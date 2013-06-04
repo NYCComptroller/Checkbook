@@ -1,0 +1,39 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":411,
+    "no_results_content":"No Results Found",
+    
+    "defaultParameters":{
+        "cum_spend.cum_spend.status_flag":"A"
+    },
+    "startWith":0,
+    "urlParamMap":{
+    				"doctype":"document_code.document_code.document_code",
+    			    "contstatus":"cum_spend.cum_spend.status_flag",
+    			    "calyear":"cum_spend.cum_spend.fiscal_year_id",
+    			    "year":"cum_spend.cum_spend.fiscal_year_id",
+    			    "yeartype":"cum_spend.cum_spend.type_of_year"
+    			  }  ,
+    "columns":["agency.agency", "agency.agency.agency_name", "txcount"],
+    "orderBy":"-txcount",    
+	"getTotalDataCount":true,    
+	"facetPager":true,   
+    "filterName":"Agency",
+    "urlParameterName":"agency",
+    "autocompleteParamName":"agency_auto",    
+    "autocompleteID":"fagencyId",
+    "autocompleteField":"agency_name", 	
+	"maxSelect":1,        	         
+    "adjustParameters":"
+    if(function_exists('_checkbook_project_adjustContractParameterFilters')){
+        _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
+    }
+    if(function_exists('_checkbook_project_applyParameterFilters')){
+        $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        $adjustedParameters['agency.agency'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+        return $adjustedParameters;
+    }
+    return $parameters;
+    ",       
+    "template":"individual_filter"
+}

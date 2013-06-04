@@ -1,0 +1,12 @@
+{
+    "datasets": {
+		"industry_type": {
+            "datasourceName": "main",
+            "source": "ref_industry_type",
+            "columns": [
+                {
+                    "name": "industry_type_id",
+                    "key": true}
+            ]}            
+    }
+}

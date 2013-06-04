@@ -1,0 +1,259 @@
+<?php
+/**
+ * @file
+ * Util contrib to collapse admin field sets.
+ */
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function admin_page_fieldsets_theme_registry_alter(&$theme_registry) {
+  if (!empty($theme_registry['system_modules_fieldset'])) {
+    $theme_registry['system_modules_fieldset']['function'] = 'admin_page_fieldsets_theme_system_modules_fieldset';
+  }
+  if (!empty($theme_registry['user_admin_permissions'])) {
+    $theme_registry['user_admin_permissions']['function'] = 'admin_page_fieldsets_theme_user_admin_permissions';
+  }
+}
+
+
+/**
+ * Implements hook_form_FORM_ID_alter() for system_modules().
+ */
+function admin_page_fieldsets_form_system_modules_alter(&$form, $form_state) {
+  drupal_add_css(drupal_get_path('module', 'admin_page_fieldsets') .'/admin_page_fieldsets.css');
+
+  $packages = array();
+  $weights = array();
+  $result = db_select('system', 's')
+    ->condition('type', 'module')
+    ->fields('s', array('filename', 'name', 'weight', 'info'))
+    ->execute();
+  foreach ($result as $module) {
+    $info = unserialize($module->info);
+    $package_name = (isset($info['package']) && $info['package']) ? $info['package'] : t('Other');
+    $packages[$package_name] = $package_name;
+    $weights[$module->name] = $module->weight;
+  }
+  ksort($packages);
+
+  $form['admin_page_fieldsets_module_weights'] = array(
+    '#type' => 'hidden', // pass to submit()
+    '#value' => $weights,
+    );
+
+  $form['admin_page_fieldsets_list'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Package display'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#weight' => -9999,
+    );
+
+  $defaults = variable_get('admin_page_fieldsets_packages', array());
+  $form['admin_page_fieldsets_list']['admin_page_fieldsets_packages'] = array(
+    '#type' => 'checkboxes',
+    '#description' => t('Checked module packages will be displayed in an open (non-collapsed) fieldset.'),
+    '#default_value' => $defaults,
+    '#options' => $packages,
+    );
+
+  $display_weights = variable_get('admin_page_fieldsets_module_weight');
+  $form['admin_page_fieldsets_list']['admin_page_fieldsets_module_weight'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Display and edit module weight in tables'),
+    '#default_value' => $display_weights,
+    );
+
+  foreach ($packages as $package) {
+    // set collapsed state
+    $form['modules'][$package]['#collapsed'] = isset($defaults[$package]) ? ($defaults[$package] === 0) : FALSE;
+
+    if ($display_weights) {
+      $header_array = &$form['modules'][$package]['#header'];
+      if (is_array($header_array)) {
+        // add weight column to table header
+        array_splice($header_array, 3, 0, t('Weight'));
+        foreach ($form['modules'][$package] as $module => $row_array) {
+          if ($module[0] != '#') {
+            // add weight column to table row
+            $form['modules'][$package][$module]['weight'] = array(
+              '#type' => 'textfield',
+              '#size' => 4,
+              '#default_value' => $weights[$module],
+            );
+          }
+        }
+      }
+    }
+  }
+
+  $form['#validate'][] = 'admin_page_fieldsets_system_modules_validate';
+  array_unshift($form['#submit'], 'admin_page_fieldsets_system_modules_submit');
+}
+
+function admin_page_fieldsets_system_modules_validate($form, &$form_state) {
+  if (variable_get('admin_page_fieldsets_module_weight')) {
+    foreach ($form_state['values']['modules'] as $package_name => $package) {
+      foreach ($package as $module_name => $module) {
+        if (!is_numeric($module['weight'])) {
+          form_set_error("modules][{$package_name}][{$module_name}][weight", t('The !module module weight must be numeric.', array('!module' => $module_name)));
+        }
+      }
+    }
+  }
+}
+
+function admin_page_fieldsets_system_modules_submit($form, &$form_state) {
+  variable_set('admin_page_fieldsets_packages', $form_state['values']['admin_page_fieldsets_packages']);
+  variable_set('admin_page_fieldsets_module_weight', $form_state['values']['admin_page_fieldsets_module_weight']);
+
+  if (variable_get('admin_page_fieldsets_module_weight')) {
+    $weights = $form_state['values']['admin_page_fieldsets_module_weights'];
+    foreach ($form_state['values']['modules'] as $package_name => $package) {
+      foreach ($package as $module_name => $module) {
+        if (isset($module['weight']) && $module['weight'] != $weights[$module_name]) {
+          db_update('system')
+            ->fields(array('weight' => $module['weight']))
+            ->condition('name', $module_name)
+            ->execute();
+        }
+      }
+    }
+  }
+}
+
+
+/**
+ * Copied from system.admin.inc::theme_system_modules_fieldset. A single extra item added (see *** comments).
+ */
+function admin_page_fieldsets_theme_system_modules_fieldset($variables) {
+  $display_weights = variable_get('admin_page_fieldsets_module_weight'); //***
+  $form = $variables['form'];
+  $rows = array();
+  foreach (element_children($form) as $key) {
+    $module = $form[$key];
+    $row = array();
+    unset($module['enable']['#title']);
+    $row[] = array('class' => array('checkbox'), 'data' => drupal_render($module['enable']));
+    $label = '<label';
+    if (isset($module['enable']['#id'])) {
+      $label .= ' for="' . $module['enable']['#id'] . '"';
+    }
+    $row[] = $label . '><strong>' . drupal_render($module['name']) . '</strong></label>';
+    $row[] = drupal_render($module['version']);
+    if ($display_weights) { //***
+      $row[] = drupal_render($module['weight']);
+    }
+    $description = drupal_render($module['description']);
+    if ($module['#requires']) {
+      $description .= '<div class="admin-requirements">' . t('Requires: !module-list', array('!module-list' => implode(', ', $module['#requires']))) . '</div>';
+    }
+    if ($module['#required_by']) {
+      $description .= '<div class="admin-requirements">' . t('Required by: !module-list', array('!module-list' => implode(', ', $module['#required_by']))) . '</div>';
+    }
+    $row[] = array('data' => $description, 'class' => array('description'));
+    foreach (array('help', 'permissions', 'configure') as $key) {
+      $row[] = array('data' => drupal_render($module['links'][$key]), 'class' => array($key));
+    }
+    $rows[] = $row;
+  }
+  return theme('table', array('header' => $form['#header'], 'rows' => $rows));
+}
+
+
+/**
+ * Implements hook_form_FORM_ID_alter() for user_admin_permissions().
+ */
+function admin_page_fieldsets_form_user_admin_permissions_alter(&$form, $form_state) {
+  drupal_add_css(drupal_get_path('module', 'admin_page_fieldsets') .'/admin_page_fieldsets.css');
+
+  $modules = array();
+  $module_info = system_get_info('module');
+  foreach (module_implements('permission') as $module) {
+    $modules[$module] = $module_info[$module]['name'];
+  }
+  asort($modules);
+
+  $form['admin_page_fieldsets_list'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Module display'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#weight' => -9999,
+    );
+  $defaults = variable_get('admin_page_fieldsets_modules', array());
+  $form['admin_page_fieldsets_list']['admin_page_fieldsets_modules'] = array(
+    '#type' => 'checkboxes',
+    '#description' => t('Permissions of checked modules will be displayed in an open (non-collapsed) fieldset.'),
+    '#default_value' => $defaults,
+    '#options' => $modules,
+    );
+
+  foreach ($modules as $id => $module) {
+    $form[$id] = array(
+      '#type' => 'fieldset',
+      '#title' => $module,
+      '#collapsible' => TRUE,
+      '#collapsed' => isset($defaults[$id]) ? ($defaults[$id] === 0) : FALSE,
+      );
+  }
+
+  $form['#submit'][] = 'admin_page_fieldsets_user_admin_permissions_submit';
+}
+
+function admin_page_fieldsets_user_admin_permissions_submit($form, &$form_state) {
+  variable_set('admin_page_fieldsets_modules', $form_state['values']['admin_page_fieldsets_modules']);
+}
+
+/**
+ * Copied from user.admin.inc::theme_user_admin_permissions. Modified to display in fieldsets.
+ */
+function admin_page_fieldsets_theme_user_admin_permissions($variables) {
+  $form = $variables['form'];
+  $output = drupal_render($form['admin_page_fieldsets_list']);
+  unset($form['admin_page_fieldsets_list']);
+
+  $header = array();
+  $header[] = (t('Permission'));
+  foreach (element_children($form['role_names']) as $rid) {
+    $header[] = array('data' => drupal_render($form['role_names'][$rid]), 'class' => array('checkbox'));
+  }
+
+  $roles = user_roles();
+  $tables = array();
+  foreach (element_children($form['permission']) as $key) {
+    if (is_numeric($key)) {
+      $module_id = $form['permission'][$key]['#id'];
+      $tables[$module_id] = array();
+    }
+    else {
+      $row = array();
+      $row[] = array(
+        'data' => drupal_render($form['permission'][$key]),
+        'class' => array('permission'),
+      );
+      foreach (element_children($form['checkboxes']) as $rid) {
+        $row[] = array(
+          'data' => drupal_render($form['checkboxes'][$rid][$key]),
+          'class' => array('checkbox'),
+          'title' => $roles[$rid] . ': ' . $form['permission'][$key]['#markup']
+        );
+      }
+      $tables[$module_id][] = $row;
+    }
+  }
+  unset($form['permission']);
+  unset($form['checkboxes']);
+
+  $output .= theme('system_compact_link');
+
+  foreach ($tables as $module_id => $table) {
+    $form[$module_id]['#value'] = theme('table', array('header' => $header, 'rows' => $table, 'attributes' => array('id' => 'permissions')));
+    $output .= drupal_render($form[$module_id]);
+    unset($form[$module_id]);
+  }
+
+  $output .= drupal_render_children($form);
+  return $output;
+}

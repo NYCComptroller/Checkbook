@@ -1,0 +1,16 @@
+<?php
+/**
+ * @file
+ * Install code for Comment Box add-on to Util.
+ */
+
+function comment_box_uninstall() {
+  variable_del('comment_box_show_roles');
+  variable_del('comment_box_show_perms');
+  
+  $types = node_type_get_names();
+  foreach ($types as $type => $name) {
+    variable_del("comment_box_size_$type");
+  }
+
+}

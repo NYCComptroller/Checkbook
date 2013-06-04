@@ -1,0 +1,12 @@
+<?php
+// $Id: admin_page_fieldsets.install,v 1.4.2.3.2.2 2010/06/04 18:39:33 djg_tram Exp $
+
+
+/**
+ * Implements hook_uninstall().
+ */
+function admin_page_fieldsets_uninstall() {
+  db_delete('variable')
+    ->condition('name', 'admin_page_fieldsets_%', 'LIKE')
+    ->execute();
+}

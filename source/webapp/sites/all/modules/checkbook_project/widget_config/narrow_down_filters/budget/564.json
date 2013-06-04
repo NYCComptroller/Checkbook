@@ -1,0 +1,25 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":277,
+    "startWith":0,
+	"columns":["budget_code.budget_code", "budget_code_name.budget_code_name", "txcount"],
+	"orderBy":"-txcount",    
+    "filterName":"Budget Code",
+    "urlParameterName":"bdgcode",
+    "autocompleteParamName":"bdgcode_auto", 
+    "getTotalDataCount":true,    
+    "facetPager":true,
+    "urlParameterNameType":"eqtext",    
+    "autocompleteID":"fbdgcodeId",
+    "autocompleteField":"budget_code_name", 
+    "maxSelect":5,   
+    "limit":100,
+    "adjustParameters":"
+    if(function_exists('_checkbook_project_applyParameterFilters')){
+        $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+    }
+    $adjustedParameters['budget_code_name.budget_code_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+    return $adjustedParameters;
+    ",   
+    "template":"individual_filter"
+}

@@ -1,0 +1,62 @@
+{
+"widgetType": "phpparser",
+"useList":true,
+"template":"contracts_cta_history",
+"no_results_content":"No Results Found",
+"defaultParameters":{"original_agreement_id@checkbook:history_agreement":"1064400","original_agreement_id":"1064400"},
+"cleanURLParameters":["agid"],
+ "urlParamMap":{"agid":"original_agreement_id"},
+
+"model": {
+       "join": {
+          "method": "Union"
+      },
+      "series": [
+ {"dataset": "checkbook:pending_contracts",
+ "urlParamMap":{"agid":"original_agreement_id"},
+"orderBy":"-document_version",
+             "allowedParams":["original_agreement_id"],
+               "columns": [ "original_maximum_amount", "revised_maximum_amount",
+                "start_date",
+                "end_date",
+                "year_value@checkbook:ref_year/nyc_year_id@checkbook:date_id/cif_received_date_id@checkbook:pending_contracts",
+                "cif_received_date","document_version"
+                      ]
+           }           ,
+              {"dataset": "checkbook:history_agreement",
+             "seriesURLParamMap":{"agid":"original_agreement_id@checkbook:history_agreement"},
+             "allowedParams":["original_agreement_id@checkbook:history_agreement"],
+                 "orderBy":["-source_updated_fiscal_year","-document_version"],
+               "columns": [ "contract_number","document_version","maximum_contract_amount", "original_contract_amount",
+                "source_updated_fiscal_year",
+                "date@checkbook:date_id/effective_begin_date_id@checkbook:history_agreement",
+                "date@checkbook:date_id/effective_end_date_id@checkbook:history_agreement",
+                "date@checkbook:date_id/source_updated_date_id@checkbook:history_agreement",
+                "date@checkbook:date_id/registered_date_id@checkbook:history_agreement"
+                      ]
+           }
+   ]
+},
+"derivedColumns": {
+"status": {
+      "type": "expression2",
+      "expression": "isset($row[cif_received_date])?\"Pending\":\"Registered\""
+    } ,
+"start_date": {
+      "type": "expression2",
+      "expression": "isset($row[\"date@checkbook:date_id/effective_begin_date_id@checkbook:history_agreement\"])?$row[\"date@checkbook:date_id/effective_begin_date_id@checkbook:history_agreement\"]:$row[start_date]"
+    } ,
+"end_date": {
+      "type": "expression2",
+      "expression": "isset($row[\"date@checkbook:date_id/effective_end_date_id@checkbook:history_agreement\"])?$row[\"date@checkbook:date_id/effective_end_date_id@checkbook:history_agreement\"]:$row[end_date]"
+    } ,
+"source_updated_fiscal_year": {
+      "type": "expression2",
+      "expression": "isset($row[source_updated_fiscal_year])?$row[source_updated_fiscal_year]:$row[\"year_value@checkbook:ref_year/nyc_year_id@checkbook:date_id/cif_received_date_id@checkbook:pending_contracts\"]"
+    } ,
+"updated_date": {
+      "type": "expression2",
+      "expression": "$row[\"date@checkbook:date_id/source_updated_date_id@checkbook:history_agreement\"]"
+    }
+}
+}

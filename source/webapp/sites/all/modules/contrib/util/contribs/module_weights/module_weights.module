@@ -1,0 +1,231 @@
+<?php
+
+/**
+ * @file
+ * Allows module weights to be viewed and edited.
+ */
+
+/**
+ * Implements hook_help().
+ */
+function module_weights_help($path, $arg) {
+  $output = '';
+  switch ($path) {
+    case 'admin/help#module_weights':
+      $output .= '<p>'. t('Drupal assigns each module a weight. For most operations involving any module that defines a particular hook, the modules are invoked in order first by weight, then by name.') .'</p>';
+      $output .= '<p>'. t('This module adds a weight column to the modules table at !modules, allowing weights to be viewed and edited. Once activated, a weight column appears on the modules table. To change a module weight, edit its value and press "Save configuration". Any user who can submit the !modules form will be able to change module weights.', array('!modules' => l('admin/build/modules', 'admin/build/modules'))) .'</p>';
+      break;
+    
+    case 'admin/build/modules':
+      $output .= '<p>'. t('For more information on module weights, see <a href="!url">Drupal.org</a>.', array('!url' => 'http://drupal.org/node/110238')) .'</p>';
+      break;
+  }
+  return $output;
+}
+
+/**
+ * Implements hook_menu().
+ */
+function module_weights_menu() {
+  $menu['admin/settings/util/module_weights'] = array(
+    'title'            => 'Module Weights',
+    'description'      => 'Module weight information.',
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('module_weights_settings'),
+    'access arguments' => array('administer site configuration'),
+    'type'             => MENU_LOCAL_TASK,
+  );
+  return $menu;
+}
+
+/**
+ * Implements hook_TYPE_alter().
+ * Add weight header.
+ */
+function module_weights_system_module_headers_alter(&$header) {
+  array_unshift($header, 'Weight');
+}
+
+/**
+ * Implements hook_TYPE_alter().
+ */
+function module_weights_system_module_weights_alter(&$row, $module, &$form) {
+  array_unshift($row, drupal_render($form['weights'][$module]));
+  // CLEANUP what we added in hook_form_alter().
+  unset($form['weights'][$module]);
+}
+
+/**
+ * Helper function to fetch and cache module weights.
+ */
+function fetch_module_weights($name = NULL) {
+  static $module_weights = array();
+  if (empty($module_weights)) {
+    $query = "SELECT filename, name, type, owner, status, throttle, bootstrap, schema_version, weight FROM {system} WHERE type = 'module' ORDER BY name";
+    $result = db_query($query);
+    while ($row = db_fetch_object($result)) {
+      // When a module is deleted, it remains in the system table.
+      // If module has been deleted, omit it from the list.
+      if (file_exists($row->filename)) {
+        $module_weights[$row->name] =  empty($row->weight) ? 0 : $row->weight;
+      }
+      else {
+        // Do we want a warning?
+        if (variable_get('module_weights_warning', 0)) {
+          if ($row->status) {
+            drupal_set_message(t('@name module file (@file) could not be found, but is still marked as "enabled!"', array('@name' => $row->name, '@file' => $row->filename)), 'warning');
+          }
+          else {
+            drupal_set_message(t('@name module file (@file) could not be found.', array('@name' => $row->name, '@file' => $row->filename)));
+          }
+        }
+      }
+    }
+  }
+  if ($name === NULL) {
+    return $module_weights;
+  }
+  elseif (isset($module_weights[$name])) {
+    return $module_weights[$name];
+  }
+  else {
+    return NULL;
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function module_weights_form_alter(&$form, $form_state, $form_id) {
+  switch ($form_id) {
+    // The admin modules page.
+    case 'system_modules':
+      if (!empty($form['description']['system_module'])) {
+        $weights = fetch_module_weights();
+        $form['weights'] = array('#tree' => TRUE);
+        foreach ($weights as $name => $weight) {
+          // We add "w_" to the name so as not to upset system module.
+          $form['description'][$name]['weights']["w_$name"] = array(
+            '#type'          => 'textfield',
+            '#default_value' => empty($weight) ? 0 : $weight,
+            '#title'         => t('Module weight'),
+            '#size'          => 4,
+            '#prefix'        => '<div class="container-inline">',
+            '#suffix'        => '</div>',
+            );
+        }
+
+        // Do my #submit before system.module's so all the rebuilding
+        // operations in system_module_submit use the new weights.
+        array_unshift($form['#submit'], 'module_weights_system_module_submit');
+        $form['#validate'][] = 'module_weights_system_module_validate';
+      }
+      break;
+  }
+}
+
+/**
+ * Implements form_validate().
+ */
+function module_weights_system_module_validate($form, &$form_state) {
+  $weights = fetch_module_weights();
+  foreach ($weights as $name => $weight) {
+    // Submitted weights must be numeric.
+    $found = $form_state['values']["w_$name"];
+    if (!is_numeric($found)) {
+      form_set_error("weights][w_{$name}",
+        t('The !module module weight must be a number (found "@found").',
+          array('!module' => $name, '@found' => $found))
+        );
+    }
+  }
+}
+
+/**
+ * Implements form_submit().
+ */
+function module_weights_system_module_submit($form, &$form_state) {
+  foreach ($form_state['values'] as $key => $weight) {
+    // Extra step of optimization, update only weights that changed
+    // also skip on module names that don't match our record in fetch_module_weights().
+    if (drupal_substr($key, 0, 2) == 'w_') {
+      $name = drupal_substr($key, 2);
+      $module_weight = fetch_module_weights($name);
+      if ($module_weight !== NULL && $module_weight != $weight) {
+        $query = "UPDATE {system} SET weight = %d WHERE name LIKE '%s'";
+        db_query($query, (int) $weight, $name);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_settings().
+ */
+function module_weights_settings() {
+  drupal_add_css(drupal_get_path('module', 'module_weights') .'/module_weights.css');
+  $form = array();
+
+  $form['module_weights_warning'] = array(
+    '#type' => 'radios',
+    '#options' => array(0 => t('None'), 1 => t('Verbose')),
+    '#default_value' => variable_get('module_weights_warning', 0),
+    '#title' => t('Missing module warning'),
+    '#description' => t('If a module file cannot be found, would you like a warning to be issued?'),
+    );
+
+  $weighted = $missing = array();
+  $header = array(t('Module'), t('Weight'));
+  $result = db_query("SELECT name, weight, filename, status FROM {system} WHERE TYPE = 'module' ORDER BY name");
+  while ($row = db_fetch_object($result)) {
+    if (!file_exists($row->filename)) {
+      $desc = $row->name;
+      if ($row->status) {
+        drupal_set_message(t('@name module file (@file) could not be found, but is still marked as "enabled!"', array('@name' => $row->name, '@file' => $row->filename)), 'warning');
+        $desc .= '*';
+      }
+      $missing[] = $desc;
+    }
+
+    if ($row->weight != 0) {
+      $weighted[] = array(
+        $row->name,
+        array('data' => $row->weight, 'align' => 'right'),
+        );
+    }
+  }
+
+  if ($missing) {
+    if (module_exists('system_table_cleaner')) {
+      $desc = t('These module files could not be found and mess up the modules administration page. The system table needs to be <a href="!url">cleaned up</a>.', array('!url' => url('admin/settings/systems-table-cleaner')));
+    }
+    else {
+      $desc = t('These module files could not be found and mess up the modules administration page. The system table needs to be cleaned up. The <a href="!url">System Table Cleaner</a> module can be used for this.', array('!url' => 'http://drupal.org/project/system_table_cleaner'));
+    }
+    $form['missing'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Missing module files'),
+      '#description' => $desc,
+      '#collapsible' => TRUE,
+      '#collapsed' => FALSE,
+      );
+    $form['missing']['list'] = array(
+      '#type' => 'markup',
+      '#value' => theme('item_list', $missing),
+      );
+  }
+
+  $form['weights'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Weighted modules'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+    );
+
+  $form['weights']['list'] = array(
+    '#type' => 'markup',
+    '#value' => theme('table', $header, $weighted, array('style' => 'width: auto;')),
+    );
+
+  return system_settings_form($form);
+}

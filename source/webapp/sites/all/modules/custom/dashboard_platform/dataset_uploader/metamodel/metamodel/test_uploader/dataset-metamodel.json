@@ -1,0 +1,8 @@
+{
+    "datasets": {
+        "__metamodel2": {
+            "datasourceName": "drupal:default",
+            "description": "Storage for dynamic meta model configurations",
+            "source": "dp_metamodels"}
+    }
+}

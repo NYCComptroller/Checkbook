@@ -1,0 +1,79 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function cacheexclude_menu() {
+
+  $items['admin/config/system/cacheexclude'] = array(
+    'title' => t('Cache exclusions'),
+    'description' => t('Configure pages to exclude from caching.'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('cacheexclude_admin_settings'),
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+/**
+ * Administrative settings form.
+ */
+function cacheexclude_admin_settings() {
+
+  $form['cacheexclude_list'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Pages to exclude from caching'),
+    '#default_value' => variable_get('cacheexclude_list', ''),
+    '#width' => 40,
+    '#height' => 10,
+    '#description' => t("Enter one page per line as Drupal paths. Don't begin link with trailing slash. The '*' character is a wildcard. Example paths are %blog for the blog page and %blog-wildcard for every personal blog. %front is the front page.", array('%blog' => 'blog', '%blog-wildcard' => 'blog/*', '%front' => '<front>')),
+  );
+
+  $form['cacheexclude_node_types'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Content types to exclude from caching'),
+    '#default_value' => variable_get('cacheexclude_node_types', array()),
+    '#options' => node_type_get_names(),
+    '#description' => t("Check all content types that you do not want to be cached."),
+  );
+
+  // Add an additional submit handler to clear the cache after list is updated.
+  $full_form = system_settings_form($form);
+  $full_form['#submit'][] = 'cacheexclude_admin_settings_submit';
+
+  return $full_form;
+}
+
+/**
+ * Clear the cache when the admin settings form is submitted.
+ */
+function cacheexclude_admin_settings_submit() {
+  // Clear the page cache when new settings are added.
+  cache_clear_all(NULL, 'cache_page', '*');
+}
+
+/**
+ * Implements hook_init().
+ */
+function cacheexclude_init() {
+  $pages = trim(variable_get('cacheexclude_list', ''));
+
+  // If the current page is one we want to exclude from the cache,
+  // set the page caching to false temporarily.
+  if (strlen($pages) && (drupal_match_path($_GET['q'], $pages) ||
+                         drupal_match_path(drupal_get_path_alias($_GET['q']), $pages) )) {
+    drupal_page_is_cacheable(FALSE);
+    return;
+  }
+
+  // Check if the current node type is one we want to exclude from the cache.
+  if ($node = menu_get_object('node')) {
+    $types = array_filter(variable_get('cacheexclude_node_types', array()));
+
+    if (in_array($node->type, $types)) {
+      drupal_page_is_cacheable(FALSE);
+    }
+  }
+}

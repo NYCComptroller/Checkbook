@@ -1,0 +1,80 @@
+<?php
+/**
+ * @file
+ * Duplicate node form buttons at the top.
+ */
+
+/**
+ * Implements hook_form_alter().
+ * Duplicate the buttons on the node edit form.
+ */
+function top_buttons_form_alter(&$form, $form_state, $form_id) {
+  // Is it a node add/edit form?
+  if (drupal_substr($form_id, -10) == '_node_form') {
+    $node_type = drupal_substr($form_id, 0, -10);
+
+    $handle_types = variable_get('top_buttons_types', array());
+
+    if (variable_get("top_buttons_remove_delete_$node_type", 0)) {
+      unset($form['actions']['delete']);
+    }
+
+    if (variable_get("top_buttons_$node_type", 1)) {
+      $form['top_buttons'] = $form['actions'];
+      $form['top_buttons']['#weight'] = -5;
+      return;
+    }
+  }
+  else {
+    switch ($form_id) {
+      // Is it the node type add/edit form?
+       case 'node_type_form':
+          $node_type = $form['#node_type']->type;
+          $noyes = array(t('No'), t('Yes'));
+
+          $form['submission']["top_buttons"] = array(
+            '#type' => 'radios',
+            '#options' => $noyes,
+            '#title' => t('Duplicate submission buttons at top'),
+            '#description' => t('Select "yes" if you want the submission buttons ("Save," "Delete," etc.) duplicated above the body field.'),
+            '#attributes' => array('class' => array('container-inline')),
+            '#default_value' => variable_get("top_buttons_$node_type", 1),
+            );
+
+          $form['submission']["top_buttons_remove_delete"] = array(
+            '#type' => 'radios',
+            '#options' => $noyes,
+            '#title' => t('Remove the delete button?'),
+            '#description' => t('Select "yes" if you want the delete button removed from the edit page.'),
+            '#attributes' => array('class' => array('container-inline')),
+            '#default_value' => variable_get("top_buttons_remove_delete_$node_type", 0),
+            );
+          return;
+
+       case 'user_profile_form':
+         $handle_types = variable_get('top_buttons_user', array());
+
+         if (variable_get("top_buttons_user", 1)) {
+           $form['account']['top_buttons'] = $form['actions'];
+           $form['account']['top_buttons']['#weight'] = -9;
+          }
+         return;
+
+       case 'user_admin_settings':
+         $form['submission'] = array(
+           '#type' => 'fieldset',
+           '#title' => t('Account/Profile form submission buttons'),
+           '#weight' => 0,
+           );
+         $form['submission']['top_buttons_user'] = array(
+           '#type' => 'radios',
+           '#options' => array(t('No'), t('Yes')),
+           '#title' => t('Duplicate submission buttons at top'),
+           '#description' => t('Select "yes" if you want the "Save" and "Delete" buttons copied to the top of user account (and profile) edit form.'),
+           '#attributes' => array('class' => array('container-inline')),
+           '#default_value' => variable_get('top_buttons_user', 1),
+           );
+         return;
+    }
+  }
+}

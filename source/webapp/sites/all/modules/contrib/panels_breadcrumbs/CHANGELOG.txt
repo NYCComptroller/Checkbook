@@ -1,0 +1,25 @@
+panels_breadcrumbs 7.x-1.6
+==================
+Issue #1355066 by devuo: Fix characters & from being output as &amp; if they come pre-encoded as &amp; from substituion.
+
+panels_breadcrumbs 7.x-1.5
+==================
+Issue #1387994 by devuo: Fix Undefined offset.
+
+panels_breadcrumbs 7.x-1.4
+==================
+Issue #1355066 by devuo: Fix Characters like ' and & from being output as ' and & if they come from a substitution.
+
+panels_breadcrumbs 7.x-1.3
+==================
+Issue #1347690 by devuo: Add Home breadcrumb option.
+
+panels_breadcrumbs 7.x-1.2
+==================
+Issue #1325772 by andypost: Fixed notices when breadcrumbs disabled.
+Issue #1324798 by devuo: Empty Breadcrumb in trail.
+Issue #1320748 by bennetteson, nod_: Patch to add a alter capacity to panels breadcrumbs.
+
+panels_breadcrumbs 7.x-1.1
+==================
+Issue #1304278 by andypost: Fixed Call-time pass-by-reference in panels_breadcrumbs.module.

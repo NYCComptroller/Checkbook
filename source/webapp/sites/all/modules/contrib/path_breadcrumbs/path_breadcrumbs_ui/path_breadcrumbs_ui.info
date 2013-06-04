@@ -1,0 +1,14 @@
+name = Path breadcrubms UI
+description = User interface for Path Breadcrumbs module
+core = 7.x
+package = Path breadcrumbs
+configure = admin/structure/path-breadcrumbs
+
+dependencies[] = path_breadcrumbs
+
+; Information added by drupal.org packaging script on 2012-08-05
+version = "7.x-2.0-beta17"
+core = "7.x"
+project = "path_breadcrumbs"
+datestamp = "1344169037"
+

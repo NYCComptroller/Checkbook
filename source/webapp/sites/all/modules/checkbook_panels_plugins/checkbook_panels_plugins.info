@@ -1,0 +1,13 @@
+
+;	GNU AFFERO GENERAL PUBLIC LICENSE 
+;	   Version 3, 19 November 2007
+; This software is licensed under the GNU AGPL Version 3
+; 	(see the file LICENSE for details)
+name = CTools Panels Plugin for checkbook
+description = Shows how an external module can provide ctools plugins (for Panels, etc.).
+dependencies[] = ctools
+dependencies[] = panels
+dependencies[] = page_manager
+core = 7.x
+
+

@@ -1,0 +1,435 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+
+
+
+
+/**
+ * Implements hook_page_alter().
+ */
+function checkbook_custom_breadcrumbs_page_alter(&$page) {
+  //TODO
+  if(preg_match('/^contracts_landing/',current_path()) || preg_match('/^contracts_revenue_landing/',current_path())){
+      _set_contracts_breadcrumb_title_drilldown();
+  }
+  elseif( preg_match('/^contracts_pending/',current_path())){
+      _set_pending_contracts_breadcrumb_title_drilldown();
+  }
+  elseif( preg_match('/^spending_landing/',current_path())){
+    _set_spending_breadcrumb_title_drilldown();
+  }elseif( preg_match('/^budget/',current_path())){
+      _set_budget_breadcrumb_title_drilldown();
+  }elseif( preg_match('/^revenue/',current_path())){
+        _set_revenue_breadcrumb_title_drilldown();
+  }
+
+  _checkbook_custom_breadcrumnb_add_breadcrumb_title();
+}
+
+
+/**
+* Custom function to set title for contracts landing pages
+**/
+function _set_contracts_breadcrumb_title_drilldown(){
+    drupal_set_title(_get_contracts_breadcrumb_title_drilldown());
+}
+
+/**
+* Custom function to set title for Spending landing pages
+**/
+function _set_spending_breadcrumb_title_drilldown(){
+  drupal_set_title(_get_spending_breadcrumb_title_drilldown());
+}
+
+/**
+* Custom function to set title for Budget landing pages
+**/
+function _set_budget_breadcrumb_title_drilldown(){
+  drupal_set_title(_get_budget_breadcrumb_title_drilldown());
+}
+
+/**
+* Custom function to set title for Revenue landing pages
+**/
+function _set_revenue_breadcrumb_title_drilldown(){
+  drupal_set_title(_get_revenue_breadcrumb_title_drilldown());
+}
+
+/**
+ * Custom function to get title for contracts landing pages
+ **/
+function _get_contracts_breadcrumb_title_drilldown(){
+
+    $lastReqParam = _getLastRequestParamValue();
+    $title = "New York City";
+
+    foreach($lastReqParam as $key => $value){
+        switch($key){
+            case 'agency':
+                $title = _checkbook_project_get_name_for_argument("agency_id",$value);
+                break;
+            case 'vendor':
+                $title = _checkbook_project_get_name_for_argument("vendor_id",$value);
+                break;
+            case 'awdmethod':
+                $title = _checkbook_project_get_name_for_argument("award_method_id",$value);
+                break;
+            case 'csize':
+                $title = _checkbook_project_get_name_for_argument("award_size_id",$value);
+                break;
+            case 'cindustry':
+                $title = _checkbook_project_get_name_for_argument("industry_type_id",$value);
+                break;
+            default:
+        }
+    }
+
+    return $title;
+
+}
+
+
+/**
+ * Custom function to get title for contracts landing pages
+ **/
+function _get_spending_breadcrumb_title_drilldown(){
+
+  $lastReqParam = _getLastRequestParamValue();
+  $title = "New York City";
+
+  foreach($lastReqParam as $key => $value){
+    switch($key){
+      case 'agency':
+        $title = _checkbook_project_get_name_for_argument("agency_id",$value);
+        break;
+      case 'vendor':
+        $title = _checkbook_project_get_name_for_argument("vendor_id",$value);
+        break;      
+      default:
+    }
+  }
+
+  return $title;
+
+}
+
+/**
+ * Custom function to get title for Budget landing pages
+ **/
+function _get_budget_breadcrumb_title_drilldown(){
+  $bottomURL = $_REQUEST['expandBottomContURL'];
+    if(!$bottomURL && preg_match('/^budget\/transactions/',current_path())){
+       $title = null;
+    }else{
+        $lastReqParam = _getLastRequestParamValue();
+        $title = "New York City";
+
+        foreach($lastReqParam as $key => $value){
+        switch($key){
+          case 'agency':
+            $title = _checkbook_project_get_name_for_argument("agency_id",$value);
+            break;
+          case 'expcategory':
+            $title = _checkbook_project_get_name_for_argument("object_class_id",$value);
+            break;
+          case 'dept':
+              $title = _checkbook_project_get_name_for_argument("department_id",$value);
+              break;
+            case 'bdgcode':
+             $title = _checkbook_project_get_name_for_argument("budget_code_id",$value) ;
+
+          default:
+        }
+      }
+    }
+  return $title;
+
+}
+
+/**
+ * Custom function to get title for Revenue landing pages
+ **/
+function _get_revenue_breadcrumb_title_drilldown(){
+  $bottomURL = $_REQUEST['expandBottomContURL'];
+    if(!$bottomURL && preg_match('/^revenue\/transactions/',current_path())){
+       $title = null;
+    }else{
+        $lastReqParam = _getLastRequestParamValue();
+        $title = "New York City";
+
+        foreach($lastReqParam as $key => $value){
+        switch($key){
+          case 'agency':
+            $title = _checkbook_project_get_name_for_argument("agency_id",$value);
+            break;
+          case 'revcat':
+              $title = _checkbook_project_get_name_for_argument("revenue_category_id",$value);
+              break;
+          case 'fundsrccode':
+              $title = _checkbook_project_get_name_for_argument("funding_class_code",$value);
+              break;
+          default:
+        }
+      }
+    }
+  return $title;
+
+}
+
+/**
+* Custom function to set title for contracts landing pages
+**/
+function _set_pending_contracts_breadcrumb_title_drilldown(){
+    drupal_set_title(_get_pending_contracts_breadcrumb_title_drilldown());
+}
+
+/**
+ * Custom function to set title for contracts landing pages
+ **/
+function _get_pending_contracts_breadcrumb_title_drilldown(){
+
+    $lastReqParam = _getLastRequestParamValue();
+    $title = "New York City";
+
+    foreach($lastReqParam as $key => $value){
+        switch($key){
+            case 'agency':
+                $title = _checkbook_project_get_name_for_argument("agency_id",$value);
+                break;
+            case 'vendor':
+                $title = _checkbook_project_get_name_for_argument("pending_contracts_vendor_id",$value);
+                break;
+            case 'awdmethod':
+                $title = _checkbook_project_get_name_for_argument("award_method_id",$value);
+                break;
+            case 'awrdmthd':
+                $title = _checkbook_project_get_name_for_argument("award_method_id",$value);
+                break;
+            case 'csize':
+                $title = _checkbook_project_get_name_for_argument("award_size_id",$value);
+                break;
+            case 'cindustry':
+                $title = _checkbook_project_get_name_for_argument("industry_type_id",$value);
+                break;
+            default:
+        }
+    }
+
+    return $title;
+
+}
+
+
+/**
+* Custom function to set breadcrumbs and title for contracts landing pages
+*/
+function _set_contracts_breadcrumb_title(){
+  $agency_id = _getRequestParamValue("agency", true);
+  $vendor_id = _getRequestParamValue("vendor", true);
+  $year_id = _getRequestParamValue("year", true);
+  $award_method_id = _getRequestParamValue("awdmethod", true);
+  $award_size_id = _getRequestParamValue("csize", true);
+  $industry_type_id = _getRequestParamValue("cindustry", true);
+
+  $year_type = _getRequestParamValue("yeartype", true);
+  $values['agency_id'] = (isset($agency_id))? _checkbook_project_get_name_for_argument("agency_id",$agency_id):"";
+  $values['vendor_id'] = (isset($vendor_id))?_checkbook_project_get_name_for_argument("vendor_id",$vendor_id):"";
+  $values['award_method'] =(isset($award_method_id))? _checkbook_project_get_name_for_argument("award_method_id",$award_method_id):"";
+  $values['award_size_id'] =(isset($award_size_id))? _checkbook_project_get_name_for_argument("award_size_id",$award_size_id):"";
+  $values['industry_type_id'] =(isset($industry_type_id))? _checkbook_project_get_name_for_argument("industry_type_id",$industry_type_id):"";
+
+
+  $breadcrumb = array();
+  $breadcrumb[] = l('Home', '<front>');
+  $breadcrumb[] = l('NYC Contracts', 'contracts/year/' . $year_id . '/yeartype/' . $year_type);
+  $title = "New York City";
+  if(isset($agency_id)){
+    $breadcrumb[] = l($values['agency_id'] , 'contracts/agency/' .$agency_id .  '/year/' . $year_id . '/yeartype/' . $year_type);
+    $title = $values['agency_id'];
+  }
+  if(isset($vendor_id)){
+    $link = 'contracts';
+    $link .= (isset($agency_id))? '/agency/' .$agency_id : '';
+    $link .= '/vendor/' . $vendor_id;
+    $link .= '/year/' . $year_id . '/yeartype/' . $year_type;
+    $link .= (isset($award_size_id))? '/csize/' . $award_size_id : '';
+    $link .= (isset($industry_type_id))? '/cindustry/' . $industry_type_id : '';
+    $breadcrumb[] = l($values['vendor_id'] , $link  );
+    $title = $values['vendor_id'];
+  }
+  if(isset($award_method_id)){
+    $link = 'contracts';
+    $link .= (isset($agency_id))? '/agency/' .$agency_id : '';
+    $link .= (isset($vendor_id))? '/vendor/' .$vendor_id : '';
+    $link .= (isset($award_size_id))? '/csize/' . $award_size_id : '';
+    $link .= (isset($industry_type_id))? '/cindustry/' . $industry_type_id : '';
+    $link .= '/awdmethod/' . $award_method_id;
+    $link .= '/year/' . $year_id . '/yeartype/' . $year_type;
+    $breadcrumb[] = l($values['award_method'] , $link  );
+    $title = $values['award_method'];
+  }
+  if(isset($industry_type_id)){
+      $link = 'contracts';
+      $link .= (isset($agency_id))? '/agency/' .$agency_id : '';
+      $link .= (isset($vendor_id))? '/vendor/' .$vendor_id : '';
+      $link .= (isset($award_method_id))? '/awdmethod/' .$award_method_id : '';
+      $link .= (isset($award_size_id))? '/csize/' . $award_size_id : '';
+      $link .= '/cindustry/' . $industry_type_id;
+      $link .= '/year/' . $year_id . '/yeartype/' . $year_type;
+      $breadcrumb[] = l($values['industry_type_id'] , $link  );
+      $title = $values['industry_type_id'];
+  }
+
+  if(isset($award_size_id)){
+      $link = 'contracts';
+      $link .= (isset($agency_id))? '/agency/' .$agency_id : '';
+      $link .= (isset($vendor_id))? '/vendor/' .$vendor_id : '';
+      $link .= (isset($award_method_id))? '/awdmethod/' .$award_method_id : '';
+      $link .= (isset($industry_type_id))? '/cindustry/' . $industry_type_id : '';
+      $link .= '/csize/' . $award_size_id;
+      $link .= '/year/' . $year_id . '/yeartype/' . $year_type;
+      $breadcrumb[] = l($values['award_size_id'] , $link  );
+      $title = $values['award_size_id'];
+  }
+
+    $breadcrumb[count($breadcrumb) -1] = $title;
+  drupal_set_title($title);
+  //drupal_set_breadcrumb($breadcrumb);
+}
+
+/**
+* Custom function to set breadcrumbs and title for pending contracts landing pages
+*/
+function _set_pending_contracts_breadcrumb_title(){
+    $pending_contracts_agency_id = _getRequestParamValue("agency", true);
+    $pending_contracts_vendor_code = _getRequestParamValue("vendor", true);
+    $pending_contracts_year_id = _getRequestParamValue("year", true);
+    $pending_contracts_award_method_code = _getRequestParamValue("awrdmthd", true);
+    $pending_contracts_award_size_id = _getRequestParamValue("csize", true);
+    $pending_contracts_industry_type_id = _getRequestParamValue("cindustry", true);
+    $pending_contracts_year_type = _getRequestParamValue("yeartype", true);
+
+    $values['pending_contracts_agency_id'] = (isset($pending_contracts_agency_id))? _checkbook_project_get_name_for_argument("agency_id",$pending_contracts_agency_id):"";
+    $values['pending_contracts_vendor_code'] = (isset($pending_contracts_vendor_code))?_checkbook_project_get_name_for_argument("pending_contracts_vendor_code",$pending_contracts_vendor_code):"";
+    $values['pending_contracts_award_method'] =(isset($pending_contracts_award_method_code))? _checkbook_project_get_name_for_argument("pending_contracts_award_method",$pending_contracts_award_method_code):"";
+    $values['pending_contracts_award_size_id'] =(isset($pending_contracts_award_size_id))? _checkbook_project_get_name_for_argument("award_size_id",$pending_contracts_award_size_id):"";
+    $values['pending_contracts_industry_type_id'] =(isset($pending_contracts_industry_type_id))? _checkbook_project_get_name_for_argument("industry_type_id",$pending_contracts_industry_type_id):"";
+
+    $breadcrumb = array();
+    $breadcrumb[] = l('Home', '<front>');
+    $breadcrumb[] = l('NYC Contracts', 'contracts/year/' . $pending_contracts_year_id . '/yeartype/' . $pending_contracts_year_type);
+    $title = "New York City";
+    if(isset($pending_contracts_agency_id)){
+      $breadcrumb[] = l($values['pending_contracts_agency_id'] , 'contracts/agency/' .$pending_contracts_agency_id .  '/year/' . $pending_contracts_year_id . '/yeartype/' . $pending_contracts_year_type);
+      $title = $values['pending_contracts_agency_id'];
+    }
+    if(isset($pending_contracts_vendor_code)){
+      $link = 'contracts';
+      $link .= (isset($agency_id))? '/agency/' .$pending_contracts_agency_id : '';
+      $link .= '/vendor/' . $pending_contracts_vendor_code;
+      $link .= '/year/' . $pending_contracts_year_id . '/yeartype/' . $pending_contracts_year_type;
+      $link .= (isset($award_size_id))? '/csize/' . $pending_contracts_award_size_id : '';
+      $link .= (isset($industry_type_id))? '/cindustry/' . $pending_contracts_industry_type_id : '';
+      $breadcrumb[] = l($values['pending_contracts_vendor_code'] , $link  );
+      $title = $values['pending_contracts_vendor_code'];
+    }
+    if(isset($pending_contracts_award_method_code)){
+      $link = 'contracts';
+      $link .= (isset($pending_contracts_agency_id))? '/agency/' .$pending_contracts_agency_id : '';
+      $link .= (isset($pending_contracts_vendor_code))? '/vendor/' .$pending_contracts_vendor_code : '';
+      $link .= (isset($award_size_id))? '/csize/' . $pending_contracts_award_size_id : '';
+      $link .= (isset($industry_type_id))? '/cindustry/' . $pending_contracts_industry_type_id : '';
+      $link .= '/awrdmthd/' . $pending_contracts_award_method_code;
+      $link .= '/year/' . $pending_contracts_year_id . '/yeartype/' . $pending_contracts_year_type;
+      $breadcrumb[] = l($values['pending_contracts_award_method'] , $link  );
+      $title = $values['pending_contracts_award_method'];
+    }
+    if(isset($pending_contracts_industry_type_id)){
+        $link = 'contracts';
+        $link .= (isset($agency_id))? '/agency/' .$pending_contracts_agency_id : '';
+        $link .= (isset($vendor_id))? '/vendor/' .$pending_contracts_vendor_code : '';
+        $link .= (isset($award_method_id))? '/awdmethod/' .$pending_contracts_award_method_code : '';
+        $link .= (isset($award_size_id))? '/csize/' . $pending_contracts_award_size_id : '';
+        $link .= '/cindustry/' . $pending_contracts_industry_type_id;
+        $link .= '/year/' . $pending_contracts_year_id . '/yeartype/' . $pending_contracts_year_type;
+        $breadcrumb[] = l($values['pending_contracts_industry_type_id'] , $link  );
+        $title = $values['pending_contracts_industry_type_id'];
+    }
+    if(isset($pending_contracts_award_size_id)){
+        $link = 'contracts';
+        $link .= (isset($agency_id))? '/agency/' .$pending_contracts_agency_id : '';
+        $link .= (isset($vendor_id))? '/vendor/' .$pending_contracts_vendor_code : '';
+        $link .= (isset($award_method_id))? '/awdmethod/' .$pending_contracts_award_method_code : '';
+        $link .= (isset($industry_type_id))? '/cindustry/' . $pending_contracts_industry_type_id : '';
+        $link .= '/csize/' . $pending_contracts_award_size_id;
+        $link .= '/year/' . $pending_contracts_year_id . '/yeartype/' . $pending_contracts_year_type;
+        $breadcrumb[] = l($values['pending_contracts_award_size_id'] , $link  );
+        $title = $values['pending_contracts_award_size_id'];
+    }
+    $breadcrumb[count($breadcrumb) -1] = $title;
+    drupal_set_title($title);
+}
+
+
+function _checkbook_custom_breadcrumnb_add_breadcrumb_title(){
+  global $checkbook_breadcrumb_title;
+  if(preg_match('/api/',drupal_get_path_alias(current_path()))){
+     $links = array(l(t('Home'), ''),'API');
+     drupal_set_breadcrumb($links);
+  }
+  if(preg_match('/(contract-api)/',drupal_get_path_alias(current_path()))){
+    $links = array(l(t('Home'), ''),l(t('API'), 'data-feeds/api'),'Contracts API');
+     drupal_set_breadcrumb($links);
+  }else  if(preg_match('/(payroll-api)/',drupal_get_path_alias(current_path()))){
+    $links = array(l(t('Home'), ''),l(t('API'), 'data-feeds/api'),'Payroll API');
+     drupal_set_breadcrumb($links);
+  }else  if(preg_match('/(spending-api)/',drupal_get_path_alias(current_path()))){
+    $links = array(l(t('Home'), ''),l(t('API'), 'data-feeds/api'),'Spending API');
+     drupal_set_breadcrumb($links);
+  }else  if(preg_match('/(budget-api)/',drupal_get_path_alias(current_path()))){
+    $links = array(l(t('Home'), ''),l(t('API'), 'data-feeds/api'),'Budget API');
+     drupal_set_breadcrumb($links);
+  }else  if(preg_match('/(revenue-api)/',drupal_get_path_alias(current_path()))){
+    $links = array(l(t('Home'), ''),l(t('API'), 'data-feeds/api'),'Revenue API');
+     drupal_set_breadcrumb($links);
+  }
+  
+   else if(preg_match('/^contract/',current_path())){
+     $checkbook_breadcrumb_title = requestUtil::getContractBreadcrumbTitle();
+   }elseif(preg_match('/^payroll/',current_path())){
+     $checkbook_breadcrumb_title = requestUtil::getPayrollBreadcrumbTitle();
+   }elseif(preg_match('/^spending/',current_path())){
+     $checkbook_breadcrumb_title = requestUtil::getSpendingBreadcrumbTitle();
+   }elseif(preg_match('/^budget/',current_path())){
+     $checkbook_breadcrumb_title = requestUtil::getBudgetBreadcrumbTitle();
+   }elseif(preg_match('/^revenue/',current_path())){
+      $checkbook_breadcrumb_title = requestUtil::getRevenueBreadcrumbTitle();
+   }elseif(preg_match('/smart_search/',current_path())){
+     $links = array(l(t('Home'), ''),'Search Results');
+     drupal_set_breadcrumb($links);
+   }
+}
+
+
+
+function _checkbook_custom_breadcrumb_is_hierarchical(){
+  if(preg_match('/(contract-api)|(payroll-api)|(spending-api)|(budget-api)|(revenue-api)/',current_path())){
+    return true;
+  }
+  else if(preg_match('/(contract)|(payroll)|(spending)|(budget)|(revenue)|(newwindow)/',current_path())){
+    return false;
+  }else{
+    return true;
+  }
+  
+}
+
+
+
+
+

@@ -1,0 +1,114 @@
+{
+  "widgetType":"highcharts",
+  "widgetSubType":"ajaxSimple",
+  "header":"$header = '<h2 class=\"chart-title\" style=\"display:none;\">Fiscal Year Comparisons</h2>'; $header .= ChartUtil::generateGridViewLink($node); return $header;",
+  "gridConfig":{
+	"template":"highchart_revenue_comparisons_grid_view",
+    "html_class":"chart-grid-view-table",
+    "table_columns": [
+            {
+                "labelAlias": "fiscal_year",
+                "column": "year_year_year_value",
+                "sortColumn":"sort_order"
+             },
+            {
+                "colLabel": "recognized",
+                "column": "revenue_amount_sum",
+                "eval":true
+            },
+            {
+                "colLabel": "remaining",
+                "column": "remaining_amount",
+                "eval":true
+            }
+        ]
+  },
+  "dataset":"checkbook:aggregate_revenue",
+  "columns":["year.year","year.year.year_value","revenue_amount_sum","remaining_amount"],
+  "orderBy":"year.year.year_value",
+  "defaultParameters":{"year.year":114},
+  "cleanURLParameters":["year","agency","revcat","fundsrccode"],
+  "urlParamMap":{"year":"year.year","agency":"agency_id","revcat":"revenue_category_id","fundsrccode":"funding_class_code"},
+  "adjustParameters":"
+  $adjustedParameters = $parameters;
+  if (count($adjustedParameters) > 0) {
+    foreach ($adjustedParameters as $key => $value) {
+      if ($key == 'year.year' && $value[0] <= 115 ){
+        $year = $value[0];
+        $adjustedParameters[$key] = array(data_controller_get_operator_factory_instance()->initiateHandler(RangeOperatorHandler::$OPERATOR__NAME, 112, $year));
+      } else if ($key == 'year.year' && $value[0] > 115){
+        $end = $value[0];
+        $start = $end - 3;
+        $adjustedParameters[$key] = array(data_controller_get_operator_factory_instance()->initiateHandler(RangeOperatorHandler::$OPERATOR__NAME, $start, $end));
+      }
+    }
+  }
+  return $adjustedParameters;",
+  "transformationPHP":"
+  $transactions_page = '/' .  current_path()  . '?expandBottomContURL=/panel_html/revenue_transactions';
+  $agency = ($node->widgetConfig->requestParams['agency_id.agency_id']) ? '/agency/' . $node->widgetConfig->requestParams['agency_id.agency_id'] : '';
+  //$dept = ($node->widgetConfig->requestParams['dept.dept']) ? '/dept/' . $node->widgetConfig->requestParams['dept.dept'] : '';
+  //$expcategory = ($node->widgetConfig->requestParams['object_class_id.object_class_id']) ? '/expcategory/' . $node->widgetConfig->requestParams['object_class_id.object_class_id'] : '';
+  $allZero = TRUE;
+  foreach ($node->data as $row){
+    if (abs($row['revenue_amount_sum']) > 0){$allZero = FALSE;}
+    if (abs($row['remaining_amount']) > 0){$allZero = FALSE;}
+    $categories[] = $row['year_year'];
+    $url = $transactions_page . $agency . '/year/' . $row['year_year'];
+    $recognized_data[] = array('name' => $row['year_year_year_value'], 'y' => $row['revenue_amount_sum'], 'url' => $url);
+    $remaining_data[] = array('name' => $row['year_year_year_value'], 'y' => $row['remaining_amount'], 'url' => $url);
+  }
+  if($allZero){$node->totalDataCount = 0;}
+  $node->widgetConfig->chartTitle = 'Fiscal Year Comparisons';
+  $node->widgetConfig->chartConfig->xAxis->categories = $categories;
+  $node->widgetConfig->chartConfig->series = array(array('name' => 'Recognized', 'data' => $recognized_data),
+                                             array('name' => 'Remaining', 'data' => $remaining_data));
+  return $node->data;
+  ",
+  "chartConfig":{
+    "chart":{
+      "defaultSeriesType":"column"
+    },
+    "legend":{
+      "align":"left",
+      "verticalAlign":"bottom"
+    },
+    "xAxis":{
+      "categories":[]
+    },
+    "yAxis":{
+      "title":{
+        "text":""
+      },
+      "labels":{
+        "function":"yAxisFormatter"
+      }
+    },
+    "tooltip":{
+      "function":"revenueTooltip"
+    },
+    "plotOptions":{
+      "column":{
+        "minPointLength":3,
+        "pointWidth":50
+      },
+      "series":{
+        "cursor":"pointer",
+        "point":{
+          "events":{
+            "function":"clickEvent"
+          }
+        }
+      }
+    },
+    "series":[],
+    "title":{
+      "text":""
+    }
+  }
+}
+<function>
+yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
+revenueTooltip^^"formatter" : function() {return 'Year: '+this.point.name + '<br>Amount: ' + abbrNum(this.y, 2, '$')}##
+clickEvent^^"click": function(){location.href = this.url;}##
+</function>

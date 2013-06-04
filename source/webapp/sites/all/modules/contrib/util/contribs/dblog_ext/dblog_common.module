@@ -1,0 +1,22 @@
+<?php
+
+function dblog_common_format_minutes($minutes, $recent) {
+  $hours = (int)($minutes / 60);
+  $minutes = $minutes % 60;
+  $half_hour = ($minutes == 30);
+
+  $time = '';
+  if ($hours) {
+    $time .= format_plural($hours, 'hour', '@count hours') . ' ';
+  }
+  if ($half_hour) {
+    $time .= $hours ? t('and a half') : t('half hour');
+  }
+  elseif ($minutes) {
+    if ($hours) $time .= t('and') . ' ';
+    $time .= format_plural($minutes, empty($time) ? 'minute' : '1 minute', '@count minutes');
+  }
+  
+  $args = array('!time' => $time);
+  return $recent ? t('within the last !time', $args) : t('beyond the last !time', $args);
+}

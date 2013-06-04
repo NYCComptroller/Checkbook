@@ -1,0 +1,42 @@
+<?php
+
+/**
+ * Implementation of hook_log_filters_settings().
+ */
+function dblog_user_filter_log_filters_settings() {
+  $settings['username'] = array(
+    'title' => 'Username',
+    'description' => 'Filters by username with autocompletion.',
+    //'page arguments' => array('dblog_user_filter_settings'),
+    //'file'           => 'dblog_filters.user.admin.inc',
+  );
+  return $settings;
+}
+
+/**
+ * Implementation of hook_log_filters() on behalf of dblog.
+ */
+function dblog_user_filter_log_filters() {
+  if (!dblog_filters_is_enabled('username')) {
+    return array();
+  }
+
+//  $user_list = array('' => t('- None -'));
+  $use_realname = module_exists('realname');
+  $result = db_query("SELECT DISTINCT(w.uid) AS x, u.* FROM {watchdog} w INNER JOIN {users} u ON u.uid = w.uid");
+  while ($row = db_fetch_object($result)) {
+    $user_list[$row->uid] = ($row->uid == 0 || $use_realname) ? theme('username', $row, array('plain' => TRUE)) : $row->name;
+  }
+  
+  // Sort the list by user name.
+  asort($user_list);
+
+  $filters['username'] = array(
+    'title' => t('Username'),
+    'where' => "u.uid = %d",
+    'conjunction' => TRUE,
+    'options' => $user_list,
+    );
+
+  return $filters;
+}

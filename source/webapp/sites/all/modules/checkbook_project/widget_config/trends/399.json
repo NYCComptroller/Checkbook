@@ -1,0 +1,26 @@
+{
+	"widgetType": "data_tables",
+	"widgetSubType":"template",
+        "template":"trends_property_tax_rates",
+        "useList":true,
+"defaultParameters":{"display_yn":"Y"},
+	"no_results_content":"No Results Found",
+	"dataset": "checkbook:trends_property_tax",
+	"columns": ["fiscal_year","basic_rate","obligation_debt","total_direct"],
+       "orderBy":"fiscal_year",
+	"table_title":"",	
+	"dataTableOptions":{
+        "bFilter": false,
+        "bPaginate": false,
+        "bLengthChange": false,        
+        "bInfo": false,
+         "bSort":false,
+        "fnPreDrawCallback":"##function( oSettings ) {
+            jQuery('.trendsShowOnLoad').show();
+            return true;
+        }##",
+
+ 	"bScrollCollapse": false,
+        "bAutoWidth":false
+       }
+}

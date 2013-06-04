@@ -1,0 +1,15 @@
+
+;	GNU AFFERO GENERAL PUBLIC LICENSE 
+;	   Version 3, 19 November 2007
+; This software is licensed under the GNU AGPL Version 3
+; 	(see the file LICENSE for details)
+name = "MySQL integration (DDL)"
+description = "Extension to MySQL adapter to manage data storage"
+package = REI Dashboard Platform (Adapter)
+version = 7.x-2.x
+core = 7.x
+
+dependencies[] = data_controller_datasource_sql_ddl
+dependencies[] = data_controller_mysql
+
+files[] = datasource/handler/impl/MySQLCreateTableStatementImpl.php

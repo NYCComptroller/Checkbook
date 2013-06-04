@@ -1,0 +1,10 @@
+{
+"widgetType": "phpparser",
+"no_results_content":"No Results Found",
+"cleanURLParameters":["agency","vendor","awdmethod","contnum","contcat","pin","aptpin","csize"],
+"defaultParameters":{"document_code.document_code.document_code":"MA1~MMA1~CT1"},
+"urlParamMap":{"agency":"document_agency_id.document_agency_ide","vendor":"vendor.vendor","contcat":"document_code@checkbook:ref_document_code","contnum":"contract_number.contract_number","awdmethod":"award_method_id.award_method_id","pin":"tracking_number.tracking_number","aptpin":"board_award_number.board_award_number","csize":"award_size.award_size"},
+"dataset": "checkbook:pending_contracts",
+"columns": ["current_amount_sum"],
+"template":"pending_contracts_total_amount"
+}

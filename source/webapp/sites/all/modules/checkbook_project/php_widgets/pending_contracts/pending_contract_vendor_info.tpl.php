@@ -1,0 +1,98 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+?>
+<h4>
+Vendor Information
+</h4>
+<?php
+
+
+//TODO temp fix move bottom code to separate custom preprocess function
+    $contract_num = _getRequestParamValue("contract");
+    $version_num = _getRequestParamValue("version");
+
+$queryVendorDetails = "SELECT
+       vh.vendor_id,
+       rb.business_type_code,
+       p.vendor_id vendor_vendor,
+       l444.document_code,
+       va.address_id,
+       p.vendor_legal_name AS vendor_name,
+       a.address_line_1,
+       a.address_line_2,
+       a.city, a.state, a.zip, a.country,
+      (CASE WHEN (rb.business_type_code = 'MNRT' OR rb.business_type_code = 'WMNO') THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor,
+      (CASE WHEN rm.minority_type_id in (4,5) then 'Asian American' ELSE rm.minority_type_name END)AS ethnicity
+	                        FROM {pending_contracts} p
+	                            LEFT JOIN {vendor} v ON p.vendor_id = v.vendor_id
+	                            LEFT JOIN (SELECT vendor_id, MAX(vendor_history_id) AS vendor_history_id
+	                                        FROM {vendor_history} WHERE miscellaneous_vendor_flag::BIT = 0 ::BIT  GROUP BY 1) vh ON v.vendor_id = vh.vendor_id
+	                            LEFT JOIN {vendor_address} va ON vh.vendor_history_id = va.vendor_history_id
+	                            LEFT JOIN {address} a ON va.address_id = a.address_id
+	                            LEFT JOIN {ref_address_type} ra ON va.address_type_id = ra.address_type_id
+	                            LEFT JOIN {vendor_business_type} vb ON vh.vendor_history_id = vb.vendor_history_id
+	                            LEFT JOIN {ref_business_type} rb ON vb.business_type_id = rb.business_type_id
+	                            LEFT JOIN {ref_minority_type} rm ON vb.minority_type_id = rm.minority_type_id
+	                            LEFT JOIN {ref_document_code} AS l444 ON l444.document_code_id = p.document_code_id
+	                        WHERE p.contract_number = '" . $contract_num . "'"
+                                  ." AND p.document_version =" .$version_num;
+
+$results1 = _checkbook_project_execute_sql($queryVendorDetails);
+$node->data = $results1;
+foreach($node->data as $key => $value){
+    if($value['business_type_code'] == "MNRT" || $value['business_type_code'] == "WMNO"){
+        $node->data[0]["mwbe_vendor"] = "Yes";
+    }
+}
+
+if($node->data[0]["vendor_id"]){
+    $queryVendorCount = "SELECT COUNT(*) AS total_contracts_sum FROM {agreement_snapshot} WHERE latest_flag= 'Y' AND vendor_id =".$node->data[0]["vendor_id"];
+    $results2 = _checkbook_project_execute_sql($queryVendorCount);
+
+    foreach($results2 as $row){
+        $total_cont +=$row['total_contracts_sum'];
+    }
+
+$vendor_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
+              .$node->data[0]['vendor_id'].'?expandBottomCont=true';
+}else{
+    $total_cont  = 0;
+    if($node->data[0]['document_code'] == 'RCT1')
+        $vendor_link = '/contracts_pending_rev_landing/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'.$node->data[0]['vendor_vendor'] .'?expandBottomCont=true';
+    else
+        $vendor_link = '/contracts_pending_exp_landing/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'.$node->data[0]['vendor_vendor'] .'?expandBottomCont=true';
+}
+
+
+
+?>
+  <ul class="left">
+    <li><span class="gi-list-item">Vendor:</span> <a href="<?php echo $vendor_link;?> " ><?php echo $node->data[0]['vendor_name'] ;?></a></li>
+  <?php
+      $address = $node->data[0]['address_line_1'] ;
+      $address .= " "  .  $node->data[0]['address_line_2'];
+      $address .= " "  .  $node->data[0]['city'];
+      $address .= " "  .  $node->data[0]['state'];
+      $address .= " "  .  $node->data[0]['zip'];
+      $address .= " "  .  $node->data[0]['country'];
+
+      $ethnicities = array();
+      foreach($node->data as $row){
+        if($row['ethnicity'] != null and trim($row['ethnicity']) != '' ){
+          $ethnicities[] = $row['ethnicity'];
+        }
+      }
+      $ethnicity = implode(',',$ethnicities);
+
+  ?>
+    <li><span class="gi-list-item">Address:</span> <?php echo $address;?></li>
+    <li><span class="gi-list-item">Total Number of NYC Contracts:</span> <?php echo $total_cont;?></li>
+    <li><span class="gi-list-item">M/WBE Vendor:</span> <?php echo $node->data[0]['mwbe_vendor'] ;?></li>
+
+    <li><span class="gi-list-item">Ethnicity:</span> <?php echo $ethnicity ;?></li>
+</ul>

@@ -1,0 +1,27 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":280,    
+    "limit":100,
+    "startWith":0,
+    "columns":["class_name.class_name", "txcount"],
+    "orderBy":["-txcount","class_name.class_name"],    
+	"getTotalDataCount":true,    
+    "filterName":"Closing Classification Name",
+    "facetPager":true,
+    "urlParameterName":"clsname",
+    "urlParameterNameType":"eqtext",
+    "autocompleteParamName":"clsname_auto",    
+    "autocompleteID":"fclsNm", 	
+    "autocompleteField":"class_name.class_name",
+    "limit":100,
+    "maxSelect":5,
+    "adjustParameters":"
+	checkbook_faceted_search_adjust_param($node);
+    if(function_exists('_checkbook_project_applyParameterFilters')){
+        $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+    }
+    $adjustedParameters['class_name.class_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+    return $adjustedParameters;
+    ",        
+    "template":"individual_filter"
+}

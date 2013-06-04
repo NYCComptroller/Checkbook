@@ -1,0 +1,12 @@
+name = Util
+description = Enables Menu parent for the util modules
+package = Util
+core = 7.x
+configure = 'admin/config/system/util'
+
+; Information added by drupal.org packaging script on 2012-08-26
+version = "7.x-1.0-rc1"
+core = "7.x"
+project = "util"
+datestamp = "1345944858"
+

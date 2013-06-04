@@ -1,0 +1,139 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+ 
+
+/*************************************************************************************/
+/* Widget Hooks                                                                      */
+/*************************************************************************************/
+
+function widget_jquery_widget_metadata() {
+  return array(
+    'jquery' => array(
+      'name' => t('jQuery'),
+      'module' => 'widget_jquery',
+      'description' => t("This widget type implements custom jQuery.")
+    )
+  );
+}
+
+function widget_jquery_widget_validate(&$node) {
+
+}
+
+function widget_jquery_widget_prepare(&$node) {
+
+}
+
+function widget_jquery_widget_data(&$node) {  
+
+	if (isset($node->data)) {
+		foreach ($node->data as &$row) {
+			foreach ($row as &$col) {
+				$col = str_replace('\'', "&#39;", $col);
+			}
+		}
+	}
+	
+	
+  $jsonData = json_encode($node->data);
+  $node->data = $jsonData;
+}
+
+function widget_jquery_widget_view(&$node) {
+	//return the rendered content for this widget
+	drupal_add_js('sites/default/files/script/jquery_tablesorter.js');
+	drupal_add_js('sites/all/libraries/jquery_parsejson/jQuery.parseJSON-min.js');
+	return theme('widget_jquery_default_theme', $node);
+}
+
+/*************************************************************************************/
+/* Theme Hooks                                                                       */
+/*************************************************************************************/
+
+function widget_jquery_theme() {
+  return array(
+    'widget_jquery_default_theme' => array(
+      'arguments' => array('node'),
+    ),
+  );
+}
+
+/*************************************************************************************/
+/* Google Visualizations Internal Implementation                                                 */
+/*************************************************************************************/
+
+
+
+function theme_widget_jquery_default_theme($node) {
+	$output = widget_jquery_full($node);
+	return $output;
+}
+
+function widget_jquery_full($node) {
+  $output  = widget_jquery_include();
+  $output .= widget_jquery_html($node);
+  $output .= widget_jquery_javascript($node);
+  return $output;
+}
+
+function widget_jquery_include() {
+	$output .= "";
+	return $output;
+}
+
+function widget_jquery_html($node) {
+	$output = "<div id=\"" . widget_get_div_name($node) . "\"></div>";
+	return $output;
+}
+
+function widget_jquery_javascript($node) {
+	$output  = "<script type=\"text/javascript\">\n";
+	
+	$output .= widget_define_exclude_params($node);
+    
+    $output .= "var " . widget_jquery_get_var_name($node) . " = jQuery.parseJSON('" . $node->data . "');\n";
+    
+    $output .= "var " . widget_jquery_custom_function_name($node) . " = " . $node->widgetConfig->callback . ";\n";
+    $output .= widget_jquery_custom_function_name($node) . "($(\"#" . widget_get_div_name($node) . "\"), " . widget_jquery_get_var_name($node) . ");\n";
+    
+    $output .= widget_jquery_get_updated_data($node);
+	//$output .= widget_event_function($node);  
+	$output .= widget_callback_function($node);
+	$output .= widget_attach_to_widget_controller($node);
+	
+	$output .= "</script>";	
+	return $output;
+}
+
+function widget_jquery_get_var_name($node) {
+	return "widget" . widget_unique_identifier($node);
+}
+
+function widget_jquery_custom_function_name($node) {
+	return "customFunction" . widget_unique_identifier($node);
+}
+
+//i think this implementation may leak memory as it creates a new visualization each time
+function widget_jquery_get_updated_data($node) {
+	//drupal_set_message('<pre>$$$node'. print_r($node->data, TRUE) . '</pre>');
+	$output = "function " . widget_get_updated_data_function_name($node) . "() {\n";
+	$output .= "$.ajax({\n";
+    $output .= "    url: '/?q=ajaxnode/" . $node->nid . "&data=1' + widgetCoordinator.getParametersAsQueryString(" . widget_get_widget_exclude_params_name($node) . "), \n";
+    $output .= "    type: 'GET', \n";
+    $output .= "    success: function(result) { \n";
+	$output .= "    " . widget_jquery_get_var_name($node) . " = jQuery.parseJSON(result);\n";
+	$output .= "    " . widget_jquery_custom_function_name($node) . "($(\"#" . widget_get_div_name($node) . "\"), " . widget_jquery_get_var_name($node) . ");\n";
+    $output .= "    },\n";
+	$output .= "    error: function (XMLHttpRequest, textStatus, errorThrown) {\n";
+	$output .= "    	  alert(textStatus);\n";
+	$output .= "    	  alert(errorThrown);\n";
+	$output .= "    	}\n";
+    $output .= "});	\n";
+	$output .= "}\n";
+	return $output;
+}

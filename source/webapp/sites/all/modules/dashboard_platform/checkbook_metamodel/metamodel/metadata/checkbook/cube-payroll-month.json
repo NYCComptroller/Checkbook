@@ -1,0 +1,78 @@
+{
+    "datasets":{
+        "payroll_month":{
+            "datasourceName":"main",
+            "source":"aggregateon_payroll_coa_month "
+        }
+    },
+    "cubes":{
+        "payroll_month":{
+            "sourceDatasetName":"payroll_month",
+            "dimensions":[
+                {
+                    "name": "agency",
+                    "levels": [
+                                {
+                                    "name": "agency",
+                                    "datasetName": "agency",
+                                    "sourceColumnName": "agency_id"
+                                }
+                    ]
+                },
+                {
+                    "name": "dept",
+                    "levels": [
+                                {
+                                    "name": "dept",
+                                    "datasetName": "department",
+                                    "sourceColumnName": "department_id"
+                                }
+                    ]
+                },
+                {
+                    "name":"year",
+                    "levels":[
+                        {
+                            "name":"year",
+                            "datasetName":"year",
+                            "sourceColumnName":"fiscal_year_id"
+                        }
+                    ]
+                },
+                {
+                    "name":"month",
+                    "levels":[
+                        {
+                            "name":"month",
+                            "datasetName":"month",
+                            "sourceColumnName":"month_id"
+                        }
+                    ]
+                },
+                {
+                    "name":"year_type",
+                    "levels":[
+                        {
+                            "name":"year_type",
+                            "sourceColumnName":"type_of_year"
+                        }
+                    ]
+                }
+            ],
+             "measures":{
+                "total_base_pay": {
+                    "function": "sum(base_pay)"
+                },
+                "total_overtime_pay": {
+                    "function": "sum(overtime_pay)"
+                },
+                 "total_other_payments": {
+                    "function": "sum(other_payments)"
+                },
+                 "total_gross_pay":{
+                     "function": "sum(gross_pay)"
+                 }
+             }
+        }
+    }
+}

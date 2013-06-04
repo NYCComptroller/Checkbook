@@ -1,0 +1,64 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+
+
+/*************************************************************************************/
+/* Widget Hooks                                                                      */
+/*************************************************************************************/
+
+function widget_wt_widget_metadata() {
+	return array(
+    'wt' => array(
+      'name' => t('Widget Widget Table'),
+      'module' => 'widget_wt',
+      'description' => t("This widget type implements a table that can output other widgets.")
+	)
+	);
+}
+
+function widget_wt_widget_validate(&$node) {
+
+}
+
+function widget_wt_widget_data(&$node) {
+
+}
+
+
+function widget_wt_widget_view(&$node) {
+	if (!isset($node->data) || count($node->data) == 0) {
+		return theme('widget_wt_no_results_theme', array('node'=> $node));
+	}
+	else if (isset($node->widgetConfig->table_rows)) {
+		return theme('widget_wt_by_rows_theme', array('node'=> $node));
+	}
+	else {
+		return theme('widget_wt_default_theme', array('node'=> $node));
+	}
+}
+
+/*************************************************************************************/
+/* Theme Hooks                                                                       */
+/*************************************************************************************/
+
+function widget_wt_theme($existing, $type, $theme, $path) {
+	return array(
+      'widget_wt_default_theme' => array(
+	    'template' => 'wt_table',
+        'arguments' => array('node' => NULL),
+	  ),
+	  'widget_wt_by_rows_theme' => array(
+	    'template' => 'wt_table_by_rows',
+	    'arguments' => array('node' => NULL),
+	  ),
+	  'widget_wt_no_results_theme' => array(
+	    'template' => 'wt_no_results',
+	    'arguments' => array('node' => NULL),
+	  ),	  
+	);
+}

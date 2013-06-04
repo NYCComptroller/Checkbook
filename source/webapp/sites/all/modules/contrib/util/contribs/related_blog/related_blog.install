@@ -1,0 +1,22 @@
+<?php
+/**
+ * @file
+ * Provides block to show blog of node's author.
+ */
+
+/**
+ * Implements hook_install();
+ */
+function related_blog_install() {
+  // Ignore Coder message on url.
+  drupal_set_message(st('The Related Blog module has been installed. You should go to the <a href="!url">block administration page</a> and configure the block.', array('!url' => url('admin/structure/block'))));
+
+  return;
+}
+
+/**
+ * Implements hook_uninstall();
+ */
+function related_blog_uninstall() {
+  variable_del('related_blog_count');
+}

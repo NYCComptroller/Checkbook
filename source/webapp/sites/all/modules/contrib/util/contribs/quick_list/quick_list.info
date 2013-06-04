@@ -1,0 +1,13 @@
+name = Module Quick List
+description = Provides a debugging summary of modules that are enabled.
+core = 7.x
+dependencies[] = util
+package = Util
+configure = 'admin/config/system/util/quick_list'
+
+; Information added by drupal.org packaging script on 2012-08-26
+version = "7.x-1.0-rc1"
+core = "7.x"
+project = "util"
+datestamp = "1345944858"
+

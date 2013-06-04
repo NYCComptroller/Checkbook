@@ -1,0 +1,24 @@
+
+;	GNU AFFERO GENERAL PUBLIC LICENSE 
+;	   Version 3, 19 November 2007
+; This software is licensed under the GNU AGPL Version 3
+; 	(see the file LICENSE for details)
+name = "Core ANSI SQL Database API implementation (DDL)"
+description = "Extension to integration with SQL-driven database to manage data storage"
+package = REI Dashboard Platform (Core)
+version = 7.x-2.x
+core = 7.x
+
+dependencies[] = data_controller_datasource_sql
+
+files[] = datasource/handler/impl/AbstractCreateDatabaseStatementImpl.php
+files[] = datasource/handler/impl/AbstractDropDatabaseStatementImpl.php
+files[] = datasource/handler/impl/AbstractCreateTableStatementImpl.php
+files[] = datasource/handler/impl/AbstractTruncateTableStatementImpl.php
+files[] = datasource/handler/impl/AbstractDropTableStatementImpl.php
+files[] = datasource/handler/impl/default/DefaultCreateDatabaseStatementImpl.php
+files[] = datasource/handler/impl/default/DefaultDropDatabaseStatementImpl.php
+files[] = datasource/handler/impl/default/DefaultDropTableStatementImpl.php
+files[] = datasource/handler/impl/default/DefaultTruncateTableStatementImpl.php
+files[] = datasource/handler/AbstractSQLDataSourceStructureHandler.php
+files[] = datasource/handler/DefaultSQLDataSourceStructureHandler.php

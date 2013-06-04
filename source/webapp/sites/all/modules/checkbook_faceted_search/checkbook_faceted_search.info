@@ -1,0 +1,17 @@
+
+;	GNU AFFERO GENERAL PUBLIC LICENSE 
+;	   Version 3, 19 November 2007
+; This software is licensed under the GNU AGPL Version 3
+; 	(see the file LICENSE for details)
+name = Checkbook Faceted Search
+description = Narrow Down/Faceted Search functionality
+package = NYC Checkbook
+core = 7.x
+
+stylesheets[all][] = css/narrow-down-filter.css
+
+scripts[] = js/narrow-down-filter.js
+
+dependencies[] = data_controller
+dependencies[] = custom_number_formatter
+

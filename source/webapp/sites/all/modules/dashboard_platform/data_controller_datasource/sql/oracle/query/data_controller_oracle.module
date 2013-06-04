@@ -1,0 +1,45 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+
+
+function data_controller_oracle_dc_datasource() {
+    $items[OracleDataSource::TYPE] = array(
+        'extensions' => array(
+            'getMaximumEntityNameLength' => 'OracleMaximumEntityNameLengthImpl',
+
+            'concatenateValues' => 'DefaultConcatenateValuesImpl',
+            'formatWildcardValue' => 'DefaultFormatWildcardValueImpl',
+            'formatDateValue' => 'OracleFormatDateValueImpl',
+
+            'initializeConnection' => 'OCIInitializeConnectionImpl',
+            'executeStatement' => 'OCIExecuteStatementImpl',
+            'executeQueryStatement' => 'OCIExecuteQueryStatementImpl',
+            'executeQueryStatement_callback' => 'OracleQueryStatementExecutionCallback',
+
+            'startTransaction' => 'NoStartTransactionStatementImpl',
+            'commitTransaction' => 'DefaultCommitTransactionStatementImpl',
+            'rollbackTransaction' => 'DefaultRollbackTransactionStatementImpl',
+
+            'getDataSourceOwner' => 'OracleDataSourceOwnerImpl'
+        )
+    );
+
+    return $items;
+}
+
+function data_controller_oracle_dc_datasource_query() {
+    $items[OracleDataSource::TYPE] = array(
+        'handler' => 'DefaultSQLDataSourceQueryHandler',
+        'extensions' => array(
+            'isJoinSupported' => 'DefaultCheckJoinSupportImpl',
+            'applyPagination' => 'OracleApplyPaginationImpl'
+        )
+    );
+
+    return $items;
+}

@@ -1,0 +1,14 @@
+
+;	GNU AFFERO GENERAL PUBLIC LICENSE 
+;	   Version 3, 19 November 2007
+; This software is licensed under the GNU AGPL Version 3
+; 	(see the file LICENSE for details)
+name = "Dataset Meta Data completion using PostgreSQL system tables"
+description = "Finalizes Dataset Meta Data configuration using PostgreSQL system tables"
+package = REI Dashboard Platform (Adapter)
+version = 7.x-2.x
+core = 7.x
+
+dependencies[] = data_controller_metamodel_system_tables
+
+files[] = metamodel/loader/handler/PostgreSQLMetaModelLoader.php

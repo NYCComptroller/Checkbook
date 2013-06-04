@@ -1,0 +1,136 @@
+{
+"widgetType": "data_tables",
+"widgetSubType":"ajaxSimple",
+"no_results_content":"No Results Found",
+"defaultParameters":{"type_of_year":"B","document_code.document_code.document_code":"MA1~CTA1~CT1","status_flag":"A"},
+"cleanURLParameters":["year","calyear","agency","yeartype","awdmethod","vendor","status","cagency","cvendor","csize","cindustry","awdmethod"],
+ "urlParamMap":{"calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id","status":"status_flag","cagency":"agency_id","cvendor":"vendor_id","csize":"award_size_id","cindustry":"industry_type_id","awdmethod":"award_method_id"},
+"dataset": "checkbook:contracts_coa_aggregates",
+"noDataInitialLoad":true,
+"columns": ["total_contracts","award_size.award_size","award_size.award_size.award_size_name","original_amount_sum","current_amount_sum","yeartype.yeartype","spending_amount_sum"],
+"adjustParameters":"
+            $adjustedParameters = $parameters;
+            if(function_exists('_checkbook_project_applyParameterFilters')){
+                  $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+            }
+            return $adjustedParameters;
+",
+"limit":5,
+"getTotalDataCount":true,
+"derivedColumns": {
+"contract_size_link": {
+      "type": "expression2",
+      "expression": "'<a href=\"/contracts_landing' . _checkbook_project_get_url_param_string(\"agency\")   .   _checkbook_project_get_url_param_string(\"vendor\")  .  _checkbook_project_get_url_param_string(\"awdmethod\") . _checkbook_project_get_url_param_string(\"status\")  .  _checkbook_project_get_url_param_string(\"cindustry\")  .   _checkbook_project_get_year_url_param_string() . '/csize/'. $row[award_size_award_size]  .'?expandBottomCont=true\">' .$row[award_size_award_size_award_size_name]. '</a>'"
+    } ,
+"spent_amount_link": {
+      "type": "expression2",
+      "expression": "'<a class=\"new_window\" href=\"/contract/spending/transactions/csize/' .$row[award_size_award_size]  . _checkbook_project_get_url_param_string(\"agency\",\"cagency\") . _checkbook_project_get_url_param_string(\"vendor\",\"cvendor\")   .  _checkbook_project_get_url_param_string(\"awdmethod\") . _checkbook_project_get_url_param_string(\"status\")  .  _checkbook_project_get_url_param_string(\"cindustry\") .  '/doctype/CT1~CTA1~MA1' .  ContractURLHelper::_checkbook_project_spending_get_year_url_param_string() . '/smnid/' . $node->nid .  '/newwindow\">' . custom_number_formatter_format($row['spending_amount_sum'],2,'$'). '</a>'"
+    } ,
+"formatted_original_amount_sum": {
+      "type": "expression2",
+      "expression": "custom_number_formatter_format($row['original_amount_sum'],2,'$')"
+    },
+"formatted_total_current_amount_sum": {
+      "type": "expression2",
+      "expression": "custom_number_formatter_format($row['current_amount_sum'],2,'$')"
+    },
+
+"formatted_total_contracts": {
+      "type": "expression2",
+      "expression": " number_format($row['total_contracts'])"
+    }
+},
+"disableViewAll":true,
+"footer":"
+$url = '/panel_html/contract_details/contract/transactions/contcat/expense' . _checkbook_project_get_url_param_string('status','contstatus');
+$url .= _checkbook_project_get_url_param_string('agency');
+$url .= _checkbook_project_get_url_param_string('vendor');
+$url .= _checkbook_project_get_url_param_string('awdmethod');
+$url .= _checkbook_project_get_url_param_string('csize');
+$url .= _checkbook_project_get_url_param_string('cindustry');
+$url .= _checkbook_project_get_year_url_param_string();
+$url .= '/smnid/' .  $node->nid;
+$url .= '/doctype/MA1~CTA1~CT1';
+$footer = '';
+if($node->totalDataCount > 5)
+      $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
+else if($node->totalDataCount > 0 && $node->totalDataCount <= 5)
+     $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
+return $footer;
+",
+"header":"
+$node->widgetConfig->getData=true;
+unset($node->widgetConfig->limit);
+load_widget_data($node);
+$total = 0;
+foreach($node->data as $key=>$row){
+     $total += $row['total_contracts'];
+}
+$header='<div class=\"tableHeader\"><h2>Contracts by Size</h2>
+<span class=\"contCount\"> Number of Contracts:  ' . number_format($total) . '</span>
+</div>';
+return $header;
+",
+"summaryView":{
+	"template":"contract_summary_expense_expense",
+        "entityColumnName":"award_size_award_size_award_size_name",
+	"templateTitle":"Contract by Size Spending Transactions"
+},
+"widgetTitle":"Contracts by Size",
+"table_title":"",
+  "table_columns": [
+ {
+      "labelAlias": "contract_size",
+      "column": "contract_size_link",
+      "sortSourceColumn":"award_size.award_size.award_size_name"
+    },
+ {
+      "labelAlias": "no_of_contracts",
+      "column": "formatted_total_contracts",
+      "sortSourceColumn":"total_contracts"
+    },
+ {
+      "labelAlias": "original_amount",
+      "column": "formatted_original_amount_sum",
+      "sortSourceColumn":"original_amount_sum"
+    },
+ {
+      "labelAlias": "current_amount",
+      "column": "formatted_total_current_amount_sum",
+      "sortSourceColumn":"current_amount_sum"
+    },
+ {
+      "labelAlias": "spent_to_date",
+      "column": "spent_amount_link",
+      "sortSourceColumn":"spending_amount_sum"
+    },
+     {
+      "label": "",
+      "column": ""
+    }
+  ],
+"dataTableOptions":{
+"aoColumns": [
+      { "bSortable": false,"sWidth":"249px", "sClass":"text"},
+      {"sClass":"number" ,"sWidth":"120px", "asSorting": [ "desc","asc" ]},
+      {"sClass":"number","sWidth":"177px", "asSorting": [ "desc","asc" ] },
+      {"sClass":"number" ,"sWidth":"217px", "asSorting": [ "desc","asc" ]},
+       {"sClass":"number" ,"sWidth":"160px", "asSorting": [ "desc","asc" ]},
+  { "bSortable": false,"sWidth":"15px" }
+    ] ,
+"bServerSide": true,
+"bFilter": false,
+"bPaginate": false,
+"bProcessing":true,
+"bLengthChange": false,
+"bInfo": false,
+"bAutoWidth": false,
+"aaSorting": [[ 3, "desc" ]],
+"fnServerParams": "##function ( aoData ) {
+           reloadExpandCollapseWidget(this,aoData);
+}##",
+"oLanguage":{
+"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+}
+}
+}

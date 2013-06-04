@@ -1,0 +1,91 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+?>
+<?php
+    include_once('contracts_title.php');
+    include_once('page_title.php');
+    include_once('export_link.php');
+?>
+
+<table id="table_<?php echo widget_unique_identifier($node) ?>" class="<?php echo $node->widgetConfig->gridConfig->html_class ?>">
+    <thead>
+        <tr><th class='text'><?php echo WidgetUtil::generateLabelMapping("contract_id") ;?></th>
+        <th class='number'><?php echo WidgetUtil::generateLabelMapping("current_amount") ;?></th>
+        <th class='text'><?php echo WidgetUtil::generateLabelMapping("vendor_name") ;?></th>
+        <th class='text'><?php echo WidgetUtil::generateLabelMapping("contract_agency") ;?></th>
+            <th>&nbsp</th>
+        </tr>
+
+    </thead>
+
+    <tbody>
+    <?php
+        if (isset($node->data) && is_array($node->data)) {
+            foreach ($node->data as $datarow) {
+                echo '<tr>
+                <td><div>' . $datarow['contract_number_contract_number'] . '</div></td>
+                <td>' . $datarow['total_revised_maximum_amount'] . '</td>
+                <td><div>' . $datarow['vendor_legal_name_vendor_legal_name'] . '</div></td>
+                <td><div>' . $datarow['document_agency_name_document_agency_name'] . '</div></td>
+                <td>&nbsp</td>
+                </tr>';
+            }
+        }
+    ?>
+    </tbody>
+</table>
+<?php
+echo eval($node->widgetConfig->gridConfig->footer);
+
+ $dataTableOptions ='
+                    {
+                        "bFilter":false,
+                        "bInfo":false,
+                        "bLengthChange":false,
+                        "iDisplayLength":12,
+                        "aaSorting":[[1,"desc"]],
+                        "bPaginate": false,
+                        "sAltAjaxSource":"'. $_GET['q'] .'",
+            			"fnDrawCallback"  :  function( oSettings ) {
+            			addPaddingToDataCells(this);
+            			},                                                
+                        "aoColumnDefs": [
+                            {
+                                "aTargets": [0,2,3],
+                                "sClass":"text",
+                                "asSorting": [ "asc","desc" ]
+                            },
+                            {"aTargets":[0],"sWidth":"140px"},
+                            {
+                                "aTargets": [1],
+                                "aExportFn":"function",
+                                "mDataProp": function ( source, type, val ) {
+                                    if (type == "set") {
+                                        source.contract_amount = val;
+                                        source.contract_amount_display =  "<div>" + custom_number_format(val) + "</div>";
+                                        return;
+                                    }else if (type == "display") {
+                                        return source.contract_amount_display;
+                                    }
+                                    return source.contract_amount;
+                                },
+                                "sClass":"number",
+                                "asSorting": [ "desc", "asc" ],
+                                "sWidth":"75px"
+                            },
+                            {
+                              "aTargets": [4],
+                              "sWidth":"15px"
+                            }
+
+                        ]
+                    }
+                    ';
+
+$node->widgetConfig->gridConfig->dataTableOptions = $dataTableOptions;
+widget_highcharts_add_datatable_js($node);

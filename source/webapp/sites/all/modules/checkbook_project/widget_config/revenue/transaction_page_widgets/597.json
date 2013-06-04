@@ -1,0 +1,105 @@
+{
+"widgetType": "data_tables",
+"widgetSubType":"dataTableList",
+"header":"
+    $header = NULL;
+    $header .= widget_data_tables_export_link($node);
+    return $header;
+",
+"getTotalDataCount":true,
+"html_class": "initiative-table",
+"no_results_content":"No Results Found",
+"noDataInitialLoad":true,
+"cleanURLParameters":["year","agency","revcat","fundsrccode"],
+"urlParamMap":{"year":"year_id.year_id","agency":"agency_id","revcat":"revenue_category_id","fundsrccode":"funding_class_code"},
+"defaultParameters":{"year_id.year_id":114},
+"dataset": "checkbook:revenue_cross_year_collections",
+"columns": ["funding.funding.funding_class_name","funding.funding.funding_class_code",
+            "current_recognized","recognized_1","recognized_2","other_years","remaining_amount"],
+"limit":35,
+"widgetTitle":"Funding Class Revenue by Cross Year Collections Details",
+ "derivedColumns":{
+    "current_recognized_formatted":{
+        "type":"expression2",
+        "expression":"custom_number_formatter_basic_format($row['current_recognized'])"
+    },
+    "recognized_1_formatted":{
+        "type":"expression2",
+        "expression":"custom_number_formatter_basic_format($row['recognized_1'])"
+    },
+    "recognized_2_formatted":{
+        "type":"expression2",
+        "expression":"custom_number_formatter_basic_format($row['recognized_2'])"
+    },
+    "other_years_formatted":{
+        "type":"expression2",
+        "expression":"custom_number_formatter_basic_format($row['other_years'])"
+    },
+    "remaining_formatted":{
+        "type":"expression2",
+        "expression":"custom_number_formatter_basic_format($row['remaining_amount'])"
+    }
+ },
+"table_columns": [
+    {
+      "labelAlias": "funding_class",
+      "column": "funding_funding_funding_class_name",
+      "exportColumn":"funding.funding.funding_class_name"
+    },
+    {
+      "labelAlias":"recognized_current",
+      "column":"current_recognized_formatted",
+      "sortSourceColumn":"current_recognized"
+    },
+    {
+      "labelAlias":"recognized_1",
+      "column":"recognized_1_formatted",
+      "sortSourceColumn":"recognized_1"
+    },
+    {
+      "labelAlias":"recognized_2",
+      "column":"recognized_2_formatted",
+      "sortSourceColumn":"recognized_2"
+    },
+    {
+      "labelAlias": "other_years",
+      "column":"other_years_formatted",
+      "sortSourceColumn":"other_years"
+    },
+    {
+      "labelAlias":"remaining",
+      "column":"remaining_formatted",
+      "sortSourceColumn":"remaining_amount"
+    },
+    {
+      "label": "",
+      "column": ""
+    }
+  ],
+"dataTableOptions":{
+    "aoColumns": [
+        { "bSortable": true,"sWidth":"250px","sClass":"text" },
+        { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
+        { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
+        { "bSortable": true,"sWidth":"150px" ,"sClass":"number","asSorting": [ "desc" ,"asc" ]},
+        { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
+        { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
+        { "bSortable": true,"sWidth":"15px" }
+    ],
+    "aaSorting":[[1,"desc"]],
+    "bRetrieve": true,
+    "bServerSide": true,
+    "bProcessing":true,
+    "bFilter": false,
+    "iDisplayLength":35,
+    "bPaginate": true,
+    "sPaginationType":"full_numbers",
+    "bLengthChange": false,
+    "sDom":"<pr><t><ip>",
+    "oLanguage": {
+            "sInfo": "Displaying transactions _START_ - _END_ of _TOTAL_",
+            "sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+    },
+    "bInfo": true
+}
+}

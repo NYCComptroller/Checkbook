@@ -1,0 +1,12 @@
+
+;	GNU AFFERO GENERAL PUBLIC LICENSE 
+;	   Version 3, 19 November 2007
+; This software is licensed under the GNU AGPL Version 3
+; 	(see the file LICENSE for details)
+name = Checkbook Data Feeds
+description = Data Feeds functionality for Checkbook 2.0
+core = 7.x
+version = 2.0
+package = NYC Checkbook
+dependencies[] = checkbook_autocomplete
+dependencies[] = checkbook_api

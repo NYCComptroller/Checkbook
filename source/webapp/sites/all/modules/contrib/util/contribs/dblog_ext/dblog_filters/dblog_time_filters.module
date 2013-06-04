@@ -1,0 +1,91 @@
+<?php
+
+define('DBLOB_FILTERS__DEFAULT_RECENT', serialize(array(1, 5, 15, 30, 45)));
+define('DBLOB_FILTERS__DEFAULT_AGED', serialize(array(30, 45, 60, 90, 120)));
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function dblog_time_filters_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'dblog_ext_filter_form') {
+    if (dblog_filters_is_enabled('recent_aged') || dblog_filters_is_enabled('datetime')) {
+      drupal_add_css(drupal_get_path('module', 'dblog_filters') . '/dblog_time_filters.css');
+    }
+  }
+}
+
+/**
+ * Implementation of hook_log_filters() on behalf of dblog.
+ */
+function dblog_filters_log_filters() {
+  if (!dblog_filters_is_enabled('recent_aged')) return array();
+  
+  $filters = array();
+  $time_options = array();
+  foreach(array('recent', 'aged') as $key) {
+    $settings = variable_get("dblog_time_filters:$key", unserialize(constant('DBLOB_FILTERS__DEFAULT_' . strtoupper($key))));
+    
+    if (!empty($settings)) {
+      $options = array();
+      
+      // <select> without "multiple" can't be unselected with Ctrl+click 
+      $options[0] = t('- None -'); 
+      
+      foreach($settings as $minutes) {
+        $options[$minutes] = dblog_common_format_minutes($minutes, ($key == 'recent'));
+      }
+      $time_options[$key] = $options;
+    }
+  }
+  
+  if (!empty($time_options['recent'])) {
+    $filters['recent'] = array(
+      'title' => t('Recent'),
+      // Using PHP time(), since SQL NOW() creates a datetime format value rather than a Unix timestamp
+      'where' => '(' . time() . ' - w.timestamp) <= (%d * 60)',
+      'conjunction' => FALSE,
+      'options' => $time_options['recent'],
+    );
+  }
+
+  if (!empty($time_options['aged'])) {
+    $filters['aged'] = array(
+      'title' => t('Aged'),
+      // Using PHP time(), since SQL NOW() creates a datetime format value rather than a Unix timestamp
+      'where' => '(' . time() . ' - w.timestamp) > (%d * 60)',
+      'conjunction' => FALSE,
+      'options' => $time_options['aged'],
+    );
+  }
+  
+  return $filters;
+}
+
+/**
+ * Implementation of hook_log_filters_settings().
+ */
+function dblog_filters_log_filters_settings() {
+  $settings['datetime'] = array(
+    'title'          => 'Date/Time',
+    'description'    => 'Filters by date/time',
+    // @TODO: page arguments & file for drupal_get_form callback
+    'content'        => t('+/- time tolerance around the searched date/time is configurable.'),
+  );
+  $settings['recent_aged'] = array(
+    'title'          => 'Recent/Aged',
+    'description'    => 'Filters by recent/aged',
+    'page arguments' => array('dblog_filters_recent_aged_settings'),
+    'file'           => 'dblog_filters.recent_aged.admin.inc',
+    'content'        => t('Both of these filters have configurable thresholds. To disable either of them, leave respective thresholds blank.'),
+  );
+  return $settings;
+}
+
+/**
+ * Implementation of hook_log_filters_validate().
+ */
+function dblog_time_filters_log_filters_validate($form, $form_state) {
+  if (!empty($form_state['values']['recent']) && !empty($form_state['values']['aged'])) {
+    form_set_error('aged', t('Can\'t filter by <em>aged</em> while filtering by <em>recent</em>.'));
+  }
+}

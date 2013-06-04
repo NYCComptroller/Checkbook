@@ -1,0 +1,116 @@
+{
+    "revenue":{
+        "searchCriteriaMap":{
+            "budget_fiscal_year":"budget_fiscal_year",
+            "fiscal_year":"fiscal_year",
+            "agency_code":"agency_code",
+            "revenue_class":"revenue_class_code",
+            "fund_class":"fund_class_code",
+            "funding_class":"funding_class_code",
+            "revenue_category":"revenue_category_code",
+            "revenue_source":"revenue_source_code",
+            "adopted":"adopted_amount",
+            "modified":"current_modified_budget_amount",
+            "recognized":"posting_amount"
+        },
+        "dataset":{
+            "sortColumn":"-posting_amount",
+            "name":"checkbook:fact_revenue",
+            "displayConfiguration":{
+                "xml":{
+                    "rootElement":"revenue_transactions",
+                    "rowParentElement":"transaction",
+                    "elementsColumn":{
+                        "agency":"agency_name",
+                        "revenue_category":"revenue_category_name",
+                        "revenue_source":"revenue_source_name",
+                        "fund_class":"fund_class_name",
+                        "funding_class":"funding_class_name",
+                        "revenue_class":"revenue_class_name",
+                        "budget_fiscal_year":"budget_fiscal_year",
+                        "fiscal_year":"fiscal_year",
+					    "adopted":"adopted_amount",
+					    "modified":"current_modified_budget_amount",                        
+                        "recognized":"posting_amount",
+                        "closing_classification_name":"closing_classification_name"
+                    },
+                    "rowElements":["agency", "revenue_category", "revenue_source", "fund_class", "funding_class", "revenue_class",
+                     "budget_fiscal_year","fiscal_year","adopted","modified", "recognized","closing_classification_name"]
+                },
+                "csv":{
+                    "elementsColumn":{                        
+                        "Agency":"agency_name",
+                        "Revenue Category":"revenue_category_name",
+                        "Revenue Source":"revenue_source_name",
+                        "Fund Class":"fund_class_name",
+                        "Funding Class":"funding_class_name",
+                        "Revenue Class":"revenue_class_name",
+                        "Budget Fiscal Year":"budget_fiscal_year",
+                        "Fiscal Year":"fiscal_year",
+					    "Adopted":"adopted_amount",
+					    "Modified":"current_modified_budget_amount",                        
+                        "Recognized":"posting_amount",
+                        "Closing Classification Name":"closing_classification_name"
+                    }
+                }
+            }
+        },
+        "requestParameters":{
+            "budget_fiscal_year":{
+                "valueType":"value",
+                "dataType":"year",
+                "maxLength":4
+            },
+           "fiscal_year":{
+                "valueType":"value",
+                "dataType":"year",
+                "maxLength":4
+            },
+            "agency_code":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":3
+            },
+            "revenue_class":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":3
+            },
+            "fund_class":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":4
+            },
+            "funding_class":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":4
+            },
+            "revenue_category":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":2
+            },
+            "revenue_source":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":5
+            },
+            "recognized":{
+                "valueType":"range",
+                "dataType":"amount",
+                "maxLength":18
+            },
+             "adopted":{
+                "valueType":"range",
+                "dataType":"amount",
+                "maxLength":18
+            },
+             "modified":{
+                "valueType":"range",
+                "dataType":"amount",
+                "maxLength":18
+            }
+        }
+    }
+}

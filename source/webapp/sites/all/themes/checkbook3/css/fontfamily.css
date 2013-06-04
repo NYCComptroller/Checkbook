@@ -1,0 +1,56 @@
+body {
+    font-family: 'Roboto';
+}
+h1 {
+    font-family: 'RobotoCondensed';
+}
+.page-contracts-landing h1, .page-budget-year h1, .page-payroll h1, .page-revenue h1,
+.page-featured-trends h1, .page-contract-transactions h1,
+.page-budget-transactions h1, .page-budget-revenue-transactions h1, .page-contracts-revenue-landing h1,
+.page-contracts-pending-exp-landing h1, .page-spending-landing h1, .page-contracts-pending-rev-landing h1 {
+    font-family: 'Roboto';
+}
+.page-spending-landing .bottomContainer h1{font-family: 'RobotoCondensed';}
+h2 {
+    font-family: 'RobotoCondensed';
+}
+h3 {
+    font-family: 'RobotoCondensed';
+}
+h4 {
+    font-family: 'Roboto';
+}
+#social-media{
+    font-family: Arial,Helvetica,sans-serif;
+}
+#checkbook-smart-search-form input#edit-search-box {
+    font-family: RobotoLight;
+}
+table.expense td a {
+    font-family: NovecentowideNormalRegular;
+}
+span.nav-title {
+    font-family: 'Roboto';
+}
+span.dollars{
+    font-family: NovecentowideNormalRegular;
+}
+.page-payroll-search-transactions h2.contract-title {
+    font-family: 'RobotoCondensed';
+}
+.inside .transactions-container .transactions-total-amount{
+    font-family: 'Novecento';
+}
+.sub-table th{
+    font-family: 'RobotoCondensed';
+
+}
+.sub-table th div{
+    font-family: 'RobotoCondensed';
+}
+#zone-postscript-wrapper{
+    font-family: 'Georgia', serif;
+}
+#zone-postscript-wrapper h2 {
+    font-family: 'Georgia', serif;
+}

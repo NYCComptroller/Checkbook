@@ -1,0 +1,111 @@
+{
+  "widgetType":"highcharts",
+  "widgetSubType":"ajaxSimple",
+  "header":"$header = '<h2 class=\"chart-title\" style=\"display:none;\">Top Ten Agencies by Budget</h2>'; $header .= ChartUtil::generateGridViewLink($node); return $header;",
+  "gridConfig":{
+    "template":"highchart_budget_agency_grid_view",
+    "html_class":"chart-grid-view-table",
+    "table_columns": [
+            {
+                  "labelAlias": "agency_name",
+              "column": "agency_name_agency_name",
+                  "sortColumn":"sort_order"
+             },
+            {
+                  "colLabel": "committed",
+              "column": "budget_committed",
+                   "eval":true
+            },
+            {
+                  "colLabel": "remaining",
+              "column": "budget_remaining",
+                   "eval":true
+            }
+        ]
+  },
+  "dataset":"checkbook:budget",
+  "columns":[
+    "year_id.year_id",
+    "agency_id.agency_id",
+    "agency_name.agency_name",
+    "budget_committed",
+    "budget_remaining"
+  ],
+  "limit":10,
+  "orderBy":"-budget_committed",
+  "defaultParameters":{
+    "year_id.year_id":114
+  },
+  "cleanURLParameters":[
+    "year",
+    "expcategory"
+  ],
+  "urlParamMap":{
+    "year":"year_id.year_id",
+    "expcategory":"object_class_id.object_class_id"
+  },
+  "transformationPHP":"
+  $landing_page =    '/' . current_path()  ;
+  
+  $allZero = TRUE;
+  foreach ($node->data as $row) {
+    if (abs($row['budget_committed']) > 0){$allZero = FALSE;}
+    if (abs($row['budget_remaining']) > 0){$allZero = FALSE;}
+    $categories[] = html_entity_decode($row['agency_name_agency_name'],ENT_QUOTES);
+    $url = $landing_page . '/agency/' . $row['agency_id_agency_id'] ;
+    $committed_data[] = array('y' => $row['budget_committed'], 'name' => html_entity_decode($row['agency_name_agency_name'],ENT_QUOTES), 'url' => $url);
+    $remaining_data[] = array('y' => $row['budget_remaining'], 'name' => html_entity_decode($row['agency_name_agency_name'],ENT_QUOTES), 'url' => $url);
+  }
+  if($allZero){$node->totalDataCount = 0;}
+  $node->widgetConfig->chartTitle = 'Top Ten Agencies by Budget';
+  $node->widgetConfig->chartConfig->xAxis->categories = $categories;
+  $node->widgetConfig->chartConfig->series = array(array('name' => 'Committed', 'data' => $committed_data,), array('name' => 'Remaining', 'data' => $remaining_data));
+  return $node->data;
+  ",
+  "chartConfig":{
+    "chart":{
+      "defaultSeriesType":"column"
+    },
+    "legend":{
+      "align":"left",
+      "verticalAlign":"bottom"
+    },
+    "xAxis":{
+      "categories":[]
+    },
+    "yAxis":{
+      "title":{
+        "text":""
+      },
+      "labels":{
+        "function":"yAxisFormatter"
+      }
+    },
+    "tooltip":{
+      "function":"budgetTooltip"
+    },
+    "plotOptions":{
+      "column":{
+        "minPointLength":3,
+        "pointWidth":17
+      },
+      "series":{
+        "cursor":"pointer",
+        "point":{
+          "events":{
+            "function":"clickEvent"
+          }
+        }
+      }
+    },
+    "series":[],
+    "title":{
+      "text":""
+    }
+  }
+}
+<function>
+yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
+budgetTooltip^^"formatter": function(){return 'Agency: ' + this.point.name + '<br>Amount: ' + abbrNum(this.y, 2, '$')}##
+clickEvent^^"click": function(){location.href = this.options.url}
+</function>

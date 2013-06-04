@@ -1,0 +1,39 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+
+
+
+/*
+ * This block is designed to print the advanced search form which is then exposed to the users using a jQuery modal dialog box
+ */
+
+/*
+ * Implementation of hook_block_info()
+ */
+
+function checkbook_advanced_search_block_block_info(){
+    $blocks['checkbook_advanced_search_form'] = array(
+        'info' => t('Checkbook Advanced Search Form Block'),
+    );
+    return $blocks;
+}
+
+
+
+/*
+ * Implementation of hook_block_view()
+ */
+
+function checkbook_advanced_search_block_block_view($delta = ''){
+    switch($delta){
+        case 'checkbook_advanced_search_form':
+            $block['content'] = drupal_get_form('checkbook_advanced_search_form');
+            break;
+    }
+    return $block;
+}
