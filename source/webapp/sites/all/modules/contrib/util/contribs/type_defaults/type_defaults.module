@@ -1,0 +1,299 @@
+<?php
+
+/**
+ * @file
+ * Set the default options for all content types.
+ * Requires 'administer nodes' permission.
+ */
+
+/**
+ * Implementation of hook_help().
+ */
+ function type_defaults_help($path, $args) {
+  switch ($path) {
+    case 'admin/settings/util/type_defaults':
+      return '<p style="font-size: 115%; background-color: #ffcccc;">'. t('<strong>Note</strong>: content types defined after you submit this form will have the standard defaults.') .'</p>';
+;
+  }
+}
+
+/**
+ * Implementation of hook_menu().
+ */
+ function type_defaults_menu() {
+  $menu['admin/settings/util/type_defaults'] = array(
+    'title' => 'Type Defaults',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('type_defaults_settings'),
+    'access arguments' => array('administer nodes'),
+    'type' => MENU_LOCAL_TASK,
+  );
+  return $menu;
+}
+
+function type_defaults_fields() {
+  $fields = module_invoke_all('type_defaults');
+//  dsm(print_r($fields, true));
+  return $fields;
+}
+
+/**
+ * Implementation of hook_type_defaults().
+ * Stand-in for node module.
+ */
+function node_type_defaults() {
+  $yesno = array(t('No'), t('Yes'));
+
+  return array(
+      '#groups' => array(
+        array('name' => 'Workflow', 'title' => t('Workflow/Publishing options'), 'inline' => TRUE),
+        ),
+      'status' => array(
+        'group' => 'Workflow',
+        'variable' => 'node_options_$type',
+        'title' => t('Published'),
+        'type' => 'checkbox',
+        'return' => 'status',
+        ),
+      'promote' => array(
+        'group' => 'Workflow',
+        'variable' => 'node_options_$type',
+        'title' => t('Promote to front page'),
+        'type' => 'checkbox',
+        'return' => 'promote',
+        ),
+      'sticky' => array(
+        'group' => 'Workflow',
+        'variable' => 'node_options_$type',
+        'title' => t('Sticky at the top of lists'),
+        'type' => 'checkbox',
+        'return' => 'sticky',
+        ),
+      'revision' => array(
+        'group' => 'Workflow',
+        'variable' => 'node_options_$type',
+        'title' => t('Create new revision'),
+        'type' => 'checkbox',
+        'return' => 'revision',
+        ),
+      'min_word_count' => array(
+        'title' => t('Minimum number of words'),
+        'db_field' => array('node_type', 'min_word_count'),
+        'type' => 'textfield',
+        'size' => 5,
+        ),
+    );
+}
+
+/**
+ * Implementation of hook_type_defaults().
+ * Example for modr8 module?
+ */
+function modr8_type_defaults() {
+  return array(
+    'moderate' => array(
+      'group' => 'Workflow',
+      'variable' => 'node_options_$type',
+      'title' => t('Moderate'),
+      'type' => 'checkbox',
+      'return' => 'moderate',
+      ),
+    );
+}
+
+/**
+ * Implementation of hook_type_defaults().
+ * Stand-in for comment module.
+ */
+function comment_type_defaults() {
+  return array(
+    'comment' => array(
+    'title' => t('Comments'),
+    'variable' => 'comment_$type',
+    'type' => 'radios',
+    'options' => array(t('Disabled'), t('Read Only'), t('Read/Write')),
+    ),
+  );
+}
+
+/**
+ * Put our stuff onto the Util settings page.
+ */
+function type_defaults_settings() {
+  // Set the default options for all content types.
+  $types = $rows = $form = array();
+  $yesno = array(1 => t('Yes'), 0 => t('No'));
+
+  $types = node_get_types();
+  ksort($types);
+
+  $fields = type_defaults_fields();
+
+  // Global options.
+  $form['typedef'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Content Type Defaults'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+    );
+  $form['typedef']['#description'] = '<p>'
+    . t('This form allows you to set the default options for all current content types.')
+    .' '
+    . t('Options chosen in this section will override all of the individual content type options below.')
+    .'</p>';
+
+
+  foreach ($fields as $name => $options) {
+    if ($name == '#groups') {
+      foreach ($fields['#groups'] as $group) {
+        $form['typedef'][$group['name']] = array(
+          '#type' => 'fieldset',
+          '#title' => $group['title'],
+          '#collapsible' => FALSE,
+          );
+      }
+      continue;
+    }
+
+    $t = $options['type'];
+    $o = $options['options'];
+    if ($options['type'] == 'checkbox') {
+      $t = 'radios';
+      $o = $yesno;
+    }
+    $form['typedef'][$options['group']][$name] = array(
+      '#title' => $options['title'],
+      '#type' => $t,
+      '#size' => $options['size'],
+      '#options' => $o,
+      '#prefix' => '<div class="container-inline">',
+      '#suffix' => '</div>'. (isset($options['group']) ? NULL : '<br />'),
+      );
+  }
+
+  $all_opts = array(
+    'status' => FALSE,
+    'promote' => FALSE,
+    'revision' => FALSE,
+    'sticky' => FALSE,
+    'comment' => 0,
+    );
+  
+  foreach ($types as $type => $def) {
+    // Group all the data together.
+    $form[$type] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Defaults for @type_name (@internal_name)',
+        array('@type_name' => $def->name, '@internal_name' => $type)),
+      '#description' => '<p>'. filter_xss_admin($def->description) .'</p>',
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      );
+
+    // @TODO: "genericize" this stuff.
+    $workflow = array_merge($all_opts, array_fill_keys(variable_get("node_options_$type", array()), TRUE));
+    $workflow['min_word_count'] = $types[$type]->min_word_count;
+    $workflow['comment'] = variable_get("comment_$type", 0);
+    $types[$type]->options = $workflow;
+
+    foreach ($fields as $name => $options) {
+      if ($name == '#groups') {
+        foreach ($options as $group) {
+          $form[$type][$group['name']] = array(
+            '#type' => 'fieldset',
+            '#title' => $group['title'],
+            '#collapsible' => TRUE,
+            '#prefix' => ($group['inline'] ? '<div class="container-inline">' : NULL),
+            '#suffix' => ($group['inline'] ? '</div' : NULL),
+            );
+        }
+        continue;
+      }
+
+      $p = $s = NULL;
+      if (!isset($options['group'])) {
+        $p = '<div class="container-inline">';
+        $s = '</div><br />';
+      }
+
+      $form[$type][$options['group']][$name ."-$type"] = array(
+        '#title' => $options['title'],
+        '#type' => $options['type'],
+        '#options' => $options['options'],
+        '#size' => $options['size'],
+        '#default_value' => $workflow[$name],
+        '#return_value' => $options['return'],
+        '#prefix' => $p,
+        '#suffix' => $s,
+        );
+    }
+  }
+
+  $form['types'] = array('#type' => 'value', '#value' => $types); 
+  $form['fields'] = array('#type' => 'value', '#value' => $fields); 
+
+  $form['submit'] = array('#type' => 'submit', '#value' => t('Save configuration'), '#weight' => 99);
+  return $form;
+}
+
+function type_defaults_settings_submit($form, &$form_state) {
+  global $user;
+  $workflow = $global_opts = array();
+  $types = $form_state['values']['types'];
+  $fields = $form_state['values']['fields'];
+
+  unset($fields['#groups']);
+  $look_for = array_keys($fields);
+  foreach ($look_for as $field) {
+    if ($form_state['values'][$field] != '') {
+      $global_opts[$field] = isset($fields[$field]['group']) ? $field : $form_state['values'][$field];
+    }
+  }
+
+  $data = array();
+  foreach ($types as $type_name => $type) {
+    foreach ($fields as $field_name => $field) {
+      $v = $form_state['values'][$field_name .'-'. $type_name];
+
+      // Was a global version chosen?
+      $v = isset($global_opts[$field_name]) ? $global_opts[$field_name] : $v;
+      
+      if ($v) {
+        if (isset($field['group'])) {
+          $data[$type_name][$field['group']][] = $v;
+        }
+        else {
+          $data[$type_name][$field_name] = $v;        
+        }
+      }
+    }
+  }
+
+  foreach ($data as $type => $field) {
+    foreach ($field as $name => $value) {
+      if (is_array($value)) {
+          $var = str_replace('$type', $type, $fields[$value[0]]['variable']);
+          drupal_set_message("variable_set('$var', array('". implode("', '", $value). "'));");    
+      }
+      else {
+        if (isset($fields[$name]['variable'])) {
+          $var = str_replace('$type', $type, $fields[$name]['variable']);
+          drupal_set_message("variable_set($var, $value);");
+        }
+        else {
+          if (isset($fields[$name]['db_field'])) {
+            $tbl = $fields[$name]['db_field'][0];
+            $fld = $fields[$name]['db_field'][1];
+            drupal_set_message("UPDATE {$tbl} SET $fld = $value WHERE type = $type");
+          }
+          else {
+            drupal_set_message("What do I do $type $name?");
+          }
+        }
+      }
+    }
+  }
+
+//  drupal_set_message(show_array($form_state['values']));
+//  watchdog('TDS', 'okay');
+}

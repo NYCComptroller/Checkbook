@@ -1,0 +1,782 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+
+
+
+module_load_include('inc', 'checkbook_advanced_search', 'includes/checkbook_advanced_search');
+module_load_include('inc', 'checkbook_advanced_search_autocomplete', 'includes/checkbook_advanced_search_autocomplete_functions');
+
+/**
+ * Implements of hook_menu().
+ */
+function checkbook_advanced_search_menu() {
+  $items['advanced-search'] = array(
+    'title' => 'Checkbook Advanced Search',
+    'page callback' => 'checkbook_advanced_search_display',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  $items['advanced-search/autocomplete'] = array(
+    'page callback' => '_checkbook_advanced_search_autocomplete_get_agencyname_and_id',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+function checkbook_advanced_search_display() {
+  return drupal_get_form('checkbook_advanced_search_form');
+}
+
+/**
+ * Implements hook_form().
+ */
+function checkbook_advanced_search_form($form, $form_state) {
+  $agencies = _checkbook_advanced_search_get_agencyname_and_id();
+  $agency_attributes = _checkbook_advanced_search_get_agency_attributes();
+  $fund_class = _checkbook_advanced_search_get_fund_class_and_id();
+  $year_range = "'-" . (date("Y") - 1900) . ":+" . (2500 - date("Y")) . "'";
+  $revenue_fys = array(0=>"All Fiscal Years") + _checkbook_advanced_search_get_year('revenue');
+  $form['opening_div'] = array(
+    '#type' => 'markup',
+    '#markup' => '<div class = "advanced-search-accordion">',
+  );
+ 
+  $form['revenue']['revenue_budget_fiscal_year'] = array(
+    '#prefix' => '<h3><a href="#">Revenue</a></h3><div id="revenue-advanced-search"><div class="column column-left">',
+    '#type' => 'select',
+    '#title' => t('Budget FY:'),
+    '#options' => _checkbook_advanced_search_get_year('revenue'),
+  );
+  $form['revenue']['revenue_agencies'] = array(
+    '#type' => 'select',
+    '#title' => t('Agency:'),
+    '#options' => $agencies,
+    '#option_attributes' => $agency_attributes,
+  );
+  $form['revenue']['revenue_revenue_category'] = array(
+    '#type' => 'select',
+    '#title' => t('Revenue Category:'),
+    '#options' => _checkbook_advanced_search_get_revenue_category_and_id(),
+  );
+  $form['revenue']['revenue_revenue_source'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Revenue Source:'),
+      '#size' => 30,
+      '#maxlength' => 100
+  );  
+  $form['revenue']['revenue_revenue_source_exact'] = array(
+      '#type' => 'hidden'
+  );
+  $form['revenue']['revenue_adopted_from'] = array(
+      '#type' => 'textfield',
+      '#size' => 30,
+      '#maxlength' => 32,
+      '#prefix' => '<div class="datafield revenue_adopted datarange"><label>Adopted:</label><div class="ranges"><div class="form-item form-type textfield form-item-revenue-adopted">',
+      '#suffix' => '<span class="advanced-search-to">to </span>',
+  );
+  $form['revenue']['revenue_adopted_to'] = array(
+      '#type' => 'textfield',
+      '#title' => t(''),
+      '#size' => 30,
+      '#maxlength' => 32,
+      '#suffix' => '</div></div></div>',
+  );
+  
+  
+  $form['revenue']['revenue_recognized_from'] = array(
+      '#type' => 'textfield',
+      '#size' => 30,
+      '#maxlength' => 32,
+      '#prefix' => '<div class="datafield revenue_recognized datarange"><label>Recognized:</label><div class="ranges"><div class="form-item form-type textfield form-item-revenue-recognized">',
+      '#suffix' => '<span class="advanced-search-to">to </span>',
+  );
+  $form['revenue']['revenue_recognized_to'] = array(
+      '#type' => 'textfield',
+      '#title' => t(''),
+      '#size' => 30,
+      '#maxlength' => 32,
+      '#suffix' => '</div></div></div></div>',
+  );  
+  
+  $form['revenue']['revenue_fiscal_year'] = array(
+      '#prefix' => '<div class="column column-right">',
+      '#type' => 'select',
+      '#title' => t('Fiscal Year:'),
+      '#options' => $revenue_fys,
+  );
+  $form['revenue']['revenue_funding_source'] = array(
+      '#type' => 'select',
+      '#title' => t('Funding Class'),
+      '#options' => _checkbook_advanced_search_get_funding_source_and_id(),
+  );  
+  $form['revenue']['revenue_revenue_class'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Revenue Class:'),
+    '#size' => 30,
+    '#maxlength' => 100
+  );
+  $form['revenue']['revenue_revenue_class_exact'] = array(
+      '#type' => 'hidden'
+  );
+  
+  $form['revenue']['revenue_fund_class'] = array(
+      '#type' => 'select',
+      '#title' => t('Fund Class:'),
+      '#options' => $fund_class,
+  
+  );  
+  $form['revenue']['revenue_modified_from'] = array(
+    '#type' => 'textfield',
+    '#size' => 30,
+    '#maxlength' => 32,
+    '#prefix' => '<div class="datafield revenue_modified datarange"><label>Modified:</label><div class="ranges"><div class="form-item form-type textfield form-item-revenue-modified">',
+    '#suffix' => '<span class="advanced-search-to">to </span>',
+  );
+  $form['revenue']['revenue_modified_to'] = array(
+    '#type' => 'textfield',
+    '#title' => t(''),
+    '#size' => 30,
+    '#maxlength' => 32,
+    '#suffix' => '</div></div></div></div>',
+  );
+  $form['revenue']['revenue_submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Submit'),
+    '#name' => 'revenue_submit',
+    '#prefix' => t('<div class="revenue-submit">'),
+  );
+  $form['revenue']['revenue_clear'] = array(
+    '#suffix' => '</div></div>',
+    '#type' => 'submit',
+    '#value' => t('Clear All'),
+  );
+  $form['budget']['budget_agencies'] = array(
+      '#type' => 'select',
+      '#title' => t('Agency'),
+      '#prefix' => '<h3><a href="#">Budget</a></h3><div id="budget-advanced-search"><div class="column column-left">',
+      '#default_value' => t('Citywide(All Agencies)'),
+      '#options' => $agencies,
+      '#option_attributes' => $agency_attributes,
+  );
+$form['budget']['budget_department'] = array(
+    '#type' => 'select',
+    '#title' => t('Department'),
+    '#default_value' => t('Select Department'),
+    '#options' => array('Select Department'),
+    '#disabled' => TRUE,
+  );
+  $form['budget']['budget_expense_category'] = array(
+    '#type' => 'select',
+    '#title' => t('Expense Category'),
+    '#default_value' => t('Select Expense Category'),
+    '#options' => array("Select Expense Category"),
+    '#disabled' => TRUE,
+  );
+  
+  $form['budget']['budget_budget_code'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Budget Code'),
+      '#size' => 30,
+      '#maxlength' => 100
+  );
+ 
+  $form['budget']['budget_fiscal_year'] = array(
+      '#type' => 'select',
+      '#title' => t('Year'),
+      '#options' => _checkbook_advanced_search_get_year('budget')
+  );
+  
+  $form['budget']['budget_adopted_budget_from'] = array(
+      '#type' => 'textfield',
+      '#size' => 30,
+      '#maxlength' => 32,
+      '#prefix' => '<div class="datafield budget_adopted_budget datarange"><label>Adopted</label><div class="ranges"><div class="form-item form-type-textfield form-item-budget-adopted">',
+      '#suffix' => '<span class="advanced-search-to">to </span>',
+  );
+  $form['budget']['budget_adopted_budget_to'] = array(
+      '#type' => 'textfield',
+      '#title' => t(''),
+      '#size' => 30,
+      '#maxlength' => 32,
+      '#suffix' => '</div></div></div></div>',
+  );
+  $form['budget']['budget_current_modified_from'] = array(
+      '#type' => 'textfield',
+      '#size' => 30,
+      '#maxlength' => 32,
+      '#prefix' => '<div class="column column-right"><div class="datafield budget_current_modified datarange"><label>Modified</label><div class="ranges"><div class="form-item form-type-textfield form-item-budget-modified">',
+      '#suffix' => '<span class="advanced-search-to">to </span>'
+  );
+  $form['budget']['budget_current_modified_to'] = array(
+      '#type' => 'textfield',
+      '#title' => t(''),
+      '#size' => 30,
+      '#maxlength' => 32,
+      '#suffix' => '</div></div></div>',
+  );
+
+
+  $form['budget']['budget_pre_encumbered_from'] = array(
+      '#type' => 'textfield',
+      '#size' => 30,
+      '#maxlength' => 32,
+      '#prefix' => '<div class="datafield budget_pre_encumbered datarange"><label>Pre Encumbered</label><div class="ranges"><div class="form-item form-type-textfield form-item-budget-pre-encumbered">',
+      '#suffix' => '<span class="advanced-search-to">to </span>',
+  );
+  $form['budget']['budget_pre_encumbered_to'] = array(
+      '#type' => 'textfield',
+      '#title' => t(''),
+      '#size' => 30,
+      '#maxlength' => 32,
+      '#suffix' => '</div></div></div>',
+  );
+  $form['budget']['budget_encumbered_from'] = array(
+      '#type' => 'textfield',
+      '#size' => 30,
+      '#maxlength' => 32,
+      '#prefix' => '<div class="datafield budget_encumbered datarange"><label>Encumbered</label><div class="ranges"><div class="form-item form-type-textfield form-item-budget-encumbered">',
+      '#suffix' => '<span class="advanced-search-to">to </span>',
+  );
+  $form['budget']['budget_encumbered_to'] = array(
+      '#type' => 'textfield',
+      '#title' => t(''),
+      '#size' => 30,
+      '#maxlength' => 32,
+      '#suffix' => '</div></div></div>',
+  );
+  $form['budget']['budget_accrued_expense_from'] = array(
+      '#type' => 'textfield',
+      '#size' => 30,
+      '#maxlength' => 32,
+      '#prefix' => '<div class="datafield budget_accrued_expense datarange"><label>Accrued Expense</label><div class="ranges"><div class="form-item form-type-textfield form-item-budget-accrued-expense">',
+      '#suffix' => '<span class="advanced-search-to">to </span>',
+  );
+  $form['budget']['budget_accrued_expense_to'] = array(
+      '#type' => 'textfield',
+      '#title' => t(''),
+      '#size' => 30,
+      '#maxlength' => 32,
+      '#suffix' => '</div></div></div>',
+  );  
+  $form['budget']['budget_cash_expense_from'] = array(
+      '#type' => 'textfield',
+      '#size' => 30,
+      '#maxlength' => 32,
+      '#prefix' => '<div class="datafield budget_cash_expense datarange"><label>Cash Payments</label></label><div class="ranges"><div class="form-item form-type-textfield form-item-budget-expense">',
+      '#suffix' => '<span class="advanced-search-to">to </span>',
+  );
+  $form['budget']['budget_cash_expense_to'] = array(
+      '#type' => 'textfield',
+      '#title' => t(''),
+      '#size' => 30,
+      '#maxlength' => 32,
+      '#suffix' => '</div></div></div>',
+  );
+  $form['budget']['budget_post_adjustments_from'] = array(
+      '#type' => 'textfield',
+      '#size' => 30,
+      '#maxlength' => 32,
+      '#prefix' => '<div class="datafield budget_post_adjustments datarange"><label>Post Adjustments</label><div class="ranges"><div class="form-item form-type-textfield form-item-budget-post-adjustments">',
+      '#suffix' => '<span class="advanced-search-to">to </span>',
+  );
+  $form['budget']['budget_post_adjustments_to'] = array(
+      '#type' => 'textfield',
+      '#title' => t(''),
+      '#size' => 30,
+      '#maxlength' => 32,
+      '#suffix' => '</div></div></div></div>',
+  );
+  
+  $form['budget']['budget_submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('Submit'),
+      '#name' => 'budget_submit',
+      '#prefix' => t('<div class="budget-submit">'),
+  );
+  $form['budget']['budget_clear'] = array(
+      '#suffix' => '</div></div>',
+      '#type' => 'submit',
+      '#value' => t('Clear All'),
+  );  
+  $form['spending']['spending_agencies'] = array(
+    '#prefix' => '<h3><a href="#">Spending</a></h3><div id="spending-advanced-search"><div class="column column-left">',
+    '#type' => 'select',
+    '#title' => t('Agency'),
+    '#default_value' => t('Citywide(All Agencies)'),
+    '#options' => $agencies,
+    '#option_attributes' => $agency_attributes,
+  );
+  $form['spending']['spending_department'] = array(
+    '#type' => 'select',
+    '#title' => t('Department'),
+    '#default_value' => t('Select Department'),
+    '#options' => array('Select Department'),
+    '#disabled' => TRUE,
+  );
+  $form['spending']['spending_expense_category'] = array(
+    '#type' => 'select',
+    '#title' => t('Expense Category'),
+    '#default_value' => t('Select Expense Category'),
+    '#options' => array("Select Expense Category"),
+    '#disabled' => TRUE,
+  );
+  $form['spending']['spending_expense_type'] = array(
+    '#type' => 'select',
+    '#title' => t('Spending Category'),
+    '#options' => _checkbook_advanced_search_get_expensetype_and_id(),
+  );
+  $form['spending']['spending_payee_name'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Payee Name'),
+    '#size' => 30,
+    '#maxlength' => 100
+  );
+  $form['spending']['spending_payee_name_exact'] = array(
+      '#type' => 'hidden',
+    '#suffix' => '</div>',
+  );
+  $form['spending']['spending_check_amount_from'] = array(
+    '#type' => 'textfield',
+    '#size' => 30,
+    '#maxlength' => 32,
+    '#prefix' => '<div class="column column-right"><div class="form-item form-item-check-amount"><label>Check Amount</label><div class="ranges">',
+  );
+  $form['spending']['spending_check_amount_to'] = array(
+    '#type' => 'textfield',
+    '#title' => t('TO'),
+    '#size' => 30,
+    '#maxlength' => 32,
+    '#suffix' => '</div></div>',
+  );
+  $form['spending']['spending_contract_num'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Contract ID'),
+    '#size' => 30,
+    '#maxlength' => 32,
+  );
+
+  $form['spending']['spending_contract_num_exact'] = array(
+      '#type' => 'hidden'
+  );
+  $form['spending']['spending_document_id'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Document ID'),
+    '#size' => 30,
+    '#maxlength' => 100,
+  );  
+  $form['spending']['spending_document_id_exact'] = array(
+      '#type' => 'hidden'
+  );
+  $form['spending']['spending_capital_project'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Capital Project'),
+    '#size' => 30,
+    '#maxlength' => 100,
+  );
+  $form['spending']['spending_capital_project_exact'] = array(
+      '#type' => 'hidden'
+  );  
+  $form['spending']['date_filter'] = array(
+    '#type' => 'radios',
+    '#title' => t('Date Filter'),
+    '#options' => array(
+      'Year',
+      'Issue Date',
+    ),
+    '#prefix' => '<div class="datafield datefilter clearfix">',
+    '#suffix' => '</div>',
+    '#attributes' => array('class' => array('watch')),
+    '#default_value' => '',
+  );
+  $form['spending']['year_filter_start'] = array(
+    '#markup' => '<div class="datafield year-filters last-item">',
+  );
+  $form['spending']['spending_issue_date_from'] = array(
+    '#type' => 'date_popup',
+    '#date_format' => 'Y-m-d',
+    '#date_year_range' => $year_range,
+    '#prefix' => '<div class="datafield datarange issueddate"><div class="ranges">',
+    '#default_value' => '',
+  );
+  $form['spending']['spending_issue_date_to'] = array(
+    '#type' => 'date_popup',
+    '#title' => t('to'),
+    '#date_format' => 'Y-m-d',
+    '#date_year_range' => $year_range,
+    '#suffix' => '</div></div>',
+    '#default_value' => '',
+  );
+  $form['spending']['spending_fiscal_year'] = array(
+    '#type' => 'select',
+    '#options' => _checkbook_advanced_search_get_year('spending'),
+    '#default_value' => 'fy~' . _getCurrentYearID(),
+    '#attributes' => array('class' => array('watch')),
+    '#prefix' => '<div class="datafield year">',
+    '#suffix' => '</div>',
+  );
+  $form['spending']['year_filter_end'] = array(
+    '#markup' => '</div></div>',
+  );
+  $form['spending']['spending_submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Submit'),
+    '#name' => 'spending_submit',
+    '#prefix' => t('<div class="spending-submit">'),
+  );
+  $form['spending']['spending_clear'] = array(
+    '#suffix' => '</div></div>',
+    '#type' => 'submit',
+    '#value' => t('Clear All'),
+  );
+  $form['contracts']['contract_status'] = array(
+    '#type' => 'select',
+    '#title' => t('Status'),
+    '#options' => array('A' => 'Active', 'P' => 'Pending', 'R' => 'Registered'),
+    '#prefix' => '<h3><a href="#">Contracts</a></h3><div id="contracts-advanced-search"><div class="column column-left">',
+  );
+  $form['contracts']['contract_vendor_name'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Vendor'),
+    '#size' => 30,
+    '#maxlength' => 100,
+  );
+  $form['contracts']['contract_type'] = array(
+    '#type' => 'select',
+    '#title' => t('Contract Type'),
+    '#options' => _checkbook_advanced_search_get_contract_type_and_id(),
+  );
+  $form['contracts']['contract_contract_num'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Contract ID'),
+    '#size' => 30,
+    '#maxlength' => 100,
+  );
+  $form['contracts']['contract_pin'] = array(
+    '#type' => 'textfield',
+    '#title' => t('PIN'),
+    '#size' => 30,
+    '#maxlength' => 100,
+  );
+  $form['contracts']['contract_current_contract_amount_from'] = array(
+    '#type' => 'textfield',
+    '#size' => 30,
+    '#maxlength' => 32,
+    '#prefix' => '<div class="form-item form-item-current-contract-amount"><label>Current Amount</label><div class="ranges">',
+  );
+  $form['contracts']['contract_current_contract_amount_to'] = array(
+    '#type' => 'textfield',
+    '#title' => t('To'),
+    '#size' => 30,
+    '#maxlength' => 32,
+    '#suffix' => '</div></div>',
+  );
+  $form['contracts']['contract_end_date_from'] = array(
+    '#type' => 'date_popup',
+    '#date_format' => 'Y-m-d',
+    '#date_year_range' => $year_range,
+    '#prefix' => '<div class="form-item form-item-end-date"><label>End Date</label><div class="ranges">',
+  );
+  $form['contracts']['contract_end_date_to'] = array(
+    '#type' => 'date_popup',
+    '#date_format' => 'Y-m-d',
+    '#date_year_range' => $year_range,
+    '#title' => t('To'),
+    '#suffix' => '</div></div>',
+  );
+  $form['contracts']['contract_registration_date_from'] = array(
+    '#type' => 'date_popup',
+    '#date_format' => 'Y-m-d',
+    '#date_year_range' => $year_range,
+    '#prefix' => '<div class="form-item form-item-registration-date"><label>Registration Date</label><div class="ranges">',
+  );
+  $form['contracts']['contract_registration_date_to'] = array(
+    '#type' => 'date_popup',
+    '#date_format' => 'Y-m-d',
+    '#date_year_range' => $year_range,
+    '#title' => t('To'),
+    '#suffix' => '</div></div></div>',
+  );
+  $form['contracts']['contract_category'] = array(
+    '#type' => 'select',
+    '#title' => t('Category'),
+    '#options' => array('expense' => 'Expense', 'revenue' => 'Revenue'),
+    '#prefix' => '<div class="column column-right">',
+  );
+  $form['contracts']['contract_purpose'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Purpose'),
+    '#size' => 30,
+    '#maxlength' => 100,
+  );
+  $form['contracts']['contract_agency'] = array(
+    '#type' => 'select',
+    '#title' => t('Agency'),
+    '#options' => $agencies,
+    '#option_attributes' => $agency_attributes,
+  );
+  $form['contracts']['contract_apt_pin'] = array(
+    '#type' => 'textfield',
+    '#title' => t('APT PIN'),
+    '#size' => 30,
+    '#maxlength' => 100,
+  );
+  $form['contracts']['contract_award_method'] = array(
+    '#type' => 'select',
+    '#title' => t('Award Method'),
+    '#options' => _checkbook_advanced_search_get_contract_award_method_and_id(),
+    '#option_attributes' => _checkbook_advanced_search_get_contract_award_method_attributes(),
+  );
+  $form['contracts']['contract_start_date_from'] = array(
+    '#type' => 'date_popup',
+    '#date_format' => 'Y-m-d',
+    '#date_year_range' => $year_range,
+    '#prefix' => '<div class="form-item form-item-start-date"><label>Start Date</label><div class="ranges">',
+  );
+  $form['contracts']['contract_start_date_to'] = array(
+    '#type' => 'date_popup',
+    '#date_format' => 'Y-m-d',
+    '#date_year_range' => $year_range,
+    '#title' => t('To'),
+    '#suffix' => '</div></div>',
+  );
+  $form['contracts']['contract_received_date_from'] = array(
+    '#type' => 'date_popup',
+    '#date_format' => 'Y-m-d',
+    '#date_year_range' => $year_range,
+    '#prefix' => '<div class="form-item form-item-received-date"><label>Received Date</label><div class="ranges">',
+    '#disabled' => TRUE,
+  );
+  $form['contracts']['contract_received_date_to'] = array(
+    '#type' => 'date_popup',
+    '#date_format' => 'Y-m-d',
+    '#date_year_range' => $year_range,
+    '#title' => t('To'),
+    '#suffix' => '</div></div>',
+    '#disabled' => TRUE,
+  );
+  $form['contracts']['contract_year'] = array(
+    '#type' => 'select',
+    '#title' => t('Year'),
+    '#options' => _checkbook_advanced_search_get_year('contracts'),
+    '#suffix' => '</div>',
+  );
+  $form['contracts']['contracts_submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Submit'),
+    '#name' => 'contracts_submit',
+    '#prefix' => '<div class="contracts-submit">',
+  );
+  $form['contracts']['contracts_clear'] = array(
+    '#suffix' => '</div></div>',
+    '#type' => 'submit',
+    '#value' => t('Clear All'),
+  );
+  $form['payroll']['payroll_employee_name'] = array(
+    '#prefix' => '<h3><a href="#">Payroll</a></h3><div id="payroll-advanced-search"><div class="column column-left">',
+    '#type' => 'textfield',
+    '#title' => t('Title'),
+    '#size' => 30,
+    '#maxlength' => 100,
+  );
+  $form['payroll']['payroll_agencies'] = array(
+    '#type' => 'select',
+    '#title' => t('Agency'),
+    '#default_value' => t('Citywide(All Agencies)'),
+    '#options' => $agencies,
+    '#option_attributes' => $agency_attributes,
+  );
+  $form['payroll']['payroll_other_payments_from'] = array(
+    '#type' => 'textfield',
+    '#size' => 30,
+    '#maxlength' => 32,
+    '#prefix' => '<div class="form-item form-item-payroll-other-payments"><label>Other Payments</label><div class="ranges">',
+  );
+  $form['payroll']['payroll_other_payments_to'] = array(
+    '#type' => 'textfield',
+    '#title' => t('TO'),
+    '#size' => 30,
+    '#maxlength' => 32,
+    '#suffix' => '</div></div>',
+  );
+  $form['payroll']['payroll_gross_pay_amount_from'] = array(
+    '#type' => 'textfield',
+    '#size' => 30,
+    '#maxlength' => 32,
+    '#prefix' => '<div class="form-item form-item-payroll-pay-amount"><label>Gross Pay</label><div class="ranges">',
+  );
+  $form['payroll']['payroll_gross_pay_amount_to'] = array(
+    '#type' => 'textfield',
+    '#title' => t('TO'),
+    '#size' => 30,
+    '#maxlength' => 32,
+    '#suffix' => '</div></div>',
+  );
+  $form['payroll']['payroll_total_gross_pay_from'] = array(
+    '#type' => 'textfield',
+    '#size' => 30,
+    '#maxlength' => 32,
+    '#prefix' => '<div class="form-item form-item-payroll-total-gross-pay"><label>Gross Pay YTD</label><div class="ranges">',
+  );
+  $form['payroll']['payroll_total_gross_pay_to'] = array(
+    '#type' => 'textfield',
+    '#title' => t('TO'),
+    '#size' => 30,
+    '#maxlength' => 32,
+    '#suffix' => '</div></div>',
+  );
+  $form['payroll']['payroll_amount_from'] = array(
+    '#type' => 'textfield',
+    '#size' => 30,
+    '#maxlength' => 32,
+    '#prefix' => '<div class="form-item form-item-payroll-amount"><label>Amount</label><div class="ranges">',
+  );
+  $form['payroll']['payroll_amount_to'] = array(
+    '#type' => 'textfield',
+    '#title' => t('TO'),
+    '#size' => 30,
+    '#maxlength' => 32,
+    '#suffix' => '</div></div>',
+  );
+  $form['payroll']['payroll_amount_type'] = array(
+    '#type' => 'radios',
+    '#default_value' => 0,
+    '#options' => array(0 => t('All'), 1 => t('Annual'), 2 => t('Rate')),
+    '#suffix' => '</div>',
+  );
+  $form['payroll']['payroll_base_salary_from'] = array(
+    '#type' => 'textfield',
+    '#size' => 30,
+    '#maxlength' => 32,
+    '#prefix' => '<div class="column column-right"><div class="form-item form-item-payroll-base-salary"><label>Base Pay</label><div class="ranges">',
+  );
+  $form['payroll']['payroll_base_salary_to'] = array(
+    '#type' => 'textfield',
+    '#title' => t('TO'),
+    '#size' => 30,
+    '#maxlength' => 32,
+    '#suffix' => '</div></div>',
+  );
+
+  $form['payroll']['payroll_overtime_amount_from'] = array(
+    '#type' => 'textfield',
+    '#size' => 30,
+    '#maxlength' => 32,
+    '#prefix' => '<div class="form-item form-item-payroll-overtime-amount"><label>Overtime Payments</label><div class="ranges">',
+  );
+  $form['payroll']['payroll_overtime_amount_to'] = array(
+    '#type' => 'textfield',
+    '#title' => t('TO'),
+    '#size' => 30,
+    '#maxlength' => 32,
+    '#suffix' => '</div></div>',
+  );
+  $form['payroll']['payroll_pay_frequency'] = array(
+    '#type' => 'select',
+    '#title' => t('Pay Frequency'),
+    '#default_value' => t('Select Pay Frequency'),
+    '#options' => _checkbook_advanced_search_get_payroll_frequency(),
+  );
+  $form['payroll']['payroll_year'] = array(
+    '#type' => 'select',
+    '#title' => t('Year'),
+    '#options' => _checkbook_advanced_search_get_year('payroll'),
+  );
+  $form['payroll']['payroll_pay_date_from'] = array(
+    '#type' => 'date_popup',
+    '#date_format' => 'Y-m-d',
+    '#date_year_range' => '-3:+3',
+    '#prefix' => '<div class="form-item form-item-payroll-pay-date"><label>Pay Date</label><div class="ranges">',
+  );
+  $form['payroll']['payroll_pay_date_to'] = array(
+    '#type' => 'date_popup',
+    '#date_format' => 'Y-m-d',
+    '#date_year_range' => '-3:+3',
+    '#title' => t('TO'),
+    '#description' => '',
+    '#suffix' => '</div></div></div>',
+  );
+  $form['payroll']['payroll_submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Submit'),
+    '#name' => 'payroll_submit',
+    '#prefix' => t('<div class="payroll-submit">'),
+  );
+  $form['payroll']['payroll_clear'] = array(
+    '#suffix' => '</div>',
+    '#type' => 'submit',
+    '#value' => t('Clear All'),
+  );
+  $form['closing_div'] = array(
+    '#type' => 'markup',
+    '#markup' => '</div></div>',
+  );
+  $form['#attached'] = array(
+    'library' => array(
+      array('system', 'ui.accordion', FALSE),
+      array('system', 'ui.autocomplete', FALSE),
+    ),
+    'js' => array(
+      array(
+        'type' => 'file',
+        'data' => drupal_get_path('module', 'checkbook_advanced_search') . '/js/checkbook_advanced_search_clear_button.js',
+      ),
+      array(
+        'type' => 'file',
+        'data' => drupal_get_path('module', 'checkbook_advanced_search') . '/js/checkbook_advanced_search_spending.js',
+      ),
+      array(
+        'type' => 'file',
+        'data' => drupal_get_path('module', 'checkbook_advanced_search') . '/js/checkbook_advanced_search_budget.js',
+      ),
+      array(
+        'type' => 'file',
+        'data' => drupal_get_path('module', 'checkbook_advanced_search') . '/js/checkbook_advanced_search_revenue.js',
+      ),
+      array(
+        'type' => 'file',
+        'data' => drupal_get_path('module', 'checkbook_advanced_search') . '/js/checkbook_advanced_search_payroll.js',
+      ),
+      array(
+        'type' => 'file',
+        'data' => drupal_get_path('module', 'checkbook_advanced_search') . '/js/checkbook_advanced_search_contracts.js',
+      ),
+    ),
+  );
+
+  return $form;
+}
+
+
+/*
+* This block is designed to print the advanced search form which is then exposed to the users using a jQuery modal dialog box
+*/
+
+/**
+ * Implements hook_block_info().
+ */
+function checkbook_advanced_search_block_info() {
+  $blocks['checkbook_advanced_search_form'] = array(
+    'info' => t('Checkbook Advanced Search Form Block'),
+    'cache' => DRUPAL_CACHE_GLOBAL,
+  );
+  return $blocks;
+}
+
+
+/**
+ * Implements hook_block_view().
+ */
+function checkbook_advanced_search_block_view($delta = '') {
+  switch ($delta) {
+    case 'checkbook_advanced_search_form':
+      $block['content'] = drupal_get_form('checkbook_advanced_search_form');
+      break;
+  }
+  return $block;
+}

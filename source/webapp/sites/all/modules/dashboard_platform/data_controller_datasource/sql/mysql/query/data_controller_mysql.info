@@ -1,0 +1,22 @@
+
+;	GNU AFFERO GENERAL PUBLIC LICENSE 
+;	   Version 3, 19 November 2007
+; This software is licensed under the GNU AGPL Version 3
+; 	(see the file LICENSE for details)
+;  Copyright 2009-2011 United States Government.
+;
+name = "MySQL integration"
+description = "Integrates Data Controller with MySQL database"
+package = REI Dashboard Platform (Adapter)
+version = 7.x-2.x
+core = 7.x
+
+dependencies[] = data_controller_datasource_sql
+
+files[] = datasource/MySQLDataSource.php
+files[] = datasource/handler/impl/MySQLConcatenateValuesImpl.php
+files[] = datasource/handler/impl/MySQLDataSourceOwnerImpl.php
+files[] = datasource/handler/impl/MySQLExecuteQueryStatementImpl.php
+files[] = datasource/handler/impl/MySQLFormatDateValueImpl.php
+files[] = datasource/handler/impl/MySQLInitializeConnectionImpl.php
+files[] = datasource/handler/impl/MySQLMaximumEntityNameLengthImpl.php

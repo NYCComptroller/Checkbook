@@ -1,0 +1,32 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+ 
+
+function highcharts_legend_block($op, $delta = NULL, $edit = array()) {
+  switch ($op) {
+    case 'list':
+      $blocks[0]['info'] = t('Highcharts Series Selector');
+      return $blocks;
+
+    case 'view':
+    	//return 
+    	$block['content'] = theme('highcharts_legend_default_theme', $node);
+    	return $block;  
+    }
+}
+
+
+function highcharts_legend_theme($existing, $type, $theme, $path) {
+	return array(
+    'highcharts_legend_default_theme' => array(
+	  'template' => 'highcharts_legend',
+      'arguments' => array('node' => NULL),
+	),
+	);
+}
+?>

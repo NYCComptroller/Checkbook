@@ -1,0 +1,178 @@
+<?php
+/**
+ * @file
+ * Provides a debugging summary of modules that are enabled.
+ */
+
+/**
+ * Implements hook_help().
+ */
+function quick_list_help($path, $arg) {
+  switch ($path) {
+    // Main module help for the quick_list module.
+    case 'admin/help#quick_list':
+      return '<p>'
+        . t('The Quick_List module provides a debugging summary of modules that are enabled.')
+        . '</p>';
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function quick_list_menu() {
+  $items = array();
+
+  $items['admin/modules/quick_list'] = array(
+    'title' => 'Module Quick List',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'quick_list_page',
+    'access arguments' => array('Administer modules '),
+    );
+
+  $items['admin/config/system/util/quick_list'] = array(
+    'title' => 'Module Quick List Settings',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('quick_list_settings'),
+    'access arguments' => array('Administer modules'),
+    );
+
+  return $items;
+}
+
+
+/**
+ * Implements hook_theme().
+ */
+function quick_list_theme() {
+  return array(
+    'list_table' => array('variables' => array()),
+    );
+}
+
+/**
+ * The main list function.
+ */
+function quick_list_page() {
+  $output = '';
+  $list = array();
+  $show_core = variable_get('quick_list_show_core', FALSE);
+  $help_exists = module_exists('help');
+
+  $result = db_select('system', 's')
+    ->fields('s', array('name', 'info'))
+    ->condition('type', 'module','=')
+    ->condition('status', 0,'>')
+    ->execute();
+
+  foreach ($result as $row) {
+    $row->info = unserialize($row->info);
+
+    // Skip hidden and core modules, if desired.
+    if (!$show_core && isset($row->info['hidden']) && $row->info['hidden']) {
+      continue;
+    }
+
+    // Build the module line.
+    if ((!$show_core && $row->info['package'] != 'Core') || $show_core) {
+      $line = $row->name
+        . ' '
+        . $row->info['version']
+        . ' '
+        . (substr($row->info['version'], -4) == '-dev' ? date('Y/m/d', $row->info['datestamp']) : '')
+        ;
+
+      if ($help_exists && function_exists($row->name . '_help')) {
+        $line .= ' '
+          . l('<img src="/misc/help.png" />', "admin/help#$row->name",
+            array('html' => TRUE, 'attributes' => array('title' => t('Help'))));
+      }
+
+      if (isset($row->info['configure'])) {
+        $line .= ' '
+          . l('<img src="/misc/configure.png" />', $row->info['configure'],
+            array('html' => TRUE, 'attributes' => array('title' => t('Configure'))));
+      }
+
+      $list[] = $line;
+    }
+  }
+
+  $output .= theme_list_table(array('items' => $list, 'columns' => variable_get('quick_list_columns', 2)));
+
+  $output .= t('!count modules, !not including core.', array('!count' => count($list), '!not' => ($show_core ? NULL : 'not')));
+
+  return $output;
+}
+
+/**
+ * Returns HTML for a list as a multi-column table.
+ *
+ * @param $variables
+ *   An associative array containing:
+ *   - columns: The number of columns desired.
+ *   - items: an array of items. Generally a simple list, but may be any data
+ *      recognized by theme_table.
+ *   - empty: The message to display if list does not have any rows.
+ *
+ * Example:
+ * @code
+ *    $list = array_map('filter_xss', array_values(module_list(FALSE, FALSE, TRUE)));
+ *    echo theme('list_table', array('items' => $list, 'columns' => 5));
+ * @endcode
+ */
+function theme_list_table($variables) {
+  $defaults = array(
+    'columns' => 2,
+    'items' => array(),
+    'empty' => t('The list is empty'),
+    );
+
+  $variables = array_merge($defaults, $variables);
+  $cols = $variables['columns'];
+  $list = $variables['items'];
+
+  $addvals = ($cols - (count($list) % $cols)) % $cols;
+  for ($i = 0; $i < $addvals; ++$i) {
+    $list[] = "&nbsp;";
+  }
+
+  $count = count($list);
+  $len = $count / $cols;
+  $rows = array();
+  for ($i = 0; $i < $len; ++$i) {
+    $row = array();
+    for ($j = $i; $j < $count; $j += $len) {
+      $row[] = $list[$j];
+    }
+    $rows[] = $row;
+  }
+
+  return theme('table', array('rows' => $rows, 'empty' => $variables['empty']));
+}
+
+/**
+ * Settings page.
+ */
+function quick_list_settings() {
+  $form = array();
+
+  $form['quick_list_show_core'] = array(
+    '#type' => 'radios',
+    '#options' => array(t('No'), t('Yes')),
+    '#title' => t('Show core modules'),
+    '#default_value' => variable_get('quick_list_show_core', FALSE),
+    '#attributes' => array('class' => array('container-inline')),
+    );
+
+  $form['quick_list_columns'] = array(
+    '#type' => 'radios',
+    '#options' => array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5),
+    '#title' => t('Number of columns'),
+    '#default_value' => variable_get('quick_list_columns', 2),
+    '#attributes' => array('class' => array('container-inline')),
+    );
+
+  return system_settings_form($form);
+}

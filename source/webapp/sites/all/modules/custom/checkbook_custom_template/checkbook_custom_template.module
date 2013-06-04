@@ -1,0 +1,137 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+
+
+/**
+ * Implementation of hook_menu..
+ * @return multitype:string boolean multitype:number
+ */
+function checkbook_custom_template_menu(){
+    $items['checkbook/view_all_popup_template/revenue_category/node/%node'] = array(
+        'page callback' => '_checkbook_custom_template_view_all_popup_template',
+        'page arguments' => array(4,'revcat'),
+        'access callback' => true,
+	    'type'=>MENU_CALLBACK
+  	);
+    $items['checkbook/view_all_popup_template_data/revenue_category/node/%node'] = array(
+             'page callback' => '_checkbook_custom_template_view_all_popup_template_data',
+             'page arguments' => array(4,'revcat'),
+             'access callback' => true,
+     	    'type'=>MENU_CALLBACK
+    );
+    $items['checkbook/view_all_popup_template/funding_source/node/%node'] = array(
+        'page callback' => '_checkbook_custom_template_view_all_popup_template',
+        'page arguments' => array(4,'fundsrccode'),
+        'access callback' => true,
+	    'type'=>MENU_CALLBACK
+  	);
+    $items['checkbook/view_all_popup_template_data/funding_source/node/%node'] = array(
+             'page callback' => '_checkbook_custom_template_view_all_popup_template_data',
+             'page arguments' => array(4,'fundsrccode'),
+             'access callback' => true,
+     	    'type'=>MENU_CALLBACK
+    );
+    $items['checkbook/view_all_popup_template/agency_revenue/node/%node'] = array(
+        'page callback' => '_checkbook_custom_template_view_all_popup_template',
+        'page arguments' => array(4,'agency'),
+        'access callback' => true,
+	    'type'=>MENU_CALLBACK
+  	);
+    $items['checkbook/view_all_popup_template_data/agency_revenue/node/%node'] = array(
+             'page callback' => '_checkbook_custom_template_view_all_popup_template_data',
+             'page arguments' => array(4,'agency'),
+             'access callback' => true,
+     	    'type'=>MENU_CALLBACK
+    );
+    $items['checkbook/view_all_popup_template/dept_revenue/node/%node'] = array(
+        'page callback' => '_checkbook_custom_template_view_all_popup_template',
+        'page arguments' => array(4,'dept'),
+        'access callback' => true,
+	    'type'=>MENU_CALLBACK
+  	);
+    $items['checkbook/view_all_popup_template_data/dept_revenue/node/%node'] = array(
+             'page callback' => '_checkbook_custom_template_view_all_popup_template_data',
+             'page arguments' => array(4,'dept'),
+             'access callback' => true,
+     	    'type'=>MENU_CALLBACK
+    );
+    $items['ajaxData/revenue_category/node/%node'] = array(
+        'page callback' => '_checkbook_revenue_get_data',
+        'page arguments' => array(3,'revcat'),
+        'access callback' => true,
+	    'type'=>MENU_CALLBACK
+  	);
+  	$items['ajaxData/funding_source/node/%node'] = array(
+        'page callback' => '_checkbook_revenue_get_data',
+        'page arguments' => array(3,'fundsrccode'),
+        'access callback' => true,
+	    'type'=>MENU_CALLBACK
+  	);
+  	$items['ajaxData/agency_revenue/node/%node'] = array(
+        'page callback' => '_checkbook_revenue_get_data',
+        'page arguments' => array(3,'agency'),
+        'access callback' => true,
+	    'type'=>MENU_CALLBACK
+  	);
+    $items['ajaxData/dept_revenue/node/%node'] = array(
+        'page callback' => '_checkbook_revenue_get_data',
+        'page arguments' => array(3,'dept'),
+        'access callback' => true,
+	    'type'=>MENU_CALLBACK
+  	);
+    $items['ajaxData/budget_top_agencies_by_percent_difference/node/%node'] = array(
+            'page callback' => '_checkbook_get_agency_budget_percent_difference',
+            'page arguments' => array(3,'agency'),
+            'access callback' => true,
+    	    'type'=>MENU_CALLBACK
+      	);
+  	return $items;
+}
+
+/**
+ * Hook to load custom project specific utility functions during bootstrap..
+ */
+function checkbook_custom_template_init(){
+	require_once(drupal_get_path("module","checkbook_custom_template") . "/includes/checkbook_custom_template.inc");
+}
+
+/**
+ * Implementation of hook_theme() ...
+ * @param unknown_type $existing
+ * @param unknown_type $type
+ * @param unknown_type $theme
+ * @param unknown_type $path
+ * @return multitype:multitype:string multitype:unknown   multitype:string multitype:NULL
+ */
+function checkbook_custom_template_theme($existing, $type, $theme, $path){
+    return array(
+        'revenue_cat_table' => array(
+            'template' => 'templates/revenue_category',
+            'arguments' => array('node' => $node)
+        ),
+        'revenue_fundsrc_table' => array(
+            'template' => 'templates/revenue_fndsrc',
+            'arguments' => array('node' => $node)
+        ),
+        'agency_revenue_table' => array(
+            'template' => 'templates/agency_revenue',
+            'arguments' => array('node' => $node)
+        ),
+        'dept_revenue_table' => array(
+            'template' => 'templates/dept_revenue',
+            'arguments' => array('node' => $node)
+        ),
+        'budget_agency_percent_difference' => array(
+            'template' => 'templates/budget/agency_percent_difference',
+            'arguments' => array('node' => $node)
+        ),
+
+    );
+
+}
+?>

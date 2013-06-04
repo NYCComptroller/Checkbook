@@ -1,0 +1,95 @@
+{
+"widgetType": "highcharts",
+"header":"
+    $header = '<h2 class=\"chart-title\" style=\"display:none;\">' . $node->widgetConfig->chartTitle . '</h2>';
+    $header .= ChartUtil::generateGridViewLink($node);
+    return $header;
+",
+"gridConfig":{
+    "template":"highchart_contracts_active_agency_vendor",
+    "html_class":"chart-grid-view-table three-columns",
+    "table_columns": [
+        {
+            "labelAlias": "vendor_name",
+            "column": "vendor_vendor_legal_name"
+        },
+        {
+            "labelAlias": "no_of_contracts",
+            "column": "total_contracts"
+        },
+        {
+            "labelAlias": "current_amount",
+            "column": "current_amount_sum"
+        }
+    ]
+},
+"dataset": "checkbook:contracts_coa_aggregates",
+"columns": ["vendor.vendor","vendor.vendor.legal_name","current_amount_sum","total_contracts"],
+"datasets":[{"name":"vendor","column":"vendor_vendor_legal_name","type":"string","isArray":true}],
+"limit": 10,
+"orderBy": "-current_amount_sum",
+"defaultParameters":{"fiscal_year_id":113,"yeartype.yeartype":"B","contract_status.contract_status":"A","document_code.document_code.document_code":"MA1~CTA1~CT1","maximum_contract_amount":"0"},
+"defaultParamTypeConfig":{"maximum_contract_amount":"ne"},
+"adjustParameters":"
+            $adjustedParameters = $parameters;
+            if(function_exists('_checkbook_project_applyParameterFilters')){
+                  $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+            }
+            return $adjustedParameters;
+",
+"cleanURLParameters":["year","status","yeartype","agency","awdmethod","csize","cindustry"],
+"urlParamMap":{"year":"fiscal_year_id","status":"contract_status.contract_status","yeartype":"yeartype.yeartype","agency":"agency.agency","awdmethod":"award_method_id","csize":"award_size_id","cindustry":"industry_type_id"},
+"transformationPHP": "
+    $data = array();$categories=array();
+    foreach ($node->data as $row){
+        $link= CustomURLHelper::prepareUrl('contracts_landing', ContractURLHelper::$landingPageParams, array('expandBottomCont'=>'true'), array('vendor'=>$row['vendor_vendor']) );
+        $categories[]=html_entity_decode($row['vendor_vendor_legal_name'],ENT_QUOTES);
+        $data[] = (object)array('totalcontracts'=>$row['total_contracts'],'year'=>$row['fiscal_year_id'],'y'=>$row['current_amount_sum'],'url'=>$link,'name'=>strtoupper(html_entity_decode($row['vendor_vendor_legal_name'],ENT_QUOTES)));
+    }
+    $node->widgetConfig->chartConfig->series[0]->data = $data;$node->widgetConfig->chartConfig->xAxis->categories = $categories;
+    $node->widgetConfig->chartConfig->series[0]->name = 'Contract Amount';
+    $node->widgetConfig->chartTitle = _checkbook_project_getChartTitle('contracts','Top Ten Vendors','by');
+
+    return $node->data;",
+"chartConfig": {
+    "chart": {"defaultSeriesType": "column"},
+    "colors":["#7DB7E5"],
+    "legend": {
+        "enabled": false,
+        "align": "left",
+        "verticalAlign": "bottom",
+        "floating": "true",
+        "layout": "horizontal"
+    },
+    "xAxis": {
+        "title": {"text": ""},
+        "labels":{"enabled":false},
+        "categories":{"ds":"vendor"},
+        "minPadding":0.1,
+        "maxPadding":0.1
+    },
+    "yAxis": {
+        "title": {"text": ""},
+        "labels":{"rotation": 0,"function":"yAxisFormatter"}
+    },
+    "tooltip": {
+        "function": "budgetTooltip"
+    },
+    "title": {"text": ""},
+    "plotOptions": {
+        "column": {"pointWidth": 30},
+        "series": {
+            "cursor": "pointer",
+            "point": {
+                "events": {"function": "clickEvent"}
+            }
+        }
+    },
+    "series": [],
+    "title":{"text":""}
+}
+}
+<function>yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
+budgetTooltip^^"formatter": function(){return 'Vendor: '+this.point.name  + '<br/>' + 'Number of Contracts: '+Highcharts.numberFormat(this.point.totalcontracts,0)+'<br/>'+'Amount: '+abbrNum(this.y,2,'$')}##
+clickEvent^^"click": function(){location.href = Drupal.settings.basePath+this.url; }
+</function>

@@ -1,0 +1,203 @@
+{
+"widgetType": "highcharts",
+"header":"
+       $header = '<h2 class=\"chart-title\" style=\"display:none;\">' . $node->widgetConfig->chartTitle . '</h2>';
+       $header .= ChartUtil::generateGridViewLink($node);
+       return $header;
+",
+"gridConfig":{
+    "template":"payroll_by_gross_ot_pay",
+    "html_class":"chart-grid-view-table three-columns",
+    "table_columns": [
+        {
+            "labelAlias": "month",
+            "column": "month_month_month_name",
+            "sortColumn":"sort_order"
+        },
+	    {
+            "colLabel": "$node->widgetConfig->chartConfig->series[0]->name",
+            "column": "previous_overtime_pay",
+            "eval":true
+	    },
+	    {
+            "colLabel": "$node->widgetConfig->chartConfig->series[1]->name",
+            "column": "current_overtime_pay",
+            "eval":true
+	    }
+    ]
+},
+"no_results_content":"No Results Found",
+"defaultParameters":{"type_of_year":"C"},
+"cleanURLParameters":["year","calyear","agency","yeartype"],
+"urlParamMap":{"calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year"},
+"adjustParameters":"
+        $year = 'year_id';
+        $config->model->series[0]->additionalParameters->$year = $parameters[fiscal_year_id][0]  ;
+        $config->model->series[1]->additionalParameters->fiscal_year_id = $parameters[fiscal_year_id][0] -1 ;
+        $config->model->series[2]->additionalParameters->fiscal_year_id = $parameters[fiscal_year_id][0];
+        $adjustedParameters = $parameters;
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+                $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        }
+        return $adjustedParameters;
+",
+"model": {
+    "join": {
+        "method": "LeftOuter",
+        "columns": ["month_month_month_value"]
+    },
+    "series": [
+        {
+            "dataset": "checkbook:month",
+            "useList":true,
+            "orderBy":"month_value",
+            "allowedParams":["calyear"],
+            "columns": ["month_value","month_short_name","month_name"],
+            "columnPrefix": "month_month_"
+        },
+        {
+            "dataset": "checkbook:payroll_month",
+            "orderBy":"",
+            "columns": ["total_overtime_pay","month.month", "month.month.month_value"],
+            "allowedParams":["fiscal_year_id","agency_id","type_of_year","total_overtime_pay"],
+            "columnPrefix": "previous_"
+        },
+        {
+            "dataset": "checkbook:payroll_month",
+            "orderBy":"",
+            "columns": ["total_overtime_pay","month.month", "month.month.month_value"],
+            "allowedParams":["fiscal_year_id","agency_id","type_of_year","total_overtime_pay"],
+            "columnPrefix": "current_"
+        }
+      ]
+  },
+"derivedColumns": {
+    "current_overtime_pay": {
+        "type": "expression2",
+        "expression": "  ($row['current_total_overtime_pay']==null)?0:$row['current_total_overtime_pay']"
+    },
+    "previous_overtime_pay": {
+        "type": "null_check",
+        "type": "expression2",
+        "expression": "  ($row['previous_total_overtime_pay']==null)?0:$row['previous_total_overtime_pay']"
+    }
+},
+"datasets" : [
+          {"name": "month","column":"month_month_month_name", "type":"string", "isArray":true},
+          {"name": "previous","column":"previous_overtime_pay", "type":"string", "isArray":true},
+          {"name": "current","column":"current_overtime_pay", "type":"string", "isArray":true}
+],
+"transformationPHP":"
+    $year = _getYearValueFromID($parameters['fiscal_year_id'][0]);
+    if($parameters['type_of_year'][0] == 'B'){
+         $SeriesCurrentYearLabel = 'FY '   .  $year;
+         $SeriesPreviousYearLabel = 'FY '.  ($year - 1);
+    }else{
+        $SeriesCurrentYearLabel = 'CY '   .  $year;
+         $SeriesPreviousYearLabel = 'CY '.  ($year - 1);
+    }
+    $node->widgetConfig->chartConfig->series[0]->name = $SeriesPreviousYearLabel;
+    $node->widgetConfig->chartConfig->series[1]->name = $SeriesCurrentYearLabel;
+
+    foreach($node->data as $key=>$value){
+        if($value['current_total_overtime_pay'] == 0)
+            $value['current_total_overtime_pay'] = null;
+        if($value['previous_total_overtime_pay'] == 0)
+            $value['previous_total_overtime_pay'] = null;
+    }
+
+    $categories=array();
+    $allZero = true;
+
+    $isAgencyPage = (strpos(current_path(),'payroll/agency/') === 0);
+    $pathParams = explode('/',drupal_get_path_alias(current_path()));
+    foreach ($node->data as $row){
+        $categories[]=html_entity_decode($row['month_month_month_name'],ENT_QUOTES);
+        $currentYearUrl = current_path() . '?expandBottomContURL=' . ($isAgencyPage ? '/panel_html/payroll_agency_by_month_transactions/payroll/agencywide/monthly/transactions' . _checkbook_project_get_year_url_param_string() . CustomURLHelper::get_url_param($pathParams,'agency') . '/month/' . $row['current_month_month']
+                                                                                                                           :
+                                                                                                                           '/panel_html/payroll_by_month_nyc_transactions/payroll/monthly/transactions' . _checkbook_project_get_year_url_param_string() . '/month/' . $row['current_month_month']
+                                                                                                 );
+        $previousYearUrl = current_path() . '?expandBottomContURL=' . ($isAgencyPage ? '/panel_html/payroll_agency_by_month_transactions/payroll/agencywide/monthly/transactions' . _checkbook_project_get_year_url_param_string(false, true) . CustomURLHelper::get_url_param($pathParams,'agency') . '/month/' . $row['previous_month_month']
+                                                                                                                                        :
+                                                                                                                                        '/panel_html/payroll_by_month_nyc_transactions/payroll/monthly/transactions' . _checkbook_project_get_year_url_param_string(false, true) . '/month/' . $row['previous_month_month']
+                                                                                                              );
+
+        if(abs($row['previous_total_overtime_pay']) > 0)
+            $allZero = false;
+
+        if(abs($row['current_total_overtime_pay']) > 0)
+           $allZero = false;
+
+        $seriesPreviousData[] = (object)array( 'y' => $row['previous_total_overtime_pay'], 'url'=> $previousYearUrl );
+        $seriesCurrentData[] = (object)array('y' => $row['current_total_overtime_pay'],'url'=> $currentYearUrl);
+
+    }
+
+    if($allZero) $node->totalDataCount = 0;
+    $node->widgetConfig->chartConfig->series[0]->data = $seriesPreviousData;
+    $node->widgetConfig->chartConfig->series[1]->data = $seriesCurrentData;
+    $node->widgetConfig->chartConfig->xAxis->categories = $categories;
+    $node->widgetConfig->chartTitle = 'Overtime Payments by Month';
+
+    if($year == 2010){
+        foreach($node->data as $row){
+            $row['previous_total_overtime_pay'] = null;
+        }
+        $node->widgetConfig->chartConfig->series[0]->showInLegend = false;
+        $node->widgetConfig->chartConfig->series[0]->visible = false;
+        unset($node->widgetConfig->gridConfig->table_columns[1]);
+    }
+    return $node->data;
+",
+"chartConfig" : {
+    "plotOptions": {
+        "series": {
+            "cursor": "pointer",
+            "point": { "events": {"function": "clickEvent"} }
+        }
+    },
+    "chart" : {},
+    "xAxis": {
+        "categories": {"ds":"month"},
+        "title": {"text": ""},
+        "labels": {}
+    },
+    "series": [{
+        "name": "YTD",
+        "type": "column",
+        "pointWidth": 15,
+        "data": {"ds":"previous"}
+    },
+    {
+        "name": "FY",
+        "type": "column",
+        "pointWidth": 15,
+        "data": {"ds":"current"}
+    }],
+    "title": {"text": ""},
+    "yAxis": {
+        "startOnTick":true,
+        "title": {"text": ""},
+        "labels":{"rotation": 0,"function":"yAxisFormatter"}
+    } ,
+    "legend": {
+        "enabled": "true",
+        "align": "left",
+        "verticalAlign": "bottom",
+        "floating": "true",
+        "layout": "horizontal"
+    },
+    "tooltip":{
+        "function":"tooltipformatter"
+    }
+}
+}
+
+
+<function>
+yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
+tooltipformatter^^'formatter' :
+function() {return 'Month: ' + this.x + '<br/>' + 'Year: ' + this.series.name + '<br/>' + 'Overtime Amount: ' + abbrNum(this.y, 2, '$') ;
+}
+##clickEvent^^"click": function(){location.href = Drupal.settings.basePath+this.url; }
+</function>

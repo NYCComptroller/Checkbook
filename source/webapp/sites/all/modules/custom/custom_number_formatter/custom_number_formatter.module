@@ -1,0 +1,98 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+
+ 
+/**
+ * formats the number for display purposes, eg:1000000 will be displayed as 1M
+ * @param int,float $number
+ * @param int $decimal_digits
+ * @param string $prefix
+ * @param string $suffix
+ * @return string formattedNumber
+ */
+function custom_number_formatter_format($number, $decimal_digits = 0, $prefix = '', $suffix = '') {
+	$thousands = 1000;
+	$millions = $thousands * 1000;
+	$billions = $millions * 1000;
+	$trillions = $billions * 1000;
+    $formattedNumber = '';
+	if($number < 0) {
+	  $formattedNumber =  '-';
+	}	
+	
+	if(abs($number) >= $trillions) {
+	  $formattedNumber = $formattedNumber . $prefix . number_format((abs($number)/$trillions), $decimal_digits, '.', ',') . 'T' . $suffix;
+	}
+	else if(abs($number) >= $billions) {
+	  $formattedNumber = $formattedNumber . $prefix . number_format((abs($number)/$billions), $decimal_digits, '.', ',') . 'B' . $suffix;
+	}
+	else if(abs($number) >= $millions) {
+	  $formattedNumber = $formattedNumber . $prefix . number_format((abs($number)/$millions), $decimal_digits, '.', ',') . 'M' . $suffix;
+	}
+	else if(abs($number) >= $thousands) {
+	  $formattedNumber = $formattedNumber . $prefix . number_format((abs($number)/$thousands), $decimal_digits, '.', ',') . 'K' . $suffix;
+	}
+	else {
+	  $formattedNumber = $formattedNumber . $prefix . number_format(abs($number), $decimal_digits, '.', ',') . $suffix;
+	}	
+	return $formattedNumber;
+}
+
+/**
+ * formats the number for display purposes, eg:1000000 will be displayed as 1M
+ * @param int,float $number
+ * @param int $decimal_digits
+ * @param string $prefix
+ * @param string $suffix
+ * @return string formattedNumber
+ */
+function custom_number_formatter_homepage_format($number, $decimal_digits = 0, $prefix = '', $suffix = '') {
+	$thousands = 1000;
+	$millions = $thousands * 1000;
+    $formattedNumber = '';
+	if($number < 0) {
+	  $formattedNumber =  '-';
+	}	
+	
+	if(abs($number) >= $millions) {
+	  $formattedNumber = $formattedNumber . $prefix . number_format((abs($number)/$millions), $decimal_digits, '.', ',') . 'M' . $suffix;
+	}
+	else if(abs($number) >= $thousands) {
+	  $formattedNumber = $formattedNumber . $prefix . number_format((abs($number)/$thousands), $decimal_digits, '.', ',') . 'K' . $suffix;
+	}
+	else {
+	  $formattedNumber = $formattedNumber . $prefix . number_format(abs($number), $decimal_digits, '.', ',') . $suffix;
+	}	
+	return $formattedNumber;
+}
+
+/**
+ * formats the number for display purposes, eg:1000000 will be displayed as 1M
+ * @param int,float $number
+ * @param int $decimal_digits
+ * @param string $prefix
+ * @param string $suffix
+ * @return string formattedNumber
+ */
+function custom_number_formatter_basic_format($number, $decimal_digits = 2, $prefix = '$') {
+    if($number == null){
+      $number = 0;
+    }
+    if(!is_numeric($number)){
+        return $number;
+    }
+  
+    $formattedNumber = NULL;
+    if($number < 0) {
+        $formattedNumber =  '-';
+    }
+
+    $formattedNumber .= $prefix . number_format(abs($number),$decimal_digits);
+
+    return $formattedNumber;
+}

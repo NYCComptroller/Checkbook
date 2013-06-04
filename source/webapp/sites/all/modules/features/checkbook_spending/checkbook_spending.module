@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Checkbook Panels feature.
+ */
+
+include_once('checkbook_spending.features.inc');

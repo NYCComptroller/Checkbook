@@ -1,0 +1,21 @@
+
+;	GNU AFFERO GENERAL PUBLIC LICENSE 
+;	   Version 3, 19 November 2007
+; This software is licensed under the GNU AGPL Version 3
+; 	(see the file LICENSE for details)
+name = "Core Logging API implementation"
+description = "Provides core functionality for logging"
+package = REI Dashboard Platform (Core)
+version = 7.x-2.x
+core = 7.x
+
+dependencies[] = data_controller
+
+files[] = logger/LogHelper.php
+files[] = logger/LogMessageListener.php
+files[] = logger/listener/AbstractLogMessageListener.php
+files[] = logger/listener/ArrayLogMessageSlicer.php
+files[] = logger/listener/ExceptionLogMessageFormatter.php
+files[] = logger/listener/PreservedTextLogMessageListener.php
+files[] = logger/listener/PreservedTextMessage.php
+files[] = logger/listener/TextLogMessageTrimmer.php

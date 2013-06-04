@@ -1,0 +1,106 @@
+
+pre.prettyprint {
+  padding: 5px;
+  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+  margin-bottom: 10px;
+  background-color: #eee;
+  overflow: auto;
+  width: auto;
+  width: 650px !ie7;
+  padding-bottom: 20px !ie7;
+  max-height: 600px;
+}
+
+pre.prettyprint {
+  max-height: none\9;
+}
+
+code.prettyprint {
+  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+  background-color: #eee;
+}
+
+p code.prettyprint {
+  padding: 1px 5px 1px 5px;
+}
+
+.str {
+  color: maroon;
+}
+
+.kwd {
+  color: #00008b;
+}
+
+.com {
+  color: gray;
+}
+
+.typ {
+  color: #2b91af;
+}
+
+.lit {
+  color: maroon;
+}
+
+.pun {
+  color: #000;
+}
+
+.pln {
+  color: #000;
+}
+
+.tag {
+  color: maroon;
+}
+
+.atn {
+  color: red;
+}
+
+.atv {
+  color: blue;
+}
+
+.dec {
+  color: purple;
+}
+
+@media print {
+  .str {
+    color: #060;
+  }
+  .kwd {
+    color: #006;
+    font-weight: bold;
+  }
+  .com {
+    color: #600;
+    font-style: italic;
+  }
+  .typ {
+    color: #404;
+    font-weight: bold;
+  }
+  .lit {
+    color: #044;
+  }
+  .pun {
+    color: #440;
+  }
+  .pln {
+    color: #000;
+  }
+  .tag {
+    color: #006;
+    font-weight: bold;
+  }
+  .atn {
+    color: #404;
+  }
+  .atv {
+    color: #060;
+  }
+}

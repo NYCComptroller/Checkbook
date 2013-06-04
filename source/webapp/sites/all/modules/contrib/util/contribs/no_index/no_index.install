@@ -1,0 +1,9 @@
+<?php
+/**
+ * @file
+ * Prevent search indexing.
+ */
+
+function no_index_uninstall() {
+  variable_del('no_index_setting');
+}

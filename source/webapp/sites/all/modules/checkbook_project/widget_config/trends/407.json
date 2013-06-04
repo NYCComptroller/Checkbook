@@ -1,0 +1,67 @@
+{
+	"widgetType": "data_tables",
+	"widgetSubType":"template",
+        "template":"trends_legal_debt_margin",
+        "useList":true,
+	"no_results_content":"No Results Found",
+	"dataset": "checkbook:trends_legal_debt_margin",
+	"columns": ["category","amount","fiscal_year","highlight_yn","indentation_level","display_order","amount_display_type"],
+       "orderBy":"display_order",
+"defaultParameters":{"display_yn":"Y"},
+	"table_title":"",
+"dataTableOptions":{
+ 
+        "bFilter": false,
+        "bPaginate": false,
+        "bLengthChange": false,        
+        "bInfo": false,
+       "bSort":false,
+       	"sScrollY": 400,
+ 	"bScrollCollapse": true,     
+        "sScrollX": "100%",
+         "sScrollXInner": "1900px",
+         "bAutoWidth": false,
+        "fnPreDrawCallback":"##function( oSettings ) {
+            jQuery('.trendsShowOnLoad').show();
+            return true;
+        }##",
+          "aoColumns": [
+        null,
+        { "sWidth": "30px"},
+        {"sWidth":"95px"},
+        { "sWidth": "30px"},
+        {"sWidth":"95px"},
+        { "sWidth": "30px"},
+        {"sWidth":"95px"},
+        { "sWidth": "30px"},
+        {"sWidth":"95px"},
+        { "sWidth": "30px"},
+        {"sWidth":"95px"},
+        { "sWidth": "30px"},
+        {"sWidth":"95px"},
+        { "sWidth": "30px"},
+        {"sWidth":"95px"},
+        { "sWidth": "30px"},
+        {"sWidth":"95px"},
+        { "sWidth": "30px"},
+        {"sWidth":"95px"},
+        { "sWidth": "30px"},
+        {"sWidth":"95px"},
+        { "sWidth": "30px"},
+        {"sWidth":"95px"},
+        { "sWidth": "30px"},
+        {"sWidth":"95px"},
+        { "sWidth": "30px"},
+        {"sWidth":"95px"},
+        { "sWidth": "30px"},
+        {"sWidth":"95px"},
+        { "sWidth": "30px"},
+        {"sWidth":"95px"},
+        {"sWidth":"25px"}
+        ]
+       },
+ "customJS":"new FixedColumns( oTable, {
+ 		\"iLeftColumns\": 1,
+		\"iLeftWidth\": 270
+ 	} );"
+}

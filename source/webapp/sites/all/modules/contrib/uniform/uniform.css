@@ -1,0 +1,24 @@
+div.uploader {
+  float:none;
+}
+
+dl.multiselect .form-item {
+  height:2.5em;
+}
+
+.container-inline div, .container-inline label {
+  display:inline-block;
+}
+
+#node-admin-buttons {
+  margin-left:1.5em;
+}
+
+table.sticky-header {
+  z-index:1000;
+}
+
+input.text, input.email, input.password, textarea.uniform, input.text:focus, input.email:focus, input.password:focus, textarea.uniform:focus {
+  background-color: #fff;
+
+}

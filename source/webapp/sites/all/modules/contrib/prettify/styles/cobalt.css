@@ -1,0 +1,44 @@
+/* Pretty printing styles. Used with prettify.js. */
+/* Cobalt Textmate adaption by cartuchogl */
+
+pre .str, code .str { color: #10d400; } /* string */
+pre .kwd, code .kwd { color: #ff9d00; } /* keyword */
+pre .com, code .com { color: #008eff; font-style: italic; } /*
+comment  */
+pre .typ, code .typ { color: #70fbab; } /* type  */
+pre .lit, code .lit { color: #ff6878; } /* literal */
+pre .pun, code .pun { color: #fff; } /* punctuation  */
+pre .pln, code .pln { color: #fff; } /* plaintext */
+pre .tag, code .tag { color: #65f2ff; } /* html/xml tag  */
+pre .atn, code .atn { color: #65f2ff; } /* html/xml attribute name */
+pre .atv, code .atv { color: #10d400; } /* html/xml attribute value */
+pre .dec, code .dec { color: #ff6878; } /* decimal */
+
+pre.prettyprint, code.prettyprint {
+  background-color: #002e56;
+}
+
+pre.prettyprint {
+  white-space: pre-wrap;
+}
+
+/* Specify class=linenums on a pre to get line numbering */
+ol.linenums { margin-top: 0; margin-bottom: 0; color:
+#948888;background-color: #e3e3e3; } /* IE indents via margin-left */
+li.L0,li.L1,li.L2,li.L3,li.L5,li.L6,li.L7,li.L8 { list-style-type:
+none; }
+li.L0,li.L1,li.L2,li.L3,li.L5,li.L6,li.L7,li.L8,li.L1,li.L3,li.L4,li.L5,li.L7,li.L9
+{ background-color: #002e56; }
+
+@media print {
+  pre .str, code .str { color: #060; }
+  pre .kwd, code .kwd { color: #006; font-weight: bold; }
+  pre .com, code .com { color: #600; font-style: italic; }
+  pre .typ, code .typ { color: #404; font-weight: bold; }
+  pre .lit, code .lit { color: #044; }
+  pre .pun, code .pun { color: #440; }
+  pre .pln, code .pln { color: #000; }
+  pre .tag, code .tag { color: #006; font-weight: bold; }
+  pre .atn, code .atn { color: #404; }
+  pre .atv, code .atv { color: #060; }
+}

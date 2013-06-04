@@ -1,0 +1,11 @@
+
+Code prettify 7.x-1.0-beta1, 2012-04-22
+=======================================
+- Issue #1437518 by input: better worded help text.
+- Added warning message on administration interface if prettify filter
+  processing order is incorrect.
+- Changed Prettify style CSS file is added after the theme's style.
+- Issue #1393966 reported by akkawi: "show lines" option does not work using
+  prettify filter.
+- Added help for code prettify settings page.
+- Issue #1392876 reported by mfer: drupal_eval not in D7.

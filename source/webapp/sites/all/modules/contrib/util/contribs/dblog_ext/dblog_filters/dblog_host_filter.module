@@ -1,0 +1,82 @@
+<?php
+
+define('DBLOG_HOST_FILTER__COMPARISON_CONTAINS', "'contains'");
+define('DBLOG_HOST_FILTER__COMPARISON_STARTS', "'starts'");
+define('DBLOG_HOST_FILTER__COMPARISON_ENDS', "'ends'");
+define('DBLOG_HOST_FILTER__COMPARISON_EQUALS', 'eq');
+define('DBLOG_HOST_FILTER__DEFAULT_COMPARISON', DBLOG_HOST_FILTER__COMPARISON_CONTAINS);
+
+/**
+ * Implementation of hook_log_filters_settings().
+ */
+function dblog_host_filter_log_filters_settings() {
+  $settings['hostname'] = array(
+    'title' => 'Hostname',
+    'description'    => 'Filters by hostname.',
+    'page arguments' => array('dblog_host_filter_settings'),
+    'file'           => 'dblog_filters.host.admin.inc',
+    'content'        => t('Comparison operation might be exact match, contains, starts with or end withs.'),
+  );
+  return $settings;
+}
+
+/**
+ * Implementation of hook_log_filters() on behalf of dblog.
+ */
+function dblog_host_filter_log_filters() {
+  if (!dblog_filters_is_enabled('hostname')) return array();
+  
+  $comparison = variable_get('dblog_host_filter:comparison', DBLOG_HOST_FILTER__DEFAULT_COMPARISON);
+  if ($comparison == DBLOG_HOST_FILTER__COMPARISON_EQUALS) {
+    $op = '=';
+    $placeholder = "'%s'";
+    $host_list = array();
+    $result = db_query("SELECT DISTINCT(hostname) FROM {watchdog}");
+    while ($row = db_fetch_array($result)) {
+      $host_list[$row['hostname']] = $row['hostname'];
+    }
+  }
+  else {
+    $op = 'LIKE';
+    switch($comparison) {
+      case DBLOG_HOST_FILTER__COMPARISON_STARTS: 
+        $placeholder = "'%s%%'";
+        break;
+      case DBLOG_HOST_FILTER__COMPARISON_ENDS: 
+        $placeholder = "'%%%s'";
+        break;
+      case DBLOG_HOST_FILTER__COMPARISON_CONTAINS:
+      default: 
+        $placeholder = "'%%%s%%%'";
+        break;
+    }
+  } 
+  $filters['hostname'] = array(
+    'title' => t('Hostname (@comparison)', array('@comparison' => $comparison)),
+    'where' => "w.hostname $op $placeholder",
+    'conjunction' => FALSE,
+  );
+  if ($comparison == DBLOG_HOST_FILTER__COMPARISON_EQUALS) {
+    if (count($host_list) > 1) {
+      $filters['hostname']['widget'] = array(
+        '#type' => 'select', 
+        '#options' => $host_list,
+        );
+    }
+    else {
+      $filters['hostname']['widget'] = array(
+        '#type' => 'textfield', 
+        '#default_value' => current($host_list),
+        '#size' => 27,
+        );
+    }
+  }
+  else {
+    $filters['hostname']['widget'] = array(
+      '#type' => 'textfield', 
+      '#size' => 27, // fit the same width as <select>
+      );
+  }
+
+  return $filters;
+}

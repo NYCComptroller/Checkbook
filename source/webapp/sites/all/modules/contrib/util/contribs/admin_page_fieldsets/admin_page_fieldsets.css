@@ -1,0 +1,17 @@
+/**
+ * @file
+ * CSS for admin_fieldsets contrib.
+ */
+
+#system-modules #edit-admin-page-fieldsets-list .form-checkboxes .form-item,
+#user-admin-permissions #edit-admin-page-fieldsets-list .form-checkboxes .form-item {
+  float: left;
+  margin-top: 0;
+  margin-bottom: 0;
+  width: 24%;
+}
+
+#system-modules .description {
+  clear: both;
+  display: block;
+}

@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Checkbook Expense feature.
+ */
+
+include_once('checkbook_expense.features.inc');

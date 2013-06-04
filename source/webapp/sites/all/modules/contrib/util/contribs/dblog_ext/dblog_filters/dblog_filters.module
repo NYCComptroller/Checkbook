@@ -1,0 +1,154 @@
+<?php
+
+/**
+ * Implementation of hook_help().
+ */
+function dblog_filters_help($path, $arg) {
+  $prefix = 'admin/settings/logging/filters/';
+  if (strpos($path, $prefix) === 0) {
+    $subpath = substr($path, strlen($prefix));
+    $subpath = explode('/', $subpath);
+    $subpath = $subpath[0];
+    
+    if ($subpath && ($subpath != 'overview')) {
+      $enabled = dblog_filters_is_enabled($subpath);
+      $output = '<p>' . t('%id filter is currently %enabled.', array('%id' => $subpath, '%enabled' => $enabled ? t('enabled') : t('disabled'))) . '</p>';
+      return $output;
+    }
+  }
+}
+
+/**
+ * Implementation of hook_menu().
+ */
+function dblog_filters_menu() {
+  $items['admin/settings/logging/filters'] = array(
+    'title'            => 'Log Filters',
+    'description'      => 'Manage log filters settings',
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('dblog_filters_main_admin_page'),
+    'access arguments' => array('administer site configuration'),
+    'type'             => MENU_NORMAL_ITEM,
+  );
+  $items['admin/settings/logging/filters/overview'] = array(
+    'title'  => 'Overview',
+    'type'   => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+  
+  $filter_settings = dblog_filters_get_filters_settings(TRUE);
+  $weight = 0;
+  foreach($filter_settings as $subpath => $item) {
+    $items["admin/settings/logging/filters/$subpath"] = array_merge(array(
+      'title'            => $subpath,
+      'page callback'    => 'drupal_get_form',
+      'page arguments'    => array('dblog_filters_missing_settings'),
+      'access arguments' => array('administer site configuration'),
+      'type'             => MENU_LOCAL_TASK,
+      'weight'           => $weight++,
+    ), $item);
+  }
+  
+  return $items;
+}
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function dblog_filters_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'dblog_ext_filter_form') {
+    drupal_add_css(drupal_get_path('module', 'dblog_filters') . '/dblog_filters.css');
+    $form['filters']['#description'] .= t('You may configure and enable/disable filters from the !link.', array('!link' => l(t('settings page'), 'admin/settings/logging/filters')));
+  }
+}
+
+function dblog_filters_missing_settings() {
+  $msg = t('This module declares, but doesn\'t implement, a settings page.');
+  $msg .= '<br/>' . t('Please, report this issue to its maintainer.');
+  drupal_set_message($msg, 'warning');
+  return array();
+}
+
+function dblog_filters_main_admin_page() {
+  $filter_settings = dblog_filters_get_filters_settings(TRUE);
+  
+  $enabled_options = array();
+  $blocks = $form = array();
+
+  $form['link_to_reports'] = array(
+    '#type' => 'markup',
+    '#value' => l(t('Go to recent log page'), 'admin/reports/dblog'),
+    );
+
+  foreach($filter_settings as $subpath => $settings) {
+    $enabled_options[$subpath] = t($settings['title']);
+    $blocks[$subpath] = array(
+      'title' => t($settings['title']),
+      'description' => t($settings['description']),
+      'content' => l($settings['title'], "admin/settings/logging/filters/$subpath"),
+    );
+    if (isset($settings['content'])) $blocks[$subpath]['content'] .= '<br/>' . $settings['content'];
+  }
+  if ($blocks) {
+    ksort($blocks);
+    $output = theme('admin_page', $blocks);
+    // wipe out "hide/show descriptions" link because it redirects to main admin page
+    $output = preg_replace('!<div class="compact-link">.*</div>!U', '', $output);
+  }
+  else {
+    $form['output'] = array(
+      '#type' => 'item',
+      '#value' => t('You don\'t have any module providing log filter settings.'),
+    );
+    return $form; 
+  }
+  
+  $form['enabled'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Enabled filters'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+    '#description' => t('By default new filters provided are disabled. Select the filters you would like to enable.'),
+    '#prefix' => $output,
+  );
+  $enabled = variable_get('dblog_filters:enabled', array());
+  $form['enabled']['dblog_filters:enabled'] = array(
+    '#type' => 'checkboxes',
+    '#default_value' => variable_get('dblog_filters:enabled', array()),
+    '#options' => $enabled_options,
+  );
+  $form['#submit'][] = 'dblog_filters_refresh_filters_settings';
+  
+  return system_settings_form($form);
+}
+
+function dblog_filters_refresh_filters_settings() {
+  dblog_filters_get_filters_settings(TRUE, TRUE);
+  dblog_filters_get_filters_settings(FALSE, FALSE);
+}
+
+function dblog_filters_get_filters_settings($include_disabled = FALSE, $reset = FALSE) {
+  static $filter_settings, $enabled, $result;
+  if (!isset($filter_settings) || $reset) { 
+    $filter_settings = module_invoke_all('log_filters_settings');
+    if ($filter_settings === false) $filter_settings = array();
+    $enabled = variable_get('dblog_filters:enabled', array());
+    $result = array();
+  }
+  
+  if (!isset($result[$include_disabled])) {
+    $result[$include_disabled] = array();
+    foreach($filter_settings as $subpath => $settings) {
+      if (!$include_disabled && !$enabled[$subpath]) continue;
+      $result[$include_disabled][$subpath] = $settings;
+      $result[$include_disabled][$subpath]['enabled'] = $enabled[$subpath];
+    }
+  }
+  return $result[$include_disabled];
+}
+
+function dblog_filters_is_enabled($subpath) {
+  $filter_settings = dblog_filters_get_filters_settings();
+  return isset($filter_settings[$subpath]);
+}
+

@@ -1,0 +1,24 @@
+{
+"widgetType": "phpparser",
+"cleanURLParameters":["abc","xyz","agency","year","calyear","yeartype"],
+"urlParamMap":{"abc":"employee_id","xyz":"employee_id","agency":"agency_id","year":"fiscal_year_id","calyear":"fiscal_year_id","yeartype":"type_of_year"},
+"defaultParameters":{"type_of_year":"B"},
+"limit":"17",
+"dataset": "checkbook:payroll_employee_agency",
+"columns": ["agency.agency","agency.agency.agency_short_name","employee.employee.civil_service_title","employment_type.employment_type","start_date.start_date","max_annual_salary","total_base_salary","total_overtime_amount","total_other_payments","total_gross_pay","year.year","year_type.year_type","agency.agency.agency_name"],
+"adjustParameters":"
+            $empId = _getRequestParamValue('xyz');
+            if(isset($empId)){
+                $empNoData = _checkbook_project_querydataset('checkbook:employee',array('employee_number'), array('employee_id'=>$empId));
+                $parameters['employee_number'] = $empNoData[0]['employee_number'];
+                unset($parameters['employee_id']);
+            }
+
+            $adjustedParameters = $parameters;
+            if(function_exists('_checkbook_project_applyParameterFilters')){
+                  $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+            }
+            return $adjustedParameters;
+",
+ "template":"payroll_employee_agency_payroll_summary"
+}

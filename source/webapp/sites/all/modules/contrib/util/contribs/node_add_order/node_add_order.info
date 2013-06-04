@@ -1,0 +1,13 @@
+name = Node_Add_Order
+description = Changes the order of content types on the node/add page.
+dependencies[] = util
+dependencies[] = node
+core = 7.x
+package = Util
+
+; Information added by drupal.org packaging script on 2012-08-26
+version = "7.x-1.0-rc1"
+core = "7.x"
+project = "util"
+datestamp = "1345944858"
+

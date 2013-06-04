@@ -1,0 +1,12 @@
+name = "Search embedded form"
+description = "Support module for search module testing of embedded forms."
+package = Testing
+version = VERSION
+core = 7.x
+hidden = TRUE
+
+; Information added by drupal.org packaging script on 2013-04-03
+version = "7.22"
+project = "drupal"
+datestamp = "1365027012"
+

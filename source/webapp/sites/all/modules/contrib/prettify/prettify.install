@@ -1,0 +1,74 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the prettify module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function prettify_install() {
+  $t = get_t();
+  $args = array('@url' => url('admin/config/user-interface/prettify'));
+  $message = $t('Code prettify module installed. Automatic syntax highlighting of code snippets has enabled on your Drupal website, you can change the module settings in <a href="@url">Code prettify configuration page</a>.', $args);
+  drupal_set_message($message);
+}
+
+/**
+ * Implements hook_enable().
+ */
+function prettify_enable() {
+  $library_path = prettify_library_get_path();
+  if (!file_exists("$library_path/prettify.js")) {
+    drupal_set_message(t('Could not find Google Code Prettify JavaScript library. Check the <a href="@status">status report</a> for more information.', array('@status' => url('admin/reports/status'))), 'error');
+  }
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function prettify_uninstall() {
+  // Delete all the prettify variables and then clear the variable cache.
+  db_delete('variable')
+    ->condition('name', 'prettify_%', 'LIKE')
+    ->execute();
+  cache_clear_all('variables', 'cache');
+}
+
+/**
+ * Implements hook_requirements().
+ */
+function prettify_requirements($phase) {
+  $requirements = array();
+  // Ensure translations don't break at install time
+  $t = get_t();
+
+  if ($phase == 'runtime') {
+    $library_path = prettify_library_get_path();
+    if (!file_exists("$library_path/prettify.js")) {
+      $args = array(
+        '@url' => url('http://code.google.com/p/google-code-prettify'),
+        '@library-path' => $library_path,
+        '@library-filepath' => "$library_path/prettify.js",
+        '@library-filepath-src' => "$library_path/src/prettify.js",
+      );
+      $description = $t('Download the <a href="@url">Google Code Prettify library</a>, extract it and copy its contents into a new folder in the following location:<br /><code>@library-path</code><br /><br />So prettify library can be found at:<br /><code>@library-filepath</code> or<br /><code>@library-filepath-src</code>', $args);
+      $requirements['prettify_library'] = array(
+        'title' => $t('Google Code Prettify library'),
+        'value' => $t('Prettify JavaScript source files not found'),
+        'description' => $description,
+        'severity' => REQUIREMENT_ERROR,
+      );
+    }
+    else {
+      $requirements['prettify_library'] = array(
+        'title' => $t('Google Code Prettify library'),
+        'value' => $t('Found (<code>@library-path</code>)', array('@library-path' => "$library_path/prettify.js")),
+        'severity' => REQUIREMENT_OK,
+      );
+    }
+  }
+
+  return $requirements;
+}

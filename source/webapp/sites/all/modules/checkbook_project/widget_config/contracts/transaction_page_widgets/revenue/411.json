@@ -1,0 +1,205 @@
+{
+"widgetType": "data_tables",
+"widgetSubType": "dataTableList",
+"cleanURLParameters":["doctype","contstatus","year","calyear","yeartype","agency","vendor","curamtr","vendornm","contdesc","agrmnttype","agencyh","contnum","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","modamt"],
+"urlParamMap":{"doctype":"document_code@checkbook:ref_document_code","contstatus":"status_flag@checkbook:contracts_coa_aggregates" ,"year":"fiscal_year_id@checkbook:contracts_coa_aggregates","calyear":"fiscal_year_id@checkbook:contracts_coa_aggregates","yeartype":"type_of_year@checkbook:contracts_coa_aggregates" ,"agency":"agency_id","vendor":"vendor_id","curamtr":"maximum_contract_amount","vendornm":"vendor_name","contdesc":"description","agrmnttype":"agreement_type_id","agencyh":"agency_history_id","contnum":"contract_number","aptpin":"brd_awd_no","pin":"tracking_number","awdmethod":"award_method_id","curamt":"maximum_contract_amount","startdate":"effective_begin_date","enddate":"effective_end_date","regdate":"registered_date","cindustry":"industry_type_id","csize":"award_size_id","modamt":"dollar_difference"},
+"allowRequestParams":["smnid"],
+"paramTypeConfig":{"curamtr":"rangeid","vendornm":"like","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","regdate":"range","modamt":"ne"},
+"defaultParameters":{"status_flag@checkbook:contracts_coa_aggregates":"A"},
+"header":"
+	$header = NULL;
+	$header .= widget_data_tables_export_link($node);
+	return $header;
+",
+"useList":true,
+"getTotalDataCount":true,
+"limit":"35",
+"noDataInitialLoad":true,
+"html_class": "initiative-table",
+"no_results_content":"No Results Found",
+"dataset": "checkbook:agreement_snapshot",
+"columns": ["fiscal_year_id@checkbook:contracts_coa_aggregates","type_of_year@checkbook:contracts_coa_aggregates", "contract_number","original_agreement_id","description","document_version","original_contract_amount","maximum_contract_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","document_code@checkbook:ref_document_code","industry_type_name","dollar_difference","percent_difference"],
+"caption":"",
+"derivedColumns": {
+          "contract_link": {
+	      "type": "expression2",
+               "expression": "ContractURLHelper::prepareRevenueContractLink($row, $node)"
+	    },
+	"formatted_original_amount": {
+	      "type": "expression2",
+	      "expression": "custom_number_formatter_basic_format($row['original_contract_amount'])"
+	    },
+	"formatted_current_amount": {
+	      "type": "expression2",
+	        "expression": "custom_number_formatter_basic_format($row['maximum_contract_amount'])"
+	    },
+"vendor_formatted": {
+      "type": "expression2",
+      "expression": "_get_tooltip_markup($row['vendor_name'],30)"
+    },
+	"vendor_name_link": {
+	      "type": "expression2",
+              "expression": " '<a href=\"/contracts_revenue_landing'
+                                    .  (isset($row['fiscal_year_id@checkbook:contracts_coa_aggregates']) ? '/year/'.$row['fiscal_year_id@checkbook:contracts_coa_aggregates'] : '')
+                                    .  (isset($row['type_of_year@checkbook:contracts_coa_aggregates']) ? '/yeartype/'.$row['type_of_year@checkbook:contracts_coa_aggregates'] : '')
+                                    .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
+                                    .  '/vendor/' . $row['vendor_id']
+                                    .  '?expandBottomCont=true\">'. $row['vendor_formatted'] . '</a>'  "
+	    },
+"agency_formatted": {
+      "type": "expression2",
+      "expression": "_get_tooltip_markup($row['agency_name'],30)"
+    },
+	"agency_name_link": {
+		"type": "expression2",
+                "expression": " '<a href=\"/contracts_revenue_landing'
+                                    .  (isset($row['fiscal_year_id@checkbook:contracts_coa_aggregates']) ? '/year/'.$row['fiscal_year_id@checkbook:contracts_coa_aggregates'] : '')
+                                    .  (isset($row['type_of_year@checkbook:contracts_coa_aggregates']) ? '/yeartype/'.$row['type_of_year@checkbook:contracts_coa_aggregates'] : '')
+                                    .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
+                                    .  '/agency/' . $row['agency_id']
+                                    .  '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "
+	},
+"purpose_formatted": {
+      "type": "expression2",
+      "expression": "_get_tooltip_markup($row['description'],40)"
+    },
+"award_method_formatted": {
+      "type": "expression2",
+      "expression": "_get_tooltip_markup($row['award_method_name'],30)"
+    },
+"contract_type_formatted": {
+      "type": "expression2",
+      "expression": "_get_tooltip_markup($row['agreement_type_name'],30)"
+    },
+"industry_name_formatted": {
+      "type": "expression2",
+      "expression": "_get_tooltip_markup($row['industry_type_name'],30)"
+    },
+"formatted_dollar_diff": {
+      "type": "expression2",
+      "expression": "custom_number_formatter_basic_format($row['dollar_difference'])"
+    },
+"formatted_percent_diff": {
+      "type": "expression2",
+      "expression": "round($row['percent_difference'],2) . '%'"
+    }
+},
+"table_columns": [
+        {"labelAlias": "contract_id","column": "contract_link","sortSourceColumn":"contract_number"},
+	    {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description"},
+	    {"labelAlias": "version","column": "document_version","headerClass":"centrig"},
+        {"labelAlias": "original_amount","column": "formatted_original_amount","sortSourceColumn":"original_contract_amount","headerClass":"centrig"},
+	    {"labelAlias": "current_amount","column": "formatted_current_amount","sortSourceColumn":"maximum_contract_amount","headerClass":"centrig"},
+        {"labelAlias": "dollar_diff","column": "formatted_dollar_diff","sortSourceColumn":"dollar_difference","headerClass":"centrig"},
+        {"labelAlias": "percent_diff","column": "formatted_percent_diff","sortSourceColumn":"percent_difference","headerClass":"centrig"},
+	    {"labelAlias": "vendor_name","column": "vendor_name_link","sortSourceColumn":"vendor_name"},
+	    {"labelAlias": "contract_agency","column": "agency_name_link","sortSourceColumn":"agency_name"},
+	    {"labelAlias": "contract_type","column": "contract_type_formatted","sortSourceColumn":"agreement_type_name"},
+	    {"labelAlias": "award_method","column": "award_method_formatted","sortSourceColumn":"award_method_name"},
+        {"labelAlias": "contract_industry","column": "industry_name_formatted","sortSourceColumn":"industry_type_name"},
+	    {"labelAlias": "start_date","column": "effective_begin_date"},
+	    {"labelAlias": "end_date","column": "effective_end_date"},
+	    {"labelAlias": "reg_date","column": "registered_date"},
+	    {"labelAlias": "pin","column": "tracking_number"},
+	    {"labelAlias": "apt_pin","column": "brd_awd_no"}
+	  ],
+"adjustParameters":"
+           if(function_exists('_checkbook_project_adjustContractParameterFilters')){
+                  _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
+            }
+
+            if(function_exists('_checkbook_project_applyParameterFilters')){
+                  $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+                  return $adjustedParameters;
+            }
+           return $parameters;
+",
+"adjustDataTableOptions":"
+          $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
+
+          $rpp = _getRequestParamValue('rpp');
+             if(is_numeric($rpp) ){
+                    $adjustDataTableOptions->iDisplayLength = (int)$rpp;
+             }
+
+              $smnid = _getRequestParamValue('smnid');
+	      if($smnid != 434){
+		      foreach($node->widgetConfig->table_columns as $key => $table_column){
+            if($table_column->labelAlias == 'dollar_diff' || $table_column->labelAlias == 'percent_diff'){
+				unset($node->widgetConfig->table_columns[$key]);
+				unset($adjustDataTableOptions->aoColumns[$key]);
+			}
+		      }
+	      }
+	      if($smnid == 434){
+	      	$adjustDataTableOptions->aaSorting[0][0] = 5;
+	      }
+             $node->widgetConfig->table_columns = array_values($node->widgetConfig->table_columns);
+             $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoColumns);
+",
+"dataTableOptions":{
+        "bRetrieve": true,
+        "bServerSide": true,
+        "bProcessing":true,
+        "bFilter": false,
+        "bPaginate": true,
+         "iDisplayLength":35,
+        "sPaginationType":"full_numbers",
+        "sDom":"<pr><t><ip>",
+        "oLanguage": {
+                "sInfo": "Displaying transactions _START_ - _END_ of _TOTAL_",
+                "sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+        },
+        "bInfo": true,
+
+        "aoColumns":[
+        {"sClass":"text","sWidth":"195px","asSorting": [ "asc","desc" ]},
+		{"sClass":"text","sWidth":"165px","asSorting": [ "asc","desc" ]},
+		{"sClass":"number","sWidth":"75px","asSorting": [ "desc","asc" ]},
+		{"sClass":"number","sWidth":"120px","asSorting": [ "desc","asc" ]},
+		{"sClass":"number","sWidth":"120px","asSorting": [ "desc","asc" ]},
+		{"sClass":"number","sWidth":"120px","asSorting": [ "desc","asc" ]},
+		{"sClass":"number","sWidth":"120px","asSorting": [ "desc","asc" ]},
+		{"sClass":"text number-left","sWidth":"150px","asSorting": [ "asc","desc" ]},
+		{"sClass":"text","sWidth":"135px","asSorting": [ "asc","desc" ]},
+		{"sClass":"text","sWidth":"135px","asSorting": [ "asc","desc" ]},
+		{"sClass":"text","sWidth":"135px","asSorting": [ "asc","desc" ]},
+		{"sClass":"text","sWidth":"115px","asSorting": [ "asc","desc" ]},
+		{"sClass":"text","sWidth":"115px","asSorting": [ "asc","desc" ]},
+		{"sClass":"text","sWidth":"115px","asSorting": [ "asc","desc" ]},
+		{"sClass":"text","sWidth":"115px","asSorting": [ "asc","desc" ]},
+		{"sClass":"text","sWidth":"360px","asSorting": [ "asc","desc" ]},
+		{"sClass":"text","sWidth":"180px","asSorting": [ "asc","desc" ]}
+],
+
+        "aaSorting":[[4,"desc"]],
+	"sScrollX": "100%",
+         "bScrollCollapse": true
+}
+,"customExternalJS":"function prepareTableListFilterUrl(){
+
+        var agencyIds = getNamedFilterCriteria('fagencyId');
+        if(agencyIds.length==0 && eval(document.getElementById('fHideAgencyId'))){
+             agencyIds = document.getElementById('fHideAgencyId').value;
+        }
+        var oVendorIds = getNamedFilterCriteria('fvendorId');
+        var oCurAmount = getNamedFilterCriteria('fCurAmount');
+        var oAwdMethod = getNamedFilterCriteria('fAwdMethodId');
+        var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
+
+        var  cUrl = oTable.fnSettings().sAjaxSource;
+           cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
+           cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
+           cUrl = adjustUrlParameter(cUrl,'curamtr',oCurAmount);
+           cUrl = adjustUrlParameter(cUrl,'awdmethod',oAwdMethod);
+           cUrl = adjustUrlParameter(cUrl,'cindustry',oIndustryType);
+
+         //remove advance search param if narrow down search is present for amount
+         //if(oCurAmount != null && oCurAmount.length > 0 ){
+        //      cUrl = adjustUrlParameter(cUrl,'curamt','');
+         //}
+
+       return cUrl;
+    }
+"
+}

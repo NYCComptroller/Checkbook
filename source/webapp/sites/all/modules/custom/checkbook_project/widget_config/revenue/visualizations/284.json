@@ -1,0 +1,108 @@
+{
+  "widgetType":"highcharts",
+  "widgetSubType":"ajaxSimple",
+  "header":"$header = '<h2 class=\"chart-title\" style=\"display:none;\">Revenue</h2>';$header .= ChartUtil::generateGridViewLink($node); return $header;",
+  "gridConfig":{
+    "template":"highchart_revenue_grid_view",
+    "html_class":"chart-grid-view-table",
+        "table_columns": [
+            {
+                  "labelAlias": "year",
+              "column": "year_year_year_value",
+                  "sortColumn":"sort_order"
+             },
+            {
+                  "colLabel": "recognized",
+              "column": "revenue_amount_sum",
+                   "eval":true
+            },
+            {
+                  "colLabel": "remaining",
+              "column": "remaining",
+                   "eval":true
+            }
+        ]
+  },
+  "no_results_content":"No Results Found",
+  "defaultParameters":{
+    "year.year":"114"
+  },
+  "cleanURLParameters":["year", "revcat", "fundsrc", "agency"],
+  "urlParamMap":{
+    "year":"year.year",
+    "revcat":"category.category",
+    "fundsrc":"funding.funding",
+    "agency":"agency.agency"
+  },
+  "dataset":"checkbook:aggregate_revenue",
+  "columns":["year.year.year_value","revenue_amount_sum","current_modified_budget"],
+  "transformationPHP":"
+  $transactions_page = '/' . current_path()  . '?expandBottomContURL=/panel_html/revenue_transactions';  
+  $year = _checkbook_project_get_url_param_string('year');
+  $agency = ($node->widgetConfig->requestParams['agency.agency']) ? '/agency/' . $node->widgetConfig->requestParams['agency.agency'] : '';  
+  $url =  $transactions_page . $year . $agency ;
+
+  foreach ($node->data as $key=>$row){
+    $remain = $row['current_modified_budget'] - $row['revenue_amount_sum'];
+    $node->data[$key]['remaining'] = $remain;
+    $categories[] = $row['year_year_year_value'];
+    $recognized[] = array('y' => $row['revenue_amount_sum'], 'url' => $url);
+    $remaining[] = array('y' => $remain, 'url' => $url);
+  }
+  $node->widgetConfig->chartTitle = 'Revenue';
+  $node->widgetConfig->chartConfig->xAxis->categories = $categories;
+  $node->widgetConfig->chartConfig->series = array(array('name' => 'Recognized', 'data' => $recognized), array('name' => 'Remaining', 'data' => $remaining));
+  return $node->data;
+  ",
+  "chartConfig":{
+    "chart":{
+      "defaultSeriesType":"column"
+    },
+    "xAxis":{
+      "categories":[],
+      "title":{
+        "text":""
+      }
+    },
+    "plotOptions":{
+      "series": {
+        "cursor": "pointer",
+        "point": {
+          "events": {
+            "function": "clickEvent"
+          }
+        }
+      },
+      "column":{
+        "pointWidth":150,
+        "minPointLength":3
+      }
+    },
+    "series":[],
+    "title":{
+      "text":""
+    },
+    "yAxis":{
+      "startOnTick":true,
+      "title":{
+        "text":""
+      },
+      "labels":{
+        "rotation":0,
+        "function":"yAxisFormatter"
+      }
+    },
+    "legend":{
+      "align":"left",
+      "verticalAlign":"bottom"
+    },
+    "tooltip":{
+      "function":"tooltipformatter"
+    }
+  }
+}
+<function>
+yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
+tooltipformatter^^'formatter' : function(){return 'Year: ' + this.x + '<br>Amount: ' + abbrNum(this.y, 2, '$');}##
+clickEvent^^'click' : function(){location.href = this.url;}##
+</function>

@@ -1,0 +1,89 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+
+ 
+
+require_once('test/testDatasetUploader.php');
+
+function dataset_uploader_testsuite_menu() {
+    $items['testsuite/dataset_uploader/states'] = array(
+        'page callback'     => 'dataset_uploader_testsuite_upload_states',
+        'access callback'   => TRUE,
+        'type'              => MENU_CALLBACK,   
+    );
+
+    $items['testsuite/dataset_uploader/faads'] = array(
+        'page callback'     => 'dataset_uploader_testsuite_upload_faads',
+        'access callback'   => TRUE,
+        'type'              => MENU_CALLBACK,   
+    );
+
+    $items['testsuite/dataset_uploader/dsv'] = array(
+        'page callback'     => 'dataset_uploader_testsuite_upload_dsv',
+        'access callback'   => TRUE,
+        'type'              => MENU_CALLBACK,   
+    );
+
+    return $items;
+}
+
+function dataset_uploader_testsuite_dc_metamodel() {
+    $items[] = array(
+        'path' => dirname(__FILE__)
+    );
+
+    return $items;
+}
+
+function dataset_uploader_testsuite_upload_states() {
+    $fileName = dirname(__FILE__) . '/test/data/data_states.txt';
+    $delimiter = '|';
+    $isHeaderPresent = FALSE;
+    $excludedColumnNames = NULL;
+    $testDummyColumn = TRUE;
+    $testTruncate = TRUE;
+
+    testDatasetUploader($fileName, $delimiter, 0, 10, $isHeaderPresent, $excludedColumnNames, $testDummyColumn, $testTruncate);
+}
+
+function dataset_uploader_testsuite_upload_faads() {
+    $size = isset($_REQUEST['size']) ? $_REQUEST['size'] : NULL;
+
+    $fileName = dirname(__FILE__) . '/test/data/data_awards_faads' . $size. '.txt';
+    $delimiter = '|';
+    $isHeaderPresent = TRUE;
+    $excludedColumnNames = NULL;
+    $testDummyColumn = FALSE;
+    $testTruncate = FALSE;
+
+    testDatasetUploader($fileName, $delimiter, 0, NULL, $isHeaderPresent, $excludedColumnNames, $testDummyColumn, $testTruncate);
+}
+
+function dataset_uploader_testsuite_upload_dsv() {
+    $delimiter = isset($_REQUEST['delimiter']) ? StringHelper::trim($_REQUEST['delimiter']) : NULL;
+    if (!isset($delimiter)) {
+        throw new IllegalArgumentException("Value delimiter was not provided. Use 'delimiter' parameter");
+    }
+
+    $fileName = isset($_REQUEST['filename']) ? StringHelper::trim($_REQUEST['filename']) : NULL;
+    if (!isset($fileName)) {
+        throw new IllegalArgumentException("File name was not provided. Use 'filename' parameter");
+    }
+
+    $isHeaderPresent = isset($_REQUEST['header']) ? (StringHelper::trim($_REQUEST['header']) == 'Y') : TRUE;
+
+    $limitRecordCount = isset($_REQUEST['limit']) ? StringHelper::trim($_REQUEST['limit']) : NULL;
+
+    $excludedColumnNames = isset($_REQUEST['excluded']) ? ArrayElementTrimmer::trimList(explode(',', $_REQUEST['excluded'])) : NULL;
+
+    $fileName = dirname(__FILE__) . "/test/data/$fileName";
+    $testDummyColumn = FALSE;
+    $testTruncate = FALSE;
+
+    testDatasetUploader($fileName, $delimiter, 0, $limitRecordCount, $isHeaderPresent, $excludedColumnNames, $testDummyColumn, $testTruncate);
+}

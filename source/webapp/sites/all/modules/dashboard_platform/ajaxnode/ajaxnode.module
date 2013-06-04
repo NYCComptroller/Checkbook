@@ -1,0 +1,30 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+
+
+function ajaxnode_menu() {
+
+	$items['ajaxnode/%node'] = array(
+		'page callback'		=> 'ajaxnode_view',
+		'page arguments' => array(1),		
+	    'access callback' => 'node_access',
+	    'access arguments' => array('view', 1),
+		'type'				=> MENU_CALLBACK,	
+	);
+	
+	return $items;
+}
+
+function ajaxnode_view($node) {
+
+	$node = node_build_content($node);
+	$result = drupal_render($node->content);
+
+	print $result;
+
+}

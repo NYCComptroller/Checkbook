@@ -1,0 +1,110 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+
+
+/**
+ * Script to handle process queue jobs.
+ */
+set_time_limit(0);
+
+_drush_bootstrap_drupal_full();
+
+define('MAXIMUM_JOBS_TO_RUN', 1);
+
+TextLogMessageTrimmer::$LOGGED_TEXT_LENGTH__MAXIMUM = 512 * 10;
+// Make sure data is not getting updated:
+// TODO - This  will be handled by server scripts.
+$log_id = date('mdYHis');
+
+LogHelper::log_notice("$log_id: Cron invoked for processing next job in queue.");
+
+if (!QueueUtil::isJobsInProgress()) {
+  LogHelper::log_notice("$log_id: No job is in progress. Getting next job.");
+
+  try {
+    $job_details = QueueUtil::getNextJob();
+  }
+  catch (Exception $claim_exception) {
+    LogHelper::log_error("$log_id: Error while fetching job from queue: " . $claim_exception);
+    return;
+  }
+
+  if ($job_details) {
+    try {
+      $job_id = $job_details['job_id'];
+      LogHelper::log_notice("$log_id: Fetched next job from queue for job id:" . $job_details['job_id']);
+
+      LogHelper::log_notice("$log_id: Claiming job from queue:" . $job_id);
+      $job_claimed = QueueUtil::claimJob($job_id);
+      if ($job_claimed) {
+        LogHelper::log_notice("$log_id: Job $job_id is claimed for processing.");
+        LogHelper::log_notice("$log_id: Started processing job $job_id.");
+        $queue_job = new QueueJob($job_details);
+        $queue_job->setLogId($log_id);
+        $queue_job->processJob();
+        LogHelper::log_notice("$log_id: Completed processing job $job_id.");
+
+        LogHelper::log_notice("$log_id: Started udpating status 2 for job $job_id.");
+        $job_details = array(
+          'status' => 2,
+          'end_time' => time(),
+          'filename' => $queue_job->getFileName(),
+        );
+        $job_log = "~~$log_id: File generated Successfully on " . date("m-d-Y, H:i:s");
+
+        LogHelper::log_notice("$log_id: jobId:" . $job_id);
+        LogHelper::log_notice("$log_id: filename:" . $queue_job->getFileName());
+        LogHelper::log_notice("$log_id: jobLog:" . $job_log);
+
+        QueueUtil::updateJobDetails($job_id, $job_details, $job_log);
+        LogHelper::log_notice("$log_id: Completed udpating status 2 for job $job_id.");
+      }
+      else {
+        // Do not expect this to occur.
+        LogHelper::log_notice("$log_id: Could not claim the Job $job_id.");
+
+        LogHelper::log_notice("$log_id: Started udpating failed status(COULD NOT CLAIM THE JOB) 3 for job $job_id.");
+        $job_details = array('status' => 3, 'end_time' => time());
+        $job_log = "~~$log_id: COULD NOT CLAIM THE JOB on " . date("m-d-Y, H:i:s");
+        QueueUtil::updateJobDetails($job_id, $job_details, $job_log);
+        LogHelper::log_notice("$log_id: Completed udpating failed status(COULD NOT CLAIM THE JOB) 3 for job $job_id.");
+      }
+    }
+    catch (JobRecoveryException $jre) {
+      LogHelper::log_error("$log_id: Job recoverable Exception occured while processing job $job_id. Exception is " . $jre);
+
+      LogHelper::log_notice("$log_id: Started recovering job to set staus to 0 for job $job_id.");
+      $job_details = array(
+        'status' => 0,
+        'start_time' => NULL,
+        'end_time' => NULL,
+      );
+      $job_log = "~~$log_id: Job recovered for job $job_id on " . date("m-d-Y, H:i:s") . ". Exception is " . $jre->getMessage();
+      QueueUtil::updateJobDetails($job_id, $job_details, $job_log);
+      LogHelper::log_notice("$log_id: Completed recovering job and updated staus to 0 for job $job_id for reprocessing.");
+    }
+    catch (Exception $exception) {
+      LogHelper::log_error("$log_id: Error while processing queue job $job_id. Exception is " . $exception);
+
+      LogHelper::log_notice("$log_id: Started udpating failed status 3 for job $job_id.");
+      $job_details = array('status' => 3, 'end_time' => time());
+      $job_log = "~~$log_id: Error while processing queue job on " . date("m-d-Y, H:i:s") . ". Exception is " . $exception->getMessage();
+      QueueUtil::updateJobDetails($job_id, $job_details, $job_log);
+      LogHelper::log_notice("$log_id: Completed udpating failed status 3 for job $job_id.");
+    }
+  }
+  else {
+    LogHelper::log_notice("$log_id: No requests are found for processing. Sleep until next job is available.");
+  }
+
+}
+else {
+  LogHelper::log_notice("$log_id: Currently a job is in progress. Skipping processing next job until current job is finished.");
+}
+
+LogHelper::log_notice("$log_id: Completed process queue cron.");

@@ -1,0 +1,10 @@
+
+;	GNU AFFERO GENERAL PUBLIC LICENSE 
+;	   Version 3, 19 November 2007
+; This software is licensed under the GNU AGPL Version 3
+; 	(see the file LICENSE for details)
+name = Checkbook Advanced Search
+description = Module to display the advanced search form in a dialog box with accordion to identify different buckets.
+core = 7.x
+package = NYC Checkbook
+dependencies[] = checkbook_project

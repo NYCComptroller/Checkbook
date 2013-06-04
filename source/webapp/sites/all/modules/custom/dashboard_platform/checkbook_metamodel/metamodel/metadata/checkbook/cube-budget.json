@@ -1,0 +1,213 @@
+{
+    "datasets":{
+        "budget":{
+            "datasourceName":"main",
+            "source":"budget"
+        }
+    },
+    "cubes":{
+        "budget":{
+            "sourceDatasetName":"budget",
+            "dimensions":[
+                {
+                    "name": "year",
+                    "levels": [
+                        {
+                            "name": "year",
+                            "sourceColumnName": "budget_fiscal_year"
+                        }
+                    ]
+                },
+                {
+                    "name":"year_id",
+                    "levels":[
+                        {
+                            "name":"year_id",
+                            "sourceColumnName":"budget_fiscal_year_id"
+                        }
+                    ]
+                },
+                {
+                    "name":"object_class_history",
+                    "levels":[
+                        {
+                            "name":"object_class_history",
+                            "datasetName":"object_class_history",
+                            "sourceColumnName":"object_class_history_id"
+                        }
+                    ]
+                },
+                {
+                    "name":"agency_history",
+                    "levels":[
+                        {
+                            "name":"agency_history",
+                            "datasetName":"agency_history",
+                            "sourceColumnName":"agency_history_id"
+                        }
+                    ]
+                },
+                {
+                    "name":"department_history",
+                    "levels":[
+                        {
+                            "name":"department_history",
+                            "datasetName":"department_history",
+                            "sourceColumnName":"department_history_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "dept",
+                    "levels": [
+                                {
+                                "name": "dept",
+                                "sourceColumnName": "department_id"
+                                }
+                    ]
+                },
+                {
+                  "name":"department_name",
+                  "levels":[
+                    {
+                      "name":"department_name",
+                      "sourceColumnName":"department_name"
+                    }
+                  ]
+                },
+                {
+                    "name":"fund_class",
+                    "levels":[
+                        {
+                            "name":"fund_class",
+                            "datasetName":"fund_class",
+                            "sourceColumnName":"fund_class_id"
+                        }
+                    ]
+                },
+                {
+                    "name":"budget_code",
+                    "levels":[
+                        {
+                            "name":"budget_code",
+                            "sourceColumnName":"budget_code_id"
+                        }
+                    ]
+                },
+                                {
+                    "name":"budget_code_code",
+                    "levels":[
+                        {
+                            "name":"budget_code_code",
+                            "sourceColumnName":"budget_code"
+                        }
+                    ]
+                },
+                {
+                    "name":"budget_code_name",
+                    "levels":[
+                        {
+                            "name":"budget_code_name",
+                            "sourceColumnName":"budget_code_name"
+                        }
+                    ]
+                },
+                {
+                    "name": "agency_id",
+                    "levels": [
+                                {
+                                    "name": "agency_id",
+                                    "sourceColumnName": "agency_id"
+                                }
+                    ]
+                },
+                {
+                    "name": "agency",
+                    "levels": [
+                                {
+                                    "name": "agency",
+                                    "sourceColumnName": "agency_id"
+                                }
+                    ]
+                },                
+                {
+                "name": "agency_name",
+                    "levels": [
+                                {
+                                    "name": "agency_name",
+                                    "sourceColumnName": "agency_name"
+                                }
+                    ]
+                },
+                {
+                    "name":"object_class_id",
+                    "levels":[
+                        {
+                            "name":"object_class_id",
+                            "sourceColumnName":"object_class_id"
+                        }
+                    ]
+                },
+                {
+                    "name":"object_class_name",
+                    "levels":[
+                        {
+                            "name":"object_class_name",
+                            "sourceColumnName":"object_class_name"
+                        }
+                    ]
+                }
+            ],
+            "measures":{
+                "txcount": {
+                    "function": "COUNT(*)"
+                },
+                "budget_adopted":{
+                    "function":"SUM(adopted_amount)"
+                },
+                "budget_current":{
+                    "function":"SUM(COALESCE(current_budget_amount,0))"
+                },
+                "budget_committed":{
+                    "function":"SUM(total_expenditure_amount)"
+                },
+                "pre_encumbered":{
+                    "function":"SUM(pre_encumbered_amount)"
+                },
+                "encumbered":{
+                    "function":"SUM(encumbered_amount)"
+                },
+                "accrued_expense":{
+                    "function":"SUM(accrued_expense_amount)"
+                },
+                "cash_payments":{
+                    "function":"SUM(cash_expense_amount)"
+                },
+                "post_adjustments":{
+                    "function":"SUM(post_closing_adjustment_amount)"
+                },
+                "budget_remaining":{
+                    "function":"SUM(remaining_budget)"
+                },
+                "g100m_count": {
+                    "function": "SUM(CASE WHEN COALESCE(current_budget_amount,0) > 100000000 THEN 1 ELSE 0 END)"
+                },
+                "g50m_le100m_count": {
+                    "function": "SUM(CASE WHEN COALESCE(current_budget_amount,0) > 50000000 AND COALESCE(current_budget_amount,0) <= 100000000 THEN 1 ELSE 0 END)"
+                },
+                "g25m_le50m_count": {
+                    "function": "SUM(CASE WHEN COALESCE(current_budget_amount,0) > 25000000 AND COALESCE(current_budget_amount,0) <= 50000000 THEN 1 ELSE 0 END)"
+                },
+                "g10m_le25m_count": {
+                    "function": "SUM(CASE WHEN COALESCE(current_budget_amount,0) > 10000000 AND COALESCE(current_budget_amount,0) <= 25000000 THEN 1 ELSE 0 END)"
+                },
+                "ge1m_le10m_count": {
+                    "function": "SUM(CASE WHEN COALESCE(current_budget_amount,0) >= 1000000 AND COALESCE(current_budget_amount,0) <= 10000000 THEN 1 ELSE 0 END)"
+                },
+                "less1m_count": {
+                    "function": "SUM(CASE WHEN COALESCE(current_budget_amount,0) < 1000000 THEN 1 ELSE 0 END)"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,69 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+?>
+<?php
+echo eval($node->widgetConfig->header);  
+?>
+
+<a class="trends-export" href="/export/download/trends_collections_cancellations_abatements_csv?dataUrl=/node/<?php echo $node->nid ?>">Export</a>
+
+<table id="table_<?php echo widget_unique_identifier($node) ?>" class="<?php echo $node->widgetConfig->html_class ?>">
+    <?php
+    if (isset($node->widgetConfig->caption_column)) {
+        echo '<caption>' . $node->data[0][$node->widgetConfig->caption_column] . '</caption>';
+    }
+    else if (isset($node->widgetConfig->caption)) {
+        echo '<caption>' . $node->widgetConfig->caption . '</caption>';
+    }
+    ?>
+    <thead>
+    <tr class="first-row">
+        <th rowspan="2" class="number"><div class="trendCen" >Fiscal<br>year</div></th>
+        <th rowspan="2" class="number"><div class="trendCen" >Tax Levy<br>(in millions)</div></th>
+        <th colspan="3" class="centrig bb"><div>Percent of Levy through June 30, 2011</div></th>
+        <th rowspan="2" class="number"><div class="trendCen" >Uncollected<br>Balance<br/> June 30, 2011</div></th>
+    </tr>
+    <tr class="second-row">
+        <th class="number"><div class="trendCen" >Collections</div></th>
+        <th class="number"><div class="trendCen" >Cancellations</div></th>
+        <th class="number"><div class="trendCen" >Abatements<br>and Discounts<sup>(1)</sup></div></th>
+    </tr>    
+    </thead>
+
+    <tbody>
+
+    <?php
+            $count = 1;
+    		foreach( $node->data as $row){
+                $dollar_sign = ($count == 1) ? '<div class="dollarItem" >$</div>':'';
+                $percent_sign = ($count == 1) ? '<span class="endItem">%</span>' : '<span class="endItem" style="visibility:hidden;">%</span>';
+
+			    echo "<tr><td class='number'><div class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
+    			echo "<td class='number '>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['tax_levy'],1,'.',',') . (($row['fiscal_year']=='2003')?"<sup class='endItem'>(2)</sup>":"<sup class='endItem' style='visibility: hidden;'>(1)</sup>") . "</div></td>";
+    			echo "<td class='number'><div class='tdCen'>" .  number_format($row['collection'],1) . $percent_sign . "</div></td>";
+    			echo "<td class='number'><div class='tdCen'>" .  number_format($row['cancellations'],1) . $percent_sign ."</div></td>";
+    			echo "<td class='number'><div class='tdCen'>" .  number_format($row['abatement_and_discounts_1'],1) . $percent_sign ."</div></td>";
+    			echo "<td class='number'><div class='tdCen'>" .  number_format($row['uncollected_balance_percent'],1) . $percent_sign ."</div></td>";
+			    echo "</tr>";
+
+                $count++;
+    		}
+    ?>
+
+    </tbody>
+</table>
+<?php
+	widget_data_tables_add_js($node);
+?>
+<div class="footnote">
+<p>(1) Abatements and discounts inlcude SCRIE abatements(Senior Citizen Rent Increase Excemption), J51 Abatements, Section 626 Abatements and other minor discounts offered by the City to property owners.</p>
+<p>(2) The Tax levy amount is the amount from the City Council Resoltuion.In 2003,and 18% surcharge was imposed and is included in each following year.</p>
+<p>NOTES: Total uncollected balance at June 30, 2011 less allowance for uncollectible amounts equals net realizable amount (real estate taxes receivable).</p>
+<p>Levy may total over 100 percent due to imposed charges that include ICIP deferred charges (Industrial and Commercial Incentive Program), rebilling charges and other additional charges imposed by the Department of Finance (DOF). This information is
+included in the FAIRTAX LEVY report.</p>
+</div>

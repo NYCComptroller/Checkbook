@@ -1,0 +1,12 @@
+{
+    "datasets": {
+        "budget_code": {
+            "datasourceName": "main",
+            "source": "ref_budget_code",
+            "columns": [
+                {
+                    "name": "budget_code_id",
+                    "key": true}
+            ]}
+    }
+}

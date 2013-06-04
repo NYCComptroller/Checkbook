@@ -1,0 +1,23 @@
+
+;	GNU AFFERO GENERAL PUBLIC LICENSE 
+;	   Version 3, 19 November 2007
+; This software is licensed under the GNU AGPL Version 3
+; 	(see the file LICENSE for details)
+name = "PostgreSQL integration"
+description = "Integrates Data Controller with PostgreSQL database"
+package = REI Dashboard Platform (Adapter)
+version = 7.x-2.x
+core = 7.x
+
+dependencies[] = data_controller_datasource_sql
+
+files[] = datasource/PostgreSQLDataSource.php
+files[] = datasource/handler/impl/PostgreSQLDataSourceOwnerImpl.php
+files[] = datasource/handler/impl/PostgreSQLExecuteQueryStatementImpl.php
+files[] = datasource/handler/impl/PostgreSQLFormatDateValueImpl.php
+files[] = datasource/handler/impl/PostgreSQLFormatWildcardValueImpl.php
+files[] = datasource/handler/impl/PostgreSQLInitializeConnectionImpl.php
+files[] = datasource/handler/impl/PostgreSQLMaximumEntityNameLengthImpl.php
+files[] = datasource/handler/impl/PostgreSQLRegularExpressionValueImpl.php
+files[] = datasource/handler/impl/PostgreSQLNotRegularExpressionValueImpl.php
+files[] = datasource/handler/PostgreSQLDataSourceQueryHandler.php

@@ -1,0 +1,13 @@
+name = Content translation
+description = Allows content to be translated into different languages.
+dependencies[] = locale
+package = Core
+version = VERSION
+core = 7.x
+files[] = translation.test
+
+; Information added by drupal.org packaging script on 2013-04-03
+version = "7.22"
+project = "drupal"
+datestamp = "1365027012"
+

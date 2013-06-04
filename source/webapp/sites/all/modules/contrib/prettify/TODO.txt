@@ -1,0 +1,5 @@
+
+-- TODO --
+
+* WYSIWYG plugin.
+* Plugins system for add custom themes.

@@ -1,0 +1,914 @@
+<ul class="api-jump-links">
+    <li><a href="#global-parameters">Global Parameters</a></li>
+    <li><a href="#budget-parameters">Contract Parameters</a></li>
+    <li><a href="#possible-response">Possible Response Columns</a></li>
+    <li><a href="#sample-xml">Sample XML Requests and Responses</a></li>
+    <li><a href="#sample-request-contract_expense">Sample Request: Contract Transactions Active Expense</a></li>
+    <li><a href="#sample-response-contract_expense">Sample Response:  Contract Transactions Active Expense</a></li>
+    <li><a href="#sample-request-contracts-pending_expense">Sample Request: Contract Transactions Pending Expense</a></li>
+    <li><a href="#sample-response-pending_expense">Sample Response: Contract Transactions Pending Expense</a></li>
+    <li><a href="#status-codes-messages">Status Codes and Messages</a></li>
+</ul>
+
+
+<a name="global-parameters" id="global-parameters"></a>
+<h3 class="title">Global Parameters</h3>
+<table class="api-table">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Required (Y/N)</th>
+        <th>Format/Value</th>
+        <th>Description</th>
+        <th>Example</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>type_of_data</td>
+        <td>Y</td>
+        <td>String – Must be one of the following:<br />Contracts, Payroll, or Spending.</td>
+        <td>Allows user to select different types of data:<br />Value must be one of the following Contracts, Payroll, or Spending.</td>
+        <td>Contracts</td>
+    </tr>
+    <tr>
+        <td>max_records</td>
+        <td>N</td>
+        <td>String - Maximum 4 characters</td>
+        <td>Allows you to set the maximum number of records retrieved to fewer than 1000</td>
+        <td>500</td>
+    </tr>
+    <tr>
+        <td>record_from</td>
+        <td>N</td>
+        <td>String - Maximum 15 characters</td>
+        <td>Allows you to set the starting position of the records to be retrieved</td>
+        <td>12500</td>
+    </tr>
+    </tbody>
+</table>
+<a href="#top" class="float-right">Back to the top</a>
+<a name="budget-parameters" id="budget-parameters"></a>
+<h3 class="title">type_of_data: Contract</h3>
+Contract Parameters – All the parameters are optional, meaning that you can send only 1 or all of them.  If you choose to not send any, you will receive random transactions in return as these parameters are the filter.
+<table class="api-table">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Required (Y/N)</th>
+        <th>Type of Criteria (Value/Range)</th>
+        <th>Format/Value</th>
+        <th>Category</th>
+        <th>Contract Status</th>
+        <th>Description</th>
+        <th>Example</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>fiscal_year</td>
+        <td>N</td>
+        <td valign="top">value</td>
+        <td>String - YYYY - 4 characters</td>
+        <td>Expense<br />Revenue</td>
+        <td>Active<br />Registered</td>
+        <td>Fiscal Year.  Must be exactly 4 characters. Either fiscal year or calendar year can be selected. By default, all years are pre-selected. The response column would be ‘year’ for both FY and CY selections.</td>
+        <td>2005 </td>
+    </tr>
+    <tr>
+        <td>calendar_year</td>
+        <td>N</td>
+        <td valign="top">value</td>
+        <td>String - YYYY - 4 characters</td>
+        <td>Expense<br />Revenue</td>
+        <td>Active<br />Registered</td>
+        <td>Calendar Year. Must be exactly 4 characters. Either fiscal year or calendar year can be selected. By default, all years are pre-selected. The response column would be ‘year’ for both FY and CY selections.</td>
+        <td>2005</td>
+    </tr>
+    <tr>
+        <td>status</td>
+        <td>Y</td>
+        <td valign="top">value</td>
+        <td>Allows you to select from three possible contract statuses. Values must be one of the following: active, pending or registered.</td>
+        <td>Expense<br />Revenue</td>
+        <td>Active<br />Registered<br />Pending</td>
+        <td>Allows you to select from three possible contract statuses. Values must be one of the following: active, pending or registered.</td>
+        <td>active</td>
+    </tr>
+    <tr>
+        <td>category</td>
+        <td>Y</td>
+        <td valign="top">value</td>
+        <td>Allows you to select two possible contract category types. Values must be one of the following: expense or revenue.</td>
+        <td>Expense<br/>Revenue</td>
+        <td>Active<br />Registered<br />Pending</td>
+        <td>Allows you to select two possible contract category types. Values must be one of the following: expense or revenue.</td>
+        <td>expense</td>
+    </tr>
+    <tr>
+        <td>vendor_code</td>
+        <td>N</td>
+        <td valign="top">range</td>
+        <td>String - Maximum 4 characters </td>
+        <td valign="top">Expense<br />Revenue</td>
+        <td valign="top">Active<br />Registered<br />Pending</td>
+        <td>Identification code associated with vendor. See here for <a href="/ref_code_list/vendor">vendor codes list</a>.</td>
+        <td>0000631395</td>
+    </tr>
+    <tr>
+        <td>contract_type</td>
+        <td>N</td>
+        <td valign="top">value</td>
+        <td>String - Maximum 2 characters</td>
+        <td valign="top">Expense<br />Revenue</td>
+        <td valign="top">Active<br />Registered<br />Pending</td>
+        <td>Indicates the agreement type</td>
+        <td>50</td>
+    </tr>
+    <tr>
+        <td>agency_code</td>
+        <td>N</td>
+        <td valign="top">value</td>
+        <td>String - Maximum 4 characters</td>
+        <td valign="top">Expense<br />Revenue</td>
+        <td valign="top">Active<br />Registered<br />Pending</td>
+        <td>Identification code associated with agency. See here for <a href="/ref_code_list/agency">agency codes list</a></td>
+        <td>127</td>
+    </tr>
+    <tr>
+        <td>contract_id</td>
+        <td>N</td>
+        <td valign="top">value</td>
+        <td>String - Maximum 32 characters</td>
+        <td valign="top">Expense<br />Revenue</td>
+        <td valign="top">Active<br />Registered<br />Pending</td>
+        <td>Contract number.</td>
+        <td>CTA100154422994473</td>
+    </tr>
+    <tr>
+        <td>award_method</td>
+        <td>N</td>
+        <td valign="top">value</td>
+        <td>String - Maximum 3 characters</td>
+        <td valign="top">Expense<br />Revenue</td>
+        <td valign="top">Active<br />Registered<br />Pending</td>
+        <td>Indicates how vendors are to be awarded based on the information entered in the table.</td>
+        <td>115</td>
+    </tr>
+    <tr>
+        <td>current_amount</td>
+        <td>N</td>
+        <td valign="top">range</td>
+        <td>String - Maximum 18 characters</td>
+        <td valign="top">Expense<br />Revenue</td>
+        <td valign="top">Active<br />Registered<br />Pending</td>
+        <td>Current amount associated with a contract.</td>
+        <td>20000.00</td>
+    </tr>
+    <tr>
+        <td>start_date</td>
+        <td>N</td>
+        <td valign="top">range</td>
+        <td>String - YYYY-MM-DD</td>
+        <td valign="top">Expense<br />Revenue</td>
+        <td valign="top">Active<br />Registered<br />Pending</td>
+        <td>Start date associated with a contract</td>
+        <td>1999-01-09</td>
+    </tr>
+    <tr>
+        <td>end_date</td>
+        <td>N</td>
+        <td valign="top">range</td>
+        <td>String - YYYY-MM-DD</td>
+        <td valign="top">Expense<br />Revenue</td>
+        <td valign="top">Active<br />Registered<br />Pending</td>
+        <td>End date associated with a contract</td>
+        <td>2011-01-09</td>
+    </tr>
+    <tr>
+        <td>registration_date</td>
+        <td>N</td>
+        <td valign="top">range</td>
+        <td>String - YYYY-MM-DD</td>
+        <td valign="top">Expense<br />Revenue</td>
+        <td valign="top">Active<br />Registered</td>
+        <td>Registration date associated with a contract</td>
+        <td>2000-02-02</td>
+    </tr>
+    <tr>
+        <td>received_date</td>
+        <td>N</td>
+        <td valign="top">range</td>
+        <td>String - YYYY-MM-DD</td>
+        <td valign="top">Expense<br />Revenue </td>
+        <td valign="top">Pending </td>
+        <td>Recieved date associated with a contract</td>
+        <td>2009-03-03</td>
+    </tr>
+    </tbody>
+</table>
+<a href="#top" class="float-right">Back to the top</a>
+<a name="possible-response" id="possible-response"></a>
+<h3 class="title">Possible response columns:</h3>
+<p>User would be able to select which columns he would like to view in his output. Below mentioned are the possible column names for the domain.
+    The user should include the required column names in the request xml in an element called &lt;response_columns&gt;.  Please note:</p>
+<ul>
+    <li>1. For pending contracts, the data is displayed only for the latest version of the contract.</li>
+    <li>2. If no year is provided in the search criteria, all years are considered and only the latest version of the contract will be displayed in the results. The response column year will not be applicable for all years.The user can categorize the year based on start and end date of the contract which will be populated in the results.</li>
+</ul>
+<div class="api-center">
+    <table>
+        <tr>
+            <td class="api-td-left">
+                <table class="api-table">
+                    <tr>
+                        <th colspan="2"><br />Response Column Names_Active &amp; Registered<br />Category-Expense</th>
+                    </tr>
+                    <tr>
+                        <td>contract_id</td>
+                        <td>vendor</td>
+                    </tr>
+                    <tr>
+                        <td>purpose</td>
+                        <td>agency</td>
+                    </tr>
+                    <tr>
+                        <td>version</td>
+                        <td>contract_type</td>
+                    </tr>
+                    <tr>
+                        <td>parent_contract_id</td>
+                        <td>award_method</td>
+                    </tr>
+                    <tr>
+                        <td>original_amount</td>
+                        <td>expense_category</td>
+                    </tr>
+                    <tr>
+                        <td>current_amount</td>
+                        <td width="51%">start_date</td>
+                    </tr>
+                    <tr>
+                        <td>spent_to_date</td>
+                        <td>end_date</td>
+                    </tr>
+                    <tr>
+                        <td>registration_date</td>
+                        <td>pin</td>
+                    </tr>
+                    <tr>
+                        <td>apt_pin</td>
+                        <td>contract_industry</td>
+                    </tr>
+                    <tr>
+                        <td>year</td>
+                        <td>document_code</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="api-td-right">
+                <table class="api-table" border="1" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <th colspan="2">Response Column Names_Active &amp; Registered<br />Category-Revenue</th>
+                    </tr>
+                    <tr>
+                        <td>contract_id</td>
+                        <td>vendor</td>
+                    </tr>
+                    <tr>
+                        <td>purpose</td>
+                        <td>agency</td>
+                    </tr>
+                    <tr>
+                        <td>parent_contract_id</td>
+                        <td>contract_type</td>
+                    </tr>
+                    <tr>
+                        <td>original_amount</td>
+                        <td>award_method</td>
+                    </tr>
+                    <tr>
+                        <td>current_amount</td>
+                        <td>start_date</td>
+                    </tr>
+                    <tr>
+                        <td>registration_date</td>
+                        <td>end_date</td>
+                    </tr>
+                    <tr>
+                        <td>apt_pin</td>
+                        <td>pin</td>
+                    </tr>
+                    <tr>
+                        <td>document_code</td>
+                        <td>contract_industry</td>
+                    </tr>
+                    <tr>
+                        <td>version</td>
+                        <td>year</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="api-td-left">
+                <table class="api-table">
+                    <tr>
+                        <th colspan="2"><br />Response Column Names_Pending <br />Category-Expense</th>
+                    </tr>
+                    <tr>
+                        <td>contract_id</td>
+                        <td>contract_type</td>
+                    </tr>
+                    <tr>
+                        <td>purpose</td>
+                        <td>original_modified</td>
+                    </tr>
+                    <tr>
+                        <td>parent_contract_id</td>
+                        <td>apt_pin</td>
+                    </tr>
+                    <tr>
+                        <td>original_amount</td>
+                        <td>award_method</td>
+                    </tr>
+                    <tr>
+                        <td>current_amount</td>
+                        <td>start_date</td>
+                    </tr>
+                    <tr>
+                        <td>vendor</td>
+                        <td width="51%">end_date</td>
+                    </tr>
+                    <tr>
+                        <td>recieved_date</td>
+                        <td>pin</td>
+                    </tr>
+                    <tr>
+                        <td>agency</td>
+                        <td>contract_industry</td>
+                    </tr>
+                    <tr>
+                        <td>document_code</td>
+                        <td>version</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="api-td-right">
+                <table class="api-table" border="1" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <th colspan="2">Response Column Names_Pending<br/>Category-Revenue</th>
+                    </tr>
+                    <tr>
+                        <td>contract_id</td>
+                        <td>contract_type</td>
+                    </tr>
+                    <tr>
+                        <td>purpose</td>
+                        <td>original_modified</td>
+                    </tr>
+                    <tr>
+                        <td>parent_contract_id</td>
+                        <td>apt_pin</td>
+                    </tr>
+                    <tr>
+                        <td>original_amount</td>
+                        <td>award_method</td>
+                    </tr>
+                    <tr>
+                        <td>current_amount</td>
+                        <td>start_date</td>
+                    </tr>
+                    <tr>
+                        <td>vendor</td>
+                        <td>end_date</td>
+                    </tr>
+                    <tr>
+                        <td>received_date</td>
+                        <td>pin</td>
+                    </tr>
+                    <tr>
+                        <td>agency</td>
+                        <td>contract_industry</td>
+                    </tr>
+                    <tr>
+                        <td>document_code</td>
+                        <td>version</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="divider" style="clear: both;"></div>
+<a href="#top" class="float-right">Back to the top</a>
+<a name="sample-xml" id="sample-xml"></a>
+<h3 class="title">Sample XML Requests and Responses</h3>
+<p>The following xml file will specify API method calls and the details for each call.</p>
+<p>The request xml would include global parameters which specify the selected domain, records from and maximum records to return in response. It also includes search parameters along with requested response column.</p>
+<p>In the response xml, the actual search parameters that were sent will be returned in an element called &lt;search_criteria&gt; along with the actual result for a given search criteria will be displayed in an element called &lt;result_records&gt;.</p>
+<p>The total number of resulting records for a given search criteria will be displayed within an element called &lt;record_count&gt;, which helps user to view the total number of records found for a given search criteria.</p>
+<p>The response xml also includes status messages for the result. If there is an error, corresponding error code along with description will be included in an element called &lt;messages&gt; for user reference.</p>
+<a href="#top" class="float-right">Back to the top</a>
+<a name="sample-request-contract_expense" id="sample-request-contract_expense"></a>
+<h3 class="title">Sample Request: Contract Transactions Active Expense</h3>
+<pre>
+&lt;request&gt;
+    &lt;type_of_data&gt;contracts&lt;/type_of_data&gt;
+  &lt;records_from&gt;1&lt;/records_from&gt;
+  &lt;max_records&gt;5&lt;/max_records&gt;
+  &lt;search_criteria&gt;
+    &lt;criteria&gt;
+          &lt;name&gt;status&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;active&lt;/value&gt;
+      &lt;/criteria&gt;’
+      &lt;criteria&gt;
+          &lt;name&gt;category&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;expense&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;fiscal_year&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;2011&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;agency_code&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;126&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;vendor_code&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;002&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;current_amount&lt;/name&gt;
+          &lt;type&gt;range&lt;/type&gt;
+          &lt;start&gt;0.00&lt;/start&gt;
+          &lt;end&gt;100000000.00&lt;/end&gt;
+      &lt;/criteria&gt;
+    &lt;criteria&gt;
+              &lt;name&gt;award_method&lt;/name&gt;
+              &lt;type&gt;value&lt;/type&gt;
+              &lt;value&gt;115&lt;/value&gt;
+          &lt;/criteria&gt;
+          &lt;criteria&gt;
+              &lt;name&gt;contract_id&lt;/name&gt;
+              &lt;type&gt;value&lt;/type&gt;
+              &lt;value&gt;CT185620050034130&lt;/value&gt;
+          &lt;/criteria&gt;
+          &lt;criteria&gt;
+              &lt;name&gt;contract_type&lt;/name&gt;
+              &lt;type&gt;value&lt;/type&gt;
+              &lt;value&gt;50&lt;/value&gt;
+          &lt;/criteria&gt;
+          &lt;criteria&gt;
+              &lt;name&gt;start_date&lt;/name&gt;
+              &lt;type&gt;range&lt;/type&gt;
+              &lt;start&gt;2010-01-31&lt;/start&gt;
+              &lt;end&gt;2011-12-26&lt;/end&gt;
+          &lt;/criteria&gt;
+          &lt;criteria&gt;
+              &lt;name&gt;end_date&lt;/name&gt;
+              &lt;type&gt;range&lt;/type&gt;
+              &lt;start&gt;2010-01-31&lt;/start&gt;
+              &lt;end&gt;2011-12-26&lt;/end&gt;
+          &lt;/criteria&gt;
+          &lt;criteria&gt;
+              &lt;name&gt;registration_date&lt;/name&gt;
+              &lt;type&gt;range&lt;/type&gt;
+              &lt;start&gt;2010-01-31&lt;/start&gt;
+              &lt;end&gt;2011-12-26&lt;/end&gt;
+          &lt;/criteria&gt;
+    &lt;/search_criteria&gt;
+
+    &lt;response_columns&gt;
+        &lt;column&gt;agency&lt;/column&gt;
+           &lt;column&gt;vendor&lt;/column&gt;
+           &lt;column&gt;contract_id&lt;/column&gt;
+           &lt;column&gt;version&lt;/column&gt;
+    &lt;column&gt;purpose &lt;/column&gt;
+        &lt;column&gt;parent_contract_id &lt;/column&gt;
+           &lt;column&gt;original_amount&lt;/column&gt;
+           &lt;column&gt;current_amount&lt;/column&gt;
+    &lt;column&gt;spent_to_date&lt;/column&gt;
+        &lt;column&gt;registration_date&lt;/column&gt;
+        &lt;column&gt;apt_pin&lt;/column&gt;
+           &lt;column&gt;pin&lt;/column&gt;
+        &lt;column&gt;contract_type&lt;/column&gt;
+        &lt;column&gt;award_method&lt;/column&gt;
+        &lt;column&gt;expense_category&lt;/column&gt;
+           &lt;column&gt;start_date&lt;/column&gt;
+           &lt;column&gt;end_date&lt;/column&gt;
+           &lt;column&gt;contract_industry&lt;/column&gt;
+           &lt;column&gt;year&lt;/column&gt;
+           &lt;column&gt;document_code&lt;/column&gt;
+    &lt;/response_columns&gt;
+    &lt;/request&gt;
+</pre>
+<a href="#top" class="float-right">Back to the top</a>
+<a name="sample-response-contract_expense" id="sample-response-contract_expense"></a>
+<h3 class="title">Sample Response: Contract Transactions Active Expense</h3>
+<pre>
+&lt;response&gt;
+    &lt;status &gt;
+        &lt;result&gt;success&lt;/result&gt;
+               &lt;/status&gt;
+ &lt;request_criteria&gt;
+              &lt;request&gt;
+      &lt;type_of_data &gt;contracts&lt;/type_of_data&gt;
+     &lt;records_from&gt;1&lt;/records_from&gt;
+     &lt;max_records&gt;5&lt;/max_records&gt;
+  &lt;search_criteria&gt;
+        &lt;criteria&gt;
+          &lt;name&gt;status&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;active&lt;/value&gt;
+      &lt;/criteria&gt;’
+      &lt;criteria&gt;
+          &lt;name&gt;category&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;expense&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;fiscal_year&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;2011&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;agency_code&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;126&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;vendor_code&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;002&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;current_amount&lt;/name&gt;
+          &lt;type&gt;range&lt;/type&gt;
+          &lt;start&gt;0.00&lt;/start&gt;
+          &lt;end&gt;100000000.00&lt;/end&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;award_method&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;115&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;contract_id&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;CT185620050034130&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;contract_type&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;50&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;start_date&lt;/name&gt;
+          &lt;type&gt;range&lt;/type&gt;
+          &lt;start&gt;2010-01-31&lt;/start&gt;
+          &lt;end&gt;2011-12-26&lt;/end&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;end_date&lt;/name&gt;
+          &lt;type&gt;range&lt;/type&gt;
+          &lt;start&gt;2010-01-31&lt;/start&gt;
+          &lt;end&gt;2011-12-26&lt;/end&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;registration_date&lt;/name&gt;
+          &lt;type&gt;range&lt;/type&gt;
+          &lt;start&gt;2010-01-31&lt;/start&gt;
+          &lt;end&gt;2011-12-26&lt;/end&gt;
+      &lt;/criteria&gt;
+&lt;/search_criteria&gt;
+&lt;/request&gt;
+    &lt;/request_criteria&gt;
+&lt;result_records&gt;
+     &lt;record_count&gt;1&lt;/record_count&gt;
+           &lt;transactions&gt;
+    &lt;transaction&gt;
+        &lt;agency&gt;DEPARTMENT OF CULTURAL AFFAIRS&lt;/agency&gt;
+        &lt;vendor&gt;ASI Systems&lt;/vendor&gt;
+        &lt;year&gt;N/A&lt;/year &gt;
+        &lt;contract_id&gt;CT185620050034130&lt;/contract_id&gt;
+        &lt;parent_contract_id&gt;N/A &lt;/parent_contract_id &gt;
+        &lt;purpose&gt;Public Utility&lt;/purpose&gt;
+&lt;original_amount&gt;25000.00&lt;/original_amount&gt;
+&lt;current_amount&gt;65000.00&lt;/current_amount&gt;
+&lt;spent_to_date&gt;151000.00&lt;/spent_to_date&gt;
+&lt;start_date&gt;04/30/2011&lt;/start_date&gt;
+&lt;end_date&gt;08/03/2011&lt;/end_date&gt;
+         &lt;registration_date&gt;02/25/1999&lt;/ registration_date &gt;
+&lt;contract_type&gt;construction&lt;/contract_type&gt;
+         &lt;award_method&gt;Competitive bid&lt;/award_method&gt;
+         &lt;expense_category&gt;Building Acquisition&lt;/expense_category&gt;
+         &lt;document_code&gt;CT1&lt;/document_code&gt;
+         &lt;version&gt;1&lt;/version&gt;
+&lt;pin&gt;212&lt;/pin&gt;
+&lt;apt_pin&gt;322&lt;/apt_pin&gt;
+        &lt;contract_industry&gt;Goods&lt;/contract_industry&gt;
+&lt;/transaction&gt;
+ &lt;/transactions&gt;
+&lt;/result_records&gt;
+&lt;/response&gt;
+</pre>
+<a href="#top" class="float-right">Back to the top</a>
+<a name="sample-request-contracts-pending_expense" id="sample-request-contracts-pending_expense"></a>
+<h3 class="title">Sample Request: Contract Transactions Pending Expense</h3>
+<pre>
+&lt;request&gt;
+    &lt;type_of_data &gt;contracts&lt;/type_of_data&gt;
+    &lt;records_from&gt;1&lt;/records_from&gt;
+    &lt;max_records&gt;5&lt;/max_records&gt;
+    &lt;search_criteria&gt;
+    &lt;criteria&gt;
+              &lt;name&gt;status&lt;/name&gt;
+              &lt;type&gt;value&lt;/type&gt;
+              &lt;value&gt;pending&lt;/value&gt;
+          &lt;/criteria&gt;
+          &lt;criteria&gt;
+              &lt;name&gt;category&lt;/name&gt;
+              &lt;type&gt;value&lt;/type&gt;
+              &lt;value&gt;expense&lt;/value&gt;
+          &lt;/criteria&gt;
+          &lt;criteria&gt;
+              &lt;name&gt;agency_code&lt;/name&gt;
+              &lt;type&gt;value&lt;/type&gt;
+              &lt;value&gt;126&lt;/value&gt;
+          &lt;/criteria&gt;
+          &lt;criteria&gt;
+              &lt;name&gt;vendor_code&lt;/name&gt;
+              &lt;type&gt;value&lt;/type&gt;
+              &lt;value&gt;002&lt;/value&gt;
+          &lt;/criteria&gt;
+          &lt;criteria&gt;
+              &lt;name&gt;current_amount&lt;/name&gt;
+              &lt;type&gt;range&lt;/type&gt;
+              &lt;start&gt;0.00&lt;/start&gt;
+              &lt;end&gt;100000000.00&lt;/end&gt;
+          &lt;/criteria&gt;
+          &lt;criteria&gt;
+              &lt;name&gt;award_method&lt;/name&gt;
+              &lt;type&gt;value&lt;/type&gt;
+              &lt;value&gt;115&lt;/value&gt;
+          &lt;/criteria&gt;
+          &lt;criteria&gt;
+              &lt;name&gt;contract_id&lt;/name&gt;
+              &lt;type&gt;value&lt;/type&gt;
+              &lt;value&gt;CT185620050034130&lt;/value&gt;
+          &lt;/criteria&gt;
+          &lt;criteria&gt;
+              &lt;name&gt;contract_type&lt;/name&gt;
+              &lt;type&gt;value&lt;/type&gt;
+              &lt;value&gt;50&lt;/value&gt;
+          &lt;/criteria&gt;
+          &lt;criteria&gt;
+              &lt;name&gt;start_date&lt;/name&gt;
+              &lt;type&gt;range&lt;/type&gt;
+              &lt;start&gt;2010-01-31&lt;/start&gt;
+              &lt;end&gt;2011-12-26&lt;/end&gt;
+          &lt;/criteria&gt;
+          &lt;criteria&gt;
+              &lt;name&gt;end_date&lt;/name&gt;
+              &lt;type&gt;range&lt;/type&gt;
+              &lt;start&gt;2010-01-31&lt;/start&gt;
+              &lt;end&gt;2011-12-26&lt;/end&gt;
+          &lt;/criteria&gt;
+          &lt;criteria&gt;
+              &lt;name&gt;received_date&lt;/name&gt;
+              &lt;type&gt;range&lt;/type&gt;
+              &lt;start&gt;2010-01-31&lt;/start&gt;
+              &lt;end&gt;2011-12-26&lt;/end&gt;
+          &lt;/criteria&gt;
+    &lt;/search_criteria&gt;
+    &lt;response_columns&gt;
+        &lt;column&gt;agency&lt;/column&gt;
+           &lt;column&gt;vendor&lt;/column&gt;
+           &lt;column&gt;contract_id&lt;/column&gt;
+    &lt;column&gt;purpose &lt;/column&gt;
+        &lt;column&gt;parent_contract_id &lt;/column&gt;
+           &lt;column&gt;original_amount&lt;/column&gt;
+           &lt;column&gt;current_amount&lt;/column&gt;
+           &lt;column&gt;original_modified&lt;/column&gt;
+    &lt;column&gt;version&lt;/column&gt;
+        &lt;column&gt;received_date&lt;/column&gt;
+        &lt;column&gt;apt_pin&lt;/column&gt;
+           &lt;column&gt;pin&lt;/column&gt;
+        &lt;column&gt;contract_type&lt;/column&gt;
+        &lt;column&gt;award_method&lt;/column&gt;
+           &lt;column&gt;start_date&lt;/column&gt;
+           &lt;column&gt;end_date&lt;/column&gt;
+           &lt;column&gt;contract_industry&lt;/column&gt;
+           &lt;column&gt;document_code&lt;/column&gt;
+    &lt;/response_columns&gt;
+&lt;/request&gt;
+</pre>
+<a href="#top" class="float-right">Back to the top</a>
+<a name="sample-response-pending_expense" id="sample-response-pending_expense"></a>
+<h3 class="title">Sample Response: Contract Transactions Pending Expense</h3>
+<pre>
+&lt;response&gt;
+    &lt;status &gt;
+        &lt;result&gt;success&lt;/result&gt;
+               &lt;/status&gt;
+ &lt;request_criteria&gt;
+              &lt;request&gt;
+      &lt;type_of_data &gt;contracts&lt;/type_of_data&gt;
+     &lt;records_from&gt;1&lt;/records_from&gt;
+     &lt;max_records&gt;1000&lt;/max_records&gt;
+  &lt;search_criteria&gt;
+             &lt;criteria&gt;
+          &lt;name&gt;status&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;pending&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;category&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;expense&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;agency_code&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;126&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;vendor_code&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;002&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;current_amount&lt;/name&gt;
+          &lt;type&gt;range&lt;/type&gt;
+          &lt;start&gt;0.00&lt;/start&gt;
+          &lt;end&gt;100000000.00&lt;/end&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;award_method&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;115&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;contract_id&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;CT185620050034130&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;contract_type&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;50&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;start_date&lt;/name&gt;
+          &lt;type&gt;range&lt;/type&gt;
+          &lt;start&gt;2010-01-31&lt;/start&gt;
+          &lt;end&gt;2011-12-26&lt;/end&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;end_date&lt;/name&gt;
+          &lt;type&gt;range&lt;/type&gt;
+          &lt;start&gt;2010-01-31&lt;/start&gt;
+          &lt;end&gt;2011-12-26&lt;/end&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;received_date&lt;/name&gt;
+          &lt;type&gt;range&lt;/type&gt;
+          &lt;start&gt;2010-01-31&lt;/start&gt;
+          &lt;end&gt;2011-12-26&lt;/end&gt;
+      &lt;/criteria&gt;
+&lt;/search_criteria&gt;
+&lt;/request&gt;
+    &lt;/request_criteria&gt;
+&lt;result_records&gt;
+     &lt;record_count&gt;1&lt;/record_count&gt;
+           &lt;transactions&gt;
+    &lt;transaction&gt;
+        &lt;agency&gt;DEPARTMENT OF CULTURAL AFFAIRS&lt;/agency&gt;
+        &lt;vendor&gt;ASI Systems&lt;/vendor&gt;
+        &lt;contract_id&gt;CT185620050034130&lt;/contract_id&gt;
+        &lt;parent_contract_id&gt;N/A &lt;/parent_contract_id &gt;
+        &lt;purpose&gt;Public Utility&lt;/purpose&gt;
+&lt;original_amount&gt;25000.00&lt;/original_amount&gt;
+&lt;current_amount&gt;65000.00&lt;/current_amount&gt;
+&lt;original_modified&gt;original&lt;/original_modified&gt;
+&lt;version&gt;1&lt;/version&gt;
+&lt;start_date&gt;04/30/2000&lt;/start_date&gt;
+&lt;end_date&gt;08/03/2012&lt;/end_date&gt;
+         &lt;received_date&gt;02/25/1999&lt;/received_date &gt;
+&lt;contract_type&gt;construction&lt;/contract_type&gt;
+         &lt;award_method&gt;Competitive bid&lt;/award_method&gt;
+         &lt;document_code&gt;CT1&lt;/document_code&gt;
+&lt;pin&gt;212&lt;/pin&gt;
+&lt;apt_pin&gt;322&lt;/apt_pin&gt;
+        &lt;contract_industry&gt;Goods&lt;/contract_industry&gt;
+&lt;/transaction&gt;
+ &lt;/transactions&gt;
+&lt;/result_records&gt;
+&lt;/response&gt;
+</pre>
+<a href="#top" class="float-right">Back to the top</a>
+<a name="status-codes-messages" id="status-codes-messages"></a>
+<h3 class="title">Status Codes and Messages</h3>
+<p>Status messages are categorized and displayed as status codes with short description for the user to understand the cause of the error. In case of an error no result records will be displayed and the error message will be displayed inside the &lt;message&gt; XML element as shown below. See here for <a href="#" class="status-codes">list of status codes and messages</a></p>
+
+<strong>Example: Result is Success</strong>
+<pre class="prettyprint" id="xml">
+&lt;status&gt;
+    &lt;result&gt;success&lt;/result&gt;
+    &lt;messages&gt;
+        &lt;message&gt;
+            &lt;code&gt;1&lt;/code&gt;
+            &lt;description&gt;The status is still a success but there are no results found for given search criteria&lt;/description&gt;
+        &lt;/message&gt;
+    &lt;/messages&gt;
+&lt;/status&gt;
+</pre>
+<strong>Example: Result is Failure</strong>
+<pre class="prettyprint" id="xml">
+ &lt;status&gt;
+    &lt;result&gt;error&lt;/result&gt;
+    &lt;messages&gt;
+        &lt;message&gt;
+            &lt;code&gt;1000&lt;/code&gt;
+            &lt;description&gt;Required parameter 'type_of_data' is missing&lt;/description&gt;
+        &lt;/message&gt;
+    &lt;/messages&gt;
+&lt;/status&gt;
+</pre>
+<a href="#top" class="float-right">Back to the top</a>
+<div class="status-codes">
+    <table class="api-table">
+        <thead>
+        <tr>
+            <th>Status Code</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>1</td>
+            <td>The status is still a success but there are no results found for given search criteria. </td>
+        </tr>
+        <tr>
+            <td>1000</td>
+            <td>Required parameter 'type_of_data' is missing.</td>
+        </tr>
+        <tr>
+            <td>1001</td>
+            <td>Invalid value 'BudgetRequest' is provided for 'type_of_data'. Valid values are Budget, Spending, and Revenue.</td>
+        </tr>
+        <tr>
+            <td>1002</td>
+            <td>Provided value '2.1' for 'records_from' is not an integer. Valid value is a number values without decimal places</td>
+        </tr>
+        <tr>
+            <td>1003</td>
+            <td>Total number of requested records '1001' exceeds allowed limit of '1000' records</td>
+        </tr>
+        <tr>
+            <td>1101</td>
+            <td>Provided request parameter 'date' is not valid for 'Budget' domain. Valid values are 'fiscal_year, agency_code, department_code, budget_code, expense_category, adopted_budget, current_modified_budget, pre_encumbered, encumbered, cash_expense, post_adjustment, accrued_expense</td>
+        </tr>
+        <tr>
+            <td>1102</td>
+            <td>No value is provided for request parameter 'fiscal_year'.</td>
+        </tr>
+        <tr>
+            <td>1103</td>
+            <td>Provided value '20000' for request parameter 'fiscal_year' is not valid year.</td>
+        </tr>
+        <tr>
+            <td>1104</td>
+            <td>Provided 'start' value '200s' for request parameter 'adopted_budget' is not valid amount.</td>
+        </tr>
+        <tr>
+            <td>1105</td>
+            <td>Provided start value '1000' is greater than end value '500' for request parameter 'adopted_budget'.</td>
+        </tr>
+        <tr>
+            <td>1106</td>
+            <td>Provided response column 'agencyname' value is not allowed for 'Budget' domain. Valid values are 'agency_name, department_name, expense_category, budget_code, budget_code_name, current_modified_budget, adopted_budget, pre_encumbered, encumbered, cash_expense, post_adjustment, accrued_expense'.</td>
+        </tr>
+        <tr>
+            <td>1108</td>
+            <td>Provided value 'abcd' for request parameter 'agency_code' exceeds maximum allowed '3' characters.</td>
+        </tr>
+        <tr>
+            <td>1109</td>
+            <td>Provided 'start' value '1234567890' for request parameter 'adopted_budget' exceeds maximum allowed '5' characters.</td>
+        </tr>
+        <tr>
+            <td>1110</td>
+            <td>Request parameter 'agency_code' do not support range values.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="/sites/all/libraries/raphael/raphael.min.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+
+
+var paper = Raphael(20, 20, 600, 600);
+
+paper.customAttributes.arc = function (centerX, centerY, startAngle, endAngle, innerR, outerR) {
+    var radians = Math.PI / 180,
+        largeArc = +(endAngle - startAngle > 180);
+        // calculate the start and end points for both inner and outer edges of the arc segment
+        // the -90s are about starting the angle measurement from the top get rid of these if this doesn't suit your needs
+        outerX1 = centerX + outerR * Math.cos((startAngle-90) * radians),
+        outerY1 = centerY + outerR * Math.sin((startAngle-90) * radians),
+        outerX2 = centerX + outerR * Math.cos((endAngle-90) * radians),
+        outerY2 = centerY + outerR * Math.sin((endAngle-90) * radians),
+        innerX1 = centerX + innerR * Math.cos((endAngle-90) * radians),
+        innerY1 = centerY + innerR * Math.sin((endAngle-90) * radians),
+        innerX2 = centerX + innerR * Math.cos((startAngle-90) * radians),
+        innerY2 = centerY + innerR * Math.sin((startAngle-90) * radians);
+
+    // build the path array
+    var path = [
+        ["M", outerX1, outerY1], //move to the start point
+        ["A", outerR, outerR, 0, largeArc, 1, outerX2, outerY2], //draw the outer edge of the arc
+        ["L", innerX1, innerY1], //draw a line inwards to the start of the inner edge of the arc
+        ["A", innerR, innerR, 0, largeArc, 0, innerX2, innerY2], //draw the inner arc
+        ["z"] //close the path
+    ];                   
+    return {path: path};
+};
+
+var redParams = {stroke: "#f00", "stroke-width": 1, fill:"#f00"},
+greenParams = {stroke: "#0f0", "stroke-width": 1, fill:"#0f0"},
+blueParams = {stroke: "#00f", "stroke-width": 1, fill:"#00f"},
+cx = 300, cy = 300, innerRadius = 200, outerRadius = 250;
+
+var red = paper.path().attr(redParams).attr({arc: [cx, cy, 270, 280, innerRadius, outerRadius]}); 
+var green = paper.path().attr(greenParams).attr({arc: [cx, cy, 280, 10, innerRadius, outerRadius]}); 
+var blue = paper.path().attr(blueParams).attr({arc: [cx, cy, 10, 90, innerRadius, outerRadius]});
+
+txt_obj = paper.text(150, 100, "Hello!");
+
+
+
+</script>
+</body>
+</html>

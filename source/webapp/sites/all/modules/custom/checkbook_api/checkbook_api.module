@@ -1,0 +1,188 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+
+
+
+/**
+ * Implements hook_menu().
+ */
+function checkbook_api_menu() {
+  $items['api'] = array(
+    'title' => 'Checkbook API',
+    'page callback' => 'checkbook_api',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['generate_ref_data'] = array(
+    'title' => 'Generate Reference Data',
+    'page callback' => 'checkbook_api_generate_ref_data',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['ref_code_list/%'] = array(
+    'title' => 'Load Reference Data',
+    'page callback' => 'checkbook_api_load_ref_data',
+    'page arguments' => array(1),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ *
+ */
+function checkbook_api() {
+
+  $document = new DOMDocument();
+  $document->preserveWhiteSpace = FALSE;
+  $document->load('php://input');
+
+  $search_criteria = new XMLSearchCriteria($document);
+
+  try {
+    $checkbook_api = new CheckBookAPI($search_criteria);
+  }
+  catch (Exception $e) {
+    echo $e->getMessage();
+    return;
+  }
+
+  if (isset($checkbook_api)) {
+    if ($checkbook_api->validateRequest()) {
+      echo $checkbook_api->getData();
+    }
+    else {
+      echo $checkbook_api->getErrorResponse();
+    }
+  }
+}
+
+/**
+ * @param $code_list_name
+ */
+function checkbook_api_load_ref_data($code_list_name) {
+  global $conf;
+
+  $file_name = $code_list_name . '_code_list.csv';
+  $file = variable_get('file_public_path', 'sites/default/files') . '/' . $conf['check_book']['data_feeds']['output_file_dir'] . '/' . $conf['check_book']['ref_data_dir'] . '/' . $file_name;
+
+  drupal_add_http_header("Content-Type", "text/csv");
+  drupal_add_http_header("Content-Disposition", "attachment; filename=$file_name");
+  drupal_add_http_header("Pragma", "cache");
+  drupal_add_http_header("Expires", "-1");
+
+  if (is_file($file)) {
+    $data = file_get_contents($file);
+    drupal_add_http_header("Content-Length", strlen($data));
+    echo $data;
+  }
+  else {
+    echo "Data is not generated. Please contact support team.";
+  }
+}
+
+/**
+ *
+ */
+function checkbook_api_generate_ref_data() {
+  include_once 'script/generateRefData.php';
+}
+
+/**
+ * @param $data_set
+ * @param $parameters
+ * @param $criteria
+ */
+function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, $criteria) {
+  $contract_status = $criteria['value']['status'];
+  $category = $criteria['value']['category'];
+
+  switch ($contract_status) {
+    case "registered":
+    case "active":
+      $data_controller_instance = data_controller_get_operator_factory_instance();
+
+      // Either Fiscal or Calendar year is provided:
+      if (isset($parameters['fiscal_year@checkbook:contracts_coa_aggregates'])) {
+        // Adjust dataset:
+        if (isset($criteria['value']['calendar_year'])) {
+          $data_set->name = 'checkbook:agreement_snapshot_cy';
+          $parameters['type_of_year@checkbook:contracts_coa_aggregates'] = 'C';
+        }
+        else {
+          $parameters['type_of_year@checkbook:contracts_coa_aggregates'] = 'B';
+        }
+
+        if ($contract_status == 'registered') {
+          $parameters['status_flag@checkbook:contracts_coa_aggregates'] = 'R';
+        }
+        else {
+          if ($contract_status == 'active') {
+            $parameters['status_flag@checkbook:contracts_coa_aggregates'] = 'A';
+          }
+        }
+
+        // Adjust year:
+        $req_year = $parameters['fiscal_year@checkbook:contracts_coa_aggregates'];
+        if (isset($req_year)) {
+          $ge_condition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, $req_year);
+          $le_condition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, $req_year);
+          $parameters['starting_year'] = $le_condition;
+          $parameters['ending_year'] = $ge_condition;
+          if ($contract_status == 'registered') {
+            $parameters['registered_year'] = $req_year;
+          }
+          else {
+            if ($contract_status == 'active') {
+              $parameters['effective_begin_year'] = $le_condition;
+              $parameters['effective_end_year'] = $ge_condition;
+            }
+          }
+        }
+      }
+      else {
+        // All years:
+        $parameters['latest_flag'] = 'Y';
+
+        /*if($contractStatus =='active'){
+          $leCondition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, array(date('Y-m-d')));
+          $parameters['effective_begin_date'] = $leCondition;
+        }*/
+      }
+      break;
+
+    case "pending":
+      // $parameters['latest_flag'] = 'Y';
+      break;
+
+    default:
+      break;
+  }
+
+  if ($category == 'revenue') {
+    $parameters['document_code@checkbook:ref_document_code'] = 'RCT1';
+  }
+  else {
+    if ($category == 'expense') {
+      $parameters['document_code@checkbook:ref_document_code'] = array(
+        "MMA1",
+        "MA1",
+        "CT1",
+        "DO1",
+        "CTA1",
+        "MAR",
+        "CTR",
+      );
+    }
+  }
+}
+

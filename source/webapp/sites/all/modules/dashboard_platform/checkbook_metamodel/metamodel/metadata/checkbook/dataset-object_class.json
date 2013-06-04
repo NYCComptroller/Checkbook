@@ -1,0 +1,24 @@
+{
+    "datasets": {
+        "object_class_history": {
+            "datasourceName": "main",
+            "source": "ref_object_class_history",
+            "columns": [
+                {
+                    "name": "object_class_history_id",
+                    "key": true
+                }
+            ]
+        },
+        "object_class": {
+            "datasourceName": "main",
+            "source": "ref_object_class",
+            "columns": [
+                {
+                    "name": "object_class_id",
+                    "key": true
+                }
+            ]
+        }
+    }
+}

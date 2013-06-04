@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Checkbook agencies content view importer feature.
+ */
+
+include_once('checkbook_agencies.features.inc');

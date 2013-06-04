@@ -1,0 +1,17 @@
+
+;	GNU AFFERO GENERAL PUBLIC LICENSE 
+;	   Version 3, 19 November 2007
+; This software is licensed under the GNU AGPL Version 3
+; 	(see the file LICENSE for details)
+;  Copyright 2009-2011 United States Government.
+;
+name = "Meta Model in json files"
+description = "Loads meta model configuration from json files"
+package = REI Dashboard Platform (Adapter)
+version = 7.x-2.x
+core = 7.x
+
+dependencies[] = data_controller
+
+files[] = metamodel/loader/handler/AbstractFileMetaModelLoader.php
+files[] = metamodel/loader/handler/FileMetaModelLoader.php

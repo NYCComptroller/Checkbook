@@ -1,0 +1,29 @@
+
+;	GNU AFFERO GENERAL PUBLIC LICENSE 
+;	   Version 3, 19 November 2007
+; This software is licensed under the GNU AGPL Version 3
+; 	(see the file LICENSE for details)
+name = Checkbook API
+description = Checkbook API.
+core = 7.x
+package = NYC Checkbook
+dependencies[] = checkbook_project
+
+files[] = api/CheckBookAPI.php
+files[] = criteria/AbstractAPISearchCriteria.php
+files[] = criteria/XMLSearchCriteria.php
+files[] = criteria/SearchCriteria.php
+files[] = criteria/QueueCriteria.php
+files[] = criteria/ValidatorConfig.php
+files[] = criteria/Messages.php
+files[] = config/util/ConfigUtil.php
+files[] = handler/AbstractDataHandler.php
+files[] = handler/XMLDataHandler.php
+files[] = handler/CSVDataHandler.php
+files[] = handler/DataSetHandler.php
+files[] = queue/QueueUtil.php
+files[] = queue/QueueJob.php
+files[] = formatter/AbstractFormatter.php
+files[] = formatter/CSVFormatter.php
+files[] = formatter/XMLFormatter.php
+files[] = script/generateRefData.php

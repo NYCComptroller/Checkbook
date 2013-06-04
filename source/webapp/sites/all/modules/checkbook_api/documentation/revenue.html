@@ -1,0 +1,402 @@
+<ul class="api-jump-links">
+    <li><a href="#global-parameters">Global Parameters</a></li>
+    <li><a href="#revenue-parameters">Revenue Paraments</a></li>
+    <li><a href="#possible-response">Possible Response Columns</a></li>
+    <li><a href="#sample-xml">Sample XML Requests and Responses</a></li>
+    <li><a href="#sample-request">Sample Request: Revenue Transactions</a></li>
+    <li><a href="#sample-response">Sample Response: Revenue Transactions</a></li>
+    <li><a href="#status-codes-messages">Status Codes and Messages</a></li>
+</ul>
+<a name="global-parameters"></a>
+<h2>Global Parameters</h2>
+<table class="api-table">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Required (Y/N)</th>
+        <th>Format/Value</th>
+        <th>Description</th>
+        <th>Example</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td class="bold">type_of_data</td>
+        <td>Y</td>
+        <td>String – Must be one of the following: Contracts, Budget, Revenue, Payroll, or Spending.</td>
+        <td>Allows user to select different types of data:<br />Value must be one of the following Contracts, Budget, Revenue, Payroll, or Spending.</td>
+        <td>Revenue</td>
+    </tr>
+    <tr>
+        <td class="bold">max_records</td>
+        <td>N</td>
+        <td>String – Max 4 Characters</td>
+        <td>Allows you to set the maximum number of records retrieved to fewer than 1000</td>
+        <td>500</td>
+    </tr>
+    <tr>
+        <td class="bold">record_from</td>
+        <td>N</td>
+        <td>String – Max 15 Characters</td>
+        <td>Allows you to set the starting position of the records to be retrieved</td>
+        <td>12500</td>
+    </tr>
+    </tbody>
+</table>
+<a href="#top" class="float-right">Back to the top</a>
+<a name="revenue-parameters"></a>
+<h2>type_of_data: Revenue</h2>
+<p><strong>Revenue Parameters</strong> – All the parameters are optional, meaning that you can send only 1 or all of them.  If you choose to not send any, you will receive random transactions in return as these parameters are the filter.</p>
+<table class="api-table">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Required (Y/N)</th>
+        <th>Type of Criteria(Value/Range)</th>
+        <th>Format/Value</th>
+        <th>Description</th>
+        <th>Example</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td class="bold">budget_fiscal_year</td>
+        <td>N</td>
+        <td>Value</td>
+        <td>String/YYYY 4 characters</td>
+        <td>The Budget Fiscal Year (BFY) associated with an account or record.Must be exactly 4 characters</td>
+        <td>2011</td>
+    </tr>
+    <tr>
+        <td class="bold">agency_code</td>
+        <td>N</td>
+        <td>Value</td>
+        <td>String /maximum 4 characters</td>
+        <td>See here for <a href="/ref_code_list/agency">agency codes list</a></td>
+        <td>127</td>
+    </tr>
+    <tr>
+        <td class="bold">revenue_class</td>
+        <td>N</td>
+        <td>Value</td>
+        <td>String/Maximum 4 characters</td>
+        <td>The identification code assigned to the revenue source class. This code groups revenue sources for reporting purposes. See here for <a href="/ref_code_list/revneue_class">revenue class codes list</a></td>
+        <td>790</td>
+    </tr>
+    <tr>
+        <td class="bold">fund_class</td>
+        <td>N</td>
+        <td>Value</td>
+        <td>String/Maximum 4 characters</td>
+        <td>The identification code assigned to the fund class. This code groups the funds you defined on the Fund page for reporting purposes. See here for <a href="/ref_code_list/fund_class">fund class codes list</a></td>
+        <td>001</td>
+    </tr>
+    <tr>
+        <td class="bold">funding_source</td>
+        <td>N</td>
+        <td>Value</td>
+        <td>String/Maximum 4 characters</td>
+        <td>The type code associated with the activity. This code groups the activities you defined on the Activity page for reporting purposes. See here for <a href="/ref_code_list/funding_source">funding source codes list</a>.</td>
+        <td>IF</td>
+    </tr>
+    <tr>
+        <td class="bold">revenue_category</td>
+        <td>N</td>
+        <td>Value</td>
+        <td>String/Maximum 4 characters</td>
+        <td>The identification code assigned to the revenue source category. This code groups revenue sources for reporting purposes See here for <a href="/ref_code_list/revenue_category">revenue category codes list</a>.</td>
+        <td>71</td>
+    </tr>
+    <tr>
+        <td class="bold">revenue_source</td>
+        <td>N</td>
+        <td>Value</td>
+        <td>String/Maximum 5 characters</td>
+        <td>Revenue sources are used to track individual sources of revenue taken in. See here for <a href="/ref_code_list/revenue_source">revenue source codes list</a>.</td>
+        <td>1008</td>
+    </tr>
+    <tr>
+        <td class="bold">revenue_amount</td>
+        <td>N</td>
+        <td>Range</td>
+        <td>String /Maximum 18 Characters</td>
+        <td>The dollar amount posted to the journals as a result of a transaction. Up to "99999999999999.99" (99 trillion); includes decimal and leading negative; no commas or dollar sign are accepted.</td>
+        <td>250000.00</td>
+    </tr>
+    </tbody>
+</table>
+<a href="#top" class="float-right">Back to the top</a>
+
+<a name="possible-response"></a>
+<h2>Possible response columns:</h2>
+<p>The user would be able to select which columns he would like to view in his output. Below mentioned are the possible column names for the domain. The user should include the required column names in the request xml in an element called &lt;response_columns&gt;</p>
+<table class="api-table">
+    <thead>
+    <tr>
+        <th class="bold" colspan="2">Response Column Names</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>agency_name</td>
+        <td>funding_source</td>
+    </tr>
+    <tr>
+        <td>revenue_category</td>
+        <td>budget_fiscal_year</td>
+    </tr>
+    <tr>
+        <td>revenue_source</td>
+        <td>revenue_amount</td>
+    </tr>
+    <tr>
+        <td>funding_source</td>
+        <td>fund_class</td>
+    </tr>
+    </tbody>
+</table>
+<a href="#top" class="float-right">Back to the top</a>
+
+<a name="sample-xml"></a>
+<h2>Sample XML Requests and Responses</h2>
+<p>The following xml file will specify API method calls and the details for each call.</p>
+<p>The request xml would include global parameters which specify the selected domain, records from and maximum records to return in response. It also includes search parameters along with requested response column.</p>
+<p>In the response xml, the actual search parameters that were sent will be returned in an element called &lt;search_criteria&gt; along with the actual result for a given search criteria will be displayed in an element called &lt;result_records&gt;.</p>
+<p>The total number of resulting records for a given search criteria will be displayed within an element called &lt;record_count&gt;, which helps user to view the total number of records found for a given search criteria.</p>
+<p>The response xml also includes status messages for the result. If there is an error, corresponding error code along with description will be included in an element called &lt;messages&gt; for user reference.</p>
+<a href="#top" class="float-right">Back to the top</a>
+<a name="sample-request"></a>
+<h2>Sample Request: Revenue Transactions</h2>
+<pre class="prettyprint" id="xml">
+  &lt;request&gt;
+    &lt;type_of_data &gt;Revenue &lt;/type_of_data&gt;
+    &lt;records_from&gt;1&lt;/records_from&gt;
+    &lt;max_records&gt;1&lt;/max_records&gt;
+    &lt;search_criteria&gt;
+      &lt;criteria &gt;
+        &lt;name&gt;budget_fiscal_year&lt;/name&gt;
+        &lt;type&gt;value&lt;/type&gt;
+        &lt;value&gt;2011&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+        &lt;name&gt;agency_code&lt;/name&gt;
+        &lt;type&gt;value&lt;/type&gt;
+        &lt;value&gt;126&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+        &lt;name&gt;revenue_category&lt;/name&gt;
+        &lt;type&gt;value&lt;/type&gt;
+        &lt;value&gt;24 &lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+        &lt;name&gt;revenue_source&lt;/name&gt;
+        &lt;type&gt;value&lt;/type&gt;
+        &lt;value&gt;875&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+        &lt;name&gt;fund_class&lt;/name&gt;
+        &lt;type&gt;value&lt;/type&gt;
+        &lt;value&gt;001&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+        &lt;name&gt;funding _source&lt;/name&gt;
+        &lt;type&gt;value&lt;/type&gt;
+        &lt;value&gt;C&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+        &lt;name&gt;revenue_class&lt;/name&gt;
+        &lt;type&gt;value&lt;/type&gt;
+        &lt;value&gt;18&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+        &lt;name&gt;revenue_amount &lt;/name&gt;
+        &lt;type&gt;range&lt;/type&gt;
+        &lt;start&gt;0.00&lt;/start&gt;
+        &lt;end&gt;100000.00&lt;/end&gt;
+      &lt;/criteria&gt;
+    &lt;/search_criteria&gt;
+    &lt;response_columns&gt;
+      &lt;column&gt;agency_name&lt;/column&gt;
+      &lt;column&gt;revenue_category&lt;/column&gt;
+      &lt;column&gt;revenue_source&lt;/column&gt;
+      &lt;column&gt;fund_class&lt;/column&gt;
+      &lt;column&gt;funding _source&lt;/column&gt;
+      &lt;column&gt;revenue_class&lt;/column&gt;
+      &lt;column&gt;budget_fiscal_year&lt;/column&gt;
+      &lt;column&gt;revenue_amount&lt;/column&gt;
+    &lt;/response_columns&gt;
+  &lt;/request&gt;
+</pre>
+<a href="#top" class="float-right">Back to the top</a>
+
+<a name="sample-response"></a>
+<h2>Sample Response: Revenue Transactions</h2>
+<pre class="prettyprint" id="xml">
+  &lt;response&gt;
+    &lt;status &gt;
+      &lt;result&gt;success&lt;/result&gt;
+    &lt;/status&gt;
+    &lt;request_criteria&gt;
+      &lt;request&gt;
+        &lt;type_of_data &gt;Revenue &lt;/type_of_data&gt;
+        &lt;records_from&gt;1&lt;/records_from&gt;
+        &lt;max_records&gt;1&lt;/max_records&gt;
+        &lt;search_criteria&gt;
+          &lt;criteria &gt;
+            &lt;name&gt;budget_fiscal_year&lt;/name&gt;
+            &lt;type&gt;value&lt;/type&gt;
+            &lt;value&gt;2011&lt;/value&gt;
+          &lt;/criteria&gt;
+          &lt;criteria&gt;
+            &lt;name&gt;agency_code&lt;/name&gt;
+            &lt;type&gt;value&lt;/type&gt;
+            &lt;value&gt;126&lt;/value&gt;
+          &lt;/criteria&gt;
+          &lt;criteria&gt;
+            &lt;name&gt;revenue_category&lt;/name&gt;
+            &lt;type&gt;value&lt;/type&gt;
+            &lt;value&gt;24 &lt;/value&gt;
+          &lt;/criteria&gt;
+          &lt;criteria&gt;
+            &lt;name&gt;revenue_source&lt;/name&gt;
+            &lt;type&gt;value&lt;/type&gt;
+            &lt;value&gt;875&lt;/value&gt;
+          &lt;/criteria&gt;
+          &lt;criteria&gt;
+            &lt;name&gt;fund_class&lt;/name&gt;
+            &lt;type&gt;value&lt;/type&gt;
+            &lt;value&gt;001&lt;/value&gt;
+          &lt;/criteria&gt;
+          &lt;criteria&gt;
+            &lt;name&gt;funding _source&lt;/name&gt;
+            &lt;type&gt;value&lt;/type&gt;
+            &lt;value&gt;C&lt;/value&gt;
+          &lt;/criteria&gt;
+          &lt;criteria&gt;
+            &lt;name&gt;revenue_class&lt;/name&gt;
+            &lt;type&gt;value&lt;/type&gt;
+            &lt;value&gt;18&lt;/value&gt;
+          &lt;/criteria&gt;
+          &lt;criteria&gt;
+            &lt;name&gt;revenue_amount &lt;/name&gt;
+            &lt;type&gt;range&lt;/type&gt;
+            &lt;start&gt;0.00&lt;/start&gt;
+            &lt;end&gt;100000.00&lt;/end&gt;
+          &lt;/criteria&gt;
+        &lt;/search_criteria&gt;
+      &lt;/request&gt;
+    &lt;/request_criteria&gt;
+    &lt;result_records&gt;
+      &lt;record_count&gt;11016&lt;/record_count&gt;
+      &lt;revenue_transactions&gt;
+        &lt;transaction&gt;
+          &lt;agency_name&gt;DEPARTMENT OF CULTURAL AFFAIRS&lt;/agency_name&gt;
+          &lt;revenue_category&gt;MISCELLANEOUS&lt;/revenue_category&gt;
+          &lt;revenue_class&gt;MISCELLANEOUS&lt;/revenue_class&gt;
+          &lt;revenue_source&gt;EMERGENCY REPAIR PROG RECOUPMT&lt;/revenue_source&gt;
+          &lt;budget_fiscal_year&gt;2011&lt;/budget_fiscal_year&gt;
+          &lt;revenue_amount&gt;64789.00&lt;/revenue_amount&gt;
+          &lt;fund_class&gt;GENERAL FUND&lt;/fund_class&gt;
+          &lt;funding_source&gt;CITY FUNDS&lt;/funding_source&gt;
+        &lt;/transaction&gt;
+      &lt;/revenue_transactions&gt;
+    &lt;/result_records&gt;
+  &lt;/response&gt;
+</pre>
+<a href="#top" class="float-right">Back to the top</a>
+
+<a name="status-codes-messages"></a>
+<h2>Status Codes and Messages</h2>
+<p>Status messages are categorized and displayed as status codes with short description for the user to understand the cause of the error. In case of an error no result records will be displayed and the error message will be displayed inside the &lt;message&gt; XML element as shown below. See here for <a class="status-codes" href="#">list of status codes and messages</a>.</p>
+<strong>Example: Result is Success</strong>
+<pre class="prettyprint" id="xml">
+  &lt;status&gt;
+    &lt;result&gt;success&lt;/result&gt;
+    &lt;messages&gt;
+      &lt;message&gt; &lt;code&gt;1&lt;/code&gt;
+        &lt;description&gt; The status is still a success but there are no results found for given search criteria&lt;/description&gt;
+      &lt;/message&gt;
+    &lt;/messages&gt;
+  &lt;/status&gt;
+</pre>
+
+<strong>Example: Result is Failure</strong>
+<pre class="prettyprint" id="xml">
+  &lt;status&gt;
+    &lt;result&gt;error&lt;/result&gt;
+    &lt;messages&gt;
+      &lt;message&gt; &lt;code&gt;1000&lt;/code &gt;
+        &lt;description&gt;Required parameter 'type_of_data' is missing&lt;/description&gt;
+      &lt;/message&gt;
+    &lt;/messages&gt;
+  &lt;/status&gt;
+</pre>
+<a href="#top" class="float-right">Back to the top</a>
+<div class="status-codes">
+    <table class="api-table">
+        <thead>
+        <tr>
+            <th>Status Code</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>1</td>
+            <td>The status is still a success but there are no results found for given search criteria. </td>
+        </tr>
+        <tr>
+            <td>1000</td>
+            <td>Required parameter 'type_of_data' is missing.</td>
+        </tr>
+        <tr>
+            <td>1001</td>
+            <td>Invalid value 'BudgetRequest' is provided for 'type_of_data'. Valid values are Budget, Spending, and Revenue.</td>
+        </tr>
+        <tr>
+            <td>1002</td>
+            <td>Provided value '2.1' for 'records_from' is not an integer. Valid value is a number values without decimal places</td>
+        </tr>
+        <tr>
+            <td>1003</td>
+            <td>Total number of requested records '1001' exceeds allowed limit of '1000' records</td>
+        </tr>
+        <tr>
+            <td>1101</td>
+            <td>Provided request parameter 'date' is not valid for 'Budget' domain. Valid values are 'fiscal_year, agency_code, department_code, budget_code, expense_category, adopted_budget, current_modified_budget, pre_encumbered, encumbered, cash_expense, post_adjustment, accrued_expense</td>
+        </tr>
+        <tr>
+            <td>1102</td>
+            <td>No value is provided for request parameter 'fiscal_year'.</td>
+        </tr>
+        <tr>
+            <td>1103</td>
+            <td>Provided value '20000' for request parameter 'fiscal_year' is not valid year.</td>
+        </tr>
+        <tr>
+            <td>1104</td>
+            <td>Provided 'start' value '200s' for request parameter 'adopted_budget' is not valid amount.</td>
+        </tr>
+        <tr>
+            <td>1105</td>
+            <td>Provided start value '1000' is greater than end value '500' for request parameter 'adopted_budget'.</td>
+        </tr>
+        <tr>
+            <td>1106</td>
+            <td>Provided response column 'agencyname' value is not allowed for 'Budget' domain. Valid values are 'agency_name, department_name, expense_category, budget_code, budget_code_name, current_modified_budget, adopted_budget, pre_encumbered, encumbered, cash_expense, post_adjustment, accrued_expense'.</td>
+        </tr>
+        <tr>
+            <td>1108</td>
+            <td>Provided value 'abcd' for request parameter 'agency_code' exceeds maximum allowed '3' characters.</td>
+        </tr>
+        <tr>
+            <td>1109</td>
+            <td>Provided 'start' value '1234567890' for request parameter 'adopted_budget' exceeds maximum allowed '5' characters.</td>
+        </tr>
+        <tr>
+            <td>1110</td>
+            <td>Request parameter 'agency_code' do not support range values.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

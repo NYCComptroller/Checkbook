@@ -1,0 +1,156 @@
+<?php
+
+/**
+ * @file
+ * Adds a "Logged In As" block.
+ */
+
+/**
+ * Implementation of hook_block_info().
+ * Get the list of the blocks.
+ *
+ * @param
+ *   none.
+ *
+ * @return
+ *   array containing the title ("info") of the block.
+ */
+function logged_in_block_info() {
+  return array(
+    'logged_in' => array('info' => t('Util: Logged in as'), 'cache' => DRUPAL_CACHE_PER_USER),
+    );
+}
+
+/**
+ * Implementation of hook_block_view().
+ * Get the output to be displayed by the block.
+ *
+ * @param
+ *   $delta - integer for the block number.
+ *
+ * @return
+ *   array containing the title ("subject") and content of the block.
+ */
+function logged_in_block_view($delta) {
+  $block = array();
+  switch ($delta) {
+    case 'logged_in':
+      $block = array('content' => _logged_in_data());
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Implementation of hook_block_configure().
+ * Get the extra form elements for the block.
+ *
+ * @param
+ *   $delta - integer for the block number.
+ *
+ * @return
+ *   array containing the extra form elements for the block.
+ */
+function logged_in_block_configure($delta) {
+  $form = array();
+  $noyes = array(t('No'), t('Yes'));
+
+  switch ($delta) {
+    case 'logged_in':
+      $form['logged_in'] = array(
+        '#type' => 'fieldset',
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
+        '#title' => t('Logged In Display'),
+        '#description' => t('Select the options for the display.'),
+        '#prefix' => '<div id="logged-in-settings">',
+        '#suffix' => '</div>',
+        );
+
+      $form['logged_in']['show_roles'] = array(
+        '#type' => 'radios',
+        '#options' => $noyes,
+        '#title' => t('Show user roles'),
+        '#default_value' => (int) variable_get('logged_in_show_roles', 0),
+        '#attributes' => array('class' => array('container-inline')),
+        );
+
+      $form['logged_in']['show_perms'] = array(
+        '#type' => 'radios',
+        '#options' => $noyes,
+        '#title' => t('Show permissions'),
+        '#description' => t('This can be a very lengthy list.'),
+        '#default_value' => (int) variable_get('logged_in_show_perms', 0),
+        '#attributes' => array('class' => array('container-inline')),
+        );
+
+      break;
+  }
+  return $form;
+}
+
+/**
+ * Implementation of hook_block_save().
+ * Process the extra form values for the block.
+ *
+ * @param
+ *   $delta - integer for the block number.
+ * @param
+ *   $edit - entered form values.
+ */
+function logged_in_block_save($delta, $edit) {
+  switch ($delta) {
+    case 'logged_in':
+      variable_set('logged_in_show_roles', $edit['show_roles']);
+      variable_set('logged_in_show_perms', $edit['show_perms']);
+      break;
+  }
+}
+
+function _logged_in_data() {
+  global $user;
+  $output = NULL;
+  $show_roles = variable_get('logged_in_show_roles', 0);
+  $show_perms = variable_get('logged_in_show_perms', 0);
+
+  if ($user->uid) {
+    $output .= t('You are logged in as !username (@userid).',
+      array('!username' => theme('username', array('account' => $user)), '@userid' => $user->uid)
+      );
+  }
+  else {
+    $output .=  t('You are not logged in.');
+  }
+
+  if ($show_roles) {
+    if ($user->uid == 1) {
+      $roles = t('super-user');
+    }
+    else {
+      $roles = implode(', ', $user->roles);
+    }
+    $output .= '<br />' . t('Your roles:') . ' ' . $roles;
+  }
+
+  if (!$show_perms) {
+    return $output;
+  }
+
+  if ($uid == 1) {
+    $perms = array('all');
+  }
+  else {
+    $result = db_query("SELECT p.perm FROM {role} r INNER JOIN {permission} p ON p.rid = r.rid WHERE r.rid IN (" . db_placeholders($user->roles) . ")", array_keys($user->roles));
+    $perms = array();
+    foreach ($result as $row) {
+      $perms += explode(', ', $row->perm);
+    }
+  }
+  $perms = array_unique($perms);
+  asort($perms);
+  $class = count($perms) > 25 ? 'logged-in-xsmall' : 'logged-in-small';
+  $output .= '<br />' . t('Your permissions:')
+    . " <div class=\"$class\">" . implode(', ', $perms) . '</div>';
+
+  return $output;
+}

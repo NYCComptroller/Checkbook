@@ -1,0 +1,159 @@
+<?php
+// $Id: quickmenu.module,v 1.0 2011/07/28 01:31:07 sagar Exp $
+/** 
+ * Implementation of hook_permission()
+ */
+function quickmenu_permission() {
+	return array(
+		'administer quick menus' => array(
+      'title' => t('Administer quick menus'), 
+      'description' => t('Perform administration tasks for mquick menus.'),
+    ),
+	);
+}
+
+/** 
+ * Implementation of hook_menu()
+ */
+function quickmenu_menu() {
+	$items = array();
+	$items['admin/structure/menu/quickmenus'] = array(
+		'title' => t('Quick Menu'),
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('quickmenu_settings'),
+		'access arguments' => array('administer quick menus'),
+		'type' => MENU_LOCAL_TASK,
+		'weight' => 100,
+	);
+	return $items;
+}
+
+function quickmenu_settings() {
+	$q = db_query("SELECT * FROM {menu_custom} ORDER BY title");
+	$options = array();
+	while ($row = $q->fetchAssoc()) {
+		$options[$row['menu_name']] = $row['title'];
+	}
+
+	$form['qm_intro'] = array(
+		'#value' => '<h2>Quick Menu Configuration</h2><P>Which menus in the system should be available as quick menu blocks?</P><P>A quick menu block forms a select box with all the pages in that menu.	When a user selects an entry from the select box, they are sent to that page.</p>'
+	);
+	$form['quickmenu_enabled'] = array(
+		'#type' => 'checkboxes',
+		'#options' => $options,
+		'#default_value' => _quickmenu_enabled_menus(),
+		'#title' => t('Select the menus you wish to enable as quick menu blocks'),
+		'#description' => t('You will still need to individually enable the QUICK MENU blocks for each of these menus at ' . l('block admin','admin/build/block')),
+	);
+	$form['quickmenu_maxlength'] = array(
+		'#type' => 'textfield'
+		,'#default_value' => variable_get('quickmenu_maxlength', '25')
+		,'#title' => t('Max width of quick-menu entries')
+		,'#size' => 6
+		,'#description' => t('This affects entries coming from node/edit but does <i>not</i> affect entries from other menu editing sources.')
+	);
+  $form['quickmenu_maxdepth'] = array(
+		'#type' => 'textfield'
+		,'#default_value' => variable_get('quickmenu_maxdepth', '10')
+		,'#title' => t('Max depth of quick-menu entries')
+		,'#size' => 6
+		,'#description' => t('This defines the menu depth.')
+	);
+	return system_settings_form($form);
+}
+
+function _quickmenu_enabled_menus() {
+	return variable_get('quickmenu_enabled', array('main-menu'));
+}
+
+function _quickmenu_block_view($delta) {
+	drupal_add_js(drupal_get_path('module', 'quickmenu') . '/quickmenu.js');
+
+	if (in_array($delta, _quickmenu_enabled_menus())) {
+    // Load up the menu.
+    $menu = menu_tree_all_data($delta);
+    // Initialize for building.
+    $maxDepth = variable_get('quickmenu_maxdepth', 10);
+    $depths = array('current' => 0, 'max' => $maxDepth);
+    $targets = array();
+      foreach($menu as $m) {
+        // mlid is i18n tranlsation friendly.
+         //   $menu = $m['below'];
+            _quickmenu_create_options($targets, $menu, $depths);
+            break;
+    }
+    
+			$select = array(
+				'#type'		=> 'select',
+				'#options'	=> $targets,
+        '#attributes'	=> array('class' => array('quick_menu_select'), '#id'	=> str_replace('-','_',"quick_menu_$delta")),        
+			);
+		
+			$title = db_query("SELECT title FROM {menu_custom} WHERE menu_name = :name", array(':name' => $delta))->fetchField();
+			return array(
+				'subject'	=> $title,
+				'content'	=> drupal_render($select),
+			);
+		}
+}
+
+function _quickmenu_block_list() {
+	$quickmenus = _quickmenu_enabled_menus();
+	$q = db_query("SELECT * FROM {menu_custom} ORDER BY title");
+	while ($row = $q->fetchAssoc()) {
+		$titles[$row['menu_name']] = $row['title'];
+	}
+	foreach ($quickmenus as $menu_name) {
+		if ( $menu_name ) {
+			$blocks[ $menu_name ] = array(
+				'info' => t('QUICK MENU: ' . $titles[$menu_name]),
+			//	'weight' => '0',
+			//	'enabled' => '0',
+			//	'region' => 'left',
+			);
+		}
+	}
+	return $blocks;
+}
+
+/**
+ * Implementation hook_block_info()
+ * Define block information
+ */
+function quickmenu_block_info(){
+  return _quickmenu_block_list();
+}
+
+/**
+ * Implementation hook_block_view()
+ * Define block information
+ */
+function quickmenu_block_view($delta = 'main-menu'){
+  return _quickmenu_block_view($delta);  
+}
+
+// Recursive menu to select option building.
+function _quickmenu_create_options(&$t, &$m, &$d) {
+    foreach ($m as $item) { // set the option
+     //   dpr($item);
+        if($item['link']['hidden'] == 0) { // Kill non-viewable menu items.
+
+            // Add depth indicators to titles.
+            if($d['current'] > 0) {
+                $title = ' '. str_repeat('-', $d['current']) .' '. $item['link']['title'];
+            } else {
+                $title = $item['link']['title'];
+            }
+                // Create a normal option.
+            $t[url($item['link']['href'])] = t($title);
+
+        }
+        
+         // Loop deeper if there is no max or we haven't reached it.
+        if ($item['below'] || ($d['max'] == 0 || $d['current'] < $d['max'])) {
+            $d['current']++; // Drop current depth.
+            _quickmenu_create_options($t, $item['below'], $d);
+        }   
+    }
+    $d['current']--; // Raise current depth back up.
+}

@@ -1,0 +1,22 @@
+{
+	"widgetType": "data_tables",
+	"widgetSubType":"template",
+        "template":"trends_persons_rec_pub_asst",
+        "useList":true,
+	"no_results_content":"No Results Found",
+"defaultParameters":{"display_yn":"Y"},
+	"dataset": "checkbook:trends_person_receiving_pubic_assistance",
+	"columns": ["fiscal_year","public_assistance","ssi"],
+       "orderBy":"fiscal_year",
+	"table_title":"",	
+	"dataTableOptions":{
+        "bFilter": false,
+        "bPaginate": false,
+        "bLengthChange": false,        
+        "bInfo": false,
+         "bSort":false,
+         "fnDrawCallback": "##function () {
+            trendsCenPad(this);
+        }##" 
+       }
+}

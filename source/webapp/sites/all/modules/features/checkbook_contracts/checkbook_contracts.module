@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Checkbook Contracts feature.
+ */
+
+include_once('checkbook_contracts.features.inc');

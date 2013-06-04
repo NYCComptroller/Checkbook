@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Checkbook Payroll feature.
+ */
+
+include_once('checkbook_payroll.features.inc');

@@ -1,0 +1,78 @@
+<?php
+
+/**
+ * Implementation of hook_help().
+ */
+function dblog_clear_help($path, $args) {
+  switch ($path) {
+    case 'admin/reports/dblog':
+      // being able to access reports is not enough to allow deletion
+      // the ones responsible for configuration owns the right
+      // over log history preservation 
+      if (user_access('administer site configuration')) {
+        return '<p>'. t('Within the "Filter log messages" field set there is a button that you may use to clear selected entries.') .'</p>';
+      }
+  }
+}
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function dblog_clear_form_alter(&$form, $form_state, $form_id) {
+  switch ($form_id) {
+    // works with or without dblog_ext
+    case 'dblog_filter_form': // no break;
+    case 'dblog_ext_filter_form':
+      drupal_add_css(drupal_get_path('module', 'dblog_clear') . '/dblog_clear.css');
+      $form['filters']['buttons']['clear'] = array(
+        '#type' => 'submit',
+        '#value' => t('Clear'),
+        '#submit' => array('dblog_clear_submit'),
+        '#attributes' => array('class' => 'warning'),
+      );
+      break;
+  }
+}
+
+function dblog_clear_submit() {
+  // works with or without dblog_ext
+  $filter = module_exists('dblog_ext') ? dblog_ext_build_filter_query() : dblog_build_filter_query();
+  if ($filter) {
+    $where = $filter['where'];
+    $args = $filter['args'];
+
+    // support filtering by user
+    if (strpos($where, 'u.name') === false) {
+      $where = str_replace('w.', '', $where);
+    }
+    else {
+      $query = 'SELECT w.wid FROM {watchdog} w INNER JOIN {users} u ON w.uid = u.uid';
+      $query .= ' WHERE ' . $where;
+      $result = db_query($query, $args);
+      $wids = array();
+      while($row = db_fetch_array($result)) {
+        $wids[] = $row['wid'];
+      }
+
+      $args = array(); // clear $args
+      if (empty($wids)) unset($where);
+      else $where = "wid IN ('" . implode("', '", $wids) . "')";
+    }
+  }
+
+  $query = 'DELETE FROM {watchdog}';
+  if ($where) $query .= ' WHERE ' . $where;
+
+  if (db_query($query, $args) === FALSE) {
+    $msg = t('Failed to clear logs.');
+    drupal_set_message($msg, 'error');
+    $msg .= ' ' . t('Performed SQL query: @query; with arguments: @args', array('@query' => $query, '@args' => implode(', ', $args))); 
+    watchdog('dblog_clear', $msg, NULL, WATCHDOG_ERROR);
+  }
+  else {
+    $count = db_affected_rows();
+    drupal_set_message(t('Deleted @count rows.', array('@count' => $count)));
+    // clear the filter
+    unset($_SESSION['dblog_overview_filter']);
+  }
+}

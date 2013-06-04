@@ -1,0 +1,146 @@
+<?php
+// $Id: uniform.module,v 1.10 2010/11/10 02:25:04 realityloop Exp $
+/**
+ * @file
+ * Module for displaying sexy forms using jQuery.
+ * This module uses jQuery to theme html forms.
+ * @see http://pixelmatrixdesign.com/uniform/
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function uniform_menu() {
+  $items = array();
+
+  $items['admin/config/user-interface/uniform'] = array(
+    'title' => 'Uniform settings',
+    'description' => 'Configuration options for the uniform module',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('uniform_admin_settings'),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer site configuration'),
+  );
+  return $items;
+}
+
+// Build admin settings page for Uniform
+function uniform_admin_settings() {
+  // get path to uniform
+  $path = libraries_get_path('uniform');
+  // scan for themes
+  $uthemes = file_scan_directory('./' . $path . '/css', '/.*/', array('nomask' => '/(\.\.?|CVS)$/'));
+  // get currently set theme from {variable} table
+  $deftheme = variable_get('uniform_theme', 'default');
+
+  // create array of themes for select options
+  $options = array();
+  foreach ($uthemes as $key => $data) {
+    list(, $option) = explode('.', $data->name);
+    $options[$option] = drupal_ucfirst($option) . ' ' . t('theme');
+  }
+
+  // build select
+  $form['uniform_theme'] = array(
+    '#type' => 'select',
+    '#title' => t('Uniform theme'),
+    '#default_value' => $deftheme,
+    '#options' => $options,
+    '#description' => t('Select your desired theme.'),
+  );
+
+  // checkboxes for form elements to be themed
+  $form['uniform_elements'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Form elements'),
+    '#default_value' => variable_get('uniform_elements', array()),
+    '#options' => array(
+      'button' => t('Button: HTML Tag'),
+      'input:button' => t('Button: Input'),
+      'input:submit' => t('Button: Submit '),
+      'input:checkbox' => t('Checkbox'),
+      'input:file' => t('File field'),
+      'input:password' => t('Password'),
+      'input:radio' => t('Radio'),
+      'textarea' => t('Textarea'),
+      'input:text' => t('Text field'),
+//      'input:search' => t('Search'),
+      'select' => t('Select'),
+    ),
+    '#description' => t('Select the form elements you would like to be themed.'),
+  );
+
+  // string of jQuery selectors to be excluded
+  $form['uniform_not_selectors'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Exclude Selectors'),
+    '#default_value' => variable_get('uniform_not_selectors', ''),
+    '#description' => t('Enter a comma separated list of jQuery selectors you want to exclude from Uniform theming, these will be excluded using the jQuery <a href="http://api.jquery.com/not/">.not()</a> API call.'),
+  );
+
+  // optionally disable in Admin section
+  $form['uniform_admin'] = array(
+    '#type' => 'select',
+    '#title' => t('Administration Areas'),
+    '#default_value' => variable_get('uniform_admin', 'su'),
+    '#options' => array(
+      'su' => t('Enable Uniform'),
+      'hu' => t('Disable Uniform'),
+    ),
+    '#description' => t('Select Disable Uniform if you don\'t want Uniform to apply on forms in the administration area.'),
+  );
+  // optionally disable on node add/edit forms
+  $form['uniform_node'] = array(
+    '#type' => 'select',
+    '#title' => t('Node forms'),
+    '#default_value' => variable_get('uniform_node', 'su'),
+    '#options' => array(
+      'su' => t('Enable Uniform'),
+      'hu' => t('Disable Uniform'),
+    ),
+    '#description' => t('Select Disable Uniform if you don\'t want Uniform to apply on node edit/add forms.'),
+  );
+return system_settings_form($form);
+}
+
+
+/**
+ * Implements hook_init().
+ */
+function uniform_init() {
+  $enabled = variable_get('uniform_elements', array());
+  $go = current($enabled);
+  if(!empty($go)) {
+    $path = libraries_get_path('uniform');
+    $modpath = drupal_get_path('module', 'uniform');
+    // load theme css
+    drupal_add_css($path . '/css/uniform.' . variable_get('uniform_theme', 'default') . '.css');
+    drupal_add_css( $modpath . '/uniform.css');
+    // load uniform js file, chosing minified version if present.
+    if (file_exists($path . '/jquery.uniform.min.js')) {
+      drupal_add_js($path . '/jquery.uniform.min.js');
+    }
+    else {
+      drupal_add_js($path . '/jquery.uniform.js');
+    }
+
+    //Only Show uniform in Admin section or on node add/edit forms if allowed
+    if ((variable_get('uniform_admin','su') != 'su' && (arg(0) == 'admin')) || (variable_get('uniform_node','su') != 'su' && (arg(0) == 'node') && ((arg(1) =='add') || (arg(2) =='edit')))) {
+
+    }
+    else {
+      // add script to enable theming of elements defined in settings
+      $uniform_selectors = array(
+        'selectors' => array_keys(array_filter($enabled))
+      );
+
+      $not_selectors = variable_get('uniform_not_selectors', '');
+      if (!empty($not_selectors)) {
+        $uniform_selectors['not'] = filter_xss_admin($not_selectors);
+      }
+
+      drupal_add_js(array('uniform' => $uniform_selectors), 'setting');
+      drupal_add_js($modpath .'/uniform.js');
+    }
+  }
+}

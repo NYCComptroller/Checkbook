@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Checkbook Featured Trends Graphs feature.
+ */
+
+include_once('checkbook_featured_trends_graphs.features.inc');

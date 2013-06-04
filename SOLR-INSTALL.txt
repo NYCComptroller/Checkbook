@@ -1,0 +1,29 @@
+1. move directories to right path
+- copy software/apache-tomcat-6.0.35 to /opt/apache-tomcat-6.0.35
+- copy software/solr-4.1.0 to /opt/solr-4.1.0
+
+2. Update solr database settings.
+- update /opt/solr-4.1.0/indexes/solr/collection1/conf/db-config.xml 
+with correct username, password and schema for the postgreSQL database.
+- update second line from the file db-config.xml with correct database details
+	/opt/solr-4.1.0/indexes/solr/collection1/conf/db-config.xml
+	url="jdbc:postgresql://localhost/<database schema name>" user="<database username>" password="<database password>"
+
+3. start solr.
+- change to directory /opt/apache-tomcat-6.0.35/bin and type ./startup.sh and hit enter to start solr.
+- go to url http://localhost:8080/solr-checkbook/ to see that solr has started.
+- detailed logs for troubleshooting errors can be found at /opt/apache-tomcat-6.0.35/logs
+
+4. start indexing.
+- paste the url in browser to restart reindexing.
+http://localhost:8088/solr-checkbook/dataimport?command=full-import&clean=true&jobID=0
+
+5. monitor indexing
+- monitor the progress by hitting url http://localhost:8080/solr-checkbook/dataimport 
+- detailed logs for troubleshooting errors can be found at /opt/apache-tomcat-6.0.35/logs
+
+
+
+	
+	 
+

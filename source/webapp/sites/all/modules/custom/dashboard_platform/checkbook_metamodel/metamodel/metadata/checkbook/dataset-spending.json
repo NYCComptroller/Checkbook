@@ -1,0 +1,17 @@
+{
+    "datasets": {
+        "disbursement_line_item_details": {
+            "datasourceName": "main",
+            "source": "disbursement_line_item_details"            
+        } 			             	        		        
+     },
+
+    
+	"references": {
+        "disbursement_line_item_details__source_updated_date": [
+                {"datasetName": "disbursement_line_item_details", "columnNames": ["check_eft_issued_date_id"]},
+                {"datasetName": "date_id", "columnNames": ["date_id"]}
+        ]                                          
+                            
+    }    
+}

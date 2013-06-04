@@ -1,0 +1,10 @@
+{
+"widgetType": "phpparser",
+"cleanURLParameters":["agency","year","calyear","yeartype"],
+"urlParamMap":{"agency":"agency_id","year":"fiscal_year_id","calyear":"fiscal_year_id","yeartype":"type_of_year"},
+"defaultParameters":{"type_of_year":"B","type_of_employment@checkbook:payroll_employee_agency":"Salaried"},
+"limit":"1",
+"dataset": "checkbook:payroll_agency",
+"columns": ["agency.agency","agency.agency.agency_short_name","total_annual_salary","total_gross_pay","total_base_pay","total_other_payments","total_overtime_pay","total_employees","total_salaried_employees","total_hourly_employees","year.year","year_type.year_type","agency.agency.agency_name"],
+"template":"payroll_agency_payroll_summary"
+}

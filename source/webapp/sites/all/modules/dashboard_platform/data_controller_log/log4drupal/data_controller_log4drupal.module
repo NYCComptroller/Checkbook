@@ -1,0 +1,16 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+
+
+function data_controller_log4drupal_dc_log_message_listener() {
+    $items[] = array(
+        'classname' => 'Log4DrupalMessageListener',
+        'priority' => 1000);
+
+    return $items;
+}

@@ -1,0 +1,93 @@
+{
+	"widgetType": "data_tables",
+	"widgetSubType":"ajaxSimple",
+	"no_results_content":"No Results Found",
+	"cleanURLParameters":["vendor","year","yeartype","calyear","category","vendor","expcategory","agency"],
+	"urlParamMap":{"year":"year.year","yeartype":"type_of_year","calyear":"year_id","category":"spending_category_id","vendor":"vendor_id","expcategory":"expenditure_object.expenditure_object","agency":"agency_id"},
+	"defaultParameters":{"year.year":22,"type_of_year":"B"},
+	"dataset": "checkbook:spending_data",
+	"noDataInitialLoad":true,
+	"columns": ["yeartype.yeartype","check_amount_sum","expenditure_object.expenditure_object","expenditure_object.expenditure_object.original_expenditure_object_name","year.year"],
+	"limit":5,
+"enableExpand":true,
+"getTotalDataCount":true,
+"disableViewAll":true,
+"header":"
+$node->widgetConfig->getData=false;
+load_widget_data($node);
+if($node->totalDataCount > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
+$header='<div class=\"tableHeader\"><h2>Top ' .  $count . 'Expense Categories</h2><span class=\"contCount\"> Number of Expense Categories:  ' . number_format($node->totalDataCount) . '</span></div>';
+return $header;",
+"footer":"
+$url = '/panel_html/spending_transactions/spending/transactions'. _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_url_param_string(\"category\")  . '/dtsmnid/' . $node->nid . _checkbook_project_get_year_url_param_string(false,false,true);
+$footer = '';
+if($node->totalDataCount > 5)
+      $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
+else if($node->totalDataCount > 0 && $node->totalDataCount <= 5)
+     $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
+else
+      $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
+return $footer;
+",
+
+	"derivedColumns": 
+	{
+		"formatted_check_amount_sum": {
+			"type": "expression2",
+			"expression": "custom_number_formatter_format($row['check_amount_sum'],2,'$')"
+		},
+		"formatted_check_amount_sum_link":{
+			"type": "expression2",
+                         "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/spending_transactions/spending/transactions' .  _checkbook_project_get_year_url_param_string(false,false,true)  ._checkbook_project_get_url_param_string(\"vendor\") . _checkbook_project_get_url_param_string(\"category\")  . '/smnid/' . $node->nid . _checkbook_project_get_url_param_string(\"agency\") . '/expcategory/' .  $row[expenditure_object_expenditure_object] .   '\">' . $row['formatted_check_amount_sum'] . '</a>'"
+		}
+	},
+        "summaryView":{
+	          "template":"spending_exp_category_summary",
+                  "templateTitleEval":"
+                         $catName = RequestUtil::getSpendingCategoryName();
+                         return ('Expense Category ' . $catName . ' Transactions');
+                   "
+         },
+       "WidgetTitleEval":"
+                   $catName = RequestUtil::getSpendingCategoryName();
+                  return ('Expense Categories ' . $catName . ' Transactions');
+         ",
+	"table_title":"",
+	"table_columns": [
+		{
+			"labelAlias": "expense_category",
+			"column": "expenditure_object_expenditure_object_original_expenditure_object_name",
+			"header": "false"
+		},
+		{
+			"labelAlias": "ytd_spending",
+			"column": "formatted_check_amount_sum_link",
+			"header": "false",
+			"sortSourceColumn":"check_amount_sum"
+		},
+     {
+      "label": "",
+      "column": ""
+    }
+	],
+	"dataTableOptions":{
+                "aoColumns": [ 
+                  { "sClass":"text","bSortable": false},
+                  { "sWidth":"143px","sClass":"number" ,"asSorting": [ "desc" ,"asc" ]},
+                  { "bSortable": false,"sWidth":"15px" } ],
+"bServerSide": true,
+"bFilter": false,
+"bPaginate": false,
+"bProcessing":true,
+"bLengthChange": false,
+"bInfo": false,
+"bAutoWidth": false,
+"aaSorting": [[ 1, "desc" ]],
+"fnServerParams": "##function ( aoData ) {
+           reloadExpandCollapseWidget(this,aoData);
+}##",
+"oLanguage":{
+"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+}
+}
+}

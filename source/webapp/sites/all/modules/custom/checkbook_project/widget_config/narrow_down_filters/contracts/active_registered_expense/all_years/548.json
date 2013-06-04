@@ -1,0 +1,35 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":485,
+    "no_results_content":"No Results Found",    
+    "allowRequestParams":["contstatus"],    
+    "defaultParameters":{
+        "latest_flag":"Y"
+    },
+    "limit":100,
+    "urlParamMap":{"doctype":"document_code.document_code.document_code"}  ,
+    "columns":["vendor.vendor", "vendor.vendor.legal_name", "txcount"],
+    "orderBy":["-txcount","vendor.vendor.legal_name"], 
+	"getTotalDataCount":true,    
+	"facetPager":true,    
+    "filterName":"Vendor",
+    "urlParameterName":"vendor",
+    "autocompleteParamName":"vendor_auto",    
+    "autocompleteID":"fvendorId", 	
+    "autocompleteField":"vendor_name",
+    "maxSelect":5,	   
+    "adjustParameters":"
+	checkbook_faceted_search_adjust_param($node);
+    if(function_exists('_checkbook_project_adjustContractParameterFilters')){
+        _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered_all');
+    }
+
+    if(function_exists('_checkbook_project_applyParameterFilters')){
+        $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+		$adjustedParameters['vendor.vendor'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);        
+        return $adjustedParameters;
+    }
+    return $parameters;
+    " ,      
+    "template":"individual_filter"
+}
