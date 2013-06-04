@@ -1,0 +1,12 @@
+
+;	GNU AFFERO GENERAL PUBLIC LICENSE 
+;	   Version 3, 19 November 2007
+; This software is licensed under the GNU AGPL Version 3
+; 	(see the file LICENSE for details)
+name = Views Ranking
+description = "Views style plugin to view ranking"
+package = REI Dashboard Platform (Visualization)
+version = 7.x-1.x
+core = 7.x
+
+dependencies[] = views

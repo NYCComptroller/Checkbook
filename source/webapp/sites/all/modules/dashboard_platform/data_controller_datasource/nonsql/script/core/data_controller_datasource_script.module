@@ -1,0 +1,106 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+
+
+function data_controller_datasource_script_dc_datasource() {
+    $items[ScriptDataSource::TYPE] = array(
+        'extensions' => array(
+            'getMaximumEntityNameLength' => 'UnlimitedEntityNameLengthImpl'
+        )
+    );
+
+    return $items;
+}
+
+function data_controller_datasource_script_dc_datasource_query() {
+    $items[ScriptDataSource::TYPE] = array(
+        'handler' => 'ScriptDataSourceHandler');
+
+    return $items;
+}
+
+function data_controller_datasource_script_get_script_file_name(DatasetMetaData $dataset) {
+    $filename = NULL;
+
+    if (isset($dataset->source->scriptFile)) {
+        if (!isset($dataset->loadedFromFile)) {
+            throw new IllegalStateException(t(
+                "Source file from which '@datasetName' dataset was loaded is unknown",
+                array('@datasetName' => $dataset->publicName)));
+        }
+
+        // calculating script location
+        $dir = dirname($dataset->loadedFromFile);
+        $filename = $dir . $dataset->source->scriptFile;
+    }
+
+    return $filename;
+}
+
+function data_controller_datasource_script_prepare_version(DatasetMetaData $dataset, $scriptFileName) {
+    $scriptVersion = NULL;
+    if (isset($scriptFileName)) {
+        $scriptVersion = filemtime($scriptFileName);
+        if ($scriptVersion === FALSE) {
+            $scriptVersion = NULL;
+        }
+    }
+
+    return MathHelper::max($scriptVersion, $dataset->version);
+}
+
+function data_controller_datasource_script_load_dataset_script($datasetName) {
+    $response = NULL;
+
+    try {
+        MetaModelFactory::getInstance()->registerAdHocMetaModelFilter('DatasetMetaData', 'datasourceName', NULL);
+
+        $metamodel = data_controller_get_metamodel();
+
+        $dataset = $metamodel->getDataset($datasetName);
+
+        $scriptBody = NULL;
+
+        $scriptFileName = data_controller_datasource_script_get_script_file_name($dataset);
+        if (isset($scriptFileName)) {
+            $scriptBody = file_get_contents($scriptFileName);
+            if ($scriptBody === FALSE) {
+                LogHelper::log_error(t(
+                    "Could not read content of '@datasetName' dataset script file: @filename",
+                    array('@datasetName' => $dataset->publicName, '@filename' => $scriptFileName)));
+                throw new IllegalStateException(t(
+                    'Could not read content of script file for the dataset: @datasetName',
+                    array('@datasetName' => $dataset->publicName)));
+            }
+        }
+        elseif (isset($dataset->source->script)) {
+            $scriptBody = $dataset->source->script;
+        }
+        else {
+            throw new UnsupportedOperationException(t(
+                'Could not access script body for the dataset: @datasetName',
+                array('@datasetName' => $dataset->publicName)));
+        }
+
+        $response = $scriptBody;
+
+        // preparing version number
+        $selectedVersion = data_controller_datasource_script_prepare_version($dataset, $scriptFileName);
+        if (isset($selectedVersion)) {
+            drupal_add_http_header('ETag', $selectedVersion);
+        }
+
+        drupal_add_http_header('Status', '200 OK');
+    }
+    catch (Exception $e) {
+        LogHelper::log_error($e);
+        drupal_add_http_header('Status', '500 Internal Server Error: ' . $e->getMessage());
+    }
+
+    return $response;
+}

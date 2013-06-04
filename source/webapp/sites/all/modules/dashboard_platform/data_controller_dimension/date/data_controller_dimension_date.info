@@ -1,0 +1,37 @@
+
+;	GNU AFFERO GENERAL PUBLIC LICENSE 
+;	   Version 3, 19 November 2007
+; This software is licensed under the GNU AGPL Version 3
+; 	(see the file LICENSE for details)
+name = "Date dimension"
+description = "Adds support for date dimension"
+package = REI Dashboard Platform (Adapter)
+version = 7.x-2.x
+core = 7.x
+
+dependencies[] = data_controller
+dependencies[] = cube_uploader
+
+files[] = common/datatype/handler/DateDimensionMonthDataTypeHandler.php
+files[] = common/datatype/handler/DateDimensionQuarterDataTypeHandler.php
+files[] = common/datatype/handler/DateDimensionYearDataTypeHandler.php
+files[] = datasource/dataset/assembler/handler/AbstractDateDimensionDatasetAssembler.php
+files[] = datasource/dataset/assembler/handler/DateDimensionDateDatasetAssembler.php
+files[] = datasource/dataset/assembler/handler/DateDimensionMonthDatasetAssembler.php
+files[] = datasource/dataset/assembler/handler/DateDimensionQuarterDatasetAssembler.php
+files[] = datasource/dataset/assembler/handler/DateDimensionYearDatasetAssembler.php
+files[] = datasource/operator/handler/DynamicDateRangeOperatorHandler.php
+files[] = datasource/operator/handler/SQL_DynamicDateRangeOperatorHandler.php
+files[] = datasource/operator/handler/LatestDateOperatorHandler.php
+files[] = datasource/operator/handler/OldestDateOperatorHandler.php
+files[] = datasource/operator/handler/PreviousDateOperatorHandler.php
+files[] = datasource/operator/handler/SQL_DateOperatorHandlerHelper.php
+files[] = datasource/operator/handler/SQL_LatestDateOperatorHandler.php
+files[] = datasource/operator/handler/SQL_OldestDateOperatorHandler.php
+files[] = datasource/operator/handler/SQL_PreviousDateOperatorHandler.php
+files[] = environment/DateDimensionConfiguration.php
+files[] = lookup/handler/AbstractDateDimensionLookupHandler.php
+files[] = lookup/handler/DateDimensionLookupHandler.php
+files[] = lookup/handler/DateDimensionYearLookupHandler.php
+files[] = metamodel/DateDimensionDatasetNames.php
+files[] = metamodel/DateDimensionLevelNames.php

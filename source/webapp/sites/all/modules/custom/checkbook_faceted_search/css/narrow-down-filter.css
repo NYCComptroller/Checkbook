@@ -1,0 +1,178 @@
+#spending-transactions .grid-3,
+#contract-details .grid-3,
+#budget-transactions .grid-3,
+#revenue-transactions .grid-3,
+.page-node div.filter-content,
+.page-smart-search .smart-search-right{
+    border: 1px solid #CACACA;
+    padding-bottom: 10px;
+    width: 218px;
+}
+#spending-transactions .grid-3{
+    margin-top: 47px;
+}
+#contract-details .grid-3{
+    margin-top: 30px;
+}
+.grid-3 .narrow-down-title,
+.smart-search-right .narrow-down-title{
+    color: #2E2E2E;
+    text-align: left;
+    background-color: #E9E9E9;
+    border-bottom: 1px solid #CACACA;
+    padding: 10px;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+div.filter-content{
+    margin-top: 30px;
+}
+div.filter-content.disabled{
+    margin-top: 0;
+}
+div.filter-content-fdomainName,
+div.filter-content-fagencyName,
+div.filter-content-fvendorName,
+div.filter-content-fexpenseCategoryName,
+div.filter-content-fyear{
+    position: relative;
+}
+div.filter-content-fdomainName div.options{
+    max-height: none;
+}
+.grid-3 div.filter-title,
+.page-node div.filter-title,
+.smart-search-right div.filter-title{
+    padding: 0 10px;
+    color: #3C5E7C;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.grid-3 div.autocomplete,
+.page-node div.autocomplete,
+.smart-search-right div.autocomplete{
+    padding: 10px 10px 0 10px;
+    width: 198px;
+}
+.grid-3 div.autocomplete input,
+.page-node div.autocomplete input,
+.smart-search-right div.autocomplete input{
+    width: 100%;
+}
+.grid-3 div.options,
+.page-node div.options,
+.smart-search-right div.options{
+    max-height: 200px;
+    overflow: auto;
+    width: 100%;
+}
+.grid-3 div.row,
+.page-node div.row,
+.smart-search-right div.row{
+    padding: 10px 10px 0 10px;
+    min-height: 18px;
+}
+.grid-3 div.checkbox,
+.grid-3 div.name,
+.grid-3 div.number,
+.page-node div.checkbox,
+.page-node div.name,
+.page-node div.number,
+.smart-search-right div.checkbox,
+.smart-search-right div.name,
+.smart-search-right div.number{
+    display: inline-block;
+    vertical-align: top;
+}
+.grid-3 div.checkbox,
+.page-node div.checkbox,
+.smart-search-right div.checkbox{
+    padding: 0 5px 0 0;
+    text-align: left;
+    width: 12px;
+}
+.grid-3 div.checkbox input,
+.page-node div.checkbox input,
+.smart-search-right div.checkbox input{
+    vertical-align: baseline;
+}
+.grid-3 div.name,
+.page-node div.name,
+.smart-search-right div.name{
+    text-align: left;
+    padding: 0 5px;
+    max-width: 88px;
+    text-transform: uppercase;
+}
+.grid-3 div.number,
+.page-node div.number,
+.smart-search-right div.number{
+    text-align: right;
+    width: 70px;
+    float: right;
+    padding-top: 2px;
+}
+.grid-3 div.number span,
+.page-node div.number span,
+.smart-search-right div.number span{
+    background: #F0F0F0;
+    border-radius: 2px;
+    padding: 2px;
+}
+.grid-3 div.number span.active,
+.page-node div.number span.active,
+.smart-search-right div.number span.active{
+    background: #209ad6;
+    color: #FFFFFF;
+}
+.mCSB_container{
+    margin-right: 0;
+}
+.mCustomScrollBox .mCSB_scrollTools{
+    width: 10px;
+}
+#spending-transactions .grid-3 .panel-separator,
+#contract-details .grid-3 .panel-separator{
+    margin: 0;
+    border: none;
+}
+#spending-transactions .grid-3 .node-widget .content,
+#spending-transactions div.node-widget,
+#contract-details .grid-3 .node-widget .content,
+#contract-details div.node-widget{
+    margin:0;
+}
+.grid-3 .progress,
+.page-node .progress,
+.smart-search-right .progress{
+    background: url(/sites/all/themes/checkbook/images/loading.gif) no-repeat;
+    display: none;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    height: 16px;
+    width: 16px;
+    text-align: center;
+}
+.sub-category{
+    margin-left: 22px;
+    width: 176px;
+}
+.sub-category div.filter-title{
+    padding: 10px 0 0 0;
+    font-size: 11px;
+}
+.sub-category div.options{
+    font-size: 11px;
+}
+.sub-category div.row{
+    margin: 10px 0 0 0;
+    padding: 0;
+    width: 176px;
+}
+.sub-category div.name{
+    max-width: 79px;
+}
+.sub-category div.number{
+    width: 70px;
+}

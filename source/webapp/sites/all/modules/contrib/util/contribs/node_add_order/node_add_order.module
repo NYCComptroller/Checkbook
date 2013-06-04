@@ -1,0 +1,134 @@
+<?php
+/**
+ * @file
+ * Changes the order of content types on the node/add page.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function node_add_order_menu() {
+  $items = array();
+
+  $items['admin/config/content/types_order'] = array(
+    'title' => 'Order create content',
+    'description' => 'Set how the "create content" page is ordered.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('node_add_order_settings'),
+    'access arguments' => array('administer site configuration'),
+    );
+
+  return $items;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function node_add_order_theme($existing, $type, $theme, $path) {
+  return array(
+    'node_add_order' => array('variables' => array('content' => NULL)),
+    );
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function node_add_order_theme_registry_alter(&$theme_registry) {
+  $path = drupal_get_path('module', 'node_add_order');
+  $theme_registry['node_add_list']['theme path'] = $path;
+  $theme_registry['node_add_list']['function'] = 'theme_node_add_order';
+  $theme_registry['node_add_list']['type'] = 'module';
+}
+
+/**
+ * Change the order of the create content list.
+ * Original copied from theme_node_add_list().
+ */
+function theme_node_add_order($variables) {
+  $content = $variables['content'];
+  $output = '';
+  $order = variable_get('node_add_order_sort', 'alpha');
+
+  if ($content) {
+    foreach ($content as $key => $item) {
+      switch ($order) {
+        // Alphabetically.
+        case 'alpha':
+          $content[$key]['node_add_order'] = $item['title'];
+          break;
+
+        // Number of nodes.
+        case 'count':
+          $query = "SELECT COUNT(n.nid) FROM {node} n "
+            . "INNER JOIN {node_type} t ON n.type = t.type "
+            . "WHERE t.name = :type ";
+          $count = db_query($query, array(':type' => $item['title']))->fetchField();
+          // Go negative to sort descending.
+          $content[$key]['node_add_order'] = -$count;
+          break;
+
+        // Last created.
+        case 'last':
+          $query = "SELECT MAX(n.created) FROM {node} n "
+            . "INNER JOIN {node_type} t ON n.type = t.type "
+            . "WHERE t.name = :type ";
+          $last = db_query($query, array(':type' => $item['title']))->fetchField();
+          // Go negative to sort descending.
+          $content[$key]['node_add_order'] = -$last;
+          break;
+      }
+    }
+    uasort($content, '_node_add_order_compare');
+
+    $output .= '<dl class="node-type-list">';
+    foreach ($content as $item) {
+      $title = $item['title'];
+      if ($order == 'count') {
+        $title .= ' (' . -$item['node_add_order'] . ')';
+      }
+      $output .= '<dt>' . l($title, $item['href'], $item['localized_options']) . '</dt>';
+      $output .= '<dd>' . filter_xss_admin($item['description']) . '</dd>';
+    }
+    $output .= '</dl>';
+  }
+  return $output;
+}
+
+/**
+ * Sort comparison function.
+ */
+function _node_add_order_compare($a, $b) {
+  if ($a['node_add_order'] == $b['node_add_order']) {
+    return 0;
+  }
+  return ($a['node_add_order'] < $b['node_add_order'] ? -1 : 1);
+}
+
+/**
+ * Settings page.
+ */
+function node_add_order_settings() {
+  $form = array();
+
+  $form['intro'] = array(
+    '#type' => 'markup',
+    '#markup' => '<p>' . t('This page allows you to change the order of the content types on the "Create content" page.') . '</p>',
+    );
+
+  $options = array(
+    'alpha' => t('Alphabetically'),
+    'count' => t('Number of uses'),
+    'last' => t('Last created'),
+    );
+
+  $form['node_add_order_sort'] = array(
+    '#type' => 'radios',
+    '#options' => $options,
+    '#default_value' => variable_get('node_add_order_sort', 'alpha'),
+    '#title' => t('Order of content types'),
+    '#description' => t('Select the method by which you wish to order (sort) the content types.'),
+//    '#attributes' => array('class' => array('container-inline')),
+    );
+
+  return system_settings_form($form);
+}

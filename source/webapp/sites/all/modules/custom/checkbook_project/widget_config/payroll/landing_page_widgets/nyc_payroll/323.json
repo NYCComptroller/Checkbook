@@ -1,0 +1,130 @@
+{
+"widgetType": "data_tables",
+"widgetSubType":"ajaxSimple",
+"html_class": "vendor-table",
+"no_results_content":"No Results Found",
+"defaultParameters":{"year.year":"22", "type_of_year":"B"},
+"cleanURLParameters":["year","yeartype","calyear"],
+ "urlParamMap":{"year":"year.year","calyear":"year.year","yeartype":"type_of_year"},
+"dataset": "checkbook:payroll_agency",
+"noDataInitialLoad":true,
+"columns": ["agency.agency.agency_name", "agency.agency.agency_short_name", "agency.agency","total_overtime_pay", "total_gross_pay", "total_employees", "total_salaried_employees", "total_hourly_employees", "year_type.year_type", "year.year","total_other_payments"],
+"limit":5,
+"disableViewAll":true,
+"enableExpand":true,
+"getTotalDataCount":true,
+"header":"
+$node->widgetConfig->getData=false;
+load_widget_data($node);
+if($node->totalDataCount > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
+$header='<div class=\"tableHeader\"><h2>Top ' .  $count . 'Agencies by Payroll</h2><span class=\"contCount\"> Number of Agencies:  ' . number_format($node->totalDataCount) . '</span></div>';
+return $header;
+",
+"footer":"
+$url = '/panel_html/payroll_nyc_transactions/payroll/transactions';
+$url .= _checkbook_project_get_year_url_param_string();
+$url .= '/smnid/' . $node->nid;
+$count = $node->count;
+$footer = '';
+if($node->totalDataCount > 5)
+      $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
+else if($node->totalDataCount > 0 && $node->totalDataCount <= 5)
+     $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
+else
+      $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
+return $footer;
+",
+"widgetTitle":"Top Agencies by Payroll Transactions",
+"table_title":"",
+"derivedColumns": {
+    "agency_name_link": {
+     "type": "expression2",
+     "expression": "'<a href=/payroll/agency/'. $row[agency_agency] . _checkbook_project_get_year_url_param_string() . '>'. $row[agency_agency_agency_name] .'</a>'"
+  },
+  "total_gross_pay_formatted":{
+     "type":"expression2",
+     "expression": "custom_number_formatter_format($row['total_gross_pay'],2,'$')"
+   },
+  "total_gross_pay_link":{
+     "type":"expression2",
+           "type":"expression2",
+       "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/payroll_agencytransactions/payroll/agencywide/transactions' ._checkbook_project_get_year_url_param_string() .'/agency/' .  $row[agency_agency] . '\">' . $row['total_gross_pay_formatted'] . '</a>'"
+   },
+   "total_employees_formatted":{
+     "type":"expression2",
+     "expression": "number_format($row['total_employees'])"
+   },
+   "total_salaried_employees_formatted":{
+     "type":"expression2",
+     "expression": "number_format($row['total_salaried_employees'])"
+   },
+   "total_hourly_employees_formatted":{
+     "type":"expression2",
+     "expression": "number_format($row['total_hourly_employees'])"
+   },
+  "total_overtime_expense_formatted":{
+     "type":"expression2",
+     "expression": "custom_number_formatter_format($row['total_overtime_pay'],2,'$')"
+   },
+  "total_overtime_expense_link":{
+     "type":"expression2",
+    "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/payroll_agencytransactions/payroll/agencywide/transactions' ._checkbook_project_get_year_url_param_string() .'/agency/' .  $row[agency_agency] . '\">' . $row['total_overtime_expense_formatted'] . '</a>'"
+   },
+   "total_other_payments_formatted":{
+     "type":"expression2",
+     "expression": "custom_number_formatter_format($row['total_other_payments'],2,'$')"
+   }
+},
+"table_columns": [
+   {
+      "labelAlias": "agency_name",
+      "column": "agency_name_link",
+      "sortSourceColumn": "agency.agency.agency_name",
+      "header": "false"
+    },
+    {
+      "labelAlias": "no_of_sal_employees",
+      "column": "total_salaried_employees_formatted",
+      "header": "false",
+      "sortSourceColumn":"total_salaried_employees"
+    },
+   {
+      "labelAlias": "gross_pay_ytd",
+      "column": "total_gross_pay_link",
+      "sortSourceColumn": "total_gross_pay",
+      "header": "false"
+    },
+   {
+      "labelAlias": "other_pay_ytd",
+      "column": "total_other_payments_formatted",
+      "sortSourceColumn": "total_other_payments",
+      "header": "false"
+    },
+     {
+      "labelAlias": "",
+      "column": ""
+    }
+ ],
+"dataTableOptions":{
+"aoColumns":[{"bSortable":false,"sClass":"text","sWidth":"250px","asSorting": [ "asc","desc" ]},
+    {"bSortable":true,"sClass":"number","sWidth":"200px", "asSorting": [ "desc","asc"  ]},
+    {"bSortable":true,"sClass":"number", "asSorting": [ "desc","asc"  ]},
+    {"bSortable":true,"sClass":"number","asSorting": [ "desc","asc"  ]},
+    { "bSortable": false,"sWidth":"15px" }
+],
+"bServerSide": true,
+"bFilter": false,
+"bPaginate": false,
+"bProcessing":true,
+"bLengthChange": false,
+"bInfo": false,
+"bAutoWidth": false,
+"aaSorting": [[ 2, "desc" ]],
+"fnServerParams": "##function ( aoData ) {
+           reloadExpandCollapseWidget(this,aoData);
+}##",
+"oLanguage":{
+"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+}
+}
+}

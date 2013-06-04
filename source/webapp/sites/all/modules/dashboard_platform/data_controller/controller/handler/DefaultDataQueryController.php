@@ -1,0 +1,226 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+
+
+
+
+/*
+ * Data Controller has the following responsibilities:
+ *   - prepares context for the call
+ *   - cleans/adjusts (trims, converts) input parameters
+ *   - wraps input parameters into a request object
+ */
+class DefaultDataQueryController extends AbstractDataQueryController {
+
+    public function getDatasetMetaData($datasetName) {
+        $datasetName = StringHelper::trim($datasetName);
+
+        $metamodel = data_controller_get_metamodel();
+
+        $dataset = $metamodel->getDataset($datasetName);
+        if (!$dataset->isComplete()) {
+            $callcontext = $this->prepareCallContext();
+
+            MetaModelFactory::getInstance()->startGlobalModification();
+            try {
+                $this->getDataSourceQueryHandlerByDataset($dataset)->loadDatasetMetaData($callcontext, $dataset);
+
+                $dataset->markAsComplete();
+            }
+            catch (Exception $e) {
+                MetaModelFactory::getInstance()->finishGlobalModification(FALSE);
+                throw $e;
+            }
+            MetaModelFactory::getInstance()->finishGlobalModification(TRUE);
+        }
+
+        return $dataset;
+    }
+
+    public function getCubeMetaData($cubeName) {
+        $cubeName = StringHelper::trim($cubeName);
+
+        $metamodel = data_controller_get_metamodel();
+
+        $cube = $metamodel->getCube($cubeName);
+        if (!$cube->isComplete()) {
+            $callcontext = $this->prepareCallContext();
+
+            // preparing meta data for the cube source dataset
+            if (!isset($cube->sourceDataset)) {
+                $cube->sourceDataset = $this->getDatasetMetaData($cube->sourceDatasetName);
+            }
+
+            // preparing meta data for dimension level datasets
+            if (isset($cube->dimensions)) {
+                foreach ($cube->dimensions as $dimension) {
+                    foreach ($dimension->levels as $level) {
+                        if (isset($level->datasetName) && !isset($level->dataset)) {
+                            $level->dataset = $this->getDatasetMetaData($level->datasetName);
+                        }
+                    }
+                }
+            }
+
+            // preparing metadata for the rest of the cube
+            $this->getDataSourceQueryHandlerByDatasetName($cube->sourceDatasetName)->prepareCubeMetaData($callcontext, $cube);
+        }
+
+        return $cube;
+    }
+
+    public function getNextSequenceValues($datasourceName, $sequenceName, $quantity) {
+        $datasourceName = StringHelper::trim($datasourceName);
+        $sequenceName = StringHelper::trim($sequenceName);
+
+        $callcontext = $this->prepareCallContext();
+
+        $request = new SequenceRequest($datasourceName, $sequenceName, $quantity);
+
+        LogHelper::log_debug($request);
+
+        return $this->getDataSourceQueryHandler($datasourceName)->getNextSequenceValues($callcontext, $request);
+    }
+
+    public function query($request) {
+        $requestCleaner = new DataQueryControllerRequestCleaner();
+        $adjustedRequest = $requestCleaner->adjustRequest($request);
+
+        $result = NULL;
+        if ($adjustedRequest instanceof DataQueryControllerRequestTree) {
+            // it is possible that whole tree or some branches of the tree need to be joined manually
+            throw new UnsupportedOperationException();
+        }
+        elseif ($adjustedRequest instanceof DataQueryControllerDatasetRequest) {
+            $result = $this->executeDatasetQueryRequest($adjustedRequest);
+        }
+        elseif ($adjustedRequest instanceof DataQueryControllerCubeRequest) {
+            $result = $this->executeCubeQueryRequest($adjustedRequest);
+        }
+
+        return $result;
+    }
+
+    public function countRecords($request) {
+        $requestCleaner = new DataQueryControllerRequestCleaner();
+        $adjustedRequest = $requestCleaner->adjustRequest($request);
+
+        $result = NULL;
+        if ($adjustedRequest instanceof DataQueryControllerRequestTree) {
+            // it is possible that whole tree or some branches of the tree need to be joined manually
+            throw new UnsupportedOperationException();
+        }
+        elseif ($adjustedRequest instanceof DataQueryControllerDatasetRequest) {
+            $result = $this->executeDatasetCountRequest($adjustedRequest);
+        }
+        elseif ($adjustedRequest instanceof DataQueryControllerCubeRequest) {
+            $result = $this->executeCubeCountRequest($adjustedRequest);
+        }
+
+        return $result;
+    }
+
+    protected function executeDatasetQueryRequest(DataQueryControllerDatasetRequest $request) {
+        $callcontext = $this->prepareCallContext();
+
+        $requestPreparer = new DataSourceDatasetQueryRequestPreparer();
+        $datasetQueryRequest = $requestPreparer->prepareDatasetQueryRequest($request);
+
+        $this->prepareDatasetRequestMetaData($datasetQueryRequest);
+
+        $datasetResultFormatter = isset($request->resultFormatter) ? $request->resultFormatter : $this->getDefaultResultFormatter();
+        $datasetResultFormatter->adjustDatasetQueryRequest($callcontext, $datasetQueryRequest);
+
+        LogHelper::log_debug($datasetQueryRequest);
+
+        $datasetName = $datasetQueryRequest->getDatasetName();
+        LogHelper::log_debug(t(
+        	"Using '!formattingPath' to format result of the dataset: @datasetName",
+            array('!formattingPath' => $datasetResultFormatter->printFormattingPath(), '@datasetName' => $datasetName)));
+
+        return $this->getDataSourceQueryHandlerByDatasetName($datasetName)->queryDataset($callcontext, $datasetQueryRequest, $datasetResultFormatter);
+    }
+
+    protected function executeDatasetCountRequest(DataQueryControllerDatasetRequest $request) {
+        $callcontext = $this->prepareCallContext();
+
+        $requestPreparer = new DataSourceDatasetQueryRequestPreparer();
+        $datasetCountRequest = $requestPreparer->prepareDatasetCountRequest($request);
+
+        $this->prepareDatasetRequestMetaData($datasetCountRequest);
+
+        $datasetResultFormatter = isset($request->resultFormatter) ? $request->resultFormatter : $this->getDefaultResultFormatter();
+        $datasetResultFormatter->adjustDatasetCountRequest($callcontext, $datasetCountRequest);
+
+        LogHelper::log_debug($request);
+
+        $datasetName = $datasetCountRequest->getDatasetName();
+
+        return $this->getDataSourceQueryHandlerByDatasetName($datasetName)->countDatasetRecords($callcontext, $datasetCountRequest, $datasetResultFormatter);
+    }
+
+    protected function prepareDatasetRequestMetaData(AbstractDatasetQueryRequest $request) {
+        $this->getDatasetMetaData($request->getDatasetName());
+    }
+
+    protected function executeCubeQueryRequest(DataQueryControllerCubeRequest $request) {
+        $callcontext = $this->prepareCallContext();
+
+        $requestPreparer = new DataSourceCubeQueryRequestPreparer();
+        $cubeQueryRequest = $requestPreparer->prepareCubeQueryRequest($request);
+
+        $this->prepareCubeRequestMetaData($cubeQueryRequest);
+
+        $cubeResultFormatter = isset($request->resultFormatter) ? $request->resultFormatter : $this->getDefaultResultFormatter();
+        $cubeResultFormatter->adjustCubeQueryRequest($callcontext, $cubeQueryRequest);
+
+        $cubeName = $cubeQueryRequest->getCubeName();
+        LogHelper::log_debug(t(
+        	"Using '!formattingPath' to format result of the cube: @cubeName",
+            array('!formattingPath' => $cubeResultFormatter->printFormattingPath(), '@cubeName' =>  $cubeName)));
+        LogHelper::log_debug($request);
+
+        return $this->getDataSourceQueryHandlerByCubeName($cubeName)->queryCube($callcontext, $cubeQueryRequest, $cubeResultFormatter);
+    }
+
+    protected function executeCubeCountRequest(DataQueryControllerCubeRequest $request) {
+        $callcontext = $this->prepareCallContext();
+
+        $requestPreparer = new DataSourceCubeQueryRequestPreparer();
+        $cubeCountRequest = $requestPreparer->prepareCubeCountRequest($request);
+
+        $this->prepareCubeRequestMetaData($cubeCountRequest);
+
+        $cubeResultFormatter = isset($request->resultFormatter) ? $request->resultFormatter : $this->getDefaultResultFormatter();
+        $cubeResultFormatter->adjustCubeCountRequest($callcontext, $cubeCountRequest);
+
+        LogHelper::log_debug($request);
+
+        $cubeName = $cubeCountRequest->getCubeName();
+
+        return $this->getDataSourceQueryHandlerByCubeName($cubeName)->countCubeRecords($callcontext, $cubeCountRequest, $cubeResultFormatter);
+    }
+
+    protected function prepareCubeRequestMetaData(CubeQueryRequest $request) {
+        $metamodel = data_controller_get_metamodel();
+
+        $cube = $metamodel->getCube($request->getCubeName());
+        $this->getDatasetMetaData($cube->sourceDatasetName);
+
+        if (isset($request->referencedRequests)) {
+            foreach ($request->referencedRequests as $referencedRequest) {
+                $referencedCube = $metamodel->getCube($referencedRequest->getCubeName());
+                $this->getDatasetMetaData($referencedCube->sourceDatasetName);
+            }
+        }
+    }
+
+    protected function getDefaultResultFormatter() {
+        return new PassthroughResultFormatter();
+    }
+}

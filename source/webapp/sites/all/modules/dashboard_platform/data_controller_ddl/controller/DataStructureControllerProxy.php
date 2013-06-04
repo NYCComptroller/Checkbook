@@ -1,0 +1,29 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+
+
+class DataStructureControllerProxy extends AbstractDataControllerProxy {
+
+    private static $factory = NULL;
+
+    protected function prepareProxiedInstance() {
+        return new DefaultDataStructureController();
+    }
+
+    /**
+     * @static
+     * @return DataStructureController
+     */
+    public static function getInstance() {
+        if (!isset(self::$factory)) {
+            self::$factory = new DataStructureControllerProxy();
+        }
+
+        return self::$factory;
+    }
+}

@@ -1,0 +1,65 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+
+
+/*************************************************************************************/
+/* Widget Hooks                                                                      */
+/*************************************************************************************/
+
+function widget_table_widget_metadata() {
+	return array(
+    'table' => array(
+      'name' => t('Table'),
+      'module' => 'widget_table',
+      'description' => t("This widget type implements HTML table.")
+	)
+	);
+}
+
+function widget_table_widget_validate(&$node) {
+
+}
+
+function widget_table_widget_data(&$node) {
+
+}
+
+
+function widget_table_widget_view(&$node) {  
+	drupal_add_js('sites/default/files/script/jquery_tablesorter.js');
+	if (!isset($node->data) || count($node->data) == 0) {
+		return theme('widget_table_no_results_theme', array('node'=> $node));
+	}
+	else if (isset($node->widgetConfig->table_rows)) {
+		return theme('widget_table_by_rows_theme', array('node'=> $node));
+	}
+	else {
+		return theme('widget_table_default_theme', array('node'=> $node));
+	}
+}
+
+/*************************************************************************************/
+/* Theme Hooks                                                                       */
+/*************************************************************************************/
+
+function widget_table_theme($existing, $type, $theme, $path) {
+	return array(
+      'widget_table_default_theme' => array(
+	    'template' => 'table',
+        'arguments' => array('node' => NULL),
+	  ),
+	  'widget_table_by_rows_theme' => array(
+	    'template' => 'table_by_rows',
+	    'arguments' => array('node' => NULL),
+	  ),
+	  'widget_table_no_results_theme' => array(
+	    'template' => 'no_results',
+	    'arguments' => array('node' => NULL),
+	  ),	  
+	);
+}

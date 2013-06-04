@@ -1,0 +1,24 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+
+
+
+
+function data_controller_dataset_php_dc_metamodel_environment_loader() {
+    $items[] = array(
+        'classname' => 'PHPDatasetEnvironmentMetaModelGenerator');
+
+    return $items;
+}
+
+function data_controller_dataset_php_dc_datasource_query() {
+    $items[PHPDataSourceHandler::$DATASOURCE__TYPE] = array(
+        'classname' => 'PHPDataSourceHandler');
+
+    return $items;
+}

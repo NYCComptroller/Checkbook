@@ -1,0 +1,10 @@
+<?php
+/**
+ * @file
+ * Adds a "Logged In As" block.
+ */
+
+function logged_in_uninstall() {
+  variable_del('logged_in_show_roles');
+  variable_del('logged_in_show_perms');
+}

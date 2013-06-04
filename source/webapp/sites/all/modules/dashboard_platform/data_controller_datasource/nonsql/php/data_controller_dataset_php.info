@@ -1,0 +1,19 @@
+
+;	GNU AFFERO GENERAL PUBLIC LICENSE 
+;	   Version 3, 19 November 2007
+; This software is licensed under the GNU AGPL Version 3
+; 	(see the file LICENSE for details)
+;  Copyright 2009-2011 United States Government.
+;
+name = "PHP dataset"
+description = "Provides data to Data Controller through PHP code"
+package = REI Dashboard Platform (Adapter)
+version = 7.x-1.x
+core = 7.x
+
+dependencies[] = data_controller_datasource_nonsql
+
+files[] = datasource/dataset/PHPDatasetHandler.php
+files[] = datasource/dataset/handler/AbstractPHPDatasetHandler.php
+files[] = datasource/handler/PHPDataSourceHandler.php
+files[] = environment/loader/handler/PHPDatasetEnvironmentMetaModelGenerator.php

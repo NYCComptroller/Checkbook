@@ -1,0 +1,25 @@
+
+;	GNU AFFERO GENERAL PUBLIC LICENSE 
+;	   Version 3, 19 November 2007
+; This software is licensed under the GNU AGPL Version 3
+; 	(see the file LICENSE for details)
+name = "Data Controller (DML)"
+description = "Extension to Data Controller to manipulate data"
+package = REI Dashboard Platform (Core)
+version = 7.x-2.x
+core = 7.x
+
+dependencies[] = data_controller
+
+files[] = controller/DataManipulationController.php
+files[] = controller/DataManipulationControllerProxy.php
+files[] = controller/handler/AbstractDataManipulationController.php
+files[] = controller/handler/DefaultDataManipulationController.php
+
+files[] = datasource/DataSourceManipulationFactory.php
+files[] = datasource/DataSourceManipulationHandler.php
+files[] = datasource/factory/AbstractDataSourceManipulationFactory.php
+files[] = datasource/request/dataset/AbstractDatasetManipulationRequest.php
+files[] = datasource/request/dataset/DatasetInsertRequest.php
+files[] = datasource/request/dataset/DatasetUpdateRequest.php
+files[] = datasource/request/dataset/DatasetDeleteRequest.php

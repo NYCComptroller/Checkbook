@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the checkbook_featured_trends_table feature.
+ */
+
+include_once('checkbook_featured_trends_table.features.inc');

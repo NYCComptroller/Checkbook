@@ -1,0 +1,37 @@
+
+;	GNU AFFERO GENERAL PUBLIC LICENSE 
+;	   Version 3, 19 November 2007
+; This software is licensed under the GNU AGPL Version 3
+; 	(see the file LICENSE for details)
+name = "Data Uploader"
+description = "Adds support for data uploading"
+package = REI Dashboard Platform (Core)
+version = 7.x-2.x
+core = 7.x
+
+dependencies[] = data_controller
+
+files[] = parser/AbstractDataParser.php
+files[] = parser/DelimiterDataParser.php
+files[] = provider/AbstractDataProvider.php
+files[] = provider/FileDataProvider.php
+files[] = provider/StreamDataProvider.php
+files[] = request/AbstractDelimiterSeparatedUploadRequest.php
+files[] = request/AbstractMetaDataRequest.php
+files[] = request/AbstractUploadRequest.php
+files[] = request/DelimiterSeparatedFileUploadRequest.php
+files[] = submitter/AbstractControllerDataSubmitter.php
+files[] = submitter/AbstractDataAutoDetector.php
+files[] = submitter/AbstractDataSubmitter.php
+files[] = submitter/AbstractSubsetDataSubmitter.php
+files[] = submitter/ColumnMetaDataPreparer.php
+files[] = submitter/ColumnValueTrimmer.php
+files[] = submitter/ColumnValueTypeAdjuster.php
+files[] = submitter/EmptyRecordSkipper.php
+files[] = submitter/FlatSchemaDataSubmitter.php
+files[] = submitter/PrimaryKeyAutoDetector.php
+files[] = submitter/ColumnTypeAutoDetector.php
+files[] = submitter/ColumnUniquenessAutoDetector.php
+files[] = submitter/SampleDataPreparer.php
+files[] = submitter/ScreenDataSubmitter.php
+files[] = submitter/TransactionSupporter.php

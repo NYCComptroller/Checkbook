@@ -1,0 +1,176 @@
+<?php
+
+/**
+ * @file
+ * This module is heavily based off of "Panels Everywhere", and inspired by
+ * Itangalo's tentative project "Page Manager Breadcrumbs".
+ */
+
+/**
+ * Implements hook_page_manager_variant_operations_alter().
+ *
+ * Shameful rip off from panels_everywhere module.
+ *
+ * @see panels_everywhere_page_manager_variant_operations_alter()
+ * @see http://groups.drupal.org/node/110719#comment-356094
+ */
+function panels_breadcrumbs_page_manager_variant_operations_alter(&$operations, $handler) {
+
+  // Use this obnoxious construct to safely insert our item.
+  reset($operations['children']);
+  $children_operations = array();
+  while (list($key, $value) = each($operations['children'])) {
+    $children_operations[$key] = $value;
+    if ($key == 'context') {
+      $children_operations['breadcrumb'] = array(
+          'title' => t('Breadcrumb'),
+          'description' => t('Edit Breadcrumbs.'),
+          'form' => 'panels_breadcrumbs_variant_breadcrumb_form',
+      );
+    }
+  }
+  $operations['children'] = $children_operations;
+}
+
+/**
+ * Panels breadcrumbs form.
+ */
+function panels_breadcrumbs_variant_breadcrumb_form($form, &$form_state) {
+
+  ctools_include('context-task-handler');
+
+  $handler = &$form_state['handler'];
+  $contexts = ctools_context_handler_get_all_contexts($form_state['task'], $form_state['subtask'], $handler);
+
+  if (empty($handler->conf['panels_breadcrumbs_state'])) {
+    $handler->conf['panels_breadcrumbs_state'] = '0';
+  }
+
+  if (empty($handler->conf['panels_breadcrumbs_titles'])) {
+    $handler->conf['panels_breadcrumbs_titles'] = '';
+  }
+
+  if (empty($handler->conf['panels_breadcrumbs_paths'])) {
+    $handler->conf['panels_breadcrumbs_paths'] = '';
+  }
+
+  $form['settings']['panels_breadcrumbs_state'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Enable Breadcrumbs for this Variant'),
+      '#default_value' => $handler->conf['panels_breadcrumbs_state'],
+  );
+  $form['settings']['panels_breadcrumbs_titles'] = array(
+      '#type' => 'textarea',
+      '#title' => t('Breadcrumb titles'),
+      '#description' => t('Enter one title per line.'),
+      '#default_value' => $handler->conf['panels_breadcrumbs_titles'],
+  );
+  $form['settings']['panels_breadcrumbs_paths'] = array(
+      '#type' => 'textarea',
+      '#title' => t('Breadcrumb paths'),
+      '#description' => t('Enter one path per line. You can use @front to link
+      to the front page, or @none for no link.', array('@front' => '<front>', '@none' => '<none>')),
+      '#default_value' => $handler->conf['panels_breadcrumbs_paths'],
+  );
+  $form['settings']['panels_breadcrumbs_home'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Prepend Home Link to the Breadcrumb'),
+      '#default_value' => isset($handler->conf['panels_breadcrumbs_home']) ? $handler->conf['panels_breadcrumbs_home'] : TRUE,
+  );
+
+  $rows = array();
+  foreach ($contexts as $context) {
+    foreach (ctools_context_get_converters('%' . check_plain($context->keyword) . ':', $context) as $keyword => $title) {
+      $rows[] = array(
+          check_plain($keyword),
+          t('@identifier: @title', array('@title' => $title, '@identifier' => $context->identifier)),
+      );
+    }
+  }
+
+  $header = array(t('Keyword'), t('Value'));
+  $form['contexts'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Substitutions'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#value' => theme('table', array('header' => $header, 'rows' => $rows)),
+  );
+
+  return $form;
+}
+
+/**
+ * Handles Panels breadcrumbs form submission.
+ */
+function panels_breadcrumbs_variant_breadcrumb_form_submit($form, &$form_state) {
+  $form_state['handler']->conf['panels_breadcrumbs_state'] = $form_state['values']['panels_breadcrumbs_state'];
+  $form_state['handler']->conf['panels_breadcrumbs_titles'] = $form_state['values']['panels_breadcrumbs_titles'];
+  $form_state['handler']->conf['panels_breadcrumbs_paths'] = $form_state['values']['panels_breadcrumbs_paths'];
+  $form_state['handler']->conf['panels_breadcrumbs_home'] = $form_state['values']['panels_breadcrumbs_home'];
+}
+
+/**
+ * Implements hook_ctools_render_alter().
+ *
+ * When a Page Manager page is rendered, set the breadcrumb
+ */
+function panels_breadcrumbs_ctools_render_alter($info, $page, $context) {
+  $conf = $context['handler']->conf;
+
+  // If panels_breadcrumbs isn't enabled for this display, bail out.
+  if (!isset($conf['panels_breadcrumbs_state']) || !$conf['panels_breadcrumbs_state']) {
+    return;
+  }
+
+  // If no titles or paths are defined, also bail out.
+  if (!isset($conf['panels_breadcrumbs_titles']) || !isset($conf['panels_breadcrumbs_paths'])) {
+    return;
+  }
+
+  $display_context = $context['handler']->conf['display']->context;
+
+  // Look for Placeholder Tokens in Titles and Paths and Convert them for this Display
+  $titles = ctools_context_keyword_substitute($conf['panels_breadcrumbs_titles'], array(), $display_context);
+  $paths = ctools_context_keyword_substitute($conf['panels_breadcrumbs_paths'], array(), $display_context);
+
+  // Breaks titles and paths into arrays and removes empty keys.
+  $titles = array_filter(array_map('trim', explode(PHP_EOL, $titles)), 'strlen');
+  $paths = array_filter(array_map('trim', explode(PHP_EOL, $paths)), 'strlen');
+
+  $default = array(
+      'title' => '',
+      'href' => '',
+      'localized_options' => array(),
+  );
+
+
+  $breadcrumbs_info = array();
+
+  if (!isset($conf['panels_breadcrumbs_home']) || $conf['panels_breadcrumbs_home'] == TRUE) {
+    // Sets the First Crumb to Home
+    $breadcrumbs_info[] = array('title' => t('Home'), 'href' => '<front>') + $default;
+  }
+
+  // Iterate through all titles and add them to the breadcrumb
+  foreach ($titles as $key => $title) {
+    $title = html_entity_decode(trim($title));
+    $path = empty($paths[$key]) ? '<none>' : trim($paths[$key]);
+    $breadcrumbs_info[] = array('title' => t($title), 'href' => $path) + $default;
+  }
+
+  // Allow other modules to intercept and change the breadcrumb
+  drupal_alter('menu_breadcrumb', $breadcrumbs_info, end($breadcrumbs_info));
+
+  $breadcrumbs = array();
+
+  foreach ($breadcrumbs_info as $crumb) {
+    if (isset($crumb['href']) && $crumb['href'] == '<none>') {
+      $crumb['localized_options'] += array('attributes' => array(), 'html' => true);
+      $breadcrumbs[] = '<span ' . drupal_attributes($crumb['localized_options']['attributes']) . '>' . ($crumb['localized_options']['html'] ? $crumb['title'] : check_plain($crumb['title'])) . '</span>';
+    } else {
+      $breadcrumbs[] = l($crumb['title'], $crumb['href'], $crumb['localized_options']);
+    }
+  }
+  drupal_set_breadcrumb($breadcrumbs);
+}

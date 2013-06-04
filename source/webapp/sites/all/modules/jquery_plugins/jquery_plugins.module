@@ -1,0 +1,110 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+
+
+/**
+ * Implements hook_library().
+ */
+function jquery_plugins_library() {
+  $options = array(
+    'type' => 'file',
+    'group' => JS_LIBRARY,
+    'every_page' => TRUE
+  );
+  // jQuery Cycle
+  $libraries['cycle'] = array(
+    'title' => 'jQuery Cycle',
+    'website' => 'http://jquery.malsup.com/cycle/',
+    'version' => '2.9999.2',
+    'js' => array(
+      drupal_get_path('module', 'jquery_plugins') . '/jquery.cycle.all.js' => $options,
+    ),
+    'dependencies'=>array(
+      array('system','jquery')
+    )
+  );
+  // Easy List Splitter
+  $libraries['easyListSplitter'] = array(
+    'title' => 'Easy List Splitter',
+    'website' => 'http://www.madeincima.it/en/articles/resources-and-tools/easy-list-splitter-plugin/',
+    'version' => '1.0.2',
+    'js' => array(
+      drupal_get_path('module', 'jquery_plugins') . '/jquery.easyListSplitter.js' => $options,
+    ),
+    'dependencies'=>array(
+      array('system','jquery')
+    )
+  );
+  $libraries['jScrollPane'] = array(
+    'title' => 'jScrollPane',
+    'website' => 'http://jscrollpane.kelvinluck.com/',
+    'version' => '1.0.2',
+    'js' => array(
+      drupal_get_path('module', 'jquery_plugins') . '/jquery.jscrollpane.min.js' => $options,
+      drupal_get_path('module', 'jquery_plugins') . '/jquery.mousewheel.js' => $options,
+    ),
+    'css' => array(
+      drupal_get_path('module', 'jquery_plugins') . '/jquery.jscrollpane.css' => array(),
+    ),
+    'dependencies'=>array(
+      array('system','jquery')
+    )
+  );
+  $libraries['chosen'] = array(
+    'title' => 'chosen',
+    'website' => 'http://harvesthq.github.com/chosen/',
+    'version' => '0.9.11',
+    'js' => array(
+      drupal_get_path('module', 'jquery_plugins') . '/chosen.jquery.min.js' => $options,
+    ),
+    'css' => array(
+      drupal_get_path('module', 'jquery_plugins') . '/chosen.css' => array(),
+    ),
+    'dependencies'=>array(
+      array('system','jquery')
+    )
+  );
+  $libraries['fitvids'] = array(
+    'title' => 'fitvids',
+    'website' => 'http://fitvidsjs.com/',
+    'version' => '1.0',
+    'js' => array(
+      drupal_get_path('module', 'jquery_plugins') . '/jquery.fitvids.js' => $options,
+    ),
+    'dependencies'=>array(
+      array('system','jquery')
+    )
+  );
+  $libraries['custom-scrollbar'] = array(
+    'title' => 'jQuery custom content scroller',
+    'website' => 'http://manos.malihu.gr/jquery-custom-content-scroller/',
+    'version' => '2.8.1',
+    'js' => array(
+      drupal_get_path('module','jquery_plugins').'/malihu-custom-scrollbar-plugin-master/jquery.mCustomScrollbar.concat.min.js' => $options
+    ),
+    'css' => array(
+      drupal_get_path('module','jquery_plugins').'/malihu-custom-scrollbar-plugin-master/jquery.mCustomScrollbar.css' => array()
+    )
+  );
+  return $libraries;
+}
+
+/**
+ * Implements hook_init().
+ */
+function jquery_plugins_init() {
+  drupal_add_library('jquery_plugins', 'cycle', TRUE);
+  drupal_add_library('jquery_plugins', 'easyListSplitter', TRUE);
+  drupal_add_library('jquery_plugins', 'jScrollPane', TRUE);
+  drupal_add_library('jquery_plugins', 'chosen', TRUE);
+  drupal_add_library('jquery_plugins', 'fitvids', TRUE);
+  drupal_add_library('jquery_plugins', 'fancyBox', TRUE);
+  drupal_add_library('system', 'ui.dialog');
+  drupal_add_library('system', 'jquery.cookie');
+  drupal_add_library('jquery_plugins','custom-scrollbar',TRUE);
+}

@@ -1,0 +1,61 @@
+<?php
+/**
+ * @file
+ * Changes the size of the comment area.
+ */
+
+/**
+ * Implements hook_form_alter().
+ * Change the comment textarea size.
+ */
+function comment_box_form_alter(&$form, $form_state, $form_id) {
+  // Is it a comment form?
+  if (substr($form_id,0, 13) == 'comment_node_' && substr($form_id, -5) == '_form') {
+    // Save the content type.
+    $type = drupal_html_id(substr($form_id, 13, -5));
+    // Fake the form id.
+    $form_id = '_comment_node_xxx_form';
+  }
+
+  switch ($form_id) {
+    case '_comment_node_xxx_form':
+      foreach ($form['comment_body'] as $lang => $group) {
+        if (substr($lang, 0, 1) != '#') {
+          foreach ($group as $key => $element) {
+            if (is_numeric($key)) {
+              // Set the texarea size. Note, Drupal always adds one extra row, so we decrement the value.
+              $form['comment_body'][$lang][$key]['#rows'] = variable_get("comment_box_size_$type", 10) - 1;
+
+              // Add a class so it can be further styled in the CSS.
+              $form['comment_body'][$lang][$key]['#prefix'] = '<div class="' . "comment-box-$type" . '">';
+              $form['comment_body'][$lang][$key]['#suffix'] = '</div>';
+            }
+          }
+        }
+      }
+      return;
+
+    // Settings
+    case 'util_page':
+      $form['comment_box'] = array(
+        '#type' => 'fieldset',
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
+        '#title' => t('Comment box size'),
+        '#description' => t('Enter the number of rows you wish each comment box to be for the listed content type.'),
+        );
+
+      $types = node_type_get_names();
+      foreach ($types as $type => $name) {
+        $var_name = "comment_box_size_$type";
+        $form['comment_box'][$var_name] = array(
+          '#type' => 'textfield',
+          '#field_prefix' => '<strong>' . check_plain($name) . '</strong> ',
+          '#default_value' => variable_get($var_name, 10),
+          '#size' => 8,
+          );
+      }
+
+      $form['clear'] = array('#value' => '<div class="clear-block"></div>');
+  }
+}

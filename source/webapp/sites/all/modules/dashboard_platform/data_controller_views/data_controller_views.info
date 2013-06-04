@@ -1,0 +1,29 @@
+
+;	GNU AFFERO GENERAL PUBLIC LICENSE 
+;	   Version 3, 19 November 2007
+; This software is licensed under the GNU AGPL Version 3
+; 	(see the file LICENSE for details)
+;  Copyright 2009-2011 United States Government.
+;
+name = "Data Controller Views"
+description = "Add support for Data Controller Views"
+package = REI Dashboard Platform (Visualization)
+version = 7.x-1.x
+core = 7.x
+
+dependencies[] = data_controller
+dependencies[] = views
+
+files[] = handlers/data_controller_views_argument_equality.inc
+files[] = handlers/data_controller_views_field_data_controller_column.inc
+files[] = handlers/data_controller_views_field_data_controller_dynamic_column.inc
+files[] = handlers/data_controller_views_filter_calc_percents.inc
+files[] = handlers/data_controller_views_filter_csv_streamer.inc
+files[] = handlers/data_controller_views_filter_cube_or_list.inc
+files[] = handlers/data_controller_views_filter_dataset.inc
+files[] = handlers/data_controller_views_filter_equality.inc
+files[] = handlers/data_controller_views_filter_row_flattener.inc
+files[] = handlers/data_controller_views_filter_weighted_grader.inc
+files[] = handlers/data_controller_views_sort_dynamic_column.inc
+files[] = handlers/data_controller_views_sort.inc
+files[] = plugins/data_controller_views_views_plugin_query.inc

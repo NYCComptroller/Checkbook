@@ -1,0 +1,29 @@
+
+;	GNU AFFERO GENERAL PUBLIC LICENSE 
+;	   Version 3, 19 November 2007
+; This software is licensed under the GNU AGPL Version 3
+; 	(see the file LICENSE for details)
+name = Checkbook Project
+description = Checkbook 2.0-specific code and overrides
+core = 7.x
+
+dependencies[] = data_controller
+dependencies[] = custom_number_formatter
+
+scripts[] = js/agencies-vendors.js
+scripts[] = js/year_select_redirection.js
+scripts[] = js/contracts.js
+scripts[] = js/transactions.js
+scripts[] = js/cookie_breadcrumbs.js
+
+files[] = customclasses/masterAgreementDetails.php
+files[] = customclasses/childAgreementDetails.php
+files[] = customclasses/RequestUtil.php
+files[] = customclasses/contract/ContractURLHelper.php
+files[] = customclasses/spending/SpendingUtil.php
+files[] = customclasses/util/ChartUtil.php
+files[] = customclasses/util/NodeSummaryUtil.php
+files[] = customclasses/util/CustomURLHelper.php
+files[] = customclasses/util/CheckbookDateUtil.php
+files[] = customclasses/util/WidgetUtil.php
+files[] = customclasses/contract/PendingContractDetails.php

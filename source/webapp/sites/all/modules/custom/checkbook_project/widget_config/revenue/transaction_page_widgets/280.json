@@ -1,0 +1,109 @@
+{
+"widgetType": "data_tables",
+"widgetSubType": "dataTableList",
+  "cleanURLParameters":["revsrcnm_exact","revclsnm_exact","clsname","agency","agencyh","year","revcat","fundsrc","fundsrcnm","fundsrccode","fundcls","fy","by","revcls","revclsnm","revsrc","revsrcnm","amt","amtr"],
+ "urlParamMap":{
+ "revsrcnm_exact":"revenue_source_name",
+ "revclsnm_exact":"revenue_class_name",
+ "clsname":"closing_classification_name","agency":"agency_id","agencyh":"agency_history_id","year":"budget_fiscal_year_id","revcat":"revenue_category_id","fundsrc":"funding_class_id","fundsrcnm":"funding_class_name","fundsrccode":"funding_class_code","fundcls":"fund_class_id","fy":"fiscal_year_id","by":"budget_fiscal_year_id","revcls":"revenue_class_id","revclsnm":"revenue_class_name","revsrc":"revenue_source_id","revsrcnm":"revenue_source_name","amt":"posting_amount","amtr":"posting_amount"},
+"paramTypeConfig":{"revsrcnm_exact":"eqignorecase","revclsnm_exact":"eqignorecase","amt":"range","amtr":"rangeid2","revclsnm":"like","revsrcnm":"like","fundsrcnm":"like"},
+"header":"
+	$header = NULL;
+	$header .= widget_data_tables_export_link($node);
+	return $header; 
+",
+"useList":true,
+"getTotalDataCount":true,
+"limit":"35",
+"noDataInitialLoad":true,
+"html_class": "initiative-table",
+"no_results_content":"No Results Found",
+"dataset": "checkbook:fact_revenue",
+"columns": ["closing_classification_name","agency_short_name","revenue_category_name","revenue_source_name","fiscal_year","budget_fiscal_year","posting_amount","revenue_class_name","fund_class_name","funding_class_name","agency_id","fiscal_year_id","budget_fiscal_year_id","fund_class_id","revenue_category_id","revenue_source_id","revenue_class_id","funding_class_id","agency_name"],
+"caption":"",
+"derivedColumns": {
+	"formatted_posting_amount": {
+	      "type": "expression2",
+	      "expression": "custom_number_formatter_basic_format($row['posting_amount'])"
+	    },
+       "agency_name_formatted":{
+                "type": "expression2",
+                "expression": "_get_tooltip_markup($row[agency_name], 50)"
+       },	    
+           "agency_name_link": {
+		"type": "expression2",
+                "expression": " '<a href=/revenue/year/' . $row[budget_fiscal_year_id] . '/agency/' . $row[agency_id] .'>' . $row[agency_name_formatted] .'</a>'"
+	  }
+},
+"table_columns": [
+	    {"labelAlias": "agency_name","column": "agency_name_link","sortSourceColumn": "agency_name"},
+	    {"labelAlias": "revenue_category","column": "revenue_category_name"},
+        {"labelAlias": "revenue_class","column": "revenue_class_name"},
+	    {"labelAlias": "revenue_source","label": "<span>Revenue Source</span>","colLabel": "Revenue Source","column": "revenue_source_name"},
+	    {"labelAlias": "fiscal_year","label": "<span>Fiscal<br/>Year</span>","colLabel": "Fiscal Year","column": "fiscal_year"},
+	    {"labelAlias": "budget_fiscal_year","column": "budget_fiscal_year"},
+	    {"labelAlias": "recognized","column": "formatted_posting_amount","sortSourceColumn":"posting_amount"},
+	    {"labelAlias": "fund_class","column": "fund_class_name"},
+	    {"labelAlias": "funding_class","column": "funding_class_name"},
+	    {"labelAlias": "cls_classification_name","column": "closing_classification_name"}
+	  ],
+"adjustParameters":"
+            $adjustedParameters = $parameters;
+            if(function_exists('_checkbook_project_applyParameterFilters')){
+                  $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+            }
+            return $adjustedParameters;
+",
+"dataTableOptions":{
+         "bRetrieve": true,
+        "bServerSide": true,
+        "bProcessing":true,
+        "bFilter": false,
+        "iDisplayLength":35,
+        "bPaginate": true,
+        "sPaginationType":"full_numbers",
+        "bLengthChange": false,
+        "sDom":"<pr><t><ip>",
+        "oLanguage": {
+                "sInfo": "Displaying transactions _START_ - _END_ of _TOTAL_"
+        },
+        "bInfo": true,
+        "aoColumns":[
+	        {"sClass":"text", "sWidth":"245px","asSorting": [ "asc","desc" ]},
+			{"sClass":"text","sWidth":"175px","asSorting": [ "asc","desc" ]},
+			{"sClass":"text", "sWidth":"175px","asSorting": [ "asc","desc" ]},
+			{"sClass":"text", "sWidth":"175px","asSorting": [ "asc","desc" ]},
+			{"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
+			{"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
+			{"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
+			{"sClass":"text number-left","sWidth":"165px","asSorting": [ "asc","desc" ]},
+			{"sClass":"text","sWidth":"165px","asSorting": [ "asc","desc" ]},
+			{"sClass":"text","sWidth":"245px","asSorting": [ "asc","desc" ]}
+		],
+        "aaSorting":[[6,"desc"]],
+       	"sScrollX": "100%"
+},
+"customExternalJS":"function prepareTableListFilterUrl(){
+        var agencyIds = getNamedFilterCriteria('fagencyId');
+        if(agencyIds.length==0 && eval(document.getElementById('fHideAgencyId'))){
+             agencyIds = document.getElementById('fHideAgencyId').value;
+        }
+
+        var oRevenueCategoryIds = getNamedFilterCriteria('frevenueCategoryId');
+	var oRevenueSourceIds = getNamedFilterCriteria('frevenueSourceId');
+	var oFundingSourceIds = getNamedFilterCriteria('ffundingSourceId');
+        var oRevenueAmount = getNamedFilterCriteria('frevenueAmount');
+        var oclsNms = getNamedFilterCriteria('fclsNm');
+        
+         var  cUrl = oTable.fnSettings().sAjaxSource;
+           cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
+           cUrl = adjustUrlParameter(cUrl,'revcat',oRevenueCategoryIds);
+           cUrl = adjustUrlParameter(cUrl,'revsrc',oRevenueSourceIds);
+           cUrl = adjustUrlParameter(cUrl,'amtr',oRevenueAmount);
+           cUrl = adjustUrlParameter(cUrl,'clsname',oclsNms);
+           cUrl = adjustUrlParameter(cUrl,'fundsrccode',oFundingSourceIds);
+
+       
+       return cUrl;
+    }"
+}

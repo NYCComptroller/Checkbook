@@ -1,0 +1,24 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+
+
+function cube_uploader_du_star_schema_lookup() {
+    $items[IntegerDataTypeHandler::$DATA_TYPE] = array(
+        'classname' => 'SimpleDimensionLookupHandler');
+    $items[StringDataTypeHandler::$DATA_TYPE] = array(
+        'classname' => 'PrimitiveTypeDimensionLookupHandler');
+    // FIXME store date as date dimension and time (or datetime???) as a property in facts extension table
+    // FIXME move the registration to date dimension
+    $items[DateTimeDataTypeHandler::$DATA_TYPE] = array(
+        'classname' => 'PrimitiveTypeDimensionLookupHandler');
+
+    $items[URIDataTypeHandler::$DATA_TYPE] = array(
+        'classname' => 'PrimitiveTypeDimensionLookupHandler');
+
+    return $items;
+}

@@ -1,0 +1,26 @@
+
+/* for the wrappers */
+#dblog-ext-filter-form .form-item {
+  float: left; /* LTR */
+  padding-right: .8em; /* LTR */
+  margin: 0.1em;
+  /**
+   * In Opera 9, DOM elements with the property of "overflow: auto"
+   * will partially hide its contents with unnecessary scrollbars when
+   * its immediate child is floated without an explicit width set.
+   */
+  width: 15em;
+}
+
+/* avoid the wrappers styling */
+#dblog-ext-filter-form .form-item select.form-select {
+  float: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+/* improve button's positioning */
+#dblog-ext-filter-form .form-submit {
+  margin: 1.5em 0.5em 1em 0;
+}

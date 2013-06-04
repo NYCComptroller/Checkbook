@@ -1,0 +1,120 @@
+{
+    "datasets": {
+        "contract_summary": {
+            "datasourceName": "main",
+            "source": "SELECT (CASE WHEN (fa.registered_date_id != NULL) THEN 'Registered' ELSE 'Pending' END) AS status,
+                            fa.agreement_id, fa.document_id AS contract_id, fa.vendor_name, fa.description, at.agreement_type_name,
+                            fa.agency_name, am.award_method_name, fa.document_version, fa.tracking_number AS pin,fa.worksites_name,
+                            fa.document_code, fa.effective_begin_date AS start_date, fa.effective_end_date AS end_date,
+                            fa.registered_date, fa.amount_spent AS spent_to_date, fa.maximum_contract_amount AS current_amount,
+                            fa.original_contract_amount AS original_amount, fa.record_date AS receive_date,
+                            (CASE WHEN (fa.master_agreement_yn = 'Y') THEN ma.number_responses ELSE a.number_responses END) AS number_responses,
+                            (CASE WHEN (fa.master_agreement_yn = 'Y') THEN ma.number_solicitation ELSE a.number_solicitation END) AS number_solicitation,
+                            (CASE WHEN (fa.master_agreement_yn = 'N' AND fa.master_agreement_id > 0) THEN fa.master_agreement_id ELSE NULL END) AS parent_contract_id
+                        FROM fact_agreement fa
+                         LEFT JOIN agreement a ON fa.agreement_id = a.agreement_id
+                         LEFT JOIN master_agreement ma ON fa.master_agreement_id = ma.master_agreement_id
+                         LEFT JOIN ref_agreement_type at ON fa.agreement_type_id = at.agreement_type_id
+                         LEFT JOIN ref_award_method am ON fa.award_method_id = am.award_method_id"
+        },
+        "contract_vendor_info2": {
+            "datasourceName": "main",
+            "source": "SELECT fa.agreement_id, va.address_id, legal_name AS vendor_name, a.address_line_1, a.address_line_2, a.city, a.state, a.zip, a.country,
+                            (CASE WHEN (rb.business_type_code = 'MNRT' OR rb.business_type_code = 'WMNO') THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor,
+                            rm.minority_type_name AS ethnicity
+                        FROM fact_agreement fa
+                            LEFT JOIN vendor_history vh ON fa.vendor_history_id = vh.vendor_history_id
+                            LEFT JOIN vendor_address va ON vh.vendor_history_id = va.vendor_history_id
+                            LEFT JOIN address a ON va.address_id = a.address_id
+                            LEFT JOIN ref_address_type ra ON va.address_type_id = ra.address_type_id
+                            LEFT JOIN vendor_business_type vb ON fa.vendor_history_id = vb.vendor_history_id
+                            LEFT JOIN ref_business_type rb ON vb.business_type_id = rb.business_type_id
+                            LEFT JOIN ref_minority_type rm ON vb.minority_type_id = rm.minority_type_id
+                        WHERE ra.address_type_code = 'PR'"
+
+        },
+        "contract_spending_category": {
+            "datasourceName": "main",
+            "source": "SELECT fa.agreement_id, reoh.expenditure_object_name AS category,
+                            SUM(aal.line_amount) AS current_amount, SUM(check_amount) AS spent_to_date
+                        FROM fact_agreement fa
+                            LEFT JOIN agreement_accounting_line aal ON fa.agreement_id = aal.agreement_id
+                            LEFT JOIN ref_expenditure_object_history reoh ON aal.expenditure_object_history_id = reoh.expenditure_object_history_id
+                            LEFT JOIN disbursement_line_item dli ON fa.agreement_id = dli.agreement_id AND dli.expenditure_object_history_id = reoh.expenditure_object_history_id
+                        GROUP BY fa.agreement_id, reoh.expenditure_object_name"
+
+        },
+        "contract_spending_fy":{
+            "datasourceName": "main",
+            "source": "SELECT dli.agreement_id, dli.check_amount, d.document_id AS expense_id, ry.year_value AS fiscal_year, rd.date
+                        FROM fact_disbursement_line_item dli
+                         LEFT JOIN disbursement d ON dli.disbursement_id = d.disbursement_id
+                         LEFT JOIN ref_year ry ON dli.check_eft_issued_nyc_year_id = ry.year_id
+                         LEFT JOIN ref_date rd ON d.check_eft_issued_date_id = rd.date_id
+                        ORDER BY fiscal_year DESC, date ASC"
+        },
+        "associated_contracts":{
+            "datasourceName": "main",
+             "source":"SELECT (CASE WHEN (registered_date_id != NULL) THEN 'Registered' ELSE 'Pending' END) AS status,
+                           agreement_id,
+                           document_id AS contract_id,
+                           description,
+                           amount_spent AS spent_to_date,
+                           maximum_contract_amount AS current_amount
+                       FROM fact_agreement"
+
+        },
+        "contract_allocation":{
+             "datasourceName": "main",
+             "source": "SELECT aal.agreement_id, rf.fund_class_name, SUM(aal.line_amount) AS current_amount, SUM(dli.check_amount) AS amount_spent
+                        FROM agreement_accounting_line aal
+                            LEFT JOIN ref_fund_class rf ON aal.fund_class_id = rf.fund_class_id
+                            LEFT JOIN disbursement_line_item dli ON aal.agreement_id = dli.agreement_id
+                        GROUP BY fund_class_name, aal.agreement_id"
+
+        },
+        "contract_history":{
+             "datasourceName": "main",
+             "source": "SELECT ha.document_id,
+                                COALESCE(ha_ry1.year_value, ha_ry2.year_value) as fiscal_year,
+                                document_version,
+                                rd1.date AS start_date,
+                                rd2.date AS end_date,
+                                ha_rd1.date AS registered_date,
+                                original_contract_amount AS original_amount,
+                                maximum_contract_amount AS current_amount,
+                                (maximum_contract_amount-original_contract_amount) AS difference,
+                                (CASE WHEN (registered_date_id != NULL) THEN 'Registered' ELSE 'Pending' END) AS status
+                        FROM history_agreement ha
+                            LEFT JOIN ref_date ha_rd1 ON ha.registered_date_id = ha_rd1.date_id
+                            LEFT JOIN ref_year ha_ry1 ON ha_rd1.nyc_year_id = ha_ry1.year_id
+                            LEFT JOIN ref_date ha_rd2 ON ha.record_date_id = ha_rd2.date_id
+                            LEFT JOIN ref_year ha_ry2 ON ha_rd2.nyc_year_id = ha_ry2.year_id
+                            LEFT JOIN ref_date rd1 ON ha.effective_begin_date_id = rd1.date_id
+                            LEFT JOIN ref_date rd2 ON ha.effective_end_date_id = rd2.date_id
+                        ORDER BY fiscal_year, document_version DESC"
+        },
+        "contract_history_master":{
+             "datasourceName": "main",
+             "source": "SELECT ha.document_id,
+                                COALESCE(ha_ry1.year_value, ha_ry2.year_value) as fiscal_year,
+                                document_version,
+                                rd1.date AS start_date,
+                                rd2.date AS end_date,
+                                ha_rd1.date AS registered_date,
+                                original_contract_amount AS original_amount,
+                                maximum_spending_limit AS current_amount,
+                                (maximum_spending_limit-original_contract_amount) AS difference,
+                                (CASE WHEN (registered_date_id != NULL) THEN 'Registered' ELSE 'Pending' END) AS status
+                        FROM history_master_agreement ha
+                            LEFT JOIN ref_date ha_rd1 ON ha.registered_date_id = ha_rd1.date_id
+                            LEFT JOIN ref_year ha_ry1 ON ha_rd1.nyc_year_id = ha_ry1.year_id
+                            LEFT JOIN ref_date ha_rd2 ON ha.record_date_id = ha_rd2.date_id
+                            LEFT JOIN ref_year ha_ry2 ON ha_rd2.nyc_year_id = ha_ry2.year_id
+                            LEFT JOIN ref_date rd1 ON ha.effective_begin_date_id = rd1.date_id
+                            LEFT JOIN ref_date rd2 ON ha.effective_end_date_id = rd2.date_id
+                        ORDER BY fiscal_year, document_version DESC"
+
+        }
+    }
+}

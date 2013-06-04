@@ -1,0 +1,27 @@
+
+;	GNU AFFERO GENERAL PUBLIC LICENSE 
+;	   Version 3, 19 November 2007
+; This software is licensed under the GNU AGPL Version 3
+; 	(see the file LICENSE for details)
+name = "Cube Uploader"
+description = "Adds support for data uploading into star/snowflake schema"
+package = REI Dashboard Platform (Core)
+version = 7.x-2.x
+core = 7.x
+
+dependencies[] = dataset_uploader
+
+files[] = lookup/DimensionLookupFactory.php
+files[] = lookup/DimensionLookupHandler.php
+files[] = lookup/factory/DefaultDimensionLookupFactory.php
+files[] = lookup/handler/AbstractDimensionLookupHandler.php
+files[] = lookup/handler/PrimitiveTypeDimensionLookupHandler.php
+files[] = lookup/handler/SimpleDimensionLookupHandler.php
+files[] = lookup/handler/lookup/LookupDatasetColumnDimensionLookupHandler.php
+files[] = lookup/handler/lookup/LookupSchemaNamingConvention.php
+files[] = schema/star/StarSchemaCubeMetaData.php
+files[] = schema/star/StarSchemaNamingConvention.php
+files[] = submitter/ColumnCategoryPreparer.php
+files[] = submitter/EmptyFactRecordSkipper.php
+files[] = submitter/LookupIdentifierLoader.php
+files[] = submitter/StarSchemaDataSubmitter.php

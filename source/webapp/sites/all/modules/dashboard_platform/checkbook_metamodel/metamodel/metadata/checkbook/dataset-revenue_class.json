@@ -1,0 +1,13 @@
+{
+    "datasets": {
+        "revenue_class": {
+            "datasourceName": "main",
+            "source": "ref_revenue_class",
+            "columns": [
+                {
+                    "name": "revenue_class_id",
+                    "key": true}
+            ]
+        }
+    }
+}

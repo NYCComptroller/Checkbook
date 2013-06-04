@@ -1,0 +1,61 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+
+
+function data_controller_services_doc_menu() {
+    $items['doc/api'] = array(
+        'page callback'   => 'data_controller_services_doc_endpoint',
+        'access callback' => TRUE,
+        'type'            => MENU_CALLBACK);
+
+    return $items;
+}
+
+function data_controller_services_doc_endpoint() {
+    $endpointDef = module_invoke_all('services_resources');
+
+    $endpointGenerator = new EndPointDocumentGenerator($endpointDef);
+
+    $resourcesGenerator = new ResourcesDocumentGenerator($endpointGenerator);
+    $endpointGenerator->registerNestedGenerator($resourcesGenerator);
+
+    $methodNames = array('index', 'retrieve', 'create', 'update', 'delete');
+    foreach ($endpointDef as $resourceName => $resourceDef) {
+        $resourceGenerator = new ResourceDocumentGenerator($resourcesGenerator, $resourceName);
+        $resourcesGenerator->registerNestedGenerator($resourceGenerator);
+
+        $methodsGenerator = new MethodsDocumentGenerator($resourceGenerator);
+        $resourceGenerator->registerNestedGenerator($methodsGenerator);
+
+        foreach ($methodNames as $methodName) {
+            $methodsGenerator->registerNestedGenerator(new MethodDocumentGenerator($methodsGenerator, $methodName));
+        }
+    }
+
+    $content = '';
+    $endpointGenerator->generate($content);
+
+    $page = array(
+        '#show_messages' => false,
+        '#theme' => 'page-doc-api',
+        '#type' => 'page',
+        'content' => array(
+            'system_main' => array(
+                '#markup' => $content
+            )
+        ),
+        'post_header' => array(
+            '#markup' => ''
+        ),
+        'pre_content' => array(
+            '#markup' => ''
+        )
+    );
+
+    return $page;
+}

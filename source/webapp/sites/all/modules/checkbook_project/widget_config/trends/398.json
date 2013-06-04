@@ -1,0 +1,45 @@
+{
+	"widgetType": "data_tables",
+	"widgetSubType":"template",
+        "template":"trends_assesed_val_and_estd_act_val",
+        "useList":true,
+         "defaultParameters":{"display_yn":"Y"},
+	"no_results_content":"No Results Found",
+	"dataset": "checkbook:trends_assesed_estimated_actual_taxable_property",
+	"columns": ["fiscal_year","class_one","class_two","class_three","class_four","less_tax_exempt_property","total_taxable_assesed_value","total_direct_tax_1","estimated_actual_taxable_value","assesed_value_percentage"],
+       "orderBy":"fiscal_year",
+	"table_title":"",	
+	"dataTableOptions":{
+        "bFilter": false,
+        "bPaginate": false,
+        "bLengthChange": false,        
+        "bInfo": false,
+        "bSort":false,
+        "sScrollY": 400,
+        "bScrollCollapse": true,
+        "bAutoWidth":false,
+        "fnPreDrawCallback":"##function( oSettings ) {
+            jQuery('.trendsShowOnLoad').show();
+            return true;
+        }##",
+        "sScrollX": "100%",
+        "sScrollXInner":"925px",
+        "aoColumns":[
+          null,
+          {"sWidth":"100px"},
+          {"sWidth":"100px"},
+          {"sWidth":"100px"},
+          {"sWidth":"100px"},
+          {"sWidth":"100px"},
+          {"sWidth":"100px"},
+          {"sWidth":"100px"},
+          {"sWidth":"100px"},
+          {"sWidth":"100px"},
+          {"sWidth":"25px"}
+        ]
+       },
+ "customJS":"new FixedColumns( oTable, {
+ 		\"iLeftColumns\": 1,
+		\"iLeftWidth\": 100
+ 	} );"
+}

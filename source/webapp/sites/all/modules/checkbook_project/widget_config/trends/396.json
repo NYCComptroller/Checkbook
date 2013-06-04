@@ -1,0 +1,23 @@
+{
+	"widgetType": "data_tables",
+	"widgetSubType":"template",
+        "template":"trends_nyc_population",
+        "useList":true,
+	"no_results_content":"No Results Found",
+"defaultParameters":{"display_yn":"Y"},
+	"dataset": "checkbook:trends_nyc_population",
+	"columns": ["fiscal_year","united_states","percentage_change_from_prior_period","city_of_new_york","percentage_change_prior_period"],
+       "orderBy":"fiscal_year",
+	"table_title":"",	
+	"dataTableOptions":{
+         "bJQueryUI": false,
+        "bFilter": false,
+        "bPaginate": false,
+        "bLengthChange": false,        
+        "bInfo": false,
+        "bSort":false,
+        "fnDrawCallback": "##function () {
+            trendsCenPad(this);
+        }##" 
+       }
+}

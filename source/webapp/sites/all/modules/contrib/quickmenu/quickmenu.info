@@ -1,0 +1,7 @@
+; $Id: quickmenu.info,v 1.0 2011/07/28 02:21:38 sagar Exp $
+name = Quick Menu
+description = Adds select-box navigation blocks for any menus
+dependencies[] = menu
+core = 7.x
+package = Other
+configure = admin/structure/menu/quickmenus

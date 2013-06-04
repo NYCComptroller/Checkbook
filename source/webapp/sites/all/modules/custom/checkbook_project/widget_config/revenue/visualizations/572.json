@@ -1,0 +1,109 @@
+{
+  "widgetType":"highcharts",
+  "widgetSubType":"ajaxSimple",
+  "header":"$header = '<h2 class=\"chart-title\" style=\"display:none;\">Top Ten Agencies by Revenue</h2>';$header .= ChartUtil::generateGridViewLink($node); return $header;",
+  "gridConfig":{
+    "template":"highchart_revenue_agency_grid_view",
+    "html_class":"chart-grid-view-table",
+            "table_columns": [
+            {
+                  "labelAlias": "agency_name",
+              "column": "agency_agency_agency_name",
+                  "sortColumn":"sort_order"
+             },
+            {
+                  "colLabel": "recognized",
+              "column": "revenue_amount_sum",
+                   "eval":true
+            },
+            {
+                  "colLabel": "remaining",
+              "column": "remaining",
+                   "eval":true
+            }
+        ]
+  },
+  "no_results_content":"No Results Found",
+  "defaultParameters":{
+    "year.year":"114"
+  },
+  "cleanURLParameters":["year", "revcat", "fundsrc", "agency"],
+  "urlParamMap":{
+    "year":"year.year",
+    "revcat":"category.category",
+    "fundsrc":"funding.funding",
+    "agency":"agency.agency"
+  },
+  "dataset":"checkbook:aggregate_revenue",
+  "columns":["year.year", "agency.agency", "agency.agency.agency_name", "revenue_amount_sum", "current_modified_budget"],
+  "limit":10,
+  "orderBy":"-revenue_amount_sum",
+  "transformationPHP":"
+
+  $landing_page = '/' . current_path() ;  
+  
+  foreach ($node->data as $key=>$row){
+    $remain = $remain = $row['current_modified_budget'] - $row['revenue_amount_sum'];
+    $node->data[$key]['remaining'] = $remain;
+    $url = $landing_page . '/agency/' . $row['agency_agency'] ;
+    $categories[] = html_entity_decode($row['agency_agency_agency_name'],ENT_QUOTES);
+    $recognized[] = array('y' => $row['revenue_amount_sum'], 'url' => $url);
+    $remaining[] = array('y' => $remain, 'url' => $url);
+  }
+  $node->widgetConfig->chartTitle = 'Top Ten Agencies by Revenue';
+  $node->widgetConfig->chartConfig->xAxis->categories = $categories;
+  $node->widgetConfig->chartConfig->series = array(array('name' => 'Recognized', 'data' => $recognized), array('name' => 'Remaining', 'data' => $remaining));
+  return $node->data;
+  ",
+  "chartConfig":{
+    "chart":{
+      "defaultSeriesType":"column"
+    },
+    "xAxis":{
+      "categories":[],
+      "title":{
+        "text":""
+      }
+    },
+    "plotOptions":{
+      "series":{
+        "cursor":"pointer",
+        "point":{
+          "events":{
+            "function":"clickEvent"
+          }
+        }
+      },
+      "column":{
+        "pointWidth":16,
+        "minPointLength":3
+      }
+    },
+    "series":[],
+    "title":{
+      "text":""
+    },
+    "yAxis":{
+      "startOnTick":true,
+      "title":{
+        "text":""
+      },
+      "labels":{
+        "rotation":0,
+        "function":"yAxisFormatter"
+      }
+    },
+    "legend":{
+      "align":"left",
+      "verticalAlign":"bottom"
+    },
+    "tooltip":{
+      "function":"tooltipformatter"
+    }
+  }
+}
+<function>
+yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
+tooltipformatter^^'formatter' : function(){return 'Agency: ' + this.x + '<br>Amount: ' + abbrNum(this.y, 2, '$');}##
+clickEvent^^'click' : function(){location.href = this.url;}##
+</function>

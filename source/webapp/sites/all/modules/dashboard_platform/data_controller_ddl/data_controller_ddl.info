@@ -1,0 +1,28 @@
+
+;	GNU AFFERO GENERAL PUBLIC LICENSE 
+;	   Version 3, 19 November 2007
+; This software is licensed under the GNU AGPL Version 3
+; 	(see the file LICENSE for details)
+name = "Data Controller (DDL)"
+description = "Extension to Data Controller to manage data storage"
+package = REI Dashboard Platform (Core)
+version = 7.x-2.x
+core = 7.x
+
+dependencies[] = data_controller
+
+files[] = controller/DataStructureController.php
+files[] = controller/DataStructureControllerProxy.php
+files[] = controller/handler/AbstractDataStructureController.php
+files[] = controller/handler/DefaultDataStructureController.php
+
+files[] = datasource/DataSourceStructureFactory.php
+files[] = datasource/DataSourceStructureHandler.php
+files[] = datasource/factory/AbstractDataSourceStructureFactory.php
+files[] = datasource/request/database/AbstractDatabaseRequest.php
+files[] = datasource/request/database/CreateDatabaseRequest.php
+files[] = datasource/request/database/DropDatabaseRequest.php
+files[] = datasource/request/dataset/AbstractDatasetStorageRequest.php
+files[] = datasource/request/dataset/TruncateDatasetStorageRequest.php
+files[] = datasource/request/dataset/CreateDatasetStorageRequest.php
+files[] = datasource/request/dataset/DropDatasetStorageRequest.php

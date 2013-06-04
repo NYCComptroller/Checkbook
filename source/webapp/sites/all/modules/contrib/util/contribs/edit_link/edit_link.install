@@ -1,0 +1,9 @@
+<?php
+/**
+ * @file
+ * Add an 'edit' link to nodes.
+ */
+
+function edit_link_uninstall() {
+  variable_del('edit_link_type');
+}

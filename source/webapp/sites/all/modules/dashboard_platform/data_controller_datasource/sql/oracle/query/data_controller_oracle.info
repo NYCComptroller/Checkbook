@@ -1,0 +1,23 @@
+
+;	GNU AFFERO GENERAL PUBLIC LICENSE 
+;	   Version 3, 19 November 2007
+; This software is licensed under the GNU AGPL Version 3
+; 	(see the file LICENSE for details)
+name = "Oracle integration"
+description = "Integrates Data Controller with Oracle database"
+package = REI Dashboard Platform (Adapter)
+version = 7.x-2.x
+core = 7.x
+
+dependencies[] = data_controller_datasource_sql
+
+files[] = datasource/OracleDataSource.php
+files[] = datasource/handler/impl/OCIImplHelper.php
+files[] = datasource/handler/impl/OCIExecuteQueryStatementImpl.php
+files[] = datasource/handler/impl/OCIExecuteStatementImpl.php
+files[] = datasource/handler/impl/OCIInitializeConnectionImpl.php
+files[] = datasource/handler/impl/OracleApplyPaginationImpl.php
+files[] = datasource/handler/impl/OracleDataSourceOwnerImpl.php
+files[] = datasource/handler/impl/OracleFormatDateValueImpl.php
+files[] = datasource/handler/impl/OracleMaximumEntityNameLengthImpl.php
+files[] = datasource/handler/OracleDataSourceQueryHandler.php

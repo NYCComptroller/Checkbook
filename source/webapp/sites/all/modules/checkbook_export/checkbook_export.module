@@ -1,0 +1,56 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+
+
+
+/**
+ * Hook to load custom project specific utility functions during bootstrap..
+ */
+function checkbook_export_init(){
+    require_once(drupal_get_path("module","checkbook_export") . "/includes/checkbook_export.inc");
+}
+
+/**
+ * Implementation of hook_menu
+ */
+function checkbook_export_menu(){
+    $items['export/transactions/form'] = array(
+        'title' => 'Checkbook Export',
+        'page callback' => '_checkbook_export_form',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+
+    $items['export/transactions'] = array(
+        'title' => 'Checkbook Export',
+        'page callback' => '_checkbook_export_transactions',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+
+    $items['export/grid/transactions'] = array(
+        'title' => 'Checkbook Export',
+        'page callback' => '_checkbook_export_grid_transactions',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+
+    return $items;
+}
+
+function checkbook_export_theme($existing, $type, $theme, $path){
+    return array(
+        'checkbook_export_default_theme' => array(
+            'template' => 'checkbook_export',
+            'arguments' => array('maxPages' => NULL,
+                                'totalRecords' => NULL,
+                                'displayRecords' => NULL
+            )
+        )
+    );
+}

@@ -1,0 +1,24 @@
+
+;	GNU AFFERO GENERAL PUBLIC LICENSE 
+;	   Version 3, 19 November 2007
+; This software is licensed under the GNU AGPL Version 3
+; 	(see the file LICENSE for details)
+name = "Core ANSI SQL Database API implementation (DML)"
+description = "Extension to integration with SQL-driven database to manipulate data"
+package = REI Dashboard Platform (Core)
+version = 7.x-2.x
+core = 7.x
+
+dependencies[] = data_controller_datasource_sql
+
+files[] = datasource/handler/AbstractSQLDataSourceManipulationHandler.php
+files[] = datasource/handler/DefaultSQLDataSourceManipulationHandler.php
+files[] = datasource/handler/impl/AbstractPrepareDeleteStatementImpl.php
+files[] = datasource/handler/impl/AbstractPrepareInsertStatementBatchImpl.php
+files[] = datasource/handler/impl/AbstractPrepareManipulationStatementBatchImpl.php
+files[] = datasource/handler/impl/AbstractPrepareUpdateStatementImpl.php
+files[] = datasource/handler/impl/default/DefaultPrepareDeleteStatementImpl.php
+files[] = datasource/handler/impl/default/DefaultPrepareInsertStatementsInsteadOfBatchImpl.php
+files[] = datasource/handler/impl/default/DefaultPrepareInsertStatementBatchImpl.php
+files[] = datasource/handler/impl/default/DefaultPrepareManipulationStatementBatchImpl.php
+files[] = datasource/handler/impl/default/DefaultPrepareUpdateStatementImpl.php

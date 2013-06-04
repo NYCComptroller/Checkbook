@@ -1,0 +1,49 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+
+
+
+
+function data_controller_mysql_dc_datasource() {
+    $items[MySQLDataSource::TYPE] = array(
+        'extensions' => array(
+            'getMaximumEntityNameLength' => 'MySQLMaximumEntityNameLengthImpl',
+
+            'concatenateValues' => 'MySQLConcatenateValuesImpl',
+            'formatWildcardValue' => 'DefaultFormatWildcardValueImpl',
+            'formatDateValue' => 'MySQLFormatDateValueImpl',
+            'formatRegularExpression' => 'DefaultFormatRegularExpressionValueImpl',
+            'formatNotRegularExpression' => 'DefaultFormatNotRegularExpressionValueImpl',
+
+            'initializeConnection' => 'MySQLInitializeConnectionImpl',
+            'executeStatement' => 'PDOExecuteStatementImpl',
+            'executeQueryStatement' => 'PDOExecuteQueryStatementImpl',
+            'executeQueryStatement_callback' => 'MySQLQueryStatementExecutionCallback',
+
+            'startTransaction' => 'DefaultStartTransactionStatementImpl',
+            'commitTransaction' => 'DefaultCommitTransactionStatementImpl',
+            'rollbackTransaction' => 'DefaultRollbackTransactionStatementImpl',
+
+            'getDataSourceOwner' => 'MySQLDataSourceOwnerImpl'
+        )
+    );
+
+    return $items;
+}
+
+function data_controller_mysql_dc_datasource_query() {
+    $items[MySQLDataSource::TYPE] = array(
+        'handler' => 'DefaultSQLDataSourceQueryHandler',
+        'extensions' => array(
+            'isJoinSupported' => 'IntraSchemaJoinSupportImpl',
+            'applyPagination' => 'DefaultApplyPaginationImpl'
+        )
+    );
+
+    return $items;
+}

@@ -1,0 +1,31 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+
+
+/*
+ * Implementation of 'Distributed Transaction Processing: The XA Specification'
+ * http://pubs.opengroup.org/onlinepubs/009680699/toc.pdf
+ */
+
+/**
+ * Common acronyms:
+ *     TM - Transaction Manager
+ *     RM - Resource Manager
+ *     AP - Application Program
+ */
+
+/**
+ * Implementation restrictions:
+ *   - in most of cases methods do not return error codes. They throw exceptions.
+ *     Original specification was approved in 1991 and at that time returning error code was accepted pattern.
+ *     Present-day development is based on exceptions instead
+ *   - asynchronous transaction preparation/commit/rollback are not supported because
+ *     PHP language does not natively support threading model
+ */
+
+define('DISTRIBUTED_TRANSACTION_MODULE_NAME', 'xa_transaction');

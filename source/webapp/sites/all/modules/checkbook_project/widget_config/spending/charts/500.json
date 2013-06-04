@@ -1,0 +1,99 @@
+{
+"widgetType": "highcharts",
+"header":"
+    $header = '<h2 class=\"chart-title\" style=\"display:none;\">' . $node->widgetConfig->chartTitle . '</h2>';
+    $header .= ChartUtil::generateGridViewLink($node);
+    return $header;
+",
+"gridConfig":{
+    "template":"highchart_spending_vendor_grid_view",
+    "html_class":"chart-grid-view-table two-columns",
+    "table_columns": [
+    {
+        "labelAlias": "vendor_name",
+        "column": "vendor_vendor_legal_name"
+    },
+    {
+        "labelAlias": "amount",
+        "column": "check_amount_sum"
+    }
+  ]
+},
+"dataset": "checkbook:spending_data",
+"columns": ["vendor.vendor","vendor.vendor.legal_name","check_amount_sum"],
+"datasets":[{"name":"vendor","column":"vendor_vendor_legal_name","type":"string","isArray":true}],
+"limit": 10,
+"orderBy": "-check_amount_sum",
+"cleanURLParameters":["year","yeartype","agency","vendor","category"],
+"urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"vendor_id","category":"spending_category_id"},
+"defaultParameters":{"check_amount_sum":"0","vendor_id":""},
+"defaultParamTypeConfig":{"check_amount_sum":"ne","vendor_id":"ne"},
+"adjustParameters":"
+            $adjustedParameters = $parameters;
+            if(function_exists('_checkbook_project_applyParameterFilters')){
+                  $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+            }
+            return $adjustedParameters;
+",
+"transformationPHP": "
+    $data = array();
+    $categories=array();
+    foreach ($node->data as $row){
+        $link= CustomURLHelper::prepareUrl('spending_landing', SpendingUtil::$landingPageParams, array('expandBottomCont'=>'true'), array('vendor'=>$row['vendor_vendor']) );
+        $categories[]=html_entity_decode($row['vendor_vendor_legal_name'],ENT_QUOTES);
+        $data[] = (object)array('year'=>$row['fiscal_year_id'],'y'=>$row['check_amount_sum'],'url'=>$link,'name'=>strtoupper(html_entity_decode($row['vendor_vendor_legal_name'],ENT_QUOTES)));
+    }
+    $node->widgetConfig->chartConfig->series[0]->data = $data;$node->widgetConfig->chartConfig->xAxis->categories = $categories;
+    $node->widgetConfig->chartConfig->series[0]->name = 'Disbursement Amount';
+    $node->widgetConfig->chartTitle = 'Top Ten Vendors by Disbursement Amount';
+
+    return $node->data;
+",
+"chartConfig": {
+    "chart": {"defaultSeriesType": "column"},
+    "colors":["#7DB7E5"],
+    "legend": {
+        "enabled": false,
+        "align": "left",
+        "verticalAlign": "bottom",
+        "floating": "true",
+        "layout": "horizontal"
+    },
+    "xAxis": {
+        "title": {"text": ""},
+        "labels":{"enabled":false},
+        "categories":{"ds":"vendor"},
+        "minPadding":0.1,
+        "maxPadding":0.1
+    },
+    "yAxis": {
+        "title": {"text": ""},
+        "labels":{"rotation": 0,"function":"yAxisFormatter"}
+    },
+    "tooltip": {
+        "function": "tooltipformatter"
+    },
+    "title": {"text": ""},
+    "plotOptions": {
+        "column": {"pointWidth": 30},
+        "series": {
+            "cursor": "pointer",
+            "point": {
+                "events": {"function": "clickEvent"}
+            }
+        }
+    },
+    "series": [],
+    "title":{"text":""}
+}
+}
+<function>yAxisFormatter^^'formatter' : function(){
+                                            return yAxisLabelFormatter(this);
+                                        }##
+tooltipformatter^^"formatter": function(){
+                                    return 'Vendor: '+this.point.name  + '<br/>'+'Amount: '+abbrNum(this.y,2,'$')
+                                }##
+clickEvent^^"click": function(){
+                           location.href = Drupal.settings.basePath+this.url;
+                     }
+</function>

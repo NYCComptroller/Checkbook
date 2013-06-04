@@ -1,0 +1,12 @@
+
+.form-submit {
+  color: #009900;
+  font-weight: bold;
+  padding: 0.1em 1em;
+}
+
+.form-submit.warning {
+  color: #cc0000;
+  padding: 0.1em 0.3em;
+}
+

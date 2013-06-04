@@ -1,0 +1,6 @@
+{
+"widgetType": "phpparser",
+"noDataInitialLoad":true,
+"customDataHandlerClass":"masterAgreementDetails",
+"template":"contracts_mma_details"
+}

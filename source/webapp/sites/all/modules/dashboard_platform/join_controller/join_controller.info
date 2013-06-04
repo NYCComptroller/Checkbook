@@ -1,0 +1,27 @@
+
+;	GNU AFFERO GENERAL PUBLIC LICENSE 
+;	   Version 3, 19 November 2007
+; This software is licensed under the GNU AGPL Version 3
+; 	(see the file LICENSE for details)
+;  Copyright 2009-2011 United States Government.
+;
+name = "Join Controller"
+description = "Adds support for data join"
+package = REI Dashboard Platform (Core)
+version = 7.x-2.x
+core = 7.x
+
+dependencies[] = data_controller
+
+files[] = controller/JoinController.php
+files[] = controller/JoinControllerFactory.php
+files[] = controller/factory/DefaultJoinControllerFactory.php
+files[] = controller/handler/AbstractColumnBasedJoinController.php
+files[] = controller/handler/AbstractJoinController.php
+files[] = controller/handler/AbstractLeftOuterJoinController.php
+files[] = controller/handler/CrossJoinController.php
+files[] = controller/handler/FullJoinController.php
+files[] = controller/handler/InnerJoinController.php
+files[] = controller/handler/LeftOuterJoinController.php
+files[] = controller/handler/RightOuterJoinController.php
+files[] = controller/handler/UnionJoinController.php

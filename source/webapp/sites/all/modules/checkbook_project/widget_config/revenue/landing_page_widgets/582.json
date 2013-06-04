@@ -1,0 +1,128 @@
+{
+"widgetType": "data_tables",
+"widgetSubType":"ajaxSimple",
+"disableViewAll":true,
+"enableExpand":true,
+"getTotalDataCount":true,
+"no_results_content":"No Results Found",
+"cleanURLParameters":["year","agency","revcat","fundsrccode"],
+"urlParamMap":{"year":"year.year","agency":"agency_id","revcat":"revenue_category_id","fundsrccode":"funding_class_code"},
+"defaultParameters":{"year.year":113},
+"noDataInitialLoad":true,
+"dataset": "checkbook:aggregate_revenue",
+"columns": ["funding.funding.funding_class_name","funding.funding.funding_class_code",
+            "adopted_budget","current_modified_budget","revenue_amount_sum","remaining_amount"],
+"limit":5,
+"widgetTitle":"Funding Class Revenue Details",
+"header":"
+    $node->widgetConfig->getData=false;
+    load_widget_data($node);
+    if($node->totalDataCount > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
+    $header='<div class=\"tableHeader\"><h2>Revenue by Funding Class</h2><span class=\"contCount\"> Number of Funding Classes: ' . number_format($node->totalDataCount) . '</span></div>';
+    return $header;
+",
+"footer":"
+    $url = '/panel_html/revenue_transactions/budget/transactions'.'/dtsmnid/' . $node->nid;
+    $url .= _checkbook_project_get_url_param_string('agency');
+    $url .= _checkbook_project_get_url_param_string('revcat');
+    $url .= _checkbook_project_get_url_param_string('fundsrccode');
+    $url .= _checkbook_project_get_year_url_param_string();
+    $count = $node->count;
+    $footer = '';
+    if($node->totalDataCount > 5)
+       $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
+    else if($node->totalDataCount > 0 && $node->totalDataCount <= 5)
+       $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
+    else
+       $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
+    return $footer;
+",
+ "derivedColumns":{
+    "adopted_formatted":{
+        "type":"expression2",
+        "expression":"custom_number_formatter_format($row['adopted_budget'],2,'$')"
+    },
+    "modified_formatted":{
+            "type":"expression2",
+            "expression":"custom_number_formatter_format($row['current_modified_budget'],2,'$')"
+    },
+    "recognized_formatted":{
+            "type":"expression2",
+            "expression":"'<a class=\"bottomContainerReload\" href=\"/panel_html/revenue_transactions/revenue/transactions'
+                               .'/smnid/' . $node->nid
+                               . _checkbook_project_get_year_url_param_string()
+                               ._checkbook_project_get_url_param_string(\"agency\")
+                               ._checkbook_project_get_url_param_string(\"fundsrccode\")
+                               ._checkbook_project_get_url_param_string(\"revcat\")
+                               .'/fundsrccode/'.$row['funding_funding_funding_class_code']
+                               .'\">'.custom_number_formatter_format($row['revenue_amount_sum'],2,'$').'</a>'"
+    },
+    "remaining_formatted":{
+            "type":"expression2",
+            "expression":"custom_number_formatter_format($row['remaining_amount'],2,'$')"
+    },
+    "funsrc_link":{
+            "type":"expression2",
+            "expression":"'<a href=\"/revenue'. _checkbook_project_get_year_url_param_string()
+                                    ._checkbook_project_get_url_param_string(\"agency\")
+                                    ._checkbook_project_get_url_param_string(\"fundsrccode\")
+                                    ._checkbook_project_get_url_param_string(\"revcat\")
+                                    .'/fundsrccode/'.$row['funding_funding_funding_class_code']
+                                    .'\">'.$row['funding_funding_funding_class_name'].'</a>'"
+    }
+ },
+"table_columns": [
+    {
+      "labelAlias": "funding_class",
+      "column": "funding_funding_funding_class_name"
+    },
+    {
+      "labelAlias": "adopted",
+      "column":"adopted_formatted",
+      "sortSourceColumn":"adopted_budget"
+    },
+    {
+      "labelAlias": "modified",
+      "column": "modified_formatted",
+      "sortSourceColumn":"current_modified_budget"
+    },
+    {
+      "labelAlias":"recognized",
+      "column":"recognized_formatted",
+      "sortSourceColumn":"revenue_amount_sum"
+    },
+   {
+      "labelAlias":"remaining",
+      "column":"remaining_formatted",
+      "sortSourceColumn":"remaining_amount"
+    },
+    {
+      "label": "",
+      "column": ""
+    }
+  ],
+"dataTableOptions":{
+    "aoColumns": [
+        { "bSortable": false,"sWidth":"250px","sClass":"text" },
+        { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
+        { "bSortable": true,"sWidth":"150px" ,"sClass":"number","asSorting": [ "desc" ,"asc" ]},
+        { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
+        { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
+        { "bSortable": true,"sWidth":"15px" }
+    ],
+    "aaSorting":[[3,"desc"]],
+    "bServerSide": true,
+    "bFilter": false,
+    "bPaginate": false,
+    "bProcessing":true,
+    "bLengthChange": false,
+    "bInfo": false,
+    "bAutoWidth": false,
+    "fnServerParams": "##function ( aoData ) {
+               reloadExpandCollapseWidget(this,aoData);
+    }##",
+    "oLanguage":{
+    "sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+    }
+}
+}

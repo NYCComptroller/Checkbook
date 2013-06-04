@@ -1,0 +1,30 @@
+<?php
+
+/**
+ * Implementation of hook_menu_alter().
+ */
+function dblog_ext_menu_alter(&$items) {
+  $items['admin/reports/dblog']['page callback'] = 'dblog_ext_overview';
+  $items['admin/reports/dblog']['module'] = 'dblog_ext';
+  $items['admin/reports/dblog']['file'] = 'dblog_ext.admin.inc';
+}
+
+function dblog_ext_get_filters($reset = FALSE) {
+  static $filters;
+  if (!isset($filters) || $reset) {
+    $filters = module_invoke_all('log_filters');
+  }
+  return $filters;
+}
+
+/**
+ * Implementation of hook_log_filters() on behalf of dblog.
+ */
+function dblog_log_filters() {
+  $filters = dblog_filters();
+  foreach($filters as $key => $filter) {
+    $filters[$key]['conjunction'] = TRUE;
+  }
+  return $filters;
+}
+

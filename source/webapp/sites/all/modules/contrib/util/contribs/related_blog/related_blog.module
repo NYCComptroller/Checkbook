@@ -1,0 +1,118 @@
+<?php
+/**
+ * @file
+ * Provides block to show blog of node's author.
+ */
+
+/**
+ * Implements hook_block_info();
+ */
+function related_blog_block_info() {
+  return array(
+    'related_blog' => array(
+      'info' => t('Util: Related Blog'),
+      'visibility' => BLOCK_VISIBILITY_LISTED,  // Show only on...
+      'pages' => 'node/*',                       // Node pages.
+      'cache' => DRUPAL_NO_CACHE,
+      ),
+    );
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function related_blog_block_view($delta = 0) {
+  $block = array();
+
+  switch ($delta) {
+    case 'related_blog':
+      // Make sure it makes sense to show this.
+      // That is, not on node add/edit, etc.
+      if (arg(2)) {
+        return $block;
+      }
+
+      // Get the currently displayed node.
+      $node = menu_get_object();
+
+      // See blog_page_user().
+      $build = array();
+
+      $query = db_select('node', 'n')->extend('PagerDefault');
+      $nids = $query
+        ->fields('n', array('nid', 'sticky', 'created'))
+        ->condition('type', 'blog')
+        ->condition('uid', $node->uid)
+        ->condition('nid', $node->nid, '<>')  // No point in showing the same one.
+        ->condition('status', 1)
+        ->orderBy('sticky', 'DESC')
+        ->orderBy('created', 'DESC')
+        ->limit(variable_get('related_blog_count', variable_get('default_nodes_main', 10)))
+        ->addTag('node_access')
+        ->execute()
+        ->fetchCol();
+
+      if (!empty($nids)) {
+        $nodes = node_load_multiple($nids);
+        $build += node_view_multiple($nodes, 'related_blog');
+        $build['pager'] = array(
+          '#theme' => 'pager',
+          '#weight' => 5,
+        );
+      }
+      else {
+        drupal_set_message(t('!author has not created any blog entries.', array('!author' => theme('username', array('account' => $account)))));
+      }
+
+      $block['content'] = $build;
+
+      break;
+  }
+
+  return $block;
+}
+
+/**
+ * Implements hook_block_configure().
+ */
+function related_blog_block_configure($delta = 0) {
+  $form = array();
+
+  switch ($delta) {
+    case 'related_blog':
+      $form['blog_count'] = array(
+        '#type' => 'radios',
+        '#title' => t('How many blogs to show'),
+        '#default_value' => variable_get('related_blog_count', variable_get('default_nodes_main', 10)),
+        '#options' => array(1 => 1, 2 => 2, 3=> 3, 4 => 4, 5 => 5, 10 => 10),
+        '#attributes' => array('class' => array('container-inline')),
+        );
+      break;
+}
+
+  return $form;
+}
+
+/**
+ * Implements hook_block_save().
+ */
+function related_blog_block_save($delta = 0, $edit = array()) {
+  switch ($delta) {
+    case 'related_blog':
+      variable_set('related_blog_count', $edit['blog_count']);
+      return;
+  }
+}
+
+/**
+ * Implements hook_entity_info_alter().
+ * Add a view mode so teaser can be changed, if desired.
+ */
+function related_blog_entity_info_alter(&$entity_info){
+// drupal_set_message(print_r($entity_info['node']['view modes'],true));
+  $entity_info['node']['view modes']['related_blog'] = array(
+    'label' => t('Related blog block'),
+    'custom settings' => TRUE,
+  );
+}
+

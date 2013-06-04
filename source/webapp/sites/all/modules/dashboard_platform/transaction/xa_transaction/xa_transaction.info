@@ -1,0 +1,27 @@
+
+;	GNU AFFERO GENERAL PUBLIC LICENSE 
+;	   Version 3, 19 November 2007
+; This software is licensed under the GNU AGPL Version 3
+; 	(see the file LICENSE for details)
+name = "XA Transaction"
+description = "Distributed Transaction Processing (Implementation of XA Specification)"
+package = REI Dashboard Platform (Core)
+version = 7.x-2.x
+core = 7.x
+
+files[] = xid/XID.php
+files[] = xid/XIDFactory.php
+files[] = xid/XIDGenerator.php
+files[] = xid/XIDGeneratorFactory.php
+files[] = xid/impl/DefaultXIDFactory.php
+files[] = xid/impl/DefaultXIDGeneratorFactory.php
+
+files[] = tm/Transaction.php
+files[] = tm/TransactionManager.php
+files[] = tm/impl/DefaultTransactionManager.php
+files[] = tm/impl/XATransaction.php
+files[] = tm/impl/LocalTransaction.php
+
+files[] = rm/ResourceManager.php
+files[] = rm/AbstractResourceManager.php
+files[] = rm/AbstractSQLResourceManager.php

@@ -1,0 +1,35 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":488,
+    "no_results_content":"No Results Found",
+    "allowRequestParams":["contstatus"],
+    "defaultParameters":{
+        "latest_flag":"Y"
+    },
+    "limit":100,
+    "urlParamMap":{"doctype":"document_code.document_code.document_code"}  ,
+    "columns":["award_method.award_method", "award_method.award_method.award_method_name", "txcount"],
+    "orderBy":"-txcount", 
+	"getTotalDataCount":true,    
+	"facetPager":true,    
+    "filterName":"Award Method",
+    "urlParameterName":"awdmethod",
+    "autocompleteParamName":"awdmethod_auto",    
+    "autocompleteID":"fAwdMethodId", 	
+    "autocompleteField":"award_method_name",
+    "maxSelect":5,	       
+    "adjustParameters":"
+	checkbook_faceted_search_adjust_param($node);
+    if(function_exists('_checkbook_project_adjustContractParameterFilters')){
+        _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered_all');
+    }
+
+    if(function_exists('_checkbook_project_applyParameterFilters')){
+        $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+		$adjustedParameters['award_method.award_method'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);        
+        return $adjustedParameters;
+    }
+    return $parameters;
+    ",  
+    "template":"individual_filter"
+}

@@ -1,0 +1,50 @@
+<?php
+/**
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
+*/
+
+
+function views_highcharts_init() {
+		drupal_add_js(drupal_get_path('module', 'views_highcharts') .'/highcharts/2.1.1/js/highcharts.js');
+		drupal_add_js(drupal_get_path('module', 'views_highcharts') .'/highcharts/2.1.1/js/modules/exporting.js');
+		drupal_add_js(drupal_get_path('module', 'views_highcharts') .'/highcharts/highstock-globals.js');
+}
+/**
+ * Implementation of hook_views_api().
+ */
+function views_highcharts_views_api() {
+	return array('api' => 3);
+}
+
+/**
+ * Implementation of hook_views_plugin().
+ */
+function views_highcharts_views_plugins() {
+	$path = drupal_get_path('module', 'views_highcharts');
+	return array(
+    'module'  => 'views_highcharts',
+      'style'   => array(                 // Declare the views_highcharts style plugin.
+        'views_highcharts'      => array(
+        'title'         => ('HighCharts'),
+	    'path'          => $path,
+	    'help'          => ('Displays views as HighCharts'), 
+        'handler'         => 'views_plugin_style_highcharts',
+		'theme'           => 'views_views_highcharts_style',
+	    'theme file'      => 'views_views_highcharts_style.theme.inc',
+	    'theme path'      => $path.'/theme',
+        'uses row plugin' => FALSE,
+        'uses fields'     => TRUE,
+        'uses options'    => TRUE,
+        'type'            => 'normal',
+	    'even empty'      => FALSE
+	  ),
+	),
+  );
+}
+
+
+
+

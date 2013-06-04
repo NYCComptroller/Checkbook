@@ -1,0 +1,51 @@
+<?php
+/**
+ * @file
+ * Prevent search indexing.
+ * Adding a robots header isn't necessarily a sure thing. It's not supported by
+ * all search engines and will not guarantee your site will be excluded.
+ * Read: http://www.sitepoint.com/why-pages-disallowed-in-robots-txt-still-appear-in-google/
+ */
+
+/**
+ * Implements hook_form_alter().
+ * Settings to prevent search indexing.
+ */
+function no_index_form_alter(&$form, $form_state, $form_id) {
+  switch ($form_id) {
+    // Settings
+    case 'util_page':
+      $form['no_index'] = array(
+        '#type' => 'fieldset',
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
+        '#title' => t('No search indexing'),
+        '#description' => t('Produces site directive telling search engines to go away.'),
+        );
+
+      $form['no_index']['no_index_setting'] = array(
+        '#type' => 'radios',
+        '#options' => array(t('No'), t('Yes')),
+        '#title' => t('No search indexing'),
+        '#description' => t('Produces site directive telling search engines to go away.'),
+        '#default_value' => variable_get('no_index_setting', 0),
+        '#attributes' => array('class' => array('container-inline')),
+        );
+  }
+}
+
+/**
+ * Implements hook_init().
+ */
+function no_index_init() {
+  if (variable_get('no_index_setting', 0)) {
+  	$data = array(
+      '#tag' => 'meta',
+      '#attributes' => array(
+        'name' => 'robots',
+        'content' => 'noindex, nofollow',
+        ),
+      );
+  	drupal_add_html_head($data, 'no_index_meta');
+  }
+}

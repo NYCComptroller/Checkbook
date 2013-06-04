@@ -1,0 +1,10 @@
+<?php
+/**
+ * @file
+ * Prevent search indexing.
+ */
+
+function quick_list_uninstall() {
+  variable_del('quick_list_show_core');
+  variable_del('quick_list_columns');
+}
