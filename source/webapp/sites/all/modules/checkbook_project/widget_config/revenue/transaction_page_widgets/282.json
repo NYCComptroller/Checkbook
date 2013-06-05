@@ -1,9 +1,0 @@
-{
-"widgetType": "phpparser",
-"cleanURLParameters":["year","agency","revcat","fundsrccode"],
-"urlParamMap":{"year":"year.year","agency":"agency_id","revcat":"revenue_category_id","fundsrccode":"funding_class_code"},
-"defaultParameters":{"year.year":113},
-"dataset": "checkbook:aggregate_revenue",
-"columns": ["adopted_budget","current_modified_budget","revenue_amount_sum"],
-"template":"revenue_transaction_total_amount"
-}
