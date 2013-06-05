@@ -47,7 +47,7 @@
                }
          }
          $column_count = count($node->widgetConfig->table_columns);
-         $adjustDataTableOptions->aaSorting[0][0] = $column_count - 3;
+         $adjustDataTableOptions->aaSorting[0][0] = $column_count - 2;
 
          $node->widgetConfig->table_columns = array_values($node->widgetConfig->table_columns);
          $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoColumns);
