@@ -1,0 +1,96 @@
+
+; This file is part of the Checkbook NYC financial transparency software.
+; 
+; Copyright (C) 2012, 2013 New York City
+; 
+; This program is free software: you can redistribute it and/or modify
+; it under the terms of the GNU Affero General Public License as
+; published by the Free Software Foundation, either version 3 of the
+; License, or (at your option) any later version.
+; 
+; This program is distributed in the hope that it will be useful,
+; but WITHOUT ANY WARRANTY; without even the implied warranty of
+; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+; GNU Affero General Public License for more details.
+; 
+; You should have received a copy of the GNU Affero General Public License
+; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+;  Copyright 2009-2011 United States Government.
+;
+name = "Core ANSI SQL Database API implementation"
+description = "Provides core functionality to integrate with SQL-driven database"
+package = REI Dashboard Platform (Core)
+version = 7.x-2.x
+core = 7.x
+
+dependencies[] = data_controller
+
+files[] = datasource/dataset/assembler/handler/AbstractSQLDatasetSourceAssembler.php
+files[] = datasource/dataset/assembler/statement/AbstractSection.php
+files[] = datasource/dataset/assembler/statement/SelectSection.php
+files[] = datasource/dataset/assembler/statement/StatementCompositeEntity.php
+files[] = datasource/dataset/assembler/statement/FromSection.php
+files[] = datasource/dataset/assembler/statement/WhereSection.php
+files[] = datasource/dataset/assembler/statement/GroupBySection.php
+files[] = datasource/dataset/assembler/statement/Statement.php
+files[] = datasource/SQLDataSourceHandler.php
+files[] = datasource/handler/DefaultSQLDataSourceQueryHandler.php
+files[] = datasource/handler/impl/AbstractApplyPaginationImpl.php
+files[] = datasource/handler/impl/AbstractCheckJoinSupportImpl.php
+files[] = datasource/handler/impl/AbstractCommitTransactionStatementImpl.php
+files[] = datasource/handler/impl/AbstractDataSourceOwnerImpl.php
+files[] = datasource/handler/impl/AbstractExecuteQueryStatementImpl.php
+files[] = datasource/handler/impl/AbstractExecuteStatementImpl.php
+files[] = datasource/handler/impl/AbstractInitializeConnectionImpl.php
+files[] = datasource/handler/impl/AbstractInitializePDOConnectionImpl.php
+files[] = datasource/handler/impl/AbstractRollbackTransactionStatementImpl.php
+files[] = datasource/handler/impl/AbstractStartTransactionStatementImpl.php
+files[] = datasource/handler/impl/default/DefaultApplyPaginationImpl.php
+files[] = datasource/handler/impl/default/DefaultCheckJoinSupportImpl.php
+files[] = datasource/handler/impl/default/DefaultCommitTransactionStatementImpl.php
+files[] = datasource/handler/impl/default/DefaultConcatenateValuesImpl.php
+files[] = datasource/handler/impl/default/DefaultFormatWildcardValueImpl.php
+files[] = datasource/handler/impl/default/DefaultRollbackTransactionStatementImpl.php
+files[] = datasource/handler/impl/default/DefaultStartTransactionStatementImpl.php
+files[] = datasource/handler/impl/default/IntraSchemaJoinSupportImpl.php
+files[] = datasource/handler/impl/default/NoStartTransactionStatementImpl.php
+files[] = datasource/handler/impl/default/PDOExecuteQueryStatementImpl.php
+files[] = datasource/handler/impl/default/PDOExecuteStatementImpl.php
+files[] = datasource/handler/impl/default/DefaultFormatRegularExpressionValueImpl.php
+files[] = datasource/handler/impl/default/DefaultFormatNotRegularExpressionValueImpl.php
+files[] = datasource/handler/generator/CubeStatementGenerator.php
+files[] = datasource/handler/generator/DatasetStatementGenerator.php
+files[] = datasource/handler/AbstractSQLDataSourceHandler.php
+files[] = datasource/handler/AbstractSQLDataSourceQueryHandler.php
+files[] = datasource/operator/factory/DefaultSQLOperatorFactory.php
+files[] = datasource/operator/SQLOperatorFactory.php
+files[] = datasource/operator/handler/SQL_AbstractOperatorHandler.php
+files[] = datasource/operator/handler/SQL_EmptyOperatorHandler.php
+files[] = datasource/operator/handler/SQL_EqualOperatorHandler.php
+files[] = datasource/operator/handler/SQL_GreaterOrEqualOperatorHandler.php
+files[] = datasource/operator/handler/SQL_GreaterThanOperatorHandler.php
+files[] = datasource/operator/handler/SQL_LessOrEqualOperatorHandler.php
+files[] = datasource/operator/handler/SQL_LessThanOperatorHandler.php
+files[] = datasource/operator/handler/SQL_NotEmptyOperatorHandler.php
+files[] = datasource/operator/handler/SQL_NotEqualOperatorHandler.php
+files[] = datasource/operator/handler/SQL_NotInRangeOperatorHandler.php
+files[] = datasource/operator/handler/SQL_NotWildcardOperatorHandler.php
+files[] = datasource/operator/handler/SQL_RangeOperatorHandler.php
+files[] = datasource/operator/handler/SQL_NotRegularExpressionOperatorHandler.php
+files[] = datasource/operator/handler/SQL_RegularExpressionOperatorHandler.php
+files[] = datasource/operator/handler/SQL_WildcardOperatorHandler.php
+files[] = datasource/operator/handler/SQK_AbstractBoundaryOperatorHandler.php
+files[] = datasource/operator/handler/SQL_AbstractHighestBoundaryOperatorHandler.php
+files[] = datasource/operator/handler/SQL_AbstractPreviousOperatorHandler.php
+files[] = datasource/operator/handler/SQL_AbstractLowestBoundaryOperatorHandler.php
+files[] = datasource/operator/handler/SQL_LatestOperatorHandler.php
+files[] = datasource/operator/handler/SQL_OldestOperatorHandler.php
+files[] = datasource/operator/handler/SQL_PreviousOperatorHandler.php
+files[] = datasource/operator/handler/SQL_AbstractRangeBasedOperatorHandler.php
+files[] = datasource/operator/handler/SQL_AbstractDynamicRangeOperatorHandler.php
+files[] = datasource/operator/handler/SQL_DynamicRangeOperatorHandler.php
+files[] = datasource/operator/handler/SQL_AbstractLatestOperatorHandler.php
+files[] = metamodel/DatasetTypeHelper.php
+files[] = logger/listener/StatementLogMessageFormatter.php
+files[] = logger/listener/StatementLogMessageKeeper.php
+files[] = logger/listener/StatementLogMessage.php

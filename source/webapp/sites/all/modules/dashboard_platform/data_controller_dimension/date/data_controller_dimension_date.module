@@ -1,0 +1,124 @@
+<?php
+/**
+* This file is part of the Checkbook NYC financial transparency software.
+* 
+* Copyright (C) 2012, 2013 New York City
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as
+* published by the Free Software Foundation, either version 3 of the
+* License, or (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+* 
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+
+function data_controller_dimension_date_dc_data_type() {
+    $items[DateDimensionMonthDataTypeHandler::$DATA_TYPE] = array(
+        'description' => t('Month'),
+        'classname' => 'DateDimensionMonthDataTypeHandler');
+    $items[DateDimensionQuarterDataTypeHandler::$DATA_TYPE] = array(
+        'description' => t('Quarter'),
+        'classname' => 'DateDimensionQuarterDataTypeHandler');
+    $items[DateDimensionYearDataTypeHandler::$DATA_TYPE] = array(
+        'description' => t('Year'),
+        'classname' => 'DateDimensionYearDataTypeHandler');
+
+    return $items;
+}
+
+function data_controller_dimension_date_dc_datasource_operator() {
+    // date-related operators
+    $items[OldestDateOperatorHandler::$OPERATOR__NAME] = array(
+        'description' => t('Oldest Date'),
+        'handler' => array(
+            'classname' => 'OldestDateOperatorHandler'));
+    $items[PreviousDateOperatorHandler::$OPERATOR__NAME] = array(
+        'description' => t('Previous Date'),
+        'handler' => array(
+            'classname' => 'PreviousDateOperatorHandler'),
+        'metadata' => array(
+            'classname' => 'PreviousOperatorMetaData'));
+    $items[LatestDateOperatorHandler::$OPERATOR__NAME] = array(
+        'description' => t('Latest Date'),
+        'handler' => array(
+            'classname' => 'LatestDateOperatorHandler'));
+
+    // month-related operator
+    $items[OldestMonthOperatorHandler::$OPERATOR__NAME] = array(
+        'description' => t('Oldest Month'),
+        'handler' => array(
+            'classname' => 'OldestMonthOperatorHandler'));
+    $items[PreviousMonthOperatorHandler::$OPERATOR__NAME] = array(
+        'description' => t('Previous Month'),
+        'handler' => array(
+            'classname' => 'PreviousMonthOperatorHandler'),
+        'metadata' => array(
+            'classname' => 'PreviousOperatorMetaData'));
+    $items[LatestMonthOperatorHandler::$OPERATOR__NAME] = array(
+        'description' => t('Latest Month'),
+        'handler' => array(
+            'classname' => 'LatestMonthOperatorHandler'));
+
+    // quarter-related operator
+    $items[OldestQuarterOperatorHandler::$OPERATOR__NAME] = array(
+        'description' => t('Oldest Quarter'),
+        'handler' => array(
+            'classname' => 'OldestQuarterOperatorHandler'));
+    $items[PreviousQuarterOperatorHandler::$OPERATOR__NAME] = array(
+        'description' => t('Previous Quarter'),
+        'handler' => array(
+            'classname' => 'PreviousQuarterOperatorHandler'),
+        'metadata' => array(
+            'classname' => 'PreviousOperatorMetaData'));
+    $items[LatestQuarterOperatorHandler::$OPERATOR__NAME] = array(
+        'description' => t('Latest Quarter'),
+        'handler' => array(
+            'classname' => 'LatestQuarterOperatorHandler'));
+
+    // year-related operator
+    $items[OldestYearOperatorHandler::$OPERATOR__NAME] = array(
+        'description' => t('Oldest Year'),
+        'handler' => array(
+            'classname' => 'OldestYearOperatorHandler'));
+    $items[PreviousYearOperatorHandler::$OPERATOR__NAME] = array(
+        'description' => t('Previous Year'),
+        'handler' => array(
+            'classname' => 'PreviousYearOperatorHandler'),
+        'metadata' => array(
+            'classname' => 'PreviousOperatorMetaData'));
+    $items[LatestYearOperatorHandler::$OPERATOR__NAME] = array(
+        'description' => t('Latest Year'),
+        'handler' => array(
+            'classname' => 'LatestYearOperatorHandler'));
+
+    return $items;
+}
+
+function data_controller_dimension_date_dc_dataset_assembler() {
+    $items[DateDimensionDateDatasetAssembler::$DATASET_SOURCE_ASSEMBLER__TYPE] = array(
+        'classname' => 'DateDimensionDateDatasetAssembler');
+    $items[DateDimensionMonthDatasetAssembler::$DATASET_SOURCE_ASSEMBLER__TYPE] = array(
+        'classname' => 'DateDimensionMonthDatasetAssembler');
+    $items[DateDimensionQuarterDatasetAssembler::$DATASET_SOURCE_ASSEMBLER__TYPE] = array(
+        'classname' => 'DateDimensionQuarterDatasetAssembler');
+    $items[DateDimensionYearDatasetAssembler::$DATASET_SOURCE_ASSEMBLER__TYPE] = array(
+        'classname' => 'DateDimensionYearDatasetAssembler');
+
+    return $items;
+}
+
+function data_controller_dimension_date_du_star_schema_lookup() {
+    $items[DateDataTypeHandler::$DATA_TYPE] = array(
+        'classname' => 'DateDimensionLookupHandler');
+    $items[DateDimensionYearDataTypeHandler::$DATA_TYPE] = array(
+        'classname' => 'DateDimensionYearLookupHandler');
+
+    return $items;
+}
