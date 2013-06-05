@@ -1,12 +1,45 @@
 Checkbook NYC Installation
---------------------------
+==========================
 
 Table of contents:
 
+ * Introduction
  * Requirements
  * Optional configuration for scalability and performance
  * Installation
  
+Introduction
+------------
+
+Our goal is for Checkbook NYC to be easily deployable by any city or
+other entity that wants to offer a financial transparency dashboard.
+The level of IT expertise required to deploy Checkbook NYC should be
+about the same as that required to run, say, a Drupal site or other
+LAMP-stack open source application suite.
+
+However, the Checkbook deployment process is not at that stage yet.
+We open sourced it knowing that more work is needed to smooth and
+standardize deployment, and we intend to conduct that work in the
+open, with participation from all interested parties.  The code's
+authors, who are intimiately familiar with every step of the process,
+naturally can and do regularly deploy production instances to
+http://checkbooknyc.com/ -- but we are aware that many improvements
+need to be made to these instructions, to the installation scripts,
+etc, before that process is equally easy for newcomers.
+
+We therefore ask for your patience *and your help* to make those
+improvements.  As you try out Checkbook, please stay in contact with
+the project, asking questions and making suggestions.  There is no
+better source of information than feedback from people doing
+deployment in the wild.  Contact the project by reporting bugs and
+submitting pull requests at https://github.com/NYCComptroller/Checkbook,
+and by joining us in the Checkbook NYC technical discussion forum:
+
+      https://groups.google.com/d/forum/checkbooknyc
+
+You do not need to be subscribed to post there, though we recommend
+you subscribe if you're interested in following Checkbook development.
+
 Requirements 
 -------------
 
