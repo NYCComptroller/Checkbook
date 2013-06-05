@@ -156,7 +156,18 @@
                             "sourceColumnName":"object_class_name"
                         }
                     ]
+                },
+                {
+                    "name":"object_class",
+                    "levels":[
+                        {
+                            "name":"object_class",
+                            "datasetName":"object_class",
+                            "sourceColumnName":"object_class_id"
+                        }
+                    ]
                 }
+
             ],
             "measures":{
                 "txcount": {
