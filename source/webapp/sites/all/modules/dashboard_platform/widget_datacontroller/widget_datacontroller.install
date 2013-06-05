@@ -1,0 +1,65 @@
+<?php
+
+function widget_datacontroller_schema() {
+	$schema['widget_datacontroller'] = array(
+		'description' => 'Table to capture data required to invoke Data Controller',
+		'fields' => array(
+      	'nid' => array(
+        	'description' => 'The primary identifier for a node.',
+        	'type' => 'serial',
+        	'unsigned' => TRUE,
+        	'not null' => TRUE),
+      	'vid' => array(
+        	'description' => 'The current {node_revisions}.vid version identifier.',
+        	'type' => 'int',
+        	'unsigned' => TRUE,
+        	'not null' => TRUE,
+        	'default' => 0),
+        'dataset' => array(
+        	'description' => 'The name of the cube',
+        	'type' => 'varchar',
+        	'length' => 320,
+        	'not null' => TRUE,
+        	'default' => ''),
+        'dataset_type' => array(
+        	'description' => 'Type of Dataset',
+        	'type' => 'varchar',
+        	'length' => 10,
+        	'not null' => TRUE,
+        	'default' => 'cube'),
+        'defaultParameters'  => array(
+        	'description' => 'Parameters to pass to the cube',
+        	'type' => 'varchar',
+        	'length' => 320,
+        	'not null' => FALSE,
+        	'default' => ''),
+        'columns'  => array(
+        	'description' => 'Columns to view',
+        	'type' => 'varchar',
+        	'length' => 320,
+        	'not null' => FALSE,
+        	'default' => ''),
+        'orderBy'  => array(
+        	'description' => 'Columns to sort the data on',
+        	'type' => 'varchar',
+        	'length' => 320,
+        	'not null' => FALSE,
+        	'default' => '')),
+	    'unique keys' => array(
+    	  'nid_vid' => array('nid', 'vid'),
+      	  'vid'     => array('vid')
+      	),
+    	'primary key' => array('nid')
+	);
+	return $schema;
+}
+
+function widget_datacontroller_install() {
+  // Create my tables.
+  drupal_install_schema('widget_datacontroller');
+}
+
+function widget_datacontroller_uninstall() {
+  // Drop my tables.
+  drupal_uninstall_schema('widget_datacontroller');
+}

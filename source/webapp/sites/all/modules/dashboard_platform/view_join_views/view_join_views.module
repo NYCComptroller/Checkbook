@@ -1,0 +1,362 @@
+<?php
+/**
+* This file is part of the Checkbook NYC financial transparency software.
+* 
+* Copyright (C) 2012, 2013 New York City
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as
+* published by the Free Software Foundation, either version 3 of the
+* License, or (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+* 
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+
+/**
+ * Implementation of hook_views_api().
+ */
+function view_join_views_views_api() {
+	return array('api' => 3);
+}
+
+/**
+ * Implementation of hook_views_plugins()
+ */
+function view_join_views_views_plugins() {
+	$plugins = array(
+    'module' => 'view_join_views',
+    'query' => array(
+      'view_join_views_query' => array(
+        'title' => t('View Join Views Query'),
+        'help' => t('Query will be run using Views API'),
+        'handler' => 'view_join_views_plugin_query',
+        'path' => drupal_get_path('module', 'view_join_views') .'/plugins',
+	),
+	)
+	);
+	return $plugins;
+}
+
+/**
+ * Implementation of hook_views_data()
+ *
+ */
+function view_join_views_views_data() {
+
+	//set up grouping by dataset
+	$data['view_join']['table']['group'] = t('View Join');
+
+	//set up base
+	$data['view_join']['table']['base'] = array(
+	    'field' => 'id',
+	    'title' => t('View Join'),
+	    'help' => t('View Join'),
+	    'query class' => 'view_join_views_query',
+	);
+
+	//set up the view filter
+	$data['view_join']['view'] = array(
+	    'title' => t('View'),
+	    'help' => t('View'),
+	    'filter' => array(
+	      'handler' => 'view_join_views_filter_view',
+	      'dcapi' => array('filter_key' => 'view'),
+	)
+	);
+
+	//set up the join type filter
+	$data['view_join']['join_type'] = array(
+	    'title' => t('Join Type'),
+	    'help' => t('Join Type'),
+	    'filter' => array(
+	      'handler' => 'view_join_views_filter_join_type',
+	      'dcapi' => array('filter_key' => 'join_type'),
+	)
+	);
+
+	//set up the join column filter
+	$data['view_join']['join_column'] = array(
+	    'title' => t('Join Column'),
+	    'help' => t('Join Column'),
+	    'filter' => array(
+	      'handler' => 'view_join_views_filter_join_column',
+	      'dcapi' => array('filter_key' => 'join_column'),
+	)
+	);
+
+	//set up view field
+	$data['view_join']['view_field'] = array(
+    	'title' => t('View Field'),
+    	'help' => t('View Field'),
+    	'field' => array(
+      		'handler' => 'view_join_views_field_view_column',
+      		'click sortable' => TRUE,
+	),
+	    'sort' => array(
+	      'handler' => 'view_join_views_sort',
+	),
+	    'filter' => array(
+	      'handler' => 'view_join_views_filter_view_column_equality',
+	),
+	    'argument' => array(
+	      'handler' => 'view_join_views_argument_view_column_equality',
+	),
+	);
+
+
+	return $data;
+
+}
+
+// sorry this code is really ugly, i need to clean it up
+function view_join_views_get_valid_view_args($thisview, $view, $args) {
+	$viewArgs = array();
+
+	//get the args for this view
+	$thisViewArgs = $thisview->get_items('argument');
+
+	//we either need all the args, or contiguous subset starting at 0
+	//so we start at the beginning, and as soon as we find an argument
+	//we dont have, we stop adding to the array and pass it on
+	$foreignArgs = $view->get_items('argument');
+	foreach ($foreignArgs as $fArgName => $fArg) {
+		foreach ($thisViewArgs as $tArgName => $tArg) {
+			$vname = $view->name;
+			$ptvname = $tArg['pass_through'][$vname];
+			if ($ptvname == $fArgName) {
+				$vcol = $tArg['view_col'];
+				if (isset($args[$vcol])) {
+					$viewArgs[] = $args[$vcol];
+					continue 2;
+				}
+			}
+		}
+		break;
+	}
+
+	return $viewArgs;
+}
+
+function view_join_views_get_view_data($thisview, $viewname, $args) {
+	$view = views_get_view($viewname);
+	if (!is_object($view))
+	return NULL;
+
+	//determine if supplied args can be used with view
+	$viewArgs = view_join_views_get_valid_view_args($thisview, $view, $args);
+
+	log_debug("Requesting View: $viewname");
+	log_debug("With args: " . var_export($viewArgs, TRUE));
+
+	//doing this should trigger the entire lifecycle to be
+	//executed in the right order
+	$preview    = $view->preview('defaults', $viewArgs);
+
+	//try and reset any rownum fields
+	view_join_views_reset_rownum_fields($view);
+
+	//no we mine through the results to do our own thing
+	$rows = array();
+	foreach ($view->result as $row) {
+		$rows[] = view_join_views_render_fields($view, $row);
+	}
+
+	$objects = array();
+	foreach ($rows as $row) {
+		$object = array('row' => array());
+		/*Convert the $rows into a hierachial key => value array*/
+		foreach ($row as $field) {
+//			if ($options["field_output"] == "normal") {
+//				if ($field->label)
+				$label = $plaintext_output ? strip_tags($field->label) : $field->label;
+//				else $label = $plaintext_output ? strip_tags($field->id) : $field->id;
+//				if (!$field->is_multiple) {
+					$content = $plaintext_output ? strip_tags($field->content) : $field->content;
+//				}
+//				else {
+//					$content = array();
+//					foreach ($field->content as $n => $oc) $content[$n] = ($plaintext_output ? strip_tags($oc) : $oc);
+//				}
+//			}
+//			elseif ($options["field_output"] == "raw") {
+//				$label = $plaintext_output ? strip_tags($field->label) : $field->label;
+//				if (!$field->is_multiple) {
+//					$content = $plaintext_output ? strip_tags($field->raw) : $field->raw;
+//				}
+//				else {
+//					$content = array();
+//					foreach ($field->raw as $n => $oc) $content[$n] = $plaintext_output ? strip_tags($oc) : $oc;
+//				}
+//			}
+			$object['row'][$label] = $content;
+		}
+		$objects[] = $object;
+	}
+
+	$result = array('result' => $objects);
+
+	log_debug("this is the final result");
+	log_debug($result);
+
+	return $result;
+}
+
+function view_join_views_reset_rownum_fields($view) {
+	$field_ids = array_keys($view->field);
+	foreach ($field_ids as $id) {
+		$field = $view->field[$id];
+		if ($field->definition['handler'] == 'views_customfield_handler_field_rownumber') {
+			$field->rownumbers = 0;
+		}
+	}
+}
+
+function view_join_views_render_fields($view, $row) {
+	$field_ids = array_keys($view->field);
+	$rendered_fields = array();
+	foreach ($field_ids as $id) {
+		$field = $view->field[$id];
+		$field_is_multiple = FALSE;
+		$field_raw = array();
+		//    if ((isset($field->options['multiple']['group']))&& isset($field->field_values)) {
+		//    	$field_output = _views_json_render_multiple_field($field, $row);
+		//    	$n = 0;
+		//    	if (is_array($field_output)) {
+		//    	  foreach ($field->field_values[$row->{$field->field_alias}] as $item) {
+		//          $field_raw[++$n] = $item["value"];
+		//    	  }
+		//    	  $field_is_multiple = TRUE;
+		//    	}
+		//    	else $field_raw = $view->field[$field->options['id']]->advanced_render($row);
+		//    }
+		//    else {
+		$field_output = $view->field[$field->options['id']]->advanced_render($row);
+		$field_raw = (isset($view->field[$id]->field_alias) && isset($row->{$view->field[$id]->field_alias})) ? $row->{$view->field[$id]->field_alias} : NULL;
+		//    }
+
+		//    $img_match = array();
+		//    $src_match = array();
+		//    if (is_array($field_output)) {
+		//      foreach ($field_output as $i => $f) {
+		//        if (preg_match("/<img[^>]+>/i", $f, $img_match)) {
+		//    	    if (preg_match('/(src)="([^"]*)"/i', $img_match[0], $src_match))
+		//    	    $field_output[$i] = ($src_match[2]);
+		//        }
+		//      }
+		//    }
+		//    else {
+		//      if (preg_match("/<img[^>]+>/i", $field_output, $img_match)) {
+		//    	  if (preg_match('/(src)="([^"]*)"/i', $img_match[0], $src_match))
+		//    	    $field_output = ($src_match[2]);
+		//      }
+		//    }
+
+		if (empty($field->options['exclude']) && ($field_output != "") && !empty($field_output)) {
+			$object = new stdClass();
+			$object->id = $id;
+			$object->content = $field_output;
+			$object->raw = $field_raw;
+			$object->class = views_css_safe($id);
+			$object->label = check_plain($view->field[$id]->label());
+			$object->is_multiple = $field_is_multiple;
+			$rendered_fields[$id] = $object;
+		}
+}
+return $rendered_fields;
+}
+
+/**
+ * Implementation of hook_views_handlers()
+ */
+function view_join_views_views_handlers() {
+	return array(
+    'info' => array(
+      'path' => drupal_get_path('module', 'view_join_views') . '/handlers',
+	),
+    'handlers' => array(
+      'view_join_views_filter_view' => array(
+        'parent' => 'views_handler_filter',
+	),
+      'view_join_views_field_view_column' => array(
+        'parent' => 'views_handler_field',
+	),
+      'view_join_views_filter_join_type' => array(
+        'parent' => 'views_handler_filter',
+	),
+      'view_join_views_filter_join_column' => array(
+        'parent' => 'views_handler_filter',
+	),
+      'view_join_views_sort' => array(
+        'parent' => 'views_handler_sort',
+	),
+      'view_join_views_filter_view_column_equality' => array(
+        'parent' => 'views_handler_filter_equality',
+	),
+      'view_join_views_argument_view_column_equality' => array(
+        'parent' => 'views_handler_argument',
+	)
+	),
+	);
+}
+
+
+/**
+ * Internal Functions
+ */
+
+//this function finds all the joined views
+//then finds all of their fields and makes one big options list
+//extract here because its used in several places
+function _view_join_views_options_list_all_view_fields($view) {
+	$options = array();
+
+	$filters = $view->get_items('filter');
+
+	foreach ($filters as $name => $filter) {
+		if ($filter['field'] == 'view') {
+			$innerViewName = $filter['value'];
+			$innerView = views_get_view($innerViewName);
+			$fields = $innerView->get_items('field');
+			foreach ($fields as $fieldName => $fieldDetails) {
+				$options[$fieldDetails['label']] = t($fieldDetails['label']);
+			}
+		}
+	}
+
+	return $options;
+}
+
+//this function finds all the joined views
+function _view_join_views_list_all_views($view) {
+	$result = array();
+
+	$filters = $view->get_items('filter');
+
+	foreach ($filters as $name => $filter) {
+		if ($filter['field'] == 'view') {
+			$innerViewName = $filter['value'];
+			$result[] = $innerViewName;
+		}
+	}
+
+	return $result;
+}
+
+function _view_join_views_options_list_view_arguments($view) {
+	$options = array();
+
+	$arguments = $view->get_items('argument');
+
+	foreach ($arguments as $name => $argument) {
+		$options[$name] = t($name . '-' . $argument['table'] . '-' . $argument['field']);
+	}
+
+	return $options;
+}

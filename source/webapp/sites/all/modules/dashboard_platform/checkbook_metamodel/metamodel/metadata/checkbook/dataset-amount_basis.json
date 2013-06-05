@@ -1,0 +1,12 @@
+{
+    "datasets": {
+		"ref_amount_basis": {
+            "datasourceName": "main",
+            "source": "ref_amount_basis",
+            "columns": [
+                {
+                    "name": "amount_basis_id",
+                    "key": true}
+            ]}            
+    }
+}
