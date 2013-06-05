@@ -106,7 +106,7 @@
     "plotOptions":{
       "column":{
         "minPointLength":3,
-        "pointWidth":60
+        "pointWidth":50
       },
       "series":{
         "cursor":"pointer",
