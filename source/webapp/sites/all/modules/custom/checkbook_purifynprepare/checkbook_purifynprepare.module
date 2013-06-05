@@ -18,8 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-
+/** validates strings as UTF-8 to prevent cross site scripting attacks and decodes special characters */
 function checkbook_purifynprepare_init() {
 
     $_GET['q'] = check_plain($_GET['q'],array());

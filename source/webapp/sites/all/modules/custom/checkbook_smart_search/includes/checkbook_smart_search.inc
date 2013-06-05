@@ -4,6 +4,7 @@
  *
 */
 
+/** Submit handler for smart serch */
 function _checkbook_smart_search_submit($form, &$form_state){
     $search_term =  trim($form['search_box']['#value']);
     if($search_term == 'Type ahead search'){$search_term = '';}
@@ -19,6 +20,7 @@ function _checkbook_smart_search_submit($form, &$form_state){
     );
 }
 
+/** Returns results for smart search */
 function _checkbook_smart_search_get_results(){
 
     $search_terms = explode('*|*', $_REQUEST['search_term']);
@@ -92,7 +94,6 @@ function _checkbook_smart_search_get_results(){
  * @param
  * @return search results
 */
-
 function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results){
     
     $current_date = date("c").'Z';
@@ -127,6 +128,7 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
     return array('search_results'=> $search_results,'active_contracts' => $active_contracts);
 }
 
+/** Returns solr results based on the search criteria from current URL */
 function _checkbook_smart_search_get_results_query_search_term(){
   $parameterMapping = array("agency_names" => "agency_name",
       "fiscal_years" => "fiscal_year",
@@ -170,6 +172,7 @@ function _checkbook_smart_search_get_results_query_search_term(){
   return $searchTerm;
 }
 
+/** Returns only selectes facet values from current URL */
 function _checkbook_smart_search_get_selected_facet_results($search_text, $search_terms, $facet_name){
    $parameter_mapping = array(
           "agency_names" => "agency_name",
@@ -231,6 +234,7 @@ function _checkbook_smart_search_get_selected_facet_results($search_text, $searc
 
 }
 
+/** Returns Facet results */
 function _checkbook_smart_search_get_facet_results($search_text, $search_terms, $facet_name, $offset = null, $limit = null, $exclude = FALSE, $fromScroll = FALSE){
 
         $parameter_mapping = array(
@@ -294,7 +298,6 @@ function _checkbook_smart_search_get_facet_results($search_text, $search_terms, 
  *  @param $string
  *  @return the matching words
 **/
-
 function _checkbook_smart_search_autocomplete(){
 
     $search_term = htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES);
@@ -480,7 +483,6 @@ function _checkbook_smart_search_fiscalyear_autocomplete(){
  * @param $string
  * @return $string
  */
-
 function _checkbook_smart_search_escapeSolrValue($string){
 
     $string = str_replace("%", "%25", $string);
@@ -508,6 +510,7 @@ function _checkbook_smart_search_escapeSolrValue($string){
     return $string;
 }
 
+/** Escape special characters from regular expression string */
 function escapeRegex($string){
     $string = str_replace(" ", "%20", $string);
     $string = str_replace("(", "%28", $string);
@@ -525,7 +528,6 @@ function escapeRegex($string){
  *  @param $query
  *  @return the solr result in PHP array format.
 */
-
 function _checkbook_smart_search_solr_results($query){
     global $conf;
     if($conf['check_book']['solr']['url']){
@@ -545,7 +547,6 @@ function _checkbook_smart_search_solr_results($query){
  *  @param $string
  *  @return the substring of the input.
 */
-
 function _checkbook_smart_search_clear_url($facetName,$facetValue=null, $count = null){
 
     $searchArgs = $_REQUEST['search_term'];
@@ -643,10 +644,12 @@ function getCurrentYearID(){
      return $current_nyc_year;
 }
 
+/** Generates smart search export form */
 function _checkbook_smart_search_export_form(){
   echo theme('checkbook_smart_search_export_form');
 }
 
+/** Downloads the smart search export data */
 function _checkbook_smart_search_export_download(){
   drupal_add_http_header("Content-Type", "text/csv");
   //drupal_add_http_header("Content-Length",9);
@@ -656,6 +659,7 @@ function _checkbook_smart_search_export_download(){
   _checkbook_smart_search_export_data();
 }
 
+/** Exports the smart search export data */
 function _checkbook_smart_search_export_data(){
   $search_terms = explode('*|*', $_REQUEST['searchTerm']);
   $index = 0;
@@ -686,6 +690,7 @@ function _checkbook_smart_search_export_data(){
 
 }
 
+/** Smart search results labels array */
 function _checkbook_smart_search_domain_fields($domain){
   switch ($domain){
     case "spending":
@@ -770,6 +775,7 @@ function _checkbook_smart_search_domain_fields($domain){
   return $parameter_mapping;
 }
 
+/** Exports the smart search export data */
 function _checkbook_smart_search_solr_results_csv($query){
   global $conf;
   if($conf['check_book']['solr']['url']){
@@ -783,6 +789,7 @@ function _checkbook_smart_search_solr_results_csv($query){
   return $contents;
 }
 
+/** Exports the smart search export data */
 function _checkbook_smart_search_get_results_csv($search_terms,$page_no, $no_of_results,$highlighting = true , $fl = "*", $skip_header = false){
   $current_date = date("c").'Z';
   $search_string = _checkbook_smart_search_get_results_query_search_term();
@@ -805,6 +812,7 @@ function _checkbook_smart_search_get_results_csv($search_terms,$page_no, $no_of_
   return _checkbook_smart_search_solr_results_csv($query);
 }
 
+/** Returns theme for Vendor facet */
 function _checkbook_smart_search_vendor_facet($page){
     $search_terms = explode('*|*', $_REQUEST['search_term']);
     $search_terms[0] = urldecode($search_terms[0]);
@@ -827,6 +835,7 @@ function _checkbook_smart_search_vendor_facet($page){
     print theme('facet_results', array('results'=> $results['facet_counts']['facet_fields']['vendor_name'], 'name'=> 'fvendorName'));
 }
 
+/** Returns theme for Expense Category facet */
 function _checkbook_smart_search_expensecategory_facet($page){
     $search_terms = explode('*|*', $_REQUEST['search_term']);
     $search_terms[0] = urldecode($search_terms[0]);
