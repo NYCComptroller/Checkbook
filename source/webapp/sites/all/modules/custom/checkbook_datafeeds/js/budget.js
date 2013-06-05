@@ -35,26 +35,26 @@
             $.fn.disableStuff();
             var year = ($('#edit-fiscal-year',context).val() == 'All Years') ? 0 : $('#edit-fiscal-year',context).val();
             var agency = emptyToZero($('#edit-agency',context).val());
-            var dept = emptyToZero($('#edit-dept',context).val());
+            var dept = emptyToZero($('#department select',context).val());
             var expcategory = emptyToZero($('#expense-category select',context).val());
-            //var dept = ($('#edit-dept',context).attr('disabled')) ? 0 : emptyToZero($('#edit-dept',context).val());
+            //var dept = ($('#department select',context).attr('disabled')) ? 0 : emptyToZero($('#department select',context).val());
             //var expcategory = ($('#expense-category select',context).attr('disabled')) ? 0 : emptyToZero($('#expense-category select',context).val());
             var budgetcode = ($('#edit-budget-code',context).attr('disabled')) ? 0 : emptyToZero($('#edit-budget-code',context).val());
             $('#edit-budget-code',context).autocomplete({source:'/autocomplete/budget/budgetcode/' + agency + '/' + dept + '/' +expcategory+ '/' + budgetcode + '/' + year});
             $('#expense-category select',context).autocomplete({source:'/autocomplete/budget/expcategory/' + agency + '/' + dept + '/' + expcategory + '/' + budgetcode + '/' + year});
-            $('#edit-dept',context).autocomplete({source:'/autocomplete/budget/department/' + agency + '/' + dept + '/' + expcategory + '/' + budgetcode + '/' + year});
+            $('#department select',context).autocomplete({source:'/autocomplete/budget/department/' + agency + '/' + dept + '/' + expcategory + '/' + budgetcode + '/' + year});
             $('.watch:input',context).each(function () {
                 $(this,context).focusin(function () {
                     //set variables for each field's value
                     year = ($('#edit-fiscal-year',context).val() == 'All Years') ? 0 : $('#edit-fiscal-year',context).val();
                     var agency = emptyToZero($('#edit-agency',context).val());
-                    var dept = emptyToZero($('#edit-dept',context).val());
-                    var expcategory = emptyToZero($('#expense-category select',context).val());                    //dept = ($('#edit-dept',context).attr('disabled')) ? 0 : emptyToZero($('#edit-dept',context).val());
+                    var dept = emptyToZero($('#department select',context).val());
+                    var expcategory = emptyToZero($('#expense-category select',context).val());                    //dept = ($('#department select',context).attr('disabled')) ? 0 : emptyToZero($('#department select',context).val());
                     //expcategory = ($('#expense-category select',context).attr('disabled')) ? 0 : emptyToZero($('#expense-category select',context).val());
                     budgetcode = ($('#edit-budget-code',context).attr('disabled')) ? 0 : emptyToZero($('#edit-budget-code',context).val());
                     $("#edit-budget-code",context).autocomplete("option", "source", '/autocomplete/budget/budgetcode/' + agency + '/' + dept + '/' + expcategory + '/' + budgetcode + '/' + year);
                     $("#expense-category select",context).autocomplete("option", "source", '/autocomplete/budget/expcategory/' + agency + '/' + dept + '/' + expcategory + '/' + budgetcode + '/' + year);
-                    $('#edit-dept',context).autocomplete("option", "source", '/autocomplete/budget/department/' + agency + '/' + dept + '/' + expcategory + '/' + budgetcode + '/' + year);
+                    $('#department select',context).autocomplete("option", "source", '/autocomplete/budget/department/' + agency + '/' + dept + '/' + expcategory + '/' + budgetcode + '/' + year);
                 });
             });
             $(':input[name="budgettype"]',context).change(function(){
