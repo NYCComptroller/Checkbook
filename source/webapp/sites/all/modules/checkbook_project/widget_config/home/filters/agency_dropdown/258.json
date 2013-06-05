@@ -1,9 +1,0 @@
-{
-"widgetType": "phpparser",
-"useList":"true",
-"dataset": "checkbook:agency",
-"defaultParameters":{"is_display":"Y"},
-"columns": ["agency_id","agency_name"],
-"orderBy":["agency_name"],
-"template":"agencies_list"
-}
