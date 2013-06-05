@@ -30,6 +30,10 @@ if($current_url[1] == 'contracts_landing' || $current_url[1] == 'contracts_reven
    $all_agency_url = $url = 'contracts_landing/status/A/yeartype/B/year/'.$current_fy_year;
 }else if($current_url[1] == 'payroll'){
     $all_agency_url = $url = 'payroll/yeartype/B/year/'.$current_fy_year;
+}else if($current_url[1] == 'budget'){
+    $all_agency_url = $url = 'budget/yeartype/B/year/'.$current_fy_year;
+}else if($current_url[1] == 'revenue'){
+    $all_agency_url = $url = 'revenue/yeartype/B/year/'.$current_fy_year;
 }else{
     $all_agency_url = $url = 'spending_landing/yeartype/B/year/'.$current_fy_year;
 }
