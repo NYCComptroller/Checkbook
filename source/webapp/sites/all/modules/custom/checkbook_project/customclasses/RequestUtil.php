@@ -1,29 +1,29 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
-
 
 class RequestUtil{
 
     //Links for landing pages. This can be avoided if ajax requests can be identified uniquely.
     static $landing_links = array("contracts_landing","contracts_revenue_landing","contracts_pending_rev_landing","contracts_pending_exp_landing");
 
+    /** Checks if the page bottom container is expanded */
     static function isExpandBottomContainer(){
         $referer = $_SERVER['HTTP_REFERER'];
 
@@ -36,12 +36,14 @@ class RequestUtil{
         return false;
     }
 
+    /** Checks if the current URL is opened in a new window */
     static function isNewWindow(){
         $referer = $_SERVER['HTTP_REFERER'];
 
         return preg_match('/newwindow/i',$referer);
     }
 
+    /** Checks if the current page is Pending Expense Contratcts page */
     static function isPendingExpenseContractPath($path){
 
         if( preg_match('/^contracts_pending_exp_landing/',$path)){
@@ -51,6 +53,7 @@ class RequestUtil{
         return false;
     }
 
+    /** Checks if the current page is Pending Revenue Contratcts page */
     static function isPendingRevenueContractPath($path){
 
         if( preg_match('/^contracts_pending_rev_landing/',$path)){
@@ -60,6 +63,7 @@ class RequestUtil{
         return false;
     }
 
+    /** Checks if the current page is Active/Registered Expense Contratcs page */
     static function isExpenseContractPath($path){
 
         if( preg_match('/^contracts_landing/',$path)){
@@ -69,6 +73,7 @@ class RequestUtil{
         return false;
     }
 
+    /** Checks if the current page is Active/Registered Pending Revenue Contratcs page */
     static function isRevenueContractPath($path){
 
         if( preg_match('/^contracts_revenue_landing/',$path)){
@@ -77,7 +82,8 @@ class RequestUtil{
 
         return false;
     }
-    
+
+    /** Returns the request parameter value from URL */
     static function getRequestKeyValueFromURL($key, $urlPath){      
         $value = NULL;      
         $pathParams = explode('/', $urlPath);
@@ -87,7 +93,8 @@ class RequestUtil{
         }      
         return $value;
     }
-    
+
+    /** Returns Contracts page title and Breadcrumb */
     static function getContractBreadcrumbTitle(){
       $bottomURL = $_REQUEST['expandBottomContURL'];
       if(preg_match('/magid/',$bottomURL)){
@@ -153,6 +160,7 @@ class RequestUtil{
       return html_entity_decode($title);
     }
 
+    /** Returns Payroll page title and Breadcrumb */
     static function getPayrollBreadcrumbTitle(){
       $bottomURL = $_REQUEST['expandBottomContURL'];
       if(isset($bottomURL) && preg_match('/payroll_agencytransactions/',$bottomURL)){        
@@ -205,6 +213,7 @@ class RequestUtil{
       return html_entity_decode($title);
     }
 
+    /** Returns Spending Category based on 'category' value from current path */
     static function getSpendingCategoryName($defaultName = 'Total Spending'){
         $categoryId = _getRequestParamValue('category');
         if(isset($categoryId)){
@@ -216,7 +225,8 @@ class RequestUtil{
 
         return $defaultName;
     }
-    
+
+    /** Returns Spending page title and Breadcrumb */
     static function getSpendingBreadcrumbTitle(){
       $bottomURL = $_REQUEST['expandBottomContURL'];
       if(preg_match('/transactions/',current_path())){
@@ -288,6 +298,7 @@ class RequestUtil{
       return html_entity_decode($title);
     }
 
+    /** Prepares Payroll bottom navigation filter */
     static  public function preparePayrollBottomNavFilter($page, $category){
 
         $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
@@ -306,6 +317,7 @@ class RequestUtil{
 
     }
 
+    /** Returns Budget page title and Breadcrumb */
     static function getBudgetBreadcrumbTitle(){
          $bottomURL = $_REQUEST['expandBottomContURL'];
          if((isset($bottomURL) && preg_match('/transactions/',$bottomURL))
@@ -348,6 +360,7 @@ class RequestUtil{
          return html_entity_decode($title);
     }
 
+    /** Returns Revenue page title and Breadcrumb */
     static function getRevenueBreadcrumbTitle(){
             $bottomURL = $_REQUEST['expandBottomContURL'];
             if((isset($bottomURL) && preg_match('/transactions/',$bottomURL))
@@ -386,6 +399,43 @@ class RequestUtil{
             return html_entity_decode($title);
        }
 
+    static function getRevenueNoRecordsMsg(){
+        $bottomURL = $_REQUEST['expandBottomContURL'];
+            if((isset($bottomURL) && preg_match('/transactions/',$bottomURL))
+                || preg_match('/agency_revenue_by_cross_year_collections_details/',current_path())
+                || preg_match('/agency_revenue_by_cross_year_collections_details/',$bottomURL)
+                || preg_match('/revenue_category_revenue_by_cross_year_collections_details/',current_path())
+                || preg_match('/revenue_category_revenue_by_cross_year_collections_details/',$bottomURL)
+                || preg_match('/funding_class_revenue_by_cross_year_collections_details/',current_path())
+                || preg_match('/funding_class_revenue_by_cross_year_collections_details/',$bottomURL)
+                || preg_match('/revenue_transactions/',current_path())
+            ){
+              $smnid = (isset($bottomURL)) ? RequestUtil::getRequestKeyValueFromURL("smnid",$bottomURL) : RequestUtil::getRequestKeyValueFromURL("smnid",current_path());
+              $dtsmnid = (isset($bottomURL)) ? RequestUtil::getRequestKeyValueFromURL("dtsmnid",$bottomURL) : RequestUtil::getRequestKeyValueFromURL("dtsmnid",current_path());
+              if($smnid > 0 || $dtsmnid > 0){
+                if($dtsmnid > 0){
+                    $title = "There are no records to be displayed.";
+                }else{
+                    $bottomURL = ($bottomURL)? $bottomURL : current_path();
+                    $last_id = _getLastRequestParamValue($bottomURL);
+                    if($last_id["agency"] > 0){
+                      $title = _checkbook_project_get_name_for_argument("agency_id",RequestUtil::getRequestKeyValueFromURL("agency",$bottomURL)) ;
+                    }elseif($last_id["revcat"] > 0){
+                       $title = _checkbook_project_get_name_for_argument("revenue_category_id",RequestUtil::getRequestKeyValueFromURL("revcat",$bottomURL)) ;
+                    }
+                    elseif(isset($last_id["fundsrccode"])){
+                       $title = _checkbook_project_get_name_for_argument("funding_class_code",RequestUtil::getRequestKeyValueFromURL("fundsrccode",$bottomURL)) ;
+                    }
+                    $title = 'There are no records to be displayed for '.$title.'.';
+                }
+              }
+            }
+            else{
+                  $title = "There are no revenue details.";
+            }
+            return html_entity_decode($title);
+    }
+    /** Returns top navigation URL */
     static function getTopNavURL($domain){
       
         switch($domain){
@@ -416,16 +466,16 @@ class RequestUtil{
           break;   
           case "budget":
             if(_getRequestParamValue("agency") > 0){
-              $path ="budget/year/"._getCurrentYearID() . "/agency/" . _getRequestParamValue("agency") ;
+              $path ="budget/yeartype/B/year/"._getCurrentYearID() . "/agency/" . _getRequestParamValue("agency") ;
             }else{
-              $path ="budget/year/"._getCurrentYearID();
+              $path ="budget/yeartype/B/year/"._getCurrentYearID();
             }
             break;
           case "revenue":
             if(_getRequestParamValue("agency") > 0){
-              $path ="revenue/year/"._getCurrentYearID() . "/agency/" . _getRequestParamValue("agency") ;
+              $path ="revenue/yeartype/B/year/"._getCurrentYearID() . "/agency/" . _getRequestParamValue("agency") ;
             }else{
-              $path ="revenue/year/"._getCurrentYearID();
+              $path ="revenue/yeartype/B/year/"._getCurrentYearID();
             }
             break;
             
@@ -435,6 +485,7 @@ class RequestUtil{
      
     }
 
+    /** Checks if the current page is NYC level*/
     static function isNYCLevelPage(){
         $landingPages = array("contracts_landing","contracts_revenue_landing",
                               "contracts_pending_rev_landing","contracts_pending_exp_landing",

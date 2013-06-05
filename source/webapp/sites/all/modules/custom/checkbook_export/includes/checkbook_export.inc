@@ -12,7 +12,7 @@ function _checkbook_export_form(){
     echo theme('checkbook_export_default_theme', array('maxPages' => $maxPages,'totalRecords' => $iRecordsTotal,'displayRecords' => $iRecordsDisplay));
 }
 
-
+/** Function to render export data for grid view */
 function _checkbook_export_grid_transactions(){
 
     $nodeId = _getRequestParamValue('node',false);
@@ -134,13 +134,9 @@ function _checkbook_export_transactions(){
     }
 
     if($isList){//Selecting only required columns.
-        //TODO - FIX ME - Payroll DB change required node 336/337
-        if(isset($node->widgetConfig->additionalSelectColumns)){
-            $columnsConfig = array_merge($columnsConfig,$node->widgetConfig->additionalSelectColumns);
-        }
-
         $node->widgetConfig->columns = $columnsConfig;
     }
+    
     //load data
     widget_data($node);
 
@@ -196,6 +192,7 @@ function _checkbook_export_transactions(){
     }
 }
 
+/** Function to handle download export file */
 function _checkbook_export_download_file($fileName){
     global $conf;
 
@@ -215,6 +212,7 @@ function _checkbook_export_download_file($fileName){
     }
 }
 
+/** Function to handle generate export file */
 function _checkbook_export_generateExportFile($node,$headers){
     global $conf;
 
@@ -230,6 +228,33 @@ function _checkbook_export_generateExportFile($node,$headers){
 
         $tempOutputFile = $tmpDir .'/'. $filename;
         $outputFile = DRUPAL_ROOT . '/' . $fileDir . '/' . $filename;
+        
+        $columns = $node->widgetConfig->table_columns;
+        $columnsConfig = array();
+        foreach($columns as $column){
+          $columnsConfig[] = (isset($column->sortSourceColumn)) ? str_replace('.','_',$column->sortSourceColumn) : str_replace('.','_',$column->column);
+        }
+        
+        $input = $node->data;$start = "SELECT ";$end = " FROM (";
+        $selectQuery = substr($input, strlen($start)+strpos($input, $start), (strlen($input) - strpos($input, $end))*(-1));
+        $selectColumns = explode(",",$selectQuery);
+        $exportColumns = array();
+        
+        foreach($selectColumns as $key =>$value){
+          $selectColumn = (strpos($value,' AS ')) ? str_replace('AS ','',substr($value, strpos($value,' AS ')+1)) : substr($value, strpos($value,'.')+1);
+          if(in_array(trim($selectColumn),$columnsConfig)){
+            $exportColumns[trim($selectColumn)] = $value;
+          }
+        }
+        
+        $newQuery = null;
+        foreach($columnsConfig as $key => $value){
+          $newQuery .= $exportColumns[$value] . ',';
+        }
+        $newQuery = substr($newQuery, 0, -1);
+        $node->data = str_replace($selectQuery,$newQuery, $node->data);
+                
+        
 
         $command = $conf['check_book']['data_feeds']['command']
                 . " -c \"\\\\COPY (" . $node->data . ") TO '"
@@ -261,6 +286,7 @@ function _checkbook_export_generateExportFile($node,$headers){
     return $filename;
 }
 
+/** Function to generate the path to save export file */
 function _checkbook_export_prepareFileOutputDir(){
     global $conf;
 
@@ -280,6 +306,7 @@ function _checkbook_export_prepareFileOutputDir(){
     return $dir;
 }
 
+/** Function to generate the path to save export file */
 function _checkbook_export_prepareDirectory($dir){
     if(!file_prepare_directory($dir,FILE_CREATE_DIRECTORY)){
         LogHelper::log_error("Could not prepare file output directory $dir.Should check if this directory is writable.");
@@ -292,6 +319,7 @@ function _checkbook_export_prepareDirectory($dir){
     }*/
 }
 
+/** Function to generate a unique id */
 function _checkbook_export_generate_uuid(){
     $guid = 'export';
     $uid = uniqid("", true);
@@ -316,6 +344,7 @@ function _checkbook_export_generate_uuid(){
 
     return strtolower($guid);
 }
+
 /**
  * Function to return export data count
  *

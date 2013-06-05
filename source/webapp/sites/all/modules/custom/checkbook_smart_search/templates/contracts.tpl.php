@@ -1,21 +1,9 @@
 <?php
 /**
-* This file is part of the Checkbook NYC financial transparency software.
-* 
-* Copyright (C) 2012, 2013 New York City
-* 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as
-* published by the Free Software Foundation, either version 3 of the
-* License, or (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-* 
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*	GNU AFFERO GENERAL PUBLIC LICENSE 
+*	   Version 3, 19 November 2007
+* This software is licensed under the GNU AGPL Version 3
+* 	(see the file LICENSE for details)
 */
 ?>
 <?php
@@ -107,8 +95,9 @@ $date_fields = array("start_date","end_date","received_date","registered_date");
 $amount_fields = array("current_amount", "original_amount");
 
 $name_fields = array("agency_name", "vendor_name", "award_method_name", "contract_purpose", "expenditure_object_name");
-$rows = array(array('<div class="field-label">Status:</div><div class="field-content">'.$contracts_results['status'].'</div>','<div class="field-label">Category:</div><div class="field-content">'.$contracts_results['contract_category_name'].'</div>'));
+//$rows = array(array('<div class="field-label">Status:</div><div class="field-content">'.$contracts_results['status'].'</div>','<div class="field-label">Category:</div><div class="field-content">'.$contracts_results['contract_category_name'].'</div>'));
 $count = 1;
+$rows = array();
 $row = array();
 foreach ($contracts_parameter_mapping as $key => $title){
   if($key == 'expenditure_object_name'){

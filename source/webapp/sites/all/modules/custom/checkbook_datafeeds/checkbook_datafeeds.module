@@ -1,23 +1,22 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
-
 
 
 /**
@@ -517,9 +516,10 @@ function checkbook_datafeeds_budget($form, &$form_state) {
   $year = !empty($form_state['values']['fiscal_year']) ? $form_state['values']['fiscal_year'] : 'FY' . currentFiscalYear();
 
   $form['description'] = array(
-    '#type' => 'item',
-    '#prefix' => '<div class="data-feed-wizard">',
-    '#title' => 'Budget',
+    '#markup' => '<h2 class="domain-title">Budget</h2>',
+  );
+  $form['loaded'] = array(
+    '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date('budget') . '</div>',
   );
   $form['requiredmessage'] = array(
     '#markup' => 'Fields marked with an asterisk (<span class="form-required">*</span>) are required.',
@@ -553,7 +553,7 @@ function checkbook_datafeeds_budget($form, &$form_state) {
         '#type' => 'select',
         '#title' => t('Department:'),
         '#options' => _budget_dept_options($agency, $year),
-        '#prefix' => '<div id="dynamic-fields"><div class="datafield department">',
+        '#prefix' => '<div id="dynamic-fields"><div id="department" class="datafield department">',
         '#suffix' => '</div>',
         '#attributes' => array('class' => array('watch')),
         '#multiple' => FALSE,
@@ -2854,8 +2854,10 @@ function checkbook_datafeeds_revenue($form, &$form_state) {
   $revenue_fys = $revenue_fys + _checkbook_advanced_search_get_year('revenue','datafeeds');
 
   $form['description'] = array(
-    '#type' => 'item',
-    '#title' => 'Revenue',
+    '#markup' => '<h2 class="domain-title">Revenue</h2>',
+  );
+  $form['loaded'] = array(
+    '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date('revenue') . '</div>',
   );
   $form['requiredmessage'] = array(
     '#markup' => '<p class="required-message">Fields marked with an asterisk (<span class="form-required">*</span>) are required.</p>',
@@ -5132,6 +5134,12 @@ function _checkbook_datafeeds_get_updated_date($domain) {
 
     case 'payroll':
       $query = ('SELECT MAX(COALESCE(created_date)) FROM {payroll}');
+      break;
+    case 'budget':
+      $query = ('SELECT MAX(COALESCE(updated_date, created_date)) FROM {budget}');
+      break;
+    case 'revenue':
+      $query = ('SELECT MAX(COALESCE(last_modified_date)) FROM {revenue_details}');
       break;
   }
   $results = _checkbook_project_execute_sql($query);
