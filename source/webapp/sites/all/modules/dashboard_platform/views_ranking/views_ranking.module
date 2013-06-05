@@ -1,0 +1,63 @@
+<?php
+/**
+* This file is part of the Checkbook NYC financial transparency software.
+* 
+* Copyright (C) 2012, 2013 New York City
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as
+* published by the Free Software Foundation, either version 3 of the
+* License, or (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+* 
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+
+/**
+ * Implementation of hook_views_api().
+ */
+function views_ranking_views_api() {
+	return array('api' => 3);
+}
+
+/**
+ * Implementation of hook_views_plugin().
+ */
+function views_ranking_views_plugins() {
+	$path = drupal_get_path('module', 'views_ranking');
+	return array(
+    'module'  => 'views_ranking',
+      'style'   => array(                 // Declare the views_highcharts style plugin.
+        'views_ranking'      => array(
+        'title'         => ('Ranking Style'),
+	    'path'          => $path,
+	    'help'          => ('Displays the rank of the result'), 
+        'handler'         => 'views_plugin_style_ranking',
+		'theme'           => 'views_views_ranking_style',
+	    'theme file'      => 'views_views_ranking_style.theme.inc',
+	    'theme path'      => $path.'/theme',
+        'uses row plugin' => FALSE,
+        'uses fields'     => TRUE,
+        'uses options'    => TRUE,
+        'type'            => 'normal',
+	    'even empty'      => FALSE
+	  ),
+	),
+  );
+}
+
+//this is a theme pre-process function where we can prepare varialbes for the template
+function template_preprocess_views_views_ranking_style(&$vars) {
+	
+	$options = $vars['options'];
+	log_debug($options);	
+	$rows = $vars['rows'];
+	$vars['rank'] = $rows[0];
+	
+}

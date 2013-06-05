@@ -1,0 +1,73 @@
+<?php
+/**
+* This file is part of the Checkbook NYC financial transparency software.
+* 
+* Copyright (C) 2012, 2013 New York City
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as
+* published by the Free Software Foundation, either version 3 of the
+* License, or (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+* 
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+
+function data_controller_services_doc_menu() {
+    $items['doc/api'] = array(
+        'page callback'   => 'data_controller_services_doc_endpoint',
+        'access callback' => TRUE,
+        'type'            => MENU_CALLBACK);
+
+    return $items;
+}
+
+function data_controller_services_doc_endpoint() {
+    $endpointDef = module_invoke_all('services_resources');
+
+    $endpointGenerator = new EndPointDocumentGenerator($endpointDef);
+
+    $resourcesGenerator = new ResourcesDocumentGenerator($endpointGenerator);
+    $endpointGenerator->registerNestedGenerator($resourcesGenerator);
+
+    $methodNames = array('index', 'retrieve', 'create', 'update', 'delete');
+    foreach ($endpointDef as $resourceName => $resourceDef) {
+        $resourceGenerator = new ResourceDocumentGenerator($resourcesGenerator, $resourceName);
+        $resourcesGenerator->registerNestedGenerator($resourceGenerator);
+
+        $methodsGenerator = new MethodsDocumentGenerator($resourceGenerator);
+        $resourceGenerator->registerNestedGenerator($methodsGenerator);
+
+        foreach ($methodNames as $methodName) {
+            $methodsGenerator->registerNestedGenerator(new MethodDocumentGenerator($methodsGenerator, $methodName));
+        }
+    }
+
+    $content = '';
+    $endpointGenerator->generate($content);
+
+    $page = array(
+        '#show_messages' => false,
+        '#theme' => 'page-doc-api',
+        '#type' => 'page',
+        'content' => array(
+            'system_main' => array(
+                '#markup' => $content
+            )
+        ),
+        'post_header' => array(
+            '#markup' => ''
+        ),
+        'pre_content' => array(
+            '#markup' => ''
+        )
+    );
+
+    return $page;
+}

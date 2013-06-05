@@ -1,0 +1,12 @@
+{
+    "datasets": {
+		"award_category": {
+            "datasourceName": "main",
+            "source": "ref_award_category",
+            "columns": [
+                {
+                    "name": "award_category_id",
+                    "key": true}
+            ]}            
+    }
+}

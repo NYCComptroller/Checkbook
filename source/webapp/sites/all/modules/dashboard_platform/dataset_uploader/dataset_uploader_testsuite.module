@@ -1,0 +1,101 @@
+<?php
+/**
+* This file is part of the Checkbook NYC financial transparency software.
+* 
+* Copyright (C) 2012, 2013 New York City
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as
+* published by the Free Software Foundation, either version 3 of the
+* License, or (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+* 
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+ 
+
+require_once('test/testDatasetUploader.php');
+
+function dataset_uploader_testsuite_menu() {
+    $items['testsuite/dataset_uploader/states'] = array(
+        'page callback'     => 'dataset_uploader_testsuite_upload_states',
+        'access callback'   => TRUE,
+        'type'              => MENU_CALLBACK,   
+    );
+
+    $items['testsuite/dataset_uploader/faads'] = array(
+        'page callback'     => 'dataset_uploader_testsuite_upload_faads',
+        'access callback'   => TRUE,
+        'type'              => MENU_CALLBACK,   
+    );
+
+    $items['testsuite/dataset_uploader/dsv'] = array(
+        'page callback'     => 'dataset_uploader_testsuite_upload_dsv',
+        'access callback'   => TRUE,
+        'type'              => MENU_CALLBACK,   
+    );
+
+    return $items;
+}
+
+function dataset_uploader_testsuite_dc_metamodel() {
+    $items[] = array(
+        'path' => dirname(__FILE__)
+    );
+
+    return $items;
+}
+
+function dataset_uploader_testsuite_upload_states() {
+    $fileName = dirname(__FILE__) . '/test/data/data_states.txt';
+    $delimiter = '|';
+    $isHeaderPresent = FALSE;
+    $excludedColumnNames = NULL;
+    $testDummyColumn = TRUE;
+    $testTruncate = TRUE;
+
+    testDatasetUploader($fileName, $delimiter, 0, 10, $isHeaderPresent, $excludedColumnNames, $testDummyColumn, $testTruncate);
+}
+
+function dataset_uploader_testsuite_upload_faads() {
+    $size = isset($_REQUEST['size']) ? $_REQUEST['size'] : NULL;
+
+    $fileName = dirname(__FILE__) . '/test/data/data_awards_faads' . $size. '.txt';
+    $delimiter = '|';
+    $isHeaderPresent = TRUE;
+    $excludedColumnNames = NULL;
+    $testDummyColumn = FALSE;
+    $testTruncate = FALSE;
+
+    testDatasetUploader($fileName, $delimiter, 0, NULL, $isHeaderPresent, $excludedColumnNames, $testDummyColumn, $testTruncate);
+}
+
+function dataset_uploader_testsuite_upload_dsv() {
+    $delimiter = isset($_REQUEST['delimiter']) ? StringHelper::trim($_REQUEST['delimiter']) : NULL;
+    if (!isset($delimiter)) {
+        throw new IllegalArgumentException("Value delimiter was not provided. Use 'delimiter' parameter");
+    }
+
+    $fileName = isset($_REQUEST['filename']) ? StringHelper::trim($_REQUEST['filename']) : NULL;
+    if (!isset($fileName)) {
+        throw new IllegalArgumentException("File name was not provided. Use 'filename' parameter");
+    }
+
+    $isHeaderPresent = isset($_REQUEST['header']) ? (StringHelper::trim($_REQUEST['header']) == 'Y') : TRUE;
+
+    $limitRecordCount = isset($_REQUEST['limit']) ? StringHelper::trim($_REQUEST['limit']) : NULL;
+
+    $excludedColumnNames = isset($_REQUEST['excluded']) ? ArrayElementTrimmer::trimList(explode(',', $_REQUEST['excluded'])) : NULL;
+
+    $fileName = dirname(__FILE__) . "/test/data/$fileName";
+    $testDummyColumn = FALSE;
+    $testTruncate = FALSE;
+
+    testDatasetUploader($fileName, $delimiter, 0, $limitRecordCount, $isHeaderPresent, $excludedColumnNames, $testDummyColumn, $testTruncate);
+}
