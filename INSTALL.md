@@ -97,10 +97,11 @@ The following assumptions are made about the installation:
 
 Steps to install:
 
-1. Download and install the code (basically like any Drupal install).
+1. Download the latest version of the Checkbook code:
+   
+ `git clone https://github.com/NYCComptroller/Checkbook.git`
 
- * Download the latest version of checkbook code
-   (see https://github.com/NYCComptroller/Checkbook)
+ The next steps will look familiar if you've installed Drupal before:
 
  * Copy the contents of the folder `source/webapp/` to the webroot
    directory, such that the top level inside &lt;Webroot> looks like
