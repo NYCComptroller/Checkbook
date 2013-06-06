@@ -23,15 +23,23 @@ version 3.0.  See the file LICENSE.md for details.
 Installing Checkbook
 --------------------
 
+(See the file INSTALL.md for details.)
+
 Checkbook runs in a standard LAMP-stack environment: Apache HTTPD and
 Apache Solr, MySQL and PostgreSQL.  Checkbook is built on top of
 Drupal, but you do not need to install Drupal first, as Checkbook's
 own source code includes the appropriate version of Drupal.
 
-See the file INSTALL.md for details.
+Checkbook NYC's installation and data management procedures were
+originally designed around the needs of New York City.  Our goal is to
+make Checkbook portable to other jurisdictions; the installation and
+data import procedures are probably the areas that most need
+improvement to achieve that goal.  (The code itself is
+production-ready, as New York City runs a live instance.)  We welcome
+early-adopter feedback to help make these improvements.
 
-Developing Checkbook
---------------------
+Getting Help / Participating in Development
+-------------------------------------------
 
 The source code to Checkbook NYC is available here:
 
