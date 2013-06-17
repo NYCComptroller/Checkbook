@@ -474,7 +474,6 @@ function _checkbook_trends_default_download($node,$template = null){
     widget_data($node);
 
 	drupal_add_http_header("Content-Type", "text/csv");
-	drupal_add_http_header("Content-Length",strlen($data));
 	drupal_add_http_header("Content-Disposition", "attachment; filename=\"" . str_replace(' ', '_',$node->body['und'][0]['summary']) . ".csv\"");
 	drupal_add_http_header("Pragma", "cache");
 	drupal_add_http_header("Expires", "-1");
