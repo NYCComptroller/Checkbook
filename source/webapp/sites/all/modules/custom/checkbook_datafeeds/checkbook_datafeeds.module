@@ -121,6 +121,14 @@ function checkbook_datafeeds_tracking_form() {
   return $form;
 }
 
+function checkbook_datafeeds_tracking_form_submit($form, &$form_state) {
+  $code = $form_state['values']['tracking_number'];
+  $form_state['redirect'] = array(
+      'track-data-feed',
+      array('query' => array('code' => $code))
+  );
+}
+
 /**
  * Page callback for API queue tracking page.
  *
