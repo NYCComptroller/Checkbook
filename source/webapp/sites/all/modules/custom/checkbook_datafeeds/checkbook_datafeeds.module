@@ -1955,7 +1955,8 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state) {
     $criteria['value']['contract_id'] = $values['contractno'];
   }
   if ($values['contract_type'] != 'No Contract Type Selected') {
-    $criteria['value']['contract_type'] = $values['contract_type'];
+    preg_match($pattern, $values['contract_type'], $ctypematches);
+    $criteria['value']['contract_type'] = trim($ctypematches[1], '[ ]');
   }
   if ($values['startdatefrom'] !== '' || $values['startdateto'] !== '') {
     $criteria['range']['start_date'] = array(
