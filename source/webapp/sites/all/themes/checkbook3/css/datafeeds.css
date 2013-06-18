@@ -404,7 +404,9 @@ body.page-data-feeds #zone-content form.data-feeds-wizard .column .salarytype in
 .api-table {
     margin-bottom: 10px;
 }
-
+.agency-code-list-table {
+    margin-top: 10px;
+}
 .api-table + p a.float-right, .api-center + .divider + p a.float-right, pre.prettyprint + p a.float-right, a.float-right {
     float: right;
 }
