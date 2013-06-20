@@ -64,7 +64,7 @@
     }
     return $adjustedParameters;
  ",
-"widgetTitle":"Expense Category Budget Percent Difference Details",
+"widgetTitle":"Expense Category Expense Budget Percent Difference Details",
 "header":"
     $node->widgetConfig->getData=false;
     load_widget_data($node);

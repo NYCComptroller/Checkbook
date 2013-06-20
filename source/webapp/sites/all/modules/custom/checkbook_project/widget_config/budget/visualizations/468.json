@@ -1,7 +1,7 @@
 {
   "widgetType":"highcharts",
   "widgetSubType":"ajaxSimple",
-  "header":"$header = '<h2 class=\"chart-title\" style=\"display:none;\">Top Ten Departments by Budget</h2>'; $header .= ChartUtil::generateGridViewLink($node); return $header;",
+  "header":"$header = '<h2 class=\"chart-title\" style=\"display:none;\">Top Ten Departments by Expense Budget</h2>'; $header .= ChartUtil::generateGridViewLink($node); return $header;",
   "gridConfig":{
     "template":"highchart_budget_department_grid_view",
     "html_class":"chart-grid-view-table",
@@ -54,7 +54,7 @@
     $remaining_data[] = array('name' => html_entity_decode($row['department_name_department_name'],ENT_QUOTES), 'y' => $row['budget_remaining'], 'dept_id' => $row['dept_dept'], 'year' => $row['year_id_year_id'],'url' => $url);
   }
   if($allZero){$node->totalDataCount = 0;}
-  $node->widgetConfig->chartTitle = 'Top Ten Departments by Budget';
+  $node->widgetConfig->chartTitle = 'Top Ten Departments by Expense Budget';
   $node->widgetConfig->chartConfig->xAxis->categories = $categories;
   $node->widgetConfig->chartConfig->series = array(array('name' => 'Committed', 'data' => $committed_data), array('name' => 'Remaining', 'data' => $remaining_data));
   return $node->data;

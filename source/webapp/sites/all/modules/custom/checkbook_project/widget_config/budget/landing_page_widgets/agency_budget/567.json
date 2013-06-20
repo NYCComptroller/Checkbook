@@ -13,7 +13,7 @@
 "columns": ["year_id.year_id","department_name.department_name","dept.dept",
             "budget_adopted","budget_remaining","budget_committed","budget_current"],
 "limit":5,
-"widgetTitle":"Departments Budget Details",
+"widgetTitle":"Departments Expense Budget Details",
 "header":"
     $node->widgetConfig->getData=false;
     load_widget_data($node);

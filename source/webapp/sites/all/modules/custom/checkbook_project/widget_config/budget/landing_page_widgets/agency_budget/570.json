@@ -13,12 +13,12 @@
 "columns": ["year_id.year_id","budget_code_name.budget_code_name","budget_code.budget_code",
             "budget_adopted","budget_remaining","budget_committed","budget_current"],
 "limit":5,
-"widgetTitle":"Budget Categories Budget Details",
+"widgetTitle":"Expense Budget Categories Expense Budget Details",
 "header":"
     $node->widgetConfig->getData=false;
     load_widget_data($node);
     if($node->totalDataCount > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
-    $header='<div class=\"tableHeader\"><h2>Top ' .  $count . 'Budget Categories</h2><span class=\"contCount\"> Number of Budget Categories:  ' . number_format($node->totalDataCount) . '</span></div>';
+    $header='<div class=\"tableHeader\"><h2>Top ' .  $count . 'Expense Budget Categories</h2><span class=\"contCount\"> Number of Expense Budget Categories:  ' . number_format($node->totalDataCount) . '</span></div>';
     return $header;
 ",
 "footer":"

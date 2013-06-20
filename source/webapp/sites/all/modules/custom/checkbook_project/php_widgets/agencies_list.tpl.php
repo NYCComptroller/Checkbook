@@ -49,10 +49,10 @@ foreach($node->data as $key => $value){
 
 $agencies = array_chunk($node->data, 10);
 
-$agency_list = "<div id='agency-list'>";
-$agency_list .= "<div class='agency-list-open'><span>$selected_text</span></div>";
-$agency_list .= "<div class='agency-list-content'>";
-$agency_list .= "<div class='listContainer1'>";
+$agency_list = "<div id='agency-list' class='agency-nav-dropdowns'>";
+$agency_list .= "<div class='agency-list-open'><span id='all-agency-list-open'>$selected_text</span></div>";
+$agency_list .= "<div class='agency-list-content all-agency-list-content'>";
+$agency_list .= "<div class='listContainer1' id='allAgenciesList'>";
 
 foreach($agencies as $key => $agencies_chunck){
     $agency_list .= ((($key+1)%2 == 0)? "" : "<div class='agency-slide'>");
@@ -76,4 +76,28 @@ $agency_list .= "<div class='agency-list-nav'><a href='#' id='prev'>Prev</a><a h
 $agency_list .= "<a href='/".$all_agency_url."' id='citywide_all_agencies'>CITYWIDE ALL AGENCIES</a></div>";
 $agency_list .= "<div class='agency-list-close'><a href='#'>x Close</a></div>";
 $agency_list .= "</div></div>";
+
+$agency_list_other = 
+"<div id='agency-list' class='agency-nav-dropdowns'>
+  <div class='agency-list-open'><span id='other-agency-list-open'>Other Agencies</span></div>
+  <div class='agency-list-content other-agency-list-content'>
+    <div class='listContainer1' id='otherAgenciesList'>
+        <div class='agency-slide'>
+          <ul class='listCol'>
+            <li><a href='/".$agency_url. "'>Economic Development Coproration</a></li>
+          </ul>
+        </div>
+    </div>        
+        <div class='agency-list-nav'><a href='#' id='prev'>Prev</a><a href='#' id='next'>Next</a>
+        <a href='/".$all_agency_url."' id='citywide_all_agencies'>OTHER AGENCIES</a>
+        </div>
+    <div class='agency-list-close'><a href='#'>x Close</a></div>
+  </div>
+</div>";
+
+
+
+print "<div class='agency-nav-dropdowns-parent'>";
+print $agency_list_other;
 print $agency_list;
+print "</div>";

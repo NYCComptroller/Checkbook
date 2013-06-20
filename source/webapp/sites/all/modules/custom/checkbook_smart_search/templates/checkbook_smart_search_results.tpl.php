@@ -187,7 +187,11 @@ if($noOfTotalResults > 0){
 
   foreach($search_results['response']['docs'] as $key=>$value){
     print "<li>";
-    print "<h3 class='title'>Transaction #". $transaction_no .": ". $value["domain"] ."</h3>";
+    $domain_display = $value["domain"];
+    if($domain_display == "budget"){
+      $domain_display = "Expense Budget";
+    }
+    print "<h3 class='title'>Transaction #". $transaction_no .": ". $domain_display ."</h3>";
     $transaction_no++;
     switch(strtolower($value["domain"])){
       case "revenue":

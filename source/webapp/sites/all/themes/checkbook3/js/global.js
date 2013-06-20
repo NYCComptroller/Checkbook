@@ -347,9 +347,14 @@ function addPaddingToDataCells(table){
     Drupal.behaviors.agenciesDropDown = {
         attach:function (context, settings) {
             $('.agency-list-open span, .agency-list-open div b').click(function () {
-                $('.agency-list-content').slideToggle(300);
+            	if($(this).attr("id")== "other-agency-list-open"){
+            		$('.all-agency-list-content').slideUp(300);            		
+            	}else{
+            		$('.other-agency-list-content').slideUp(300);
+            	}
+            	$(this).parent().parent().find('.agency-list-content').slideToggle(300);
                 $(this).toggleClass('open');
-                $('.agency-list-open div b').toggleClass('open');
+                $(this).parent().find(' div b').toggleClass('open');
             });
 
             $('.agency-list-close a').click(function () {
@@ -357,8 +362,23 @@ function addPaddingToDataCells(table){
                 $('.agency-list-open div b').removeClass('open');
             });
 
-            if ($('.listContainer1').length > 0) {
-                $('.listContainer1')
+            if ($('#allAgenciesList').length > 0) {
+                $('#allAgenciesList')
+                    .after('<div class="agency-list-pager"></div>')
+                    .cycle({
+                        fx:'none',
+                        speed:1000,
+                        timeout:0,
+                        pause:true,
+                        pauseOnPagerHover:0,
+                        pager:'.agency-list-pager',
+                        prev:'#prev',
+                        next:'#next'
+                    });
+            }
+            
+            if ($('#otherAgenciesList').length > 0) {
+                $('#otherAgenciesList')
                     .after('<div class="agency-list-pager"></div>')
                     .cycle({
                         fx:'none',
@@ -736,10 +756,10 @@ function addPaddingToDataCells(table){
                 if (this.id)
                     page_clicked_from = this.id;
                 switch (page_clicked_from) {
-                    case "revenue":
+                    case "budget":
                         active_accordion_window = 0;
                         break;
-                    case "budget":
+                    case "revenue":
                         active_accordion_window = 1;
                         break;
                     case "spending":

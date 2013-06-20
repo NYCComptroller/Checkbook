@@ -13,7 +13,7 @@
 "columns": ["year_id.year_id","object_class_id.object_class_id","object_class_name.object_class_name",
             "budget_adopted","budget_current","budget_remaining","budget_committed"],
 "limit":5,
-"widgetTitle":"Expense Categories Budget Details",
+"widgetTitle":"Expense Categories Expense Budget Details",
 "header":"
     $node->widgetConfig->getData=false;
     load_widget_data($node);
