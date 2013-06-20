@@ -68,7 +68,7 @@
     }
     return $adjustedParameters;
  ",
-"widgetTitle":"Departments Budget Details",
+"widgetTitle":"Departments Expense Budget Details",
  "derivedColumns":{
     "agency_link":{
             "type":"expression2",

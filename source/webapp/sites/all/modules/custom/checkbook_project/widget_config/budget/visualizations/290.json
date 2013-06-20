@@ -1,7 +1,7 @@
 {
   "widgetType":"highcharts",
   "widgetSubType":"ajaxSimple",
-  "header":"$header = '<h2 class=\"chart-title\" style=\"display:none;\">Top Ten Expense Categories by Budget</h2>'; $header .= ChartUtil::generateGridViewLink($node); return $header;",
+  "header":"$header = '<h2 class=\"chart-title\" style=\"display:none;\">Top Ten Expense Categories by Expense Budget</h2>'; $header .= ChartUtil::generateGridViewLink($node); return $header;",
   "gridConfig":{
     "template":"highchart_budget_expenditure_grid_view",
     "html_class":"chart-grid-view-table",
@@ -59,7 +59,7 @@
     $remaining_data[] = array('name' => html_entity_decode($row['object_class_name_object_class_name'],ENT_QUOTES), 'y' => $row['budget_remaining'], 'url' => $url);
   }
   if($allZero){$node->totalDataCount = 0;}
-  $node->widgetConfig->chartTitle = 'Top Ten Expense Categories by Budget';
+  $node->widgetConfig->chartTitle = 'Top Ten Expense Categories by Expense Budget';
   $node->widgetConfig->chartConfig->xAxis->categories = $categories;
   $node->widgetConfig->chartConfig->series = array(array('name' => 'Committed', 'data' => $committed_data),array('name' => 'Remaining', 'data' => $remaining_data));
   return $node->data;

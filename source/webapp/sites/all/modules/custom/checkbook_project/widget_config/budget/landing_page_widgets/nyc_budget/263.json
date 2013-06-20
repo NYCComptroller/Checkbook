@@ -13,7 +13,7 @@
 "columns": ["year_id.year_id","agency_name.agency_name","agency_id.agency_id",
             "budget_adopted","budget_remaining","budget_committed","budget_current"],
 "limit":5,
-"widgetTitle":"Agencies Budget Details",
+"widgetTitle":"Agencies Expense Budget Details",
 "header":"
     $node->widgetConfig->getData=false;
     load_widget_data($node);

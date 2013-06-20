@@ -348,13 +348,13 @@ class RequestUtil{
              elseif($last_id["bdgcode"] > 0){
                 $title = _checkbook_project_get_name_for_argument("budget_code_id",RequestUtil::getRequestKeyValueFromURL("bdgcode",$bottomURL)) ;
              }
-             $title = $title . ' Budget Details';
+             $title = $title . ' Expense Budget Details';
            }
          }else if(!$bottomURL && preg_match('/^budget\/transactions/',current_path())){
-            $title = "Budget Details";
+            $title = "Expense Budget Details";
          }
          else{
-           $title = _get_budget_breadcrumb_title_drilldown() . ' Budget' ;
+           $title = _get_budget_breadcrumb_title_drilldown() . ' Exepnse Budget' ;
          }
 
          return html_entity_decode($title);
@@ -437,10 +437,13 @@ class RequestUtil{
     }
     /** Returns top navigation URL */
     static function getTopNavURL($domain){
-      
+        $year = _getRequestParamValue("year");
+        if($year ==null){
+          $year = _getCurrentYearID();
+        }
         switch($domain){
           case "contracts":            
-          $path ="contracts_landing/status/A/yeartype/B/year/"._getCurrentYearID();
+          $path ="contracts_landing/status/A/yeartype/B/year/".$year;
           if(_getRequestParamValue("agency") > 0){
             $path =  $path . "/agency/" . _getRequestParamValue("agency")  ;
           }
@@ -449,7 +452,7 @@ class RequestUtil{
           } 
           break;
           case "spending":
-          $path ="spending_landing/yeartype/B/year/"._getCurrentYearID();
+          $path ="spending_landing/yeartype/B/year/".$year;
           if(_getRequestParamValue("agency") > 0){
             $path =  $path . "/agency/" . _getRequestParamValue("agency")  ;
           }
@@ -459,23 +462,23 @@ class RequestUtil{
           break;
           case "payroll":
             if(_getRequestParamValue("agency") > 0){
-              $path ="payroll/". "agency/" . _getRequestParamValue("agency")  . "/yeartype/B/year/"._getCurrentYearID() ;
+              $path ="payroll/". "agency/" . _getRequestParamValue("agency")  . "/yeartype/B/year/".$year ;
             }else{
-              $path ="payroll/yeartype/B/year/"._getCurrentYearID();
+              $path ="payroll/yeartype/B/year/".$year;
             }
           break;   
           case "budget":
             if(_getRequestParamValue("agency") > 0){
-              $path ="budget/yeartype/B/year/"._getCurrentYearID() . "/agency/" . _getRequestParamValue("agency") ;
+              $path ="budget/yeartype/B/year/".$year . "/agency/" . _getRequestParamValue("agency") ;
             }else{
-              $path ="budget/yeartype/B/year/"._getCurrentYearID();
+              $path ="budget/yeartype/B/year/".$year;
             }
             break;
           case "revenue":
             if(_getRequestParamValue("agency") > 0){
-              $path ="revenue/yeartype/B/year/"._getCurrentYearID() . "/agency/" . _getRequestParamValue("agency") ;
+              $path ="revenue/yeartype/B/year/".$year . "/agency/" . _getRequestParamValue("agency") ;
             }else{
-              $path ="revenue/yeartype/B/year/"._getCurrentYearID();
+              $path ="revenue/yeartype/B/year/".$year;
             }
             break;
             
@@ -487,6 +490,7 @@ class RequestUtil{
 
     /** Checks if the current page is NYC level*/
     static function isNYCLevelPage(){
+      self::isEDCPage();
         $landingPages = array("contracts_landing","contracts_revenue_landing",
                               "contracts_pending_rev_landing","contracts_pending_exp_landing",
                               "spending_landing","payroll");
@@ -503,6 +507,22 @@ class RequestUtil{
         }else{
             return false;
         }
+    }
+    
+    static function isEDCPage(){
+      $vendor_id = _getRequestParamValue('vendor');
+      if($vendor_id != null){
+        $vendor = _checkbook_project_querydataset("checkbook:vendor","vendor_customer_code",array("vendor_id"=>$vendor_id)); 
+        log_error($vendor);
+        if($vendor[0]['vendor_customer_code'] == "0000776804"){
+          return true; 
+        }else{
+          return false;
+        } 
+        
+      }else{
+        return false;
+      }
     }
 
 }

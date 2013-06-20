@@ -64,7 +64,7 @@
     }
     return $adjustedParameters;
  ",
-"widgetTitle":"Department Budget Percent Difference Details",
+"widgetTitle":"Department Expense Budget Percent Difference Details",
 "header":"
     $node->widgetConfig->getData=false;
     load_widget_data($node);

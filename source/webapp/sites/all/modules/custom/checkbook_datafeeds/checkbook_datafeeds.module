@@ -403,8 +403,8 @@ function checkbook_datafeeds_data_feed_wizard($form, &$form_state) {
     '#title' => t('1. Select the Data Type:'),
     '#prefix' => '<div class="data-feed-wizard">',
     '#options' => array(
-      'revenue' => t('Revenue'),
       'budget' => t('Budget'),
+      'revenue' => t('Revenue'),      
       'spending' => t('Spending'),
       'contracts' => t('Contracts'),
       'payroll' => t('Payroll'),

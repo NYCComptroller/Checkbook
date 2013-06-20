@@ -1,7 +1,7 @@
 {
   "widgetType":"highcharts",
   "widgetSubType":"ajaxSimple",
-  "header":"$header = '<h2 class=\"chart-title\" style=\"display:none;\">Budget</h2>'; $header .= ChartUtil::generateGridViewLink($node); return $header;",
+  "header":"$header = '<h2 class=\"chart-title\" style=\"display:none;\">Expense Budget</h2>'; $header .= ChartUtil::generateGridViewLink($node); return $header;",
   "gridConfig":{
     "template":"highchart_budget_grid_view",
     "html_class":"chart-grid-view-table",
@@ -60,7 +60,7 @@
     $remaining_data[] = array('y' => $row['budget_remaining'], 'url' => $url);
   }
   if($allZero){$node->totalDataCount = 0;}
-  $node->widgetConfig->chartTitle = 'Budget';
+  $node->widgetConfig->chartTitle = 'Expense Budget';
   $node->widgetConfig->chartConfig->xAxis->categories = $categories;
   $node->widgetConfig->chartConfig->series = array(array('name' => 'Committed', 'data' => $committed_data), array('name' => 'Remaining', 'data' => $remaining_data));
   return $node->data;

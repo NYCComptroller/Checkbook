@@ -69,7 +69,7 @@
     }
     return $adjustedParameters;
  ",
-"widgetTitle":"Expense Categories Budget Details",
+"widgetTitle":"Expense Categories Expense Budget Details",
  "derivedColumns":{
     "agency_link":{
             "type":"expression2",

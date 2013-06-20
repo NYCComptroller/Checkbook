@@ -199,11 +199,15 @@ h4 {
 #block-block-4 {
     display:block;
     float: left;
-    width:187px;
 }
 .front #block-block-4,
 .page-user #block-block-4 {
     display: none;
+}
+
+.agency-nav-dropdowns {
+	display:block;
+	float:right;
 }
 .agency-list-open {
     border-right: 1px solid #5387B7;
@@ -238,6 +242,10 @@ h4 {
     z-index: 30;
     display:none;
 }
+.other-agency-list-content{
+	height:160px;
+	left:0px;
+}
 #agency-list ul {
     background: none;
     float: left;
@@ -259,6 +267,9 @@ h4 {
     height:230px;
     float:left;
 }
+.other-agency-list-content .listContainer1{
+	height:130px;
+} 
 .listContainer1 .agency-slide {
     margin: 0 24px 0 64px;
     padding: 0;

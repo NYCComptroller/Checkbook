@@ -13,7 +13,7 @@
 "columns": ["year_id.year_id","department_name.department_name","dept.dept","budget_committed",
             "pre_encumbered","encumbered","accrued_expense","cash_payments","post_adjustments"],
 "limit":5,
-"widgetTitle":"Departments Budget Details",
+"widgetTitle":"Departments Expense Budget Details",
 "header":"
     $node->widgetConfig->getData=false;
     load_widget_data($node);
