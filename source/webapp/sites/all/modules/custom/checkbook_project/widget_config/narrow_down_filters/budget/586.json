@@ -7,7 +7,7 @@
     "orderBy":["-txcount", "budget_code_name.budget_code_name"],
 	"getTotalDataCount":true,    
 	"facetPager":true,	    
-    "filterName":"Budget Code",
+    "filterName":"Expense Budget Code",
     "urlParameterName":"bdgcodenm_exact",
     "urlParameterNameType":"eqtext",    
     "autocompleteParamName":"bdgcodenm_exact_auto",    
