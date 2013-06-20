@@ -2,7 +2,7 @@
     "widgetType":"phpparser",
     "parentNid":277,    
     "autocomplete":false,
-    "filterName":"Modified Budget",
+    "filterName":"Modified Expense Budget",
     "urlParameterName":"curamtr",
     "urlParameterType":"rangeid",
     "autocompleteID":"fCurAmount",     

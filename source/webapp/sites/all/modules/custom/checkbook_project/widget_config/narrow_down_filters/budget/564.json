@@ -4,7 +4,7 @@
     "startWith":0,
 	"columns":["budget_code.budget_code", "budget_code_name.budget_code_name", "txcount"],
 	"orderBy":"-txcount",    
-    "filterName":"Budget Code",
+    "filterName":"Expense Budget Code",
     "urlParameterName":"bdgcode",
     "autocompleteParamName":"bdgcode_auto", 
     "getTotalDataCount":true,    
