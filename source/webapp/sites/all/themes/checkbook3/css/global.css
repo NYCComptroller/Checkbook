@@ -1892,3 +1892,10 @@ body.page-payroll-employee-transactions #table_310{
 }
 .ui-dialog-titlebar #ui-dialog-title-dialog{line-height:19px;}
 
+
+
+.page-instructional-videos .pane-title{
+	font-size: 18px;
+	margin-top:10px;
+	margin-bottom: 10px;
+}
