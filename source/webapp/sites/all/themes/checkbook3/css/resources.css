@@ -1,17 +1,21 @@
 /********************************************
 ***   GENERAL RESOURCES AND HELP STYLES   ***
 ********************************************/
-body.context-resources, body.page-node-503, body.page-node-504,body.page-node-599, body.page-node-505, body.page-node-510, body.page-node-511{
+body.context-resources, body.page-node-503, body.page-node-504,body.page-node-599, body.page-node-505, body.page-node-510, body.page-node-511,body.page-node-603,body.page-node-604{
     line-height: 18px;
     color:#000;
 }
 body.page-node-505 #region-content, body.page-node-505 #region-content h1{font-family: 'Georgia', serif;}
-body.context-resources p, body.page-node-503 p, body.page-node-504 p,body.page-node-599 p, body.page-node-505 p, body.page-node-510 p, body.page-node-511 p{
+body.context-resources p, body.page-node-503 p, body.page-node-504 p,body.page-node-599 p, body.page-node-505 p, body.page-node-510 p, body.page-node-511 p,body.page-node-603 p
+,body.page-node-604 p
+{
     margin-bottom: 10px;
 }
-body.page-node-504 h2,body.page-node-599 h2, body.page-node-510 h2, body.page-node-511 h2{font-size: 12px;}
-body.page-node-504 #breadcrumb, body.page-node-599 #breadcrumb,body.page-node-510 #breadcrumb, body.page-node-511 #breadcrumb{display:none;}
-body.page-node-504 #section-header,body.page-node-599 #section-header,  body.page-node-510 #section-header, body.page-node-511 #section-header{margin-bottom:15px;}
+body.page-node-504 h2,body.page-node-599 h2, body.page-node-510 h2, body.page-node-511 h2,body.page-node-603 h2 ,body.page-node-604 h2{font-size: 12px;}
+body.page-node-504 #breadcrumb, body.page-node-599 #breadcrumb,body.page-node-510 #breadcrumb, body.page-node-511 #breadcrumb,
+body.page-node-603 #breadcrumb,body.page-node-604 #breadcrumb{display:none;}
+body.page-node-504 #section-header,body.page-node-599 #section-header,  body.page-node-510 #section-header, body.page-node-511 #section-header,
+body.page-node-603 #section-header ,body.page-node-604 #section-header{margin-bottom:15px;}
 body.context-resources #breadcrumb, body.page-node-503 #breadcrumb, body.page-node-505 #breadcrumb{
     margin-left:0px;
 }
@@ -31,6 +35,8 @@ body.page-node-503 #page-title,
 body.page-node-504 #page-title,
 body.page-node-599 #page-title,
 body.page-node-510 #page-title,
+body.page-node-604 #page-title,
+body.page-node-603 #page-title, 
 body.page-node-511 #page-title,
 body.page-node-512 #page-title,
 body.page-node-513 #page-title,
