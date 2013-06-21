@@ -513,7 +513,7 @@ class RequestUtil{
       $vendor_id = _getRequestParamValue('vendor');
       if($vendor_id != null){
         $vendor = _checkbook_project_querydataset("checkbook:vendor","vendor_customer_code",array("vendor_id"=>$vendor_id)); 
-        log_error($vendor);
+     
         if($vendor[0]['vendor_customer_code'] == "0000776804"){
           return true; 
         }else{
@@ -523,6 +523,12 @@ class RequestUtil{
       }else{
         return false;
       }
+    }
+    
+    static function getEDCURL(){
+      $vendor = _checkbook_project_querydataset("checkbook:vendor","vendor_id",array("vendor_customer_code"=>"0000776804"));
+      $url = "contracts_landing/status/A/yeartype/B/year/" . _getCurrentYearID() . "/vendor/" . $vendor[0]['vendor_id'];
+      return $url;
     }
 
 }
