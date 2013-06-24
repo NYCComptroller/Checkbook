@@ -493,7 +493,7 @@ class RequestUtil{
       self::isEDCPage();
         $landingPages = array("contracts_landing","contracts_revenue_landing",
                               "contracts_pending_rev_landing","contracts_pending_exp_landing",
-                              "spending_landing","payroll");
+                              "spending_landing","payroll","budget","revenue");
 
         $url = $_GET['q'];
         $urlPath = drupal_get_path_alias($url);
