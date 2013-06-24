@@ -530,5 +530,12 @@ class RequestUtil{
       $url = "contracts_landing/status/A/yeartype/B/year/" . _getCurrentYearID() . "/vendor/" . $vendor[0]['vendor_id'];
       return $url;
     }
-
+    
+    static function getSpendingEDCURL(){
+      $vendor = _checkbook_project_querydataset("checkbook:vendor","vendor_id",array("vendor_customer_code"=>"0000776804"));
+      $url = "spending_landing/yeartype/B/year/" . _getCurrentYearID() . "/vendor/" . $vendor[0]['vendor_id'];
+      return $url;
+    }
+    
+    
 }
