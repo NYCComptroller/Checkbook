@@ -84,12 +84,12 @@ $agency_list_other =
     <div class='listContainer1' id='otherAgenciesList'>
         <div class='agency-slide'>
           <ul class='listCol'>
-            <li><a href='/".RequestUtil::getEDCURL(). "'>Economic Development Coproration</a></li>
+            <li><a href='/".RequestUtil::getEDCURL(). "'>New York City Economic Development Coproration</a></li>
           </ul>
         </div>
     </div>        
         <div class='agency-list-nav'><a href='#' id='prev'>Prev</a><a href='#' id='next'>Next</a>
-        <a href='/".RequestUtil::getEDCURL()."' id='citywide_all_agencies'>OTHER AGENCIES</a>
+        <a href='/".RequestUtil::getSpendingEDCURL()."' id='citywide_all_agencies'>OTHER AGENCIES</a>
         </div>
     <div class='agency-list-close'><a href='#'>x Close</a></div>
   </div>
