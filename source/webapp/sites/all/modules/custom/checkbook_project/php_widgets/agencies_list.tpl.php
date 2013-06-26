@@ -79,7 +79,7 @@ $agency_list .= "</div></div>";
 
 $agency_list_other = 
 "<div id='agency-list' class='agency-nav-dropdowns'>
-  <div class='agency-list-open'><span id='other-agency-list-open'>Other Agencies</span></div>
+  <div class='agency-list-open'><span id='other-agency-list-open'>Featured</span></div>
   <div class='agency-list-content other-agency-list-content'>
     <div class='listContainer1' id='otherAgenciesList'>
         <div class='agency-slide'>
