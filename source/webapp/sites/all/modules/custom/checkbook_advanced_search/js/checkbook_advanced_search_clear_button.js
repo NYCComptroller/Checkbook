@@ -36,10 +36,11 @@ function clearInputFields(enclosingDiv,domain){
         switch(this.type){
             case 'select-one':
                     //jQuery('#edit-spending-fiscal-year').removeAttr("disabled");
-                    if(this.name != 'spending_fiscal_year')
+            		var defaultoption = jQuery(this).attr('default_selected_value');
+                    if(defaultoption == null)
                         jQuery(this).find('option:first').attr("selected", "selected");
                     else
-                        jQuery(this).find('option:eq(1)').attr("selected", "selected");
+                    	jQuery(this).find('option[value=' + defaultoption + ']').attr("selected", "selected");
                 break;
             case 'text':
                 jQuery(this).val('');

@@ -93,7 +93,9 @@ $form['budget']['budget_department'] = array(
   $form['budget']['budget_fiscal_year'] = array(
       '#type' => 'select',
       '#title' => t('Year'),
-      '#options' => _checkbook_advanced_search_get_year('budget')
+      '#default_value' =>  _getCurrentYearID(),
+      '#options' => _checkbook_advanced_search_get_year('budget'),
+      '#attributes' => array('default_selected_value'=> _getCurrentYearID())
   );
   
   $form['budget']['budget_adopted_budget_from'] = array(
@@ -214,6 +216,8 @@ $form['budget']['budget_department'] = array(
       '#type' => 'select',
       '#title' => t('Budget FY:'),
       '#options' => _checkbook_advanced_search_get_year('revenue'),
+      '#attributes' => array('default_selected_value'=> _getCurrentYearID()),
+      '#default_value' =>  _getCurrentYearID(),
   );
   $form['revenue']['revenue_agencies'] = array(
       '#type' => 'select',
@@ -431,7 +435,7 @@ $form['budget']['budget_department'] = array(
     '#type' => 'select',
     '#options' => _checkbook_advanced_search_get_year('spending'),
     '#default_value' => 'fy~' . _getCurrentYearID(),
-    '#attributes' => array('class' => array('watch')),
+    '#attributes' => array('class' => array('watch'),'default_selected_value'=>'fy~' . _getCurrentYearID()),
     '#prefix' => '<div class="datafield year">',
     '#suffix' => '</div>',
   );
@@ -700,7 +704,9 @@ $form['budget']['budget_department'] = array(
   $form['payroll']['payroll_year'] = array(
     '#type' => 'select',
     '#title' => t('Year'),
+    '#default_value' => 'fy~' . _getCurrentYearID(),      
     '#options' => _checkbook_advanced_search_get_year('payroll'),
+    '#attributes' => array('default_selected_value'=>'fy~' . _getCurrentYearID())
   );
   $form['payroll']['payroll_pay_date_from'] = array(
     '#type' => 'date_popup',
