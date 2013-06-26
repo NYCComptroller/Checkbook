@@ -8,13 +8,16 @@ function _getFiscalYearID(){
     static $fiscalYearId;
 
     if(!isset($fiscalYearId)){
+      if(variable_get('current_fiscal_year_id')){
+        $fiscalYearId = variable_get('current_fiscal_year_id');
+      }else{
         $year=date("Y");
         if(date("m") >= 7 ){
             $year += 1;
         }
         $fiscalYearId = _getYearIDFromValue($year);
+      }
     }
-
     return $fiscalYearId;
 }
 
@@ -26,8 +29,12 @@ function _getCalendarYearID(){
     static $calYearId;
 
     if(!isset($calYearId)){
+      if(variable_get('current_cal_year_id')){
+        $calYearId = variable_get('current_cal_year_id');
+      }else{
         $year=date("Y");
         $calYearId = _getYearIDFromValue($year);
+      }
     }
 
     return $calYearId;
@@ -40,12 +47,15 @@ function _getCalendarYearID(){
 function _getCurrentYearID(){
 	STATIC $currentNYCYear;	
 	if(!isset($currentNYCYear)){
-	
+	  if(variable_get('current_fiscal_year_id')){
+	    $currentNYCYear = variable_get('current_fiscal_year_id');
+	  }else{	
         $currentNYCYear=date("Y");
         $currentMonth=date("m");
         if($currentMonth > 6 )
          $currentNYCYear +=1; 
         $currentNYCYear = _getYearIDFromValue($currentNYCYear);
+	  }
 	 }
      return $currentNYCYear;
 }
@@ -1363,12 +1373,11 @@ function _get_num_from_string($string){
 }
 
 
-
-
-function _checkbook_get_latest_fiscal_year(){
-  return 114;
+function _checkbook_max_data_year(){
+  $query = "select type_of_year, max(year) year_value , max(year_id) year_id from {transactions_data_by_year} t join ref_year y on t.year = y.year_value group by type_of_year
+  order by type_of_year ";
+  $result = _checkbook_project_execute_sql($query);
+  return array("year_value"=>$result[0]['year_value'], "year_id"=>$result[0]['year_id'],
+      "cal_year_value"=>$result[1]['year_value'], "cal_year_id"=>$result[1]['year_id']);
 }
 
-function _checkbook_get_latest_calendar_year(){
-  return 114;
-}

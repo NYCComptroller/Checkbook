@@ -20,7 +20,7 @@
 ?>
 <?php
 
-$current_year = (int)date('Y');
+$filter_years = _checkbook_max_data_year();
 $q = $_SERVER['REQUEST_URI'];
 $array_q = explode('/',$q);
 
@@ -38,7 +38,7 @@ foreach($node->data as $key => $value){
         $selected_fiscal_year = '';
     }
 
-    if($value['year_value'] <= _getYearValueFromID($current_fy_id)){
+    if($value['year_value'] <= $filter_years['year_value']){
 
         $display_text = 'FY '.$value['year_value'].' (Jul 1, '.($value['year_value']-1).' - Jun 30, '.$value['year_value'].')';
 

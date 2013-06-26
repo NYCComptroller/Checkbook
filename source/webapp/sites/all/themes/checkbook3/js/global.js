@@ -796,6 +796,8 @@ function addPaddingToDataCells(table){
                 clearInputFields("#payroll-advanced-search",'payroll');
                 clearInputFields("#contracts-advanced-search",'contracts');
                 clearInputFields("#spending-advanced-search",'spending');
+                clearInputFields("#budget-advanced-search",'budget');
+                clearInputFields("#revenue-advanced-search",'revenue');
 
                 $('#block-checkbook-advanced-search-checkbook-advanced-search-form').dialog({
                     title:"Advanced Search",

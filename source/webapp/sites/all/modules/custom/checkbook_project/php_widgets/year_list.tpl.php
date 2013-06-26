@@ -20,7 +20,8 @@
 ?>
 <?php
 
-$current_year = (int)date('Y');
+
+$filter_years = _checkbook_max_data_year();
 //$q is the new url 
 $q = $_SERVER['REQUEST_URI'];
 $q= preg_replace("/\/month\/[^\/]*/","", $q);
@@ -161,7 +162,7 @@ if($display){
             $isSelected =  true;
         }
     
-        if($value['year_value'] <= _getYearValueFromID($current_fy_id) && $value['year_value'] != '2010'){
+        if($value['year_value'] <= $filter_years['year_value'] && $value['year_value'] != '2010'){
             $display_text = 'FY '.$value['year_value'].' (Jul 1, '.($value['year_value']-1).' - Jun 30, '.$value['year_value'].')';
             $yearFromURL = _getRequestParamValue("year");
 
@@ -180,7 +181,7 @@ if($display){
                                         'value' => $value['year_id'].'~B',
                                         'selected' => $selected_fiscal_year);
         }
-        if($value['year_value'] <= date('Y') ){        $yearFromURL = _getRequestParamValue("year");
+        if($value['year_value'] <= $filter_years['cal_year_value'] ){        $yearFromURL = _getRequestParamValue("year");
             if($calYearSet){
               $link = preg_replace("/year\/" . $yearFromURL . "/","calyear/" .  $value['year_id'],$q);
             }else{

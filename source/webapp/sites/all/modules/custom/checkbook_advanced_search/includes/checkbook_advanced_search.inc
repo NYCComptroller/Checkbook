@@ -37,16 +37,17 @@ function _checkbook_advanced_search_get_year($domain=null, $form =null) {
         $data = $dataController->queryDataset("checkbook:year", array('year_value','year_id'), array('year_value' => data_controller_get_operator_factory_instance()->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, 2010)), 'year_value', 0);
 
         $current_fy_id = _getFiscalYearID();
+        $max_years = _checkbook_max_data_year();
         foreach ($data as $row) {
             if($domain != 'revenue' && $domain != 'budget'){
-                if($row['year_value'] <= _getYearValueFromID($current_fy_id) && $row['year_value'] != 2010){
+                if($row['year_value'] <= $max_years['year_value'] && $row['year_value'] != 2010){
                     $fiscal_year_array['fy~'.$row['year_id']] = 'FY '.$row['year_value'];
                 }
-                if($row['year_value'] <= date('Y') ){
+                if($row['year_value'] <= $max_years['cal_year_value'] ){
                     $calendar_year_array['cy~'.$row['year_id']] = 'CY '.$row['year_value'];
                 }
             }else{
-                if($row['year_value'] <= _getYearValueFromID($current_fy_id) && $row['year_value'] != 2010){
+                if($row['year_value'] <= $max_years['year_value'] && $row['year_value'] != 2010){
                     if($form == 'datafeeds')
                         $fiscal_year_array[$row['year_value']] = $row['year_value'];
                     else
