@@ -301,8 +301,10 @@ h4 {
     background: url("../images/agency-list-active-button.png") repeat-x;
     color: white;
 }
-.agency-list-nav #prev,
-.agency-list-nav #next {
+.agency-list-nav #prev1,
+.agency-list-nav #prev2,
+.agency-list-nav #next1, 
+.agency-list-nav #next2 {
     bottom: 38%;
     height: 79px;
     position: absolute;
@@ -310,11 +312,13 @@ h4 {
     width: 17px;
     z-index: 10;
 }
-.agency-list-nav #prev {
+.agency-list-nav #prev1,
+.agency-list-nav #prev2 {
     background: url("../images/agency-list-prev.png") no-repeat;
     left: 5px;
 }
-.agency-list-nav #next {
+.agency-list-nav #next1,
+.agency-list-nav #next2 {
     background: url("../images/agency-list-next.png") no-repeat;
     right: 5px;
 }

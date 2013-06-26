@@ -1361,3 +1361,14 @@ function _checkbook_project_ma1_mma1_exist(){
 function _get_num_from_string($string){
     return(int)preg_replace('/[^\-\d]*(\-?\d*).*/','$1',$string);
 }
+
+
+
+
+function _checkbook_get_latest_fiscal_year(){
+  return 114;
+}
+
+function _checkbook_get_latest_calendar_year(){
+  return 114;
+}
