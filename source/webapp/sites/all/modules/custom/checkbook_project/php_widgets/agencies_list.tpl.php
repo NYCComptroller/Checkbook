@@ -72,7 +72,7 @@ foreach($agencies as $key => $agencies_chunck){
 
 $agency_list .= "</div>";
 $agency_list .= "</div>";
-$agency_list .= "<div class='agency-list-nav'><a href='#' id='prev'>Prev</a><a href='#' id='next'>Next</a>";
+$agency_list .= "<div class='agency-list-nav'><a href='#' id='prev1'>Prev</a><a href='#' id='next1'>Next</a>";
 $agency_list .= "<a href='/".$all_agency_url."' id='citywide_all_agencies'>CITYWIDE ALL AGENCIES</a></div>";
 $agency_list .= "<div class='agency-list-close'><a href='#'>x Close</a></div>";
 $agency_list .= "</div></div>";
@@ -84,12 +84,12 @@ $agency_list_other =
     <div class='listContainer1' id='otherAgenciesList'>
         <div class='agency-slide'>
           <ul class='listCol'>
-            <li><a href='/".RequestUtil::getEDCURL(). "'>New York City Economic Development Coproration</a></li>
+            <li><a href='/".RequestUtil::getEDCURL(). "'>New York City Economic Development Corporation</a></li>
           </ul>
         </div>
     </div>        
-        <div class='agency-list-nav'><a href='#' id='prev'>Prev</a><a href='#' id='next'>Next</a>
-        <a href='/".RequestUtil::getSpendingEDCURL()."' id='citywide_all_agencies'>OTHER AGENCIES</a>
+        <div class='agency-list-nav'><a href='#' id='prev2'>Prev</a><a href='#' id='next2'>Next</a>
+        <a href='/".RequestUtil::getSpendingEDCURL()."' id='citywide_all_agencies'>FEATURED</a>
         </div>
     <div class='agency-list-close'><a href='#'>x Close</a></div>
   </div>

@@ -364,31 +364,31 @@ function addPaddingToDataCells(table){
 
             if ($('#allAgenciesList').length > 0) {
                 $('#allAgenciesList')
-                    .after('<div class="agency-list-pager"></div>')
+                    .after('<div id="agency-list-pager1" class="agency-list-pager"></div>')
                     .cycle({
                         fx:'none',
                         speed:1000,
                         timeout:0,
                         pause:true,
                         pauseOnPagerHover:0,
-                        pager:'.agency-list-pager',
-                        prev:'#prev',
-                        next:'#next'
+                        pager:'#agency-list-pager1',
+                        prev:'#prev1',
+                        next:'#next1'
                     });
             }
             
             if ($('#otherAgenciesList').length > 0) {
                 $('#otherAgenciesList')
-                    .after('<div class="agency-list-pager"></div>')
+                    .after('<div id="agency-list-pager2" class="agency-list-pager"></div>')
                     .cycle({
                         fx:'none',
                         speed:1000,
                         timeout:0,
                         pause:true,
                         pauseOnPagerHover:0,
-                        pager:'.agency-list-pager',
-                        prev:'#prev',
-                        next:'#next'
+                        pager:'#agency-list-pager2',
+                        prev:'#prev2',
+                        next:'#next2'
                     });
             }
         }

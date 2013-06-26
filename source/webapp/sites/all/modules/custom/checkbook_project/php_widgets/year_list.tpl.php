@@ -145,7 +145,6 @@ if($display){
     $calendar_year_data_array = array();
     $current_fy_id = _getFiscalYearID();
     
-    
     $isSelected = false;
     foreach($node->data as $key => $value){
     
