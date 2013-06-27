@@ -166,7 +166,7 @@ Steps to install:
 
               $ wget http://www.highcharts.com/downloads/zips/Highstock-1.2.4.zip
 
-  - Unpack it into `<Webroot>/sites/all/modules/dashboard_platform/widget_highcharts/highstock/1.2.4`
+  - Unpack it into `<Webroot>/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/1.2.4`
 
               $ mkdir -p /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/1.2.4/
               $ unzip Highstock-1.2.4.zip -d \
