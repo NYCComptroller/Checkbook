@@ -152,14 +152,14 @@ Steps to install:
 
   - Unpack it into the appropriate place in the web application:
 
-              $ mkdir -p /var/www/html/sites/all/modules/dashboard_platform/widget_highcharts/highcharts/3.0.1
+              $ mkdir -p /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highcharts/3.0.1
               $ unzip Highcharts-3.0.1.zip -d \
-                /var/www/html/sites/all/modules/dashboard_platform/widget_highcharts/highcharts/3.0.1
+                /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highcharts/3.0.1
 
      (That creates the "3.0.1" destination dir.)
   - Verify that it is unpacked into the right place, by checking that the path to `highcharts.src.js` is `<Webroot>/sites/all/modules/dashboard_platform/widget_highcharts/highcharts/3.0.1/js/highcharts.src.js`:
 
-              $ ls /var/www/html/sites/all/modules/dashboard_platform/widget_highcharts/highcharts/3.0.1/js/highcharts.src.js
+              $ ls /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highcharts/3.0.1/js/highcharts.src.js
 
  **Highstock:**
   - Download version 1.2.4 from http://www.highcharts.com/products/highstock
@@ -168,13 +168,13 @@ Steps to install:
 
   - Unpack it into `<Webroot>/sites/all/modules/dashboard_platform/widget_highcharts/highstock/1.2.4`
 
-              $ mkdir -p /var/www/html/sites/all/modules/dashboard_platform/widget_highcharts/highstock/1.2.4/
+              $ mkdir -p /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/1.2.4/
               $ unzip Highstock-1.2.4.zip -d \
-                /var/www/html/sites/all/modules/dashboard_platform/widget_highcharts/highstock/1.2.4
+                /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/1.2.4
 
   - Verify that it is unpacked correctly into the right place, by checking that the path to `highstock.src.js` is `<Webroot>/sites/all/modules/dashboard_platform/widget_highcharts/highstock/1.2.4/js/highstock.src.js`:
 
-              $ ls /var/www/html/sites/all/modules/dashboard_platform/widget_highcharts/highstock/1.2.4/js/highstock.src.js
+              $ ls /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/1.2.4/js/highstock.src.js
 
  Note that these Highcharts and Highstock downloads are available at
  no charge, but they are not licensed under open source licenses.
