@@ -258,8 +258,7 @@ Steps to install:
 
                   $conf['check_book']['data_feeds']['site_url'] = 'http://<site url>';
 
-     - Adjust location of reference data text files.  (TODO: this could
-       probably use some more explanation!)
+     - Adjust location of reference data text files. This directory is used to write reference data files.
 
                   create directory refdata at sites/default/files/refdata
                   //Reference data outputDirectory
