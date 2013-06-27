@@ -157,7 +157,7 @@ Steps to install:
                 /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highcharts/3.0.1
 
      (That creates the "3.0.1" destination dir.)
-  - Verify that it is unpacked into the right place, by checking that the path to `highcharts.src.js` is `<Webroot>/sites/all/modules/dashboard_platform/widget_highcharts/highcharts/3.0.1/js/highcharts.src.js`:
+  - Verify that it is unpacked into the right place, by checking that the path to `highcharts.src.js` is `<Webroot>/sites/all/modules/custom/widget_framework/widget_highcharts/highcharts/3.0.1/js/highcharts.src.js`:
 
               $ ls /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highcharts/3.0.1/js/highcharts.src.js
 
@@ -172,7 +172,7 @@ Steps to install:
               $ unzip Highstock-1.2.4.zip -d \
                 /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/1.2.4
 
-  - Verify that it is unpacked correctly into the right place, by checking that the path to `highstock.src.js` is `<Webroot>/sites/all/modules/dashboard_platform/widget_highcharts/highstock/1.2.4/js/highstock.src.js`:
+  - Verify that it is unpacked correctly into the right place, by checking that the path to `highstock.src.js` is `<Webroot>/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/1.2.4/js/highstock.src.js`:
 
               $ ls /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/1.2.4/js/highstock.src.js
 
