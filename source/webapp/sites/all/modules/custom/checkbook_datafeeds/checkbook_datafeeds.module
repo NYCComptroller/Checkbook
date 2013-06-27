@@ -4226,8 +4226,9 @@ function _year_options($yeartype = NULL) {
   switch ($yeartype) {
     case 'all-years':
       try {
-        $fiscal_year = currentFiscalYear();
-        $calendar_year = currentCalendarYear();
+        $filters = _checkbook_max_data_year();
+        $fiscal_year = $filters["year_value"];
+        $calendar_year = $filters["cal_year_value"];
         $dataController = data_controller_get_instance();
         $fydata = $dataController->queryDataset("checkbook:year", array(
           'year_value',
@@ -4276,8 +4277,9 @@ function _year_options($yeartype = NULL) {
 
     default:
       try {
-        $fiscal_year = currentFiscalYear();
-        $calendar_year = currentCalendarYear();
+        $filters = _checkbook_max_data_year();
+        $fiscal_year = $filters["year_value"];
+        $calendar_year = $filters["cal_year_value"];
         $dataController = data_controller_get_instance();
         $fydata = $dataController->queryDataset("checkbook:year", array(
           'year_value',
@@ -4323,8 +4325,16 @@ function _year_options($yeartype = NULL) {
  *   Current fiscal year
  */
 function currentFiscalYear() {
-  $year_filter = _checkbook_max_data_year();
-  return $year_filter['year_value'];
+  if(variable_get('current_fiscal_year')){
+    $year = variable_get('current_fiscal_year');
+  }else{
+    $year = date('Y');
+    $month = date('n');
+    if ($month >= 7 && $month <= 12) {
+      $year++;
+    }
+  }
+  return $year;
 }
 
 /**
@@ -4334,8 +4344,12 @@ function currentFiscalYear() {
  *   Current calendar year
  */
 function currentCalendarYear() {
-  $year_filter = _checkbook_max_data_year();
-  return $year_filter['cal_year_value'];
+  if(variable_get('current_cal_year')){
+    $year = variable_get('current_cal_year');
+  }else{
+    $year = date('Y');
+    return $year;
+  }
 }
 
 /**
