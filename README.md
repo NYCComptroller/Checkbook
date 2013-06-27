@@ -47,6 +47,10 @@ The source code to Checkbook NYC is available here:
 
 You can use the usual ways to interact with the project there (submit
 pull requests, file tickets in the issue tracker, etc), and we invite
-you to join us in the Checkbook NYC technical discussion forum:
+you to ask questions in the Checkbook NYC technical discussion forum:
 
-      https://groups.google.com/d/forum/checkbooknyc
+      Web:    https://groups.google.com/group/checkbooknyc
+      Email:  checkbooknyc {_AT_} googlegroups.com
+
+You can post via web or email; either way, you don't need to be
+subscribed to post.
