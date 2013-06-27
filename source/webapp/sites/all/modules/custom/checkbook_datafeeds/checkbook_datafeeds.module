@@ -4323,12 +4323,8 @@ function _year_options($yeartype = NULL) {
  *   Current fiscal year
  */
 function currentFiscalYear() {
-  $year = date('Y');
-  $month = date('n');
-  if ($month >= 7 && $month <= 12) {
-    $year++;
-  }
-  return $year;
+  $year_filter = _checkbook_max_data_year();
+  return $year_filter['year_value'];
 }
 
 /**
@@ -4338,8 +4334,8 @@ function currentFiscalYear() {
  *   Current calendar year
  */
 function currentCalendarYear() {
-  $year = date('Y');
-  return $year;
+  $year_filter = _checkbook_max_data_year();
+  return $year_filter['cal_year_value'];
 }
 
 /**
