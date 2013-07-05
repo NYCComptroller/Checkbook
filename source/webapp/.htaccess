@@ -77,7 +77,11 @@ DirectoryIndex index.php index.html index.htm
   # directories from your webroot or otherwise protect them from being
   # downloaded.
   RewriteRule "(^|/)\." - [F]
-
+  RewriteRule "\.(engine|inc|old|bak|info|install|cgi|txt|asp|jsp|pl|aspx|make|module|profile|test|po|sh|.*sql|theme|tpl(\.php)?|xtmpl)$|^(\..*|Entries.*|Repository|Root|Tag|Template)$" - [F]
+  RewriteRule "/test\.(cgi|txt|asp|jsp|pl|aspx|html)$" - [F]
+  RewriteRule "cgi-bin$" - [F]  
+  RewriteRule "<script>" - [F]
+  RewriteRule "%3Cscript%3E" - [F] 
   # If your site can be accessed both with and without the 'www.' prefix, you
   # can use one of the following settings to redirect users to your preferred
   # URL, either WITH or WITHOUT the 'www.' prefix. Choose ONLY one option:
