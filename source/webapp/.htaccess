@@ -142,5 +142,6 @@ DirectoryIndex index.php index.html index.htm
       # Force proxies to cache gzipped & non-gzipped css/js files separately.
       Header append Vary Accept-Encoding
     </FilesMatch>
+     Header always append X-Frame-Options SAMEORIGIN
   </IfModule>
 </IfModule>
