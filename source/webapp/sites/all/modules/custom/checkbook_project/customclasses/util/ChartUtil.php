@@ -23,7 +23,7 @@ class ChartUtil
 {
     static function generateGridViewLink($node){
         return '<a class="chart-grid-view gridpopup" style="display:none"
-                href="/gridview/popup/node/' . $node->nid . '?refURL='. drupal_get_path_alias($_GET['q']) .'">Grid View</a>';
+                href="/gridview/popup/node/' . $node->nid . '?refURL='. check_plain(drupal_get_path_alias($_GET['q'])) .'">Grid View</a>';
     }
 
     /*static function isGridView($node){
