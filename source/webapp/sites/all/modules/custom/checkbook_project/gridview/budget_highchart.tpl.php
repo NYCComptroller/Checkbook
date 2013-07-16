@@ -65,7 +65,7 @@ echo eval($node->widgetConfig->gridConfig->footer);
                         "iDisplayLength":1,
                         "aaSorting":[[0,"desc"]],
                         "bPaginate": false,
-                        "sAltAjaxSource":"'. $_GET['q'] .'",
+                        "sAltAjaxSource":"'. check_plain($_GET['q']) .'",
             			"fnDrawCallback"  :  function( oSettings ) {
             			addPaddingToDataCells(this);
             			},
