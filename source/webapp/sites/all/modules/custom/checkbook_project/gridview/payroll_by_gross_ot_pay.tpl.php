@@ -71,7 +71,7 @@ $dataTableOptions ='
                         "iDisplayLength":12,
                         "aaSorting":[[0,"asc"]],
                         "bPaginate": false,
-                        "sAltAjaxSource":"'. $_GET['q'] .'",
+                        "sAltAjaxSource":"'. check_plain($_GET['q']) .'",
                         "fnDrawCallback"  :  function( oSettings ) {
             			    addPaddingToDataCells(this);
             			},
