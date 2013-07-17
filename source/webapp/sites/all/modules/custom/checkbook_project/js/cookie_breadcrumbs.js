@@ -38,7 +38,7 @@
 						if(i == HistoryLink.length -1 ){
 							breadcrumbHTML =  breadcrumbHTML + ' >> <span class=\'inline\'>' + HistoryTitle[i] + '<span>' ;
 						}else{
-							breadcrumbHTML =  breadcrumbHTML + ' >> <span class=\'inline\'><a href=\'' + HistoryLink[i] +  '\'>'  + HistoryTitle[i] + '</a></span>' ;
+							breadcrumbHTML =  breadcrumbHTML + ' >> <span class=\'inline\'><a href=\'' + encodeURI(HistoryLink[i]) +  '\'>'  + HistoryTitle[i] + '</a></span>' ;
 						}
 						
 					}
