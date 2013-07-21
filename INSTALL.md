@@ -97,21 +97,58 @@ The following assumptions are made about the installation:
 
 Steps to install:
 
-1. Download and install the latest version of the base Checkbook code:
+1. Ensure you have the necessary system dependencies installed.  Under
+ the Ubuntu 12.04 Server operating system, that looks like this:
+
+          $ sudo apt-get update
+          $ sudo apt-get install php5
+          $ sudo apt-get install php5-gd
+          $ sudo apt-get install php5-intl
+          $ sudo apt-get install php5-mysql
+          $ sudo apt-get install php5-pgsql
+          $ sudo apt-get install mysql-server
+          $ sudo apt-get install postgresql
+          $ sudo apt-get install postgresql-client
+          $ sudo apt-get install postgresql-contrib
+          $ sudo apt-get install drush
+          $ sudo apt-get install apache2
+          $ sudo apt-get install openjdk-6-jre-headless
+          $ sudo apt-get install zip
+
+ (You will also need to install Apache Solr; that process will be
+ detailed at a later step in these instructions.)
+
+ TODO: Also, make sure ports 22, 80, and 8080 are open.  In AWS, do
+ this via the security group.  Shell in using the PEM file, e.g.:
+ $ ssh -i foo.pem ubuntu@ec2-54-234-239-21.compute-1.amazonaws.com
+
+2. Download the latest version of the base Checkbook code:
    
          $ git clone https://github.com/NYCComptroller/Checkbook.git
 
- The next steps will look familiar if you've installed Drupal before:
+ (TODO: might need to install git too)
 
- Copy the contents of the folder `source/webapp/` to the webroot
+ (It doesn't matter where you put it; later installation steps will
+ copy the relevant parts to the appropriate destinations.)
+
+ The next steps will look familiar if you've installed Drupal before.
+ We'll copy the contents of the folder `source/webapp/` to the webroot
  directory, such that the top level inside &lt;Webroot> looks like
  the top level inside `source/webapp/` (i.e., looks like the top of
  a Drupal tree).
 
+ First, make sure there's nothing in the way at the destination:
+
           $ ls /var/www/html
           No such file or directory
 
- So far so good -- the next command will create the destination directory:
+ (TODO: on AWS, "chown -R www-data.www-data /var/www" then
+ "su www-data" then the below.)
+
+ Good -- the next step will create the `/var/www/html` directory.
+ Note that you might need to become user `www-data` (or whatever user
+ has permission to create new directories under `/var/www/`) for this:
+ (TODO: and www-data for other steps below too -- how to say this?)
 
           $ cp -a source/webapp /var/www/html
           $ ls /var/www/html
@@ -124,24 +161,11 @@ Steps to install:
 
  Copy `<Webroot>/sites/default/default.settings.php` to
  `<Webroot>/sites/default/settings.php` (we'll edit settings.php later).  
-  There is no line break below, nor backslash -- the backslash just
-  indicates that the line continues:
+ There is no line break below, nor backslash -- the backslash just
+ indicates that the line continues:
 
           $ cp /var/www/html/sites/default/default.settings.php \
                /var/www/html/sites/default/settings.php
-
-2. Ensure you have the necessary system dependencies installed.  Under
- the Ubuntu 12.04 Server operating system, that looks like this:
-
-          $ sudo apt-get update
-          $ sudo apt-get install php5 php5-gd php5-intl
-          $ sudo apt-get install mysql-server
-          $ sudo apt-get install postgresql
-          $ sudo apt-get install postgresql-client
-          $ sudo apt-get install apache2
-
- (You will also need to install Apache Solr; that process will be
- detailed at a later step in these instructions.)
 
 3. Bring over some third-party libraries.
 
@@ -152,7 +176,7 @@ Steps to install:
 
   - Unpack it into the appropriate place in the web application:
 
-              $ mkdir -p /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highcharts/3.0.1
+              $ mkdir -p /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highcharts/
               $ unzip Highcharts-3.0.1.zip -d \
                 /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highcharts/3.0.1
 
@@ -168,7 +192,7 @@ Steps to install:
 
   - Unpack it into `<Webroot>/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/1.2.4`
 
-              $ mkdir -p /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/1.2.4/
+              $ mkdir -p /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/
               $ unzip Highstock-1.2.4.zip -d \
                 /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/1.2.4
 
@@ -186,6 +210,8 @@ Steps to install:
 4. Install the Drupal database.
 
  Create and import the database into MySQL using the following commands:
+
+ TODO document creating the user (use 'checkbook')
 
           $ mysql -u<username> -p<password>
             _(enter the MySQL password for <username>)_
@@ -214,16 +240,64 @@ Steps to install:
             _(to exit from the database interactive prompt)_
           $ psql checkbook -f data/checkbook_demo_database_for_postgres_db_20130524.sql
 
+ (TODO: "$ createdb checkbook && createuser checkbook" would have
+ worked too.)
+
  *Note: The data set loaded above by psql contains sanitized sample
  data for testing Checkbook -- you would not load it into a production
  instance.  We plan to better document the process for loading real
- data into production instances.  In the meantime, see these files:*
+ data into production instances.  These documentation files describe
+ more about the process of importing data and running a production
+ instance:*
 
           documentation/Creating new Database and running ETL Job.docx
           documentation/Data Mapping  4_29_2013.xlsx
           documentation/NYC Checkbook2 ETL Implementation Approach_2013_29_01.docx
 
-6. Install Solr and configure its settings.
+6. Edit settings.php
+
+   TODO: Having the mysql checkbook user be "checkbook" is okay, but
+   in Postgres the user is the PG root user "postgres" -- and this is
+   hardcoded into the demo data .sql file, so we can't just change it
+   in these instructions.  Talk to REI about this.  See below.
+
+     $databases = array(
+         'default' => array(
+             'default' => array(
+                 'database' => 'checkbook_drupal',
+                 'username' => 'checkbook',
+                 'password' => 'checkbook',
+                 'host' => 'localhost',
+                 'port' => '',
+                 'driver' => 'mysql',
+                 'prefix' => '',
+             ),
+         ),
+         'checkbook' => array(
+             'main' => array(
+                 'database' => 'checkbook',
+                 'username' => 'postgres',
+                 'password' => 'postgres',
+                 'host' => '127.0.0.1',
+                 'port' => '5432',
+                 'driver' => 'pgsql',
+                 'prefix' => '',
+                 'schema' => 'public'
+             ),
+         ),
+     );
+
+  TODO: in email "mdw4 error" from Eric, the problem is that there are
+  hardcoded REI-specific things in settings.php, for example the last
+  line in the checkbook custom settings section at the end:
+
+    $conf['check_book']['data_feeds']['command'] = \
+      'PGPASSWORD=webuser1 psql -h mdw4 -U webuser1 checkbook';
+
+  That looks like it's for ETL import or for APIs ("data_feeds"), but
+  it's expecting "webuser1" in PG, and host "mdw4".
+
+7. Install Solr and configure its settings.
 
  Installing Apache Solr can be complex if you've never done it before.
  Please refer to SOLR-INSTALL.md for Solr installation instructions.
@@ -232,7 +306,9 @@ Steps to install:
 
  * Reindex Solr by using the following command:
 
-              http://<solr-host>:<solr-port>/<solr webapp name>/dataimport?command=full-import&clean=true&jobID=0
+              http://<solr-host>:<solr-port>/solr-checkbook/dataimport?command=full-import&clean=true&jobID=0
+
+              (TODO: that is redundant with SOLR-INSTALL.md)
 
  * Update the following settings in `<Webroot>/sites/default/settings.php`:
 
@@ -241,14 +317,28 @@ Steps to install:
                   //Solr URL
                   $conf['check_book']['solr']['url'] = 'http://<solr server ip>:<solr server port>/<solr instance name>/';
 
-     - Make sure this setting points to a directory that is writable by
-       the user Apache HTTPD runs as:
+       TODO: You can just use "http://localhost:8080/solr-checkbook"
+       for installs that use one box.
+
+       TODO: Note that SOLR-INSTALL.md and default.settings.php
+       contradict each other on this URL -- one has port 8080, the
+       other 8088.  The real solution is to finish the templatization.
+
+    - Make sure this setting points to a directory that is writable by
+      the user Apache HTTPD runs as:
               
                   create directory /data/datafeeds 
                   $conf['check_book']['data_feeds']['db_file_dir'] = '/data/datafeeds';
 
-     - Adjust this setting if you want the files generated by datafeeds
+                  (TODO: we did 'sites/default/files/db_file_dir'
+                  instead.  And we created it first.)
+
+     - Adjust this setting if you want the files generated by datafeeds to
        be in a different directory than the default:
+
+                  (TODO: does the first line below mean that in this
+                  step we should actually *create* the directory too?
+                  We did, FWIW.)
 
                   create directory datafeeds sites/default/files/datafeeds
                   //relative directory path to 'sites/default/files' to store generated files
@@ -260,12 +350,19 @@ Steps to install:
 
      - Adjust location of reference data text files. This directory is used to write reference data files.
 
+                  (TODO: does the first line below mean that in this
+                  step we should actually *create* the directory too?
+                  We did, FWIW.)
+
                   create directory refdata at sites/default/files/refdata
                   //Reference data outputDirectory
                   $conf['check_book']['ref_data_dir'] = 'refdata';
 
      - Optionally adjust where temporary files are written when doing an
        export through the application:
+
+                  (TODO: and what about here?  Do we have to create
+                  this directory?  We did, FWIW.)
 
                   //Export data outputDirectory
                   $conf['check_book']['export_data_dir'] = 'exportdata';
@@ -283,7 +380,10 @@ Steps to install:
                   $conf['check_book']['data_feeds']['command'] = \
                   'PGPASSWORD=<password> psql -h <postgres-db-ip> -U <postgres-db-user> <postgresdb-name>'
 
-7. Install or Modify Fonts.
+8. Install or Modify Fonts.
+
+ TODO: This step can be skipped -- say so clearly.  Skipping it will
+ result in, for example, in-browser errors visible to Firebug.
 
  On its New York City production instance at checkbooknyc.com,
  Checkbook uses Novecento Wide Normal font.  This font can be
@@ -312,20 +412,53 @@ Steps to install:
 
 8. Set up cron jobs.
 
+  TODO: which crontab?  Also, change "root" to "www-data" if appropriate.
+
   Add the following entries to crontab (again, backslashes escape line
   breaks):
 
-          */15 * * * * root /usr/bin/php <path to drush>/drush.php             \
+          */15 * * * * www-data /usr/bin/drush                                 \
           --root="<Webroot>" scr processQueueJob                               \
           --script-path="sites/all/modules/custom/checkbook_api/script/"       \
           >> /dev/null 2>&1
 
-          */5 * * * * root /usr/bin/php <path to drush>/drush.php              \
+          */5 * * * * www-data /usr/bin/drush                                  \
           --root="<Webroot>" scr sendFeedCompletionEmails                      \
           --script-path="sites/all/modules/custom/checkbook_datafeeds/script/" \
           >> /dev/null 2>&1
 
-9. Verify that the site is working.
+10. Make sure the web server can serve the site!
+
+    TODO: Set up Apache config in /etc/apache2/sites-available/checkbook.conf,
+    then symlink it into sites-enabled as per usual.  Then restart apache.
+
+          <VirtualHost *:80>
+            ServerAdmin webmaster@localhost
+            ServerName your-checkbook-hostname.com
+            DocumentRoot /var/www/html
+            ErrorLog ${APACHE_LOG_DIR}/checkbook_error.log
+            LogLevel debug
+          </VirtualHost>
+
+          <Directory /var/www/html>
+            AllowOverride all
+          </Directory>
+
+          root@ip-10-30-128-33:/etc/apache2/sites-available# cd ..
+          root@ip-10-30-128-33:/etc/apache2# cd sites-enabled/
+          root@ip-10-30-128-33:/etc/apache2/sites-enabled# ln -s ../sites-available/checkbook.conf checkbook.conf
+          root@ip-10-30-128-33:/etc/apache2/sites-enabled# ls -l
+          total 0
+          lrwxrwxrwx 1 root root 26 Jul 21 02:43 000-default -> ../sites-available/default
+          lrwxrwxrwx 1 root root 33 Jul 21 03:32 checkbook.conf -> ../sites-available/checkbook.conf
+          root@ip-10-30-128-33:/etc/apache2/sites-enabled# rm checkbook.conf 
+          root@ip-10-30-128-33:/etc/apache2/sites-enabled# rm 000-default 
+          root@ip-10-30-128-33:/etc/apache2/sites-enabled# ln -s ../sites-available/checkbook.conf 000-checkbook.conf
+          root@ip-10-30-128-33:/etc/apache2/sites-enabled# 
+
+          $ sudo service apache2 restart
+
+11. Verify that the site is working.
 
  * Test the site by accessing the root URL. 
    The default page should be the spending transactions page for
