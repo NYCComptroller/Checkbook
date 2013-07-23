@@ -117,21 +117,21 @@ Steps to install:
 
     On Ubuntu 12.04 Server, that looks like this:
 
-          $ sudo apt-get update
-          $ sudo apt-get install php5
-          $ sudo apt-get install php5-gd
-          $ sudo apt-get install php5-intl
-          $ sudo apt-get install php5-mysql
-          $ sudo apt-get install php5-pgsql
-          $ sudo apt-get install mysql-server
-          $ sudo apt-get install postgresql
-          $ sudo apt-get install postgresql-client
-          $ sudo apt-get install postgresql-contrib
-          $ sudo apt-get install git
-          $ sudo apt-get install drush
-          $ sudo apt-get install apache2
-          $ sudo apt-get install openjdk-6-jre-headless
-          $ sudo apt-get install zip
+        $ sudo apt-get update
+        $ sudo apt-get install php5
+        $ sudo apt-get install php5-gd
+        $ sudo apt-get install php5-intl
+        $ sudo apt-get install php5-mysql
+        $ sudo apt-get install php5-pgsql
+        $ sudo apt-get install mysql-server
+        $ sudo apt-get install postgresql
+        $ sudo apt-get install postgresql-client
+        $ sudo apt-get install postgresql-contrib
+        $ sudo apt-get install git
+        $ sudo apt-get install drush
+        $ sudo apt-get install apache2
+        $ sudo apt-get install openjdk-6-jre-headless
+        $ sudo apt-get install zip
 
     Debian GNU/Linux would be pretty similar to the above.  For other
     operating systems, you'll have to translate the above to the native
@@ -142,7 +142,7 @@ Steps to install:
 
 3.  Download the latest version of the base Checkbook code:
    
-         $ git clone https://github.com/NYCComptroller/Checkbook.git
+        $ git clone https://github.com/NYCComptroller/Checkbook.git
 
     (It doesn't matter where you put it; later installation steps will
     copy the relevant parts to the appropriate destinations.)
@@ -157,21 +157,21 @@ Steps to install:
 
     First, make sure there's nothing in the way at the destination:
 
-          $ ls /var/www/html
-          No such file or directory
+        $ ls /var/www/html
+        No such file or directory
 
     Good.  Next, create the `/var/www/html` directory by copying the
     webapp from Checkbook:
 
-          $ sudo su www-data
-          $ cp -a source/webapp /var/www/html
-          $ ls /var/www/html
-          authorize.php index.php          INSTALL.txt     profiles/  themes/
-          CHANGELOG.txt INSTALL.mysql.txt  LICENSE.txt     README.txt update.php
-          COPYRIGHT.txt INSTALL.pgsql.txt  MAINTAINERS.txt robots.txt UPGRADE.txt
-          cron.php      install.php        misc/           scripts/   web.config
-          includes/     INSTALL.sqlite.txt modules/        sites/     xmlrpc.php
-          $ 
+        $ sudo su www-data
+        $ cp -a source/webapp /var/www/html
+        $ ls /var/www/html
+        authorize.php index.php          INSTALL.txt     profiles/  themes/
+        CHANGELOG.txt INSTALL.mysql.txt  LICENSE.txt     README.txt update.php
+        COPYRIGHT.txt INSTALL.pgsql.txt  MAINTAINERS.txt robots.txt UPGRADE.txt
+        cron.php      install.php        misc/           scripts/   web.config
+        includes/     INSTALL.sqlite.txt modules/        sites/     xmlrpc.php
+        $ 
 
     (This assumes that directory `/var/www/` exists and is owned by user
     `www-data` and group `www-data`.  If that's not the case, you may
@@ -183,8 +183,8 @@ Steps to install:
     `settings.php`. There is no actual line break below nor backslash --
     the backslash just indicates that the line continues:
 
-          $ cp /var/www/html/sites/default/default.settings.php \
-               /var/www/html/sites/default/settings.php
+        $ cp /var/www/html/sites/default/default.settings.php \
+             /var/www/html/sites/default/settings.php
 
     (We'll edit `settings.php` later.)
 
@@ -229,14 +229,14 @@ Steps to install:
 
     Create and import the database into MySQL using the following commands:
 
-          $ mysql -u root -p
-            _(enter the MySQL password for the MySQL root user)_
-          mysql> grant all on checkbook_drupal.* to checkbook@localhost \
-                 identified by 'checkbook';
-          mysql> create database checkbook_drupal;
-          mysql> use checkbook_drupal
-          mysql> source data/checkbook_drupal.sql
-          mysql> quit;
+        $ mysql -u root -p
+          _(enter the MySQL password for the MySQL root user)_
+        mysql> grant all on checkbook_drupal.* to checkbook@localhost \
+               identified by 'checkbook';
+        mysql> create database checkbook_drupal;
+        mysql> use checkbook_drupal
+        mysql> source data/checkbook_drupal.sql
+        mysql> quit;
 
     *Notes:*
 
@@ -254,17 +254,17 @@ Steps to install:
 
     Create and import the database into PostgreSQL using the following commands:
 
-          $ cd data
-          $ unzip checkbook_demo_database_for_postgres_db_20130524.zip
-          Archive:  checkbook_demo_database_for_postgres_db_20130524.zip
-            inflating: checkbook_demo_database_for_postgres_db_20130524.sql
-          $ cd ..
-          $ sudo su postgres
-          $ psql
-          postgres=# create database checkbook ;
-          postgres=# \q
-            _(to exit from the database interactive prompt)_
-          $ psql checkbook -f data/checkbook_demo_database_for_postgres_db_20130524.sql
+        $ cd data
+        $ unzip checkbook_demo_database_for_postgres_db_20130524.zip
+        Archive:  checkbook_demo_database_for_postgres_db_20130524.zip
+          inflating: checkbook_demo_database_for_postgres_db_20130524.sql
+        $ cd ..
+        $ sudo su postgres
+        $ psql
+        postgres=# create database checkbook ;
+        postgres=# \q
+          _(to exit from the database interactive prompt)_
+        $ psql checkbook -f data/checkbook_demo_database_for_postgres_db_20130524.sql
 
     *Notes:*
 
@@ -282,39 +282,39 @@ Steps to install:
     These documentation files describe more about the process of
     importing data and running a production instance:
 
-          documentation/Creating new Database and running ETL Job.docx
-          documentation/Data Mapping  4_29_2013.xlsx
-          documentation/NYC Checkbook2 ETL Implementation Approach_2013_29_01.docx
+        documentation/Creating new Database and running ETL Job.docx
+        documentation/Data Mapping  4_29_2013.xlsx
+        documentation/NYC Checkbook2 ETL Implementation Approach_2013_29_01.docx
 
 8.  Check the basic database settings in `settings.php`.
 
     Look for this text in `/var/www/html/sites/default/settings.php`:
 
-          $databases = array(
-              'default' => array(
-                  'default' => array(
-                      'database' => 'checkbook_drupal',
-                      'username' => 'checkbook',
-                      'password' => 'checkbook',
-                      'host' => 'localhost',
-                      'port' => '',
-                      'driver' => 'mysql',
-                      'prefix' => '',
-                  ),
-              ),
-              'checkbook' => array(
-                  'main' => array(
-                      'database' => 'checkbook',
-                      'username' => 'postgres',
-                      'password' => 'postgres',
-                      'host' => '127.0.0.1',
-                      'port' => '5432',
-                      'driver' => 'pgsql',
-                      'prefix' => '',
-                      'schema' => 'public'
-                  ),
-              ),
-          );
+        $databases = array(
+            'default' => array(
+                'default' => array(
+                    'database' => 'checkbook_drupal',
+                    'username' => 'checkbook',
+                    'password' => 'checkbook',
+                    'host' => 'localhost',
+                    'port' => '',
+                    'driver' => 'mysql',
+                    'prefix' => '',
+                ),
+            ),
+            'checkbook' => array(
+                'main' => array(
+                    'database' => 'checkbook',
+                    'username' => 'postgres',
+                    'password' => 'postgres',
+                    'host' => '127.0.0.1',
+                    'port' => '5432',
+                    'driver' => 'pgsql',
+                    'prefix' => '',
+                    'schema' => 'public'
+                ),
+            ),
+        );
      
     If any of the settings don't look right for you, fix them.  (However,
     the default settings provided there should work assuming you used the
@@ -444,8 +444,8 @@ Steps to install:
 
     Define an httpd configuration block for the site like this:
 
-         <VirtualHost *:80>
-         ServerAdmin webmaster@localhost
+        <VirtualHost *:80>
+          ServerAdmin webmaster@localhost
           ServerName your-checkbook-hostname.com
           DocumentRoot /var/www/html
           ErrorLog ${APACHE_LOG_DIR}/checkbook_error.log
