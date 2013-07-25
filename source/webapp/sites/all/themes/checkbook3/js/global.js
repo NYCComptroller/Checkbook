@@ -842,15 +842,15 @@ function addPaddingToDataCells(table){
 
 
                         $('.bottomContainer').toggle();
-                        $('.bottomContainer').html("<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Loading Data...'/>");
+                        $('.bottomContainer').html("<img style='float:right' src='/sites/all/themes/checkbook/images/loading_large.gif' title='Loading Data...'/>");
                         $.cookie("showDetails","enable", { path: '/' });
+                        $('.bottomContainerToggle').toggle();
                         $.ajax({
                             url:callBackURL,
                             success:function (data) {
                                 $('.bottomContainer').html(data);
                                 $('.bottomContainerToggle').html("Hide Details &#171;");
-                                //addPaddingToDataCells($('.bottomContainer').find("table.adjustPadding"));
-                            	//alert("2");
+                                $('.bottomContainerToggle').toggle();
                             }
                         });
                     } else {
