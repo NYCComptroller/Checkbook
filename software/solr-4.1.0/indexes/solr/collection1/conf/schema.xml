@@ -249,6 +249,8 @@
     <field name="document_version" type="string_custom" indexed="true" stored="true"/>
     <field name="start_date" type="date" indexed="true" stored="true" />
     <field name="end_date" type="date" indexed="true" stored="true" />
+    <field name="start_date_orig" type="date" indexed="true" stored="true" />
+    <field name="end_date_orig" type="date" indexed="true" stored="true" />
     <field name="received_date" type="date" indexed="true" stored="true" />
     <field name="registration_date" type="date" indexed="true" stored="true" />
     <field name="current_amount" type="double" indexed="true" stored="true"/>
