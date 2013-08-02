@@ -91,7 +91,7 @@ $highlighting_fields = array("agency_name" => "agency_name_text",
                              "contract_type" => "contract_type_text",
                              "contract_category_name" => "contract_category_name_text",);
 
-$date_fields = array("start_date_orig","end_date_orig","received_date","registered_date");
+$date_fields = array("start_date_orig","end_date_orig","received_date","registration_date");
 $amount_fields = array("current_amount", "original_amount");
 
 $name_fields = array("agency_name", "vendor_name", "award_method_name", "contract_purpose", "expenditure_object_name");
