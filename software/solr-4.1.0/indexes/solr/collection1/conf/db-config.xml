@@ -316,6 +316,8 @@
                 description,
                 COALESCE(effective_begin_date,'1900-01-01') effective_begin_date,
                 COALESCE(effective_end_date,'9999-01-01') effective_end_date,
+                effective_begin_date effective_begin_date_orig,
+                effective_end_date effective_end_date_orig,
                 brd_awd_no apt_pin,
                 tracking_number pin,
                 document_version version_number,
@@ -360,6 +362,8 @@
             <field column="description" name="contract_purpose" />
             <field column="effective_begin_date" name="start_date" />
             <field column="effective_end_date" name="end_date" />
+            <field column="effective_begin_date_orig" name="start_date_orig" />
+            <field column="effective_end_date_orig" name="end_date_orig" />
             <field column="apt_pin" name="apt_pin" />
             <field column="pin" name="pin" />
             <field column="version_number" name="version_number" />

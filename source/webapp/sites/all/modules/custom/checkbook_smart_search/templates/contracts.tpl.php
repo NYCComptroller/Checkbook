@@ -91,7 +91,7 @@ $highlighting_fields = array("agency_name" => "agency_name_text",
                              "contract_type" => "contract_type_text",
                              "contract_category_name" => "contract_category_name_text",);
 
-$date_fields = array("start_date","end_date","received_date","registered_date");
+$date_fields = array("start_date_orig","end_date_orig","received_date","registered_date");
 $amount_fields = array("current_amount", "original_amount");
 
 $name_fields = array("agency_name", "vendor_name", "award_method_name", "contract_purpose", "expenditure_object_name");
@@ -121,7 +121,9 @@ foreach ($contracts_parameter_mapping as $key => $title){
   if(in_array($key, $amount_fields)){
     $value = custom_number_formatter_format($value, 2 , '$');
   }else if(in_array($key, $date_fields)){
-    $value = date("F j, Y", strtotime($value));
+    if($value != null ){
+      $value = date("F j, Y", strtotime($value));
+    }
   }else if(array_key_exists($key, $linkable_fields)){
     $value = "<a href='" . $linkable_fields[$key]. "'>". $value ."</a>";
   }
