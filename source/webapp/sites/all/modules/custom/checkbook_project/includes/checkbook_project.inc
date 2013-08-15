@@ -967,7 +967,7 @@ function _checkbook_project_check_parameter($reqParam, $value=null){
  * returns the year type and year values string to be appended to the URL.
  * @return string
  */
-function _checkbook_project_get_year_url_param_string($applySpendingYear=false, $applyPreviousYear=false, $spendingTransactions = false){
+function _checkbook_project_get_year_url_param_string($applySpendingYear=false, $applyPreviousYear=false, $spendingTransactions = false,$landing_page_link = false){
 
     $urlPath = drupal_get_path_alias($_GET['q']);
     $pathParams = explode('/', $urlPath);
@@ -984,8 +984,9 @@ function _checkbook_project_get_year_url_param_string($applySpendingYear=false, 
         }
     }else{
         if($calyrIndex){
+            $year_param_name = ($landing_page_link) ? 'year':'calyear';
             $calYear = ($applyPreviousYear ? ($pathParams[($calyrIndex+1)]-1) : $pathParams[($calyrIndex+1)]);
-            return "/yeartype/C/calyear/" . $calYear . ($applySpendingYear ? ('/scalyear/'.$calYear) : '');
+            return "/yeartype/C/" . $year_param_name . "/" . $calYear . ($applySpendingYear ? ('/scalyear/'.$calYear) : '');
         }
         if($yeartypeIndex && $pathParams[($yeartypeIndex+1)] == "C"){
             $calYear = ($applyPreviousYear ? ($pathParams[($yrIndex+1)]-1) : $pathParams[($yrIndex+1)]);
