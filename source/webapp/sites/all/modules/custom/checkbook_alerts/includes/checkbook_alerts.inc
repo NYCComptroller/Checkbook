@@ -1,24 +1,10 @@
 <?php
 
 function _checkbook_alerts_form(){
-  echo theme('checkbook_alerts_default_theme',array('maxPages'=>$_GET['maxPages'],'alert_email'=>$_GET['alert_email']));
-  print_r($_GET);
+  echo theme('checkbook_alerts_default_theme',array());
 }
 
 function _checkbook_alerts_transactions(){
-  $query_parameters = drupal_get_query_parameters();
-  print_r($query_parameters);
-print_r($_SERVER);
-  echo '"'.request_uri().'"';
-  echo '"'.drupal_get_path_alias($_GET['q']).'"';
-  print_r($_GET);
-  print_r($_REQUEST);
-  echo '"'.print_r(arg(),true).'"';
-  echo '"'.arg(0).'"';
-
-  echo '"'.arg(1).'"';
-  echo '"'.arg(2).'"';
-  print_r($path);
   $nodeId=_getRequestParamValue('node',false);
   $node=node_load($nodeId);
   if(!isset($_GET['alert_email'])){
@@ -53,7 +39,7 @@ print_r($_SERVER);
     'label'=>$_GET['alert_label'],
     'recipient_type'=>'EMAIL',
     'ref_url'=>$_GET['refURL'],
-    'number_of_results'=>_checkbook_alerts_get_node_config(),
+    'number_of_results'=>_checkbook_alerts_get_data_count(),
     'minimum_results'=>$_GET['alert_minimum_results'],
     'minimum_days'=>$_GET['alert_minimum_days'],
     'date_end'=>$_GET['alert_end']['date'],
@@ -63,8 +49,14 @@ print_r($_SERVER);
 }
 
 function _checkbook_alerts_unsubscribe(){
+  $alert=arg(2);
 
+  db_query('DELETE FROM checkbook_alerts WHERE CONCAT(checkbook_alerts_sysid,MD5(CONCAT(checkbook_alerts_sysid,label,recipient)))=:alert OR MD5(recipient)=:alert',array(':alert'=>$alert));
+
+  echo "Unsubscribed";
 }
+
+//////////////////////////////////////////////////////////
 
 function _checkbook_alerts_get_data_count(){
   $node = _checkbook_alerts_get_node_config();

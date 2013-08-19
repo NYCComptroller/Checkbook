@@ -40,7 +40,7 @@ function checkbook_alerts_menu() {
     'type' => MENU_CALLBACK,
     'weight' => 1,
   );
-  $items['alert/unsubscribe'] = array(
+  $items['alert/unsubscribe/%'] = array(
     'title' => 'Checkbook Alerts',
     'page callback' => '_checkbook_alerts_unsubscribe',
     'access callback' => TRUE,

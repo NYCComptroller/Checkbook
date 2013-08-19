@@ -531,6 +531,89 @@ function addPaddingToDataCells(table){
         }
     }
 
+    Drupal.behaviors.alertTransactions = {
+        attach:function (context, settings) {
+// The span.alert is the object in Drupal to which you link the click button, I don’t know how it is actually named for the alert 
+            $('span.alerts').live("click", function () {
+                var dialog = $("#dialog");
+                if ($("#dialog").length == 0) {
+                    dialog = $('<div id="dialog" style="display:none"></div>');
+                }
+
+// This is where you add the alerted table to which you link the output data from '/alert/transactions/form’
+                var oSettings = $('#table_'+$(this).attr('alertsid')).dataTable().fnSettings();
+
+ // This is the part where we get the data from to show in the dialogue we open, I don’t know if you process the following parameters  maxPages , record and so on but it won’t hurt if it stayed here
+                var dialogUrl = '/alert/transactions/form';
+ 
+                // load remote content
+                dialog.load(
+                    dialogUrl,
+                    {},
+                    function (responseText, textStatus, XMLHttpRequest) {
+                        dialog.dialog({position:"center",
+                            modal:true,
+                            title:'Alert',
+                            dialogClass:"alert",
+                            width:700,
+                            buttons:{
+                                "Create Alert":function () {
+                                    //current page we define the variables here we get from the form we just loaded once we click the “Create Alert” button
+                                    // the new fields without validation
+                                    var alertLabel = $('input[name=alert_label]').val();
+                                    var alertEmail = $('input[name=alert_email]').val();
+                                    var alertMinimumResult = $('input[name=alert_minimum_results]').val();
+                                    var alertMinimumDays = $('input[name=alert_minimum_days]').val();
+                                    var alertEnd = $("input[name='alert_end[date]']").val();
+
+                                    var alertMsgs = [];
+// This part is commented because I don’t have anything to validate the fields. ( The commented one are the rules to validate the export va
+/*                                     var dcfilter = $('input[name=dc]:checked').val();
+                                    if (dcfilter == null) {
+                                        alertMsgs.push("One of 'Data Selection' option must be selected.");
+                                    }
+ 
+                                    if (dcfilter == 'all') {
+                                        startRecord = 0;
+                                        recordLimit = iRecordsDisplay;
+                                    }
+ 
+ 
+                                    var frmtfilter = $('input[name=frmt]:checked').val();
+                                    if (frmtfilter == null) {
+                                        alertMsgs.push('Format must be selected');
+                                    } */
+ 
+                                    if (alertMsgs.length > 0) {
+                                        $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul>' + '<li>' + alertMsgs.join('<li/>') + '</ul></div>');
+                                    } else {
+                                        $('#errorMessages').html('');
+ // This is the part where we pass the values to, we can add as many as we want and we can ignore them or process them in the url to which we post the data
+                                        var url = '/alert/transactions';
+                                        var inputs = "<input type='hidden' name='refURL' value='" + oSettings.sAjaxSource + "'/>"
+                                                + "<input type='hidden' name='alert_label' value='" + alertLabel + "'/>"
+                                                + "<input type='hidden' name='alert_email' value='" + alertEmail + "'/>"
+                                                + "<input type='hidden' name='alert_minimum_result' value='" + alertMinimumResult + "'/>"
+                                                + "<input type='hidden' name='alert_minimum_days' value='" + alertMinimumDays + "'/>"
+                                                + "<input type='hidden' name='alert_end' value='" + alertEnd + "'/>";
+ 
+                                        $.get(url,$('<form>' + inputs + '</form>').serialize(),function(data){
+                                        $(this).dialog('close');
+                                        });
+                                    }
+                                },
+                                "Cancel":function () {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                    }
+                );
+                return false;
+            });
+        }
+    };
+
     Drupal.behaviors.exportTransactions = {
         attach:function (context, settings) {
             $('span.export').live("click", function () {
