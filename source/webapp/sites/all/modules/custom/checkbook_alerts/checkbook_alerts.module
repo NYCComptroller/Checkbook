@@ -94,6 +94,12 @@ function checkbook_alerts_schema() {
         'length' => '2000',
         'not null' => TRUE,
       ),
+      'user_url' => array(
+        'description' => t('URL the user was on.'),
+        'type'=>'varchar',
+        'length'=>'2000',
+        'not null'=>TRUE
+      ),
       'number_of_results' => array(
         'description' => t('Number of results required trigger the alert.'),
         'type'=>'int',

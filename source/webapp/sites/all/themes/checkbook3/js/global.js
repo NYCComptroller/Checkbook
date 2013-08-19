@@ -590,15 +590,18 @@ function addPaddingToDataCells(table){
                                         $('#errorMessages').html('');
  // This is the part where we pass the values to, we can add as many as we want and we can ignore them or process them in the url to which we post the data
                                         var url = '/alert/transactions';
-                                        var inputs = "<input type='hidden' name='refURL' value='" + oSettings.sAjaxSource + "'/>"
-                                                + "<input type='hidden' name='alert_label' value='" + alertLabel + "'/>"
-                                                + "<input type='hidden' name='alert_email' value='" + alertEmail + "'/>"
-                                                + "<input type='hidden' name='alert_minimum_result' value='" + alertMinimumResult + "'/>"
-                                                + "<input type='hidden' name='alert_minimum_days' value='" + alertMinimumDays + "'/>"
-                                                + "<input type='hidden' name='alert_end' value='" + alertEnd + "'/>";
- 
-                                        $.get(url,$('<form>' + inputs + '</form>').serialize(),function(data){
-                                        $(this).dialog('close');
+                                        var data = {
+                                          refURL:oSettings.sAjaxSource,
+                                          alert_label:alertLabel,
+                                          alert_email:alertEmail,
+                                          alert_minimum_result:alertMinimumResult,
+                                          alert_minimum_days:alertMinimumDays,
+                                          alert_end:alertEnd,
+                                          userURL:window.location.href
+                                        }
+                                        $this=$(this);
+                                        $.get(url,data,function(data){
+                                          $this.dialog('close');
                                         });
                                     }
                                 },

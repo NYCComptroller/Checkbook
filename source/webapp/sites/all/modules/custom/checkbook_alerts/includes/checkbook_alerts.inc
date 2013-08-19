@@ -13,7 +13,9 @@ function _checkbook_alerts_transactions(){
   if(!isset($_GET['refURL'])){
     $errors[]="No search was selected.";
   }
-
+  if(!isset($_GET['userURL'])){
+    $errors[]="No user url.";
+  }
   if(!isset($_GET['alert_label'])){
     $errors[]="No alert label.";
   }
@@ -39,6 +41,7 @@ function _checkbook_alerts_transactions(){
     'label'=>$_GET['alert_label'],
     'recipient_type'=>'EMAIL',
     'ref_url'=>$_GET['refURL'],
+    'user_url'=>$_GET['userURL'],
     'number_of_results'=>_checkbook_alerts_get_data_count(),
     'minimum_results'=>$_GET['alert_minimum_results'],
     'minimum_days'=>$_GET['alert_minimum_days'],
