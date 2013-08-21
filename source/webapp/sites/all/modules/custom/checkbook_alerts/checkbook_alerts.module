@@ -46,6 +46,12 @@ function checkbook_alerts_menu() {
     'access callback' => TRUE,
     'type' => MENU_CALLBACK
   );
+  $itmes['alert/activate/%'] = array(
+    'title' => 'Checkbook Alerts',
+    'page callback' => '_checkbook_alerts_activate',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK
+  );
   return $items;
 }
 
@@ -56,7 +62,16 @@ function checkbook_alerts_menu() {
 function checkbook_alerts_theme($existing, $type, $theme, $path) {
   return array(
     'checkbook_alerts_default_theme'=>array(
-      'template'=>'checkbook_alerts'
+      'template'=>'checkbook_alerts',
+      'path'=>'sites/all/modules/custom/checkbook_alerts'
+    ),
+    'checkbook_alerts_email_theme'=>array(
+      'template'=>'checkbook_alerts_email',
+      'path'=>'sites/all/modules/custom/checkbook_alerts',      
+      'arguments'=>array(
+        'alerts'=>array(),
+        'unsubscribe'=>null
+      )
     )
   );
 }
@@ -99,6 +114,13 @@ function checkbook_alerts_schema() {
         'type'=>'varchar',
         'length'=>'2000',
         'not null'=>TRUE
+      ),
+      'active' => array(
+        'description' => t('Indicating whether or not the alert has been activated via email.'),
+        'type' => 'varchar',
+        'not null' => true,
+        'default' => 'N',
+        'length' => 1
       ),
       'number_of_results' => array(
         'description' => t('Number of results required trigger the alert.'),

@@ -594,7 +594,7 @@ function addPaddingToDataCells(table){
                                           refURL:oSettings.sAjaxSource,
                                           alert_label:alertLabel,
                                           alert_email:alertEmail,
-                                          alert_minimum_result:alertMinimumResult,
+                                          alert_minimum_results:alertMinimumResult,
                                           alert_minimum_days:alertMinimumDays,
                                           alert_end:alertEnd,
                                           userURL:window.location.href

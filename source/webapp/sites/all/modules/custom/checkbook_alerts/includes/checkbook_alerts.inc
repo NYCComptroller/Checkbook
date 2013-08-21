@@ -4,9 +4,9 @@ function _checkbook_alerts_form(){
   echo theme('checkbook_alerts_default_theme',array());
 }
 
+
+
 function _checkbook_alerts_transactions(){
-  $nodeId=_getRequestParamValue('node',false);
-  $node=node_load($nodeId);
   if(!isset($_GET['alert_email'])){
     $errors[]="No email address was sent.";
   }
@@ -51,12 +51,36 @@ function _checkbook_alerts_transactions(){
   drupal_write_record('checkbook_alerts',$alert);
 }
 
+function _checkbook_alerts_process_email($alerts){
+  $message=theme('checkbook_alerts_email_theme',array(
+    'alerts'=>$alerts,
+    'unsubscribe'=>md5($alerts[0]->recipient)
+  ));
+
+  drupal_mail("Checkbook Alerts",$alerts[0]->recipient,"Checkbook NYC Alert",$message,"");
+}
+
+function _checkbook_alerts_process_twitter($alert){
+  $message=theme('checkbook_alerts_twitter_theme',array(
+    'alert'=>$alert
+  ));
+  
+}
+
 function _checkbook_alerts_unsubscribe(){
   $alert=arg(2);
 
   db_query('DELETE FROM checkbook_alerts WHERE CONCAT(checkbook_alerts_sysid,MD5(CONCAT(checkbook_alerts_sysid,label,recipient)))=:alert OR MD5(recipient)=:alert',array(':alert'=>$alert));
 
   echo "Unsubscribed";
+}
+
+function _checkbook_alerts_activate(){
+  $alert=arg(2);
+
+  db_query("UPDATE checkbook_alerts SET active='Y' WHERE CONCAT(checkbook_alerts_sysid,MD5(CONCAT(checkbook_alerts_sysid,label,recipient)))=:alert",array(':alert'=>$alert));
+
+  echo "Activated";
 }
 
 //////////////////////////////////////////////////////////
