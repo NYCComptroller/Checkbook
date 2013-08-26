@@ -82,6 +82,12 @@ function _checkbook_alerts_transactions(){
     drupal_write_record('checkbook_alerts',$alert);
   }
 
+  $message=theme('checkbook_alerts_email_theme',array(
+    'alerts'=>$alert
+  ));
+
+  drupal_mail("Checkbook Alerts",$alerts[0]->recipient,"Checkbook NYC Alert Activation",$message,"");
+
   $res=array(
     "success"=>true,
     "html"=>theme('checkbook_alerts_subscribe_theme',array())
@@ -91,8 +97,7 @@ function _checkbook_alerts_transactions(){
 
 function _checkbook_alerts_process_email($alerts){
   $message=theme('checkbook_alerts_email_theme',array(
-    'alerts'=>$alerts,
-    'unsubscribe'=>md5($alerts[0]->recipient)
+    'alerts'=>$alerts
   ));
 
   drupal_mail("Checkbook Alerts",$alerts[0]->recipient,"Checkbook NYC Alert",$message,"");
