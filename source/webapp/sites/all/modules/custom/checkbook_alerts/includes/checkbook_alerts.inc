@@ -4,22 +4,37 @@ function _checkbook_alerts_form(){
   echo theme('checkbook_alerts_default_theme',array());
 }
 
-
+function _checkbook_alerts_getQuery(){
+$sql=
+  "SELECT checkbook_alerts_sysid,".
+    "label,recipient,".
+    "recipient_type,".
+    "ref_url,".
+    "user_url,".
+    "number_of_results,".
+    "minimum_results,".
+    "minimum_days,".
+    "date_end,".
+    "date_last_new_results ".
+  "FROM checkbook_alerts ";
+  return $sql;
+}
 
 function _checkbook_alerts_transactions(){
   if(!isset($_GET['alert_email'])){
-    $errors[]="No email address was sent.";
+    $errors['errors'][]="No email address was sent.";
   }
   if(!isset($_GET['refURL'])){
-    $errors[]="No search was selected.";
+    $errors['errors'][]="No search was selected.";
   }
   if(!isset($_GET['userURL'])){
-    $errors[]="No user url.";
+    $errors['errors'][]="No user url.";
   }
   if(!isset($_GET['alert_label'])){
-    $errors[]="No alert label.";
+    $errors['errors'][]="No alert label.";
   }
   if(isset($errors)){
+    $errors['success']=false;
     echo json_encode($errors);
     return;
   }
@@ -36,6 +51,15 @@ function _checkbook_alerts_transactions(){
 
   $_GET['q']=urldecode(drupal_get_path_alias($_GET['refURL']));
 
+  $alerts=db_query(
+    _checkbook_alerts_getQuery().
+    "WHERE recipient=:recipient AND ".
+      "recipient_type='EMAIL' AND ".
+      "UPPER(ref_url)=UPPER(:ref_url)",
+        array(
+          ":recipient"=>$_GET['alert_email'],
+          ":ref_url"=>$_GET['refURL']));
+ 
   $alert=array(
     'recipient'=>$_GET['alert_email'],
     'label'=>$_GET['alert_label'],
@@ -48,7 +72,21 @@ function _checkbook_alerts_transactions(){
     'date_end'=>$_GET['alert_end']['date'],
     'date_last_new_results'=>date("Y-m-d H:i:s")
   );
-  drupal_write_record('checkbook_alerts',$alert);
+
+  if(($a=$alerts->fetchObject())!=null){
+    $a=$alerts->fetchObject();
+    $alert['checkbook_alerts_sysid']=$a->checkbook_alerts_sysid;
+    $alert['active']=$a->active;
+    drupal_write_record('checkbook_alerts',$alert,array("checkbook_alerts_sysid"));
+  }else{
+    drupal_write_record('checkbook_alerts',$alert);
+  }
+
+  $res=array(
+    "success"=>true,
+    "html"=>theme('checkbook_alerts_subscribe_theme',array())
+  );
+  echo json_encode($res);
 }
 
 function _checkbook_alerts_process_email($alerts){
@@ -61,10 +99,26 @@ function _checkbook_alerts_process_email($alerts){
 }
 
 function _checkbook_alerts_process_twitter($alert){
-  $message=theme('checkbook_alerts_twitter_theme',array(
-    'alert'=>$alert
-  ));
-  
+  global $conf;
+
+  if(!isset($conf['check_book']['alerts']['twitter'][$alert->recipient])){
+    return;
+  }
+
+  $settings = $conf['check_book']['alerts']['twitter'][$alert->recipient];
+
+  $message=str_replace(":count",$alert->new_count,$alert->label);
+  $url = 'https://api.twitter.com/1.1/statuses/update.json';
+
+  $postfields = array(
+    'status'=>$message,
+    'wrap_links'=>'true'
+  );
+  $requestMethod = 'POST';
+  $twitter = new TwitterAPIExchange($settings);
+  echo $twitter->buildOauth($url,$requestMethod)
+               ->setPostfields($postfields)
+               ->performRequest();
 }
 
 function _checkbook_alerts_unsubscribe(){
@@ -72,7 +126,7 @@ function _checkbook_alerts_unsubscribe(){
 
   db_query('DELETE FROM checkbook_alerts WHERE CONCAT(checkbook_alerts_sysid,MD5(CONCAT(checkbook_alerts_sysid,label,recipient)))=:alert OR MD5(recipient)=:alert',array(':alert'=>$alert));
 
-  echo "Unsubscribed";
+  return theme('checkbook_alerts_unsubscribe_theme');
 }
 
 function _checkbook_alerts_activate(){
@@ -80,7 +134,11 @@ function _checkbook_alerts_activate(){
 
   db_query("UPDATE checkbook_alerts SET active='Y' WHERE CONCAT(checkbook_alerts_sysid,MD5(CONCAT(checkbook_alerts_sysid,label,recipient)))=:alert",array(':alert'=>$alert));
 
-  echo "Activated";
+  return theme('checkbook_alerts_activated_theme');
+}
+
+function _checkbook_alerts_twitter_callback(){
+
 }
 
 //////////////////////////////////////////////////////////

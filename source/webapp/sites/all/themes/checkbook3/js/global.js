@@ -546,6 +546,20 @@ function addPaddingToDataCells(table){
  // This is the part where we get the data from to show in the dialogue we open, I don’t know if you process the following parameters  maxPages , record and so on but it won’t hurt if it stayed here
                 var dialogUrl = '/alert/transactions/form';
  
+var validateEmail=function(email) { 
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+};
+var isNumber=function(value) {
+    if ((undefined === value) || (null === value)) {
+        return false;
+    }
+    if (typeof value == 'number') {
+        return true;
+    }
+    return !isNaN(value - 0);
+}
+
                 // load remote content
                 dialog.load(
                     dialogUrl,
@@ -558,50 +572,66 @@ function addPaddingToDataCells(table){
                             width:700,
                             buttons:{
                                 "Create Alert":function () {
-                                    //current page we define the variables here we get from the form we just loaded once we click the “Create Alert” button
-                                    // the new fields without validation
                                     var alertLabel = $('input[name=alert_label]').val();
                                     var alertEmail = $('input[name=alert_email]').val();
-                                    var alertMinimumResult = $('input[name=alert_minimum_results]').val();
-                                    var alertMinimumDays = $('input[name=alert_minimum_days]').val();
+                                    var alertMinimumResults = $('input[name=alert_minimum_results]').val();
+                                    var alertMinimumDays = $('select[name=alert_minimum_days]').val();
                                     var alertEnd = $("input[name='alert_end[date]']").val();
 
                                     var alertMsgs = [];
-// This part is commented because I don’t have anything to validate the fields. ( The commented one are the rules to validate the export va
-/*                                     var dcfilter = $('input[name=dc]:checked').val();
-                                    if (dcfilter == null) {
-                                        alertMsgs.push("One of 'Data Selection' option must be selected.");
+                                    if(alertLabel.length<1){
+                                      alertMsgs.push("No label has been set.");
                                     }
- 
-                                    if (dcfilter == 'all') {
-                                        startRecord = 0;
-                                        recordLimit = iRecordsDisplay;
+                                    if(alertEmail.length<1 || !validateEmail(alertEmail)){
+                                      alertMsgs.push("No email entered.");
                                     }
- 
- 
-                                    var frmtfilter = $('input[name=frmt]:checked').val();
-                                    if (frmtfilter == null) {
-                                        alertMsgs.push('Format must be selected');
-                                    } */
+                                    if(!isNumber(alertMinimumResults) || alertMinimumResults<1){
+                                      alertMsgs.push("Minimum results is not a valid number.");
+                                    }
+                                    if(!isNumber(alertMinimumDays) || alertMinimumDays<1){
+                                      alertMsgs.push("Alert frequency is not valid.");
+                                    }
  
                                     if (alertMsgs.length > 0) {
                                         $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul>' + '<li>' + alertMsgs.join('<li/>') + '</ul></div>');
                                     } else {
                                         $('#errorMessages').html('');
- // This is the part where we pass the values to, we can add as many as we want and we can ignore them or process them in the url to which we post the data
+
                                         var url = '/alert/transactions';
                                         var data = {
                                           refURL:oSettings.sAjaxSource,
                                           alert_label:alertLabel,
                                           alert_email:alertEmail,
-                                          alert_minimum_results:alertMinimumResult,
+                                          alert_minimum_results:alertMinimumResults,
                                           alert_minimum_days:alertMinimumDays,
                                           alert_end:alertEnd,
                                           userURL:window.location.href
                                         }
                                         $this=$(this);
                                         $.get(url,data,function(data){
-                                          $this.dialog('close');
+                                          data=JSON.parse(data);
+                                          if(data.success){
+                                            $this.dialog('close');
+
+                                            var dialog = $("#dialog");
+                                            if ($("#dialog").length == 0) {
+                                              dialog = $('<div id="dialog" style="display:none"></div>');
+                                            }
+                                            dialog.html(data.html);
+                                            dialog.dialog({position:"center",
+                                              modal:true,
+                                              title:'Alert',
+                                              dialogClass:"alert",
+                                              width:700,
+                                              buttons:{
+                                                "Okay":function () {
+                                                  $this.dialog('close');
+                                                }
+                                              }
+                                            });
+                                          }else{
+                                            $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul><li>'+data.errors.join('<li/>')+'</ul></div>');
+                                          }
                                         });
                                     }
                                 },

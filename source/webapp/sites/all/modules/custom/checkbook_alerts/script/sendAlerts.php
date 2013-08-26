@@ -29,22 +29,13 @@ $recipients = db_query("SELECT DISTINCT recipient FROM checkbook_alerts");
 
 foreach($recipients as $recipient){
   $alerts=db_query(
-    "SELECT checkbook_alerts_sysid,".
-      "label,recipient,".
-      "recipient_type,".
-      "ref_url,".
-      "user_url,".
-      "number_of_results,".
-      "minimum_results,".
-      "minimum_days,".
-      "date_end,".
-      "date_last_new_results ".
-    "FROM checkbook_alerts ".
+    _checkbook_alerts_getQuery().
     "WHERE UPPER(recipient)=UPPER(:recipient) AND ".
       "active = 'Y' AND ".
       "date_end>CURRENT_TIMESTAMP AND ".
       "DATE_ADD( date_last_new_results, INTERVAL minimum_days DAY) <= CURRENT_TIMESTAMP",
         array(":recipient"=>$recipient->recipient));
+
   $alertsToEmail=array();
   foreach($alerts as $alert){
     $_GET['refURL']=$alert->ref_url;
@@ -56,9 +47,8 @@ foreach($recipients as $recipient){
       $alert->number_of_results=$count;
       $alert->date_last_new_results=date("Y-m-d H:i:s");
       drupal_write_record('checkbook_alerts',$alert,array('checkbook_alerts_sysid'));
+      $alert->new_count=$newRecords;      
       if($alert->recipient_type=="EMAIL"){
-        $alert->new_count=$newRecords;
-        $alert->unsubscribe_link=
         $alertsToEmail[]=$alert;
       }else if($alert->recipient_type=="TWITTER"){
         _checkbook_alerts_process_twitter($alert);

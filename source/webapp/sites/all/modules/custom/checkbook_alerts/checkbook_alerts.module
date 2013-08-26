@@ -20,6 +20,7 @@
 
 function checkbook_alerts_init(){
   require_once(drupal_get_path("module","checkbook_alerts")."/includes/checkbook_alerts.inc");
+  require_once(drupal_get_path("module","checkbook_alerts")."/includes/twitter-api/TwitterAPIExchange.php");
 }
 
 /**
@@ -46,11 +47,17 @@ function checkbook_alerts_menu() {
     'access callback' => TRUE,
     'type' => MENU_CALLBACK
   );
-  $itmes['alert/activate/%'] = array(
+  $items['alert/activate/%'] = array(
     'title' => 'Checkbook Alerts',
     'page callback' => '_checkbook_alerts_activate',
     'access callback' => TRUE,
     'type' => MENU_CALLBACK
+  );
+  $items['alert/twitter']=array(
+    'title'=>'Twitter Callback',
+    'page callback' => '_checkbook_alerts_twitter_callback',
+    'access callback' => TRUE,
+    'type'=>MENU_CALLBACK
   );
   return $items;
 }
@@ -63,15 +70,25 @@ function checkbook_alerts_theme($existing, $type, $theme, $path) {
   return array(
     'checkbook_alerts_default_theme'=>array(
       'template'=>'checkbook_alerts',
-      'path'=>'sites/all/modules/custom/checkbook_alerts'
+      //'path'=>'sites/all/modules/custom/checkbook_alerts'
     ),
     'checkbook_alerts_email_theme'=>array(
       'template'=>'checkbook_alerts_email',
-      'path'=>'sites/all/modules/custom/checkbook_alerts',      
+      //'path'=>'sites/all/modules/custom/checkbook_alerts',      
       'arguments'=>array(
         'alerts'=>array(),
         'unsubscribe'=>null
       )
+    ),
+    'checkbook_alerts_activated_theme'=>array(
+      'template'=>'checkbook_alerts_activated'
+      //'path'=>'sites/all/modules/custom/check
+    ),
+    'checkbook_alerts_unsubscribe_theme'=>array(
+      'template'=>'checkbook_alerts_unsubscribe'
+    ),
+    'checkbook_alerts_subscribe_theme'=>array(
+      'template'=>'checkbook_alerts_subscribe'
     )
   );
 }
