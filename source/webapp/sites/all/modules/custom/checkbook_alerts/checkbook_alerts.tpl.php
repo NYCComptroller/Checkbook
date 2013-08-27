@@ -15,10 +15,17 @@
       </td>
     </tr>
     <tr>
-      <td>Email:</td><td><input type='text' name='alert_email' size="50" /></td>
+      <td>Email:</td>
+      <td>
+        <input type='text' name='alert_email' size="50" />
+      </td>
     </tr>
     <tr>
-      <td>Minimum Additional Results:</td><td><input type='text' name='alert_minimum_results' value='10' size="5" maxlength="5" /><div class="description">Checkbook will not notify you until this many new results are returned.</div></td>
+      <td>Minimum Additional Results:</td>
+      <td>
+        <input type='text' name='alert_minimum_results' value='10' size="5" maxlength="5" />
+        <div class="description">Checkbook will not notify you until this many new results are returned.</div>
+      </td>
     </tr>
     <tr>
       <td>Alert Frequency:</td>
@@ -34,7 +41,8 @@
     <tr>
       <td>Expiration Date:</td>
       <td>
-        <input type='text' name='alert_end[date]' size="30" maxlength="30"><div class="description">E.g., 2013-08-09</div>
+        <input type='text' name='alert_end[date]' size="30" maxlength="30">
+        <div class="description">This is the date the alert will expire.  The default is one year.</div>
       </td>
     </tr>
   </table>
