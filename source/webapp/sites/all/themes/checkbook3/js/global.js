@@ -570,6 +570,9 @@ var isNumber=function(value) {
                             title:'Alert',
                             dialogClass:"alert",
                             width:700,
+                            open:function(){
+$("input[name='alert_end[date]']").datepicker({"changeMonth":true,"changeYear":true,"autoPopUp":"focus","closeAtTop":false,"speed":"immediate","firstDay":0,"dateFormat":"yy-mm-dd","yearRange":"-113:+487","fromTo":false,"defaultDate":"0y"});
+                                                        },
                             buttons:{
                                 "Create Alert":function () {
                                     var alertLabel = $('input[name=alert_label]').val();
