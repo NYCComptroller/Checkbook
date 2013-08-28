@@ -627,7 +627,7 @@ $("input[name='alert_end[date]']").datepicker({"changeMonth":true,"changeYear":t
                                               dialogClass:"alert",
                                               width:700,
                                               buttons:{
-                                                "Okay":function () {
+                                                "OK":function () {
                                                   $this.dialog('close');
                                                 }
                                               }
