@@ -80,6 +80,9 @@ function checkbook_alerts_theme($existing, $type, $theme, $path) {
         'unsubscribe'=>null
       )
     ),
+    'checkbook_alerts_activate_theme'=>array(
+      'template'=>'checkbook_alerts_activate'
+    ),
     'checkbook_alerts_activated_theme'=>array(
       'template'=>'checkbook_alerts_activated'
       //'path'=>'sites/all/modules/custom/check

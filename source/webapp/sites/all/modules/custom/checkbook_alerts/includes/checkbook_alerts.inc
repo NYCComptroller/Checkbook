@@ -45,8 +45,8 @@ function _checkbook_alerts_transactions(){
   if(!isset($_GET['alert_minimum_days'])){
     $_GET['alert_minimum_days']=1;
   }
-  if(!isset($_GET['alert_end']['date'])){
-    $_GET['alert_end']['date']=date('Y-m-d H:i:s',strtotime(date("Y-m-d", mktime()) . " + 365 day"));
+  if(!isset($_GET['alert_end'])){
+    $_GET['alert_end']=date('Y-m-d H:i:s',strtotime(date("Y-m-d", mktime()) . " + 365 day"));
   }
 
   $_GET['q']=urldecode(drupal_get_path_alias($_GET['refURL']));
@@ -69,7 +69,7 @@ function _checkbook_alerts_transactions(){
     'number_of_results'=>_checkbook_alerts_get_data_count(),
     'minimum_results'=>$_GET['alert_minimum_results'],
     'minimum_days'=>$_GET['alert_minimum_days'],
-    'date_end'=>$_GET['alert_end']['date'],
+    'date_end'=>date("Y-m-d H:i:s",strtotime($_GET['alert_end'])),
     'date_last_new_results'=>date("Y-m-d H:i:s")
   );
 
@@ -82,17 +82,42 @@ function _checkbook_alerts_transactions(){
     drupal_write_record('checkbook_alerts',$alert);
   }
 
-  $message=theme('checkbook_alerts_email_theme',array(
-    'alerts'=>$alert
-  ));
+  $alertFrequency=_checkbook_alerts_alertFrequency($_GET['alert_minimum_days']);
+  
+  $subData=array(
+    "alertFrequency"=>$alertFrequency,
+    "label"=>$_GET['alert_label']
+  );
 
-  drupal_mail("Checkbook Alerts",$alerts[0]->recipient,"Checkbook NYC Alert Activation",$message,"");
+  $message=theme('checkbook_alerts_activate_theme',$subData);
+
+  drupal_mail("Checkbook Alerts",$alert->recipient,"Checkbook NYC Alert Activation",$message,"");
 
   $res=array(
     "success"=>true,
-    "html"=>theme('checkbook_alerts_subscribe_theme',array())
+    "html"=>theme('checkbook_alerts_subscribe_theme',$subData)
   );
   echo json_encode($res);
+}
+
+function _checkbook_alerts_alertFrequency($days){
+  switch($days){
+  case 1:
+    $alertFrequency="Daily";
+    break;
+  case 7:
+    $alertFrequency="Weekly";
+    break;
+  case 30:
+    $alertFrequency="Monthly";
+    break;
+  case 90:
+    $alertFrequency="Quarterly";
+    break;
+  default:
+    $alertFrequency="{$_GET['alert_minimum_days']} days";
+  }
+  return $alertFrequency;
 }
 
 function _checkbook_alerts_process_email($alerts){
