@@ -31,11 +31,11 @@
 	}
 	rsort($years);
 	$header = '';
-    $header .= ',,,,,,1997-2011,,,,,'."\n";
+    $header .= ',,,,,,1997-2012,,,,,'."\n";
     $header .= ',,,,,,(average annual employment in thousands),,,,,'."\n";
 
     foreach ($years as $year){
-        if($year == 2011)
+        if($year == 2012)
     	    $header = $header .  ",," . $year .'(b)' ;
         else
     	    $header = $header .  ",," . $year ;
