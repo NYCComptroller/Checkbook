@@ -20,7 +20,7 @@
 ?>
 <?php
    
-    echo "\n".",,".'"'."Percent of Levy through June 30, 2011".'"'."\n";
+    echo "\n".",,".'"'."Percent of Levy through June 30, 2012".'"'."\n";
     $header = 'Fiscal year';
 
     $header .=  ",,Tax Levy (in millions)" ;
@@ -28,7 +28,7 @@
     $header .=  ",Cancellations,";
     $header .=  ",Abatements and Discounts(1),";
 
-    $header .=  ",".'"'."Uncollected Balance June 30, 2011".'"'.',';
+    $header .=  ",".'"'."Uncollected Balance June 30, 2012".'"'.',';
 
 	echo $header . "\n";
 
@@ -50,7 +50,7 @@
 
    echo "\n"."\n"."(1) Abatements and discounts inlcude SCRIE abatements(Senior Citizen Rent Increase Excemption), J51 Abatements, Section 626 Abatements and other minor discounts offered by the City to property owners.";
    echo "\n"."\n"."(2) The Tax levy amount is the amount from the City Council Resoltuion.In 2003,and 18% surcharge was imposed and is included in each following year.";
-   echo "\n\n".'"'."NOTES: Total uncollected balance at June 30, 2011 less allowance for uncollectible amounts equals net realizable amount (real estate taxes receivable).  Levy may total over 100 percent due to imposed charges that include ICIP deferred charges (Industrial and Commercial Incentive
+   echo "\n\n".'"'."NOTES: Total uncollected balance at June 30, 2012 less allowance for uncollectible amounts equals net realizable amount (real estate taxes receivable).  Levy may total over 100 percent due to imposed charges that include ICIP deferred charges (Industrial and Commercial Incentive
 Program), rebilling charges and other additional charges imposed by the Department of Finance (DOF). This information is
 included in the FAIRTAX LEVY report.".'"';
 
