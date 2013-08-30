@@ -89,9 +89,19 @@ function _checkbook_alerts_transactions(){
     "label"=>$_GET['alert_label']
   );
 
-  $message=theme('checkbook_alerts_activate_theme',$subData);
+  $module="checkbook_alerts";
+  $key=md5(date());
+  $msg=theme('checkbook_alerts_activate_theme',$subData);
 
-  drupal_mail("Checkbook Alerts",$alert->recipient,"Checkbook NYC Alert Activation",$message,"");
+  $message=drupal_mail($module,$key,$a->recipient,language_default(),array(),"",false);
+
+  $message['subject']="Checkbook NYC Alert Activation";
+  $message['body'] = $msg;
+
+  $system=drupal_mail_system($module,$key);
+  $message=$system->format($message);
+
+  $message['result']=$system->mail($message);
 
   $res=array(
     "success"=>true,
@@ -121,11 +131,21 @@ function _checkbook_alerts_alertFrequency($days){
 }
 
 function _checkbook_alerts_process_email($alerts){
-  $message=theme('checkbook_alerts_email_theme',array(
+  $module="checkbook_alerts";
+  $key=md5(date());
+  $msg=theme('checkbook_alerts_email_theme',array(
     'alerts'=>$alerts
   ));
 
-  drupal_mail("Checkbook Alerts",$alerts[0]->recipient,"Checkbook NYC Alert",$message,"");
+  $message=drupal_mail($module,$key,$alerts[0]->recipient,language_default(),array(),"",false);
+
+  $message['subject']="Checkbook NYC Alert";
+  $message['body'] = $msg;
+
+  $system=drupal_mail_system($module,$key);
+  $message=$system->format($message);
+
+  $message['result']=$system->mail($message);
 }
 
 function _checkbook_alerts_process_twitter($alert){
