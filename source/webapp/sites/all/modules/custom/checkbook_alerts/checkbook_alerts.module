@@ -186,3 +186,6 @@ function checkbook_alerts_enable() {
   }
 }
 
+function checkbook_alerts_unsinstall(){
+  db_query("DROP TABLE checkbook_alerts");
+}
