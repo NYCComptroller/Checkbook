@@ -93,7 +93,7 @@ function _checkbook_alerts_transactions(){
   $key=md5(date());
   $msg=theme('checkbook_alerts_activate_theme',$subData);
 
-  $message=drupal_mail($module,$key,$a->recipient,language_default(),array(),"",false);
+  $message=drupal_mail($module,$key,$_GET['alert_email'],language_default(),array(),"",false);
 
   $message['subject']="Checkbook NYC Alert Activation";
   $message['body'] = $msg;
