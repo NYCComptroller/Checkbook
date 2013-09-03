@@ -167,7 +167,7 @@ rsort($years);
 Law. Resources of the General Debt Service Fund applicable to non-excluded debt and debt service appropriations for the redemption of such debt are deducted from the non-excluded funded
 debt to arrive at the funded debt within the debt limit.</p>
         
-<p>To provide for the City’s capital program, State legislation was enacted which created the Transitional Finance Authority (TFA) and TSASC Inc. (TSASC). The new authorization as of July
+<p>To provide for the City's capital program, State legislation was enacted which created the Transitional Finance Authority (TFA) and TSASC Inc. (TSASC). The new authorization as of July
 2009 provides that TFA debt above $13.5 billion is subject to the general debt limit of the City. Without the TFA and TSASC, new contractual commitments for the City’s general obligation
 financed capital program could not continue to be made. The debt-incurring power of TFA and TSASC has permitted the City to continue to enter into new contractual commitments.</p>
     </div>
