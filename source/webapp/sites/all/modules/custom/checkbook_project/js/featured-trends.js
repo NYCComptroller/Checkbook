@@ -7,9 +7,9 @@
             var maxraw = $(parentID + ' .chartdateto').val();
             if (minraw.length > 0 || maxraw.length > 0) {
                 if (chartNumber == 3) {
-                    validateInput(minraw, maxraw, chartNumber, 1980)
+                    validateInput(minraw, maxraw, chartNumber, 1980,2011)
                 } else {
-                    validateInput(minraw, maxraw, chartNumber, 1997)
+                    validateInput(minraw, maxraw, chartNumber, 1997,2012)
                 }
             } else if (minraw.length == 0 && maxraw.length == 0) {
                 var today = new Date().getFullYear();
@@ -95,14 +95,14 @@ function isValidYear(n, floor) {
     return !isNaN(parseFloat(n)) && isFinite(n) && n >= floor && n <= ceiling;
 }
 
-function validateInput(min, max, chartno, floor) {
+function validateInput(min, max, chartno, floor, ceiling) {
     min = Number(min);
     max = Number(max);
-    var mindate = Date.UTC(min, 0, 1);
-    var maxdate = Date.UTC(max, 0, 31);
-    var floorDate = Date.UTC(floor, 0, 1);
-    var ceiling = new Date().getFullYear() - 1;
-    var ceilingDate = Date.UTC(ceiling, 0, 1);
+    var mindate = Date.UTC(min, 7, 31);
+    var maxdate = Date.UTC(max, 7, 31);
+    var floorDate = Date.UTC(floor, 7, 31);
+    //var ceiling = new Date().getFullYear() - 1;
+    var ceilingDate = Date.UTC(ceiling, 7, 31);
     if (min <= max) {
         if (isValidYear(min, floor) && isValidYear(max, floor)) {
             Highcharts.chartarray[chartno].xAxis[0].setExtremes(mindate, maxdate, true);
