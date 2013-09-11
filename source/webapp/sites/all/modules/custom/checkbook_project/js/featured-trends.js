@@ -110,6 +110,8 @@ function validateInput(min, max, chartno, floor, ceiling) {
             Highcharts.chartarray[chartno].xAxis[0].setExtremes(mindate, ceilingDate, true);
         } else if (!isValidYear(min, floor) && isValidYear(max, floor)) {
             Highcharts.chartarray[chartno].xAxis[0].setExtremes(floorDate, maxdate, true);
+        }else{
+        	Highcharts.chartarray[chartno].xAxis[0].setExtremes(floorDate, ceilingDate, true);
         }
     } else {
         Highcharts.chartarray[chartno].xAxis[0].setExtremes(floorDate, ceilingDate, true);
