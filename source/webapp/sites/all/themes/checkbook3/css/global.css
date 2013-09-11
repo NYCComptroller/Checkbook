@@ -1892,7 +1892,9 @@ body.page-payroll-employee-transactions #table_310{
 #zone-footer .grid-12 {margin:0;}
 
 #zone-footer .content div.copyright {width: 100%; text-align:center;}
-#zone-footer .content div.copyright p{margin:19px 0 10px 0; line-height: 19px;}
+#zone-footer .content div.copyright p{margin:0; line-height: 19px;}
+#zone-footer .content div.copyright a{color:#1F82C9;}
+
 /*Export styles*/
 
 #dialog{
