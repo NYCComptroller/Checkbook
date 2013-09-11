@@ -1846,6 +1846,7 @@ body.page-payroll-employee-transactions #table_310{
 #section-footer .block-menu {
     display: block;
     float:left;
+    /*position: absolute;*/
     margin: 0 19px 0 0;
 }
 #section-footer .block-quickmenu {display: none;}
@@ -1859,6 +1860,7 @@ body.page-payroll-employee-transactions #table_310{
     list-style-type: none;
     list-style-image: none;
     margin-bottom:6px;
+    width:130px;
 }
 #block-block-12 {
     color: #666;
@@ -1869,6 +1871,15 @@ body.page-payroll-employee-transactions #table_310{
     width:100%;
 }
 #block-block-12 a{color:#1F82C9;}
+#zone-footer .content div{
+    float:left;
+    width:130px;
+    margin-right:15px;
+}
+#zone-footer .content div ul,
+#zone-footer .content div h4{width:130px;}
+#zone-footer .content div h4 {margin-top:15px; font-size:12px;}
+
 
 /*Export styles*/
 
