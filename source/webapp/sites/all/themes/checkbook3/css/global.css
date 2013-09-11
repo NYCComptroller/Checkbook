@@ -1842,7 +1842,7 @@ body.page-payroll-employee-transactions #table_310{
     margin-top: 23px;
 }
 #section-footer h2{display:none;}
-#zone-footer{width:874px; padding:73px 43px 0px 43px;}
+#zone-footer{width:96%; padding:73px 2% 0px 2%;}
 #section-footer .block-menu {
     display: block;
     float:left;
@@ -1860,7 +1860,7 @@ body.page-payroll-employee-transactions #table_310{
     list-style-type: none;
     list-style-image: none;
     margin-bottom:6px;
-    width:130px;
+    width:151px;
 }
 #block-block-12 {
     color: #666;
@@ -1873,14 +1873,26 @@ body.page-payroll-employee-transactions #table_310{
 #block-block-12 a{color:#1F82C9;}
 #zone-footer .content div{
     float:left;
-    width:130px;
-    margin-right:15px;
+    width:151px;
+    margin-right:7px;
+    font-size: 12px;
+}
+#zone-footer .content div .help {
+    width: 130px;
 }
 #zone-footer .content div ul,
-#zone-footer .content div h4{width:130px;}
+#zone-footer .content div h4{width:151px; text-transform:capitalize; margin-bottom: 10px;}
 #zone-footer .content div h4 {margin-top:15px; font-size:12px;}
 
+#zone-footer .content div.help h4,
+#zone-footer .content div.help ul,
+#zone-footer .content div.help ul li {width: 130px;}
 
+#zone-footer .content div.help {margin-right: 0; width: 130px;}
+#zone-footer .grid-12 {margin:0;}
+
+#zone-footer .content div.copyright {width: 100%; text-align:center;}
+#zone-footer .content div.copyright p{margin:19px 0 10px 0; line-height: 19px;}
 /*Export styles*/
 
 #dialog{
