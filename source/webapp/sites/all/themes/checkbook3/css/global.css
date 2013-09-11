@@ -1881,8 +1881,8 @@ body.page-payroll-employee-transactions #table_310{
     width: 130px;
 }
 #zone-footer .content div ul,
-#zone-footer .content div h4{width:151px; text-transform:capitalize; margin-bottom: 10px;}
-#zone-footer .content div h4 {margin-top:15px; font-size:12px;}
+#zone-footer .content div h4{width:151px; text-transform:capitalize; margin-bottom: 10px; color:#666; margin-top:15px; font-size:12px;}
+#zone-footer .content div h4 a{color:#666;}
 
 #zone-footer .content div.help h4,
 #zone-footer .content div.help ul,
