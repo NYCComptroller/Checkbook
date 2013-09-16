@@ -40,7 +40,7 @@ rsort($years);
 if(preg_match('/featuredtrends/',$_GET['q'])){
   $links = array(l(t('Home'), ''), l(t('Trends'), 'featured-trends'),
                 '<a href="/featured-trends?slide=2">Capital Projects Fund Aid Revenues</a>',
-               'Capital Projects Fund Aid Revenues by Agency Details');
+               'Capital Projects Fund Aid Revenues Details');
   drupal_set_breadcrumb($links);
 }
 ?>

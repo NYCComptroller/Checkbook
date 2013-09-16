@@ -87,6 +87,6 @@ rsort($years);
 
  echo "\n\n"." (1) Represents the weighted average of the four classes of real property."."\n".
     "Note: Property in New York City is reassessed once every year on average. The City assesses property at approximately 40 percent of Market Value for commercial and industrial property and 20 percent of Market Value for residential property."."\n".
-'"'."SOURCES: Resolutions of the City Council and The Annual Report, The New York City Property Tax Fiscal Year 2011.".'"';
+'"'."Sources: Resolutions of the City Council and The Annual Report of The New York City Property Tax Fiscal Year 2012. ".'"';
 ?>
 
