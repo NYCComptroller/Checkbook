@@ -37,7 +37,7 @@
     "derivedColumns": {
         "fiscal_year_date": {
             "type": "expression2",
-            "expression": "   $row['fiscal_year'] . '-1-1'"
+            "expression": "   $row['fiscal_year'] . '-1-1' "
         },
         "fiscal_year_utc": {
             "type": "expression2",
