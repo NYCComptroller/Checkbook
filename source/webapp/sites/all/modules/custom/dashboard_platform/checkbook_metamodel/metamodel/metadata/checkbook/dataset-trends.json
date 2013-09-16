@@ -117,7 +117,7 @@
             ],
             "measures":{
                 "income_or_population":{
-                    "function":"SUM(income_or_population)"
+                    "function":"SUM(income_or_population) "
                 }              
             }
         }
