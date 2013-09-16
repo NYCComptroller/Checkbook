@@ -100,5 +100,26 @@
             "datasourceName": "main",
             "source": "trends_legal_debt_margin"
          }
+    },
+    "cubes":{
+        "trends_personal_income":{
+            "sourceDatasetName":"trends_personal_income",
+            "dimensions":[
+                {
+                    "name": "fiscal_year",
+                    "levels": [
+                        {
+                            "name": "fiscal_year",
+                            "sourceColumnName": "fiscal_year"
+                        }
+                    ]
+                }    
+            ],
+            "measures":{
+                "income_or_population":{
+                    "function":"SUM(income_or_population)"
+                }              
+            }
+        }
     }
 }

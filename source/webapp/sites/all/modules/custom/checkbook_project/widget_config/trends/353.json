@@ -6,7 +6,7 @@
         "useList":true,
 	"no_results_content":"No Results Found",
 	"dataset": "checkbook:trends_personal_income",
-	"columns": ["category","fips","area","line_code","income_or_population","fiscal_year","highlight_yn","indentation_level","display_order"],
+	"columns": ["fips","area","income_or_population","fiscal_year","highlight_yn","indentation_level","display_order"],
        "orderBy":"display_order",
 "derivedColumns": {       
 	"amount": {
@@ -67,12 +67,11 @@
         {"sWidth":"100px"},
         {"sWidth":"100px"},
         {"sWidth":"100px"},
-        {"sWidth":"100px"},
         {"sWidth":"25px"}
         ]
        },
       "customJS":"new FixedColumns( oTable, {
- 		\"iLeftColumns\": 4,
-		\"iLeftWidth\": 450
+ 		\"iLeftColumns\": 2,
+		\"iLeftWidth\": 250
  	} );"
 }
