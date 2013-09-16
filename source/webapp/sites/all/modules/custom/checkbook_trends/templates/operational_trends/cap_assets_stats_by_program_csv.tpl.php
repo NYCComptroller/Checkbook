@@ -72,6 +72,8 @@ echo "\n"."\n".'"'."(1) In 2004, the Department of Transportation (DOT) took own
      ."\n".'"'."(25) The Department of Sanitation (DOS) demolished its Hamilton Avenue MTS transfer station to make room for a new one presently under construction.".'"'
      ."\n".'"'."(26) In fiscal year 2011, DOS added the Manhattan 7 garage.".'"'
      ."\n".'"'."(27) Yankee and Shea Stadia have been demolished. The two new Stadia, Citi Field and Yankee Stadium have leasing agreements in place with the Industrial Development Corporation.".'"'
+     ."\n".'"'."(28) In FY 2012, we included an Admin building with active enrollment. ".'"'
+     ."\n".'"'."(29) As of Fall 2012, CUNY started accepting students at its newest Community College called the New Community College ".'"'
      ."\n"."\n".'"'."Sources: Various City Agencies".'"';
 
 
