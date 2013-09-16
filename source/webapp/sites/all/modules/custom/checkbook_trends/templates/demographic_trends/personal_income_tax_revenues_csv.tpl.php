@@ -22,10 +22,8 @@
 	$table_rows = array();
 	$years = array();
 	foreach( $node->data as $row){
-		$table_rows[$row['display_order']]['category'] = $row['category'];
 		$table_rows[$row['display_order']]['area'] =  $row['area'];
 		$table_rows[$row['display_order']]['fips'] =  $row['fips'];
-		$table_rows[$row['display_order']]['line_code'] =  $row['line_code'];		
 		$table_rows[$row['display_order']]['highlight_yn'] = $row['highlight_yn'];
 		$table_rows[$row['display_order']]['indentation_level'] = $row['indentation_level'];
 		$table_rows[$row['display_order']]['amount_display_type'] = $row['amount_display_type'];
@@ -36,8 +34,6 @@
     echo "CA1-3 Personal income summary"."\n" ."Bureau of Economic Analysis". "\n" ."\n";
 	$header = 'FIPS';
 	$header .= ',Area';
-	$header .= ',LineCode';
-	$header .= ',Description';
     foreach ($years as $year){
     	$header = $header .  "," . $year ;
     }
@@ -46,8 +42,6 @@
     foreach( $table_rows as $row){
         $rowString = $row['fips'] ;
         $rowString .= ','  . '"'. $row['area'] . '"' ;
-        $rowString .= ','  . '"'. $row['line_code']  . '"';
-        $rowString .= ','  . '"'. $row['category']  . '"';
         foreach ($years as $year){
             $rowString .= ','  . '"'. $row[$year]['amount'] . '"';
         }

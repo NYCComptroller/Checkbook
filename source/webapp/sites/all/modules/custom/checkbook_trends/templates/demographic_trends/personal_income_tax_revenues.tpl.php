@@ -29,10 +29,8 @@ foreach( $node->data as $row){
 		$spaceString .= '&nbsp';
 		$length -=1;
 	}
-	$table_rows[$row['display_order']]['category'] =  $row['category'];
-	$table_rows[$row['display_order']]['area'] =  $row['area'];
 	$table_rows[$row['display_order']]['fips'] =  $row['fips'];
-	$table_rows[$row['display_order']]['line_code'] =  $row['line_code'];
+	$table_rows[$row['display_order']]['area'] =  $row['area'];
 	$table_rows[$row['display_order']]['highlight_yn'] = $row['highlight_yn'];
 	$table_rows[$row['display_order']]['indentation_level'] = $row['indentation_level'];
 	$table_rows[$row['display_order']]['amount_display_type'] = $row['amount_display_type'];
@@ -54,7 +52,7 @@ if(preg_match('/featuredtrends/',$_GET['q'])){
 
 <h5>CA1-3 Personal income summary</h5>
 <h6>Bureau of Economic Analysis</h6>
-<table id="table_<?php echo widget_unique_identifier($node) ?>" style='display:none' class="trendsShowOnLoad <?php echo $node->widgetConfig->html_class ?>">
+<table id="table_<?php echo widget_unique_identifier($node) ?>" style="display:none" class="trendsShowOnLoad <?php echo $node->widgetConfig->html_class ?>">
     <?php
     if (isset($node->widgetConfig->caption_column)) {
         echo '<caption>' . $node->data[0][$node->widgetConfig->caption_column] . '</caption>';
@@ -67,8 +65,6 @@ if(preg_match('/featuredtrends/',$_GET['q'])){
         <tr>
             <th class="number"><div class="trendCen">FIPS</div></th>
             <th class="text"><div>Area</div></th>
-            <th class="centrig"><div>LineCode</div></th>
-            <th class="text"><div>Description</div></th>
             <?php
             foreach ($years as $year)
                 echo "<th class='number'><div>" . $year . "</div></th>";
@@ -80,6 +76,7 @@ if(preg_match('/featuredtrends/',$_GET['q'])){
     <tbody>
 
     <?php 
+    
     		foreach( $table_rows as $row){
     			$cat_class = "";
     			if( $row['highlight_yn'] == 'Y')
@@ -103,8 +100,6 @@ if(preg_match('/featuredtrends/',$_GET['q'])){
 
                 echo "<tr><td class='number'><div class='tdCen'>" . (isset($row['fips'])?$row['fips'] :'&nbsp;') . "</div></td>";
 			    echo "<td class='text'><div>" . (isset($row['area'])?$row['area'] :'&nbsp;') . "</div></td>";
-			    echo "<td class='number centrig'><div>" . (isset($row['line_code'])?$row['line_code'] :'&nbsp;') . "</div></td>";
-			    echo "<td class='text'><div>" . (isset($row['category'])?$row['category'] :'&nbsp;') . "</div></td>";
 			    foreach ($years as $year)
 			        echo "<td class='" . $amount_class . "'><div>" . (isset($row[$year]['amount'])?number_format($row[$year]['amount']) :'&nbsp;') . "</div></td>";
 			    echo "<td>&nbsp;</td>";

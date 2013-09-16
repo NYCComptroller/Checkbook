@@ -1,0 +1,192 @@
+{
+    "widgetType": "highcharts",
+    "widgetSubType": "highstock",
+    "html_class": "thumbnail",
+    "header":"
+    print '<h2 class=\"chart-title\">Personal Income</h2>
+    <div class=\"featured-trends-filter\" id=\"personal-income-filter\">
+    <div class=\"filter-container\">
+    <input type=\"text\" class=\"chartdatefrom\" maxlength=\"4\" size=\"4\">
+    <label> to </label>
+    <input type=\"text\" class=\"chartdateto\" maxlength=\"4\" size=\"4\"></div>
+    <img src=\"/sites/all/themes/checkbook/images/featured-filter.png\" class=\"chartfilter\" name=\"3\">
+    </div>';",
+    "footer":"print '<div class=\"detail-page-links\">
+    <a class=\"show-detail-link\" href=\"/featuredtrends/node/353\">Show Details for Personal Income</a>
+    </div>';",
+    "callback":"
+       var axis = chart.xAxis[0].getExtremes();
+       jQuery('#personal-income-filter .chartdatefrom').val(Highcharts.dateFormat('%Y',axis.min));
+       jQuery('#personal-income-filter .chartdateto').val(Highcharts.dateFormat('%Y',axis.max));
+    ",
+
+    "dataset": "checkbook:trends_personal_income",
+    "orderBy": "fiscal_year.fiscal_year",
+    "defaultParameters": {
+        "display_yn":"Y"
+    },
+    "paramTypeConfig": {
+        "fiscal_year.fiscal_year": "range"
+    },
+    "columns": [
+        "fiscal_year.fiscal_year",
+        "income_or_population"
+    ],
+
+
+    "derivedColumns": {
+        "fiscal_year_date": {
+            "type": "expression2",
+            "expression": "   $row['fiscal_year'] . '-1-1'"
+        },
+        "fiscal_year_utc": {
+            "type": "expression2",
+            "expression": "   strtotime($row['fiscal_year_fiscal_year'] . '-1-1') * 1000"
+        },
+        "income_color":{
+            "type":"expression2",
+            "expression":"checkbook_project_income_tax_color($row['income_or_population'])"
+        },
+        "mod_amount":{
+            "type":"expression2",
+            "expression":"$row['income_or_population'] * 1000"
+        }
+    },
+    "datasets": [
+        {
+            "name": "amount",
+            "columns": [
+                {
+                    "name": "x",
+                    "value": "fiscal_year_utc"
+                },
+                {
+                    "name": "y",
+                    "value": "mod_amount"
+                },
+                {
+                    "name":"color",
+                    "value":"income_color"
+                }
+            ],
+            "isArray": true,
+            "type":"string"
+        }
+    ],
+    "chartConfig": {
+        "chart": {
+            "height": 600,
+            "width": 940,
+            "spacingTop": 0,
+            "spacingRight": 0,
+            "spacingLeft": 0,
+            "spacingBottom": 30,
+            "backgroundColor":"rgba(255,255,255,0)",
+            "margin": [
+                50,
+                50,
+                50,
+                80
+            ]
+        },
+        "plotOptions": {
+            "column": {
+                "dataLabels": {
+                    "enabled": true,
+                    "rotation": -90,
+                    "function": "dataLabelFormatter",
+                    "y":50
+                }
+            },
+            "series":{
+               "minPointLength": 100
+            }
+        },
+        "title": {
+            //"text": "Personal Income",
+            "style": {
+                "fontSize": "16px"
+            },
+            "margin": 0
+        },
+        "xAxis": {
+            "tickInterval": 31557600000,
+            "range": 284018400000,
+            "minRange": 31557600000,
+            "labels": {
+                "enabled":true,
+                "style": {
+                    "fontSize":"11px"
+                }
+            },
+            "events":{
+                "function":"numbers"
+            }
+        },
+        "series": [
+            {
+                "name": "Tax Revenue Amount",
+                "type": "column",
+                "data": {
+                    "ds": "amount"
+                }
+            }
+        ],
+        "yAxis": {
+            "lineWidth": 1,
+            "gridLineWidth": 0,
+            "startOnTick": true,
+            "title": {
+                "text": "",
+                "style": {
+                    "fontSize": "16px"
+                },
+                "offset": 60
+            },
+            "labels": {
+                "align": "right",
+                "x": -2,
+                "rotation": 0,
+                "function": "yaxisformatter",
+                "style": {
+                    "fontSize": "11px"
+                }
+            }
+        },
+        "legend": {
+            "enabled": false
+        },
+        "tooltip": {
+            "enabled": true,
+            "shared": false,
+            "crosshairs":false,
+            "function": "tooltipformatter"
+        },
+        "scrollbar": {
+            "enabled": true
+        },
+        "navigator": {
+            "enabled": true,
+            "xAxis":{"labels":{"enabled":true}}
+        },
+        "rangeSelector": {
+            "enabled": false,
+            "buttons":[{"type":"year","count":1,"text":"1Y"},{"type":"year","count":5,"text":"5Y"},{"type":"year","count":10,"text":"10Y"},{"type":"ytd","text":"YTD"},{"type":"all","text":"All"}],
+            "selected":2,
+            "inputEditDateFormat":"%m-%d-%Y"
+        },
+        "linkOptions": [
+            {
+                "text": "<a class=\"show-detail-link\" href=\"/featuredtrends/node/353\">Show Details for Personal Income Tax Revenues</a>"
+            }
+        ]
+    }
+}
+<function>
+yaxisformatter^^'formatter' : function() {return yAxisLabelFormatter(this);}##
+tooltipformatter^^'formatter' : function() {return this.series.name + ':  ' + abbrNum(this.y, 2,'$') ;}##
+dataLabelFormatter^^'formatter':function(){if (this.y === 0){return "Data Not Available";} else {return null;}}##
+numbers^^"setExtremes": function(event){
+jQuery('#personal-income-filter .chartdatefrom').val(Highcharts.dateFormat('%Y',event.min));
+jQuery('#personal-income-filter .chartdateto').val(Highcharts.dateFormat('%Y',event.max));}
+</function>
