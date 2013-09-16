@@ -7,7 +7,7 @@
             var maxraw = $(parentID + ' .chartdateto').val();
             if (minraw.length > 0 || maxraw.length > 0) {
                 if (chartNumber == 3) {
-                    validateInput(minraw, maxraw, chartNumber, 1980,2011)
+                    validateInput(minraw, maxraw, chartNumber, 1980,2012)
                 } else {
                     validateInput(minraw, maxraw, chartNumber, 1997,2012)
                 }
