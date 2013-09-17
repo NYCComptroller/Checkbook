@@ -34,8 +34,8 @@
           "aoColumns": [
         null,
         null,
-        null,
-        null,
+        {"sWidth":"100px"},
+        {"sWidth":"100px"},
         {"sWidth":"100px"},
         {"sWidth":"100px"},
         {"sWidth":"100px"},
@@ -72,6 +72,6 @@
        },
       "customJS":"new FixedColumns( oTable, {
  		\"iLeftColumns\": 2,
-		\"iLeftWidth\": 250
+		\"iLeftWidth\": 150
  	} );"
 }
