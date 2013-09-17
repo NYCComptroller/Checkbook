@@ -19,7 +19,7 @@
 */
 ?>
 <?php
-    $header = ",,,1997-2011,,,"."\n";
+    $header = ",,,1996-2011,,,"."\n";
     $header .= 'year';
 
     $header .=  ",New York City Employed - Civilian Labor Force (in thousands)" ;
