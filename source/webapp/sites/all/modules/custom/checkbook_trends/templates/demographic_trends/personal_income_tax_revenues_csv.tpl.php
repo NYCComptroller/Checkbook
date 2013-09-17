@@ -49,9 +49,7 @@
    	}
 
 echo "\n"."Legend / Footnotes:". "\n"
- .'"' ."1/ Census Bureau midyear population estimates. Estimates for 2000-2009 reflect county population estimates available as of April 2010. For more information see the explanatory note at: http://www.bea.gov/regional/docs/popnote.cfm.". '"' ."\n"
- .'"'. "2/ Per capita personal income was computed using Census Bureau midyear population estimates. Estimates for 2000-2009 reflect county population estimates available as of April 2010.".'"'."\n"
- .'"'."All state and local area dollar estimates are in current dollars (not adjusted for inflation).".'"'."\n"
- .'"'."Last updated: April 21, 2011 - new estimates for 2009; revised estimates for 2001-2008.".'"'."\n";
+ .'"' ."Note-- All state and local area dollar estimates are in current dollars (not adjusted for inflation).". '"' ."\n"
+ .'"'."Last updated: November 26, 2012 - new estimates for 2011; revised estimates for 2009-2010. For more information see the explanatory note at: http://www.bea.gov/regional/docs/popnote.cfm.".'"'."\n";
 ?>
 

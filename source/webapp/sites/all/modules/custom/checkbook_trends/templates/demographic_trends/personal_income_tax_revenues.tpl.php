@@ -111,10 +111,8 @@ if(preg_match('/featuredtrends/',$_GET['q'])){
 </table>
   <div class="footnote">
 <h5>Legend / Footnotes:</h5>
-<p>1/ Census Bureau midyear population estimates. Estimates for 2000-2009 reflect county population estimates available as of April 2010. For more information see the explanatory note at: http://www.bea.gov/regional/docs/popnote.cfm.</p>
-<p>2/ Per capita personal income was computed using Census Bureau midyear population estimates. Estimates for 2000-2009 reflect county population estimates available as of April 2010.</p>
-<p>All state and local area dollar estimates are in current dollars (not adjusted for inflation).</p>
-<p>Last updated: April 21, 2011 - new estimates for 2009; revised estimates for 2001-2008.</p>
+<p>Note-- All state and local area dollar estimates are in current dollars (not adjusted for inflation).</p>
+<p>Last updated: November 26, 2012 - new estimates for 2011; revised estimates for 2009-2010. For more information see the explanatory note at: http://www.bea.gov/regional/docs/popnote.cfm.</p>
 </div>
 <?php 
 	widget_data_tables_add_js($node);
