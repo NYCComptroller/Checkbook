@@ -29,7 +29,7 @@ if(preg_match('/featuredtrends/',$_GET['q'])){
 ?>
 
 <a class="trends-export" href="/export/download/trends_ratios_of_outstanding_debt_csv?dataUrl=/node/<?php echo $node->nid ?>">Export</a>
-<h4>(dollars in millions)</h4>
+<h5>(dollars in millions)</h5>
 <table id="table_<?php echo widget_unique_identifier($node) ?>" style='display:none' class="trendsShowOnLoad <?php echo $node->widgetConfig->html_class ?>">
     <?php
     if (isset($node->widgetConfig->caption_column)) {
