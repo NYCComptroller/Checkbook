@@ -19,7 +19,7 @@
 */
 ?>
 <?php  
-    $header .= ",,,,,,,,".'"'.'(dollars in millions)'.'"'.",,,,". "\n";
+    $header .= ",,,,,,,,".'"'.'(AMOUNTS IN MILLIONS)'.'"'.",,,,". "\n";
 	$header .= 'Fiscal year';
     $header .=  ",,General Obligation Bonds"  ;
     $header .=  ",,Revenue Bonds"  ;
