@@ -52,6 +52,7 @@ if(preg_match('/featuredtrends/',$_GET['q'])){
 
 <h5>CA1-3 Personal income summary</h5>
 <h6>Bureau of Economic Analysis</h6>
+    <h5>(Amounts in Thousands)</h5>
 <table id="table_<?php echo widget_unique_identifier($node) ?>" style="display:none" class="trendsShowOnLoad <?php echo $node->widgetConfig->html_class ?>">
     <?php
     if (isset($node->widgetConfig->caption_column)) {

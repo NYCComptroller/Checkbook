@@ -32,6 +32,7 @@
 	}
 	sort($years);
     echo "CA1-3 Personal income summary"."\n" ."Bureau of Economic Analysis". "\n" ."\n";
+    echo "(Amounts in Thousands)";
 	$header = 'FIPS';
 	$header .= ',Area';
     foreach ($years as $year){
