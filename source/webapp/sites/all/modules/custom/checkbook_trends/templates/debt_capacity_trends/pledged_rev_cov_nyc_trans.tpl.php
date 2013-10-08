@@ -24,7 +24,7 @@ echo eval($node->widgetConfig->header);
 
 <a class="trends-export" href="/export/download/trends_pledged_rev_cov_nyc_trans_csv?dataUrl=/node/<?php echo $node->nid ?>">Export</a>
 
-<h5>(in thousands)<br/>New York City Transitional Finance Authority</h5>
+<h5>(AMOUNTS IN THOUSANDS)<br/>New York City Transitional Finance Authority</h5>
 
 <table id="table_<?php echo widget_unique_identifier($node) ?>" style='display:none' class="trendsShowOnLoad <?php echo $node->widgetConfig->html_class ?>">
     <?php

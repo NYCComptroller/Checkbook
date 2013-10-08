@@ -21,7 +21,7 @@
 <?php
 
    echo ",,,,,,New York City Transitional Finance Authority". "\n";
-   echo ",,,,,,(in thousands)". "\n";
+   echo ",,,,,,(AMOUNTS IN THOUSANDS)". "\n";
 
 	$header = 'Fiscal year';
     $header .=  ",,PIT Revenue(1)"  ;
