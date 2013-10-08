@@ -77,7 +77,7 @@ if(preg_match('/featuredtrends/',$_GET['q'])){
     <tbody>
 
     <?php 
-    
+            $dollar_div = "<div class='dollarItem'>$</div>";
     		foreach( $table_rows as $row){
     			$cat_class = "";
     			if( $row['highlight_yn'] == 'Y')
@@ -101,10 +101,12 @@ if(preg_match('/featuredtrends/',$_GET['q'])){
 
                 echo "<tr><td class='number'><div class='tdCen'>" . (isset($row['fips'])?$row['fips'] :'&nbsp;') . "</div></td>";
 			    echo "<td class='text'><div>" . (isset($row['area'])?$row['area'] :'&nbsp;') . "</div></td>";
+			    
 			    foreach ($years as $year)
-			        echo "<td class='" . $amount_class . "'><div class='dollarItem'>$</div><div>" . (isset($row[$year]['amount'])?number_format($row[$year]['amount']) :'&nbsp;') . "</div></td>";
+			        echo "<td class='" . $amount_class . "'>$dollar_div<div>" . (isset($row[$year]['amount'])?number_format($row[$year]['amount']) :'&nbsp;') . "</div></td>";
 			    echo "<td>&nbsp;</td>";
 			    echo "</tr>";
+			    $dollar_div = "";
     		}
     ?>
 
