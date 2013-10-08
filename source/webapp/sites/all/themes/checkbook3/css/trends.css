@@ -267,7 +267,7 @@ a.trends-export {
 }
 
 /* dollar styles */
-td.number div.dollarItem {float:left; margin-left:5px;}
+td.number div.dollarItem {float:left; margin-left:20px;}
 #table_355_wrapper td.number div.dollarItem {float:left; margin-left:30px;}
 #table_406_wrapper td.number div.dollarItem {float:left; margin-left:75px;}
 #table_404_wrapper td.number div.dollarItem {float:left; margin-left:40px;}
