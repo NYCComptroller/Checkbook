@@ -421,6 +421,9 @@ body.page-trends-landing-trends-node-395 #zone-content{
 #table_397_wrapper tr > td:nth-child(3) .tdCen {margin-right:135px;}
 
 /* 398 */
+#table_398_wrapper td.number div.dollarItem{
+    margin-left:10px;
+}
 #table_398_wrapper .DTFC_LeftHeadWrapper tr:nth-child(1) > th:nth-child(1) .trendCen {margin-right:30px;}
 #table_398_wrapper tr:nth-child(1) > th:nth-child(1) .trendCen {margin-right:31px; }
 #table_398_wrapper tr:nth-child(1) > th:nth-child(2) .trendCen {margin-right:31px;}
