@@ -267,7 +267,7 @@ a.trends-export {
 }
 
 /* dollar styles */
-td.number div.dollarItem {float:left; margin-left:20px;}
+td.number div.dollarItem {float:left; margin-left:12px;}
 #table_355_wrapper td.number div.dollarItem {float:left; margin-left:30px;}
 #table_406_wrapper td.number div.dollarItem {float:left; margin-left:75px;}
 #table_404_wrapper td.number div.dollarItem {float:left; margin-left:40px;}
@@ -301,7 +301,7 @@ td.number div.dollarItem {float:left; margin-left:20px;}
     color: #2D4C68;
     margin: 10px 0px;
 }
-#node-widget-353 a.trends-export{top:20px;}
+#node-widget-353 a.trends-export{top:40px;}
 #table_353_wrapper .DTFC_LeftBodyWrapper tr > td:nth-child(3) div  {margin-right:52px;}
 
 /* 355 */
@@ -336,6 +336,10 @@ td.number div.dollarItem {float:left; margin-left:20px;}
 #table_355_wrapper tr > td:nth-child(12) .tdCen {margin-right:51px;}
 #table_355_wrapper tr > td:nth-child(13) .tdCen {margin-right:47px;}
 #table_355_wrapper tr > td:nth-child(14) .tdCen {margin-right:43px;}
+
+#node-widget-355 h5{
+    color: #2D4C68;
+}
 
 /* 359 */
 #table_359_wrapper tr:nth-child(1) > th:nth-child(1) .trendCen {margin-right:62px;}
