@@ -374,6 +374,9 @@ body.page-trends-landing-trends-node-360 h1#page-title {
 body.page-trends-landing-trends-node-395 #page-title {
     display: none;
 }
+body.page-trends-landing-trends-node-395 #zone-content{
+    margin-top:15px;
+}
 #node-widget-395 a.trends-export{top:10px;}
 #table_395_wrapper tr:nth-child(1) > th:nth-child(1) .trendCen {margin-right:20px; }
 #table_395_wrapper tr:nth-child(1) > th:nth-child(2) .trendCen {margin-right:17px;}
@@ -506,6 +509,9 @@ body.page-trends-landing-trends-node-404 #page-title {
     color: #2D4C68;
     margin: 5px 0px;
     line-height:22px;
+}
+#node-widget-420 td.number div.dollarItem{
+    margin-left:7px;
 }
 #node-widget-420 a.trends-export{top:23px;}
 #table_420_wrapper .DTFC_LeftHeadWrapper tr:nth-child(1) > th:nth-child(1) .trendCen {margin-right:30px;}
