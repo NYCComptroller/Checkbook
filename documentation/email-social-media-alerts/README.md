@@ -34,7 +34,7 @@ requesting some basic information:
  * How frequently the alert is desired (e.g., daily, weekly, etc),
  * What the alert threshold should be (e.g., when 10 more results, or 1000 more results, etc),
  * End date (default 1 year),
- * Description, i.e., a name for the alert so the user can recognize it.
+ * Label, i.e., a name for the alert so the user can recognize it.
 
 No other personally identifying information (PII) is requested other
 than the email address, which of course need not be a personal email
@@ -140,7 +140,7 @@ e.g.:
                 'consumer_secret' => "CONSUMER_SECRET"
             );
 
-The content of the tweet will be the value of the `description` field
+The content of the tweet will be the value of the `label` field
 for that alert, with ":count" substituted by the new result count
 that caused the alert.
           
