@@ -112,13 +112,13 @@ function checkbook_alerts_schema() {
         'length'=>'200'
       ),
       'recipient' => array(
-        'description' => t('Recipiant address for sending.'),
+        'description' => t('Recipient address for sending.'),
         'type' => 'varchar',
         'not null' => TRUE,
         'length' => '300'
       ),
       'recipient_type'=>array(
-        'description'=>t('Recipiant type, email or twitter.'),
+        'description'=>t('Recipient type, email or twitter.'),
         'type'=>'varchar',
         'not null'=>true,
         'length'=>'15'
@@ -166,7 +166,7 @@ function checkbook_alerts_schema() {
         'not null'=>true
       ),
       'date_last_new_results'=>array(
-        'description'=>t('Date that the notification was last send.'),
+        'description'=>t('Date that the notification was last sent.'),
         'type'=>'datetime',
         'mysql_type' => 'datetime',
         'not null'=>true
