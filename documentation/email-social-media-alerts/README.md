@@ -144,5 +144,5 @@ The content of the tweet will be the value of the `label` field
 for that alert, with ":count" substituted by the new result count
 that caused the alert.
           
-The best method to create an Twitter alert is to create an email alert
+The best method to create a Twitter alert is to create an email alert
 and then modify the `checkbook_alerts` table directly.
