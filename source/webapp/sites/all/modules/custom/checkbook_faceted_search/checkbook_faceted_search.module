@@ -216,7 +216,7 @@ function _checkbook_faceted_search_update_data_range2_filter($node){
   $initial[3] = array(3, '$2B - $3B', $data[0]['g2b_le3b_count']);
   $initial[4] = array(2, '$1B - $2B', $data[0]['g1b_le2b_count']);
   $initial[5] = array(1, 'Less than $1B', $data[0]['less1b_count']);
-  for ($i = 0; $i < 6; $i++){
+for ($i = 0; $i < 6; $i++){
     $checked = false;
     foreach ($params as $param){
       if ($param == $initial[$i][0]){

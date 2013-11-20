@@ -1170,14 +1170,14 @@ function changeLinkText(divId, divText) {
 function adjustUrlParameter(cUrl, name, value) {
     var cUrlArray = cUrl.split('/');
     var nameIndex = jQuery.inArray(name, cUrlArray);
-
+    value = replaceAllOccurrences("/","__", value);
+    value = replaceAllOccurrences("%2F",encodeURIComponent("__"), value);
+    
     if (nameIndex == -1) {//add
         if (value != null && value.length > 0) {
             cUrlArray.splice((cUrlArray.length + 1), 2, name, value);
         }
     } else if (value != null && value.length > 0) {//update
-    	value = value.replace("/","__");
-    	value = value.replace("%2F","__");
         cUrlArray[(nameIndex + 1)] = value;
     } else if (value == null || value.length == 0) {//remove
         cUrlArray.splice(nameIndex, 1);//name
@@ -1185,6 +1185,15 @@ function adjustUrlParameter(cUrl, name, value) {
     }
     var newUrl = cUrlArray.join('/');
     return newUrl;
+}
+
+/** Replacing all occurrences of a pattern in a string
+ * @param {String} find pattern to be replaced
+ * @param {string} replace new pattern
+ * @param {string} str subject
+ */
+function replaceAllOccurrences(find, replace, str) {
+  return str.replace(new RegExp(find, 'g'), replace);
 }
 
 
