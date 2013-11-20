@@ -42,7 +42,10 @@ function applyTableListFilters(){
 
 function applyTableListFiltersAutocomplete(label, field){
     var cUrl = prepareTableListFilterUrl();
-    cUrl = updateURLForTableListFilters(cUrl, jQuery(field).attr("name"), label.item.value);
+    var value = replaceAllOccurrences('/', '__', label.item.value);
+    value = replaceAllOccurrences('%2F', encodeURIComponent('__'), value);
+    cUrl = updateURLForTableListFilters(cUrl, jQuery(field).attr("name"), value);
+    
     oTable.fnSettings().sAjaxSource = cUrl;
     oTable.fnClearTable(0);
     oTable.fnDraw();

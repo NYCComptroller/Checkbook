@@ -32,7 +32,7 @@ if(isset($node->widgetConfig->maxSelect)){
   $tooltip = 'title="Select upto ' . $node->widgetConfig->maxSelect . '"';
 }
 else{
-  $tooltip = "";
+$tooltip = "";
 }
 ?>
 <div class="filter-content <?php if( $hide_filter != "") print "disabled"; ?>"><div <?php print $hide_filter; ?>>
@@ -52,6 +52,8 @@ else{
   <div class="checked-items">
     <?php    
     foreach ($checked as $row) {
+      $row[0] = str_replace('__','/', $row[0]);      
+      $row[1] = str_replace('__','/', $row[1]);      
       echo '<div class="row">';
       echo '<div class="checkbox"><input class="styled" name="' . $autocomplete_id . '" type="checkbox" checked="checked" value="' . urlencode($row[0]) . '" onClick="return applyTableListFilters();"></div>';
       echo '<div class="name">' . _break_text_custom2($row[1],15) . '</div>';
@@ -64,6 +66,8 @@ else{
     <div class="rows">
     <?php
     foreach ($unchecked as $row) {
+      $row[0] = str_replace('__','/', $row[0]);      
+      $row[1] = str_replace('__','/', $row[1]);      
       echo '<div class="row">';
       echo '<div class="checkbox"><input class="styled" name="' . $autocomplete_id . '" type="checkbox" '  .  $disabled .  'value="' . urlencode($row[0]) . '" onClick="return applyTableListFilters();"></div>';
       echo '<div class="name">' . _break_text_custom2($row[1],15) . '</div>';
