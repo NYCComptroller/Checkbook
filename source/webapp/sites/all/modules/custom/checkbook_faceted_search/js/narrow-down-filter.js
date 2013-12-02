@@ -21,9 +21,8 @@ if (typeof Drupal != "undefined") {
 		    	            
 		    	            var request_term = request.term;
 		    	            request_term = replaceAllOccurrences('/','__',request_term);
-		    	            curl = '/faceted-search/ajax/autocomplete'  + curl + "/" + filter_column + "/" + encodeURIComponent(request_term);
+		    	            curl = '/faceted-search/ajax/autocomplete'  + curl + "/" + filter_column + "/" + encodeURIComponent(request_term) + "/xyz";
 
-		    	            
 		    	            var p = new RegExp('node\/[0-9]*');
 		    	            curl = curl.replace(p,'node/' + nid );
 		                	jQuery.ajax({
