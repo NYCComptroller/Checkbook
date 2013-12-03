@@ -20,6 +20,10 @@ if (typeof Drupal != "undefined") {
 		    	            
 		    	            
 		    	            var request_term = $.trim(request.term);
+		    	            if(request_term == ''){
+		    	            	response(["No Matches Found"]);
+		    	            	return true;
+		    	            }
 		    	            request_term = replaceAllOccurrences('/','__',request_term);
 		    	            curl = '/faceted-search/ajax/autocomplete'  + curl + "/" + filter_column + "/" + encodeURIComponent(request_term) + "/xyz";
 
