@@ -19,7 +19,11 @@ if (typeof Drupal != "undefined") {
 		    	            var filter_column = jQuery("#node-widget-" + nid).find('input.autocomplete').attr('autocomplete_param_name');
 		    	            
 		    	            
-		    	            var request_term = request.term;
+		    	            var request_term = $.trim(request.term);
+		    	            if(request_term == ''){
+		    	            	respone(["No Matches Found"]);
+		    	            	return true;
+		    	            }
 		    	            request_term = replaceAllOccurrences('/','__',request_term);
 		    	            curl = '/faceted-search/ajax/autocomplete'  + curl + "/" + filter_column + "/" + encodeURIComponent(request_term) + "/xyz";
 
