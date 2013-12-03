@@ -1834,7 +1834,7 @@ body.page-payroll-employee-transactions #table_310{
 *************************/
 
 /* overriding some of the alpha styles */
-#section-footer .container-12 .grid-12{width:100%;}
+#section-footer .container-12 .grid-12, #section-footer {width:100%;}
 #section-footer div{vertical-align: top;}
 
 /* footer styles */
