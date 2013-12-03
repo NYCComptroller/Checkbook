@@ -208,7 +208,7 @@ h4 {
 
 .agency-nav-dropdowns {
 	display:block;
-	float:right;
+	float:left;
 }
 .agency-list-open {
     border-right: 1px solid #5387B7;

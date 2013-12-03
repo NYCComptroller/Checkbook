@@ -98,6 +98,6 @@ $agency_list_other =
 
 
 print "<div class='agency-nav-dropdowns-parent'>";
-print $agency_list_other;
 print $agency_list;
+print $agency_list_other;
 print "</div>";
