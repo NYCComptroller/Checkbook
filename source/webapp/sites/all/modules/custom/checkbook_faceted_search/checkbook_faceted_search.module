@@ -102,7 +102,7 @@ function _checkbook_faceted_search_node_autocomplete(){
   
   foreach( $node->data['unchecked'] as $row ){
     if(isset($row[1]))
-      $output[] =  array("value"=>urlencode($row[0]), 'label'=>html_entity_decode($row[1]) . " (" . $row[2] . ")" );
+      $output[] =  array("value"=>urlencode(html_entity_decode($row[0],ENT_QUOTES)), 'label'=>html_entity_decode($row[1],ENT_QUOTES) . " (" . $row[2] . ")" );
   }  
 
   return drupal_json_output($output);
