@@ -1872,7 +1872,7 @@ body.page-payroll-employee-transactions #table_310{
     width:100%;
 }
 #block-block-12 a{color:#1F82C9;}
-#zone-footer .content div{
+#zone-footer .content div.footer-column{
     float:left;
     width:151px;
     margin-right:7px;
