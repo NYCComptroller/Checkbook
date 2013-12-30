@@ -190,8 +190,7 @@ if($display){
         	if($yearFromURL =="") {
         		$yearFromURL = _getRequestParamValue("calyear");
         	}
-
-            if($calYearSet){
+            if($calYearSet || preg_match('/transactions/',$_GET['q'])){
               $link = preg_replace("/year\/" . $yearFromURL . "/","calyear/" .  $value['year_id'],$q);
             }else{
               $link = preg_replace("/year\/" . $yearFromURL . "/","year/" .  $value['year_id'],$q);
