@@ -21,7 +21,7 @@
                                 "columns": [
                     "total_base_pay","total_overtime_pay","total_gross_pay"
                 ],
-               "seriesURLParamMap":{"vendor":"vendor_id","year":"year.year","agency":"agency_id","yeartype":"type_of_year"},
+               "seriesURLParamMap":{"vendor":"vendor_id","calyear":"year.year","year":"year.year","agency":"agency_id","yeartype":"type_of_year"},
                "allowedParams":["year.year","agency_id","type_of_year"],
                "seriesDefaultParameters":{"type_of_year":"B"}
             },
@@ -30,7 +30,7 @@
                                 "columns": [
                     "check_amount_sum"
                 ],
-               "seriesURLParamMap":{"vendor":"vendor_id","year":"year.year","agency":"agency_id","yeartype":"type_of_year"},
+               "seriesURLParamMap":{"vendor":"vendor_id","year":"year.year","calyear":"year.year","agency":"agency_id","yeartype":"type_of_year"},
                "allowedParams":["vendor_id","year.year","agency_id","type_of_year"],
                "seriesDefaultParameters":{"type_of_year":"B"}
             },
