@@ -165,8 +165,12 @@ if($display){
         if($value['year_value'] <= $filter_years['year_value'] && $value['year_value'] != '2010'){
             $display_text = 'FY '.$value['year_value'].' (Jul 1, '.($value['year_value']-1).' - Jun 30, '.$value['year_value'].')';
             $yearFromURL = _getRequestParamValue("year");
-
-            $link = preg_replace("/year\/" . $yearFromURL . "/","year/" .  $value['year_id'],$q);
+            if($yearFromURL ==''){
+            	$yearFromURL = _getRequestParamValue("calyear");
+            	$link = preg_replace("/calyear\/" . $yearFromURL . "/","year/" .  $value['year_id'],$q);
+            }else{
+            	$link = preg_replace("/year\/" . $yearFromURL . "/","year/" .  $value['year_id'],$q);
+            }
             $link = preg_replace("/yeartype\/./","yeartype/B",$link);
             $link = str_replace("/dept/".$deptId,"/dept/".$dept_Ids[$value['year_id']],$link);
             $link = str_replace("/expcategory/".$expCatId,"/expcategory/".$expCatIds[$value['year_id']],$link);
@@ -181,13 +185,17 @@ if($display){
                                         'value' => $value['year_id'].'~B',
                                         'selected' => $selected_fiscal_year);
         }
-        if($value['year_value'] <= $filter_years['cal_year_value'] ){        $yearFromURL = _getRequestParamValue("year");
+        if($value['year_value'] <= $filter_years['cal_year_value'] ){        
+        	$yearFromURL = _getRequestParamValue("year");
+        	if($yearFromURL =="") {
+        		$yearFromURL = _getRequestParamValue("calyear");
+        	}
+
             if($calYearSet){
               $link = preg_replace("/year\/" . $yearFromURL . "/","calyear/" .  $value['year_id'],$q);
             }else{
               $link = preg_replace("/year\/" . $yearFromURL . "/","year/" .  $value['year_id'],$q);
             }
-            
             if(preg_match("/expandBottomContURL/",$link) && preg_match("/spending/",$link)){
               $link_parts = explode("?expandBottomContURL=",$link);
               $link = $link_parts[0] . '?expandBottomContURL='. preg_replace("/\/year\//","/calyear/" ,$link_parts[1]);
