@@ -46,7 +46,7 @@ rsort($years);
   <tbody>
   <tr>
     <td width="240"><div>&nbsp;</div></td>
-    <td class="bb"><div>1997-2012<br>(average annual employment in thousands)</div></td>
+    <td class="bb"><div>1997-2013<br>(average annual employment in thousands)</div></td>
   </tr>
   </tbody>
 </table>
