@@ -65,7 +65,7 @@ rsort($years);
             <?php
             foreach ($years as $year){
                 echo "<th></th>";
-                if($year == 2012)
+                if($year == 2013)
                     echo "<th class='number'><div>" . $year . "<sup>(b)</sup></div></th>";
                 else
                     echo "<th class='number'><div>" . $year . "</div></th>";
