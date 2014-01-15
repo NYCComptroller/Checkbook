@@ -19,7 +19,7 @@
 */
 ?>
 <?php
-	echo "\n".'2002-2012 (annual averages in thousands)'."\n"."\n";
+	echo "\n".'2002-2013 (annual averages in thousands)'."\n"."\n";
     $header = 'Year';
     $header .=  ",Public Assistance" ;
     $header .=  ",SSI(a)" ;

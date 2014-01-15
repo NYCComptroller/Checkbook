@@ -35,7 +35,7 @@
     $header .= ',,,,,,(average annual employment in thousands),,,,,'."\n";
 
     foreach ($years as $year){
-        if($year == 2012)
+        if($year == 2013)
     	    $header = $header .  ",," . $year .'(b)' ;
         else
     	    $header = $header .  ",," . $year ;
