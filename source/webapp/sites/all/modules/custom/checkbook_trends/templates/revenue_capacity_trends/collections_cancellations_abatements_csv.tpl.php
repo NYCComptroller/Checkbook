@@ -20,7 +20,7 @@
 ?>
 <?php
    
-    echo "\n".",,".'"'."Percent of Levy through June 30, 2012".'"'."\n";
+    echo "\n".",,".'"'."Percent of Levy through June 30, 2013".'"'."\n";
     $header = 'Fiscal year';
 
     $header .=  ",,Tax Levy (in millions)" ;
