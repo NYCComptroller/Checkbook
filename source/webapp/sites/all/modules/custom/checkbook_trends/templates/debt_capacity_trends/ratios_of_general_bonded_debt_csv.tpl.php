@@ -21,9 +21,9 @@
 <?php
 	$header = 'Fiscal Year';
 
-    $header .=  ",,General Obligation Bonds (in millions)" ;
+    $header .=  ",General Obligation Bonds (in millions)" ;
     $header .=  ",Percentage of Actual Taxable Value of Property," ;
-    $header .=  ",,Per Capita General Obligations";
+    $header .=  ",Per Capita General Obligations";
 
 	echo $header . "\n";
 
@@ -33,9 +33,9 @@
         $percent_sign = ($count == 1) ? '%':'';
 
         $rowString = $row['fiscal_year'] ;
-        $rowString .= ','.$dollar_sign.',' . '"'. number_format($row['general_obligation_bonds']) .'"';
+        $rowString .= ',' . '"'. number_format($row['general_obligation_bonds']) .'"';
         $rowString .= ',' . '"'. number_format($row['percentage_atcual_taxable_property'], 2).'"'.','.$percent_sign;
-        $rowString .= ','.$dollar_sign.',' . '"'. number_format($row['per_capita_general_obligations']).'"';
+        $rowString .= ',' . '"'. number_format($row['per_capita_general_obligations']).'"';
 
         echo $rowString . "\n";
         $count++;

@@ -35,7 +35,7 @@
     	$header = $header .  ",," . $year ;
     }
 
-    $header .= "\n".',,,,,,,,(in thousands),,,,,';
+    $header .= "\n".',,,,,,,,(AMOUNT IN THOUSANDS),,,,,';
     echo $header . "\n";
 
     $count = 0;
@@ -48,7 +48,6 @@
         }
         $rowString = '"'.$row['category'].'"';
         foreach ($years as $year){
-            $rowString .= ",".$dollar_sign;
             $amount = '';
             if($row[$year]['amount'] > 0){
                $amount = '"'. number_format($row[$year]['amount']) .'"';

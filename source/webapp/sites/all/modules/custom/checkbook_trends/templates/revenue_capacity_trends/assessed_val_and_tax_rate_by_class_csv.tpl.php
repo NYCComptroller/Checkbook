@@ -35,7 +35,7 @@ foreach( $node->data as $row){
 rsort($years);
 	$header = 'Type of Property';
     foreach ($years as $year){
-    	$header = $header .  ",,Fiscal Year" . $year . " - Assessed Value (in millions)";
+    	$header = $header .  ",Fiscal Year" . $year . " - Assessed Value (in millions)";
     	$header = $header .  ",Fiscal Year" . $year . " - Percentage of Taxable Real Estate,";
     	$header = $header .  ",Fiscal Year" . $year . " - Direct Tax Rate,";
     }
@@ -77,7 +77,7 @@ rsort($years);
                 $row[$year]['direct_tax_rate'] = '';
             }
 
-             $rowString .= ',' . $dollar_sign . ',' .'"' . $row[$year]['assesed_value_million_amount'].'"';
+             $rowString .=  ',' .'"' . $row[$year]['assesed_value_million_amount'].'"';
 			 $rowString .= ',' .$row[$year]['percentage_taxable_real_estate'].','.$percent_sign_1;
 			 $rowString .= ',' .$row[$year]['direct_tax_rate'].$sup_script.','." ";
         }

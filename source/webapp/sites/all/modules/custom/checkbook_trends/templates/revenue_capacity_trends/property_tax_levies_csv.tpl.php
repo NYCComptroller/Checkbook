@@ -21,14 +21,14 @@
 <?php
 
 	$header = 'Fiscal year';
-    $header .=  ",,Taxes Levied for the Fiscal Year"  ;
-    $header .=  ",,Collected Within the Fiscal Year of the Levy - Amount"  ;
+    $header .=  ",Taxes Levied for the Fiscal Year"  ;
+    $header .=  ",Collected Within the Fiscal Year of the Levy - Amount"  ;
     $header .=  ",Collected Within the Fiscal Year of the Levy - Percentage of Levy,"  ;
-    $header .=  ",,Collected in Subsequent Years"  ;
-    $header .=  ",,Non-Cash Liquidations and Adjustments to Levy(1)"  ;
-    $header .=  ",,Total Collections and Adjustments to Date - Amount"  ;
+    $header .=  ",Collected in Subsequent Years"  ;
+    $header .=  ",Non-Cash Liquidations and Adjustments to Levy(1)"  ;
+    $header .=  ",Total Collections and Adjustments to Date - Amount"  ;
     $header .=  ",Total Collections and Adjustments to Date - Percentage of Levy,"  ;
-    $header .=  ",,".'"'."Remaining Uncollected July 1, 2011".'"'  ;
+    $header .=  ",".'"'."Remaining Uncollected July 1, 2011".'"'  ;
 	echo $header . "\n";
 
     $count = 1;
@@ -37,14 +37,14 @@
         $percent_sign = ($count == 1)?"%":"";
 
         $rowString = $row['fiscal_year'] ;
-        $rowString .= ',' .$dollar_sign .',' . '"'. number_format($row['tax_levied']).'"';
-        $rowString .= ',' .$dollar_sign .',' . '"'.number_format($row['amount']).'"';
+        $rowString .= ',' . '"'. number_format($row['tax_levied']).'"';
+        $rowString .= ',' . '"'.number_format($row['amount']).'"';
         $rowString .= ',' . '"'.number_format($row['percentage_levy'],2).'"'. ',' . $percent_sign;
-        $rowString .= ',' .$dollar_sign .',' . '"'.(($row['collected_subsequent_years']>0)?number_format($row['collected_subsequent_years']):'-').'"';
-        $rowString .= ',' .$dollar_sign .',' .'"'. number_format($row['levy_non_cash_adjustments']).'"';
-        $rowString .= ',' .$dollar_sign .',' . '"'.number_format($row['collected_amount']).'"';
+        $rowString .= ',' . '"'.(($row['collected_subsequent_years']>0)?number_format($row['collected_subsequent_years']):'-').'"';
+        $rowString .= ',' .'"'. number_format($row['levy_non_cash_adjustments']).'"';
+        $rowString .= ',' . '"'.number_format($row['collected_amount']).'"';
         $rowString .= ',' . '"'.number_format($row['collected_percentage_levy'],2).'"'. ',' . $percent_sign;
-        $rowString .= ',' .$dollar_sign .',' . '"'.number_format($row['uncollected_amount']).'"';
+        $rowString .= ',' . '"'.number_format($row['uncollected_amount']).'"';
 
         echo $rowString . "\n";
         $count++;

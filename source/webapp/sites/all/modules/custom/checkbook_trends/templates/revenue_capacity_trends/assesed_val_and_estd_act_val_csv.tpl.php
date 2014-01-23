@@ -21,17 +21,17 @@
 <?php
 	$header = 'Fiscal year';
 
-    $header .=  ",,Class One" ;
-    $header .=  ",,Class Two" ;
-    $header .=  ",,Class Three";
-    $header .=  ",,Class Four";
+    $header .=  ",Class One" ;
+    $header .=  ",Class Two" ;
+    $header .=  ",Class Three";
+    $header .=  ",Class Four";
 
-    $header .=  ",,Less Tax Exempt Property";
-    $header .=  ",,Total Taxable Assessed Value";
-    $header .=  ",,Total Direct Tax Rate(1)";
-    $header .=  ",,Estimated Actual Taxable Value";
+    $header .=  ",Less Tax Exempt Property";
+    $header .=  ",Total Taxable Assessed Value";
+    $header .=  ",Total Direct Tax Rate(1)";
+    $header .=  ",Estimated Actual Taxable Value";
     $header .=  ",Assessed Value as a Percentage of Actual Value,";
-    $header .= "\n".",,,,,,,,,,,(in millions),,,,,,,,";
+    $header .= "\n".",,,,,,,(AMOUNT IN MILLIONS),,,,,";
 	echo $header . "\n\n";
 
     $count = 1;
@@ -40,14 +40,14 @@
         $percent_sign = ($count == 1) ? '%' : '';
 
         $rowString = $row['fiscal_year'] ;
-        $rowString .= ','.$dollar_sign.',' . '"' . number_format($row['class_one'],1,'.',',') . '"';
-        $rowString .= ','.$dollar_sign.',' . '"' . number_format($row['class_two'],1,'.',',') . '"';
-        $rowString .= ','.$dollar_sign.',' . '"' . number_format($row['class_three'],1,'.',',') . '"';
-        $rowString .= ','.$dollar_sign.',' . '"' . number_format($row['class_four'],1,'.',',') . '"';
-        $rowString .= ','.$dollar_sign.',' . '"' . number_format($row['less_tax_exempt_property'],1,'.',',') . '"';
-        $rowString .= ','.$dollar_sign.',' . '"' . number_format($row['total_taxable_assesed_value'],1,'.',',') . '"';
-        $rowString .= ','.$dollar_sign.',' . '"' . number_format($row['total_direct_tax_1'],2) . '"';
-        $rowString .= ','.$dollar_sign.',' . '"' . number_format($row['estimated_actual_taxable_value'],1,'.',',') . '"';
+        $rowString .= ',' . '"' . number_format($row['class_one'],1,'.',',') . '"';
+        $rowString .= ',' . '"' . number_format($row['class_two'],1,'.',',') . '"';
+        $rowString .= ',' . '"' . number_format($row['class_three'],1,'.',',') . '"';
+        $rowString .= ',' . '"' . number_format($row['class_four'],1,'.',',') . '"';
+        $rowString .= ',' . '"' . number_format($row['less_tax_exempt_property'],1,'.',',') . '"';
+        $rowString .= ',' . '"' . number_format($row['total_taxable_assesed_value'],1,'.',',') . '"';
+        $rowString .= ',' . '"' . number_format($row['total_direct_tax_1'],2) . '"';
+        $rowString .= ',' . '"' . number_format($row['estimated_actual_taxable_value'],1,'.',',') . '"';
         $rowString .= ',' . '"' . number_format($row['assesed_value_percentage'],2) .'"' .','.$percent_sign;
 
         echo $rowString . "\n";
