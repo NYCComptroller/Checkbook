@@ -33,17 +33,17 @@
 
 	$header = ',,,,,,,,Fiscal Year,,,,,,,'."\n";
     foreach ($years as $year){
-    	$header .=  ",," . $year ;
+    	$header .=  "," . $year ;
     }
 	echo $header . "\n";
-    echo ",,,,,,,,,(in millions),,,,,,,"."\n"."\n";
+    echo ",,,,,,(AMOUNT IN MILLIONS),,,,,,,"."\n"."\n";
 
     $count = 1;
     foreach( $table_rows as $row){
         $dollar_sign = ($count == 1 || $count ==  count($table_rows)) ? '$' : '';
         $rowString = '"'.$row['category'].'"' ;
         foreach ($years as $year){
-            $rowString .= ',' .$dollar_sign . ',' . '"'. (($row[$year]['amount'] >0) ?number_format($row[$year]['amount']) : '') .'"';
+            $rowString .=  ',' . '"'. (($row[$year]['amount'] >0) ?number_format($row[$year]['amount']) : '') .'"';
         }
         echo $rowString . "\n";
         $count++;
