@@ -34,7 +34,7 @@
     foreach ($years as $year){
     	$header .= "," . $year ;
     }
-    $header .= "\n".',,,,,,(AMOUNT IN THOUSANDS),,,,,'."\n";
+    $header .= "\n".',,,,,,(AMOUNTS IN THOUSANDS),,,,,'."\n";
 	echo $header . "\n";
 
     $count = 1;

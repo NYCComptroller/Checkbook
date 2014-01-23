@@ -31,7 +31,7 @@
     $header .=  ",Total Direct Tax Rate(1)";
     $header .=  ",Estimated Actual Taxable Value";
     $header .=  ",Assessed Value as a Percentage of Actual Value,";
-    $header .= "\n".",,,,,,,(AMOUNT IN MILLIONS),,,,,";
+    $header .= "\n".",,,,,,,(AMOUNTS IN MILLIONS),,,,,";
 	echo $header . "\n\n";
 
     $count = 1;
