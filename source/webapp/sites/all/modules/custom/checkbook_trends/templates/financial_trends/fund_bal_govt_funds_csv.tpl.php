@@ -35,7 +35,7 @@
     	$header = $header .  "," . $year ;
     }
 
-    $header .= "\n".',,,,,,,,(AMOUNT IN THOUSANDS),,,,,';
+    $header .= "\n".',,,,,,,,(AMOUNTS IN THOUSANDS),,,,,';
     echo $header . "\n";
     $count = 0;
     foreach( $table_rows as $row){
