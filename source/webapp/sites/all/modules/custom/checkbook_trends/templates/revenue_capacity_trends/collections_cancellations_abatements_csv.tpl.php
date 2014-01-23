@@ -28,7 +28,7 @@
     $header .=  ",Cancellations,";
     $header .=  ",Abatements and Discounts(1),";
 
-    $header .=  ",".'"'."Uncollected Balance June 30, 2011".'"'.',';
+    $header .=  ",".'"'."Uncollected Balance June 30, 2013".'"'.',';
 
 	echo $header . "\n";
 
