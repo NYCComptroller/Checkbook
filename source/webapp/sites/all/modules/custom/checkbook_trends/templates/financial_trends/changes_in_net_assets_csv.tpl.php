@@ -32,7 +32,7 @@
 	rsort($years);
 	$header = ',,,,,,,,Fiscal Year,,,,,'."\n";
     foreach ($years as $year){
-    	$header = $header .  ",," . $year ;
+    	$header = $header .  "," . $year ;
     }
 
     $header .= "\n".',,,,,,,,(AMOUNT IN THOUSANDS),,,,,';
