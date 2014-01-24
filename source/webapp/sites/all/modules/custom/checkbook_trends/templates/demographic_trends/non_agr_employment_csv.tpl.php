@@ -65,7 +65,7 @@
                 }
             }
             
-            $rowString .= ',,' . $amount;
+            $rowString .= ',' . $amount;
         }
         $i++;
         echo '"'.$row['category'].'"'.$rowString . "\n";
