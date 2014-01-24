@@ -37,7 +37,7 @@ rsort($years);
     foreach ($years as $year){
     	$header = $header .  ",Fiscal Year" . $year . " - Assessed Value (in millions)";
     	$header = $header .  ",Fiscal Year" . $year . " - Percentage of Taxable Real Estate,";
-    	$header = $header .  ",Fiscal Year" . $year . " - Direct Tax Rate,";
+    	$header = $header .  ",Fiscal Year" . $year . " - Direct Tax Rate";
     }
 	echo $header . "\n";
 
@@ -79,7 +79,7 @@ rsort($years);
 
              $rowString .=  ',' .'"' . $row[$year]['assesed_value_million_amount'].'"';
 			 $rowString .= ',' .$row[$year]['percentage_taxable_real_estate'].','.$percent_sign_1;
-			 $rowString .= ',' .$row[$year]['direct_tax_rate'].$sup_script.','." ";
+			 $rowString .= ',' .$row[$year]['direct_tax_rate'].$sup_script.''." ";
         }
         echo $rowString . "\n";
         $count++;
