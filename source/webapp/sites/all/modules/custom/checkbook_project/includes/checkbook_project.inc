@@ -138,7 +138,7 @@ function _get_tooltip_markup($text, $length = 20, $no_of_lines = 2){
 /*  if(trim(strip_tags($text)) == "" or $text == null   )
     return "<div class='blanktext'>-</div>";
  */ 
-  return _break_text_custom($text, $length, $no_of_lines );
+  return _break_text_custom(html_entity_decode($text,ENT_QUOTES), $length, $no_of_lines );
   //return "<span title='" . $text . "'>". str_replace(" ","&nbsp;", $text ) . "</span>";
   
 }
@@ -156,7 +156,7 @@ function _break_text_custom($text, $length = 20, $no_of_lines = 2){
 
   $index= 0 ;
   if(strlen($text_array[0]) >= 2 * $remaining_original ){
-    return "<span title='" . $text . "'>". substr($text, 0, $length -3 ) . "...</span>";
+    return "<span title='" . htmlentities($text,ENT_QUOTES) . "'>". substr(htmlentities($text), 0, $length -3 ) . "...</span>";
   }
   else{
     foreach($text_array as $key=>$value){
@@ -191,11 +191,10 @@ function _break_text_custom($text, $length = 20, $no_of_lines = 2){
       }
       $index +=1;
     }
-
     if($offset < strlen($text) )
-      return "<span title='" . $text . "'>". substr($text, 0, $offset ) . "...</span>";
+      return "<span title='" . htmlentities($text,ENT_QUOTES) . "'>". substr(htmlentities($text), 0, $offset ) . "...</span>";
     else
-      return "<span title='" . $text . "'>". substr($text, 0, $offset ) . "</span>";
+      return "<span title='" . htmlentities($text,ENT_QUOTES) . "'>". substr(htmlentities($text), 0, $offset ) . "</span>";
   }
 
 
@@ -207,6 +206,7 @@ function _break_text_custom($text, $length = 20, $no_of_lines = 2){
  * @param integer $length
  */
 function _break_text_custom2($text, $length = 18){
+  $text = html_entity_decode($text,ENT_QUOTES);	
   $text_array = explode(" ",$text);
   $breaked_text = "";
   foreach($text_array as $key => $value){
@@ -215,7 +215,7 @@ function _break_text_custom2($text, $length = 18){
     $breaked_text = $breaked_text . " " . $value ;
   } 
 
-  return $breaked_text;
+  return htmlentities($breaked_text);
 
 }
 
