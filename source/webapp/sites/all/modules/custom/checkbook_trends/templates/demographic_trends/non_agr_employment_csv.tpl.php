@@ -36,9 +36,9 @@
 
     foreach ($years as $year){
         if($year == 2013)
-    	    $header = $header .  ",," . $year .'(b)' ;
+    	    $header = $header .  "," . $year .'(b)' ;
         else
-    	    $header = $header .  ",," . $year ;
+    	    $header = $header .  "," . $year ;
     }
 	echo $header . "\n";
     $i = 0;
