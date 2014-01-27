@@ -32,10 +32,10 @@
 	rsort($years);
 	$header = ',,,,,,,,Fiscal Year,,,,,'."\n";
     foreach ($years as $year){
-    	$header = $header .  ",," . $year ;
+    	$header = $header .  "," . $year ;
     }
 
-    $header .= "\n".',,,,,,,,(in thousands),,,,,';
+    $header .= "\n".',,,,,,,,(AMOUNTS IN THOUSANDS),,,,,';
     echo $header . "\n";
     $count = 0;
 
@@ -47,7 +47,6 @@
         }
         $rowString = '"'.$row['category'].'"';
         foreach ($years as $year){
-            $rowString .= ",".$dollar_sign;
             $amount = '';
             if($count == count($table_rows)){
                 $amount = $row[$year]['amount'] . '%';

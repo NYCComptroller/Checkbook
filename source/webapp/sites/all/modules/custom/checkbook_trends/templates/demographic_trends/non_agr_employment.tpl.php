@@ -46,7 +46,7 @@ rsort($years);
   <tbody>
   <tr>
     <td width="240"><div>&nbsp;</div></td>
-    <td class="bb"><div>1997-2012<br>(average annual employment in thousands)</div></td>
+    <td class="bb"><div>1997-2013<br>(average annual employment in thousands)</div></td>
   </tr>
   </tbody>
 </table>
@@ -65,7 +65,7 @@ rsort($years);
             <?php
             foreach ($years as $year){
                 echo "<th></th>";
-                if($year == 2012)
+                if($year == 2013)
                     echo "<th class='number'><div>" . $year . "<sup>(b)</sup></div></th>";
                 else
                     echo "<th class='number'><div>" . $year . "</div></th>";

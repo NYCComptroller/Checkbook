@@ -31,14 +31,14 @@
 	}
 	rsort($years);
 	$header = '';
-    $header .= ',,,,,,1997-2012,,,,,'."\n";
+    $header .= ',,,,,,1997-2013,,,,,'."\n";
     $header .= ',,,,,,(average annual employment in thousands),,,,,'."\n";
 
     foreach ($years as $year){
-        if($year == 2012)
-    	    $header = $header .  ",," . $year .'(b)' ;
+        if($year == 2013)
+    	    $header = $header .  "," . $year .'(b)' ;
         else
-    	    $header = $header .  ",," . $year ;
+    	    $header = $header .  "," . $year ;
     }
 	echo $header . "\n";
     $i = 0;
@@ -65,7 +65,7 @@
                 }
             }
             
-            $rowString .= ',,' . $amount;
+            $rowString .= ',' . $amount;
         }
         $i++;
         echo '"'.$row['category'].'"'.$rowString . "\n";

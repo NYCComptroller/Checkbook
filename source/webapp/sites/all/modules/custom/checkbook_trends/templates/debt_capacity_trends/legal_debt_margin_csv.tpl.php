@@ -32,9 +32,9 @@
 	rsort($years);
 	$header = ',,,,,,Fiscal Year,,,,,'."\n";
     foreach ($years as $year){
-    	$header .= ",," . $year ;
+    	$header .= "," . $year ;
     }
-    $header .= "\n".',,,,,,(in thousands),,,,,'."\n";
+    $header .= "\n".',,,,,,(AMOUNTS IN THOUSANDS),,,,,'."\n";
 	echo $header . "\n";
 
     $count = 1;
@@ -45,17 +45,17 @@
         foreach ($years as $year){
             $amount = '';
             if($count == count($table_rows)){
-                $amount = $dollar_sign.','.$row[$year]['amount'] . " %";
+                $amount = $row[$year]['amount'] . " %";
             }else{
                 if($row[$year]['amount'] > 0){
-                   $amount = $dollar_sign.','.'"'. number_format($row[$year]['amount']) .'"';
+                   $amount = '"'. number_format($row[$year]['amount']) .'"';
                 }else if($row[$year]['amount'] < 0){
-                   $amount = $dollar_sign.','.'"' . "(" . number_format(abs($row[$year]['amount'])) . ")" . '"';
+                   $amount = '"' . "(" . number_format(abs($row[$year]['amount'])) . ")" . '"';
                 }else if($row[$year]['amount'] == 0){
                     if(strpos($row['category'], ':'))
-                        $amount = $dollar_sign.','.'';
+                        $amount = '';
                     else
-                        $amount = $dollar_sign.','.'"-"';
+                        $amount = '"-"';
                 }
             }
             
