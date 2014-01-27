@@ -1272,3 +1272,7 @@ ul#site-overview li {
 body.context-resources h1, body.page-node-503 h1, body.page-node-504 h1, body.page-node-505 h1, body.page-node-510 h1, body.page-node-511 h1{
     line-height: 28px;
 }
+
+body.page-featured-trends #featured-trends-thumbnails{
+    margin-top: 20px;
+}
