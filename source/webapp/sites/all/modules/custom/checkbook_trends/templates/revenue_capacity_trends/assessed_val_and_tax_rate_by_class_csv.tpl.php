@@ -35,9 +35,9 @@ foreach( $node->data as $row){
 rsort($years);
 	$header = 'Type of Property';
     foreach ($years as $year){
-    	$header = $header .  ",,Fiscal Year" . $year . " - Assessed Value (in millions)";
+    	$header = $header .  ",Fiscal Year" . $year . " - Assessed Value (in millions)";
     	$header = $header .  ",Fiscal Year" . $year . " - Percentage of Taxable Real Estate,";
-    	$header = $header .  ",Fiscal Year" . $year . " - Direct Tax Rate,";
+    	$header = $header .  ",Fiscal Year" . $year . " - Direct Tax Rate";
     }
 	echo $header . "\n";
 
@@ -77,9 +77,9 @@ rsort($years);
                 $row[$year]['direct_tax_rate'] = '';
             }
 
-             $rowString .= ',' . $dollar_sign . ',' .'"' . $row[$year]['assesed_value_million_amount'].'"';
+             $rowString .=  ',' .'"' . $row[$year]['assesed_value_million_amount'].'"';
 			 $rowString .= ',' .$row[$year]['percentage_taxable_real_estate'].','.$percent_sign_1;
-			 $rowString .= ',' .$row[$year]['direct_tax_rate'].$sup_script.','." ";
+			 $rowString .= ',' .$row[$year]['direct_tax_rate'].$sup_script.''." ";
         }
         echo $rowString . "\n";
         $count++;
@@ -87,6 +87,6 @@ rsort($years);
 
  echo "\n\n"." (1) Represents the weighted average of the four classes of real property."."\n".
     "Note: Property in New York City is reassessed once every year on average. The City assesses property at approximately 40 percent of Market Value for commercial and industrial property and 20 percent of Market Value for residential property."."\n".
-'"'."Sources: Resolutions of the City Council and The Annual Report of The New York City Property Tax Fiscal Year 2012. ".'"';
+'"'."Sources: Resolutions of the City Council and The Annual Report of The New York City Property Tax Fiscal Year 2013. ".'"';
 ?>
 

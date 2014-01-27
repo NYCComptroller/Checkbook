@@ -21,15 +21,15 @@
 <?php
 	$header = 'Fiscal year';
 
-    $header .=  ",,Rental Revenue" ;
-    $header .=  ",,Interest Revenue" ;
-    $header .=  ",,Total Revenue";
+    $header .=  ",Rental Revenue" ;
+    $header .=  ",Interest Revenue" ;
+    $header .=  ",Total Revenue";
 
-    $header .=  ",,Debt Service - Interest";
-    $header .=  ",,Debt Service - Principal";
-    $header .=  ",,Debt Service - Total";
-    $header .=  ",,Operating Expenses";
-    $header .=  ",,Total to be Covered";
+    $header .=  ",Debt Service - Interest";
+    $header .=  ",Debt Service - Principal";
+    $header .=  ",Debt Service - Total";
+    $header .=  ",Operating Expenses";
+    $header .=  ",Total to be Covered";
     $header .=  ",Coverage Ratio";
 
 	echo $header . "\n";
@@ -37,14 +37,14 @@
     foreach( $node->data as $row){
         $dollar_sign = ($count == 1) ? '$' : '';
         $rowString = $row['fiscal_year'] ;
-        $rowString .= ','.$dollar_sign.',"' . number_format($row['rental_revenue']).'"';
-        $rowString .= ','.$dollar_sign.',"' . number_format($row['interest_revenue']).'"';
-        $rowString .= ','.$dollar_sign.',"' . number_format($row['total_revenue']).'"';
-        $rowString .= ','.$dollar_sign.',"' . number_format($row['interest']).'"';
-        $rowString .= ','.$dollar_sign.',"' . number_format($row['pricipal']).'"';
-        $rowString .= ','.$dollar_sign.',"' . number_format($row['total']).'"';
-        $rowString .= ','.$dollar_sign.',"' . number_format($row['operating_expenses']).'"';
-        $rowString .= ','.$dollar_sign.',"' . number_format($row['total_to_be_covered']).'"';
+        $rowString .= ',"' . number_format($row['rental_revenue']).'"';
+        $rowString .= ',"' . number_format($row['interest_revenue']).'"';
+        $rowString .= ',"' . number_format($row['total_revenue']).'"';
+        $rowString .= ',"' . number_format($row['interest']).'"';
+        $rowString .= ',"' . number_format($row['pricipal']).'"';
+        $rowString .= ',"' . number_format($row['total']).'"';
+        $rowString .= ',"' . number_format($row['operating_expenses']).'"';
+        $rowString .= ',"' . number_format($row['total_to_be_covered']).'"';
         $rowString .= ',' .  number_format($row['coverage_ratio'],2);
 
         echo $rowString . "\n";

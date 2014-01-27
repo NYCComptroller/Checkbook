@@ -28,8 +28,10 @@ $q= preg_replace("/\/month\/[^\/]*/","", $q);
 
 if(preg_match("/trends/",$q)){
   $q = "/spending_landing/yeartype/B/year/" ;
+  $trends = true;
 }else if(preg_match("/smart_search/",$q)){
   $q = "/spending_landing/yeartype/B/year/" ;
+  $search = true;
 }
 else if(preg_match("/contracts_pending_exp_landing/",$q)){
   $q =preg_replace("/contracts_pending_exp_landing/","contracts_landing/status/A",$q );
@@ -163,47 +165,56 @@ if($display){
         }
     
         if($value['year_value'] <= $filter_years['year_value'] && $value['year_value'] != '2010'){
-            $display_text = 'FY '.$value['year_value'].' (Jul 1, '.($value['year_value']-1).' - Jun 30, '.$value['year_value'].')';
-            $yearFromURL = _getRequestParamValue("year");
-            if($yearFromURL ==''){
-            	$yearFromURL = _getRequestParamValue("calyear");
-            	$link = preg_replace("/calyear\/" . $yearFromURL . "/","year/" .  $value['year_id'],$q);
-            }else{
-            	$link = preg_replace("/year\/" . $yearFromURL . "/","year/" .  $value['year_id'],$q);
-            }
-            $link = preg_replace("/yeartype\/./","yeartype/B",$link);
-            $link = str_replace("/dept/".$deptId,"/dept/".$dept_Ids[$value['year_id']],$link);
-            $link = str_replace("/expcategory/".$expCatId,"/expcategory/".$expCatIds[$value['year_id']],$link);
-
-            if(preg_match("/expandBottomContURL/",$link) && preg_match("/spending/",$link)){
-              $link_parts = explode("?expandBottomContURL=",$link);
-              $link = $link_parts[0] . '?expandBottomContURL='. preg_replace("/\/calyear\//","/year/" ,$link_parts[1]);
-            }
+        	$display_text = 'FY '.$value['year_value'].' (Jul 1, '.($value['year_value']-1).' - Jun 30, '.$value['year_value'].')';        	 
+        	if($trends || $search){
+        		$link = $q .$value['year_id'] ; 
+        	}else{
+        		
+	            $yearFromURL = _getRequestParamValue("year");
+	            if($yearFromURL ==''){
+	            	$yearFromURL = _getRequestParamValue("calyear");
+	            	$link = preg_replace("/calyear\/" . $yearFromURL . "/","year/" .  $value['year_id'],$q);
+	            }else{
+	            	$link = preg_replace("/year\/" . $yearFromURL . "/","year/" .  $value['year_id'],$q);
+	            }
+	            $link = preg_replace("/yeartype\/./","yeartype/B",$link);
+	            $link = str_replace("/dept/".$deptId,"/dept/".$dept_Ids[$value['year_id']],$link);
+	            $link = str_replace("/expcategory/".$expCatId,"/expcategory/".$expCatIds[$value['year_id']],$link);
+	
+	            if(preg_match("/expandBottomContURL/",$link) && preg_match("/spending/",$link)){
+	              $link_parts = explode("?expandBottomContURL=",$link);
+	              $link = $link_parts[0] . '?expandBottomContURL='. preg_replace("/\/calyear\//","/year/" ,$link_parts[1]);
+	            }
+        	}
 
             $fiscal_year_data_array[] = array('display_text' =>$display_text ,
                                          'link' => $link,
                                         'value' => $value['year_id'].'~B',
                                         'selected' => $selected_fiscal_year);
         }
-        if($value['year_value'] <= $filter_years['cal_year_value'] ){        
-        	$yearFromURL = _getRequestParamValue("year");
-        	if($yearFromURL =="") {
-        		$yearFromURL = _getRequestParamValue("calyear");
+        if($value['year_value'] <= $filter_years['cal_year_value'] ){  
+        	if($trends || $search){
+        		$link = $q .$value['year_id'] ;
+        		$link = "/spending_landing/yeartype/C/year/" .  $value['year_id'];
+        	}else{      
+	        	$yearFromURL = _getRequestParamValue("year");
+	        	if($yearFromURL =="") {
+	        		$yearFromURL = _getRequestParamValue("calyear");
+	        	}
+	            if($calYearSet || preg_match('/transactions/',$_GET['q'])){
+	              $link = preg_replace("/year\/" . $yearFromURL . "/","calyear/" .  $value['year_id'],$q);
+	            }else{
+	              $link = preg_replace("/year\/" . $yearFromURL . "/","year/" .  $value['year_id'],$q);
+	            }
+	            if(preg_match("/expandBottomContURL/",$link) && preg_match("/spending/",$link)){
+	              $link_parts = explode("?expandBottomContURL=",$link);
+	              $link = $link_parts[0] . '?expandBottomContURL='. preg_replace("/\/year\//","/calyear/" ,$link_parts[1]);
+	            }
+	            
+	            $link = preg_replace("/yeartype\/./","yeartype/C",$link);
+	            $link = str_replace("/dept/".$deptId,"/dept/".$dept_Ids[$value['year_id']],$link);
+	            $link = str_replace("/expcategory/".$expCatId,"/expcategory/".$expCatIds[$value['year_id']],$link);
         	}
-            if($calYearSet || preg_match('/transactions/',$_GET['q'])){
-              $link = preg_replace("/year\/" . $yearFromURL . "/","calyear/" .  $value['year_id'],$q);
-            }else{
-              $link = preg_replace("/year\/" . $yearFromURL . "/","year/" .  $value['year_id'],$q);
-            }
-            if(preg_match("/expandBottomContURL/",$link) && preg_match("/spending/",$link)){
-              $link_parts = explode("?expandBottomContURL=",$link);
-              $link = $link_parts[0] . '?expandBottomContURL='. preg_replace("/\/year\//","/calyear/" ,$link_parts[1]);
-            }
-            
-            $link = preg_replace("/yeartype\/./","yeartype/C",$link);
-            $link = str_replace("/dept/".$deptId,"/dept/".$dept_Ids[$value['year_id']],$link);
-            $link = str_replace("/expcategory/".$expCatId,"/expcategory/".$expCatIds[$value['year_id']],$link);
-
             $calendar_year_data_array[] = array('display_text' => 'CY '.$value['year_value'].' (Jan 1, '.$value['year_value'].' - Dec 31, '.$value['year_value'].')',
                                                 'value' => $value['year_id'].'~C',
                                               'link' => $link,
@@ -211,7 +222,6 @@ if($display){
                                             );
         }
     }
-    
     $year_data_array = array_merge($fiscal_year_data_array,$calendar_year_data_array);
     $year_list = "<select id='year_list'>";
     foreach($year_data_array as $key => $value){

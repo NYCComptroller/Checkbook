@@ -20,15 +20,15 @@
 ?>
 <?php
    
-    echo "\n".",,".'"'."Percent of Levy through June 30, 2012".'"'."\n";
+    echo "\n".",,".'"'."Percent of Levy through June 30, 2013".'"'."\n";
     $header = 'Fiscal year';
 
-    $header .=  ",,Tax Levy (in millions)" ;
+    $header .=  ",Tax Levy (in millions)" ;
     $header .=  ",Collections,";
     $header .=  ",Cancellations,";
     $header .=  ",Abatements and Discounts(1),";
 
-    $header .=  ",".'"'."Uncollected Balance June 30, 2011".'"'.',';
+    $header .=  ",".'"'."Uncollected Balance June 30, 2013".'"'.',';
 
 	echo $header . "\n";
 
@@ -38,7 +38,7 @@
         $percent_sign = ($count == 1) ? '%' : '';
 
         $rowString = $row['fiscal_year'] ;
-        $rowString .= ','.$dollar_sign.',' . '"' .number_format($row['tax_levy'],1,'.',',').(($row['fiscal_year']=='2003')?'(2)':'') . '"';
+        $rowString .= ',' . '"' .number_format($row['tax_levy'],1,'.',',').(($row['fiscal_year']=='2003')?'(2)':'') . '"';
         $rowString .= ',' . '"' . number_format($row['collection'],1) . '"'.','.$percent_sign;
         $rowString .= ',' . '"' . number_format($row['cancellations'],1) . '"'.','.$percent_sign;
         $rowString .= ',' . '"' . number_format($row['abatement_and_discounts_1'],1) . '"'.','.$percent_sign;

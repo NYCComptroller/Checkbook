@@ -19,22 +19,22 @@
 */
 ?>
 <?php  
-    $header .= ",,,,,,,,".'"'.'(AMOUNTS IN MILLIONS)'.'"'.",,,,". "\n";
+    $header .= ",,,,".'"'.'(AMOUNTS IN MILLIONS)'.'"'.",,,,". "\n";
 	$header .= 'Fiscal year';
-    $header .=  ",,General Obligation Bonds"  ;
-    $header .=  ",,Revenue Bonds"  ;
-    $header .=  ",,ECF"  ;
-    $header .=  ",,MAC Debt"  ;
-    $header .=  ",,TFA"  ;
-    $header .=  ",,TSASC Debt"  ;
-    $header .=  ",,STAR"  ;
-    $header .=  ",,FSC"  ;
-    $header .=  ",,SFC Debt"  ;
-    $header .=  ",,HYIC Bonds and Notes"  ;
-    $header .=  ",,Capital Leases Obligations"  ;
-    $header .=  ",,IDA Bonds"  ;
-    $header .=  ",,Treasury Obligations"  ;
-    $header .=  ",,Total Primary Government"  ;
+    $header .=  ",General Obligation Bonds"  ;
+    $header .=  ",Revenue Bonds"  ;
+    $header .=  ",ECF"  ;
+    $header .=  ",MAC Debt"  ;
+    $header .=  ",TFA"  ;
+    $header .=  ",TSASC Debt"  ;
+    $header .=  ",STAR"  ;
+    $header .=  ",FSC"  ;
+    $header .=  ",SFC Debt"  ;
+    $header .=  ",HYIC Bonds and Notes"  ;
+    $header .=  ",Capital Leases Obligations"  ;
+    $header .=  ",IDA Bonds"  ;
+    $header .=  ",Treasury Obligations"  ;
+    $header .=  ",Total Primary Government"  ;
 	echo $header . "\n";
 
         $count = 1;
@@ -42,26 +42,26 @@
             $dollar_symbol = ($count ==1 )? '$':'';
             $count++;
         $rowString = $row['fiscal_year'] ;
-        $rowString .= ','.$dollar_symbol.','  . '"' . (($row['general_obligation_bonds']>0)?number_format($row['general_obligation_bonds']):'-') . '"';
-        $rowString .= ','.$dollar_symbol.','  . '"'. (($row['revenue_bonds']>0)?number_format($row['revenue_bonds']):'-') . '"';
-        $rowString .= ','.$dollar_symbol.','  . '"'. (($row['ecf']>0)?number_format($row['ecf']):'-') . '"';
-        $rowString .= ','.$dollar_symbol.','  . '"'. (($row['mac_debt']>0)?number_format($row['mac_debt']):'-') . '"';
-        $rowString .= ','.$dollar_symbol.','  . '"'. (($row['tfa']>0)?number_format($row['tfa']):'-') . '"';
-        $rowString .= ','.$dollar_symbol.','  . '"'. (($row['tsasc_debt']>0)?number_format($row['tsasc_debt']):'-') . '"';
-        $rowString .= ','.$dollar_symbol.','  . '"'. (($row['star']>0)?number_format($row['star']):'-') . '"';
-        $rowString .= ','.$dollar_symbol.','  . '"'. (($row['fsc']>0)?number_format($row['fsc']):'-') . '"';
-        $rowString .= ','.$dollar_symbol.','  . '"'. (($row['sfc_debt']>0)?number_format($row['sfc_debt']):'-') . '"';
-        $rowString .= ','.$dollar_symbol.','  . '"'. (($row['hyic_bonds_notes']>0)?number_format($row['hyic_bonds_notes']):'-') . '"';
-        $rowString .= ','.$dollar_symbol.','  . '"'. (($row['capital_leases_obligations']>0)?number_format($row['capital_leases_obligations']):'-') . '"';
-        $rowString .= ','.$dollar_symbol.','  . '"'. (($row['ida_bonds']>0)?number_format($row['ida_bonds']):'-') . '"';
+        $rowString .= ','  . '"' . (($row['general_obligation_bonds']>0)?number_format($row['general_obligation_bonds']):'-') . '"';
+        $rowString .= ','  . '"'. (($row['revenue_bonds']>0)?number_format($row['revenue_bonds']):'-') . '"';
+        $rowString .= ','  . '"'. (($row['ecf']>0)?number_format($row['ecf']):'-') . '"';
+        $rowString .= ','  . '"'. (($row['mac_debt']>0)?number_format($row['mac_debt']):'-') . '"';
+        $rowString .= ','  . '"'. (($row['tfa']>0)?number_format($row['tfa']):'-') . '"';
+        $rowString .= ','  . '"'. (($row['tsasc_debt']>0)?number_format($row['tsasc_debt']):'-') . '"';
+        $rowString .= ','  . '"'. (($row['star']>0)?number_format($row['star']):'-') . '"';
+        $rowString .= ','  . '"'. (($row['fsc']>0)?number_format($row['fsc']):'-') . '"';
+        $rowString .= ','  . '"'. (($row['sfc_debt']>0)?number_format($row['sfc_debt']):'-') . '"';
+        $rowString .= ','  . '"'. (($row['hyic_bonds_notes']>0)?number_format($row['hyic_bonds_notes']):'-') . '"';
+        $rowString .= ','  . '"'. (($row['capital_leases_obligations']>0)?number_format($row['capital_leases_obligations']):'-') . '"';
+        $rowString .= ','  . '"'. (($row['ida_bonds']>0)?number_format($row['ida_bonds']):'-') . '"';
         if($row['treasury_obligations'] < 0 )
-            $rowString .= ','.$dollar_symbol.','  . '"'. "(" . number_format(abs($row['treasury_obligations'])) . ")" . '"';
+            $rowString .= ','  . '"'. "(" . number_format(abs($row['treasury_obligations'])) . ")" . '"';
         else if ($row['treasury_obligations'] == 0)
-            $rowString .= ','.$dollar_symbol.',' .  "-";
+            $rowString .= ',' .  "-";
         else
-            $rowString .= ','.$dollar_symbol.','  . '"'. number_format($row['treasury_obligations']) . '"';
+            $rowString .= ','  . '"'. number_format($row['treasury_obligations']) . '"';
 
-        $rowString .= ','.$dollar_symbol.','  . '"'. (($row['total_primary_government']>0)?number_format($row['total_primary_government']):'-') . '"';
+        $rowString .= ','  . '"'. (($row['total_primary_government']>0)?number_format($row['total_primary_government']):'-') . '"';
         echo $rowString . "\n";
    	}
 

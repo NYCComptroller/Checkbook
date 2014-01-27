@@ -24,17 +24,17 @@
    echo ",,,,,,(AMOUNTS IN THOUSANDS)". "\n";
 
 	$header = 'Fiscal year';
-    $header .=  ",,PIT Revenue(1)"  ;
-    $header .=  ",,Sales Tax Revenue(2)"  ;
-    $header .=  ",,Total Receipt"  ;
-    $header .=  ",,Other(3)"  ;
-    $header .=  ",,Investment Earnings"  ;
-    $header .=  ",,Total Revenue"  ;
-    $header .=  ",,Future Tax Secured Bonds Debt Service - Interest"  ;
-    $header .=  ",,Future Tax Secured Bonds Debt Service - Principal"  ;
-    $header .=  ",,Future Tax Secured Bonds Debt Service - Total"  ;
-    $header .=  ",,Operating Expenses"  ;
-    $header .=  ",,Total to be Covered"  ;
+    $header .=  ",PIT Revenue(1)"  ;
+    $header .=  ",Sales Tax Revenue(2)"  ;
+    $header .=  ",Total Receipt"  ;
+    $header .=  ",Other(3)"  ;
+    $header .=  ",Investment Earnings"  ;
+    $header .=  ",Total Revenue"  ;
+    $header .=  ",Future Tax Secured Bonds Debt Service - Interest"  ;
+    $header .=  ",Future Tax Secured Bonds Debt Service - Principal"  ;
+    $header .=  ",Future Tax Secured Bonds Debt Service - Total"  ;
+    $header .=  ",Operating Expenses"  ;
+    $header .=  ",Total to be Covered"  ;
 
 	echo $header . "\n";
 
@@ -43,17 +43,17 @@
         $dollar_sign = ($count == 1)? '$':'';
         $count++;
         $rowString = $row['fiscal_year'] ;
-        $rowString .= ','.$dollar_sign . ','.'"'. (($row['pit_revenue']>0)?number_format($row['pit_revenue']):'-').'"';
-        $rowString .= ','.$dollar_sign .','.'"'. (($row['sales_tax_revenue']>0)?number_format($row['sales_tax_revenue']):'-').'"';
-        $rowString .= ','.$dollar_sign .','.'"'. (($row['total_receipt']>0)?number_format($row['total_receipt']):'-').'"';
-        $rowString .= ','.$dollar_sign .','.'"'. (($row['other']>0)?number_format($row['other']):'-').'"';
-        $rowString .= ','.$dollar_sign .','.'"'. (($row['investment_earnings']>0)?number_format($row['investment_earnings']):'-').'"';
-        $rowString .= ','.$dollar_sign .','.'"' . (($row['total_revenue']>0)?number_format($row['total_revenue']):'-').'"';
-        $rowString .= ','.$dollar_sign .','.'"' . (($row['interest']>0)?number_format($row['interest']):'-').'"';
-        $rowString .= ','.$dollar_sign .','.'"' . (($row['pricipal']>0)?number_format($row['pricipal']):'-').'"';
-        $rowString .= ','.$dollar_sign .','.'"' . (($row['total']>0)?number_format($row['total']):'-').'"';
-        $rowString .= ','.$dollar_sign .','.'"' . (($row['operating_expenses']>0)?number_format($row['operating_expenses']):'-').'"';
-        $rowString .= ','.$dollar_sign .','.'"' . (($row['total_to_be_covered']>0)?number_format($row['total_to_be_covered']):'-').'"';
+        $rowString .=  ','.'"'. (($row['pit_revenue']>0)?number_format($row['pit_revenue']):'-').'"';
+        $rowString .= ','.'"'. (($row['sales_tax_revenue']>0)?number_format($row['sales_tax_revenue']):'-').'"';
+        $rowString .= ','.'"'. (($row['total_receipt']>0)?number_format($row['total_receipt']):'-').'"';
+        $rowString .= ','.'"'. (($row['other']>0)?number_format($row['other']):'-').'"';
+        $rowString .= ','.'"'. (($row['investment_earnings']>0)?number_format($row['investment_earnings']):'-').'"';
+        $rowString .= ','.'"' . (($row['total_revenue']>0)?number_format($row['total_revenue']):'-').'"';
+        $rowString .= ','.'"' . (($row['interest']>0)?number_format($row['interest']):'-').'"';
+        $rowString .= ','.'"' . (($row['pricipal']>0)?number_format($row['pricipal']):'-').'"';
+        $rowString .= ','.'"' . (($row['total']>0)?number_format($row['total']):'-').'"';
+        $rowString .= ','.'"' . (($row['operating_expenses']>0)?number_format($row['operating_expenses']):'-').'"';
+        $rowString .= ','.'"' . (($row['total_to_be_covered']>0)?number_format($row['total_to_be_covered']):'-').'"';
     			        
         echo $rowString . "\n";
    	}
