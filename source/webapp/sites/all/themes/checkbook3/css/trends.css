@@ -471,6 +471,9 @@ body.page-trends-landing-trends-node-395 #zone-content{
 body.page-trends-landing-trends-node-404 #page-title {
     display: none;
 }
+body.page-trends-node-404 #page-title {
+    display: none;
+}
 #node-widget-404 a.trends-export{top:10px;}
 #table_404_wrapper .DTFC_LeftHeadWrapper tr:nth-child(1) > th:nth-child(1) .trendCen {margin-right:55px;}
 #table_404_wrapper .DTFC_LeftHeadWrapper tr:nth-child(2) > th:nth-child(1) .trendCen {margin-right:60px; }
