@@ -40,9 +40,9 @@
     foreach( $table_rows as $row){
         $rowString = '"'.$row['category'].'"' ;
         if(strpos($row['category'], ':')){
-        	$hyphen = "-";
-        }else{
         	$hyphen = "";
+        }else{
+        	$hyphen = "-";
         }
         foreach ($years as $year){
             $rowString .= ',' . '"'. (($row[$year]['amount'] > 0)?number_format($row[$year]['amount']):$hyphen) .'"';
