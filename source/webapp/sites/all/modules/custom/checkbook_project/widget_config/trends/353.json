@@ -24,7 +24,7 @@
          "bSort":false,
        	 "sScrollX": "100%",
  	 "bScrollCollapse": false,
-         "sScrollXInner": "3225px",
+         "sScrollXInner": "3325px",
          "bScrollCollapse": true,
          "bAutoWidth": false,
         "fnPreDrawCallback":"##function( oSettings ) {
