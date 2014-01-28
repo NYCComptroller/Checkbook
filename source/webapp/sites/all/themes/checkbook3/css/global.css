@@ -1197,7 +1197,7 @@ table.dataTable th.sorting_asc span {
     text-align:center;
 }
 .dataTable td div {
-    margin: 13px 0 13px 4px;
+    margin: 13px 0 13px 0px;
 }
 td.text div {
     float: left;
