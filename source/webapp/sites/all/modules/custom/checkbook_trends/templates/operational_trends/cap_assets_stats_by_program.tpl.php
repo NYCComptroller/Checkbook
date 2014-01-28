@@ -113,7 +113,7 @@ rsort($years);
                 
 			    echo "<tr><td class='text'>" . /*$row['category']*/ $conditionCategory . "</td>";
 			    foreach ($years as $year)
-			        echo "<td><div>&nbsp;</div></td><td class='" . $amount_class . "'><div>" . (($row[$year]['amount'] > 0)?number_format($row[$year]['amount']):'&nbsp;') . "</div></td>";
+			        echo "<td><div>&nbsp;</div></td><td class='" . $amount_class . "'><div>" . (($row[$year]['amount'] > 0)?number_format($row[$year]['amount']):'&nbsp;-') . "</div></td>";
 			    echo "<td>&nbsp;</td>";
 			    echo "</tr>";
     		}

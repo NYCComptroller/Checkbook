@@ -40,7 +40,7 @@
     foreach( $table_rows as $row){
         $rowString = '"'.$row['category'].'"' ;
         foreach ($years as $year){
-            $rowString .= ',' . '"'. (($row[$year]['amount'] > 0)?number_format($row[$year]['amount']):'') .'"';
+            $rowString .= ',' . '"'. (($row[$year]['amount'] > 0)?number_format($row[$year]['amount']):'-') .'"';
         }
         echo $rowString . "\n";
    	}
