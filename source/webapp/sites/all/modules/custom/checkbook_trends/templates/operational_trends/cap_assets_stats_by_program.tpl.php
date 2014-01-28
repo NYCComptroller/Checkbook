@@ -90,6 +90,7 @@ rsort($years);
                 
                 
                 $conditionCategory = $row['category'];
+                $hyphen = "-";
                 switch($conditionCategory){
                 	case "Correctional/Detention Centers<sup>(2)</sup><sup>(3)</sup>":
                 		$conditionCategory = "<div class='" . $cat_class . "'>Correctional/Detention<br><span style='padding-left:10px;'>Centers<sup>(2)</sup><sup>(3)</sup><span></div>";
@@ -108,12 +109,13 @@ rsort($years);
                 		break;
                 	default:
                 		$conditionCategory = "<div class='" . $cat_class . "' >" . $row['category'] . "</div>";
+                		$hyphen = "";
                 		break;
                 }
                 
 			    echo "<tr><td class='text'>" . /*$row['category']*/ $conditionCategory . "</td>";
 			    foreach ($years as $year)
-			        echo "<td><div>&nbsp;</div></td><td class='" . $amount_class . "'><div>" . (($row[$year]['amount'] > 0)?number_format($row[$year]['amount']):'&nbsp;-') . "</div></td>";
+			        echo "<td><div>&nbsp;</div></td><td class='" . $amount_class . "'><div>" . (($row[$year]['amount'] > 0)?number_format($row[$year]['amount']):'&nbsp;' . $hyphen) . "</div></td>";			    
 			    echo "<td>&nbsp;</td>";
 			    echo "</tr>";
     		}
