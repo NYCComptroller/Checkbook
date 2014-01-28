@@ -59,7 +59,7 @@ echo eval($node->widgetConfig->header);
     			echo "<td class='number '><div  class='tdCen'>" . (($row['united_states']>0)?number_format($row['united_states']):' - ') . "</div></td>";
     			echo "<td class='number '><div  class='tdCen'>" . (($row['percentage_change_from_prior_period']>0)?(number_format($row['percentage_change_from_prior_period'],2)):' - ') . $percent_sign. "</div></td>";
     			echo "<td class='number '><div  class='tdCen'>" . (($row['city_of_new_york']>0)?number_format($row['city_of_new_york']):' - '). "</div></td>";
-    			echo "<td class='number '><div  class='tdCen'>" . (($row['percentage_change_prior_period']>0)?(number_format($row['percentage_change_prior_period'],2)):' - '). $percent_sign. "</div></td>";
+    			echo "<td class='number '><div  class='tdCen'>" . (($row['percentage_change_prior_period']!=0)?(number_format($row['percentage_change_prior_period'],2)):' - '). $percent_sign. "</div></td>";
 			    echo "</tr>";
                 $count++;
     		}
