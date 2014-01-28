@@ -29,7 +29,8 @@ body.page-trends h1#page-title,
 body.page-featured-trends h1#page-title,
 body.page-all-trends h1#page-title,
 body.page-trends-landing h1#page-title,
-body.page-featuredtrends  h1#page-title{
+body.page-featuredtrends  h1#page-title,
+body.page-trends-landing-trends h1#page-titleSpecial{
     margin-top:6px;
     line-height: 42px;
 }
@@ -268,7 +269,7 @@ a.trends-export {
 
 /* dollar styles */
 td.number div.dollarItem {float:left; margin-left:12px;}
-#table_407_wrapper td.number div.dollarItem {float:left; margin-left:0;}
+body.page-trends-landing-trends td.number div.dollarItem, body.page-trends-node td.number div.dollarItem {float:left; margin-left:0;}
 #table_355_wrapper td.number div.dollarItem {float:left; margin-left:30px;}
 #table_406_wrapper td.number div.dollarItem {float:left; margin-left:75px;}
 #table_404_wrapper td.number div.dollarItem {float:left; margin-left:40px;}
