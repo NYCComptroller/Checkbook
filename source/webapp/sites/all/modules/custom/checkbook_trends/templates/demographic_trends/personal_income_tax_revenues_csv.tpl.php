@@ -44,7 +44,7 @@
         $rowString = $row['fips'] ;
         $rowString .= ','  . '"'. $row['area'] . '"' ;
         foreach ($years as $year){
-            $rowString .= ','  . '"'. $row[$year]['amount'] . '"';
+            $rowString .= ','  . '"'. number_format($row[$year]['amount']) . '"';
         }
         echo $rowString . "\n";
    	}
