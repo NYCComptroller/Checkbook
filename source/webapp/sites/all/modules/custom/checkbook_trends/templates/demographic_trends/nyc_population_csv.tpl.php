@@ -36,7 +36,7 @@
         $rowString .= ',' . '"' . (($row['united_states']>0)?number_format($row['united_states']):' - ') .'"';
         $rowString .= ',' . '"' . (($row['percentage_change_from_prior_period']>0)?number_format($row['percentage_change_from_prior_period'],2):' - ') .'"'.','.$percent_sign;
         $rowString .= ',' . '"' . (($row['city_of_new_york']>0)?number_format($row['city_of_new_york']):' - ') .'"';
-        $rowString .= ',' . '"' . (($row['percentage_change_prior_period']>0)?number_format($row['percentage_change_prior_period'],2):' - ').'"'.','.$percent_sign;
+        $rowString .= ',' . '"' . (($row['percentage_change_prior_period']!=0)?number_format($row['percentage_change_prior_period'],2):' - ').'"'.','.$percent_sign;
 
         echo $rowString . "\n";
         $count++;
