@@ -1844,6 +1844,7 @@ body.page-payroll-employee-transactions #table_310{
 }
 #section-footer h2{display:none;}
 #zone-footer{width:96%; padding:73px 2% 0px 2%;}
+body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
 #section-footer .block-menu {
     display: block;
     float:left;
