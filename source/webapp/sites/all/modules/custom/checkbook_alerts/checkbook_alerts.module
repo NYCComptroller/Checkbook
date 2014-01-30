@@ -20,6 +20,7 @@
 
 function checkbook_alerts_init(){
   require_once(drupal_get_path("module","checkbook_alerts")."/includes/checkbook_alerts.inc");
+  require_once(drupal_get_path("module","checkbook_alerts")."/includes/twitter-api/TwitterAPIExchange.php");
 }
 
 /**
@@ -40,11 +41,23 @@ function checkbook_alerts_menu() {
     'type' => MENU_CALLBACK,
     'weight' => 1,
   );
-  $items['alert/unsubscribe'] = array(
+  $items['alert/unsubscribe/%'] = array(
     'title' => 'Checkbook Alerts',
     'page callback' => '_checkbook_alerts_unsubscribe',
     'access callback' => TRUE,
     'type' => MENU_CALLBACK
+  );
+  $items['alert/activate/%'] = array(
+    'title' => 'Checkbook Alerts',
+    'page callback' => '_checkbook_alerts_activate',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK
+  );
+  $items['alert/twitter']=array(
+    'title'=>'Twitter Callback',
+    'page callback' => '_checkbook_alerts_twitter_callback',
+    'access callback' => TRUE,
+    'type'=>MENU_CALLBACK
   );
   return $items;
 }
@@ -57,10 +70,122 @@ function checkbook_alerts_theme($existing, $type, $theme, $path) {
   return array(
     'checkbook_alerts_default_theme'=>array(
       'template'=>'checkbook_alerts',
-      'arguments'=>array('maxPages'=>NULL,
-                         'totalRecords'=>NULL,
-                         'displayRecords'=>NULL
+      //'path'=>'sites/all/modules/custom/checkbook_alerts'
+    ),
+    'checkbook_alerts_email_theme'=>array(
+      'template'=>'checkbook_alerts_email',
+      //'path'=>'sites/all/modules/custom/checkbook_alerts',      
+      'arguments'=>array(
+        'alerts'=>array(),
+        'unsubscribe'=>null
       )
+    ),
+    'checkbook_alerts_activate_theme'=>array(
+      'template'=>'checkbook_alerts_activate'
+    ),
+    'checkbook_alerts_activated_theme'=>array(
+      'template'=>'checkbook_alerts_activated'
+      //'path'=>'sites/all/modules/custom/check
+    ),
+    'checkbook_alerts_unsubscribe_theme'=>array(
+      'template'=>'checkbook_alerts_unsubscribe'
+    ),
+    'checkbook_alerts_subscribe_theme'=>array(
+      'template'=>'checkbook_alerts_subscribe'
     )
   );
+}
+
+function checkbook_alerts_schema() {
+  $schema['checkbook_alerts'] = array(
+    'description' => t('Table that will contain all of the alerts.'),
+    'fields' => array(
+      'checkbook_alerts_sysid' => array(
+        'description' => t('The primary identifier'),
+        'type' => 'serial',
+        'not null' => TRUE
+      ),
+      'label'=>array(
+        'description'=>t('The label that will be shown to the user.'),
+        'type' => 'varchar',
+        'not null'=>true,
+        'length'=>'200'
+      ),
+      'recipient' => array(
+        'description' => t('Recipiant address for sending.'),
+        'type' => 'varchar',
+        'not null' => TRUE,
+        'length' => '300'
+      ),
+      'recipient_type'=>array(
+        'description'=>t('Recipiant type, email or twitter.'),
+        'type'=>'varchar',
+        'not null'=>true,
+        'length'=>'15'
+      ),
+      'ref_url' => array(
+        'description' => t('Reference URL for querying results.'),
+        'type' => 'varchar',
+        'length' => '2000',
+        'not null' => TRUE,
+      ),
+      'user_url' => array(
+        'description' => t('URL the user was on.'),
+        'type'=>'varchar',
+        'length'=>'2000',
+        'not null'=>TRUE
+      ),
+      'active' => array(
+        'description' => t('Indicating whether or not the alert has been activated via email.'),
+        'type' => 'varchar',
+        'not null' => true,
+        'default' => 'N',
+        'length' => 1
+      ),
+      'number_of_results' => array(
+        'description' => t('Number of results required trigger the alert.'),
+        'type'=>'int',
+        'not null'=>true,
+      ),
+      'minimum_results'=>array(
+        'description'=>t('Minimum number of results required to trigger the alert.'),
+        'type'=>'int',
+        'not null'=>true,
+        'default'=>1
+      ),
+      'minimum_days'=>array(
+        'description'=>t('Minimum days inbetween notifications even if more results are returned.'),
+        'type'=>'int',
+        'not null'=>true,
+        'default'=>1
+      ),
+      'date_end'=>array(
+        'description'=>t('Date that the notifications will end.'),
+        'type'=>'datetime',
+        'mysql_type' => 'datetime',
+        'not null'=>true
+      ),
+      'date_last_new_results'=>array(
+        'description'=>t('Date that the notification was last send.'),
+        'type'=>'datetime',
+        'mysql_type' => 'datetime',
+        'not null'=>true
+      )
+    ),
+    'indexes'=>array(
+      'checkbook_alerts_recipient'=>array('recipient')
+    ),
+    'primary key' => array('checkbook_alerts_sysid'),
+  );
+  return $schema;
+}
+
+function checkbook_alerts_enable() {
+  if(db_table_exists('checkbook_alerts') == FALSE) {
+    drupal_install_schema('checkbook_alerts');
+  }
+}
+
+function checkbook_alerts_unsinstall(){
+  db_query("DROP TABLE checkbook_alerts");
 }

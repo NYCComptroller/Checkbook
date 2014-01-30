@@ -478,8 +478,10 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state){
     $contracts_contract_start_date_to = trim($form['contracts']['contract_start_date_to']['#value']['date']);
     $contracts_contract_end_date_from = trim($form['contracts']['contract_end_date_from']['#value']['date']);
     $contracts_contract_end_date_to = trim($form['contracts']['contract_end_date_to']['#value']['date']);
-    $contracts_contract_received_date_from = trim($form['contracts']['contract_received_date_from']['#value']['date']);
-    $contracts_contract_received_date_to = trim($form['contracts']['contract_received_date_to']['#value']['date']);
+    //$contracts_contract_received_date_from = trim($form['contracts']['contract_received_date_from']['#value']['date']);
+    $contracts_contract_received_date_from = trim($form_state['input']['contract_received_date_from']['date']);
+    //$contracts_contract_received_date_to = trim($form['contracts']['contract_received_date_to']['#value']['date']);
+    $contracts_contract_received_date_to = trim($form_state['input']['contract_received_date_to']['date']);
     $contracts_contract_registration_date_from = trim($form['contracts']['contract_registration_date_from']['#value']['date']);
     $contracts_contract_registration_date_to = trim($form['contracts']['contract_registration_date_to']['#value']['date']);
     $contracts_year = trim($form['contracts']['contract_year']['#value']);
@@ -548,7 +550,6 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state){
 
     $contracts_contract_registration_date_range_array = array('from' => $contracts_contract_registration_date_from, 'to' => $contracts_contract_registration_date_to, 'type' => 'date');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_registration_date_range_array,'regdate',TRUE);
-
     $form_state['redirect'] = $redirect_url;
 }
 
