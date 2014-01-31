@@ -418,14 +418,14 @@ ul li.leaf {
     height: 130px !important;
 }
 
-#table_353_wrapper .DTFC_LeftHeadWrapper tr > th:first-child .trendCen {
+/*#table_353_wrapper .DTFC_LeftHeadWrapper tr > th:first-child .trendCen {
     margin-right: 0px;
     margin-left: 40px;
 }
 
 #table_353_wrapper tr > td .tdCen {
     margin-right: 43px;
-}
+}*/
 
 /* 355 */
 #table_355_wrapper .DTFC_LeftHeadWrapper tr > th:first-child  div.trendCen {
