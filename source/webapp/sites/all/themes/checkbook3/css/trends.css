@@ -361,7 +361,8 @@ body.page-trends-landing-trends td.number div.dollarItem, body.page-trends-node 
 #table_359_wrapper tr > td:nth-child(6) .tdCen {margin-right:58px;}
 
 /* 360 */
-body.page-trends-landing-trends-node-360 h1#page-title {
+body.page-trends-landing-trends-node-360 h1#page-title,
+body.page-trends-node h1#page-title{
     width: 850px;
 }
 #table_360_wrapper tr:nth-child(1) > th:nth-child(1) .trendCen {margin-right:28px;}
