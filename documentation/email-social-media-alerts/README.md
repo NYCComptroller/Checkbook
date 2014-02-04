@@ -69,6 +69,12 @@ together in one email.  The email offers separate links to unsubscribe
 from each individual alert, and at the bottom a link to unsubscribe
 from all alerts.
 
+Since every search result uses a different URL, by design a user can
+create only one alert per page per email address.  That way instead of
+accidentally creating multiple alerts for the same result, Checkbook
+just updates the existing alert -- specifically, the interval and the
+settings are updated.
+
 **Twitter Alerts**
 
 The Twitter functionality is similar to the email functionality, but
