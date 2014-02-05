@@ -11,6 +11,7 @@ $sql=
     "recipient_type,".
     "ref_url,".
     "user_url,".
+    "active,".
     "number_of_results,".
     "minimum_results,".
     "minimum_days,".
@@ -45,9 +46,6 @@ function _checkbook_alerts_transactions(){
   if(!isset($_GET['alert_minimum_days'])){
     $_GET['alert_minimum_days']=1;
   }
-  if(!isset($_GET['alert_end'])){
-    $_GET['alert_end']=date('Y-m-d H:i:s',strtotime(date("Y-m-d", mktime()) . " + 365 day"));
-  }
 
   $_GET['q']=urldecode(drupal_get_path_alias($_GET['refURL']));
 
@@ -80,7 +78,6 @@ function _checkbook_alerts_transactions(){
   );
 
   if(($a=$alerts->fetchObject())!=null){
-    $a=$alerts->fetchObject();
     $alert['checkbook_alerts_sysid']=$a->checkbook_alerts_sysid;
     $alert['active']=$a->active;
     drupal_write_record('checkbook_alerts',$alert,array("checkbook_alerts_sysid"));
