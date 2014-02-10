@@ -660,7 +660,8 @@ function widget_data_tables_theme($existing, $type, $theme, $path) {
 
 function widget_data_tables_export_link($node) {
     $nid = widget_unique_identifier($node);
-	return widget_data_tables_alerts_link($node)." <span class=export exportid={$nid}>Export</span>";
+	//return widget_data_tables_alerts_link($node)." <span class=export exportid={$nid}>Export</span>";
+    return "<span class=export exportid={$nid}>Export</span>";
 }
 
 function widget_data_tables_alerts_link($node){
