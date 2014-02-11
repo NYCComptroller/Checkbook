@@ -300,11 +300,11 @@ td.number div.dollarItem {float:left; margin-left:12px;}
 #table_351_wrapper tr > td:nth-child(8) .tdCen {margin-right:37px;}
 
 /* 353 */
-/*#node-widget-353 h5,
+#node-widget-353 h5,
 #node-widget-353 h6{
     color: #2D4C68;
     margin: 10px 0px;
-}*/
+}
 #node-widget-353 a.trends-export{top:40px;}
 #table_353_wrapper .DTFC_LeftBodyWrapper tr > td:nth-child(3) div  {margin-right:52px;}
 #table_353_wrapper td.text div{
