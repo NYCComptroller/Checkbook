@@ -379,7 +379,8 @@ body.page-trends-node h1#page-title{
 #table_360 tr > td:nth-child(6) .tdCen {margin-right:68px;}
 
 /* 395 */
-body.page-trends-node-395 #page-title {
+body.page-trends-node-395 #page-title,
+body.page-trends-landing-trends-node-395 #page-title {
     display: none;
 }
 body.page-trends-landing-trends-node-395 #zone-content{
