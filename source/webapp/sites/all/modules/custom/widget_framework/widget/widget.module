@@ -463,7 +463,7 @@ function load_widget_data($node, $resultFormatter) {
         //Do not move this code before adjusting parameters.
         //Widget config may be updated.
         $isList = isset($config->useList); // FIXME v2. check for true/false
-        $datasetName = $config->dataset;
+        $datasetName = _update_dataset_datasource($config->dataset);
         $columns = $config->columns;
         $orderBy = $config->orderBy;
         $startWith = isset($config->startWith) ? $config->startWith : 0;
@@ -510,7 +510,7 @@ function load_widget_data($node, $resultFormatter) {
             foreach ($config->model->series as $serie) {
                 // preparing serie data controller parameters
                 $isSerieList = isset($serie->useList) ? $serie->useList : $isList;
-                $serieDatasetName = isset($serie->dataset) ? $serie->dataset : $datasetName;
+                $serieDatasetName = isset($serie->dataset) ? _update_dataset_datasource($serie->dataset) : _update_dataset_datasource($datasetName);
                 $serieColumns = isset($serie->columns)
                     ? (isset($columns) ? array_merge($columns, $serie->columns) : $serie->columns)
                     : $columns;
@@ -1191,4 +1191,14 @@ function widget_cleanurlparams_as_string($node) {
 
 function _replaceSlash($string){
     return str_replace('__','/',$string);
+}
+
+function _update_dataset_datasource($datasetName){
+    $database = $_REQUEST['datasource'];
+    if(isset($database)){
+        $database = str_replace("checkbook:", "checkbook_oge:",$datasetName);
+    }else{
+        $database = $datasetName;
+    }
+    return $database;
 }
