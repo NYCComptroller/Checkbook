@@ -1382,3 +1382,20 @@ function _checkbook_max_data_year(){
       "cal_year_value"=>$result[1]['year_value'], "cal_year_id"=>$result[1]['year_id']);
 }
 
+function _checkbook_append_url_params(){
+    $database = _getRequestParamValue('datasource');
+    if(isset($database)){
+        return '/datasource/checkbook_oge';
+    }else{
+        return "";
+    }
+}
+
+function _checkbook_check_isEDCPage(){
+    $database = _getRequestParamValue('datasource');
+    if(isset($database)){
+        return true;
+    }else{
+        return false;
+    }
+}
