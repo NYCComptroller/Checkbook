@@ -1194,7 +1194,7 @@ function _replaceSlash($string){
 }
 
 function _update_dataset_datasource($datasetName){
-    $database = $_REQUEST['datasource'];
+    $database = _getRequestParamValue('datasource');;
     if(isset($database)){
         $database = str_replace("checkbook:", "checkbook_oge:",$datasetName);
     }else{
