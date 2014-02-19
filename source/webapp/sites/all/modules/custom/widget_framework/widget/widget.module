@@ -464,7 +464,11 @@ function load_widget_data($node, $resultFormatter) {
         //Widget config may be updated.
         $isList = isset($config->useList); // FIXME v2. check for true/false
         $datasetName = _update_dataset_datasource($config->dataset);
-        $columns = $config->columns;
+        $columns = array();
+        foreach($config->columns as $column){
+            array_push($columns, _update_dataset_datasource($column));
+        }
+        //$columns = $config->columns;
         $orderBy = $config->orderBy;
         $startWith = isset($config->startWith) ? $config->startWith : 0;
         $limit = $config->limit;
@@ -482,6 +486,14 @@ function load_widget_data($node, $resultFormatter) {
         if (isset($config->model)) {
                  $joinController = NULL;
             $joinMethod = isset($config->model->join) ? $config->model->join->method : NULL;
+            $joinColumns = array();
+            if(isset($config->model->join->columns)){
+                foreach($config->columns as $column){
+                    array_push($joinColumns, _update_dataset_datasource($column));
+                }
+            }else{
+                $joinColumns = NULL;
+            }
             $joinColumns = isset($config->model->join->columns) ? $config->model->join->columns : NULL;
             if (isset($joinMethod)) {
                 $classname = $joinMethod . 'JoinController';
@@ -510,9 +522,19 @@ function load_widget_data($node, $resultFormatter) {
             foreach ($config->model->series as $serie) {
                 // preparing serie data controller parameters
                 $isSerieList = isset($serie->useList) ? $serie->useList : $isList;
-                $serieDatasetName = isset($serie->dataset) ? _update_dataset_datasource($serie->dataset) : _update_dataset_datasource($datasetName);
-                $serieColumns = isset($serie->columns)
-                    ? (isset($columns) ? array_merge($columns, $serie->columns) : $serie->columns)
+                $serieDatasetName = isset($serie->dataset) ? $serie->dataset : $datasetName;
+
+
+                $serieDatasetName = _update_dataset_datasource($serieDatasetName);
+
+                $serieColumns = array();
+                if(isset($serie->columns)){
+                    foreach($serie->columns as $column){
+                        array_push($serieColumns, _update_dataset_datasource($column));
+                    }
+                }
+                $serieColumns = isset($serieColumns)
+                    ? (isset($columns) ? array_merge($columns, $serieColumns) : $serieColumns)
                     : $columns;
                 $serieParameters = $parameters;
                 prepare_dataset_parameters($serieParameters, $serie,$node->widgetConfig);
@@ -624,7 +646,6 @@ function load_widget_data($node, $resultFormatter) {
   	if(isset($node->widgetConfig->transformationPHP)){
   		$node->data = eval($node->widgetConfig->transformationPHP);
   	}
-
     } catch(Exception $e) {
         // FIXME Commented out printing of $e because it generates 100+ KBs in a log file
         log_error("Error getting data from the controller: \n" . $e->getMessage()/*, $e*/);
