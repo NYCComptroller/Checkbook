@@ -39,7 +39,7 @@ if($current_url[1] == 'contracts_landing' || $current_url[1] == 'contracts_reven
 }
 
 
-$selected_text = 'Citywide (All Agencies)';
+$selected_text = 'Citywide Agencies';
 
 foreach($node->data as $key => $value){
 	if($value['agency_id'] == $agency_id_value){
