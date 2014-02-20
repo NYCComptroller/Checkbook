@@ -643,6 +643,8 @@ function load_widget_data($node, $resultFormatter) {
 
         }
 
+     $node->data = _update_node_data($node->data);
+
   	if(isset($node->widgetConfig->transformationPHP)){
   		$node->data = eval($node->widgetConfig->transformationPHP);
   	}
@@ -1222,4 +1224,18 @@ function _update_dataset_datasource($datasetName){
         $database = $datasetName;
     }
     return $database;
+}
+
+function _update_node_data($data){
+    $returnData = array();
+    foreach($data as $key=>$value){
+         $arrayValues = array();
+         foreach($value as $a=>$b){
+             $a = str_replace('@checkbook_oge:',"@checkbook:",$a);
+             $arrayValues[$a] = $b;
+         }
+        $returnData[$key] = $arrayValues;
+     }
+
+    return $returnData;
 }
