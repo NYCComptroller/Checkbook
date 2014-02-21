@@ -22,6 +22,14 @@
 $options = array('html'=>true);
 $options_disabled = array('html'=>true,"attributes"=>array("class"=>"noclick"));
 
+if(_checkbook_check_isEDCPage()){
+    $contract_amount = $node->data[0]['current_amount_sum'];
+    $spending_amount = $node->data[1]['check_amount_sum'];
+}else{
+    $contract_amount = $node->data[0]['current_amount_sum'];
+    $spending_amount = $node->data[2]['check_amount_sum'];
+}
+
 if(preg_match('/vendor/',$_GET['q'])){
   $budget_link = l('<span class="nav-title">Budget</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') ,'',$options_disabled);
   $revenue_link =  l('<span class="nav-title">Revenue</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
@@ -43,16 +51,16 @@ if(preg_match('/vendor/',$_GET['q'])){
     $payroll_link = l('<span class="nav-title">Payroll</span><br>'.custom_number_formatter_format($node->data[1]['total_gross_pay'] ,1,'$'),RequestUtil::getTopNavURL("payroll"),$options);
   }  
 }
-if($node->data[2]['check_amount_sum']  == 0){
+if($spending_amount  == 0){
   $spending_link =  l('<span class="nav-title">Spending</span><br>'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
 }else{
-  $spending_link =  l('<span class="nav-title">Spending</span><br>'. custom_number_formatter_format($node->data[2]['check_amount_sum'] ,1,'$'),RequestUtil::getTopNavURL("spending"),$options);  
+  $spending_link =  l('<span class="nav-title">Spending</span><br>'. custom_number_formatter_format($spending_amount ,1,'$'),RequestUtil::getTopNavURL("spending"),$options);
 }
   
-if($node->data[0]['current_amount_sum'] == 0){
+if($contract_amount == 0){
   $contracts_link =  l('<span class="nav-title">Contracts</span><br>'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
 }else{
-  $contracts_link = l('<span class="nav-title">Contracts</span><br>'.custom_number_formatter_format($node->data[0]['current_amount_sum'],1,'$'),RequestUtil::getTopNavURL("contracts"),$options);  
+  $contracts_link = l('<span class="nav-title">Contracts</span><br>'.custom_number_formatter_format($contract_amount, 1,'$'),RequestUtil::getTopNavURL("contracts"),$options);
 }
 
 
