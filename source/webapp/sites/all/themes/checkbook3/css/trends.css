@@ -302,11 +302,11 @@ td.number div.dollarItem {float:left; margin-left:12px;}
 #table_351_wrapper tr > td:nth-child(8) .tdCen {margin-right:37px;}
 
 /* 353 */
-/*#node-widget-353 h5,
+#node-widget-353 h5,
 #node-widget-353 h6{
     color: #2D4C68;
     margin: 10px 0px;
-}*/
+}
 #node-widget-353 a.trends-export{top:40px;}
 #table_353_wrapper .DTFC_LeftBodyWrapper tr > td:nth-child(3) div  {margin-right:52px;}
 #table_353_wrapper td.text div{
@@ -381,11 +381,12 @@ body.page-trends-node h1#page-title{
 #table_360 tr > td:nth-child(6) .tdCen {margin-right:68px;}
 
 /* 395 */
+body.page-trends-node-395 #page-title,
 body.page-trends-landing-trends-node-395 #page-title {
     display: none;
 }
 body.page-trends-landing-trends-node-395 #zone-content{
-    margin-top:15px;
+    /*margin-top:15px;*/
 }
 #node-widget-395 #page-titleSpecial{margin-bottom: 7px;}
 #node-widget-395 a.trends-export{top:10px;}
