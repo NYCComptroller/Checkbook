@@ -37,6 +37,8 @@
     $header .=  ",Coverage on Total Revenue(6)";
 
 	echo $header . "\n";
+	echo "(AMOUNTS IN MILLIONS)" . "\n";
+	
 
      $count = 1;
     foreach($node->data as $row){
