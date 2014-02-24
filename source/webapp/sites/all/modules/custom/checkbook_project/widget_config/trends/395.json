@@ -15,6 +15,10 @@
         "bLengthChange": false,        
         "bInfo": false,
          "bSort":false,
+        "sScrollX": "100%",
+        "sScrollXInner": "1000px",
+        "bScrollCollapse": false,
+        "bAutoWidth": false,
          "fnDrawCallback": "##function () {
             trendsCenPad(this);
         }##"
