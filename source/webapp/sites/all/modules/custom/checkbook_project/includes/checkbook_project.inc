@@ -483,6 +483,7 @@ function _checkbook_project_get_name_for_argument($keyword,$id){
 function _checkbook_project_querydataset($dataset,$columns,$parameters = null){
 	try{
 		$dataController = data_controller_get_instance();
+        $dataset = _update_dataset_datasource($dataset);
 		$data = $dataController->queryDataset($dataset,$columns, $parameters, NULL,0, NULL,NULL);
 	 }
  	catch(Exception $exception){
