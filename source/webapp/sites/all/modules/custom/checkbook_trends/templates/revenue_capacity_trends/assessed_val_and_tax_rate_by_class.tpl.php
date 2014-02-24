@@ -122,10 +122,16 @@ rsort($years);
                     }else{
                         $row[$year]['direct_tax_rate'] = '&nbsp;';
                     }
-
+                    if($year <=2010 ){
+                    	$sup_script2 = $sup_script;
+                    }
+                    else{
+                    	$sup_script2 = '';
+                    }
+                    
 			        echo "<td><div>&nbsp;</div></td>"."<td class='" . $amount_class . " ' >". $dollar_sign . "<div class='tdCen assess'>" . $row[$year]['assesed_value_million_amount'] . "</div></td>";
 			        echo "<td><div>&nbsp;</div></td>"."<td class='" . $amount_class . " ' ><div class='tdCen percent'>". $row[$year]['percentage_taxable_real_estate'] .$percent_sign_1."</div></td>";
-			        echo "<td><div>&nbsp;</div></td>"."<td class='number' ><div class='tdCen direct'>" . $row[$year]['direct_tax_rate'] . $sup_script ."</div></td>";
+			        echo "<td><div>&nbsp;</div></td>"."<td class='number' ><div class='tdCen direct'>" . $row[$year]['direct_tax_rate'] . $sup_script2 ."</div></td>";
                 }
                 echo "<td>&nbsp;</td>";
 			    echo "</tr>";
