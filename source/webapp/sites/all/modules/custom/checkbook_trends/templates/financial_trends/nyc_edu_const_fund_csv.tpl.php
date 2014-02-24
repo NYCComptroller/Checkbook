@@ -33,7 +33,7 @@
     $header .=  ",Coverage Ratio";
 
 	echo $header . "\n";
-	echo "(AMOUNTS IN MILLIONS)" . "\n";
+	echo "(AMOUNTS IN THOUSANDS)" . "\n";
 		
     $count = 1;
     foreach( $node->data as $row){

@@ -37,7 +37,7 @@
     $header .=  ",Coverage on Total Revenue(6)";
 
 	echo $header . "\n";
-	echo "(AMOUNTS IN MILLIONS)" . "\n";
+	echo "(AMOUNTS IN THOUSANDS)" . "\n";
 	
 
      $count = 1;
@@ -55,7 +55,8 @@
         $rowString .= ',' .(($row['interest']>0)?('"'.number_format($row['interest']).'"'):'-');
         $rowString .= ',' .(($row['principal']>0)?('"'.number_format($row['principal']).'"'):'-');
         $rowString .= ',' .(($row['total']>0)?('"'.number_format($row['total']).'"'):'-');
-        $rowString .= ',' .(($row['operating_expenses']>0)?('"'.number_format($row['operating_expenses']).'"'):'-');
+        //$rowString .= ',' .(($row['operating_expenses']>0)?('"'.number_format($row['operating_expenses']).'"'):'-');
+        $rowString .= ',' .(($row['operating_expenses']>0)?('"'.number_format($row['operating_expenses']).'"'):'-') . ((  $row['fiscal_year'] == '2012')? '(8)':'');
         $rowString .= ',' .(($row['total_to_be_covered']>0)?('"'.number_format($row['total_to_be_covered']).'"'):'-');
         $rowString .= ',' . $row['coverage_on_total_revenue_5'].(($row['fiscal_year'] == '2009' || $row['fiscal_year'] == '2010' || $row['fiscal_year'] == '2011')?'(6)':'');
 
