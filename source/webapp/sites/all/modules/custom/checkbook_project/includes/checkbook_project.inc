@@ -1017,6 +1017,8 @@ function _checkbook_project_get_url_param_string($key,$key_alias =  null){
   foreach($pathParams as $index => $value){
     if($key == $value){
         $keyIndex = $index;
+    }else if($key_alias == $value){
+        $keyIndex = $index;
     }
   }
 
