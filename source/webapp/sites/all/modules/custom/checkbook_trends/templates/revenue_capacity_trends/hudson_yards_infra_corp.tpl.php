@@ -23,7 +23,7 @@ echo eval($node->widgetConfig->header);
 ?>
 <h1 id="page-titleSpecial" class="title">Hudson Yards Infrastructure Corporation<sup class="title-sup">*</sup></h1>
 <a class="trends-export" href="/export/download/trends_hudson_yards_infra_corp_csv?dataUrl=/node/<?php echo $node->nid ?>">Export</a>
-
+<h5>(AMOUNTS IN MILLIONS)</h5>
 <div class="dataTable_wrapper">
 <table id="table_<?php echo widget_unique_identifier($node) ?>" style='display:none' class="trendsShowOnLoad <?php echo $node->widgetConfig->html_class ?>">
     <?php
