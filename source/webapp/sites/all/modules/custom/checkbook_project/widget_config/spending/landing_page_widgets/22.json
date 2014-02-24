@@ -19,7 +19,7 @@ if($node->totalDataCount > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
 $header='<div class=\"tableHeader\"><h2>Top ' .  $count . 'Expense Categories</h2><span class=\"contCount\"> Number of Expense Categories:  ' . number_format($node->totalDataCount) . '</span></div>';
 return $header;",
 "footer":"
-$url = '/panel_html/spending_transactions/spending/transactions'. _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_url_param_string(\"category\")  . '/dtsmnid/' . $node->nid . _checkbook_project_get_year_url_param_string(false,false,true);
+$url = '/panel_html/spending_transactions/spending/transactions'. _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_url_param_string(\"category\")  . '/dtsmnid/' . $node->nid . _checkbook_project_get_year_url_param_string(false,false,true) . _checkbook_append_url_params();
 $footer = '';
 if($node->totalDataCount > 5)
       $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
@@ -38,7 +38,7 @@ return $footer;
 		},
 		"formatted_check_amount_sum_link":{
 			"type": "expression2",
-                         "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/spending_transactions/spending/transactions' .  _checkbook_project_get_year_url_param_string(false,false,true)  ._checkbook_project_get_url_param_string(\"vendor\") . _checkbook_project_get_url_param_string(\"category\")  . '/smnid/' . $node->nid . _checkbook_project_get_url_param_string(\"agency\") . '/expcategory/' .  $row[expenditure_object_expenditure_object] .   '\">' . $row['formatted_check_amount_sum'] . '</a>'"
+                         "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/spending_transactions/spending/transactions' .  _checkbook_project_get_year_url_param_string(false,false,true) . _checkbook_append_url_params() ._checkbook_project_get_url_param_string(\"vendor\") . _checkbook_project_get_url_param_string(\"category\")  . '/smnid/' . $node->nid . _checkbook_project_get_url_param_string(\"agency\") . '/expcategory/' .  $row[expenditure_object_expenditure_object] .   '\">' . $row['formatted_check_amount_sum'] . '</a>'"
 		}
 	},
         "summaryView":{
