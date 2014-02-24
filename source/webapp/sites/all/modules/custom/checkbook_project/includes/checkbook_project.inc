@@ -1013,8 +1013,12 @@ function _checkbook_project_get_url_param_string($key,$key_alias =  null){
   
   $urlPath = drupal_get_path_alias($_GET['q']);
   $pathParams = explode('/', $urlPath);
-
-  $keyIndex = (array_search($key,$pathParams))?array_search($key,$pathParams) : array_search($key_alias,$pathParams);
+  $keyIndex = NULL;
+  foreach($pathParams as $index => $value){
+    if($key == $value){
+        $keyIndex = $index;
+    }
+  }
 
   if($keyIndex){
     if($key_alias == null){
