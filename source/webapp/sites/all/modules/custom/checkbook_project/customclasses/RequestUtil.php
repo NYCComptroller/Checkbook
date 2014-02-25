@@ -444,30 +444,30 @@ class RequestUtil{
         }
         switch($domain){
           case "contracts":            
-          $path ="contracts_landing/status/A/yeartype/B/year/".$year;
-          if(_getRequestParamValue("agency") > 0){
-            $path =  $path . "/agency/" . _getRequestParamValue("agency")  ;
-          }
-          if(_getRequestParamValue("vendor") > 0){
-            $path =  $path . "/vendor/" . _getRequestParamValue("vendor")  ;
-          } 
-          break;
+              $path ="contracts_landing/status/A/yeartype/B/year/".$year._checkbook_append_url_params();
+              if(_getRequestParamValue("agency") > 0){
+                $path =  $path . "/agency/" . _getRequestParamValue("agency")  ;
+              }
+              if(_getRequestParamValue("vendor") > 0){
+                $path =  $path . "/vendor/" . _getRequestParamValue("vendor")  ;
+              }
+              break;
           case "spending":
-          $path ="spending_landing/yeartype/B/year/".$year;
-          if(_getRequestParamValue("agency") > 0){
-            $path =  $path . "/agency/" . _getRequestParamValue("agency")  ;
-          }
-          if(_getRequestParamValue("vendor") > 0){
-            $path =  $path . "/vendor/" . _getRequestParamValue("vendor")  ;
-          }          
-          break;
+              $path ="spending_landing/yeartype/B/year/".$year._checkbook_append_url_params();
+              if(_getRequestParamValue("agency") > 0){
+                $path =  $path . "/agency/" . _getRequestParamValue("agency")  ;
+              }
+              if(_getRequestParamValue("vendor") > 0){
+                $path =  $path . "/vendor/" . _getRequestParamValue("vendor")  ;
+              }
+              break;
           case "payroll":
-            if(_getRequestParamValue("agency") > 0){
-              $path ="payroll/". "agency/" . _getRequestParamValue("agency")  . "/yeartype/B/year/".$year ;
-            }else{
-              $path ="payroll/yeartype/B/year/".$year;
-            }
-          break;   
+                if(_getRequestParamValue("agency") > 0){
+                  $path ="payroll/". "agency/" . _getRequestParamValue("agency")  . "/yeartype/B/year/".$year ;
+                }else{
+                  $path ="payroll/yeartype/B/year/".$year;
+                }
+              break;
           case "budget":
             if(_getRequestParamValue("agency") > 0){
               $path ="budget/yeartype/B/year/".$year . "/agency/" . _getRequestParamValue("agency") ;
