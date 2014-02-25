@@ -11,117 +11,147 @@ function _checkbook_smart_search_submit($form, &$form_state){
     $search_term = ($search_term)? $search_term : '';
 
     $form_state['redirect'] = array(
-      'smart_search',
-      array(
-        'query' => array(
-          'search_term' => urlencode($search_term),
+        'smart_search',
+        array(
+            'query' => array(
+                'search_term' => urlencode($search_term),
+            )
         )
-      )
     );
 }
 
 /** Returns results for smart search */
 function _checkbook_smart_search_get_results(){
 
-    $search_terms = explode('*|*', $_REQUEST['search_term']);
-    $search_terms[0] = urldecode($search_terms[0]);
-    if($search_terms[0] == ""){
-        $search_text = "*:*";
-    } else {
-        $search_text = _checkbook_smart_search_escapeSolrValue($search_terms[0]);
-        $search_text = ucwords(strtolower($search_text));
-    }
+    $search_terms = explode('*|*', $_REQUEST['search_term']); // array("Education", "domains=Payroll~Spending", "fiscal_years=2014~2013")
+    $search_terms[0] = urldecode($search_terms[0]); //"Education"
+
+    $search_terms[0] = ($search_terms[0] == "") ? "*:*" : ucwords(strtolower(_checkbook_smart_search_escapeSolrValue($search_terms[0])));
 
     //Search results
-    $page_no = ($_REQUEST['page'])? $_REQUEST['page'] : 0;
+    $page_no = ($_REQUEST['page'])? $_REQUEST['page'] : 0; // 0
     $no_of_results = 10;
     $search_results = _checkbook_smart_search_results($search_terms, $page_no, $no_of_results);
 
     // Facet Results
-    $domains = _checkbook_smart_search_get_facet_results($search_text, $search_terms, "domains");
-    $agencies = _checkbook_smart_search_get_facet_results($search_text, $search_terms, "agency_names", NULL, -1);
-    $vendors = _checkbook_smart_search_get_facet_results($search_text, $search_terms, "vendor_names", NULL, 100);
-    $all_vendors = _checkbook_smart_search_get_facet_results($search_text, $search_terms, "vendor_names", NULL, -1);
+    $domains = _checkbook_smart_search_get_facet_results($search_terms, "domains");
+    $oges = _checkbook_smart_search_get_facet_results($search_terms, "oge_names", NULL, -1);
+    $agencies = _checkbook_smart_search_get_facet_results($search_terms, "agency_names", NULL, -1);
+    $vendors = _checkbook_smart_search_get_facet_results($search_terms, "vendor_names", NULL, 100);
+    $all_vendors = _checkbook_smart_search_get_facet_results($search_terms, "vendor_names", NULL, -1);
     $vendor_number = count($all_vendors['facet_counts']['facet_fields']['vendor_name']);
     $vendor_pages = floor($vendor_number / 100);
     drupal_add_js(array('checkbook_smart_search' => array('vendor_pages' => $vendor_pages)), 'setting');
-    $expense_categories = _checkbook_smart_search_get_facet_results($search_text, $search_terms, "expense_categories", NULL, 100);
-    $all_expense_categories = _checkbook_smart_search_get_facet_results($search_text, $search_terms, "expense_categories", NULL, -1);
+    $expense_categories = _checkbook_smart_search_get_facet_results($search_terms, "expense_categories", NULL, 100);
+    $all_expense_categories = _checkbook_smart_search_get_facet_results($search_terms, "expense_categories", NULL, -1);
     $expense_categories_number = count($all_expense_categories['facet_counts']['facet_fields']['expenditure_object_name']);
     $expense_category_pages = floor($expense_categories_number / 100);
     drupal_add_js(array('checkbook_smart_search' => array('expense_category_pages' => $expense_category_pages)), 'setting');
-    $fiscal_years = _checkbook_smart_search_get_facet_results($search_text, $search_terms, "fiscal_years");
-    $contract_categories = _checkbook_smart_search_get_facet_results($search_text, $search_terms, "contract_categories");
-    $contract_status = _checkbook_smart_search_get_facet_results($search_text, $search_terms, "contract_status");
-    $spending_categories = _checkbook_smart_search_get_facet_results($search_text, $search_terms, "spending_categories");
+    $fiscal_years = _checkbook_smart_search_get_facet_results($search_terms, "fiscal_years");
+    $contract_categories = _checkbook_smart_search_get_facet_results($search_terms, "contract_categories");
+    $contract_status = _checkbook_smart_search_get_facet_results($search_terms, "contract_status");
+    $spending_categories = _checkbook_smart_search_get_facet_results($search_terms, "spending_categories");
 
     $facetResults = array("domain" => $domains['facet_counts']['facet_fields'],
-                          "agency_name" => $agencies['facet_counts']['facet_fields'],
-                          "vendor_name" => $vendors['facet_counts']['facet_fields'],
-                          "expenditure_object_name" => $expense_categories['facet_counts']['facet_fields'],
-                          "fiscal_year" => $fiscal_years['facet_counts']['facet_fields'],
-                          "spending_category_name" => $spending_categories['facet_counts']['facet_fields'],
-                          "contract_category_name" => $contract_categories['facet_counts']['facet_fields'],
-                          "contract_status" => $contract_status['facet_counts']['facet_fields']);
+        "oge" => $oges['facet_counts']['facet_fields'],
+        "agency_name" => $agencies['facet_counts']['facet_fields'],
+        "vendor_name" => $vendors['facet_counts']['facet_fields'],
+        "expenditure_object_name" => $expense_categories['facet_counts']['facet_fields'],
+        "fiscal_year" => $fiscal_years['facet_counts']['facet_fields'],
+        "spending_category_name" => $spending_categories['facet_counts']['facet_fields'],
+        "contract_category_name" => $contract_categories['facet_counts']['facet_fields'],
+        "contract_status" => $contract_status['facet_counts']['facet_fields']);
+
+
 
     //Selected Facet Filters
-    $selected_domains = _checkbook_smart_search_get_selected_facet_results($search_text, $search_terms, "domains");
-    $selected_agencies = _checkbook_smart_search_get_selected_facet_results($search_text, $search_terms, "agency_names");
-    $selected_vendors = _checkbook_smart_search_get_selected_facet_results($search_text, $search_terms, "vendor_names");
-    $selected_expense_categories = _checkbook_smart_search_get_selected_facet_results($search_text, $search_terms, "expense_categories");
-    $selected_fiscal_years = _checkbook_smart_search_get_selected_facet_results($search_text, $search_terms, "fiscal_years");
-    $selected_spending_categories = _checkbook_smart_search_get_selected_facet_results($search_text, $search_terms, "spending_categories");
-    $selected_contract_status = _checkbook_smart_search_get_selected_facet_results($search_text, $search_terms, "contract_status");
-    $selected_contract_categories = _checkbook_smart_search_get_selected_facet_results($search_text, $search_terms, "contract_categories");
+    $selected_domains = _checkbook_smart_search_get_selected_facet_results($search_terms, "domains");
+    $selected_agencies = _checkbook_smart_search_get_selected_facet_results($search_terms, "agency_names");
+    $selected_vendors = _checkbook_smart_search_get_selected_facet_results($search_terms, "vendor_names");
+    $selected_expense_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "expense_categories");
+    $selected_fiscal_years = _checkbook_smart_search_get_selected_facet_results($search_terms, "fiscal_years");
+    $selected_spending_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "spending_categories");
+    $selected_contract_status = _checkbook_smart_search_get_selected_facet_results($search_terms, "contract_status");
+    $selected_contract_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "contract_categories");
 
     $selected_facet_results = array("domain" => $selected_domains,
-                          "agency_name" => $selected_agencies,
-                          "vendor_name" => $selected_vendors,
-                          "expenditure_object_name" => $selected_expense_categories,
-                          "fiscal_year" => $selected_fiscal_years,
-                          "spending_category_name" => $selected_spending_categories,
-                          "contract_category_name" => $selected_contract_categories,
-                          "contract_status" => $selected_contract_status);
+        "agency_name" => $selected_agencies,
+        "vendor_name" => $selected_vendors,
+        "expenditure_object_name" => $selected_expense_categories,
+        "fiscal_year" => $selected_fiscal_years,
+        "spending_category_name" => $selected_spending_categories,
+        "contract_category_name" => $selected_contract_categories,
+        "contract_status" => $selected_contract_status);
+
+
 
     return theme('checkbook_smart_search_results', array('search_results'=> $search_results['search_results'],
-                                                         'active_contracts' => $search_results['active_contracts'],
-                                                         'facet_results' => $facetResults,
-                                                         'selected_facet_results' => $selected_facet_results));
+        'active_contracts' => $search_results['active_contracts'],
+        'facet_results' => $facetResults,
+        'selected_facet_results' => $selected_facet_results));
+}
+
+/**
+ *  Replaces and encodes the special characters in the goven string
+ * @param $string
+ * @return $string
+ */
+function _checkbook_smart_search_escapeSolrValue($string){
+
+    $string = str_replace("%", "%25", $string);
+    $string = str_replace("'", "%27", $string);
+    $string = str_replace("\\", "%5C%5C", $string);
+    $string = str_replace(" ", "%20", $string);
+    $string = str_replace("#", "%23", $string);
+    $string = str_replace("/", "\%2F", $string);
+    $string = str_replace("&", "%26", $string);
+    $string = str_replace("[", "\[", $string);
+    $string = str_replace("]", "\]", $string);
+    $string = str_replace(":", "\:", $string);
+    $string = str_replace("+", "\%2B", $string);
+    $string = str_replace("?", "\%3F", $string);
+    $string = str_replace("$", "\%24", $string);
+    $string = str_replace("!", "\%21", $string);
+    $string = str_replace("(", "\%28", $string);
+    $string = str_replace(")", "\%29", $string);
+    $string = str_replace("|", "\%7C", $string);
+    $string = str_replace("^", "\%5E", $string);
+    $string = str_replace("*", "%2A", $string);
+    $string = str_replace(".", "\%2E", $string);
+    $string = str_replace("-", "\-", $string);
+
+    return $string;
 }
 
 /**
  * Outputs search results using the template file 'checkbook_smart_search_results.tpl.php'.
  * @param
  * @return search results
-*/
+ */
 function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results){
-    
+
     $current_date = date("c").'Z';
 
-    $search_string = _checkbook_smart_search_get_results_query_search_term();
-    if($_REQUEST['page']){
-      $start = (($_REQUEST['page'])*10);
-    }else{
-      $start = 0;
-    }
-     $query = "select/?q=". $search_string
-               ."&start=". ($page_no*$no_of_results)
-               ."&hl=true&hl.fl=*"
-               ."&fq=-latest_flag:N"
-               ."&wt=php";
+    $search_string = _checkbook_smart_search_get_results_query_search_term($search_terms);
 
-     $search_results = _checkbook_smart_search_solr_results($query);
-    
-    // Active Contracts Results 
+    $query = "select/?q=". $search_string
+        ."&start=". ($page_no*$no_of_results)
+        ."&hl=true&hl.fl=*"
+        ."&fq=-latest_flag:N"
+        ."&wt=php";
+
+    $search_results = _checkbook_smart_search_solr_results($query);
+
+    // Active Contracts Results
     $act_start_date_filter = "start_date:[*%20TO%20".$current_date."]";
     $act_end_date_filter = "end_date:[".$current_date."%20TO%20*]";
     $act_search_string = str_replace('&fq=(contract_status:"pending")','',$search_string);
     $active_contracts_query = "select/?q=" . $act_search_string
-                               ."&fq=". $act_start_date_filter
-                               ."&fq=". $act_end_date_filter
-                               ."&fq=latest_flag:Y"
-                               ."&fq=contract_status:registered"
-                               ."&wt=php";
+        ."&fq=". $act_start_date_filter
+        ."&fq=". $act_end_date_filter
+        ."&fq=latest_flag:Y"
+        ."&fq=contract_status:registered"
+        ."&wt=php";
 
     $active_contracts = _checkbook_smart_search_solr_results($active_contracts_query);
 
@@ -129,79 +159,87 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
 }
 
 /** Returns solr results based on the search criteria from current URL */
-function _checkbook_smart_search_get_results_query_search_term(){
-  $parameterMapping = array("agency_names" => "agency_name",
-      "fiscal_years" => "fiscal_year",
-      "domains" => "domain",
-      "vendor_names" => "vendor_name",
-      "expense_categories" => "expenditure_object_name",
-      "revenue_categories" => "revenue_category_name",
-      "spending_categories" => "spending_category_name",
-      "contract_categories" => "contract_category_name",
-      "contract_status" => "contract_status");
+function _checkbook_smart_search_get_results_query_search_term($search_terms){
+    $parameterMapping = array(
+        "oge_agency_names" => "oge_agency_name",
+        "agency_names" => "agency_name",
+        "fiscal_years" => "fiscal_year",
+        "domains" => "domain",
+        "vendor_names" => "vendor_name",
+        "expense_categories" => "expenditure_object_name",
+        "revenue_categories" => "revenue_category_name",
+        "spending_categories" => "spending_category_name",
+        "contract_categories" => "contract_category_name",
+        "contract_status" => "contract_status");
 
-  $string = $_REQUEST['search_term'];
-  $searchTerms = explode('*|*', $string);
-  $searchTerm = NULL;
-  $searchTerms[0] = urldecode($searchTerms[0]);
+    $searchTerm = $search_terms[0];
 
-  if($searchTerms[0] == ""){
-    $searchTerm = "*:*";
-  }else{
-    $searchTerm = _checkbook_smart_search_escapeSolrValue($searchTerms[0]);
-    $searchTerm = ucwords(strtolower($searchTerm));
-  }
-
-  for($i=1;$i < count($searchTerms);$i++){
-    $searchString = NULL;
-    $reqParams  = explode('=', $searchTerms[$i]);
-    $filters = explode('~',urldecode($reqParams[1]));
-    $subQuery = "";
-    foreach($filters as $key=>$value){
-      $subQuery .=  "(". $parameterMapping[$reqParams[0]] .":" . _checkbook_smart_search_escapeSolrValue('"'.$value.'"').")%20OR%20";
+    for($i=1;$i < count($search_terms);$i++){
+        $reqParams  = explode('=', $search_terms[$i]);
+        $filters = explode('~',urldecode($reqParams[1]));
+        $subQuery = "";
+        foreach($filters as $value){
+            $subQuery .=  "(". $parameterMapping[$reqParams[0]] .":" . _checkbook_smart_search_escapeSolrValue('"'.$value.'"').")%20OR%20";
+        }
+        $subQuery = substr($subQuery, 0, -8);
+        $searchTerm .= "&fq="  . $subQuery;
     }
-    $subQuery = substr($subQuery, 0, -8);
-    $searchTerm .= "&fq="  . $subQuery;
-  }
 
-  if($_REQUEST['page']){
-    $start = (($_REQUEST['page'])*10);
-  }else{
-    $start = 0;
-  }
-  return $searchTerm;
+    return $searchTerm;
 }
 
-/** Returns only selectes facet values from current URL */
-function _checkbook_smart_search_get_selected_facet_results($search_text, $search_terms, $facet_name){
-   $parameter_mapping = array(
-          "agency_names" => "agency_name",
-          "fiscal_years" => "fiscal_year",
-          "domains" => "domain",
-          "vendor_names" => "vendor_name",
-          "expense_categories" => "expenditure_object_name",
-          "revenue_categories" => "revenue_category_name",
-          "spending_categories" => "spending_category_name",
-          "contract_categories" => "contract_category_name",
-          "contract_status" => "contract_status"
-   );
+/**
+ *  Outputs the solr query result for the input query.
+ *  @param $query
+ *  @return the solr result in PHP array format.
+ */
+function _checkbook_smart_search_solr_results($query){
+    global $conf;
+    if($conf['check_book']['solr']['url']){
+        $solr_server_url = $conf['check_book']['solr']['url'];
+    }
+    ini_set('default_socket_timeout',120);
+    $url = $solr_server_url . $query;
+    $contents = file_get_contents($url);
+    $contents = utf8_encode($contents);
+    if($contents){
+        eval("\$results = " . $contents . ";");
+    }
+    return $results;
+}
 
-    $search_string = $search_text;
+/** Returns only selected facet values from current URL */
+function _checkbook_smart_search_get_selected_facet_results($search_terms, $facet_name){
+    $parameter_mapping = array(
+        "oge_agency_names" => "oge_agency_name",
+        "agency_names" => "agency_name",
+        "fiscal_years" => "fiscal_year",
+        "domains" => "domain",
+        "vendor_names" => "vendor_name",
+        "expense_categories" => "expenditure_object_name",
+        "revenue_categories" => "revenue_category_name",
+        "spending_categories" => "spending_category_name",
+        "contract_categories" => "contract_category_name",
+        "contract_status" => "contract_status"
+    );
+
+    $search_string = $search_terms[0];
     $request_facet_param = array();
     $result = array();
 
     for($i=1;$i < count($search_terms);$i++){
-        $req_params  = explode('=', $search_terms[$i]);
+        $req_params  = explode('=', $search_terms[$i]); // ("domains", "payroll~spending") ("fiscal_years", "2014~2013")
         $filters = explode('~',urldecode($req_params[1]));
         $sub_query = "";
 
-        foreach($filters as $key=>$value){
-             if($req_params[0] == $facet_name){
+
+        foreach($filters as $value){
+            if($req_params[0] == $facet_name){
                 $count = 1;
                 $request_facet_param[] = $value;
-             }
-             $sub_query .=  "(". $parameter_mapping[$req_params[0]] .":" .
-            _checkbook_smart_search_escapeSolrValue('"'.$value.'"').")%20OR%20";
+            }
+            $sub_query .=  "(". $parameter_mapping[$req_params[0]] .":" .
+                _checkbook_smart_search_escapeSolrValue('"'.$value.'"').")%20OR%20";
         }
 
         if(strlen($sub_query) > 0){
@@ -210,21 +248,21 @@ function _checkbook_smart_search_get_selected_facet_results($search_text, $searc
     }
     if($count > 0){
         $query = "select/?q=". $search_string
-                      ."&facet=true"
-                      ."&fq=-latest_flag:N"
-                      ."&facet.sort=count"
-                      ."&facet.field=".$parameter_mapping[$facet_name]
-                      ."&wt=php"
-                      ."&facet.mincount=1";
+            ."&facet=true"
+            ."&fq=-latest_flag:N"
+            ."&facet.sort=count"
+            ."&facet.field=".$parameter_mapping[$facet_name]
+            ."&wt=php"
+            ."&facet.mincount=1";
 
         $selected_facet_results = _checkbook_smart_search_solr_results($query);
         foreach($selected_facet_results['facet_counts']['facet_fields'] as $name => $value){
             if(count($value) > 0){
-              foreach($request_facet_param as $a => $b){
-                foreach($value as $facet=>$facet_count)
-                   if($facet == $b)
-                        $result[] = array('name' => $facet, 'count' => $facet_count);
-              }
+                foreach($request_facet_param as $a => $b){
+                    foreach($value as $facet=>$facet_count)
+                        if($facet == $b)
+                            $result[] = array('name' => $facet, 'count' => $facet_count);
+                }
             }
         }
         return $result;
@@ -235,9 +273,10 @@ function _checkbook_smart_search_get_selected_facet_results($search_text, $searc
 }
 
 /** Returns Facet results */
-function _checkbook_smart_search_get_facet_results($search_text, $search_terms, $facet_name, $offset = null, $limit = null, $exclude = FALSE, $fromScroll = FALSE){
+function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $offset = null, $limit = null, $exclude = FALSE, $fromScroll = FALSE){
 
         $parameter_mapping = array(
+          "oge_names" => "oge_agency_name",
           "agency_names" => "agency_name",
           "fiscal_years" => "fiscal_year",
           "domains" => "domain",
@@ -249,14 +288,14 @@ function _checkbook_smart_search_get_facet_results($search_text, $search_terms, 
           "contract_status" => "contract_status"
         );
 
-        $search_string = $search_text;
+        $search_string = $search_terms[0];
         $termcount = 0;
         for($i=1;$i < count($search_terms);$i++){
             $req_params  = explode('=', $search_terms[$i]);
             $filters = explode('~',urldecode($req_params[1]));
             $sub_query = "";
 
-            foreach($filters as $key=>$value){
+            foreach($filters as $value){
                 if($req_params[0] != $facet_name){
                     $sub_query .=  "(". $parameter_mapping[$req_params[0]] .":" .
                           _checkbook_smart_search_escapeSolrValue('"'.$value.'"').")%20OR%20";
@@ -290,6 +329,7 @@ function _checkbook_smart_search_get_facet_results($search_text, $search_terms, 
 
         $facet_results = _checkbook_smart_search_solr_results($query);
 
+
         return $facet_results;
 }
 
@@ -307,9 +347,11 @@ function _checkbook_smart_search_autocomplete(){
     $regex3 = escapeRegex('.*)');
     $search_term = _checkbook_autocomplete_escapeSolrValue(strtolower($search_term));
 
-    $search_term = $regex1.$search_term.$regex2.$search_term.$regex3;
+    $search_term = $regex1.$search_term.$regex2.$search_term.$regex3; //  (.* educ.*)|(^educ .*)
 
-    $query = "terms/?terms.fl=agency_name"
+
+    $query = "terms/?terms.fl=oge_agency_name"
+             ."&terms.fl=agency_name"
              ."&terms.fl=vendor_name"
              ."&terms.fl=revenue_category_name"
              ."&terms.fl=expenditure_object_name"
@@ -318,13 +360,25 @@ function _checkbook_smart_search_autocomplete(){
 	$contents = _checkbook_smart_search_solr_results($query);
     $matches = array();
     $count = 0;
+    $oge_data = array();
     foreach($contents['terms'] as $key=>$value){
         switch($key){
+            case 'oge_agency_name':
+                foreach($value as $a=>$b){
+                    $count++;
+                    $url = "/smart_search?search_term=*|*oge_agency_names=";
+                    $matches[] = array("url"=>$url, "category"=>"Other Government Entities" ,"label" => $a, "value" => urlencode($a));
+                    $oge_data[] = $a;
+                }
+                break;
             case 'agency_name':
                 foreach ($value as $a=>$b){
-                    $count++;
-                    $url = "/smart_search?search_term=*|*agency_names=";
-                    array_push($matches, array("url"=>$url, "category"=>"Agencies" ,"label" => $a, "value" => urlencode($a)));
+                    if(!in_array($a, $oge_data))
+                    {
+                        $count++;
+                        $url = "/smart_search?search_term=*|*agency_names=";
+                        array_push($matches, array("url"=>$url, "category"=>"Agencies" ,"label" => $a, "value" => urlencode($a)));
+                    }
                 }
                 break;
             case 'vendor_name':
@@ -355,6 +409,7 @@ function _checkbook_smart_search_autocomplete(){
         array_push($matches,array("url"=> "" ,"label"=>'<span>'."No matches found".'</span>', 'value' => 'No matches found'));
     }
 
+
     return drupal_json_output($matches);
 }
 
@@ -364,8 +419,10 @@ function _checkbook_smart_search_autocomplete(){
  *  @return the Query String
 **/
 function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$facet_autocomplete_field){
-    
-    $parameter_mapping = array("agency_names" => "agency_name",
+
+    $parameter_mapping = array(
+                              "oge_names" => "oge_agency_name",
+                              "agency_names" => "agency_name",
                               "fiscal_years" => "fiscal_year",
                               "domains" => "domain",
                               "vendor_names" => "vendor_name",
@@ -376,6 +433,7 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
                               "contract_status" => "contract_status");
 
     $autocomplete_text = trim(htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES));
+
     $autocomplete_terms = explode(' ',$autocomplete_text);
 
     if(count($autocomplete_terms) > 0){
@@ -388,7 +446,8 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
     }else{
         $autocomplete_text = _checkbook_autocomplete_escapeSolrValue($autocomplete_text)."*";
     }
-    $autocomplete_text = "&fq=".$facet_autocomplete_field.":".$autocomplete_text;
+
+    $autocomplete_text = $facet_name == "oge_names" ? "&fq=oge_agency_name:".$autocomplete_text : "&fq=".$facet_autocomplete_field.":".$autocomplete_text;
 
     $request_search_term = $_REQUEST['search_term'];
     $search_terms = explode('*|*', $request_search_term);
@@ -437,7 +496,7 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
       return drupal_json_output(array(array('label' => 'No Matches Found', 'value' => 'No Matches Found')));
     }
 }
-  
+
 /**
  *  Outputs the agency suggestions for the given input.
  *  @param $string
@@ -446,6 +505,16 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
 function _checkbook_smart_search_agency_autocomplete(){
     $agencies = _checkbook_smart_search_get_searchstring_autocomplete("agency_names","agency_name_autocomplete");
     return $agencies;
+}
+
+/**
+ *  Outputs the agency suggestions for the given input.
+ *  @param $string
+ *  @return the matching words
+ **/
+function _checkbook_smart_search_oge_autocomplete(){
+    $oges = _checkbook_smart_search_get_searchstring_autocomplete("oge_names","oge_name_autocomplete");
+    return $oges;
 }
 
 /**
@@ -478,37 +547,7 @@ function _checkbook_smart_search_fiscalyear_autocomplete(){
     return $fiscal_years;
 }
 
-/**
- *  Replaces and encodes the special characters in the goven string
- * @param $string
- * @return $string
- */
-function _checkbook_smart_search_escapeSolrValue($string){
 
-    $string = str_replace("%", "%25", $string);
-    $string = str_replace("'", "%27", $string);
-    $string = str_replace("\\", "%5C%5C", $string);
-    $string = str_replace(" ", "%20", $string);
-    $string = str_replace("#", "%23", $string);
-    $string = str_replace("/", "\%2F", $string);
-    $string = str_replace("&", "%26", $string);
-    $string = str_replace("[", "\[", $string);
-    $string = str_replace("]", "\]", $string);
-    $string = str_replace(":", "\:", $string);
-    $string = str_replace("+", "\%2B", $string);
-    $string = str_replace("?", "\%3F", $string);
-    $string = str_replace("$", "\%24", $string);
-    $string = str_replace("!", "\%21", $string);
-    $string = str_replace("(", "\%28", $string);
-    $string = str_replace(")", "\%29", $string);
-    $string = str_replace("|", "\%7C", $string);
-    $string = str_replace("^", "\%5E", $string);
-    $string = str_replace("*", "%2A", $string);
-    $string = str_replace(".", "\%2E", $string);
-    $string = str_replace("-", "\-", $string);
-
-    return $string;
-}
 
 /** Escape special characters from regular expression string */
 function escapeRegex($string){
@@ -523,25 +562,7 @@ function escapeRegex($string){
     return $string;
 }
 
-/**
- *  Outputs the solr query result for the input query.
- *  @param $query
- *  @return the solr result in PHP array format.
-*/
-function _checkbook_smart_search_solr_results($query){
-    global $conf;
-    if($conf['check_book']['solr']['url']){
-        $solr_server_url = $conf['check_book']['solr']['url'];
-    }
-    ini_set('default_socket_timeout',120);
-	$url = $solr_server_url . $query;
-    $contents = file_get_contents($url);
-    $contents = utf8_encode($contents);
-    if($contents){
-        eval("\$results = " . $contents . ";");
-    }
-    return $results;
-}
+
 
 /** Returns the URL for clear functionality for each Search Term
  *  @param $string
@@ -678,12 +699,12 @@ function _checkbook_smart_search_export_data(){
   $fields = _checkbook_smart_search_domain_fields($_REQUEST['domain']);
   $fl = implode(",",array_keys($fields));
   echo implode(",",array_values($fields)) . "\n";
-  
+
   while($remaining > 0 ){
     $results = _checkbook_smart_search_get_results_csv($search_terms, $page_num , $page_size,false,$fl, true);
     $page_num += 1 ;
     $remaining = $remaining - $page_size;
-    echo $results;    
+    echo $results;
     ob_flush();
     flush();
   }
@@ -694,7 +715,7 @@ function _checkbook_smart_search_export_data(){
 function _checkbook_smart_search_domain_fields($domain){
   switch ($domain){
     case "spending":
-      $parameter_mapping = array(       
+      $parameter_mapping = array(
       "spending_category_name" => "Spending Category",
       "agency_name" => "Agency",
       "department_name" => "Department",
@@ -722,14 +743,14 @@ function _checkbook_smart_search_domain_fields($domain){
       "start_date_orig"=>"Start date",
       "end_date_orig"=>"End Date",
       "pin"=>"PIN",
-      "apt_pin"=>"APT PIN",      
+      "apt_pin"=>"APT PIN",
       "registration_date"=>"Registration date",
       "expense_category_name"=>"Expense Category",
       "received_date"=>"Received date",
       "" => "");
 
       break;
-    case "payroll":      
+    case "payroll":
       $parameter_mapping = array(
       "civil_service_title" => "Title",
       "agency_name" => "Agency",
@@ -785,21 +806,21 @@ function _checkbook_smart_search_solr_results_csv($query){
   $url = $solr_server_url . $query;
   $contents = file_get_contents($url);
   $contents = utf8_encode($contents);
-  
+
   return $contents;
 }
 
 /** Exports the smart search export data */
 function _checkbook_smart_search_get_results_csv($search_terms,$page_no, $no_of_results,$highlighting = true , $fl = "*", $skip_header = false){
   $current_date = date("c").'Z';
-  $search_string = _checkbook_smart_search_get_results_query_search_term();
+  $search_string = _checkbook_smart_search_get_results_query_search_term($search_terms);
   $domain = $_REQUEST['domain'];
   $query = "select/?q=". $search_string
                ."&fq=-latest_flag:N"
-               ."&start=". ($page_no*$no_of_results)               
+               ."&start=". ($page_no*$no_of_results)
                ."&wt=csv"
                ."&rows=" . $no_of_results ;
-  
+
   $query = $query . "&fq=domain:" . $domain;
    if($highlighting){
      $query = $query . "&hl=true&hl.fl=*&fl=" . $fl;
