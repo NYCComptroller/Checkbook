@@ -21,8 +21,10 @@
 <?php
     drupal_add_js(drupal_get_path('module', 'checkbook_smart_search') .'/js/smart_search.js');
     $output = NULL;
-    $agencies = $vendors = $expenseCategories = $revenueCategories = $fiscalYears = $domains = $contractCategory = $contractStatus = $spendingCategory = array();
-    $reqAgencies = $reqFiscalYears = $reqDomains = $reqVendors = $reqExpenseCategories = $reqRevenueCategories = $reqSpendCategories = array();
+    $oge=$agencies = $vendors = $expenseCategories = $revenueCategories
+        = $fiscalYears = $domains = $contractCategory = $contractStatus = $spendingCategory = array();
+    $reqOge=$reqAgencies = $reqFiscalYears = $reqDomains = $reqVendors =
+        $reqExpenseCategories = $reqRevenueCategories = $reqSpendCategories = array();
 
     $searchTerms = explode('*|*', $_REQUEST['search_term']);
 
@@ -90,6 +92,9 @@
                 break;
             case 'contract_status':
                 $contractStatus[] = $value[$key];
+                break;
+            case 'oge':
+                $oge[] = $value[$key];
                 break;
         }
 
@@ -197,6 +202,62 @@
 
 //End of Narrow down search by Domain/Type of Data
 
+
+//Begin of Narrow down search by OGE
+
+if(count($oge) > 0){
+    $output .= "<table id='ogefilter'>";
+    $output .= "<th colspan='3'>By Other Government Entity</th>";
+    $i=0;
+    $displayRows = NULL;
+    $hiddenRows = NULL;
+    foreach($reqOge as $ $key => $value){
+        $checked = "checked";$count = $oge[0][$value];
+        if($i<5){
+            $displayRows .= "<tr><td><input type='checkbox' name='fogeName' {$checked} value='{$value}' onClick='javascript:applySearchFilters();'/></td>
+                                     <td>". htmlentities($value). "</td> <td class='results'><span class='results'>".number_format($count)."</span></td>
+                                 </tr>";
+        }else{
+            $hiddenRows .= "<tr><td><input type='checkbox' name='fogeName' {$checked} value='{$value}' onClick='javascript:applySearchFilters();'/></td>
+                                    <td>". htmlentities($value) ."</td> <td class='results'><span class='results'>".number_format($count)."</span></td>
+                                </tr>";
+        }
+        $i++;
+    }
+    foreach($oge[0] as $ogeName=>$count){
+        if($count > 0 && !in_array($ogeName, $reqOge)){
+            $ogeValue = urlencode($ogeName);
+
+            if($i<5){
+                $displayRows .= "<tr><td><input type='checkbox' name='fagencyName' value='{$ogeValue}' onClick='javascript:applySearchFilters();'/></td>
+                                         <td>". htmlentities($ogeName). "</td> <td class='results'><span class='results'>".number_format($count)."</span></td>
+                                     </tr>";
+            }else{
+                $hiddenRows .= "<tr><td><input type='checkbox' name='fagencyName' value='{$ogeValue}' onClick='javascript:applySearchFilters();'/></td>
+                                        <td>". htmlentities($ogeName) ."</td> <td class='results'><span class='results'>".number_format($count)."</span></td>
+                                    </tr>";
+            }
+            $i++;
+        }
+    }
+
+    if($displayRows){
+        $displayRows = "<tbody>" .$displayRows."</tbody>" ;
+    }
+
+    if($hiddenRows){
+        $hiddenRows = "<tbody id='hiddenagencies' style='display: none;'>" .$hiddenRows."</tbody>";
+    }
+
+    $output .= $displayRows.$hiddenRows."</table>";
+
+    if($i > 5){
+        $output .= "<div style='margin-bottom: 20px'><a href=\"javascript:toggleDisplay('hiddenoge');changeLinkText('showmorelinkAg','Oge')\">
+                        <div id='showmorelinkAg'>Show more Entities &#187</div></a></div>";
+    }
+}
+
+//End of Narrow down search by OGE
 
 //Begin of Narrow down search by Agency
 
