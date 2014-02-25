@@ -483,6 +483,7 @@ function _checkbook_project_get_name_for_argument($keyword,$id){
 function _checkbook_project_querydataset($dataset,$columns,$parameters = null){
 	try{
 		$dataController = data_controller_get_instance();
+        $dataset = _update_dataset_datasource($dataset);
 		$data = $dataController->queryDataset($dataset,$columns, $parameters, NULL,0, NULL,NULL);
 	 }
  	catch(Exception $exception){
@@ -1013,8 +1014,14 @@ function _checkbook_project_get_url_param_string($key,$key_alias =  null){
   
   $urlPath = drupal_get_path_alias($_GET['q']);
   $pathParams = explode('/', $urlPath);
-
-  $keyIndex = (array_search($key,$pathParams))?array_search($key,$pathParams) : array_search($key_alias,$pathParams);
+  $keyIndex = NULL;
+  foreach($pathParams as $index => $value){
+    if($key == $value){
+        $keyIndex = $index;
+    }else if($key_alias != null && $key_alias == $value && $value != null){
+        $keyIndex = $index;
+    }
+  }
 
   if($keyIndex){
     if($key_alias == null){
@@ -1382,3 +1389,20 @@ function _checkbook_max_data_year(){
       "cal_year_value"=>$result[1]['year_value'], "cal_year_id"=>$result[1]['year_id']);
 }
 
+function _checkbook_append_url_params(){
+    $database = _getRequestParamValue('datasource');
+    if(isset($database)){
+        return '/datasource/checkbook_oge';
+    }else{
+        return "";
+    }
+}
+
+function _checkbook_check_isEDCPage(){
+    $database = _getRequestParamValue('datasource');
+    if(isset($database)){
+        return true;
+    }else{
+        return false;
+    }
+}

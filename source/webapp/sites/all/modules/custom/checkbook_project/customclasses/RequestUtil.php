@@ -306,6 +306,7 @@ class RequestUtil{
         if(strlen($category) > 0){
             $url .= "/category/".$category;
         }
+        $url .= _checkbook_append_url_params();
         $allowedFilters =  array("year","calyear","agency","yeartype","vendor");
         for($i=1;$i < count($pathParams);$i++){
             if(in_array($pathParams[$i] ,$allowedFilters) ){

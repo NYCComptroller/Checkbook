@@ -414,7 +414,8 @@ function widget_data_tables_widget_view(&$node) {
 		      $sAjaxSource .= "/$key/$value" ;
 		    }
 		  }
-		  	
+
+          $sAjaxSource = $sAjaxSource._checkbook_append_url_params();
 		  $node->widgetConfig->dataTableOptions->sAjaxSource =  escapeSpecialCharacters(html_entity_decode($sAjaxSource,ENT_QUOTES));
 		  if (!isset($node->data) || count($node->data) == 0) {
 		        return theme('widget_data_tables_no_results_theme', array('node'=> $node));
@@ -434,7 +435,8 @@ function widget_data_tables_widget_view(&$node) {
                      $sAjaxSource .= "/$key/$value" ;
 	    		}
 			}
-			
+
+            $sAjaxSource = $sAjaxSource._checkbook_append_url_params();
 			$node->widgetConfig->dataTableOptions->sAjaxSource =  escapeSpecialCharacters(html_entity_decode($sAjaxSource,ENT_QUOTES));
 		/*	$node->widgetConfig->dataTableOptions->fnDrawCallback  =  "##function( oSettings ) {
 			addPaddingToDataCells(this);
@@ -477,8 +479,9 @@ function widget_data_tables_widget_view(&$node) {
                 }
             }
 
+            $sAjaxSource = $sAjaxSource._checkbook_append_url_params();
             $node->widgetConfig->dataTableOptions->sAjaxSource =  escapeSpecialCharacters(html_entity_decode($sAjaxSource,ENT_QUOTES));
-            
+
             $node->widgetConfig->dataTableOptions->fnServerData= "##function ( sSource, aoData, fnCallback ) {
             aoData.push( {
             'name': 'data_type', 'value': 'json' } );
@@ -506,7 +509,7 @@ function widget_data_tables_widget_view(&$node) {
 				$urlParamMap = array_flip(get_object_vars($node->widgetConfig->urlParamMap));
 		    	foreach($node->widgetConfig->requestParams as $key=>$value) {
 		    		 $key = isset($urlParamMap[$key]) ? $urlParamMap[$key] : $key;	
-					    $node->widgetConfig->dataTableOptions->sAjaxSource .= "/$key/$value" ;
+					    $node->widgetConfig->dataTableOptions->sAjaxSource .= "/$key/$value"._checkbook_append_url_params();
 	    		}
 			}
 
@@ -593,7 +596,7 @@ function widget_data_tables_add_js($node){
 		        " . stripcslashes(str_replace('##"','',str_replace('"##','',$dataTableOptions))) ."
 		        );
 		        oTable" . $id  .  ".node_id = " . $node->nid . " ;
-		        oTable" . $id  .  ".initAjaxSource = '" . $node->widgetConfig->sAjaxSource . "' ;
+		        oTable" . $id  .  ".initAjaxSource = '" . $node->widgetConfig->sAjaxSource . _checkbook_append_url_params() . "' ;
 
 	    		" . stripcslashes($node->widgetConfig->customJS) .
         "} );" .
@@ -619,7 +622,7 @@ function widget_data_tables_add_js_setting($node){
     'id'=>$id,
     'dataTableOptions'=>$dataTableOptions,
     'nodeId'=>$node->nid,
-    'initAjaxSource'=>$node->widgetConfig->sAjaxSource,
+    'initAjaxSource'=>$node->widgetConfig->sAjaxSource._checkbook_append_url_params(),
     'customJS'=>stripcslashes($node->widgetConfig->customJS),
     'customExternalJS'=>stripcslashes($node->widgetConfig->customExternalJS),
   );
