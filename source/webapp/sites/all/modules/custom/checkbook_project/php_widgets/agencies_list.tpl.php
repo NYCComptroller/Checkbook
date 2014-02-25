@@ -87,7 +87,11 @@ $agency_list .= "<a href='/".$all_agency_url."' id='citywide_all_agencies'>CITYW
 $agency_list .= "<div class='agency-list-close'><a href='#'>x Close</a></div>";
 $agency_list .= "</div></div>";
 
-    //$edc_agencies
+//$edc_agencies
+if($current_url[1] == 'contracts_landing')
+    $edc_url = "contracts_landing";
+else
+    $edc_url = "spending_landing";
 
 $agency_list_other = "<div id='agency-list' class='agency-nav-dropdowns'>
   <div class='agency-list-open'><span id='other-agency-list-open'>Other Government Entities</span></div>
@@ -96,13 +100,13 @@ $agency_list_other = "<div id='agency-list' class='agency-nav-dropdowns'>
         <div class='agency-slide'>
           <ul class='listCol'>";
             foreach($edc_agencies as $key => $edc_agency){
-                $agency_list_other .= "<li><a href='/spending_landing"._checkbook_project_get_year_url_param_string()."/datasource/checkbook_oge/agency/".$edc_agency['agency_id']. "'>". $edc_agency['agency_name'] ."</a></li>";
+                $agency_list_other .= "<li><a href='/". $edc_url ._checkbook_project_get_year_url_param_string()."/datasource/checkbook_oge/agency/".$edc_agency['agency_id']. "'>". $edc_agency['agency_name'] ."</a></li>";
             }
  $agency_list_other .= "</ul>
         </div>
     </div>
         <div class='agency-list-nav'><a href='#' id='prev2'>Prev</a><a href='#' id='next2'>Next</a>
-        <a href='/spending_landing"._checkbook_project_get_year_url_param_string() ."/datasource/checkbook_oge/agency/9000"."' id='citywide_all_agencies'>Other Government Entities</a>
+        <a href='/". $edc_url ._checkbook_project_get_year_url_param_string() ."/datasource/checkbook_oge/agency/9000"."' id='citywide_all_agencies'>Other Government Entities</a>
         </div>
     <div class='agency-list-close'><a href='#'>x Close</a></div>
   </div>
