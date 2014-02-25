@@ -119,6 +119,28 @@
                         }
                 }
             })
+
+            $('#autocomplete_fogeName',context).autocomplete({
+                source:"/smart_search/autocomplete/oge/" + search_term,
+                focus: function (event, ui) {
+                    if(ui.item.label.toLowerCase() == 'no matches found'){
+                        return false;
+                    }else{
+                        $(event.target).val(ui.item.label);
+                        return false;
+                    }
+                },
+                select: function (event, ui) {
+                    if(ui.item.label.toLowerCase() == 'no matches found'){
+                        return false;
+                    }else{
+                        var url = getFacetAutocompleteUrl("oge_agency_names",encodeURIComponent(ui.item.value));
+                        $(event.target).val(ui.item.label);
+                        window.location = url;
+                        return false;
+                    }
+                }
+            })
             
             $('#autocomplete_fvendorName',context).autocomplete({
                 source:"/smart_search/autocomplete/vendor" + search_term,
@@ -221,6 +243,7 @@
 
     function prepareSearchFilterUrl(){
         var domainNames = getSearchFilterCriteria('fdomainName');
+        var ogeAgencyNames = getSearchFilterCriteria('fogeName');
         var agencyNames = getSearchFilterCriteria('fagencyName');
         var vendorNames = getSearchFilterCriteria('fvendorName');
         var expenseCategories = getSearchFilterCriteria('fexpenseCategoryName');
@@ -246,6 +269,9 @@
 
         if(domainNames){
             cUrl += "domains=" + encodeURIComponent(domainNames) + '*|*';
+        }
+        if(ogeAgencyNames){
+            cUrl += "oge_agency_names=" + encodeURIComponent(ogeAgencyNames) + '*|*';
         }
         if(agencyNames){
             cUrl += "agency_names=" + encodeURIComponent(agencyNames) + '*|*';
@@ -347,7 +373,6 @@ function getFacetAutocompleteUrl(category, value){
     }else{
         newUrl += "*|*" + category + '=' + value;
     }
-
     return newUrl;
 }
 

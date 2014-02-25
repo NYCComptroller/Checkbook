@@ -85,6 +85,7 @@
    <field name="agency_name_id" type="string_custom" indexed="true" stored="true"/>
    <field name="agency_code" type="string_custom" indexed="true" stored="true"/>
    <field name="agency_name_text" type="text_general" indexed="true" stored="true"/>
+   <field name="agency_type" type="string_custom" indexed="true" stored="true" />
    <field name="fiscal_year_id" type="string_custom" indexed="true" stored="true"/>
    <field name="fiscal_year" type="string_custom" indexed="true" stored="true"/>
    <field name="calendar_fiscal_year_id" type="string_custom" indexed="true" stored="true"/>
@@ -311,6 +312,7 @@
 	  Another way to map multiple source fields to the same
 	  destination field is to use the dynamic field syntax.
 	  copyField also supports a maxChars to copy setting.  -->
+
 
 	<copyField source="agency_name" dest="text" />
     <copyField source="agency_name" dest="agency_name_autocomplete" />
