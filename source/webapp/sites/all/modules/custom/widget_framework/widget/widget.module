@@ -399,6 +399,7 @@ function prepare_dataset_parameters(&$requestParameters, $configuration,$widgetC
     if (isset($configuration->defaultParameters)) {
         foreach ($configuration->defaultParameters as $key => $value) {
             if (!isset($requestParameters[$key])) {
+              $key = _update_dataset_datasource($key);
               $requestParameters[$key] = $value;
             }
         }
@@ -407,7 +408,8 @@ function prepare_dataset_parameters(&$requestParameters, $configuration,$widgetC
     if (isset($configuration->additionalParameters)) {
         foreach ($configuration->additionalParameters as $key => $value) {
             //if (isset($requestParameters[$key])) {
-                $requestParameters[$key] = $value;
+            $key = _update_dataset_datasource($key);
+            $requestParameters[$key] = $value;
             //}
         }
     }
