@@ -96,7 +96,7 @@ $agency_list_other = "<div id='agency-list' class='agency-nav-dropdowns'>
         <div class='agency-slide'>
           <ul class='listCol'>";
             foreach($edc_agencies as $key => $edc_agency){
-                $agency_list_other .= "<li><a href='/spending_landing"._checkbook_project_get_year_url_param_string()."/agency/".$edc_agency['agency_id']. "/datasource/checkbook_oge'>". $edc_agency['agency_name'] ."</a></li>";
+                $agency_list_other .= "<li><a href='/spending_landing"._checkbook_project_get_year_url_param_string()."/datasource/checkbook_oge/agency/".$edc_agency['agency_id']. "'>". $edc_agency['agency_name'] ."</a></li>";
             }
  $agency_list_other .= "</ul>
         </div>
