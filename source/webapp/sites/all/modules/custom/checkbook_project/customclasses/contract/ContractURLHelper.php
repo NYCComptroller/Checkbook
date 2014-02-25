@@ -153,7 +153,7 @@ class ContractURLHelper{
         if(strlen($status) > 0){
             $url .= "/status/".$status;
         }
-        
+        $url .= _checkbook_append_url_params();
         if( preg_match("/^contracts_pending/", drupal_get_path_alias($_GET['q'])) ){
           $allowedFilters =  array("agency","vendor","awrdmthd","csize","cindustry","agid");
           $url .= "/yeartype/B/year/"._getCurrentYearID();
