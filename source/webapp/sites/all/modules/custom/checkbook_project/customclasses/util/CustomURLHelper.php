@@ -40,7 +40,7 @@ class CustomURLHelper
     static function prepareUrl($path, $params=array(), $requestParams=array(), $customPathParams=array(), $applyPreviousYear=false, $applySpendingYear=false){
         $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
 
-        $url =  $path . _checkbook_project_get_year_url_param_string($applySpendingYear, $applyPreviousYear);
+        $url =  $path . _checkbook_append_url_params() . _checkbook_project_get_year_url_param_string($applySpendingYear, $applyPreviousYear);
 
         if(is_array($params)){
             foreach($params as $key => $value){
