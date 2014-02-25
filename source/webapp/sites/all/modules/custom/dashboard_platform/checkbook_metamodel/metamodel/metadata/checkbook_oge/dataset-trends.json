@@ -1,0 +1,125 @@
+{
+    "datasets": {
+		"trends_gen_fund_revenue": {
+            "datasourceName": "main",
+            "source": "trends_gen_fund_revenue"
+         },
+         "trends_gen_fund_expenditure": {
+            "datasourceName": "main",
+            "source": "trends_gen_fund_expenditure"
+         },
+         "trends_property_tax_levies": {
+            "datasourceName": "main",
+            "source": "trends_property_tax_levies"
+         },
+         "trends_capital_projects": {
+            "datasourceName": "main",
+            "source": "trends_capital_projects"
+         },
+         "trends_personal_income": {
+            "datasourceName": "main",
+            "source": "trends_personal_income"
+         },
+         "trends_ratios_outstanding_debt": {
+            "datasourceName": "main",
+            "source": "trends_ratios_outstanding_debt"
+         },
+         "trends_numberofcityemployees": {
+            "datasourceName": "main",
+            "source": "trends_numberofcityemployees"
+         },
+         "trends_non_agricultural_wage_salary_employment": {
+            "datasourceName": "main",
+            "source": "trends_non_agricultural_wage_salary_employement"
+         },
+         "trends_employement_status_of_resident_population": {
+            "datasourceName": "main",
+            "source": "trends_employment_status_of_resident_population"
+         },
+         "trends_collection_cancellation_abatements": {
+            "datasourceName": "main",
+            "source": "trends_collection_cancellation_abatements"
+         },
+         "trends_new_york_city_educational_construction": {
+            "datasourceName": "main",
+            "source": "trends_new_york_city_educational_construction"
+         },
+         "trends_changes_in_fund_balances": {
+            "datasourceName": "main",
+            "source": "trends_changes_in_fund_balances"
+         },
+         "trends_capital_assets_statistics_function_program": {
+            "datasourceName": "main",
+            "source": "trends_capital_assets_statistics_function_program"
+         },
+         "trends_assesed_valuation_tax_rate_class": {
+            "datasourceName": "main",
+            "source": "trends_assesed_valuation_tax_rate_class"
+         },
+         "trends_assesed_estimated_actual_taxable_property": {
+            "datasourceName": "main",
+            "source": "trends_assesed_estimated_actual_taxable_property"
+         },
+         "trends_nyc_population": {
+            "datasourceName": "main",
+            "source": "trends_nyc_population"
+         },
+         "trends_property_tax": {
+            "datasourceName": "main",
+            "source": "trends_property_tax"
+         },
+         "trends_person_receiving_pubic_assistance": {
+            "datasourceName": "main",
+            "source": "trends_person_receiving_pubic_assistance"
+         },
+         "trends_pledged_revenue": {
+            "datasourceName": "main",
+            "source": "trends_pledged_revenue"
+         },
+         "trends_uncollected_parking_violation": {
+            "datasourceName": "main",
+            "source": "trends_uncollected_parking_violation"
+         },
+         "trends_changes_net_assets": {
+            "datasourceName": "main",
+            "source": "trends_changes_net_assets"
+         },
+         "trends_government_funds": {
+            "datasourceName": "main",
+            "source": "trends_government_funds"
+         },
+         "trends_hudson_yards_infrastructure": {
+            "datasourceName": "main",
+            "source": "trends_hudson_yards_infrastructure"
+         },
+         "trends_ratios_general_bonded_debt_outstanding": {
+            "datasourceName": "main",
+            "source": "trends_ratios_general_bonded_debt_outstanding"
+         },
+         "trends_legal_debt_margin": {
+            "datasourceName": "main",
+            "source": "trends_legal_debt_margin"
+         }
+    },
+    "cubes":{
+        "trends_personal_income":{
+            "sourceDatasetName":"trends_personal_income",
+            "dimensions":[
+                {
+                    "name": "fiscal_year",
+                    "levels": [
+                        {
+                            "name": "fiscal_year",
+                            "sourceColumnName": "fiscal_year"
+                        }
+                    ]
+                }    
+            ],
+            "measures":{
+                "income_or_population":{
+                    "function":"SUM(income_or_population) "
+                }              
+            }
+        }
+    }
+}

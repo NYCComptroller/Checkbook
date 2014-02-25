@@ -1,9 +1,23 @@
 {
 "widgetType": "phpparser",
 "useList":"true",
-"dataset": "checkbook:agency",
-"defaultParameters":{"is_display":"Y"},
-"columns": ["agency_id","agency_name"],
 "orderBy":["agency_name"],
+"model": {
+        "join": {
+            "method": "Union"
+        },
+        "series": [
+            {
+                "dataset": "checkbook:agency",
+                "columns":  ["agency_id","agency_name"],
+                "seriesDefaultParameters":{"is_display":"Y"}
+            },
+           {
+               "dataset": "checkbook_oge:agency",
+               "columns":  ["agency_id","agency_name","is_oge_agency"],
+               "seriesDefaultParameters":{"is_display":"Y","is_oge_agency":"Y"}
+            }
+        ]
+},
 "template":"agencies_list"
 }
