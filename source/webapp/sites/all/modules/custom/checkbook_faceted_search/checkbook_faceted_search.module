@@ -307,99 +307,54 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
 
   $output = NULL;
 
-    // can we just have one foreach instead of several?
+    $facetDisplayNames = array(
+       'domain' => 'Type of Data',
+       'agency_name' =>  'Citywide Agency',
+       'oge_agency_name' => 'Other Government Entity',
+       'vendor_name' => 'Expense Category',
+       'expenditure_object_name' => 'Expense Category',
+       'fiscal_year' => 'Fiscal Year',
+    );
 
-    //Domain output
-    if (count($facets['domain']) > 0) {
-        foreach ($facets['domain']['domain'] as $domainName => $count) {
-            if ($count > 0) {
-                $checked = in_array($domainName, array_values_recursive($selected_filters['domain'])) ? 'checked' : '';
-                $output['Type of Data'][] = array($domainName, $domainName, $count, $checked);
-                $output['Type of Data']['name'] = 'fdomainName';
+    $facetNames = array(
+        'domain' => 'fdomainName',
+        'agency_name' =>  'fagencyName',
+        'oge_agency_name' => 'fogeName',
+        'vendor_name' => 'fvendorName',
+        'expenditure_object_name' => 'fexpenseCategoryName',
+        'fiscal_year' => 'fyear',
+    );
+
+
+    foreach($facets as $key=>$value)
+    {
+        if(!array_key_exists($key,$facetDisplayNames)) continue; // we only want certain facets shown
+        if($key == 'fiscal_year')
+        {
+            krsort($value[$key]);
+        }
+        foreach($value[$key] as $name=>$count)
+        {
+            if($name == '') continue; // No oge data shown in agency facet please :)
+            if($key == 'domain' && $count > 0)
+            {
+                $checked = in_array($name, array_values_recursive($selected_filters[$key])) ? 'checked' : '';
+                $output['Type of Data'][] = array($name, $name, $count, $checked);
             }
-        }
-    }
-
-    //Agency output
-  if (count($facets['agency_name']) > 0) {
-    foreach ($facets['agency_name']['agency_name'] as $agencyName => $count) {
-      if ($count > 0 && $agencyName != '') {
-        $checked = in_array($agencyName, array_values_recursive($selected_filters['agency_name']));
-
-        if ($checked) {
-          $output['Citywide Agency']['checked'][] = array($agencyName, $agencyName, $count);
-        }
-        else {
-          $output['Citywide Agency']['unchecked'][] = array($agencyName, $agencyName, $count);
-        }
-      }
-    }
-    $output['Citywide Agency']['name'] = 'fagencyName';
-  }
-  //OGE output
-  if (count($facets['oge']) > 0) {
-        foreach ($facets['oge']['oge_agency_name'] as $ogeName => $count) {
-            if ($count > 0) {
-                $checked = in_array($ogeName, array_values_recursive($selected_filters['oge']));
+            else if($count > 0)
+            {
+                $checked = in_array($name, array_values_recursive($selected_filters[$key]));
 
                 if ($checked) {
-                    $output['Other Government Entity']['checked'][] = array($ogeName, $ogeName, $count);
+                    $output[$facetDisplayNames[$key]]['checked'][] = array($name, $name, $count);
                 }
                 else {
-                    $output['Other Government Entity']['unchecked'][] = array($ogeName, $ogeName, $count);
+                    $output[$facetDisplayNames[$key]]['unchecked'][] = array($name, $name, $count);
                 }
             }
         }
-        $output['Other Government Entity']['name'] = 'fogeName';
-  }
-    //Vendor output
-  if (count($facets['vendor_name']) > 0) {
-    foreach ($facets['vendor_name']['vendor_name'] as $vendorName => $count) {
-      if ($count > 0) {
-        $checked = in_array($vendorName, array_values_recursive($selected_filters['vendor_name']));
-
-        if ($checked) {
-          $output['Vendor']['checked'][] = array($vendorName, $vendorName, $count);
-        }
-        else {
-          $output['Vendor']['unchecked'][] = array($vendorName, $vendorName, $count);
-        }
-      }
+        $output[$facetDisplayNames[$key]]['name'] = $facetNames[$key];
     }
-    $output['Vendor']['name'] = 'fvendorName';
-  }
-    //Expense Categories output
-  if (count($facets['expenditure_object_name']) > 0) {
-    foreach ($facets['expenditure_object_name']['expenditure_object_name'] as $expenseCategoryName => $count) {
-      if ($count > 0) {
-        $checked = in_array($expenseCategoryName, array_values_recursive($selected_filters['expenditure_object_name']));
-
-        if ($checked) {
-          $output['Expense Category']['checked'][] = array($expenseCategoryName, $expenseCategoryName, $count);
-        }
-        else {
-          $output['Expense Category']['unchecked'][] = array($expenseCategoryName, $expenseCategoryName, $count);
-        }
-      }
-    }
-    $output['Expense Category']['name'] = 'fexpenseCategoryName';
-  }
-    //Fiscal Years output
-  if (count($facets['fiscal_year']) > 0) {
-    krsort($facets['fiscal_year']['fiscal_year']);
-    foreach ($facets['fiscal_year']['fiscal_year'] as $fiscalYear => $count) {
-      if ($count > 0) {
-        $checked = in_array($fiscalYear, array_values_recursive($selected_filters['fiscal_year']));
-        if ($checked) {
-          $output['Fiscal Year']['checked'][] = array($fiscalYear, $fiscalYear, $count);
-        }
-        else {
-          $output['Fiscal Year']['unchecked'][] = array($fiscalYear, $fiscalYear, $count);
-        }
-      }
-    }
-    $output['Fiscal Year']['name'] = 'fyear';
-  }
 
   $variables['render_array'] = $output;
   //$variables['sub_cat_array'] = $subCat;
