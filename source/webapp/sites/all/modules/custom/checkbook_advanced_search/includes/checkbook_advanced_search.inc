@@ -5,13 +5,14 @@
  * has been clicked and invoke the respective functions that generate the
  * redirect URL with the necessary parameters
  */
-function checkbook_advanced_search_form_submit($form, &$form_state){
-    switch($form_state['clicked_button']['#name']){
+function checkbook_advanced_search_form_submit($form, &$form_state)
+{
+    switch ($form_state['clicked_button']['#name']) {
         case "revenue_submit":
             _checkbook_advanced_search_revenue_submit($form, $form_state);
             break;
         case "spending_submit":
-             _checkbook_advanced_search_spending_submit($form, $form_state);
+            _checkbook_advanced_search_spending_submit($form, $form_state);
             break;
         case "budget_submit":
             _checkbook_advanced_search_budget_submit($form, $form_state);
@@ -23,32 +24,34 @@ function checkbook_advanced_search_form_submit($form, &$form_state){
             _checkbook_advanced_search_contracts_submit($form, $form_state);
             break;
         default:
-           break;
+            break;
     }
 }
 
+//THIS
 /*
  * Get year_value and id using the data controller
  * @return array
  */
-function _checkbook_advanced_search_get_year($domain=null, $form =null) {
-    try{
+function _checkbook_advanced_search_get_year($domain = null, $form = null, $data_source = null)
+{
+    try {
         $dataController = data_controller_get_instance();
-        $data = $dataController->queryDataset("checkbook:year", array('year_value','year_id'), array('year_value' => data_controller_get_operator_factory_instance()->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, 2010)), 'year_value', 0);
+        $data = $dataController->queryDataset("checkbook:year", array('year_value', 'year_id'), array('year_value' => data_controller_get_operator_factory_instance()->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, 2010)), 'year_value', 0);
 
         $current_fy_id = _getFiscalYearID();
         $max_years = _checkbook_max_data_year();
         foreach ($data as $row) {
-            if($domain != 'revenue' && $domain != 'budget'){
-                if($row['year_value'] <= $max_years['year_value'] && $row['year_value'] != 2010){
-                    $fiscal_year_array['fy~'.$row['year_id']] = 'FY '.$row['year_value'];
+            if ($domain != 'revenue' && $domain != 'budget') {
+                if ($row['year_value'] <= $max_years['year_value'] && $row['year_value'] != 2010) {
+                    $fiscal_year_array['fy~' . $row['year_id']] = 'FY ' . $row['year_value'];
                 }
-                if($row['year_value'] <= $max_years['cal_year_value'] ){
-                    $calendar_year_array['cy~'.$row['year_id']] = 'CY '.$row['year_value'];
+                if ($row['year_value'] <= $max_years['cal_year_value']) {
+                    $calendar_year_array['cy~' . $row['year_id']] = 'CY ' . $row['year_value'];
                 }
-            }else{
-                if($row['year_value'] <= $max_years['year_value'] && $row['year_value'] != 2010){
-                    if($form == 'datafeeds')
+            } else {
+                if ($row['year_value'] <= $max_years['year_value'] && $row['year_value'] != 2010) {
+                    if ($form == 'datafeeds')
                         $fiscal_year_array[$row['year_value']] = $row['year_value'];
                     else
                         $fiscal_year_array[$row['year_id']] = $row['year_value'];
@@ -57,74 +60,113 @@ function _checkbook_advanced_search_get_year($domain=null, $form =null) {
         }
         arsort($fiscal_year_array);
         arsort($calendar_year_array);
-        
-        if($domain != 'revenue' && $domain != 'budget'){
-            $fiscal_year_array =  array_merge($fiscal_year_array, $calendar_year_array);
+
+        if ($domain != 'revenue' && $domain != 'budget') {
+            $fiscal_year_array = array_merge($fiscal_year_array, $calendar_year_array);
         }
-        if($domain == 'contracts' || $domain == 'spending'){
-          $fiscal_year_array = array_reverse($fiscal_year_array, true);
-          $fiscal_year_array['fy~all'] = 'All Years';
-          $fiscal_year_array = array_reverse($fiscal_year_array, true);
+        if ($domain == 'contracts' || $domain == 'spending') {
+            $fiscal_year_array = array_reverse($fiscal_year_array, true);
+            $fiscal_year_array['fy~all'] = 'All Years';
+            $fiscal_year_array = array_reverse($fiscal_year_array, true);
         }
-        
+
         return $fiscal_year_array;
 
-    }catch(Exception $e){
-        log_error("Error getting data from controller: \n".$e->getMessage());
+    } catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
     }
 }
+
 /*
  * Get agency name and id using the data controller
  * @return array
  */
-function _checkbook_advanced_search_get_agencyname_and_id(){
-    try{
+function _checkbook_advanced_search_get_agencyname_and_id()
+{
+    try {
         $dataController = data_controller_get_instance();
-        $nyc_agencies = $dataController->queryDataset('checkbook:agency',array('agency_name','agency_id'), array("is_display"=>"Y"), 'agency_name',0, NULL, NULL);
+        $nyc_agencies = $dataController->queryDataset('checkbook:agency', array('agency_name', 'agency_id'), array("is_display" => "Y"), 'agency_name', 0, NULL, NULL);
         $nyc_agencies_key_val = array('Citywide(All Agencies)');
-        foreach($nyc_agencies as $value){
-          if(strlen($value['agency_name']) > 20)
-            $nyc_agencies_key_val[$value['agency_id']] = substr($value['agency_name'],0,20) . '...' ;
-          else
-            $nyc_agencies_key_val[$value['agency_id']] = $value['agency_name'] ;
+        foreach ($nyc_agencies as $value) {
+            if (strlen($value['agency_name']) > 20)
+                $nyc_agencies_key_val[$value['agency_id']] = substr($value['agency_name'], 0, 20) . '...';
+            else
+                $nyc_agencies_key_val[$value['agency_id']] = $value['agency_name'];
         }
         return $nyc_agencies_key_val;
-    }catch(Exception $e){
-        log_error("Error getting data from controller: \n".$e->getMessage());
+    } catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
         return;
     }
 }
 
-function _checkbook_advanced_search_get_agency_attributes(){
-  try{
-    $dataController = data_controller_get_instance();
-    $nyc_agencies = $dataController->queryDataset('checkbook:agency',array('agency_name','agency_id'), NULL, 'agency_name',0, NULL, NULL);
-    $nyc_agencies_key_val = array('Citywide(All Agencies)'=>array('title'=>'Citywide(All Agencies)'));
-    foreach($nyc_agencies as $value){
-      $nyc_agencies_key_val[$value['agency_id']] = array('title'=>$value['agency_name']);
+function _checkbook_advanced_search_get_agency_attributes()
+{
+    try {
+        $dataController = data_controller_get_instance();
+        $nyc_agencies = $dataController->queryDataset('checkbook:agency', array('agency_name', 'agency_id'), NULL, 'agency_name', 0, NULL, NULL);
+        $nyc_agencies_key_val = array('Citywide(All Agencies)' => array('title' => 'Citywide(All Agencies)'));
+        foreach ($nyc_agencies as $value) {
+            $nyc_agencies_key_val[$value['agency_id']] = array('title' => $value['agency_name']);
+        }
+        return $nyc_agencies_key_val;
+    } catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
+        return;
     }
-    return $nyc_agencies_key_val;
-  }catch(Exception $e){
-    log_error("Error getting data from controller: \n".$e->getMessage());
-    return;
-  }
+}
+
+function _checkbook_advanced_search_get_agencyname_and_id_by_data_source($data_source)
+{
+    try {
+        $dataController = data_controller_get_instance();
+        $nyc_agencies = $dataController->queryDataset('checkbook:agency', array('agency_name', 'agency_id'), array("is_display" => "Y"), 'agency_name', 0, NULL, NULL);
+        $nyc_agencies_key_val = array('Citywide(All Agencies)');
+        foreach ($nyc_agencies as $value) {
+            if (strlen($value['agency_name']) > 20)
+                $nyc_agencies_key_val[$value['agency_id']] = substr($value['agency_name'], 0, 20) . '...';
+            else
+                $nyc_agencies_key_val[$value['agency_id']] = $value['agency_name'];
+        }
+        return $nyc_agencies_key_val;
+    } catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
+        return;
+    }
+}
+
+function _checkbook_advanced_search_get_agency_attributes_by_data_source($data_source)
+{
+    try {
+        $dataController = data_controller_get_instance();
+        $nyc_agencies = $dataController->queryDataset('checkbook:agency', array('agency_name', 'agency_id'), NULL, 'agency_name', 0, NULL, NULL);
+        $nyc_agencies_key_val = array('Citywide(All Agencies)' => array('title' => 'Citywide(All Agencies)'));
+        foreach ($nyc_agencies as $value) {
+            $nyc_agencies_key_val[$value['agency_id']] = array('title' => $value['agency_name']);
+        }
+        return $nyc_agencies_key_val;
+    } catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
+        return;
+    }
 }
 
 /*
  * Get expense name and id using the data controller
  * @return array
  */
-function _checkbook_advanced_search_get_expensename_and_id(){
-    try{
+function _checkbook_advanced_search_get_expensename_and_id()
+{
+    try {
         $dataController = data_controller_get_instance();
-        $nyc_expense_obj = $dataController->queryDataset('checkbook:expenditure_object',array('expenditure_object_id','expenditure_object_name'), NULL, 'expenditure_object_name',0, 10, NULL);
+        $nyc_expense_obj = $dataController->queryDataset('checkbook:expenditure_object', array('expenditure_object_id', 'expenditure_object_name'), NULL, 'expenditure_object_name', 0, 10, NULL);
         $nyc_expense_obj_key_val = array('Select Expense category');
-        foreach($nyc_expense_obj as $value){
+        foreach ($nyc_expense_obj as $value) {
             $nyc_expense_obj_key_val[$value['expenditure_object_id']] = $value['expenditure_object_name'];
         }
         return $nyc_expense_obj_key_val;
-    }catch(Exception $e){
-        log_error("Error getting data from controller: \n".$e->getMessage());
+    } catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
         return;
     }
 }
@@ -137,7 +179,8 @@ function _checkbook_advanced_search_get_expensename_and_id(){
  * @param boolean $is_range
  * @return string "$url_param/$value"
  */
-function _checkbook_advanced_search_generate_redirect_url($value, $url_param = '', $is_range = FALSE){
+function _checkbook_advanced_search_generate_redirect_url($value, $url_param = '', $is_range = FALSE)
+{
     /*
      *
      * some inputs, like "spending check amount from" and "spending check amount to" form a range of values that we need to search
@@ -153,8 +196,8 @@ function _checkbook_advanced_search_generate_redirect_url($value, $url_param = '
      */
     $value = _checkbook_advanced_search_replaceSlash($value);
     $redirect_url = '';
-    if($is_range){
-        if($value['type'] == 'amount'){
+    if ($is_range) {
+        if ($value['type'] == 'amount') {
             /* need to make special exception for amount ranges, because 0 is also an acceptable range value
             and empty(0) always returns true, so we have to use strlen to figure out whether the user has entered
             any valid text in the input box
@@ -162,30 +205,30 @@ function _checkbook_advanced_search_generate_redirect_url($value, $url_param = '
             $from_length = strlen($value['from']);
             $to_length = strlen($value['to']);
 
-            if($from_length > 0){
-                $redirect_url = '/'.$url_param.'/'.$value['from'];
+            if ($from_length > 0) {
+                $redirect_url = '/' . $url_param . '/' . $value['from'];
             }
-            if($to_length > 0){
-                if($from_length > 0){
-                    $redirect_url .= '~'.$value['to'];
-                }else{
-                    $redirect_url = '/'.$url_param.'/~'.$value['to'];
+            if ($to_length > 0) {
+                if ($from_length > 0) {
+                    $redirect_url .= '~' . $value['to'];
+                } else {
+                    $redirect_url = '/' . $url_param . '/~' . $value['to'];
                 }
             }
-        }else{
-            if(!empty($value['from'])){
-                $redirect_url = '/'.$url_param.'/'.$value['from'];
+        } else {
+            if (!empty($value['from'])) {
+                $redirect_url = '/' . $url_param . '/' . $value['from'];
             }
-            if(!empty($value['to'])){
-                if(!empty($value['from'])){
-                    $redirect_url .= '~'.$value['to'];
-                }else{
-                    $redirect_url = '/'.$url_param.'/~'.$value['to'];
+            if (!empty($value['to'])) {
+                if (!empty($value['from'])) {
+                    $redirect_url .= '~' . $value['to'];
+                } else {
+                    $redirect_url = '/' . $url_param . '/~' . $value['to'];
                 }
             }
         }
-    }else{
-        $redirect_url = '/'.$url_param.'/'.$value;
+    } else {
+        $redirect_url = '/' . $url_param . '/' . $value;
     }
 
     return $redirect_url;
@@ -195,20 +238,21 @@ function _checkbook_advanced_search_generate_redirect_url($value, $url_param = '
  * Get revenue category and id using the data controller
  * @return array
  */
-function _checkbook_advanced_search_get_revenue_category_and_id() {
-    try{
+function _checkbook_advanced_search_get_revenue_category_and_id()
+{
+    try {
         $dataController = data_controller_get_instance();
         $data = $dataController->queryDataset('checkbook:revenue_category', array(
-          'revenue_category_id',
-          'revenue_category_name'
+            'revenue_category_id',
+            'revenue_category_name'
         ), NULL, 'revenue_category_name');
         $results = array('' => 'All Revenue Categories');
         foreach ($data as $row) {
-          $results[$row['revenue_category_id']] = $row['revenue_category_name'];
+            $results[$row['revenue_category_id']] = $row['revenue_category_name'];
         }
         return array_unique($results);
-    }catch(Exception $e){
-        log_error("Error getting data from controller: \n".$e->getMessage());
+    } catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
         return;
     }
 }
@@ -217,21 +261,22 @@ function _checkbook_advanced_search_get_revenue_category_and_id() {
  * Get fund class name and id using the data controller
  * @return array
  */
-function _checkbook_advanced_search_get_fund_class_and_id(){
-    try{
+function _checkbook_advanced_search_get_fund_class_and_id()
+{
+    try {
         $dataController = data_controller_get_instance();
         $data = $dataController->queryDataset('checkbook:fund_class', array(
-          'fund_class_id',
-          'fund_class_name'
+            'fund_class_id',
+            'fund_class_name'
         ), NULL, 'fund_class_name');
         //$results = array('' => 'All Fund Class');
         foreach ($data as $row) {
-          if(strtolower($row['fund_class_name']) == 'general fund')
-            $results[$row['fund_class_id']] = $row['fund_class_name'];
+            if (strtolower($row['fund_class_name']) == 'general fund')
+                $results[$row['fund_class_id']] = $row['fund_class_name'];
         }
         return array_unique($results);
-    }catch(Exception $e){
-        log_error("Error getting data from controller: \n".$e->getMessage());
+    } catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
         return;
     }
 }
@@ -240,16 +285,17 @@ function _checkbook_advanced_search_get_fund_class_and_id(){
  * Get funding class name and code using the data controller
  * @return array
  */
-function _checkbook_advanced_search_get_funding_source_and_id() {
+function _checkbook_advanced_search_get_funding_source_and_id()
+{
     try {
         $dataController = data_controller_get_instance();
         $data = $dataController->queryDataset('checkbook:ref_funding_class', array(
-          'funding_class_code',
-          'funding_class_name'
+            'funding_class_code',
+            'funding_class_name'
         ), NULL, 'funding_class_name');
         $results = array('' => 'All Funding Classes');
         foreach ($data as $row) {
-          $results[$row['funding_class_code']] = $row['funding_class_name'];
+            $results[$row['funding_class_code']] = $row['funding_class_name'];
         }
         return array_unique($results);
     } catch (Exception $e) {
@@ -263,17 +309,18 @@ function _checkbook_advanced_search_get_funding_source_and_id() {
  * Get document id using the data controller
  * @return array
  */
-function _checkbook_advanced_search_get_document_id(){
-    try{
+function _checkbook_advanced_search_get_document_id()
+{
+    try {
         $dataController = data_controller_get_instance();
         $data = $dataController->queryDataset('checkbook:fact_disbursement_line_item', array('document_id'), NULL, 'document_id');
         $results = array('' => 'All Document ID');
         foreach ($data as $row) {
-          $results[$row['document_id']] = $row['document_id'];
+            $results[$row['document_id']] = $row['document_id'];
         }
         return array_unique($results);
-    }catch(Exception $e){
-        log_error("Error getting data from controller: \n".$e->getMessage());
+    } catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
         return;
     }
 }
@@ -282,16 +329,17 @@ function _checkbook_advanced_search_get_document_id(){
  * Get payroll frequency using the data controller
  * @return array
  */
-function _checkbook_advanced_search_get_payroll_frequency() {
+function _checkbook_advanced_search_get_payroll_frequency()
+{
     try {
         $dataController = data_controller_get_instance();
         $data = $dataController->queryDataset('checkbook:ref_pay_frequency', array(
-          'pay_frequency'
+            'pay_frequency'
         ), NULL, 'pay_frequency');
-       
+
         $results = array('' => 'Select Pay Frequency');
         foreach ($data as $row) {
-          $results[$row['pay_frequency']] = $row['pay_frequency'];
+            $results[$row['pay_frequency']] = $row['pay_frequency'];
         }
         return array_unique($results);
     } catch (Exception $e) {
@@ -304,16 +352,17 @@ function _checkbook_advanced_search_get_payroll_frequency() {
  * Get spending category name and id using data controller
  * @return array
  */
-function _checkbook_advanced_search_get_expensetype_and_id(){
+function _checkbook_advanced_search_get_expensetype_and_id($data_source = null)
+{
     try {
         $dataController = data_controller_get_instance();
         $data = $dataController->queryDataset('checkbook:spending_category', array(
-          'spending_category_id','spending_category_name'
+            'spending_category_id', 'spending_category_name'
         ), NULL, 'spending_category_id');
-        $results =  array(''=>"Total Spending");
+        $results = array('' => "Total Spending");
         foreach ($data as $row) {
-          if($row['spending_category_id'] != 6)
-            $results[$row['spending_category_id']] = $row['spending_category_name'];
+            if ($row['spending_category_id'] != 6)
+                $results[$row['spending_category_id']] = $row['spending_category_name'];
         }
         return array_unique($results);
     } catch (Exception $e) {
@@ -326,57 +375,60 @@ function _checkbook_advanced_search_get_expensetype_and_id(){
  * Get agency name and id using the data controller
  * @return array
  */
-function _checkbook_advanced_search_get_contract_award_method_and_id(){
-    try{
+function _checkbook_advanced_search_get_contract_award_method_and_id($data_source = null)
+{
+    try {
         $dataController = data_controller_get_instance();
-        $nyc_agencies = $dataController->queryDataset('checkbook:award_method',array('award_method_name','award_method_id','award_method_code'), NULL, 'award_method_name',0, NULL, NULL);
+        $nyc_agencies = $dataController->queryDataset('checkbook:award_method', array('award_method_name', 'award_method_id', 'award_method_code'), NULL, 'award_method_name', 0, NULL, NULL);
         $nyc_agencies_key_val = array('Select Award Method');
-        foreach($nyc_agencies as $value){
-            $keys = 'id=>'.$value['award_method_id'].'~code=>'.$value['award_method_code'] ;
-            if(strlen($value['award_method_name']) > 20)
-              $nyc_agencies_key_val[$keys] = substr($value['award_method_name'],0,20) . '...' ;
+        foreach ($nyc_agencies as $value) {
+            $keys = 'id=>' . $value['award_method_id'] . '~code=>' . $value['award_method_code'];
+            if (strlen($value['award_method_name']) > 20)
+                $nyc_agencies_key_val[$keys] = substr($value['award_method_name'], 0, 20) . '...';
             else
-              $nyc_agencies_key_val[$keys] = $value['award_method_name'];
+                $nyc_agencies_key_val[$keys] = $value['award_method_name'];
         }
         return $nyc_agencies_key_val;
-    }catch(Exception $e){
-        log_error("Error getting data from controller: \n".$e->getMessage());
+    } catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
         return;
     }
 }
 
-function _checkbook_advanced_search_get_contract_award_method_attributes(){
-  try{
-    $dataController = data_controller_get_instance();
-    $nyc_agencies = $dataController->queryDataset('checkbook:award_method',array('award_method_name','award_method_id','award_method_code'), NULL, 'award_method_name',0, NULL, NULL);
-    $nyc_agencies_key_val = array('title'=>'Select Award Method)');
-    foreach($nyc_agencies as $value){
-      $keys = 'id=>'.$value['award_method_id'].'~code=>'.$value['award_method_code'] ;
-      $nyc_agencies_key_val[$keys] = array('title'=>$value['award_method_name']);
+function _checkbook_advanced_search_get_contract_award_method_attributes($data_source = null)
+{
+    try {
+        $dataController = data_controller_get_instance();
+        $nyc_agencies = $dataController->queryDataset('checkbook:award_method', array('award_method_name', 'award_method_id', 'award_method_code'), NULL, 'award_method_name', 0, NULL, NULL);
+        $nyc_agencies_key_val = array('title' => 'Select Award Method)');
+        foreach ($nyc_agencies as $value) {
+            $keys = 'id=>' . $value['award_method_id'] . '~code=>' . $value['award_method_code'];
+            $nyc_agencies_key_val[$keys] = array('title' => $value['award_method_name']);
+        }
+        return $nyc_agencies_key_val;
+    } catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
+        return;
     }
-    return $nyc_agencies_key_val;
-  }catch(Exception $e){
-    log_error("Error getting data from controller: \n".$e->getMessage());
-    return;
-  }
 }
 
 /*
  * Get contract type name and id using the data controller
  * @return array
  */
-function _checkbook_advanced_search_get_contract_type_and_id(){
-    try{
+function _checkbook_advanced_search_get_contract_type_and_id()
+{
+    try {
         $dataController = data_controller_get_instance();
-        $nyc_agencies = $dataController->queryDataset('checkbook:agreement_type',array('agreement_type_name','agreement_type_id','agreement_type_code'), NULL, 'agreement_type_name',0, NULL, NULL);
+        $nyc_agencies = $dataController->queryDataset('checkbook:agreement_type', array('agreement_type_name', 'agreement_type_id', 'agreement_type_code'), NULL, 'agreement_type_name', 0, NULL, NULL);
         $nyc_agencies_key_val = array('Select Contract Type');
-        foreach($nyc_agencies as $value){
-            $keys = 'id=>'.$value['agreement_type_id'].'~code=>'.$value['agreement_type_code'];
+        foreach ($nyc_agencies as $value) {
+            $keys = 'id=>' . $value['agreement_type_id'] . '~code=>' . $value['agreement_type_code'];
             $nyc_agencies_key_val[$keys] = $value['agreement_type_name'];
         }
         return $nyc_agencies_key_val;
-    }catch(Exception $e){
-        log_error("Error getting data from controller: \n".$e->getMessage());
+    } catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
         return;
     }
 }
@@ -384,7 +436,8 @@ function _checkbook_advanced_search_get_contract_type_and_id(){
 /*
  * Constructs the URL for Payroll based on the input by the users
  */
-function _checkbook_advanced_search_payroll_submit($form, &$form_state){
+function _checkbook_advanced_search_payroll_submit($form, &$form_state)
+{
 
     $payroll_employee_name = trim($form['payroll']['payroll_employee_name']['#value']);
     $payroll_agency = trim($form['payroll']['payroll_agencies']['#value']);
@@ -409,49 +462,49 @@ function _checkbook_advanced_search_payroll_submit($form, &$form_state){
 
     $redirect_url = 'payroll/search/transactions';
 
-    if(!empty($payroll_employee_name)){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_employee_name,'empnm');
+    if (!empty($payroll_employee_name)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_employee_name, 'empnm');
     }
-    if(!empty($payroll_agency)){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_agency,'agency');
+    if (!empty($payroll_agency)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_agency, 'agency');
     }
-    if(!empty($payroll_department)){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_department,'deptnm');
+    if (!empty($payroll_department)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_department, 'deptnm');
     }
-    if(!empty($payroll_pay_frequency)){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_pay_frequency,'payfq');
+    if (!empty($payroll_pay_frequency)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_pay_frequency, 'payfq');
     }
 
     $payroll_pay_date_range_array = array('from' => $payroll_pay_date_from, 'to' => $payroll_pay_date_to, 'type' => 'date');
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_pay_date_range_array,'paydate',TRUE);
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_pay_date_range_array, 'paydate', TRUE);
 
     $payroll_amount_range_array = array('from' => $payroll_amount_from, 'to' => $payroll_amount_to, 'type' => 'amount');
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_amount_range_array,'salamt',TRUE);
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_amount_range_array, 'salamt', TRUE);
 
     $payroll_base_salary_range_array = array('from' => $payroll_base_salary_from, 'to' => $payroll_base_salary_to, 'type' => 'amount');
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_base_salary_range_array,'baseamt',TRUE);
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_base_salary_range_array, 'baseamt', TRUE);
 
     $payroll_overtime_amount_range_array = array('from' => $payroll_overtime_amount_from, 'to' => $payroll_overtime_amount_to, 'type' => 'amount');
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_overtime_amount_range_array,'overamt',TRUE);
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_overtime_amount_range_array, 'overamt', TRUE);
 
     $payroll_other_payments_range_array = array('from' => $payroll_other_payments_from, 'to' => $payroll_other_payments_to, 'type' => 'amount');
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_other_payments_range_array,'otheramt',TRUE);
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_other_payments_range_array, 'otheramt', TRUE);
 
     $payroll_gross_pay_amount_range_array = array('from' => $payroll_gross_pay_amount_from, 'to' => $payroll_gross_pay_amount_to, 'type' => 'amount');
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_gross_pay_amount_range_array,'grossamt',TRUE);
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_gross_pay_amount_range_array, 'grossamt', TRUE);
 
     $payroll_total_gross_pay_range_array = array('from' => $payroll_total_gross_pay_from, 'to' => $payroll_total_gross_pay_to, 'type' => 'amount');
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_total_gross_pay_range_array,'totalgrosspay',TRUE);
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_total_gross_pay_range_array, 'totalgrosspay', TRUE);
 
-    if(!empty($payroll_year)){
+    if (!empty($payroll_year)) {
         $redirect_url .= _checkbook_advanced_search_year_arg($payroll_year);
     }
 
-    if($payroll_amount_type == 0){
+    if ($payroll_amount_type == 0) {
         $redirect_url .= '/salamttype/1~2~3';
-    }elseif($payroll_amount_type == 1){
+    } elseif ($payroll_amount_type == 1) {
         $redirect_url .= '/salamttype/1';
-    }elseif($payroll_amount_type == 2){
+    } elseif ($payroll_amount_type == 2) {
         $redirect_url .= '/salamttype/2~3';
     }
 
@@ -461,7 +514,8 @@ function _checkbook_advanced_search_payroll_submit($form, &$form_state){
 /*
  * Constructs the URL for Contracts based on the input by the users
  */
-function _checkbook_advanced_search_contracts_submit($form, &$form_state){
+function _checkbook_advanced_search_contracts_submit($form, &$form_state)
+{
     $contracts_contract_status = trim($form['contracts']['contract_status']['#value']);
     $contracts_contract_category = trim($form['contracts']['contract_category']['#value']);
     $contracts_contract_vendor_name = trim($form['contracts']['contract_vendor_name']['#value']);
@@ -485,78 +539,79 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state){
     $contracts_contract_registration_date_from = trim($form['contracts']['contract_registration_date_from']['#value']['date']);
     $contracts_contract_registration_date_to = trim($form['contracts']['contract_registration_date_to']['#value']['date']);
     $contracts_year = trim($form['contracts']['contract_year']['#value']);
-    if($contracts_year == 'fy~all'){
-      $redirect_url = 'contract/all/transactions';
-      $contracts_year = null;
-    } else{
-      $redirect_url = 'contract/transactions';
+    if ($contracts_year == 'fy~all') {
+        $redirect_url = 'contract/all/transactions';
+        $contracts_year = null;
+    } else {
+        $redirect_url = 'contract/transactions';
     }
 
-    if(!empty($contracts_contract_status)){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_status,'contstatus');
+    if (!empty($contracts_contract_status)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_status, 'contstatus');
     }
-    if(!empty($contracts_contract_category)){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_category,'contcat');
-        if($contracts_contract_status != 'P')
-            $redirect_url .= ($contracts_contract_category == 'revenue')? '/doctype/RCT1' : '/doctype/MMA1~MA1~CTA1~CT1~DO1';
+    if (!empty($contracts_contract_category)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_category, 'contcat');
+        if ($contracts_contract_status != 'P')
+            $redirect_url .= ($contracts_contract_category == 'revenue') ? '/doctype/RCT1' : '/doctype/MMA1~MA1~CTA1~CT1~DO1';
         else
-            $redirect_url .= ($contracts_contract_category == 'revenue')? '/doctype/RCT1' : '/doctype/MMA1~MA1~MAR~CTA1~CT1~CTR~DO1';
+            $redirect_url .= ($contracts_contract_category == 'revenue') ? '/doctype/RCT1' : '/doctype/MMA1~MA1~MAR~CTA1~CT1~CTR~DO1';
     }
-    if(!empty($contracts_contract_vendor_name)){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_vendor_name,'vendornm');
+    if (!empty($contracts_contract_vendor_name)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_vendor_name, 'vendornm');
     }
-    if(!empty($contracts_contract_purpose)){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_purpose,'contdesc');
+    if (!empty($contracts_contract_purpose)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_purpose, 'contdesc');
     }
-    if(!empty($contracts_contract_agency)){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_agency,'agency');
+    if (!empty($contracts_contract_agency)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_agency, 'agency');
     }
-    if(!empty($contracts_contract_contract_num)){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_contract_num,'contnum');
+    if (!empty($contracts_contract_contract_num)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_contract_num, 'contnum');
     }
-    if(!empty($contracts_contract_apt_pin)){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_apt_pin,'aptpin');
+    if (!empty($contracts_contract_apt_pin)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_apt_pin, 'aptpin');
     }
-    if(!empty($contracts_contract_pin)){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_pin,'pin');
+    if (!empty($contracts_contract_pin)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_pin, 'pin');
     }
-    if(!empty($contracts_contract_award_method)){
+    if (!empty($contracts_contract_award_method)) {
         $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($contracts_contract_award_method);
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['id'],'awdmethod');
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['id'], 'awdmethod');
     }
-    if(!empty($contracts_contract_type)){
+    if (!empty($contracts_contract_type)) {
         $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($contracts_contract_type);
-        if($contracts_contract_status == 'P'){
-            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['code'],'agrmnttypecode');
-        }else{
-            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['id'],'agrmnttype');
+        if ($contracts_contract_status == 'P') {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['code'], 'agrmnttypecode');
+        } else {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['id'], 'agrmnttype');
         }
     }
-    if(!empty($contracts_year)){
+    if (!empty($contracts_year)) {
         $redirect_url .= _checkbook_advanced_search_year_arg($contracts_year);
     }
 
     $contracts_contract_current_contract_amount_range_array = array('from' => $contracts_contract_current_contract_amount_from, 'to' => $contracts_contract_current_contract_amount_to, 'type' => 'amount');
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_current_contract_amount_range_array,'curamt',TRUE);
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_current_contract_amount_range_array, 'curamt', TRUE);
 
     $contracts_contract_start_date_range_array = array('from' => $contracts_contract_start_date_from, 'to' => $contracts_contract_start_date_to, 'type' => 'date');
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_start_date_range_array,'startdate',TRUE);
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_start_date_range_array, 'startdate', TRUE);
 
     $contracts_contract_end_date_range_array = array('from' => $contracts_contract_end_date_from, 'to' => $contracts_contract_end_date_to, 'type' => 'date');
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_end_date_range_array,'enddate',TRUE);
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_end_date_range_array, 'enddate', TRUE);
 
     $contracts_contract_received_date_range_array = array('from' => $contracts_contract_received_date_from, 'to' => $contracts_contract_received_date_to, 'type' => 'date');
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_received_date_range_array,'recdate',TRUE);
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_received_date_range_array, 'recdate', TRUE);
 
     $contracts_contract_registration_date_range_array = array('from' => $contracts_contract_registration_date_from, 'to' => $contracts_contract_registration_date_to, 'type' => 'date');
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_registration_date_range_array,'regdate',TRUE);
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_registration_date_range_array, 'regdate', TRUE);
     $form_state['redirect'] = $redirect_url;
 }
 
 /*
  * Constructs the URL for Spending transactions based on the input by the users
  */
-function _checkbook_advanced_search_spending_submit($form, &$form_state){
+function _checkbook_advanced_search_spending_submit($form, &$form_state)
+{
 
     $spending_fiscal_year = trim($form['spending']['spending_fiscal_year']['#value']);
     $spending_payee_name = trim($form['spending']['spending_payee_name']['#value']);
@@ -582,74 +637,74 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state){
     $spending_expense_type = trim($form['spending']['spending_expense_type']['#value']);
     $spending_fiscal_year = trim($form['spending']['spending_fiscal_year']['#value']);
     $spending_date_filter = trim($form['spending']['date_filter']['#value']);
-    
-    if($spending_fiscal_year == 'fy~all'){
-      $spending_fiscal_year = null;
+
+    if ($spending_fiscal_year == 'fy~all') {
+        $spending_fiscal_year = null;
     }
 
     $redirect_url = 'spending/transactions';
 
 
-    if(!empty($spending_fiscal_year) && $spending_date_filter == 0){
-        $redirect_url .= _checkbook_advanced_search_year_arg($spending_fiscal_year,'year');
+    if (!empty($spending_fiscal_year) && $spending_date_filter == 0) {
+        $redirect_url .= _checkbook_advanced_search_year_arg($spending_fiscal_year, 'year');
     }
 
-    
-    if(!empty($spending_payee_name)){
-      if($spending_payee_name_exact == $spending_payee_name){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_payee_name,'vendornm_exact');
-      }else{
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_payee_name,'vendornm');
-      }
-    }
-    if(!empty($spending_contract_num)){
-        if($spending_contract_num_exact == $spending_contract_num){
-          $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_contract_num,'contnum_exact');
-        }else{
-          $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_contract_num,'contnum');
+
+    if (!empty($spending_payee_name)) {
+        if ($spending_payee_name_exact == $spending_payee_name) {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_payee_name, 'vendornm_exact');
+        } else {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_payee_name, 'vendornm');
         }
-        
     }
-    if(!empty($spending_document_id)){
-      if($spending_document_id_exact == $spending_document_id){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_document_id,'expdoc_exact');
-      }else{
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_document_id,'expdoc');
-      }
+    if (!empty($spending_contract_num)) {
+        if ($spending_contract_num_exact == $spending_contract_num) {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_contract_num, 'contnum_exact');
+        } else {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_contract_num, 'contnum');
+        }
+
     }
-    if(!empty($spending_agencies)){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_agencies,'agency');
+    if (!empty($spending_document_id)) {
+        if ($spending_document_id_exact == $spending_document_id) {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_document_id, 'expdoc_exact');
+        } else {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_document_id, 'expdoc');
+        }
     }
-    if(!empty($spending_expense_category)){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_expense_category,'expcategorynm');
+    if (!empty($spending_agencies)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_agencies, 'agency');
     }
-    if(!empty($spending_fund_class)){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_fund_class,'fundcls');
+    if (!empty($spending_expense_category)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_expense_category, 'expcategorynm');
     }
-    if(!empty($spending_department)){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_department,'deptnm');
+    if (!empty($spending_fund_class)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_fund_class, 'fundcls');
     }
-    if(!empty($spending_budget_code)){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_budget_code,'bdgcodenm');
+    if (!empty($spending_department)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_department, 'deptnm');
     }
-    if(!empty($spending_capital_project)){
-      if($spending_capital_project_exact == $spending_capital_project){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_capital_project,'captprj_exact');
-      }else{      
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_capital_project,'captprj');
-      }
+    if (!empty($spending_budget_code)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_budget_code, 'bdgcodenm');
     }
-    if(!empty($spending_expense_type)){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_expense_type,'category');
+    if (!empty($spending_capital_project)) {
+        if ($spending_capital_project_exact == $spending_capital_project) {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_capital_project, 'captprj_exact');
+        } else {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_capital_project, 'captprj');
+        }
+    }
+    if (!empty($spending_expense_type)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_expense_type, 'category');
     }
 
     //URL for range parameters, need to specify whether the range is an amount or a date
     $spending_check_amount_range_array = array('from' => $spending_check_amount_from, 'to' => $spending_check_amount_to, 'type' => 'amount');
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_check_amount_range_array,'checkamt',TRUE);
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_check_amount_range_array, 'checkamt', TRUE);
 
-    if($spending_date_filter == 1){
+    if ($spending_date_filter == 1) {
         $spending_issue_date_range_array = array('from' => $spending_issue_date_from, 'to' => $spending_issue_date_to, 'type' => 'date');
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_issue_date_range_array,'chkdate',TRUE);
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_issue_date_range_array, 'chkdate', TRUE);
     }
 
     $form_state['redirect'] = $redirect_url;
@@ -658,7 +713,8 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state){
 /*
  * Constructs the URL for Budget transactions based on the input by the users
  */
-function _checkbook_advanced_search_budget_submit($form, &$form_state){
+function _checkbook_advanced_search_budget_submit($form, &$form_state)
+{
 
     $budget_agency = trim($form['budget']['budget_agencies']['#value']);
     $budget_department = trim($form_state['input']['budget_department']);
@@ -675,58 +731,60 @@ function _checkbook_advanced_search_budget_submit($form, &$form_state){
     $budget_encumbered_from = trim($form['budget']['budget_encumbered_from']['#value']);
     $budget_encumbered_to = trim($form['budget']['budget_encumbered_to']['#value']);
     $budget_accrued_expense_from = trim($form['budget']['budget_accrued_expense_from']['#value']);
-    $budget_accrued_expense_to = trim($form['budget']['budget_accrued_expense_to']['#value']);    
+    $budget_accrued_expense_to = trim($form['budget']['budget_accrued_expense_to']['#value']);
     $budget_cash_expense_from = trim($form['budget']['budget_cash_expense_from']['#value']);
     $budget_cash_expense_to = trim($form['budget']['budget_cash_expense_to']['#value']);
     $budget_post_adjustments_from = trim($form['budget']['budget_post_adjustments_from']['#value']);
     $budget_post_adjustments_to = trim($form['budget']['budget_post_adjustments_to']['#value']);
     $redirect_url = "budget/transactions";
-    if(!empty($budget_fiscal_year)){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_fiscal_year,'year');
+    if (!empty($budget_fiscal_year)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_fiscal_year, 'year');
     }
-    if(!empty($budget_expense_category)){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_expense_category,'expcategorynm');
+    if (!empty($budget_expense_category)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_expense_category, 'expcategorynm');
     }
-    if(!empty($budget_agency)){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_agency,'agency');
+    if (!empty($budget_agency)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_agency, 'agency');
     }
-    if(!empty($budget_department)){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_department,'deptnm');
+    if (!empty($budget_department)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_department, 'deptnm');
     }
-    if(!empty($budget_budget_code)){
-        $input = $budget_budget_code;$start = "[";$end = "]";
-        $budget_code = substr($input, strlen($start)+strpos($input, $start), (strlen($input) - strpos($input, $end))*(-1));
-        if($budget_code){
-            $budget_budget_code = str_replace($budget_code,"",$budget_budget_code);
-            $budget_budget_code = str_replace("[","",$budget_budget_code);
-            $budget_budget_code = str_replace("]","",$budget_budget_code);
-            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_budget_code,'bdgcodenm_exact');
-        }else{
-            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_budget_code,'bdgcodenm');
+    if (!empty($budget_budget_code)) {
+        $input = $budget_budget_code;
+        $start = "[";
+        $end = "]";
+        $budget_code = substr($input, strlen($start) + strpos($input, $start), (strlen($input) - strpos($input, $end)) * (-1));
+        if ($budget_code) {
+            $budget_budget_code = str_replace($budget_code, "", $budget_budget_code);
+            $budget_budget_code = str_replace("[", "", $budget_budget_code);
+            $budget_budget_code = str_replace("]", "", $budget_budget_code);
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_budget_code, 'bdgcodenm_exact');
+        } else {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_budget_code, 'bdgcodenm');
         }
     }
 
     //URL for ranges
     $budget_adopted_budget_range_array = array('from' => $budget_adopted_budget_from, 'to' => $budget_adopted_budget_to, 'type' => 'amount');
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_adopted_budget_range_array,'adpamt',TRUE);
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_adopted_budget_range_array, 'adpamt', TRUE);
 
     $budget_pre_encumbered_range_array = array('from' => $budget_pre_encumbered_from, 'to' => $budget_pre_encumbered_to, 'type' => 'amount');
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_pre_encumbered_range_array,'preamt',TRUE);
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_pre_encumbered_range_array, 'preamt', TRUE);
 
     $budget_encumbered_range_array = array('from' => $budget_encumbered_from, 'to' => $budget_encumbered_to, 'type' => 'amount');
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_encumbered_range_array,'encamt',TRUE);
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_encumbered_range_array, 'encamt', TRUE);
 
     $budget_cash_expense_range_array = array('from' => $budget_cash_expense_from, 'to' => $budget_cash_expense_to, 'type' => 'amount');
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_cash_expense_range_array,'cshamt',TRUE);
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_cash_expense_range_array, 'cshamt', TRUE);
 
     $budget_post_adjustments_range_array = array('from' => $budget_post_adjustments_from, 'to' => $budget_post_adjustments_to, 'type' => 'amount');
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_post_adjustments_range_array,'postamt',TRUE);
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_post_adjustments_range_array, 'postamt', TRUE);
 
     $budget_accrued_expense_range_array = array('from' => $budget_accrued_expense_from, 'to' => $budget_accrued_expense_to, 'type' => 'amount');
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_accrued_expense_range_array,'acramt',TRUE);
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_accrued_expense_range_array, 'acramt', TRUE);
 
     $budget_current_modified_range_array = array('from' => $budget_current_modified_from, 'to' => $budget_current_modified_to, 'type' => 'amount');
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_current_modified_range_array,'curamt',TRUE);
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_current_modified_range_array, 'curamt', TRUE);
 
     $form_state['redirect'] = $redirect_url;
 }
@@ -734,7 +792,8 @@ function _checkbook_advanced_search_budget_submit($form, &$form_state){
 /*
  * Constructs the URL for Revenue transactions based on the input by the users
  */
-function _checkbook_advanced_search_revenue_submit($form, &$form_state){
+function _checkbook_advanced_search_revenue_submit($form, &$form_state)
+{
 
     $revenue_fund_class = trim($form['revenue']['revenue_fund_class']['#value']);
     $revenue_agency = trim($form['revenue']['revenue_agencies']['#value']);
@@ -751,44 +810,44 @@ function _checkbook_advanced_search_revenue_submit($form, &$form_state){
 
     $redirect_url = "revenue/transactions";
 
-    if(!empty($revenue_agency)){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_agency,'agency');
+    if (!empty($revenue_agency)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_agency, 'agency');
     }
-    if(!empty($revenue_fiscal_year)){
-        if(strtolower($revenue_fiscal_year) != 'all fiscal years')
-            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_fiscal_year,'fy');
+    if (!empty($revenue_fiscal_year)) {
+        if (strtolower($revenue_fiscal_year) != 'all fiscal years')
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_fiscal_year, 'fy');
     }
-    if(!empty($revenue_budget_fiscal_year)){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_budget_fiscal_year,'year');
+    if (!empty($revenue_budget_fiscal_year)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_budget_fiscal_year, 'year');
     }
-    if(!empty($revenue_fund_class)){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_fund_class,'fundcls');
+    if (!empty($revenue_fund_class)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_fund_class, 'fundcls');
     }
-    if(!empty($revenue_revenue_category)){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_revenue_category,'revcat');
+    if (!empty($revenue_revenue_category)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_revenue_category, 'revcat');
     }
-    if(!empty($revenue_revenue_class)){
-      if($revenue_revenue_class == $revenue_revenue_class_exact){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_revenue_class,'revclsnm_exact');
-      }else{
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_revenue_class,'revclsnm');
-      }
+    if (!empty($revenue_revenue_class)) {
+        if ($revenue_revenue_class == $revenue_revenue_class_exact) {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_revenue_class, 'revclsnm_exact');
+        } else {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_revenue_class, 'revclsnm');
+        }
     }
-    
-    if(!empty($revenue_revenue_source)){
-      if($revenue_revenue_source == $revenue_revenue_source_exact){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_revenue_source,'revsrcnm_exact');
-      }else{
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_revenue_source,'revsrcnm');
-      }       
+
+    if (!empty($revenue_revenue_source)) {
+        if ($revenue_revenue_source == $revenue_revenue_source_exact) {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_revenue_source, 'revsrcnm_exact');
+        } else {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_revenue_source, 'revsrcnm');
+        }
     }
-    if(!empty($revenue_funding_source)){
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_funding_source,'fundsrccode');
+    if (!empty($revenue_funding_source)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_funding_source, 'fundsrccode');
     }
 
     //URL for ranges
     $revenue_revenue_amount_range_array = array('from' => $revenue_revenue_amount_from, 'to' => $revenue_revenue_amount_to, 'type' => 'amount');
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_revenue_amount_range_array,'amt',TRUE);
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_revenue_amount_range_array, 'amt', TRUE);
 
     $form_state['redirect'] = $redirect_url;
 }
@@ -797,21 +856,550 @@ function _checkbook_advanced_search_revenue_submit($form, &$form_state){
  * Constructs the URL for year value and type
  * @param: $year_arg (contains year type and year value separated by '~')
  */
-function _checkbook_advanced_search_year_arg($year_arg){
-    $year_args = explode('~',$year_arg);
+function _checkbook_advanced_search_year_arg($year_arg)
+{
+    $year_args = explode('~', $year_arg);
     $year_type = $year_args[0];
     $year_id = $year_args[1];
 
-    if($year_type == 'fy'){
-        $year_url = '/yeartype/B/year/'.$year_id;
-    }elseif($year_type == 'cy'){
-        $year_url = '/yeartype/C/calyear/'.$year_id;
+    if ($year_type == 'fy') {
+        $year_url = '/yeartype/B/year/' . $year_id;
+    } elseif ($year_type == 'cy') {
+        $year_url = '/yeartype/C/calyear/' . $year_id;
     }
-    
+
     return $year_url;
 }
 
 
-function _checkbook_advanced_search_replaceSlash($string){
-    return str_replace('/','__',$string);
+function _checkbook_advanced_search_replaceSlash($string)
+{
+    return str_replace('/', '__', $string);
+}
+
+
+abstract class Domain
+{
+    const Budget = 'budget';
+    const Revenue = 'revenue';
+    const Spending = 'spending';
+    const Contracts = 'contracts';
+    const Payroll = 'payroll';
+}
+
+abstract class DataSource
+{
+    const CitywideAgency = 'checkbook';
+    const OtherGovernmentEntities = 'checkbook_oge';
+}
+
+abstract class FieldType
+{
+    const DateFilter = 'date_filter';
+    const DatePopup = 'date_popup';
+    const DropDown = 'select';
+    const HiddenField = 'hidden';
+    const RadioButtons = 'radios';
+    const RangeField = 'rangefield';
+    const RangeDateField = 'range';
+    const SubmitField = 'submit';
+    const TextField = 'textfield';
+}
+
+abstract class Column
+{
+    const Left = 'column-left';
+    const Right = 'column-right';
+    const None = 'none';
+}
+
+abstract class FieldDef
+{
+    const DataSourceFilter = 'domain_filter';
+    const Status = 'status';
+    const Vendor = 'vendor_name';
+    const ContractType = 'type';
+    const ContractId = 'contract_id';
+    const PIN = 'pin';
+    const CurrentContractAmount = 'current_contract_amount';
+    const EndDate = 'end_date';
+    const RegistrationDate = 'registration_date';
+    const Category = 'category';
+    const Purpose = 'purpose';
+    const Agency = 'agency';
+    const AptPIN = 'apt_pin';
+    const AwardMethod = 'award_method';
+    const StartDate = 'start_date';
+    const ReceivedDate = 'received_date';
+    const Year = 'year';
+    const ContractSubmit = 'contracts';
+    const EntityContractNumber = 'entity_contract_num';
+    const CommodityLine = 'commodity_line';
+    const BudgetName = 'budget_name';
+    const OtherGovernmentEntities = 'other_government_entities';
+    const Department = 'department';
+    const ExpenseCategory = 'expense_category';
+    const SpendingCategory = 'spending_category';
+    const PayeeName = 'payee_name';
+    const CheckAmount = 'check_amount';
+    const DocumentId = 'document_id';
+    const CapitalProject = 'capital_project';
+    const DateFilter = 'date_filter';
+    const SpendingSubmit = 'spending';
+}
+
+class Content
+{
+    public $fields = array();
+    public $domain_name;
+    public $column_type;
+    public $data_source;
+
+    public $num_left_column_fields = 0;
+    public $num_right_column_fields = 0;
+
+    public function __construct($data_source)
+    {
+        $this->data_source=$data_source;
+    }
+
+    public function add_field(Field $field, $column_type)
+    {
+        switch($column_type)
+        {
+            case Column::Left:
+                $this->num_left_column_fields+=1;
+                $field->column_index=$this->num_left_column_fields;
+                break;
+
+            case Column::Right:
+                $this->num_right_column_fields+=1;
+                $field->column_index=$this->num_right_column_fields;
+                break;
+        }
+        $this->column_type=$column_type;
+        $field->column_type=$column_type;
+        $field->domain_name=$this->domain_name;
+        $this->fields[$field->field_name] = $field;
+    }
+}
+
+class Form
+{
+    public $domain_name;
+    public $contents = array();
+
+    public function __construct($domain_name)
+    {
+        $this->domain_name=$domain_name;
+    }
+
+    public function add_content(Content $content)
+    {
+        $content->domain_name=$this->domain_name;
+        $this->contents[$content->data_source] = $content;
+    }
+
+    public function generate_form($form)
+    {
+        $form->domain_name=$this->domain_name;
+        $form = $this->generate_header($form);
+        return $this->generate_content($form);
+    }
+
+    private function generate_header($form)
+    {
+        $domain = $this->domain_name;
+        $domain_field = "{$this->domain_name}_filter";
+
+        $div_id = "$this->domain_name-advanced-search";
+
+        $form[$domain][$domain_field]['#prefix'] = '<h3><a href="#">'.$this->domain_name.'</a></h3><div id="'.$div_id.'">';
+        return $form;
+    }
+
+    private function generate_content($form)
+    {
+        foreach ($this->contents as $content) {
+            foreach ($content->fields as $field) {
+                switch($field->column_type)
+                {
+                    case Column::Left:
+                        if($field->column_index == 1)
+                            $field->field_coordinates = 1;
+                        else if ($field->column_index == $content->num_left_column_fields)
+                            $field->field_coordinates = 2;
+                        break;
+
+                    case Column::Right:
+                        if($field->column_index == 1)
+                            $field->field_coordinates = 3;
+                        else if ($field->column_index == $content->num_right_column_fields)
+                            $field->field_coordinates = 4;
+                        break;
+                }
+
+                $form = $this->generate_field($field,$form,$content->data_source);
+            }
+        }
+        return $form;
+    }
+
+    private function generate_field(Field $field,$form,$data_source)
+    {
+        $domain = $data_source . '_' . $this->domain_name;
+
+        $year_range = "'-" . (date("Y") - 1900) . ":+" . (2500 - date("Y")) . "'";
+        $column_left_class = "column column-left ".str_replace('_','-',$data_source);
+        $column_right_class = "column column-right ".str_replace('_','-',$data_source);
+
+        switch($field->field_coordinates)
+        {
+            case 1:
+                $field->prefix = '<div class="' . $column_left_class . '">';
+                break;
+            case 2:
+                $field->suffix = '</div>';
+                break;
+            case 3:
+                $field->prefix = '<div class="' . $column_right_class . '">';
+                break;
+            case 4:
+                $field->suffix = '</div>';
+                break;
+        }
+
+        switch($field->field_type)
+        {
+            case FieldType::DateFilter:
+
+                //date_filter
+                $domain_field = 'date_filter';
+
+                $form[$domain][$domain_field]['#type'] = FieldType::RadioButtons;
+                $form[$domain][$domain_field]['#title'] = t('Date Filter');
+                $form[$domain][$domain_field]['#options'] = array('Year','Issue Date');
+                $form[$domain][$domain_field]['#prefix'] = $field->prefix . '<div class="datafield datefilter clearfix">';
+                $form[$domain][$domain_field]['#suffix'] = '</div>';
+                $form[$domain][$domain_field]['#attributes'] = array('Year','Issue Date');
+                $form[$domain][$domain_field]['#default_value'] = '';
+
+                //year_filter_start
+                $domain_field = 'year_filter_start';
+
+                $form[$domain][$domain_field]['#markup'] = '<div class="datafield year-filters last-item">';
+
+                //spending_issue_date_from
+                $domain_field = "{$this->domain_name}_issue_date_from";
+
+                $form[$domain][$domain_field]['#type'] = FieldType::DatePopup;
+                $form[$domain][$domain_field]['#date_format'] = 'Y-m-d';
+                $form[$domain][$domain_field]['#date_year_range'] = $year_range;
+                $form[$domain][$domain_field]['#prefix'] = '<div class="datafield datarange issueddate"><div class="ranges">';
+                $form[$domain][$domain_field]['#default_value'] = '';
+
+                //spending_issue_date_to
+                $domain_field = "{$this->domain_name}_issue_date_to";
+
+                $form[$domain][$domain_field]['#date_popup'] = FieldType::DatePopup;
+                $form[$domain][$domain_field]['#title'] = t('to');
+                $form[$domain][$domain_field]['#date_format'] = 'Y-m-d';
+                $form[$domain][$domain_field]['#date_year_range'] = $year_range;
+                $form[$domain][$domain_field]['#suffix'] = '</div></div>';
+                $form[$domain][$domain_field]['#default_value'] = '';
+
+                //spending_fiscal_year
+                $domain_field = "{$this->domain_name}_fiscal_year";
+
+                $form[$domain][$domain_field]['#type'] = FieldType::DropDown;
+                $form[$domain][$domain_field]['#options'] = _checkbook_advanced_search_get_year($this->domain_name, $data_source);
+                $form[$domain][$domain_field]['#default_value'] = 'fy~' . _getCurrentYearID();
+                $form[$domain][$domain_field]['#attributes'] = array('class' => array('watch'), 'default_selected_value' => 'fy~' . _getCurrentYearID());
+                $form[$domain][$domain_field]['#prefix'] = '<div class="datafield year">';
+                $form[$domain][$domain_field]['#suffix'] = '</div>';
+
+                //year_filter_end
+                $domain_field = 'year_filter_end';
+
+                if(!(is_null($field->suffix)))
+                    $form[$domain][$domain_field]['#markup'] = '</div>' . $field->suffix;
+                else
+                    $form[$domain][$domain_field]['#markup'] = '</div>';
+
+                break;
+
+            case FieldType::DropDown:
+
+                $domain_field = "{$this->domain_name}_{$field->field_name}";
+
+                if(!(is_null($field->prefix)))
+                    $form[$domain][$domain_field]['#prefix'] = $field->prefix;
+
+                if(!(is_null($field->suffix)))
+                    $form[$domain][$domain_field]['#suffix'] = $field->suffix;
+
+                $form[$domain][$domain_field]['#type'] = $field->field_type;
+
+                $form[$domain][$domain_field]['#title'] = $field->getFieldTitle();
+
+                $form[$domain][$domain_field]['#default_value'] = $field->getDropDownDefault();
+
+                $form[$domain][$domain_field]['#options'] = $field->getDropDownOptions();
+
+                if(!(is_null($field->disabled)))
+                    $form[$domain][$domain_field]['#disabled'] = $field->disabled;
+
+                if(!(is_null($field->option_attributes)))
+                    $form[$domain][$domain_field]['#option_attributes'] = $field->option_attributes;
+
+                break;
+
+            case FieldType::RadioButtons:
+
+                $domain_field = "{$this->domain_name}_{$field->field_name}";
+
+                if(!(is_null($field->prefix)))
+                    $form[$domain][$domain_field]['#prefix'] = $field->prefix;
+
+                $form[$domain][$domain_field]['#type'] = FieldType::RadioButtons;
+
+                if(!(is_null($field->default_value)))
+                    $form[$domain][$domain_field]['#default_value'] = $field->default_value;
+
+                if(!(is_null($field->options)))
+                    $form[$domain][$domain_field]['#options'] = $field->options;
+
+                break;
+
+            case FieldType::RangeField:
+
+                //From
+                $domain_field = "{$this->domain_name}_{$field->field_name}_from";
+                $css_name = str_replace('_','-',$field->field_name);
+
+                $form[$domain][$domain_field]['#type'] = FieldType::TextField;
+
+                if(!(is_null($field->size)))
+                    $form[$domain][$domain_field]['#size'] = $field->size;
+                else
+                    $form[$domain][$domain_field]['#size'] = 30; //Default
+
+                if(!(is_null($field->maxlength)))
+                    $form[$domain][$domain_field]['#maxlength'] = $field->maxlength;
+                else
+                    $form[$domain][$domain_field]['#maxlength'] = 32; //Default
+
+                if(!(is_null($field->prefix)))
+                    $form[$domain][$domain_field]['#prefix'] = $field->prefix . '<div class="form-item form-item-'.$css_name.'"><label>' . $field->getFieldTitle() . '</label><div class="ranges">';
+                else
+                    $form[$domain][$domain_field]['#prefix'] = '<div class="form-item form-item-'.$css_name.'"><label>' . $field->getFieldTitle() . '</label><div class="ranges">';
+
+                //To
+                $domain_field = "{$this->domain_name}_{$field->field_name}_to";
+
+                $form[$domain][$domain_field]['#type'] = FieldType::TextField;
+
+                $form[$domain][$domain_field]['#title'] = t('TO');
+
+                if(!(is_null($field->size)))
+                    $form[$domain][$domain_field]['#size'] = $field->size;
+                else
+                    $form[$domain][$domain_field]['#size'] = 30; //Default
+
+                if(!(is_null($field->maxlength)))
+                    $form[$domain][$domain_field]['#maxlength'] = $field->maxlength;
+                else
+                    $form[$domain][$domain_field]['#maxlength'] = 32; //Default
+
+                if(!(is_null($field->suffix)))
+                    $form[$domain][$domain_field]['#suffix'] = '</div></div>' . $field->suffix;
+                else
+                    $form[$domain][$domain_field]['#suffix'] = '</div></div>';
+
+                break;
+
+            case FieldType::RangeDateField:
+
+                //From
+                $domain_field = "{$this->domain_name}_{$field->field_name}_from";
+                $css_name = str_replace('_','-',$field->field_name);
+
+                $form[$domain][$domain_field]['#type'] = FieldType::DatePopup;
+                $form[$domain][$domain_field]['#date_format'] = 'Y-m-d';
+
+                $form[$domain][$domain_field]['#date_year_range'] = $year_range;
+
+                if(!(is_null($field->prefix)))
+                    $form[$domain][$domain_field]['#prefix'] = $field->prefix . '<div class="form-item form-item-'.$css_name.'"><label>' . $field->getFieldTitle() . '</label><div class="ranges">';
+                else
+                    $form[$domain][$domain_field]['#prefix'] = '<div class="form-item form-item-'.$css_name.'"><label>' . $field->getFieldTitle() . '</label><div class="ranges">';
+
+                //To
+                $domain_field = "{$this->domain_name}_{$field->field_name}_to";
+
+                $form[$domain][$domain_field]['#type'] = FieldType::DatePopup;
+                $form[$domain][$domain_field]['#date_format'] = 'Y-m-d';
+                $form[$domain][$domain_field]['#title'] = t('TO');
+
+                if(!(is_null($field->suffix)))
+                    $form[$domain][$domain_field]['#suffix'] = '</div></div>' . $field->suffix;
+                else
+                    $form[$domain][$domain_field]['#suffix'] = '</div></div>';
+
+                break;
+
+            case FieldType::SubmitField:
+
+                //Submit Button
+                $domain_field = "{$this->domain_name}_submit";
+
+                $submit_class = "$this->domain_name-submit ".str_replace('_','-',$data_source);
+
+                $form[$domain][$domain_field]['#type'] = $field->field_type;
+                $form[$domain][$domain_field]['#name'] = $domain_field;
+                $form[$domain][$domain_field]['#value'] = t('Submit');
+                $form[$domain][$domain_field]['#prefix'] = t('<div class="'.$submit_class.'">');
+
+                //Clear All Button
+                $domain_field = "{$this->domain_name}_clear";
+
+                $form[$domain][$domain_field]['#type'] = $field->field_type;
+                $form[$domain][$domain_field]['#value'] = t('Clear All');
+
+                end($this->contents);
+                $endKey = key($this->contents);
+                if($data_source == $endKey)
+                    $form[$domain][$domain_field]['#suffix'] = '</div></div>';
+                else
+                    $form[$domain][$domain_field]['#suffix'] = '</div>';
+
+                break;
+
+            case FieldType::TextField:
+
+                $domain_field = "{$this->domain_name}_{$field->field_name}";
+
+                $form[$domain][$domain_field]['#type'] = FieldType::TextField;
+
+                $form[$domain][$domain_field]['#title'] = $field->getFieldTitle();
+
+                if(!(is_null($field->size)))
+                    $form[$domain][$domain_field]['#size'] = $field->size;
+                else
+                    $form[$domain][$domain_field]['#size'] = 30; //Default
+
+                if(!(is_null($field->maxlength)))
+                    $form[$domain][$domain_field]['#maxlength'] = $field->maxlength;
+                else
+                    $form[$domain][$domain_field]['#maxlength'] = 32; //Default
+
+                if(!(is_null($field->prefix)))
+                    $form[$domain][$domain_field]['#prefix'] = $field->prefix;
+
+                //Hidden
+                $domain_field = "{$this->domain_name}_{$field->field_name}_exact";
+
+                $form[$domain][$domain_field]['#type'] = FieldType::HiddenField;
+
+                if(!(is_null($field->suffix)))
+                    $form[$domain][$domain_field]['#suffix'] = $field->suffix;
+
+                break;
+        }
+
+        return $form;
+    }
+}
+
+class Field
+{
+    public $domain_name;
+    public $field_name;
+    public $data_source;
+    public $field_type;
+    public $column_type;
+    public $field_coordinates;
+    public $column_index;
+
+    public $options;
+    public $title;
+    public $option_attributes;
+    public $default_value;
+    public $size;
+    public $maxlength;
+    public $attributes;
+    public $name;
+    public $value;
+    public $disabled;
+    public $required;
+
+    public $prefix;
+    public $suffix;
+
+    public function __construct($field_name, $field_type, $attributes,$disabled = FALSE)
+    {
+        $this->field_name = $field_name;
+        $this->field_type = $field_type;
+
+        if(!(is_null($attributes['attributes'])))
+            $this->attributes = $attributes['attributes'];
+
+        if(!(is_null($attributes['data_source'])))
+            $this->data_source = $attributes['data_source'];
+
+        if(!(is_null($attributes['default_value'])))
+            $this->default_value = $attributes['default_value'];
+
+        if(!(is_null($attributes['domain_name'])))
+            $this->domain_name = $attributes['domain_name'];
+
+        if(!(is_null($attributes['field_name'])))
+            $this->field_name = $attributes['field_name'];
+
+        if(!(is_null($attributes['maxlength'])))
+            $this->maxlength = $attributes['maxlength'];
+
+        if(!(is_null($attributes['option_attributes'])))
+            $this->option_attributes = $attributes['option_attributes'];
+
+        if(!(is_null($attributes['options'])))
+            $this->options = $attributes['options'];
+
+        if(!(is_null($attributes['required'])))
+            $this->required = $attributes['required'];
+
+        if(!(is_null($attributes['size'])))
+            $this->size = $attributes['size'];
+
+        if(!(is_null($attributes['title'])))
+            $this->title = $attributes['title'];
+
+        if(!(is_null($attributes['value'])))
+            $this->value = $attributes['value'];
+    }
+
+    public function getFieldTitle()
+    {
+        if(!(is_null($this->title)))
+            $field_title = $this->title;
+        else
+            $field_title = ucwords(str_replace('_',' ',$this->field_name));
+        return str_replace(' Id',' ID',$field_title);
+    }
+
+    public function getDropDownOptions()
+    {
+        if(!(is_null($this->options)))
+            return $this->options;
+        else
+            return array('Select ' . $this->getFieldTitle());
+    }
+
+    public function getDropDownDefault()
+    {
+        if(!(is_null($this->options[0])))
+            return $this->options[0];
+        else
+            return 'Select ' . $this->getFieldTitle();
+    }
 }
