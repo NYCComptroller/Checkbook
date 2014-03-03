@@ -86,7 +86,6 @@ function _checkbook_smart_search_get_results(){
         "contract_category_name" => $selected_contract_categories,
         "contract_status" => $selected_contract_status);
 
-
     return theme('checkbook_smart_search_results', array('search_results'=> $search_results['search_results'],
         'active_contracts' => $search_results['active_contracts'],
         'facet_results' => $facetResults,
@@ -212,6 +211,8 @@ function _checkbook_smart_search_solr_results($query){
 
 /** Returns only selected facet values from current URL */
 function _checkbook_smart_search_get_selected_facet_results($search_terms, $facet_name){
+
+
 
     $parameter_mapping = array(
         "oge_agency_names" => "oge_agency_name",
