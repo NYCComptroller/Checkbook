@@ -10,13 +10,22 @@
             ]
         },
         "edc_mag_contracts_coa_aggregates": {
-                    "datasourceName": "main",
-                    "source": "aggregateon_contracts_cumulative_spending",
-                    "columns": [
-                        {
-                            "name": "original_agreement_id",
-                            "key": true}
-                    ]
+            "datasourceName": "main",
+            "source": "aggregateon_contracts_cumulative_spending",
+            "columns": [
+                {
+                    "name": "original_agreement_id",
+                    "key": true}
+            ]
+        },
+        "edc_contracts_coa_aggregates_no_vendor": {
+            "datasourceName": "main",
+            "source": "aggregateon_contracts_cumulative_spending_no_vendor",
+            "columns": [
+                {
+                    "name": "original_agreement_id",
+                    "key": true}
+            ]
         },
  		"aggregateon_contracts_department": {
             "datasourceName": "main",
@@ -190,6 +199,169 @@
                     "function": "MIN(COALESCE(maximum_contract_amount,0))"}      ,
                 "spending_amount_sum": {
                     "function": "MIN(COALESCE(spending_amount,0))"}      ,
+                "dollar_difference": {
+                    "function": "SUM(COALESCE(dollar_difference,0))"}      ,
+                "percent_difference": {
+                    "function": "AVG(percent_difference)"} ,
+                "total_contracts": {
+                    "function": "COUNT(contract_number)"}
+            }
+        },
+        "edc_contracts_coa_aggregates_no_vendor": {
+            "sourceDatasetName": "edc_contracts_coa_aggregates_no_vendor",
+            "dimensions": [
+                {
+                    "name": "agency",
+                    "levels": [
+                            {
+                                "name": "agency",
+                                "datasetName": "agency",
+                                "sourceColumnName": "agency_id"
+                            }
+                    ]
+                }    ,
+                {
+                    "name": "year",
+                    "levels": [
+                            {
+                                "name": "year",
+                                "sourceColumnName": "fiscal_year"
+                            }
+                    ]
+                }  ,
+                {
+                    "name": "yeartype",
+                    "levels": [
+                            {
+                                "name": "yeartype",
+                                "sourceColumnName": "type_of_year"
+                            }
+                    ]
+                },
+                {
+                    "name": "month",
+                    "levels": [
+                            {
+                                "name": "month",
+                                "datasetName": "month",
+                                "sourceColumnName": "month_id"
+                            }
+                    ]
+                },
+                {
+                    "name": "vendor",
+                    "levels": [
+                            {
+                                "name": "vendor",
+                                "datasetName": "vendor",
+                                "sourceColumnName": "vendor_id"
+                            }
+                    ]
+                }      ,
+                {
+                    "name": "contract_purpose",
+                    "levels": [
+                            {
+                                "name": "contract_purpose",
+                                "sourceColumnName": "description"
+                            }
+                    ]
+                }        ,
+                {
+                    "name": "award_method",
+                    "levels": [
+                            {
+                                "name": "award_method",
+                                "sourceColumnName": "award_method_id",
+                                "datasetName": "award_method"
+                            }
+                    ]
+                }    ,
+                {
+                    "name": "contract_category",
+                    "levels": [
+                            {
+                                "name": "contract_category",
+                                "sourceColumnName": "contract_category",
+                                "datasetName": "category"
+                            }
+                    ]
+                }    ,
+                {
+                    "name": "contract_status",
+                    "levels": [
+                            {
+                                "name": "contract_status",
+                                "datasetName": "contract_status",
+                                "sourceColumnName": "status_flag"
+                            }
+                    ]
+                }             ,
+                {
+                    "name": "contract_purpose",
+                    "levels": [
+                            {
+                                "name": "contract_purpose",
+                                "sourceColumnName": "description"
+                            }
+                    ]
+                }     ,
+                {
+                    "name": "contract_number",
+                    "levels": [
+                            {
+                                "name": "contract_number",
+                                "sourceColumnName": "contract_number"
+                            }
+                    ]
+                },
+                {
+                    "name": "original_agreement",
+                    "levels": [
+                            {
+                                "name": "original_agreement",
+                                "sourceColumnName": "original_agreement_id"
+                            }
+                    ]
+                },
+                {
+                    "name": "document_code",
+                    "levels": [
+                            {
+                                "name": "document_code",
+                                "datasetName": "ref_document_code",
+                                "sourceColumnName": "document_code_id"
+                            }
+                    ]
+                },
+                {
+                    "name": "industry",
+                    "levels": [
+                        {
+                            "name": "industry",
+                            "datasetName": "industry_type",
+                            "sourceColumnName": "industry_type_id"
+                        }
+                    ]
+                }    ,
+                {
+                    "name": "award_size",
+                    "levels": [
+                        {
+                            "name": "award_size",
+                            "datasetName": "award_size",
+                            "sourceColumnName": "award_size_id"
+                        }
+                    ]
+                }
+            ],
+            "measures": {
+                "original_amount_sum": {
+                    "function": "SUM(COALESCE(original_contract_amount,0))"}     ,
+                "current_amount_sum": {
+                    "function": "SUM(COALESCE(maximum_contract_amount,0))"}      ,
+                "spending_amount_sum": {
+                    "function": "SUM(COALESCE(spending_amount,0))"}      ,
                 "dollar_difference": {
                     "function": "SUM(COALESCE(dollar_difference,0))"}      ,
                 "percent_difference": {
