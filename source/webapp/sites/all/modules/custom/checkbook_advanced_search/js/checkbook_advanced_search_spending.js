@@ -236,8 +236,7 @@
                 $("#edit-spending-issue-date-to-datepicker-popup-0").attr('disabled','');
             }
         });
-        
-        
+
         function emptyToZero(input) {
             var inputval, output;
             inputval = p.exec(input);
@@ -247,6 +246,29 @@
                 output = 0;
             }
             return output;
+        }
+
+        changeDataSource($('input:radio[name=spending_domain_filter]:checked').val());
+        $('input:radio[name=spending_domain_filter]').change(function () {
+
+            changeDataSource($('input[name=spending_domain_filter]:checked').val());
+        });
+
+        function changeDataSource(dataSource) {
+
+            switch (dataSource)
+            {
+                case "1":
+                    $("#spending-advanced-search").children('div.checkbook').hide();
+                    $("#spending-advanced-search").children('div.checkbook-oge').show();
+
+                    break;
+
+                default:
+                    $("#spending-advanced-search").children('div.checkbook').show();
+                    $("#spending-advanced-search").children('div.checkbook-oge').hide();
+                    break;
+            }
         }
     })
 }(jQuery));
