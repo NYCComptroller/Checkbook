@@ -105,7 +105,7 @@ function _checkbook_smart_search_escapeSolrValue($string){
     $string = str_replace(" ", "%20", $string);
     $string = str_replace("#", "%23", $string);
     $string = str_replace("/", "\%2F", $string);
-    $string = str_replace("&", "%26", $string);
+    $string = str_replace("&", "%2526", $string);
     $string = str_replace("[", "\[", $string);
     $string = str_replace("]", "\]", $string);
     $string = str_replace(":", "\:", $string);
@@ -354,8 +354,8 @@ function _checkbook_smart_search_autocomplete(){
     $search_term = $regex1.$search_term.$regex2.$search_term.$regex3; //  (.* educ.*)|(^educ .*)
 
 
-    $query = "terms/?terms.fl=oge_agency_name"
-             ."&terms.fl=agency_name"
+    $query = "terms/?terms.fl=agency_name"
+             ."&terms.fl=oge_agency_name"
              ."&terms.fl=vendor_name"
              ."&terms.fl=revenue_category_name"
              ."&terms.fl=expenditure_object_name"
@@ -364,25 +364,23 @@ function _checkbook_smart_search_autocomplete(){
 	$contents = _checkbook_smart_search_solr_results($query);
     $matches = array();
     $count = 0;
-    $oge_data = array();
     foreach($contents['terms'] as $key=>$value){
         switch($key){
+            case 'agency_name':
+                foreach ($value as $a=>$b){
+                    if(!in_array($a, $contents['terms']['oge_agency_name']))
+                    {
+                        $count++;
+                        $url = "/smart_search?search_term=*|*agency_names=";
+                        $matches[]= array("url"=>$url, "category"=>"Agencies" ,"label" => $a, "value" => urlencode($a));
+                    }
+                }
+                break;
             case 'oge_agency_name':
                 foreach($value as $a=>$b){
                     $count++;
                     $url = "/smart_search?search_term=*|*oge_agency_names=";
                     $matches[] = array("url"=>$url, "category"=>"Other Government Entities" ,"label" => $a, "value" => urlencode($a));
-                    $oge_data[] = $a;
-                }
-                break;
-            case 'agency_name':
-                foreach ($value as $a=>$b){
-                    if(!in_array($a, $oge_data))
-                    {
-                        $count++;
-                        $url = "/smart_search?search_term=*|*agency_names=";
-                        array_push($matches, array("url"=>$url, "category"=>"Agencies" ,"label" => $a, "value" => urlencode($a)));
-                    }
                 }
                 break;
             case 'vendor_name':
@@ -412,7 +410,6 @@ function _checkbook_smart_search_autocomplete(){
     if($count == 0){
         array_push($matches,array("url"=> "" ,"label"=>'<span>'."No matches found".'</span>', 'value' => 'No matches found'));
     }
-
 
     return drupal_json_output($matches);
 }
