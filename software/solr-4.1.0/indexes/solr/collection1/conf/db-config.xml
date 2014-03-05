@@ -485,7 +485,7 @@
                 pk="id"
                 query="
 				select
-                'contracts:' || agreement_id || ':' agency_id || ':' || vendor_id || 'oge' id,
+                'contracts:' || agreement_id || ':' || agency_id || ':' || vendor_id || 'oge' id,
                 original_agreement_id,
                 'contracts' domain1,
                 (case when(document_code ='RCT1') then 'Revenue' else 'Expense' end) category,
