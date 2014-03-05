@@ -210,10 +210,10 @@ class ContractURLHelper{
         if($yeartypeIndex){
             $yeartypeValue = $pathParams[($yeartypeIndex+1)];
             if($yeartypeValue == 'B'){
-                return "/yeartype/B/year/" . $pathParams[($yearIndex+1)] . "/syear/" . $pathParams[($yearIndex+1)];
+                return _checkbook_append_url_params()."/yeartype/B/year/" . $pathParams[($yearIndex+1)] . "/syear/" . $pathParams[($yearIndex+1)];
             }else{
                 $year = ($calyearIndex)?$pathParams[($calyearIndex+1)]:$pathParams[($yearIndex+1)];
-                return "/yeartype/C/calyear/" . $year . "/scalyear/" . $year;
+                return _checkbook_append_url_params()."/yeartype/C/calyear/" . $year . "/scalyear/" . $year;
             }
 
         }
