@@ -218,6 +218,9 @@ h4 {
     height: 12px;
 
 }
+#agency-list-other .agency-list-open{
+    width:190px;
+}
 .agency-list-open span {
     background: url("../images/agency-list-arrow.png") no-repeat scroll 138px 3px transparent;
     cursor: pointer;
@@ -228,8 +231,14 @@ h4 {
     line-height:12px;
     display:block;
 }
+#agency-list-other .agency-list-open span {
+    background: url("../images/agency-list-arrow.png") no-repeat scroll 169px 3px transparent;
+}
 .agency-list-open span.open {
     background: url("../images/agency-list-arrow-closed.png") no-repeat scroll 138px 1px transparent;
+}
+#agency-list-other .agency-list-open span.open {
+    background: url("../images/agency-list-arrow-closed.png") no-repeat scroll 169px 3px transparent;
 }
 .agency-list-content {
     height:260px;
@@ -247,19 +256,22 @@ h4 {
 	height:160px;
 	left:0px;
 }
-#agency-list ul {
+#agency-list ul,
+#agency-list-other ul {
     background: none;
     float: left;
     margin-right: 3%;
     margin-top: 10px;
     width: 47%;
 }
-#agency-list li {
+#agency-list li,
+#agency-list-other li {
     list-style-type: disc;
     list-style-position: outside;
     line-height:18px;
 }
-#agency-list li a {
+#agency-list li a,
+#agency-list-other li a {
     color: #2A639A;
     text-transform: uppercase;
 }
