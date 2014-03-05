@@ -24,7 +24,7 @@
 },
 "award_method_name_link": {
       "type": "expression2",
-      "expression": "'<a href=\"/contracts_landing'  . _checkbook_project_get_url_param_string(\"agency\")   .   _checkbook_project_get_url_param_string(\"vendor\")  .  _checkbook_project_get_url_param_string(\"status\") .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\") .   _checkbook_project_get_year_url_param_string()  . '/awdmethod/' .$row[award_method_award_method] .  '?expandBottomCont=true\">' .$row[award_name_formatted]. '</a>'"
+      "expression": "'<a href=\"/contracts_landing'  . _checkbook_append_url_params() . _checkbook_project_get_url_param_string(\"agency\")   .   _checkbook_project_get_url_param_string(\"vendor\")  .  _checkbook_project_get_url_param_string(\"status\") .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\") .   _checkbook_project_get_year_url_param_string()  . '/awdmethod/' .$row[award_method_award_method] .  '?expandBottomCont=true\">' .$row[award_name_formatted]. '</a>'"
     } ,
 "spent_amount_no_link": {
       "type": "expression2",
@@ -32,7 +32,7 @@
     } ,
 "spent_amount_link": {
       "type": "expression2",
-      "expression": "'<a class=\"new_window\" href=\"/contract/spending/transactions/awdmethod/' .$row[award_method_award_method] .  _checkbook_project_get_url_param_string(\"status\") .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\") . _checkbook_project_get_url_param_string(\"agency\",\"cagency\")   ._checkbook_project_get_url_param_string(\"vendor\",\"cvendor\") .  '/doctype/CT1~CTA1~MA1'.  ContractURLHelper::_checkbook_project_spending_get_year_url_param_string() . '/smnid/' . $node->nid .  '/newwindow\">' . custom_number_formatter_format($row['spending_amount_sum'],2,'$'). '</a>'"
+      "expression": "'<a class=\"new_window\" href=\"/contract/spending/transactions/awdmethod/' .$row[award_method_award_method] . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string(\"status\") .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\") . _checkbook_project_get_url_param_string(\"agency\",\"cagency\")   ._checkbook_project_get_url_param_string(\"vendor\",\"cvendor\") .  '/doctype/CT1~CTA1~MA1'.  ContractURLHelper::_checkbook_project_spending_get_year_url_param_string() . '/smnid/' . $node->nid .  '/newwindow\">' . custom_number_formatter_format($row['spending_amount_sum'],2,'$'). '</a>'"
     } ,
 "formatted_original_amount_sum": {
       "type": "expression2",
@@ -59,6 +59,7 @@ return $header;
 ",
 "footer":"
 $url = '/panel_html/contract_details/contract/transactions/contcat/expense'. _checkbook_project_get_url_param_string('status','contstatus');
+$url .= _checkbook_append_url_params();
 $url .= _checkbook_project_get_url_param_string('agency');
 $url .= _checkbook_project_get_url_param_string('vendor');
 $url .= _checkbook_project_get_url_param_string('awdmethod');
