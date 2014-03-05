@@ -354,6 +354,16 @@ h4 {
     font-weight: bold;
 }
 
+.page-spending-landing-yeartype-b-year-agency #agency-list .agency-list-open,
+.page-contracts-landing-status-a-yeartype-b-year-agency #agency-list .agency-list-open,
+.page-spending-landing-yeartype-b-year-datasource-checkbook-oge #agency-list-other .agency-list-open,
+.page-contracts-landing-status-a-yeartype-b-year-datasource-checkbook-oge #agency-list-other .agency-list-open{
+    font-weight:bold;
+    font-size:13px;
+    color:#e5f4fe;
+
+}
+
 /* Year Dropdown */
 .chzn-container {
     font-size:12px;
