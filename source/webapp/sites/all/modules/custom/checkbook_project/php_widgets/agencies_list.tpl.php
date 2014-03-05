@@ -93,7 +93,7 @@ if($current_url[1] == 'contracts_landing')
 else
     $edc_url = "spending_landing";
 
-$agency_list_other = "<div id='agency-list' class='agency-nav-dropdowns'>
+$agency_list_other = "<div id='agency-list-other' class='agency-nav-dropdowns'>
   <div class='agency-list-open'><span id='other-agency-list-open'>Other Government Entities</span></div>
   <div class='agency-list-content other-agency-list-content'>
     <div class='listContainer1' id='otherAgenciesList'>
