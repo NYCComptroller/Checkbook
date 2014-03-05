@@ -89,7 +89,7 @@ $agency_list .= "</div></div>";
 
 //$edc_agencies
 if($current_url[1] == 'contracts_landing')
-    $edc_url = "contracts_landing";
+    $edc_url = "contracts_landing/status/A";
 else
     $edc_url = "spending_landing";
 
@@ -106,7 +106,7 @@ $agency_list_other = "<div id='agency-list' class='agency-nav-dropdowns'>
         </div>
     </div>
         <div class='agency-list-nav'><a href='#' id='prev2'>Prev</a><a href='#' id='next2'>Next</a>
-        <a href='/". $edc_url ._checkbook_project_get_year_url_param_string() ."/datasource/checkbook_oge/agency/9000"."' id='citywide_all_agencies'>Other Government Entities</a>
+        <a href='/spending_landing" ._checkbook_project_get_year_url_param_string() ."/datasource/checkbook_oge/agency/9000"."' id='citywide_all_agencies'>Other Government Entities</a>
         </div>
     <div class='agency-list-close'><a href='#'>x Close</a></div>
   </div>
