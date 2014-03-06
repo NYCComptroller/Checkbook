@@ -87,7 +87,7 @@ for($i=1;$i < count($searchTerms);$i++){
       $reqVendors = explode("~", $filters[1]);
       foreach($reqVendors as $key=>$value){
         $clearUrl = _checkbook_smart_search_clear_url($filters[0],$value);
-        $filterCriteria .= "<li><span class='search-terms'>Vendor: <strong>". $value ."</strong></span><a class='clear-filter' href='".$clearUrl."'>
+        $filterCriteria .= "<li><span class='search-terms'>Vendor: <strong>". 'kkkhk8 llalalala'."</strong></span><a class='clear-filter' href='".$clearUrl."'>
                             <img src='".$clear_icon."'></a></li>";
       }
       break;

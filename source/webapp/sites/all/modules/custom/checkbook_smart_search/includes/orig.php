@@ -102,7 +102,7 @@ function _checkbook_smart_search_escapeSolrValue($string){
     $string = str_replace(" ", "%20", $string);
     $string = str_replace("#", "%23", $string);
     $string = str_replace("/", "\%2F", $string);
-    $string = str_replace("&", "%26", $string);
+    $string = str_replace("&", "%2526", $string);
     $string = str_replace("[", "\[", $string);
     $string = str_replace("]", "\]", $string);
     $string = str_replace(":", "\:", $string);
