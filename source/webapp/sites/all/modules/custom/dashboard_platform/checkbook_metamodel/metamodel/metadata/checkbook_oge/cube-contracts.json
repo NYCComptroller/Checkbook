@@ -53,7 +53,7 @@
                             {
                                 "name": "agency",
                                 "datasetName": "agency",
-                                "sourceColumnName": "mag_agency_id"
+                                "sourceColumnName": "display_agency_id"
                             }
                     ]
                 }    ,
@@ -91,7 +91,7 @@
                             {
                                 "name": "vendor",
                                 "datasetName": "vendor",
-                                "sourceColumnName": "mag_vendor_id"
+                                "sourceColumnName": "display_vendor_id"
                             }
                     ]
                 }      ,
