@@ -248,12 +248,12 @@
             return output;
         }
 
-        //Hide/show fields based on data_source
-        $('input:radio[name=spending_advanced_search_domain_filter][value="0"]').attr('checked',true);
-        changeDataSource($('input:radio[name=spending_advanced_search_domain_filter]:checked').val());
-        $('input:radio[name=spending_advanced_search_domain_filter]').change(function () {
-            changeDataSource($('input[name=spending_advanced_search_domain_filter]:checked').val());
+        changeDataSource($('input:radio[name=spending_domain_filter]:checked').val());
+        $('input:radio[name=spending_domain_filter]').change(function () {
+
+            changeDataSource($('input[name=spending_domain_filter]:checked').val());
         });
+
         function changeDataSource(dataSource) {
 
             switch (dataSource)

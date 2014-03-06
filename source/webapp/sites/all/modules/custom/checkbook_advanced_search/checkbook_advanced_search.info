@@ -20,7 +20,3 @@ description = Module to display the advanced search form in a dialog box with ac
 core = 7.x
 package = NYC Checkbook
 dependencies[] = checkbook_project
-
-files[] = includes/classes/Content.php
-files[] = includes/classes/Field.php
-files[] = includes/classes/Form.php
