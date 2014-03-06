@@ -326,7 +326,6 @@
                 }
             }
         }
-
         return filterId;
     }
 

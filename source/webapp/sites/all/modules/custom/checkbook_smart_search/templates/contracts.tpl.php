@@ -8,7 +8,6 @@
 ?>
 <?php
 $contracts_parameter_mapping = _checkbook_smart_search_domain_fields('contracts');
-
 if(strtolower($contracts_results['contract_status']) == 'registered'){
 
    $current_date = date("c").'Z';
@@ -103,7 +102,7 @@ foreach ($contracts_parameter_mapping as $key => $title){
   if($key == 'expenditure_object_name'){
      $value = "";
      foreach($contracts_results[$key] as $a => $b){
-         $value .= $b.',';
+         $value .= strip_tags($b).',';
      }
      $value = substr($value, 0, -1);
   }else{
@@ -116,8 +115,11 @@ foreach ($contracts_parameter_mapping as $key => $title){
   }
 
   if(in_array($key, $name_fields)){
-      $value = _get_tooltip_markup($value, 80, 2);
+     // $value = _get_tooltip_markup($value, 80, 2);
   }
+
+  //$value =  str_replace('&lt;/em&gt;', '</em>', str_replace('&lt;em&gt;', '<em>',$value));
+
   if(in_array($key, $amount_fields)){
     $value = custom_number_formatter_format($value, 2 , '$');
   }else if(in_array($key, $date_fields)){
@@ -130,12 +132,12 @@ foreach ($contracts_parameter_mapping as $key => $title){
 
   if ($count % 2 == 0){
     if($title)
-        $row[] = '<div class="field-label">'.$title.':</div><div class="field-content">'.$value.'</div>';
+        $row[] = '<div class="field-label">'.$title.':</div><div class="field-content">'. $value .'</div>';
     $rows[] = $row;
     $row = array();
   } else {
     if($title)
-        $row[] = '<div class="field-label">'.$title.':</div><div class="field-content">'.$value.'</div>';
+        $row[] = '<div class="field-label">'.$title.':</div><div class="field-content">'. $value .'</div>';
   }
   $count++;
 }

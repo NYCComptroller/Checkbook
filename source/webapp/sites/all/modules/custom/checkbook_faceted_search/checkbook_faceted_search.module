@@ -304,16 +304,17 @@ function checkbook_faceted_search_preprocess_pagination(&$variables){
 function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
   $facets = $variables['facets'];
   $selected_filters = $variables['selected_facet_results'];
-
   $output = NULL;
 
     $facetDisplayNames = array(
        'domain' => 'Type of Data',
        'agency_name' =>  'Citywide Agency',
        'oge_agency_name' => 'Other Government Entity',
-       'vendor_name' => 'Expense Category',
+       'vendor_name' => 'Vendor',
        'expenditure_object_name' => 'Expense Category',
        'fiscal_year' => 'Fiscal Year',
+       'spending' => 'Spending Category',
+       'contracts' => 'Category'
     );
 
     $facetNames = array(
@@ -323,22 +324,51 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
         'vendor_name' => 'fvendorName',
         'expenditure_object_name' => 'fexpenseCategoryName',
         'fiscal_year' => 'fyear',
+        'spending' => 'fspendingCatName',
+        'contracts' => 'fcontractCatName',
+        'contracts_status' => 'fcontractStatus'
+    );
+    $Categories = array(
+        'spending' => array('all' => $facets['spending_category_name']['spending_category_name'],
+                            'selected' => $selected_filters['spending_category_name']
+         ),
+        'contracts' => array('all' => $facets['contract_category_name']['contract_category_name'],
+                             'selected' => $selected_filters['contract_category_name'],
+                             'selected_status' => $selected_filters['contract_status'],
+                             'status' => $facets['contract_status']['contract_status']
+
+        ),
     );
 
+    $subCat = array();
 
     foreach($facets as $key=>$value)
     {
         if(!array_key_exists($key,$facetDisplayNames)) continue; // we only want certain facets shown
         if($key == 'fiscal_year')
-        {
             krsort($value[$key]);
-        }
         foreach($value[$key] as $name=>$count)
         {
             if($name == '') continue; // No oge data shown in agency facet please :)
             if($key == 'domain' && $count > 0)
             {
                 $checked = in_array($name, array_values_recursive($selected_filters[$key])) ? 'checked' : '';
+                if($checked){
+                    foreach($Categories[$name]['all'] as $subcat=>$subcount) // list types of data
+                    {
+                        $subChecked = in_array($subcat, array_values_recursive($Categories[$name]['selected'])) ? 'checked' : '';
+                        $subCat[$name][$facetDisplayNames[$name]][] = array($subcat, $subcat, $subcount, $subChecked);
+                        $subCat[$name][$facetDisplayNames[$name]]['name'] = $facetNames[$name];
+                    }
+                    foreach($Categories[$name]['status'] as $subcat=>$subcount) // list sub category of data
+                    {
+                        $subChecked = in_array($subcat, array_values_recursive($Categories[$name]['selected_status'])) ? 'checked' : '';
+                        $subCat[$name]['Status'][] = array($subcat, $subcat, $subcount, $subChecked);
+                        $subCat[$name]['Status']['name'] = 'fcontractStatus';
+                        if (strtolower($subcat) == 'registered')  //Now add the active number right under  registered
+                            $subCat[$name]['Status'][] = array('', 'Active', $variables['active_contracts']['response']['numFound']);
+                    }
+                }
                 $output['Type of Data'][] = array($name, $name, $count, $checked);
             }
             else if($count > 0)
@@ -346,18 +376,19 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
                 $checked = in_array($name, array_values_recursive($selected_filters[$key]));
 
                 if ($checked) {
-                    $output[$facetDisplayNames[$key]]['checked'][] = array($name, $name, $count);
+                    $output[$facetDisplayNames[$key]]['checked'][] = array(urlencode($name), $name, $count);
                 }
                 else {
-                    $output[$facetDisplayNames[$key]]['unchecked'][] = array($name, $name, $count);
+                    $output[$facetDisplayNames[$key]]['unchecked'][] = array(urlencode($name), $name, $count);
                 }
             }
         }
-        $output[$facetDisplayNames[$key]]['name'] = $facetNames[$key];
+        if($output[$facetDisplayNames[$key]])
+            $output[$facetDisplayNames[$key]]['name'] = $facetNames[$key];
     }
 
   $variables['render_array'] = $output;
-  //$variables['sub_cat_array'] = $subCat;
+  $variables['sub_cat_array'] = $subCat;
 }
 
 function array_values_recursive($ary)
