@@ -56,12 +56,12 @@
             }
         }
 
-        //Hide/show fields based on data source, default to checkbook data source
-        $('input:radio[name=contracts_advanced_search_domain_filter][value="0"]').attr('checked',true);
-        changeDataSource($('input:radio[name=contracts_advanced_search_domain_filter]:checked').val());
-        $('input:radio[name=contracts_advanced_search_domain_filter]').change(function () {
-            changeDataSource($('input[name=contracts_advanced_search_domain_filter]:checked').val());
+        changeDataSource($('input:radio[name=contracts_domain_filter]:checked').val());
+        $('input:radio[name=contracts_domain_filter]').change(function () {
+
+            changeDataSource($('input[name=contracts_domain_filter]:checked').val());
         });
+
         function changeDataSource(dataSource) {
 
             switch (dataSource)
