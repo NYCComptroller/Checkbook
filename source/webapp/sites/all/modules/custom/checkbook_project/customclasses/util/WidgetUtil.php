@@ -170,5 +170,8 @@ class WidgetUtil
         "cls_classification_name"=>"Closing Classification<br/>Name",
         "other_years"=>"Other<br/>Years",
         "year"=>"Year",
+        "budget_name"=>"Budget Name",
+        "commodity_line "=>"Commodity Line",
+        "entity_contact_num"=>"Entity Contract # "
     );
 }
