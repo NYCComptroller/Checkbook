@@ -615,6 +615,7 @@ abstract class AbstractAPISearchCriteria {
         break;
 
       case "contracts":
+      case "contracts_oge":
         $category = $this->criteria['value']['category'];
         $status = $this->criteria['value']['status'];
 

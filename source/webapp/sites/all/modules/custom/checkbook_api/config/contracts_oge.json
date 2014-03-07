@@ -1,0 +1,298 @@
+{
+    "contracts_oge_active_expense":{
+        "searchCriteriaMap":{
+            "fiscal_year":"fiscal_year@checkbook_oge:contracts_coa_aggregates",
+            "calendar_year":"fiscal_year@checkbook_oge:contracts_coa_aggregates",
+            "agency_code":"agency_code",
+            "vendor_code":"vendor_code",
+            "current_amount":"maximum_contract_amount",
+            "spent_to_date":"spending_amount@checkbook_oge:contracts_coa_aggregates",
+            "award_method":"award_method_code",
+            "expense_category":"expenditure_object_codes",
+            "contract_id":"contract_number",
+            "contract_type":"agreement_type_code",
+            "start_date":"effective_begin_date",
+            "end_date":"effective_end_date",
+            "registration_date":"registered_date",
+            "category":"document_code@checkbook_oge:ref_document_code",
+            "pin":"brd_awd_no",
+            "apt_pin":"tracking_number"
+        },
+        "dataset":{
+            "sortColumn":"-registered_date",
+            "name":"checkbook_oge:agreement_snapshot",
+            "columnTypes":{
+                "expenditure_object_codes":"trueLike",
+                "contract_number":"like"
+            },
+            "displayConfiguration":{
+                "xml":{
+                    "rootElement":"contract_transactions",
+                    "rowParentElement":"transaction",
+                    "elementsColumn":{
+                        "contract_id":"contract_number",
+                        "purpose":"description",
+                        "version":"document_version",
+                        "year":"fiscal_year@checkbook_oge:contracts_coa_aggregates",
+                        "parent_contract_id":"master_contract_number",
+                        "original_amount":"original_contract_amount",
+                        "current_amount":"maximum_contract_amount",
+                        "spent_to_date":"spending_amount@checkbook_oge:contracts_coa_aggregates",
+                        "vendor":"vendor_name",
+                        "agency":"agency_name",
+                        "contract_type":"agreement_type_name",
+                        "award_method":"award_method_name",
+                        "expense_category":"expenditure_object_names",
+                        "start_date":"effective_begin_date",
+                        "end_date":"effective_end_date",
+                        "registration_date":"registered_date",
+                        "pin":"brd_awd_no",
+                        "apt_pin":"tracking_number",
+                        "document_code":"document_code@checkbook_oge:ref_document_code",
+                        "contract_industry":"industry_type_name"
+                    },
+                    "rowElements":["agency", "vendor", "contract_id", "version", "year", "parent_contract_id", "purpose", "original_amount", "current_amount", "spent_to_date", "registration_date"
+                        , "apt_pin", "pin", "contract_type", "award_method", "expense_category", "start_date", "end_date", "document_code", "contract_industry"]
+                },
+                "csv":{
+                    "elementsColumn":{
+                        "Contract ID":"contract_number",
+                        "Purpose":"description",
+                        "Version":"document_version",
+                        "Year":"fiscal_year@checkbook_oge:contracts_coa_aggregates",
+                        "Parent Contract ID":"master_contract_number",
+                        "Original Amount":"original_contract_amount",
+                        "Current Amount":"maximum_contract_amount",
+                        "Spent to date":"spending_amount@checkbook_oge:contracts_coa_aggregates",
+                        "Vendor":"vendor_name",
+                        "Agency":"agency_name",
+                        "Contract Type":"agreement_type_name",
+                        "Award Method":"award_method_name",
+                        "Expense Category":"expenditure_object_names",
+                        "Start Date":"effective_begin_date",
+                        "End Date":"effective_end_date",
+                        "Registration Date":"registered_date",
+                        "PIN":"brd_awd_no",
+                        "APT PIN":"tracking_number",
+                        "Document Code":"document_code@checkbook_oge:ref_document_code",
+                        "Contract Industry":"industry_type_name"
+                    }
+                }
+            },
+            "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($dataSet,$parameters,$criteria);}"
+        },
+        "requestParameters":{
+            "fiscal_year":{"valueType":"value","dataType":"year","maxLength":"4"},
+            "calendar_year":{"valueType":"value","dataType":"year","maxLength":"4"},
+            "agency_code":{"valueType":"value","dataType":"text","maxLength":"4"},
+            "vendor_code":{"valueType":"value","dataType":"text","maxLength":"20"},
+            "current_amount":{"valueType":"range","dataType":"amount","maxLength":"18"},
+            "spent_to_date":{"valueType":"range","dataType":"amount","maxLength":"18"},
+            "award_method":{"valueType":"value","dataType":"text","maxLength":"3"},
+            "expense_category":{"valueType":"value","dataType":"text","maxLength":"4"},
+            "contract_id":{"valueType":"value","dataType":"text","maxLength":"32"},
+            "contract_type":{"valueType":"value","dataType":"text","maxLength":"2"},
+            "start_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"},
+            "end_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"},
+            "registration_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"},
+
+            "status":{
+                "valueType":"value",
+                "dataType":"text"
+            },
+            "category":{
+                "valueType":"value",
+                "dataType":"list",
+                "allowedValues":["expense", "revenue"]
+            },
+            "pin":{
+                "valueType":"value",
+                "dataType":"text"
+            },
+            "apt_pin":{
+                "valueType":"value",
+                "dataType":"text"
+            }
+        }
+    },
+    "contracts_oge_active_expense_all_years":{
+        "searchCriteriaMap":{
+            "agency_code":"agency_code",
+            "vendor_code":"vendor_code",
+            "current_amount":"maximum_contract_amount",
+            "spent_to_date":"rfed_amount",
+            "award_method":"award_method_code",
+            "expense_category":"expenditure_object_codes",
+            "contract_id":"contract_number",
+            "contract_type":"agreement_type_code",
+            "start_date":"effective_begin_date",
+            "end_date":"effective_end_date",
+            "registration_date":"registered_date",
+            "category":"document_code@checkbook_oge:ref_document_code",
+            "pin":"brd_awd_no",
+            "apt_pin":"tracking_number"
+        },
+        "dataset":{
+            "sortColumn":"-registered_date",
+            "name":"checkbook_oge:agreement_snapshot",
+            "columnTypes":{
+                "expenditure_object_codes":"trueLike",
+                "contract_number":"like"
+            },
+            "displayConfiguration":{
+                "xml":{
+                    "rootElement":"contract_transactions",
+                    "rowParentElement":"transaction",
+                    "elementsColumn":{
+                        "contract_id":"contract_number",
+                        "purpose":"description",
+                        "version":"document_version",
+                        "parent_contract_id":"master_contract_number",
+                        "original_amount":"original_contract_amount",
+                        "current_amount":"maximum_contract_amount",
+                        "spent_to_date":"rfed_amount",
+                        "vendor":"vendor_name",
+                        "agency":"agency_name",
+                        "contract_type":"agreement_type_name",
+                        "award_method":"award_method_name",
+                        "expense_category":"expenditure_object_names",
+                        "start_date":"effective_begin_date",
+                        "end_date":"effective_end_date",
+                        "registration_date":"registered_date",
+                        "pin":"brd_awd_no",
+                        "apt_pin":"tracking_number",
+                        "document_code":"document_code@checkbook_oge:ref_document_code",
+                        "contract_industry":"industry_type_name"
+                    },
+                    "rowElements":["agency", "vendor", "contract_id", "version", "parent_contract_id", "purpose", "original_amount", "current_amount", "spent_to_date", "registration_date"
+                        , "apt_pin", "pin", "contract_type", "award_method", "expense_category", "start_date", "end_date", "document_code", "contract_industry"]
+                },
+                "csv":{
+                    "elementsColumn":{
+                        "Contract ID":"contract_number",
+                        "Purpose":"description",
+                        "Version":"document_version",
+                        "Parent Contract ID":"master_contract_number",
+                        "Original Amount":"original_contract_amount",
+                        "Current Amount":"maximum_contract_amount",
+                        "Spent to date":"rfed_amount",
+                        "Vendor":"vendor_name",
+                        "Agency":"agency_name",
+                        "Contract Type":"agreement_type_name",
+                        "Award Method":"award_method_name",
+                        "Expense Category":"expenditure_object_names",
+                        "Start Date":"effective_begin_date",
+                        "End Date":"effective_end_date",
+                        "Registration Date":"registered_date",
+                        "PIN":"brd_awd_no",
+                        "APT PIN":"tracking_number",
+                        "Document Code":"document_code@checkbook_oge:ref_document_code",
+                        "Contract Industry":"industry_type_name"
+                    }
+                }
+            },
+            "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($dataSet,$parameters,$criteria);}"
+        },
+        "requestParameters":{
+            "agency_code":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"4"
+            },
+            "vendor_code":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"20"
+            },
+            "current_amount":{
+                "valueType":"range",
+                "dataType":"amount",
+                "maxLength":"18"
+            },
+            "spent_to_date":{
+                "valueType":"range",
+                "dataType":"amount",
+                "maxLength":"18"
+            },
+            "award_method":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"3"
+            },
+            "expense_category":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"4"
+            },
+            "contract_id":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"32"
+            },
+            "contract_type":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"2"
+            },
+            "start_date":{
+                "valueType":"range",
+                "dataType":"date",
+                "format":"YYYY-MM-DD"
+            },
+            "end_date":{
+                "valueType":"range",
+                "dataType":"date",
+                "format":"YYYY-MM-DD"
+            },
+            "registration_date":{
+                "valueType":"range",
+                "dataType":"date",
+                "format":"YYYY-MM-DD"
+            },
+
+            "status":{
+                "valueType":"value",
+                "dataType":"text"
+            },
+            "category":{
+                "valueType":"value",
+                "dataType":"list",
+                "allowedValues":["expense", "revenue"]
+            },
+            "pin":{
+                "valueType":"value",
+                "dataType":"text"
+            },
+            "apt_pin":{
+                "valueType":"value",
+                "dataType":"text"
+            }
+        }
+    },
+    "requiredCriteria":[
+        {
+            "name":"status",
+            "criteriaLevel":"value",
+            "allowedValues":["active", "registered"]
+        },
+        {
+            "name":"category",
+            "criteriaLevel":"value",
+            "allowedValues":["expense" ]
+        }
+    ],
+    "validators":[
+        {
+            "name":"optionalSingleFilter",
+            "configKey":["contracts_oge_active_expense", "contracts_oge_active_revenue"],
+            "config":{
+                "criteriaLevel":"value",
+                "validatorType":"filterName",
+                "validatorTypeConfig":{
+                    "required":false,
+                    "filterNames":["fiscal_year", "calendar_year"]
+                }
+            }
+        }
+    ]
+}

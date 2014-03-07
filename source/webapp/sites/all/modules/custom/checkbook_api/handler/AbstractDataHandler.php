@@ -257,7 +257,6 @@ abstract class AbstractDataHandler {
   private function setRequestDataSet() {
     // Load request configuration:
     $configuration = $this->loadConfiguration();
-
     $data_set_handler = new DataSetHandler($this->requestSearchCriteria, $configuration);
     $this->requestDataSet = $data_set_handler->prepareDataSet();
   }
