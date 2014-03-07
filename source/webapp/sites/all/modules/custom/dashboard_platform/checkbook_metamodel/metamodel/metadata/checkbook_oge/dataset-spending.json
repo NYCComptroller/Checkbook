@@ -3,6 +3,10 @@
         "disbursement_line_item_details": {
             "datasourceName": "main",
             "source": "disbursement_line_item_details"            
+        } ,
+        "oge_contract": {
+            "datasourceName": "main",
+            "source": "oge_contract"            
         } 			             	        		        
      },
 
@@ -11,7 +15,10 @@
         "disbursement_line_item_details__source_updated_date": [
                 {"datasetName": "disbursement_line_item_details", "columnNames": ["check_eft_issued_date_id"]},
                 {"datasetName": "date_id", "columnNames": ["date_id"]}
-        ]                                          
-                            
+        ],
+        "disbursement_line_item_details__oge_contract": [
+                {"datasetName": "disbursement_line_item_details", "columnNames": ["contract_number","agreement_commodity_line_number"]},
+                {"datasetName": "oge_contract", "columnNames": ["fms_contract_number","fms_commodity_line"]}
+        ]                            
     }    
 }

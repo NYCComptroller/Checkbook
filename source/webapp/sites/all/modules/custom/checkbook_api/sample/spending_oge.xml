@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<request>
+    <type_of_data>Spending_OGE</type_of_data>
+    <records_from>1</records_from>
+    <max_records>1</max_records>
+    <search_criteria>        
+        <criteria>
+            <name>agency_code</name>
+            <type>value</type>
+            <value>z81</value>
+        </criteria>       
+    </search_criteria>
+    <response_columns>
+        <column>agency</column>
+        <column>fiscal_year</column>
+        <column>calendar_year</column>
+        <column>document_id</column>
+        <column>payee_name</column>
+        <column>department</column>
+        <column>check_amount</column>
+        <column>expense_category</column>
+        <column>contract_ID</column>
+        <column>contract_purpose</column>
+        <column>capital_project</column>
+        <column>issue_date</column>
+        <column>spending_category</column>
+        <column>entity_contract_number</column>
+    </response_columns>
+</request>

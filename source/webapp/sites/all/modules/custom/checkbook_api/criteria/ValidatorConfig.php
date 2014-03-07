@@ -23,7 +23,7 @@
  * Class that defines the validations.
  */
 class ValidatorConfig {
-  static $domains = array('Budget','Revenue','Spending','Payroll','Contracts');
+  static $domains = array('Budget','Revenue','Spending','Payroll','Contracts','Spending_OGE','Contracts_OGE');
   static $response_formats = array('xml','csv');
   static $specialChars = "!\"#$%&'()*+,–./:;<=>@?[\\]^{}|~`";
 }
