@@ -22,7 +22,7 @@ function _checkbook_smart_search_submit($form, &$form_state){
 
 /** Returns results for smart search */
 function _checkbook_smart_search_get_results(){
-
+    dsm($_REQUEST['search_term']);
     $search_terms = explode('*|*', $_REQUEST['search_term']); // array("Education", "domains=Payroll~Spending", "fiscal_years=2014~2013")
     $search_terms[0] = urldecode($search_terms[0]); //"Education"
 
@@ -105,7 +105,7 @@ function _checkbook_smart_search_escapeSolrValue($string){
     $string = str_replace(" ", "%20", $string);
     $string = str_replace("#", "%23", $string);
     $string = str_replace("/", "\%2F", $string);
-    $string = str_replace("&", "%2526", $string);
+    $string = str_replace("&", "%26", $string);
     $string = str_replace("[", "\[", $string);
     $string = str_replace("]", "\]", $string);
     $string = str_replace(":", "\:", $string);

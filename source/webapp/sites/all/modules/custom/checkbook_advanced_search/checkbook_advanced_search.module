@@ -18,9 +18,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
+//Constants
+module_load_include('inc', 'checkbook_advanced_search', 'includes/checkbook_advanced_search_constants');
+module_load_include('php', 'checkbook_advanced_search', 'includes/classes/Field');
+module_load_include('php', 'checkbook_advanced_search', 'includes/classes/Content');
+module_load_include('php', 'checkbook_advanced_search', 'includes/classes/Form');
 module_load_include('inc', 'checkbook_advanced_search', 'includes/checkbook_advanced_search');
 module_load_include('inc', 'checkbook_advanced_search_autocomplete', 'includes/checkbook_advanced_search_autocomplete_functions');
+
+use checkbook_advanced_search\DataSource as DataSource;
+use checkbook_advanced_search\Domain as Domain;
+use checkbook_advanced_search\Field as Field;
+use checkbook_advanced_search\Content as Content;
+use checkbook_advanced_search\Form as Form;
 
 /**
  * Implements of hook_menu().
@@ -527,388 +537,16 @@ function checkbook_advanced_search_form($form, $form_state)
     return $form;
 }
 
-function _get_all_field_definitions($domain,$data_source,$agencies,$agency_attributes,$year_range)
-{
-    switch($data_source)
-    {
-        case DataSource::CitywideAgency:
-            break;
-        case DataSource::OtherGovernmentEntities:
-            $agencies = _checkbook_advanced_search_get_agencyname_and_id_by_data_source($data_source);
-            $agency_attributes = _checkbook_advanced_search_get_agency_attributes_by_data_source($data_source);
-            break;
-    }
-    $expense_attributes = _checkbook_advanced_search_get_expensetype_and_id($data_source);
-    $year_attribute = _checkbook_advanced_search_get_year($domain,$data_source);
-    $award_method =  _checkbook_advanced_search_get_contract_award_method_and_id($data_source);
-    $award_method_attributes = _checkbook_advanced_search_get_contract_award_method_attributes($data_source);
-
-    //Department
-    $field_array[FieldDef::Department] = array(
-        'field_type' => FieldType::DropDown,
-        'field_name' => FieldDef::Department
-    );
-
-    //ExpenseCategory
-    $field_array[FieldDef::ExpenseCategory] = array(
-        'field_type' => FieldType::DropDown,
-        'field_name' => FieldDef::ExpenseCategory
-    );
-
-    //SpendingCategory
-    $field_array[FieldDef::SpendingCategory] = array(
-        'field_type' => FieldType::DropDown,
-        'field_name' => FieldDef::SpendingCategory,
-        'attributes' => array(
-            'options' => $expense_attributes
-        ));
-
-
-    //PayeeName
-    $field_array[FieldDef::PayeeName] = array(
-        'field_type' => FieldType::TextField,
-        'field_name' => FieldDef::PayeeName,
-        'attributes' => array(
-            'size' => 30,
-            'maxlength' => 100
-        ));
-
-    //CheckAmount
-    $field_array[FieldDef::CheckAmount] = array(
-        'field_type' => FieldType::TextField,
-        'field_name' => FieldDef::CheckAmount,
-        'attributes' => array(
-            'size' => 30,
-            'maxlength' => 32
-        ));
-
-    //DocumentId
-    $field_array[FieldDef::DocumentId] = array(
-        'field_type' => FieldType::TextField,
-        'field_name' => FieldDef::DocumentId,
-        'attributes' => array(
-            'size' => 30,
-            'maxlength' => 100,
-            'title' => t('Document ID')
-        ));
-
-    //CapitalProject
-    $field_array[FieldDef::CapitalProject] = array(
-        'field_type' => FieldType::TextField,
-        'field_name' => FieldDef::CapitalProject,
-        'attributes' => array(
-            'size' => 30,
-            'maxlength' => 100
-        ));
-
-    //DateFilter
-    $field_array[FieldDef::DateFilter] = array(
-        'field_type' => FieldType::DateFilter,
-        'field_name' => FieldDef::DateFilter
-        );
-
-    //SpendingSubmit
-    $field_array[FieldDef::SpendingSubmit] = array(
-        'field_type' => FieldType::SubmitField,
-        'field_name' => FieldDef::SpendingSubmit
-    );
-
-    //Data Source Filter
-    $field_array[FieldDef::DataSourceFilter] = array(
-        'field_type' => FieldType::RadioButtons,
-        'field_name' => FieldDef::DataSourceFilter,
-        'attributes' => array(
-            'options' => array('Citywide Agencies','Other Government Entities')
-        ));
-
-    //Status
-    $field_array[FieldDef::Status] = array(
-        'field_type' => FieldType::DropDown,
-        'field_name' => FieldDef::Status,
-        'attributes' => array(
-            'options' => array('A' => 'Active', 'P' => 'Pending', 'R' => 'Registered'),
-            'default_value' => ''
-        ));
-
-    //Vendor
-    $field_array[FieldDef::Vendor] = array(
-        'field_type' => FieldType::TextField,
-        'field_name' => FieldDef::Vendor,
-        'attributes' => array(
-            'size' => 30,
-            'maxlength' => 100,
-            'title' => t('Vendor')
-        ));
-
-    //Contract Type
-    $field_array[FieldDef::ContractType] = array(
-        'field_type' => FieldType::DropDown,
-        'field_name' => FieldDef::ContractType,
-        'attributes' => array(
-            'options' => $agencies,
-            'option_attributes' => $agency_attributes,
-            'title' => t('Contract Type')
-        ));
-
-    //Contract Id
-    $field_array[FieldDef::ContractId] = array(
-        'field_type' => FieldType::TextField,
-        'field_name' => FieldDef::ContractId,
-        'attributes' => array(
-            'size' => 30,
-            'maxlength' => 100,
-            'title' => t('Contract ID')
-        ));
-
-    //PIN
-    $field_array[FieldDef::PIN] = array(
-        'field_type' => FieldType::TextField,
-        'field_name' => FieldDef::PIN,
-        'attributes' => array(
-            'size' => 30,
-            'maxlength' => 100,
-            'title' => t('PIN')
-        ));
-
-    //Current Amount
-    $field_array[FieldDef::CurrentContractAmount] = array(
-        'field_type' => FieldType::RangeField,
-        'field_name' => FieldDef::CurrentContractAmount,
-        'attributes' => array(
-            'size' => 30,
-            'maxlength' => 32,
-            'title' => t('Current Amount')
-        ));
-
-    //End Date
-    $field_array[FieldDef::EndDate] = array(
-        'field_type' => FieldType::RangeDateField,
-        'field_name' => FieldDef::EndDate,
-        'attributes' => array(
-            'date_year_range' => $year_range
-        ));
-
-    //Registration Date
-    $field_array[FieldDef::RegistrationDate] = array(
-        'field_type' => FieldType::RangeDateField,
-        'field_name' => FieldDef::RegistrationDate,
-        'attributes' => array(
-            'date_year_range' => $year_range
-        ));
-
-    //Category
-    $field_array[FieldDef::Category] = array(
-        'field_type' => FieldType::DropDown,
-        'field_name' => FieldDef::Category,
-        'attributes' => array(
-            'options' => array('expense' => 'Expense', 'revenue' => 'Revenue')
-        ));
-
-    //Contract Type
-    $field_array[FieldDef::Purpose] = array(
-        'field_type' => FieldType::TextField,
-        'field_name' => FieldDef::Purpose,
-        'attributes' => array(
-            'size' => 30,
-            'maxlength' => 100
-        ));
-
-
-    //Agency
-    $field_array[FieldDef::Agency] = array(
-        'field_type' => FieldType::DropDown,
-        'field_name' => FieldDef::Agency,
-        'attributes' => array(
-            'options' => $agency_attributes
-        ));
-
-    //APT PIN
-    $field_array[FieldDef::AptPIN] = array(
-        'field_type' => FieldType::TextField,
-        'field_name' => FieldDef::AptPIN,
-        'attributes' => array(
-            'size' => 30,
-            'maxlength' => 100,
-            'title' => t('APT PIN')
-        ));
-
-    //Award Method
-    $field_array[FieldDef::AwardMethod] = array(
-        'field_type' => FieldType::DropDown,
-        'field_name' => FieldDef::AwardMethod,
-        'attributes' => array(
-            'options' => $award_method,
-            'option_attributes' => $award_method_attributes
-        ));
-
-    //Start Date
-    $field_array[FieldDef::StartDate] = array(
-        'field_type' => FieldType::RangeDateField,
-        'field_name' => FieldDef::StartDate,
-        'attributes' => array(
-            'date_year_range' => $year_range
-        ));
-
-    //Received Date
-    $field_array[FieldDef::ReceivedDate] = array(
-        'field_type' => FieldType::RangeDateField,
-        'field_name' => FieldDef::ReceivedDate,
-        'attributes' => array(
-            'date_year_range' => $year_range
-        ));
-
-    //Year
-    $field_array[FieldDef::Year] = array(
-        'field_type' => FieldType::DropDown,
-        'field_name' => FieldDef::Year,
-        'attributes' => array(
-            'options' => $year_attribute
-        ));
-
-    //Contracts Submit
-    $field_array[FieldDef::ContractSubmit] = array(
-    'field_type' => FieldType::SubmitField,
-    'field_name' => FieldDef::ContractSubmit
-    );
-
-    //Entity Contract Number
-    $field_array[FieldDef::EntityContractNumber] = array(
-        'field_type' => FieldType::TextField,
-        'field_name' => FieldDef::EntityContractNumber,
-        'attributes' => array(
-            'size' => 30,
-            'maxlength' => 100,
-            'title' => t('Entity Contract #')
-        ));
-
-    //Commodity Line
-    $field_array[FieldDef::CommodityLine] = array(
-        'field_type' => FieldType::TextField,
-        'field_name' => FieldDef::CommodityLine,
-        'attributes' => array(
-            'size' => 30,
-            'maxlength' => 100
-        ));
-
-    //Budget Name
-    $field_array[FieldDef::BudgetName] = array(
-        'field_type' => FieldType::TextField,
-        'field_name' => FieldDef::BudgetName,
-        'attributes' => array(
-            'size' => 30,
-            'maxlength' => 100
-        ));
-
-    //Other Government Entities
-    $field_array[FieldDef::OtherGovernmentEntities] = array(
-        'field_type' => FieldType::DropDown,
-        'field_name' => FieldDef::OtherGovernmentEntities,
-        'attributes' => array(
-            'options' => $agency_attributes
-        ));
-
-    return $field_array;
-
-}
-
-function _get_form_field_configurations($domain)
-{
-    switch($domain)
-    {
-        case Domain::Spending:
-            $fields =  array(
-                DataSource::CitywideAgency => array(
-                    array('field_name'=> FieldDef::DataSourceFilter,'column' => Column::None),
-                    array('field_name'=> FieldDef::Agency,'column' => Column::Left),
-                    array('field_name'=> FieldDef::Department,'column' => Column::Left,'disabled' => TRUE),
-                    array('field_name'=> FieldDef::ExpenseCategory,'column' => Column::Left,'disabled' => TRUE),
-                    array('field_name'=> FieldDef::SpendingCategory,'column' => Column::Left),
-                    array('field_name'=> FieldDef::PayeeName,'column' => Column::Left),
-                    array('field_name'=> FieldDef::CheckAmount,'column' => Column::Right),
-                    array('field_name'=> FieldDef::ContractId,'column' => Column::Right),
-                    array('field_name'=> FieldDef::DocumentId,'column' => Column::Right),
-                    array('field_name'=> FieldDef::CapitalProject,'column' => Column::Right),
-                    array('field_name'=> FieldDef::DateFilter,'column' => Column::Right),
-                    array('field_name'=> FieldDef::SpendingSubmit,'column' => Column::None),
-                ),
-                DataSource::OtherGovernmentEntities => array(
-                    array('field_name'=> FieldDef::OtherGovernmentEntities,'column' => Column::Left),
-                    array('field_name'=> FieldDef::Department,'column' => Column::Left,'disabled' => TRUE),
-                    array('field_name'=> FieldDef::ExpenseCategory,'column' => Column::Left,'disabled' => TRUE),
-                    array('field_name'=> FieldDef::SpendingCategory,'column' => Column::Left),
-                    array('field_name'=> FieldDef::PayeeName,'column' => Column::Left),
-                    array('field_name'=> FieldDef::CheckAmount,'column' => Column::Left),
-                    array('field_name'=> FieldDef::ContractId,'column' => Column::Right),
-                    array('field_name'=> FieldDef::EntityContractNumber,'column' => Column::Right),
-                    array('field_name'=> FieldDef::DocumentId,'column' => Column::Right),
-                    array('field_name'=> FieldDef::CapitalProject,'column' => Column::Right),
-                    array('field_name'=> FieldDef::CommodityLine,'column' => Column::Right),
-                    array('field_name'=> FieldDef::BudgetName,'column' => Column::Right),
-                    array('field_name'=> FieldDef::DateFilter,'column' => Column::Right),
-                    array('field_name'=> FieldDef::SpendingSubmit,'column' => Column::None),
-                )
-            );
-            break;
-
-        case Domain::Contracts:
-            $fields =  array(
-                DataSource::CitywideAgency => array(
-                    array('field_name'=> FieldDef::DataSourceFilter,'column' => Column::None),
-                    array('field_name'=> FieldDef::Status,'column' => Column::Left),
-                    array('field_name'=> FieldDef::Vendor,'column' => Column::Left),
-                    array('field_name'=> FieldDef::ContractType,'column' => Column::Left),
-                    array('field_name'=> FieldDef::ContractId,'column' => Column::Left),
-                    array('field_name'=> FieldDef::PIN,'column' => Column::Left),
-                    array('field_name'=> FieldDef::CurrentContractAmount,'column' => Column::Left),
-                    array('field_name'=> FieldDef::EndDate,'column' => Column::Left),
-                    array('field_name'=> FieldDef::RegistrationDate,'column' => Column::Left),
-                    array('field_name'=> FieldDef::Category,'column' => Column::Right),
-                    array('field_name'=> FieldDef::Purpose,'column' => Column::Right),
-                    array('field_name'=> FieldDef::Agency,'column' => Column::Right),
-                    array('field_name'=> FieldDef::AptPIN,'column' => Column::Right),
-                    array('field_name'=> FieldDef::AwardMethod,'column' => Column::Right),
-                    array('field_name'=> FieldDef::StartDate,'column' => Column::Right),
-                    array('field_name'=> FieldDef::ReceivedDate,'column' => Column::Right),
-                    array('field_name'=> FieldDef::Year,'column' => Column::Right),
-                    array('field_name'=> FieldDef::ContractSubmit,'column' => Column::None),
-                ),
-                DataSource::OtherGovernmentEntities => array(
-                    array('field_name'=> FieldDef::Status,'column' => Column::Left),
-                    array('field_name'=> FieldDef::Vendor,'column' => Column::Left),
-                    array('field_name'=> FieldDef::ContractType,'column' => Column::Left),
-                    array('field_name'=> FieldDef::ContractId,'column' => Column::Left),
-                    array('field_name'=> FieldDef::EntityContractNumber,'column' => Column::Left),
-                    array('field_name'=> FieldDef::CommodityLine,'column' => Column::Left),
-                    array('field_name'=> FieldDef::BudgetName,'column' => Column::Left),
-                    array('field_name'=> FieldDef::CurrentContractAmount,'column' => Column::Left),
-                    array('field_name'=> FieldDef::RegistrationDate,'column' => Column::Left),
-                    array('field_name'=> FieldDef::OtherGovernmentEntities,'column' => Column::Right),
-                    array('field_name'=> FieldDef::Category,'column' => Column::Right),
-                    array('field_name'=> FieldDef::Purpose,'column' => Column::Right),
-                    array('field_name'=> FieldDef::PIN,'column' => Column::Right),
-                    array('field_name'=> FieldDef::AptPIN,'column' => Column::Right),
-                    array('field_name'=> FieldDef::AwardMethod,'column' => Column::Right),
-                    array('field_name'=> FieldDef::StartDate,'column' => Column::Right),
-                    array('field_name'=> FieldDef::EndDate,'column' => Column::Right),
-                    array('field_name'=> FieldDef::Year,'column' => Column::Right),
-                    array('field_name'=> FieldDef::ContractSubmit,'column' => Column::None),
-                )
-            );
-            break;
-    }
-    return $fields;
-}
-
 function _checkbook_advanced_search_get_form($form, $domain, $agencies, $agency_attributes, $year_range)
 {
-    $field_configurations = _get_form_field_configurations($domain);
+    $field_configurations = _checkbook_advanced_search_get_field_configs($domain);
 
     $checkbook_form = new Form($domain);
 
     foreach ($field_configurations as $key => $value) {
         $data_source = $key;
         $field_configs = $value;
-        $all_field_def = _get_all_field_definitions($domain,$data_source,$agencies,$agency_attributes,$year_range);
+        $all_field_def = _checkbook_advanced_search_filter_field_definition($domain,$data_source,$agencies,$agency_attributes,$year_range);
 
         $checkbook_content = new Content($data_source);
 
@@ -922,15 +560,59 @@ function _checkbook_advanced_search_get_form($form, $domain, $agencies, $agency_
                 $disabled = FALSE;
             $field = new Field($field_def['field_name'],$field_def['field_type'],$field_def['attributes'],$disabled);
 
-
             $checkbook_content->add_field($field,$column);
         }
-
         $checkbook_form->add_content($checkbook_content);
     }
 
     $form = $checkbook_form->generate_form($form);
     return $form;
+}
+
+function _checkbook_advanced_search_filter_field_definition($domain, $data_source, $agencies, $agency_attributes, $year_range)
+{
+    if($data_source == DataSource::OtherGovernmentEntities)
+    {
+        $agencies = _checkbook_advanced_search_get_agencyname_and_id_by_data_source($data_source);
+        $agency_attributes = _checkbook_advanced_search_get_agency_attributes_by_data_source($data_source);
+    }
+    $expense_attributes = _checkbook_advanced_search_get_expensetype_and_id($data_source);
+    $year_attribute = _checkbook_advanced_search_get_year($domain, $data_source);
+    $award_method = _checkbook_advanced_search_get_contract_award_method_and_id($data_source);
+    $award_method_attributes = _checkbook_advanced_search_get_contract_award_method_attributes($data_source);
+    $contract_type_attribute = _checkbook_advanced_search_get_contract_type_and_id($data_source);
+
+    $field_definition_configs = _checkbook_advanced_search_get_field_def_configs();
+
+    foreach ($field_definition_configs as $i=>$field_config) {
+       if(!(is_null($field_config['attributes'])))
+       {
+           $attributes = $field_config['attributes'];
+           if(!(is_null($attributes['options'])))
+           {
+               $options = $attributes['options'];
+
+               if($options == '$agencies')
+                   $field_definition_configs[$i]['attributes']['options'] = $agencies;
+               if($options == '$agency_attributes')
+                   $field_definition_configs[$i]['attributes']['options'] = $agency_attributes;
+               if($options == '$expense_attributes')
+                   $field_definition_configs[$i]['attributes']['options'] = $expense_attributes;
+               if($options == '$year_attribute')
+                   $field_definition_configs[$i]['attributes']['options'] = $year_attribute;
+               if($options == '$award_method')
+                   $field_definition_configs[$i]['attributes']['options'] = $award_method;
+               if($options == '$award_method_attributes')
+                   $field_definition_configs[$i]['attributes']['options'] = $award_method_attributes;
+               if($options == '$year_range')
+                   $field_definition_configs[$i]['attributes']['options'] = $year_range;
+               if($options == '$contract_type_attribute')
+                   $field_definition_configs[$i]['attributes']['options'] = $contract_type_attribute;
+           }
+        }
+    }
+
+    return $field_definition_configs;
 }
 
 /*

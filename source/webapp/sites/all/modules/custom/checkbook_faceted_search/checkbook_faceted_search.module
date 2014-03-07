@@ -376,10 +376,10 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
                 $checked = in_array($name, array_values_recursive($selected_filters[$key]));
 
                 if ($checked) {
-                    $output[$facetDisplayNames[$key]]['checked'][] = array($name, $name, $count);
+                    $output[$facetDisplayNames[$key]]['checked'][] = array(urlencode($name), $name, $count);
                 }
                 else {
-                    $output[$facetDisplayNames[$key]]['unchecked'][] = array($name, $name, $count);
+                    $output[$facetDisplayNames[$key]]['unchecked'][] = array(urlencode($name), $name, $count);
                 }
             }
         }
