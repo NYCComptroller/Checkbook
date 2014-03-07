@@ -417,13 +417,13 @@ function widget_data_tables_widget_view(&$node) {
 
           $sAjaxSource = $sAjaxSource._checkbook_append_url_params();
 		  $node->widgetConfig->dataTableOptions->sAjaxSource =  escapeSpecialCharacters(html_entity_decode($sAjaxSource,ENT_QUOTES));
-		  if (!isset($node->data) || count($node->data) == 0) {
+		  /*if (!isset($node->data) || count($node->data) == 0) {
 		        return theme('widget_data_tables_no_results_theme', array('node'=> $node));
 
 		  }
-		  else {
+		  else {*/
                 return theme($node->widgetConfig->template, array('node'=> $node));
-		  }
+		  //}
 		  break;		
 		case "ajaxSimple" :
             $sAjaxSource = '/dashboard_platform/data_tables/ajax_data/node/' .$node->nid  ;
@@ -456,12 +456,12 @@ function widget_data_tables_widget_view(&$node) {
 			}##";			
 			
 			
-			if (!isset($node->data) || count($node->data) == 0) {
+			/*if (!isset($node->data) || count($node->data) == 0) {
 				return theme('widget_data_tables_no_results_theme', array('node'=> $node));
 			}
-			else {
+			else {*/
 				return theme('widget_data_tables_by_rows_theme', array('node'=> $node));
-			}	
+			//}
 		break;
         case "dataTableList" :
             $sAjaxSource = '/dashboard_platform/data_tables_list/ajax_data/node/' . $node->nid;
@@ -495,12 +495,12 @@ function widget_data_tables_widget_view(&$node) {
             }##";
             	            
 
-            if (!isset($node->data) || count($node->data) == 0) {
+            /*if (!isset($node->data) || count($node->data) == 0) {
                 return theme('widget_data_tables_no_results_theme', array('node'=> $node));
             }
-            else {
+            else {*/
                 return theme('widget_data_tables_list_by_rows_theme', array('node'=> $node));
-            }
+            //}
         break;        
         case "dataTableWidgets" :
             $node->widgetConfig->dataTableOptions->sAjaxSource .= '/dashboard_platform/data_tables_list_wt/ajax_data/node/' .$node->nid;
@@ -538,12 +538,12 @@ function widget_data_tables_widget_view(&$node) {
             }
 
 
-            if (!isset($node->data) || count($node->data) == 0) {
+            /*if (!isset($node->data) || count($node->data) == 0) {
                 return theme('widget_data_tables_no_results_theme', array('node'=> $node));
             }
-            else {
+            else {*/
                 return theme('widget_data_tables_list_by_rows_wt_theme', array('node'=> $node));
-            }
+            //}
 
         break;
         /*case "deferredRendering":
@@ -566,10 +566,10 @@ function widget_data_tables_widget_view(&$node) {
           }
         break;*/
 		default :
-			if (!isset($node->data) || count($node->data) == 0) {
+			/*if (!isset($node->data) || count($node->data) == 0) {
 				return theme('widget_data_tables_no_results_theme', array('node'=> $node));
 			}
-			else
+			else*/
 			return theme('widget_data_tables_default_theme', array('node'=> $node));
 		break;	
 		
