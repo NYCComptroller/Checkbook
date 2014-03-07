@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Advanced search submit form handler, used to figure which submit button
  * has been clicked and invoke the respective functions that generate the
@@ -28,7 +27,6 @@ function checkbook_advanced_search_form_submit($form, &$form_state)
     }
 }
 
-//THIS
 /*
  * Get year_value and id using the data controller
  * @return array
@@ -172,7 +170,7 @@ function _checkbook_advanced_search_get_expensename_and_id()
 }
 
 /*
- * this function is used to generate the URL based on what the users have selected on advanced search form
+ * this functiocheckbook_advanced_searchn is used to generate the URL based on what the users have selected on advanced search form
  * @param $value
  * @param string $url_param
  * @param boolean $need_to_get_id
@@ -304,7 +302,6 @@ function _checkbook_advanced_search_get_funding_source_and_id()
     }
 }
 
-
 /*
  * Get document id using the data controller
  * @return array
@@ -416,7 +413,7 @@ function _checkbook_advanced_search_get_contract_award_method_attributes($data_s
  * Get contract type name and id using the data controller
  * @return array
  */
-function _checkbook_advanced_search_get_contract_type_and_id()
+function _checkbook_advanced_search_get_contract_type_and_id($data_source = null)
 {
     try {
         $dataController = data_controller_get_instance();
@@ -871,535 +868,46 @@ function _checkbook_advanced_search_year_arg($year_arg)
     return $year_url;
 }
 
-
 function _checkbook_advanced_search_replaceSlash($string)
 {
     return str_replace('/', '__', $string);
 }
 
+/**
+ * Get field definition configurations.
+ *
+ * @param string $domain
+ *   domain
+ *
+ * @return mixed
+ *   configuration
+ */
+function _checkbook_advanced_search_get_field_def_configs() {
+    $config_str = file_get_contents(realpath(drupal_get_path('module', 'checkbook_advanced_search')) . "/config/checkbook_advanced_search_field_definitions.json");
 
-abstract class Domain
-{
-    const Budget = 'budget';
-    const Revenue = 'revenue';
-    const Spending = 'spending';
-    const Contracts = 'contracts';
-    const Payroll = 'payroll';
+    $converter = new Json2PHPArray();
+    $configuration = $converter->convert($config_str);
+
+    return $configuration;
 }
 
-abstract class DataSource
+/**
+ * Get field configurations.
+ *
+ * @param string $domain
+ *   domain
+ *
+ * @return mixed
+ *   configuration
+ */
+function _checkbook_advanced_search_get_field_configs($domain)
 {
-    const CitywideAgency = 'checkbook';
-    const OtherGovernmentEntities = 'checkbook_oge';
+    $config_str = file_get_contents(realpath(drupal_get_path('module', 'checkbook_advanced_search')) . "/config/checkbook_advanced_search_".strtolower($domain)."_field_configurations.json");
+
+    $converter = new Json2PHPArray();
+    $configuration = $converter->convert($config_str);
+
+    return $configuration;
 }
 
-abstract class FieldType
-{
-    const DateFilter = 'date_filter';
-    const DatePopup = 'date_popup';
-    const DropDown = 'select';
-    const HiddenField = 'hidden';
-    const RadioButtons = 'radios';
-    const RangeField = 'rangefield';
-    const RangeDateField = 'range';
-    const SubmitField = 'submit';
-    const TextField = 'textfield';
-}
 
-abstract class Column
-{
-    const Left = 'column-left';
-    const Right = 'column-right';
-    const None = 'none';
-}
-
-abstract class FieldDef
-{
-    const DataSourceFilter = 'domain_filter';
-    const Status = 'status';
-    const Vendor = 'vendor_name';
-    const ContractType = 'type';
-    const ContractId = 'contract_id';
-    const PIN = 'pin';
-    const CurrentContractAmount = 'current_contract_amount';
-    const EndDate = 'end_date';
-    const RegistrationDate = 'registration_date';
-    const Category = 'category';
-    const Purpose = 'purpose';
-    const Agency = 'agency';
-    const AptPIN = 'apt_pin';
-    const AwardMethod = 'award_method';
-    const StartDate = 'start_date';
-    const ReceivedDate = 'received_date';
-    const Year = 'year';
-    const ContractSubmit = 'contracts';
-    const EntityContractNumber = 'entity_contract_num';
-    const CommodityLine = 'commodity_line';
-    const BudgetName = 'budget_name';
-    const OtherGovernmentEntities = 'other_government_entities';
-    const Department = 'department';
-    const ExpenseCategory = 'expense_category';
-    const SpendingCategory = 'spending_category';
-    const PayeeName = 'payee_name';
-    const CheckAmount = 'check_amount';
-    const DocumentId = 'document_id';
-    const CapitalProject = 'capital_project';
-    const DateFilter = 'date_filter';
-    const SpendingSubmit = 'spending';
-}
-
-class Content
-{
-    public $fields = array();
-    public $domain_name;
-    public $column_type;
-    public $data_source;
-
-    public $num_left_column_fields = 0;
-    public $num_right_column_fields = 0;
-
-    public function __construct($data_source)
-    {
-        $this->data_source=$data_source;
-    }
-
-    public function add_field(Field $field, $column_type)
-    {
-        switch($column_type)
-        {
-            case Column::Left:
-                $this->num_left_column_fields+=1;
-                $field->column_index=$this->num_left_column_fields;
-                break;
-
-            case Column::Right:
-                $this->num_right_column_fields+=1;
-                $field->column_index=$this->num_right_column_fields;
-                break;
-        }
-        $this->column_type=$column_type;
-        $field->column_type=$column_type;
-        $field->domain_name=$this->domain_name;
-        $this->fields[$field->field_name] = $field;
-    }
-}
-
-class Form
-{
-    public $domain_name;
-    public $contents = array();
-
-    public function __construct($domain_name)
-    {
-        $this->domain_name=$domain_name;
-    }
-
-    public function add_content(Content $content)
-    {
-        $content->domain_name=$this->domain_name;
-        $this->contents[$content->data_source] = $content;
-    }
-
-    public function generate_form($form)
-    {
-        $form->domain_name=$this->domain_name;
-        $form = $this->generate_header($form);
-        return $this->generate_content($form);
-    }
-
-    private function generate_header($form)
-    {
-        $domain = $this->domain_name;
-        $domain_field = "{$this->domain_name}_filter";
-
-        $div_id = "$this->domain_name-advanced-search";
-
-        $form[$domain][$domain_field]['#prefix'] = '<h3><a href="#">'.$this->domain_name.'</a></h3><div id="'.$div_id.'">';
-        return $form;
-    }
-
-    private function generate_content($form)
-    {
-        foreach ($this->contents as $content) {
-            foreach ($content->fields as $field) {
-                switch($field->column_type)
-                {
-                    case Column::Left:
-                        if($field->column_index == 1)
-                            $field->field_coordinates = 1;
-                        else if ($field->column_index == $content->num_left_column_fields)
-                            $field->field_coordinates = 2;
-                        break;
-
-                    case Column::Right:
-                        if($field->column_index == 1)
-                            $field->field_coordinates = 3;
-                        else if ($field->column_index == $content->num_right_column_fields)
-                            $field->field_coordinates = 4;
-                        break;
-                }
-
-                $form = $this->generate_field($field,$form,$content->data_source);
-            }
-        }
-        return $form;
-    }
-
-    private function generate_field(Field $field,$form,$data_source)
-    {
-        $domain = $data_source . '_' . $this->domain_name;
-
-        $year_range = "'-" . (date("Y") - 1900) . ":+" . (2500 - date("Y")) . "'";
-        $column_left_class = "column column-left ".str_replace('_','-',$data_source);
-        $column_right_class = "column column-right ".str_replace('_','-',$data_source);
-
-        switch($field->field_coordinates)
-        {
-            case 1:
-                $field->prefix = '<div class="' . $column_left_class . '">';
-                break;
-            case 2:
-                $field->suffix = '</div>';
-                break;
-            case 3:
-                $field->prefix = '<div class="' . $column_right_class . '">';
-                break;
-            case 4:
-                $field->suffix = '</div>';
-                break;
-        }
-
-        switch($field->field_type)
-        {
-            case FieldType::DateFilter:
-
-                //date_filter
-                $domain_field = 'date_filter';
-
-                $form[$domain][$domain_field]['#type'] = FieldType::RadioButtons;
-                $form[$domain][$domain_field]['#title'] = t('Date Filter');
-                $form[$domain][$domain_field]['#options'] = array('Year','Issue Date');
-                $form[$domain][$domain_field]['#prefix'] = $field->prefix . '<div class="datafield datefilter clearfix">';
-                $form[$domain][$domain_field]['#suffix'] = '</div>';
-                $form[$domain][$domain_field]['#attributes'] = array('Year','Issue Date');
-                $form[$domain][$domain_field]['#default_value'] = '';
-
-                //year_filter_start
-                $domain_field = 'year_filter_start';
-
-                $form[$domain][$domain_field]['#markup'] = '<div class="datafield year-filters last-item">';
-
-                //spending_issue_date_from
-                $domain_field = "{$this->domain_name}_issue_date_from";
-
-                $form[$domain][$domain_field]['#type'] = FieldType::DatePopup;
-                $form[$domain][$domain_field]['#date_format'] = 'Y-m-d';
-                $form[$domain][$domain_field]['#date_year_range'] = $year_range;
-                $form[$domain][$domain_field]['#prefix'] = '<div class="datafield datarange issueddate"><div class="ranges">';
-                $form[$domain][$domain_field]['#default_value'] = '';
-
-                //spending_issue_date_to
-                $domain_field = "{$this->domain_name}_issue_date_to";
-
-                $form[$domain][$domain_field]['#date_popup'] = FieldType::DatePopup;
-                $form[$domain][$domain_field]['#title'] = t('to');
-                $form[$domain][$domain_field]['#date_format'] = 'Y-m-d';
-                $form[$domain][$domain_field]['#date_year_range'] = $year_range;
-                $form[$domain][$domain_field]['#suffix'] = '</div></div>';
-                $form[$domain][$domain_field]['#default_value'] = '';
-
-                //spending_fiscal_year
-                $domain_field = "{$this->domain_name}_fiscal_year";
-
-                $form[$domain][$domain_field]['#type'] = FieldType::DropDown;
-                $form[$domain][$domain_field]['#options'] = _checkbook_advanced_search_get_year($this->domain_name, $data_source);
-                $form[$domain][$domain_field]['#default_value'] = 'fy~' . _getCurrentYearID();
-                $form[$domain][$domain_field]['#attributes'] = array('class' => array('watch'), 'default_selected_value' => 'fy~' . _getCurrentYearID());
-                $form[$domain][$domain_field]['#prefix'] = '<div class="datafield year">';
-                $form[$domain][$domain_field]['#suffix'] = '</div>';
-
-                //year_filter_end
-                $domain_field = 'year_filter_end';
-
-                if(!(is_null($field->suffix)))
-                    $form[$domain][$domain_field]['#markup'] = '</div>' . $field->suffix;
-                else
-                    $form[$domain][$domain_field]['#markup'] = '</div>';
-
-                break;
-
-            case FieldType::DropDown:
-
-                $domain_field = "{$this->domain_name}_{$field->field_name}";
-
-                if(!(is_null($field->prefix)))
-                    $form[$domain][$domain_field]['#prefix'] = $field->prefix;
-
-                if(!(is_null($field->suffix)))
-                    $form[$domain][$domain_field]['#suffix'] = $field->suffix;
-
-                $form[$domain][$domain_field]['#type'] = $field->field_type;
-
-                $form[$domain][$domain_field]['#title'] = $field->getFieldTitle();
-
-                $form[$domain][$domain_field]['#default_value'] = $field->getDropDownDefault();
-
-                $form[$domain][$domain_field]['#options'] = $field->getDropDownOptions();
-
-                if(!(is_null($field->disabled)))
-                    $form[$domain][$domain_field]['#disabled'] = $field->disabled;
-
-                if(!(is_null($field->option_attributes)))
-                    $form[$domain][$domain_field]['#option_attributes'] = $field->option_attributes;
-
-                break;
-
-            case FieldType::RadioButtons:
-
-                $domain_field = "{$this->domain_name}_{$field->field_name}";
-
-                if(!(is_null($field->prefix)))
-                    $form[$domain][$domain_field]['#prefix'] = $field->prefix;
-
-                $form[$domain][$domain_field]['#type'] = FieldType::RadioButtons;
-
-                if(!(is_null($field->default_value)))
-                    $form[$domain][$domain_field]['#default_value'] = $field->default_value;
-
-                if(!(is_null($field->options)))
-                    $form[$domain][$domain_field]['#options'] = $field->options;
-
-                break;
-
-            case FieldType::RangeField:
-
-                //From
-                $domain_field = "{$this->domain_name}_{$field->field_name}_from";
-                $css_name = str_replace('_','-',$field->field_name);
-
-                $form[$domain][$domain_field]['#type'] = FieldType::TextField;
-
-                if(!(is_null($field->size)))
-                    $form[$domain][$domain_field]['#size'] = $field->size;
-                else
-                    $form[$domain][$domain_field]['#size'] = 30; //Default
-
-                if(!(is_null($field->maxlength)))
-                    $form[$domain][$domain_field]['#maxlength'] = $field->maxlength;
-                else
-                    $form[$domain][$domain_field]['#maxlength'] = 32; //Default
-
-                if(!(is_null($field->prefix)))
-                    $form[$domain][$domain_field]['#prefix'] = $field->prefix . '<div class="form-item form-item-'.$css_name.'"><label>' . $field->getFieldTitle() . '</label><div class="ranges">';
-                else
-                    $form[$domain][$domain_field]['#prefix'] = '<div class="form-item form-item-'.$css_name.'"><label>' . $field->getFieldTitle() . '</label><div class="ranges">';
-
-                //To
-                $domain_field = "{$this->domain_name}_{$field->field_name}_to";
-
-                $form[$domain][$domain_field]['#type'] = FieldType::TextField;
-
-                $form[$domain][$domain_field]['#title'] = t('TO');
-
-                if(!(is_null($field->size)))
-                    $form[$domain][$domain_field]['#size'] = $field->size;
-                else
-                    $form[$domain][$domain_field]['#size'] = 30; //Default
-
-                if(!(is_null($field->maxlength)))
-                    $form[$domain][$domain_field]['#maxlength'] = $field->maxlength;
-                else
-                    $form[$domain][$domain_field]['#maxlength'] = 32; //Default
-
-                if(!(is_null($field->suffix)))
-                    $form[$domain][$domain_field]['#suffix'] = '</div></div>' . $field->suffix;
-                else
-                    $form[$domain][$domain_field]['#suffix'] = '</div></div>';
-
-                break;
-
-            case FieldType::RangeDateField:
-
-                //From
-                $domain_field = "{$this->domain_name}_{$field->field_name}_from";
-                $css_name = str_replace('_','-',$field->field_name);
-
-                $form[$domain][$domain_field]['#type'] = FieldType::DatePopup;
-                $form[$domain][$domain_field]['#date_format'] = 'Y-m-d';
-
-                $form[$domain][$domain_field]['#date_year_range'] = $year_range;
-
-                if(!(is_null($field->prefix)))
-                    $form[$domain][$domain_field]['#prefix'] = $field->prefix . '<div class="form-item form-item-'.$css_name.'"><label>' . $field->getFieldTitle() . '</label><div class="ranges">';
-                else
-                    $form[$domain][$domain_field]['#prefix'] = '<div class="form-item form-item-'.$css_name.'"><label>' . $field->getFieldTitle() . '</label><div class="ranges">';
-
-                //To
-                $domain_field = "{$this->domain_name}_{$field->field_name}_to";
-
-                $form[$domain][$domain_field]['#type'] = FieldType::DatePopup;
-                $form[$domain][$domain_field]['#date_format'] = 'Y-m-d';
-                $form[$domain][$domain_field]['#title'] = t('TO');
-
-                if(!(is_null($field->suffix)))
-                    $form[$domain][$domain_field]['#suffix'] = '</div></div>' . $field->suffix;
-                else
-                    $form[$domain][$domain_field]['#suffix'] = '</div></div>';
-
-                break;
-
-            case FieldType::SubmitField:
-
-                //Submit Button
-                $domain_field = "{$this->domain_name}_submit";
-
-                $submit_class = "$this->domain_name-submit ".str_replace('_','-',$data_source);
-
-                $form[$domain][$domain_field]['#type'] = $field->field_type;
-                $form[$domain][$domain_field]['#name'] = $domain_field;
-                $form[$domain][$domain_field]['#value'] = t('Submit');
-                $form[$domain][$domain_field]['#prefix'] = t('<div class="'.$submit_class.'">');
-
-                //Clear All Button
-                $domain_field = "{$this->domain_name}_clear";
-
-                $form[$domain][$domain_field]['#type'] = $field->field_type;
-                $form[$domain][$domain_field]['#value'] = t('Clear All');
-
-                end($this->contents);
-                $endKey = key($this->contents);
-                if($data_source == $endKey)
-                    $form[$domain][$domain_field]['#suffix'] = '</div></div>';
-                else
-                    $form[$domain][$domain_field]['#suffix'] = '</div>';
-
-                break;
-
-            case FieldType::TextField:
-
-                $domain_field = "{$this->domain_name}_{$field->field_name}";
-
-                $form[$domain][$domain_field]['#type'] = FieldType::TextField;
-
-                $form[$domain][$domain_field]['#title'] = $field->getFieldTitle();
-
-                if(!(is_null($field->size)))
-                    $form[$domain][$domain_field]['#size'] = $field->size;
-                else
-                    $form[$domain][$domain_field]['#size'] = 30; //Default
-
-                if(!(is_null($field->maxlength)))
-                    $form[$domain][$domain_field]['#maxlength'] = $field->maxlength;
-                else
-                    $form[$domain][$domain_field]['#maxlength'] = 32; //Default
-
-                if(!(is_null($field->prefix)))
-                    $form[$domain][$domain_field]['#prefix'] = $field->prefix;
-
-                //Hidden
-                $domain_field = "{$this->domain_name}_{$field->field_name}_exact";
-
-                $form[$domain][$domain_field]['#type'] = FieldType::HiddenField;
-
-                if(!(is_null($field->suffix)))
-                    $form[$domain][$domain_field]['#suffix'] = $field->suffix;
-
-                break;
-        }
-
-        return $form;
-    }
-}
-
-class Field
-{
-    public $domain_name;
-    public $field_name;
-    public $data_source;
-    public $field_type;
-    public $column_type;
-    public $field_coordinates;
-    public $column_index;
-
-    public $options;
-    public $title;
-    public $option_attributes;
-    public $default_value;
-    public $size;
-    public $maxlength;
-    public $attributes;
-    public $name;
-    public $value;
-    public $disabled;
-    public $required;
-
-    public $prefix;
-    public $suffix;
-
-    public function __construct($field_name, $field_type, $attributes,$disabled = FALSE)
-    {
-        $this->field_name = $field_name;
-        $this->field_type = $field_type;
-
-        if(!(is_null($attributes['attributes'])))
-            $this->attributes = $attributes['attributes'];
-
-        if(!(is_null($attributes['data_source'])))
-            $this->data_source = $attributes['data_source'];
-
-        if(!(is_null($attributes['default_value'])))
-            $this->default_value = $attributes['default_value'];
-
-        if(!(is_null($attributes['domain_name'])))
-            $this->domain_name = $attributes['domain_name'];
-
-        if(!(is_null($attributes['field_name'])))
-            $this->field_name = $attributes['field_name'];
-
-        if(!(is_null($attributes['maxlength'])))
-            $this->maxlength = $attributes['maxlength'];
-
-        if(!(is_null($attributes['option_attributes'])))
-            $this->option_attributes = $attributes['option_attributes'];
-
-        if(!(is_null($attributes['options'])))
-            $this->options = $attributes['options'];
-
-        if(!(is_null($attributes['required'])))
-            $this->required = $attributes['required'];
-
-        if(!(is_null($attributes['size'])))
-            $this->size = $attributes['size'];
-
-        if(!(is_null($attributes['title'])))
-            $this->title = $attributes['title'];
-
-        if(!(is_null($attributes['value'])))
-            $this->value = $attributes['value'];
-    }
-
-    public function getFieldTitle()
-    {
-        if(!(is_null($this->title)))
-            $field_title = $this->title;
-        else
-            $field_title = ucwords(str_replace('_',' ',$this->field_name));
-        return str_replace(' Id',' ID',$field_title);
-    }
-
-    public function getDropDownOptions()
-    {
-        if(!(is_null($this->options)))
-            return $this->options;
-        else
-            return array('Select ' . $this->getFieldTitle());
-    }
-
-    public function getDropDownDefault()
-    {
-        if(!(is_null($this->options[0])))
-            return $this->options[0];
-        else
-            return 'Select ' . $this->getFieldTitle();
-    }
-}
