@@ -30,11 +30,11 @@
     },
     "agency_name_link": {
       "type": "expression2",
-      "expression": "'<a href=\"/contracts_landing' . _checkbook_append_url_params()  ._checkbook_project_get_url_param_string(\"vendor\")  .  _checkbook_project_get_url_param_string(\"cindustry\")  .  _checkbook_project_get_url_param_string(\"csize\") .    _checkbook_project_get_url_param_string(\"awdmethod\") .  _checkbook_project_get_url_param_string(\"status\") .   _checkbook_project_get_year_url_param_string() .'/agency/' . $row[agency_agency]. '?expandBottomCont=true\">' .$row[agency_name_formatted]. '</a>'"
+      "expression": "$row[agency_name_formatted]"
     },
 "vendor_name_link": {
       "type": "expression2",
-      "expression": "'<a href=\"/contracts_landing' . _checkbook_append_url_params()  . _checkbook_project_get_url_param_string(\"agency\")  .  _checkbook_project_get_url_param_string(\"cindustry\")  .  _checkbook_project_get_url_param_string(\"csize\") .    _checkbook_project_get_url_param_string(\"awdmethod\") .  _checkbook_project_get_url_param_string(\"status\")  .   _checkbook_project_get_year_url_param_string() . '/vendor/' .$row[vendor_vendor] . '?expandBottomCont=true\">' .$row[vendor_name_formatted]. '</a>'"
+      "expression": "$row[vendor_name_formatted]"
     } ,
 "spent_amount_link": {
       "type": "expression2",
