@@ -132,7 +132,7 @@ function _checkbook_faceted_search_update_data($node){
           $parameters[$urlParamMap[$node->widgetConfig->urlParameterName]] = array(data_controller_get_operator_factory_instance()->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, $param));
         }
         $resultFormatter = new SpecialCharacterResultFormatter(NULL,new ArrayResultFormatter());
-        $checked_items = $dataController->queryCube($node->widgetConfig->dataset, $node->widgetConfig->columns, $parameters,null, null, null, $resultFormatter);        
+        $checked_items = $dataController->queryCube(_update_dataset_datasource($node->widgetConfig->dataset), $node->widgetConfig->columns, $parameters,null, null, null, $resultFormatter);
       } catch (Exception $e) {
         log_error($e->getMessage());
       }
