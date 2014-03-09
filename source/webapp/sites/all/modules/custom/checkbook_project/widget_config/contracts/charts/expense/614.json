@@ -20,7 +20,7 @@
         },
         {
             "labelAlias": "vendor_name",
-            "column": "legal_name@checkbook:vendor"
+            "column": "display_vendor_names"
         },
         {
             "labelAlias": "agency_name",
