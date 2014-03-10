@@ -22,7 +22,6 @@ function _checkbook_smart_search_submit($form, &$form_state){
 
 /** Returns results for smart search */
 function _checkbook_smart_search_get_results(){
-    dsm($_REQUEST['search_term']);
     $search_terms = explode('*|*', $_REQUEST['search_term']); // array("Education", "domains=Payroll~Spending", "fiscal_years=2014~2013")
     $search_terms[0] = urldecode($search_terms[0]); //"Education"
 
@@ -53,16 +52,16 @@ function _checkbook_smart_search_get_results(){
     $spending_categories = _checkbook_smart_search_get_facet_results($search_terms, "spending_categories");
 
 
-    $facetResults = array("domain" => $domains['facet_counts']['facet_fields'],
-        "oge_agency_name" => $oges['facet_counts']['facet_fields'],
+    $facetResults = array(
+        "domain" => $domains['facet_counts']['facet_fields'],
         "agency_name" => $agencies['facet_counts']['facet_fields'],
+        "oge_agency_name" => $oges['facet_counts']['facet_fields'],
         "vendor_name" => $vendors['facet_counts']['facet_fields'],
         "expenditure_object_name" => $expense_categories['facet_counts']['facet_fields'],
         "fiscal_year" => $fiscal_years['facet_counts']['facet_fields'],
         "spending_category_name" => $spending_categories['facet_counts']['facet_fields'],
         "contract_category_name" => $contract_categories['facet_counts']['facet_fields'],
         "contract_status" => $contract_status['facet_counts']['facet_fields']);
-
 
 
     //Selected Facet Filters

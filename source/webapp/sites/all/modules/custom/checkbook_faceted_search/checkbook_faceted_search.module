@@ -342,6 +342,7 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
 
     $subCat = array();
 
+
     foreach($facets as $key=>$value)
     {
         if(!array_key_exists($key,$facetDisplayNames)) continue; // we only want certain facets shown
