@@ -26,7 +26,7 @@
 "html_class": "initiative-table transaction-table",
 "no_results_content":"No Results Found",
 "dataset": "checkbook:fact_disbursement_line_item",
-"columns": ["agreement_commodity_line_number","budget_name@checkbook_oge:oge_contract","oge_contract_number@checkbook_oge:oge_contract","disbursement_number","vendor_name","check_eft_issued_date","agency_name","department_name","department_short_name","check_amount","expenditure_object_name","budget_name","reference_document_number","purpose","purpose_cy","reporting_code","spending_category_name","agency_id","vendor_id","expenditure_object_id","department_id","spending_category_id","agreement_id","reference_document_code"],
+"columns": ["disbursement_number","vendor_name","check_eft_issued_date","agency_name","department_name","department_short_name","check_amount","expenditure_object_name","budget_name","reference_document_number","purpose","purpose_cy","reporting_code","spending_category_name","agency_id","vendor_id","expenditure_object_id","department_id","spending_category_id","agreement_id","reference_document_code"],
 "derivedColumns": {
        "agency_name_formatted":{
                 "type": "expression2",
@@ -141,7 +141,7 @@
 	    },
 	    {
 	      "labelAlias": "expense_category",	    
-          "column":"expense_cat_formatted",
+              "column":"expense_cat_formatted",
 	      "sortSourceColumn": "expenditure_object_name"
 	    },
 	    /*{
@@ -160,29 +160,21 @@
 	      "labelAlias": "contract_id",	    
 	      "column": "reference_document_number_link",
 	      "sortSourceColumn":"reference_document_number",
-          "exportColumn":"reference_document_number_export"
+              "exportColumn":"reference_document_number_export"
 	    },
 	    {
 	      "labelAlias": "contract_purpose",	    
 	      "column": "contract_purpose_text",
-          "sortSourceColumn":"purpose",
-          "exportColumn":"contract_purpose_export"
+               "sortSourceColumn":"purpose",
+              "exportColumn":"contract_purpose_export"
 	    },
 	    {
 	      "labelAlias": "capital_project",	    
 	      "column": "reporting_code"
 	    },
 	    {
-	      "labelAlias": "commodity_line",
-	      "column": "agreement_commodity_line_number"
-	    },
-        {
-	      "labelAlias": "budget_name",
-	      "column": "budget_name@checkbook_oge:oge_contract"
-	    },
-        {
-	      "labelAlias": "entity_contact_num",
-	      "column": "oge_contract_number@checkbook_oge:oge_contract"
+	      "labelAlias": "spending_category",	    
+	      "column": "spending_category_name"
 	    }
 	  ],
 "adjustParameters":"
@@ -252,7 +244,6 @@
         {"sClass":"text", "sWidth":"196px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"229px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text", "sWidth":"90px","asSorting": [ "asc","desc" ]},
-
 		{"sClass":"text", "sWidth":"165px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text", "sWidth":"165px","asSorting": [ "asc","desc" ]},
 		{"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
@@ -260,13 +251,10 @@
 		{"sClass":"text","sWidth":"165px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"165px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"165px","asSorting": [ "asc","desc" ]},
-		{"sClass":"text","sWidth":"165px","asSorting": [ "asc","desc" ]},
-        {"sClass":"text","asSorting": [ "asc","desc" ]},
-		{"sClass":"text","asSorting": [ "asc","desc" ]},
-		{"sClass":"text","asSorting": [ "asc","desc" ]}
+		{"sClass":"text","sWidth":"165px","asSorting": [ "asc","desc" ]}
 ],
         "aaSorting":[[5,"desc"]],
-        "sScrollX": "100%",
+       		"sScrollX": "100%",
  		"bScrollCollapse": false,
         "fnInitComplete": "##function () { new FixedColumns( oTable, {
  		\"iLeftColumns\": 3,
@@ -280,8 +268,7 @@
         }
         var oVendorIds = getNamedFilterCriteria('fvendorId');
         var oVendorNms = getNamedFilterCriteria('fvendorNm');
-        var oCategoryIds = getNamedFilterCriteria('fCat' +
-'egoryId');
+        var oCategoryIds = getNamedFilterCriteria('fCategoryId');
          var oSpendCategoryIds = getNamedFilterCriteria('fSpendCategoryId');
         var oCheckAmount = getNamedFilterCriteria('fCheckAmount');
         var oDeptIds = getNamedFilterCriteria('fdeptId');
