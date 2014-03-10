@@ -62,7 +62,7 @@ class WidgetUtil
             $label = NULL;
             if($labelOnly){
                 $label = self::getLabel($labelAlias);
-            }else{dsm($labelAlias);dsm(self::$labels[$labelAlias]);
+            }else{
                 $label  = "<div><span>". self::$labels[$labelAlias] ."</span></div>";
             }
         }
