@@ -62,7 +62,7 @@ class WidgetUtil
             $label = NULL;
             if($labelOnly){
                 $label = self::getLabel($labelAlias);
-            }else{
+            }else{dsm($labelAlias);dsm(self::$labels[$labelAlias]);
                 $label  = "<div><span>". self::$labels[$labelAlias] ."</span></div>";
             }
         }
@@ -170,8 +170,8 @@ class WidgetUtil
         "cls_classification_name"=>"Closing Classification<br/>Name",
         "other_years"=>"Other<br/>Years",
         "year"=>"Year",
-        "budget_name"=>"Budget Name",
-        "commodity_line "=>"Commodity Line",
-        "entity_contact_num"=>"Entity Contract # "
+        "budget_name"=>"Budget<br/>Name",
+        "commodity_line"=>"Commodity<br/>Line",
+        "entity_contact_num"=>"Entity<br/>Contract # "
     );
 }
