@@ -136,7 +136,6 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
 
     $query = "select/?q=". $search_string
         ."&start=". ($page_no*$no_of_results)
-        ."&hl=true&hl.fl=*"
         ."&fq=-latest_flag:N"
         ."&wt=php";
 

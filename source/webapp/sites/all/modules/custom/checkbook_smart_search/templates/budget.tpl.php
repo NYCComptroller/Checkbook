@@ -24,11 +24,11 @@ $budget_parameter_mapping = _checkbook_smart_search_domain_fields('budget');
 $linkable_fields = array("agency_name" => "/budget/year/" . _getCurrentYearID() . "/yeartype/B/agency/".$budget_results["agency_id"],
                          "expenditure_object_name" => "/budget/year/". _getCurrentYearID() . "/yeartype/B/expcategory/".$budget_results["expenditure_object_id"],
                         );
-$highlighting_fields = array("agency_name" => "agency_name_text",
+/*$highlighting_fields = array("agency_name" => "agency_name_text",
                              "department_name" => "department_name_text",
                              "expenditure_object_name" => "expenditure_object_name_text",
                              "budget_code_name" => "budget_code_name_text"
-                            );
+                            );*/
 
 $amount_fields = array("adopted_amount", "current_budget_amount", "total_expenditure","pre_encumbered_amount","encumbered_amount","accrued_expense_amount","cash_expense_amount","post_closing_adjustment_amount");
 
@@ -43,9 +43,9 @@ foreach ($budget_parameter_mapping as $key=>$title){
         $value = $budget_results[$key];
       }
 
-    if($highlighting[$budget_results["id"]][$highlighting_fields[$key]]){
-        $value = $highlighting[$budget_results["id"]][$highlighting_fields[$key]][0];
-    }
+    $temp = substr($value, strpos(strtoupper($value), strtoupper($SearchTerm)),strlen($SearchTerm));
+    $value = str_ireplace($SearchTerm,'<em>'. $temp . '</em>', $value);
+
     $value = _checkbook_smart_search_str_html_entities($value);
 
     if(in_array($key, $amount_fields)){
