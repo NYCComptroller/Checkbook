@@ -466,13 +466,11 @@ function load_widget_data($node, $resultFormatter) {
         //Widget config may be updated.
         $isList = isset($config->useList); // FIXME v2. check for true/false
         $datasetName = _update_dataset_datasource($config->dataset);
-        $columns = array();
-        foreach($config->columns as $column){
-            array_push($columns, _update_dataset_datasource($column));
-        }
-        //$columns = $config->columns;
+        $config->columns_datasource = isset($config->columns_datasource) ? $config->columns_datasource : null;
+        $columns = _update_columns_by_datasource($config->columns, $config->columns_datasource);
+
         $orderBy = $config->orderBy;
-        $startWith = isset($config->startWith) ? $config->startWith : 0;
+        $startWith = isset($config->startWith) ? $config->startWiwth : 0;
         $limit = $config->limit;
 
 
@@ -490,9 +488,8 @@ function load_widget_data($node, $resultFormatter) {
             $joinMethod = isset($config->model->join) ? $config->model->join->method : NULL;
             $joinColumns = array();
             if(isset($config->model->join->columns)){
-                foreach($config->columns as $column){
-                    array_push($joinColumns, _update_dataset_datasource($column));
-                }
+                $config->columns_datasource = isset($config->columns_datasource) ? $config->columns_datasource : null;
+                $joinColumns = _update_columns_by_datasource($config->columns, $config->columns_datasource);
             }else{
                 $joinColumns = NULL;
             }
@@ -1240,4 +1237,23 @@ function _update_node_data($data){
      }
 
     return $returnData;
+}
+
+function _update_columns_by_datasource($node_columns, $datasource_mapping = null){
+    $columns = array();
+    $database = _getRequestParamValue('datasource');
+    $datasource_mapping = ($datasource_mapping != null) ? get_object_vars($datasource_mapping) : null;
+    foreach($node_columns as $column){
+        if($datasource_mapping == null){
+            array_push($columns, _update_dataset_datasource($column));
+        }else{
+            if(!array_key_exists($column, $datasource_mapping)){
+                array_push($columns, _update_dataset_datasource($column));
+            }
+            else if(array_key_exists($column, $datasource_mapping) && $datasource_mapping[$column] == $database){
+                array_push($columns, _update_dataset_datasource($column));
+            }
+        }
+    }
+    return $columns;
 }
