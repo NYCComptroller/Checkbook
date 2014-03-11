@@ -79,7 +79,13 @@ rsort($years);
 
              $rowString .=  ',' .'"' . $row[$year]['assesed_value_million_amount'].'"';
 			 $rowString .= ',' .$row[$year]['percentage_taxable_real_estate'].','.$percent_sign_1;
-			 $rowString .= ',' .$row[$year]['direct_tax_rate'].$sup_script.''." ";
+			 //$rowString .= ',' .$row[$year]['direct_tax_rate'].$sup_script.''." ";
+			 if($year <=2010 ){
+			 	$rowString .= ',' .$row[$year]['direct_tax_rate'].$sup_script.''." ";
+			 }
+			 else{
+				$rowString .= ',' .$row[$year]['direct_tax_rate'].''." ";
+			 }
         }
         echo $rowString . "\n";
         $count++;

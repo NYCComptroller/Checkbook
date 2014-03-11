@@ -33,6 +33,8 @@
     $header .=  ",Coverage Ratio";
 
 	echo $header . "\n";
+	echo "(AMOUNTS IN THOUSANDS)" . "\n";
+		
     $count = 1;
     foreach( $node->data as $row){
         $dollar_sign = ($count == 1) ? '$' : '';
