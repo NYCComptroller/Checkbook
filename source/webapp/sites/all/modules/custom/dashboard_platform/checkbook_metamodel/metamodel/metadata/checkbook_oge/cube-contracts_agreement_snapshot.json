@@ -3,6 +3,10 @@
         "agreement_snapshot": {
             "datasourceName": "main",
             "source": "agreement_snapshot"
+        },
+        "oge_contract_contract": {
+            "datasourceName": "main",
+            "source": "oge_contract"
         }
      },
     "cubes": {
@@ -113,7 +117,7 @@
         ],
         "agreement_snapshot__oge_contract": [
             {"datasetName": "agreement_snapshot", "columnNames": ["contract_number"]},
-            {"datasetName": "oge_contract", "columnNames": ["fms_contract_number"]}
+            {"datasetName": "oge_contract_contract", "columnNames": ["fms_contract_number"]}
         ]
     }
 }
