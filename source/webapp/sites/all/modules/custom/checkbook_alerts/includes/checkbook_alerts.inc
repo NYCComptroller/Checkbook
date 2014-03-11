@@ -73,7 +73,7 @@ function _checkbook_alerts_transactions(){
     'number_of_results'=>_checkbook_alerts_get_data_count(),
     'minimum_results'=>$_GET['alert_minimum_results'],
     'minimum_days'=>$_GET['alert_minimum_days'],
-    'date_end'=>,$alertEndDate,
+    'date_end'=>$alertEndDate,
     'date_last_new_results'=>date("Y-m-d H:i:s")
   );
 
