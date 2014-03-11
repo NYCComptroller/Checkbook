@@ -178,11 +178,6 @@
 	      "column": "spending_category_name"
 	    },
         {
-          "labelAlias": "commodity_line",
-          "datasource": "checkbook_oge",
-          "column": "agreement_commodity_line_number"
-        },
-        {
            "labelAlias":"entity_contact_num",
            "datasource": "checkbook_oge",
            "column":"oge_contract_number@checkbook:oge_contract"
@@ -191,6 +186,11 @@
             "labelAlias":"budget_name",
             "datasource": "checkbook_oge",
             "column":"budget_name@checkbook:oge_contract"
+        },
+        {
+          "labelAlias": "commodity_line",
+          "datasource": "checkbook_oge",
+          "column": "agreement_commodity_line_number"
         }
 	  ],
 "adjustParameters":"
