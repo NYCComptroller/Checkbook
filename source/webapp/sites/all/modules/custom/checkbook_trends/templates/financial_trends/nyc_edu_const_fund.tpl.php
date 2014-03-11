@@ -23,7 +23,7 @@ echo eval($node->widgetConfig->header);
 ?>
 <h1 id="page-titleSpecial" class="title">New York City Educational Construction Fund<sup class="title-sup">*</sup></h1>
 <a class="trends-export" href="/export/download/trends_nyc_edu_const_fund_csv?dataUrl=/node/<?php echo $node->nid ?>">Export</a>
-
+<h5>(AMOUNTS IN THOUSANDS)</h5>
 <table id="table_<?php echo widget_unique_identifier($node) ?>" class="<?php echo $node->widgetConfig->html_class ?>">
     <?php
     if (isset($node->widgetConfig->caption_column)) {
