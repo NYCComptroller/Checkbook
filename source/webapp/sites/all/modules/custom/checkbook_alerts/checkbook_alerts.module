@@ -115,7 +115,7 @@ function checkbook_alerts_schema() {
         'description' => t('Recipiant address for sending.'),
         'type' => 'varchar',
         'not null' => TRUE,
-        'length' => '200'
+        'length' => '300'
       ),
       'recipient_type'=>array(
         'description'=>t('Recipiant type, email or twitter.'),
