@@ -110,6 +110,10 @@
         "agreement_snapshot__ref_award_category": [
             {"datasetName": "agreement_snapshot", "columnNames": ["award_category_id"]},
             {"datasetName": "award_category", "columnNames": ["award_category_id"]}
+        ],
+        "agreement_snapshot__oge_contract": [
+            {"datasetName": "agreement_snapshot", "columnNames": ["contract_number"]},
+            {"datasetName": "oge_contract", "columnNames": ["fms_contract_number"]}
         ]
     }
 }
