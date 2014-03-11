@@ -23,11 +23,11 @@
 $revenue_parameter_mapping = _checkbook_smart_search_domain_fields('revenue');
 
 $linkable_fields = array("agency_name" => "/agency/". $revenue_results["agency_id"],);
-$highlighting_fields = array("agency_name" => "agency_name_text",
+/*$highlighting_fields = array("agency_name" => "agency_name_text",
                              "revenue_class_name" => "revenue_class_name_text",
                              "revenue_source_name" => "revenue_source_name_text",
                              "funding_class_name" => "funding_class_name_text",
-                             "revenue_category_name" => "revenue_category_name_text");
+                             "revenue_category_name" => "revenue_category_name_text");*/
 
 $amount_fields = array("adopted_amount", "current_budget_amount", "posting_amount");
 
@@ -36,8 +36,9 @@ $row = array();
 $rows = array();
 foreach ($revenue_parameter_mapping as $key=>$title){
     $value = $revenue_results[$key];
-    if($highlighting[$revenue_results["id"]][$highlighting_fields[$key]]){
-        $value = $highlighting[$revenue_results["id"]][$highlighting_fields[$key]][0];
+    if(strpos(strtoupper($value), strtoupper($SearchTerm)) !== FALSE){
+        $temp = substr($value, strpos(strtoupper($value), strtoupper($SearchTerm)),strlen($SearchTerm));
+        $value = str_ireplace($SearchTerm,'<em>'. $temp . '</em>', $value);
         $value = _checkbook_smart_search_str_html_entities($value);
     }
 

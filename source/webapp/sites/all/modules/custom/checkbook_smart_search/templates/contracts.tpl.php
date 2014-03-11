@@ -56,7 +56,6 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
         $agency_link = "/contracts_pending_rev_landing/agency/".$contracts_results['agency_id'];
         $vendor_link = "/contracts_pending_rev_landing/vendor/".$contracts_results['vendor_id'];
         $contract_Id_link = "/contracts_pending_rev_landing/";
-
     }
 
     if($contracts_results['original_agreement_id']){
@@ -83,12 +82,13 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
 $linkable_fields = array("agency_name" => $agency_link,
                          "vendor_name" => $vendor_link,
                         );
-$highlighting_fields = array("agency_name" => "agency_name_text",
+
+/*$highlighting_fields = array("agency_name" => "agency_name_text",
                              "vendor_name" => "vendor_name_text",
                              "award_method_name" => "award_method_name_text",
                              "contract_purpose" => "contract_purpose_text",
                              "contract_type" => "contract_type_text",
-                             "contract_category_name" => "contract_category_name_text",);
+                             "contract_category_name" => "contract_category_name_text",);*/
 
 $date_fields = array("start_date_orig","end_date_orig","received_date","registration_date");
 $amount_fields = array("current_amount", "original_amount");
@@ -109,16 +109,18 @@ foreach ($contracts_parameter_mapping as $key => $title){
     $value = $contracts_results[$key];
   }
 
-  if($highlighting[$contracts_results["id"]][$highlighting_fields[$key]]){
-    $value = $highlighting[$contracts_results["id"]][$highlighting_fields[$key]][0];
-    $value = _checkbook_smart_search_str_html_entities($value);
-  }
+  $temp = substr($value, strpos(strtoupper($value), strtoupper($SearchTerm)),strlen($SearchTerm));
+  $value = str_ireplace($SearchTerm,'<em>'. $temp . '</em>', $value);
+
+//  if($highlighting[$contracts_results["id"]][$highlighting_fields[$key]]){
+//    $value = $highlighting[$contracts_results["id"]][$highlighting_fields[$key]][0];
+//    $value = _checkbook_smart_search_str_html_entities($value);
+//
+//  }
 
   if(in_array($key, $name_fields)){
      // $value = _get_tooltip_markup($value, 80, 2);
   }
-
-  //$value =  str_replace('&lt;/em&gt;', '</em>', str_replace('&lt;em&gt;', '<em>',$value));
 
   if(in_array($key, $amount_fields)){
     $value = custom_number_formatter_format($value, 2 , '$');
