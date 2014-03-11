@@ -29,6 +29,10 @@ foreach($node->data as $key=>$value){
         $city_agencies[$key] = $value;
     }
 }
+
+$oge_filter_highlight = (_checkbook_check_isEDCPage()) ? 'agency_filter_highlight' : '';
+$city_filter_highlight = (!_checkbook_check_isEDCPage()) ? 'agency_filter_highlight' : '';
+
 $current_fy_year = _getFiscalYearID();
 $current_cal_year = _getCalendarYearID();
 
@@ -60,7 +64,7 @@ foreach($city_agencies as $key => $value){
 $agencies = array_chunk($city_agencies, 10);
 
 $agency_list = "<div id='agency-list' class='agency-nav-dropdowns'>";
-$agency_list .= "<div class='agency-list-open'><span id='all-agency-list-open'>$selected_text</span></div>";
+$agency_list .= "<div class='agency-list-open'><span id='all-agency-list-open' class='".$city_filter_highlight."'>$selected_text</span></div>";
 $agency_list .= "<div class='agency-list-content all-agency-list-content'>";
 $agency_list .= "<div class='listContainer1' id='allAgenciesList'>";
 
@@ -94,7 +98,7 @@ else
     $edc_url = "spending_landing";
 
 $agency_list_other = "<div id='agency-list-other' class='agency-nav-dropdowns'>
-  <div class='agency-list-open'><span id='other-agency-list-open'>Other Government Entities</span></div>
+  <div class='agency-list-open'><span id='other-agency-list-open' class='".$oge_filter_highlight."'>Other Government Entities</span></div>
   <div class='agency-list-content other-agency-list-content'>
     <div class='listContainer1' id='otherAgenciesList'>
         <div class='agency-slide'>
