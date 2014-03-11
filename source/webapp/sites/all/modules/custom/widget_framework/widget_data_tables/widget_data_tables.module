@@ -583,7 +583,18 @@ function widget_data_tables_add_js($node){
 	$node->widgetConfig->dataTableOptions->oLanguage =
 	                 array("sProcessing"=>"<img src='/" . $theme_path . "/images/loading_large.gif' title='Processing...'/>",
 	                     "sZeroRecords"=>"<div class='clearfix' id='no-records-datatable'><span>No Matching Records Found</span></div>");
-	$dataTableOptions = json_encode($node->widgetConfig->dataTableOptions);
+
+    $oldDataTableOptions = get_object_vars($node->widgetConfig->dataTableOptions);
+    $newAolcols = array();
+    foreach($oldDataTableOptions['aoColumns'] as $key=>$value){
+        $aoCols = get_object_vars($value);
+        if((!isset($aoCols['datasource'])) || ((isset($aoCols['datasource']) && _getRequestParamValue('datasource') == isset($aoCols['datasource'])))){
+            array_push($newAolcols, $value);
+        }
+    }
+    $oldDataTableOptions['aoColumns'] = (object)$newAolcols;
+    $dataTableOptions = json_encode((object)$oldDataTableOptions);
+
     $id  = "";
     if($node->widgetConfig->widgetSubType == "ajaxSimple" || $node->widgetConfig->widgetSubType == "ajaxCustomTemplate" ){
         $id = widget_unique_identifier($node);
