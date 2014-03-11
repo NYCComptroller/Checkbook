@@ -36,15 +36,17 @@ echo eval($node->widgetConfig->header);
   <?php
   echo "<tr>";
   foreach ($node->widgetConfig->table_columns as $row) {
-      $label = (isset($row->labelAlias))? (WidgetUtil::generateLabelMapping($row->labelAlias)) : $row->label;
-      $fn = $row->adjustLabelFunction;
-      if(isset($fn) && function_exists($fn)){
-          $label = $fn($label);
-      }else if(isset($row->evalLabel) && $row->evalLabel){
-          $label = eval("return $row->label;");
+      if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == _getRequestParamValue('datasource')))){
+          $label = (isset($row->labelAlias))? (WidgetUtil::generateLabelMapping($row->labelAlias)) : $row->label;
+          $fn = $row->adjustLabelFunction;
+          if(isset($fn) && function_exists($fn)){
+              $label = $fn($label);
+          }else if(isset($row->evalLabel) && $row->evalLabel){
+              $label = eval("return $row->label;");
+          }
+          $headerClass = ($row->headerClass)? ' class="'.$row->headerClass.'"':'';
+          echo "<th$headerClass>" . $label . "</th>";
       }
-      $headerClass = ($row->headerClass)? ' class="'.$row->headerClass.'"':'';
-      echo "<th$headerClass>" . $label . "</th>";
   }
   echo "</tr>\n";
   ?>
@@ -57,7 +59,9 @@ echo eval($node->widgetConfig->header);
     foreach ($node->data as $datarow) {
       echo "<tr>";
       foreach ($node->widgetConfig->table_columns as $row) {
-        echo '<td class="' . $datarow[$row->classColumn] . '">' . $datarow[$row->column] . '</td>';
+        if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == _getRequestParamValue('datasource')))){
+            echo '<td class="' . $datarow[$row->classColumn] . '">' . $datarow[$row->column] . '</td>';
+        }
       }
       echo "</tr>";
     }
