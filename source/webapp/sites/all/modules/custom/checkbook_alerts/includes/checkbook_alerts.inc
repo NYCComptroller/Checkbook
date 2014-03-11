@@ -11,6 +11,7 @@ $sql=
     "recipient_type,".
     "ref_url,".
     "user_url,".
+    "active,".
     "number_of_results,".
     "minimum_results,".
     "minimum_days,".
@@ -45,9 +46,6 @@ function _checkbook_alerts_transactions(){
   if(!isset($_GET['alert_minimum_days'])){
     $_GET['alert_minimum_days']=1;
   }
-  if(!isset($_GET['alert_end'])){
-    $_GET['alert_end']=date('Y-m-d H:i:s',strtotime(date("Y-m-d", mktime()) . " + 365 day"));
-  }
 
   $_GET['q']=urldecode(drupal_get_path_alias($_GET['refURL']));
 
@@ -59,7 +57,13 @@ function _checkbook_alerts_transactions(){
         array(
           ":recipient"=>$_GET['alert_email'],
           ":ref_url"=>$_GET['refURL']));
- 
+
+  $alertEndDate=strtotime($_GET['alert_end']);
+  if(!$alertEndDate){
+    $alertEndDate = strtotime(date("Y-m-d", mktime()) . " + 365 day");
+  }
+  $alertEndDate=date("Y-m-d H:i:s",$alertEndDate);
+  
   $alert=array(
     'recipient'=>$_GET['alert_email'],
     'label'=>$_GET['alert_label'],
@@ -69,12 +73,11 @@ function _checkbook_alerts_transactions(){
     'number_of_results'=>_checkbook_alerts_get_data_count(),
     'minimum_results'=>$_GET['alert_minimum_results'],
     'minimum_days'=>$_GET['alert_minimum_days'],
-    'date_end'=>date("Y-m-d H:i:s",strtotime($_GET['alert_end'])),
+    'date_end'=>,$alertEndDate,
     'date_last_new_results'=>date("Y-m-d H:i:s")
   );
 
   if(($a=$alerts->fetchObject())!=null){
-    $a=$alerts->fetchObject();
     $alert['checkbook_alerts_sysid']=$a->checkbook_alerts_sysid;
     $alert['active']=$a->active;
     drupal_write_record('checkbook_alerts',$alert,array("checkbook_alerts_sysid"));
