@@ -462,6 +462,13 @@ function load_widget_data($node, $resultFormatter) {
            $parameters =  eval($config->adjustParameters);
         }
 
+        $updatedParameters = array();
+        foreach($parameters as $key=>$value){
+            $key = _update_dataset_datasource($key);
+            $updatedParameters[$key] = $value;
+        }
+        $parameters = $updatedParameters;
+
         //Do not move this code before adjusting parameters.
         //Widget config may be updated.
         $isList = isset($config->useList); // FIXME v2. check for true/false
