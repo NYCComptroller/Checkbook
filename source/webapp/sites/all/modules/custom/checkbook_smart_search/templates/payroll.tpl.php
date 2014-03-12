@@ -30,8 +30,8 @@ $year_id = _getCurrentYearID();
 $linkable_fields = array("civil_service_title" => "/payroll/employee/transactions/xyz/" .$emp_id . "/agency/" . $agency_id,
                          "agency_name" => "/payroll/agency/". $agency_id
                         );
-$highlighting_fields = array("agency_name" => "agency_name_text",
-                             "civil_service_title" => "civil_service_title_text");
+/*$highlighting_fields = array("agency_name" => "agency_name_text",
+                             "civil_service_title" => "civil_service_title_text"); */
 
 $date_fields = array("pay_date");
 $amount_fields = array("annual_salary", "gross_pay", "base_pay", "other_payments", "overtime_pay");
@@ -41,10 +41,14 @@ $row = array();
 $rows = array();
 foreach ($payroll_parameter_mapping as $key => $title){
   $value = $payroll_results[$key];
-  if($highlighting[$payroll_results["id"]][$highlighting_fields[$key]]){
-    $value = $highlighting[$payroll_results["id"]][$highlighting_fields[$key]][0];
-    $value = _checkbook_smart_search_str_html_entities($value);
-  }
+//  if($highlighting[$payroll_results["id"]][$highlighting_fields[$key]]){
+//    $value = $highlighting[$payroll_results["id"]][$highlighting_fields[$key]][0];
+//    $value = _checkbook_smart_search_str_html_entities($value);
+//  }
+
+  $temp = substr($value, strpos(strtoupper($value), strtoupper($SearchTerm)),strlen($SearchTerm));
+  $value = str_ireplace($SearchTerm,'<em>'. $temp . '</em>', $value);
+
   if(in_array($key, $amount_fields)){
     $value = custom_number_formatter_format($value, 2 , '$');
   }else if(in_array($key, $date_fields)){

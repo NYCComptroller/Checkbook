@@ -195,19 +195,20 @@ if($noOfTotalResults > 0){
     $transaction_no++;
     switch(strtolower($value["domain"])){
       case "revenue":
-        print theme('revenue', array('revenue_results'=> $value, 'highlighting' => $search_results['highlighting']));
+
+        print theme('revenue', array('revenue_results'=> $value, 'SearchTerm' => $searchTerms[0]));
         break;
       case "budget":
-        print theme('budget', array('budget_results'=> $value, 'highlighting' => $search_results['highlighting']));
+        print theme('budget', array('budget_results'=> $value, 'SearchTerm' => $searchTerms[0]));
         break;
       case "spending":
-        print theme('spending', array('spending_results'=> $value, 'highlighting' => $search_results['highlighting']));
+        print theme('spending', array('spending_results'=> $value, 'SearchTerm' => $searchTerms[0]));
         break;
       case "payroll":
-        print theme('payroll', array('payroll_results'=> $value, 'highlighting' => $search_results['highlighting']));
+        print theme('payroll', array('payroll_results'=> $value, 'SearchTerm' => $searchTerms[0]));
         break;
       case "contracts":
-        print theme('contracts', array('contracts_results'=> $value, 'highlighting' => $search_results['highlighting']));
+        print theme('contracts', array('contracts_results'=> $value, 'SearchTerm' => $searchTerms[0]));
         break;
     }
     print "</li>";
@@ -220,7 +221,7 @@ if($noOfTotalResults > 0){
   pager_default_initialize($noOfTotalResults, $noOfResultsPerPage);
   $output = theme('pager', array('quantity' => $total));
   if($output==""){
-    $output= '<div class="item-list"><ul class="pager">
+    $output= '<div class=" item-list"><ul class="pager">
     <li class="pager-first first"><a href="" title="Go to first page" class="pagerItemDisabled">First</a></li>
     <li class="pager-first previous"><a href="" title="Go to previous page" class="pagerItemDisabled">Previous</a></li>
     <li class="pager-current">1</li>

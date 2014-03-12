@@ -23,7 +23,7 @@ echo eval($node->widgetConfig->header);
 ?>
 <h1 id="page-titleSpecial" class="title">Hudson Yards Infrastructure Corporation<sup class="title-sup">*</sup></h1>
 <a class="trends-export" href="/export/download/trends_hudson_yards_infra_corp_csv?dataUrl=/node/<?php echo $node->nid ?>">Export</a>
-
+<h5>(AMOUNTS IN THOUSANDS)</h5>
 <div class="dataTable_wrapper">
 <table id="table_<?php echo widget_unique_identifier($node) ?>" style='display:none' class="trendsShowOnLoad <?php echo $node->widgetConfig->html_class ?>">
     <?php
@@ -77,9 +77,10 @@ echo eval($node->widgetConfig->header);
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['interest']>0)?number_format($row['interest']):'-') . "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['principal']>0)?number_format($row['principal']):'-') . "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['total']>0)?number_format($row['total']):'-') . "</td>";
-            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['operating_expenses']>0)?number_format($row['operating_expenses']):'-') . "</td>";
+            //echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['operating_expenses']>0)?number_format($row['operating_expenses']):'-') . "</td>";
+            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['operating_expenses']>0)?number_format($row['operating_expenses']):'-') . ((  $row['fiscal_year'] == '2012')? "<sup class='endItem'>(8)</sup>":"<sup class='endItem' style='visibility: hidden;'>(8)</sup>"). "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['total_to_be_covered']>0)?number_format($row['total_to_be_covered']):'-') . "</td>";
-            echo "<td class='number ' ><div class='tdCen'>" . $row['coverage_on_total_revenue_5'] . (($row['fiscal_year'] == '2009' || $row['fiscal_year'] == '2010' || $row['fiscal_year'] == '2011')? "<sup class='endItem'>(6)</sup>":"<sup class='endItem' style='visibility: hidden;'>(6)</sup>") . "</div></td>";
+            echo "<td class='number ' ><div class='tdCen'>" . $row['coverage_on_total_revenue_5'] . (($row['fiscal_year'] == '2009' || $row['fiscal_year'] == '2010' || $row['fiscal_year'] == '2011' || $row['fiscal_year'] == '2012')? "<sup class='endItem'>(7)</sup>":"<sup class='endItem' style='visibility: hidden;'>(7)</sup>") . "</div></td>";
             echo "<td>&nbsp;</td>";
             echo "</tr>";
             $count++;
