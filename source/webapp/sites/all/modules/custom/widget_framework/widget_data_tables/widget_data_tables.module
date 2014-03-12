@@ -177,10 +177,6 @@ function _widget_data_tables_list_wt_ajaxdata($node){
 }
 
 
-
-
-
-
 /**
  * construct the json from data returned from data controller.This function is used for dataTableWidgets data table widget . 
  * @param $node
@@ -592,7 +588,7 @@ function widget_data_tables_add_js($node){
             array_push($newAolcols, $value);
         }
     }
-    $oldDataTableOptions['aoColumns'] = (object)$newAolcols;
+    $oldDataTableOptions['aoColumns'] = $newAolcols;
     $dataTableOptions = json_encode((object)$oldDataTableOptions);
 
     $id  = "";
