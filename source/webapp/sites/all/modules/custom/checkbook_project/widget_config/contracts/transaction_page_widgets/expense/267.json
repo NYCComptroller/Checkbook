@@ -19,15 +19,14 @@
 "html_class": "initiative-table",
 "no_results_content":"No Results Found",
 "dataset": "checkbook:agreement_snapshot",
-"columns": ["fiscal_year_id@checkbook:contracts_coa_aggregates","type_of_year@checkbook:contracts_coa_aggregates", "has_children","contract_number","original_agreement_id","description","document_version","original_contract_amount","maximum_contract_amount","spending_amount@checkbook:contracts_coa_aggregates","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","document_code@checkbook:ref_document_code","industry_type_name","dollar_difference","percent_difference"],
-"columns_datasource":{"budget_name@checkbook:oge_contract_contract":"checkbook_oge","oge_contract_number@checkbook:oge_contract_contract":"checkbook_oge","fms_commodity_line@checkbook:oge_contract_contract":"checkbook_oge"},
+"columns": ["fms_commodity_line@checkbook:oge_contract_contract","budget_name@checkbook:oge_contract_contract","oge_contract_number@checkbook:oge_contract_contract","fiscal_year_id@checkbook:contracts_coa_aggregates","type_of_year@checkbook:contracts_coa_aggregates", "has_children","contract_number","original_agreement_id","description","document_version","original_contract_amount","maximum_contract_amount","spending_amount@checkbook:contracts_coa_aggregates","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","document_code@checkbook:ref_document_code","industry_type_name","dollar_difference","percent_difference"],
+"columns_datasource":{"fms_commodity_line@checkbook:oge_contract_contract":"checkbook_oge","oge_contract_number@checkbook:oge_contract_contract":"checkbook_oge", "budget_name@checkbook:oge_contract_contract":"checkbook_oge"},
 "caption":"",
 "derivedColumns": {
          "child_contrats_link":{
 	      "type": "expression2",
               "expression": " ($row['has_children'] == 'Y') ? '<span id=dtl_expand class=\"toggler collapsed\"  magid=\"' . $row['original_agreement_id'] . '\" '
                                 . ( _getRequestParamValue('smnid') != '' ?  ('smnid=\"' . _getRequestParamValue('smnid') . '\"' ) : '')
-                                . _checkbook_append_url_params()
                                 . ( _getRequestParamValue('year') != '' ?  ('year=\"' . _getRequestParamValue('year') . '\"' ) : '')
                                 . ( _getRequestParamValue('calyear') != '' ?  ('calyear=\"' . _getRequestParamValue('calyear') . '\"' ) : '')
                                 . ( _getRequestParamValue('yeartype') != '' ?  ('yeartype=\"' . _getRequestParamValue('yeartype') . '\"' ) : '')
@@ -37,7 +36,7 @@
             },
            "contract_link": {
 	      "type": "expression2",
-               "expression": "ContractURLHelper::prepareexpensecontractlink($row, $node)"
+               "expression": "ContractURLHelper::prepareExpenseContractLink($row, $node)"
 	    },
          "parent_contract_link": {
 	      "type": "expression",
@@ -55,7 +54,6 @@
 	      "type": "expression2",
                 "expression": "
                                            '<a href=\"/spending/transactions'
-                                          . _checkbook_append_url_params()
                                           .  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id']
                                           .  ( $row['type_of_year@checkbook:contracts_coa_aggregates'] == 'B' ? ('/year/'. $row['fiscal_year_id@checkbook:contracts_coa_aggregates'].'/syear/'. $row['fiscal_year_id@checkbook:contracts_coa_aggregates']) : ('/calyear/'.$row['fiscal_year_id@checkbook:contracts_coa_aggregates']. '/scalyear/'.$row['fiscal_year_id@checkbook:contracts_coa_aggregates']) )
                                           .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['spending_amount@checkbook:contracts_coa_aggregates']) . '</a>'
@@ -68,7 +66,6 @@
 	"vendor_name_link": {
 	      "type": "expression2",
               "expression": " '<a href=\"/contracts_landing'
-                                    . _checkbook_append_url_params()
                                     .  (isset($row['fiscal_year_id@checkbook:contracts_coa_aggregates']) ? '/year/'.$row['fiscal_year_id@checkbook:contracts_coa_aggregates'] : '')
                                     .  (isset($row['type_of_year@checkbook:contracts_coa_aggregates']) ? '/yeartype/'.$row['type_of_year@checkbook:contracts_coa_aggregates'] : '')
                                     .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
@@ -82,7 +79,6 @@
 	"agency_name_link": {
 		"type": "expression2",
                 "expression": " '<a href=\"/contracts_landing'
-                                    . _checkbook_append_url_params()
                                     .  (isset($row['fiscal_year_id@checkbook:contracts_coa_aggregates']) ? '/year/'.$row['fiscal_year_id@checkbook:contracts_coa_aggregates'] : '')
                                     .  (isset($row['type_of_year@checkbook:contracts_coa_aggregates']) ? '/yeartype/'.$row['type_of_year@checkbook:contracts_coa_aggregates'] : '')
                                    .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
@@ -139,9 +135,23 @@
 	    {"labelAlias": "end_date","column": "effective_end_date"},
 	    {"labelAlias": "reg_date","column": "registered_date"},
 	    {"labelAlias": "pin","column": "tracking_number"},
-	    {"labelAlias": "apt_pin","column": "brd_awd_no"}
-],
-
+	    {"labelAlias": "apt_pin","column": "brd_awd_no"},
+	            {
+	               "labelAlias":"entity_contact_num",
+	               "datasource": "checkbook_oge",
+	               "column":"oge_contract_number@checkbook:oge_contract_contract"
+	            },
+	            {
+	              "labelAlias": "commodity_line",
+	              "datasource": "checkbook_oge",
+	              "column": "fms_commodity_line@checkbook:oge_contract_contract"
+	            },
+                {
+	                "labelAlias":"budget_name",
+	                "datasource": "checkbook_oge",
+	                "column":"budget_name@checkbook:oge_contract_contract"
+	            }
+	  ],
 "adjustParameters":"
            if(function_exists('_checkbook_project_adjustContractParameterFilters')){
                   _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
@@ -222,7 +232,10 @@
 		{"sClass":"text","sWidth":"145px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"145px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"360px","asSorting": [ "asc","desc" ]},
-		{"sClass":"text","sWidth":"180px","asSorting": [ "asc","desc" ]}
+		{"sClass":"text","sWidth":"180px","asSorting": [ "asc","desc" ]},
+		{"sClass":"text","sWidth":"180px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"},
+		{"sClass":"text","sWidth":"180px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"},
+		{"sClass":"text","sWidth":"180px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"}
       ],
         "aaSorting":[[6,"desc"]],
 	"sScrollX": "100%",
@@ -323,7 +336,12 @@
 			sOut += '<td class=\"text\"  style=\"width:145px\">'+ (row[18] == null ? '': row[18])+'</td>';
 			sOut += '<td class=\"text\" style=\"width:360px;\">'+ (row[19] == null ? '': row[19])+'</td>';
 			sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[20] == null ? '': row[20])+'</td>';
-                     }else{
+                if(_checkbook_check_isEDCPage()){
+                    sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[21] == null ? '': row[21])+'</td>';
+                    sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[22] == null ? '': row[22])+'</td>';
+                    sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[23] == null ? '': row[23])+'</td>';
+                }
+                  }else{
                         sOut += '<tr>';
 			sOut += '<td  style=\"width:10px\">'+ '&nbsp;'+'</td>';                        
 			sOut += '<td class=\"text\" style=\"width:180px\">'+ (row[1] == null ? '': row[1])+'</td>';
@@ -344,6 +362,11 @@
 			sOut += '<td class=\"text\"  style=\"width:145px\">'+ (row[18] == null ? '': row[18])+'</td>';
 			sOut += '<td class=\"text\"  style=\"width:360px\">'+ (row[19] == null ? '': row[19])+'</td>';
 			sOut += '<td class=\"text\"  style=\"width:180px;\">'+ (row[20] == null ? '': row[20])+'</td>';
+                      if(_checkbook_check_isEDCPage()){
+                          sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[21] == null ? '': row[21])+'</td>';
+                          sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[22] == null ? '': row[22])+'</td>';
+                          sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[23] == null ? '': row[23])+'</td>';
+                      }
                      }
                         sOut += '</tr>';
                     }
