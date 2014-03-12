@@ -32,7 +32,9 @@ function _checkbook_smart_search_get_results(){
     $no_of_results = 10;
     $search_results = _checkbook_smart_search_results($search_terms, $page_no, $no_of_results);
 
-    // Facet Results
+    /* Facet Results
+       These represent the side facet numbers and each is independent of what you select
+    */
     $domains = _checkbook_smart_search_get_facet_results($search_terms, "domains");
     $oges = _checkbook_smart_search_get_facet_results($search_terms, "oge_agency_names", NULL, -1);
     $agencies = _checkbook_smart_search_get_facet_results($search_terms, "agency_names", NULL, -1);
@@ -507,7 +509,7 @@ function _checkbook_smart_search_agency_autocomplete(){
 }
 
 /**
- *  Outputs the agency suggestions for the given input.
+ *  Outputs the oge suggestions for the given input.
  *  @param $string
  *  @return the matching words
  **/
@@ -700,7 +702,7 @@ function _checkbook_smart_search_export_data(){
   echo implode(",",array_values($fields)) . "\n";
 
   while($remaining > 0 ){
-    $results = _checkbook_smart_search_get_results_csv($search_terms, $page_num , $page_size,false,$fl, true);
+    $results = _checkbook_smart_search_get_results_csv($search_terms, $page_num , $page_size,$fl, true);
     $page_num += 1 ;
     $remaining = $remaining - $page_size;
     echo $results;
@@ -810,7 +812,7 @@ function _checkbook_smart_search_solr_results_csv($query){
 }
 
 /** Exports the smart search export data */
-function _checkbook_smart_search_get_results_csv($search_terms,$page_no, $no_of_results,$highlighting = true , $fl = "*", $skip_header = false){
+function _checkbook_smart_search_get_results_csv($search_terms,$page_no, $no_of_results, $fl = "*", $skip_header = false){
   $current_date = date("c").'Z';
   $search_string = _checkbook_smart_search_get_results_query_search_term($search_terms);
   $domain = $_REQUEST['domain'];
@@ -821,11 +823,8 @@ function _checkbook_smart_search_get_results_csv($search_terms,$page_no, $no_of_
                ."&rows=" . $no_of_results ;
 
   $query = $query . "&fq=domain:" . $domain;
-   if($highlighting){
-     $query = $query . "&hl=true&hl.fl=*&fl=" . $fl;
-   }else{
-     $query = $query . "&fl=" . $fl;
-   }
+  $query = $query . "&fl=" . $fl;
+
    if($skip_header){
      $query = $query . "&csv.header=false";
    }
@@ -835,13 +834,10 @@ function _checkbook_smart_search_get_results_csv($search_terms,$page_no, $no_of_
 /** Returns theme for Vendor facet */
 function _checkbook_smart_search_vendor_facet($page){
     $search_terms = explode('*|*', $_REQUEST['search_term']);
-    $search_terms[0] = urldecode($search_terms[0]);
-    if($search_terms[0] == ""){
-        $search_text = "*:*";
-    } else {
-        $search_text = _checkbook_smart_search_escapeSolrValue($search_terms[0]);
-        $search_text = ucwords(strtolower($search_text));
-    }
+    $search_terms[0] = urldecode($search_terms[0]); //"Education"
+
+    $search_terms[0] = ($search_terms[0] == "") ? "*:*" : ucwords(strtolower(_checkbook_smart_search_escapeSolrValue($search_terms[0])));
+
     $limit = 100;
     $double_limit = (2 * $limit);
     if ($page == 0){
@@ -851,20 +847,17 @@ function _checkbook_smart_search_vendor_facet($page){
     if ($page > 0){
       $offset = ( $page - 1 ) * $limit;
     }
-    $results = _checkbook_smart_search_get_facet_results($search_text, $search_terms, "vendor_names", $offset, $double_limit, TRUE, TRUE);
+    $results = _checkbook_smart_search_get_facet_results($search_terms, "vendor_names", $offset, $double_limit, TRUE, TRUE);
     print theme('facet_results', array('results'=> $results['facet_counts']['facet_fields']['vendor_name'], 'name'=> 'fvendorName'));
 }
 
 /** Returns theme for Expense Category facet */
 function _checkbook_smart_search_expensecategory_facet($page){
     $search_terms = explode('*|*', $_REQUEST['search_term']);
-    $search_terms[0] = urldecode($search_terms[0]);
-    if($search_terms[0] == ""){
-        $search_text = "*:*";
-    } else {
-        $search_text = _checkbook_smart_search_escapeSolrValue($search_terms[0]);
-        $search_text = ucwords(strtolower($search_text));
-    }
+    $search_terms[0] = urldecode($search_terms[0]); //"Education"
+
+    $search_terms[0] = ($search_terms[0] == "") ? "*:*" : ucwords(strtolower(_checkbook_smart_search_escapeSolrValue($search_terms[0])));
+
     $limit = 100;
     $double_limit = (2 * $limit);
     if ($page == 0){
@@ -874,6 +867,6 @@ function _checkbook_smart_search_expensecategory_facet($page){
     if ($page > 0){
       $offset = ( $page - 1 ) * $limit;
     }
-    $results = _checkbook_smart_search_get_facet_results($search_text, $search_terms, "expense_categories", $offset, $double_limit, TRUE, TRUE);
+    $results = _checkbook_smart_search_get_facet_results($search_terms, "expense_categories", $offset, $double_limit, TRUE, TRUE);
     print theme('facet_results', array('results'=>$results['facet_counts']['facet_fields']['expenditure_object_name'], 'name'=> 'fexpenseCategoryName'));
 }
