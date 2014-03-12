@@ -39,13 +39,15 @@
                         "expense_category":"expenditure_object_name",
                         "contract_ID":"reference_document_number",
                         "entity_contract_number":"oge_contract_number@checkbook_oge:oge_contract",
+                        "budget_name":"budget_name@checkbook_oge:oge_contract",
                         "contract_purpose":"purpose",
                         "capital_project":"reporting_code",
                         "issue_date":"check_eft_issued_date",
-                        "spending_category":"spending_category_name"
+                        "spending_category":"spending_category_name",
+                        "commodity_line":"agreement_commodity_line_number"
                     },
                     "rowElements":["agency", "fiscal_year", "calendar_year", "document_id", "payee_name", "department", "check_amount", "expense_category"
-                        , "contract_ID", "contract_purpose", "capital_project", "issue_date", "spending_category","entity_contract_number"]
+                        , "contract_ID", "contract_purpose", "capital_project", "issue_date", "spending_category","entity_contract_number","budget_name","commodity_line"]
                 },
                 "csv":{
                     "elementsColumn":{
@@ -141,7 +143,12 @@
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"32"
-            }   
+            } ,
+            "commodity_line":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"32"
+            } 
         }
     },
     "validators":[
