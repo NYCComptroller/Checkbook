@@ -26,6 +26,7 @@
          "child_contrats_link":{
 	      "type": "expression2",
               "expression": " ($row['has_children'] == 'Y') ? '<span id=dtl_expand class=\"toggler collapsed\"  magid=\"' . $row['original_agreement_id'] . '\" '
+                                . _checkbook_append_url_params()
                                 . ( _getRequestParamValue('smnid') != '' ?  ('smnid=\"' . _getRequestParamValue('smnid') . '\"' ) : '')
                                 . ( _getRequestParamValue('year') != '' ?  ('year=\"' . _getRequestParamValue('year') . '\"' ) : '')
                                 . ( _getRequestParamValue('calyear') != '' ?  ('calyear=\"' . _getRequestParamValue('calyear') . '\"' ) : '')
@@ -66,6 +67,7 @@
 	"vendor_name_link": {
 	      "type": "expression2",
               "expression": " '<a href=\"/contracts_landing'
+                                    . _checkbook_append_url_params()
                                     .  (isset($row['fiscal_year_id@checkbook:contracts_coa_aggregates']) ? '/year/'.$row['fiscal_year_id@checkbook:contracts_coa_aggregates'] : '')
                                     .  (isset($row['type_of_year@checkbook:contracts_coa_aggregates']) ? '/yeartype/'.$row['type_of_year@checkbook:contracts_coa_aggregates'] : '')
                                     .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
@@ -79,6 +81,7 @@
 	"agency_name_link": {
 		"type": "expression2",
                 "expression": " '<a href=\"/contracts_landing'
+                                    ._checkbook_append_url_params()
                                     .  (isset($row['fiscal_year_id@checkbook:contracts_coa_aggregates']) ? '/year/'.$row['fiscal_year_id@checkbook:contracts_coa_aggregates'] : '')
                                     .  (isset($row['type_of_year@checkbook:contracts_coa_aggregates']) ? '/yeartype/'.$row['type_of_year@checkbook:contracts_coa_aggregates'] : '')
                                    .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
