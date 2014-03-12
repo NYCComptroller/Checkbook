@@ -132,16 +132,16 @@ class ContractURLHelper{
         $docType = $row['document_code@checkbook:ref_document_code'];
 
         if( RequestUtil::isExpandBottomContainer() ){
-            $link = '<a href=/panel_html/contract_transactions/contract_details/agid/' . $row['disb_agreement_id'] .  '/doctype/' . $docType .  ' class=bottomContainerReload>'. $row['disb_contract_number'] . '</a>';
+            $link = '<a href=/panel_html/contract_transactions/contract_details/agid/' . $row['disb_agreement_id'] .  '/doctype/' . $docType . _checkbook_append_url_params() . ' class=bottomContainerReload>'. $row['disb_contract_number'] . '</a>';
         }else if( RequestUtil::isNewWindow() ){
             $link = '<span href=/contracts_landing/status/A'
                 . _checkbook_project_get_year_url_param_string()
-                . '?expandBottomContURL=/panel_html/contract_transactions/contract_details/agid/' . $row['disb_agreement_id'] .  '/doctype/' . $docType
+                . '?expandBottomContURL=/panel_html/contract_transactions/contract_details/agid/' . $row['disb_agreement_id'] .  '/doctype/' . $docType . _checkbook_append_url_params()
                 .  ' class=loadParentWindow>'. $row['disb_contract_number'] . '</span>';
         }else {
             $link = '<a href=/contracts_landing/status/A'
                 . _checkbook_project_get_year_url_param_string()
-                . '?expandBottomContURL=/panel_html/contract_transactions/contract_details/agid/' . $row['disb_agreement_id'] .  '/doctype/' . $docType
+                . '?expandBottomContURL=/panel_html/contract_transactions/contract_details/agid/' . $row['disb_agreement_id'] .  '/doctype/' . $docType . _checkbook_append_url_params()
                 .  ' >'. $row['disb_contract_number'] . '</a>';
         }
 
