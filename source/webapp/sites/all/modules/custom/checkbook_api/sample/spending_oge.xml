@@ -25,5 +25,7 @@
         <column>issue_date</column>
         <column>spending_category</column>
         <column>entity_contract_number</column>
+        <column>budget_name</column>
+        <column>commodity_line</column>
     </response_columns>
 </request>
