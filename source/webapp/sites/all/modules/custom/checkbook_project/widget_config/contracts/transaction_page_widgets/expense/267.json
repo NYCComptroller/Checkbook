@@ -236,8 +236,8 @@
 		{"sClass":"text","sWidth":"145px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"360px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"180px","asSorting": [ "asc","desc" ]},
-		{"sClass":"text","sWidth":"180px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"},
-		{"sClass":"text","sWidth":"180px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"},
+		{"sClass":"number","sWidth":"180px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"},
+		{"sClass":"number","sWidth":"180px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"},
 		{"sClass":"text","sWidth":"180px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"}
       ],
         "aaSorting":[[6,"desc"]],
