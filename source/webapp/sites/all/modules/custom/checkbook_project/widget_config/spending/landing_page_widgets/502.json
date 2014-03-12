@@ -106,7 +106,7 @@
           { "bSortable": true,"sClass":"text","sWidth":"100px","asSorting": ["asc","desc"]},
           { "bSortable": false,"sClass":"text","sWidth":"210px"},
           { "bSortable": false,"sClass":"text","sWidth":"210px"},
-          { "bSortable": false,"sClass":"text","sWidth":"210px"},
+          { "bSortable": false,"sClass":"text","sWidth":"270px"},
           { "sClass":"number","asSorting": [ "desc","asc" ]},
           { "bSortable": false,"sWidth":"15px" }],
         "bServerSide": true,
