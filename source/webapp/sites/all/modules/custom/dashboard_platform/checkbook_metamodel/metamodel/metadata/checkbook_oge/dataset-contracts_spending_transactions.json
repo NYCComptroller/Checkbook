@@ -126,6 +126,10 @@
         "contracts_spending_transactions__ref_document_code": [
             {"datasetName": "contracts_spending_transactions", "columnNames": ["document_code_id"]},
             {"datasetName": "ref_document_code", "columnNames": ["document_code_id"]}
+        ],
+        "contracts_spending_transactions__oge_contract": [
+            {"datasetName": "contracts_spending_transactions", "columnNames": ["disb_contract_number"]},
+            {"datasetName": "oge_contract_contract", "columnNames": ["fms_contract_number"]}
         ]
     }
 }
