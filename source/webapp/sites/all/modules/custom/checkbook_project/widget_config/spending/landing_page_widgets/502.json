@@ -105,7 +105,7 @@
 "aoColumns": [
           { "bSortable": true,"sClass":"text","sWidth":"100px","asSorting": ["asc","desc"]},
           { "bSortable": false,"sClass":"text","sWidth":"210px"},
-          { "bSortable": false,"sClass":"text","sWidth":"270px"},
+          { "bSortable": false,"sClass":"text","sWidth":"300px"},
           { "bSortable": false,"sClass":"text","sWidth":"210px"},
           { "sClass":"number","asSorting": [ "desc","asc" ]},
           { "bSortable": false,"sWidth":"15px" }],
