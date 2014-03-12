@@ -297,6 +297,9 @@ h4 {
     text-align: center;
     width: 520px;
 }
+#agency-list-other .agency-list-pager {
+    padding:5px 0px 5px 430px;
+}
 .agency-list-pager a {
     background: url("../images/agency-list-button.png") no-repeat scroll 0 0 transparent;
     color: white;
@@ -354,10 +357,8 @@ h4 {
     font-weight: bold;
 }
 
-.page-spending-landing-yeartype-b-year-agency #agency-list .agency-list-open,
-.page-contracts-landing-status-a-yeartype-b-year-agency #agency-list .agency-list-open,
-.page-spending-landing-yeartype-b-year-datasource-checkbook-oge #agency-list-other .agency-list-open,
-.page-contracts-landing-status-a-yeartype-b-year-datasource-checkbook-oge #agency-list-other .agency-list-open{
+
+.agency_filter_highlight{
     font-weight:bold;
     font-size:13px;
     color:#e5f4fe;
