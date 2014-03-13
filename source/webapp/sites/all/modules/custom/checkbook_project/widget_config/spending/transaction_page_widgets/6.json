@@ -269,7 +269,7 @@
 		{"sClass":"text","sWidth":"165px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"165px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"165px","asSorting": [ "asc","desc" ]},
-		{"sClass":"text number-left","sWidth":"125px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"},
+		{"sClass":"text number-left","sWidth":"125px","asSorting": [ "desc","asc" ],"datasource":"checkbook_oge"},
 		{"sClass":"text","sWidth":"200px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"},
 		{"sClass":"number","sWidth":"150px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"}
 ],
