@@ -49,10 +49,14 @@
                         "pin":"brd_awd_no",
                         "apt_pin":"tracking_number",
                         "document_code":"document_code@checkbook_oge:ref_document_code",
-                        "contract_industry":"industry_type_name"
+                        "contract_industry":"industry_type_name",
+                        "commodity_line":"fms_commodity_line@checkbook_oge:oge_contract_contract",
+                        "entity_contract_number":"oge_contract_number@checkbook_oge:oge_contract_contract",
+                        "budget_name":"budget_name@checkbook_oge:oge_contract_contract"
                     },
                     "rowElements":["agency", "vendor", "contract_id", "version", "year", "parent_contract_id", "purpose", "original_amount", "current_amount", "spent_to_date", "registration_date"
-                        , "apt_pin", "pin", "contract_type", "award_method", "expense_category", "start_date", "end_date", "document_code", "contract_industry"]
+                        , "apt_pin", "pin", "contract_type", "award_method", "expense_category", "start_date", "end_date", "document_code", "contract_industry"
+                        ,"entity_contract_number","budget_name","commodity_line"]
                 },
                 "csv":{
                     "elementsColumn":{
@@ -75,11 +79,14 @@
                         "PIN":"brd_awd_no",
                         "APT PIN":"tracking_number",
                         "Document Code":"document_code@checkbook_oge:ref_document_code",
-                        "Contract Industry":"industry_type_name"
+                        "Contract Industry":"industry_type_name",
+                        "Commodity Line":"fms_commodity_line@checkbook_oge:oge_contract_contract",
+                        "Entity Contract Number":"oge_contract_number@checkbook_oge:oge_contract_contract",
+                        "Budget Name":"budget_name@checkbook_oge:oge_contract_contract"
                     }
                 }
             },
-            "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($dataSet,$parameters,$criteria);}"
+            "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($dataSet,$parameters,$criteria,'checkbook_oge');}"
         },
         "requestParameters":{
             "fiscal_year":{"valueType":"value","dataType":"year","maxLength":"4"},
@@ -162,10 +169,14 @@
                         "pin":"brd_awd_no",
                         "apt_pin":"tracking_number",
                         "document_code":"document_code@checkbook_oge:ref_document_code",
-                        "contract_industry":"industry_type_name"
+                        "contract_industry":"industry_type_name",
+                        "commodity_line":"fms_commodity_line@checkbook_oge:oge_contract_contract",
+                        "entity_contract_number":"oge_contract_number@checkbook_oge:oge_contract_contract",
+                        "budget_name":"budget_name@checkbook_oge:oge_contract_contract"                         
                     },
                     "rowElements":["agency", "vendor", "contract_id", "version", "parent_contract_id", "purpose", "original_amount", "current_amount", "spent_to_date", "registration_date"
-                        , "apt_pin", "pin", "contract_type", "award_method", "expense_category", "start_date", "end_date", "document_code", "contract_industry"]
+                        , "apt_pin", "pin", "contract_type", "award_method", "expense_category", "start_date", "end_date", "document_code", "contract_industry"
+                        ,"entity_contract_number","budget_name","commodity_line"]
                 },
                 "csv":{
                     "elementsColumn":{
@@ -187,11 +198,14 @@
                         "PIN":"brd_awd_no",
                         "APT PIN":"tracking_number",
                         "Document Code":"document_code@checkbook_oge:ref_document_code",
-                        "Contract Industry":"industry_type_name"
+                        "Contract Industry":"industry_type_name",
+                        "Commodity Line":"fms_commodity_line@checkbook_oge:oge_contract_contract",
+                        "Entity Contract Number":"oge_contract_number@checkbook_oge:oge_contract_contract",
+                        "Budget Name":"budget_name@checkbook_oge:oge_contract_contract"    
                     }
                 }
             },
-            "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($dataSet,$parameters,$criteria);}"
+            "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($dataSet,$parameters,$criteria,'checkbook_oge');}"
         },
         "requestParameters":{
             "agency_code":{
@@ -266,7 +280,22 @@
             "apt_pin":{
                 "valueType":"value",
                 "dataType":"text"
-            }
+            },
+            "budget_name":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"60"
+            },
+            "entity_contract_number":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"32"
+            } ,
+            "commodity_line":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"32"
+            } 
         }
     },
     "requiredCriteria":[
