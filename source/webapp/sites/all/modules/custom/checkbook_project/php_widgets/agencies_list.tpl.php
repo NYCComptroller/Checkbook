@@ -104,13 +104,13 @@ $agency_list_other = "<div id='agency-list-other' class='agency-nav-dropdowns'>
         <div class='agency-slide'>
           <ul class='listCol'>";
             foreach($edc_agencies as $key => $edc_agency){
-                $agency_list_other .= "<li><a href='/". $edc_url ._checkbook_project_get_year_url_param_string()."/datasource/checkbook_oge/agency/".$edc_agency['agency_id']. "'>". $edc_agency['agency_name'] ."</a></li>";
+                $agency_list_other .= "<li><a href='/". $edc_url .'/yeartype/B/year/'.$current_fy_year."/datasource/checkbook_oge/agency/".$edc_agency['agency_id']. "'>". $edc_agency['agency_name'] ."</a></li>";
             }
  $agency_list_other .= "</ul>
         </div>
     </div>
         <div class='agency-list-nav'><a href='#' id='prev2'>Prev</a><a href='#' id='next2'>Next</a>
-        <a href='/spending_landing" ._checkbook_project_get_year_url_param_string() ."/datasource/checkbook_oge/agency/9000"."' id='citywide_all_agencies'>Other Government Entities</a>
+        <a href='/spending_landing" . '/yeartype/B/year/'.$current_fy_year ."/datasource/checkbook_oge/agency/9000"."' id='citywide_all_agencies'>Other Government Entities</a>
         </div>
     <div class='agency-list-close'><a href='#'>x Close</a></div>
   </div>
