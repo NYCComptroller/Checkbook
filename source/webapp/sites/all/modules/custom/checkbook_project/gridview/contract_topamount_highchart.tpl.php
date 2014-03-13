@@ -48,7 +48,7 @@ include_once('export_link.php');
 
                 echo '<tr>
                 <td><div>' . $datarow['contract_number'] . '</div></td>
-                <td>' . $datarow['maximum_contract_amount'] . '</td>
+                <td><div>' . $datarow['maximum_contract_amount'] . '</div></td>
                 <td><div>' . $datarow['legal_name@checkbook:vendor'] . '</div></td>
                 <td><div>' . $datarow['agency_name@checkbook:agency'] . '</div></td>
                 <td>&nbsp</td>
