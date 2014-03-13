@@ -108,25 +108,27 @@ function _widget_add_padding_data($node){
   $index= 0;
   $paddings = array();
   foreach ($node->widgetConfig->table_columns as $row){
-    $colDataTableOptions = $node->widgetConfig->dataTableOptions->aoColumns[$index];
-    if(!isset($colDataTableOptions)){
-      $colDataTableOptions->sClass = $row->type;
-    }
-    if(preg_match("/number/",$colDataTableOptions->sClass)){
-      $label = (isset($row->labelAlias))? (WidgetUtil::generateLabelMapping($row->labelAlias)) : $row->label;
-      $labelWords =  explode("<br/>",$label);
-      $maxlength = 0;
-      foreach($labelWords as $word){
-        $maxlength = ($maxlength > strlen(strip_tags($word))) ? $maxlength : strlen(strip_tags($word));
+      if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == _getRequestParamValue('datasource')))){
+        $colDataTableOptions = $node->widgetConfig->dataTableOptions->aoColumns[$index];
+        if(!isset($colDataTableOptions)){
+          $colDataTableOptions->sClass = $row->type;
+        }
+        if(preg_match("/number/",$colDataTableOptions->sClass)){
+          $label = (isset($row->labelAlias))? (WidgetUtil::generateLabelMapping($row->labelAlias)) : $row->label;
+          $labelWords =  explode("<br/>",$label);
+          $maxlength = 0;
+          foreach($labelWords as $word){
+            $maxlength = ($maxlength > strlen(strip_tags($word))) ? $maxlength : strlen(strip_tags($word));
+          }
+          $maxColumnDataLength =  0;
+          foreach ($node->data as $datarow) {
+            $maxColumnDataLength = ($maxColumnDataLength > strlen(strip_tags($datarow[$row->column]))) ? $maxColumnDataLength : strlen(strip_tags($datarow[$row->column]));
+          }
+          $paddings[$row->column] =  ( ($maxlength - $maxColumnDataLength )/2 > 0 ) ? ($maxlength - $maxColumnDataLength )/2 : 0;
+        }
+
+        $index +=1;
       }
-      $maxColumnDataLength =  0;
-      foreach ($node->data as $datarow) {
-        $maxColumnDataLength = ($maxColumnDataLength > strlen(strip_tags($datarow[$row->column]))) ? $maxColumnDataLength : strlen(strip_tags($datarow[$row->column]));
-      }
-      $paddings[$row->column] =  ( ($maxlength - $maxColumnDataLength )/2 > 0 ) ? ($maxlength - $maxColumnDataLength )/2 : 0;       
-    }
-    
-    $index +=1;
   }
   $node->customDataPaddings =  $paddings;
 }
@@ -148,13 +150,15 @@ function _widget_data_tables_ajaxdata_json($node){
 			  $rowarray = array();
               if(is_array($node->widgetConfig->table_columns)){
                 foreach ($node->widgetConfig->table_columns as $row){
-                  if($node->customDataPaddings[$row->column] > 0){
-                    $style = "style='margin-right:" . $node->customDataPaddings[$row->column] *8  . "px'";
-                  }
-                  else{
-                    $style = "";
-                  }
-              	  $rowarray[] = '<div ' . $style . '>' . $datarow[$row->column] . '</div>';
+                    if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == _getRequestParamValue('datasource')))){
+                          if($node->customDataPaddings[$row->column] > 0){
+                            $style = "style='margin-right:" . $node->customDataPaddings[$row->column] *8  . "px'";
+                          }
+                          else{
+                            $style = "";
+                          }
+                          $rowarray[] = '<div ' . $style . '>' . $datarow[$row->column] . '</div>';
+                    }
                 }
               }
 			$response['aaData'][] = $rowarray;
@@ -198,36 +202,38 @@ function _widget_data_tables_list_wt_prepare_json($node){
         foreach ($node->data as $datarow) {
             $rowarray = array();
             foreach ($node->widgetConfig->table_columns as $row){
-                if ($row->isWidget){              	
-                    $widgetnode = node_load($row->widgetNid);
-                    widget_set_uid($widgetnode,$i . '-' . uniqid());
-                    $additionalParams = array();
-                    foreach($row->columnParams as $paramColumn){
-                        $additionalParams[$paramColumn] = $datarow[str_replace(".", "_",$paramColumn)];
-                    }
-                    widget_add_additional_parameters($widgetnode,$additionalParams);                    
-                    $widgetChart = node_build_content($widgetnode);
-                    if(!$isGridView){
-                        $widgetChart = drupal_render($widgetnode->content);
-                        $rowarray[] = $widgetChart;
-                    }else{
-                        $tempDataSets = $widgetnode->data;
-                        if(is_array($tempDataSets)){
-                            foreach($row->gridViewColumns as $gridViewColumn){
-                                $value = '';
-                                foreach($tempDataSets as $tempDataSet){
-                                    if(isset($tempDataSet[$gridViewColumn->matchcolumn]) && $tempDataSet[$gridViewColumn->matchcolumn] == $gridViewColumn->matchvalue){
-                                        $value = $tempDataSet[$gridViewColumn->dataColumn];
-                                        break;
+                if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == _getRequestParamValue('datasource')))){
+                    if ($row->isWidget){
+                        $widgetnode = node_load($row->widgetNid);
+                        widget_set_uid($widgetnode,$i . '-' . uniqid());
+                        $additionalParams = array();
+                        foreach($row->columnParams as $paramColumn){
+                            $additionalParams[$paramColumn] = $datarow[str_replace(".", "_",$paramColumn)];
+                        }
+                        widget_add_additional_parameters($widgetnode,$additionalParams);
+                        $widgetChart = node_build_content($widgetnode);
+                        if(!$isGridView){
+                            $widgetChart = drupal_render($widgetnode->content);
+                            $rowarray[] = $widgetChart;
+                        }else{
+                            $tempDataSets = $widgetnode->data;
+                            if(is_array($tempDataSets)){
+                                foreach($row->gridViewColumns as $gridViewColumn){
+                                    $value = '';
+                                    foreach($tempDataSets as $tempDataSet){
+                                        if(isset($tempDataSet[$gridViewColumn->matchcolumn]) && $tempDataSet[$gridViewColumn->matchcolumn] == $gridViewColumn->matchvalue){
+                                            $value = $tempDataSet[$gridViewColumn->dataColumn];
+                                            break;
+                                        }
                                     }
+                                    $rowarray[]= $value;
                                 }
-                                $rowarray[]= $value;
                             }
                         }
+                        $i++;
+                    } else {
+                        $rowarray[] =  $datarow[$row->column];
                     }
-                    $i++;
-                } else {
-                    $rowarray[] =  $datarow[$row->column];
                 }
             }
             $response['aaData'][] = $rowarray;
@@ -265,13 +271,15 @@ function _widget_data_tables_list_ajaxdata($node){
         foreach ($node->data as $datarow) {
             $rowarray = array();
             foreach ($node->widgetConfig->table_columns as $row){
-              if($node->customDataPaddings[$row->column] > 0){
-                $style = "style='margin-right:" . $node->customDataPaddings[$row->column] *8  . "px'";
-              }
-              else{
-                $style = "";
-              }
-              $rowarray[] = '<div ' . $style . '>' . $datarow[$row->column] . '</div>';
+                if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == _getRequestParamValue('datasource')))){
+                  if($node->customDataPaddings[$row->column] > 0){
+                    $style = "style='margin-right:" . $node->customDataPaddings[$row->column] *8  . "px'";
+                  }
+                  else{
+                    $style = "";
+                  }
+                  $rowarray[] = '<div ' . $style . '>' . $datarow[$row->column] . '</div>';
+                }
             }
             $response['aaData'][] = $rowarray;
         }
@@ -519,12 +527,14 @@ function widget_data_tables_widget_view(&$node) {
                 $cls = new stdClass();
                 $cls->bSortable = false;
                 foreach ($tableColumns as $tableColumn){
-                    if(isset($tableColumn->isWidget) && $tableColumn->isWidget){
-                        foreach($tableColumn->gridViewColumns as $gridViewColumn){
+                    if(!isset($tableColumn->datasource) || (isset($tableColumn->datasource) && ($tableColumn->datasource == _getRequestParamValue('datasource')))){
+                        if(isset($tableColumn->isWidget) && $tableColumn->isWidget){
+                            foreach($tableColumn->gridViewColumns as $gridViewColumn){
+                                $updatedaoColumns[] = $cls;
+                            }
+                        }else{
                             $updatedaoColumns[] = $cls;
                         }
-                    }else{
-                        $updatedaoColumns[] = $cls;
                     }
                 }
 
