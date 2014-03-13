@@ -114,37 +114,37 @@ function checkbook_api_generate_ref_data() {
  * @param $parameters
  * @param $criteria
  */
-function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, $criteria) {
+function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, $criteria,$datasource = null) {
   $contract_status = $criteria['value']['status'];
   $category = $criteria['value']['category'];
-
   switch ($contract_status) {
     case "registered":
     case "active":
       $data_controller_instance = data_controller_get_operator_factory_instance();
 
       // Either Fiscal or Calendar year is provided:
-      if (isset($parameters['fiscal_year@checkbook:contracts_coa_aggregates'])) {
+      $fy = checkbook_api_change_datasource($datasource,$parameters['fiscal_year@checkbook:contracts_coa_aggregates']);
+      if (isset($fy)) {
         // Adjust dataset:
         if (isset($criteria['value']['calendar_year'])) {
-          $data_set->name = 'checkbook:agreement_snapshot_cy';
-          $parameters['type_of_year@checkbook:contracts_coa_aggregates'] = 'C';
+          $data_set->name = checkbook_api_change_datasource($datasource,'checkbook:agreement_snapshot_cy');
+          $parameters[checkbook_api_change_datasource($datasource,'type_of_year@checkbook:contracts_coa_aggregates')] = 'C';
         }
         else {
-          $parameters['type_of_year@checkbook:contracts_coa_aggregates'] = 'B';
+          $parameters[checkbook_api_change_datasource($datasource,'type_of_year@checkbook:contracts_coa_aggregates')] = 'B';
         }
 
         if ($contract_status == 'registered') {
-          $parameters['status_flag@checkbook:contracts_coa_aggregates'] = 'R';
+          $parameters[checkbook_api_change_datasource($datasource,'status_flag@checkbook:contracts_coa_aggregates')] = 'R';
         }
         else {
           if ($contract_status == 'active') {
-            $parameters['status_flag@checkbook:contracts_coa_aggregates'] = 'A';
+            $parameters[checkbook_api_change_datasource($datasource,'status_flag@checkbook:contracts_coa_aggregates')] = 'A';
           }
         }
 
         // Adjust year:
-        $req_year = $parameters['fiscal_year@checkbook:contracts_coa_aggregates'];
+        $req_year = $parameters[checkbook_api_change_datasource($datasource,'fiscal_year@checkbook:contracts_coa_aggregates')];
         if (isset($req_year)) {
           $ge_condition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, $req_year);
           $le_condition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, $req_year);
@@ -179,13 +179,12 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
     default:
       break;
   }
-
   if ($category == 'revenue') {
-    $parameters['document_code@checkbook:ref_document_code'] = 'RCT1';
+    $parameters[checkbook_api_change_datasource($datasource,'document_code@checkbook:ref_document_code')] = 'RCT1';
   }
   else {
-    if ($category == 'expense') {
-      $parameters['document_code@checkbook:ref_document_code'] = array(
+    if ($category == 'expense') {    	
+      $parameters[checkbook_api_change_datasource($datasource,'document_code@checkbook:ref_document_code')] = array(
         "MMA1",
         "MA1",
         "CT1",
@@ -196,5 +195,14 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
       );
     }
   }
+}
+
+
+function checkbook_api_change_datasource($datasource,$param){
+	if($datasource != null){
+		return str_replace("checkbook:", $datasource . ":",$param);
+	}else{
+		return $param;
+	}
 }
 
