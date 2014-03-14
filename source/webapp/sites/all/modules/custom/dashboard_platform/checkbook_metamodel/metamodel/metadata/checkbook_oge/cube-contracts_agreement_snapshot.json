@@ -107,6 +107,10 @@
             {"datasetName": "agreement_snapshot", "columnNames": ["original_agreement_id"]},
             {"datasetName": "contracts_coa_aggregates", "columnNames": ["original_agreement_id"]}
         ],
+        "agreement_snapshot__aggregateon_contracts_cumulative_spending_no_vendor": [
+            {"datasetName": "agreement_snapshot", "columnNames": ["original_agreement_id"]},
+            {"datasetName": "edc_contracts_coa_aggregates_no_vendor", "columnNames": ["original_agreement_id"]}
+        ],
         "agreement_snapshot__ref_document_code": [
             {"datasetName": "agreement_snapshot", "columnNames": ["document_code_id"]},
             {"datasetName": "ref_document_code", "columnNames": ["document_code_id"]}
