@@ -19,11 +19,18 @@
 */
 ?>
 <?php
-$spending_parameter_mapping = _checkbook_smart_search_domain_fields('spending');
+$spending_parameter_mapping = _checkbook_smart_search_domain_fields('spending', $IsOge);
 
-$linkable_fields = array("agency_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getCurrentYearID() . "/yeartype/B/agency/".$spending_results["agency_id"],
-                         "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getCurrentYearID() . "/yeartype/B/vendor/".$spending_results["vendor_id"],
-                        );
+if($IsOge)
+    $linkable_fields = array(
+        "agency_name" => "/spending_landing/category/".$spending_results['spending_category_id'].'/datasource/checkbook_oge'."/year/" . _getCurrentYearID() . "/yeartype/B/agency/".$spending_results["agency_id"],
+        "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id'].'/datasource/checkbook_oge'."/year/" . _getCurrentYearID() . "/yeartype/B/vendor/".$spending_results["vendor_id"],
+    );
+else
+    $linkable_fields = array(
+        "agency_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getCurrentYearID() . "/yeartype/B/agency/".$spending_results["agency_id"],
+        "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getCurrentYearID() . "/yeartype/B/vendor/".$spending_results["vendor_id"],
+    );
 
 $date_fields = array("check_eft_issued_date");
 $amount_fields = array("check_amount");
@@ -39,6 +46,7 @@ foreach ($spending_parameter_mapping as $key=>$title){
     $value = $spending_results[$key];
   }
 
+    // highlighting (italics) search term
   $temp = substr($value, strpos(strtoupper($value), strtoupper($SearchTerm)),strlen($SearchTerm));
   $value = str_ireplace($SearchTerm,'<em>'. $temp . '</em>', $value);
 
