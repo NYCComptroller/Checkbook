@@ -421,6 +421,7 @@ function _checkbook_smart_search_autocomplete(){
 **/
 function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$facet_autocomplete_field){
 //"vendor_names","vendor_name_autocomplete"
+// "oge_agency_names","oge_agency_name_autocomplete"
     $parameter_mapping = array(
                               "oge_agency_names" => "oge_agency_name",
                               "agency_names" => "agency_name",
@@ -448,7 +449,7 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
         $autocomplete_text = _checkbook_autocomplete_escapeSolrValue($autocomplete_text)."*";
     }
 
-    $autocomplete_text = "&fq=".$facet_autocomplete_field.":".$autocomplete_text;
+    $autocomplete_text = "&fq=".$facet_autocomplete_field.":".$autocomplete_text; // &fq=oge_agency_name_autocomplete:(eco*)
 
     $request_search_term = $_REQUEST['search_term']; // ""
     $search_terms = explode('*|*', $request_search_term);// ()
@@ -473,7 +474,7 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
         $search_string .= (strlen($sub_query) > 0) ? "&fq="  . substr($sub_query, 0, -8) : "";
     }
     $query = "select/?q=". $search_string // *:*
-                  .$autocomplete_text //&fq=oge_agency_name:(eco*)
+                  .$autocomplete_text //&fq=oge_agency_name_autocomplete:(eco*)
                   ."&facet=true"
                   ."&fq=-latest_flag:N"
                   ."&facet.field=".$parameter_mapping[$facet_name] // oge_agency_name
