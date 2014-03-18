@@ -3,17 +3,18 @@
     "parentNid":634,
     "no_results_content":"No Results Found",
     "defaultParameters":{
-        "cum_spend.cum_spend.status_flag":"A"
+        "edc_no_vendor.edc_no_vendor.status_flag":"A"
     },
     "limit":10,
     "startWith":0,
     "urlParamMap":{
-				"doctype":"document_code.document_code.document_code",
-			    "contstatus":"cum_spend.cum_spend.status_flag",
-			    "calyear":"cum_spend.cum_spend.fiscal_year_id",
-			    "year":"cum_spend.cum_spend.fiscal_year_id",
-			    "yeartype":"cum_spend.cum_spend.type_of_year"
-			  }  ,
+        "doctype":"document_code.document_code.document_code",
+                "contstatus":"edc_no_vendor.edc_no_vendor.status_flag",
+                "calyear":"edc_no_vendor.edc_no_vendor.fiscal_year_id",
+                "year":"edc_no_vendor.edc_no_vendor.fiscal_year_id",
+                "yeartype":"edc_no_vendor.edc_no_vendor.type_of_year",
+                "agency":"edc_no_vendor.edc_no_vendor.agency_id"
+        },
     "columns":["vendor.vendor", "vendor.vendor.legal_name", "txcount"],
     "orderBy":"-txcount",
 	"getTotalDataCount":true,
