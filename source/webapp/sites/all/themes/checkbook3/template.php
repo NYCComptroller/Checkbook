@@ -345,7 +345,7 @@ function checkbook3_form_select_options($element,$choices=NULL){
         $selected = '';
       }
       //custom section that allows addition of other attributes to <option> tags
-      if ($option_att && array_key_exists($key,$option_att)){
+      if ($option_att && is_array($option_att) && array_key_exists($key,$option_att)){
         $attributes = drupal_attributes($option_att[$key]);
       } else {
         $attributes = '';
