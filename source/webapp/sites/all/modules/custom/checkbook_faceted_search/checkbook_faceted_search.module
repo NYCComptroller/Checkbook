@@ -388,6 +388,7 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
             $output[$facetDisplayNames[$key]]['name'] = $facetNames[$key];
     }
 
+
   $variables['render_array'] = $output;
   $variables['sub_cat_array'] = $subCat;
 }

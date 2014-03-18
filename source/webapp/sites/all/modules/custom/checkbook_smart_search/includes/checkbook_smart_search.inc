@@ -330,9 +330,9 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
         } elseif ($limit){
           $query .= "&facet.limit=". $limit;
         }
-
+dsm($query);
         $facet_results = _checkbook_smart_search_solr_results($query);
-
+dsm($facet_results);
 
         return $facet_results;
 }
@@ -420,7 +420,8 @@ function _checkbook_smart_search_autocomplete(){
  *  @return the Query String
 **/
 function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$facet_autocomplete_field){
-
+//"vendor_names","vendor_name_autocomplete"
+// "oge_agency_names","oge_agency_name_autocomplete"
     $parameter_mapping = array(
                               "oge_agency_names" => "oge_agency_name",
                               "agency_names" => "agency_name",
@@ -433,33 +434,33 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
                               "contract_categories" => "contract_category_name",
                               "contract_status" => "contract_status");
 
-    $autocomplete_text = trim(htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES));
+    $autocomplete_text = trim(htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES));//eco
 
-    $autocomplete_terms = explode(' ',$autocomplete_text);
+    $autocomplete_terms = explode(' ',$autocomplete_text); // (eco)
 
     if(count($autocomplete_terms) > 0){
         $autocomplete_text = "";
         foreach($autocomplete_terms as $key => $value){
             if(strlen($value) > 0)
-                $autocomplete_text .= _checkbook_autocomplete_escapeSolrValue($value)."*%20AND%20";
+                $autocomplete_text .= _checkbook_autocomplete_escapeSolrValue($value)."*%20AND%20"; //eco*%20AND%20
         }
-            $autocomplete_text = "(". substr($autocomplete_text, 0, -9) . ")";
+            $autocomplete_text = "(". substr($autocomplete_text, 0, -9) . ")"; //(eco*)
     }else{
         $autocomplete_text = _checkbook_autocomplete_escapeSolrValue($autocomplete_text)."*";
     }
 
-    $autocomplete_text = $facet_name == "oge_agency_names" ? "&fq=oge_agency_name:".$autocomplete_text : "&fq=".$facet_autocomplete_field.":".$autocomplete_text;
+    $autocomplete_text = "&fq=".$facet_autocomplete_field.":".$autocomplete_text; // &fq=oge_agency_name_autocomplete:(eco*)
 
-    $request_search_term = $_REQUEST['search_term'];
-    $search_terms = explode('*|*', $request_search_term);
+    $request_search_term = $_REQUEST['search_term']; // ""
+    $search_terms = explode('*|*', $request_search_term);// ()
     if($search_terms[0] == ""){
-        $search_text = "*:*";
+        $search_text = "*:*"; //*:*
     }else{
         $search_text = _checkbook_smart_search_escapeSolrValue(urldecode($search_terms[0]));
         $search_text = ucwords(strtolower($search_text));
     }
 
-    $search_string = $search_text;
+    $search_string = $search_text; //*:*
     for($i=1;$i < count($search_terms);$i++){
         $req_params  = explode('=', $search_terms[$i]);
         $filters = explode('~',$value = urldecode($req_params[1]));
@@ -472,11 +473,11 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
         }
         $search_string .= (strlen($sub_query) > 0) ? "&fq="  . substr($sub_query, 0, -8) : "";
     }
-    $query = "select/?q=". $search_string
-                  .$autocomplete_text
+    $query = "select/?q=". $search_string // *:*
+                  .$autocomplete_text //&fq=oge_agency_name_autocomplete:(eco*)
                   ."&facet=true"
                   ."&fq=-latest_flag:N"
-                  ."&facet.field=".$parameter_mapping[$facet_name]
+                  ."&facet.field=".$parameter_mapping[$facet_name] // oge_agency_name
                   ."&facet.limit=10"
                   ."&wt=php";
 
@@ -514,7 +515,7 @@ function _checkbook_smart_search_agency_autocomplete(){
  *  @return the matching words
  **/
 function _checkbook_smart_search_oge_autocomplete(){
-    $oges = _checkbook_smart_search_get_searchstring_autocomplete("oge_agency_names","oge_name_autocomplete");
+    $oges = _checkbook_smart_search_get_searchstring_autocomplete("oge_agency_names","oge_agency_name_autocomplete"); // ln 422
     return $oges;
 }
 
@@ -697,7 +698,7 @@ function _checkbook_smart_search_export_data(){
   $remaining = $conf['check_book']['datatables']['iTotalDisplayRecords'] ;
   $page_size = 10000;
   $page_num = 0;
-  $fields = _checkbook_smart_search_domain_fields($_REQUEST['domain']);
+  $fields = _checkbook_smart_search_domain_fields($_REQUEST['domain'], 0);
   $fl = implode(",",array_keys($fields));
   echo implode(",",array_values($fields)) . "\n";
 
@@ -713,19 +714,31 @@ function _checkbook_smart_search_export_data(){
 }
 
 /** Smart search results labels array */
-function _checkbook_smart_search_domain_fields($domain){
+function _checkbook_smart_search_domain_fields($domain, $IsOge){
   switch ($domain){
     case "spending":
-      $parameter_mapping = array(
-      "spending_category_name" => "Spending Category",
-      "agency_name" => "Agency",
-      "department_name" => "Department",
-      "vendor_name" => "Payee Name",
-      "expenditure_object_name" => "Expense Category",
-      "contract_number" => "Contract ID",
-      "check_amount" => "Check Amount",
-      "check_eft_issued_date" => "Issue Date"
-      );
+        if($IsOge)
+          $parameter_mapping = array(
+          "spending_category_name" => "Spending Category",
+          "oge_agency_name" => "Agency",
+          "department_name" => "Department",
+          "vendor_name" => "Payee Name",
+          "expenditure_object_name" => "Expense Category",
+          "contract_number" => "Contract ID",
+          "check_amount" => "Check Amount",
+          "check_eft_issued_date" => "Issue Date"
+          );
+        else
+            $parameter_mapping = array(
+                "spending_category_name" => "Spending Category",
+                "agency_name" => "Agency",
+                "department_name" => "Department",
+                "vendor_name" => "Payee Name",
+                "expenditure_object_name" => "Expense Category",
+                "contract_number" => "Contract ID",
+                "check_amount" => "Check Amount",
+                "check_eft_issued_date" => "Issue Date"
+            );
       break;
     case "contracts":
       $parameter_mapping = array(

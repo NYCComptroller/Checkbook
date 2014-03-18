@@ -86,6 +86,7 @@
         <field name="agency_code" type="string_custom" indexed="true" stored="true"/>
         <field name="agency_name_text" type="text_general" indexed="true" stored="true"/>
         <field name="oge_agency_name" type="string_custom" indexed="true" stored="true" />
+        <field name="oge_agency_name_autocomplete" type="string_autocomplete" indexed="true"/>
         <field name="agency_type" type="string_custom" indexed="true" stored="true" />
         <field name="fiscal_year_id" type="string_custom" indexed="true" stored="true"/>
         <field name="fiscal_year" type="string_custom" indexed="true" stored="true"/>
@@ -316,6 +317,7 @@
 
     <copyField source="agency_name" dest="text" />
     <copyField source="agency_name" dest="agency_name_autocomplete" />
+    <copyField source="agency_name" dest="oge_agency_name_autocomplete" />
     <copyField source="department_name" dest="text" />
     <copyField source="budget_code" dest="text" />
     <copyField source="budget_code_name" dest="text" />
