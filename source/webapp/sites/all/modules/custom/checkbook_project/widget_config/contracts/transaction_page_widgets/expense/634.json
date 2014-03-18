@@ -28,7 +28,7 @@
 "noDataInitialLoad":true,
 "html_class": "initiative-table",
 "no_results_content":"No Results Found",
-"dataset": "checkbook:agreement_snapshot",
+"dataset": "checkbook:agreement_snapshot_oge",
 "columns": ["fms_commodity_line@checkbook:oge_contract_contract","budget_name@checkbook:oge_contract_contract","oge_contract_number@checkbook:oge_contract_contract","fiscal_year_id@checkbook:edc_contracts_coa_aggregates_no_vendor","type_of_year@checkbook:edc_contracts_coa_aggregates_no_vendor", "has_children","contract_number","original_agreement_id","description","document_version","original_contract_amount","maximum_contract_amount","spending_amount@checkbook:edc_contracts_coa_aggregates_no_vendor","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","document_code@checkbook:ref_document_code","industry_type_name","dollar_difference","percent_difference"],
 "columns_datasource":{"fms_commodity_line@checkbook:oge_contract_contract":"checkbook_oge","oge_contract_number@checkbook:oge_contract_contract":"checkbook_oge", "budget_name@checkbook:oge_contract_contract":"checkbook_oge"},
 "caption":"",
