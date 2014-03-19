@@ -25,6 +25,10 @@ th {
   padding: 0 10px;
   border-bottom: none;
 }
+.chart-grid-view-table th div{
+    text-align: center;
+    float: left;
+}
 tr.odd {
   background-color: #ddd;
   border-right: 1px solid #CACACA;
