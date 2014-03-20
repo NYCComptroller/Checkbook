@@ -93,9 +93,9 @@ echo eval($node->widgetConfig->gridConfig->footer);
                                     }
                                     return source.contract_amount;
                                 },
-                                "sClass":"number",
+                                "sClass":"text number-left",
                                 "asSorting": [ "desc", "asc" ],
-                                "sWidth":"75px"
+                                "sWidth":"40px"
                             },
                             {
                               "aTargets": [4],
