@@ -80,17 +80,24 @@ th.sorting_desc span{
     padding-left:15px;
     display: inline-block;
     cursor: pointer;
+    text-align: center;
 }
 th.sorting_asc span{
     background:url(../images/arrow-desc.png) scroll no-repeat left center;
     padding-left:15px;
     display: inline-block;
     cursor:pointer;
+    text-align: center;
 }
 th.sorting span{
     padding-left:15px;
     display: inline-block;
     cursor:pointer;
+    text-align: center;
+}
+th.text > div,
+th.number > div{
+    float: left;
 }
 div.print-content div.DTTT_container{
     display: none;
