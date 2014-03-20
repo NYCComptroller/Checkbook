@@ -28,12 +28,14 @@ function checkbook_alerts_init(){
  */
 function checkbook_alerts_menu() {
   $items = array();
+    // show user alert form
   $items['alert/transactions/form'] = array(
     'title' => 'Checkbook Alerts',
     'page callback' => '_checkbook_alerts_form',
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
+    // Create Alert and send activate email
   $items['alert/transactions'] = array(
     'title' => 'Checkbook Alerts',
     'page callback' => '_checkbook_alerts_transactions',

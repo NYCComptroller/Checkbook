@@ -1,3 +1,3 @@
 <div>
-Your alert has been successfully activated.
+Your alert has been successfully activated.<br>
 </div>
