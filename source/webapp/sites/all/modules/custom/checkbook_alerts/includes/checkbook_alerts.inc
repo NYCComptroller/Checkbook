@@ -135,7 +135,7 @@ function _checkbook_alerts_alertFrequency($days){
 
 function _checkbook_alerts_process_email($alerts){
   $module="checkbook_alerts";
-  $key=md5(date());
+  $key=md5(date("Y-m-d H:i:s"));
   $msg=theme('checkbook_alerts_email_theme',array(
     'alerts'=>$alerts
   ));
@@ -208,6 +208,8 @@ function _checkbook_alerts_get_data_count(){
   $node->widgetConfig->getData = false;
 
   widget_data($node);
+
+
 
   return $node->totalDataCount;
 }
