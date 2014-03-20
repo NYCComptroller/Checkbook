@@ -375,7 +375,6 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
             else if($count > 0)
             {
                 $checked = in_array($name, array_values_recursive($selected_filters[$key]));
-
                 if ($checked) {
                     $output[$facetDisplayNames[$key]]['checked'][] = array(urlencode($name), $name, $count);
                 }
