@@ -84,12 +84,12 @@ function _checkbook_alerts_transactions(){
   }else{
     drupal_write_record('checkbook_alerts',$alert);
   }
-
   $alertFrequency=_checkbook_alerts_alertFrequency($_GET['alert_minimum_days']);
   
   $subData=array(
     "alertFrequency"=>$alertFrequency,
-    "label"=>$_GET['alert_label']
+    "label"=>$_GET['alert_label'],
+     "alert2"=>$alert,
   );
 
   $module="checkbook_alerts";
@@ -185,9 +185,14 @@ function _checkbook_alerts_unsubscribe(){
 function _checkbook_alerts_activate(){
   $alert=arg(2);
 
-  db_query("UPDATE checkbook_alerts SET active='Y' WHERE CONCAT(checkbook_alerts_sysid,MD5(CONCAT(checkbook_alerts_sysid,label,recipient)))=:alert",array(':alert'=>$alert));
+    db_update('checkbook_alerts')
+        ->fields(array('active' => 'Y'))
+        ->where('CONCAT(checkbook_alerts_sysid,MD5(CONCAT(checkbook_alerts_sysid,label,recipient))) = :alert', array(':alert' => $alert))
+        ->execute();
 
-  return theme('checkbook_alerts_activated_theme');
+ // db_query("UPDATE checkbook_alerts SET active='Y' WHERE CONCAT(checkbook_alerts_sysid,MD5(CONCAT(checkbook_alerts_sysid,label,recipient)))=:alert",array(':alert'=>$alert));
+
+  return theme('checkbook_alerts_activated_theme',array("arg2" => $alert));
 }
 
 function _checkbook_alerts_twitter_callback(){

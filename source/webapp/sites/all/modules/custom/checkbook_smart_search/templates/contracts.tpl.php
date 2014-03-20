@@ -7,7 +7,6 @@
 */
 ?>
 <?php
-$contracts_parameter_mapping = _checkbook_smart_search_domain_fields('contracts', IsOge);
 if(strtolower($contracts_results['contract_status']) == 'registered'){
 
    $current_date = date("c").'Z';
