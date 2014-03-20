@@ -330,9 +330,7 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
         } elseif ($limit){
           $query .= "&facet.limit=". $limit;
         }
-dsm($query);
         $facet_results = _checkbook_smart_search_solr_results($query);
-dsm($facet_results);
 
         return $facet_results;
 }
@@ -741,27 +739,53 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
             );
       break;
     case "contracts":
-      $parameter_mapping = array(
-      "contract_status"=>"Status",
-      "contract_category_name"=>"Category",
-      "vendor_name"=>"Vendor",
-      "agency_name"=>"Agency",
-      "contract_number"=>"Contract ID",
-      "version_number"=>"Version Number",
-      "contract_purpose"=>"Purpose",
-      "parent_contract_number"=>"Parent Contract ID",
-      "award_method_name"=>"Award Method",
-      "contract_type_code"=>"Contract type",
-      "original_amount"=>"Original Amount",
-      "current_amount"=>"Current Amount",
-      "start_date_orig"=>"Start date",
-      "end_date_orig"=>"End Date",
-      "pin"=>"PIN",
-      "apt_pin"=>"APT PIN",
-      "registration_date"=>"Registration date",
-      "expense_category_name"=>"Expense Category",
-      "received_date"=>"Received date",
-      "" => "");
+        if($IsOge)
+        {
+          $parameter_mapping = array(
+          "contract_status"=>"Status",
+          "contract_category_name"=>"Category",
+          "vendor_name"=>"Vendor",
+          "oge_agency_name"=>"Agency",
+          "contract_number"=>"Contract ID",
+          "version_number"=>"Version Number",
+          "contract_purpose"=>"Purpose",
+          "parent_contract_number"=>"Parent Contract ID",
+          "award_method_name"=>"Award Method",
+          "contract_type_code"=>"Contract type",
+          "original_amount"=>"Original Amount",
+          "current_amount"=>"Current Amount",
+          "start_date_orig"=>"Start date",
+          "end_date_orig"=>"End Date",
+          "pin"=>"PIN",
+          "apt_pin"=>"APT PIN",
+          "registration_date"=>"Registration date",
+          "expense_category_name"=>"Expense Category",
+          "received_date"=>"Received date",
+          "" => "");
+        }
+        else{
+            $parameter_mapping = array(
+                "contract_status"=>"Status",
+                "contract_category_name"=>"Category",
+                "vendor_name"=>"Vendor",
+                "agency_name"=>"Agency",
+                "contract_number"=>"Contract ID",
+                "version_number"=>"Version Number",
+                "contract_purpose"=>"Purpose",
+                "parent_contract_number"=>"Parent Contract ID",
+                "award_method_name"=>"Award Method",
+                "contract_type_code"=>"Contract type",
+                "original_amount"=>"Original Amount",
+                "current_amount"=>"Current Amount",
+                "start_date_orig"=>"Start date",
+                "end_date_orig"=>"End Date",
+                "pin"=>"PIN",
+                "apt_pin"=>"APT PIN",
+                "registration_date"=>"Registration date",
+                "expense_category_name"=>"Expense Category",
+                "received_date"=>"Received date",
+                "" => "");
+        }
 
       break;
     case "payroll":

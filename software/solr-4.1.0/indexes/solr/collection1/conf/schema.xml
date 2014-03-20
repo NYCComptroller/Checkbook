@@ -317,7 +317,7 @@
 
     <copyField source="agency_name" dest="text" />
     <copyField source="agency_name" dest="agency_name_autocomplete" />
-    <copyField source="agency_name" dest="oge_agency_name_autocomplete" />
+    <copyField source="oge_agency_name" dest="oge_agency_name_autocomplete" />
     <copyField source="department_name" dest="text" />
     <copyField source="budget_code" dest="text" />
     <copyField source="budget_code_name" dest="text" />

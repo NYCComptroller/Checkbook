@@ -255,6 +255,7 @@ h4 {
 .other-agency-list-content{
 	height:160px;
 	left:0px;
+    overflow:hidden;
 }
 #agency-list ul,
 #agency-list-other ul {

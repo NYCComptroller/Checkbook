@@ -7,7 +7,7 @@
 */
 ?>
 <?php
-$contracts_parameter_mapping = _checkbook_smart_search_domain_fields('contracts');
+$contracts_parameter_mapping = _checkbook_smart_search_domain_fields('contracts', $IsOge);
 if(strtolower($contracts_results['contract_status']) == 'registered'){
 
    $current_date = date("c").'Z';
@@ -24,12 +24,16 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
 
     if(strtolower($contracts_results['contract_category_name']) == 'expense'){
         $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". _getFiscalYearID() .'/vendor/'.$contracts_results['vendor_id'];
-        $agency_link = "/contracts_landing/status/" .$status."/yeartype/B/year/"._getFiscalYearID().'/agency/'.$contracts_results['agency_id'];
+        if($IsOge)
+            $agency_link = "/contracts_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/"._getFiscalYearID().'/agency/'.$contracts_results['agency_id'];
+        else $agency_link = "/contracts_landing/status/" .$status."/yeartype/B/year/"._getFiscalYearID().'/agency/'.$contracts_results['agency_id'];
         $contract_Id_link = "/contracts_landing/status/" .$status;
 
     }else{
         $vendor_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/year/"._getFiscalYearID() .'/vendor/'.$contracts_results['vendor_id'];
-        $agency_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/year/"._getFiscalYearID().'/agency/'.$contracts_results['agency_id'];
+        if($IsOge)
+            $agency_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/"._getFiscalYearID().'/agency/'.$contracts_results['agency_id'];
+        else $agency_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/year/"._getFiscalYearID().'/agency/'.$contracts_results['agency_id'];
         $contract_Id_link = "/contracts_revenue_landing/status/" .$status;
     }
 
@@ -79,7 +83,8 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
 
 
 
-$linkable_fields = array("agency_name" => $agency_link,
+$linkable_fields = array("oge_agency_name" => $agency_link,
+                         "agency_name" => $agency_link,
                          "vendor_name" => $vendor_link,
                         );
 
