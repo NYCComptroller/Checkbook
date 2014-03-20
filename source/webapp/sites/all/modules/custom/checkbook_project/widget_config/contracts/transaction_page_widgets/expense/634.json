@@ -6,11 +6,12 @@
                "contstatus":"status_flag@checkbook:edc_contracts_coa_aggregates_no_vendor" ,
                 "year":"fiscal_year_id@checkbook:edc_contracts_coa_aggregates_no_vendor",
                 "calyear":"fiscal_year_id@checkbook:edc_contracts_coa_aggregates_no_vendor",
-                "yeartype":"type_of_year@checkbook:edc_contracts_coa_aggregates_no_vendor" ,"agency":"agency_id@checkbook:edc_contracts_coa_aggregates_no_vendor","vendor":"vendor_id",
-                 "curamtr":"maximum_contract_amount","vendornm":"vendor_name","contdesc":"description",
+                "yeartype":"type_of_year@checkbook:edc_contracts_coa_aggregates_no_vendor" ,
+                "agency":"agency_id@checkbook:edc_contracts_coa_aggregates_no_vendor","vendor":"vendor_id@checkbook:oge_contract_contract",
+                 "curamtr":"current_amount@checkbook:oge_contract_contract","vendornm":"vendor_name","contdesc":"description",
                  "agrmnttype":"agreement_type_id","agencyh":"agency_history_id","contnum":"contract_number",
                  "aptpin":"brd_awd_no","pin":"tracking_number","awdmethod":"award_method_id",
-                 "curamt":"maximum_contract_amount","startdate":"effective_begin_date","enddate":"effective_end_date",
+                 "curamt":"current_amount@checkbook:oge_contract_contract","startdate":"effective_begin_date","enddate":"effective_end_date",
                  "regdate":"registered_date","cindustry":"industry_type_id","csize":"award_size_id",
                  "modamt":"dollar_difference"
 },
@@ -29,7 +30,15 @@
 "html_class": "initiative-table",
 "no_results_content":"No Results Found",
 "dataset": "checkbook:agreement_snapshot_oge",
-"columns": ["fms_commodity_line@checkbook:oge_contract_contract","budget_name@checkbook:oge_contract_contract","oge_contract_number@checkbook:oge_contract_contract","fiscal_year_id@checkbook:edc_contracts_coa_aggregates_no_vendor","type_of_year@checkbook:edc_contracts_coa_aggregates_no_vendor", "has_children","contract_number","original_agreement_id","description","document_version","original_contract_amount","maximum_contract_amount","spending_amount@checkbook:edc_contracts_coa_aggregates_no_vendor","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","document_code@checkbook:ref_document_code","industry_type_name","dollar_difference","percent_difference"],
+"columns": ["fms_commodity_line@checkbook:oge_contract_contract","budget_name@checkbook:oge_contract_contract","oge_contract_number@checkbook:oge_contract_contract",
+            "fiscal_year_id@checkbook:edc_contracts_coa_aggregates_no_vendor",
+             "type_of_year@checkbook:edc_contracts_coa_aggregates_no_vendor", "has_children","contract_number",
+             "original_agreement_id","description","document_version","original_amount@checkbook:oge_contract_contract",
+             "current_amount@checkbook:oge_contract_contract","spending_amount@checkbook:edc_contracts_coa_aggregates_no_vendor",
+             "vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name",
+             "expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no",
+             "tracking_number","master_agreement_yn","document_code@checkbook:ref_document_code",
+             "industry_type_name","dollar_difference","percent_difference"],
 "columns_datasource":{"fms_commodity_line@checkbook:oge_contract_contract":"checkbook_oge","oge_contract_number@checkbook:oge_contract_contract":"checkbook_oge", "budget_name@checkbook:oge_contract_contract":"checkbook_oge"},
 "caption":"",
 "derivedColumns": {
@@ -55,11 +64,11 @@
 	    },
 	"formatted_original_amount": {
 	      "type": "expression2",
-	      "expression": "custom_number_formatter_basic_format($row['original_contract_amount'])"
+	      "expression": "custom_number_formatter_basic_format($row['original_amount@checkbook:oge_contract_contract'])"
 	    },
 	"formatted_current_amount": {
 	      "type": "expression2",
-	        "expression": "custom_number_formatter_basic_format($row['maximum_contract_amount'])"
+	        "expression": "custom_number_formatter_basic_format($row['current_amount@checkbook:oge_contract_contract'])"
 	    },
        "formatted_spent_to_date": {
 	      "type": "expression2",
@@ -133,8 +142,8 @@
 	    {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description"},
 	    {"labelAlias": "version","column": "document_version"},
 	    {"labelAlias": "fms_doc_id","column":"parent_contract_link","export":false},
-        {"labelAlias": "original_amount","column": "formatted_original_amount","sortSourceColumn":"original_contract_amount"},
-	    {"labelAlias": "current_amount","column": "formatted_current_amount","sortSourceColumn":"maximum_contract_amount"},
+        {"labelAlias": "original_amount","column": "formatted_original_amount","sortSourceColumn":"original_amount@checkbook:oge_contract_contract"},
+	    {"labelAlias": "current_amount","column": "formatted_current_amount","sortSourceColumn":"current_amount@checkbook:oge_contract_contract"},
 	    {"labelAlias": "spent_to_date","column": "formatted_spent_to_date","sortSourceColumn":"spending_amount@checkbook:edc_contracts_coa_aggregates_no_vendor"},
         {"labelAlias": "dollar_diff","column": "formatted_dollar_diff","sortSourceColumn":"dollar_difference"},
         {"labelAlias": "percent_diff","column": "formatted_percent_diff","sortSourceColumn":"percent_difference"},
