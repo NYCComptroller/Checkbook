@@ -1,19 +1,22 @@
 {
 "widgetType": "data_tables",
 "widgetSubType": "dataTableList",
-"cleanURLParameters":["doctype","contstatus","year","calyear","yeartype","agency","vendor","curamtr","vendornm","contdesc","agrmnttype","agencyh","contnum","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","modamt"],
+"cleanURLParameters":["doctype","contstatus","year","calyear","yeartype","agency","vendor","curamtr","vendornm","contdesc","agrmnttype",
+                      "agencyh","contnum","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry",
+                      "csize","modamt"],
 "urlParamMap":{"doctype":"document_code@checkbook:ref_document_code",
                "contstatus":"status_flag@checkbook:contracts_coa_aggregates" ,"year":"fiscal_year_id@checkbook:contracts_coa_aggregates",
                "calyear":"fiscal_year_id@checkbook:contracts_coa_aggregates","yeartype":"type_of_year@checkbook:contracts_coa_aggregates" ,
                "agency":"agency_id","vendor":"vendor_id@checkbook:contracts_coa_aggregates","curamtr":"maximum_contract_amount",
-                "vendornm":"vendor_name",
+               "vendornm":"vendor_name",
                "contdesc":"description","agrmnttype":"agreement_type_id","agencyh":"agency_history_id","contnum":"contract_number",
                "aptpin":"brd_awd_no","pin":"tracking_number","awdmethod":"award_method_id","curamt":"maximum_contract_amount",
                "startdate":"effective_begin_date","enddate":"effective_end_date","regdate":"registered_date","cindustry":"industry_type_id",
-                "csize":"award_size_id","modamt":"dollar_difference"
+               "csize":"award_size_id","modamt":"dollar_difference"
 },
 "allowRequestParams":["smnid"],
-"paramTypeConfig":{"curamtr":"rangeid","vendornm":"like","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","regdate":"range","modamt":"ne"},
+"paramTypeConfig":{"curamtr":"rangeid","vendornm":"like","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range",
+                    "startdate":"range","enddate":"range","regdate":"range","modamt":"ne"},
 "defaultParameters":{"status_flag@checkbook:contracts_coa_aggregates":"A"},
 "header":"
 	$header = NULL;
@@ -27,8 +30,14 @@
 "html_class": "initiative-table",
 "no_results_content":"No Results Found",
 "dataset": "checkbook:agreement_snapshot",
-"columns": ["fms_commodity_line@checkbook:oge_contract_contract","budget_name@checkbook:oge_contract_contract","oge_contract_number@checkbook:oge_contract_contract","fiscal_year_id@checkbook:contracts_coa_aggregates","type_of_year@checkbook:contracts_coa_aggregates", "has_children","contract_number","original_agreement_id","description","document_version","original_contract_amount","maximum_contract_amount","spending_amount@checkbook:contracts_coa_aggregates","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","document_code@checkbook:ref_document_code","industry_type_name","dollar_difference","percent_difference"],
-"columns_datasource":{"fms_commodity_line@checkbook:oge_contract_contract":"checkbook_oge","oge_contract_number@checkbook:oge_contract_contract":"checkbook_oge", "budget_name@checkbook:oge_contract_contract":"checkbook_oge"},
+"columns": ["fms_commodity_line@checkbook:oge_contract_contract","budget_name@checkbook:oge_contract_contract","oge_contract_number@checkbook:oge_contract_contract",
+            "fiscal_year_id@checkbook:contracts_coa_aggregates","type_of_year@checkbook:contracts_coa_aggregates", "has_children","contract_number",
+            "original_agreement_id","description","document_version","original_contract_amount","maximum_contract_amount",
+            "spending_amount@checkbook:contracts_coa_aggregates","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name",
+            "award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no",
+            "tracking_number","master_agreement_yn","document_code@checkbook:ref_document_code","industry_type_name","dollar_difference","percent_difference"],
+"columns_datasource":{"fms_commodity_line@checkbook:oge_contract_contract":"checkbook_oge","oge_contract_number@checkbook:oge_contract_contract":"checkbook_oge",
+                      "budget_name@checkbook:oge_contract_contract":"checkbook_oge"},
 "caption":"",
 "derivedColumns": {
          "child_contrats_link":{
