@@ -485,26 +485,26 @@
                 pk="id"
                 query="
 				select
-                'contracts:' || agreement_id || ':' || agency_id || ':' || vendor_id || 'oge' id,
+                'contracts:' || agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END) || 'oge' id,
                 original_agreement_id,
                 'contracts' domain1,
                 (case when(document_code ='RCT1') then 'Revenue' else 'Expense' end) category,
                 '' agency_name,
                 agency_name oge_agency_name,
                 'oge' agency_type,
-                agency_id,
-                agency_code,
-                vendor_id,
-                vendor_name,
-                vendor_code,
-                lower(vendor_name) || '[ ' || vendor_code || ' ]' vendor_name_code,
-                vendor_name || '[' || vendor_id || ']' vendor_name_id,
+                a.agency_id,
+                a.agency_code,
+                (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END) as vendor_id,
+                (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_name ELSE ogecon.vendor_name END) as vendor_name,
+                (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_code ELSE NULL END) vendor_code,
+                (CASE WHEN master_agreement_yn = 'Y' THEN lower(a.vendor_name) ELSE lower(ogecon.vendor_name) END) || '[ ' || (CASE WHEN master_agreement_yn = 'Y' THEN lower(a.vendor_code) ELSE NULL END) || ' ]' vendor_name_code,
+                (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_name ELSE ogecon.vendor_name END) || '[' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END) || ']' vendor_name_id,
                 contract_number,
                 master_contract_number,
                 award_method_name,
                 award_method_id,
                 agreement_type_name,
-				agreement_type_id,
+                              agreement_type_id,
                 expenditure_object_names,
                 description,
                 COALESCE(effective_begin_date,'1900-01-01') effective_begin_date,
@@ -515,8 +515,8 @@
                 tracking_number pin,
                 document_version version_number,
                 registered_date,
-                original_contract_amount original_amount,
-                maximum_contract_amount current_amount,
+                (CASE WHEN master_agreement_yn = 'Y' THEN a.original_contract_amount ELSE ogecon.original_amount END) original_amount,
+                (CASE WHEN master_agreement_yn = 'Y' THEN a.maximum_contract_amount ELSE ogecon.current_amount END )current_amount,
                 registered_year fiscal_year,
                 registered_year_id fiscal_year_id,
                 rac.award_category_code,
@@ -528,6 +528,7 @@
                 (case when(latest_flag = 'Y') then 'Y' else 'N' end) latest_flag,
                 'Registered' status
                 from agreement_snapshot a
+                LEFT JOIN oge_contract_vendor_level ogecon ON a.contract_number = ogecon.fms_contract_number
             left join ref_document_code dc on a.document_code_id = dc.document_code_id
             left join ref_award_category rac on a.award_category_id = rac.award_category_id
             where dc.document_code in ('MMA1', 'MA1', 'MAR', 'CT1', 'CTR', 'DO1', 'CTA1', 'RCT1')

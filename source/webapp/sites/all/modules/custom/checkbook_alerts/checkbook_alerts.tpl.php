@@ -21,10 +21,10 @@
       </td>
     </tr>
     <tr>
-      <td>Minimum Additional Results:</td>
+      <td>Minimum Difference In Results:</td>
       <td>
         <input type='text' name='alert_minimum_results' value='10' size="5" maxlength="5" />
-        <div class="description">Checkbook will not notify you until this many new results are returned.</div>
+        <div class="description">Checkbook will not notify you until there is a difference in returned results of at least this amount.</div>
       </td>
     </tr>
     <tr>
