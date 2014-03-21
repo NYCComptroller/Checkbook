@@ -3,12 +3,12 @@
 "widgetSubType": "dataTableList",
 "cleanURLParameters":["doctype","contstatus","year","calyear","yeartype","agency","vendor","curamtr","vendornm","contdesc","agrmnttype","agencyh","contnum","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","modamt"],
 "urlParamMap":{"doctype":"document_code@checkbook:ref_document_code",
-               "contstatus":"status_flag@checkbook:edc_contracts_coa_aggregates_no_vendor" ,
-                "year":"fiscal_year_id@checkbook:edc_contracts_coa_aggregates_no_vendor",
-                "calyear":"fiscal_year_id@checkbook:edc_contracts_coa_aggregates_no_vendor",
-                "yeartype":"type_of_year@checkbook:edc_contracts_coa_aggregates_no_vendor" ,
-                "agency":"agency_id@checkbook:edc_contracts_coa_aggregates_no_vendor","vendor":"vendor_id@checkbook:oge_contract_contract",
-                 "curamtr":"current_amount@checkbook:oge_contract_contract","vendornm":"vendor_name","contdesc":"description",
+               "contstatus":"status_flag@checkbook:contracts_coa_aggregates" ,
+                "year":"fiscal_year_id@checkbook:contracts_coa_aggregates",
+                "calyear":"fiscal_year_id@checkbook:contracts_coa_aggregates",
+                "yeartype":"type_of_year@checkbook:contracts_coa_aggregates" ,
+                "agency":"agency_id@checkbook:contracts_coa_aggregates","vendor":"vendor_id@checkbook:oge_contract_contract",
+                 "curamtr":"current_amount@checkbook:oge_contract_contract","vendornm":"vendor_name@checkbook:oge_contract_contract","contdesc":"description",
                  "agrmnttype":"agreement_type_id","agencyh":"agency_history_id","contnum":"contract_number",
                  "aptpin":"brd_awd_no","pin":"tracking_number","awdmethod":"award_method_id",
                  "curamt":"current_amount@checkbook:oge_contract_contract","startdate":"effective_begin_date","enddate":"effective_end_date",
@@ -17,7 +17,7 @@
 },
 "allowRequestParams":["smnid"],
 "paramTypeConfig":{"curamtr":"rangeid","vendornm":"like","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","regdate":"range","modamt":"ne"},
-"defaultParameters":{"status_flag@checkbook:edc_contracts_coa_aggregates_no_vendor":"A"},
+"defaultParameters":{"status_flag@checkbook:contracts_coa_aggregates":"A"},
 "header":"
 	$header = NULL;
 	$header .= widget_data_tables_export_link($node);
@@ -31,15 +31,14 @@
 "no_results_content":"No Results Found",
 "dataset": "checkbook:agreement_snapshot_oge",
 "columns": ["fms_commodity_line@checkbook:oge_contract_contract","budget_name@checkbook:oge_contract_contract","oge_contract_number@checkbook:oge_contract_contract",
-            "fiscal_year_id@checkbook:edc_contracts_coa_aggregates_no_vendor",
-             "type_of_year@checkbook:edc_contracts_coa_aggregates_no_vendor", "has_children","contract_number",
+            "fiscal_year_id@checkbook:contracts_coa_aggregates",
+             "type_of_year@checkbook:contracts_coa_aggregates", "has_children","contract_number",
              "original_agreement_id","description","document_version","original_amount@checkbook:oge_contract_contract",
-             "current_amount@checkbook:oge_contract_contract","spending_amount@checkbook:edc_contracts_coa_aggregates_no_vendor",
-             "vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name",
+             "current_amount@checkbook:oge_contract_contract","spending_amount_disb@checkbook:contracts_coa_aggregates",
+             "vendor_name@checkbook:oge_contract_contract","agency_name","vendor_id@checkbook:oge_contract_contract","agency_id","agreement_type_name","award_method_name",
              "expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no",
              "tracking_number","master_agreement_yn","document_code@checkbook:ref_document_code",
              "industry_type_name","dollar_difference","percent_difference"],
-"columns_datasource":{"fms_commodity_line@checkbook:oge_contract_contract":"checkbook_oge","oge_contract_number@checkbook:oge_contract_contract":"checkbook_oge", "budget_name@checkbook:oge_contract_contract":"checkbook_oge"},
 "caption":"",
 "derivedColumns": {
          "child_contrats_link":{
@@ -75,22 +74,22 @@
                 "expression": "
                                            '<a href=\"/spending/transactions'
                                           .  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id']
-                                          .  ( $row['type_of_year@checkbook:edc_contracts_coa_aggregates_no_vendor'] == 'B' ? ('/year/'. $row['fiscal_year_id@checkbook:edc_contracts_coa_aggregates_no_vendor'].'/syear/'. $row['fiscal_year_id@checkbook:edc_contracts_coa_aggregates_no_vendor']) : ('/calyear/'.$row['fiscal_year_id@checkbook:edc_contracts_coa_aggregates_no_vendor']. '/scalyear/'.$row['fiscal_year_id@checkbook:edc_contracts_coa_aggregates_no_vendor']) )
-                                          .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['spending_amount@checkbook:edc_contracts_coa_aggregates_no_vendor']) . '</a>'
+                                          .  ( $row['type_of_year@checkbook:contracts_coa_aggregates'] == 'B' ? ('/year/'. $row['fiscal_year_id@checkbook:contracts_coa_aggregates'].'/syear/'. $row['fiscal_year_id@checkbook:contracts_coa_aggregates']) : ('/calyear/'.$row['fiscal_year_id@checkbook:contracts_coa_aggregates']. '/scalyear/'.$row['fiscal_year_id@checkbook:contracts_coa_aggregates']) )
+                                          .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['spending_amount_disb@checkbook:contracts_coa_aggregates']) . '</a>'
                                       "
 	    },
 "vendor_formatted": {
       "type": "expression2",
-      "expression": "_get_tooltip_markup($row['vendor_name'],30)"
+      "expression": "_get_tooltip_markup($row['vendor_name@checkbook:oge_contract_contract'],30)"
     },
 	"vendor_name_link": {
 	      "type": "expression2",
               "expression": " '<a href=\"/contracts_landing'
                                     . _checkbook_append_url_params()
-                                    .  (isset($row['fiscal_year_id@checkbook:edc_contracts_coa_aggregates_no_vendor']) ? '/year/'.$row['fiscal_year_id@checkbook:edc_contracts_coa_aggregates_no_vendor'] : '')
-                                    .  (isset($row['type_of_year@checkbook:edc_contracts_coa_aggregates_no_vendor']) ? '/yeartype/'.$row['type_of_year@checkbook:edc_contracts_coa_aggregates_no_vendor'] : '')
+                                    .  (isset($row['fiscal_year_id@checkbook:contracts_coa_aggregates']) ? '/year/'.$row['fiscal_year_id@checkbook:contracts_coa_aggregates'] : '')
+                                    .  (isset($row['type_of_year@checkbook:contracts_coa_aggregates']) ? '/yeartype/'.$row['type_of_year@checkbook:contracts_coa_aggregates'] : '')
                                     .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
-                                    .  '/vendor/' . $row['vendor_id']
+                                    .  '/vendor/' . $row['vendor_id@checkbook:oge_contract_contract']
                                     .  '?expandBottomCont=true\">'. $row['vendor_formatted'] . '</a>'  "
 	    },
 "agency_formatted": {
@@ -101,8 +100,8 @@
 		"type": "expression2",
                 "expression": " '<a href=\"/contracts_landing'
                                     ._checkbook_append_url_params()
-                                    .  (isset($row['fiscal_year_id@checkbook:edc_contracts_coa_aggregates_no_vendor']) ? '/year/'.$row['fiscal_year_id@checkbook:edc_contracts_coa_aggregates_no_vendor'] : '')
-                                    .  (isset($row['type_of_year@checkbook:edc_contracts_coa_aggregates_no_vendor']) ? '/yeartype/'.$row['type_of_year@checkbook:edc_contracts_coa_aggregates_no_vendor'] : '')
+                                    .  (isset($row['fiscal_year_id@checkbook:contracts_coa_aggregates']) ? '/year/'.$row['fiscal_year_id@checkbook:contracts_coa_aggregates'] : '')
+                                    .  (isset($row['type_of_year@checkbook:contracts_coa_aggregates']) ? '/yeartype/'.$row['type_of_year@checkbook:contracts_coa_aggregates'] : '')
                                    .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
                                    . '/agency/' . $row['agency_id']
                                     .  '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "
@@ -144,10 +143,10 @@
 	    {"labelAlias": "fms_doc_id","column":"parent_contract_link","export":false},
         {"labelAlias": "original_amount","column": "formatted_original_amount","sortSourceColumn":"original_amount@checkbook:oge_contract_contract"},
 	    {"labelAlias": "current_amount","column": "formatted_current_amount","sortSourceColumn":"current_amount@checkbook:oge_contract_contract"},
-	    {"labelAlias": "spent_to_date","column": "formatted_spent_to_date","sortSourceColumn":"spending_amount@checkbook:edc_contracts_coa_aggregates_no_vendor"},
+	    {"labelAlias": "spent_to_date","column": "formatted_spent_to_date","sortSourceColumn":"spending_amount_disb@checkbook:contracts_coa_aggregates"},
         {"labelAlias": "dollar_diff","column": "formatted_dollar_diff","sortSourceColumn":"dollar_difference"},
         {"labelAlias": "percent_diff","column": "formatted_percent_diff","sortSourceColumn":"percent_difference"},
-	    {"labelAlias": "vendor_name","column": "vendor_name_link","sortSourceColumn":"vendor_name"},
+	    {"labelAlias": "vendor_name","column": "vendor_name_link","sortSourceColumn":"vendor_name@checkbook:oge_contract_contract"},
 	    {"labelAlias": "contract_agency","column": "agency_name_link","sortSourceColumn":"agency_name"},
 	    {"labelAlias": "contract_type","column": "contract_type_formatted","sortSourceColumn":"agreement_type_name"},
 	    {"labelAlias": "award_method","column": "award_method_formatted","sortSourceColumn":"award_method_name"},
