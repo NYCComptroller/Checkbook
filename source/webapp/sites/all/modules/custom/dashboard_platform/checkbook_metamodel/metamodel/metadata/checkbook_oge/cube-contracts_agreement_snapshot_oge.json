@@ -10,11 +10,11 @@
             "sourceDatasetName": "agreement_snapshot_oge",
             "dimensions": [
                 {
-                    "name": "edc_no_vendor",
+                    "name": "oge_child_transactions",
                     "levels": [
                             {
-                                "name": "edc_no_vendor",
-                                "datasetName": "edc_contracts_coa_aggregates_no_vendor",
+                                "name": "oge_child_transactions",
+                                "datasetName": "contracts_coa_aggregates",
                                 "sourceColumnName": "original_agreement_id"
                             }
                     ]
