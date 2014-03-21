@@ -202,7 +202,7 @@
                 "current_amount_sum": {
                     "function": "MIN(COALESCE(maximum_contract_amount,0))"}      ,
                 "spending_amount_sum": {
-                    "function": "MIN(COALESCE(spending_amount_disb,0))"}      ,
+                    "function": "SUM(COALESCE(spending_amount_disb,0))"}      ,
                 "dollar_difference": {
                     "function": "SUM(COALESCE(dollar_difference,0))"}      ,
                 "percent_difference": {
