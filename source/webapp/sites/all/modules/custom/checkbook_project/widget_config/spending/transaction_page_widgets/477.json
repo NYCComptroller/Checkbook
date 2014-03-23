@@ -1,8 +1,17 @@
 {
 "widgetType": "data_tables",
 "widgetSubType": "dataTableList",
-"cleanURLParameters":["deptnm","expcategorynm","year","calyear","yeartype","status","agency","vendor","expcategory","category","checkamtr","dept","syear","scalyear","magid","agid","cvendor","cagency","awdmethod","csize","cindustry","doctype","month"],
-"urlParamMap":{"deptnm":"disb_department_short_name","expcategorynm":"disb_expenditure_object_name","year":"disb_fiscal_year_id","calyear":"disb_fiscal_year_id","yeartype":"type_of_year","status":"status_flag","agency":"disb_agency_id","vendor":"vendor_id","expcategory":"disb_expenditure_object_id","category":"disb_spending_category_id","checkamtr":"disb_check_amount","dept":"disb_department_id","syear":"disb_fiscal_year_id","scalyear":"disb_fiscal_year_id","magid":"disb_master_agreement_id","agid":"disb_agreement_id","cvendor":"vendor_id","cagency":"document_agency_id","awdmethod":"award_method_id","csize":"award_size_id","cindustry":"industry_type_id","doctype":"document_code@checkbook:ref_document_code","month":"disb_check_eft_issued_cal_month_id"},
+"cleanURLParameters":["deptnm","expcategorynm","year","calyear","yeartype","status","agency","vendor","expcategory","category",
+                      "checkamtr","dept","syear","scalyear","magid","agid","cvendor","cagency","awdmethod","csize","cindustry",
+                       "doctype","month"],
+"urlParamMap":{"deptnm":"disb_department_short_name","expcategorynm":"disb_expenditure_object_name","year":"disb_fiscal_year_id",
+                "calyear":"disb_fiscal_year_id","yeartype":"type_of_year","status":"status_flag","agency":"disb_agency_id",
+                "vendor":"vendor_id","expcategory":"disb_expenditure_object_id","category":"disb_spending_category_id",
+                "checkamtr":"disb_check_amount","dept":"disb_department_id","syear":"disb_fiscal_year_id",
+                "scalyear":"disb_fiscal_year_id","magid":"disb_master_agreement_id","agid":"disb_agreement_id",
+                "cvendor":"vendor_id","cagency":"document_agency_id","awdmethod":"award_method_id","csize":"award_size_id",
+                "cindustry":"industry_type_id","doctype":"document_code@checkbook:ref_document_code",
+                "month":"disb_check_eft_issued_cal_month_id"},
 "paramTypeConfig":{"checkamtr":"rangeid","syear":"le","scalyear":"le","deptnm":"eqignorecase","expcategorynm":"eqignorecase"},
 "header":"
 	$header = NULL;
@@ -16,8 +25,15 @@
 "html_class": "initiative-table",
 "no_results_content":"No Results Found",
 "dataset": "checkbook:contracts_spending_transactions",
-"columns": ["fms_commodity_line@checkbook:oge_contract_contract","budget_name@checkbook:oge_contract_contract","oge_contract_number@checkbook:oge_contract_contract","disb_disbursement_number","disb_vendor_name","disb_check_eft_issued_date","disb_agency_name","disb_department_short_name","disb_check_amount","disb_expenditure_object_name","disb_budget_name","disb_contract_number","disb_purpose","disb_reporting_code","disb_spending_category_name","disb_agency_id","disb_vendor_id","disb_expenditure_object_id","disb_department_id","disb_spending_category_id","disb_agreement_id","document_code@checkbook:ref_document_code"],
-"columns_datasource":{"fms_commodity_line@checkbook:oge_contract_contract":"checkbook_oge","oge_contract_number@checkbook:oge_contract_contract":"checkbook_oge", "budget_name@checkbook:oge_contract_contract":"checkbook_oge"},
+"columns": ["fms_commodity_line@checkbook:oge_contract_contract","budget_name@checkbook:oge_contract_contract",
+            "oge_contract_number@checkbook:oge_contract_contract","disb_disbursement_number","disb_vendor_name",
+            "disb_check_eft_issued_date","disb_agency_name","disb_department_short_name","disb_check_amount",
+            "disb_expenditure_object_name","disb_budget_name","disb_contract_number","disb_purpose","disb_reporting_code",
+            "disb_spending_category_name","disb_agency_id","disb_vendor_id","disb_expenditure_object_id","disb_department_id",
+            "disb_spending_category_id","disb_agreement_id","document_code@checkbook:ref_document_code"],
+"columns_datasource":{"fms_commodity_line@checkbook:oge_contract_contract":"checkbook_oge",
+                      "oge_contract_number@checkbook:oge_contract_contract":"checkbook_oge",
+                      "budget_name@checkbook:oge_contract_contract":"checkbook_oge"},
 "caption":"",
 "derivedColumns": {
        "agency_name_formatted":{
@@ -152,6 +168,16 @@
             $adjustedParameters = $parameters;
             if(function_exists('_checkbook_project_applyParameterFilters')){
                   $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+            }
+
+            //Using child_contract_agency_id column in OGE domainO
+            if(_checkbook_check_isEDCPage()){
+                foreach($adjustedParameters as $key=>$value){
+                    if($key == 'document_agency_id'){
+                       $adjustedParameters['agency_id@checkbook:oge_contract_contract'] = $value;
+                       unset($adjustedParameters[$key]);
+                    }
+                }
             }
             return $adjustedParameters;
 ",
