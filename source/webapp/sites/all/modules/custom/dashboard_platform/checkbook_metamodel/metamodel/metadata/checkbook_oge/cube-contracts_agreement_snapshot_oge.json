@@ -64,27 +64,27 @@
 
             ],
             "measures": {
-            "txcount": {
-                "function": "COUNT(*)"
+                "txcount": {
+                    "function": "COUNT(*)"
+                },
+                "g100m_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{current_amount},0) > 100000000 THEN 1 ELSE 0 END)"
+                },
+                "g50m_le100m_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{current_amount},0) > 50000000 AND COALESCE($COLUMN{current_amount},0) <= 100000000 THEN 1 ELSE 0 END)"
+                },
+                "g25m_le50m_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{current_amount},0) > 25000000 AND COALESCE($COLUMN{current_amount},0) <= 50000000 THEN 1 ELSE 0 END)"
+                },
+                "g10m_le25m_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{current_amount},0) > 10000000 AND COALESCE($COLUMN{current_amount},0) <= 25000000 THEN 1 ELSE 0 END)"
+                },
+                "ge1m_le10m_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{current_amount},0) >= 1000000 AND COALESCE($COLUMN{current_amount},0) <= 10000000 THEN 1 ELSE 0 END)"
+                },
+                "less1m_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{current_amount},0) < 1000000 THEN 1 ELSE 0 END)"
                 }
-            },
-            "g100m_count": {
-                "function": "SUM(CASE WHEN COALESCE($COLUMN{current_amount},0) > 100000000 THEN 1 ELSE 0 END)"
-            },
-            "g50m_le100m_count": {
-                "function": "SUM(CASE WHEN COALESCE($COLUMN{current_amount},0) > 50000000 AND COALESCE($COLUMN{current_amount},0) <= 100000000 THEN 1 ELSE 0 END)"
-            },
-            "g25m_le50m_count": {
-                "function": "SUM(CASE WHEN COALESCE($COLUMN{current_amount},0) > 25000000 AND COALESCE($COLUMN{current_amount},0) <= 50000000 THEN 1 ELSE 0 END)"
-            },
-            "g10m_le25m_count": {
-                "function": "SUM(CASE WHEN COALESCE($COLUMN{current_amount},0) > 10000000 AND COALESCE($COLUMN{current_amount},0) <= 25000000 THEN 1 ELSE 0 END)"
-            },
-            "ge1m_le10m_count": {
-                "function": "SUM(CASE WHEN COALESCE($COLUMN{current_amount},0) >= 1000000 AND COALESCE($COLUMN{current_amount},0) <= 10000000 THEN 1 ELSE 0 END)"
-            },
-            "less1m_count": {
-                "function": "SUM(CASE WHEN COALESCE($COLUMN{current_amount},0) < 1000000 THEN 1 ELSE 0 END)"
             }
         },
         "agreement_snapshot_oge": {
