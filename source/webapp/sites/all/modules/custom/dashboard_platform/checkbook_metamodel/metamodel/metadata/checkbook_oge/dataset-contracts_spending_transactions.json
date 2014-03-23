@@ -9,6 +9,16 @@
                     "key":true
                 }
             ]
+        },
+        "oge_spending_contract": {
+            "datasourceName": "main",
+            "source": "oge_contract",
+            "columns":[
+                {
+                    "name":"fms_contract_number",
+                    "key":true
+                }
+            ]
         }
     },
     "cubes":   {
@@ -90,6 +100,16 @@
                             "name": "document_code",
                             "datasetName": "ref_document_code",
                             "sourceColumnName": "document_code_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "abc",
+                    "levels": [
+                        {
+                            "name": "abc",
+                            "datasetName": "oge_spending_contract",
+                            "sourceColumnName": "disb_contract_number"
                         }
                     ]
                 }
