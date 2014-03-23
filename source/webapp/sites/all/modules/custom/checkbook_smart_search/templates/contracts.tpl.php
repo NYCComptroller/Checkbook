@@ -23,17 +23,25 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
    }
 
     if(strtolower($contracts_results['contract_category_name']) == 'expense'){
-        $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". _getFiscalYearID() .'/vendor/'.$contracts_results['vendor_id'];
-        if($IsOge)
+        if($IsOge){
+            $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/". _getFiscalYearID() .'/vendor/'.$contracts_results['vendor_id'];
             $agency_link = "/contracts_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/"._getFiscalYearID().'/agency/'.$contracts_results['agency_id'];
-        else $agency_link = "/contracts_landing/status/" .$status."/yeartype/B/year/"._getFiscalYearID().'/agency/'.$contracts_results['agency_id'];
+        }
+        else {
+            $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". _getFiscalYearID() .'/vendor/'.$contracts_results['vendor_id'];
+            $agency_link = "/contracts_landing/status/" .$status."/yeartype/B/year/"._getFiscalYearID().'/agency/'.$contracts_results['agency_id'];
+        }
         $contract_Id_link = "/contracts_landing/status/" .$status;
 
     }else{
-        $vendor_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/year/"._getFiscalYearID() .'/vendor/'.$contracts_results['vendor_id'];
-        if($IsOge)
+        if($IsOge){
+            $vendor_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/"._getFiscalYearID() .'/vendor/'.$contracts_results['vendor_id'];
             $agency_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/"._getFiscalYearID().'/agency/'.$contracts_results['agency_id'];
-        else $agency_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/year/"._getFiscalYearID().'/agency/'.$contracts_results['agency_id'];
+        }
+        else{
+            $vendor_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/year/"._getFiscalYearID() .'/vendor/'.$contracts_results['vendor_id'];
+            $agency_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/year/"._getFiscalYearID().'/agency/'.$contracts_results['agency_id'];
+        }
         $contract_Id_link = "/contracts_revenue_landing/status/" .$status;
     }
 
