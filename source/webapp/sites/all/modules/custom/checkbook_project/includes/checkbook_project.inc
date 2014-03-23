@@ -464,6 +464,10 @@ function _checkbook_project_get_name_for_argument($keyword,$id){
               $contracts = _checkbook_project_querydataset('checkbook:history_master_agreement',array('contract_number','master_agreement_id'),array($keyword=>$id));
               return ucwords(strtolower($contracts[0]['contract_number']));
               break;
+        case "document_code":
+            $agencies = _checkbook_project_querydataset('checkbook:ref_document_code',array('document_code','document_code_id'),array($keyword=>$id));
+            return htmlentities(ucwords(strtolower($agencies[0]['document_code_id'])));
+            break;
 
 		default:
 			return $id;
@@ -500,7 +504,7 @@ function _checkbook_project_querydataset($dataset,$columns,$parameters = null){
  * @param $contractType Contract Type
  * @return array adjusted parameters
  */
-function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,$contractType){
+function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,$contractType, $dimension = null){
 
     //$contractCategoryParam = 'contcat';
     $contractStatusParam = 'contstatus';
@@ -540,13 +544,27 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
                $data_controller_instance = data_controller_get_operator_factory_instance();
                $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
                $leCondition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
-               $parameters['starting_year_id']= $leCondition;
-               $parameters['ending_year_id']= $geCondition;
+               if(isset($dimension)){
+                   $parameters[$dimension .'.'.$dimension.'.starting_year_id']= $leCondition;
+                   $parameters[$dimension .'.'.$dimension.'.ending_year_id']= $geCondition;
+               }else{
+                   $parameters['starting_year_id']= $leCondition;
+                   $parameters['ending_year_id']= $geCondition;
+               }
                if($contractStatus=='R'){
-                   $parameters['registered_year_id']= array($reqYear);
+                   if(isset($dimension))
+                        $parameters[$dimension .'.'.$dimension.'.registered_year_id']= array($reqYear);
+                   else
+                       $parameters['registered_year_id']= array($reqYear);
                }else if($contractStatus=='A'){
-                   $parameters['effective_begin_year_id']= $leCondition;
-                   $parameters['effective_end_year_id']= $geCondition;
+                       if(isset($dimension)){
+                           $parameters[$dimension .'.'.$dimension.'.effective_begin_year_id']= $leCondition;
+                           $parameters[$dimension .'.'.$dimension.'.effective_end_year_id']= $geCondition;
+                       }else{
+                           $parameters['effective_begin_year_id']= $leCondition;
+                           $parameters['effective_end_year_id']= $geCondition;
+                       }
+
                }
            }
 
