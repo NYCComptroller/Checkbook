@@ -6,7 +6,12 @@
         },
         "oge_contract_contract": {
             "datasourceName": "main",
-            "source": "oge_contract"
+            "source": "oge_contract",
+            "columns": [
+                {
+                    "name": "fms_contract_number",
+                    "key": true}
+            ]
         }
      },
     "cubes": {
