@@ -1060,8 +1060,10 @@ function widget_merge_config($parent_config, $child_config){
       unset($child_config->cleanURLParameters[$key]);
     }
   }
-  
-  $child_config->dataset = $parent_config->dataset;
+
+  if(!isset($child_config->dataset)){
+    $child_config->dataset = $parent_config->dataset;
+  }
   return (object) $child_config;
 }
 
