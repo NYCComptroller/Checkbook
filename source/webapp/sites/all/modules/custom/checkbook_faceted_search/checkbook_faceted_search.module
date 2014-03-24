@@ -342,7 +342,6 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
 
     $subCat = array();
 
-
     foreach($facets as $key=>$value)
     {
         if(!array_key_exists($key,$facetDisplayNames)) continue; // we only want certain facets shown
@@ -376,6 +375,9 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
             {
                 $checked = in_array($name, array_values_recursive($selected_filters[$key]));
                 if ($checked) {
+                    foreach($selected_filters[$key] as $k=>$va) // remove all values we check from the selected array
+                        if($va['name'] == $name);
+                            unset($selected_filters[$key][$k]);
                     $output[$facetDisplayNames[$key]]['checked'][] = array(urlencode($name), $name, $count);
                 }
                 else {
@@ -385,6 +387,10 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
         }
         if($output[$facetDisplayNames[$key]])
             $output[$facetDisplayNames[$key]]['name'] = $facetNames[$key];
+        //Now we must check any remaining selected facets (yes, yes, they do exist)
+        foreach($selected_filters[$key] as $v)
+            if($v['count'] > 0)
+                $output[$facetDisplayNames[$key]]['checked'][] = array(urlencode($v['name']), $v['name'], $v['count']);
     }
 
 
