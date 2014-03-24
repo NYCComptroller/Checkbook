@@ -1,0 +1,43 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":641,
+    "no_results_content":"No Results Found",
+    "defaultParameters":{
+        "edc_no_vendor.edc_no_vendor.status_flag":"A"
+    },
+    "limit":10,
+    "startWith":0,
+    "urlParamMap":{
+    				"doctype":"document_code.document_code.document_code",
+    			    "contstatus":"edc_no_vendor.edc_no_vendor.status_flag",
+    			    "calyear":"edc_no_vendor.edc_no_vendor.fiscal_year_id",
+    			    "year":"edc_no_vendor.edc_no_vendor.fiscal_year_id",
+    			    "yeartype":"edc_no_vendor.edc_no_vendor.type_of_year",
+    			    "vendor":"vendor_id",
+        "agency":"edc_no_vendor.edc_no_vendor.agency_id",
+                            "display_agency":"edc_no_vendor.edc_no_vendor.display_agency_id"
+
+    			  }  ,
+    "columns":["industry.industry", "industry.industry.industry_type_name", "txcount"],
+    "orderBy":"-txcount",
+	"getTotalDataCount":true,
+	"facetPager":true,
+    "filterName":"Contract Industry",
+    "urlParameterName":"cindustry",
+    "autocompleteParamName":"cindustry_auto",
+    "autocompleteID":"fIndustryTypeId",
+    "autocompleteField":"industry_type_name",
+    "adjustParameters":"
+	checkbook_faceted_search_adjust_param($node);
+    if(function_exists('_checkbook_project_adjustContractParameterFilters')){
+        _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
+    }
+    if(function_exists('_checkbook_project_applyParameterFilters')){
+        $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        $adjustedParameters['industry.industry'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+        return $adjustedParameters;
+    }
+    return $parameters;
+    ",
+    "template":"individual_filter"
+}

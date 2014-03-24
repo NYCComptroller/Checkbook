@@ -1,0 +1,42 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":641,
+    "no_results_content":"No Results Found",
+    
+    "defaultParameters":{
+        "edc_no_vendor.edc_no_vendor.status_flag":"A"
+    },
+    "startWith":0,
+    "urlParamMap":{
+    				"doctype":"document_code.document_code.document_code",
+    			    "contstatus":"edc_no_vendor.edc_no_vendor.status_flag",
+    			    "calyear":"edc_no_vendor.edc_no_vendor.fiscal_year_id",
+    			    "year":"edc_no_vendor.edc_no_vendor.fiscal_year_id",
+    			    "yeartype":"edc_no_vendor.edc_no_vendor.type_of_year",
+                    "vendor":"vendor_id",
+                    "agency":"edc_no_vendor.edc_no_vendor.agency_id",
+                    "display_agency":"edc_no_vendor.edc_no_vendor.display_agency_id"
+    			  }  ,
+    "columns":["agency.agency", "agency.agency.agency_name", "txcount"],
+    "orderBy":"-txcount",    
+	"getTotalDataCount":true,    
+	"facetPager":true,   
+    "filterName":"Agency",
+    "urlParameterName":"display_agency",
+    "autocompleteParamName":"agency_auto",    
+    "autocompleteID":"fagencyId",
+    "autocompleteField":"agency_name", 	
+	"maxSelect":1,        	         
+    "adjustParameters":"
+    if(function_exists('_checkbook_project_adjustContractParameterFilters')){
+        _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
+    }
+    if(function_exists('_checkbook_project_applyParameterFilters')){
+        $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        $adjustedParameters['agency.agency'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+        return $adjustedParameters;
+    }
+    return $parameters;
+    ",       
+    "template":"individual_filter"
+}
