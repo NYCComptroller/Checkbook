@@ -59,6 +59,16 @@
                     ]
                 },
                 {
+                    "name": "edc_no_vendor",
+                    "levels": [
+                        {
+                            "name": "edc_no_vendor",
+                            "datasetName": "edc_contracts_coa_aggregates_no_vendor",
+                            "sourceColumnName": "original_agreement_id"
+                        }
+                    ]
+                },
+                {
                     "name": "industry",
                     "levels": [
                         {
