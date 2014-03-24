@@ -23,7 +23,7 @@ $sql=
 
 function _checkbook_alerts_transactions(){
   if(!isset($_GET['alert_email'])){
-    $errors['errors'][]="No email address was sent.";
+    $errors['errors'][]="No email is entered.";
   }
   if(!isset($_GET['refURL'])){
     $errors['errors'][]="No search was selected.";
@@ -32,8 +32,10 @@ function _checkbook_alerts_transactions(){
     $errors['errors'][]="No user url.";
   }
   if(!isset($_GET['alert_label'])){
-    $errors['errors'][]="No alert label.";
+    $errors['errors'][]="No Description has been set.";
   }
+  if(isset($_GET['alert_end[date]']) && !strtotime($_GET['alert_end[date]']))
+    $errors['errors'][] = "Invalid date entered.";
   if(isset($errors)){
     $errors['success']=false;
     echo json_encode($errors);
