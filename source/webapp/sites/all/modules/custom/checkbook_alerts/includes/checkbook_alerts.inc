@@ -117,21 +117,21 @@ function _checkbook_alerts_alertFrequency($days){
 }
 
 function _checkbook_alerts_process_email($alerts){
-  $module="checkbook_alerts";
-  $key=md5(date("Y-m-d H:i:s"));
+  //$module="checkbook_alerts";
+  //$key=md5(date("Y-m-d H:i:s"));
   $msg=theme('checkbook_alerts_email_theme',array(
     'alerts'=>$alerts
   ));
 
-  $message=drupal_mail($module,$key,$alerts[0]->recipient,language_default(),array(),"",false);
+  //$message=drupal_mail($module,$key,$alerts[0]->recipient,language_default(),array(),"",false);
 
-  $message['subject']="Checkbook NYC Alert";
-  $message['body'][] = $msg;
+  //$message['subject']="Checkbook NYC Alert";
+  //$message['body'][] = $msg;
+  mail($alerts[0]->recipient,"Checkbook NYC Alert",$msg,"From: checkbook@reisys.com\r\nContent-Type: text/html;");
+  //$system=drupal_mail_system($module,$key);
+  //$message=$system->format($message);
 
-  $system=drupal_mail_system($module,$key);
-  $message=$system->format($message);
-
-  $message['result']=$system->mail($message);
+  //$message['result']=$system->mail($message);
 }
 
 function _checkbook_alerts_process_twitter($alert){
