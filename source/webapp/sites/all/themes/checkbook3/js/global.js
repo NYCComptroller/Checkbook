@@ -533,17 +533,17 @@ function addPaddingToDataCells(table){
 
     Drupal.behaviors.alertTransactions = {
         attach:function (context, settings) {
-// The span.alert is the object in Drupal to which you link the click button, I don’t know how it is actually named for the alert 
+// The span.alert is the object in Drupal to which you link the click button, I donï¿½t know how it is actually named for the alert 
             $('span.alerts').live("click", function () {
                 var dialog = $("#dialog");
                 if ($("#dialog").length == 0) {
                     dialog = $('<div id="dialog" style="display:none"></div>');
                 }
 
-// This is where you add the alerted table to which you link the output data from '/alert/transactions/form’
+// This is where you add the alerted table to which you link the output data from '/alert/transactions/formï¿½
                 var oSettings = $('#table_'+$(this).attr('alertsid')).dataTable().fnSettings();
 
- // This is the part where we get the data from to show in the dialogue we open, I don’t know if you process the following parameters  maxPages , record and so on but it won’t hurt if it stayed here
+ // This is the part where we get the data from to show in the dialogue we open, I donï¿½t know if you process the following parameters  maxPages , record and so on but it wonï¿½t hurt if it stayed here
                 var dialogUrl = '/alert/transactions/form';
  
 var validateEmail=function(email) { 
@@ -580,19 +580,23 @@ $("input[name='alert_end[date]']").datepicker({"changeMonth":true,"changeYear":t
                                     var alertMinimumResults = $('input[name=alert_minimum_results]').val();
                                     var alertMinimumDays = $('select[name=alert_minimum_days]').val();
                                     var alertEnd = $("input[name='alert_end[date]']").val();
+                                    var dateRegEx = '[0-9]{4,4}-[0-1][0-9]-[0-3][0-9]';
 
                                     var alertMsgs = [];
                                     if(alertLabel.length<1){
-                                      alertMsgs.push("No label has been set.");
+                                      alertMsgs.push("No Description has been set.");
                                     }
                                     if(alertEmail.length<1 || !validateEmail(alertEmail)){
-                                      alertMsgs.push("No email entered.");
+                                      alertMsgs.push("No email is entered.");
                                     }
                                     if(!isNumber(alertMinimumResults) || alertMinimumResults<1){
                                       alertMsgs.push("Minimum results is not a valid number.");
                                     }
                                     if(!isNumber(alertMinimumDays) || alertMinimumDays<1){
                                       alertMsgs.push("Alert frequency is not valid.");
+                                    }
+                                    if((alertEnd.length > 1 && alertEnd.length != 10) || (alertEnd.length > 1 && !alertEnd.match(dateRegEx))){
+                                        alertMsgs.push("Expiration Date is not valid.");
                                     }
  
                                     if (alertMsgs.length > 0) {
