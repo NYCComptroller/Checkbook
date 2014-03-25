@@ -25,15 +25,15 @@
 "html_class": "initiative-table",
 "no_results_content":"No Results Found",
 "dataset": "checkbook:contracts_spending_transactions",
-"columns": ["fms_commodity_line@checkbook:oge_contract_contract","budget_name@checkbook:oge_contract_contract",
-            "oge_contract_number@checkbook:oge_contract_contract","disb_disbursement_number","disb_vendor_name",
+"columns": ["disb_agreement_commodity_line_number","oge_budget_name",
+            "oge_contract_number","disb_disbursement_number","disb_vendor_name",
             "disb_check_eft_issued_date","disb_agency_name","disb_department_short_name","disb_check_amount",
             "disb_expenditure_object_name","disb_budget_name","disb_contract_number","disb_purpose","disb_reporting_code",
             "disb_spending_category_name","disb_agency_id","disb_vendor_id","disb_expenditure_object_id","disb_department_id",
             "disb_spending_category_id","disb_agreement_id","document_code@checkbook:ref_document_code"],
-"columns_datasource":{"fms_commodity_line@checkbook:oge_contract_contract":"checkbook_oge",
-                      "oge_contract_number@checkbook:oge_contract_contract":"checkbook_oge",
-                      "budget_name@checkbook:oge_contract_contract":"checkbook_oge"},
+"columns_datasource":{"disb_agreement_commodity_line_number":"checkbook_oge",
+                      "oge_contract_number":"checkbook_oge",
+                      "oge_budget_name":"checkbook_oge"},
 "caption":"",
 "derivedColumns": {
        "agency_name_formatted":{
@@ -145,17 +145,17 @@
         {
            "labelAlias":"entity_contact_num",
            "datasource": "checkbook_oge",
-           "column":"oge_contract_number@checkbook:oge_contract_contract"
+           "column":"oge_contract_number"
         },
         {
           "labelAlias": "commodity_line",
           "datasource": "checkbook_oge",
-          "column": "fms_commodity_line@checkbook:oge_contract_contract"
+          "column": "disb_agreement_commodity_line_number"
         },
         {
             "labelAlias":"budget_name",
             "datasource": "checkbook_oge",
-            "column":"budget_name@checkbook:oge_contract_contract"
+            "column":"oge_budget_name"
         }
 	  ],
 "adjustParameters":"
@@ -168,16 +168,6 @@
             $adjustedParameters = $parameters;
             if(function_exists('_checkbook_project_applyParameterFilters')){
                   $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-            }
-
-            //Using child_contract_agency_id column in OGE domainO
-            if(_checkbook_check_isEDCPage()){
-                foreach($adjustedParameters as $key=>$value){
-                    if($key == 'document_agency_id'){
-                       $adjustedParameters['agency_id@checkbook:oge_contract_contract'] = $value;
-                       unset($adjustedParameters[$key]);
-                    }
-                }
             }
             return $adjustedParameters;
 ",
