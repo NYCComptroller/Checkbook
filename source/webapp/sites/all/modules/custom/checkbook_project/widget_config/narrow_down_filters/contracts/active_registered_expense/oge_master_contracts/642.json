@@ -17,15 +17,15 @@
                     "agency":"edc_no_vendor.edc_no_vendor.agency_id",
                     "display_agency":"edc_no_vendor.edc_no_vendor.display_agency_id"
     			  }  ,
-    "columns":["agency.agency", "agency.agency.agency_name", "txcount"],
+    "columns":["edc_no_vendor.edc_no_vendor.display_agency_id", "agency.agency.agency_name", "txcount"],
     "orderBy":"-txcount",    
 	"getTotalDataCount":true,    
 	"facetPager":true,   
     "filterName":"Agency",
     "urlParameterName":"display_agency",
-    "autocompleteParamName":"agency_auto",    
-    "autocompleteID":"fagencyId",
-    "autocompleteField":"agency_name", 	
+    "autocompleteParamName":"display_agency_auto",
+    "autocompleteID":"fdisplayagencyId",
+    "autocompleteField":"display_agency_name",
 	"maxSelect":1,        	         
     "adjustParameters":"
     if(function_exists('_checkbook_project_adjustContractParameterFilters')){
@@ -33,7 +33,7 @@
     }
     if(function_exists('_checkbook_project_applyParameterFilters')){
         $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-        $adjustedParameters['agency.agency'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+        $adjustedParameters['edc_no_vendor.edc_no_vendor.display_agency_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
         return $adjustedParameters;
     }
     return $parameters;
