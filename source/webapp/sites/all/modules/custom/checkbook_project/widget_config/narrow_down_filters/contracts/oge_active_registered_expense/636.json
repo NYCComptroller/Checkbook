@@ -2,37 +2,12 @@
     "widgetType":"phpparser",
     "parentNid":634,
     "no_results_content":"No Results Found",
-    "defaultParameters":{
-        "cum_spend.cum_spend.status_flag":"A"
-    },
     "limit":10,
     "startWith":0,
     "urlParamMap":{
-        "contstatus":"cum_spend.cum_spend.status_flag" ,
-        "year":"cum_spend.cum_spend.fiscal_year_id",
-        "calyear":"cum_spend.cum_spend.fiscal_year_id",
-        "yeartype":"cum_spend.cum_spend.type_of_year" ,
-        "agency":"cum_spend.cum_spend.agency_id",
-        "contdesc":"agreement_snapshot.agreement_snapshot.description",
-        "agrmnttype":"agreement_snapshot.agreement_snapshot.agreement_type_id",
-        "agencyh":"agreement_snapshot.agreement_snapshot.agency_history_id",
-        "contnum":"agreement_snapshot.agreement_snapshot.contract_number",
-        "aptpin":"agreement_snapshot.agreement_snapshot.brd_awd_no",
-        "pin":"agreement_snapshot.agreement_snapshot.tracking_number",
-        "awdmethod":"agreement_snapshot.agreement_snapshot.award_method_id",
-        "startdate":"agreement_snapshot.agreement_snapshot.effective_begin_date",
-        "enddate":"agreement_snapshot.agreement_snapshot.effective_end_date",
-        "regdate":"agreement_snapshot.agreement_snapshot.registered_date",
-        "cindustry":"agreement_snapshot.agreement_snapshot.industry_type_id",
-        "csize":"agreement_snapshot.agreement_snapshot.award_size_id",
-        "modamt":"agreement_snapshot.agreement_snapshot.dollar_difference",
-        "vendor":"vendor_id.vendor_id",
-        "curamtr":"current_amount",
-        "curamt":"current_amount",
-        "vendornm":"vendor_name.vendor_name"
+        "doctype":"document_code.document_code.document_code"
      },
-    "dataset":"checkbook:oge_contract_contract",
-    "columns":["vendor_id.vendor_id", "vendor_name.vendor_name", "txcount"],
+    "columns":["vendor.vendor", "vendor.vendor.legal_name", "txcount"],
     "orderBy":"-txcount",
 	"getTotalDataCount":true,
 	"facetPager":true,
@@ -45,20 +20,11 @@
     "adjustParameters":"
 	checkbook_faceted_search_adjust_param($node);
     if(function_exists('_checkbook_project_adjustContractParameterFilters')){
-        _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered','agreement_snapshot');
-    }
-    foreach($parameters as $key=>$value){
-       if($key == 'document_code@checkbook:ref_document_code' || $key == 'document_code.document_code.document_code'){
-           foreach($value as $a=>$b){
-               $value[$a] = _checkbook_project_get_name_for_argument('document_code',$b);
-           }
-           $parameters['agreement_snapshot.agreement_snapshot.document_code_id'] = $value;
-           unset($parameters[$key]);
-       }
+        _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
     }
     if(function_exists('_checkbook_project_applyParameterFilters')){
         $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-		$adjustedParameters['vendor_id.vendor_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+		$adjustedParameters['vendor.vendor'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
         return $adjustedParameters;
     }
     return $parameters;

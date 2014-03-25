@@ -2,24 +2,11 @@
     "widgetType":"phpparser",
     "parentNid":634,
     "no_results_content":"No Results Found",
-
-    "defaultParameters":{
-        "oge_child_transactions.oge_child_transactions.status_flag":"A"
-    },
     "limit":10,
     "startWith":0,
     "urlParamMap":{
-        "doctype":"document_code.document_code.document_code",
-        "contstatus":"oge_child_transactions.oge_child_transactions.status_flag",
-        "calyear":"oge_child_transactions.oge_child_transactions.fiscal_year_id",
-        "year":"oge_child_transactions.oge_child_transactions.fiscal_year_id",
-        "yeartype":"oge_child_transactions.oge_child_transactions.type_of_year",
-        "agency":"oge_child_transactions.oge_child_transactions.agency_id",
-        "vendor":"oge_contract.oge_contract.vendor_id",
-        "vendornm":"oge_contract.oge_contract.vendor_name",
-        "curamt":"oge_contract.oge_contract.current_amount",
-         "curamtr":"oge_contract.oge_contract.current_amount"
-    }  ,
+        "doctype":"document_code.document_code.document_code"
+    },
     "columns":["award_method.award_method", "award_method.award_method.award_method_name", "txcount"],
     "orderBy":"-txcount",
 	"getTotalDataCount":true,
