@@ -2,7 +2,7 @@
     "datasets": {
         "agreement_snapshot_oge": {
             "datasourceName": "main",
-            "source": "agreement_snapshot",
+            "source": "contracts_detailed_transactions",
             "columns": [
                 {
                     "name": "contract_number",
@@ -20,73 +20,6 @@
         }
      },
     "cubes": {
-        "oge_contract_contract": {
-            "sourceDatasetName": "oge_contract_contract",
-            "dimensions": [
-                {
-                    "name": "vendor_id",
-                    "levels": [
-                            {
-                                "name": "vendor_id",
-                                "sourceColumnName": "vendor_id"
-                            }
-                    ]
-                },
-                {
-                    "name": "vendor_name",
-                    "levels": [
-                            {
-                                "name": "vendor_name",
-                                "sourceColumnName": "vendor_name"
-                            }
-                    ]
-                },
-                {
-                    "name": "agreement_snapshot",
-                    "levels": [
-                            {
-                                "name": "agreement_snapshot",
-                                "datasetName": "agreement_snapshot_oge",
-                                "sourceColumnName": "fms_contract_number"
-                            }
-                    ]
-                },
-                {
-                    "name": "cum_spend",
-                    "levels": [
-                            {
-                                "name": "cum_spend",
-                                "datasetName": "contracts_coa_aggregates_oge",
-                                "sourceColumnName": "fms_contract_number"
-                            }
-                    ]
-                }
-
-            ],
-            "measures": {
-                "txcount": {
-                    "function": "COUNT(*)"
-                },
-                "g100m_count": {
-                    "function": "SUM(CASE WHEN COALESCE($COLUMN{current_amount},0) > 100000000 THEN 1 ELSE 0 END)"
-                },
-                "g50m_le100m_count": {
-                    "function": "SUM(CASE WHEN COALESCE($COLUMN{current_amount},0) > 50000000 AND COALESCE($COLUMN{current_amount},0) <= 100000000 THEN 1 ELSE 0 END)"
-                },
-                "g25m_le50m_count": {
-                    "function": "SUM(CASE WHEN COALESCE($COLUMN{current_amount},0) > 25000000 AND COALESCE($COLUMN{current_amount},0) <= 50000000 THEN 1 ELSE 0 END)"
-                },
-                "g10m_le25m_count": {
-                    "function": "SUM(CASE WHEN COALESCE($COLUMN{current_amount},0) > 10000000 AND COALESCE($COLUMN{current_amount},0) <= 25000000 THEN 1 ELSE 0 END)"
-                },
-                "ge1m_le10m_count": {
-                    "function": "SUM(CASE WHEN COALESCE($COLUMN{current_amount},0) >= 1000000 AND COALESCE($COLUMN{current_amount},0) <= 10000000 THEN 1 ELSE 0 END)"
-                },
-                "less1m_count": {
-                    "function": "SUM(CASE WHEN COALESCE($COLUMN{current_amount},0) < 1000000 THEN 1 ELSE 0 END)"
-                }
-            }
-        },
         "agreement_snapshot_oge": {
             "sourceDatasetName": "agreement_snapshot_oge",
             "dimensions": [
@@ -198,7 +131,7 @@
             {"datasetName": "agreement_snapshot_oge", "columnNames": ["original_agreement_id"]},
             {"datasetName": "contracts_coa_aggregates", "columnNames": ["original_agreement_id"]}
         ],
-        "agreement_snapshot__ref_document_code": [
+        "contracts_detailed_transactions__ref_document_code": [
             {"datasetName": "agreement_snapshot_oge", "columnNames": ["document_code_id"]},
             {"datasetName": "ref_document_code", "columnNames": ["document_code_id"]}
         ],
