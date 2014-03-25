@@ -39,10 +39,20 @@ function checkbook_custom_breadcrumbs_page_alter(&$page) {
   }elseif( preg_match('/^revenue/',current_path())){
         _set_revenue_breadcrumb_title_drilldown();
   }
+  elseif( preg_match('/^alert/',current_path())){
+      _set_alert_breadcrumb_title_drilldown();
+  }
 
   _checkbook_custom_breadcrumnb_add_breadcrumb_title();
 }
 
+/**
+ * Custom function to set title for alert landing pages
+ **/
+function _set_alert_breadcrumb_title_drilldown(){
+    $links = array(l(t('Home'), ''),'Alerts');
+    drupal_set_breadcrumb($links);
+}
 
 /**
 * Custom function to set title for contracts landing pages

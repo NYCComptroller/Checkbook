@@ -22,25 +22,6 @@ $sql=
 }
 
 function _checkbook_alerts_transactions(){
-  if(!isset($_GET['alert_email'])){
-    $errors['errors'][]="No email is entered.";
-  }
-  if(!isset($_GET['refURL'])){
-    $errors['errors'][]="No search was selected.";
-  }
-  if(!isset($_GET['userURL'])){
-    $errors['errors'][]="No user url.";
-  }
-  if(!isset($_GET['alert_label'])){
-    $errors['errors'][]="No Description has been set.";
-  }
-  if(isset($_GET['alert_end[date]']) && !strtotime($_GET['alert_end[date]']))
-    $errors['errors'][] = "Invalid date entered.";
-  if(isset($errors)){
-    $errors['success']=false;
-    echo json_encode($errors);
-    return;
-  }
 
   if(!isset($_GET['alert_minimum_results'])){
     $_GET['alert_minimum_results']=1;
@@ -95,7 +76,7 @@ function _checkbook_alerts_transactions(){
   );
 
   $module="checkbook_alerts";
-  $key=md5(date());
+  $key=md5(date("Y-m-d H:i:s"));
   $msg=theme('checkbook_alerts_activate_theme',$subData);
 
   $message=drupal_mail($module,$key,$_GET['alert_email'],language_default(),array(),"",false);
@@ -106,7 +87,7 @@ function _checkbook_alerts_transactions(){
   $system=drupal_mail_system($module,$key);
   $message=$system->format($message);
 
-  $message['result']=$system->mail($message);
+  $system->mail($message);
 
   $res=array(
     "success"=>true,
