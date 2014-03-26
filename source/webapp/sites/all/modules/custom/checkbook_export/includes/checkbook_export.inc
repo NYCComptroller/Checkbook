@@ -47,7 +47,7 @@ function _checkbook_export_grid_transactions(){
         }
 
         if($i == 0)
-            $data .= '"'.$label.'"';
+            $data .= $label;
         else{
             $data .= ',"'.$label.'"';
         }
@@ -124,7 +124,7 @@ function _checkbook_export_transactions(){
             (isset($column->colLabel) ? $column->colLabel : $column->label);
 
         if($i == 0){
-            $data .= '"'.$label.'"';
+            $data .= $label;
         }else{
             $data .= ',"'.$label.'"';
         }
