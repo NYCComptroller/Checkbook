@@ -36,11 +36,9 @@ $tooltip = "";
 }
 
 if(strtolower($filter_name) == 'agency'){
-    if(_checkbook_check_isEDCPage()){
-        $filter_name = 'Other Government Entity';
-    }else{
-        $filter_name = 'Citywide Agency';
-    }
+
+     $filter_name = 'Citywide Agency';
+
 }
 ?>
 <div class="filter-content <?php if( $hide_filter != "") print "disabled"; ?>"><div <?php print $hide_filter; ?>>
