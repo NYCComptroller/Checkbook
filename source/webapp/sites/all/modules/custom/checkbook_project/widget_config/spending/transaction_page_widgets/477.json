@@ -148,15 +148,16 @@
            "column":"oge_contract_number"
         },
         {
-          "labelAlias": "commodity_line",
-          "datasource": "checkbook_oge",
-          "column": "disb_agreement_commodity_line_number"
-        },
-        {
             "labelAlias":"budget_name",
             "datasource": "checkbook_oge",
             "column":"oge_budget_name"
+        },
+        {
+          "labelAlias": "commodity_line",
+          "datasource": "checkbook_oge",
+          "column": "disb_agreement_commodity_line_number"
         }
+
 	  ],
 "adjustParameters":"
 
