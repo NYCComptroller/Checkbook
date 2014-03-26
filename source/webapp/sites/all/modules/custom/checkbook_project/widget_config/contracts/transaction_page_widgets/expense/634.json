@@ -357,11 +357,11 @@
 			sOut += '<td class=\"text\"  style=\"width:145px\">'+ (row[18] == null ? '': row[18])+'</td>';
 			sOut += '<td class=\"text\" style=\"width:360px;\">'+ (row[19] == null ? '': row[19])+'</td>';
 			sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[20] == null ? '': row[20])+'</td>';
-                if(_checkbook_check_isEDCPage()){
+                //if(_checkbook_check_isEDCPage()){
                     sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[21] == null ? '': row[21])+'</td>';
                     sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[22] == null ? '': row[22])+'</td>';
                     sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[23] == null ? '': row[23])+'</td>';
-                }
+                //}
                   }else{
                         sOut += '<tr>';
 			sOut += '<td  style=\"width:10px\">'+ '&nbsp;'+'</td>';                        
@@ -383,11 +383,11 @@
 			sOut += '<td class=\"text\"  style=\"width:145px\">'+ (row[18] == null ? '': row[18])+'</td>';
 			sOut += '<td class=\"text\"  style=\"width:360px\">'+ (row[19] == null ? '': row[19])+'</td>';
 			sOut += '<td class=\"text\"  style=\"width:180px;\">'+ (row[20] == null ? '': row[20])+'</td>';
-                      if(_checkbook_check_isEDCPage()){
+                      //if(_checkbook_check_isEDCPage()){
                           sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[21] == null ? '': row[21])+'</td>';
                           sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[22] == null ? '': row[22])+'</td>';
                           sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[23] == null ? '': row[23])+'</td>';
-                      }
+                      //}
                      }
                         sOut += '</tr>';
                     }

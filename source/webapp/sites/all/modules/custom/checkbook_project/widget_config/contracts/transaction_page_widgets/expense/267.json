@@ -156,21 +156,21 @@
 	    {"labelAlias": "reg_date","column": "registered_date"},
 	    {"labelAlias": "pin","column": "tracking_number"},
 	    {"labelAlias": "apt_pin","column": "brd_awd_no"},
-	            {
-	               "labelAlias":"entity_contact_num",
-	               "datasource": "checkbook_oge",
-	               "column":"oge_contract_number@checkbook:oge_contract_contract"
-	            },
-                {
-	                "labelAlias":"budget_name",
-	                "datasource": "checkbook_oge",
-	                "column":"budget_name@checkbook:oge_contract_contract"
-	            },
-                {
-	              "labelAlias": "commodity_line",
-	              "datasource": "checkbook_oge",
-	              "column": "fms_commodity_line@checkbook:oge_contract_contract"
-	            }
+        {
+           "labelAlias":"entity_contact_num",
+           "datasource": "checkbook_oge",
+           "column":"oge_contract_number@checkbook:oge_contract_contract"
+        },
+        {
+            "labelAlias":"budget_name",
+            "datasource": "checkbook_oge",
+            "column":"budget_name@checkbook:oge_contract_contract"
+        },
+        {
+          "labelAlias": "commodity_line",
+          "datasource": "checkbook_oge",
+          "column": "fms_commodity_line@checkbook:oge_contract_contract"
+        }
 	  ],
 "adjustParameters":"
            if(function_exists('_checkbook_project_adjustContractParameterFilters')){
