@@ -17,7 +17,7 @@
                     "regdate":"registered_date","cindustry":"industry_type_id",
                     "csize":"award_size_id","modamt":"dollar_difference"},
 	"paramTypeConfig":{"vendornm":"like","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","regdate":"range","modamt":"ne"},
-	"defaultParameters":{"oge_child_transactions.oge_child_transactions.status_flag":"A"},
+	"defaultParameters":{"status_flag":"A"},
 "dataset": "checkbook:agreement_snapshot_oge",
 "columns": ["total_maximum_contract_amount"],
 "adjustParameters":"
