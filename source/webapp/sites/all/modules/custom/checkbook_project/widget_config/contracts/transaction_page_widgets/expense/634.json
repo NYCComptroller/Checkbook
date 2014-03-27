@@ -44,7 +44,7 @@
          "child_contrats_link":{
 	      "type": "expression2",
               "expression": " ($row['has_children'] == 'Y') ? '<span id=dtl_expand class=\"toggler collapsed\"  magid=\"' . $row['original_agreement_id'] . '\" '
-                                . _checkbook_append_url_params()
+                                . ( _getRequestParamValue('datasource') != '' ?  ('datasource=\"' . _getRequestParamValue('datasource') . '\"' ) : '')
                                 . ( _getRequestParamValue('smnid') != '' ?  ('smnid=\"' . _getRequestParamValue('smnid') . '\"' ) : '')
                                 . ( _getRequestParamValue('year') != '' ?  ('year=\"' . _getRequestParamValue('year') . '\"' ) : '')
                                 . ( _getRequestParamValue('calyear') != '' ?  ('calyear=\"' . _getRequestParamValue('calyear') . '\"' ) : '')
@@ -74,6 +74,7 @@
                 "expression": "
                        '<a href=\"/spending/transactions'
                       .  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id']
+                      . _checkbook_append_url_params()
                       .  ( $row['type_of_year'] == 'B' ? ('/year/'. $row['fiscal_year_id'].'/syear/'. $row['fiscal_year_id']) : ('/calyear/'.$row['fiscal_year_id']. '/scalyear/'.$row['fiscal_year_id']) )
                       .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['spending_amount_disb']) . '</a>'
                   "
@@ -254,7 +255,7 @@
 		{"sClass":"text","sWidth":"145px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"360px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"180px","asSorting": [ "asc","desc" ]},
-{"sClass":"text number-left","sWidth":"125px","asSorting": [ "desc","asc" ],"datasource":"checkbook_oge"},
+        {"sClass":"text number-left","sWidth":"125px","asSorting": [ "desc","asc" ],"datasource":"checkbook_oge"},
 		{"sClass":"text","sWidth":"200px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"},
 		{"sClass":"number","sWidth":"100px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"}
       ],
@@ -357,11 +358,9 @@
 			sOut += '<td class=\"text\"  style=\"width:145px\">'+ (row[18] == null ? '': row[18])+'</td>';
 			sOut += '<td class=\"text\" style=\"width:360px;\">'+ (row[19] == null ? '': row[19])+'</td>';
 			sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[20] == null ? '': row[20])+'</td>';
-                //if(_checkbook_check_isEDCPage()){
                     sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[21] == null ? '': row[21])+'</td>';
                     sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[22] == null ? '': row[22])+'</td>';
                     sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[23] == null ? '': row[23])+'</td>';
-                //}
                   }else{
                         sOut += '<tr>';
 			sOut += '<td  style=\"width:10px\">'+ '&nbsp;'+'</td>';                        
@@ -383,11 +382,9 @@
 			sOut += '<td class=\"text\"  style=\"width:145px\">'+ (row[18] == null ? '': row[18])+'</td>';
 			sOut += '<td class=\"text\"  style=\"width:360px\">'+ (row[19] == null ? '': row[19])+'</td>';
 			sOut += '<td class=\"text\"  style=\"width:180px;\">'+ (row[20] == null ? '': row[20])+'</td>';
-                      //if(_checkbook_check_isEDCPage()){
                           sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[21] == null ? '': row[21])+'</td>';
                           sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[22] == null ? '': row[22])+'</td>';
                           sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[23] == null ? '': row[23])+'</td>';
-                      //}
                      }
                         sOut += '</tr>';
                     }
