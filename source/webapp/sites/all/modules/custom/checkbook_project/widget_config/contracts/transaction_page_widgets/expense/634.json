@@ -316,7 +316,7 @@
         //fallback for error
         magid = (magid == null || magid.length == 0) ?  '0' : magid;
 
-        var sUrl = '/dashboard_platform/data_tables/ajax_data/node/'+ (mastercode == 'MA1' ? '509' : '271') +'/magid/'+magid+'/contstatus/A/datasource/checkbook_oge';
+        var sUrl = '/dashboard_platform/data_tables/ajax_data/node/'+ (mastercode == 'MA1' ? '641' : '642') +'/magid/'+magid+'/contstatus/A/datasource/checkbook_oge';
         sUrl = sUrl + ( (year == null || year.length == 0) ?  '' : '/year/'+year);
         sUrl = sUrl + ( (calyear == null || calyear.length == 0) ?  '' : '/calyear/'+calyear);
         sUrl = sUrl + ( (yeartype == null || yeartype.length == 0) ?  '' : '/yeartype/'+yeartype);
