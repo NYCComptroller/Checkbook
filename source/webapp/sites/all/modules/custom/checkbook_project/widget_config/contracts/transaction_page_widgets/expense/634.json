@@ -335,7 +335,7 @@
                     for(i=0;i<dataLen;i++){
                         var row = data[i];
                         sOut += '<tr>';
-                            sOut += '<td  style=\"width:10px\">'+ '&nbsp;'+'</td>';
+                            sOut += '<td  style=\"width:30px\">'+ '&nbsp;'+'</td>';
                             sOut += '<td class=\"text\" style=\"width:180px\">'+ (row[1] == null ? '': row[1])+'</td>';
                             sOut += '<td class=\"text\"  style=\"width:210px\">'+ (row[2] == null ? '': row[2])+'</td>';
                             sOut += '<td class=\"text vers-num\"  style=\"width:75px\">'+ (row[3] == null ? '': row[3])+'</td>';
