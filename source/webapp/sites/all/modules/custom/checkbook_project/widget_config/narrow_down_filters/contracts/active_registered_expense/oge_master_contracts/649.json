@@ -6,20 +6,24 @@
     "startWith":0,
     "urlParamMap":{
         "doctype":"document_code.document_code.document_code"
-     },
-    "columns":["g100m_count", "g50m_le100m_count", "g25m_le50m_count", "g10m_le25m_count", "ge1m_le10m_count", "less1m_count"],
-    "orderBy":"",
-    "autocomplete":false,
-    "filterName":"Amount",
-    "urlParameterName":"curamtr",
-    "urlParameterType":"rangeid",
-    "autocompleteID":"fCurAmount",
+    }  ,
+    "columns":["industry.industry", "industry.industry.industry_type_name", "txcount"],
+    "orderBy":"-txcount",
+	"getTotalDataCount":true,
+	"facetPager":true,
+    "filterName":"Contract Industry",
+    "urlParameterName":"cindustry",
+    "autocompleteParamName":"cindustry_auto",
+    "autocompleteID":"fIndustryTypeId",
+    "autocompleteField":"industry_type_name",
     "adjustParameters":"
+	checkbook_faceted_search_adjust_param($node);
     if(function_exists('_checkbook_project_adjustContractParameterFilters')){
         _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
     }
     if(function_exists('_checkbook_project_applyParameterFilters')){
         $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        $adjustedParameters['industry.industry'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
         return $adjustedParameters;
     }
     return $parameters;
