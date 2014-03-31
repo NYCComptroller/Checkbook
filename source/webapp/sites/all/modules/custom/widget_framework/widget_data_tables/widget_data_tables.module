@@ -603,7 +603,9 @@ function widget_data_tables_add_js($node){
             array_push($newAolcols, $value);
         }
     }
-    $oldDataTableOptions['aoColumns'] = $newAolcols;
+    if(count($newAolcols)){
+    	$oldDataTableOptions['aoColumns'] = $newAolcols;
+    }
     $dataTableOptions = json_encode((object)$oldDataTableOptions);
 
     $id  = "";
