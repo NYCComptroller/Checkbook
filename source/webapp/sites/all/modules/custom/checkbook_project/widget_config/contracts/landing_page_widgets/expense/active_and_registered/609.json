@@ -6,7 +6,7 @@
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B","document_code.document_code.document_code":"MMA1~MA1","status_flag":"A"},
 "cleanURLParameters":["year","calyear","agency","yeartype","vendor","status","magid","cagency","cvendor","csize","cindustry","awdmethod"],
- "urlParamMap":{"calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","vendor":"display_vendor_id","status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id","magid":"original_agreement.original_agreement","cagency":"agency_id","cvendor":"vendor_id","csize":"award_size_id","cindustry":"industry_type_id","awdmethod":"award_method_id"},
+ "urlParamMap":{"calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","vendor":"vendor_id","status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id","magid":"original_agreement.original_agreement","cagency":"agency_id","cvendor":"vendor_id","csize":"award_size_id","cindustry":"industry_type_id","awdmethod":"award_method_id"},
 "dataset": "checkbook:edc_mag_contracts_coa_aggregates",
 "noDataInitialLoad":true,
 "columns": ["agency.agency","vendor.vendor","contract_purpose.contract_purpose","contract_number.contract_number","agency.agency.agency_short_name","vendor.vendor.legal_name","original_amount_sum","current_amount_sum","yeartype.yeartype","spending_amount_sum","original_agreement.original_agreement","document_code.document_code.document_code","agency.agency.agency_name"],
