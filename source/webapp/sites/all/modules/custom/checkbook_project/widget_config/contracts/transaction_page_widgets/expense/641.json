@@ -148,6 +148,9 @@ if(isset($config->model) && is_array($node->data)){
 	      "type": "expression2",
                 "expression": " '<a href=\"/spending/transactions'
                                 .  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id']
+                                . _checkbook_project_get_url_param_string('vendor')
+                                . _checkbook_project_get_url_param_string('agency')
+                                . _checkbook_append_url_params()
                                 .  ( _getRequestParamValue('yeartype') == 'B' ? ('/year/'. _getRequestParamValue('year').'/syear/'. _getRequestParamValue('year')) :
                                             (_getRequestParamValue('yeartype') == 'C' ? ('/calyear/'. _getRequestParamValue('year').'/scalyear/'. _getRequestParamValue('year')) :
                                                     ('/year/'.$row['ending_year_id']. '/syear/'.$row['ending_year_id']) )
@@ -170,6 +173,8 @@ if(isset($config->model) && is_array($node->data)){
               "expression": " '<a href=\"/contracts_landing'
                                     .  (isset($row['fiscal_year_id']) ? ('/year/'.$row['fiscal_year_id'] . '/yeartype/'.$row['type_of_year']) : _checkbook_project_get_year_url_param_string())
                                     .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
+                                    . _checkbook_append_url_params()
+                                    . _checkbook_project_get_url_param_string('agency')
                                     .  '/vendor/' . $row['vendor_id']
                                     .  '?expandBottomCont=true\">'. $row['vendor_formatted'] . '</a>'  "
 	    },
