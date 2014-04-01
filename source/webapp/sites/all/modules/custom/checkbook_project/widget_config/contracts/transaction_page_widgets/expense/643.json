@@ -86,13 +86,7 @@
     },
 	"vendor_name_link": {
 	      "type": "expression2",
-              "expression": " '<a href=\"/contracts_landing'
-                                    . _checkbook_append_url_params()
-                                    .  (isset($row['fiscal_year_id']) ? '/year/'.$row['fiscal_year_id'] : '')
-                                    .  (isset($row['type_of_year']) ? '/yeartype/'.$row['type_of_year'] : '')
-                                    .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
-                                    .  '/vendor/' . $row['vendor_id']
-                                    .  '?expandBottomCont=true\">'. $row['vendor_formatted'] . '</a>'  "
+              "expression": "$row['vendor_formatted']"
 	    },
 "agency_formatted": {
       "type": "expression2",
@@ -100,13 +94,7 @@
     },
 	"agency_name_link": {
 		"type": "expression2",
-                "expression": " '<a href=\"/contracts_landing'
-                                    ._checkbook_append_url_params()
-                                    .  (isset($row['fiscal_year_id']) ? '/year/'.$row['fiscal_year_id'] : '')
-                                    .  (isset($row['type_of_year']) ? '/yeartype/'.$row['type_of_year'] : '')
-                                   .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
-                                   . '/agency/' . $row['agency_id']
-                                    .  '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "
+                "expression": "$row['agency_formatted']"
 	},
 "purpose_formatted": {
       "type": "expression2",
