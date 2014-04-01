@@ -24,6 +24,10 @@
                $adjustedParameters['contract_agency_id'] = $value;
                unset($adjustedParameters[$key]);
             }
+            if($key == 'master_child_contract_vendor_id'){
+               $adjustedParameters['contract_vendor_id'] = $value;
+               unset($adjustedParameters[$key]);
+            }
         }
     }
     return $adjustedParameters;
