@@ -107,7 +107,7 @@
 	    },
        "budget_name_formatted":{
                 "type": "expression2",
-                "expression": "_get_tooltip_markup($row[budget_name@checkbook:oge_contract], 36)"
+                "expression": "_get_tooltip_markup($row['budget_name@checkbook:oge_contract'],36)"
        }
 },
 "table_columns": [
@@ -189,8 +189,8 @@
         {
             "labelAlias":"budget_name",
             "datasource": "checkbook_oge",
-            "sortSourceColumn":"budget_name@checkbook:oge_contract",
-            "column":"budget_name_formatted"
+            "column":"budget_name_formatted",
+            "sortSourceColumn":"budget_name@checkbook:oge_contract"
         },
         {
           "labelAlias": "commodity_line",
