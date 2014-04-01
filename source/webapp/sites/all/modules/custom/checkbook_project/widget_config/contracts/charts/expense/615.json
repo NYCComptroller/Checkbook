@@ -28,12 +28,15 @@
 "datasets":[{"name":"vendor","column":"vendor_vendor_legal_name","type":"string","isArray":true}],
 "limit": 10,
 "orderBy": "-current_amount_sum",
-"defaultParameters":{"fiscal_year_id":113,"yeartype.yeartype":"B","contract_status.contract_status":"A","document_code.document_code.document_code":"MA1~CTA1~CT1","maximum_contract_amount":"0"},
+"defaultParameters":{"fiscal_year_id":113,"yeartype.yeartype":"B","contract_status.contract_status":"A","document_code.document_code.document_code":"MA1~CTA1~CT1","maximum_contract_amount":"0","is_vendor_page":"N"},
 "defaultParamTypeConfig":{"maximum_contract_amount":"ne"},
 "adjustParameters":"
             $adjustedParameters = $parameters;
             if(function_exists('_checkbook_project_applyParameterFilters')){
                   $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+            }
+            if(_getRequestParamValue('vendor')){
+                $adjustedParameters['is_vendor_page'] = 'Y';
             }
             return $adjustedParameters;
 ",

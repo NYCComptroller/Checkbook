@@ -29,13 +29,17 @@
 	  ]
 },
 "no_results_content":"No Results Found",
-"defaultParameters":{"type_of_year":"B","document_code_id":"5~6~1~2","status_flag":"A","current_amount_sum":"0"},
+"defaultParameters":{"type_of_year":"B","document_code_id":"5~6~1~2","status_flag":"A","current_amount_sum":"0","is_vendor_page":"N"},
 "defaultParamTypeConfig":{"current_amount_sum":"ne"},
 "adjustParameters":"
             $adjustedParameters = $parameters;
             if(function_exists('_checkbook_project_applyParameterFilters')){
                   $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
             }
+            if(_getRequestParamValue('vendor')){
+                $adjustedParameters['is_vendor_page'] = 'Y';
+            }
+
             return $adjustedParameters;
 ",
 "cleanURLParameters":["year","calyear","agency","yeartype", "awdmethod","vendor","status","csize","cindustry"],
