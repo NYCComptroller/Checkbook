@@ -45,7 +45,17 @@
                                 "sourceColumnName": "agency_id"
                             }
                     ]
-                }    ,
+                },
+                {
+                    "name": "display_agency",
+                    "levels": [
+                            {
+                                "name": "display_agency",
+                                "datasetName": "agency",
+                                "sourceColumnName": "display_agency_id"
+                            }
+                    ]
+                },
                 {
                     "name": "year",
                     "levels": [
