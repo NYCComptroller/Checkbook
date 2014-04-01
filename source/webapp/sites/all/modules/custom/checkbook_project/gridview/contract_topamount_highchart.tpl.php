@@ -42,7 +42,7 @@ include_once('export_link.php');
         if (isset($node->data) && is_array($node->data)) {
             foreach ($node->data as $datarow) {
                 $datarow['contract_number'] = _checkbook_check_isEDCPage() ? $datarow['contract_number_contract_number'] : $datarow['contract_number'];
-                $datarow['maximum_contract_amount'] = _checkbook_check_isEDCPage() ? $datarow['current_amount_sum'] : $datarow['current_amount_sum'];
+                $datarow['maximum_contract_amount'] = _checkbook_check_isEDCPage() ? $datarow['current_amount_sum'] : $datarow['maximum_contract_amount'];
                 $datarow['legal_name@checkbook:vendor'] = _checkbook_check_isEDCPage() ? $datarow['display_vendor_names'] : $datarow['legal_name@checkbook:vendor'];
                 $datarow['agency_name@checkbook:agency'] = _checkbook_check_isEDCPage() ? $datarow['display_agency_display_agency_agency_name'] : $datarow['agency_name@checkbook:agency'];
 
