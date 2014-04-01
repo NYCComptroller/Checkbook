@@ -184,13 +184,13 @@
         {
            "labelAlias":"entity_contact_num",
            "datasource": "checkbook_oge",
-           "column":"budget_name_formatted",
-           "sortSourceColumn":"budget_name@checkbook:oge_contract"
+           "column":"oge_contract_number@checkbook:oge_contract"
         },
         {
             "labelAlias":"budget_name",
             "datasource": "checkbook_oge",
-            "column":"budget_name@checkbook:oge_contract"
+            "sortSourceColumn":"budget_name@checkbook:oge_contract",
+            "column":"budget_name_formatted"
         },
         {
           "labelAlias": "commodity_line",
