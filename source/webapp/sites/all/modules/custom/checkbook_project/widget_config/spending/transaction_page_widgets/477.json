@@ -78,7 +78,11 @@
          "contract_purpose_text":{
 	      "type": "expression2",
 	      "expression": "($row[disb_spending_category_name] == 'Payroll' ||  $row[disb_spending_category_name] == 'Others') ? 'n/a' : $row[purpose_formatted]"
-	    }
+	    },
+       "budget_name_formatted":{
+                "type": "expression2",
+                "expression": "_get_tooltip_markup($row[oge_budget_name], 36)"
+       }
 },
 "table_columns": [
 	   {
@@ -150,7 +154,8 @@
         {
             "labelAlias":"budget_name",
             "datasource": "checkbook_oge",
-            "column":"oge_budget_name"
+            "sortSourceColumn":"oge_budget_name",
+            "column":"budget_name_formatted"
         },
         {
           "labelAlias": "commodity_line",

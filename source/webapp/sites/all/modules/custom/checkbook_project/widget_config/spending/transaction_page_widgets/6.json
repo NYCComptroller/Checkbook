@@ -104,7 +104,11 @@
 	    "disbursement_number_derived":{
 	    		"type": "expression2",
                 "expression": "($row[spending_category_name]=='Payroll')?'N/A':$row[disbursement_number]"
-	    }
+	    },
+       "budget_name_formatted":{
+                "type": "expression2",
+                "expression": "_get_tooltip_markup($row[budget_name@checkbook:oge_contract], 36)"
+       }
 },
 "table_columns": [
 	   {
@@ -180,7 +184,8 @@
         {
            "labelAlias":"entity_contact_num",
            "datasource": "checkbook_oge",
-           "column":"oge_contract_number@checkbook:oge_contract"
+           "column":"budget_name_formatted",
+           "sortSourceColumn":"budget_name@checkbook:oge_contract"
         },
         {
             "labelAlias":"budget_name",
