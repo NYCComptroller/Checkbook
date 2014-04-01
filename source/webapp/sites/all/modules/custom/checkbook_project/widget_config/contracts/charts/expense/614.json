@@ -24,7 +24,7 @@
         },
         {
             "labelAlias": "agency_name",
-            "column": "agency_agency_agency_name"
+            "column": "display_agency_display_agency_agency_name"
         }
 	  ]
 },
@@ -47,14 +47,14 @@
     "series": [
         {
             "dataset": "checkbook:contracts_cumulative_spending_visualizations","orderBy":"-maximum_contract_amount_maximum_contract_amount",
-            "columns": ["agency.agency.agency_name","agency.agency","contract_number.contract_number","maximum_contract_amount.maximum_contract_amount","original_agreement_id.original_agreement_id","display_vendor_names","document_code.document_code"]
+            "columns": ["agency.agency.agency_name","agency.agency","display_agency.display_agency.agency_name","contract_number.contract_number","maximum_contract_amount.maximum_contract_amount","original_agreement_id.original_agreement_id","display_vendor_names","document_code.document_code"]
         }
     ]
 },
 "derivedColumns": {
     "agency_formatted": {
         "type": "expression2",
-        "expression": "strtoupper(html_entity_decode($row[\"agency_agency_agency_name\"],ENT_QUOTES))"
+        "expression": "strtoupper(html_entity_decode($row[\"display_agency_display_agency_agency_name\"],ENT_QUOTES))"
     },
         "vendor_formatted": {
         "type": "expression2",
