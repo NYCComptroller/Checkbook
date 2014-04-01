@@ -230,7 +230,11 @@ if(isset($config->model) && is_array($node->data)){
 "formatted_percent_diff": {
       "type": "expression2",
       "expression": " ($row['document_code@checkbook:ref_document_code'] == 'DO1') ? 'N/A' : (round($row['percent_difference'],2) . '%')"
-    }
+    },
+"budget_name_formatted":{
+                "type": "expression2",
+                "expression": "_get_tooltip_markup($row[budget_name], 36)"
+       }
 },
 "table_columns": [
 	    {"label": "&nbsp;","column": "child_contrats_link"},
@@ -260,7 +264,8 @@ if(isset($config->model) && is_array($node->data)){
                 {
 	                "labelAlias":"budget_name",
 	                "datasource": "checkbook_oge",
-	                "column":"budget_name"
+	                "column":"budget_name_formatted",
+	                "sortSourceColumn":"budget_name"
 	            },
                 {
 	              "labelAlias": "commodity_line",
