@@ -135,7 +135,11 @@
 "formatted_percent_diff": {
       "type": "expression2",
       "expression": "round($row['percent_difference'],2) . '%'"
-    }
+    },
+    "budget_name_formatted":{
+            "type": "expression2",
+            "expression": "_get_tooltip_markup($row[budget_name], 36)"
+   }
 },
 "table_columns": [
 	    {"label": "<div>&nbsp;</div>","colLabel": "","column": "child_contrats_link","export":false},
@@ -165,7 +169,8 @@
                 {
 	                "labelAlias":"budget_name",
 	                "datasource": "checkbook_oge",
-	                "column":"budget_name"
+                    "column":"budget_name_formatted",
+	                "sortSourceColumn":"budget_name"
 	            },
                 {
 	              "labelAlias": "commodity_line",
