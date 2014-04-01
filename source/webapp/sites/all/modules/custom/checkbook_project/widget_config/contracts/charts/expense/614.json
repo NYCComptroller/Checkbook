@@ -16,7 +16,7 @@
         },
         {
             "labelAlias": "current_amount",
-            "column": "maximum_contract_amount_maximum_contract_amount"
+            "column": "current_amount_sum"
         },
         {
             "labelAlias": "vendor_name",
@@ -29,8 +29,8 @@
 	  ]
 },
 "no_results_content":"No Results Found",
-"defaultParameters":{"type_of_year":"B","document_code_id":"5~6~1~2","status_flag":"A","maximum_contract_amount":"0"},
-"defaultParamTypeConfig":{"maximum_contract_amount":"ne"},
+"defaultParameters":{"type_of_year":"B","document_code_id":"5~6~1~2","status_flag":"A","current_amount_sum":"0"},
+"defaultParamTypeConfig":{"current_amount_sum":"ne"},
 "adjustParameters":"
             $adjustedParameters = $parameters;
             if(function_exists('_checkbook_project_applyParameterFilters')){
@@ -46,8 +46,8 @@
     },
     "series": [
         {
-            "dataset": "checkbook:contracts_cumulative_spending_visualizations","orderBy":"-maximum_contract_amount_maximum_contract_amount",
-            "columns": ["agency.agency.agency_name","agency.agency","display_agency.display_agency.agency_name","contract_number.contract_number","maximum_contract_amount.maximum_contract_amount","original_agreement_id.original_agreement_id","display_vendor_names","document_code.document_code"]
+            "dataset": "checkbook:contracts_cumulative_spending_visualizations","orderBy":"-current_amount_sum",
+            "columns": ["agency.agency.agency_name","agency.agency","display_agency.display_agency.agency_name","contract_number.contract_number","current_amount_sum","original_agreement_id.original_agreement_id","display_vendor_names","document_code.document_code"]
         }
     ]
 },
@@ -71,7 +71,7 @@
 },
 "limit": "10",
 "datasets" : [
-      {"name": "contracts","type":"string","columns":[{"name":"y","url":"column_link","value":"maximum_contract_amount_maximum_contract_amount","agency":"agency_formatted","vendor":"vendor_formatted","contractnum":"contract_number_contract_number"}], "isArray":true,"allowNullValues":true}
+      {"name": "contracts","type":"string","columns":[{"name":"y","url":"column_link","value":"current_amount_sum","agency":"agency_formatted","vendor":"vendor_formatted","contractnum":"contract_number_contract_number"}], "isArray":true,"allowNullValues":true}
 ],
 "transformationPHP":"
     $node->widgetConfig->chartTitle = _checkbook_project_getChartTitle('contracts','Top Ten Contracts','','contracts');
