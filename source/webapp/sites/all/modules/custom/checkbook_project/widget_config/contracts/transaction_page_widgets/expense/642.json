@@ -88,7 +88,7 @@
                                     .  (isset($row['fiscal_year_id']) ? ('/year/'.$row['fiscal_year_id'] . '/yeartype/'.$row['type_of_year']) : _checkbook_project_get_year_url_param_string())
                                     .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
                                     . _checkbook_append_url_params()
-                                    . _checkbook_project_get_url_param_string('agency')
+                                    . '/agency/' .$row['agency_id']
                                     .  '/vendor/' . $row['vendor_id']
                                     .  '?expandBottomCont=true\">'. $row['vendor_formatted'] . '</a>'  "
 	    },
