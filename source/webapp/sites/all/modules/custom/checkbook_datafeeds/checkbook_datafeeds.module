@@ -1971,7 +1971,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
     $responsetype = $form_state['step_information']['type']['stored_values']['format'];
     $user_criteria = array();
     //Get current data source
-    $data_source = !isset($form_state['input']['datafeeds-contracts-domain-filter']) ? 'checkbook' : 'checkbook_oge';
+    $data_source = !isset($form_state['input']['datafeeds-contracts-domain-filter']) ? 'checkbook' : $form_state['input']['datafeeds-contracts-domain-filter'];
     //Set type/source of data by data_source
     $user_criteria['Type of Data'] = $data_source == 'checkbook_oge' ? 'Contracts_OGE' : 'Contracts';
     $form['columns'] = array(
