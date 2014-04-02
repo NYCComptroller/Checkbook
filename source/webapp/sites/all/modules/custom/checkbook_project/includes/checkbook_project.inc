@@ -937,9 +937,9 @@ function get_db_query($isList, $datasetName, $columns = NULL, $parameters = NULL
  *
  * @return Database DB connection
  */
-function get_datafeed_connection($db_name = "datafeed"){
+function get_datafeed_connection($db_name = "datafeed", $data_source = 'checkbook'){
     try{
-        return Database::getConnection($db_name,'checkbook');
+        return Database::getConnection($db_name, $data_source);
     }catch(Exception $e){
         LogHelper::log_error("Exception getting connection for datafeed. Exception is :".$e);
         throw $e;
@@ -1163,22 +1163,42 @@ function _checkbook_project_delete_file_if_stale($uri) {
 /**
  * Callback to delete files modified more than a set time ago.
  */
-function _checkbook_project_execute_sql($sql, $datasource = "main") {
-  
-  $connection = get_datafeed_connection($datasource);
-  $results = null;
+function _checkbook_project_execute_sql($sql, $db_name = "main")
+{
 
-  try{
-    $results = $connection->query($sql);   
-  }catch(Exception $e){
-    LogHelper::log_error("Erorr executing DB query for generating: ".$sql .". Exception is: ".$e);
-  }
+    $connection = get_datafeed_connection($db_name);
+    $results = null;
 
-  $output=array();
-  foreach($results as $row){
-    $output[] = get_object_vars($row);
-  }
-  return $output;
+    try {
+        $results = $connection->query($sql);
+    } catch (Exception $e) {
+        LogHelper::log_error("Erorr executing DB query for generating: " . $sql . ". Exception is: " . $e);
+    }
+
+    $output = array();
+    foreach ($results as $row) {
+        $output[] = get_object_vars($row);
+    }
+    return $output;
+}
+
+function _checkbook_project_execute_sql_by_data_source($sql, $data_source = 'checkbook')
+{
+    $db_name = "main";
+    $connection = get_datafeed_connection($db_name, $data_source);
+    $results = null;
+
+    try {
+        $results = $connection->query($sql);
+    } catch (Exception $e) {
+        LogHelper::log_error("Erorr executing DB query for generating: " . $sql . ". Exception is: " . $e);
+    }
+
+    $output = array();
+    foreach ($results as $row) {
+        $output[] = get_object_vars($row);
+    }
+    return $output;
 }
 
 /**

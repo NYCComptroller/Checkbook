@@ -25,68 +25,81 @@ class Field
     public $size;
     public $maxlength;
     public $attributes;
-    public $name;
     public $value;
     public $disabled;
     public $required;
+    public $ajax;
+    public $id;
 
     public $prefix;
     public $suffix;
 
-    public function __construct($field_name, $field_type, $attributes,$disabled = FALSE)
+    public function __construct($field_name, $field_type, $attributes, $disabled = FALSE)
     {
         $this->field_name = $field_name;
         $this->field_type = $field_type;
+        $this->disabled = $disabled;
 
-        if(!(is_null($attributes['attributes'])))
-            $this->attributes = $attributes['attributes'];
 
-        if(!(is_null($attributes['data_source'])))
-            $this->data_source = $attributes['data_source'];
 
-        if(!(is_null($attributes['default_value'])))
-            $this->default_value = $attributes['default_value'];
+        if (array_key_exists('id', $attributes))
+            $this->id = str_replace('{domain}',$this->domain_name,$attributes['id']);
 
-        if(!(is_null($attributes['domain_name'])))
-            $this->domain_name = $attributes['domain_name'];
+        if (!(is_null($attributes))) {
 
-        if(!(is_null($attributes['field_name'])))
-            $this->field_name = $attributes['field_name'];
+            if (array_key_exists('attributes', $attributes))
+                $this->attributes = $attributes['attributes'];
 
-        if(!(is_null($attributes['maxlength'])))
-            $this->maxlength = $attributes['maxlength'];
+            if (array_key_exists('data_source', $attributes))
+                $this->data_source = $attributes['data_source'];
 
-        if(!(is_null($attributes['option_attributes'])))
-            $this->option_attributes = $attributes['option_attributes'];
+            if (array_key_exists('default_value', $attributes))
+                $this->default_value = $attributes['default_value'];
 
-        if(!(is_null($attributes['options'])))
-            $this->options = $attributes['options'];
+            if (array_key_exists('domain_name', $attributes))
+                $this->domain_name = $attributes['domain_name'];
 
-        if(!(is_null($attributes['required'])))
-            $this->required = $attributes['required'];
+            if (array_key_exists('field_name', $attributes))
+                $this->field_name = $attributes['field_name'];
 
-        if(!(is_null($attributes['size'])))
-            $this->size = $attributes['size'];
+            if (array_key_exists('maxlength', $attributes))
+                $this->maxlength = $attributes['maxlength'];
 
-        if(!(is_null($attributes['title'])))
-            $this->title = $attributes['title'];
+            if (array_key_exists('option_attributes', $attributes))
+                $this->option_attributes = $attributes['option_attributes'];
 
-        if(!(is_null($attributes['value'])))
-            $this->value = $attributes['value'];
+            if (array_key_exists('options', $attributes))
+                $this->options = $attributes['options'];
+
+            if (array_key_exists('required', $attributes))
+                $this->required = $attributes['required'];
+
+            if (array_key_exists('size', $attributes))
+                $this->size = $attributes['size'];
+
+            if (array_key_exists('title', $attributes))
+                $this->title = $attributes['title'];
+
+            if (array_key_exists('value', $attributes))
+                $this->value = $attributes['value'];
+
+            if (array_key_exists('ajax', $attributes))
+                $this->ajax = $attributes['ajax'];
+        }
     }
 
     public function getFieldTitle()
     {
-        if(!(is_null($this->title)))
+        if (!(is_null($this->title)))
             $field_title = $this->title;
         else
-            $field_title = ucwords(str_replace('_',' ',$this->field_name));
-        return str_replace(' Id',' ID',$field_title);
+            $field_title = ucwords(str_replace('_', ' ', $this->field_name));
+        return str_replace(' Id', ' ID', $field_title);
     }
 
     public function getDropDownOptions()
     {
-        if(!(is_null($this->options)))
+        if (!(is_null($this->options)))
             return $this->options;
         else
             return array('Select ' . $this->getFieldTitle());
@@ -94,7 +107,7 @@ class Field
 
     public function getDropDownDefault()
     {
-        if(!(is_null($this->options[0])))
+        if (!(is_null($this->options[0])))
             return $this->options[0];
         else
             return 'Select ' . $this->getFieldTitle();

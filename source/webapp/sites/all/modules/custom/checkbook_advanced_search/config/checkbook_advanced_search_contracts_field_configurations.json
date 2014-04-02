@@ -30,7 +30,8 @@
                 {"field_name":"commodity_line","column":"column-left"},
                 {"field_name":"budget_name","column":"column-left"},
                 {"field_name":"current_contract_amount","column":"column-left"},
-                {"field_name":"registration_date","column":"column-left"},
+                {"field_name":"received_date","column":"column-left","disabled":true},
+                {"field_name":"year","column":"column-left"},
                 {"field_name":"other_government_entities","column":"column-right"},
                 {"field_name":"category","column":"column-right"},
                 {"field_name":"purpose","column":"column-right"},
@@ -39,7 +40,7 @@
                 {"field_name":"award_method","column":"column-right"},
                 {"field_name":"start_date","column":"column-right"},
                 {"field_name":"end_date","column":"column-right"},
-                {"field_name":"year","column":"column-right"},
+                {"field_name":"registration_date","column":"column-right"},
                 {"field_name":"contracts","column":"none"}
             ]
 }

@@ -8,14 +8,17 @@
  */
 namespace checkbook_advanced_search;
 
+
 class Form
 {
     public $domain_name;
+    public $data_source;
     public $contents = array();
 
-    public function __construct($domain_name)
+    public function __construct($domain_name, $data_source)
     {
         $this->domain_name=$domain_name;
+        $this->data_source=$data_source;
     }
 
     public function add_content(Content $content)
@@ -28,6 +31,7 @@ class Form
     {
         $form->domain_name=$this->domain_name;
         $form = $this->generate_header($form);
+        //$form = $this->generate_filter($form);
         return $this->generate_content($form);
     }
 
@@ -39,8 +43,30 @@ class Form
         $div_id = "$this->domain_name-advanced-search";
 
         $form[$domain][$domain_field]['#prefix'] = '<h3><a href="#">'.$this->domain_name.'</a></h3><div id="'.$div_id.'">';
+
         return $form;
     }
+
+//    private function generate_filter($form)
+//    {
+//        $domain = $this->domain_name;
+//        $data_source = $this->data_source;
+//        $domain_field = 'advanced_search_'.$domain.'_filter';
+//
+//        $form[$domain][$domain_field]['#type'] = 'radios';
+//        //$form[$domain][$domain_field]['#id'] = 'edit-advanced-search-spending-filter-checkbook';
+//        $form[$domain][$domain_field]['#options'] = array('checkbook' => 'Citywide Agencies', 'checkbook_oge' => 'Other Government Entities');
+//        $form[$domain][$domain_field]['#default_value'] = !isset($data_source) ? 'checkbook' : $data_source;
+//        $form[$domain][$domain_field]['#prefix'] = '<div id="advanced_search_'.$this->domain_name.'_dynamic_fields">';
+//        $form[$domain][$domain_field]['#ajax'] = array(
+//            'event' => 'change',
+//            'callback' => 'advanced_search_'.$domain.'_filter_ajax',
+//            'method' => 'replace',
+//            'attributes' => array('new_data_source'=> $this->data_source)
+//        );
+//
+//        return $form;
+//    }
 
     private function generate_content($form)
     {
@@ -101,11 +127,13 @@ class Form
                 $domain_field = 'date_filter';
 
                 $form[$domain][$domain_field]['#type'] = FieldType::RadioButtons;
+                //$form[$domain][$domain_field]['#id'] = 'edit-'.$data_source.'date-filter';
+                //$form[$domain][$domain_field]['#name'] = $data_source.'_date_filter';
                 $form[$domain][$domain_field]['#title'] = t('Date Filter');
                 $form[$domain][$domain_field]['#options'] = array('Year','Issue Date');
                 $form[$domain][$domain_field]['#prefix'] = $field->prefix . '<div class="datafield datefilter clearfix">';
                 $form[$domain][$domain_field]['#suffix'] = '</div>';
-                $form[$domain][$domain_field]['#attributes'] = array('Year','Issue Date');
+                $form[$domain][$domain_field]['#attributes'] = array('class' => array('watch'), 'name' => $data_source.'_date_filter');
                 $form[$domain][$domain_field]['#default_value'] = '';
 
                 //year_filter_start
@@ -113,29 +141,32 @@ class Form
 
                 $form[$domain][$domain_field]['#markup'] = '<div class="datafield year-filters last-item">';
 
-                //spending_issue_date_from
+                //issue_date_from
                 $domain_field = "{$this->domain_name}_issue_date_from";
 
                 $form[$domain][$domain_field]['#type'] = FieldType::DatePopup;
+//                $form[$domain][$domain_field]['#id'] = 'edit-'.$this->domain_name.'-issue-date-from';
                 $form[$domain][$domain_field]['#date_format'] = 'Y-m-d';
                 $form[$domain][$domain_field]['#date_year_range'] = $year_range;
                 $form[$domain][$domain_field]['#prefix'] = '<div class="datafield datarange issueddate"><div class="ranges">';
                 $form[$domain][$domain_field]['#default_value'] = '';
 
-                //spending_issue_date_to
+                //issue_date_to
                 $domain_field = "{$this->domain_name}_issue_date_to";
 
-                $form[$domain][$domain_field]['#date_popup'] = FieldType::DatePopup;
+                $form[$domain][$domain_field]['#type'] = FieldType::DatePopup;
+//                $form[$domain][$domain_field]['#id'] = 'edit-'.$this->domain_name.'-issue-date-to';
                 $form[$domain][$domain_field]['#title'] = t('to');
                 $form[$domain][$domain_field]['#date_format'] = 'Y-m-d';
                 $form[$domain][$domain_field]['#date_year_range'] = $year_range;
                 $form[$domain][$domain_field]['#suffix'] = '</div></div>';
                 $form[$domain][$domain_field]['#default_value'] = '';
 
-                //spending_fiscal_year
+                //fiscal_year
                 $domain_field = "{$this->domain_name}_fiscal_year";
 
                 $form[$domain][$domain_field]['#type'] = FieldType::DropDown;
+//                $form[$domain][$domain_field]['#id'] = 'edit-'.$this->domain_name.'-fiscal-year';
                 $form[$domain][$domain_field]['#options'] = _checkbook_advanced_search_get_year($this->domain_name, $data_source);
                 $form[$domain][$domain_field]['#default_value'] = 'fy~' . _getCurrentYearID();
                 $form[$domain][$domain_field]['#attributes'] = array('class' => array('watch'), 'default_selected_value' => 'fy~' . _getCurrentYearID());
@@ -158,21 +189,15 @@ class Form
 
                 if(!(is_null($field->prefix)))
                     $form[$domain][$domain_field]['#prefix'] = $field->prefix;
-
                 if(!(is_null($field->suffix)))
                     $form[$domain][$domain_field]['#suffix'] = $field->suffix;
-
                 $form[$domain][$domain_field]['#type'] = $field->field_type;
-
+                $form[$domain][$domain_field]['#id'] = $field->id;
                 $form[$domain][$domain_field]['#title'] = $field->getFieldTitle();
-
                 $form[$domain][$domain_field]['#default_value'] = $field->getDropDownDefault();
-
                 $form[$domain][$domain_field]['#options'] = $field->getDropDownOptions();
-
                 if(!(is_null($field->disabled)))
                     $form[$domain][$domain_field]['#disabled'] = $field->disabled;
-
                 if(!(is_null($field->option_attributes)))
                     $form[$domain][$domain_field]['#option_attributes'] = $field->option_attributes;
 
@@ -181,15 +206,13 @@ class Form
             case FieldType::RadioButtons:
 
                 $domain_field = "{$this->domain_name}_{$field->field_name}";
-
                 if(!(is_null($field->prefix)))
                     $form[$domain][$domain_field]['#prefix'] = $field->prefix;
-
                 $form[$domain][$domain_field]['#type'] = FieldType::RadioButtons;
-
+                if(!(is_null($field->id)))
+//                    $form[$domain][$domain_field]['#id'] = $field->id;
                 if(!(is_null($field->default_value)))
                     $form[$domain][$domain_field]['#default_value'] = $field->default_value;
-
                 if(!(is_null($field->options)))
                     $form[$domain][$domain_field]['#options'] = $field->options;
 
@@ -202,17 +225,16 @@ class Form
                 $css_name = str_replace('_','-',$field->field_name);
 
                 $form[$domain][$domain_field]['#type'] = FieldType::TextField;
-
+//                if(!(is_null($field->id)))
+//                    $form[$domain][$domain_field]['#id'] = $field->id;
                 if(!(is_null($field->size)))
                     $form[$domain][$domain_field]['#size'] = $field->size;
                 else
                     $form[$domain][$domain_field]['#size'] = 30; //Default
-
                 if(!(is_null($field->maxlength)))
                     $form[$domain][$domain_field]['#maxlength'] = $field->maxlength;
                 else
                     $form[$domain][$domain_field]['#maxlength'] = 32; //Default
-
                 if(!(is_null($field->prefix)))
                     $form[$domain][$domain_field]['#prefix'] = $field->prefix . '<div class="form-item form-item-'.$css_name.'"><label>' . $field->getFieldTitle() . '</label><div class="ranges">';
                 else
@@ -220,21 +242,18 @@ class Form
 
                 //To
                 $domain_field = "{$this->domain_name}_{$field->field_name}_to";
-
                 $form[$domain][$domain_field]['#type'] = FieldType::TextField;
-
+//                if(!(is_null($field->id)))
+//                    $form[$domain][$domain_field]['#id'] = $field->id;
                 $form[$domain][$domain_field]['#title'] = t('TO');
-
                 if(!(is_null($field->size)))
                     $form[$domain][$domain_field]['#size'] = $field->size;
                 else
                     $form[$domain][$domain_field]['#size'] = 30; //Default
-
                 if(!(is_null($field->maxlength)))
                     $form[$domain][$domain_field]['#maxlength'] = $field->maxlength;
                 else
                     $form[$domain][$domain_field]['#maxlength'] = 32; //Default
-
                 if(!(is_null($field->suffix)))
                     $form[$domain][$domain_field]['#suffix'] = '</div></div>' . $field->suffix;
                 else
@@ -249,10 +268,10 @@ class Form
                 $css_name = str_replace('_','-',$field->field_name);
 
                 $form[$domain][$domain_field]['#type'] = FieldType::DatePopup;
+//                if(!(is_null($field->id)))
+//                    $form[$domain][$domain_field]['#id'] = $field->id;
                 $form[$domain][$domain_field]['#date_format'] = 'Y-m-d';
-
                 $form[$domain][$domain_field]['#date_year_range'] = $year_range;
-
                 if(!(is_null($field->prefix)))
                     $form[$domain][$domain_field]['#prefix'] = $field->prefix . '<div class="form-item form-item-'.$css_name.'"><label>' . $field->getFieldTitle() . '</label><div class="ranges">';
                 else
@@ -260,11 +279,11 @@ class Form
 
                 //To
                 $domain_field = "{$this->domain_name}_{$field->field_name}_to";
-
                 $form[$domain][$domain_field]['#type'] = FieldType::DatePopup;
+//                if(!(is_null($field->id)))
+//                    $form[$domain][$domain_field]['#id'] = $field->id;
                 $form[$domain][$domain_field]['#date_format'] = 'Y-m-d';
                 $form[$domain][$domain_field]['#title'] = t('TO');
-
                 if(!(is_null($field->suffix)))
                     $form[$domain][$domain_field]['#suffix'] = '</div></div>' . $field->suffix;
                 else
@@ -305,26 +324,25 @@ class Form
 
                 $form[$domain][$domain_field]['#type'] = FieldType::TextField;
 
-                $form[$domain][$domain_field]['#title'] = $field->getFieldTitle();
+//                if(!(is_null($field->id)))
+//                    $form[$domain][$domain_field]['#id'] = $field->id;
 
+                $form[$domain][$domain_field]['#title'] = $field->getFieldTitle();
                 if(!(is_null($field->size)))
                     $form[$domain][$domain_field]['#size'] = $field->size;
                 else
                     $form[$domain][$domain_field]['#size'] = 30; //Default
-
                 if(!(is_null($field->maxlength)))
                     $form[$domain][$domain_field]['#maxlength'] = $field->maxlength;
                 else
                     $form[$domain][$domain_field]['#maxlength'] = 32; //Default
-
                 if(!(is_null($field->prefix)))
                     $form[$domain][$domain_field]['#prefix'] = $field->prefix;
 
                 //Hidden
                 $domain_field = "{$this->domain_name}_{$field->field_name}_exact";
-
                 $form[$domain][$domain_field]['#type'] = FieldType::HiddenField;
-
+                $form[$domain][$domain_field]['#name'] = $domain_field;
                 if(!(is_null($field->suffix)))
                     $form[$domain][$domain_field]['#suffix'] = $field->suffix;
 
