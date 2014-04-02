@@ -52,15 +52,22 @@ function clearInputFields(enclosingDiv,domain){
                 break;
             case 'checkbox':
             case 'radio':
-                if(domain == 'payroll'){
-                    jQuery('#edit-payroll-amount-type-0').attr('checked','checked');
-                }
-                if(domain == 'spending'){
-                    jQuery('#edit-date-filter-0').attr('checked','checked');
-                    jQuery('#edit-spending-fiscal-year').removeAttr("disabled");
-                    jQuery('#edit-spending-issue-date-from-datepicker-popup-0').attr("disabled", "disabled");
-                    jQuery('#edit-spending-issue-date-to-datepicker-popup-0').attr("disabled", "disabled");
-
+                switch(domain)
+                {
+                    case 'payroll':
+                        jQuery('#edit-payroll-amount-type-0').attr('checked','checked');
+                        break;
+                    case 'spending':
+//                        jQuery('#edit-date-filter-0').attr('checked','checked');
+//                        jQuery('#edit-spending-fiscal-year').removeAttr("disabled");
+//                        jQuery('#edit-spending-issue-date-from-datepicker-popup-0').attr("disabled", "disabled");
+//                        jQuery('#edit-spending-issue-date-to-datepicker-popup-0').attr("disabled", "disabled");
+                        //jQuery(':radio[name="spending_advanced_search_domain_filter"][value="checkbook"]').attr('checked', 'checked');
+                        jQuery(':radio[name="spending_advanced_search_domain_filter"][value="checkbook"]').click();
+                        break;
+                    case 'contracts':
+                        jQuery(':radio[name="contracts_advanced_search_domain_filter"][value="checkbook"]').click();
+                        break;
                 }
                 break;
         }

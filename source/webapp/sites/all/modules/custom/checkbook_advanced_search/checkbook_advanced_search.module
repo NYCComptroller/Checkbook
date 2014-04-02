@@ -573,8 +573,8 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
 {
     if($data_source == DataSource::OtherGovernmentEntities)
     {
-        $agencies = _checkbook_advanced_search_get_agencyname_and_id_by_data_source($data_source);
-        $agency_attributes = _checkbook_advanced_search_get_agency_attributes_by_data_source($data_source);
+        $agencies = _checkbook_advanced_search_get_agencyname_and_id($data_source);
+        $agency_attributes = _checkbook_advanced_search_get_agency_attributes($data_source);
     }
     $expense_attributes = _checkbook_advanced_search_get_expensetype_and_id($data_source);
     $year_attribute = _checkbook_advanced_search_get_year($domain, $data_source);
@@ -613,6 +613,31 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
     }
 
     return $field_definition_configs;
+}
+
+/**
+ * Ajax callback for the data source radio button toggle.
+ *
+ * Updates the form to point to correct data source for spending
+ */
+function advanced_search_spending_filter_ajax($form, $form_state) {
+    $new_data_Source = $form_state['triggering_element']['#ajax']['attributes']['new_data_source'];
+    $fields_html = array($form['spending']['advanced_search_spending_filter'], $form[$new_data_Source.'_spending']);
+    $fields_html = drupal_render($fields_html);
+    $commands[] = ajax_command_replace('#advanced_search_spending_dynamic_fields', $fields_html);
+    return array('#type' => 'ajax', '#commands' => $commands);
+}
+/**
+ * Ajax callback for the data source radio button toggle.
+ *
+ * Updates the form to point to correct data source for contracts
+ */
+function advanced_search_contracts_filter_ajax($form, $form_state) {
+    $new_data_Source = $form_state['triggering_element']['#ajax']['attributes']['new_data_source'];
+    $html = array($form['contracts']['advanced_search_contracts_filter'], $form[$new_data_Source.'_contracts']);
+    $html = drupal_render($html);
+    $commands[] = ajax_command_replace('#advanced_search_contracts_dynamic_fields', $html);
+    return array('#type' => 'ajax', '#commands' => $commands);
 }
 
 /*

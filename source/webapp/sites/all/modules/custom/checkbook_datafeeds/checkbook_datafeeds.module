@@ -19,8 +19,8 @@
 */
 
 
-module_load_include('inc', 'checkbook_datafeeds', 'includes/checkbook_datafeeds');
-use checkbook_datafeeds\DataSource as DataSource;
+module_load_include('php', 'checkbook_datafeeds', 'config/util/DatafeedsConfigUtil');
+
 /**
  * Implements hook_menu().
  */
@@ -362,11 +362,11 @@ function checkbook_datafeeds_data_feed_wizard($form, &$form_state) {
     break;
 
     case 'contracts':
-      return checkbook_datafeeds_contracts($form, $form_state, DataSource::OtherGovernmentEntities);
+      return checkbook_datafeeds_contracts($form, $form_state);
     break;
 
     case 'contracts_confirmation':
-      return checkbook_datafeeds_contracts_confirmation($form, $form_state, DataSource::OtherGovernmentEntities);
+      return checkbook_datafeeds_contracts_confirmation($form, $form_state);
     break;
 
     case 'payroll':
@@ -386,14 +386,12 @@ function checkbook_datafeeds_data_feed_wizard($form, &$form_state) {
     break;
 
     case 'spending':
-        $form = checkbook_datafeeds_spending($form, $form_state, DataSource::OtherGovernmentEntities);
-       // $form = checkbook_datafeeds_spending($form, $form_state, DataSource::CitywideAgency);
+        $form = checkbook_datafeeds_spending($form, $form_state);
         return $form;
     break;
 
     case 'spending_confirmation':
-        $form = checkbook_datafeeds_spending_confirmation($form, $form_state, DataSource::CitywideAgency);
-        //$form = checkbook_datafeeds_spending_confirmation($form, $form_state, DataSource::OtherGovernmentEntities);
+        $form = checkbook_datafeeds_spending_confirmation($form, $form_state);
         return $form;
     break;
 
@@ -511,7 +509,8 @@ function checkbook_datafeeds_type_next_submit($form, &$form_state) {
   }
 }
 
-// Budget section:
+//<editor-fold desc="Budget section">
+
 /**
  * First step of Budget section.
  *
@@ -1204,28 +1203,10 @@ function checkbook_datafeeds_budget_validate($form, &$form_state) {
   }
 }
 
-/**
- * DataSource radio options for spending and contracts domains.
- *
- * @param $domain
- *   domain (i.e. spending/contracts)
- */
-function _checkbook_datafeeds_get_data_source_options($domain)
-{
-    $options = '<div id="edit-datafeeds-'.$domain.'-domain-filter" class="form-radios">
-                      <div class="form-item form-type-radio form-item-'.$domain.'-domain-filter">
-                      <input id="edit-'.$domain.'-domain-filter-0" name="'.$domain.'_datafeeds_domain_filter" value="0" class="form-radio" type="radio">
-                      <label class="option" for="edit-'.$domain.'-domain-filter-0">Citywide Agencies</label>
-                      </div>
-                      <div class="form-item form-type-radio form-item-'.$domain.'-domain-filter">
-                      <input id="edit-'.$domain.'-domain-filter-1" name="'.$domain.'_datafeeds_domain_filter" value="1" class="form-radio" type="radio">
-                      <label class="option" for="edit-'.$domain.'-domain-filter-1">Other Government Entities </label>
-                      </div>
-                      </div><br/><br/>';
-    return $options;
-}
+//</editor-fold>
 
-// Contracts section:
+//<editor-fold desc="Contracts section">
+
 /**
  * First step of Contracts section.
  *
@@ -1237,9 +1218,10 @@ function _checkbook_datafeeds_get_data_source_options($domain)
  * @return array
  *   Renderable array of first step of Contracts
  */
-function checkbook_datafeeds_contracts($form, &$form_state, $data_source)
+function checkbook_datafeeds_contracts($form, &$form_state)
 {
     $data_type = $form_state['step_information']['type']['stored_values']['format'];
+    $data_source = $form_state['values']['datafeeds-contracts-domain-filter'];
 
     //<editor-fold desc="Heading">
 
@@ -1250,464 +1232,37 @@ function checkbook_datafeeds_contracts($form, &$form_state, $data_source)
         '#markup' => '<p class="required-message">Fields marked with an asterisk (<span class="form-required">*</span>) are required.</p><br/>',
     );
     $form['description'] = array(
-        '#markup' => '<h2 class="domain-title">Contracts</h2>' . _checkbook_datafeeds_get_data_source_options('contracts'),
+        '#markup' => '<h2 class="domain-title">Contracts</h2>'
     );
 
     //</editor-fold>
 
     //<editor-fold desc="Filter">
 
+    $form['datafeeds-contracts-domain-filter'] = array(
+        '#type' => 'radios',
+        '#options' => array('checkbook' => 'Citywide Agencies', 'checkbook_oge' => 'Other Government Entities'),
+        '#default_value' => !isset($data_source) ? 'checkbook' : $data_source,
+        '#prefix' => '<div id="div_data_source">',
+        '#suffix' => '</div><br/><br/>',
+        '#parents' => array('datafeeds-contracts-domain-filter'),
+        '#ajax' => array(
+            'event' => 'change',
+            'callback' => 'checkbook_datafeeds_contracts_filter_ajax',
+            'method' => 'replace',
+        )
+    );
+
     $form['filter'] = array(
         '#type' => 'fieldset',
         '#title' => t('3. Filter the Data:'),
         '#attributes' => array('class' => array('contracts-fieldset')),
+        '#prefix' => '<div id="dynamic-filter-data-wrapper">',
+        '#suffix' => '</div>',
+        '#id' => 'edit-filter',
     );
 
-    //<editor-fold desc="Citywide Agency">
-
-    $data_source = DataSource::CitywideAgency;
-
-    $form['filter']['df_contract_status'] = array(
-        '#type' => 'select',
-        '#title' => t('Status:'),
-        '#options' => array(
-            'active' => 'Active',
-            'registered' => 'Registered',
-            'pending' => 'Pending',
-        ),
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['df_contract_status']) ? $form_state['values']['df_contract_status'] : 'active',
-        '#prefix' => '<div class="column column-left '.str_replace('_','-',$data_source).'"><div class="datafield contractstatus">',
-        '#suffix' => '</div>',
-    );
-    $form['filter']['vendor'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Vendor:'),
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['vendor']) ? $form_state['values']['vendor'] : '',
-        '#prefix' => '<div class="datafield vendor">',
-        '#suffix' => '</div>',
-    );
-    $form['filter']['contract_type'] = array(
-        '#type' => 'select',
-        '#title' => t('Contract Type:'),
-        '#options' => _contract_type_options(),
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['contract_type']) ? $form_state['values']['contract_type'] : 'Any Contract Type',
-        '#prefix' => '<div class="datafield contracttype">',
-        '#suffix' => '</div>',
-    );
-    $form['filter']['contractno'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Contract ID:'),
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['contractno']) ? $form_state['values']['contractno'] : '',
-        '#prefix' => '<div class="datafield contractno">',
-        '#suffix' => '</div>',
-    );
-    $form['filter']['pin'] = array(
-        '#type' => 'textfield',
-        '#title' => t('PIN:'),
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['pin']) ? $form_state['values']['pin'] : '',
-        '#prefix' => '<div class="datafield pin">',
-        '#suffix' => '</div>',
-    );
-    $form['filter']['currentamtfrom'] = array(
-        '#type' => 'textfield',
-        '#size' => 15,
-        '#maxlength' => 15,
-        '#prefix' => '<div class="datafield currentamt datarange"><label>Current Amount:</label><div class="ranges">',
-        '#default_value' => !empty($form_state['values']['currentamtfrom']) ? $form_state['values']['currentamtfrom'] : '',
-    );
-    $form['filter']['currentamtto'] = array(
-        '#type' => 'textfield',
-        '#title' => t('to'),
-        '#size' => 15,
-        '#maxlength' => 15,
-        '#suffix' => '</div></div>',
-        '#default_value' => !empty($form_state['values']['currentamtto']) ? $form_state['values']['currentamtto'] : '',
-    );
-    $form['filter']['enddatefrom'] = array(
-        '#type' => 'textfield',
-        '#size' => 15,
-        '#maxlength' => 15,
-        '#description' => 'E.g., ' . date('Y-m-d'),
-        '#attributes' => array('class' => array('datepicker')),
-        '#prefix' => '<div class="datafield enddate datarange"><label>End Date:</label><div class="ranges">',
-        '#default_value' => !empty($form_state['values']['enddatefrom']) ? $form_state['values']['enddatefrom'] : '',
-    );
-    $form['filter']['enddateto'] = array(
-        '#type' => 'textfield',
-        '#title' => t('to'),
-        '#size' => 15,
-        '#maxlength' => 15,
-        '#description' => 'E.g., ' . date('Y-m-d'),
-        '#attributes' => array('class' => array('datepicker')),
-        '#suffix' => '</div></div>',
-        '#default_value' => !empty($form_state['values']['enddateto']) ? $form_state['values']['enddateto'] : '',
-    );
-    $form['filter']['regdatefrom'] = array(
-        '#type' => 'textfield',
-        '#size' => 15,
-        '#maxlength' => 15,
-        '#description' => 'E.g., ' . date('Y-m-d'),
-        '#attributes' => array('class' => array('datepicker')),
-        '#prefix' => '<div class="datafield regdate datarange"><label>Registration Date:</label><div class="ranges">',
-        '#default_value' => !empty($form_state['values']['regdatefrom']) ? $form_state['values']['regdatefrom'] : '',
-        '#states' => array(
-            'disabled' => array(
-                'select[name="df_contract_status"]' => array('value' => 'pending')
-            )
-        )
-    );
-    $form['filter']['regdateto'] = array(
-        '#type' => 'textfield',
-        '#title' => t('to'),
-        '#size' => 15,
-        '#maxlength' => 15,
-        '#description' => 'E.g., ' . date('Y-m-d'),
-        '#attributes' => array('class' => array('datepicker')),
-        '#suffix' => '</div></div></div>',
-        '#default_value' => !empty($form_state['values']['regdateto']) ? $form_state['values']['regdateto'] : '',
-        '#states' => array(
-            'disabled' => array(
-                'select[name="df_contract_status"]' => array('value' => 'pending')
-            )
-        )
-    );
-    $form['filter']['category'] = array(
-        '#type' => 'select',
-        '#title' => t('Category:'),
-        '#options' => array(
-            'expense' => 'Expense',
-            'revenue' => 'Revenue',
-        ),
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['category']) ? $form_state['values']['category'] : 'expense',
-        '#prefix' => '<div class="column column-right '.str_replace('_','-',$data_source).'"><div class="datafield category">',
-        '#suffix' => '</div>',
-    );
-    $form['filter']['purpose'] = array(
-
-        '#type' => 'textfield',
-        '#title' => t('Purpose:'),
-        '#prefix' => '<div class="datafield purpose">',
-        '#suffix' => '</div>',
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['purpose']) ? $form_state['values']['purpose'] : '',
-    );
-    $form['filter']['agency'] = array(
-        '#type' => 'select',
-        '#title' => t('Agency:'),
-        '#options' => _agency_options(),
-        '#attributes' => array('class' => array('watch')),
-        '#prefix' => '<div class="datafield agency">',
-        '#suffix' => '</div>',
-        '#default_value' => !empty($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Citywide (All Agencies)',
-    );
-    $form['filter']['apt_pin'] = array(
-        '#type' => 'textfield',
-        '#title' => t('APT PIN:'),
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['apt_pin']) ? $form_state['values']['apt_pin'] : '',
-        '#prefix' => '<div class="datafield apt-pin">',
-        '#suffix' => '</div>',
-    );
-    $form['filter']['award_method'] = array(
-        '#type' => 'select',
-        '#title' => t('Award Method:'),
-        '#options' => _award_method_options(),
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['award_method']) ? $form_state['values']['award_method'] : '',
-        '#prefix' => '<div class="datafield awardmethod">',
-        '#suffix' => '</div>',
-    );
-    $form['filter']['startdatefrom'] = array(
-        '#type' => 'textfield',
-        '#size' => 15,
-        '#maxlength' => 15,
-        '#description' => 'E.g., ' . date('Y-m-d'),
-        '#attributes' => array('class' => array('datepicker')),
-        '#prefix' => '<div class="datafield startdate datarange"><label>Start Date:</label><div class="ranges">',
-        '#default_value' => !empty($form_state['values']['startdatefrom']) ? $form_state['values']['startdatefrom'] : '',
-    );
-    $form['filter']['startdateto'] = array(
-        '#type' => 'textfield',
-        '#title' => t('to'),
-        '#size' => 15,
-        '#maxlength' => 15,
-        '#description' => 'E.g., ' . date('Y-m-d'),
-        '#suffix' => '</div></div>',
-        '#attributes' => array('class' => array('datepicker')),
-        '#default_value' => !empty($form_state['values']['startdateto']) ? $form_state['values']['startdateto'] : '',
-    );
-    $form['filter']['recdatefrom'] = array(
-        '#type' => 'textfield',
-        '#size' => 15,
-        '#maxlength' => 15,
-        '#description' => 'E.g., ' . date('Y-m-d'),
-        '#attributes' => array('class' => array('datepicker')),
-        '#prefix' => '<div class="datafield receiveddate datarange"><label>Received Date:</label><div class="ranges">',
-        '#default_value' => !empty($form_state['values']['recdatefrom']) ? $form_state['values']['recdatefrom'] : '',
-        '#states' => array(
-            'enabled' => array(
-                'select[name="df_contract_status"]' => array('value' => 'pending')
-            )
-        )
-    );
-    $form['filter']['recdateto'] = array(
-        '#type' => 'textfield',
-        '#title' => t('to'),
-        '#size' => 15,
-        '#maxlength' => 15,
-        '#description' => 'E.g., ' . date('Y-m-d'),
-        '#attributes' => array('class' => array('datepicker')),
-        '#suffix' => '</div></div>',
-        '#default_value' => !empty($form_state['values']['recdateto']) ? $form_state['values']['recdateto'] : '',
-        '#states' => array(
-            'enabled' => array(
-                'select[name="df_contract_status"]' => array('value' => 'pending')
-            )
-        )
-    );
-    $form['filter']['year'] = array(
-        '#type' => 'select',
-        '#title' => t('Year:'),
-        '#options' => _year_options('all-years'),
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['year']) ? $form_state['values']['year'] : 'ALL',
-        '#prefix' => '<div class="datafield year last-item">',
-        '#suffix' => '</div></div>',
-        '#states' => array(
-            'disabled' => array(
-                'select[name="df_contract_status"]' => array('value' => 'pending')
-            )
-        )
-    );
-
-    //</editor-fold>
-
-    //<editor-fold desc="Other Government Entities">
-
-    $data_source = DataSource::OtherGovernmentEntities;
-
-    $form['filter'][$data_source . '_df_contract_status'] = array(
-        '#type' => 'select',
-        '#title' => t('Status:'),
-        '#options' => array(
-            'active' => 'Active',
-            'registered' => 'Registered',
-            'pending' => 'Pending',
-        ),
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['df_contract_status']) ? $form_state['values']['df_contract_status'] : 'active',
-        '#prefix' => '<div class="column column-left '.str_replace('_','-',$data_source).'"><div class="datafield contractstatus">',
-        '#suffix' => '</div>',
-    );
-    $form['filter'][$data_source . '_vendor'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Vendor:'),
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['vendor']) ? $form_state['values']['vendor'] : '',
-        '#prefix' => '<div class="datafield vendor">',
-        '#suffix' => '</div>',
-    );
-    $form['filter'][$data_source . '_contract_type'] = array(
-        '#type' => 'select',
-        '#title' => t('Contract Type:'),
-        '#options' => _contract_type_options(),
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['contract_type']) ? $form_state['values']['contract_type'] : 'Any Contract Type',
-        '#prefix' => '<div class="datafield contracttype">',
-        '#suffix' => '</div>',
-    );
-    $form['filter'][$data_source . '_contractno'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Contract ID:'),
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['contractno']) ? $form_state['values']['contractno'] : '',
-        '#prefix' => '<div class="datafield contractno">',
-        '#suffix' => '</div>',
-    );
-    $form['filter'][$data_source . '_entity_contract_num'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Entity Contract #:'),
-        '#prefix' => '<div class="datafield entitycontractnum">',
-        '#suffix' => '</div>',
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['entitycontractnum']) ? $form_state['values']['entitycontractnum'] : '',
-    );
-    $form['filter'][$data_source . '_commodity_line'] = array(
-
-        '#type' => 'textfield',
-        '#title' => t('Commodity Line:'),
-        '#prefix' => '<div class="datafield commodityline">',
-        '#suffix' => '</div>',
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['commodity_line']) ? $form_state['values']['commodity_line'] : '',
-    );
-    $form['filter'][$data_source . '_budget_name'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Budget Name:'),
-        '#prefix' => '<div class="datafield budgetname">',
-        '#suffix' => '</div>',
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['budget_name']) ? $form_state['values']['budget_name'] : '',
-    );
-    $form['filter'][$data_source . '_currentamtfrom'] = array(
-        '#type' => 'textfield',
-        '#size' => 15,
-        '#maxlength' => 15,
-        '#prefix' => '<div class="datafield currentamt datarange"><label>Current Amount:</label><div class="ranges">',
-        '#default_value' => !empty($form_state['values']['currentamtfrom']) ? $form_state['values']['currentamtfrom'] : '',
-    );
-    $form['filter'][$data_source . '_currentamtto'] = array(
-        '#type' => 'textfield',
-        '#title' => t('to'),
-        '#size' => 15,
-        '#maxlength' => 15,
-        '#suffix' => '</div></div>',
-        '#default_value' => !empty($form_state['values']['currentamtto']) ? $form_state['values']['currentamtto'] : '',
-    );
-    $form['filter'][$data_source . '_regdatefrom'] = array(
-        '#type' => 'textfield',
-        '#size' => 15,
-        '#maxlength' => 15,
-        '#description' => 'E.g., ' . date('Y-m-d'),
-        '#attributes' => array('class' => array('datepicker')),
-        '#prefix' => '<div class="datafield regdate datarange"><label>Registration Date:</label><div class="ranges">',
-        '#default_value' => !empty($form_state['values']['regdatefrom']) ? $form_state['values']['regdatefrom'] : '',
-        '#states' => array(
-            'disabled' => array(
-                'select[name="df_contract_status"]' => array('value' => 'pending')
-            )
-        )
-    );
-    $form['filter'][$data_source . '_regdateto'] = array(
-        '#type' => 'textfield',
-        '#title' => t('to'),
-        '#size' => 15,
-        '#maxlength' => 15,
-        '#description' => 'E.g., ' . date('Y-m-d'),
-        '#attributes' => array('class' => array('datepicker')),
-        '#suffix' => '</div></div></div>',
-        '#default_value' => !empty($form_state['values']['regdateto']) ? $form_state['values']['regdateto'] : '',
-        '#states' => array(
-            'disabled' => array(
-                'select[name="df_contract_status"]' => array('value' => 'pending')
-            )
-        )
-    );
-    $form['filter'][$data_source . '_agency'] = array(
-        '#type' => 'select',
-        '#title' => t('Other Government Entities:'),
-        '#options' => _agency_options(),
-        '#attributes' => array('class' => array('watch')),
-        '#prefix' => '<div class="column column-right '.str_replace('_','-',$data_source).'"><div class="datafield agency">',
-        '#suffix' => '</div>',
-        '#default_value' => !empty($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Citywide (All Agencies)',
-    );
-    $form['filter'][$data_source . '_category'] = array(
-        '#type' => 'select',
-        '#title' => t('Category:'),
-        '#options' => array(
-            'expense' => 'Expense',
-            'revenue' => 'Revenue',
-        ),
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['category']) ? $form_state['values']['category'] : 'expense',
-        '#prefix' => '<div class="datafield category">',
-        '#suffix' => '</div>',
-    );
-    $form['filter'][$data_source . '_purpose'] = array(
-
-        '#type' => 'textfield',
-        '#title' => t('Purpose:'),
-        '#prefix' => '<div class="datafield purpose">',
-        '#suffix' => '</div>',
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['purpose']) ? $form_state['values']['purpose'] : '',
-    );
-    $form['filter'][$data_source . '_pin'] = array(
-        '#type' => 'textfield',
-        '#title' => t('PIN:'),
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['pin']) ? $form_state['values']['pin'] : '',
-        '#prefix' => '<div class="datafield pin">',
-        '#suffix' => '</div>',
-    );
-    $form['filter'][$data_source . '_apt_pin'] = array(
-        '#type' => 'textfield',
-        '#title' => t('APT PIN:'),
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['apt_pin']) ? $form_state['values']['apt_pin'] : '',
-        '#prefix' => '<div class="datafield apt-pin">',
-        '#suffix' => '</div>',
-    );
-    $form['filter'][$data_source . '_award_method'] = array(
-        '#type' => 'select',
-        '#title' => t('Award Method:'),
-        '#options' => _award_method_options(),
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['award_method']) ? $form_state['values']['award_method'] : '',
-        '#prefix' => '<div class="datafield awardmethod">',
-        '#suffix' => '</div>',
-    );
-    $form['filter'][$data_source . '_startdatefrom'] = array(
-        '#type' => 'textfield',
-        '#size' => 15,
-        '#maxlength' => 15,
-        '#description' => 'E.g., ' . date('Y-m-d'),
-        '#attributes' => array('class' => array('datepicker')),
-        '#prefix' => '<div class="datafield startdate datarange"><label>Start Date:</label><div class="ranges">',
-        '#default_value' => !empty($form_state['values']['startdatefrom']) ? $form_state['values']['startdatefrom'] : '',
-    );
-    $form['filter'][$data_source . '_startdateto'] = array(
-        '#type' => 'textfield',
-        '#title' => t('to'),
-        '#size' => 15,
-        '#maxlength' => 15,
-        '#description' => 'E.g., ' . date('Y-m-d'),
-        '#suffix' => '</div></div>',
-        '#attributes' => array('class' => array('datepicker')),
-        '#default_value' => !empty($form_state['values']['startdateto']) ? $form_state['values']['startdateto'] : '',
-    );
-    $form['filter'][$data_source . '_enddatefrom'] = array(
-        '#type' => 'textfield',
-        '#size' => 15,
-        '#maxlength' => 15,
-        '#description' => 'E.g., ' . date('Y-m-d'),
-        '#attributes' => array('class' => array('datepicker')),
-        '#prefix' => '<div class="datafield enddate datarange"><label>End Date:</label><div class="ranges">',
-        '#default_value' => !empty($form_state['values']['enddatefrom']) ? $form_state['values']['enddatefrom'] : '',
-    );
-    $form['filter'][$data_source . '_enddateto'] = array(
-        '#type' => 'textfield',
-        '#title' => t('to'),
-        '#size' => 15,
-        '#maxlength' => 15,
-        '#description' => 'E.g., ' . date('Y-m-d'),
-        '#attributes' => array('class' => array('datepicker')),
-        '#suffix' => '</div></div>',
-        '#default_value' => !empty($form_state['values']['enddateto']) ? $form_state['values']['enddateto'] : '',
-    );
-    $form['filter'][$data_source . '_year'] = array(
-        '#type' => 'select',
-        '#title' => t('Year:'),
-        '#options' => _year_options('all-years'),
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['year']) ? $form_state['values']['year'] : 'ALL',
-        '#prefix' => '<div class="datafield year last-item">',
-        '#suffix' => '</div></div>',
-        '#states' => array(
-            'disabled' => array(
-                'select[name="df_contract_status"]' => array('value' => 'pending')
-            )
-        )
-    );
-
-    //</editor-fold>
+    $form = checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_source);
 
     //</editor-fold>
 
@@ -1716,28 +1271,33 @@ function checkbook_datafeeds_contracts($form, &$form_state, $data_source)
     $form['columns'] = array(
         '#type' => 'fieldset',
         '#title' => t('4. Select Columns:'),
+        // These provide the wrapper referred to in #ajax['wrapper'] above.
+        '#prefix' => '<div id="dynamic-columns-wrapper">',
+        '#suffix' => '</div>',
+        '#id' => 'edit-columns',
     );
-    //Citywide Agency
-    //Other Government Entities
     $form['columns']['column_select_expense'] = array(
         '#type' => 'select',
         '#title' => t('Expense<span class="form-required" title="This field is required.">*</span>'),
         '#multiple' => TRUE,
-        '#options' => _checkbook_datafeeds_contracts_column_options($data_type, 'expense', DataSource::OtherGovernmentEntities),
+        '#options' => _checkbook_datafeeds_contracts_column_options($data_source, 'default', 'expense', $data_type),
+        '#id' => 'edit-column-select-expense',
         '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
     );
     $form['columns']['column_select_revenue'] = array(
         '#type' => 'select',
         '#title' => t('Revenue<span class="form-required" title="This field is required.">*</span>'),
         '#multiple' => TRUE,
-        '#options' => _checkbook_datafeeds_contracts_column_options($data_type, 'revenue', DataSource::OtherGovernmentEntities),
+        '#options' => _checkbook_datafeeds_contracts_column_options($data_source, 'default', 'revenue', $data_type),
+        '#id' => 'edit-column-select-revenue',
         '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
     );
     $form['columns']['column_select_pending'] = array(
         '#type' => 'select',
         '#title' => t('Pending<span class="form-required" title="This field is required.">*</span>'),
         '#multiple' => TRUE,
-        '#options' => _checkbook_datafeeds_contracts_column_options($data_type, 'expense', 'pending', DataSource::OtherGovernmentEntities),
+        '#options' => _checkbook_datafeeds_contracts_column_options($data_source, 'pending', 'pending', $data_type),
+        '#id' => 'edit-column-select-pending',
         '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
     );
 
@@ -1781,6 +1341,571 @@ function checkbook_datafeeds_contracts($form, &$form_state, $data_source)
     return $form;
 }
 
+function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_source)
+{
+    switch ($data_source) {
+        case 'checkbook_oge':
+            $form['filter']['df_contract_status'] = array(
+                '#type' => 'select',
+                '#title' => t('Status:'),
+                '#options' => array(
+                    'active' => 'Active',
+                    'registered' => 'Registered',
+                ),
+                '#attributes' => array('class' => array('watch')),
+                '#prefix' => '<div class="column column-left"><div class="datafield contractstatus">',
+                '#suffix' => '</div>',
+                '#id' => 'edit-df-contract-status',
+                '#name' => 'df_contract_status',
+                '#default_value' => !empty($form_state['values']['df_contract_status']) ? $form_state['values']['df_contract_status'] : 'active',
+            );
+            $form['filter']['vendor'] = array(
+                '#type' => 'textfield',
+                '#title' => t('Vendor:'),
+                '#attributes' => array('class' => array('watch')),
+                '#prefix' => '<div class="datafield vendor">',
+                '#suffix' => '</div>',
+                '#id' => 'edit-agency',
+                '#name' => 'agency',
+                '#default_value' => !empty($form_state['values']['vendor']) ? $form_state['values']['vendor'] : '',
+            );
+            $form['filter']['contract_type'] = array(
+                '#type' => 'select',
+                '#title' => t('Contract Type:'),
+                '#options' => _contract_type_options(),
+                '#attributes' => array('class' => array('watch')),
+                '#prefix' => '<div class="datafield contracttype">',
+                '#suffix' => '</div>',
+                '#id' => 'edit-contract-type',
+                '#name' => 'contract_type',
+                '#default_value' => !empty($form_state['values']['contract_type']) ? $form_state['values']['contract_type'] : 'Any Contract Type',
+            );
+            $form['filter']['contractno'] = array(
+                '#type' => 'textfield',
+                '#title' => t('Contract ID:'),
+                '#attributes' => array('class' => array('watch')),
+                '#prefix' => '<div class="datafield contractno">',
+                '#suffix' => '</div>',
+                '#id' => 'edit-contractno',
+                '#name' => 'contractno',
+                '#default_value' => !empty($form_state['values']['contractno']) ? $form_state['values']['contractno'] : '',
+            );
+            $form['filter']['entity_contract_num'] = array(
+                '#type' => 'textfield',
+                '#title' => t('Entity Contract #:'),
+                '#prefix' => '<div class="datafield entity_contract_num">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch')),
+                '#id' => 'edit-entity-contract-num',
+                '#name' => 'entity_contract_num',
+                '#default_value' => !empty($form_state['values']['entity_contract_num']) ? $form_state['values']['entity_contract_num'] : '',
+            );
+            $form['filter']['commodity_line'] = array(
+
+                '#type' => 'textfield',
+                '#title' => t('Commodity Line:'),
+                '#prefix' => '<div class="datafield commodityline">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch')),
+                '#id' => 'edit-commodity-line',
+                '#name' => 'commodity_line',
+                '#default_value' => !empty($form_state['values']['commodity_line']) ? $form_state['values']['commodity_line'] : '',
+            );
+            $form['filter']['pin'] = array(
+                '#type' => 'textfield',
+                '#title' => t('PIN:'),
+                '#attributes' => array('class' => array('watch')),
+                '#prefix' => '<div class="datafield pin">',
+                '#suffix' => '</div>',
+                '#id' => 'edit-pin',
+                '#name' => 'pin',
+                '#default_value' => !empty($form_state['values']['pin']) ? $form_state['values']['pin'] : '',
+            );
+            $form['filter']['currentamtfrom'] = array(
+                '#type' => 'textfield',
+                '#size' => 15,
+                '#maxlength' => 15,
+                '#prefix' => '<div class="datafield currentamt datarange"><label>Current Amount:</label><div class="ranges">',
+                '#id' => 'edit-currentamtfrom',
+                '#name' => 'currentamtfrom',
+                '#default_value' => !empty($form_state['values']['currentamtfrom']) ? $form_state['values']['currentamtfrom'] : '',
+            );
+            $form['filter']['currentamtto'] = array(
+                '#type' => 'textfield',
+                '#title' => t('to'),
+                '#size' => 15,
+                '#maxlength' => 15,
+                '#suffix' => '</div></div>',
+                '#id' => 'edit-currentamtto',
+                '#name' => 'currentamtto',
+                '#default_value' => !empty($form_state['values']['currentamtto']) ? $form_state['values']['currentamtto'] : '',
+            );
+            $form['filter']['enddatefrom'] = array(
+                '#type' => 'textfield',
+                '#size' => 15,
+                '#maxlength' => 15,
+                '#description' => 'E.g., ' . date('Y-m-d'),
+                '#attributes' => array('class' => array('datepicker')),
+                '#prefix' => '<div class="datafield enddate datarange"><label>End Date:</label><div class="ranges">',
+                '#id' => 'edit-enddatefrom',
+                '#name' => 'enddatefrom',
+                '#default_value' => !empty($form_state['values']['enddatefrom']) ? $form_state['values']['enddatefrom'] : '',
+            );
+            $form['filter']['enddateto'] = array(
+                '#type' => 'textfield',
+                '#title' => t('to'),
+                '#size' => 15,
+                '#maxlength' => 15,
+                '#description' => 'E.g., ' . date('Y-m-d'),
+                '#attributes' => array('class' => array('datepicker')),
+                '#suffix' => '</div></div>',
+                '#id' => 'edit-enddateto',
+                '#name' => 'enddateto',
+                '#default_value' => !empty($form_state['values']['enddateto']) ? $form_state['values']['enddateto'] : '',
+            );
+            $form['filter']['regdatefrom'] = array(
+                '#type' => 'textfield',
+                '#size' => 15,
+                '#maxlength' => 15,
+                '#description' => 'E.g., ' . date('Y-m-d'),
+                '#attributes' => array('class' => array('datepicker')),
+                '#prefix' => '<div class="datafield regdate datarange"><label>Registration Date:</label><div class="ranges">',
+                '#id' => 'edit-regdatefrom',
+                '#name' => 'regdatefrom',
+                '#default_value' => !empty($form_state['values']['regdatefrom']) ? $form_state['values']['regdatefrom'] : '',
+                '#states' => array(
+                    'disabled' => array(
+                        'select[name="df_contract_status"]' => array('value' => 'pending')
+                    )
+                )
+            );
+            $form['filter']['regdateto'] = array(
+                '#type' => 'textfield',
+                '#title' => t('to'),
+                '#size' => 15,
+                '#maxlength' => 15,
+                '#description' => 'E.g., ' . date('Y-m-d'),
+                '#attributes' => array('class' => array('datepicker')),
+                '#suffix' => '</div></div></div>',
+                '#id' => 'edit-regdateto',
+                '#name' => 'regdateto',
+                '#default_value' => !empty($form_state['values']['regdateto']) ? $form_state['values']['regdateto'] : '',
+                '#states' => array(
+                    'disabled' => array(
+                        'select[name="df_contract_status"]' => array('value' => 'pending')
+                    )
+                )
+            );
+            $form['filter']['category'] = array(
+                '#type' => 'select',
+                '#title' => t('Category:'),
+                '#options' => array(
+                    'expense' => 'Expense',
+                ),
+                '#attributes' => array('class' => array('watch')),
+                '#prefix' => '<div class="column column-right"><div class="datafield category">',
+                '#suffix' => '</div>',
+                '#id' => 'edit-category',
+                '#name' => 'category',
+                '#default_value' => !empty($form_state['values']['category']) ? $form_state['values']['category'] : 'expense',
+            );
+            $form['filter']['agency'] = array(
+                '#type' => 'select',
+                '#title' => t('Other Government Entities:'),
+                '#options' => _agency_options($data_source),
+                '#attributes' => array('class' => array('watch')),
+                '#prefix' => '<div class="datafield agency">',
+                '#suffix' => '</div>',
+                '#id' => 'edit-agency',
+                '#name' => 'agency',
+                '#default_value' => !empty($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Other Government Entities',
+            );
+            $form['filter']['apt_pin'] = array(
+                '#type' => 'textfield',
+                '#title' => t('APT PIN:'),
+                '#attributes' => array('class' => array('watch'), 'disabled' => 'disabled'),
+                '#prefix' => '<div class="datafield apt-pin">',
+                '#suffix' => '</div>',
+                '#id' => 'edit-apt-pin',
+                '#name' => 'apt_pin',
+                '#default_value' => !empty($form_state['values']['apt_pin']) ? $form_state['values']['apt_pin'] : '',
+            );
+            $form['filter']['award_method'] = array(
+                '#type' => 'select',
+                '#title' => t('Award Method:'),
+                '#options' => _award_method_options(),
+                '#attributes' => array('class' => array('watch')),
+                '#prefix' => '<div class="datafield awardmethod">',
+                '#suffix' => '</div>',
+                '#id' => 'edit-award-method',
+                '#name' => 'award_method',
+                '#default_value' => !empty($form_state['values']['award_method']) ? $form_state['values']['award_method'] : '',
+            );
+            $form['filter']['budget_name'] = array(
+                '#type' => 'textfield',
+                '#title' => t('Budget Name:'),
+                '#prefix' => '<div class="datafield budgetname">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch')),
+                '#id' => 'edit-budget-name',
+                '#name' => 'budget_name',
+                '#default_value' => !empty($form_state['values']['budget_name']) ? $form_state['values']['budget_name'] : '',
+            );
+            $form['filter']['purpose'] = array(
+
+                '#type' => 'textfield',
+                '#title' => t('Contract Purpose:'),
+                '#prefix' => '<div class="datafield purpose">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch')),
+                '#id' => 'edit-purpose',
+                '#name' => 'purpose',
+                '#default_value' => !empty($form_state['values']['purpose']) ? $form_state['values']['purpose'] : '',
+            );
+            $form['filter']['startdatefrom'] = array(
+                '#type' => 'textfield',
+                '#size' => 15,
+                '#maxlength' => 15,
+                '#description' => 'E.g., ' . date('Y-m-d'),
+                '#attributes' => array('class' => array('datepicker')),
+                '#prefix' => '<div class="datafield startdate datarange"><label>Start Date:</label><div class="ranges">',
+                '#id' => 'edit-startdatefrom',
+                '#name' => 'startdatefrom',
+                '#default_value' => !empty($form_state['values']['startdatefrom']) ? $form_state['values']['startdatefrom'] : '',
+            );
+            $form['filter']['startdateto'] = array(
+                '#type' => 'textfield',
+                '#title' => t('to'),
+                '#size' => 15,
+                '#maxlength' => 15,
+                '#description' => 'E.g., ' . date('Y-m-d'),
+                '#suffix' => '</div></div>',
+                '#attributes' => array('class' => array('datepicker')),
+                '#id' => 'edit-startdateto',
+                '#name' => 'startdateto',
+                '#default_value' => !empty($form_state['values']['startdateto']) ? $form_state['values']['startdateto'] : '',
+            );
+            $form['filter']['recdatefrom'] = array(
+                '#type' => 'textfield',
+                '#size' => 15,
+                '#maxlength' => 15,
+                '#description' => 'E.g., ' . date('Y-m-d'),
+                '#attributes' => array('class' => array('datepicker')),
+                '#prefix' => '<div class="datafield receiveddate datarange"><label>Received Date:</label><div class="ranges">',
+                '#id' => 'edit-recdatefrom',
+                '#name' => 'recdatefrom',
+                '#default_value' => !empty($form_state['values']['recdatefrom']) ? $form_state['values']['recdatefrom'] : '',
+                '#states' => array(
+                    'enabled' => array(
+                        'select[name="df_contract_status"]' => array('value' => 'pending')
+                    )
+                )
+            );
+            $form['filter']['recdateto'] = array(
+                '#type' => 'textfield',
+                '#title' => t('to'),
+                '#size' => 15,
+                '#maxlength' => 15,
+                '#description' => 'E.g., ' . date('Y-m-d'),
+                '#attributes' => array('class' => array('datepicker')),
+                '#suffix' => '</div></div>',
+                '#id' => 'edit-recdateto',
+                '#name' => 'recdateto',
+                '#default_value' => !empty($form_state['values']['recdateto']) ? $form_state['values']['recdateto'] : '',
+                '#states' => array(
+                    'enabled' => array(
+                        'select[name="df_contract_status"]' => array('value' => 'pending')
+                    )
+                )
+            );
+            $form['filter']['year'] = array(
+                '#type' => 'select',
+                '#title' => t('Year:'),
+                '#options' => _year_options('all-years'),
+                '#attributes' => array('class' => array('watch')),
+                '#prefix' => '<div class="datafield year last-item">',
+                '#suffix' => '</div></div>',
+                '#states' => array(
+                    'disabled' => array(
+                        'select[name="df_contract_status"]' => array('value' => 'pending')
+                    ),
+                '#id' => 'edit-contractno',
+                '#name' => 'contractno',
+                '#default_value' => !empty($form_state['values']['year']) ? $form_state['values']['year'] : 'ALL',
+                )
+            );
+
+            break;
+
+        default:
+            $form['filter']['df_contract_status'] = array(
+                '#type' => 'select',
+                '#title' => t('Status:'),
+                '#options' => array(
+                    'active' => 'Active',
+                    'registered' => 'Registered',
+                    'pending' => 'Pending',
+                ),
+                '#attributes' => array('class' => array('watch')),
+                '#prefix' => '<div class="column column-left"><div class="datafield contractstatus">',
+                '#suffix' => '</div>',
+                '#id' => 'edit-df-contract-status',
+                '#name' => 'df_contract_status',
+                '#default_value' => !empty($form_state['values']['df_contract_status']) ? $form_state['values']['df_contract_status'] : 'active',
+            );
+            $form['filter']['vendor'] = array(
+                '#type' => 'textfield',
+                '#title' => t('Vendor:'),
+                '#attributes' => array('class' => array('watch')),
+                '#prefix' => '<div class="datafield vendor">',
+                '#suffix' => '</div>',
+                '#id' => 'edit-agency',
+                '#name' => 'agency',
+                '#default_value' => !empty($form_state['values']['vendor']) ? $form_state['values']['vendor'] : '',
+            );
+            $form['filter']['contract_type'] = array(
+                '#type' => 'select',
+                '#title' => t('Contract Type:'),
+                '#options' => _contract_type_options(),
+                '#attributes' => array('class' => array('watch')),
+                '#prefix' => '<div class="datafield contracttype">',
+                '#suffix' => '</div>',
+                '#id' => 'edit-contract-type',
+                '#name' => 'contract_type',
+                '#default_value' => !empty($form_state['values']['contract_type']) ? $form_state['values']['contract_type'] : 'Any Contract Type',
+            );
+            $form['filter']['contractno'] = array(
+                '#type' => 'textfield',
+                '#title' => t('Contract ID:'),
+                '#attributes' => array('class' => array('watch')),
+                '#prefix' => '<div class="datafield contractno">',
+                '#suffix' => '</div>',
+                '#id' => 'edit-contractno',
+                '#name' => 'contractno',
+                '#default_value' => !empty($form_state['values']['contractno']) ? $form_state['values']['contractno'] : '',
+            );
+            $form['filter']['pin'] = array(
+                '#type' => 'textfield',
+                '#title' => t('PIN:'),
+                '#attributes' => array('class' => array('watch')),
+                '#prefix' => '<div class="datafield pin">',
+                '#suffix' => '</div>',
+                '#id' => 'edit-pin',
+                '#name' => 'pin',
+                '#default_value' => !empty($form_state['values']['pin']) ? $form_state['values']['pin'] : '',
+            );
+            $form['filter']['currentamtfrom'] = array(
+                '#type' => 'textfield',
+                '#size' => 15,
+                '#maxlength' => 15,
+                '#prefix' => '<div class="datafield currentamt datarange"><label>Current Amount:</label><div class="ranges">',
+                '#id' => 'edit-currentamtfrom',
+                '#name' => 'currentamtfrom',
+                '#default_value' => !empty($form_state['values']['currentamtfrom']) ? $form_state['values']['currentamtfrom'] : '',
+            );
+            $form['filter']['currentamtto'] = array(
+                '#type' => 'textfield',
+                '#title' => t('to'),
+                '#size' => 15,
+                '#maxlength' => 15,
+                '#suffix' => '</div></div>',
+                '#id' => 'edit-currentamtto',
+                '#name' => 'currentamtto',
+                '#default_value' => !empty($form_state['values']['currentamtto']) ? $form_state['values']['currentamtto'] : '',
+            );
+            $form['filter']['enddatefrom'] = array(
+                '#type' => 'textfield',
+                '#size' => 15,
+                '#maxlength' => 15,
+                '#description' => 'E.g., ' . date('Y-m-d'),
+                '#attributes' => array('class' => array('datepicker')),
+                '#prefix' => '<div class="datafield enddate datarange"><label>End Date:</label><div class="ranges">',
+                '#id' => 'edit-enddatefrom',
+                '#name' => 'enddatefrom',
+                '#default_value' => !empty($form_state['values']['enddatefrom']) ? $form_state['values']['enddatefrom'] : '',
+            );
+            $form['filter']['enddateto'] = array(
+                '#type' => 'textfield',
+                '#title' => t('to'),
+                '#size' => 15,
+                '#maxlength' => 15,
+                '#description' => 'E.g., ' . date('Y-m-d'),
+                '#attributes' => array('class' => array('datepicker')),
+                '#suffix' => '</div></div>',
+                '#id' => 'edit-enddateto',
+                '#name' => 'enddateto',
+                '#default_value' => !empty($form_state['values']['enddateto']) ? $form_state['values']['enddateto'] : '',
+            );
+            $form['filter']['regdatefrom'] = array(
+                '#type' => 'textfield',
+                '#size' => 15,
+                '#maxlength' => 15,
+                '#description' => 'E.g., ' . date('Y-m-d'),
+                '#attributes' => array('class' => array('datepicker')),
+                '#prefix' => '<div class="datafield regdate datarange"><label>Registration Date:</label><div class="ranges">',
+                '#id' => 'edit-regdatefrom',
+                '#name' => 'regdatefrom',
+                '#default_value' => !empty($form_state['values']['regdatefrom']) ? $form_state['values']['regdatefrom'] : '',
+                '#states' => array(
+                    'disabled' => array(
+                        'select[name="df_contract_status"]' => array('value' => 'pending')
+                    )
+                )
+            );
+            $form['filter']['regdateto'] = array(
+                '#type' => 'textfield',
+                '#title' => t('to'),
+                '#size' => 15,
+                '#maxlength' => 15,
+                '#description' => 'E.g., ' . date('Y-m-d'),
+                '#attributes' => array('class' => array('datepicker')),
+                '#suffix' => '</div></div></div>',
+                '#id' => 'edit-regdateto',
+                '#name' => 'regdateto',
+                '#default_value' => !empty($form_state['values']['regdateto']) ? $form_state['values']['regdateto'] : '',
+                '#states' => array(
+                    'disabled' => array(
+                        'select[name="df_contract_status"]' => array('value' => 'pending')
+                    )
+                )
+            );
+            $form['filter']['category'] = array(
+                '#type' => 'select',
+                '#title' => t('Category:'),
+                '#options' => array(
+                    'expense' => 'Expense',
+                    'revenue' => 'Revenue',
+                ),
+                '#attributes' => array('class' => array('watch')),
+                '#prefix' => '<div class="column column-right"><div class="datafield category">',
+                '#suffix' => '</div>',
+                '#id' => 'edit-category',
+                '#name' => 'category',
+                '#default_value' => !empty($form_state['values']['category']) ? $form_state['values']['category'] : 'expense',
+            );
+            $form['filter']['agency'] = array(
+                '#type' => 'select',
+                '#title' => t('Agency:'),
+                '#options' => _agency_options($data_source),
+                '#attributes' => array('class' => array('watch')),
+                '#prefix' => '<div class="datafield agency">',
+                '#suffix' => '</div>',
+                '#id' => 'edit-agency',
+                '#name' => 'agency',
+                '#default_value' => !empty($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Citywide (All Agencies)',
+            );
+            $form['filter']['apt_pin'] = array(
+                '#type' => 'textfield',
+                '#title' => t('APT PIN:'),
+                '#attributes' => array('class' => array('watch')),
+                '#prefix' => '<div class="datafield apt-pin">',
+                '#suffix' => '</div>',
+                '#id' => 'edit-apt-pin',
+                '#name' => 'apt_pin',
+                '#default_value' => !empty($form_state['values']['apt_pin']) ? $form_state['values']['apt_pin'] : '',
+            );
+            $form['filter']['award_method'] = array(
+                '#type' => 'select',
+                '#title' => t('Award Method:'),
+                '#options' => _award_method_options(),
+                '#attributes' => array('class' => array('watch')),
+                '#prefix' => '<div class="datafield awardmethod">',
+                '#suffix' => '</div>',
+                '#id' => 'edit-award-method',
+                '#name' => 'award_method',
+                '#default_value' => !empty($form_state['values']['award_method']) ? $form_state['values']['award_method'] : '',
+            );
+            $form['filter']['startdatefrom'] = array(
+                '#type' => 'textfield',
+                '#size' => 15,
+                '#maxlength' => 15,
+                '#description' => 'E.g., ' . date('Y-m-d'),
+                '#attributes' => array('class' => array('datepicker')),
+                '#prefix' => '<div class="datafield startdate datarange"><label>Start Date:</label><div class="ranges">',
+                '#id' => 'edit-startdatefrom',
+                '#name' => 'startdatefrom',
+                '#default_value' => !empty($form_state['values']['startdatefrom']) ? $form_state['values']['startdatefrom'] : '',
+            );
+            $form['filter']['startdateto'] = array(
+                '#type' => 'textfield',
+                '#title' => t('to'),
+                '#size' => 15,
+                '#maxlength' => 15,
+                '#description' => 'E.g., ' . date('Y-m-d'),
+                '#suffix' => '</div></div>',
+                '#attributes' => array('class' => array('datepicker')),
+                '#id' => 'edit-startdateto',
+                '#name' => 'startdateto',
+                '#default_value' => !empty($form_state['values']['startdateto']) ? $form_state['values']['startdateto'] : '',
+            );
+            $form['filter']['recdatefrom'] = array(
+                '#type' => 'textfield',
+                '#size' => 15,
+                '#maxlength' => 15,
+                '#description' => 'E.g., ' . date('Y-m-d'),
+                '#attributes' => array('class' => array('datepicker')),
+                '#prefix' => '<div class="datafield receiveddate datarange"><label>Received Date:</label><div class="ranges">',
+                '#id' => 'edit-recdatefrom',
+                '#name' => 'recdatefrom',
+                '#default_value' => !empty($form_state['values']['recdatefrom']) ? $form_state['values']['recdatefrom'] : '',
+                '#states' => array(
+                    'enabled' => array(
+                        'select[name="df_contract_status"]' => array('value' => 'pending')
+                    )
+                )
+            );
+            $form['filter']['recdateto'] = array(
+                '#type' => 'textfield',
+                '#title' => t('to'),
+                '#size' => 15,
+                '#maxlength' => 15,
+                '#description' => 'E.g., ' . date('Y-m-d'),
+                '#attributes' => array('class' => array('datepicker')),
+                '#suffix' => '</div></div>',
+                '#id' => 'edit-recdateto',
+                '#name' => 'recdateto',
+                '#default_value' => !empty($form_state['values']['recdateto']) ? $form_state['values']['recdateto'] : '',
+                '#states' => array(
+                    'enabled' => array(
+                        'select[name="df_contract_status"]' => array('value' => 'pending')
+                    )
+                )
+            );
+            $form['filter']['year'] = array(
+                '#type' => 'select',
+                '#title' => t('Year:'),
+                '#options' => _year_options('all-years'),
+                '#attributes' => array('class' => array('watch')),
+                '#default_value' => !empty($form_state['values']['year']) ? $form_state['values']['year'] : 'ALL',
+                '#prefix' => '<div class="datafield year last-item">',
+                '#suffix' => '</div></div>',
+                '#id' => 'edit-year',
+                '#name' => 'year',
+                '#states' => array(
+                    'disabled' => array(
+                        'select[name="df_contract_status"]' => array('value' => 'pending')
+                    )
+                )
+            );
+            break;
+    }
+
+    return $form;
+}
+
+/**
+ * Callback for the data source radio button toggle.
+ *
+ * Updates the form to point to correct data source
+ */
+function checkbook_datafeeds_contracts_filter_ajax($form, $form_state) {
+    $commands[] = ajax_command_replace('#dynamic-filter-data-wrapper', drupal_render($form['filter']));
+    $commands[] = ajax_command_replace('#dynamic-columns-wrapper', drupal_render($form['columns']));
+    $commands[] = ajax_command_invoke(NULL, 'onDataSourceChange');
+
+    return array('#type' => 'ajax', '#commands' => $commands);
+}
+
 /**
  * Column options for contracts domain.
  *
@@ -1788,424 +1913,21 @@ function checkbook_datafeeds_contracts($form, &$form_state, $data_source)
  *   Type of data for Data Feeds to return (xml or csv)
  * @param string $contract_type
  *   Type of contract (expense or revenue)
- * @param string $status
+ * @param string $contract_status
  *   Contract status (active, registered or pending)
  *
  * @return array
  *   FAPI structured array for select box #options
  */
-function _checkbook_datafeeds_contracts_column_options($data_type, $contract_type, $status = '', $data_source)
+function _checkbook_datafeeds_contracts_column_options($data_source, $status, $category, $data_type)
 {
-    if ($data_type == 'csv') {
-        if ($status != 'pending') {
-            switch ($contract_type) {
-                case 'expense':
-//                    switch ($data_source) {
-//                        case DataSource::OtherGovernmentEntities:
-//                            $options = drupal_map_assoc(array(
-//                                "Contract ID",
-//                                "Purpose",
-//                                "Version",
-//                                "Year",
-//                                "Parent Contract ID",
-//                                "Entity Contract #",
-//                                "Commodity Line",
-//                                "Budget Name",
-//                                "Original Amount",
-//                                "Current Amount",
-//                                "Spent to date",
-//                                "Vendor",
-//                                "Agency",
-//                                "Other Government Entities",
-//                                "Contract Type",
-//                                "Award Method",
-//                                "Expense Category",
-//                                "Start Date",
-//                                "End Date",
-//                                "Registration Date",
-//                                "PIN",
-//                                "APT PIN",
-//                                "Document Code",
-//                                "Contract Industry",
-//                            ));
-//                            break;
-//                        default:
-//                            $options = drupal_map_assoc(array(
-//                                "Contract ID",
-//                                "Purpose",
-//                                "Version",
-//                                "Year",
-//                                "Parent Contract ID",
-//                                "Original Amount",
-//                                "Current Amount",
-//                                "Spent to date",
-//                                "Vendor",
-//                                "Agency",
-//                                "Contract Type",
-//                                "Award Method",
-//                                "Expense Category",
-//                                "Start Date",
-//                                "End Date",
-//                                "Registration Date",
-//                                "PIN",
-//                                "APT PIN",
-//                                "Document Code",
-//                                "Contract Industry",
-//                            ));
-//                            break;
-//                    }
-                    $options = drupal_map_assoc(array(
-                        "Contract ID",
-                        "Purpose",
-                        "Version",
-                        "Year",
-                        "Parent Contract ID",
-                        "Entity Contract #",
-                        "Commodity Line",
-                        "Budget Name",
-                        "Original Amount",
-                        "Current Amount",
-                        "Spent to date",
-                        "Vendor",
-                        "Agency",
-                        "Other Government Entities",
-                        "Contract Type",
-                        "Award Method",
-                        "Expense Category",
-                        "Start Date",
-                        "End Date",
-                        "Registration Date",
-                        "PIN",
-                        "APT PIN",
-                        "Document Code",
-                        "Contract Industry",
-                    ));
-                    break;
+    $options = DatafeedsConfigUtil::getConfig(strtolower('contracts'));
 
-                case 'revenue':
-//                    switch ($data_source) {
-//                        case DataSource::OtherGovernmentEntities:
-//                            $options = drupal_map_assoc(array(
-//                                "Contract ID",
-//                                "Purpose",
-//                                "Version",
-//                                "Year",
-//                                "Parent Contract ID",
-//                                "Entity Contract #",
-//                                "Commodity Line",
-//                                "Budget Name",
-//                                "Original Amount",
-//                                "Current Amount",
-//                                "Vendor",
-//                                "Agency",
-//                                "Other Government Entities",
-//                                "Contract Type",
-//                                "Award Method",
-//                                "Start Date",
-//                                "End Date",
-//                                "Registration Date",
-//                                "PIN",
-//                                "APT PIN",
-//                                "Contract Category",
-//                                "Document Code",
-//                                "Contract Industry",
-//                            ));
-//                            break;
-//                        default:
-//                            $options = drupal_map_assoc(array(
-//                                "Contract ID",
-//                                "Purpose",
-//                                "Version",
-//                                "Year",
-//                                "Parent Contract ID",
-//                                "Original Amount",
-//                                "Current Amount",
-//                                "Vendor",
-//                                "Agency",
-//                                "Contract Type",
-//                                "Award Method",
-//                                "Start Date",
-//                                "End Date",
-//                                "Registration Date",
-//                                "PIN",
-//                                "APT PIN",
-//                                "Contract Category",
-//                                "Document Code",
-//                                "Contract Industry",
-//                            ));
-//                            break;
-//                    }
-                    $options = drupal_map_assoc(array(
-                        "Contract ID",
-                        "Purpose",
-                        "Version",
-                        "Year",
-                        "Parent Contract ID",
-                        "Entity Contract #",
-                        "Commodity Line",
-                        "Budget Name",
-                        "Original Amount",
-                        "Current Amount",
-                        "Vendor",
-                        "Agency",
-                        "Other Government Entities",
-                        "Contract Type",
-                        "Award Method",
-                        "Start Date",
-                        "End Date",
-                        "Registration Date",
-                        "PIN",
-                        "APT PIN",
-                        "Contract Category",
-                        "Document Code",
-                        "Contract Industry",
-                    ));
-                    break;
-            }
-        } else {
-//            switch ($data_source) {
-//                case DataSource::OtherGovernmentEntities:
-//                    $options = drupal_map_assoc(array(
-//                        "Contract ID",
-//                        "Parent Contract Id",
-//                        "Purpose",
-//                        "Current Amount",
-//                        "Vendor",
-//                        "Received Date",
-//                        "Agency",
-//                        "Other Government Entities",
-//                        "Contract Type",
-//                        "Entity Contract #",
-//                        "Commodity Line",
-//                        "Budget Name",
-//                        "Award Method",
-//                        "Start Date",
-//                        "End Date",
-//                        "PIN",
-//                        "APT PIN",
-//                        "Document Code",
-//                        "Version",
-//                        "Original Amount",
-//                        "Purpose",
-//                        "Original Modified",
-//                        "Contract Industry",
-//                    ));
-//                    break;
-//                default:
-//                    $options = drupal_map_assoc(array(
-//                        "Contract ID",
-//                        "Parent Contract Id",
-//                        "Purpose",
-//                        "Current Amount",
-//                        "Vendor",
-//                        "Received Date",
-//                        "Agency",
-//                        "Contract Type",
-//                        "Award Method",
-//                        "Start Date",
-//                        "End Date",
-//                        "PIN",
-//                        "APT PIN",
-//                        "Document Code",
-//                        "Version",
-//                        "Original Amount",
-//                        "Purpose",
-//                        "Original Modified",
-//                        "Contract Industry",
-//                    ));
-//                    break;
-//            }
-            $options = drupal_map_assoc(array(
-                "Contract ID",
-                "Parent Contract Id",
-                "Purpose",
-                "Current Amount",
-                "Vendor",
-                "Received Date",
-                "Agency",
-                "Other Government Entities",
-                "Contract Type",
-                "Entity Contract #",
-                "Commodity Line",
-                "Budget Name",
-                "Award Method",
-                "Start Date",
-                "End Date",
-                "PIN",
-                "APT PIN",
-                "Document Code",
-                "Version",
-                "Original Amount",
-                "Purpose",
-                "Original Modified",
-                "Contract Industry",
-            ));
-        }
-    } elseif ($data_type == 'xml') {
-        if ($status != 'pending') {
-            switch ($contract_type) {
-                case 'expense':
-                    switch ($data_source) {
-                        case DataSource::OtherGovernmentEntities:
-                            $options = drupal_map_assoc(array(
-                                "contract_id",
-                                "purpose",
-                                "version",
-                                "year",
-                                "parent_contract_id",
-                                "entity_contract_num",
-                                "commodity_line",
-                                "budget_name",
-                                "original_amount",
-                                "current_amount",
-                                "spent_to_date",
-                                "vendor",
-                                "agency",
-                                "contract_type",
-                                "award_method",
-                                "expense_category",
-                                "start_date",
-                                "end_date",
-                                "registration_date",
-                                "pin",
-                                "apt_pin",
-                                "document_code",
-                                "contract_industry",
-                            ));
-                            break;
-                        default:
-                            $options = drupal_map_assoc(array(
-                                "contract_id",
-                                "purpose",
-                                "version",
-                                "year",
-                                "parent_contract_id",
-                                "original_amount",
-                                "current_amount",
-                                "spent_to_date",
-                                "vendor",
-                                "agency",
-                                "contract_type",
-                                "award_method",
-                                "expense_category",
-                                "start_date",
-                                "end_date",
-                                "registration_date",
-                                "pin",
-                                "apt_pin",
-                                "document_code",
-                                "contract_industry",
-                            ));
-                            break;
-                    }
-                    break;
+    $options = !isset($options['data_source'][$data_source]) ? $options['data_source']['checkbook'] : $options['data_source'][$data_source];
+    $options = !isset($options['status'][$status]) ? $options['status']['default'] : $options['status'][$status];
+    $options = !isset($options['category'][$category]) ? $options['category']['default'] : $options['category'][$category];
+    $options = !isset($options['data_type'][$data_type]) ? $options['data_type']['default'] : $options['data_type'][$data_type];
 
-                case 'revenue':
-                    switch ($data_source) {
-                        case DataSource::OtherGovernmentEntities:
-                            $options = drupal_map_assoc(array(
-                                "contract_id",
-                                "purpose",
-                                "version",
-                                "year",
-                                "parent_contract_id",
-                                "entity_contract_num",
-                                "commodity_line",
-                                "budget_name",
-                                "original_amount",
-                                "current_amount",
-                                "vendor",
-                                "agency",
-                                "contract_type",
-                                "award_method",
-                                "start_date",
-                                "end_date",
-                                "registration_date",
-                                "pin",
-                                "apt_pin",
-                                "document_code",
-                                "contract_industry",
-                            ));
-                            break;
-                        default:
-                            $options = drupal_map_assoc(array(
-                                "contract_id",
-                                "purpose",
-                                "version",
-                                "year",
-                                "parent_contract_id",
-                                "original_amount",
-                                "current_amount",
-                                "vendor",
-                                "agency",
-                                "contract_type",
-                                "award_method",
-                                "start_date",
-                                "end_date",
-                                "registration_date",
-                                "pin",
-                                "apt_pin",
-                                "document_code",
-                                "contract_industry",
-                            ));
-                            break;
-                    }
-                    break;
-            }
-        } else {
-            switch ($data_source) {
-                case DataSource::OtherGovernmentEntities:
-                    $options = drupal_map_assoc(array(
-                        "contract_id",
-                        "entity_contract_num",
-                        "commodity_line",
-                        "budget_name",
-                        "purpose",
-                        "current_amount",
-                        "vendor",
-                        "agency",
-                        "contract_type",
-                        "award_method",
-                        "start_date",
-                        "end_date",
-                        "pin",
-                        "apt_pin",
-                        "parent_contract_id",
-                        "received_date",
-                        "document_code",
-                        "version",
-                        "original_amount",
-                        "purpose",
-                        "original_modified",
-                        "contract_industry",
-                    ));
-                    break;
-                default:
-                    $options = drupal_map_assoc(array(
-                        "contract_id",
-                        "purpose",
-                        "current_amount",
-                        "vendor",
-                        "agency",
-                        "contract_type",
-                        "award_method",
-                        "start_date",
-                        "end_date",
-                        "pin",
-                        "apt_pin",
-                        "parent_contract_id",
-                        "received_date",
-                        "document_code",
-                        "version",
-                        "original_amount",
-                        "purpose",
-                        "original_modified",
-                        "contract_industry",
-                    ));
-                    break;
-            }
-        }
-    }
     return $options;
 }
 
@@ -2218,6 +1940,7 @@ function _checkbook_datafeeds_contracts_column_options($data_type, $contract_typ
  *   Data Feeds wizard form_state array
  */
 function checkbook_datafeeds_contracts_next_submit($form, &$form_state) {
+
   $current_step = & $form_state['step'];
   $form_state['step_information'][$current_step]['stored_values'] = $form_state['values'];
   $current_step = 'contracts_confirmation';
@@ -2242,13 +1965,15 @@ function checkbook_datafeeds_contracts_next_submit($form, &$form_state) {
  * @return array
  *   Renderable array of Contracts confirmation step
  */
-function checkbook_datafeeds_contracts_confirmation($form, &$form_state, $data_source)
+function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
 {
     $values = $form_state['step_information']['contracts']['stored_values'];
     $responsetype = $form_state['step_information']['type']['stored_values']['format'];
     $user_criteria = array();
-    $user_criteria['Type of Data'] = 'Contracts';
-    $user_criteria['Type of File'] = $responsetype;
+    //Get current data source
+    $data_source = !isset($form_state['input']['datafeeds-contracts-domain-filter']) ? 'checkbook' : 'checkbook_oge';
+    //Set type/source of data by data_source
+    $user_criteria['Type of Data'] = $data_source == 'checkbook_oge' ? 'Contracts_OGE' : 'Contracts';
     $form['columns'] = array(
         '#type' => 'fieldset',
         '#title' => t('Selected Columns'),
@@ -2373,20 +2098,20 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state, $data_s
         $user_criteria['Purpose'] = $values['purpose'];
     }
     switch ($data_source) {
-        case DataSource::OtherGovernmentEntities:
-            if ($values['agency']) {
-                $form['filter']['agency'] = array(
-                    '#markup' => '<div><strong>Agency:</strong> ' . $values['agency'] . '</div>',
-                );
-                $user_criteria['Agency'] = $values['agency'];
-            }
-            break;
-        default:
+        case 'checkbook_oge':
             if ($values['agency']) {
                 $form['filter']['agency'] = array(
                     '#markup' => '<div><strong>Other Government Entities:</strong> ' . $values['agency'] . '</div>',
                 );
                 $user_criteria['Other Government Entities'] = $values['agency'];
+            }
+            break;
+        default:
+            if ($values['agency']) {
+                $form['filter']['agency'] = array(
+                    '#markup' => '<div><strong>Agency:</strong> ' . $values['agency'] . '</div>',
+                );
+                $user_criteria['Agency'] = $values['agency'];
             }
             break;
     }
@@ -2470,11 +2195,13 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
     $pattern = "/.*?(\\[.*?\\])/is";
     $criteria = array(
         'global' => array(
-            'type_of_data' => 'Contracts',
+            //Set data source for query
+            'type_of_data' => $data_source == 'checkbook_oge' ? 'Contracts_OGE' : 'Contracts',
             'records_from' => 1,
             'max_records' => 50000,
         ),
     );
+
     if ($values['df_contract_status'] != 'pending' && $values['category'] == 'expense') {
         $criteria['responseColumns'] = $values['column_select_expense'];
         if ($values['year'] && $values['year'] != 'ALL') {
@@ -2496,10 +2223,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
     } elseif ($values['df_contract_status'] == 'pending' && $values['category'] == 'expense') {
         $criteria['responseColumns'] = $values['column_select_pending'];
     }
-    if ($values['agency'] != 'Citywide (All Agencies)') {
-        preg_match($pattern, $values['agency'], $amatches);
-        $criteria['value']['agency_code'] = trim($amatches[1], '[ ]');
-    }
+
     if ($values['vendor']) {
         preg_match($pattern, $values['vendor'], $vmatches);
         if ($vmatches) {
@@ -2524,15 +2248,6 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
     if ($values['contract_type'] != 'No Contract Type Selected') {
         preg_match($pattern, $values['contract_type'], $ctypematches);
         $criteria['value']['contract_type'] = trim($ctypematches[1], '[ ]');
-    }
-    if ($values['entity_contract_num']) {
-        $criteria['value']['entity_contract_num'] = $values['entity_contract_num'];
-    }
-    if ($values['commodity_line']) {
-        $criteria['value']['commodity_line'] = $values['commodity_line'];
-    }
-    if ($values['budget_name']) {
-        $criteria['value']['budget_name'] = $values['budget_name'];
     }
     if ($values['startdatefrom'] !== '' || $values['startdateto'] !== '') {
         $criteria['range']['start_date'] = array(
@@ -2570,6 +2285,33 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
     if ($values['apt_pin']) {
         $criteria['value']['apt_pin'] = strtoupper($values['apt_pin']);
     }
+    //By data source
+    switch($data_source)
+    {
+        case 'checkbook_oge':
+            if ($values['agency'] != 'Other Government Entities') {
+                preg_match($pattern, $values['agency'], $amatches);
+                $criteria['value']['agency_code'] = trim($amatches[1], '[ ]');
+            }
+            if ($values['entity_contract_num']) {
+                $criteria['value']['entity_contract_num'] = $values['entity_contract_num'];
+            }
+            if ($values['commodity_line']) {
+                $criteria['value']['commodity_line'] = $values['commodity_line'];
+            }
+            if ($values['budget_name']) {
+                $criteria['value']['budget_name'] = $values['budget_name'];
+            }
+            break;
+
+        default:
+            if ($values['agency'] != 'Citywide (All Agencies)') {
+                preg_match($pattern, $values['agency'], $amatches);
+                $criteria['value']['agency_code'] = trim($amatches[1], '[ ]');
+            }
+            break;
+    }
+
     return $criteria;
 }
 
@@ -2691,7 +2433,10 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state) {
   }
 }
 
-// Payroll section:
+//</editor-fold>
+
+//<editor-fold desc="Payroll section">
+
 /**
  * First step of Payroll section.
  *
@@ -3421,7 +3166,10 @@ function checkbook_datafeeds_payroll_validate($form, &$form_state) {
   }
 }
 
-// Revenue section:
+//</editor-fold>
+
+//<editor-fold desc="Revenue section">
+
 /**
  * First step of Revenue section.
  *
@@ -3976,7 +3724,10 @@ function checkbook_datafeeds_revenue_validate($form, &$form_state) {
   }
 }
 
-// Spending section:
+//</editor-fold>
+
+//<editor-fold desc="Spending section">
+
 /**
  * First step of Spending section.
  *
@@ -3988,13 +3739,10 @@ function checkbook_datafeeds_revenue_validate($form, &$form_state) {
  * @return array
  *   Renderable array of first step of Spending
  */
-function checkbook_datafeeds_spending($form, &$form_state, $data_source)
+function checkbook_datafeeds_spending($form, &$form_state)
 {
     $datatype = $form_state['step_information']['type']['stored_values']['format'];
-    $agency = isset($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Citywide (All Agencies)';
-    $dept = !empty($form_state['values']['dept']) ? $form_state['values']['dept'] : '';
-    $sc = !empty($form_state['values']['expense_type']) ? $form_state['values']['expense_type'] : '';
-    $year = !empty($form_state['values']['year']) ? $form_state['values']['year'] : 'FY' . currentFiscalYear();
+    $data_source = $form_state['values']['datafeeds-spending-domain-filter'];
 
     //<editor-fold desc="Heading">
 
@@ -4005,416 +3753,53 @@ function checkbook_datafeeds_spending($form, &$form_state, $data_source)
         '#markup' => '<p class="required-message">Fields marked with an asterisk (<span class="form-required">*</span>) are required.</p><br/>',
     );
     $form['description'] = array(
-        '#markup' => '<h2 class="domain-title">Spending</h2>' . _checkbook_datafeeds_get_data_source_options('spending'),
+        '#markup' => '<h2 class="domain-title">Spending</h2>',
     );
-
-    //</editor-fold>
-
-    //<editor-fold desc="Filter">
-
+    $form['datafeeds-spending-domain-filter'] = array(
+        '#type' => 'radios',
+        '#options' => array('checkbook' => 'Citywide Agencies', 'checkbook_oge' => 'Other Government Entities'),
+        '#default_value' => !isset($data_source) ? 'checkbook' : $data_source,
+        '#prefix' => '<div id="div_data_source">',
+        '#suffix' => '</div><br/><br/>',
+        '#parents' => array('datafeeds-spending-domain-filter'),
+        '#ajax' => array(
+            'event' => 'change',
+            'callback' => 'checkbook_datafeeds_spending_filter_ajax',
+            'method' => 'replace',
+        )
+    );
     $form['filter'] = array(
         '#type' => 'fieldset',
         '#title' => t('3. Filter the Data:'),
         '#attributes' => array('class' => array('spending-fieldset')),
-    );
-
-    //<editor-fold desc="Citywide Agency">
-
-    $data_source = DataSource::CitywideAgency;
-
-    $form['filter']['agency'] = array(
-        '#type' => 'select',
-        '#title' => t('Agency:'),
-        '#options' => _agency_options($data_source),
-        '#prefix' => '<div class="column column-left '.str_replace('_','-',$data_source).'"><div class="datafield agency">',
+        '#prefix' => '<div id="dynamic-filter-data-wrapper">',
         '#suffix' => '</div>',
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => $agency,
-        '#ajax' => array(
-            'callback' => 'checkbook_datafeeds_agency_ajax',
-            'wrapper' => 'dynamic-fields',
-            'progress' => array(
-                'message' => NULL,
-                'type' => 'throbber',
-            ),
-        ),
-    );
-    $form['filter']['dept'] = array(
-        '#type' => 'select',
-        '#title' => t('Department:'),
-        '#options' => _dept_options($agency, $sc, $year),
-        '#prefix' => '<div id="dynamic-fields"><div class="datafield department">',
-        '#suffix' => '</div>',
-        '#attributes' => array('class' => array('watch')),
-        '#multiple' => FALSE,
-        '#default_value' => $dept,
-        '#ajax' => array(
-            'callback' => 'checkbook_datafeeds_dept_ajax',
-            'wrapper' => 'expense-category',
-            'progress' => array(
-                'message' => NULL,
-                'type' => 'throbber',
-            ),
-        ),
-    );
-    $form['filter']['expense_category'] = array(
-        '#type' => 'select',
-        '#title' => t('Expense Category:'),
-        '#options' => _expcat_options($agency, $dept, $sc, $year),
-        '#prefix' => '<div id="expense-category"><div class="datafield expensecategory">',
-        '#suffix' => '</div></div></div>',
-        '#attributes' => array('class' => array('watch')),
-        '#multiple' => FALSE,
-        '#default_value' => !empty($form_state['values']['expense_category']) ? $form_state['values']['expense_category'] : '',
-    );
-    $form['filter']['expense_type'] = array(
-        '#type' => 'select',
-        '#title' => t('Spending Category:'),
-        '#options' => _expense_type_options(),
-        '#prefix' => '<div class="datafield expensetype">',
-        '#suffix' => '</div>',
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => $sc,
-        '#ajax' => array(
-            'callback' => 'checkbook_datafeeds_exptype_ajax',
-            'wrapper' => 'dynamic-fields',
-            'progress' => array(
-                'message' => NULL,
-                'type' => 'throbber',
-            ),
-        ),
-    );
-    $form['filter']['payee_name'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Payee Name:'),
-        '#prefix' => '<div class="datafield payeename last-item">',
-        '#suffix' => '</div></div>',
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['payee_name']) ? $form_state['values']['payee_name'] : '',
-    );
-    $form['filter']['checkamtfrom'] = array(
-        '#type' => 'textfield',
-        '#size' => 15,
-        '#maxlength' => 15,
-        '#prefix' => '<div class="column column-right '.str_replace('_','-',$data_source).'"><div class="datafield datarange checkamount"><label>Check Amount:</label><div class="ranges">',
-        '#default_value' => !empty($form_state['values']['checkamtfrom']) ? $form_state['values']['checkamtfrom'] : '',
-    );
-    $form['filter']['checkamtto'] = array(
-        '#type' => 'textfield',
-        '#title' => t('to'),
-        '#size' => 15,
-        '#maxlength' => 15,
-        '#suffix' => '</div></div>',
-        '#default_value' => !empty($form_state['values']['checkamtto']) ? $form_state['values']['checkamtto'] : '',
-    );
-    $form['filter']['contractno'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Contract ID:'),
-        '#prefix' => '<div class="datafield contractno">',
-        '#suffix' => '</div>',
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['contractno']) ? $form_state['values']['contractno'] : '',
-    );
-    $form['filter']['document_id'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Document ID:'),
-        '#prefix' => '<div class="datafield expenseid">',
-        '#suffix' => '</div>',
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['document_id']) ? $form_state['values']['document_id'] : '',
-    );
-    $form['filter']['capital_project'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Capital Project:'),
-        '#prefix' => '<div class="datafield capitalproject">',
-        '#suffix' => '</div>',
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['capital_project']) ? $form_state['values']['capital_project'] : '',
-    );
-    $form['filter']['date_filter'] = array(
-        '#type' => 'radios',
-        '#title' => t('Date Filter:'),
-        '#options' => array(
-            'Year',
-            'Issue Date',
-        ),
-        '#prefix' => '<div id="datefilter"><div class="datafield datefilter clearfix">',
-        '#suffix' => '</div></div>',
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['date_filter']) ? $form_state['values']['date_filter'] : 0,
-        '#ajax' => array(
-            'callback' => 'checkbook_datafeeds_datefilter_ajax',
-            'wrapper' => 'datefilter',
-            'progress' => array(
-                'message' => NULL,
-                'type' => 'throbber',
-            ),
-        ),
-    );
-    $form['filter']['year_filter_start'] = array(
-        '#markup' => '<div class="datafield year-filters last-item">',
-    );
-    $form['filter']['year'] = array(
-        '#type' => 'select',
-        '#options' => _year_options('all-years'),
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => $year,
-        '#prefix' => '<div id="year"><div class="datafield year">',
-        '#suffix' => '</div></div>',
-        '#ajax' => array(
-            'callback' => 'checkbook_datafeeds_year_ajax',
-            'wrapper' => 'dynamic-fields',
-            'progress' => array(
-                'message' => NULL,
-                'type' => 'throbber',
-            ),
-        ),
-    );
-    $form['filter']['issuedfrom'] = array(
-        '#type' => 'textfield',
-        '#size' => 10,
-        '#maxlength' => 10,
-        '#description' => t('E.g., ' . date('Y-m-d')),
-        '#attributes' => array('class' => array('datepicker')),
-        '#prefix' => '<div class="datafield datarange issueddate"><div class="ranges">',
-        '#default_value' => !empty($form_state['values']['issuedfrom']) ? $form_state['values']['issuedfrom'] : '',
-    );
-    $form['filter']['issuedto'] = array(
-        '#type' => 'textfield',
-        '#title' => t('to'),
-        '#size' => 10,
-        '#maxlength' => 10,
-        '#description' => t('E.g., ' . date('Y-m-d')),
-        '#attributes' => array('class' => array('datepicker')),
-        '#suffix' => '</div></div>',
-        '#default_value' => !empty($form_state['values']['issuedto']) ? $form_state['values']['issuedto'] : '',
-    );
-    $form['filter']['year_filter_end'] = array(
-        '#markup' => '</div></div>',
+        '#id' => 'edit-filter',
     );
 
     //</editor-fold>
 
-    //<editor-fold desc="Other Government Entities">
-
-    $data_source = DataSource::OtherGovernmentEntities;
-
-    $form['filter'][$data_source . '_agency'] = array(
-        '#type' => 'select',
-        '#title' => t('Other Government Entities:'),
-        '#options' => _agency_options($data_source),
-        '#prefix' => '<div class="column column-left '.str_replace('_','-',$data_source).'"><div class="datafield agency">',
-        '#suffix' => '</div>',
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => $agency,
-        '#ajax' => array(
-            'callback' => 'checkbook_datafeeds_agency_ajax',
-            'wrapper' => 'dynamic-fields',
-            'progress' => array(
-                'message' => NULL,
-                'type' => 'throbber',
-            ),
-        ),
-    );
-    $form['filter'][$data_source . '_dept'] = array(
-        '#type' => 'select',
-        '#title' => t('Department:'),
-        '#options' => _dept_options($agency, $sc, $year),
-        '#prefix' => '<div id="dynamic-fields"><div class="datafield department">',
-        '#suffix' => '</div>',
-        '#attributes' => array('class' => array('watch')),
-        '#multiple' => FALSE,
-        '#default_value' => $dept,
-        '#ajax' => array(
-            'callback' => 'checkbook_datafeeds_dept_ajax',
-            'wrapper' => 'expense-category',
-            'progress' => array(
-                'message' => NULL,
-                'type' => 'throbber',
-            ),
-        ),
-    );
-    $form['filter'][$data_source . '_expense_category'] = array(
-        '#type' => 'select',
-        '#title' => t('Expense Category:'),
-        '#options' => _expcat_options($agency, $dept, $sc, $year),
-        '#prefix' => '<div id="expense-category"><div class="datafield expensecategory">',
-        '#suffix' => '</div></div></div>',
-        '#attributes' => array('class' => array('watch')),
-        '#multiple' => FALSE,
-        '#default_value' => !empty($form_state['values']['expense_category']) ? $form_state['values']['expense_category'] : '',
-    );
-    $form['filter'][$data_source . '_expense_type'] = array(
-        '#type' => 'select',
-        '#title' => t('Spending Category:'),
-        '#options' => _expense_type_options(),
-        '#prefix' => '<div class="datafield expensetype">',
-        '#suffix' => '</div>',
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => $sc,
-        '#ajax' => array(
-            'callback' => 'checkbook_datafeeds_exptype_ajax',
-            'wrapper' => 'dynamic-fields',
-            'progress' => array(
-                'message' => NULL,
-                'type' => 'throbber',
-            ),
-        ),
-    );
-    $form['filter'][$data_source . '_payee_name'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Payee Name:'),
-        '#prefix' => '<div class="datafield payeename last-item">',
-        '#suffix' => '</div>',
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['payee_name']) ? $form_state['values']['payee_name'] : '',
-    );
-    $form['filter'][$data_source . '_checkamtfrom'] = array(
-        '#type' => 'textfield',
-        '#size' => 15,
-        '#maxlength' => 15,
-        '#prefix' => '<div class="datafield datarange checkamount"><label>Check Amount:</label><div class="ranges">',
-        '#default_value' => !empty($form_state['values']['checkamtfrom']) ? $form_state['values']['checkamtfrom'] : '',
-    );
-    $form['filter'][$data_source . '_checkamtto'] = array(
-        '#type' => 'textfield',
-        '#title' => t('to'),
-        '#size' => 15,
-        '#maxlength' => 15,
-        '#suffix' => '</div></div></div>',
-        '#default_value' => !empty($form_state['values']['checkamtto']) ? $form_state['values']['checkamtto'] : '',
-    );
-    $form['filter'][$data_source . '_contractno'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Contract ID:'),
-        '#prefix' => '<div class="column column-right '.str_replace('_','-',$data_source).'"><div class="datafield contractno">',
-        '#suffix' => '</div>',
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['contractno']) ? $form_state['values']['contractno'] : '',
-    );
-    $form['filter'][$data_source . '_entity_contract_num'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Entity Contract #:'),
-        '#prefix' => '<div class="datafield entitycontractnum">',
-        '#suffix' => '</div>',
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['entitycontractnum']) ? $form_state['values']['entitycontractnum'] : '',
-    );
-    $form['filter'][$data_source . '_document_id'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Document ID:'),
-        '#prefix' => '<div class="datafield expenseid">',
-        '#suffix' => '</div>',
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['document_id']) ? $form_state['values']['document_id'] : '',
-    );
-    $form['filter'][$data_source . '_capital_project'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Capital Project:'),
-        '#prefix' => '<div class="datafield capitalproject">',
-        '#suffix' => '</div>',
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['capital_project']) ? $form_state['values']['capital_project'] : '',
-    );
-    $form['filter'][$data_source . '_commodity_line'] = array(
-
-        '#type' => 'textfield',
-        '#title' => t('Commodity Line:'),
-        '#prefix' => '<div class="datafield commodityline">',
-        '#suffix' => '</div>',
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['commodity_line']) ? $form_state['values']['commodity_line'] : '',
-    );
-    $form['filter'][$data_source . '_budget_name'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Budget Name:'),
-        '#prefix' => '<div class="datafield budgetname">',
-        '#suffix' => '</div>',
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['budget_name']) ? $form_state['values']['budget_name'] : '',
-    );
-    $form['filter'][$data_source . '_date_filter'] = array(
-        '#type' => 'radios',
-        '#title' => t('Date Filter:'),
-        '#options' => array(
-            'Year',
-            'Issue Date',
-        ),
-        '#prefix' => '<div id="datefilter"><div class="datafield datefilter clearfix">',
-        '#suffix' => '</div></div>',
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => !empty($form_state['values']['date_filter']) ? $form_state['values']['date_filter'] : 0,
-        '#ajax' => array(
-            'callback' => 'checkbook_datafeeds_datefilter_ajax',
-            'wrapper' => 'datefilter',
-            'progress' => array(
-                'message' => NULL,
-                'type' => 'throbber',
-            ),
-        ),
-    );
-    $form['filter'][$data_source . '_year_filter_start'] = array(
-        '#markup' => '<div class="datafield year-filters last-item">',
-    );
-    $form['filter'][$data_source . '_year'] = array(
-        '#type' => 'select',
-        '#options' => _year_options('all-years'),
-        '#attributes' => array('class' => array('watch')),
-        '#default_value' => $year,
-        '#prefix' => '<div id="year"><div class="datafield year">',
-        '#suffix' => '</div></div>',
-        '#ajax' => array(
-            'callback' => 'checkbook_datafeeds_year_ajax',
-            'wrapper' => 'dynamic-fields',
-            'progress' => array(
-                'message' => NULL,
-                'type' => 'throbber',
-            ),
-        ),
-    );
-    $form['filter'][$data_source . '_issuedfrom'] = array(
-        '#type' => 'textfield',
-        '#size' => 10,
-        '#maxlength' => 10,
-        '#description' => t('E.g., ' . date('Y-m-d')),
-        '#attributes' => array('class' => array('datepicker')),
-        '#prefix' => '<div class="datafield datarange issueddate"><div class="ranges">',
-        '#default_value' => !empty($form_state['values']['issuedfrom']) ? $form_state['values']['issuedfrom'] : '',
-    );
-    $form['filter'][$data_source . '_issuedto'] = array(
-        '#type' => 'textfield',
-        '#title' => t('to'),
-        '#size' => 10,
-        '#maxlength' => 10,
-        '#description' => t('E.g., ' . date('Y-m-d')),
-        '#attributes' => array('class' => array('datepicker')),
-        '#suffix' => '</div></div>',
-        '#default_value' => !empty($form_state['values']['issuedto']) ? $form_state['values']['issuedto'] : '',
-    );
-    $form['filter'][$data_source . '_year_filter_end'] = array(
-        '#markup' => '</div></div>',
-    );
-
-    //</editor-fold>
-
-    //</editor-fold>
+    $form = checkbook_datafeeds_spending_filter_data($form, $form_state, $data_source);
 
     //<editor-fold desc="Columns">
 
     $form['columns'] = array(
         '#type' => 'fieldset',
         '#title' => t('4. Select Columns:'),
+        // These provide the wrapper referred to in #ajax['wrapper'] above.
+        '#prefix' => '<div id="dynamic-columns-wrapper">',
+        '#suffix' => '</div>',
+        '#id' => 'edit-columns',
     );
-    //Citywide Agency
 
-    //Other Government Entities
-    $data_source = DataSource::OtherGovernmentEntities;
     $form['columns']['column_select'] = array(
         '#type' => 'select',
         '#title' => t('Columns'),
-        '#options' => _checkbook_datafeeds_spending_column_options($datatype, DataSource::CitywideAgency),
+        '#options' => _checkbook_datafeeds_spending_column_options($data_source, $datatype),
         '#multiple' => TRUE,
         '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
+        '#id' => 'edit-column-select',
+        '#name' => 'column_select',
         '#required' => TRUE,
     );
 
@@ -4458,6 +3843,478 @@ function checkbook_datafeeds_spending($form, &$form_state, $data_source)
     return $form;
 }
 
+function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_source)
+{
+    switch ($data_source) {
+        case 'checkbook_oge':
+            $data_source = 'checkbook_oge';
+            $agency = 'Other Government Entities';
+            $dept = '';
+            $sc = '';
+            $year = 'FY' . currentFiscalYear();
+
+            $form['filter']['agency'] = array(
+                '#type' => 'select',
+                '#title' => t('Other Government Entities:'),
+                '#options' => _agency_options($data_source),
+                '#prefix' => '<div class="column column-left"><div class="datafield agency">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch')),
+                '#default_value' => $agency,
+                '#id' => 'edit-agency',
+                '#name' => 'agency',
+                '#ajax' => array(
+                    'callback' => 'checkbook_datafeeds_agency_ajax',
+                    'wrapper' => 'dynamic-fields',
+                    'progress' => array(
+                        'message' => NULL,
+                        'type' => 'throbber',
+                    ),
+                    'parameters' => array('data_source' => $data_source),
+                ),
+            );
+            $form['filter']['dept'] = array(
+                '#type' => 'select',
+                '#title' => t('Department:'),
+                '#options' => _dept_options($agency, $sc, $year, $data_source),
+                '#prefix' => '<div id="dynamic-fields"><div class="datafield department">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch')),
+                '#multiple' => FALSE,
+                '#default_value' => $dept,
+                '#id' => 'edit-dept',
+                '#name' => 'dept',
+                '#ajax' => array(
+                    'callback' => 'checkbook_datafeeds_dept_ajax',
+                    'wrapper' => 'expense-category',
+                    'progress' => array(
+                        'message' => NULL,
+                        'type' => 'throbber',
+                    ),
+                    'parameters' => array('data_source' => $data_source),
+                ),
+            );
+            $form['filter']['expense_category'] = array(
+                '#type' => 'select',
+                '#title' => t('Expense Category:'),
+                '#options' => _expcat_options($agency, $dept, $sc, $year, $data_source),
+                '#prefix' => '<div id="expense-category"><div class="datafield expensecategory">',
+                '#suffix' => '</div></div></div>',
+                '#attributes' => array('class' => array('watch')),
+                '#multiple' => FALSE,
+                '#id' => 'edit-expense-category',
+                '#name' => 'expense_category',
+                '#default_value' => !empty($form_state['values']['expense_category']) ? $form_state['values']['expense_category'] : '',
+            );
+            $form['filter']['expense_type'] = array(
+                '#type' => 'select',
+                '#title' => t('Spending Category:'),
+                '#options' => _expense_type_options($data_source),
+                '#prefix' => '<div class="datafield expensetype">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch')),
+                '#default_value' => $sc,
+                '#id' => 'edit-expense-type',
+                '#name' => 'expense_type',
+                '#ajax' => array(
+                    'callback' => 'checkbook_datafeeds_exptype_ajax',
+                    'wrapper' => 'dynamic-fields',
+                    'progress' => array(
+                        'message' => NULL,
+                        'type' => 'throbber',
+                    ),
+                    'parameters' => array('data_source' => $data_source),
+                ),
+            );
+            $form['filter']['payee_name'] = array(
+                '#type' => 'textfield',
+                '#title' => t('Payee Name:'),
+                '#prefix' => '<div class="datafield payeename last-item">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch')),
+                '#id' => 'edit-payee-name',
+                '#name' => 'payee_name',
+                '#default_value' => !empty($form_state['values']['payee_name']) ? $form_state['values']['payee_name'] : '',
+            );
+            $form['filter']['checkamtfrom'] = array(
+                '#type' => 'textfield',
+                '#size' => 15,
+                '#maxlength' => 15,
+                '#prefix' => '<div class="datafield datarange checkamount"><label>Check Amount:</label><div class="ranges">',
+                '#id' => 'edit-checkamtfrom',
+                '#name' => 'checkamtfrom',
+                '#default_value' => !empty($form_state['values']['checkamtfrom']) ? $form_state['values']['checkamtfrom'] : '',
+            );
+            $form['filter']['checkamtto'] = array(
+                '#type' => 'textfield',
+                '#title' => t('to'),
+                '#size' => 15,
+                '#maxlength' => 15,
+                '#suffix' => '</div></div></div>',
+                '#id' => 'edit-checkamtto',
+                '#name' => 'checkamtto',
+                '#default_value' => !empty($form_state['values']['checkamtto']) ? $form_state['values']['checkamtto'] : '',
+            );
+            $form['filter']['contractno'] = array(
+                '#type' => 'textfield',
+                '#title' => t('Contract ID:'),
+                '#prefix' => '<div class="column column-right"><div class="datafield contractno">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch')),
+                '#id' => 'edit-contractno',
+                '#name' => 'contractno',
+                '#default_value' => !empty($form_state['values']['contractno']) ? $form_state['values']['contractno'] : '',
+            );
+            $form['filter']['entity_contract_num'] = array(
+                '#type' => 'textfield',
+                '#title' => t('Entity Contract #:'),
+                '#prefix' => '<div class="datafield entity_contract_num">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch')),
+                '#id' => 'edit-entity-contract-num',
+                '#name' => 'entity-contract-num',
+                '#default_value' => !empty($form_state['values']['entity_contract_num']) ? $form_state['values']['entity_contract_num'] : '',
+            );
+            $form['filter']['document_id'] = array(
+                '#type' => 'textfield',
+                '#title' => t('Document ID:'),
+                '#prefix' => '<div class="datafield expenseid">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch'), 'disabled' => 'disabled'),
+                '#id' => 'edit-document-id',
+                '#name' => 'document_id',
+                '#default_value' => !empty($form_state['values']['document_id']) ? $form_state['values']['document_id'] : '',
+            );
+            $form['filter']['capital_project'] = array(
+                '#type' => 'textfield',
+                '#title' => t('Capital Project:'),
+                '#prefix' => '<div class="datafield capitalproject">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch')),
+                '#id' => 'edit-capital-project',
+                '#name' => 'capital_project',
+                '#default_value' => !empty($form_state['values']['capital_project']) ? $form_state['values']['capital_project'] : '',
+            );
+            $form['filter']['commodity_line'] = array(
+
+                '#type' => 'textfield',
+                '#title' => t('Commodity Line:'),
+                '#prefix' => '<div class="datafield commodityline">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch')),
+                '#id' => 'edit-commodity-line',
+                '#name' => 'commodity_line',
+                '#default_value' => !empty($form_state['values']['commodity_line']) ? $form_state['values']['commodity_line'] : '',
+            );
+            $form['filter']['budget_name'] = array(
+                '#type' => 'textfield',
+                '#title' => t('Budget Name:'),
+                '#prefix' => '<div class="datafield budgetname">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch')),
+                '#id' => 'edit-budget-name',
+                '#name' => 'budget_name',
+                '#default_value' => !empty($form_state['values']['budget_name']) ? $form_state['values']['budget_name'] : '',
+            );
+            $form['filter']['date_filter'] = array(
+                '#type' => 'radios',
+                '#title' => t('Date Filter:'),
+                '#options' => array(
+                    'Year',
+                    'Issue Date',
+                ),
+                '#prefix' => '<div id="datefilter"><div class="datafield datefilter clearfix">',
+                '#suffix' => '</div></div>',
+                '#attributes' => array('class' => array('watch')),
+                '#default_value' => !empty($form_state['values']['date_filter']) ? $form_state['values']['date_filter'] : 0,
+                '#id' => 'edit-date-filter',
+                '#name' => 'date_filter',
+                '#ajax' => array(
+                    'callback' => 'checkbook_datafeeds_datefilter_ajax',
+                    'wrapper' => 'datefilter',
+                    'progress' => array(
+                        'message' => NULL,
+                        'type' => 'throbber',
+                    ),
+                ),
+            );
+            $form['filter']['year_filter_start'] = array(
+                '#markup' => '<div class="datafield year-filters last-item">',
+            );
+            $form['filter']['year'] = array(
+                '#type' => 'select',
+                '#options' => _year_options('all-years'),
+                '#attributes' => array('class' => array('watch')),
+                '#default_value' => $year,
+                '#prefix' => '<div id="year"><div class="datafield year">',
+                '#suffix' => '</div></div>',
+                '#id' => 'edit-year',
+                '#name' => 'year',
+                '#ajax' => array(
+                    'callback' => 'checkbook_datafeeds_year_ajax',
+                    'wrapper' => 'dynamic-fields',
+                    'progress' => array(
+                        'message' => NULL,
+                        'type' => 'throbber',
+                    ),
+                    'parameters' => array('data_source' => $data_source),
+                ),
+            );
+            $form['filter']['issuedfrom'] = array(
+                '#type' => 'textfield',
+                '#size' => 10,
+                '#maxlength' => 10,
+                '#description' => t('E.g., ' . date('Y-m-d')),
+                '#attributes' => array('class' => array('datepicker'), 'disabled' => 'disabled'),
+                '#prefix' => '<div class="datafield datarange issueddate"><div class="ranges">',
+                '#id' => 'edit-issuedfrom',
+                '#name' => 'issuedfrom',
+                '#default_value' => !empty($form_state['values']['issuedfrom']) ? $form_state['values']['issuedfrom'] : '',
+            );
+            $form['filter']['issuedto'] = array(
+                '#type' => 'textfield',
+                '#title' => t('to'),
+                '#size' => 10,
+                '#maxlength' => 10,
+                '#description' => t('E.g., ' . date('Y-m-d')),
+                '#attributes' => array('class' => array('datepicker'), 'disabled' => 'disabled'),
+                '#suffix' => '</div></div>',
+                '#id' => 'edit-issuedto',
+                '#name' => 'issuedto',
+                '#default_value' => !empty($form_state['values']['issuedto']) ? $form_state['values']['issuedto'] : '',
+            );
+            $form['filter']['year_filter_end'] = array(
+                '#markup' => '</div>',
+            );
+            break;
+
+        default:
+            $data_source = DataSource::CitywideAgency;
+            $agency = isset($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Citywide (All Agencies)';
+            $dept = !empty($form_state['values']['dept']) ? $form_state['values']['dept'] : '';
+            $sc = !empty($form_state['values']['expense_type']) ? $form_state['values']['expense_type'] : '';
+            $year = !empty($form_state['values']['year']) ? $form_state['values']['year'] : 'FY' . currentFiscalYear();
+
+
+            $form['filter']['agency'] = array(
+                '#type' => 'select',
+                '#title' => t('Agency:'),
+                '#options' => _agency_options($data_source),
+                '#prefix' => '<div class="column column-left"><div class="datafield agency">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch')),
+                '#default_value' => $agency,
+                '#id' => 'edit-agency',
+                '#name' => 'agency',
+                '#ajax' => array(
+                    'callback' => 'checkbook_datafeeds_agency_ajax',
+                    'wrapper' => 'dynamic-fields',
+                    'progress' => array(
+                        'message' => NULL,
+                        'type' => 'throbber',
+                    ),
+                    'parameters' => array('data_source' => $data_source),
+                ),
+            );
+            $form['filter']['dept'] = array(
+                '#type' => 'select',
+                '#title' => t('Department:'),
+                '#options' => _dept_options($agency, $sc, $year),
+                '#prefix' => '<div id="dynamic-fields"><div class="datafield department">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch')),
+                '#multiple' => FALSE,
+                '#default_value' => $dept,
+                '#id' => 'edit-dept',
+                '#name' => 'dept',
+                '#ajax' => array(
+                    'callback' => 'checkbook_datafeeds_dept_ajax',
+                    'wrapper' => 'expense-category',
+                    'progress' => array(
+                        'message' => NULL,
+                        'type' => 'throbber',
+                    ),
+                ),
+            );
+            $form['filter']['expense_category'] = array(
+                '#type' => 'select',
+                '#title' => t('Expense Category:'),
+                '#options' => _expcat_options($agency, $dept, $sc, $year),
+                '#prefix' => '<div id="expense-category"><div class="datafield expensecategory">',
+                '#suffix' => '</div></div></div>',
+                '#attributes' => array('class' => array('watch')),
+                '#multiple' => FALSE,
+                '#id' => 'edit-expense-category',
+                '#name' => 'expense_category',
+                '#default_value' => !empty($form_state['values']['expense_category']) ? $form_state['values']['expense_category'] : '',
+            );
+            $form['filter']['expense_type'] = array(
+                '#type' => 'select',
+                '#title' => t('Spending Category:'),
+                '#options' => _expense_type_options(),
+                '#prefix' => '<div class="datafield expensetype">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch')),
+                '#default_value' => $sc,
+                '#id' => 'edit-expense-type',
+                '#name' => 'expense_type',
+                '#ajax' => array(
+                    'callback' => 'checkbook_datafeeds_exptype_ajax',
+                    'wrapper' => 'dynamic-fields',
+                    'progress' => array(
+                        'message' => NULL,
+                        'type' => 'throbber',
+                    ),
+                ),
+            );
+            $form['filter']['payee_name'] = array(
+                '#type' => 'textfield',
+                '#title' => t('Payee Name:'),
+                '#prefix' => '<div class="datafield payeename last-item">',
+                '#suffix' => '</div></div>',
+                '#attributes' => array('class' => array('watch')),
+                '#id' => 'edit-payee-name',
+                '#name' => 'payee_name',
+                '#default_value' => !empty($form_state['values']['payee_name']) ? $form_state['values']['payee_name'] : '',
+            );
+            $form['filter']['checkamtfrom'] = array(
+                '#type' => 'textfield',
+                '#size' => 15,
+                '#maxlength' => 15,
+                '#prefix' => '<div class="column column-right '.str_replace('_','-',$data_source).'"><div class="datafield datarange checkamount"><label>Check Amount:</label><div class="ranges">',
+                '#id' => 'edit-checkamtfrom',
+                '#name' => 'checkamtfrom',
+                '#default_value' => !empty($form_state['values']['checkamtfrom']) ? $form_state['values']['checkamtfrom'] : '',
+            );
+            $form['filter']['checkamtto'] = array(
+                '#type' => 'textfield',
+                '#title' => t('to'),
+                '#size' => 15,
+                '#maxlength' => 15,
+                '#suffix' => '</div></div>',
+                '#id' => 'edit-checkamtto',
+                '#name' => 'checkamtto',
+                '#default_value' => !empty($form_state['values']['checkamtto']) ? $form_state['values']['checkamtto'] : '',
+            );
+            $form['filter']['contractno'] = array(
+                '#type' => 'textfield',
+                '#title' => t('Contract ID:'),
+                '#prefix' => '<div class="datafield contractno">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch')),
+                '#id' => 'edit-contractno',
+                '#name' => 'contractno',
+                '#default_value' => !empty($form_state['values']['contractno']) ? $form_state['values']['contractno'] : '',
+            );
+            $form['filter']['document_id'] = array(
+                '#type' => 'textfield',
+                '#title' => t('Document ID:'),
+                '#prefix' => '<div class="datafield expenseid">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch')),
+                '#id' => 'edit-document-id',
+                '#name' => 'document_id',
+                '#default_value' => !empty($form_state['values']['document_id']) ? $form_state['values']['document_id'] : '',
+            );
+            $form['filter']['capital_project'] = array(
+                '#type' => 'textfield',
+                '#title' => t('Capital Project:'),
+                '#prefix' => '<div class="datafield capitalproject">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch')),
+                '#id' => 'edit-capital-project',
+                '#name' => 'capital_project',
+                '#default_value' => !empty($form_state['values']['capital_project']) ? $form_state['values']['capital_project'] : '',
+            );
+            $form['filter']['date_filter'] = array(
+                '#type' => 'radios',
+                '#title' => t('Date Filter:'),
+                '#options' => array(
+                    'Year',
+                    'Issue Date',
+                ),
+                '#prefix' => '<div id="datefilter"><div class="datafield datefilter clearfix">',
+                '#suffix' => '</div></div>',
+                '#attributes' => array('class' => array('watch')),
+                '#default_value' => !empty($form_state['values']['date_filter']) ? $form_state['values']['date_filter'] : 0,
+                '#id' => 'edit-date-filter',
+                '#name' => 'date_filter',
+                '#ajax' => array(
+                    'callback' => 'checkbook_datafeeds_datefilter_ajax',
+                    'wrapper' => 'datefilter',
+                    'progress' => array(
+                        'message' => NULL,
+                        'type' => 'throbber',
+                    ),
+                ),
+            );
+            $form['filter']['year_filter_start'] = array(
+                '#markup' => '<div class="datafield year-filters last-item">',
+            );
+            $form['filter']['year'] = array(
+                '#type' => 'select',
+                '#options' => _year_options('all-years'),
+                '#attributes' => array('class' => array('watch')),
+                '#default_value' => $year,
+                '#prefix' => '<div id="year"><div class="datafield year">',
+                '#suffix' => '</div></div>',
+                '#id' => 'edit-year',
+                '#name' => 'year',
+                '#ajax' => array(
+                    'callback' => 'checkbook_datafeeds_year_ajax',
+                    'wrapper' => 'dynamic-fields',
+                    'progress' => array(
+                        'message' => NULL,
+                        'type' => 'throbber',
+                    ),
+                ),
+            );
+            $form['filter']['issuedfrom'] = array(
+                '#type' => 'textfield',
+                '#size' => 10,
+                '#maxlength' => 10,
+                '#description' => t('E.g., ' . date('Y-m-d')),
+                '#attributes' => array('class' => array('datepicker'), 'disabled' => 'disabled'),
+                '#prefix' => '<div class="datafield datarange issueddate"><div class="ranges">',
+                '#id' => 'edit-issuedfrom',
+                '#name' => 'issuedfrom',
+                '#default_value' => !empty($form_state['values']['issuedfrom']) ? $form_state['values']['issuedfrom'] : '',
+            );
+            $form['filter']['issuedto'] = array(
+                '#type' => 'textfield',
+                '#title' => t('to'),
+                '#size' => 10,
+                '#maxlength' => 10,
+                '#description' => t('E.g., ' . date('Y-m-d')),
+                '#attributes' => array('class' => array('datepicker'), 'disabled' => 'disabled'),
+                '#suffix' => '</div></div>',
+                '#id' => 'edit-issuedto',
+                '#name' => 'issuedto',
+                '#default_value' => !empty($form_state['values']['issuedto']) ? $form_state['values']['issuedto'] : '',
+            );
+            $form['filter']['year_filter_end'] = array(
+                '#markup' => '</div>',
+            );
+            break;
+    }
+
+    return $form;
+}
+
+/**
+ * Ajax callback for the data source radio button toggle.
+ *
+ * Updates the form to point to correct data source
+ */
+function checkbook_datafeeds_spending_filter_ajax($form, $form_state) {
+    $commands[] = ajax_command_replace('#dynamic-filter-data-wrapper', drupal_render($form['filter']));
+    $commands[] = ajax_command_replace('#dynamic-columns-wrapper', drupal_render($form['columns']));
+    $commands[] = ajax_command_invoke('#edit-year option[value="'.'FY' . currentFiscalYear().'"]', 'attr', array('selected','selected'));
+    $commands[] = ajax_command_invoke(NULL, 'onDataSourceChange');
+
+    return array('#type' => 'ajax', '#commands' => $commands);
+}
+
 /**
  * Ajax callback to update department and expenditure category fields depending on agency selected.
  *
@@ -4470,50 +4327,32 @@ function checkbook_datafeeds_spending($form, &$form_state, $data_source)
  *   Array of ajax commands
  */
 function checkbook_datafeeds_agency_ajax($form, &$form_state) {
-  $html = array($form['filter']['dept'], $form['filter']['expense_category']);
-  $html = drupal_render($html);
-  $commands[] = ajax_command_replace('#dynamic-fields', $html);
-  $commands[] = ajax_command_invoke('window', 'disableStuff');
-  return array('#type' => 'ajax', '#commands' => $commands);
-}
 
-//
-///**
-// * Ajax callback to update department and expenditure category fields depending on oge agency selected.
-// *
-// * @param array $form
-// *   Data Feeds wizard form array
-// * @param array $form_state
-// *   Data Feeds wizard form_state array
-// *
-// * @return array
-// *   Array of ajax commands
-// */
-//function checkbook_datafeeds_othergovernmententities_ajax($form, &$form_state) {
-//    $html = array($form['filter']['dept'], $form['filter']['expense_category']);
-//    $html = drupal_render($html);
-//    $commands[] = ajax_command_replace('#dynamic-fields', $html);
-//    $commands[] = ajax_command_invoke('window', 'disableStuff');
-//    return array('#type' => 'ajax', '#commands' => $commands);
-//}
+    $html = array($form['filter']['dept'], $form['filter']['expense_category']);
+    $html = drupal_render($html);
+    $settings = array('datasource'=>'checkbook');
+
+    $commands[] = ajax_command_replace('#dynamic-fields', $html, $settings);
+    $commands[] = ajax_command_invoke('window', 'disableStuff');
+    return array('#type' => 'ajax', '#commands' => $commands);
+}
 
 /**
  * Ajax callback to update expenditure category field based on department category selected.
  *
  * @param array $form
  *   Data Feeds wizard form array
- * @param array $form_state
- *   Data Feeds wizard form_state array
  *
  * @return array
  *   Array of ajax commands
  */
 function checkbook_datafeeds_dept_ajax($form, &$form_state) {
-$html = array($form['filter']['expense_category']);
-$html = drupal_render($html);
-$commands[] = ajax_command_replace('#expense-category', $html);
-$commands[] = ajax_command_invoke('window', 'disableStuff');
-return array('#type' => 'ajax', '#commands' => $commands);
+
+    $html = array($form['filter']['expense_category']);
+    $html = drupal_render($html);
+    $commands[] = ajax_command_replace('#expense-category', $html);
+    $commands[] = ajax_command_invoke('window', 'disableStuff');
+    return array('#type' => 'ajax', '#commands' => $commands);
 }
 
 /**
@@ -4527,38 +4366,38 @@ return array('#type' => 'ajax', '#commands' => $commands);
  * @return array
  *   Array of ajax commands
  */
-function checkbook_datafeeds_datefilter_ajax($form, &$form_state) {
-  $value = $form_state['values']['date_filter'];
-  if ($value == 0) {
-    $commands[] = ajax_command_invoke('select[name="year"]', 'attr', array(
-      'disabled',
-      '',
-    ));
-    $commands[] = ajax_command_invoke('input[name="issuedfrom"]', 'attr', array(
-      'disabled',
-      'disabled',
-    ));
-    $commands[] = ajax_command_invoke('input[name="issuedto"]', 'attr', array(
-      'disabled',
-      'disabled',
-    ));
-  }
-  elseif ($value == 1) {
-    $commands[] = ajax_command_invoke('select[name="year"]', 'attr', array(
-      'disabled',
-      'disabled',
-    ));
-    $commands[] = ajax_command_invoke('input[name="issuedfrom"]', 'attr', array(
-      'disabled',
-      '',
-    ));
-    $commands[] = ajax_command_invoke('input[name="issuedto"]', 'attr', array(
-      'disabled',
-      '',
-    ));
-  }
-  $commands[] = ajax_command_invoke(NULL, 'refreshMultiSelect');
-  return array('#type' => 'ajax', '#commands' => $commands);
+function checkbook_datafeeds_datefilter_ajax($form, &$form_state)
+{
+    $value = $form_state['values']['date_filter'];
+    if ($value == 0) {
+        $commands[] = ajax_command_invoke('select[name="year"]', 'attr', array(
+            'disabled',
+            '',
+        ));
+        $commands[] = ajax_command_invoke('input[name="issuedfrom"]', 'attr', array(
+            'disabled',
+            'disabled',
+        ));
+        $commands[] = ajax_command_invoke('input[name="issuedto"]', 'attr', array(
+            'disabled',
+            'disabled',
+        ));
+    } elseif ($value == 1) {
+        $commands[] = ajax_command_invoke('select[name="year"]', 'attr', array(
+            'disabled',
+            'disabled',
+        ));
+        $commands[] = ajax_command_invoke('input[name="issuedfrom"]', 'attr', array(
+            'disabled',
+            '',
+        ));
+        $commands[] = ajax_command_invoke('input[name="issuedto"]', 'attr', array(
+            'disabled',
+            '',
+        ));
+    }
+    $commands[] = ajax_command_invoke(NULL, 'refreshMultiSelect');
+    return array('#type' => 'ajax', '#commands' => $commands);
 }
 
 /**
@@ -4572,66 +4411,65 @@ function checkbook_datafeeds_datefilter_ajax($form, &$form_state) {
  * @return array
  *  Array of ajax commands
  */
-function checkbook_datafeeds_exptype_ajax($form, &$form_state) {
-  $html = array($form['filter']['dept'], $form['filter']['expense_category']);
-  $html = drupal_render($html);
-  $commands[] = ajax_command_replace('#dynamic-fields', $html);
-  $value = $form_state['values']['expense_type'];
-  if ($value == 'Payroll Spending [p]') {
-    $commands[] = ajax_command_invoke('input[name="contractno"]', 'attr', array(
-      'disabled',
-      'disabled',
-    ));
-    $commands[] = ajax_command_invoke('input[name="payee_name"]', 'attr', array(
-      'disabled',
-      'disabled',
-    ));
-    $commands[] = ajax_command_invoke('option[value="Payee Name"]', 'attr', array(
-      'disabled',
-      'disabled',
-    ));
-    $commands[] = ajax_command_invoke('option[value="Contract ID"]', 'attr', array(
-      'disabled',
-      'disabled',
-    ));
-    $commands[] = ajax_command_invoke('option[value="payee_name"]', 'attr', array(
-      'disabled',
-      'disabled',
-    ));
-    $commands[] = ajax_command_invoke('option[value="contract_ID"]', 'attr', array(
-      'disabled',
-      'disabled',
-    ));
-  }
-  else {
-    if ($value == 'Other Spending [o]') {
-      $commands[] = ajax_command_invoke('input[name="contractno"]', 'attr', array(
-        'disabled',
-        'disabled',
-      ));
-      $commands[] = ajax_command_invoke('input[name="payee_name"]', 'removeAttr', array('disabled'));
-      $commands[] = ajax_command_invoke('option[value="Contract ID"]', 'attr', array(
-        'disabled',
-        'disabled',
-      ));
-      $commands[] = ajax_command_invoke('option[value="Payee Name"]', 'removeAttr', array('disabled'));
-      $commands[] = ajax_command_invoke('option[value="contract_ID"]', 'attr', array(
-        'disabled',
-        'disabled',
-      ));
-      $commands[] = ajax_command_invoke('option[value="payee_name"]', 'removeAttr', array('disabled'));
+function checkbook_datafeeds_exptype_ajax($form, &$form_state)
+{
+    $html = array($form['filter']['dept'], $form['filter']['expense_category']);
+    $html = drupal_render($html);
+    $commands[] = ajax_command_replace('#dynamic-fields', $html);
+    $value = $form_state['values']['expense_type'];
+    if ($value == 'Payroll Spending [p]') {
+        $commands[] = ajax_command_invoke('input[name="contractno"]', 'attr', array(
+            'disabled',
+            'disabled',
+        ));
+        $commands[] = ajax_command_invoke('input[name="payee_name"]', 'attr', array(
+            'disabled',
+            'disabled',
+        ));
+        $commands[] = ajax_command_invoke('option[value="Payee Name"]', 'attr', array(
+            'disabled',
+            'disabled',
+        ));
+        $commands[] = ajax_command_invoke('option[value="Contract ID"]', 'attr', array(
+            'disabled',
+            'disabled',
+        ));
+        $commands[] = ajax_command_invoke('option[value="payee_name"]', 'attr', array(
+            'disabled',
+            'disabled',
+        ));
+        $commands[] = ajax_command_invoke('option[value="contract_ID"]', 'attr', array(
+            'disabled',
+            'disabled',
+        ));
+    } else {
+        if ($value == 'Other Spending [o]') {
+            $commands[] = ajax_command_invoke('input[name="contractno"]', 'attr', array(
+                'disabled',
+                'disabled',
+            ));
+            $commands[] = ajax_command_invoke('input[name="payee_name"]', 'removeAttr', array('disabled'));
+            $commands[] = ajax_command_invoke('option[value="Contract ID"]', 'attr', array(
+                'disabled',
+                'disabled',
+            ));
+            $commands[] = ajax_command_invoke('option[value="Payee Name"]', 'removeAttr', array('disabled'));
+            $commands[] = ajax_command_invoke('option[value="contract_ID"]', 'attr', array(
+                'disabled',
+                'disabled',
+            ));
+            $commands[] = ajax_command_invoke('option[value="payee_name"]', 'removeAttr', array('disabled'));
+        } else {
+            $commands[] = ajax_command_invoke('input[name="contractno"]', 'removeAttr', array('disabled'));
+            $commands[] = ajax_command_invoke('input[name="payee_name"]', 'removeAttr', array('disabled'));
+            $commands[] = ajax_command_invoke('option[value="Payee Name"]', 'removeAttr', array('disabled'));
+            $commands[] = ajax_command_invoke('option[value="Contract ID"]', 'removeAttr', array('disabled'));
+            $commands[] = ajax_command_invoke('option[value="payee_name"]', 'removeAttr', array('disabled'));
+            $commands[] = ajax_command_invoke('option[value="contract_ID"]', 'removeAttr', array('disabled'));
+        }
     }
-    else {
-      $commands[] = ajax_command_invoke('input[name="contractno"]', 'removeAttr', array('disabled'));
-      $commands[] = ajax_command_invoke('input[name="payee_name"]', 'removeAttr', array('disabled'));
-      $commands[] = ajax_command_invoke('option[value="Payee Name"]', 'removeAttr', array('disabled'));
-      $commands[] = ajax_command_invoke('option[value="Contract ID"]', 'removeAttr', array('disabled'));
-      $commands[] = ajax_command_invoke('option[value="payee_name"]', 'removeAttr', array('disabled'));
-      $commands[] = ajax_command_invoke('option[value="contract_ID"]', 'removeAttr', array('disabled'));
-    }
-  }
-  $commands[] = ajax_command_invoke(NULL, 'refreshMultiSelect');
-  return array('#type' => 'ajax', '#commands' => $commands);
+    $commands[] = ajax_command_invoke(NULL, 'refreshMultiSelect');
+    return array('#type' => 'ajax', '#commands' => $commands);
 }
 
 /**
@@ -4646,10 +4484,11 @@ function checkbook_datafeeds_exptype_ajax($form, &$form_state) {
  *   Array of ajax commands
  */
 function checkbook_datafeeds_year_ajax($form, &$form_state) {
-  $html = array($form['filter']['dept'], $form['filter']['expense_category']);
-  $html = drupal_render($html);
-  $commands[] = ajax_command_replace('#dynamic-fields', $html);
-  return array('#type' => 'ajax', '#commands' => $commands);
+
+    $html = array($form['filter']['dept'], $form['filter']['expense_category']);
+    $html = drupal_render($html);
+    $commands[] = ajax_command_replace('#dynamic-fields', $html);
+    return array('#type' => 'ajax', '#commands' => $commands);
 }
 
 /**
@@ -4661,111 +4500,14 @@ function checkbook_datafeeds_year_ajax($form, &$form_state) {
  * @return array
  *   FAPI structured array for select box #options
  */
-function _checkbook_datafeeds_spending_column_options($datatype, $data_source) {
-  if ($datatype == 'csv') {
-      return drupal_map_assoc(array(
-          "Document ID",
-          "Payee Name",
-          "Issue Date",
-          "Agency",
-          "Other Government Entities",
-          "Department",
-          "Check Amount",
-          "Expense Category",
-          "Entity Contract #",
-          "Contract ID",
-          "Contract Purpose",
-          "Capital Project",
-          "Commodity Line",
-          "Budget Name",
-          "Spending Category",
-          "Fiscal year",
-          "Calendar year",
-      ));
-//      switch($data_source) {
-//          case DataSource::OtherGovernmentEntities:
-//              return drupal_map_assoc(array(
-//                  "Document ID",
-//                  "Payee Name",
-//                  "Issue Date",
-//                  "Other Government Entities",
-//                  "Department",
-//                  "Check Amount",
-//                  "Expense Category",
-//                  "Entity Contract #",
-//                  "Contract ID",
-//                  "Contract Purpose",
-//                  "Capital Project",
-//                  "Commodity Line",
-//                  "Budget Name",
-//                  "Spending Category",
-//                  "Fiscal year",
-//                  "Calendar year",
-//              ));
-//              break;
-//
-//          default:
-//              return drupal_map_assoc(array(
-//                  "Document ID",
-//                  "Payee Name",
-//                  "Issue Date",
-//                  "Agency",
-//                  "Department",
-//                  "Check Amount",
-//                  "Expense Category",
-//                  "Contract ID",
-//                  "Contract Purpose",
-//                  "Capital Project",
-//                  "Spending Category",
-//                  "Fiscal year",
-//                  "Calendar year",
-//              ));
-//              break;
-//      }
-  }
-  else {
-    if ($datatype == 'xml') {
+function _checkbook_datafeeds_spending_column_options($data_source, $data_type)
+{
+    $options = DatafeedsConfigUtil::getConfig(strtolower('spending'));
 
-        switch($data_source) {
-            case DataSource::OtherGovernmentEntities:
-                return drupal_map_assoc(array(
-                    "agency",
-                    "document_id",
-                    "payee_name",
-                    "department",
-                    "check_amount",
-                    "expense_category",
-                    "contract_ID",
-                    "contract_purpose",
-                    "capital_project",
-                    "commodity_line",
-                    "budget_name",
-                    "issue_date",
-                    "spending_category",
-                    "fiscal_year",
-                    "calendar_year",
-                ));
-                break;
-            default:
-                return drupal_map_assoc(array(
-                    "agency",
-                    "document_id",
-                    "payee_name",
-                    "department",
-                    "check_amount",
-                    "expense_category",
-                    "contract_ID",
-                    "contract_purpose",
-                    "capital_project",
-                    "issue_date",
-                    "spending_category",
-                    "fiscal_year",
-                    "calendar_year",
-                ));
-                break;
-        }
-    }
-  }
+    $options = !isset($options['data_source'][$data_source]) ? $options['data_source']['checkbook'] : $options['data_source'][$data_source];
+    $options = !isset($options['data_type'][$data_type]) ? $options['data_type']['default'] : $options['data_type'][$data_type];
+
+    return $options;
 }
 
 /**
@@ -4776,27 +4518,49 @@ function _checkbook_datafeeds_spending_column_options($datatype, $data_source) {
  * @param array $form_state
  *   Data Feeds wizard form_state array
  */
-function checkbook_datafeeds_spending_next_submit($form, &$form_state) {
-  if ($form_state['values']['date_filter'] == '0') {
-    unset($form_state['values']['issuedfrom']);
-    unset($form_state['values']['issuedto']);
-  }
-  else {
-    if ($form_state['values']['date_filter'] == '1') {
-      unset($form_state['values']['year']);
+function checkbook_datafeeds_spending_next_submit($form, &$form_state)
+{
+    if ($form_state['values']['date_filter'] == '0') {
+        unset($form_state['values']['issuedfrom']);
+        unset($form_state['values']['issuedto']);
+    } else {
+        if ($form_state['values']['date_filter'] == '1') {
+            unset($form_state['values']['year']);
+        }
     }
-  }
-  $current_step = & $form_state['step'];
-  $form_state['step_information'][$current_step]['stored_values'] = $form_state['values'];
-  $current_step = 'spending_confirmation';
-  if (!empty($form_state['step_information'][$current_step]['stored_values'])) {
-    $form_state['values'] = $form_state['step_information'][$current_step]['stored_values'];
-  }
-  else {
-    $form_state['values'] = array();
-  }
-  // Force rebuild with next step.
-  $form_state['rebuild'] = TRUE;
+
+    $current_step = & $form_state['step'];
+    $form_state['step_information'][$current_step]['stored_values'] = $form_state['values'];
+    $current_step = 'spending_confirmation';
+    if (!empty($form_state['step_information'][$current_step]['stored_values'])) {
+        $form_state['values'] = $form_state['step_information'][$current_step]['stored_values'];
+    } else {
+        $form_state['values'] = array();
+    }
+    // Force rebuild with next step.
+    $form_state['rebuild'] = TRUE;
+}
+
+/**
+ * Filters selected columns to only contain columns configured for this domain snd data_source
+ *
+ * @param array $selected_columns
+ *   selected column array
+ * @param string $data_source
+ *   current selected data source (i.e. checkbook, checkbook_oge)
+ * @param string $response_type
+ *   response type (i.e. csv, xml)
+ */
+function checkbook_datafeeds_filter_selected_columns($selected_columns, $data_source, $response_type)
+{
+    //Get column configurations
+    $domain = $data_source == 'checkbook_oge' ? 'spending_oge' : 'spending';
+    $domain_config = ConfigUtil::getDomainConfiguration($domain);
+    //Get columns which should be included for the current data source
+    $columns_included = $domain_config->$domain->dataset->displayConfiguration->$response_type->elementsColumn;
+    //Filter out selected columns which are not configured to show for this data source
+    $filtered_columns = array_intersect_key($selected_columns, (array)$columns_included);
+    return $filtered_columns;
 }
 
 /**
@@ -4810,13 +4574,17 @@ function checkbook_datafeeds_spending_next_submit($form, &$form_state) {
  * @return array
  *   Renderable array of Payroll confirmation step
  */
-function checkbook_datafeeds_spending_confirmation($form, &$form_state, $data_source)
+function checkbook_datafeeds_spending_confirmation($form, &$form_state)
 {
     $values = $form_state['step_information']['spending']['stored_values'];
-    $responsetype = $form_state['step_information']['type']['stored_values']['format'];
+    $response_type = $form_state['step_information']['type']['stored_values']['format'];
     $user_criteria = array();
-    $user_criteria['Type of Data'] = 'Spending';
-    $user_criteria['Type of File'] = $responsetype;
+    $user_criteria['Type of File'] = $response_type;
+    //Get current data source
+    $data_source = $form_state['input']['datafeeds-spending-domain-filter'];
+    //Set type/source of data by data_source
+    $user_criteria['Type of Data'] = $data_source == 'checkbook_oge' ? 'Spending_OGE' : 'Spending';
+
     $form['download_feeds'] = array(
         '#markup' => '<h2 id="edit-description">Download Data</h2>',
     );
@@ -4830,22 +4598,30 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state, $data_so
             'data-feeds-wizard',
         )
     );
-    foreach ($values['column_select'] as $column) {
+
+    //Filter columns for current data source
+    $filtered_columns = checkbook_datafeeds_filter_selected_columns($values['column_select'], $data_source, $response_type);
+    $form_state['step_information']['spending']['stored_values']['column_select'] = $filtered_columns;
+
+    foreach ($form_state['step_information']['spending']['stored_values']['column_select'] as $column) {
         $form['columns'][$column] = array('#markup' => '<div>' . $column . '</div>');
         $user_criteria['Columns'][] = $column;
     }
+
     $form['filter'] = array(
         '#type' => 'fieldset',
         '#title' => t('Filter'),
     );
-    if($data_source != DataSource::OtherGovernmentEntities)
-    {
-        if ($values['agency']) {
-            $form['filter']['fund_class'] = array(
-                '#markup' => '<div><strong>Agency:</strong> ' . $values['agency'] . '</div>',
-            );
-            $user_criteria['Agency'] = $values['agency'];
-        }
+
+    //<editor-fold desc="Spending Confirmation Fields">
+
+    $agency_label = $data_source == 'checkbook_oge' ? "Other Government Entities" : "Agency";
+
+    if ($values['agency']) {
+        $form['filter']['fund_class'] = array(
+            '#markup' => '<div><strong>'.$agency_label.':</strong> ' . $values['agency'] . '</div>',
+        );
+        $user_criteria['Agency'] = $values['agency'];
     }
     if ($values['budget_name']) {
         $form['filter']['budget_name'] = array(
@@ -4940,15 +4716,6 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state, $data_so
         );
         $user_criteria['Issued Date After'] = $values['issuedfrom'];
     }
-    if($data_source == DataSource::OtherGovernmentEntities)
-    {
-        if ($values['agency']) {
-            $form['filter']['fund_class'] = array(
-                '#markup' => '<div><strong>Other Government Entities:</strong> ' . $values['agency'] . '</div>',
-            );
-            $user_criteria['Other Government Entities'] = $values['agency'];
-        }
-    }
     if ($values['payee_name']) {
         $form['filter']['payee_name'] = array(
             '#markup' => '<div><strong>Payee Name:</strong> ' . $values['payee_name'] . '</div>',
@@ -4968,13 +4735,16 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state, $data_so
             $user_criteria['Calendar Year'] = ltrim($values['year'], 'CY');
         }
     }
+
+    //</editor-fold>
+
     $form['filter']['filetype'] = array(
         '#markup' => '<div><strong>File Type:</strong> ' . $form_state['step_information']['type']['stored_values']['format'] . '</div>',
     );
     $criteria = checkbook_datafeeds_process_spending_values($form, $form_state, $data_source);
     $form_state['step_information']['confirmation']['stored_values']['criteria'] = $criteria;
     $form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $user_criteria;
-    $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $responsetype, 'spending');
+    $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $response_type, 'spending');
     return $modified_form;
 }
 
@@ -5012,13 +4782,14 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
     $pattern = "/.*?(\\[.*?\\])/is";
     $criteria = array(
         'global' => array(
-            'type_of_data' => 'Spending',
+            //Set data source for query
+            'type_of_data' => $data_source == 'checkbook_oge' ? 'Spending_OGE' : 'Spending',
             'records_from' => 1,
             'max_records' => 50000,
         ),
         'responseColumns' => $values['column_select'],
     );
-    if($data_source != DataSource::OtherGovernmentEntities) {
+    if($data_source != 'checkbook_oge') {
         if ($values['agency'] != 'Citywide (All Agencies)') {
             preg_match($pattern, $values['agency'], $amatches);
             $criteria['value']['agency_code'] = trim($amatches[1], '[ ]');
@@ -5057,7 +4828,7 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
         preg_match($pattern, $values['expense_type'], $etmatches);
         $criteria['value']['spending_category'] = trim($etmatches[1], '[ ]');
     }
-    if($data_source == DataSource::OtherGovernmentEntities) {
+    if($data_source == 'checkbook_oge') {
         if ($values['agency'] != 'Citywide (All Agencies)') {
             preg_match($pattern, $values['agency'], $amatches);
             $criteria['value']['agency_code'] = trim($amatches[1], '[ ]');
@@ -5144,7 +4915,10 @@ function checkbook_datafeeds_spending_validate($form, &$form_state) {
   }
 }
 
-// Reusable functions
+//</editor-fold>
+
+//Reusable functions
+
 /**
  * Get years from Data Controller and format into a FAPI select input #options array.
  *
@@ -5291,22 +5065,39 @@ function currentCalendarYear() {
  *   Agency names and codes
  */
 function _agency_options($data_source = null) {
-  try {
-    $dataController = data_controller_get_instance();
-    $data = $dataController->queryDataset("checkbook:agency", array(
-      'agency_code',
-      'agency_name',
-    ), array("is_display" => "Y"), 'agency_name');
-    $results = array('Citywide (All Agencies)' => 'Citywide (All Agencies)');
-    foreach ($data as $row) {
-      $results[$row['agency_name'] . ' [' . $row['agency_code'] . ']'] = $row['agency_name'] . ' [' . $row['agency_code'] . ']';
+    try {
+        $dataController = data_controller_get_instance();
+
+        switch($data_source)
+        {
+            case 'checkbook_oge':
+                $data = $dataController->queryDataset("checkbook_oge:agency", array(
+                    'agency_code',
+                    'agency_name',
+                ), array("is_display" => "Y","is_oge_agency" => "Y"), 'agency_name');
+                $results = array('Other Government Entities' => 'Other Government Entities');
+                foreach ($data as $row) {
+                    $results[$row['agency_name'] . ' [' . $row['agency_code'] . ']'] = $row['agency_name'] . ' [' . $row['agency_code'] . ']';
+                }
+                return $results;
+                break;
+            default:
+                $data = $dataController->queryDataset("checkbook:agency", array(
+                    'agency_code',
+                    'agency_name',
+                ), array("is_display" => "Y"), 'agency_name');
+                $results = array('Citywide (All Agencies)' => 'Citywide (All Agencies)');
+                foreach ($data as $row) {
+                    $results[$row['agency_name'] . ' [' . $row['agency_code'] . ']'] = $row['agency_name'] . ' [' . $row['agency_code'] . ']';
+                }
+                return $results;
+                break;
+        }
     }
-    return $results;
-  }
-  catch (Exception $e) {
-    log_error("Error getting data from controller: \n" . $e->getMessage());
-    return;
-  }
+    catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
+        return;
+    }
 }
 
 /**
@@ -5393,27 +5184,48 @@ function _funding_source_options() {
  * @return array
  *   Spending category codes and display names
  */
-function _expense_type_options() {
-  try {
-    $dataController = data_controller_get_instance();
-    $data = $dataController->queryDataset('checkbook:spending_category', array(
-      'spending_category_code',
-      'display_name',
-    ), NULL, 'display_order');
-    foreach ($data as $row) {
-      if ($row['spending_category_code'] == 'ts') {
-        $results[""] = $row['display_name'] . ' [' . $row['spending_category_code'] . ']';
-      }
-      else {
-        $results[$row['display_name'] . ' [' . $row['spending_category_code'] . ']'] = $row['display_name'] . ' [' . $row['spending_category_code'] . ']';
-      }
+function _expense_type_options($data_source = null) {
+    try {
+        $dataController = data_controller_get_instance();
+        switch($data_source)
+        {
+            case 'checkbook_oge':
+                $data = $dataController->queryDataset('checkbook_oge:spending_category', array(
+                    'spending_category_code',
+                    'display_name',
+                ), null, 'display_order');
+                foreach ($data as $row) {
+                    if ($row['spending_category_code'] == 'ts') {
+                        $results[""] = $row['display_name'] . ' [' . $row['spending_category_code'] . ']';
+                    }
+                    else {
+                        $results[$row['display_name'] . ' [' . $row['spending_category_code'] . ']'] = $row['display_name'] . ' [' . $row['spending_category_code'] . ']';
+                    }
+                }
+                return array_unique($results);
+                break;
+
+            default:
+                $data = $dataController->queryDataset('checkbook:spending_category', array(
+                    'spending_category_code',
+                    'display_name',
+                ), NULL, 'display_order');
+                foreach ($data as $row) {
+                    if ($row['spending_category_code'] == 'ts') {
+                        $results[""] = $row['display_name'] . ' [' . $row['spending_category_code'] . ']';
+                    }
+                    else {
+                        $results[$row['display_name'] . ' [' . $row['spending_category_code'] . ']'] = $row['display_name'] . ' [' . $row['spending_category_code'] . ']';
+                    }
+                }
+                return array_unique($results);
+                break;
+        }
     }
-    return array_unique($results);
-  }
-  catch (Exception $e) {
-    log_error("Error getting data from controller: \n" . $e->getMessage());
-    return;
-  }
+    catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
+        return;
+    }
 }
 
 /**
@@ -5563,34 +5375,66 @@ function _budget_expcat_options($agency, $dept, $year) {
  *   Spending category
  * @param $year
  *   Year
+ * @param $data_source
+ *   optional parameter to specify the data source (i.e. checkbook, checkbook_oge)
  *
  * @return array
  *  Department codes and department names filtered by agency, spending category, year
  */
-function _dept_options($agency, $sc, $year) {
-  $agency = emptyToZero($agency);
-  $sc = emptyToZero($sc);
-  if ($year && startsWith($year, 'F')) {
-    $year = ltrim($year, 'FY');
-    $yearstring = "AND disbursement_line_item_details.fiscal_year = '" . $year . "' ";
-  }
-  elseif ($year && startsWith($year, 'C')) {
-    $year = ltrim($year, 'CY');
-    $yearstring = "AND disbursement_line_item_details.calendar_fiscal_year = '" . $year . "' ";
-  }
-  if ($agency) {
-    $agencystring = "AND disbursement_line_item_details.agency_code = '" . $agency . "' ";
-  }
-  if ($sc) {
-    $scstring = "AND ref_spending_category.spending_category_code = '" . $sc . "' ";
-  }
-  $query = "SELECT DISTINCT department_name || ' [' || department_code || ']' department_name FROM disbursement_line_item_details, ref_spending_category WHERE disbursement_line_item_details.spending_category_id = ref_spending_category.spending_category_id " . $agencystring . $yearstring . $scstring . "ORDER BY department_name ASC";
-  $results = _checkbook_project_execute_sql($query);
-  $output[''] = "Select Department";
-  foreach ($results as $result) {
-    $output[$result['department_name']] = $result['department_name'];
-  }
-  return $output;
+function _dept_options($agency, $sc, $year, $data_source = null) {
+    switch($data_source)
+    {
+        case 'checkbook_oge':
+            $agency = emptyToZero($agency);
+            $sc = emptyToZero($sc);
+            if ($year && startsWith($year, 'F')) {
+                $year = ltrim($year, 'FY');
+                $yearstring = "AND disbursement_line_item_details.fiscal_year = '" . $year . "' ";
+            }
+            elseif ($year && startsWith($year, 'C')) {
+                $year = ltrim($year, 'CY');
+                $yearstring = "AND disbursement_line_item_details.calendar_fiscal_year = '" . $year . "' ";
+            }
+            if ($agency) {
+                $agencystring = "AND disbursement_line_item_details.agency_code = '" . $agency . "' ";
+            }
+            if ($sc) {
+                $scstring = "AND ref_spending_category.spending_category_code = '" . $sc . "' ";
+            }
+            $query = "SELECT DISTINCT department_name || ' [' || department_code || ']' department_name FROM disbursement_line_item_details, ref_spending_category WHERE disbursement_line_item_details.spending_category_id = ref_spending_category.spending_category_id " . $agencystring . $yearstring . $scstring . "ORDER BY department_name ASC";
+            $results = _checkbook_project_execute_sql_by_data_source($query, $data_source);
+            $output[''] = "Select Department";
+            foreach ($results as $result) {
+                $output[$result['department_name']] = $result['department_name'];
+            }
+            return $output;
+            break;
+        default:
+            $agency = emptyToZero($agency);
+            $sc = emptyToZero($sc);
+            if ($year && startsWith($year, 'F')) {
+                $year = ltrim($year, 'FY');
+                $yearstring = "AND disbursement_line_item_details.fiscal_year = '" . $year . "' ";
+            }
+            elseif ($year && startsWith($year, 'C')) {
+                $year = ltrim($year, 'CY');
+                $yearstring = "AND disbursement_line_item_details.calendar_fiscal_year = '" . $year . "' ";
+            }
+            if ($agency) {
+                $agencystring = "AND disbursement_line_item_details.agency_code = '" . $agency . "' ";
+            }
+            if ($sc) {
+                $scstring = "AND ref_spending_category.spending_category_code = '" . $sc . "' ";
+            }
+            $query = "SELECT DISTINCT department_name || ' [' || department_code || ']' department_name FROM disbursement_line_item_details, ref_spending_category WHERE disbursement_line_item_details.spending_category_id = ref_spending_category.spending_category_id " . $agencystring . $yearstring . $scstring . "ORDER BY department_name ASC";
+            $results = _checkbook_project_execute_sql($query);
+            $output[''] = "Select Department";
+            foreach ($results as $result) {
+                $output[$result['department_name']] = $result['department_name'];
+            }
+            return $output;
+            break;
+    }
 }
 
 /**
@@ -5608,34 +5452,69 @@ function _dept_options($agency, $sc, $year) {
  * @return array
  *   Expenditure object codes and expenditure object names, filtered by agency, department, spending category, year
  */
-function _expcat_options($agency, $dept, $sc, $year) {
-  $agency = emptyToZero($agency);
-  $dept = emptyToZero($dept);
-  $sc = emptyToZero($sc);
-  if ($year && startsWith($year, 'F')) {
-    $year = ltrim($year, 'FY');
-    $yearstring = "AND disbursement_line_item_details.fiscal_year = '" . $year . "' ";
-  }
-  elseif ($year && startsWith($year, 'C')) {
-    $year = ltrim($year, 'CY');
-    $yearstring = "AND disbursement_line_item_details.calendar_fiscal_year = '" . $year . "' ";
-  }
-  if ($agency) {
-    $agencystring = "AND disbursement_line_item_details.agency_code = '" . $agency . "' ";
-  }
-  if ($sc) {
-    $scstring = "AND ref_spending_category.spending_category_code = '" . $sc . "' ";
-  }
-  if ($dept) {
-    $deptstring = "AND disbursement_line_item_details.department_code = '" . $dept . "' ";
-  }
-  $query = "SELECT DISTINCT expenditure_object_name|| '[' || expenditure_object_code || ']' expenditure_object_code FROM disbursement_line_item_details, ref_spending_category WHERE disbursement_line_item_details.spending_category_id = ref_spending_category.spending_category_id " . $yearstring . $agencystring . $scstring . $deptstring . "ORDER BY expenditure_object_code ASC";
-  $results = _checkbook_project_execute_sql($query);
-  $output[''] = 'Select Expense Category';
-  foreach ($results as $result) {
-    $output[$result['expenditure_object_code']] = $result['expenditure_object_code'];
-  }
-  return $output;
+function _expcat_options($agency, $dept, $sc, $year, $data_source = null) {
+    switch($data_source)
+    {
+        case 'checkbook_oge':
+            $agency = emptyToZero($agency);
+            $dept = emptyToZero($dept);
+            $sc = emptyToZero($sc);
+            if ($year && startsWith($year, 'F')) {
+                $year = ltrim($year, 'FY');
+                $yearstring = "AND disbursement_line_item_details.fiscal_year = '" . $year . "' ";
+            }
+            elseif ($year && startsWith($year, 'C')) {
+                $year = ltrim($year, 'CY');
+                $yearstring = "AND disbursement_line_item_details.calendar_fiscal_year = '" . $year . "' ";
+            }
+            if ($agency) {
+                $agencystring = "AND disbursement_line_item_details.agency_code = '" . $agency . "' ";
+            }
+            if ($sc) {
+                $scstring = "AND ref_spending_category.spending_category_code = '" . $sc . "' ";
+            }
+            if ($dept) {
+                $deptstring = "AND disbursement_line_item_details.department_code = '" . $dept . "' ";
+            }
+            $query = "SELECT DISTINCT expenditure_object_name|| '[' || expenditure_object_code || ']' expenditure_object_code FROM disbursement_line_item_details, ref_spending_category WHERE disbursement_line_item_details.spending_category_id = ref_spending_category.spending_category_id " . $yearstring . $agencystring . $scstring . $deptstring . "ORDER BY expenditure_object_code ASC";
+            $results =  _checkbook_project_execute_sql_by_data_source($query, 'checkbook_oge');
+            $output[''] = 'Select Expense Category';
+            foreach ($results as $result) {
+                $output[$result['expenditure_object_code']] = $result['expenditure_object_code'];
+            }
+            return $output;
+            break;
+
+        default:
+            $agency = emptyToZero($agency);
+            $dept = emptyToZero($dept);
+            $sc = emptyToZero($sc);
+            if ($year && startsWith($year, 'F')) {
+                $year = ltrim($year, 'FY');
+                $yearstring = "AND disbursement_line_item_details.fiscal_year = '" . $year . "' ";
+            }
+            elseif ($year && startsWith($year, 'C')) {
+                $year = ltrim($year, 'CY');
+                $yearstring = "AND disbursement_line_item_details.calendar_fiscal_year = '" . $year . "' ";
+            }
+            if ($agency) {
+                $agencystring = "AND disbursement_line_item_details.agency_code = '" . $agency . "' ";
+            }
+            if ($sc) {
+                $scstring = "AND ref_spending_category.spending_category_code = '" . $sc . "' ";
+            }
+            if ($dept) {
+                $deptstring = "AND disbursement_line_item_details.department_code = '" . $dept . "' ";
+            }
+            $query = "SELECT DISTINCT expenditure_object_name|| '[' || expenditure_object_code || ']' expenditure_object_code FROM disbursement_line_item_details, ref_spending_category WHERE disbursement_line_item_details.spending_category_id = ref_spending_category.spending_category_id " . $yearstring . $agencystring . $scstring . $deptstring . "ORDER BY expenditure_object_code ASC";
+            $results = _checkbook_project_execute_sql($query);
+            $output[''] = 'Select Expense Category';
+            foreach ($results as $result) {
+                $output[$result['expenditure_object_code']] = $result['expenditure_object_code'];
+            }
+            return $output;
+            break;
+    }
 }
 
 /**

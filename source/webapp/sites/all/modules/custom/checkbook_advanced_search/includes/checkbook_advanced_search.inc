@@ -31,11 +31,11 @@ function checkbook_advanced_search_form_submit($form, &$form_state)
  * Get year_value and id using the data controller
  * @return array
  */
-function _checkbook_advanced_search_get_year($domain = null, $form = null, $data_source = null)
+function _checkbook_advanced_search_get_year($domain = null, $form = null, $data_source = 'checkbook')
 {
     try {
         $dataController = data_controller_get_instance();
-        $data = $dataController->queryDataset("checkbook:year", array('year_value', 'year_id'), array('year_value' => data_controller_get_operator_factory_instance()->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, 2010)), 'year_value', 0);
+        $data = $dataController->queryDataset($data_source.":year", array('year_value', 'year_id'), array('year_value' => data_controller_get_operator_factory_instance()->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, 2010)), 'year_value', 0);
 
         $current_fy_id = _getFiscalYearID();
         $max_years = _checkbook_max_data_year();
@@ -79,12 +79,22 @@ function _checkbook_advanced_search_get_year($domain = null, $form = null, $data
  * Get agency name and id using the data controller
  * @return array
  */
-function _checkbook_advanced_search_get_agencyname_and_id()
+function _checkbook_advanced_search_get_agencyname_and_id($data_source = 'checkbook')
 {
     try {
+        switch ($data_source) {
+            case 'checkbook_oge':
+                $title = 'Other Government Entities';
+                $parameters = array("is_oge_agency" => "Y", "is_display" => "Y");
+                break;
+            default:
+                $title = 'Citywide(All Agencies)';
+                $parameters = array("is_display" => "Y");
+                break;
+        }
         $dataController = data_controller_get_instance();
-        $nyc_agencies = $dataController->queryDataset('checkbook:agency', array('agency_name', 'agency_id'), array("is_display" => "Y"), 'agency_name', 0, NULL, NULL);
-        $nyc_agencies_key_val = array('Citywide(All Agencies)');
+        $nyc_agencies = $dataController->queryDataset($data_source.':agency', array('agency_name', 'agency_id'), $parameters, 'agency_name', 0, NULL, NULL);
+        $nyc_agencies_key_val = array($title);
         foreach ($nyc_agencies as $value) {
             if (strlen($value['agency_name']) > 20)
                 $nyc_agencies_key_val[$value['agency_id']] = substr($value['agency_name'], 0, 20) . '...';
@@ -98,50 +108,26 @@ function _checkbook_advanced_search_get_agencyname_and_id()
     }
 }
 
-function _checkbook_advanced_search_get_agency_attributes()
+function _checkbook_advanced_search_get_agency_attributes($data_source = 'checkbook')
 {
     try {
+        switch ($data_source) {
+            case 'checkbook_oge':
+                $title = 'Other Government Entities';
+                $parameters = array("is_oge_agency" => "Y");
+                break;
+            default:
+                $title = 'Citywide(All Agencies)';
+                $parameters = null;
+                break;
+        }
         $dataController = data_controller_get_instance();
-        $nyc_agencies = $dataController->queryDataset('checkbook:agency', array('agency_name', 'agency_id'), NULL, 'agency_name', 0, NULL, NULL);
-        $nyc_agencies_key_val = array('Citywide(All Agencies)' => array('title' => 'Citywide(All Agencies)'));
+        $nyc_agencies = $dataController->queryDataset($data_source . ':agency', array('agency_name', 'agency_id'), $parameters, 'agency_name', 0, NULL, NULL);
+        $nyc_agencies_key_val = array($title => array('title' => $title));
         foreach ($nyc_agencies as $value) {
             $nyc_agencies_key_val[$value['agency_id']] = array('title' => $value['agency_name']);
         }
-        return $nyc_agencies_key_val;
-    } catch (Exception $e) {
-        log_error("Error getting data from controller: \n" . $e->getMessage());
-        return;
-    }
-}
 
-function _checkbook_advanced_search_get_agencyname_and_id_by_data_source($data_source)
-{
-    try {
-        $dataController = data_controller_get_instance();
-        $nyc_agencies = $dataController->queryDataset('checkbook:agency', array('agency_name', 'agency_id'), array("is_display" => "Y"), 'agency_name', 0, NULL, NULL);
-        $nyc_agencies_key_val = array('Citywide(All Agencies)');
-        foreach ($nyc_agencies as $value) {
-            if (strlen($value['agency_name']) > 20)
-                $nyc_agencies_key_val[$value['agency_id']] = substr($value['agency_name'], 0, 20) . '...';
-            else
-                $nyc_agencies_key_val[$value['agency_id']] = $value['agency_name'];
-        }
-        return $nyc_agencies_key_val;
-    } catch (Exception $e) {
-        log_error("Error getting data from controller: \n" . $e->getMessage());
-        return;
-    }
-}
-
-function _checkbook_advanced_search_get_agency_attributes_by_data_source($data_source)
-{
-    try {
-        $dataController = data_controller_get_instance();
-        $nyc_agencies = $dataController->queryDataset('checkbook:agency', array('agency_name', 'agency_id'), NULL, 'agency_name', 0, NULL, NULL);
-        $nyc_agencies_key_val = array('Citywide(All Agencies)' => array('title' => 'Citywide(All Agencies)'));
-        foreach ($nyc_agencies as $value) {
-            $nyc_agencies_key_val[$value['agency_id']] = array('title' => $value['agency_name']);
-        }
         return $nyc_agencies_key_val;
     } catch (Exception $e) {
         log_error("Error getting data from controller: \n" . $e->getMessage());
@@ -349,11 +335,11 @@ function _checkbook_advanced_search_get_payroll_frequency()
  * Get spending category name and id using data controller
  * @return array
  */
-function _checkbook_advanced_search_get_expensetype_and_id($data_source = null)
+function _checkbook_advanced_search_get_expensetype_and_id($data_source = 'checkbook')
 {
     try {
         $dataController = data_controller_get_instance();
-        $data = $dataController->queryDataset('checkbook:spending_category', array(
+        $data = $dataController->queryDataset($data_source.':spending_category', array(
             'spending_category_id', 'spending_category_name'
         ), NULL, 'spending_category_id');
         $results = array('' => "Total Spending");
@@ -372,11 +358,11 @@ function _checkbook_advanced_search_get_expensetype_and_id($data_source = null)
  * Get agency name and id using the data controller
  * @return array
  */
-function _checkbook_advanced_search_get_contract_award_method_and_id($data_source = null)
+function _checkbook_advanced_search_get_contract_award_method_and_id($data_source = 'checkbook')
 {
     try {
         $dataController = data_controller_get_instance();
-        $nyc_agencies = $dataController->queryDataset('checkbook:award_method', array('award_method_name', 'award_method_id', 'award_method_code'), NULL, 'award_method_name', 0, NULL, NULL);
+        $nyc_agencies = $dataController->queryDataset($data_source.':award_method', array('award_method_name', 'award_method_id', 'award_method_code'), NULL, 'award_method_name', 0, NULL, NULL);
         $nyc_agencies_key_val = array('Select Award Method');
         foreach ($nyc_agencies as $value) {
             $keys = 'id=>' . $value['award_method_id'] . '~code=>' . $value['award_method_code'];
@@ -392,11 +378,11 @@ function _checkbook_advanced_search_get_contract_award_method_and_id($data_sourc
     }
 }
 
-function _checkbook_advanced_search_get_contract_award_method_attributes($data_source = null)
+function _checkbook_advanced_search_get_contract_award_method_attributes($data_source = 'checkbook')
 {
     try {
         $dataController = data_controller_get_instance();
-        $nyc_agencies = $dataController->queryDataset('checkbook:award_method', array('award_method_name', 'award_method_id', 'award_method_code'), NULL, 'award_method_name', 0, NULL, NULL);
+        $nyc_agencies = $dataController->queryDataset($data_source.':award_method', array('award_method_name', 'award_method_id', 'award_method_code'), NULL, 'award_method_name', 0, NULL, NULL);
         $nyc_agencies_key_val = array('title' => 'Select Award Method)');
         foreach ($nyc_agencies as $value) {
             $keys = 'id=>' . $value['award_method_id'] . '~code=>' . $value['award_method_code'];
@@ -413,11 +399,11 @@ function _checkbook_advanced_search_get_contract_award_method_attributes($data_s
  * Get contract type name and id using the data controller
  * @return array
  */
-function _checkbook_advanced_search_get_contract_type_and_id($data_source = null)
+function _checkbook_advanced_search_get_contract_type_and_id($data_source = 'checkbook')
 {
     try {
         $dataController = data_controller_get_instance();
-        $nyc_agencies = $dataController->queryDataset('checkbook:agreement_type', array('agreement_type_name', 'agreement_type_id', 'agreement_type_code'), NULL, 'agreement_type_name', 0, NULL, NULL);
+        $nyc_agencies = $dataController->queryDataset($data_source.':agreement_type', array('agreement_type_name', 'agreement_type_id', 'agreement_type_code'), NULL, 'agreement_type_name', 0, NULL, NULL);
         $nyc_agencies_key_val = array('Select Contract Type');
         foreach ($nyc_agencies as $value) {
             $keys = 'id=>' . $value['agreement_type_id'] . '~code=>' . $value['agreement_type_code'];

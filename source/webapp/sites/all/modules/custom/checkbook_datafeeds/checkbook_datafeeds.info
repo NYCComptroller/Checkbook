@@ -22,3 +22,5 @@ version = 2.0
 package = NYC Checkbook
 dependencies[] = checkbook_autocomplete
 dependencies[] = checkbook_api
+
+files[] = config/util/DatafeedsConfigUtil.php

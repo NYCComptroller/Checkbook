@@ -180,7 +180,7 @@ function _checkbook_autocomplete_contracts_pin($status, $category, $contract_typ
  * @return array
  *   Results from Solr
  */
-function _get_spending_datafeeds_autocomplete_results($facet, $query, $year = NULL, $agency = NULL, $expcategory = NULL, $dept = NULL, $exptype = NULL) {
+function _get_spending_datafeeds_autocomplete_results($facet, $query, $year = NULL, $agency = NULL, $expcategory = NULL, $dept = NULL, $exptype = NULL, $data_source = NULL) {
   if ($year) {
     $query .= _checkbook_autocomplete_get_start_end_dates($year, 'spending');
   }
@@ -819,7 +819,7 @@ function _get_autocomplete_search_term() {
  * @return array
  *   Facet results from Solr.
  */
-function _checkbook_autocomplete_solr_results($query, $facet = NULL) {
+function _checkbook_autocomplete_solr_results($query, $facet = NULL, $data_source = 'checkbook') {
   global $conf;
   if ($conf['check_book']['solr']['url']) {
     $solr_server_url = $conf['check_book']['solr']['url'];
