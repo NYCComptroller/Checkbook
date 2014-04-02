@@ -329,7 +329,7 @@ function widget_data_tables_widget_prepare($node){
     while($count < $_REQUEST['iSortingCols']){
 	//if($_REQUEST['iSortCol_0'] != NULL){
 	$index =  $count ;
-		$sort_column = $node->widgetConfig->table_columns[$_REQUEST['iSortCol_' . $index ]]->column;		
+		$sort_column = $node->widgetConfig->table_columns[$_REQUEST['iSortCol_' . $index ]]->column;
 		if(isset($node->widgetConfig->table_columns[$_REQUEST['iSortCol_' . $index ]]->sortSourceColumn)){
 			$sort_actual_column = $node->widgetConfig->table_columns[$_REQUEST['iSortCol_' . $index ]]->sortSourceColumn;
 		}
@@ -344,6 +344,11 @@ function widget_data_tables_widget_prepare($node){
 			$node->widgetConfig->orderBy[] =  $sort_actual_column ;		
 	//}
 		$count += 1;
+    }
+
+    foreach($node->widgetConfig->orderBy as $key=>$value){
+        $value = _update_dataset_datasource($value);
+        $node->widgetConfig->orderBy[$key] = $value;
     }
 
     $iDisplayStart = $_REQUEST['iDisplayStart'];
@@ -598,7 +603,9 @@ function widget_data_tables_add_js($node){
             array_push($newAolcols, $value);
         }
     }
-    $oldDataTableOptions['aoColumns'] = $newAolcols;
+    if(count($newAolcols)){
+    	$oldDataTableOptions['aoColumns'] = $newAolcols;
+    }
     $dataTableOptions = json_encode((object)$oldDataTableOptions);
 
     $id  = "";
@@ -680,8 +687,8 @@ function widget_data_tables_theme($existing, $type, $theme, $path) {
 
 function widget_data_tables_export_link($node) {
     $nid = widget_unique_identifier($node);
-	//return widget_data_tables_alerts_link($node)." <span class=export exportid={$nid}>Export</span>";
-    return "<span class=export exportid={$nid}>Export</span>";
+	return widget_data_tables_alerts_link($node)." <span class=export exportid={$nid}>Export</span>";
+    //return "<span class=export exportid={$nid}>Export</span>";
 }
 
 function widget_data_tables_alerts_link($node){

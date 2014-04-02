@@ -9,6 +9,16 @@
                     "key":true
                 }
             ]
+        },
+        "oge_spending_contract": {
+            "datasourceName": "main",
+            "source": "oge_contract",
+            "columns":[
+                {
+                    "name":"fms_contract_number",
+                    "key":true
+                }
+            ]
         }
     },
     "cubes":   {
@@ -92,6 +102,16 @@
                             "sourceColumnName": "document_code_id"
                         }
                     ]
+                },
+                {
+                    "name": "abc",
+                    "levels": [
+                        {
+                            "name": "abc",
+                            "datasetName": "oge_spending_contract",
+                            "sourceColumnName": "disb_contract_number"
+                        }
+                    ]
                 }
             ],
             "measures": {
@@ -128,8 +148,8 @@
             {"datasetName": "ref_document_code", "columnNames": ["document_code_id"]}
         ],
         "contracts_spending_transactions__oge_contract": [
-            {"datasetName": "contracts_spending_transactions", "columnNames": ["disb_contract_number"]},
-            {"datasetName": "oge_contract_contract", "columnNames": ["fms_contract_number"]}
+            {"datasetName": "contracts_spending_transactions", "columnNames": ["disb_contract_number", "disb_agreement_commodity_line_number"]},
+            {"datasetName": "oge_contract_contract", "columnNames": ["fms_contract_number","fms_commodity_line"]}
         ]
     }
 }

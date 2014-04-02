@@ -202,7 +202,7 @@
                 "current_amount_sum": {
                     "function": "MIN(COALESCE(maximum_contract_amount,0))"}      ,
                 "spending_amount_sum": {
-                    "function": "MIN(COALESCE(spending_amount,0))"}      ,
+                    "function": "SUM(COALESCE(spending_amount_disb,0))"}      ,
                 "dollar_difference": {
                     "function": "SUM(COALESCE(dollar_difference,0))"}      ,
                 "percent_difference": {
@@ -365,7 +365,7 @@
                 "current_amount_sum": {
                     "function": "SUM(COALESCE(maximum_contract_amount,0))"}      ,
                 "spending_amount_sum": {
-                    "function": "SUM(COALESCE(spending_amount,0))"}      ,
+                    "function": "SUM(COALESCE(spending_amount_disb,0))"}      ,
                 "dollar_difference": {
                     "function": "SUM(COALESCE(dollar_difference,0))"}      ,
                 "percent_difference": {
@@ -528,7 +528,7 @@
                 "current_amount_sum": {
                     "function": "SUM(COALESCE(maximum_contract_amount,0))"}      ,
                 "spending_amount_sum": {
-                    "function": "SUM(COALESCE(spending_amount,0))"}      ,
+                    "function": "SUM(COALESCE(spending_amount_disb,0))"}      ,
                 "dollar_difference": {
                     "function": "SUM(COALESCE(dollar_difference,0))"}      ,                    
                 "percent_difference": {
@@ -621,7 +621,7 @@
             ],
             "measures": {
                 "spending_amount_sum": {
-                    "function": "SUM(COALESCE(spending_amount,0))"}      
+                    "function": "SUM(COALESCE(spending_amount,0))"}
             }
         }    ,
 		"aggregateon_total_contracts": {
@@ -722,7 +722,7 @@
 				"total_contracts_amount_sum": {
                     "function": "sum(COALESCE(total_contracts_amount,0))"},                                              
 				"total_spending_amount_sum": {
-                    "function": "sum(COALESCE(total_spending_amount,0))"}                                                                                                                
+                    "function": "sum(COALESCE(spending_amount_disb,0))"}
             }                      
         }      ,
 	"aggregateon_contracts_department": {
@@ -743,7 +743,7 @@
                     "levels": [
                        		{
                             	"name": "document_agency",
-                            	"sourceColumnName": "document_agency_id"
+                            	"sourceColumnName": "agency_id"
                             }
                     ]
                 }    , 
@@ -828,7 +828,7 @@
             ],
             "measures": {               
                 "spending_amount_sum": {
-                    "function": "SUM(COALESCE(spending_amount,0))"}      ,
+                    "function": "SUM(COALESCE(spending_amount_disb,0))"}      ,
                 "total_contracts": {
                     "function": "sum(total_contracts)"}                                                            
             }
@@ -853,7 +853,7 @@
                    "levels": [
                             {
                             "name": "document_agency",
-                            "sourceColumnName": "document_agency_id"
+                            "sourceColumnName": "agency_id"
                            }
                    ]
                }    ,
@@ -938,7 +938,7 @@
            ],
            "measures": {
                "spending_amount_sum": {
-                   "function": "SUM(COALESCE(spending_amount,0))"}      ,
+                   "function": "SUM(COALESCE(spending_amount_disb,0))"}      ,
                "total_contracts": {
                    "function": "sum(total_contracts)"}
            }

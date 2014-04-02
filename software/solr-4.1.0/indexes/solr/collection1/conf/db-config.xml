@@ -1,6 +1,6 @@
 <dataConfig>
-    <dataSource name="db1" type="JdbcDataSource" driver="org.postgresql.Driver" url="jdbc:postgresql://192.168.3.24/checkbook" user="webuser1" password="webuser1" readOnly="true" autoCommit="false" transactionIsolation="TRANSACTION_READ_COMMITTED" holdability="CLOSE_CURSORS_AT_COMMIT"/>
-    <dataSource name="db2" type="JdbcDataSource" driver="org.postgresql.Driver" url="jdbc:postgresql://192.168.3.23/checkbook_ogent" user="webuser1" password="webuser1" readOnly="true" autoCommit="false" transactionIsolation="TRANSACTION_READ_COMMITTED" holdability="CLOSE_CURSORS_AT_COMMIT"/>
+    <dataSource name="db1" type="JdbcDataSource" driver="org.postgresql.Driver" url="jdbc:postgresql://<ip>/checkbook" user="webuser1" password="webuser1" readOnly="true" autoCommit="false" transactionIsolation="TRANSACTION_READ_COMMITTED" holdability="CLOSE_CURSORS_AT_COMMIT"/>
+    <dataSource name="db2" type="JdbcDataSource" driver="org.postgresql.Driver" url="jdbc:postgresql://<ip>/checkbook_ogent" user="webuser1" password="webuser1" readOnly="true" autoCommit="false" transactionIsolation="TRANSACTION_READ_COMMITTED" holdability="CLOSE_CURSORS_AT_COMMIT"/>
     <document>
         <entity dataSource="db1" name="budget" query="select
 			'budget:' || budget_id id,
@@ -232,51 +232,55 @@
         <entity dataSource="db2" name="spending_oge"
                 pk="id"
                 query="select
-				'spending:' || agency_id || ':' || disbursement_line_item_id || 'oge' id,
-				'spending' domain1,
-				agency_id,
-				agency_code,
-				'' agency_name,
-				agency_name oge_agency_name,
-				agency_name || '[' || agency_id || ']' agency_name_id,
-				'oge' agency_type,
-				check_eft_issued_nyc_year_id fiscal_year_id,
-				ry.year_value   fiscal_year,
-				department_id,
-				department_code,
-				department_name ,
-				lower(department_name) || '[' || department_code || ']' department_name_code,
-				disbursement_line_item_id,
-				vendor_id,
-				vendor_name ,
-				vendor_name || '[' || vendor_id || ']' vendor_name_id,
-				vendor_customer_code,
-				lower(vendor_name) || '[ ' || vendor_customer_code || ' ]' vendor_name_code,
-				expenditure_object_id,
-				expenditure_object_code,
-				expenditure_object_name,
-				expenditure_object_name || '[' || expenditure_object_id || ']' expenditure_object_name_id,
-				lower(expenditure_object_name) || '[' || expenditure_object_code || ']' expenditure_object_name_code,
-				check_eft_issued_date,
-				check_amount,
-				reporting_code,
-				fund_class_id,
-				fund_class_name ,
-				fund_class_code,
-				lower(fund_class_name) || '[' || fund_class_code || ']' fund_class_name_code,
-				budget_code_id,
-				budget_code ,
-				budget_name  budget_code_name,
-				lower(budget_name) || '[' || budget_code || ']' budget_code_name_code,
-				disbursement_number document_id,
-				reference_document_number contract_number,
-				agreement_id,
-				master_agreement_id,
-				rsc.spending_category_id,
-				lower(rsc.spending_category_name) || '[' || rsc.spending_category_code || ']' spending_category_name_code,
-				rsc.spending_category_name
-			 from disbursement_line_item_details  dlid left join ref_year ry on dlid.check_eft_issued_nyc_year_id = ry.year_id
-			 left join ref_spending_category rsc on rsc.spending_category_id = dlid.spending_category_id
+                'spending:' || dlid.agency_id || ':' || disbursement_line_item_id || 'oge' id,
+                'spending' domain1,
+                dlid.agency_id,
+                dlid.agency_code,
+                '' agency_name,
+                agency_name oge_agency_name,
+                agency_name || '[' || dlid.agency_id || ']' agency_name_id,
+                'oge' agency_type,
+                check_eft_issued_nyc_year_id fiscal_year_id,
+                ry.year_value   fiscal_year,
+                dlid.department_id,
+                dlid.department_code,
+                dlid.department_name ,
+                lower(department_name) || '[' || department_code || ']' department_name_code,
+                disbursement_line_item_id,
+                dlid.vendor_id,
+                dlid.vendor_name ,
+                dlid.vendor_name || '[' || dlid.vendor_id || ']' vendor_name_id,
+                vendor_customer_code,
+                lower(dlid.vendor_name) || '[ ' || vendor_customer_code || ' ]' vendor_name_code,
+                expenditure_object_id,
+                expenditure_object_code,
+                expenditure_object_name,
+                expenditure_object_name || '[' || expenditure_object_id || ']' expenditure_object_name_id,
+                lower(expenditure_object_name) || '[' || expenditure_object_code || ']' expenditure_object_name_code,
+                check_eft_issued_date,
+                check_amount,
+                reporting_code,
+                fund_class_id,
+                fund_class_name ,
+                fund_class_code,
+                lower(fund_class_name) || '[' || fund_class_code || ']' fund_class_name_code,
+                budget_code_id,
+                budget_code ,
+                dlid.budget_name  budget_code_name,
+                lower(dlid.budget_name) || '[' || budget_code || ']' budget_code_name_code,
+                disbursement_number document_id,
+                reference_document_number contract_number,
+                agreement_id,
+                master_agreement_id,
+                rsc.spending_category_id,
+                lower(rsc.spending_category_name) || '[' || rsc.spending_category_code || ']' spending_category_name_code,
+                rsc.spending_category_name,
+                oc.fms_contract_number as entity_contract_number,
+                oc.fms_commodity_line  as commodity_line,
+                oc.budget_name as budget_name
+                from disbursement_line_item_details  dlid left join ref_year ry on dlid.check_eft_issued_nyc_year_id = ry.year_id
+                left join ref_spending_category rsc on rsc.spending_category_id = dlid.spending_category_id
+                left join oge_contract oc on oc.fms_contract_number = dlid.contract_number and oc.fms_commodity_line = dlid.agreement_commodity_line_number
 			 where
 			'${dataimporter.request.clean}' != 'false'
       			OR dlid.job_id >= ${dataimporter.request.jobID}
@@ -324,6 +328,9 @@
             <field column="spending_category_id" name="spending_category_id" />
             <field column="spending_category_name" name="spending_category_name" />
             <field column="spending_category_name_code" name="spending_category_name_code" />
+            <field column="entity_contract_number" name="spending_entity_contract_number" />
+            <field column="commodity_line" name="spending_commodity_line" />
+            <field column="budget_name" name="spending_budget_name" />
         </entity>
         <entity dataSource="db1" name="payroll"
                 query="
@@ -485,26 +492,26 @@
                 pk="id"
                 query="
 				select
-                'contracts:' || agreement_id || ':' || agency_id || ':' || vendor_id || 'oge' id,
+                'contracts:' || agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END) || 'oge' id,
                 original_agreement_id,
                 'contracts' domain1,
                 (case when(document_code ='RCT1') then 'Revenue' else 'Expense' end) category,
                 '' agency_name,
-                agency_name oge_agency_name,
+                a.agency_name oge_agency_name,
                 'oge' agency_type,
-                agency_id,
-                agency_code,
-                vendor_id,
-                vendor_name,
-                vendor_code,
-                lower(vendor_name) || '[ ' || vendor_code || ' ]' vendor_name_code,
-                vendor_name || '[' || vendor_id || ']' vendor_name_id,
+                a.agency_id,
+                a.agency_code,
+                (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END) as vendor_id,
+                (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_name ELSE ogecon.vendor_name END) as vendor_name,
+                (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_code ELSE NULL END) vendor_code,
+                (CASE WHEN master_agreement_yn = 'Y' THEN lower(a.vendor_name) ELSE lower(ogecon.vendor_name) END) || '[ ' || (CASE WHEN master_agreement_yn = 'Y' THEN lower(a.vendor_code) ELSE NULL END) || ' ]' vendor_name_code,
+                (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_name ELSE ogecon.vendor_name END) || '[' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END) || ']' vendor_name_id,
                 contract_number,
                 master_contract_number,
                 award_method_name,
                 award_method_id,
                 agreement_type_name,
-				agreement_type_id,
+                agreement_type_id,
                 expenditure_object_names,
                 description,
                 COALESCE(effective_begin_date,'1900-01-01') effective_begin_date,
@@ -515,8 +522,8 @@
                 tracking_number pin,
                 document_version version_number,
                 registered_date,
-                original_contract_amount original_amount,
-                maximum_contract_amount current_amount,
+                (CASE WHEN master_agreement_yn = 'Y' THEN a.original_contract_amount ELSE ogecon.original_amount END) original_amount,
+                (CASE WHEN master_agreement_yn = 'Y' THEN a.maximum_contract_amount ELSE ogecon.current_amount END )current_amount,
                 registered_year fiscal_year,
                 registered_year_id fiscal_year_id,
                 rac.award_category_code,
@@ -526,10 +533,44 @@
                 expenditure_object_codes,
                 expenditure_object_names,
                 (case when(latest_flag = 'Y') then 'Y' else 'N' end) latest_flag,
-                'Registered' status
+                'Registered' status,
+                ogecon.fms_contract_number as entity_contract_number,
+                budget_names.values as budget_name,
+                commodity_lines.values as commodity_line
                 from agreement_snapshot a
-            left join ref_document_code dc on a.document_code_id = dc.document_code_id
-            left join ref_award_category rac on a.award_category_id = rac.award_category_id
+                LEFT JOIN oge_contract_vendor_level ogecon ON a.contract_number = ogecon.fms_contract_number AND a.vendor_id = ogecon.vendor_id
+                left join ref_document_code dc on a.document_code_id = dc.document_code_id
+                left join ref_award_category rac on a.award_category_id = rac.award_category_id
+                left join
+                (
+                    select
+                    'contracts:' || agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END) || 'oge' id,
+                    GROUP_CONCAT(oc.budget_name) As values
+                    from agreement_snapshot a
+                    LEFT JOIN oge_contract_vendor_level ogecon ON a.contract_number = ogecon.fms_contract_number AND a.vendor_id = ogecon.vendor_id
+                    left join ref_document_code dc on a.document_code_id = dc.document_code_id
+                    left join ref_award_category rac on a.award_category_id = rac.award_category_id
+                    left join oge_contract oc on oc.fms_contract_number = a.contract_number
+                    where dc.document_code in ('MMA1', 'MA1', 'MAR', 'CT1', 'CTR', 'DO1', 'CTA1', 'RCT1')
+                    and ( '${dataimporter.request.clean}' != 'false'
+                    OR  a.job_id >= ${dataimporter.request.jobID} )
+                    group by 'contracts:' || agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END)
+                ) budget_names on budget_names.id = 'contracts:' || agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END) || 'oge'
+                left join
+                (
+                    select
+                    'contracts:' || agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END) || 'oge' id,
+                    GROUP_CONCAT(oc.fms_commodity_line) As values
+                    from agreement_snapshot a
+                    LEFT JOIN oge_contract_vendor_level ogecon ON a.contract_number = ogecon.fms_contract_number AND a.vendor_id = ogecon.vendor_id
+                    left join ref_document_code dc on a.document_code_id = dc.document_code_id
+                    left join ref_award_category rac on a.award_category_id = rac.award_category_id
+                    left join oge_contract oc on oc.fms_contract_number = a.contract_number
+                    where dc.document_code in ('MMA1', 'MA1', 'MAR', 'CT1', 'CTR', 'DO1', 'CTA1', 'RCT1')
+                    and ( '${dataimporter.request.clean}' != 'false'
+                    OR  a.job_id >= ${dataimporter.request.jobID} )
+                    group by 'contracts:' || agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END)
+                ) commodity_lines on commodity_lines.id = 'contracts:' || agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END) || 'oge'
             where dc.document_code in ('MMA1', 'MA1', 'MAR', 'CT1', 'CTR', 'DO1', 'CTA1', 'RCT1')
                   and ( '${dataimporter.request.clean}' != 'false'
       			OR  a.job_id >= ${dataimporter.request.jobID} )
@@ -578,6 +619,9 @@
             <field column="expenditure_object_names" name="expenditure_object_name" splitBy=","/>
             <field column="status" name="contract_status" />
             <field column="document_code" name="document_code" />
+            <field column="entity_contract_number" name="contract_entity_contract_number" />
+            <field column="commodity_line" name="contract_commodity_line" />
+            <field column="budget_name" name="contract_budget_name" splitBy=","  />
         </entity>
         <entity dataSource="db1" name="pending_contracts" query="
 		    select
