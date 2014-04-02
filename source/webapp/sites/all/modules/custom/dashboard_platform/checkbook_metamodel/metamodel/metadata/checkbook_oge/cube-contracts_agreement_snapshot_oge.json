@@ -1,0 +1,261 @@
+{
+    "datasets": {
+        "agreement_snapshot_oge": {
+            "datasourceName": "main",
+            "source": "contracts_detailed_transactions",
+            "columns": [
+                {
+                    "name": "contract_number",
+                    "key": true}
+            ]
+        },
+        "agreement_snapshot_vendor_oge": {
+            "datasourceName": "main",
+            "source": "contracts_detailed_transactions_mag_vendor",
+            "columns": [
+                {
+                    "name": "contract_number",
+                    "key": true}
+            ]
+        },
+        "contracts_coa_aggregates_oge": {
+            "datasourceName": "main",
+            "source": "aggregateon_contracts_cumulative_spending",
+            "columns": [
+                {
+                    "name": "contract_number",
+                    "key": true}
+            ]
+        }
+     },
+    "cubes": {
+        "agreement_snapshot_oge": {
+            "sourceDatasetName": "agreement_snapshot_oge",
+            "dimensions": [
+                {
+                    "name": "oge_child_transactions",
+                    "levels": [
+                            {
+                                "name": "oge_child_transactions",
+                                "datasetName": "contracts_coa_aggregates",
+                                "sourceColumnName": "original_agreement_id"
+                            }
+                    ]
+                },
+                {
+                    "name": "oge_contract",
+                    "levels": [
+                            {
+                                "name": "oge_contract",
+                                "datasetName": "oge_contract_contract",
+                                "sourceColumnName": "contract_number"
+                            }
+                    ]
+                },
+				{
+                    "name": "agency",
+                    "levels": [
+                       		{
+                            	"name": "agency",
+                            	"datasetName": "agency",
+                            	"sourceColumnName": "agency_id"
+                            }
+                    ]
+                }    ,
+				{
+                    "name": "vendor",
+                    "levels": [
+                       		{
+                            	"name": "vendor",
+                                "datasetName": "vendor",
+                            	"sourceColumnName": "vendor_id"
+                            }
+                    ]
+                },
+				{
+                    "name": "document_code",
+                    "levels": [
+                       		{
+                            	"name": "document_code",
+                            	"datasetName": "ref_document_code",
+                            	"sourceColumnName": "document_code_id"
+                            }
+                    ]
+                },
+                {
+                    "name": "industry",
+                    "levels": [
+                        {
+                            "name": "industry",
+                            "datasetName":"industry_type",
+                            "sourceColumnName": "industry_type_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "award_method",
+                    "levels": [
+                        {
+                            "name": "award_method",
+                            "datasetName":"award_method",
+                            "sourceColumnName": "award_method_id"
+                        }
+                    ]
+                }
+            ],
+            "measures": {
+                "txcount": {
+                    "function": "COUNT(*)"
+                },
+                "total_maximum_contract_amount": {
+                    "function": "SUM(COALESCE($COLUMN{maximum_contract_amount},0))"
+                },
+                "g100m_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{maximum_contract_amount},0) > 100000000 THEN 1 ELSE 0 END)"
+                },
+                "g50m_le100m_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{maximum_contract_amount},0) > 50000000 AND COALESCE($COLUMN{maximum_contract_amount},0) <= 100000000 THEN 1 ELSE 0 END)"
+                },
+                "g25m_le50m_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{maximum_contract_amount},0) > 25000000 AND COALESCE($COLUMN{maximum_contract_amount},0) <= 50000000 THEN 1 ELSE 0 END)"
+                },
+                "g10m_le25m_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{maximum_contract_amount},0) > 10000000 AND COALESCE($COLUMN{maximum_contract_amount},0) <= 25000000 THEN 1 ELSE 0 END)"
+                },
+                "ge1m_le10m_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{maximum_contract_amount},0) >= 1000000 AND COALESCE($COLUMN{maximum_contract_amount},0) <= 10000000 THEN 1 ELSE 0 END)"
+                },
+                "less1m_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{maximum_contract_amount},0) < 1000000 THEN 1 ELSE 0 END)"
+                }
+            }
+        },
+        "agreement_snapshot_vendor_oge": {
+            "sourceDatasetName": "agreement_snapshot_vendor_oge",
+            "dimensions": [
+                {
+                    "name": "oge_child_transactions",
+                    "levels": [
+                            {
+                                "name": "oge_child_transactions",
+                                "datasetName": "contracts_coa_aggregates",
+                                "sourceColumnName": "original_agreement_id"
+                            }
+                    ]
+                },
+                {
+                    "name": "oge_contract",
+                    "levels": [
+                            {
+                                "name": "oge_contract",
+                                "datasetName": "oge_contract_contract",
+                                "sourceColumnName": "contract_number"
+                            }
+                    ]
+                },
+				{
+                    "name": "agency",
+                    "levels": [
+                       		{
+                            	"name": "agency",
+                            	"datasetName": "agency",
+                            	"sourceColumnName": "agency_id"
+                            }
+                    ]
+                }    ,
+				{
+                    "name": "vendor",
+                    "levels": [
+                       		{
+                            	"name": "vendor",
+                                "datasetName": "vendor",
+                            	"sourceColumnName": "vendor_id"
+                            }
+                    ]
+                },
+				{
+                    "name": "document_code",
+                    "levels": [
+                       		{
+                            	"name": "document_code",
+                            	"datasetName": "ref_document_code",
+                            	"sourceColumnName": "document_code_id"
+                            }
+                    ]
+                },
+                {
+                    "name": "industry",
+                    "levels": [
+                        {
+                            "name": "industry",
+                            "datasetName":"industry_type",
+                            "sourceColumnName": "industry_type_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "award_method",
+                    "levels": [
+                        {
+                            "name": "award_method",
+                            "datasetName":"award_method",
+                            "sourceColumnName": "award_method_id"
+                        }
+                    ]
+                }
+            ],
+            "measures": {
+                "txcount": {
+                    "function": "COUNT(*)"
+                },
+                "total_maximum_contract_amount": {
+                    "function": "SUM(COALESCE($COLUMN{maximum_contract_amount},0))"
+                },
+                "g100m_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{maximum_contract_amount},0) > 100000000 THEN 1 ELSE 0 END)"
+                },
+                "g50m_le100m_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{maximum_contract_amount},0) > 50000000 AND COALESCE($COLUMN{maximum_contract_amount},0) <= 100000000 THEN 1 ELSE 0 END)"
+                },
+                "g25m_le50m_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{maximum_contract_amount},0) > 25000000 AND COALESCE($COLUMN{maximum_contract_amount},0) <= 50000000 THEN 1 ELSE 0 END)"
+                },
+                "g10m_le25m_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{maximum_contract_amount},0) > 10000000 AND COALESCE($COLUMN{maximum_contract_amount},0) <= 25000000 THEN 1 ELSE 0 END)"
+                },
+                "ge1m_le10m_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{maximum_contract_amount},0) >= 1000000 AND COALESCE($COLUMN{maximum_contract_amount},0) <= 10000000 THEN 1 ELSE 0 END)"
+                },
+                "less1m_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{maximum_contract_amount},0) < 1000000 THEN 1 ELSE 0 END)"
+                }
+            }
+        }
+    },
+    "references": {
+        "agreement_snapshot__aggregateon_contracts_cumulative_spending_no_vendor": [
+            {"datasetName": "agreement_snapshot_oge", "columnNames": ["original_agreement_id"]},
+            {"datasetName": "contracts_coa_aggregates", "columnNames": ["original_agreement_id"]}
+        ],
+        "agreement_snapshot__aggregateon_contracts_cumulative_spending": [
+            {"datasetName": "agreement_snapshot_oge", "columnNames": ["original_agreement_id"]},
+            {"datasetName": "contracts_coa_aggregates", "columnNames": ["original_agreement_id"]}
+        ],
+        "contracts_detailed_transactions__ref_document_code": [
+            {"datasetName": "agreement_snapshot_oge", "columnNames": ["document_code_id"]},
+            {"datasetName": "ref_document_code", "columnNames": ["document_code_id"]}
+        ],
+        "agreement_snapshot__ref_award_category": [
+            {"datasetName": "agreement_snapshot_oge", "columnNames": ["award_category_id"]},
+            {"datasetName": "award_category", "columnNames": ["award_category_id"]}
+        ],
+        "agreement_snapshot__oge_contract": [
+            {"datasetName": "agreement_snapshot_oge", "columnNames": ["contract_number"]},
+            {"datasetName": "oge_contract_contract", "columnNames": ["fms_contract_number"]}
+        ],
+        "contracts_detailed_transactions_mag_vendor__ref_document_code": [
+                    {"datasetName": "agreement_snapshot_vendor_oge", "columnNames": ["document_code_id"]},
+                    {"datasetName": "ref_document_code", "columnNames": ["document_code_id"]}
+        ]
+    }
+}

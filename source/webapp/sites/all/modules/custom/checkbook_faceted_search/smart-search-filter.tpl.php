@@ -48,6 +48,7 @@
 <div class="narrow-down-filter">
   <div class="narrow-down-title">Narrow Down Your Search:</div>
   <?php
+
 foreach ($render_array as $title => $value) {
   echo '<div class="filter-content-' . $value['name'] . ' filter-content">';
   echo '<div class="filter-title">By ' . $title . '</div>';

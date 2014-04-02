@@ -1,0 +1,195 @@
+{
+"widgetType": "data_tables",
+"cleanURLParameters":["magid","year","calyear","contstatus","yeartype"],
+"urlParamMap":{"magid":"master_agreement_id","year":"fiscal_year_id",
+               "calyear":"fiscal_year_id",
+               "contstatus":"status_flag",
+               "yeartype":"type_of_year"},
+"defaultParameters":{"master_agreement_id":-1},//default master_agreement_id to avoid load
+"useList":true,
+"getTotalDataCount":false,
+"dataset": "checkbook:agreement_snapshot_oge",
+"orderBy":"-maximum_contract_amount",
+"columns": ["fms_commodity_line","budget_name","oge_contract_number","fiscal_year_id","type_of_year",
+            "document_code@checkbook:ref_document_code","has_children","original_agreement_id","contract_number",
+            "master_agreement_id","description","document_version","original_contract_amount",
+            "maximum_contract_amount","spending_amount_disb","vendor_name","agency_name",
+            "vendor_id","agency_id","agreement_type_name","award_method_name","expenditure_object_names",
+            "effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number",
+            "master_agreement_yn","industry_type_name","dollar_difference","percent_difference"],
+"caption":"",
+"adjustParameters":"
+            if(!isset($parameters['fiscal_year_id'])){
+                $parameters['latest_flag'] = 'Y';
+                $parameters['status_flag'] = 'A';
+                $parameters['type_of_year'] = 'B';
+            }
+
+            if($parameters['type_of_year'] == 'C'){
+                $config->dataset = 'checkbook:agreement_snapshot_oge';
+            }
+            if(function_exists('_checkbook_project_adjustContractParameterFilters')){
+                  _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
+            }
+            return $parameters;
+",
+"derivedColumns": {
+         "child_contrats_link":{
+	      "type": "expression2",
+             "expression": "''"
+            },
+         "contract_link": {
+	      "type": "expression2",
+               "expression": "ContractURLHelper::prepareExpenseContractLink($row, $node)"
+	    },
+         "parent_contract_link": {
+	      "type": "expression2",
+              "expression": ""
+	    },
+         "parent_contract_actual": {
+	      "type": "expression2",
+              "expression": " '<a href=\"/contract_details/magid/' . $row['master_agreement_id']  .  '\">'. '</a>'  "
+	    },
+	"formatted_original_amount": {
+	      "type": "expression2",
+              "expression": " ($row['document_code@checkbook:ref_document_code'] == 'DO1') ? 'N/A' : custom_number_formatter_basic_format($row['original_contract_amount']) "
+	    },
+	"formatted_current_amount": {
+	      "type": "expression2",
+                "expression": " ($row['document_code@checkbook:ref_document_code'] == 'DO1') ? 'N/A' : custom_number_formatter_basic_format($row['maximum_contract_amount']) "
+	    },
+       "formatted_spent_to_date": {
+	      "type": "expression2",
+                "expression": " $row['document_code@checkbook:ref_document_code'] == 'DO1' ? 'N/A' :
+                                        (
+                                           '<a href=\"/spending/transactions'
+                                          . _checkbook_project_get_url_param_string('vendor')
+                                          . _checkbook_project_get_url_param_string('agency')
+                                          . _checkbook_append_url_params()
+                                          .  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id']
+                                          .  ( $row['type_of_year'] == 'B' ? ('/year/'. $row['fiscal_year_id'].'/syear/'. $row['fiscal_year_id']) : ('/calyear/'.$row['fiscal_year_id']. '/scalyear/'.$row['fiscal_year_id']) )
+                                          .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['spending_amount_disb']) . '</a>'
+                                        )
+                                      "
+	    },
+	   "vendor_name_link_old": {
+	      "type": "expression2",
+              "expression": " '<a href=\"/contracts_landing/vendor/' . $row['vendor_id']
+                                    .  _checkbook_project_get_year_url_param_string()
+                                    .  '\">'. $row['vendor_name'] . '</a>'  "
+	    },
+"vendor_formatted": {
+      "type": "expression2",
+      "expression": "_get_tooltip_markup($row['vendor_name'],30)"
+    },
+          "vendor_name_link": {
+	      "type": "expression2",
+              "expression": " '<a href=\"/contracts_landing'
+                                    .  (isset($row['fiscal_year_id']) ? ('/year/'.$row['fiscal_year_id'] . '/yeartype/'.$row['type_of_year']) : _checkbook_project_get_year_url_param_string())
+                                    .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
+                                    . _checkbook_append_url_params()
+                                    . '/agency/' .$row['agency_id']
+                                    .  '/vendor/' . $row['vendor_id']
+                                    .  '?expandBottomCont=true\">'. $row['vendor_formatted'] . '</a>'  "
+	    },
+	   "agency_name_link_old": {
+		"type": "expression2",
+                "expression": " '<a href=\"/contracts_landing/agency/' . $row['agency_id']
+                                    .  _checkbook_project_get_year_url_param_string()
+                                    .  '\">'. $row['agency_name'] . '</a>'  "
+	},
+"agency_formatted": {
+      "type": "expression2",
+      "expression": "_get_tooltip_markup($row['agency_name'],30)"
+    },
+        "agency_name_link": {
+		"type": "expression2",
+                "expression": " '<a href=\"/contracts_landing'
+                                    .  (isset($row['fiscal_year_id']) ? ('/year/'.$row['fiscal_year_id'] . '/yeartype/'.$row['type_of_year']) : _checkbook_project_get_year_url_param_string())
+                                   .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
+                                   .  '/agency/' . $row['agency_id']
+                                    .  '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "
+	},
+	"display_effective_begin_date": {
+		"type": "expression2",
+		"expression": " ($row['document_code@checkbook:ref_document_code'] == 'DO1') ? 'N/A' : $row['effective_begin_date'] "
+	},
+	"display_effective_end_date": {
+		"type": "expression2",
+		"expression": " ($row['document_code@checkbook:ref_document_code'] == 'DO1') ? 'N/A' : $row['effective_end_date'] "
+	},
+	"display_registered_date": {
+		"type": "expression2",
+		"expression": " ($row['document_code@checkbook:ref_document_code'] == 'DO1') ? 'N/A' : $row['registered_date'] "
+	},
+       "purpose_formatted": {
+      "type": "expression2",
+      "expression": "_get_tooltip_markup($row['description'],36)"
+    },
+"expense_cat_formatted": {
+      "type": "expression2",
+      "expression": "_get_tooltip_markup($row['expenditure_object_names'],36)"
+    },
+"award_method_formatted": {
+      "type": "expression2",
+      "expression": "_get_tooltip_markup($row['award_method_name'],36)"
+    },
+"contract_type_formatted": {
+      "type": "expression2",
+      "expression": "_get_tooltip_markup($row['agreement_type_name'],36)"
+    },
+"industry_name_formatted": {
+      "type": "expression2",
+      "expression": "_get_tooltip_markup($row['industry_type_name'],36)"
+    },
+"formatted_dollar_diff": {
+      "type": "expression2",
+       "expression": " ($row['document_code@checkbook:ref_document_code'] == 'DO1') ? 'N/A' : custom_number_formatter_basic_format($row['dollar_difference']) "
+    },
+"formatted_percent_diff": {
+      "type": "expression2",
+      "expression": " ($row['document_code@checkbook:ref_document_code'] == 'DO1') ? 'N/A' : (round($row['percent_difference'],2) . '%')"
+    },
+"budget_name_formatted":{
+                "type": "expression2",
+                "expression": "_get_tooltip_markup($row[budget_name], 36)"
+       }
+},
+"table_columns": [
+	    {"label": "&nbsp;","column": "child_contrats_link"},
+        {"label": "Contract ID","column": "contract_link","sortSourceColumn":"contract_number"},
+	    {"label": "<span>Purpose</span>","column": "purpose_formatted","sortSourceColumn":"description"},
+	    {"label": "Version","column": "document_version"},
+	    {"label": "FMS Document/ Parent Contract ID","column":"parent_contract_link"},
+        {"label": "Original Amount","column": "formatted_original_amount","sortSourceColumn":"original_contract_amount"},
+	    {"label": "Current Amount","column": "formatted_current_amount","sortSourceColumn":"maximum_contract_amount"},
+	    {"label": "Spent to date","column": "formatted_spent_to_date","sortSourceColumn":"spending_amount_disb"},
+	    {"label": "Vendor","column": "vendor_name_link","sortSourceColumn":"vendor_name"},
+	    {"label": "Agency","column": "agency_name_link","sortSourceColumn":"agency_name"},
+	    {"label": "Contract<br/>Type","column":"contract_type_formatted","sortSourceColumn": "agreement_type_name"},
+	    {"label": "Award Method","column":"award_method_formatted","sortSourceColumn": "award_method_name"},
+	    {"label": "Expense Category","column":"expense_cat_formatted","sortSourceColumn": "expenditure_object_names"},
+        {"label": "Industry","column": "industry_name_formatted","sortSourceColumn": "industry_type_name"},
+	    {"label": "Start Date","column": "display_effective_begin_date","sortSourceColumn": "effective_begin_date"},
+	    {"label": "End Date","column": "display_effective_end_date","sortSourceColumn": "effective_end_date"},
+	    {"label": "Registration<br/>Date","column": "display_registered_date","sortSourceColumn": "registered_date"},
+	    {"label": "PIN","column": "tracking_number"},
+	    {"label": "APT PIN","column": "brd_awd_no"},
+        {
+	               "labelAlias":"entity_contact_num",
+	               "datasource": "checkbook_oge",
+	               "column":"oge_contract_number"
+	            },
+                {
+	                "labelAlias":"budget_name",
+	                "datasource": "checkbook_oge",
+                    "column":"budget_name_formatted",
+	                "sortSourceColumn":"budget_name"
+	            },
+                {
+	              "labelAlias": "commodity_line",
+	              "datasource": "checkbook_oge",
+	              "column": "fms_commodity_line"
+	            }
+	  ]
+}

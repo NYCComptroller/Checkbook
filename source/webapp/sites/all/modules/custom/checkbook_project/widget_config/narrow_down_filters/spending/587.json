@@ -21,6 +21,15 @@
         $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
     }
     $adjustedParameters['expenditure_object_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+    //Using child_contract_agency_id column in OGE domainO
+    if(_checkbook_check_isEDCPage()){
+        foreach($adjustedParameters as $key=>$value){
+            if($key == 'master_child_contract_agency_id'){
+               $adjustedParameters['contract_agency_id'] = $value;
+               unset($adjustedParameters[$key]);
+            }
+        }
+    }
     return $adjustedParameters;
     ",      
     "template":"individual_filter"

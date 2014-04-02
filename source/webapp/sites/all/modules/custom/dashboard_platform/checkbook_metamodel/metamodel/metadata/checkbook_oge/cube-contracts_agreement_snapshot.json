@@ -6,13 +6,18 @@
         },
         "oge_contract_contract": {
             "datasourceName": "main",
-            "source": "oge_contract"
+            "source": "oge_contract",
+            "columns": [
+                {
+                    "name": "fms_contract_number",
+                    "key": true}
+            ]
         }
      },
     "cubes": {
         "agreement_snapshot": {
             "sourceDatasetName": "agreement_snapshot",
-            "dimensions": [                               				
+            "dimensions": [
 				{
                     "name": "agency",
                     "levels": [
@@ -49,6 +54,16 @@
                         {
                             "name": "cum_spend",
                             "datasetName": "contracts_coa_aggregates",
+                            "sourceColumnName": "original_agreement_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "edc_no_vendor",
+                    "levels": [
+                        {
+                            "name": "edc_no_vendor",
+                            "datasetName": "edc_contracts_coa_aggregates_no_vendor",
                             "sourceColumnName": "original_agreement_id"
                         }
                     ]
@@ -106,6 +121,10 @@
         "agreement_snapshot__aggregateon_contracts_cumulative_spending": [
             {"datasetName": "agreement_snapshot", "columnNames": ["original_agreement_id"]},
             {"datasetName": "contracts_coa_aggregates", "columnNames": ["original_agreement_id"]}
+        ],
+        "agreement_snapshot__aggregateon_contracts_cumulative_spending_no_vendor": [
+            {"datasetName": "agreement_snapshot", "columnNames": ["original_agreement_id"]},
+            {"datasetName": "edc_contracts_coa_aggregates_no_vendor", "columnNames": ["original_agreement_id"]}
         ],
         "agreement_snapshot__ref_document_code": [
             {"datasetName": "agreement_snapshot", "columnNames": ["document_code_id"]},

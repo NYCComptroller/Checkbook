@@ -22,23 +22,6 @@ $sql=
 }
 
 function _checkbook_alerts_transactions(){
-  if(!isset($_GET['alert_email'])){
-    $errors['errors'][]="No email address was sent.";
-  }
-  if(!isset($_GET['refURL'])){
-    $errors['errors'][]="No search was selected.";
-  }
-  if(!isset($_GET['userURL'])){
-    $errors['errors'][]="No user url.";
-  }
-  if(!isset($_GET['alert_label'])){
-    $errors['errors'][]="No alert label.";
-  }
-  if(isset($errors)){
-    $errors['success']=false;
-    echo json_encode($errors);
-    return;
-  }
 
   if(!isset($_GET['alert_minimum_results'])){
     $_GET['alert_minimum_results']=1;
@@ -84,16 +67,16 @@ function _checkbook_alerts_transactions(){
   }else{
     drupal_write_record('checkbook_alerts',$alert);
   }
-
   $alertFrequency=_checkbook_alerts_alertFrequency($_GET['alert_minimum_days']);
   
   $subData=array(
     "alertFrequency"=>$alertFrequency,
-    "label"=>$_GET['alert_label']
+    "label"=>$_GET['alert_label'],
+     "alert2"=>$alert,
   );
 
   $module="checkbook_alerts";
-  $key=md5(date());
+  $key=md5(date("Y-m-d H:i:s"));
   $msg=theme('checkbook_alerts_activate_theme',$subData);
 
   $message=drupal_mail($module,$key,$_GET['alert_email'],language_default(),array(),"",false);
@@ -104,7 +87,7 @@ function _checkbook_alerts_transactions(){
   $system=drupal_mail_system($module,$key);
   $message=$system->format($message);
 
-  $message['result']=$system->mail($message);
+  $system->mail($message);
 
   $res=array(
     "success"=>true,
@@ -134,21 +117,21 @@ function _checkbook_alerts_alertFrequency($days){
 }
 
 function _checkbook_alerts_process_email($alerts){
-  $module="checkbook_alerts";
-  $key=md5(date());
+  //$module="checkbook_alerts";
+  //$key=md5(date("Y-m-d H:i:s"));
   $msg=theme('checkbook_alerts_email_theme',array(
     'alerts'=>$alerts
   ));
 
-  $message=drupal_mail($module,$key,$alerts[0]->recipient,language_default(),array(),"",false);
+  //$message=drupal_mail($module,$key,$alerts[0]->recipient,language_default(),array(),"",false);
 
-  $message['subject']="Checkbook NYC Alert";
-  $message['body'][] = $msg;
+  //$message['subject']="Checkbook NYC Alert";
+  //$message['body'][] = $msg;
+  mail($alerts[0]->recipient,"Checkbook NYC Alert",$msg,"From: checkbook@reisys.com\r\nContent-Type: text/html;");
+  //$system=drupal_mail_system($module,$key);
+  //$message=$system->format($message);
 
-  $system=drupal_mail_system($module,$key);
-  $message=$system->format($message);
-
-  $message['result']=$system->mail($message);
+  //$message['result']=$system->mail($message);
 }
 
 function _checkbook_alerts_process_twitter($alert){
@@ -185,9 +168,14 @@ function _checkbook_alerts_unsubscribe(){
 function _checkbook_alerts_activate(){
   $alert=arg(2);
 
-  db_query("UPDATE checkbook_alerts SET active='Y' WHERE CONCAT(checkbook_alerts_sysid,MD5(CONCAT(checkbook_alerts_sysid,label,recipient)))=:alert",array(':alert'=>$alert));
+    db_update('checkbook_alerts')
+        ->fields(array('active' => 'Y'))
+        ->where('CONCAT(checkbook_alerts_sysid,MD5(CONCAT(checkbook_alerts_sysid,label,recipient))) = :alert', array(':alert' => $alert))
+        ->execute();
 
-  return theme('checkbook_alerts_activated_theme');
+ // db_query("UPDATE checkbook_alerts SET active='Y' WHERE CONCAT(checkbook_alerts_sysid,MD5(CONCAT(checkbook_alerts_sysid,label,recipient)))=:alert",array(':alert'=>$alert));
+
+  return theme('checkbook_alerts_activated_theme',array("arg2" => $alert));
 }
 
 function _checkbook_alerts_twitter_callback(){
@@ -203,6 +191,8 @@ function _checkbook_alerts_get_data_count(){
   $node->widgetConfig->getData = false;
 
   widget_data($node);
+
+
 
   return $node->totalDataCount;
 }

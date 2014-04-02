@@ -45,9 +45,13 @@
                 "type": "expression2",
                 "expression": "($row[spending_category_id]==2)?_get_tooltip_markup($row[vendor_name], 30):_get_tooltip_markup($row[vendor_name], 40)"
        },
+     "agency_param":{
+                "type": "expression2",
+                "expression": "(_checkbook_check_isEDCPage()? _checkbook_project_get_url_param_string(\"agency\") :'')"
+       },
 	"vendor_name_link": {
 	      "type": "expression2",
-               "expression": " RequestUtil::isNewWindow() ||  $row[spending_category_id]==2 ?  $row[vendor_name_formatted] : ('<a href=/spending_landing' . _checkbook_project_get_year_url_param_string(false,false,false,true) . _checkbook_append_url_params() . _checkbook_project_get_url_param_string('category') . '/vendor/'. $row[vendor_id] . '?expandBottomCont=true>'. $row[vendor_name_formatted] .'</a>') "
+               "expression": " RequestUtil::isNewWindow() ||  $row[spending_category_id]==2 ?  $row[vendor_name_formatted] : ('<a href=/spending_landing' . _checkbook_project_get_year_url_param_string(false,false,false,true) . _checkbook_append_url_params() . $row['agency_param'] . _checkbook_project_get_url_param_string('category') . '/vendor/'. $row[vendor_id] . '?expandBottomCont=true>'. $row[vendor_name_formatted] .'</a>') "
 	    } ,
 	"formatted_check_amount": {
 	      "type": "expression2",
@@ -104,7 +108,11 @@
 	    "disbursement_number_derived":{
 	    		"type": "expression2",
                 "expression": "($row[spending_category_name]=='Payroll')?'N/A':$row[disbursement_number]"
-	    }
+	    },
+       "budget_name_formatted":{
+                "type": "expression2",
+                "expression": "_get_tooltip_markup($row['budget_name@checkbook:oge_contract'],36)"
+       }
 },
 "table_columns": [
 	   {
@@ -185,7 +193,8 @@
         {
             "labelAlias":"budget_name",
             "datasource": "checkbook_oge",
-            "column":"budget_name@checkbook:oge_contract"
+            "column":"budget_name_formatted",
+            "sortSourceColumn":"budget_name@checkbook:oge_contract"
         },
         {
           "labelAlias": "commodity_line",
@@ -221,6 +230,19 @@
             $adjustedParameters = $parameters;
             if(function_exists('_checkbook_project_applyParameterFilters')){
                   $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+            }
+            //Using child_contract_agency_id column in OGE domainO
+            if(_checkbook_check_isEDCPage()){
+                foreach($adjustedParameters as $key=>$value){
+                    if($key == 'master_child_contract_agency_id'){
+                       $adjustedParameters['contract_agency_id'] = $value;
+                       unset($adjustedParameters[$key]);
+                    }
+                    if($key == 'master_child_contract_vendor_id'){
+                       $adjustedParameters['contract_vendor_id'] = $value;
+                       unset($adjustedParameters[$key]);
+                    }
+                }
             }
             return $adjustedParameters;
 ",
@@ -269,9 +291,9 @@
 		{"sClass":"text","sWidth":"165px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"165px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"165px","asSorting": [ "asc","desc" ]},
-		{"sClass":"text number-left","sWidth":"125px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"},
+		{"sClass":"text number-left","sWidth":"125px","asSorting": [ "desc","asc" ],"datasource":"checkbook_oge"},
 		{"sClass":"text","sWidth":"200px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"},
-		{"sClass":"number","sWidth":"150px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"}
+		{"sClass":"number","sWidth":"100px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"}
 ],
         "aaSorting":[[5,"desc"]],
         "sScrollX": "100%",

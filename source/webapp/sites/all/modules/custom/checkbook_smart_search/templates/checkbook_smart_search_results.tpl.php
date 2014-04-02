@@ -122,27 +122,6 @@ if($searchTerm != ""){
     print "<li class='clear-all'><a class='clear-all' href='/smart_search'><strong>Clear All</strong></a></li>";
     print "</ul></div>";
 }
-/*if(count($searchTerms) == 1 && $searchTerm != ""){
-  print "<div class='search-filters'><span id='filter-header'> Filters: </span><ul>";
-  print "<li><span class='search-terms'>Search Term: <strong>". htmlentities($searchTerm) ."</strong></span><a class='clear-filter' href='". $clearUrl ."'>
-            <img src='".$clear_icon."'></a></li>";
-  print "<li class='clear-all'><a class='clear-all' href='/smart_search'><strong>Clear All</strong></a></li>";
-  print "</ul></div>";
-}
-else if(count($searchTerms) > 1){
-  print "<div class='search-filters'><span id='filter-header'> Filters: </span><ul>";
-  if($searchTerm != ""){
-    print "<li><span class='search-terms'>Search Term: <strong>". htmlentities($searchTerm) ."</strong></span><a class='clear-filter' href='".  $clearUrl ."'>
-            <img src='".$clear_icon."'></a></li>";
-  }
-
-  print $filterCriteria;
-
-  print "<li class='clear-all'><a class='clear-all' href='/smart_search'><strong>Clear All</strong></a></li>";
-  print "</ul></div>";
-}*/
-
-//End of displaying filter criteria
 
 //Begin of search results
 $noOfTotalResults = $search_results['response']['numFound'];
@@ -202,13 +181,13 @@ if($noOfTotalResults > 0){
         print theme('budget', array('budget_results'=> $value, 'SearchTerm' => $searchTerms[0]));
         break;
       case "spending":
-        print theme('spending', array('spending_results'=> $value, 'SearchTerm' => $searchTerms[0]));
+        print theme('spending', array('spending_results'=> $value, 'SearchTerm' => $searchTerms[0], 'IsOge' => isset($value["oge_agency_name"]) ));
         break;
       case "payroll":
         print theme('payroll', array('payroll_results'=> $value, 'SearchTerm' => $searchTerms[0]));
         break;
       case "contracts":
-        print theme('contracts', array('contracts_results'=> $value, 'SearchTerm' => $searchTerms[0]));
+        print theme('contracts', array('contracts_results'=> $value, 'SearchTerm' => $searchTerms[0], 'IsOge' => isset($value["oge_agency_name"]) ));
         break;
     }
     print "</li>";

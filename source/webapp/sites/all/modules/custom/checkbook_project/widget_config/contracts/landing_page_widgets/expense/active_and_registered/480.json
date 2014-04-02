@@ -15,6 +15,13 @@
             if(function_exists('_checkbook_project_applyParameterFilters')){
                   $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
             }
+            //showing 'No matching records found' message in OGE (Replacing the document code with some random text)
+            if(_checkbook_check_isEDCPage()){
+                foreach($adjustedParameters['document_code.document_code.document_code'] as $key=>$value)
+                {
+                    $adjustedParameters['document_code.document_code.document_code'][$key] = 'abc';
+                }
+            }
             return $adjustedParameters;
 ",
 "limit":5,
