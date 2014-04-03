@@ -3,7 +3,7 @@
         "searchCriteriaMap":{
             "fiscal_year":"fiscal_year",
             "calendar_year":"calendar_fiscal_year",
-            "payee_code":"vendor_customer_code",
+            "payee_name":"vendor_name",
             "document_id":"disbursement_number",
             "agency_code":"agency_code",
             "agency_name":"agency_name",
@@ -22,7 +22,8 @@
                 "reference_document_number":"like",
                 "reporting_code":"like",
                 "disbursement_number":"like",
-                "agency_name":"like"
+                "agency_name":"like",
+                "vendor_name":"like"
             },
             "displayConfiguration":{
                 "xml":{
@@ -82,10 +83,10 @@
                 "dataType":"year",
                 "maxLength":"4"
             },
-            "payee_code":{
+            "payee_name":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"20"
+                "maxLength":"100"
             },
             "document_id":{
                 "valueType":"value",
