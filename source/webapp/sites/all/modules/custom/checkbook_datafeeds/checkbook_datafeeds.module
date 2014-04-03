@@ -3972,7 +3972,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#suffix' => '</div>',
                 '#attributes' => array('class' => array('watch')),
                 '#id' => 'edit-entity-contract-num',
-                '#name' => 'entity-contract-num',
+                '#name' => 'entity_contract_num',
                 '#default_value' => !empty($form_state['values']['entity_contract_num']) ? $form_state['values']['entity_contract_num'] : '',
             );
             $form['filter']['document_id'] = array(
@@ -3996,7 +3996,6 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#default_value' => !empty($form_state['values']['capital_project']) ? $form_state['values']['capital_project'] : '',
             );
             $form['filter']['commodity_line'] = array(
-
                 '#type' => 'textfield',
                 '#title' => t('Commodity Line:'),
                 '#prefix' => '<div class="datafield commodityline">',
@@ -4089,7 +4088,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
             break;
 
         default:
-            $data_source = DataSource::CitywideAgency;
+            $data_source = 'checkbook';
             $agency = isset($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Citywide (All Agencies)';
             $dept = !empty($form_state['values']['dept']) ? $form_state['values']['dept'] : '';
             $sc = !empty($form_state['values']['expense_type']) ? $form_state['values']['expense_type'] : '';
@@ -4828,11 +4827,22 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
         preg_match($pattern, $values['expense_type'], $etmatches);
         $criteria['value']['spending_category'] = trim($etmatches[1], '[ ]');
     }
-    if($data_source == 'checkbook_oge') {
-        if ($values['agency'] != 'Citywide (All Agencies)') {
-            preg_match($pattern, $values['agency'], $amatches);
-            $criteria['value']['agency_code'] = trim($amatches[1], '[ ]');
-        }
+    //By data source
+    switch($data_source)
+    {
+        case 'checkbook_oge':
+            if ($values['agency'] != 'Other Government Entities') {
+                preg_match($pattern, $values['agency'], $amatches);
+                $criteria['value']['agency_code'] = trim($amatches[1], '[ ]');
+            }
+            break;
+
+        default:
+            if ($values['agency'] != 'Citywide (All Agencies)') {
+                preg_match($pattern, $values['agency'], $amatches);
+                $criteria['value']['agency_code'] = trim($amatches[1], '[ ]');
+            }
+            break;
     }
     if ($values['payee_name']) {
         preg_match($pattern, $values['payee_name'], $pmatches);
