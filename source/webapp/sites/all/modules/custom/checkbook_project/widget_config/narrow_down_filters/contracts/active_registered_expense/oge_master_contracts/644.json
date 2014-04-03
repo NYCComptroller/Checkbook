@@ -6,7 +6,7 @@
     "urlParamMap":{
         "doctype":"document_code.document_code.document_code"
     }  ,
-    "columns":["agency.agency", "agency.agency.agency_name", "txcount"],
+    "columns":["agency.agency", "display_agency.display_agency.agency_name", "txcount"],
     "orderBy":"-txcount",
 	"getTotalDataCount":true,
 	"facetPager":true,

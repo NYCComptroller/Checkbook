@@ -62,6 +62,16 @@
                             }
                     ]
                 }    ,
+                {
+                    "name": "display_agency",
+                    "levels": [
+                            {
+                                "name": "display_agency",
+                                "datasetName": "agency",
+                                "sourceColumnName": "display_agency_id"
+                            }
+                    ]
+                }    ,
 				{
                     "name": "vendor",
                     "levels": [
@@ -163,6 +173,16 @@
                             }
                     ]
                 }    ,
+                {
+                    "name": "display_agency",
+                    "levels": [
+                            {
+                                "name": "display_agency",
+                                "datasetName": "agency",
+                                "sourceColumnName": "display_agency_id"
+                            }
+                    ]
+                }    ,
 				{
                     "name": "vendor",
                     "levels": [
@@ -245,6 +265,10 @@
             {"datasetName": "agreement_snapshot_oge", "columnNames": ["document_code_id"]},
             {"datasetName": "ref_document_code", "columnNames": ["document_code_id"]}
         ],
+        "contracts_detailed_transactions__ref_agency": [
+            {"datasetName": "agreement_snapshot_oge", "columnNames": ["display_agency_id"]},
+            {"datasetName": "agency", "columnNames": ["agency_id"]}
+        ],
         "agreement_snapshot__ref_award_category": [
             {"datasetName": "agreement_snapshot_oge", "columnNames": ["award_category_id"]},
             {"datasetName": "award_category", "columnNames": ["award_category_id"]}
@@ -254,8 +278,12 @@
             {"datasetName": "oge_contract_contract", "columnNames": ["fms_contract_number"]}
         ],
         "contracts_detailed_transactions_mag_vendor__ref_document_code": [
-                    {"datasetName": "agreement_snapshot_vendor_oge", "columnNames": ["document_code_id"]},
-                    {"datasetName": "ref_document_code", "columnNames": ["document_code_id"]}
+            {"datasetName": "agreement_snapshot_vendor_oge", "columnNames": ["document_code_id"]},
+            {"datasetName": "ref_document_code", "columnNames": ["document_code_id"]}
+        ],
+        "contracts_detailed_transactions_mag_vendor__ref_agency": [
+            {"datasetName": "agreement_snapshot_vendor_oge", "columnNames": ["display_agency_id"]},
+            {"datasetName": "agency", "columnNames": ["agency_id"]}
         ]
     }
 }
