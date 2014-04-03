@@ -39,7 +39,7 @@
                 "csv":{
                     "Payee Name":"Payee Name",
                     "Issue Date":"Issue Date",
-                    "Agency":"Agency",
+                    "Other Government Entities":"Other Government Entities",
                     "Department":"Department",
                     "Check Amount":"Check Amount",
                     "Expense Category":"Expense Category",
@@ -52,8 +52,9 @@
                     "Commodity Line":"Commodity Line"
                 },
                 "xml":{
-                    "agency":"agency",
                     "payee_name":"payee_name",
+                    "issue_date":"issue_date",
+                    "other_government_entities":"other_government_entities",
                     "department":"department",
                     "check_amount":"check_amount",
                     "expense_category":"expense_category",

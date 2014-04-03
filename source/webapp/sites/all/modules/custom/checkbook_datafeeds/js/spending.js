@@ -53,6 +53,7 @@
         attach:function (context, settings) {
             var p = /\[(.*?)\]$/;
 
+            var  dataSource = $('input:radio[name=datafeeds-spending-domain-filter]:checked').val();
             var datefilter = $('input[name="date_filter"]:checked').val();
             var exptypeval = $('select[name="expense_type"]').val();
             $.fn.disableStuff();
@@ -97,14 +98,21 @@
             }
             var dept = emptyToZero($('#edit-dept--2',context).val());
             var agency = emptyToZero($('#edit-agency',context).val());
-            //var othergovernmententities = emptyToZero($('#edit-other-government-entities',context).val());
             var expcategory = emptyToZero($('#edit-expense-category--2',context).val());
             var exptype = emptyToZero($('#edit-expense-type',context).val());
+            var entitycontractnum = emptyToZero($('#edit-entity-contract-num',context).val());
+            var commodityline = emptyToZero($('#edit-commodity-line',context).val());
+            var budgetname = emptyToZero($('#edit-budget-name',context).val());
+
+
             //Sets up jQuery UI autocompletes and autocomplete filtering functionality
-            $('#edit-payee-name',context).autocomplete({source:'/autocomplete/spending/payee/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype});
-            $('#edit-contractno',context).autocomplete({source:'/autocomplete/spending/contractno/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype});
-            $('#edit-document-id',context).autocomplete({source:'/autocomplete/spending/documentid/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype});
-            $('#edit-capital-project',context).autocomplete({source:'/autocomplete/spending/capitalproject/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype});
+            $('#edit-payee-name',context).autocomplete({source:'/autocomplete/spending/payee/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + dataSource});
+            $('#edit-contractno',context).autocomplete({source:'/autocomplete/spending/contractno/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + dataSource});
+            $('#edit-document-id',context).autocomplete({source:'/autocomplete/spending/documentid/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + dataSource});
+            $('#edit-capital-project',context).autocomplete({source:'/autocomplete/spending/capitalproject/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + dataSource});
+            $('#edit-entity-contract-num',context).autocomplete({source:'/autocomplete/spending/entitycontractnum/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + dataSource});
+            $('#edit-commodity-line',context).autocomplete({source:'/autocomplete/spending/commodityline/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + dataSource});
+            $('#edit-budget-name',context).autocomplete({source:'/autocomplete/spending/budgetname/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + dataSource});
             $('.watch:input',context).each(function () {
                 $(this).focusin(function () {
                     //set variables for each field's value
@@ -113,13 +121,15 @@
                     }
                     dept = emptyToZero($('#edit-dept--2',context).val());
                     agency = emptyToZero($('#edit-agency',context).val());
-                   // othergovernmententities = emptyToZero($('#edit-other-government-entities',context).val());
                     expcategory = emptyToZero($('#edit-expense-category--2',context).val());
                     exptype = emptyToZero($('#edit-expense-type',context).val());
-                    $("#edit-payee-name",context).autocomplete("option", "source", '/autocomplete/spending/payee/'  + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype);
-                    $('#edit-contractno',context).autocomplete("option", "source", '/autocomplete/spending/contractno/'  + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype);
-                    $('#edit-document-id',context).autocomplete("option", "source", '/autocomplete/spending/documentid/'  + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype);
-                    $('#edit-capital-project',context).autocomplete("option", "source", '/autocomplete/spending/capitalproject/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype);
+                    $("#edit-payee-name",context).autocomplete("option", "source", '/autocomplete/spending/payee/'  + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + dataSource);
+                    $('#edit-contractno',context).autocomplete("option", "source", '/autocomplete/spending/contractno/'  + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + dataSource);
+                    $('#edit-document-id',context).autocomplete("option", "source", '/autocomplete/spending/documentid/'  + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + dataSource);
+                    $('#edit-capital-project',context).autocomplete("option", "source", '/autocomplete/spending/capitalproject/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + dataSource);
+                    $('#edit-entity-contract-num',context).autocomplete("option", "source", '/autocomplete/spending/entitycontractnum/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + dataSource);
+                    $('#edit-commodity-line',context).autocomplete("option", "source", '/autocomplete/spending/commodityline/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + dataSource);
+                    $('#edit-budget-name',context).autocomplete("option", "source", '/autocomplete/spending/budgetname/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + dataSource);
                 });
             });
         }
