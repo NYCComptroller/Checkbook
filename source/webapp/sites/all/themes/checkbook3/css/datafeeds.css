@@ -38,6 +38,7 @@ body.page-data-feeds h1#page-title,
 body.page-node-300 h1#page-title,
 body.page-node-302 h1#page-title{
     margin-bottom:20px;
+
 }
 
 body.page-data-feeds,
@@ -145,6 +146,7 @@ body.page-data-feeds #zone-content fieldset#edit-columns {
     margin-top: 20px;
 }
 
+body.page-data-feeds #zone-content div#dynamic-columns-wrapper + input,
 body.page-data-feeds #zone-content fieldset#edit-columns + input,
 body.page-data-feeds #zone-content #edit-budget-next,
 body.page-data-feeds #zone-content #edit-revenue-next {

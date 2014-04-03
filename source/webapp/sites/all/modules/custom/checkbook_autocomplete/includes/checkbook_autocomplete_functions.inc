@@ -180,7 +180,7 @@ function _checkbook_autocomplete_contracts_pin($status, $category, $contract_typ
  * @return array
  *   Results from Solr
  */
-function _get_spending_datafeeds_autocomplete_results($facet, $query, $year = NULL, $agency = NULL, $expcategory = NULL, $dept = NULL, $exptype = NULL) {
+function _get_spending_datafeeds_autocomplete_results($facet, $query, $year = NULL, $agency = NULL, $expcategory = NULL, $dept = NULL, $exptype = NULL, $data_source = NULL) {
   if ($year) {
     $query .= _checkbook_autocomplete_get_start_end_dates($year, 'spending');
   }
@@ -214,12 +214,13 @@ function _get_spending_datafeeds_autocomplete_results($facet, $query, $year = NU
  * @param int $exptype
  *   Spending category code
  */
-function _checkbook_autocomplete_spending_payee($year, $agency, $expcategory, $dept, $exptype = 0) {
+function _checkbook_autocomplete_spending_payee($year, $agency, $expcategory, $dept, $exptype = 0, $data_source = 'checkbook') {
   $search_term = _get_autocomplete_search_term();
   if (!empty($search_term)) {
-    $query = 'select/?q=vendor_name_code_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name_code&fq=domain:spending&facet.limit=10&wt=php';
-    $matches = _get_spending_datafeeds_autocomplete_results('vendor_name_code', $query, $year, $agency, $expcategory, $dept, $exptype);
-    drupal_json_output($matches);
+      $query = 'select/?q=vendor_name_code_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name_code&fq=domain:spending&facet.limit=10&wt=php';
+      if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
+      $matches = _get_spending_datafeeds_autocomplete_results('vendor_name_code', $query, $year, $agency, $expcategory, $dept, $exptype);
+      drupal_json_output($matches);
   }
 }
 
@@ -237,12 +238,13 @@ function _checkbook_autocomplete_spending_payee($year, $agency, $expcategory, $d
  * @param int $exptype
  *   Spending category code
  */
-function _checkbook_autocomplete_spending_contractno($year, $agency, $expcategory, $dept, $exptype = 0) {
+function _checkbook_autocomplete_spending_contractno($year, $agency, $expcategory, $dept, $exptype = 0, $data_source = 'checkbook') {
   $search_term = _get_autocomplete_search_term();
   if (!empty($search_term)) {
-    $query = 'select/?q=contract_number:' . $search_term . '&facet=true&facet.field=contract_number&fq=domain:spending&facet.limit=10&wt=php';
-    $matches = _get_spending_datafeeds_autocomplete_results('contract_number', $query, $year, $agency, $expcategory, $dept, $exptype);
-    drupal_json_output($matches);
+      $query = 'select/?q=contract_number:' . $search_term . '&facet=true&facet.field=contract_number&fq=domain:spending&facet.limit=10&wt=php';
+      if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
+      $matches = _get_spending_datafeeds_autocomplete_results('contract_number', $query, $year, $agency, $expcategory, $dept, $exptype);
+      drupal_json_output($matches);
   }
 }
 
@@ -260,12 +262,13 @@ function _checkbook_autocomplete_spending_contractno($year, $agency, $expcategor
  * @param int $exptype
  *   Spending category code
  */
-function _checkbook_autocomplete_spending_capitalproject($year, $agency, $expcategory, $dept, $exptype = 0) {
+function _checkbook_autocomplete_spending_capitalproject($year, $agency, $expcategory, $dept, $exptype = 0, $data_source = 'checkbook') {
   $search_term = _get_autocomplete_search_term();
   if (!empty($search_term)) {
-    $query = 'select/?q=reporting_code:' . $search_term . '&facet=true&facet.field=reporting_code&fq=domain:spending&facet.limit=10&wt=php';
-    $matches = _get_spending_datafeeds_autocomplete_results('reporting_code', $query, $year, $agency, $expcategory, $dept, $exptype);
-    drupal_json_output($matches);
+      $query = 'select/?q=reporting_code:' . $search_term . '&facet=true&facet.field=reporting_code&fq=domain:spending&facet.limit=10&wt=php';
+      if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
+      $matches = _get_spending_datafeeds_autocomplete_results('reporting_code', $query, $year, $agency, $expcategory, $dept, $exptype);
+      drupal_json_output($matches);
   }
 }
 
@@ -283,13 +286,86 @@ function _checkbook_autocomplete_spending_capitalproject($year, $agency, $expcat
  * @param int $exptype
  *   Spending category code
  */
-function _checkbook_autocomplete_spending_documentid($year, $agency, $expcategory, $dept, $exptype = 0) {
+function _checkbook_autocomplete_spending_documentid($year, $agency, $expcategory, $dept, $exptype = 0, $data_source = 'checkbook') {
   $search_term = _get_autocomplete_search_term();
   if (!empty($search_term)) {
-    $query = 'select/?q=expense_id:' . $search_term . '&facet=true&facet.field=expense_id&fq=domain:spending&facet.limit=10&wt=php';
-    $matches = _get_spending_datafeeds_autocomplete_results('expense_id', $query, $year, $agency, $expcategory, $dept, $exptype);
-    drupal_json_output($matches);
+      $query = 'select/?q=expense_id:' . $search_term . '&facet=true&facet.field=expense_id&fq=domain:spending&facet.limit=10&wt=php';
+      if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
+      $matches = _get_spending_datafeeds_autocomplete_results('expense_id', $query, $year, $agency, $expcategory, $dept, $exptype);
+      drupal_json_output($matches);
   }
+}
+
+/**
+ * Get autocomplete results for Entity Contract # from Solr.
+ *
+ * @param string $year
+ *   Year
+ * @param string $agency
+ *   Agency code
+ * @param string $expcategory
+ *   Expense category code
+ * @param string $dept
+ *   Department code
+ * @param int $exptype
+ *   Spending category code
+ */
+function _checkbook_autocomplete_spending_entitycontractnum($year, $agency, $expcategory, $dept, $exptype = 0, $data_source = 'checkbook') {
+    $search_term = _get_autocomplete_search_term();
+    if (!empty($search_term)) {
+        $query = 'select/?q=spending_entity_contract_number:' . $search_term . '&facet=true&facet.field=reporting_code&fq=domain:spending&facet.limit=10&wt=php';
+        if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
+        $matches = _get_spending_datafeeds_autocomplete_results('spending_entity_contract_number', $query, $year, $agency, $expcategory, $dept, $exptype);
+        drupal_json_output($matches);
+    }
+}
+
+/**
+ * Get autocomplete results for Commodity Line from Solr.
+ *
+ * @param string $year
+ *   Year
+ * @param string $agency
+ *   Agency code
+ * @param string $expcategory
+ *   Expense category code
+ * @param string $dept
+ *   Department code
+ * @param int $exptype
+ *   Spending category code
+ */
+function _checkbook_autocomplete_spending_commodityline($year, $agency, $expcategory, $dept, $exptype = 0, $data_source = 'checkbook') {
+    $search_term = _get_autocomplete_search_term();
+    if (!empty($search_term)) {
+        $query = 'select/?q=spending_commodity_line:' . $search_term . '&facet=true&facet.field=reporting_code&fq=domain:spending&facet.limit=10&wt=php';
+        if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
+        $matches = _get_spending_datafeeds_autocomplete_results('spending_commodity_line', $query, $year, $agency, $expcategory, $dept, $exptype);
+        drupal_json_output($matches);
+    }
+}
+
+/**
+ * Get autocomplete results for Budget Name from Solr.
+ *
+ * @param string $year
+ *   Year
+ * @param string $agency
+ *   Agency code
+ * @param string $expcategory
+ *   Expense category code
+ * @param string $dept
+ *   Department code
+ * @param int $exptype
+ *   Spending category code
+ */
+function _checkbook_autocomplete_spending_budgetname($year, $agency, $expcategory, $dept, $exptype = 0, $data_source = 'checkbook') {
+    $search_term = _get_autocomplete_search_term();
+    if (!empty($search_term)) {
+        $query = 'select/?q=spending_budget_name:' . $search_term . '&facet=true&facet.field=reporting_code&fq=domain:spending&facet.limit=10&wt=php';
+        if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
+        $matches = _get_spending_datafeeds_autocomplete_results('spending_budget_name', $query, $year, $agency, $expcategory, $dept, $exptype);
+        drupal_json_output($matches);
+    }
 }
 
 // Payroll autocomplete menu callback functions:
@@ -819,7 +895,7 @@ function _get_autocomplete_search_term() {
  * @return array
  *   Facet results from Solr.
  */
-function _checkbook_autocomplete_solr_results($query, $facet = NULL) {
+function _checkbook_autocomplete_solr_results($query, $facet = NULL, $data_source = 'checkbook') {
   global $conf;
   if ($conf['check_book']['solr']['url']) {
     $solr_server_url = $conf['check_book']['solr']['url'];

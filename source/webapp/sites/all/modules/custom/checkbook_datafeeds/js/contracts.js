@@ -1,4 +1,27 @@
 (function ($) {
+
+    $.fn.onDataSourceChange = function(){
+        //clear all text fields
+        var enclosingDiv = $("#dynamic-filter-data-wrapper").children('#edit-filter').children('div.fieldset-wrapper').children();
+        jQuery(enclosingDiv).find(':input').each(function() {
+            if(this.type == 'text') {
+                jQuery(this).val('');
+            }
+        });
+
+        //reset the drop-downs
+        $('select[name="df_contract_status"]').val('active');
+        $('select[name="contract_type"]').val('');
+        $('select[name="category"]').val('expense');
+        $('select[name="award_method"]').val('');
+        $('select[name="year"]').val('');
+
+        //reset the selected columns
+        $('#edit-column-select-expense').multiSelect('deselect_all');
+        $('#edit-column-select-revenue').multiSelect('deselect_all');
+        $('#edit-column-select-pending').multiSelect('deselect_all');
+    }
+
     Drupal.behaviors.contractsDataFeeds = {
         attach:function (context, settings) {
             //use jQuery to hide/show the correct column select
@@ -174,159 +197,6 @@
                    });
                }
             });
-
-            //Hide/show fields based on data source, default to checkbook data source
-
-            //Initialize Filter Data
-            $('input:radio[name=contracts_datafeeds_domain_filter][value="0"]').attr('checked',true);
-            changeFilterView($('input:radio[name=contracts_datafeeds_domain_filter]:checked').val());
-
-            //Initialize Selectable Columns
-            $('.ms-selectable li[ms-value="Agency"]').show();
-            $('.ms-selectable li[ms-value="Other Government Entities"]').hide();
-            $('.ms-selectable li[ms-value="Entity Contract #"]').hide();
-            $('.ms-selectable li[ms-value="Commodity Line"]').hide();
-            $('.ms-selectable li[ms-value="Budget Name"]').hide();
-
-            //Initialize Selected Columns
-            $('.ms-selection li[ms-value="Agency"]').show();
-            $('.ms-selection li[ms-value="Other Government Entities"]').hide();
-            $('.ms-selection li[ms-value="Entity Contract #"]').hide();
-            $('.ms-selection li[ms-value="Commodity Line"]').hide();
-            $('.ms-selection li[ms-value="Budget Name"]').hide();
-
-            $('#edit-column-select-expense option[value="Agency"]',context).show();
-            $('#edit-column-select-expense option[value="Other Government Entities"]',context).hide();
-            $('#edit-column-select-expense option[value="Entity Contract #"]',context).hide();
-            $('#edit-column-select-expense option[value="Commodity Line"]',context).hide();
-            $('#edit-column-select-expense option[value="Budget Name"]',context).hide();
-            $('#edit-column-select-revenue option[value="Agency"]',context).show();
-            $('#edit-column-select-revenue option[value="Other Government Entities"]',context).hide();
-            $('#edit-column-select-revenue option[value="Entity Contract #"]',context).hide();
-            $('#edit-column-select-revenue option[value="Commodity Line"]',context).hide();
-            $('#edit-column-select-revenue option[value="Budget Name"]',context).hide();
-            $('#edit-column-select-pending option[value="Agency"]',context).show();
-            $('#edit-column-select-pending option[value="Other Government Entities"]',context).hide();
-            $('#edit-column-select-pending option[value="Entity Contract #"]',context).hide();
-            $('#edit-column-select-pending option[value="Commodity Line"]',context).hide();
-            $('#edit-column-select-pending option[value="Budget Name"]',context).hide();
-
-            //Update all views based on data source selection and reset any selected columns
-            $('input:radio[name=contracts_datafeeds_domain_filter]').change(function () {
-
-                $('#edit-column-select-expense', context).multiSelect('deselect_all');
-                $('#edit-column-select-revenue', context).multiSelect('deselect_all');
-                $('#edit-column-select-pending', context).multiSelect('deselect_all');
-                changeFilterView($('input[name=contracts_datafeeds_domain_filter]:checked').val());
-                changeSelectableColumnView($('input[name=contracts_datafeeds_domain_filter]:checked').val());
-            });
-            //Update selected columns on 'Add All' button
-            $('a.select').click(function () {
-                changeSelectedColumnView($('input[name=contracts_datafeeds_domain_filter]:checked').val());
-            });
-            //Update selectable columns on 'Remove All' button
-            $('a.deselect').click(function () {
-                changeSelectableColumnView($('input[name=contracts_datafeeds_domain_filter]:checked').val());
-            });
-
-            //Update filter data fields based on data source radio button selection
-            function changeFilterView(dataSource) {
-                switch (dataSource)
-                {
-                    case "1":
-                        //Filter Data
-                        $("#edit-filter").children('div.fieldset-wrapper').children('div.checkbook').hide();
-                        $("#edit-filter").children('div.fieldset-wrapper').children('div.checkbook-oge').show();
-                        break;
-
-                    default:
-                        //Filter Data
-                        $("#edit-filter").children('div.fieldset-wrapper').children('div.checkbook').show();
-                        $("#edit-filter").children('div.fieldset-wrapper').children('div.checkbook-oge').hide();
-                        break;
-                }
-            }
-            //Update selected columns based on data source radio button selection
-            function changeSelectedColumnView(dataSource) {
-
-                switch (dataSource)
-                {
-                    case "1":
-                        //Selected Columns
-                        $('.ms-selection li[ms-value="Agency"]').hide();
-                        $('.ms-selection li[ms-value="Other Government Entities"]').show();
-                        $('.ms-selection li[ms-value="Entity Contract #"]').show();
-                        $('.ms-selection li[ms-value="Commodity Line"]').show();
-                        $('.ms-selection li[ms-value="Budget Name"]').show();
-                        break;
-
-                    default:
-                        //Selected Columns
-                        $('.ms-selection li[ms-value="Agency"]').show();
-                        $('.ms-selection li[ms-value="Other Government Entities"]').hide();
-                        $('.ms-selection li[ms-value="Entity Contract #"]').hide();
-                        $('.ms-selection li[ms-value="Commodity Line"]').hide();
-                        $('.ms-selection li[ms-value="Budget Name"]').hide();
-                        break;
-                }
-            }
-            //Update selectable columns based on data source radio button selection
-            function changeSelectableColumnView(dataSource) {
-                switch (dataSource)
-                {
-                    case "1":
-                        //Selectable Columns
-                        $('.ms-selectable li[ms-value="Agency"]').hide();
-                        $('.ms-selectable li[ms-value="Other Government Entities"]').show();
-                        $('.ms-selectable li[ms-value="Entity Contract #"]').show();
-                        $('.ms-selectable li[ms-value="Commodity Line"]').show();
-                        $('.ms-selectable li[ms-value="Budget Name"]').show();
-
-                        //Hidden Columns
-                        $('#edit-column-select-expense option[value="Agency"]',context).hide();
-                        $('#edit-column-select-expense option[value="Other Government Entities"]',context).show();
-                        $('#edit-column-select-expense option[value="Entity Contract #"]',context).show();
-                        $('#edit-column-select-expense option[value="Commodity Line"]',context).show();
-                        $('#edit-column-select-expense option[value="Budget Name"]',context).show();
-                        $('#edit-column-select-revenue option[value="Agency"]',context).hide();
-                        $('#edit-column-select-revenue option[value="Other Government Entities"]',context).show();
-                        $('#edit-column-select-revenue option[value="Entity Contract #"]',context).show();
-                        $('#edit-column-select-revenue option[value="Commodity Line"]',context).show();
-                        $('#edit-column-select-revenue option[value="Budget Name"]',context).show();
-                        $('#edit-column-select-pending option[value="Agency"]',context).hide();
-                        $('#edit-column-select-pending option[value="Other Government Entities"]',context).show();
-                        $('#edit-column-select-pending option[value="Entity Contract #"]',context).show();
-                        $('#edit-column-select-pending option[value="Commodity Line"]',context).show();
-                        $('#edit-column-select-pending option[value="Budget Name"]',context).show();
-                        break;
-
-                    default:
-                        //Selectable Columns
-                        $('.ms-selectable li[ms-value="Agency"]').show();
-                        $('.ms-selectable li[ms-value="Other Government Entities"]').hide();
-                        $('.ms-selectable li[ms-value="Entity Contract #"]').hide();
-                        $('.ms-selectable li[ms-value="Commodity Line"]').hide();
-                        $('.ms-selectable li[ms-value="Budget Name"]').hide();
-
-                        //Hidden Columns
-                        $('#edit-column-select-expense option[value="Agency"]',context).show();
-                        $('#edit-column-select-expense option[value="Other Government Entities"]',context).hide();
-                        $('#edit-column-select-expense option[value="Entity Contract #"]',context).hide();
-                        $('#edit-column-select-expense option[value="Commodity Line"]',context).hide();
-                        $('#edit-column-select-expense option[value="Budget Name"]',context).hide();
-                        $('#edit-column-select-revenue option[value="Agency"]',context).show();
-                        $('#edit-column-select-revenue option[value="Other Government Entities"]',context).hide();
-                        $('#edit-column-select-revenue option[value="Entity Contract #"]',context).hide();
-                        $('#edit-column-select-revenue option[value="Commodity Line"]',context).hide();
-                        $('#edit-column-select-revenue option[value="Budget Name"]',context).hide();
-                        $('#edit-column-select-pending option[value="Agency"]',context).show();
-                        $('#edit-column-select-pending option[value="Other Government Entities"]',context).hide();
-                        $('#edit-column-select-pending option[value="Entity Contract #"]',context).hide();
-                        $('#edit-column-select-pending option[value="Commodity Line"]',context).hide();
-                        $('#edit-column-select-pending option[value="Budget Name"]',context).hide();
-                        break;
-                }
-            }
         }
     }
     //Function to retrieve values enclosed in brackets or return zero if none
