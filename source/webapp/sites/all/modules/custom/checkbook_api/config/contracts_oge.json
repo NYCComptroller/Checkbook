@@ -69,7 +69,7 @@
                         "Current Amount":"maximum_contract_amount",
                         "Spent to date":"spending_amount@checkbook_oge:contracts_coa_aggregates",
                         "Vendor":"vendor_name",
-                        "Agency":"agency_name",
+                        "Other Government Entities":"agency_name",
                         "Contract Type":"agreement_type_name",
                         "Award Method":"award_method_name",
                         "Expense Category":"expenditure_object_names",
@@ -81,7 +81,7 @@
                         "Document Code":"document_code@checkbook_oge:ref_document_code",
                         "Contract Industry":"industry_type_name",
                         "Commodity Line":"fms_commodity_line@checkbook_oge:oge_contract_contract",
-                        "Entity Contract Number":"oge_contract_number@checkbook_oge:oge_contract_contract",
+                        "Entity Contract #":"oge_contract_number@checkbook_oge:oge_contract_contract",
                         "Budget Name":"budget_name@checkbook_oge:oge_contract_contract"
                     }
                 }
@@ -188,7 +188,7 @@
                         "Current Amount":"maximum_contract_amount",
                         "Spent to date":"rfed_amount",
                         "Vendor":"vendor_name",
-                        "Agency":"agency_name",
+                        "Other Government Entities":"agency_name",
                         "Contract Type":"agreement_type_name",
                         "Award Method":"award_method_name",
                         "Expense Category":"expenditure_object_names",
@@ -200,7 +200,7 @@
                         "Document Code":"document_code@checkbook_oge:ref_document_code",
                         "Contract Industry":"industry_type_name",
                         "Commodity Line":"fms_commodity_line@checkbook_oge:oge_contract_contract",
-                        "Entity Contract Number":"oge_contract_number@checkbook_oge:oge_contract_contract",
+                        "Entity Contract #":"oge_contract_number@checkbook_oge:oge_contract_contract",
                         "Budget Name":"budget_name@checkbook_oge:oge_contract_contract"    
                     }
                 }

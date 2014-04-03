@@ -1,0 +1,72 @@
+{
+    "data_source":{
+        "checkbook":{
+            "data_type":{
+                "csv":{
+                    "Document ID":"Document ID",
+                    "Payee Name":"Payee Name",
+                    "Issue Date":"Issue Date",
+                    "Agency":"Agency",
+                    "Department":"Department",
+                    "Check Amount":"Check Amount",
+                    "Expense Category":"Expense Category",
+                    "Contract ID":"Contract ID",
+                    "Contract Purpose":"Contract Purpose",
+                    "Capital Project":"Capital Project",
+                    "Spending Category":"Spending Category",
+                    "Fiscal year":"Fiscal year",
+                    "Calendar year":"Calendar year"
+                },
+                "xml":{
+                    "agency":"agency",
+                    "document_id":"document_id",
+                    "payee_name":"payee_name",
+                    "department":"department",
+                    "check_amount":"check_amount",
+                    "expense_category":"expense_category",
+                    "contract_ID":"contract_ID",
+                    "contract_purpose":"contract_purpose",
+                    "capital_project":"capital_project",
+                    "issue_date":"issue_date",
+                    "spending_category":"spending_category",
+                    "fiscal_year":"fiscal_year",
+                    "calendar_year":"calendar_year"
+                }
+            }
+        },
+        "checkbook_oge":{
+            "data_type":{
+                "csv":{
+                    "Payee Name":"Payee Name",
+                    "Issue Date":"Issue Date",
+                    "Other Government Entities":"Other Government Entities",
+                    "Department":"Department",
+                    "Check Amount":"Check Amount",
+                    "Expense Category":"Expense Category",
+                    "Contract ID":"Contract ID",
+                    "Purpose":"Purpose",
+                    "Capital Project":"Capital Project",
+                    "Spending Category":"Spending Category",
+                    "Entity Contract #":"Entity Contract #",
+                    "Budget Name":"Budget Name",
+                    "Commodity Line":"Commodity Line"
+                },
+                "xml":{
+                    "payee_name":"payee_name",
+                    "issue_date":"issue_date",
+                    "other_government_entities":"other_government_entities",
+                    "department":"department",
+                    "check_amount":"check_amount",
+                    "expense_category":"expense_category",
+                    "contract_ID":"contract_ID",
+                    "purpose":"purpose",
+                    "capital_project":"capital_project",
+                    "spending_category":"spending_category",
+                    "entity_contract_num":"entity_contract_num",
+                    "budget_name":"budget_name",
+                    "commodity_line":"commodity_line"
+                }
+            }
+        }
+    }
+}

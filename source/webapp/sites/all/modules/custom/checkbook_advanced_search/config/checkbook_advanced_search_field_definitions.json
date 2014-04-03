@@ -7,10 +7,11 @@
         "field_type":"select",
         "field_name":"expense_category"
     },
-    "spending_category":{
+    "expense_type":{
         "field_type":"select",
-        "field_name":"spending_category",
+        "field_name":"expense_type",
         "attributes":{
+            "title":"Spending Category",
             "options":"$expense_attributes"
         }
     },
@@ -23,7 +24,7 @@
         }
     },
     "check_amount":{
-        "field_type":"textfield",
+        "field_type":"rangefield",
         "field_name":"check_amount",
         "attributes":{
             "size":30,
@@ -59,7 +60,16 @@
         "field_type":"radios",
         "field_name":"advanced_search_domain_filter",
         "attributes":{
-            "options":["Citywide Agencies", "Other Government Entities"]
+            "options":{
+                "checkbook":"Citywide Agencies",
+                "checkbook_oge":"Other Government Entities"
+            },
+            "default_value":"checkbook",
+            "ajax":{
+                "event":"change",
+                "callback":"checkbook_advanced_search_filter_ajax",
+                "method":"replace"
+            }
         }
     },
     "status":{
@@ -93,10 +103,10 @@
     },
     "contract_id":{
         "field_type":"textfield",
-        "field_name":"contract_id",
+        "field_name":"contract_num",
         "attributes":{
             "size":30,
-            "maxlength":100,
+            "maxlength":32,
             "title":"Contract ID"
         }
     },
@@ -205,7 +215,7 @@
         "field_name":"entity_contract_num",
         "attributes":{
             "size":30,
-            "maxlength":100,
+            "maxlength":32,
             "title":"Entity Contract #"
         }
     },
@@ -214,7 +224,7 @@
         "field_name":"commodity_line",
         "attributes":{
             "size":30,
-            "maxlength":100
+            "maxlength":32
         }
     },
     "budget_name":{
@@ -227,8 +237,9 @@
     },
     "other_government_entities":{
         "field_type":"select",
-        "field_name":"other_government_entities",
+        "field_name":"agency",
         "attributes":{
+            "title":"Other Government Entities",
             "options":"$agencies",
             "option_attributes":"$agency_attributes"
         }
