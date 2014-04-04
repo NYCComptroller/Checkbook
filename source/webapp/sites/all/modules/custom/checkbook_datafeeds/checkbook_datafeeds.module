@@ -1411,15 +1411,15 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#name' => 'commodity_line',
                 '#default_value' => !empty($form_state['values']['commodity_line']) ? $form_state['values']['commodity_line'] : '',
             );
-            $form['filter']['pin'] = array(
+            $form['filter']['budget_name'] = array(
                 '#type' => 'textfield',
-                '#title' => t('PIN:'),
-                '#attributes' => array('class' => array('watch')),
-                '#prefix' => '<div class="datafield pin">',
+                '#title' => t('Budget Name:'),
+                '#prefix' => '<div class="datafield budgetname">',
                 '#suffix' => '</div>',
-                '#id' => 'edit-pin',
-                '#name' => 'pin',
-                '#default_value' => !empty($form_state['values']['pin']) ? $form_state['values']['pin'] : '',
+                '#attributes' => array('class' => array('watch')),
+                '#id' => 'edit-budget-name',
+                '#name' => 'budget_name',
+                '#default_value' => !empty($form_state['values']['budget_name']) ? $form_state['values']['budget_name'] : '',
             );
             $form['filter']['currentamtfrom'] = array(
                 '#type' => 'textfield',
@@ -1439,29 +1439,6 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#id' => 'edit-currentamtto',
                 '#name' => 'currentamtto',
                 '#default_value' => !empty($form_state['values']['currentamtto']) ? $form_state['values']['currentamtto'] : '',
-            );
-            $form['filter']['enddatefrom'] = array(
-                '#type' => 'textfield',
-                '#size' => 15,
-                '#maxlength' => 15,
-                '#description' => 'E.g., ' . date('Y-m-d'),
-                '#attributes' => array('class' => array('datepicker')),
-                '#prefix' => '<div class="datafield enddate datarange"><label>End Date:</label><div class="ranges">',
-                '#id' => 'edit-enddatefrom',
-                '#name' => 'enddatefrom',
-                '#default_value' => !empty($form_state['values']['enddatefrom']) ? $form_state['values']['enddatefrom'] : '',
-            );
-            $form['filter']['enddateto'] = array(
-                '#type' => 'textfield',
-                '#title' => t('to'),
-                '#size' => 15,
-                '#maxlength' => 15,
-                '#description' => 'E.g., ' . date('Y-m-d'),
-                '#attributes' => array('class' => array('datepicker')),
-                '#suffix' => '</div></div>',
-                '#id' => 'edit-enddateto',
-                '#name' => 'enddateto',
-                '#default_value' => !empty($form_state['values']['enddateto']) ? $form_state['values']['enddateto'] : '',
             );
             $form['filter']['regdatefrom'] = array(
                 '#type' => 'textfield',
@@ -1496,6 +1473,17 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                     )
                 )
             );
+            $form['filter']['agency'] = array(
+                '#type' => 'select',
+                '#title' => t('Other Government <br/>Entities:'),
+                '#options' => _agency_options($data_source),
+                '#attributes' => array('class' => array('watch')),
+                '#prefix' => '<div class="column column-right"><div class="datafield agency">',
+                '#suffix' => '</div>',
+                '#id' => 'edit-agency',
+                '#name' => 'agency',
+                '#default_value' => !empty($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Other Government Entities',
+            );
             $form['filter']['category'] = array(
                 '#type' => 'select',
                 '#title' => t('Category:'),
@@ -1503,22 +1491,32 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                     'expense' => 'Expense',
                 ),
                 '#attributes' => array('class' => array('watch')),
-                '#prefix' => '<div class="column column-right"><div class="datafield category">',
+                '#prefix' => '<div class="datafield category">',
                 '#suffix' => '</div>',
                 '#id' => 'edit-category',
                 '#name' => 'category',
                 '#default_value' => !empty($form_state['values']['category']) ? $form_state['values']['category'] : 'expense',
             );
-            $form['filter']['agency'] = array(
-                '#type' => 'select',
-                '#title' => t('Other Government Entities:'),
-                '#options' => _agency_options($data_source),
-                '#attributes' => array('class' => array('watch')),
-                '#prefix' => '<div class="datafield agency">',
+            $form['filter']['purpose'] = array(
+
+                '#type' => 'textfield',
+                '#title' => t('Purpose:'),
+                '#prefix' => '<div class="datafield purpose">',
                 '#suffix' => '</div>',
-                '#id' => 'edit-agency',
-                '#name' => 'agency',
-                '#default_value' => !empty($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Other Government Entities',
+                '#attributes' => array('class' => array('watch')),
+                '#id' => 'edit-purpose',
+                '#name' => 'purpose',
+                '#default_value' => !empty($form_state['values']['purpose']) ? $form_state['values']['purpose'] : '',
+            );
+            $form['filter']['pin'] = array(
+                '#type' => 'textfield',
+                '#title' => t('PIN:'),
+                '#attributes' => array('class' => array('watch')),
+                '#prefix' => '<div class="datafield pin">',
+                '#suffix' => '</div>',
+                '#id' => 'edit-pin',
+                '#name' => 'pin',
+                '#default_value' => !empty($form_state['values']['pin']) ? $form_state['values']['pin'] : '',
             );
             $form['filter']['apt_pin'] = array(
                 '#type' => 'textfield',
@@ -1540,27 +1538,6 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#id' => 'edit-award-method',
                 '#name' => 'award_method',
                 '#default_value' => !empty($form_state['values']['award_method']) ? $form_state['values']['award_method'] : '',
-            );
-            $form['filter']['budget_name'] = array(
-                '#type' => 'textfield',
-                '#title' => t('Budget Name:'),
-                '#prefix' => '<div class="datafield budgetname">',
-                '#suffix' => '</div>',
-                '#attributes' => array('class' => array('watch')),
-                '#id' => 'edit-budget-name',
-                '#name' => 'budget_name',
-                '#default_value' => !empty($form_state['values']['budget_name']) ? $form_state['values']['budget_name'] : '',
-            );
-            $form['filter']['purpose'] = array(
-
-                '#type' => 'textfield',
-                '#title' => t('Contract Purpose:'),
-                '#prefix' => '<div class="datafield purpose">',
-                '#suffix' => '</div>',
-                '#attributes' => array('class' => array('watch')),
-                '#id' => 'edit-purpose',
-                '#name' => 'purpose',
-                '#default_value' => !empty($form_state['values']['purpose']) ? $form_state['values']['purpose'] : '',
             );
             $form['filter']['startdatefrom'] = array(
                 '#type' => 'textfield',
@@ -1584,6 +1561,29 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#id' => 'edit-startdateto',
                 '#name' => 'startdateto',
                 '#default_value' => !empty($form_state['values']['startdateto']) ? $form_state['values']['startdateto'] : '',
+            );
+            $form['filter']['enddatefrom'] = array(
+                '#type' => 'textfield',
+                '#size' => 15,
+                '#maxlength' => 15,
+                '#description' => 'E.g., ' . date('Y-m-d'),
+                '#attributes' => array('class' => array('datepicker')),
+                '#prefix' => '<div class="datafield enddate datarange"><label>End Date:</label><div class="ranges">',
+                '#id' => 'edit-enddatefrom',
+                '#name' => 'enddatefrom',
+                '#default_value' => !empty($form_state['values']['enddatefrom']) ? $form_state['values']['enddatefrom'] : '',
+            );
+            $form['filter']['enddateto'] = array(
+                '#type' => 'textfield',
+                '#title' => t('to'),
+                '#size' => 15,
+                '#maxlength' => 15,
+                '#description' => 'E.g., ' . date('Y-m-d'),
+                '#attributes' => array('class' => array('datepicker')),
+                '#suffix' => '</div></div>',
+                '#id' => 'edit-enddateto',
+                '#name' => 'enddateto',
+                '#default_value' => !empty($form_state['values']['enddateto']) ? $form_state['values']['enddateto'] : '',
             );
             $form['filter']['recdatefrom'] = array(
                 '#type' => 'textfield',
@@ -3855,7 +3855,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
 
             $form['filter']['agency'] = array(
                 '#type' => 'select',
-                '#title' => t('Other Government Entities:'),
+                '#title' => t('Other Government<br/> Entities:'),
                 '#options' => _agency_options($data_source),
                 '#prefix' => '<div class="column column-left"><div class="datafield agency">',
                 '#suffix' => '</div>',
