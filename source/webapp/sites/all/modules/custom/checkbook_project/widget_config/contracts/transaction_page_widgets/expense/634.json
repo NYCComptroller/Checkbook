@@ -365,7 +365,7 @@
                             sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[18] == null ? '': row[18])+'</td>';
                             sOut += '<td class=\"text number-left\" style=\"width:125px;\">'+ (row[19] == null ? '': row[19])+'</td>';
                             sOut += '<td class=\"text\" style=\"width:200px;\">'+ (row[20] == null ? '': row[20])+'</td>';
-                            sOut += '<td class=\"number\" style=\"width:100px;\">'+ (row[21] == null ? '': row[21])+'</td>';
+                            sOut += '<td class=\"number\" style=\"width:100px;\">'+ (row[21] == null ? '': row[21])+'&nbsp;&nbsp;</td>';
                             sOut += '<td>'+ '&nbsp;'+'</td>';
                         sOut += '</tr>';
                     }
