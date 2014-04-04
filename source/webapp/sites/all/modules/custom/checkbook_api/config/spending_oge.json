@@ -57,7 +57,7 @@
                         "Document ID":"disbursement_number",
                         "Payee Name":"vendor_name",
                         "Issue Date":"check_eft_issued_date",
-                        "Other Government Entity":"agency_name",
+                        "Other Government Entities":"agency_name",
                         "Department":"department_name",
                         "Check Amount":"check_amount",
                         "Expense Category":"expenditure_object_name",
@@ -66,7 +66,7 @@
                         "Capital Project":"reporting_code",
                         "Spending Category":"spending_category_name",
                         "Commodity Line":"agreement_commodity_line_number",
-                        "Entity Contract Number":"oge_contract_number@checkbook_oge:oge_contract",
+                        "Entity Contract #":"oge_contract_number@checkbook_oge:oge_contract",
                         "Budget Name":"budget_name@checkbook_oge:oge_contract"                         
                     }
                 }

@@ -44,12 +44,14 @@
                     "Check Amount":"Check Amount",
                     "Expense Category":"Expense Category",
                     "Contract ID":"Contract ID",
-                    "Purpose":"Purpose",
+                    "Contract Purpose":"Contract Purpose",
                     "Capital Project":"Capital Project",
                     "Spending Category":"Spending Category",
+                    "Fiscal year":"Fiscal year",
+                    "Calendar year":"Calendar year",
                     "Entity Contract #":"Entity Contract #",
-                    "Budget Name":"Budget Name",
-                    "Commodity Line":"Commodity Line"
+                    "Commodity Line":"Commodity Line",
+                    "Budget Name":"Budget Name"
                 },
                 "xml":{
                     "payee_name":"payee_name",
@@ -59,12 +61,14 @@
                     "check_amount":"check_amount",
                     "expense_category":"expense_category",
                     "contract_ID":"contract_ID",
-                    "purpose":"purpose",
+                    "contract_purpose":"contract_purpose",
                     "capital_project":"capital_project",
                     "spending_category":"spending_category",
+                    "fiscal_year":"fiscal_year",
+                    "calendar_year":"calendar_year",
                     "entity_contract_num":"entity_contract_num",
-                    "budget_name":"budget_name",
-                    "commodity_line":"commodity_line"
+                    "commodity_line":"commodity_line",
+                    "budget_name":"budget_name"
                 }
             }
         }
