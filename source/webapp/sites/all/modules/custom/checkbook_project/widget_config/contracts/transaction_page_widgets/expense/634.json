@@ -17,7 +17,7 @@
 },
 "allowRequestParams":["smnid"],
 "paramTypeConfig":{"curamtr":"rangeid","vendornm":"like","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","regdate":"range","modamt":"ne"},
-"defaultParameters":{"status_flag":"A"},
+"defaultParameters":{"status_flag":"A","is_vendor_flag":"N"},
 "header":"
 	$header = NULL;
 	$header .= widget_data_tables_export_link($node);
@@ -189,6 +189,9 @@
             if(function_exists('_checkbook_project_applyParameterFilters')){
                   $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
                   return $adjustedParameters;
+            }
+            if(_getRequestParamValue('vendor')){
+                $adjustedParameters['is_vendor_flag'] = 'Y';
             }
            return $parameters;
 ",
