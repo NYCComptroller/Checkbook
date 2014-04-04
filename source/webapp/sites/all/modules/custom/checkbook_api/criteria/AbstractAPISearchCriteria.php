@@ -615,6 +615,25 @@ abstract class AbstractAPISearchCriteria {
         break;
 
       case "contracts":
+          $category = $this->criteria['value']['category'];
+          $status = $this->criteria['value']['status'];
+
+          if ($status == 'active' || $status == 'registered') {
+            $config_key .= "_active_{$category}";
+            if (!isset($this->criteria['value']['fiscal_year']) && !isset($this->criteria['value']['calendar_year'])) {
+              $config_key .= "_all_years";
+            }
+          }
+          else {
+            if ($status == 'pending') {
+              $config_key .= "_{$status}";
+            }
+            else {
+              $config_key .= "_{$status}_{$category}";
+            }
+          }
+          break;
+
       case "contracts_oge":
         $category = $this->criteria['value']['category'];
         $status = $this->criteria['value']['status'];

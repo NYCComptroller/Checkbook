@@ -25,6 +25,9 @@
         $adjustedParameters['agency.agency'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
         return $adjustedParameters;
     }
+    if(_getRequestParamValue('vendor')){
+        $adjustedParameters['is_vendor_flag'] = 'Y';
+    }
     return $parameters;
     ",
     "template":"individual_filter"

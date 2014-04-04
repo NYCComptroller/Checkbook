@@ -22,6 +22,9 @@
         $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
         return $adjustedParameters;
     }
+    if(_getRequestParamValue('vendor')){
+        $adjustedParameters['is_vendor_flag'] = 'Y';
+    }
     return $parameters;
     ",
     "template":"individual_filter"
