@@ -7,6 +7,7 @@
     "urlParamMap":{
         "doctype":"document_code.document_code.document_code"
     }  ,
+    "defaultParameters":{"status_flag":"A","is_vendor_flag":"N"},
     "columns":["industry.industry", "industry.industry.industry_type_name", "txcount"],
     "orderBy":"-txcount",
 	"getTotalDataCount":true,
