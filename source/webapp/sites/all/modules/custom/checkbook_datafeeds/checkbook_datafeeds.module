@@ -5194,7 +5194,7 @@ function _funding_source_options() {
  * @return array
  *   Spending category codes and display names
  */
-function _expense_type_options($data_source = null) {
+function _expense_type_options($data_source = 'checkbook') {
     try {
         $dataController = data_controller_get_instance();
         switch($data_source)
