@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <request>
-    <type_of_data >Contracts_OGE</type_of_data>
+    <type_of_data>Contracts_OGE</type_of_data>
     <records_from>1</records_from>
     <max_records>5</max_records>
     <search_criteria>
@@ -18,14 +18,18 @@
             <name>agency_code</name>
             <type>value</type>
             <value>z81</value>
-        </criteria>        
+        </criteria>
+        <criteria>
+            <name>expense_category</name>
+            <type>value</type>
+            <value>2110</value>
+        </criteria>
     </search_criteria>
     <response_columns>
             <column>agency</column>
             <column>vendor</column>
             <column>contract_id</column>
             <column>version</column>
-            <column>year</column>
             <column>purpose</column>
             <column>parent_contract_id</column>
             <column>original_amount</column>
@@ -41,5 +45,6 @@
             <column>end_date</column>
             <column>document_code</column>
             <column>contract_industry</column>
+            <column>year</column>
     </response_columns>
 </request>
