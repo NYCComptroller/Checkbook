@@ -15,10 +15,10 @@ class Form
     public $data_source;
     public $contents = array();
 
-    public function __construct($domain_name, $data_source)
+    public function __construct($domain_name)
     {
         $this->domain_name=$domain_name;
-        $this->data_source=$data_source;
+        //$this->data_source=$data_source;
     }
 
     public function add_content(Content $content)
