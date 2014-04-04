@@ -7,6 +7,7 @@
     "urlParamMap":{
         "doctype":"document_code.document_code.document_code"
      },
+    "defaultParameters":{"status_flag":"A","is_vendor_flag":"N"},
     "columns":["g100m_count", "g50m_le100m_count", "g25m_le50m_count", "g10m_le25m_count", "ge1m_le10m_count", "less1m_count"],
     "orderBy":"",
     "autocomplete":false,
