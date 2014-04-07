@@ -16,7 +16,8 @@
             "registration_date":"registered_date",
             "category":"document_code@checkbook_oge:ref_document_code",
             "pin":"brd_awd_no",
-            "apt_pin":"tracking_number"
+            "apt_pin":"tracking_number",
+            "is_vendor_flag":"is_vendor_flag"
         },
         "dataset":{
             "sortColumn":"-registered_date",
@@ -92,7 +93,7 @@
             "fiscal_year":{"valueType":"value","dataType":"year","maxLength":"4"},
             "calendar_year":{"valueType":"value","dataType":"year","maxLength":"4"},
             "agency_code":{"valueType":"value","dataType":"text","maxLength":"4"},
-            "vendor_name":{"valueType":"value","dataType":"text","maxLength":"20"},
+            "vendor_name":{"valueType":"value","dataType":"text","maxLength":"100"},
             "current_amount":{"valueType":"range","dataType":"amount","maxLength":"18"},
             "spent_to_date":{"valueType":"range","dataType":"amount","maxLength":"18"},
             "award_method":{"valueType":"value","dataType":"text","maxLength":"3"},
@@ -102,24 +103,11 @@
             "start_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"},
             "end_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"},
             "registration_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"},
-
-            "status":{
-                "valueType":"value",
-                "dataType":"text"
-            },
-            "category":{
-                "valueType":"value",
-                "dataType":"list",
-                "allowedValues":["expense", "revenue"]
-            },
-            "pin":{
-                "valueType":"value",
-                "dataType":"text"
-            },
-            "apt_pin":{
-                "valueType":"value",
-                "dataType":"text"
-            }
+            "status":{"valueType":"value","dataType":"text"},
+            "category":{"valueType":"value","dataType":"list","allowedValues":["expense", "revenue"]},
+            "pin":{"valueType":"value","dataType":"text"},
+            "apt_pin":{"valueType":"value","dataType":"text"},
+            "is_vendor_flag":{"valueType":"value","dataType":"text"}
         }
     },
     "contracts_oge_active_expense_all_years":{
@@ -137,7 +125,8 @@
             "registration_date":"registered_date",
             "category":"document_code@checkbook_oge:ref_document_code",
             "pin":"brd_awd_no",
-            "apt_pin":"tracking_number"
+            "apt_pin":"tracking_number",
+            "is_vendor_flag":"is_vendor_flag"
         },
         "dataset":{
             "sortColumn":"-registered_date",
@@ -211,94 +200,25 @@
             "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($dataSet,$parameters,$criteria,'checkbook_oge');}"
         },
         "requestParameters":{
-            "agency_code":{
-                "valueType":"value",
-                "dataType":"text",
-                "maxLength":"4"
-            },
-            "vendor_name":{
-                "valueType":"value",
-                "dataType":"text",
-                "maxLength":"100"
-            },
-            "current_amount":{
-                "valueType":"range",
-                "dataType":"amount",
-                "maxLength":"18"
-            },
-            "spent_to_date":{
-                "valueType":"range",
-                "dataType":"amount",
-                "maxLength":"18"
-            },
-            "award_method":{
-                "valueType":"value",
-                "dataType":"text",
-                "maxLength":"3"
-            },
-            "expense_category":{
-                "valueType":"value",
-                "dataType":"text",
-                "maxLength":"4"
-            },
-            "contract_id":{
-                "valueType":"value",
-                "dataType":"text",
-                "maxLength":"32"
-            },
-            "contract_type":{
-                "valueType":"value",
-                "dataType":"text",
-                "maxLength":"2"
-            },
-            "start_date":{
-                "valueType":"range",
-                "dataType":"date",
-                "format":"YYYY-MM-DD"
-            },
-            "end_date":{
-                "valueType":"range",
-                "dataType":"date",
-                "format":"YYYY-MM-DD"
-            },
-            "registration_date":{
-                "valueType":"range",
-                "dataType":"date",
-                "format":"YYYY-MM-DD"
-            },
-
-            "status":{
-                "valueType":"value",
-                "dataType":"text"
-            },
-            "category":{
-                "valueType":"value",
-                "dataType":"list",
-                "allowedValues":["expense", "revenue"]
-            },
-            "pin":{
-                "valueType":"value",
-                "dataType":"text"
-            },
-            "apt_pin":{
-                "valueType":"value",
-                "dataType":"text"
-            },
-            "budget_name":{
-                "valueType":"value",
-                "dataType":"text",
-                "maxLength":"60"
-            },
-            "entity_contract_number":{
-                "valueType":"value",
-                "dataType":"text",
-                "maxLength":"32"
-            } ,
-            "commodity_line":{
-                "valueType":"value",
-                "dataType":"text",
-                "maxLength":"32"
-            } 
+            "agency_code":{"valueType":"value","dataType":"text","maxLength":"4"},
+            "vendor_name":{"valueType":"value","dataType":"text","maxLength":"100"},
+            "current_amount":{"valueType":"range","dataType":"amount","maxLength":"18"},
+            "spent_to_date":{"valueType":"range","dataType":"amount","maxLength":"18"},
+            "award_method":{"valueType":"value","dataType":"text","maxLength":"3"},
+            "expense_category":{"valueType":"value","dataType":"text","maxLength":"4"},
+            "contract_id":{"valueType":"value","dataType":"text","maxLength":"32"},
+            "contract_type":{"valueType":"value","dataType":"text", "maxLength":"2"},
+            "start_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"},
+            "end_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"},
+            "registration_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"},
+            "status":{"valueType":"value","dataType":"text"},
+            "category":{"valueType":"value","dataType":"list","allowedValues":["expense", "revenue"]},
+            "pin":{"valueType":"value","dataType":"text"},
+            "apt_pin":{"valueType":"value","dataType":"text"},
+            "budget_name":{"valueType":"value","dataType":"text","maxLength":"60"},
+            "entity_contract_number":{"valueType":"value","dataType":"text","maxLength":"32"} ,
+            "commodity_line":{"valueType":"value","dataType":"text","maxLength":"32"},
+            "is_vendor_flag":{"valueType":"value","dataType":"text"}
         }
     },
     "requiredCriteria":[
