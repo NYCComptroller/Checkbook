@@ -1181,10 +1181,10 @@ function _checkbook_project_delete_file_if_stale($uri) {
 /**
  * Callback to delete files modified more than a set time ago.
  */
-function _checkbook_project_execute_sql($sql, $db_name = "main")
+function _checkbook_project_execute_sql($sql, $db_name = "main", $data_source = 'checkbook')
 {
 
-    $connection = get_datafeed_connection($db_name);
+    $connection = get_datafeed_connection($db_name, $data_source);
     $results = null;
 
     try {

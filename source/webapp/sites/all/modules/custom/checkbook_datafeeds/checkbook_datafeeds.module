@@ -1365,8 +1365,8 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#attributes' => array('class' => array('watch')),
                 '#prefix' => '<div class="datafield vendor">',
                 '#suffix' => '</div>',
-                '#id' => 'edit-agency',
-                '#name' => 'agency',
+                '#id' => 'edit-vendor',
+                '#name' => 'vendor',
                 '#default_value' => !empty($form_state['values']['vendor']) ? $form_state['values']['vendor'] : '',
             );
             $form['filter']['contract_type'] = array(
@@ -1623,15 +1623,15 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#title' => t('Year:'),
                 '#options' => _year_options('all-years'),
                 '#attributes' => array('class' => array('watch')),
+                '#default_value' => !empty($form_state['values']['year']) ? $form_state['values']['year'] : 'ALL',
                 '#prefix' => '<div class="datafield year last-item">',
                 '#suffix' => '</div></div>',
+                '#id' => 'edit-year',
+                '#name' => 'year',
                 '#states' => array(
                     'disabled' => array(
                         'select[name="df_contract_status"]' => array('value' => 'pending')
-                    ),
-                '#id' => 'edit-contractno',
-                '#name' => 'contractno',
-                '#default_value' => !empty($form_state['values']['year']) ? $form_state['values']['year'] : 'ALL',
+                    )
                 )
             );
 
@@ -1659,8 +1659,8 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#attributes' => array('class' => array('watch')),
                 '#prefix' => '<div class="datafield vendor">',
                 '#suffix' => '</div>',
-                '#id' => 'edit-agency',
-                '#name' => 'agency',
+                '#id' => 'edit-vendor',
+                '#name' => 'vendor',
                 '#default_value' => !empty($form_state['values']['vendor']) ? $form_state['values']['vendor'] : '',
             );
             $form['filter']['contract_type'] = array(

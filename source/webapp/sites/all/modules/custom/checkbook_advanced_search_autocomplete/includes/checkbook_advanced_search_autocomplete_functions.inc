@@ -1,5 +1,180 @@
 <?php
 
+//Generic Spending/Contracts Auto-complete
+
+/**
+ * Construct query string and get results from Solr.
+ *
+ * @param string $facet
+ *   Facet results needed
+ * @param string $query
+ *   Partially constructed query
+ * @param string $domain
+ *   spending, used to merge later
+ * @param string $parameters
+ *   Solr filter parameters
+ *
+ * @return array
+ *   Results from Solr
+ */
+function _get_advanced_search_autocomplete_results($facet, $query, $domain, $parameters) {
+
+    switch($domain)
+    {
+        case 'spending':
+            $year = $parameters['year'];
+            $department = $parameters['department'];
+            $agency = $parameters['agency'];
+            $expense_category = $parameters['expense_category'];
+            $expense_type = $parameters['expense_type'];
+
+            if ($year) $query .= _checkbook_autocomplete_get_start_end_dates($year, 'spending');
+            if ($department) $query .= '&fq=department_name:' . $department;
+            if ($agency) $query .= '&fq=agency_id:' . $agency;
+            if ($expense_category) $query .= '&fq=expenditure_object_name:' . $expense_category;
+            if ($expense_type) $query .= '&fq=spending_category_id:' . $expense_type;
+            break;
+
+        case 'contracts':
+            $status = $parameters['status'];
+            $category = $parameters['category'];
+            $contract_type = $parameters['contract_type'];
+            $agency = $parameters['agency'];
+            $award_method = $parameters['award_method'];
+            $year = $parameters['year'];
+
+            switch($status)
+            {
+                case 'P':
+                    $query .= '&fq=contract_status:pending';
+                    break;
+
+                case 'A':
+                    if(isset($year)) $query .= _checkbook_autocomplete_get_start_end_dates($year, 'contracts', 'A');
+                    $query .= '&fq=contract_status:registered';
+                    break;
+
+                case 'R':
+                    $query .= '&fq=contract_status:registered';
+                    if (isset($year)) $query .= _checkbook_autocomplete_get_start_end_dates($year, 'contracts', 'R');
+                    break;
+            }
+            if ($category) $query .= '&fq=contract_category_name:' . $category;
+            if(!in_array($contract_type, array('No Contract Type Selected', '0')))
+            {
+                $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($contract_type);
+                if($status == 'P')
+                    $query .= '&fq=contract_type_code:'.$code_id_array['code'];
+                else
+                    $query .= '&fq=contract_type_id:'.$code_id_array['id'];
+            }
+            if ($agency) $query .= '&fq=agency_id:' . $agency;
+            if($award_method){
+                $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($award_method);
+                $query .= '&fq=award_method_id:'.$code_id_array['id'];
+            }
+            break;
+    }
+
+    $matches = _checkbook_autocomplete_solr_results($query, $facet);
+
+    return $matches;
+}
+/**
+ * Construct query string and get results from Solr.
+ *
+ * @param string $field
+ *   Field results needed
+ * @param string $domain
+ *   Domain to search on
+ * @param string $data_source
+ *   data source (i.e. checkbook, checkbook_oge)
+ * @param string $args
+ *   Solr filter parameters
+ *
+ * @return array
+ *   Results from Solr
+ */
+function _checkbook_advanced_search_autocomplete($field, $domain, $data_source = 'checkbook', $args, $string) {
+
+    $search_term = _get_autocomplete_search_term();
+    $query_field = $field;
+    $facet_field = $field;
+
+    switch($field)
+    {
+        case 'payee_name':
+            $query_field = 'vendor_name_autocomplete';
+            $facet_field = 'vendor_name';
+            break;
+        case 'document_id':
+            $query_field = 'expense_id';
+            $facet_field = 'expense_id';
+            break;
+        case 'capital_project':
+            $query_field = 'reporting_code';
+            $facet_field = 'reporting_code';
+            break;
+        case 'apt_pin':
+            $query_field = 'apt_pin';
+            $facet_field = 'apt_pin';
+            break;
+        case 'pin':
+            $query_field = 'pin';
+            $facet_field = 'pin';
+            break;
+        case 'contract_id':
+            $query_field = 'contract_number';
+            $facet_field = 'contract_number';
+            break;
+        case 'entity_contract_num':
+            $query_field = $domain . '_contract_number';
+            $facet_field = $domain . '_entity_contract_number';
+            break;
+        case 'commodity_line':
+            $query_field = $domain . '_commodity_line';
+            $facet_field = $domain . '_commodity_line';
+            break;
+        case 'budget_name':
+            $query_field = $domain . '_budget_name';
+            $facet_field = $domain . '_budget_name';
+            break;
+        case 'vendor':
+            $query_field = 'vendor_name_autocomplete';
+            $facet_field = 'vendor_name';
+            break;
+        case 'department':
+            $search_term = 'department_name';
+            $query_field = 'department_name';
+            $facet_field = 'department_name';
+            break;
+        case 'expense_category':
+            $search_term = 'department_name';
+            $query_field = 'department_name';
+            $facet_field = 'department_name';
+            break;
+    }
+
+    foreach(explode(',', $args) as $arg)
+    {
+        $param_parts = explode('=>', $arg);
+        if($param_parts[0] != $field)
+            $parameters[$param_parts[0]] = $param_parts[1];
+    }
+
+    if (!empty($search_term) & !empty($parameters))
+    {
+        $query = 'select/?q=' . $query_field . ':' . $search_term . '&facet=true&facet.field=' . $facet_field . '&fq=domain:' . $domain . '&wt=php&facet.limit=10';
+        if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
+        $options = _get_advanced_search_autocomplete_results($facet_field, $query, $domain, $parameters);
+        $matches = array();
+        foreach($options as $key => $value)
+            $matches[] = htmlentities($value);
+
+        drupal_json_output($matches);
+    }
+}
+
 // Spending autocomplete menu callback functions
 /**
  * Construct query string and get results from Solr for spending domain.
@@ -81,7 +256,8 @@ function _get_spending_expense_cat_options($agency, $dept, $spending_cat, $year,
   $query = "SELECT DISTINCT expenditure_object_name FROM disbursement_line_item_details
             WHERE ".$scstring.$yearstring.$agencystring.$deptstring."ORDER BY expenditure_object_name ASC";
 
-  $results = _checkbook_project_execute_sql($query, $data_source);
+    $db_name = "main";
+  $results = _checkbook_project_execute_sql($query, $db_name,  $data_source);
   if(count($results) == 0){
         $output = array('label' => 'No Matches Found','value' => '');
   }else{
@@ -212,6 +388,7 @@ function _checkbook_advanced_search_autocomplete_spending_expenseid($year, $agen
  ***/
 function _checkbook_advanced_search_autocomplete_spending_department($year, $agency, $exptype, $data_source = 'checkbook') {
     $query = 'select/?q=department_name:*&facet=true&facet.field=department_name&fq=domain:spending&wt=php';
+    if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
     $options = _get_spending_advanced_search_autocomplete_results('department_name', $query, $year, $agency, null, null, $exptype, $data_source);
     $matches = array();
     foreach($options as $key => $value)

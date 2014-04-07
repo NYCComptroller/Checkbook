@@ -527,7 +527,7 @@ $conf['check_book']['ref_data_dir'] = 'refdata';
 //Export data outputDirectory
 $conf['check_book']['export_data_dir'] = 'exportdata';
 //Solr URL
-$conf['check_book']['solr']['url'] = 'http://192.168.3.24:8088/solr-checkbook/';
+$conf['check_book']['solr']['url'] = 'http://192.168.3.23:8088/solr-checkbook/';
 //no of records to limit for datatables
 $conf['check_book']['datatables']['iTotalDisplayRecords'] = 200000;
 

@@ -11,7 +11,8 @@ function checkbook_advanced_search_form_submit($form, &$form_state)
             _checkbook_advanced_search_revenue_submit($form, $form_state);
             break;
         case "spending_submit":
-            _checkbook_advanced_search_spending_submit($form, $form_state);
+            $data_source = $form_state['values']['spending_advanced_search_domain_filter'];
+            _checkbook_advanced_search_spending_submit($form, $form_state, $data_source);
             break;
         case "budget_submit":
             _checkbook_advanced_search_budget_submit($form, $form_state);
@@ -20,7 +21,8 @@ function checkbook_advanced_search_form_submit($form, &$form_state)
             _checkbook_advanced_search_payroll_submit($form, $form_state);
             break;
         case "contracts_submit":
-            _checkbook_advanced_search_contracts_submit($form, $form_state);
+            $data_source = $form_state['values']['contracts_advanced_search_domain_filter'];
+            _checkbook_advanced_search_contracts_submit($form, $form_state, $data_source);
             break;
         default:
             break;
@@ -497,31 +499,37 @@ function _checkbook_advanced_search_payroll_submit($form, &$form_state)
 /*
  * Constructs the URL for Contracts based on the input by the users
  */
-function _checkbook_advanced_search_contracts_submit($form, &$form_state)
+function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_source = 'checkbook')
 {
-    $contracts_contract_status = trim($form['contracts']['contract_status']['#value']);
-    $contracts_contract_category = trim($form['contracts']['contract_category']['#value']);
-    $contracts_contract_vendor_name = trim($form['contracts']['contract_vendor_name']['#value']);
-    $contracts_contract_purpose = trim($form['contracts']['contract_purpose']['#value']);
-    $contracts_contract_type = trim($form['contracts']['contract_type']['#value']);
-    $contracts_contract_agency = trim($form['contracts']['contract_agency']['#value']);
-    $contracts_contract_contract_num = trim($form['contracts']['contract_contract_num']['#value']);
-    $contracts_contract_apt_pin = trim($form['contracts']['contract_apt_pin']['#value']);
-    $contracts_contract_pin = trim($form['contracts']['contract_pin']['#value']);
-    $contracts_contract_award_method = trim($form['contracts']['contract_award_method']['#value']);
-    $contracts_contract_current_contract_amount_from = trim($form['contracts']['contract_current_contract_amount_from']['#value']);
-    $contracts_contract_current_contract_amount_to = trim($form['contracts']['contract_current_contract_amount_to']['#value']);
-    $contracts_contract_start_date_from = trim($form['contracts']['contract_start_date_from']['#value']['date']);
-    $contracts_contract_start_date_to = trim($form['contracts']['contract_start_date_to']['#value']['date']);
-    $contracts_contract_end_date_from = trim($form['contracts']['contract_end_date_from']['#value']['date']);
-    $contracts_contract_end_date_to = trim($form['contracts']['contract_end_date_to']['#value']['date']);
-    //$contracts_contract_received_date_from = trim($form['contracts']['contract_received_date_from']['#value']['date']);
+    $filter_dimension = $data_source . '_contracts';
+
+    $contracts_contract_status = trim($form[$filter_dimension]['contract_status']['#value']);
+    $contracts_contract_category = trim($form[$filter_dimension]['contract_category']['#value']);
+    $contracts_contract_vendor_name = trim($form[$filter_dimension]['contract_vendor_name']['#value']);
+    $contracts_contract_purpose = trim($form[$filter_dimension]['contract_purpose']['#value']);
+    $contracts_contract_type = trim($form[$filter_dimension]['contract_type']['#value']);
+    $contracts_contract_agency = trim($form[$filter_dimension]['contract_agency']['#value']);
+    $contracts_contract_contract_num = trim($form[$filter_dimension]['contract_contract_num']['#value']);
+    $contracts_contract_apt_pin = trim($form[$filter_dimension]['contract_apt_pin']['#value']);
+    $contracts_contract_pin = trim($form[$filter_dimension]['contract_pin']['#value']);
+    $contracts_contract_award_method = trim($form[$filter_dimension]['contract_award_method']['#value']);
+    $contracts_contract_current_contract_amount_from = trim($form[$filter_dimension]['contract_current_contract_amount_from']['#value']);
+    $contracts_contract_current_contract_amount_to = trim($form[$filter_dimension]['contract_current_contract_amount_to']['#value']);
+    $contracts_contract_start_date_from = trim($form[$filter_dimension]['contract_start_date_from']['#value']['date']);
+    $contracts_contract_start_date_to = trim($form[$filter_dimension]['contract_start_date_to']['#value']['date']);
+    $contracts_contract_end_date_from = trim($form[$filter_dimension]['contract_end_date_from']['#value']['date']);
+    $contracts_contract_end_date_to = trim($form[$filter_dimension]['contract_end_date_to']['#value']['date']);
     $contracts_contract_received_date_from = trim($form_state['input']['contract_received_date_from']['date']);
-    //$contracts_contract_received_date_to = trim($form['contracts']['contract_received_date_to']['#value']['date']);
     $contracts_contract_received_date_to = trim($form_state['input']['contract_received_date_to']['date']);
-    $contracts_contract_registration_date_from = trim($form['contracts']['contract_registration_date_from']['#value']['date']);
-    $contracts_contract_registration_date_to = trim($form['contracts']['contract_registration_date_to']['#value']['date']);
-    $contracts_year = trim($form['contracts']['contract_year']['#value']);
+    $contracts_contract_registration_date_from = trim($form[$filter_dimension]['contract_registration_date_from']['#value']['date']);
+    $contracts_contract_registration_date_to = trim($form[$filter_dimension]['contract_registration_date_to']['#value']['date']);
+    $contracts_entity_contract_num = trim($form[$filter_dimension]['contracts_entity_contract_num']['#value']);
+    $contracts_entity_contract_num_exact = trim($form[$filter_dimension]['contracts_entity_contract_num_exact']['#value']);
+    $contracts_commodity_line = trim($form[$filter_dimension]['contracts_commodity_line']['#value']);
+    $contracts_commodity_line_exact = trim($form[$filter_dimension]['contracts_commodity_line_exact']['#value']);
+    $contracts_budget_name = trim($form[$filter_dimension]['contracts_budget_name']['#value']);
+    $contracts_budget_name_exact = trim($form[$filter_dimension]['spending_budget_name_exact']['#value']);
+    $contracts_year = trim($form[$filter_dimension]['contract_year']['#value']);
     if ($contracts_year == 'fy~all') {
         $redirect_url = 'contract/all/transactions';
         $contracts_year = null;
@@ -572,6 +580,27 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state)
     if (!empty($contracts_year)) {
         $redirect_url .= _checkbook_advanced_search_year_arg($contracts_year);
     }
+    if (!empty($contracts_entity_contract_num)) {
+        if ($contracts_entity_contract_num_exact == $contracts_entity_contract_num) {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_entity_contract_num, 'entcontnum_exact');
+        } else {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_entity_contract_num, 'entcontnum');
+        }
+    }
+    if (!empty($contracts_commodity_line)) {
+        if ($contracts_commodity_line_exact == $contracts_commodity_line) {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_commodity_line, 'comline_exact');
+        } else {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_commodity_line, 'comline');
+        }
+    }
+    if (!empty($contracts_budget_name)) {
+        if ($contracts_budget_name_exact == $contracts_budget_name) {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_budget_name, 'budname_exact');
+        } else {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_budget_name, 'budname');
+        }
+    }
 
     $contracts_contract_current_contract_amount_range_array = array('from' => $contracts_contract_current_contract_amount_from, 'to' => $contracts_contract_current_contract_amount_to, 'type' => 'amount');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_current_contract_amount_range_array, 'curamt', TRUE);
@@ -586,6 +615,10 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state)
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_received_date_range_array, 'recdate', TRUE);
 
     $contracts_contract_registration_date_range_array = array('from' => $contracts_contract_registration_date_from, 'to' => $contracts_contract_registration_date_to, 'type' => 'date');
+
+    //append data source if not default (checkbook)
+    if($data_source != 'checkbook') $redirect_url .= '/datasource/' . $data_source;
+
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_registration_date_range_array, 'regdate', TRUE);
     $form_state['redirect'] = $redirect_url;
 }
@@ -593,33 +626,41 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state)
 /*
  * Constructs the URL for Spending transactions based on the input by the users
  */
-function _checkbook_advanced_search_spending_submit($form, &$form_state)
+function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_source = 'checkbook')
 {
+    $filter_dimension = $data_source . '_spending';
 
-    $spending_fiscal_year = trim($form['spending']['spending_fiscal_year']['#value']);
-    $spending_payee_name = trim($form['spending']['spending_payee_name']['#value']);
-    $spending_payee_name_exact = trim($form['spending']['spending_payee_name_exact']['#value']);
-    $spending_contract_num = trim($form['spending']['spending_contract_num']['#value']);
-    $spending_contract_num_exact = trim($form['spending']['spending_contract_num_exact']['#value']);
-    $spending_document_id = trim($form['spending']['spending_document_id']['#value']);
-    $spending_document_id_exact = trim($form['spending']['spending_document_id_exact']['#value']);
-    $spending_agencies = trim($form['spending']['spending_agencies']['#value']);
-    //$spending_expense_category = trim($form['spending']['spending_expense_category']['#value']);
+    $spending_fiscal_year = trim($form[$filter_dimension]['spending_fiscal_year']['#value']);
+    $spending_payee_name = trim($form[$filter_dimension]['spending_payee_name']['#value']);
+    $spending_payee_name_exact = trim($form[$filter_dimension]['spending_payee_name_exact']['#value']);
+    $spending_contract_num = trim($form[$filter_dimension]['spending_contract_num']['#value']);
+    $spending_contract_num_exact = trim($form[$filter_dimension]['spending_contract_num_exact']['#value']);
+    $spending_document_id = trim($form[$filter_dimension]['spending_document_id']['#value']);
+    $spending_document_id_exact = trim($form[$filter_dimension]['spending_document_id_exact']['#value']);
+    $spending_agencies = trim($form[$filter_dimension]['spending_agencies']['#value']);
+
     $spending_expense_category = trim($form_state['input']['spending_expense_category']);
-    //log_error($form_state);
-    $spending_check_amount_from = trim($form['spending']['spending_check_amount_from']['#value']);
-    $spending_check_amount_to = trim($form['spending']['spending_check_amount_to']['#value']);
-    $spending_issue_date_from = trim($form['spending']['spending_issue_date_from']['#value']['date']);
-    $spending_issue_date_to = trim($form['spending']['spending_issue_date_to']['#value']['date']);
-    $spending_fund_class = trim($form['spending']['spending_fund_class']['#value']);
-    //$spending_department = trim($form['spending']['spending_department']['#value']);
+
+    $spending_check_amount_from = trim($form[$filter_dimension]['spending_check_amount_from']['#value']);
+    $spending_check_amount_to = trim($form[$filter_dimension]['spending_check_amount_to']['#value']);
+    $spending_issue_date_from = trim($form[$filter_dimension]['spending_issue_date_from']['#value']['date']);
+    $spending_issue_date_to = trim($form[$filter_dimension]['spending_issue_date_to']['#value']['date']);
+    $spending_fund_class = trim($form[$filter_dimension]['spending_fund_class']['#value']);
+
     $spending_department = trim($form_state['input']['spending_department']);
-    $spending_budget_code = trim($form['spending']['spending_budget_code']['#value']);
-    $spending_capital_project = trim($form['spending']['spending_capital_project']['#value']);
-    $spending_capital_project_exact = trim($form['spending']['spending_capital_project_exact']['#value']);
-    $spending_expense_type = trim($form['spending']['spending_expense_type']['#value']);
-    $spending_fiscal_year = trim($form['spending']['spending_fiscal_year']['#value']);
-    $spending_date_filter = trim($form['spending']['date_filter']['#value']);
+    $spending_budget_code = trim($form[$filter_dimension]['spending_budget_code']['#value']);
+    $spending_capital_project = trim($form[$filter_dimension]['spending_capital_project']['#value']);
+    $spending_capital_project_exact = trim($form[$filter_dimension]['spending_capital_project_exact']['#value']);
+    $spending_expense_type = trim($form[$filter_dimension]['spending_expense_type']['#value']);
+    $spending_fiscal_year = trim($form[$filter_dimension]['spending_fiscal_year']['#value']);
+    $spending_date_filter = trim($form[$filter_dimension]['date_filter']['#value']);
+
+    $spending_entity_contract_num = trim($form[$filter_dimension]['spending_entity_contract_num']['#value']);
+    $spending_entity_contract_num_exact = trim($form[$filter_dimension]['spending_entity_contract_num_exact']['#value']);
+    $spending_commodity_line = trim($form[$filter_dimension]['spending_commodity_line']['#value']);
+    $spending_commodity_line_exact = trim($form[$filter_dimension]['spending_commodity_line_exact']['#value']);
+    $spending_budget_name = trim($form[$filter_dimension]['spending_budget_name']['#value']);
+    $spending_budget_name_exact = trim($form[$filter_dimension]['spending_budget_name_exact']['#value']);
 
     if ($spending_fiscal_year == 'fy~all') {
         $spending_fiscal_year = null;
@@ -631,8 +672,6 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state)
     if (!empty($spending_fiscal_year) && $spending_date_filter == 0) {
         $redirect_url .= _checkbook_advanced_search_year_arg($spending_fiscal_year, 'year');
     }
-
-
     if (!empty($spending_payee_name)) {
         if ($spending_payee_name_exact == $spending_payee_name) {
             $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_payee_name, 'vendornm_exact');
@@ -646,7 +685,6 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state)
         } else {
             $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_contract_num, 'contnum');
         }
-
     }
     if (!empty($spending_document_id)) {
         if ($spending_document_id_exact == $spending_document_id) {
@@ -681,6 +719,28 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state)
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_expense_type, 'category');
     }
 
+    if (!empty($spending_entity_contract_num)) {
+        if ($spending_entity_contract_num_exact == $spending_entity_contract_num) {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_entity_contract_num, 'entcontnum_exact');
+        } else {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_entity_contract_num, 'entcontnum');
+        }
+    }
+    if (!empty($spending_commodity_line)) {
+        if ($spending_commodity_line_exact == $spending_commodity_line) {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_commodity_line, 'comline_exact');
+        } else {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_commodity_line, 'comline');
+        }
+    }
+    if (!empty($spending_budget_name)) {
+        if ($spending_budget_name_exact == $spending_budget_name) {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_budget_name, 'budname_exact');
+        } else {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_budget_name, 'budname');
+        }
+    }
+
     //URL for range parameters, need to specify whether the range is an amount or a date
     $spending_check_amount_range_array = array('from' => $spending_check_amount_from, 'to' => $spending_check_amount_to, 'type' => 'amount');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_check_amount_range_array, 'checkamt', TRUE);
@@ -689,6 +749,9 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state)
         $spending_issue_date_range_array = array('from' => $spending_issue_date_from, 'to' => $spending_issue_date_to, 'type' => 'date');
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_issue_date_range_array, 'chkdate', TRUE);
     }
+
+    //append data source if not default (checkbook)
+    if($data_source != 'checkbook') $redirect_url .= '/datasource/' . $data_source;
 
     $form_state['redirect'] = $redirect_url;
 }
