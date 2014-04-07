@@ -17,14 +17,16 @@
                     "regdate":"registered_date","cindustry":"industry_type_id",
                     "csize":"award_size_id","modamt":"dollar_difference"},
 	"paramTypeConfig":{"vendornm":"like","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","regdate":"range","modamt":"ne"},
-	"defaultParameters":{"status_flag":"A"},
+	"defaultParameters":{"status_flag":"A","is_vendor_flag":"N"},
 "dataset": "checkbook:agreement_snapshot_oge",
 "columns": ["total_maximum_contract_amount"],
 "adjustParameters":"
 	    if(function_exists('_checkbook_project_adjustContractParameterFilters')){
 		 _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
 	    }
-
+        if(_getRequestParamValue('vendor')){
+            $parameters['is_vendor_flag'] = 'Y';
+        }
 	    if(function_exists('_checkbook_project_applyParameterFilters')){
 		  $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
 		  return $adjustedParameters;

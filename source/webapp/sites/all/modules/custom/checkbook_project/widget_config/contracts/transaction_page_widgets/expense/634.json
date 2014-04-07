@@ -17,7 +17,7 @@
 },
 "allowRequestParams":["smnid"],
 "paramTypeConfig":{"curamtr":"rangeid","vendornm":"like","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","regdate":"range","modamt":"ne"},
-"defaultParameters":{"status_flag":"A"},
+"defaultParameters":{"status_flag":"A","is_vendor_flag":"N"},
 "header":"
 	$header = NULL;
 	$header .= widget_data_tables_export_link($node);
@@ -185,11 +185,14 @@
            if(function_exists('_checkbook_project_adjustContractParameterFilters')){
                   _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
             }
-
+            if(_getRequestParamValue('vendor')){
+                $parameters['is_vendor_flag'] = 'Y';
+            }
             if(function_exists('_checkbook_project_applyParameterFilters')){
                   $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
                   return $adjustedParameters;
             }
+
            return $parameters;
 ",
 "adjustDataTableOptions":"
@@ -362,7 +365,7 @@
                             sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[18] == null ? '': row[18])+'</td>';
                             sOut += '<td class=\"text number-left\" style=\"width:125px;\">'+ (row[19] == null ? '': row[19])+'</td>';
                             sOut += '<td class=\"text\" style=\"width:200px;\">'+ (row[20] == null ? '': row[20])+'</td>';
-                            sOut += '<td class=\"number\" style=\"width:100px;\">'+ (row[21] == null ? '': row[21])+'</td>';
+                            sOut += '<td class=\"number\" style=\"width:100px;\">'+ (row[21] == null ? '': row[21])+'&nbsp;&nbsp;</td>';
                             sOut += '<td>'+ '&nbsp;'+'</td>';
                         sOut += '</tr>';
                     }

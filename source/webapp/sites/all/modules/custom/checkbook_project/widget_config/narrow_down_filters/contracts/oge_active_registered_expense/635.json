@@ -6,6 +6,7 @@
     "urlParamMap":{
         "doctype":"document_code.document_code.document_code"
     }  ,
+    "defaultParameters":{"status_flag":"A","is_vendor_flag":"N"},
     "columns":["agency.agency","display_agency.display_agency.agency_name", "txcount"],
     "orderBy":"-txcount",
 	"getTotalDataCount":true,
@@ -20,11 +21,15 @@
     if(function_exists('_checkbook_project_adjustContractParameterFilters')){
         _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
     }
+    if(_getRequestParamValue('vendor')){
+        $parameters['is_vendor_flag'] = 'Y';
+    }
     if(function_exists('_checkbook_project_applyParameterFilters')){
         $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
         $adjustedParameters['agency.agency'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
         return $adjustedParameters;
     }
+
     return $parameters;
     ",
     "template":"individual_filter"
