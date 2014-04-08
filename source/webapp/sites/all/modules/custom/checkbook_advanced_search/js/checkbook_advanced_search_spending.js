@@ -5,10 +5,10 @@
 
         var spending_div = function (data_source, div_contents) {
             this.div_elements = {
-                'agency':'select[name="spending_agency"]',
-                'dept':'select[name="spending_department"]',
-                'exp_category':'select[name="spending_expense_category"]',
-                'spending_category':'select[name="spending_expense_type"]',
+                'agency':'select[name='+data_source+'_spending_agency]',
+                'dept':'select[name='+data_source+'_spending_department]',
+                'exp_category':'select[name='+data_source+'_spending_expense_category]',
+                'spending_category':'select[name='+data_source+'spending_expense_type]',
                 'payee_name':'input:text[name=spending_payee_name]',
                 'check_amt_from':'input:text[name="spending_check_amount_from[date]"]',
                 'check_amt_to':'input:text[name="spending_check_amount_to[date]"]',
@@ -293,6 +293,7 @@
                     initializeSpendingView(div_checkbook_spending, dataSource);
                     div_checkbook_spending.contents().show();
                     div_checkbook_spending_oge.contents().hide();
+                    div_checkbook_spending_oge.ele('agency')[0].selectedIndex = 1;
                     break;
             }
         }

@@ -3,11 +3,11 @@
 
         var contracts_div = function (data_source, div_contents) {
             this.div_elements = {
-                'agency':'select[name="contracts_agency"]',
-                'status':'select[name="contracts_status"]',
-                'category':'select[name="contracts_category"]',
-                'contract_type':'select[name="contracts_type"]',
-                'award_method':'select[name="contracts_award_method"]',
+                'agency':'select[name='+data_source+'contracts_agency]',
+                'status':'select[name='+data_source+'contracts_status]',
+                'category':'select[name='+data_source+'contracts_category]',
+                'contract_type':'select[name='+data_source+'contracts_type]',
+                'award_method':'select[name='+data_source+'contracts_award_method]',
                 'year':'select[name="contracts_year"]',
                 'vendor_name':'input:text[name=contracts_vendor_name]',
                 'contract_id':'input:text[name=contracts_contract_num]',

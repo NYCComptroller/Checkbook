@@ -127,8 +127,6 @@ class Form
                 $domain_field = 'date_filter';
 
                 $form[$domain][$domain_field]['#type'] = FieldType::RadioButtons;
-                //$form[$domain][$domain_field]['#id'] = 'edit-'.$data_source.'date-filter';
-                //$form[$domain][$domain_field]['#name'] = $data_source.'_date_filter';
                 $form[$domain][$domain_field]['#title'] = t('Date Filter');
                 $form[$domain][$domain_field]['#options'] = array('Year','Issue Date');
                 $form[$domain][$domain_field]['#prefix'] = $field->prefix . '<div class="datafield datefilter clearfix">';
@@ -145,7 +143,6 @@ class Form
                 $domain_field = "{$this->domain_name}_issue_date_from";
 
                 $form[$domain][$domain_field]['#type'] = FieldType::DatePopup;
-//                $form[$domain][$domain_field]['#id'] = 'edit-'.$this->domain_name.'-issue-date-from';
                 $form[$domain][$domain_field]['#date_format'] = 'Y-m-d';
                 $form[$domain][$domain_field]['#date_year_range'] = $year_range;
                 $form[$domain][$domain_field]['#prefix'] = '<div class="datafield datarange issueddate"><div class="ranges">';
@@ -155,7 +152,6 @@ class Form
                 $domain_field = "{$this->domain_name}_issue_date_to";
 
                 $form[$domain][$domain_field]['#type'] = FieldType::DatePopup;
-//                $form[$domain][$domain_field]['#id'] = 'edit-'.$this->domain_name.'-issue-date-to';
                 $form[$domain][$domain_field]['#title'] = t('to');
                 $form[$domain][$domain_field]['#date_format'] = 'Y-m-d';
                 $form[$domain][$domain_field]['#date_year_range'] = $year_range;
@@ -166,7 +162,6 @@ class Form
                 $domain_field = "{$this->domain_name}_fiscal_year";
 
                 $form[$domain][$domain_field]['#type'] = FieldType::DropDown;
-//                $form[$domain][$domain_field]['#id'] = 'edit-'.$this->domain_name.'-fiscal-year';
                 $form[$domain][$domain_field]['#options'] = _checkbook_advanced_search_get_year($this->domain_name, $data_source);
                 $form[$domain][$domain_field]['#default_value'] = 'fy~' . _getCurrentYearID();
                 $form[$domain][$domain_field]['#attributes'] = array('class' => array('watch'), 'default_selected_value' => 'fy~' . _getCurrentYearID());
@@ -185,14 +180,14 @@ class Form
 
             case FieldType::DropDown:
 
-                $domain_field = "{$this->domain_name}_{$field->field_name}";
+                $domain_field = "{$data_source}_{$this->domain_name}_{$field->field_name}";
 
                 if(!(is_null($field->prefix)))
                     $form[$domain][$domain_field]['#prefix'] = $field->prefix;
                 if(!(is_null($field->suffix)))
                     $form[$domain][$domain_field]['#suffix'] = $field->suffix;
                 $form[$domain][$domain_field]['#type'] = $field->field_type;
-                $form[$domain][$domain_field]['#id'] = $field->id;
+                //$form[$domain][$domain_field]['#id'] = $field->id;
                 $form[$domain][$domain_field]['#title'] = $field->getFieldTitle();
                 $form[$domain][$domain_field]['#default_value'] = $field->getDropDownDefault();
                 $form[$domain][$domain_field]['#options'] = $field->getDropDownOptions();
@@ -200,6 +195,7 @@ class Form
                     $form[$domain][$domain_field]['#disabled'] = $field->disabled;
                 if(!(is_null($field->option_attributes)))
                     $form[$domain][$domain_field]['#option_attributes'] = $field->option_attributes;
+               // $form[$domain][$domain_field]['#needs_validation'] = $data_source;
 
                 break;
 
@@ -209,8 +205,6 @@ class Form
                 if(!(is_null($field->prefix)))
                     $form[$domain][$domain_field]['#prefix'] = $field->prefix;
                 $form[$domain][$domain_field]['#type'] = FieldType::RadioButtons;
-                if(!(is_null($field->id)))
-//                    $form[$domain][$domain_field]['#id'] = $field->id;
                 if(!(is_null($field->default_value)))
                     $form[$domain][$domain_field]['#default_value'] = $field->default_value;
                 if(!(is_null($field->options)))
@@ -225,8 +219,6 @@ class Form
                 $css_name = str_replace('_','-',$field->field_name);
 
                 $form[$domain][$domain_field]['#type'] = FieldType::TextField;
-//                if(!(is_null($field->id)))
-//                    $form[$domain][$domain_field]['#id'] = $field->id;
                 if(!(is_null($field->size)))
                     $form[$domain][$domain_field]['#size'] = $field->size;
                 else
@@ -243,8 +235,6 @@ class Form
                 //To
                 $domain_field = "{$this->domain_name}_{$field->field_name}_to";
                 $form[$domain][$domain_field]['#type'] = FieldType::TextField;
-//                if(!(is_null($field->id)))
-//                    $form[$domain][$domain_field]['#id'] = $field->id;
                 $form[$domain][$domain_field]['#title'] = t('TO');
                 if(!(is_null($field->size)))
                     $form[$domain][$domain_field]['#size'] = $field->size;
@@ -268,8 +258,6 @@ class Form
                 $css_name = str_replace('_','-',$field->field_name);
 
                 $form[$domain][$domain_field]['#type'] = FieldType::DatePopup;
-//                if(!(is_null($field->id)))
-//                    $form[$domain][$domain_field]['#id'] = $field->id;
                 $form[$domain][$domain_field]['#date_format'] = 'Y-m-d';
                 $form[$domain][$domain_field]['#date_year_range'] = $year_range;
                 if(!(is_null($field->prefix)))
@@ -280,8 +268,6 @@ class Form
                 //To
                 $domain_field = "{$this->domain_name}_{$field->field_name}_to";
                 $form[$domain][$domain_field]['#type'] = FieldType::DatePopup;
-//                if(!(is_null($field->id)))
-//                    $form[$domain][$domain_field]['#id'] = $field->id;
                 $form[$domain][$domain_field]['#date_format'] = 'Y-m-d';
                 $form[$domain][$domain_field]['#title'] = t('TO');
                 if(!(is_null($field->suffix)))
@@ -302,6 +288,8 @@ class Form
                 $form[$domain][$domain_field]['#name'] = $domain_field;
                 $form[$domain][$domain_field]['#value'] = t('Submit');
                 $form[$domain][$domain_field]['#prefix'] = t('<div class="'.$submit_class.'">');
+//                $form[$domain][$domain_field]['#limit_validation_errors'] = array(array($domain));
+//                $form[$domain][$domain_field]['#submit'] = array('checkbook_advanced_search_form_submit');
 
                 //Clear All Button
                 $domain_field = "{$this->domain_name}_clear";
@@ -323,10 +311,6 @@ class Form
                 $domain_field = "{$this->domain_name}_{$field->field_name}";
 
                 $form[$domain][$domain_field]['#type'] = FieldType::TextField;
-
-//                if(!(is_null($field->id)))
-//                    $form[$domain][$domain_field]['#id'] = $field->id;
-
                 $form[$domain][$domain_field]['#title'] = $field->getFieldTitle();
                 if(!(is_null($field->size)))
                     $form[$domain][$domain_field]['#size'] = $field->size;

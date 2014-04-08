@@ -56,6 +56,15 @@ function checkbook_advanced_search_display()
     return drupal_get_form('checkbook_advanced_search_form');
 }
 
+///**
+// * Custom Form Validation
+// */
+//function my_module_form_validate($form, &$form_state) {
+//    // Don't custom-validate if previous validation errors (still) exist
+//    if (form_get_errors()) return;
+//    // .. Otherwise, process custom form validation goes here
+//}
+
 /**
  * Implements hook_form().
  */
@@ -591,25 +600,40 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
            if(!(is_null($attributes['options'])))
            {
                $options = $attributes['options'];
-
-               if($options == '$agencies')
-                   $field_definition_configs[$i]['attributes']['options'] = $agencies;
-               if($options == '$agency_attributes')
-                   $field_definition_configs[$i]['attributes']['options'] = $agency_attributes;
-               if($options == '$expense_attributes')
-                   $field_definition_configs[$i]['attributes']['options'] = $expense_attributes;
-               if($options == '$year_attribute')
-                   $field_definition_configs[$i]['attributes']['options'] = $year_attribute;
-               if($options == '$award_method')
-                   $field_definition_configs[$i]['attributes']['options'] = $award_method;
-               if($options == '$award_method_attributes')
-                   $field_definition_configs[$i]['attributes']['options'] = $award_method_attributes;
-               if($options == '$year_range')
-                   $field_definition_configs[$i]['attributes']['options'] = $year_range;
-               if($options == '$contract_type_attribute')
-                   $field_definition_configs[$i]['attributes']['options'] = $contract_type_attribute;
+               switch ($options) {
+                   case '$agencies':
+                       $field_definition_configs[$i]['attributes']['options'] = $agencies;
+                       break;
+                   case '$expense_attributes':
+                       $field_definition_configs[$i]['attributes']['options'] = $expense_attributes;
+                       break;
+                   case'$year_attribute':
+                       $field_definition_configs[$i]['attributes']['options'] = $year_attribute;
+                       break;
+                   case'$award_method':
+                       $field_definition_configs[$i]['attributes']['options'] = $award_method;
+                       break;
+                   case'$year_range':
+                       $field_definition_configs[$i]['attributes']['options'] = $year_range;
+                       break;
+                   case'$contract_type_attribute':
+                       $field_definition_configs[$i]['attributes']['options'] = $contract_type_attribute;
+                       break;
+               }
            }
-        }
+           if(!(is_null($attributes['option_attributes'])))
+           {
+               $option_attributes = $attributes['option_attributes'];
+               switch ($option_attributes) {
+                   case '$agency_attributes':
+                       $field_definition_configs[$i]['attributes']['option_attributes'] = $agency_attributes;
+                       break;
+                   case '$award_method_attributes':
+                       $field_definition_configs[$i]['attributes']['option_attributes'] = $award_method_attributes;
+                       break;
+               }
+           }
+       }
     }
 
     return $field_definition_configs;
