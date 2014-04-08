@@ -889,9 +889,23 @@ span.dollars{
 #nyc-spending .nyc_totals_links td{
     width:16.66%;
 }
-p.show-details-link {
+a.bottomContainerToggle {
     margin-top: 15px;
-    text-align: right;
+    float: right;
+}
+a.toggleVendor{
+    margin-top: 15px;
+    float: left;
+}
+span.toggleVendor{
+    margin-top: 15px;
+    float: left;
+}
+span.toggleAgency {
+    margin-top: 15px;
+    float: left;
+    font-size: 13px;
+    font-weight: bold;
 }
 
 div.bottomContainer{
