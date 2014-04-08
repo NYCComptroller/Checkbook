@@ -275,7 +275,7 @@
                 rsc.spending_category_id,
                 lower(rsc.spending_category_name) || '[' || rsc.spending_category_code || ']' spending_category_name_code,
                 rsc.spending_category_name,
-                oc.fms_contract_number as entity_contract_number,
+                oc.oge_contract_number as entity_contract_number,
                 oc.fms_commodity_line  as commodity_line,
                 oc.budget_name as budget_name
                 from disbursement_line_item_details  dlid left join ref_year ry on dlid.check_eft_issued_nyc_year_id = ry.year_id
