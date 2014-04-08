@@ -1,6 +1,6 @@
 <dataConfig>
-    <dataSource name="db1" type="JdbcDataSource" driver="org.postgresql.Driver" url="jdbc:postgresql://<ip>/checkbook" user="webuser1" password="webuser1" readOnly="true" autoCommit="false" transactionIsolation="TRANSACTION_READ_COMMITTED" holdability="CLOSE_CURSORS_AT_COMMIT"/>
-    <dataSource name="db2" type="JdbcDataSource" driver="org.postgresql.Driver" url="jdbc:postgresql://<ip>/checkbook_ogent" user="webuser1" password="webuser1" readOnly="true" autoCommit="false" transactionIsolation="TRANSACTION_READ_COMMITTED" holdability="CLOSE_CURSORS_AT_COMMIT"/>
+    <dataSource name="db1" type="JdbcDataSource" driver="org.postgresql.Driver" url="jdbc:postgresql://192.168.3.24/checkbook" user="webuser1" password="webuser1" readOnly="true" autoCommit="false" transactionIsolation="TRANSACTION_READ_COMMITTED" holdability="CLOSE_CURSORS_AT_COMMIT"/>
+    <dataSource name="db2" type="JdbcDataSource" driver="org.postgresql.Driver" url="jdbc:postgresql://192.168.3.23/checkbook_ogent" user="webuser1" password="webuser1" readOnly="true" autoCommit="false" transactionIsolation="TRANSACTION_READ_COMMITTED" holdability="CLOSE_CURSORS_AT_COMMIT"/>
     <document>
         <entity dataSource="db1" name="budget" query="select
 			'budget:' || budget_id id,
@@ -534,13 +534,25 @@
                 expenditure_object_names,
                 (case when(latest_flag = 'Y') then 'Y' else 'N' end) latest_flag,
                 'Registered' status,
-                ogecon.fms_contract_number as entity_contract_number,
+                entity_contract_number.values as entity_contract_number,
                 budget_names.values as budget_name,
                 commodity_lines.values as commodity_line
                 from agreement_snapshot a
                 LEFT JOIN oge_contract_vendor_level ogecon ON a.contract_number = ogecon.fms_contract_number AND a.vendor_id = ogecon.vendor_id
                 left join ref_document_code dc on a.document_code_id = dc.document_code_id
                 left join ref_award_category rac on a.award_category_id = rac.award_category_id
+                left join
+                (
+                     select distinct
+                    'contracts:' || agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END) || 'oge' id,
+                    GROUP_CONCAT(oc.oge_contract_number) As values
+                    from agreement_snapshot a
+                    LEFT JOIN oge_contract_vendor_level ogecon ON a.contract_number = ogecon.fms_contract_number AND a.vendor_id = ogecon.vendor_id
+                    left join ref_document_code dc on a.document_code_id = dc.document_code_id
+                    left join ref_award_category rac on a.award_category_id = rac.award_category_id
+                    left join oge_contract oc on oc.fms_contract_number = a.contract_number
+                    group by 'contracts:' || agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END)
+                ) entity_contract_number on entity_contract_number.id = 'contracts:' || agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END) || 'oge'
                 left join
                 (
                     select
@@ -619,8 +631,8 @@
             <field column="expenditure_object_names" name="expenditure_object_name" splitBy=","/>
             <field column="status" name="contract_status" />
             <field column="document_code" name="document_code" />
-            <field column="entity_contract_number" name="contract_entity_contract_number" />
-            <field column="commodity_line" name="contract_commodity_line" />
+            <field column="entity_contract_number" name="contract_entity_contract_number" splitBy=","/>
+            <field column="commodity_line" name="contract_commodity_line" splitBy="," />
             <field column="budget_name" name="contract_budget_name" splitBy=","  />
         </entity>
         <entity dataSource="db1" name="pending_contracts" query="
