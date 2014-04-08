@@ -51,6 +51,9 @@ function _get_datafeeds_autocomplete_results($facet, $query, $domain, $parameter
             $agency = $parameters['agency'];
             $award_method = $parameters['award_method'];
             $year = $parameters['year'];
+            $entity_contract_num = $parameters['entity_contract_num'];
+            $commodity_line = $parameters['commodity_line'];
+            $budget_name = $parameters['budget_name'];
 
             switch($status)
             {
@@ -73,6 +76,10 @@ function _get_datafeeds_autocomplete_results($facet, $query, $domain, $parameter
             if ($contract_type) $query .= '&fq=contract_type_id:' . $contract_type;
             if ($agency) $query .= '&fq=agency_code:' . $agency;
             if ($award_method) $query .= '&fq=award_method_code:' . $award_method;
+            if ($entity_contract_num) $query .= '&fq=contract_entity_contract_number:' . $entity_contract_num;
+            if ($commodity_line) $query .= '&fq=contract_commodity_line:' . $commodity_line;
+            if ($budget_name) $query .= '&fq=contract_budget_name:' . $budget_name;
+
             break;
     }
     $matches = _checkbook_autocomplete_solr_results($query, $facet);
@@ -99,6 +106,7 @@ function _checkbook_datafeeds_autocomplete($field, $domain, $data_source = 'chec
     $search_term = _get_autocomplete_search_term();
     $query_field = $field;
     $facet_field = $field;
+    $prefix = $domain == 'contracts' ? 'contract' : $domain;
 
     switch($field)
     {
@@ -127,16 +135,16 @@ function _checkbook_datafeeds_autocomplete($field, $domain, $data_source = 'chec
             $facet_field = 'contract_number';
             break;
         case 'entity_contract_num':
-            $query_field = $domain . '_entity_contract_number';
-            $facet_field = $domain . '_entity_contract_number';
+            $query_field = $prefix . '_entity_contract_number';
+            $facet_field = $prefix . '_entity_contract_number';
             break;
         case 'commodity_line':
-            $query_field = $domain . '_commodity_line';
-            $facet_field = $domain . '_commodity_line';
+            $query_field = $prefix . '_commodity_line';
+            $facet_field = $prefix . '_commodity_line';
             break;
         case 'budget_name':
-            $query_field = $domain . '_budget_name';
-            $facet_field = $domain . '_budget_name';
+            $query_field = $prefix . '_budget_name';
+            $facet_field = $prefix . '_budget_name';
             break;
         case 'vendor':
             $query_field = 'vendor_name_autocomplete';
@@ -161,8 +169,11 @@ function _checkbook_datafeeds_autocomplete($field, $domain, $data_source = 'chec
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
         $options = _get_datafeeds_autocomplete_results($facet_field, $query, $domain, $parameters);
         $matches = array();
-        foreach($options as $key => $value)
-            $matches[] = htmlentities($value);
+        if($options[0]['label'] == "No Matches Found")
+            $matches = $options;
+        else
+            foreach($options as $key => $value)
+                $matches[] = htmlentities($value);
 
         drupal_json_output($matches);
     }

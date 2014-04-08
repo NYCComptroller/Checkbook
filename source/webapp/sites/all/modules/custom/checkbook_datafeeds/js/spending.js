@@ -48,53 +48,6 @@
             $('#edit-column-select').multiSelect('deselect_all');
         });
     };
-//
-//    var autoComplete = function () {
-//        this.fields = {
-//            'payee':'#edit-payee-name',
-//            'contractno':'#edit-contractno',
-//            'documentid':'#edit-document-id',
-//            'capitalproject':'#edit-capital-project',
-//            'entitycontractnum':'#edit-entity-contract-num',
-//            'commodityline':'#edit-commodity-line',
-//            'budgetname':'#edit-budget-name'
-//        };
-//        this.params = {
-//            'agency':'select[name="=agency"]',
-//            'dept':'select[name="dept"]',
-//            'expCategory':'select[name="expense_category"]',
-//            'expType':'select[name="expense_type"]',
-//            'entityContractNum':'input:text[name=entity_contract_num]',
-//            'commodityLine':'input:text[name=commodity_line]',
-//            'budgetName':'input:text[name=budget_name]'
-//        };
-//    };
-//    autoComplete.prototype.initialize = function (context, dataSource, mode) {
-//        var year, path;
-//
-//        if ($('input:radio[name=date_filter]:checked').val() == 0)
-//            year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
-//
-//        path = year + '/';
-//
-//        $.each(this.params, function (name, selector) {
-//            path += emptyToZero($(selector, context).val()) + '/';
-//        });
-//
-//        $.each(this.fields, function (fieldName, fieldId) {
-//            var fullPath = '/autocomplete/spending/' + fieldName + '/' + path + dataSource;
-//
-//            if (mode == 'option')
-//                $(fieldId, context).autocomplete("option", "source", fullPath);
-//            else
-//                $(fieldId, context).autocomplete({source:fullPath});
-//        });
-//    };
-//
-//    $.fn.addAutoComplete = function (context, dataSource, mode) {
-//        var objAutoComplete = new autoComplete();
-//        objAutoComplete.initialize(context, dataSource, mode);
-//    };
 
     Drupal.behaviors.spendingDataFeeds = {
         attach:function (context, settings) {
@@ -171,25 +124,25 @@
             //Sets up jQuery UI autocompletes and autocomplete filtering functionality
             var path = getAutoCompletePath();
 
-            $('#edit-payee-name',context).autocomplete({source:'/autocomplete/spending/payee_name/' + path});
-            $('#edit-contractno',context).autocomplete({source:'/autocomplete/spending/contract_id/' + path});
-            $('#edit-document-id',context).autocomplete({source:'/autocomplete/spending/document_id/' + path});
-            $('#edit-capital-project',context).autocomplete({source:'/autocomplete/spending/capital_project/' + path});
-            $('#edit-entity-contract-num',context).autocomplete({source:'/autocomplete/spending/entity_contract_num/' + path});
-            $('#edit-commodity-line',context).autocomplete({source:'/autocomplete/spending/commodity_line/' + path});
-            $('#edit-budget-name',context).autocomplete({source:'/autocomplete/spending/budget_name/' + path});
+            $('#edit-payee-name',context).autocomplete({source:'/autocomplete/datafeeds/spending/payee_name/' + path});
+            $('#edit-contractno',context).autocomplete({source:'/autocomplete/datafeeds/spending/contract_id/' + path});
+            $('#edit-document-id',context).autocomplete({source:'/autocomplete/datafeeds/spending/document_id/' + path});
+            $('#edit-capital-project',context).autocomplete({source:'/autocomplete/datafeeds/spending/capital_project/' + path});
+            $('#edit-entity-contract-num',context).autocomplete({source:'/autocomplete/datafeeds/spending/entity_contract_num/' + path});
+            $('#edit-commodity-line',context).autocomplete({source:'/autocomplete/datafeeds/spending/commodity_line/' + path});
+            $('#edit-budget-name',context).autocomplete({source:'/autocomplete/datafeeds/spending/budget_name/' + path});
 
             $('.watch:input', context).each(function () {
                 $(this).focusin(function () {
                     var path = getAutoCompletePath();
 
-                    $("#edit-payee-name",context).autocomplete("option", "source", '/autocomplete/spending/payee_name/'  + path);
-                    $('#edit-contractno',context).autocomplete("option", "source", '/autocomplete/spending/contract_id/'  + path);
-                    $('#edit-document-id',context).autocomplete("option", "source", '/autocomplete/spending/document_id/'  + path);
-                    $('#edit-capital-project',context).autocomplete("option", "source", '/autocomplete/spending/capital_project/' + path);
-                    $('#edit-entity-contract-num',context).autocomplete("option", "source", '/autocomplete/spending/entity_contract_num/' + path);
-                    $('#edit-commodity-line',context).autocomplete("option", "source", '/autocomplete/spending/commodity_line/' + path);
-                    $('#edit-budget-name',context).autocomplete("option", "source", '/autocomplete/spending/budget_name/' + path);
+                    $("#edit-payee-name",context).autocomplete("option", "source", '/autocomplete/datafeeds/spending/payee_name/'  + path);
+                    $('#edit-contractno',context).autocomplete("option", "source", '/autocomplete/datafeeds/spending/contract_id/'  + path);
+                    $('#edit-document-id',context).autocomplete("option", "source", '/autocomplete/datafeeds/spending/document_id/'  + path);
+                    $('#edit-capital-project',context).autocomplete("option", "source", '/autocomplete/datafeeds/spending/capital_project/' + path);
+                    $('#edit-entity-contract-num',context).autocomplete("option", "source", '/autocomplete/datafeeds/spending/entity_contract_num/' + path);
+                    $('#edit-commodity-line',context).autocomplete("option", "source", '/autocomplete/datafeeds/spending/commodity_line/' + path);
+                    $('#edit-budget-name',context).autocomplete("option", "source", '/autocomplete/datafeeds/spending/budget_name/' + path);
                 });
             });
         }

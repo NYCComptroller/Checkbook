@@ -135,6 +135,7 @@
                 var commodity_line = $('#edit-commodity-line',context).val();
                 var budget_name = $('#edit-budget-name',context).val();
 
+
                 var domain = 'contracts';
                 var data_source = $('input:radio[name=datafeeds-contracts-domain-filter]:checked').val();
                 var params = ['status=>'+status,
@@ -146,29 +147,29 @@
                     'entity_contract_num=>'+entity_contract_num,
                     'commodity_line=>'+commodity_line,
                     'budget_name=>'+budget_name];
+
                 return domain + '/' + data_source + '/' + params;
             }
             var path = getAutoCompletePath();
-
             //$('#{element-id}', context).autocomplete({source:'/autocomplete/{domain}/{facet}/' + domain + '/' + data_source + '/' + params});
-            $('#edit-contractno', context).autocomplete({source:'/autocomplete/contracts/contract_id/' + path});
-            $('#edit-vendor', context).autocomplete({source:'/autocomplete/contracts/vendor/' + path});
-            $('#edit-apt-pin',context).autocomplete({source:'/autocomplete/contracts/apt_pin/' + path});
-            $('#edit-pin',context).autocomplete({source:'/autocomplete/contracts/pin/' + path});
-            $('#edit-entity-contract-num',context).autocomplete({source:'/autocomplete/contracts/entity_contract_num/' + path});
-            $('#edit-commodity-line',context).autocomplete({source:'/autocomplete/contracts/commodity_line/' + path});
-            $('#edit-budget-name',context).autocomplete({source:'/autocomplete/contracts/budget_name/' + path});
+            $('#edit-contractno', context).autocomplete({source:'/autocomplete/datafeeds/contracts/contract_id/' + path});
+            $('#edit-vendor', context).autocomplete({source:'/autocomplete/datafeeds/contracts/vendor/' + path});
+            $('#edit-apt-pin',context).autocomplete({source:'/autocomplete/datafeeds/contracts/apt_pin/' + path});
+            $('#edit-pin',context).autocomplete({source:'/autocomplete/datafeeds/contracts/pin/' + path});
+            $('#edit-entity-contract-num',context).autocomplete({source:'/autocomplete/datafeeds/contracts/entity_contract_num/' + path});
+            $('#edit-commodity-line',context).autocomplete({source:'/autocomplete/datafeeds/contracts/commodity_line/' + path});
+            $('#edit-budget-name',context).autocomplete({source:'/autocomplete/datafeeds/contracts/budget_name/' + path});
             $('.watch:input', context).each(function () {
                 $(this).focusin(function () {
                     var path = getAutoCompletePath();
 
-                    $('#edit-contractno', context).autocomplete('option', 'source', '/autocomplete/contracts/contract_id/' + path);
-                    $('#edit-vendor', context).autocomplete('option', 'source', '/autocomplete/contracts/vendor/' + path);
-                    $('#edit-apt-pin',context).autocomplete('option','source','/autocomplete/contracts/apt_pin/' + path);
-                    $('#edit-pin',context).autocomplete('option','source','/autocomplete/contracts/pin/' + path);
-                    $('#edit-entity-contract-num',context).autocomplete("option", "source", '/autocomplete/contracts/entity_contract_num/' + path);
-                    $('#edit-commodity-line',context).autocomplete("option", "source", '/autocomplete/contracts/commodity_line/' + path);
-                    $('#edit-budget-name',context).autocomplete("option", "source", '/autocomplete/contracts/budget_name/' + path);
+                    $('#edit-contractno', context).autocomplete('option', 'source', '/autocomplete/datafeeds/contracts/contract_id/' + path);
+                    $('#edit-vendor', context).autocomplete('option', 'source', '/autocomplete/datafeeds/contracts/vendor/' + path);
+                    $('#edit-apt-pin',context).autocomplete('option','source','/autocomplete/datafeeds/contracts/apt_pin/' + path);
+                    $('#edit-pin',context).autocomplete('option','source','/autocomplete/datafeeds/contracts/pin/' + path);
+                    $('#edit-entity-contract-num',context).autocomplete("option", "source", '/autocomplete/datafeeds/contracts/entity_contract_num/' + path);
+                    $('#edit-commodity-line',context).autocomplete("option", "source", '/autocomplete/datafeeds/contracts/commodity_line/' + path);
+                    $('#edit-budget-name',context).autocomplete("option", "source", '/autocomplete/datafeeds/contracts/budget_name/' + path);
 
                 });
             });
