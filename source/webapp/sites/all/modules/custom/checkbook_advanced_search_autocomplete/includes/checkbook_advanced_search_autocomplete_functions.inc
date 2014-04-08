@@ -27,12 +27,18 @@ function _get_advanced_search_autocomplete_results($facet, $query, $domain, $par
             $agency = $parameters['agency'];
             $expense_category = $parameters['expense_category'];
             $expense_type = $parameters['expense_type'];
+            $entity_contract_num = $parameters['entity_contract_num'];
+            $commodity_line = $parameters['commodity_line'];
+            $budget_name = $parameters['budget_name'];
 
             if ($year) $query .= _checkbook_autocomplete_get_start_end_dates($year, 'spending');
             if ($department) $query .= '&fq=department_name:' . $department;
             if ($agency) $query .= '&fq=agency_id:' . $agency;
             if ($expense_category) $query .= '&fq=expenditure_object_name:' . $expense_category;
             if ($expense_type) $query .= '&fq=spending_category_id:' . $expense_type;
+            if ($entity_contract_num) $query .= '&fq=spending_entity_contract_number:' . $entity_contract_num;
+            if ($commodity_line) $query .= '&fq=spending_commodity_line:' . $commodity_line;
+            if ($budget_name) $query .= '&fq=spending_budget_name:' . $budget_name;
             break;
 
         case 'contracts':
@@ -42,6 +48,9 @@ function _get_advanced_search_autocomplete_results($facet, $query, $domain, $par
             $agency = $parameters['agency'];
             $award_method = $parameters['award_method'];
             $year = $parameters['year'];
+            $entity_contract_num = $parameters['entity_contract_num'];
+            $commodity_line = $parameters['commodity_line'];
+            $budget_name = $parameters['budget_name'];
 
             switch($status)
             {
@@ -73,6 +82,9 @@ function _get_advanced_search_autocomplete_results($facet, $query, $domain, $par
                 $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($award_method);
                 $query .= '&fq=award_method_id:'.$code_id_array['id'];
             }
+            if ($entity_contract_num) $query .= '&fq=contract_entity_contract_number:' . $entity_contract_num;
+            if ($commodity_line) $query .= '&fq=contract_commodity_line:' . $commodity_line;
+            if ($budget_name) $query .= '&fq=contract_budget_name:' . $budget_name;
             break;
     }
 
@@ -100,6 +112,7 @@ function _checkbook_advanced_search_autocomplete($field, $domain, $data_source =
     $search_term = _get_autocomplete_search_term();
     $query_field = $field;
     $facet_field = $field;
+    $prefix = $domain == 'contracts' ? 'contract' : $domain;
 
     switch($field)
     {
@@ -128,16 +141,16 @@ function _checkbook_advanced_search_autocomplete($field, $domain, $data_source =
             $facet_field = 'contract_number';
             break;
         case 'entity_contract_num':
-            $query_field = $domain . '_contract_number';
-            $facet_field = $domain . '_entity_contract_number';
+            $query_field = $prefix . '_entity_contract_number';
+            $facet_field = $prefix . '_entity_contract_number';
             break;
         case 'commodity_line':
-            $query_field = $domain . '_commodity_line';
-            $facet_field = $domain . '_commodity_line';
+            $query_field = $prefix . '_commodity_line';
+            $facet_field = $prefix . '_commodity_line';
             break;
         case 'budget_name':
-            $query_field = $domain . '_budget_name';
-            $facet_field = $domain . '_budget_name';
+            $query_field = $prefix . '_budget_name';
+            $facet_field = $prefix . '_budget_name';
             break;
         case 'vendor':
             $query_field = 'vendor_name_autocomplete';
@@ -168,8 +181,11 @@ function _checkbook_advanced_search_autocomplete($field, $domain, $data_source =
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
         $options = _get_advanced_search_autocomplete_results($facet_field, $query, $domain, $parameters);
         $matches = array();
-        foreach($options as $key => $value)
-            $matches[] = htmlentities($value);
+        if($options[0]['label'] == "No Matches Found")
+            $matches = $options;
+        else
+            foreach($options as $key => $value)
+                $matches[] = htmlentities($value);
 
         drupal_json_output($matches);
     }
