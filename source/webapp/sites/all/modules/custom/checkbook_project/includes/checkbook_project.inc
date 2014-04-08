@@ -1444,3 +1444,39 @@ function _checkbook_check_isEDCPage(){
         return false;
     }
 }
+
+function _checkbook_get_oge_agency_id($vendor_id){
+    $vendors = _checkbook_project_querydataset('checkbook:vendor',array('vendor_id','legal_name'),array('vendor_id'=>$vendor_id));
+    $vendor_name = $vendors[0]['legal_name'];
+    $agencies = _checkbook_project_querydataset('checkbook_oge:agency',array('agency_id','agency_name'),array('agency_name'=>$vendor_name, 'is_oge_agency'=>'Y'));
+    return htmlentities($agencies[0]['agency_id']);
+}
+
+function _checkbook_get_toggle_vendor_id($agency_id){
+    $agencies = _checkbook_project_querydataset('checkbook_oge:agency',array('agency_id','agency_name'),array('agency_id'=>$agency_id, 'is_oge_agency'=>'Y'));
+    $agency_name = $agencies[0]['agency_name'];
+    $vendors = _checkbook_project_querydataset('checkbook:vendor',array('vendor_id','legal_name'),array('legal_name'=>$agency_name));
+    return htmlentities($vendors[0]['vendor_id']);
+}
+
+function _get_toggle_view_links(){
+    $q = $_SERVER['REQUEST_URI'];
+    $array_q = explode('/',$q);
+    $year_string = _checkbook_project_get_year_url_param_string();
+    $link = $oge_agency_id = $vendor_id = null;
+
+    if(!_checkbook_check_isEDCPage() && _getRequestParamValue('vendor')){
+       $oge_agency_id = _checkbook_get_oge_agency_id(_getRequestParamValue('vendor'));
+       $link = '/'.$array_q[1].$year_string.'/datasource/checkbook_oge/agency/'.$oge_agency_id;
+       return array('vendor',$link);
+
+    }
+    else if(_checkbook_check_isEDCPage()){
+        $vendor_id = _checkbook_get_toggle_vendor_id( _getRequestParamValue('agency'));
+        $link = '/'.$array_q[1].$year_string.'/vendor/'.$vendor_id;
+        return array('agency',$link);
+    }else{
+        return null;
+    }
+
+}
