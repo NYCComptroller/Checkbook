@@ -503,16 +503,16 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
 {
     $filter_dimension = $data_source . '_contracts';
 
-    $contracts_contract_status = trim($form[$filter_dimension]['contract_status']['#value']);
-    $contracts_contract_category = trim($form[$filter_dimension]['contract_category']['#value']);
+    $contracts_contract_status = trim($form[$filter_dimension][$data_source . '_contract_status']['#value']);
+    $contracts_contract_category = trim($form[$filter_dimension][$data_source . '_contract_category']['#value']);
     $contracts_contract_vendor_name = trim($form[$filter_dimension]['contract_vendor_name']['#value']);
     $contracts_contract_purpose = trim($form[$filter_dimension]['contract_purpose']['#value']);
-    $contracts_contract_type = trim($form[$filter_dimension]['contract_type']['#value']);
-    $contracts_contract_agency = trim($form[$filter_dimension]['contract_agency']['#value']);
+    $contracts_contract_type = trim($form[$filter_dimension][$data_source . '_contract_type']['#value']);
+    $contracts_contract_agency = trim($form[$filter_dimension][$data_source . '_contract_agency']['#value']);
     $contracts_contract_contract_num = trim($form[$filter_dimension]['contract_contract_num']['#value']);
     $contracts_contract_apt_pin = trim($form[$filter_dimension]['contract_apt_pin']['#value']);
     $contracts_contract_pin = trim($form[$filter_dimension]['contract_pin']['#value']);
-    $contracts_contract_award_method = trim($form[$filter_dimension]['contract_award_method']['#value']);
+    $contracts_contract_award_method = trim($form[$filter_dimension][$data_source . '_contract_award_method']['#value']);
     $contracts_contract_current_contract_amount_from = trim($form[$filter_dimension]['contract_current_contract_amount_from']['#value']);
     $contracts_contract_current_contract_amount_to = trim($form[$filter_dimension]['contract_current_contract_amount_to']['#value']);
     $contracts_contract_start_date_from = trim($form[$filter_dimension]['contract_start_date_from']['#value']['date']);
@@ -536,6 +536,8 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
     } else {
         $redirect_url = 'contract/transactions';
     }
+    //append data source if not default (checkbook)
+    if($data_source != 'checkbook') $redirect_url .= '/datasource/' . $data_source;
 
     if (!empty($contracts_contract_status)) {
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_status, 'contstatus');
@@ -616,9 +618,6 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
 
     $contracts_contract_registration_date_range_array = array('from' => $contracts_contract_registration_date_from, 'to' => $contracts_contract_registration_date_to, 'type' => 'date');
 
-    //append data source if not default (checkbook)
-    if($data_source != 'checkbook') $redirect_url .= '/datasource/' . $data_source;
-
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_registration_date_range_array, 'regdate', TRUE);
     $form_state['redirect'] = $redirect_url;
 }
@@ -637,9 +636,9 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
     $spending_contract_num_exact = trim($form[$filter_dimension]['spending_contract_num_exact']['#value']);
     $spending_document_id = trim($form[$filter_dimension]['spending_document_id']['#value']);
     $spending_document_id_exact = trim($form[$filter_dimension]['spending_document_id_exact']['#value']);
-    $spending_agencies = trim($form[$filter_dimension]['spending_agencies']['#value']);
+    $spending_agencies = trim($form[$filter_dimension][$data_source . '_spending_agency']['#value']); //drop down
 
-    $spending_expense_category = trim($form_state['input']['spending_expense_category']);
+    $spending_expense_category = trim($form_state['input'][$data_source . '_spending_expense_category']);
 
     $spending_check_amount_from = trim($form[$filter_dimension]['spending_check_amount_from']['#value']);
     $spending_check_amount_to = trim($form[$filter_dimension]['spending_check_amount_to']['#value']);
@@ -647,11 +646,11 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
     $spending_issue_date_to = trim($form[$filter_dimension]['spending_issue_date_to']['#value']['date']);
     $spending_fund_class = trim($form[$filter_dimension]['spending_fund_class']['#value']);
 
-    $spending_department = trim($form_state['input']['spending_department']);
+    $spending_department = trim($form_state['input'][$data_source . '_spending_department']);
     $spending_budget_code = trim($form[$filter_dimension]['spending_budget_code']['#value']);
     $spending_capital_project = trim($form[$filter_dimension]['spending_capital_project']['#value']);
     $spending_capital_project_exact = trim($form[$filter_dimension]['spending_capital_project_exact']['#value']);
-    $spending_expense_type = trim($form[$filter_dimension]['spending_expense_type']['#value']);
+    $spending_expense_type = trim($form[$filter_dimension][$data_source . '_spending_expense_type']['#value']);
     $spending_fiscal_year = trim($form[$filter_dimension]['spending_fiscal_year']['#value']);
     $spending_date_filter = trim($form[$filter_dimension]['date_filter']['#value']);
 
@@ -667,7 +666,8 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
     }
 
     $redirect_url = 'spending/transactions';
-
+    //append data source if not default (checkbook)
+    if($data_source != 'checkbook') $redirect_url .= '/datasource/' . $data_source;
 
     if (!empty($spending_fiscal_year) && $spending_date_filter == 0) {
         $redirect_url .= _checkbook_advanced_search_year_arg($spending_fiscal_year, 'year');
@@ -749,9 +749,6 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
         $spending_issue_date_range_array = array('from' => $spending_issue_date_from, 'to' => $spending_issue_date_to, 'type' => 'date');
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_issue_date_range_array, 'chkdate', TRUE);
     }
-
-    //append data source if not default (checkbook)
-    if($data_source != 'checkbook') $redirect_url .= '/datasource/' . $data_source;
 
     $form_state['redirect'] = $redirect_url;
 }
