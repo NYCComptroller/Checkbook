@@ -1968,7 +1968,7 @@ function checkbook_datafeeds_contracts_next_submit($form, &$form_state) {
 function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
 {
     $values = $form_state['step_information']['contracts']['stored_values'];
-    $responsetype = $form_state['step_information']['type']['stored_values']['format'];
+    $response_type = $form_state['step_information']['type']['stored_values']['format'];
     $user_criteria = array();
     //Get current data source
     $data_source = !isset($form_state['input']['datafeeds-contracts-domain-filter']) ? 'checkbook' : $form_state['input']['datafeeds-contracts-domain-filter'];
@@ -1984,6 +1984,17 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
             'data-feeds-wizard',
         ),
     );
+
+    //Filter columns for current data source
+    $columns_selected = $values['column_select_expense'];
+    if (!empty($values['column_select_revenue']))
+        $columns_selected = $values['column_select_revenue'];
+    else if (!empty($values['column_select_pending']))
+        $columns_selected = $values['column_select_pending'];
+
+    $filtered_columns = checkbook_datafeeds_contracts_filter_selected_columns($columns_selected, $data_source, $response_type, $values['df_contract_status'],$values['category'],$values['year']);
+    $form_state['step_information']['spending']['stored_values']['column_select'] = $filtered_columns;
+
     if ($values['df_contract_status'] != 'pending' && $values['category'] == 'expense') {
         foreach ($values['column_select_expense'] as $column) {
             $form['columns'][$column] = array(
@@ -2158,7 +2169,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
     $criteria = checkbook_datafeeds_process_contracts_values($form, $form_state, $data_source);
     $form_state['step_information']['confirmation']['stored_values']['criteria'] = $criteria;
     $form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $user_criteria;
-    $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $responsetype, 'contracts');
+    $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $response_type, 'contracts');
     return $modified_form;
 }
 
@@ -4550,13 +4561,49 @@ function checkbook_datafeeds_spending_next_submit($form, &$form_state)
  * @param string $response_type
  *   response type (i.e. csv, xml)
  */
-function checkbook_datafeeds_filter_selected_columns($selected_columns, $data_source, $response_type)
+function checkbook_datafeeds_spending_filter_selected_columns($selected_columns, $data_source, $response_type)
 {
     //Get column configurations
-    $domain = $data_source == 'checkbook_oge' ? 'spending_oge' : 'spending';
+    $domain = 'spending';
+    $domain = $data_source == 'checkbook_oge' ? $domain.'_oge' : $domain;
     $domain_config = ConfigUtil::getDomainConfiguration($domain);
     //Get columns which should be included for the current data source
     $columns_included = $domain_config->$domain->dataset->displayConfiguration->$response_type->elementsColumn;
+    //Filter out selected columns which are not configured to show for this data source
+    $filtered_columns = array_intersect_key($selected_columns, (array)$columns_included);
+    return $filtered_columns;
+}
+
+/**
+ * Filters selected columns to only contain columns configured for this domain snd data_source
+ *
+ * @param array $selected_columns
+ *   selected column array
+ * @param string $data_source
+ *   current selected data source (i.e. checkbook, checkbook_oge)
+ * @param string $response_type
+ *   response type (i.e. csv, xml)
+ * @param string $status
+ *   status
+ * @param string $expense_category
+ *   expense category
+ * @param string $year
+ *   year
+ */
+function checkbook_datafeeds_contracts_filter_selected_columns($selected_columns, $data_source, $response_type, $status, $expense_category, $year)
+{
+    //Get column configurations
+    $domain = 'contracts';
+    $domain = $data_source == 'checkbook_oge' ? $domain.'_oge' : $domain;
+    $domain_config = ConfigUtil::getDomainConfiguration($domain);
+
+    $domain_filter = $domain;
+    $domain_filter .= $status == 'pending' ? '_pending' : '_active';
+    $domain_filter .= '_'.$expense_category;
+    if ($year == 'All Years') $domain_filter .= "_all_years";
+
+    //Get columns which should be included for the current data source
+    $columns_included = $domain_config->$domain_filter->dataset->displayConfiguration->$response_type->elementsColumn;
     //Filter out selected columns which are not configured to show for this data source
     $filtered_columns = array_intersect_key($selected_columns, (array)$columns_included);
     return $filtered_columns;
@@ -4599,7 +4646,7 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
     );
 
     //Filter columns for current data source
-    $filtered_columns = checkbook_datafeeds_filter_selected_columns($values['column_select'], $data_source, $response_type);
+    $filtered_columns = checkbook_datafeeds_spending_filter_selected_columns($values['column_select'], $data_source, $response_type);
     $form_state['step_information']['spending']['stored_values']['column_select'] = $filtered_columns;
 
     foreach ($form_state['step_information']['spending']['stored_values']['column_select'] as $column) {
