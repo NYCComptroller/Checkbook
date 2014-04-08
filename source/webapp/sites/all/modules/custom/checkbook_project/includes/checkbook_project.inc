@@ -1462,6 +1462,7 @@ function _checkbook_get_toggle_vendor_id($agency_id){
 function _get_toggle_view_links(){
     $q = $_SERVER['REQUEST_URI'];
     $array_q = explode('/',$q);
+    $array_q[1] = ($array_q[1] == 'contracts_landing') ? $array_q[1].'/status/A':$array_q[1];
     $year_string = _checkbook_project_get_year_url_param_string();
     $link = $oge_agency_id = $vendor_id = null;
 
