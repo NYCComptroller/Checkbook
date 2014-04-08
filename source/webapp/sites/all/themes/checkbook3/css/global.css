@@ -897,11 +897,18 @@ a.toggleVendor{
     margin-top: 15px;
     float: left;
 }
-span.toggleVendor{
+a.toggleAgency{
     margin-top: 15px;
     float: left;
 }
-span.toggleAgency {
+span.toggleVendor{
+    margin-top: 15px;
+    float: left;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+span.toggleAgency{
     margin-top: 15px;
     float: left;
     font-size: 13px;
