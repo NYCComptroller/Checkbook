@@ -181,7 +181,7 @@ function _checkbook_advanced_search_autocomplete($field, $domain, $data_source =
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
         $options = _get_advanced_search_autocomplete_results($facet_field, $query, $domain, $parameters);
         $matches = array();
-        if($options[0]['label'] == "No Matches Found")
+        if(isset($options[0]['label']) && $options[0]['label'] == "No Matches Found")
             $matches = $options;
         else
             foreach($options as $key => $value)
