@@ -101,25 +101,25 @@
 
             var path = getAutoCompletePath(div);
 
-            div.ele('vendor_name').autocomplete({source:'/advanced-search/autocomplete/pathcontracts/vendor/' + path});
-            div.ele('contract_id').autocomplete({source:'/advanced-search/autocomplete/contracts/contract_id/' + path});
-            div.ele('apt_pin').autocomplete({source:'/advanced-search/autocomplete/contracts/apt_pin/' + path});
-            div.ele('pin').autocomplete({source:'/advanced-search/autocomplete/contracts/pin/' + path});
-            div.ele('entity_contract_num').autocomplete({source:'/advanced-search/autocomplete/contracts/entity_contract_num/' + path});
-            div.ele('commodity_line').autocomplete({source:'/advanced-search/autocomplete/contracts/commodity_line/' + path});
-            div.ele('budget_name').autocomplete({source:'/advanced-search/autocomplete/contracts/budget_name/' + path});
+            div.ele('vendor_name').autocomplete({source:'/advanced-search/generic/autocomplete/pathcontracts/vendor/' + path});
+            div.ele('contract_id').autocomplete({source:'/advanced-search/generic/autocomplete/contracts/contract_id/' + path});
+            div.ele('apt_pin').autocomplete({source:'/advanced-search/generic/autocomplete/contracts/apt_pin/' + path});
+            div.ele('pin').autocomplete({source:'/advanced-search/generic/autocomplete/contracts/pin/' + path});
+            div.ele('entity_contract_num').autocomplete({source:'/advanced-search/generic/autocomplete/contracts/entity_contract_num/' + path});
+            div.ele('commodity_line').autocomplete({source:'/advanced-search/generic/autocomplete/contracts/commodity_line/' + path});
+            div.ele('budget_name').autocomplete({source:'/advanced-search/generic/autocomplete/contracts/budget_name/' + path});
 
             $('#contracts-advanced-search').each(function () {
                 $(this).focusout(function () {
                     path = getAutoCompletePath(div);
 
-                    div.ele('vendor_name').autocomplete({source:'/advanced-search/autocomplete/pathcontracts/vendor/' + path});
-                    div.ele('contract_id').autocomplete({source:'/advanced-search/autocomplete/contracts/contract_id/' + path});
-                    div.ele('apt_pin').autocomplete({source:'/advanced-search/autocomplete/contracts/apt_pin/' + path});
-                    div.ele('pin').autocomplete({source:'/advanced-search/autocomplete/contracts/pin/' + path});
-                    div.ele('entity_contract_num').autocomplete({source:'/advanced-search/autocomplete/contracts/entity_contract_num/' + path});
-                    div.ele('commodity_line').autocomplete({source:'/advanced-search/autocomplete/contracts/commodity_line/' + path});
-                    div.ele('budget_name').autocomplete({source:'/advanced-search/autocomplete/contracts/budget_name/' + path});
+                    div.ele('vendor_name').autocomplete({source:'/advanced-search/generic/autocomplete/pathcontracts/vendor/' + path});
+                    div.ele('contract_id').autocomplete({source:'/advanced-search/generic/autocomplete/contracts/contract_id/' + path});
+                    div.ele('apt_pin').autocomplete({source:'/advanced-search/generic/autocomplete/contracts/apt_pin/' + path});
+                    div.ele('pin').autocomplete({source:'/advanced-search/autocomplete/generic/contracts/pin/' + path});
+                    div.ele('entity_contract_num').autocomplete({source:'/advanced-search/generic/autocomplete/contracts/entity_contract_num/' + path});
+                    div.ele('commodity_line').autocomplete({source:'/advanced-search/autocomplete/generic/contracts/commodity_line/' + path});
+                    div.ele('budget_name').autocomplete({source:'/advanced-search/autocomplete/generic/contracts/budget_name/' + path});
                 });
             });
         }

@@ -336,43 +336,43 @@
             path = getAutoCompletePath(div);
 
             div.ele('payee_name').autocomplete({
-                source:'/advanced-search/autocomplete/spending/payee_name/' + path,
+                source:'/advanced-search/generic/autocomplete/spending/payee_name/' + path,
                 select:function (event, ui) {
                     $(this).parent().next().val(ui.item.label);
                 }
             });
             div.ele('contract_id').autocomplete({
-                source:'/advanced-search/autocomplete/spending/contract_id/' + path,
+                source:'/advanced-search/generic/autocomplete/spending/contract_id/' + path,
                 select:function (event, ui) {
                     $(this).parent().next().val(ui.item.label);
                 }
             });
             div.ele('capital_project').autocomplete({
-                source:'/advanced-search/autocomplete/spending/capital_project/' + path,
+                source:'/advanced-search/generic/autocomplete/spending/capital_project/' + path,
                 select:function (event, ui) {
                     $(this).parent().next().val(ui.item.label);
                 }
             });
             div.ele('document_id').autocomplete({
-                source:'/advanced-search/autocomplete/spending/document_id/' + path,
+                source:'/advanced-search/generic/autocomplete/spending/document_id/' + path,
                 select:function (event, ui) {
                     $(this).parent().next().val(ui.item.label);
                 }
             });
             div.ele('commodity_line').autocomplete({
-                source:'/advanced-search/autocomplete/spending/commodity_line/' + path,
+                source:'/advanced-search/generic/autocomplete/spending/commodity_line/' + path,
                 select:function (event, ui) {
                     $(this).parent().next().val(ui.item.label);
                 }
             });
             div.ele('budget_name').autocomplete({
-                source:'/advanced-search/autocomplete/spending/budget_name/' + path,
+                source:'/advanced-search/generic/autocomplete/spending/budget_name/' + path,
                 select:function (event, ui) {
                     $(this).parent().next().val(ui.item.label);
                 }
             })
             div.ele('entity_contract_num').autocomplete({
-                source:'/advanced-search/autocomplete/spending/entity_contract_num/' + path,
+                source:'/advanced-search/generic/autocomplete/spending/entity_contract_num/' + path,
                 select:function (event, ui) {
                     $(this).parent().next().val(ui.item.label);
                 }
@@ -382,13 +382,13 @@
                 $(this).focusout(function () {
                     path = getAutoCompletePath(div);
 
-                    div.ele('payee_name').autocomplete({source:'/advanced-search/autocomplete/spending/payee_name/' + path});
-                    div.ele('contract_id').autocomplete({source:'/advanced-search/autocomplete/spending/contract_id/' + path});
-                    div.ele('capital_project').autocomplete({source:'/advanced-search/autocomplete/spending/capital_project/' + path});
-                    div.ele('document_id').autocomplete({source:'/advanced-search/autocomplete/spending/document_id/' + path});
-                    div.ele('entity_contract_num').autocomplete({source:'/advanced-search/autocomplete/spending/entity_contract_num/' + path});
-                    div.ele('commodity_line').autocomplete({source:'/advanced-search/autocomplete/spending/commodity_line/' + path});
-                    div.ele('budget_name').autocomplete({source:'/advanced-search/autocomplete/spending/budget_name/' + path});
+                    div.ele('payee_name').autocomplete({source:'/advanced-search/generic/autocomplete/spending/payee_name/' + path});
+                    div.ele('contract_id').autocomplete({source:'/advanced-search/generic/autocomplete/spending/contract_id/' + path});
+                    div.ele('capital_project').autocomplete({source:'/advanced-search/generic/autocomplete/spending/capital_project/' + path});
+                    div.ele('document_id').autocomplete({source:'/advanced-search/generic/autocomplete/spending/document_id/' + path});
+                    div.ele('entity_contract_num').autocomplete({source:'/advanced-search/generic/autocomplete/spending/entity_contract_num/' + path});
+                    div.ele('commodity_line').autocomplete({source:'/advanced-search/generic/autocomplete/spending/commodity_line/' + path});
+                    div.ele('budget_name').autocomplete({source:'/advanced-search/generic/autocomplete/spending/budget_name/' + path});
                 });
             });
             if (div.ele('date_filter_checked').val() == 0) {

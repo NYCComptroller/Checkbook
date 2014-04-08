@@ -33,13 +33,13 @@ function checkbook_advanced_search_autocomplete_menu()
     $items = array();
 
     //Generic Spending/Contracts Auto-complete
-    $items['advanced-search/autocomplete/spending'] = array(
+    $items['advanced-search/generic/autocomplete/spending'] = array(
         'page callback' => '_checkbook_advanced_search_autocomplete',
         'access callback' => TRUE,
         'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
         'type' => MENU_CALLBACK
     );
-    $items['advanced-search/autocomplete/contracts'] = array(
+    $items['advanced-search/generic/autocomplete/contracts'] = array(
         'page callback' => '_checkbook_advanced_search_autocomplete',
         'access callback' => TRUE,
         'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
@@ -83,7 +83,6 @@ function checkbook_advanced_search_autocomplete_menu()
         'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
         'type' => MENU_CALLBACK
     );
-    //
     $items['advanced-search/autocomplete/spending/entitycontractnum'] = array(
         'page callback' => '_checkbook_advanced_search_autocomplete_spending_entitycontractnum',
         'access callback' => TRUE,
