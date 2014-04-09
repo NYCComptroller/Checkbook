@@ -3,11 +3,11 @@
 
         var contracts_div = function (data_source, div_contents) {
             this.div_elements = {
-                'agency':'select[name='+data_source+'contracts_agency]',
-                'status':'select[name='+data_source+'contracts_status]',
-                'category':'select[name='+data_source+'contracts_category]',
-                'contract_type':'select[name='+data_source+'contracts_type]',
-                'award_method':'select[name='+data_source+'contracts_award_method]',
+                'agency':'select[name='+data_source+'_contracts_agency]',
+                'status':'select[name='+data_source+'_contracts_status]',
+                'category':'select[name='+data_source+'_contracts_category]',
+                'contract_type':'select[name='+data_source+'_contracts_type]',
+                'award_method':'select[name='+data_source+'_contracts_award_method]',
                 'year':'select[name="contracts_year"]',
                 'vendor_name':'input:text[name=contracts_vendor_name]',
                 'contract_id':'input:text[name=contracts_contract_num]',
@@ -74,10 +74,14 @@
            resetFields(div_checkbook_contracts.contents());
            resetFields(div_checkbook_contracts_oge.contents());
 
+            /* Initialize the disabled fields */
+            onStatusChange(div_checkbook_contracts);
+            onStatusChange(div_checkbook_contracts_oge);
+
             /* Initialize view by data source */
             switch (dataSource) {
                 case "checkbook_oge":
-                    initializeContractsView(div_checkbook_contracts_oge, dataSource);
+                    initializeContractsView(div_checkbook_contracts_oge);
                     div_checkbook_contracts.contents().hide();
                     div_checkbook_contracts_oge.contents().show();
 
@@ -90,14 +94,14 @@
                     break;
 
                 default:
-                    initializeContractsView(div_checkbook_contracts, dataSource);
+                    initializeContractsView(div_checkbook_contracts);
                     div_checkbook_contracts.contents().show();
                     div_checkbook_contracts_oge.contents().hide();
                     break;
             }
         }
 
-        function initializeContractsView(div, dataSource) {
+        function initializeContractsView(div) {
 
             var path = getAutoCompletePath(div);
 
@@ -139,7 +143,7 @@
         div_checkbook_contracts.ele('status').change(function () {
             onStatusChange(div_checkbook_contracts);
         });
-        div_checkbook_contracts_oge.ele('fiscal_year').change(function () {
+        div_checkbook_contracts_oge.ele('status').change(function () {
             onStatusChange(div_checkbook_contracts_oge);
         });
         function onStatusChange(div) {
