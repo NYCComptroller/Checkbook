@@ -873,54 +873,68 @@ $("input[name='alert_end[date]']").datepicker({"changeMonth":true,"changeYear":t
                 var href = window.location.href.replace(/(http|https):\/\//, '');
                 var n = href.indexOf('?');
                 href = href.substring(0, n != -1 ? n : href.length);
+                var data_source = (href.indexOf('datasource/checkbook_oge') !== -1) ? "checkbook_oge" : "checkbook";
 
                 var page_clicked_from = href.split('/')[1];
-
                 if (this.id)
                     page_clicked_from = this.id;
+                var domain;
                 switch (page_clicked_from) {
                     case "budget":
+                        domain = "budget";
                         active_accordion_window = 0;
                         break;
                     case "revenue":
+                        domain = "revenue";
                         active_accordion_window = 1;
                         break;
                     case "spending":
+                        domain = "spending";
                         active_accordion_window = 2;
                         break;
                     case "spending_landing":
+                        domain = "spending";
                         active_accordion_window = 2;
                         break;                          
                     case "contracts_revenue_landing":
+                        domain = "contracts";
                         active_accordion_window = 3;
                         break;
                     case "contracts_landing":
+                        domain = "contracts";
                         active_accordion_window = 3;
                         break;
                     case "contracts_pending_rev_landing":
+                        domain = "contracts";
                         active_accordion_window = 3;
                         break;
                     case "contracts_pending_exp_landing":
+                        domain = "contracts";
                         active_accordion_window = 3;
                         break;
                     case "contracts_pending_landing":
+                        domain = "contracts";
                         active_accordion_window = 3;
                         break;
                     case "contract":
+                        domain = "contracts";
                         active_accordion_window = 3;
                         break;                          
                     case "payroll":
+                        domain = "payroll";
                         active_accordion_window = 4;
                         break;                        
                     default:
+                        domain = "spending";
                         active_accordion_window = 2;
                         break;
                 }
-                clearInputFields("#payroll-advanced-search",'payroll');
-                clearInputFields("#contracts-advanced-search",'contracts');
-                clearInputFields("#spending-advanced-search",'spending');
-                clearInputFields("#budget-advanced-search",'budget');
-                clearInputFields("#revenue-advanced-search",'revenue');
+
+                clearInputFieldByDataSource("#payroll-advanced-search",'payroll',data_source);
+                clearInputFieldByDataSource("#contracts-advanced-search",'contracts',data_source);
+                clearInputFieldByDataSource("#spending-advanced-search",'spending',data_source);
+                clearInputFieldByDataSource("#budget-advanced-search",'budget',data_source);
+                clearInputFieldByDataSource("#revenue-advanced-search",'revenue',data_source);
 
                 $('#block-checkbook-advanced-search-checkbook-advanced-search-form').dialog({
                     title:"Advanced Search",
@@ -933,18 +947,33 @@ $("input[name='alert_end[date]']").datepicker({"changeMonth":true,"changeYear":t
                         $(".ui-autocomplete-input").autocomplete("close")
                     },
                     open: function(){
-
                     },
                     close: function(){
                         $(".ui-autocomplete-input").autocomplete("close")
                     }
                 });
+
                 $('.advanced-search-accordion').accordion({
                     autoHeight: false,
                     active: active_accordion_window
                 });
+
+                /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
+                if(data_source == "checkbook_oge") {
+                    disableAccordionSection('Budget');
+                    disableAccordionSection('Revenue');
+                    disableAccordionSection('Payroll');
+                }
+
                 return false;
             });
+
+            /* Function will apply disable the click of the accordian section and apply an attribute for future processing */
+            function disableAccordionSection(name) {
+                var accordion_section = $("a:contains("+name+")").closest("h3");
+                accordion_section.attr("data-enabled","false");
+                accordion_section.unbind("click");
+            }
         }
     };
 
