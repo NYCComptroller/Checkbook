@@ -27,11 +27,12 @@
     }
 }(jQuery));
 
-
-
-
-
+/* Deprecated to pass data source optionally with default */
 function clearInputFields(enclosingDiv,domain){
+    clearInputFieldByDataSource(enclosingDiv,domain,'checkbook');
+}
+
+function clearInputFieldByDataSource(enclosingDiv,domain,dataSource){
     jQuery(enclosingDiv).find(':input').each(function() {
         switch(this.type){
             case 'select-one':
@@ -58,15 +59,10 @@ function clearInputFields(enclosingDiv,domain){
                         jQuery('#edit-payroll-amount-type-0').attr('checked','checked');
                         break;
                     case 'spending':
-//                        jQuery('#edit-date-filter-0').attr('checked','checked');
-//                        jQuery('#edit-spending-fiscal-year').removeAttr("disabled");
-//                        jQuery('#edit-spending-issue-date-from-datepicker-popup-0').attr("disabled", "disabled");
-//                        jQuery('#edit-spending-issue-date-to-datepicker-popup-0').attr("disabled", "disabled");
-                        //jQuery(':radio[name="spending_advanced_search_domain_filter"][value="checkbook"]').attr('checked', 'checked');
-                        jQuery(':radio[name="spending_advanced_search_domain_filter"][value="checkbook"]').click();
+                        jQuery(':radio[name="spending_advanced_search_domain_filter"][value="'+dataSource+'"]').click();
                         break;
                     case 'contracts':
-                        jQuery(':radio[name="contracts_advanced_search_domain_filter"][value="checkbook"]').click();
+                        jQuery(':radio[name="contracts_advanced_search_domain_filter"][value="'+dataSource+'"]').click();
                         break;
                 }
                 break;
