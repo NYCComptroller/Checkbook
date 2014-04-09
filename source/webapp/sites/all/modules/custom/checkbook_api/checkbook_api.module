@@ -67,13 +67,13 @@ function checkbook_api() {
     echo $e->getMessage();
     return;
   }
-
+  drupal_add_http_header("Content-Type", "application/xml");
   if (isset($checkbook_api)) {
-    if ($checkbook_api->validateRequest()) {
-      echo $checkbook_api->getData();
+    if ($checkbook_api->validateRequest()) {   
+      echo $checkbook_api->getData();      
     }
     else {
-      echo $checkbook_api->getErrorResponse();
+    	echo $checkbook_api->getErrorResponse();
     }
   }
 }
