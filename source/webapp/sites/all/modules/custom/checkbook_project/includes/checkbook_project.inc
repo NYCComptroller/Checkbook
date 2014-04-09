@@ -1456,7 +1456,8 @@ function _checkbook_get_toggle_vendor_id($agency_id){
     $agencies = _checkbook_project_querydataset('checkbook_oge:agency',array('agency_id','agency_name'),array('agency_id'=>$agency_id, 'is_oge_agency'=>'Y'));
     $agency_name = $agencies[0]['agency_name'];
     $vendors = _checkbook_project_querydataset('checkbook:vendor',array('vendor_id','legal_name'),array('legal_name'=>$agency_name));
-    return htmlentities($vendors[0]['vendor_id']);
+    $vendor_id = htmlentities($vendors[0]['vendor_id']-100000);
+    return $vendor_id;
 }
 
 function _get_toggle_view_links(){
