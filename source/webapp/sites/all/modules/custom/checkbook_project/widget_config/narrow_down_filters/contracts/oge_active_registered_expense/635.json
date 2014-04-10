@@ -15,7 +15,7 @@
     "urlParameterName":"agency",
     "autocompleteParamName":"agency_auto",
     "autocompleteID":"fagencyId",
-    "autocompleteField":"agency_name",
+    "autocompleteField":"display_agency.display_agency.agency_name",
 	"maxSelect":1,
     "adjustParameters":"
     if(function_exists('_checkbook_project_adjustContractParameterFilters')){
