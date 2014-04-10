@@ -1,7 +1,8 @@
 {
 "widgetType": "data_tables",
 "widgetSubType": "dataTableList",
-"cleanURLParameters":["doctype","contstatus","year","calyear","yeartype","agency","vendor","curamtr","vendornm","contdesc","agrmnttype","agencyh","contnum","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","modamt"],
+"cleanURLParameters":["doctype","contstatus","year","calyear","yeartype","agency","vendor","curamtr","vendornm","contdesc","agrmnttype","agencyh","contnum","aptpin","pin",
+    "awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","modamt","entcontnum_exact","entcontnum","comline_exact","comline","budname_exact","budname"],
 "urlParamMap":{"doctype":"document_code@checkbook:ref_document_code",
                "contstatus":"status_flag" ,
                 "year":"fiscal_year_id",
@@ -13,10 +14,16 @@
                  "aptpin":"brd_awd_no","pin":"tracking_number","awdmethod":"award_method_id",
                  "curamt":"maximum_contract_amount","startdate":"effective_begin_date","enddate":"effective_end_date",
                  "regdate":"registered_date","cindustry":"industry_type_id","csize":"award_size_id",
-                 "modamt":"dollar_difference"
+                 "modamt":"dollar_difference",
+         "entcontnum_exact":"oge_contract_number",
+        "entcontnum":"oge_contract_number",
+        "comline_exact":"fms_commodity_line",
+        "comline":"fms_commodity_line",
+        "budname_exact":"budget_name",
+        "budname":"budget_name"
 },
 "allowRequestParams":["smnid"],
-"paramTypeConfig":{"curamtr":"rangeid","vendornm":"like","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","regdate":"range","modamt":"ne"},
+"paramTypeConfig":{"entcontnum_exact":"eqignorecase","comline_exact":"eqignorecase","budname_exact":"eqignorecase","curamtr":"rangeid","vendornm":"like","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","regdate":"range","modamt":"ne"},
 "defaultParameters":{"status_flag":"A","is_vendor_flag":"N"},
 "header":"
 	$header = NULL;
