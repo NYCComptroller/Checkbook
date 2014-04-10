@@ -8,18 +8,18 @@
                 'category':'select[name='+data_source+'_contracts_category]',
                 'contract_type':'select[name='+data_source+'_contracts_type]',
                 'award_method':'select[name='+data_source+'_contracts_award_method]',
-                'year':'select[name="contracts_year"]',
-                'vendor_name':'input:text[name=contracts_vendor_name]',
-                'contract_id':'input:text[name=contracts_contract_num]',
-                'apt_pin':'input:text[name=contracts_apt_pin]',
-                'pin':'input:text[name=contracts_pin]',
-                'registration_date_from':'input:text[name="contracts_registration_date_from[date]"]',
-                'registration_date_to':'input:text[name="contracts_registration_date_to[date]"]',
-                'received_date_from':'input:text[name="contracts_received_date_from[date]"]',
-                'received_date_to':'input:text[name="contracts_received_date_to[date]"]',
-                'entity_contract_num':'input:text[name=contracts_entity_contract_num]',
-                'commodity_line':'input:text[name=contracts_commodity_line]',
-                'budget_name':'input:text[name=contracts_budget_name]'
+                'year':'select[name="'+data_source+'_contracts_year"]',
+                'vendor_name':'input:text[name='+data_source+'_contracts_vendor_name]',
+                'contract_id':'input:text[name='+data_source+'_contracts_contract_num]',
+                'apt_pin':'input:text[name='+data_source+'_contracts_apt_pin]',
+                'pin':'input:text[name='+data_source+'_contracts_pin]',
+                'registration_date_from':'input:text[name="'+data_source+'_contracts_registration_date_from[date]"]',
+                'registration_date_to':'input:text[name="'+data_source+'_contracts_registration_date_to[date]"]',
+                'received_date_from':'input:text[name="'+data_source+'_contracts_received_date_from[date]"]',
+                'received_date_to':'input:text[name="'+data_source+'_contracts_received_date_to[date]"]',
+                'entity_contract_num':'input:text[name='+data_source+'_contracts_entity_contract_num]',
+                'commodity_line':'input:text[name='+data_source+'_contracts_commodity_line]',
+                'budget_name':'input:text[name='+data_source+'_contracts_budget_name]'
             };
 
             this.data_source = data_source;
