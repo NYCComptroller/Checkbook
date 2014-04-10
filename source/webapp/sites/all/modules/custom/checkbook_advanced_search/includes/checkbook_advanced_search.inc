@@ -629,37 +629,37 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
 {
     $filter_dimension = $data_source . '_spending';
 
-    $spending_fiscal_year = trim($form[$filter_dimension]['spending_fiscal_year']['#value']);
-    $spending_payee_name = trim($form[$filter_dimension]['spending_payee_name']['#value']);
-    $spending_payee_name_exact = trim($form[$filter_dimension]['spending_payee_name_exact']['#value']);
-    $spending_contract_num = trim($form[$filter_dimension]['spending_contract_num']['#value']);
-    $spending_contract_num_exact = trim($form[$filter_dimension]['spending_contract_num_exact']['#value']);
-    $spending_document_id = trim($form[$filter_dimension]['spending_document_id']['#value']);
-    $spending_document_id_exact = trim($form[$filter_dimension]['spending_document_id_exact']['#value']);
+    $spending_fiscal_year = trim($form[$filter_dimension][$data_source . '_spending_fiscal_year']['#value']);
+    $spending_payee_name = trim($form[$filter_dimension][$data_source . '_spending_payee_name']['#value']);
+    $spending_payee_name_exact = trim($form[$filter_dimension][$data_source . '_spending_payee_name_exact']['#value']);
+    $spending_contract_num = trim($form[$filter_dimension][$data_source . '_spending_contract_num']['#value']);
+    $spending_contract_num_exact = trim($form[$filter_dimension][$data_source . '_spending_contract_num_exact']['#value']);
+    $spending_document_id = trim($form[$filter_dimension][$data_source . '_spending_document_id']['#value']);
+    $spending_document_id_exact = trim($form[$filter_dimension][$data_source . '_spending_document_id_exact']['#value']);
     $spending_agencies = trim($form[$filter_dimension][$data_source . '_spending_agency']['#value']); //drop down
 
     $spending_expense_category = trim($form_state['input'][$data_source . '_spending_expense_category']);
 
-    $spending_check_amount_from = trim($form[$filter_dimension]['spending_check_amount_from']['#value']);
-    $spending_check_amount_to = trim($form[$filter_dimension]['spending_check_amount_to']['#value']);
-    $spending_issue_date_from = trim($form[$filter_dimension]['spending_issue_date_from']['#value']['date']);
-    $spending_issue_date_to = trim($form[$filter_dimension]['spending_issue_date_to']['#value']['date']);
-    $spending_fund_class = trim($form[$filter_dimension]['spending_fund_class']['#value']);
+    $spending_check_amount_from = trim($form[$filter_dimension][$data_source . '_spending_check_amount_from']['#value']);
+    $spending_check_amount_to = trim($form[$filter_dimension][$data_source . '_spending_check_amount_to']['#value']);
+    $spending_issue_date_from = trim($form[$filter_dimension][$data_source . '_spending_issue_date_from']['#value']['date']);
+    $spending_issue_date_to = trim($form[$filter_dimension][$data_source . '_spending_issue_date_to']['#value']['date']);
+    $spending_fund_class = trim($form[$filter_dimension][$data_source . '_spending_fund_class']['#value']);
 
     $spending_department = trim($form_state['input'][$data_source . '_spending_department']);
-    $spending_budget_code = trim($form[$filter_dimension]['spending_budget_code']['#value']);
-    $spending_capital_project = trim($form[$filter_dimension]['spending_capital_project']['#value']);
-    $spending_capital_project_exact = trim($form[$filter_dimension]['spending_capital_project_exact']['#value']);
+    $spending_budget_code = trim($form[$filter_dimension][$data_source . '_spending_budget_code']['#value']);
+    $spending_capital_project = trim($form[$filter_dimension][$data_source . '_spending_capital_project']['#value']);
+    $spending_capital_project_exact = trim($form[$filter_dimension][$data_source . '_spending_capital_project_exact']['#value']);
     $spending_expense_type = trim($form[$filter_dimension][$data_source . '_spending_expense_type']['#value']);
-    $spending_fiscal_year = trim($form[$filter_dimension]['spending_fiscal_year']['#value']);
+    $spending_fiscal_year = trim($form[$filter_dimension][$data_source . '_spending_fiscal_year']['#value']);
     $spending_date_filter = trim($form[$filter_dimension]['date_filter']['#value']);
 
-    $spending_entity_contract_num = trim($form[$filter_dimension]['spending_entity_contract_num']['#value']);
-    $spending_entity_contract_num_exact = trim($form[$filter_dimension]['spending_entity_contract_num_exact']['#value']);
-    $spending_commodity_line = trim($form[$filter_dimension]['spending_commodity_line']['#value']);
-    $spending_commodity_line_exact = trim($form[$filter_dimension]['spending_commodity_line_exact']['#value']);
-    $spending_budget_name = trim($form[$filter_dimension]['spending_budget_name']['#value']);
-    $spending_budget_name_exact = trim($form[$filter_dimension]['spending_budget_name_exact']['#value']);
+    $spending_entity_contract_num = trim($form[$filter_dimension][$data_source . '_spending_entity_contract_num']['#value']);
+    $spending_entity_contract_num_exact = trim($form[$filter_dimension][$data_source . '_spending_entity_contract_num_exact']['#value']);
+    $spending_commodity_line = trim($form[$filter_dimension][$data_source . '_spending_commodity_line']['#value']);
+    $spending_commodity_line_exact = trim($form[$filter_dimension][$data_source . '_spending_commodity_line_exact']['#value']);
+    $spending_budget_name = trim($form[$filter_dimension][$data_source . '_spending_budget_name']['#value']);
+    $spending_budget_name_exact = trim($form[$filter_dimension][$data_source . '_spending_budget_name_exact']['#value']);
 
     if ($spending_fiscal_year == 'fy~all') {
         $spending_fiscal_year = null;
