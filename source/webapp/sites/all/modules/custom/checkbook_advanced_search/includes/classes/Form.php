@@ -202,6 +202,7 @@ class Form
             case FieldType::RadioButtons:
 
                 $domain_field = "{$this->domain_name}_{$field->field_name}";
+
                 if(!(is_null($field->prefix)))
                     $form[$domain][$domain_field]['#prefix'] = $field->prefix;
                 $form[$domain][$domain_field]['#type'] = FieldType::RadioButtons;
@@ -215,7 +216,8 @@ class Form
             case FieldType::RangeField:
 
                 //From
-                $domain_field = "{$this->domain_name}_{$field->field_name}_from";
+                //$domain_field = "{$this->domain_name}_{$field->field_name}_from";
+                $domain_field = "{$data_source}_{$this->domain_name}_{$field->field_name}_from";
                 $css_name = str_replace('_','-',$field->field_name);
 
                 $form[$domain][$domain_field]['#type'] = FieldType::TextField;
@@ -233,7 +235,8 @@ class Form
                     $form[$domain][$domain_field]['#prefix'] = '<div class="form-item form-item-'.$css_name.'"><label>' . $field->getFieldTitle() . '</label><div class="ranges">';
 
                 //To
-                $domain_field = "{$this->domain_name}_{$field->field_name}_to";
+                //$domain_field = "{$this->domain_name}_{$field->field_name}_to";
+                $domain_field = "{$data_source}_{$this->domain_name}_{$field->field_name}_to";
                 $form[$domain][$domain_field]['#type'] = FieldType::TextField;
                 $form[$domain][$domain_field]['#title'] = t('TO');
                 if(!(is_null($field->size)))
@@ -254,7 +257,8 @@ class Form
             case FieldType::RangeDateField:
 
                 //From
-                $domain_field = "{$this->domain_name}_{$field->field_name}_from";
+               // $domain_field = "{$this->domain_name}_{$field->field_name}_from";
+                $domain_field = "{$data_source}_{$this->domain_name}_{$field->field_name}_from";
                 $css_name = str_replace('_','-',$field->field_name);
 
                 $form[$domain][$domain_field]['#type'] = FieldType::DatePopup;
@@ -266,7 +270,8 @@ class Form
                     $form[$domain][$domain_field]['#prefix'] = '<div class="form-item form-item-'.$css_name.'"><label>' . $field->getFieldTitle() . '</label><div class="ranges">';
 
                 //To
-                $domain_field = "{$this->domain_name}_{$field->field_name}_to";
+               // $domain_field = "{$this->domain_name}_{$field->field_name}_to";
+                $domain_field = "{$data_source}_{$this->domain_name}_{$field->field_name}_to";
                 $form[$domain][$domain_field]['#type'] = FieldType::DatePopup;
                 $form[$domain][$domain_field]['#date_format'] = 'Y-m-d';
                 $form[$domain][$domain_field]['#title'] = t('TO');
@@ -308,7 +313,8 @@ class Form
 
             case FieldType::TextField:
 
-                $domain_field = "{$this->domain_name}_{$field->field_name}";
+               // $domain_field = "{$this->domain_name}_{$field->field_name}";
+                $domain_field = "{$data_source}_{$this->domain_name}_{$field->field_name}";
 
                 $form[$domain][$domain_field]['#type'] = FieldType::TextField;
                 $form[$domain][$domain_field]['#title'] = $field->getFieldTitle();
@@ -324,7 +330,8 @@ class Form
                     $form[$domain][$domain_field]['#prefix'] = $field->prefix;
 
                 //Hidden
-                $domain_field = "{$this->domain_name}_{$field->field_name}_exact";
+                //$domain_field = "{$this->domain_name}_{$field->field_name}_exact";
+                $domain_field = "{$data_source}_{$this->domain_name}_{$field->field_name}_exact";
                 $form[$domain][$domain_field]['#type'] = FieldType::HiddenField;
                 $form[$domain][$domain_field]['#name'] = $domain_field;
                 if(!(is_null($field->suffix)))
