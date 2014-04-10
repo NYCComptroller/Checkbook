@@ -6,14 +6,17 @@
             "payee_name":"vendor_name",
             "document_id":"disbursement_number",
             "agency_code":"agency_code",
-            "agency_name":"agency_name",
+            "other_government_entities":"agency_name",
             "issue_date":"check_eft_issued_date",
             "department_code":"department_code",
             "check_amount":"check_amount",
             "expense_category":"expenditure_object_code",
             "contract_ID":"reference_document_number",
             "capital_project_code":"reporting_code",
-            "spending_category":"spending_category_code@checkbook_oge:spending_category"
+            "spending_category":"spending_category_code@checkbook_oge:spending_category",
+            "commodity_line":"agreement_commodity_line_number",
+            "entity_contract_number":"oge_contract_number@checkbook_oge:oge_contract",
+            "budget_name":"budget_name@checkbook_oge:oge_contract"
         },
         "dataset":{
             "sortColumn":"-check_amount",
@@ -22,8 +25,11 @@
                 "reference_document_number":"like",
                 "reporting_code":"like",
                 "disbursement_number":"like",
-                "agency_name":"like",
-                "vendor_name":"like"
+                "other_government_entities":"like",
+                "vendor_name":"like",
+                "commodity_line":"like",
+                "entity_contract_number":"like",
+                "budget_name":"like"
             },
             "displayConfiguration":{
                 "xml":{
@@ -47,7 +53,7 @@
                         "entity_contract_number":"oge_contract_number@checkbook_oge:oge_contract",
                         "budget_name":"budget_name@checkbook_oge:oge_contract"                        
                     },
-                    "rowElements":["agency", "fiscal_year", "calendar_year", "document_id", "payee_name", "department", "check_amount", "expense_category"
+                    "rowElements":["other_government_entities", "fiscal_year", "calendar_year", "document_id", "payee_name", "department", "check_amount", "expense_category"
                         , "contract_ID", "contract_purpose", "capital_project", "issue_date", "spending_category","entity_contract_number","budget_name","commodity_line"]
                 },
                 "csv":{
@@ -98,7 +104,7 @@
                 "dataType":"text",
                 "maxLength":"3"
             },
-            "agency_name":{
+            "other_government_entities":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"30"
