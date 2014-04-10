@@ -3,7 +3,7 @@
 "widgetSubType": "dataTableList",
 "cleanURLParameters":["deptnm","expcategorynm","year","calyear","yeartype","status","agency","vendor","expcategory","category",
                       "checkamtr","dept","syear","scalyear","magid","agid","cvendor","cagency","awdmethod","csize","cindustry",
-                       "doctype","month"],
+                       "doctype","month","entcontnum_exact","entcontnum","comline_exact","comline","budname_exact","budname"],
 "urlParamMap":{"deptnm":"disb_department_short_name","expcategorynm":"disb_expenditure_object_name","year":"disb_fiscal_year_id",
                 "calyear":"disb_fiscal_year_id","yeartype":"type_of_year","status":"status_flag","agency":"disb_agency_id",
                 "vendor":"vendor_id","expcategory":"disb_expenditure_object_id","category":"disb_spending_category_id",
@@ -11,8 +11,15 @@
                 "scalyear":"disb_fiscal_year_id","magid":"disb_master_agreement_id","agid":"disb_agreement_id",
                 "cvendor":"vendor_id","cagency":"document_agency_id","awdmethod":"award_method_id","csize":"award_size_id",
                 "cindustry":"industry_type_id","doctype":"document_code@checkbook:ref_document_code",
-                "month":"disb_check_eft_issued_cal_month_id"},
-"paramTypeConfig":{"checkamtr":"rangeid","syear":"le","scalyear":"le","deptnm":"eqignorecase","expcategorynm":"eqignorecase"},
+                "month":"disb_check_eft_issued_cal_month_id",
+                "entcontnum_exact":"oge_contract_number",
+                "entcontnum":"oge_contract_number",
+                "comline_exact":"disb_agreement_commodity_line_number",
+                "comline":"disb_agreement_commodity_line_number",
+                "budname_exact":"oge_budget_name",
+                "budname":"oge_budget_name"},
+"paramTypeConfig":{"entcontnum_exact":"eqignorecase","comline_exact":"eqignorecase","budname_exact":"eqignorecase",
+                    "checkamtr":"rangeid","syear":"le","scalyear":"le","deptnm":"eqignorecase","expcategorynm":"eqignorecase"},
 "header":"
 	$header = NULL;
 	$header .= widget_data_tables_export_link($node);
