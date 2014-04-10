@@ -30,6 +30,9 @@
         $('input:radio[name=date_filter][value=0]').attr('checked', 'checked').button("refresh");
         $('select[name="year"]').removeAttr('disabled');
 
+        //reset the Spending Category
+        $('select[name="expense_type"]').val('Total Spending [ts]');
+
         //reset the selected columns
         $('#edit-column-select').multiSelect('deselect_all');
 
