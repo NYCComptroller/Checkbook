@@ -29,9 +29,17 @@
         //reset the date filter
         $('input:radio[name=date_filter][value=0]').attr('checked', 'checked').button("refresh");
         $('select[name="year"]').removeAttr('disabled');
+        $('input[name="issuedfrom"]').attr('disabled', 'disabled');
+        $('input[name="issuedto"]').attr('disabled', 'disabled');
 
         //reset the Spending Category
         $('select[name="expense_type"]').val('Total Spending [ts]');
+        $('input[name="payee_name"]').removeAttr('disabled');
+        $('option[value="Payee Name"]').removeAttr('disabled');
+        $('option[value="payee_name"]').removeAttr('disabled');
+        $('input[name="contractno"]').removeAttr('disabled');
+        $('option[value="Contract ID"]').removeAttr('disabled');
+        $('option[value="contract_ID"]').removeAttr('disabled');
 
         //reset the selected columns
         $('#edit-column-select').multiSelect('deselect_all');
