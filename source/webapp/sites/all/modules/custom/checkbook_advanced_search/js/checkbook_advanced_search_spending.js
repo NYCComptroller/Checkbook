@@ -19,6 +19,8 @@
                 'commodity_line':'input:text[name='+data_source+'_spending_commodity_line]',
                 'budget_name':'input:text[name='+data_source+'_spending_budget_name]',
                 'date_filter':'input:radio[name='+data_source+'_date_filter]',
+                'date_filter_year':'input:radio[name='+data_source+'_date_filter][value=0]',
+                'date_filter_issue_date':'input:radio[name='+data_source+'_date_filter][value=1]',
                 'date_filter_checked':'input:radio[name='+data_source+'_date_filter]:checked',
 //                'fiscal_year':'select[name="'+data_source+'_spending_fiscal_year"]',
 //                'issue_date_from':'input:text[name="'+data_source+'_spending_issue_date_from[date]"]',
@@ -139,13 +141,13 @@
             onExpenseTypeChange(div_checkbook_spending_oge);
         });
         function onExpenseTypeChange(div) {
-            if ($(this).val() == 2) {
+            if (div.ele('spending_category').val() == 2) {
                 div.ele('contract_id').attr("disabled", "disabled");
                 div.ele('contract_id').val("");
                 div.ele('payee_name').attr("disabled", "disabled");
                 div.ele('payee_name').val("");
             }
-            else if ($(this).val() == 4) {
+            else if (div.ele('spending_category').val() == 4) {
                 div.ele('contract_id').attr("disabled", "disabled");
                 div.ele('contract_id').val("");
             }
@@ -196,6 +198,9 @@
             onFiscalYearChange(div_checkbook_spending_oge);
         });
         function onFiscalYearChange(div) {
+            if(div.ele('date_filter_checked').val() == 0){
+                year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
+            }
             var agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
             var dept = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
             var exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
@@ -231,13 +236,23 @@
         }
 
         //On clicking "Clear"
-        $('#edit-spending-clear').click(function () {
+        $('div.spending-submit.checkbook').find('input:submit[value="Clear All"]').click(function(e){
             onClearClick(div_checkbook_spending);
+            e.preventDefault();
+        });
+        $('div.spending-submit.checkbook-oge').find('input:submit[value="Clear All"]').click(function(e){
             onClearClick(div_checkbook_spending_oge);
+            e.preventDefault();
         });
         function onClearClick(div) {
             div.ele('exp_category').attr("disabled", "disabled");
             div.ele('dept').attr("disabled", "disabled");
+            div.ele('spending_category').val('Total Spending');
+            div.ele('date_filter_year').attr('checked', 'checked');
+            div.ele('date_filter_issue_date').removeAttr('checked');
+
+            onExpenseTypeChange(div);
+            onDateFilterClick(div);
         }
 
         //On click of "Date Filter"
@@ -256,7 +271,7 @@
             } else if (value == 1) {
                 div.ele('fiscal_year').attr('disabled', 'disabled');
                 div.ele('issue_date_from').removeAttr("disabled");
-               div.ele('issue_date_to').removeAttr("disabled");
+                div.ele('issue_date_to').removeAttr("disabled");
             }
         }
 
@@ -274,6 +289,8 @@
             /* Reset all the fields for the data source */
             resetFields(div_checkbook_spending.contents());
             resetFields(div_checkbook_spending_oge.contents());
+            onClearClick(div_checkbook_spending);
+            onClearClick(div_checkbook_spending_oge);
 
             /* Initialize view by data source */
             switch (dataSource) {
@@ -364,7 +381,7 @@
                 select:function (event, ui) {
                     $(this).parent().next().val(ui.item.label);
                 }
-            })
+            });
             div.ele('entity_contract_num').autocomplete({
                 source:'/advanced-search/generic/autocomplete/spending/entity_contract_num/' + path,
                 select:function (event, ui) {

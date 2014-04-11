@@ -930,11 +930,11 @@ $("input[name='alert_end[date]']").datepicker({"changeMonth":true,"changeYear":t
                         break;
                 }
 
-                clearInputFieldByDataSource("#payroll-advanced-search",'payroll',data_source);
+                clearInputFields("#payroll-advanced-search",'payroll');
                 clearInputFieldByDataSource("#contracts-advanced-search",'contracts',data_source);
                 clearInputFieldByDataSource("#spending-advanced-search",'spending',data_source);
-                clearInputFieldByDataSource("#budget-advanced-search",'budget',data_source);
-                clearInputFieldByDataSource("#revenue-advanced-search",'revenue',data_source);
+                clearInputFields("#budget-advanced-search",'budget');
+                clearInputFields("#revenue-advanced-search",'revenue');
 
                 $('#block-checkbook-advanced-search-checkbook-advanced-search-form').dialog({
                     title:"Advanced Search",
