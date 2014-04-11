@@ -4,7 +4,7 @@
             "fiscal_year":"fiscal_year",
             "calendar_year":"calendar_fiscal_year",
             "payee_name":"vendor_name",
-            "other_government_entity_code":"agency_code",
+            "other_government_entities_code":"agency_code",
             "other_government_entities":"agency_name",
             "issue_date":"check_eft_issued_date",
             "department_code":"department_code",
@@ -91,7 +91,7 @@
                 "dataType":"text",
                 "maxLength":"100"
             },
-            "other_government_entity_code":{
+            "other_government_entities_code":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"3"
