@@ -3,7 +3,7 @@
         "searchCriteriaMap":{
             "fiscal_year":"fiscal_year",
             "calendar_year":"fiscal_year",
-            "agency_code":"agency_code@checkbook_oge:agency",
+            "other_government_entities_code":"agency_code@checkbook_oge:agency",
             "vendor_name":"vendor_name",
             "current_amount":"maximum_contract_amount",
             "spent_to_date":"spending_amount_disb",
@@ -98,7 +98,7 @@
         "requestParameters":{
             "fiscal_year":{"valueType":"value","dataType":"year","maxLength":"4"},
             "calendar_year":{"valueType":"value","dataType":"year","maxLength":"4"},
-            "agency_code":{"valueType":"value","dataType":"text","maxLength":"4"},
+            "other_government_entities_code":{"valueType":"value","dataType":"text","maxLength":"4"},
             "vendor_name":{"valueType":"value","dataType":"text","maxLength":"100"},
             "current_amount":{"valueType":"range","dataType":"amount","maxLength":"18"},
             "spent_to_date":{"valueType":"range","dataType":"amount","maxLength":"18"},
@@ -121,7 +121,7 @@
     },
     "contracts_oge_active_expense_all_years":{
         "searchCriteriaMap":{
-            "agency_code":"agency_code@checkbook_oge:agency",
+            "other_government_entities_code":"agency_code@checkbook_oge:agency",
             "vendor_name":"vendor_name",
             "current_amount":"maximum_contract_amount",
             "spent_to_date":"spending_amount_disb",
@@ -215,7 +215,7 @@
             "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($dataSet,$parameters,$criteria,'checkbook_oge');}"
         },
         "requestParameters":{
-            "agency_code":{"valueType":"value","dataType":"text","maxLength":"4"},
+            "other_government_entities_code":{"valueType":"value","dataType":"text","maxLength":"4"},
             "vendor_name":{"valueType":"value","dataType":"text","maxLength":"100"},
             "current_amount":{"valueType":"range","dataType":"amount","maxLength":"18"},
             "spent_to_date":{"valueType":"range","dataType":"amount","maxLength":"18"},
