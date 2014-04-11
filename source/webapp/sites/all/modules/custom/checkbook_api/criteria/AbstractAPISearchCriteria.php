@@ -326,7 +326,9 @@ abstract class AbstractAPISearchCriteria {
         }
         else {
           if ($data_type == 'text' && $this->hasSpecialCharacters($value, $special_chars)) {
-            $this->addError(1111, array('@paramName' => $name, '@paramValue' => $value));
+            if(!in_array($name,ValidatorConfig::$allow_special_chars_params)){
+                $this->addError(1111, array('@paramName' => $name, '@paramValue' => $value));
+            }
           }
         }
       }
@@ -633,7 +635,6 @@ abstract class AbstractAPISearchCriteria {
             }
           }
           break;
-
       case "contracts_oge":
         $category = $this->criteria['value']['category'];
         $status = $this->criteria['value']['status'];
