@@ -58,30 +58,54 @@ class masterAgreementDetails {
     WHERE l1.original_master_agreement_id = " . $mag_id . "
     AND l1.latest_flag = 'Y'
     ";
-    $query2 = "select rfed_amount from {agreement_snapshot_expanded} where original_agreement_id = " .$mag_id . " 
-     and master_agreement_yn = 'Y'  and status_flag = 'A'  order by fiscal_year  desc  limit 1"  ;
     
-    $results1 = _checkbook_project_execute_sql($query1);
+    $results1 = _checkbook_project_execute_sql_by_data_source($query1,_get_default_datasource());
     $node->data = $results1;
     
-    $results2 = _checkbook_project_execute_sql($query2);
-    $spent_amount = 0;
-    foreach ($results2 as $row) {
-      $spent_amount += $row["rfed_amount"];
-    }
-    $node->spent_amount = $spent_amount ;
     
-    $query3 = "SELECT COUNT(*) AS total_child_contracts
-    FROM {history_agreement}
-    WHERE master_agreement_id = " . $mag_id . "
-    AND latest_flag = 'Y'";
-    
-    $results3 = _checkbook_project_execute_sql($query3);
-    $total_child_contracts = 0;
-    foreach($results3 as $row){
-      $total_child_contracts +=$row["total_child_contracts"];
+    if(_get_current_datasource() ==_get_default_datasource() ){
+    	$query2 = "select rfed_amount from {agreement_snapshot_expanded} where original_agreement_id = " .$mag_id . "
+     		and master_agreement_yn = 'Y'  and status_flag = 'A'  order by fiscal_year  desc  limit 1"  ;
+    	 
+	    $results2 = _checkbook_project_execute_sql_by_data_source($query2,_get_default_datasource());
+	    $spent_amount = 0;
+	    foreach ($results2 as $row) {
+	      $spent_amount += $row["rfed_amount"];
+	    }
+	    $node->spent_amount = $spent_amount ;
+	    $node->original_contract_amount = $node->data[0]['original_contract_amount'] ;
+	    $node->maximum_spending_limit = $node->data[0]['maximum_spending_limit'] ;
+
+	    $query3 = "SELECT COUNT(*) AS total_child_contracts
+	    FROM {history_agreement}
+	    WHERE master_agreement_id = " . $mag_id . "
+	    AND latest_flag = 'Y'";
+	    
+	    $results3 = _checkbook_project_execute_sql_by_data_source($query3,_get_current_datasource());
+	    $total_child_contracts = 0;
+	    foreach($results3 as $row){
+	    	$total_child_contracts +=$row["total_child_contracts"];
+	    }
+	    $node->total_child_contracts = $total_child_contracts;	    
+    }else{
+    	$query2 = "select sum(original_amount) original_amount, sum(current_amount) current_amount, 
+    			count(distinct fms_contract_number) as num_associated_contracts, sum(check_amount) as spent_amount
+				FROM {oge_contract_vendor_level} a
+				JOIN (select distinct contract_number from {history_agreement} where master_agreement_id = " . $mag_id . ") b
+				ON a.fms_contract_number = b.contract_number
+				LEFT JOIN (SELECT sum(check_amount) as check_amount, contract_number, vendor_id FROM {disbursement_line_item_details} group by 2,3) c
+				ON b.contract_number = c.contract_number AND a.vendor_id = c.vendor_id limit 1"  ;
+    	
+    	$results2 = _checkbook_project_execute_sql_by_data_source($query2,_get_current_datasource());
+    	foreach ($results2 as $row) {
+    		$node->spent_amount = $row['spent_amount'] ;
+    		$node->original_contract_amount = $row['original_amount'];
+    		$node->maximum_spending_limit = $row['current_amount'] ;
+    		$node->total_child_contracts = $row['num_associated_contracts'];
+    	}
+    	
     }
-    $node->total_child_contracts = $total_child_contracts;
+    
     
   }
   

@@ -33,6 +33,9 @@
 		$("a.showHide").live("click", function(event){
 			$(this).toggleClass('open');
 			jQuery(this).parent().parent().parent().next().toggle();
+			if(jQuery(this).hasClass("expandTwo")){
+				//jQuery(this).parent().parent().parent().next().next().toggle();
+			}
 		});		
 
  

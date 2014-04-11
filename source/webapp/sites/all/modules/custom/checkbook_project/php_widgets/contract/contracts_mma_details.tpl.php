@@ -20,6 +20,10 @@
 ?>
 <?php
 
+if ( _getRequestParamValue("datasource") == "checkbook_oge") {
+	$datasource ="/datasource/checkbook_oge";
+	
+}
 
 if (_getRequestParamValue("doctype") == "RCT1") {
   $vendor_link = '/contracts_revenue_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
@@ -43,42 +47,61 @@ if(!preg_match("/newwindow/",current_path())){
   <div class="contract-id">
     <h2 class='contract-title'>Contract ID: <span
       class="contract-number"><?php echo $node->data[0]['contract_number'];?></span></h2>
-
+	<?php 
+		if($datasource!= null){
+			$alt_txt = "This master agreement has infromation as an agency <br> Click this icon to view this contract as vendor ";
+			$url='/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
+    . $node->data[0]['vendor_id_checkbook_vendor_history'] . "?expandBottomContURL=/panel_html/contract_transactions/contract_details/magid/" .  _getRequestParamValue("magid") . "/doctype/MMA1";
+			echo "<div class='contractLinkNote'><a href='". $url ."' atl='" . $alt_txt . "' target='_blank' >View as Vendor</a></div>"; 
+		}
+	?>
   </div>
   <div class="dollar-amounts">
     <?php if(!preg_match('/RCT1/',$node->data[0]['contract_number'])){?>
     <div class="spent-to-date">
+    <?php if($datasource == null){?>
       <a <?php echo $newwindowclass ?>
          href="<?php echo $spending_link; ?>"><?php echo custom_number_formatter_format($node->spent_amount, 2, "$");?></a>
-
+	<?php }else{
+		echo custom_number_formatter_format($node->spent_amount, 2, "$");
+	 }?>
       <div class="amount-title">Spent to<br/>Date</div>
     </div>
     <?php }?>
     <div class="original-amount">
-      <?php echo custom_number_formatter_format($node->data[0]['original_contract_amount'], 2, '$');?>
+      <?php echo custom_number_formatter_format($node->original_contract_amount, 2, '$');?>
       <div class="amount-title">Original Amount</div>
     </div>
     <div class="current-amount">
-      <?php echo custom_number_formatter_format($node->data[0]['maximum_spending_limit'], 2, '$');?>
+      <?php echo custom_number_formatter_format($node->maximum_spending_limit, 2, '$');?>
       <div class="amount-title">Current Amount</div>
     </div>
     <div class="total-contracts">
       <?php echo $node->total_child_contracts;?>
       <div class="amount-title">Assoc. Contracts</div>
     </div>
-  </div>
 </div>
 <div class="contract-information">
   <div class="contract-details">
     <h4>General Information</h4>
     <ul class="left">
+    <?php if($datasource ==  null){?>
       <li><span class="gi-list-item">Vendor:</span> <a
         href="<?php echo $vendor_link;?>"><?php echo $node->data[0]['legal_name_checkbook_vendor'];?></a></li>
+    <?php }else{ ?>
+      <li><span class="gi-list-item">Vendor:</span> <?php echo $node->data[0]['legal_name_checkbook_vendor'];?></li>        	
+    <?php }?>    
       <li><span class="gi-list-item">Purpose:</span> <?php echo $node->data[0]['description'];?></li>
       <li><span class="gi-list-item">Contract Type:</span> <?php echo $node->data[0]['agreement_type_name'];?></li>
+      <?php if($datasource ==  null){?>
       <li><span class="gi-list-item">Contracting Agency:</span> <a
         href="<?php echo $agency_link;?>"><?php echo $node->data[0]['agency_name_checkbook_agency'];?></a>
       </li>
+      <?php }else{ ?>
+      	<li><span class="gi-list-item">Contracting Agency:</span> 
+       	<?php echo $node->data[0]['agency_name_checkbook_agency'];?>
+      </li>
+      <?php } ?>	
       <li><span
         class="gi-list-item">Award Method:</span> <?php echo $node->data[0]['award_method_name_checkbook_award_method'];?>
       </li>

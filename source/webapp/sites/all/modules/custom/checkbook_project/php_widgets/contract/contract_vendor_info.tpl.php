@@ -48,7 +48,7 @@ $queryVendorCount = " select count(*) total_contracts_sum from {agreement_snapsh
 (select vendor_id from {agreement_snapshot} where original_agreement_id =". $ag_id . "limit 1)
    and latest_flag = 'Y'";
 
-$results1 = _checkbook_project_execute_sql($queryVendorDetails);
+$results1 = _checkbook_project_execute_sql_by_data_source($queryVendorDetails,_get_current_datasource());
 $node->data = $results1;
 foreach($node->data as $key => $value){
     if($value['business_type_code'] == "MNRT" || $value['business_type_code'] == "WMNO"){
@@ -56,7 +56,7 @@ foreach($node->data as $key => $value){
     }
 }
 $total_cont  = 0;
-$results2 = _checkbook_project_execute_sql($queryVendorCount);
+$results2 = _checkbook_project_execute_sql_by_data_source($queryVendorCount,_get_current_datasource());
 //log_error($_SERVER);
 foreach($results2 as $row){
     $total_cont +=$row['total_contracts_sum']; 
@@ -73,7 +73,11 @@ else{
 
 ?>
   <ul class="left">
+  <?php if( _get_current_datasource() == "checkbook" ){?> 
     <li><span class="gi-list-item">Vendor:</span> <a href="<?php echo $vendor_link;?> " ><?php echo $node->data[0]['vendor_name'] ;?></a></li>
+  <?php }else{ ?>
+  	<li><span class="gi-list-item">Vendor:</span> <?php echo $node->data[0]['vendor_name'] ;?></li>
+  <?php } ?>   
   <?php 
       $address = $node->data[0]['address_line_1'] ;
       $address .= " "  .  $node->data[0]['address_line_2'];
@@ -93,7 +97,9 @@ else{
   ?>    
     <li><span class="gi-list-item">Address:</span> <?php echo $address;?></li>
     <li><span class="gi-list-item">Total Number of NYC Contracts:</span> <?php echo $total_cont;?></li>
+<?php if( _get_current_datasource() == "checkbook" ){?>    
     <li><span class="gi-list-item">M/WBE Vendor:</span> <?php echo $node->data[0]['mwbe_vendor'] ;?></li>
     
     <li><span class="gi-list-item">Ethnicity:</span> <?php echo $ethnicity ;?></li>
+<?php }?>    
 </ul>
