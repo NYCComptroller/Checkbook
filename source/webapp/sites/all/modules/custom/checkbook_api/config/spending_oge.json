@@ -4,7 +4,6 @@
             "fiscal_year":"fiscal_year",
             "calendar_year":"calendar_fiscal_year",
             "payee_name":"vendor_name",
-            "document_id":"disbursement_number",
             "agency_code":"agency_code",
             "other_government_entities":"agency_name",
             "issue_date":"check_eft_issued_date",
@@ -39,7 +38,6 @@
                         "other_government_entities":"agency_name",
                         "fiscal_year":"fiscal_year",
                         "calendar_year":"calendar_fiscal_year",
-                        "document_id":"disbursement_number",
                         "payee_name":"vendor_name",
                         "department":"department_name",
                         "check_amount":"check_amount",
@@ -53,14 +51,13 @@
                         "entity_contract_number":"oge_contract_number@checkbook_oge:oge_contract_oge",
                         "budget_name":"budget_name@checkbook_oge:oge_contract_oge"                        
                     },
-                    "rowElements":["other_government_entities", "fiscal_year", "calendar_year", "document_id", "payee_name", "department", "check_amount", "expense_category"
+                    "rowElements":["other_government_entities", "fiscal_year", "calendar_year", "payee_name", "department", "check_amount", "expense_category"
                         , "contract_ID", "contract_purpose", "capital_project", "issue_date", "spending_category","entity_contract_number","budget_name","commodity_line"]
                 },
                 "csv":{
                     "elementsColumn":{
                         "Fiscal year":"fiscal_year",
                         "Calendar year":"calendar_fiscal_year",
-                        "Document ID":"disbursement_number",
                         "Payee Name":"vendor_name",
                         "Issue Date":"check_eft_issued_date",
                         "Other Government Entities":"agency_name",
@@ -93,11 +90,6 @@
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"100"
-            },
-            "document_id":{
-                "valueType":"value",
-                "dataType":"text",
-                "maxLength":"30"
             },
             "agency_code":{
                 "valueType":"value",
