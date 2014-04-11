@@ -149,7 +149,7 @@ function _checkbook_advanced_search_autocomplete($field, $domain, $data_source =
             $facet_field = $prefix . '_commodity_line';
             break;
         case 'budget_name':
-            $query_field = $prefix . '_budget_name';
+            $query_field = $prefix . '_budget_name_autocomplete';
             $facet_field = $prefix . '_budget_name';
             break;
         case 'vendor':
