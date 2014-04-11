@@ -523,8 +523,8 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
     $contracts_contract_received_date_to = trim($form_state['input'][$data_source . '_contracts_received_date_to']['date']);
     $contracts_contract_registration_date_from = trim($form[$filter_dimension][$data_source . '_contracts_registration_date_from']['#value']['date']);
     $contracts_contract_registration_date_to = trim($form[$filter_dimension][$data_source . '_contracts_registration_date_to']['#value']['date']);
-    $contracts_entity_contract_num = trim($form[$filter_dimension][$data_source . '_contracts_entity_contract_num']['#value']);
-    $contracts_entity_contract_num_exact = trim($form[$filter_dimension][$data_source . '_contracts_entity_contract_num_exact']['#value']);
+    $contracts_entity_contract_number = trim($form[$filter_dimension][$data_source . '_contracts_entity_contract_number']['#value']);
+    $contracts_entity_contract_number_exact = trim($form[$filter_dimension][$data_source . '_contracts_entity_contract_number_exact']['#value']);
     $contracts_commodity_line = trim($form[$filter_dimension][$data_source . '_contracts_commodity_line']['#value']);
     $contracts_commodity_line_exact = trim($form[$filter_dimension][$data_source . '_contracts_commodity_line_exact']['#value']);
     $contracts_budget_name = trim($form[$filter_dimension][$data_source . '_contracts_budget_name']['#value']);
@@ -582,11 +582,11 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
     if (!empty($contracts_year)) {
         $redirect_url .= _checkbook_advanced_search_year_arg($contracts_year);
     }
-    if (!empty($contracts_entity_contract_num)) {
-        if ($contracts_entity_contract_num_exact == $contracts_entity_contract_num) {
-            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_entity_contract_num, 'entcontnum_exact');
+    if (!empty($contracts_entity_contract_number)) {
+        if ($contracts_entity_contract_number_exact == $contracts_entity_contract_number) {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_entity_contract_number, 'entcontnum_exact');
         } else {
-            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_entity_contract_num, 'entcontnum');
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_entity_contract_number, 'entcontnum');
         }
     }
     if (!empty($contracts_commodity_line)) {
@@ -653,8 +653,8 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
     $spending_fiscal_year = trim($form[$filter_dimension][$data_source . '_spending_fiscal_year']['#value']);
     $spending_date_filter = trim($form[$filter_dimension]['date_filter']['#value']);
 
-    $spending_entity_contract_num = trim($form[$filter_dimension][$data_source . '_spending_entity_contract_num']['#value']);
-    $spending_entity_contract_num_exact = trim($form[$filter_dimension][$data_source . '_spending_entity_contract_num_exact']['#value']);
+    $spending_entity_contract_number = trim($form[$filter_dimension][$data_source . '_spending_entity_contract_number']['#value']);
+    $spending_entity_contract_number_exact = trim($form[$filter_dimension][$data_source . '_spending_entity_contract_number_exact']['#value']);
     $spending_commodity_line = trim($form[$filter_dimension][$data_source . '_spending_commodity_line']['#value']);
     $spending_commodity_line_exact = trim($form[$filter_dimension][$data_source . '_spending_commodity_line_exact']['#value']);
     $spending_budget_name = trim($form[$filter_dimension][$data_source . '_spending_budget_name']['#value']);
@@ -718,11 +718,11 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_expense_type, 'category');
     }
 
-    if (!empty($spending_entity_contract_num)) {
-        if ($spending_entity_contract_num_exact == $spending_entity_contract_num) {
-            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_entity_contract_num, 'entcontnum_exact');
+    if (!empty($spending_entity_contract_number)) {
+        if ($spending_entity_contract_number_exact == $spending_entity_contract_number) {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_entity_contract_number, 'entcontnum_exact');
         } else {
-            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_entity_contract_num, 'entcontnum');
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_entity_contract_number, 'entcontnum');
         }
     }
     if (!empty($spending_commodity_line)) {
