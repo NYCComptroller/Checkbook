@@ -6,6 +6,7 @@
 "defaultParameters":{"original_master_agreement_id@checkbook:history_master_agreement":"1064400","original_agreement_id":"1064400"},
 "cleanURLParameters":["magid"],
  "urlParamMap":{"magid":"original_agreement_id"},
+ "keepOriginalDatasource":true,
 "model": {
        "join": {
           "method": "Union"
@@ -59,4 +60,6 @@
       "expression": "$row[\"date@checkbook:date_id/source_updated_date_id@checkbook:history_master_agreement\"]"
     }
 }
+
+
 }

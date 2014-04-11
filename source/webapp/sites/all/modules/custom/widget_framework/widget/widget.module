@@ -96,6 +96,39 @@ function widget_perm() {
 	);
 }
 
+function _widget_node_load($key, $type='node'){
+	switch ($type) {
+		case 'node':
+			return node_load($key);;
+		case 'file':
+			return _widget_node_load_file($key);
+			
+	}	
+}
+
+
+function _widget_node_view($key){
+	$node = _widget_node_load_file($key);
+	$node = widget_node_view($node);
+	echo $node->content['body']['#markup'];
+}
+
+function _widget_node_load_file($key){
+	$node =  new stdClass();
+	$node->type = "widget";
+	$files = file_scan_directory( drupal_get_path('module','checkbook_project') , '/^'.$key.'\.json$/');
+      if(count($files) > 0){
+        $file_names = array_keys($files); 
+        $json = file_get_contents($file_names[0]);
+        $node->widget_json =  $json;
+      }
+      
+    return $node;  
+}
+
+
+
+
 function widget_node_load($nodes,$types){  
   foreach($nodes as $nid => $node ){
     if( $node->type == "widget"){
@@ -399,7 +432,7 @@ function prepare_dataset_parameters(&$requestParameters, $configuration,$widgetC
     if (isset($configuration->defaultParameters)) {
         foreach ($configuration->defaultParameters as $key => $value) {
             if (!isset($requestParameters[$key])) {
-              $key = _update_dataset_datasource($key);
+              $key = _update_dataset_datasource($key, $configuration->keepOriginalDatasource);
               $requestParameters[$key] = $value;
             }
         }
@@ -408,7 +441,7 @@ function prepare_dataset_parameters(&$requestParameters, $configuration,$widgetC
     if (isset($configuration->additionalParameters)) {
         foreach ($configuration->additionalParameters as $key => $value) {
             //if (isset($requestParameters[$key])) {
-            $key = _update_dataset_datasource($key);
+            $key = _update_dataset_datasource($key,$configuration->keepOriginalDatasource);
             $requestParameters[$key] = $value;
             //}
         }
@@ -464,7 +497,7 @@ function load_widget_data($node, $resultFormatter) {
 
         $updatedParameters = array();
         foreach($parameters as $key=>$value){
-            $key = _update_dataset_datasource($key);
+            $key = _update_dataset_datasource($key,$node->widgetConfig->keepOriginalDatasource);
             $updatedParameters[$key] = $value;
         }
         $parameters = $updatedParameters;
@@ -472,9 +505,9 @@ function load_widget_data($node, $resultFormatter) {
         //Do not move this code before adjusting parameters.
         //Widget config may be updated.
         $isList = isset($config->useList); // FIXME v2. check for true/false
-        $datasetName = _update_dataset_datasource($config->dataset);
+        $datasetName = _update_dataset_datasource($config->dataset,$node->widgetConfig->keepOriginalDatasource);
         $config->columns_datasource = isset($config->columns_datasource) ? $config->columns_datasource : null;
-        $columns = _update_columns_by_datasource($config->columns, $config->columns_datasource);
+        $columns = _update_columns_by_datasource($config->columns, $config->columns_datasource,$config->keepOriginalDatasource);
 
         $orderBy = $config->orderBy;
         $startWith = isset($config->startWith) ? $config->startWiwth : 0;
@@ -496,7 +529,7 @@ function load_widget_data($node, $resultFormatter) {
             $joinColumns = array();
             if(isset($config->model->join->columns)){
                 $config->columns_datasource = isset($config->columns_datasource) ? $config->columns_datasource : null;
-                $joinColumns = _update_columns_by_datasource($config->columns, $config->columns_datasource);
+                $joinColumns = _update_columns_by_datasource($config->columns, $config->columns_datasource,$config->keepOriginalDatasource);
             }else{
                 $joinColumns = NULL;
             }
@@ -531,12 +564,12 @@ function load_widget_data($node, $resultFormatter) {
                 $serieDatasetName = isset($serie->dataset) ? $serie->dataset : $datasetName;
 
 
-                $serieDatasetName = _update_dataset_datasource($serieDatasetName);
+                $serieDatasetName = _update_dataset_datasource($serieDatasetName,$node->widgetConfig->keepOriginalDatasource);
 
                 $serieColumns = array();
                 if(isset($serie->columns)){
                     foreach($serie->columns as $column){
-                        array_push($serieColumns, _update_dataset_datasource($column));
+                        array_push($serieColumns, _update_dataset_datasource($column,$node->widgetConfig->keepOriginalDatasource));
                     }
                 }
                 $serieColumns = isset($serieColumns)
@@ -649,7 +682,7 @@ function load_widget_data($node, $resultFormatter) {
 
         }
 
-     $node->data = _update_node_data($node->data);
+     $node->data = _update_node_data($node->data,$node->widgetConfig->keepOriginalDatasource);
 
   	if(isset($node->widgetConfig->transformationPHP)){
   		$node->data = eval($node->widgetConfig->transformationPHP);
@@ -1224,7 +1257,10 @@ function _replaceSlash($string){
     return str_replace('__','/',$string);
 }
 
-function _update_dataset_datasource($datasetName){
+function _update_dataset_datasource($datasetName,$keepOriginalDatasource = false){
+	if($keepOriginalDatasource == true){
+		return $datasetName;
+	}	
     $database = _getRequestParamValue('datasource');
     if(isset($database)){
         $database = str_replace("checkbook:", "checkbook_oge:",$datasetName);
@@ -1234,7 +1270,10 @@ function _update_dataset_datasource($datasetName){
     return $database;
 }
 
-function _update_node_data($data){
+function _update_node_data($data,$keepOriginalDatasource = false){
+	if($keepOriginalDatasource == true){
+		return $data;
+	}	
     $returnData = array();
     foreach($data as $key=>$value){
          $arrayValues = array();
@@ -1248,7 +1287,10 @@ function _update_node_data($data){
     return $returnData;
 }
 
-function _update_columns_by_datasource($node_columns, $datasource_mapping = null){
+function _update_columns_by_datasource($node_columns, $datasource_mapping = null, $keepOriginalDatasource= false){	
+	if($keepOriginalDatasource == true){
+		return $node_columns;
+	}
     $columns = array();
     $database = _getRequestParamValue('datasource');
     $datasource_mapping = ($datasource_mapping != null) ? get_object_vars($datasource_mapping) : null;
@@ -1266,3 +1308,21 @@ function _update_columns_by_datasource($node_columns, $datasource_mapping = null
     }
     return $columns;
 }
+
+
+function _get_current_datasource(){
+	$datasource = _getRequestParamValue('datasource');
+	if(isset($datasource)){
+		return $datasource;
+	}else{
+		return _get_default_datasource();
+	}
+}
+
+
+function _get_default_datasource(){
+	return "checkbook";
+}
+
+
+

@@ -1769,6 +1769,13 @@ table.outerTable.ma-history{
     margin-bottom:15px;
 }
 
+.contract_transactions .oge-cta-details table.outerTable,
+table.outerTable.ma-history{
+    border:1px solid #cacaca;
+    margin-bottom:15px;
+}
+
+
 #assoc_contracts_list_info {
     float:left;
     text-align: left;

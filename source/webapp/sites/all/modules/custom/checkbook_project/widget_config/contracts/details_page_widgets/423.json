@@ -1,0 +1,13 @@
+{
+"widgetType": "phpparser",
+"useList":true,
+"template":"contracts_ma_assoc_contracts",
+"no_results_content":"No Results Found",
+"defaultParameters":{"latest_flag":"Y","original_master_agreement_id@checkbook:history_master_agreement":"MMA185820116200488"},
+"cleanURLParameters":["magid"],
+ "urlParamMap":{"magid":"original_master_agreement_id@checkbook:history_master_agreement"},
+"dataset": "checkbook:history_agreement",
+"orderBy":["-rfed_amount","-contract_number"],
+"columns": ["contract_number","original_agreement_id","document_code@checkbook:ref_document_code","rfed_amount"]
+
+}

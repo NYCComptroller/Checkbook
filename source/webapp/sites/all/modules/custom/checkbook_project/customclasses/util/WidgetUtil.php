@@ -172,6 +172,9 @@ class WidgetUtil
         "year"=>"Year",
         "budget_name"=>"Budget<br/>Name",
         "commodity_line"=>"Commodity<br/>Line",
-        "entity_contact_num"=>"Entity<br/>Contract # "
+        "entity_contact_num"=>"Entity<br/>Contract # ",
+    	"prime_vendor_name"=>"Prime<br/>Vendor Name",
+    	"tot_edc_con"=>"Total number of<br/>NYC EDC Contracts",
+    	"vendor_address"=>"Vendor<br/>Address"
     );
 }

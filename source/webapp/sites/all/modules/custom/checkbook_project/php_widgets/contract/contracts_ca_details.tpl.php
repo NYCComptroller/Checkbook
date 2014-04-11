@@ -19,16 +19,20 @@
 */
 ?>
 <?php
+
+if ( _getRequestParamValue("datasource") == "checkbook_oge") {
+	$datasource ="/datasource/checkbook_oge";
+}
 if (_getRequestParamValue("doctype") == "RCT1") {
   $vendor_link = '/contracts_revenue_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
     . $node->data[0]['vendor_id_checkbook_vendor_history'] . '?expandBottomCont=true';
-  $agency_link = '/contracts_revenue_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/agency/'
+  $agency_link = '/contracts_revenue_landing/status/A/year/' . _getCurrentYearID() . $datasource. '/yeartype/B/agency/'
     . $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
 }
 else {
   $vendor_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
     . $node->data[0]['vendor_id_checkbook_vendor_history'] . '?expandBottomCont=true';
-  $agency_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/agency/'
+  $agency_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . $datasource. '/yeartype/B/agency/'
     . $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
 }
 $spending_link = "/spending/transactions/agid/" . _getRequestParamValue("agid") . "/newwindow";
@@ -38,9 +42,21 @@ $spending_link = "/spending/transactions/agid/" . _getRequestParamValue("agid") 
   <div class="contract-id">
     <h2 class="contract-title">Contract ID: <span
       class="contract-number"><?php echo $node->data[0]['contract_number'];?></span></h2>
+	<?php 
+		if($datasource!= null){
+			$alt_txt = "This contract agreement has infromation as an agency <br> Click this icon to view this contract as vendor ";
+			$url='/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
+    . $node->data[0]['vendor_id_checkbook_vendor_history'] . "?expandBottomContURL=/panel_html/contract_transactions/contract_details/agid/" .  _getRequestParamValue("agid") . "/doctype/CTA1";
+			echo "<div class='contractLinkNote'><a href='". $url ."' atl='" . $alt_txt . "' target='_blank' >View as Vendor</a></div>"; 
+		}
+	?>      
 <?php 
+
+
+
+
 if(isset($node->magid)){
-  $master_link_html = '<span class="master-contract-link">Parent Contract: <a class="bottomContainerReload" href=/panel_html/contract_transactions/contract_details/magid/' .  $node->magid . '/doctype/' . $node->document_code . ' class=\"bottomContainerReload\">' .  $node->contract_number . '</a></span>';
+  $master_link_html = '<span class="master-contract-link">Parent Contract: <a class="bottomContainerReload" href=/panel_html/contract_transactions/contract_details/magid/' .  $node->magid . '/doctype/' . $node->document_code. $datasource . ' class=\"bottomContainerReload\">' .  $node->contract_number . '</a></span>';
   echo  $master_link_html;
 }
 
@@ -72,18 +88,39 @@ if(!preg_match("/newwindow/",current_path())){
         Amount
       </div>
     </div>
-  </div>
 </div>
 <div class="contract-information">
-  <div class="contract-details">
+  <div class="contract-details <?php echo ( _getRequestParamValue("datasource") == "checkbook_oge")? "oge-cta-contract ":"" ; ?>">
     <h4>General Information</h4>
     <ul class="left">
-      <li><span class="gi-list-item">Vendor:</span> <a
-        href="<?php echo $vendor_link;?>"><?php echo $node->data[0]['legal_name_checkbook_vendor'];?></a></span></li>
-      <li><span class="gi-list-item">Purpose:</span> <?php echo $node->data[0]['description'];?></li>
-      <li><span class="gi-list-item">Contract Type:</span> <?php echo $node->data[0]['agreement_type_name'];?></li>
+    <?php
+    if ( _getRequestParamValue("datasource") == "checkbook_oge") {
+    ?>
       <li><span class="gi-list-item">Contracting Agency:</span> <a
         href="<?php echo $agency_link;?>"><?php echo $node->data[0]['agency_name_checkbook_agency'];?></a></li>
+        <?php
+    }else{
+    ?>
+      <li><span class="gi-list-item">Vendor:</span> <a
+        href="<?php echo $vendor_link;?>"><?php echo $node->data[0]['legal_name_checkbook_vendor'];?></a></span></li>    
+    <?php
+ 
+	}
+
+    ?>
+    
+    
+      <li><span class="gi-list-item">Purpose:</span> <?php echo $node->data[0]['description'];?></li>
+      <li><span class="gi-list-item">Contract Type:</span> <?php echo $node->data[0]['agreement_type_name'];?></li>
+      
+     <?php
+    if ( _getRequestParamValue("datasource") != "checkbook_oge") {
+    ?>
+      <li><span class="gi-list-item">Contracting Agency:</span> <a
+        href="<?php echo $agency_link;?>"><?php echo $node->data[0]['agency_name_checkbook_agency'];?></a></li>
+        <?php
+    }
+    ?>
       <li><span
         class="gi-list-item">Award Method:</span> <?php echo $node->data[0]['award_method_name_checkbook_award_method'];?>
       </li>
@@ -111,15 +148,18 @@ if(!preg_match("/newwindow/",current_path())){
       <li><span class="gi-list-item">APT PIN:</span> <?php echo $node->data[0]["brd_awd_no"];?></li>
       <li><span class="gi-list-item">PIN:</span> <?php echo $node->data[0]['tracking_number'];?></li>
     </ul>
-  </div>
-  <div class="contract-vendor-details">
+  </div>  
     <?php
-    $nid = 439;
-    $node = node_load($nid);
-    node_build_content($node);
-    print drupal_render($node->content);
+    if ( _getRequestParamValue("datasource") != "checkbook_oge") {
+		echo '<div class="contract-vendor-details">';
+	    $nid = 439;
+	    $node = node_load($nid);
+	    node_build_content($node);
+	    print drupal_render($node->content);
+	    echo '</div>';
+    }
     ?>
-  </div>
+  
 </div>
 <!--<div class="associated-contracts">
   <?php

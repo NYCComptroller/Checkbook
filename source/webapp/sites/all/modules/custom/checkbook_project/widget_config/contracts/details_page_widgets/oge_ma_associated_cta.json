@@ -1,0 +1,25 @@
+{
+"widgetType": "phpparser",
+"template":"contracts_oge_ma_assoc_contracts",
+"noDataInitialLoad":true,
+"phpcode":"
+        $mag_id = _getRequestParamValue('magid');
+        $query = 'select b.contract_number, b.original_agreement_id,b.original_agreement_id, sum(original_amount) original_amount, sum(current_amount) current_amount,  
+sum(check_amount) as spent_amount
+FROM {oge_contract_vendor_level} a
+JOIN (select distinct contract_number, original_agreement_id from {history_agreement} where master_agreement_id = '  . $mag_id .   ') b
+ON a.fms_contract_number = b.contract_number
+LEFT JOIN (SELECT sum(check_amount) as check_amount, contract_number, vendor_id FROM {disbursement_line_item_details} group by 2,3) c
+ON b.contract_number = c.contract_number AND a.vendor_id = c.vendor_id
+group by b.contract_number, b.original_agreement_id
+order by sum(current_amount) desc
+';        
+
+
+        $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook_oge');
+        $node->data = $results;
+        $template = $node->widgetConfig->template;
+        return theme($template, array('node'=> $node));
+
+"
+}
