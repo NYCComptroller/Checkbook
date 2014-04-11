@@ -31,7 +31,7 @@
         </criteria>
     </search_criteria>
     <response_columns>
-            <column>agency</column>
+            <column>other government entities</column>
             <column>vendor</column>
             <column>contract_id</column>
             <column>version</column>
