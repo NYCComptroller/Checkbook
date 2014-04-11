@@ -20,7 +20,6 @@
 "caption":"",
 "adjustParameters":"
             if(!isset($parameters['fiscal_year_id'])){
-                $parameters['latest_flag'] = 'Y';
                 $parameters['status_flag'] = 'A';
                 $parameters['type_of_year'] = 'B';
             }

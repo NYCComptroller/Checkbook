@@ -23,7 +23,6 @@
 
             if(!isset($year)){
                 unset($config->model);
-                $parameters['latest_flag'] = 'Y';
             }
 
             $yearType = _getRequestParamValue('yeartype');
@@ -96,7 +95,6 @@
 
                             if(isset($year)){
                                 $data_controller_instance = data_controller_get_operator_factory_instance();
-                                $serieParameters['latest_flag'] = 'Y';
                                 $serieParameters['ending_year_id'] = $data_controller_instance->initiateHandler(LessThanOperatorHandler::$OPERATOR__NAME, $year);
 
                                 $yearType = _getRequestParamValue('yeartype');
