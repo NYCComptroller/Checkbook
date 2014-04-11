@@ -160,7 +160,7 @@
             {"datasetName": "contracts_spending_transactions", "columnNames": ["disbursement_line_item_id","disb_agreement_commodity_line_number"]}
         ],
         "disbursement_line_item_details__oge_contract": [
-                {"datasetName": "fact_disbursement_line_item1", "columnNames": ["contract_number","agreement_commodity_line_number"]},
+                {"datasetName": "fact_disbursement_line_item", "columnNames": ["contract_number","agreement_commodity_line_number"]},
                 {"datasetName": "oge_contract", "columnNames": ["fms_contract_number","fms_commodity_line"]}
         ],
         "disbursement_line_item_details__oge_contract_oge": [
