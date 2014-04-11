@@ -32,9 +32,9 @@ function _get_advanced_search_autocomplete_results($facet, $query, $domain, $par
             $budget_name = $parameters['budget_name'];
 
             if ($year) $query .= _checkbook_autocomplete_get_start_end_dates($year, 'spending');
-            if ($department) $query .= '&fq=department_name:' . $department;
+            if ($department) $query .= '&fq=department_name:' . '"'._checkbook_autocomplete_escapeSolrValue(str_replace('__','/',$department)).'"';
             if ($agency) $query .= '&fq=agency_id:' . $agency;
-            if ($expense_category) $query .= '&fq=expenditure_object_name:' . $expense_category;
+            if ($expense_category) $query .= '&fq=expenditure_object_name:' . '"'._checkbook_autocomplete_escapeSolrValue(trim($expense_category)).'"';
             if ($expense_type) $query .= '&fq=spending_category_id:' . $expense_type;
             if ($entity_contract_number) $query .= '&fq=spending_entity_contract_number:' . $entity_contract_number;
             if ($commodity_line) $query .= '&fq=spending_commodity_line:' . $commodity_line;
@@ -179,13 +179,7 @@ function _checkbook_advanced_search_autocomplete($field, $domain, $data_source =
     {
         $query = 'select/?q=' . $query_field . ':' . $search_term . '&facet=true&facet.field=' . $facet_field . '&fq=domain:' . $domain . '&wt=php&facet.limit=10';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
-        $options = _get_advanced_search_autocomplete_results($facet_field, $query, $domain, $parameters);
-        $matches = array();
-        if(isset($options[0]['label']) && $options[0]['label'] == "No Matches Found")
-            $matches = $options;
-        else
-            foreach($options as $key => $value)
-                $matches[] = htmlentities($value);
+        $matches = _get_advanced_search_autocomplete_results($facet_field, $query, $domain, $parameters);
 
         drupal_json_output($matches);
     }

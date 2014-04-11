@@ -169,13 +169,7 @@ function _checkbook_datafeeds_autocomplete($field, $domain, $data_source = 'chec
     {
         $query = 'select/?q=' . $query_field . ':' . $search_term . '&facet=true&facet.field=' . $facet_field . '&fq=domain:' . $domain . '&wt=php&facet.limit=10';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
-        $options = _get_datafeeds_autocomplete_results($facet_field, $query, $domain, $parameters);
-        $matches = array();
-        if(isset($options[0]['label']) && $options[0]['label'] == "No Matches Found")
-            $matches = $options;
-        else
-            foreach($options as $key => $value)
-                $matches[] = htmlentities($value);
+        $matches = _get_datafeeds_autocomplete_results($facet_field, $query, $domain, $parameters);
 
         drupal_json_output($matches);
     }
