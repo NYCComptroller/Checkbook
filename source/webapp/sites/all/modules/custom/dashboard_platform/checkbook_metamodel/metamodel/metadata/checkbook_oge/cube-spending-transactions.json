@@ -147,15 +147,15 @@
         }
     },
     "references": {
-        "fact_disbursement_line_item__spending_category": [
+        "disbursement_line_item_details__spending_category": [
             {"datasetName": "fact_disbursement_line_item", "columnNames": ["spending_category_id"]},
             {"datasetName": "spending_category", "columnNames": ["spending_category_id"]}
         ],
-        "fact_disbursement_line_item__spending_category_oge": [
+        "disbursement_line_item_details__spending_category_oge": [
             {"datasetName": "fact_disbursement_line_item1", "columnNames": ["spending_category_id"]},
             {"datasetName": "spending_category_oge", "columnNames": ["spending_category_id"]}
         ],        
-        "fact_disbursement_line_item__contracts_spending_transactions": [
+        "disbursement_line_item_details__contracts_spending_transactions": [
             {"datasetName": "fact_disbursement_line_item", "columnNames": ["disbursement_line_item_id","agreement_commodity_line_number"]},
             {"datasetName": "contracts_spending_transactions", "columnNames": ["disbursement_line_item_id","disb_agreement_commodity_line_number"]}
         ],
