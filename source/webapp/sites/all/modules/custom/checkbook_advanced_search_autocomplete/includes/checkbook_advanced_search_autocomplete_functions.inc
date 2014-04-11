@@ -27,7 +27,7 @@ function _get_advanced_search_autocomplete_results($facet, $query, $domain, $par
             $agency = $parameters['agency'];
             $expense_category = $parameters['expense_category'];
             $expense_type = $parameters['expense_type'];
-            $entity_contract_num = $parameters['entity_contract_num'];
+            $entity_contract_number = $parameters['entity_contract_number'];
             $commodity_line = $parameters['commodity_line'];
             $budget_name = $parameters['budget_name'];
 
@@ -36,7 +36,7 @@ function _get_advanced_search_autocomplete_results($facet, $query, $domain, $par
             if ($agency) $query .= '&fq=agency_id:' . $agency;
             if ($expense_category) $query .= '&fq=expenditure_object_name:' . $expense_category;
             if ($expense_type) $query .= '&fq=spending_category_id:' . $expense_type;
-            if ($entity_contract_num) $query .= '&fq=spending_entity_contract_number:' . $entity_contract_num;
+            if ($entity_contract_number) $query .= '&fq=spending_entity_contract_number:' . $entity_contract_number;
             if ($commodity_line) $query .= '&fq=spending_commodity_line:' . $commodity_line;
             if ($budget_name) $query .= '&fq=spending_budget_name:' . $budget_name;
             break;
@@ -48,7 +48,7 @@ function _get_advanced_search_autocomplete_results($facet, $query, $domain, $par
             $agency = $parameters['agency'];
             $award_method = $parameters['award_method'];
             $year = $parameters['year'];
-            $entity_contract_num = $parameters['entity_contract_num'];
+            $entity_contract_number = $parameters['entity_contract_number'];
             $commodity_line = $parameters['commodity_line'];
             $budget_name = $parameters['budget_name'];
 
@@ -82,7 +82,7 @@ function _get_advanced_search_autocomplete_results($facet, $query, $domain, $par
                 $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($award_method);
                 $query .= '&fq=award_method_id:'.$code_id_array['id'];
             }
-            if ($entity_contract_num) $query .= '&fq=contract_entity_contract_number:' . $entity_contract_num;
+            if ($entity_contract_number) $query .= '&fq=contract_entity_contract_number:' . $entity_contract_number;
             if ($commodity_line) $query .= '&fq=contract_commodity_line:' . $commodity_line;
             if ($budget_name) $query .= '&fq=contract_budget_name:' . $budget_name;
             break;
@@ -140,7 +140,7 @@ function _checkbook_advanced_search_autocomplete($field, $domain, $data_source =
             $query_field = 'contract_number';
             $facet_field = 'contract_number';
             break;
-        case 'entity_contract_num':
+        case 'entity_contract_number':
             $query_field = $prefix . '_entity_contract_number';
             $facet_field = $prefix . '_entity_contract_number';
             break;
@@ -434,78 +434,6 @@ function _checkbook_advanced_search_autocomplete_spending_expcategory($year, $ag
         $matches[] = htmlentities(strtolower($value));
 
     drupal_json_output($matches);
-}
-
-/**
- * Returns the auto suggestions for entity contract # based on the selected agency/department/year/spending category/expense category values.
- * @param string $year
- *   Year value
- * @param string $agency
- *   Selected agency id
- * @param string $dept
- *   Selected Department Name
- * @param string $exptype
- *   Selected Spending Category Id
- * @param $expcategory
- *   Selected Expense Category
- * @param $data_source
- *   Data source to get data (i.e checkbook, checkbook_oge)
- ***/
-function _checkbook_advanced_search_autocomplete_spending_entitycontractnum($year, $agency, $expcategory, $dept, $exptype = 0, $data_source = 'checkbook') {
-    $searchTerm = _get_autocomplete_search_term();
-    if (!empty($searchTerm)) {
-        $query = 'select/?q=entity_contract_num:' . $searchTerm . '&facet=true&facet.field=entity_contract_num&fq=domain:spending&facet.limit=10&wt=php';
-        $matches = _get_spending_advanced_search_autocomplete_results('entity_contract_num', $query, $year, $agency, $expcategory, $dept, $exptype, $data_source);
-        drupal_json_output($matches);
-    }
-}
-
-/**
- * Returns the auto suggestions for commodity line based on the selected agency/department/year/spending category/expense category values.
- * @param string $year
- *   Year value
- * @param string $agency
- *   Selected agency id
- * @param string $dept
- *   Selected Department Name
- * @param string $exptype
- *   Selected Spending Category Id
- * @param $expcategory
- *   Selected Expense Category
- * @param $data_source
- *   Data source to get data (i.e checkbook, checkbook_oge)
- ***/
-function _checkbook_advanced_search_autocomplete_spending_commodityline($year, $agency, $expcategory, $dept, $exptype = 0, $data_source = 'checkbook') {
-    $searchTerm = _get_autocomplete_search_term();
-    if (!empty($searchTerm)) {
-        $query = 'select/?q=commodity_line:' . $searchTerm . '&facet=true&facet.field=commodity_line&fq=domain:spending&facet.limit=10&wt=php';
-        $matches = _get_spending_advanced_search_autocomplete_results('commodity_line', $query, $year, $agency, $expcategory, $dept, $exptype, $data_source);
-        drupal_json_output($matches);
-    }
-}
-
-/**
- * Returns the auto suggestions for budget name based on the selected agency/department/year/spending category/expense category values.
- * @param string $year
- *   Year value
- * @param string $agency
- *   Selected agency id
- * @param string $dept
- *   Selected Department Name
- * @param string $exptype
- *   Selected Spending Category Id
- * @param $expcategory
- *   Selected Expense Category
- * @param $data_source
- *   Data source to get data (i.e checkbook, checkbook_oge)
- ***/
-function _checkbook_advanced_search_autocomplete_spending_budgetname($year, $agency, $expcategory, $dept, $exptype = 0, $data_source = 'checkbook') {
-    $searchTerm = _get_autocomplete_search_term();
-    if (!empty($searchTerm)) {
-        $query = 'select/?q=budget_name:' . $searchTerm . '&facet=true&facet.field=budget_name&fq=domain:spending&facet.limit=10&wt=php';
-        $matches = _get_spending_advanced_search_autocomplete_results('budget_name', $query, $year, $agency, $expcategory, $dept, $exptype, $data_source);
-        drupal_json_output($matches);
-    }
 }
 
 //Payroll autocomplete menu callback functions

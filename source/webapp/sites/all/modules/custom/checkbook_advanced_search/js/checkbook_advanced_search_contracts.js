@@ -17,7 +17,7 @@
                 'registration_date_to':'input:text[name="'+data_source+'_contracts_registration_date_to[date]"]',
                 'received_date_from':'input:text[name="'+data_source+'_contracts_received_date_from[date]"]',
                 'received_date_to':'input:text[name="'+data_source+'_contracts_received_date_to[date]"]',
-                'entity_contract_num':'input:text[name='+data_source+'_contracts_entity_contract_num]',
+                'entity_contract_number':'input:text[name='+data_source+'_contracts_entity_contract_number]',
                 'commodity_line':'input:text[name='+data_source+'_contracts_commodity_line]',
                 'budget_name':'input:text[name='+data_source+'_contracts_budget_name]'
             };
@@ -53,7 +53,7 @@
             var agency = div.ele('agency').val() ? div.ele('agency').val() : 0;
             var award_method = div.ele('award_method').val() ? div.ele('award_method').val() : 0;
             var year = div.ele('year').val() ? div.ele('year').val() : 0;
-            var entity_contract_num = div.ele('entity_contract_num').val() ? div.ele('entity_contract_num').val() : 0;
+            var entity_contract_number = div.ele('entity_contract_number').val() ? div.ele('entity_contract_number').val() : 0;
             var commodity_line = div.ele('commodity_line').val() ? div.ele('commodity_line').val() : 0;
             var budget_name = div.ele('budget_name').val() ? div.ele('budget_name').val() : 0;
 
@@ -109,7 +109,7 @@
             div.ele('contract_id').autocomplete({source:'/advanced-search/generic/autocomplete/contracts/contract_id/' + path});
             div.ele('apt_pin').autocomplete({source:'/advanced-search/generic/autocomplete/contracts/apt_pin/' + path});
             div.ele('pin').autocomplete({source:'/advanced-search/generic/autocomplete/contracts/pin/' + path});
-            div.ele('entity_contract_num').autocomplete({source:'/advanced-search/generic/autocomplete/contracts/entity_contract_num/' + path});
+            div.ele('entity_contract_number').autocomplete({source:'/advanced-search/generic/autocomplete/contracts/entity_contract_number/' + path});
             div.ele('commodity_line').autocomplete({source:'/advanced-search/generic/autocomplete/contracts/commodity_line/' + path});
             div.ele('budget_name').autocomplete({source:'/advanced-search/generic/autocomplete/contracts/budget_name/' + path});
 
@@ -121,7 +121,7 @@
                     div.ele('contract_id').autocomplete({source:'/advanced-search/generic/autocomplete/contracts/contract_id/' + path});
                     div.ele('apt_pin').autocomplete({source:'/advanced-search/generic/autocomplete/contracts/apt_pin/' + path});
                     div.ele('pin').autocomplete({source:'/advanced-search/generic/autocomplete/contracts/pin/' + path});
-                    div.ele('entity_contract_num').autocomplete({source:'/advanced-search/generic/autocomplete/contracts/entity_contract_num/' + path});
+                    div.ele('entity_contract_number').autocomplete({source:'/advanced-search/generic/autocomplete/contracts/entity_contract_number/' + path});
                     div.ele('commodity_line').autocomplete({source:'/advanced-search/autocomplete/generic/contracts/commodity_line/' + path});
                     div.ele('budget_name').autocomplete({source:'/advanced-search/autocomplete/generic/contracts/budget_name/' + path});
                 });

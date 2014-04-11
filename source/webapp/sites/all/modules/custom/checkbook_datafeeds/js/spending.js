@@ -113,7 +113,7 @@
                 var expense_type = emptyToZero($('#edit-expense-type',context).val());
                 var contract_id = $('#edit-contractno',context).val();
                 var capital_project = $('#edit-capital-project',context).val();
-                var entity_contract_num = $('#edit-entity-contract-num',context).val();
+                var entity_contract_number = $('#edit-entity-contract-number',context).val();
                 var commodity_line = $('#edit-commodity-line',context).val();
                 var budget_name = $('#edit-budget-name',context).val();
 
@@ -126,7 +126,7 @@
                     'expense_type=>'+expense_type,
                     'contract_id=>'+contract_id,
                     'capital_project=>'+capital_project,
-                    'entity_contract_num=>'+entity_contract_num,
+                    'entity_contract_number=>'+entity_contract_number,
                     'commodity_line=>'+commodity_line,
                     'budget_name=>'+budget_name];
                 return domain + '/' + data_source + '/' + params;
@@ -139,7 +139,7 @@
             $('#edit-contractno',context).autocomplete({source:'/autocomplete/datafeeds/spending/contract_id/' + path});
             $('#edit-document-id',context).autocomplete({source:'/autocomplete/datafeeds/spending/document_id/' + path});
             $('#edit-capital-project',context).autocomplete({source:'/autocomplete/datafeeds/spending/capital_project/' + path});
-            $('#edit-entity-contract-num',context).autocomplete({source:'/autocomplete/datafeeds/spending/entity_contract_num/' + path});
+            $('#edit-entity-contract-number',context).autocomplete({source:'/autocomplete/datafeeds/spending/entity_contract_number/' + path});
             $('#edit-commodity-line',context).autocomplete({source:'/autocomplete/datafeeds/spending/commodity_line/' + path});
             $('#edit-budget-name',context).autocomplete({source:'/autocomplete/datafeeds/spending/budget_name/' + path});
 
@@ -151,7 +151,7 @@
                     $('#edit-contractno',context).autocomplete("option", "source", '/autocomplete/datafeeds/spending/contract_id/'  + path);
                     $('#edit-document-id',context).autocomplete("option", "source", '/autocomplete/datafeeds/spending/document_id/'  + path);
                     $('#edit-capital-project',context).autocomplete("option", "source", '/autocomplete/datafeeds/spending/capital_project/' + path);
-                    $('#edit-entity-contract-num',context).autocomplete("option", "source", '/autocomplete/datafeeds/spending/entity_contract_num/' + path);
+                    $('#edit-entity-contract-number',context).autocomplete("option", "source", '/autocomplete/datafeeds/spending/entity_contract_number/' + path);
                     $('#edit-commodity-line',context).autocomplete("option", "source", '/autocomplete/datafeeds/spending/commodity_line/' + path);
                     $('#edit-budget-name',context).autocomplete("option", "source", '/autocomplete/datafeeds/spending/budget_name/' + path);
                 });

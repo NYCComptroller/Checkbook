@@ -44,7 +44,7 @@ abstract class FieldDef
     const ReceivedDate = 'received_date';
     const Year = 'year';
     const ContractSubmit = 'contracts';
-    const EntityContractNumber = 'entity_contract_num';
+    const EntityContractNumber = 'entity_contract_number';
     const CommodityLine = 'commodity_line';
     const BudgetName = 'budget_name';
     const OtherGovernmentEntities = 'other_government_entities';

@@ -32,7 +32,7 @@
                                     "version":"version",
                                     "year":"year",
                                     "parent_contract_id":"parent_contract_id",
-                                    "entity_contract_num":"entity_contract_num",
+                                    "entity_contract_number":"entity_contract_number",
                                     "commodity_line":"commodity_line",
                                     "budget_name":"budget_name",
                                     "original_amount":"original_amount",
@@ -87,7 +87,7 @@
                                     "version":"version",
                                     "year":"year",
                                     "parent_contract_id":"parent_contract_id",
-                                    "entity_contract_num":"entity_contract_num",
+                                    "entity_contract_number":"entity_contract_number",
                                     "commodity_line":"commodity_line",
                                     "budget_name":"budget_name",
                                     "original_amount":"original_amount",
@@ -207,7 +207,7 @@
                                     "pin":"pin",
                                     "apt_pin":"apt_pin",
                                     "contract_industry":"contract_industry",
-                                    "entity_contract_num":"entity_contract_num",
+                                    "entity_contract_number":"entity_contract_number",
                                     "commodity_line":"commodity_line",
                                     "budget_name":"budget_name"
                                 }
