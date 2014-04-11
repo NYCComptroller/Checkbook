@@ -13,14 +13,14 @@
             "expense_category":"expenditure_object_code",
             "contract_ID":"reference_document_number",
             "capital_project_code":"reporting_code",
-            "spending_category":"spending_category_code@checkbook_oge:spending_category",
+            "spending_category":"spending_category_code@checkbook_oge:spending_category_oge",
             "commodity_line":"agreement_commodity_line_number",
-            "entity_contract_number":"oge_contract_number@checkbook_oge:oge_contract",
-            "budget_name":"budget_name@checkbook_oge:oge_contract"
+            "entity_contract_number":"oge_contract_number@checkbook_oge:oge_contract_oge",
+            "budget_name":"budget_name@checkbook_oge:oge_contract_oge"
         },
         "dataset":{
             "sortColumn":"-check_amount",
-            "name":"checkbook_oge:fact_disbursement_line_item",
+            "name":"checkbook_oge:fact_disbursement_line_item1",
             "columnTypes":{
                 "reference_document_number":"like",
                 "reporting_code":"like",
@@ -50,8 +50,8 @@
                         "issue_date":"check_eft_issued_date",
                         "spending_category":"spending_category_name",
                         "commodity_line":"agreement_commodity_line_number",
-                        "entity_contract_number":"oge_contract_number@checkbook_oge:oge_contract",
-                        "budget_name":"budget_name@checkbook_oge:oge_contract"                        
+                        "entity_contract_number":"oge_contract_number@checkbook_oge:oge_contract_oge",
+                        "budget_name":"budget_name@checkbook_oge:oge_contract_oge"                        
                     },
                     "rowElements":["other_government_entities", "fiscal_year", "calendar_year", "document_id", "payee_name", "department", "check_amount", "expense_category"
                         , "contract_ID", "contract_purpose", "capital_project", "issue_date", "spending_category","entity_contract_number","budget_name","commodity_line"]
@@ -72,8 +72,8 @@
                         "Capital Project":"reporting_code",
                         "Spending Category":"spending_category_name",
                         "Commodity Line":"agreement_commodity_line_number",
-                        "Entity Contract #":"oge_contract_number@checkbook_oge:oge_contract",
-                        "Budget Name":"budget_name@checkbook_oge:oge_contract"                         
+                        "Entity Contract #":"oge_contract_number@checkbook_oge:oge_contract_oge",
+                        "Budget Name":"budget_name@checkbook_oge:oge_contract_oge"                         
                     }
                 }
             }
