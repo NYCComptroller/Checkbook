@@ -126,9 +126,9 @@
                     'expense_type=>'+expense_type,
                     'contract_id=>'+contract_id,
                     'capital_project=>'+capital_project,
-                    'entity_contract_number=>'+entity_contract_number,
-                    'commodity_line=>'+commodity_line,
-                    'budget_name=>'+budget_name];
+                    'entity_contract_number=>'+(entity_contract_number ? entity_contract_number : ''),
+                    'commodity_line=>'+(commodity_line ? commodity_line : ''),
+                    'budget_name=>'+(budget_name ? budget_name : '')];
                 return domain + '/' + data_source + '/' + params;
             }
 

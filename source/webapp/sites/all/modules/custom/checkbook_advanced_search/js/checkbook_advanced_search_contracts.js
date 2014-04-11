@@ -122,8 +122,8 @@
                     div.ele('apt_pin').autocomplete({source:'/advanced-search/generic/autocomplete/contracts/apt_pin/' + path});
                     div.ele('pin').autocomplete({source:'/advanced-search/generic/autocomplete/contracts/pin/' + path});
                     div.ele('entity_contract_number').autocomplete({source:'/advanced-search/generic/autocomplete/contracts/entity_contract_number/' + path});
-                    div.ele('commodity_line').autocomplete({source:'/advanced-search/autocomplete/generic/contracts/commodity_line/' + path});
-                    div.ele('budget_name').autocomplete({source:'/advanced-search/autocomplete/generic/contracts/budget_name/' + path});
+                    div.ele('commodity_line').autocomplete({source:'/advanced-search/generic/autocomplete/contracts/commodity_line/' + path});
+                    div.ele('budget_name').autocomplete({source:'/advanced-search/generic/autocomplete/contracts/budget_name/' + path});
                 });
             });
         }

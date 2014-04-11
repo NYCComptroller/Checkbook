@@ -144,14 +144,13 @@
                     'agency=>'+agency,
                     'award_method=>'+award_method,
                     'year=>'+year,
-                    'entity_contract_number=>'+entity_contract_number,
-                    'commodity_line=>'+commodity_line,
-                    'budget_name=>'+budget_name];
+                    'entity_contract_number=>'+(entity_contract_number ? entity_contract_number : ''),
+                    'commodity_line=>'+(commodity_line ? commodity_line : ''),
+                    'budget_name=>'+(budget_name ? budget_name : '')];
 
                 return domain + '/' + data_source + '/' + params;
             }
             var path = getAutoCompletePath();
-            //$('#{element-id}', context).autocomplete({source:'/autocomplete/{domain}/{facet}/' + domain + '/' + data_source + '/' + params});
             $('#edit-contractno', context).autocomplete({source:'/autocomplete/datafeeds/contracts/contract_id/' + path});
             $('#edit-vendor', context).autocomplete({source:'/autocomplete/datafeeds/contracts/vendor/' + path});
             $('#edit-apt-pin',context).autocomplete({source:'/autocomplete/datafeeds/contracts/apt_pin/' + path});
