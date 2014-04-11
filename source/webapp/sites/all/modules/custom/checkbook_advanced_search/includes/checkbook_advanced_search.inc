@@ -650,7 +650,7 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
     $spending_capital_project = trim($form[$filter_dimension][$data_source . '_spending_capital_project']['#value']);
     $spending_capital_project_exact = trim($form[$filter_dimension][$data_source . '_spending_capital_project_exact']['#value']);
     $spending_expense_type = trim($form[$filter_dimension][$data_source . '_spending_expense_type']['#value']);
-    $spending_fiscal_year = trim($form[$filter_dimension][$data_source . '_spending_fiscal_year']['#value']);
+    $spending_fiscal_year = trim($form[$filter_dimension]['spending_fiscal_year']['#value']);
     $spending_date_filter = trim($form[$filter_dimension]['date_filter']['#value']);
 
     $spending_entity_contract_number = trim($form[$filter_dimension][$data_source . '_spending_entity_contract_number']['#value']);
