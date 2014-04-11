@@ -3,6 +3,18 @@
         "fact_disbursement_line_item": {
             "datasourceName": "main",
             "source": "disbursement_line_item_details"
+        },
+        "fact_disbursement_line_item1": {
+            "datasourceName": "main",
+            "source": "disbursement_line_item_details"
+        },
+         "spending_category_oge": {
+            "datasourceName": "main",
+            "source": "ref_spending_category"
+        },
+        "oge_contract_oge": {
+            "datasourceName": "main",
+            "source": "oge_contract"
         }
     },
     "cubes":   {
@@ -139,13 +151,21 @@
             {"datasetName": "fact_disbursement_line_item", "columnNames": ["spending_category_id"]},
             {"datasetName": "spending_category", "columnNames": ["spending_category_id"]}
         ],
+        "fact_disbursement_line_item__spending_category_oge": [
+            {"datasetName": "fact_disbursement_line_item1", "columnNames": ["spending_category_id"]},
+            {"datasetName": "spending_category_oge", "columnNames": ["spending_category_id"]}
+        ],        
         "fact_disbursement_line_item__contracts_spending_transactions": [
             {"datasetName": "fact_disbursement_line_item", "columnNames": ["disbursement_line_item_id","agreement_commodity_line_number"]},
             {"datasetName": "contracts_spending_transactions", "columnNames": ["disbursement_line_item_id","disb_agreement_commodity_line_number"]}
         ],
         "disbursement_line_item_details__oge_contract": [
-                {"datasetName": "fact_disbursement_line_item", "columnNames": ["contract_number","agreement_commodity_line_number"]},
+                {"datasetName": "fact_disbursement_line_item1", "columnNames": ["contract_number","agreement_commodity_line_number"]},
                 {"datasetName": "oge_contract", "columnNames": ["fms_contract_number","fms_commodity_line"]}
+        ],
+        "disbursement_line_item_details__oge_contract_oge": [
+                {"datasetName": "fact_disbursement_line_item1", "columnNames": ["contract_number","agreement_commodity_line_number"]},
+                {"datasetName": "oge_contract_oge", "columnNames": ["fms_contract_number","fms_commodity_line"]}
         ]
     }
 }
