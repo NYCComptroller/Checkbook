@@ -629,7 +629,6 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
 {
     $filter_dimension = $data_source . '_spending';
 
-    $spending_fiscal_year = trim($form[$filter_dimension][$data_source . '_spending_fiscal_year']['#value']);
     $spending_payee_name = trim($form[$filter_dimension][$data_source . '_spending_payee_name']['#value']);
     $spending_payee_name_exact = trim($form[$filter_dimension][$data_source . '_spending_payee_name_exact']['#value']);
     $spending_contract_num = trim($form[$filter_dimension][$data_source . '_spending_contract_num']['#value']);
