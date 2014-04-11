@@ -13,7 +13,7 @@
                 'check_amt_from':'input:text[name="'+data_source+'_spending_check_amount_from[date]"]',
                 'check_amt_to':'input:text[name="'+data_source+'_spending_check_amount_to[date]"]',
                 'contract_id':'input:text[name='+data_source+'_spending_contract_num]',
-                'entity_contract_num':'input:text[name='+data_source+'_spending_entity_contract_num]',
+                'entity_contract_number':'input:text[name='+data_source+'_spending_entity_contract_number]',
                 'document_id':'input:text[name='+data_source+'_spending_document_id]',
                 'capital_project':'input:text[name='+data_source+'_spending_capital_project]',
                 'commodity_line':'input:text[name='+data_source+'_spending_commodity_line]',
@@ -251,8 +251,33 @@
             div.ele('date_filter_year').attr('checked', 'checked');
             div.ele('date_filter_issue_date').removeAttr('checked');
 
-            onExpenseTypeChange(div);
-            onDateFilterClick(div);
+            //reset Expense Type
+            if (div.ele('spending_category').val() == 2) {
+                div.ele('contract_id').attr("disabled", "disabled");
+                div.ele('contract_id').val("");
+                div.ele('payee_name').attr("disabled", "disabled");
+                div.ele('payee_name').val("");
+            }
+            else if (div.ele('spending_category').val() == 4) {
+                div.ele('contract_id').attr("disabled", "disabled");
+                div.ele('contract_id').val("");
+            }
+            else {
+                div.ele('contract_id').removeAttr("disabled");
+                div.ele('payee_name').removeAttr("disabled");
+            }
+
+            //reset Date Filter
+            var value = div.ele('date_filter_checked').val();
+            if (value == 0) {
+                div.ele('fiscal_year').attr('disabled', '');
+                div.ele('issue_date_from').attr('disabled', 'disabled');
+                div.ele('issue_date_to').attr('disabled', 'disabled');
+            } else if (value == 1) {
+                div.ele('fiscal_year').attr('disabled', 'disabled');
+                div.ele('issue_date_from').removeAttr("disabled");
+                div.ele('issue_date_to').removeAttr("disabled");
+            }
         }
 
         //On click of "Date Filter"
@@ -289,8 +314,8 @@
             /* Reset all the fields for the data source */
             resetFields(div_checkbook_spending.contents());
             resetFields(div_checkbook_spending_oge.contents());
-            onClearClick(div_checkbook_spending);
-            onClearClick(div_checkbook_spending_oge);
+//            onClearClick(div_checkbook_spending);
+//            onClearClick(div_checkbook_spending_oge);
 
             /* Initialize view by data source */
             switch (dataSource) {
@@ -317,7 +342,7 @@
             var department = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
             var expense_category = (div.ele('exp_category').val()) ? (div.ele('exp_category').val()) : 0;
             var expense_type = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
-            var entity_contract_num = (div.ele('entity_contract_num').val()) ? (div.ele('entity_contract_num').val()) : 0;
+            var entity_contract_number = (div.ele('entity_contract_number').val()) ? (div.ele('entity_contract_number').val()) : 0;
             var commodity_line = (div.ele('commodity_line').val()) ? (div.ele('commodity_line').val()) : 0;
             var budget_name = (div.ele('budget_name').val()) ? (div.ele('budget_name').val()) : 0;
 
@@ -328,7 +353,7 @@
                 'department=>'+department,
                 'expense_category=>'+expense_category,
                 'expense_type=>'+expense_type,
-                'entity_contract_num=>'+entity_contract_num,
+                'entity_contract_number=>'+entity_contract_number,
                 'commodity_line=>'+commodity_line,
                 'budget_name=>'+budget_name];
             return domain + '/' + data_source + '/' + params;
@@ -382,8 +407,8 @@
                     $(this).parent().next().val(ui.item.label);
                 }
             });
-            div.ele('entity_contract_num').autocomplete({
-                source:'/advanced-search/generic/autocomplete/spending/entity_contract_num/' + path,
+            div.ele('entity_contract_number').autocomplete({
+                source:'/advanced-search/generic/autocomplete/spending/entity_contract_number/' + path,
                 select:function (event, ui) {
                     $(this).parent().next().val(ui.item.label);
                 }
@@ -397,7 +422,7 @@
                     div.ele('contract_id').autocomplete({source:'/advanced-search/generic/autocomplete/spending/contract_id/' + path});
                     div.ele('capital_project').autocomplete({source:'/advanced-search/generic/autocomplete/spending/capital_project/' + path});
                     div.ele('document_id').autocomplete({source:'/advanced-search/generic/autocomplete/spending/document_id/' + path});
-                    div.ele('entity_contract_num').autocomplete({source:'/advanced-search/generic/autocomplete/spending/entity_contract_num/' + path});
+                    div.ele('entity_contract_number').autocomplete({source:'/advanced-search/generic/autocomplete/spending/entity_contract_number/' + path});
                     div.ele('commodity_line').autocomplete({source:'/advanced-search/generic/autocomplete/spending/commodity_line/' + path});
                     div.ele('budget_name').autocomplete({source:'/advanced-search/generic/autocomplete/spending/budget_name/' + path});
                 });

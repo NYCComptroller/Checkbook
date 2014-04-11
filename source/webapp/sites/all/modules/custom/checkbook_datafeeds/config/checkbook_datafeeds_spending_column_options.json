@@ -66,7 +66,7 @@
                     "spending_category":"spending_category",
                     "fiscal_year":"fiscal_year",
                     "calendar_year":"calendar_year",
-                    "entity_contract_num":"entity_contract_num",
+                    "entity_contract_number":"entity_contract_number",
                     "commodity_line":"commodity_line",
                     "budget_name":"budget_name"
                 }

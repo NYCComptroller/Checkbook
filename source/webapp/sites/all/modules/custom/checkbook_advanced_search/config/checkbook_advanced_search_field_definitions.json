@@ -210,9 +210,9 @@
         "field_type":"submit",
         "field_name":"contracts"
     },
-    "entity_contract_num":{
+    "entity_contract_number":{
         "field_type":"textfield",
-        "field_name":"entity_contract_num",
+        "field_name":"entity_contract_number",
         "attributes":{
             "size":30,
             "maxlength":32,

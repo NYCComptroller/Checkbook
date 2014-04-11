@@ -29,7 +29,7 @@ function _get_datafeeds_autocomplete_results($facet, $query, $domain, $parameter
             $expense_type = $parameters['expense_type'];
             $contract_id = $parameters['contract_id'];
             $capital_project = $parameters['capital_project'];
-            $entity_contract_num = $parameters['entity_contract_num'];
+            $entity_contract_number = $parameters['entity_contract_number'];
             $commodity_line = $parameters['commodity_line'];
             $budget_name = $parameters['budget_name'];
 
@@ -40,7 +40,7 @@ function _get_datafeeds_autocomplete_results($facet, $query, $domain, $parameter
             if ($expense_type) $query .= '&fq=spending_category_code:' . $expense_type;
             if ($contract_id) $query .= '&fq=contract_number:' . $contract_id;
             if ($capital_project) $query .= '&fq=reporting_code:' . $capital_project;
-            if ($entity_contract_num) $query .= '&fq=spending_entity_contract_number:' . $entity_contract_num;
+            if ($entity_contract_number) $query .= '&fq=spending_entity_contract_number:' . $entity_contract_number;
             if ($commodity_line) $query .= '&fq=spending_commodity_line:' . $commodity_line;
             if ($budget_name) $query .= '&fq=spending_budget_name:' . $budget_name;
             break;
@@ -52,7 +52,7 @@ function _get_datafeeds_autocomplete_results($facet, $query, $domain, $parameter
             $agency = $parameters['agency'];
             $award_method = $parameters['award_method'];
             $year = $parameters['year'];
-            $entity_contract_num = $parameters['entity_contract_num'];
+            $entity_contract_number = $parameters['entity_contract_number'];
             $commodity_line = $parameters['commodity_line'];
             $budget_name = $parameters['budget_name'];
 
@@ -77,7 +77,7 @@ function _get_datafeeds_autocomplete_results($facet, $query, $domain, $parameter
             if ($contract_type) $query .= '&fq=contract_type_id:' . $contract_type;
             if ($agency) $query .= '&fq=agency_code:' . $agency;
             if ($award_method) $query .= '&fq=award_method_code:' . $award_method;
-            if ($entity_contract_num) $query .= '&fq=contract_entity_contract_number:' . $entity_contract_num;
+            if ($entity_contract_number) $query .= '&fq=contract_entity_contract_number:' . $entity_contract_number;
             if ($commodity_line) $query .= '&fq=contract_commodity_line:' . $commodity_line;
             if ($budget_name) $query .= '&fq=contract_budget_name:' . $budget_name;
 
@@ -136,7 +136,7 @@ function _checkbook_datafeeds_autocomplete($field, $domain, $data_source = 'chec
             $query_field = 'contract_number';
             $facet_field = 'contract_number';
             break;
-        case 'entity_contract_num':
+        case 'entity_contract_number':
             $query_field = $prefix . '_entity_contract_number';
             $facet_field = $prefix . '_entity_contract_number';
             break;

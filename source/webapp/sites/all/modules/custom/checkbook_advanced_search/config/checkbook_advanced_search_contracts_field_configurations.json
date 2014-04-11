@@ -26,7 +26,7 @@
                 {"field_name":"vendor_name","column":"column-left"},
                 {"field_name":"type","column":"column-left"},
                 {"field_name":"contract_id","column":"column-left"},
-                {"field_name":"entity_contract_num","column":"column-left"},
+                {"field_name":"entity_contract_number","column":"column-left"},
                 {"field_name":"commodity_line","column":"column-left"},
                 {"field_name":"budget_name","column":"column-left"},
                 {"field_name":"current_contract_amount","column":"column-left"},
