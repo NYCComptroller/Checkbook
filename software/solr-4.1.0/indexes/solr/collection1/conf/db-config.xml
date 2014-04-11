@@ -551,6 +551,9 @@
                     left join ref_document_code dc on a.document_code_id = dc.document_code_id
                     left join ref_award_category rac on a.award_category_id = rac.award_category_id
                     left join oge_contract oc on oc.fms_contract_number = a.contract_number
+                    where dc.document_code in ('MMA1', 'MA1', 'MAR', 'CT1', 'CTR', 'DO1', 'CTA1', 'RCT1')
+                    and ( '${dataimporter.request.clean}' != 'false'
+                    OR  a.job_id >= ${dataimporter.request.jobID} )
                     group by 'contracts:' || agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END)
                 ) entity_contract_number on entity_contract_number.id = 'contracts:' || agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END) || 'oge'
                 left join
