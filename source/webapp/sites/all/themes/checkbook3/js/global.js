@@ -972,6 +972,7 @@ $("input[name='alert_end[date]']").datepicker({"changeMonth":true,"changeYear":t
             function disableAccordionSection(name) {
                 var accordion_section = $("a:contains("+name+")").closest("h3");
                 accordion_section.attr("data-enabled","false");
+                accordion_section.addClass('ui-state-section-disabled');
                 accordion_section.unbind("click");
             }
         }
