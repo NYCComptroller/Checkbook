@@ -3837,7 +3837,6 @@ function checkbook_datafeeds_spending($form, &$form_state)
         '#prefix' => '<div id="div_data_source">',
         '#suffix' => '</div><br/><br/>',
         '#parents' => array('datafeeds-spending-domain-filter'),
-        '#validated' => true,
         '#ajax' => array(
             'event' => 'change',
             'callback' => 'checkbook_datafeeds_spending_filter_ajax',
@@ -4428,6 +4427,8 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
  * Updates the form to point to correct data source
  */
 function checkbook_datafeeds_spending_filter_ajax($form, $form_state) {
+
+    $commands[] = ajax_command_replace('.messages', '');
     $commands[] = ajax_command_replace('#dynamic-filter-data-wrapper', drupal_render($form['filter']));
     $commands[] = ajax_command_replace('#dynamic-columns-wrapper', drupal_render($form['columns']));
     $commands[] = ajax_command_invoke('#edit-year option[value="'.'FY' . currentFiscalYear().'"]', 'attr', array('selected','selected'));
