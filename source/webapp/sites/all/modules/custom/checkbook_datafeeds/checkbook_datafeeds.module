@@ -351,88 +351,89 @@ function checkbook_datafeeds_data_feeds_page() {
  * @return array
  *   Renderable array of right pane of Data Feeds wizard
  */
-function checkbook_datafeeds_data_feed_wizard($form, &$form_state) {
-  switch ($form_state['step']) {
-    case 'budget':
-      return checkbook_datafeeds_budget($form, $form_state);
-    break;
+function checkbook_datafeeds_data_feed_wizard($form, &$form_state)
+{
+    switch ($form_state['step']) {
+        case 'budget':
+            return checkbook_datafeeds_budget($form, $form_state);
+            break;
 
-    case 'budget_confirmation':
-      return checkbook_datafeeds_budget_confirmation($form, $form_state);
-    break;
+        case 'budget_confirmation':
+            return checkbook_datafeeds_budget_confirmation($form, $form_state);
+            break;
 
-    case 'contracts':
-      return checkbook_datafeeds_contracts($form, $form_state);
-    break;
+        case 'contracts':
+            return checkbook_datafeeds_contracts($form, $form_state);
+            break;
 
-    case 'contracts_confirmation':
-      return checkbook_datafeeds_contracts_confirmation($form, $form_state);
-    break;
+        case 'contracts_confirmation':
+            return checkbook_datafeeds_contracts_confirmation($form, $form_state);
+            break;
 
-    case 'payroll':
-      return checkbook_datafeeds_payroll($form, $form_state);
-    break;
+        case 'payroll':
+            return checkbook_datafeeds_payroll($form, $form_state);
+            break;
 
-    case 'payroll_confirmation':
-      return checkbook_datafeeds_payroll_confirmation($form, $form_state);
-    break;
+        case 'payroll_confirmation':
+            return checkbook_datafeeds_payroll_confirmation($form, $form_state);
+            break;
 
-    case 'revenue':
-      return checkbook_datafeeds_revenue($form, $form_state);
-    break;
+        case 'revenue':
+            return checkbook_datafeeds_revenue($form, $form_state);
+            break;
 
-    case 'revenue_confirmation':
-      return checkbook_datafeeds_revenue_confirmation($form, $form_state);
-    break;
+        case 'revenue_confirmation':
+            return checkbook_datafeeds_revenue_confirmation($form, $form_state);
+            break;
 
-    case 'spending':
-        $form = checkbook_datafeeds_spending($form, $form_state);
-        return $form;
-    break;
+        case 'spending':
+            $form = checkbook_datafeeds_spending($form, $form_state);
+            return $form;
+            break;
 
-    case 'spending_confirmation':
-        $form = checkbook_datafeeds_spending_confirmation($form, $form_state);
-        return $form;
-    break;
+        case 'spending_confirmation':
+            $form = checkbook_datafeeds_spending_confirmation($form, $form_state);
+            return $form;
+            break;
 
-    case 'queue_final':
-      return checkbook_datafeeds_queue_final($form, $form_state);
-    break;
-  }
+        case 'queue_final':
+            return checkbook_datafeeds_queue_final($form, $form_state);
+            break;
+    }
 
-  $form_state['step'] = 'type';
+    $form_state['step'] = 'type';
 
-  $form['type'] = array(
-    '#type' => 'radios',
-    '#title' => t('1. Select the Data Type:'),
-    '#prefix' => '<div class="data-feed-wizard">',
-    '#options' => array(
-      'budget' => t('Budget'),
-      'revenue' => t('Revenue'),      
-      'spending' => t('Spending'),
-      'contracts' => t('Contracts'),
-      'payroll' => t('Payroll'),
-    ),
-    '#default_value' => !empty($form_state['values']['type']) ? $form_state['values']['type'] : 'spending',
-  );
-  $form['format'] = array(
-    '#type' => 'radios',
-    '#title' => t('2. Select the Format:'),
-    '#options' => array(
-      'csv' => t('CSV'),
-      'xml' => t('XML'),
-    ),
-    '#default_value' => !empty($form_state['values']['format']) ? $form_state['values']['format'] : 'csv',
-  );
-  $form['type_next'] = array(
-    '#type' => 'submit',
-    '#value' => t('Next'),
-    '#name' => 'next',
-    '#suffix' => '</div>',
-    '#submit' => array('checkbook_datafeeds_type_next_submit'),
-  );
-  $form['#attributes'] = array('class' => array('first-page', 'data-feeds-wizard'));
-  return $form;
+    $form['type'] = array(
+        '#type' => 'radios',
+        '#title' => t('1. Select the Data Type:'),
+        '#prefix' => '<div class="data-feed-wizard">',
+        '#options' => array(
+            'budget' => t('Budget'),
+            'revenue' => t('Revenue'),
+            'spending' => t('Spending'),
+            'contracts' => t('Contracts'),
+            'payroll' => t('Payroll'),
+        ),
+        '#default_value' => !empty($form_state['values']['type']) ? $form_state['values']['type'] : 'spending',
+    );
+    $form['format'] = array(
+        '#type' => 'radios',
+        '#title' => t('2. Select the Format:'),
+        '#options' => array(
+            'csv' => t('CSV'),
+            'xml' => t('XML'),
+        ),
+        '#default_value' => !empty($form_state['values']['format']) ? $form_state['values']['format'] : 'csv',
+    );
+    $form['type_next'] = array(
+        '#type' => 'submit',
+        '#value' => t('Next'),
+        '#name' => 'next',
+        '#suffix' => '</div>',
+        '#submit' => array('checkbook_datafeeds_type_next_submit'),
+    );
+    $form['#attributes'] = array('class' => array('first-page', 'data-feeds-wizard'));
+    return $form;
 }
 
 /**
@@ -2029,7 +2030,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         $columns_selected = $values['column_select_pending'];
 
     $filtered_columns = checkbook_datafeeds_contracts_filter_selected_columns($columns_selected, $data_source, $response_type, $values['df_contract_status'],$values['category'],$values['year']);
-    $form_state['step_information']['spending']['stored_values']['column_select'] = $filtered_columns;
+    $form_state['step_information']['contracts']['stored_values']['column_select'] = $filtered_columns;
 
     if ($values['df_contract_status'] != 'pending' && $values['category'] == 'expense') {
         foreach ($values['column_select_expense'] as $column) {
@@ -2274,9 +2275,9 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
     if ($values['vendor']) {
         preg_match($pattern, $values['vendor'], $vmatches);
         if ($vmatches) {
-            $criteria['value']['vendor_code'] = trim($vmatches[1], '[ ]');
+            $criteria['value']['vendor_name'] = trim($vmatches[1], '[ ]');
         } else {
-            $criteria['value']['vendor_code'] = $values['vendor'];
+            $criteria['value']['vendor_name'] = $values['vendor'];
         }
     }
     if ($values['currentamtfrom'] !== '' || $values['currentamtto'] !== '') {
@@ -2339,7 +2340,6 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
             if ($values['agency'] != 'Other Government Entities') {
                 preg_match($pattern, $values['agency'], $amatches);
                 $criteria['value']['other_government_entities_code'] = trim($amatches[1], '[ ]');
-                //$criteria['value']['agency_code'] = trim($amatches[1], '[ ]');
             }
             if ($values['entity_contract_number']) {
                 $criteria['value']['entity_contract_number'] = $values['entity_contract_number'];
@@ -2371,114 +2371,141 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
  * @param array $form_state
  *   Data Feeds wizard form_state array
  */
-function checkbook_datafeeds_contracts_validate($form, &$form_state) {
-  $startfrom = $form_state['values']['startdatefrom'];
-  $startto = $form_state['values']['startdateto'];
-  $enddatefrom = $form_state['values']['enddatefrom'];
-  $enddateto = $form_state['values']['enddateto'];
-  $regdatefrom = $form_state['values']['regdatefrom'];
-  $regdateto = $form_state['values']['regdateto'];
-  $recdatefrom = $form_state['values']['recdatefrom'];
-  $recdateto = $form_state['values']['recdateto'];
-  $currentfrom = $form_state['values']['currentamtfrom'];
-  $currentto = $form_state['values']['currentamtto'];
-  $activeexpense = $form_state['values']['column_select_expense'];
-  $activerevenue = $form_state['values']['column_select_revenue'];
-  $pending = $form_state['values']['column_select_pending'];
-  $vendor = $form_state['values']['vendor'];
-  // Start Date:
-  if ($startfrom && !checkDateFormat($startfrom)) {
-    form_set_error('startdatefrom', t('Start Date must be a valid date (YYYY-MM-DD).'));
-  }
-  if ($startto && !checkDateFormat($startto)) {
-    form_set_error('startdateto', t('Start Date must be a valid date (YYYY-MM-DD).'));
-  }
-  if ($startfrom && $startto && strtotime($startto) < strtotime($startfrom)) {
-    form_set_error('startdateto', t('Invalid date range for Start Date.'));
-  }
-  // End Date:
-  if ($enddatefrom && !checkDateFormat($enddatefrom)) {
-    form_set_error('enddatefrom', t('End Date must be a valid date (YYYY-MM-DD).'));
-  }
-  if ($enddateto && !checkDateFormat($enddateto)) {
-    form_set_error('enddateto', t('End Date must be a valid date (YYYY-MM-DD).'));
-  }
-  if ($enddatefrom && $enddateto && strtotime($enddateto) < strtotime($enddatefrom)) {
-    form_set_error('enddateto', t('Invalid date range for End Date.'));
-  }
-  // Registered Date:
-  if ($regdatefrom && !checkDateFormat($regdatefrom)) {
-    form_set_error('regdatefrom', t('Registered Date must be a valid date (YYYY-MM-DD).'));
-  }
-  if ($regdateto && !checkDateFormat($regdateto)) {
-    form_set_error('regdateto', t('Registered Date must be a valid date (YYYY-MM-DD).'));
-  }
-  if ($regdatefrom && $regdateto && strtotime($regdateto) < strtotime($regdatefrom)) {
-    form_set_error('regdateto', t('Invalid Date range for Registered Date.'));
-  }
-  // Received Date:
-  if ($recdatefrom && !checkDateFormat($recdatefrom)) {
-    form_set_error('recdatefrom', t('Received Date must be a valid date (YYYY-MM-DD).'));
-  }
-  if ($recdateto && !checkDateFormat($recdateto)) {
-    form_set_error('recdateto', t('Received Date must be a valid date (YYYY-MM-DD).'));
-  }
-  if ($recdatefrom && $recdateto && strtotime($recdateto) < strtotime($recdatefrom)) {
-    form_set_error('recdateto', t('Invalid Date range for Received Date.'));
-  }
-  // Current Amount:
-  if ($currentfrom && !is_numeric($currentfrom)) {
-    form_set_error('currentamtfrom', t('Current Amount must be a number.'));
-  }
-  if ($currentto && !is_numeric($currentto)) {
-    form_set_error('currentamtto', t('Current Amount must be a number.'));
-  }
-  if ($currentfrom && $currentto && $currentto < $currentfrom) {
-    form_set_error('currentamtto', t('Invalid range for Current Amount.'));
-  }
-  // Vendor:
-  if ($vendor) {
-    $pattern = "/.*?(\\[.*?\\])/is";
-    preg_match($pattern, $vendor, $vmatches);
-    if (!$vmatches) {
-      try {
-        $dataController = data_controller_get_instance();
-        $results = $dataController->queryDataset('checkbook:vendor', array('vendor_customer_code'), array('vendor_customer_code' => $vendor));
-      }
-      catch (Exception $e) {
-        log_error($e->getMessage());
-      }
-      if (!$results[0]) {
-        form_set_error('vendor', t('Please enter a valid vendor code.'));
-      }
+function checkbook_datafeeds_contracts_validate($form, &$form_state)
+{
+    $data_source = $form_state['input']['datafeeds-contracts-domain-filter'];
+    $agency = $form_state['values']['agency'];
+    $agency_code = emptyToZero($agency);
+    $startfrom = $form_state['values']['startdatefrom'];
+    $startto = $form_state['values']['startdateto'];
+    $enddatefrom = $form_state['values']['enddatefrom'];
+    $enddateto = $form_state['values']['enddateto'];
+    $regdatefrom = $form_state['values']['regdatefrom'];
+    $regdateto = $form_state['values']['regdateto'];
+    $recdatefrom = $form_state['values']['recdatefrom'];
+    $recdateto = $form_state['values']['recdateto'];
+    $currentfrom = $form_state['values']['currentamtfrom'];
+    $currentto = $form_state['values']['currentamtto'];
+    $activeexpense = $form_state['values']['column_select_expense'];
+    $activerevenue = $form_state['values']['column_select_revenue'];
+    $pending = $form_state['values']['column_select_pending'];
+    $vendor = $form_state['values']['vendor'];
+    // Start Date:
+    if ($startfrom && !checkDateFormat($startfrom)) {
+        form_set_error('startdatefrom', t('Start Date must be a valid date (YYYY-MM-DD).'));
     }
-  }
-  //Columns
-  if (!$activeexpense && $form_state['values']['df_contract_status'] != 'pending' && $form_state['values']['category'] == 'expense') {
-    form_set_error('column_select_expense', t('You must select at least one column.'));
-  }
-  if (!$activerevenue && $form_state['values']['df_contract_status'] != 'pending' && $form_state['values']['category'] == 'revenue') {
-    form_set_error('column_select_revenue', t('You must select at least one column.'));
-  }
-  if (!$pending && $form_state['values']['df_contract_status'] == 'pending') {
-    form_set_error('column_select_pending', t('You must select at least one column.'));
-  }
-  if ($form_state['values']['df_contract_status'] != 'pending') {
-    if ($form_state['values']['recdatefrom']) {
-      form_set_error('recdatefrom', t('Received Date filter is not available on active or registered contracts.'));
+    if ($startto && !checkDateFormat($startto)) {
+        form_set_error('startdateto', t('Start Date must be a valid date (YYYY-MM-DD).'));
     }
-    if ($form_state['values']['recdateto']) {
-      form_set_error('recdateto', t('Received Date filter is not available on active or registered contracts.'));
+    if ($startfrom && $startto && strtotime($startto) < strtotime($startfrom)) {
+        form_set_error('startdateto', t('Invalid date range for Start Date.'));
     }
-  }
-  elseif ($form_state['values']['df_contract_status'] == 'pending') {
-    if ($form_state['values']['regdatefrom']) {
-      form_set_error('spentto', t('Registered Date filter is not available on pending contracts'));
+    // End Date:
+    if ($enddatefrom && !checkDateFormat($enddatefrom)) {
+        form_set_error('enddatefrom', t('End Date must be a valid date (YYYY-MM-DD).'));
     }
-    if ($form_state['values']['regdateto']) {
-      form_set_error('spentto', t('Registered Date filter is not available on pending contracts'));
+    if ($enddateto && !checkDateFormat($enddateto)) {
+        form_set_error('enddateto', t('End Date must be a valid date (YYYY-MM-DD).'));
     }
-  }
+    if ($enddatefrom && $enddateto && strtotime($enddateto) < strtotime($enddatefrom)) {
+        form_set_error('enddateto', t('Invalid date range for End Date.'));
+    }
+    // Registered Date:
+    if ($regdatefrom && !checkDateFormat($regdatefrom)) {
+        form_set_error('regdatefrom', t('Registered Date must be a valid date (YYYY-MM-DD).'));
+    }
+    if ($regdateto && !checkDateFormat($regdateto)) {
+        form_set_error('regdateto', t('Registered Date must be a valid date (YYYY-MM-DD).'));
+    }
+    if ($regdatefrom && $regdateto && strtotime($regdateto) < strtotime($regdatefrom)) {
+        form_set_error('regdateto', t('Invalid Date range for Registered Date.'));
+    }
+    // Received Date:
+    if ($recdatefrom && !checkDateFormat($recdatefrom)) {
+        form_set_error('recdatefrom', t('Received Date must be a valid date (YYYY-MM-DD).'));
+    }
+    if ($recdateto && !checkDateFormat($recdateto)) {
+        form_set_error('recdateto', t('Received Date must be a valid date (YYYY-MM-DD).'));
+    }
+    if ($recdatefrom && $recdateto && strtotime($recdateto) < strtotime($recdatefrom)) {
+        form_set_error('recdateto', t('Invalid Date range for Received Date.'));
+    }
+    // Current Amount:
+    if ($currentfrom && !is_numeric($currentfrom)) {
+        form_set_error('currentamtfrom', t('Current Amount must be a number.'));
+    }
+    if ($currentto && !is_numeric($currentto)) {
+        form_set_error('currentamtto', t('Current Amount must be a number.'));
+    }
+    if ($currentfrom && $currentto && $currentto < $currentfrom) {
+        form_set_error('currentamtto', t('Invalid range for Current Amount.'));
+    }
+    // Vendor:
+    if ($vendor) {
+        $pattern = "/.*?(\\[.*?\\])/is";
+        preg_match($pattern, $vendor, $vmatches);
+        if (!$vmatches) {
+            try {
+                $dataController = data_controller_get_instance();
+                switch($data_source) {
+                    case 'checkbook_oge':
+
+                        $query = "SELECT DISTINCT vendor_name ";
+                        $query .= "FROM disbursement_line_item_details dld ";
+                        $query .= "JOIN ref_spending_category rsc on rsc.spending_category_id = dld.spending_category_id ";
+                        $query .= "JOIN ref_agency ra on ra.agency_code = dld.agency_code ";
+                        $query .= "WHERE ra.is_display = 'Y' " ;
+                        $query .= "AND vendor_name ilike '".$vendor."'";
+                        if($agency_code) $query .= "AND dld.agency_code = '".$agency_code."'";
+
+                        $results = _checkbook_project_execute_sql($query, "main", $data_source);
+
+                        break;
+                    default:
+                        $results = $dataController->queryDataset('checkbook:vendor', array('vendor_customer_code'), array('vendor_customer_code' => $vendor));
+                        break;
+                }
+            } catch (Exception $e) {
+                log_error($e->getMessage());
+            }
+            if (!$results[0]) {
+                switch($data_source) {
+                    case 'checkbook_oge':
+                        form_set_error('payee_name', t('Please enter a valid vendor name.'));
+                        break;
+                    default:
+                        form_set_error('payee_name', t('Please enter a valid vendor code.'));
+                        break;
+                }
+            }
+        }
+    }
+
+    //Columns
+    if (!$activeexpense && $form_state['values']['df_contract_status'] != 'pending' && $form_state['values']['category'] == 'expense') {
+        form_set_error('column_select_expense', t('You must select at least one column.'));
+    }
+    if (!$activerevenue && $form_state['values']['df_contract_status'] != 'pending' && $form_state['values']['category'] == 'revenue') {
+        form_set_error('column_select_revenue', t('You must select at least one column.'));
+    }
+    if (!$pending && $form_state['values']['df_contract_status'] == 'pending') {
+        form_set_error('column_select_pending', t('You must select at least one column.'));
+    }
+    if ($form_state['values']['df_contract_status'] != 'pending') {
+        if ($form_state['values']['recdatefrom']) {
+            form_set_error('recdatefrom', t('Received Date filter is not available on active or registered contracts.'));
+        }
+        if ($form_state['values']['recdateto']) {
+            form_set_error('recdateto', t('Received Date filter is not available on active or registered contracts.'));
+        }
+    } elseif ($form_state['values']['df_contract_status'] == 'pending') {
+        if ($form_state['values']['regdatefrom']) {
+            form_set_error('spentto', t('Registered Date filter is not available on pending contracts'));
+        }
+        if ($form_state['values']['regdateto']) {
+            form_set_error('spentto', t('Registered Date filter is not available on pending contracts'));
+        }
+    }
 }
 
 //</editor-fold>
@@ -3810,6 +3837,7 @@ function checkbook_datafeeds_spending($form, &$form_state)
         '#prefix' => '<div id="div_data_source">',
         '#suffix' => '</div><br/><br/>',
         '#parents' => array('datafeeds-spending-domain-filter'),
+        '#validated' => true,
         '#ajax' => array(
             'event' => 'change',
             'callback' => 'checkbook_datafeeds_spending_filter_ajax',
@@ -3882,7 +3910,6 @@ function checkbook_datafeeds_spending($form, &$form_state)
             'data' => drupal_get_path('module', 'checkbook_datafeeds') . '/js/spending.js',
         )
     );
-    $form['#validate'] = array('checkbook_datafeeds_spending_validate');
     $form['#attributes'] = array(
         'class' => array(
             'spending',
@@ -4979,9 +5006,9 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
     if ($values['payee_name']) {
         preg_match($pattern, $values['payee_name'], $pmatches);
         if ($pmatches) {
-            $criteria['value']['payee_code'] = trim($pmatches[1], '[ ]');
+            $criteria['value']['payee_name'] = trim($pmatches[1], '[ ]');
         } else {
-            $criteria['value']['payee_code'] = $values['payee_name'];
+            $criteria['value']['payee_name'] = $values['payee_name'];
         }
     }
     if ($values['date_filter'] == '0') {
@@ -5014,47 +5041,74 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
  *   Data Feeds wizard form_state array
  */
 function checkbook_datafeeds_spending_validate($form, &$form_state) {
-  $checkfrom = $form_state['values']['checkamtfrom'];
-  $checkto = $form_state['values']['checkamtto'];
-  $datefrom = $form_state['values']['issuedfrom'];
-  $dateto = $form_state['values']['issuedto'];
-  $vendor = $form_state['values']['payee_name'];
-  if ($checkfrom && !is_numeric($checkfrom)) {
-    form_set_error('checkamtfrom', t('Check Amount must be a number.'));
-  }
-  if ($checkto && !is_numeric($checkto)) {
-    form_set_error('checkamtto', t('Check Amount must be a number.'));
-  }
-  if ($checkfrom && $checkto && $checkto < $checkfrom) {
-    form_set_error('checkamtto', t('Invalid range for Check Amount.'));
-  }
-  if ($datefrom && !checkDateFormat($datefrom)) {
-    form_set_error('issuedfrom', t('Issue Date must be a valid date (YYYY-MM-DD).'));
-  }
-  if ($dateto && !checkDateFormat($dateto)) {
-    form_set_error('issuedto', t('Issue Date must be a valid date (YYYY-MM-DD).'));
-  }
-  if ($datefrom && $dateto && strtotime($dateto) < strtotime($datefrom)) {
-    form_set_error('issuedto', t('Invalid range for Issue Date.'));
-  }
-  //Vendor
-  if ($vendor) {
-    //$pattern = '/\[(.*?)\]$/';
-    $pattern = "/.*?(\\[.*?\\])/is";
-    preg_match($pattern, $vendor, $vmatches);
-    if (!$vmatches) {
-      try {
-        $dataController = data_controller_get_instance();
-        $results = $dataController->queryDataset('checkbook:vendor', array('vendor_customer_code'), array('vendor_customer_code' => $vendor));
-      }
-      catch (Exception $e) {
-        log_error($e->getMessage());
-      }
-      if (!$results[0]) {
-        form_set_error('payee_name', t('Please enter a valid vendor code.'));
-      }
+
+    $data_source = $form_state['input']['datafeeds-spending-domain-filter'];
+    $agency = $form_state['values']['agency'];
+    $agency_code = emptyToZero($agency);
+    $checkfrom = $form_state['values']['checkamtfrom'];
+    $checkto = $form_state['values']['checkamtto'];
+    $datefrom = $form_state['values']['issuedfrom'];
+    $dateto = $form_state['values']['issuedto'];
+    $vendor = $form_state['values']['payee_name'];
+    if ($checkfrom && !is_numeric($checkfrom)) {
+        form_set_error('checkamtfrom', t('Check Amount must be a number.'));
     }
-  }
+    if ($checkto && !is_numeric($checkto)) {
+        form_set_error('checkamtto', t('Check Amount must be a number.'));
+    }
+    if ($checkfrom && $checkto && $checkto < $checkfrom) {
+        form_set_error('checkamtto', t('Invalid range for Check Amount.'));
+    }
+    if ($datefrom && !checkDateFormat($datefrom)) {
+        form_set_error('issuedfrom', t('Issue Date must be a valid date (YYYY-MM-DD).'));
+    }
+    if ($dateto && !checkDateFormat($dateto)) {
+        form_set_error('issuedto', t('Issue Date must be a valid date (YYYY-MM-DD).'));
+    }
+    if ($datefrom && $dateto && strtotime($dateto) < strtotime($datefrom)) {
+        form_set_error('issuedto', t('Invalid range for Issue Date.'));
+    }
+    //Vendor
+    if ($vendor) {
+        //$pattern = '/\[(.*?)\]$/';
+        $pattern = "/.*?(\\[.*?\\])/is";
+        preg_match($pattern, $vendor, $vmatches);
+        if (!$vmatches) {
+            try {
+                $dataController = data_controller_get_instance();
+                switch($data_source) {
+                    case 'checkbook_oge':
+
+                        $query = "SELECT DISTINCT vendor_name ";
+                        $query .= "FROM disbursement_line_item_details dld ";
+                        $query .= "JOIN ref_spending_category rsc on rsc.spending_category_id = dld.spending_category_id ";
+                        $query .= "JOIN ref_agency ra on ra.agency_code = dld.agency_code ";
+                        $query .= "WHERE ra.is_display = 'Y' " ;
+                        $query .= "AND vendor_name ilike '".$vendor."'";
+                        if($agency_code) $query .= "AND dld.agency_code = '".$agency_code."'";
+
+                        $results = _checkbook_project_execute_sql($query, "main", $data_source);
+
+                        break;
+                    default:
+                        $results = $dataController->queryDataset('checkbook:vendor', array('vendor_customer_code'), array('vendor_customer_code' => $vendor));
+                        break;
+                }
+            } catch (Exception $e) {
+                log_error($e->getMessage());
+            }
+            if (!$results[0]) {
+                switch($data_source) {
+                    case 'checkbook_oge':
+                        form_set_error('payee_name', t('Please enter a valid vendor name.'));
+                        break;
+                    default:
+                        form_set_error('payee_name', t('Please enter a valid vendor code.'));
+                        break;
+                }
+            }
+        }
+    }
 }
 
 //</editor-fold>
