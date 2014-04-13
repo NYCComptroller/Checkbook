@@ -4503,6 +4503,8 @@ function checkbook_datafeeds_datefilter_ajax($form, &$form_state)
             'disabled',
             'disabled',
         ));
+        $commands[] = ajax_command_invoke('input[name="issuedfrom"]', 'val', array(''));
+        $commands[] = ajax_command_invoke('input[name="issuedto"]', 'val', array(''));
     } elseif ($value == 1) {
         $commands[] = ajax_command_invoke('select[name="year"]', 'attr', array(
             'disabled',
