@@ -3910,6 +3910,7 @@ function checkbook_datafeeds_spending($form, &$form_state)
             'data' => drupal_get_path('module', 'checkbook_datafeeds') . '/js/spending.js',
         )
     );
+    $form['#validate'] = array('checkbook_datafeeds_spending_validate');
     $form['#attributes'] = array(
         'class' => array(
             'spending',
@@ -4192,7 +4193,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#size' => 10,
                 '#maxlength' => 10,
                 '#description' => t('E.g., ' . date('Y-m-d')),
-                '#attributes' => array('class' => array('datepicker'), 'disabled' => 'disabled'),
+                '#attributes' => array('class' => array('datepicker')),
                 '#prefix' => '<div class="datafield datarange issueddate"><div class="ranges">',
                 '#id' => 'edit-issuedfrom',
                 '#name' => 'issuedfrom',
@@ -4204,7 +4205,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#size' => 10,
                 '#maxlength' => 10,
                 '#description' => t('E.g., ' . date('Y-m-d')),
-                '#attributes' => array('class' => array('datepicker'), 'disabled' => 'disabled'),
+                '#attributes' => array('class' => array('datepicker')),
                 '#suffix' => '</div></div>',
                 '#id' => 'edit-issuedto',
                 '#name' => 'issuedto',
@@ -4394,7 +4395,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#size' => 10,
                 '#maxlength' => 10,
                 '#description' => t('E.g., ' . date('Y-m-d')),
-                '#attributes' => array('class' => array('datepicker'), 'disabled' => 'disabled'),
+                '#attributes' => array('class' => array('datepicker')),
                 '#prefix' => '<div class="datafield datarange issueddate"><div class="ranges">',
                 '#id' => 'edit-issuedfrom',
                 '#name' => 'issuedfrom',
@@ -4406,7 +4407,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#size' => 10,
                 '#maxlength' => 10,
                 '#description' => t('E.g., ' . date('Y-m-d')),
-                '#attributes' => array('class' => array('datepicker'), 'disabled' => 'disabled'),
+                '#attributes' => array('class' => array('datepicker')),
                 '#suffix' => '</div></div>',
                 '#id' => 'edit-issuedto',
                 '#name' => 'issuedto',
