@@ -414,7 +414,7 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
       }
     }
   }
-  if (count($agencies) > 0 && count($reqOGEAgencies) == 0) {
+  if (count($agencies) > 0) {
     foreach ($agencies[0] as $agencyName => $count) {
       if ($count > 0) {
         $checked = in_array($agencyName, array_values_recursive($reqAgencies[0]));
@@ -423,7 +423,8 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
           $output['City Wide Agency']['checked'][] = array($agencyValue, $agencyName, $count);
         }
         else {
-          $output['City Wide Agency']['unchecked'][] = array($agencyValue, $agencyName, $count);
+            if(count($reqOGEAgencies) == 0 || strlen($agencyName) > 0)
+                $output['City Wide Agency']['unchecked'][] = array($agencyValue, $agencyName, $count);
         }
       }
     }
