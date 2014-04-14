@@ -160,7 +160,7 @@ function _checkbook_datafeeds_autocomplete($field, $domain, $data_source = 'chec
 
     foreach(explode(',', $args) as $arg)
     {
-        $param_parts = explode('=>', $arg);
+        $param_parts = explode('==>>', $arg);
         if($param_parts[0] != $field)
             $parameters[$param_parts[0]] = $param_parts[1];
     }

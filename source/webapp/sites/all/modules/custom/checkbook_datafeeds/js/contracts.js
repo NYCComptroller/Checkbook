@@ -138,15 +138,15 @@
 
                 var domain = 'contracts';
                 var data_source = $('input:radio[name=datafeeds-contracts-domain-filter]:checked').val();
-                var params = ['status=>'+status,
-                    'category=>'+category,
-                    'contract_type=>'+contract_type,
-                    'agency=>'+agency,
-                    'award_method=>'+award_method,
-                    'year=>'+year,
-                    'entity_contract_number=>'+(entity_contract_number ? entity_contract_number : ''),
-                    'commodity_line=>'+(commodity_line ? commodity_line : ''),
-                    'budget_name=>'+(budget_name ? budget_name : '')];
+                var params = ['status==>>'+status,
+                    'category==>>'+category,
+                    'contract_type==>>'+contract_type,
+                    'agency==>>'+agency,
+                    'award_method==>>'+award_method,
+                    'year==>>'+year,
+                    'entity_contract_number==>>'+(entity_contract_number ? entity_contract_number : ''),
+                    'commodity_line==>>'+(commodity_line ? commodity_line : ''),
+                    'budget_name==>>'+(budget_name ? budget_name : '')];
 
                 return domain + '/' + data_source + '/' + params;
             }

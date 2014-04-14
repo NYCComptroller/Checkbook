@@ -22,9 +22,6 @@
                 'date_filter_year':'input:radio[name='+data_source+'_date_filter][value=0]',
                 'date_filter_issue_date':'input:radio[name='+data_source+'_date_filter][value=1]',
                 'date_filter_checked':'input:radio[name='+data_source+'_date_filter]:checked',
-//                'fiscal_year':'select[name="'+data_source+'_spending_fiscal_year"]',
-//                'issue_date_from':'input:text[name="'+data_source+'_spending_issue_date_from[date]"]',
-//                'issue_date_to':'input:text[name="'+data_source+'_spending_issue_date_to[date]"]'
                 'fiscal_year':'select[name="spending_fiscal_year"]',
                 'issue_date_from':'input:text[name="spending_issue_date_from[date]"]',
                 'issue_date_to':'input:text[name="spending_issue_date_to[date]"]'
@@ -348,14 +345,14 @@
 
             var domain = 'spending';
             var data_source = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
-            var params = ['year=>'+year,
-                'agency=>'+agency,
-                'department=>'+department,
-                'expense_category=>'+expense_category,
-                'expense_type=>'+expense_type,
-                'entity_contract_number=>'+entity_contract_number,
-                'commodity_line=>'+commodity_line,
-                'budget_name=>'+budget_name];
+            var params = ['year==>>'+year,
+                'agency==>>'+agency,
+                'department==>>'+department,
+                'expense_category==>>'+expense_category,
+                'expense_type==>>'+expense_type,
+                'entity_contract_number==>>'+entity_contract_number,
+                'commodity_line==>>'+commodity_line,
+                'budget_name==>>'+budget_name];
             return domain + '/' + data_source + '/' + params;
         }
 
