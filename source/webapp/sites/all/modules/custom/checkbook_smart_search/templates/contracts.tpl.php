@@ -24,8 +24,9 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
 
     if(strtolower($contracts_results['contract_category_name']) == 'expense'){
         if($IsOge){
-            $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/". _getFiscalYearID() .'/vendor/'.$contracts_results['vendor_id'];
+            $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/". _getFiscalYearID() . '/agency/' . $contracts_results['agency_id'] .'/vendor/'.$contracts_results['vendor_id'];
             $agency_link = "/contracts_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/"._getFiscalYearID().'/agency/'.$contracts_results['agency_id'];
+
         }
         else {
             $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". _getFiscalYearID() .'/vendor/'.$contracts_results['vendor_id'];
@@ -35,7 +36,7 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
 
     }else{
         if($IsOge){
-            $vendor_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/"._getFiscalYearID() .'/vendor/'.$contracts_results['vendor_id'];
+            $vendor_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/"._getFiscalYearID() . '/agency/' . $contracts_results['agency_id'] .'/vendor/'.$contracts_results['vendor_id'];
             $agency_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/"._getFiscalYearID().'/agency/'.$contracts_results['agency_id'];
         }
         else{
@@ -90,11 +91,12 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
 }
 
 
-
-$linkable_fields = array("oge_agency_name" => $agency_link,
-                         "agency_name" => $agency_link,
-                         "vendor_name" => $vendor_link,
-                        );
+if($IsOge && !in_array($contracts_results['contract_type_code'],array('MMA1', 'MA1'))){
+    $linkable_fields = array("oge_agency_name" => $agency_link,
+                             "agency_name" => $agency_link,
+                             "vendor_name" => $vendor_link,
+                            );
+}
 
 $date_fields = array("start_date_orig","end_date_orig","received_date","registration_date");
 $amount_fields = array("current_amount", "original_amount");

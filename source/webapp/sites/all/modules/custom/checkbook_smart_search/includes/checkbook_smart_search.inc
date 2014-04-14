@@ -724,7 +724,11 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
           "expenditure_object_name" => "Expense Category",
           "contract_number" => "Contract ID",
           "check_amount" => "Check Amount",
-          "check_eft_issued_date" => "Issue Date"
+          "check_eft_issued_date" => "Issue Date",
+          "spending_entity_contract_number" => "Entity Contract#",
+          "spending_budget_name" => "Budget Name",
+          "spending_commodity_line" => "Commodity Line",
+          "" => "",
           );
         else
             $parameter_mapping = array(
@@ -742,26 +746,29 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
         if($IsOge)
         {
           $parameter_mapping = array(
-          "contract_status"=>"Status",
-          "contract_category_name"=>"Category",
-          "vendor_name"=>"Vendor",
-          "oge_agency_name"=>"Agency",
-          "contract_number"=>"Contract ID",
-          "version_number"=>"Version Number",
-          "contract_purpose"=>"Purpose",
-          "parent_contract_number"=>"Parent Contract ID",
-          "award_method_name"=>"Award Method",
-          "contract_type_code"=>"Contract type",
-          "original_amount"=>"Original Amount",
-          "current_amount"=>"Current Amount",
-          "start_date_orig"=>"Start date",
-          "end_date_orig"=>"End Date",
-          "pin"=>"PIN",
-          "apt_pin"=>"APT PIN",
-          "registration_date"=>"Registration date",
-          "expense_category_name"=>"Expense Category",
-          "received_date"=>"Received date",
-          "" => "");
+              "contract_status"=>"Status",
+              "contract_category_name"=>"Category",
+              "vendor_name"=>"Vendor",
+              "oge_agency_name"=>"Agency",
+              "contract_number"=>"Contract ID",
+              "version_number"=>"Version Number",
+              "contract_purpose"=>"Purpose",
+              "parent_contract_number"=>"Parent Contract ID",
+              "award_method_name"=>"Award Method",
+              "contract_type_code"=>"Contract type",
+              "original_amount"=>"Original Amount",
+              "current_amount"=>"Current Amount",
+              "start_date_orig"=>"Start date",
+              "end_date_orig"=>"End Date",
+              "pin"=>"PIN",
+              "apt_pin"=>"APT PIN",
+              "registration_date"=>"Registration date",
+              "expense_category_name"=>"Expense Category",
+              "received_date"=>"Received date",
+              "contract_entity_contract_number" => "Entity Contract#",
+              "commodity_line" => "Budget Name",
+              "contract_commodity_line" => "Commodity Line",
+          );
         }
         else{
             $parameter_mapping = array(
