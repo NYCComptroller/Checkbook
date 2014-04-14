@@ -471,6 +471,7 @@ body.page-smart-search .smart-search-left{
   display:block;
   float:left;
   width:700px;
+  width:700px;
 
 }
 body.page-smart-search .search-results li{
@@ -1038,11 +1039,14 @@ div.bottomContainer{
     float: left;
 }
 #spending-advanced-search .form-item.form-type-select.form-item-spending-fiscal-year{float:left;}
-#spending-advanced-search #edit-spending-fiscal-year {
+#spending-advanced-search #edit-spending-fiscal-year,
+#spending-advanced-search #edit-spending-fiscal-year--2{
     width: 90px;
 }
 #checkbook-advanced-search-form #edit-spending-issue-date-from label,
 #checkbook-advanced-search-form #edit-spending-issue-date-to label,
+#checkbook-advanced-search-form #edit-spending-issue-date-from--2 label,
+#checkbook-advanced-search-form #edit-spending-issue-date-to--2 label,
 #checkbook-advanced-search-form #edit-contract-end-date-from label,
 #checkbook-advanced-search-form #edit-contract-end-date-to label,
 #checkbook-advanced-search-form #edit-contract-registration-date-from label,
@@ -1051,6 +1055,24 @@ div.bottomContainer{
 #checkbook-advanced-search-form #edit-contract-start-date-to label,
 #checkbook-advanced-search-form #edit-contract-received-date-from label,
 #checkbook-advanced-search-form #edit-contract-received-date-to label,
+
+#checkbook-advanced-search-form #edit-checkbook-contracts-end-date-from label,
+#checkbook-advanced-search-form #edit-checkbook-contracts-end-date-to label,
+#checkbook-advanced-search-form #edit-checkbook-oge-contracts-end-date-from label,
+#checkbook-advanced-search-form #edit-checkbook-oge-contracts-end-date-to label,
+#checkbook-advanced-search-form #edit-checkbook-contracts-registration-date-from label,
+#checkbook-advanced-search-form #edit-checkbook-contracts-registration-date-to label,
+#checkbook-advanced-search-form #edit-checkbook-oge-contracts-registration-date-from label,
+#checkbook-advanced-search-form #edit-checkbook-oge-contracts-registration-date-to label,
+#checkbook-advanced-search-form #edit-checkbook-contracts-start-date-from label,
+#checkbook-advanced-search-form #edit-checkbook-contracts-start-date-to label,
+#checkbook-advanced-search-form #edit-checkbook-oge-contracts-start-date-from label,
+#checkbook-advanced-search-form #edit-checkbook-oge-contracts-start-date-to label,
+#checkbook-advanced-search-form #edit-checkbook-contracts-received-date-from label,
+#checkbook-advanced-search-form #edit-checkbook-contracts-received-date-to label,
+#checkbook-advanced-search-form #edit-checkbook-oge-contracts-received-date-from label,
+#checkbook-advanced-search-form #edit-checkbook-oge-contract-received-date-to label,
+
 #checkbook-advanced-search-form #edit-payroll-pay-date-from label,
 #checkbook-advanced-search-form #edit-payroll-pay-date-to label {
     display: none;
