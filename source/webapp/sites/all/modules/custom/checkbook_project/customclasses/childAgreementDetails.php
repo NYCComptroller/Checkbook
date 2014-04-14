@@ -61,10 +61,10 @@ class childAgreementDetails {
     
     
     
-    $results1 = _checkbook_project_execute_sql($query1);
+    $results1 = _checkbook_project_execute_sql_by_data_source($query1,_get_current_datasource());
     $node->data = $results1;
     
-    $results2 = _checkbook_project_execute_sql($query2);
+    $results2 = _checkbook_project_execute_sql_by_data_source($query2,_get_current_datasource());
     $spent_amount = 0;
     foreach($results2 as $row){
       $spent_amount +=$row["rfed_amount"];

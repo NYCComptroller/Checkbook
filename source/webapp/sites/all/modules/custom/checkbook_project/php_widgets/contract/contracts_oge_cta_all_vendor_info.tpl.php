@@ -24,7 +24,7 @@
     <thead>
     <tr>
       <th class="text"><?php echo WidgetUtil::generateLabelMapping("vendor_name"); ?></th>
-      <th class="text"><?php echo WidgetUtil::generateLabelMapping("tot_edc_con"); ?></th>
+      <th class="text"><div><span><?php echo $node->widget_count_label; ?></span></div></th>
       <th class="number"><?php echo WidgetUtil::generateLabelMapping("spent_to_date"); ?></th>
       <th class="number endCol"><?php echo WidgetUtil::generateLabelMapping("vendor_address"); ?></th>
     </tr>
@@ -33,14 +33,17 @@
    <?php 
 	$vendor_cont_count = array();   
    	foreach($node->vendor_contracts_count as $vendor_cont){
-		$vendor_cont_count[$vendor_cont['vendor_id']] = $vendor_cont['count'];
+		$vendor_cont_count[$vendor_cont['vendor_id']]['count'] = $vendor_cont['count'];
+		$vendor_cont_count[$vendor_cont['vendor_id']]['count'] = $vendor_cont['count'];
 	}
 
     
    	foreach($node->vendors_list as $vendor){
 		echo "<tr>";
-		echo "<td class='text'>" . $vendor['vendor_name']  . "</td>";
-		echo "<td class='text'>" . $vendor_cont_count[$vendor['vendor_id']]  . "</td>";
+		echo "<td class='text'><a href='/contracts_landing/status/A/year/" . _getCurrentYearID() . "/yeartype/B/vendor/" . $vendor['vendor_id']  . 
+				 "/agency/" . $vendor['agency_id'] . "/datasource/checkbook_oge/?expandBottomCont=true'>" . 
+								$vendor['vendor_name']  . "</a></td>";
+		echo "<td class='text'>" . $vendor_cont_count[$vendor['vendor_id']]['count']  . "</td>";
 		echo "<td class='number'>" . custom_number_formatter_format($vendor['check_amount_sum'], 2, '$')  . "</td>";
 		echo "<td class='text'>" . $vendor['address']  . "</td>";
 		echo "</tr>";

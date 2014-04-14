@@ -38,7 +38,7 @@ else {
     . $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
 }
 
-$spending_link = "/spending/transactions/magid/" . _getRequestParamValue("magid") . "/newwindow";
+$spending_link = "/spending/transactions/magid/" . _getRequestParamValue("magid") . $datasource . "/newwindow";
 if(!preg_match("/newwindow/",current_path())){
   $newwindowclass= 'class="new_window"';
 }
@@ -48,23 +48,22 @@ if(!preg_match("/newwindow/",current_path())){
     <h2 class='contract-title'>Contract ID: <span
       class="contract-number"><?php echo $node->data[0]['contract_number'];?></span></h2>
 	<?php 
-		if($datasource!= null){
-			$alt_txt = "This master agreement has infromation as an agency <br> Click this icon to view this contract as vendor ";
-			$url='/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
-    . $node->data[0]['vendor_id_checkbook_vendor_history'] . "?expandBottomContURL=/panel_html/contract_transactions/contract_details/magid/" .  _getRequestParamValue("magid") . "/doctype/MMA1";
+		if ( _getRequestParamValue("datasource") == "checkbook_oge" && !preg_match('/newwindow/',$_GET['q']) ) {
+			$alt_txt = "This master agreement has infromation as an vendor <br> Click this icon to view this contract as vendor ";
+			$url="/contract_details/magid/" .  _getRequestParamValue("magid") . "/doctype/MMA1/newwindow";
 			echo "<div class='contractLinkNote'><a href='". $url ."' atl='" . $alt_txt . "' target='_blank' >View as Vendor</a></div>"; 
-		}
+		}elseif( !preg_match('/newwindow/',$_GET['q'])){
+			$alt_txt = "This master agreement has infromation as an agency <br> Click this icon to view this contract as agency ";
+			$url="/contract_details/magid/" .  _getRequestParamValue("magid") . "/doctype/MMA1/datasource/checkbook_agency";
+			echo "<div class='contractLinkNote'><a href='". $url ."' atl='" . $alt_txt . "' target='_blank' >View as Vendor</a></div>";
+		}	
 	?>
   </div>
   <div class="dollar-amounts">
     <?php if(!preg_match('/RCT1/',$node->data[0]['contract_number'])){?>
     <div class="spent-to-date">
-    <?php if($datasource == null){?>
       <a <?php echo $newwindowclass ?>
          href="<?php echo $spending_link; ?>"><?php echo custom_number_formatter_format($node->spent_amount, 2, "$");?></a>
-	<?php }else{
-		echo custom_number_formatter_format($node->spent_amount, 2, "$");
-	 }?>
       <div class="amount-title">Spent to<br/>Date</div>
     </div>
     <?php }?>

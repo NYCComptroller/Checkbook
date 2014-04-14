@@ -50,7 +50,7 @@ $q2 = 'select
         og.fms_contract_number = dlid.contract_number AND og.vendor_id = dlid.vendor_id
         join ref_date rd1 on rd1.date_id = check_eft_issued_date_id
         where dlid.agreement_id = ' . $ag_id . 
-        'order by og.vendor_id, dlid.fiscal_year desc , rd1.date desc ' ;
+        'order by og.vendor_id, dlid.fiscal_year desc , rd1.date desc , dlid.check_amount desc' ;
         
         
         $results_spending = _checkbook_project_execute_sql_by_data_source($q2,'checkbook_oge');
