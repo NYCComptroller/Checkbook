@@ -22,6 +22,7 @@
 
 if ( _getRequestParamValue("datasource") == "checkbook_oge") {
 	$datasource ="/datasource/checkbook_oge";
+	$oge_class = "oge-ma-details";
 	
 }
 
@@ -43,7 +44,7 @@ if(!preg_match("/newwindow/",current_path())){
   $newwindowclass= 'class="new_window"';
 }
 ?>
-<div class="contract-details-heading">
+<div class="contract-details-heading <?php echo $oge_class ;?>">
   <div class="contract-id">
     <h2 class='contract-title'>Contract ID: <span
       class="contract-number"><?php echo $node->data[0]['contract_number'];?></span></h2>
@@ -80,7 +81,7 @@ if(!preg_match("/newwindow/",current_path())){
       <div class="amount-title">Assoc. Contracts</div>
     </div>
 </div>
-<div class="contract-information">
+<div class="contract-information <?php echo $oge_class ;?>">
   <div class="contract-details">
     <h4>General Information</h4>
     <ul class="left">
