@@ -22,6 +22,7 @@
 
 if ( _getRequestParamValue("datasource") == "checkbook_oge") {
 	$datasource ="/datasource/checkbook_oge";
+	$oge_class = "oge-ca-details";
 }
 if (_getRequestParamValue("doctype") == "RCT1") {
   $vendor_link = '/contracts_revenue_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
@@ -38,7 +39,7 @@ else {
 $spending_link = "/spending/transactions/agid/" . _getRequestParamValue("agid") . "/newwindow";
 
 ?>
-<div class="contract-details-heading">
+<div class="contract-details-heading <?php echo $oge_class ;?>">
   <div class="contract-id">
     <h2 class="contract-title">Contract ID: <span
       class="contract-number"><?php echo $node->data[0]['contract_number'];?></span></h2>
@@ -92,7 +93,7 @@ if(!preg_match("/newwindow/",current_path())){
       </div>
     </div>
 </div>
-<div class="contract-information">
+<div class="contract-information <?php echo $oge_class ;?>">
   <div class="contract-details <?php echo ( _getRequestParamValue("datasource") == "checkbook_oge")? "oge-cta-contract ":"" ; ?>">
     <h4>General Information</h4>
     <ul class="left">
