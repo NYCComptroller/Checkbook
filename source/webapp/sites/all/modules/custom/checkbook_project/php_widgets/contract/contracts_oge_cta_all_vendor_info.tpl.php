@@ -19,8 +19,9 @@
 */
 ?>
 <div>
-<h3>Vendor Infromation</h3> Number of Vendors: <?php echo count($node->vendors_list);?> 
-<table class="dataTable outerTable">
+<div class="tableHeader"><h3>Vendor Infromation</h3> <span class="contCount">Number of Vendors: <?php echo count($node->vendors_list);?> </span></div>
+
+<table class="dataTable outerTable oge-cta-vendor-info">
     <thead>
     <tr>
       <th class="text"><?php echo WidgetUtil::generateLabelMapping("vendor_name"); ?></th>
@@ -40,12 +41,12 @@
     
    	foreach($node->vendors_list as $vendor){
 		echo "<tr>";
-		echo "<td class='text'><a href='/contracts_landing/status/A/year/" . _getCurrentYearID() . "/yeartype/B/vendor/" . $vendor['vendor_id']  . 
+		echo "<td class='text'><div><a href='/contracts_landing/status/A/year/" . _getCurrentYearID() . "/yeartype/B/vendor/" . $vendor['vendor_id']  . 
 				 "/agency/" . $vendor['agency_id'] . "/datasource/checkbook_oge/?expandBottomCont=true'>" . 
-								$vendor['vendor_name']  . "</a></td>";
-		echo "<td class='text'>" . $vendor_cont_count[$vendor['vendor_id']]['count']  . "</td>";
-		echo "<td class='number'>" . custom_number_formatter_format($vendor['check_amount_sum'], 2, '$')  . "</td>";
-		echo "<td class='text'>" . $vendor['address']  . "</td>";
+								$vendor['vendor_name']  . "</div></a></td>";
+		echo "<td class='text'><div>" . $vendor_cont_count[$vendor['vendor_id']]['count']  . "</div></td>";
+		echo "<td class='number'><div>" . custom_number_formatter_format($vendor['check_amount_sum'], 2, '$')  . "</div></td>";
+		echo "<td class='text'><div>" . $vendor['address']  . "</div></td>";
 		echo "</tr>";
 	}
    ?>
