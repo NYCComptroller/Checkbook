@@ -119,16 +119,16 @@
 
                 var domain = 'spending';
                 var data_source = $('input:radio[name=datafeeds-spending-domain-filter]:checked').val();
-                var params = ['year=>'+year,
-                    'department=>'+department,
-                    'agency=>'+agency,
-                    'expense_category=>'+expense_category,
-                    'expense_type=>'+expense_type,
-                    'contract_id=>'+contract_id,
-                    'capital_project=>'+capital_project,
-                    'entity_contract_number=>'+(entity_contract_number ? entity_contract_number : ''),
-                    'commodity_line=>'+(commodity_line ? commodity_line : ''),
-                    'budget_name=>'+(budget_name ? budget_name : '')];
+                var params = ['year==>>'+year,
+                    'department==>>'+department,
+                    'agency==>>'+agency,
+                    'expense_category==>>'+expense_category,
+                    'expense_type==>>'+expense_type,
+                    'contract_id==>>'+contract_id,
+                    'capital_project==>>'+capital_project,
+                    'entity_contract_number==>>'+(entity_contract_number ? entity_contract_number : ''),
+                    'commodity_line==>>'+(commodity_line ? commodity_line : ''),
+                    'budget_name==>>'+(budget_name ? budget_name : '')];
                 return domain + '/' + data_source + '/' + params;
             }
 

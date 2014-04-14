@@ -59,12 +59,12 @@
 
             var domain = 'contracts';
             var data_source = $('input:radio[name=contracts_advanced_search_domain_filter]:checked').val();
-            var params = ['status=>'+status,
-                'category=>'+category,
-                'contract_type=>'+contract_type,
-                'agency=>'+agency,
-                'award_method=>'+award_method,
-                'year=>'+year];
+            var params = ['status==>>'+status,
+                'category==>>'+category,
+                'contract_type==>>'+contract_type,
+                'agency==>>'+agency,
+                'award_method==>>'+award_method,
+                'year==>>'+year];
             return domain + '/' + data_source + '/' + params;
         }
 
