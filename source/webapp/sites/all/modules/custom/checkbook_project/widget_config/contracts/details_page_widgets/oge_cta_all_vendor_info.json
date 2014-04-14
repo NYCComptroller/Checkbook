@@ -35,7 +35,7 @@ group by vendor_id, agency_short_name, og.agency_id ' ;
         
         $vendor_contracts_count = _checkbook_project_execute_sql_by_data_source($q2,'checkbook_oge');
         
-        $node->widget_count_label = 'Total Number of</br>' . $vendor_contracts_count[0]['agency_short_name'] . 'Contracts';
+        $node->widget_count_label = 'Total Number of</br>' . $vendor_contracts_count[0]['agency_short_name'] . ' Contracts';
         
         $node->vendor_contracts_count = $vendor_contracts_count;
         $template = $node->widgetConfig->template;
