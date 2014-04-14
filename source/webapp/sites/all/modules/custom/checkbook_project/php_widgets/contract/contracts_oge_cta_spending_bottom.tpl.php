@@ -54,7 +54,7 @@ foreach($node->results_spending as $spending_row){
 //log_error($vendor_contract_yearly_summary);
 ?>
 
-<div class="oge-cta-details">
+<div class="oge-cta-details ">
 <h3>SPENDING BY PRIME VENDOR</h3>
   <table class="dataTable cta-history outerTable">
     <thead>
