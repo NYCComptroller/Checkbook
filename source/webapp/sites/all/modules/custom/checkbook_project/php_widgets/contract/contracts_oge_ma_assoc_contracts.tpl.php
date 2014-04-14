@@ -19,8 +19,8 @@
 */
 ?>
 <h3>Associated Contracts</h3>
-<table id="assoc_contracts_list oge-assoc-contracts-list">
-  <thead>
+<table id="assoc_contracts_list" class="oge-assoc-contracts-list">
+  <thead> 
   <tr>
     <th></th>
   </tr>
@@ -58,9 +58,9 @@
 			echo "<div class='contractLinkNote'><a href='". $url ."' atl='" . $alt_txt . "' target='_blank' >Open in New Window</a></div>"; 
 		}     
 		?>          
-        <div class="rfed-amount contract-details-assoc"><span class="amount"><?php echo custom_number_formatter_format($contract['spent_amount'], 2, '$');?></span><span class="label">>Spent to Date</span></div>          
-        <div class="rfed-amount contract-details-assoc"><span class="amount">><?php echo custom_number_formatter_format($contract['original_amount'], 2, '$');?></span><span class="label">>Orignal Amount</span></div>        
-        <div class="rfed-amount contract-details-assoc"><span class="amount">><?php echo custom_number_formatter_format($contract['current_amount'], 2, '$');?></span><span class="label">>Current Amount</span></div>        
+        <div class="rfed-amount contract-details-assoc"><span class="amount"><?php echo custom_number_formatter_format($contract['spent_amount'], 2, '$');?></span><span class="label">Spent to Date</span></div>          
+        <div class="rfed-amount contract-details-assoc"><span class="amount"><?php echo custom_number_formatter_format($contract['original_amount'], 2, '$');?></span><span class="label">Orignal Amount</span></div>        
+        <div class="rfed-amount contract-details-assoc"><span class="amount"><?php echo custom_number_formatter_format($contract['current_amount'], 2, '$');?></span><span class="label">Current Amount</span></div>        
         </div>
 
       <div class="resultsContainer<?php print $count?>">&nbsp</div>
