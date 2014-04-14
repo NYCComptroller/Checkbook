@@ -191,6 +191,7 @@ class Form
                 $form[$domain][$domain_field]['#title'] = $field->getFieldTitle();
                 $form[$domain][$domain_field]['#default_value'] = $field->getDropDownDefault();
                 $form[$domain][$domain_field]['#options'] = $field->getDropDownOptions();
+                $form[$domain][$domain_field]['#validated'] = true;
                 if(!(is_null($field->disabled)))
                     $form[$domain][$domain_field]['#disabled'] = $field->disabled;
                 if(!(is_null($field->option_attributes)))
