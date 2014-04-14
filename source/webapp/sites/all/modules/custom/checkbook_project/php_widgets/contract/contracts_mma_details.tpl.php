@@ -51,11 +51,11 @@ if(!preg_match("/newwindow/",current_path())){
 		if ( _getRequestParamValue("datasource") == "checkbook_oge" && !preg_match('/newwindow/',$_GET['q']) ) {
 			$alt_txt = "This master agreement has infromation as an vendor <br> Click this icon to view this contract as vendor ";
 			$url="/contract_details/magid/" .  _getRequestParamValue("magid") . "/doctype/MMA1/newwindow";
-			echo "<div class='contractLinkNote'><a href='". $url ."' atl='" . $alt_txt . "' target='_blank' >View as Vendor</a></div>"; 
+			echo "<div class='contractLinkNote'><a href='". $url ."' atl='" . $alt_txt . "' target='_blank' >Open in New Window</a></div>"; 
 		}elseif( !preg_match('/newwindow/',$_GET['q'])){
 			$alt_txt = "This master agreement has infromation as an agency <br> Click this icon to view this contract as agency ";
 			$url="/contract_details/magid/" .  _getRequestParamValue("magid") . "/doctype/MMA1/datasource/checkbook_agency";
-			echo "<div class='contractLinkNote'><a href='". $url ."' atl='" . $alt_txt . "' target='_blank' >View as Vendor</a></div>";
+			echo "<div class='contractLinkNote'><a href='". $url ."' atl='" . $alt_txt . "' target='_blank' >Open in New Window</a></div>";
 		}	
 	?>
   </div>
