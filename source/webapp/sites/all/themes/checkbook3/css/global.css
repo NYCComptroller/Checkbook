@@ -1790,7 +1790,9 @@ a.noclick{
 }
 /* Contract ID Detail Pages*/
 .contract_transactions #mini-panel-contracts_cta_history table.outerTable,
-table.outerTable.ma-history{
+table.outerTable.ma-history
+,table.oge-cta-vendor-info
+{
     border:1px solid #cacaca;
     margin-bottom:15px;
 }
