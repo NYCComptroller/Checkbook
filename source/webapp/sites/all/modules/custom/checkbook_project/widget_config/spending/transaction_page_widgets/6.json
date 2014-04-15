@@ -73,7 +73,7 @@
        },
        "vendor_name_formatted":{
                 "type": "expression2",
-                "expression": "($row[spending_category_id]==2)?_get_tooltip_markup($row[vendor_name], 30):_get_tooltip_markup($row[vendor_name], 40)"
+                "expression": "($row[spending_category_id]==2)?_get_tooltip_markup($row[vendor_name], 30):_get_tooltip_markup($row[vendor_name], 34)"
        },
      "agency_param":{
                 "type": "expression2",
