@@ -447,7 +447,10 @@ class RequestUtil{
               $path ="contracts_landing/status/A/yeartype/B/year/".$year._checkbook_append_url_params();
               if(_getRequestParamValue("agency") > 0){
                 $path =  $path . "/agency/" . _getRequestParamValue("agency")  ;
+              }else if(_checkbook_check_isEDCPage()){
+                $path =  $path . "/agency/9000";
               }
+
               if(_getRequestParamValue("vendor") > 0){
                 $path =  $path . "/vendor/" . _getRequestParamValue("vendor")  ;
               }
@@ -456,7 +459,10 @@ class RequestUtil{
               $path ="spending_landing/yeartype/B/year/".$year._checkbook_append_url_params();
               if(_getRequestParamValue("agency") > 0){
                 $path =  $path . "/agency/" . _getRequestParamValue("agency")  ;
+              }else if(_checkbook_check_isEDCPage()){
+                  $path =  $path . "/agency/9000";
               }
+
               if(_getRequestParamValue("vendor") > 0){
                 $path =  $path . "/vendor/" . _getRequestParamValue("vendor")  ;
               }
