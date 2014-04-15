@@ -41,6 +41,7 @@ class ContractURLHelper{
                             ( $row['type_of_year@checkbook:contracts_coa_aggregates'] == 'B' ? ('/yeartype/B/year/'. $row['fiscal_year_id@checkbook:contracts_coa_aggregates']) : ('/yeartype/C/calyear/'.$row['fiscal_year_id@checkbook:contracts_coa_aggregates']) )
                             : (_checkbook_project_get_year_url_param_string())
                  )
+              . (_checkbook_check_isEDCPage()) ? '/agency/' . $row['agency_id'] :''
               . '?expandBottomContURL=/panel_html/contract_transactions/contract_details/' .$agrParamName . '/' . $row['original_agreement_id'] .  '/doctype/' . $docType . _checkbook_append_url_params()
               .  ' >'. $row['contract_number'] . '</a>';
         }
