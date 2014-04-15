@@ -1,180 +1,5 @@
 <?php
 
-//Generic Spending/Contracts Auto-complete
-
-/**
- * Construct query string and get results from Solr.
- *
- * @param string $facet
- *   Facet results needed
- * @param string $query
- *   Partially constructed query
- * @param string $domain
- *   spending, used to merge later
- * @param string $parameters
- *   Solr filter parameters
- *
- * @return array
- *   Results from Solr
- */
-function _get_datafeeds_autocomplete_results($facet, $query, $domain, $parameters) {
-
-    switch($domain)
-    {
-        case 'spending':
-            $year = $parameters['year'];
-            $department = $parameters['department'];
-            $agency = $parameters['agency'];
-            $expense_category = $parameters['expense_category'];
-            $expense_type = $parameters['expense_type'];
-            $contract_id = $parameters['contract_id'];
-            $capital_project = $parameters['capital_project'];
-            $entity_contract_number = $parameters['entity_contract_number'];
-            $commodity_line = $parameters['commodity_line'];
-            $budget_name = $parameters['budget_name'];
-
-            if ($year) $query .= _checkbook_autocomplete_get_start_end_dates($year, lcfirst($domain));
-            if ($department) $query .= '&fq=department_code:' . $department;
-            if ($agency) $query .= '&fq=agency_code:' . $agency;
-            if ($expense_category) $query .= '&fq=expenditure_object_code:' . $expense_category;
-            if ($expense_type) $query .= '&fq=spending_category_code:' . $expense_type;
-            if ($contract_id) $query .= '&fq=contract_number:' . $contract_id;
-            if ($capital_project) $query .= '&fq=reporting_code:' . $capital_project;
-            if ($entity_contract_number) $query .= '&fq=spending_entity_contract_number:' . $entity_contract_number;
-            if ($commodity_line) $query .= '&fq=spending_commodity_line:' . $commodity_line;
-            if ($budget_name) $query .= '&fq=spending_budget_name:' . $budget_name;
-            break;
-
-        case 'contracts':
-            $status = $parameters['status'];
-            $category = $parameters['category'];
-            $contract_type = $parameters['contract_type'];
-            $agency = $parameters['agency'];
-            $award_method = $parameters['award_method'];
-            $year = $parameters['year'];
-            $entity_contract_number = $parameters['entity_contract_number'];
-            $commodity_line = $parameters['commodity_line'];
-            $budget_name = $parameters['budget_name'];
-
-            switch($status)
-            {
-                case 'pending':
-                    $query .= '&fq=contract_status:pending';
-                    break;
-                case 'active':
-                    if (strtolower($year) != 'all')
-                        $query .= _checkbook_autocomplete_get_start_end_dates($year, 'contracts', 'A');
-                    else
-                        $query .= '&fq=-contract_status:pending';
-                    break;
-
-                case 'registered':
-                    $query .= '&fq=contract_status:registered';
-                    if (isset($year))  $query .= _checkbook_autocomplete_get_start_end_dates($year, 'contracts', 'R');
-                    break;
-            }
-            if ($category) $query .= '&fq=contract_category_name:' . ucfirst($category);
-            if ($contract_type) $query .= '&fq=contract_type_id:' . $contract_type;
-            if ($agency) $query .= '&fq=agency_code:' . $agency;
-            if ($award_method) $query .= '&fq=award_method_code:' . $award_method;
-            if ($entity_contract_number) $query .= '&fq=contract_entity_contract_number:' . $entity_contract_number;
-            if ($commodity_line) $query .= '&fq=contract_commodity_line:' . $commodity_line;
-            if ($budget_name) $query .= '&fq=contract_budget_name:' . $budget_name;
-
-            break;
-    }
-    $matches = _checkbook_autocomplete_solr_results($query, $facet);
-    return $matches;
-}
-
-/**
- * Construct query string and get results from Solr.
- *
- * @param string $field
- *   Field results needed
- * @param string $domain
- *   Domain to search on
- * @param string $data_source
- *   data source (i.e. checkbook, checkbook_oge)
- * @param string $args
- *   Solr filter parameters
- * @param $string
- *
- * @return array
- *   Results from Solr
- */
-function _checkbook_datafeeds_autocomplete($field, $domain, $data_source = 'checkbook', $args, $string) {
-
-    $search_term = _get_autocomplete_search_term();
-    $query_field = $field;
-    $facet_field = $field;
-    $prefix = $domain == 'contracts' ? 'contract' : $domain;
-
-    switch($field)
-    {
-        case 'payee_name':
-            $query_field = 'vendor_name_autocomplete';
-            $facet_field = 'vendor_name';
-            break;
-        case 'document_id':
-            $query_field = 'expense_id';
-            $facet_field = 'expense_id';
-            break;
-        case 'capital_project':
-            $query_field = 'reporting_code';
-            $facet_field = 'reporting_code';
-            break;
-        case 'apt_pin':
-            $query_field = 'apt_pin';
-            $facet_field = 'apt_pin';
-            break;
-        case 'pin':
-            $query_field = 'pin';
-            $facet_field = 'pin';
-            break;
-        case 'contract_id':
-            $query_field = 'contract_number';
-            $facet_field = 'contract_number';
-            break;
-        case 'entity_contract_number':
-            $query_field = $prefix . '_entity_contract_number';
-            $facet_field = $prefix . '_entity_contract_number';
-            break;
-        case 'commodity_line':
-            $query_field = $prefix . '_commodity_line';
-            $facet_field = $prefix . '_commodity_line';
-            break;
-        case 'budget_name':
-            $query_field = $prefix . '_budget_name_autocomplete';
-            $facet_field = $prefix . '_budget_name';
-            break;
-        case 'vendor':
-            $query_field = 'vendor_name_autocomplete';
-            $facet_field = 'vendor_name';
-            break;
-        case 'department':
-            $query_field = 'department_name';
-            $facet_field = 'department_name';
-            break;
-    }
-
-    foreach(explode(',', $args) as $arg)
-    {
-        $param_parts = explode('==>>', $arg);
-        if($param_parts[0] != $field)
-            $parameters[$param_parts[0]] = $param_parts[1];
-    }
-
-    if (!empty($search_term) & !empty($parameters))
-    {
-        $query = 'select/?q=' . $query_field . ':' . $search_term . '&facet=true&facet.field=' . $facet_field . '&fq=domain:' . $domain . '&wt=php&facet.limit=10';
-        if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
-        $matches = _get_datafeeds_autocomplete_results($facet_field, $query, $domain, $parameters);
-
-        drupal_json_output($matches);
-    }
-}
-
 // Contracts autocomplete menu callback functions:
 /**
  * Construct query string and get results from Solr.
@@ -200,37 +25,37 @@ function _checkbook_datafeeds_autocomplete($field, $domain, $data_source = 'chec
  *   Results from Solr
  */
 function _get_contracts_datafeeds_autocomplete_results($facet, $query, $status = NULL, $category = NULL, $contract_type = NULL, $agency = NULL, $award_method = NULL, $year = NULL) {
-  if ($status == 'pending') {
-    $query .= '&fq=contract_status:pending';
-  }
-  if ($status == 'active') {
-    if (strtolower($year) != 'all') {
-      $query .= _checkbook_advanced_search_get_start_end_dates($year, 'contracts', 'A');
+    if ($status == 'pending') {
+        $query .= '&fq=contract_status:pending';
     }
-    else {
-      $query .= '&fq=-contract_status:pending';
+    if ($status == 'active') {
+        if (strtolower($year) != 'all') {
+            $query .= _checkbook_autocomplete_get_start_end_dates($year, 'contracts', 'A');
+        }
+        else {
+            $query .= '&fq=-contract_status:pending';
+        }
     }
-  }
-  if ($status == 'registered') {
-    $query .= '&fq=contract_status:registered';
-    if (isset($year)) {
-      $query .= _checkbook_autocomplete_get_start_end_dates($year, 'contracts', 'R');
+    if ($status == 'registered') {
+        $query .= '&fq=contract_status:registered';
+        if (isset($year)) {
+            $query .= _checkbook_autocomplete_get_start_end_dates($year, 'contracts', 'R');
+        }
     }
-  }
-  if ($category) {
-    $query .= '&fq=contract_category_name:' . ucfirst($category);
-  }
-  if ($contract_type) {
-    $query .= '&fq=contract_type_id:' . $contract_type;
-  }
-  if ($agency) {
-    $query .= '&fq=agency_code:' . $agency;
-  }
-  if ($award_method) {
-    $query .= '&fq=award_method_code:' . $award_method;
-  }
-  $matches = _checkbook_autocomplete_solr_results($query, $facet);
-  return $matches;
+    if ($category) {
+        $query .= '&fq=contract_category_name:' . ucfirst($category);
+    }
+    if ($contract_type) {
+        $query .= '&fq=contract_type_id:' . $contract_type;
+    }
+    if ($agency) {
+        $query .= '&fq=agency_code:' . $agency;
+    }
+    if ($award_method) {
+        $query .= '&fq=award_method_code:' . $award_method;
+    }
+    $matches = _checkbook_autocomplete_solr_results($query, $facet);
+    return $matches;
 }
 
 /**
@@ -248,14 +73,17 @@ function _get_contracts_datafeeds_autocomplete_results($facet, $query, $status =
  *   Award method code
  * @param string $year
  *   Year
+ * @param string $data_source
+ *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_contracts_vendor($status, $category, $contract_type, $agency, $award_method, $year) {
-  $search_term = _get_autocomplete_search_term();
-  if (!empty($search_term)) {
-    $query = 'select/?q=vendor_name_code_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name_code&fq=domain:contracts&wt=php&facet.limit=10';
-    $matches = _get_contracts_datafeeds_autocomplete_results('vendor_name_code', $query, $status, $category, $contract_type, $agency, $award_method, $year);
-    drupal_json_output($matches);
-  }
+function _checkbook_autocomplete_contracts_vendor($status, $category, $contract_type, $agency, $award_method, $year, $data_source, $data_source = 'checkbook') {
+    $search_term = _get_autocomplete_search_term();
+    if (!empty($search_term)) {
+        $query = 'select/?q=vendor_name_code_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name_code&fq=domain:contracts&wt=php&facet.limit=10';
+        if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
+        $matches = _get_contracts_datafeeds_autocomplete_results('vendor_name_code', $query, $status, $category, $contract_type, $agency, $award_method, $year);
+        drupal_json_output($matches);
+    }
 }
 
 /**
@@ -273,14 +101,17 @@ function _checkbook_autocomplete_contracts_vendor($status, $category, $contract_
  *   Award method code
  * @param string $year
  *   Year
+ * @param string $data_source
+ *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_contracts_contract_number($status, $category, $contract_type, $agency, $award_method, $year) {
-  $search_term = _get_autocomplete_search_term();
-  if (!empty($search_term)) {
-    $query = 'select/?q=contract_number:' . $search_term . '&facet=true&facet.field=contract_number&fq=domain:contracts&wt=php&facet.limit=10';
-    $matches = _get_contracts_datafeeds_autocomplete_results('contract_number', $query, $status, $category, $contract_type, $agency, $award_method, $year);
-    drupal_json_output($matches);
-  }
+function _checkbook_autocomplete_contracts_contract_number($status, $category, $contract_type, $agency, $award_method, $year, $data_source = 'checkbook') {
+    $search_term = _get_autocomplete_search_term();
+    if (!empty($search_term)) {
+        $query = 'select/?q=contract_number:' . $search_term . '&facet=true&facet.field=contract_number&fq=domain:contracts&wt=php&facet.limit=10';
+        if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
+        $matches = _get_contracts_datafeeds_autocomplete_results('contract_number', $query, $status, $category, $contract_type, $agency, $award_method, $year);
+        drupal_json_output($matches);
+    }
 }
 
 /**
@@ -298,14 +129,17 @@ function _checkbook_autocomplete_contracts_contract_number($status, $category, $
  *   Award method code
  * @param string $year
  *   Year
+ * @param string $data_source
+ *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_contracts_apt_pin($status, $category, $contract_type, $agency, $award_method, $year) {
-  $search_term = _get_autocomplete_search_term();
-  if (!empty($search_term)) {
-    $query = 'select/?q=apt_pin:' . $search_term . '&facet=true&facet.field=apt_pin&fq=domain:contracts&wt=php&facet.limit=10';
-    $matches = _get_contracts_datafeeds_autocomplete_results('apt_pin', $query, $status, $category, $contract_type, $agency, $award_method, $year);
-    drupal_json_output($matches);
-  }
+function _checkbook_autocomplete_contracts_apt_pin($status, $category, $contract_type, $agency, $award_method, $year, $data_source = 'checkbook') {
+    $search_term = _get_autocomplete_search_term();
+    if (!empty($search_term)) {
+        $query = 'select/?q=apt_pin:' . $search_term . '&facet=true&facet.field=apt_pin&fq=domain:contracts&wt=php&facet.limit=10';
+        if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
+        $matches = _get_contracts_datafeeds_autocomplete_results('apt_pin', $query, $status, $category, $contract_type, $agency, $award_method, $year);
+        drupal_json_output($matches);
+    }
 }
 
 /**
@@ -323,14 +157,101 @@ function _checkbook_autocomplete_contracts_apt_pin($status, $category, $contract
  *   Award method code
  * @param string $year
  *   Year
+ * @param string $data_source
+ *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_contracts_pin($status, $category, $contract_type, $agency, $award_method, $year) {
-  $search_term = _get_autocomplete_search_term();
-  if (!empty($search_term)) {
-    $query = 'select/?q=pin:' . $search_term . '&facet=true&facet.field=pin&fq=domain:contracts&wt=php&facet.limit=10';
-    $matches = _get_contracts_datafeeds_autocomplete_results('pin', $query, $status, $category, $contract_type, $agency, $award_method, $year);
-    drupal_json_output($matches);
-  }
+function _checkbook_autocomplete_contracts_pin($status, $category, $contract_type, $agency, $award_method, $year, $data_source = 'checkbook') {
+    $search_term = _get_autocomplete_search_term();
+    if (!empty($search_term)) {
+        $query = 'select/?q=pin:' . $search_term . '&facet=true&facet.field=pin&fq=domain:contracts&wt=php&facet.limit=10';
+        if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
+        $matches = _get_contracts_datafeeds_autocomplete_results('pin', $query, $status, $category, $contract_type, $agency, $award_method, $year);
+        drupal_json_output($matches);
+    }
+}
+
+/**
+ * Get autocomplete results for Entity Contract Number from Solr.
+ *
+ * @param string $status
+ *   Contract status
+ * @param string $category
+ *   Contract category
+ * @param string $contract_type
+ *   Agreement type code
+ * @param string $agency
+ *   Agency code
+ * @param string $award_method
+ *   Award method code
+ * @param string $year
+ *   Year
+ * @param string $data_source
+ *   Data source (checkbook, checkbook_oge)
+ */
+function _checkbook_autocomplete_contracts_entitycontractnum($status, $category, $contract_type, $agency, $award_method, $year, $data_source = 'checkbook') {
+    $search_term = _get_autocomplete_search_term();
+    if (!empty($search_term)) {
+        $query = 'select/?q=contracts_entity_contract_number:' . $search_term . '&facet=true&facet.field=contracts_entity_contract_number&fq=domain:contracts&facet.limit=10&wt=php';
+        if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
+        $matches = _get_contracts_datafeeds_autocomplete_results('contracts_entity_contract_number', $query, $status, $category, $contract_type, $agency, $award_method, $year);
+        drupal_json_output($matches);
+    }
+}
+
+/**
+ * Get autocomplete results for Commodity Line from Solr.
+ *
+ * @param string $status
+ *   Contract status
+ * @param string $category
+ *   Contract category
+ * @param string $contract_type
+ *   Agreement type code
+ * @param string $agency
+ *   Agency code
+ * @param string $award_method
+ *   Award method code
+ * @param string $year
+ *   Year
+ * @param string $data_source
+ *   Data source (checkbook, checkbook_oge)
+ */
+function _checkbook_autocomplete_contracts_commodityline($status, $category, $contract_type, $agency, $award_method, $year, $data_source = 'checkbook') {
+    $search_term = _get_autocomplete_search_term();
+    if (!empty($search_term)) {
+        $query = 'select/?q=contracts_commodity_line:' . $search_term . '&facet=true&facet.field=contracts_commodity_line&fq=domain:contracts&facet.limit=10&wt=php';
+        if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
+        $matches = _get_contracts_datafeeds_autocomplete_results('contracts_commodity_line', $query, $status, $category, $contract_type, $agency, $award_method, $year);
+        drupal_json_output($matches);
+    }
+}
+
+/**
+ * Get autocomplete results for Budget Name from Solr.
+ *
+ * @param string $status
+ *   Contract status
+ * @param string $category
+ *   Contract category
+ * @param string $contract_type
+ *   Agreement type code
+ * @param string $agency
+ *   Agency code
+ * @param string $award_method
+ *   Award method code
+ * @param string $year
+ *   Year
+ * @param string $data_source
+ *   Data source (checkbook, checkbook_oge)
+ */
+function _checkbook_autocomplete_contracts_budgetname($status, $category, $contract_type, $agency, $award_method, $year, $data_source = 'checkbook') {
+    $search_term = _get_autocomplete_search_term();
+    if (!empty($search_term)) {
+        $query = 'select/?q=contracts_budget_name_autocomplete:' . $search_term . '&facet=true&facet.field=contracts_budget_name&fq=domain:contracts&facet.limit=10&wt=php';
+        if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
+        $matches = _get_contracts_datafeeds_autocomplete_results('contracts_budget_name', $query, $status, $category, $contract_type, $agency, $award_method, $year);
+        drupal_json_output($matches);
+    }
 }
 
 // Spending autocomplete menu callback functions:
@@ -355,7 +276,7 @@ function _checkbook_autocomplete_contracts_pin($status, $category, $contract_typ
  * @return array
  *   Results from Solr
  */
-function _get_spending_datafeeds_autocomplete_results($facet, $query, $year = NULL, $agency = NULL, $expcategory = NULL, $dept = NULL, $exptype = NULL) {
+function _get_spending_datafeeds_autocomplete_results($facet, $query, $year = NULL, $agency = NULL, $expcategory = NULL, $dept = NULL, $exptype = NULL, $data_source = 'checkbook') {
     if ($year) {
         $query .= _checkbook_autocomplete_get_start_end_dates($year, 'spending');
     }
@@ -369,7 +290,8 @@ function _get_spending_datafeeds_autocomplete_results($facet, $query, $year = NU
         $query .= '&fq=expenditure_object_code:' . $expcategory;
     }
     if ($exptype) {
-        $query .= '&fq=spending_category_code' . $exptype;
+        $exptypeid = _get_spending_datafeeds_autocomplete_expense_type_options($exptype, $data_source);
+        if ($exptypeid) $query .= '&fq=spending_category_id:' . $exptypeid;
     }
     $matches = _checkbook_autocomplete_solr_results($query, $facet);
     return $matches;
@@ -388,12 +310,15 @@ function _get_spending_datafeeds_autocomplete_results($facet, $query, $year = NU
  *   Department code
  * @param int $exptype
  *   Spending category code
+ * @param string $data_source
+ *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_spending_payee($year, $agency, $expcategory, $dept, $exptype = 0) {
+function _checkbook_autocomplete_spending_payee($year, $agency, $expcategory, $dept, $exptype = 0, $data_source = 'checkbook') {
     $search_term = _get_autocomplete_search_term();
     if (!empty($search_term)) {
-        $query = 'select/?q=vendor_name_code_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name_code&fq=domain:spending&facet.limit=10&wt=php';
-        $matches = _get_spending_datafeeds_autocomplete_results('vendor_name_code', $query, $year, $agency, $expcategory, $dept, $exptype);
+        $query = 'select/?q=vendor_name_code_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name&fq=domain:spending&facet.limit=10&wt=php';
+        if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
+        $matches = _get_spending_datafeeds_autocomplete_results('vendor_name', $query, $year, $agency, $expcategory, $dept, $exptype, $data_source);
         drupal_json_output($matches);
     }
 }
@@ -411,11 +336,14 @@ function _checkbook_autocomplete_spending_payee($year, $agency, $expcategory, $d
  *   Department code
  * @param int $exptype
  *   Spending category code
+ * @param string $data_source
+ *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_spending_contractno($year, $agency, $expcategory, $dept, $exptype = 0) {
+function _checkbook_autocomplete_spending_contractno($year, $agency, $expcategory, $dept, $exptype = 0, $data_source = 'checkbook') {
     $search_term = _get_autocomplete_search_term();
     if (!empty($search_term)) {
         $query = 'select/?q=contract_number:' . $search_term . '&facet=true&facet.field=contract_number&fq=domain:spending&facet.limit=10&wt=php';
+        if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
         $matches = _get_spending_datafeeds_autocomplete_results('contract_number', $query, $year, $agency, $expcategory, $dept, $exptype);
         drupal_json_output($matches);
     }
@@ -434,11 +362,14 @@ function _checkbook_autocomplete_spending_contractno($year, $agency, $expcategor
  *   Department code
  * @param int $exptype
  *   Spending category code
+ * @param string $data_source
+ *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_spending_capitalproject($year, $agency, $expcategory, $dept, $exptype = 0) {
+function _checkbook_autocomplete_spending_capitalproject($year, $agency, $expcategory, $dept, $exptype = 0, $data_source = 'checkbook') {
     $search_term = _get_autocomplete_search_term();
     if (!empty($search_term)) {
         $query = 'select/?q=reporting_code:' . $search_term . '&facet=true&facet.field=reporting_code&fq=domain:spending&facet.limit=10&wt=php';
+        if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
         $matches = _get_spending_datafeeds_autocomplete_results('reporting_code', $query, $year, $agency, $expcategory, $dept, $exptype);
         drupal_json_output($matches);
     }
@@ -457,12 +388,93 @@ function _checkbook_autocomplete_spending_capitalproject($year, $agency, $expcat
  *   Department code
  * @param int $exptype
  *   Spending category code
+ * @param string $data_source
+ *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_spending_documentid($year, $agency, $expcategory, $dept, $exptype = 0) {
+function _checkbook_autocomplete_spending_documentid($year, $agency, $expcategory, $dept, $exptype = 0, $data_source = 'checkbook') {
     $search_term = _get_autocomplete_search_term();
     if (!empty($search_term)) {
         $query = 'select/?q=expense_id:' . $search_term . '&facet=true&facet.field=expense_id&fq=domain:spending&facet.limit=10&wt=php';
+        if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
         $matches = _get_spending_datafeeds_autocomplete_results('expense_id', $query, $year, $agency, $expcategory, $dept, $exptype);
+        drupal_json_output($matches);
+    }
+}
+
+/**
+ * Get autocomplete results for Entity Contract Number from Solr.
+ *
+ * @param string $year
+ *   Year
+ * @param string $agency
+ *   Agency code
+ * @param string $expcategory
+ *   Expense category code
+ * @param string $dept
+ *   Department code
+ * @param int $exptype
+ *   Spending category code
+ * @param string $data_source
+ *   Data source (checkbook, checkbook_oge)
+ */
+function _checkbook_autocomplete_spending_entitycontractnum($year, $agency, $expcategory, $dept, $exptype = 0, $data_source = 'checkbook') {
+    $search_term = _get_autocomplete_search_term();
+    if (!empty($search_term)) {
+        $query = 'select/?q=spending_entity_contract_number:' . $search_term . '&facet=true&facet.field=spending_entity_contract_number&fq=domain:spending&facet.limit=10&wt=php';
+        if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
+        $matches = _get_spending_datafeeds_autocomplete_results('spending_entity_contract_number', $query, $year, $agency, $expcategory, $dept, $exptype, $data_source);
+        drupal_json_output($matches);
+    }
+}
+
+/**
+ * Get autocomplete results for Commodity Line from Solr.
+ *
+ * @param string $year
+ *   Year
+ * @param string $agency
+ *   Agency code
+ * @param string $expcategory
+ *   Expense category code
+ * @param string $dept
+ *   Department code
+ * @param int $exptype
+ *   Spending category code
+ * @param string $data_source
+ *   Data source (checkbook, checkbook_oge)
+ */
+function _checkbook_autocomplete_spending_commodityline($year, $agency, $expcategory, $dept, $exptype = 0, $data_source = 'checkbook') {
+    $search_term = _get_autocomplete_search_term();
+    if (!empty($search_term)) {
+        $query = 'select/?q=spending_commodity_line:' . $search_term . '&facet=true&facet.field=spending_commodity_line&fq=domain:spending&facet.limit=10&wt=php';
+        if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
+        $matches = _get_spending_datafeeds_autocomplete_results('spending_commodity_line', $query, $year, $agency, $expcategory, $dept, $exptype, $data_source);
+        drupal_json_output($matches);
+    }
+}
+
+/**
+ * Get autocomplete results for Budget Name from Solr.
+ *
+ * @param string $year
+ *   Year
+ * @param string $agency
+ *   Agency code
+ * @param string $expcategory
+ *   Expense category code
+ * @param string $dept
+ *   Department code
+ * @param int $exptype
+ *   Spending category code
+ * @param string $data_source
+ *   Data source (checkbook, checkbook_oge)
+ */
+function _checkbook_autocomplete_spending_budgetname($year, $agency, $expcategory, $dept, $exptype = 0, $data_source = 'checkbook') {
+    $search_term = _get_autocomplete_search_term();
+    if (!empty($search_term)) {
+        $query = 'select/?q=spending_budget_name_autocomplete:' . $search_term . '&facet=true&facet.field=spending_budget_name&fq=domain:spending&facet.limit=10&wt=php';
+        if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
+        $matches = _get_spending_datafeeds_autocomplete_results('spending_budget_name', $query, $year, $agency, $expcategory, $dept, $exptype, $data_source);
         drupal_json_output($matches);
     }
 }
@@ -479,379 +491,379 @@ function _checkbook_autocomplete_spending_documentid($year, $agency, $expcategor
  *   Year
  */
 function _checkbook_autocomplete_payroll_employee_name($agency, $payfreq, $year) {
-  $search_term = _get_autocomplete_search_term();
-  if (!empty($search_term)) {
-    $query = 'select/?q=civil_service_title_autocomplete:' . $search_term . '&facet=true&facet.field=civil_service_title&fq=domain:payroll&facet.limit=10&wt=php';
-    if ($agency) {
-      $agency_code = _getCodeFromName($agency);
-      $query .= '&fq=agency_code:' . $agency_code;
+    $search_term = _get_autocomplete_search_term();
+    if (!empty($search_term)) {
+        $query = 'select/?q=civil_service_title_autocomplete:' . $search_term . '&facet=true&facet.field=civil_service_title&fq=domain:payroll&facet.limit=10&wt=php';
+        if ($agency) {
+            $agency_code = _getCodeFromName($agency);
+            $query .= '&fq=agency_code:' . $agency_code;
+        }
+        if ($payfreq) {
+            $query .= '&fq=pay_frequency:' . $payfreq;
+        }
+        if ($year) {
+            if (startsWith($year, 'F')) {
+                $query .= '&fq=fiscal_year:' . ltrim($year, 'FY ');
+            }
+            elseif (startsWith($year, 'C')) {
+                $query .= '&fq=calendar_fiscal_year:' . ltrim($year, 'CY ');
+            }
+        }
+        $matches = _checkbook_autocomplete_solr_results($query, 'civil_service_title');
+        drupal_json_output($matches);
     }
-    if ($payfreq) {
-      $query .= '&fq=pay_frequency:' . $payfreq;
-    }
-    if ($year) {
-      if (startsWith($year, 'F')) {
-        $query .= '&fq=fiscal_year:' . ltrim($year, 'FY ');
-      }
-      elseif (startsWith($year, 'C')) {
-        $query .= '&fq=calendar_fiscal_year:' . ltrim($year, 'CY ');
-      }
-    }
-    $matches = _checkbook_autocomplete_solr_results($query, 'civil_service_title');
-    drupal_json_output($matches);
-  }
 }
 
 // Budget autocomplete menu callback functions:
 function _checkbook_autocomplete_budget_department($agency, $budgetcode, $expcategory, $fiscal_year, $fundingsrc, $revcat, $revsrc, $type) {
-  $search_term = _get_autocomplete_search_term();
-  if (!empty($search_term)) {
-    $query = 'select/?q=department_name_code:' . $search_term . '&facet=true&facet.field=department_name_code&wt=php';
-    if ($agency) {
-      $query .= '&fq=agency_code:' . $agency;
-    }
-    if ($budgetcode) {
-      $query .= '&fq=budget_code:' . $budgetcode;
-    }
-    if ($expcategory) {
-      $query .= '&fq=object_class_code:' . $expcategory;
-    }
-    if ($fiscal_year) {
-      $query .= '&fq=fiscal_year:' . $fiscal_year;
-    }
-    if ($fundingsrc) {
-      $query .= '&fq=funding_class_code:' . $fundingsrc;
-    }
-    if ($revcat) {
-      $query .= '&fq=revenue_category_code:' . $revcat;
-    }
-    if ($revsrc) {
-      $query .= '&fq=revenue_source_code:' . $revsrc;
-    }
-    if ($type) {
-      if ($type == 'expense') {
-        $query .= '&fq=domain:expense\%20budget';
-      }
-      elseif ($type == 'revenue') {
-        $query .= '&fq=domain:revenue\%20budget';
-      }
-    }
-    $results = _checkbook_autocomplete_solr_results($query);
-    if ($results['response']['numFound'] != 0) {
-      $facetcounts = $results['facet_counts']['facet_fields']['department_name_code'];
-      $matches = array();
-      foreach ($facetcounts as $key => $value) {
-        if ($value > 0) {
-          $matches[] = $key;
+    $search_term = _get_autocomplete_search_term();
+    if (!empty($search_term)) {
+        $query = 'select/?q=department_name_code:' . $search_term . '&facet=true&facet.field=department_name_code&wt=php';
+        if ($agency) {
+            $query .= '&fq=agency_code:' . $agency;
         }
-      }
-      drupal_json_output($matches);
+        if ($budgetcode) {
+            $query .= '&fq=budget_code:' . $budgetcode;
+        }
+        if ($expcategory) {
+            $query .= '&fq=object_class_code:' . $expcategory;
+        }
+        if ($fiscal_year) {
+            $query .= '&fq=fiscal_year:' . $fiscal_year;
+        }
+        if ($fundingsrc) {
+            $query .= '&fq=funding_class_code:' . $fundingsrc;
+        }
+        if ($revcat) {
+            $query .= '&fq=revenue_category_code:' . $revcat;
+        }
+        if ($revsrc) {
+            $query .= '&fq=revenue_source_code:' . $revsrc;
+        }
+        if ($type) {
+            if ($type == 'expense') {
+                $query .= '&fq=domain:expense\%20budget';
+            }
+            elseif ($type == 'revenue') {
+                $query .= '&fq=domain:revenue\%20budget';
+            }
+        }
+        $results = _checkbook_autocomplete_solr_results($query);
+        if ($results['response']['numFound'] != 0) {
+            $facetcounts = $results['facet_counts']['facet_fields']['department_name_code'];
+            $matches = array();
+            foreach ($facetcounts as $key => $value) {
+                if ($value > 0) {
+                    $matches[] = $key;
+                }
+            }
+            drupal_json_output($matches);
+        }
+        else {
+            drupal_json_output(array(
+                array(
+                    'label' => 'No Matches Found',
+                    'value' => '',
+                ),
+            ));
+        }
     }
-    else {
-      drupal_json_output(array(
-        array(
-          'label' => 'No Matches Found',
-          'value' => '',
-        ),
-      ));
-    }
-  }
 }
 
 function _checkbook_autocomplete_budget_expcategory($agency, $budgetcode, $dept, $fiscal_year, $fundingsrc, $revcat, $revsrc, $type) {
-  $search_term = _get_autocomplete_search_term();
-  if (!empty($search_term)) {
-    $query = 'select/?q=object_class_name_code:' . $search_term . '&facet=true&facet.field=object_class_name_code&facet.limit=10&wt=php';
-    if ($agency) {
-      $query .= '&fq=agency_code:' . $agency;
-    }
-    if ($budgetcode) {
-      $query .= '&fq=budget_code:' . $budgetcode;
-    }
-    if ($dept) {
-      $query .= '&fq=department_code:' . $dept;
-    }
-    if ($fiscal_year) {
-      $query .= '&fq=fiscal_year:' . $fiscal_year;
-    }
-    if ($fundingsrc) {
-      $query .= '&fq=funding_class_code:' . $fundingsrc;
-    }
-    if ($revcat) {
-      $query .= '&fq=revenue_category_code:' . $revcat;
-    }
-    if ($revsrc) {
-      $query .= '&fq=revenue_source_code:' . $revsrc;
-    }
-    if ($type) {
-      if ($type == 'expense') {
-        $query .= '&fq=domain:expense\%20budget';
-      }
-      elseif ($type == 'revenue') {
-        $query .= '&fq=domain:revenue\%20budget';
-      }
-    }
-    $results = _checkbook_autocomplete_solr_results($query);
-    if ($results['response']['numFound'] != 0) {
-      $facetcounts = $results['facet_counts']['facet_fields']['object_class_name_code'];
-      $matches = array();
-      foreach ($facetcounts as $key => $value) {
-        if ($value > 0) {
-          $matches[] = $key;
+    $search_term = _get_autocomplete_search_term();
+    if (!empty($search_term)) {
+        $query = 'select/?q=object_class_name_code:' . $search_term . '&facet=true&facet.field=object_class_name_code&facet.limit=10&wt=php';
+        if ($agency) {
+            $query .= '&fq=agency_code:' . $agency;
         }
-      }
-      drupal_json_output($matches);
+        if ($budgetcode) {
+            $query .= '&fq=budget_code:' . $budgetcode;
+        }
+        if ($dept) {
+            $query .= '&fq=department_code:' . $dept;
+        }
+        if ($fiscal_year) {
+            $query .= '&fq=fiscal_year:' . $fiscal_year;
+        }
+        if ($fundingsrc) {
+            $query .= '&fq=funding_class_code:' . $fundingsrc;
+        }
+        if ($revcat) {
+            $query .= '&fq=revenue_category_code:' . $revcat;
+        }
+        if ($revsrc) {
+            $query .= '&fq=revenue_source_code:' . $revsrc;
+        }
+        if ($type) {
+            if ($type == 'expense') {
+                $query .= '&fq=domain:expense\%20budget';
+            }
+            elseif ($type == 'revenue') {
+                $query .= '&fq=domain:revenue\%20budget';
+            }
+        }
+        $results = _checkbook_autocomplete_solr_results($query);
+        if ($results['response']['numFound'] != 0) {
+            $facetcounts = $results['facet_counts']['facet_fields']['object_class_name_code'];
+            $matches = array();
+            foreach ($facetcounts as $key => $value) {
+                if ($value > 0) {
+                    $matches[] = $key;
+                }
+            }
+            drupal_json_output($matches);
+        }
+        else {
+            drupal_json_output(array(
+                array(
+                    'label' => 'No Matches Found',
+                    'value' => '',
+                ),
+            ));
+        }
     }
-    else {
-      drupal_json_output(array(
-        array(
-          'label' => 'No Matches Found',
-          'value' => '',
-        ),
-      ));
-    }
-  }
 }
 
 function _checkbook_autocomplete_budget_budgetcode($agency , $dept , $expcategory, $budgetcode , $year) {
-  $search_term = _get_autocomplete_search_term();
-  if (!empty($search_term)) {
-    $query = 'select?q=budget_code_name_code_autocomplete:' . $search_term . '&facet=true&facet.field=budget_code_name_code&fq=domain:budget&facet.limit=10&wt=php';
-    if ($agency) {
-      $query .= '&fq=agency_code:' . $agency;
+    $search_term = _get_autocomplete_search_term();
+    if (!empty($search_term)) {
+        $query = 'select?q=budget_code_name_code_autocomplete:' . $search_term . '&facet=true&facet.field=budget_code_name_code&fq=domain:budget&facet.limit=10&wt=php';
+        if ($agency) {
+            $query .= '&fq=agency_code:' . $agency;
+        }
+        if ($dept) {
+            $query .= '&fq=department_code:' . $dept;
+        }
+        if ($expcategory) {
+            $query .= '&fq=expenditure_object_code:' . $expcategory;
+        }
+        if ($year) {
+            $query .= '&fq=fiscal_year:' . $year;
+        }
     }
-    if ($dept) {
-      $query .= '&fq=department_code:' . $dept;
-    }
-    if ($expcategory) {
-      $query .= '&fq=expenditure_object_code:' . $expcategory;
-    }
-    if ($year) {
-      $query .= '&fq=fiscal_year:' . $year;
-    }
-  }
-   $matches = _checkbook_autocomplete_solr_results($query, 'budget_code_name_code');
-   drupal_json_output($matches);
+    $matches = _checkbook_autocomplete_solr_results($query, 'budget_code_name_code');
+    drupal_json_output($matches);
 }
 
 function _checkbook_autocomplete_budget_fundingsrc($agency, $budgetcode, $dept, $expcategory, $fiscal_year, $revcat, $revsrc, $type) {
-  $search_term = _get_autocomplete_search_term();
-  if (!empty($search_term)) {
-    $query = 'select/?q=funding_class_name_code:' . $search_term . '&facet=true&facet.field=funding_class_name_code&facet.limit=10&wt=php';
-    if ($agency) {
-      $query .= '&fq=agency_code:' . $agency;
-    }
-    if ($budgetcode) {
-      $query .= '&fq=budget_code:' . $budgetcode;
-    }
-    if ($dept) {
-      $query .= '&fq=department_code:' . $dept;
-    }
-    if ($expcategory) {
-      $query .= '&fq=object_class_code:' . $expcategory;
-    }
-    if ($fiscal_year) {
-      $query .= '&fq=fiscal_year:' . $fiscal_year;
-    }
-    if ($revcat) {
-      $query .= '&fq=revenue_category_code:' . $revcat;
-    }
-    if ($revsrc) {
-      $query .= '&fq=revenue_source_code:' . $revsrc;
-    }
-    if ($type) {
-      if ($type == 'expense') {
-        $query .= '&fq=domain:expense\%20budget';
-      }
-      elseif ($type == 'revenue') {
-        $query .= '&fq=domain:revenue\%20budget';
-      }
-    }
-    $results = _checkbook_autocomplete_solr_results($query);
-    if ($results['response']['numFound'] != 0) {
-      $facetcounts = $results['facet_counts']['facet_fields']['funding_class_name_code'];
-      $matches = array();
-      foreach ($facetcounts as $key => $value) {
-        if ($value > 0) {
-          $matches[] = $key;
+    $search_term = _get_autocomplete_search_term();
+    if (!empty($search_term)) {
+        $query = 'select/?q=funding_class_name_code:' . $search_term . '&facet=true&facet.field=funding_class_name_code&facet.limit=10&wt=php';
+        if ($agency) {
+            $query .= '&fq=agency_code:' . $agency;
         }
-      }
-      drupal_json_output($matches);
+        if ($budgetcode) {
+            $query .= '&fq=budget_code:' . $budgetcode;
+        }
+        if ($dept) {
+            $query .= '&fq=department_code:' . $dept;
+        }
+        if ($expcategory) {
+            $query .= '&fq=object_class_code:' . $expcategory;
+        }
+        if ($fiscal_year) {
+            $query .= '&fq=fiscal_year:' . $fiscal_year;
+        }
+        if ($revcat) {
+            $query .= '&fq=revenue_category_code:' . $revcat;
+        }
+        if ($revsrc) {
+            $query .= '&fq=revenue_source_code:' . $revsrc;
+        }
+        if ($type) {
+            if ($type == 'expense') {
+                $query .= '&fq=domain:expense\%20budget';
+            }
+            elseif ($type == 'revenue') {
+                $query .= '&fq=domain:revenue\%20budget';
+            }
+        }
+        $results = _checkbook_autocomplete_solr_results($query);
+        if ($results['response']['numFound'] != 0) {
+            $facetcounts = $results['facet_counts']['facet_fields']['funding_class_name_code'];
+            $matches = array();
+            foreach ($facetcounts as $key => $value) {
+                if ($value > 0) {
+                    $matches[] = $key;
+                }
+            }
+            drupal_json_output($matches);
+        }
+        else {
+            drupal_json_output(array(
+                array(
+                    'label' => 'No Matches Found',
+                    'value' => ''
+                )
+            ));
+        }
     }
-    else {
-      drupal_json_output(array(
-        array(
-          'label' => 'No Matches Found',
-          'value' => ''
-        )
-      ));
-    }
-  }
 }
 
 function _checkbook_autocomplete_budget_revcat($agency, $budgetcode, $dept, $expcategory, $fiscal_year, $fundingsrc, $revsrc, $type) {
-  $search_term = _get_autocomplete_search_term();
-  if (!empty($search_term)) {
-    $query = 'select/?q=revenue_category_name_code:' . $search_term . '&facet=true&facet.field=revenue_category_name_code&facet.limit=10&wt=php';
-    if ($agency) {
-      $query .= '&fq=agency_code:' . $agency;
-    }
-    if ($budgetcode) {
-      $query .= '&fq=budget_code:' . $budgetcode;
-    }
-    if ($dept) {
-      $query .= '&fq=department_code:' . $dept;
-    }
-    if ($expcategory) {
-      $query .= '&fq=object_class_code:' . $expcategory;
-    }
-    if ($fiscal_year) {
-      $query .= '&fq=fiscal_year:' . $fiscal_year;
-    }
-    if ($fundingsrc) {
-      $query .= '&fq=funding_class_code:' . $fundingsrc;
-    }
-    if ($revsrc) {
-      $query .= '&fq=revenue_source_code:' . $revsrc;
-    }
-    if ($type) {
-      if ($type == 'expense') {
-        $query .= '&fq=domain:expense\%20budget';
-      }
-      elseif ($type == 'revenue') {
-        $query .= '&fq=domain:revenue\%20budget';
-      }
-    }
-    $results = _checkbook_autocomplete_solr_results($query);
-    if ($results['response']['numFound'] != 0) {
-      $facetcounts = $results['facet_counts']['facet_fields']['revenue_category_name_code'];
-      $matches = array();
-      foreach ($facetcounts as $key => $value) {
-        if ($value > 0) {
-          $matches[] = $key;
+    $search_term = _get_autocomplete_search_term();
+    if (!empty($search_term)) {
+        $query = 'select/?q=revenue_category_name_code:' . $search_term . '&facet=true&facet.field=revenue_category_name_code&facet.limit=10&wt=php';
+        if ($agency) {
+            $query .= '&fq=agency_code:' . $agency;
         }
-      }
-      drupal_json_output($matches);
+        if ($budgetcode) {
+            $query .= '&fq=budget_code:' . $budgetcode;
+        }
+        if ($dept) {
+            $query .= '&fq=department_code:' . $dept;
+        }
+        if ($expcategory) {
+            $query .= '&fq=object_class_code:' . $expcategory;
+        }
+        if ($fiscal_year) {
+            $query .= '&fq=fiscal_year:' . $fiscal_year;
+        }
+        if ($fundingsrc) {
+            $query .= '&fq=funding_class_code:' . $fundingsrc;
+        }
+        if ($revsrc) {
+            $query .= '&fq=revenue_source_code:' . $revsrc;
+        }
+        if ($type) {
+            if ($type == 'expense') {
+                $query .= '&fq=domain:expense\%20budget';
+            }
+            elseif ($type == 'revenue') {
+                $query .= '&fq=domain:revenue\%20budget';
+            }
+        }
+        $results = _checkbook_autocomplete_solr_results($query);
+        if ($results['response']['numFound'] != 0) {
+            $facetcounts = $results['facet_counts']['facet_fields']['revenue_category_name_code'];
+            $matches = array();
+            foreach ($facetcounts as $key => $value) {
+                if ($value > 0) {
+                    $matches[] = $key;
+                }
+            }
+            drupal_json_output($matches);
+        }
+        else {
+            drupal_json_output(array(
+                array(
+                    'label' => 'No Matches Found',
+                    'value' => ''
+                )
+            ));
+        }
     }
-    else {
-      drupal_json_output(array(
-        array(
-          'label' => 'No Matches Found',
-          'value' => ''
-        )
-      ));
-    }
-  }
 }
 
 function _checkbook_autocomplete_budget_revsrc($agency, $budgetcode, $dept, $expcategory, $fiscal_year, $fundingsrc, $revcat, $type) {
-  $search_term = _get_autocomplete_search_term();
-  if (!empty($search_term)) {
-    $query = 'select/?q=revenue_source_name_code:' . $search_term . '&facet=true&facet.field=revenue_source_name_code&facet.limit=10&wt=php';
-    if ($agency) {
-      $query .= '&fq=agency_code:' . $agency;
-    }
-    if ($budgetcode) {
-      $query .= '&fq=budget_code:' . $budgetcode;
-    }
-    if ($dept) {
-      $query .= '&fq=department_code:' . $dept;
-    }
-    if ($expcategory) {
-      $query .= '&fq=object_class_code:' . $expcategory;
-    }
-    if ($fiscal_year) {
-      $query .= '&fq=fiscal_year:' . $fiscal_year;
-    }
-    if ($fundingsrc) {
-      $query .= '&fq=funding_class_code:' . $fundingsrc;
-    }
-    if ($revcat) {
-      $query .= '&fq=revenue_category_code:' . $revcat;
-    }
-    if ($type) {
-      if ($type == 'expense') {
-        $query .= '&fq=domain:expense\%20budget';
-      }
-      elseif ($type == 'revenue') {
-        $query .= '&fq=domain:revenue\%20budget';
-      }
-    }
-    $results = _checkbook_autocomplete_solr_results($query);
-    if ($results['response']['numFound'] != 0) {
-      $facetcounts = $results['facet_counts']['facet_fields']['revenue_source_name_code'];
-      $matches = array();
-      foreach ($facetcounts as $key => $value) {
-        if ($value > 0) {
-          $matches[] = (string) $key;
+    $search_term = _get_autocomplete_search_term();
+    if (!empty($search_term)) {
+        $query = 'select/?q=revenue_source_name_code:' . $search_term . '&facet=true&facet.field=revenue_source_name_code&facet.limit=10&wt=php';
+        if ($agency) {
+            $query .= '&fq=agency_code:' . $agency;
         }
-      }
-      drupal_json_output($matches);
+        if ($budgetcode) {
+            $query .= '&fq=budget_code:' . $budgetcode;
+        }
+        if ($dept) {
+            $query .= '&fq=department_code:' . $dept;
+        }
+        if ($expcategory) {
+            $query .= '&fq=object_class_code:' . $expcategory;
+        }
+        if ($fiscal_year) {
+            $query .= '&fq=fiscal_year:' . $fiscal_year;
+        }
+        if ($fundingsrc) {
+            $query .= '&fq=funding_class_code:' . $fundingsrc;
+        }
+        if ($revcat) {
+            $query .= '&fq=revenue_category_code:' . $revcat;
+        }
+        if ($type) {
+            if ($type == 'expense') {
+                $query .= '&fq=domain:expense\%20budget';
+            }
+            elseif ($type == 'revenue') {
+                $query .= '&fq=domain:revenue\%20budget';
+            }
+        }
+        $results = _checkbook_autocomplete_solr_results($query);
+        if ($results['response']['numFound'] != 0) {
+            $facetcounts = $results['facet_counts']['facet_fields']['revenue_source_name_code'];
+            $matches = array();
+            foreach ($facetcounts as $key => $value) {
+                if ($value > 0) {
+                    $matches[] = (string) $key;
+                }
+            }
+            drupal_json_output($matches);
+        }
+        else {
+            drupal_json_output(array(
+                array(
+                    'label' => 'No Matches Found',
+                    'value' => ''
+                )
+            ));
+        }
     }
-    else {
-      drupal_json_output(array(
-        array(
-          'label' => 'No Matches Found',
-          'value' => ''
-        )
-      ));
-    }
-  }
 }
 
 //Revenue autocomplete menu callback functions
 function _checkbook_autocomplete_revenue_revenueclass($year, $fundclass, $agency, $budgetyear, $revcat, $revsrc, $fundingsrc) {
-  $search_term = _get_autocomplete_search_term();
-  if (!empty($search_term)) {
-    $query = 'select/?q=revenue_class_name_code_autocomplete:' . $search_term . '&facet=true&facet.field=revenue_class_name_code&fq=domain:revenue&facet.limit=10&wt=php';
-    if ($year) {
-      $query .= '&fq=display_fiscal_year:' . $year;
+    $search_term = _get_autocomplete_search_term();
+    if (!empty($search_term)) {
+        $query = 'select/?q=revenue_class_name_code_autocomplete:' . $search_term . '&facet=true&facet.field=revenue_class_name_code&fq=domain:revenue&facet.limit=10&wt=php';
+        if ($year) {
+            $query .= '&fq=display_fiscal_year:' . $year;
+        }
+        if ($fundclass) {
+            $query .= '&fq=fund_class_code:' . $fundclass;
+        }
+        if ($agency) {
+            $query .= '&fq=agency_code:' . $agency;
+        }
+        if ($budgetyear) {
+            $query .= '&fq=fiscal_year:' . $budgetyear;
+        }
+        if ($revcat) {
+            $query .= '&fq=revenue_category_code:' . $revcat;
+        }
+        if ($fundingsrc) {
+            $query .= '&fq=funding_class_code:' . $fundingsrc;
+        }
+        $matches = _checkbook_autocomplete_solr_results($query, 'revenue_class_name_code');
+        drupal_json_output($matches);
     }
-    if ($fundclass) {
-      $query .= '&fq=fund_class_code:' . $fundclass;
-    }
-    if ($agency) {
-      $query .= '&fq=agency_code:' . $agency;
-    }
-    if ($budgetyear) {
-      $query .= '&fq=fiscal_year:' . $budgetyear;
-    }
-    if ($revcat) {
-      $query .= '&fq=revenue_category_code:' . $revcat;
-    }
-    if ($fundingsrc) {
-      $query .= '&fq=funding_class_code:' . $fundingsrc;
-    }
-    $matches = _checkbook_autocomplete_solr_results($query, 'revenue_class_name_code');
-    drupal_json_output($matches);
-  }
 }
 
 function _checkbook_autocomplete_revenue_revenuesource($year, $fundclass, $agency, $budgetyear, $revcat, $revclass, $fundingsrc) {
-  $search_term = _get_autocomplete_search_term();
-  if (!empty($search_term)) {
-    $query = 'select/?q=revenue_source_name_code_autocomplete:' . $search_term . '&facet=true&facet.field=revenue_source_name_code&fq=domain:revenue&facet.limit=10&wt=php';
-      if ($year) {
-       $query .= '&fq=display_fiscal_year:' . $year;
-     }
-     if ($fundclass) {
-       $query .= '&fq=fund_class_code:' . $fundclass;
-     }
-     if ($agency) {
-       $query .= '&fq=agency_code:' . $agency;
-     }
-     if ($budgetyear) {
-       $query .= '&fq=fiscal_year:' . $budgetyear;
-     }
-     if ($revcat) {
-       $query .= '&fq=revenue_category_code:' . $revcat;
-     }
-     if ($fundingsrc) {
-       $query .= '&fq=funding_class_code:' . $fundingsrc;
-     }
-     $matches = _checkbook_autocomplete_solr_results($query, 'revenue_source_name_code');
-     drupal_json_output($matches);
-  }
+    $search_term = _get_autocomplete_search_term();
+    if (!empty($search_term)) {
+        $query = 'select/?q=revenue_source_name_code_autocomplete:' . $search_term . '&facet=true&facet.field=revenue_source_name_code&fq=domain:revenue&facet.limit=10&wt=php';
+        if ($year) {
+            $query .= '&fq=display_fiscal_year:' . $year;
+        }
+        if ($fundclass) {
+            $query .= '&fq=fund_class_code:' . $fundclass;
+        }
+        if ($agency) {
+            $query .= '&fq=agency_code:' . $agency;
+        }
+        if ($budgetyear) {
+            $query .= '&fq=fiscal_year:' . $budgetyear;
+        }
+        if ($revcat) {
+            $query .= '&fq=revenue_category_code:' . $revcat;
+        }
+        if ($fundingsrc) {
+            $query .= '&fq=funding_class_code:' . $fundingsrc;
+        }
+        $matches = _checkbook_autocomplete_solr_results($query, 'revenue_source_name_code');
+        drupal_json_output($matches);
+    }
 }
 
 /**
@@ -869,50 +881,50 @@ function _checkbook_autocomplete_revenue_revenuesource($year, $fundclass, $agenc
  */
 function _checkbook_autocomplete_get_start_end_dates($year, $domain = NULL, $status = NULL) {
 
-  if (strpos($year, '~')) {
-    if ($year == 'fy~all') {
-      return '';
-    }
-    $year_type = substr($year, 0, 2);
-    $year_id = substr($year, 3, strlen($year));
-    $year_value = _getYearValueFromID($year_id);
-  }
-  else {
-    if ($year == 'ALL') {
-      return '';
-    }
-    $year_type = substr($year, 0, 2);
-    $year_value = str_replace($year_type, '', $year);
-  }
-
-  $query = "";
-  if (strtolower($year_type) == 'fy') {
-    $start_date = ($year_value - 1) . "-07-01T00:00:00.999Z";
-    $end_date = $year_value . "-06-30T23:59:59.999Z";
-  }
-  elseif (strtolower($year_type) == 'cy') {
-    $start_date = ($year_value) . "-01-01T00:00:00.999Z";
-    $end_date = $year_value . "-12-31T23:59:59.999Z";
-  }
-
-  if ($domain == 'spending') {
-    $query .= '(check_eft_issued_date:[' . $start_date . '%20TO%20' . $end_date . '])';
-  }
-  else {
-    if ($status == 'A') {
-      $query .= '(start_date:[*%20TO%20' . $start_date . ']%20AND%20end_date:[' . $end_date . '%20TO%20*])OR';
-      $query .= '(start_date:[*%20TO%20' . $end_date . ']%20AND%20end_date[:' . $end_date . '%20TO%20*])OR';
-      $query .= '(start_date:[' . $end_date . '%20TO%20*]%20AND%20start_date:[*%20TO%20' . $end_date . '])';
+    if (strpos($year, '~')) {
+        if ($year == 'fy~all') {
+            return '';
+        }
+        $year_type = substr($year, 0, 2);
+        $year_id = substr($year, 3, strlen($year));
+        $year_value = _getYearValueFromID($year_id);
     }
     else {
-      if ($status == 'R') {
-        $query .= '(registration_date:[' . $start_date . '%20TO%20' . $end_date . '])';
-      }
+        if ($year == 'ALL') {
+            return '';
+        }
+        $year_type = substr($year, 0, 2);
+        $year_value = str_replace($year_type, '', $year);
     }
-  }
 
-  $query = '&fq=(' . $query . ')';
-  return $query;
+    $query = "";
+    if (strtolower($year_type) == 'fy') {
+        $start_date = ($year_value - 1) . "-07-01T00:00:00.999Z";
+        $end_date = $year_value . "-06-30T23:59:59.999Z";
+    }
+    elseif (strtolower($year_type) == 'cy') {
+        $start_date = ($year_value) . "-01-01T00:00:00.999Z";
+        $end_date = $year_value . "-12-31T23:59:59.999Z";
+    }
+
+    if ($domain == 'spending') {
+        $query .= '(check_eft_issued_date:[' . $start_date . '%20TO%20' . $end_date . '])';
+    }
+    else {
+        if ($status == 'A') {
+            $query .= '(start_date:[*%20TO%20' . $start_date . ']%20AND%20end_date:[' . $end_date . '%20TO%20*])OR';
+            $query .= '(start_date:[*%20TO%20' . $end_date . ']%20AND%20end_date[:' . $end_date . '%20TO%20*])OR';
+            $query .= '(start_date:[' . $end_date . '%20TO%20*]%20AND%20start_date:[*%20TO%20' . $end_date . '])';
+        }
+        else {
+            if ($status == 'R') {
+                $query .= '(registration_date:[' . $start_date . '%20TO%20' . $end_date . '])';
+            }
+        }
+    }
+
+    $query = '&fq=(' . $query . ')';
+    return $query;
 }
 
 /**
@@ -926,29 +938,29 @@ function _checkbook_autocomplete_get_start_end_dates($year, $domain = NULL, $sta
  */
 function _checkbook_autocomplete_escapeSolrValue($string) {
 
-  $string = str_replace("%", "%25", $string);
-  $string = str_replace("\\", "%5C%5C", $string);
-  $string = str_replace(" ", "%20", $string);
-  $string = str_replace("#", "%23", $string);
-  $string = str_replace("/", "\%2F", $string);
-  $string = str_replace("&", "%2526", $string);
-  $string = str_replace("[", "\[", $string);
-  $string = str_replace("]", "\]", $string);
-  $string = str_replace(":", "\:", $string);
-  $string = str_replace("'", "%27", $string);
-  $string = str_replace("+", "\%2B", $string);
-  $string = str_replace("?", "\%3F", $string);
-  $string = str_replace("$", "\%24", $string);
-  $string = str_replace("!", "\%21", $string);
-  $string = str_replace("^", "\%5E", $string);
-  $string = str_replace("|", "\%7C", $string);
-  $string = str_replace("(", "\%28", $string);
-  $string = str_replace(")", "\%29", $string);
-  $string = str_replace("*", "\%2A", $string);
-  $string = str_replace(".", "\%2E", $string);
-  $string = str_replace("-", "\-", $string);
+    $string = str_replace("%", "%25", $string);
+    $string = str_replace("\\", "%5C%5C", $string);
+    $string = str_replace(" ", "%20", $string);
+    $string = str_replace("#", "%23", $string);
+    $string = str_replace("/", "\%2F", $string);
+    $string = str_replace("&", "%2526", $string);
+    $string = str_replace("[", "\[", $string);
+    $string = str_replace("]", "\]", $string);
+    $string = str_replace(":", "\:", $string);
+    $string = str_replace("'", "%27", $string);
+    $string = str_replace("+", "\%2B", $string);
+    $string = str_replace("?", "\%3F", $string);
+    $string = str_replace("$", "\%24", $string);
+    $string = str_replace("!", "\%21", $string);
+    $string = str_replace("^", "\%5E", $string);
+    $string = str_replace("|", "\%7C", $string);
+    $string = str_replace("(", "\%28", $string);
+    $string = str_replace(")", "\%29", $string);
+    $string = str_replace("*", "\%2A", $string);
+    $string = str_replace(".", "\%2E", $string);
+    $string = str_replace("-", "\-", $string);
 
-  return $string;
+    return $string;
 }
 
 /**
@@ -958,29 +970,29 @@ function _checkbook_autocomplete_escapeSolrValue($string) {
  *   Search term
  */
 function _get_autocomplete_search_term() {
-  if (strlen($_REQUEST['term']) > 0) {
-    $autocomplete_text = trim(htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES));
-    $autocomplete_terms = explode(' ', $autocomplete_text);
-    $autocomplete_text = _checkbook_autocomplete_escapeSolrValue(trim(htmlspecialchars_decode($_REQUEST['term']), ENT_QUOTES));
+    if (strlen($_REQUEST['term']) > 0) {
+        $autocomplete_text = trim(htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES));
+        $autocomplete_terms = explode(' ', $autocomplete_text);
+        $autocomplete_text = _checkbook_autocomplete_escapeSolrValue(trim(htmlspecialchars_decode($_REQUEST['term']), ENT_QUOTES));
 
-    if (count($autocomplete_terms) > 0) {
-      $autocomplete_text = "";
-      foreach ($autocomplete_terms as $key => $value) {
-        if (strlen($value) > 0) {
-          $autocomplete_text .= _checkbook_autocomplete_escapeSolrValue($value) . "*%20AND%20";
+        if (count($autocomplete_terms) > 0) {
+            $autocomplete_text = "";
+            foreach ($autocomplete_terms as $key => $value) {
+                if (strlen($value) > 0) {
+                    $autocomplete_text .= _checkbook_autocomplete_escapeSolrValue($value) . "*%20AND%20";
+                }
+            }
+            $search_term = "(" . substr($autocomplete_text, 0, -9) . ")";
         }
-      }
-      $search_term = "(" . substr($autocomplete_text, 0, -9) . ")";
+        else {
+            $search_term = $autocomplete_text . "*";
+        }
+
+        return $search_term;
     }
     else {
-      $search_term = $autocomplete_text . "*";
+        return '';
     }
-
-    return $search_term;
-  }
-  else {
-    return '';
-  }
 }
 
 /**
@@ -1032,7 +1044,35 @@ function _checkbook_autocomplete_solr_results($query, $facet = NULL) {
  *   Text in brackets
  */
 function _getCodeFromName($string) {
-  $index1 = strrpos($string, '[');
-  $code = substr($string, $index1 + 1, strlen($string) - ($index1 + 2));
-  return $code;
+    $index1 = strrpos($string, '[');
+    $code = substr($string, $index1 + 1, strlen($string) - ($index1 + 2));
+    return $code;
 }
+
+/**
+ * Get Expense Type id from Data Controller and format into a FAPI select input options array.
+ *
+ * @return array
+ *   Spending category id from name
+ */
+function _get_spending_datafeeds_autocomplete_expense_type_options($exptype, $data_source = 'checkbook') {
+    try {
+        $dataController = data_controller_get_instance();
+        switch($data_source)
+        {
+            case 'checkbook_oge':
+                $data = $dataController->queryDataset('checkbook_oge:spending_category', array('spending_category_id','spending_category_code','display_name'), NULL, 'display_order');
+                break;
+
+            default:
+                $data = $dataController->queryDataset('checkbook:spending_category', array('spending_category_id','spending_category_code','display_name'), NULL, 'display_order');
+                break;
+        }
+        foreach ($data as $row) if ($row['spending_category_code'] == $exptype) return $row['spending_category_id'];
+    }
+    catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
+    }
+
+    return null;
+};
