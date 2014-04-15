@@ -24,7 +24,7 @@
 },
 "allowRequestParams":["smnid"],
 "paramTypeConfig":{"entcontnum_exact":"eqignorecase","comline_exact":"eqignorecase","budname_exact":"eqignorecase","curamtr":"rangeid","vendornm":"like","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","regdate":"range","modamt":"ne"},
-"defaultParameters":{"status_flag":"A","is_vendor_flag":"N"},
+"defaultParameters":{"status_flag":"A","is_vendor_flag":"N","type_of_year":"B"},
 "header":"
 	$header = NULL;
 	$header .= widget_data_tables_export_link($node);

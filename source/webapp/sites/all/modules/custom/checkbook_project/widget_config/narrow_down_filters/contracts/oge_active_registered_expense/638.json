@@ -7,7 +7,7 @@
     "urlParamMap":{
         "doctype":"document_code.document_code.document_code"
     },
-    "defaultParameters":{"status_flag":"A","is_vendor_flag":"N"},
+    "defaultParameters":{"status_flag":"A","is_vendor_flag":"N","type_of_year":"B"},
     "columns":["award_method.award_method", "award_method.award_method.award_method_name", "txcount"],
     "orderBy":"-txcount",
 	"getTotalDataCount":true,
