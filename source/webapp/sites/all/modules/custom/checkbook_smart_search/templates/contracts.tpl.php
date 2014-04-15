@@ -52,6 +52,7 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
     }else{
         $contract_Id_link .= "/agid/".$contracts_results['original_agreement_id']."/doctype/".$contracts_results["document_code"];
     }
+    $contract_Id_link = ($IsOge) ? $contract_Id_link.'/datasource/checkbook_oge' : $contract_Id_link;
 
     if($contracts_results['original_agreement_id']){
         $contracts_results['contract_number'] = "<a href='".$contract_Id_link ."'>".$contracts_results['contract_number']."</a>";
