@@ -128,7 +128,7 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
       if (isset($fy)) {
         // Adjust dataset:
         if (isset($criteria['value']['calendar_year'])) {
-          $data_set->name = checkbook_api_change_datasource($datasource,'checkbook:agreement_snapshot_cy');
+          $data_set->name = (strtolower($type_of_data) != 'contracts_oge') ? checkbook_api_change_datasource($datasource,'checkbook:agreement_snapshot_cy') : $data_set->name;
           if(strtolower($type_of_data) == 'contracts_oge')
                 $parameters[checkbook_api_change_datasource($datasource,'type_of_year')] = 'C';
           else

@@ -520,7 +520,7 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
            //adjust dataset
            $yearTypeCol = $node->widgetConfig->urlParamMap->$yearTypeParam;
            $reqYearType = $node->widgetConfig->requestParams[$yearTypeCol];
-           if(isset($reqYearType) && ($reqYearType == 'C')){
+           if(isset($reqYearType) && ($reqYearType == 'C') && !_checkbook_check_isEDCPage()){
                if(isset($node->widgetConfig->dataset)){
                     $node->widgetConfig->dataset = 'checkbook:agreement_snapshot_cy';
                }else if(isset($node->widgetConfig->model->series) && is_array($node->widgetConfig->model->series)){

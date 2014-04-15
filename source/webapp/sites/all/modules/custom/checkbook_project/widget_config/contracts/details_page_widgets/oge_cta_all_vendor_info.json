@@ -30,7 +30,6 @@ $ag_id = _getRequestParamValue('agid');
 $q2 = ' select vendor_id, agency_short_name, og.agency_id, count(distinct fms_contract_number) count from oge_contract og 
 join ref_agency ra on ra.agency_id = og.agency_id 
         where og.agency_id =  ' .$vendors_list[0]['agency_id'] . '
-        and og.vendor_id =  ' . $vendors_list[0]['vendor_id'] . '
 group by vendor_id, agency_short_name, og.agency_id ' ;
         
         $vendor_contracts_count = _checkbook_project_execute_sql_by_data_source($q2,'checkbook_oge');
