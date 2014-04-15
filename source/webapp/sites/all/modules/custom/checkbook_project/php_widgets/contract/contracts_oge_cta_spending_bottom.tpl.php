@@ -231,27 +231,36 @@ foreach($node->results_spending as $spending_row){
 	                  	</tr></thead><tbody>";
 						$open2 = "open";
 						$hide_text2 = "style=display:none";
-						foreach($node->results_spending as $contract_spending){
-							$class3 = 0;
-							if($contract_spending['fiscal_year'] == $year && $contract_spending['vendor_name'] == $vendor){
-								if ($count3 % 2 == 0) {
-									$class3 = "class=\"even\"";
+						if(count($node->results_spending)){
+							foreach($node->results_spending as $contract_spending){
+								$class3 = 0;
+								if($contract_spending['fiscal_year'] == $year && $contract_spending['vendor_name'] == $vendor){
+									if ($count3 % 2 == 0) {
+										$class3 = "class=\"even\"";
+									}
+									else {
+										$class3 = "class=\"odd\"";
+									}
+									$count3 +=1;
+									echo "
+						                  	<tr " . $class3 . ">
+						                    <td class='text '><div>".$contract_spending['issue_date']."</div></td>
+						                    <td class='number'><div>".custom_number_formatter_format($contract_spending['check_amount'], 2, '$')."</div></td>
+						                    <td class='text '><div>".$contract_spending['expenditure_object_name']."</div></td>
+						                    <td class='text '><div>".$contract_spending['agency_name']."</div></td>
+						                    <td class='text '><div>".$contract_spending['department_name']."</div></td>
+						                  	</tr>";
 								}
-								else {
-									$class3 = "class=\"odd\"";
-								}
-								$count3 +=1;
-								echo "
-					                  	<tr " . $class3 . ">
-					                    <td class='text '><div>".$contract_spending['issue_date']."</div></td>
-					                    <td class='number'><div>".custom_number_formatter_format($contract_spending['check_amount'], 2, '$')."</div></td>
-					                    <td class='text '><div>".$contract_spending['expenditure_object_name']."</div></td>
-					                    <td class='text '><div>".$contract_spending['agency_name']."</div></td>
-					                    <td class='text '><div>".$contract_spending['department_name']."</div></td>
-					                  	</tr>";
+	
 							}
-
-						}
+						}else {
+					      echo '<tr class="odd">';
+					     echo '<td class="dataTables_empty" valign="top" colspan="3">' .
+					           '<div id="no-records-datatable" class="clearfix">
+					                 <span>No Matching Records Found</span>
+					           </div>' . '</td>';
+					      echo '</tr>';
+					    }
 						echo "</tbody></table>
 						</div>
 						</td>

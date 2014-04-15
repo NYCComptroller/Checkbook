@@ -135,7 +135,6 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
     $current_date = date("c").'Z';
 
     $search_string = _checkbook_smart_search_get_results_query_search_term($search_terms);
-
     $query = "select/?q=". $search_string
         ."&start=". ($page_no*$no_of_results)
         ."&fq=-latest_flag:N"
@@ -185,7 +184,6 @@ function _checkbook_smart_search_get_results_query_search_term($search_terms){
         $subQuery = substr($subQuery, 0, -8);
         $searchTerm .= "&fq="  . $subQuery;
     }
-
     return $searchTerm;
 }
 
@@ -682,7 +680,10 @@ function _checkbook_smart_search_export_download(){
 
 /** Exports the smart search export data */
 function _checkbook_smart_search_export_data(){
-  $search_terms = explode('*|*', $_REQUEST['searchTerm']);
+  $search_terms = explode('*|*', $_REQUEST['search_term']);
+  $search_terms[0] = urldecode($search_terms[0]); //"Education"  
+  $search_terms[0] = ($search_terms[0] == "") ? "*:*" : ucwords(strtolower(_checkbook_smart_search_escapeSolrValue($search_terms[0])));
+  
   $index = 0;
   foreach($search_terms as $search_term){
     $terms = explode("=", $search_term);
@@ -699,9 +700,9 @@ function _checkbook_smart_search_export_data(){
   $fields = _checkbook_smart_search_domain_fields($_REQUEST['domain'], 0);
   $fl = implode(",",array_keys($fields));
   echo implode(",",array_values($fields)) . "\n";
-
+  
   while($remaining > 0 ){
-    $results = _checkbook_smart_search_get_results_csv($search_terms, $page_num , $page_size,$fl, true);
+    $results = _checkbook_smart_search_domain_export_fields($search_terms, $page_num , $page_size,$fl, true);
     $page_num += 1 ;
     $remaining = $remaining - $page_size;
     echo $results;
@@ -839,6 +840,97 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
       break;
   }
   return $parameter_mapping;
+}
+
+
+function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
+	switch ($domain){
+		case "spending":
+				$parameter_mapping = array(
+						"spending_category_name" => "Spending Category",
+						"oge_agency_name" => "Agency",
+						"department_name" => "Department",
+						"vendor_name" => "Payee Name",
+						"expenditure_object_name" => "Expense Category",
+						"contract_number" => "Contract ID",
+						"check_amount" => "Check Amount",
+						"check_eft_issued_date" => "Issue Date",
+						"spending_entity_contract_number" => "Entity Contract#",
+						"spending_budget_name" => "Budget Name",
+						"spending_commodity_line" => "Commodity Line",
+						"" => "",);
+			break;
+		case "contracts":
+				$parameter_mapping = array(
+						"contract_status"=>"Status",
+						"contract_category_name"=>"Category",
+						"vendor_name"=>"Vendor",
+						"oge_agency_name"=>"Agency",
+						"contract_number"=>"Contract ID",
+						"version_number"=>"Version Number",
+						"contract_purpose"=>"Purpose",
+						"parent_contract_number"=>"Parent Contract ID",
+						"award_method_name"=>"Award Method",
+						"contract_type_code"=>"Contract type",
+						"original_amount"=>"Original Amount",
+						"current_amount"=>"Current Amount",
+						"start_date_orig"=>"Start date",
+						"end_date_orig"=>"End Date",
+						"pin"=>"PIN",
+						"apt_pin"=>"APT PIN",
+						"registration_date"=>"Registration date",
+						"expense_category_name"=>"Expense Category",
+						"received_date"=>"Received date",
+						"contract_entity_contract_number" => "Entity Contract#",
+						"commodity_line" => "Budget Name",
+						"contract_commodity_line" => "Commodity Line",
+				);		
+
+			break;
+		case "payroll":
+			$parameter_mapping = array(
+			"civil_service_title" => "Title",
+			"agency_name" => "Agency",
+			"pay_frequency" => "Pay Frequency",
+			"pay_date" => "Pay Date",
+			"gross_pay" => "Gross Pay",
+			"annual_salary" => "Annual Salary",
+			"base_pay" => "Base Pay",
+			"overtime_pay" => "Overtime Payments",
+			"other_payments" => "Other Payments",
+			"" => ""
+					);
+					break;
+		case "budget":
+			$parameter_mapping = array("agency_name" => "Agency",
+			"department_name" => "Department Name",
+			"expenditure_object_name" => "Expense Category",
+			"budget_code_name" => "Budget Category",
+			"adopted_amount" => "Adopted",
+			"current_budget_amount" => "Modified",
+			"pre_encumbered_amount" => "Pre Encumbered",
+			"encumbered_amount" => "Encumbered",
+			"accrued_expense_amount" => "Accrued Expense",
+			"cash_expense_amount" => "Cash Payments",
+			"post_closing_adjustment_amount" => "Post Adjustments",
+			"fiscal_year" => "Year",
+			);
+			break;
+		case "revenue":
+			$parameter_mapping = array( "agency_name" => "Agency Name",
+			"fiscal_year" => "Budget Fiscal Year",
+			"display_fiscal_year" => "Fiscal Year",
+			"revenue_category_name" => "Revenue Category",
+			"revenue_source_name" => "Revenue Source",
+			"funding_class_name" => "Funding Class",
+			"adopted_amount" => "Adopted",
+			"current_budget_amount" => "Modified",
+			"posting_amount" => "Recognized",
+			"" => "",
+			);
+			break;
+	}
+	return $parameter_mapping;
 }
 
 /** Exports the smart search export data */
