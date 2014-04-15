@@ -200,73 +200,74 @@ foreach($node->results_spending as $spending_row){
 				$hide_text2 = "";
 				$open2 = "";
 				$count2 = 0;
-				foreach($vendor_spending_yearly_summary[$vendor] as $year=>$results_spending_history_fy){
-					if ($count2 % 2 == 0) {
-						$class2 = "class=\"even\"";
-					}
-					else {
-						$class2 = "class=\"odd\"";
-					}
-					$count2 +=1;
-					echo "<tr " . $class2 .">";
-					echo "<td><div><a class='showHide " . $open2 . " '></a>FY "  . $year . "</div></td>";
-					echo "<td><div>"  . $results_spending_history_fy['no_of_trans'] . "</div></td>";
-					echo "<td><div>"  . custom_number_formatter_format($results_spending_history_fy['amount_spent'], 2, '$') . "</div></td>";
-					echo "</tr>";
-					
-					
-					/// start level 3
-						echo "<tr class='showHide' "  . $hide_text2 . " >";
-						echo "<td colspan='3' >";
-						echo "<div class='scroll'>";
-						echo "<table class='sub-table col5 dataTable'>";
-	
-						echo "<thead>
-	                  	<tr>
-	                    <th class='text thStartDate'>".WidgetUtil::generateLabelMapping("start_date")."</th>
-	                    <th class='number thEndDate'>".WidgetUtil::generateLabelMapping("check_amount")."</th>
-	                    <th class='text purpose'>".WidgetUtil::generateLabelMapping("expense_category")."</th>
-	                    <th class='text thVNum'>".WidgetUtil::generateLabelMapping("agency_name")."</th>
-	                    <th class='text thCurAmt'>".WidgetUtil::generateLabelMapping("dept_name")."</th>
-	                  	</tr></thead><tbody>";
-						$open2 = "open";
-						$hide_text2 = "style=display:none";
-						if(count($node->results_spending)){
-							foreach($node->results_spending as $contract_spending){
-								$class3 = 0;
-								if($contract_spending['fiscal_year'] == $year && $contract_spending['vendor_name'] == $vendor){
-									if ($count3 % 2 == 0) {
-										$class3 = "class=\"even\"";
+				if(count($node->results_spending) > 0){
+					foreach($vendor_spending_yearly_summary[$vendor] as $year=>$results_spending_history_fy){
+						if ($count2 % 2 == 0) {
+							$class2 = "class=\"even\"";
+						}
+						else {
+							$class2 = "class=\"odd\"";
+						}
+						$count2 +=1;
+						echo "<tr " . $class2 .">";
+						echo "<td><div><a class='showHide " . $open2 . " '></a>FY "  . $year . "</div></td>";
+						echo "<td><div>"  . $results_spending_history_fy['no_of_trans'] . "</div></td>";
+						echo "<td><div>"  . custom_number_formatter_format($results_spending_history_fy['amount_spent'], 2, '$') . "</div></td>";
+						echo "</tr>";
+						
+						
+						/// start level 3
+							echo "<tr class='showHide' "  . $hide_text2 . " >";
+							echo "<td colspan='3' >";
+							echo "<div class='scroll'>";
+							echo "<table class='sub-table col5 dataTable'>";
+		
+							echo "<thead>
+		                  	<tr>
+		                    <th class='text thStartDate'>".WidgetUtil::generateLabelMapping("start_date")."</th>
+		                    <th class='number thEndDate'>".WidgetUtil::generateLabelMapping("check_amount")."</th>
+		                    <th class='text purpose'>".WidgetUtil::generateLabelMapping("expense_category")."</th>
+		                    <th class='text thVNum'>".WidgetUtil::generateLabelMapping("agency_name")."</th>
+		                    <th class='text thCurAmt'>".WidgetUtil::generateLabelMapping("dept_name")."</th>
+		                  	</tr></thead><tbody>";
+							$open2 = "open";
+							$hide_text2 = "style=display:none";
+								foreach($node->results_spending as $contract_spending){
+									$class3 = 0;
+									if($contract_spending['fiscal_year'] == $year && $contract_spending['vendor_name'] == $vendor){
+										if ($count3 % 2 == 0) {
+											$class3 = "class=\"even\"";
+										}
+										else {
+											$class3 = "class=\"odd\"";
+										}
+										$count3 +=1;
+										echo "
+							                  	<tr " . $class3 . ">
+							                    <td class='text '><div>".$contract_spending['issue_date']."</div></td>
+							                    <td class='number'><div>".custom_number_formatter_format($contract_spending['check_amount'], 2, '$')."</div></td>
+							                    <td class='text '><div>".$contract_spending['expenditure_object_name']."</div></td>
+							                    <td class='text '><div>".$contract_spending['agency_name']."</div></td>
+							                    <td class='text '><div>".$contract_spending['department_name']."</div></td>
+							                  	</tr>";
 									}
-									else {
-										$class3 = "class=\"odd\"";
-									}
-									$count3 +=1;
-									echo "
-						                  	<tr " . $class3 . ">
-						                    <td class='text '><div>".$contract_spending['issue_date']."</div></td>
-						                    <td class='number'><div>".custom_number_formatter_format($contract_spending['check_amount'], 2, '$')."</div></td>
-						                    <td class='text '><div>".$contract_spending['expenditure_object_name']."</div></td>
-						                    <td class='text '><div>".$contract_spending['agency_name']."</div></td>
-						                    <td class='text '><div>".$contract_spending['department_name']."</div></td>
-						                  	</tr>";
+		
 								}
-	
-							}
-						}else {
-					      echo '<tr class="odd">';
-					     echo '<td class="dataTables_empty" valign="top" colspan="3">' .
-					           '<div id="no-records-datatable" class="clearfix">
+							
+							echo "</tbody></table>
+							</div>
+							</td>
+							</tr>"	;
+						/// end level 3
+					}	
+				}else {
+					echo '<tr class="odd">';
+					echo '<td class="dataTables_empty" valign="top" colspan="3">' .
+							'<div id="no-records-datatable" class="clearfix">
 					                 <span>No Matching Records Found</span>
 					           </div>' . '</td>';
-					      echo '</tr>';
-					    }
-						echo "</tbody></table>
-						</div>
-						</td>
-						</tr>"	;
-					/// end level 3
-				}		
+					echo '</tr>';
+				}
 			echo "</tbody></table>
 			</div>
 			</td>
