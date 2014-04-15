@@ -29,21 +29,6 @@ function checkbook_autocomplete_menu()
 {
     $items = array();
 
-    //Generic Spending/Contracts Auto-complete
-    $items['autocomplete/datafeeds/spending'] = array(
-        'page callback' => '_checkbook_datafeeds_autocomplete',
-        'access callback' => TRUE,
-        'file' => '/includes/checkbook_autocomplete_functions.inc',
-        'type' => MENU_CALLBACK
-    );
-
-    $items['autocomplete/datafeeds/contracts'] = array(
-        'page callback' => '_checkbook_datafeeds_autocomplete',
-        'access callback' => TRUE,
-        'file' => '/includes/checkbook_autocomplete_functions.inc',
-        'type' => MENU_CALLBACK
-    );
-
     // Budget autocomplete paths
     $items['autocomplete/budget/department'] = array(
         'page callback' => '_checkbook_autocomplete_budget_department',
@@ -106,6 +91,25 @@ function checkbook_autocomplete_menu()
         'file' => '/includes/checkbook_autocomplete_functions.inc',
         'type' => MENU_CALLBACK
     );
+    $items['autocomplete/contracts/entitycontractnum'] = array(
+        'page callback' => '_checkbook_autocomplete_contracts_entitycontractnum',
+        'access callback' => TRUE,
+        'file' => '/includes/checkbook_autocomplete_functions.inc',
+        'type' => MENU_CALLBACK
+    );
+    $items['autocomplete/contracts/commodityline'] = array(
+        'page callback' => '_checkbook_autocomplete_contracts_commodityline',
+        'access callback' => TRUE,
+        'file' => '/includes/checkbook_autocomplete_functions.inc',
+        'type' => MENU_CALLBACK
+    );
+    $items['autocomplete/contracts/budgetname'] = array(
+        'page callback' => '_checkbook_autocomplete_contracts_budgetname',
+        'access callback' => TRUE,
+        'file' => '/includes/checkbook_autocomplete_functions.inc',
+        'type' => MENU_CALLBACK
+    );
+
     //Spending autocomplete paths
     $items['autocomplete/spending/payee'] = array(
         'page callback' => '_checkbook_autocomplete_spending_payee',

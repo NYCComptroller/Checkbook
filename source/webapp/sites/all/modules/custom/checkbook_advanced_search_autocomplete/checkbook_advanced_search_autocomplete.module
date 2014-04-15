@@ -32,20 +32,6 @@ function checkbook_advanced_search_autocomplete_menu()
 {
     $items = array();
 
-    //Generic Spending/Contracts Auto-complete
-    $items['advanced-search/generic/autocomplete/spending'] = array(
-        'page callback' => '_checkbook_advanced_search_autocomplete',
-        'access callback' => TRUE,
-        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
-        'type' => MENU_CALLBACK
-    );
-    $items['advanced-search/generic/autocomplete/contracts'] = array(
-        'page callback' => '_checkbook_advanced_search_autocomplete',
-        'access callback' => TRUE,
-        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
-        'type' => MENU_CALLBACK
-    );
-
     //Spending autocomplete paths
     $items['advanced-search/autocomplete/spending/payee'] = array(
         'page callback' => '_checkbook_advanced_search_autocomplete_spending_payee',
@@ -83,6 +69,24 @@ function checkbook_advanced_search_autocomplete_menu()
         'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
         'type' => MENU_CALLBACK
     );
+    $items['advanced-search/autocomplete/spending/entitycontractnum'] = array(
+        'page callback' => '_checkbook_advanced_search_autocomplete_spending_entitycontractnum',
+        'access callback' => TRUE,
+        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
+        'type' => MENU_CALLBACK
+    );
+    $items['advanced-search/autocomplete/spending/commodityline'] = array(
+        'page callback' => '_checkbook_advanced_search_autocomplete_spending_commodityline',
+        'access callback' => TRUE,
+        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
+        'type' => MENU_CALLBACK
+    );
+    $items['advanced-search/autocomplete/spending/budgetname'] = array(
+        'page callback' => '_checkbook_advanced_search_autocomplete_spending_budgetname',
+        'access callback' => TRUE,
+        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
+        'type' => MENU_CALLBACK
+    );
     //payroll autocomplete paths
     $items['advanced-search/autocomplete/payroll/employee-name'] = array(
         'page callback' => '_checkbook_advanced_search_autocomplete_payroll_employee_name',
@@ -111,6 +115,24 @@ function checkbook_advanced_search_autocomplete_menu()
     );
     $items['advanced-search/autocomplete/contracts/pin'] = array(
         'page callback' => '_checkbook_advanced_search_autocomplete_contracts_pin',
+        'access callback' => TRUE,
+        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
+        'type' => MENU_CALLBACK
+    );
+    $items['advanced-search/autocomplete/contracts/entitycontractnum'] = array(
+        'page callback' => '_checkbook_advanced_search_autocomplete_contracts_entitycontractnum',
+        'access callback' => TRUE,
+        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
+        'type' => MENU_CALLBACK
+    );
+    $items['advanced-search/autocomplete/contracts/commodityline'] = array(
+        'page callback' => '_checkbook_advanced_search_autocomplete_contracts_commodityline',
+        'access callback' => TRUE,
+        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
+        'type' => MENU_CALLBACK
+    );
+    $items['advanced-search/autocomplete/contracts/budgetname'] = array(
+        'page callback' => '_checkbook_advanced_search_autocomplete_contracts_budgetname',
         'access callback' => TRUE,
         'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
         'type' => MENU_CALLBACK
