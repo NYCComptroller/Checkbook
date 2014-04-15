@@ -635,6 +635,12 @@ abstract class AbstractAPISearchCriteria {
             }
           }
           break;
+      case "spending":
+      case "spending_oge":
+          if($this->criteria['value']['spending_category'] == 'ts'){
+              unset($this->criteria['value']['spending_category']);
+          }
+          break;
       case "contracts_oge":
         $category = $this->criteria['value']['category'];
         $status = $this->criteria['value']['status'];
