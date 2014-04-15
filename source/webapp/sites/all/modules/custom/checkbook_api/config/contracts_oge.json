@@ -125,7 +125,7 @@
             "vendor_name":"vendor_name",
             "current_amount":"maximum_contract_amount",
             "spent_to_date":"spending_amount_disb",
-            "award_method":"award_method_code",
+            "award_method":"award_method_code@checkbook_oge:award_method",
             "expense_category":"expenditure_object_codes",
             "contract_id":"contract_number",
             "contract_type":"agreement_type_code",
