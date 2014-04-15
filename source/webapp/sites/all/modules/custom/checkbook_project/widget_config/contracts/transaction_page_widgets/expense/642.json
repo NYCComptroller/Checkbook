@@ -27,6 +27,16 @@
             if($parameters['type_of_year'] == 'C'){
                 $config->dataset = 'checkbook:agreement_snapshot_oge';
             }
+
+            if(_getRequestParamValue('vendor')){
+                $parameters['is_vendor_flag'] = 'Y';
+            }else{
+                $parameters['is_vendor_flag'] = 'N';
+            }
+            if(!_getRequestParamValue('year')){
+                $parameters['latest_flag'] = 'Y';
+            }
+
             if(function_exists('_checkbook_project_adjustContractParameterFilters')){
                   _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
             }
