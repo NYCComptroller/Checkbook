@@ -102,58 +102,45 @@
             //Sets up jQuery UI datepickers
             $('.datepicker', context).datepicker({dateFormat:"yy-mm-dd"});
 
-            function getAutoCompletePath() {
-                var year;
-                if ($('input:radio[name=date_filter]:checked').val() == 0) {
-                    year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
-                }
-                var department = emptyToZero($('#edit-dept',context).val());
-                var agency = emptyToZero($('#edit-agency',context).val());
-                var expense_category = emptyToZero($('#edit-expense-category',context).val());
-                var expense_type = emptyToZero($('#edit-expense-type',context).val());
-                var contract_id = $('#edit-contractno',context).val();
-                var capital_project = $('#edit-capital-project',context).val();
-                var entity_contract_number = $('#edit-entity-contract-number',context).val();
-                var commodity_line = $('#edit-commodity-line',context).val();
-                var budget_name = $('#edit-budget-name',context).val();
-
-                var domain = 'spending';
-                var data_source = $('input:radio[name=datafeeds-spending-domain-filter]:checked').val();
-                var params = ['year==>>'+year,
-                    'department==>>'+department,
-                    'agency==>>'+agency,
-                    'expense_category==>>'+expense_category,
-                    'expense_type==>>'+expense_type,
-                    'contract_id==>>'+contract_id,
-                    'capital_project==>>'+capital_project,
-                    'entity_contract_number==>>'+(entity_contract_number ? entity_contract_number : ''),
-                    'commodity_line==>>'+(commodity_line ? commodity_line : ''),
-                    'budget_name==>>'+(budget_name ? budget_name : '')];
-                return domain + '/' + data_source + '/' + params;
+            //Sets up jQuery UI autocompletes and autocomplete filtering functionality
+            var year;
+            if ($('input:radio[name=date_filter]:checked').val() == 0) {
+                year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
             }
+            var dept = emptyToZero($('#edit-dept',context).val());
+            var agency = emptyToZero($('#edit-agency',context).val());
+            var expcategory = emptyToZero($('#edit-expense-category',context).val());
+            var exptype = emptyToZero($('#edit-expense-type',context).val());
+            var data_source = $('input:radio[name=datafeeds-spending-domain-filter]:checked').val();
 
             //Sets up jQuery UI autocompletes and autocomplete filtering functionality
-            var path = getAutoCompletePath();
-
-            $('#edit-payee-name',context).autocomplete({source:'/autocomplete/datafeeds/spending/payee_name/' + path});
-            $('#edit-contractno',context).autocomplete({source:'/autocomplete/datafeeds/spending/contract_id/' + path});
-            $('#edit-document-id',context).autocomplete({source:'/autocomplete/datafeeds/spending/document_id/' + path});
-            $('#edit-capital-project',context).autocomplete({source:'/autocomplete/datafeeds/spending/capital_project/' + path});
-            $('#edit-entity-contract-number',context).autocomplete({source:'/autocomplete/datafeeds/spending/entity_contract_number/' + path});
-            $('#edit-commodity-line',context).autocomplete({source:'/autocomplete/datafeeds/spending/commodity_line/' + path});
-            $('#edit-budget-name',context).autocomplete({source:'/autocomplete/datafeeds/spending/budget_name/' + path});
-
-            $('.watch:input', context).each(function () {
+            $('#edit-payee-name',context).autocomplete({source:'/autocomplete/spending/payee/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + data_source});
+            $('#edit-contractno',context).autocomplete({source:'/autocomplete/spending/contractno/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + data_source});
+            $('#edit-document-id',context).autocomplete({source:'/autocomplete/spending/documentid/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + data_source});
+            $('#edit-capital-project',context).autocomplete({source:'/autocomplete/spending/capitalproject/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + data_source});
+            $('#edit-entity-contract-number',context).autocomplete({source:'/autocomplete/spending/entitycontractnum/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + data_source});
+            $('#edit-commodity-line',context).autocomplete({source:'/autocomplete/spending/commodityline/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + data_source});
+            $('#edit-budget-name',context).autocomplete({source:'/autocomplete/spending/budgetname/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + data_source});
+            $('.watch:input',context).each(function () {
                 $(this).focusin(function () {
-                    var path = getAutoCompletePath();
+                    //set variables for each field's value
+                    if($('input:radio[name=date_filter]:checked').val() == 0){
+                        year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
+                    }
+                    dept = emptyToZero($('#edit-dept',context).val());
+                    agency = emptyToZero($('#edit-agency',context).val());
+                    expcategory = emptyToZero($('#edit-expense-category',context).val());
+                    exptype = emptyToZero($('#edit-expense-type',context).val());
+                    data_source = $('input:radio[name=datafeeds-spending-domain-filter]:checked').val();
 
-                    $("#edit-payee-name",context).autocomplete("option", "source", '/autocomplete/datafeeds/spending/payee_name/'  + path);
-                    $('#edit-contractno',context).autocomplete("option", "source", '/autocomplete/datafeeds/spending/contract_id/'  + path);
-                    $('#edit-document-id',context).autocomplete("option", "source", '/autocomplete/datafeeds/spending/document_id/'  + path);
-                    $('#edit-capital-project',context).autocomplete("option", "source", '/autocomplete/datafeeds/spending/capital_project/' + path);
-                    $('#edit-entity-contract-number',context).autocomplete("option", "source", '/autocomplete/datafeeds/spending/entity_contract_number/' + path);
-                    $('#edit-commodity-line',context).autocomplete("option", "source", '/autocomplete/datafeeds/spending/commodity_line/' + path);
-                    $('#edit-budget-name',context).autocomplete("option", "source", '/autocomplete/datafeeds/spending/budget_name/' + path);
+                    $("#edit-payee-name",context).autocomplete("option", "source", '/autocomplete/spending/payee/'  + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + data_source);
+                    $('#edit-contractno',context).autocomplete("option", "source", '/autocomplete/spending/contractno/'  + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + data_source);
+                    $('#edit-document-id',context).autocomplete("option", "source", '/autocomplete/spending/documentid/'  + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + data_source);
+                    $('#edit-capital-project',context).autocomplete("option", "source", '/autocomplete/spending/capitalproject/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + data_source);
+                    $('#edit-entity-contract-number',context).autocomplete("option", "source", '/autocomplete/spending/entitycontractnum/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + data_source);
+                    $('#edit-commodity-line',context).autocomplete("option", "source", '/autocomplete/spending/commodityline/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + data_source);
+                    $('#edit-budget-name',context).autocomplete("option", "source", '/autocomplete/spending/budgetname/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + data_source);
+
                 });
             });
         }
