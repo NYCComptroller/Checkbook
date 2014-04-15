@@ -35,6 +35,7 @@
             }
             if(!_getRequestParamValue('year')){
                 $parameters['latest_flag'] = 'Y';
+                $parameters['type_of_year'] = 'B';
             }
 
             if(function_exists('_checkbook_project_adjustContractParameterFilters')){
