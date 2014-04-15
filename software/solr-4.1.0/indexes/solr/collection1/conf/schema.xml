@@ -86,6 +86,7 @@
         <field name="agency_code" type="string_custom" indexed="true" stored="true"/>
         <field name="agency_name_text" type="text_general" indexed="true" stored="true"/>
         <field name="oge_agency_name" type="string_custom" indexed="true" stored="true" />
+        <field name="oge_agency_id" type="string_custom" indexed="true" stored="true" />
         <field name="oge_agency_name_autocomplete" type="string_autocomplete" indexed="true"/>
         <field name="agency_type" type="string_custom" indexed="true" stored="true" />
         <field name="fiscal_year_id" type="string_custom" indexed="true" stored="true"/>

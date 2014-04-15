@@ -497,7 +497,8 @@
                 'contracts' domain1,
                 (case when(document_code ='RCT1') then 'Revenue' else 'Expense' end) category,
                 '' agency_name,
-                a.agency_name oge_agency_name,
+                a.oge_agency_id, 
+                a.oge_agency_name,
                 'oge' agency_type,
                 a.agency_id,
                 a.agency_code,
@@ -599,6 +600,7 @@
             <field column="agency_code" name="agency_code" />
             <field column="agency_name" name="agency_name" />
             <field column="oge_agency_name" name="oge_agency_name" />
+            <field column="oge_agency_id" name="oge_agency_id" />            
             <field column="agency_type" name="agency_type"/>
             <field column="vendor_id" name="vendor_id" />
             <field column="vendor_name" name="vendor_name" />
