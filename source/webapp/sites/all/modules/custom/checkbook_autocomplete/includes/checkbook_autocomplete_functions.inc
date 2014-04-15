@@ -332,7 +332,7 @@ function _checkbook_autocomplete_spending_payee($year, $agency, $expcategory, $d
         {
             case 'checkbook':
                 $query = 'select/?q=vendor_name_code_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name_code&fq=domain:spending&wt=php&facet.limit=10';
-                $matches = _get_contracts_datafeeds_autocomplete_results('vendor_name_code', $query, $query, $year, $agency, $expcategory, $dept, $exptype, $data_source);
+                $matches = _get_spending_datafeeds_autocomplete_results('vendor_name_code', $query, $year, $agency, $expcategory, $dept, $exptype);
                 break;
             case 'checkbook_oge':
                 $query = 'select/?q=vendor_name_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name&fq=domain:spending&wt=php&facet.limit=10';
@@ -964,7 +964,7 @@ function _checkbook_autocomplete_escapeSolrValue($string) {
     $string = str_replace(" ", "%20", $string);
     $string = str_replace("#", "%23", $string);
     $string = str_replace("/", "\%2F", $string);
-    $string = str_replace("&", "%2526", $string);
+    $string = str_replace("&", "%26", $string);
     $string = str_replace("[", "\[", $string);
     $string = str_replace("]", "\]", $string);
     $string = str_replace(":", "\:", $string);
