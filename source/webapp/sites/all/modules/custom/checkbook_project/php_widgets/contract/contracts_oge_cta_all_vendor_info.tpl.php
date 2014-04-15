@@ -41,8 +41,8 @@
     
    	foreach($node->vendors_list as $vendor){
 		echo "<tr>";
-		echo "<td class='text'><div><a href='/contracts_landing/status/A/year/" . _getCurrentYearID() . "/yeartype/B/vendor/" . $vendor['vendor_id']  . 
-				 "/agency/" . $vendor['agency_id'] . "/datasource/checkbook_oge/?expandBottomCont=true'>" . 
+		echo "<td class='text'><div><a href='/contracts_landing/status/A/year/" . _getCurrentYearID() . "/yeartype/B/agency/" . $vendor['agency_id'] .
+				 "/datasource/checkbook_oge/vendor/" . $vendor['vendor_id']  . "?expandBottomCont=true'>" . 
 								$vendor['vendor_name']  . "</div></a></td>";
 		echo "<td class='text'><div>" . $vendor_cont_count[$vendor['vendor_id']]['count']  . "</div></td>";
 		echo "<td class='number'><div>" . custom_number_formatter_format($vendor['check_amount_sum'], 2, '$')  . "</div></td>";
