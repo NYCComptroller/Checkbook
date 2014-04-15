@@ -124,52 +124,38 @@
                 $('#edit-column-select-pending', context).multiSelect('deselect_all');
             });
 
-            function getAutoCompletePath() {
-                var status = $('select[name="df_contract_status"]', context).val();
-                var category = $('#edit-category', context).val();
-                var contract_type = emptyToZero($('#edit-contract-type', context).val());
-                var agency = emptyToZero($('#edit-agency', context).val());
-                var award_method = emptyToZero($('#edit-award-method', context).val());
-                var year = ($('#edit-year', context).attr('disabled')) ? 0 : $('#edit-year', context).val();
-                var entity_contract_number = $('#edit-entity-contract-number',context).val();
-                var commodity_line = $('#edit-commodity-line',context).val();
-                var budget_name = $('#edit-budget-name',context).val();
+            var status = $('select[name="df_contract_status"]', context).val();
+            var category = $('#edit-category', context).val();
+            var contract_type = emptyToZero($('#edit-contract-type', context).val());
+            var agency = emptyToZero($('#edit-agency', context).val());
+            var award_method = emptyToZero($('#edit-award-method', context).val());
+            var year = ($('#edit-year', context).attr('disabled')) ? 0 : $('#edit-year', context).val();
+            var data_source = $('input:radio[name=datafeeds-contracts-domain-filter]:checked').val();
 
-
-                var domain = 'contracts';
-                var data_source = $('input:radio[name=datafeeds-contracts-domain-filter]:checked').val();
-                var params = ['status==>>'+status,
-                    'category==>>'+category,
-                    'contract_type==>>'+contract_type,
-                    'agency==>>'+agency,
-                    'award_method==>>'+award_method,
-                    'year==>>'+year,
-                    'entity_contract_number==>>'+(entity_contract_number ? entity_contract_number : ''),
-                    'commodity_line==>>'+(commodity_line ? commodity_line : ''),
-                    'budget_name==>>'+(budget_name ? budget_name : '')];
-
-                return domain + '/' + data_source + '/' + params;
-            }
-            var path = getAutoCompletePath();
-            $('#edit-contractno', context).autocomplete({source:'/autocomplete/datafeeds/contracts/contract_id/' + path});
-            $('#edit-vendor', context).autocomplete({source:'/autocomplete/datafeeds/contracts/vendor/' + path});
-            $('#edit-apt-pin',context).autocomplete({source:'/autocomplete/datafeeds/contracts/apt_pin/' + path});
-            $('#edit-pin',context).autocomplete({source:'/autocomplete/datafeeds/contracts/pin/' + path});
-            $('#edit-entity-contract-number',context).autocomplete({source:'/autocomplete/datafeeds/contracts/entity_contract_number/' + path});
-            $('#edit-commodity-line',context).autocomplete({source:'/autocomplete/datafeeds/contracts/commodity_line/' + path});
-            $('#edit-budget-name',context).autocomplete({source:'/autocomplete/datafeeds/contracts/budget_name/' + path});
+            $('#edit-vendor', context).autocomplete({source:'/autocomplete/contracts/vendor/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + data_source});
+            $('#edit-contractno', context).autocomplete({source:'/autocomplete/contracts/contract_number/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + data_source});
+            $('#edit-apt-pin',context).autocomplete({source:'/autocomplete/contracts/apt_pin/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + data_source});
+            $('#edit-pin',context).autocomplete({source:'/autocomplete/contracts/pin/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + data_source});
+            $('#edit-entity-contract-number',context).autocomplete({source:'/autocomplete/contracts/entitycontractnum/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + data_source});
+            $('#edit-commodity-line',context).autocomplete({source:'/autocomplete/contracts/commodityline/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + data_source});
+            $('#edit-budget-name',context).autocomplete({source:'/autocomplete/contracts/budgetname/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + data_source});
             $('.watch:input', context).each(function () {
                 $(this).focusin(function () {
-                    var path = getAutoCompletePath();
+                    var status = $('select[name="df_contract_status"]', context).val();
+                    var category = $('#edit-category', context).val();
+                    var contract_type = emptyToZero($('#edit-contract-type', context).val());
+                    var agency = emptyToZero($('#edit-agency', context).val());
+                    var award_method = emptyToZero($('#edit-award-method', context).val());
+                    var year = ($('#edit-year', context).attr('disabled')) ? 0 : $('#edit-year', context).val();
+                    var data_source = $('input:radio[name=datafeeds-contracts-domain-filter]:checked').val();
 
-                    $('#edit-contractno', context).autocomplete('option', 'source', '/autocomplete/datafeeds/contracts/contract_id/' + path);
-                    $('#edit-vendor', context).autocomplete('option', 'source', '/autocomplete/datafeeds/contracts/vendor/' + path);
-                    $('#edit-apt-pin',context).autocomplete('option','source','/autocomplete/datafeeds/contracts/apt_pin/' + path);
-                    $('#edit-pin',context).autocomplete('option','source','/autocomplete/datafeeds/contracts/pin/' + path);
-                    $('#edit-entity-contract-number',context).autocomplete("option", "source", '/autocomplete/datafeeds/contracts/entity_contract_number/' + path);
-                    $('#edit-commodity-line',context).autocomplete("option", "source", '/autocomplete/datafeeds/contracts/commodity_line/' + path);
-                    $('#edit-budget-name',context).autocomplete("option", "source", '/autocomplete/datafeeds/contracts/budget_name/' + path);
-
+                    $('#edit-vendor', context).autocomplete('option', 'source', '/autocomplete/contracts/vendor/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + data_source);
+                    $('#edit-contractno', context).autocomplete('option', 'source', '/autocomplete/contracts/contract_number/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + data_source);
+                    $('#edit-apt-pin',context).autocomplete('option','source','/autocomplete/contracts/apt_pin/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + data_source);
+                    $('#edit-pin',context).autocomplete('option','source','/autocomplete/contracts/pin/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + data_source);
+                    $('#edit-entity-contract-number',context).autocomplete('option','source','/autocomplete/contracts/entitycontractnum/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + data_source);
+                    $('#edit-commodity-line',context).autocomplete('option','source','/autocomplete/contracts/commodityline/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + data_source);
+                    $('#edit-budget-name',context).autocomplete('option','source','/autocomplete/contracts/budgetname/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + data_source);
                 });
             });
             $('#edit-year',context).change(function(){

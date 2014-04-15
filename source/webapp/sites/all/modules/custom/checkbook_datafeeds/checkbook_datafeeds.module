@@ -2360,6 +2360,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
             break;
     }
 
+
     return $criteria;
 }
 
@@ -4961,9 +4962,6 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
     if ($values['commodity_line']) {
         $criteria['value']['commodity_line'] = $values['commodity_line'];
     }
-    if ($values['contractno']) {
-        $criteria['value']['contract_ID'] = $values['contractno'];
-    }
     if ($values['dept'] && $values['dept'] != 'Select Department') {
         preg_match($pattern, $values['dept'], $dcmatches);
         $criteria['value']['department_code'] = trim($dcmatches[1], '[ ]');
@@ -4982,13 +4980,6 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
         preg_match($pattern, $values['expense_type'], $etmatches);
         $criteria['value']['spending_category'] = trim($etmatches[1], '[ ]');
     }
-
-    if($data_source != 'checkbook_oge') {
-        if ($values['agency'] != 'Citywide (All Agencies)') {
-            preg_match($pattern, $values['agency'], $amatches);
-            $criteria['value']['agency_code'] = trim($amatches[1], '[ ]');
-        }
-    }
     //By data source
     switch($data_source)
     {
@@ -4996,7 +4987,9 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
             if ($values['agency'] != 'Other Government Entities') {
                 preg_match($pattern, $values['agency'], $amatches);
                 $criteria['value']['other_government_entities_code'] = trim($amatches[1], '[ ]');
-                //$criteria['value']['agency_code'] = trim($amatches[1], '[ ]');
+            }
+            if ($values['contractno']) {
+                $criteria['value']['contract_id'] = $values['contractno'];
             }
             break;
 
@@ -5004,6 +4997,9 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
             if ($values['agency'] != 'Citywide (All Agencies)') {
                 preg_match($pattern, $values['agency'], $amatches);
                 $criteria['value']['agency_code'] = trim($amatches[1], '[ ]');
+            }
+            if ($values['contractno']) {
+                $criteria['value']['contract_ID'] = $values['contractno'];
             }
             break;
     }

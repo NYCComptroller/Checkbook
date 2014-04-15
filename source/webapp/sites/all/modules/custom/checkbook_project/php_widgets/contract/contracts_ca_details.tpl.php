@@ -36,7 +36,7 @@ else {
   $agency_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . $datasource. '/yeartype/B/agency/'
     . $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
 }
-$spending_link = "/spending/transactions/agid/" . _getRequestParamValue("agid") . "/newwindow";
+$spending_link = "/spending/transactions/agid/" . _getRequestParamValue("agid") . $datasource.  "/newwindow";
 
 ?>
 <div class="contract-details-heading <?php echo $oge_class ;?>">
