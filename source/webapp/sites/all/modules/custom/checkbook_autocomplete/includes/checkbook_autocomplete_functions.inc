@@ -46,14 +46,17 @@ function _get_contracts_datafeeds_autocomplete_results($facet, $query, $status =
         $query .= '&fq=contract_category_name:' . ucfirst($category);
     }
     if ($contract_type) {
-        $query .= '&fq=contract_type_id:' . $contract_type;
+        $contract_id= _get_contracts_datafeeds_autocomplete_contract_type_options($contract_type);
+        if ($contract_id) $query .= '&fq=contract_type_id:' . $contract_id;
     }
     if ($agency) {
         $query .= '&fq=agency_code:' . $agency;
     }
     if ($award_method) {
-        $query .= '&fq=award_method_code:' . $award_method;
+        $award_method_id = _get_contracts_datafeeds_autocomplete_award_method_options($award_method);
+        if ($award_method_id) $query .= '&fq=award_method_id:' . $award_method_id;
     }
+
     $matches = _checkbook_autocomplete_solr_results($query, $facet);
     return $matches;
 }
@@ -76,12 +79,21 @@ function _get_contracts_datafeeds_autocomplete_results($facet, $query, $status =
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_contracts_vendor($status, $category, $contract_type, $agency, $award_method, $year, $data_source, $data_source = 'checkbook') {
+function _checkbook_autocomplete_contracts_vendor($status, $category, $contract_type, $agency, $award_method, $year, $data_source = 'checkbook') {
     $search_term = _get_autocomplete_search_term();
     if (!empty($search_term)) {
-        $query = 'select/?q=vendor_name_code_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name_code&fq=domain:contracts&wt=php&facet.limit=10';
-        if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
-        $matches = _get_contracts_datafeeds_autocomplete_results('vendor_name_code', $query, $status, $category, $contract_type, $agency, $award_method, $year);
+        switch($data_source)
+        {
+            case 'checkbook':
+                $query = 'select/?q=vendor_name_code_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name_code&fq=domain:contracts&wt=php&facet.limit=10';
+                $matches = _get_contracts_datafeeds_autocomplete_results('vendor_name_code', $query, $status, $category, $contract_type, $agency, $award_method, $year);
+                break;
+            case 'checkbook_oge':
+                $query = 'select/?q=vendor_name_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name&fq=domain:contracts&wt=php&facet.limit=10';
+                $query .= '&fq=agency_type:oge';
+                $matches = _get_contracts_datafeeds_autocomplete_results('vendor_name', $query, $status, $category, $contract_type, $agency, $award_method, $year);
+                break;
+        }
         drupal_json_output($matches);
     }
 }
@@ -191,9 +203,9 @@ function _checkbook_autocomplete_contracts_pin($status, $category, $contract_typ
 function _checkbook_autocomplete_contracts_entitycontractnum($status, $category, $contract_type, $agency, $award_method, $year, $data_source = 'checkbook') {
     $search_term = _get_autocomplete_search_term();
     if (!empty($search_term)) {
-        $query = 'select/?q=contracts_entity_contract_number:' . $search_term . '&facet=true&facet.field=contracts_entity_contract_number&fq=domain:contracts&facet.limit=10&wt=php';
+        $query = 'select/?q=contract_entity_contract_number:' . $search_term . '&facet=true&facet.field=contract_entity_contract_number&fq=domain:contracts&facet.limit=10&wt=php';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
-        $matches = _get_contracts_datafeeds_autocomplete_results('contracts_entity_contract_number', $query, $status, $category, $contract_type, $agency, $award_method, $year);
+        $matches = _get_contracts_datafeeds_autocomplete_results('contract_entity_contract_number', $query, $status, $category, $contract_type, $agency, $award_method, $year);
         drupal_json_output($matches);
     }
 }
@@ -219,9 +231,9 @@ function _checkbook_autocomplete_contracts_entitycontractnum($status, $category,
 function _checkbook_autocomplete_contracts_commodityline($status, $category, $contract_type, $agency, $award_method, $year, $data_source = 'checkbook') {
     $search_term = _get_autocomplete_search_term();
     if (!empty($search_term)) {
-        $query = 'select/?q=contracts_commodity_line:' . $search_term . '&facet=true&facet.field=contracts_commodity_line&fq=domain:contracts&facet.limit=10&wt=php';
+        $query = 'select/?q=contract_commodity_line:' . $search_term . '&facet=true&facet.field=contract_commodity_line&fq=domain:contracts&facet.limit=10&wt=php';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
-        $matches = _get_contracts_datafeeds_autocomplete_results('contracts_commodity_line', $query, $status, $category, $contract_type, $agency, $award_method, $year);
+        $matches = _get_contracts_datafeeds_autocomplete_results('contract_commodity_line', $query, $status, $category, $contract_type, $agency, $award_method, $year);
         drupal_json_output($matches);
     }
 }
@@ -247,9 +259,9 @@ function _checkbook_autocomplete_contracts_commodityline($status, $category, $co
 function _checkbook_autocomplete_contracts_budgetname($status, $category, $contract_type, $agency, $award_method, $year, $data_source = 'checkbook') {
     $search_term = _get_autocomplete_search_term();
     if (!empty($search_term)) {
-        $query = 'select/?q=contracts_budget_name_autocomplete:' . $search_term . '&facet=true&facet.field=contracts_budget_name&fq=domain:contracts&facet.limit=10&wt=php';
+        $query = 'select/?q=contract_budget_name_autocomplete:' . $search_term . '&facet=true&facet.field=contract_budget_name&fq=domain:contracts&facet.limit=10&wt=php';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
-        $matches = _get_contracts_datafeeds_autocomplete_results('contracts_budget_name', $query, $status, $category, $contract_type, $agency, $award_method, $year);
+        $matches = _get_contracts_datafeeds_autocomplete_results('contract_budget_name', $query, $status, $category, $contract_type, $agency, $award_method, $year);
         drupal_json_output($matches);
     }
 }
@@ -316,9 +328,18 @@ function _get_spending_datafeeds_autocomplete_results($facet, $query, $year = NU
 function _checkbook_autocomplete_spending_payee($year, $agency, $expcategory, $dept, $exptype = 0, $data_source = 'checkbook') {
     $search_term = _get_autocomplete_search_term();
     if (!empty($search_term)) {
-        $query = 'select/?q=vendor_name_code_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name&fq=domain:spending&facet.limit=10&wt=php';
-        if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
-        $matches = _get_spending_datafeeds_autocomplete_results('vendor_name', $query, $year, $agency, $expcategory, $dept, $exptype, $data_source);
+        switch($data_source)
+        {
+            case 'checkbook':
+                $query = 'select/?q=vendor_name_code_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name_code&fq=domain:spending&wt=php&facet.limit=10';
+                $matches = _get_contracts_datafeeds_autocomplete_results('vendor_name_code', $query, $query, $year, $agency, $expcategory, $dept, $exptype, $data_source);
+                break;
+            case 'checkbook_oge':
+                $query = 'select/?q=vendor_name_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name&fq=domain:spending&wt=php&facet.limit=10';
+                $query .= '&fq=agency_type:oge';
+                $matches = _get_spending_datafeeds_autocomplete_results('vendor_name', $query, $year, $agency, $expcategory, $dept, $exptype);
+                break;
+        }
         drupal_json_output($matches);
     }
 }
@@ -1061,18 +1082,54 @@ function _get_spending_datafeeds_autocomplete_expense_type_options($exptype, $da
         switch($data_source)
         {
             case 'checkbook_oge':
-                $data = $dataController->queryDataset('checkbook_oge:spending_category', array('spending_category_id','spending_category_code','display_name'), NULL, 'display_order');
+                $results = $dataController->queryDataset('checkbook_oge:spending_category', array('spending_category_id'), array('spending_category_code' => $exptype));
                 break;
 
             default:
-                $data = $dataController->queryDataset('checkbook:spending_category', array('spending_category_id','spending_category_code','display_name'), NULL, 'display_order');
+                $results = $dataController->queryDataset('checkbook:spending_category', array('spending_category_id'), array('spending_category_code' => $exptype));
                 break;
         }
-        foreach ($data as $row) if ($row['spending_category_code'] == $exptype) return $row['spending_category_id'];
+        if($results && $results[0]['spending_category_id']) return $results[0]['spending_category_id'];
     }
     catch (Exception $e) {
         log_error("Error getting data from controller: \n" . $e->getMessage());
     }
-
     return null;
 };
+
+
+/**
+ * Get Contract Type from Data Controller and format into a FAPI select input #options array.
+ *
+ * @return array
+ *   Agreement type codes and agreement type names
+ */
+function _get_contracts_datafeeds_autocomplete_contract_type_options($contract_type) {
+    try {
+        $dataController = data_controller_get_instance();
+        $results = $dataController->queryDataset('checkbook:agreement_type', array('agreement_type_id'), array('agreement_type_code' => $contract_type));
+        if($results && $results[0]['agreement_type_id']) return $results[0]['agreement_type_id'];
+    }
+    catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
+    }
+    return null;
+}
+
+/**
+ * Get Award Method from Data Controller and format into a FAPI select input #options array.
+ *
+ * @return array
+ *   Award method codes and award method names
+ */
+function _get_contracts_datafeeds_autocomplete_award_method_options($award_method_code) {
+    try {
+        $dataController = data_controller_get_instance();
+        $results = $dataController->queryDataset('checkbook:award_method', array('award_method_id'), array('award_method_code' => $award_method_code));
+        if($results && $results[0]['award_method_id']) return $results[0]['award_method_id'];
+    }
+    catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
+    }
+    return null;
+}
