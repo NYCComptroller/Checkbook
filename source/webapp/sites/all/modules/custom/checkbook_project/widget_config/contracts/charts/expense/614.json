@@ -51,7 +51,7 @@
     "series": [
         {
             "dataset": "checkbook:contracts_cumulative_spending_visualizations","orderBy":"-current_amount_sum",
-            "columns": ["agency.agency.agency_name","agency.agency","display_agency.display_agency.agency_name","contract_number.contract_number","current_amount_sum","original_agreement_id.original_agreement_id","display_vendor_names","document_code.document_code"]
+            "columns": ["agency.agency.agency_name","agency.agency","display_agency.display_agency.agency_name","contract_number.contract_number","current_amount_sum","original_agreement_id.original_agreement_id","display_vendor_names","document_code.document_code","document_code.document_code.document_code"]
         }
     ]
 },
@@ -66,10 +66,10 @@
     },
     "column_link":{
         "type":"expression2",
-        "expression":" 'contracts_landing' . _checkbook_project_get_url_param_string('status')  .  _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . '?expandBottomContURL=/panel_html/contract_transactions'
+        "expression":" 'contracts_landing' . _checkbook_project_get_url_param_string('status')  .  _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string('agency') . '?expandBottomContURL=/panel_html/contract_transactions'
                         . ( in_array($row['document_code_document_code'], array('5','6')) ? '/contract_details' : '' )
                         . ( in_array($row['document_code_document_code'], array('5','6')) ? '/magid/' : '/agid/' )
-                        .  $row['original_agreement_id_original_agreement_id'] . '/doctype/' . $row['document_code_document_code']
+                        .  $row['original_agreement_id_original_agreement_id'] . '/doctype/' . $row['document_code_document_code_document_code']
                         . _checkbook_append_url_params()"
     }
 },
