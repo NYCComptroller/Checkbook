@@ -7,7 +7,7 @@
         "doctype":"document_code.document_code.document_code"
     }  ,
     "defaultParameters":{"status_flag":"A","is_vendor_flag":"N"},
-    "columns":["agency.agency","display_agency.display_agency.agency_name", "txcount"],
+    "columns":["agency.agency","agency.agency.agency_name", "txcount"],
     "orderBy":"-txcount",
 	"getTotalDataCount":true,
 	"facetPager":true,
@@ -15,7 +15,7 @@
     "urlParameterName":"agency",
     "autocompleteParamName":"agency_auto",
     "autocompleteID":"fagencyId",
-    "autocompleteField":"display_agency.display_agency.agency_name",
+    "autocompleteField":"agency.agency.agency_name",
 	"maxSelect":1,
     "adjustParameters":"
     if(function_exists('_checkbook_project_adjustContractParameterFilters')){
