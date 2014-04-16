@@ -1012,6 +1012,7 @@ div.bottomContainer{
 }
 
 /* date filter styles */
+
 #spending-advanced-search div.datefilter .form-item,
 #spending-advanced-search div.year .form-item {
     height: auto;
@@ -1023,6 +1024,13 @@ div.bottomContainer{
     float:left;
     clear:both;
     margin-right: 100px;
+}
+.spending-fieldset #datefilter{float:left;}
+#edit-date-filter .form-item{position:relative;}
+#edit-date-filter .form-item .ajax-progress.ajax-progress-throbber{
+   position:absolute;
+   right:-30px;
+   top:0px;
 }
 
 #edit-date-filter input,
