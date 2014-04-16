@@ -952,12 +952,16 @@ div.bottomContainer{
 }
 #checkbook-advanced-search-form label {
     float: left;
-    clear:both;
 }
 #checkbook-advanced-search-form select,
 #checkbook-advanced-search-form input {
     float: right;
     width: 195px;
+}
+#checkbook-advanced-search-form input[type="radio"]{
+    float: left;
+    width: auto;
+    margin-right: 5px;
 }
 #checkbook-advanced-search-form #edit-spending-submit,
 #checkbook-advanced-search-form #edit-spending-clear,
@@ -1037,6 +1041,16 @@ div.bottomContainer{
 {
     clear: none;
     float: left;
+}
+#spending-advanced-search .form-item.form-item-spending-advanced-search-domain-filter,
+#checkbook-advanced-search-form .form-item.form-item-contracts-advanced-search-domain-filter{
+    width:200px;
+    float: left;
+}
+#spending-advanced-search .form-item.form-item-spending-advanced-search-domain-filter input[type="radio"]{
+    width: auto;
+    float: left;
+    margin-right: 5px;
 }
 #spending-advanced-search .form-item.form-type-select.form-item-spending-fiscal-year{float:left;}
 #spending-advanced-search #edit-spending-fiscal-year,
