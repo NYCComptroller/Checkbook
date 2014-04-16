@@ -19,10 +19,9 @@
                                     "Start Date":"Start Date",
                                     "End Date":"End Date",
                                     "PIN":"PIN",
-                                    "APT PIN":"APT PIN",
                                     "Document Code":"Document Code",
                                     "Version":"Version",
-                                    "Original Amount":"Original Amount",
+                                      "Original Amount":"Original Amount",
                                     "Original Modified":"Original Modified",
                                     "Contract Industry":"Contract Industry"
                                 },
@@ -47,7 +46,6 @@
                                     "end_date":"end_date",
                                     "registration_date":"registration_date",
                                     "pin":"pin",
-                                    "apt_pin":"apt_pin",
                                     "document_code":"document_code",
                                     "contract_industry":"contract_industry"
                                 }
@@ -77,7 +75,6 @@
                                     "End Date":"End Date",
                                     "Registration Date":"Registration Date",
                                     "PIN":"PIN",
-                                    "APT PIN":"APT PIN",
                                     "Document Code":"Document Code",
                                     "Contract Industry":"Contract Industry"
                                 },
@@ -102,7 +99,6 @@
                                     "end_date":"end_date",
                                     "registration_date":"registration_date",
                                     "pin":"pin",
-                                    "apt_pin":"apt_pin",
                                     "document_code":"document_code",
                                     "contract_industry":"contract_industry"
                                 }
@@ -126,7 +122,6 @@
                                     "End Date":"End Date",
                                     "Registration Date":"Registration Date",
                                     "PIN":"PIN",
-                                    "APT PIN":"APT PIN",
                                     "Contract Category":"Contract Category",
                                     "Document Code":"Document Code",
                                     "Contract Industry":"Contract Industry"
@@ -146,7 +141,6 @@
                                     "end_date":"end_date",
                                     "registration_date":"registration_date",
                                     "pin":"pin",
-                                    "apt_pin":"apt_pin",
                                     "document_code":"document_code",
                                     "contract_industry":"contract_industry"
                                 }
@@ -180,7 +174,6 @@
                                     "End Date":"End Date",
                                     "Registration Date":"Registration Date",
                                     "PIN":"PIN",
-                                    "APT PIN":"APT PIN",
                                     "Document Code":"Document Code",
                                     "Contract Industry":"Contract Industry",
                                     "Entity Contract #":"Entity Contract #",
@@ -205,7 +198,6 @@
                                     "end_date":"end_date",
                                     "registration_date":"registration_date",
                                     "pin":"pin",
-                                    "apt_pin":"apt_pin",
                                     "contract_industry":"contract_industry",
                                     "entity_contract_number":"entity_contract_number",
                                     "commodity_line":"commodity_line",
