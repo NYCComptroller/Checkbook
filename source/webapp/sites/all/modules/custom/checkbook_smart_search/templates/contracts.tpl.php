@@ -51,6 +51,8 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
         $contract_Id_link .= "/magid/".$contracts_results['original_agreement_id']."/doctype/".$contracts_results["document_code"];
     }else{
         $contract_Id_link .= "/agid/".$contracts_results['original_agreement_id']."/doctype/".$contracts_results["document_code"];
+        $master_contract_Id_link = $contract_Id_link . "/magid/".$contracts_results['master_agreement_id']."/doctype/".$contracts_results["document_code"];
+        
     }
     $contract_Id_link = ($IsOge) ? $contract_Id_link.'/datasource/checkbook_oge' : $contract_Id_link;
 
@@ -78,6 +80,7 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
             $contract_Id_link .= "/magid/".$contracts_results['original_agreement_id']."/doctype/".$contracts_results["document_code"];
         }else{
             $contract_Id_link .= "/agid/".$contracts_results['original_agreement_id']."/doctype/".$contracts_results["document_code"];
+            $master_contract_Id_link = $contract_Id_link . "/magid/".$contracts_results['master_agreement_id']."/doctype/".$contracts_results["document_code"];
         }
         $contracts_results['contract_number'] = "<a href='".$contract_Id_link ."'>".$contracts_results['contract_number']."</a>";
         $contracts_results['parent_contract_number'] = "<a href='". $contract_Id_link."'>".$contracts_results['parent_contract_number']."</a>";
