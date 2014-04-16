@@ -79,10 +79,10 @@ foreach($node->results_spending as $spending_row){
 		}
 		$count1 +=1;
 		echo "<tr " . $class1 . ">";
-		echo "<td><div><a class='showHide " . $open1 . " expandTwo'></a>"  . $vendor . "</div></td>";
-		echo "<td><div>"  . custom_number_formatter_format($vendor_summary['current_amount'], 2, '$') . "</div></td>";
-		echo "<td><div>"  . custom_number_formatter_format($vendor_summary['original_amount'] , 2, '$'). "</div></td>";
-		echo "<td><div>"  . custom_number_formatter_format($vendor_summary['check_amount'], 2, '$') . "</div></td>" ;
+		echo "<td class='text'><div><a class='showHide " . $open1 . " expandTwo'></a>"  . $vendor . "</div></td>";
+		echo "<td class='number'><div>"  . custom_number_formatter_format($vendor_summary['current_amount'], 2, '$') . "</div></td>";
+		echo "<td class='number'><div>"  . custom_number_formatter_format($vendor_summary['original_amount'] , 2, '$'). "</div></td>";
+		echo "<td class='number endCol'><div>"  . custom_number_formatter_format($vendor_summary['check_amount'], 2, '$') . "</div></td>" ;
 		echo "</tr>";
 		
   ?>
@@ -100,7 +100,7 @@ foreach($node->results_spending as $spending_row){
 			      <th class="text"><?php echo WidgetUtil::generateLabelMapping("fiscal_year"); ?></th>
 			      <th class="text"><?php echo WidgetUtil::generateLabelMapping("no_of_mod"); ?></th>
 			      <th class="number"><?php echo WidgetUtil::generateLabelMapping("current_amount"); ?></th>
-			      <th class="number endCol"><?php echo WidgetUtil::generateLabelMapping("original_amount"); ?></th>
+			      <th class="number"><?php echo WidgetUtil::generateLabelMapping("original_amount"); ?></th>
 			      <th class="number endCol"><?php echo WidgetUtil::generateLabelMapping("increase_decrease"); ?></th>	      
 			    </tr>
 		    </thead><tbody>
@@ -120,11 +120,11 @@ foreach($node->results_spending as $spending_row){
 					}
 					$count2 +=1;
 					echo "<tr " . $class2 .">";
-					echo "<td><div><a class='showHide " . $open2 . "' ></a>FY "  . $year . "</div></td>";
-					echo "<td><div>"  . $results_contract_history_fy['no_of_mods'] . "</div></td>";
-					echo "<td><div>"  . custom_number_formatter_format($results_contract_history_fy['current_amount'], 2, '$') . "</div></td>";
-					echo "<td><div>"  . custom_number_formatter_format($results_contract_history_fy['original_amount'] , 2, '$'). "</div></td>";
-					echo "<td><div>"  . custom_number_formatter_format($results_contract_history_fy['current_amount'] - $results_contract_history_fy['original_amount'], 2, '$') . "</div></td>";
+					echo "<td class='text'><div><a class='showHide " . $open2 . "' ></a>FY "  . $year . "</div></td>";
+					echo "<td class='number'><div>"  . $results_contract_history_fy['no_of_mods'] . "</div></td>";
+					echo "<td class='number'><div>"  . custom_number_formatter_format($results_contract_history_fy['current_amount'], 2, '$') . "</div></td>";
+					echo "<td class='number'><div>"  . custom_number_formatter_format($results_contract_history_fy['original_amount'] , 2, '$'). "</div></td>";
+					echo "<td class='number endCol'><div>"  . custom_number_formatter_format($results_contract_history_fy['current_amount'] - $results_contract_history_fy['original_amount'], 2, '$') . "</div></td>";
 					echo "</tr>";
 					
 					
@@ -164,7 +164,7 @@ foreach($node->results_spending as $spending_row){
 					                    <td class='number thVNum'><div>".$contract_history['fms_commodity_line']."</div></td>
 					                    <td class='number thCurAmt'><div>".custom_number_formatter_format($contract_history['current_amount_commodity_level'], 2, '$')."</div></td>
 					                    <td class='number thOrigAmt'><div>".custom_number_formatter_format($contract_history['original_amount'], 2, '$')."</div></td>
-					                    <td class='number thIncDec'><div>".custom_number_formatter_format($contract_history['current_amount_commodity_level']-$contract_history['original_amount'], 2, '$')."</div></td>
+					                    <td class='number thCommodLvl endCol'><div>".custom_number_formatter_format($contract_history['current_amount_commodity_level']-$contract_history['original_amount'], 2, '$')."</div></td>
 					                  	</tr>";
 							}
 
@@ -210,9 +210,9 @@ foreach($node->results_spending as $spending_row){
 						}
 						$count2 +=1;
 						echo "<tr " . $class2 .">";
-						echo "<td><div><a class='showHide " . $open2 . " '></a>FY "  . $year . "</div></td>";
-						echo "<td><div>"  . $results_spending_history_fy['no_of_trans'] . "</div></td>";
-						echo "<td><div>"  . custom_number_formatter_format($results_spending_history_fy['amount_spent'], 2, '$') . "</div></td>";
+						echo "<td  class='number'><div><a class='showHide " . $open2 . " '></a>FY "  . $year . "</div></td>";
+						echo "<td class='number'><div>"  . $results_spending_history_fy['no_of_trans'] . "</div></td>";
+						echo "<td class='number endCol'><div>"  . custom_number_formatter_format($results_spending_history_fy['amount_spent'], 2, '$') . "</div></td>";
 						echo "</tr>";
 						
 						
@@ -248,7 +248,7 @@ foreach($node->results_spending as $spending_row){
 							                    <td class='number'><div>".custom_number_formatter_format($contract_spending['check_amount'], 2, '$')."</div></td>
 							                    <td class='text '><div>".$contract_spending['expenditure_object_name']."</div></td>
 							                    <td class='text '><div>".$contract_spending['agency_name']."</div></td>
-							                    <td class='text '><div>".$contract_spending['department_name']."</div></td>
+							                    <td class='text endCol'><div>".$contract_spending['department_name']."</div></td>
 							                  	</tr>";
 									}
 		

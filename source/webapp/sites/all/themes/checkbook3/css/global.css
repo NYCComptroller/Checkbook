@@ -1085,7 +1085,7 @@ div.bottomContainer{
 #checkbook-advanced-search-form #edit-checkbook-contracts-received-date-from label,
 #checkbook-advanced-search-form #edit-checkbook-contracts-received-date-to label,
 #checkbook-advanced-search-form #edit-checkbook-oge-contracts-received-date-from label,
-#checkbook-advanced-search-form #edit-checkbook-oge-contracts-received-date-to label,
+#checkbook-advanced-search-form #edit-checkbook-oge-contract-received-date-to label,
 
 #checkbook-advanced-search-form #edit-payroll-pay-date-from label,
 #checkbook-advanced-search-form #edit-payroll-pay-date-to label {
@@ -1540,7 +1540,7 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
 }
 .dollar-amounts,
 .inside .transactions-container{float: right;}
-.contract-details {
+.contract-details{
     border: 1px dotted #CACACA;
     border-width: 1px 1px 0px 0px;
     display: block;
@@ -1550,6 +1550,107 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
     padding-top: 20px;
     vertical-align: top;
 }
+.oge-ca-details .contract-details{
+    width:100%;
+    border-right:none;
+}
+.oge-ca-details .contract-details .left,
+.oge-ca-details .contract-details .right{
+    width:441px;
+}
+.oge-ma-details .contract-id h2.contract-title,
+.oge-ma-details .contract-id .contractLinkNote,
+.oge-ca-details .contract-id h2.contract-title,
+.oge-ca-details .contract-id .contractLinkNote,
+.oge-ca-details .contract-id .master-contract-link,
+.oge-assoc-contracts-list .contractLinkNote{
+    float:left;
+}
+.oge-ma-details .contract-id .contractLinkNote,
+.oge-ca-details .contract-id .contractLinkNote,
+.oge-assoc-contracts-list .contractLinkNote {
+    position:relative;
+}
+.oge-ma-details .contract-id .contractLinkNote a,
+.oge-ca-details .contract-id .contractLinkNote a,
+.oge-assoc-contracts-list .contractLinkNote a{
+    display:block;
+    height:16px;
+    width:14px;
+    margin:5px 0px 0px 5px;
+    text-indent: -99999px;
+    background: url("../images/note-icon.png") no-repeat scroll right 0 transparent;
+}
+
+.oge-ma-details .toolTip,
+.oge-ca-details .toolTip,
+.oge-assoc-contracts-list .toolTip{
+    display:none;
+    position:absolute;
+    top:-85px;
+    width:195px;
+    left:-183px;
+    padding:8px 12px;
+    background-color: #f4f4f4;
+    color:#3b5f7f;
+    border:1px solid #c5c5c3;
+    -webkit-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.5);
+    -moz-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.5);
+    box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.5);
+    text-transform: none;
+    margin:0px;
+}
+.oge-assoc-contracts-list .toolTip{
+    top:-89px;
+}
+
+.oge-ma-details .toolTip .bottom,
+.oge-ca-details .toolTip .bottom,
+.oge-assoc-contracts-list .toolTip .bottom{
+    display:block;
+    width:24px;
+    height:18px;
+    position:absolute;
+    margin:0px;
+    background: url("../images/drop-arrow.png") no-repeat scroll right 0 transparent;
+    bottom:-18px;
+    right:12px;
+}
+
+.oge-assoc-contracts-list .contractLinkNote a{
+    margin:0px 0px 0px 5px;
+}
+
+.oge-assoc-contracts-list .assoc_item .contract-title{
+    margin-bottom:5px;
+}
+
+table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title .contract-title-text{
+    margin-top:3px;
+}
+.oge-assoc-contracts-list .assoc_amounts{
+    float:right;
+}
+.oge-assoc-contracts-list .assoc_amounts .rfed-amount{
+    float:left;
+    margin:0px 0px 0px 30px;
+}
+.oge-assoc-contracts-list .assoc_amounts .rfed-amount span{
+    display:block;
+    width:100%;
+    text-align: center;
+    text-transform: capitalize;
+    float:left;
+    clear:both;
+}
+.oge-assoc-contracts-list .assoc_amounts .rfed-amount span.label{
+    font-size: 12px;
+}
+
+.oge-ca-details .contract-id .master-contract-link{
+    clear:both;
+}
+
 .contract-vendor-details {
     border-top: 1px dotted #CACACA;
     display: block;

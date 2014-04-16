@@ -947,6 +947,7 @@ function _checkbook_autocomplete_get_start_end_dates($year, $domain = NULL, $sta
         if ($status == 'A') {
             $query .= '(start_date:[*%20TO%20' . $start_date . ']%20AND%20end_date:[' . $end_date . '%20TO%20*])OR';
             $query .= '(start_date:[*%20TO%20' . $end_date . ']%20AND%20end_date:[' . $end_date . '%20TO%20*])OR';
+            $query .= '(start_date:[*%20TO%20' . $start_date . ']%20AND%20end_date:[' . $start_date . '%20TO%20*])OR';
             $query .= '(start_date:[' . $end_date . '%20TO%20*]%20AND%20start_date:[*%20TO%20' . $end_date . '])';
         }
         else {
