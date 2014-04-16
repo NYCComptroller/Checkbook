@@ -1,5 +1,5 @@
 <dataConfig>
-    <dataSource name="db1" type="JdbcDataSource" driver="org.postgresql.Driver" url="jdbc:postgresql://192.168.3.24/checkbook" user="webuser1" password="webuser1" readOnly="true" autoCommit="false" transactionIsolation="TRANSACTION_READ_COMMITTED" holdability="CLOSE_CURSORS_AT_COMMIT"/>
+    <dataSource name="db1" type="JdbcDataSource" driver="org.postgresql.Driver" url="jdbc:postgresql://192.168.3.23/checkbook" user="webuser1" password="webuser1" readOnly="true" autoCommit="false" transactionIsolation="TRANSACTION_READ_COMMITTED" holdability="CLOSE_CURSORS_AT_COMMIT"/>
     <dataSource name="db2" type="JdbcDataSource" driver="org.postgresql.Driver" url="jdbc:postgresql://192.168.3.23/checkbook_ogent" user="webuser1" password="webuser1" readOnly="true" autoCommit="false" transactionIsolation="TRANSACTION_READ_COMMITTED" holdability="CLOSE_CURSORS_AT_COMMIT"/>
     <document>
         <entity dataSource="db1" name="budget" query="select
@@ -138,7 +138,7 @@
         </entity>
         <entity dataSource="db1" name="spending"
                 pk="id"
-                deletedPkQuery="select 'spending:'|| disbursement_line_item_id id from disbursement_line_item_deleted where job_id >= ${dataimporter.request.jobID}"
+                deletedPkQuery="select 'spending:' || agency_id || ':' || disbursement_line_item_id id from disbursement_line_item_deleted where job_id >= ${dataimporter.request.jobID}"
                 query="select
 				'spending:' || agency_id || ':' || disbursement_line_item_id id,
 				'spending' domain1,
@@ -400,6 +400,7 @@
 				select
                 'contracts:' || agreement_id id,
                 original_agreement_id,
+                master_agreement_id,
                 'contracts' domain1,
                 (case when(document_code ='RCT1') then 'Revenue' else 'Expense' end) category,
                 agency_name,
@@ -447,6 +448,7 @@
 		">
             <field column="id" name="id" />
             <field column="original_agreement_id" name="original_agreement_id" />
+            <field column="master_agreement_id" name="master_agreement_id" />
             <field column="domain1" name="domain" />
             <field column="category" name="contract_category_name" />
             <field column="vendor_name_id" name="vendor_name_id" />
@@ -494,6 +496,7 @@
 				select
                 'contracts:' || agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END) || 'oge' id,
                 original_agreement_id,
+                master_agreement_id,
                 'contracts' domain1,
                 (case when(document_code ='RCT1') then 'Revenue' else 'Expense' end) category,
                 '' agency_name,
@@ -546,7 +549,7 @@
                 (
                      select distinct
                     'contracts:' || agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END) || 'oge' id,
-                    GROUP_CONCAT(oc.oge_contract_number) As values
+                    GROUP_CONCAT(distinct trim(oc.oge_contract_number)) As values
                     from agreement_snapshot a
                     LEFT JOIN oge_contract_vendor_level ogecon ON a.contract_number = ogecon.fms_contract_number AND a.vendor_id = ogecon.vendor_id
                     left join ref_document_code dc on a.document_code_id = dc.document_code_id
@@ -561,7 +564,7 @@
                 (
                     select
                     'contracts:' || agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END) || 'oge' id,
-                    GROUP_CONCAT(oc.budget_name) As values
+                    GROUP_CONCAT(distinct trim(oc.budget_name)) As values
                     from agreement_snapshot a
                     LEFT JOIN oge_contract_vendor_level ogecon ON a.contract_number = ogecon.fms_contract_number AND a.vendor_id = ogecon.vendor_id
                     left join ref_document_code dc on a.document_code_id = dc.document_code_id
@@ -576,7 +579,7 @@
                 (
                     select
                     'contracts:' || agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END) || 'oge' id,
-                    GROUP_CONCAT(oc.fms_commodity_line) As values
+                    GROUP_CONCAT(distinct trim(oc.fms_commodity_line)) As values
                     from agreement_snapshot a
                     LEFT JOIN oge_contract_vendor_level ogecon ON a.contract_number = ogecon.fms_contract_number AND a.vendor_id = ogecon.vendor_id
                     left join ref_document_code dc on a.document_code_id = dc.document_code_id
@@ -593,6 +596,7 @@
 		">
             <field column="id" name="id" />
             <field column="original_agreement_id" name="original_agreement_id" />
+            <field column="master_agreement_id" name="master_agreement_id" />
             <field column="domain1" name="domain" />
             <field column="category" name="contract_category_name" />
             <field column="vendor_name_id" name="vendor_name_id" />
