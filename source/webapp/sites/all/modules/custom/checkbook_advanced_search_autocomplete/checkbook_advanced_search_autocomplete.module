@@ -119,19 +119,19 @@ function checkbook_advanced_search_autocomplete_menu()
         'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
         'type' => MENU_CALLBACK
     );
-    $items['advanced-search/autocomplete/contracts/entitycontractnum'] = array(
+    $items['advanced-search/autocomplete/contracts/entity_contract_number'] = array(
         'page callback' => '_checkbook_advanced_search_autocomplete_contracts_entitycontractnum',
         'access callback' => TRUE,
         'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
         'type' => MENU_CALLBACK
     );
-    $items['advanced-search/autocomplete/contracts/commodityline'] = array(
+    $items['advanced-search/autocomplete/contracts/commodity_line'] = array(
         'page callback' => '_checkbook_advanced_search_autocomplete_contracts_commodityline',
         'access callback' => TRUE,
         'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
         'type' => MENU_CALLBACK
     );
-    $items['advanced-search/autocomplete/contracts/budgetname'] = array(
+    $items['advanced-search/autocomplete/contracts/budget_name'] = array(
         'page callback' => '_checkbook_advanced_search_autocomplete_contracts_budgetname',
         'access callback' => TRUE,
         'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',

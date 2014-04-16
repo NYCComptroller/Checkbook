@@ -697,12 +697,12 @@ function _checkbook_smart_search_export_data(){
   $remaining = $conf['check_book']['datatables']['iTotalDisplayRecords'] ;
   $page_size = 10000;
   $page_num = 0;
-  $fields = _checkbook_smart_search_domain_fields($_REQUEST['domain'], 0);
+  $fields = _checkbook_smart_search_domain_export_fields($_REQUEST['domain'], 0);
   $fl = implode(",",array_keys($fields));
   echo implode(",",array_values($fields)) . "\n";
   
   while($remaining > 0 ){
-    $results = _checkbook_smart_search_domain_export_fields($search_terms, $page_num , $page_size,$fl, true);
+    $results = _checkbook_smart_search_get_results_csv($search_terms, $page_num , $page_size,$fl, true);
     $page_num += 1 ;
     $remaining = $remaining - $page_size;
     echo $results;
@@ -882,7 +882,7 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
 						"expense_category_name"=>"Expense Category",
 						"received_date"=>"Received date",
 						"contract_entity_contract_number" => "Entity Contract#",
-						"commodity_line" => "Budget Name",
+						"contract_budget_name" => "Budget Name",
 						"contract_commodity_line" => "Commodity Line",
 				);		
 

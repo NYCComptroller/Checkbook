@@ -35,14 +35,12 @@
 	            $('#edit-budget-expense-category').attr("disabled", "disabled");
             }
             else{
-            	
-            	if($('input:radio[name=date_filter]:checked').val() == 0){
-                    year = ($('#edit-budget-fiscal-year').val()) ? $('#edit-budget-fiscal-year').val() : 0;
-                }
+
+                fiscal_year = ($('#edit-budget-fiscal-year').val()) ? $('#edit-budget-fiscal-year').val() : 0;
                 agency = ($('#edit-budget-agencies').val()) ? $('#edit-budget-agencies').val() : 0;
                 dept = ($('#edit-budget-department').val()) ? ($('#edit-budget-department').val()) : 0;                
                 $.ajax({
-                		url: '/advanced-search/autocomplete/budget/expcategory/' + year + '/' + agency + '/' + dept.replace(/\//g,"__") 
+                		url: '/advanced-search/autocomplete/budget/expcategory/' + fiscal_year + '/' + agency + '/' + dept.replace(/\//g,"__")
                 		,success: function(data) {
                 			var html = '<option select="selected" value="0" >Select Expense Category</option>';
                             if(data[0]){
@@ -56,7 +54,7 @@
                 		  }		
                 });
                 $.ajax({
-            		url: '/advanced-search/autocomplete/budget/department/' + year + '/' + agency
+            		url: '/advanced-search/autocomplete/budget/department/' + fiscal_year + '/' + agency
             		,success: function(data) {
             			var html = '<option select="selected" value="0" >Select Department</option>';
                         if(data[0]){
@@ -76,13 +74,11 @@
 
         $('#edit-budget-department').change(function(){
 
-            if($('input:radio[name=date_filter]:checked').val() == 0){
-                year = ($('#edit-budget-fiscal-year').val()) ? $('#edit-budget-fiscal-year').val() : 0;
-            }
+            fiscal_year = ($('#edit-budget-fiscal-year').val()) ? $('#edit-budget-fiscal-year').val() : 0;
             agency = ($('#edit-budget-agencies').val()) ? $('#edit-budget-agencies').val() : 0;
             dept = ($('#edit-budget-department').val()) ? ($('#edit-budget-department').val()) : 0;
             $.ajax({
-                    url: '/advanced-search/autocomplete/budget/expcategory/' + year + '/' + agency + '/' + dept.replace(/\//g,"__")  
+                    url: '/advanced-search/autocomplete/budget/expcategory/' + fiscal_year + '/' + agency + '/' + dept.replace(/\//g,"__")
                     ,success: function(data) {
                         var html = '<option select="selected" value="0" >Select Expense Category</option>';
                         if(data[0]){
