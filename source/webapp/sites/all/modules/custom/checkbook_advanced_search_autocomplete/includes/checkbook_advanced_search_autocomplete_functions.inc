@@ -25,7 +25,7 @@ function _get_spending_advanced_search_autocomplete_results($facet, $query, $yea
         $query .= _checkbook_autocomplete_get_start_end_dates($year, 'spending');
     }
     if ($dept) {
-        $query .= '&fq=department_name:'._checkbook_autocomplete_escapeSolrValue(str_replace('__','/',$string));
+        $query .= '&fq=department_name:'._checkbook_autocomplete_escapeSolrValue(str_replace('__','/',$dept));
     }
     if ($agency) {
         $query .= '&fq=agency_id:' . $agency;
