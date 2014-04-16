@@ -2255,11 +2255,13 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
     if ($values['category']) {
         $criteria['value']['category'] = $values['category'];
     }
-    if ($values['recdatefrom'] !== '' || $values['recdateto'] !== '') {
-        $criteria['range']['received_date'] = array(
-            checknull($values['recdatefrom']),
-            checknull($values['recdateto']),
-        );
+    if($data_source != 'checkbook_oge') {
+        if ($values['recdatefrom'] !== '' || $values['recdateto'] !== '') {
+            $criteria['range']['received_date'] = array(
+                checknull($values['recdatefrom']),
+                checknull($values['recdateto']),
+            );
+        }
     }
     if ($values['pin']) {
         $criteria['value']['pin'] = strtoupper($values['pin']);
