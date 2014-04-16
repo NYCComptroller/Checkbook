@@ -2,6 +2,7 @@
     "contracts_oge_active_expense":{
         "searchCriteriaMap":{
             "fiscal_year":"fiscal_year",
+            "purpose":"description",
             "calendar_year":"fiscal_year",
             "other_government_entities_code":"agency_code@checkbook_oge:agency",
             "vendor_name":"vendor_name",
@@ -99,6 +100,7 @@
             "fiscal_year":{"valueType":"value","dataType":"year","maxLength":"4"},
             "calendar_year":{"valueType":"value","dataType":"year","maxLength":"4"},
             "other_government_entities_code":{"valueType":"value","dataType":"text","maxLength":"4"},
+            "purpose":{"valueType":"value","dataType":"text","maxLength":"100"},
             "vendor_name":{"valueType":"value","dataType":"text","maxLength":"100"},
             "current_amount":{"valueType":"range","dataType":"amount","maxLength":"18"},
             "spent_to_date":{"valueType":"range","dataType":"amount","maxLength":"18"},
@@ -123,6 +125,7 @@
         "searchCriteriaMap":{
             "other_government_entities_code":"agency_code@checkbook_oge:agency",
             "vendor_name":"vendor_name",
+            "purpose":"description",
             "current_amount":"maximum_contract_amount",
             "spent_to_date":"spending_amount_disb",
             "award_method":"award_method_code@checkbook_oge:award_method",
@@ -216,6 +219,7 @@
         },
         "requestParameters":{
             "other_government_entities_code":{"valueType":"value","dataType":"text","maxLength":"4"},
+            "purpose":{"valueType":"value","dataType":"text","maxLength":"100"},
             "vendor_name":{"valueType":"value","dataType":"text","maxLength":"100"},
             "current_amount":{"valueType":"range","dataType":"amount","maxLength":"18"},
             "spent_to_date":{"valueType":"range","dataType":"amount","maxLength":"18"},
