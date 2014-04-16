@@ -1051,7 +1051,7 @@ div.bottomContainer{
     float: left;
 }
 #spending-advanced-search .form-item.form-item-spending-advanced-search-domain-filter,
-#checkbook-advanced-search-form .form-item.form-item-contracts-advanced-search-domain-filter{
+#contracts-advanced-search .form-item.form-item-contracts-advanced-search-domain-filter{
     width:200px;
     float: left;
 }
@@ -1059,6 +1059,9 @@ div.bottomContainer{
     width: auto;
     float: left;
     margin-right: 5px;
+}
+#contracts-advanced-search .form-item-checkbook-oge-contracts-received-date-to-date label{
+    display: none;
 }
 #spending-advanced-search .form-item.form-type-select.form-item-spending-fiscal-year{float:left;}
 #spending-advanced-search #edit-spending-fiscal-year,
