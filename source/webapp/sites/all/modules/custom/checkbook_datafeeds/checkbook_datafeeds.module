@@ -2269,6 +2269,9 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
     if ($values['apt_pin']) {
         $criteria['value']['apt_pin'] = strtoupper($values['apt_pin']);
     }
+    if ($values['purpose']) {
+        $criteria['value']['purpose'] = $values['purpose'];
+    }
     //By data source
     switch($data_source)
     {
