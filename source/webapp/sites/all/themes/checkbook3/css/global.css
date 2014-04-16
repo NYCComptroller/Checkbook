@@ -939,7 +939,8 @@ div.bottomContainer{
     width: 346px;
 }
 #checkbook-datafeeds-data-feed-wizard .column-right,
-#checkbook-advanced-search-form .column-right {
+#checkbook-advanced-search-form .column-right,
+#checkbook-datafeeds-data-feed-wizard--2 .column-right{
     margin-left: 20px;
 }
 #checkbook-advanced-search-form .form-item,
