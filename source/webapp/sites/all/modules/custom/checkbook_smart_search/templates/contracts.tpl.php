@@ -117,7 +117,9 @@ foreach ($contracts_parameter_mapping as $key => $title){
   }else{
     $value = $contracts_results[$key];
   }
-
+  if(is_array($value)){
+  	$value = implode(',' , $value);
+  }
   $temp = substr($value, strpos(strtoupper($value), strtoupper($SearchTerm)),strlen($SearchTerm));
   $value = str_ireplace($SearchTerm,'<em>'. $temp . '</em>', $value);
 
@@ -131,7 +133,6 @@ foreach ($contracts_parameter_mapping as $key => $title){
   }else if(array_key_exists($key, $linkable_fields)){
     $value = "<a href='" . $linkable_fields[$key]. "'>". $value ."</a>";
   }
-
   if ($count % 2 == 0){
     if($title)
         $row[] = '<div class="field-label">'.$title.':</div><div class="field-content">'. $value .'</div>';
