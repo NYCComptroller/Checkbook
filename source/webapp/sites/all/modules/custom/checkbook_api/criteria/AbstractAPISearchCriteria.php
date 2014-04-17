@@ -644,11 +644,15 @@ abstract class AbstractAPISearchCriteria {
       case "contracts_oge":
         $category = $this->criteria['value']['category'];
         $status = $this->criteria['value']['status'];
-        if(isset($this->criteria['value']['vendor_name'])){
-            $this->criteria['value']['is_vendor_flag'] = "Y";
+        $this->criteria['value']['is_vendor_flag'] = (isset($this->criteria['value']['vendor_name'])) ? "Y" : "N";
+
+        if(isset($this->criteria['value']['year'])){
+            $this->criteria['value']['if_for_all_years'] = "N";
         }else{
-            $this->criteria['value']['is_vendor_flag'] = "N";
+            $this->criteria['value']['if_for_all_years'] = "Y";
+            $this->criteria['value']['latest_flag'] = "Y";
         }
+
         if ($status == 'active' || $status == 'registered') {
           $config_key .= "_active_{$category}";
           if (!isset($this->criteria['value']['fiscal_year']) && !isset($this->criteria['value']['calendar_year'])) {
