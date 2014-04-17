@@ -7,7 +7,7 @@
     "urlParamMap":{
         "doctype":"document_code.document_code.document_code"
     }  ,
-    "defaultParameters":{"status_flag":"A","is_vendor_flag":"N","type_of_year":"B"},
+    "defaultParameters":{"status_flag":"A","is_vendor_flag":"N","type_of_year":"B","if_for_all_years":"N"},
     "columns":["industry.industry", "industry.industry.industry_type_name", "txcount"],
     "orderBy":"-txcount",
 	"getTotalDataCount":true,
@@ -22,11 +22,12 @@
     if(function_exists('_checkbook_project_adjustContractParameterFilters')){
         _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
     }
-    if(_getRequestParamValue('vendor')){
+    if(_getRequestParamValue('vendor') || _getRequestParamValue('vendornm')){
         $parameters['is_vendor_flag'] = 'Y';
     }
     if(!_getRequestParamValue('year')){
         $parameters['latest_flag'] = 'Y';
+        $parameters['if_for_all_years'] = 'Y';
     }
     if(function_exists('_checkbook_project_applyParameterFilters')){
         $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
