@@ -8,7 +8,7 @@
                 "year":"fiscal_year_id",
                 "calyear":"fiscal_year_id",
                 "yeartype":"type_of_year" ,
-                "agency":"agency_id","vendor":"vendor_id",
+                "agency":"agency_id","vendor":"display_vendor_id",
                  "curamtr":"maximum_contract_amount","vendornm":"vendor_name","contdesc":"description",
                  "agrmnttype":"agreement_type_id","agencyh":"agency_history_id","contnum":"contract_number",
                  "aptpin":"brd_awd_no","pin":"tracking_number","awdmethod":"award_method_id",

@@ -536,8 +536,6 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
     } else {
         $redirect_url = 'contract/transactions';
     }
-    //append data source if not default (checkbook)
-    if($data_source != 'checkbook') $redirect_url .= '/datasource/' . $data_source;
 
     if (!empty($contracts_contract_status)) {
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_status, 'contstatus');
@@ -618,6 +616,9 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
 
     $contracts_contract_registration_date_range_array = array('from' => $contracts_contract_registration_date_from, 'to' => $contracts_contract_registration_date_to, 'type' => 'date');
 
+    //append data source if not default (checkbook)
+    if($data_source != 'checkbook') $redirect_url .= '/datasource/' . $data_source;
+
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_registration_date_range_array, 'regdate', TRUE);
     $form_state['redirect'] = $redirect_url;
 }
@@ -641,8 +642,8 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
 
     $spending_check_amount_from = trim($form[$filter_dimension][$data_source . '_spending_check_amount_from']['#value']);
     $spending_check_amount_to = trim($form[$filter_dimension][$data_source . '_spending_check_amount_to']['#value']);
-    $spending_issue_date_from = trim($form[$filter_dimension]['spending_issue_date_from']['#value']['date']);
-    $spending_issue_date_to = trim($form[$filter_dimension]['spending_issue_date_to']['#value']['date']);
+    $spending_issue_date_from = trim($form[$filter_dimension][$data_source . '_spending_issue_date_from_exact']['#value']);
+    $spending_issue_date_to = trim($form[$filter_dimension][$data_source . '_spending_issue_date_to_exact']['#value']);
     $spending_fund_class = trim($form[$filter_dimension][$data_source . '_spending_fund_class']['#value']);
 
     $spending_department = trim($form_state['input'][$data_source . '_spending_department']);

@@ -22,8 +22,9 @@
 
 if ( _getRequestParamValue("datasource") == "checkbook_oge") {
 	$datasource ="/datasource/checkbook_oge";
-	$oge_class = "oge-ma-details";
-	
+	$oge_class = "oge-ma-details";	
+}else{
+	$oge_class = "cb-ma-details";
 }
 
 if (_getRequestParamValue("doctype") == "RCT1") {
@@ -48,16 +49,17 @@ if(!preg_match("/newwindow/",current_path())){
   <div class="contract-id">
     <h2 class='contract-title'>Contract ID: <span
       class="contract-number"><?php echo $node->data[0]['contract_number'];?></span></h2>
-	<?php 
+	<?php
+		$oge_agency_id = _checkbook_get_oge_agency_id($node->data[0]['vendor_id_checkbook_vendor_history']);
 		if ( _getRequestParamValue("datasource") == "checkbook_oge" && !preg_match('/newwindow/',$_GET['q']) ) {
-			$alt_txt = "This master agreement has infromation as an vendor.<br/> Click this icon to view this contract as a vendor. ";
+			$alt_txt = "This master agreement has infromation as a vendor.<br/> Click this icon to view this contract as a vendor. ";
 			$url="/contract_details/magid/" .  _getRequestParamValue("magid") . "/doctype/MMA1/newwindow";
 			echo "<div class='contractLinkNote'><a href='". $url ."' alt='" . $alt_txt . "' target='_blank' >Open in New Window</a></div>"; 
-		}/*elseif( !preg_match('/newwindow/',$_GET['q']) && count(_get_toggle_view_links()) > 0  ){
-			$alt_txt = "This master agreement has infromation as an agency <br><br> Click this icon to view this contract as agency ";
+		}elseif( !preg_match('/newwindow/',$_GET['q']) && $oge_agency_id > 0  ){
+			$alt_txt = "This master agreement has infromation as an agency <br><br> Click this icon to view this contract as an agency ";
 			$url="/contract_details/magid/" .  _getRequestParamValue("magid") . "/doctype/MMA1/datasource/checkbook_agency";
 			echo "<div class='contractLinkNote'><a href='". $url ."' alt='" . $alt_txt . "' target='_blank' >Open in New Window</a></div>";
-		}	*/
+		}	
 	?>
   </div>
   <div class="dollar-amounts">
