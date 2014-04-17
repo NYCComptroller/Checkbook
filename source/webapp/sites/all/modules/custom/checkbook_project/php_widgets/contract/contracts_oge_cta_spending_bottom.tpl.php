@@ -55,7 +55,7 @@ foreach($node->results_spending as $spending_row){
 ?>
 
 <div class="oge-cta-details " >
-<h3>SPENDING BY PRIME VENDOR</h3>
+<div class="tableHeader"><h3>SPENDING BY PRIME VENDOR</h3></div>
   <table class="dataTable cta-history outerTable">
     <thead>
     <tr>
@@ -91,7 +91,7 @@ foreach($node->results_spending as $spending_row){
 			<td colspan='4' >
 			<div>
 			<!--    start  CONTRACT HISTORY BY PRIME VENDOR --> 
-			<h3>CONTRACT HISTORY BY PRIME VENDOR</h3>
+			<div class="tableHeader"><h3>CONTRACT HISTORY BY PRIME VENDOR</h3></div>
 			<table class='col5 dataTable outerTable'>
 		
 
@@ -184,7 +184,7 @@ foreach($node->results_spending as $spending_row){
 		
 		<!--    start  Spendinng HISTORY BY PRIME VENDOR --> 		
 
-			<h3>SPENDING TRANSACTIONS BY PRIME VENDOR</h3>
+			<div class="tableHeader"><h3>SPENDING TRANSACTIONS BY PRIME VENDOR</h3></div>
 			<table class='col3 dataTable outerTable'>
 		
 
@@ -200,7 +200,7 @@ foreach($node->results_spending as $spending_row){
 				$hide_text2 = "";
 				$open2 = "";
 				$count2 = 0;
-				if(count($node->results_spending) > 0){
+				if(count($vendor_spending_yearly_summary[$vendor]) > 0){
 					foreach($vendor_spending_yearly_summary[$vendor] as $year=>$results_spending_history_fy){
 						if ($count2 % 2 == 0) {
 							$class2 = "class=\"even  outer\"";

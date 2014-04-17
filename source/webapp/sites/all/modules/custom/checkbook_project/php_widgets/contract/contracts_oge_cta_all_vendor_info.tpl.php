@@ -25,7 +25,7 @@
     <thead>
     <tr>
       <th class="text"><?php echo WidgetUtil::generateLabelMapping("vendor_name"); ?></th>
-      <th class="text"><div><span><?php echo $node->widget_count_label; ?></span></div></th>
+      <th class="number"><div><span><?php echo $node->widget_count_label; ?></span></div></th>
       <th class="number"><?php echo WidgetUtil::generateLabelMapping("spent_to_date"); ?></th>
       <th class="number endCol"><?php echo WidgetUtil::generateLabelMapping("vendor_address"); ?></th>
     </tr>
@@ -44,9 +44,9 @@
 		echo "<td class='text'><div><a href='/contracts_landing/status/A/year/" . _getCurrentYearID() . "/yeartype/B/agency/" . $vendor['agency_id'] .
 				 "/datasource/checkbook_oge/vendor/" . $vendor['vendor_id']  . "?expandBottomCont=true'>" . 
 								$vendor['vendor_name']  . "</div></a></td>";
-		echo "<td class='text'><div>" . $vendor_cont_count[$vendor['vendor_id']]['count']  . "</div></td>";
+		echo "<td class='number'><div>" . $vendor_cont_count[$vendor['vendor_id']]['count']  . "</div></td>";
 		echo "<td class='number'><div>" . custom_number_formatter_format($vendor['check_amount_sum'], 2, '$')  . "</div></td>";
-		echo "<td class='text'><div>" . $vendor['address']  . "</div></td>";
+		echo "<td class='text endCol'><div>" . $vendor['address']  . "</div></td>";
 		echo "</tr>";
 	}
    ?>
