@@ -24,7 +24,9 @@
                 'date_filter_checked':'input:radio[name='+data_source+'_date_filter]:checked',
                 'fiscal_year':'select[name="spending_fiscal_year"]',
                 'issue_date_from':'input:text[name="spending_issue_date_from[date]"]',
-                'issue_date_to':'input:text[name="spending_issue_date_to[date]"]'
+                'issue_date_to':'input:text[name="spending_issue_date_to[date]"]',
+                'issue_date_from_hidden':'input:hidden[name='+data_source+'_spending_issue_date_from_exact]',
+                'issue_date_to_hidden':'input:hidden[name='+data_source+'_spending_issue_date_to_exact]'
             };
 
             this.data_source = data_source;
@@ -277,6 +279,20 @@
             }
         }
 
+        //On change of issue date
+        div_checkbook_spending.ele('issue_date_from').change(function () {
+            div_checkbook_spending.ele('issue_date_from_hidden').val(div_checkbook_spending.ele('issue_date_from').val());
+        });
+        div_checkbook_spending_oge.ele('issue_date_from').change(function () {
+            div_checkbook_spending_oge.ele('issue_date_from_hidden').val(div_checkbook_spending_oge.ele('issue_date_from').val());
+        });
+        div_checkbook_spending.ele('issue_date_to').change(function () {
+            div_checkbook_spending.ele('issue_date_to_hidden').val(div_checkbook_spending.ele('issue_date_to').val());
+        });
+        div_checkbook_spending_oge.ele('issue_date_to').change(function () {
+            div_checkbook_spending_oge.ele('issue_date_to_hidden').val(div_checkbook_spending_oge.ele('issue_date_to').val());
+        });
+
         //On click of "Date Filter"
         div_checkbook_spending.ele('date_filter').click(function () {
             onDateFilterClick(div_checkbook_spending);
@@ -290,10 +306,16 @@
                 div.ele('fiscal_year').attr('disabled', '');
                 div.ele('issue_date_from').attr('disabled', 'disabled');
                 div.ele('issue_date_to').attr('disabled', 'disabled');
+
+                div.ele('issue_date_from_hidden').val('');
+                div.ele('issue_date_to_hidden').val('');
             } else if (value == 1) {
                 div.ele('fiscal_year').attr('disabled', 'disabled');
                 div.ele('issue_date_from').removeAttr("disabled");
                 div.ele('issue_date_to').removeAttr("disabled");
+
+                div.ele('issue_date_from_hidden').val(div.ele('issue_date_from').val());
+                div.ele('issue_date_to_hidden').val(div.ele('issue_date_to').val());
             }
         }
 

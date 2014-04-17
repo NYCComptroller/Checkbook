@@ -1574,14 +1574,21 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
     width:441px;
 }
 .oge-ma-details .contract-id h2.contract-title,
+.cb-ma-details .contract-id h2.contract-title,
 .oge-ma-details .contract-id .contractLinkNote,
+.cb-ma-details .contract-id .contractLinkNote,
 .oge-ca-details .contract-id h2.contract-title,
+.cb-ca-details .contract-id h2.contract-title,
 .oge-ca-details .contract-id .contractLinkNote,
+.cb-ca-details .contract-id .contractLinkNote,
 .oge-ca-details .contract-id .master-contract-link,
+.cb-ca-details .contract-id .master-contract-link,
 .oge-assoc-contracts-list .contractLinkNote{
     float:left;
 }
+.cb-ma-details .contract-id .contractLinkNote,
 .oge-ma-details .contract-id .contractLinkNote,
+.cb-ca-details .contract-id .contractLinkNote,
 .oge-ca-details .contract-id .contractLinkNote,
 .oge-assoc-contracts-list .contractLinkNote {
     position:relative;
@@ -1592,7 +1599,9 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
 }
 
 .oge-ma-details .contract-id .contractLinkNote a,
+.cb-ma-details .contract-id .contractLinkNote a,
 .oge-ca-details .contract-id .contractLinkNote a,
+.cb-ca-details .contract-id .contractLinkNote a,
 .oge-assoc-contracts-list .contractLinkNote a{
     display:block;
     height:16px;
@@ -1603,7 +1612,10 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
 }
 
 .oge-ma-details .toolTip,
+.cb-ma-details .toolTip,
 .oge-ca-details .toolTip,
+.cb-ca-details .toolTip,
+.assoc-contracts-list .toolTip,
 .oge-assoc-contracts-list .toolTip{
     display:none;
     position:absolute;
@@ -1620,12 +1632,16 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
     text-transform: none;
     margin:0px;
 }
-.oge-assoc-contracts-list .toolTip{
+.oge-assoc-contracts-list .toolTip,
+.assoc-contracts-list .toolTip{
     top:-89px;
 }
 
 .oge-ma-details .toolTip .bottom,
+.cb-ma-details .toolTip .bottom,
 .oge-ca-details .toolTip .bottom,
+.cb-ca-details .toolTip .bottom,
+.assoc-contracts-list .toolTip .bottom,
 .oge-assoc-contracts-list .toolTip .bottom{
     display:block;
     width:24px;
@@ -1637,6 +1653,7 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
     right:12px;
 }
 
+.assoc-contracts-list .contractLinkNote a,
 .oge-assoc-contracts-list .contractLinkNote a{
     margin:0px 0px 0px 5px;
 }
@@ -1667,6 +1684,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
     font-size: 12px;
 }
 
+.cb-ca-details .contract-id .master-contract-link,
 .oge-ca-details .contract-id .master-contract-link{
     clear:both;
 }
