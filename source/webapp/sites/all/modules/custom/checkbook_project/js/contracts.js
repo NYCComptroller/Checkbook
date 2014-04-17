@@ -131,7 +131,7 @@
 function contractsAddPadding(container) {
     var $outerTables = container.find('table.outerTable');
     $outerTables.each(function(i,val){
-        var $outerNumberDiv = jQuery(this).find('tr:first').find('th.number div'),
+        var $outerNumberDiv = jQuery(this).find('tr:first,tr:outer').find('th.number div'),
             $outerRows = jQuery(this).find('tr.outer');
         $outerNumberDiv.each(function(j,val1){
             var $this = jQuery(this),
