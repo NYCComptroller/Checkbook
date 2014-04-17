@@ -96,7 +96,7 @@ foreach($node->results_spending as $spending_row){
 		
 
 			<thead>
-			    <tr>
+			    <tr class="outer">
 			      <th class="text"><?php echo WidgetUtil::generateLabelMapping("fiscal_year"); ?></th>
 			      <th class="number"><?php echo WidgetUtil::generateLabelMapping("no_of_mod"); ?></th>
 			      <th class="number"><?php echo WidgetUtil::generateLabelMapping("current_amount"); ?></th>
@@ -189,7 +189,7 @@ foreach($node->results_spending as $spending_row){
 		
 
 			<thead>
-			    <tr>
+			    <tr  class="outer">
 			      <th class="text"><?php echo WidgetUtil::generateLabelMapping("fiscal_year"); ?></th>
 			      <th class="number"><?php echo WidgetUtil::generateLabelMapping("no_of_transactions"); ?></th>
 			      <th class="number endCol"><?php echo WidgetUtil::generateLabelMapping("amount_spent"); ?></th>

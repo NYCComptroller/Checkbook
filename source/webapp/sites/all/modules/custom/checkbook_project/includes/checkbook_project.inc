@@ -1452,6 +1452,26 @@ function _checkbook_get_oge_agency_id($vendor_id){
     return htmlentities($agencies[0]['agency_id']);
 }
 
+
+function _checkbook_is_oge_contract($cont_num){	
+	$rows = _checkbook_project_querydataset('checkbook_oge:oge_contract',array('fms_contract_number'),array('fms_contract_number'=>$cont_num));
+	if($rows > 0){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+
+function _checkbook_is_oge_parent_contract($cont_num){
+	$rows = _checkbook_project_querydataset('checkbook_oge:agreement_snapshot',array('master_contract_number'),array('master_contract_number'=>$cont_num));
+	if($rows > 0){
+		return true;
+	}else{
+		return false;
+	}
+}
+
 function _checkbook_get_toggle_vendor_id($agency_id){
     $agencies = _checkbook_project_querydataset('checkbook_oge:agency',array('agency_id','agency_name'),array('agency_id'=>$agency_id, 'is_oge_agency'=>'Y'));
     $agency_name = $agencies[0]['agency_name'];
