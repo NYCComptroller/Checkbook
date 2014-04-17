@@ -148,6 +148,11 @@ class Form
                 $form[$domain][$domain_field]['#prefix'] = '<div class="datafield datarange issueddate"><div class="ranges">';
                 $form[$domain][$domain_field]['#default_value'] = '';
 
+                //Hidden Field
+                $domain_field = "{$data_source}_{$this->domain_name}_issue_date_from_exact";
+                $form[$domain][$domain_field]['#type'] = FieldType::HiddenField;
+                $form[$domain][$domain_field]['#name'] = $domain_field;
+
                 //issue_date_to
                 $domain_field = "{$this->domain_name}_issue_date_to";
 
@@ -157,6 +162,12 @@ class Form
                 $form[$domain][$domain_field]['#date_year_range'] = $year_range;
                 $form[$domain][$domain_field]['#suffix'] = '</div></div>';
                 $form[$domain][$domain_field]['#default_value'] = '';
+
+                //Hidden Field
+                $domain_field = "{$data_source}_{$this->domain_name}_issue_date_to_exact";
+
+                $form[$domain][$domain_field]['#type'] = FieldType::HiddenField;
+                $form[$domain][$domain_field]['#name'] = $domain_field;
 
                 //fiscal_year
                 $domain_field = "{$this->domain_name}_fiscal_year";
@@ -187,7 +198,6 @@ class Form
                 if(!(is_null($field->suffix)))
                     $form[$domain][$domain_field]['#suffix'] = $field->suffix;
                 $form[$domain][$domain_field]['#type'] = $field->field_type;
-                //$form[$domain][$domain_field]['#id'] = $field->id;
                 $form[$domain][$domain_field]['#title'] = $field->getFieldTitle();
                 $form[$domain][$domain_field]['#default_value'] = $field->getDropDownDefault();
                 $form[$domain][$domain_field]['#options'] = $field->getDropDownOptions();
@@ -196,7 +206,6 @@ class Form
                     $form[$domain][$domain_field]['#disabled'] = $field->disabled;
                 if(!(is_null($field->option_attributes)))
                     $form[$domain][$domain_field]['#option_attributes'] = $field->option_attributes;
-               // $form[$domain][$domain_field]['#needs_validation'] = $data_source;
 
                 break;
 
@@ -217,7 +226,6 @@ class Form
             case FieldType::RangeField:
 
                 //From
-                //$domain_field = "{$this->domain_name}_{$field->field_name}_from";
                 $domain_field = "{$data_source}_{$this->domain_name}_{$field->field_name}_from";
                 $css_name = str_replace('_','-',$field->field_name);
 
@@ -236,7 +244,6 @@ class Form
                     $form[$domain][$domain_field]['#prefix'] = '<div class="form-item form-item-'.$css_name.'"><label>' . $field->getFieldTitle() . '</label><div class="ranges">';
 
                 //To
-                //$domain_field = "{$this->domain_name}_{$field->field_name}_to";
                 $domain_field = "{$data_source}_{$this->domain_name}_{$field->field_name}_to";
                 $form[$domain][$domain_field]['#type'] = FieldType::TextField;
                 $form[$domain][$domain_field]['#title'] = t('TO');
@@ -258,7 +265,6 @@ class Form
             case FieldType::RangeDateField:
 
                 //From
-               // $domain_field = "{$this->domain_name}_{$field->field_name}_from";
                 $domain_field = "{$data_source}_{$this->domain_name}_{$field->field_name}_from";
                 $css_name = str_replace('_','-',$field->field_name);
 
@@ -271,7 +277,6 @@ class Form
                     $form[$domain][$domain_field]['#prefix'] = '<div class="form-item form-item-'.$css_name.'"><label>' . $field->getFieldTitle() . '</label><div class="ranges">';
 
                 //To
-               // $domain_field = "{$this->domain_name}_{$field->field_name}_to";
                 $domain_field = "{$data_source}_{$this->domain_name}_{$field->field_name}_to";
                 $form[$domain][$domain_field]['#type'] = FieldType::DatePopup;
                 $form[$domain][$domain_field]['#date_format'] = 'Y-m-d';
@@ -294,8 +299,6 @@ class Form
                 $form[$domain][$domain_field]['#name'] = $domain_field;
                 $form[$domain][$domain_field]['#value'] = t('Submit');
                 $form[$domain][$domain_field]['#prefix'] = t('<div class="'.$submit_class.'">');
-//                $form[$domain][$domain_field]['#limit_validation_errors'] = array(array($domain));
-//                $form[$domain][$domain_field]['#submit'] = array('checkbook_advanced_search_form_submit');
 
                 //Clear All Button
                 $domain_field = "{$this->domain_name}_clear";
@@ -314,7 +317,6 @@ class Form
 
             case FieldType::TextField:
 
-               // $domain_field = "{$this->domain_name}_{$field->field_name}";
                 $domain_field = "{$data_source}_{$this->domain_name}_{$field->field_name}";
 
                 $form[$domain][$domain_field]['#type'] = FieldType::TextField;
@@ -331,7 +333,6 @@ class Form
                     $form[$domain][$domain_field]['#prefix'] = $field->prefix;
 
                 //Hidden
-                //$domain_field = "{$this->domain_name}_{$field->field_name}_exact";
                 $domain_field = "{$data_source}_{$this->domain_name}_{$field->field_name}_exact";
                 $form[$domain][$domain_field]['#type'] = FieldType::HiddenField;
                 $form[$domain][$domain_field]['#name'] = $domain_field;
