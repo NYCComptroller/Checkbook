@@ -349,49 +349,48 @@
             exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
             datasource = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
 
-            div.ele('payee_name').autocomplete({
+            $('#edit-checkbook-oge-spending-payee-name, #edit-checkbook-spending-payee-name').autocomplete({
                 source:'/advanced-search/autocomplete/spending/payee/' + year + '/' + agency + '/' + expcategory + '/' + dept.replace(/\//g,"__") + '/' + exptype + '/' + datasource,
                 select: function( event, ui ) {
                     $(this).parent().next().val(ui.item.label) ;
                 }
             });
-            div.ele('contract_id').autocomplete({
+            $('#edit-checkbook-oge-spending-contract-num, #edit-checkbook-spending-contract-num').autocomplete({
                 source:'/advanced-search/autocomplete/spending/contractno/'  + year + '/' + agency + '/' + expcategory + '/' + dept.replace(/\//g,"__") + '/' + exptype + '/' + datasource,
                 select: function( event, ui ) {
                     $(this).parent().next().val(ui.item.label) ;
                 }
             });
-            div.ele('capital_project').autocomplete({
+            $('#edit-checkbook-oge-spending-capital-project, #edit-checkbook-spending-capital-project').autocomplete({
                 source:'/advanced-search/autocomplete/spending/capitalproject/'  + year + '/' + agency + '/' + expcategory + '/' + dept.replace(/\//g,"__") + '/' + exptype + '/' + datasource,
                 select: function( event, ui ) {
                     $(this).parent().next().val(ui.item.label) ;
                 }
             });
-            div.ele('document_id').autocomplete({
+            $('#edit-checkbook-oge-spending-document-id, #edit-checkbook-spending-document-id').autocomplete({
                 source:'/advanced-search/autocomplete/spending/expenseid/'  + year + '/' + agency + '/' + expcategory + '/' + dept.replace(/\//g,"__") + '/' + exptype + '/' + datasource,
                 select: function( event, ui ) {
                     $(this).parent().next().val(ui.item.label) ;
                 }
             });
-            div.ele('commodity_line').autocomplete({
+            $('#edit-checkbook-oge-spending-commodity-line, #edit-checkbook-spending-commodity-line').autocomplete({
                 source:'/advanced-search/autocomplete/spending/commodityline/'  + year + '/' + agency + '/' + expcategory + '/' + dept.replace(/\//g,"__") + '/' + exptype + '/' + datasource,
                 select: function( event, ui ) {
                     $(this).parent().next().val(ui.item.label) ;
                 }
             });
-            div.ele('budget_name').autocomplete({
+            $('#edit-checkbook-oge-spending-budget-name, #edit-checkbook-spending-budget-name').autocomplete({
                 source:'/advanced-search/autocomplete/spending/budgetname/'  + year + '/' + agency + '/' + expcategory + '/' + dept.replace(/\//g,"__") + '/' + exptype + '/' + datasource,
                 select: function( event, ui ) {
                     $(this).parent().next().val(ui.item.label) ;
                 }
             });
-            div.ele('entity_contract_number').autocomplete({
+            $('#edit-checkbook-oge-spending-contract-number, #edit-checkbook-spending-contract-number').autocomplete({
                 source:'/advanced-search/autocomplete/spending/entitycontractnum/'  + year + '/' + agency + '/' + expcategory + '/' + dept.replace(/\//g,"__") + '/' + exptype + '/' + datasource,
                 select: function( event, ui ) {
                     $(this).parent().next().val(ui.item.label) ;
                 }
             });
-
 
             div_spending_main.each(function () {
                 $(this).focusout(function () {
