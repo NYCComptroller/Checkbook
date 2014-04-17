@@ -27,8 +27,8 @@
     <tr>
         <td>type_of_data</td>
         <td>Y</td>
-        <td>String – Must be one of the following:<br />Contracts, Payroll, or Spending.</td>
-        <td>Allows user to select different types of data:<br />Value must be one of the following Contracts, Payroll, or Spending.</td>
+        <td>String – Must be one of the following:<br/>Contracts, Budget, Revenue, Payroll, Spending, Spending_OGE, Contracts_OGE. </td>
+        <td>Allows user to select different types of data:<br/>Value must be one of the following Contracts, Budget, Revenue, Payroll, Spending, Spending_OGE, and Contracts_OGE.</td>
         <td>Contracts</td>
     </tr>
     <tr>
@@ -58,6 +58,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
         <th>Required (Y/N)</th>
         <th>Type of Criteria (Value/Range)</th>
         <th>Format/Value</th>
+        <th>Applicable Filters</th>
         <th>Category</th>
         <th>Contract Status</th>
         <th>Description</th>
@@ -70,6 +71,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
         <td>N</td>
         <td valign="top">value</td>
         <td>String - YYYY - 4 characters</td>
+        <td>Citywide Agencies and Other Government Entities</td>
         <td>Expense<br />Revenue</td>
         <td>Active<br />Registered</td>
         <td>Fiscal Year.  Must be exactly 4 characters. Either fiscal year or calendar year can be selected. By default, all years are pre-selected. The response column would be ‘year’ for both FY and CY selections.</td>
@@ -80,6 +82,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
         <td>N</td>
         <td valign="top">value</td>
         <td>String - YYYY - 4 characters</td>
+        <td>Citywide Agencies and Other Government Entities</td>
         <td>Expense<br />Revenue</td>
         <td>Active<br />Registered</td>
         <td>Calendar Year. Must be exactly 4 characters. Either fiscal year or calendar year can be selected. By default, all years are pre-selected. The response column would be ‘year’ for both FY and CY selections.</td>
@@ -90,6 +93,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
         <td>Y</td>
         <td valign="top">value</td>
         <td>Allows you to select from three possible contract statuses. Values must be one of the following: active, pending or registered.</td>
+        <td>Citywide Agencies and Other Government Entities</td>
         <td>Expense<br />Revenue</td>
         <td>Active<br />Registered<br />Pending</td>
         <td>Allows you to select from three possible contract statuses. Values must be one of the following: active, pending or registered.</td>
@@ -100,16 +104,29 @@ Contract Parameters – All the parameters are optional, meaning that you can se
         <td>Y</td>
         <td valign="top">value</td>
         <td>Allows you to select two possible contract category types. Values must be one of the following: expense or revenue.</td>
+        <td>Citywide Agencies and Other Government Entities</td>
         <td>Expense<br/>Revenue</td>
         <td>Active<br />Registered<br />Pending</td>
         <td>Allows you to select two possible contract category types. Values must be one of the following: expense or revenue.</td>
         <td>expense</td>
     </tr>
     <tr>
+        <td>vendor_name</td>
+        <td>N</td>
+        <td valign="top">value</td>
+        <td>String/Maximum 20 Characters</td>
+        <td>Other Government Entities</td>
+        <td valign="top">Expense<br />Revenue</td>
+        <td valign="top">Active<br />Registered<br />Pending</td>
+        <td>Vendor name. The user shall be able to search using vendor name. The search will return all results that match the first three letters of the vendor name.</td>
+        <td>Apple inc</td>
+    </tr>
+    <tr>
         <td>vendor_code</td>
         <td>N</td>
         <td valign="top">range</td>
         <td>String - Maximum 4 characters </td>
+        <td>Citywide Agencies</td>
         <td valign="top">Expense<br />Revenue</td>
         <td valign="top">Active<br />Registered<br />Pending</td>
         <td>Identification code associated with vendor. See here for <a href="/ref_code_list/vendor">vendor codes list</a>.</td>
@@ -120,6 +137,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
         <td>N</td>
         <td valign="top">value</td>
         <td>String - Maximum 2 characters</td>
+        <td>Citywide Agencies and Other Government Entities</td>
         <td valign="top">Expense<br />Revenue</td>
         <td valign="top">Active<br />Registered<br />Pending</td>
         <td>Indicates the agreement type</td>
@@ -130,6 +148,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
         <td>N</td>
         <td valign="top">value</td>
         <td>String - Maximum 4 characters</td>
+        <td>Citywide Agencies</td>
         <td valign="top">Expense<br />Revenue</td>
         <td valign="top">Active<br />Registered<br />Pending</td>
         <td>Identification code associated with agency. See here for <a href="/ref_code_list/agency">agency codes list</a></td>
@@ -140,6 +159,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
         <td>N</td>
         <td valign="top">value</td>
         <td>String - Maximum 32 characters</td>
+        <td>Citywide Agencies and Other Government Entities</td>
         <td valign="top">Expense<br />Revenue</td>
         <td valign="top">Active<br />Registered<br />Pending</td>
         <td>Contract number.</td>
@@ -150,6 +170,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
         <td>N</td>
         <td valign="top">value</td>
         <td>String - Maximum 3 characters</td>
+        <td>Citywide Agencies and Other Government Entities</td>
         <td valign="top">Expense<br />Revenue</td>
         <td valign="top">Active<br />Registered<br />Pending</td>
         <td>Indicates how vendors are to be awarded based on the information entered in the table.</td>
@@ -160,6 +181,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
         <td>N</td>
         <td valign="top">range</td>
         <td>String - Maximum 18 characters</td>
+        <td>Citywide Agencies and Other Government Entities</td>
         <td valign="top">Expense<br />Revenue</td>
         <td valign="top">Active<br />Registered<br />Pending</td>
         <td>Current amount associated with a contract.</td>
@@ -170,6 +192,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
         <td>N</td>
         <td valign="top">range</td>
         <td>String - YYYY-MM-DD</td>
+        <td>Citywide Agencies and Other Government Entities</td>
         <td valign="top">Expense<br />Revenue</td>
         <td valign="top">Active<br />Registered<br />Pending</td>
         <td>Start date associated with a contract</td>
@@ -180,6 +203,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
         <td>N</td>
         <td valign="top">range</td>
         <td>String - YYYY-MM-DD</td>
+        <td>Citywide Agencies and Other Government Entities</td>
         <td valign="top">Expense<br />Revenue</td>
         <td valign="top">Active<br />Registered<br />Pending</td>
         <td>End date associated with a contract</td>
@@ -190,6 +214,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
         <td>N</td>
         <td valign="top">range</td>
         <td>String - YYYY-MM-DD</td>
+        <td>Citywide Agencies and Other Government Entities</td>
         <td valign="top">Expense<br />Revenue</td>
         <td valign="top">Active<br />Registered</td>
         <td>Registration date associated with a contract</td>
@@ -200,10 +225,55 @@ Contract Parameters – All the parameters are optional, meaning that you can se
         <td>N</td>
         <td valign="top">range</td>
         <td>String - YYYY-MM-DD</td>
+        <td>Citywide Agencies</td>
         <td valign="top">Expense<br />Revenue </td>
         <td valign="top">Pending </td>
         <td>Recieved date associated with a contract</td>
         <td>2009-03-03</td>
+    </tr>
+    <tr>
+        <td>budget_name</td>
+        <td>N</td>
+        <td>value</td>
+        <td>String- Maximum 75 characters</td>
+        <td>Other Government Entities</td>
+        <td>Active<br/>Registered</td>
+        <td>Expense</td>
+        <td>Budget name. The user shall be able to search using budget name. The search will return all results that match the first three letters of the budget name.</td>
+        <td>FA - EDUCATIONAL  ALLIANCE RENOVATIONS</td>
+    </tr>
+    <tr>
+        <td>commodity_line</td>
+        <td>N</td>
+        <td>value</td>
+        <td>String- Maximum 3 characters</td>
+        <td>Other Government Entities</td>
+        <td>Expense</td>
+        <td>Active<br/>Registered</td>
+        <td>Commodity line associated to EDC contracts.</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>entity_contract_number</td>
+        <td>N</td>
+        <td>value</td>
+        <td>String- Maximum 15 characters</td>
+        <td>Other Government Entities</td>
+        <td>Expense</td>
+        <td>Active<br/>Registered</td>
+        <td>Identification code associated with OGE contract. The user would need to enter the contract number manually.</td>
+        <td>48440001</td>
+    </tr>
+    <tr>
+        <td>other_government_entities_code</td>
+        <td>N</td>
+        <td>value</td>
+        <td>String- Maximum 3 characters</td>
+        <td>Other Government Entities</td>
+        <td>Expense</td>
+        <td>Active<br/>Registered</td>
+        <td>Identifies which government entities the user would want to search. Includes EDC and TDC.See here for other government entities codes list.</td>
+        <td>z81</td>
     </tr>
     </tbody>
 </table>
@@ -212,17 +282,17 @@ Contract Parameters – All the parameters are optional, meaning that you can se
 <h3 class="title">Possible response columns:</h3>
 <p>User would be able to select which columns he would like to view in his output. Below mentioned are the possible column names for the domain.
     The user should include the required column names in the request xml in an element called &lt;response_columns&gt;.  Please note:</p>
-<ul>
-    <li>1. For pending contracts, the data is displayed only for the latest version of the contract.</li>
-    <li>2. If no year is provided in the search criteria, all years are considered and only the latest version of the contract will be displayed in the results. The response column year will not be applicable for all years.The user can categorize the year based on start and end date of the contract which will be populated in the results.</li>
-</ul>
+<ol style="list-style-type:decimal;">
+    <li>For pending contracts, the data is displayed for all versions of the contract.</li>
+    <li>If no year is provided in the search criteria, all years are considered and only the latest version of the contract will be displayed in the results. The response column year will not be applicable for all years. The user can categorize the year based on start and end date of the contract which will be populated in the results.</li>
+</ol>
 <div class="api-center">
     <table>
         <tr>
             <td class="api-td-left">
                 <table class="api-table">
                     <tr>
-                        <th colspan="2"><br />Response Column Names_Active &amp; Registered<br />Category-Expense</th>
+                        <th colspan="2"><br />(Citywide)Response Column Names_Active &amp; Registered<br />Category-Expense</th>
                     </tr>
                     <tr>
                         <td>contract_id</td>
@@ -269,7 +339,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
             <td class="api-td-right">
                 <table class="api-table" border="1" cellspacing="0" cellpadding="0">
                     <tr>
-                        <th colspan="2">Response Column Names_Active &amp; Registered<br />Category-Revenue</th>
+                        <th colspan="2">(Citywide)Response Column Names_Active &amp; Registered<br />Category-Revenue</th>
                     </tr>
                     <tr>
                         <td>contract_id</td>
@@ -315,7 +385,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
             <td class="api-td-left">
                 <table class="api-table">
                     <tr>
-                        <th colspan="2"><br />Response Column Names_Pending <br />Category-Expense</th>
+                        <th colspan="2"><br />(Citywide)Response Column Names_Pending <br />Category-Expense</th>
                     </tr>
                     <tr>
                         <td>contract_id</td>
@@ -358,7 +428,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
             <td class="api-td-right">
                 <table class="api-table" border="1" cellspacing="0" cellpadding="0">
                     <tr>
-                        <th colspan="2">Response Column Names_Pending<br/>Category-Revenue</th>
+                        <th colspan="2">(Citywide)Response Column Names_Pending<br/>Category-Revenue</th>
                     </tr>
                     <tr>
                         <td>contract_id</td>
@@ -370,38 +440,88 @@ Contract Parameters – All the parameters are optional, meaning that you can se
                     </tr>
                     <tr>
                         <td>parent_contract_id</td>
-                        <td>apt_pin</td>
-                    </tr>
-                    <tr>
                         <td>original_amount</td>
+                    </tr>
+                    <tr>
                         <td>award_method</td>
-                    </tr>
-                    <tr>
                         <td>current_amount</td>
+                    </tr>
+                    <tr>
                         <td>start_date</td>
-                    </tr>
-                    <tr>
                         <td>vendor</td>
+                    </tr>
+                    <tr>
                         <td>end_date</td>
-                    </tr>
-                    <tr>
                         <td>received_date</td>
+                    </tr>
+                    <tr>
                         <td>pin</td>
-                    </tr>
-                    <tr>
                         <td>agency</td>
-                        <td>contract_industry</td>
                     </tr>
                     <tr>
+                        <td>contract_industry</td>
                         <td>document_code</td>
+                    </tr>
+                    <tr>
                         <td>version</td>
+                        <td>apt_pin</td>
                     </tr>
                 </table>
             </td>
         </tr>
     </table>
 </div>
-
+<div class="api-center">
+    <table class="api-table">
+        <tr>
+            <th colspan="2"><br />(Other Government Entities)Response Column Names_Active &amp; Registered<br />Category-Expense</th>
+        </tr>
+        <tr>
+            <td>contract_id</td>
+            <td>vendor</td>
+        </tr>
+        <tr>
+            <td>purpose</td>
+            <td>other_government_entities</td>
+        </tr>
+        <tr>
+            <td>version</td>
+            <td>contract_type</td>
+        </tr>
+        <tr>
+            <td>parent_contract_id</td>
+            <td>award_method</td>
+        </tr>
+        <tr>
+            <td>original_amount</td>
+            <td>expense_category</td>
+        </tr>
+        <tr>
+            <td>current_amount</td>
+            <td width="51%">start_date</td>
+        </tr>
+        <tr>
+            <td>spent_to_date</td>
+            <td>end_date</td>
+        </tr>
+        <tr>
+            <td>registration_date</td>
+            <td>pin</td>
+        </tr>
+        <tr>
+            <td>document_code</td>
+            <td>contract_industry</td>
+        </tr>
+        <tr>
+            <td>year</td>
+            <td>budget_name</td>
+        </tr>
+        <tr>
+            <td>entity_contract_number</td>
+            <td>commodity_line</td>
+        </tr>
+     </table>
+</div>
 <div class="divider" style="clear: both;"></div>
 <a href="#top" class="float-right">Back to the top</a>
 <a name="sample-xml" id="sample-xml"></a>
@@ -413,106 +533,106 @@ Contract Parameters – All the parameters are optional, meaning that you can se
 <p>The response xml also includes status messages for the result. If there is an error, corresponding error code along with description will be included in an element called &lt;messages&gt; for user reference.</p>
 <a href="#top" class="float-right">Back to the top</a>
 <a name="sample-request-contract_expense" id="sample-request-contract_expense"></a>
-<h3 class="title">Sample Request: Contract Transactions Active Expense</h3>
+<h3 class="title">Sample Request: Contract Transactions Active Expense(Citywide)</h3>
 <pre>
-&lt;request&gt;
-    &lt;type_of_data&gt;contracts&lt;/type_of_data&gt;
-  &lt;records_from&gt;1&lt;/records_from&gt;
-  &lt;max_records&gt;5&lt;/max_records&gt;
-  &lt;search_criteria&gt;
-    &lt;criteria&gt;
-          &lt;name&gt;status&lt;/name&gt;
-          &lt;type&gt;value&lt;/type&gt;
-          &lt;value&gt;active&lt;/value&gt;
-      &lt;/criteria&gt;’
-      &lt;criteria&gt;
-          &lt;name&gt;category&lt;/name&gt;
-          &lt;type&gt;value&lt;/type&gt;
-          &lt;value&gt;expense&lt;/value&gt;
-      &lt;/criteria&gt;
-      &lt;criteria&gt;
-          &lt;name&gt;fiscal_year&lt;/name&gt;
-          &lt;type&gt;value&lt;/type&gt;
-          &lt;value&gt;2011&lt;/value&gt;
-      &lt;/criteria&gt;
-      &lt;criteria&gt;
-          &lt;name&gt;agency_code&lt;/name&gt;
-          &lt;type&gt;value&lt;/type&gt;
-          &lt;value&gt;126&lt;/value&gt;
-      &lt;/criteria&gt;
-      &lt;criteria&gt;
-          &lt;name&gt;vendor_code&lt;/name&gt;
-          &lt;type&gt;value&lt;/type&gt;
-          &lt;value&gt;002&lt;/value&gt;
-      &lt;/criteria&gt;
-      &lt;criteria&gt;
-          &lt;name&gt;current_amount&lt;/name&gt;
-          &lt;type&gt;range&lt;/type&gt;
-          &lt;start&gt;0.00&lt;/start&gt;
-          &lt;end&gt;100000000.00&lt;/end&gt;
-      &lt;/criteria&gt;
-    &lt;criteria&gt;
-              &lt;name&gt;award_method&lt;/name&gt;
+    &lt;request&gt;
+        &lt;type_of_data&gt;contracts&lt;/type_of_data&gt;
+      &lt;records_from&gt;1&lt;/records_from&gt;
+      &lt;max_records&gt;5&lt;/max_records&gt;
+      &lt;search_criteria&gt;
+        &lt;criteria&gt;
+              &lt;name&gt;status&lt;/name&gt;
               &lt;type&gt;value&lt;/type&gt;
-              &lt;value&gt;115&lt;/value&gt;
-          &lt;/criteria&gt;
+              &lt;value&gt;active&lt;/value&gt;
+          &lt;/criteria&gt;’
           &lt;criteria&gt;
-              &lt;name&gt;contract_id&lt;/name&gt;
+              &lt;name&gt;category&lt;/name&gt;
               &lt;type&gt;value&lt;/type&gt;
-              &lt;value&gt;CT185620050034130&lt;/value&gt;
+              &lt;value&gt;expense&lt;/value&gt;
           &lt;/criteria&gt;
           &lt;criteria&gt;
-              &lt;name&gt;contract_type&lt;/name&gt;
+              &lt;name&gt;fiscal_year&lt;/name&gt;
               &lt;type&gt;value&lt;/type&gt;
-              &lt;value&gt;50&lt;/value&gt;
+              &lt;value&gt;2011&lt;/value&gt;
           &lt;/criteria&gt;
           &lt;criteria&gt;
-              &lt;name&gt;start_date&lt;/name&gt;
-              &lt;type&gt;range&lt;/type&gt;
-              &lt;start&gt;2010-01-31&lt;/start&gt;
-              &lt;end&gt;2011-12-26&lt;/end&gt;
+              &lt;name&gt;agency_code&lt;/name&gt;
+              &lt;type&gt;value&lt;/type&gt;
+              &lt;value&gt;126&lt;/value&gt;
           &lt;/criteria&gt;
           &lt;criteria&gt;
-              &lt;name&gt;end_date&lt;/name&gt;
-              &lt;type&gt;range&lt;/type&gt;
-              &lt;start&gt;2010-01-31&lt;/start&gt;
-              &lt;end&gt;2011-12-26&lt;/end&gt;
+              &lt;name&gt;vendor_code&lt;/name&gt;
+              &lt;type&gt;value&lt;/type&gt;
+              &lt;value&gt;002&lt;/value&gt;
           &lt;/criteria&gt;
           &lt;criteria&gt;
-              &lt;name&gt;registration_date&lt;/name&gt;
+              &lt;name&gt;current_amount&lt;/name&gt;
               &lt;type&gt;range&lt;/type&gt;
-              &lt;start&gt;2010-01-31&lt;/start&gt;
-              &lt;end&gt;2011-12-26&lt;/end&gt;
+              &lt;start&gt;0.00&lt;/start&gt;
+              &lt;end&gt;100000000.00&lt;/end&gt;
           &lt;/criteria&gt;
-    &lt;/search_criteria&gt;
+        &lt;criteria&gt;
+                  &lt;name&gt;award_method&lt;/name&gt;
+                  &lt;type&gt;value&lt;/type&gt;
+                  &lt;value&gt;115&lt;/value&gt;
+              &lt;/criteria&gt;
+              &lt;criteria&gt;
+                  &lt;name&gt;contract_id&lt;/name&gt;
+                  &lt;type&gt;value&lt;/type&gt;
+                  &lt;value&gt;CT185620050034130&lt;/value&gt;
+              &lt;/criteria&gt;
+              &lt;criteria&gt;
+                  &lt;name&gt;contract_type&lt;/name&gt;
+                  &lt;type&gt;value&lt;/type&gt;
+                  &lt;value&gt;50&lt;/value&gt;
+              &lt;/criteria&gt;
+              &lt;criteria&gt;
+                  &lt;name&gt;start_date&lt;/name&gt;
+                  &lt;type&gt;range&lt;/type&gt;
+                  &lt;start&gt;2010-01-31&lt;/start&gt;
+                  &lt;end&gt;2011-12-26&lt;/end&gt;
+              &lt;/criteria&gt;
+              &lt;criteria&gt;
+                  &lt;name&gt;end_date&lt;/name&gt;
+                  &lt;type&gt;range&lt;/type&gt;
+                  &lt;start&gt;2010-01-31&lt;/start&gt;
+                  &lt;end&gt;2011-12-26&lt;/end&gt;
+              &lt;/criteria&gt;
+              &lt;criteria&gt;
+                  &lt;name&gt;registration_date&lt;/name&gt;
+                  &lt;type&gt;range&lt;/type&gt;
+                  &lt;start&gt;2010-01-31&lt;/start&gt;
+                  &lt;end&gt;2011-12-26&lt;/end&gt;
+              &lt;/criteria&gt;
+        &lt;/search_criteria&gt;
 
-    &lt;response_columns&gt;
-        &lt;column&gt;agency&lt;/column&gt;
-           &lt;column&gt;vendor&lt;/column&gt;
-           &lt;column&gt;contract_id&lt;/column&gt;
-           &lt;column&gt;version&lt;/column&gt;
-    &lt;column&gt;purpose &lt;/column&gt;
-        &lt;column&gt;parent_contract_id &lt;/column&gt;
-           &lt;column&gt;original_amount&lt;/column&gt;
-           &lt;column&gt;current_amount&lt;/column&gt;
-    &lt;column&gt;spent_to_date&lt;/column&gt;
-        &lt;column&gt;registration_date&lt;/column&gt;
-        &lt;column&gt;apt_pin&lt;/column&gt;
-           &lt;column&gt;pin&lt;/column&gt;
-        &lt;column&gt;contract_type&lt;/column&gt;
-        &lt;column&gt;award_method&lt;/column&gt;
-        &lt;column&gt;expense_category&lt;/column&gt;
-           &lt;column&gt;start_date&lt;/column&gt;
-           &lt;column&gt;end_date&lt;/column&gt;
-           &lt;column&gt;contract_industry&lt;/column&gt;
-           &lt;column&gt;year&lt;/column&gt;
-           &lt;column&gt;document_code&lt;/column&gt;
-    &lt;/response_columns&gt;
-    &lt;/request&gt;
+        &lt;response_columns&gt;
+            &lt;column&gt;agency&lt;/column&gt;
+               &lt;column&gt;vendor&lt;/column&gt;
+               &lt;column&gt;contract_id&lt;/column&gt;
+               &lt;column&gt;version&lt;/column&gt;
+        &lt;column&gt;purpose &lt;/column&gt;
+            &lt;column&gt;parent_contract_id &lt;/column&gt;
+               &lt;column&gt;original_amount&lt;/column&gt;
+               &lt;column&gt;current_amount&lt;/column&gt;
+        &lt;column&gt;spent_to_date&lt;/column&gt;
+            &lt;column&gt;registration_date&lt;/column&gt;
+            &lt;column&gt;apt_pin&lt;/column&gt;
+               &lt;column&gt;pin&lt;/column&gt;
+            &lt;column&gt;contract_type&lt;/column&gt;
+            &lt;column&gt;award_method&lt;/column&gt;
+            &lt;column&gt;expense_category&lt;/column&gt;
+               &lt;column&gt;start_date&lt;/column&gt;
+               &lt;column&gt;end_date&lt;/column&gt;
+               &lt;column&gt;contract_industry&lt;/column&gt;
+               &lt;column&gt;year&lt;/column&gt;
+               &lt;column&gt;document_code&lt;/column&gt;
+        &lt;/response_columns&gt;
+        &lt;/request&gt;
 </pre>
 <a href="#top" class="float-right">Back to the top</a>
 <a name="sample-response-contract_expense" id="sample-response-contract_expense"></a>
-<h3 class="title">Sample Response: Contract Transactions Active Expense</h3>
+<h3 class="title">Sample Response: Contract Transactions Active Expense(Citywide)</h3>
 <pre>
 &lt;response&gt;
     &lt;status &gt;
@@ -622,7 +742,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
 </pre>
 <a href="#top" class="float-right">Back to the top</a>
 <a name="sample-request-contracts-pending_expense" id="sample-request-contracts-pending_expense"></a>
-<h3 class="title">Sample Request: Contract Transactions Pending Expense</h3>
+<h3 class="title">Sample Request: Contract Transactions Pending Expense(Citywide)</h3>
 <pre>
 &lt;request&gt;
     &lt;type_of_data &gt;contracts&lt;/type_of_data&gt;
@@ -713,7 +833,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
 </pre>
 <a href="#top" class="float-right">Back to the top</a>
 <a name="sample-response-pending_expense" id="sample-response-pending_expense"></a>
-<h3 class="title">Sample Response: Contract Transactions Pending Expense</h3>
+<h3 class="title">Sample Response: Contract Transactions Pending Expense(Citywide)</h3>
 <pre>
 &lt;response&gt;
     &lt;status &gt;
@@ -809,6 +929,234 @@ Contract Parameters – All the parameters are optional, meaning that you can se
 &lt;pin&gt;212&lt;/pin&gt;
 &lt;apt_pin&gt;322&lt;/apt_pin&gt;
         &lt;contract_industry&gt;Goods&lt;/contract_industry&gt;
+&lt;/transaction&gt;
+ &lt;/transactions&gt;
+&lt;/result_records&gt;
+&lt;/response&gt;
+</pre>
+<a href="#top" class="float-right">Back to the top</a>
+<h3 class="title">Sample Request: Contract Transactions Active Expense (Other Government Entities)</h3>
+<pre>
+&lt;request&gt;
+    &lt;type_of_data&gt;Contracts_OGE&lt;/type_of_data&gt;
+    &lt;records_from&gt;1&lt;/records_from&gt;
+    &lt;max_records&gt;150&lt;/max_records&gt;
+    &lt;search_criteria&gt;
+        &lt;criteria&gt;
+            &lt;name&gt;fiscal_year&lt;/name&gt;
+            &lt;type&gt;value&lt;/type&gt;
+            &lt;value&gt;2014&lt;/value&gt;
+        &lt;/criteria&gt;
+        &lt;criteria&gt;
+            &lt;name&gt;status&lt;/name&gt;
+            &lt;type&gt;value&lt;/type&gt;
+            &lt;value&gt;active&lt;/value&gt;
+        &lt;/criteria&gt;
+        &lt;criteria&gt;
+            &lt;name&gt;category&lt;/name&gt;
+            &lt;type&gt;value&lt;/type&gt;
+            &lt;value&gt;expense&lt;/value&gt;
+        &lt;/criteria&gt;
+        &lt;criteria&gt;
+            &lt;name&gt;other_government_entities_code&lt;/name&gt;
+            &lt;type&gt;value&lt;/type&gt;
+            &lt;value&gt;z81&lt;/value&gt;
+        &lt;/criteria&gt;
+        &lt;criteria&gt;
+            &lt;name&gt;entity_contract_number&lt;/name&gt;
+            &lt;type&gt;value&lt;/type&gt;
+            &lt;value&gt;1900014&lt;/value&gt;
+        &lt;/criteria&gt;
+        &lt;criteria&gt;
+            &lt;name&gt;vendor_name&lt;/name&gt;
+            &lt;type&gt;value&lt;/type&gt;
+            &lt;value&gt;EIC ASSOCIATES, INC&lt;/value&gt;
+        &lt;/criteria&gt;  
+        &lt;criteria&gt;
+            &lt;name&gt;contract_type&lt;/name&gt;
+            &lt;type&gt;value&lt;/type&gt;
+            &lt;value&gt;99&lt;/value&gt;
+        &lt;/criteria&gt;
+        &lt;criteria&gt;
+            &lt;name&gt;contract_id&lt;/name&gt;
+            &lt;type&gt;value&lt;/type&gt;
+            &lt;value&gt;CTA180120127207516&lt;/value&gt;
+        &lt;/criteria&gt;
+        &lt;criteria&gt;
+            &lt;name&gt;award_method&lt;/name&gt;
+            &lt;type&gt;value&lt;/type&gt;
+            &lt;value&gt;115&lt;/value&gt;
+        &lt;/criteria&gt;
+        &lt;criteria&gt;
+            &lt;name&gt;current_amount&lt;/name&gt;
+            &lt;type&gt;value&lt;/type&gt;
+            &lt;value&gt;26669948.4&lt;/value&gt;
+        &lt;/criteria&gt;
+        &lt;criteria&gt;
+            &lt;name&gt;start_date&lt;/name&gt;
+            &lt;type&gt;value&lt;/type&gt;
+            &lt;value&gt;2012-04-03&lt;/value&gt;
+        &lt;/criteria&gt;
+        &lt;criteria&gt;
+            &lt;name&gt;end_date&lt;/name&gt;
+            &lt;type&gt;value&lt;/type&gt;
+            &lt;value&gt;2014-07-03&lt;/value&gt;
+        &lt;/criteria&gt;
+        &lt;criteria&gt;
+            &lt;name&gt;budget_name&lt;/name&gt;
+            &lt;type&gt;value&lt;/type&gt;
+            &lt;value&gt;SPRINGFIELD GARDENS&lt;/value&gt;
+        &lt;/criteria&gt;
+        &lt;criteria&gt;
+            &lt;name&gt;commodity_line&lt;/name&gt;
+            &lt;type&gt;value&lt;/type&gt;
+            &lt;value&gt;5&lt;/value&gt;
+        &lt;/criteria&gt;
+    &lt;/search_criteria&gt;
+    &lt;response_columns&gt;
+        &lt;column&gt;contract_id&lt;/column&gt;
+        &lt;column&gt;purpose&lt;/column&gt;
+        &lt;column&gt;version&lt;/column&gt;
+        &lt;column&gt;parent_contract_id&lt;/column&gt;
+        &lt;column&gt;original_amount&lt;/column&gt;
+        &lt;column&gt;current_amount&lt;/column&gt;
+        &lt;column&gt;spent_to_date&lt;/column&gt;
+        &lt;column&gt;registration_date&lt;/column&gt;
+        &lt;column&gt;year&lt;/column&gt;
+        &lt;column&gt;other_government_entities&lt;/column&gt;
+        &lt;column&gt;vendor&lt;/column&gt;
+        &lt;column&gt;contract_type&lt;/column&gt;
+        &lt;column&gt;award_method&lt;/column&gt;
+        &lt;column&gt;expense_category&lt;/column&gt;
+        &lt;column&gt;start_date&lt;/column&gt;
+        &lt;column&gt;end_date&lt;/column&gt;
+        &lt;column&gt;pin&lt;/column&gt;
+        &lt;column&gt;contract_industry&lt;/column&gt; 
+        &lt;column&gt;document_code&lt;/column&gt;
+        &lt;column&gt;budget_name&lt;/column&gt;
+        &lt;column&gt;commodity_line&lt;/column&gt;
+        &lt;column&gt;entity_contract_number&lt;/column&gt;
+    &lt;/response_columns&gt;
+&lt;/request></pre>
+<a href="#top" class="float-right">Back to the top</a>
+<h3 class="title">Sample Response: Contract Transactions Active Expense (Other Government Entities)</h3>
+<pre>&lt;response&gt;
+    &lt;status &gt;
+        &lt;result&gt;success&lt;/result&gt;
+               &lt;/status&gt;
+ &lt;request&gt;
+    &lt;type_of_data &gt;Contracts_OGE&lt;/type_of_data&gt;
+  &lt;records_from&gt;1&lt;/records_from&gt; 
+  &lt;max_records&gt;5&lt;/max_records&gt;
+  &lt;search_criteria&gt;
+    &lt;criteria&gt;
+          &lt;name&gt;status&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;active&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;category&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;expense&lt;/value&gt;
+      &lt;/criteria&gt; 
+      &lt;criteria&gt;
+          &lt;name&gt;fiscal_year&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;2014&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;other_government_entities_code&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;Z81&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;vendor_name&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;APOLLO THEATER FOUNDATION&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;current_amount&lt;/name&gt;
+          &lt;type&gt;range&lt;/type&gt;
+          &lt;start&gt;400000&lt;/start&gt;
+          &lt;end&gt;500000&lt;/end&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;award_method&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;115 &lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;contract_id&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;CTA180120147201682&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;contract_type&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;99&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;start_date&lt;/name&gt;
+          &lt;type&gt;range&lt;/type&gt;
+          &lt;start&gt;2013-07-01&lt;/start&gt;
+          &lt;end&gt;2013-08-26&lt;/end&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;end_date&lt;/name&gt;
+          &lt;type&gt;range&lt;/type&gt;
+          &lt;start&gt;2014-06-01&lt;/start&gt;
+          &lt;end&gt;2014-06-30&lt;/end&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;registration_date&lt;/name&gt;
+          &lt;type&gt;range&lt;/type&gt;
+          &lt;start&gt;2013-10-01&lt;/start&gt;
+          &lt;end&gt;2013-10-10&lt;/end&gt;
+      &lt;/criteria&gt;
+     &lt;criteria&gt;
+          &lt;name&gt;budget_name&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;FA - APOLLO THEATER LIGHT&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;commodity_line&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;1&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;entity_contract_number&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;48410001&lt;/value&gt;
+      &lt;/criteria&gt;
+&lt;/search_criteria&gt;
+    &lt;/request&gt;
+       &lt;result_records&gt;
+     &lt;record_count&gt;1&lt;/record_count&gt;
+           &lt;transactions&gt;
+    &lt;transaction&gt; 
+        &lt;other_government_entities&gt;NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION&lt;/other_government_entities&gt;
+        &lt;vendor&gt;APOLLO THEATER FOUNDATION, INC. (THE)&lt;/vendor&gt;
+        &lt;contract_id&gt;CTA180120147201682&lt;/contract_id&gt;
+        &lt;parent_contract_id&gt;MMA180120136200331&lt;/parent_contract_id &gt;
+        &lt;purpose&gt;FA - Apollo Theater Lighting and Sound Upgrades 48410001&lt;/purpose&gt;
+&lt;original_amount&gt;436782&lt;/original_amount&gt;
+&lt;current_amount&gt;436782&lt;/current_amount&gt;
+&lt;expense_category&gt;CONSTRUCTION-BUILDINGS&lt;/expense_category&gt;
+&lt;version&gt;1&lt;/version&gt;
+&lt;year&gt;2014&lt;/year&gt;
+&lt;start_date&gt;2013-07-01&lt;/start_date&gt;
+&lt;end_date&gt;2014-06-30&lt;/end_date&gt;
+&lt;spent_to_date&gt;100181.04&lt;/spent_to_date&gt;
+&lt;contract_type&gt;Others&lt;/contract_type&gt; 
+         &lt;award_method&gt;Multiple Awards&lt;/award_method&gt;
+         &lt;document_code&gt;CTA1&lt;/document_code&gt;
+         &lt;registration_date&gt;2013-10-10&lt;/registration_date&gt;
+&lt;pin&gt;801SBS120110&lt;/pin&gt; 
+&lt;apt_pin&gt;80112S0002001A001&lt;/apt_pin&gt; 
+         &lt;contract_industry&gt;Not Classified&lt;/contract_industry&gt;
+                       &lt;entity_contract_number&gt;48410001&lt;/entity_contract_number&gt;
+                       &lt;budget_name&gt;FA - APOLLO THEATER LIGHT AND SOUND UPGRADES&lt;/budget_name&gt;
+                       &lt;commodity_line&gt;1&lt;/commodity_line&gt;
 &lt;/transaction&gt;
  &lt;/transactions&gt;
 &lt;/result_records&gt;

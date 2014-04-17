@@ -4,7 +4,7 @@
             "fiscal_year":"fiscal_year",
             "purpose":"description",
             "calendar_year":"fiscal_year",
-            "other_government_entities_code":"agency_code@checkbook_oge:agency",
+            "other_government_entities_code":"agency_code@checkbook_oge:oge_agency",
             "vendor_name":"legal_name@checkbook_oge:vendor",
             "current_amount":"maximum_contract_amount",
             "spent_to_date":"spending_amount_disb",
@@ -126,7 +126,7 @@
     },
     "contracts_oge_active_expense_all_years":{
         "searchCriteriaMap":{
-            "other_government_entities_code":"agency_code@checkbook_oge:agency",
+            "other_government_entities_code":"agency_code@checkbook_oge:oge_agency",
             "vendor_name":"legal_name@checkbook_oge:vendor",
             "purpose":"description",
             "current_amount":"maximum_contract_amount",
