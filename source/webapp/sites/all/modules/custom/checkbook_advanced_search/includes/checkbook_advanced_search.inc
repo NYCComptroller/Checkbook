@@ -641,8 +641,8 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
 
     $spending_check_amount_from = trim($form[$filter_dimension][$data_source . '_spending_check_amount_from']['#value']);
     $spending_check_amount_to = trim($form[$filter_dimension][$data_source . '_spending_check_amount_to']['#value']);
-    $spending_issue_date_from = trim($form[$filter_dimension]['spending_issue_date_from']['#value']['date']);
-    $spending_issue_date_to = trim($form[$filter_dimension]['spending_issue_date_to']['#value']['date']);
+    $spending_issue_date_from = trim($form[$filter_dimension][$data_source . '_spending_issue_date_from_exact']['#value']);
+    $spending_issue_date_to = trim($form[$filter_dimension][$data_source . '_spending_issue_date_to_exact']['#value']);
     $spending_fund_class = trim($form[$filter_dimension][$data_source . '_spending_fund_class']['#value']);
 
     $spending_department = trim($form_state['input'][$data_source . '_spending_department']);
