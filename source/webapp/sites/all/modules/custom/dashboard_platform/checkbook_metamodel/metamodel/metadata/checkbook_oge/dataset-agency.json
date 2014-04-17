@@ -10,6 +10,16 @@
                 }
             ]
         },
+        "oge_agency": {
+            "datasourceName": "main",
+            "source": "ref_agency",
+            "columns": [
+                {
+                    "name": "agency_id",
+                    "key": true
+                }
+            ]
+        },
         "agency_history":{
                 "datasourceName":"main",
                 "source":"ref_agency_history",
