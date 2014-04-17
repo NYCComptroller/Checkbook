@@ -62,6 +62,46 @@
 	        }
 	    } );
 
+		$( document ).ready(function() {
+
+			//create tool tops for contract notes
+			var contractNotesToolTip = function(){
+				// add processed class to all anchors after ajax
+				$(".contractLinkNote a").each(function(){
+					if (!$(this).hasClass('processed')) { 
+					    $('<div class="toolTip">' + $(this).attr('alt') + '<div class="bottom"></div></div>').insertBefore(this);
+						$(this).addClass('processed');
+					}
+				});
+				$('.contractLinkNote').hover(
+					function(){
+					$(this).find('.toolTip').css('display', 'block')},
+					function(){
+					$(this).find('.toolTip').css('display', 'none');
+					}
+				);
+			}
+
+
+
+			//check if ajax is being fired on the page or not
+            if ($.active > 0) {
+				$( document ).ajaxComplete(function() {
+				  contractNotesToolTip();
+				});
+            }
+            else {
+				contractNotesToolTip();
+            }
+
+
+
+		});
+
+
+
+
+
 }(jQuery));
 
 	function fnAddChildAgreementDetails (expander)

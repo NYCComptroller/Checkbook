@@ -507,7 +507,7 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
     $contracts_contract_category = trim($form[$filter_dimension][$data_source . '_contracts_category']['#value']);
     $contracts_contract_vendor_name = trim($form[$filter_dimension][$data_source . '_contracts_vendor_name']['#value']);
     $contracts_contract_purpose = trim($form[$filter_dimension][$data_source . '_contracts_purpose']['#value']);
-    $contracts_contract_type = trim($form[$filter_dimension][$data_source . '_contracts_contract_type']['#value']);
+    $contracts_contract_type = trim($form[$filter_dimension][$data_source . '_contracts_type']['#value']);
     $contracts_contract_agency = trim($form[$filter_dimension][$data_source . '_contracts_agency']['#value']);
     $contracts_contract_contract_num = trim($form[$filter_dimension][$data_source . '_contracts_contract_num']['#value']);
     $contracts_contract_apt_pin = trim($form[$filter_dimension][$data_source . '_contracts_apt_pin']['#value']);
@@ -641,8 +641,8 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
 
     $spending_check_amount_from = trim($form[$filter_dimension][$data_source . '_spending_check_amount_from']['#value']);
     $spending_check_amount_to = trim($form[$filter_dimension][$data_source . '_spending_check_amount_to']['#value']);
-    $spending_issue_date_from = trim($form[$filter_dimension][$data_source . '_spending_issue_date_from']['#value']['date']);
-    $spending_issue_date_to = trim($form[$filter_dimension][$data_source . '_spending_issue_date_to']['#value']['date']);
+    $spending_issue_date_from = trim($form[$filter_dimension]['spending_issue_date_from']['#value']['date']);
+    $spending_issue_date_to = trim($form[$filter_dimension]['spending_issue_date_to']['#value']['date']);
     $spending_fund_class = trim($form[$filter_dimension][$data_source . '_spending_fund_class']['#value']);
 
     $spending_department = trim($form_state['input'][$data_source . '_spending_department']);
@@ -651,7 +651,7 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
     $spending_capital_project_exact = trim($form[$filter_dimension][$data_source . '_spending_capital_project_exact']['#value']);
     $spending_expense_type = trim($form[$filter_dimension][$data_source . '_spending_expense_type']['#value']);
     $spending_fiscal_year = trim($form[$filter_dimension]['spending_fiscal_year']['#value']);
-    $spending_date_filter = trim($form[$filter_dimension]['date_filter']['#value']);
+    $spending_date_filter = trim($form_state['input'][$data_source . '_date_filter']['#value']);
 
     $spending_entity_contract_number = trim($form[$filter_dimension][$data_source . '_spending_entity_contract_number']['#value']);
     $spending_entity_contract_number_exact = trim($form[$filter_dimension][$data_source . '_spending_entity_contract_number_exact']['#value']);

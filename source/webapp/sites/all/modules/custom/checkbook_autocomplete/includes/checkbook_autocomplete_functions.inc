@@ -20,11 +20,13 @@
  *   Award method code
  * @param string|null $year
  *   Year
+ * @param string $data_source
+ *   Data source (checkbook, checkbook_oge)
  *
  * @return array
  *   Results from Solr
  */
-function _get_contracts_datafeeds_autocomplete_results($facet, $query, $status = NULL, $category = NULL, $contract_type = NULL, $agency = NULL, $award_method = NULL, $year = NULL) {
+function _get_contracts_datafeeds_autocomplete_results($facet, $query, $status = NULL, $category = NULL, $contract_type = NULL, $agency = NULL, $award_method = NULL, $year = NULL, $data_source = 'checkbook') {
     if ($status == 'pending') {
         $query .= '&fq=contract_status:pending';
     }
@@ -50,8 +52,18 @@ function _get_contracts_datafeeds_autocomplete_results($facet, $query, $status =
         if ($contract_id) $query .= '&fq=contract_type_id:' . $contract_id;
     }
     if ($agency) {
-        $query .= '&fq=agency_code:' . $agency;
+        switch($data_source) {
+            case 'checkbook_oge':
+                $agency_id = _get_contracts_datafeeds_autocomplete_agency_id($agency, 'checkbook_oge');
+                $query .= '&fq=oge_agency_id:' . $agency_id;
+                break;
+
+              default:
+                $query .= '&fq=agency_code:' . $agency;
+                break;
+        }
     }
+
     if ($award_method) {
         $award_method_id = _get_contracts_datafeeds_autocomplete_award_method_options($award_method);
         if ($award_method_id) $query .= '&fq=award_method_id:' . $award_method_id;
@@ -86,12 +98,12 @@ function _checkbook_autocomplete_contracts_vendor($status, $category, $contract_
         {
             case 'checkbook':
                 $query = 'select/?q=vendor_name_code_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name_code&fq=domain:contracts&wt=php&facet.limit=10';
-                $matches = _get_contracts_datafeeds_autocomplete_results('vendor_name_code', $query, $status, $category, $contract_type, $agency, $award_method, $year);
+                $matches = _get_contracts_datafeeds_autocomplete_results('vendor_name_code', $query, $status, $category, $contract_type, $agency, $award_method, $year, $data_source);
                 break;
             case 'checkbook_oge':
                 $query = 'select/?q=vendor_name_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name&fq=domain:contracts&wt=php&facet.limit=10';
                 $query .= '&fq=agency_type:oge';
-                $matches = _get_contracts_datafeeds_autocomplete_results('vendor_name', $query, $status, $category, $contract_type, $agency, $award_method, $year);
+                $matches = _get_contracts_datafeeds_autocomplete_results('vendor_name', $query, $status, $category, $contract_type, $agency, $award_method, $year, $data_source);
                 break;
         }
         drupal_json_output($matches);
@@ -121,7 +133,7 @@ function _checkbook_autocomplete_contracts_contract_number($status, $category, $
     if (!empty($search_term)) {
         $query = 'select/?q=contract_number:' . $search_term . '&facet=true&facet.field=contract_number&fq=domain:contracts&wt=php&facet.limit=10';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
-        $matches = _get_contracts_datafeeds_autocomplete_results('contract_number', $query, $status, $category, $contract_type, $agency, $award_method, $year);
+        $matches = _get_contracts_datafeeds_autocomplete_results('contract_number', $query, $status, $category, $contract_type, $agency, $award_method, $year, $data_source);
         drupal_json_output($matches);
     }
 }
@@ -149,7 +161,7 @@ function _checkbook_autocomplete_contracts_apt_pin($status, $category, $contract
     if (!empty($search_term)) {
         $query = 'select/?q=apt_pin:' . $search_term . '&facet=true&facet.field=apt_pin&fq=domain:contracts&wt=php&facet.limit=10';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
-        $matches = _get_contracts_datafeeds_autocomplete_results('apt_pin', $query, $status, $category, $contract_type, $agency, $award_method, $year);
+        $matches = _get_contracts_datafeeds_autocomplete_results('apt_pin', $query, $status, $category, $contract_type, $agency, $award_method, $year, $data_source);
         drupal_json_output($matches);
     }
 }
@@ -177,7 +189,7 @@ function _checkbook_autocomplete_contracts_pin($status, $category, $contract_typ
     if (!empty($search_term)) {
         $query = 'select/?q=pin:' . $search_term . '&facet=true&facet.field=pin&fq=domain:contracts&wt=php&facet.limit=10';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
-        $matches = _get_contracts_datafeeds_autocomplete_results('pin', $query, $status, $category, $contract_type, $agency, $award_method, $year);
+        $matches = _get_contracts_datafeeds_autocomplete_results('pin', $query, $status, $category, $contract_type, $agency, $award_method, $year, $data_source);
         drupal_json_output($matches);
     }
 }
@@ -205,7 +217,7 @@ function _checkbook_autocomplete_contracts_entitycontractnum($status, $category,
     if (!empty($search_term)) {
         $query = 'select/?q=contract_entity_contract_number:' . $search_term . '&facet=true&facet.field=contract_entity_contract_number&fq=domain:contracts&facet.limit=10&wt=php';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
-        $matches = _get_contracts_datafeeds_autocomplete_results('contract_entity_contract_number', $query, $status, $category, $contract_type, $agency, $award_method, $year);
+        $matches = _get_contracts_datafeeds_autocomplete_results('contract_entity_contract_number', $query, $status, $category, $contract_type, $agency, $award_method, $year, $data_source);
         drupal_json_output($matches);
     }
 }
@@ -233,7 +245,7 @@ function _checkbook_autocomplete_contracts_commodityline($status, $category, $co
     if (!empty($search_term)) {
         $query = 'select/?q=contract_commodity_line:' . $search_term . '&facet=true&facet.field=contract_commodity_line&fq=domain:contracts&facet.limit=10&wt=php';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
-        $matches = _get_contracts_datafeeds_autocomplete_results('contract_commodity_line', $query, $status, $category, $contract_type, $agency, $award_method, $year);
+        $matches = _get_contracts_datafeeds_autocomplete_results('contract_commodity_line', $query, $status, $category, $contract_type, $agency, $award_method, $year, $data_source);
         drupal_json_output($matches);
     }
 }
@@ -261,7 +273,7 @@ function _checkbook_autocomplete_contracts_budgetname($status, $category, $contr
     if (!empty($search_term)) {
         $query = 'select/?q=contract_budget_name_autocomplete:' . $search_term . '&facet=true&facet.field=contract_budget_name&fq=domain:contracts&facet.limit=10&wt=php';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
-        $matches = _get_contracts_datafeeds_autocomplete_results('contract_budget_name', $query, $status, $category, $contract_type, $agency, $award_method, $year);
+        $matches = _get_contracts_datafeeds_autocomplete_results('contract_budget_name', $query, $status, $category, $contract_type, $agency, $award_method, $year, $data_source);
         drupal_json_output($matches);
     }
 }
@@ -332,12 +344,12 @@ function _checkbook_autocomplete_spending_payee($year, $agency, $expcategory, $d
         {
             case 'checkbook':
                 $query = 'select/?q=vendor_name_code_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name_code&fq=domain:spending&wt=php&facet.limit=10';
-                $matches = _get_spending_datafeeds_autocomplete_results('vendor_name_code', $query, $year, $agency, $expcategory, $dept, $exptype);
+                $matches = _get_spending_datafeeds_autocomplete_results('vendor_name_code', $query, $year, $agency, $expcategory, $dept, $exptype, $data_source);
                 break;
             case 'checkbook_oge':
                 $query = 'select/?q=vendor_name_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name&fq=domain:spending&wt=php&facet.limit=10';
                 $query .= '&fq=agency_type:oge';
-                $matches = _get_spending_datafeeds_autocomplete_results('vendor_name', $query, $year, $agency, $expcategory, $dept, $exptype);
+                $matches = _get_spending_datafeeds_autocomplete_results('vendor_name', $query, $year, $agency, $expcategory, $dept, $exptype, $data_source);
                 break;
         }
         drupal_json_output($matches);
@@ -365,7 +377,7 @@ function _checkbook_autocomplete_spending_contractno($year, $agency, $expcategor
     if (!empty($search_term)) {
         $query = 'select/?q=contract_number:' . $search_term . '&facet=true&facet.field=contract_number&fq=domain:spending&facet.limit=10&wt=php';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
-        $matches = _get_spending_datafeeds_autocomplete_results('contract_number', $query, $year, $agency, $expcategory, $dept, $exptype);
+        $matches = _get_spending_datafeeds_autocomplete_results('contract_number', $query, $year, $agency, $expcategory, $dept, $exptype, $data_source);
         drupal_json_output($matches);
     }
 }
@@ -391,7 +403,7 @@ function _checkbook_autocomplete_spending_capitalproject($year, $agency, $expcat
     if (!empty($search_term)) {
         $query = 'select/?q=reporting_code:' . $search_term . '&facet=true&facet.field=reporting_code&fq=domain:spending&facet.limit=10&wt=php';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
-        $matches = _get_spending_datafeeds_autocomplete_results('reporting_code', $query, $year, $agency, $expcategory, $dept, $exptype);
+        $matches = _get_spending_datafeeds_autocomplete_results('reporting_code', $query, $year, $agency, $expcategory, $dept, $exptype, $data_source);
         drupal_json_output($matches);
     }
 }
@@ -417,7 +429,7 @@ function _checkbook_autocomplete_spending_documentid($year, $agency, $expcategor
     if (!empty($search_term)) {
         $query = 'select/?q=expense_id:' . $search_term . '&facet=true&facet.field=expense_id&fq=domain:spending&facet.limit=10&wt=php';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
-        $matches = _get_spending_datafeeds_autocomplete_results('expense_id', $query, $year, $agency, $expcategory, $dept, $exptype);
+        $matches = _get_spending_datafeeds_autocomplete_results('expense_id', $query, $year, $agency, $expcategory, $dept, $exptype, $data_source);
         drupal_json_output($matches);
     }
 }
@@ -443,7 +455,7 @@ function _checkbook_autocomplete_spending_entitycontractnum($year, $agency, $exp
     if (!empty($search_term)) {
         $query = 'select/?q=spending_entity_contract_number:' . $search_term . '&facet=true&facet.field=spending_entity_contract_number&fq=domain:spending&facet.limit=10&wt=php';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
-        $matches = _get_spending_datafeeds_autocomplete_results('spending_entity_contract_number', $query, $year, $agency, $expcategory, $dept, $exptype, $data_source);
+        $matches = _get_spending_datafeeds_autocomplete_results('spending_entity_contract_number', $query, $year, $agency, $expcategory, $dept, $exptype, $data_source, $data_source);
         drupal_json_output($matches);
     }
 }
@@ -469,7 +481,7 @@ function _checkbook_autocomplete_spending_commodityline($year, $agency, $expcate
     if (!empty($search_term)) {
         $query = 'select/?q=spending_commodity_line:' . $search_term . '&facet=true&facet.field=spending_commodity_line&fq=domain:spending&facet.limit=10&wt=php';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
-        $matches = _get_spending_datafeeds_autocomplete_results('spending_commodity_line', $query, $year, $agency, $expcategory, $dept, $exptype, $data_source);
+        $matches = _get_spending_datafeeds_autocomplete_results('spending_commodity_line', $query, $year, $agency, $expcategory, $dept, $exptype, $data_source, $data_source);
         drupal_json_output($matches);
     }
 }
@@ -495,7 +507,7 @@ function _checkbook_autocomplete_spending_budgetname($year, $agency, $expcategor
     if (!empty($search_term)) {
         $query = 'select/?q=spending_budget_name_autocomplete:' . $search_term . '&facet=true&facet.field=spending_budget_name&fq=domain:spending&facet.limit=10&wt=php';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
-        $matches = _get_spending_datafeeds_autocomplete_results('spending_budget_name', $query, $year, $agency, $expcategory, $dept, $exptype, $data_source);
+        $matches = _get_spending_datafeeds_autocomplete_results('spending_budget_name', $query, $year, $agency, $expcategory, $dept, $exptype, $data_source, $data_source);
         drupal_json_output($matches);
     }
 }
@@ -934,7 +946,8 @@ function _checkbook_autocomplete_get_start_end_dates($year, $domain = NULL, $sta
     else {
         if ($status == 'A') {
             $query .= '(start_date:[*%20TO%20' . $start_date . ']%20AND%20end_date:[' . $end_date . '%20TO%20*])OR';
-            $query .= '(start_date:[*%20TO%20' . $end_date . ']%20AND%20end_date[:' . $end_date . '%20TO%20*])OR';
+            $query .= '(start_date:[*%20TO%20' . $end_date . ']%20AND%20end_date:[' . $end_date . '%20TO%20*])OR';
+            $query .= '(start_date:[*%20TO%20' . $start_date . ']%20AND%20end_date:[' . $start_date . '%20TO%20*])OR';
             $query .= '(start_date:[' . $end_date . '%20TO%20*]%20AND%20start_date:[*%20TO%20' . $end_date . '])';
         }
         else {
@@ -1097,6 +1110,27 @@ function _get_spending_datafeeds_autocomplete_expense_type_options($exptype, $da
     return null;
 };
 
+
+/**
+ * Get Contract Type from Data Controller and format into a FAPI select input #options array.
+ *
+ * @return array
+ *   Agency Ids
+ */
+function _get_contracts_datafeeds_autocomplete_agency_id($agency_code, $data_source = 'checkbook') {
+    try {
+
+        $parameters = $data_source == 'checkbook_oge' ? array('agency_code' => $agency_code,"is_oge_agency" => "Y") : array('agency_code' => $agency_code);
+        $dataController = data_controller_get_instance();
+        $results = $dataController->queryDataset($data_source . ':agency', array('agency_id'), $parameters);
+
+        if($results && $results[0]['agency_id']) return $results[0]['agency_id'];
+    }
+    catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
+    }
+    return null;
+}
 
 /**
  * Get Contract Type from Data Controller and format into a FAPI select input #options array.
