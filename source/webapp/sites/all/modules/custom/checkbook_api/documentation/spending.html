@@ -23,8 +23,9 @@
     <tr>
         <td>type_of_data</td>
         <td>Y</td>
-        <td>String – Must be one of the following:<br />Contracts, Payroll, or Spending.</td>
-        <td>Allows user to select different types of data:<br />Value must be one of the following Contracts, Payroll, or Spending.</td>
+        <td>String – Must be one of the following:<br/>Contracts, Budget, Revenue, Payroll, Spending, Spending_OGE, Contracts_OGE.
+        </td>
+        <td>Allows user to select different types of data:<br/>Value must be one of the following Contracts, Budget, Revenue, Payroll, Spending, Spending_OGE, and Contracts_OGE.</td>
         <td>Spending</td>
     </tr>
     <tr>
@@ -54,6 +55,7 @@
     <th>Required (Y/N/C)</th>
     <th>Type of Criteria (Value/Range)</th>
     <th>Format/Value</th>
+    <th>Applicable Filters</th>
     <th>Description</th>
     <th>Spending Category</th>
     <th>Example</th>
@@ -66,6 +68,7 @@
     <td>C</td>
     <td>value</td>
     <td>String - YYYY - Maximum 4 characters</td>
+    <td>Citywide Agencies and Other Government Entities</td>
     <td>Fiscal Year. Must be exactly 4 characters. Either fiscal year or calendar year or Issue Date can be specified.</td>
     <td style="width:175px;">
         <ul>
@@ -83,6 +86,7 @@
     <td>C</td>
     <td>value</td>
     <td>String - YYYY - Maximum 4 characters</td>
+    <td>Citywide Agencies and Other Government Entities</td>
     <td>Calendar Year. Must be exactly 4 characters. Either fiscal year or calendar year or Issue Date can be specified.</td>
     <td style="width:175px;">
         <ul>
@@ -95,13 +99,30 @@
     </td>
     <td>2011</td>
 </tr>
-
-
+<tr>
+    <td >payee_name</td>
+    <td>N</td>
+    <td>value</td>
+    <td>String - Maximum 20 characters</td>
+    <td>Other Government Entities</td>
+    <td>Vendor name. The user shall be able to search using vendor name. The search will return all results that match the first three letters of the vendor name.</td>
+    <td style="width:175px;">
+        <ul>
+            <li>Total Spending</li>
+            <li>Capital Spending</li>
+            <li>Contract Spending</li>
+            <li>Trust &amp; Agency Spending</li>
+            <li>Other Spending</li>
+        </ul>
+    </td>
+    <td>apple inc</td>
+</tr>
 <tr>
     <td >payee_code</td>
     <td>N</td>
     <td>value</td>
     <td>String - Maximum 20 characters</td>
+    <td>Citywide Agencies</td>
     <td>The unique identifier assigned to the vendor/customer. See here for <a href="/ref_code_list/payee">payee codes list</a>.</td>
     <td style="width:175px;">
         <ul>
@@ -115,10 +136,11 @@
     <td>0000636940</td>
 </tr>
 <tr>
-    <td >document_id</td>
+    <td>document_id</td>
     <td>N</td>
     <td>value</td>
     <td>String - Maximum 20 characters</td>
+    <td>Citywide Agencies</td>
     <td>The unique identifier assigned to the vendor/customer. See here for <a href="/ref_code_list/document_id">Document ID list</a>.</td>
     <td><ul>
         <li>Total Spending</li>
@@ -132,10 +154,11 @@
     <td>20110480413</td>
 </tr>
 <tr>
-    <td >agency_code</td>
+    <td>agency_code</td>
     <td>N</td>
     <td>value</td>
     <td>String - Maximum 4 characters</td>
+    <td>Citywide Agencies</td>
     <td>See here for <a href="/ref_code_list/agency">agency codes list</a></td>
     <td><ul>
         <li>Total Spending</li>
@@ -149,10 +172,11 @@
     <td>002</td>
 </tr>
 <tr>
-    <td >issue_date</td>
+    <td>issue_date</td>
     <td>C</td>
     <td>range</td>
     <td>String - YYYY-MM-DD</td>
+    <td>Citywide Agencies and Other Government Entities</td>
     <td>The Check/EFT Issue Date field is the day that represents when the check or electronic funds transfer was issued for disbursement. Either fiscal year or calendar year or Issue Date can be specified.</td>
     <td><ul>
         <li>Total Spending</li>
@@ -170,6 +194,7 @@
     <td>N</td>
     <td>value</td>
     <td>String – Maximum 9 characters</td>
+    <td>Citywide Agencies and Other Government Entities</td>
     <td>An identification code associated with a department on the accounting line. See here for <a href="/ref_code_list/department">department_codes list</a></td>
     <td><ul>
         <li>Total Spending</li>
@@ -187,6 +212,7 @@
     <td>N</td>
     <td>range</td>
     <td>String - Maximum 22 characters</td>
+    <td>Citywide Agencies and Other Government Entities</td>
     <td>This is the net check amount.  It reflects the line amount net any of the deductions (i.e., discount, retainage, withholding, intercepts, interest). Up to "99999999999999.99" (99 trillion); includes decimal and leading negative; no commas or dollar sign.</td>
     <td><ul>
         <li>Total Spending</li>
@@ -200,10 +226,11 @@
     <td>1000000.00</td>
 </tr>
 <tr>
-    <td >expense_category</td>
+    <td>expense_category</td>
     <td>N</td>
     <td>value</td>
     <td>String – Maximum 4 characters</td>
+    <td>Citywide Agencies and Other Government Entities</td>
     <td>See here for <a href="/ref_code_list/spending_expense_category">expense category codes list</a></td>
     <td><ul>
         <li>Total Spending</li>
@@ -221,6 +248,7 @@
     <td>N</td>
     <td>value</td>
     <td>String - Maximum 32 characters</td>
+    <td>Citywide Agencies and Other Government Entities</td>
     <td>Identification code associated with contract.</td>
     <td><ul>
         <li>Total Spending</li>
@@ -232,10 +260,11 @@
     <td>MMA120090026495069</td>
 </tr>
 <tr>
-    <td >capital_project_code</td>
+    <td>capital_project_code</td>
     <td>N</td>
     <td>value</td>
     <td>String - Maximum 15 characters</td>
+    <td>Citywide Agencies</td>
     <td>Identification of Capital Project for which Disbursement is being made. See here for <a href="/ref_code_list/capital_project">capital project codes</a>.</td>
     <td><ul>
         <li>Total Spending</li>
@@ -253,6 +282,7 @@
     <td>N</td>
     <td>value</td>
     <td>String - Maximum 2 characters</td>
+    <td>Citywide Agencies and Other Government Entities</td>
     <td>For total spending, the user shall not include the script for spending category in the request xml (search criteria).By default, that data for total spending is displayed. See here for <a href="/ref_code_list/spending_category">spending category codes</a> list</td>
     <td><ul>
         <li>Total Spending</li>
@@ -265,50 +295,172 @@
     </td>
     <td>c</td>
 </tr>
-
+<tr>
+    <td>budget_name</td>
+    <td>N</td>
+    <td>value</td>
+    <td>String- Maximum 75 characters</td>
+    <td>Other Government Entities</td>
+    <td>Budget name. The user shall be able to search using budget name. The search will return all results that match the first three letters of the budget name.</td>
+    <td><ul>
+            <li>Total Spending</li>
+            <li>Payroll Spending</li>
+            <li>Capital Spending</li>
+            <li>Contract Spending</li>
+            <li>Trust &amp; Agency Spending</li>
+            <li>Other Spending</li>
+        </ul>
+    </td>
+    <td>FA - EDUCATIONAL  ALLIANCE RENOVATIONS</td>
+</tr>
+<tr>
+    <td>commodity_line</td>
+    <td>N</td>
+    <td>value</td>
+    <td>String- Maximum 3 characters</td>
+    <td>Other Government Entities</td>
+    <td></td>
+    <td><ul>
+            <li>Total Spending</li>
+            <li>Payroll Spending</li>
+            <li>Capital Spending</li>
+            <li>Contract Spending</li>
+            <li>Trust &amp; Agency Spending</li>
+            <li>Other Spending</li>
+        </ul>
+    </td>
+    <td>1</td>
+</tr>
+<tr>
+    <td>entity_contract_number</td>
+    <td>N</td>
+    <td>value</td>
+    <td>String- Maximum 15 characters</td>
+    <td>Other Government Entities</td>
+    <td>Identification code associated with OGE contract. The user would need to enter the contract number manually.</td>
+    <td><ul>
+            <li>Total Spending</li>
+            <li>Payroll Spending</li>
+            <li>Capital Spending</li>
+            <li>Contract Spending</li>
+            <li>Trust &amp; Agency Spending</li>
+            <li>Other Spending</li>
+        </ul>
+    </td>
+    <td>48440001</td>
+</tr>
+<tr>
+    <td>other_government_entities_code</td>
+    <td>N</td>
+    <td>value</td>
+    <td>String- Maximum 3 characters</td>
+    <td>Other Government Entities</td>
+    <td>Identifies which government entities the user would want to search. Includes EDC and TDC.See here for other government entities codes.</td>
+    <td><ul>
+            <li>Total Spending</li>
+            <li>Payroll Spending</li>
+            <li>Capital Spending</li>
+            <li>Contract Spending</li>
+            <li>Trust &amp; Agency Spending</li>
+            <li>Other Spending</li>
+        </ul>
+    </td>
+    <td>z81</td>
+</tr>
 </tbody>
 </table>
 <a href="#top" class="float-right">Back to the top</a>
 <a name="possible-response"></a>
 <h3 class="title">Possible response columns:</h3>
-<p>User would be able to select which columns he would like to view in his output. Below mentioned are the possible column names for spending domain. The user should include the required column names in the request xml in an element called &lt;response_columns&gt;</p>
-<table class="api-table">
-    <thead>
-    <tr>
-        <th  colspan="2">Response Column Names</th>
-    </tr>
-    </thead>
+<p>User would be able to select which columns he would like to view in his output. Below mentioned are the possible column names for contracts domain (including OGE column names). The user should include the required column names in the request xml in an element called &lt;response_columns&gt;</p>
+<div class="api-center">
+    <table>
     <tbody>
-    <tr>
-        <td>agency</td>
-        <td>expense_category</td>
-    </tr>
-    <tr>
-        <td>fiscal_year</td>
-        <td>calendar_year</td>
-    </tr>
-    <tr>
-        <td>spending_category</td>
-        <td>contract_id</td>
-    </tr>
-    <tr>
-        <td>document_id</td>
-        <td>purpose</td>
-    </tr>
-    <tr>
-        <td>payee_name</td>
-        <td>issue_date</td>
-    </tr>
-    <tr>
-        <td>check_amount</td>
-        <td>capital_project</td>
-    </tr>
-    <tr>
-        <td>department</td>
-        <td>&nbsp;</td>
-    </tr>
+        <tr>
+            <td class="api-td-left"><table class="api-table">
+            <thead>
+            <tr>
+                <th  colspan="2">Response Column Names Citywide</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>agency</td>
+                <td>expense_category</td>
+            </tr>
+            <tr>
+                <td>fiscal_year</td>
+                <td>calendar_year</td>
+            </tr>
+            <tr>
+                <td>spending_category</td>
+                <td>contract_id</td>
+            </tr>
+            <tr>
+                <td>document_id</td>
+                <td>purpose</td>
+            </tr>
+            <tr>
+                <td>payee_name</td>
+                <td>issue_date</td>
+            </tr>
+            <tr>
+                <td>check_amount</td>
+                <td>capital_project</td>
+            </tr>
+            <tr>
+                <td>department</td>
+                <td>&nbsp;</td>
+            </tr>
+            </tbody>
+        </table></td>
+            <td class="api-td-right"><table class="api-table">
+                <thead>
+                <tr>
+                    <th  colspan="2">Response Column Names OGE</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>other_government_entities</td>
+                    <td>contract_id</td>
+                </tr>
+                <tr>
+                    <td>spending_category</td>
+                    <td>purpose</td>
+                </tr>
+                <tr>
+                    <td>payee_name</td>
+                    <td>issue_date</td>
+                </tr>
+                <tr>
+                    <td>check_amount</td>
+                    <td>capital_project</td>
+                </tr>
+                <tr>
+                    <td>department</td>
+                    <td>budget_name</td>
+                </tr>
+                <tr>
+                    <td>commodity_line</td>
+                    <td>entity_contract_number</td>
+                </tr>
+                <tr>
+                    <td>expense_category</td>
+                    <td>fiscal_year</td>
+                </tr>
+                <tr>
+                    <td>calendar_year</td>
+                    <td>&nbsp;</td>
+                </tr>
+                </tbody>
+            </table></td>
+        </tr>
+
+
     </tbody>
-</table>
+   </table>
+</div>
 <a href="#top" class="float-right">Back to the top</a>
 <a name="sample-xml"></a>
 <h3 class="title">Sample XML Requests and Responses</h3>
@@ -319,7 +471,7 @@
 <p>The response xml also includes status messages for the result. If there is an error, corresponding error code along with description will be included in an element called &lt;messages&gt; for user reference.</p>
 <a href="#top" class="float-right">Back to the top</a>
 <a name="sample-request-spending"></a>
-<h3 class="title">Sample Request: Spending Transactions</h3>
+<h3 class="title">Sample Request: Spending Transactions(Citywide)</h3>
 <pre>
 &lt;request&gt;
     &lt;type_of_data&gt;Spending&lt;/type_of_data&gt;
@@ -478,6 +630,226 @@
         &lt;/spending_transactions&gt;
     &lt;/result_records&gt;
 &lt;/response&gt;
+</pre>
+<a href="#top" class="float-right">Back to the top</a>
+<h3 class="title">Sample Request: Spending Transactions (Other Government Entities)</h3>
+<pre>
+&lt;request&gt;
+    &lt;type_of_data &gt;Spending_OGE&lt;/type_of_data&gt;
+  &lt;records_from&gt;1&lt;/records_from&gt; 
+  &lt;max_records&gt;1000&lt;/max_records&gt; 
+    &lt;search_criteria&gt;
+         &lt;criteria&gt;
+            &lt;name&gt;fiscal_year&lt;/name&gt;
+            &lt;type&gt;value&lt;/type&gt;
+            &lt;value&gt;2013&lt;/value&gt;
+         &lt;/criteria&gt;
+       &lt;criteria&gt;
+          &lt;name&gt;payee_name&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;THE EDUCATIONAL ALLIANCE INC&lt;value&gt;
+       &lt;/criteria&gt;
+        &lt;criteria&gt;
+          &lt;name&gt;department_code&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;110&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;expense_category&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;2110&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;check _amount&lt;/name&gt;
+          &lt;type&gt;range&lt;/type&gt;
+          &lt;start&gt;1000000.00&lt;/start&gt;
+          &lt;end&gt;6500000.00&lt;/end&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;contract_id&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;CTA180120147200602&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;issue_date &lt;/name&gt;
+          &lt;type&gt;range&lt;/type&gt;
+          &lt;start&gt;2013-11-01&lt;/start&gt;
+          &lt;end&gt;2013-11-12&lt;/end&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;spending_category&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;cc&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;capital_project_code&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;801PWM999EDA003&lt;/value&gt;
+      &lt;/criteria&gt;
+     &lt;criteria&gt;
+          &lt;name&gt;budget_name&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;FA - EDUCATIONAL  ALLIANCE RENOVATIONS&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;commodity_line&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;1&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;entity_contract_number&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;48440001&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;other_government_entities_code&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;z81&lt;/value&gt;	
+      &lt;/criteria&gt;
+  &lt;/search_criteria&gt;
+
+&lt;response_columns&gt;
+	&lt;column&gt;other_government_entities&lt;/column&gt;
+       &lt;column&gt;fiscal_year&lt;/column&gt;
+	&lt;column&gt;payee_name&lt;/column&gt;
+	&lt;column&gt;department&lt;/column&gt;
+	&lt;column&gt;check_amount&lt;/column&gt;
+	&lt;column&gt;expense_category&lt;/column&gt;
+	&lt;column&gt;contract_id&lt;/column&gt;
+	&lt;column&gt;purpose&lt;/column&gt;
+	&lt;column&gt;capital_project &lt;/column&gt;
+       &lt;column&gt;issue_date&lt;/column&gt;
+       &lt;column&gt;spending_category&lt;/column&gt;
+       &lt;column&gt;budget_name&lt;/column&gt;
+       &lt;column&gt;commodity_line&lt;/column&gt;
+       &lt;column&gt;entity_contract_number&lt;/column&gt;
+&lt;/response_columns&gt;
+&lt;/request&gt;
+</pre>
+<a href="#top" class="float-right">Back to the top</a>
+<h3 class="title">Sample Response: Spending Transactions (Other Government Entities)</h3>
+<pre>
+&lt;response&gt;
+    &lt;status &gt;
+        &lt;result&gt;success&lt;/result&gt;
+               &lt;/status&gt;
+         &lt;request_criteria&gt;
+              &lt;request&gt;
+    &lt;search_criteria&gt;
+         &lt;criteria&gt;
+            &lt;name&gt;fiscal_year&lt;/name&gt;
+            &lt;type&gt;value&lt;/type&gt;
+            &lt;value&gt;2013&lt;/value&gt;
+         &lt;/criteria&gt;
+       &lt;criteria&gt;
+          &lt;name&gt;payee_name&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;THE EDUCATIONAL ALLIANCE INC&lt;/value&gt;
+       &lt;/criteria&gt;
+        &lt;criteria&gt;
+          &lt;name&gt;department_code&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;110&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;expense_category&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;2110&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;check _amount&lt;/name&gt;
+          &lt;type&gt;range&lt;/type&gt;
+          &lt;start&gt;1000000.00&lt;/start&gt;
+          &lt;end&gt;6500000.00&lt;/end&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;contract_id&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;CTA180120147200602 &lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;issue_date &lt;/name&gt;
+          &lt;type&gt;range&lt;/type&gt;
+          &lt;start&gt;2013-11-01&lt;/start&gt;
+          &lt;end&gt;2013-11-12&lt;/end&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;spending_category&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;cc&lt;/value&gt;
+      &lt;/criteria&gt;
+     &lt;criteria&gt;
+          &lt;name&gt;budget_name&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt; FA - EDUCATIONAL  ALLIANCE RENOVATIONS &lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;commodity_line&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;1&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;entity_contract_number&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;48440001&lt;/value&gt;
+      &lt;/criteria&gt;
+      &lt;criteria&gt;
+          &lt;name&gt;other_government_entities_code&lt;/name&gt;
+          &lt;type&gt;value&lt;/type&gt;
+          &lt;value&gt;z81&lt;/value&gt;
+      &lt;/criteria&gt;
+  &lt;/search_criteria&gt;
+&lt;/request&gt;
+&lt;/request_criteria&gt;
+&lt;result_records&gt;
+&lt; transactions&gt;
+	&lt;transaction&gt; 
+&lt;other_government_entities&gt;NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION&lt;/other_government_entities&gt;
+&lt;fiscal_year&gt;2013&lt;/fiscal_year&gt;
+&lt;payee_name&gt; THE EDUCATIONAL ALLIANCE INC &lt;/payee_name&gt;
+         &lt;department&gt;NYCEDC &lt;/department&gt;
+&lt;check_amount&gt;5832512.31&lt;/check_amount&gt;
+&lt;issue_date&gt;2013-11-12&lt;/issue_date&gt;
+                       &lt;expense_category&gt;CONSTRUCTION-BUILDINGS&lt;/expense_category&gt;
+                       &lt;purpose&gt;FA - Educational Alliance 48440001&lt;/purpose&gt;
+                       &lt;contract_id&gt;CTA180120147200602&lt;/contract_id&gt;
+&lt;capital_project&gt;801PWM999EDA003&lt;/capital_project&gt;
+                       &lt;spending_category&gt;Capital Contracts&lt;/spending_category &gt;
+                       &lt;entity_contract_number&gt;48440001&lt;/ entity_contract_number&gt;
+                       &lt;budget_name&gt;FA - EDUCATIONAL ALLIANCE RENOVATIONS&lt;/budget_name&gt;
+                       &lt;commodity_line&gt;1&lt;/commodity_line&gt;
+             &lt;/transaction&gt;
+    &lt;/transactions&gt;
+ &lt;/result_records&gt;
+&lt;/response&gt;
+</pre>
+
+<h3 class="title">Status Codes and Messages</h3>
+   <p>Status messages are categorized and displayed as status codes with short description for the user to understand the cause of the error. In case of an error no result records will be displayed and the error message will be displayed inside the &lt;message&gt; XML element as shown below. See here for <a href="#" class="status-codes">list of Status codes and Messages</a>.</p>
+
+       Example:
+•	Result is Success <pre>
+&lt;status&gt;
+       &lt;result&gt;success&lt;/result&gt;
+           &lt;messages&gt;
+               &lt;message&gt;
+                               &lt;code&gt;1&lt;/code&gt;
+          &lt;description&gt; The status is still a success but there are no results found for given search criteria&lt;/description&gt;
+                           &lt;/message&gt;
+                      &lt;/messages&gt;
+               &lt;/status&gt;
+</pre>
+•	Result is Failure
+<pre>
+      &lt;status&gt;
+          &lt;result&gt;failure&lt;/result&gt;
+             &lt;messages&gt;
+                  &lt;message&gt;
+                                  &lt;code&gt;1000&lt;/code &gt;
+                                  &lt;description&gt;Required parameter 'type_of_data' is missing&lt;/description&gt;
+                              &lt;/message&gt;
+                        &lt;/messages&gt;
+                &lt;/status&gt;
 </pre>
 <a href="#top" class="float-right">Back to the top</a>
 <div class="status-codes">
