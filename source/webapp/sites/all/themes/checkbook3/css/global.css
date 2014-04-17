@@ -57,6 +57,11 @@ h2 {
     font-weight: bold;
     color: #3c5e7c;
 }
+.tableHeader{
+    float:left;
+    clear:both;
+    width:100%;
+}
 .tableHeader h2{
     font-size:20px;
 }
@@ -1594,7 +1599,7 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
     position:relative;
 }
 
-.oge-ca-details .contract-id .master-contract-link{
+.contract-details-heading .contract-id .master-contract-link{
     margin:10px 0px;
 }
 
