@@ -34,10 +34,10 @@
   }
   foreach ($node->data as $contract) {
     if ($count % 2 == 0) {
-      $class = "class=\"odd\"";
+      $class = "odd";
     }
     else {
-      $class = "class=\"even\"";
+      $class = "even";
     }
 
     ?>
@@ -104,8 +104,7 @@
       }
     );
 
-
-    $(".clickOnLoad").click();
+    jQuery(" .clickOnLoad").click();
   });
 
   
