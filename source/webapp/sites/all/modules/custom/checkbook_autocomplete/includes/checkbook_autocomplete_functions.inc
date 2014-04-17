@@ -401,7 +401,7 @@ function _checkbook_autocomplete_spending_contractno($year, $agency, $expcategor
 function _checkbook_autocomplete_spending_capitalproject($year, $agency, $expcategory, $dept, $exptype = 0, $data_source = 'checkbook') {
     $search_term = _get_autocomplete_search_term();
     if (!empty($search_term)) {
-        $query = 'select/?q=reporting_code:' . $search_term . '&facet=true&facet.field=reporting_code&fq=domain:spending&facet.limit=10&wt=php';
+        $query = 'select/?q=reporting_code_autocomplete:' . $search_term . '&facet=true&facet.field=reporting_code&fq=domain:spending&facet.limit=10&wt=php';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
         $matches = _get_spending_datafeeds_autocomplete_results('reporting_code', $query, $year, $agency, $expcategory, $dept, $exptype, $data_source);
         drupal_json_output($matches);
