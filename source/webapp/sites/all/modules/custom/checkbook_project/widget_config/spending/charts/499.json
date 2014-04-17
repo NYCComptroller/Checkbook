@@ -68,7 +68,7 @@
         "type":"expression2",
         "expression":" 'contract_details'
                        . ( in_array($row['document_code'], array('MMA1','MA1')) ? '/magid/' : '/agid/' )
-                       .  $row['agreement_id'] . '/doctype/' . $row['document_code'] . '/newwindow' "
+                       .  $row['agreement_id'] .  _checkbook_append_url_params() . '/doctype/' . $row['document_code'] . '/newwindow' "
     }
 },
 "limit": "10",

@@ -60,7 +60,8 @@ foreach ($spending_parameter_mapping as $key=>$title){
   }
   if($key == 'contract_number' &&  $spending_results['agreement_id']){
     $value = "<a class=\"new_window\" href=\"/contract_details"
-      . _checkbook_project_get_contract_url($value, $spending_results['agreement_id']) .'/newwindow\">'
+      . (($IsOge)?'/datasource/checkbook_oge' :'')
+      . _checkbook_project_get_contract_url($value, $spending_results['agreement_id']) . '/newwindow\">'
       . $value . "</a>";
   }
   if($key == "vendor_name" && !$spending_results["vendor_id"]){
