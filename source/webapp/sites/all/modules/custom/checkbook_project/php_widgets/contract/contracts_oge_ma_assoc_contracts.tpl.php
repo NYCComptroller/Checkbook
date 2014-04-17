@@ -29,7 +29,6 @@
   <?php
   $count = 0;
   $clickClass = "clickOnLoad";
-  $count = 0;
   if ( _getRequestParamValue("datasource") == "checkbook_oge") {
   	$datasource ="/datasource/checkbook_oge";
   }
@@ -46,14 +45,14 @@
     <td class="assoc_item">
       <div class="contract-title clearfix">
              <span agurl="/minipanels/contracts_cta_history/agid/<?php echo $contract['original_agreement_id'] . $datasource ; ?>"
-                   class="toggler collapsed <?php echo $clickClass . " " . $class; ?>"
+                   class="toggler collapsed <?php echo $clickClass . ' ' . $class; ?>"
                    id="master_assoc_cta_expand"></span>
         <div class='contract-title-text'>Contract Spending for 
         <a href="/panel_html/contract_transactions/contract_details/agid/<?php echo $contract['original_agreement_id'].  $datasource; ?>/doctype/CTA1"
           class="bottomContainerReload"><?php echo $contract['contract_number']; ?></a></div>
 		<?php 
 		if ( _getRequestParamValue("datasource") == "checkbook_oge" && !preg_match('/newwindow/',$_GET['q']) ) {
-			$alt_txt = "This master agreement has infromation as an vendor <br><br> Click this icon to view this contract as vendor ";
+			$alt_txt = "This contract agreement has infromation as a vendor <br><br> Click this icon to view this contract a vendor ";
 			$url="/contract_details/agid/" .  $contract['original_agreement_id'] . "/doctype/CTA1/newwindow";
 			echo "<div class='contractLinkNote'><a href='". $url ."' alt='" . $alt_txt . "' target='_blank' >Open in New Window</a></div>"; 
 		}     
@@ -70,9 +69,9 @@
 
   </tr>
     <?php $count += 1;
-    if ($count > 1) {
+    //if ($count > 0) {
       $clickClass = "";
-    }
+    //}
   }
 
   ?>
@@ -104,6 +103,14 @@
         "asStripeClasses":[]
       }
     );
+
+
+    $(".clickOnLoad").click();
   });
 
+  
+  
 </script>
+
+
+  
