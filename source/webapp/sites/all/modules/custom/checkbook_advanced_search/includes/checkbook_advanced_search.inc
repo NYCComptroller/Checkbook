@@ -507,7 +507,7 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
     $contracts_contract_category = trim($form[$filter_dimension][$data_source . '_contracts_category']['#value']);
     $contracts_contract_vendor_name = trim($form[$filter_dimension][$data_source . '_contracts_vendor_name']['#value']);
     $contracts_contract_purpose = trim($form[$filter_dimension][$data_source . '_contracts_purpose']['#value']);
-    $contracts_contract_type = trim($form[$filter_dimension][$data_source . '_contracts_contract_type']['#value']);
+    $contracts_contract_type = trim($form[$filter_dimension][$data_source . '_contracts_type']['#value']);
     $contracts_contract_agency = trim($form[$filter_dimension][$data_source . '_contracts_agency']['#value']);
     $contracts_contract_contract_num = trim($form[$filter_dimension][$data_source . '_contracts_contract_num']['#value']);
     $contracts_contract_apt_pin = trim($form[$filter_dimension][$data_source . '_contracts_apt_pin']['#value']);
