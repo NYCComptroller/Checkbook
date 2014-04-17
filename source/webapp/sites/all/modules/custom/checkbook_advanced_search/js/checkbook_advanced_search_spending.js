@@ -269,6 +269,9 @@
             //reset Date Filter
             var value = div.ele('date_filter_checked').val();
             if (value == 0) {
+                div.ele('issue_date_from_hidden').val('');
+                div.ele('issue_date_to_hidden').val('');
+
                 div.ele('fiscal_year').attr('disabled', '');
                 div.ele('issue_date_from').attr('disabled', 'disabled');
                 div.ele('issue_date_to').attr('disabled', 'disabled');
@@ -276,6 +279,9 @@
                 div.ele('fiscal_year').attr('disabled', 'disabled');
                 div.ele('issue_date_from').removeAttr("disabled");
                 div.ele('issue_date_to').removeAttr("disabled");
+
+                div.ele('issue_date_from_hidden').val(div.ele('issue_date_from').val());
+                div.ele('issue_date_to_hidden').val(div.ele('issue_date_to').val());
             }
         }
 
@@ -303,12 +309,12 @@
         function onDateFilterClick(div) {
             var value = div.ele('date_filter_checked').val();
             if (value == 0) {
+                div.ele('issue_date_from_hidden').val('');
+                div.ele('issue_date_to_hidden').val('');
+
                 div.ele('fiscal_year').attr('disabled', '');
                 div.ele('issue_date_from').attr('disabled', 'disabled');
                 div.ele('issue_date_to').attr('disabled', 'disabled');
-
-                div.ele('issue_date_from_hidden').val('');
-                div.ele('issue_date_to_hidden').val('');
             } else if (value == 1) {
                 div.ele('fiscal_year').attr('disabled', 'disabled');
                 div.ele('issue_date_from').removeAttr("disabled");
@@ -436,6 +442,9 @@
                 });
             });
             if (div.ele('date_filter_checked').val() == 0) {
+                div.ele('issue_date_from_hidden').val('');
+                div.ele('issue_date_to_hidden').val('');
+
                 div.ele('issue_date_from').attr('disabled', 'disabled');
                 div.ele('issue_date_to').attr('disabled', 'disabled');
             }
