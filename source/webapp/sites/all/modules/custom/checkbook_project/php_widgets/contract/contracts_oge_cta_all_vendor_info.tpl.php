@@ -27,7 +27,7 @@
       <th class="text"><?php echo WidgetUtil::generateLabelMapping("vendor_name"); ?></th>
       <th class="number"><div><span><?php echo $node->widget_count_label; ?></span></div></th>
       <th class="number"><?php echo WidgetUtil::generateLabelMapping("spent_to_date"); ?></th>
-      <th class="number endCol"><?php echo WidgetUtil::generateLabelMapping("vendor_address"); ?></th>
+      <th class="text endCol"><?php echo WidgetUtil::generateLabelMapping("vendor_address"); ?></th>
     </tr>
     </thead>
    <tbody>
