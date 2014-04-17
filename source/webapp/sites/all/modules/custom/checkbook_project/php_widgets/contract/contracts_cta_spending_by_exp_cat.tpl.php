@@ -20,6 +20,10 @@
 ?>
 <h3>Spending by Expense Category</h3>
   <?php
+  
+  if ( _getRequestParamValue("datasource") == "checkbook_oge") {
+  	$datasource ="/datasource/checkbook_oge";
+  }
 echo "<table class='dataTable spending-exp-cat outerTable'>";
 echo "<thead>
         <tr>
@@ -40,7 +44,7 @@ if (count($node->data) > 0) {
     }
     $spending_link = "/spending/transactions/expcategorycode/" . $row['expenditure_object_code'] . "/contnum/" .
       $row['contract_number@checkbook:history_agreement/original_agreement_id@checkbook:aggregateon_contracts_expense']
-      . "/newwindow";
+      . $datasource . "/newwindow";
     echo "<tr class='outer " . $class . "'>";
     echo "<td class='text'><div>" . $row['expenditure_object_name'] . "</div></td>";
     echo "<td class='number'><div>" . custom_number_formatter_format($row['encumbered_amount'], 2, '$') . "</div></td>";
