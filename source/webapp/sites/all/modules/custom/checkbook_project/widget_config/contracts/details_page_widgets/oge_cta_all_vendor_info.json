@@ -16,7 +16,10 @@ $ag_id = _getRequestParamValue('agid');
         join {vendor_history} vh on vh.vendor_history_id = og.vendor_history_id
         join {vendor_address} va on vh.vendor_history_id = va.vendor_history_id        
         join {address} a on va.address_id = a.address_id
-        where dlid.agreement_id = ' . $ag_id . '
+        where  
+        dlid.vendor_id in (
+            select vendor_id from disbursement_line_item_details where agreement_id =       
+         ' . $ag_id . ')
         group by og.vendor_id, og.vendor_name,og.agency_id,a.address_line_1 || \\', \\'|| a. city || \\', \\'|| a. state || \\', \\'|| a. zip;
         ';
         
