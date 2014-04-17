@@ -5,7 +5,7 @@
             "purpose":"description",
             "calendar_year":"fiscal_year",
             "other_government_entities_code":"agency_code@checkbook_oge:agency",
-            "vendor_name":"vendor_name",
+            "vendor_name":"legal_name@checkbook:vendor",
             "current_amount":"maximum_contract_amount",
             "spent_to_date":"spending_amount_disb",
             "award_method":"award_method_code@checkbook_oge:award_method",
@@ -19,6 +19,8 @@
             "pin":"tracking_number",
             "apt_pin":"tracking_number",
             "is_vendor_flag":"is_vendor_flag",
+            "if_for_all_years":"if_for_all_years",
+            "latest_flag":"latest_flag",
             "commodity_line":"fms_commodity_line",
             "entity_contract_number":"oge_contract_number",
             "budget_name":"budget_name"
@@ -28,7 +30,7 @@
             "name":"checkbook_oge:agreement_snapshot_oge",
             "columnTypes":{
                 "contract_number":"like",
-                "vendor_name":"like",
+                "legal_name@checkbook:vendor":"like",
                 "commodity_line":"like",
                 "entity_contract_number":"like",
                 "budget_name":"like"
@@ -46,8 +48,8 @@
                         "original_amount":"original_contract_amount",
                         "current_amount":"maximum_contract_amount",
                         "spent_to_date":"spending_amount_disb",
-                        "vendor":"vendor_name",
-                        "other_government_entities":"agency_name",
+                        "vendor":"legal_name@checkbook:vendor",
+                        "other_government_entities":"agency_name@checkbook_oge:agency",
                         "contract_type":"agreement_type_code",
                         "award_method":"award_method_name",
                         "expense_category":"expenditure_object_names",
@@ -75,8 +77,8 @@
                         "Original Amount":"original_contract_amount",
                         "Current Amount":"maximum_contract_amount",
                         "Spent to date":"spending_amount_disb",
-                        "Vendor":"vendor_name",
-                        "Other Government Entities":"agency_name",
+                        "Vendor":"legal_name@checkbook:vendor",
+                        "Other Government Entities":"agency_name@checkbook_oge:agency",
                         "Contract Type":"agreement_type_name",
                         "Award Method":"award_method_name",
                         "Expense Category":"expenditure_object_names",
@@ -115,6 +117,8 @@
             "pin":{"valueType":"value","dataType":"text"},
             "apt_pin":{"valueType":"value","dataType":"text"},
             "is_vendor_flag":{"valueType":"value","dataType":"text"},
+            "if_for_all_years":{"valueType":"value","dataType":"text"},
+            "latest_flag":{"valueType":"value","dataType":"text"},
             "budget_name":{"valueType":"value","dataType":"text","maxLength":"60"},
             "entity_contract_number":{"valueType":"value","dataType":"text","maxLength":"32"} ,
             "commodity_line":{"valueType":"value","dataType":"text","maxLength":"32"}
@@ -123,7 +127,7 @@
     "contracts_oge_active_expense_all_years":{
         "searchCriteriaMap":{
             "other_government_entities_code":"agency_code@checkbook_oge:agency",
-            "vendor_name":"vendor_name",
+            "vendor_name":"legal_name@checkbook:vendor",
             "purpose":"description",
             "current_amount":"maximum_contract_amount",
             "spent_to_date":"spending_amount_disb",
@@ -138,6 +142,8 @@
             "pin":"tracking_number",
             "apt_pin":"brd_awd_no",
             "is_vendor_flag":"is_vendor_flag",
+            "if_for_all_years":"if_for_all_years",
+            "latest_flag":"latest_flag",
             "commodity_line":"fms_commodity_line",
             "entity_contract_number":"oge_contract_number",
             "budget_name":"budget_name"
@@ -148,7 +154,7 @@
             "columnTypes":{
                 "expenditure_object_codes":"trueLike",
                 "contract_number":"like",
-                "vendor_name":"like",
+                "legal_name@checkbook:vendor":"like",
                 "commodity_line":"like",
                 "entity_contract_number":"like",
                 "budget_name":"like"
@@ -166,8 +172,8 @@
                         "original_amount":"original_contract_amount",
                         "current_amount":"maximum_contract_amount",
                         "spent_to_date":"spending_amount_disb",
-                        "vendor":"vendor_name",
-                        "other_government_entities":"agency_name",
+                        "vendor":"legal_name@checkbook:vendor",
+                        "other_government_entities":"agency_name@checkbook_oge:agency",
                         "contract_type":"agreement_type_code",
                         "award_method":"award_method_name",
                         "expense_category":"expenditure_object_names",
@@ -196,8 +202,8 @@
                         "Original Amount":"original_contract_amount",
                         "Current Amount":"maximum_contract_amount",
                         "Spent to date":"spending_amount_disb",
-                        "Vendor":"vendor_name",
-                        "Other Government Entities":"agency_name",
+                        "Vendor":"legal_name@checkbook:vendor",
+                        "Other Government Entities":"agency_name@checkbook_oge:agency",
                         "Contract Type":"agreement_type_name",
                         "Award Method":"award_method_name",
                         "Expense Category":"expenditure_object_names",
@@ -236,7 +242,9 @@
             "budget_name":{"valueType":"value","dataType":"text","maxLength":"60"},
             "entity_contract_number":{"valueType":"value","dataType":"text","maxLength":"32"} ,
             "commodity_line":{"valueType":"value","dataType":"text","maxLength":"32"},
-            "is_vendor_flag":{"valueType":"value","dataType":"text"}
+            "is_vendor_flag":{"valueType":"value","dataType":"text"},
+            "if_for_all_years":{"valueType":"value","dataType":"text"},
+            "latest_flag":{"valueType":"value","dataType":"text"}
         }
     },
     "requiredCriteria":[
