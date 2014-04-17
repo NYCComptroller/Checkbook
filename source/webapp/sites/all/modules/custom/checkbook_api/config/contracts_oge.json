@@ -17,7 +17,7 @@
             "registration_date":"registered_date",
             "category":"document_code@checkbook_oge:ref_document_code",
             "pin":"tracking_number",
-            "apt_pin":"tracking_number",
+            "apt_pin":"brd_awd_no",
             "is_vendor_flag":"is_vendor_flag",
             "if_for_all_years":"if_for_all_years",
             "latest_flag":"latest_flag",
