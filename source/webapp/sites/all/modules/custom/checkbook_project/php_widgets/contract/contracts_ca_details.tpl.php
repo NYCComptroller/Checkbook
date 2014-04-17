@@ -48,11 +48,11 @@ $spending_link = "/spending/transactions/agid/" . _getRequestParamValue("agid") 
 			$alt_txt = "This contract agreement has infromation as an vendor <br> Click this icon to view this contract as vendor ";
 			$url="/contract_details/agid/" .  _getRequestParamValue("agid") . "/doctype/CTA1/newwindow";
 			echo "<div class='contractLinkNote'><a href='". $url ."' alt='" . $alt_txt . "' target='_blank' >View as Vendor</a></div>"; 
-		}elseif( !preg_match('/newwindow/',$_GET['q'])){
+		}/*elseif( !preg_match('/newwindow/',$_GET['q']) && count(_get_toggle_view_links()) > 0 ){
 			$alt_txt = "This contract agreement has infromation as an agency <br> Click this icon to view this contract as agency ";
 			$url="/contract_details/agid/" .  _getRequestParamValue("agid") . "/doctype/CTA1/datasource/checkbook_oge/newwindow";
 			echo "<div class='contractLinkNote'><a href='". $url ."' alt='" . $alt_txt . "' target='_blank' >View as agency</a></div>";
-		}
+		}*/
 	?>      
 <?php 
 
