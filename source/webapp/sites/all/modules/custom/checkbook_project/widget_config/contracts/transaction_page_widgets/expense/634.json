@@ -23,7 +23,10 @@
         "budname":"budget_name"
 },
 "allowRequestParams":["smnid"],
-"paramTypeConfig":{"entcontnum_exact":"eqignorecase","comline_exact":"eqignorecase","budname_exact":"eqignorecase","curamtr":"rangeid","vendornm":"like","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","regdate":"range","modamt":"ne"},
+"paramTypeConfig":{"budname":"like","entcontnum":"like","comline":"like","entcontnum_exact":"eqignorecase","comline_exact":"eqignorecase",
+                   "budname_exact":"eqignorecase","curamtr":"rangeid","vendornm":"like",
+                   "contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range","startdate":"range",
+                   "enddate":"range","regdate":"range","modamt":"ne"},
 "defaultParameters":{"status_flag":"A","is_vendor_flag":"N","type_of_year":"B","if_for_all_years":"N"},
 "header":"
 	$header = NULL;
