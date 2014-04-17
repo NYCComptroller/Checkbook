@@ -54,7 +54,7 @@
 		if ( _getRequestParamValue("datasource") == "checkbook_oge" && !preg_match('/newwindow/',$_GET['q']) ) {
 			$alt_txt = "This contract agreement has information as a vendor.<br><br> Click this icon to view this contract as a vendor. ";
 			$url="/contract_details/agid/" .  $contract['original_agreement_id'] . "/doctype/CTA1/newwindow";
-			echo "<div class='contractLinkNote'><a href='". $url ."' alt='" . $alt_txt . "' target='_blank' >Open in New Window</a></div>"; 
+			echo "<div class='contractLinkNote'><a class='new_window' href='". $url ."' alt='" . $alt_txt . "' target='_blank' >Open in New Window</a></div>"; 
 		}     
 		?>
           <div class="assoc_amounts">          
