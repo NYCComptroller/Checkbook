@@ -142,12 +142,12 @@
             "entity_contract_number":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"32"
+                "maxLength":"15"
             } ,
             "commodity_line":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"32"
+                "maxLength":"3"
             } 
         }
     },
