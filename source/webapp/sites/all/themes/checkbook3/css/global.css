@@ -976,6 +976,10 @@ div.bottomContainer{
     width: auto;
     margin-right: 5px;
 }
+#checkbook-advanced-search-form .form-item-payroll-amount-type input[type="radio"]{
+    float:none;
+}
+
 #checkbook-advanced-search-form #edit-spending-submit,
 #checkbook-advanced-search-form #edit-spending-clear,
 #checkbook-advanced-search-form #edit-contracts-submit,
