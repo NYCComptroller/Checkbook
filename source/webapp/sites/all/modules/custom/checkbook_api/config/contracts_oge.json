@@ -120,8 +120,8 @@
             "if_for_all_years":{"valueType":"value","dataType":"text"},
             "latest_flag":{"valueType":"value","dataType":"text"},
             "budget_name":{"valueType":"value","dataType":"text","maxLength":"75"},
-            "entity_contract_number":{"valueType":"value","dataType":"text","maxLength":"32"} ,
-            "commodity_line":{"valueType":"value","dataType":"text","maxLength":"32"}
+            "entity_contract_number":{"valueType":"value","dataType":"text","maxLength":"15"} ,
+            "commodity_line":{"valueType":"value","dataType":"text","maxLength":"3"}
         }
     },
     "contracts_oge_active_expense_all_years":{
@@ -240,8 +240,8 @@
             "pin":{"valueType":"value","dataType":"text"},
             "apt_pin":{"valueType":"value","dataType":"text"},
             "budget_name":{"valueType":"value","dataType":"text","maxLength":"75"},
-            "entity_contract_number":{"valueType":"value","dataType":"text","maxLength":"32"} ,
-            "commodity_line":{"valueType":"value","dataType":"text","maxLength":"32"},
+            "entity_contract_number":{"valueType":"value","dataType":"text","maxLength":"15"} ,
+            "commodity_line":{"valueType":"value","dataType":"text","maxLength":"3"},
             "is_vendor_flag":{"valueType":"value","dataType":"text"},
             "if_for_all_years":{"valueType":"value","dataType":"text"},
             "latest_flag":{"valueType":"value","dataType":"text"}
