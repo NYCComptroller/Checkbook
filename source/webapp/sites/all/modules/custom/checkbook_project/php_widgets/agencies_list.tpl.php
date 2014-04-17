@@ -110,7 +110,7 @@ $agency_list_other = "<div id='agency-list-other' class='agency-nav-dropdowns'>
         </div>
     </div>
         <div class='agency-list-nav'><a href='#' id='prev2'>Prev</a><a href='#' id='next2'>Next</a>
-        <a href='/spending_landing" . '/yeartype/B/year/'.$current_fy_year ."/datasource/checkbook_oge/agency/9000"."' id='citywide_all_agencies'>Other Government Entities</a>
+        <a href='/spending_landing" . '/yeartype/B/year/'.$current_fy_year ."/datasource/checkbook_oge/agency/9000"."' id='citywide_all_agencies'>OTHER GOVERNMENT ENTITIES</a>
         </div>
     <div class='agency-list-close'><a href='#'>x Close</a></div>
   </div>
