@@ -60,6 +60,9 @@ h2 {
 .tableHeader h2{
     font-size:20px;
 }
+.tableHeader h3{
+    float:left;
+}
 h2.chart-title {
     font-size:18px;
     text-align: center;
@@ -1590,6 +1593,11 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
 .oge-assoc-contracts-list .contractLinkNote {
     position:relative;
 }
+
+.oge-ca-details .contract-id .master-contract-link{
+    margin:10px 0px;
+}
+
 .oge-ma-details .contract-id .contractLinkNote a,
 .cb-ma-details .contract-id .contractLinkNote a,
 .oge-ca-details .contract-id .contractLinkNote a,
