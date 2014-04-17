@@ -50,15 +50,16 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
     if($contracts_results['document_code'] == 'MA1' || $contracts_results['document_code'] == 'MMA1' || $contracts_results['document_code'] == 'RCT1'){
         $contract_Id_link .= "/magid/".$contracts_results['original_agreement_id']."/doctype/".$contracts_results["document_code"];
     }else{
-        $contract_Id_link .= "/agid/".$contracts_results['original_agreement_id']."/doctype/".$contracts_results["document_code"];
-        $master_contract_Id_link = $contract_Id_link . "/magid/".$contracts_results['master_agreement_id']."/doctype/".$contracts_results["document_code"];
+    	$master_contract_Id_link = $contract_Id_link . "/magid/".$contracts_results['master_agreement_id']."/doctype/MMA1";
+    	$contract_Id_link .= "/agid/".$contracts_results['original_agreement_id']."/doctype/".$contracts_results["document_code"];
         
     }
     $contract_Id_link = ($IsOge) ? $contract_Id_link.'/datasource/checkbook_oge' : $contract_Id_link;
 
     if($contracts_results['original_agreement_id']){
         $contracts_results['contract_number'] = "<a href='".$contract_Id_link ."'>".$contracts_results['contract_number']."</a>";
-        $contracts_results['parent_contract_number'] = "<a href='". $contract_Id_link."'>".$contracts_results['parent_contract_number']."</a>";
+        $master_contract_Id_link = ($IsOge) ? $master_contract_Id_link.'/datasource/checkbook_oge' : $master_contract_Id_link;
+        $contracts_results['parent_contract_number'] = "<a href='". $master_contract_Id_link."'>".$contracts_results['parent_contract_number']."</a>";
     }
 
 
@@ -79,16 +80,16 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
         if($contracts_results['document_code'] == 'MA1' || $contracts_results['document_code'] == 'MMA1' || $contracts_results['document_code'] == 'RCT1'){
             $contract_Id_link .= "/magid/".$contracts_results['original_agreement_id']."/doctype/".$contracts_results["document_code"];
         }else{
-            $contract_Id_link .= "/agid/".$contracts_results['original_agreement_id']."/doctype/".$contracts_results["document_code"];
-            $master_contract_Id_link = $contract_Id_link . "/magid/".$contracts_results['master_agreement_id']."/doctype/".$contracts_results["document_code"];
+        	$master_contract_Id_link = $contract_Id_link . "/magid/".$contracts_results['master_agreement_id']."/doctype/MMA1";        	 
+        	$contract_Id_link .= "/agid/".$contracts_results['original_agreement_id']."/doctype/".$contracts_results["document_code"];
         }
         $contracts_results['contract_number'] = "<a href='".$contract_Id_link ."'>".$contracts_results['contract_number']."</a>";
-        $contracts_results['parent_contract_number'] = "<a href='". $contract_Id_link."'>".$contracts_results['parent_contract_number']."</a>";
+        $contracts_results['parent_contract_number'] = "<a href='". $master_contract_Id_link."'>".$contracts_results['parent_contract_number']."</a>";
     }else{
        $contract_Id_link .= _checkbook_project_get_year_url_param_string()."?expandBottomContURL=/minipanels/pending_contract_transactions/contract/".
                             $contracts_results['fms_pending_contract_number']."/version/".$contracts_results['document_version'];
        $contracts_results['contract_number'] = "<a href='".$contract_Id_link ."'>".$contracts_results['contract_number']."</a>";
-       $contracts_results['parent_contract_number'] = "<a href='". $contract_Id_link."'>".$contracts_results['parent_contract_number']."</a>";
+       $contracts_results['parent_contract_number'] = "<a href='". $master_contract_Id_link."'>".$contracts_results['parent_contract_number']."</a>";
     }
 
     $contracts_results['status'] =  "Pending";
@@ -96,11 +97,17 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
 
 
 if($IsOge && !in_array($contracts_results['contract_type_code'],array('MMA1', 'MA1'))){
-    $linkable_fields = array("oge_agency_name" => $agency_link,
+    $linkable_fields = array("oge_contracting_agency_name" => $agency_link,
                              "agency_name" => $agency_link,
                              "vendor_name" => $vendor_link,
                             );
 }
+
+if($IsOge && in_array($contracts_results['contract_type_code'],array('MMA1'))){
+	$contracts_parameter_mapping['oge_contracting_agency_name'] = "Contracting Agency";
+}
+
+
 
 $date_fields = array("start_date_orig","end_date_orig","received_date","registration_date");
 $amount_fields = array("current_amount", "original_amount");
