@@ -149,6 +149,10 @@
             {"datasetName": "agreement_snapshot_oge", "columnNames": ["display_agency_id"]},
             {"datasetName": "agency", "columnNames": ["agency_id"]}
         ],
+        "contracts_detailed_transactions__ref_vendor": [
+            {"datasetName": "agreement_snapshot_oge", "columnNames": ["display_vendor_id"]},
+            {"datasetName": "vendor", "columnNames": ["vendor_id"]}
+        ],
         "agreement_snapshot_oge__ref_award_method": [
             {"datasetName": "agreement_snapshot_oge", "columnNames": ["award_method_id"]},
             {"datasetName": "award_method", "columnNames": ["award_method_id"]}
