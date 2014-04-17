@@ -15,8 +15,8 @@
             "end_date":"effective_end_date",
             "registration_date":"registered_date",
             "category":"document_code@checkbook:ref_document_code",
-            "pin":"brd_awd_no",
-            "apt_pin":"tracking_number"
+            "pin":"tracking_number",
+            "apt_pin":"brd_awd_no"
         },
         "dataset":{
             "sortColumn":"-registered_date",
@@ -46,8 +46,8 @@
                         "start_date":"effective_begin_date",
                         "end_date":"effective_end_date",
                         "registration_date":"registered_date",
-                        "pin":"brd_awd_no",
-                        "apt_pin":"tracking_number",
+                        "pin":"tracking_number",
+                        "apt_pin":"brd_awd_no",
                         "document_code":"document_code@checkbook:ref_document_code",
                         "contract_industry":"industry_type_name"
                     },
@@ -72,8 +72,8 @@
                         "Start Date":"effective_begin_date",
                         "End Date":"effective_end_date",
                         "Registration Date":"registered_date",
-                        "PIN":"brd_awd_no",
-                        "APT PIN":"tracking_number",
+                        "PIN":"tracking_number",
+                        "APT PIN":"brd_awd_no",
                         "Document Code":"document_code@checkbook:ref_document_code",
                         "Contract Industry":"industry_type_name"
                     }
@@ -129,8 +129,8 @@
             "end_date":"effective_end_date",
             "registration_date":"registered_date",
             "category":"document_code@checkbook:ref_document_code",
-            "pin":"brd_awd_no",
-            "apt_pin":"tracking_number"
+            "pin":"tracking_number",
+            "apt_pin":"brd_awd_no"
         },
         "dataset":{
             "sortColumn":"-registered_date",
@@ -159,8 +159,8 @@
                         "start_date":"effective_begin_date",
                         "end_date":"effective_end_date",
                         "registration_date":"registered_date",
-                        "pin":"brd_awd_no",
-                        "apt_pin":"tracking_number",
+                        "pin":"tracking_number",
+                        "apt_pin":"brd_awd_no",
                         "document_code":"document_code@checkbook:ref_document_code",
                         "contract_industry":"industry_type_name"
                     },
@@ -184,8 +184,8 @@
                         "Start Date":"effective_begin_date",
                         "End Date":"effective_end_date",
                         "Registration Date":"registered_date",
-                        "PIN":"brd_awd_no",
-                        "APT PIN":"tracking_number",
+                        "PIN":"tracking_number",
+                        "APT PIN":"brd_awd_no",
                         "Document Code":"document_code@checkbook:ref_document_code",
                         "Contract Industry":"industry_type_name"
                     }
@@ -283,8 +283,8 @@
             "end_date":"effective_end_date",
             "registration_date":"registered_date",
             "category":"document_code@checkbook:ref_document_code",
-            "pin":"brd_awd_no",
-            "apt_pin":"tracking_number"
+            "pin":"tracking_number",
+            "apt_pin":"brd_awd_no"
         },
         "dataset":{
             "sortColumn":"-registered_date",
@@ -311,8 +311,8 @@
                         "start_date":"effective_begin_date",
                         "end_date":"effective_end_date",
                         "registration_date":"registered_date",
-                        "pin":"brd_awd_no",
-                        "apt_pin":"tracking_number",
+                        "pin":"tracking_number",
+                        "apt_pin":"brd_awd_no",
                         "document_code":"document_code@checkbook:ref_document_code",
                         "contract_industry":"industry_type_name"
                     },
@@ -335,8 +335,8 @@
                         "Start Date":"effective_begin_date",
                         "End Date":"effective_end_date",
                         "Registration Date":"registered_date",
-                        "PIN":"brd_awd_no",
-                        "APT PIN":"tracking_number",
+                        "PIN":"tracking_number",
+                        "APT PIN":"brd_awd_no",
                         "Contract Category":"award_category_name@checkbook:award_category",
                         "Document Code":"document_code@checkbook:ref_document_code",
                         "Contract Industry":"industry_type_name"
@@ -433,8 +433,8 @@
             "end_date":"effective_end_date",
             "registration_date":"registered_date",
             "category":"document_code@checkbook:ref_document_code",
-            "pin":"brd_awd_no",
-            "apt_pin":"tracking_number"
+            "pin":"tracking_number",
+            "apt_pin":"brd_awd_no"
         },
         "dataset":{
             "sortColumn":"-registered_date",
@@ -460,8 +460,8 @@
                         "start_date":"effective_begin_date",
                         "end_date":"effective_end_date",
                         "registration_date":"registered_date",
-                        "pin":"brd_awd_no",
-                        "apt_pin":"tracking_number",
+                        "pin":"tracking_number",
+                        "apt_pin":"brd_awd_no",
                         "document_code":"document_code@checkbook:ref_document_code",
                         "contract_industry":"industry_type_name"
                     },
@@ -483,8 +483,8 @@
                         "Start Date":"effective_begin_date",
                         "End Date":"effective_end_date",
                         "Registration Date":"registered_date",
-                        "PIN":"brd_awd_no",
-                        "APT PIN":"tracking_number",
+                        "PIN":"tracking_number",
+                        "APT PIN":"brd_awd_no",
                         "Contract Category":"award_category_name@checkbook:award_category",
                         "Document Code":"document_code@checkbook:ref_document_code",
                         "Contract Industry":"industry_type_name"
@@ -571,8 +571,8 @@
             "end_date":"end_date",
             "received_date":"cif_received_date",
             "category":"document_code@checkbook:ref_document_code",
-            "pin":"board_award_number",
-            "apt_pin":"tracking_number"
+            "pin":"tracking_number",
+            "apt_pin":"brd_awd_no"
         },
         "dataset":{
             "sortColumn":"-cif_received_date",
@@ -594,8 +594,8 @@
                         "award_method":"award_method_name",
                         "start_date":"start_date",
                         "end_date":"end_date",
-                        "pin":"board_award_number",
-                        "apt_pin":"tracking_number",
+                        "pin":"tracking_number",
+                        "apt_pin":"brd_awd_no",
                         "parent_contract_id":"fms_parent_contract_number",
                         "received_date":"cif_received_date",
                         "document_code":"document_code@checkbook:ref_document_code",
@@ -621,8 +621,8 @@
                         "Award Method":"award_method_name",
                         "Start Date":"start_date",
                         "End Date":"end_date",
-                        "PIN":"board_award_number",
-                        "APT PIN":"tracking_number",
+                        "PIN":"tracking_number",
+                        "APT PIN":"brd_awd_no",
                         "Document Code":"document_code@checkbook:ref_document_code",
                         "Version":"document_version",
                         "Original Amount":"original_maximum_amount",
