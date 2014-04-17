@@ -137,7 +137,7 @@
             "budget_name":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"60"
+                "maxLength":"75"
             },
             "entity_contract_number":{
                 "valueType":"value",
