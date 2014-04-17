@@ -536,8 +536,6 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
     } else {
         $redirect_url = 'contract/transactions';
     }
-    //append data source if not default (checkbook)
-    if($data_source != 'checkbook') $redirect_url .= '/datasource/' . $data_source;
 
     if (!empty($contracts_contract_status)) {
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_status, 'contstatus');
@@ -617,6 +615,9 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_received_date_range_array, 'recdate', TRUE);
 
     $contracts_contract_registration_date_range_array = array('from' => $contracts_contract_registration_date_from, 'to' => $contracts_contract_registration_date_to, 'type' => 'date');
+
+    //append data source if not default (checkbook)
+    if($data_source != 'checkbook') $redirect_url .= '/datasource/' . $data_source;
 
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_registration_date_range_array, 'regdate', TRUE);
     $form_state['redirect'] = $redirect_url;
