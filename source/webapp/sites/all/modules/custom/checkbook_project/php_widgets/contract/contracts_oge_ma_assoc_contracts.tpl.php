@@ -53,14 +53,16 @@
           class="bottomContainerReload"><?php echo $contract['contract_number']; ?></a></div>
 		<?php 
 		if ( _getRequestParamValue("datasource") == "checkbook_oge" && !preg_match('/newwindow/',$_GET['q']) ) {
-			$alt_txt = "This master agreement has infromation as an vendor <br> Click this icon to view this contract as vendor ";
+			$alt_txt = "This master agreement has infromation as an vendor <br><br> Click this icon to view this contract as vendor ";
 			$url="/contract_details/agid/" .  $contract['original_agreement_id'] . "/doctype/CTA1/newwindow";
-			echo "<div class='contractLinkNote'><a href='". $url ."' atl='" . $alt_txt . "' target='_blank' >Open in New Window</a></div>"; 
+			echo "<div class='contractLinkNote'><a href='". $url ."' alt='" . $alt_txt . "' target='_blank' >Open in New Window</a></div>"; 
 		}     
-		?>          
-        <div class="rfed-amount contract-details-assoc"><span class="amount"><?php echo custom_number_formatter_format($contract['spent_amount'], 2, '$');?></span><span class="label">Spent to Date</span></div>          
-        <div class="rfed-amount contract-details-assoc"><span class="amount"><?php echo custom_number_formatter_format($contract['original_amount'], 2, '$');?></span><span class="label">Orignal Amount</span></div>        
-        <div class="rfed-amount contract-details-assoc"><span class="amount"><?php echo custom_number_formatter_format($contract['current_amount'], 2, '$');?></span><span class="label">Current Amount</span></div>        
+		?>
+          <div class="assoc_amounts">          
+            <div class="rfed-amount contract-details-assoc"><span class="amount"><?php echo custom_number_formatter_format($contract['spent_amount'], 2, '$');?></span><span class="label">Spent to Date</span></div>          
+            <div class="rfed-amount contract-details-assoc"><span class="amount"><?php echo custom_number_formatter_format($contract['original_amount'], 2, '$');?></span><span class="label">Orignal Amount</span></div>        
+            <div class="rfed-amount contract-details-assoc"><span class="amount"><?php echo custom_number_formatter_format($contract['current_amount'], 2, '$');?></span><span class="label">Current Amount</span></div>        
+          </div>    
         </div>
 
       <div class="resultsContainer<?php print $count?>">&nbsp</div>

@@ -54,13 +54,13 @@ foreach($node->results_spending as $spending_row){
 //log_error($vendor_contract_yearly_summary);
 ?>
 
-<div class="oge-cta-details ">
+<div class="oge-cta-details " >
 <h3>SPENDING BY PRIME VENDOR</h3>
   <table class="dataTable cta-history outerTable">
     <thead>
     <tr>
       <th class="text"><?php echo WidgetUtil::generateLabelMapping("prime_vendor_name"); ?></th>
-      <th class="text"><?php echo WidgetUtil::generateLabelMapping("original_amount"); ?></th>
+      <th class="number"><?php echo WidgetUtil::generateLabelMapping("original_amount"); ?></th>
       <th class="number"><?php echo WidgetUtil::generateLabelMapping("current_amount"); ?></th>
       <th class="number endCol"><?php echo WidgetUtil::generateLabelMapping("amount_spent"); ?></th>
     </tr>
@@ -72,17 +72,17 @@ foreach($node->results_spending as $spending_row){
     $open1 = "";
 	foreach($vendor_contract_summary as $vendor=>$vendor_summary){
 		if ($count1 % 2 == 0) {
-			$class1 = "class=\"even\"";
+			$class1 = "class=\"even outer\"";
 		}
 		else {
-			$class1 = "class=\"odd\"";
+			$class1 = "class=\"odd outer\"";
 		}
 		$count1 +=1;
 		echo "<tr " . $class1 . ">";
-		echo "<td><div><a class='showHide " . $open1 . " expandTwo'></a>"  . $vendor . "</div></td>";
-		echo "<td><div>"  . custom_number_formatter_format($vendor_summary['current_amount'], 2, '$') . "</div></td>";
-		echo "<td><div>"  . custom_number_formatter_format($vendor_summary['original_amount'] , 2, '$'). "</div></td>";
-		echo "<td><div>"  . custom_number_formatter_format($vendor_summary['check_amount'], 2, '$') . "</div></td>" ;
+		echo "<td class='text'><div><a class='showHide " . $open1 . " expandTwo'></a>"  . $vendor . "</div></td>";
+		echo "<td class='number'><div>"  . custom_number_formatter_format($vendor_summary['current_amount'], 2, '$') . "</div></td>";
+		echo "<td class='number'><div>"  . custom_number_formatter_format($vendor_summary['original_amount'] , 2, '$'). "</div></td>";
+		echo "<td class='number endCol'><div>"  . custom_number_formatter_format($vendor_summary['check_amount'], 2, '$') . "</div></td>" ;
 		echo "</tr>";
 		
   ?>
@@ -98,9 +98,9 @@ foreach($node->results_spending as $spending_row){
 			<thead>
 			    <tr>
 			      <th class="text"><?php echo WidgetUtil::generateLabelMapping("fiscal_year"); ?></th>
-			      <th class="text"><?php echo WidgetUtil::generateLabelMapping("no_of_mod"); ?></th>
+			      <th class="number"><?php echo WidgetUtil::generateLabelMapping("no_of_mod"); ?></th>
 			      <th class="number"><?php echo WidgetUtil::generateLabelMapping("current_amount"); ?></th>
-			      <th class="number endCol"><?php echo WidgetUtil::generateLabelMapping("original_amount"); ?></th>
+			      <th class="number"><?php echo WidgetUtil::generateLabelMapping("original_amount"); ?></th>
 			      <th class="number endCol"><?php echo WidgetUtil::generateLabelMapping("increase_decrease"); ?></th>	      
 			    </tr>
 		    </thead><tbody>
@@ -113,18 +113,18 @@ foreach($node->results_spending as $spending_row){
 				$count2 = 0;
 				foreach($vendor_contract_yearly_summary[$vendor] as $year=>$results_contract_history_fy){
 					if ($count2 % 2 == 0) {
-						$class2 = "class=\"even\"";
+						$class2 = "class=\"even  outer\"";
 					}
 					else {
-						$class2 = "class=\"odd\"";
+						$class2 = "class=\"odd  outer\"";
 					}
 					$count2 +=1;
 					echo "<tr " . $class2 .">";
-					echo "<td><div><a class='showHide " . $open2 . "' ></a>FY "  . $year . "</div></td>";
-					echo "<td><div>"  . $results_contract_history_fy['no_of_mods'] . "</div></td>";
-					echo "<td><div>"  . custom_number_formatter_format($results_contract_history_fy['current_amount'], 2, '$') . "</div></td>";
-					echo "<td><div>"  . custom_number_formatter_format($results_contract_history_fy['original_amount'] , 2, '$'). "</div></td>";
-					echo "<td><div>"  . custom_number_formatter_format($results_contract_history_fy['current_amount'] - $results_contract_history_fy['original_amount'], 2, '$') . "</div></td>";
+					echo "<td class='text'><div><a class='showHide " . $open2 . "' ></a>FY "  . $year . "</div></td>";
+					echo "<td class='number'><div>"  . $results_contract_history_fy['no_of_mods'] . "</div></td>";
+					echo "<td class='number'><div>"  . custom_number_formatter_format($results_contract_history_fy['current_amount'], 2, '$') . "</div></td>";
+					echo "<td class='number'><div>"  . custom_number_formatter_format($results_contract_history_fy['original_amount'] , 2, '$'). "</div></td>";
+					echo "<td class='number endCol'><div>"  . custom_number_formatter_format($results_contract_history_fy['current_amount'] - $results_contract_history_fy['original_amount'], 2, '$') . "</div></td>";
 					echo "</tr>";
 					
 					
@@ -139,7 +139,7 @@ foreach($node->results_spending as $spending_row){
 	                    <th class='text thStartDate'>".WidgetUtil::generateLabelMapping("start_date")."</th>
 	                    <th class='text thEndDate'>".WidgetUtil::generateLabelMapping("end_date")."</th>
 	                    <th class='text purpose'>".WidgetUtil::generateLabelMapping("contract_purpose")."</th>
-	                    <th class='text thVNum'>".WidgetUtil::generateLabelMapping("commodity_line")."</th>
+	                    <th class='number thVNum'>".WidgetUtil::generateLabelMapping("commodity_line")."</th>
 	                    <th class='number thCurAmt'>".WidgetUtil::generateLabelMapping("current_amount")."</th>
 	                    <th class='number thOrigAmt'>".WidgetUtil::generateLabelMapping("original_amount")."</th>
 	                    <th class='number thIncDec'>".WidgetUtil::generateLabelMapping("increase_decrease")."</th>
@@ -150,10 +150,10 @@ foreach($node->results_spending as $spending_row){
 							$count3 = 0;
 							if($contract_history['document_fiscal_year'] == $year && $contract_history['vendor_name'] == $vendor){
 								if ($count3 % 2 == 0) {
-									$class3 = "class=\"even\"";
+									$class3 = "class=\"even  \"";
 								}
 								else {
-									$class3 = "class=\"odd\"";
+									$class3 = "class=\"odd  \"";
 								}
 								$count3 +=1;
 								echo "
@@ -164,7 +164,7 @@ foreach($node->results_spending as $spending_row){
 					                    <td class='number thVNum'><div>".$contract_history['fms_commodity_line']."</div></td>
 					                    <td class='number thCurAmt'><div>".custom_number_formatter_format($contract_history['current_amount_commodity_level'], 2, '$')."</div></td>
 					                    <td class='number thOrigAmt'><div>".custom_number_formatter_format($contract_history['original_amount'], 2, '$')."</div></td>
-					                    <td class='number thIncDec'><div>".custom_number_formatter_format($contract_history['current_amount_commodity_level']-$contract_history['original_amount'], 2, '$')."</div></td>
+					                    <td class='number thCommodLvl endCol'><div>".custom_number_formatter_format($contract_history['current_amount_commodity_level']-$contract_history['original_amount'], 2, '$')."</div></td>
 					                  	</tr>";
 							}
 
@@ -191,7 +191,7 @@ foreach($node->results_spending as $spending_row){
 			<thead>
 			    <tr>
 			      <th class="text"><?php echo WidgetUtil::generateLabelMapping("fiscal_year"); ?></th>
-			      <th class="text"><?php echo WidgetUtil::generateLabelMapping("no_of_transactions"); ?></th>
+			      <th class="number"><?php echo WidgetUtil::generateLabelMapping("no_of_transactions"); ?></th>
 			      <th class="number endCol"><?php echo WidgetUtil::generateLabelMapping("amount_spent"); ?></th>
 			    </tr>
 		    </thead><tbody>
@@ -200,64 +200,74 @@ foreach($node->results_spending as $spending_row){
 				$hide_text2 = "";
 				$open2 = "";
 				$count2 = 0;
-				foreach($vendor_spending_yearly_summary[$vendor] as $year=>$results_spending_history_fy){
-					if ($count2 % 2 == 0) {
-						$class2 = "class=\"even\"";
-					}
-					else {
-						$class2 = "class=\"odd\"";
-					}
-					$count2 +=1;
-					echo "<tr " . $class2 .">";
-					echo "<td><div><a class='showHide " . $open2 . " '></a>FY "  . $year . "</div></td>";
-					echo "<td><div>"  . $results_spending_history_fy['no_of_trans'] . "</div></td>";
-					echo "<td><div>"  . custom_number_formatter_format($results_spending_history_fy['amount_spent'], 2, '$') . "</div></td>";
-					echo "</tr>";
-					
-					
-					/// start level 3
-						echo "<tr class='showHide' "  . $hide_text2 . " >";
-						echo "<td colspan='3' >";
-						echo "<div class='scroll'>";
-						echo "<table class='sub-table col5 dataTable'>";
-	
-						echo "<thead>
-	                  	<tr>
-	                    <th class='text thStartDate'>".WidgetUtil::generateLabelMapping("start_date")."</th>
-	                    <th class='number thEndDate'>".WidgetUtil::generateLabelMapping("check_amount")."</th>
-	                    <th class='text purpose'>".WidgetUtil::generateLabelMapping("expense_category")."</th>
-	                    <th class='text thVNum'>".WidgetUtil::generateLabelMapping("agency_name")."</th>
-	                    <th class='text thCurAmt'>".WidgetUtil::generateLabelMapping("dept_name")."</th>
-	                  	</tr></thead><tbody>";
-						$open2 = "open";
-						$hide_text2 = "style=display:none";
-						foreach($node->results_spending as $contract_spending){
-							$class3 = 0;
-							if($contract_spending['fiscal_year'] == $year && $contract_spending['vendor_name'] == $vendor){
-								if ($count3 % 2 == 0) {
-									$class3 = "class=\"even\"";
-								}
-								else {
-									$class3 = "class=\"odd\"";
-								}
-								$count3 +=1;
-								echo "
-					                  	<tr " . $class3 . ">
-					                    <td class='text '><div>".$contract_spending['issue_date']."</div></td>
-					                    <td class='number'><div>".custom_number_formatter_format($contract_spending['check_amount'], 2, '$')."</div></td>
-					                    <td class='text '><div>".$contract_spending['expenditure_object_name']."</div></td>
-					                    <td class='text '><div>".$contract_spending['agency_name']."</div></td>
-					                    <td class='text '><div>".$contract_spending['department_name']."</div></td>
-					                  	</tr>";
-							}
-
+				if(count($node->results_spending) > 0){
+					foreach($vendor_spending_yearly_summary[$vendor] as $year=>$results_spending_history_fy){
+						if ($count2 % 2 == 0) {
+							$class2 = "class=\"even  outer\"";
 						}
-						echo "</tbody></table>
-						</div>
-						</td>
-						</tr>"	;
-					/// end level 3
-				}		
+						else {
+							$class2 = "class=\"odd  outer\"";
+						}
+						$count2 +=1;
+						echo "<tr " . $class2 .">";
+						echo "<td  class='text'><div><a class='showHide " . $open2 . " '></a>FY "  . $year . "</div></td>";
+						echo "<td class='number'><div>"  . $results_spending_history_fy['no_of_trans'] . "</div></td>";
+						echo "<td class='number endCol'><div>"  . custom_number_formatter_format($results_spending_history_fy['amount_spent'], 2, '$') . "</div></td>";
+						echo "</tr>";
+						
+						
+						/// start level 3
+							echo "<tr class='showHide' "  . $hide_text2 . " >";
+							echo "<td colspan='3' >";
+							echo "<div class='scroll'>";
+							echo "<table class='sub-table col5 dataTable'>";
+		
+							echo "<thead>
+		                  	<tr>
+		                    <th class='text thStartDate'>".WidgetUtil::generateLabelMapping("start_date")."</th>
+		                    <th class='number thCurAmt'>".WidgetUtil::generateLabelMapping("check_amount")."</th>
+		                    <th class='text purpose'>".WidgetUtil::generateLabelMapping("expense_category")."</th>
+		                    <th class='text thVNum'>".WidgetUtil::generateLabelMapping("agency_name")."</th>
+		                    <th class='text thCurAmt'>".WidgetUtil::generateLabelMapping("dept_name")."</th>
+		                  	</tr></thead><tbody>";
+							$open2 = "open";
+							$hide_text2 = "style=display:none";
+								foreach($node->results_spending as $contract_spending){
+									$class3 = 0;
+									if($contract_spending['fiscal_year'] == $year && $contract_spending['vendor_name'] == $vendor){
+										if ($count3 % 2 == 0) {
+											$class3 = "class=\"even \"";
+										}
+										else {
+											$class3 = "class=\"odd \"";
+										}
+										$count3 +=1;
+										echo "
+							                  	<tr " . $class3 . ">
+							                    <td class='text '><div>".$contract_spending['issue_date']."</div></td>
+							                    <td class='number'><div>".custom_number_formatter_format($contract_spending['check_amount'], 2, '$')."</div></td>
+							                    <td class='text '><div>".$contract_spending['expenditure_object_name']."</div></td>
+							                    <td class='text '><div>".$contract_spending['agency_name']."</div></td>
+							                    <td class='text endCol'><div>".$contract_spending['department_name']."</div></td>
+							                  	</tr>";
+									}
+		
+								}
+							
+							echo "</tbody></table>
+							</div>
+							</td>
+							</tr>"	;
+						/// end level 3
+					}	
+				}else {
+					echo '<tr class="odd">';
+					echo '<td class="dataTables_empty" valign="top" colspan="3">' .
+							'<div id="no-records-datatable" class="clearfix">
+					                 <span>No Matching Records Found</span>
+					           </div>' . '</td>';
+					echo '</tr>';
+				}
 			echo "</tbody></table>
 			</div>
 			</td>

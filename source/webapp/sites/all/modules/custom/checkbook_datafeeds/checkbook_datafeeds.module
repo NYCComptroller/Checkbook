@@ -1589,72 +1589,6 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#name' => 'enddateto',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'enddateto', $first_time_load, ''),
             );
-            $form['filter']['recdatefrom'] = array(
-                '#type' => 'textfield',
-                '#size' => 15,
-                '#maxlength' => 15,
-                '#description' => 'E.g., ' . date('Y-m-d'),
-                '#attributes' => array('class' => array('datepicker')),
-                '#prefix' => '<div class="datafield receiveddate datarange"><label>Received Date:</label><div class="ranges">',
-                '#id' => 'edit-recdatefrom',
-                '#name' => 'recdatefrom',
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'recdatefrom', $first_time_load, ''),
-                '#states' => array(
-                    'enabled' => array(
-                        'select[name="df_contract_status"]' => array('value' => 'pending')
-                    )
-                )
-            );
-            $form['filter']['recdateto'] = array(
-                '#type' => 'textfield',
-                '#title' => t('to'),
-                '#size' => 15,
-                '#maxlength' => 15,
-                '#description' => 'E.g., ' . date('Y-m-d'),
-                '#attributes' => array('class' => array('datepicker')),
-                '#suffix' => '</div></div>',
-                '#id' => 'edit-recdateto',
-                '#name' => 'recdateto',
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'recdateto', $first_time_load, ''),
-                '#states' => array(
-                    'enabled' => array(
-                        'select[name="df_contract_status"]' => array('value' => 'pending')
-                    )
-                )
-            );
-            $form['filter']['recdatefrom'] = array(
-                '#type' => 'textfield',
-                '#size' => 15,
-                '#maxlength' => 15,
-                '#description' => 'E.g., ' . date('Y-m-d'),
-                '#attributes' => array('class' => array('datepicker')),
-                '#prefix' => '<div class="datafield receiveddate datarange"><label>Received Date:</label><div class="ranges">',
-                '#id' => 'edit-recdatefrom',
-                '#name' => 'recdatefrom',
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'recdatefrom', $first_time_load, ''),
-                '#states' => array(
-                    'enabled' => array(
-                        'select[name="df_contract_status"]' => array('value' => 'pending')
-                    )
-                )
-            );
-            $form['filter']['recdateto'] = array(
-                '#type' => 'textfield',
-                '#title' => t('to'),
-                '#size' => 15,
-                '#maxlength' => 15,
-                '#description' => 'E.g., ' . date('Y-m-d'),
-                '#attributes' => array('class' => array('datepicker')),
-                '#suffix' => '</div></div>',
-                '#id' => 'edit-recdateto',
-                '#name' => 'recdateto',
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'recdateto', $first_time_load, ''),
-                '#states' => array(
-                    'enabled' => array(
-                        'select[name="df_contract_status"]' => array('value' => 'pending')
-                    )
-                )
-            );
             $form['filter']['year'] = array(
                 '#type' => 'select',
                 '#title' => t('Year:'),
@@ -2321,17 +2255,22 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
     if ($values['category']) {
         $criteria['value']['category'] = $values['category'];
     }
-    if ($values['recdatefrom'] !== '' || $values['recdateto'] !== '') {
-        $criteria['range']['received_date'] = array(
-            checknull($values['recdatefrom']),
-            checknull($values['recdateto']),
-        );
+    if($data_source != 'checkbook_oge') {
+        if ($values['recdatefrom'] !== '' || $values['recdateto'] !== '') {
+            $criteria['range']['received_date'] = array(
+                checknull($values['recdatefrom']),
+                checknull($values['recdateto']),
+            );
+        }
     }
     if ($values['pin']) {
         $criteria['value']['pin'] = strtoupper($values['pin']);
     }
     if ($values['apt_pin']) {
         $criteria['value']['apt_pin'] = strtoupper($values['apt_pin']);
+    }
+    if ($values['purpose']) {
+        $criteria['value']['purpose'] = $values['purpose'];
     }
     //By data source
     switch($data_source)

@@ -939,7 +939,8 @@ div.bottomContainer{
     width: 346px;
 }
 #checkbook-datafeeds-data-feed-wizard .column-right,
-#checkbook-advanced-search-form .column-right {
+#checkbook-advanced-search-form .column-right,
+#checkbook-datafeeds-data-feed-wizard--2 .column-right{
     margin-left: 20px;
 }
 #checkbook-advanced-search-form .form-item,
@@ -952,12 +953,16 @@ div.bottomContainer{
 }
 #checkbook-advanced-search-form label {
     float: left;
-    clear:both;
 }
 #checkbook-advanced-search-form select,
 #checkbook-advanced-search-form input {
     float: right;
     width: 195px;
+}
+#checkbook-advanced-search-form input[type="radio"]{
+    float: left;
+    width: auto;
+    margin-right: 5px;
 }
 #checkbook-advanced-search-form #edit-spending-submit,
 #checkbook-advanced-search-form #edit-spending-clear,
@@ -1007,6 +1012,7 @@ div.bottomContainer{
 }
 
 /* date filter styles */
+
 #spending-advanced-search div.datefilter .form-item,
 #spending-advanced-search div.year .form-item {
     height: auto;
@@ -1018,6 +1024,13 @@ div.bottomContainer{
     float:left;
     clear:both;
     margin-right: 100px;
+}
+.spending-fieldset #datefilter{float:left;}
+#edit-date-filter .form-item{position:relative;}
+#edit-date-filter .form-item .ajax-progress.ajax-progress-throbber{
+   position:absolute;
+   right:-30px;
+   top:0px;
 }
 
 #edit-date-filter input,
@@ -1037,6 +1050,19 @@ div.bottomContainer{
 {
     clear: none;
     float: left;
+}
+#spending-advanced-search .form-item.form-item-spending-advanced-search-domain-filter,
+#contracts-advanced-search .form-item.form-item-contracts-advanced-search-domain-filter{
+    width:200px;
+    float: left;
+}
+#spending-advanced-search .form-item.form-item-spending-advanced-search-domain-filter input[type="radio"]{
+    width: auto;
+    float: left;
+    margin-right: 5px;
+}
+#contracts-advanced-search .form-item-checkbook-oge-contracts-received-date-to-date label{
+    display: none;
 }
 #spending-advanced-search .form-item.form-type-select.form-item-spending-fiscal-year{float:left;}
 #spending-advanced-search #edit-spending-fiscal-year,
@@ -1071,7 +1097,7 @@ div.bottomContainer{
 #checkbook-advanced-search-form #edit-checkbook-contracts-received-date-from label,
 #checkbook-advanced-search-form #edit-checkbook-contracts-received-date-to label,
 #checkbook-advanced-search-form #edit-checkbook-oge-contracts-received-date-from label,
-#checkbook-advanced-search-form #edit-checkbook-oge-contracts-received-date-to label,
+#checkbook-advanced-search-form #edit-checkbook-oge-contract-received-date-to label,
 
 #checkbook-advanced-search-form #edit-payroll-pay-date-from label,
 #checkbook-advanced-search-form #edit-payroll-pay-date-to label {
@@ -1526,7 +1552,7 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
 }
 .dollar-amounts,
 .inside .transactions-container{float: right;}
-.contract-details {
+.contract-details{
     border: 1px dotted #CACACA;
     border-width: 1px 1px 0px 0px;
     display: block;
@@ -1536,6 +1562,107 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
     padding-top: 20px;
     vertical-align: top;
 }
+.oge-ca-details .contract-details{
+    width:100%;
+    border-right:none;
+}
+.oge-ca-details .contract-details .left,
+.oge-ca-details .contract-details .right{
+    width:441px;
+}
+.oge-ma-details .contract-id h2.contract-title,
+.oge-ma-details .contract-id .contractLinkNote,
+.oge-ca-details .contract-id h2.contract-title,
+.oge-ca-details .contract-id .contractLinkNote,
+.oge-ca-details .contract-id .master-contract-link,
+.oge-assoc-contracts-list .contractLinkNote{
+    float:left;
+}
+.oge-ma-details .contract-id .contractLinkNote,
+.oge-ca-details .contract-id .contractLinkNote,
+.oge-assoc-contracts-list .contractLinkNote {
+    position:relative;
+}
+.oge-ma-details .contract-id .contractLinkNote a,
+.oge-ca-details .contract-id .contractLinkNote a,
+.oge-assoc-contracts-list .contractLinkNote a{
+    display:block;
+    height:16px;
+    width:14px;
+    margin:5px 0px 0px 5px;
+    text-indent: -99999px;
+    background: url("../images/note-icon.png") no-repeat scroll right 0 transparent;
+}
+
+.oge-ma-details .toolTip,
+.oge-ca-details .toolTip,
+.oge-assoc-contracts-list .toolTip{
+    display:none;
+    position:absolute;
+    top:-85px;
+    width:195px;
+    left:-183px;
+    padding:8px 12px;
+    background-color: #f4f4f4;
+    color:#3b5f7f;
+    border:1px solid #c5c5c3;
+    -webkit-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.5);
+    -moz-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.5);
+    box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.5);
+    text-transform: none;
+    margin:0px;
+}
+.oge-assoc-contracts-list .toolTip{
+    top:-89px;
+}
+
+.oge-ma-details .toolTip .bottom,
+.oge-ca-details .toolTip .bottom,
+.oge-assoc-contracts-list .toolTip .bottom{
+    display:block;
+    width:24px;
+    height:18px;
+    position:absolute;
+    margin:0px;
+    background: url("../images/drop-arrow.png") no-repeat scroll right 0 transparent;
+    bottom:-18px;
+    right:12px;
+}
+
+.oge-assoc-contracts-list .contractLinkNote a{
+    margin:0px 0px 0px 5px;
+}
+
+.oge-assoc-contracts-list .assoc_item .contract-title{
+    margin-bottom:5px;
+}
+
+table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title .contract-title-text{
+    margin-top:3px;
+}
+.oge-assoc-contracts-list .assoc_amounts{
+    float:right;
+}
+.oge-assoc-contracts-list .assoc_amounts .rfed-amount{
+    float:left;
+    margin:0px 0px 0px 30px;
+}
+.oge-assoc-contracts-list .assoc_amounts .rfed-amount span{
+    display:block;
+    width:100%;
+    text-align: center;
+    text-transform: capitalize;
+    float:left;
+    clear:both;
+}
+.oge-assoc-contracts-list .assoc_amounts .rfed-amount span.label{
+    font-size: 12px;
+}
+
+.oge-ca-details .contract-id .master-contract-link{
+    clear:both;
+}
+
 .contract-vendor-details {
     border-top: 1px dotted #CACACA;
     display: block;
