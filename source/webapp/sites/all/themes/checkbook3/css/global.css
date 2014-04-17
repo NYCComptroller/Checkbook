@@ -1061,7 +1061,7 @@ div.bottomContainer{
 }
 #spending-advanced-search .form-item.form-item-spending-advanced-search-domain-filter,
 #contracts-advanced-search .form-item.form-item-contracts-advanced-search-domain-filter{
-    width:200px;
+    width:205px;
     float: left;
 }
 #spending-advanced-search .form-item.form-item-spending-advanced-search-domain-filter input[type="radio"]{
