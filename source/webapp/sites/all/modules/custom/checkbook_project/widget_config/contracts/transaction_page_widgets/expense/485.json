@@ -159,7 +159,7 @@
 		{"sClass":"number","sWidth":"125px","asSorting": [ "desc","asc" ]},
 		{"sClass":"number","sWidth":"125px","asSorting": [ "desc","asc" ]},
 		{"sClass":"number","sWidth":"125px","asSorting": [ "desc","asc" ]},
-		{"sClass":"text","sWidth":"135px","asSorting": [ "asc","desc" ]},
+		{"sClass":"text number-left","sWidth":"135px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"135px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"165px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"165px","asSorting": [ "asc","desc" ]},
@@ -249,7 +249,7 @@ jQuery.ajax({
 			sOut += '<td class=\"number\"  style=\"width:125px\">'+ (row[5] == null ? '': row[5])+'</td>';
 			sOut += '<td class=\"number\"  style=\"width:125px\">'+ (row[6] == null ? '': row[6])+'</td>';
 			sOut += '<td class=\"number\"  style=\"width:125px\">'+ (row[7] == null ? '': row[7])+'</td>';
-			sOut += '<td class=\"text\"  style=\"width:135px\">'+ (row[10] == null ? '': row[10])+'</td>';
+			sOut += '<td class=\"text number-left\"  style=\"width:135px\">'+ (row[10] == null ? '': row[10])+'</td>';
 			sOut += '<td class=\"text\"  style=\"width:135px\">'+ (row[11] == null ? '': row[11])+'</td>';
 			sOut += '<td class=\"text\"  style=\"width:165px\">'+ (row[12] == null ? '': row[12])+'</td>';
 			sOut += '<td class=\"text\"  style=\"width:165px\">'+ (row[13] == null ? '': row[13])+'</td>';
