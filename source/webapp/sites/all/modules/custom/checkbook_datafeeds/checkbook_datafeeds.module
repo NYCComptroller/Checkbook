@@ -2205,15 +2205,6 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
     } elseif ($values['df_contract_status'] == 'pending' && $values['category'] == 'expense') {
         $criteria['responseColumns'] = $values['column_select_pending'];
     }
-
-    if ($values['vendor']) {
-        preg_match($pattern, $values['vendor'], $vmatches);
-        if ($vmatches) {
-            $criteria['value']['vendor_name'] = trim($vmatches[1], '[ ]');
-        } else {
-            $criteria['value']['vendor_name'] = $values['vendor'];
-        }
-    }
     if ($values['currentamtfrom'] !== '' || $values['currentamtto'] !== '') {
         $criteria['range']['current_amount'] = array(
             checknull($values['currentamtfrom']),
@@ -2289,12 +2280,29 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
             if ($values['budget_name']) {
                 $criteria['value']['budget_name'] = $values['budget_name'];
             }
+            if ($values['vendor']) {
+                preg_match($pattern, $values['vendor'], $vmatches);
+                if ($vmatches) {
+                    $criteria['value']['vendor_name'] = trim($vmatches[1], '[ ]');
+                } else {
+                    $criteria['value']['vendor_name'] = $values['vendor'];
+                }
+            }
             break;
 
         default:
             if ($values['agency'] != 'Citywide (All Agencies)') {
                 preg_match($pattern, $values['agency'], $amatches);
                 $criteria['value']['agency_code'] = trim($amatches[1], '[ ]');
+            }
+            if ($values['vendor']) {
+                preg_match($pattern, $values['vendor'], $vmatches);
+                if ($vmatches) {
+                    $criteria['value']['vendor_code'] = trim($vmatches[1], '[ ]');
+                }
+                else {
+                    $criteria['value']['vendor_code'] = $values['vendor'];
+                }
             }
             break;
     }
@@ -4930,6 +4938,14 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
             if ($values['contractno']) {
                 $criteria['value']['contract_id'] = $values['contractno'];
             }
+            if ($values['payee_name']) {
+                preg_match($pattern, $values['payee_name'], $pmatches);
+                if ($pmatches) {
+                    $criteria['value']['payee_name'] = trim($pmatches[1], '[ ]');
+                } else {
+                    $criteria['value']['payee_name'] = $values['payee_name'];
+                }
+            }
             break;
 
         default:
@@ -4940,15 +4956,16 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
             if ($values['contractno']) {
                 $criteria['value']['contract_ID'] = $values['contractno'];
             }
+            if ($values['payee_name']) {
+                preg_match($pattern, $values['payee_name'], $pmatches);
+                if ($pmatches) {
+                    $criteria['value']['payee_code'] = trim($pmatches[1], '[ ]');
+                }
+                else {
+                    $criteria['value']['payee_code'] = $values['payee_name'];
+                }
+            }
             break;
-    }
-    if ($values['payee_name']) {
-        preg_match($pattern, $values['payee_name'], $pmatches);
-        if ($pmatches) {
-            $criteria['value']['payee_name'] = trim($pmatches[1], '[ ]');
-        } else {
-            $criteria['value']['payee_name'] = $values['payee_name'];
-        }
     }
     if ($values['date_filter'] == '0') {
         if ($values['year'] && $values['year'] != 'ALL') {
