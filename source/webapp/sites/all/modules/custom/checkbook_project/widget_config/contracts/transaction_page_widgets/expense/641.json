@@ -34,9 +34,8 @@
             }else{
                 $parameters['is_vendor_flag'] = 'N';
             }
-            if(!_getRequestParamValue('year')){
+            if(!_getRequestParamValue('year') || !_getRequestParamValue('calyear')){
                 $parameters['latest_flag'] = 'Y';
-                $parameters['type_of_year'] = 'B';
                 $parameters['if_for_all_years'] = 'Y';
             }else{
                 $parameters['if_for_all_years'] = 'N';
@@ -144,7 +143,7 @@ if(isset($config->model) && is_array($node->data)){
 	    },
 "parent_contract_actual": {
 	      "type": "expression2",
-              "expression": " '<a Master contract link " href=\"/contract_details/magid/' . $row['master_agreement_id']  .  '/datasource/checkbook_oge\">'. $row['master_contract_number'] .'</a>'  "
+              "expression": " '<a Master contract link " href=\"/contract_details/magid/' . $row['master_agreement_id']  .  '/datasource/checkbook_oge/newwindow\">'. $row['master_contract_number'] .'</a>'  "
 	    },
 	"formatted_original_amount": {
 	      "type": "expression2",
@@ -256,7 +255,7 @@ if(isset($config->model) && is_array($node->data)){
         {"label": "Contract ID","column": "contract_link","sortSourceColumn":"contract_number"},
 	    {"label": "<span>Purpose</span>","column": "purpose_formatted","sortSourceColumn":"description"},
 	    {"label": "Version","column": "document_version","type":"number"},
-	    {"label": "FMS Document/ Parent Contract ID","column":"parent_contract_actual"},
+	    {"label": "FMS Document/ Parent Contract ID","column":"master_contract_number"},
         {"label": "Original Amount","column": "formatted_original_amount","sortSourceColumn":"original_contract_amount","type":"number"},
 	    {"label": "Current Amount","column": "formatted_current_amount","sortSourceColumn":"maximum_contract_amount","type":"number"},
 	    {"label": "Spent to date","column": "formatted_spent_to_date","sortSourceColumn":"spending_amount_disb","type":"number"},
