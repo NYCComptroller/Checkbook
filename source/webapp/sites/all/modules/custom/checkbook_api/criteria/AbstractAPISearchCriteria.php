@@ -646,7 +646,7 @@ abstract class AbstractAPISearchCriteria {
         $status = $this->criteria['value']['status'];
         $this->criteria['value']['is_vendor_flag'] = (isset($this->criteria['value']['vendor_name'])) ? "Y" : "N";
 
-        if(isset($this->criteria['value']['year'])){
+        if(isset($this->criteria['value']['year']) || isset($this->criteria['value']['calendar_year'])){
             $this->criteria['value']['if_for_all_years'] = "N";
         }else{
             $this->criteria['value']['if_for_all_years'] = "Y";
