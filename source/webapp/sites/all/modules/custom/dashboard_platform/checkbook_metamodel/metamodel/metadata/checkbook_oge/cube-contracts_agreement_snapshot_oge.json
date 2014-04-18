@@ -111,6 +111,9 @@
                 "total_maximum_contract_amount": {
                     "function": "SUM(COALESCE($COLUMN{maximum_contract_amount},0))"
                 },
+                "total_amount_for_transaction":{
+                   "fuction": "SUM(COALESCE($COLUMN{current_amount_for_transaction},0))"
+                },
                 "g100m_count": {
                     "function": "SUM(CASE WHEN COALESCE($COLUMN{maximum_contract_amount},0) > 100000000 THEN 1 ELSE 0 END)"
                 },
