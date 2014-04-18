@@ -19,7 +19,7 @@
 	"paramTypeConfig":{"vendornm":"like","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","regdate":"range","modamt":"ne"},
     "defaultParameters":{"status_flag":"A","is_vendor_flag":"N","type_of_year":"B","if_for_all_years":"N"},
 "dataset": "checkbook:agreement_snapshot_oge",
-"columns": ["total_maximum_contract_amount"],
+"columns": ["total_amount_for_transaction"],
 "adjustParameters":"
 	    if(function_exists('_checkbook_project_adjustContractParameterFilters')){
 		 _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
