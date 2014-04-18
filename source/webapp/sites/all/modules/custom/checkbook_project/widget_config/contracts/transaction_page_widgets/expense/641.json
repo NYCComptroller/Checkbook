@@ -34,7 +34,7 @@
             }else{
                 $parameters['is_vendor_flag'] = 'N';
             }
-            if(!_getRequestParamValue('year') || !_getRequestParamValue('calyear')){
+            if(!(_getRequestParamValue('year') || _getRequestParamValue('calyear'))){
                 $parameters['latest_flag'] = 'Y';
                 $parameters['if_for_all_years'] = 'Y';
             }else{
