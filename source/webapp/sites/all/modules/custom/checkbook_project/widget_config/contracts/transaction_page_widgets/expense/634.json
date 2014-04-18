@@ -1,20 +1,20 @@
 {
 "widgetType": "data_tables",
 "widgetSubType": "dataTableList",
-"cleanURLParameters":["doctype","contstatus","year","calyear","yeartype","agency","vendor","curamtr","vendornm","contdesc","agrmnttype","agencyh","contnum","aptpin","pin",
+"cleanURLParameters":["doctype","contstatus","year","calyear","yeartype","agency","vendor","curamtr","vendornm","contdesc","agrmnttypecode","agencyh","contnum","aptpin","pin",
     "awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","modamt","entcontnum_exact","entcontnum","comline_exact","comline","budname_exact","budname"],
 "urlParamMap":{"doctype":"document_code@checkbook:ref_document_code",
-               "contstatus":"status_flag" ,
-                "year":"fiscal_year_id",
-                "calyear":"fiscal_year_id",
-                "yeartype":"type_of_year" ,
-                "agency":"agency_id","vendor":"vendor_id",
-                 "curamtr":"maximum_contract_amount","vendornm":"vendor_name","contdesc":"description",
-                 "agrmnttype":"agreement_type_code","agencyh":"agency_history_id","contnum":"contract_number",
-                 "aptpin":"brd_awd_no","pin":"tracking_number","awdmethod":"award_method_id",
-                 "curamt":"maximum_contract_amount","startdate":"effective_begin_date","enddate":"effective_end_date",
-                 "regdate":"registered_date","cindustry":"industry_type_id","csize":"award_size_id",
-                 "modamt":"dollar_difference",
+        "contstatus":"status_flag" ,
+        "year":"fiscal_year_id",
+        "calyear":"fiscal_year_id",
+        "yeartype":"type_of_year" ,
+        "agency":"agency_id","vendor":"vendor_id",
+         "curamtr":"maximum_contract_amount","vendornm":"vendor_name","contdesc":"description",
+         "agrmnttypecode":"agreement_type_code","agencyh":"agency_history_id","contnum":"contract_number",
+         "aptpin":"brd_awd_no","pin":"tracking_number","awdmethod":"award_method_id",
+         "curamt":"maximum_contract_amount","startdate":"effective_begin_date","enddate":"effective_end_date",
+         "regdate":"registered_date","cindustry":"industry_type_id","csize":"award_size_id",
+         "modamt":"dollar_difference",
          "entcontnum_exact":"oge_contract_number",
         "entcontnum":"oge_contract_number",
         "comline_exact":"fms_commodity_line",
@@ -84,7 +84,7 @@
                 "expression": "
                        '<a href=\"/spending/transactions'
                       .  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id']
-                      .  ($row['master_agreement_yn'] == 'Y' ? '/vendor/'.$row['vendor_id'] : '/comline/'.$row['fms_commodity_line'])
+                      .  ($row['master_agreement_yn'] == 'Y' ? '' : ('/comline/'.$row['fms_commodity_line'].'/vendor/'.$row['vendor_id']))
                       . _checkbook_project_get_url_param_string('vendor')
                       . _checkbook_project_get_url_param_string('agency')
                       . _checkbook_append_url_params()
