@@ -61,7 +61,7 @@
 	    },
          "parent_contract_actual": {
 	      "type": "expression2",
-              "expression": " '<a class=\"new_window\" href=\"/contract_details/magid/' . $row['master_agreement_id']  .  '/datasource/checkbook_oge\">'. $row['master_contract_number'] .'</a>'  "
+              "expression": " '<a class=\"new_window\" href=\"/contract_details/magid/' . $row['master_agreement_id']  .  '/datasource/checkbook_oge/newwindow\">'. $row['master_contract_number'] .'</a>'  "
 	    },
 	"formatted_original_amount": {
 	      "type": "expression2",
