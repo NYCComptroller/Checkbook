@@ -26,7 +26,8 @@
                 "vendor_name":"like",
                 "commodity_line":"like",
                 "entity_contract_number":"like",
-                "budget_name@checkbook_oge:oge_contract_oge":"like"
+                "budget_name@checkbook_oge:oge_contract_oge":"like",
+                "oge_contract_number@checkbook_oge:oge_contract_oge":"like"
             },
             "displayConfiguration":{
                 "xml":{
