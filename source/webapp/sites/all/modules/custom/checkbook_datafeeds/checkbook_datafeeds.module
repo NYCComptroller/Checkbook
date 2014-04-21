@@ -4897,6 +4897,10 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
         ),
         'responseColumns' => $values['column_select'],
     );
+
+    if ($values['capital_project']) {
+        $criteria['value']['capital_project_code'] = $values['capital_project'];
+    }
     if ($values['budget_name']) {
         $criteria['value']['budget_name'] = $values['budget_name'];
     }
