@@ -256,7 +256,7 @@
             $parameters['contract_number'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
         }
 
-        if($dtsmnid == 634){//From OGE contracts transactions pages
+        if($dtsmnid == 634 ||  $dtsmnid == 641 ||  $dtsmnid == 642){//From OGE contracts transactions pages
             $data_controller_instance = data_controller_get_operator_factory_instance();
             if($parameters['agreement_commodity_line_number'])
                $parameters['agreement_commodity_line_number'] = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, $parameters['agreement_commodity_line_number']);
