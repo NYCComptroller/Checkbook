@@ -60,6 +60,10 @@
             }
             else
             {
+                var year = 0;
+                if(div.ele('date_filter_checked').val() == 0){
+                    year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
+                }
                 var agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
                 var dept = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
                 var exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
@@ -107,9 +111,9 @@
             onDeptChange(div_checkbook_spending_oge);
         });
         function onDeptChange(div) {
-            if (div.ele('date_filter_checked').val() == 0) {
-                var year_option = div.ele('fiscal_year');
-                year = (year_option.val()) ? year_option.val() : 0;
+            year = 0;
+            if(div.ele('date_filter_checked').val() == 0){
+                year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
             }
             var agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
             var dept = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
@@ -155,6 +159,10 @@
                 div.ele('payee_name').removeAttr("disabled");
             }
 
+            year = 0;
+            if(div.ele('date_filter_checked').val() == 0){
+                year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
+            }
             var agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
             var dept = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
             var exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
@@ -197,6 +205,7 @@
             onFiscalYearChange(div_checkbook_spending_oge);
         });
         function onFiscalYearChange(div) {
+            year = 0;
             if(div.ele('date_filter_checked').val() == 0){
                 year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
             }
@@ -367,7 +376,7 @@
             div.ele('dept').attr("disabled", "disabled");
             div.ele('exp_category').attr("disabled", "disabled");
 
-
+            year = 0;
             if (div.ele('date_filter_checked').val() == 0) {
                 year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
             }
@@ -423,6 +432,7 @@
 
             div_spending_main.each(function () {
                 $(this).focusout(function () {
+                    year = 0;
                     if (div.ele('date_filter_checked').val() == 0) {
                         year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
                     }
