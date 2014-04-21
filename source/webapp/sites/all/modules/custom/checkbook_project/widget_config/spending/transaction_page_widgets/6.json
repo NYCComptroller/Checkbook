@@ -4,7 +4,7 @@
 "cleanURLParameters":["vendornm_exact","expdoc_exact","captprj_exact","contnum_exact",
     "entcontnum_exact","comline_exact","budname_exact","agency","deptnm_facet","expcategorynm_facet",
     "mcagency","agencyh","year","calyear","vendor","mcvendor","expcategory","category","checkamtr","dept",
-    "contnum","checkamt",
+    "contnum","checkamt","comline",
     "chkdate","fundcls","bdgcodenm","captprj","expdoc","vendornm","deptnm","expcategorynm","syear",
     "scalyear","magid","agid","cvendor","cagency","awdmethod","status","csize","cindustry","expcategorycode","month"],
 "urlParamMap":{
@@ -256,6 +256,11 @@
             $parameters['contract_number'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
         }
 
+        if($dtsmnid == 634){//From OGE contracts transactions pages
+            $data_controller_instance = data_controller_get_operator_factory_instance();
+            if($parameters['agreement_commodity_line_number'])
+               $parameters['agreement_commodity_line_number'] = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, $parameters['agreement_commodity_line_number']);
+        }
 
             $adjustedParameters = $parameters;
             if(function_exists('_checkbook_project_applyParameterFilters')){
