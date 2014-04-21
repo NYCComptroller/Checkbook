@@ -587,8 +587,9 @@ function _checkbook_advanced_search_autocomplete_contracts_entitycontractnum($st
  */
 function _checkbook_advanced_search_autocomplete_contracts_commodityline($status, $category, $contract_type, $agency, $award_method, $year, $data_source = 'checkbook') {
     $searchTerm = _get_autocomplete_search_term();
+    $facet_prefix = _get_autocomplete_search_term_facet_prefix();
     if(strlen($searchTerm) > 0){
-        $query = 'select/?q=contract_commodity_line:'. $searchTerm .'&facet=true&facet.field=contract_commodity_line&fq=domain:contracts&facet.limit=10&wt=php';
+        $query = 'select/?q=contract_commodity_line:'. $searchTerm .'&facet=true&facet.field=contract_commodity_line&facet.prefix='. $facet_prefix .'&fq=domain:contracts&facet.limit=10&wt=php';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
         $matches = _get_contracts_advanced_search_autocomplete_results('contract_commodity_line', $query, $status, $category, $contract_type, $agency, $award_method, $year, $data_source);
         drupal_json_output($matches);
