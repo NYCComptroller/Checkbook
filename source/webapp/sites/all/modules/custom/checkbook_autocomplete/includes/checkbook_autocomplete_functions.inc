@@ -242,8 +242,9 @@ function _checkbook_autocomplete_contracts_entitycontractnum($status, $category,
  */
 function _checkbook_autocomplete_contracts_commodityline($status, $category, $contract_type, $agency, $award_method, $year, $data_source = 'checkbook') {
     $search_term = _get_autocomplete_search_term();
+    $facet_prefix = _get_autocomplete_search_term_facet_prefix();
     if (!empty($search_term)) {
-        $query = 'select/?q=contract_commodity_line:' . $search_term . '&facet=true&facet.field=contract_commodity_line&fq=domain:contracts&facet.limit=10&wt=php';
+        $query = 'select/?q=contract_commodity_line:' . $search_term . '&facet=true&facet.field=contract_commodity_line&facet.prefix='. $facet_prefix .'&fq=domain:contracts&facet.limit=10&wt=php';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
         $matches = _get_contracts_datafeeds_autocomplete_results('contract_commodity_line', $query, $status, $category, $contract_type, $agency, $award_method, $year, $data_source);
         drupal_json_output($matches);
@@ -1030,6 +1031,38 @@ function _get_autocomplete_search_term() {
 }
 
 /**
+ * Get search term from $_REQUEST and prepares it as facet prefix
+ *
+ * @return string
+ *   Search term
+ */
+function _get_autocomplete_search_term_facet_prefix() {
+    if (strlen($_REQUEST['term']) > 0) {
+        $autocomplete_text = trim(htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES));
+        $autocomplete_terms = explode(' ', $autocomplete_text);
+        $autocomplete_text = _checkbook_autocomplete_escapeSolrValue(trim(htmlspecialchars_decode($_REQUEST['term']), ENT_QUOTES));
+
+        if (count($autocomplete_terms) > 0) {
+            $autocomplete_text = "";
+            foreach ($autocomplete_terms as $key => $value) {
+                if (strlen($value) > 0) {
+                    $autocomplete_text .= _checkbook_autocomplete_escapeSolrValue($value) . "%20AND%20";
+                }
+            }
+            $search_term =substr($autocomplete_text, 0, -9);
+        }
+        else {
+            $search_term = $autocomplete_text;
+        }
+
+        return $search_term;
+    }
+    else {
+        return '';
+    }
+}
+
+/**
  * Outputs the solr query result for the input query.
  *
  * @param string $query
@@ -1054,11 +1087,15 @@ function _checkbook_autocomplete_solr_results($query, $facet = NULL) {
     if ($results['response']['numFound'] != 0) {
         $facetcounts = $results['facet_counts']['facet_fields'][$facet];
         $matches = array();
-        foreach ($facetcounts as $key => $value) {
-            if ($value > 0) {
-                $key = (string) $key;
-                $matches[] = $key;
+        if($facetcounts)
+            foreach ($facetcounts as $key => $value) {
+                if ($value > 0) {
+                    $key = (string) $key;
+                    $matches[] = $key;
+                }
             }
+        else {
+            $matches = array(array('label' => 'No Matches Found', 'value' => ''));
         }
     }
     else {
