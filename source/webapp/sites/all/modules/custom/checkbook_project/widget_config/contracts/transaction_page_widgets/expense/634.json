@@ -84,7 +84,7 @@
                 "expression": "
                        '<a href=\"/spending/transactions'
                       .  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id']
-                      .  '/vendor/'.$row['vendor_id']
+                      .  '/vendor/' . ($row['master_agreement_yn'] == 'Y' ? $row['vendor_id'] : $row['vendor_id'])
                       .  ($row['master_agreement_yn'] == 'Y' ? '' : ('/comline/'.$row['fms_commodity_line']))
                       .  ((!(_getRequestParamValue('year') || _getRequestParamValue('calyear'))) ? '/yeartype/B/year/' ._getFiscalYearID():'')
                       . _checkbook_project_get_url_param_string('agency')
