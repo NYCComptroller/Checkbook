@@ -103,7 +103,7 @@
             $('.datepicker', context).datepicker({dateFormat:"yy-mm-dd"});
 
             //Sets up jQuery UI autocompletes and autocomplete filtering functionality
-            var year;
+            var year = 0;
             if ($('input:radio[name=date_filter]:checked').val() == 0) {
                 year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
             }
@@ -124,6 +124,7 @@
             $('.watch:input',context).each(function () {
                 $(this).focusin(function () {
                     //set variables for each field's value
+                    year = 0;
                     if($('input:radio[name=date_filter]:checked').val() == 0){
                         year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
                     }
