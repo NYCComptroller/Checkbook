@@ -768,6 +768,7 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
               "contract_entity_contract_number" => "Entity Contract#",
               "contract_budget_name" => "Budget Name",
               "contract_commodity_line" => "Commodity Line",
+          	  "" => ""
           );
         }
         else{
