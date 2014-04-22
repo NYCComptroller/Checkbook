@@ -635,6 +635,7 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
     $spending_agencies = trim($form[$filter_dimension][$data_source . '_spending_agency']['#value']); //drop down
 
     $spending_expense_category = trim($form[$filter_dimension][$data_source . '_spending_expense_category']);
+    $spending_expense_category = $spending_expense_category == "Select Expense Category" ? 0 : $spending_expense_category;
 
     $spending_check_amount_from = trim($form[$filter_dimension][$data_source . '_spending_check_amount_from']['#value']);
     $spending_check_amount_to = trim($form[$filter_dimension][$data_source . '_spending_check_amount_to']['#value']);
@@ -643,6 +644,8 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
     $spending_fund_class = trim($form[$filter_dimension][$data_source . '_spending_fund_class']['#value']);
 
     $spending_department = trim($form[$filter_dimension][$data_source . '_spending_department']['#value']);
+    $spending_department = $spending_department == "Select Department" ? 0 : $spending_department;
+
     $spending_budget_code = trim($form[$filter_dimension][$data_source . '_spending_budget_code']['#value']);
     $spending_capital_project = trim($form[$filter_dimension][$data_source . '_spending_capital_project']['#value']);
     $spending_capital_project_exact = trim($form[$filter_dimension][$data_source . '_spending_capital_project_exact']['#value']);
