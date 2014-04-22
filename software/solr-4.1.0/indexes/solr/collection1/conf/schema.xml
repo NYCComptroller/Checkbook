@@ -73,6 +73,7 @@
              a default value of "NOW" to indicate when each document was indexed.
           -->
         <field name="timestamp" type="date" indexed="true" stored="true" default="NOW" multiValued="false"/>
+
         <!--
             Checkbook 2.0
             Common Elements from all domains....
@@ -278,8 +279,9 @@
         
         <field name="contract_entity_contract_number" type="string_custom" indexed="true" stored="true" />
         <field name="contract_commodity_line" type="string_custom" indexed="true" stored="true" multiValued="true"/>
-        <field name="contract_budget_name" type="string_custom" indexed="true" stored="true" multiValued="true"/>
-        <field name="contract_budget_name_autocomplete" type="string_autocomplete" indexed="true" multiValued="true"/>
+        <!--Fields used for multi-valued auto complete for multiple works-->
+        <field name="contract_budget_name" type="string" indexed="true" stored="true"/>
+        <field name="contract_budget_name_autocomplete" type="text_autocomplete" indexed="true" stored="true" omitNorms="true" omitTermFreqAndPositions="true"/>
 
     </fields>
 
@@ -366,6 +368,7 @@
     <copyField source="revenue_class_name_code" dest="revenue_class_name_code_autocomplete" />
     <copyField source="revenue_source_name_code" dest="revenue_source_name_code_autocomplete" />
     <copyField source="spending_budget_name" dest="spending_budget_name_autocomplete" />
+    <!--Field used for multi-valued auto complete for multiple works-->
     <copyField source="contract_budget_name" dest="contract_budget_name_autocomplete" />
 
     <types>
@@ -1204,6 +1207,25 @@
                 <tokenizer class="solr.WhitespaceTokenizerFactory"/>
                 <filter class="solr.LowerCaseFilterFactory"/>
                 <filter class="solr.TrimFilterFactory" />
+            </analyzer>
+            <analyzer type="query">
+                <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+            </analyzer>
+        </fieldType>
+        <!--Text Auto complete:
+        Our auto complete mechanism has the following requirements:
+
+        1. We return whole phrase, not just s single word
+        2. Returned phrase can be present multiple times in the index
+        3. We want to know the number of results for the returned phrase
+        4. Common phrases should be shown higher than the less common ones
+        5. Order of words entered by the user doesn't matter-->
+        <fieldType name="text_autocomplete" class="solr.TextField" positionIncrementGap="100">
+            <analyzer type="index">
+                <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+                <filter class="solr.EdgeNGramFilterFactory" minGramSize="1" maxGramSize="25" />
             </analyzer>
             <analyzer type="query">
                 <tokenizer class="solr.WhitespaceTokenizerFactory"/>
