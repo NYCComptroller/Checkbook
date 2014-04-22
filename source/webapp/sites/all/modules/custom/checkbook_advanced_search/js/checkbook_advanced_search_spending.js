@@ -434,7 +434,11 @@
                     jQuery(this).val('');
                 }
                 if (this.type == 'select-one') {
-                    jQuery(this).val('');
+                    var default_option = jQuery(this).attr('default_selected_value');
+                    if(default_option == null)
+                        jQuery(this).find('option:first').attr("selected", "selected");
+                    else
+                        jQuery(this).find('option[value=' + default_option + ']').attr("selected", "selected");
                 }
             });
         }
