@@ -221,4 +221,30 @@ class ContractURLHelper{
 
         }
     }
+
+    function _prepare_oge_contracts_spending_url($row, $node){
+       $agencies = _checkbook_project_querydataset('checkbook_oge:agency',array('agency_id','agency_name'),array('agency_id'=>$row['agency_id'], 'is_oge_agency'=>'Y'));
+       $oge_agency_name = $agencies[0]['agency_name'];
+
+       $vendors = _checkbook_project_querydataset('checkbook_oge:vendor',array('vendor_id','legal_name'),array('vendor_id'=>$row['vendor_id']));
+       $oge_vendor_name = $vendors[0]['legal_name'];
+
+       $vendor_url = '';
+       if(strtolower($oge_agency_name) != strtolower($oge_vendor_name)){
+           $vendor_url = '/vendor/' . $row['vendor_id'];
+       }
+
+       $url = "<a href='/spending/transactions"
+             .  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id']
+             .  ($row['master_agreement_yn'] == 'Y' ? $vendor_url : '/vendor/' . $row['vendor_id'])
+             .  ($row['master_agreement_yn'] == 'Y' ? '' : ('/comline/'.$row['fms_commodity_line']))
+             .  ((!(_getRequestParamValue('year') || _getRequestParamValue('calyear'))) ? '/yeartype/B/year/' . _getFiscalYearID():'')
+             . _checkbook_project_get_url_param_string('agency')
+             . _checkbook_append_url_params()
+             . '/dtsmnid/' . $node->nid
+             .  ( $row['type_of_year'] == 'B' ? ('/year/'. $row['fiscal_year_id'].'/syear/'. $row['fiscal_year_id']) : ('/calyear/'.$row['fiscal_year_id']. '/scalyear/'.$row['fiscal_year_id']) )
+             .  "/newwindow' class='new_window'>" . custom_number_formatter_basic_format($row['spending_amount_disb']) . '</a>';
+        return $url;
+    }
+
 }
