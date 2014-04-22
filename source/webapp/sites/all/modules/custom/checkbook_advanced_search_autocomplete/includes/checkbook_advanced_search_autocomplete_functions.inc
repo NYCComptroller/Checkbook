@@ -559,8 +559,9 @@ function _checkbook_advanced_search_autocomplete_contracts_pin($status, $categor
  */
 function _checkbook_advanced_search_autocomplete_contracts_entitycontractnum($status, $category, $contract_type, $agency, $award_method, $year, $data_source = 'checkbook') {
     $searchTerm = _get_autocomplete_search_term();
+    $facet_prefix = _get_autocomplete_search_term_facet_prefix();
     if(strlen($searchTerm) > 0){
-        $query = 'select/?q=contract_entity_contract_number:'. $searchTerm .'&facet=true&facet.field=contract_entity_contract_number&fq=domain:contracts&facet.limit=10&wt=php';
+        $query = 'select/?q=contract_entity_contract_number:'. $searchTerm .'&facet=true&facet.field=contract_entity_contract_number&facet.prefix='. $facet_prefix .'&fq=domain:contracts&facet.limit=10&wt=php';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
         $matches = _get_contracts_advanced_search_autocomplete_results('contract_entity_contract_number', $query, $status, $category, $contract_type, $agency, $award_method, $year, $data_source);
         drupal_json_output($matches);
@@ -616,8 +617,8 @@ function _checkbook_advanced_search_autocomplete_contracts_commodityline($status
  */
 function _checkbook_advanced_search_autocomplete_contracts_budgetname($status, $category, $contract_type, $agency, $award_method, $year, $data_source = 'checkbook') {
     $searchTerm = _get_autocomplete_search_term();
-    if(strlen($searchTerm) > 0){
-        $query = 'select/?q=contract_budget_name_autocomplete:'. $searchTerm .'&facet=true&facet.field=contract_budget_name&fq=domain:contracts&facet.limit=10&wt=php';
+    if (!empty($searchTerm)) {
+        $query = 'select/?q=contract_budget_name_autocomplete:' . $searchTerm . '&q.op=AND&rows=0&facet=true&facet.field=contract_budget_name&facet.mincount=1&facet.limit=10&wt=php';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
         $matches = _get_contracts_advanced_search_autocomplete_results('contract_budget_name', $query, $status, $category, $contract_type, $agency, $award_method, $year, $data_source);
         drupal_json_output($matches);

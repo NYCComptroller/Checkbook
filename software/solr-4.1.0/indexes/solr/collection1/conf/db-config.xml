@@ -539,9 +539,9 @@
                 expenditure_object_names,
                 (case when(latest_flag = 'Y') then 'Y' else 'N' end) latest_flag,
                 'Registered' status,
-                entity_contract_number.values as entity_contract_number,
-                budget_names.values as budget_name,
-                commodity_lines.values as commodity_line
+                REPLACE(entity_contract_number.values, ', ', ',') As entity_contract_number,
+                REPLACE(budget_names.values, ', ', ',') As budget_name,
+                REPLACE(commodity_lines.values, ', ', ',') As commodity_line
                 from agreement_snapshot a
                 LEFT JOIN oge_contract_vendor_level ogecon ON a.contract_number = ogecon.fms_contract_number AND a.vendor_id = ogecon.vendor_id
                 left join ref_document_code dc on a.document_code_id = dc.document_code_id
