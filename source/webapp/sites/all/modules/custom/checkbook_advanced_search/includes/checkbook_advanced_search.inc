@@ -642,7 +642,7 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
     $spending_issue_date_to = trim($form[$filter_dimension][$data_source . '_spending_issue_date_to']['#value']['date']);
     $spending_fund_class = trim($form[$filter_dimension][$data_source . '_spending_fund_class']['#value']);
 
-    $spending_department = trim($form[$filter_dimension][$data_source . '_spending_department']);
+    $spending_department = trim($form[$filter_dimension][$data_source . '_spending_department']['#value']);
     $spending_budget_code = trim($form[$filter_dimension][$data_source . '_spending_budget_code']['#value']);
     $spending_capital_project = trim($form[$filter_dimension][$data_source . '_spending_capital_project']['#value']);
     $spending_capital_project_exact = trim($form[$filter_dimension][$data_source . '_spending_capital_project_exact']['#value']);
