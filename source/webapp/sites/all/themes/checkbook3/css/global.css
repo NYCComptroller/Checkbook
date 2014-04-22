@@ -1042,8 +1042,12 @@ div.bottomContainer{
     margin-right: 100px;
 }
 .spending-fieldset #datefilter{float:left;}
-#edit-date-filter .form-item{position:relative;}
-#edit-date-filter .form-item .ajax-progress.ajax-progress-throbber{
+#edit-date-filter .form-item,
+#edit-checkbook-spending-date-filter .form-item,
+#edit-checkbook-oge-spending-date-filter .form-item{position:relative;}
+#edit-date-filter .form-item .ajax-progress.ajax-progress-throbber,
+#edit-checkbook-spending-date-filter .form-item .ajax-progress.ajax-progress-throbber,
+#edit-checkbook-oge-spending-date-filter .form-item .ajax-progress.ajax-progress-throbber{
    position:absolute;
    right:-30px;
    top:0px;
@@ -1051,13 +1055,21 @@ div.bottomContainer{
 
 #edit-date-filter input,
 #edit-date-filter--2 input,
+#edit-checkbook-spending-date-filter input,
+#edit-checkbook-spending-date-filter--2 input,
+#edit-checkbook-oge-spending-date-filter input,
+#edit-checkbook-oge-spending-date-filter--2 input
 {
     float: left;
     margin-right: 5px;
     width: auto;
 }
 #edit-date-filter label,
-#edit-date-filter--2 label
+#edit-date-filter--2 label,
+#edit-checkbook-spending-date-filter label,
+#edit-checkbook-spending-date-filter--2 label,
+#edit-checkbook-oge-spending-date-filter label,
+#edit-checkbook-oge-spending-date-filter--2 label
 {
     float:left;
     clear:none;
@@ -1080,15 +1092,23 @@ div.bottomContainer{
 #contracts-advanced-search .form-item-checkbook-oge-contracts-received-date-to-date label{
     display: none;
 }
+
 #spending-advanced-search .form-item.form-type-select.form-item-spending-fiscal-year{float:left;}
-#spending-advanced-search #edit-spending-fiscal-year,
-#spending-advanced-search #edit-spending-fiscal-year--2{
+#spending-advanced-search #edit-checkbook-spending-fiscal-year,
+#spending-advanced-search #edit-checkbook-spending-fiscal-year--2,
+#spending-advanced-search #edit-checkbook-oge-spending-fiscal-year,
+#spending-advanced-search #edit-checkbook-oge-spending-fiscal-year--2{
     width: 90px;
 }
-#checkbook-advanced-search-form #edit-spending-issue-date-from label,
-#checkbook-advanced-search-form #edit-spending-issue-date-to label,
-#checkbook-advanced-search-form #edit-spending-issue-date-from--2 label,
-#checkbook-advanced-search-form #edit-spending-issue-date-to--2 label,
+#checkbook-advanced-search-form #edit-checkbook-spending-issue-date-from label,
+#checkbook-advanced-search-form #edit-checkbook-spending-issue-date-to label,
+#checkbook-advanced-search-form #edit-checkbook-spending-issue-date-from--2 label,
+#checkbook-advanced-search-form #edit-checkbook-spending-issue-date-to--2 label,
+#checkbook-advanced-search-form #edit-checkbook-oge-spending-issue-date-from label,
+#checkbook-advanced-search-form #edit-checkbook-oge-spending-issue-date-to label,
+#checkbook-advanced-search-form #edit-checkbook-oge-spending-issue-date-from--2 label,
+#checkbook-advanced-search-form #edit-checkbook-oge-spending-issue-date-to--2 label,
+
 #checkbook-advanced-search-form #edit-contract-end-date-from label,
 #checkbook-advanced-search-form #edit-contract-end-date-to label,
 #checkbook-advanced-search-form #edit-contract-registration-date-from label,
