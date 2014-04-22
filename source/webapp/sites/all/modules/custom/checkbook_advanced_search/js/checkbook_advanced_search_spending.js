@@ -18,15 +18,13 @@
                 'capital_project':'input:text[name='+data_source+'_spending_capital_project]',
                 'commodity_line':'input:text[name='+data_source+'_spending_commodity_line]',
                 'budget_name':'input:text[name='+data_source+'_spending_budget_name]',
-                'date_filter':'input:radio[name='+data_source+'_date_filter]',
-                'date_filter_year':'input:radio[name='+data_source+'_date_filter][value=0]',
-                'date_filter_issue_date':'input:radio[name='+data_source+'_date_filter][value=1]',
-                'date_filter_checked':'input:radio[name='+data_source+'_date_filter]:checked',
-                'fiscal_year':'select[name="spending_fiscal_year"]',
-                'issue_date_from':'input:text[name="spending_issue_date_from[date]"]',
-                'issue_date_to':'input:text[name="spending_issue_date_to[date]"]',
-                'issue_date_from_hidden':'input:hidden[name='+data_source+'_spending_issue_date_from_exact]',
-                'issue_date_to_hidden':'input:hidden[name='+data_source+'_spending_issue_date_to_exact]'
+                'date_filter':'input:radio[name='+data_source+'_spending_date_filter]',
+                'date_filter_year':'input:radio[name='+data_source+'_spending_date_filter][value=0]',
+                'date_filter_issue_date':'input:radio[name='+data_source+'_spending_date_filter][value=1]',
+                'date_filter_checked':'input:radio[name='+data_source+'_spending_date_filter]:checked',
+                'fiscal_year':'select[name="'+data_source+'_spending_fiscal_year"]',
+                'issue_date_from':'input:text[name="'+data_source+'_spending_issue_date_from[date]"]',
+                'issue_date_to':'input:text[name="'+data_source+'_spending_issue_date_to[date]"]'
             };
 
             this.data_source = data_source;
@@ -278,9 +276,6 @@
             //reset Date Filter
             var value = div.ele('date_filter_checked').val();
             if (value == 0) {
-                div.ele('issue_date_from_hidden').val('');
-                div.ele('issue_date_to_hidden').val('');
-
                 div.ele('fiscal_year').attr('disabled', '');
                 div.ele('issue_date_from').attr('disabled', 'disabled');
                 div.ele('issue_date_to').attr('disabled', 'disabled');
@@ -288,26 +283,8 @@
                 div.ele('fiscal_year').attr('disabled', 'disabled');
                 div.ele('issue_date_from').removeAttr("disabled");
                 div.ele('issue_date_to').removeAttr("disabled");
-
-                div.ele('issue_date_from_hidden').val(div.ele('issue_date_from').val());
-                div.ele('issue_date_to_hidden').val(div.ele('issue_date_to').val());
             }
         }
-
-        //On change of issue date
-        div_checkbook_spending.ele('issue_date_from').change(function () {
-            div_checkbook_spending.ele('issue_date_from_hidden').val(div_checkbook_spending.ele('issue_date_from').val());
-        });
-        div_checkbook_spending_oge.ele('issue_date_from').change(function () {
-            div_checkbook_spending_oge.ele('issue_date_from_hidden').val(div_checkbook_spending_oge.ele('issue_date_from').val());
-        });
-        div_checkbook_spending.ele('issue_date_to').change(function () {
-            div_checkbook_spending.ele('issue_date_to_hidden').val(div_checkbook_spending.ele('issue_date_to').val());
-        });
-        div_checkbook_spending_oge.ele('issue_date_to').change(function () {
-            div_checkbook_spending_oge.ele('issue_date_to_hidden').val(div_checkbook_spending_oge.ele('issue_date_to').val());
-        });
-
         //On click of "Date Filter"
         div_checkbook_spending.ele('date_filter').click(function () {
             onDateFilterClick(div_checkbook_spending);
@@ -318,9 +295,6 @@
         function onDateFilterClick(div) {
             var value = div.ele('date_filter_checked').val();
             if (value == 0) {
-                div.ele('issue_date_from_hidden').val('');
-                div.ele('issue_date_to_hidden').val('');
-
                 div.ele('fiscal_year').attr('disabled', '');
                 div.ele('issue_date_from').attr('disabled', 'disabled');
                 div.ele('issue_date_to').attr('disabled', 'disabled');
@@ -328,9 +302,6 @@
                 div.ele('fiscal_year').attr('disabled', 'disabled');
                 div.ele('issue_date_from').removeAttr("disabled");
                 div.ele('issue_date_to').removeAttr("disabled");
-
-                div.ele('issue_date_from_hidden').val(div.ele('issue_date_from').val());
-                div.ele('issue_date_to_hidden').val(div.ele('issue_date_to').val());
             }
         }
 
@@ -452,9 +423,6 @@
                 });
             });
             if (div.ele('date_filter_checked').val() == 0) {
-                div.ele('issue_date_from_hidden').val('');
-                div.ele('issue_date_to_hidden').val('');
-
                 div.ele('issue_date_from').attr('disabled', 'disabled');
                 div.ele('issue_date_to').attr('disabled', 'disabled');
             }

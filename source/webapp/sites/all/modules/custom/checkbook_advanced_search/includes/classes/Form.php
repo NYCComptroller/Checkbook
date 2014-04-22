@@ -124,23 +124,26 @@ class Form
             case FieldType::DateFilter:
 
                 //date_filter
-                $domain_field = 'date_filter';
+                $domain_field = "{$data_source}_{$this->domain_name}_date_filter";
+                //$domain_field = 'date_filter';
 
                 $form[$domain][$domain_field]['#type'] = FieldType::RadioButtons;
                 $form[$domain][$domain_field]['#title'] = t('Date Filter');
                 $form[$domain][$domain_field]['#options'] = array('Year','Issue Date');
                 $form[$domain][$domain_field]['#prefix'] = $field->prefix . '<div class="datafield datefilter clearfix">';
                 $form[$domain][$domain_field]['#suffix'] = '</div>';
-                $form[$domain][$domain_field]['#attributes'] = array('class' => array('watch'), 'name' => $data_source.'_date_filter');
+                $form[$domain][$domain_field]['#attributes'] = array('class' => array('watch'));
                 $form[$domain][$domain_field]['#default_value'] = '';
 
                 //year_filter_start
-                $domain_field = 'year_filter_start';
+                //$domain_field = 'year_filter_start';
+                $domain_field = "{$data_source}_{$this->domain_name}_year_filter_start";
 
                 $form[$domain][$domain_field]['#markup'] = '<div class="datafield year-filters last-item">';
 
                 //issue_date_from
-                $domain_field = "{$this->domain_name}_issue_date_from";
+                //$domain_field = "{$this->domain_name}_issue_date_from";
+                $domain_field = "{$data_source}_{$this->domain_name}_issue_date_from";
 
                 $form[$domain][$domain_field]['#type'] = FieldType::DatePopup;
                 $form[$domain][$domain_field]['#date_format'] = 'Y-m-d';
@@ -148,13 +151,14 @@ class Form
                 $form[$domain][$domain_field]['#prefix'] = '<div class="datafield datarange issueddate"><div class="ranges">';
                 $form[$domain][$domain_field]['#default_value'] = '';
 
-                //Hidden Field
-                $domain_field = "{$data_source}_{$this->domain_name}_issue_date_from_exact";
-                $form[$domain][$domain_field]['#type'] = FieldType::HiddenField;
-                $form[$domain][$domain_field]['#name'] = $domain_field;
+//                //Hidden Field
+//                $domain_field = "{$data_source}_{$this->domain_name}_issue_date_from_exact";
+//                $form[$domain][$domain_field]['#type'] = FieldType::HiddenField;
+//                $form[$domain][$domain_field]['#name'] = $domain_field;
 
                 //issue_date_to
-                $domain_field = "{$this->domain_name}_issue_date_to";
+                //$domain_field = "{$this->domain_name}_issue_date_to";
+                $domain_field = "{$data_source}_{$this->domain_name}_issue_date_to";
 
                 $form[$domain][$domain_field]['#type'] = FieldType::DatePopup;
                 $form[$domain][$domain_field]['#title'] = t('to');
@@ -164,13 +168,14 @@ class Form
                 $form[$domain][$domain_field]['#default_value'] = '';
 
                 //Hidden Field
-                $domain_field = "{$data_source}_{$this->domain_name}_issue_date_to_exact";
-
-                $form[$domain][$domain_field]['#type'] = FieldType::HiddenField;
-                $form[$domain][$domain_field]['#name'] = $domain_field;
+//                $domain_field = "{$data_source}_{$this->domain_name}_issue_date_to_exact";
+//
+//                $form[$domain][$domain_field]['#type'] = FieldType::HiddenField;
+//                $form[$domain][$domain_field]['#name'] = $domain_field;
 
                 //fiscal_year
-                $domain_field = "{$this->domain_name}_fiscal_year";
+                //$domain_field = "{$this->domain_name}_fiscal_year";
+                $domain_field = "{$data_source}_{$this->domain_name}_fiscal_year";
 
                 $form[$domain][$domain_field]['#type'] = FieldType::DropDown;
                 $form[$domain][$domain_field]['#options'] = _checkbook_advanced_search_get_year($this->domain_name, $data_source);
@@ -180,7 +185,8 @@ class Form
                 $form[$domain][$domain_field]['#suffix'] = '</div>';
 
                 //year_filter_end
-                $domain_field = 'year_filter_end';
+               // $domain_field = 'year_filter_end';
+                $domain_field = "{$data_source}_{$this->domain_name}_year_filter_end";
 
                 if(!(is_null($field->suffix)))
                     $form[$domain][$domain_field]['#markup'] = '</div>' . $field->suffix;
