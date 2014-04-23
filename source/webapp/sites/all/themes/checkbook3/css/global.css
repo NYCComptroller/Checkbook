@@ -1937,7 +1937,10 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
     clear:both;
     width:100%;
 }
-.newwindow .outerTable{border:1px solid #cacaca;}
+.newwindow .outerTable{
+    border:1px solid #cacaca;
+    margin-bottom:20px;
+}
 #spending-transactions .narrow-down-filter,
 #contract-details .narrow-down-filter,
 #nyc-payroll .narrow-down-filter{
