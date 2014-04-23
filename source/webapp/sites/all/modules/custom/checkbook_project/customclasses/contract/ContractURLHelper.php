@@ -231,7 +231,7 @@ class ContractURLHelper{
 
        $vendor_url = '';
        if(strtolower($oge_agency_name) != strtolower($oge_vendor_name)){
-           $vendor_url = '/vendor/' . $row['vendor_id'];
+           $vendor_url = '/svendor/' . $row['vendor_id'];
        }
 
        $year_url = '';
@@ -243,10 +243,11 @@ class ContractURLHelper{
 
        $url = "<a href='/spending/transactions"
              .  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id']
-             .  ($row['master_agreement_yn'] == 'Y' ? $vendor_url : '/vendor/' . $row['vendor_id'])
+             .  ($row['master_agreement_yn'] == 'Y' ? $vendor_url : '/svendor/' . $row['vendor_id'])
              .  ($row['master_agreement_yn'] == 'Y' ? '' : ('/scomline/'.$row['fms_commodity_line']))
              .  $year_url
              . _checkbook_project_get_url_param_string('agency')
+             . _checkbook_project_get_url_param_string('vendor')
              . _checkbook_append_url_params()
              .  "/newwindow' class='new_window'>" . custom_number_formatter_basic_format($row['spending_amount_disb']) . '</a>';
         return $url;
