@@ -89,7 +89,7 @@
         "field_name":"vendor_name",
         "attributes":{
             "size":30,
-            "maxlength":100,
+            "maxlength":150,
             "title":"Vendor"
         }
     },
