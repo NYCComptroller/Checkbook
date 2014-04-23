@@ -158,7 +158,8 @@
                 "legal_name@checkbook_oge:vendor":"like",
                 "commodity_line":"like",
                 "entity_contract_number":"like",
-                "budget_name":"like"
+                "budget_name":"like",
+                "oge_contract_number":"like"
             },
             "displayConfiguration":{
                 "xml":{
