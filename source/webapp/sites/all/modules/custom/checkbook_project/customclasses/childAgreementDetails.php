@@ -63,7 +63,13 @@ class childAgreementDetails {
     
     $results1 = _checkbook_project_execute_sql_by_data_source($query1,_get_current_datasource());
     $node->data = $results1;
-    
+    $magid = _get_master_agreement_id();
+    if(!empty($magid)){
+    	$magdetails = _get_master_agreement_details($magid);
+    	$node->magid = $magid;
+    	$node->document_code = $magdetails['document_code@checkbook:ref_document_code'];
+    	$node->contract_number = $magdetails['contract_number'];
+    }
     if(_get_current_datasource() ==_get_default_datasource() ){
 	    $results2 = _checkbook_project_execute_sql_by_data_source($query2,_get_current_datasource());
 	    $spent_amount = 0;
@@ -71,16 +77,6 @@ class childAgreementDetails {
 	      $spent_amount +=$row["rfed_amount"];
 	    }
 	    $node->spent_amount = $spent_amount ;
-	    
-	    
-	    
-	    $magid = _get_master_agreement_id();
-	    if(!empty($magid)){
-	      $magdetails = _get_master_agreement_details($magid);
-	      $node->magid = $magid;
-	      $node->document_code = $magdetails['document_code@checkbook:ref_document_code'];
-	      $node->contract_number = $magdetails['contract_number'];      
-	    }
 	    
 	    
 	    $query3 = "SELECT COUNT(*) AS total_child_contracts
