@@ -1074,6 +1074,21 @@ div.bottomContainer{
     float:left;
     clear:none;
 }
+#edit-checkbook-spending-date-filter,
+#edit-checkbook-oge-spending-date-filter{
+    clear:both;
+}
+#edit-checkbook-spending-date-filter > .form-item,
+#edit-checkbook-oge-spending-date-filter > .form-item{
+    float:left;
+}
+#edit-checkbook-spending-date-filter > .form-item.form-item-checkbook-spending-date-filter,
+#edit-checkbook-oge-spending-date-filter > .form-item.form-item-checkbook-oge-spending-date-filter{
+    margin-right:104px;
+}
+.datafield.year{
+    float:left;
+}
 #spending-advanced-search div.year,
 {
     clear: none;
