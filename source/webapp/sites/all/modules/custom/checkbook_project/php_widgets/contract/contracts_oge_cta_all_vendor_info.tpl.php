@@ -46,7 +46,7 @@
 			echo "<td class='text'><div>" .
 			$vendor['vendor_name']  . "</div></td>";
 		}else{
-			echo "<td class='text'><div><a href='/contracts_landing/status/A/year/" . _getCurrentYearID() . "/yeartype/B/agency/" . $vendor['agency_id'] .
+			echo "<td class='text'><div><a class='new_window' href='/contracts_landing/status/A/year/" . _getCurrentYearID() . "/yeartype/B/agency/" . $vendor['agency_id'] .
 				 "/datasource/checkbook_oge/vendor/" . $vendor['vendor_id']  . "?expandBottomCont=true'>" . 
 								$vendor['vendor_name']  . "</a></div></td>";
 		}
@@ -54,7 +54,7 @@
 		if(preg_match("/newwindow/",$_GET['q'])){
 			echo "<td class='number'><div>" . custom_number_formatter_format($vendor['check_amount_sum'], 2, '$')  . "</div></td>";
 		}else{
-			echo "<td class='number'><div><a target='_new' href='" . $spending_link . "'>" . custom_number_formatter_format($vendor['check_amount_sum'], 2, '$')  . "</a></div></td>";
+			echo "<td class='number'><div><a class='new_window' target='_new' href='" . $spending_link . "'>" . custom_number_formatter_format($vendor['check_amount_sum'], 2, '$')  . "</a></div></td>";
 		}
 		echo "<td class='text endCol'><div>" . $vendor['address']  . "</div></td>";
 		echo "</tr>";
