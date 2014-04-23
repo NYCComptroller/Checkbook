@@ -107,7 +107,7 @@ class childAgreementDetails {
     	foreach ($results2 as $row) {
     		$node->spent_amount = $row['spent_amount'] ;
     		$node->original_contract_amount = $row['original_amount'];
-    		$node->maximum_spending_limit = $row['current_amount'] ;
+    		$node->maximum_contract_amount = $row['current_amount'] ;
     		$node->total_child_contracts = $row['num_associated_contracts'];
     	}
     }
