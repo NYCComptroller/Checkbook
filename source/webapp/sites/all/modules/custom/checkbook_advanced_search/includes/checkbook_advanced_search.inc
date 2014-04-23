@@ -634,7 +634,7 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
     $spending_document_id_exact = trim($form[$filter_dimension][$data_source . '_spending_document_id_exact']['#value']);
     $spending_agencies = trim($form[$filter_dimension][$data_source . '_spending_agency']['#value']); //drop down
 
-    $spending_expense_category = trim($form[$filter_dimension][$data_source . '_spending_expense_category']);
+    $spending_expense_category = trim($form[$filter_dimension][$data_source . '_spending_expense_category']['#value']);
     $spending_expense_category = $spending_expense_category == "Select Expense Category" ? 0 : $spending_expense_category;
 
     $spending_check_amount_from = trim($form[$filter_dimension][$data_source . '_spending_check_amount_from']['#value']);
