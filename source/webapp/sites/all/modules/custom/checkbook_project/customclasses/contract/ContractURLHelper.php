@@ -231,18 +231,24 @@ class ContractURLHelper{
 
        $vendor_url = '';
        if(strtolower($oge_agency_name) != strtolower($oge_vendor_name)){
-           $vendor_url = '/vendor/' . $row['vendor_id'];
+           $vendor_url = '/svendor/' . $row['vendor_id'];
+       }
+
+       $year_url = '';
+       if((!(_getRequestParamValue('year') || _getRequestParamValue('calyear')))){
+           $year_url = '/yeartype/B/year/' . _getFiscalYearID() . '/syear/'. _getFiscalYearID();
+       }else{
+           $year_url = $row['type_of_year'] == 'B' ? ('/year/'. $row['fiscal_year_id'].'/syear/'. $row['fiscal_year_id']) : ('/calyear/'.$row['fiscal_year_id']. '/scalyear/'.$row['fiscal_year_id']);
        }
 
        $url = "<a href='/spending/transactions"
              .  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id']
-             .  ($row['master_agreement_yn'] == 'Y' ? $vendor_url : '/vendor/' . $row['vendor_id'])
-             .  ($row['master_agreement_yn'] == 'Y' ? '' : ('/comline/'.$row['fms_commodity_line']))
-             .  ((!(_getRequestParamValue('year') || _getRequestParamValue('calyear'))) ? '/yeartype/B/year/' . _getFiscalYearID():'')
+             .  ($row['master_agreement_yn'] == 'Y' ? $vendor_url : '/svendor/' . $row['vendor_id'])
+             .  ($row['master_agreement_yn'] == 'Y' ? '' : ('/scomline/'.$row['fms_commodity_line']))
+             .  $year_url
              . _checkbook_project_get_url_param_string('agency')
+             . _checkbook_project_get_url_param_string('vendor')
              . _checkbook_append_url_params()
-             . '/dtsmnid/' . $node->nid
-             .  ( $row['type_of_year'] == 'B' ? ('/year/'. $row['fiscal_year_id'].'/syear/'. $row['fiscal_year_id']) : ('/calyear/'.$row['fiscal_year_id']. '/scalyear/'.$row['fiscal_year_id']) )
              .  "/newwindow' class='new_window'>" . custom_number_formatter_basic_format($row['spending_amount_disb']) . '</a>';
         return $url;
     }
