@@ -72,20 +72,7 @@
 	    },
        "formatted_spent_to_date": {
 	      "type": "expression2",
-                "expression": " $row['document_code@checkbook:ref_document_code'] == 'DO1' ? 'N/A' :
-                                        (
-                                           '<a href=\"/spending/transactions'
-                                          .  '/vendor/'.$row['vendor_id']
-                                          .  ($row['master_agreement_yn'] == 'Y' ? '' : ('/comline/'.$row['fms_commodity_line']))
-                                          .  ((!(_getRequestParamValue('year') || _getRequestParamValue('calyear'))) ? '/yeartype/B/year/' ._getFiscalYearID():'')
-                                          . '/dtsmnid/' . $node->nid
-                                          . _checkbook_project_get_url_param_string('agency')
-                                          . _checkbook_append_url_params()
-                                          .  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id']
-                                          .  ( $row['type_of_year'] == 'B' ? ('/year/'. $row['fiscal_year_id'].'/syear/'. $row['fiscal_year_id']) : ('/calyear/'.$row['fiscal_year_id']. '/scalyear/'.$row['fiscal_year_id']) )
-                                          .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['spending_amount_disb']) . '</a>'
-                                        )
-                                      "
+                "expression": "ContractURLHelper::_prepare_oge_contracts_spending_url($row, $node)"
 	    },
 	   "vendor_name_link_old": {
 	      "type": "expression2",
