@@ -1086,6 +1086,10 @@ div.bottomContainer{
 #edit-checkbook-oge-spending-date-filter > .form-item.form-item-checkbook-oge-spending-date-filter{
     margin-right:104px;
 }
+#edit-checkbook-spending-date-filter > .form-item.form-item-checkbook-spending-date-filter + .form-item.form-item-checkbook-spending-date-filter,
+#edit-checkbook-oge-spending-date-filter > .form-item.form-item-checkbook-oge-spending-date-filter +.form-item.form-item-checkbook-oge-spending-date-filter{
+    margin-right:0px;
+}
 .datafield.year{
     float:left;
 }
