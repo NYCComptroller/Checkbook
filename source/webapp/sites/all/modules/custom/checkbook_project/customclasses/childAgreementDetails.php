@@ -98,7 +98,7 @@ class childAgreementDetails {
     	$query2 = "select sum(original_amount) original_amount, sum(current_amount) current_amount,
     			 sum(check_amount) as spent_amount
 				FROM {oge_contract_vendor_level} a
-				JOIN (select distinct contract_number from {history_agreement} where _agreement_id = " . $ag_id . ") b
+				JOIN (select distinct contract_number from {history_agreement} where agreement_id = " . $ag_id . ") b
 				ON a.fms_contract_number = b.contract_number
 				LEFT JOIN (SELECT sum(check_amount) as check_amount, contract_number, vendor_id FROM {disbursement_line_item_details} group by 2,3) c
 				ON b.contract_number = c.contract_number AND a.vendor_id = c.vendor_id limit 1"  ;
