@@ -80,8 +80,8 @@ foreach($node->results_spending as $spending_row){
 		$count1 +=1;
 		echo "<tr " . $class1 . ">";
 		echo "<td class='text'><div><a class='showHide " . $open1 . " expandTwo'></a>"  . $vendor . "</div></td>";
-		echo "<td class='number'><div>"  . custom_number_formatter_format($vendor_summary['current_amount'], 2, '$') . "</div></td>";
-		echo "<td class='number'><div>"  . custom_number_formatter_format($vendor_summary['original_amount'] , 2, '$'). "</div></td>";
+		echo "<td class='number'><div>"  . custom_number_formatter_format($vendor_summary['original_amount'], 2, '$') . "</div></td>";
+		echo "<td class='number'><div>"  . custom_number_formatter_format($vendor_summary['current_amount'] , 2, '$'). "</div></td>";
 		echo "<td class='number endCol'><div>"  . custom_number_formatter_format($vendor_summary['check_amount'], 2, '$') . "</div></td>" ;
 		echo "</tr>";
 		
