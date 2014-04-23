@@ -19,7 +19,7 @@
 */
 ?>
 <div>
-<div class="tableHeader"><h3>Vendor Infromation</h3> <span class="contCount">Number of Vendors: <?php echo count($node->vendors_list);?> </span></div>
+<div class="tableHeader"><h3>Vendor Information</h3> <span class="contCount">Number of Vendors: <?php echo count($node->vendors_list);?> </span></div>
 
 <table class="dataTable outerTable oge-cta-vendor-info">
     <thead>
