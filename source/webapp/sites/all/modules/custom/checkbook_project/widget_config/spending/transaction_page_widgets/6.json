@@ -6,7 +6,7 @@
     "mcagency","agencyh","year","calyear","vendor","mcvendor","expcategory","category","checkamtr","dept",
     "contnum","checkamt","comline","budname","entcontnum",
     "chkdate","fundcls","bdgcodenm","captprj","expdoc","vendornm","deptnm","expcategorynm","syear",
-    "scalyear","magid","agid","cvendor","cagency","awdmethod","status","csize","cindustry","expcategorycode","month"],
+    "scalyear","magid","agid","cvendor","cagency","awdmethod","status","csize","cindustry","expcategorycode","month","scomline"],
 "urlParamMap":{
     "contnum_exact":"reference_document_number",
     "captprj_exact":"reporting_code",
@@ -19,6 +19,7 @@
     "entcontnum":"oge_contract_number",
     "comline_exact":"agreement_commodity_line_number",
     "comline":"agreement_commodity_line_number",
+    "scomline":"agreement_commodity_line_number",
     "budname_exact":"oge_budget_name",
     "budname":"oge_budget_name",
     "year":"check_eft_issued_nyc_year_id","calyear":"calendar_fiscal_year_id","agency":"agency_id",
@@ -42,7 +43,7 @@
     "contnum_exact":"eqignorecase","checkamtr":"rangeid","checkamt":"range","chkdate":"range",
     "captprj":"like","vendornm":"like","contnum":"like","bdgcodenm":"like","expdoc":"like","syear":"le",
     "scalyear":"le","deptnm":"eqignorecase","expcategorynm":"eqignorecase",
-    "budname":"like","comline":"like","entcontnum":"like",
+    "budname":"like","comline":"like","entcontnum":"like","scomline":"le",
     "entcontnum_exact":"eqignorecase","comline_exact":"eqignorecase","budname_exact":"eqignorecase"
 },
 "allowRequestParams":["dtsmnid","smnid"],
@@ -256,12 +257,6 @@
             $data_controller_instance = data_controller_get_operator_factory_instance();
             $parameters['agreement_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
             $parameters['contract_number'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
-        }
-
-        if($dtsmnid == 634 ||  $dtsmnid == 641 ||  $dtsmnid == 642){//From OGE contracts transactions pages
-            $data_controller_instance = data_controller_get_operator_factory_instance();
-            if($parameters['agreement_commodity_line_number'])
-               $parameters['agreement_commodity_line_number'] = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, $parameters['agreement_commodity_line_number']);
         }
 
             $adjustedParameters = $parameters;
