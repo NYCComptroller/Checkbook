@@ -155,7 +155,8 @@ function _break_text_custom($text, $length = 20, $no_of_lines = 2){
   $first_line = true;
 
   $index= 0 ;
-  if(strlen($text_array[0]) >= 2 * $remaining_original ){
+  
+  if(strlen($text_array[0]) >= 2 * $remaining_original ){  	 
     return "<span title='" . htmlentities($text,ENT_QUOTES) . "'>". substr(htmlentities($text), 0, $length -3 ) . "...</span>";
   }
   else{
@@ -191,10 +192,11 @@ function _break_text_custom($text, $length = 20, $no_of_lines = 2){
       }
       $index +=1;
     }
+    
     if($offset < strlen($text) )
-      return "<span title='" . htmlentities($text,ENT_QUOTES) . "'>". substr(htmlentities($text), 0, $offset ) . "...</span>";
+      return "<span title='" . htmlentities($text,ENT_QUOTES) . "'>". htmlentities(substr($text, 0, $offset )) . "...</span>";
     else
-      return "<span title='" . htmlentities($text,ENT_QUOTES) . "'>". substr(htmlentities($text), 0, $offset ) . "</span>";
+      return "<span title='" . htmlentities($text,ENT_QUOTES) . "'>". htmlentities(substr($text, 0, $offset )) . "</span>";
   }
 
 
