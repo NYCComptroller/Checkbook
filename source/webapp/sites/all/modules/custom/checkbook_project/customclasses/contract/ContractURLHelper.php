@@ -248,7 +248,6 @@ class ContractURLHelper{
              .  $year_url
              . _checkbook_project_get_url_param_string('agency')
              . _checkbook_append_url_params()
-             . '/dtsmnid/' . $node->nid
              .  "/newwindow' class='new_window'>" . custom_number_formatter_basic_format($row['spending_amount_disb']) . '</a>';
         return $url;
     }
