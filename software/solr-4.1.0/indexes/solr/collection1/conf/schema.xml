@@ -280,8 +280,8 @@
         <field name="contract_entity_contract_number" type="string_custom" indexed="true" stored="true" multiValued="true"/>
         <field name="contract_commodity_line" type="string_custom" indexed="true" stored="true" multiValued="true"/>
         <!--Fields used for multi-valued auto complete for multiple works-->
-        <field name="contract_budget_name" type="string" indexed="true" stored="true"/>
-        <field name="contract_budget_name_autocomplete" type="text_autocomplete" indexed="true" stored="true" omitNorms="true" omitTermFreqAndPositions="true"/>
+        <field name="contract_budget_name" type="string" indexed="true" stored="true" multiValued="true"/>
+        <field name="contract_budget_name_autocomplete" type="text_autocomplete" indexed="true" stored="true" omitNorms="true" omitTermFreqAndPositions="true" multiValued="true"/>
 
     </fields>
 
