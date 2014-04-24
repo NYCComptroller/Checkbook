@@ -24,8 +24,8 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
 
     if(strtolower($contracts_results['contract_category_name']) == 'expense'){
         if($IsOge){
-            $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/". _getFiscalYearID() . '/agency/' . $contracts_results['agency_id'] .'/vendor/'.$contracts_results['vendor_id'];
-            $agency_link = "/contracts_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/"._getFiscalYearID().'/agency/'.$contracts_results['agency_id'];
+            $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/". _getFiscalYearID() . '/agency/' . $contracts_results['oge_agency_id'] .'/vendor/'.$contracts_results['vendor_id'];
+            $agency_link = "/contracts_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/"._getFiscalYearID().'/agency/'.$contracts_results['oge_agency_id'];
 
         }
         else {
@@ -36,8 +36,8 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
 
     }else{
         if($IsOge){
-            $vendor_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/"._getFiscalYearID() . '/agency/' . $contracts_results['agency_id'] .'/vendor/'.$contracts_results['vendor_id'];
-            $agency_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/"._getFiscalYearID().'/agency/'.$contracts_results['agency_id'];
+            $vendor_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/"._getFiscalYearID() . '/agency/' . $contracts_results['oge_agency_id'] .'/vendor/'.$contracts_results['vendor_id'];
+            $agency_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/"._getFiscalYearID().'/agency/'.$contracts_results['oge_agency_id'];
         }
         else{
             $vendor_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/year/"._getFiscalYearID() .'/vendor/'.$contracts_results['vendor_id'];
