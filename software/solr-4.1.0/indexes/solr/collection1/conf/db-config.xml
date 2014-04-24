@@ -540,7 +540,7 @@
                 (case when(latest_flag = 'Y') then 'Y' else 'N' end) latest_flag,
                 'Registered' status,
                 REPLACE(entity_contract_number.values, ', ', ',') As entity_contract_number,
-                REPLACE(budget_names.values, ', ', ',') As budget_name,
+                budget_names.values As budget_name,
                 REPLACE(commodity_lines.values, ', ', ',') As commodity_line
                 from agreement_snapshot a
                 LEFT JOIN oge_contract_vendor_level ogecon ON a.contract_number = ogecon.fms_contract_number AND a.vendor_id = ogecon.vendor_id
