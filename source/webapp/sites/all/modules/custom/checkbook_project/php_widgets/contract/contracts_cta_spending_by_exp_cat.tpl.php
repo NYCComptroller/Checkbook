@@ -49,7 +49,7 @@ if (count($node->data) > 0) {
     echo "<td class='text'><div>" . $row['expenditure_object_name'] . "</div></td>";
     echo "<td class='number'><div>" . custom_number_formatter_format($row['encumbered_amount'], 2, '$') . "</div></td>";
     if ($row['is_disbursements_exist'] == 'Y' && !preg_match("/newwindow/",current_path())) {
-      echo "<td class='number endCol'><div><a class=\"new_window\" href='" . $spending_link . "'>" . custom_number_formatter_format($row['spending_amount'], 2, '$') . "</a></div></td>";
+      echo "<td class='number endCol'><div><a class=\"new_window\" href='" . $spending_link . "'>" . custom_number_formatter_format((isset($row['spending_amount_disb']))?$row['spending_amount_disb']:$row['spending_amount'], 2, '$') . "</a></div></td>";
     }
     else {
       echo "<td class='number endCol'><div>" . custom_number_formatter_format($row['spending_amount'], 2, '$') . "</div></td>";
