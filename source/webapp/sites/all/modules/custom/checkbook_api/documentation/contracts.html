@@ -2,6 +2,7 @@
     <li><a href="#global-parameters">Global Parameters</a></li>
     <li><a href="#budget-parameters">Contract Parameters</a></li>
     <li><a href="#possible-response">Possible Response Columns</a></li>
+    <li><a href="#predefined-xml-entities">Predefined Entities in XML</a></li>
     <li><a href="#sample-xml">Sample XML Requests and Responses</a></li>
     <li><a href="#sample-request-contract_expense">Sample Request: Contract Transactions Active Expense</a></li>
     <li><a href="#sample-response-contract_expense">Sample Response:  Contract Transactions Active Expense</a></li>
@@ -523,6 +524,62 @@ Contract Parameters – All the parameters are optional, meaning that you can se
      </table>
 </div>
 <div class="divider" style="clear: both;"></div>
+<a href="#top" class="float-right">Back to the top</a>
+<a name="predefined-xml-entities"></a>
+<h3>Predefined Entities in XML</h3>
+<p>The user has to encode the names using the predefined entities list embedded below, while searching using names (payee_name, budget_name, vendor_name, and purpose). The table below lists the five XML predefined entities. The "Name" column mentions the entity's name. The "Character" column shows the character. To render the character, the format &name; is used; for example, &amp;amp; renders as &.</p>
+<table class="api-table">
+<tbody>
+    <tr>
+        <th>Name</th>
+        <th>Character</th>
+        <th>Description</th>
+        <th>Representation</th>
+        <th>Example Text</th>
+        <th>Example Request/Response</th>
+    </tr>
+    <tr>
+        <td>quot</td>
+        <td>"</td>
+        <td>double quotation mark</td>
+        <td>&amp;quot;</td>
+        <td>“Gilbane”</td>
+        <td>&amp;quot;Gilbane&amp;quot;</td>
+    </tr>
+    <tr>
+        <td>amp</td>
+        <td>&</td>
+        <td>ampersand</td>
+        <td>&amp;amp;</td>
+        <td>Mckissack & Mckissack</td>
+        <td>Mckissack &amp;amp; Mckissack</td>
+    </tr>
+    <tr>
+        <td>apos</td>
+        <td>'</td>
+        <td>apostrophe (apostrophe-quote)</td>
+        <td>&amp;apos;</td>
+        <td>‘turner’</td>
+        <td>&amp;apos; turner &amp;apos;</td>
+    </tr>
+    <tr>
+        <td>lt</td>
+        <td>&lt;</td>
+        <td>less-than sign</td>
+        <td>&amp;lt;</td>
+        <td>&lt;gilbane building</td>
+        <td>&amp;lt;gilbane building</td>
+    </tr>
+    <tr>
+        <td>gt</td>
+        <td>&gt;</td>
+        <td>greater-than sign</td>
+        <td>&amp;gt;</td>
+        <td>gilbane building&gt;</td>
+        <td>gilbane building&amp;gt;</td>
+    </tr>
+</tbody>
+</table>
 <a href="#top" class="float-right">Back to the top</a>
 <a name="sample-xml" id="sample-xml"></a>
 <h3 class="title">Sample XML Requests and Responses</h3>
