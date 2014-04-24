@@ -220,9 +220,15 @@ function _checkbook_advanced_search_autocomplete_spending_department($year, $age
     if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
     $options = _get_spending_advanced_search_autocomplete_results('department_name', $query, $year, $agency, null, null, $exptype);
     $matches = array();
-    foreach($options as $key => $value)
-        $matches[] = htmlentities($value);
-    drupal_json_output($matches);
+    if($options[0]['label'] == 'No Matches Found') {
+        drupal_json_output(array('label' => 'No Matches Found','value' => ''));
+    }
+    else {
+        foreach($options as $key => $value)
+            $matches[] = htmlentities($value);
+        drupal_json_output($matches);
+    }
+
 }
 
 /**
@@ -637,7 +643,10 @@ function _checkbook_advanced_search_autocomplete_contracts_budgetname($status, $
                     $result_count++;
                 }
             }
-            drupal_json_output($unique_matches);
+            if($unique_matches)
+                drupal_json_output($unique_matches);
+            else
+                drupal_json_output(array('label' => 'No Matches Found','value' => ''));
         }
     }
 }
