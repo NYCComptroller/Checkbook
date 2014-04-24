@@ -287,7 +287,8 @@ function checkbook3_pager_link($variables) {
   //   possible to use l() here.
   // @see http://drupal.org/node/1410574
   $attributes['href'] = url($_GET['q'], array('query' => $query));
-  return '<a' . drupal_attributes($attributes) . '>' . $text . '</a>';
+  $attributes['href'] = urldecode($attributes['href']);
+  return '<a' . drupal_attributes($attributes) . '>' . check_plain($text) . '</a>';
 }
 
 /*
