@@ -16,7 +16,8 @@
              "allowedParams":["original_agreement_id"],
               "orderBy":"-spending_amount",
                  "limit":5,
-               "columns": [ "expenditure_object_code","expenditure_object_name","encumbered_amount","spending_amount","contract_number@checkbook:history_agreement/original_agreement_id@checkbook:aggregateon_contracts_expense","is_disbursements_exist"]
+               "columns": [ "expenditure_object_code","expenditure_object_name","encumbered_amount","spending_amount_disb","spending_amount","contract_number@checkbook:history_agreement/original_agreement_id@checkbook:aggregateon_contracts_expense","is_disbursements_exist"],
+               "columns_datasource":{"spending_amount_disb":"checkbook_oge"}
            }
    ]
 }
