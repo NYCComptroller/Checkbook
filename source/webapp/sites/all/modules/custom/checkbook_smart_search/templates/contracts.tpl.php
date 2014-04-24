@@ -24,8 +24,8 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
 
     if(strtolower($contracts_results['contract_category_name']) == 'expense'){
         if($IsOge){
-            $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/". _getFiscalYearID() . '/agency/' . $contracts_results['oge_agency_id'] .'/vendor/'.$contracts_results['vendor_id'];
-            $agency_link = "/contracts_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/"._getFiscalYearID().'/agency/'.$contracts_results['oge_agency_id'];
+            $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/". _getFiscalYearID() . '/agency/' . $contracts_results['agency_id'] .'/vendor/'.$contracts_results['vendor_id'];
+            $agency_link = "/contracts_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/"._getFiscalYearID().'/agency/'.$contracts_results['agency_id'];
 
         }
         else {
@@ -36,8 +36,8 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
 
     }else{
         if($IsOge){
-            $vendor_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/"._getFiscalYearID() . '/agency/' . $contracts_results['oge_agency_id'] .'/vendor/'.$contracts_results['vendor_id'];
-            $agency_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/"._getFiscalYearID().'/agency/'.$contracts_results['oge_agency_id'];
+            $vendor_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/"._getFiscalYearID() . '/agency/' . $contracts_results['agency_id'] .'/vendor/'.$contracts_results['vendor_id'];
+            $agency_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/"._getFiscalYearID().'/agency/'.$contracts_results['agency_id'];
         }
         else{
             $vendor_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/year/"._getFiscalYearID() .'/vendor/'.$contracts_results['vendor_id'];
@@ -46,7 +46,7 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
         $contract_Id_link = "/contracts_revenue_landing/status/" .$status;
     }
 
-    $contract_Id_link .= _checkbook_project_get_year_url_param_string(). (($IsOge) ? '/datasource/checkbook_oge/agency/'.$contracts_results['agency_id'] : '') ."?expandBottomContURL=/panel_html/contract_transactions/"."/contract_details";
+    $contract_Id_link .= _checkbook_project_get_year_url_param_string(). (($IsOge) ? '/datasource/checkbook_oge/agency/'.$contracts_results['oge_agency_id'] : '') ."?expandBottomContURL=/panel_html/contract_transactions/"."/contract_details";
     if($contracts_results['document_code'] == 'MA1' || $contracts_results['document_code'] == 'MMA1' || $contracts_results['document_code'] == 'RCT1'){
         $contract_Id_link .= "/magid/".$contracts_results['original_agreement_id']."/doctype/".$contracts_results["document_code"];
     }else{
