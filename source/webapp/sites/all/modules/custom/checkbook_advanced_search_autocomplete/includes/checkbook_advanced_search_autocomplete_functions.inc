@@ -618,10 +618,27 @@ function _checkbook_advanced_search_autocomplete_contracts_commodityline($status
 function _checkbook_advanced_search_autocomplete_contracts_budgetname($status, $category, $contract_type, $agency, $award_method, $year, $data_source = 'checkbook') {
     $searchTerm = _get_autocomplete_search_term();
     if (!empty($searchTerm)) {
-        $query = 'select/?q=contract_budget_name_autocomplete:' . $searchTerm . '&q.op=AND&rows=0&facet=true&facet.field=contract_budget_name&facet.mincount=1&facet.limit=10&wt=php';
+        $query = 'select/?q=contract_budget_name_autocomplete:' . $searchTerm . '&q.op=AND&rows=0&facet=true&facet.field=contract_budget_name&facet.mincount=1&facet.limit=50&wt=php';
         if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
         $matches = _get_contracts_advanced_search_autocomplete_results('contract_budget_name', $query, $status, $category, $contract_type, $agency, $award_method, $year, $data_source);
-        drupal_json_output($matches);
+
+        //Need to filter out fields in doc that should not be returned
+        if($matches[0]['label'] == 'No Matches Found') {
+            drupal_json_output($matches);
+        }
+        else {
+            $searchTerm = trim(htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES));
+            $unique_matches = array();
+            $result_count = 0;
+            foreach($matches as $key => $value) {
+                if($result_count == 10) break;
+                if (stripos(strtolower($value), strtolower($searchTerm)) !== false) {
+                    $unique_matches[] = $matches[$key];
+                    $result_count++;
+                }
+            }
+            drupal_json_output($unique_matches);
+        }
     }
 }
 

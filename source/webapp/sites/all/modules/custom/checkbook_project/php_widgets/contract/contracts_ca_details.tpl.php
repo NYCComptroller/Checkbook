@@ -70,6 +70,10 @@ if(isset($node->magid)){
 if(!preg_match("/newwindow/",current_path())){
   $newwindowclass= 'class="new_window"'; 
 }
+
+$original_contract_amount =  ( _getRequestParamValue("datasource") == "checkbook_oge") ? $node->original_contract_amount:$node->data[0]['original_contract_amount'];
+$maximum_contract_amount =  ( _getRequestParamValue("datasource") == "checkbook_oge") ? $node->maximum_contract_amount:$node->data[0]['maximum_contract_amount'];
+
 ?>      
              
   </div>
@@ -83,13 +87,13 @@ if(!preg_match("/newwindow/",current_path())){
       </div>
     </div>
     <div
-      class="original-amount"><?php echo custom_number_formatter_format($node->data[0]['original_contract_amount'], 2, '$');?>
+      class="original-amount"><?php echo custom_number_formatter_format($original_contract_amount, 2, '$');?>
       <div class="amount-title">Original
         Amount
       </div>
     </div>
     <div
-      class="current-amount"><?php echo custom_number_formatter_format($node->data[0]['maximum_contract_amount'], 2, '$');?>
+      class="current-amount"><?php echo custom_number_formatter_format($maximum_contract_amount, 2, '$');?>
       <div class="amount-title">Current
         Amount
       </div>

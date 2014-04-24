@@ -38,26 +38,34 @@
 		$vendor_cont_count[$vendor_cont['vendor_id']]['count'] = $vendor_cont['count'];
 	}
 
-    
-   	foreach($node->vendors_list as $vendor){
-		$spending_link = "/spending/transactions/vendor/" . $vendor['vendor_id'] . "/datasource/checkbook_oge/newwindow";
-		echo "<tr>";
-		if(preg_match("/newwindow/",$_GET['q'])){
-			echo "<td class='text'><div>" .
-			$vendor['vendor_name']  . "</div></td>";
-		}else{
-			echo "<td class='text'><div><a class='new_window' href='/contracts_landing/status/A/year/" . _getCurrentYearID() . "/yeartype/B/agency/" . $vendor['agency_id'] .
-				 "/datasource/checkbook_oge/vendor/" . $vendor['vendor_id']  . "?expandBottomCont=true'>" . 
-								$vendor['vendor_name']  . "</a></div></td>";
+    if(count($node->vendors_list) > 0){
+	   	foreach($node->vendors_list as $vendor){
+			$spending_link = "/spending/transactions/vendor/" . $vendor['vendor_id'] . "/datasource/checkbook_oge/newwindow";
+			echo "<tr>";
+			if(preg_match("/newwindow/",$_GET['q'])){
+				echo "<td class='text'><div>" .
+				$vendor['vendor_name']  . "</div></td>";
+			}else{
+				echo "<td class='text'><div><a class='new_window' href='/contracts_landing/status/A/year/" . _getCurrentYearID() . "/yeartype/B/agency/" . $vendor['agency_id'] .
+					 "/datasource/checkbook_oge/vendor/" . $vendor['vendor_id']  . "?expandBottomCont=true'>" . 
+									$vendor['vendor_name']  . "</a></div></td>";
+			}
+			echo "<td class='number'><div>" . $vendor_cont_count[$vendor['vendor_id']]['count']  . "</div></td>";
+			if(preg_match("/newwindow/",$_GET['q'])){
+				echo "<td class='number'><div>" . custom_number_formatter_format($vendor['check_amount_sum'], 2, '$')  . "</div></td>";
+			}else{
+				echo "<td class='number'><div><a class='new_window' target='_new' href='" . $spending_link . "'>" . custom_number_formatter_format($vendor['check_amount_sum'], 2, '$')  . "</a></div></td>";
+			}
+			echo "<td class='text endCol'><div>" . $vendor['address']  . "</div></td>";
+			echo "</tr>";
 		}
-		echo "<td class='number'><div>" . $vendor_cont_count[$vendor['vendor_id']]['count']  . "</div></td>";
-		if(preg_match("/newwindow/",$_GET['q'])){
-			echo "<td class='number'><div>" . custom_number_formatter_format($vendor['check_amount_sum'], 2, '$')  . "</div></td>";
-		}else{
-			echo "<td class='number'><div><a class='new_window' target='_new' href='" . $spending_link . "'>" . custom_number_formatter_format($vendor['check_amount_sum'], 2, '$')  . "</a></div></td>";
-		}
-		echo "<td class='text endCol'><div>" . $vendor['address']  . "</div></td>";
-		echo "</tr>";
+	}else{
+		echo '<tr class="odd">';
+		echo '<td class="dataTables_empty" valign="top" colspan="4">' .
+				'<div id="no-records-datatable" class="clearfix">
+							                 <span>No Matching Records Found</span>
+							           </div>' . '</td>';
+		echo '</tr>';
 	}
    ?>
    
