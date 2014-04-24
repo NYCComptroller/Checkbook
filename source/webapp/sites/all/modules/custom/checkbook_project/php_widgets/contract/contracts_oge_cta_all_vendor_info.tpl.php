@@ -61,7 +61,7 @@
 		}
 	}else{
 		echo '<tr class="odd">';
-		echo '<td class="dataTables_empty" valign="top" colspan="3">' .
+		echo '<td class="dataTables_empty" valign="top" colspan="4">' .
 				'<div id="no-records-datatable" class="clearfix">
 							                 <span>No Matching Records Found</span>
 							           </div>' . '</td>';
