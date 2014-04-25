@@ -220,15 +220,14 @@ function _checkbook_advanced_search_autocomplete_spending_department($year, $age
     if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
     $options = _get_spending_advanced_search_autocomplete_results('department_name', $query, $year, $agency, null, null, $exptype);
     $matches = array();
-    if($options[0]['label'] == 'No Matches Found') {
-        drupal_json_output(array('label' => 'No Matches Found','value' => ''));
+    if(isset($options[0]['label'])) {
+        $matches[] = $options[0]['label'];
     }
     else {
         foreach($options as $key => $value)
-            $matches[] = htmlentities($value);
-        drupal_json_output($matches);
+            $matches[] = htmlentities(strtoupper($value));
     }
-
+    drupal_json_output($matches);
 }
 
 /**
@@ -249,9 +248,13 @@ function _checkbook_advanced_search_autocomplete_spending_department($year, $age
 function _checkbook_advanced_search_autocomplete_spending_expcategory($year, $agency, $dept, $exptype, $data_source = 'checkbook') {
     $options = _get_spending_expense_cat_options($agency, str_replace('__','/',$dept), $exptype, $year, $data_source);
     $matches = array();
-    foreach($options as $key => $value)
-        $matches[] = htmlentities(strtolower($value));
-
+    if(isset($options['label'])) {
+        $matches[] = $options['label'];
+    }
+    else {
+        foreach($options as $key => $value)
+            $matches[] = htmlentities($value);
+    }
     drupal_json_output($matches);
 }
 

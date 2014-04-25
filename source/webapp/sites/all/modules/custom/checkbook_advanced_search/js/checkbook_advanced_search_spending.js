@@ -1,7 +1,7 @@
 (function ($) {
     $(document).ready(function () {
         var p = /\[(.*?)\]/;
-        var year, dept, agency, exptype, expcategory, entitycontractnum, commodityline, budgetname, datasource, path;
+        var year, dept, agency, exptype, expcategory, entitycontractnum, commodityline, budgetname, datasource;
 
         var spending_div = function (data_source, div_contents) {
             this.div_elements = {
@@ -71,11 +71,12 @@
                     ,success: function(data) {
                         var html = '<option select="selected" value="0" >Select Expense Category</option>';
                         if(data[0]){
-                            if(data[0]['label'] != 'No Matches Found'){
+                            if(data[0]!= 'No Matches Found'){
                                 for (i = 0; i < data.length; i++) {
-                                    html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>'
+                                    html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
                                 }
                             }
+                            else { html=html + '<option value="">' + data[0]  + '</option>'; }
                         }
                         div.ele('exp_category').html(html);
                     }
@@ -85,11 +86,12 @@
                     ,success: function(data) {
                         var html = '<option select="selected" value="0" >Select Department</option>';
                         if(data[0]){
-                            if(data[0]['label'] != 'No Matches Found'){
+                            if(data[0]!= 'No Matches Found'){
                                 for (i = 0; i < data.length; i++) {
-                                    html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>'
+                                    html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
                                 }
                             }
+                            else { html=html + '<option value="">' + data[0]  + '</option>'; }
                         }
                         div.ele('dept').html(html);
                     }
@@ -123,11 +125,12 @@
                 ,success: function(data) {
                     var html = '<option select="selected" value="0" >Select Expense Category</option>';
                     if(data[0]){
-                        if(data[0]['label'] != 'No Matches Found'){
+                        if(data[0]!= 'No Matches Found'){
                             for (i = 0; i < data.length; i++) {
-                                html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>'
+                                html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
                             }
                         }
+                        else { html=html + '<option value="">' + data[0]  + '</option>'; }
                     }
                     div.ele('exp_category').html(html);
                 }
@@ -170,11 +173,12 @@
                 ,success: function(data) {
                     var html = '<option select="selected" value="0" >Select Expense Category</option>';
                     if(data[0]){
-                        if(data[0]['label'] != 'No Matches Found'){
+                        if(data[0] != 'No Matches Found'){
                             for (i = 0; i < data.length; i++) {
-                                html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>'
+                                html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
                             }
                         }
+                        else { html=html + '<option value="">' + data[0]  + '</option>'; }
                     }
                     div.ele('exp_category').html(html);
                 }
@@ -184,11 +188,12 @@
                 ,success: function(data) {
                     var html = '<option select="selected" value="0" >Select Department</option>';
                     if(data[0]){
-                        if(data[0]['label'] != 'No Matches Found'){
+                        if(data[0] != 'No Matches Found'){
                             for (i = 0; i < data.length; i++) {
-                                html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>'
+                                html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
                             }
                         }
+                        else { html=html + '<option value="">' + data[0]  + '</option>'; }
                     }
                     div.ele('dept').html(html);
                 }
@@ -216,11 +221,12 @@
                 ,success: function(data) {
                     var html = '<option select="selected" value="0" >Select Expense Category</option>';
                     if(data[0]){
-                        if(data[0]['label'] != 'No Matches Found'){
+                        if(data[0] != 'No Matches Found'){
                             for (i = 0; i < data.length; i++) {
-                                html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>'
+                                html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
                             }
                         }
+                        else { html=html + '<option value="">' + data[0]  + '</option>'; }
                     }
                     div.ele('exp_category').html(html);
                 }
@@ -230,11 +236,12 @@
                 ,success: function(data) {
                     var html = '<option select="selected" value="0" >Select Department</option>';
                     if(data[0]){
-                        if(data[0]['label'] != 'No Matches Found'){
+                        if(data[0] != 'No Matches Found'){
                             for (i = 0; i < data.length; i++) {
-                                html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>'
+                                html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
                             }
                         }
+                        else { html=html + '<option value="">' + data[0]  + '</option>'; }
                     }
                     div.ele('dept').html(html);
                 }
