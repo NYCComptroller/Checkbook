@@ -225,7 +225,7 @@ function _checkbook_advanced_search_autocomplete_spending_department($year, $age
     }
     else {
         foreach($options as $key => $value)
-            $matches[] = htmlentities(strtoupper($value));
+            $matches[] = htmlentities($value);
     }
     drupal_json_output($matches);
 }
@@ -253,7 +253,7 @@ function _checkbook_advanced_search_autocomplete_spending_expcategory($year, $ag
     }
     else {
         foreach($options as $key => $value)
-            $matches[] = htmlentities($value);
+            $matches[] = htmlentities(strtolower($value));
     }
     drupal_json_output($matches);
 }
