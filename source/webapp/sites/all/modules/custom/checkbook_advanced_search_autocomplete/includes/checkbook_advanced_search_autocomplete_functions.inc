@@ -201,27 +201,47 @@ function _checkbook_advanced_search_autocomplete_spending_expenseid($year, $agen
 }
 
 /**
- * Returns the options for department dropdown based on the selected agency/year/spending category values.
+ * Returns the options for department drop down based on the selected agency/year/spending category values.
  * @param string $year
  *   Year value
  * @param string $agency
  *   Selected agency id
  * @param string $dept
  *   Selected Department Name
- * @param string $exptype
+ * @param string $exp_type
  *   Selected Spending Category Id
- * @param $expcategory
- *   Selected Expense Category
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  ***/
-function _checkbook_advanced_search_autocomplete_spending_department($year, $agency, $exptype, $data_source = 'checkbook') {
-    $query = 'select/?q=department_name:*&facet=true&facet.field=department_name&fq=domain:spending&wt=php';
-    if($data_source == 'checkbook_oge') $query .= '&fq=agency_type:oge';
-    $options = _get_spending_advanced_search_autocomplete_results('department_name', $query, $year, $agency, null, null, $exptype);
+function _checkbook_advanced_search_autocomplete_spending_department($year, $agency, $exp_type, $data_source = 'checkbook') {
+    if ($year) {
+        $year_type = substr($year, 0, 2);
+        $year_value = substr($year, 3, strlen($year));
+        if ($year_type == 'fy') {
+            $year_string = "AND disbursement_line_item_details.check_eft_issued_nyc_year_id = '" . $year_value . "' ";
+        } elseif ($year_type == 'cy') {
+            $year_string = "AND disbursement_line_item_details.calendar_fiscal_year_id = '" . $year_value . "' ";
+        }
+    }
+    $agency_string = $agency ? "AND disbursement_line_item_details.agency_id = '" . $agency . "' " : "";
+    $exp_type_string = $exp_type ? "AND ref_spending_category.spending_category_id = '" . $exp_type . "' " : "";
+    $query = "SELECT DISTINCT department_name
+            FROM disbursement_line_item_details, ref_spending_category
+            WHERE disbursement_line_item_details.spending_category_id = ref_spending_category.spending_category_id " .
+        $agency_string . $year_string . $exp_type_string . "ORDER BY department_name ASC";
+
+    $db_name = "main";
+    $results = _checkbook_project_execute_sql($query, $db_name,  $data_source);
+    if(count($results) == 0){
+        $options = array('label' => 'No Matches Found','value' => '');
+    }else{
+        foreach ($results as $result) {
+            $options[$result['department_name']] = $result['department_name'];
+        }
+    }
     $matches = array();
-    if(isset($options[0]['label'])) {
-        $matches[] = $options[0]['label'];
+    if(isset($options['label'])) {
+        $matches[] = $options['label'];
     }
     else {
         foreach($options as $key => $value)
@@ -253,7 +273,7 @@ function _checkbook_advanced_search_autocomplete_spending_expcategory($year, $ag
     }
     else {
         foreach($options as $key => $value)
-            $matches[] = htmlentities(strtolower($value));
+            $matches[] = htmlentities($value);
     }
     drupal_json_output($matches);
 }
