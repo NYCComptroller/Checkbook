@@ -95,8 +95,10 @@
             //Set up multiselects/option transfers
             //Active/Registered Expense
             $('#edit-column-select-expense', context).multiSelect();
-            $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="deselect">Remove All</a>');
-            $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="select">Add All</a>');
+            if(!$('#ms-edit-column-select-expense .ms-selection', context).next().is("a")){
+                $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="deselect">Remove All</a>');
+                $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="select">Add All</a>');
+            }
             $('#ms-edit-column-select-expense a.select', context).click(function () {
                 $('#edit-column-select-expense', context).multiSelect('select_all');
             });
@@ -105,8 +107,10 @@
             });
             //Active/Registered Revenue
             $('#edit-column-select-revenue', context).multiSelect();
-            $('#ms-edit-column-select-revenue .ms-selection', context).after('<a class="deselect">Remove All</a>');
-            $('#ms-edit-column-select-revenue .ms-selection', context).after('<a class="select">Add All</a>');
+            if(!$('#ms-edit-column-select-revenue .ms-selection', context).next().is("a")){
+                $('#ms-edit-column-select-revenue .ms-selection', context).after('<a class="deselect">Remove All</a>');
+                $('#ms-edit-column-select-revenue .ms-selection', context).after('<a class="select">Add All</a>');
+            }
             $('#ms-edit-column-select-revenue a.select', context).click(function () {
                 $('#edit-column-select-revenue', context).multiSelect('select_all');
             });
@@ -115,8 +119,10 @@
             });
             //Pending
             $('#edit-column-select-pending', context).multiSelect();
-            $('#ms-edit-column-select-pending .ms-selection', context).after('<a class="deselect">Remove All</a>');
-            $('#ms-edit-column-select-pending .ms-selection', context).after('<a class="select">Add All</a>');
+            if(!$('#ms-edit-column-select-pending .ms-selection', context).next().is("a")){
+                $('#ms-edit-column-select-pending .ms-selection', context).after('<a class="deselect">Remove All</a>');
+                $('#ms-edit-column-select-pending .ms-selection', context).after('<a class="select">Add All</a>');
+            }
             $('#ms-edit-column-select-pending a.select', context).click(function () {
                 $('#edit-column-select-pending', context).multiSelect('select_all');
             });
@@ -163,8 +169,10 @@
                    $('#edit-column-select-expense option[value="Year"]',context).attr('disabled','disabled');
                    $('#edit-column-select-expense option[value="year"]',context).attr('disabled','disabled');
                    $('#edit-column-select-expense', context).multiSelect('refresh');
-                   $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="deselect">Remove All</a>');
-                   $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="select">Add All</a>');
+                   if(!$('#ms-edit-column-select-expense .ms-selection', context).next().is("a")){
+                       $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="deselect">Remove All</a>');
+                       $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="select">Add All</a>');
+                   }
                    $('#ms-edit-column-select-expense a.select', context).click(function () {
                        $('#edit-column-select-expense', context).multiSelect('select_all');
                    });
@@ -174,8 +182,10 @@
                    $('#edit-column-select-revenue option[value="Year"]',context).attr('disabled','disabled');
                    $('#edit-column-select-revenue option[value="year"]',context).attr('disabled','disabled');
                    $('#edit-column-select-revenue', context).multiSelect('refresh');
-                   $('#ms-edit-column-select-revenue .ms-selection', context).after('<a class="deselect">Remove All</a>');
-                   $('#ms-edit-column-select-revenue .ms-selection', context).after('<a class="select">Add All</a>');
+                   if(!$('#ms-edit-column-select-revenue .ms-selection', context).next().is("a")){
+                       $('#ms-edit-column-select-revenue .ms-selection', context).after('<a class="deselect">Remove All</a>');
+                       $('#ms-edit-column-select-revenue .ms-selection', context).after('<a class="select">Add All</a>');
+                   }
                    $('#ms-edit-column-select-revenue a.select', context).click(function () {
                        $('#edit-column-select-revenue', context).multiSelect('select_all');
                    });
@@ -186,8 +196,10 @@
                    $('#edit-column-select-expense option[value="Year"]',context).attr('disabled','');
                    $('#edit-column-select-expense option[value="year"]',context).attr('disabled','');
                    $('#edit-column-select-expense', context).multiSelect('refresh');
-                   $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="deselect">Remove All</a>');
-                   $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="select">Add All</a>');
+                   if(!$('#ms-edit-column-select-expense .ms-selection', context).next().is("a")){
+                       $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="deselect">Remove All</a>');
+                       $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="select">Add All</a>');
+                   }
                    $('#ms-edit-column-select-expense a.select', context).click(function () {
                        $('#edit-column-select-expense', context).multiSelect('select_all');
                    });
@@ -197,8 +209,10 @@
                    $('#edit-column-select-revenue option[value="Year"]',context).attr('disabled','');
                    $('#edit-column-select-revenue option[value="year"]',context).attr('disabled','');
                    $('#edit-column-select-revenue', context).multiSelect('refresh');
-                   $('#ms-edit-column-select-revenue .ms-selection', context).after('<a class="deselect">Remove All</a>');
-                   $('#ms-edit-column-select-revenue .ms-selection', context).after('<a class="select">Add All</a>');
+                   if(!$('#ms-edit-column-select-revenue .ms-selection', context).next().is("a")){
+                       $('#ms-edit-column-select-revenue .ms-selection', context).after('<a class="deselect">Remove All</a>');
+                       $('#ms-edit-column-select-revenue .ms-selection', context).after('<a class="select">Add All</a>');
+                   }
                    $('#ms-edit-column-select-revenue a.select', context).click(function () {
                        $('#edit-column-select-revenue', context).multiSelect('select_all');
                    });

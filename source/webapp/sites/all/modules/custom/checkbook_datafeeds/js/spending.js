@@ -91,8 +91,12 @@
             }
             // Sets up multi-select/option transfer
             $('#edit-column-select', context).multiSelect();
-            $('.ms-selection', context).after('<a class="deselect">Remove All</a>');
-            $('.ms-selection', context).after('<a class="select">Add All</a>');
+
+            //Only add the anchors if they don't exist
+            if(!$('.ms-selection', context).next().is("a")){
+                $('.ms-selection', context).after('<a class="deselect">Remove All</a>');
+                $('.ms-selection', context).after('<a class="select">Add All</a>');
+            }
             $('a.select', context).click(function () {
                 $('#edit-column-select', context).multiSelect('select_all');
             });
