@@ -221,8 +221,19 @@
                    });
                }
             });
+            fixAutoCompleteWrapping($("#dynamic-filter-data-wrapper").children());
         }
     };
+
+    //Prevent the auto-complete from wrapping un-necessarily
+    function fixAutoCompleteWrapping(divWrapper) {
+        jQuery(divWrapper.children()).find('input.ui-autocomplete-input:text').each(function () {
+            $(this).data("autocomplete")._resizeMenu = function () {
+                (this.menu.element).outerWidth('100%');
+            }
+        });
+    }
+
     //Function to retrieve values enclosed in brackets or return zero if none
     function emptyToZero(input) {
         var p = /\[(.*?)\]$/;

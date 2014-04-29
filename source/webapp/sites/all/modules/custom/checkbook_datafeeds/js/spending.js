@@ -145,10 +145,19 @@
                     $('#edit-entity-contract-number',context).autocomplete("option", "source", '/autocomplete/spending/entitycontractnum/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + data_source);
                     $('#edit-commodity-line',context).autocomplete("option", "source", '/autocomplete/spending/commodityline/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + data_source);
                     $('#edit-budget-name',context).autocomplete("option", "source", '/autocomplete/spending/budgetname/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + data_source);
-
                 });
             });
+            fixAutoCompleteWrapping($("#dynamic-filter-data-wrapper").children());
         }
+    }
+
+    //Prevent the auto-complete from wrapping un-necessarily
+    function fixAutoCompleteWrapping(divWrapper) {
+        jQuery(divWrapper.children()).find('input.ui-autocomplete-input:text').each(function () {
+            $(this).data("autocomplete")._resizeMenu = function () {
+                (this.menu.element).outerWidth('100%');
+            }
+        });
     }
 
     //Function to retrieve values enclosed in brackets or return zero if none
