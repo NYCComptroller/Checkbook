@@ -292,6 +292,7 @@
                 div.ele('issue_date_to').removeAttr("disabled");
             }
         }
+
         //On click of "Date Filter"
         div_checkbook_spending.ele('date_filter').click(function () {
             onDateFilterClick(div_checkbook_spending);
@@ -316,11 +317,10 @@
         $('input:radio[name=spending_advanced_search_domain_filter]').change(function () {
             onChangeDataSource($('input[name=spending_advanced_search_domain_filter]:checked').val());
         });
-        ///checkbook_advanced_search_clear_button.js sets this value by default
+        //checkbook_advanced_search_clear_button.js sets this value by default
         $('input:radio[name=spending_advanced_search_domain_filter]').click(function () {
             onChangeDataSource($('input[name=spending_advanced_search_domain_filter]:checked').val());
         });
-
         function onChangeDataSource(dataSource) {
 
             /* Reset all the fields for the data source */
@@ -344,6 +344,7 @@
             }
         }
 
+        //Initialize the field elements in the view based on data source selected
         function initializeSpendingView(div, dataSource) {
 
             if(dataSource == "checkbook_oge") {
@@ -407,7 +408,6 @@
                 }
             });
 
-
             div_spending_main.each(function () {
                 $(this).focusout(function () {
                     year = 0;
@@ -433,8 +433,12 @@
                 div.ele('issue_date_from').attr('disabled', 'disabled');
                 div.ele('issue_date_to').attr('disabled', 'disabled');
             }
+
+            //prevent the auto-complete from wrapping un-necessarily
+            fixAutoCompleteWrapping(div.contents());
         }
 
+        //Reset fields to default values
         function resetFields(divWrapper) {
             jQuery(divWrapper.children()).find(':input').each(function () {
                 if (this.type == 'text') {
@@ -446,6 +450,15 @@
                         jQuery(this).find('option:first').attr("selected", "selected");
                     else
                         jQuery(this).find('option[value=' + default_option + ']').attr("selected", "selected");
+                }
+            });
+        }
+
+        //Prevent the auto-complete from wrapping un-necessarily
+        function fixAutoCompleteWrapping(divWrapper) {
+            jQuery(divWrapper.children()).find('input.ui-autocomplete-input:text').each(function () {
+                $(this).data("autocomplete")._resizeMenu = function () {
+                    (this.menu.element).outerWidth('100%');
                 }
             });
         }
