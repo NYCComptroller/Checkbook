@@ -7,7 +7,7 @@
             $('select[name="expense_category"]').val('');
             $('select[name="expense_category"]').attr('disabled', 'disabled');
         }
-        else if ($('#edit-agency').val() == 'Other Government Entities') {
+        else if ($('#edit-agency').val() == 'Select One') {
             $('select[name="dept"]').val('');
             $('select[name="dept"]').attr('disabled', 'disabled');
             $('select[name="expense_category"]').val('');

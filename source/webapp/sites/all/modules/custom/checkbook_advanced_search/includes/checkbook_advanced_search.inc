@@ -86,7 +86,7 @@ function _checkbook_advanced_search_get_agencyname_and_id($data_source = 'checkb
     try {
         switch ($data_source) {
             case 'checkbook_oge':
-                $title = 'Other Government Entities';
+                $title = 'Select One';
                 $parameters = array("is_oge_agency" => "Y", "is_display" => "Y");
                 break;
             default:
@@ -115,7 +115,7 @@ function _checkbook_advanced_search_get_agency_attributes($data_source = 'checkb
     try {
         switch ($data_source) {
             case 'checkbook_oge':
-                $title = 'Other Government Entities';
+                $title = 'Select One';
                 $parameters = array("is_oge_agency" => "Y");
                 break;
             default:
