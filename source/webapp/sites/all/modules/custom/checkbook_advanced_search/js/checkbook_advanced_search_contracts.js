@@ -106,6 +106,17 @@
                     autoCompletes(div);
                 });
             });
+            //prevent the auto-complete from wrapping un-necessarily
+            fixAutoCompleteWrapping(div.contents());
+        }
+
+        //Prevent the auto-complete from wrapping un-necessarily
+        function fixAutoCompleteWrapping(divWrapper) {
+            jQuery(divWrapper.children()).find('input.ui-autocomplete-input:text').each(function () {
+                $(this).data("autocomplete")._resizeMenu = function () {
+                    (this.menu.element).outerWidth('100%');
+                }
+            });
         }
 
         function resetFields(divWrapper) {

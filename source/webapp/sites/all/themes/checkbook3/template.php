@@ -287,6 +287,7 @@ function checkbook3_pager_link($variables) {
   //   possible to use l() here.
   // @see http://drupal.org/node/1410574
   $attributes['href'] = url($_GET['q'], array('query' => $query));
+  $attributes['href'] = urldecode($attributes['href']);
   return '<a' . drupal_attributes($attributes) . '>' . check_plain($text) . '</a>';
 }
 
@@ -355,3 +356,6 @@ function checkbook3_form_select_options($element,$choices=NULL){
   }
   return $options;
 }
+
+
+
