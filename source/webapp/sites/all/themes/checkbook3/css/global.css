@@ -774,6 +774,12 @@ h3.grid_title, h3.grid_chart_title {
     color: #2d4c68;
     line-height:27px;
 }
+h3.grid_title{
+    width:80%;
+}
+.print-content h3.grid_title{
+    width:auto;
+}
 h3.grid_year_title {
     color: #353535;
     font-size: 13px;
