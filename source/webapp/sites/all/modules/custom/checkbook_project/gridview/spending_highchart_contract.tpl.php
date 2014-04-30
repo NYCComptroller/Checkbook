@@ -29,7 +29,8 @@ include_once('export_link.php');
     <thead>
 
         <tr><th class='text'><?php echo WidgetUtil::generateLabelMapping("contract_id") ;?></th>
-        <th class='number'><?php echo WidgetUtil::generateLabelMapping("spending_amount") ;?></th>
+        <th class='number-left'><?php echo WidgetUtil::generateLabelMapping("spending_amount") ;?></th>
+        <th>&nbsp;&nbsp;</th>
         <th class='text'><?php echo WidgetUtil::generateLabelMapping("vendor_name") ;?></th>
         <th class='text'><?php echo WidgetUtil::generateLabelMapping("contract_agency") ;?></th>
         <th>&nbsp</th>
@@ -44,9 +45,10 @@ include_once('export_link.php');
                 echo '<tr>
                 <td><div>' . $datarow['document_id'] . '</div></td>
                 <td>' . $datarow['total_spending_amount'] . '</td>
+                <td>&nbsp;&nbsp;</td>
                 <td><div>' . $datarow['legal_name@checkbook:vendor'] . '</div></td>
                 <td><div>' . $datarow['agency_name@checkbook:agency'] . '</div></td>
-                <td>&nbsp</td>
+                <td>&nbsp;</td>
                 </tr>';
             }
         }
@@ -68,7 +70,7 @@ $dataTableOptions ='
             			},                                                
                         "aoColumnDefs": [
                             {
-                                "aTargets": [0,2,3],
+                                "aTargets": [0,2,3,4],
                                 "sClass":"text",
                                 "asSorting": [ "asc","desc" ]
                             },
@@ -91,11 +93,14 @@ $dataTableOptions ='
                                 "sWidth":"75px"
                             },
                             {
-                              "aTargets": [2]
+                              "aTargets": [2],"sWidth":"35px"
                             },
                             {
-                              "aTargets":[4],
-                              "sWidth":"15px"
+                              "aTargets": [3]
+                            },
+                            {
+                              "aTargets":[5],
+                              "sWidth":"5px"
                             }
                         ]
                     }
