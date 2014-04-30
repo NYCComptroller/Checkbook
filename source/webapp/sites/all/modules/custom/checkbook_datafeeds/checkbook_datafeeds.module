@@ -1486,7 +1486,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#suffix' => '</div>',
                 '#id' => 'edit-agency',
                 '#name' => 'agency',
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'agency', $first_time_load, 'Other Government Entities'),
+                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'agency', $first_time_load, 'Select One'),
             );
             $form['filter']['category'] = array(
                 '#type' => 'select',
@@ -2267,7 +2267,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
     switch($data_source)
     {
         case 'checkbook_oge':
-            if ($values['agency'] != 'Other Government Entities') {
+            if ($values['agency'] != 'Select One') {
                 preg_match($pattern, $values['agency'], $amatches);
                 $criteria['value']['other_government_entities_code'] = trim($amatches[1], '[ ]');
             }
@@ -3921,7 +3921,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
 {
     $first_time_load = checkbook_datafeeds_is_first_load($form_state, $data_source);
 
-    $agency_default = $data_source == 'checkbook' ? 'Citywide (All Agencies)' :'Other Government Entities';
+    $agency_default = $data_source == 'checkbook' ? 'Citywide (All Agencies)' : 'Select One';
     $agency = checkbook_datafeeds_filter_get_default_value($form_state, 'agency', $first_time_load, $agency_default);
     $dept = checkbook_datafeeds_filter_get_default_value($form_state, 'dept', $first_time_load, '');
     $sc = checkbook_datafeeds_filter_get_default_value($form_state, 'expense_type', $first_time_load, '');
@@ -4935,7 +4935,7 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
     switch($data_source)
     {
         case 'checkbook_oge':
-            if ($values['agency'] != 'Other Government Entities') {
+            if ($values['agency'] != 'Select One') {
                 preg_match($pattern, $values['agency'], $amatches);
                 $criteria['value']['other_government_entities_code'] = trim($amatches[1], '[ ]');
             }
@@ -5231,7 +5231,7 @@ function _agency_options($data_source = null) {
                     'agency_code',
                     'agency_name',
                 ), array("is_display" => "Y","is_oge_agency" => "Y"), 'agency_name');
-                $results = array('Other Government Entities' => 'Other Government Entities');
+                $results = array('Select One' => 'Select One');
                 foreach ($data as $row) {
                     $results[$row['agency_name'] . ' [' . $row['agency_code'] . ']'] = $row['agency_name'] . ' [' . $row['agency_code'] . ']';
                 }
