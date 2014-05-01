@@ -127,27 +127,20 @@
 	   	  "labelAlias": "expense_category",		    
 	      "column": "disb_expenditure_object_name"
 	    },
-	    /*{
-	      "label": "<span>Budget Code</span>",
-              "colLabel": "Budget Code",
-	      "column": "disb_budget_name",
-              "headerClass":"text"
-	    },
-            {
-	      "label": "FMS<br/>Document",
-              "colLabel": "FMS Document",
-	      "column": "fms_document_link",
-	      "sortSourceColumn":"contract_number"              
-	    },*/
 	    {
 	   	  "labelAlias": "contract_id",		    
 	      "column": "contract_number_link",
 	      "sortSourceColumn":"disb_contract_number"
 	    },
-	    {
+        {
+            "labelAlias": "commodity_line",
+            "datasource": "checkbook_oge",
+            "column": "disb_agreement_commodity_line_number"
+        },
+        {
 	   	  "labelAlias": "contract_purpose",		    
 	      "column": "contract_purpose_text",
-               "sortSourceColumn":"disb_purpose"
+           "sortSourceColumn":"disb_purpose"
 	    },
 	    {
 	   	  "labelAlias": "capital_project",		    
@@ -167,13 +160,7 @@
             "datasource": "checkbook_oge",
             "sortSourceColumn":"oge_budget_name",
             "column":"budget_name_formatted"
-        },
-        {
-          "labelAlias": "commodity_line",
-          "datasource": "checkbook_oge",
-          "column": "disb_agreement_commodity_line_number"
         }
-
 	  ],
 "adjustParameters":"
 
@@ -220,12 +207,12 @@
             {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
             {"sClass":"text number-left","sWidth":"180px","asSorting": [ "asc","desc" ]},
             {"sClass":"text","sWidth":"165px","asSorting": [ "asc","desc" ]},
+            {"sClass":"number","sWidth":"100px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"},
             {"sClass":"text","sWidth":"165px","asSorting": [ "asc","desc" ]},
             {"sClass":"text","sWidth":"165px","asSorting": [ "asc","desc" ]},
             {"sClass":"text","sWidth":"165px","asSorting": [ "asc","desc" ]},
 {"sClass":"text number-left","sWidth":"125px","asSorting": [ "desc","asc" ],"datasource":"checkbook_oge"},
-		{"sClass":"text","sWidth":"200px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"},
-		{"sClass":"number","sWidth":"100px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"}
+		{"sClass":"text","sWidth":"200px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"}
         ],
          "aaSorting":[[5,"desc"]],
        		"sScrollX": "100%",

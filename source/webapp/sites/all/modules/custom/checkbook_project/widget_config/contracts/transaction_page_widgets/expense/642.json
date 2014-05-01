@@ -160,6 +160,11 @@
 "table_columns": [
 	    {"label": "&nbsp;","column": "child_contrats_link"},
         {"label": "Contract ID","column": "contract_link","sortSourceColumn":"contract_number"},
+        {
+            "labelAlias": "commodity_line",
+            "datasource": "checkbook_oge",
+            "column": "fms_commodity_line"
+        },
 	    {"label": "<span>Purpose</span>","column": "purpose_formatted","sortSourceColumn":"description"},
 	    {"label": "Version","column": "document_version"},
 	    {"label": "FMS Document/ Parent Contract ID","column":"master_contract_number"},
@@ -178,20 +183,15 @@
 	    {"label": "PIN","column": "tracking_number"},
 	    {"label": "APT PIN","column": "brd_awd_no"},
         {
-	               "labelAlias":"entity_contact_num",
-	               "datasource": "checkbook_oge",
-	               "column":"oge_contract_number"
-	            },
-                {
-	                "labelAlias":"budget_name",
-	                "datasource": "checkbook_oge",
-                    "column":"budget_name_formatted",
-	                "sortSourceColumn":"budget_name"
-	            },
-                {
-	              "labelAlias": "commodity_line",
-	              "datasource": "checkbook_oge",
-	              "column": "fms_commodity_line"
-	            }
+           "labelAlias":"entity_contact_num",
+           "datasource": "checkbook_oge",
+           "column":"oge_contract_number"
+        },
+        {
+            "labelAlias":"budget_name",
+            "datasource": "checkbook_oge",
+            "column":"budget_name_formatted",
+            "sortSourceColumn":"budget_name"
+        }
 	  ]
 }
