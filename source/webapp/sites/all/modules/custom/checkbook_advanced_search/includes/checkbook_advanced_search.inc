@@ -570,8 +570,21 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['id'], 'awdmethod');
     }
     if (!empty($contracts_contract_type)) {
-        $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($contracts_contract_type);
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['code'], 'agrmnttypecode');
+        switch ($data_source) {
+            case "checkbook_oge":
+                $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($contracts_contract_type);
+                $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['code'], 'agrmnttypecode');
+                break;
+            default:
+                $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($contracts_contract_type);
+                if ($contracts_contract_status == 'P') {
+                    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['code'], 'agrmnttypecode');
+                }
+                else {
+                    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['id'], 'agrmnttype');
+                }
+                break;
+        }
     }
     if (!empty($contracts_year)) {
         $redirect_url .= _checkbook_advanced_search_year_arg($contracts_year);
