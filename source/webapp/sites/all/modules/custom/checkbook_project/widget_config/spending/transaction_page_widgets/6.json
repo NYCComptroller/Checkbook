@@ -82,6 +82,10 @@
                 "type": "expression2",
                 "expression": "(_checkbook_check_isEDCPage()? _checkbook_project_get_url_param_string(\"agency\") :'')"
        },
+        "issue_date_formatted":{
+            "type": "expression2",
+            "expression": "(_checkbook_check_isEDCPage()? 'N/A' : $row[check_eft_issued_date])"
+        },
 	"vendor_name_link": {
 	      "type": "expression2",
                "expression": " RequestUtil::isNewWindow() ||  $row[spending_category_id]==2 ?  $row[vendor_name_formatted] : ('<a href=/spending_landing' . _checkbook_project_get_year_url_param_string(false,false,false,true) . _checkbook_append_url_params() . $row['agency_param'] . _checkbook_project_get_url_param_string('category') . (_checkbook_check_isEDCPage() ? ('/agency/'. $row[agency_id]) :'') . '/vendor/'. $row[vendor_id] . '?expandBottomCont=true>'. $row[vendor_name_formatted] .'</a>') "
@@ -162,7 +166,8 @@
 	    },
 	    {
 	    	"labelAlias": "issue_date",
-	      "column": "check_eft_issued_date",
+	      "column": "issue_date_formatted",
+	      "sortSourceColumn": "check_eft_issued_date",
               "headerClass":"issuedate"
 	    },
 	    {
