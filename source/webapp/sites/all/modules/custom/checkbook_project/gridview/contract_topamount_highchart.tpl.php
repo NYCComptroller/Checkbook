@@ -30,6 +30,7 @@ include_once('export_link.php');
     <thead>
         <tr><th class='text'><?php echo WidgetUtil::generateLabelMapping("contract_id") ;?></th>
         <th class='number'><?php echo WidgetUtil::generateLabelMapping("current_amount") ;?></th>
+        <th>&nbsp;&nbsp;&nbsp;</th>
         <th class='text'><?php echo WidgetUtil::generateLabelMapping("vendor_name") ;?></th>
         <th class='text'><?php echo WidgetUtil::generateLabelMapping("contract_agency") ;?></th>
         <th>&nbsp</th>
@@ -49,6 +50,7 @@ include_once('export_link.php');
                 echo '<tr>
                 <td><div>' . $datarow['contract_number'] . '</div></td>
                 <td>' . $datarow['maximum_contract_amount'] . '</td>
+                <td>&nbsp;&nbsp;&nbsp;</td>
                 <td><div>' . $datarow['legal_name@checkbook:vendor'] . '</div></td>
                 <td><div>' . $datarow['agency_name@checkbook:agency'] . '</div></td>
                 <td>&nbsp</td>
@@ -75,7 +77,7 @@ echo eval($node->widgetConfig->gridConfig->footer);
             			},                                                
                         "aoColumnDefs": [
                             {
-                                "aTargets": [0,2,3],
+                                "aTargets": [0,2,4],
                                 "sClass":"text",
                                 "asSorting": [ "asc","desc" ]
                             },
@@ -93,12 +95,12 @@ echo eval($node->widgetConfig->gridConfig->footer);
                                     }
                                     return source.contract_amount;
                                 },
-                                "sClass":"text number-left",
+                                "sClass":"number",
                                 "asSorting": [ "desc", "asc" ],
                                 "sWidth":"40px"
                             },
                             {
-                              "aTargets": [4],
+                              "aTargets": [5],
                               "sWidth":"15px"
                             }
 
