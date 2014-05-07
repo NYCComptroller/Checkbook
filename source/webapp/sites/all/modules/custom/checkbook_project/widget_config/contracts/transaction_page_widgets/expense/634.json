@@ -145,7 +145,11 @@
    "budget_name_formatted":{
             "type": "expression2",
             "expression": "_get_tooltip_markup($row[budget_name], 36)"
-   }
+   },
+    "reg_date":{
+        "type": "expression2",
+         "expression": "(_checkbook_check_isEDCPage()? 'N/A' : 'N/A')"
+    }
 },
 "table_columns": [
 	    {"label": "<div>&nbsp;</div>","colLabel": "","column": "child_contrats_link","export":false},
@@ -169,7 +173,7 @@
         {"labelAlias": "contract_industry","column": "industry_name_formatted","sortSourceColumn":"industry_type_name"},
 	    {"labelAlias": "start_date","column": "effective_begin_date"},
 	    {"labelAlias": "end_date","column": "effective_end_date"},
-	    {"labelAlias": "reg_date","column": "registered_date"},
+	    {"labelAlias": "reg_date","column": "reg_date","sortSourceColumn":"registered_date"},
 	    {"labelAlias": "pin","column": "tracking_number"},
 	    {"labelAlias": "apt_pin","column": "brd_awd_no"},
 	            {
@@ -269,7 +273,7 @@
 		{"sClass":"text","sWidth":"220px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"145px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"145px","asSorting": [ "asc","desc" ]},
-		{"sClass":"text","sWidth":"145px","asSorting": [ "asc","desc" ]},
+		{"sClass":"number-left","sWidth":"145px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"360px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"180px","asSorting": [ "asc","desc" ]},
         {"sClass":"text number-left","sWidth":"125px","asSorting": [ "desc","asc" ]},
