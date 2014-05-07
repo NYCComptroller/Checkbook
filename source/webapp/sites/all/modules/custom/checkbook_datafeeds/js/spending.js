@@ -14,6 +14,12 @@
             $('select[name="expense_category"]').attr('disabled', 'disabled');
         }
 
+        var dataSource = $('input:radio[name=datafeeds-spending-domain-filter]:checked').val();
+
+        //Issue Date is disabled for oge
+        if(dataSource == 'checkbook_oge') {
+            $('input:radio[name=date_filter][value=1]').attr('disabled', 'disabled');
+        }
     };
 
     $.fn.onDataSourceChange = function () {

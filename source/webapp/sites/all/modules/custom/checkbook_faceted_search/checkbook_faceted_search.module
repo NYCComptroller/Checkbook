@@ -121,7 +121,7 @@ function _checkbook_faceted_search_update_data($node){
           $paramValues =  explode('~', $param);
           $patterns = array();
           foreach($paramValues as $value){
-            $value = _replaceSlash($value);
+            $value = checkbook_faceted_search_replaceSlash($value);
             $patterns[] = "(^" . _checkbook_regex_replace_pattern($value) . "$)";
           }          
           $parameters[$urlParamMap[$node->widgetConfig->urlParameterName]] = array(data_controller_get_operator_factory_instance()->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, implode($patterns,"|")));          
@@ -555,4 +555,9 @@ function array_values_recursive($ary)
       }
    }
    return $lst;
+}
+
+function checkbook_faceted_search_replaceSlash($string)
+{
+    return str_replace('/', '__', $string);
 }
