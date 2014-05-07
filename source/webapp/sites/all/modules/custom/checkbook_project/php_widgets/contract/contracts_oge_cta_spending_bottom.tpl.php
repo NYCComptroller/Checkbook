@@ -62,7 +62,7 @@ foreach($node->results_spending as $spending_row){
       <th class="text"><?php echo WidgetUtil::generateLabelMapping("prime_vendor_name"); ?></th>
       <th class="number"><?php echo WidgetUtil::generateLabelMapping("current_amount"); ?></th>
       <th class="number"><?php echo WidgetUtil::generateLabelMapping("original_amount"); ?></th>      
-      <th class="number endCol"><?php echo WidgetUtil::generateLabelMapping("amount_spent"); ?></th>
+      <th class="number endCol"><?php echo WidgetUtil::generateLabelMapping("spent_to_date"); ?></th>
     </tr>
     </thead>
    <tbody>
@@ -158,8 +158,8 @@ foreach($node->results_spending as $spending_row){
 								$count3 +=1;
 								echo "
 					                  	<tr " . $class3 ." >
-					                    <td class='text thStartDate'><div>".$contract_history['start_date']."</div></td>
-					                    <td class='text thEndDate'><div>".$contract_history['end_date']."</div></td>
+					                    <td class='text thStartDate'><div>".date_format(new DateTime($contract_history['start_date']),'m/d/Y')."</div></td>
+					                    <td class='text thEndDate'><div>".date_format(new DateTime($contract_history['end_date']),'m/d/Y')."</div></td>
 					                    <td class='text purpose'><div>".$contract_history['description']."</div></td>
 					                    <td class='number thVNum'><div>".$contract_history['fms_commodity_line']."</div></td>
 					                    <td class='number thCurAmt'><div>".custom_number_formatter_format($contract_history['current_amount_commodity_level'], 2, '$')."</div></td>
@@ -224,7 +224,7 @@ foreach($node->results_spending as $spending_row){
 		
 							echo "<thead>
 		                  	<tr>
-		                    <th class='text thStartDate'>".WidgetUtil::generateLabelMapping("start_date")."</th>
+		                    <th class='text thStartDate'>".WidgetUtil::generateLabelMapping("date")."</th>
 		                    <th class='number thCurAmt'>".WidgetUtil::generateLabelMapping("check_amount")."</th>
 		                    <th class='text purpose'>".WidgetUtil::generateLabelMapping("expense_category")."</th>
 		                    <th class='text thVNum'>".WidgetUtil::generateLabelMapping("agency_name")."</th>
@@ -244,7 +244,7 @@ foreach($node->results_spending as $spending_row){
 										$count3 +=1;
 										echo "
 							                  	<tr " . $class3 . ">
-							                    <td class='text '><div>".$contract_spending['issue_date']."</div></td>
+							                    <td class='text '><div>".date_format(new DateTime($contract_spending['issue_date']),'m/d/Y')."</div></td>
 							                    <td class='number'><div>".custom_number_formatter_format($contract_spending['check_amount'], 2, '$')."</div></td>
 							                    <td class='text '><div>".$contract_spending['expenditure_object_name']."</div></td>
 							                    <td class='text '><div>".$contract_spending['agency_name']."</div></td>

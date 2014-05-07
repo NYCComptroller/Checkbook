@@ -379,7 +379,7 @@ function widget_prepare(&$node) {
 				if ($up == $pathParams[$i]) {
        				 $up = isset($node->widgetConfig->urlParamMap) ? $node->widgetConfig->urlParamMap->$up : $up;
 					if(isset($pathParams[$i + 1])){
-                        $pathParams[$i + 1] = _replaceSlash($pathParams[$i + 1]);
+                        $pathParams[$i + 1] = _replaceSpecialCharactersDecode($pathParams[$i + 1]);
                         $node->widgetConfig->requestParams[$up] = htmlspecialchars_decode($pathParams[$i + 1]);
                         $node->widgetConfig->originalRequestParams[$pathParam] = htmlspecialchars_decode($pathParams[$i + 1]);
                     }
@@ -1253,8 +1253,9 @@ function widget_cleanurlparams_as_string($node) {
 	return $requestParams;
 }
 
-function _replaceSlash($string){
-    return str_replace('__','/',$string);
+function _replaceSpecialCharactersDecode($string){
+	$string = str_replace('__','/',$string);
+    return str_replace('^^','.',$string);
 }
 
 function _update_dataset_datasource($datasetName,$keepOriginalDatasource = false){

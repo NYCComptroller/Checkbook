@@ -1394,6 +1394,16 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#name' => 'contractno',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'contractno', $first_time_load, ''),
             );
+            $form['filter']['commodity_line'] = array(
+                '#type' => 'textfield',
+                '#title' => t('Commodity Line:'),
+                '#prefix' => '<div class="datafield commodityline">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch')),
+                '#id' => 'edit-commodity-line',
+                '#name' => 'commodity_line',
+                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'commodity_line', $first_time_load, ''),
+            );
             $form['filter']['entity_contract_number'] = array(
                 '#type' => 'textfield',
                 '#title' => t('Entity Contract #:'),
@@ -1403,17 +1413,6 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#id' => 'edit-entity-contract-number',
                 '#name' => 'entity_contract_number',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'entity_contract_number', $first_time_load, ''),
-            );
-            $form['filter']['commodity_line'] = array(
-
-                '#type' => 'textfield',
-                '#title' => t('Commodity Line:'),
-                '#prefix' => '<div class="datafield commodityline">',
-                '#suffix' => '</div>',
-                '#attributes' => array('class' => array('watch')),
-                '#id' => 'edit-commodity-line',
-                '#name' => 'commodity_line',
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'commodity_line', $first_time_load, ''),
             );
             $form['filter']['budget_name'] = array(
                 '#type' => 'textfield',
@@ -4041,6 +4040,16 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#name' => 'contractno',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'contractno', $first_time_load, ''),
             );
+            $form['filter']['commodity_line'] = array(
+                '#type' => 'textfield',
+                '#title' => t('Commodity Line:'),
+                '#prefix' => '<div class="datafield commodityline">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch')),
+                '#id' => 'edit-commodity-line',
+                '#name' => 'commodity_line',
+                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'commodity_line', $first_time_load, ''),
+            );
             $form['filter']['entity_contract_number'] = array(
                 '#type' => 'textfield',
                 '#title' => t('Entity Contract #:'),
@@ -4051,16 +4060,6 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#name' => 'entity_contract_number',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'entity_contract_number', $first_time_load, ''),
             );
-            $form['filter']['document_id'] = array(
-                '#type' => 'textfield',
-                '#title' => t('Document ID:'),
-                '#prefix' => '<div class="datafield expenseid">',
-                '#suffix' => '</div>',
-                '#attributes' => array('class' => array('watch'), 'disabled' => 'disabled'),
-                '#id' => 'edit-document-id',
-                '#name' => 'document_id',
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'document_id', $first_time_load, ''),
-            );
             $form['filter']['capital_project'] = array(
                 '#type' => 'textfield',
                 '#title' => t('Capital Project:'),
@@ -4070,16 +4069,6 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#id' => 'edit-capital-project',
                 '#name' => 'capital_project',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'capital_project', $first_time_load, ''),
-            );
-            $form['filter']['commodity_line'] = array(
-                '#type' => 'textfield',
-                '#title' => t('Commodity Line:'),
-                '#prefix' => '<div class="datafield commodityline">',
-                '#suffix' => '</div>',
-                '#attributes' => array('class' => array('watch')),
-                '#id' => 'edit-commodity-line',
-                '#name' => 'commodity_line',
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'commodity_line', $first_time_load, ''),
             );
             $form['filter']['budget_name'] = array(
                 '#type' => 'textfield',
