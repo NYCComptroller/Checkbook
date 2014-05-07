@@ -38,7 +38,6 @@
             "data_type":{
                 "csv":{
                     "Payee Name":"Payee Name",
-                    "Issue Date":"Issue Date",
                     "Other Government Entities":"Other Government Entities",
                     "Department":"Department",
                     "Check Amount":"Check Amount",
@@ -55,7 +54,6 @@
                 },
                 "xml":{
                     "payee_name":"payee_name",
-                    "issue_date":"issue_date",
                     "other_government_entities":"other_government_entities",
                     "department":"department",
                     "check_amount":"check_amount",
