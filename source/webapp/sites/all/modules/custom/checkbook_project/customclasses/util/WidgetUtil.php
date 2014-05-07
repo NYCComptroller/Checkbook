@@ -147,6 +147,7 @@ class WidgetUtil
         "resp_per_sol"=>"# of Responses per Solicitation",
         "payee_name"=>"Payee<br/>Name",
         "issue_date"=>"Issue<br/>Date",
+    	"date"=>"Date",
         "capital_project"=>"Capital<br/>Project",
         "spending_category"=>"Spending<br/>Category",
         "spending_amount"=>"Amount",
