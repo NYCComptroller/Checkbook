@@ -349,6 +349,7 @@
 
             if(dataSource == "checkbook_oge") {
                 div.ele('document_id').attr("disabled", "disabled");
+                div.ele('date_filter_issue_date').attr('disabled', 'disabled');
             }
 
             //Both
