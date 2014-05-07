@@ -25,7 +25,6 @@
                 {"field_name":"contract_id","column":"column-right"},
                 {"field_name":"commodity_line","column":"column-right"},
                 {"field_name":"entity_contract_number","column":"column-right"},
-                {"field_name":"document_id","column":"column-right","disabled":true},
                 {"field_name":"capital_project","column":"column-right"},
                 {"field_name":"budget_name","column":"column-right"},
                 {"field_name":"date_filter","column":"column-right"},
