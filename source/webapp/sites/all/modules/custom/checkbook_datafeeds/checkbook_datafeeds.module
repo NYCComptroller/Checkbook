@@ -4060,16 +4060,6 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#name' => 'entity_contract_number',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'entity_contract_number', $first_time_load, ''),
             );
-            $form['filter']['document_id'] = array(
-                '#type' => 'textfield',
-                '#title' => t('Document ID:'),
-                '#prefix' => '<div class="datafield expenseid">',
-                '#suffix' => '</div>',
-                '#attributes' => array('class' => array('watch'), 'disabled' => 'disabled'),
-                '#id' => 'edit-document-id',
-                '#name' => 'document_id',
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'document_id', $first_time_load, ''),
-            );
             $form['filter']['capital_project'] = array(
                 '#type' => 'textfield',
                 '#title' => t('Capital Project:'),
