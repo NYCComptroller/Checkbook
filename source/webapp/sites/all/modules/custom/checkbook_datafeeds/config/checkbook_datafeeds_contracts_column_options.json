@@ -158,6 +158,7 @@
                             "data_type":{
                                 "csv":{
                                     "Contract ID":"Contract ID",
+                                    "Commodity Line":"Commodity Line",
                                     "Purpose":"Purpose",
                                     "Version":"Version",
                                     "Year":"Year",
@@ -177,11 +178,11 @@
                                     "Document Code":"Document Code",
                                     "Contract Industry":"Contract Industry",
                                     "Entity Contract #":"Entity Contract #",
-                                    "Commodity Line":"Commodity Line",
                                     "Budget Name":"Budget Name"
                                 },
                                 "xml":{
                                     "contract_id":"contract_id",
+                                    "commodity_line":"commodity_line",
                                     "purpose":"purpose",
                                     "version":"version",
                                     "year":"year",
@@ -200,7 +201,6 @@
                                     "pin":"pin",
                                     "contract_industry":"contract_industry",
                                     "entity_contract_number":"entity_contract_number",
-                                    "commodity_line":"commodity_line",
                                     "budget_name":"budget_name"
                                 }
                             }
