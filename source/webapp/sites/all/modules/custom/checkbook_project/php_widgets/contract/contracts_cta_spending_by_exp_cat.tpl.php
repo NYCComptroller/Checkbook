@@ -29,7 +29,7 @@ echo "<thead>
         <tr>
           <th class='text'>" . WidgetUtil::generateLabelMapping("expense_category") ."</th>
           <th class='number'>" . WidgetUtil::generateLabelMapping("encumbered_amount") ."</th>
-          <th class='number endCol'>" . WidgetUtil::generateLabelMapping("amount_spent") ."</th>
+          <th class='number endCol'>" . WidgetUtil::generateLabelMapping("spent_to_date") ."</th>
         </tr>
       </thead>
       <tbody>";

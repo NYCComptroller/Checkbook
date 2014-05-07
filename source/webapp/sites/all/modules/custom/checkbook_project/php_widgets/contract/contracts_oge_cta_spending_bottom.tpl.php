@@ -62,7 +62,7 @@ foreach($node->results_spending as $spending_row){
       <th class="text"><?php echo WidgetUtil::generateLabelMapping("prime_vendor_name"); ?></th>
       <th class="number"><?php echo WidgetUtil::generateLabelMapping("current_amount"); ?></th>
       <th class="number"><?php echo WidgetUtil::generateLabelMapping("original_amount"); ?></th>      
-      <th class="number endCol"><?php echo WidgetUtil::generateLabelMapping("amount_spent"); ?></th>
+      <th class="number endCol"><?php echo WidgetUtil::generateLabelMapping("spent_to_date"); ?></th>
     </tr>
     </thead>
    <tbody>
