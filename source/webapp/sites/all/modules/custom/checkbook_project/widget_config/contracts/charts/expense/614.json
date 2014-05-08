@@ -132,7 +132,7 @@
 yAxisFormatter^^"formatter" : function(){return yAxisLabelFormatter(this);}##
 tooltipformatter^^"formatter" : function() {
       return  "<div style='width:380px;white-space:normal;'>Contract ID: " + this.point.contractnum +
-              "<br/>Vendor: " + "<span style='text-wrap:unrestricted'>" + this.point.vendor + '</span>' +
+              "<br/>Prime Vendor: " + "<span style='text-wrap:unrestricted'>" + this.point.vendor + '</span>' +
               "<br/>Contracting Agency: " + "<span style='text-wrap:unrestricted'>" + this.point.agency + '</span>' +
               "<br/>Amount: " + abbrNum(this.y, 2, "$") + "</div>";
 }
