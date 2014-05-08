@@ -161,8 +161,8 @@
         },
 	    {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description"},
 	    {"labelAlias": "version","column": "document_version"},
-	    {"labelAlias": "fms_doc_id","column":"parent_contract_link","export":false}
-        {"labelAlias": "current_amount","column": "formatted_current_amount","sortSourceColumn":"maximum_contract_amount"},
+	    {"labelAlias": "fms_doc_id","column":"parent_contract_link","export":false},
+	    {"labelAlias": "current_amount","column": "formatted_current_amount","sortSourceColumn":"maximum_contract_amount"},
         {"labelAlias": "original_amount","column": "formatted_original_amount","sortSourceColumn":"original_contract_amount"},
 	    {"labelAlias": "spent_to_date","column": "formatted_spent_to_date","sortSourceColumn":"spending_amount_disb"},
 	    {"labelAlias": "prime_vendor","column": "vendor_name_link","sortSourceColumn":"legal_name@checkbook:vendor"},
