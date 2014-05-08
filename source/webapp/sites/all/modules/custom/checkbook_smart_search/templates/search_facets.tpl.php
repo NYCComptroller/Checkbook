@@ -319,7 +319,7 @@ if(count($oge) > 0){
 
     if(count($vendors) > 0){
         $output .= "<table id='vendorfilter'>";
-        $output .= "<th colspan='3'>By Vendor</th>";
+        $output .= "<th colspan='3'>By Prime Vendor</th>";
         $i=0;
         $displayRows = NULL;
         $hiddenRows = NULL;
