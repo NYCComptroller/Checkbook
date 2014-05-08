@@ -23,7 +23,7 @@
     "checkbook_oge":
             [
                 {"field_name":"status","column":"column-left"},
-                {"field_name":"vendor_name","column":"column-left"},
+                {"field_name":"prime_vendor_name","column":"column-left"},
                 {"field_name":"type","column":"column-left"},
                 {"field_name":"contract_id","column":"column-left"},
                 {"field_name":"commodity_line","column":"column-left"},
