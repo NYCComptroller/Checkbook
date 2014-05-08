@@ -49,7 +49,7 @@
                         "original_amount":"original_contract_amount",
                         "current_amount":"maximum_contract_amount",
                         "spent_to_date":"spending_amount_disb",
-                        "vendor":"legal_name@checkbook_oge:vendor",
+                        "prime_vendor":"legal_name@checkbook_oge:vendor",
                         "other_government_entities":"agency_name@checkbook_oge:agency",
                         "contract_type":"agreement_type_code",
                         "award_method":"award_method_name",
@@ -64,7 +64,7 @@
                         "entity_contract_number":"oge_contract_number",
                         "budget_name":"budget_name"
                     },
-                    "rowElements":["other_government_entities", "vendor", "contract_id", "version", "year", "parent_contract_id", "purpose", "original_amount", "current_amount", "spent_to_date", "registration_date"
+                    "rowElements":["other_government_entities", "prime_vendor", "contract_id", "version", "year", "parent_contract_id", "purpose", "original_amount", "current_amount", "spent_to_date", "registration_date"
                         , "apt_pin", "pin", "contract_type", "award_method", "expense_category", "start_date", "end_date", "document_code", "contract_industry"
                         ,"commodity_line","entity_contract_number","budget_name"]
                 },
@@ -78,7 +78,7 @@
                         "Original Amount":"original_contract_amount",
                         "Current Amount":"maximum_contract_amount",
                         "Spent to date":"spending_amount_disb",
-                        "Vendor":"legal_name@checkbook_oge:vendor",
+                        "Prime Vendor":"legal_name@checkbook_oge:vendor",
                         "Other Government Entities":"agency_name@checkbook_oge:agency",
                         "Contract Type":"agreement_type_name",
                         "Award Method":"award_method_name",
@@ -174,7 +174,7 @@
                         "original_amount":"original_contract_amount",
                         "current_amount":"maximum_contract_amount",
                         "spent_to_date":"spending_amount_disb",
-                        "vendor":"legal_name@checkbook_oge:vendor",
+                        "prime_vendor":"legal_name@checkbook_oge:vendor",
                         "other_government_entities":"agency_name@checkbook_oge:agency",
                         "contract_type":"agreement_type_code",
                         "award_method":"award_method_name",
@@ -190,7 +190,7 @@
                         "entity_contract_number":"oge_contract_number",
                         "budget_name":"budget_name"
                     },
-                    "rowElements":["other_government_entities", "vendor", "contract_id", "version", "parent_contract_id", "purpose", "original_amount", "current_amount", "spent_to_date", "registration_date"
+                    "rowElements":["other_government_entities", "prime_vendor", "contract_id", "version", "parent_contract_id", "purpose", "original_amount", "current_amount", "spent_to_date", "registration_date"
                         , "apt_pin", "pin", "contract_type", "award_method", "expense_category", "start_date", "end_date", "document_code", "contract_industry"
                         ,"entity_contract_number","budget_name","commodity_line"]
                 },
@@ -204,7 +204,7 @@
                         "Original Amount":"original_contract_amount",
                         "Current Amount":"maximum_contract_amount",
                         "Spent to date":"spending_amount_disb",
-                        "Vendor":"legal_name@checkbook_oge:vendor",
+                        "Prime Vendor":"legal_name@checkbook_oge:vendor",
                         "Other Government Entities":"agency_name@checkbook_oge:agency",
                         "Contract Type":"agreement_type_name",
                         "Award Method":"award_method_name",

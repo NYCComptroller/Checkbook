@@ -1365,7 +1365,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
             );
             $form['filter']['vendor'] = array(
                 '#type' => 'textfield',
-                '#title' => t('Vendor:'),
+                '#title' => t('Prime Vendor:'),
                 '#attributes' => array('class' => array('watch')),
                 '#prefix' => '<div class="datafield vendor">',
                 '#suffix' => '</div>',
@@ -1995,12 +1995,6 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         $form['filter']['df_contract_status'] = array('#markup' => '<div><strong>Contract Status:</strong> ' . $values['df_contract_status'] . '</div>');
         $user_criteria['Contract Status'] = $values['df_contract_status'];
     }
-    if ($values['vendor']) {
-        $form['filter']['vendor'] = array(
-            '#markup' => '<div><strong>Vendor:</strong> ' . $values['vendor'] . '</div>',
-        );
-        $user_criteria['Vendor'] = $values['vendor'];
-    }
     if ($values['contract_type']) {
         $form['filter']['contract_type'] = array('#markup' => '<div><strong>Contract Type:</strong> ' . $values['contract_type'] . '</div>');
         $user_criteria['Contract Type'] = $values['contract_type'];
@@ -2086,6 +2080,12 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
                 );
                 $user_criteria['Other Government Entities'] = $values['agency'];
             }
+            if ($values['vendor']) {
+                $form['filter']['vendor'] = array(
+                    '#markup' => '<div><strong>Prime Vendor:</strong> ' . $values['vendor'] . '</div>',
+                );
+                $user_criteria['Prime Vendor'] = $values['vendor'];
+            }
             break;
         default:
             if ($values['agency']) {
@@ -2093,6 +2093,12 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
                     '#markup' => '<div><strong>Agency:</strong> ' . $values['agency'] . '</div>',
                 );
                 $user_criteria['Agency'] = $values['agency'];
+            }
+            if ($values['vendor']) {
+                $form['filter']['vendor'] = array(
+                    '#markup' => '<div><strong>Vendor:</strong> ' . $values['vendor'] . '</div>',
+                );
+                $user_criteria['Vendor'] = $values['vendor'];
             }
             break;
     }
