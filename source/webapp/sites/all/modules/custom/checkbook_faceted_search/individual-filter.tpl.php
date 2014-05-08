@@ -42,6 +42,9 @@ if(strtolower($filter_name) == 'agency'){
         $filter_name = 'Citywide Agency';
     }
 }
+if(strtolower($filter_name) == 'vendor'){
+    $filter_name = "Prime Vendor";
+}
 ?>
 <div class="filter-content <?php if( $hide_filter != "") print "disabled"; ?>"><div <?php print $hide_filter; ?>>
   <div class="filter-title" <?php print $tooltip ?>>By <?php print $filter_name;?></div>
