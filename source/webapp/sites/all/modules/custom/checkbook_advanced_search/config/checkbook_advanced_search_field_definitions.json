@@ -93,6 +93,15 @@
             "title":"Vendor"
         }
     },
+    "prime_vendor_name":{
+        "field_type":"textfield",
+        "field_name":"vendor_name",
+        "attributes":{
+            "size":30,
+            "maxlength":150,
+            "title":"Prime Vendor"
+        }
+    },
     "type":{
         "field_type":"select",
         "field_name":"type",
