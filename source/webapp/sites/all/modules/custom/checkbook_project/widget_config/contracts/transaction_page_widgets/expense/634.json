@@ -161,11 +161,11 @@
         },
 	    {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description"},
 	    {"labelAlias": "version","column": "document_version"},
-	    {"labelAlias": "fms_doc_id","column":"parent_contract_link","export":false},
+	    {"labelAlias": "fms_doc_id","column":"parent_contract_link","export":false}
+        {"labelAlias": "current_amount","column": "formatted_current_amount","sortSourceColumn":"maximum_contract_amount"},
         {"labelAlias": "original_amount","column": "formatted_original_amount","sortSourceColumn":"original_contract_amount"},
-	    {"labelAlias": "current_amount","column": "formatted_current_amount","sortSourceColumn":"maximum_contract_amount"},
 	    {"labelAlias": "spent_to_date","column": "formatted_spent_to_date","sortSourceColumn":"spending_amount_disb"},
-	    {"labelAlias": "vendor_name","column": "vendor_name_link","sortSourceColumn":"legal_name@checkbook:vendor"},
+	    {"labelAlias": "prime_vendor","column": "vendor_name_link","sortSourceColumn":"legal_name@checkbook:vendor"},
 	    {"labelAlias": "contract_agency","column": "agency_name_link","sortSourceColumn":"agency_name@checkbook:agency"},
 	    {"labelAlias": "contract_type","column": "contract_type_formatted","sortSourceColumn":"agreement_type_name"},
 	    {"labelAlias": "award_method","column": "award_method_formatted","sortSourceColumn":"award_method_name"},
@@ -280,7 +280,7 @@
 		{"sClass":"text","sWidth":"200px","asSorting": [ "asc","desc" ]},
         {"bSortable": false,"sWidth":"10px"}
       ],
-        "aaSorting":[[7,"desc"]],
+        "aaSorting":[[6,"desc"]],
 	"sScrollX": "100%",
          "bScrollCollapse": true
 }
