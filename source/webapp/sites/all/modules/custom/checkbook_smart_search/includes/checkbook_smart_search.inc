@@ -705,7 +705,7 @@ function _checkbook_smart_search_export_data(){
     $results = _checkbook_smart_search_get_results_csv($search_terms, $page_num , $page_size,$fl, true);
     $page_num += 1 ;
     $remaining = $remaining - $page_size;
-    echo $results;
+    echo preg_replace("/(\d{4})-(\d{2})-(\d{2})...:..:.../","$2/$3/$1",$results);
     ob_flush();
     flush();
   }
