@@ -51,14 +51,14 @@
       "type": "expression2",
       "expression": "'<a class=\"new_window\" href=\"/spending/transactions/magid/' .$row[original_agreement_original_agreement] . _checkbook_append_url_params() .   ContractURLHelper::_checkbook_project_spending_get_year_url_param_string()  . '/smnid/' . $node->nid .  '/newwindow\">' . '$' . custom_number_formatter_format($row['spending_amount_sum'],2). '</a>'"
     } ,
-"formatted_original_amount_sum": {
-      "type": "expression2",
-      "expression": " '$' . custom_number_formatter_format($row['original_amount_sum'],2)"
-    },
 "formatted_total_current_amount_sum": {
       "type": "expression2",
       "expression": " '$' . custom_number_formatter_format($row['current_amount_sum'],2)"
     },
+"formatted_original_amount_sum": {
+    "type": "expression2",
+    "expression": " '$' . custom_number_formatter_format($row['original_amount_sum'],2)"
+},
 "formatted_dollar_diff": {
       "type": "expression2",
       "expression": " custom_number_formatter_format($row['dollar_difference'],2,'$')"
@@ -124,19 +124,19 @@ return $footer;
      "sortSourceColumn":"agency.agency.agency_short_name"
     },
  {
-      "labelAlias": "vendor_name",
+      "labelAlias": "prime_vendor",
       "column": "vendor_name_link",
       "sortSourceColumn":"vendor.vendor.legal_name"
-    },
- {
-      "labelAlias": "original_amount",
-      "column": "formatted_original_amount_sum",
-      "sortSourceColumn":"original_amount_sum"
     },
  {
       "labelAlias": "current_amount",
       "column": "formatted_total_current_amount_sum",
       "sortSourceColumn":"current_amount_sum"
+    },
+    {
+        "labelAlias": "original_amount",
+        "column": "formatted_original_amount_sum",
+        "sortSourceColumn":"original_amount_sum"
     },
  {
       "labelAlias": "spent_to_date",
