@@ -91,15 +91,15 @@ return $footer;
       "column": "formatted_total_contracts",
       "sortSourceColumn":"total_contracts"
     },
+    {
+        "labelAlias": "current_amount",
+        "column": "formatted_total_current_amount_sum",
+        "sortSourceColumn":"current_amount_sum"
+    },
  {
       "labelAlias": "original_amount",
       "column": "formatted_original_amount_sum",
       "sortSourceColumn":"original_amount_sum"
-    },
- {
-      "labelAlias": "current_amount",
-      "column": "formatted_total_current_amount_sum",
-      "sortSourceColumn":"current_amount_sum"
     },
  {
       "labelAlias": "spent_to_date",
@@ -127,7 +127,7 @@ return $footer;
 "bLengthChange": false,
 "bInfo": false,
 "bAutoWidth": false,
-"aaSorting": [[ 3, "desc" ]],
+"aaSorting": [[ 2, "desc" ]],
 "fnServerParams": "##function ( aoData ) {
            reloadExpandCollapseWidget(this,aoData);
 }##",

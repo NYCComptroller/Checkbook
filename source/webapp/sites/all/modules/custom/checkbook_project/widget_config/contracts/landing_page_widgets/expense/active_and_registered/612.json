@@ -80,27 +80,27 @@ return $header;
 "widgetTitle":"Contracts by Size",
 "table_title":"",
   "table_columns": [
- {
+    {
       "labelAlias": "contract_size",
       "column": "contract_size_link",
       "sortSourceColumn":"award_size.award_size.award_size_name"
     },
- {
+    {
       "labelAlias": "no_of_contracts",
       "column": "formatted_total_contracts",
       "sortSourceColumn":"total_contracts"
     },
- {
-      "labelAlias": "original_amount",
-      "column": "formatted_original_amount_sum",
-      "sortSourceColumn":"original_amount_sum"
-    },
- {
+    {
       "labelAlias": "current_amount",
       "column": "formatted_total_current_amount_sum",
       "sortSourceColumn":"current_amount_sum"
     },
- {
+    {
+        "labelAlias": "original_amount",
+        "column": "formatted_original_amount_sum",
+        "sortSourceColumn":"original_amount_sum"
+    },
+    {
       "labelAlias": "spent_to_date",
       "column": "spent_amount_link",
       "sortSourceColumn":"spending_amount_sum"

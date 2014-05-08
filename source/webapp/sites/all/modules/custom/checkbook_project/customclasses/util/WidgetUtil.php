@@ -175,6 +175,7 @@ class WidgetUtil
         "commodity_line"=>"Commodity<br/>Line",
         "entity_contact_num"=>"Entity<br/>Contract # ",
     	"prime_vendor_name"=>"Prime<br/>Vendor Name",
+    	"prime_vendor"=>"Prime<br/>Vendor",
     	"tot_edc_con"=>"Total number of<br/>NYC EDC Contracts",
     	"vendor_address"=>"Vendor<br/>Address"
     );
