@@ -133,7 +133,7 @@
 
 <function>
 yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
-tooltipformatter^^'formatter' : function() {return  'Contract ID: ' + this.point.contractnum + '<br/>' + 'Amount: ' + abbrNum(this.y, 2, '$') + '<br/>' + 'Vendor: ' + this.point.vendor  + '<br/>' + 'Agency: ' + this.point.agency ;}
+tooltipformatter^^'formatter' : function() {return  'Contract ID: ' + this.point.contractnum + '<br/>' + 'Amount: ' + abbrNum(this.y, 2, '$') + '<br/>' + 'Prime Vendor: ' + this.point.vendor  + '<br/>' + 'Agency: ' + this.point.agency ;}
 ##clickEvent^^"click": function(){
         var newWindow = window.open(Drupal.settings.basePath+this.options.url, '_blank', 'menubar=no,toolbar=no,location=no,resizable=yes,scrollbars=yes,personalbar=no,chrome=yes,height=700,width=980');
         function disableClicks(){

@@ -91,7 +91,7 @@
                                             return yAxisLabelFormatter(this);
                                         }##
 tooltipformatter^^"formatter": function(){
-                                    return 'Vendor: '+this.point.name  + '<br/>'+'Amount: '+abbrNum(this.y,2,'$')
+                                    return 'Prime Vendor: '+this.point.name  + '<br/>'+'Amount: '+abbrNum(this.y,2,'$')
                                 }##
 clickEvent^^"click": function(){
                            location.href = Drupal.settings.basePath+this.url;
