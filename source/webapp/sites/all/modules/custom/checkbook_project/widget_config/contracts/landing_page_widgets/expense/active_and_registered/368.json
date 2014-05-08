@@ -58,11 +58,24 @@
 },
 "disableViewAll":true,
 "header":"
-$node->widgetConfig->getData=false;
-load_widget_data($node);
-if($node->totalDataCount > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
-$header='<div class=\"tableHeader\"><h2>Top ' . $count. 'Contracts</h2><span class=\"contCount\"> Number of Stand Alone Contracts: ' . number_format($node->totalDataCount) . '</span></div>';
-return $header;
+    if(_checkbook_check_isEDCPage()){
+        unset($node->widgetConfig->limit);
+        $node->widgetConfig->getData=true;
+        load_widget_data($node);
+        $total = 0;$oge_contracts = array();
+        foreach($node->data as $key=>$row){
+            array_push($oge_contracts, $row['contract_number.contract_number']);
+        }
+        $oge_contracts = array_unique($oge_contracts);
+        $total_oge_contracts = count($oge_contracts);
+    }else{
+        $node->widgetConfig->getData=false;
+        load_widget_data($node);
+    }
+    $total_count = (_checkbook_check_isEDCPage()) ? number_format($total_oge_contracts) : number_format($node->totalDataCount);
+    if($total_count > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
+    $header='<div class=\"tableHeader\"><h2>Top ' . $count. 'Contracts</h2><span class=\"contCount\"> Number of Stand Alone Contracts: ' . $total_count . '</span></div>';
+    return $header;
 ",
 "footer":"
 $url = '/panel_html/contract_details/contract/transactions/contcat/expense'. _checkbook_project_get_url_param_string('status','contstatus');
