@@ -27,7 +27,7 @@ include_once('export_link.php');
 <table id="table_<?php echo widget_unique_identifier($node);?>" class="<?php echo $node->widgetConfig->gridConfig->html_class; ?>">
   <thead>
     <tr>
-        <th class='text'><?php echo WidgetUtil::generateLabelMapping("vendor_name") ;?></th>
+        <th class='text'><?php echo WidgetUtil::generateLabelMapping("prime_vendor") ;?></th>
         <th class='number'><?php echo WidgetUtil::generateLabelMapping("spending_amount") ;?></th>
         <th>&nbsp</th>
     </tr>
