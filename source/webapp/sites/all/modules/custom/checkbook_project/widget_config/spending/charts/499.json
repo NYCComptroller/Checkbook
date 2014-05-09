@@ -19,7 +19,7 @@
             "column": "total_spending_amount"
         },
         {
-            "labelAlias": "vendor_name",
+            "labelAlias": "prime_vendor",
             "column": "legal_name@checkbook:vendor"
         },
         {

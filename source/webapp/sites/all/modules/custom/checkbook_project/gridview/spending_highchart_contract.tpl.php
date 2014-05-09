@@ -31,7 +31,7 @@ include_once('export_link.php');
         <tr><th class='text'><?php echo WidgetUtil::generateLabelMapping("contract_id") ;?></th>
         <th class='number-left'><?php echo WidgetUtil::generateLabelMapping("spending_amount") ;?></th>
         <th>&nbsp;&nbsp;</th>
-        <th class='text'><?php echo WidgetUtil::generateLabelMapping("vendor_name") ;?></th>
+        <th class='text'><?php echo WidgetUtil::generateLabelMapping("prime_vendor") ;?></th>
         <th class='text'><?php echo WidgetUtil::generateLabelMapping("contract_agency") ;?></th>
         <th>&nbsp</th>
         </tr>

@@ -40,7 +40,7 @@ include_once('export_link.php');
         if ($isAgencyPage){
             echo "<th class='text'>" . WidgetUtil::generateLabelMapping("contract_agency") . "</th>";
         } else {
-            echo "<th class='text'>" . WidgetUtil::generateLabelMapping("vendor_name") . "</th>";
+            echo "<th class='text'>" . WidgetUtil::generateLabelMapping("prime_vendor") . "</th>";
         }
         ?>
       <th class='number'><?php echo WidgetUtil::generateLabelMapping("no_of_contracts") ;?></th>
