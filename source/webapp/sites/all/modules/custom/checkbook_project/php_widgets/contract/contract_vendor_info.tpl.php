@@ -19,7 +19,7 @@
 */
 ?>
 <h4>
-Vendor Information
+Prime Vendor Information
 </h4>
 <?php 
 
@@ -74,9 +74,9 @@ else{
 ?>
   <ul class="left">
   <?php if( _get_current_datasource() == "checkbook" ){?> 
-    <li><span class="gi-list-item">Vendor:</span> <a href="<?php echo $vendor_link;?> " ><?php echo $node->data[0]['vendor_name'] ;?></a></li>
+    <li><span class="gi-list-item">Prime Vendor:</span> <a href="<?php echo $vendor_link;?> " ><?php echo $node->data[0]['vendor_name'] ;?></a></li>
   <?php }else{ ?>
-  	<li><span class="gi-list-item">Vendor:</span> <?php echo $node->data[0]['vendor_name'] ;?></li>
+  	<li><span class="gi-list-item">Prime Vendor:</span> <?php echo $node->data[0]['vendor_name'] ;?></li>
   <?php } ?>   
   <?php 
       $address = $node->data[0]['address_line_1'] ;
