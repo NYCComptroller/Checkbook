@@ -39,7 +39,7 @@
                 {"field_name":"award_method","column":"column-right"},
                 {"field_name":"start_date","column":"column-right"},
                 {"field_name":"end_date","column":"column-right"},
-                {"field_name":"registration_date","column":"column-right"},
+                {"field_name":"registration_date","column":"column-right","disabled":true},
                 {"field_name":"year","column":"column-right"},
                 {"field_name":"contracts","column":"none"}
             ]
