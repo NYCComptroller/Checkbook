@@ -420,18 +420,18 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
         $checked = in_array($agencyName, array_values_recursive($reqAgencies[0]));
         $agencyValue = urlencode($agencyName);
         if ($checked) {
-          $output['City Wide Agency']['checked'][] = array($agencyValue, $agencyName, $count);
+          $output['Citywide Agency']['checked'][] = array($agencyValue, $agencyName, $count);
         }
         else {
             if(count($reqOGEAgencies) == 0 || strlen($agencyName) > 0)
-                $output['City Wide Agency']['unchecked'][] = array($agencyValue, $agencyName, $count);
+                $output['Citywide Agency']['unchecked'][] = array($agencyValue, $agencyName, $count);
         }
       }
     }
-    $output['City Wide Agency']['name'] = 'fagencyName';
+    $output['Citywide Agency']['name'] = 'fagencyName';
     foreach($reqAgencies[0] as $key => $value){
-        if(!in_array($value['name'], array_values_recursive($output['City Wide Agency']['checked'])) && strlen($value['name']) > 0){
-            $output['City Wide Agency']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
+        if(!in_array($value['name'], array_values_recursive($output['Citywide Agency']['checked'])) && strlen($value['name']) > 0){
+            $output['Citywide Agency']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
         }
     }
   }
