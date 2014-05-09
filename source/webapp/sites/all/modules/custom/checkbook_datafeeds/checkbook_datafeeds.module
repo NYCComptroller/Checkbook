@@ -1452,11 +1452,11 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#prefix' => '<div class="datafield regdate datarange"><label>Registration Date:</label><div class="ranges">',
                 '#id' => 'edit-regdatefrom',
                 '#name' => 'regdatefrom',
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'regdatefrom', $first_time_load, ''),
-                '#states' => array(
-                    'disabled' => array(
-                        'select[name="df_contract_status"]' => array('value' => 'pending')
-                    )
+                '#default_value' => '',
+                '#states' => array('disabled' => array(
+                        'select[name="df_contract_status"]' => array(
+                            array('value' => 'active'),
+                            array('value' => 'registered')))
                 )
             );
             $form['filter']['regdateto'] = array(
@@ -1469,11 +1469,11 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#suffix' => '</div></div></div>',
                 '#id' => 'edit-regdateto',
                 '#name' => 'regdateto',
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'regdateto', $first_time_load, ''),
-                '#states' => array(
-                    'disabled' => array(
-                        'select[name="df_contract_status"]' => array('value' => 'pending')
-                    )
+                '#default_value' => '',
+                '#states' => array('disabled' => array(
+                    'select[name="df_contract_status"]' => array(
+                        array('value' => 'active'),
+                        array('value' => 'registered')))
                 )
             );
             $form['filter']['agency'] = array(
