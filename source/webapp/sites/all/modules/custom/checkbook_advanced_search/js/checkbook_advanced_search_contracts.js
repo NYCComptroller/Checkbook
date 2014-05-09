@@ -69,6 +69,8 @@
                     div_checkbook_contracts_oge.ele('apt_pin').attr('disabled','disabled');
                     div_checkbook_contracts_oge.ele('received_date_from').attr('disabled','disabled');
                     div_checkbook_contracts_oge.ele('received_date_to').attr('disabled','disabled');
+                    div_checkbook_contracts_oge.ele('registration_date_from').attr('disabled','disabled');
+                    div_checkbook_contracts_oge.ele('registration_date_to').attr('disabled','disabled');
                     break;
 
                 default:
@@ -138,16 +140,21 @@
             onStatusChange(div_checkbook_contracts_oge);
         });
         function onStatusChange(div) {
+            var data_source = $('input[name=contracts_advanced_search_domain_filter]:checked').val();
             var contract_status = div.ele('status').val();
             if (contract_status == 'P') {
-                div.ele('registration_date_from').val('').attr("disabled", "disabled");
-                div.ele('registration_date_to').val('').attr("disabled", "disabled");
+                if(data_source == 'checkbook') {
+                    div.ele('registration_date_from').val('').attr("disabled", "disabled");
+                    div.ele('registration_date_to').val('').attr("disabled", "disabled");
+                }
                 div.ele('year').attr("disabled", "disabled");
                 div.ele('received_date_from').removeAttr("disabled");
                 div.ele('received_date_to').removeAttr("disabled");
             } else {
-                div.ele('registration_date_from').removeAttr("disabled");
-                div.ele('registration_date_to').removeAttr("disabled");
+                if(data_source == 'checkbook') {
+                    div.ele('registration_date_from').removeAttr("disabled");
+                    div.ele('registration_date_to').removeAttr("disabled");
+                }
                 div.ele('year').removeAttr("disabled");
                 div.ele('received_date_from').attr("disabled", "disabled");
                 div.ele('received_date_to').attr("disabled", "disabled");
