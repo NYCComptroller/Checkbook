@@ -111,7 +111,7 @@ $maximum_contract_amount =  ( _getRequestParamValue("datasource") == "checkbook_
         <?php
     }else{
     ?>
-      <li><span class="gi-list-item">Vendor:</span> <a
+      <li><span class="gi-list-item">Prime Vendor:</span> <a
         href="<?php echo $vendor_link;?>"><?php echo $node->data[0]['legal_name_checkbook_vendor'];?></a></span></li>    
     <?php
  

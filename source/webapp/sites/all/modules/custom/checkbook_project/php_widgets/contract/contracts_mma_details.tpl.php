@@ -91,10 +91,10 @@ if(!preg_match("/newwindow/",current_path())){
     <h4>General Information</h4>
     <ul class="left">
     <?php if($datasource ==  null){?>
-      <li><span class="gi-list-item">Vendor:</span> <a
+      <li><span class="gi-list-item">Prime Vendor:</span> <a
         href="<?php echo $vendor_link;?>"><?php echo $node->data[0]['legal_name_checkbook_vendor'];?></a></li>
     <?php }else{ ?>
-      <li><span class="gi-list-item">Vendor:</span> <?php echo $node->data[0]['legal_name_checkbook_vendor'];?></li>        	
+      <li><span class="gi-list-item">Prime Vendor:</span> <?php echo $node->data[0]['legal_name_checkbook_vendor'];?></li>        	
     <?php }?>    
       <li><span class="gi-list-item">Purpose:</span> <?php echo $node->data[0]['description'];?></li>
       <li><span class="gi-list-item">Contract Type:</span> <?php echo $node->data[0]['agreement_type_name'];?></li>
