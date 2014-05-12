@@ -749,7 +749,7 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
           $parameter_mapping = array(
               "contract_status"=>"Status",
               "contract_category_name"=>"Category",
-              "vendor_name"=>"Vendor",
+              "vendor_name"=>"Prime Vendor",
               "oge_contracting_agency_name"=>"Agency",
               "contract_number"=>"Contract ID",
               "version_number"=>"Version Number",
@@ -775,7 +775,7 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
             $parameter_mapping = array(
                 "contract_status"=>"Status",
                 "contract_category_name"=>"Category",
-                "vendor_name"=>"Vendor",
+                "vendor_name"=>"Prime Vendor",
                 "agency_name"=>"Agency",
                 "contract_number"=>"Contract ID",
                 "version_number"=>"Version Number",
