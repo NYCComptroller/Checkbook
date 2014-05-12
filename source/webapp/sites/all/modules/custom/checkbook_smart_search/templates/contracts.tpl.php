@@ -107,7 +107,7 @@ if($IsOge && in_array($contracts_results['contract_type_code'],array('MMA1'))){
 	$contracts_parameter_mapping['oge_contracting_agency_name'] = "Contracting Agency";
 }
 
-
+$contracts_results["registration_date"] = ($IsOge)? "N/A" : $contracts_results["registration_date"];
 
 $date_fields = array("start_date_orig","end_date_orig","received_date","registration_date");
 $amount_fields = array("current_amount", "original_amount");
@@ -137,7 +137,7 @@ foreach ($contracts_parameter_mapping as $key => $title){
   if(in_array($key, $amount_fields)){
     $value = custom_number_formatter_format($value, 2 , '$');
   }else if(in_array($key, $date_fields)){
-    if($value != null ){
+    if($value != null && $value != "N/A" ){
       $value = date("F j, Y", strtotime($value));
     }
   }else if(array_key_exists($key, $linkable_fields)){
