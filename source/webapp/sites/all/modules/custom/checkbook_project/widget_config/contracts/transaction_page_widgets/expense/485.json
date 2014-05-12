@@ -168,7 +168,7 @@
 		{"sClass":"text","sWidth":"115px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"115px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"115px","asSorting": [ "asc","desc" ]},
-		{"sClass":"text","sWidth":"360px","asSorting": [ "asc","desc" ]},
+		{"sClass":"text","sWidth":"230px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"180px","asSorting": [ "asc","desc" ]}
       ],
         "aaSorting":[[6,"desc"]],
@@ -258,7 +258,7 @@ jQuery.ajax({
 			sOut += '<td class=\"text\"  style=\"width:115px\">'+ (row[16] == null ? '': row[16])+'</td>';
 			sOut += '<td class=\"text\"  style=\"width:115px\">'+ (row[17] == null ? '': row[17])+'</td>';
 			sOut += '<td class=\"text\"  style=\"width:115px\">'+ (row[18] == null ? '': row[18])+'</td>';
-			sOut += '<td class=\"text\"  style=\"width:360px\">'+ (row[19] == null ? '': row[19])+'</td>';
+			sOut += '<td class=\"text\"  style=\"width:230px\">'+ (row[19] == null ? '': row[19])+'</td>';
 			sOut += '<td class=\"text\"  >'+ (row[20] == null ? '': row[20])+'</td>';
                         sOut += '</tr>';
 
