@@ -83,7 +83,7 @@ return ('Checks ' . $catName . ' Transactions');
 "sortSourceColumn":"agency_name"
 },
 {
-"labelAlias": "vendor_name",
+"labelAlias": "prime_vendor",
 "column": "vendor_name_link2",
 "sortSourceColumn":"vendor_name"
 },
