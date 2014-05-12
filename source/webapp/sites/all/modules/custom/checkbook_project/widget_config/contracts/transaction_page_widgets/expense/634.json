@@ -173,7 +173,7 @@
         {"labelAlias": "contract_industry","column": "industry_name_formatted","sortSourceColumn":"industry_type_name"},
 	    {"labelAlias": "start_date","column": "effective_begin_date"},
 	    {"labelAlias": "end_date","column": "effective_end_date"},
-	    {"labelAlias": "reg_date","column": "reg_date","sortSourceColumn":"registered_date"},
+	    {"labelAlias": "reg_date","column": "reg_date","sortSourceColumn":"registered_date","exportColumn":"reg_date"},
 	    {"labelAlias": "pin","column": "tracking_number"},
 	    {"labelAlias": "apt_pin","column": "brd_awd_no"},
 	            {
