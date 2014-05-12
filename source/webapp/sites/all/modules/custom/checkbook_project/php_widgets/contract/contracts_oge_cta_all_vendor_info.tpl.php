@@ -17,60 +17,57 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+
+//Main table header
+$tbl['header']['title'] = "<div class='tableHeader'><h3>Vendor Information</h3> <span class='contCount'>Number of Vendors: ".count($node->vendors_list)." </span></div>";
+$tbl['header']['columns'] = array(
+    array('value' => WidgetUtil::generateLabelMappingNoDiv("vendor_name"), 'type' => 'text'),
+    array('value' => $node->widget_count_label, 'type' => 'number'),
+    array('value' => WidgetUtil::generateLabelMappingNoDiv("spent_to_date"), 'type' => 'number'),
+    array('value' => WidgetUtil::generateLabelMappingNoDiv("vendor_address"), 'type' => 'text')
+);
+
+$vendor_cont_count = array();
+foreach($node->vendor_contracts_count as $vendor_cont){
+    $vendor_cont_count[$vendor_cont['vendor_id']]['count'] = $vendor_cont['count'];
+    $vendor_cont_count[$vendor_cont['vendor_id']]['count'] = $vendor_cont['count'];
+}
+
+$count = 0;
+if(count($node->vendors_list) > 0){
+    foreach($node->vendors_list as $vendor){
+
+        $spending_link = "/spending/transactions/vendor/" . $vendor['vendor_id'] . "/datasource/checkbook_oge/newwindow";
+
+        if(preg_match("/newwindow/",$_GET['q'])) {
+            $vendor_name = $vendor['vendor_name'];
+        }
+        else {
+            $vendor_name =  "<a class='new_window' href='/contracts_landing/status/A/year/" . _getCurrentYearID() . "/yeartype/B/agency/" . $vendor['agency_id'] .
+                "/datasource/checkbook_oge/vendor/" . $vendor['vendor_id']  . "?expandBottomCont=true'>" . $vendor['vendor_name']  . "</a>";
+        }
+
+        $spent_to_date_value =  custom_number_formatter_format($vendor['check_amount_sum'], 2, '$');
+        if(preg_match("/newwindow/",$_GET['q'])) {
+            $spent_to_date_link =  custom_number_formatter_format($vendor['check_amount_sum'], 2, '$');
+        }
+        else {
+           $spent_to_date_link = "<a class='new_window' target='_new' href='" . $spending_link . "'>" . custom_number_formatter_format($vendor['check_amount_sum'], 2, '$')  . "</a>";
+        }
+
+        //Main table columns
+        $tbl['body']['rows'][$count]['columns'] = array(
+            array('value' => $vendor_name, 'type' => 'text'),
+            array('value' => $vendor_cont_count[$vendor['vendor_id']]['count'], 'type' => 'number'),
+            array('value' => $spent_to_date_value, 'type' => 'number_link', 'link_value' => $spent_to_date_link),
+            array('value' => $vendor['address'], 'type' => 'text')
+        );
+        $count++;
+    }
+}
+
+$html = WidgetUtil::generateTable($tbl);
+echo $html;
 ?>
-<div>
-<div class="tableHeader"><h3>Vendor Information</h3> <span class="contCount">Number of Vendors: <?php echo count($node->vendors_list);?> </span></div>
-
-<table class="dataTable outerTable oge-cta-vendor-info">
-    <thead>
-    <tr>
-      <th class="text"><?php echo WidgetUtil::generateLabelMapping("vendor_name"); ?></th>
-      <th class="number"><div><span><?php echo $node->widget_count_label; ?></span></div></th>
-      <th class="number"><?php echo WidgetUtil::generateLabelMapping("spent_to_date"); ?></th>
-      <th class="text endCol"><?php echo WidgetUtil::generateLabelMapping("vendor_address"); ?></th>
-    </tr>
-    </thead>
-   <tbody>
-   <?php 
-	$vendor_cont_count = array();   
-   	foreach($node->vendor_contracts_count as $vendor_cont){
-		$vendor_cont_count[$vendor_cont['vendor_id']]['count'] = $vendor_cont['count'];
-		$vendor_cont_count[$vendor_cont['vendor_id']]['count'] = $vendor_cont['count'];
-	}
-
-    if(count($node->vendors_list) > 0){
-	   	foreach($node->vendors_list as $vendor){
-			$spending_link = "/spending/transactions/vendor/" . $vendor['vendor_id'] . "/datasource/checkbook_oge/newwindow";
-			echo "<tr>";
-			if(preg_match("/newwindow/",$_GET['q'])){
-				echo "<td class='text'><div>" .
-				$vendor['vendor_name']  . "</div></td>";
-			}else{
-				echo "<td class='text'><div><a class='new_window' href='/contracts_landing/status/A/year/" . _getCurrentYearID() . "/yeartype/B/agency/" . $vendor['agency_id'] .
-					 "/datasource/checkbook_oge/vendor/" . $vendor['vendor_id']  . "?expandBottomCont=true'>" . 
-									$vendor['vendor_name']  . "</a></div></td>";
-			}
-			echo "<td class='number'><div>" . $vendor_cont_count[$vendor['vendor_id']]['count']  . "</div></td>";
-			if(preg_match("/newwindow/",$_GET['q'])){
-				echo "<td class='number'><div>" . custom_number_formatter_format($vendor['check_amount_sum'], 2, '$')  . "</div></td>";
-			}else{
-				echo "<td class='number'><div><a class='new_window' target='_new' href='" . $spending_link . "'>" . custom_number_formatter_format($vendor['check_amount_sum'], 2, '$')  . "</a></div></td>";
-			}
-			echo "<td class='text endCol'><div>" . $vendor['address']  . "</div></td>";
-			echo "</tr>";
-		}
-	}else{
-		echo '<tr class="odd">';
-		echo '<td class="dataTables_empty" valign="top" colspan="4">' .
-				'<div id="no-records-datatable" class="clearfix">
-							                 <span>No Matching Records Found</span>
-							           </div>' . '</td>';
-		echo '</tr>';
-	}
-   ?>
-   
- </tbody>
- </table>  
-</div>
-<?php
 
