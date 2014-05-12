@@ -705,6 +705,9 @@ h3.grid_year_title{text-transform: none;}
 .top-chart {
     margin-bottom: 31px;
 }
+.bottomContainer .top-chart{
+    margin-bottom:0px;
+}
 
 /* chart pagination */
 .slider-pager {
@@ -939,6 +942,8 @@ span.toggle{
 }
 div.bottomContainer{
     margin-top: 15px;
+    float:left;
+    clear:both;
 }
 
 /***************************************
