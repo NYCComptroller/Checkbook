@@ -135,7 +135,7 @@ return $parameters;
 {"sClass":"text","sWidth":"115px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"115px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"115px","asSorting": [ "asc","desc" ]},
-{"sClass":"text","sWidth":"360px","asSorting": [ "asc","desc" ]},
+{"sClass":"text","sWidth":"230px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"180px","asSorting": [ "asc","desc" ]}
 ],
 

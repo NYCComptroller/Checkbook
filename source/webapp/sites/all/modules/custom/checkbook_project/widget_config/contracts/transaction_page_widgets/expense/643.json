@@ -246,7 +246,7 @@
 		{"sClass":"text","sWidth":"145px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"145px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"145px","asSorting": [ "asc","desc" ]},
-		{"sClass":"text","sWidth":"360px","asSorting": [ "asc","desc" ]},
+		{"sClass":"text","sWidth":"230px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"180px","asSorting": [ "asc","desc" ]},
         {"sClass":"text number-left","sWidth":"125px","asSorting": [ "desc","asc" ]},
 		{"sClass":"text","sWidth":"200px","asSorting": [ "asc","desc" ]},
@@ -346,7 +346,7 @@
                             sOut += '<td class=\"text\"  style=\"width:145px\">'+ (row[14] == null ? '': row[14])+'</td>';
                             sOut += '<td class=\"text\"  style=\"width:145px\">'+ (row[15] == null ? '': row[15])+'</td>';
                             sOut += '<td class=\"text\"  style=\"width:145px\">'+ (row[16] == null ? '': row[16])+'</td>';
-                            sOut += '<td class=\"text\" style=\"width:360px;\">'+ (row[17] == null ? '': row[17])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:230px;\">'+ (row[17] == null ? '': row[17])+'</td>';
                             sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[18] == null ? '': row[18])+'</td>';
                             sOut += '<td class=\"text number-left\" style=\"width:125px;\">'+ (row[19] == null ? '': row[19])+'</td>';
                             sOut += '<td class=\"text\" style=\"width:200px;\">'+ (row[20] == null ? '': row[20])+'</td>';
