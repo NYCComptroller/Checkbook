@@ -168,7 +168,8 @@
 	    	"labelAlias": "issue_date",
 	      "column": "issue_date_formatted",
 	      "sortSourceColumn": "check_eft_issued_date",
-              "headerClass":"issuedate"
+              "headerClass":"issuedate",
+            "exportColumn":"issue_date_formatted"
 	    },
 	    {
 	      "labelAlias": "agency_name",
