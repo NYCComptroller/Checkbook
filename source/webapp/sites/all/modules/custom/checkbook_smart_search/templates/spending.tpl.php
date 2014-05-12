@@ -38,6 +38,7 @@ $amount_fields = array("check_amount");
 $count = 1;
 $row = array();
 $rows = array();
+$contracts_results["check_eft_issued_date"] = ($IsOge)? "N/A" : $contracts_results["check_eft_issued_date"];
 foreach ($spending_parameter_mapping as $key=>$title){
   if($key == 'expenditure_object_name'){
     $value = $spending_results[$key][0];
