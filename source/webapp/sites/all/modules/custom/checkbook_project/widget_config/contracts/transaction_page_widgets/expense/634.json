@@ -49,7 +49,7 @@
              "vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name",
              "expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no",
              "tracking_number","master_agreement_yn","document_code@checkbook:ref_document_code","agency_name@checkbook:agency","legal_name@checkbook:vendor",
-             "industry_type_name","dollar_difference","percent_difference"],
+             "industry_type_name","dollar_difference","percent_difference","master_contract_number","master_agreement_id"],
 "caption":"",
 "derivedColumns": {
          "child_contrats_link":{
@@ -69,8 +69,8 @@
                "expression": "ContractURLHelper::prepareExpenseContractLink($row, $node)"
 	    },
          "parent_contract_link": {
-	      "type": "expression",
-               "expression": "N/A"
+	      "type": "expression2",
+           "expression": " '<a class=\"new_window\" href=\"/contract_details/magid/' . $row['master_agreement_id']  .  '/datasource/checkbook_oge/newwindow\">'. $row['master_contract_number'] .'</a>'"
 	    },
 	"formatted_original_amount": {
 	      "type": "expression2",
@@ -159,7 +159,7 @@
             "datasource": "checkbook_oge",
             "column": "fms_commodity_line"
         },
-        {"labelAlias": "fms_doc_id","column":"parent_contract_link","sortSourceColumn":"","exportColumn":"parent_contract_link"},
+        {"labelAlias": "fms_doc_id","column":"parent_contract_link","sortSourceColumn":"master_contract_number","exportColumn":"master_contract_number"},
 	    {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description"},
 	    {"labelAlias": "current_amount","column": "formatted_current_amount","sortSourceColumn":"maximum_contract_amount"},
         {"labelAlias": "original_amount","column": "formatted_original_amount","sortSourceColumn":"original_contract_amount"},
@@ -256,8 +256,8 @@
         "bInfo": true,
        "aoColumns": [
         {"sClass":"expander","bSortable": false,"sWidth":"30px"},
-        {"sClass":"number","sWidth":"100px","asSorting": [ "asc","desc" ]},
-		{"sClass":"text", "sWidth":"150px","asSorting": [ "asc","desc" ]},
+        {"sClass":"text","sWidth":"150px","asSorting": [ "asc","desc" ]},
+		{"sClass":"number", "sWidth":"100px","asSorting": [ "asc","desc" ]},
         {"sClass":"text", "sWidth":"210px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text no-sort number-left","bSortable": false, "sWidth":"155px","asSorting": [ "asc","desc" ]},
 		{"sClass":"number","sWidth":"125px","asSorting": [ "desc","asc" ]},
@@ -271,7 +271,7 @@
 		{"sClass":"text","sWidth":"220px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"145px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"145px","asSorting": [ "asc","desc" ]},
-		{"sClass":"number-left","sWidth":"145px","asSorting": [ "asc","desc" ]},
+		{"sClass":"text number-left","sWidth":"145px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"230px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"180px","asSorting": [ "asc","desc" ]},
         {"sClass":"text number-left","sWidth":"125px","asSorting": [ "desc","asc" ]},
