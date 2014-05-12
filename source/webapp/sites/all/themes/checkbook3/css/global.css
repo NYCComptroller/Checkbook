@@ -942,6 +942,8 @@ span.toggle{
 }
 div.bottomContainer{
     margin-top: 15px;
+    float:left;
+    clear:both;
 }
 
 /***************************************
