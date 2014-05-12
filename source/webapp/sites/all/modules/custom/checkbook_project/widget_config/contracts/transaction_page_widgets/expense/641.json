@@ -243,14 +243,13 @@ if(isset($config->model) && is_array($node->data)){
 "table_columns": [
 	    {"label": "&nbsp;","column": "child_contrats_link"},
         {"label": "Contract ID","column": "contract_link","sortSourceColumn":"contract_number"},
-	    {"label": "<span>Purpose</span>","column": "purpose_formatted","sortSourceColumn":"description"},
         {
             "labelAlias": "commodity_line",
             "datasource": "checkbook_oge",
             "column": "fms_commodity_line"
         },
-	    {"label": "Version","column": "document_version","type":"number"},
-	    {"label": "FMS Document/ Parent Contract ID","column":"master_contract_number"},
+        {"label": "FMS Document/ Parent Contract ID","column":"master_contract_number"},
+        {"label": "<span>Purpose</span>","column": "purpose_formatted","sortSourceColumn":"description"},
         {"label": "Original Amount","column": "formatted_original_amount","sortSourceColumn":"original_contract_amount","type":"number"},
 	    {"label": "Current Amount","column": "formatted_current_amount","sortSourceColumn":"maximum_contract_amount","type":"number"},
 	    {"label": "Spent to date","column": "formatted_spent_to_date","sortSourceColumn":"spending_amount_disb","type":"number"},
