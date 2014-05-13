@@ -112,7 +112,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
         <td>expense</td>
     </tr>
     <tr>
-        <td>vendor_name</td>
+        <td>prime_vendor</td>
         <td>N</td>
         <td valign="top">value</td>
         <td>String/Maximum 20 Characters</td>
@@ -215,7 +215,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
         <td>N</td>
         <td valign="top">range</td>
         <td>String - YYYY-MM-DD</td>
-        <td>Citywide Agencies and Other Government Entities</td>
+        <td>Citywide Agencies</td>
         <td valign="top">Expense<br />Revenue</td>
         <td valign="top">Active<br />Registered</td>
         <td>Registration date associated with a contract</td>
@@ -479,7 +479,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
         </tr>
         <tr>
             <td>contract_id</td>
-            <td>vendor</td>
+            <td>prime_vendor</td>
         </tr>
         <tr>
             <td>purpose</td>
@@ -506,10 +506,6 @@ Contract Parameters – All the parameters are optional, meaning that you can se
             <td>end_date</td>
         </tr>
         <tr>
-            <td>registration_date</td>
-            <td>pin</td>
-        </tr>
-        <tr>
             <td>document_code</td>
             <td>contract_industry</td>
         </tr>
@@ -527,7 +523,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
 <a href="#top" class="float-right">Back to the top</a>
 <a name="predefined-xml-entities"></a>
 <h3>Predefined Entities in XML</h3>
-<p>The user has to encode the names using the predefined entities list embedded below, while searching using names (payee_name, budget_name, vendor_name, and purpose). The table below lists the five XML predefined entities. The "Name" column mentions the entity's name. The "Character" column shows the character. To render the character, the format &name; is used; for example, &amp;amp; renders as &.</p>
+<p>The user has to encode the names using the predefined entities list embedded below, while searching using names (payee_name, budget_name, prime_vendor, and purpose). The table below lists the five XML predefined entities. The "Name" column mentions the entity's name. The "Character" column shows the character. To render the character, the format &name; is used; for example, &amp;amp; renders as &.</p>
 <table class="api-table">
 <tbody>
     <tr>
@@ -1025,7 +1021,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
             &lt;value&gt;1900014&lt;/value&gt;
         &lt;/criteria&gt;
         &lt;criteria&gt;
-            &lt;name&gt;vendor_name&lt;/name&gt;
+            &lt;name&gt;prime_vendor&lt;/name&gt;
             &lt;type&gt;value&lt;/type&gt;
             &lt;value&gt;EIC ASSOCIATES, INC&lt;/value&gt;
         &lt;/criteria&gt;  
@@ -1078,7 +1074,6 @@ Contract Parameters – All the parameters are optional, meaning that you can se
         &lt;column&gt;original_amount&lt;/column&gt;
         &lt;column&gt;current_amount&lt;/column&gt;
         &lt;column&gt;spent_to_date&lt;/column&gt;
-        &lt;column&gt;registration_date&lt;/column&gt;
         &lt;column&gt;year&lt;/column&gt;
         &lt;column&gt;other_government_entities&lt;/column&gt;
         &lt;column&gt;vendor&lt;/column&gt;
@@ -1127,7 +1122,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
           &lt;value&gt;Z81&lt;/value&gt;
       &lt;/criteria&gt;
       &lt;criteria&gt;
-          &lt;name&gt;vendor_name&lt;/name&gt;
+          &lt;name&gt;prime_vendor&lt;/name&gt;
           &lt;type&gt;value&lt;/type&gt;
           &lt;value&gt;APOLLO THEATER FOUNDATION&lt;/value&gt;
       &lt;/criteria&gt;
@@ -1163,12 +1158,6 @@ Contract Parameters – All the parameters are optional, meaning that you can se
           &lt;type&gt;range&lt;/type&gt;
           &lt;start&gt;2014-06-01&lt;/start&gt;
           &lt;end&gt;2014-06-30&lt;/end&gt;
-      &lt;/criteria&gt;
-      &lt;criteria&gt;
-          &lt;name&gt;registration_date&lt;/name&gt;
-          &lt;type&gt;range&lt;/type&gt;
-          &lt;start&gt;2013-10-01&lt;/start&gt;
-          &lt;end&gt;2013-10-10&lt;/end&gt;
       &lt;/criteria&gt;
      &lt;criteria&gt;
           &lt;name&gt;budget_name&lt;/name&gt;
@@ -1207,8 +1196,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
 &lt;contract_type&gt;Others&lt;/contract_type&gt; 
          &lt;award_method&gt;Multiple Awards&lt;/award_method&gt;
          &lt;document_code&gt;CTA1&lt;/document_code&gt;
-         &lt;registration_date&gt;2013-10-10&lt;/registration_date&gt;
-&lt;pin&gt;801SBS120110&lt;/pin&gt; 
+&lt;pin&gt;801SBS120110&lt;/pin&gt;
 &lt;apt_pin&gt;80112S0002001A001&lt;/apt_pin&gt; 
          &lt;contract_industry&gt;Not Classified&lt;/contract_industry&gt;
                        &lt;entity_contract_number&gt;48410001&lt;/entity_contract_number&gt;
