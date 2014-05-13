@@ -1358,6 +1358,9 @@ table.dataTable th.sorting_asc span {
 .dataTable td.text:first-child div {
     margin: 13px 0 13px 15px;
 }
+.dataTable td.text-left-padding div{
+     margin: 13px 0 13px 15px;
+ }
 .dataTables_wrapper td, .sub-table td{
     vertical-align: middle;
     text-transform: uppercase;
@@ -1441,13 +1444,13 @@ td.endCol div,
 .dataTable td.childcontracts .jspPane table td.number-left div {
      margin: 13px 0 13px 15px;
  }
-.dataTable td.childcontracts .jspPane table td.number-center-scroll div {
+.dataTable td.childcontracts .jspPane table td.number-scroll div {
     margin: 13px 0 13px 0px;
     text-align: center;
  }
-/*.dataTable td.childcontracts .jspPane table td.text-scroll div {*/
-    /*margin: 13px 0 13px 5px;*/
-/*}*/
+.dataTable td.childcontracts .jspPane table td.text-left-padding-scroll div {
+    margin: 13px 0 13px 15px;
+}
 td.vers-num div{margin-left:40px;}
 .dataTable td.childcontracts .jspPane table td.vers-num div {
     margin: 13px 0px 13px 40px;
