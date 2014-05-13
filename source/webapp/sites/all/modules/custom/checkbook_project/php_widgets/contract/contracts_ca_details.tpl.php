@@ -99,6 +99,9 @@ $maximum_contract_amount =  ( _getRequestParamValue("datasource") == "checkbook_
       </div>
     </div>
 </div>
+
+</div>
+
 <div class="contract-information <?php echo $oge_class ;?>">
   <div class="contract-details <?php echo ( _getRequestParamValue("datasource") == "checkbook_oge")? "oge-cta-contract ":"" ; ?>">
     <h4>General Information</h4>
@@ -171,14 +174,7 @@ $maximum_contract_amount =  ( _getRequestParamValue("datasource") == "checkbook_
     ?>
   
 </div>
-<!--<div class="associated-contracts">
-  <?php
-/*  $nid = 440;
-  $node = node_load($nid);
-  node_build_content($node);
-  print drupal_render($node->content);
-  */?>
-</div>-->
+
 
   
   <script type="text/javascript">
