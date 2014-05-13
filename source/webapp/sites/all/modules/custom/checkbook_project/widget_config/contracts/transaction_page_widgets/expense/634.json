@@ -70,7 +70,7 @@
 	    },
          "parent_contract_link": {
 	      "type": "expression2",
-           "expression": " '<a class=\"new_window\" href=\"/contract_details/magid/' . $row['master_agreement_id']  .  '/datasource/checkbook_oge/newwindow\">'. $row['master_contract_number'] .'</a>'"
+           "expression": "ContractURLHelper::prepareExpenseContractLink($row, $node, true)"
 	    },
 	"formatted_original_amount": {
 	      "type": "expression2",

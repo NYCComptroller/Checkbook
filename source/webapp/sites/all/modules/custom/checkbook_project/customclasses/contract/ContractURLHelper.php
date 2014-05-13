@@ -24,11 +24,19 @@ class ContractURLHelper{
     static $landingPageParams = array("status"=>"status","vendor"=>"vendor","agency"=>"agency","awdmethod"=>"awdmethod","cindustry"=>"cindustry","csize"=>"csize");
     static $transactionPageParams = array("status"=>"status","vendor"=>"cvendor","agency"=>"cagency","awdmethod"=>"awdmethod","cindustry"=>"cindustry","csize"=>"csize");
 
-    static function prepareExpenseContractLink($row, $node) {
+    static function prepareExpenseContractLink($row, $node, $parent = false) {
 
         $link = NULL;
-        $docType = $row['document_code@checkbook:ref_document_code'];
-        $agrParamName = in_array($docType, array('MMA1','MA1')) ? 'magid' : 'agid';
+        if($parent && strlen($row['master_contract_number']) > 0){
+            $agrParamName = 'magid';
+            $docTypeStr = substr($row['master_contract_number'],0,3);
+            $docType = ($docTypeStr == 'MA1') ? 'MA1' : 'MMA1';
+            $row['original_agreement_id'] = $row['master_agreement_id'];
+            $row['contract_number'] = $row['master_contract_number'];
+        }else{
+            $docType = $row['document_code@checkbook:ref_document_code'];
+            $agrParamName = in_array($docType, array('MMA1','MA1')) ? 'magid' : 'agid';
+        }
 
         if( RequestUtil::isExpandBottomContainer() ){
           $link = '<a href=/panel_html/contract_transactions/contract_details/' .$agrParamName . '/' . $row['original_agreement_id'] .  '/doctype/' . $docType .  _checkbook_append_url_params() . ' class=bottomContainerReload>'. $row['contract_number'] . '</a>';
@@ -45,6 +53,7 @@ class ContractURLHelper{
               . '?expandBottomContURL=/panel_html/contract_transactions/contract_details/' .$agrParamName . '/' . $row['original_agreement_id'] .  '/doctype/' . $docType . _checkbook_append_url_params()
               .  ' >'. $row['contract_number'] . '</a>';
         }
+
 
         return $link;
     }
