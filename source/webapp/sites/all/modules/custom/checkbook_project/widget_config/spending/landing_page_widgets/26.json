@@ -16,7 +16,7 @@
 $node->widgetConfig->getData=false;
 load_widget_data($node);
 if($node->totalDataCount > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
-$header='<div class=\"tableHeader\"><h2>Top ' .  $count . 'Vendors</h2><span class=\"contCount\"> Number of Vendors:  ' . number_format($node->totalDataCount) . '</span></div>';
+$header='<div class=\"tableHeader\"><h2>Top ' .  $count . 'Prime Vendors</h2><span class=\"contCount\"> Number of Prime Vendors:  ' . number_format($node->totalDataCount) . '</span></div>';
 return $header;
 ",
 "footer":"
@@ -55,12 +55,12 @@ return $footer;
 	"template":"spending_vendor_summary",
          "templateTitleEval":"
               $catName = RequestUtil::getSpendingCategoryName();
-              return ('Vendor ' . $catName . ' Transactions');
+              return ('Prime Vendor ' . $catName . ' Transactions');
           "
 },
 "WidgetTitleEval":"
    $catName = RequestUtil::getSpendingCategoryName();
-    return ('Vendors ' . $catName . ' Transactions');
+    return ('Prime Vendors ' . $catName . ' Transactions');
 ",
 "table_title":"",
   "table_columns": [

@@ -14,7 +14,6 @@
             "contract_type":"agreement_type_code",
             "start_date":"effective_begin_date",
             "end_date":"effective_end_date",
-            "registration_date":"registered_date",
             "category":"document_code@checkbook_oge:ref_document_code",
             "pin":"tracking_number",
             "apt_pin":"brd_awd_no",
@@ -56,7 +55,6 @@
                         "expense_category":"expenditure_object_names",
                         "start_date":"effective_begin_date",
                         "end_date":"effective_end_date",
-                        "registration_date":"registered_date",
                         "pin":"tracking_number",
                         "document_code":"document_code@checkbook_oge:ref_document_code",
                         "contract_industry":"industry_type_name",
@@ -64,9 +62,9 @@
                         "entity_contract_number":"oge_contract_number",
                         "budget_name":"budget_name"
                     },
-                    "rowElements":["other_government_entities", "prime_vendor", "contract_id", "version", "year", "parent_contract_id", "purpose", "original_amount", "current_amount", "spent_to_date", "registration_date"
-                        , "apt_pin", "pin", "contract_type", "award_method", "expense_category", "start_date", "end_date", "document_code", "contract_industry"
-                        ,"commodity_line","entity_contract_number","budget_name"]
+                    "rowElements":["other_government_entities", "prime_vendor", "contract_id", "version", "year", "parent_contract_id", "purpose", "original_amount",
+                        "current_amount", "spent_to_date","apt_pin", "pin", "contract_type", "award_method", "expense_category", "start_date", "end_date", "document_code",
+                        "contract_industry","commodity_line","entity_contract_number","budget_name"]
                 },
                 "csv":{
                     "elementsColumn":{
@@ -85,7 +83,6 @@
                         "Expense Category":"expenditure_object_names",
                         "Start Date":"effective_begin_date",
                         "End Date":"effective_end_date",
-                        "Registration Date":"registered_date",
                         "PIN":"tracking_number",
                         "APT":"brd_awd_no",
                         "Document Code":"document_code@checkbook_oge:ref_document_code",
@@ -112,7 +109,6 @@
             "contract_type":{"valueType":"value","dataType":"text","maxLength":"2"},
             "start_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"},
             "end_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"},
-            "registration_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"},
             "status":{"valueType":"value","dataType":"text"},
             "category":{"valueType":"value","dataType":"list","allowedValues":["expense", "revenue"]},
             "pin":{"valueType":"value","dataType":"text"},
@@ -138,7 +134,6 @@
             "contract_type":"agreement_type_code",
             "start_date":"effective_begin_date",
             "end_date":"effective_end_date",
-            "registration_date":"registered_date",
             "category":"document_code@checkbook_oge:ref_document_code",
             "pin":"tracking_number",
             "apt_pin":"brd_awd_no",
@@ -181,7 +176,6 @@
                         "expense_category":"expenditure_object_names",
                         "start_date":"effective_begin_date",
                         "end_date":"effective_end_date",
-                        "registration_date":"registered_date",
                         "pin":"tracking_number",
                         "apt_pin":"brd_awd_no",
                         "document_code":"document_code@checkbook_oge:ref_document_code",
@@ -190,7 +184,8 @@
                         "entity_contract_number":"oge_contract_number",
                         "budget_name":"budget_name"
                     },
-                    "rowElements":["other_government_entities", "prime_vendor", "contract_id", "version", "parent_contract_id", "purpose", "original_amount", "current_amount", "spent_to_date", "registration_date"
+                    "rowElements":["other_government_entities", "prime_vendor", "contract_id", "version", "parent_contract_id", "purpose", "original_amount", "current_amount",
+                        "spent_to_date"
                         , "apt_pin", "pin", "contract_type", "award_method", "expense_category", "start_date", "end_date", "document_code", "contract_industry"
                         ,"entity_contract_number","budget_name","commodity_line"]
                 },
@@ -211,7 +206,6 @@
                         "Expense Category":"expenditure_object_names",
                         "Start Date":"effective_begin_date",
                         "End Date":"effective_end_date",
-                        "Registration Date":"registered_date",
                         "PIN":"tracking_number",
                         "APT":"brd_awd_no",
                         "Document Code":"document_code@checkbook_oge:ref_document_code",
@@ -236,7 +230,6 @@
             "contract_type":{"valueType":"value","dataType":"text", "maxLength":"2"},
             "start_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"},
             "end_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"},
-            "registration_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"},
             "status":{"valueType":"value","dataType":"text"},
             "category":{"valueType":"value","dataType":"list","allowedValues":["expense", "revenue"]},
             "pin":{"valueType":"value","dataType":"text"},
