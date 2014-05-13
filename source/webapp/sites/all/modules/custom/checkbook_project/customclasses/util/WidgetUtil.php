@@ -174,10 +174,11 @@ class WidgetUtil
         "budget_name"=>"Budget<br/>Name",
         "commodity_line"=>"Commodity<br/>Line",
         "entity_contact_num"=>"Entity<br/>Contract # ",
-    	"prime_vendor_name"=>"Prime<br/>Vendor Name",
+    	"prime_vendor_name"=>"Prime Vendor<br/>Name",
     	"prime_vendor"=>"Prime<br/>Vendor",
     	"tot_edc_con"=>"Total number of<br/>NYC EDC Contracts",
-    	"vendor_address"=>"Vendor<br/>Address"
+    	"vendor_address"=>"Vendor<br/>Address",
+    	"prime_vendor_address"=>"Prime Vendor<br/>Address"
     );
 
     //For number cols, need to find out if they are uniform number of digits for formatting
@@ -320,7 +321,7 @@ class WidgetUtil
                 }
                 else {
                     $html .= '<th style="'.$border.'text-align: left !important; vertical-align: middle; padding-left:10px !important">';
-                    $html .= '<span style="margin:8px 0px 8px 0px!important;display:inline-block; text-align: left !important;">'. $value .'</span></th>';
+                    $html .= '<span style="margin:8px 0px 8px 0px!important;display:inline-block; text-align: center !important;">'. $value .'</span></th>';
                 }
             }
         }

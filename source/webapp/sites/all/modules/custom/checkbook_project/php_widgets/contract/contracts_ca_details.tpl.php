@@ -137,7 +137,9 @@ $maximum_contract_amount =  ( _getRequestParamValue("datasource") == "checkbook_
       <li><span
         class="gi-list-item">Award Method:</span> <?php echo $node->data[0]['award_method_name_checkbook_award_method'];?>
       </li>
+      <?php if ( _getRequestParamValue("datasource") != "checkbook_oge") { ?>
       <li><span class="gi-list-item">Version Number:</span> <?php echo $node->data[0]['document_version'];?></li>
+      <?php } ?>
       <li><span
         class="gi-list-item">FMS Document:</span> <?php echo $node->data[0]['document_code_checkbook_ref_document_code'];?>
       </li>
@@ -155,9 +157,11 @@ $maximum_contract_amount =  ( _getRequestParamValue("datasource") == "checkbook_
       <li><span class="gi-list-item">End
           Date:</span> <?php echo format_string_to_date($node->data[0]['date_checkbk_date_id_effctv_end_date_id_chckbk_history_agrmnt_1']);?>
       </li>
+      <?php if ( _getRequestParamValue("datasource") != "checkbook_oge") { ?>
       <li><span class="gi-list-item">Registration
           Date:</span> <?php echo format_string_to_date($node->data[0]['date_chckbk_date_id_rgstrd_date_id_checkbook_history_agreemnt_2']);?>
       </li>
+      <?php } ?>
       <li><span class="gi-list-item">APT PIN:</span> <?php echo $node->data[0]["brd_awd_no"];?></li>
       <li><span class="gi-list-item">PIN:</span> <?php echo $node->data[0]['tracking_number'];?></li>
     </ul>
