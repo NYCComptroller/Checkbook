@@ -162,7 +162,7 @@ foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
                 if ($contract_spending['fiscal_year'] == $year && $contract_spending['vendor_name'] == $vendor) {
                     //Inner table columns
                     $tbl_spending_transaction_inner['body']['rows'][$index_spending_transaction_inner]['columns'] = array(
-                        array('value' => date_format(new DateTime($contract_spending['issue_date']), 'm/d/Y'), 'type' => 'text'),
+                        array('value' => 'N/A', 'type' => 'text'),
                         array('value' => custom_number_formatter_format($contract_spending['check_amount'], 2, '$'), 'type' => 'number'),
                         array('value' => $contract_spending['expenditure_object_name'], 'type' => 'text'),
                         array('value' => $contract_spending['agency_name'], 'type' => 'text'),
