@@ -45,7 +45,7 @@
     }
     $node->widgetConfig->chartConfig->series[0]->data = $data;$node->widgetConfig->chartConfig->xAxis->categories = $categories;
     $node->widgetConfig->chartConfig->series[0]->name = 'Disbursement Amount';
-    $node->widgetConfig->chartTitle = 'Top Ten Prime sVendors by Disbursement Amount';
+    $node->widgetConfig->chartTitle = 'Top Ten Prime Vendors by Disbursement Amount';
 
     return $node->data;
 ",
