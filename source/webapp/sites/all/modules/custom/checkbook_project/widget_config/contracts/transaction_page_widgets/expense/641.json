@@ -261,7 +261,6 @@ if(isset($config->model) && is_array($node->data)){
         {"label": "Industry","column": "industry_name_formatted","sortSourceColumn": "industry_type_name"},
 	    {"label": "Start Date","column": "display_effective_begin_date","sortSourceColumn": "effective_begin_date"},
 	    {"label": "End Date","column": "display_effective_end_date","sortSourceColumn": "effective_end_date"},
-	    {"label": "Registration<br/>Date","column": "display_registered_date","sortSourceColumn": "registered_date"},
 	    {"label": "PIN","column": "tracking_number"},
 	    {"label": "APT PIN","column": "brd_awd_no"},
         {
