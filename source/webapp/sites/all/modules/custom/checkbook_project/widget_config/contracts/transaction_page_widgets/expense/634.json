@@ -172,7 +172,6 @@
         {"labelAlias": "contract_industry","column": "industry_name_formatted","sortSourceColumn":"industry_type_name"},
 	    {"labelAlias": "start_date","column": "effective_begin_date"},
 	    {"labelAlias": "end_date","column": "effective_end_date"},
-	    {"labelAlias": "reg_date","column": "reg_date","sortSourceColumn":"registered_date","exportColumn":"reg_date"},
 	    {"labelAlias": "pin","column": "tracking_number"},
 	    {"labelAlias": "apt_pin","column": "brd_awd_no"},
 	            {
@@ -271,7 +270,6 @@
 		{"sClass":"text","sWidth":"220px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"145px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"145px","asSorting": [ "asc","desc" ]},
-		{"sClass":"text number-left","sWidth":"145px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"230px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"180px","asSorting": [ "asc","desc" ]},
         {"sClass":"text number-left","sWidth":"125px","asSorting": [ "desc","asc" ]},
@@ -370,11 +368,10 @@
                             sOut += '<td class=\"text\"  style=\"width:220px\">'+ (row[13] == null ? '': row[13])+'</td>';
                             sOut += '<td class=\"text\"  style=\"width:145px\">'+ (row[14] == null ? '': row[14])+'</td>';
                             sOut += '<td class=\"text\"  style=\"width:145px\">'+ (row[15] == null ? '': row[15])+'</td>';
-                            sOut += '<td class=\"text\"  style=\"width:145px\">'+ (row[16] == null ? '': row[16])+'</td>';
-                            sOut += '<td class=\"text\" style=\"width:230px;\">'+ (row[17] == null ? '': row[17])+'</td>';
-                            sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[18] == null ? '': row[18])+'</td>';
-                            sOut += '<td class=\"text number-left\" style=\"width:125px;\">'+ (row[19] == null ? '': row[19])+'</td>';
-                            sOut += '<td class=\"text\" style=\"width:200px;\">'+ (row[20] == null ? '': row[20])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:230px;\">'+ (row[16] == null ? '': row[16])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[17] == null ? '': row[17])+'</td>';
+                            sOut += '<td class=\"text number-left\" style=\"width:125px;\">'+ (row[18] == null ? '': row[18])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:200px;\">'+ (row[19] == null ? '': row[19])+'</td>';
                             sOut += '<td>'+ '&nbsp;'+'</td>';
                         sOut += '</tr>';
                     }

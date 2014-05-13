@@ -78,9 +78,9 @@ return $footer;
 "summaryView":{
 	"template":"contract_summary_expense_expense",
         "entityColumnName":"vendor_vendor_legal_name",
-	"templateTitle":"Vendor Spending Transactions"
+	"templateTitle":"Prime Vendor Spending Transactions"
 },
-"widgetTitle":"Vendors",
+"widgetTitle":"Prime Vendors",
 "table_title":"",
   "table_columns": [
     {

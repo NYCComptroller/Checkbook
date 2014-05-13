@@ -20,12 +20,12 @@
 
 
 //Main table header
-$tbl['header']['title'] = "<div class='tableHeader'><h3>Vendor Information</h3> <span class='contCount'>Number of Vendors: ".count($node->vendors_list)." </span></div>";
+$tbl['header']['title'] = "<div class='tableHeader'><h3>Prime Vendor Information</h3> <span class='contCount'>Number of Prime Vendors: ".count($node->vendors_list)." </span></div>";
 $tbl['header']['columns'] = array(
-    array('value' => WidgetUtil::generateLabelMappingNoDiv("vendor_name"), 'type' => 'text'),
+    array('value' => WidgetUtil::generateLabelMappingNoDiv("prime_vendor_name"), 'type' => 'text'),
     array('value' => $node->widget_count_label, 'type' => 'number'),
     array('value' => WidgetUtil::generateLabelMappingNoDiv("spent_to_date"), 'type' => 'number'),
-    array('value' => WidgetUtil::generateLabelMappingNoDiv("vendor_address"), 'type' => 'text')
+    array('value' => WidgetUtil::generateLabelMappingNoDiv("prime_vendor_address"), 'type' => 'text')
 );
 
 $vendor_cont_count = array();
