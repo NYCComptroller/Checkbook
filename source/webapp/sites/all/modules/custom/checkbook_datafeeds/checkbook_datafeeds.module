@@ -1438,43 +1438,10 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#title' => t('to'),
                 '#size' => 15,
                 '#maxlength' => 15,
-                '#suffix' => '</div></div>',
+                '#suffix' => '</div></div></div>',
                 '#id' => 'edit-currentamtto',
                 '#name' => 'currentamtto',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'currentamtto', $first_time_load, ''),
-            );
-            $form['filter']['recdatefrom'] = array(
-                '#type' => 'textfield',
-                '#size' => 15,
-                '#maxlength' => 15,
-                '#description' => 'E.g., ' . date('Y-m-d'),
-                '#attributes' => array('class' => array('datepicker')),
-                '#prefix' => '<div class="datafield receiveddate datarange"><label>Received Date:</label><div class="ranges">',
-                '#id' => 'edit-recdatefrom',
-                '#name' => 'recdatefrom',
-                '#default_value' => '',
-                '#states' => array('disabled' => array(
-                    'select[name="df_contract_status"]' => array(
-                        array('value' => 'active'),
-                        array('value' => 'registered')))
-                )
-            );
-            $form['filter']['recdateto'] = array(
-                '#type' => 'textfield',
-                '#title' => t('to'),
-                '#size' => 15,
-                '#maxlength' => 15,
-                '#description' => 'E.g., ' . date('Y-m-d'),
-                '#attributes' => array('class' => array('datepicker')),
-                '#suffix' => '</div></div></div>',
-                '#id' => 'edit-recdateto',
-                '#name' => 'recdateto',
-                '#default_value' => '',
-                '#states' => array('disabled' => array(
-                    'select[name="df_contract_status"]' => array(
-                        array('value' => 'active'),
-                        array('value' => 'registered')))
-                )
             );
             $form['filter']['agency'] = array(
                 '#type' => 'select',
