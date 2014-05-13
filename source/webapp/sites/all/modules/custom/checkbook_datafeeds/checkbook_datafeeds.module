@@ -1438,43 +1438,10 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#title' => t('to'),
                 '#size' => 15,
                 '#maxlength' => 15,
-                '#suffix' => '</div></div>',
+                '#suffix' => '</div></div></div>',
                 '#id' => 'edit-currentamtto',
                 '#name' => 'currentamtto',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'currentamtto', $first_time_load, ''),
-            );
-            $form['filter']['regdatefrom'] = array(
-                '#type' => 'textfield',
-                '#size' => 15,
-                '#maxlength' => 15,
-                '#description' => 'E.g., ' . date('Y-m-d'),
-                '#attributes' => array('class' => array('datepicker')),
-                '#prefix' => '<div class="datafield regdate datarange"><label>Registration Date:</label><div class="ranges">',
-                '#id' => 'edit-regdatefrom',
-                '#name' => 'regdatefrom',
-                '#default_value' => '',
-                '#states' => array('disabled' => array(
-                        'select[name="df_contract_status"]' => array(
-                            array('value' => 'active'),
-                            array('value' => 'registered')))
-                )
-            );
-            $form['filter']['regdateto'] = array(
-                '#type' => 'textfield',
-                '#title' => t('to'),
-                '#size' => 15,
-                '#maxlength' => 15,
-                '#description' => 'E.g., ' . date('Y-m-d'),
-                '#attributes' => array('class' => array('datepicker')),
-                '#suffix' => '</div></div></div>',
-                '#id' => 'edit-regdateto',
-                '#name' => 'regdateto',
-                '#default_value' => '',
-                '#states' => array('disabled' => array(
-                    'select[name="df_contract_status"]' => array(
-                        array('value' => 'active'),
-                        array('value' => 'registered')))
-                )
             );
             $form['filter']['agency'] = array(
                 '#type' => 'select',
@@ -2051,17 +2018,6 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         $form['filter']['end_date'] = array('#markup' => '<div><strong>End Date:</strong><br />Greater Than: ' . $values['enddatefrom'] . '</div>');
         $user_criteria['End Date Greater Than'] = $values['enddatefrom'];
     }
-    if ($values['regdatefrom'] && $values['regdateto']) {
-        $form['filter']['regdate'] = array('#markup' => '<div><strong>Registered Date:</strong><br />Greater Than: ' . $values['regdatefrom'] . ' Less Than: ' . $values['regdateto'] . '</div>');
-        $user_criteria['Registered Date Greater Than'] = $values['regdatefrom'];
-        $user_criteria['Registered Date Less Than'] = $values['regdateto'];
-    } elseif (!$values['regdatefrom'] && $values['regdateto']) {
-        $form['filter']['regdate'] = array('#markup' => '<div><strong>Registered Date:</strong><br />Less Than: ' . $values['regdateto'] . '</div>');
-        $user_criteria['Registered Date Less Than'] = $values['regdateto'];
-    } elseif ($values['regdatefrom'] && !$values['regdateto']) {
-        $form['filter']['regdate'] = array('#markup' => '<div><strong>Spent To Date:</strong><br />Greater Than: $' . $values['regdatefrom'] . '</div>');
-        $user_criteria['Registered Date Greater Than'] = $values['regdatefrom'];
-    }
     if ($values['category']) {
         $form['filter']['category'] = array('#markup' => '<div><strong>Category:</strong> ' . $values['category'] . '</div>');
         $user_criteria['Category'] = $values['category'];
@@ -2088,6 +2044,17 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
             }
             break;
         default:
+            if ($values['regdatefrom'] && $values['regdateto']) {
+                $form['filter']['regdate'] = array('#markup' => '<div><strong>Registered Date:</strong><br />Greater Than: ' . $values['regdatefrom'] . ' Less Than: ' . $values['regdateto'] . '</div>');
+                $user_criteria['Registered Date Greater Than'] = $values['regdatefrom'];
+                $user_criteria['Registered Date Less Than'] = $values['regdateto'];
+            } elseif (!$values['regdatefrom'] && $values['regdateto']) {
+                $form['filter']['regdate'] = array('#markup' => '<div><strong>Registered Date:</strong><br />Less Than: ' . $values['regdateto'] . '</div>');
+                $user_criteria['Registered Date Less Than'] = $values['regdateto'];
+            } elseif ($values['regdatefrom'] && !$values['regdateto']) {
+                $form['filter']['regdate'] = array('#markup' => '<div><strong>Spent To Date:</strong><br />Greater Than: $' . $values['regdatefrom'] . '</div>');
+                $user_criteria['Registered Date Greater Than'] = $values['regdatefrom'];
+            }
             if ($values['agency']) {
                 $form['filter']['agency'] = array(
                     '#markup' => '<div><strong>Agency:</strong> ' . $values['agency'] . '</div>',
@@ -2239,12 +2206,6 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
             checknull($values['enddateto']),
         );
     }
-    if ($values['regdatefrom'] !== '' || $values['regdateto'] !== '') {
-        $criteria['range']['registration_date'] = array(
-            checknull($values['regdatefrom']),
-            checknull($values['regdateto']),
-        );
-    }
     if ($values['df_contract_status']) {
         $criteria['value']['status'] = $values['df_contract_status'];
     }
@@ -2252,6 +2213,12 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
         $criteria['value']['category'] = $values['category'];
     }
     if($data_source != 'checkbook_oge') {
+        if ($values['regdatefrom'] !== '' || $values['regdateto'] !== '') {
+            $criteria['range']['registration_date'] = array(
+                checknull($values['regdatefrom']),
+                checknull($values['regdateto']),
+            );
+        }
         if ($values['recdatefrom'] !== '' || $values['recdateto'] !== '') {
             $criteria['range']['received_date'] = array(
                 checknull($values['recdatefrom']),
