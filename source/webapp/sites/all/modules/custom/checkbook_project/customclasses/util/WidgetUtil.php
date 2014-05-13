@@ -239,8 +239,8 @@ class WidgetUtil
             if(isset($table_rows)) {
                 $alternating_row_count = 0;
                 $inner_tbl_count = 0;
-                for ($row_index = 0; $row_index < count($table_rows); $row_index++) {
-
+                $outer_table_count = 0;
+                for ($row_index = 0; $row_index < count($table_rows); $row_index++) {                	
                     if(isset($table_rows[$row_index]['columns'])) {
                         if ($alternating_row_count % 2 == 0)
                             $class = "even outer";
@@ -249,13 +249,15 @@ class WidgetUtil
                         $alternating_row_count++;
                         WidgetUtil::populateMaxColumnLength($table_rows);
 //                        $html .= "<tr class='".$class."' style='border: 1px solid black !important;'>";
-                        $html .= "<tr class='".$class."'>";
+                        $html .= "<tr class='".$class."' >";
                         $html .= WidgetUtil::generateColumns($table_rows[$row_index]['columns']);
                         $html .= "</tr>";
                     }
                     elseif(isset($table_rows[$row_index]['child_tables'])) {
+                    	$display_main = $outer_table_count > 0 ? "display: none;" : "";
+                    	$outer_table_count++;
                         $col_span = count($table_rows[$row_index-1]['columns']);
-                        $html .= "<tr class='showHide'>";
+                        $html .= "<tr class='showHide' style='" .$display_main . "'>";
                         $html .= "<td colspan='".$col_span."'>";
                         $html .= "<div>";
                         for ($tbl_index = 0; $tbl_index < count($table_rows[$row_index]['child_tables']); $tbl_index++) {
