@@ -826,7 +826,12 @@ span.grid_export, span.exportSmartSearch {
 /********************************************
 ***   CONTRACT TOTALS MENU TABLE STYLING  ***
 ********************************************/
-.panel-panel.grid-12 .panel-pane.pane-node, .pane-contracts-cta-history{
+
+.contracts-oge-spending-bottom td div >  .float-clear + .float-clear{
+	margin-top: 20px;
+}
+
+.panel-panel.grid-12 .panel-pane.pane-node, .pane-contracts-cta-history, float-clear{
     float:left;
     clear:both;
     width:100%;
@@ -2001,6 +2006,18 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 }
 .newwindow #section-header{margin-bottom:0px;}
 .newwindow #contract-transactions{margin-top:5px;}
+.newwindow .container-12 .block .omega-grid, 
+.newwindow .container-16 .block .omega-grid, 
+.newwindow .container-24 .block .omega-grid{
+	margin-left:19px;
+	margin-right: 19px;
+}
+
+.newwindow #mini-panel-contracts_cta_history{
+    margin-left:0px;
+    margin-right: 0px;
+}
+
 .inside .transactions-container .transactions-total-amount{width:220px;}
 span.export {
     background: url("../images/export.png") no-repeat scroll right 0 transparent;
