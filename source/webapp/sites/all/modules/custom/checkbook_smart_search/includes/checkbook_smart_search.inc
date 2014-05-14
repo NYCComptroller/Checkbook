@@ -724,11 +724,11 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
           "vendor_name" => "Payee Name",
           "expenditure_object_name" => "Expense Category",
           "contract_number" => "Contract ID",
+          "spending_commodity_line" => "Commodity Line",          		
           "check_amount" => "Check Amount",
           "check_eft_issued_date" => "Issue Date",
           "spending_entity_contract_number" => "Entity Contract#",
           "spending_budget_name" => "Budget Name",
-          "spending_commodity_line" => "Commodity Line",
           "" => "",
           );
         else
