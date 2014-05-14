@@ -195,7 +195,6 @@ $adjustDataTableOptions->iDisplayLength = (int)$rpp;
 },
 "bInfo": true,
 "aoColumns":[
-{"sClass":"text", "sWidth":"160px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"180px","asSorting": [ "asc","desc" ]},
 {"sClass":"text", "sWidth":"90px","asSorting": [ "asc","desc" ]},
 {"sClass":"text", "sWidth":"165px","asSorting": [ "asc","desc" ]},
