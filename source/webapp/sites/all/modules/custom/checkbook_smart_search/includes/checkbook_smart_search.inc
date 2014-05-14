@@ -383,7 +383,7 @@ function _checkbook_smart_search_autocomplete(){
                 foreach ($value as $a=>$b){
                     $count++;
                     $url = "/smart_search?search_term=*|*vendor_names=";
-                    array_push($matches, array("url"=>$url,"category"=>"Vendors" ,"label" => $a, "value" => urlencode($a)));
+                    array_push($matches, array("url"=>$url,"category"=>"Prime Vendors" ,"label" => $a, "value" => urlencode($a)));
                 }
                 break;
             /*case 'revenue_category_name':
@@ -763,7 +763,6 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
               "end_date_orig"=>"End Date",
               "pin"=>"PIN",
               "apt_pin"=>"APT PIN",
-              "registration_date"=>"Registration date",
               "expense_category_name"=>"Expense Category",
               "contract_entity_contract_number" => "Entity Contract#",
               "contract_budget_name" => "Budget Name",

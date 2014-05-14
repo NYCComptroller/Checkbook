@@ -257,7 +257,7 @@
                 expenditure_object_name,
                 expenditure_object_name || '[' || expenditure_object_id || ']' expenditure_object_name_id,
                 lower(expenditure_object_name) || '[' || expenditure_object_code || ']' expenditure_object_name_code,
-                check_eft_issued_date,
+                '' check_eft_issued_date,
                 check_amount,
                 reporting_code,
                 fund_class_id,
@@ -474,9 +474,11 @@
             <field column="pin" name="pin" />
             <field column="version_number" name="version_number" />
             <field column="registered_date" name="registration_date" />
+            <field column="registered_date" name="exp_registration_date" />
             <field column="original_amount" name="original_amount" />
             <field column="current_amount" name="current_amount" />
             <field column="fiscal_year" name="fiscal_year" />
+            <field column="fiscal_year" name="reg_fiscal_year_exp" />
             <field column="fiscal_year_id" name="fiscal_year_id" />
             <field column="agreement_type_id" name="contract_type_id" />
             <field column="latest_flag" name="latest_flag" />
@@ -526,11 +528,13 @@
                 brd_awd_no apt_pin,
                 tracking_number pin,
                 document_version version_number,
-                registered_date,
+                '' registered_date,
                 (CASE WHEN master_agreement_yn = 'Y' THEN a.original_contract_amount ELSE ogecon.original_amount END) original_amount,
                 (CASE WHEN master_agreement_yn = 'Y' THEN a.maximum_contract_amount ELSE ogecon.current_amount END )current_amount,
-                registered_year fiscal_year,
-                registered_year_id fiscal_year_id,
+                '' fiscal_year,
+                'N/A' reg_fiscal_year,
+                'N/A' exp_registration_date,
+                '' fiscal_year_id,
                 rac.award_category_code,
                 lower(rac.award_category_name) || '[' ||  rac.award_category_code || ']' award_category_name_code,
                 dc.document_code,
@@ -627,9 +631,11 @@
             <field column="pin" name="pin" />
             <field column="version_number" name="version_number" />
             <field column="registered_date" name="registration_date" />
+            <field column="exp_registration_date" name="exp_registration_date" />            
             <field column="original_amount" name="original_amount" />
             <field column="current_amount" name="current_amount" />
             <field column="fiscal_year" name="fiscal_year" />
+            <field column="fiscal_year" name="reg_fiscal_year_exp" />
             <field column="fiscal_year_id" name="fiscal_year_id" />
             <field column="agreement_type_id" name="contract_type_id" />
             <field column="latest_flag" name="latest_flag" />
