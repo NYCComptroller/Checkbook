@@ -52,7 +52,7 @@
           class="bottomContainerReload"><?php echo $contract['contract_number']; ?></a></div>
 		<?php 
 		if ( _getRequestParamValue("datasource") == "checkbook_oge" && !preg_match('/newwindow/',$_GET['q']) ) {
-			$alt_txt = "This contract agreement has information as a vendor.<br><br> Click this icon to view this contract as a vendor. ";
+			$alt_txt = "This contract agreement has information as a prime vendor.<br><br> Click this icon to view this contract as a prime vendor. ";
 			$url="/contract_details/agid/" .  $contract['original_agreement_id'] . "/doctype/CTA1/newwindow";
 			echo "<div class='contractLinkNote'><a class='new_window' href='". $url ."' alt='" . $alt_txt . "' target='_blank' >Open in New Window</a></div>"; 
 		}     
