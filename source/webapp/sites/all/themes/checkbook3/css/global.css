@@ -1535,6 +1535,28 @@ td.childcontracts div.sub-table-wrapper {
 #assoc_contracts_list_wrapper{
     border:none;
 }
+
+#assoc_contracts_list_wrapper{
+    margin-top:-10px;
+}
+#assoc_contracts_list_wrapper .panel-pane.pane-custom.pane-1 + .panel-separator{
+    display:none;
+}
+#assoc_contracts_list_wrapper .panel-pane.pane-custom.pane-1{
+    margin-bottom:0px;
+}
+
+#assoc_contracts_list_wrapper .contextual-links-region.panel-pane.pane-node,
+#assoc_contracts_list_wrapper .contextual-links-region.panel-pane.pane-node .pane-content,
+#assoc_contracts_list_wrapper .contextual-links-region.panel-pane.pane-node .content.clearfix{
+    margin:0px;
+}
+
+
+#assoc_contracts_list_wrapper .contextual-links-region.panel-pane.pane-node .content.clearfix + .clearfix{
+    display:none;
+}
+
 table#assoc_contracts_list {
     border: none;
     border-collapse: separate;
