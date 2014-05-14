@@ -32,18 +32,28 @@
 	},
 	"file_history":
 	[
-		"/Users/robert.ashley/Documents/sites/checkbook/source/webapp/sites/default/settings.php",
-		"/Users/robert.ashley/Documents/sites/checkbook/source/webapp/sites/all/themes/checkbook3/css/global.css"
+		"/Users/robert.ashley/Documents/sites/checkbook/source/webapp/sites/all/modules/custom/checkbook_smart_search/js/smart_search.js",
+		"/Users/robert.ashley/Documents/sites/checkbook/source/webapp/sites/all/modules/custom/checkbook_project/widget_config/contracts/transaction_page_widgets/expense/634.json",
+		"/Users/robert.ashley/Documents/sites/checkbook/source/webapp/sites/all/modules/custom/checkbook_project/widget_config/contracts/transaction_page_widgets/expense/267.json",
+		"/Users/robert.ashley/Documents/sites/checkbook/source/webapp/sites/all/modules/custom/checkbook_project/widget_config/contracts/transaction_page_widgets/expense/485.json",
+		"/Users/robert.ashley/Documents/sites/checkbook/source/webapp/sites/all/modules/custom/checkbook_project/widget_config/contracts/transaction_page_widgets/expense/643.json",
+		"/Users/robert.ashley/Documents/sites/checkbook/source/webapp/sites/all/modules/custom/checkbook_project/widget_config/contracts/transaction_page_widgets/revenue/411.json",
+		"/Users/robert.ashley/Documents/sites/checkbook/source/webapp/sites/all/modules/custom/checkbook_project/widget_config/contracts/transaction_page_widgets/revenue/488.json",
+		"/Users/robert.ashley/Documents/sites/checkbook/source/webapp/sites/all/themes/checkbook3/css/global.css",
+		"/Users/robert.ashley/Documents/sites/checkbook/source/webapp/sites/default/settings.php"
 	],
 	"find":
 	{
-		"height": 0.0
+		"height": 35.0
 	},
 	"find_in_files":
 	{
 		"height": 0.0,
 		"where_history":
 		[
+			"/Users/robert.ashley/Documents/sites/checkbook",
+			"/Users/robert.ashley/Documents/sites/checkbook/software",
+			"/Users/robert.ashley/Documents/sites/checkbook/source/webapp/sites/all"
 		]
 	},
 	"find_state":
@@ -51,6 +61,27 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"12 .block .ome",
+			".container-24 .block .omega-grid",
+			"bottomContainer",
+			"360",
+			"pin",
+			"360",
+			"pin",
+			"360px",
+			"360",
+			"pin",
+			"360px",
+			"230px",
+			"pin",
+			"250",
+			"{\"sClass\":\"text\",\"sWidth\":\"360px\",\"asSorting\": [ \"asc\",\"desc\" ]}",
+			"360",
+			"{\"sClass\":\"text\",\"sWidth\":\"360px\",\"asSorting\": [ \"asc\",\"desc\" ]}",
+			"pin",
+			"datatable",
+			".json",
+			"*.json"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -114,6 +145,14 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"smartsearch",
+				"checkbook/source/webapp/sites/all/modules/custom/checkbook_smart_search/js/smart_search.js"
+			],
+			[
+				"634.json",
+				"checkbook/source/webapp/sites/all/modules/custom/checkbook_project/widget_config/contracts/transaction_page_widgets/expense/634.json"
+			]
 		],
 		"width": 0.0
 	},
@@ -129,6 +168,6 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 401.0,
+	"side_bar_width": 529.0,
 	"status_bar_visible": true
 }
