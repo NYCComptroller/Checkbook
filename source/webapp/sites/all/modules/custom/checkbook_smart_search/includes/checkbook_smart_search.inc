@@ -851,11 +851,11 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
 						"vendor_name" => "Payee Name",
 						"expenditure_object_name" => "Expense Category",
 						"contract_number" => "Contract ID",
+						"spending_commodity_line" => "Commodity Line",						
 						"check_amount" => "Check Amount",
 						"check_eft_issued_date" => "Issue Date",
 						"spending_entity_contract_number" => "Entity Contract#",
 						"spending_budget_name" => "Budget Name",
-						"spending_commodity_line" => "Commodity Line",
 						"" => "",);
 			break;
 		case "contracts":
@@ -865,6 +865,7 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
 						"vendor_name"=>"Prime Vendor",
 						"oge_agency_name"=>"Agency",
 						"contract_number"=>"Contract ID",
+						"contract_commodity_line" => "Commodity Line",						
 						"version_number"=>"Version Number",
 						"contract_purpose"=>"Purpose",
 						"parent_contract_number"=>"Parent Contract ID",
@@ -881,7 +882,6 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
 						"received_date"=>"Received date",
 						"contract_entity_contract_number" => "Entity Contract#",
 						"contract_budget_name" => "Budget Name",
-						"contract_commodity_line" => "Commodity Line",
 				);		
 
 			break;
