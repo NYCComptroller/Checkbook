@@ -827,7 +827,6 @@ span.grid_export, span.exportSmartSearch {
 ***   CONTRACT TOTALS MENU TABLE STYLING  ***
 ********************************************/
 .panel-panel.grid-12 .panel-pane.pane-node{
-    float:left;
     clear:both;
     width:100%;
 }
