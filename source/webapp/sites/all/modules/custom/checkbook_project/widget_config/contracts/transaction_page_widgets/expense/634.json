@@ -105,7 +105,7 @@ return $header;
         },
         "parent_contract_export":{
             "type": "expression2",
-            "expression": "(($row['has_children'] == 'Y') ? 'N/A'; : $row['master_contract_number'])"
+            "expression": "(($row['has_children'] == 'Y') ? 'N/A' : $row['master_contract_number'])"
         },
         "formatted_original_amount": {
             "type": "expression2",
@@ -190,7 +190,7 @@ return $header;
         {"label": "<div>&nbsp;</div>","colLabel": "","column": "child_contrats_link","export":false},
         {"labelAlias": "contract_id","column": "contract_link","sortSourceColumn":"contract_number"},
         {"labelAlias": "commodity_line", "datasource": "checkbook_oge","column": "fms_commodity_line"},
-        {"labelAlias": "fms_doc_id","column":"parent_contract_link","sortSourceColumn":"master_contract_number"},
+        {"labelAlias": "fms_doc_id","column":"parent_contract_link","sortSourceColumn":"master_contract_number","exportColumn":"parent_contract_export"},
         {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description"},
         {"labelAlias": "current_amount","column": "formatted_current_amount","sortSourceColumn":"maximum_contract_amount"},
         {"labelAlias": "original_amount","column": "formatted_original_amount","sortSourceColumn":"original_contract_amount"},
