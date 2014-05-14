@@ -249,7 +249,7 @@ class WidgetUtil
                         $alternating_row_count++;
                         WidgetUtil::populateMaxColumnLength($table_rows);
 //                        $html .= "<tr class='".$class."' style='border: 1px solid black !important;'>";
-                        $html .= "<tr class='".$class."' >";
+                        $html .= "<tr class='".$class."' >";                       
                         $html .= WidgetUtil::generateColumns($table_rows[$row_index]['columns']);
                         $html .= "</tr>";
                     }
@@ -261,8 +261,8 @@ class WidgetUtil
                         $html .= "<td colspan='".$col_span."'>";
                         $html .= "<div>";
                         for ($tbl_index = 0; $tbl_index < count($table_rows[$row_index]['child_tables']); $tbl_index++) {
-//                            $html .= "<tr class='showHide' style='border: 1px solid black !important;'>";
-                            $html .= WidgetUtil::generateTable($table_rows[$row_index]['child_tables'][$tbl_index]);
+//                            $html .= "<tr class='showHide' style='border: 1px solid black !important;'>";                            
+                        	$html .=  WidgetUtil::generateTable($table_rows[$row_index]['child_tables'][$tbl_index]);
                         }
                         $html .= "</div>";
                         $html .= "</td>";
@@ -275,8 +275,8 @@ class WidgetUtil
 //                        $html .= "<tr class='showHide' style='".$display." border: 1px solid black !important;'>";
                         $html .= "<tr class='showHide' style='".$display."'>";
                         $html .= "<td colspan='".$col_span."'>";
-                        $html .= "<div class='scroll'>";
-                        $html .= WidgetUtil::generateTable($table_rows[$row_index]['inner_table'],false);
+                        $html .= "<div class='scroll'>";                       
+                        $html .=  WidgetUtil::generateTable($table_rows[$row_index]['inner_table'],false);
                         $html .= "</div>";
                         $html .= "</td>";
                         $html .= "</tr>";
@@ -288,7 +288,7 @@ class WidgetUtil
         else {
             $html .= "<tbody>";
             $html .= "<tr class='odd'>";
-            $html .= "<td class='dataTables_empty' valign='top' colspan='3'>";
+            $html .= "<td class='dataTables_empty' valign='top' colspan='" . count($header_columns). "'>";
             $html .= "<div id='no-records-datatable' class='clearfix'>";
             $html .= "<span>No Matching Records Found</span>";
             $html .= "</div>";
