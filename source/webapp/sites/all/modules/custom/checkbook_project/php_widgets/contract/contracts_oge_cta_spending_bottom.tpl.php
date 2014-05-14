@@ -182,7 +182,7 @@ foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
     $index_spending++;
 
 }
-$html = WidgetUtil::generateTable($tbl_spending);
+$html = "<div class='contracts-oge-spending-bottom'>" . WidgetUtil::generateTable($tbl_spending) . "</div>" ;
 echo $html;
 
 ?>
