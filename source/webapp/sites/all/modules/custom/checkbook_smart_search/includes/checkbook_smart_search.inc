@@ -877,7 +877,7 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
 						"end_date_orig"=>"End Date",
 						"pin"=>"PIN",
 						"apt_pin"=>"APT PIN",
-						"exp_registration_date"=>"Registration date",
+						"registration_date"=>"Registration date",
 						"expense_category_name"=>"Expense Category",
 						"received_date"=>"Received date",
 						"contract_entity_contract_number" => "Entity Contract#",
