@@ -91,8 +91,8 @@
           echo "<th class='text thEndDate'>" . WidgetUtil::generateLabelMapping("end_date") . "</th>";
           echo "<th class='text thRegDate'>" . WidgetUtil::generateLabelMapping("reg_date") . "</th>";
           echo "<th class='text thLastMDate'>" . WidgetUtil::generateLabelMapping("last_mod_date") . "</th>";
+          echo "<th class='number thCurAmt'>" . WidgetUtil::generateLabelMapping("current_amount") . "</th>";          
           echo "<th class='number thOrigAmt'>" . WidgetUtil::generateLabelMapping("original_amount") . "</th>";
-          echo "<th class='number thCurAmt'>" . WidgetUtil::generateLabelMapping("current_amount") . "</th>";
           echo "<th class='number thIncDec'>" . WidgetUtil::generateLabelMapping("increase_decrease") . "</th>";
           echo "<th class='text thVerStat'>" . WidgetUtil::generateLabelMapping("version_status") . "</th>";
           echo "</tr></thead><tbody>";
@@ -119,8 +119,8 @@
             else {
               echo "<td class='text thLastMDate'><div>" . $item['date@checkbook:date_id/source_updated_date_id@checkbook:history_master_agreement'] . "</div></td>";
             }
+            echo "<td class='number thCurAmt'><div>" . custom_number_formatter_format($item['maximum_spending_limit'], 2, '$') . "</div></td>";            
             echo "<td class='number thOrigAmt'><div>" . custom_number_formatter_format($item['original_contract_amount'], 2, '$') . "</div></td>";
-            echo "<td class='number thCurAmt'><div>" . custom_number_formatter_format($item['maximum_spending_limit'], 2, '$') . "</div></td>";
             echo "<td class='number thIncDec'><div>" . custom_number_formatter_format(($item['maximum_spending_limit'] - $item['original_contract_amount']), 2, '$') . "</div></td>";
             echo "<td class='text thVerStat'><div>" . $item['status'] . "</div></td>";
             echo "</tr>";
