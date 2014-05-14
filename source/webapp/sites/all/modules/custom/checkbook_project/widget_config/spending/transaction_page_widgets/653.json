@@ -96,7 +96,7 @@ return $header;
 },
 "issue_date_formatted":{
 "type": "expression2",
-"expression": "(_checkbook_check_isEDCPage()? 'N/A' : $row[check_eft_issued_date])"
+"expression": "(_checkbook_check_isEDCPage()? 'N/A' : $row[disb_check_eft_issued_date])"
 }
 },
 "table_columns": [
@@ -108,7 +108,7 @@ return $header;
 {
 "labelAlias": "issue_date",
 "column": "issue_date_formatted",
-"sortSourceColumn": "check_eft_issued_date",
+"sortSourceColumn": "disb_check_eft_issued_date",
 "headerClass":"issuedate",
 "exportColumn":"issue_date_formatted"
 },
