@@ -1375,6 +1375,22 @@ table.dataTable th.sorting_asc span {
     margin: 13px 0 13px 20px;
 }
 
+
+.dataTable th.text-left{
+    text-align:left !important;
+    vertical-align:middle !important;
+}
+.dataTable th.text-left span{
+    padding-left: 0px !important;
+}
+.dataTable th.text-left div{
+    margin: 0px 0px 0px 20px !important;
+    text-align:center !important;
+}
+.dataTable td.text-left div {
+    margin: 13px 0 13px 20px !important;
+}
+
 .dataTables_wrapper td, .sub-table td{
     vertical-align: middle;
     text-transform: uppercase;
