@@ -55,7 +55,7 @@ if(!preg_match("/newwindow/",current_path())){
 		
 		
 		if ( _getRequestParamValue("datasource") == "checkbook_oge" && !preg_match('/newwindow/',$_GET['q']) ) {
-			$alt_txt = "This master agreement has information as a vendor.<br><br> Click this icon to view this contract as a prime vendor. ";
+			$alt_txt = "This master agreement has information as a prime vendor.<br><br> Click this icon to view this contract as a prime vendor. ";
 			$url="/contract_details/magid/" .  _getRequestParamValue("magid") . "/doctype/MMA1/newwindow";
 			echo "<div class='contractLinkNote'><a class='new_window' href='". $url ."' alt='" . $alt_txt . "' >Open in New Window</a></div>"; 
 		}elseif( !preg_match('/newwindow/',$_GET['q']) && _checkbook_is_oge_parent_contract($node->data[0]['contract_number'])  ){
@@ -110,7 +110,13 @@ if(!preg_match("/newwindow/",current_path())){
       <li><span
         class="gi-list-item">Award Method:</span> <?php echo $node->data[0]['award_method_name_checkbook_award_method'];?>
       </li>
+       <?php
+	    if ( _getRequestParamValue("datasource") != "checkbook_oge") {
+	    ?>
       <li><span class="gi-list-item">Version Number:</span> <?php echo $node->data[0]['document_version'];?></li>
+        <?php
+    	}
+    	?>
       <li><span
         class="gi-list-item">FMS Document:</span> <?php echo $node->data[0]['document_code_checkbook_ref_document_code'];?>
       </li>
@@ -128,9 +134,15 @@ if(!preg_match("/newwindow/",current_path())){
       <li><span
         class="gi-list-item">End Date:</span> <?php echo format_string_to_date($node->data[0]['date_chckbk_date_id_effctv_end_dat_id_chckbk_hstr_mstr_agrmnt_1']);?>
       </li>
+        <?php
+    		if ( _getRequestParamValue("datasource") != "checkbook_oge") {
+    	?>
       <li><span
         class="gi-list-item">Registration Date:</span> <?php echo format_string_to_date($node->data[0]['date_chckbk_date_id_rgstrd_date_id_chckbk_histr_master_agrmnt_2']);?></span>
       </li>
+        <?php
+    	}
+    	?>
       <li><span class="gi-list-item">APT PIN:</span> <?php echo $node->data[0]["board_approved_award_no"];?></li>
       <li><span class="gi-list-item">PIN:</span> <?php echo $node->data[0]['tracking_number'];?></li>
     </ul>
