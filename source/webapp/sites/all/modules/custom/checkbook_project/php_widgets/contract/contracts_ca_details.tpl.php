@@ -146,7 +146,7 @@ $maximum_contract_amount =  ( _getRequestParamValue("datasource") == "checkbook_
     </ul>
     <ul class="right">
       <li><span
-        class="gi-list-item">Number of Solicitations per Contract:</span> <?php echo $node->data[0]['number_solicitation'];?></span>
+        class="gi-list-item">Number of Solicitations per Contract:</span> <?php echo $node->data[0]['number_solicitation'];?>
       </li>
       <li><span
         class="gi-list-item">Number of Responses per Solicitation:</span> <?php echo $node->data[0]['number_responses'];?>
