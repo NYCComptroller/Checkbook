@@ -32,13 +32,14 @@ else
         "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getCurrentYearID() . "/yeartype/B/vendor/".$spending_results["vendor_id"],
     );
 
+if(!$IsOge)
 $date_fields = array("check_eft_issued_date");
 $amount_fields = array("check_amount");
 
 $count = 1;
 $row = array();
 $rows = array();
-$contracts_results["check_eft_issued_date"] = ($IsOge)? "N/A" : $contracts_results["check_eft_issued_date"];
+$spending_results["check_eft_issued_date"] = ($IsOge)? "N/A" : $spending_results["check_eft_issued_date"];
 foreach ($spending_parameter_mapping as $key=>$title){
   if($key == 'expenditure_object_name'){
     $value = $spending_results[$key][0];

@@ -752,7 +752,7 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
               "vendor_name"=>"Prime Vendor",
               "oge_contracting_agency_name"=>"Agency",
               "contract_number"=>"Contract ID",
-              "version_number"=>"Version Number",
+          	  "contract_commodity_line" => "Commodity Line",              
               "contract_purpose"=>"Purpose",
               "parent_contract_number"=>"Parent Contract ID",
               "award_method_name"=>"Award Method",
@@ -765,8 +765,7 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
               "apt_pin"=>"APT PIN",
               "expense_category_name"=>"Expense Category",
               "contract_entity_contract_number" => "Entity Contract#",
-              "contract_budget_name" => "Budget Name",
-              "contract_commodity_line" => "Commodity Line",
+              "contract_budget_name" => "Budget Name",              
           	  "" => ""
           );
         }
