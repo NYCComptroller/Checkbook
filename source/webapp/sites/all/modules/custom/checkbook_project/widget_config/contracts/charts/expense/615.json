@@ -51,7 +51,7 @@
     }
     $node->widgetConfig->chartConfig->series[0]->data = $data;$node->widgetConfig->chartConfig->xAxis->categories = $categories;
     $node->widgetConfig->chartConfig->series[0]->name = 'Contract Amount';
-    $node->widgetConfig->chartTitle = _checkbook_project_getChartTitle('contracts','Top Ten Vendors','by');
+    $node->widgetConfig->chartTitle = _checkbook_project_getChartTitle('contracts','Top Ten Prime Vendors','by');
 
     return $node->data;",
 "chartConfig": {
