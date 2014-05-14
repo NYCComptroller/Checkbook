@@ -47,7 +47,7 @@ $spending_link = "/spending/transactions/agid/" . _getRequestParamValue("agid") 
       class="contract-number"><?php echo $node->data[0]['contract_number'];?></span></h2>
 	<?php 
 		if ( _getRequestParamValue("datasource") == "checkbook_oge" && !preg_match('/newwindow/',$_GET['q'])) {
-			$alt_txt = "This contract agreement has information as a vendor. <br><br> Click this icon to view this contract as a prime vendor. ";
+			$alt_txt = "This contract agreement has information as a prime vendor. <br><br> Click this icon to view this contract as a prime vendor. ";
 			$url="/contract_details/agid/" .  _getRequestParamValue("agid") . "/doctype/CTA1/newwindow";
 			echo "<div class='contractLinkNote'><a class='new_window' href='". $url ."' alt='" . $alt_txt . "'  >View as Vendor</a></div>"; 
 		}elseif( !preg_match('/newwindow/',$_GET['q']) && _checkbook_is_oge_contract($node->data[0]['contract_number'])){

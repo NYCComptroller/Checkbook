@@ -531,7 +531,6 @@
                 '' registered_date,
                 (CASE WHEN master_agreement_yn = 'Y' THEN a.original_contract_amount ELSE ogecon.original_amount END) original_amount,
                 (CASE WHEN master_agreement_yn = 'Y' THEN a.maximum_contract_amount ELSE ogecon.current_amount END )current_amount,
-                '' fiscal_year,
                 'N/A' reg_fiscal_year,
                 'N/A' exp_registration_date,
                 '' fiscal_year_id,
