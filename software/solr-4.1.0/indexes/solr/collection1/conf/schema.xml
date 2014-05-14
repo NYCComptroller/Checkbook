@@ -93,6 +93,7 @@
         <field name="agency_type" type="string_custom" indexed="true" stored="true" />
         <field name="fiscal_year_id" type="string_custom" indexed="true" stored="true"/>
         <field name="fiscal_year" type="string_custom" indexed="true" stored="true"/>
+        <field name="reg_fiscal_year_exp" type="string_custom" indexed="true" stored="true"/>        
         <field name="calendar_fiscal_year_id" type="string_custom" indexed="true" stored="true"/>
         <field name="calendar_fiscal_year" type="string_custom" indexed="true" stored="true"/>
         <field name="department_id" type="string_custom" indexed="true" stored="true" />
@@ -263,6 +264,7 @@
         <field name="end_date_orig" type="date" indexed="true" stored="true" />
         <field name="received_date" type="date" indexed="true" stored="true" />
         <field name="registration_date" type="date" indexed="true" stored="true" />
+        <field name="exp_registration_date" type="string_custom" indexed="true" stored="true" />        
         <field name="current_amount" type="double" indexed="true" stored="true"/>
         <field name="original_amount" type="double" indexed="true" stored="true"/>
         <field name="contract_status" type="string_custom" indexed="true" stored="true"/>
