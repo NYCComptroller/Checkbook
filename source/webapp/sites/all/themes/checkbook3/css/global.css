@@ -831,11 +831,16 @@ span.grid_export, span.exportSmartSearch {
 	margin-top: 20px;
 }
 
-.panel-panel.grid-12 .panel-pane.pane-node, .pane-contracts-cta-history, float-clear{
+.panel-panel.grid-12 .contextual-links-region.panel-pane.pane-node,
+.pane-contracts-cta-history,
+.float-clear{
     float:left;
     clear:both;
     width:100%;
 }
+
+
+
 .toggleVendorContainer{
     float:left;
     clear:both;
