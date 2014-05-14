@@ -1381,7 +1381,8 @@ table.dataTable th.sorting_asc span {
     vertical-align:middle !important;
 }
 .dataTable th.text-left span{
-    padding-left: 0px !important;
+    padding-left: 15px !important;
+    display: block !important;
 }
 .dataTable th.text-left div{
     margin: 0px 0px 0px 20px !important;
@@ -1390,6 +1391,10 @@ table.dataTable th.sorting_asc span {
 .dataTable td.text-left div {
     margin: 13px 0 13px 20px !important;
 }
+.dataTable td.text-left span{
+    padding-left: 15px !important;
+    display: block !important;
+ }
 
 .dataTables_wrapper td, .sub-table td{
     vertical-align: middle;
