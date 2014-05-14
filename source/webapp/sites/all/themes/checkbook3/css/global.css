@@ -827,7 +827,6 @@ span.grid_export, span.exportSmartSearch {
 ***   CONTRACT TOTALS MENU TABLE STYLING  ***
 ********************************************/
 .panel-panel.grid-12 .panel-pane.pane-node{
-    float:left;
     clear:both;
     width:100%;
 }
@@ -1358,9 +1357,13 @@ table.dataTable th.sorting_asc span {
 .dataTable td.text:first-child div {
     margin: 13px 0 13px 15px;
 }
-.dataTable td.text-left-padding div{
-     margin: 13px 0 13px 15px;
+.dataTable th.text-left-padding{
+    text-align:center;
  }
+.dataTable td.text-left-padding div{
+    margin: 13px 0 13px 20px;
+}
+
 .dataTables_wrapper td, .sub-table td{
     vertical-align: middle;
     text-transform: uppercase;
@@ -1449,7 +1452,7 @@ td.endCol div,
     text-align: center;
  }
 .dataTable td.childcontracts .jspPane table td.text-left-padding-scroll div {
-    margin: 13px 0 13px 15px;
+    margin: 13px 0 13px 20px;
 }
 td.vers-num div{margin-left:40px;}
 .dataTable td.childcontracts .jspPane table td.vers-num div {
