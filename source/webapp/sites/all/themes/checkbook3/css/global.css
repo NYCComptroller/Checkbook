@@ -1358,6 +1358,9 @@ table.dataTable th.sorting_asc span {
 .dataTable td.text:first-child div {
     margin: 13px 0 13px 15px;
 }
+.dataTable td.text-left-padding div{
+     margin: 13px 0 13px 15px;
+ }
 .dataTables_wrapper td, .sub-table td{
     vertical-align: middle;
     text-transform: uppercase;
@@ -1375,6 +1378,10 @@ table.dataTable th.sorting_asc span {
     float:right;
     text-align:center;
 }
+.dataTable th.number-center div {
+    display:block;
+    text-align:center;
+}
 .dataTable td div {
     margin: 13px 0 13px 0px;
 }
@@ -1386,6 +1393,9 @@ td.text div {
 td.number div {
     float: right;
     text-align: right;
+}
+td.number-center {
+    text-align: center;
 }
 table.dataTable tr.even,
 table.outerTable.ma-history tr.even{
@@ -1432,6 +1442,13 @@ td.endCol div,
     margin: 13px 0 13px 5px;
 }
 .dataTable td.childcontracts .jspPane table td.number-left div {
+     margin: 13px 0 13px 15px;
+ }
+.dataTable td.childcontracts .jspPane table td.number-scroll div {
+    margin: 13px 0 13px 0px;
+    text-align: center;
+ }
+.dataTable td.childcontracts .jspPane table td.text-left-padding-scroll div {
     margin: 13px 0 13px 15px;
 }
 td.vers-num div{margin-left:40px;}
