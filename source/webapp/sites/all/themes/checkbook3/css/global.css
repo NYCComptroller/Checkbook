@@ -831,7 +831,7 @@ span.grid_export, span.exportSmartSearch {
 	margin-top: 20px;
 }
 
-.panel-panel.grid-12 .contextual-links-region.panel-pane.pane-node,
+.panel-panel.grid-12 .bottom-nav-container.panel-pane.pane-node,
 .pane-contracts-cta-history,
 .float-clear{
     float:left;
@@ -1551,14 +1551,14 @@ td.childcontracts div.sub-table-wrapper {
     margin-bottom:0px;
 }
 
-#assoc_contracts_list_wrapper .contextual-links-region.panel-pane.pane-node,
-#assoc_contracts_list_wrapper .contextual-links-region.panel-pane.pane-node .pane-content,
-#assoc_contracts_list_wrapper .contextual-links-region.panel-pane.pane-node .content.clearfix{
+#assoc_contracts_list_wrapper .panel-pane.pane-node,
+#assoc_contracts_list_wrapper .panel-pane.pane-node .pane-content,
+#assoc_contracts_list_wrapper .panel-pane.pane-node .content.clearfix{
     margin:0px;
 }
 
 
-#assoc_contracts_list_wrapper .contextual-links-region.panel-pane.pane-node .content.clearfix + .clearfix{
+#assoc_contracts_list_wrapper .panel-pane.pane-node .content.clearfix + .clearfix{
     display:none;
 }
 
