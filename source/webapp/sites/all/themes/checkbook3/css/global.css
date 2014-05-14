@@ -831,7 +831,7 @@ span.grid_export, span.exportSmartSearch {
 	margin-top: 20px;
 }
 
-.panel-panel.grid-12 .contextual-links-region.panel-pane.pane-node,
+.panel-panel.grid-12 .bottom-nav-container.panel-pane.pane-node,
 .pane-contracts-cta-history,
 .float-clear{
     float:left;
