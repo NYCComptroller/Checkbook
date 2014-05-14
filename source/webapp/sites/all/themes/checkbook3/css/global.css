@@ -1984,10 +1984,12 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
     clear:both;
     width:100%;
 }
-.newwindow .outerTable{
+.outerTable{
     border:1px solid #cacaca;
     margin-bottom:20px;
 }
+
+
 #spending-transactions .narrow-down-filter,
 #contract-details .narrow-down-filter,
 #nyc-payroll .narrow-down-filter{
@@ -2006,12 +2008,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 }
 .newwindow #section-header{margin-bottom:0px;}
 .newwindow #contract-transactions{margin-top:5px;}
-.newwindow .container-12 .block .omega-grid, 
-.newwindow .container-16 .block .omega-grid, 
-.newwindow .container-24 .block .omega-grid{
-	margin-left:19px;
-	margin-right: 19px;
-}
+
 
 .newwindow #mini-panel-contracts_cta_history{
     margin-left:0px;
