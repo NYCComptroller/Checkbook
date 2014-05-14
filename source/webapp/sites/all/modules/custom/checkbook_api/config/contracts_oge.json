@@ -100,7 +100,7 @@
             "calendar_year":{"valueType":"value","dataType":"year","maxLength":"4"},
             "other_government_entities_code":{"valueType":"value","dataType":"text","maxLength":"4"},
             "purpose":{"valueType":"value","dataType":"text","maxLength":"100"},
-            "vendor_name":{"valueType":"value","dataType":"text","maxLength":"100"},
+            "prime_vendor":{"valueType":"value","dataType":"text","maxLength":"100"},
             "current_amount":{"valueType":"range","dataType":"amount","maxLength":"18"},
             "spent_to_date":{"valueType":"range","dataType":"amount","maxLength":"18"},
             "award_method":{"valueType":"value","dataType":"text","maxLength":"3"},
@@ -124,7 +124,7 @@
     "contracts_oge_active_expense_all_years":{
         "searchCriteriaMap":{
             "other_government_entities_code":"agency_code@checkbook_oge:oge_agency",
-            "vendor_name":"legal_name@checkbook_oge:vendor",
+            "prime_vendor":"legal_name@checkbook_oge:vendor",
             "purpose":"description",
             "current_amount":"maximum_contract_amount",
             "spent_to_date":"spending_amount_disb",
@@ -221,7 +221,7 @@
         "requestParameters":{
             "other_government_entities_code":{"valueType":"value","dataType":"text","maxLength":"4"},
             "purpose":{"valueType":"value","dataType":"text","maxLength":"100"},
-            "vendor_name":{"valueType":"value","dataType":"text","maxLength":"100"},
+            "prime_vendor":{"valueType":"value","dataType":"text","maxLength":"100"},
             "current_amount":{"valueType":"range","dataType":"amount","maxLength":"18"},
             "spent_to_date":{"valueType":"range","dataType":"amount","maxLength":"18"},
             "award_method":{"valueType":"value","dataType":"text","maxLength":"3"},
