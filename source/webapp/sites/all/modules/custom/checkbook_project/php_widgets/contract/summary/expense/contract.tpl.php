@@ -44,13 +44,13 @@ if(is_array($records)){
 			{$spentToDateAmount}
             <div class="amount-title">{$spnttodt}</div>
 		</div>
-		<div class="original-amount">
-		    {$originalAmount}
-            <div class="amount-title">{$oamnt}</div>
-		</div>
 		<div class="current-amount">
 		    {$currentAmount}
             <div class="amount-title">{$camnt}</div>
+		</div>
+		<div class="original-amount">
+		    {$originalAmount}
+            <div class="amount-title">{$oamnt}</div>
 		</div>
 	</div>
 </div>
