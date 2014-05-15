@@ -863,7 +863,7 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
 						"contract_status"=>"Status",
 						"contract_category_name"=>"Category",
 						"vendor_name"=>"Prime Vendor",
-						"oge_agency_name"=>"Agency",
+						"agency_name_export"=>"Agency",
 						"contract_number"=>"Contract ID",
 						"contract_commodity_line" => "Commodity Line",						
 						"version_number"=>"Version Number",
