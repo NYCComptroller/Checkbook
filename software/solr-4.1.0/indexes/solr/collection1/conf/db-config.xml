@@ -456,6 +456,7 @@
             <field column="agency_id" name="agency_id" />
             <field column="agency_code" name="agency_code" />
             <field column="agency_name" name="agency_name" />
+            <field column="agency_name" name="agency_name_export" />
             <field column="vendor_id" name="vendor_id" />
             <field column="vendor_name" name="vendor_name" />
             <field column="vendor_name_code" name="vendor_name_code" />
@@ -528,7 +529,6 @@
                 effective_end_date effective_end_date_orig,
                 brd_awd_no apt_pin,
                 tracking_number pin,
-                document_version version_number,
                 registered_date,
                 (CASE WHEN master_agreement_yn = 'Y' THEN a.original_contract_amount ELSE ogecon.original_amount END) original_amount,
                 (CASE WHEN master_agreement_yn = 'Y' THEN a.maximum_contract_amount ELSE ogecon.current_amount END )current_amount,
@@ -611,6 +611,7 @@
             <field column="agency_name" name="agency_name" />
             <field column="oge_contracting_agency_name" name="oge_contracting_agency_name" />            
             <field column="oge_agency_name" name="oge_agency_name" />
+            <field column="oge_agency_name" name="agency_name_export" />
             <field column="oge_agency_id" name="oge_agency_id" />            
             <field column="agency_type" name="agency_type"/>
             <field column="vendor_id" name="vendor_id" />
@@ -696,6 +697,7 @@
             <field column="agency_id" name="agency_id" />
             <field column="agency_code" name="agency_code" />
             <field column="agency_name" name="agency_name" />
+            <field column="agency_name" name="agency_name_export" />
             <field column="vendor_id" name="vendor_id" />
             <field column="vendor_name" name="vendor_name" />
             <field column="vendor_name_code" name="vendor_name_code" />
