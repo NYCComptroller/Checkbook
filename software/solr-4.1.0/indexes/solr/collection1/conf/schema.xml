@@ -83,6 +83,7 @@
         <field name="agency_id" type="string_custom" indexed="true" stored="true" />
         <field name="agency_name_autocomplete" type="string_autocomplete" indexed="true"/>
         <field name="agency_name" type="string_custom" indexed="true" stored="true"/>
+        <field name="agency_name_export" type="string_custom" indexed="true" stored="true"/>
         <field name="oge_contracting_agency_name" type="string_custom" indexed="true" stored="true"/>
         <field name="agency_name_id" type="string_custom" indexed="true" stored="true"/>
         <field name="agency_code" type="string_custom" indexed="true" stored="true"/>
