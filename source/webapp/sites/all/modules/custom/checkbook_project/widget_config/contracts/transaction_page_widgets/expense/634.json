@@ -244,17 +244,6 @@ return $header;
         $adjustDataTableOptions->iDisplayLength = (int)$rpp;
         }
 
-        $doctype = $node->widgetConfig->requestParams['document_code@checkbook:ref_document_code'];
-        if(isset($doctype)){
-        $doctypes = explode('~', $doctype);
-        if(! (in_array('MA1', $doctypes)  || in_array('MMA1', $doctypes) )){
-        array_shift($node->widgetConfig->table_columns);
-        array_shift($adjustDataTableOptions->aoColumns);
-
-        $adjustDataTableOptions->aaSorting = array(array(5,'desc'));
-        }
-        }
-
         $smnid = _getRequestParamValue('smnid');
         if(  !($smnid == 480 || $smnid == 366) ){
         foreach($node->widgetConfig->table_columns as $key => $table_column){
