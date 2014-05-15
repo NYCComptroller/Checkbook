@@ -846,14 +846,14 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
 		case "spending":
 				$parameter_mapping = array(
 						"spending_category_name" => "Spending Category",
-						"oge_agency_name" => "Agency",
+						"agency_name_export:if(exists(oge_agency_name),oge_agency_name,agency_name)" => "Agency",
 						"department_name" => "Department",
 						"vendor_name" => "Payee Name",
 						"expenditure_object_name" => "Expense Category",
 						"contract_number" => "Contract ID",
 						"spending_commodity_line" => "Commodity Line",						
 						"check_amount" => "Check Amount",
-						"check_eft_issued_date" => "Issue Date",
+						"check_eft_issued_date_export" => "Issue Date",
 						"spending_entity_contract_number" => "Entity Contract#",
 						"spending_budget_name" => "Budget Name",
 						"" => "",);
@@ -863,7 +863,7 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
 						"contract_status"=>"Status",
 						"contract_category_name"=>"Category",
 						"vendor_name"=>"Prime Vendor",
-						"oge_agency_name"=>"Agency",
+						"agency_name_export"=>"Agency",
 						"contract_number"=>"Contract ID",
 						"contract_commodity_line" => "Commodity Line",						
 						"version_number"=>"Version Number",
