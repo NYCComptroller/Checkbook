@@ -1372,8 +1372,54 @@ table.dataTable th.sorting_asc span {
     text-align:center;
  }
 .dataTable td.text-left-padding div{
-    margin: 13px 0 13px 20px;
+    margin: 13px 0px 13px 20px;
 }
+
+/* Begin - Overriding data table css for 634.json,653.json */
+.dataTable th.text-left,
+.dataTable th.text-left-no-padding {
+    text-align:left !important;
+    vertical-align:middle !important;
+}
+.dataTable th.text-left span,
+.dataTable th.text-left-no-padding span {
+    padding-left: 15px !important;
+    display: block !important;
+}
+.dataTable th.text-left div,
+.dataTable th.text-left-no-padding div {
+    margin: 0px 0px 0px 20px !important;
+    text-align:center !important;
+}
+.dataTable td.text-left div,
+.dataTable td.text-left-no-padding div {
+    margin: 13px 0 13px 20px !important;
+    padding-left: 15px !important;
+}
+.dataTable td.text-left span,
+.dataTable td.text-left-no-padding span {
+    display: block !important;
+ }
+.dataTable th.text-left:first-child div {
+    margin: 0px 0px 0px 5px !important;
+}
+.dataTable td.text-left:first-child div {
+    margin: 13px 0px 13px 5px !important;
+}
+.dataTable th.text-left-no-padding div {
+    padding-left: 0px !important;
+}
+.dataTable td.text-left-no-padding div {
+    margin: 13px 0px 13px 0px !important;
+    padding-left: 0px !important;
+}
+.dataTable td.expander-right div {
+    margin: 13px 0px 13px 0px !important;
+}
+.dataTable td.expander-right {
+    text-align:right !important;
+}
+/* End - Overriding data table css for 634.json,653.json */
 
 .dataTables_wrapper td, .sub-table td{
     vertical-align: middle;
