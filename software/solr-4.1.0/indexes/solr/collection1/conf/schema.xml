@@ -183,6 +183,7 @@
         <field name="expenditure_object_name_code" type="string" indexed="true" stored="true" />
         <field name="expenditure_object_name_text" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="check_eft_issued_date" type="date" indexed="true" stored="true"/>
+        <field name="check_eft_issued_date_export" type="string" indexed="true" stored="true"/>
         <field name="location_id" type="string_custom" indexed="true" stored="true"/>
         <field name="location_name" type="string_custom" indexed="true" stored="true"/>
         <field name="location_name_text" type="text_general" indexed="true" stored="true"/>
@@ -331,6 +332,8 @@
        copyField also supports a maxChars to copy setting.  -->
 
     <copyField source="oge_agency_name" dest="oge_agency_name_autocomplete" />
+    <copyField source="agency_name" dest="text" />
+    <copyField source="oge_agency_name" dest="text" />
     <copyField source="department_name" dest="text" />
     <copyField source="budget_code" dest="text" />
     <copyField source="budget_code_name" dest="text" />
