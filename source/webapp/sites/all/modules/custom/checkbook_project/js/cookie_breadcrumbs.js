@@ -68,7 +68,7 @@
 				
 				if((link.match(/contract/) == 'contract')||(link.match(/payroll/) == 'payroll')||(link.match(/spending/) == 'spending')||(link.match(/budget/) == 'budget')||(link.match(/revenue/) == 'revenue')){
 					if(link.match(/newwindow/) != "newwindow" && link.match(/admin/) != "admin" && link.match(/-api/) != "-api" ){
-						if(link.match(/contract/) == 'contract'){
+						if(link.match(/contract/) == 'contract' && link.match(/datasource/) != 'datasource' && link.match(/checkbook_oge/) != 'checkbook_oge'){
 							if($.cookie(CookieDomainName) != 'contract')
 								$.cookie(CookieName,null,{ path: '/' });
 							$.cookie(CookieDomainName,'contract',{ path: '/' });
@@ -76,7 +76,7 @@
 							if($.cookie(CookieDomainName) != 'payroll')
 								$.cookie(CookieName,null,{ path: '/' });
 							$.cookie(CookieDomainName,'payroll',{ path: '/' });
-						}else if(link.match(/spending/) == 'spending'){
+						}else if(link.match(/spending/) == 'spending' && link.match(/datasource/) != 'datasource' && link.match(/checkbook_oge/) != 'checkbook_oge'){
 							if($.cookie(CookieDomainName) != 'spending')
 								$.cookie(CookieName,null,{ path: '/' });
 							$.cookie(CookieDomainName,'spending',{ path: '/' });
@@ -88,6 +88,14 @@
                             if($.cookie(CookieDomainName) != 'revenue')
                                 $.cookie(CookieName,null,{ path: '/' });
                             $.cookie(CookieDomainName,'revenue',{ path: '/' });
+                        }else if(link.match(/spending/) == 'spending' && link.match(/datasource/) == 'datasource' && link.match(/checkbook_oge/) == 'checkbook_oge'){
+                            if($.cookie(CookieDomainName) != 'oge_spending')
+                                $.cookie(CookieName,null,{ path: '/' });
+                            $.cookie(CookieDomainName,'oge_spending',{ path: '/' });
+                        }else if(link.match(/contract/) == 'contract' && link.match(/datasource/) == 'datasource' && link.match(/checkbook_oge/) == 'checkbook_oge'){
+                            if($.cookie(CookieDomainName) != 'oge_contract')
+                                $.cookie(CookieName,null,{ path: '/' });
+                            $.cookie(CookieDomainName,'oge_contract',{ path: '/' });
                         }
 						GetCookie();		
 						RecordCurrentPage();
