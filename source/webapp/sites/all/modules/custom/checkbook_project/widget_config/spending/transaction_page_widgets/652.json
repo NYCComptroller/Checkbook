@@ -298,8 +298,8 @@ $table_column->labelAlias = 'agency_name';
 "aoColumns":[
 {"sClass":"text-left sort","sWidth":"170px","asSorting": [ "asc","desc" ]},
 {"sClass":"number sort", "sWidth":"50px","asSorting": [ "asc","desc" ]},
-{"sClass":"text-left sort", "sWidth":"165px","asSorting": [ "asc","desc" ]},
-{"sClass":"text-left sort", "sWidth":"120px","asSorting": [ "asc","desc" ]},
+{"sClass":"text-left sort", "sWidth":"170px","asSorting": [ "asc","desc" ]},
+{"sClass":"number sort", "sWidth":"110px","asSorting": [ "asc","desc" ]},
 {"sClass":"number sort","sWidth":"135px","asSorting": [ "desc","asc" ]},
 {"sClass":"text-left sort","sWidth":"100px","asSorting": [ "asc","desc" ]},
 {"sClass":"text-left sort","sWidth":"100px","asSorting": [ "asc","desc" ]},

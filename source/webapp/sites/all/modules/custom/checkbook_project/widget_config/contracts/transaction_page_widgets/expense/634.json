@@ -285,26 +285,26 @@ return $header;
         },
         "bInfo": true,
         "aoColumns": [
-        {"sClass":"expander","bSortable": false,"sWidth":"30px"},
-        {"sClass":"text","sWidth":"150px","asSorting": [ "asc","desc" ]},
-        {"sClass":"number", "sWidth":"100px","asSorting": [ "asc","desc" ]},
-        {"sClass":"text-left-padding", "sWidth":"210px","asSorting": [ "asc","desc" ]},
-        {"sClass":"text no-sort number-left","bSortable": false, "sWidth":"155px","asSorting": [ "asc","desc" ]},
-        {"sClass":"number","sWidth":"130px","asSorting": [ "desc","asc" ]},
-        {"sClass":"number","sWidth":"130px","asSorting": [ "desc","asc" ]},
-        {"sClass":"number","sWidth":"130px","asSorting": [ "desc","asc" ]},
-        {"sClass":"text-left-padding","sWidth":"190px","asSorting": [ "asc","desc" ]},
-        {"sClass":"text-left-padding","sWidth":"190px","asSorting": [ "asc","desc" ]},
-        {"sClass":"text-left-padding","sWidth":"190px","asSorting": [ "asc","desc" ]},
-        {"sClass":"text","sWidth":"145px","asSorting": [ "asc","desc" ]},
-        {"sClass":"text","sWidth":"190px","asSorting": [ "asc","desc" ]},
-        {"sClass":"text","sWidth":"190px","asSorting": [ "asc","desc" ]},
-        {"sClass":"text","sWidth":"145px","asSorting": [ "asc","desc" ]},
-        {"sClass":"text","sWidth":"145px","asSorting": [ "asc","desc" ]},
-        {"sClass":"text","sWidth":"200px","asSorting": [ "asc","desc" ]},
-        {"sClass":"text","sWidth":"180px","asSorting": [ "asc","desc" ]},
-        {"sClass":"text","sWidth":"125px","asSorting": [ "desc","asc" ]},
-        {"sClass":"text","sWidth":"150px","asSorting": [ "asc","desc" ]},
+        {"sClass":"expander","bSortable": false,"sWidth":"10px"},
+        {"sClass":"text-left-no-padding sort","sWidth":"150px","asSorting": [ "asc","desc" ]},
+        {"sClass":"number sort", "sWidth":"100px","asSorting": [ "asc","desc" ]},
+        {"sClass":"text-left sort", "sWidth":"210px","asSorting": [ "asc","desc" ]},
+        {"sClass":"text-left no-sort","bSortable": false, "sWidth":"155px","asSorting": [ "asc","desc" ]},
+        {"sClass":"number sort","sWidth":"130px","asSorting": [ "desc","asc" ]},
+        {"sClass":"number sort","sWidth":"130px","asSorting": [ "desc","asc" ]},
+        {"sClass":"number sort","sWidth":"130px","asSorting": [ "desc","asc" ]},
+        {"sClass":"text-left sort","sWidth":"200px","asSorting": [ "asc","desc" ]},
+        {"sClass":"text-left sort","sWidth":"170px","asSorting": [ "asc","desc" ]},
+        {"sClass":"number sort","sWidth":"100px","asSorting": [ "asc","desc" ]},
+        {"sClass":"text-left sort","sWidth":"145px","asSorting": [ "asc","desc" ]},
+        {"sClass":"text-left sort","sWidth":"150px","asSorting": [ "asc","desc" ]},
+        {"sClass":"text-left sort","sWidth":"150px","asSorting": [ "asc","desc" ]},
+        {"sClass":"text-left sort","sWidth":"100px","asSorting": [ "asc","desc" ]},
+        {"sClass":"text-left sort","sWidth":"100px","asSorting": [ "asc","desc" ]},
+        {"sClass":"text-left sort","sWidth":"180px","asSorting": [ "asc","desc" ]},
+        {"sClass":"text-left sort","sWidth":"140px","asSorting": [ "asc","desc" ]},
+        {"sClass":"text-left sort","sWidth":"110px","asSorting": [ "desc","asc" ]},
+        {"sClass":"text-left sort","sWidth":"120px","asSorting": [ "asc","desc" ]},
         {"bSortable": false,"sWidth":"10px"}
         ],
         "aaSorting":[[5,"desc"]],
@@ -383,28 +383,28 @@ return $header;
         for(i=0;i<dataLen;i++){
         var row = data[i];
         sOut += '<tr>';
-        sOut += '<td></td>';
-        sOut += '<td class=\"text\" style=\"width:150px\">'+ (row[1] == null ? '': row[1])+'</td>';
+        sOut += '<td style=\"width:10px;\">&nbsp;</td>';
+        sOut += '<td class=\"text-left-no-padding\" style=\"width:150px\">'+ (row[1] == null ? '': row[1])+'</td>';
         var val = row[2];
         val = val.replace('<div >', '<div style=\"margin-right:28px\";>');
-        sOut += '<td class=\"number\" style=\"width:100px;\">'+ (row[2] == null ? '': val)+'</td>';
-        sOut += '<td class=\"text-left-padding-scroll\"  style=\"width:210px\">'+ (row[3] == null ? '': row[3])+'&nbsp;&nbsp;</td>';
-        sOut += '<td class=\"text no-sort number-left\"  style=\"width:155px\">'+ (row[4] == null ? '': row[4])+'</td>';
-        sOut += '<td class=\"number\"  style=\"width:130px\">'+ (row[5] == null ? '': row[5])+'</td>';
-        sOut += '<td class=\"number\"  style=\"width:130px\">'+ (row[6] == null ? '': row[6])+'</td>';
-        sOut += '<td class=\"number\"  style=\"width:130px\">'+ (row[7] == null ? '': row[7])+'</td>';
-        sOut += '<td class=\"text-left-padding-scroll\"  style=\"width:190px\">'+ (row[8] == null ? '': row[8])+'</td>';
-        sOut += '<td class=\"text-left-padding-scroll\"  style=\"width:190px\">'+ (row[9] == null ? '': row[9])+'</td>';
-        sOut += '<td class=\"text-left-padding-scroll\"  style=\"width:190px\">'+ (row[10] == null ? '': row[10])+'</td>';
-        sOut += '<td class=\"text\"  style=\"width:145px\">'+ (row[11] == null ? '': row[11])+'</td>';
-        sOut += '<td class=\"text\"  style=\"width:190px\">'+ (row[12] == null ? '': row[12])+'</td>';
-        sOut += '<td class=\"text\"  style=\"width:190px\">'+ (row[13] == null ? '': row[13])+'</td>';
-        sOut += '<td class=\"text\"  style=\"width:145px\">'+ (row[14] == null ? '': row[14])+'</td>';
-        sOut += '<td class=\"text\"  style=\"width:145px\">'+ (row[15] == null ? '': row[15])+'</td>';
-        sOut += '<td class=\"text\" style=\"width:200px;\">'+ (row[16] == null ? '': row[16])+'</td>';
-        sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[17] == null ? '': row[17])+'</td>';
-        sOut += '<td class=\"text\" style=\"width:125px;\">'+ (row[18] == null ? '': row[18])+'</td>';
-        sOut += '<td class=\"text\" style=\"width:150px;\">'+ (row[19] == null ? '': row[19])+'</td>';
+        sOut += '<td class=\"number sort\" style=\"width:100px;\">'+ (row[2] == null ? '': val)+'</td>';
+        sOut += '<td class=\"text-left sort\"  style=\"width:210px\">'+ (row[3] == null ? '': row[3])+'&nbsp;&nbsp;</td>';
+        sOut += '<td class=\"text-left no-sort\" style=\"width:155px\">'+ (row[4] == null ? '': row[4])+'</td>';
+        sOut += '<td class=\"number sort\"  style=\"width:130px\">'+ (row[5] == null ? '': row[5])+'</td>';
+        sOut += '<td class=\"number sort\"  style=\"width:130px\">'+ (row[6] == null ? '': row[6])+'</td>';
+        sOut += '<td class=\"number sort\"  style=\"width:130px\">'+ (row[7] == null ? '': row[7])+'</td>';
+        sOut += '<td class=\"text-left sort\"  style=\"width:190px\">'+ (row[8] == null ? '': row[8])+'</td>';
+        sOut += '<td class=\"text-left sort\"  style=\"width:200px\">'+ (row[9] == null ? '': row[9])+'</td>';
+        sOut += '<td class=\"text-left sort\"  style=\"width:170px\">'+ (row[10] == null ? '': row[10])+'</td>';
+        sOut += '<td class=\"text-left sort\"  style=\"width:100px\">'+ (row[11] == null ? '': row[11])+'</td>';
+        sOut += '<td class=\"number sort\"  style=\"width:145px\">'+ (row[12] == null ? '': row[12])+'</td>';
+        sOut += '<td class=\"text-left sort\"  style=\"width:150px\">'+ (row[13] == null ? '': row[13])+'</td>';
+        sOut += '<td class=\"text-left sort\"  style=\"width:150px\">'+ (row[14] == null ? '': row[14])+'</td>';
+        sOut += '<td class=\"text-left sort\"  style=\"width:100px\">'+ (row[15] == null ? '': row[15])+'</td>';
+        sOut += '<td class=\"text-left sort\" style=\"width:180px;\">'+ (row[16] == null ? '': row[16])+'</td>';
+        sOut += '<td class=\"text-left sort\" style=\"width:140px;\">'+ (row[17] == null ? '': row[17])+'</td>';
+        sOut += '<td class=\"text-left sort\" style=\"width:110px;\">'+ (row[18] == null ? '': row[18])+'</td>';
+        sOut += '<td class=\"text-left sort\" style=\"width:120px;\">'+ (row[19] == null ? '': row[19])+'</td>';
         sOut += '<td>'+ '&nbsp;'+'</td>';
         sOut += '</tr>';
         }
