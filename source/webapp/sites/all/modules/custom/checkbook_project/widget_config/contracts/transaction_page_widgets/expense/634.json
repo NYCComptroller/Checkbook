@@ -293,7 +293,7 @@ return $header;
         {"sClass":"text-left sort","sWidth":"180px","asSorting": [ "asc","desc" ]},
         {"sClass":"text-left sort","sWidth":"140px","asSorting": [ "asc","desc" ]},
         {"sClass":"number sort","sWidth":"110px","asSorting": [ "desc","asc" ]},
-        {"sClass":"text-left sort","sWidth":"120px","asSorting": [ "asc","desc" ]},
+        {"sClass":"text-left sort","sWidth":"140px","asSorting": [ "asc","desc" ]},
         {"bSortable": false,"sWidth":"10px"}
         ],
         "aaSorting":[[5,"desc"]],
@@ -393,7 +393,7 @@ return $header;
         sOut += '<td class=\"text-left sort\" style=\"width:180px;\">'+ (row[16] == null ? '': row[16])+'</td>';
         sOut += '<td class=\"text-left sort\" style=\"width:140px;\">'+ (row[17] == null ? '': row[17])+'</td>';
         sOut += '<td class=\"number sort\" style=\"width:110px;\">'+ (row[18] == null ? '': row[18])+'</td>';
-        sOut += '<td class=\"text-left sort\" style=\"width:120px;\">'+ (row[19] == null ? '': row[19])+'</td>';
+        sOut += '<td class=\"text-left sort\" style=\"width:140px;\">'+ (row[19] == null ? '': row[19])+'</td>';
         sOut += '<td>'+ '&nbsp;'+'</td>';
         sOut += '</tr>';
         }
