@@ -93,10 +93,10 @@ function clearInputFieldByDataSource(enclosingDiv,domain,dataSource){
                         jQuery('#edit-payroll-amount-type-0').attr('checked','checked');
                         break;
                     case 'spending':
-                        jQuery(':radio[name="spending_advanced_search_domain_filter"][value="'+dataSource+'"]').click();
+//                        jQuery(':radio[name="spending_advanced_search_domain_filter"][value="'+dataSource+'"]').click();
                         break;
                     case 'contracts':
-                        jQuery(':radio[name="contracts_advanced_search_domain_filter"][value="'+dataSource+'"]').click();
+//                        jQuery(':radio[name="contracts_advanced_search_domain_filter"][value="'+dataSource+'"]').click();
                         break;
                 }
                 break;

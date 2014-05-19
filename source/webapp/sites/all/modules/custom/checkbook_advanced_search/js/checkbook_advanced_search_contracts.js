@@ -37,14 +37,14 @@
         var div_checkbook_contracts = new contracts_div('checkbook', div_contracts_main.children('div.checkbook'));
         var div_checkbook_contracts_oge = new contracts_div('checkbook_oge', div_contracts_main.children('div.checkbook-oge'));
 
-        //On change of data source
-        $('input:radio[name=contracts_advanced_search_domain_filter]').change(function () {
-            onChangeDataSource($('input[name=contracts_advanced_search_domain_filter]:checked').val());
-        });
-        ///checkbook_advanced_search_clear_button.js sets this value by default
-        $('input:radio[name=contracts_advanced_search_domain_filter]').click(function () {
-            onChangeDataSource($('input[name=contracts_advanced_search_domain_filter]:checked').val());
-        });
+//        //On change of data source
+//        $('input:radio[name=contracts_advanced_search_domain_filter]').change(function () {
+//            onChangeDataSource($('input[name=contracts_advanced_search_domain_filter]:checked').val());
+//        });
+//        ///checkbook_advanced_search_clear_button.js sets this value by default
+//        $('input:radio[name=contracts_advanced_search_domain_filter]').click(function () {
+//            onChangeDataSource($('input[name=contracts_advanced_search_domain_filter]:checked').val());
+//        });
 
         function onChangeDataSource(dataSource) {
 
@@ -88,7 +88,7 @@
             var agency = div.ele('agency').val() ? div.ele('agency').val() : 0;
             var award_method = div.ele('award_method').val() ? div.ele('award_method').val() : 0;
             var year = div.ele('year').val() ? div.ele('year').val() : 0;
-            var data_source = $('input:radio[name=contracts_advanced_search_domain_filter]:checked').val();
+            var data_source = 'checkbook';//$('input:radio[name=contracts_advanced_search_domain_filter]:checked').val();
 
             div.ele('vendor_name').autocomplete({source:'/advanced-search/autocomplete/contracts/vendor-name/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + data_source});
             div.ele('contract_id').autocomplete({source:'/advanced-search/autocomplete/contracts/contract-num/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + data_source});
@@ -140,7 +140,7 @@
             onStatusChange(div_checkbook_contracts_oge);
         });
         function onStatusChange(div) {
-            var data_source = $('input[name=contracts_advanced_search_domain_filter]:checked').val();
+            var data_source = 'checkbook';//$('input[name=contracts_advanced_search_domain_filter]:checked').val();
             var contract_status = div.ele('status').val();
             if (contract_status == 'P') {
                 if(data_source == 'checkbook') {
