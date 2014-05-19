@@ -38,7 +38,7 @@
                         "original_amount":"original_contract_amount",
                         "current_amount":"maximum_contract_amount",
                         "spent_to_date":"spending_amount@checkbook:contracts_coa_aggregates",
-                        "vendor":"vendor_name",
+                        "prime_vendor":"vendor_name",
                         "agency":"agency_name",
                         "contract_type":"agreement_type_name",
                         "award_method":"award_method_name",
@@ -51,7 +51,7 @@
                         "document_code":"document_code@checkbook:ref_document_code",
                         "contract_industry":"industry_type_name"
                     },
-                    "rowElements":["agency", "vendor", "contract_id", "version", "year", "parent_contract_id", "purpose", "original_amount", "current_amount", "spent_to_date", "registration_date"
+                    "rowElements":["agency", "prime_vendor", "contract_id", "version", "year", "parent_contract_id", "purpose", "original_amount", "current_amount", "spent_to_date", "registration_date"
                         , "apt_pin", "pin", "contract_type", "award_method", "expense_category", "start_date", "end_date", "document_code", "contract_industry"]
                 },
                 "csv":{
@@ -64,7 +64,7 @@
                         "Original Amount":"original_contract_amount",
                         "Current Amount":"maximum_contract_amount",
                         "Spent to date":"spending_amount@checkbook:contracts_coa_aggregates",
-                        "Vendor":"vendor_name",
+                        "Prime Vendor":"vendor_name",
                         "Agency":"agency_name",
                         "Contract Type":"agreement_type_name",
                         "Award Method":"award_method_name",
@@ -151,7 +151,7 @@
                         "original_amount":"original_contract_amount",
                         "current_amount":"maximum_contract_amount",
                         "spent_to_date":"rfed_amount",
-                        "vendor":"vendor_name",
+                        "prime_vendor":"vendor_name",
                         "agency":"agency_name",
                         "contract_type":"agreement_type_name",
                         "award_method":"award_method_name",
@@ -164,7 +164,7 @@
                         "document_code":"document_code@checkbook:ref_document_code",
                         "contract_industry":"industry_type_name"
                     },
-                    "rowElements":["agency", "vendor", "contract_id", "version", "parent_contract_id", "purpose", "original_amount", "current_amount", "spent_to_date", "registration_date"
+                    "rowElements":["agency", "prime_vendor", "contract_id", "version", "parent_contract_id", "purpose", "original_amount", "current_amount", "spent_to_date", "registration_date"
                         , "apt_pin", "pin", "contract_type", "award_method", "expense_category", "start_date", "end_date", "document_code", "contract_industry"]
                 },
                 "csv":{
@@ -176,7 +176,7 @@
                         "Original Amount":"original_contract_amount",
                         "Current Amount":"maximum_contract_amount",
                         "Spent to date":"rfed_amount",
-                        "Vendor":"vendor_name",
+                        "Prime Vendor":"vendor_name",
                         "Agency":"agency_name",
                         "Contract Type":"agreement_type_name",
                         "Award Method":"award_method_name",
@@ -304,7 +304,7 @@
                         "parent_contract_id":"master_contract_number",
                         "original_amount":"original_contract_amount",
                         "current_amount":"maximum_contract_amount",
-                        "vendor":"vendor_name",
+                        "prime_vendor":"vendor_name",
                         "agency":"agency_name",
                         "contract_type":"agreement_type_name",
                         "award_method":"award_method_name",
@@ -316,7 +316,7 @@
                         "document_code":"document_code@checkbook:ref_document_code",
                         "contract_industry":"industry_type_name"
                     },
-                    "rowElements":["agency", "vendor", "contract_id", "version", "year", "parent_contract_id", "purpose", "original_amount", "current_amount", "registration_date"
+                    "rowElements":["agency", "prime_vendor", "contract_id", "version", "year", "parent_contract_id", "purpose", "original_amount", "current_amount", "registration_date"
                         , "apt_pin", "pin", "contract_type", "award_method", "start_date", "end_date", "document_code", "contract_industry"]
                 },
                 "csv":{
@@ -328,7 +328,7 @@
                         "Parent Contract ID":"master_contract_number",
                         "Original Amount":"original_contract_amount",
                         "Current Amount":"maximum_contract_amount",
-                        "Vendor":"vendor_name",
+                        "Prime Vendor":"vendor_name",
                         "Agency":"agency_name",
                         "Contract Type":"agreement_type_name",
                         "Award Method":"award_method_name",
@@ -453,7 +453,7 @@
                         "parent_contract_id":"master_contract_number",
                         "original_amount":"original_contract_amount",
                         "current_amount":"maximum_contract_amount",
-                        "vendor":"vendor_name",
+                        "prime_vendor":"vendor_name",
                         "agency":"agency_name",
                         "contract_type":"agreement_type_name",
                         "award_method":"award_method_name",
@@ -465,7 +465,7 @@
                         "document_code":"document_code@checkbook:ref_document_code",
                         "contract_industry":"industry_type_name"
                     },
-                    "rowElements":["agency", "vendor", "contract_id", "version", "parent_contract_id", "purpose", "original_amount", "current_amount", "registration_date"
+                    "rowElements":["agency", "prime_vendor", "contract_id", "version", "parent_contract_id", "purpose", "original_amount", "current_amount", "registration_date"
                         , "apt_pin", "pin", "contract_type", "award_method", "start_date", "end_date", "document_code", "contract_industry"]
                 },
                 "csv":{
@@ -476,7 +476,7 @@
                         "Parent Contract ID":"master_contract_number",
                         "Original Amount":"original_contract_amount",
                         "Current Amount":"maximum_contract_amount",
-                        "Vendor":"vendor_name",
+                        "Prime Vendor":"vendor_name",
                         "Agency":"agency_name",
                         "Contract Type":"agreement_type_name",
                         "Award Method":"award_method_name",
@@ -588,7 +588,7 @@
                         "contract_id":"contract_number",
                         "purpose":"description",
                         "current_amount":"revised_maximum_amount",
-                        "vendor":"vendor_legal_name",
+                        "prime_vendor":"vendor_legal_name",
                         "agency":"document_agency_name",
                         "contract_type":"contract_type_name",
                         "award_method":"award_method_name",
@@ -605,7 +605,7 @@
                         "original_modified":"original_or_modified_desc",
                         "contract_industry":"industry_type_name@checkbook:industry_type"
                     },
-                    "rowElements":["agency", "vendor", "contract_id", "purpose", "parent_contract_id", "current_amount", "received_date"
+                    "rowElements":["agency", "prime_vendor", "contract_id", "purpose", "parent_contract_id", "current_amount", "received_date"
                         , "apt_pin", "pin", "contract_type", "award_method", "start_date", "end_date", "document_code", "version", "original_amount", "purpose", "original_modified", "contract_industry"]
                 },
                 "csv":{
@@ -614,7 +614,7 @@
                         "Parent Contract Id":"fms_parent_contract_number",
                         "Purpose":"description",
                         "Current Amount":"revised_maximum_amount",
-                        "Vendor":"vendor_legal_name",
+                        "Prime Vendor":"vendor_legal_name",
                         "Received Date":"cif_received_date",
                         "Agency":"document_agency_name",
                         "Contract Type":"contract_type_name",
