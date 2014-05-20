@@ -16,7 +16,6 @@
             return $adjustedParameters;
 ",
 "limit":5,
-"enableExpand":true,
 "derivedColumns": {
 "contract_industry_link": {
       "type": "expression2",

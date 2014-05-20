@@ -17,7 +17,6 @@
             return $adjustedParameters;
 ",
 "limit":5,
-"enableExpand":true,
 "derivedColumns": {
 "industry_name_link": {
       "type": "expression2",
@@ -44,10 +43,11 @@ $url .= _checkbook_project_get_year_url_param_string();
 $url .= '/smnid/' .  $node->nid;
 $url .= '/doctype/MMA1~MA1~MAR~CT1~CTA1~CTR';
 $footer = '';
-if($node->totalDataCount > 5)
-      $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
-else if($node->totalDataCount > 0 && $node->totalDataCount <= 5)
-     $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
+if($node->totalDataCount > 0)
+   $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
+else
+   $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
+
 return $footer;
 ",
 "header":"
