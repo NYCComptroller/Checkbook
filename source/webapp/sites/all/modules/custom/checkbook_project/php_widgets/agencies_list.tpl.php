@@ -19,20 +19,6 @@
 */
 ?>
 <?php
-
-$city_agencies = array();
-$edc_agencies = array();
-foreach($node->data as $key=>$value){
-    if(array_key_exists('is_oge_agency', $value)){
-        $edc_agencies[$key] = $value;
-    }else{
-        $city_agencies[$key] = $value;
-    }
-}
-
-$oge_filter_highlight = (_checkbook_check_isEDCPage()) ? 'agency_filter_highlight' : '';
-$city_filter_highlight = (!_checkbook_check_isEDCPage()) ? 'agency_filter_highlight' : '';
-
 $current_fy_year = _getFiscalYearID();
 $current_cal_year = _getCalendarYearID();
 
@@ -55,16 +41,16 @@ if($current_url[1] == 'contracts_landing' || $current_url[1] == 'contracts_reven
 
 $selected_text = 'Citywide Agencies';
 
-foreach($city_agencies as $key => $value){
+foreach($node->data as $key => $value){
 	if($value['agency_id'] == $agency_id_value){
 		$selected_text = $value['agency_name'];
 	}
 }
 
-$agencies = array_chunk($city_agencies, 10);
+$agencies = array_chunk($node->data, 10);
 
 $agency_list = "<div id='agency-list' class='agency-nav-dropdowns'>";
-$agency_list .= "<div class='agency-list-open'><span id='all-agency-list-open' class='".$city_filter_highlight."'>$selected_text</span></div>";
+$agency_list .= "<div class='agency-list-open'><span id='all-agency-list-open'>$selected_text</span></div>";
 $agency_list .= "<div class='agency-list-content all-agency-list-content'>";
 $agency_list .= "<div class='listContainer1' id='allAgenciesList'>";
 
@@ -91,26 +77,19 @@ $agency_list .= "<a href='/".$all_agency_url."' id='citywide_all_agencies'>CITYW
 $agency_list .= "<div class='agency-list-close'><a href='#'>x Close</a></div>";
 $agency_list .= "</div></div>";
 
-//$edc_agencies
-if($current_url[1] == 'contracts_landing')
-    $edc_url = "contracts_landing/status/A";
-else
-    $edc_url = "spending_landing";
-
-$agency_list_other = "<div id='agency-list-other' class='agency-nav-dropdowns'>
-  <div class='agency-list-open'><span id='other-agency-list-open' class='".$oge_filter_highlight."'>Other Government Entities</span></div>
+$agency_list_other = 
+"<div id='agency-list' class='agency-nav-dropdowns'>
+  <div class='agency-list-open'><span id='other-agency-list-open'>Featured</span></div>
   <div class='agency-list-content other-agency-list-content'>
     <div class='listContainer1' id='otherAgenciesList'>
         <div class='agency-slide'>
-          <ul class='listCol'>";
-            foreach($edc_agencies as $key => $edc_agency){
-                $agency_list_other .= "<li><a href='/". $edc_url .'/yeartype/B/year/'.$current_fy_year."/datasource/checkbook_oge/agency/".$edc_agency['agency_id']. "'>". $edc_agency['agency_name'] ."</a></li>";
-            }
- $agency_list_other .= "</ul>
+          <ul class='listCol'>
+            <li><a href='/".RequestUtil::getEDCURL(). "'>New York City Economic Development Corporation</a></li>
+          </ul>
         </div>
-    </div>
+    </div>        
         <div class='agency-list-nav'><a href='#' id='prev2'>Prev</a><a href='#' id='next2'>Next</a>
-        <a href='/spending_landing" . '/yeartype/B/year/'.$current_fy_year ."/datasource/checkbook_oge/agency/9000"."' id='citywide_all_agencies'>OTHER GOVERNMENT ENTITIES</a>
+        <a href='/".RequestUtil::getSpendingEDCURL()."' id='citywide_all_agencies'>FEATURED</a>
         </div>
     <div class='agency-list-close'><a href='#'>x Close</a></div>
   </div>
