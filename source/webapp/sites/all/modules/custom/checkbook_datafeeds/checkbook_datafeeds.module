@@ -772,37 +772,37 @@ function checkbook_datafeeds_budget($form, &$form_state) {
 function _checkbook_datafeeds_budget_column_options($datatype) {
     if ($datatype == 'csv') {
         $out = drupal_map_assoc(array(
+            "Accrued Expense",
+            "Adopted",
             "Agency",
-            "Department",
-            "Expense Category",
             "Budget Code",
             "Budget Name",
-            "Pre-Encumbered",
-            "Accrued Expense",
-            "Year",
-            "Post Adjustments",
-            "Modified",
-            "Adopted",
-            "Encumbered",
             "Cash Expense",
+            "Department",
+            "Encumbered",
+            "Expense Category",
+            "Modified",
+            "Post Adjustments",
+            "Pre-Encumbered",
+            "Year",
         ));
     }
     else {
         if ($datatype = 'xml') {
             $out = drupal_map_assoc(array(
                 "agency",
-                "department",
-                "expense_category",
+                "accrued_expense",
+                "adopted",
                 "budget_code",
                 "budget_name",
-                "pre_encumbered",
-                "accrued_expense",
-                "year",
-                "post_adjustment",
-                "modified",
-                "adopted",
-                "encumbered",
                 "cash_expense",
+                "department",
+                "encumbered",
+                "expense_category",
+                "modified",
+                "post_adjustment",
+                "pre_encumbered",
+                "year",
             ));
         }
     }
@@ -2691,18 +2691,18 @@ function _checkbook_datafeeds_payroll_column_options($datatype) {
         $options =
             drupal_map_assoc(array(
                     "Agency",
-                    "Title",
-                    "Pay Frequency",
-                    "Pay Date",
                     "Annual Salary",
-                    "Hourly Rate",
-                    "Gross Pay",
                     "Base Pay",
+                    "Calendar Year",
+                    "Fiscal year",
+                    "Gross Pay",
+                    "Gross Pay YTD",
+                    "Hourly Rate",
                     "Other Payments",
                     "Overtime Payments",
-                    "Gross Pay YTD",
-                    "Fiscal year",
-                    "Calendar Year",
+                    "Pay Date",
+                    "Pay Frequency",
+                    "Title",
                 )
             );
     }
@@ -2710,18 +2710,18 @@ function _checkbook_datafeeds_payroll_column_options($datatype) {
         if ($datatype == 'xml') {
             $options = array(
                 "agency_name" => "agency",
+                "base_pay" => "base_pay",
+                "calendar_fiscal_year" => "calendar_year",
                 "civil_service_title" => "title",
+                "fiscal_year" => "fiscal_year",
+                "gross_pay" => "gross_pay",
+                "gross_pay_ytd" => "gross_pay_ytd",
+                "non_salaried_amount" => "hourly_rate",
+                "other_payments" => "other_payments",
+                "overtime_pay" => "overtime_payments",
                 "pay_frequency" => "pay_frequency",
                 "pay_date" => "pay_date",
                 "salaried_amount" => "annual_salary",
-                "non_salaried_amount" => "hourly_rate",
-                "gross_pay" => "gross_pay",
-                "base_pay" => "base_pay",
-                "other_payments" => "other_payments",
-                "overtime_pay" => "overtime_payments",
-                "gross_pay_ytd" => "gross_pay_ytd",
-                "fiscal_year" => "fiscal_year",
-                "calendar_fiscal_year" => "calendar_year",
             );
         }
     }
@@ -3386,35 +3386,35 @@ function checkbook_datafeeds_revenue($form, &$form_state) {
 function _checkbook_datafeeds_revenue_column_options($datatype) {
     if ($datatype == 'csv') {
         return drupal_map_assoc(array(
+            "Adopted",
             "Agency",
-            "Revenue Category",
-            "Revenue Source",
+            "Budget Fiscal Year",
+            "Closing Classification Name",
+            "Fiscal Year",
             "Fund Class",
             "Funding Class",
-            "Revenue Class",
-            "Budget Fiscal Year",
-            "Fiscal Year",
-            "Adopted",
             "Modified",
             "Recognized",
-            "Closing Classification Name",
+            "Revenue Category",
+            "Revenue Class",
+            "Revenue Source",
         ));
     }
     else {
         if ($datatype == 'xml') {
             return array(
+                "adopted",
                 "agency",
-                "revenue_category",
-                "revenue_source",
+                "budget_fiscal_year",
+                "closing_classification_name",
+                "fiscal_year",
                 "fund_class",
                 "funding_class",
-                "revenue_class",
-                "budget_fiscal_year",
-                "fiscal_year",
-                "adopted",
                 "modified",
                 "recognized",
-                "closing_classification_name",
+                "revenue_category",
+                "revenue_class",
+                "revenue_source",
             );
         }
     }
