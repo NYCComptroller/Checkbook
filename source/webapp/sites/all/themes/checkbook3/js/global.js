@@ -1141,8 +1141,6 @@ $('.expandCollapseWidget').live("click",
                 oTable.fnSettings().oInit.expandto150 = true;
                 oTable.fnSettings().oInit.expandto5 = false;
                 text = "<img src='/sites/all/themes/checkbook/images/close.png'>";
-                $(this).parent().find('.plus-or').show();
-                $(this).parent().find('.show-details').show();
                 $(this).parent().parent().find('.hideOnExpand').hide();
 
            }else{
@@ -1151,8 +1149,6 @@ $('.expandCollapseWidget').live("click",
                 text = "<img src='/sites/all/themes/checkbook/images/open.png'>";
                 var place = $('#'+oTable.fnSettings().sInstance + '_wrapper').parent().parent().attr('id');
                 document.getElementById(place).scrollIntoView();
-                $(this).parent().find('.plus-or').hide();
-                $(this).parent().find('.show-details').hide();
                 $(this).parent().parent().find('.hideOnExpand').show();
            }
             oTable.fnDraw();
@@ -1188,7 +1184,7 @@ $('.simultExpandCollapseWidget').live("click",
 
            event.preventDefault();
            var text ="";
-           
+
            if (!toggled) {
                if(oTable22.size() > 0){
                     oTable22.fnSettings().oInit.expandto150 = true;
@@ -1205,19 +1201,13 @@ $('.simultExpandCollapseWidget').live("click",
 
                 text = "<img src='/sites/all/themes/checkbook/images/close.png'>";
                if(oElement22 != null){
-                    oElement22.parent().find('.plus-or').show();
-                    oElement22.parent().find('.show-details').show();
                     oElement22.parent().parent().find('.hideOnExpand').hide();
                }
                if(oElement23 != null){
-                    oElement23.parent().find('.plus-or').show();
-                    oElement23.parent().find('.show-details').show();
                     oElement23.parent().parent().find('.hideOnExpand').hide();
                }
 
                if(oElement29 != null){
-                    oElement29.parent().find('.plus-or').show();
-                    oElement29.parent().find('.show-details').show();
                     oElement29.parent().parent().find('.hideOnExpand').hide();
                }
 
@@ -1243,20 +1233,14 @@ $('.simultExpandCollapseWidget').live("click",
 
                 text = "<img src='/sites/all/themes/checkbook/images/open.png'>";
                 if(oElement22 != null){
-                    oElement22.parent().find('.plus-or').hide();
-                    oElement22.parent().find('.show-details').hide();
                     oElement22.parent().parent().find('.hideOnExpand').show();
                 }
 
                 if(oElement23 != null){
-                    oElement23.parent().find('.plus-or').hide();
-                    oElement23.parent().find('.show-details').hide();
                     oElement23.parent().parent().find('.hideOnExpand').show();
                 }
 
                 if(oElement29 != null){
-                    oElement29.parent().find('.plus-or').hide();
-                    oElement29.parent().find('.show-details').hide();
                     oElement29.parent().parent().find('.hideOnExpand').show();
                 }
 

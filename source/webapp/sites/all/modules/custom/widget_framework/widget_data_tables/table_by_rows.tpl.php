@@ -103,13 +103,13 @@ else {
 <div class="tableFooter">
   <?php
   if ($node->widgetConfig->enableExpand == TRUE) {
-    if($node->totalDataCount > 5){
+    if($node->totalDataCount > 0){
         if($node->nid == 22 || $node->nid == 23 || $node->nid == 29){
             echo '<a href="#" class="simultExpandCollapseWidget"><img src="/' . drupal_get_path('theme',$GLOBALS['theme']) . '/images/open.png"></a>';
         }else{
             echo '<a href="#" class="expandCollapseWidget"><img src="/' . drupal_get_path('theme',$GLOBALS['theme']) . '/images/open.png"></a>';
         }
-        echo '<span class="plus-or" style="display: none;">or</span>';
+        echo '<span class="plus-or">or</span>';
     }
   }
   if (isset($node->widgetConfig->footer)) {
