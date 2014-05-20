@@ -17,7 +17,6 @@
 ",
 "limit":5,
 "getTotalDataCount":true,
-"enableExpand":true,
 "derivedColumns": {
 "contract_industry_link": {
       "type": "expression2",
