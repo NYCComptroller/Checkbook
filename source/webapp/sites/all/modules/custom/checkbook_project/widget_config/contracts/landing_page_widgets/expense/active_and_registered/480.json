@@ -95,9 +95,7 @@ $url .= '/smnid/' .  $node->nid;
 $url .= '/doctype/MMA1~MA1';
 $url .= '/modamt/0';
 $footer = '';
-if($node->totalDataCount > 5)
-      $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
-else if($node->totalDataCount > 0 && $node->totalDataCount <= 5)
+if($node->totalDataCount > 0)
      $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
 else
       $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
