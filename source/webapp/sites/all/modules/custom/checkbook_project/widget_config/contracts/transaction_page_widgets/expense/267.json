@@ -251,8 +251,8 @@
 		{"sClass":"text","sWidth":"145px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"145px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"145px","asSorting": [ "asc","desc" ]},
-		{"sClass":"text","sWidth":"230px","asSorting": [ "asc","desc" ]},
-		{"sClass":"text","sWidth":"180px","asSorting": [ "asc","desc" ]},
+		{"sClass":"text","sWidth":"160px","asSorting": [ "asc","desc" ]},
+		{"sClass":"text","sWidth":"150px","asSorting": [ "asc","desc" ]},
 {"sClass":"text number-left","sWidth":"125px","asSorting": [ "desc","asc" ],"datasource":"checkbook_oge"},
 		{"sClass":"text","sWidth":"200px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"},
 		{"sClass":"number","sWidth":"100px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"}
@@ -354,8 +354,8 @@
 			sOut += '<td class=\"text\"  style=\"width:145px\">'+ (row[16] == null ? '': row[16])+'</td>';
 			sOut += '<td class=\"text\"  style=\"width:145px\">'+ (row[17] == null ? '': row[17])+'</td>';
 			sOut += '<td class=\"text\"  style=\"width:145px\">'+ (row[18] == null ? '': row[18])+'</td>';
-			sOut += '<td class=\"text\" style=\"width:230px;\">'+ (row[19] == null ? '': row[19])+'</td>';
-			sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[20] == null ? '': row[20])+'</td>';
+			sOut += '<td class=\"text\" style=\"width:160px;\">'+ (row[19] == null ? '': row[19])+'</td>';
+			sOut += '<td class=\"text\" style=\"width:150px;\">'+ (row[20] == null ? '': row[20])+'</td>';
 
                   }else{
                         sOut += '<tr>';
@@ -376,8 +376,8 @@
 			sOut += '<td class=\"text\"  style=\"width:145px\">'+ (row[16] == null ? '': row[16])+'</td>';
 			sOut += '<td class=\"text\"  style=\"width:145px\">'+ (row[17] == null ? '': row[17])+'</td>';
 			sOut += '<td class=\"text\"  style=\"width:145px\">'+ (row[18] == null ? '': row[18])+'</td>';
-			sOut += '<td class=\"text\"  style=\"width:230px\">'+ (row[19] == null ? '': row[19])+'</td>';
-			sOut += '<td class=\"text\"  style=\"width:180px;\">'+ (row[20] == null ? '': row[20])+'</td>';
+			sOut += '<td class=\"text\"  style=\"width:160px\">'+ (row[19] == null ? '': row[19])+'</td>';
+			sOut += '<td class=\"text\"  style=\"width:150px;\">'+ (row[20] == null ? '': row[20])+'</td>';
 
                      }
                         sOut += '</tr>';
