@@ -1374,6 +1374,10 @@ table.dataTable th.sorting_asc span {
 .dataTable td.text-left-padding div{
     margin: 13px 0px 13px 20px;
 }
+th.pad-left div,
+td.pad-left div{
+    margin-left: 20px !important;
+}
 
 /* Begin - Overriding data table css for 634.json,653.json */
 .dataTable th.text-left,
