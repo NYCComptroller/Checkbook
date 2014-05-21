@@ -959,11 +959,11 @@ $("input[name='alert_end[date]']").datepicker({"changeMonth":true,"changeYear":t
                 });
 
                 /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
-                if(data_source == "checkbook_oge") {
-                    disableAccordionSection('Budget');
-                    disableAccordionSection('Revenue');
-                    disableAccordionSection('Payroll');
-                }
+//                if(data_source == "checkbook_oge") {
+//                    disableAccordionSection('Budget');
+//                    disableAccordionSection('Revenue');
+//                    disableAccordionSection('Payroll');
+//                }
 
                 return false;
             });
