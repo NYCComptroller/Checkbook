@@ -27,8 +27,8 @@
     <tr>
       <th class="text"><?php echo WidgetUtil::generateLabelMapping("fiscal_year"); ?></th>
       <th class="text"><?php echo WidgetUtil::generateLabelMapping("no_of_mod"); ?></th>
+        <th class="number endCol"><?php echo WidgetUtil::generateLabelMapping("current_amount"); ?></th>
       <th class="number"><?php echo WidgetUtil::generateLabelMapping("original_amount"); ?></th>
-      <th class="number endCol"><?php echo WidgetUtil::generateLabelMapping("current_amount"); ?></th>
     </tr>
     </thead>
     <tbody>
@@ -91,8 +91,8 @@
                     <th class='text thEndDate'>".WidgetUtil::generateLabelMapping("end_date")."</th>
                     <th class='text thRegDate'>".WidgetUtil::generateLabelMapping("reg_date")."</th>
                     <th class='text thLastMDate'>".WidgetUtil::generateLabelMapping("last_mod_date")."</th>
-                    <th class='number thOrigAmt'>".WidgetUtil::generateLabelMapping("original_amount")."</th>
                     <th class='number thCurAmt'>".WidgetUtil::generateLabelMapping("current_amount")."</th>
+                    <th class='number thOrigAmt'>".WidgetUtil::generateLabelMapping("original_amount")."</th>
                     <th class='number thIncDec'>".WidgetUtil::generateLabelMapping("increase_decrease")."</th>
                     <th class='text thVerStat status'>".WidgetUtil::generateLabelMapping("version_status")."</th>
                   </tr></thead><tbody>";
@@ -119,8 +119,8 @@
             else {
               echo "<td class='text thLastMDate'><div>" . $item['date@checkbook:date_id/source_updated_date_id@checkbook:history_agreement'] . "</div></td>";
             }
-            echo "<td class='number thOrigAmt' ><div>" . custom_number_formatter_format($item['original_contract_amount'], 2, '$') . "</div></td>";
             echo "<td class='number thCurAmt' ><div>" . custom_number_formatter_format($item['maximum_contract_amount'], 2, '$') . "</div></td>";
+            echo "<td class='number thOrigAmt' ><div>" . custom_number_formatter_format($item['original_contract_amount'], 2, '$') . "</div></td>";
             echo "<td class='number thIncDec' ><div>" . custom_number_formatter_format(($item['maximum_contract_amount'] - $item['original_contract_amount']), 2, '$') . "</div></td>";
             echo "<td class='text thVerStat'><div>" . $item['status'] . "</div></td>";
             echo "</tr>";
