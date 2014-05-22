@@ -65,7 +65,7 @@ return $header;
 "table_title":"",
   "table_columns": [
  {
-      "labelAlias": "vendor_name",
+      "labelAlias": "prime_vendor",
       "column": "vendor_name_link",
       "sortSourceColumn": "vendor_legal_name.vendor_legal_name"
     },
@@ -75,15 +75,15 @@ return $header;
 	"sortSourceColumn": "total_contracts"
 	},
  {
-      "labelAlias": "original_amount",
-      "column": "formatted_original_amount_sum",
-      "sortSourceColumn": "original_amount_sum"
-    },
- {
       "labelAlias": "current_amount",
       "column": "formatted_total_current_amount_sum",
       "sortSourceColumn": "current_amount_sum"
     },
+{
+"labelAlias": "original_amount",
+"column": "formatted_original_amount_sum",
+"sortSourceColumn": "original_amount_sum"
+},
      {
       "label": "",
       "column": ""
@@ -104,7 +104,7 @@ return $header;
 "bLengthChange": false,
 "bInfo": false,
 "bAutoWidth": false,
-"aaSorting": [[ 3, "desc" ]],
+"aaSorting": [[ 2, "desc" ]],
 "fnServerParams": "##function ( aoData ) {
            reloadExpandCollapseWidget(this,aoData);
 }##",
