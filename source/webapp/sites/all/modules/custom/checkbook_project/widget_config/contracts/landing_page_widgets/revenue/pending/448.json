@@ -71,15 +71,15 @@ return $header;
 	"sortSourceColumn": "total_contracts"
 	},
  {
-      "labelAlias": "original_amount",
-      "column": "formatted_original_amount_sum",
-      "sortSourceColumn": "original_amount_sum"
-    },
- {
       "labelAlias": "current_amount",
       "column": "formatted_total_current_amount_sum",
       "sortSourceColumn": "current_amount_sum"
     },
+{
+"labelAlias": "original_amount",
+"column": "formatted_original_amount_sum",
+"sortSourceColumn": "original_amount_sum"
+},
      {
       "label": "",
       "column": ""
@@ -100,7 +100,7 @@ return $header;
 "bLengthChange": false,
 "bInfo": false,
 "bAutoWidth": false,
-"aaSorting": [[ 3, "desc" ]],
+"aaSorting": [[ 2, "desc" ]],
 "oLanguage":{
 "sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
 },
