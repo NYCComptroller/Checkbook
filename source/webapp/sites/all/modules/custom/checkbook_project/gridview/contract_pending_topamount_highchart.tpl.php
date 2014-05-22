@@ -28,7 +28,7 @@
     <thead>
         <tr><th class='text'><?php echo WidgetUtil::generateLabelMapping("contract_id") ;?></th>
         <th class='number'><?php echo WidgetUtil::generateLabelMapping("current_amount") ;?></th>
-        <th class='text'><?php echo WidgetUtil::generateLabelMapping("vendor_name") ;?></th>
+        <th class='text'><?php echo WidgetUtil::generateLabelMapping("prime_vendor") ;?></th>
         <th class='text'><?php echo WidgetUtil::generateLabelMapping("contract_agency") ;?></th>
             <th>&nbsp</th>
         </tr>

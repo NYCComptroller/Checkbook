@@ -105,6 +105,6 @@ return $node->data;
 
 
 <function>
-tooltipformatter^^'formatter' : function() {return  'Contract ID: ' + this.point.contractnum + '<br/>' + 'Vendor: ' + this.point.vendor  + '<br/>' + 'Agency: ' + this.point.agency+ '<br/>' + 'Amount: ' + abbrNum(this.y, 2, '$')  ;}
+tooltipformatter^^'formatter' : function() {return  'Contract ID: ' + this.point.contractnum + '<br/>' + 'Prime Vendor: ' + this.point.vendor  + '<br/>' + 'Agency: ' + this.point.agency+ '<br/>' + 'Amount: ' + abbrNum(this.y, 2, '$')  ;}
 ##clickEvent^^"click": function(){   if(this.url.length > 0) {location.href = Drupal.settings.basePath+this.url;} }
 </function>
