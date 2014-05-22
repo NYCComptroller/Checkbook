@@ -30,7 +30,7 @@
 "html_class": "initiative-table",
 "no_results_content":"No Results Found",
 "dataset": "checkbook:agreement_snapshot",
-"columns": ["fms_commodity_line@checkbook:oge_contract_contract","budget_name@checkbook:oge_contract_contract","oge_contract_number@checkbook:oge_contract_contract",
+"columns": ["master_contract_number","master_agreement_id","fms_commodity_line@checkbook:oge_contract_contract","budget_name@checkbook:oge_contract_contract","oge_contract_number@checkbook:oge_contract_contract",
             "fiscal_year_id@checkbook:contracts_coa_aggregates","type_of_year@checkbook:contracts_coa_aggregates", "has_children","contract_number",
             "original_agreement_id","description","document_version","original_contract_amount","maximum_contract_amount",
             "spending_amount@checkbook:contracts_coa_aggregates","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name",
@@ -56,10 +56,14 @@
 	      "type": "expression2",
                "expression": "ContractURLHelper::prepareExpenseContractLink($row, $node)"
 	    },
-         "parent_contract_link": {
-	      "type": "expression",
-               "expression": "N/A"
-	    },
+        "parent_contract_link": {
+            "type": "expression2",
+            "expression": "(($row['master_agreement_yn'] == 'Y') ? 'N/A' : ContractURLHelper::prepareExpenseContractLink($row, $node, true))"
+        },
+        "parent_contract_export":{
+            "type": "expression2",
+            "expression": "(($row['master_agreement_yn'] == 'Y') ? 'N/A' : $row['master_contract_number'])"
+        },
 	"formatted_original_amount": {
 	      "type": "expression2",
 	      "expression": "custom_number_formatter_basic_format($row['original_contract_amount'])"
@@ -139,7 +143,7 @@
         {"labelAlias": "contract_id","column": "contract_link","sortSourceColumn":"contract_number"},
 	    {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description"},
 	    {"labelAlias": "version","column": "document_version"},
-	    {"labelAlias": "fms_doc_id","column":"parent_contract_link","export":false},
+	    {"labelAlias": "fms_doc_id","column":"parent_contract_link","export":false, "exportColumn":"parent_contract_export", "sortSourceColumn":"master_contract_number"},
         {"labelAlias": "original_amount","column": "formatted_original_amount","sortSourceColumn":"original_contract_amount"},
 	    {"labelAlias": "current_amount","column": "formatted_current_amount","sortSourceColumn":"maximum_contract_amount"},
 	    {"labelAlias": "spent_to_date","column": "formatted_spent_to_date","sortSourceColumn":"spending_amount@checkbook:contracts_coa_aggregates"},
