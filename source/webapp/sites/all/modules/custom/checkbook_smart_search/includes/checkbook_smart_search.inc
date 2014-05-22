@@ -383,7 +383,7 @@ function _checkbook_smart_search_autocomplete(){
                 foreach ($value as $a=>$b){
                     $count++;
                     $url = "/smart_search?search_term=*|*vendor_names=";
-                    array_push($matches, array("url"=>$url,"category"=>"Prime Vendors" ,"label" => $a, "value" => urlencode($a)));
+                    array_push($matches, array("url"=>$url,"category"=>"Vendors" ,"label" => $a, "value" => urlencode($a)));
                 }
                 break;
             /*case 'revenue_category_name':
