@@ -79,9 +79,9 @@
         {"labelAlias": "contract_id","column": "contract_link","sortSourceColumn":"contract_number"},
         {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description"},
 	    {"labelAlias": "recv_date","column": "cif_received_date"},
-		{"labelAlias": "vendor_name","column": "vendor_formatted","sortSourceColumn":"vendor_legal_name"},        
-        {"labelAlias": "original_amount","column": "formatted__original_maximum_amount","sortSourceColumn":"original_maximum_amount","headerClass":"centrig"},
+		{"labelAlias": "prime_vendor","column": "vendor_formatted","sortSourceColumn":"vendor_legal_name"},
         {"labelAlias": "current_amount","column": "formatted__maximum_amount","sortSourceColumn":"revised_maximum_amount","headerClass":"centrig"},
+        {"labelAlias": "original_amount","column": "formatted__original_maximum_amount","sortSourceColumn":"original_maximum_amount","headerClass":"centrig"},
         {"labelAlias": "start_date","column": "revised_start_date"},
 	    {"labelAlias": "end_date","column": "revised_end_date"},
         {"labelAlias": "dollar_diff","column": "formatted_dollar_diff","sortSourceColumn":"dollar_difference","headerClass":"centrig"},
@@ -224,7 +224,7 @@
     "bInfo": true,
     "aaSorting": [
         [
-            5,
+            4,
             "desc"
         ]
     ],
