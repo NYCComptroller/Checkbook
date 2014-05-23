@@ -6035,7 +6035,7 @@ function checkbook_datafeeds_format_columns() {
     $array_selected_values = explode("|", $hidden_selected_values); //convert the values into array
     $filter_array = array_filter($array_selected_values); //remove empty index
 
-    $selected_columns = [];
+    $selected_columns = array();
     foreach($filter_array as $column) {
         $selected_columns[$column] = $column;
     }
