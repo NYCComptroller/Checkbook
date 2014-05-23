@@ -99,6 +99,11 @@
           text = selectedOption.text(),
           klass = selectedOption.attr('class'),
           titleAttr = selectedOption.attr('title');
+
+        //For tracking order, use hidden field
+        var hiddenField = $('input[name="hidden_multiple_value"]');
+        var hiddenValue = hiddenField.val();
+        hiddenField.val(hiddenValue+'|'+value+'|');
       
         var selectedLi = $('<li class="ms-elem-selected'+(klass ? ' '+klass : '')+'" ms-value="'+value+'">'+text+'</li>'),
             selectableUl = $('#ms-'+ms.attr('id')+' .ms-selectable ul'),
@@ -169,6 +174,12 @@
           selectedUl = $('#ms-'+ms.attr('id')+' .ms-selection ul'),
           selectedOption = ms.find('option[value="'+value +'"]'),
           selectedLi = selectedUl.children('li[ms-value="'+value+'"]');
+
+        //For tracking order, use hidden field
+        var hiddenField = $('input[name="hidden_multiple_value"]');
+        var hiddenValue = hiddenField.val();
+        var newValue = hiddenValue.replace('|'+value+'|', "");
+        hiddenField.val(newValue);
       
       if(selectedLi){
         var selectableUl = $('#ms-'+ms.attr('id')+' .ms-selectable ul'),
@@ -207,6 +218,9 @@
       var ms = this;
       ms.find("option:not(option[value=''])").each(function(){
         ms.multiSelect('deselect', $(this).val(), 'deselect_all');
+
+        //reset the hidden field
+        $('input[name="hidden_multiple_value"]').val("");
       });
     }
   };
