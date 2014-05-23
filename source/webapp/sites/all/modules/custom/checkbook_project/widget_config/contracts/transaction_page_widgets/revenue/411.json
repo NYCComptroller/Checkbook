@@ -173,8 +173,12 @@
 ],
 
         "aaSorting":[[4,"desc"]],
-	"sScrollX": "100%",
-         "bScrollCollapse": true
+        "sScrollX": "100%",
+        "bScrollCollapse": true,
+        "fnInitComplete": "##function () { new FixedColumns( oTable, {
+        \"iLeftColumns\": 1,
+        \"iLeftWidth\": 195
+        } );}##"
 }
 ,"customExternalJS":"function prepareTableListFilterUrl(){
 

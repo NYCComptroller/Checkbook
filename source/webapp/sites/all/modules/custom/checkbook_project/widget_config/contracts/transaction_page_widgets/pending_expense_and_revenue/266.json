@@ -229,7 +229,11 @@
         ]
     ],
     "sScrollX": "100%",
-    "bScrollCollapse": true
+    "bScrollCollapse": true,
+    "fnInitComplete": "##function () { new FixedColumns( oTable, {
+    \"iLeftColumns\": 1,
+    \"iLeftWidth\": 170
+} );}##"
 },
 "customExternalJS":"function prepareTableListFilterUrl(){
 
