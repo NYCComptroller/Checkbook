@@ -510,7 +510,7 @@ function load_widget_data($node, $resultFormatter) {
         $columns = _update_columns_by_datasource($config->columns, $config->columns_datasource,$config->keepOriginalDatasource);
 
         $orderBy = $config->orderBy;
-        $startWith = isset($config->startWith) ? $config->startWiwth : 0;
+        $startWith = isset($config->startWith) ? $config->startWith : 0;
         $limit = $config->limit;
 
 
