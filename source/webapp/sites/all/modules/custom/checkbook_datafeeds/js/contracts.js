@@ -39,6 +39,8 @@
                 csval = $('select[name="df_contract_status"]', context).val();
                 catval = $('#edit-category', context).val();
                 hideShow(csval, catval);
+                //reset the hidden field
+                $('input[name="hidden_multiple_value"]').val("");
             });
             function hideShow(csval, catval) {
                 var $expense = $('.form-item-column-select-expense', context);

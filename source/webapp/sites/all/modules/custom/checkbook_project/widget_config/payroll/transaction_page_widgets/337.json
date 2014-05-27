@@ -131,6 +131,12 @@
                 {"sClass":"number","sWidth":"75px","asSorting": [ "desc","asc" ]},
                 {"sClass":"number endCol","sWidth":"100px","asSorting": [ "desc","asc" ]}
 
-        ]
+        ],
+        "sScrollX": "100%",
+        "bScrollCollapse": false,
+        "fnInitComplete": "##function () { new FixedColumns( oTable, {
+        \"iLeftColumns\": 1,
+        \"iLeftWidth\": 135
+        } );}##"
 }
 }

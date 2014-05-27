@@ -731,6 +731,11 @@ function checkbook_datafeeds_budget($form, &$form_state) {
         '#multiple' => TRUE,
         '#default_value' => !empty($form_state['values']['column_select_expense']) ? $form_state['values']['column_select_expense'] : '',
     );
+    //Hidden Field for multi-select
+    $form['columns']['hidden_multiple_value'] = array(
+        '#value' => '',
+        '#type' => 'hidden',
+    );
     $form['#attached'] = array(
         'library' => array(
             array('system', 'ui.autocomplete', FALSE),
@@ -855,7 +860,10 @@ function checkbook_datafeeds_budget_confirmation($form, &$form_state) {
         '#type' => 'fieldset',
         '#title' => t('Selected Columns'),
     );
-    foreach ($values['column_select_expense'] as $column) {
+    //Used to maintain the order of the columns
+    $selected_columns = checkbook_datafeeds_format_columns();
+    $form_state['step_information']['budget']['stored_values']['column_select'] = $selected_columns;
+    foreach ($selected_columns as $column) {
         $form['columns'][$column] = array(
             '#markup' => '<div>' . $column . '</div>',
         );
@@ -1029,7 +1037,7 @@ function checkbook_datafeeds_process_budget_values($form, $form_state) {
             'max_records' => 50000,
         ),
     );
-    $criteria['responseColumns'] = $values['column_select_expense'];
+    $criteria['responseColumns'] = $values['column_select'];
     if ($values['fiscal_year'] != 'All Years') {
         $criteria['value']['year'] = $values['fiscal_year'];
     }
@@ -1319,6 +1327,11 @@ function checkbook_datafeeds_contracts($form, &$form_state)
         '#options' => _checkbook_datafeeds_contracts_column_options($data_source, 'pending', 'pending', $data_type),
         '#id' => 'edit-column-select-pending',
         '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
+    );
+    //Hidden Field for multi-select
+    $form['columns']['hidden_multiple_value'] = array(
+        '#value' => '',
+        '#type' => 'hidden',
     );
 
     //</editor-fold>
@@ -1940,37 +1953,16 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         ),
     );
 
+    //Used to maintain the order of the columns
+    $selected_columns = checkbook_datafeeds_format_columns();
     //Filter columns for current data source
-    $columns_selected = $values['column_select_expense'];
-    if (!empty($values['column_select_revenue']))
-        $columns_selected = $values['column_select_revenue'];
-    else if (!empty($values['column_select_pending']))
-        $columns_selected = $values['column_select_pending'];
-
-    $filtered_columns = checkbook_datafeeds_contracts_filter_selected_columns($columns_selected, $data_source, $response_type, $values['df_contract_status'],$values['category'],$values['year']);
+    $filtered_columns = checkbook_datafeeds_contracts_filter_selected_columns($selected_columns, $data_source, $response_type, $values['df_contract_status'],$values['category'],$values['year']);
     $form_state['step_information']['contracts']['stored_values']['column_select'] = $filtered_columns;
-
-    if ($values['df_contract_status'] != 'pending' && $values['category'] == 'expense') {
-        foreach ($values['column_select_expense'] as $column) {
-            $form['columns'][$column] = array(
-                '#markup' => '<div>' . $column . '</div>',
-            );
-            $user_criteria['Columns'][] = $column;
-        }
-    } elseif ($values['df_contract_status'] != 'pending' && $values['category'] == 'revenue') {
-        foreach ($values['column_select_revenue'] as $column) {
-            $form['columns'][$column] = array(
-                '#markup' => '<div>' . $column . '</div>',
-            );
-            $user_criteria['Columns'] = $column;
-        }
-    } elseif ($values['df_contract_status'] == 'pending') {
-        foreach ($values['column_select_pending'] as $column) {
-            $form['columns'][$column] = array(
-                '#markup' => '<div>' . $column . '</div>',
-            );
-            $user_criteria['Columns'] = $column;
-        }
+    foreach ($filtered_columns as $column) {
+        $form['columns'][$column] = array(
+            '#markup' => '<div>' . $column . '</div>',
+        );
+        $user_criteria['Columns'][] = $column;
     }
     $form['filter'] = array(
         '#type' => 'fieldset',
@@ -2175,7 +2167,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
     );
 
     if ($values['df_contract_status'] != 'pending' && $values['category'] == 'expense') {
-        $criteria['responseColumns'] = $values['column_select_expense'];
+        $criteria['responseColumns'] = $values['column_select'];
         if ($values['year'] && $values['year'] != 'ALL') {
             if (startsWith($values['year'], 'F')) {
                 $criteria['value']['fiscal_year'] = ltrim($values['year'], 'FY');
@@ -2184,7 +2176,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
             }
         }
     } elseif ($values['df_contract_status'] != 'pending' && $values['category'] == 'revenue') {
-        $criteria['responseColumns'] = $values['column_select_revenue'];
+        $criteria['responseColumns'] = $values['column_select'];
         if ($values['year'] && $values['year'] != 'ALL') {
             if (startsWith($values['year'], 'F')) {
                 $criteria['value']['fiscal_year'] = ltrim($values['year'], 'FY ');
@@ -2193,7 +2185,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
             }
         }
     } elseif ($values['df_contract_status'] == 'pending' && $values['category'] == 'expense') {
-        $criteria['responseColumns'] = $values['column_select_pending'];
+        $criteria['responseColumns'] = $values['column_select'];
     }
     if ($values['currentamtfrom'] !== '' || $values['currentamtto'] !== '') {
         $criteria['range']['current_amount'] = array(
@@ -2644,6 +2636,11 @@ function checkbook_datafeeds_payroll($form, &$form_state) {
         '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
         '#required' => TRUE,
     );
+    //Hidden Field for multi-select
+    $form['columns']['hidden_multiple_value'] = array(
+        '#value' => '',
+        '#type' => 'hidden',
+    );
     $form['payroll_next'] = array(
         '#type' => 'submit',
         '#value' => t('Submit'),
@@ -2804,7 +2801,10 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state) {
             'data-feeds-wizard',
         )
     );
-    foreach ($values['column_select'] as $column) {
+    //Used to maintain the order of the columns
+    $selected_columns = checkbook_datafeeds_format_columns();
+    $form_state['step_information']['payroll']['stored_values']['column_select'] = $selected_columns;
+    foreach ($selected_columns as $column) {
         $form['columns'][$column] = array(
             '#markup' => '<div>' . $column . '</div>',
         );
@@ -3342,6 +3342,11 @@ function checkbook_datafeeds_revenue($form, &$form_state) {
         '#required' => TRUE,
         '#multiple' => TRUE,
     );
+    //Hidden Field for multi-select
+    $form['columns']['hidden_multiple_value'] = array(
+        '#value' => '',
+        '#type' => 'hidden',
+    );
     $form['#attached'] = array(
         'library' => array(
             array('system', 'ui.autocomplete', FALSE),
@@ -3472,7 +3477,10 @@ function checkbook_datafeeds_revenue_confirmation($form, &$form_state) {
             'data-feeds-wizard',
         )
     );
-    foreach ($values['column_select'] as $column) {
+    //Used to maintain the order of the columns
+    $selected_columns = checkbook_datafeeds_format_columns();
+    $form_state['step_information']['revenue']['stored_values']['column_select'] = $selected_columns;
+    foreach ($selected_columns as $column) {
         $form['columns'][$column] = array('#markup' => '<div>' . $column . '</div>');
         $user_criteria['Columns'][] = $column;
     }
@@ -3824,6 +3832,11 @@ function checkbook_datafeeds_spending($form, &$form_state)
         '#id' => 'edit-column-select',
         '#name' => 'column_select',
         '#required' => TRUE,
+    );
+    //Hidden Field for multi-select
+    $form['columns']['hidden_multiple_value'] = array(
+        '#value' => '',
+        '#type' => 'hidden',
     );
 
     //</editor-fold>
@@ -4696,8 +4709,11 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
         )
     );
 
+    //Used to maintain the order of the columns
+    $selected_columns = checkbook_datafeeds_format_columns();
     //Filter columns for current data source
-    $filtered_columns = checkbook_datafeeds_spending_filter_selected_columns($values['column_select'], $data_source, $response_type);
+    $filtered_columns = checkbook_datafeeds_spending_filter_selected_columns($selected_columns, $data_source, $response_type);
+
     $form_state['step_information']['spending']['stored_values']['column_select'] = $filtered_columns;
 
     foreach ($form_state['step_information']['spending']['stored_values']['column_select'] as $column) {
@@ -6006,6 +6022,26 @@ function checkDateFormat($date) {
         return FALSE;
     }
 }
+
+/**
+ * Maintains the selected column order
+ *
+ * @return array
+ *   re-ordered columns
+ */
+function checkbook_datafeeds_format_columns() {
+    //Used to maintain the order of the columns
+    $hidden_selected_values = $_POST['hidden_multiple_value']; //get the values from the hidden field
+    $array_selected_values = explode("|", $hidden_selected_values); //convert the values into array
+    $filter_array = array_filter($array_selected_values); //remove empty index
+
+    $selected_columns = array();
+    foreach($filter_array as $column) {
+        $selected_columns[$column] = $column;
+    }
+    return $selected_columns;
+}
+
 
 /**
  * Output download links and expiration date message.

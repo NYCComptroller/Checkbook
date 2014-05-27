@@ -324,8 +324,8 @@
         "sScrollX": "100%",
  		"bScrollCollapse": false,
         "fnInitComplete": "##function () { new FixedColumns( oTable, {
- 		\"iLeftColumns\": 3,
-		\"iLeftWidth\": 515
+ 		\"iLeftColumns\": 1,
+		\"iLeftWidth\": 196
  	} );}##"
 },
 "customExternalJS":"function prepareTableListFilterUrl(){

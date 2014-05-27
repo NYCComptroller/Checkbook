@@ -81,7 +81,12 @@
 			{"sClass":"text","sWidth":"245px","asSorting": [ "asc","desc" ]}
 		],
         "aaSorting":[[6,"desc"]],
-       	"sScrollX": "100%"
+       	"sScrollX": "100%",
+        "bScrollCollapse": false,
+        "fnInitComplete": "##function () { new FixedColumns( oTable, {
+        \"iLeftColumns\": 1,
+        \"iLeftWidth\": 245
+        } );}##"
 },
 "customExternalJS":"function prepareTableListFilterUrl(){
         var agencyIds = getNamedFilterCriteria('fagencyId');
