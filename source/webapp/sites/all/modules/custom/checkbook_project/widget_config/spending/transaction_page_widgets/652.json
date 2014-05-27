@@ -281,6 +281,7 @@ $table_column->labelAlias = 'agency_name';
 }
 ",
 "dataTableOptions":{
+"bAutoWidth":true,
 "bRetrieve": true,
 "bServerSide": true,
 "bProcessing":true,
@@ -296,26 +297,26 @@ $table_column->labelAlias = 'agency_name';
 },
 "bInfo": true,
 "aoColumns":[
-{"sClass":"text-left sort","sWidth":"170px","asSorting": [ "asc","desc" ]},
-{"sClass":"number sort", "sWidth":"50px","asSorting": [ "asc","desc" ]},
-{"sClass":"text-left sort", "sWidth":"170px","asSorting": [ "asc","desc" ]},
-{"sClass":"number sort", "sWidth":"110px","asSorting": [ "asc","desc" ]},
-{"sClass":"number sort","sWidth":"135px","asSorting": [ "desc","asc" ]},
-{"sClass":"text-left sort","sWidth":"100px","asSorting": [ "asc","desc" ]},
-{"sClass":"text-left sort","sWidth":"100px","asSorting": [ "asc","desc" ]},
-{"sClass":"number sort","sWidth":"100px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"},
-{"sClass":"text-left sort","sWidth":"165px","asSorting": [ "asc","desc" ]},
-{"sClass":"text-left sort","sWidth":"165px","asSorting": [ "asc","desc" ]},
-{"sClass":"text-left sort","sWidth":"165px","asSorting": [ "asc","desc" ]},
-{"sClass":"number sort","sWidth":"125px","asSorting": [ "desc","asc" ],"datasource":"checkbook_oge"},
-{"sClass":"text-left sort","sWidth":"200px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"}
+{"sClass":"text sort","sWidth":"242px","asSorting": [ "asc","desc" ]},
+{"sClass":"number sort", "sWidth":"63px","asSorting": [ "asc","desc" ]},
+{"sClass":"text pad-left sort", "sWidth":"220px","asSorting": [ "asc","desc" ]},
+{"sClass":"number sort", "sWidth":"95px","asSorting": [ "asc","desc" ]},
+{"sClass":"number sort","sWidth":"96px","asSorting": [ "desc","asc" ]},
+{"sClass":"text pad-left sort","sWidth":"150px","asSorting": [ "asc","desc" ]},
+{"sClass":"text sort","sWidth":"158px","asSorting": [ "asc","desc" ]},
+{"sClass":"number sort","sWidth":"91px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"},
+{"sClass":"text pad-left sort","sWidth":"151px","asSorting": [ "asc","desc" ]},
+{"sClass":"text sort","sWidth":"148px","asSorting": [ "asc","desc" ]},
+{"sClass":"text sort","sWidth":"153px","asSorting": [ "asc","desc" ]},
+{"sClass":"number sort","sWidth":"81px","asSorting": [ "desc","asc" ],"datasource":"checkbook_oge"},
+{"sClass":"text pad-left endCol sort","sWidth":"180px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"}
 ],
 "aaSorting":[[4,"desc"]],
 "sScrollX": "100%",
 "bScrollCollapse": false,
 "fnInitComplete": "##function () { new FixedColumns( oTable, {
-\"iLeftColumns\": 3,
-\"iLeftWidth\": 515
+\"iLeftColumns\": 1,
+\"iLeftWidth\": 242
 } );}##"
 },
 "customExternalJS":"function prepareTableListFilterUrl(){
