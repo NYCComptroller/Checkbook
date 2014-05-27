@@ -305,7 +305,7 @@ $table_column->labelAlias = 'agency_name';
 {"sClass":"text pad-left sort","sWidth":"150px","asSorting": [ "asc","desc" ]},
 {"sClass":"text sort","sWidth":"158px","asSorting": [ "asc","desc" ]},
 {"sClass":"number sort","sWidth":"91px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"},
-{"sClass":"text pad-left sort","sWidth":"151px","asSorting": [ "asc","desc" ]},
+{"sClass":"text pad-left sort","sWidth":"220px","asSorting": [ "asc","desc" ]},
 {"sClass":"text sort","sWidth":"148px","asSorting": [ "asc","desc" ]},
 {"sClass":"text sort","sWidth":"153px","asSorting": [ "asc","desc" ]},
 {"sClass":"number sort","sWidth":"81px","asSorting": [ "desc","asc" ],"datasource":"checkbook_oge"},
