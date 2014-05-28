@@ -27,8 +27,8 @@
     <tr>
       <th class="text"><?php echo WidgetUtil::generateLabelMapping("fiscal_year"); ?></th>
       <th class="text"><?php echo WidgetUtil::generateLabelMapping("no_of_mod"); ?></th>
-        <th class="number endCol"><?php echo WidgetUtil::generateLabelMapping("current_amount"); ?></th>
-      <th class="number"><?php echo WidgetUtil::generateLabelMapping("original_amount"); ?></th>
+      <th class="number"><?php echo WidgetUtil::generateLabelMapping("current_amount"); ?></th>
+      <th class="number endCol"><?php echo WidgetUtil::generateLabelMapping("original_amount"); ?></th>
     </tr>
     </thead>
     <tbody>
@@ -75,8 +75,8 @@
             $orig_amount_sum = $item['original_contract_amount'];
             break;
           }
-          echo "<td class='number'><div>" . custom_number_formatter_format($orig_amount_sum, 2, '$') . "</div></td>";
-          echo "<td class='number endCol'><div>" . custom_number_formatter_format($curr_amount_sum, 2, '$') . "</div></td>";
+          echo "<td class='number'><div>" . custom_number_formatter_format($curr_amount_sum, 2, '$') . "</div></td>";
+          echo "<td class='number endCol'><div>" . custom_number_formatter_format($orig_amount_sum, 2, '$') . "</div></td>";
           echo "</tr>";
           $count1 += 1;
           echo "<tr id='showHidectahis" . $key . "' class='showHide " . $class1 . "' " . $showCondition . ">";
