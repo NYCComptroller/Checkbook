@@ -10,7 +10,7 @@
     "html_class":"chart-grid-view-table three-columns",
     "table_columns": [
         {
-            "labelAlias": "vendor_name",
+            "labelAlias": "prime_vendor",
             "column": "vendor_legal_name_vendor_legal_name"
         },
         {

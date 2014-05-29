@@ -23,7 +23,7 @@
             "column": "display_vendor_names"
         },
         {
-            "labelAlias": "agency_name",
+            "labelAlias": "contract_agency",
             "column": "display_agency_display_agency_agency_name"
         }
 	  ]

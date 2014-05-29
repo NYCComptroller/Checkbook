@@ -10,7 +10,7 @@
     "html_class":"chart-grid-view-table three-columns",
     "table_columns": [
         {
-            "labelAlias": "agency_name",
+            "labelAlias": "contract_agency",
             "column": "agency_agency_agency_name"
         },
         {

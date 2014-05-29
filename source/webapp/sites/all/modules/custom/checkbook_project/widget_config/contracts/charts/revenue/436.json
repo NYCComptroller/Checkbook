@@ -19,11 +19,11 @@
             "column": "maximum_contract_amount"
         },
         {
-            "labelAlias": "vendor_name",
+            "labelAlias": "prime_vendor",
             "column": "legal_name@checkbook:vendor"
         },
         {
-            "labelAlias": "agency_name",
+            "labelAlias": "contract_agency",
             "column": "agency_name@checkbook:agency"
         }
     ]
