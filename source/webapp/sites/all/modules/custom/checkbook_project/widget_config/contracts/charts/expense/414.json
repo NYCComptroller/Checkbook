@@ -18,7 +18,7 @@
             "column": "total_revised_maximum_amount"
         },
         {
-            "labelAlias": "vendor_name",
+            "labelAlias": "prime_vendor",
             "column": "vendor_legal_name_vendor_legal_name"
         },
         {
