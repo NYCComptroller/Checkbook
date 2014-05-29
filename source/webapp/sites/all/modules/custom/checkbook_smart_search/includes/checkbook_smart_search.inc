@@ -846,7 +846,7 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
 		case "spending":
 				$parameter_mapping = array(
 						"spending_category_name" => "Spending Category",
-						"agency_name_export:if(exists(oge_agency_name),oge_agency_name,agency_name)" => "Agency",
+						"agency_name_export" => "Agency",
 						"department_name" => "Department",
 						"vendor_name" => "Payee Name",
 						"expenditure_object_name" => "Expense Category",
