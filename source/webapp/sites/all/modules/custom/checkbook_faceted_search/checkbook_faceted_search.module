@@ -435,7 +435,7 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
         }
     }
   }
-    if (count($ogeAgencies) > 0) {
+    /*if (count($ogeAgencies) > 0) {
         foreach ($ogeAgencies[0] as $agencyName => $count) {
           if ($count > 0) {
             $checked = in_array($agencyName, array_values_recursive($reqOGEAgencies[0]));
@@ -454,7 +454,7 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
                 $output['Other Government Entity']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
             }
         }
-      }
+      }*/
   if (count($vendors) > 0) {
     foreach ($vendors[0] as $vendorName => $count) {
       if ($count > 0) {
