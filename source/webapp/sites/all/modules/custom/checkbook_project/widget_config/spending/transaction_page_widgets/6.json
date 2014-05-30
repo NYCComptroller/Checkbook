@@ -290,7 +290,7 @@
         }
 ",
 "dataTableOptions":{
-         "bRetrieve": true,
+        "bRetrieve": true,
         "bServerSide": true,
         "bProcessing":true,
         "bFilter": false,
@@ -309,7 +309,7 @@
 		{"sClass":"text","sWidth":"229px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text", "sWidth":"90px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text", "sWidth":"165px","asSorting": [ "asc","desc" ]},
-		{"sClass":"text", "sWidth":"165px","asSorting": [ "asc","desc" ]},
+		{"sClass":"text pad-left", "sWidth":"200px","asSorting": [ "asc","desc" ]},
 		{"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
 		{"sClass":"text number-left","sWidth":"180px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"165px","asSorting": [ "asc","desc" ]},
