@@ -733,7 +733,7 @@ function checkbook_datafeeds_budget($form, &$form_state) {
     );
     //Hidden Field for multi-select
     $form['columns']['hidden_multiple_value'] = array(
-        '#value' => '',
+        '#value' => isset($form_state['values']['column_select']) ? '|'.implode('||',$form_state['values']['column_select']).'|' : '',
         '#type' => 'hidden',
     );
     $form['#attached'] = array(
@@ -1330,7 +1330,7 @@ function checkbook_datafeeds_contracts($form, &$form_state)
     );
     //Hidden Field for multi-select
     $form['columns']['hidden_multiple_value'] = array(
-        '#value' => '',
+        '#value' => isset($form_state['values']['column_select']) ? '|'.implode('||',$form_state['values']['column_select']).'|' : '',
         '#type' => 'hidden',
     );
 
@@ -2638,7 +2638,7 @@ function checkbook_datafeeds_payroll($form, &$form_state) {
     );
     //Hidden Field for multi-select
     $form['columns']['hidden_multiple_value'] = array(
-        '#value' => '',
+        '#value' => isset($form_state['values']['column_select']) ? '|'.implode('||',$form_state['values']['column_select']).'|' : '',
         '#type' => 'hidden',
     );
     $form['payroll_next'] = array(
@@ -3344,7 +3344,7 @@ function checkbook_datafeeds_revenue($form, &$form_state) {
     );
     //Hidden Field for multi-select
     $form['columns']['hidden_multiple_value'] = array(
-        '#value' => '',
+        '#value' => isset($form_state['values']['column_select']) ? '|'.implode('||',$form_state['values']['column_select']).'|' : '',
         '#type' => 'hidden',
     );
     $form['#attached'] = array(
@@ -3835,7 +3835,7 @@ function checkbook_datafeeds_spending($form, &$form_state)
     );
     //Hidden Field for multi-select
     $form['columns']['hidden_multiple_value'] = array(
-        '#value' => '',
+        '#value' => isset($form_state['values']['column_select']) ? '|'.implode('||',$form_state['values']['column_select']).'|' : '',
         '#type' => 'hidden',
     );
 

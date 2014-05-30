@@ -83,9 +83,27 @@
           container.append(selectableContainer);
           container.append(selectedContainer);
           ms.after(container);
-          ms.find('option:selected').each(function(){
-            ms.multiSelect('select', $(this).val(), 'init');
-          });
+
+          //For tracking order, use hidden field
+          //We should select values in the order that we have in our hidden field
+          var hiddenField = $('input[name="hidden_multiple_value"]');
+          var hiddenValue = hiddenField.val();
+
+          if(hiddenValue != '') {
+              //String the padding off the hidden string and put in array.
+              //i.e value = '|a||b||c|' array = {'a','b','c'}
+              hiddenValue = hiddenValue.substr(1);
+              hiddenValue = hiddenValue.substr(0, hiddenValue.length-1);
+              var arrayHiddenValues = hiddenValue.split("||");
+
+              $.each( arrayHiddenValues, function( index, value ){
+                  ms.multiSelect('select', value, 'init');
+              });
+          } else {
+              ms.find('option:selected').each(function() {
+                  ms.multiSelect('select', $(this).val(), 'init');
+              });
+          }
         }
       });
     },
@@ -103,7 +121,9 @@
         //For tracking order, use hidden field
         var hiddenField = $('input[name="hidden_multiple_value"]');
         var hiddenValue = hiddenField.val();
-        hiddenField.val(hiddenValue+'|'+value+'|');
+        //Don't add this more than once
+        if(hiddenValue.indexOf('|'+value+'|') < 0)
+            hiddenField.val(hiddenValue+'|'+value+'|');
       
         var selectedLi = $('<li class="ms-elem-selected'+(klass ? ' '+klass : '')+'" ms-value="'+value+'">'+text+'</li>'),
             selectableUl = $('#ms-'+ms.attr('id')+' .ms-selectable ul'),
