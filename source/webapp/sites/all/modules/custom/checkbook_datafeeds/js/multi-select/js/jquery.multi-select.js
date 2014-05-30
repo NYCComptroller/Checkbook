@@ -118,13 +118,6 @@
           klass = selectedOption.attr('class'),
           titleAttr = selectedOption.attr('title');
 
-        //For tracking order, use hidden field
-        var hiddenField = $('input[name="hidden_multiple_value"]');
-        var hiddenValue = hiddenField.val();
-        //Don't add this more than once
-        if(hiddenValue.indexOf('|'+value+'|') < 0)
-            hiddenField.val(hiddenValue+'|'+value+'|');
-      
         var selectedLi = $('<li class="ms-elem-selected'+(klass ? ' '+klass : '')+'" ms-value="'+value+'">'+text+'</li>'),
             selectableUl = $('#ms-'+ms.attr('id')+' .ms-selectable ul'),
             selectedUl = $('#ms-'+ms.attr('id')+' .ms-selection ul'),
@@ -134,6 +127,14 @@
                               (method != 'init' && !selectedOption.attr('selected')))
 
         if (haveToSelect ){
+        //For tracking order, use hidden field
+        var hiddenField = $('input[name="hidden_multiple_value"]');
+        var hiddenValue = hiddenField.val();
+
+        //Don't add this more than once
+        if(hiddenValue.indexOf('|'+value+'|') < 0)
+            hiddenField.val(hiddenValue+'|'+value+'|');
+
           var parentOptgroup = selectableLi.parent('.ms-optgroup');
           if (parentOptgroup.length > 0)
             if (parentOptgroup.children('.ms-elem-selectable:not(:hidden)').length == 1)
