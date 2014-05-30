@@ -846,16 +846,16 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
 		case "spending":
 				$parameter_mapping = array(
 						"spending_category_name" => "Spending Category",
-						"agency_name_export" => "Agency",
+						"agency_name" => "Agency",
 						"department_name" => "Department",
 						"vendor_name" => "Payee Name",
 						"expenditure_object_name" => "Expense Category",
 						"contract_number" => "Contract ID",
-						"spending_commodity_line" => "Commodity Line",						
+						//"spending_commodity_line" => "Commodity Line",
 						"check_amount" => "Check Amount",
 						"check_eft_issued_date_export" => "Issue Date",
-						"spending_entity_contract_number" => "Entity Contract#",
-						"spending_budget_name" => "Budget Name",
+						//"spending_entity_contract_number" => "Entity Contract#",
+						//"spending_budget_name" => "Budget Name",
 						"" => "",);
 			break;
 		case "contracts":
@@ -865,7 +865,7 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
 						"vendor_name"=>"Prime Vendor",
 						"agency_name_export"=>"Agency",
 						"contract_number"=>"Contract ID",
-						"contract_commodity_line" => "Commodity Line",						
+						//"contract_commodity_line" => "Commodity Line",
 						"version_number"=>"Version Number",
 						"contract_purpose"=>"Purpose",
 						"parent_contract_number"=>"Parent Contract ID",
@@ -880,8 +880,8 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
 						"registration_date"=>"Registration date",
 						"expense_category_name"=>"Expense Category",
 						"received_date"=>"Received date",
-						"contract_entity_contract_number" => "Entity Contract#",
-						"contract_budget_name" => "Budget Name",
+						//"contract_entity_contract_number" => "Entity Contract#",
+						//"contract_budget_name" => "Budget Name",
 				);		
 
 			break;
