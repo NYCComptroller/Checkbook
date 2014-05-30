@@ -19,7 +19,7 @@
 */
 ?>
 <h4>
-Vendor Information
+Prime Vendor Information
 </h4>
 <?php
 
