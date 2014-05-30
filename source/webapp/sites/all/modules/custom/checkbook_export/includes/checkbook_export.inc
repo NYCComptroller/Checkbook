@@ -113,7 +113,14 @@ function _checkbook_export_transactions(){
     $isList = $node->widgetConfig->useList;
     $data = NULL;
     $i = 0;
-    $columns = $node->widgetConfig->table_columns;
+    $exportColumns = $node->widgetConfig->table_columns;
+    $columns = array();
+    foreach($exportColumns as $column){
+        if(!isset($column->datasource) || (isset($column->datasource) && ($column->datasource == _getRequestParamValue('datasource')))){
+            array_push($columns, $column);
+        }
+    }
+
     $columnsConfig = array();
     foreach($columns as $column){
         if($column->export === FALSE){
