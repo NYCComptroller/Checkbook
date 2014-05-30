@@ -84,7 +84,7 @@ $vendor_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yea
 
 ?>
   <ul class="left">
-    <li><span class="gi-list-item">Vendor:</span> <a href="<?php echo $vendor_link;?> " ><?php echo $node->data[0]['vendor_name'] ;?></a></li>
+    <li><span class="gi-list-item">Prime Vendor:</span> <a href="<?php echo $vendor_link;?> " ><?php echo $node->data[0]['vendor_name'] ;?></a></li>
   <?php
       $address = $node->data[0]['address_line_1'] ;
       $address .= " "  .  $node->data[0]['address_line_2'];
