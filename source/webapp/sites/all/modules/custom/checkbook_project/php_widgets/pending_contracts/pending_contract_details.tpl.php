@@ -58,7 +58,7 @@
   <div class="contract-details">
     <h4>General Information</h4>
     <ul class="left">
-      <li><span class="gi-list-item">Vendor:</span> <a
+      <li><span class="gi-list-item">Prime Vendor:</span> <a
         href="<?php echo $vendor_link;?>"><?php echo $node->data[0]['legal_name_checkbook_vendor'];?></a></li>
       <li><span class="gi-list-item">Purpose:</span> <?php echo $node->data[0]['description'];?></li>
       <li><span class="gi-list-item">Contracting Agency:</span> <a
