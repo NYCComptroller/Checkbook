@@ -11,7 +11,7 @@ function checkbook_advanced_search_form_submit($form, &$form_state)
             _checkbook_advanced_search_revenue_submit($form, $form_state);
             break;
         case "spending_submit":
-            $data_source = 'checkbook';//$form_state['values']['spending_advanced_search_domain_filter'];
+            $data_source = $form_state['values']['spending_advanced_search_domain_filter'];
             _checkbook_advanced_search_spending_submit($form, $form_state, $data_source);
             break;
         case "budget_submit":
@@ -21,7 +21,7 @@ function checkbook_advanced_search_form_submit($form, &$form_state)
             _checkbook_advanced_search_payroll_submit($form, $form_state);
             break;
         case "contracts_submit":
-            $data_source = 'checkbook';//$form_state['values']['contracts_advanced_search_domain_filter'];
+            $data_source = $form_state['values']['contracts_advanced_search_domain_filter'];
             _checkbook_advanced_search_contracts_submit($form, $form_state, $data_source);
             break;
         default:
