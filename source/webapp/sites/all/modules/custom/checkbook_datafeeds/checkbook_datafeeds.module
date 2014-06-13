@@ -1231,6 +1231,13 @@ function checkbook_datafeeds_contracts($form, &$form_state)
 {
     $data_type = $form_state['step_information']['type']['stored_values']['format'];
     $data_source = $form_state['values']['datafeeds-contracts-domain-filter'];
+    $data_source = !isset($data_source) ? 'checkbook' : $data_source;
+
+    $form['data_source'] = array(
+        '#title' =>  'data_source',
+        '#value' => $data_source,
+        '#type' => 'hidden'
+    );
 
     //<editor-fold desc="Heading">
 
@@ -1251,7 +1258,7 @@ function checkbook_datafeeds_contracts($form, &$form_state)
     $form['datafeeds-contracts-domain-filter'] = array(
         '#type' => 'radios',
         '#options' => array('checkbook' => 'Citywide Agencies', 'checkbook_oge' => 'Other Government Entities'),
-        '#default_value' => !isset($data_source) ? 'checkbook' : $data_source,
+        '#default_value' => $data_source,
         '#prefix' => '<div id="div_data_source">',
         '#suffix' => '</div><br/><br/>',
         '#parents' => array('datafeeds-contracts-domain-filter'),
@@ -1259,8 +1266,13 @@ function checkbook_datafeeds_contracts($form, &$form_state)
             'event' => 'change',
             'callback' => 'checkbook_datafeeds_contracts_filter_ajax',
             'method' => 'replace',
-            'parameters' => array('data_source_changed' => true),
-        )
+            'parameters' => array('data_source_changed' => true, 'new_data_source' => $data_source),
+        ),
+        '#states' => array(
+            'checked' => array(
+                ':input[name="report_group[selectall]"]' => array('checked' => TRUE),
+            ),
+        ),
     );
 
     $form['filter'] = array(
@@ -1849,9 +1861,13 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
  * Updates the form to point to correct data source
  */
 function checkbook_datafeeds_contracts_filter_ajax($form, $form_state) {
+    $new_data_source = $form['datafeeds-contracts-domain-filter']['#ajax']['parameters']['new_data_source'];
+
+    $commands[] = ajax_command_replace('.messages', '');
     $commands[] = ajax_command_replace('#dynamic-filter-data-wrapper', drupal_render($form['filter']));
     $commands[] = ajax_command_replace('#dynamic-columns-wrapper', drupal_render($form['columns']));
     $commands[] = ajax_command_invoke(NULL, 'onDataSourceChange');
+    $commands[] = ajax_command_invoke('input:hidden[name="data_source"]', 'val', array($new_data_source));
 
     return array('#type' => 'ajax', '#commands' => $commands);
 }
@@ -3746,6 +3762,13 @@ function checkbook_datafeeds_spending($form, &$form_state)
 {
     $datatype = $form_state['step_information']['type']['stored_values']['format'];
     $data_source = $form_state['values']['datafeeds-spending-domain-filter'];
+    $data_source = !isset($data_source) ? 'checkbook' : $data_source;
+
+    $form['data_source'] = array(
+        '#title' =>  'data_source',
+        '#value' => $data_source,
+        '#type' => 'hidden'
+    );
 
     //<editor-fold desc="Heading">
 
@@ -3774,7 +3797,7 @@ function checkbook_datafeeds_spending($form, &$form_state)
             'event' => 'change',
             'callback' => 'checkbook_datafeeds_spending_filter_ajax',
             'method' => 'replace',
-            'parameters' => array('data_source_changed' => true),
+            'parameters' => array('data_source_changed' => true, 'new_data_source' => $data_source),
         )
     );
 
@@ -4357,11 +4380,14 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
  */
 function checkbook_datafeeds_spending_filter_ajax($form, $form_state) {
 
+    $new_data_source = $form['datafeeds-spending-domain-filter']['#ajax']['parameters']['new_data_source'];
+
     $commands[] = ajax_command_replace('.messages', '');
     $commands[] = ajax_command_replace('#dynamic-filter-data-wrapper', drupal_render($form['filter']));
     $commands[] = ajax_command_replace('#dynamic-columns-wrapper', drupal_render($form['columns']));
     $commands[] = ajax_command_invoke('#edit-year option[value="'.'FY' . currentFiscalYear().'"]', 'attr', array('selected','selected'));
     $commands[] = ajax_command_invoke(NULL, 'onDataSourceChange');
+    $commands[] = ajax_command_invoke('input:hidden[name="data_source"]', 'val', array($new_data_source));
 
     return array('#type' => 'ajax', '#commands' => $commands);
 }

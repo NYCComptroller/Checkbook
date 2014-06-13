@@ -1,5 +1,17 @@
 (function ($) {
 
+    $(document).ready(function () {
+        //This is to reset the radio button to citywide if the user refreshes browser
+        var data_source = $('input:hidden[name="data_source"]').val();
+        var agency_selected = $('#edit-agency').val();
+
+        if (data_source == "checkbook_oge" && agency_selected == 'Citywide (All Agencies)') {
+            $('input:radio[name="datafeeds-contracts-domain-filter"][value="checkbook_oge"]').removeAttr('checked').button("refresh");
+            $('input:radio[name="datafeeds-contracts-domain-filter"][value="checkbook"]').attr('checked', 'checked').button("refresh");
+            $('input:hidden[name="data_source"]').val("checkbook");
+        }
+    });
+
     $.fn.onDataSourceChange = function(){
         //clear all text fields
         var enclosingDiv = $("#dynamic-filter-data-wrapper").children('#edit-filter').children('div.fieldset-wrapper').children();
