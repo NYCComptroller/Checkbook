@@ -28,6 +28,7 @@ scripts[] = js/contracts.js
 scripts[] = js/transactions.js
 scripts[] = js/cookie_breadcrumbs.js
 
+files[] = customclasses/contract/ContractUtil.php
 files[] = customclasses/masterAgreementDetails.php
 files[] = customclasses/childAgreementDetails.php
 files[] = customclasses/RequestUtil.php
