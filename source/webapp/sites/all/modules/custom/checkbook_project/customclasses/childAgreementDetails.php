@@ -17,7 +17,9 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
- 
+
+require_once(realpath(drupal_get_path('module', 'checkbook_project')) .'/customclasses/contract/ContractUtil.php');
+
 class childAgreementDetails {
   
   public function getData(&$node){
@@ -106,6 +108,8 @@ class childAgreementDetails {
     		$node->maximum_contract_amount = $row['current_amount'] ;
     		$node->total_child_contracts = $row['num_associated_contracts'];
     	}
+
+        $node->data_source_amounts_differ = ContractUtil::childAgreementAmountsDiffer($ag_id);
     }
   }
   

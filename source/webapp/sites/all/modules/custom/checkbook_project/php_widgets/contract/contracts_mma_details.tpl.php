@@ -51,19 +51,19 @@ if(!preg_match("/newwindow/",current_path())){
       class="contract-number"><?php echo $node->data[0]['contract_number'];?></span></h2>
 	<?php
 		//$oge_agency_id = _checkbook_get_oge_agency_id($node->data[0]['vendor_id_checkbook_vendor_history']);
-		
-		
-		
-		if ( _getRequestParamValue("datasource") == "checkbook_oge" && !preg_match('/newwindow/',$_GET['q']) ) {
-			$alt_txt = "This master agreement has information as a prime vendor.<br><br> Click this icon to view this contract as a prime vendor. ";
-			$url="/contract_details/magid/" .  _getRequestParamValue("magid") . "/doctype/MMA1/newwindow";
-			echo "<div class='contractLinkNote'><a class='new_window' href='". $url ."' alt='" . $alt_txt . "' >Open in New Window</a></div>"; 
-		}elseif( !preg_match('/newwindow/',$_GET['q']) && _checkbook_is_oge_parent_contract($node->data[0]['contract_number'])  ){
-			$alt_txt = "This master agreement has information as an agency <br><br> Click this icon to view this contract as an agency ";
-			$url="/contract_details/magid/" .  _getRequestParamValue("magid") . "/doctype/MMA1/datasource/checkbook_oge/newwindow";
-			echo "<div class='contractLinkNote'><a class='new_window' href='". $url ."' alt='" . $alt_txt . "' >Open in New Window</a></div>";
-		}	
-	?>
+
+
+
+    if ( _getRequestParamValue("datasource") == "checkbook_oge" && !preg_match('/newwindow/',$_GET['q']) && $node->data_source_amounts_differ) {
+        $alt_txt = "This master agreement has information as a prime vendor.<br><br> Click this icon to view this contract as a prime vendor. ";
+        $url="/contract_details/magid/" .  _getRequestParamValue("magid") . "/doctype/MMA1/newwindow";
+        echo "<div class='contractLinkNote'><a class='new_window' href='". $url ."' alt='" . $alt_txt . "' >Open in New Window</a></div>";
+    }elseif( !preg_match('/newwindow/',$_GET['q']) && _checkbook_is_oge_parent_contract($node->data[0]['contract_number'])  && $node->data_source_amounts_differ){
+        $alt_txt = "This master agreement has information as an agency <br><br> Click this icon to view this contract as an agency ";
+        $url="/contract_details/magid/" .  _getRequestParamValue("magid") . "/doctype/MMA1/datasource/checkbook_oge/newwindow";
+        echo "<div class='contractLinkNote'><a class='new_window' href='". $url ."' alt='" . $alt_txt . "' >Open in New Window</a></div>";
+    }
+    ?>
   </div>
   <div class="dollar-amounts">
     <?php if(!preg_match('/RCT1/',$node->data[0]['contract_number'])){?>
