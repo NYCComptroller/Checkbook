@@ -109,8 +109,8 @@ $maximum_contract_amount =  ( _getRequestParamValue("datasource") == "checkbook_
     <?php
     if ( _getRequestParamValue("datasource") == "checkbook_oge") {
     ?>
-      <li><span class="gi-list-item">Contracting Agency:</span> <a
-        href="<?php echo $agency_link;?>"><?php echo $node->data[0]['agency_name_checkbook_agency'];?></a></li>
+        <li><span class="gi-list-item">Contracting Agency:</span>
+            <?php echo $node->data[0]['agency_name_checkbook_agency'];?></li>
         <?php
     }else{
     ?>
