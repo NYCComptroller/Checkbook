@@ -93,23 +93,13 @@ function clearInputFieldByDataSource(enclosingDiv,domain,dataSource){
                         jQuery('#edit-payroll-amount-type-0').attr('checked','checked');
                         break;
                     case 'spending':
-//                        jQuery(':radio[name="spending_advanced_search_domain_filter"][value="'+dataSource+'"]').click();
+                        jQuery(':radio[name="spending_advanced_search_domain_filter"][value="'+dataSource+'"]').click();
                         break;
                     case 'contracts':
-//                        jQuery(':radio[name="contracts_advanced_search_domain_filter"][value="'+dataSource+'"]').click();
+                        jQuery(':radio[name="contracts_advanced_search_domain_filter"][value="'+dataSource+'"]').click();
                         break;
                 }
                 break;
-        }
-        //Commenting out oge code, initialize spengin here for now
-        if(domain == 'spending') {
-            //no oge
-            jQuery('input:radio[name=checkbook_spending_date_filter][value=0]').attr('checked','checked');
-            jQuery('select[name="checkbook_spending_fiscal_year"]').removeAttr("disabled");
-            jQuery('input:text[name="checkbook_spending_issue_date_from[date]"]').attr("disabled", "disabled");
-            jQuery('input:text[name="checkbook_spending_issue_date_to[date]"]').attr("disabled", "disabled");
-            jQuery('select[name="checkbook_spending_department"]').attr("disabled", "disabled");
-            jQuery('select[name="checkbook_spending_expense_category"]').attr("disabled", "disabled");
         }
     })
 }

@@ -37,14 +37,14 @@
         var div_checkbook_contracts = new contracts_div('checkbook', div_contracts_main.children('div.checkbook'));
         var div_checkbook_contracts_oge = new contracts_div('checkbook_oge', div_contracts_main.children('div.checkbook-oge'));
 
-//        //On change of data source
-//        $('input:radio[name=contracts_advanced_search_domain_filter]').change(function () {
-//            onChangeDataSource($('input[name=contracts_advanced_search_domain_filter]:checked').val());
-//        });
-//        ///checkbook_advanced_search_clear_button.js sets this value by default
-//        $('input:radio[name=contracts_advanced_search_domain_filter]').click(function () {
-//            onChangeDataSource($('input[name=contracts_advanced_search_domain_filter]:checked').val());
-//        });
+        //On change of data source
+        $('input:radio[name=contracts_advanced_search_domain_filter]').change(function () {
+            onChangeDataSource($('input[name=contracts_advanced_search_domain_filter]:checked').val());
+        });
+        ///checkbook_advanced_search_clear_button.js sets this value by default
+        $('input:radio[name=contracts_advanced_search_domain_filter]').click(function () {
+            onChangeDataSource($('input[name=contracts_advanced_search_domain_filter]:checked').val());
+        });
 
         function onChangeDataSource(dataSource) {
 

@@ -1232,46 +1232,13 @@ function checkbook_datafeeds_contracts($form, &$form_state)
     $data_type = $form_state['step_information']['type']['stored_values']['format'];
     $data_source = $form_state['values']['datafeeds-contracts-domain-filter'];
 
-//    //<editor-fold desc="Heading">
-//
-//    $form['loaded'] = array(
-//        '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date('contracts') . '</div>',
-//    );
-//    $form['requiredmessage'] = array(
-//        '#markup' => '<p class="required-message">Fields marked with an asterisk (<span class="form-required">*</span>) are required.</p><br/>',
-//    );
-//    $form['description'] = array(
-//        '#markup' => '<h2 class="domain-title">Contracts</h2>'
-//    );
-//
-//    //</editor-fold>
-//
-//    //<editor-fold desc="Filter">
-//
-//    $form['datafeeds-contracts-domain-filter'] = array(
-//        '#type' => 'radios',
-//        '#options' => array('checkbook' => 'Citywide Agencies', 'checkbook_oge' => 'Other Government Entities'),
-//        '#default_value' => !isset($data_source) ? 'checkbook' : $data_source,
-//        '#prefix' => '<div id="div_data_source">',
-//        '#suffix' => '</div><br/><br/>',
-//        '#parents' => array('datafeeds-contracts-domain-filter'),
-//        '#ajax' => array(
-//            'event' => 'change',
-//            'callback' => 'checkbook_datafeeds_contracts_filter_ajax',
-//            'method' => 'replace',
-//            'parameters' => array('data_source_changed' => true),
-//        )
-//    );
     //<editor-fold desc="Heading">
 
-    $form['description'] = array(
-        '#markup' => '<h2 class="domain-title">Contracts</h2>'
-    );
     $form['loaded'] = array(
         '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date('contracts') . '</div>',
     );
     $form['requiredmessage'] = array(
-        '#markup' => '<p class="required-message">Fields marked with an asterisk (<span class="form-required">*</span>) are required.</p>',
+        '#markup' => '<p class="required-message">Fields marked with an asterisk (<span class="form-required">*</span>) are required.</p><br/>',
     );
     $form['description'] = array(
         '#markup' => '<h2 class="domain-title">Contracts</h2>'
@@ -1280,6 +1247,21 @@ function checkbook_datafeeds_contracts($form, &$form_state)
     //</editor-fold>
 
     //<editor-fold desc="Filter">
+
+    $form['datafeeds-contracts-domain-filter'] = array(
+        '#type' => 'radios',
+        '#options' => array('checkbook' => 'Citywide Agencies', 'checkbook_oge' => 'Other Government Entities'),
+        '#default_value' => !isset($data_source) ? 'checkbook' : $data_source,
+        '#prefix' => '<div id="div_data_source">',
+        '#suffix' => '</div><br/><br/>',
+        '#parents' => array('datafeeds-contracts-domain-filter'),
+        '#ajax' => array(
+            'event' => 'change',
+            'callback' => 'checkbook_datafeeds_contracts_filter_ajax',
+            'method' => 'replace',
+            'parameters' => array('data_source_changed' => true),
+        )
+    );
 
     $form['filter'] = array(
         '#type' => 'fieldset',
@@ -3767,38 +3749,35 @@ function checkbook_datafeeds_spending($form, &$form_state)
 
     //<editor-fold desc="Heading">
 
-//    $form['loaded'] = array(
-//        '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date('spending') . '</div>',
-//    );
-//    $form['requiredmessage'] = array(
-//        '#markup' => '<p class="required-message">Fields marked with an asterisk (<span class="form-required">*</span>) are required.</p><br/>',
-//    );
-//    $form['description'] = array(
-//        '#markup' => '<h2 class="domain-title">Spending</h2>',
-//    );
-//    $form['datafeeds-spending-domain-filter'] = array(
-//        '#type' => 'radios',
-//        '#options' => array('checkbook' => 'Citywide Agencies', 'checkbook_oge' => 'Other Government Entities'),
-//        '#default_value' => !isset($data_source) ? 'checkbook' : $data_source,
-//        '#prefix' => '<div id="div_data_source">',
-//        '#suffix' => '</div><br/><br/>',
-//        '#parents' => array('datafeeds-spending-domain-filter'),
-//        '#ajax' => array(
-//            'event' => 'change',
-//            'callback' => 'checkbook_datafeeds_spending_filter_ajax',
-//            'method' => 'replace',
-//            'parameters' => array('data_source_changed' => true),
-//        )
-//    );
-    $form['description'] = array(
-        '#markup' => '<h2 class="domain-title">Spending</h2>',
-    );
     $form['loaded'] = array(
         '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date('spending') . '</div>',
     );
     $form['requiredmessage'] = array(
-        '#markup' => '<p class="required-message">Fields marked with an asterisk (<span class="form-required">*</span>) are required.</p>',
+        '#markup' => '<p class="required-message">Fields marked with an asterisk (<span class="form-required">*</span>) are required.</p><br/>',
     );
+    $form['description'] = array(
+        '#markup' => '<h2 class="domain-title">Spending</h2>',
+    );
+
+    //</editor-fold>
+
+    //<editor-fold desc="Filter">
+
+    $form['datafeeds-spending-domain-filter'] = array(
+        '#type' => 'radios',
+        '#options' => array('checkbook' => 'Citywide Agencies', 'checkbook_oge' => 'Other Government Entities'),
+        '#default_value' => !isset($data_source) ? 'checkbook' : $data_source,
+        '#prefix' => '<div id="div_data_source">',
+        '#suffix' => '</div><br/><br/>',
+        '#parents' => array('datafeeds-spending-domain-filter'),
+        '#ajax' => array(
+            'event' => 'change',
+            'callback' => 'checkbook_datafeeds_spending_filter_ajax',
+            'method' => 'replace',
+            'parameters' => array('data_source_changed' => true),
+        )
+    );
+
     $form['filter'] = array(
         '#type' => 'fieldset',
         '#title' => t('3. Filter the Data:'),
