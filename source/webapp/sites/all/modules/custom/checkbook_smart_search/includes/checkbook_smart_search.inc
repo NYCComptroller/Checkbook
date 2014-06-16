@@ -705,6 +705,13 @@ function _checkbook_smart_search_export_data(){
     $results = _checkbook_smart_search_get_results_csv($search_terms, $page_num , $page_size,$fl, true);
     $page_num += 1 ;
     $remaining = $remaining - $page_size;
+    /*
+     * For data which should be N/A and represent a timestamp,
+     * the column selected from solr is "1970-01-01 00:00:00 UTC" (epoch time)
+     * and we convert it to N/A here.  This is because a null timestamp would return
+     * and empty string and is not reliable for casting.
+     */
+    $results = preg_replace("/1970-01-01T05:00:00Z/","N/A",$results);
     echo preg_replace("/(\d{4})-(\d{2})-(\d{2})...:..:.../","$2/$3/$1",$results);
     ob_flush();
     flush();
@@ -853,7 +860,7 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
 						"contract_number" => "Contract ID",
 						//"spending_commodity_line" => "Commodity Line",
 						"check_amount" => "Check Amount",
-						"check_eft_issued_date_export" => "Issue Date",
+						"check_eft_issued_date" => "Issue Date",
 						//"spending_entity_contract_number" => "Entity Contract#",
 						//"spending_budget_name" => "Budget Name",
 						"" => "",);
