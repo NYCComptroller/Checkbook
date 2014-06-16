@@ -27,6 +27,7 @@ scripts[] = js/year_select_redirection.js
 scripts[] = js/contracts.js
 scripts[] = js/transactions.js
 scripts[] = js/cookie_breadcrumbs.js
+scripts[] = js/jquery.sticky.js
 
 files[] = customclasses/contract/ContractUtil.php
 files[] = customclasses/masterAgreementDetails.php
