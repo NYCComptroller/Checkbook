@@ -2,6 +2,11 @@
 ***   GENERAL LAYOUT STYLES   ***
 ********************************/
 
+/* Sticky Plugin v1.0.0 for jQuery */
+.sticky-header-left-side > div.DTFC_LeftHeadWrapper {
+    left: auto !important;
+}
+
 /* body/wrapper styles */
 body {
     background: url("../images/background.png") no-repeat scroll center top #F1F1F1;
