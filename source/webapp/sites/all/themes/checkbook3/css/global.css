@@ -3,7 +3,8 @@
 ********************************/
 
 /* Sticky Plugin v1.0.0 for jQuery */
-.sticky-header-left-side > div.DTFC_LeftHeadWrapper {
+.sticky-wrapper > div {
+    z-index: 20;
     left: auto !important;
 }
 
