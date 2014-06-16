@@ -138,4 +138,5 @@ function jquery_plugins_init() {
   drupal_add_library('system', 'ui.dialog');
   drupal_add_library('system', 'jquery.cookie');
   drupal_add_library('jquery_plugins','custom-scrollbar',TRUE);
+  drupal_add_library('jquery_plugins','sticky',TRUE);
 }
