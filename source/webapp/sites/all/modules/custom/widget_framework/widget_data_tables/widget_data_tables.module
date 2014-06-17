@@ -769,7 +769,7 @@ function widget_data_tables_export_link($node) {
 
 function widget_data_tables_alerts_link($node){
     $nid = widget_unique_identifier($node);
-    return "<span class=alerts alertsid={$nid}>Create Alert</span>";
+    return "<span class=alerts alertsid={$nid}>Schedule Alert</span>";
 }
 
 function escapeSpecialCharacters($string) {
