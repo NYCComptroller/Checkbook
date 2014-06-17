@@ -2106,7 +2106,7 @@ span.export {
     height:17px;
     cursor: pointer;
     position: absolute;
-    top:0px;
+    top:17px;
     right: 0px;
     padding-top:3px;
     color: #209AD6;
@@ -2114,16 +2114,19 @@ span.export {
     text-transform: uppercase;
 }
 span.alerts {
-    height:17px;
+    background: url("../images/create-alert.png") no-repeat scroll right 0 transparent;
+    height:18px;
+    width:123px;
     cursor: pointer;
     position: absolute;
-    top:17px;
-    right: 24px;
-    padding-top:3px;
+    top:-8px;
+    right: 0px;
+    padding-top:5px;
     color: #209AD6;
     font-weight: bold;
     text-transform: uppercase;
 }
+
 .newwindow .contract-details-heading a{
   color: #5C5C5C;
   cursor: default;
