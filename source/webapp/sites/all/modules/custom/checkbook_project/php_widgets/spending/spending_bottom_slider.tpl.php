@@ -40,7 +40,7 @@
       <?php if($total != 0 ){?>        
           <a href="/<?php echo $link; ?>?expandBottomCont=true"><?php echo $count; ?>Total<br>Spending<br><?php echo $dollars; ?></a>
         <?php }else{?>
-        <?php echo $count; ?>Total<br>Spending<br><?php echo $dollars; ?>
+        <?php echo $count; ?><a>Total<br>Spending</a><?php echo $dollars; ?>
         <?php }?>           
         </div>
         <div class="indicator"></div>
