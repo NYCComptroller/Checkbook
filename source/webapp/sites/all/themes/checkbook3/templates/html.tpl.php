@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php print $language->language; ?>" version="XHTML+RDFa 1.0" dir="<?php print $language->dir; ?>"<?php print $rdf_namespaces; ?>>
 <head profile="<?php print $grddl_profile; ?>">
   <?php print $head; ?>
-  <title>Checkbook NYC 2.0</title>
+  <title>Checkbook NYC</title>
   <?php print $styles; ?>
   <?php print $scripts; ?>
 </head>
