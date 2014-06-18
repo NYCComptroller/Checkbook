@@ -276,68 +276,68 @@ function _checkbook_smart_search_get_selected_facet_results($search_terms, $face
 /** Returns Facet results */
 function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $offset = null, $limit = null, $exclude = FALSE, $fromScroll = FALSE){
 
-    $parameter_mapping = array(
-        "oge_agency_names" => "oge_agency_name",
-        "agency_names" => "agency_name",
-        "fiscal_years" => "fiscal_year",
-        "domains" => "domain",
-        "vendor_names" => "vendor_name",
-        "expense_categories" => "expenditure_object_name",
-        "revenue_categories" => "revenue_category_name",
-        "spending_categories" => "spending_category_name",
-        "contract_categories" => "contract_category_name",
-        "contract_status" => "contract_status"
-    );
+        $parameter_mapping = array(
+          "oge_agency_names" => "oge_agency_name",
+          "agency_names" => "agency_name",
+          "fiscal_years" => "fiscal_year",
+          "domains" => "domain",
+          "vendor_names" => "vendor_name",
+          "expense_categories" => "expenditure_object_name",
+          "revenue_categories" => "revenue_category_name",
+          "spending_categories" => "spending_category_name",
+          "contract_categories" => "contract_category_name",
+          "contract_status" => "contract_status"
+        );
 
-    $search_string = $search_terms[0];
-    $termcount = 0;
-    for($i=1;$i < count($search_terms);$i++){
-        $req_params  = explode('=', $search_terms[$i]);
-        $filters = explode('~',urldecode($req_params[1]));
-        $sub_query = "";
+        $search_string = $search_terms[0];
+        $termcount = 0;
+        for($i=1;$i < count($search_terms);$i++){
+            $req_params  = explode('=', $search_terms[$i]);
+            $filters = explode('~',urldecode($req_params[1]));
+            $sub_query = "";
 
-        foreach($filters as $value){
-            if($req_params[0] != $facet_name){
-                $sub_query .=  "(". $parameter_mapping[$req_params[0]] .":" .
-                    _checkbook_smart_search_escapeSolrValue('"'.$value.'"').")%20OR%20";
-            } elseif ($req_params[0] == $facet_name && $exclude == TRUE){
-                $sub_query .= "-".$parameter_mapping[$req_params[0]] . ":" . _checkbook_smart_search_escapeSolrValue('"'.$value.'"') . "%20OR%20";
-            } elseif ($req_params[0] == $facet_name){
-                $termcount++;
+            foreach($filters as $value){
+                if($req_params[0] != $facet_name){
+                    $sub_query .=  "(". $parameter_mapping[$req_params[0]] .":" .
+                          _checkbook_smart_search_escapeSolrValue('"'.$value.'"').")%20OR%20";
+                } elseif ($req_params[0] == $facet_name && $exclude == TRUE){
+                    $sub_query .= "-".$parameter_mapping[$req_params[0]] . ":" . _checkbook_smart_search_escapeSolrValue('"'.$value.'"') . "%20OR%20";
+                } elseif ($req_params[0] == $facet_name){
+                  $termcount++;
+                }
             }
+
+            $sub_query = substr($sub_query, 0, -8);
+            if(strlen($sub_query) > 0)
+                $search_string .= "&fq="  . $sub_query;
         }
-
-        $sub_query = substr($sub_query, 0, -8);
-        if(strlen($sub_query) > 0)
-            $search_string .= "&fq="  . $sub_query;
-    }
-    $query = "select/?q=". $search_string
-        ."&facet=true"
-        ."&fq=-latest_flag:N"
-        ."&facet.sort=count"
-        ."&facet.field=".$parameter_mapping[$facet_name]
-        ."&wt=php"
-        ."&facet.mincount=1";
+        $query = "select/?q=". $search_string
+                  ."&facet=true"
+                  ."&fq=-latest_flag:N"
+                  ."&facet.sort=count"
+                  ."&facet.field=".$parameter_mapping[$facet_name]
+                  ."&wt=php"
+                  ."&facet.mincount=1";
 
 
-    if ($offset){
-        $query .= "&facet.offset=".$offset;
-    }
-    if ($limit && $limit >= 0 && !$fromScroll){
-        $query .= "&facet.limit=". ($limit + $termcount);
-    } elseif ($limit){
-        $query .= "&facet.limit=". $limit;
-    }
-    $facet_results = _checkbook_smart_search_solr_results($query);
+        if ($offset){
+          $query .= "&facet.offset=".$offset;
+        }
+        if ($limit && $limit >= 0 && !$fromScroll){
+          $query .= "&facet.limit=". ($limit + $termcount);
+        } elseif ($limit){
+          $query .= "&facet.limit=". $limit;
+        }
+        $facet_results = _checkbook_smart_search_solr_results($query);
 
-    return $facet_results;
+        return $facet_results;
 }
 
 /**
  *  Outputs the suggestions for the given input.
  *  @param $string
  *  @return the matching words
- **/
+**/
 function _checkbook_smart_search_autocomplete(){
 
     $search_term = htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES);
@@ -351,13 +351,13 @@ function _checkbook_smart_search_autocomplete(){
 
 
     $query = "terms/?terms.fl=agency_name"
-        ."&terms.fl=oge_agency_name"
-        ."&terms.fl=vendor_name"
-        ."&terms.fl=revenue_category_name"
-        ."&terms.fl=expenditure_object_name"
-        ."&terms.regex=". $search_term ."&wt=php";
+             ."&terms.fl=oge_agency_name"
+             ."&terms.fl=vendor_name"
+             ."&terms.fl=revenue_category_name"
+             ."&terms.fl=expenditure_object_name"
+             ."&terms.regex=". $search_term ."&wt=php";
 
-    $contents = _checkbook_smart_search_solr_results($query);
+	$contents = _checkbook_smart_search_solr_results($query);
     $matches = array();
     $count = 0;
     foreach($contents['terms'] as $key=>$value){
@@ -414,21 +414,21 @@ function _checkbook_smart_search_autocomplete(){
  *  Outputs query string for facet auto complete fields
  *  @param $facetName
  *  @return the Query String
- **/
+**/
 function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$facet_autocomplete_field){
 //"vendor_names","vendor_name_autocomplete"
 // "oge_agency_names","oge_agency_name_autocomplete"
     $parameter_mapping = array(
-        "oge_agency_names" => "oge_agency_name",
-        "agency_names" => "agency_name",
-        "fiscal_years" => "fiscal_year",
-        "domains" => "domain",
-        "vendor_names" => "vendor_name",
-        "expense_categories" => "expenditure_object_name",
-        "revenue_categories" => "revenue_category_name",
-        "spending_categories" => "spending_category_name",
-        "contract_categories" => "contract_category_name",
-        "contract_status" => "contract_status");
+                              "oge_agency_names" => "oge_agency_name",
+                              "agency_names" => "agency_name",
+                              "fiscal_years" => "fiscal_year",
+                              "domains" => "domain",
+                              "vendor_names" => "vendor_name",
+                              "expense_categories" => "expenditure_object_name",
+                              "revenue_categories" => "revenue_category_name",
+                              "spending_categories" => "spending_category_name",
+                              "contract_categories" => "contract_category_name",
+                              "contract_status" => "contract_status");
 
     $autocomplete_text = trim(htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES));//eco
 
@@ -440,7 +440,7 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
             if(strlen($value) > 0)
                 $autocomplete_text .= _checkbook_autocomplete_escapeSolrValue($value)."*%20AND%20"; //eco*%20AND%20
         }
-        $autocomplete_text = "(". substr($autocomplete_text, 0, -9) . ")"; //(eco*)
+            $autocomplete_text = "(". substr($autocomplete_text, 0, -9) . ")"; //(eco*)
     }else{
         $autocomplete_text = _checkbook_autocomplete_escapeSolrValue($autocomplete_text)."*";
     }
@@ -463,35 +463,35 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
         $sub_query = "";
         foreach($filters as $key=>$value){
             if($req_params[0] != $facet_name){
-                $sub_query .=  "(". $parameter_mapping[$req_params[0]] .":" .
-                    _checkbook_smart_search_escapeSolrValue('"'.$value.'"').")%20OR%20";
+                    $sub_query .=  "(". $parameter_mapping[$req_params[0]] .":" .
+                          _checkbook_smart_search_escapeSolrValue('"'.$value.'"').")%20OR%20";
             }
         }
         $search_string .= (strlen($sub_query) > 0) ? "&fq="  . substr($sub_query, 0, -8) : "";
     }
     $query = "select/?q=". $search_string // *:*
-        .$autocomplete_text //&fq=oge_agency_name_autocomplete:(eco*)
-        ."&facet=true"
-        ."&fq=-latest_flag:N"
-        ."&facet.field=".$parameter_mapping[$facet_name] // oge_agency_name
-        ."&facet.limit=10"
-        ."&wt=php";
+                  .$autocomplete_text //&fq=oge_agency_name_autocomplete:(eco*)
+                  ."&facet=true"
+                  ."&fq=-latest_flag:N"
+                  ."&facet.field=".$parameter_mapping[$facet_name] // oge_agency_name
+                  ."&facet.limit=10"
+                  ."&wt=php";
 
     $results = _checkbook_smart_search_solr_results($query);
 
     if ($results['response']['numFound'] != 0) {
-        $facet_results = $results['facet_counts']['facet_fields'][$parameter_mapping[$facet_name]];
-        $matches = array();
-        foreach ($facet_results as $key => $value) {
-            if ($value > 0) {
-                $key = (string)$key;
-                array_push($matches, array("url"=>"","category"=>$facet_name ,"label" => $key, "value" => urlencode($key)));
-            }
+      $facet_results = $results['facet_counts']['facet_fields'][$parameter_mapping[$facet_name]];
+      $matches = array();
+      foreach ($facet_results as $key => $value) {
+        if ($value > 0) {
+          $key = (string)$key;
+          array_push($matches, array("url"=>"","category"=>$facet_name ,"label" => $key, "value" => urlencode($key)));
         }
-        return drupal_json_output($matches);
+      }
+      return drupal_json_output($matches);
     }
     else {
-        return drupal_json_output(array(array('label' => 'No Matches Found', 'value' => 'No Matches Found')));
+      return drupal_json_output(array(array('label' => 'No Matches Found', 'value' => 'No Matches Found')));
     }
 }
 
@@ -499,7 +499,7 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
  *  Outputs the agency suggestions for the given input.
  *  @param $string
  *  @return the matching words
- **/
+**/
 function _checkbook_smart_search_agency_autocomplete(){
     $agencies = _checkbook_smart_search_get_searchstring_autocomplete("agency_names","agency_name_autocomplete");
     return $agencies;
@@ -519,7 +519,7 @@ function _checkbook_smart_search_oge_autocomplete(){
  *  Outputs the vendor suggestions for the given input.
  *  @param $string
  *  @return the matching words
- **/
+**/
 function _checkbook_smart_search_vendor_autocomplete(){
     $vendors = _checkbook_smart_search_get_searchstring_autocomplete("vendor_names","vendor_name_autocomplete");
     return $vendors;
@@ -529,7 +529,7 @@ function _checkbook_smart_search_vendor_autocomplete(){
  *  Outputs the expense category suggestions for the given input.
  *  @param $string
  *  @return the matching words
- **/
+**/
 function _checkbook_smart_search_expensecategory_autocomplete(){
     $expense_categories = _checkbook_smart_search_get_searchstring_autocomplete("expense_categories","expenditure_object_name_autocomplete");
     return $expense_categories;
@@ -539,7 +539,7 @@ function _checkbook_smart_search_expensecategory_autocomplete(){
  *  Outputs the fiscalyear suggestions for the given input.
  *  @param $string
  *  @return the matching words
- **/
+**/
 function _checkbook_smart_search_fiscalyear_autocomplete(){
     $fiscal_years = _checkbook_smart_search_get_searchstring_autocomplete("fiscal_years","fiscal_year");
     return $fiscal_years;
@@ -565,7 +565,7 @@ function escapeRegex($string){
 /** Returns the URL for clear functionality for each Search Term
  *  @param $string
  *  @return the substring of the input.
- */
+*/
 function _checkbook_smart_search_clear_url($facetName,$facetValue=null, $count = null){
 
     $searchArgs = $_REQUEST['search_term'];
@@ -636,7 +636,7 @@ function _checkbook_smart_search_clear_url($facetName,$facetValue=null, $count =
 /** Returns the html entities for string without replacing <em> and </em> tags.
  *  @param $string
  *  @return $string.
- */
+*/
 function _checkbook_smart_search_str_html_entities($string){
     $string = str_replace("<em>", "**|**", $string);
     $string = str_replace("</em>", "**||**", $string);
@@ -652,220 +652,137 @@ function _checkbook_smart_search_str_html_entities($string){
  * @return year_id    $string = str_replace("^", "\%5E", $string);
  */
 function getCurrentYearID(){
-    STATIC $current_nyc_year;
-    if(!isset($current_nyc_year)){
+	STATIC $current_nyc_year;
+	if(!isset($current_nyc_year)){
         $current_nyc_year=date("Y");
         $current_month=date("m");
         if($current_month <= 6 )
-            $current_nyc_year -=1;
+         $current_nyc_year -=1;
         $current_nyc_year = _getYearIDFromValue($current_nyc_year);
-    }
-    return $current_nyc_year;
+	 }
+     return $current_nyc_year;
 }
 
 /** Generates smart search export form */
 function _checkbook_smart_search_export_form(){
-    echo theme('checkbook_smart_search_export_form');
+  echo theme('checkbook_smart_search_export_form');
 }
 
 /** Downloads the smart search export data */
 function _checkbook_smart_search_export_download(){
-    drupal_add_http_header("Content-Type", "text/csv");
-    //drupal_add_http_header("Content-Length",9);
-    drupal_add_http_header("Content-Disposition", "attachment; filename=TransactionsData.csv");
-    drupal_add_http_header("Pragma", "cache");
-    drupal_add_http_header("Expires", "-1");
-    _checkbook_smart_search_export_data();
+  drupal_add_http_header("Content-Type", "text/csv");
+  //drupal_add_http_header("Content-Length",9);
+  drupal_add_http_header("Content-Disposition", "attachment; filename=TransactionsData.csv");
+  drupal_add_http_header("Pragma", "cache");
+  drupal_add_http_header("Expires", "-1");
+  _checkbook_smart_search_export_data();
 }
 
 /** Exports the smart search export data */
 function _checkbook_smart_search_export_data(){
-    $search_terms = explode('*|*', $_REQUEST['search_term']);
-    $search_terms[0] = urldecode($search_terms[0]); //"Education"
-    $search_terms[0] = ($search_terms[0] == "") ? "*:*" : ucwords(strtolower(_checkbook_smart_search_escapeSolrValue($search_terms[0])));
-
-    $index = 0;
-    foreach($search_terms as $search_term){
-        $terms = explode("=", $search_term);
-        if($terms[0] == "domains"){
-            $domains = explode("~", $terms[1] );
-            $search_terms[$index] = "domains=" . $_REQUEST['domain'];
-        }
-        $index += 1;
+  $search_terms = explode('*|*', $_REQUEST['search_term']);
+  $search_terms[0] = urldecode($search_terms[0]); //"Education"  
+  $search_terms[0] = ($search_terms[0] == "") ? "*:*" : ucwords(strtolower(_checkbook_smart_search_escapeSolrValue($search_terms[0])));
+  
+  $index = 0;
+  foreach($search_terms as $search_term){
+    $terms = explode("=", $search_term);
+    if($terms[0] == "domains"){
+      $domains = explode("~", $terms[1] );
+      $search_terms[$index] = "domains=" . $_REQUEST['domain'];
     }
-    global $conf;
-    $remaining = $conf['check_book']['datatables']['iTotalDisplayRecords'] ;
-    $page_size = 10000;
-    $page_num = 0;
-    $fields = _checkbook_smart_search_domain_export_fields($_REQUEST['domain'], 0);
-    $fl = implode(",",array_keys($fields));
-    echo implode(",",array_values($fields)) . "\n";
-
-    while($remaining > 0 ){
-        $results = _checkbook_smart_search_get_results_csv($search_terms, $page_num , $page_size,$fl, true);
-        $page_num += 1 ;
-        $remaining = $remaining - $page_size;
-        echo preg_replace("/(\d{4})-(\d{2})-(\d{2})...:..:.../","$2/$3/$1",$results);
-        ob_flush();
-        flush();
-    }
+    $index += 1;
+  }
+  global $conf;
+  $remaining = $conf['check_book']['datatables']['iTotalDisplayRecords'] ;
+  $page_size = 10000;
+  $page_num = 0;
+  $fields = _checkbook_smart_search_domain_export_fields($_REQUEST['domain'], 0);
+  $fl = implode(",",array_keys($fields));
+  echo implode(",",array_values($fields)) . "\n";
+  
+  while($remaining > 0 ){
+    $results = _checkbook_smart_search_get_results_csv($search_terms, $page_num , $page_size,$fl, true);
+    $page_num += 1 ;
+    $remaining = $remaining - $page_size;
+    /*
+     * For data which should be N/A and represent a timestamp,
+     * the column selected from solr is "1970-01-01 00:00:00 UTC" (epoch time)
+     * and we convert it to N/A here.  This is because a null timestamp would return
+     * and empty string and is not reliable for casting.
+     */
+    $results = preg_replace("/1970-01-01T05:00:00Z/","N/A",$results);
+    echo preg_replace("/(\d{4})-(\d{2})-(\d{2})...:..:.../","$2/$3/$1",$results);
+    ob_flush();
+    flush();
+  }
 
 }
 
 /** Smart search results labels array */
 function _checkbook_smart_search_domain_fields($domain, $IsOge){
-    switch ($domain){
-        case "spending":
-            if($IsOge)
-                $parameter_mapping = array(
-                    "spending_category_name" => "Spending Category",
-                    "oge_agency_name" => "Agency",
-                    "department_name" => "Department",
-                    "vendor_name" => "Payee Name",
-                    "expenditure_object_name" => "Expense Category",
-                    "contract_number" => "Contract ID",
-                    "spending_commodity_line" => "Commodity Line",
-                    "check_amount" => "Check Amount",
-                    "check_eft_issued_date" => "Issue Date",
-                    "spending_entity_contract_number" => "Entity Contract#",
-                    "spending_budget_name" => "Budget Name",
-                    "" => "",
-                );
-            else
-                $parameter_mapping = array(
-                    "spending_category_name" => "Spending Category",
-                    "agency_name" => "Agency",
-                    "department_name" => "Department",
-                    "vendor_name" => "Payee Name",
-                    "expenditure_object_name" => "Expense Category",
-                    "contract_number" => "Contract ID",
-                    "check_amount" => "Check Amount",
-                    "check_eft_issued_date" => "Issue Date"
-                );
-            break;
-        case "contracts":
-            if($IsOge)
-            {
-                $parameter_mapping = array(
-                    "contract_status"=>"Status",
-                    "contract_category_name"=>"Category",
-                    "vendor_name"=>"Prime Vendor",
-                    "oge_contracting_agency_name"=>"Agency",
-                    "contract_number"=>"Contract ID",
-                    "contract_commodity_line" => "Commodity Line",
-                    "contract_purpose"=>"Purpose",
-                    "parent_contract_number"=>"Parent Contract ID",
-                    "award_method_name"=>"Award Method",
-                    "contract_type"=>"Contract type",
-                    "current_amount"=>"Current Amount",
-                    "original_amount"=>"Original Amount",
-                    "start_date_orig"=>"Start date",
-                    "end_date_orig"=>"End Date",
-                    "pin"=>"PIN",
-                    "apt_pin"=>"APT PIN",
-                    "expense_category_name"=>"Expense Category",
-                    "contract_entity_contract_number" => "Entity Contract#",
-                    "contract_budget_name" => "Budget Name",
-                    "" => ""
-                );
-            }
-            else{
-                $parameter_mapping = array(
-                    "contract_status"=>"Status",
-                    "contract_category_name"=>"Category",
-                    "vendor_name"=>"Prime Vendor",
-                    "agency_name"=>"Agency",
-                    "contract_number"=>"Contract ID",
-                    "version_number"=>"Version Number",
-                    "contract_purpose"=>"Purpose",
-                    "parent_contract_number"=>"Parent Contract ID",
-                    "award_method_name"=>"Award Method",
-                    "contract_type"=>"Contract type",
-                    "original_amount"=>"Original Amount",
-                    "current_amount"=>"Current Amount",
-                    "start_date_orig"=>"Start date",
-                    "end_date_orig"=>"End Date",
-                    "pin"=>"PIN",
-                    "apt_pin"=>"APT PIN",
-                    "registration_date"=>"Registration date",
-                    "expense_category_name"=>"Expense Category",
-                    "received_date"=>"Received date",
-                    "" => "");
-            }
-
-            break;
-        case "payroll":
-            $parameter_mapping = array(
-                "civil_service_title" => "Title",
-                "agency_name" => "Agency",
-                "pay_frequency" => "Pay Frequency",
-                "pay_date" => "Pay Date",
-                "gross_pay" => "Gross Pay",
-                "annual_salary" => "Annual Salary",
-                "base_pay" => "Base Pay",
-                "overtime_pay" => "Overtime Payments",
-                "other_payments" => "Other Payments",
-                "" => ""
-            );
-            break;
-        case "budget":
-            $parameter_mapping = array("agency_name" => "Agency",
-                "department_name" => "Department Name",
-                "expenditure_object_name" => "Expense Category",
-                "budget_code_name" => "Budget Category",
-                "adopted_amount" => "Adopted",
-                "current_budget_amount" => "Modified",
-                "pre_encumbered_amount" => "Pre Encumbered",
-                "encumbered_amount" => "Encumbered",
-                "accrued_expense_amount" => "Accrued Expense",
-                "cash_expense_amount" => "Cash Payments",
-                "post_closing_adjustment_amount" => "Post Adjustments",
-                "fiscal_year" => "Year",
-            );
-            break;
-        case "revenue":
-            $parameter_mapping = array( "agency_name" => "Agency Name",
-                "fiscal_year" => "Budget Fiscal Year",
-                "display_fiscal_year" => "Fiscal Year",
-                "revenue_category_name" => "Revenue Category",
-                "revenue_source_name" => "Revenue Source",
-                "funding_class_name" => "Funding Class",
-                "adopted_amount" => "Adopted",
-                "current_budget_amount" => "Modified",
-                "posting_amount" => "Recognized",
-                "" => "",
-            );
-            break;
-    }
-    return $parameter_mapping;
-}
-
-
-function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
-    switch ($domain){
-        case "spending":
+  switch ($domain){
+    case "spending":
+        if($IsOge)
+          $parameter_mapping = array(
+          "spending_category_name" => "Spending Category",
+          "oge_agency_name" => "Agency",
+          "department_name" => "Department",
+          "vendor_name" => "Payee Name",
+          "expenditure_object_name" => "Expense Category",
+          "contract_number" => "Contract ID",
+          "spending_commodity_line" => "Commodity Line",          		
+          "check_amount" => "Check Amount",
+          "check_eft_issued_date" => "Issue Date",
+          "spending_entity_contract_number" => "Entity Contract#",
+          "spending_budget_name" => "Budget Name",
+          "" => "",
+          );
+        else
             $parameter_mapping = array(
                 "spending_category_name" => "Spending Category",
-                "agency_name_export" => "Agency",
+                "agency_name" => "Agency",
                 "department_name" => "Department",
                 "vendor_name" => "Payee Name",
                 "expenditure_object_name" => "Expense Category",
                 "contract_number" => "Contract ID",
-                "spending_commodity_line" => "Commodity Line",
                 "check_amount" => "Check Amount",
-                "check_eft_issued_date_export" => "Issue Date",
-                "spending_entity_contract_number" => "Entity Contract#",
-                "spending_budget_name" => "Budget Name",
-                "" => "",);
-            break;
-        case "contracts":
+                "check_eft_issued_date" => "Issue Date"
+            );
+      break;
+    case "contracts":
+        if($IsOge)
+        {
+          $parameter_mapping = array(
+              "contract_status"=>"Status",
+              "contract_category_name"=>"Category",
+              "vendor_name"=>"Prime Vendor",
+              "oge_contracting_agency_name"=>"Agency",
+              "contract_number"=>"Contract ID",
+          	  "contract_commodity_line" => "Commodity Line",              
+              "contract_purpose"=>"Purpose",
+              "parent_contract_number"=>"Parent Contract ID",
+              "award_method_name"=>"Award Method",
+              "contract_type"=>"Contract type",
+          	  "current_amount"=>"Current Amount",          		
+          	  "original_amount"=>"Original Amount",
+              "start_date_orig"=>"Start date",
+              "end_date_orig"=>"End Date",
+              "pin"=>"PIN",
+              "apt_pin"=>"APT PIN",
+              "expense_category_name"=>"Expense Category",
+              "contract_entity_contract_number" => "Entity Contract#",
+              "contract_budget_name" => "Budget Name",              
+          	  "" => ""
+          );
+        }
+        else{
             $parameter_mapping = array(
                 "contract_status"=>"Status",
                 "contract_category_name"=>"Category",
                 "vendor_name"=>"Prime Vendor",
-                "agency_name_export"=>"Agency",
+                "agency_name"=>"Agency",
                 "contract_number"=>"Contract ID",
-                "contract_commodity_line" => "Commodity Line",
                 "version_number"=>"Version Number",
                 "contract_purpose"=>"Purpose",
                 "parent_contract_number"=>"Parent Contract ID",
@@ -880,89 +797,179 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
                 "registration_date"=>"Registration date",
                 "expense_category_name"=>"Expense Category",
                 "received_date"=>"Received date",
-                "contract_entity_contract_number" => "Entity Contract#",
-                "contract_budget_name" => "Budget Name",
-            );
+                "" => "");
+        }
 
-            break;
-        case "payroll":
-            $parameter_mapping = array(
-                "civil_service_title" => "Title",
-                "agency_name" => "Agency",
-                "pay_frequency" => "Pay Frequency",
-                "pay_date" => "Pay Date",
-                "gross_pay" => "Gross Pay",
-                "annual_salary" => "Annual Salary",
-                "base_pay" => "Base Pay",
-                "overtime_pay" => "Overtime Payments",
-                "other_payments" => "Other Payments",
-                "" => ""
-            );
-            break;
-        case "budget":
-            $parameter_mapping = array("agency_name" => "Agency",
-                "department_name" => "Department Name",
-                "expenditure_object_name" => "Expense Category",
-                "budget_code_name" => "Budget Category",
-                "adopted_amount" => "Adopted",
-                "current_budget_amount" => "Modified",
-                "pre_encumbered_amount" => "Pre Encumbered",
-                "encumbered_amount" => "Encumbered",
-                "accrued_expense_amount" => "Accrued Expense",
-                "cash_expense_amount" => "Cash Payments",
-                "post_closing_adjustment_amount" => "Post Adjustments",
-                "fiscal_year" => "Year",
-            );
-            break;
-        case "revenue":
-            $parameter_mapping = array( "agency_name" => "Agency Name",
-                "fiscal_year" => "Budget Fiscal Year",
-                "display_fiscal_year" => "Fiscal Year",
-                "revenue_category_name" => "Revenue Category",
-                "revenue_source_name" => "Revenue Source",
-                "funding_class_name" => "Funding Class",
-                "adopted_amount" => "Adopted",
-                "current_budget_amount" => "Modified",
-                "posting_amount" => "Recognized",
-                "" => "",
-            );
-            break;
-    }
-    return $parameter_mapping;
+      break;
+    case "payroll":
+      $parameter_mapping = array(
+      "civil_service_title" => "Title",
+      "agency_name" => "Agency",
+      "pay_frequency" => "Pay Frequency",
+      "pay_date" => "Pay Date",
+      "gross_pay" => "Gross Pay",
+      "annual_salary" => "Annual Salary",
+      "base_pay" => "Base Pay",
+      "overtime_pay" => "Overtime Payments",
+      "other_payments" => "Other Payments",
+      "" => ""
+      );
+      break;
+    case "budget":
+    $parameter_mapping = array("agency_name" => "Agency",
+        "department_name" => "Department Name",
+        "expenditure_object_name" => "Expense Category",
+        "budget_code_name" => "Budget Category",
+        "adopted_amount" => "Adopted",
+        "current_budget_amount" => "Modified",
+        "pre_encumbered_amount" => "Pre Encumbered",
+        "encumbered_amount" => "Encumbered",
+        "accrued_expense_amount" => "Accrued Expense",
+        "cash_expense_amount" => "Cash Payments",
+        "post_closing_adjustment_amount" => "Post Adjustments",
+        "fiscal_year" => "Year",
+       );
+      break;
+    case "revenue":
+      $parameter_mapping = array( "agency_name" => "Agency Name",
+        "fiscal_year" => "Budget Fiscal Year",
+        "display_fiscal_year" => "Fiscal Year",
+        "revenue_category_name" => "Revenue Category",
+        "revenue_source_name" => "Revenue Source",
+        "funding_class_name" => "Funding Class",
+        "adopted_amount" => "Adopted",
+        "current_budget_amount" => "Modified",
+        "posting_amount" => "Recognized",
+        "" => "",
+       );
+      break;
+  }
+  return $parameter_mapping;
+}
+
+
+function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
+	switch ($domain){
+		case "spending":
+				$parameter_mapping = array(
+						"spending_category_name" => "Spending Category",
+						"agency_name" => "Agency",
+						"department_name" => "Department",
+						"vendor_name" => "Payee Name",
+						"expenditure_object_name" => "Expense Category",
+						"contract_number" => "Contract ID",
+						//"spending_commodity_line" => "Commodity Line",
+						"check_amount" => "Check Amount",
+						"check_eft_issued_date" => "Issue Date",
+						//"spending_entity_contract_number" => "Entity Contract#",
+						//"spending_budget_name" => "Budget Name",
+						"" => "",);
+			break;
+		case "contracts":
+				$parameter_mapping = array(
+						"contract_status"=>"Status",
+						"contract_category_name"=>"Category",
+						"vendor_name"=>"Prime Vendor",
+						"agency_name_export"=>"Agency",
+						"contract_number"=>"Contract ID",
+						//"contract_commodity_line" => "Commodity Line",
+						"version_number"=>"Version Number",
+						"contract_purpose"=>"Purpose",
+						"parent_contract_number"=>"Parent Contract ID",
+						"award_method_name"=>"Award Method",
+						"contract_type"=>"Contract type",
+						"current_amount"=>"Current Amount",						
+						"original_amount"=>"Original Amount",
+						"start_date_orig"=>"Start date",
+						"end_date_orig"=>"End Date",
+						"pin"=>"PIN",
+						"apt_pin"=>"APT PIN",
+						"registration_date"=>"Registration date",
+						"expense_category_name"=>"Expense Category",
+						"received_date"=>"Received date",
+						//"contract_entity_contract_number" => "Entity Contract#",
+						//"contract_budget_name" => "Budget Name",
+				);		
+
+			break;
+		case "payroll":
+			$parameter_mapping = array(
+			"civil_service_title" => "Title",
+			"agency_name" => "Agency",
+			"pay_frequency" => "Pay Frequency",
+			"pay_date" => "Pay Date",
+			"gross_pay" => "Gross Pay",
+			"annual_salary" => "Annual Salary",
+			"base_pay" => "Base Pay",
+			"overtime_pay" => "Overtime Payments",
+			"other_payments" => "Other Payments",
+			"" => ""
+					);
+					break;
+		case "budget":
+			$parameter_mapping = array("agency_name" => "Agency",
+			"department_name" => "Department Name",
+			"expenditure_object_name" => "Expense Category",
+			"budget_code_name" => "Budget Category",
+			"adopted_amount" => "Adopted",
+			"current_budget_amount" => "Modified",
+			"pre_encumbered_amount" => "Pre Encumbered",
+			"encumbered_amount" => "Encumbered",
+			"accrued_expense_amount" => "Accrued Expense",
+			"cash_expense_amount" => "Cash Payments",
+			"post_closing_adjustment_amount" => "Post Adjustments",
+			"fiscal_year" => "Year",
+			);
+			break;
+		case "revenue":
+			$parameter_mapping = array( "agency_name" => "Agency Name",
+			"fiscal_year" => "Budget Fiscal Year",
+			"display_fiscal_year" => "Fiscal Year",
+			"revenue_category_name" => "Revenue Category",
+			"revenue_source_name" => "Revenue Source",
+			"funding_class_name" => "Funding Class",
+			"adopted_amount" => "Adopted",
+			"current_budget_amount" => "Modified",
+			"posting_amount" => "Recognized",
+			"" => "",
+			);
+			break;
+	}
+	return $parameter_mapping;
 }
 
 /** Exports the smart search export data */
 function _checkbook_smart_search_solr_results_csv($query){
-    global $conf;
-    if($conf['check_book']['solr']['url']){
-        $solr_server_url = $conf['check_book']['solr']['url'];
-    }
-    ini_set('default_socket_timeout',120);
-    $url = $solr_server_url . $query;
-    $contents = file_get_contents($url);
-    $contents = utf8_encode($contents);
+  global $conf;
+  if($conf['check_book']['solr']['url']){
+    $solr_server_url = $conf['check_book']['solr']['url'];
+  }
+  ini_set('default_socket_timeout',120);
+  $url = $solr_server_url . $query;
+  $contents = file_get_contents($url);
+  $contents = utf8_encode($contents);
 
-    return $contents;
+  return $contents;
 }
 
 /** Exports the smart search export data */
 function _checkbook_smart_search_get_results_csv($search_terms,$page_no, $no_of_results, $fl = "*", $skip_header = false){
-    $current_date = date("c").'Z';
-    $search_string = _checkbook_smart_search_get_results_query_search_term($search_terms);
-    $domain = $_REQUEST['domain'];
-    $query = "select/?q=". $search_string
-        ."&fq=-latest_flag:N"
-        ."&start=". ($page_no*$no_of_results)
-        ."&wt=csv"
-        ."&rows=" . $no_of_results ;
+  $current_date = date("c").'Z';
+  $search_string = _checkbook_smart_search_get_results_query_search_term($search_terms);
+  $domain = $_REQUEST['domain'];
+  $query = "select/?q=". $search_string
+               ."&fq=-latest_flag:N"
+               ."&start=". ($page_no*$no_of_results)
+               ."&wt=csv"
+               ."&rows=" . $no_of_results ;
 
-    $query = $query . "&fq=domain:" . $domain;
-    $query = $query . "&fl=" . $fl;
+  $query = $query . "&fq=domain:" . $domain;
+  $query = $query . "&fl=" . $fl;
 
-    if($skip_header){
-        $query = $query . "&csv.header=false";
-    }
-    return _checkbook_smart_search_solr_results_csv($query);
+   if($skip_header){
+     $query = $query . "&csv.header=false";
+   }
+  return _checkbook_smart_search_solr_results_csv($query);
 }
 
 /** Returns theme for Vendor facet */
@@ -975,11 +982,11 @@ function _checkbook_smart_search_vendor_facet($page){
     $limit = 100;
     $double_limit = (2 * $limit);
     if ($page == 0){
-        $double_limit = 100;
+      $double_limit = 100;
     }
     $offset = 0;
     if ($page > 0){
-        $offset = ( $page - 1 ) * $limit;
+      $offset = ( $page - 1 ) * $limit;
     }
     $results = _checkbook_smart_search_get_facet_results($search_terms, "vendor_names", $offset, $double_limit, TRUE, TRUE);
     print theme('facet_results', array('results'=> $results['facet_counts']['facet_fields']['vendor_name'], 'name'=> 'fvendorName'));
@@ -995,11 +1002,11 @@ function _checkbook_smart_search_expensecategory_facet($page){
     $limit = 100;
     $double_limit = (2 * $limit);
     if ($page == 0){
-        $double_limit = 100;
+      $double_limit = 100;
     }
     $offset = 0;
     if ($page > 0){
-        $offset = ( $page - 1 ) * $limit;
+      $offset = ( $page - 1 ) * $limit;
     }
     $results = _checkbook_smart_search_get_facet_results($search_terms, "expense_categories", $offset, $double_limit, TRUE, TRUE);
     print theme('facet_results', array('results'=>$results['facet_counts']['facet_fields']['expenditure_object_name'], 'name'=> 'fexpenseCategoryName'));
