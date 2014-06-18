@@ -193,7 +193,7 @@
             ],
             "measures": {
                 "display_vendor_names":{
-                    "function":"GROUP_CONCAT(DISTINCT display_vendor_name)"},
+                    "function":"STRING_AGG(display_vendor_name)"},
                 "original_amount_sum": {
                     "function": "SUM(COALESCE(original_contract_amount,0))"}     ,
                 "current_amount_sum": {
