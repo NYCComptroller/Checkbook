@@ -40,8 +40,7 @@
 ],
 "limit": 10,
 "orderBy": "-current_amount_sum",
-"defaultParameters":{"fiscal_year_id":113,"yeartype.yeartype":"B","contract_status.contract_status":"A","document_code.document_code.document_code":"MA1~CTA1~CT1","maximum_contract_amount":"0"},
-"defaultParamTypeConfig":{"maximum_contract_amount":"ne"},
+"defaultParameters":{"fiscal_year_id":113,"yeartype.yeartype":"B","contract_status.contract_status":"A","document_code.document_code.document_code":"MA1~CTA1~CT1"},
 "adjustParameters":"
             $adjustedParameters = $parameters;
             if(function_exists('_checkbook_project_applyParameterFilters')){
