@@ -260,6 +260,7 @@
                 expenditure_object_name || '[' || expenditure_object_id || ']' expenditure_object_name_id,
                 lower(expenditure_object_name) || '[' || expenditure_object_code || ']' expenditure_object_name_code,
                 check_eft_issued_date,
+                'N/A' check_eft_issued_date_export,
                 check_amount,
                 reporting_code,
                 fund_class_id,
@@ -314,6 +315,7 @@
             <field column="expenditure_object_name" name="expenditure_object_name" />
             <field column="expenditure_object_name_id" name="expenditure_object_name_id" />
             <field column="check_eft_issued_date" name="check_eft_issued_date" />
+            <field column="check_eft_issued_date_export" name="check_eft_issued_date_export" />
             <field column="check_amount" name="check_amount" />
             <field column="reporting_code" name="reporting_code" />
             <field column="fund_class_id" name="fund_class_id" />
