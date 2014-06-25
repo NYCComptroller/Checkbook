@@ -136,7 +136,7 @@
 	    },
         "expense_cat_formatted":{
 	      "type": "expression2",
-	      "expression": "_get_tooltip_markup($row[expenditure_object_name],48)"
+	      "expression": "_get_tooltip_markup($row[expenditure_object_name],40)"
 	    },
         "dept_name_formatted":{
 	      "type": "expression2",
@@ -310,9 +310,9 @@
 		{"sClass":"text", "sWidth":"90px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text", "sWidth":"165px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text pad-left", "sWidth":"200px","asSorting": [ "asc","desc" ]},
-		{"sClass":"number-left","sWidth":"135px","asSorting": [ "desc","asc" ]},
-		{"sClass":"text","sWidth":"230px","asSorting": [ "asc","desc" ]},
-		{"sClass":"number number-left","sWidth":"185px","asSorting": [ "asc","desc" ]},
+		{"sClass":"number pad-left","sWidth":"135px","asSorting": [ "desc","asc" ]},
+		{"sClass":"text pad-left","sWidth":"180px","asSorting": [ "asc","desc" ]},
+		{"sClass":"text pad-left","sWidth":"165px","asSorting": [ "asc","desc" ]},
         {"sClass":"number","sWidth":"100px","asSorting": [ "asc","desc" ],"datasource":"checkbook_oge"},
         {"sClass":"text","sWidth":"165px","asSorting": [ "asc","desc" ]},
 		{"sClass":"text","sWidth":"165px","asSorting": [ "asc","desc" ]},
