@@ -114,8 +114,11 @@ $maximum_contract_amount =  ( _getRequestParamValue("datasource") == "checkbook_
         <?php
     }else{
     ?>
-      <li><span class="gi-list-item">Prime Vendor:</span> <a
-        href="<?php echo $vendor_link;?>"><?php echo $node->data[0]['legal_name_checkbook_vendor'];?></a></span></li>    
+      <li><span class="gi-list-item">Prime Vendor:</span>
+          <?php if(!preg_match('/newwindow/',$_GET['q'])){ ?>
+            <a href="<?php echo $vendor_link;?>"><?php echo $node->data[0]['legal_name_checkbook_vendor'];?></a>
+          <?php }else{ echo $node->data[0]['legal_name_checkbook_vendor']; } ?>
+          </span></li>
     <?php
  
 	}
@@ -129,8 +132,11 @@ $maximum_contract_amount =  ( _getRequestParamValue("datasource") == "checkbook_
      <?php
     if ( _getRequestParamValue("datasource") != "checkbook_oge") {
     ?>
-      <li><span class="gi-list-item">Contracting Agency:</span> <a
-        href="<?php echo $agency_link;?>"><?php echo $node->data[0]['agency_name_checkbook_agency'];?></a></li>
+      <li><span class="gi-list-item">Contracting Agency:</span>
+          <?php if(!preg_match('/newwindow/',$_GET['q'])){ ?>
+            <a href="<?php echo $agency_link;?>"><?php echo $node->data[0]['agency_name_checkbook_agency'];?></a>
+          <?php }else{ echo $node->data[0]['agency_name_checkbook_agency'];} ?>
+      </li>
         <?php
     }
     ?>
