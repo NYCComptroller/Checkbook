@@ -364,7 +364,7 @@
             dept = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
             expcategory = (div.ele('exp_category').val()) ? (div.ele('exp_category').val()) : 0;
             exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
-            datasource = 'checkbook';//$('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
+            datasource = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
 
             div.ele('payee_name').autocomplete({
                 source:'/advanced-search/autocomplete/spending/payee/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + datasource,
@@ -419,7 +419,7 @@
                     dept = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
                     expcategory = (div.ele('exp_category').val()) ? (div.ele('exp_category').val()) : 0;
                     exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
-                    datasource = 'checkbook';//$('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
+                    datasource = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
 
                     div.ele('payee_name').autocomplete({source:'/advanced-search/autocomplete/spending/payee/' + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + datasource});
                     div.ele('contract_id').autocomplete({source:'/advanced-search/autocomplete/spending/contractno/'  + year + '/' + agency + '/' + expcategory + '/' + dept + '/' + exptype + '/' + datasource});
