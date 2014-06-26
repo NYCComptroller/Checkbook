@@ -73,7 +73,7 @@ else{
 
 ?>
   <ul class="left">
-  <?php if( _get_current_datasource() == "checkbook" ){?> 
+  <?php if( _get_current_datasource() == "checkbook" && !preg_match('/newwindow/',$_GET['q'])){?>
     <li><span class="gi-list-item">Prime Vendor:</span> <a href="<?php echo $vendor_link;?> " ><?php echo $node->data[0]['vendor_name'] ;?></a></li>
   <?php }else{ ?>
   	<li><span class="gi-list-item">Prime Vendor:</span> <?php echo $node->data[0]['vendor_name'] ;?></li>
