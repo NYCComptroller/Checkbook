@@ -862,79 +862,14 @@ $("input[name='alert_end[date]']").datepicker({"changeMonth":true,"changeYear":t
     Drupal.behaviors.advancedSearchAccordions = {
         attach:function (context, settings) {
             $('a.advanced-search').click(function () {
-                /*
-                 * This code is used to determine which window in the accordion should be open when users click the "Advanced Search" link, based on the page
-                 * from where the link has been clicked
-                 * Eg: if the "Advanced Search" link from spending page is clicked, the URL would be http://checkbook/SPENDING/transactions.....
-                 * if the "Advanced Search" link from budget page is clicked, the URL would be http://checkbook/BUDGET/transactions.....
-                 * based on the url param in the caps above, we have to keep the specific window in the accordion open
-                 * check the code in checkbook_advanced_search.module where we generate the form
-                 */
+
                 var href = window.location.href.replace(/(http|https):\/\//, '');
                 var n = href.indexOf('?');
                 href = href.substring(0, n != -1 ? n : href.length);
                 var data_source = (href.indexOf('datasource/checkbook_oge') !== -1) ? "checkbook_oge" : "checkbook";
+                var page_clicked_from = this.id ? this.id : href.split('/')[1];
 
-                var page_clicked_from = href.split('/')[1];
-                if (this.id)
-                    page_clicked_from = this.id;
-                var domain;
-                switch (page_clicked_from) {
-                    case "budget":
-                        domain = "budget";
-                        active_accordion_window = 0;
-                        break;
-                    case "revenue":
-                        domain = "revenue";
-                        active_accordion_window = 1;
-                        break;
-                    case "spending":
-                        domain = "spending";
-                        active_accordion_window = 2;
-                        break;
-                    case "spending_landing":
-                        domain = "spending";
-                        active_accordion_window = 2;
-                        break;                          
-                    case "contracts_revenue_landing":
-                        domain = "contracts";
-                        active_accordion_window = 3;
-                        break;
-                    case "contracts_landing":
-                        domain = "contracts";
-                        active_accordion_window = 3;
-                        break;
-                    case "contracts_pending_rev_landing":
-                        domain = "contracts";
-                        active_accordion_window = 3;
-                        break;
-                    case "contracts_pending_exp_landing":
-                        domain = "contracts";
-                        active_accordion_window = 3;
-                        break;
-                    case "contracts_pending_landing":
-                        domain = "contracts";
-                        active_accordion_window = 3;
-                        break;
-                    case "contract":
-                        domain = "contracts";
-                        active_accordion_window = 3;
-                        break;                          
-                    case "payroll":
-                        domain = "payroll";
-                        active_accordion_window = 4;
-                        break;                        
-                    default:
-                        domain = "spending";
-                        active_accordion_window = 2;
-                        break;
-                }
-
-                clearInputFields("#payroll-advanced-search",'payroll');
-                clearInputFieldByDataSource("#contracts-advanced-search",'contracts',data_source);
-                clearInputFieldByDataSource("#spending-advanced-search",'spending',data_source);
-                clearInputFields("#budget-advanced-search",'budget');
-                clearInputFields("#revenue-advanced-search",'revenue');
+                initializeSection(page_clicked_from, data_source);
 
                 $('#block-checkbook-advanced-search-checkbook-advanced-search-form').dialog({
                     title:"Advanced Search",
@@ -958,6 +893,16 @@ $("input[name='alert_end[date]']").datepicker({"changeMonth":true,"changeYear":t
                     active: active_accordion_window
                 });
 
+                //Remove Create Alert Attributes and styling
+                $('.create-wizard-instructions').css('display','none');
+                $('.create-alert-customize-results').css('display','none');
+                $('.create-alert-schedule-alert').css('display','none');
+                $('.create-alert-confirmation').css('display','none');
+                $('.create-alert-submit').css('display','none');
+                $('.advanced-search-accordion').css('display','inline');
+                $('.advanced-search-accordion').width('100%');
+                $('.ui-dialog .ui-dialog-content').css('padding','0.5em 1em');
+
                 /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
                 if(data_source == "checkbook_oge") {
                     disableAccordionSection('Budget');
@@ -967,16 +912,112 @@ $("input[name='alert_end[date]']").datepicker({"changeMonth":true,"changeYear":t
 
                 return false;
             });
-
-            /* Function will apply disable the click of the accordian section and apply an attribute for future processing */
-            function disableAccordionSection(name) {
-                var accordion_section = $("a:contains("+name+")").closest("h3");
-                accordion_section.attr("data-enabled","false");
-                accordion_section.addClass('ui-state-section-disabled');
-                accordion_section.unbind("click");
-            }
         }
     };
+
+    Drupal.behaviors.createAlerts = {
+        attach:function (context, settings) {
+            $('a.advanced-search-create-alert').click(function () {
+
+                var href = window.location.href.replace(/(http|https):\/\//, '');
+                var n = href.indexOf('?');
+                href = href.substring(0, n != -1 ? n : href.length);
+                var data_source = (href.indexOf('datasource/checkbook_oge') !== -1) ? "checkbook_oge" : "checkbook";
+                var page_clicked_from = this.id ? this.id : href.split('/')[1];
+
+                initializeSection(page_clicked_from, data_source);
+
+                $('#block-checkbook-advanced-search-checkbook-advanced-search-form').dialog({
+                    title:"Advanced Search",
+                    position:['center', 'center'],
+                    width:900,
+                    modal:true,
+                    autoResize:true,
+                    resizable: false,
+                    dragStart: function(){
+                        $(".ui-autocomplete-input").autocomplete("close")
+                    },
+                    open: function(){
+                    },
+                    close: function(){
+                        $(".ui-autocomplete-input").autocomplete("close")
+                    }
+                });
+
+                $('.advanced-search-accordion').accordion({
+                    autoHeight: false,
+                    active: active_accordion_window
+                });
+
+                //Add Create Alert Attributes and styling
+                $('.create-wizard-instructions').css('display','inline');
+                $('.create-alert-customize-results').css('display','none');
+                $('.create-alert-schedule-alert').css('display','none');
+                $('.create-alert-confirmation').css('display','none');
+                $('.create-alert-submit').css('display','none');
+                $('.advanced-search-accordion').css('display','inline');
+
+                $('.advanced-search-accordion').width('90%');
+                $('.ui-dialog .ui-dialog-content').css('padding','0.5em 0px 0.5em');
+
+                /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
+                if(data_source == "checkbook_oge") {
+                    disableAccordionSection('Budget');
+                    disableAccordionSection('Revenue');
+                    disableAccordionSection('Payroll');
+                }
+
+                return false;
+            });
+        }
+    };
+
+    /*
+     * This code is used to determine which window in the accordion should be open when users click the "Advanced Search" link, based on the page
+     * from where the link has been clicked
+     * Eg: if the "Advanced Search" link from spending page is clicked, the URL would be http://checkbook/SPENDING/transactions.....
+     * if the "Advanced Search" link from budget page is clicked, the URL would be http://checkbook/BUDGET/transactions.....
+     * based on the url param in the caps above, we have to keep the specific window in the accordion open
+     * check the code in checkbook_advanced_search.module where we generate the form
+     */
+    function initializeSection(page_clicked_from, data_source) {
+        switch (page_clicked_from) {
+            case "budget":
+                active_accordion_window = 0;
+                break;
+            case "revenue":
+                active_accordion_window = 1;
+                break;
+            case "contracts_revenue_landing":
+            case "contracts_landing":
+            case "contracts_pending_rev_landing":
+            case "contracts_pending_exp_landing":
+            case "contracts_pending_landing":
+            case "contract":
+                active_accordion_window = 3;
+                break;
+            case "payroll":
+                active_accordion_window = 4;
+                break;
+            default: //spending
+                active_accordion_window = 2;
+                break;
+        }
+
+        clearInputFields("#payroll-advanced-search",'payroll');
+        clearInputFieldByDataSource("#contracts-advanced-search",'contracts',data_source);
+        clearInputFieldByDataSource("#spending-advanced-search",'spending',data_source);
+        clearInputFields("#budget-advanced-search",'budget');
+        clearInputFields("#revenue-advanced-search",'revenue');
+    }
+
+    /* Function will apply disable the click of the accordian section and apply an attribute for future processing */
+    function disableAccordionSection(name) {
+        var accordion_section = $("a:contains("+name+")").closest("h3");
+        accordion_section.attr("data-enabled","false");
+        accordion_section.addClass('ui-state-section-disabled');
+        accordion_section.unbind("click");
+    }
 
     Drupal.behaviors.bottomContainerShowHide = {
         attach:function (context, settings) {
@@ -1035,7 +1076,7 @@ $("input[name='alert_end[date]']").datepicker({"changeMonth":true,"changeYear":t
             var reloadURL =  window.location.pathname + "?expandBottomContURL=" +  this.getAttribute("href") ;
             window.location = reloadURL;
 
-            
+
            /* $('.bottomContainer').html("Loading Data");
             $.ajax({
                 url:callBackURL,

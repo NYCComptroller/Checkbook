@@ -47,27 +47,6 @@ class Form
         return $form;
     }
 
-//    private function generate_filter($form)
-//    {
-//        $domain = $this->domain_name;
-//        $data_source = $this->data_source;
-//        $domain_field = 'advanced_search_'.$domain.'_filter';
-//
-//        $form[$domain][$domain_field]['#type'] = 'radios';
-//        //$form[$domain][$domain_field]['#id'] = 'edit-advanced-search-spending-filter-checkbook';
-//        $form[$domain][$domain_field]['#options'] = array('checkbook' => 'Citywide Agencies', 'checkbook_oge' => 'Other Government Entities');
-//        $form[$domain][$domain_field]['#default_value'] = !isset($data_source) ? 'checkbook' : $data_source;
-//        $form[$domain][$domain_field]['#prefix'] = '<div id="advanced_search_'.$this->domain_name.'_dynamic_fields">';
-//        $form[$domain][$domain_field]['#ajax'] = array(
-//            'event' => 'change',
-//            'callback' => 'advanced_search_'.$domain.'_filter_ajax',
-//            'method' => 'replace',
-//            'attributes' => array('new_data_source'=> $this->data_source)
-//        );
-//
-//        return $form;
-//    }
-
     private function generate_content($form)
     {
         foreach ($this->contents as $content) {
@@ -320,6 +299,40 @@ class Form
                     $form[$domain][$domain_field]['#suffix'] = '</div>';
 
                 break;
+
+//            case FieldType::SubmitField:
+//
+//                $submit_class = "$this->domain_name-submit ".str_replace('_','-',$data_source);
+//
+//                //Next Button
+//                $domain_field = "{$this->domain_name}_next";
+//
+//                $form[$domain][$domain_field]['#type'] = $field->field_type;
+//                $form[$domain][$domain_field]['#name'] = $domain_field;
+//                $form[$domain][$domain_field]['#value'] = t('Next');
+//                $form[$domain][$domain_field]['#prefix'] = t('<div class="'.$submit_class.'">');
+//
+//                //Submit Button
+//                $domain_field = "{$this->domain_name}_submit";
+//
+//                $form[$domain][$domain_field]['#type'] = $field->field_type;
+//                $form[$domain][$domain_field]['#name'] = $domain_field;
+//                $form[$domain][$domain_field]['#value'] = t('Submit');
+//
+//                //Clear All Button
+//                $domain_field = "{$this->domain_name}_clear";
+//
+//                $form[$domain][$domain_field]['#type'] = $field->field_type;
+//                $form[$domain][$domain_field]['#value'] = t('Clear All');
+//
+//                end($this->contents);
+//                $endKey = key($this->contents);
+//                if($data_source == $endKey)
+//                    $form[$domain][$domain_field]['#suffix'] = '</div></div>';
+//                else
+//                    $form[$domain][$domain_field]['#suffix'] = '</div>';
+//
+//                break;
 
             case FieldType::TextField:
 
