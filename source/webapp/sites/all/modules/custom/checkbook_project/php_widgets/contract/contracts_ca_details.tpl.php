@@ -47,11 +47,11 @@ $spending_link = "/spending/transactions/agid/" . _getRequestParamValue("agid") 
       class="contract-number"><?php echo $node->data[0]['contract_number'];?></span></h2>
 	<?php
     if ( _getRequestParamValue("datasource") == "checkbook_oge" && !preg_match('/newwindow/',$_GET['q']) && $node->data_source_amounts_differ) {
-			$alt_txt = "This contract agreement has information as a prime vendor. <br><br> Click this icon to view this contract as a prime vendor. ";
+			$alt_txt = "This contract agreement has addtional information as a prime vendor. <br><br> Click this icon to view this contract as a prime vendor. ";
 			$url="/contract_details/agid/" .  _getRequestParamValue("agid") . "/doctype/CTA1/newwindow";
 			echo "<div class='contractLinkNote'><a class='new_window' href='". $url ."' alt='" . $alt_txt . "'  >View as Vendor</a></div>";
     }elseif( !preg_match('/newwindow/',$_GET['q']) && _checkbook_is_oge_contract($node->data[0]['contract_number']) && $node->data_source_amounts_differ){
-			$alt_txt = "This contract agreement has information as agency <br><br> Click this icon to view this contract as an agency ";
+			$alt_txt = "This contract agreement has addtional information as agency <br><br> Click this icon to view this contract as an agency ";
 			$url="/contract_details/agid/" .  _getRequestParamValue("agid") . "/doctype/CTA1/datasource/checkbook_oge/newwindow";
 			echo "<div class='contractLinkNote'><a class='new_window' href='". $url ."' alt='" . $alt_txt . "'  >View as agency</a></div>";
 		}
@@ -114,8 +114,11 @@ $maximum_contract_amount =  ( _getRequestParamValue("datasource") == "checkbook_
         <?php
     }else{
     ?>
-      <li><span class="gi-list-item">Prime Vendor:</span> <a
-        href="<?php echo $vendor_link;?>"><?php echo $node->data[0]['legal_name_checkbook_vendor'];?></a></span></li>    
+      <li><span class="gi-list-item">Prime Vendor:</span>
+          <?php if(!preg_match('/newwindow/',$_GET['q'])){ ?>
+            <a href="<?php echo $vendor_link;?>"><?php echo $node->data[0]['legal_name_checkbook_vendor'];?></a>
+          <?php }else{ echo $node->data[0]['legal_name_checkbook_vendor']; } ?>
+          </span></li>
     <?php
  
 	}
@@ -129,8 +132,11 @@ $maximum_contract_amount =  ( _getRequestParamValue("datasource") == "checkbook_
      <?php
     if ( _getRequestParamValue("datasource") != "checkbook_oge") {
     ?>
-      <li><span class="gi-list-item">Contracting Agency:</span> <a
-        href="<?php echo $agency_link;?>"><?php echo $node->data[0]['agency_name_checkbook_agency'];?></a></li>
+      <li><span class="gi-list-item">Contracting Agency:</span>
+          <?php if(!preg_match('/newwindow/',$_GET['q'])){ ?>
+            <a href="<?php echo $agency_link;?>"><?php echo $node->data[0]['agency_name_checkbook_agency'];?></a>
+          <?php }else{ echo $node->data[0]['agency_name_checkbook_agency'];} ?>
+      </li>
         <?php
     }
     ?>
