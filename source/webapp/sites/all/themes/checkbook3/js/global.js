@@ -533,32 +533,32 @@ function addPaddingToDataCells(table){
 
     Drupal.behaviors.alertTransactions = {
         attach:function (context, settings) {
-// The span.alert is the object in Drupal to which you link the click button, I don�t know how it is actually named for the alert 
+        // The span.alert is the object in Drupal to which you link the click button, I don�t know how it is actually named for the alert
             $('span.alerts').live("click", function () {
                 var dialog = $("#dialog");
                 if ($("#dialog").length == 0) {
                     dialog = $('<div id="dialog" style="display:none"></div>');
                 }
 
-// This is where you add the alerted table to which you link the output data from '/alert/transactions/form�
+                // This is where you add the alerted table to which you link the output data from '/alert/transactions/form�
                 var oSettings = $('#table_'+$(this).attr('alertsid')).dataTable().fnSettings();
 
- // This is the part where we get the data from to show in the dialogue we open, I don�t know if you process the following parameters  maxPages , record and so on but it won�t hurt if it stayed here
+                // This is the part where we get the data from to show in the dialogue we open, I don�t know if you process the following parameters  maxPages , record and so on but it won�t hurt if it stayed here
                 var dialogUrl = '/alert/transactions/form';
- 
-var validateEmail=function(email) { 
-    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(email);
-};
-var isNumber=function(value) {
-    if ((undefined === value) || (null === value)) {
-        return false;
-    }
-    if (typeof value == 'number') {
-        return true;
-    }
-    return !isNaN(value - 0);
-}
+
+                var validateEmail=function(email) {
+                    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                    return re.test(email);
+                };
+                var isNumber=function(value) {
+                    if ((undefined === value) || (null === value)) {
+                        return false;
+                    }
+                    if (typeof value == 'number') {
+                        return true;
+                    }
+                    return !isNaN(value - 0);
+                }
 
                 // load remote content
                 dialog.load(
@@ -571,7 +571,7 @@ var isNumber=function(value) {
                             dialogClass:"alert",
                             width:700,
                             open:function(){
-$("input[name='alert_end[date]']").datepicker({"changeMonth":true,"changeYear":true,"autoPopUp":"focus","closeAtTop":false,"speed":"immediate","firstDay":0,"dateFormat":"yy-mm-dd","yearRange":"-113:+487","fromTo":false,"defaultDate":"0y"});
+                            $("input[name='alert_end[date]']").datepicker({"changeMonth":true,"changeYear":true,"autoPopUp":"focus","closeAtTop":false,"speed":"immediate","firstDay":0,"dateFormat":"yy-mm-dd","yearRange":"-113:+487","fromTo":false,"defaultDate":"0y"});
                                                         },
                             buttons:{
                                 "Create Alert":function () {
@@ -598,7 +598,7 @@ $("input[name='alert_end[date]']").datepicker({"changeMonth":true,"changeYear":t
                                     if((alertEnd.length > 1 && alertEnd.length != 10) || (alertEnd.length > 1 && !alertEnd.match(dateRegEx))){
                                         alertMsgs.push("Expiration Date is not valid.");
                                     }
- 
+
                                     if (alertMsgs.length > 0) {
                                         $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul>' + '<li>' + alertMsgs.join('<li/>') + '</ul></div>');
                                     } else {
@@ -653,6 +653,146 @@ $("input[name='alert_end[date]']").datepicker({"changeMonth":true,"changeYear":t
             });
         }
     };
+
+    $.fn.onScheduleAlert = function () {
+        var dialog = $(".create-alert-schedule-alert");
+
+        // This is where you add the alerted table to which you link the output data from '/alert/transactions/form�
+        // var oSettings = $('#table_'+$(this).attr('alertsid')).dataTable().fnSettings();
+
+        // This is the part where we get the data from to show in the dialogue we open, I don�t know if you process the following parameters  maxPages , record and so on but it won�t hurt if it stayed here
+        var dialogUrl = '/spending/transactions/yeartype/B/year/115/agency/50/expcategorynm/BUILDING ACQUISITION/deptnm/400-068-A02'/newwindow/'/alert/transactions/form';
+
+        var validateEmail=function(email) {
+            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+        };
+        var isNumber=function(value) {
+            if ((undefined === value) || (null === value)) {
+                return false;
+            }
+            if (typeof value == 'number') {
+                return true;
+            }
+            return !isNaN(value - 0);
+        }
+
+        $.ajax({
+            url: dialogUrl
+            ,success: function(data) {
+                var html = "<div class='create-alert-schedule-alert'>"+data+"</div>";
+                html = html.replace("<span class='alert-required-field'></span>", "<span class='alert-required-field' style='color:red;'>*</span>");
+                html = html.replace("<span class='alert-required-field'></span>", "<span class='alert-required-field' style='color:red;'>*</span>");
+                html = html.replace("id='alert_instructions'", "style='display:none'");
+                dialog.html(html);
+            }
+        });
+        // load remote content
+//        dialog.load(
+//            dialogUrl,
+//            {},
+//            function (responseText, textStatus, XMLHttpRequest) {
+//                dialog.dialog({position:"center",
+//                    modal:false,
+//                    open:function(){
+//                        $("input[name='alert_end[date]']").datepicker({"changeMonth":true,"changeYear":true,"autoPopUp":"focus","closeAtTop":false,"speed":"immediate","firstDay":0,"dateFormat":"yy-mm-dd","yearRange":"-113:+487","fromTo":false,"defaultDate":"0y"});
+//                    },
+//                    buttons:{
+//                        "Scedule Alert":function () {
+//                            var alertLabel = $('input[name=alert_label]').val();
+//                            var alertEmail = $('input[name=alert_email]').val();
+//                            var alertMinimumResults = $('input[name=alert_minimum_results]').val();
+//                            var alertMinimumDays = $('select[name=alert_minimum_days]').val();
+//                            var alertEnd = $("input[name='alert_end[date]']").val();
+//                            var dateRegEx = '[0-9]{4,4}-[0-1][0-9]-[0-3][0-9]';
+//
+//                            var alertMsgs = [];
+//                            if(alertLabel.length<1){
+//                                alertMsgs.push("No Description has been set.");
+//                            }
+//                            if(alertEmail.length<1 || !validateEmail(alertEmail)){
+//                                alertMsgs.push("No email is entered.");
+//                            }
+//                            if(!isNumber(alertMinimumResults) || alertMinimumResults<1){
+//                                alertMsgs.push("Minimum results is not a valid number.");
+//                            }
+//                            if(!isNumber(alertMinimumDays) || alertMinimumDays<1){
+//                                alertMsgs.push("Alert frequency is not valid.");
+//                            }
+//                            if((alertEnd.length > 1 && alertEnd.length != 10) || (alertEnd.length > 1 && !alertEnd.match(dateRegEx))){
+//                                alertMsgs.push("Expiration Date is not valid.");
+//                            }
+//
+//                            if (alertMsgs.length > 0) {
+//                                $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul>' + '<li>' + alertMsgs.join('<li/>') + '</ul></div>');
+//                            } else {
+//                                $('#errorMessages').html('');
+//
+//                                var url = '/alert/transactions';
+//                                var data = {
+//                                    refURL:oSettings.sAjaxSource,
+//                                    alert_label:alertLabel,
+//                                    alert_email:alertEmail,
+//                                    alert_minimum_results:alertMinimumResults,
+//                                    alert_minimum_days:alertMinimumDays,
+//                                    alert_end:alertEnd,
+//                                    userURL:window.location.href
+//                                }
+//                                $this=$(this);
+//                                $.get(url,data,function(data){
+//                                    data=JSON.parse(data);
+//                                    if(data.success){
+//                                        $this.dialog('close');
+//
+//                                        var dialog = $("#dialog");
+//                                        if ($("#dialog").length == 0) {
+//                                            dialog = $('<div id="dialog" style="display:none"></div>');
+//                                        }
+//                                        dialog.html(data.html);
+//                                        dialog.dialog({position:"center",
+//                                            modal:true,
+//                                            title:'Alert',
+//                                            dialogClass:"alert",
+//                                            width:700,
+//                                            buttons:{
+//                                                "OK":function () {
+//                                                    $this.dialog('close');
+//                                                }
+//                                            }
+//                                        });
+//                                    }else{
+//                                        $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul><li>'+data.errors.join('<li/>')+'</ul></div>');
+//                                    }
+//                                });
+//                            }
+//                        },
+//                        "Back":function () {
+//                            $(this).dialog('close');
+//                        }
+//                    }
+//                });
+//            }
+//        );
+        return false;
+    }
+
+    $.fn.buildResults = function (url) {
+        alert(url);
+    }
+
+    $.fn.onCustomizeResults = function (url) {
+        var dialog = $(".create-alert-customize-results");
+        var dialogUrl = '/spending/transactions/yeartype/B/year/115/agency/50/expcategorynm/BUILDING ACQUISITION/deptnm/400-068-A02/newwindow/';
+
+        $.ajax({
+            url: dialogUrl
+            ,success: function(data) {
+                var html = "<div class='create-alert-customize-results'>"+data+"</div>";
+                dialog.html(html);
+            }
+        });
+        return false;
+    }
 
     Drupal.behaviors.exportTransactions = {
         attach:function (context, settings) {
@@ -854,13 +994,12 @@ $("input[name='alert_end[date]']").datepicker({"changeMonth":true,"changeYear":t
               });
             }
         };
-    
-    
 
     //Uncomment budget and revenue case and change indexes when enabling budget and revenue
     //Also see changes in checkbook_advanced_search.module and checkbook_datafeeds.module
     Drupal.behaviors.advancedSearchAccordions = {
         attach:function (context, settings) {
+
             $('a.advanced-search').click(function () {
 
                 var href = window.location.href.replace(/(http|https):\/\//, '');
@@ -894,11 +1033,21 @@ $("input[name='alert_end[date]']").datepicker({"changeMonth":true,"changeYear":t
                 });
 
                 //Remove Create Alert Attributes and styling
-                $('.create-wizard-instructions').css('display','none');
+                $('.create-alert-instructions').css('display','none');
                 $('.create-alert-customize-results').css('display','none');
                 $('.create-alert-schedule-alert').css('display','none');
                 $('.create-alert-confirmation').css('display','none');
                 $('.create-alert-submit').css('display','none');
+                $('input[name="budget_submit"]').css('display','inline');
+                $('input[name="revenue_submit"]').css('display','inline');
+                $('input[name="spending_submit"]').css('display','inline');
+                $('input[name="contracts_submit"]').css('display','inline');
+                $('input[name="payroll_submit"]').css('display','inline');
+                $('input[name="budget_next"]').css('display','none');
+                $('input[name="revenue_next"]').css('display','none');
+                $('input[name="spending_next"]').css('display','none');
+                $('input[name="contracts_next"]').css('display','none');
+                $('input[name="payroll_next"]').css('display','none');
                 $('.advanced-search-accordion').css('display','inline');
                 $('.advanced-search-accordion').width('100%');
                 $('.ui-dialog .ui-dialog-content').css('padding','0.5em 1em');
@@ -926,9 +1075,8 @@ $("input[name='alert_end[date]']").datepicker({"changeMonth":true,"changeYear":t
                 var page_clicked_from = this.id ? this.id : href.split('/')[1];
 
                 initializeSection(page_clicked_from, data_source);
-
                 $('#block-checkbook-advanced-search-checkbook-advanced-search-form').dialog({
-                    title:"Advanced Search",
+                    title:"<span class='create-alert-header'><span class='active'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>3. Schedule Alerts</span></span>",
                     position:['center', 'center'],
                     width:900,
                     modal:true,
@@ -950,11 +1098,21 @@ $("input[name='alert_end[date]']").datepicker({"changeMonth":true,"changeYear":t
                 });
 
                 //Add Create Alert Attributes and styling
-                $('.create-wizard-instructions').css('display','inline');
+                $('.create-alert-instructions').css('display','inline');
                 $('.create-alert-customize-results').css('display','none');
                 $('.create-alert-schedule-alert').css('display','none');
                 $('.create-alert-confirmation').css('display','none');
                 $('.create-alert-submit').css('display','none');
+                $('input[name="budget_submit"]').css('display','none');
+                $('input[name="revenue_submit"]').css('display','none');
+                $('input[name="spending_submit"]').css('display','none');
+                $('input[name="contracts_submit"]').css('display','none');
+                $('input[name="payroll_submit"]').css('display','none');
+                $('input[name="budget_next"]').css('display','inline');
+                $('input[name="revenue_next"]').css('display','inline');
+                $('input[name="spending_next"]').css('display','inline');
+                $('input[name="contracts_next"]').css('display','inline');
+                $('input[name="payroll_next"]').css('display','inline');
                 $('.advanced-search-accordion').css('display','inline');
 
                 $('.advanced-search-accordion').width('90%');

@@ -1,6 +1,6 @@
 <div id='dialog'>
   <div id='errorMessages'></div>
-  <div>Checkbook alerts will notify you by email when new results matching your current search criteria are available.  Emails will be sent based on the frequency selected and only after the minimum number of additional results entered has been reached since the last alert.</div>
+  <div id='alert_instructions'>Checkbook alerts will notify you by email when new results matching your current search criteria are available.  Emails will be sent based on the frequency selected and only after the minimum number of additional results entered has been reached since the last alert.</div>
   <table>
     <tr>
       <th>
@@ -8,14 +8,14 @@
       </th>
     </tr>
     <tr>
-      <td>Description:</td>
+      <td><span class='alert-required-field'></span>Description:</td>
       <td>
         <input type='text' name='alert_label' size="25" />
         <div class="description">This is how the alert will be described in the email text.</div>
       </td>
     </tr>
     <tr>
-      <td>Email:</td>
+      <td><span class='alert-required-field'></span>Email:</td>
       <td>
         <input type='text' name='alert_email' size="50" />
       </td>
