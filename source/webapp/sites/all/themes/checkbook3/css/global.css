@@ -2408,3 +2408,13 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
 	margin-top:10px;
 	margin-bottom: 10px;
 }
+
+.createalert #section-header
+{
+    display: none;
+}
+.createalert span.alerts
+{
+    display: none;
+}
+
