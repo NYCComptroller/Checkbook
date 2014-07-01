@@ -980,18 +980,6 @@ div.bottomContainer{
 /***************************************
 ***   ADVANCED SEARCH FORM STYLING   ***
 ***************************************/
-
-/* Advanced Search - Create Alerts */
-
-#ui-dialog-title-block-checkbook-advanced-search-checkbook-advanced-search-form span.active{
-
-}
-#ui-dialog-title-block-checkbook-advanced-search-checkbook-advanced-search-form span.inactive{
-    opacity: 0.3;
-}
-
-/* Advanced Search */
-
 #ui-dialog-title-block-checkbook-advanced-search-checkbook-advanced-search-form{
     line-height:20px;
 }
@@ -1003,10 +991,6 @@ div.bottomContainer{
     vertical-align: top;
     float:left;
     width: 346px;
-}
-#checkbook-advanced-search-form .column.column-left.checkbook,
-#checkbook-advanced-search-form .column.column-left.checkbook-oge{
-    clear: left;
 }
 #checkbook-datafeeds-data-feed-wizard .column-right,
 #checkbook-advanced-search-form .column-right,
@@ -1261,13 +1245,7 @@ div.bottomContainer{
 #checkbook-advanced-search-form .contracts-submit input,
 #checkbook-advanced-search-form .payroll-submit input,
 #checkbook-advanced-search-form .revenue-submit input,
-#checkbook-advanced-search-form .budget-submit input,
-#checkbook-advanced-search-form .spending-next input,
-#checkbook-advanced-search-form .contracts-next input,
-#checkbook-advanced-search-form .payroll-next input,
-#checkbook-advanced-search-form .revenue-next input,
-#checkbook-advanced-search-form .budget-next input,
-#checkbook-advanced-search-form .create-alert-submit input {
+#checkbook-advanced-search-form .budget-submit input{
     width: auto;
 }
 /* budget section styles */
