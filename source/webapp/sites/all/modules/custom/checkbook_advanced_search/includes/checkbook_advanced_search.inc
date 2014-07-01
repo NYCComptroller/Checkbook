@@ -4,7 +4,33 @@
  * has been clicked and invoke the respective functions that generate the
  * redirect URL with the necessary parameters
  */
-function checkbook_advanced_search_form_submit($form, &$form_state)
+function checkbook_advanced_search_form_submit($form, &$form_state) {
+
+    switch ($form_state['clicked_button']['#name']) {
+        case "revenue_submit":
+            _checkbook_advanced_search_revenue_submit($form, $form_state);
+            break;
+        case "spending_submit":
+            $data_source = $form_state['values']['spending_advanced_search_domain_filter'];
+            _checkbook_advanced_search_spending_submit($form, $form_state, $data_source);
+            break;
+        case "budget_submit":
+        case "budget_next":
+            return _checkbook_advanced_search_budget_submit($form, $form_state);
+            break;
+        case "payroll_submit":
+            _checkbook_advanced_search_payroll_submit($form, $form_state);
+            break;
+        case "contracts_submit":
+            $data_source = $form_state['values']['contracts_advanced_search_domain_filter'];
+            _checkbook_advanced_search_contracts_submit($form, $form_state, $data_source);
+            break;
+        default:
+            break;
+    }
+}
+
+function checkbook_advanced_search__create_alert_next($form, &$form_state)
 {
     switch ($form_state['clicked_button']['#name']) {
         case "revenue_submit":
@@ -28,6 +54,7 @@ function checkbook_advanced_search_form_submit($form, &$form_state)
             break;
     }
 }
+
 
 /*
  * Get year_value and id using the data controller
@@ -841,7 +868,8 @@ function _checkbook_advanced_search_budget_submit($form, &$form_state)
     $budget_current_modified_range_array = array('from' => $budget_current_modified_from, 'to' => $budget_current_modified_to, 'type' => 'amount');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_current_modified_range_array, 'curamt', TRUE);
 
-    $form_state['redirect'] = $redirect_url;
+
+    return $redirect_url;
 }
 
 /*
@@ -934,9 +962,6 @@ function _checkbook_advanced_search_replaceSlash($string)
 /**
  * Get field definition configurations.
  *
- * @param string $domain
- *   domain
- *
  * @return mixed
  *   configuration
  */
@@ -968,4 +993,161 @@ function _checkbook_advanced_search_get_field_configs($domain)
     return $configuration;
 }
 
+/**
+ * Get create alert wizard configuration.
+ *
+ * @return mixed
+ *   configuration
+ */
+function _checkbook_advanced_search_create_alert_config()
+{
+    $config_str = file_get_contents(realpath(drupal_get_path('module', 'checkbook_advanced_search')) . "/config/checkbook_advanced_search_create_alert_config.json");
 
+    $converter = new Json2PHPArray();
+    $configuration = $converter->convert($config_str);
+
+    return $configuration;
+
+//    /* select_criteria step */
+//    $steps = [];
+//    $step = new step();
+//    $step->name = 'select_criteria';
+//    $step->title = 'Select Criteria';
+//    $step->order = '1';
+//
+//    $instructions = "Follow the three step process to schedule alerts.<br/><br/>";
+//    $instructions .= "<ul style='list-style:disc inside;'>";
+//    $instructions .= "<li>Please select one of the following domains and also select the desired filters.</li>";
+//    $instructions .= "<li>Click 'Next' button to view and customize the results.</li>";
+//    $instructions .= "<li>Click 'Clear All' to clear out the filters applied.</li></ul><br/>";
+//    $step->instructions .= $instructions;
+//
+//    $step->content = '';
+//    $step->next_step = 'customize_results';
+//
+//    $buttons = [];
+//
+//    $button = new button();
+//    $button->id = 'next_submit';
+//    $button->value = t('Next');
+//    $button->name = 'next';
+//    $button->ajax_callback = '_checkbook_advanced_search_next_ajax';
+//    $buttons[] = $button;
+//
+//    $button = new button();
+//    $button->id = 'back_submit';
+//    $button->value = t('Back');
+//    $button->name = 'back';
+//    $button->ajax_callback = '_checkbook_advanced_search_back_ajax';
+//    $buttons[] = $button;
+//
+//    $step->buttons[] = $buttons;
+//
+//    $steps[] = $step;
+//
+//    /* customize_results step */
+//    $step = new step();
+//    $step->name = 'customize_results';
+//    $step->title = 'Customize Results';
+//    $step->order = '2';
+//
+//    $instructions .= "Further narrow down the results using the 'Narrow down your search' functionality.<br/><br/>";
+//    $instructions .= "<ul style='list-style:disc inside;'>";
+//    $instructions .= "<li>Click 'Export' button to download the results into excel.</li>";
+//    $instructions .= "<li>Click 'Back' to go back to Step1: Select Criteria</li>";
+//    $instructions .= "<li>Click 'Next' button to Schedule Alert.</li></ul><br/>";
+//    $step->instructions .= $instructions;
+//
+//    $step->content = '';
+//    $step->prev_step = 'select_criteria';
+//    $step->next_step = 'schedule_alert';
+//
+//    $buttons = [];
+//
+//    $button = new button();
+//    $button->id = 'next_submit';
+//    $button->value = t('Next');
+//    $button->name = 'next';
+//    $button->ajax_callback = '_checkbook_advanced_search_next_ajax';
+//    $buttons[] = $button;
+//
+//    $button = new button();
+//    $button->id = 'back_submit';
+//    $button->value = t('Back');
+//    $button->name = 'back';
+//    $button->ajax_callback = '_checkbook_advanced_search_back_ajax';
+//    $buttons[] = $button;
+//
+//    $step->buttons[] = $buttons;
+//
+//    $steps[] = $step;
+//
+//    /* schedule_alert step */
+//    $step = new step();
+//    $step->name = 'schedule_alert';
+//    $step->title = 'Schedule Alert';
+//    $step->order = '3';
+//
+//    $instructions .= "<ul style='list-style:disc inside;'>";
+//    $instructions .= "<li>Checkbook alerts will notify you by email when new results matching your current search criteria are available. Use options below for alert settings.</li>";
+//    $instructions .= "<li>Provide email address, in order to receive alerts. Emails will be sent based on the frequency selected and only after the minimum number of additional results entered has been reached since the last alert.</li>";
+//    $instructions .= "<li>Click 'Back' to go back to Step2: Customize Results</li>";
+//    $instructions .= "<li>Click 'Schedule Alert' to schedule the alert</li>";
+//    $instructions .= "<li>The user shall receive email confirmation once the alert is scheduled.</li></ul><br/>";
+//    $step->instructions .= $instructions;
+//
+//    $step->content = '';
+//    $step->prev_step = 'customize_results';
+//    $step->next_step = 'confirmation';
+//
+//    $buttons = [];
+//
+//    $button = new button();
+//    $button->id = 'next_submit';
+//    $button->value = t('Schedule Alert');
+//    $button->name = 'next';
+//    $button->ajax_callback = '_checkbook_advanced_search_next_ajax';
+//    $buttons[] = $button;
+//
+//    $button = new button();
+//    $button->id = 'back_submit';
+//    $button->value = t('Back');
+//    $button->name = 'back';
+//    $button->ajax_callback = '_checkbook_advanced_search_back_ajax';
+//    $buttons[] = $button;
+//
+//    $step->buttons[] = $buttons;
+//
+//    $steps[] = $step;
+//
+//    /* confirmation step */
+//    $step = new step();
+//    $step->name = 'confirmation';
+//    $step->order = '4';
+//
+//    $steps[] = $step;
+//
+//
+//    $json = json_encode( $steps );
+
+}
+
+class step
+{
+    public $name;
+    public $title;
+    public $order;
+    public $instructions;
+    public $content;
+    public $buttons = [];
+    public $prev_step;
+    public $next_step;
+}
+
+class button
+{
+    public $id;
+    public $value;
+    public $name;
+    public $ajax_callback;
+}
