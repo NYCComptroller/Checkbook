@@ -275,22 +275,15 @@ class Form
 
             case FieldType::SubmitField:
 
-                $submit_class = "$this->domain_name-submit ".str_replace('_','-',$data_source);
-
-                //Next Button
-                $domain_field = "{$this->domain_name}_next";
-
-                $form[$domain][$domain_field]['#type'] = $field->field_type;
-                $form[$domain][$domain_field]['#name'] = $domain_field;
-                $form[$domain][$domain_field]['#value'] = t('Next');
-                $form[$domain][$domain_field]['#prefix'] = t('<div class="'.$submit_class.'">');
-
                 //Submit Button
                 $domain_field = "{$this->domain_name}_submit";
+
+                $submit_class = "$this->domain_name-submit ".str_replace('_','-',$data_source);
 
                 $form[$domain][$domain_field]['#type'] = $field->field_type;
                 $form[$domain][$domain_field]['#name'] = $domain_field;
                 $form[$domain][$domain_field]['#value'] = t('Submit');
+                $form[$domain][$domain_field]['#prefix'] = t('<div class="'.$submit_class.'">');
 
                 //Clear All Button
                 $domain_field = "{$this->domain_name}_clear";
@@ -306,6 +299,40 @@ class Form
                     $form[$domain][$domain_field]['#suffix'] = '</div>';
 
                 break;
+
+//            case FieldType::SubmitField:
+//
+//                $submit_class = "$this->domain_name-submit ".str_replace('_','-',$data_source);
+//
+//                //Next Button
+//                $domain_field = "{$this->domain_name}_next";
+//
+//                $form[$domain][$domain_field]['#type'] = $field->field_type;
+//                $form[$domain][$domain_field]['#name'] = $domain_field;
+//                $form[$domain][$domain_field]['#value'] = t('Next');
+//                $form[$domain][$domain_field]['#prefix'] = t('<div class="'.$submit_class.'">');
+//
+//                //Submit Button
+//                $domain_field = "{$this->domain_name}_submit";
+//
+//                $form[$domain][$domain_field]['#type'] = $field->field_type;
+//                $form[$domain][$domain_field]['#name'] = $domain_field;
+//                $form[$domain][$domain_field]['#value'] = t('Submit');
+//
+//                //Clear All Button
+//                $domain_field = "{$this->domain_name}_clear";
+//
+//                $form[$domain][$domain_field]['#type'] = $field->field_type;
+//                $form[$domain][$domain_field]['#value'] = t('Clear All');
+//
+//                end($this->contents);
+//                $endKey = key($this->contents);
+//                if($data_source == $endKey)
+//                    $form[$domain][$domain_field]['#suffix'] = '</div></div>';
+//                else
+//                    $form[$domain][$domain_field]['#suffix'] = '</div>';
+//
+//                break;
 
             case FieldType::TextField:
 
