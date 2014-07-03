@@ -56,147 +56,24 @@ function checkbook_advanced_search_display()
     return drupal_get_form('checkbook_advanced_search_form');
 }
 
-function _checkbook_advanced_search_next_ajax($form, &$form_state) {
-
-    $domain = isset($form_state['triggering_element']['#ajax']['parameters']['domain'])
-        ? $form_state['triggering_element']['#ajax']['parameters']['domain']
-        : $_POST['domain'];
-    $step = isset($form_state['triggering_element']['#ajax']['parameters']['step'])
-        ? $form_state['triggering_element']['#ajax']['parameters']['step']
-        : $_POST['step'];
-    $commands = [];
-
-    switch($step) {
-        case 'select_criteria':
-            $next_step = 'customize_results';
-
-            /* Update header */
-
-            /* Update wizard instructions */
-
-            /* Hide the accordion */
-            $commands[] = ajax_command_invoke('.advanced-search-accordion', 'css', array('display','none',));
-            /* Show the results page */
-            $commands[] = ajax_command_invoke('.create-alert-customize-results', 'css', array('display','inline',));
-            /* Show results buttons */
-            $commands[] = ajax_command_invoke('.create-alert-submit', 'css', array('display','inline',));
-            /* Add new domain to hidden field for persistence */
-            $commands[] = ajax_command_invoke('input:hidden[name="domain"]', 'val', array($domain));
-            /* Add new step to hidden field for persistence */
-            $commands[] = ajax_command_invoke('input:hidden[name="step"]', 'val', array($next_step));
-
-            break;
-
-        case 'customize_results':
-            $next_step = 'schedule_alert';
-
-            /* Update header */
-
-            /* Update wizard instructions */
-
-            /* Hide the results page */
-            $commands[] = ajax_command_invoke('.create-alert-customize-results', 'css', array('display','none',));
-            /* Show the schedule alert page */
-            $commands[] = ajax_command_invoke('.create-alert-schedule-alert', 'css', array('display','inline',));
-            /* Update hidden field for new step */
-            $commands[] = ajax_command_invoke('input:hidden[name="step"]', 'val', array($next_step));
-
-            break;
-
-        case 'schedule_alert':
-            $next_step = 'confirmation';
-
-            /* Update header */
-
-            /* Update wizard instructions */
-
-            /* Hide the schedule alert page */
-            $commands[] = ajax_command_invoke('.create-alert-schedule-alert', 'css', array('display','none',));
-            /* Show the confirmation page */
-            $commands[] = ajax_command_invoke('.create-alert-confirmation', 'css', array('display','inline',));
-            /* Hide buttons */
-            $commands[] = ajax_command_invoke('.create-alert-submit', 'css', array('display','none',));
-            /* Reset domain to default */
-            $commands[] = ajax_command_invoke('input:hidden[name="domain"]', 'val', array('spending'));
-            /* Reset step to default */
-            $commands[] = ajax_command_invoke('input:hidden[name="step"]', 'val', array('select_criteria'));
-
-            break;
-    }
-
-    return array('#type' => 'ajax', '#commands' => $commands);
-
-}
-
-function _checkbook_advanced_search_back_ajax($form, &$form_state) {
-
-    $domain = $_POST['domain'];
-    $step = $_POST['step'];
-    $previous_step = '';
-    $commands = [];
-
-    switch($step) {
-        case 'customize_results':
-            $previous_step = 'select_criteria';
-
-            /* Update header */
-
-            /* Update wizard instructions */
-
-            /* Hide the results page */
-            $commands[] = ajax_command_invoke('.create-alert-customize-results', 'css', array('display','none',));
-            /* Show the accordion */
-            $commands[] = ajax_command_invoke('.advanced-search-accordion', 'css', array('display','inline',));
-            /* Hide results buttons */
-            $commands[] = ajax_command_invoke('.create-alert-submit', 'css', array('display','none',));
-            /* Update hidden field for new step */
-            $commands[] = ajax_command_invoke('input:hidden[name="step"]', 'val', array($previous_step));
-            break;
-
-        case 'schedule_alert':
-            $previous_step = 'customize_results';
-
-            /* Update header */
-
-            /* Update wizard instructions */
-
-            /* Hide the schedule alerts page */
-            $commands[] = ajax_command_invoke('.create-alert-schedule-alert', 'css', array('display','none',));
-            /* Show the results page */
-            $commands[] = ajax_command_invoke('.create-alert-customize-results', 'css', array('display','inline',));
-            /* Show results buttons */
-            $commands[] = ajax_command_invoke('.create-alert-submit', 'css', array('display','inline',));
-            /* Update hidden field for new step */
-            $commands[] = ajax_command_invoke('input:hidden[name="step"]', 'val', array($previous_step));
-
-            break;
-    }
-
-    return array('#type' => 'ajax', '#commands' => $commands);
-}
 
 /**
  * Implements hook_form().
  */
 function checkbook_advanced_search_form($form, $form_state)
 {
-    $create_alert_wizard_instructions = "<div class='create-wizard-instructions'>Follow the three step process to schedule alerts.<br/><br/>";
-    $create_alert_wizard_instructions .= "<ul style='list-style:disc inside;'>";
-    $create_alert_wizard_instructions .= "<li>Please select one of the following domains and also select the desired filters.</li>";
-    $create_alert_wizard_instructions .= "<li>Click 'Next' button to view and customize the results.</li>";
-    $create_alert_wizard_instructions .= "<li>Click 'Clear All' to clear out the filters applied.</li>";
-    $create_alert_wizard_instructions .= "</ul><br/></div>";
+    $create_alert_config =  _checkbook_advanced_search_create_alert_config();
+    $create_alert_instructions = $create_alert_config['select_criteria']['instructions'];
 
     $create_alert_customize_results = "<div class='create-alert-customize-results'>Create Alert Customize Results Page<br/><br/>";
     $create_alert_customize_results .= "<br/></div>";
 
     $create_alert_schedule_alert = "<div class='create-alert-schedule-alert'>Schedule Alert Page<br/><br/>";
-    $create_alert_schedule_alert .= "<br/></div>";
+    $create_alert_schedule_alert .= "</div>";
 
-    $create_alert_confirmation = "<div class='create-alert-confirmation'>Create Alert Confirmation Page<br/><br/>";
-    $create_alert_confirmation .= "<br/></div>";
+    $create_alert_confirmation = "<div class='create-alert-confirmation'><strong>Thank you for Scheduling your Alert!<br/>You will receive a confirmation email soon.</strong></div>";
 
-    $create_alert_view = $create_alert_wizard_instructions.$create_alert_customize_results.$create_alert_schedule_alert.$create_alert_confirmation;
+    $create_alert_view = $create_alert_instructions.$create_alert_customize_results.$create_alert_schedule_alert.$create_alert_confirmation;
 
     $agencies = _checkbook_advanced_search_get_agencyname_and_id();
     $agency_attributes = _checkbook_advanced_search_get_agency_attributes();
@@ -344,37 +221,26 @@ function checkbook_advanced_search_form($form, $form_state)
         '#maxlength' => 32,
         '#suffix' => '</div></div></div></div>',
     );
+    $form['budget']['budget_next'] = array(
+        '#type' => 'button',
+        '#value' => t('Next'),
+        '#name' => 'budget_next',
+        '#prefix' => t('<div class="budget-submit">'),
+        '#ajax' => array(
+            'callback' => '_checkbook_advanced_search_next_ajax',
+            'parameters' => array('step' => 'select_criteria'),
+        ),
+    );
     $form['budget']['budget_submit'] = array(
         '#type' => 'submit',
         '#value' => t('Submit'),
         '#name' => 'budget_submit',
-        '#prefix' => t('<div class="budget-submit">'),
     );
     $form['budget']['budget_clear'] = array(
         '#suffix' => '</div></div>',
         '#type' => 'submit',
         '#value' => t('Clear All'),
     );
-//    $form['budget']['budget_next'] = array(
-//        '#type' => 'button',
-//        '#value' => t('Next'),
-//        '#name' => 'budget_next',
-//        '#prefix' => t('<div class="budget-submit">'),
-//        '#ajax' => array(
-//            'callback' => '_checkbook_advanced_search_next_ajax',
-//            'parameters' => array('domain' => 'budget', 'step' => 'select_criteria'),
-//        ),
-//    );
-//    $form['budget']['budget_submit'] = array(
-//        '#type' => 'submit',
-//        '#value' => t('Submit'),
-//        '#name' => 'budget_submit',
-//    );
-//    $form['budget']['budget_clear'] = array(
-//        '#suffix' => '</div></div>',
-//        '#type' => 'submit',
-//        '#value' => t('Clear All'),
-//    );
 
     //</editor-fold>
 
@@ -476,33 +342,26 @@ function checkbook_advanced_search_form($form, $form_state)
         '#maxlength' => 32,
         '#suffix' => '</div></div></div></div>',
     );
+    $form['revenue']['revenue_next'] = array(
+        '#type' => 'button',
+        '#value' => t('Next'),
+        '#name' => 'revenue_next',
+        '#prefix' => t('<div class="revenue-submit">'),
+        '#ajax' => array(
+            'callback' => '_checkbook_advanced_search_next_ajax',
+            'parameters' => array('step' => 'select_criteria'),
+        ),
+    );
     $form['revenue']['revenue_submit'] = array(
         '#type' => 'submit',
         '#value' => t('Submit'),
         '#name' => 'revenue_submit',
-        '#prefix' => t('<div class="revenue-submit">'),
     );
     $form['revenue']['revenue_clear'] = array(
         '#suffix' => '</div></div>',
         '#type' => 'submit',
         '#value' => t('Clear All'),
     );
-//    $form['revenue']['revenue_next'] = array(
-//        '#type' => 'submit',
-//        '#value' => t('Next'),
-//        '#name' => 'revenue_next',
-//        '#prefix' => t('<div class="revenue-submit">'),
-//    );
-//    $form['revenue']['revenue_submit'] = array(
-//        '#type' => 'submit',
-//        '#value' => t('Submit'),
-//        '#name' => 'revenue_submit',
-//    );
-//    $form['revenue']['revenue_clear'] = array(
-//        '#suffix' => '</div></div>',
-//        '#type' => 'submit',
-//        '#value' => t('Clear All'),
-//    );
 
     //</editor-fold>
 
@@ -645,33 +504,26 @@ function checkbook_advanced_search_form($form, $form_state)
         '#description' => '',
         '#suffix' => '</div></div></div>',
     );
+    $form['payroll']['payroll_next'] = array(
+        '#type' => 'button',
+        '#value' => t('Next'),
+        '#name' => 'payroll_next',
+        '#prefix' => t('<div class="payroll-submit">'),
+        '#ajax' => array(
+            'callback' => '_checkbook_advanced_search_next_ajax',
+            'parameters' => array('step' => 'select_criteria'),
+        ),
+    );
     $form['payroll']['payroll_submit'] = array(
         '#type' => 'submit',
         '#value' => t('Submit'),
         '#name' => 'payroll_submit',
-        '#prefix' => t('<div class="payroll-submit">'),
     );
     $form['payroll']['payroll_clear'] = array(
-        '#suffix' => '</div>',
+        '#suffix' => '</div></div>',
         '#type' => 'submit',
         '#value' => t('Clear All'),
     );
-//    $form['payroll']['payroll_next'] = array(
-//        '#type' => 'submit',
-//        '#value' => t('Next'),
-//        '#name' => 'payroll_next',
-//        '#prefix' => t('<div class="payroll-submit">'),
-//    );
-//    $form['payroll']['payroll_submit'] = array(
-//        '#type' => 'submit',
-//        '#value' => t('Submit'),
-//        '#name' => 'payroll_submit',
-//    );
-//    $form['payroll']['payroll_clear'] = array(
-//        '#suffix' => '</div></div>',
-//        '#type' => 'submit',
-//        '#value' => t('Clear All'),
-//    );
 
     //</editor-fold>
 
@@ -682,30 +534,31 @@ function checkbook_advanced_search_form($form, $form_state)
 
     //<editor-fold desc="Create Alert Fields">
 
-    //Hidden Field for domain, spending by default
-    $form['create_alerts']['domain'] = array(
-        '#value' => 'spending',
-        '#type' => 'hidden',
-    );
     //Hidden Field for create alerts step, select_criteria by default
     $form['create_alerts']['step'] = array(
         '#value' => 'select_criteria',
+        '#type' => 'hidden',
+    );
+    //Hidden Field for create alerts ajax referral Url
+    $form['create_alerts']['ajax_referral_url'] = array(
+        '#value' => '',
         '#type' => 'hidden',
     );
     //Create Alerts step 2 buttons
     $form['create_alerts']['next_submit'] = array(
         '#type' => 'button',
         '#value' => t('Next'),
-        '#name' => 'next',
+        '#name' => 'next_submit',
         '#prefix' => t('<div class="create-alert-submit">'),
         '#ajax' => array(
             'callback' => '_checkbook_advanced_search_next_ajax',
+            'parameters' => array('create_alerts' => true),
         ),
     );
     $form['create_alerts']['back_submit'] = array(
         '#type' => 'button',
         '#value' => t('Back'),
-        '#name' => 'back',
+        '#name' => 'back_submit',
         '#suffix' => '</div>',
         '#ajax' => array(
             'callback' => '_checkbook_advanced_search_back_ajax',

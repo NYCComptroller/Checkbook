@@ -23,6 +23,10 @@ $sql=
 
 function _checkbook_alerts_transactions(){
 
+  //Give default or option to pass this
+  if(!isset($_GET['alert_theme_file'])){
+      $_GET['alert_theme_file']='checkbook_alerts_subscribe_theme';
+  }
   if(!isset($_GET['alert_minimum_results'])){
     $_GET['alert_minimum_results']=1;
   }
@@ -91,7 +95,7 @@ function _checkbook_alerts_transactions(){
 
   $res=array(
     "success"=>true,
-    "html"=>theme('checkbook_alerts_subscribe_theme',$subData)
+    "html"=>theme($_GET['alert_theme_file'],$subData)
   );
   echo json_encode($res);
 }

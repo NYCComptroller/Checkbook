@@ -72,7 +72,6 @@ function checkbook_alerts_theme($existing, $type, $theme, $path) {
   return array(
     'checkbook_alerts_default_theme'=>array(
       'template'=>'checkbook_alerts',
-      //'path'=>'sites/all/modules/custom/checkbook_alerts'
     ),
     'checkbook_alerts_email_theme'=>array(
       'template'=>'checkbook_alerts_email',
@@ -94,6 +93,12 @@ function checkbook_alerts_theme($existing, $type, $theme, $path) {
     ),
     'checkbook_alerts_subscribe_theme'=>array(
       'template'=>'checkbook_alerts_subscribe'
+    ),
+    'checkbook_alerts_default_theme'=>array(
+        'template'=>'checkbook_alerts',
+    ),//_checkbook_alerts_advanced_search_form
+    'checkbook_alerts_advanced_search_theme'=>array(
+        'template'=>'checkbook_alerts_advanced_search'
     )
   );
 }
