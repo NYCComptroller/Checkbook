@@ -1006,7 +1006,7 @@ function _checkbook_advanced_search_next_ajax($form, &$form_state) {
     $step = isset($form_state['triggering_element']['#ajax']['parameters']['step'])
         ? $form_state['triggering_element']['#ajax']['parameters']['step']
         : $_POST['step'];
-    $commands = [];
+    $commands = array();
 
     switch($step) {
         case 'select_criteria':
@@ -1065,7 +1065,7 @@ function _checkbook_advanced_search_back_ajax($form, &$form_state) {
     $create_alert_config =  _checkbook_advanced_search_create_alert_config();
     $step = $_POST['step'];
     $previous_step = '';
-    $commands = [];
+    $commands = array();
 
     switch($step) {
         case 'customize_results':
