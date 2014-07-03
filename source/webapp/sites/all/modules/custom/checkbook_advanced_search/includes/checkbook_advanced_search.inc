@@ -1013,7 +1013,7 @@ function _checkbook_advanced_search_next_ajax($form, &$form_state) {
             $next_step = 'customize_results';
 
             /* Update width of dialog - TBD add class */
-            $commands[] = ajax_command_invoke('div.ui-dialog', 'css', array('width','960px',));
+            $commands[] = ajax_command_invoke('div.ui-dialog', 'css', array('width','965px',));
             /* Hide the accordion */
             $commands[] = ajax_command_invoke('.advanced-search-accordion', 'css', array('display','none',));
             /* Show the results page */
@@ -1027,6 +1027,9 @@ function _checkbook_advanced_search_next_ajax($form, &$form_state) {
             $commands[] = ajax_command_replace('.create-alert-header', _checkbook_advanced_search_create_alert_header($create_alert_config, $next_step));
             /* Update wizard instructions */
             $commands[] = ajax_command_replace('.create-alert-instructions', $create_alert_config[$next_step]['instructions']);
+            /* Add scroll bar */
+            $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('height','800px',));
+            $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('overflow-y','auto',));
             break;
 
         case 'customize_results':
@@ -1046,6 +1049,9 @@ function _checkbook_advanced_search_next_ajax($form, &$form_state) {
             $commands[] = ajax_command_replace('.create-alert-header', _checkbook_advanced_search_create_alert_header($create_alert_config, $next_step));
             /* Update wizard instructions */
             $commands[] = ajax_command_replace('.create-alert-instructions', $create_alert_config[$next_step]['instructions']);
+            /* Remove scroll bar */
+            $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('height','auto',));
+            $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('overflow-y','initial',));
             break;
 
         case 'schedule_alert':
@@ -1081,13 +1087,16 @@ function _checkbook_advanced_search_back_ajax($form, &$form_state) {
             $commands[] = ajax_command_invoke('.create-alert-submit', 'css', array('display','none',));
             /* Update hidden field for new step */
             $commands[] = ajax_command_invoke('input:hidden[name="step"]', 'val', array($previous_step));
+            /* Remove scroll bar */
+            $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('height','auto',));
+            $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('overflow-y','initial',));
             break;
 
         case 'schedule_alert':
             $previous_step = 'customize_results';
 
             /* Update width of dialog - TBD add class*/
-            $commands[] = ajax_command_invoke('div.ui-dialog', 'css', array('width','960px',));
+            $commands[] = ajax_command_invoke('div.ui-dialog', 'css', array('width','965px',));
             /* Hide the schedule alerts page */
             $commands[] = ajax_command_invoke('.create-alert-schedule-alert', 'css', array('display','none',));
             /* Show the results page */
@@ -1096,6 +1105,9 @@ function _checkbook_advanced_search_back_ajax($form, &$form_state) {
             $commands[] = ajax_command_invoke('.create-alert-submit', 'css', array('display','inline',));
             /* Update hidden field for new step */
             $commands[] = ajax_command_invoke('input:hidden[name="step"]', 'val', array($previous_step));
+            /* Add scroll bar */
+            $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('height','800px',));
+            $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('overflow-y','auto',));
 
             break;
     }
