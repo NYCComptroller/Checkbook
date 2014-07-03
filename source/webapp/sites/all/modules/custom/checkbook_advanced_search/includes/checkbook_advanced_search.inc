@@ -4,30 +4,46 @@
  * has been clicked and invoke the respective functions that generate the
  * redirect URL with the necessary parameters
  */
-function checkbook_advanced_search_form_submit($form, &$form_state)
-{
+function checkbook_advanced_search_form_submit($form, &$form_state) {
+
     switch ($form_state['clicked_button']['#name']) {
+        case "budget_submit":
+            $form_state['redirect'] = _checkbook_advanced_search_budget_submit($form, $form_state);
+            break;
         case "revenue_submit":
-            _checkbook_advanced_search_revenue_submit($form, $form_state);
+            $form_state['redirect'] = _checkbook_advanced_search_revenue_submit($form, $form_state);
             break;
         case "spending_submit":
             $data_source = $form_state['values']['spending_advanced_search_domain_filter'];
-            _checkbook_advanced_search_spending_submit($form, $form_state, $data_source);
-            break;
-        case "budget_submit":
-            _checkbook_advanced_search_budget_submit($form, $form_state);
-            break;
-        case "payroll_submit":
-            _checkbook_advanced_search_payroll_submit($form, $form_state);
+            $form_state['redirect'] = _checkbook_advanced_search_spending_submit($form, $form_state, $data_source);
             break;
         case "contracts_submit":
             $data_source = $form_state['values']['contracts_advanced_search_domain_filter'];
-            _checkbook_advanced_search_contracts_submit($form, $form_state, $data_source);
+            $form_state['redirect'] = _checkbook_advanced_search_contracts_submit($form, $form_state, $data_source);
             break;
-        default:
+        case "payroll_submit":
+            $form_state['redirect'] = _checkbook_advanced_search_payroll_submit($form, $form_state);
+            break;
+        case "budget_next":
+            return _checkbook_advanced_search_budget_submit($form, $form_state,'next');
+            break;
+        case "revenue_next":
+            return _checkbook_advanced_search_revenue_submit($form, $form_state, 'next');
+            break;
+        case "spending_next":
+            $data_source = $form_state['values']['spending_advanced_search_domain_filter'];
+            return _checkbook_advanced_search_spending_submit($form, $form_state, $data_source, 'next');
+            break;
+        case "contracts_next":
+            $data_source = $form_state['values']['contracts_advanced_search_domain_filter'];
+            return _checkbook_advanced_search_contracts_submit($form, $form_state, $data_source, 'next');
+            break;
+        case "payroll_next":
+            return _checkbook_advanced_search_payroll_submit($form, $form_state, 'next');
             break;
     }
 }
+
 
 /*
  * Get year_value and id using the data controller
@@ -493,7 +509,7 @@ function _checkbook_advanced_search_payroll_submit($form, &$form_state)
         $redirect_url .= '/salamttype/2~3';
     }
 
-    $form_state['redirect'] = $redirect_url;
+    return $redirect_url;
 }
 
 /*
@@ -629,7 +645,8 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
     if($data_source != 'checkbook') $redirect_url .= '/datasource/' . $data_source;
 
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_registration_date_range_array, 'regdate', TRUE);
-    $form_state['redirect'] = $redirect_url;
+
+    return $redirect_url;
 }
 
 /*
@@ -762,7 +779,7 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_issue_date_range_array, 'chkdate', TRUE);
     }
 
-    $form_state['redirect'] = $redirect_url;
+    return $redirect_url;
 }
 
 /*
@@ -841,13 +858,13 @@ function _checkbook_advanced_search_budget_submit($form, &$form_state)
     $budget_current_modified_range_array = array('from' => $budget_current_modified_from, 'to' => $budget_current_modified_to, 'type' => 'amount');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_current_modified_range_array, 'curamt', TRUE);
 
-    $form_state['redirect'] = $redirect_url;
+    return $redirect_url;
 }
 
 /*
  * Constructs the URL for Revenue transactions based on the input by the users
  */
-function _checkbook_advanced_search_revenue_submit($form, &$form_state)
+function _checkbook_advanced_search_revenue_submit($form, &$form_state, $button = NULL)
 {
 
     $revenue_fund_class = trim($form['revenue']['revenue_fund_class']['#value']);
@@ -904,7 +921,7 @@ function _checkbook_advanced_search_revenue_submit($form, &$form_state)
     $revenue_revenue_amount_range_array = array('from' => $revenue_revenue_amount_from, 'to' => $revenue_revenue_amount_to, 'type' => 'amount');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_revenue_amount_range_array, 'amt', TRUE);
 
-    $form_state['redirect'] = $redirect_url;
+    return $redirect_url;
 }
 
 /*
@@ -933,9 +950,6 @@ function _checkbook_advanced_search_replaceSlash($string)
 
 /**
  * Get field definition configurations.
- *
- * @param string $domain
- *   domain
  *
  * @return mixed
  *   configuration
@@ -968,4 +982,152 @@ function _checkbook_advanced_search_get_field_configs($domain)
     return $configuration;
 }
 
+/**
+ * Get create alert wizard configuration.
+ *
+ * @return mixed
+ *   configuration
+ */
+function _checkbook_advanced_search_create_alert_config()
+{
+    $config_str = file_get_contents(realpath(drupal_get_path('module', 'checkbook_advanced_search')) . "/config/checkbook_advanced_search_create_alert_config.json");
 
+    $converter = new Json2PHPArray();
+    $configuration = $converter->convert($config_str);
+
+    return $configuration;
+}
+
+
+
+function _checkbook_advanced_search_next_ajax($form, &$form_state) {
+
+    $create_alert_config =  _checkbook_advanced_search_create_alert_config();
+    $step = isset($form_state['triggering_element']['#ajax']['parameters']['step'])
+        ? $form_state['triggering_element']['#ajax']['parameters']['step']
+        : $_POST['step'];
+    $commands = [];
+
+    switch($step) {
+        case 'select_criteria':
+            $next_step = 'customize_results';
+
+            /* Update width of dialog - TBD add class */
+            $commands[] = ajax_command_invoke('div.ui-dialog', 'css', array('width','960px',));
+            /* Hide the accordion */
+            $commands[] = ajax_command_invoke('.advanced-search-accordion', 'css', array('display','none',));
+            /* Show the results page */
+            $commands[] = ajax_command_invoke('.create-alert-customize-results', 'css', array('display','inline',));
+            /* Add new step to hidden field for persistence */
+            $commands[] = ajax_command_invoke('input:hidden[name="step"]', 'val', array($next_step));
+            /* Load Customize Results Form */
+            $redirect_url = '/' . checkbook_advanced_search_form_submit($form, $form_state) . '/createalert';
+            $commands[] = ajax_command_replace('.create-alert-customize-results', '<div class="create-alert-customize-results"><iframe src="'.$redirect_url.'" id="checkbook_advanced_search_result_iframe" scrolling="no" width="100%"></iframe></div>');
+            /* Update header */
+            $commands[] = ajax_command_replace('.create-alert-header', _checkbook_advanced_search_create_alert_header($create_alert_config, $next_step));
+            /* Update wizard instructions */
+            $commands[] = ajax_command_replace('.create-alert-instructions', $create_alert_config[$next_step]['instructions']);
+            break;
+
+        case 'customize_results':
+            $next_step = 'schedule_alert';
+
+            /* Update width of dialog - TBD add class*/
+            $commands[] = ajax_command_invoke('div.ui-dialog', 'css', array('width','900px',));
+            /* Show the schedule alert page */
+            $commands[] = ajax_command_invoke('.create-alert-schedule-alert', 'css', array('display','inline',));
+            /* Load Schedule Alerts Form */
+            $commands[] = ajax_command_invoke(NULL, 'onScheduleAlertClick');
+            /* Hide the results page */
+            $commands[] = ajax_command_invoke('.create-alert-customize-results', 'css', array('display','none',));
+            /* Update hidden field for new step */
+            $commands[] = ajax_command_invoke('input:hidden[name="step"]', 'val', array($next_step));
+            /* Update header */
+            $commands[] = ajax_command_replace('.create-alert-header', _checkbook_advanced_search_create_alert_header($create_alert_config, $next_step));
+            /* Update wizard instructions */
+            $commands[] = ajax_command_replace('.create-alert-instructions', $create_alert_config[$next_step]['instructions']);
+            break;
+
+        case 'schedule_alert':
+            $next_step = 'confirmation';
+
+            /* Schedule Alert */
+            $commands[] = ajax_command_invoke(NULL, 'onScheduleAlertConfirmClick', array($_POST['ajax_referral_url']));
+            break;
+    }
+
+    return array('#type' => 'ajax', '#commands' => $commands);
+
+}
+
+function _checkbook_advanced_search_back_ajax($form, &$form_state) {
+
+    $create_alert_config =  _checkbook_advanced_search_create_alert_config();
+    $step = $_POST['step'];
+    $previous_step = '';
+    $commands = [];
+
+    switch($step) {
+        case 'customize_results':
+            $previous_step = 'select_criteria';
+
+            /* Update width of dialog - TBD add class*/
+            $commands[] = ajax_command_invoke('div.ui-dialog', 'css', array('width','900px',));
+            /* Hide the results page */
+            $commands[] = ajax_command_invoke('.create-alert-customize-results', 'css', array('display','none',));
+            /* Show the accordion */
+            $commands[] = ajax_command_invoke('.advanced-search-accordion', 'css', array('display','inline',));
+            /* Hide results buttons */
+            $commands[] = ajax_command_invoke('.create-alert-submit', 'css', array('display','none',));
+            /* Update hidden field for new step */
+            $commands[] = ajax_command_invoke('input:hidden[name="step"]', 'val', array($previous_step));
+            break;
+
+        case 'schedule_alert':
+            $previous_step = 'customize_results';
+
+            /* Update width of dialog - TBD add class*/
+            $commands[] = ajax_command_invoke('div.ui-dialog', 'css', array('width','960px',));
+            /* Hide the schedule alerts page */
+            $commands[] = ajax_command_invoke('.create-alert-schedule-alert', 'css', array('display','none',));
+            /* Show the results page */
+            $commands[] = ajax_command_invoke('.create-alert-customize-results', 'css', array('display','inline',));
+            /* Show results buttons */
+            $commands[] = ajax_command_invoke('.create-alert-submit', 'css', array('display','inline',));
+            /* Update hidden field for new step */
+            $commands[] = ajax_command_invoke('input:hidden[name="step"]', 'val', array($previous_step));
+
+            break;
+    }
+
+    /* Update header */
+    $commands[] = ajax_command_replace('.create-alert-header', _checkbook_advanced_search_create_alert_header($create_alert_config, $previous_step));
+
+    /* Update wizard instructions */
+    $commands[] = ajax_command_replace('.create-alert-instructions', $create_alert_config[$previous_step]['instructions']);
+
+    return array('#type' => 'ajax', '#commands' => $commands);
+}
+
+function _checkbook_advanced_search_create_alert_instructions($step)
+{
+    $create_alert_config =  _checkbook_advanced_search_create_alert_config();
+    $instructions = $create_alert_config[$step]['instructions'];
+    return $instructions;
+}
+
+function _checkbook_advanced_search_create_alert_header($create_alert_config, $current_step)
+{
+    $header_html = '';
+
+    foreach($create_alert_config as $step) {
+        if(!isset($step['title'])) continue;
+        $header_html .= $header_html != '' ? "<span class='inactive'>&nbsp;|&nbsp;</span>" : "";
+        $header_html .= $current_step == $step['name'] ? "<span class='active'>" : "<span class='inactive'>";
+        $header_html .= $step['title'];
+        $header_html .= "</span>";
+    }
+
+    $header_html = "<span class='create-alert-header'>".$header_html."</span>";
+    return $header_html;
+}
