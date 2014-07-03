@@ -1006,7 +1006,7 @@ function addPaddingToDataCells(table){
 
     Drupal.behaviors.createAlerts = {
         attach:function (context, settings) {
-            $('a.advanced-search-create-alert').click(function () {
+            $('span.advanced-search-create-alert').click(function () {
 
                 var href = window.location.href.replace(/(http|https):\/\//, '');
                 var n = href.indexOf('?');
