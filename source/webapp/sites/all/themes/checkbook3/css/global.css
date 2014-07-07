@@ -1036,8 +1036,8 @@ div.create-alert-schedule-alert select{
 #region-header-first span.advanced-search-create-alert {
     background: url("../images/create-alert-large.png") no-repeat scroll center bottom 0px transparent;
     float: right;
-    margin: -34px -190px 0px 0px;
-    height: 36px;
+    margin: -32px -190px 0px 0px;
+    height: 32px;
     line-height: 88px;
     cursor: pointer;
     color: #1F82C9;
