@@ -998,7 +998,11 @@ div.bottomContainer{
 }
 
 div.create-alert-submit #edit-next-submit {
-    margin: 0px 50px 25px 7px;
+    margin-left: 7px;
+}
+
+div.create-alert-submit {
+    margin: 0px 50px 25px 0px;
 }
 
 span.create-alert-instructions {
@@ -1033,7 +1037,7 @@ div.create-alert-schedule-alert select{
     width: auto !important;
 }
 
-#region-header-first span.advanced-search-create-alert {
+#region-header-first .advanced-search-create-alert {
     background: url("../images/create-alert-large.png") no-repeat scroll center bottom 0px transparent;
     float: right;
     margin: -35px -190px 0px 0px;
