@@ -1008,6 +1008,9 @@ function _checkbook_advanced_search_next_ajax($form, &$form_state) {
         : $_POST['step'];
     $commands = array();
 
+    /* Clear auto-completes */
+    $commands[] = ajax_command_invoke('.ui-autocomplete-input', 'autocomplete', array('close'));
+
     switch($step) {
         case 'select_criteria':
             $next_step = 'customize_results';
@@ -1028,7 +1031,6 @@ function _checkbook_advanced_search_next_ajax($form, &$form_state) {
             /* Update wizard instructions */
             $commands[] = ajax_command_replace('.create-alert-instructions', $create_alert_config[$next_step]['instructions']);
             /* Add scroll bar */
-            $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('height','800px',));
             $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('overflow-y','auto',));
             $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('margin-left','0px'));
             $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('margin-right','0px'));
@@ -1076,6 +1078,9 @@ function _checkbook_advanced_search_back_ajax($form, &$form_state) {
     $previous_step = '';
     $commands = array();
 
+    /* Clear auto-completes */
+    $commands[] = ajax_command_invoke('.ui-autocomplete-input', 'autocomplete', array('close'));
+
     switch($step) {
         case 'customize_results':
             $previous_step = 'select_criteria';
@@ -1095,6 +1100,7 @@ function _checkbook_advanced_search_back_ajax($form, &$form_state) {
             $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('overflow-y','initial',));
             $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('margin-left','45px'));
             $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('margin-right','45px'));
+            $commands[] = ajax_command_invoke('.ui-dialog .ui-dialog-content', 'css', array('padding','0.5em 0px 0.5em',));
             break;
 
         case 'schedule_alert':
@@ -1111,6 +1117,7 @@ function _checkbook_advanced_search_back_ajax($form, &$form_state) {
             /* Update hidden field for new step */
             $commands[] = ajax_command_invoke('input:hidden[name="step"]', 'val', array($previous_step));
             /* Add scroll bar */
+            $commands[] = ajax_command_invoke('div.ui-dialog', 'css', array('width','965px',));
             $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('height','800px',));
             $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('overflow-y','auto',));
             $commands[] = ajax_command_invoke('div.create-alert-submit #edit-next-submit', 'val', array('Next',));

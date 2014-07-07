@@ -26,7 +26,7 @@
         "name": "customize_results",
         "title": "2. Customize Results",
         "order": "2",
-        "instructions": "<span class='create-alert-instructions'>Further narrow down the results using the 'Narrow down your search' functionality.<ul><li>Click 'Export' button to download the results into excel.<\/li><li>Click 'Back' to go back to Step1: Select Criteria<\/li><li>Click 'Next' button to Schedule Alert.<\/li><\/ul></span>",
+        "instructions": "<span class='create-alert-instructions'>Further narrow down the results using the 'Narrow down your search' functionality.<ul><li>Click 'Export' button to download the results into excel.<\/li><li>Click 'Back' to go back to Step1: Select Criteria<\/li><li>Click 'Next' button to Schedule Alert.<\/li><\/ul><\/br></span>",
         "content": "",
         "buttons": {
             "next": {

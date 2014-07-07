@@ -1048,7 +1048,17 @@ function addPaddingToDataCells(table){
             });
 
             $("#checkbook_advanced_search_result_iframe").load(function(){
-               $(this).height($(this).contents().height());
+                if($(this).contents().height() < 330) {
+                    $(this).height('auto');
+                    $('div.block-checkbook-advanced-search-checkbook-advanced-search-form').css('padding',0);
+                    $('div.create-alert-submit #edit-next-submit').css('display','none');
+                    $('div.ui-dialog').css('width',900);
+                }
+                else {
+                    $(this).height($(this).contents().height());
+                    $('div.create-alert-submit #edit-next-submit').css('display','inline');
+                    $('div.ui-dialog').css('width',965);
+                }
                 $('.create-alert-submit').css('display','block');
             });
 
@@ -1156,62 +1166,18 @@ function addPaddingToDataCells(table){
                 }
             }
 
-
             $(window).resize(function() {
-
                 if (inIframe() && document.URL.indexOf("/createalert") >= 0) {
-
-//                    //hookup the event
-//                    $('.dataTables_processing').bind('isFrameDoneLoading', isFrameDoneLoading);
-//
-//                    //show div and trigger custom event in callback when div is visible
-//                    $('.dataTables_processing').show('slow', function(){
-//                        $(this).trigger('isFrameDoneLoading');
-//                    });
-//                    $('.dataTables_processing').on('visible', function(){
-//                        var el= $(this);
-//                        setTimeout(function(){
-//                            if ($(el).hasClass('error')){
-//                                $(el).removeClass('error');
-//                                $(el).prev('.someClass').hide();
-//                            }
-//                        },1000);
-//                    });
-//                    $('.dataTables_processing')
-//                    $("#LoadingImage").show();
-                    //window.parent.onResizeFrame();
-
-
-
-                   // alert($('.dataTables_processing').css('visibility')); //hidden
-
-//                   alert($('.dataTables_processing').attr('style'));
-//                    alert($('.dataTables_processing').attr('visibility'));
-//                    alert($('.dataTables_processing').css('visibility'));
-//                    alert($('.dataTables_processing').css('style'));
-                    //   alert($( "#checkbook_advanced_search_result_iframe", $(window.opener.document) ));
-//                    alert(
-//
-//                        this.opener.$("#checkbook_advanced_search_result_iframe").html()
-//
-//                    );
-                    //onResizeFrame();
-                    //alert(window.opener.getElementById('checkbook_advanced_search_result_iframe').height());
+                    $(document).ajaxComplete(function() {
+                        $('#checkbook_advanced_search_result_iframe', window.parent.document).css('height', $('#checkbook_advanced_search_result_iframe', window.parent.document).contents().height()-100);
+                        $('div.block-checkbook-advanced-search-checkbook-advanced-search-form', window.parent.document).css('height', 800);
+                        $('div.create-alert-customize-results', window.parent.document).css('height', 'auto');
+                    });
                 }
             });
         }
     };
 
-    function isFrameDoneLoading(){
-        //do something
-       // alert($('.dataTables_processing').css('visibility'));
-    }
-
-
-
-    function onResizeFrame(){
-            $('#checkbook_advanced_search_result_iframe').height($('#checkbook_advanced_search_result_iframe').contents().height());
-    }
     /*
     * Function to tell if the current window is inside an iFrame
     * Returns true if the window is in an iFrame, else false
@@ -1223,131 +1189,6 @@ function addPaddingToDataCells(table){
             return true;
         }
     }
-//
-//    function autoResizeFrame(){
-//        $('#checkbook_advanced_search_result_iframe').height($('#checkbook_advanced_search_result_iframe').contents().height());
-//    }
-
-//    $.fn.onScheduleAlertClick = function () {
-//
-//        var scheduleAlertDiv = $(".create-alert-schedule-alert");
-//        var scheduleAlertUrl = '/alert/transactions/form';
-//        var ajaxReferralUrl = ($('#checkbook_advanced_search_result_iframe')[0]).attributes['src'];
-//
-//        /* Add hidden field for ajax referral Url */
-//        $('input:hidden[name="ajax_referral_url"]').val(ajaxReferralUrl);
-//
-//        /* Load */
-//        $.ajax({
-//            url: scheduleAlertUrl
-//            ,success: function(data) {
-//                var html = "<div class='create-alert-schedule-alert'>"+data+"</div>";
-//                html = html.replace("<span class='alert-required-field'></span>", "<span class='alert-required-field' style='color:red;'>*</span>");
-//                html = html.replace("<span class='alert-required-field'></span>", "<span class='alert-required-field' style='color:red;'>*</span>");
-//                html = html.replace("id='alert_instructions'", "style='display:none'");
-//                scheduleAlertDiv.html(html);
-//            }
-//        });
-//    }
-
-//    $.fn.onScheduleAlertConfirmClick = function (ajaxReferralUrl) {
-//
-//        var validateEmail=function(email) {
-//            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-//            return re.test(email);
-//        };
-//
-//        var isNumber=function(value) {
-//            if ((undefined === value) || (null === value)) {
-//                return false;
-//            }
-//            if (typeof value == 'number') {
-//                return true;
-//            }
-//            return !isNaN(value - 0);
-//        }
-//
-//        var alertLabel = $('input[name=alert_label]').val();
-//        var alertEmail = $('input[name=alert_email]').val();
-//        var alertMinimumResults = $('input[name=alert_minimum_results]').val();
-//        var alertMinimumDays = $('select[name=alert_minimum_days]').val();
-//        var alertEnd = $("input[name='alert_end[date]']").val();
-//        var dateRegEx = '[0-9]{4,4}-[0-1][0-9]-[0-3][0-9]';
-//
-//        var alertMsgs = [];
-//        if(alertLabel.length<1){
-//            alertMsgs.push("No Description has been set.");
-//        }
-//        if(alertEmail.length<1 || !validateEmail(alertEmail)){
-//            alertMsgs.push("No email is entered.");
-//        }
-//        if(!isNumber(alertMinimumResults) || alertMinimumResults<1){
-//            alertMsgs.push("Minimum results is not a valid number.");
-//        }
-//        if(!isNumber(alertMinimumDays) || alertMinimumDays<1){
-//            alertMsgs.push("Alert frequency is not valid.");
-//        }
-//        if((alertEnd.length > 1 && alertEnd.length != 10) || (alertEnd.length > 1 && !alertEnd.match(dateRegEx))){
-//            alertMsgs.push("Expiration Date is not valid.");
-//        }
-//
-//        if (alertMsgs.length > 0) {
-//            $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul>' + '<li>' + alertMsgs.join('<li/>') + '</ul></div>');
-//        } else {
-//            $('#errorMessages').html('');
-//
-//            var url = '/alert/transactions';
-//            var data = {
-//                refURL:ajaxReferralUrl,
-//                alert_label:alertLabel,
-//                alert_email:alertEmail,
-//                alert_minimum_results:alertMinimumResults,
-//                alert_minimum_days:alertMinimumDays,
-//                alert_end:alertEnd,
-//                userURL:window.location.href,
-//                alert_theme_file:'checkbook_alerts_advanced_search_theme'
-//            }
-//            $this=$(this);
-//            $.get(url,data,function(data){
-//                data=JSON.parse(data);
-//                if(data.success){
-//
-//
-////                    $this.dialog('close');
-////
-////                    var dialog = $("#dialog");
-////                    if ($("#dialog").length == 0) {
-////                        dialog = $('<div id="dialog" style="display:none"></div>');
-////                    }
-////                    dialog.html(data.html);
-////                    dialog.dialog({position:"center",
-////                        modal:true,
-////                        width:550,
-////                        height:80,
-////                        buttons: {
-////                            Ok: function () {
-////                                $(this).dialog("close");
-////                            }
-////                        }
-////                    });
-//
-//                    $('.create-alert-confirmation').html(data.html);
-//                    $('.create-alert-header').css('display','none');
-//                    $('.create-alert-instructions').css('display','none');
-//                    $('.create-alert-customize-results').css('display','none');
-//                    $('.create-alert-schedule-alert').css('display','none');
-//                    $('.create-alert-confirmation').css('display','inline');
-//                    $('.create-alert-submit').css('display','none');
-//                    $('div.ui-dialog').css('width','550px');
-//                    $('div.ui-dialog').css('height','80px');
-//                    $('div.ui-dialog > div:first-child').removeClass('ui-widget-header');
-//                } else{
-//                    $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul><li>'+data.errors.join('<li/>')+'</ul></div>');
-//                }
-//            });
-//        }
-//    }
-
     Drupal.behaviors.bottomContainerShowHide = {
         attach:function (context, settings) {
 
