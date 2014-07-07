@@ -1087,7 +1087,7 @@ function _checkbook_advanced_search_back_ajax($form, &$form_state) {
             /* Show the accordion */
             $commands[] = ajax_command_invoke('.advanced-search-accordion', 'css', array('display','inline',));
             /* Hide results buttons */
-            $commands[] = ajax_command_invoke('.create-alert-submit', 'css', array('visibility','hidden',));
+            $commands[] = ajax_command_invoke('.create-alert-submit', 'css', array('display','none',));
             /* Update hidden field for new step */
             $commands[] = ajax_command_invoke('input:hidden[name="step"]', 'val', array($previous_step));
             /* Remove scroll bar */
@@ -1107,7 +1107,7 @@ function _checkbook_advanced_search_back_ajax($form, &$form_state) {
             /* Show the results page */
             $commands[] = ajax_command_invoke('.create-alert-customize-results', 'css', array('display','inline',));
             /* Show results buttons */
-            $commands[] = ajax_command_invoke('.create-alert-submit', 'css', array('visibility','visible',));
+            $commands[] = ajax_command_invoke('.create-alert-submit', 'css', array('display','block',));
             /* Update hidden field for new step */
             $commands[] = ajax_command_invoke('input:hidden[name="step"]', 'val', array($previous_step));
             /* Add scroll bar */

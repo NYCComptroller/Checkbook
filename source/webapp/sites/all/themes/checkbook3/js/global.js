@@ -947,7 +947,7 @@ function addPaddingToDataCells(table){
         $('.create-alert-customize-results').css('display','none');
         $('.create-alert-schedule-alert').css('display','none');
         $('.create-alert-confirmation').css('display','none');
-        $('.create-alert-submit').css('visibility','hidden');
+        $('.create-alert-submit').css('display','none');
         switch(accordion_type) {
             case 'advanced_search':
                 $('.create-alert-view').css('display','none');
@@ -1049,7 +1049,7 @@ function addPaddingToDataCells(table){
 
             $("#checkbook_advanced_search_result_iframe").load(function(){
                $(this).height($(this).contents().height());
-                $('.create-alert-submit').css('visibility','visible');
+                $('.create-alert-submit').css('display','block');
             });
 
             $.fn.onScheduleAlertClick = function () {
