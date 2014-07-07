@@ -3,7 +3,7 @@
         "name": "select_criteria",
         "title": "1. Select Criteria",
         "order": "1",
-        "instructions": "<span class='create-alert-instructions'>Follow the three step process to schedule alerts.<br\/><br\/><ul><li>Please select one of the following domains and also select the desired filters.<\/li><li>Click 'Next' button to view and customize the results.<\/li><li>Click 'Clear All' to clear out the filters applied.<\/li><\/ul><br\/></span>",
+        "instructions": "<span class='create-alert-instructions'>Follow the three step process to schedule alerts.<ul><li>Please select one of the following domains and also select the desired filters.<\/li><li>Click 'Next' button to view and customize the results.<\/li><li>Click 'Clear All' to clear out the filters applied.<\/li><\/ul><\/br></span>",
         "content": "",
         "buttons": {
             "next": {
@@ -26,7 +26,7 @@
         "name": "customize_results",
         "title": "2. Customize Results",
         "order": "2",
-        "instructions": "<span class='create-alert-instructions'>Further narrow down the results using the 'Narrow down your search' functionality.<br\/><br\/><ul><li>Click 'Export' button to download the results into excel.<\/li><li>Click 'Back' to go back to Step1: Select Criteria<\/li><li>Click 'Next' button to Schedule Alert.<\/li><\/ul></span>",
+        "instructions": "<span class='create-alert-instructions'>Further narrow down the results using the 'Narrow down your search' functionality.<ul><li>Click 'Export' button to download the results into excel.<\/li><li>Click 'Back' to go back to Step1: Select Criteria<\/li><li>Click 'Next' button to Schedule Alert.<\/li><\/ul></span>",
         "content": "",
         "buttons": {
             "next": {

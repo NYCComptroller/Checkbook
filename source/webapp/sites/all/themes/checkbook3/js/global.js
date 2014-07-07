@@ -944,11 +944,10 @@ function addPaddingToDataCells(table){
     }
 
     function initializeAccordionAttributes(accordion_type) {
-        $('div.ui-dialog > div:first-child').addClass('ui-widget-header');
         $('.create-alert-customize-results').css('display','none');
         $('.create-alert-schedule-alert').css('display','none');
         $('.create-alert-confirmation').css('display','none');
-        $('.create-alert-submit').css('display','none');
+        $('.create-alert-submit').css('visibility','hidden');
         switch(accordion_type) {
             case 'advanced_search':
                 $('.create-alert-view').css('display','none');
@@ -1050,7 +1049,7 @@ function addPaddingToDataCells(table){
 
             $("#checkbook_advanced_search_result_iframe").load(function(){
                $(this).height($(this).contents().height());
-                $('.create-alert-submit').css('display','inline');
+                $('.create-alert-submit').css('visibility','visible');
             });
 
             $.fn.onScheduleAlertClick = function () {
@@ -1136,36 +1135,20 @@ function addPaddingToDataCells(table){
                     $.get(url,data,function(data){
                         data=JSON.parse(data);
                         if(data.success){
-
-
-//                    $this.dialog('close');
-//
-//                    var dialog = $("#dialog");
-//                    if ($("#dialog").length == 0) {
-//                        dialog = $('<div id="dialog" style="display:none"></div>');
-//                    }
-//                    dialog.html(data.html);
-//                    dialog.dialog({position:"center",
-//                        modal:true,
-//                        width:550,
-//                        height:80,
-//                        buttons: {
-//                            Ok: function () {
-//                                $(this).dialog("close");
-//                            }
-//                        }
-//                    });
-
-                            $('.create-alert-confirmation').html(data.html);
-                            $('.create-alert-header').css('display','none');
-                            $('.create-alert-instructions').css('display','none');
-                            $('.create-alert-customize-results').css('display','none');
-                            $('.create-alert-schedule-alert').css('display','none');
-                            $('.create-alert-confirmation').css('display','inline');
-                            $('.create-alert-submit').css('display','none');
-                            $('div.ui-dialog').css('width','550px');
-                            $('div.ui-dialog').css('height','80px');
-                            $('div.ui-dialog > div:first-child').removeClass('ui-widget-header');
+                            $('#block-checkbook-advanced-search-checkbook-advanced-search-form').dialog('close');
+                            var dialog = $("#dialog");
+                            if ($("#dialog").length == 0) {
+                                dialog = $('<div id="dialog" style="display:none"></div>');
+                            }
+                            dialog.html(data.html);
+                            dialog.dialog({position:['center', 'top'],
+                                modal:true,
+                                width:550,
+                                height:80,
+                                autoResize:true,
+                                resizable: false,
+                                dialogClass:'noTitleDialog'
+                            });
                         } else{
                             $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul><li>'+data.errors.join('<li/>')+'</ul></div>');
                         }

@@ -983,6 +983,20 @@ div.bottomContainer{
 
 /* Advanced Search - Create Alerts */
 
+.noTitleDialog .ui-widget-header,
+.noTitleDialog .ui-widget-header span.ui-dialog-title {
+    border:none;
+    background: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+
+.noTitleDialog .ui-dialog-content {
+    padding: 0px 0px 20px 0px;
+    margin: 0px;
+}
+
 div.create-alert-submit #edit-next-submit {
     margin: 0px 50px 25px 7px;
 }
@@ -992,6 +1006,7 @@ span.create-alert-instructions {
     margin-left: 20px;
     margin-right: 20px;
     font-size: 12px;
+    line-height: 25px;
 }
 
 span.create-alert-instructions ul {
@@ -1005,6 +1020,11 @@ span.create-alert-instructions ul li {
 
 div.create-alert-schedule-alert {
     margin-left: 40px;
+}
+
+div.create-alert-submit {
+    display: block;
+    float:right;
 }
 
 div.create-alert-schedule-alert input,
