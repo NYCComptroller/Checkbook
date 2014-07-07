@@ -1030,6 +1030,8 @@ function _checkbook_advanced_search_next_ajax($form, &$form_state) {
             /* Add scroll bar */
             $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('height','800px',));
             $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('overflow-y','auto',));
+            $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('margin-left','0px'));
+            $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('margin-right','0px'));
             break;
 
         case 'customize_results':
@@ -1090,6 +1092,8 @@ function _checkbook_advanced_search_back_ajax($form, &$form_state) {
             /* Remove scroll bar */
             $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('height','auto',));
             $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('overflow-y','initial',));
+            $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('margin-left','45px'));
+            $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('margin-right','45px'));
             break;
 
         case 'schedule_alert':

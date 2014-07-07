@@ -983,6 +983,11 @@ div.bottomContainer{
 
 /* Advanced Search - Create Alerts */
 
+span.create-alert-instructions {
+    display: block;
+    margin-left: 20px;
+}
+
 #region-header-first span.advanced-search-create-alert {
     background: url("../images/create-alert-large.png") no-repeat scroll center bottom 0px transparent;
     float: right;
