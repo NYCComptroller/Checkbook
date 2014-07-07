@@ -983,9 +983,34 @@ div.bottomContainer{
 
 /* Advanced Search - Create Alerts */
 
+div.create-alert-submit #edit-next-submit {
+    margin: 0px 50px 25px 7px;
+}
+
 span.create-alert-instructions {
     display: block;
     margin-left: 20px;
+    margin-right: 20px;
+    font-size: 12px;
+}
+
+span.create-alert-instructions ul {
+    list-style:disc;
+    margin-left: 15px;
+}
+
+span.create-alert-instructions ul li {
+    padding-left: 7px;
+}
+
+div.create-alert-schedule-alert {
+    margin-left: 40px;
+}
+
+div.create-alert-schedule-alert input,
+div.create-alert-schedule-alert select{
+    float: none !important;
+    width: auto !important;
 }
 
 #region-header-first span.advanced-search-create-alert {
