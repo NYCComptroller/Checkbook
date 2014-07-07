@@ -74,6 +74,7 @@ function checkbook_advanced_search_form($form, $form_state)
     $create_alert_confirmation = "<div class='create-alert-confirmation'><strong>Thank you for Scheduling your Alert!<br/>You will receive a confirmation email soon.</strong></div>";
 
     $create_alert_view = $create_alert_instructions.$create_alert_customize_results.$create_alert_schedule_alert.$create_alert_confirmation;
+    $create_alert_view = "<span class='create-alert-view'>".$create_alert_view."</span>";
 
     $agencies = _checkbook_advanced_search_get_agencyname_and_id();
     $agency_attributes = _checkbook_advanced_search_get_agency_attributes();
