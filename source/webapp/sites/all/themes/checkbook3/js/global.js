@@ -951,6 +951,7 @@ function addPaddingToDataCells(table){
         $('.create-alert-schedule-alert').css('display','none');
         $('.create-alert-confirmation').css('display','none');
         $('.create-alert-submit').css('display','none');
+        $('.ui-dialog .ui-dialog-content').css('padding','0.5em 1em');
         switch(accordion_type) {
             case 'advanced_search':
                 $('.create-alert-view').css('display','none');
@@ -966,9 +967,6 @@ function addPaddingToDataCells(table){
                 $('input[name="payroll_next"]').css('display','none');
                 $('.advanced-search-accordion').css('display','inline');
                 $('.advanced-search-accordion').width('100%');
-                $('.ui-dialog .ui-dialog-content').css('padding','0.5em 1em');
-                $('#block-checkbook-advanced-search-checkbook-advanced-search-form').css('margin-left','0px');
-                $('#block-checkbook-advanced-search-checkbook-advanced-search-form').css('margin-right','0px');
                 break;
 
             case 'advanced_search_create_alerts':
@@ -985,9 +983,6 @@ function addPaddingToDataCells(table){
                 $('input[name="payroll_next"]').css('display','inline');
                 $('.advanced-search-accordion').css('display','inline');
                 $('.advanced-search-accordion').width('90%');
-                $('.ui-dialog .ui-dialog-content').css('padding','0.5em 0px 0.5em');
-                $('#block-checkbook-advanced-search-checkbook-advanced-search-form').css('margin-left','45px');
-                $('#block-checkbook-advanced-search-checkbook-advanced-search-form').css('margin-right','45px');
                 break;
         }
     }
