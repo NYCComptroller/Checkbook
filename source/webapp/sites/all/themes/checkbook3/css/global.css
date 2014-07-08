@@ -1536,6 +1536,9 @@ td.pad-left div{
     vertical-align: middle;
     text-transform: uppercase;
 }
+.dataTables_wrapper td.dataTables_empty{
+ padding:10px;
+}
 .dataTable th div {
     margin: 8px 0 8px 5px;
 }
