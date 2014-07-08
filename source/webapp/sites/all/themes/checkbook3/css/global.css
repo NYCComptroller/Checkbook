@@ -983,6 +983,12 @@ div.bottomContainer{
 
 /* Advanced Search - Create Alerts */
 
+.disableLinks {
+    color: #606060 !important;
+    cursor: default !important;
+    text-decoration: none !important;
+}
+
 .noTitleDialog .ui-widget-header,
 .noTitleDialog .ui-widget-header span.ui-dialog-title {
     border:none;

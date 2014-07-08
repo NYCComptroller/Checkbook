@@ -1181,6 +1181,18 @@ function addPaddingToDataCells(table){
                     });
                 }
             });
+
+            $(window).load(function() {
+                if (inIframe() && document.URL.indexOf("/createalert") >= 0) {
+                    $(document).ajaxComplete(function() {
+                        //Links should be disable in the iframe
+                        $(this).find('.dataTable tbody tr td div a').each(function() {
+                            $(this).addClass('disableLinks');
+                            $(this).click(function() { return false; });
+                        });
+                    });
+                }
+            });
         }
     };
 
