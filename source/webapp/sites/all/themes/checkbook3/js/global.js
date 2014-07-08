@@ -952,6 +952,7 @@ function addPaddingToDataCells(table){
         $('.create-alert-confirmation').css('display','none');
         $('.create-alert-submit').css('display','none');
         $('.ui-dialog .ui-dialog-content').css('padding','0.5em 1em');
+        $('#spending-advanced-search').css('width','auto');
         switch(accordion_type) {
             case 'advanced_search':
                 $('.create-alert-view').css('display','none');
@@ -1110,8 +1111,10 @@ function addPaddingToDataCells(table){
                 if(alertLabel.length<1){
                     alertMsgs.push("No Description has been set.");
                 }
-                if(alertEmail.length<1 || !validateEmail(alertEmail)){
+                if(alertEmail.length<1){
                     alertMsgs.push("No email is entered.");
+                } else if(!validateEmail(alertEmail)){
+                    alertMsgs.push("Email is not valid.");
                 }
                 if(!isNumber(alertMinimumResults) || alertMinimumResults<1){
                     alertMsgs.push("Minimum results is not a valid number.");
@@ -1157,6 +1160,10 @@ function addPaddingToDataCells(table){
                                 resizable: false,
                                 dialogClass:'noTitleDialog'
                             });
+
+                            /* Update wizard instructions to initial */
+                            var defaultInstructions = "<span class='create-alert-instructions'>Follow the three step process to schedule alerts.<ul><li>Please select one of the following domains and also select the desired filters.<\/li><li>Click 'Next' button to view and customize the results.<\/li><li>Click 'Clear All' to clear out the filters applied.<\/li><\/ul><\/br></span>";
+                            $('.create-alert-instructions').replaceWith(defaultInstructions);
                         } else{
                             $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul><li>'+data.errors.join('<li/>')+'</ul></div>');
                         }
