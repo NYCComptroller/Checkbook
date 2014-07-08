@@ -67,7 +67,7 @@
 				var link = window.location.pathname;
 				
 				if((link.match(/contract/) == 'contract')||(link.match(/payroll/) == 'payroll')||(link.match(/spending/) == 'spending')||(link.match(/budget/) == 'budget')||(link.match(/revenue/) == 'revenue')){
-					if(link.match(/createalert/) != "newwindow" && link.match(/newwindow/) != "newwindow" && link.match(/admin/) != "admin" && link.match(/-api/) != "-api" ){
+					if(link.match(/createalert/) != "createalert" && link.match(/newwindow/) != "newwindow" && link.match(/admin/) != "admin" && link.match(/-api/) != "-api" ){
 						if(link.match(/contract/) == 'contract' && link.match(/datasource/) != 'datasource' && link.match(/checkbook_oge/) != 'checkbook_oge'){
 							if($.cookie(CookieDomainName) != 'contract')
 								$.cookie(CookieName,null,{ path: '/' });
