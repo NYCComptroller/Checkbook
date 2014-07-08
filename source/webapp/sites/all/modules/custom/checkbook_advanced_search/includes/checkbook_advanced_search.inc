@@ -1016,23 +1016,21 @@ function _checkbook_advanced_search_next_ajax($form, &$form_state) {
             $next_step = 'customize_results';
 
             /* Update width of dialog - TBD add class */
-            $commands[] = ajax_command_invoke('div.ui-dialog', 'css', array('width','965px',));
+            $commands[] = ajax_command_invoke('div.ui-dialog', 'css', array('width','995px',));
             $commands[] = ajax_command_invoke('.ui-dialog .ui-dialog-content', 'css', array('padding','0.5em 0px',));
             /* Hide the accordion */
             $commands[] = ajax_command_invoke('.advanced-search-accordion', 'css', array('display','none',));
             /* Show the results page */
-            $commands[] = ajax_command_invoke('.create-alert-customize-results', 'css', array('display','inline',));
+            $commands[] = ajax_command_invoke('.create-alert-customize-results', 'css', array('display','block',));
             /* Add new step to hidden field for persistence */
             $commands[] = ajax_command_invoke('input:hidden[name="step"]', 'val', array($next_step));
             /* Load Customize Results Form */
             $redirect_url = '/' . checkbook_advanced_search_form_submit($form, $form_state) . '/createalert';
-            $commands[] = ajax_command_replace('.create-alert-customize-results', '<div class="create-alert-customize-results"><iframe src="'.$redirect_url.'" id="checkbook_advanced_search_result_iframe" scrolling="no" width="100%"></iframe></div>');
+            $commands[] = ajax_command_replace('.create-alert-customize-results', '<div class="create-alert-customize-results"><iframe src="'.$redirect_url.'" id="checkbook_advanced_search_result_iframe"  style="overflow-x:hidden; overflow-y:scroll;height:600px;width:995px;"></iframe></div>');
             /* Update header */
             $commands[] = ajax_command_replace('.create-alert-header', _checkbook_advanced_search_create_alert_header($create_alert_config, $next_step));
             /* Update wizard instructions */
             $commands[] = ajax_command_replace('.create-alert-instructions', $create_alert_config[$next_step]['instructions']);
-            /* Add scroll bar */
-            $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('overflow-y','auto',));
             break;
 
         case 'customize_results':
@@ -1041,6 +1039,7 @@ function _checkbook_advanced_search_next_ajax($form, &$form_state) {
             /* Update width of dialog - TBD add class*/
             $commands[] = ajax_command_invoke('div.ui-dialog', 'css', array('width','900px',));
             $commands[] = ajax_command_invoke('.ui-dialog .ui-dialog-content', 'css', array('padding','0.5em 1em',));
+            $commands[] = ajax_command_invoke('div.ui-dialog', 'css', array('height','auto',));
             /* Show the schedule alert page */
             $commands[] = ajax_command_invoke('.create-alert-schedule-alert', 'css', array('display','inline',));
             /* Load Schedule Alerts Form */
@@ -1053,9 +1052,7 @@ function _checkbook_advanced_search_next_ajax($form, &$form_state) {
             $commands[] = ajax_command_replace('.create-alert-header', _checkbook_advanced_search_create_alert_header($create_alert_config, $next_step));
             /* Update wizard instructions */
             $commands[] = ajax_command_replace('.create-alert-instructions', $create_alert_config[$next_step]['instructions']);
-            /* Remove scroll bar */
-            $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('height','auto',));
-            $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('overflow-y','initial',));
+            /* Update button text */
             $commands[] = ajax_command_invoke('div.create-alert-submit #edit-next-submit', 'val', array('Schedule Alert',));
             break;
 
@@ -1087,6 +1084,7 @@ function _checkbook_advanced_search_back_ajax($form, &$form_state) {
 
             /* Update width of dialog - TBD add class*/
             $commands[] = ajax_command_invoke('div.ui-dialog', 'css', array('width','900px',));
+            $commands[] = ajax_command_invoke('div.ui-dialog', 'css', array('height','auto',));
             $commands[] = ajax_command_invoke('.ui-dialog .ui-dialog-content', 'css', array('padding','0.5em 1em',));
             /* Hide the results page */
             $commands[] = ajax_command_invoke('.create-alert-customize-results', 'css', array('display','none',));
@@ -1096,29 +1094,28 @@ function _checkbook_advanced_search_back_ajax($form, &$form_state) {
             $commands[] = ajax_command_invoke('.create-alert-submit', 'css', array('display','none',));
             /* Update hidden field for new step */
             $commands[] = ajax_command_invoke('input:hidden[name="step"]', 'val', array($previous_step));
-            /* Remove scroll bar */
-            $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('height','auto',));
-            $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('overflow-y','initial',));
             break;
 
         case 'schedule_alert':
             $previous_step = 'customize_results';
 
             /* Update width of dialog - TBD add class*/
-            $commands[] = ajax_command_invoke('div.ui-dialog', 'css', array('width','965px',));
+            $commands[] = ajax_command_invoke('div.ui-dialog', 'css', array('width','995px',));
             $commands[] = ajax_command_invoke('.ui-dialog .ui-dialog-content', 'css', array('padding','0.5em 0px',));
             /* Hide the schedule alerts page */
             $commands[] = ajax_command_invoke('.create-alert-schedule-alert', 'css', array('display','none',));
             /* Show the results page */
-            $commands[] = ajax_command_invoke('.create-alert-customize-results', 'css', array('display','inline',));
+            $commands[] = ajax_command_invoke('.create-alert-customize-results', 'css', array('display','block',));
             /* Show results buttons */
             $commands[] = ajax_command_invoke('.create-alert-submit', 'css', array('display','block',));
             /* Update hidden field for new step */
             $commands[] = ajax_command_invoke('input:hidden[name="step"]', 'val', array($previous_step));
-            /* Add scroll bar */
-            $commands[] = ajax_command_invoke('div.ui-dialog', 'css', array('width','965px',));
-            $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('height','800px',));
-            $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('overflow-y','auto',));
+            /* Handle iFrame and scroll bar */
+            $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('overflow','hidden',));
+            $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('height','auto',));
+            $commands[] = ajax_command_invoke('div.create-alert-customize-results', 'css', array('overflow-x','hidden',));
+            $commands[] = ajax_command_invoke('div.create-alert-customize-results', 'css', array('overflow-y','scroll',));
+            /* Update button text */
             $commands[] = ajax_command_invoke('div.create-alert-submit #edit-next-submit', 'val', array('Next',));
 
             break;
