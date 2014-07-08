@@ -68,7 +68,7 @@ function checkbook_advanced_search_form($form, $form_state)
     $create_alert_customize_results = "<div class='create-alert-customize-results'>Create Alert Customize Results Page<br/><br/>";
     $create_alert_customize_results .= "<br/></div>";
 
-    $create_alert_schedule_alert = "<div class='create-alert-schedule-alert'>Schedule Alert Page<br/><br/>";
+    $create_alert_schedule_alert = "<div class='create-alert-schedule-alert'>&nbsp;<br/><br/>";
     $create_alert_schedule_alert .= "</div>";
 
     $create_alert_confirmation = "<div class='create-alert-confirmation'><strong>Thank you for Scheduling your Alert!<br/>You will receive a confirmation email soon.</strong></div>";
