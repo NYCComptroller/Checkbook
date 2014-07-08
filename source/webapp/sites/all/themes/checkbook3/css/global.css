@@ -991,6 +991,13 @@ div.bottomContainer{
     margin: 0px;
 }
 
+#budget-advanced-search .budget-submit .form-submit,
+#revenue-advanced-search .revenue-submit .form-submit,
+#spending-advanced-search .spending-submit .form-submit,
+#contracts-advanced-search .contracts-submit .form-submit,
+#payroll-advanced-search .payroll-submit .form-submit {
+    margin-left: 7px;
+}
 
 .noTitleDialog .ui-dialog-content {
     padding: 0px 0px 20px 0px;
