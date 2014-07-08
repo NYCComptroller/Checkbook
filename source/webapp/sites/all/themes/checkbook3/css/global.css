@@ -1905,7 +1905,7 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
 .oge-assoc-contracts-list .toolTip{
     display:none;
     position:absolute;
-    top:-85px;
+    top:-100px;
     width:195px;
     left:-183px;
     padding:8px 12px;
