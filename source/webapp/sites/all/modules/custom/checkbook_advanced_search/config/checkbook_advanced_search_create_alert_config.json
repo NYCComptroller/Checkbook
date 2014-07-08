@@ -72,7 +72,7 @@
         "name": "confirmation",
         "title": null,
         "order": "4",
-        "instructions": null,
+        "instructions": "<span class='create-alert-instructions'>Follow the three step process to schedule alerts.<ul><li>Please select one of the following domains and also select the desired filters.<\/li><li>Click 'Next' button to view and customize the results.<\/li><li>Click 'Clear All' to clear out the filters applied.<\/li><\/ul><\/br></span>",
         "content": null,
         "buttons": {},
         "prev_step": null,
