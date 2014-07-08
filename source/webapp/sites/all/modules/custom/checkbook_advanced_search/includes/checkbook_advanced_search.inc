@@ -1064,6 +1064,8 @@ function _checkbook_advanced_search_next_ajax($form, &$form_state) {
 
             /* Schedule Alert */
             $commands[] = ajax_command_invoke(NULL, 'onScheduleAlertConfirmClick', array($_POST['ajax_referral_url']));
+            /* Update wizard instructions */
+            $commands[] = ajax_command_replace('.create-alert-instructions', $create_alert_config[$next_step]['instructions']);
             break;
     }
 
