@@ -279,7 +279,7 @@ function checkbook_advanced_search_form($form, $form_state)
         '#type' => 'textfield',
         '#size' => 30,
         '#maxlength' => 32,
-        '#prefix' => '<div class="datafield revenue_adopted datarange"><label>Adopted:</label><div class="ranges"><div class="form-item form-type textfield form-item-revenue-adopted">',
+        '#prefix' => '<div class="datafield revenue_adopted datarange"><label>Adopted</label><div class="ranges"><div class="form-item form-type textfield form-item-revenue-adopted">',
         '#suffix' => '<span class="advanced-search-to">to </span>',
     );
     $form['revenue']['revenue_adopted_to'] = array(
@@ -293,7 +293,7 @@ function checkbook_advanced_search_form($form, $form_state)
         '#type' => 'textfield',
         '#size' => 30,
         '#maxlength' => 32,
-        '#prefix' => '<div class="datafield revenue_recognized datarange"><label>Recognized:</label><div class="ranges"><div class="form-item form-type textfield form-item-revenue-recognized">',
+        '#prefix' => '<div class="datafield revenue_recognized datarange"><label>Recognized</label><div class="ranges"><div class="form-item form-type textfield form-item-revenue-recognized">',
         '#suffix' => '<span class="advanced-search-to">to </span>',
     );
     $form['revenue']['revenue_recognized_to'] = array(
