@@ -101,6 +101,12 @@ if($IsOge && !in_array($contracts_results['contract_type_code'],array('MMA1', 'M
                              "agency_name" => $agency_link,
                              "vendor_name" => $vendor_link,
                             );
+}elseif(!$IsOge){
+	$linkable_fields = array(
+			"agency_name" => $agency_link,
+			"vendor_name" => $vendor_link,
+	);
+	
 }
 
 if($IsOge && in_array($contracts_results['contract_type_code'],array('MMA1'))){
