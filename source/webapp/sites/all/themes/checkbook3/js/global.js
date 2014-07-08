@@ -953,6 +953,7 @@ function addPaddingToDataCells(table){
         $('.create-alert-submit').css('display','none');
         $('.ui-dialog .ui-dialog-content').css('padding','0.5em 1em');
         $('#spending-advanced-search').css('width','auto');
+        $('#spending-advanced-search').css('height','auto');
         switch(accordion_type) {
             case 'advanced_search':
                 $('.create-alert-view').css('display','none');
