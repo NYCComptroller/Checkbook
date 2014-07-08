@@ -264,7 +264,7 @@ function _checkbook_export_generateExportFile($node,$headers){
         
 
         $command = $conf['check_book']['data_feeds']['command']
-                . " -c \"\\\\COPY (" . $node->data . ") TO '"
+                . " -c \"\\\\COPY (" . str_replace('\\\\','\\\\\\',$node->data) . ") TO '"
                 . $tempOutputFile
                 . "'  WITH DELIMITER ',' CSV QUOTE '\\\"' ESCAPE '\\\"' \" ";
         
