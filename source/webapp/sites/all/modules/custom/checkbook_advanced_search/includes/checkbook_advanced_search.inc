@@ -1017,6 +1017,7 @@ function _checkbook_advanced_search_next_ajax($form, &$form_state) {
 
             /* Update width of dialog - TBD add class */
             $commands[] = ajax_command_invoke('div.ui-dialog', 'css', array('width','965px',));
+            $commands[] = ajax_command_invoke('.ui-dialog .ui-dialog-content', 'css', array('padding','0.5em 0px',));
             /* Hide the accordion */
             $commands[] = ajax_command_invoke('.advanced-search-accordion', 'css', array('display','none',));
             /* Show the results page */
@@ -1032,8 +1033,6 @@ function _checkbook_advanced_search_next_ajax($form, &$form_state) {
             $commands[] = ajax_command_replace('.create-alert-instructions', $create_alert_config[$next_step]['instructions']);
             /* Add scroll bar */
             $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('overflow-y','auto',));
-            $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('margin-left','0px'));
-            $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('margin-right','0px'));
             break;
 
         case 'customize_results':
@@ -1041,6 +1040,7 @@ function _checkbook_advanced_search_next_ajax($form, &$form_state) {
 
             /* Update width of dialog - TBD add class*/
             $commands[] = ajax_command_invoke('div.ui-dialog', 'css', array('width','900px',));
+            $commands[] = ajax_command_invoke('.ui-dialog .ui-dialog-content', 'css', array('padding','0.5em 1em',));
             /* Show the schedule alert page */
             $commands[] = ajax_command_invoke('.create-alert-schedule-alert', 'css', array('display','inline',));
             /* Load Schedule Alerts Form */
@@ -1089,6 +1089,7 @@ function _checkbook_advanced_search_back_ajax($form, &$form_state) {
 
             /* Update width of dialog - TBD add class*/
             $commands[] = ajax_command_invoke('div.ui-dialog', 'css', array('width','900px',));
+            $commands[] = ajax_command_invoke('.ui-dialog .ui-dialog-content', 'css', array('padding','0.5em 1em',));
             /* Hide the results page */
             $commands[] = ajax_command_invoke('.create-alert-customize-results', 'css', array('display','none',));
             /* Show the accordion */
@@ -1100,9 +1101,6 @@ function _checkbook_advanced_search_back_ajax($form, &$form_state) {
             /* Remove scroll bar */
             $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('height','auto',));
             $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('overflow-y','initial',));
-            $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('margin-left','45px'));
-            $commands[] = ajax_command_invoke('div.block-checkbook-advanced-search-checkbook-advanced-search-form', 'css', array('margin-right','45px'));
-            $commands[] = ajax_command_invoke('.ui-dialog .ui-dialog-content', 'css', array('padding','0.5em 0px 0.5em',));
             break;
 
         case 'schedule_alert':
@@ -1110,6 +1108,7 @@ function _checkbook_advanced_search_back_ajax($form, &$form_state) {
 
             /* Update width of dialog - TBD add class*/
             $commands[] = ajax_command_invoke('div.ui-dialog', 'css', array('width','965px',));
+            $commands[] = ajax_command_invoke('.ui-dialog .ui-dialog-content', 'css', array('padding','0.5em 0px',));
             /* Hide the schedule alerts page */
             $commands[] = ajax_command_invoke('.create-alert-schedule-alert', 'css', array('display','none',));
             /* Show the results page */
