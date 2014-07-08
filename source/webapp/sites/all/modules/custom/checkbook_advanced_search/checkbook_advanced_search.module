@@ -250,25 +250,25 @@ function checkbook_advanced_search_form($form, $form_state)
     $form['revenue']['revenue_budget_fiscal_year'] = array(
         '#prefix' => '<h3><a href="#">Revenue</a></h3><div id="revenue-advanced-search"><div class="column column-left">',
         '#type' => 'select',
-        '#title' => t('Budget FY:'),
+        '#title' => t('Budget FY'),
         '#options' => _checkbook_advanced_search_get_year('revenue'),
         '#attributes' => array('default_selected_value' => _getCurrentYearID()),
         '#default_value' => _getCurrentYearID(),
     );
     $form['revenue']['revenue_agencies'] = array(
         '#type' => 'select',
-        '#title' => t('Agency:'),
+        '#title' => t('Agency'),
         '#options' => $agencies,
         '#option_attributes' => $agency_attributes,
     );
     $form['revenue']['revenue_revenue_category'] = array(
         '#type' => 'select',
-        '#title' => t('Revenue Category:'),
+        '#title' => t('Revenue Category'),
         '#options' => _checkbook_advanced_search_get_revenue_category_and_id(),
     );
     $form['revenue']['revenue_revenue_source'] = array(
         '#type' => 'textfield',
-        '#title' => t('Revenue Source:'),
+        '#title' => t('Revenue Source'),
         '#size' => 30,
         '#maxlength' => 100
     );
@@ -306,7 +306,7 @@ function checkbook_advanced_search_form($form, $form_state)
     $form['revenue']['revenue_fiscal_year'] = array(
         '#prefix' => '<div class="column column-right">',
         '#type' => 'select',
-        '#title' => t('Fiscal Year:'),
+        '#title' => t('Fiscal Year'),
         '#options' => $revenue_fys,
     );
     $form['revenue']['revenue_funding_source'] = array(
@@ -316,7 +316,7 @@ function checkbook_advanced_search_form($form, $form_state)
     );
     $form['revenue']['revenue_revenue_class'] = array(
         '#type' => 'textfield',
-        '#title' => t('Revenue Class:'),
+        '#title' => t('Revenue Class'),
         '#size' => 30,
         '#maxlength' => 100
     );
@@ -325,7 +325,7 @@ function checkbook_advanced_search_form($form, $form_state)
     );
     $form['revenue']['revenue_fund_class'] = array(
         '#type' => 'select',
-        '#title' => t('Fund Class:'),
+        '#title' => t('Fund Class'),
         '#options' => $fund_class,
 
     );
@@ -333,7 +333,7 @@ function checkbook_advanced_search_form($form, $form_state)
         '#type' => 'textfield',
         '#size' => 30,
         '#maxlength' => 32,
-        '#prefix' => '<div class="datafield revenue_modified datarange"><label>Modified:</label><div class="ranges"><div class="form-item form-type textfield form-item-revenue-modified">',
+        '#prefix' => '<div class="datafield revenue_modified datarange"><label>Modified</label><div class="ranges"><div class="form-item form-type textfield form-item-revenue-modified">',
         '#suffix' => '<span class="advanced-search-to">to </span>',
     );
     $form['revenue']['revenue_modified_to'] = array(
