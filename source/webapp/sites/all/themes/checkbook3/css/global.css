@@ -1010,7 +1010,7 @@ div.bottomContainer{
     margin: 0px;
 }
 
-div.create-alert-submit #edit-next-submit {
+div.create-alert-submit .form-submit {
     margin-left: 7px;
 }
 
