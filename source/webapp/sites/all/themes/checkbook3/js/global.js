@@ -1154,7 +1154,7 @@ function addPaddingToDataCells(table){
                                 dialog = $('<div id="dialog" style="display:none"></div>');
                             }
                             dialog.html(data.html);
-                            dialog.dialog({position:['center', 'top'],
+                            dialog.dialog({position:['center', 'center'],
                                 modal:true,
                                 width:550,
                                 height:80,
