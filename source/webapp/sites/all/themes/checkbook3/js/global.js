@@ -239,6 +239,7 @@ function addPaddingToDataCells(table){
 
             if ($(highSlides).filter(":first").length > 0) {
                 $(highSlides).filter(":first")
+                    .once('styleOverrides')
                     .cycle({
                         slideExpr:'.slider-pane',
                         fx:'fade',
@@ -345,7 +346,7 @@ function addPaddingToDataCells(table){
     // Agencies Drop Down
     Drupal.behaviors.agenciesDropDown = {
         attach:function (context, settings) {
-            $('.agency-list-open span, .agency-list-open div b').click(function () {
+            $('.agency-list-open span, .agency-list-open div b').once('agenciesDropDown').click(function () {
             	if($(this).attr("id")== "other-agency-list-open"){
             		$('.all-agency-list-content').slideUp(300);            		
             	}else{
@@ -356,13 +357,14 @@ function addPaddingToDataCells(table){
                 $(this).parent().find(' div b').toggleClass('open');
             });
 
-            $('.agency-list-close a').click(function () {
+            $('.agency-list-close a').once('agenciesDropDown').click(function () {
                 $('.agency-list-content').slideUp(300);
                 $('.agency-list-open div b').removeClass('open');
             });
 
             if ($('#allAgenciesList').length > 0) {
                 $('#allAgenciesList')
+                    .once('agenciesDropDown')
                     .after('<div id="agency-list-pager1" class="agency-list-pager"></div>')
                     .cycle({
                         fx:'none',
@@ -375,9 +377,10 @@ function addPaddingToDataCells(table){
                         next:'#next1'
                     });
             }
-            
+
             if ($('#otherAgenciesList').length > 0) {
                 $('#otherAgenciesList')
+                    .once('agenciesDropDown')
                     .after('<div id="agency-list-pager2" class="agency-list-pager"></div>')
                     .cycle({
                         fx:'none',
