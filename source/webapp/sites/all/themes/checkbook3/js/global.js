@@ -1053,6 +1053,10 @@ function addPaddingToDataCells(table){
             $("#checkbook_advanced_search_result_iframe").load(function() {
                 $('.create-alert-submit').css('display','block');
             });
+            $(document).ajaxComplete(function() {
+                $('#edit-next-submit').attr('disabled', false);
+                $('#edit-back-submit').attr('disabled', false);
+            });
 
             $.fn.onScheduleAlertClick = function () {
 
