@@ -1062,10 +1062,10 @@ function addPaddingToDataCells(table){
 
                 var scheduleAlertDiv = $(".create-alert-schedule-alert");
                 var scheduleAlertUrl = '/alert/transactions/form';
-                var ajaxReferralUrl = ($('#checkbook_advanced_search_result_iframe')[0]).attributes['src'];
 
-                /* Add hidden field for ajax referral Url */
-                $('input:hidden[name="ajax_referral_url"]').val(ajaxReferralUrl);
+//                /* Add hidden field for ajax user Url */
+//                $('input:hidden[name="ajax_user_url"]').val(ajaxUserUrl);
+//                alert($('input:hidden[name="ajax_user_url"]').val());
 
                 /* Load */
                 $.ajax({
@@ -1081,7 +1081,12 @@ function addPaddingToDataCells(table){
                 });
             }
 
-            $.fn.onScheduleAlertConfirmClick = function (ajaxReferralUrl) {
+            $.fn.onScheduleAlertConfirmClick = function (ajaxReferralUrl,serverName) {
+
+                /* Add hidden field for ajax user Url */
+                var ajaxUserUrl = $('#checkbook_advanced_search_result_iframe').attr('src');
+                $('input:hidden[name="ajax_user_url"]').val(ajaxUserUrl);
+                ajaxUserUrl = serverName+ajaxUserUrl
 
                 var validateEmail=function(email) {
                     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -1137,7 +1142,7 @@ function addPaddingToDataCells(table){
                         alert_minimum_results:alertMinimumResults,
                         alert_minimum_days:alertMinimumDays,
                         alert_end:alertEnd,
-                        userURL:window.location.href,
+                        userURL:ajaxUserUrl,
                         alert_theme_file:'checkbook_alerts_advanced_search_theme'
                     }
                     $this=$(this);
@@ -1177,7 +1182,7 @@ function addPaddingToDataCells(table){
 
                     $(document).ajaxComplete(function() {
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('height', 600);
-                        $('#checkbook_advanced_search_result_iframe', window.parent.document).css('width', 995);
+                        $('#checkbook_advanced_search_result_iframe', window.parent.document).css('width', 996);
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).attr('scrolling', 'yes');
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('overflow-x', 'hidden');
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('overflow-y', 'scroll');
@@ -1190,6 +1195,11 @@ function addPaddingToDataCells(table){
                         });
                         $(this).find('html body').css('background', '#ffffff');
                         $(this).find('html body #body-inner').css('box-shadow', 'unset');
+
+                        /* Add hidden field for ajax referral Url to parent*/
+                        var alertsid = $(this).find('span.alerts').attr('alertsid');
+                        var refUrl = $('#table_'+alertsid).dataTable().fnSettings().sAjaxSource;
+                        $('input:hidden[name="ajax_referral_url"]', window.parent.document).val(refUrl);
                     });
                 }
             });
