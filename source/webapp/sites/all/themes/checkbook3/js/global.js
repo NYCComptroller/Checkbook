@@ -1076,6 +1076,7 @@ function addPaddingToDataCells(table){
                         html = html.replace("<span class='alert-required-field'></span>", "<span class='alert-required-field' style='color:red;'>*</span>");
                         html = html.replace("id='alert_instructions'", "style='display:none'");
                         scheduleAlertDiv.html(html);
+                        $("input[name='alert_end[date]']").datepicker({"changeMonth":true,"changeYear":true,"autoPopUp":"focus","closeAtTop":false,"speed":"immediate","firstDay":0,"dateFormat":"yy-mm-dd","yearRange":"-113:+487","fromTo":false,"defaultDate":"0y"});
                     }
                 });
             }
