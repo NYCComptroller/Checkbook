@@ -1030,6 +1030,9 @@ function addPaddingToDataCells(table){
                     },
                     close: function(){
                         $(".ui-autocomplete-input").autocomplete("close")
+                        /* Update wizard instructions to initial */
+                        var defaultInstructions = "<span class='create-alert-instructions'>Follow the three step process to schedule alerts.<ul><li>Please select one of the following domains and also select the desired filters.<\/li><li>Click 'Next' button to view and customize the results.<\/li><li>Click 'Clear All' to clear out the filters applied.<\/li><\/ul><\/br></span>";
+                        $('.create-alert-instructions').replaceWith(defaultInstructions);
                     }
                 });
 
@@ -1047,18 +1050,7 @@ function addPaddingToDataCells(table){
                 return false;
             });
 
-            $("#checkbook_advanced_search_result_iframe").load(function(){
-                if($(this).contents().height() < 330) {
-                    $(this).height('auto');
-                    $('div.block-checkbook-advanced-search-checkbook-advanced-search-form').css('padding',0);
-                    $('div.create-alert-submit #edit-next-submit').css('display','none');
-                    $('div.ui-dialog').css('width',900);
-                }
-                else {
-                    $(this).height($(this).contents().height());
-                    $('div.create-alert-submit #edit-next-submit').css('display','inline');
-                    $('div.ui-dialog').css('width',965);
-                }
+            $("#checkbook_advanced_search_result_iframe").load(function() {
                 $('.create-alert-submit').css('display','block');
             });
 
@@ -1161,10 +1153,6 @@ function addPaddingToDataCells(table){
                                 resizable: false,
                                 dialogClass:'noTitleDialog'
                             });
-
-                            /* Update wizard instructions to initial */
-                            var defaultInstructions = "<span class='create-alert-instructions'>Follow the three step process to schedule alerts.<ul><li>Please select one of the following domains and also select the desired filters.<\/li><li>Click 'Next' button to view and customize the results.<\/li><li>Click 'Clear All' to clear out the filters applied.<\/li><\/ul><\/br></span>";
-                            $('.create-alert-instructions').replaceWith(defaultInstructions);
                         } else{
                             $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul><li>'+data.errors.join('<li/>')+'</ul></div>');
                         }
@@ -1172,19 +1160,22 @@ function addPaddingToDataCells(table){
                 }
             }
 
-            $(window).resize(function() {
-                if (inIframe() && document.URL.indexOf("/createalert") >= 0) {
-                    $(document).ajaxComplete(function() {
-                        $('#checkbook_advanced_search_result_iframe', window.parent.document).css('height', $('#checkbook_advanced_search_result_iframe', window.parent.document).contents().height()-100);
-                        $('div.block-checkbook-advanced-search-checkbook-advanced-search-form', window.parent.document).css('height', 800);
-                        $('div.create-alert-customize-results', window.parent.document).css('height', 'auto');
-                    });
-                }
-            });
-
             $(window).load(function() {
                 if (inIframe() && document.URL.indexOf("/createalert") >= 0) {
+                    $('#checkbook_advanced_search_result_iframe', window.parent.document).css('height', '100%');
+                    $('#checkbook_advanced_search_result_iframe', window.parent.document).attr('scrolling', 'no');
+                    $('#checkbook_advanced_search_result_iframe', window.parent.document).css('width', 960);
+                    $('#checkbook_advanced_search_result_iframe', window.parent.document).css('padding-left', '10px');
+                    $('div.ui-dialog', window.parent.document).css('height', 365);
+
                     $(document).ajaxComplete(function() {
+                        $('#checkbook_advanced_search_result_iframe', window.parent.document).css('height', 600);
+                        $('#checkbook_advanced_search_result_iframe', window.parent.document).css('width', 995);
+                        $('#checkbook_advanced_search_result_iframe', window.parent.document).attr('scrolling', 'yes');
+                        $('#checkbook_advanced_search_result_iframe', window.parent.document).css('overflow-x', 'hidden');
+                        $('#checkbook_advanced_search_result_iframe', window.parent.document).css('overflow-y', 'scroll');
+                        $('#checkbook_advanced_search_result_iframe', window.parent.document).css('padding-left', '0px');
+                        $('div.ui-dialog', window.parent.document).css('height', 815);
                         //Links should be disable in the iframe
                         $(this).find('.dataTable tbody tr td div a').each(function() {
                             $(this).addClass('disableLinks');
