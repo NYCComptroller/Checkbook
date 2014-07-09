@@ -1053,6 +1053,10 @@ function addPaddingToDataCells(table){
             $("#checkbook_advanced_search_result_iframe").load(function() {
                 $('.create-alert-submit').css('display','block');
             });
+            $(document).ajaxComplete(function() {
+                $('#edit-next-submit').attr('disabled', false);
+                $('#edit-back-submit').attr('disabled', false);
+            });
 
             $.fn.onScheduleAlertClick = function () {
 
@@ -1072,6 +1076,7 @@ function addPaddingToDataCells(table){
                         html = html.replace("<span class='alert-required-field'></span>", "<span class='alert-required-field' style='color:red;'>*</span>");
                         html = html.replace("id='alert_instructions'", "style='display:none'");
                         scheduleAlertDiv.html(html);
+                        $("input[name='alert_end[date]']").datepicker({"changeMonth":true,"changeYear":true,"autoPopUp":"focus","closeAtTop":false,"speed":"immediate","firstDay":0,"dateFormat":"yy-mm-dd","yearRange":"-113:+487","fromTo":false,"defaultDate":"0y"});
                     }
                 });
             }
@@ -1162,6 +1167,8 @@ function addPaddingToDataCells(table){
 
             $(window).load(function() {
                 if (inIframe() && document.URL.indexOf("/createalert") >= 0) {
+
+                    //No results
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).css('height', '100%');
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).attr('scrolling', 'no');
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).css('width', 960);
@@ -1181,6 +1188,8 @@ function addPaddingToDataCells(table){
                             $(this).addClass('disableLinks');
                             $(this).click(function() { return false; });
                         });
+                        $(this).find('html body').css('background', '#ffffff');
+                        $(this).find('html body #body-inner').css('box-shadow', 'unset');
                     });
                 }
             });
