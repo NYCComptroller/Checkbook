@@ -1167,6 +1167,8 @@ function addPaddingToDataCells(table){
 
             $(window).load(function() {
                 if (inIframe() && document.URL.indexOf("/createalert") >= 0) {
+
+                    //No results
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).css('height', '100%');
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).attr('scrolling', 'no');
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).css('width', 960);
@@ -1186,6 +1188,8 @@ function addPaddingToDataCells(table){
                             $(this).addClass('disableLinks');
                             $(this).click(function() { return false; });
                         });
+                        $(this).find('html body').css('background', '#ffffff');
+                        $(this).find('html body #body-inner').css('box-shadow', 'unset');
                     });
                 }
             });
