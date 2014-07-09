@@ -554,7 +554,9 @@ function checkbook_advanced_search_form($form, $form_state)
         '#ajax' => array(
             'callback' => '_checkbook_advanced_search_next_ajax',
             'parameters' => array('create_alerts' => true),
+            'event' => 'click',
         ),
+        '#attributes' => array('onclick' => "jQuery('#edit-back-submit').attr('disabled', true);"),
     );
     $form['create_alerts']['back_submit'] = array(
         '#type' => 'button',
@@ -563,7 +565,9 @@ function checkbook_advanced_search_form($form, $form_state)
         '#suffix' => '</div>',
         '#ajax' => array(
             'callback' => '_checkbook_advanced_search_back_ajax',
+            'event' => 'click',
         ),
+        '#attributes' => array('onclick' => "jQuery('#edit-next-submit').attr('disabled', true);"),
     );
 
     //</editor-fold>
