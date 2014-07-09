@@ -1162,17 +1162,19 @@ function addPaddingToDataCells(table){
 
             $(window).load(function() {
                 if (inIframe() && document.URL.indexOf("/createalert") >= 0) {
-
-
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).css('height', '100%');
-                    $('#checkbook_advanced_search_result_iframe', window.parent.document).attr('scrollable', 'no');
+                    $('#checkbook_advanced_search_result_iframe', window.parent.document).attr('scrolling', 'no');
+                    $('#checkbook_advanced_search_result_iframe', window.parent.document).css('width', 960);
+                    $('#checkbook_advanced_search_result_iframe', window.parent.document).css('padding-left', '10px');
                     $('div.ui-dialog', window.parent.document).css('height', 365);
 
                     $(document).ajaxComplete(function() {
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('height', 600);
-                        $('#checkbook_advanced_search_result_iframe', window.parent.document).attr('scrollable', 'yes');
+                        $('#checkbook_advanced_search_result_iframe', window.parent.document).css('width', 995);
+                        $('#checkbook_advanced_search_result_iframe', window.parent.document).attr('scrolling', 'yes');
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('overflow-x', 'hidden');
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('overflow-y', 'scroll');
+                        $('#checkbook_advanced_search_result_iframe', window.parent.document).css('padding-left', '0px');
                         $('div.ui-dialog', window.parent.document).css('height', 815);
                         //Links should be disable in the iframe
                         $(this).find('.dataTable tbody tr td div a').each(function() {
