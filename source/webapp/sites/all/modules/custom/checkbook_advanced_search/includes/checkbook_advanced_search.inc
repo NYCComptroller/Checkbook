@@ -1015,7 +1015,6 @@ function _checkbook_advanced_search_next_ajax($form, &$form_state) {
     switch($step) {
         case 'select_criteria':
             $next_step = 'customize_results';
-
             /* Update width of dialog - TBD add class */
             $commands[] = ajax_command_invoke('div.ui-dialog', 'css', array('width','996px',));
             $commands[] = ajax_command_invoke('.ui-dialog .ui-dialog-content', 'css', array('padding','0.5em 0px',));
@@ -1124,7 +1123,8 @@ function _checkbook_advanced_search_back_ajax($form, &$form_state) {
             $commands[] = ajax_command_invoke('div.create-alert-submit #edit-next-submit', 'val', array('Next',));
             /* Persist ajax referral url */
             $commands[] = ajax_command_invoke('input:hidden[name="ajax_referral_url"]', 'val', array($ajax_referral_url));
-
+            /* Enable Next button on back to results page  */
+            $commands[] = ajax_command_invoke('#edit-next-submit', 'attr', array('disabled',false,));
             break;
     }
 
