@@ -155,7 +155,8 @@
 	   {
 	   	  "labelAlias": "document_id",
 	      "column": "disbursement_number_derived",
-	      "sortSourceColumn":"disbursement_number"
+	      "sortSourceColumn":"disbursement_number",
+          "exportColumn":"disbursement_number_derived"
 	    },
 	    {
 	      "labelAlias": "payee_name",
