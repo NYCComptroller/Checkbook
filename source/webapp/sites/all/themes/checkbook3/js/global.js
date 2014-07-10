@@ -950,6 +950,8 @@ function addPaddingToDataCells(table){
         $('.create-alert-customize-results').css('display','none');
         $('.create-alert-schedule-alert').css('display','none');
         $('.create-alert-confirmation').css('display','none');
+        $('#edit-next-submit').attr('disabled', true);
+        $('#edit-back-submit').attr('disabled', true);
         $('.create-alert-submit').css('display','none');
         $('.ui-dialog .ui-dialog-content').css('padding','0.5em 1em');
         $('#spending-advanced-search').css('width','auto');
@@ -1054,18 +1056,33 @@ function addPaddingToDataCells(table){
                 $('.create-alert-submit').css('display','block');
             });
             $(document).ajaxComplete(function() {
-                $('#edit-next-submit').attr('disabled', false);
-                $('#edit-back-submit').attr('disabled', false);
+
+                /* Do not enable next buttons for results page here */
+                var step = $('input:hidden[name="step"]').val();
+                if(step == 'select_criteria') {
+                    $('#edit-next-submit').attr('disabled', true);
+                    $('#edit-back-submit').attr('disabled', true);
+                }
+                else {
+                    $('#edit-back-submit').attr('disabled', false);
+                }
+
+                //handle formatting here
+//                switch(step) {
+//                    case 'select_criteria':
+//                        break;
+//                    case 'select_criteria':
+//                        break;
+//                    case 'select_criteria':
+//                        break;
+//
+//                }
             });
 
             $.fn.onScheduleAlertClick = function () {
 
                 var scheduleAlertDiv = $(".create-alert-schedule-alert");
                 var scheduleAlertUrl = '/alert/transactions/form';
-                var ajaxReferralUrl = ($('#checkbook_advanced_search_result_iframe')[0]).attributes['src'];
-
-                /* Add hidden field for ajax referral Url */
-                $('input:hidden[name="ajax_referral_url"]').val(ajaxReferralUrl);
 
                 /* Load */
                 $.ajax({
@@ -1081,7 +1098,12 @@ function addPaddingToDataCells(table){
                 });
             }
 
-            $.fn.onScheduleAlertConfirmClick = function (ajaxReferralUrl) {
+            $.fn.onScheduleAlertConfirmClick = function (ajaxReferralUrl,serverName) {
+
+                /* Add hidden field for ajax user Url */
+                var ajaxUserUrl = $('#checkbook_advanced_search_result_iframe').attr('src');
+                $('input:hidden[name="ajax_user_url"]').val(ajaxUserUrl);
+                ajaxUserUrl = serverName+ajaxUserUrl
 
                 var validateEmail=function(email) {
                     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -1137,7 +1159,7 @@ function addPaddingToDataCells(table){
                         alert_minimum_results:alertMinimumResults,
                         alert_minimum_days:alertMinimumDays,
                         alert_end:alertEnd,
-                        userURL:window.location.href,
+                        userURL:ajaxUserUrl,
                         alert_theme_file:'checkbook_alerts_advanced_search_theme'
                     }
                     $this=$(this);
@@ -1171,25 +1193,37 @@ function addPaddingToDataCells(table){
                     //No results
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).css('height', '100%');
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).attr('scrolling', 'no');
-                    $('#checkbook_advanced_search_result_iframe', window.parent.document).css('width', 960);
+                    $('#checkbook_advanced_search_result_iframe', window.parent.document).css('width', 975);
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).css('padding-left', '10px');
-                    $('div.ui-dialog', window.parent.document).css('height', 365);
+                    $('div.ui-dialog', window.parent.document).css('height', 385);
+                    //Fix content formatting
+                    $(document).find('html body').css('background', '#ffffff');
+                    $(document).find('html body #body-inner').css('box-shadow', 'unset');
 
                     $(document).ajaxComplete(function() {
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('height', 600);
-                        $('#checkbook_advanced_search_result_iframe', window.parent.document).css('width', 995);
+                        $('#checkbook_advanced_search_result_iframe', window.parent.document).css('width', 1000);
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).attr('scrolling', 'yes');
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('overflow-x', 'hidden');
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('overflow-y', 'scroll');
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('padding-left', '0px');
-                        $('div.ui-dialog', window.parent.document).css('height', 815);
+                        $('div.ui-dialog', window.parent.document).css('height', 835);
                         //Links should be disable in the iframe
                         $(this).find('.dataTable tbody tr td div a').each(function() {
                             $(this).addClass('disableLinks');
                             $(this).click(function() { return false; });
                         });
+
+                        //Fix content formatting
                         $(this).find('html body').css('background', '#ffffff');
                         $(this).find('html body #body-inner').css('box-shadow', 'unset');
+                        /* Add hidden field for ajax referral Url to parent*/
+                        var alertsid = $(this).find('span.alerts').attr('alertsid');
+                        var refUrl = $('#table_'+alertsid).dataTable().fnSettings().sAjaxSource;
+                        $('input:hidden[name="ajax_referral_url"]', window.parent.document).val(refUrl);
+
+                        /* Enable button for results page after ajax loads */
+                        $('#edit-next-submit', window.parent.document).attr('disabled', false);
                     });
                 }
             });
