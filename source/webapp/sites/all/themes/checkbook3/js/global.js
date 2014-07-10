@@ -1197,8 +1197,13 @@ function addPaddingToDataCells(table){
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).css('padding-left', '10px');
                     $('div.ui-dialog', window.parent.document).css('height', 385);
                     //Fix content formatting
-                    $(document).find('html body').css('background', '#ffffff');
+                    var body = $(document).find('html body');
+                    $(body).css('background', '#ffffff');
+                    $(body).css('overflow', 'hidden');
                     $(document).find('html body #body-inner').css('box-shadow', 'unset');
+                    $('.create-alert-results-loading', window.parent.document).css('display', 'none');
+                    $('.create-alert-results-loading', window.parent.document).css('visibility', 'hidden');
+                    $('#checkbook_advanced_search_result_iframe', window.parent.document).css('visibility', 'visible');
 
                     $(document).ajaxComplete(function() {
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('height', 600);
@@ -1207,6 +1212,7 @@ function addPaddingToDataCells(table){
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('overflow-x', 'hidden');
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('overflow-y', 'scroll');
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('padding-left', '0px');
+
                         $('div.ui-dialog', window.parent.document).css('height', 835);
                         //Links should be disable in the iframe
                         $(this).find('.dataTable tbody tr td div a').each(function() {
@@ -1215,8 +1221,12 @@ function addPaddingToDataCells(table){
                         });
 
                         //Fix content formatting
-                        $(this).find('html body').css('background', '#ffffff');
+                        var body = $(this).find('html body')
+                        $(body).css('background', '#ffffff');
+                        $(body).css('overflow-x', 'hidden');
+                        $(body).css('overflow-y', 'auto');
                         $(this).find('html body #body-inner').css('box-shadow', 'unset');
+
                         /* Add hidden field for ajax referral Url to parent*/
                         var alertsid = $(this).find('span.alerts').attr('alertsid');
                         var refUrl = $('#table_'+alertsid).dataTable().fnSettings().sAjaxSource;
