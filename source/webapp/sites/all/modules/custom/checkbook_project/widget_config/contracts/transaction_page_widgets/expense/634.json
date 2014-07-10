@@ -258,9 +258,9 @@ return $header;
         }
         $node->widgetConfig->table_columns = array_values($node->widgetConfig->table_columns);
         $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoColumns);
-        if(!preg_match('/MMA/',_getRequestParamValue('doctype') ) and !preg_match('/MA/',_getRequestParamValue('doctype') ) and $smnid == 368){
+        if((!preg_match('/MMA/',_getRequestParamValue('doctype')) and !preg_match('/MA/',_getRequestParamValue('doctype'))) || $smnid == 368 || $smnid == 367 || $smnid == 610 || $smnid == 631 || $smnid == 611 || $smnid == 612){
              $adjustDataTableOptions->fnInitComplete = '##function () { new FixedColumns( oTable, {
-            \"iLeftColumns\": 1,
+            \"iLeftColumns\": 2,
             \"iLeftWidth\": 196
             } );}##';
         }        
