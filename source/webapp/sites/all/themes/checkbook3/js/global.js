@@ -1066,6 +1066,17 @@ function addPaddingToDataCells(table){
                 else {
                     $('#edit-back-submit').attr('disabled', false);
                 }
+
+                //handle formatting here
+//                switch(step) {
+//                    case 'select_criteria':
+//                        break;
+//                    case 'select_criteria':
+//                        break;
+//                    case 'select_criteria':
+//                        break;
+//
+//                }
             });
 
             $.fn.onScheduleAlertClick = function () {
@@ -1182,13 +1193,16 @@ function addPaddingToDataCells(table){
                     //No results
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).css('height', '100%');
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).attr('scrolling', 'no');
-                    $('#checkbook_advanced_search_result_iframe', window.parent.document).css('width', 960);
+                    $('#checkbook_advanced_search_result_iframe', window.parent.document).css('width', 975);
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).css('padding-left', '10px');
                     $('div.ui-dialog', window.parent.document).css('height', 385);
+                    //Fix content formatting
+                    $(document).find('html body').css('background', '#ffffff');
+                    $(document).find('html body #body-inner').css('box-shadow', 'unset');
 
                     $(document).ajaxComplete(function() {
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('height', 600);
-                        $('#checkbook_advanced_search_result_iframe', window.parent.document).css('width', 996);
+                        $('#checkbook_advanced_search_result_iframe', window.parent.document).css('width', 1000);
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).attr('scrolling', 'yes');
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('overflow-x', 'hidden');
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('overflow-y', 'scroll');
@@ -1199,9 +1213,10 @@ function addPaddingToDataCells(table){
                             $(this).addClass('disableLinks');
                             $(this).click(function() { return false; });
                         });
+
+                        //Fix content formatting
                         $(this).find('html body').css('background', '#ffffff');
                         $(this).find('html body #body-inner').css('box-shadow', 'unset');
-
                         /* Add hidden field for ajax referral Url to parent*/
                         var alertsid = $(this).find('span.alerts').attr('alertsid');
                         var refUrl = $('#table_'+alertsid).dataTable().fnSettings().sAjaxSource;
