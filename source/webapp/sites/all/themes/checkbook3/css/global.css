@@ -983,6 +983,13 @@ div.bottomContainer{
 
 /* Advanced Search - Create Alerts */
 
+.create-alert-customize-results {
+    text-align:center;
+}
+.create-alert-results-loading {
+
+}
+
 .disableLinks {
     color: #606060 !important;
     cursor: default !important;
