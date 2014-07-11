@@ -62,16 +62,6 @@ function checkbook_advanced_search_display()
  */
 function checkbook_advanced_search_form($form, $form_state)
 {
-//    $create_alert_config =  _checkbook_advanced_search_create_alert_config();
-//    $create_alert_instructions = $create_alert_config['select_criteria']['instructions'];
-//
-//    $create_alert_loading = '<div display="inline" class="create-alert-results-loading"><div class="ajax-progress ajax-progress-throbber"><div class="throbber">&nbsp;</div></div>Please Wait...</div>';
-//
-//    $create_alert_customize_results = "<div class='create-alert-customize-results'>Create Alert Customize Results Page<br/><br/><br/></div>";
-//
-//    $create_alert_schedule_alert = "<div class='create-alert-schedule-alert'>&nbsp;<br/><br/></div>";
-//
-//    $create_alert_view = $create_alert_instructions.$create_alert_loading.$create_alert_customize_results.$create_alert_schedule_alert;
     $create_alert_view = "<div class='create-alert-view'></div>";
     $agencies = _checkbook_advanced_search_get_agencyname_and_id();
     $agency_attributes = _checkbook_advanced_search_get_agency_attributes();

@@ -1010,6 +1010,15 @@ function addPaddingToDataCells(table){
 
     Drupal.behaviors.createAlerts = {
         attach:function (context, settings) {
+            // $.xhrPool and $.ajaxSetup are the solution
+            $.xhrPool = [];
+            $.xhrPool.abortAll = function() {
+                $(this).each(function(idx, jqXHR) {
+                    jqXHR.abort();
+                });
+                $.xhrPool = [];
+            };
+
             $('span.advanced-search-create-alert').click(function () {
                 var href = window.location.href.replace(/(http|https):\/\//, '');
                 var n = href.indexOf('?');
@@ -1042,6 +1051,10 @@ function addPaddingToDataCells(table){
                         $('#edit-back-submit').css('display','none');
                     },
                     close: function(){
+
+                        /* abort any running ajax calls */
+                        $.xhrPool.abortAll();
+
                         $(".ui-autocomplete-input").autocomplete("close")
                         /* Update wizard instructions to initial */
                         var defaultInstructions = "<span class='create-alert-instructions'>Follow the three step process to schedule alerts.<ul><li>Please select one of the following domains and also select the desired filters.<\/li><li>Click 'Next' button to view and customize the results.<\/li><li>Click 'Clear All' to clear out the filters applied.<\/li><\/ul><\/br></span>";
@@ -1279,7 +1292,6 @@ function addPaddingToDataCells(table){
 
             /*------------------------------------------------------------------------------------------------------------*/
 
-
             $.fn.onScheduleAlertClick = function () {
 
                 var scheduleAlertDiv = $(".create-alert-schedule-alert");
@@ -1287,8 +1299,11 @@ function addPaddingToDataCells(table){
 
                 /* Load */
                 $.ajax({
-                    url: scheduleAlertUrl
-                    ,success: function(data) {
+                    url: scheduleAlertUrl,
+                    beforeSend: function(jqXHR) {
+                        $.xhrPool.push(jqXHR);
+                    },
+                    success: function(data) {
                         var html = "<div class='create-alert-schedule-alert'>"+data+"</div>";
                         html = html.replace("<span class='alert-required-field'></span>", "<span class='alert-required-field' style='color:red;'>*</span>");
                         html = html.replace("<span class='alert-required-field'></span>", "<span class='alert-required-field' style='color:red;'>*</span>");
@@ -1368,6 +1383,7 @@ function addPaddingToDataCells(table){
                         alert_theme_file:'checkbook_alerts_advanced_search_theme'
                     }
                     $this=$(this);
+
                     $.get(url,data,function(data){
                         data=JSON.parse(data);
                         if(data.success){
