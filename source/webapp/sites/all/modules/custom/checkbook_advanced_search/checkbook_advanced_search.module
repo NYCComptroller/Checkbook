@@ -62,20 +62,17 @@ function checkbook_advanced_search_display()
  */
 function checkbook_advanced_search_form($form, $form_state)
 {
-    $create_alert_config =  _checkbook_advanced_search_create_alert_config();
-    $create_alert_instructions = $create_alert_config['select_criteria']['instructions'];
-
-    $create_alert_customize_results = "<div class='create-alert-customize-results'>Create Alert Customize Results Page<br/><br/>";
-    $create_alert_customize_results .= "<br/></div>";
-
-    $create_alert_schedule_alert = "<div class='create-alert-schedule-alert'>&nbsp;<br/><br/>";
-    $create_alert_schedule_alert .= "</div>";
-
-    $create_alert_confirmation = "<div class='create-alert-confirmation'><strong>Thank you for Scheduling your Alert!<br/>You will receive a confirmation email soon.</strong></div>";
-
-    $create_alert_view = $create_alert_instructions.$create_alert_customize_results.$create_alert_schedule_alert.$create_alert_confirmation;
-    $create_alert_view = "<div class='create-alert-view'>".$create_alert_view."</div>";
-
+//    $create_alert_config =  _checkbook_advanced_search_create_alert_config();
+//    $create_alert_instructions = $create_alert_config['select_criteria']['instructions'];
+//
+//    $create_alert_loading = '<div display="inline" class="create-alert-results-loading"><div class="ajax-progress ajax-progress-throbber"><div class="throbber">&nbsp;</div></div>Please Wait...</div>';
+//
+//    $create_alert_customize_results = "<div class='create-alert-customize-results'>Create Alert Customize Results Page<br/><br/><br/></div>";
+//
+//    $create_alert_schedule_alert = "<div class='create-alert-schedule-alert'>&nbsp;<br/><br/></div>";
+//
+//    $create_alert_view = $create_alert_instructions.$create_alert_loading.$create_alert_customize_results.$create_alert_schedule_alert;
+    $create_alert_view = "<div class='create-alert-view'></div>";
     $agencies = _checkbook_advanced_search_get_agencyname_and_id();
     $agency_attributes = _checkbook_advanced_search_get_agency_attributes();
     $fund_class = _checkbook_advanced_search_get_fund_class_and_id();
@@ -228,8 +225,7 @@ function checkbook_advanced_search_form($form, $form_state)
         '#name' => 'budget_next',
         '#prefix' => t('<div class="budget-submit">'),
         '#ajax' => array(
-            'callback' => '_checkbook_advanced_search_next_ajax',
-            'parameters' => array('step' => 'select_criteria'),
+            'callback' => '_checkbook_advanced_search_create_alert_results_ajax',
         ),
     );
     $form['budget']['budget_submit'] = array(
@@ -349,8 +345,7 @@ function checkbook_advanced_search_form($form, $form_state)
         '#name' => 'revenue_next',
         '#prefix' => t('<div class="revenue-submit">'),
         '#ajax' => array(
-            'callback' => '_checkbook_advanced_search_next_ajax',
-            'parameters' => array('step' => 'select_criteria'),
+            'callback' => '_checkbook_advanced_search_create_alert_results_ajax',
         ),
     );
     $form['revenue']['revenue_submit'] = array(
@@ -511,8 +506,7 @@ function checkbook_advanced_search_form($form, $form_state)
         '#name' => 'payroll_next',
         '#prefix' => t('<div class="payroll-submit">'),
         '#ajax' => array(
-            'callback' => '_checkbook_advanced_search_next_ajax',
-            'parameters' => array('step' => 'select_criteria'),
+            'callback' => '_checkbook_advanced_search_create_alert_results_ajax',
         ),
     );
     $form['payroll']['payroll_submit'] = array(
@@ -551,24 +545,42 @@ function checkbook_advanced_search_form($form, $form_state)
         '#value' => t('Next'),
         '#name' => 'next_submit',
         '#prefix' => t('<div class="create-alert-submit">'),
-        '#ajax' => array(
-            'callback' => '_checkbook_advanced_search_next_ajax',
-            'parameters' => array('create_alerts' => true),
-            'event' => 'click',
-        ),
-        '#attributes' => array('onclick' => "jQuery('#edit-back-submit').attr('disabled', true);"),
+        '#attributes' => array('class' => array('create_alerts_button')),
     );
     $form['create_alerts']['back_submit'] = array(
         '#type' => 'button',
         '#value' => t('Back'),
         '#name' => 'back_submit',
         '#suffix' => '</div>',
-        '#ajax' => array(
-            'callback' => '_checkbook_advanced_search_back_ajax',
-            'event' => 'click',
-        ),
-        '#attributes' => array('onclick' => "jQuery('#edit-next-submit').attr('disabled', true);"),
+        '#attributes' => array('class' => array('create_alerts_button')),
     );
+
+//    $form['create_alerts']['results_next_submit'] = array(
+//        '#type' => 'button',
+//        '#value' => t('Next'),
+//        '#name' => 'results_next_submit',
+//        '#prefix' => t('<div class="create-alert-submit">'),
+//        '#attributes' => array('class' => array('create_alerts_button')),
+//    );
+//    $form['create_alerts']['schedule_next_submit'] = array(
+//        '#type' => 'button',
+//        '#value' => t('Schedule Alert'),
+//        '#name' => 'schedule_next_submit',
+//        '#attributes' => array('class' => array('create_alerts_button')),
+//    );
+//    $form['create_alerts']['results_back_submit'] = array(
+//        '#type' => 'button',
+//        '#value' => t('Back'),
+//        '#name' => 'results_back_submit',
+//        '#attributes' => array('class' => array('create_alerts_button')),
+//    );
+//    $form['create_alerts']['schedule_back_submit'] = array(
+//        '#type' => 'button',
+//        '#value' => t('Back'),
+//        '#name' => 'schedule_back_submit',
+//        '#suffix' => '</div>',
+//        '#attributes' => array('class' => array('create_alerts_button')),
+//    );
 
     //</editor-fold>
 
