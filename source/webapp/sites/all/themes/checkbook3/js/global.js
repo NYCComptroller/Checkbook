@@ -1415,6 +1415,9 @@ function addPaddingToDataCells(table){
 
             $(window).load(function() {
                 if (inIframe() && document.URL.indexOf("/createalert") >= 0) {
+                    if($('.create-alert-customize-results', window.parent.document).css('display') == 'none') {
+                        return;
+                    }
 
                     //No results
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).css('height', '100%');
@@ -1426,12 +1429,20 @@ function addPaddingToDataCells(table){
                     var body = $(document).find('html body');
                     $(body).css('background', '#ffffff');
                     $(body).css('overflow', 'hidden');
-                    $(document).find('html body #body-inner').css('box-shadow', 'unset');
+
+                    var bodyInner = $(document).find('html body #body-inner');
+                    $(bodyInner).css('box-shadow', 'unset');
+
                     $('.create-alert-results-loading', window.parent.document).css('display', 'none');
                     $('.create-alert-results-loading', window.parent.document).css('visibility', 'hidden');
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).css('visibility', 'visible');
 
                     $(document).ajaxComplete(function() {
+
+                        if($('.create-alert-customize-results', window.parent.document).css('display') == 'none') {
+                            return;
+                        }
+
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('height', 600);
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('width', 1000);
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).attr('scrolling', 'yes');
@@ -1451,7 +1462,11 @@ function addPaddingToDataCells(table){
                         $(body).css('background', '#ffffff');
                         $(body).css('overflow-x', 'hidden');
                         $(body).css('overflow-y', 'auto');
-                        $(this).find('html body #body-inner').css('box-shadow', 'unset');
+
+                        var bodyInner = $(this).find('html body #body-inner');
+                        $(bodyInner).css('box-shadow', 'unset');
+                        $(bodyInner).css('padding-bottom', '0px');
+                        $(bodyInner).css('margin-bottom', '0px');
 
                         /* Add hidden field for ajax referral Url to parent*/
                         var alertsid = $(this).find('span.alerts').attr('alertsid');
