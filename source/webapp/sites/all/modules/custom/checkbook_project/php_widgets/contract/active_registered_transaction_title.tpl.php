@@ -30,7 +30,10 @@ if ($contactCategory == 'revenue') {
   $contactCategoryLabel = 'Revenue';
 }
 $summaryTitle = NodeSummaryUtil::getInitNodeSummaryTitle();
-print "<h2 class='contract-title' class='title'>{$summaryTitle}<br/>{$contactStatusLabel} {$contactCategoryLabel} Contracts Transactions</h2>";
+
+$summaryTitle = $summaryTitle != '' ? $summaryTitle.'<br/>' : '';
+
+print "<h2 class='contract-title' class='title'>{$summaryTitle}{$contactStatusLabel} {$contactCategoryLabel} Contracts Transactions</h2>";
 
 global $checkbook_breadcrumb_title;
 $checkbook_breadcrumb_title =  "$summaryTitle $contactStatusLabel $contactCategoryLabel Contracts Transactions";  
