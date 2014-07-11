@@ -1029,12 +1029,24 @@ function addPaddingToDataCells(table){
                         $(".ui-autocomplete-input").autocomplete("close")
                     },
                     open: function(){
+                        var createAlertsDiv = "<span class='create-alert-instructions'>Follow the three step process to schedule alerts.<ul><li>Please select one of the following domains and also select the desired filters.<\/li><li>Click 'Next' button to view and customize the results.<\/li><li>Click 'Clear All' to clear out the filters applied.<\/li><\/ul><\/br></span>";
+                        createAlertsDiv += "<span style='visibility: hidden;display: none;text-align: center' class='create-alert-results-loading'><div class='ajax-progress ajax-progress-throbber'><div class='throbber'>&nbsp;</div></div>Please Wait...</span>";
+                        createAlertsDiv += "<div class='create-alert-customize-results'><br/><br/><br/></div>";
+                        createAlertsDiv += "<div class='create-alert-schedule-alert'>&nbsp;<br/><br/></div>";
+                        createAlertsDiv = "<div class='create-alert-view'>"+createAlertsDiv+"</div>";
+                        $('.create-alert-view').replaceWith(createAlertsDiv);
+
+                        $('#edit-next-submit').css('display','none');
+                        $('#edit-back-submit').css('display','none');
                     },
                     close: function(){
                         $(".ui-autocomplete-input").autocomplete("close")
                         /* Update wizard instructions to initial */
                         var defaultInstructions = "<span class='create-alert-instructions'>Follow the three step process to schedule alerts.<ul><li>Please select one of the following domains and also select the desired filters.<\/li><li>Click 'Next' button to view and customize the results.<\/li><li>Click 'Clear All' to clear out the filters applied.<\/li><\/ul><\/br></span>";
                         $('.create-alert-instructions').replaceWith(defaultInstructions);
+
+                        var createAlertsDiv = "<div class='create-alert-view'></div>";
+                        $('.create-alert-view').replaceWith(createAlertsDiv);
                     }
                 });
 
@@ -1067,17 +1079,203 @@ function addPaddingToDataCells(table){
                     $('#edit-back-submit').attr('disabled', false);
                 }
 
-                //handle formatting here
-//                switch(step) {
-//                    case 'select_criteria':
-//                        break;
-//                    case 'select_criteria':
-//                        break;
-//                    case 'select_criteria':
-//                        break;
-//
-//                }
             });
+
+            /*------------------------------------------------------------------------------------------------------------*/
+
+            $('#edit-next-submit').once('createAlertNextSubmit').click(function (event) {
+                $('#edit-back-submit').attr('disabled', true);
+                $.fn.onScheduleAlertNextClick($('input:hidden[name="step"]').val());
+                event.preventDefault();
+            });
+            $('#edit-back-submit').once('createAlertBackSubmit').click(function (event) {
+                $('#edit-next-submit').attr('disabled', true);
+                $.fn.onScheduleAlertBackClick($('input:hidden[name="step"]').val());
+                event.preventDefault();
+            });
+
+            $.fn.onScheduleAlertNextClick = function (step) {
+                var next_step = '';
+                var header = '';
+                var instructions = '';
+
+                /* Clear auto-completes */
+                $(".ui-autocomplete-input").autocomplete("close");
+
+                switch(step) {
+                    case 'select_criteria':
+                        next_step = 'customize_results';
+
+                        /* Hide the iFrame */
+                        $('#checkbook_advanced_search_result_iframe').css('visibility','hidden');
+                        $('.create-alert-results-loading').css('visibility', 'visible');
+                        $('.create-alert-results-loading').css('display', 'block');
+
+                        /* Show the results page */
+                        $('.create-alert-customize-results').css('display','block');
+
+                        /* Update header */
+                        header = "<span class='create-alert-header'><span class='inactive'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='active'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>3. Schedule Alerts</span></span>";
+                        $('.create-alert-header').replaceWith(header);
+
+                        /* Update wizard instructions */
+                        instructions = "<span class='create-alert-instructions'>Further narrow down the results using the 'Narrow down your search' functionality.<ul><li>Click 'Export' button to download the results into excel.<\/li><li>Click 'Back' to go back to Step1: Select Criteria<\/li><li>Click 'Next' button to Schedule Alert.<\/li><\/ul><\/br></span>";
+                        $('.create-alert-instructions').replaceWith(instructions);
+
+                        /* Update width of dialog - TBD add class */
+                        $('div.ui-dialog').css('height','385px');
+                        $('div.ui-dialog').css('width','1000px');
+                        $('.ui-dialog .ui-dialog-content').css('padding','0.5em 0px');
+
+                        /* Hide the accordion */
+                        $('.advanced-search-accordion').css('display','none');
+
+                        /* Buttons */
+                        $('#edit-next-submit').css('display','inline');
+                        $('#edit-back-submit').css('display','inline');
+
+                        /* Update hidden field for new step */
+                        $('input:hidden[name="step"]').val(next_step);
+
+                        break;
+
+                    case 'customize_results':
+                        next_step = 'schedule_alert';
+
+                        /* Update header */
+                        header = "<span class='create-alert-header'><span class='inactive'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='active'>3. Schedule Alerts</span></span>";
+                        $('.create-alert-header').replaceWith(header);
+
+                        /* Update wizard instructions */
+                        instructions = "<span class='create-alert-instructions'><ul><li>Checkbook alerts will notify you by email when new results matching your current search criteria are available. Use options below for alert settings.<\/li><li>Provide email address, in order to receive alerts. Emails will be sent based on the frequency selected and only after the minimum number of additional results entered has been reached since the last alert.<\/li><li>Click 'Back' to go back to Step2: Customize Results<\/li><li>Click 'Schedule Alert' to schedule the alert<\/li><li>The user shall receive email confirmation once the alert is scheduled.<\/li><\/ul></span>";
+                        $('.create-alert-instructions').replaceWith(instructions);
+
+                        /* Update width of dialog - TBD add class*/
+                        $('div.ui-dialog').css('height','auto');
+                        $('div.ui-dialog').css('width','900px');
+                        $('.ui-dialog .ui-dialog-content').css('padding','0.5em 1em');
+
+                        /* Hide the results page */
+                        $('.create-alert-customize-results').css('display','none');
+
+                        /* Show the schedule alert page */
+                        $('.create-alert-schedule-alert').css('display','inline');
+
+                        /* Load Schedule Alerts Form */
+                        $.fn.onScheduleAlertClick();
+
+                        /* Update button text */
+                        $('div.create-alert-submit #edit-next-submit').val('Next');
+
+                        /* Buttons */
+                        $('#edit-next-submit').css('display','inline');
+                        $('#edit-back-submit').css('display','inline');
+
+                        /* Update hidden field for new step */
+                        $('input:hidden[name="step"]').val(next_step);
+
+                        break;
+
+                    case 'schedule_alert':
+                        next_step = 'confirmation';
+
+                        /* Update hidden field for new step */
+                        $('input:hidden[name="step"]').val(next_step);
+
+                        /* Schedule Alert */
+                        var ajax_referral_url = $('input:hidden[name="ajax_referral_url"]').val();
+                        var base_url = window.location.protocol+'//'+window.location.host;
+                        $.fn.onScheduleAlertConfirmClick(ajax_referral_url,base_url);
+
+                        break;
+                }
+            }
+
+            $.fn.onScheduleAlertBackClick = function (step) {
+                var previous_step = '';
+                var header = '';
+                var instructions = '';
+
+                /* Clear auto-completes */
+                $(".ui-autocomplete-input").autocomplete("close");
+
+                switch(step) {
+                    case 'customize_results':
+                        previous_step = 'select_criteria';
+
+                        /* Update header */
+                        header = "<span class='create-alert-header'><span class='active'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>3. Schedule Alerts</span></span>";
+                        $('.create-alert-header').replaceWith(header);
+
+                        /* Update wizard instructions */
+                        instructions = "<span class='create-alert-instructions'>Follow the three step process to schedule alerts.<ul><li>Please select one of the following domains and also select the desired filters.<\/li><li>Click 'Next' button to view and customize the results.<\/li><li>Click 'Clear All' to clear out the filters applied.<\/li><\/ul><\/br></span>";
+                        $('.create-alert-instructions').replaceWith(instructions);
+
+                        /* Update css of dialog  */
+                        $('div.ui-dialog').css('height','auto');
+                        $('div.ui-dialog').css('width','900px');
+                        $('.ui-dialog .ui-dialog-content').css('padding','0.5em 1em');
+
+                        /* Hide the results page */
+                        $('.create-alert-customize-results').css('display','none');
+
+                        /* Show the accordion */
+                        $('.advanced-search-accordion').css('display','inline');
+
+                        /* Hide results buttons */
+                        $('.create-alert-submit').css('display','none');
+
+                        /* Buttons */
+                        $('#edit-next-submit').css('display','none');
+                        $('#edit-back-submit').css('display','none');
+
+                        break;
+
+                    case 'schedule_alert':
+                        previous_step = 'customize_results';
+
+                        /* Update header */
+                        header = "<span class='create-alert-header'><span class='inactive'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='active'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>3. Schedule Alerts</span></span>";
+                        $('.create-alert-header').replaceWith(header);
+
+                        /* Update wizard instructions */
+                        instructions = "<span class='create-alert-instructions'>Further narrow down the results using the 'Narrow down your search' functionality.<ul><li>Click 'Export' button to download the results into excel.<\/li><li>Click 'Back' to go back to Step1: Select Criteria<\/li><li>Click 'Next' button to Schedule Alert.<\/li><\/ul><\/br></span>";
+                        $('.create-alert-instructions').replaceWith(instructions);
+
+                        /* Update css of dialog  */
+                        $('div.ui-dialog').css('height','auto');
+                        $('div.ui-dialog').css('width','auto');
+                        $('.ui-dialog .ui-dialog-content').css('padding','0.5em 0px');
+
+                        /* Hide the schedule alerts page */
+                        $('.create-alert-schedule-alert').css('display','none');
+
+                        /* Show the results page */
+                        $('.create-alert-customize-results').css('display','block');
+
+                        /* Update button text */
+                        $('div.create-alert-submit #edit-next-submit').val('Next');
+
+                        /* Show results buttons */
+                        $('.create-alert-submit').css('display','block');
+
+                        /* Buttons */
+                        $('#edit-next-submit').css('display','inline');
+                        $('#edit-back-submit').css('display','inline');
+
+                        /* Enable Next button on back to results page  */
+                        $('#edit-next-submit').attr('disabled',false);
+
+                        break;
+
+                }
+
+                /* Update hidden field for new step */
+                $('input:hidden[name="step"]').val(previous_step);
+            }
+
+            /*------------------------------------------------------------------------------------------------------------*/
+
 
             $.fn.onScheduleAlertClick = function () {
 
@@ -1148,6 +1346,9 @@ function addPaddingToDataCells(table){
 
                 if (alertMsgs.length > 0) {
                     $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul>' + '<li>' + alertMsgs.join('<li/>') + '</ul></div>');
+
+                    /* Update hidden field for new step */
+                    $('input:hidden[name="step"]').val('schedule_alert');
                 } else {
                     $('#errorMessages').html('');
 
