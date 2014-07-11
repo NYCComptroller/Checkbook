@@ -1036,6 +1036,8 @@ function addPaddingToDataCells(table){
                         createAlertsDiv = "<div class='create-alert-view'>"+createAlertsDiv+"</div>";
                         $('.create-alert-view').replaceWith(createAlertsDiv);
 
+                        /* Update button text */
+                        $('div.create-alert-submit #edit-next-submit').val('Next');
                         $('#edit-next-submit').css('display','none');
                         $('#edit-back-submit').css('display','none');
                     },
@@ -1165,7 +1167,7 @@ function addPaddingToDataCells(table){
                         $.fn.onScheduleAlertClick();
 
                         /* Update button text */
-                        $('div.create-alert-submit #edit-next-submit').val('Next');
+                        $('div.create-alert-submit #edit-next-submit').val('Schedule Alert');
 
                         /* Buttons */
                         $('#edit-next-submit').css('display','inline');
@@ -1248,6 +1250,7 @@ function addPaddingToDataCells(table){
                         $('.ui-dialog .ui-dialog-content').css('padding','0.5em 0px');
 
                         /* Hide the schedule alerts page */
+                        $('.create-alert-schedule-alert').replaceWith("<div class='create-alert-schedule-alert'>&nbsp;<br/><br/></div>");
                         $('.create-alert-schedule-alert').css('display','none');
 
                         /* Show the results page */
@@ -1346,7 +1349,8 @@ function addPaddingToDataCells(table){
 
                 if (alertMsgs.length > 0) {
                     $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul>' + '<li>' + alertMsgs.join('<li/>') + '</ul></div>');
-
+                    /* back button needs to be enabled*/
+                    $('#edit-back-submit').attr('disabled', false);
                     /* Update hidden field for new step */
                     $('input:hidden[name="step"]').val('schedule_alert');
                 } else {
@@ -1382,6 +1386,11 @@ function addPaddingToDataCells(table){
                                 dialogClass:'noTitleDialog'
                             });
                         } else{
+                            /* back button needs to be enabled*/
+                            $('#edit-back-submit').attr('disabled', false);
+                            /* Update hidden field for new step */
+                            $('input:hidden[name="step"]').val('schedule_alert');
+
                             $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul><li>'+data.errors.join('<li/>')+'</ul></div>');
                         }
                     });
