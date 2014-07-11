@@ -555,33 +555,6 @@ function checkbook_advanced_search_form($form, $form_state)
         '#attributes' => array('class' => array('create_alerts_button')),
     );
 
-//    $form['create_alerts']['results_next_submit'] = array(
-//        '#type' => 'button',
-//        '#value' => t('Next'),
-//        '#name' => 'results_next_submit',
-//        '#prefix' => t('<div class="create-alert-submit">'),
-//        '#attributes' => array('class' => array('create_alerts_button')),
-//    );
-//    $form['create_alerts']['schedule_next_submit'] = array(
-//        '#type' => 'button',
-//        '#value' => t('Schedule Alert'),
-//        '#name' => 'schedule_next_submit',
-//        '#attributes' => array('class' => array('create_alerts_button')),
-//    );
-//    $form['create_alerts']['results_back_submit'] = array(
-//        '#type' => 'button',
-//        '#value' => t('Back'),
-//        '#name' => 'results_back_submit',
-//        '#attributes' => array('class' => array('create_alerts_button')),
-//    );
-//    $form['create_alerts']['schedule_back_submit'] = array(
-//        '#type' => 'button',
-//        '#value' => t('Back'),
-//        '#name' => 'schedule_back_submit',
-//        '#suffix' => '</div>',
-//        '#attributes' => array('class' => array('create_alerts_button')),
-//    );
-
     //</editor-fold>
 
     $form['#attached'] = array(
