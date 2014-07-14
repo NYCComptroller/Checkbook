@@ -882,9 +882,16 @@ function addPaddingToDataCells(table){
                         $(".ui-autocomplete-input").autocomplete("close")
                     },
                     open: function(){
+                        //Initialize Attributes and styling
+                        initializeAccordionAttributes('advanced_search');
                     },
                     close: function(){
                         $(".ui-autocomplete-input").autocomplete("close")
+                        $('input[name="budget_submit"]').css('display','none');
+                        $('input[name="revenue_submit"]').css('display','none');
+                        $('input[name="spending_submit"]').css('display','none');
+                        $('input[name="contracts_submit"]').css('display','none');
+                        $('input[name="payroll_submit"]').css('display','none');
                     }
                 });
 
@@ -892,30 +899,6 @@ function addPaddingToDataCells(table){
                     autoHeight: false,
                     active: active_accordion_window
                 });
-
-                //Remove Create Alert Attributes and styling
-                $('.create-alert-customize-results').css('display','none');
-                $('.create-alert-schedule-alert').css('display','none');
-                $('.create-alert-confirmation').css('display','none');
-                $('#edit-next-submit').attr('disabled', true);
-                $('#edit-back-submit').attr('disabled', true);
-                $('.create-alert-submit').css('display','none');
-                $('.ui-dialog .ui-dialog-content').css('padding','0.5em 1em');
-                $('#spending-advanced-search').css('width','auto');
-                $('#spending-advanced-search').css('height','auto');
-                $('.create-alert-view').css('display','none');
-                $('input[name="budget_submit"]').css('display','inline');
-                $('input[name="revenue_submit"]').css('display','inline');
-                $('input[name="spending_submit"]').css('display','inline');
-                $('input[name="contracts_submit"]').css('display','inline');
-                $('input[name="payroll_submit"]').css('display','inline');
-                $('input[name="budget_next"]').css('display','none');
-                $('input[name="revenue_next"]').css('display','none');
-                $('input[name="spending_next"]').css('display','none');
-                $('input[name="contracts_next"]').css('display','none');
-                $('input[name="payroll_next"]').css('display','none');
-                $('.advanced-search-accordion').css('display','inline');
-                $('.advanced-search-accordion').width('100%');
 
                 /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
                 disableAccordionSections(data_source);
@@ -976,6 +959,53 @@ function addPaddingToDataCells(table){
         }
     }
 
+    function initializeAccordionAttributes(accordion_type) {
+        $('.create-alert-customize-results').css('display','none');
+        $('.create-alert-schedule-alert').css('display','none');
+        $('.create-alert-confirmation').css('display','none');
+        $('#edit-next-submit').attr('disabled', true);
+        $('#edit-back-submit').attr('disabled', true);
+        $('.create-alert-submit').css('display','none');
+        $('.ui-dialog .ui-dialog-content').css('padding','0.5em 1em');
+        $('#spending-advanced-search').css('width','auto');
+        $('#spending-advanced-search').css('height','auto');
+        switch(accordion_type) {
+            case 'advanced_search':
+                $('.create-alert-view').css('display','none');
+                $('input[name="budget_submit"]').css('display','inline');
+                $('input[name="revenue_submit"]').css('display','inline');
+                $('input[name="spending_submit"]').css('display','inline');
+                $('input[name="contracts_submit"]').css('display','inline');
+                $('input[name="payroll_submit"]').css('display','inline');
+                $('input[name="budget_next"]').css('display','none');
+                $('input[name="revenue_next"]').css('display','none');
+                $('input[name="spending_next"]').css('display','none');
+                $('input[name="contracts_next"]').css('display','none');
+                $('input[name="payroll_next"]').css('display','none');
+                $('.advanced-search-accordion').css('display','inline');
+                $('.advanced-search-accordion').width('100%');
+                break;
+
+            case 'advanced_search_create_alerts':
+                $('.create-alert-view').css('display','inline');
+                $('div.create-alert-submit #edit-next-submit').val('Next');
+                $('input[name="budget_submit"]').css('display','none');
+                $('input[name="revenue_submit"]').css('display','none');
+                $('input[name="spending_submit"]').css('display','none');
+                $('input[name="contracts_submit"]').css('display','none');
+                $('input[name="payroll_submit"]').css('display','none');
+                $('input[name="budget_next"]').css('display','inline');
+                $('input[name="revenue_next"]').css('display','inline');
+                $('input[name="spending_next"]').css('display','inline');
+                $('input[name="contracts_next"]').css('display','inline');
+                $('input[name="payroll_next"]').css('display','inline');
+                $('.advanced-search-accordion').css('display','inline');
+                $('.advanced-search-accordion').width('90%');
+                break;
+        }
+    }
+
+
     /* Function will apply disable the click of the accordian section and apply an attribute for future processing */
     function disableAccordionSection(name) {
         var accordion_section = $("a:contains("+name+")").closest("h3");
@@ -1013,25 +1043,17 @@ function addPaddingToDataCells(table){
                         createAlertsDiv = "<div class='create-alert-view'>"+createAlertsDiv+"</div>";
                         $('.create-alert-view').replaceWith(createAlertsDiv);
 
-                        /* Update button text */
-                        $('input[name="budget_submit"]').css('display','none');
-                        $('input[name="revenue_submit"]').css('display','none');
-                        $('input[name="spending_submit"]').css('display','none');
-                        $('input[name="contracts_submit"]').css('display','none');
-                        $('input[name="payroll_submit"]').css('display','none');
-                        $('div.create-alert-submit #edit-next-submit').val('Next');
-                        $('#edit-next-submit').css('display','none');
-                        $('#edit-back-submit').css('display','none');
-                        $('.create-alert-submit').css('display','none');
+                        //Initialize Attributes and styling
+                        initializeAccordionAttributes('advanced_search_create_alerts');
 
-                        $('.ui-dialog .ui-dialog-content').css('padding','0.5em 1em');
-                        $('#spending-advanced-search').css('width','auto');
-                        $('#spending-advanced-search').css('height','auto');
-                        $('.advanced-search-accordion').css('display','inline');
-                        $('.advanced-search-accordion').width('90%');
                     },
                     close: function(){
                         $(".ui-autocomplete-input").autocomplete("close");
+                        $('input[name="budget_next"]').css('display','none');
+                        $('input[name="revenue_next"]').css('display','none');
+                        $('input[name="spending_next"]').css('display','none');
+                        $('input[name="contracts_next"]').css('display','none');
+                        $('input[name="payroll_next"]').css('display','none');
 
                         var createAlertsDiv = "<div class='create-alert-view'></div>";
                         $('.create-alert-view').replaceWith(createAlertsDiv);
@@ -1067,27 +1089,27 @@ function addPaddingToDataCells(table){
             });
 
             /*------------------------------------------------------------------------------------------------------------*/
-            $('#edit-budget-next').once('createAlertBudget').click(function (event) {
+            $('input[name="budget_next"]').once('createAlertBudget').click(function (event) {
                 $('a.ui-dialog-titlebar-close').hide();
                 $(".ui-autocomplete-input").autocomplete("close");
                 event.preventDefault();
             });
-            $('#edit-revenue-next').once('createAlertRevenue').click(function (event) {
+            $('input[name="revenue_next"]').once('createAlertRevenue').click(function (event) {
                 $('a.ui-dialog-titlebar-close').hide();
                 $(".ui-autocomplete-input").autocomplete("close");
                 event.preventDefault();
             });
-            $('div.spending-submit input:hidden[name="spending_next"]').once('createAlertSpending').click(function (event) {
+            $('input[name="spending_next"]').once('createAlertSpending').click(function (event) {
                 $('a.ui-dialog-titlebar-close').hide();
                 $(".ui-autocomplete-input").autocomplete("close");
                 event.preventDefault();
             });
-            $('div.contracts-submit input:hidden[name="contracts_next"]').once('createAlertContracts').click(function (event) {
+            $('input[name="contracts_next"]').once('createAlertContracts').click(function (event) {
                 $('a.ui-dialog-titlebar-close').hide();
                 $(".ui-autocomplete-input").autocomplete("close");
                 event.preventDefault();
             });
-            $('#edit-payroll-next').once('createAlertPayroll').click(function (event) {
+            $('input[name="payroll_next"]').once('createAlertPayroll').click(function (event) {
                 $('a.ui-dialog-titlebar-close').hide();
                 $(".ui-autocomplete-input").autocomplete("close");
                 event.preventDefault();
