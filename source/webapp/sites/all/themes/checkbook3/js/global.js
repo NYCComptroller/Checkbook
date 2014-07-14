@@ -1436,7 +1436,7 @@ function addPaddingToDataCells(table){
                     $(body).css('overflow', 'hidden');
 
                     var bodyInner = $(document).find('html body #body-inner');
-                    $(bodyInner).css('box-shadow', 'unset');
+                    $(bodyInner).css('box-shadow', 'none');
 
                     $('.create-alert-results-loading', window.parent.document).css('display', 'none');
                     $('.create-alert-results-loading', window.parent.document).css('visibility', 'hidden');
