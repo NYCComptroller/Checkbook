@@ -1010,14 +1010,6 @@ function addPaddingToDataCells(table){
 
     Drupal.behaviors.createAlerts = {
         attach:function (context, settings) {
-            // $.xhrPool and $.ajaxSetup are the solution
-            $.xhrPool = [];
-            $.xhrPool.abortAll = function() {
-                $(this).each(function(idx, jqXHR) {
-                    jqXHR.abort();
-                });
-                $.xhrPool = [];
-            };
 
             $('span.advanced-search-create-alert').click(function () {
                 var href = window.location.href.replace(/(http|https):\/\//, '');
@@ -1051,9 +1043,6 @@ function addPaddingToDataCells(table){
                         $('#edit-back-submit').css('display','none');
                     },
                     close: function(){
-
-                        /* abort any running ajax calls */
-                        $.xhrPool.abortAll();
 
                         $(".ui-autocomplete-input").autocomplete("close")
                         /* Update wizard instructions to initial */
@@ -1097,7 +1086,26 @@ function addPaddingToDataCells(table){
             });
 
             /*------------------------------------------------------------------------------------------------------------*/
-
+            $('#edit-budget-next').once('createAlertBudget').click(function (event) {
+                $('a.ui-dialog-titlebar-close').hide();
+                event.preventDefault();
+            });
+            $('#edit-revenue-next').once('createAlertRevenue').click(function (event) {
+                $('a.ui-dialog-titlebar-close').hide();
+                event.preventDefault();
+            });
+            $('#edit-spending-next').once('createAlertSpending').click(function (event) {
+                $('a.ui-dialog-titlebar-close').hide();
+                event.preventDefault();
+            });
+            $('#edit-contracts-next').once('createAlertContracts').click(function (event) {
+                $('a.ui-dialog-titlebar-close').hide();
+                event.preventDefault();
+            });
+            $('#edit-payroll-next').once('createAlertPayroll').click(function (event) {
+                $('a.ui-dialog-titlebar-close').hide();
+                event.preventDefault();
+            });
             $('#edit-next-submit').once('createAlertNextSubmit').click(function (event) {
                 $('#edit-back-submit').attr('disabled', true);
                 $.fn.onScheduleAlertNextClick($('input:hidden[name="step"]').val());
@@ -1300,9 +1308,6 @@ function addPaddingToDataCells(table){
                 /* Load */
                 $.ajax({
                     url: scheduleAlertUrl,
-                    beforeSend: function(jqXHR) {
-                        $.xhrPool.push(jqXHR);
-                    },
                     success: function(data) {
                         var html = "<div class='create-alert-schedule-alert'>"+data+"</div>";
                         html = html.replace("<span class='alert-required-field'></span>", "<span class='alert-required-field' style='color:red;'>*</span>");
@@ -1436,6 +1441,7 @@ function addPaddingToDataCells(table){
                     $('.create-alert-results-loading', window.parent.document).css('display', 'none');
                     $('.create-alert-results-loading', window.parent.document).css('visibility', 'hidden');
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).css('visibility', 'visible');
+                    $('a.ui-dialog-titlebar-close', window.parent.document).show();
 
                     $(document).ajaxComplete(function() {
 

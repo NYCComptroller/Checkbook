@@ -216,6 +216,7 @@ function checkbook_advanced_search_form($form, $form_state)
         '#prefix' => t('<div class="budget-submit">'),
         '#ajax' => array(
             'callback' => '_checkbook_advanced_search_create_alert_results_ajax',
+            'event' => 'click'
         ),
     );
     $form['budget']['budget_submit'] = array(
@@ -336,6 +337,7 @@ function checkbook_advanced_search_form($form, $form_state)
         '#prefix' => t('<div class="revenue-submit">'),
         '#ajax' => array(
             'callback' => '_checkbook_advanced_search_create_alert_results_ajax',
+            'event' => 'click'
         ),
     );
     $form['revenue']['revenue_submit'] = array(
@@ -497,6 +499,7 @@ function checkbook_advanced_search_form($form, $form_state)
         '#prefix' => t('<div class="payroll-submit">'),
         '#ajax' => array(
             'callback' => '_checkbook_advanced_search_create_alert_results_ajax',
+            'event' => 'click'
         ),
     );
     $form['payroll']['payroll_submit'] = array(
