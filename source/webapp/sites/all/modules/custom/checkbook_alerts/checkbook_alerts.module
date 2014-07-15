@@ -35,6 +35,13 @@ function checkbook_alerts_menu() {
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
+    // show user alert form for advanced search
+    $items['alert/transactions/advanced/search/form'] = array(
+        'title' => 'Checkbook Alerts',
+        'page callback' => '_checkbook_alerts_advanced_search_form',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
     // Create Alert and send activate email
   $items['alert/transactions'] = array(
     'title' => 'Checkbook Alerts',
@@ -94,11 +101,11 @@ function checkbook_alerts_theme($existing, $type, $theme, $path) {
     'checkbook_alerts_subscribe_theme'=>array(
       'template'=>'checkbook_alerts_subscribe'
     ),
-    'checkbook_alerts_default_theme'=>array(
-        'template'=>'checkbook_alerts',
-    ),//_checkbook_alerts_advanced_search_form
     'checkbook_alerts_advanced_search_theme'=>array(
         'template'=>'checkbook_alerts_advanced_search'
+    ),
+    'checkbook_alerts_advanced_search_confirm_theme'=>array(
+        'template'=>'checkbook_alerts_advanced_search_confirm'
     )
   );
 }
