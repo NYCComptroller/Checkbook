@@ -882,9 +882,16 @@ function addPaddingToDataCells(table){
                         $(".ui-autocomplete-input").autocomplete("close")
                     },
                     open: function(){
+                        //Initialize Attributes and styling
+                        initializeAccordionAttributes('advanced_search');
                     },
                     close: function(){
                         $(".ui-autocomplete-input").autocomplete("close")
+                        $('input[name="budget_submit"]').css('display','none');
+                        $('input[name="revenue_submit"]').css('display','none');
+                        $('input[name="spending_submit"]').css('display','none');
+                        $('input[name="contracts_submit"]').css('display','none');
+                        $('input[name="payroll_submit"]').css('display','none');
                     }
                 });
 
@@ -892,9 +899,6 @@ function addPaddingToDataCells(table){
                     autoHeight: false,
                     active: active_accordion_window
                 });
-
-                //Remove Create Alert Attributes and styling
-                initializeAccordionAttributes('advanced_search');
 
                 /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
                 disableAccordionSections(data_source);
@@ -946,6 +950,15 @@ function addPaddingToDataCells(table){
         return active_accordion_window;
     }
 
+    /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
+    function disableAccordionSections(data_source) {
+        if(data_source == "checkbook_oge") {
+            disableAccordionSection('Budget');
+            disableAccordionSection('Revenue');
+            disableAccordionSection('Payroll');
+        }
+    }
+
     function initializeAccordionAttributes(accordion_type) {
         $('.create-alert-customize-results').css('display','none');
         $('.create-alert-schedule-alert').css('display','none');
@@ -975,6 +988,7 @@ function addPaddingToDataCells(table){
 
             case 'advanced_search_create_alerts':
                 $('.create-alert-view').css('display','inline');
+                $('div.create-alert-submit #edit-next-submit').val('Next');
                 $('input[name="budget_submit"]').css('display','none');
                 $('input[name="revenue_submit"]').css('display','none');
                 $('input[name="spending_submit"]').css('display','none');
@@ -991,14 +1005,6 @@ function addPaddingToDataCells(table){
         }
     }
 
-    /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
-    function disableAccordionSections(data_source) {
-        if(data_source == "checkbook_oge") {
-            disableAccordionSection('Budget');
-            disableAccordionSection('Revenue');
-            disableAccordionSection('Payroll');
-        }
-    }
 
     /* Function will apply disable the click of the accordian section and apply an attribute for future processing */
     function disableAccordionSection(name) {
@@ -1010,6 +1016,7 @@ function addPaddingToDataCells(table){
 
     Drupal.behaviors.createAlerts = {
         attach:function (context, settings) {
+
             $('span.advanced-search-create-alert').click(function () {
                 var href = window.location.href.replace(/(http|https):\/\//, '');
                 var n = href.indexOf('?');
@@ -1029,12 +1036,27 @@ function addPaddingToDataCells(table){
                         $(".ui-autocomplete-input").autocomplete("close")
                     },
                     open: function(){
+                        var createAlertsDiv = "<span class='create-alert-instructions'>Follow the three step process to schedule alerts.<ul><li>Please select one of the following domains and also select the desired filters.<\/li><li>Click 'Next' button to view and customize the results.<\/li><li>Click 'Clear All' to clear out the filters applied.<\/li><\/ul><\/br></span>";
+                        createAlertsDiv += "<span style='visibility: hidden;display: none;text-align: center' class='create-alert-results-loading'><div class='ajax-progress ajax-progress-throbber'><div class='throbber'>&nbsp;</div></div>Please Wait...</span>";
+                        createAlertsDiv += "<div class='create-alert-customize-results' style='display: none'><br/><br/><br/></div>";
+                        createAlertsDiv += "<div class='create-alert-schedule-alert' style='display: none'>&nbsp;<br/><br/></div>";
+                        createAlertsDiv = "<div class='create-alert-view'>"+createAlertsDiv+"</div>";
+                        $('.create-alert-view').replaceWith(createAlertsDiv);
+
+                        //Initialize Attributes and styling
+                        initializeAccordionAttributes('advanced_search_create_alerts');
+
                     },
                     close: function(){
-                        $(".ui-autocomplete-input").autocomplete("close")
-                        /* Update wizard instructions to initial */
-                        var defaultInstructions = "<span class='create-alert-instructions'>Follow the three step process to schedule alerts.<ul><li>Please select one of the following domains and also select the desired filters.<\/li><li>Click 'Next' button to view and customize the results.<\/li><li>Click 'Clear All' to clear out the filters applied.<\/li><\/ul><\/br></span>";
-                        $('.create-alert-instructions').replaceWith(defaultInstructions);
+                        $(".ui-autocomplete-input").autocomplete("close");
+                        $('input[name="budget_next"]').css('display','none');
+                        $('input[name="revenue_next"]').css('display','none');
+                        $('input[name="spending_next"]').css('display','none');
+                        $('input[name="contracts_next"]').css('display','none');
+                        $('input[name="payroll_next"]').css('display','none');
+
+                        var createAlertsDiv = "<div class='create-alert-view'></div>";
+                        $('.create-alert-view').replaceWith(createAlertsDiv);
                     }
                 });
 
@@ -1042,9 +1064,6 @@ function addPaddingToDataCells(table){
                     autoHeight: false,
                     active: active_accordion_window
                 });
-
-                //Add Create Alert Attributes and styling
-                initializeAccordionAttributes('advanced_search_create_alerts');
 
                 /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
                 disableAccordionSections(data_source);
@@ -1067,17 +1086,227 @@ function addPaddingToDataCells(table){
                     $('#edit-back-submit').attr('disabled', false);
                 }
 
-                //handle formatting here
-//                switch(step) {
-//                    case 'select_criteria':
-//                        break;
-//                    case 'select_criteria':
-//                        break;
-//                    case 'select_criteria':
-//                        break;
-//
-//                }
             });
+
+            /*------------------------------------------------------------------------------------------------------------*/
+            $('input[name="budget_next"]').once('createAlertBudget').click(function (event) {
+                $('a.ui-dialog-titlebar-close').hide();
+                $(".ui-autocomplete-input").autocomplete("close");
+                event.preventDefault();
+            });
+            $('input[name="revenue_next"]').once('createAlertRevenue').click(function (event) {
+                $('a.ui-dialog-titlebar-close').hide();
+                $(".ui-autocomplete-input").autocomplete("close");
+                event.preventDefault();
+            });
+            $('input[name="spending_next"]').once('createAlertSpending').click(function (event) {
+                $('a.ui-dialog-titlebar-close').hide();
+                $(".ui-autocomplete-input").autocomplete("close");
+                event.preventDefault();
+            });
+            $('input[name="contracts_next"]').once('createAlertContracts').click(function (event) {
+                $('a.ui-dialog-titlebar-close').hide();
+                $(".ui-autocomplete-input").autocomplete("close");
+                event.preventDefault();
+            });
+            $('input[name="payroll_next"]').once('createAlertPayroll').click(function (event) {
+                $('a.ui-dialog-titlebar-close').hide();
+                $(".ui-autocomplete-input").autocomplete("close");
+                event.preventDefault();
+            });
+            $('#edit-next-submit').once('createAlertNextSubmit').click(function (event) {
+                $('#edit-back-submit').attr('disabled', true);
+                $.fn.onScheduleAlertNextClick($('input:hidden[name="step"]').val());
+                event.preventDefault();
+            });
+            $('#edit-back-submit').once('createAlertBackSubmit').click(function (event) {
+                $('#edit-next-submit').attr('disabled', true);
+                $.fn.onScheduleAlertBackClick($('input:hidden[name="step"]').val());
+                event.preventDefault();
+            });
+
+            $.fn.onScheduleAlertNextClick = function (step) {
+                var next_step = '';
+                var header = '';
+                var instructions = '';
+
+                /* Clear auto-completes */
+                $(".ui-autocomplete-input").autocomplete("close");
+
+                switch(step) {
+                    case 'select_criteria':
+                        next_step = 'customize_results';
+
+                        /* Hide the iFrame */
+                        $('#checkbook_advanced_search_result_iframe').css('visibility','hidden');
+                        $('.create-alert-results-loading').css('visibility', 'visible');
+                        $('.create-alert-results-loading').css('display', 'block');
+
+                        /* Show the results page */
+                        $('.create-alert-customize-results').css('display','block');
+
+                        /* Update header */
+                        header = "<span class='create-alert-header'><span class='inactive'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='active'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>3. Schedule Alerts</span></span>";
+                        $('.create-alert-header').replaceWith(header);
+
+                        /* Update wizard instructions */
+                        instructions = "<span class='create-alert-instructions'>Further narrow down the results using the 'Narrow down your search' functionality.<ul><li>Click 'Export' button to download the results into excel.<\/li><li>Click 'Back' to go back to Step1: Select Criteria<\/li><li>Click 'Next' button to Schedule Alert.<\/li><\/ul><\/br></span>";
+                        $('.create-alert-instructions').replaceWith(instructions);
+
+                        /* Update width of dialog - TBD add class */
+                        $('div.ui-dialog').css('height','385px');
+                        $('div.ui-dialog').css('width','1000px');
+                        $('.ui-dialog .ui-dialog-content').css('padding','0.5em 0px');
+
+                        /* Hide the accordion */
+                        $('.advanced-search-accordion').css('display','none');
+
+                        /* Buttons */
+                        $('#edit-next-submit').css('display','inline');
+                        $('#edit-back-submit').css('display','inline');
+
+                        /* Update hidden field for new step */
+                        $('input:hidden[name="step"]').val(next_step);
+
+                        break;
+
+                    case 'customize_results':
+                        next_step = 'schedule_alert';
+
+                        /* Update header */
+                        header = "<span class='create-alert-header'><span class='inactive'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='active'>3. Schedule Alerts</span></span>";
+                        $('.create-alert-header').replaceWith(header);
+
+                        /* Update wizard instructions */
+                        instructions = "<span class='create-alert-instructions'><ul><li>Checkbook alerts will notify you by email when new results matching your current search criteria are available. Use options below for alert settings.<\/li><li>Provide email address, in order to receive alerts. Emails will be sent based on the frequency selected and only after the minimum number of additional results entered has been reached since the last alert.<\/li><li>Click 'Back' to go back to Step2: Customize Results<\/li><li>Click 'Schedule Alert' to schedule the alert<\/li><li>The user shall receive email confirmation once the alert is scheduled.<\/li><\/ul></span>";
+                        $('.create-alert-instructions').replaceWith(instructions);
+
+                        /* Update width of dialog - TBD add class*/
+                        $('div.ui-dialog').css('height','auto');
+                        $('div.ui-dialog').css('width','900px');
+                        $('.ui-dialog .ui-dialog-content').css('padding','0.5em 1em');
+
+                        /* Hide the results page */
+                        $('.create-alert-customize-results').css('display','none');
+
+                        /* Show the schedule alert page */
+                        $('.create-alert-schedule-alert').css('display','inline');
+
+                        /* Load Schedule Alerts Form */
+                        $.fn.onScheduleAlertClick();
+
+                        /* Update button text */
+                        $('div.create-alert-submit #edit-next-submit').val('Schedule Alert');
+
+                        /* Buttons */
+                        $('#edit-next-submit').css('display','inline');
+                        $('#edit-back-submit').css('display','inline');
+
+                        /* Update hidden field for new step */
+                        $('input:hidden[name="step"]').val(next_step);
+
+                        break;
+
+                    case 'schedule_alert':
+                        next_step = 'confirmation';
+
+                        /* Update hidden field for new step */
+                        $('input:hidden[name="step"]').val(next_step);
+
+                        /* Schedule Alert */
+                        var ajax_referral_url = $('input:hidden[name="ajax_referral_url"]').val();
+                        var base_url = window.location.protocol+'//'+window.location.host;
+                        $.fn.onScheduleAlertConfirmClick(ajax_referral_url,base_url);
+
+                        break;
+                }
+            }
+
+            $.fn.onScheduleAlertBackClick = function (step) {
+                var previous_step = '';
+                var header = '';
+                var instructions = '';
+
+                /* Clear auto-completes */
+                $(".ui-autocomplete-input").autocomplete("close");
+
+                switch(step) {
+                    case 'customize_results':
+                        previous_step = 'select_criteria';
+
+                        /* Update header */
+                        header = "<span class='create-alert-header'><span class='active'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>3. Schedule Alerts</span></span>";
+                        $('.create-alert-header').replaceWith(header);
+
+                        /* Update wizard instructions */
+                        instructions = "<span class='create-alert-instructions'>Follow the three step process to schedule alerts.<ul><li>Please select one of the following domains and also select the desired filters.<\/li><li>Click 'Next' button to view and customize the results.<\/li><li>Click 'Clear All' to clear out the filters applied.<\/li><\/ul><\/br></span>";
+                        $('.create-alert-instructions').replaceWith(instructions);
+
+                        /* Update css of dialog  */
+                        $('div.ui-dialog').css('height','auto');
+                        $('div.ui-dialog').css('width','900px');
+                        $('.ui-dialog .ui-dialog-content').css('padding','0.5em 1em');
+
+                        /* Hide the results page */
+                        $('.create-alert-customize-results').css('display','none');
+
+                        /* Show the accordion */
+                        $('.advanced-search-accordion').css('display','inline');
+
+                        /* Hide results buttons */
+                        $('.create-alert-submit').css('display','none');
+
+                        /* Buttons */
+                        $('#edit-next-submit').css('display','none');
+                        $('#edit-back-submit').css('display','none');
+
+                        break;
+
+                    case 'schedule_alert':
+                        previous_step = 'customize_results';
+
+                        /* Update header */
+                        header = "<span class='create-alert-header'><span class='inactive'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='active'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>3. Schedule Alerts</span></span>";
+                        $('.create-alert-header').replaceWith(header);
+
+                        /* Update wizard instructions */
+                        instructions = "<span class='create-alert-instructions'>Further narrow down the results using the 'Narrow down your search' functionality.<ul><li>Click 'Export' button to download the results into excel.<\/li><li>Click 'Back' to go back to Step1: Select Criteria<\/li><li>Click 'Next' button to Schedule Alert.<\/li><\/ul><\/br></span>";
+                        $('.create-alert-instructions').replaceWith(instructions);
+
+                        /* Update css of dialog  */
+                        $('div.ui-dialog').css('height','auto');
+                        $('div.ui-dialog').css('width','auto');
+                        $('.ui-dialog .ui-dialog-content').css('padding','0.5em 0px');
+
+                        /* Hide the schedule alerts page */
+                        $('.create-alert-schedule-alert').replaceWith("<div class='create-alert-schedule-alert'>&nbsp;<br/><br/></div>");
+                        $('.create-alert-schedule-alert').css('display','none');
+
+                        /* Show the results page */
+                        $('.create-alert-customize-results').css('display','block');
+
+                        /* Update button text */
+                        $('div.create-alert-submit #edit-next-submit').val('Next');
+
+                        /* Show results buttons */
+                        $('.create-alert-submit').css('display','block');
+
+                        /* Buttons */
+                        $('#edit-next-submit').css('display','inline');
+                        $('#edit-back-submit').css('display','inline');
+
+                        /* Enable Next button on back to results page  */
+                        $('#edit-next-submit').attr('disabled',false);
+
+                        break;
+
+                }
+
+                /* Update hidden field for new step */
+                $('input:hidden[name="step"]').val(previous_step);
+            }
+
+            /*------------------------------------------------------------------------------------------------------------*/
 
             $.fn.onScheduleAlertClick = function () {
 
@@ -1086,8 +1315,8 @@ function addPaddingToDataCells(table){
 
                 /* Load */
                 $.ajax({
-                    url: scheduleAlertUrl
-                    ,success: function(data) {
+                    url: scheduleAlertUrl,
+                    success: function(data) {
                         var html = "<div class='create-alert-schedule-alert'>"+data+"</div>";
                         html = html.replace("<span class='alert-required-field'></span>", "<span class='alert-required-field' style='color:red;'>*</span>");
                         html = html.replace("<span class='alert-required-field'></span>", "<span class='alert-required-field' style='color:red;'>*</span>");
@@ -1148,6 +1377,10 @@ function addPaddingToDataCells(table){
 
                 if (alertMsgs.length > 0) {
                     $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul>' + '<li>' + alertMsgs.join('<li/>') + '</ul></div>');
+                    /* back button needs to be enabled*/
+                    $('#edit-back-submit').attr('disabled', false);
+                    /* Update hidden field for new step */
+                    $('input:hidden[name="step"]').val('schedule_alert');
                 } else {
                     $('#errorMessages').html('');
 
@@ -1163,6 +1396,7 @@ function addPaddingToDataCells(table){
                         alert_theme_file:'checkbook_alerts_advanced_search_theme'
                     }
                     $this=$(this);
+
                     $.get(url,data,function(data){
                         data=JSON.parse(data);
                         if(data.success){
@@ -1181,6 +1415,11 @@ function addPaddingToDataCells(table){
                                 dialogClass:'noTitleDialog'
                             });
                         } else{
+                            /* back button needs to be enabled*/
+                            $('#edit-back-submit').attr('disabled', false);
+                            /* Update hidden field for new step */
+                            $('input:hidden[name="step"]').val('schedule_alert');
+
                             $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul><li>'+data.errors.join('<li/>')+'</ul></div>');
                         }
                     });
@@ -1189,6 +1428,9 @@ function addPaddingToDataCells(table){
 
             $(window).load(function() {
                 if (inIframe() && document.URL.indexOf("/createalert") >= 0) {
+                    if($('.create-alert-customize-results', window.parent.document).css('display') == 'none') {
+                        return;
+                    }
 
                     //No results
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).css('height', '100%');
@@ -1200,12 +1442,21 @@ function addPaddingToDataCells(table){
                     var body = $(document).find('html body');
                     $(body).css('background', '#ffffff');
                     $(body).css('overflow', 'hidden');
-                    $(document).find('html body #body-inner').css('box-shadow', 'unset');
+
+                    var bodyInner = $(document).find('html body #body-inner');
+                    $(bodyInner).css('box-shadow', 'none');
+
                     $('.create-alert-results-loading', window.parent.document).css('display', 'none');
                     $('.create-alert-results-loading', window.parent.document).css('visibility', 'hidden');
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).css('visibility', 'visible');
+                    $('a.ui-dialog-titlebar-close', window.parent.document).show();
 
                     $(document).ajaxComplete(function() {
+
+                        if($('.create-alert-customize-results', window.parent.document).css('display') == 'none') {
+                            return;
+                        }
+
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('height', 600);
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('width', 1000);
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).attr('scrolling', 'yes');
@@ -1225,7 +1476,11 @@ function addPaddingToDataCells(table){
                         $(body).css('background', '#ffffff');
                         $(body).css('overflow-x', 'hidden');
                         $(body).css('overflow-y', 'auto');
-                        $(this).find('html body #body-inner').css('box-shadow', 'unset');
+
+                        var bodyInner = $(this).find('html body #body-inner');
+                        $(bodyInner).css('box-shadow', 'unset');
+                        $(bodyInner).css('padding-bottom', '0px');
+                        $(bodyInner).css('margin-bottom', '0px');
 
                         /* Add hidden field for ajax referral Url to parent*/
                         var alertsid = $(this).find('span.alerts').attr('alertsid');
