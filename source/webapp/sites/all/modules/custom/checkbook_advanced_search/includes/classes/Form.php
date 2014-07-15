@@ -285,8 +285,8 @@ class Form
                 $form[$domain][$domain_field]['#value'] = t('Next');
                 $form[$domain][$domain_field]['#prefix'] = t('<div class="'.$submit_class.'">');
                 $form[$domain][$domain_field]['#ajax'] = array(
-                    'callback' => '_checkbook_advanced_search_next_ajax',
-                    'parameters' => array('domain' => 'budget', 'step' => 'select_criteria'),
+                    'callback' => '_checkbook_advanced_search_create_alert_results_ajax',
+                    'event' => 'click'
                 );
                 //Submit Button
                 $domain_field = "{$this->domain_name}_submit";
