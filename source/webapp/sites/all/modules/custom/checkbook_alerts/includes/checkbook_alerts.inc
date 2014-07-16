@@ -4,6 +4,10 @@ function _checkbook_alerts_form(){
   echo theme('checkbook_alerts_default_theme',array());
 }
 
+function _checkbook_alerts_advanced_search_form(){
+    echo theme('checkbook_alerts_advanced_search_theme',array());
+}
+
 function _checkbook_alerts_getQuery(){
 $sql=
   "SELECT checkbook_alerts_sysid,".

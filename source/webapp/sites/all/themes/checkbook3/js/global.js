@@ -536,7 +536,8 @@ function addPaddingToDataCells(table){
     Drupal.behaviors.alertTransactions = {
         attach:function (context, settings) {
         // The span.alert is the object in Drupal to which you link the click button, I don�t know how it is actually named for the alert
-            $('span.alerts').live("click", function () {
+            $('span.alerts').once('styleAlertTransactions', function() {
+                $('span.alerts').live("click", function () {
                 var dialog = $("#dialog");
                 if ($("#dialog").length == 0) {
                     dialog = $('<div id="dialog" style="display:none"></div>');
@@ -653,181 +654,186 @@ function addPaddingToDataCells(table){
                 );
                 return false;
             });
+            });
         }
     };
 
     Drupal.behaviors.exportTransactions = {
         attach:function (context, settings) {
-            $('span.export').live("click", function () {
+            $('span.export').once('styleExportTransactions', function() {
+                $('span.export').live("click", function () {
 
-                var dialog = $("#dialog");
-                if ($("#dialog").length == 0) {
-                    dialog = $('<div id="dialog" style="display:none"></div>');
-                }
-
-                var oSettings = $('#table_'+$(this).attr('exportid')).dataTable().fnSettings();
-                var iRecordsTotal = oSettings.fnRecordsTotal();
-                var iRecordsDisplay = oSettings.fnRecordsDisplay();
-                var iDisplayLength = oSettings._iDisplayLength;
-                var iDisplayStart = oSettings._iDisplayStart;
-
-                var maxPages = Math.ceil(iRecordsDisplay / iDisplayLength);
-                // var defStartRecord = iDisplayStart;
-                //var defRecordLimit = iDisplayLength;
-
-
-                var dialogUrl = '/export/transactions/form?maxPages=' + maxPages + '&iRecordsTotal=' + iRecordsTotal + '&iRecordsDisplay=' + iRecordsDisplay;
-
-                // load remote content
-                dialog.load(
-                    dialogUrl,
-                    {},
-                    function (responseText, textStatus, XMLHttpRequest) {
-                        dialog.dialog({position:"center",
-                            modal:true,
-                            title:'Download Transactions Data',
-                            dialogClass:"export",
-                            width:700,
-                            buttons:{
-                                "Download Data":function () {
-                                    //current page
-                                    var startRecord = iDisplayStart;
-                                    var recordLimit = iDisplayLength;
-
-                                    var alertMsgs = [];
-                                    var dcfilter = $('input[name=dc]:checked').val();
-                                    if (dcfilter == null) {
-                                        alertMsgs.push("One of 'Data Selection' option must be selected.");
-                                    }
-
-                                    if (dcfilter == 'all') {
-                                        startRecord = 0;
-                                        recordLimit = iRecordsDisplay;
-                                    }
-
-                                    if (dcfilter == 'range') {
-                                        var rangefrom = $('input[name=rangefrom]').val();
-                                        var rangeto = $('input[name=rangeto]').val();
-
-                                        var validFrom = ((String(rangefrom).search(/^\s*(\+|-)?\d+\s*$/) != -1 ) && (parseFloat(rangefrom) == parseInt(rangefrom)) && parseInt(rangefrom) >= 1 && parseInt(rangefrom) <= maxPages);
-                                        var validTo = ((String(rangeto).search(/^\s*(\+|-)?\d+\s*$/) != -1 ) && (parseFloat(rangeto) == parseInt(rangeto)) && parseInt(rangeto) >= 1 && parseInt(rangeto) <= maxPages);
-
-                                        if (!validFrom && !validTo) {
-                                            alertMsgs.push('If "Pages" option is selected, page numbers must be integer values between 1 and ' + maxPages);
-                                        } else if (rangefrom.length > 0 && !validFrom) {
-                                            alertMsgs.push('From page number must be integer value between 1 and ' + maxPages);
-                                        } else if (rangeto.length > 0 && !validTo) {
-                                            alertMsgs.push('To page number must be integer value between 1 and ' + maxPages);
-                                        } else {
-                                            rangefrom = !validFrom ? 1 : parseInt(rangefrom);
-                                            rangeto = !validTo ? maxPages : parseInt(rangeto);
-                                            if (rangefrom > rangeto) {
-                                                alertMsgs.push('From page number(' + rangefrom + ') must be less than or equal to ' + rangeto);
-                                            } else {
-                                                startRecord = (rangefrom - 1) * iDisplayLength;
-                                                recordLimit = (rangeto - rangefrom + 1) * iDisplayLength;
-                                                if ((startRecord + recordLimit) > iRecordsDisplay) {
-                                                    recordLimit = recordLimit - (startRecord + recordLimit - iRecordsDisplay);
-                                                }
-                                            }
-                                        }
-                                    } else {
-                                        $('input[name=rangefrom]').val(null);
-                                        $('input[name=rangeto]').val(null);
-                                    }
-
-                                    var frmtfilter = $('input[name=frmt]:checked').val();
-                                    if (frmtfilter == null) {
-                                        alertMsgs.push('Format must be selected');
-                                    }
-
-                                    if (alertMsgs.length > 0) {
-                                        $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul>' + '<li>' + alertMsgs.join('<li/>') + '</ul></div>');
-                                    } else {
-                                        $('#errorMessages').html('');
-
-                                        var url = '/export/transactions';
-                                        var inputs = "<input type='hidden' name='refURL' value='" + oSettings.sAjaxSource + "'/>"
-                                                + "<input type='hidden' name='iDisplayStart' value='" + startRecord + "'/>"
-                                                + "<input type='hidden' name='iDisplayLength' value='" + recordLimit + "'/>"
-                                            ;
-
-                                        if ( oSettings.oFeatures.bSort !== false )
-                                        {
-                                            var iCounter = 0;
-
-                                            aaSort = ( oSettings.aaSortingFixed !== null ) ?
-                                                oSettings.aaSortingFixed.concat( oSettings.aaSorting ) :
-                                                oSettings.aaSorting.slice();
-
-                                            for ( i=0 ; i<aaSort.length ; i++ )
-                                            {
-                                                aDataSort = oSettings.aoColumns[ aaSort[i][0] ].aDataSort;
-
-                                                for ( j=0 ; j<aDataSort.length ; j++ )
-                                                {
-                                                    inputs = inputs + "<input type='hidden' name='iSortCol_"+ iCounter + "' value='" + aDataSort[j] + "'/>";
-                                                    inputs = inputs + "<input type='hidden' name='sSortDir_"+ iCounter + "' value='" + aaSort[i][1] + "'/>";
-                                                    iCounter++;
-                                                }
-                                            }
-                                            inputs = inputs + "<input type='hidden' name='iSortingCols' value='" + iCounter + "'/>";
-                                        }
-
-                                        $('<form action="' + url + '" method="get">' + inputs + '</form>').appendTo('body').submit().remove();
-                                    }
-                                },
-                                "Cancel":function () {
-                                    $(this).dialog('close');
-                                }
-                            }
-                        });
+                    var dialog = $("#dialog");
+                    if ($("#dialog").length == 0) {
+                        dialog = $('<div id="dialog" style="display:none"></div>');
                     }
-                );
-                return false;
+
+                    var oSettings = $('#table_'+$(this).attr('exportid')).dataTable().fnSettings();
+                    var iRecordsTotal = oSettings.fnRecordsTotal();
+                    var iRecordsDisplay = oSettings.fnRecordsDisplay();
+                    var iDisplayLength = oSettings._iDisplayLength;
+                    var iDisplayStart = oSettings._iDisplayStart;
+
+                    var maxPages = Math.ceil(iRecordsDisplay / iDisplayLength);
+                    // var defStartRecord = iDisplayStart;
+                    //var defRecordLimit = iDisplayLength;
+
+
+                    var dialogUrl = '/export/transactions/form?maxPages=' + maxPages + '&iRecordsTotal=' + iRecordsTotal + '&iRecordsDisplay=' + iRecordsDisplay;
+
+                    // load remote content
+                    dialog.load(
+                        dialogUrl,
+                        {},
+                        function (responseText, textStatus, XMLHttpRequest) {
+                            dialog.dialog({position:"center",
+                                modal:true,
+                                title:'Download Transactions Data',
+                                dialogClass:"export",
+                                width:700,
+                                buttons:{
+                                    "Download Data":function () {
+                                        //current page
+                                        var startRecord = iDisplayStart;
+                                        var recordLimit = iDisplayLength;
+
+                                        var alertMsgs = [];
+                                        var dcfilter = $('input[name=dc]:checked').val();
+                                        if (dcfilter == null) {
+                                            alertMsgs.push("One of 'Data Selection' option must be selected.");
+                                        }
+
+                                        if (dcfilter == 'all') {
+                                            startRecord = 0;
+                                            recordLimit = iRecordsDisplay;
+                                        }
+
+                                        if (dcfilter == 'range') {
+                                            var rangefrom = $('input[name=rangefrom]').val();
+                                            var rangeto = $('input[name=rangeto]').val();
+
+                                            var validFrom = ((String(rangefrom).search(/^\s*(\+|-)?\d+\s*$/) != -1 ) && (parseFloat(rangefrom) == parseInt(rangefrom)) && parseInt(rangefrom) >= 1 && parseInt(rangefrom) <= maxPages);
+                                            var validTo = ((String(rangeto).search(/^\s*(\+|-)?\d+\s*$/) != -1 ) && (parseFloat(rangeto) == parseInt(rangeto)) && parseInt(rangeto) >= 1 && parseInt(rangeto) <= maxPages);
+
+                                            if (!validFrom && !validTo) {
+                                                alertMsgs.push('If "Pages" option is selected, page numbers must be integer values between 1 and ' + maxPages);
+                                            } else if (rangefrom.length > 0 && !validFrom) {
+                                                alertMsgs.push('From page number must be integer value between 1 and ' + maxPages);
+                                            } else if (rangeto.length > 0 && !validTo) {
+                                                alertMsgs.push('To page number must be integer value between 1 and ' + maxPages);
+                                            } else {
+                                                rangefrom = !validFrom ? 1 : parseInt(rangefrom);
+                                                rangeto = !validTo ? maxPages : parseInt(rangeto);
+                                                if (rangefrom > rangeto) {
+                                                    alertMsgs.push('From page number(' + rangefrom + ') must be less than or equal to ' + rangeto);
+                                                } else {
+                                                    startRecord = (rangefrom - 1) * iDisplayLength;
+                                                    recordLimit = (rangeto - rangefrom + 1) * iDisplayLength;
+                                                    if ((startRecord + recordLimit) > iRecordsDisplay) {
+                                                        recordLimit = recordLimit - (startRecord + recordLimit - iRecordsDisplay);
+                                                    }
+                                                }
+                                            }
+                                        } else {
+                                            $('input[name=rangefrom]').val(null);
+                                            $('input[name=rangeto]').val(null);
+                                        }
+
+                                        var frmtfilter = $('input[name=frmt]:checked').val();
+                                        if (frmtfilter == null) {
+                                            alertMsgs.push('Format must be selected');
+                                        }
+
+                                        if (alertMsgs.length > 0) {
+                                            $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul>' + '<li>' + alertMsgs.join('<li/>') + '</ul></div>');
+                                        } else {
+                                            $('#errorMessages').html('');
+
+                                            var url = '/export/transactions';
+                                            var inputs = "<input type='hidden' name='refURL' value='" + oSettings.sAjaxSource + "'/>"
+                                                    + "<input type='hidden' name='iDisplayStart' value='" + startRecord + "'/>"
+                                                    + "<input type='hidden' name='iDisplayLength' value='" + recordLimit + "'/>"
+                                                ;
+
+                                            if ( oSettings.oFeatures.bSort !== false )
+                                            {
+                                                var iCounter = 0;
+
+                                                aaSort = ( oSettings.aaSortingFixed !== null ) ?
+                                                    oSettings.aaSortingFixed.concat( oSettings.aaSorting ) :
+                                                    oSettings.aaSorting.slice();
+
+                                                for ( i=0 ; i<aaSort.length ; i++ )
+                                                {
+                                                    aDataSort = oSettings.aoColumns[ aaSort[i][0] ].aDataSort;
+
+                                                    for ( j=0 ; j<aDataSort.length ; j++ )
+                                                    {
+                                                        inputs = inputs + "<input type='hidden' name='iSortCol_"+ iCounter + "' value='" + aDataSort[j] + "'/>";
+                                                        inputs = inputs + "<input type='hidden' name='sSortDir_"+ iCounter + "' value='" + aaSort[i][1] + "'/>";
+                                                        iCounter++;
+                                                    }
+                                                }
+                                                inputs = inputs + "<input type='hidden' name='iSortingCols' value='" + iCounter + "'/>";
+                                            }
+
+                                            $('<form action="' + url + '" method="get">' + inputs + '</form>').appendTo('body').submit().remove();
+                                        }
+                                    },
+                                    "Cancel":function () {
+                                        $(this).dialog('close');
+                                    }
+                                }
+                            });
+                        }
+                    );
+                    return false;
+                });
             });
         }
     };
 
     Drupal.behaviors.exportGridTransactions = {
         attach:function (context, settings) {
-            $('span.grid_export').live("click", function () {
-        var nodeId = $(this).attr('exportid');
-        var oSettings = jQuery('#table_'+nodeId).dataTable().fnSettings();
+            $('span.grid_export').once('styleExportGridTransactions', function() {
+                $('span.grid_export').live("click", function () {
+                var nodeId = $(this).attr('exportid');
+                var oSettings = jQuery('#table_'+nodeId).dataTable().fnSettings();
 
-        var url = '/export/grid/transactions';
-        var inputs = "<input type='hidden' name='refURL' value='"+ (oSettings.sAjaxSource != null ? oSettings.sAjaxSource : oSettings.oInit.sAltAjaxSource) +"'/>"
-                + "<input type='hidden' name='iDisplayStart' value='"+ oSettings._iDisplayStart +"'/>"
-                + "<input type='hidden' name='iDisplayLength' value='"+ oSettings._iDisplayLength +"'/>"
-                + "<input type='hidden' name='node' value='" + nodeId + "'/>"
-            ;
+                var url = '/export/grid/transactions';
+                var inputs = "<input type='hidden' name='refURL' value='"+ (oSettings.sAjaxSource != null ? oSettings.sAjaxSource : oSettings.oInit.sAltAjaxSource) +"'/>"
+                        + "<input type='hidden' name='iDisplayStart' value='"+ oSettings._iDisplayStart +"'/>"
+                        + "<input type='hidden' name='iDisplayLength' value='"+ oSettings._iDisplayLength +"'/>"
+                        + "<input type='hidden' name='node' value='" + nodeId + "'/>"
+                    ;
 
-        if ( oSettings.oFeatures.bSort !== false )
-        {
-            var iCounter = 0;
-
-            aaSort = ( oSettings.aaSortingFixed !== null ) ?
-                oSettings.aaSortingFixed.concat( oSettings.aaSorting ) :
-                oSettings.aaSorting.slice();
-
-            for ( i=0 ; i<aaSort.length ; i++ )
-            {
-                aDataSort = oSettings.aoColumns[ aaSort[i][0] ].aDataSort;
-
-                for ( j=0 ; j<aDataSort.length ; j++ )
+                if ( oSettings.oFeatures.bSort !== false )
                 {
-                    inputs = inputs + "<input type='hidden' name='iSortCol_"+ iCounter + "' value='" + aDataSort[j] + "'/>";
-                    inputs = inputs + "<input type='hidden' name='sSortDir_"+ iCounter + "' value='" + aaSort[i][1] + "'/>";
-                    iCounter++;
+                    var iCounter = 0;
+
+                    aaSort = ( oSettings.aaSortingFixed !== null ) ?
+                        oSettings.aaSortingFixed.concat( oSettings.aaSorting ) :
+                        oSettings.aaSorting.slice();
+
+                    for ( i=0 ; i<aaSort.length ; i++ )
+                    {
+                        aDataSort = oSettings.aoColumns[ aaSort[i][0] ].aDataSort;
+
+                        for ( j=0 ; j<aDataSort.length ; j++ )
+                        {
+                            inputs = inputs + "<input type='hidden' name='iSortCol_"+ iCounter + "' value='" + aDataSort[j] + "'/>";
+                            inputs = inputs + "<input type='hidden' name='sSortDir_"+ iCounter + "' value='" + aaSort[i][1] + "'/>";
+                            iCounter++;
+                        }
+                    }
+                    inputs = inputs + "<input type='hidden' name='iSortingCols' value='" + iCounter + "'/>";
                 }
-            }
-            inputs = inputs + "<input type='hidden' name='iSortingCols' value='" + iCounter + "'/>";
+
+                jQuery('<form action="' + url + '" method="get">' + inputs + '</form>').appendTo('body').submit().remove();
+
+            });
+            });
         }
-
-        jQuery('<form action="' + url + '" method="get">' + inputs + '</form>').appendTo('body').submit().remove();
-
-        });
-       }
     };
 
     Drupal.behaviors.advancedSearchEnterKeyPress = {
@@ -1311,17 +1317,13 @@ function addPaddingToDataCells(table){
             $.fn.onScheduleAlertClick = function () {
 
                 var scheduleAlertDiv = $(".create-alert-schedule-alert");
-                var scheduleAlertUrl = '/alert/transactions/form';
+                var scheduleAlertUrl = '/alert/transactions/advanced/search/form';
 
                 /* Load */
                 $.ajax({
                     url: scheduleAlertUrl,
                     success: function(data) {
-                        var html = "<div class='create-alert-schedule-alert'>"+data+"</div>";
-                        html = html.replace("<span class='alert-required-field'></span>", "<span class='alert-required-field' style='color:red;'>*</span>");
-                        html = html.replace("<span class='alert-required-field'></span>", "<span class='alert-required-field' style='color:red;'>*</span>");
-                        html = html.replace("id='alert_instructions'", "style='display:none'");
-                        scheduleAlertDiv.html(html);
+                        $(scheduleAlertDiv).replaceWith("<div class='create-alert-schedule-alert'>"+data+"</div>");
                         $("input[name='alert_end[date]']").datepicker({"changeMonth":true,"changeYear":true,"autoPopUp":"focus","closeAtTop":false,"speed":"immediate","firstDay":0,"dateFormat":"yy-mm-dd","yearRange":"-113:+487","fromTo":false,"defaultDate":"0y"});
                     }
                 });
@@ -1349,11 +1351,12 @@ function addPaddingToDataCells(table){
                     return !isNaN(value - 0);
                 }
 
-                var alertLabel = $('input[name=alert_label]').val();
-                var alertEmail = $('input[name=alert_email]').val();
-                var alertMinimumResults = $('input[name=alert_minimum_results]').val();
-                var alertMinimumDays = $('select[name=alert_minimum_days]').val();
-                var alertEnd = $("input[name='alert_end[date]']").val();
+                var alertDiv = $('.create-alert-schedule-alert');
+                var alertLabel = $(alertDiv).find('input[name=alert_label]').val();
+                var alertEmail = $(alertDiv).find('input[name=alert_email]').val();
+                var alertMinimumResults = $(alertDiv).find('input[name=alert_minimum_results]').val();
+                var alertMinimumDays = $(alertDiv).find('select[name=alert_minimum_days]').val();
+                var alertEnd = $(alertDiv).find("input[name='alert_end[date]']").val();
                 var dateRegEx = '[0-9]{4,4}-[0-1][0-9]-[0-3][0-9]';
 
                 var alertMsgs = [];
@@ -1376,13 +1379,13 @@ function addPaddingToDataCells(table){
                 }
 
                 if (alertMsgs.length > 0) {
-                    $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul>' + '<li>' + alertMsgs.join('<li/>') + '</ul></div>');
+                    $(alertDiv).find('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul>' + '<li>' + alertMsgs.join('<li/>') + '</ul></div>');
                     /* back button needs to be enabled*/
                     $('#edit-back-submit').attr('disabled', false);
                     /* Update hidden field for new step */
                     $('input:hidden[name="step"]').val('schedule_alert');
                 } else {
-                    $('#errorMessages').html('');
+                    $(alertDiv).find('#errorMessages').html('');
 
                     var url = '/alert/transactions';
                     var data = {
@@ -1393,18 +1396,21 @@ function addPaddingToDataCells(table){
                         alert_minimum_days:alertMinimumDays,
                         alert_end:alertEnd,
                         userURL:ajaxUserUrl,
-                        alert_theme_file:'checkbook_alerts_advanced_search_theme'
+                        alert_theme_file:'checkbook_alerts_advanced_search_confirm_theme'
                     }
                     $this=$(this);
 
                     $.get(url,data,function(data){
                         data=JSON.parse(data);
                         if(data.success){
+                            $this.dialog('close');
                             $('#block-checkbook-advanced-search-checkbook-advanced-search-form').dialog('close');
                             var dialog = $("#dialog");
-                            if ($("#dialog").length == 0) {
+                            if ($("#dialog").length == 0)
                                 dialog = $('<div id="dialog" style="display:none"></div>');
-                            }
+                            else
+                                $(dialog).replaceWith('<div id="dialog" style="display:none"></div>');
+
                             dialog.html(data.html);
                             dialog.dialog({position:['center', 'center'],
                                 modal:true,
@@ -1412,7 +1418,11 @@ function addPaddingToDataCells(table){
                                 height:80,
                                 autoResize:true,
                                 resizable: false,
-                                dialogClass:'noTitleDialog'
+                                dialogClass:'noTitleDialog',
+                                close: function(){
+                                    var dialog = $("#dialog");
+                                    $(dialog).replaceWith('<div id="dialog" style="display:none"></div>');
+                                }
                             });
                         } else{
                             /* back button needs to be enabled*/
@@ -1420,7 +1430,7 @@ function addPaddingToDataCells(table){
                             /* Update hidden field for new step */
                             $('input:hidden[name="step"]').val('schedule_alert');
 
-                            $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul><li>'+data.errors.join('<li/>')+'</ul></div>');
+                            $(alertDiv).find('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul><li>'+data.errors.join('<li/>')+'</ul></div>');
                         }
                     });
                 }
