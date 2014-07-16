@@ -55,6 +55,7 @@ return $header;
 "useList":true,
 "getTotalDataCount":true,
 "limit":"35",
+"stickyHeader":true,
 "noDataInitialLoad":true,
 "html_class": "initiative-table transaction-table",
 "no_results_content":"No Results Found",

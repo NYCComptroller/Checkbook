@@ -17,6 +17,7 @@
 "columns": ["category.category.revenue_category_name","category.category",
             "current_recognized","recognized_1","recognized_2","other_years","remaining_amount"],
 "limit":35,
+"stickyHeader":true,
 "widgetTitle":"Revenue Category Revenue by Cross Year Collections Details",
  "derivedColumns":{
     "current_recognized_formatted":{

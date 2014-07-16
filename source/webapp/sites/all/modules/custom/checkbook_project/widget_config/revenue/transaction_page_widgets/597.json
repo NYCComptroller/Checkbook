@@ -17,6 +17,7 @@
 "columns": ["funding.funding.funding_class_name","funding.funding.funding_class_code",
             "current_recognized","recognized_1","recognized_2","other_years","remaining_amount"],
 "limit":35,
+"stickyHeader":true,
 "widgetTitle":"Funding Class Revenue by Cross Year Collections Details",
  "derivedColumns":{
     "current_recognized_formatted":{

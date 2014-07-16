@@ -17,6 +17,7 @@
 "columns": ["agency.agency.agency_name","agency.agency",
             "current_recognized","recognized_1","recognized_2","other_years","remaining_amount"],
 "limit":35,
+"stickyHeader":true,
 "caption":"",
 "widgetTitle":"Agency Revenue by Cross Year Collections Details",
  "derivedColumns":{

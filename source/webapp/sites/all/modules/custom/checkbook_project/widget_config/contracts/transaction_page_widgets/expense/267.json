@@ -1,6 +1,7 @@
 {
 "widgetType": "data_tables",
 "widgetSubType": "dataTableList",
+"stickyHeader":true,
 "cleanURLParameters":["doctype","contstatus","year","calyear","yeartype","agency","vendor","curamtr","vendornm","contdesc","agrmnttype",
                       "agencyh","contnum","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry",
                       "csize","modamt"],

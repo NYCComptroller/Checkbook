@@ -53,6 +53,7 @@
 	return $header;
 ",
 "useList":true,
+"stickyHeader":true,
 "getTotalDataCount":true,
 "limit":"35",
 "noDataInitialLoad":true,
