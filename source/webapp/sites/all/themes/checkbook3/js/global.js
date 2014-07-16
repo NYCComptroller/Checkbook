@@ -536,8 +536,7 @@ function addPaddingToDataCells(table){
     Drupal.behaviors.alertTransactions = {
         attach:function (context, settings) {
         // The span.alert is the object in Drupal to which you link the click button, I don�t know how it is actually named for the alert
-            $('span.alerts').once('styleAlertTransactions', function() {
-                $('span.alerts').live("click", function () {
+            $('span.alerts').die().live("click", function () {
                 var dialog = $("#dialog");
                 if ($("#dialog").length == 0) {
                     dialog = $('<div id="dialog" style="display:none"></div>');
@@ -654,14 +653,12 @@ function addPaddingToDataCells(table){
                 );
                 return false;
             });
-            });
         }
     };
 
     Drupal.behaviors.exportTransactions = {
         attach:function (context, settings) {
-            $('span.export').once('styleExportTransactions', function() {
-                $('span.export').live("click", function () {
+            $('span.export').die().live("click", function () {
 
                     var dialog = $("#dialog");
                     if ($("#dialog").length == 0) {
@@ -789,14 +786,12 @@ function addPaddingToDataCells(table){
                     );
                     return false;
                 });
-            });
         }
     };
 
     Drupal.behaviors.exportGridTransactions = {
         attach:function (context, settings) {
-            $('span.grid_export').once('styleExportGridTransactions', function() {
-                $('span.grid_export').live("click", function () {
+            $('span.grid_export').die().live("click", function () {
                 var nodeId = $(this).attr('exportid');
                 var oSettings = jQuery('#table_'+nodeId).dataTable().fnSettings();
 
@@ -831,7 +826,6 @@ function addPaddingToDataCells(table){
 
                 jQuery('<form action="' + url + '" method="get">' + inputs + '</form>').appendTo('body').submit().remove();
 
-            });
             });
         }
     };
