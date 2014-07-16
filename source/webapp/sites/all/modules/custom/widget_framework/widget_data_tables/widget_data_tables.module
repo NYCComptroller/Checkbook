@@ -635,7 +635,7 @@ if(isset($node->widgetConfig->stickyHeader)){
 
     //Append custom js to events
     $fnInitComplete = $oldDataTableOptions["fnInitComplete"];
-    $fnInitCompleteExists = isset($fnInitComplete);
+    $fnInitCompleteExists = isset($fnInitComplete) ? true:false;
     $fnInitComplete = str_replace("##","",$fnInitComplete);
     $fnInitComplete = $fnInitComplete ? substr_replace($fnInitComplete,"fnCustomInitComplete();}",strlen($fnInitComplete)-1,1)  : "function () { new fnCustomInitComplete(); }";
     $fnInitComplete = "##".$fnInitComplete."##";
