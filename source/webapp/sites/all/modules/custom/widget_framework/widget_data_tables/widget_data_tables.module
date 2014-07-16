@@ -646,7 +646,7 @@ if(isset($node->widgetConfig->stickyHeader)){
     $fnDrawCallback = $fnDrawCallback ? substr_replace($fnDrawCallback,"fnCustomDrawCallback();}",strlen($fnDrawCallback)-1,1)  : "function () { new fnCustomDrawCallback(); }";
     $fnDrawCallback = "##".$fnDrawCallback."##";
 
-    //if the function exists, update it, else insert it to the front
+//    if the function exists, update it, else insert it to the front
     if($fnDrawCallbackExists)
         $oldDataTableOptions["fnDrawCallback"] = $fnDrawCallback;
     else
@@ -669,6 +669,7 @@ if(isset($node->widgetConfig->stickyHeader)){
     }
     function fnCustomInitComplete() {
         var topSpacing = ".(user_is_logged_in() ? 66 : 0).";
+
         var tableOffsetTop = jQuery('.dataTables_scroll').offset().top;
         var tableHeight = jQuery('.dataTables_scroll').height();
         var docHeight = jQuery(document).height();
@@ -676,7 +677,7 @@ if(isset($node->widgetConfig->stickyHeader)){
 
         jQuery('.dataTables_scrollHead').sticky({ topSpacing: ".topSpacing.", bottomSpacing: ".bottomSpacing.", getWidthFrom:'.dataTables_scroll' });
 
-        if(jQuery('.DTFC_ScrollWrapper').offset()) {
+        if( jQuery('.DTFC_ScrollWrapper') && jQuery('.DTFC_ScrollWrapper').offset()) {
             jQuery('.DTFC_LeftHeadWrapper').sticky({ topSpacing: ".topSpacing.", bottomSpacing: ".bottomSpacing.", getWidthFrom:'.DTFC_LeftWrapper' });
         }
     }";
