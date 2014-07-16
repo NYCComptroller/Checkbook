@@ -35,10 +35,41 @@ function applyTableListFilters(){
     oTable.fnSettings().sAjaxSource = cUrl;
     oTable.fnClearTable(0);
     oTable.fnDraw();
+
+    jQuery('.dataTables_scrollHead').width(jQuery('.dataTables_scroll').width());
+    var topSpacing = ".(user_is_logged_in() ? 66 : 0).";
+    var tableOffsetTop = jQuery('.dataTables_scroll').offset().top;
+    var tableHeight = jQuery('.dataTables_scroll').height();
+    var docHeight = jQuery(document).height();
+    var bottomSpacing = docHeight - (tableOffsetTop + tableHeight);
+
+    jQuery('.dataTables_scrollHead').unstick();
+    jQuery('.DTFC_LeftWrapper').unstick;
+
+    jQuery('.dataTables_scrollHead').sticky({ topSpacing: ".topSpacing.", bottomSpacing: ".bottomSpacing.", getWidthFrom:'.dataTables_scroll' });
+    if(jQuery('.DTFC_ScrollWrapper') && jQuery('.DTFC_ScrollWrapper').offset()) {
+        jQuery('.DTFC_LeftHeadWrapper').sticky({ topSpacing: ".topSpacing.", bottomSpacing: ".bottomSpacing.", getWidthFrom:'.DTFC_LeftWrapper' });
+    }
+
     reloadSidebar(cUrl);
 }
 
+function fnCustomDrawCallback() {
+    jQuery('.dataTables_scrollHead').width(jQuery('.dataTables_scroll').width());
+}
+function fnCustomInitComplete() {
+    var topSpacing = ".(user_is_logged_in() ? 66 : 0).";
+    var tableOffsetTop = jQuery('.dataTables_scroll').offset().top;
+    var tableHeight = jQuery('.dataTables_scroll').height();
+    var docHeight = jQuery(document).height();
+    var bottomSpacing = docHeight - (tableOffsetTop + tableHeight);
 
+    jQuery('.dataTables_scrollHead').sticky({ topSpacing: ".topSpacing.", bottomSpacing: ".bottomSpacing.", getWidthFrom:'.dataTables_scroll' });
+
+    if(jQuery('.DTFC_ScrollWrapper').offset()) {
+        jQuery('.DTFC_LeftHeadWrapper').sticky({ topSpacing: ".topSpacing.", bottomSpacing: ".bottomSpacing.", getWidthFrom:'.DTFC_LeftWrapper' });
+    }
+}
 
 function applyTableListFiltersAutocomplete(label, field){
     var cUrl = prepareTableListFilterUrl();
