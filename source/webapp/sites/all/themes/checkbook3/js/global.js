@@ -871,6 +871,10 @@ function addPaddingToDataCells(table){
                 var page_clicked_from = this.id ? this.id : href.split('/')[1];
                 var active_accordion_window = initializeActiveAccordionWindow(page_clicked_from, data_source);
 
+
+                //Initialize Attributes and styling
+                initializeAccordionAttributes('advanced_search');
+
                 $('#block-checkbook-advanced-search-checkbook-advanced-search-form').dialog({
                     title:"Advanced Search",
                     position:['center', 'center'],
@@ -882,8 +886,6 @@ function addPaddingToDataCells(table){
                         $(".ui-autocomplete-input").autocomplete("close")
                     },
                     open: function(){
-                        //Initialize Attributes and styling
-                        initializeAccordionAttributes('advanced_search');
                     },
                     close: function(){
                         $(".ui-autocomplete-input").autocomplete("close")
@@ -966,9 +968,10 @@ function addPaddingToDataCells(table){
         $('#edit-next-submit').attr('disabled', true);
         $('#edit-back-submit').attr('disabled', true);
         $('.create-alert-submit').css('display','none');
-        $('.ui-dialog .ui-dialog-content').css('padding','0.5em 1em');
-        $('#spending-advanced-search').css('width','auto');
-        $('#spending-advanced-search').css('height','auto');
+//        $('.ui-dialog .ui-dialog-content').css('padding','0.5em 1em');
+//        $('#spending-advanced-search').css('width','auto');
+//        $('#spending-advanced-search').css('height','auto');
+//        $('.advanced-search-accordion').width('100%');
         switch(accordion_type) {
             case 'advanced_search':
                 $('.create-alert-view').css('display','none');
@@ -983,7 +986,6 @@ function addPaddingToDataCells(table){
                 $('input[name="contracts_next"]').css('display','none');
                 $('input[name="payroll_next"]').css('display','none');
                 $('.advanced-search-accordion').css('display','inline');
-                $('.advanced-search-accordion').width('100%');
                 break;
 
             case 'advanced_search_create_alerts':
@@ -1000,7 +1002,6 @@ function addPaddingToDataCells(table){
                 $('input[name="contracts_next"]').css('display','inline');
                 $('input[name="payroll_next"]').css('display','inline');
                 $('.advanced-search-accordion').css('display','inline');
-                $('.advanced-search-accordion').width('90%');
                 break;
         }
     }
@@ -1025,10 +1026,21 @@ function addPaddingToDataCells(table){
                 var page_clicked_from = this.id ? this.id : href.split('/')[1];
                 var active_accordion_window = initializeActiveAccordionWindow(page_clicked_from, data_source);
 
+
+                var createAlertsDiv = "<span class='create-alert-instructions'>Follow the three step process to schedule alerts.<ul><li>Please select one of the following domains and also select the desired filters.<\/li><li>Click 'Next' button to view and customize the results.<\/li><li>Click 'Clear All' to clear out the filters applied.<\/li><\/ul><\/br></span>";
+                createAlertsDiv += "<span style='visibility: hidden;display: none;text-align: center' class='create-alert-results-loading'><div class='ajax-progress ajax-progress-throbber'><div class='throbber'>&nbsp;</div></div>Please Wait...</span>";
+                createAlertsDiv += "<div class='create-alert-customize-results' style='display: none'><br/><br/><br/></div>";
+                createAlertsDiv += "<div class='create-alert-schedule-alert' style='display: none'>&nbsp;<br/><br/></div>";
+                createAlertsDiv = "<div class='create-alert-view'>"+createAlertsDiv+"</div>";
+                $('.create-alert-view').replaceWith(createAlertsDiv);
+
+                //Initialize Attributes and styling
+                initializeAccordionAttributes('advanced_search_create_alerts');
+
                 $('#block-checkbook-advanced-search-checkbook-advanced-search-form').dialog({
                     title:"<span class='create-alert-header'><span class='active'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>3. Schedule Alerts</span></span>",
                     position:['center', 'center'],
-                    width:900,
+                    width:800,
                     modal:true,
                     autoResize:true,
                     resizable: false,
@@ -1036,15 +1048,6 @@ function addPaddingToDataCells(table){
                         $(".ui-autocomplete-input").autocomplete("close")
                     },
                     open: function(){
-                        var createAlertsDiv = "<span class='create-alert-instructions'>Follow the three step process to schedule alerts.<ul><li>Please select one of the following domains and also select the desired filters.<\/li><li>Click 'Next' button to view and customize the results.<\/li><li>Click 'Clear All' to clear out the filters applied.<\/li><\/ul><\/br></span>";
-                        createAlertsDiv += "<span style='visibility: hidden;display: none;text-align: center' class='create-alert-results-loading'><div class='ajax-progress ajax-progress-throbber'><div class='throbber'>&nbsp;</div></div>Please Wait...</span>";
-                        createAlertsDiv += "<div class='create-alert-customize-results' style='display: none'><br/><br/><br/></div>";
-                        createAlertsDiv += "<div class='create-alert-schedule-alert' style='display: none'>&nbsp;<br/><br/></div>";
-                        createAlertsDiv = "<div class='create-alert-view'>"+createAlertsDiv+"</div>";
-                        $('.create-alert-view').replaceWith(createAlertsDiv);
-
-                        //Initialize Attributes and styling
-                        initializeAccordionAttributes('advanced_search_create_alerts');
 
                     },
                     close: function(){
@@ -1081,6 +1084,11 @@ function addPaddingToDataCells(table){
                 if(step == 'select_criteria') {
                     $('#edit-next-submit').attr('disabled', true);
                     $('#edit-back-submit').attr('disabled', true);
+                }
+                else if(step == 'schedule_alert') {
+                    $('#edit-next-submit').attr('disabled', false);
+                    $('#edit-back-submit').attr('disabled', false);
+                    $('a.ui-dialog-titlebar-close', window.parent.document).show();
                 }
                 else {
                     $('#edit-back-submit').attr('disabled', false);
@@ -1156,7 +1164,7 @@ function addPaddingToDataCells(table){
                         /* Update width of dialog - TBD add class */
                         $('div.ui-dialog').css('height','385px');
                         $('div.ui-dialog').css('width','1000px');
-                        $('.ui-dialog .ui-dialog-content').css('padding','0.5em 0px');
+//                        $('.ui-dialog .ui-dialog-content').css('padding','0.5em 0px');
 
                         /* Hide the accordion */
                         $('.advanced-search-accordion').css('display','none');
@@ -1181,10 +1189,20 @@ function addPaddingToDataCells(table){
                         instructions = "<span class='create-alert-instructions'><ul><li>Checkbook alerts will notify you by email when new results matching your current search criteria are available. Use options below for alert settings.<\/li><li>Provide email address, in order to receive alerts. Emails will be sent based on the frequency selected and only after the minimum number of additional results entered has been reached since the last alert.<\/li><li>Click 'Back' to go back to Step2: Customize Results<\/li><li>Click 'Schedule Alert' to schedule the alert<\/li><li>The user shall receive email confirmation once the alert is scheduled.<\/li><\/ul></span>";
                         $('.create-alert-instructions').replaceWith(instructions);
 
+                        /* Hide close button */
+                        $('a.ui-dialog-titlebar-close').hide();
+
+                        /* Buttons */
+                        $('div.create-alert-submit #edit-next-submit').val('Schedule Alert');
+                        $('#edit-next-submit').attr('disabled', true);
+                        $('#edit-back-submit').attr('disabled', true);
+                        $('#edit-next-submit').css('display','inline');
+                        $('#edit-back-submit').css('display','inline');
+
                         /* Update width of dialog - TBD add class*/
                         $('div.ui-dialog').css('height','auto');
-                        $('div.ui-dialog').css('width','900px');
-                        $('.ui-dialog .ui-dialog-content').css('padding','0.5em 1em');
+                        $('div.ui-dialog').css('width','800px');
+//                        $('.ui-dialog .ui-dialog-content').css('padding','0.5em 1em');
 
                         /* Hide the results page */
                         $('.create-alert-customize-results').css('display','none');
@@ -1194,13 +1212,6 @@ function addPaddingToDataCells(table){
 
                         /* Load Schedule Alerts Form */
                         $.fn.onScheduleAlertClick();
-
-                        /* Update button text */
-                        $('div.create-alert-submit #edit-next-submit').val('Schedule Alert');
-
-                        /* Buttons */
-                        $('#edit-next-submit').css('display','inline');
-                        $('#edit-back-submit').css('display','inline');
 
                         /* Update hidden field for new step */
                         $('input:hidden[name="step"]').val(next_step);
@@ -1244,8 +1255,8 @@ function addPaddingToDataCells(table){
 
                         /* Update css of dialog  */
                         $('div.ui-dialog').css('height','auto');
-                        $('div.ui-dialog').css('width','900px');
-                        $('.ui-dialog .ui-dialog-content').css('padding','0.5em 1em');
+                        $('div.ui-dialog').css('width','800px');
+//                        $('.ui-dialog .ui-dialog-content').css('padding','0.5em 1em');
 
                         /* Hide the results page */
                         $('.create-alert-customize-results').css('display','none');
@@ -1276,7 +1287,7 @@ function addPaddingToDataCells(table){
                         /* Update css of dialog  */
                         $('div.ui-dialog').css('height','auto');
                         $('div.ui-dialog').css('width','auto');
-                        $('.ui-dialog .ui-dialog-content').css('padding','0.5em 0px');
+//                        $('.ui-dialog .ui-dialog-content').css('padding','0.5em 0px');
 
                         /* Hide the schedule alerts page */
                         $('.create-alert-schedule-alert').replaceWith("<div class='create-alert-schedule-alert'>&nbsp;<br/><br/></div>");
@@ -1379,6 +1390,8 @@ function addPaddingToDataCells(table){
                     /* Update hidden field for new step */
                     $('input:hidden[name="step"]').val('schedule_alert');
                 } else {
+                    $('a.ui-dialog-titlebar-close').hide();
+                    $('#edit-next-submit').attr('disabled', true);
                     $(alertDiv).find('#errorMessages').html('');
 
                     var url = '/alert/transactions';

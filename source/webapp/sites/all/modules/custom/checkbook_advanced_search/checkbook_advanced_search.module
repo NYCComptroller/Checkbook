@@ -537,7 +537,7 @@ function checkbook_advanced_search_form($form, $form_state)
         '#type' => 'button',
         '#value' => t('Next'),
         '#name' => 'next_submit',
-        '#prefix' => t('<div class="create-alert-submit">'),
+        '#prefix' => '<div class="create-alert-submit">',
         '#attributes' => array('class' => array('create_alerts_button')),
     );
     $form['create_alerts']['back_submit'] = array(
