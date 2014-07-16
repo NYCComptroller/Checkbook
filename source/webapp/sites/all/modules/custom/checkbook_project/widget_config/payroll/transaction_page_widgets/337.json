@@ -1,4 +1,5 @@
 {
+"stickyHeader":true,
 "widgetType": "data_tables",
 "widgetSubType": "dataTableList",
 "cleanURLParameters":["year","empnm","agencyh","payfq","paydate","baseamt","overamt","otheramt","grossamt","totalgrosspay","salamt","salamttype","agency"],
