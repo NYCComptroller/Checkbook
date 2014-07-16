@@ -141,11 +141,10 @@
                 {"sClass":"number pad-left","sWidth":"84px","asSorting": [ "desc","asc" ]},
                 {"sClass":"number pad-left","sWidth":"84px","asSorting": [ "desc","asc" ]},
                 {"sClass":"number pad-left","sWidth":"90px","asSorting": [ "desc","asc" ]},
-                {"sClass":"number pad-left endCol","sWidth":"100px","asSorting": [ "desc","asc" ]}
+                {"sClass":"number pad-left endCol","sWidth":"109px","asSorting": [ "desc","asc" ]}
 
       ],
 "sScrollX": "100%",
-"bScrollCollapse": false,
-"fnInitComplete": "##function () { }##"
+"bScrollCollapse": true
 }
 }
