@@ -10,6 +10,7 @@
 ",
 "useList":true,
 "getTotalDataCount":true,
+"stickyHeader":true,
 "limit":"10",
 "noDataInitialLoad":true,
 "html_class": "initiative-table",
@@ -84,14 +85,16 @@
         "bInfo": true,
         "aaSorting":[[7,"desc"]],
          "aoColumns": [
-		        {"sClass":"text", "sWidth":"135px","asSorting": [ "asc","desc" ]},
-                {"sClass":"text", "sWidth":"75px","asSorting": [ "asc","desc" ]},
-                {"sClass":"text", "sWidth":"75px","asSorting": [ "asc","desc" ]},
-                {"sClass":"number","sWidth":"75px","asSorting": [ "desc","asc" ]},
-                {"sClass":"number","sWidth":"75px","asSorting": [ "desc","asc" ]},
-                {"sClass":"number","sWidth":"75px","asSorting": [ "desc","asc" ]},
-                {"sClass":"number","sWidth":"75px","asSorting": [ "desc","asc" ]},
+		        {"sClass":"text", "sWidth":"175px","asSorting": [ "asc","desc" ]},
+                {"sClass":"text", "sWidth":"108px","asSorting": [ "asc","desc" ]},
+                {"sClass":"text", "sWidth":"110px","asSorting": [ "asc","desc" ]},
+                {"sClass":"number","sWidth":"110px","asSorting": [ "desc","asc" ]},
+                {"sClass":"number","sWidth":"110px","asSorting": [ "desc","asc" ]},
+                {"sClass":"number","sWidth":"110px","asSorting": [ "desc","asc" ]},
+                {"sClass":"number","sWidth":"115px","asSorting": [ "desc","asc" ]},
                 {"sClass":"number endCol","sWidth":"100px","asSorting": [ "desc","asc" ]}
-        ]
+        ],
+"sScrollX": "100%",
+"bScrollCollapse": false
 }
 }
