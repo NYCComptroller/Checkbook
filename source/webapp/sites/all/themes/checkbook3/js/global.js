@@ -1073,7 +1073,6 @@ function addPaddingToDataCells(table){
 
                 return false;
             });
-
             $("#checkbook_advanced_search_result_iframe").load(function() {
                 $('.create-alert-submit').css('display','block');
             });
@@ -1088,7 +1087,7 @@ function addPaddingToDataCells(table){
                 else if(step == 'schedule_alert') {
                     $('#edit-next-submit').attr('disabled', false);
                     $('#edit-back-submit').attr('disabled', false);
-                    $('a.ui-dialog-titlebar-close', window.parent.document).show();
+                    $('a.ui-dialog-titlebar-close').show();
                 }
                 else {
                     $('#edit-back-submit').attr('disabled', false);
@@ -1465,6 +1464,14 @@ function addPaddingToDataCells(table){
                     $('.create-alert-results-loading', window.parent.document).css('visibility', 'hidden');
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).css('visibility', 'visible');
                     $('a.ui-dialog-titlebar-close', window.parent.document).show();
+
+                    /* On parent back button click, need to re-stick the header */
+                    $('#edit-back-submit', window.parent.document).click(function (event) {
+                        var step = $('input:hidden[name="step"]', window.parent.document).val();
+                        if(step == 'customize_results') {
+                            setTimeout(function() { fnCustomInitCompleteReload(); }, 250);
+                        }
+                    });
 
                     $(document).ajaxComplete(function() {
 
