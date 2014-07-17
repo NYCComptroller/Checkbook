@@ -30,6 +30,11 @@
   $count = 0;
   $clickClass = "clickOnLoad";
   $count = 0;
+  if(preg_match("/newwindow/",current_path())){
+	$new_window="/newwindow";
+  }else{
+	$new_window="";
+  }
   foreach ($node->data as $contract) {
     if ($count % 2 == 0) {
       $class = "class=\"odd\"";
@@ -37,19 +42,25 @@
     else {
       $class = "class=\"even\"";
     }
+    
+    if(preg_match("/newwindow/",current_path())){
+		$child_contract_link=$contract['contract_number'];
+    	
+    }else{
+		$child_contract_link ="<a
+          href='/panel_html/contract_transactions/contract_details/agid/". $contract["original_agreement_id"]. "/doctype/"
+          		. $contract["document_code@checkbook:ref_document_code"] . "'
+          class='bottomContainerReload'>" . $contract['contract_number'] . "</a>";    }
 
     ?>
   <tr>
     <td class="assoc_item">
       <div class="contract-title clearfix">
-             <span agurl="/minipanels/contracts_cta_history/agid/<?php echo $contract['original_agreement_id']; ?>"
+             <span agurl="/minipanels/contracts_cta_history/agid/<?php echo $contract['original_agreement_id'] . $new_window; ?>"
                    class="toggler collapsed <?php echo $clickClass . " " . $class; ?>"
                    id="master_assoc_cta_expand"></span>
 
-        <div class='contract-title-text'>Contract Spending for <a
-          href="/panel_html/contract_transactions/contract_details/agid/<?php echo $contract['original_agreement_id']; ?>/doctype/
-<?php echo $contract['document_code@checkbook:ref_document_code']; ?>"
-          class="bottomContainerReload"><?php echo $contract['contract_number']; ?></a></div>
+        <div class='contract-title-text'>Contract Spending for <?php echo $child_contract_link ?> </div>
         <div class="rfed-amount"><?php echo custom_number_formatter_format($contract['rfed_amount'], 2, '$');?></div>
       </div>
 
