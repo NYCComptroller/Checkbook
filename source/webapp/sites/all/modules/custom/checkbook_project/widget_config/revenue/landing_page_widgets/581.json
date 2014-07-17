@@ -29,13 +29,11 @@
     $url .= _checkbook_project_get_year_url_param_string();
     $count = $node->count;
     $footer = '';
-    if($node->totalDataCount > 5)
-       $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
-    else if($node->totalDataCount > 0 && $node->totalDataCount <= 5)
-       $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
+    if($node->totalDataCount > 0)
+    $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
     else
-       $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
-    return $footer;
+    $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
+        return $footer;
 ",
  "derivedColumns":{
     "current_recognized_formatted":{
