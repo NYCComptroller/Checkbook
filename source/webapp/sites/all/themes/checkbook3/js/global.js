@@ -901,8 +901,6 @@ function addPaddingToDataCells(table){
                     autoHeight: false,
                     active: active_accordion_window
                 });
-                /* Correct min-height for IE9, causes hover event to add spaces */
-                $('#block-checkbook-advanced-search-checkbook-advanced-search-form').css('min-height','0%');
 
                 /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
                 disableAccordionSections(data_source);
@@ -970,6 +968,10 @@ function addPaddingToDataCells(table){
         $('#edit-next-submit').attr('disabled', true);
         $('#edit-back-submit').attr('disabled', true);
         $('.create-alert-submit').css('display','none');
+//        $('.ui-dialog .ui-dialog-content').css('padding','0.5em 1em');
+//        $('#spending-advanced-search').css('width','auto');
+//        $('#spending-advanced-search').css('height','auto');
+//        $('.advanced-search-accordion').width('100%');
         switch(accordion_type) {
             case 'advanced_search':
                 $('.create-alert-view').css('display','none');
@@ -1046,6 +1048,7 @@ function addPaddingToDataCells(table){
                         $(".ui-autocomplete-input").autocomplete("close")
                     },
                     open: function(){
+
                     },
                     close: function(){
                         $(".ui-autocomplete-input").autocomplete("close");
@@ -1059,8 +1062,6 @@ function addPaddingToDataCells(table){
                         $('.create-alert-view').replaceWith(createAlertsDiv);
                     }
                 });
-                /* Correct min-height for IE9, causes hover event to add spaces */
-                $('#block-checkbook-advanced-search-checkbook-advanced-search-form').css('min-height','0%');
 
                 $('.advanced-search-accordion').accordion({
                     autoHeight: false,
