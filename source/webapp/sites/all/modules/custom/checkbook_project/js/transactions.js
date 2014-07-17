@@ -35,27 +35,26 @@ function applyTableListFilters(){
     oTable.fnSettings().sAjaxSource = cUrl;
     oTable.fnClearTable(0);
     oTable.fnDraw();
-    
-    setTimeout(function(){fnCustomInitCompleteReload();}, 5000);
+    jQuery(document).ajaxComplete(function(event, xhr, settings) {
+        var str = '/dashboard_platform/data_tables_list/ajax_data/node/';
+        if (settings.url.toLowerCase().indexOf(str) >= 0){
+            setTimeout(function(){fnCustomInitCompleteReload();}, 250);}
+     });
     reloadSidebar(cUrl);
 }
 
 
 function fnCustomInitCompleteReload() {
-	//alert('here123');
-	//jQuery('.dataTables_scrollHead').unstick();
-	//jQuery('.DTFC_LeftHeadWrapper').unstick();	
     var topSpacing = 66;
     var tableOffsetTop = jQuery('.dataTables_scroll').offset().top;
     var tableHeight = jQuery('.dataTables_scroll').height();
     var docHeight = jQuery(document).height();
     var bottomSpacing = docHeight - (tableOffsetTop + tableHeight)  ;
-    alert(bottomSpacing);
 
     jQuery('.dataTables_scrollHead').sticky({ 'topSpacing': topSpacing , 'bottomSpacing': bottomSpacing, getWidthFrom:'.dataTables_scroll' });
     jQuery('.dataTables_scrollHead').sticky('update');
 
-    if(jQuery('.DTFC_ScrollWrapper').offset()) {
+    if(jQuery('.DTFC_ScrollWrapper') && jQuery('.DTFC_ScrollWrapper').offset()) {
         jQuery('.DTFC_LeftHeadWrapper').sticky({ 'topSpacing': topSpacing , 'bottomSpacing': bottomSpacing, getWidthFrom:'.DTFC_LeftWrapper' });
         jQuery('.DTFC_LeftHeadWrapper').sticky('update');
     }
