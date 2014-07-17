@@ -1088,6 +1088,10 @@ function addPaddingToDataCells(table){
                     $('#edit-next-submit').attr('disabled', false);
                     $('#edit-back-submit').attr('disabled', false);
                     $('a.ui-dialog-titlebar-close').show();
+
+                    /* hide loading icon */
+                    $('.create-alert-results-loading').css('visibility', 'hidden');
+                    $('.create-alert-results-loading').css('display', 'inline');
                 }
                 else {
                     $('#edit-back-submit').attr('disabled', false);
@@ -1146,6 +1150,8 @@ function addPaddingToDataCells(table){
 
                         /* Hide the iFrame */
                         $('#checkbook_advanced_search_result_iframe').css('visibility','hidden');
+
+                        /* Show loading icon */
                         $('.create-alert-results-loading').css('visibility', 'visible');
                         $('.create-alert-results-loading').css('display', 'block');
 
@@ -1203,6 +1209,10 @@ function addPaddingToDataCells(table){
 
                         /* Hide the results page */
                         $('.create-alert-customize-results').css('display','none');
+
+                        /* Show loading icon */
+                        $('.create-alert-results-loading').css('visibility', 'visible');
+                        $('.create-alert-results-loading').css('display', 'block');
 
                         /* Show the schedule alert page */
                         $('.create-alert-schedule-alert').css('display','inline');
@@ -1408,6 +1418,7 @@ function addPaddingToDataCells(table){
                     $.get(url,data,function(data){
                         data=JSON.parse(data);
                         if(data.success){
+                            $('a.ui-dialog-titlebar-close').show();
                             $this.dialog('close');
                             $('#block-checkbook-advanced-search-checkbook-advanced-search-form').dialog('close');
                             var dialog = $("#dialog");
