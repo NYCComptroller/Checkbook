@@ -1164,7 +1164,6 @@ function addPaddingToDataCells(table){
                         /* Update width of dialog - TBD add class */
                         $('div.ui-dialog').css('height','385px');
                         $('div.ui-dialog').css('width','auto');
-//                        $('.ui-dialog .ui-dialog-content').css('padding','0.5em 0px');
 
                         /* Hide the accordion */
                         $('.advanced-search-accordion').css('display','none');
@@ -1202,7 +1201,6 @@ function addPaddingToDataCells(table){
                         /* Update width of dialog - TBD add class*/
                         $('div.ui-dialog').css('height','auto');
                         $('div.ui-dialog').css('width','800px');
-//                        $('.ui-dialog .ui-dialog-content').css('padding','0.5em 1em');
 
                         /* Hide the results page */
                         $('.create-alert-customize-results').css('display','none');
@@ -1256,7 +1254,6 @@ function addPaddingToDataCells(table){
                         /* Update css of dialog  */
                         $('div.ui-dialog').css('height','auto');
                         $('div.ui-dialog').css('width','800px');
-//                        $('.ui-dialog .ui-dialog-content').css('padding','0.5em 1em');
 
                         /* Hide the results page */
                         $('.create-alert-customize-results').css('display','none');
@@ -1287,7 +1284,6 @@ function addPaddingToDataCells(table){
                         /* Update css of dialog  */
                         $('div.ui-dialog').css('height','auto');
                         $('div.ui-dialog').css('width','auto');
-//                        $('.ui-dialog .ui-dialog-content').css('padding','0.5em 0px');
 
                         /* Hide the schedule alerts page */
                         $('.create-alert-schedule-alert').replaceWith("<div class='create-alert-schedule-alert'>&nbsp;<br/><br/></div>");
@@ -1298,6 +1294,9 @@ function addPaddingToDataCells(table){
 
                         /* Update button text */
                         $('div.create-alert-submit #edit-next-submit').val('Next');
+
+                        /* Remove focus from back */
+                        $('#edit-back-submit').blur();
 
                         /* Show results buttons */
                         $('.create-alert-submit').css('display','block');
@@ -1452,7 +1451,6 @@ function addPaddingToDataCells(table){
                     //No results
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).css('height', '100%');
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).attr('scrolling', 'no');
-//                    $('#checkbook_advanced_search_result_iframe', window.parent.document).css('width', 975);
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).css('padding-left', '10px');
                     $('div.ui-dialog', window.parent.document).css('height', 385);
                     //Fix content formatting
@@ -1475,7 +1473,6 @@ function addPaddingToDataCells(table){
                         }
 
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('height', 600);
-//                        $('#checkbook_advanced_search_result_iframe', window.parent.document).css('width', 1000);
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).attr('scrolling', 'yes');
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('overflow-x', 'hidden');
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('overflow-y', 'scroll');
