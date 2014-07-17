@@ -43,9 +43,9 @@ function applyTableListFilters(){
     reloadSidebar(cUrl);
 }
 
-
 function fnCustomInitCompleteReload() {
-    var topSpacing = 66;
+
+    var topSpacing = 0;
     var tableOffsetTop = jQuery('.dataTables_scroll').offset().top;
     var tableHeight = jQuery('.dataTables_scroll').height();
     var docHeight = jQuery(document).height();
