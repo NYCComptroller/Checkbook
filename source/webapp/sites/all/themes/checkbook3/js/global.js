@@ -886,7 +886,6 @@ function addPaddingToDataCells(table){
                         $(".ui-autocomplete-input").autocomplete("close")
                     },
                     open: function(){
-                        $('#block-checkbook-advanced-search-checkbook-advanced-search-form').css('min-height','0%');
                     },
                     close: function(){
                         $(".ui-autocomplete-input").autocomplete("close")
@@ -902,6 +901,8 @@ function addPaddingToDataCells(table){
                     autoHeight: false,
                     active: active_accordion_window
                 });
+                /* Correct min-height for IE9, causes hover event to add spaces */
+                $('#block-checkbook-advanced-search-checkbook-advanced-search-form').css('min-height','0%');
 
                 /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
                 disableAccordionSections(data_source);
@@ -1045,7 +1046,6 @@ function addPaddingToDataCells(table){
                         $(".ui-autocomplete-input").autocomplete("close")
                     },
                     open: function(){
-                        $('#block-checkbook-advanced-search-checkbook-advanced-search-form').css('min-height','0%');
                     },
                     close: function(){
                         $(".ui-autocomplete-input").autocomplete("close");
@@ -1059,6 +1059,8 @@ function addPaddingToDataCells(table){
                         $('.create-alert-view').replaceWith(createAlertsDiv);
                     }
                 });
+                /* Correct min-height for IE9, causes hover event to add spaces */
+                $('#block-checkbook-advanced-search-checkbook-advanced-search-form').css('min-height','0%');
 
                 $('.advanced-search-accordion').accordion({
                     autoHeight: false,
