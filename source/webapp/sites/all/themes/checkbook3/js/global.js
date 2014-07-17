@@ -886,6 +886,7 @@ function addPaddingToDataCells(table){
                         $(".ui-autocomplete-input").autocomplete("close")
                     },
                     open: function(){
+                        $('#block-checkbook-advanced-search-checkbook-advanced-search-form').css('min-height','0%');
                     },
                     close: function(){
                         $(".ui-autocomplete-input").autocomplete("close")
@@ -968,10 +969,6 @@ function addPaddingToDataCells(table){
         $('#edit-next-submit').attr('disabled', true);
         $('#edit-back-submit').attr('disabled', true);
         $('.create-alert-submit').css('display','none');
-//        $('.ui-dialog .ui-dialog-content').css('padding','0.5em 1em');
-//        $('#spending-advanced-search').css('width','auto');
-//        $('#spending-advanced-search').css('height','auto');
-//        $('.advanced-search-accordion').width('100%');
         switch(accordion_type) {
             case 'advanced_search':
                 $('.create-alert-view').css('display','none');
@@ -1048,7 +1045,7 @@ function addPaddingToDataCells(table){
                         $(".ui-autocomplete-input").autocomplete("close")
                     },
                     open: function(){
-
+                        $('#block-checkbook-advanced-search-checkbook-advanced-search-form').css('min-height','0%');
                     },
                     close: function(){
                         $(".ui-autocomplete-input").autocomplete("close");
