@@ -4,30 +4,37 @@
             $('#edit-payroll-clear').click(function(e){
                 //$('#checkbook-advanced-search-form')[0].reset(); //this works
                 clearInputFields('#payroll-advanced-search','payroll');
+                $(this).blur(); /* Remove focus */
                 e.preventDefault();
             });
             $('#edit-budget-clear').click(function(e){
                 clearInputFields('#budget-advanced-search','budget');
+                $(this).blur(); /* Remove focus */
                 e.preventDefault();
             });
             $('#edit-revenue-clear').click(function(e){
                 clearInputFields('#revenue-advanced-search','revenue');
+                $(this).blur(); /* Remove focus */
                 e.preventDefault();
             });
             $('div.contracts-submit.checkbook-oge').find('input:submit[value="Clear All"]').click(function(e){
                 clearInputFieldByDataSource("#contracts-advanced-search",'contracts','checkbook_oge');
+                $(this).blur(); /* Remove focus */
                 e.preventDefault();
             });
             $('div.contracts-submit.checkbook').find('input:submit[value="Clear All"]').click(function(e){
                 clearInputFieldByDataSource("#contracts-advanced-search",'contracts','checkbook');
+                $(this).blur(); /* Remove focus */
                 e.preventDefault();
             });
             $('div.spending-submit.checkbook-oge').find('input:submit[value="Clear All"]').click(function(e){
                 clearInputFieldByDataSource("#spending-advanced-search",'spending','checkbook_oge');
+                $(this).blur(); /* Remove focus */
                 e.preventDefault();
             });
             $('div.spending-submit.checkbook').find('input:submit[value="Clear All"]').click(function(e){
                 clearInputFieldByDataSource("#spending-advanced-search",'spending','checkbook');
+                $(this).blur(); /* Remove focus */
                 e.preventDefault();
             });
         }
