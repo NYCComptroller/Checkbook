@@ -40,6 +40,7 @@ function applyTableListFilters(){
         if (settings.url.toLowerCase().indexOf(str) >= 0){
             setTimeout(function(){fnCustomInitCompleteReload();}, 250);}
      });
+
     reloadSidebar(cUrl);
 }
 
@@ -58,6 +59,11 @@ function fnCustomInitCompleteReload() {
         jQuery('.DTFC_LeftHeadWrapper').sticky({ 'topSpacing': topSpacing , 'bottomSpacing': bottomSpacing, getWidthFrom:'.DTFC_LeftWrapper' });
         jQuery('.DTFC_LeftHeadWrapper').sticky('update');
     }
+
+    var leftPos = jQuery('.dataTables_scrollHead').scrollLeft();
+    var headerWidth = jQuery('.dataTables_scrollHeadInner table').css("width");
+    headerWidth = parseInt(headerWidth, 10);
+    jQuery('.dataTables_scrollHead').scrollLeft(headerWidth-leftPos);
 }
 
 function applyTableListFiltersAutocomplete(label, field){
