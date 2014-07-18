@@ -61,7 +61,7 @@ function fnCustomInitCompleteReload() {
     }
 
     var leftPos = jQuery('.dataTables_scrollHead').scrollLeft();
-    var headerWidth = jQuery('.dataTables_scrollHeadInner table').css("width");
+    var headerWidth = jQuery('.dataTables_scrollHead').css("width");
     headerWidth = parseInt(headerWidth, 10);
     jQuery('.dataTables_scrollHead').scrollLeft(headerWidth-leftPos);
 }
