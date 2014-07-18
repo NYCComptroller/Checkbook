@@ -1276,3 +1276,19 @@ body.context-resources h1, body.page-node-503 h1, body.page-node-504 h1, body.pa
 body.page-featured-trends #featured-trends-thumbnails{
     margin-top: 20px;
 }
+
+#region-header-first .advanced-search-create-alert {
+    display:block;
+    width:65px;
+    height:36px;
+    background: url("../images/create-alert-large.png") no-repeat top center transparent;
+    float: right;
+    position: absolute;
+    top:-38px;
+    right: 35px;
+    height: 35px;
+    margin: 0px;
+    line-height: 88px;
+    cursor: pointer;
+    color: #1F82C9;
+}
