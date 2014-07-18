@@ -173,15 +173,15 @@
 "dataTableOptions":{
     "aoColumns": [
         /*{ "bSortable": true,"sWidth":"250px","sClass":"text" },*/
-        { "bSortable": true,"sWidth":"223px","sClass":"text" },
-        { "bSortable": true,"sWidth":"140px","sClass":"number","asSorting": [ "desc","asc"  ] },
-        { "bSortable": true,"sWidth":"140px" ,"sClass":"number","asSorting": [ "desc" ,"asc" ]},
-        { "bSortable": true,"sWidth":"140px" ,"sClass":"number","asSorting": [ "desc" ,"asc" ]},
-        { "bSortable": true,"sWidth":"140px","sClass":"number","asSorting": [ "desc","asc"  ] },
-        { "bSortable": true,"sWidth":"140px","sClass":"number","asSorting": [ "desc","asc"  ] },
-        { "bSortable": true,"sWidth":"140px","sClass":"number","asSorting": [ "desc","asc"  ] },
-        { "bSortable": true,"sWidth":"140px","sClass":"number","asSorting": [ "desc","asc"  ] },
-        { "bSortable": true,"sWidth":"15px" }
+        { "bSortable": true,"sWidth":"250px","sClass":"text" },
+        { "bSortable": true,"sWidth":"160px","sClass":"number","asSorting": [ "desc","asc"  ] },
+        { "bSortable": true,"sWidth":"160px" ,"sClass":"number","asSorting": [ "desc" ,"asc" ]},
+        { "bSortable": true,"sWidth":"160px" ,"sClass":"number","asSorting": [ "desc" ,"asc" ]},
+        { "bSortable": true,"sWidth":"160px","sClass":"number","asSorting": [ "desc","asc"  ] },
+        { "bSortable": true,"sWidth":"160px","sClass":"number","asSorting": [ "desc","asc"  ] },
+        { "bSortable": true,"sWidth":"178px","sClass":"number","asSorting": [ "desc","asc"  ] },
+        { "bSortable": true,"sWidth":"178px","sClass":"number","asSorting": [ "desc","asc"  ] },
+        { "bSortable": true,"sWidth":"30px" }
     ],
     "aaSorting":[[4,"desc"]],
     "bRetrieve": true,
