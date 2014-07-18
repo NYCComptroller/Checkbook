@@ -346,7 +346,7 @@ function addPaddingToDataCells(table){
     // Agencies Drop Down
     Drupal.behaviors.agenciesDropDown = {
         attach:function (context, settings) {
-            $('.agency-list-open span, .agency-list-open div b').once('agenciesDropDown').click(function () {
+            $('.agency-list-open span, .agency-list-open div b').once('agenciesListOpen').click(function () {
             	if($(this).attr("id")== "other-agency-list-open"){
             		$('.all-agency-list-content').slideUp(300);            		
             	}else{
@@ -357,42 +357,42 @@ function addPaddingToDataCells(table){
                 $(this).parent().find(' div b').toggleClass('open');
             });
 
-            $('.agency-list-close a').once('agenciesDropDown').click(function () {
+            $('.agency-list-close a').once('agenciesListClose').click(function () {
                 $('.agency-list-content').slideUp(300);
                 $('.agency-list-open div b').removeClass('open');
             });
 
-            if ($('#allAgenciesList').length > 0) {
-                $('#allAgenciesList')
-                    .once('agenciesDropDown')
-                    .after('<div id="agency-list-pager1" class="agency-list-pager"></div>')
-                    .cycle({
-                        fx:'none',
-                        speed:1000,
-                        timeout:0,
-                        pause:true,
-                        pauseOnPagerHover:0,
-                        pager:'#agency-list-pager1',
-                        prev:'#prev1',
-                        next:'#next1'
-                    });
-            }
+            if($('#agency-list-pager1').children().length == 0)
+                if ($('#allAgenciesList').length > 0) {
+                    $('#allAgenciesList')
+                        .after('<div id="agency-list-pager1" class="agency-list-pager"></div>')
+                        .cycle({
+                            fx:'none',
+                            speed:1000,
+                            timeout:0,
+                            pause:true,
+                            pauseOnPagerHover:0,
+                            pager:'#agency-list-pager1',
+                            prev:'#prev1',
+                            next:'#next1'
+                        });
+                }
 
-            if ($('#otherAgenciesList').length > 0) {
-                $('#otherAgenciesList')
-                    .once('agenciesDropDown')
-                    .after('<div id="agency-list-pager2" class="agency-list-pager"></div>')
-                    .cycle({
-                        fx:'none',
-                        speed:1000,
-                        timeout:0,
-                        pause:true,
-                        pauseOnPagerHover:0,
-                        pager:'#agency-list-pager2',
-                        prev:'#prev2',
-                        next:'#next2'
-                    });
-            }
+            if($('#agency-list-pager2').children().length == 0)
+                if ($('#otherAgenciesList').length > 0) {
+                    $('#otherAgenciesList')
+                        .after('<div id="agency-list-pager2" class="agency-list-pager"></div>')
+                        .cycle({
+                            fx:'none',
+                            speed:1000,
+                            timeout:0,
+                            pause:true,
+                            pauseOnPagerHover:0,
+                            pager:'#agency-list-pager2',
+                            prev:'#prev2',
+                            next:'#next2'
+                        });
+                }
         }
     };
 
