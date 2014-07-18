@@ -60,10 +60,8 @@ function fnCustomInitCompleteReload() {
         jQuery('.DTFC_LeftHeadWrapper').sticky('update');
     }
 
-    var leftPos = jQuery('.dataTables_scrollHead').scrollLeft();
-    var headerWidth = jQuery('.dataTables_scrollHead').css("width");
-    headerWidth = parseInt(headerWidth, 10);
-    jQuery('.dataTables_scrollHead').scrollLeft(headerWidth-leftPos);
+    jQuery('.dataTables_scrollHead').scrollLeft(0);
+    jQuery('.dataTables_scrollBody').scrollLeft(0);
 }
 
 function applyTableListFiltersAutocomplete(label, field){
