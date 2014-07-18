@@ -45,7 +45,6 @@ function clearInputFields(enclosingDiv,domain){
     jQuery(enclosingDiv).find(':input').each(function() {
         switch(this.type){
             case 'select-one':
-                //jQuery('#edit-spending-fiscal-year').removeAttr("disabled");
                 var defaultoption = jQuery(this).attr('default_selected_value');
                 if(defaultoption == null)
                     jQuery(this).find('option:first').attr("selected", "selected");
@@ -71,6 +70,14 @@ function clearInputFields(enclosingDiv,domain){
                 break;
         }
     })
+    /* Disable the drop-downs by domain */
+    switch(domain)
+    {
+        case 'budget':
+            jQuery('#edit-budget-expense-category').attr("disabled", "disabled");
+            jQuery('#edit-budget-department').attr("disabled", "disabled");
+            break;
+    }
 }
 
 function clearInputFieldByDataSource(enclosingDiv,domain,dataSource){
