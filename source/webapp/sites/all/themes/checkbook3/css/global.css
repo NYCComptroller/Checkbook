@@ -1058,13 +1058,23 @@ div.create-alert-schedule-alert select{
 }
 
 #region-header-first .advanced-search-create-alert {
-    background: url("../images/create-alert-large.png") no-repeat scroll center bottom 0px transparent;
+    display:block;
+    width:65px;
+    height:36px;
+    background: url("../images/create-alert-large.png") no-repeat top center transparent;
     float: right;
-    margin: -35px -190px 0px 0px;
+    position: absolute;
+    top:-35px;
+    right: 40px;
     height: 35px;
+    margin: 0px;
     line-height: 88px;
     cursor: pointer;
     color: #1F82C9;
+}
+
+#region-header-first div.block-inner.clearfix {
+    position: relative;
 }
 
 #ui-dialog-title-block-checkbook-advanced-search-checkbook-advanced-search-form span.active{
