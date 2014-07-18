@@ -1,6 +1,7 @@
 {
 "widgetType": "data_tables",
 "widgetSubType":"dataTableList",
+ "stickyHeader":true,
 "header":"
     $header = NULL;
     $header .= widget_data_tables_export_link($node);
@@ -79,13 +80,13 @@
   ],
 "dataTableOptions":{
     "aoColumns": [
-        { "bSortable": true,"sWidth":"250px","sClass":"text" },
+        { "bSortable": true,"sWidth":"150px","sClass":"text" },
         { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
         { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
         { "bSortable": true,"sWidth":"150px" ,"sClass":"number","asSorting": [ "desc" ,"asc" ]},
         { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
         { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
-        { "bSortable": true,"sWidth":"15px" }
+        { "bSortable": true,"sWidth":"38px" }
     ],
     "aaSorting":[[1,"desc"]],
     "bRetrieve": true,
@@ -101,6 +102,8 @@
             "sInfo": "Displaying transactions _START_ - _END_ of _TOTAL_",
             "sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
     },
-    "bInfo": true
+    "bInfo": true,
+    "sScrollX": "100%",
+    "bScrollCollapse": true
 }
 }
