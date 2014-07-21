@@ -1060,7 +1060,6 @@ div.create-alert-schedule-alert select{
 #region-header-first .advanced-search-create-alert {
     display:block;
     width:65px;
-    height:36px;
     background: url("../images/create-alert-large.png") no-repeat top center transparent;
     float: right;
     position: absolute;
@@ -1077,10 +1076,7 @@ div.create-alert-schedule-alert select{
     position: relative;
 }
 
-#ui-dialog-title-block-checkbook-advanced-search-checkbook-advanced-search-form span.active{
-
-}
-#ui-dialog-title-block-checkbook-advanced-search-checkbook-advanced-search-form span.inactive{
+.create-alert-header span.inactive{
     opacity: 0.3;
 }
 #checkbook_advanced_search_result_iframe {
@@ -1145,6 +1141,7 @@ div.create-alert-schedule-alert select{
 #checkbook-advanced-search-form #edit-contracts-clear--2,
 #checkbook-advanced-search-form #edit-payroll-submit,
 #checkbook-advanced-search-form #edit-payroll-clear,
+#checkbook-advanced-search-form #edit-payroll-next,
 #checkbook-advanced-search-form #edit-budget-submit,
 #checkbook-advanced-search-form #edit-budget-clear,
 #checkbook-advanced-search-form #edit-revenue-submit,

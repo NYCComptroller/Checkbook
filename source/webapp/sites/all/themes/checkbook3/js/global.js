@@ -1158,6 +1158,11 @@ function addPaddingToDataCells(table){
                         /* Show the results page */
                         $('.create-alert-customize-results').css('display','block');
 
+                        /* Update width of dialog dimension */
+                        $('div.ui-dialog-titlebar').css('width', 994);
+                        $('div.ui-dialog').css('width', 1023);
+                        $('div.ui-dialog').css('height','385px');
+
                         /* Update header */
                         header = "<span class='create-alert-header'><span class='inactive'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='active'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>3. Schedule Alerts</span></span>";
                         $('.create-alert-header').replaceWith(header);
@@ -1165,10 +1170,6 @@ function addPaddingToDataCells(table){
                         /* Update wizard instructions */
                         instructions = "<span class='create-alert-instructions'>Further narrow down the results using the 'Narrow down your search' functionality.<ul><li>Click 'Export' button to download the results into excel.<\/li><li>Click 'Back' to go back to Step1: Select Criteria<\/li><li>Click 'Next' button to Schedule Alert.<\/li><\/ul><\/br></span>";
                         $('.create-alert-instructions').replaceWith(instructions);
-
-                        /* Update width of dialog - TBD add class */
-                        $('div.ui-dialog').css('height','385px');
-                        $('div.ui-dialog').css('width','auto');
 
                         /* Hide the accordion */
                         $('.advanced-search-accordion').css('display','none');
@@ -1184,6 +1185,11 @@ function addPaddingToDataCells(table){
 
                     case 'customize_results':
                         next_step = 'schedule_alert';
+
+                        /* Update width of dialog dimension */
+                        $('div.ui-dialog-titlebar').css('width', 'auto');
+                        $('div.ui-dialog').css('height','auto');
+                        $('div.ui-dialog').css('width','800px');
 
                         /* Update header */
                         header = "<span class='create-alert-header'><span class='inactive'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='active'>3. Schedule Alerts</span></span>";
@@ -1203,10 +1209,6 @@ function addPaddingToDataCells(table){
                         $('#edit-next-submit').css('display','inline');
                         $('#edit-back-submit').css('display','inline');
 
-                        /* Update width of dialog - TBD add class*/
-                        $('div.ui-dialog').css('height','auto');
-                        $('div.ui-dialog').css('width','800px');
-
                         /* Hide the results page */
                         $('.create-alert-customize-results').css('display','none');
 
@@ -1222,6 +1224,9 @@ function addPaddingToDataCells(table){
 
                         /* Update hidden field for new step */
                         $('input:hidden[name="step"]').val(next_step);
+
+                        /* Remove focus scedule alerts button */
+                        $('#edit-next-submit').blur();
 
                         break;
 
@@ -1252,6 +1257,11 @@ function addPaddingToDataCells(table){
                     case 'customize_results':
                         previous_step = 'select_criteria';
 
+                        /* Update width of dialog dimension */
+                        $('div.ui-dialog-titlebar').css('width', 'auto');
+                        $('div.ui-dialog').css('height','auto');
+                        $('div.ui-dialog').css('width','800px');
+                        
                         /* Update header */
                         header = "<span class='create-alert-header'><span class='active'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>3. Schedule Alerts</span></span>";
                         $('.create-alert-header').replaceWith(header);
@@ -1260,15 +1270,8 @@ function addPaddingToDataCells(table){
                         instructions = "<span class='create-alert-instructions'>Follow the three step process to schedule alerts.<ul><li>Please select one of the following domains and also select the desired filters.<\/li><li>Click 'Next' button to view and customize the results.<\/li><li>Click 'Clear All' to clear out the filters applied.<\/li><\/ul><\/br></span>";
                         $('.create-alert-instructions').replaceWith(instructions);
 
-                        /* Update css of dialog  */
-                        $('div.ui-dialog').css('height','auto');
-                        $('div.ui-dialog').css('width','800px');
-
                         /* Hide the results page */
                         $('.create-alert-customize-results').css('display','none');
-
-                        /* Show the accordion */
-                        $('.advanced-search-accordion').css('display','inline');
 
                         /* Hide results buttons */
                         $('.create-alert-submit').css('display','none');
@@ -1277,10 +1280,18 @@ function addPaddingToDataCells(table){
                         $('#edit-next-submit').css('display','none');
                         $('#edit-back-submit').css('display','none');
 
+                        /* Show the accordion */
+                        $('.advanced-search-accordion').css('display','inline');
+
                         break;
 
                     case 'schedule_alert':
                         previous_step = 'customize_results';
+
+                        /* Update width of dialog dimension */
+                        $('div.ui-dialog-titlebar').css('width', 994);
+                        $('div.ui-dialog').css('width', 1023);
+                        $('div.ui-dialog').css('height','auto');
 
                         /* Update header */
                         header = "<span class='create-alert-header'><span class='inactive'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='active'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>3. Schedule Alerts</span></span>";
@@ -1289,10 +1300,6 @@ function addPaddingToDataCells(table){
                         /* Update wizard instructions */
                         instructions = "<span class='create-alert-instructions'>Further narrow down the results using the 'Narrow down your search' functionality.<ul><li>Click 'Export' button to download the results into excel.<\/li><li>Click 'Back' to go back to Step1: Select Criteria<\/li><li>Click 'Next' button to Schedule Alert.<\/li><\/ul><\/br></span>";
                         $('.create-alert-instructions').replaceWith(instructions);
-
-                        /* Update css of dialog  */
-                        $('div.ui-dialog').css('height','auto');
-                        $('div.ui-dialog').css('width','auto');
 
                         /* Hide the schedule alerts page */
                         $('.create-alert-schedule-alert').replaceWith("<div class='create-alert-schedule-alert'>&nbsp;<br/><br/></div>");
@@ -1462,7 +1469,7 @@ function addPaddingToDataCells(table){
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).css('height', '100%');
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).attr('scrolling', 'no');
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).css('padding-left', '10px');
-                    $('div.ui-dialog', window.parent.document).css('height', 385);
+
                     //Fix content formatting
                     var body = $(document).find('html body');
                     $(body).css('background', '#ffffff');
@@ -1478,8 +1485,8 @@ function addPaddingToDataCells(table){
 
                     /* On parent back button click, need to re-stick the header */
                     $('#edit-back-submit', window.parent.document).click(function (event) {
-                        var step = $('input:hidden[name="step"]', window.parent.document).val();
-                        if(step == 'customize_results') {
+                        var step = $('input:hidden[name="step"]').val();
+                        if(step == 'schedule_alert') {
                             setTimeout(function() { fnCustomInitCompleteReload(); }, 250);
                         }
                     });
@@ -1495,7 +1502,6 @@ function addPaddingToDataCells(table){
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('overflow-x', 'hidden');
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('overflow-y', 'scroll');
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('padding-left', '0px');
-
                         $('div.ui-dialog', window.parent.document).css('height', 835);
                         //Links should be disable in the iframe
                         $(this).find('.dataTable tbody tr td div a').each(function() {
