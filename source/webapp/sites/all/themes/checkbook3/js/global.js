@@ -1026,7 +1026,7 @@ function addPaddingToDataCells(table){
 
 
                 var createAlertsDiv = "<span class='create-alert-instructions'>Follow the three step process to schedule alerts.<ul><li>Please select one of the following domains and also select the desired filters.<\/li><li>Click 'Next' button to view and customize the results.<\/li><li>Click 'Clear All' to clear out the filters applied.<\/li><\/ul><\/br></span>";
-                createAlertsDiv += "<span style='visibility: hidden;display: none;text-align: center' class='create-alert-results-loading'><div class='ajax-progress ajax-progress-throbber'><div class='throbber'>&nbsp;</div></div>Please Wait...</span>";
+                createAlertsDiv += "<span style='visibility: hidden;display: none;' class='create-alert-results-loading'><div class='ajax-progress ajax-progress-throbber'><div class='throbber'>&nbsp;</div></div><p>Please Wait...</p></span>";
                 createAlertsDiv += "<div class='create-alert-customize-results' style='display: none'><br/><br/><br/></div>";
                 createAlertsDiv += "<div class='create-alert-schedule-alert' style='display: none'>&nbsp;<br/><br/></div>";
                 createAlertsDiv = "<div class='create-alert-view'>"+createAlertsDiv+"</div>";
@@ -1468,6 +1468,7 @@ function addPaddingToDataCells(table){
                     //No results
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).css('height', '100%');
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).attr('scrolling', 'no');
+                    $('#checkbook_advanced_search_result_iframe', window.parent.document).attr('scroll', 'no');
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).css('padding-left', '10px');
 
                     //Fix content formatting
@@ -1499,6 +1500,7 @@ function addPaddingToDataCells(table){
 
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('height', 600);
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).attr('scrolling', 'yes');
+                        $('#checkbook_advanced_search_result_iframe', window.parent.document).attr('scroll', 'yes');
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('overflow-x', 'hidden');
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('overflow-y', 'scroll');
                         $('#checkbook_advanced_search_result_iframe', window.parent.document).css('padding-left', '0px');

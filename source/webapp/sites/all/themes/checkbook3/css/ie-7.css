@@ -1307,7 +1307,12 @@ span.alerts {
     top:-10px !important;
 }
 
-.create-alert-header span.inactive{
-    zoom: 1 !important;
-    opacity: 0.3 !important;
+
+.budget-submit .ajax-progress,
+.revenue-submit .ajax-progress,
+.spending-submit .ajax-progress,
+.contracts-submit .ajax-progress,
+.payroll-submit .ajax-progress {
+    display: none !important;
+    visibility: hidden !important;
 }

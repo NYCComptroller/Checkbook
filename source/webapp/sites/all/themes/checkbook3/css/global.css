@@ -1042,6 +1042,19 @@ span.create-alert-instructions ul li {
     padding-left: 7px;
 }
 
+span.create-alert-results-loading {
+    margin: 0 auto;
+    width: 130px;
+}
+span.create-alert-results-loading .ajax-progress.ajax-progress-throbber {
+    float: left;
+    padding-bottom:5px;
+}
+span.create-alert-results-loading p {
+    float: left;
+    margin-top:5px;
+}
+
 div.create-alert-schedule-alert {
     margin-left: 40px;
 }
@@ -1078,9 +1091,6 @@ div.create-alert-schedule-alert select{
 
 .create-alert-header span.inactive{
     opacity: 0.3;
-}
-#checkbook_advanced_search_result_iframe {
-
 }
 
 /* Advanced Search */
@@ -1141,7 +1151,6 @@ div.create-alert-schedule-alert select{
 #checkbook-advanced-search-form #edit-contracts-clear--2,
 #checkbook-advanced-search-form #edit-payroll-submit,
 #checkbook-advanced-search-form #edit-payroll-clear,
-#checkbook-advanced-search-form #edit-payroll-next,
 #checkbook-advanced-search-form #edit-budget-submit,
 #checkbook-advanced-search-form #edit-budget-clear,
 #checkbook-advanced-search-form #edit-revenue-submit,
@@ -1346,7 +1355,8 @@ div.create-alert-schedule-alert select{
 #spending-advanced-search div.spending-submit,
 #contracts-advanced-search div.contracts-submit,
 #checkbook-advanced-search-form div.revenue-submit,
-#checkbook-advanced-search-form div.budget-submit{
+#checkbook-advanced-search-form div.budget-submit,
+#checkbook-advanced-search-form div.payroll-submit{
     padding-top: 10px;
     clear:both;
     text-align: right;
