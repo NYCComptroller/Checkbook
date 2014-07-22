@@ -1281,7 +1281,7 @@ function addPaddingToDataCells(table){
                         $('#edit-back-submit').css('display','none');
 
                         /* Show the accordion */
-                        $('.advanced-search-accordion').css('display','inline');
+                        $('.advanced-search-accordion').css('display','block');
 
                         break;
 
