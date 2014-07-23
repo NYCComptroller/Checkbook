@@ -1973,6 +1973,23 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
     margin:0px 0px 0px 5px;
 }
 
+.activeExpenseContractNote.toolTip {
+    display:none;
+    position:absolute;
+    top:100px;
+    width:210px;
+    left:20px;
+    padding:8px 12px;
+    background-color: #f4f4f4;
+    color:#3b5f7f;
+    border:1px solid #c5c5c3;
+    -webkit-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.5);
+    -moz-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.5);
+    box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.5);
+    text-transform: none;
+    margin:0px;
+}
+
 .oge-assoc-contracts-list .assoc_item .contract-title{
     margin-bottom:5px;
 }

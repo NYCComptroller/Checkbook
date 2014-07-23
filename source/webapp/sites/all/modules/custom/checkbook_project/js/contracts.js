@@ -38,12 +38,6 @@
 			}
 		});		
 
- 
-	  
-		 
-		
-
-
 	    $('#master_assoc_cta_expand').live( 'click', function () {
 	        var nTr = this.parentNode.parentNode;
 	        if ( jQuery(this).attr('class').match('loader') ){
@@ -82,25 +76,24 @@
 				);
 			}
 
+            $('.activeExpenseContract').hover(
+                function(){
+                    $('.activeExpenseContractNote').css('display', 'block')},
+                function(){
+                    $('.activeExpenseContractNote').css('display', 'none');
+                }
+            );
 
-
-			//check if ajax is being fired on the page or not
+            //check if ajax is being fired on the page or not
             if ($.active > 0) {
-				$( document ).ajaxComplete(function() {
-				  contractNotesToolTip();
-				});
+                $( document ).ajaxComplete(function() {
+                    contractNotesToolTip();
+                });
             }
             else {
-				contractNotesToolTip();
+                contractNotesToolTip();
             }
-
-
-
-		});
-
-
-
-
+        });
 
 }(jQuery));
 
