@@ -10,6 +10,15 @@
 if (typeof Drupal != "undefined") {
 	Drupal.behaviors.narrowDownFiltersTransactions = {
 	        attach:function (context, settings) {
+
+                $('.filter-title').live("click",function (e){
+                    if($(this).next().css('display') == 'block'){
+                        $(this).next().css("display","none");
+                    } else {
+                        $(this).next().css("display","block");
+                    }
+                });
+
 	        	$('input.autocomplete',context).live("focus",function (e) {
 		            $('input.autocomplete',context).autocomplete({
 		                source: function (request,respone){
