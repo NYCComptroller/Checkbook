@@ -35,7 +35,13 @@ else{
 $tooltip = "";
 }
 
-$display_facet = (count($checked) == 0) ? "display:none" :"display:block";
+if(count($checked) == 0){
+    $display_facet ="none";
+    $span = "";
+}else{
+    $display_facet ="block";
+    $span = "open";
+}
 
 if(strtolower($filter_name) == 'agency'){
     if(_checkbook_check_isEDCPage()){
@@ -49,8 +55,8 @@ if(strtolower($filter_name) == 'vendor'){
 }
 ?>
 <div class="filter-content <?php if( $hide_filter != "") print "disabled"; ?>"><div <?php print $hide_filter; ?>>
-  <div class="filter-title" <?php print $tooltip ?>>By <?php print $filter_name;?></div>
-  <div class="facet_content" style="<?php echo $display_facet; ?>">
+  <div class="filter-title" <?php print $tooltip ?>><span class="<?php print $span;?>">By <?php print $filter_name;?></span></div>
+  <div class="facet-content" style="display:<?php echo $display_facet; ?>">
   <div class="progress"></div>
   <?php  
     $pages = ceil($node->totalDataCount/$node->widgetConfig->limit);   

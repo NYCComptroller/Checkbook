@@ -14,8 +14,10 @@ if (typeof Drupal != "undefined") {
                 $('.filter-title').live("click",function (e){
                     if($(this).next().css('display') == 'block'){
                         $(this).next().css("display","none");
+                        $(this).children("span").removeClass("open");
                     } else {
                         $(this).next().css("display","block");
+                        $(this).children("span").addClass("open");
                     }
                 });
 

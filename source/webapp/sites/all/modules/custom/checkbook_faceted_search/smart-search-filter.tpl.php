@@ -56,13 +56,25 @@ foreach ($render_array as $title => $value) {
             if(in_array('checked', $v))
                 $count++;
         }
-        $display_facet = ($count == 0) ? "display:none" :"display:block";
+        if($count == 0){
+            $display_facet = "none";
+            $span = "";
+        }else{
+            $display_facet = "block";
+            $span = "open";
+        }
     }else{
-        $display_facet = (count($value['checked']) > 0) ? "display:block" :"display:none";
+        if(count($value['checked']) > 0 ){
+            $display_facet = "block";
+            $span = "open";
+        }else{
+            $display_facet = "none";
+            $span = "";
+        }
     }
   echo '<div class="filter-content-' . $value['name'] . ' filter-content">';
-  echo '<div class="filter-title">By ' . $title . '</div>';
-  echo '<div class="facet-content" style="'.$display_facet.'" ><div class="progress"></div>';
+  echo '<div class="filter-title"><span class="'.$span.'">By ' . $title . '</span></div>';
+  echo '<div class="facet-content" style="display:'.$display_facet.'" ><div class="progress"></div>';
   if ($title == 'Type of Data' || $title == 'Spending Category' || $title == 'Category' || $title == 'Status') {
     echo '<div class="options">';
     echo '<div class="rows">';
