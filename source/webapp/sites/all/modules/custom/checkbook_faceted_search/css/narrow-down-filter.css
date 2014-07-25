@@ -154,7 +154,7 @@ div.filter-content-fdomainName div.options{
     background: url(/sites/all/themes/checkbook/images/loading.gif) no-repeat;
     display: none;
     position: absolute;
-    right: 10px;
+    right: 30px;
     top: 10px;
     height: 16px;
     width: 16px;
@@ -187,4 +187,16 @@ div.filter-content-fdomainName div.options{
 }
 .facet-content{
     margin-bottom: 20px;
+}
+.filter-title span{
+    -moz-user-select: none;
+    background:url("/sites/all/themes/checkbook3/images/arrow-down.png") no-repeat scroll 185px 3px transparent;
+    cursor: pointer;
+    display: block;
+    line-height: 12px;
+    padding-right: 31px;
+}
+
+.filter-title span.open{
+    background:url("/sites/all/themes/checkbook3/images/arrow-up.png") no-repeat scroll 185px 3px transparent;
 }
