@@ -50,9 +50,19 @@
   <?php
 
 foreach ($render_array as $title => $value) {
+    if ($title == 'Type of Data' || $title == 'Spending Category' || $title == 'Category' || $title == 'Status'){
+        $count =0;
+        foreach ($value as $v) {
+            if(in_array('checked', $v))
+                $count++;
+        }
+        $display_facet = ($count == 0) ? "display:none" :"display:block";
+    }else{dsm($value['checked']);
+        $display_facet = (count($value['checked']) > 0) ? "display:block" :"display:none";
+    }
   echo '<div class="filter-content-' . $value['name'] . ' filter-content">';
   echo '<div class="filter-title">By ' . $title . '</div>';
-  echo '<div class="progress"></div>';
+  echo '<div class="facet-content" style="'.$display_facet.'" ><div class="progress"></div>';
   if ($title == 'Type of Data' || $title == 'Spending Category' || $title == 'Category' || $title == 'Status') {
     echo '<div class="options">';
     echo '<div class="rows">';
@@ -72,7 +82,7 @@ foreach ($render_array as $title => $value) {
         if (count($sub_cat_array[$v[1]]) > 0) {
           foreach ($sub_cat_array[$v[1]] as $a => $b) {
             echo '<div class="sub-category">';
-            echo '<div class="filter-title">By ' . $a . '</div>';
+            echo '<div class="subcat-filter-title">By ' . $a . '</div>';
             echo '<div class="progress"></div>';
             echo '<div class="options">';
             echo '<div class="rows">';
@@ -129,7 +139,7 @@ foreach ($render_array as $title => $value) {
     echo '</div>';
     echo '</div>';
   }
-  echo '</div>';
+  echo '</div></div>';
 }
   ?>
 </div>
