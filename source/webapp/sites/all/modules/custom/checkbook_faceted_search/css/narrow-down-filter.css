@@ -45,13 +45,14 @@ div.filter-content-fdomainName div.options{
 .smart-search-right div.filter-title{
     background-color: #e9e9e9;
     border: 0.1px solid #cacaca;
-    color: #3c5e7c;;
+    color: #3c5e7c;
     font-size: 12px;
     font-weight: bold;
-    padding: 8ppx;
+    padding: 8px;
     margin: 0 2px;
     text-align: left;
     text-transform: uppercase;
+    cursor:pointer;
 }
 .grid-3 div.autocomplete,
 .page-node div.autocomplete,
