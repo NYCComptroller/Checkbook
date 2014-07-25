@@ -57,7 +57,7 @@ foreach ($render_array as $title => $value) {
                 $count++;
         }
         $display_facet = ($count == 0) ? "display:none" :"display:block";
-    }else{dsm($value['checked']);
+    }else{
         $display_facet = (count($value['checked']) > 0) ? "display:block" :"display:none";
     }
   echo '<div class="filter-content-' . $value['name'] . ' filter-content">';
