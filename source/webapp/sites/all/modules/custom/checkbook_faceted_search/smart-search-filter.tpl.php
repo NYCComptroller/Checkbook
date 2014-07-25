@@ -73,8 +73,8 @@ foreach ($render_array as $title => $value) {
         }
     }
   echo '<div class="filter-content-' . $value['name'] . ' filter-content">';
-  echo '<div class="filter-title"><span class="'.$span.'">By ' . $title . '</span></div>';
-  echo '<div class="facet-content" style="display:'.$display_facet.'" ><div class="progress"></div>';
+  echo '<div class="filter-title"><span class="'.$span.'">By ' . $title . '</span></div><div class="facet-content" style="display:"'.$display_facet.'>';
+  echo '<div class="progress"></div>';
   if ($title == 'Type of Data' || $title == 'Spending Category' || $title == 'Category' || $title == 'Status') {
     echo '<div class="options">';
     echo '<div class="rows">';
