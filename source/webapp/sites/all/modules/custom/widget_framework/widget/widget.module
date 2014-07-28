@@ -97,6 +97,11 @@ function widget_perm() {
 }
 
 function _widget_node_load($key, $type='node'){
+	
+	if(preg_match("/^admin/",$_GET['q'])){
+		return "";
+	}
+		
 	switch ($type) {
 		case 'node':
 			return node_load($key);;
@@ -130,6 +135,10 @@ function _widget_node_load_file($key){
 
 
 function widget_node_load($nodes,$types){  
+	if(preg_match("/^admin/",$_GET['q'])){
+		return "";
+	}
+	
   foreach($nodes as $nid => $node ){
     if( $node->type == "widget"){
       $files = file_scan_directory( drupal_get_path('module','checkbook_project') , '/^'.$nid.'\.json$/');
