@@ -7,6 +7,7 @@
  "urlParamMap":{"year":"year_id","agency":"agency_id","yeartype":"type_of_year","calyear":"year_id","category":"spending_category_id","vendor":"vendor_id"},
 "dataset": "checkbook:spending_data",
 "noDataInitialLoad":true,
+"totalAggregateColumns":["check_amount_sum"],
 "columns": ["yeartype.yeartype","check_amount_sum","agency.agency","agency.agency.agency_short_name","year.year","agency.agency.agency_name"],
 "limit":5,
 "enableExpand":true,

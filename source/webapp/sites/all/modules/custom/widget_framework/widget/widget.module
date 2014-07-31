@@ -688,6 +688,19 @@ function load_widget_data($node, $resultFormatter) {
                         $resultFormatter);
               $node->nodeAdjustedParamaterConfig = $parameters;
           }
+          
+          
+          if ($config->totalAggregateColumns) {
+          	foreach($config->totalAggregateColumns as $aggregateColumn){
+          		log_error($datasetName);
+          		$result = $dataQueryController->queryCube(
+          		$datasetName,
+          		array($aggregateColumn), $parameters, $orderBy,
+          		$startWith, $limit,
+          		$resultFormatter);
+          		$node->totalAggregateColumns[$aggregateColumn] = $result[0][$aggregateColumn];          	
+          	}
+          }
 
         }
 
