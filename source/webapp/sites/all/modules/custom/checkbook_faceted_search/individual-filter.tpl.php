@@ -102,15 +102,15 @@ if(strtolower($filter_name) == 'vendor'){
 </div>
 <?php
   if($node->widgetConfig->facetPager == true){
-    $js = "var page" . $node->nid ." = 0;
-    jQuery('#node-widget-" . $node->nid ." .options').mCustomScrollbar({
+    $scroll_facet = "var page" . $node->nid ." = 0;
+    $(this).parent().next().find('.options').mCustomScrollbar({
         horizontalScroll:false,
         scrollButtons:{
             enable:false
         },
         callbacks:{
             onTotalScroll: function (){   
-				var pages = jQuery('#node-widget-" . $node->nid ."').find('input.autocomplete').attr('pages');
+				var pages = $(this).parent().next().find('input.autocomplete').attr('pages');
 				if(pages == 1) return false;
 				if(page" . $node->nid ."  >= pages ) {
 					return false;
@@ -119,7 +119,7 @@ if(strtolower($filter_name) == 'vendor'){
                 paginateScroll(" . $node->nid .", page" . $node->nid .")
             },
             onTotalScrollBack: function(){
-                var pages = jQuery('#node-widget-" . $node->nid ."').find('input.autocomplete').attr('pages');
+                var pages = $(this).parent().next().find('input.autocomplete').attr('pages');
                 if(pages == 1) return false;
                 if (page" . $node->nid ." > 0){
                     page" . $node->nid ."--;
@@ -131,29 +131,20 @@ if(strtolower($filter_name) == 'vendor'){
         theme:'dark'
     });";
     
-  }/*elseif($node->widgetConfig->facetNoPager == true){
-    $js = " 
-    jQuery('.filter-title > span').click(function(){
-      if(jQuery('.filter-title > span').hasClass('open')){
-        jQuery('#node-widget-" . $node->nid ." .options').mCustomScrollbar({
+  }elseif($node->widgetConfig->facetNoPager == true){
+    $scroll_facet = "
+        $(this).parent().next().find('.options').mCustomScrollbar({
             horizontalScroll:false,
             scrollButtons:{
                 enable:false
             },
             theme:'dark'
         });
-      }
-    });";*/
+      ";
+   }
     $js .= "(function($){
-          $('.filter-title > .open').each(function(){
-            $(this).parent().next().find('.options').mCustomScrollbar({
-                horizontalScroll:false,
-                scrollButtons:{
-                    enable:false
-                },
-                theme:'dark'
-            });
-          });
+          $('.filter-title > .open').each(function(){";
+    $js .= $scroll_facet . "});
 
           $('.filter-title').unbind('click');
           $('.filter-title').click(function(){
