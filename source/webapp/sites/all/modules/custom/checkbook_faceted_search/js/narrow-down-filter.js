@@ -11,15 +11,6 @@ if (typeof Drupal != "undefined") {
 	Drupal.behaviors.narrowDownFiltersTransactions = {
 	        attach:function (context, settings) {
 
-                $('.filter-title').live("click",function (e){
-                    if($(this).next().css('display') == 'block'){
-                        $(this).next().css("display","none");
-                        $(this).children("span").removeClass("open");
-                    } else {
-                        $(this).next().css("display","block");
-                        $(this).children("span").addClass("open");
-                    }
-                });
 
 	        	$('input.autocomplete',context).live("focus",function (e) {
 		            $('input.autocomplete',context).autocomplete({

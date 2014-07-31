@@ -131,16 +131,50 @@ if(strtolower($filter_name) == 'vendor'){
         theme:'dark'
     });";
     
-  }elseif($node->widgetConfig->facetNoPager == true){
+  }/*elseif($node->widgetConfig->facetNoPager == true){
     $js = " 
-    jQuery('#node-widget-" . $node->nid ." .options').mCustomScrollbar({
-        horizontalScroll:false,
-        scrollButtons:{
-            enable:false
-        },
-        theme:'dark'
-    });";
-  }
+    jQuery('.filter-title > span').click(function(){
+      if(jQuery('.filter-title > span').hasClass('open')){
+        jQuery('#node-widget-" . $node->nid ." .options').mCustomScrollbar({
+            horizontalScroll:false,
+            scrollButtons:{
+                enable:false
+            },
+            theme:'dark'
+        });
+      }
+    });";*/
+    $js .= "(function($){
+          $('.filter-title > .open').each(function(){
+            $(this).parent().next().find('.options').mCustomScrollbar({
+                horizontalScroll:false,
+                scrollButtons:{
+                    enable:false
+                },
+                theme:'dark'
+            });
+          });
+
+          $('.filter-title').unbind('click');
+          $('.filter-title').click(function(){
+                if($(this).next().css('display') == 'block'){
+                    $(this).next().css('display','none');
+                    $(this).children('span').removeClass('open');
+
+                } else {
+                    $(this).next().css('display','block');
+                    $(this).children('span').addClass('open');
+                  $(this).next().find('.options').mCustomScrollbar({
+                        horizontalScroll:false,
+                        scrollButtons:{
+                            enable:false
+                        },
+                        theme:'dark'
+                    });
+                }
+            });
+
+            })(jQuery);";
   if(isset($js)){
     echo '<script type="text/javascript">' . $js . '</script>';
   }
