@@ -1,6 +1,6 @@
 {
     "datasets": {
-        "spending_data_mwbe": {
+        "spending_mwbe_data": {
             "datasourceName": "main",
             "source": "aggregateon_mwbe_spending_coa_entities"
         },
@@ -18,8 +18,8 @@
         }
     },
     "cubes": {
-        "spending_data_mwbe": {
-            "sourceDatasetName": "spending_data_mwbe",
+        "spending_mwbe_data": {
+            "sourceDatasetName": "spending_mwbe_data",
             "dimensions": [
                 {
                     "name": "fund_class",
