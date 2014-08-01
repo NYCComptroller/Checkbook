@@ -50,14 +50,16 @@ require_once(realpath(drupal_get_path('module', 'data_controller')) . '/common/o
   <?php
   echo "<tr>";
   foreach ($node->widgetConfig->table_columns as $row) {
-    $label = (isset($row->labelAlias))? (WidgetUtil::generateLabelMapping($row->labelAlias)) : $row->label;
-
-    $fn = $row->adjustLabelFunction;
-    if(isset($fn) && function_exists($fn)) {
-      $label = $fn($label);
+	if(check_node_flag_visibilty($row->visibility_flag, $node)){
+	    $label = (isset($row->labelAlias))? (WidgetUtil::generateLabelMapping($row->labelAlias)) : $row->label;
+	
+	    $fn = $row->adjustLabelFunction;
+	    if(isset($fn) && function_exists($fn)) {
+	      $label = $fn($label);
+	    }
+	    $headerClass = ($row->headerClass) ? ' class="' . $row->headerClass . '"' : '';
+	    echo "<th$headerClass>" . $label . "</th>";
     }
-    $headerClass = ($row->headerClass) ? ' class="' . $row->headerClass . '"' : '';
-    echo "<th$headerClass>" . $label . "</th>";
   }
   echo "</tr>\n";
   ?>
