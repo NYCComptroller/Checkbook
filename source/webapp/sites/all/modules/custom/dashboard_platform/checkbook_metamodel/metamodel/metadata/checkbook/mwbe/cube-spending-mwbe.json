@@ -1,25 +1,25 @@
 {
     "datasets": {
-        "spending_data": {
+        "spending_data_mwbe": {
             "datasourceName": "main",
-            "source": "aggregateon_spending_coa_entities"
+            "source": "aggregateon_mwbe_spending_coa_entities"
         },
-        "contracts_spending": {
+        "contracts_mwbe_spending": {
             "datasourceName": "main",
-            "source": "aggregateon_spending_contract"
+            "source": "aggregateon_mwbe_spending_contract"
         },
-        "contracts_vendor_spending": {
+        "contracts_mwbe_vendor_spending": {
             "datasourceName": "main",
-            "source": "aggregateon_spending_vendor"
+            "source": "aggregateon_mwbe_spending_vendor"
         },
-        "expenditure_vendor_spending": {
+        "expenditure_mwbe_vendor_spending": {
             "datasourceName": "main",
-            "source": "aggregateon_spending_vendor_exp_object"
+            "source": "aggregateon_mwbe_spending_vendor_exp_object"
         }
     },
     "cubes": {
-        "spending_data": {
-            "sourceDatasetName": "spending_data",
+        "spending_data_mwbe": {
+            "sourceDatasetName": "spending_data_mwbe",
             "dimensions": [
                 {
                     "name": "fund_class",
@@ -118,8 +118,8 @@
                 }
             }
         },
-        "contracts_spending": {
-            "sourceDatasetName": "contracts_spending",
+        "contracts_mwbe_spending": {
+            "sourceDatasetName": "contracts_mwbe_spending",
             "dimensions": [
                 {
                     "name": "agency",
@@ -208,8 +208,8 @@
                 }
             }
         },
-        "contracts_vendor_spending": {
-            "sourceDatasetName": "contracts_vendor_spending",
+        "contracts_mwbe_vendor_spending": {
+            "sourceDatasetName": "contracts_mwbe_vendor_spending",
             "dimensions": [
                 {
                     "name": "vendor",
@@ -274,8 +274,8 @@
                 }
             }
         },
-        "expenditure_vendor_spending": {
-            "sourceDatasetName": "expenditure_vendor_spending",
+        "expenditure_mwbe_vendor_spending": {
+            "sourceDatasetName": "expenditure_mwbe_vendor_spending",
             "dimensions": [
                 {
                     "name": "vendor",
@@ -327,16 +327,16 @@
     },
 
 	"references": {
-        "contracts_spending__history_agreement": [
-                {"datasetName": "contracts_spending", "columnNames": ["agreement_id"]},
+        "contracts_mwbe_spending__history_agreement": [
+                {"datasetName": "contracts_mwbe_spending", "columnNames": ["agreement_id"]},
                 {"datasetName": "history_agreement", "columnNames": ["agreement_id"]}
         ],
-        "contracts_spending__vendor": [
-            {"datasetName": "contracts_spending", "columnNames": ["vendor_id"]},
+        "contracts_mwbe_spending__vendor": [
+            {"datasetName": "contracts_mwbe_spending", "columnNames": ["vendor_id"]},
             {"datasetName": "vendor", "columnNames": ["vendor_id"]}
         ],
-        "contracts_spending__agency": [
-            {"datasetName": "contracts_spending", "columnNames": ["agency_id"]},
+        "contracts_mwbe_spending__agency": [
+            {"datasetName": "contracts_mwbe_spending", "columnNames": ["agency_id"]},
             {"datasetName": "agency", "columnNames": ["agency_id"]}
         ]
     }        
