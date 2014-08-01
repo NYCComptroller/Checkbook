@@ -620,9 +620,18 @@ function widget_data_tables_add_js($node){
     $newAolcols = array();
     foreach($oldDataTableOptions['aoColumns'] as $key=>$value){
         $aoCols = get_object_vars($value);
-        if((!isset($aoCols['datasource'])) || ((isset($aoCols['datasource']) && _getRequestParamValue('datasource') == isset($aoCols['datasource'])))){
+        
+        $visibility_flag = check_node_flag_visibilty($aoCols['visibility_flag'],$node);
+        if( ((isset($aoCols['datasource']) && _getRequestParamValue('datasource') == isset($aoCols['datasource'])))){
             array_push($newAolcols, $value);
+        }else if((!isset($aoCols['datasource'])) && $visibility_flag){
+        	array_push($newAolcols, $value);
         }
+        
+        
+        
+        
+        
     }
     if(count($newAolcols)){
     	$oldDataTableOptions['aoColumns'] = $newAolcols;

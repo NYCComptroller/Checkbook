@@ -205,7 +205,7 @@ function widget_node_view($node, $nodata = true) {
 
 	if($node->type != 'widget')
 		return ;
-
+	
 //	log_debug("Request to view widget " . $node->nid . " teaser " . $teaser . " page " . $page);
 
 	//make sure configuration is loaded
@@ -215,10 +215,8 @@ function widget_node_view($node, $nodata = true) {
 	widget_prepare($node);
 
 	//invoke widget specific prepare
+	
 	widget_invoke($node, 'widget_prepare');
-	if(isset($node->widgetConfig->preProcessParameters)){
-	  $parameters =  eval($node->widgetConfig->preProcessParameters);
-	}
 	
 	//load data
 	if(($node->widgetConfig->noDataInitialLoad == null || !$node->widgetConfig->noDataInitialLoad) || !$nodata ){
@@ -415,8 +413,10 @@ function widget_prepare(&$node) {
         }
     }
     prepare_dataset_parameters($node->widgetConfig->requestParams, $node->widgetConfig);
-    // log_debug("Widget parameters");
-    // log_debug($node->widgetConfig->requestParams);
+    if(isset($node->widgetConfig->preProcessConfiguration)){
+    	$parameters =  eval($node->widgetConfig->preProcessConfiguration);
+    }
+    
 }
 
 function prepare_dataset_parameters(&$requestParameters, $configuration,$widgetConfig = null) {
@@ -794,7 +794,8 @@ function widget_data(&$node) {
 	if (isset($node->widgetConfig->derivedColumns)) {
 
 		foreach ($node->widgetConfig->derivedColumns as $derivedColumnName => $derivedColumnDefinition) {
-			if (isset($node->data) && is_array($node->data)) {
+			$visibility_flag = check_node_flag_visibilty($derivedColumnDefinition->visibility_flag, $node);
+			if (isset($node->data) && is_array($node->data) && $visibility_flag) {
                 log_debug($node->data);
 				foreach ($node->data as $rowKey => $row) {
 					$result = calculateDerivedCell($row, $node->data, $derivedColumnDefinition, $node);
@@ -805,10 +806,31 @@ function widget_data(&$node) {
 				}
 			}
 		}
-
+	//	log_error($node->data);
 	}
 	//var_dump($node->data);
 	//drupal_set_message('<pre>$$$node->data'. print_r($node->data, TRUE) . '</pre>');
+}
+
+
+/*
+ * check if a given flag is set on the node. -flag_name with set visibilty to false, flag_name and empty value will set visibility to true.
+ */
+
+function check_node_flag_visibilty($flag,$node){
+	$visibility_flag = true;
+	if(isset($flag)){
+		if($flag[0] == "-"){
+			$visibility_flag_name = substr($flag,1);
+			$visibility_flag = (!isset($visibility_flag_name) or $node->$visibility_flag_name == true   ) ? false : true;
+		}else{
+			$visibility_flag_name = $flag;
+			$visibility_flag = (!isset($visibility_flag_name) or $node->$visibility_flag_name == true   ) ? true : false;
+		}
+	}
+	
+	log_error($flag . $visibility_flag);
+	return $visibility_flag;
 }
 
 function calculateDerivedCell($row, $fulldata, $derivedColumnDefinition,$node) {
