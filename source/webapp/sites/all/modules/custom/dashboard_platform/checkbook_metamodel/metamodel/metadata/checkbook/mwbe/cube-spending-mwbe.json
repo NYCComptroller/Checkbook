@@ -110,6 +110,16 @@
                             "sourceColumnName": "expenditure_object_id"
                         }
                     ]
+                },
+                {
+                    "name": "industry",
+                    "levels": [
+                        {
+                            "name": "industry",
+                            "datasetName": "industry_type",
+                            "sourceColumnName": "industry_type_id"
+                        }
+                    ]
                 }
             ],
             "measures": {
@@ -338,6 +348,10 @@
         "contracts_mwbe_spending__agency": [
             {"datasetName": "contracts_mwbe_spending", "columnNames": ["agency_id"]},
             {"datasetName": "agency", "columnNames": ["agency_id"]}
+        ],
+        "spending_mwbe_data__industry": [
+            {"datasetName": "spending_mwbe_data", "columnNames": ["industry_type_id"]},
+            {"datasetName": "industry_type", "columnNames": ["industry_type_id"]}
         ]
     }        
 }
