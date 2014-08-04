@@ -1,0 +1,126 @@
+{
+    "widgetType": "data_tables",
+    "widgetSubType":"ajaxSimple",
+    "no_results_content":"No Results Found",
+    "defaultParameters":{"type_of_year":"B"},
+    "cleanURLParameters":["year","agency","yeartype","calyear","category","vendor","mwbe"],
+    "urlParamMap":{"year":"year_id","agency":"agency_id","yeartype":"type_of_year","calyear":"year_id","category":"spending_category_id","vendor":"vendor_id","mwbe":"minority_type_id"},
+    "dataset": "checkbook:contracts_mwbe_spending",
+    "noDataInitialLoad":true,
+    "totalAggregateColumns":["check_amount_sum"],
+    "columns": ["yeartype.yeartype","check_amount_sum","agency.agency","agency.agency.agency_short_name","year.year","agency.agency.agency_name","total_contract_amount_sum"],
+    "adjustParameters":"
+        if(function_exists('_checkbook_project_adjust_minority_type_id_parameter')) {
+            $adjustedParameters = _checkbook_project_adjust_minority_type_id_parameter($node, $parameters);
+        }
+        return $adjustedParameters;
+    ",
+    "limit":5,
+    "enableExpand":true,
+    "getTotalDataCount":true,
+    "disableViewAll":true,
+    "header":"
+    $node->widgetConfig->getData=false;
+    load_widget_data($node);
+    if($node->totalDataCount > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
+    $header='<div class=\"tableHeader\"><h2>Top ' .  $count . 'Sub Vendors</h2><span class=\"contCount\"> Number of Sub Vendors:  ' . number_format($node->totalDataCount) . '</span></div>';
+    return $header;
+    ",
+    "footer":"
+    $url = '/panel_html/spending_transactions/spending/transactions'. _checkbook_project_get_url_param_string(\"mwbe\") . _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_url_param_string(\"category\") . '/dtsmnid/' . $node->nid . _checkbook_project_get_year_url_param_string(false,false,true);
+    $footer = '';
+    if($node->totalDataCount > 0)
+    $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
+    else
+    $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
+    return $footer;
+    ",
+    "derivedColumns": {
+        "sub_vendor_name_link": {
+            "type": "expression2",
+            "expression": "'<a href=\"/spending_landing' .  _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . '/agency/'. $row[agency_agency] .'\">' . $row[agency_agency_agency_name] . '</a>'"
+        },
+        "formatted_check_amount_sum": {
+            "type": "expression2",
+            "expression": "custom_number_formatter_format($row['check_amount_sum'],2,'$')"
+        },
+        "ytd_spending_link":{
+            "type":"expression2",
+            "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/spending_transactions/spending/transactions' . _checkbook_project_get_year_url_param_string(false,false,true)  ._checkbook_project_get_url_param_string(\"vendor\") . '/smnid/' . $node->nid .  _checkbook_project_get_url_param_string(\"category\") . '/agency/'. $row[agency_agency] . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
+        },
+        "percent_spending": {
+            "type":"expression2",
+            "expression": " number_format($row['check_amount_sum']/$node->totalAggregateColumns['check_amount_sum']*100 ,2) . '%'"
+        },
+        "formatted_total_contract_amount_sum": {
+            "type": "expression2",
+            "expression": "custom_number_formatter_format($row['total_contract_amount_sum'],2,'$')"
+        }
+
+    },
+    "summaryView": {
+        "template":"spending_agency_summary",
+        "templateTitleEval":"
+            $catName = RequestUtil::getSpendingCategoryName();
+            return ('Agency ' . $catName . ' Transactions');
+            "
+    },
+    "WidgetTitleEval":"
+        $catName = RequestUtil::getSpendingCategoryName();
+        $mwbe_title = _checkbook_check_is_mwbe_page() ? 'M/WBE ' : '';
+        return ($mwbe_title . 'Sub Vendors ' . $catName . ' Transactions');
+    ",
+    "table_title":"",
+    "table_columns": [
+        {
+            "labelAlias": "sub_vendor_name",
+            "column": "sub_vendor_name_link",
+            "header": "false",
+            "sortSourceColumn":"agency.agency.agency_name"
+        },
+        {
+            "labelAlias": "ytd_spending",
+            "column": "ytd_spending_link",
+            "header": "false",
+            "sortSourceColumn":"check_amount_sum"
+        },
+        {
+            "labelAlias": "percent_spending",
+            "column": "percent_spending",
+            "header": "false",
+            "sortSourceColumn":"check_amount_sum"
+        },
+        {
+            "labelAlias": "total_contract_amount",
+            "column": "formatted_total_contract_amount_sum",
+            "sortSourceColumn":"total_contract_amount_sum"
+        },
+        {
+            "label": "",
+            "column": ""
+        }
+    ],
+    "dataTableOptions": {
+        "aoColumns": [
+            {"bSortable": false,"sClass":"text"},
+            {"sClass":"number","sWidth":"150px","asSorting": ["desc","asc"]},
+            {"sClass":"number","sWidth":"150px","asSorting": ["desc","asc"]},
+            {"sClass":"number","sWidth":"150px","asSorting": ["desc","asc"]},
+            {"bSortable": false,"sWidth":"15px" }
+        ],
+        "bServerSide": true,
+        "bFilter": false,
+        "bPaginate": false,
+        "bProcessing":true,
+        "bLengthChange": false,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "aaSorting": [[ 1, "desc" ]],
+        "fnServerParams": "##function ( aoData ) {
+            reloadExpandCollapseWidget(this,aoData);
+        }##",
+        "oLanguage": {
+            "sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+        }
+    }
+}
