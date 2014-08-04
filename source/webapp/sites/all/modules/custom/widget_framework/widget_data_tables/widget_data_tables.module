@@ -54,31 +54,31 @@ function widget_data_tables_widget_data(&$node) {
  * @return multitype:string boolean multitype:number  
  */
 function widget_data_tables_menu(){
-    $items['dashboard_platform/data_tables/ajax_data/node/%node/%'] = array(
+    $items['dashboard_platform/data_tables/ajax_data/node/%widget/%'] = array(
         'page callback' => '_widget_data_tables_ajaxdata',
         'page arguments' => array(4),
         'access callback' => true,
 	    'type'=>MENU_CALLBACK
   	);
-    $items['dashboard_platform/data_tables/ajax_data/node/%node'] = array(
+    $items['dashboard_platform/data_tables/ajax_data/node/%widget'] = array(
         'page callback' => '_widget_data_tables_ajaxdata',
         'page arguments' => array(4),
         'access callback' => true,
 	    'type'=>MENU_CALLBACK
   	);
-    $items['dashboard_platform/data_tables_list/ajax_data/node/%node/%'] = array(
+    $items['dashboard_platform/data_tables_list/ajax_data/node/%widget/%'] = array(
         'page callback' => '_widget_data_tables_list_ajaxdata',
         'page arguments' => array(4),
         'access callback' => true,
         'type'=>MENU_CALLBACK
     );
-    $items['dashboard_platform/data_tables_list/ajax_data/node/%node'] = array(
+    $items['dashboard_platform/data_tables_list/ajax_data/node/%widget'] = array(
         'page callback' => '_widget_data_tables_list_ajaxdata',
         'page arguments' => array(4),
         'access callback' => true,
         'type'=>MENU_CALLBACK
     );
-    $items['dashboard_platform/data_tables_list_wt/ajax_data/node/%node'] = array(
+    $items['dashboard_platform/data_tables_list_wt/ajax_data/node/%widget'] = array(
         'page callback' => '_widget_data_tables_list_wt_ajaxdata',
         'page arguments' => array(4),
         'access callback' => true,
@@ -89,12 +89,17 @@ function widget_data_tables_menu(){
 }
 
 
+
+
 /**
  * supports ajax data callback for data table widget type..simpleAjax
  * @param $node
  */
 function _widget_data_tables_ajaxdata($node){
   
+	if($node->nid ==  null){
+		$node = _widget_node_load_file($node);
+	}
     $node = widget_data_tables_get_data($node);
     _widget_add_padding_data($node);
     drupal_add_http_header('Content-Type','application/json; utf-8');
@@ -708,7 +713,7 @@ if(isset($node->widgetConfig->stickyHeader)){
 
 		        " . stripcslashes(str_replace('##"','',str_replace('"##','',$dataTableOptions))) ."
 		        );
-		        oTable" . $id  .  ".node_id = " . $node->nid . " ;
+		        oTable" . $id  .  ".node_id = \"" . $node->nid . "\" ;
 		        oTable" . $id  .  ".initAjaxSource = '" . $node->widgetConfig->sAjaxSource . _checkbook_append_url_params() . "' ;
 
 	    		" . stripcslashes($node->widgetConfig->customJS) .

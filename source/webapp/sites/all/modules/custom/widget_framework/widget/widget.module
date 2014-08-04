@@ -44,14 +44,35 @@ require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/ob
 /***************************************/
 
 function widget_menu(){
-  $items['widget_ajax_data/node/%node/%'] = array(
+  $items['widget_ajax_data/node/%widget/%'] = array(
       'page callback' => 'widget_ajax_get_node',
       'page arguments' => array(2),
       'access callback' => true,
       'type'=>MENU_CALLBACK
   );
+  
+  
+  $items['widget/%'] = array(
+  		'page callback' => '_widget_node_view_page',
+  		'page arguments' => array(1),
+  		'access callback' => true,
+  		'type'=>MENU_CALLBACK
+  );
 
   return $items;
+}
+
+
+
+function widget_load($key){
+	if( $id > 0 ){
+		$node = node_load($key);
+	}
+	if($node == null){
+		$node = _widget_node_load_file($key);
+	}
+	
+	return $node;
 }
 
 function widget_node_info1() {
@@ -111,6 +132,12 @@ function _widget_node_load($key, $type='node'){
 	}	
 }
 
+function _widget_node_view_page($key){
+	$node = _widget_node_load_file($key);
+	$node = widget_node_view($node);
+	return $node->content['body']['#markup'];
+}
+
 
 function _widget_node_view($key){
 	$node = _widget_node_load_file($key);
@@ -127,7 +154,9 @@ function _widget_node_load_file($key){
         $json = file_get_contents($file_names[0]);
         $node->widget_json =  $json;
       }
-      
+    if($node->nid == null){
+    	$node->nid = $key;
+    }  
     return $node;  
 }
 
