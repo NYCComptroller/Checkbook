@@ -216,10 +216,11 @@ class RequestUtil{
     /** Returns Spending Category based on 'category' value from current path */
     static function getSpendingCategoryName($defaultName = 'Total Spending'){
         $categoryId = _getRequestParamValue('category');
+        $mwbe_title = _checkbook_check_is_mwbe_page() ? 'M/WBE ' : '';
         if(isset($categoryId)){
             $categoryDetails = SpendingUtil::getSpendingCategoryDetails($categoryId,'display_name');
             if(is_array($categoryDetails)){
-                return "Total " .  $categoryDetails[0]['display_name'];
+                return "Total " . $mwbe_title . $categoryDetails[0]['display_name'];
             }
         }
 
@@ -439,7 +440,7 @@ class RequestUtil{
     /** Returns top navigation URL */
     static function getTopNavURL($domain){
         $year = _getRequestParamValue("year");
-        if($year == null || _checkbook_check_isEDCPage()){
+        if($year == null || _checkbook_check_isEDCPage() || _checkbook_check_is_mwbe_page()){
           $year = _getCurrentYearID();
         }
         switch($domain){
@@ -490,7 +491,11 @@ class RequestUtil{
             break;
             
         }
-      
+
+//        //tmp for mwbe
+//        if($domain == "contracts" || $domain == "spending") {
+//            $path .= "/mwbe/all";
+//        }
         return $path;
      
     }
