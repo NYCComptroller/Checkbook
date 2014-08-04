@@ -3,12 +3,12 @@
     "widgetSubType":"ajaxSimple",
     "no_results_content":"No Results Found",
     "defaultParameters":{"type_of_year":"B"},
-    "cleanURLParameters":["year","agency","yeartype","calyear","category","vendor","mwbe"],
-    "urlParamMap":{"year":"year_id","agency":"agency_id","yeartype":"type_of_year","calyear":"year_id","category":"spending_category_id","vendor":"vendor_id","mwbe":"minority_type_id"},
-    "dataset": "checkbook:contracts_mwbe_spending",
+    "cleanURLParameters":["year","agency","yeartype","calyear","category","vendor","cindustry","mwbe"],
+    "urlParamMap":{"year":"year_id","agency":"agency_id","yeartype":"type_of_year","calyear":"year_id","category":"spending_category_id","vendor":"vendor_id","mwbe":"minority_type_id","cindustry":"industry_type_id"},
+    "dataset": "checkbook:spending_mwbe_data",
     "noDataInitialLoad":true,
     "totalAggregateColumns":["check_amount_sum"],
-    "columns": ["yeartype.yeartype","check_amount_sum","agency.agency","agency.agency.agency_short_name","year.year","agency.agency.agency_name","total_contract_amount_sum"],
+    "columns": ["yeartype.yeartype","check_amount_sum","agency.agency","agency.agency.agency_short_name","year.year","agency.agency.agency_name","industry.industry.industry_type_name"],
     "adjustParameters":"
         if(function_exists('_checkbook_project_adjust_minority_type_id_parameter')) {
             $adjustedParameters = _checkbook_project_adjust_minority_type_id_parameter($node, $parameters);
@@ -27,7 +27,7 @@
     return $header;
     ",
     "footer":"
-    $url = '/panel_html/spending_transactions/spending/transactions'. _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_url_param_string(\"category\") . '/dtsmnid/' . $node->nid . _checkbook_project_get_year_url_param_string(false,false,true);
+    $url = '/panel_html/spending_transactions/spending/transactions'. _checkbook_project_get_url_param_string(\"mwbe\") . _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_url_param_string(\"category\") . '/dtsmnid/' . $node->nid . _checkbook_project_get_year_url_param_string(false,false,true);
     $footer = '';
     if($node->totalDataCount > 0)
     $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
@@ -38,7 +38,7 @@
     "derivedColumns": {
         "industry_name_link": {
             "type": "expression2",
-            "expression": "'<a href=\"/spending_landing' .  _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . '/agency/'. $row[agency_agency] .'\">' . $row[agency_agency_agency_name] . '</a>'"
+            "expression": "_get_tooltip_markup($row['industry_type_name'],30)"
         },
         "formatted_check_amount_sum": {
             "type": "expression2",
@@ -63,32 +63,15 @@
     },
     "WidgetTitleEval":"
         $catName = RequestUtil::getSpendingCategoryName();
-        return ('Agencies ' . $catName . ' Transactions');
+        $mwbe_title = _checkbook_check_is_mwbe_page() ? 'M/WBE ' : '';
+        return ($mwbe_title . 'Spending by Industries ' . $catName . ' Transactions');
     ",
     "table_title":"",
     "table_columns": [
-        {
-            "labelAlias": "industry_name",
-            "column": "industry_name_link",
-            "header": "false",
-            "sortSourceColumn":"agency.agency.agency_name"
-        },
-        {
-            "labelAlias": "ytd_spending",
-            "column": "ytd_spending_link",
-            "header": "false",
-            "sortSourceColumn":"check_amount_sum"
-        },
-        {
-            "labelAlias": "percent_spending",
-            "column": "percent_spending",
-            "header": "false",
-            "sortSourceColumn":"check_amount_sum"
-        },
-        {
-            "label": "",
-            "column": ""
-        }
+        {"labelAlias": "industry_name","column": "industry_name_link","sortSourceColumn":"industry_type_name"},
+        {"labelAlias": "ytd_spending","column": "ytd_spending_link","header": "false","sortSourceColumn":"check_amount_sum"},
+        {"labelAlias": "percent_spending","column": "percent_spending","header": "false","sortSourceColumn":"check_amount_sum"},
+        {"label": "","column": ""}
     ],
     "dataTableOptions": {
         "aoColumns": [
