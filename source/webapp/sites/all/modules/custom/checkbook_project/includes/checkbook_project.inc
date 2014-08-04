@@ -478,8 +478,6 @@ function _checkbook_project_get_name_for_argument($keyword,$id){
 
 }
 
-
-
 /**
  * query the dataset and get data ...
  * @param unknown_type $dataset
@@ -639,6 +637,17 @@ function _checkbook_project_adjust_spending_parameter_filters(&$node, &$paramete
     $parameters['contract_number'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
   }
   return $parameters;
+}
+
+/**
+ * Function to exclude minority_type_id in the case of all
+ * @param $node Node data
+ * @param $parameters Widget parsed request parameters
+ * @return array adjusted parameters
+ */
+function _checkbook_project_adjust_minority_type_id_parameter(&$node, &$parameters) {
+    if($parameters['minority_type_id'][0] == 'all') unset($parameters['minority_type_id']);
+    return $parameters;
 }
 
 /**
@@ -1430,12 +1439,14 @@ function _checkbook_max_data_year(){
 }
 
 function _checkbook_append_url_params(){
-    $database = _getRequestParamValue('datasource');
-    if(isset($database)){
-        return '/datasource/checkbook_oge';
-    }else{
-        return "";
-    }
+
+    $datasource = _getRequestParamValue('datasource');
+    $mwbe = _getRequestParamValue('mwbe');
+
+    $url = isset($datasource) ? "/datasource/checkbook_oge" : "";
+    $url = isset($mwbe) ? "/mwbe/".$mwbe : "";
+
+    return $url;
 }
 
 function _checkbook_check_isEDCPage(){
@@ -1445,6 +1456,11 @@ function _checkbook_check_isEDCPage(){
     }else{
         return false;
     }
+}
+
+/** Returns Boolean if this is an mwbe page */
+function _checkbook_check_is_mwbe_page() {
+    return null != _getRequestParamValue('mwbe');
 }
 
 function _checkbook_is_oge_contract($cont_num){	
