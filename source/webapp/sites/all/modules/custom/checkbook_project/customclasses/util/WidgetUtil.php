@@ -178,7 +178,10 @@ class WidgetUtil
     	"prime_vendor"=>"Prime<br/>Vendor",
     	"tot_edc_con"=>"Total number of<br/>NYC EDC Contracts",
     	"vendor_address"=>"Vendor<br/>Address",
-    	"prime_vendor_address"=>"Prime Vendor<br/>Address"
+    	"prime_vendor_address"=>"Prime Vendor<br/>Address",
+        "percent_spending"=>"%<br/>Spending",
+        "sub_vendor_name"=>"Sub<br/>Vendor",
+        "industry_name"=>"Industry"
     );
 
     //For number cols, need to find out if they are uniform number of digits for formatting
