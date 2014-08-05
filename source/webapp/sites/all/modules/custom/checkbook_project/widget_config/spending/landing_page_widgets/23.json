@@ -25,7 +25,7 @@
         return $header;
     ",
     "footer":"
-        $url = '/panel_html/spending_transactions/spending/transactions'. _checkbook_project_get_url_param_string(\"mwbe\") . _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_url_param_string(\"category\") . '/dtsmnid/' . $node->nid . _checkbook_project_get_year_url_param_string(false,false,true);
+        $url = '/panel_html/spending_transactions/spending/transactions'. _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_url_param_string(\"category\") . '/dtsmnid/' . $node->nid . _checkbook_project_get_year_url_param_string(false,false,true);
         $footer = '';
         if($node->totalDataCount > 0)
              $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
