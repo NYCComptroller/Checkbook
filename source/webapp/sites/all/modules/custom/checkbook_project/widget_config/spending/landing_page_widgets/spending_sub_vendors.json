@@ -14,20 +14,25 @@
     "getTotalDataCount":true,
     "disableViewAll":true,
     "header":"
-    $node->widgetConfig->getData=false;
-    load_widget_data($node);
-    if($node->totalDataCount > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
-    $header='<div class=\"tableHeader\"><h2>Top ' .  $count . 'Sub Vendors</h2><span class=\"contCount\"> Number of Sub Vendors:  ' . number_format($node->totalDataCount) . '</span></div>';
-    return $header;
+        $node->widgetConfig->getData=false;
+        load_widget_data($node);
+        if($node->totalDataCount > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
+        $header='<div class=\"tableHeader\"><h2>Top ' .  $count . 'Sub Vendors</h2><span class=\"contCount\"> Number of Sub Vendors:  ' . number_format($node->totalDataCount) . '</span></div>';
+        return $header;
     ",
     "footer":"
-    $url = '/panel_html/spending_transactions/spending/transactions'. _checkbook_project_get_url_param_string(\"mwbe\") . _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_url_param_string(\"category\") . '/dtsmnid/' . $node->nid . _checkbook_project_get_year_url_param_string(false,false,true);
-    $footer = '';
-    if($node->totalDataCount > 0)
-    $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
-    else
-    $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
-    return $footer;
+        $url = '/panel_html/spending_transactions/spending/transactions'. _checkbook_project_get_url_param_string(\"mwbe\") . _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_url_param_string(\"category\") . '/dtsmnid/' . $node->nid . _checkbook_project_get_year_url_param_string(false,false,true);
+        $footer = '';
+        if($node->totalDataCount > 0)
+        $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
+        else
+        $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
+        return $footer;
+    ",
+    "adjustParameters":"
+        //Temporarily show no data until we have the req for this.
+        $parameters['minority_type_id'] = array(-1);
+        return $parameters;
     ",
     "derivedColumns": {
         "sub_vendor_name_link": {
