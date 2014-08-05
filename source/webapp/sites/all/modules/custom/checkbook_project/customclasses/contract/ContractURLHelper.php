@@ -191,11 +191,11 @@ class ContractURLHelper{
         $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
         $url = $page;
         if( preg_match("/^contracts_pending/", drupal_get_path_alias($_GET['q'])) ){
-          $allowedFilters =  array("year","calyear","agency","yeartype","awrdmthd","vendor","csize","cindustry");
+          $allowedFilters =  array("year","calyear","agency","yeartype","awrdmthd","vendor","csize","cindustry","mwbe");
                
         }
         else{
-          $allowedFilters =  array("year","calyear","agency","yeartype","awdmethod","vendor","csize","cindustry");
+          $allowedFilters =  array("year","calyear","agency","yeartype","awdmethod","vendor","csize","cindustry","mwbe");
         }  
         for($i=1;$i < count($pathParams);$i++){
         
