@@ -857,9 +857,7 @@ function check_node_flag_visibilty($flag,$node){
 			$visibility_flag = (!isset($visibility_flag_name) or $node->$visibility_flag_name == true   ) ? true : false;
 		}
 	}
-	
-	log_error($flag . $visibility_flag);
-	return $visibility_flag;
+    return $visibility_flag;
 }
 
 function calculateDerivedCell($row, $fulldata, $derivedColumnDefinition,$node) {
