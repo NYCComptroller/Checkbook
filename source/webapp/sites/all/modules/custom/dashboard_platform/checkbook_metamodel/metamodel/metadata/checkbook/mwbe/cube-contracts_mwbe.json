@@ -172,6 +172,16 @@
                             "sourceColumnName": "award_size_id"
                         }
                     ]
+                },
+                {
+                    "name": "minority_type",
+                    "levels": [
+                        {
+                            "name": "minority_type",
+                            "datasetName": "minority_type",
+                            "sourceColumnName": "minority_type_id"
+                        }
+                    ]
                 }
             ],
             "measures": {
