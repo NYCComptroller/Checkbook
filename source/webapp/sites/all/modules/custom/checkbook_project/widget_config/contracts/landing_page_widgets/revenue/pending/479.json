@@ -2,9 +2,9 @@
 "widgetType": "data_tables",
 "widgetSubType":"ajaxSimple",
 "no_results_content":"No Results Found",
-"cleanURLParameters":["agency","vendor","awdmethod","contnum","contcat","pin","aptpin","csize","cindustry"],
+"cleanURLParameters":["mwbe","agency","vendor","awdmethod","contnum","contcat","pin","aptpin","csize","cindustry"],
 "defaultParameters":{"document_code.document_code.document_code":"RCT1"},
-"urlParamMap":{"agency":"document_agency_id.document_agency_id","vendor":"vendor_id","contcat":"document_code@checkbook:ref_document_code","contnum":"contract_number.contract_number","awdmethod":"award_method_id.award_method_id","pin":"tracking_number.tracking_number","aptpin":"board_award_number.board_award_number","csize":"award_size.award_size","cindustry":"industry.industry"},
+"urlParamMap":{"mwbe":"minority_type_id","agency":"document_agency_id.document_agency_id","vendor":"vendor_id","contcat":"document_code@checkbook:ref_document_code","contnum":"contract_number.contract_number","awdmethod":"award_method_id.award_method_id","pin":"tracking_number.tracking_number","aptpin":"board_award_number.board_award_number","csize":"award_size.award_size","cindustry":"industry.industry"},
 "dataset": "checkbook:pending_contracts",
 "noDataInitialLoad":true,
 "columns": ["industry.industry","industry.industry.industry_type_name","original_amount_sum","current_amount_sum","total_contracts"],
@@ -20,7 +20,7 @@
 "derivedColumns": {
 "industry_name_link": {
       "type": "expression2",
- "expression": "'<a href=\"/contracts_pending_rev_landing' ._checkbook_project_get_year_url_param_string() ._checkbook_project_get_url_param_string(\"vendor\")  .  _checkbook_project_get_url_param_string(\"agency\")  .  _checkbook_project_get_url_param_string(\"csize\") .    _checkbook_project_get_url_param_string(\"awdmethod\") .  _checkbook_project_get_url_param_string(\"status\") .'/cindustry/' . $row[industry_industry]. '?expandBottomCont=true\">' .$row[industry_industry_industry_type_name]. '</a>'"
+ "expression": "'<a href=\"/contracts_pending_rev_landing' ._checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string(\"mwbe\") ._checkbook_project_get_url_param_string(\"vendor\")  .  _checkbook_project_get_url_param_string(\"agency\")  .  _checkbook_project_get_url_param_string(\"csize\") .    _checkbook_project_get_url_param_string(\"awdmethod\") .  _checkbook_project_get_url_param_string(\"status\") .'/cindustry/' . $row[industry_industry]. '?expandBottomCont=true\">' .$row[industry_industry_industry_type_name]. '</a>'"
     } ,
 "formatted_original_amount_sum": {
       "type": "expression2",
@@ -39,6 +39,7 @@ $url .= _checkbook_project_get_url_param_string('vendor');
 $url .= _checkbook_project_get_url_param_string('awdmethod');
 $url .= _checkbook_project_get_url_param_string('csize');
 $url .= _checkbook_project_get_url_param_string('cindustry');
+$url .= _checkbook_project_get_url_param_string('mwbe');
 $url .= _checkbook_project_get_year_url_param_string();
 $url .= '/smnid/' .  $node->nid;
 $url .= '/doctype/RCT1';
