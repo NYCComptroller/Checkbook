@@ -3,8 +3,12 @@
 "widgetSubType":"ajaxSimple",
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B","document_code.document_code.document_code":"RCT1","status_flag":"A"},
-"cleanURLParameters":["year","calyear","agency","yeartype","awdmethod","vendor","status","cindustry"],
- "urlParamMap":{"calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id","status":"status_flag","cindustry":"industry_type_id"},
+"cleanURLParameters":["mwbe","year","calyear","agency","yeartype","awdmethod","vendor","status","cindustry"],
+ "urlParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id","status":"status_flag","cindustry":"industry_type_id"},
+"preProcessConfiguration":"
+    $node->is_mwbe = _checkbook_check_is_mwbe_page();
+    if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:mwbe_contracts_coa_aggregates';
+",
 "dataset": "checkbook:contracts_coa_aggregates",
 "noDataInitialLoad":true,
 "columns": ["total_contracts","award_size.award_size","award_size.award_size.award_size_name","original_amount_sum","current_amount_sum","yeartype.yeartype","spending_amount_sum"],
