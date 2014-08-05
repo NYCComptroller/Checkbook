@@ -1,20 +1,28 @@
 {
     "widgetType": "phpparser",
     "no_results_content": "No Results Found",
-    "cleanURLParameters":["year","calyear","agency","yeartype","vendor"],
+    "cleanURLParameters":["year","calyear","agency","yeartype","vendor","mwbe"],
     "model": {
-        "join": {
-            "method": "Union"
-        },
+        "join": {"method": "Union"},
         "series": [
-         {
+            {
                 "dataset": "checkbook:spending_data",
-                                "columns": [
-                    "check_amount_sum","category.category"
-                ],
-               "seriesURLParamMap":{"year":"year.year","agency":"agency_id","yeartype":"type_of_year","vendor":"vendor.vendor"},
-               "allowedParams":["year.year","agency_id","type_of_year","vendor.vendor"],
-               "seriesDefaultParameters":{"year.year":"1","type_of_year":"B"}
+                "preProcessConfiguration":"
+                    $node->is_mwbe = _checkbook_check_is_mwbe_page();
+                    if($node->is_mwbe) $node->widgetConfig->model->series[0]->dataset = 'checkbook:spending_mwbe_data';
+
+                ",
+                "columns": ["check_amount_sum","category.category"],
+                "seriesURLParamMap":{"year":"year.year","agency":"agency_id","yeartype":"type_of_year","vendor":"vendor.vendor","mwbe":"minority_type_id"},
+                "allowedParams":["year.year","agency_id","type_of_year","vendor.vendor","minority_type_id"],
+                "seriesDefaultParameters":{"year.year":"1","type_of_year":"B"},
+                "adjustSerieParameters":"
+                    if(isset($serieParameters['minority_type_id'])) {
+                        $serieParameters['minority_type_id'] = explode('~',$serieParameters['minority_type_id']);
+                        $serieParameters['spending_category_id'] = data_controller_get_operator_factory_instance()->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, 2);
+                    }
+                    return $serieParameters;
+                "
             }
         ]
     },
