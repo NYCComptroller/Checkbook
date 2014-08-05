@@ -9,12 +9,6 @@
     "noDataInitialLoad":true,
     "totalAggregateColumns":["check_amount_sum"],
     "columns": ["yeartype.yeartype","check_amount_sum","agency.agency","agency.agency.agency_short_name","year.year","agency.agency.agency_name","total_contract_amount_sum"],
-    "adjustParameters":"
-        if(function_exists('_checkbook_project_adjust_minority_type_id_parameter')) {
-            $adjustedParameters = _checkbook_project_adjust_minority_type_id_parameter($node, $parameters);
-        }
-        return $adjustedParameters;
-    ",
     "limit":5,
     "enableExpand":true,
     "getTotalDataCount":true,
