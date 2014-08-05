@@ -2,9 +2,9 @@
 "widgetType": "data_tables",
 "widgetSubType":"ajaxSimple",
 "no_results_content":"No Results Found",
-"cleanURLParameters":["agency","vendor","awdmethod","contnum","contcat","pin","aptpin","csize","cindustry"],
+"cleanURLParameters":["mwbe","agency","vendor","awdmethod","contnum","contcat","pin","aptpin","csize","cindustry"],
 "defaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~CTR","dollar_difference":"0"},
-"urlParamMap":{"agency":"document_agency_id.document_agency_id","vendor":"vendor.vendor","contcat":"document_code@checkbook:ref_document_code","contnum":"contract_number.contract_number","awdmethod":"award_method_id.award_method_id","pin":"tracking_number.tracking_number","aptpin":"board_award_number.board_award_number","csize":"award_size.award_size","cindustry":"industry.industry"},
+"urlParamMap":{"mwbe":"minority_type_id","agency":"document_agency_id.document_agency_id","vendor":"vendor.vendor","contcat":"document_code@checkbook:ref_document_code","contnum":"contract_number.contract_number","awdmethod":"award_method_id.award_method_id","pin":"tracking_number.tracking_number","aptpin":"board_award_number.board_award_number","csize":"award_size.award_size","cindustry":"industry.industry"},
 "dataset": "checkbook:pending_contracts",
 "noDataInitialLoad":true,
 "columns": ["pending_contract_number.pending_contract_number","document_version.document_version","pending_contract_purpose.pending_contract_purpose","contract_number.contract_number","document_agency_name.document_agency_name","document_agency_id.document_agency_id","vendor_legal_name.vendor_legal_name","vendor.vendor","original_amount_sum","current_amount_sum","dollar_difference.dollar_difference","percent_difference.percent_difference","document_code.document_code.document_code","original_agreement_id.original_agreement_id"],
@@ -29,11 +29,11 @@
     },
      "agency_name_link": {
       "type": "expression2",
-      "expression": "'<a href=\"/contracts_pending_exp_landing' ._checkbook_project_get_year_url_param_string() ._checkbook_project_get_url_param_string(\"vendor\")  .  _checkbook_project_get_url_param_string(\"cindustry\")  .  _checkbook_project_get_url_param_string(\"csize\") .    _checkbook_project_get_url_param_string(\"awdmethod\") .  _checkbook_project_get_url_param_string(\"status\") .'/agency/' . $row[document_agency_id_document_agency_id]. '?expandBottomCont=true\">' .$row[agency_name_formatted]. '</a>'"
+      "expression": "'<a href=\"/contracts_pending_exp_landing' ._checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string(\"mwbe\") ._checkbook_project_get_url_param_string(\"vendor\")  .  _checkbook_project_get_url_param_string(\"cindustry\")  .  _checkbook_project_get_url_param_string(\"csize\") .    _checkbook_project_get_url_param_string(\"awdmethod\") .  _checkbook_project_get_url_param_string(\"status\") .'/agency/' . $row[document_agency_id_document_agency_id]. '?expandBottomCont=true\">' .$row[agency_name_formatted]. '</a>'"
     },
 "vendor_name_link": {
       "type": "expression2",
-     "expression": "'<a href=\"/contracts_pending_exp_landing' ._checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string(\"agency\")  .  _checkbook_project_get_url_param_string(\"cindustry\")  .  _checkbook_project_get_url_param_string(\"csize\") .    _checkbook_project_get_url_param_string(\"awdmethod\") .  _checkbook_project_get_url_param_string(\"status\")  . '/vendor/' .$row[vendor_vendor] . '?expandBottomCont=true\">' .$row[vendor_name_formatted]. '</a>'"
+     "expression": "'<a href=\"/contracts_pending_exp_landing' ._checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string(\"mwbe\") . _checkbook_project_get_url_param_string(\"agency\")  .  _checkbook_project_get_url_param_string(\"cindustry\")  .  _checkbook_project_get_url_param_string(\"csize\") .    _checkbook_project_get_url_param_string(\"awdmethod\") .  _checkbook_project_get_url_param_string(\"status\")  . '/vendor/' .$row[vendor_vendor] . '?expandBottomCont=true\">' .$row[vendor_name_formatted]. '</a>'"
     },
 "contract_number_link": {
       "type": "expression2",
@@ -68,6 +68,7 @@ $url .= _checkbook_project_get_url_param_string('vendor');
 $url .= _checkbook_project_get_url_param_string('awdmethod');
 $url .= _checkbook_project_get_url_param_string('csize');
 $url .= _checkbook_project_get_url_param_string('cindustry');
+$url .= _checkbook_project_get_url_param_string('mwbe');
 $url .= _checkbook_project_get_year_url_param_string();
 $url .= '/smnid/' .  $node->nid;
 $url .= '/doctype/CT1~CTA1~CTR';
