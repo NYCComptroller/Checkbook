@@ -13,7 +13,6 @@
     "dataset": "checkbook:fact_disbursement_line_item",
     "preProcessConfiguration":"
         $node->is_mwbe = _checkbook_check_is_mwbe_page();
-        if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:fact_disbursement_line_item_mwbe';
     ",
     "columns": ["check_eft_issued_date","vendor_name","agency_name","check_amount","expenditure_object_name",
                 "agency_id","vendor_id","expenditure_object_id","department_name"],
@@ -33,10 +32,6 @@
 
         unset($parameters['year_type']);
         unset($parameters['year_id']);
-
-        if(function_exists('_checkbook_project_adjust_minority_type_id_parameter')) {
-            $parameters = _checkbook_project_adjust_minority_type_id_parameter($node, $parameters);
-        }
 
         return $parameters;
     ",

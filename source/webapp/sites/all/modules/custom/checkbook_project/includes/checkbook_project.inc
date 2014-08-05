@@ -640,17 +640,6 @@ function _checkbook_project_adjust_spending_parameter_filters(&$node, &$paramete
 }
 
 /**
- * Function to exclude minority_type_id in the case of all
- * @param $node Node data
- * @param $parameters Widget parsed request parameters
- * @return array adjusted parameters
- */
-function _checkbook_project_adjust_minority_type_id_parameter(&$node, &$parameters) {
-    if($parameters['minority_type_id'][0] == 'all') unset($parameters['minority_type_id']);
-    return $parameters;
-}
-
-/**
  * Function to adjust custom parameters passed to data controller module
  * @param $node Node data
  * @param $parameters Widget parsed request parameters

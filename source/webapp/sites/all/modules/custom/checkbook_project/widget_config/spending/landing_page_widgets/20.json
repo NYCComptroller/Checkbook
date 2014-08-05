@@ -38,13 +38,6 @@
               $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
         return $footer;
     ",
-    "adjustParameters":"
-        if(function_exists('_checkbook_project_adjust_minority_type_id_parameter')) {
-            $parameters = _checkbook_project_adjust_minority_type_id_parameter($node, $parameters);
-        }
-
-        return $parameters;
-    ",
     "derivedColumns": {
         "purpose_formatted": {
             "type": "expression2",
