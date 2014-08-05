@@ -3,8 +3,12 @@
 "widgetSubType":"ajaxSimple",
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B","status_flag":"A","document_code.document_code.document_code":"MA1~CTA1~CT1"},
-"cleanURLParameters":["year","calyear","agency","yeartype","vendor","status","department","csize","cindustry","awdmethod"],
- "urlParamMap":{"calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"document_agency.document_agency","yeartype":"type_of_year","vendor":"vendor_id","status":"status_flag","department":"department_id","csize":"award_size_id","cindustry":"industry_type_id","awdmethod":"award_method_id"},
+"cleanURLParameters":["mwbe","year","calyear","agency","yeartype","vendor","status","department","csize","cindustry","awdmethod"],
+ "urlParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"document_agency.document_agency","yeartype":"type_of_year","vendor":"vendor_id","status":"status_flag","department":"department_id","csize":"award_size_id","cindustry":"industry_type_id","awdmethod":"award_method_id"},
+"preProcessConfiguration":"
+    $node->is_mwbe = _checkbook_check_is_mwbe_page();
+    if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:aggregateon_mwbe_contracts_department';
+",
 "dataset": "checkbook:aggregateon_contracts_department",
 "noDataInitialLoad":true,
 "columns": ["agency.agency","total_contracts","agency.agency.agency_name","department.department","department.department.department_name","yeartype.yeartype","spending_amount_sum"],
