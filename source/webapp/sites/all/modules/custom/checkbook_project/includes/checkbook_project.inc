@@ -1143,19 +1143,21 @@ function _pending_contracts_link_contract_details($contract_number, $original_ag
         $url = '/minipanels/pending_contract_transactions/contract/'.$contract_number.'/version/'.$version;
     }
 
+    $url .= _checkbook_project_get_url_param_string("mwbe");
+
     if($linktype == 'bar'){
         if(preg_match("/contracts_pending_exp_landing/",$_GET['q']))
-            return 'contracts_pending_exp_landing'  .  _checkbook_project_get_year_url_param_string() . '?expandBottomContURL='.$url;
+            return 'contracts_pending_exp_landing'  .  _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string("mwbe") . '?expandBottomContURL='.$url;
         if(preg_match("/contracts_pending_rev_landing/",$_GET['q']))
-            return 'contracts_pending_rev_landing'  .  _checkbook_project_get_year_url_param_string() . '?expandBottomContURL='.$url;
+            return 'contracts_pending_rev_landing'  .  _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string("mwbe") . '?expandBottomContURL='.$url;
     }
     else{
         if(in_array('expense', _getLastRequestParamValue($_SERVER["HTTP_REFERER"], "contcat"))){
-            $url = '/contracts_pending_exp_landing'  .  _checkbook_project_get_year_url_param_string() . '?expandBottomContURL='.$url;
+            $url = '/contracts_pending_exp_landing'  .  _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string("mwbe") . '?expandBottomContURL='.$url;
             return '<a href = "'.$url.'">'.$pending_contract_number.'</a>';
         }
         else if(in_array('revenue', _getLastRequestParamValue($_SERVER["HTTP_REFERER"], "contcat"))){
-            $url = '/contracts_pending_rev_landing'  .  _checkbook_project_get_year_url_param_string() . '?expandBottomContURL='.$url;
+            $url = '/contracts_pending_rev_landing'  .  _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string("mwbe") . '?expandBottomContURL='.$url;
             return '<a href = "'.$url.'">'.$pending_contract_number.'</a>';
         }
         else{
