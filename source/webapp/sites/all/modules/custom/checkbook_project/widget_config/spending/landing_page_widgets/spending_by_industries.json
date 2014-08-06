@@ -8,10 +8,13 @@
     "dataset": "checkbook:spending_mwbe_data",
     "noDataInitialLoad":true,
     "totalAggregateColumns":["check_amount_sum"],
-    "columns": ["yeartype.yeartype","check_amount_sum","agency.agency","agency.agency.agency_short_name","year.year","agency.agency.agency_name","industry.industry.industry_type_name"],
+    "columns": ["yeartype.yeartype","check_amount_sum","agency.agency","agency.agency.agency_short_name","year.year","agency.agency.agency_name","industry.industry.industry_type_id","industry.industry.industry_type_name"],
     "adjustParameters":"
+        if(null != _getRequestParamValue('industry')) return $parameters;
+
         $data_controller_instance = data_controller_get_operator_factory_instance();
         $parameters['industry_type_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
+
         return $parameters;
     ",
     "limit":5,
@@ -19,25 +22,25 @@
     "getTotalDataCount":true,
     "disableViewAll":true,
     "header":"
-    $node->widgetConfig->getData=false;
-    load_widget_data($node);
-    if($node->totalDataCount > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
-    $header='<div class=\"tableHeader\"><h2>Spending by Industries</h2><span class=\"contCount\"> Number of Contracts:  ' . number_format($node->totalDataCount) . '</span></div>';
-    return $header;
+        $node->widgetConfig->getData=false;
+        load_widget_data($node);
+        if($node->totalDataCount > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
+        $header='<div class=\"tableHeader\"><h2>Spending by Industries</h2><span class=\"contCount\"> Number of Contracts:  ' . number_format($node->totalDataCount) . '</span></div>';
+        return $header;
     ",
     "footer":"
-    $url = '/panel_html/spending_transactions/spending/transactions' . _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_url_param_string(\"category\") . '/dtsmnid/' . $node->nid . _checkbook_project_get_year_url_param_string(false,false,true) . _checkbook_append_url_params();
-    $footer = '';
-    if($node->totalDataCount > 0)
-    $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
-    else
-    $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
-    return $footer;
+        $url = '/panel_html/spending_transactions/spending/transactions' . _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_url_param_string(\"category\") . '/dtsmnid/' . $node->nid . _checkbook_project_get_year_url_param_string(false,false,true) . _checkbook_append_url_params();
+        $footer = '';
+        if($node->totalDataCount > 0)
+            $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
+        else
+            $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
+        return $footer;
     ",
     "derivedColumns": {
         "industry_name_link": {
             "type": "expression2",
-            "expression": "_get_tooltip_markup($row['industry_industry_industry_type_name'],30)"
+            "expression": "'<a href=\"/spending_landing' . '/industry/'. $row[industry_industry_industry_type_id] . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() .'\">' . $row[industry_industry_industry_type_name] . '</a>'"
         },
         "formatted_check_amount_sum": {
             "type": "expression2",
