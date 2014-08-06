@@ -4,6 +4,7 @@
                 {"field_name":"domain_filter","column":"none"},
                 {"field_name":"status","column":"column-left"},
                 {"field_name":"prime_vendor_name","column":"column-left"},
+                {"field_name":"mwbe_category","column":"column-left"},
                 {"field_name":"type","column":"column-left"},
                 {"field_name":"contract_id","column":"column-left"},
                 {"field_name":"pin","column":"column-left"},
