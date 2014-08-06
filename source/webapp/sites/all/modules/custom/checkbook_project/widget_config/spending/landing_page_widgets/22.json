@@ -72,9 +72,9 @@
             {"sClass":"text","bSortable": false,"visibility_flag": "-is_mwbe"},
             {"sWidth":"143px","sClass":"number","asSorting":["desc","asc"],"visibility_flag": "-is_mwbe"},
             {"bSortable": false,"sWidth":"15px","visibility_flag": "-is_mwbe"},
-            {"sClass":"text","sWidth":"150px","bSortable": false,"visibility_flag": "is_mwbe"},
-            {"sWidth":"150px","sClass":"number","asSorting":["desc","asc"],"visibility_flag": "is_mwbe"},
-            {"sWidth":"150px","sClass":"number","asSorting":["desc","asc"],"visibility_flag": "is_mwbe"},
+            {"sClass":"text","bSortable": false,"visibility_flag": "is_mwbe"},
+            {"sWidth":"75px","sClass":"number","asSorting":["desc","asc"],"visibility_flag": "is_mwbe"},
+            {"sWidth":"75px","sClass":"number","asSorting":["desc","asc"],"visibility_flag": "is_mwbe"},
             {"bSortable": false,"sWidth":"15px","visibility_flag": "is_mwbe"}
         ],
         "bServerSide": true,
