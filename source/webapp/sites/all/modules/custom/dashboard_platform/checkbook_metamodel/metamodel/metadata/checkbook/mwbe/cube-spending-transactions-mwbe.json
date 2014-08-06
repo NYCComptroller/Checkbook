@@ -1,0 +1,18 @@
+{
+    "datasets": {
+        "fact_disbursement_line_item_mwbe": {
+            "datasourceName": "main",
+            "source": "disbursement_line_item_details"
+        }
+    },
+    "references": {
+        "fact_disbursement_line_item_mwbe__spending_category": [
+            {"datasetName": "fact_disbursement_line_item_mwbe", "columnNames": ["spending_category_id"]},
+            {"datasetName": "spending_category", "columnNames": ["spending_category_id"]}
+        ],
+        "fact_disbursement_line_item_mwbe__contracts_spending_transactions": [
+            {"datasetName": "fact_disbursement_line_item_mwbe", "columnNames": ["disbursement_line_item_id"]},
+            {"datasetName": "contracts_spending_transactions", "columnNames": ["disbursement_line_item_id"]}
+        ]
+    }
+}

@@ -19,6 +19,9 @@
 */
 ?>
 <?php
+
+
+
 $options = array('html'=>true);
 $options_disabled = array('html'=>true,"attributes"=>array("class"=>"noclick"));
 
@@ -63,11 +66,41 @@ if($contract_amount == 0){
   $contracts_link = l('<span class="nav-title">Contracts</span><br>'.custom_number_formatter_format($contract_amount, 1,'$'),RequestUtil::getTopNavURL("contracts"),$options);
 }
 
-
 if(preg_match('/yeartype\/C/',$_GET['q'])){
   $budget_link = l('<span class="nav-title">Budget</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') ,'',$options_disabled);
   $revenue_link =  l('<span class="nav-title">Revenue</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
 }
+
+$mwbe_amount = $node->data[5]['check_amount_sum'];
+if($mwbe_amount  == 0){
+	$mwbe_link = l('<span class="nav-title">M/WBE</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
+}else{
+	$active_domain_link = RequestUtil::getTopNavURL("spending") ;
+	$mwbe_link = l('<span class="nav-title">M/WBE</span><br>&nbsp;'. custom_number_formatter_format($mwbe_amount ,1,'$'),$active_domain_link. "/mwbe/2~3~4~5~9",$options);
+	
+	$mwbe_filters =  "<div class='main-nav-drop-down' style='display:none'>
+  		<ul>
+  			<li class='no-click'>M/WBE Category<li>
+  			<li class='no-click'><a href=" . $active_domain_link . "/mwbe/4~5" . ">Asian American</a><li>
+  			<li class='no-click'><a href=" . $active_domain_link . "/mwbe/2" . ">Black American</a><li>
+  			<li class='no-click'><a href=" . $active_domain_link . "/mwbe/9" . ">Women</a><li>
+  			<li class='no-click'><a href=" . $active_domain_link . "/mwbe/3" . ">Hispanic American</a><li>
+  			<li class='no-click'><a href=" . $active_domain_link . "/mwbe/1" . ">Emerging</a><li>
+			<li class='no-click'>Other<li>
+			<li class='no-click'><a href=" . $active_domain_link . "/mwbe/7" . ">Non-M/WBE</a><li>
+			<li class='no-click'><a href=" . $active_domain_link . "/mwbe/11" . ">Individuals & Others</a><li>
+			<li class='no-click'><a href=" . $active_domain_link . "/mwbe/1~2~3~4~5" . ">Clear Filter</a><li>
+  		</ul>
+  		</div>
+  		";
+	
+}
+if($spending_amount  == 0){
+	$subvendors_link = l('<span class="nav-title">Sub Vendors</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);	
+}else{
+	$subvendors_link = l('<span class="nav-title">Sub Vendors</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
+}
+
 
  
 
@@ -101,13 +134,28 @@ switch ($arg){
     break;
 }
 //TODO: remove placeholder &nbsp; when numbers under each domain are active
+
+
 ?>
+<div class="top-navigation-left">
 <table class="expense">
   <tr>
     <td class="budget first<?php if($expclass){print $expclass;}?>"><div class="expense-container"><?php print $budget_link; ?></div><div class='indicator'></div></td>   
     <td class="revenue<?php if($rclass){print $rclass;}?>"><div class="expense-container"><?php print $revenue_link ?></div><div class='indicator'></div></td>   
     <td class="spending<?php if($chclass){print $chclass;}?>"><div class="expense-container"><?php print $spending_link; ?></div><div class='indicator'></div></td>
     <td class="contracts<?php if($cclass){print $cclass;}?>"><div class="expense-container"><?php print $contracts_link ?></div><div class='indicator'></div></td>
-    <td class="employees last<?php if($eclass){print $eclass;}?>"><div class="expense-container"><?php print $payroll_link ?></div><div class='indicator'></div></td>
+    <td class="employees<?php if($eclass){print $eclass;}?>"><div class="expense-container"><?php print $payroll_link ?></div><div class='indicator'></div></td>
   </tr>
 </table>
+
+</div>
+
+
+<div class="top-navigation-right">
+<table class="expense">
+  <tr>
+    <td class="mwbe<?php if($eclass){print $eclass;}?>"><div class="expense-container"><?php print $mwbe_link ?><div><?php print $mwbe_filters; ?></div></div><div class='indicator'></div></td>
+    <td class="subvendors<?php if($eclass){print $eclass;}?>"><div class="expense-container"><?php print $subvendors_link ?></div><div class='indicator'></div></td>
+  </tr>
+</table>
+</div>

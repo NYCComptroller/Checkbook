@@ -299,6 +299,18 @@ class RequestUtil{
       return html_entity_decode($title);
     }
 
+    /** Returns Spending Footer Url based on values from current path */
+    static function getSpendingFooterUrl($node){
+        return '/panel_html/spending_transactions/spending/transactions'
+            . _checkbook_project_get_url_param_string("vendor")
+            . _checkbook_project_get_url_param_string("agency")
+            . _checkbook_project_get_url_param_string("category")
+            . _checkbook_project_get_url_param_string("industry")
+            . '/dtsmnid/' . $node->nid
+            . _checkbook_project_get_year_url_param_string(false,false,true)
+            . _checkbook_append_url_params();
+    }
+
     /** Prepares Payroll bottom navigation filter */
     static  public function preparePayrollBottomNavFilter($page, $category){
 
@@ -492,10 +504,6 @@ class RequestUtil{
             
         }
 
-//        //tmp for mwbe
-//        if($domain == "contracts" || $domain == "spending") {
-//            $path .= "/mwbe/all";
-//        }
         return $path;
      
     }

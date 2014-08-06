@@ -1,9 +1,9 @@
 {
     "widgetType": "data_tables",
     "widgetSubType": "ajaxSimple",
-    "cleanURLParameters":["agency","vendor","category","year","yeartype","check_eft_issued_nyc_year_id","calendar_fiscal_year_id","mwbe"],
+    "cleanURLParameters":["agency","vendor","category","year","yeartype","check_eft_issued_nyc_year_id","calendar_fiscal_year_id","industry","mwbe"],
     "urlParamMap":{"agency":"agency_id","vendor":"vendor_id","category":"spending_category_id","year":"year_id","yeartype":"year_type",
-                   "check_eft_issued_nyc_year_id":"check_eft_issued_nyc_year_id","calendar_fiscal_year_id":"calendar_fiscal_year_id","mwbe":"minority_type_id"},
+                   "check_eft_issued_nyc_year_id":"check_eft_issued_nyc_year_id","calendar_fiscal_year_id":"calendar_fiscal_year_id","mwbe":"minority_type_id","industry":"industry_type_id"},
     "useList":true,
     "getTotalDataCount":true,
     "limit":"5",
@@ -13,9 +13,9 @@
     "dataset": "checkbook:fact_disbursement_line_item",
     "preProcessConfiguration":"
         $node->is_mwbe = _checkbook_check_is_mwbe_page();
+        if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:fact_disbursement_line_item_mwbe';
     ",
-    "columns": ["check_eft_issued_date","vendor_name","agency_name","check_amount","expenditure_object_name",
-                "agency_id","vendor_id","expenditure_object_id","department_name"],
+    "columns": ["check_eft_issued_date","vendor_name","agency_name","check_amount","expenditure_object_name","agency_id","vendor_id","expenditure_object_id","department_name","industry_type_id"],
     "enableExpand":true,
     "disableViewAll":true,
     "adjustParameters":"
@@ -43,7 +43,7 @@
         return $header;
     ",
     "footer":"
-        $url = '/panel_html/spending_transactions/spending/transactions'. _checkbook_project_get_url_param_string(\"mwbe\") . _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"agency\")  . '/dtsmnid/' . $node->nid ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string(false,false,true). _checkbook_append_url_params();
+        $url = RequestUtil::getSpendingFooterUrl($node);
 
         $footer = '';
         if($node->totalDataCount > 0)
@@ -57,9 +57,9 @@
             "agency_name_link": {
                 "type": "expression2",
                 "expression": "'<a href=\"/spending_landing' .  _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . '/agency/'. $row[agency_id] .'\">' . $row[agency_name] . '</a>'"
-            },
-            "vendor_name_formatted": {
-                "type": "expression2",
+},
+"vendor_name_formatted": {
+"type": "expression2",
                 "expression": "_get_tooltip_markup($row['vendor_name'],36)"
             },
             "vendor_name_link": {

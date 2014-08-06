@@ -207,6 +207,16 @@
                             "sourceColumnName": "agreement_id"
                         }
                     ]
+                },
+                {
+                    "name": "industry",
+                    "levels": [
+                        {
+                            "name": "industry",
+                            "datasetName": "industry_type",
+                            "sourceColumnName": "industry_type_id"
+                        }
+                    ]
                 }
             ],
             "measures": {
@@ -268,6 +278,16 @@
                             "name": "month",
                             "datasetName": "month",
                             "sourceColumnName": "month_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "industry",
+                    "levels": [
+                        {
+                            "name": "industry",
+                            "datasetName": "industry_type",
+                            "sourceColumnName": "industry_type_id"
                         }
                     ]
                 }
@@ -335,7 +355,6 @@
             }
         }
     },
-
 	"references": {
         "contracts_mwbe_spending__history_agreement": [
                 {"datasetName": "contracts_mwbe_spending", "columnNames": ["agreement_id"]},
@@ -345,12 +364,20 @@
             {"datasetName": "contracts_mwbe_spending", "columnNames": ["vendor_id"]},
             {"datasetName": "vendor", "columnNames": ["vendor_id"]}
         ],
+        "contracts_mwbe_spending__industry": [
+            {"datasetName": "contracts_mwbe_spending", "columnNames": ["industry_type_id"]},
+            {"datasetName": "industry_type", "columnNames": ["industry_type_id"]}
+        ],
         "contracts_mwbe_spending__agency": [
             {"datasetName": "contracts_mwbe_spending", "columnNames": ["agency_id"]},
             {"datasetName": "agency", "columnNames": ["agency_id"]}
         ],
         "spending_mwbe_data__industry": [
             {"datasetName": "spending_mwbe_data", "columnNames": ["industry_type_id"]},
+            {"datasetName": "industry_type", "columnNames": ["industry_type_id"]}
+        ],
+        "contracts_mwbe_vendor_spending__industry": [
+            {"datasetName": "contracts_mwbe_vendor_spending", "columnNames": ["industry_type_id"]},
             {"datasetName": "industry_type", "columnNames": ["industry_type_id"]}
         ]
     }        

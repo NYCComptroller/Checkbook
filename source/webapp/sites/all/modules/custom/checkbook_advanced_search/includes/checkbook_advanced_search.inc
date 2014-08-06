@@ -154,6 +154,35 @@ function _checkbook_advanced_search_get_agency_attributes($data_source = 'checkb
 }
 
 /*
+ * Get mwbe category name and id using mapping
+ *
+ * Total M/WBE 2,3,4,5,7,9,11
+ * Asian American 4,5
+ * Black American 2
+ * Women 9
+ * Hispanic American 3
+ * Emerging ?
+ * Non-M/WBE 7
+ * Individuals and Others 11
+ *
+ * @return array
+ */
+function _checkbook_advanced_search_get_mwbe_category_and_id()
+{
+    $minority_types = array(
+        '' => 'Select Category',
+        '2~3~4~5~7~9~11'=>'Total M/WBE',
+        '4~5'=>'Asian American',
+        '2'=>'Black American',
+        '9'=>'Women',
+        '3'=>'Hispanic American',
+        '?'=>'Emerging',
+        '7'=>'Non-M/WBE',
+        '11'=>'Individuals and Others'
+    );
+    return $minority_types;
+}
+/*
  * Get expense name and id using the data controller
  * @return array
  */
@@ -546,6 +575,9 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
     $contracts_budget_name = trim($form[$filter_dimension][$data_source . '_contracts_budget_name']['#value']);
     $contracts_budget_name_exact = trim($form[$filter_dimension][$data_source . '_contracts_budget_name_exact']['#value']);
     $contracts_year = trim($form[$filter_dimension][$data_source . '_contracts_year']['#value']);
+    $contracts_mwbe_category = trim($form[$filter_dimension][$data_source . '_contracts_mwbe_category']['#value']);
+    $contracts_mwbe_category = $contracts_mwbe_category == "Select Category" ? 0 : $contracts_mwbe_category;
+
     if ($contracts_year == 'fy~all') {
         $redirect_url = 'contract/all/transactions';
         $contracts_year = null;
@@ -553,6 +585,9 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
         $redirect_url = 'contract/transactions';
     }
 
+    if (!empty($contracts_mwbe_category)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_mwbe_category, 'mwbe');
+    }
     if (!empty($contracts_contract_status)) {
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_status, 'contstatus');
     }
@@ -690,6 +725,9 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
     $spending_budget_name = trim($form[$filter_dimension][$data_source . '_spending_budget_name']['#value']);
     $spending_budget_name_exact = trim($form[$filter_dimension][$data_source . '_spending_budget_name_exact']['#value']);
 
+    $spending_mwbe_category = trim($form[$filter_dimension][$data_source . '_spending_mwbe_category']['#value']);
+    $spending_mwbe_category = $spending_mwbe_category == "Select Category" ? 0 : $spending_mwbe_category;
+
     if ($spending_fiscal_year == 'fy~all') {
         $spending_fiscal_year = null;
     }
@@ -698,6 +736,9 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
     //append data source if not default (checkbook)
     if($data_source != 'checkbook') $redirect_url .= '/datasource/' . $data_source;
 
+    if (!empty($spending_mwbe_category)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_mwbe_category, 'mwbe');
+    }
     if (!empty($spending_fiscal_year) && $spending_date_filter == 0) {
         $redirect_url .= _checkbook_advanced_search_year_arg($spending_fiscal_year, 'year');
     }
