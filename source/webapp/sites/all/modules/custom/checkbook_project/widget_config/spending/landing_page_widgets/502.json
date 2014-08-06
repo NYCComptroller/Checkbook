@@ -57,9 +57,9 @@
             "agency_name_link": {
                 "type": "expression2",
                 "expression": "'<a href=\"/spending_landing' .  _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . '/agency/'. $row[agency_id] .'\">' . $row[agency_name] . '</a>'"
-            },
-            "vendor_name_formatted": {
-                "type": "expression2",
+},
+"vendor_name_formatted": {
+"type": "expression2",
                 "expression": "_get_tooltip_markup($row['vendor_name'],36)"
             },
             "vendor_name_link": {
