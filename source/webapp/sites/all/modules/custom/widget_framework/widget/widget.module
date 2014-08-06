@@ -269,7 +269,11 @@ function widget_node_view($node, $nodata = true) {
 		return $node;
 	}
 		//invoke widget specific post-load function
-	widget_invoke($node, 'widget_data');
+	if(isset($node->widgetConfig->widgetAfterDataLoader)){
+		eval($node->widgetConfig->widgetAfterDataLoader);
+	}else{	
+		widget_invoke($node, 'widget_data');
+	}
 
 	if ($node->widgetConfig->dataOnly) {
 		$node->content['body'] = array(
@@ -445,11 +449,7 @@ function widget_prepare(&$node) {
     if(isset($node->widgetConfig->preProcessConfiguration)){
     	$parameters =  eval($node->widgetConfig->preProcessConfiguration);
     }
-    foreach ($node->widgetConfig->model->series as $series) {
-        if(isset($series->preProcessConfiguration)){
-            $parameters =  eval($series->preProcessConfiguration);
-        }
-    }
+    
 }
 
 function prepare_dataset_parameters(&$requestParameters, $configuration,$widgetConfig = null) {
@@ -791,7 +791,10 @@ function widget_data(&$node) {
         $resultFormatter = null;
     }
 
-    if (isset($node->widgetConfig->dataset) || isset($node->widgetConfig->model)) {
+    if(isset($node->widgetConfig->widgetDataLoader)){
+    	eval($node->widgetConfig->widgetDataLoader);
+    }
+    elseif (isset($node->widgetConfig->dataset) || isset($node->widgetConfig->model)) {
         load_widget_data($node, $resultFormatter);
     }
 
@@ -861,7 +864,7 @@ function check_node_flag_visibilty($flag,$node){
 			$visibility_flag = (!isset($visibility_flag_name) or $node->$visibility_flag_name == true   ) ? true : false;
 		}
 	}
-    return $visibility_flag;
+	return $visibility_flag;
 }
 
 function calculateDerivedCell($row, $fulldata, $derivedColumnDefinition,$node) {
@@ -1402,3 +1405,12 @@ function _get_default_datasource(){
 
 
 
+function _widget_build_sql_condition($column, $value){
+	$values_array = explode('~',$value);
+	if(count($values_array) > 0){
+		return  $column . ' in ' . '(\'' . implode('\',\'', $values_array) . '\')';
+	}else{
+		return  $column . '=' . '\'' . $value . '\'';
+	}
+	
+}

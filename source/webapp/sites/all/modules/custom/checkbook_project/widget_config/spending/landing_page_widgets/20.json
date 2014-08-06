@@ -3,15 +3,15 @@
     "widgetSubType":"ajaxSimple",
     "no_results_content":"No Results Found",
     "defaultParameters":{"type_of_year":"B","spending_category_id":null},
-    "cleanURLParameters":["year","agency","yeartype","calyear","vendor","category","agid","magid","mwbe"],
-    "urlParamMap":{"year":"year_id","agency":"agency_id","yeartype":"type_of_year","calyear":"year_id","vendor":"vendor_id","category":"spending_category_id","agid":"agreement_id.agreement_id","magid":"agreement_id.agreement_id","mwbe":"minority_type_id"},
+    "cleanURLParameters":["year","agency","yeartype","calyear","vendor","category","agid","magid","industry","mwbe"],
+    "urlParamMap":{"year":"year_id","agency":"agency_id","yeartype":"type_of_year","calyear":"year_id","vendor":"vendor_id","category":"spending_category_id","agid":"agreement_id.agreement_id","magid":"agreement_id.agreement_id","mwbe":"minority_type_id","industry":"industry_type_id"},
     "dataset": "checkbook:contracts_spending",
         "preProcessConfiguration":"
             $node->is_mwbe = _checkbook_check_is_mwbe_page();
             if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:contracts_mwbe_spending';
         ",
     "noDataInitialLoad":true,
-    "columns": ["yeartype.yeartype","check_amount_sum","total_contract_amount_sum","document_id.document_id","vendor.vendor","vendor.vendor.legal_name","contract_purpose.contract_purpose","agency.agency","agency.agency.agency_name","year.year","agreement_id.agreement_id"],
+    "columns": ["yeartype.yeartype","check_amount_sum","total_contract_amount_sum","document_id.document_id","vendor.vendor","vendor.vendor.legal_name","contract_purpose.contract_purpose","agency.agency","agency.agency.agency_name","year.year","agreement_id.agreement_id","industry.industry.industry_type_id"],
     "limit":5,
     "enableExpand":true,
     "getTotalDataCount":true,
@@ -24,13 +24,7 @@
         return $header;
     ",
     "footer":"
-        $url = '/panel_html/spending_transactions/spending/transactions'. '/dtsmnid/' . $node->nid
-                   . _checkbook_project_get_url_param_string(\"mwbe\")
-                   . _checkbook_project_get_year_url_param_string(false,false,true)
-                   . _checkbook_append_url_params()
-                   . _checkbook_project_get_url_param_string('vendor','mcvendor')
-                   . _checkbook_project_get_url_param_string('category')
-                   . _checkbook_project_get_url_param_string('agency','mcagency');
+        $url = RequestUtil::getSpendingFooterUrl($node);
         $footer = '';
         if($node->totalDataCount > 0)
              $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
