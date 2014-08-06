@@ -1,7 +1,7 @@
 {
     "widgetType": "phpparser",
     "no_results_content": "No Results Found",
-    "cleanURLParameters":["year","calyear","agency","yeartype","awdmethod","vendor","csize","cindustry","magid"],
+    "cleanURLParameters":["year","calyear","agency","yeartype","awdmethod","vendor","csize","cindustry","magid","mwbe"],
     "model": {
         "join": {
             "method": "Union"
@@ -49,7 +49,16 @@
                 ],
                "seriesURLParamMap":{"vendor":"vendor_id","year":"year.year","agency":"agency_id"},
                "allowedParams":["year.year","agency_id"]
-            }            
+            } ,
+           {
+                "dataset": "checkbook:spending_mwbe_data",
+                                "columns": [
+                    "check_amount_sum"
+                ],
+               "seriesURLParamMap":{"vendor":"vendor_id","year":"year.year","calyear":"year.year","agency":"agency_id","yeartype":"type_of_year","mwbe":"minority_type_id"},
+               "allowedParams":["vendor_id","year.year","agency_id","type_of_year","minority_type_id"],
+               "seriesDefaultParameters":{"type_of_year":"B","minority_type_id":"2~3~4~5~9"}
+            }           
         ]
     },
     "template": "contracts_navigation"
