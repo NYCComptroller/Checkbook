@@ -3,7 +3,7 @@
     "widgetSubType":"ajaxSimple",
     "no_results_content":"No Results Found",
     "defaultParameters":{},
-    "cleanURLParameters":["year","agency","calyear","yeartype","vendor","category","dept","mwbe"],
+    "cleanURLParameters":["year","agency","calyear","yeartype","vendor","category","dept","industry","mwbe"],
     "urlParamMap":{"year":"year_id","agency":"agency_id","yeartype":"type_of_year","calyear":"year_id","vendor":"vendor_id","category":"spending_category_id","dept":"department.department","mwbe":"minority_type_id"},
     "dataset": "checkbook:spending_data",
     "preProcessConfiguration":"
@@ -12,7 +12,7 @@
     ",
     "noDataInitialLoad":true,
     "totalAggregateColumns":["check_amount_sum"],
-    "columns": ["check_amount_sum","agency.agency","department.department","department.department.department_name","year.year"],
+    "columns": ["check_amount_sum","agency.agency","department.department","department.department.department_name","year.year","industry.industry.industry_type_id"],
     "limit":5,
     "enableExpand":true,
     "getTotalDataCount":true,
@@ -25,7 +25,7 @@
         return $header;
     ",
     "footer":"
-        $url = '/panel_html/spending_transactions/spending/transactions'. _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_url_param_string(\"category\")  . '/dtsmnid/' . $node->nid . _checkbook_project_get_year_url_param_string(false,false,true) . _checkbook_append_url_params();
+        $url = RequestUtil::getSpendingFooterUrl($node);
         $footer = '';
         if($node->totalDataCount > 0)
             $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";

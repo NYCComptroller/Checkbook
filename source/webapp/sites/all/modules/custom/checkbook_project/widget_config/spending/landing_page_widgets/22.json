@@ -2,8 +2,8 @@
 	"widgetType": "data_tables",
 	"widgetSubType":"ajaxSimple",
 	"no_results_content":"No Results Found",
-	"cleanURLParameters":["vendor","year","yeartype","calyear","category","vendor","expcategory","agency","mwbe"],
-	"urlParamMap":{"year":"year.year","yeartype":"type_of_year","calyear":"year_id","category":"spending_category_id","vendor":"vendor_id","expcategory":"expenditure_object.expenditure_object","agency":"agency_id","mwbe":"minority_type_id"},
+	"cleanURLParameters":["vendor","year","yeartype","calyear","category","vendor","expcategory","agency","industry","mwbe"],
+	"urlParamMap":{"year":"year.year","yeartype":"type_of_year","calyear":"year_id","category":"spending_category_id","vendor":"vendor_id","expcategory":"expenditure_object.expenditure_object","agency":"agency_id","mwbe":"minority_type_id","industry":"industry_type_id"},
 	"defaultParameters":{"year.year":22,"type_of_year":"B"},
 	"dataset": "checkbook:spending_data",
     "preProcessConfiguration":"
@@ -12,7 +12,7 @@
     ",
 	"noDataInitialLoad":true,
     "totalAggregateColumns":["check_amount_sum"],
-	"columns": ["yeartype.yeartype","check_amount_sum","expenditure_object.expenditure_object","expenditure_object.expenditure_object.original_expenditure_object_name","year.year"],
+	"columns": ["yeartype.yeartype","check_amount_sum","expenditure_object.expenditure_object","expenditure_object.expenditure_object.original_expenditure_object_name","year.year","industry.industry.industry_type_id"],
 	"limit":5,
     "enableExpand":true,
     "getTotalDataCount":true,
@@ -24,7 +24,7 @@
         $header='<div class=\"tableHeader\"><h2>Top ' .  $count . 'Expense Categories</h2><span class=\"contCount\"> Number of Expense Categories:  ' . number_format($node->totalDataCount) . '</span></div>';
         return $header;",
     "footer":"
-        $url = '/panel_html/spending_transactions/spending/transactions'. _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_url_param_string(\"category\")  . '/dtsmnid/' . $node->nid . _checkbook_project_get_year_url_param_string(false,false,true) . _checkbook_append_url_params();
+        $url = RequestUtil::getSpendingFooterUrl($node);
         $footer = '';
         if($node->totalDataCount > 0)
              $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
