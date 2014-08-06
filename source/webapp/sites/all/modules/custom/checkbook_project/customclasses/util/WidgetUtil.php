@@ -181,7 +181,9 @@ class WidgetUtil
     	"prime_vendor_address"=>"Prime Vendor<br/>Address",
         "percent_spending"=>"%<br/>Spending",
         "sub_vendor_name"=>"Sub<br/>Vendor",
-        "industry_name"=>"Industry"
+        "industry_name"=>"Industry",
+        "sub_contract_reference_id"=>"Sub Contract<br/>Reference ID",
+        "mwbe_category"=>"M/WBE<br/>Category"
     );
 
     //For number cols, need to find out if they are uniform number of digits for formatting
