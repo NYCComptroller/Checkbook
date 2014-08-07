@@ -54,6 +54,8 @@ class NodeSummaryUtil
         }
 
         $node = node_load($nid);
+        //For custom widgets
+        if(!$node) $node = _widget_node_load_file($nid);
         widget_config($node);
 
         $title = NULL;

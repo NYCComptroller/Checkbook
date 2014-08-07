@@ -5,6 +5,135 @@
             "source": "disbursement_line_item_details"
         }
     },
+    "cubes":   {
+        "spending_transactions_by_categories_mwbe": {
+            "sourceDatasetName": "fact_disbursement_line_item_mwbe",
+            "dimensions": [
+                {
+                    "name": "agency",
+                    "levels": [
+                        {
+                            "name": "agency",
+                            "datasetName": "agency",
+                            "sourceColumnName": "agency_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "vendor",
+                    "levels": [
+                        {
+                            "name": "vendor",
+                            "datasetName": "vendor",
+                            "sourceColumnName": "vendor_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "vendornm",
+                    "levels": [
+                        {
+                            "name": "vendornm",
+                            "sourceColumnName": "vendor_name"
+                        }
+                    ]
+                },
+                {
+                    "name": "expenditure_object",
+                    "levels": [
+                        {
+                            "name": "expenditure_object",
+                            "datasetName": "expenditure_object",
+                            "sourceColumnName": "expenditure_object_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "expobjectname",
+                    "levels": [
+                        {
+                            "name": "expobjectname",
+                            "sourceColumnName": "expenditure_object_name"
+                        }
+                    ]
+                },
+                {
+                    "name": "dept",
+                    "levels": [
+                        {
+                            "name": "dept",
+                            "datasetName": "department",
+                            "sourceColumnName": "department_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "deptshortname",
+                    "levels": [
+                        {
+                            "name": "deptshortname",
+                            "sourceColumnName": "department_short_name"
+                        }
+                    ]
+                },
+                {
+                    "name": "deptname",
+                    "levels": [
+                        {
+                            "name": "deptname",
+                            "sourceColumnName": "department_name"
+                        }
+                    ]
+                },
+                {
+                    "name": "category",
+                    "levels": [
+                        {
+                            "name": "category",
+                            "datasetName": "category",
+                            "sourceColumnName": "spending_category_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "ctx",
+                    "levels": [
+                        {
+                            "name": "ctx",
+                            "datasetName": "contracts_spending_transactions",
+                            "sourceColumnName": "disbursement_line_item_id"
+                        }
+                    ]
+                }
+            ],
+            "measures": {
+                "txcount": {
+                    "function": "COUNT(*)"
+                },
+                "g100m_count": {
+                    "function": "SUM(CASE WHEN COALESCE(check_amount,0) > 100000000 THEN 1 ELSE 0 END)"
+                },
+                "g50m_le100m_count": {
+                    "function": "SUM(CASE WHEN COALESCE(check_amount,0) > 50000000 AND COALESCE(check_amount,0) <= 100000000 THEN 1 ELSE 0 END)"
+                },
+                "g25m_le50m_count": {
+                    "function": "SUM(CASE WHEN COALESCE(check_amount,0) > 25000000 AND COALESCE(check_amount,0) <= 50000000 THEN 1 ELSE 0 END)"
+                },
+                "g10m_le25m_count": {
+                    "function": "SUM(CASE WHEN COALESCE(check_amount,0) > 10000000 AND COALESCE(check_amount,0) <= 25000000 THEN 1 ELSE 0 END)"
+                },
+                "ge1m_le10m_count": {
+                    "function": "SUM(CASE WHEN COALESCE(check_amount,0) >= 1000000 AND COALESCE(check_amount,0) <= 10000000 THEN 1 ELSE 0 END)"
+                },
+                "less1m_count": {
+                    "function": "SUM(CASE WHEN COALESCE(check_amount,0) < 1000000 THEN 1 ELSE 0 END)"
+                },
+                "check_amount_sum": {
+                    "function": "SUM(COALESCE(check_amount,0))"
+                }
+            }
+        }
+    },
     "references": {
         "fact_disbursement_line_item_mwbe__spending_category": [
             {"datasetName": "fact_disbursement_line_item_mwbe", "columnNames": ["spending_category_id"]},
