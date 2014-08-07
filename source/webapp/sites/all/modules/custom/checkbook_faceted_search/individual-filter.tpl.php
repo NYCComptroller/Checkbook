@@ -146,8 +146,8 @@ if(strtolower($filter_name) == 'vendor'){
    }
     $js .= "(function($){
           $('.filter-title').each(function(){
-            if($(this).children('span').hasClass('open'))";
-    $js .= $scroll_facet . "});
+            if($(this).children('span').hasClass('open')){";
+    $js .= $scroll_facet . "}});
 
           $('.filter-title').unbind('click');
           $('.filter-title').click(function(){
