@@ -30,9 +30,9 @@
 },
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B"},
-"cleanURLParameters":["year","yeartype","agency","vendor","category"],
-"urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"vendor_id","category":"spending_category_id"},
-"chartTitle":"Spending by M/WBE Share",
+"cleanURLParameters":["yeartype","agency","vendor","category"],
+"urlParamMap":{"yeartype":"type_of_year","agency":"agency_id","vendor":"vendor_id","category":"spending_category_id"},
+"chartTitle":"M/WBE Total Spending Share",
 "widgetDataLoader":"
     
     $where_filters = array();
@@ -44,63 +44,82 @@
         $where_filter = ' where ' . implode(' and ' , $where_filters);
     }
     
-    $sql = 'select rm.minority_type_id, rm.minority_type_name , sum(total_spending_amount) total_spending
-    from aggregateon_mwbe_spending_coa_entities a1 
-    join ref_minority_type rm on rm.minority_type_id = a1.minority_type_id     
+    $sql = 'select rm.minority_type_id, rm.minority_type_name ,year_value, sum(total_spending_amount) total_spending
+    from {aggregateon_mwbe_spending_coa_entities} a1 
+    join {ref_minority_type} rm on rm.minority_type_id = a1.minority_type_id
+    join {ref_month} rmo on rmo.month_id =  a1.month_id
+    join {ref_year} ry on rmo.year_id = ry.year_id       
    ' . $where_filter . '
-    group by rm.minority_type_id, rm.minority_type_name  ';
+    group by rm.minority_type_id, rm.minority_type_name,year_value  ';
     
     $node->data  = _checkbook_project_execute_sql($sql);
     
 ",
 "widgetUpdateJSONConfig":"
 
-	$mwbe_data = array();
+	$series =  array();
+	$non_mwbe_data = array();
+	
+	 $year = '';
 	 foreach ($node->data as $row){
 	 
 	 	switch($row['minority_type_id']){
 	 		case '2':
-	 		$mwbe_data['ba'] += $row['total_spending']; 
+	 		$series[$row['year_value']]->y += $row['total_spending']; 
 	 		break;
 	 		case '3':
-	 		$mwbe_data['ha'] += $row['total_spending']; 
+	 		$series[$row['year_value']]->y += $row['total_spending']; 
 	 		break;
 	 		case '4':
-	 		$mwbe_data['aa'] += $row['total_spending']; 
+	 		$series[$row['year_value']]->y += $row['total_spending']; 
 	 		break;
 	 		case '5':
-	 		$mwbe_data['aa'] += $row['total_spending']; 
-	 		break;
-	 		case '7':
-	 		$mwbe_data['nm'] += $row['total_spending']; 
+	 		$series[$row['year_value']]->y += $row['total_spending']; 
 	 		break;
 	 		case '9':
-	 		$mwbe_data['w'] += $row['total_spending']; 
+	 		$series[$row['year_value']]->y += $row['total_spending']; 
 	 		break;
-	 		case '11':
-	 		$mwbe_data['io'] += $row['total_spending']; 
+	 		case '7':
+	 		$non_mwbe_data[$row['year_value']] = $row['total_spending']; 
 	 		break;
-	 	}	 
+	 	}	
+	 	$year = $row['year_value']; 
 	 }
-	$total_mwbe = $mwbe_data['ba'] + $mwbe_data['ha'] + $mwbe_data['aa'] + $mwbe_data['w'] ; 
-	$toal_non_mwbe = $mwbe_data['nm'];
 	
-	$node->mwbe_share_percent = custom_number_formatter_format($total_mwbe/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') ;
+	if(_getRequestParamValue('yeartype') == 'C'){
+		 $year_display = 'CY ' . $year;
+	}else{
+		$year_display = 'FY ' . $year;
+	}
 	
-	$node->widgetConfig->chartConfig->series[0]->data[0]->y = $total_mwbe;
-	$node->widgetConfig->chartConfig->series[0]->data[0]->custom_label = custom_number_formatter_format($total_mwbe,2,'$') . ' (' .
-																		 custom_number_formatter_format($total_mwbe/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') . ')';																		 
-	$node->widgetConfig->chartConfig->series[0]->data[0]->tooltip_label = 
-							'Aisan American ' . custom_number_formatter_format($mwbe_data['aa'],2,'$')  . ' (' . custom_number_formatter_format($mwbe_data['aa']/$total_mwbe*100,1,null,'%') . ')' .  '<br/>' 
-							. 'Black American ' . custom_number_formatter_format($mwbe_data['ba'],2,'$')  . ' (' .custom_number_formatter_format($mwbe_data['ba']/$total_mwbe*100,1,null,'%') . ')' . '<br/>' 
-							. 'Women ' . custom_number_formatter_format($mwbe_data['w'],2,'$')  . ' (' . custom_number_formatter_format($mwbe_data['w']/$total_mwbe*100,1,null,'%') . ')' . '<br/>' 
-							. 'Hispanic American ' . custom_number_formatter_format($mwbe_data['ha'],2,'$')  . ' (' . custom_number_formatter_format($mwbe_data['ha']/$total_mwbe*100,1,null,'%') . ')' . '<br/>' 
-							. 'Emerging ' . custom_number_formatter_format($mwbe_data['e'],2,'$')  . ' (' . custom_number_formatter_format($mwbe_data['e']/$total_mwbe*100,1,null,'%') . ')' . '<br/>';
-	$node->widgetConfig->chartConfig->series[0]->data[1]->y = $toal_non_mwbe;																		 
-	$node->widgetConfig->chartConfig->series[0]->data[1]->custom_label = custom_number_formatter_format($toal_non_mwbe,2,'$') . ' (' .
-																		 custom_number_formatter_format($toal_non_mwbe/($total_mwbe + $toal_non_mwbe) *100,1,null,'%') . ')';
-    $node->widgetConfig->chartConfig->series[0]->data[1]->tooltip_label = custom_number_formatter_format($toal_non_mwbe,2,'$') . ' (' .
-																		 custom_number_formatter_format($toal_non_mwbe/($total_mwbe + $toal_non_mwbe) *100,1,null,'%') . ')';
+	$i = 0;
+	$categories = array();
+	ksort($series);
+	
+	$series_new = array();
+	$index = 0;
+	
+	
+	foreach($series as $key=>$row){
+		if($key <= $year && $key >= $year - 4){
+	 		$tooltip_label = 
+	 						'Year: ' . $year_display.  '<br/>' .
+	 						'Amount: '. custom_number_formatter_format($series[$key]->y,2,'$')   . '<br/>' ; 
+		
+			$series_new[$index]->y = $series[$key]->y/($series[$key]->y + $non_mwbe_data[$key] ) * 100;
+			$series_new[$index]->tooltip_label = $tooltip_label;
+			$series_new[$index]->custom_label = custom_number_formatter_format($series[$key]->y/($series[$key]->y + $non_mwbe_data[$key] ) *100,1,null,'%') ; 
+			$categories[] = $key ;
+			$index += 1; 	
+		}	
+	}
+
+	$node->widgetConfig->chartConfig->series[0]->name = 'Fiscal Years';
+	$node->widgetConfig->chartConfig->series[0]->type = 'column';
+	$node->widgetConfig->chartConfig->series[0]->pointWidth = 80;
+	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
+	$node->widgetConfig->chartConfig->xAxis->categories = $categories;
+	
 																		 
 ",
 "chartConfig" : {
@@ -108,47 +127,35 @@
     "plotOptions": {
             "series": {
                 "cursor": "pointer"   ,
+                "stacking": "normal",
                 "dataLabels": {
                     "enabled": true,
-                    "format": "{point.custom_label}"
+                    "format": "{point.custom_label}",
+                    "style": {
+                		"color": "#FFFFFF",
+                		"fontSize": "24px"
+            		}
                 }             
             }
     },
-    "chart" : {"width":480},
     "xAxis": {
-        "categories": ["M/WBE","Non-M/WBE"],
-        "lineWidth": 0,
-   		"minorGridLineWidth": 0,
-   		"lineColor": "transparent",
-        "title": {"text": ""},
-        "labels": {"enabled": true}
+        "categories": [],
+        "labels": {"enabled": false}
     },
     "series": [
         {
             "name": "FY",
             "type": "column",
-            "pointWidth": 150,
+            "pointWidth": 50,
             "data": [
-            		{
-            			"name": "Point 1",
-            			"y":100,
-            			"custom_label":"",
-            			"tooltip_label":""            			         			
-            		},
-            		{
-            			"name": "Point 2",
-            			"y":200,
-            			"custom_label":"",
-            			"tooltip_label":""            			
-            		}]
+            		]
         }
     ],
     "title": {"text": ""},
     "yAxis": {
         "startOnTick":true,
         "title": {"text": ""},
-        "gridLineColor": "transparent",
-        "labels": {"enabled":false}
+        "labels":{"rotation": 0,"function":"yAxisFormatter"}
     } ,
     "legend": {
         "enabled": false       
@@ -159,6 +166,7 @@
 
 
 <function>
+yAxisFormatter^^'formatter' : function(){return this.value + '%';}##
 tooltipformatter^^'formatter' :
 function() {return this.point.tooltip_label ;
 }
