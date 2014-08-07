@@ -269,8 +269,15 @@ function widget_node_view($node, $nodata = true) {
 		return $node;
 	}
 		//invoke widget specific post-load function
-	if(isset($node->widgetConfig->widgetAfterDataLoader)){
-		eval($node->widgetConfig->widgetAfterDataLoader);
+	if(isset($node->widgetConfig->widgetUpdateJSONConfig)){
+		
+		if($node->widgetConfig->widgetType == 'highcharts'){
+			$node->widgetConfig->chartConfig->chart->renderTo = 'node-chart-' . widget_unique_identifier($node);
+			$node->widgetConfig->chartConfig->credits->enabled = false;				
+		}
+		
+		
+		eval($node->widgetConfig->widgetUpdateJSONConfig);
 	}else{	
 		widget_invoke($node, 'widget_data');
 	}
