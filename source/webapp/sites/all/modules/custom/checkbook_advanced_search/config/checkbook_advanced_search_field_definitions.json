@@ -252,5 +252,13 @@
             "options":"$agencies",
             "option_attributes":"$agency_attributes"
         }
+    },
+    "mwbe_category":{
+        "field_type":"select",
+        "field_name":"mwbe_category",
+        "attributes":{
+            "title":"M/WBE Category",
+            "options":"$mwbe_category_attributes"
+        }
     }
 }
