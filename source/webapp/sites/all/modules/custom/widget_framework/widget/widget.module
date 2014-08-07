@@ -269,8 +269,15 @@ function widget_node_view($node, $nodata = true) {
 		return $node;
 	}
 		//invoke widget specific post-load function
-	if(isset($node->widgetConfig->widgetAfterDataLoader)){
-		eval($node->widgetConfig->widgetAfterDataLoader);
+	if(isset($node->widgetConfig->widgetUpdateJSONConfig)){
+		
+		if($node->widgetConfig->widgetType == 'highcharts'){
+			$node->widgetConfig->chartConfig->chart->renderTo = 'node-chart-' . widget_unique_identifier($node);
+			$node->widgetConfig->chartConfig->credits->enabled = false;				
+		}
+		
+		
+		eval($node->widgetConfig->widgetUpdateJSONConfig);
 	}else{	
 		widget_invoke($node, 'widget_data');
 	}
@@ -637,7 +644,16 @@ function load_widget_data($node, $resultFormatter) {
                 $serieStartWith = isset($serie->startWith) ? $serie->startWith : $startWith;
                 $serieLimit = isset($serie->limit) ? $serie->limit : $limit;
                 // getting data using data controller
-                
+                if(is_array($serieParameters))
+                foreach($serieParameters as $key => $value){
+                	if(!isset($value)){
+                		unset($serieParameters[$key]);
+                		continue;
+                	}
+                	if(!is_array($value)){
+                		$serieParameters[$key] = explode("~",$value);
+                	}
+                }
                 $records = $isSerieList
                 ? $dataQueryController->queryDataset(
                         $serieDatasetName,

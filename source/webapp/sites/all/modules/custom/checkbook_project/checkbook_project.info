@@ -41,3 +41,4 @@ files[] = customclasses/util/CustomURLHelper.php
 files[] = customclasses/util/CheckbookDateUtil.php
 files[] = customclasses/util/WidgetUtil.php
 files[] = customclasses/contract/PendingContractDetails.php
+files[] = customclasses/util/MappingUtil.php

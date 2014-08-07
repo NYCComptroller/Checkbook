@@ -169,18 +169,12 @@ function _checkbook_advanced_search_get_agency_attributes($data_source = 'checkb
  */
 function _checkbook_advanced_search_get_mwbe_category_and_id()
 {
-    $minority_types = array(
-        '' => 'Select Category',
-        '2~3~4~5~7~9~11'=>'Total M/WBE',
-        '4~5'=>'Asian American',
-        '2'=>'Black American',
-        '9'=>'Women',
-        '3'=>'Hispanic American',
-        '?'=>'Emerging',
-        '7'=>'Non-M/WBE',
-        '11'=>'Individuals and Others'
-    );
-    return $minority_types;
+    $minority_cat_map = MappingUtil::getMinorityCategoryMappings();
+    $results = array('' => 'Select Category');
+    foreach($minority_cat_map as $category => $minority_types) {
+        $results[implode('~',$minority_types)] = $category;
+    }
+    return $results;
 }
 /*
  * Get expense name and id using the data controller
