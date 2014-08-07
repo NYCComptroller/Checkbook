@@ -1,0 +1,193 @@
+{
+"widgetType": "highcharts",
+"widgetDatahandler": "highcharts",
+"html_class":"chart-left",
+"header":"
+       $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
+       $header .= ChartUtil::generateGridViewLink($node);
+       return $header;
+    ",
+ "gridConfig":{
+        "template":"highchart_spending_fy_grid_view",
+        "html_class":"chart-grid-view-table three-columns",
+        "table_columns": [
+            {
+                  "labelAlias": "month",
+              "column": "month_month_month_name",
+                  "sortColumn":"sort_order"
+             },
+            {
+                  "colLabel": "$node->widgetConfig->chartConfig->series[0]->name",
+              "column": "previous_spending",
+                   "eval":true
+            },
+            {
+                  "colLabel": "$node->widgetConfig->chartConfig->series[1]->name",
+              "column": "current_spending",
+                   "eval":true
+            }
+        ]
+},
+"no_results_content":"No Results Found",
+"defaultParameters":{"type_of_year":"B"},
+"cleanURLParameters":["year","yeartype","agency","vendor","category"],
+"urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"vendor_id","category":"spending_category_id"},
+"chartTitle":"Analysis by M/WBE Share",
+"widgetDataLoader":"
+    
+    $where_filters = array();
+    foreach($node->widgetConfig->requestParams as $param=>$value){
+        $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
+    }
+    
+    if(count($where_filters) > 0){
+        $where_filter = ' where ' . implode(' and ' , $where_filters);
+    }
+    
+    $sql = 'select rm.minority_type_id, rm.minority_type_name , month_value,month_name,year_value, sum(total_spending_amount) total_spending
+    from aggregateon_mwbe_spending_coa_entities a1 
+    join ref_minority_type rm on rm.minority_type_id = a1.minority_type_id
+    join ref_month rmo on rmo.month_id =  a1.month_id
+    join ref_year ry on rmo.year_id = ry.year_id       
+   ' . $where_filter . '
+    group by rm.minority_type_id, rm.minority_type_name, month_value,month_name,year_value  ';
+    
+    $node->data  = _checkbook_project_execute_sql($sql);
+    
+",
+"widgetUpdateJSONConfig":"
+
+	$series_ba =  array();
+	$series_ha =  array();
+	$series_w =  array();
+	$series_aa =  array();
+	$series_e =  array();
+	$months = array('January','February','March','April','May','June','July','August','September','October','November','December');
+	
+	 $year = '2014';
+	 foreach ($node->data as $row){
+	 
+	 	switch($row['minority_type_id']){
+	 		case '2':
+	 		$series_ba[$row['month_value'] - 1]->y += $row['total_spending']; 
+	 		break;
+	 		case '3':
+	 		$series_ha[$row['month_value'] - 1]->y += $row['total_spending']; 
+	 		break;
+	 		case '4':
+	 		$series_aa[$row['month_value'] - 1]->y += $row['total_spending']; 
+	 		break;
+	 		case '5':
+	 		$series_aa[$row['month_value'] - 1]->y += $row['total_spending']; 
+	 		break;
+	 		case '9':
+	 		$series_w[$row['month_value'] - 1]->y += $row['total_spending']; 
+	 		break;
+	 		case '7':
+	 		$non_mwbe_data[$row['month_value'] - 1] = $row['total_spending']; 
+	 		break;
+	 	}	 
+	 	$year = $row['year_value'];
+	 }
+	
+	if(_getRequestParamValue('yeartype') == 'C'){
+		 $year = 'CY ' . $year;
+	}else{
+		$year = 'FY ' . $year;
+	}
+	
+	$i = 0;
+	while($i <=11){
+		$series_ba[$i]->total =  $series_ba[$i]->y;
+	 	$series_ba[$i]->y = $series_ba[$i]->y/$non_mwbe_data[$i]*100;
+		$series_ha[$i]->total =  $series_ha[$i]->y;
+	 	$series_ha[$i]->y = $series_ha[$i]->y/$non_mwbe_data[$i]*100;
+		$series_aa[$i]->total =  $series_aa[$i]->y;
+	 	$series_aa[$i]->y = $series_aa[$i]->y/$non_mwbe_data[$i]*100;
+		$series_w[$i]->total =  $series_w[$i]->y;
+	 	$series_w[$i]->y = $series_w[$i]->y/$non_mwbe_data[$i]*100;
+	 	$tooltip_label = 
+	 						'Year: ' . $year.  '<br/>' .
+	 						'Month: '. $months[$i] . '<br/>' . 
+							'Aisan American ' . custom_number_formatter_format($series_aa[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_aa[$i]->y,1,null,'%') . ')' .  '<br/>' 
+							. 'Black American ' . custom_number_formatter_format($series_ba[$i]->total,2,'$')  . ' (' .custom_number_formatter_format($series_ba[$i]->y,1,null,'%') . ')' . '<br/>' 
+							. 'Women ' . custom_number_formatter_format($series_w[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_w[$i]->y,1,null,'%') . ')' . '<br/>' 
+							. 'Hispanic American ' . custom_number_formatter_format($series_ha[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_ha[$i]->y,1,null,'%') . ')' . '<br/>'; 
+		$series_ba[$i]->tooltip_label = $tooltip_label;
+		$series_ha[$i]->tooltip_label = $tooltip_label;
+		$series_aa[$i]->tooltip_label = $tooltip_label;
+		$series_w[$i]->tooltip_label = $tooltip_label; 		 	
+		$i +=1;
+	}
+
+	$node->widgetConfig->chartConfig->series[0]->name = 'Women';
+	$node->widgetConfig->chartConfig->series[0]->type = 'column';
+	$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
+	ksort($series_w);
+	$node->widgetConfig->chartConfig->series[0]->data = $series_w; 
+
+	$node->widgetConfig->chartConfig->series[1]->name = 'Asian American';
+	$node->widgetConfig->chartConfig->series[1]->type = 'column';
+	$node->widgetConfig->chartConfig->series[1]->pointWidth = 30;
+	ksort($series_aa);
+	$node->widgetConfig->chartConfig->series[1]->data = $series_aa;
+	
+	$node->widgetConfig->chartConfig->series[2]->name = 'Black American';
+	$node->widgetConfig->chartConfig->series[2]->type = 'column';
+	$node->widgetConfig->chartConfig->series[2]->pointWidth = 30;
+	ksort($series_ba);
+	$node->widgetConfig->chartConfig->series[2]->data = $series_ba;  
+
+	$node->widgetConfig->chartConfig->series[3]->name = 'Hispanic American';
+	$node->widgetConfig->chartConfig->series[3]->type = 'column';
+	$node->widgetConfig->chartConfig->series[3]->pointWidth = 30;
+	ksort($series_ha);
+	$node->widgetConfig->chartConfig->series[3]->data = $series_ha;  
+
+																		 
+",
+"chartConfig" : {
+    "plotOptions": {
+            "series": {
+                "cursor": "pointer"   ,
+                "stacking": "normal",
+                "dataLabels": {
+                    "enabled": true,
+                    "format": "{point.custom_label}"
+                }             
+            }
+    },
+    "xAxis": {
+        "categories": ["January","February","March","April","May","June","July","August","September","October","November","December"],
+        "lineWidth": 0,
+   		"minorGridLineWidth": 0,
+   		"lineColor": "transparent",
+        "title": {"text": ""},
+        "labels": {"enabled": false}
+    },
+    "series": [
+        {
+            "name": "FY",
+            "type": "column",
+            "pointWidth": 30,
+            "data": [
+            		]
+        }
+    ],
+    "title": {"text": ""},
+    "yAxis": {
+        "startOnTick":true,
+        "title": {"text": ""},
+        "labels":{"rotation": 0,"function":"yAxisFormatter"}
+    } ,
+    "tooltip":{"function":"tooltipformatter"}
+    }
+}
+
+
+<function>
+yAxisFormatter^^'formatter' : function(){return this.value + '%';}##
+tooltipformatter^^'formatter' :
+function() {return this.point.tooltip_label ;
+}
+</function>

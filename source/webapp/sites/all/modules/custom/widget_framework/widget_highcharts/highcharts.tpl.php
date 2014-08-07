@@ -37,6 +37,7 @@
 <div id="node-chart-<?php print widget_unique_identifier($node)?>" class="highcharts-wrapper <?php echo $node->widgetConfig->html_class ?>">
 &nbsp
 </div>
+<?php print eval($node->widgetConfig->footer );  ?>
 </div>
   <?php if ($node->widgetConfig->deferredRendering == TRUE){
     widget_highcharts_add_js_setting($node);
@@ -53,4 +54,3 @@ jQuery(document).ready(function() {
 <?php }}?>
 
 
-<?php print eval($node->widgetConfig->footer );  ?>
