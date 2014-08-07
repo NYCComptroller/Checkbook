@@ -17,10 +17,10 @@
                 "allowedParams":["year.year","agency_id","type_of_year","vendor.vendor","minority_type_id"],
                 "seriesDefaultParameters":{"year.year":"1","type_of_year":"B"},
                 "adjustSerieParameters":"
-                    if(isset($serieParameters['minority_type_id'])) {
+                    if(isset($serieParameters['minority_type_id']))
                         $serieParameters['minority_type_id'] = explode('~',$serieParameters['minority_type_id']);
-                        $serieParameters['spending_category_id'] = data_controller_get_operator_factory_instance()->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, 2);
-                    }
+                    else
+                        $serieParameters['minority_type_id'] = data_controller_get_operator_factory_instance()->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, 2);
                     return $serieParameters;
                 "
             }

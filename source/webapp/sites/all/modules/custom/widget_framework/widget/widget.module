@@ -457,6 +457,12 @@ function widget_prepare(&$node) {
     	$parameters =  eval($node->widgetConfig->preProcessConfiguration);
     }
     
+    foreach ($node->widgetConfig->model->series as $series) {
+        if(isset($series->preProcessConfiguration)){
+            $parameters =  eval($series->preProcessConfiguration);
+        }
+    }
+
 }
 
 function prepare_dataset_parameters(&$requestParameters, $configuration,$widgetConfig = null) {
