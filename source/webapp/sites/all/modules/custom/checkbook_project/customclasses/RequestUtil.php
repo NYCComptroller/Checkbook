@@ -216,6 +216,19 @@ class RequestUtil{
     /** Returns Spending Category based on 'category' value from current path */
     static function getSpendingCategoryName($defaultName = 'Total Spending'){
         $categoryId = _getRequestParamValue('category');
+        if(isset($categoryId)){
+            $categoryDetails = SpendingUtil::getSpendingCategoryDetails($categoryId,'display_name');
+            if(is_array($categoryDetails)){
+                return "Total " . $categoryDetails[0]['display_name'];
+            }
+        }
+
+        return $defaultName;
+    }
+
+    /** Returns Spending Transaction page title based on 'category'/'featured dashboard' value from current path */
+    static function getSpendingTransactionTitle($defaultName = 'Total Spending'){
+        $categoryId = _getRequestParamValue('category');
         $mwbe_title = _checkbook_check_is_mwbe_page() ? 'M/WBE ' : '';
         if(isset($categoryId)){
             $categoryDetails = SpendingUtil::getSpendingCategoryDetails($categoryId,'display_name');
