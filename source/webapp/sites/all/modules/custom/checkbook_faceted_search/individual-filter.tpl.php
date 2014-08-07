@@ -103,14 +103,15 @@ if(strtolower($filter_name) == 'vendor'){
 <?php
   if($node->widgetConfig->facetPager == true){
     $scroll_facet = "var page" . $node->nid ." = 0;
-    $(this).parent().next().find('.options').mCustomScrollbar({
+    $(this).next().find('.options').mCustomScrollbar('destroy');
+    $(this).next().find('.options').mCustomScrollbar({
         horizontalScroll:false,
         scrollButtons:{
             enable:false
         },
         callbacks:{
             onTotalScroll: function (){   
-				var pages = $(this).parent().next().find('input.autocomplete').attr('pages');
+				var pages = $(this).next().find('input.autocomplete').attr('pages');
 				if(pages == 1) return false;
 				if(page" . $node->nid ."  >= pages ) {
 					return false;
@@ -119,7 +120,7 @@ if(strtolower($filter_name) == 'vendor'){
                 paginateScroll(" . $node->nid .", page" . $node->nid .")
             },
             onTotalScrollBack: function(){
-                var pages = $(this).parent().next().find('input.autocomplete').attr('pages');
+                var pages = $(this).next().find('input.autocomplete').attr('pages');
                 if(pages == 1) return false;
                 if (page" . $node->nid ." > 0){
                     page" . $node->nid ."--;
@@ -133,7 +134,8 @@ if(strtolower($filter_name) == 'vendor'){
     
   }elseif($node->widgetConfig->facetNoPager == true){
     $scroll_facet = "
-        $(this).parent().next().find('.options').mCustomScrollbar({
+        $(this).next().find('.options').mCustomScrollbar('destroy');
+        $(this).next().find('.options').mCustomScrollbar({
             horizontalScroll:false,
             scrollButtons:{
                 enable:false
@@ -143,7 +145,8 @@ if(strtolower($filter_name) == 'vendor'){
       ";
    }
     $js .= "(function($){
-          $('.filter-title > .open').each(function(){";
+          $('.filter-title').each(function(){
+            if($(this).children('span').hasClass('open'))";
     $js .= $scroll_facet . "});
 
           $('.filter-title').unbind('click');
@@ -151,11 +154,12 @@ if(strtolower($filter_name) == 'vendor'){
                 if($(this).next().css('display') == 'block'){
                     $(this).next().css('display','none');
                     $(this).children('span').removeClass('open');
-
+                    $(this).next().find('.options').mCustomScrollbar('destroy');
                 } else {
                     $(this).next().css('display','block');
                     $(this).children('span').addClass('open');
-                  $(this).next().find('.options').mCustomScrollbar({
+                    $(this).next().find('.options').mCustomScrollbar('destroy');
+                    $(this).next().find('.options').mCustomScrollbar({
                         horizontalScroll:false,
                         scrollButtons:{
                             enable:false

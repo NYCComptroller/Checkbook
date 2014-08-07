@@ -625,6 +625,9 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
         $agencies = _checkbook_advanced_search_get_agencyname_and_id($data_source);
         $agency_attributes = _checkbook_advanced_search_get_agency_attributes($data_source);
     }
+    else if($data_source == DataSource::CitywideAgency) {
+        $mwbe_category_attributes = _checkbook_advanced_search_get_mwbe_category_and_id();
+    }
     $expense_attributes = _checkbook_advanced_search_get_expensetype_and_id($data_source);
     $year_attribute = _checkbook_advanced_search_get_year($domain, $data_source);
     $award_method = _checkbook_advanced_search_get_contract_award_method_and_id($data_source);
@@ -659,6 +662,8 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
                    case'$contract_type_attribute':
                        $field_definition_configs[$i]['attributes']['options'] = $contract_type_attribute;
                        break;
+                   case '$mwbe_category_attributes':
+                       $field_definition_configs[$i]['attributes']['options'] = $mwbe_category_attributes;
                }
            }
            if(!(is_null($attributes['option_attributes'])))
