@@ -64,7 +64,7 @@
 	$series_e =  array();
 	$months = array('January','February','March','April','May','June','July','August','September','October','November','December');
 	
-	 $year = '2014';
+	 $year = '';
 	 foreach ($node->data as $row){
 	 
 	 	switch($row['minority_type_id']){
@@ -89,7 +89,6 @@
 	 	}	 
 	 	$year = $row['year_value'];
 	 }
-	
 	if(_getRequestParamValue('yeartype') == 'C'){
 		 $year = 'CY ' . $year;
 	}else{
