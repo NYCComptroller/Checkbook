@@ -36,6 +36,7 @@ echo eval($node->widgetConfig->header);
   <?php
   echo "<tr>";
   foreach ($node->widgetConfig->table_columns as $row) {
+    if(check_node_flag_visibilty($row->visibility_flag, $node)){
       if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == _getRequestParamValue('datasource')))){
           $label = (isset($row->labelAlias))? (WidgetUtil::generateLabelMapping($row->labelAlias)) : $row->label;
           $fn = $row->adjustLabelFunction;
@@ -47,6 +48,7 @@ echo eval($node->widgetConfig->header);
           $headerClass = ($row->headerClass)? ' class="'.$row->headerClass.'"':'';
           echo "<th$headerClass>" . $label . "</th>";
       }
+    }
   }
   echo "</tr>\n";
   ?>
