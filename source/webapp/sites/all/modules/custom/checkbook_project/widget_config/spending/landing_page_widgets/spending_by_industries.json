@@ -60,8 +60,9 @@
         "template":"spending_agency_summary",
         "templateTitleEval":"
             $catName = RequestUtil::getSpendingCategoryName();
-            return ('Agency ' . $catName . ' Transactions');
-            "
+            $mwbe_title = _checkbook_check_is_mwbe_page() ? 'M/WBE ' : '';
+            return ($mwbe_title . 'Spending by Industries ' . $catName . ' Transactions');
+        "
     },
     "WidgetTitleEval":"
         $catName = RequestUtil::getSpendingCategoryName();

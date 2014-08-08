@@ -51,8 +51,9 @@
     "summaryView":{
         "template":"spending_exp_category_summary",
         "templateTitleEval":"
-        $catName = RequestUtil::getSpendingCategoryName();
-        return ('Expense Category ' . $catName . ' Transactions');
+            $catName = RequestUtil::getSpendingCategoryName();
+            $mwbe_title = _checkbook_check_is_mwbe_page() ? 'M/WBE ' : '';
+            return ($mwbe_title . 'Expense Categories ' . $catName . ' Transactions');
         "
     },
     "WidgetTitleEval":"
