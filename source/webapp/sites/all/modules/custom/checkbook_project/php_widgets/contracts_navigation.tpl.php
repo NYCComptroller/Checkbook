@@ -86,7 +86,7 @@ if($mwbe_amount  == 0){
   			<li class='no-click'><a href=" . $active_domain_link . "/mwbe/9" . ">Women</a></li>
   			<li class='no-click'><a href=" . $active_domain_link . "/mwbe/3" . ">Hispanic American</a></li>
   			<li class='no-click'><a href=" . $active_domain_link . "/mwbe/1" . ">Emerging</a></li>
-			<li class='no-click'>Other<li>
+			<li class='no-click'>Other</li>
 			<li class='no-click'><a href=" . $active_domain_link . "/mwbe/7" . ">Non-M/WBE</a></li>
 			<li class='no-click'><a href=" . $active_domain_link . "/mwbe/11" . ">Individuals & Others</a></li>
 			<li class='no-click'><a href=" . $active_domain_link . "/mwbe/1~2~3~4~5" . ">Clear Filter</a></li>
