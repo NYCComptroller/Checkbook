@@ -51,14 +51,15 @@
     "summaryView":{
         "template":"spending_dept_summary",
         "templateTitleEval":"
-        $catName = RequestUtil::getSpendingCategoryName();
-        return ('Department ' . $catName . ' Transactions');
-    "
+            $catName = RequestUtil::getSpendingCategoryName();
+            $mwbe_title = _checkbook_check_is_mwbe_page() ? 'M/WBE ' : '';
+            return ($mwbe_title . 'Departments ' . $catName . ' Transactions');
+        "
     },
     "WidgetTitleEval":"
         $catName = RequestUtil::getSpendingCategoryName();
         $mwbe_title = _checkbook_check_is_mwbe_page() ? 'M/WBE ' : '';
-        return ($mwbe_title . 'Agencies ' . $catName . ' Transactions');
+        return ($mwbe_title . 'Departments ' . $catName . ' Transactions');
     ",
     "table_title":"",
     "table_columns": [

@@ -54,10 +54,11 @@
     },
     "summaryView":{
         "template":"spending_agency_summary",
-             "templateTitleEval":"
-                  $catName = RequestUtil::getSpendingCategoryName();
-                  return ('Agency ' . $catName . ' Transactions');
-              "
+        "templateTitleEval":"
+            $catName = RequestUtil::getSpendingCategoryName();
+            $mwbe_title = _checkbook_check_is_mwbe_page() ? 'M/WBE ' : '';
+            return ($mwbe_title . 'Agencies ' . $catName . ' Transactions');
+        "
     },
     "WidgetTitleEval":"
         $catName = RequestUtil::getSpendingCategoryName();
