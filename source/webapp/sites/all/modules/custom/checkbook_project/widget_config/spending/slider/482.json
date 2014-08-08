@@ -1,7 +1,7 @@
 {
     "widgetType": "phpparser",
     "no_results_content": "No Results Found",
-    "cleanURLParameters":["year","calyear","agency","yeartype","vendor","mwbe"],
+    "cleanURLParameters":["year","calyear","agency","yeartype","vendor","mwbe","industry"],
     "model": {
         "join": {"method": "Union"},
         "series": [
@@ -12,13 +12,14 @@
                     if($node->is_mwbe) $node->widgetConfig->model->series[0]->dataset = 'checkbook:spending_mwbe_data';
 
                 ",
-                "columns": ["check_amount_sum","category.category"],
-                "seriesURLParamMap":{"year":"year.year","agency":"agency_id","yeartype":"type_of_year","vendor":"vendor.vendor","mwbe":"minority_type_id"},
-                "allowedParams":["year.year","agency_id","type_of_year","vendor.vendor","minority_type_id"],
+                "columns": ["check_amount_sum","category.category","industry.industry.industry_type_id"],
+                "seriesURLParamMap":{"year":"year.year","agency":"agency_id","yeartype":"type_of_year","vendor":"vendor.vendor","mwbe":"minority_type_id","industry":"industry_type_id"},
+                "allowedParams":["year.year","agency_id","type_of_year","vendor.vendor","minority_type_id","industry_type_id"],
                 "seriesDefaultParameters":{"year.year":"1","type_of_year":"B"},
                 "adjustSerieParameters":"
                     if(!$node->is_mwbe) {
                         unset($serieParameters['minority_type_id']);
+                        unset($serieParameters['industry_type_id']);
                         return $serieParameters;
                     }
                     if(isset($serieParameters['minority_type_id']))
@@ -26,6 +27,11 @@
                     else
                         $serieParameters['minority_type_id'] = data_controller_get_operator_factory_instance()->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, 2);
                     return $serieParameters;
+                ",
+                "adjustSerieColumns":"
+                    if(!$node->is_mwbe && ($key = array_search('industry.industry.industry_type_id', $serieColumns)) !== false) unset($serieColumns[$key]);
+
+                    return $serieColumns;
                 "
             }
         ]

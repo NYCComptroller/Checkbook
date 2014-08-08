@@ -550,6 +550,10 @@ function load_widget_data($node, $resultFormatter) {
            $parameters =  eval($config->adjustParameters);
         }
 
+        if(isset($config->adjustColumns)){
+            $config->columns =  eval($config->adjustColumns);
+        }
+
         $updatedParameters = array();
         foreach($parameters as $key=>$value){
             $key = _update_dataset_datasource($key,$node->widgetConfig->keepOriginalDatasource);
@@ -642,6 +646,9 @@ function load_widget_data($node, $resultFormatter) {
                 }                
                 if(isset($serie->adjustSerieParameters)){
                     $serieParameters =  eval($serie->adjustSerieParameters);
+                }
+                if(isset($serie->adjustSerieColumns)){
+                    $serieColumns =  eval($serie->adjustSerieColumns);
                 }
 
                 // log_debug("Serie parameters");
