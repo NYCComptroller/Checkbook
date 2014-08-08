@@ -3,15 +3,15 @@
     "widgetSubType":"ajaxSimple",
     "no_results_content":"No Results Found",
     "defaultParameters":{"type_of_year":"B","spending_category_id":null},
-    "cleanURLParameters":["year","agency","yeartype","calyear","vendor","category","agid","magid","mwbe"],
-    "urlParamMap":{"year":"year_id","agency":"agency_id","yeartype":"type_of_year","calyear":"year_id","vendor":"vendor_id","category":"spending_category_id","agid":"agreement_id.agreement_id","magid":"agreement_id.agreement_id","mwbe":"minority_type_id"},
+    "cleanURLParameters":["year","agency","yeartype","calyear","vendor","category","agid","magid","mwbe","industry"],
+    "urlParamMap":{"year":"year_id","agency":"agency_id","yeartype":"type_of_year","calyear":"year_id","vendor":"vendor_id","category":"spending_category_id","agid":"agreement_id.agreement_id","magid":"agreement_id.agreement_id","mwbe":"minority_type_id","industry":"industry_type_id"},
     "dataset": "checkbook:contracts_spending",
         "preProcessConfiguration":"
             $node->is_mwbe = _checkbook_check_is_mwbe_page();
             if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:contracts_mwbe_spending';
         ",
     "noDataInitialLoad":true,
-    "columns": ["yeartype.yeartype","check_amount_sum","total_contract_amount_sum","document_id.document_id","vendor.vendor","vendor.vendor.legal_name","contract_purpose.contract_purpose","agency.agency","agency.agency.agency_name","year.year","agreement_id.agreement_id"],
+    "columns": ["yeartype.yeartype","check_amount_sum","total_contract_amount_sum","document_id.document_id","vendor.vendor","vendor.vendor.legal_name","contract_purpose.contract_purpose","agency.agency","agency.agency.agency_name","year.year","agreement_id.agreement_id","industry.industry.industry_type_id"],
     "limit":5,
     "enableExpand":true,
     "getTotalDataCount":true,
@@ -75,6 +75,20 @@
             "expression":"'<a class=\"new_window\" href=\"/contract_details'  . _checkbook_project_get_contract_url($row[document_id_document_id], $row[agreement_id_agreement_id]) . _checkbook_append_url_params()  .'/newwindow\">'  . $row[document_id_document_id] . '</a>'"
         }
     },
+    "adjustParameters":"
+        if(!$node->is_mwbe) {
+            unset($parameters['minority_type_id']);
+            unset($parameters['industry_type_id']);
+        }
+
+        return $parameters;
+    ",
+    "adjustColumns":"
+        $adjusted_columns = $node->widgetConfig->columns;
+        if(!$node->is_mwbe && ($key = array_search('industry.industry.industry_type_id', $adjusted_columns)) !== false) unset($adjusted_columns[$key]);
+
+        return $adjusted_columns;
+    ",
     "summaryView":{
         "template":"spending_contract_summary",
         "templateTitleEval":"

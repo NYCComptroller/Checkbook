@@ -2,8 +2,8 @@
 	"widgetType": "data_tables",
 	"widgetSubType":"ajaxSimple",
 	"no_results_content":"No Results Found",
-	"cleanURLParameters":["vendor","year","yeartype","calyear","category","vendor","expcategory","agency","mwbe"],
-	"urlParamMap":{"year":"year.year","yeartype":"type_of_year","calyear":"year_id","category":"spending_category_id","vendor":"vendor_id","expcategory":"expenditure_object.expenditure_object","agency":"agency_id","mwbe":"minority_type_id"},
+	"cleanURLParameters":["vendor","year","yeartype","calyear","category","vendor","expcategory","agency","mwbe","industry"],
+	"urlParamMap":{"year":"year.year","yeartype":"type_of_year","calyear":"year_id","category":"spending_category_id","vendor":"vendor_id","expcategory":"expenditure_object.expenditure_object","agency":"agency_id","mwbe":"minority_type_id","industry":"industry_type_id"},
 	"defaultParameters":{"year.year":22,"type_of_year":"B"},
 	"dataset": "checkbook:spending_data",
     "preProcessConfiguration":"
@@ -12,7 +12,7 @@
     ",
 	"noDataInitialLoad":true,
     "totalAggregateColumns":["check_amount_sum"],
-	"columns": ["yeartype.yeartype","check_amount_sum","expenditure_object.expenditure_object","expenditure_object.expenditure_object.original_expenditure_object_name","year.year"],
+	"columns": ["yeartype.yeartype","check_amount_sum","expenditure_object.expenditure_object","expenditure_object.expenditure_object.original_expenditure_object_name","year.year","industry.industry.industry_type_id"],
 	"limit":5,
     "enableExpand":true,
     "getTotalDataCount":true,
@@ -48,6 +48,20 @@
             "visibility_flag": "is_mwbe"
         }
 	},
+    "adjustParameters":"
+        if(!$node->is_mwbe) {
+            unset($parameters['minority_type_id']);
+            unset($parameters['industry_type_id']);
+        }
+
+        return $parameters;
+    ",
+    "adjustColumns":"
+        $adjusted_columns = $node->widgetConfig->columns;
+        if(!$node->is_mwbe && ($key = array_search('industry.industry.industry_type_id', $adjusted_columns)) !== false) unset($adjusted_columns[$key]);
+
+        return $adjusted_columns;
+    ",
     "summaryView":{
         "template":"spending_exp_category_summary",
         "templateTitleEval":"
