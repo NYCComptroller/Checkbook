@@ -162,7 +162,7 @@
     },
     "mwbe_category_name": {
         "type":"expression2",
-        "expression":"MappingUtil::getMinorityCategoryById($row[minority_type_id])"//"_checkbook_project_get_mwbe_category_by_id($row[minority_type_id])"
+        "expression":"MappingUtil::getMinorityCategoryById($row[minority_type_id])"
     }
 },
 "table_columns": [

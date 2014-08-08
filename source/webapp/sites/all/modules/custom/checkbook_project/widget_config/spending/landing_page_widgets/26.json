@@ -3,8 +3,8 @@
     "widgetSubType":"ajaxSimple",
     "no_results_content":"No Results Found",
     "defaultParameters":{"type_of_year":"B","spending_category_id":""},
-    "cleanURLParameters":["year","agency","yeartype","calyear","vendor","category","industry","mwbe"],
-    "urlParamMap":{"year":"year_id","agency":"agency_id","yeartype":"type_of_year","calyear":"year_id","vendor":"vendor_id","category":"spending_category_id","mwbe":"minority_type_id","industry":"industry_type_id"},
+    "cleanURLParameters":["year","agency","yeartype","calyear","vendor","category","mwbe"],
+    "urlParamMap":{"year":"year_id","agency":"agency_id","yeartype":"type_of_year","calyear":"year_id","vendor":"vendor_id","category":"spending_category_id","mwbe":"minority_type_id"},
     "dataset": "checkbook:contracts_vendor_spending",
         "preProcessConfiguration":"
         $node->is_mwbe = _checkbook_check_is_mwbe_page();
@@ -12,7 +12,7 @@
     ",
     "noDataInitialLoad":true,
     "totalAggregateColumns":["check_amount_sum"],
-    "columns": ["yeartype.yeartype","check_amount_sum","total_contract_amount_sum","vendor.vendor","vendor.vendor.legal_name","year.year","industry.industry.industry_type_id"],
+    "columns": ["yeartype.yeartype","check_amount_sum","total_contract_amount_sum","vendor.vendor","vendor.vendor.legal_name","year.year"],
     "limit":5,
     "enableExpand":true,
     "getTotalDataCount":true,
