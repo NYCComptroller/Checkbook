@@ -17,6 +17,10 @@
                 "allowedParams":["year.year","agency_id","type_of_year","vendor.vendor","minority_type_id"],
                 "seriesDefaultParameters":{"year.year":"1","type_of_year":"B"},
                 "adjustSerieParameters":"
+                    if(!$node->is_mwbe) {
+                        unset($serieParameters['minority_type_id']);
+                        return $serieParameters;
+                    }
                     if(isset($serieParameters['minority_type_id']))
                         $serieParameters['minority_type_id'] = explode('~',$serieParameters['minority_type_id']);
                     else
