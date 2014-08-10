@@ -88,7 +88,6 @@
 	$node->widgetConfig->chartConfig->series[0]->name = 'Fiscal Years';
 	$node->widgetConfig->chartConfig->series[0]->type = 'column';
 	$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
-	log_error($node->widgetConfig->chartConfig->series[0]->data);
 	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
 	
 ",

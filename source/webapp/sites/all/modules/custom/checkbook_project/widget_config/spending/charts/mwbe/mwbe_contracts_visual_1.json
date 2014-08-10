@@ -30,9 +30,10 @@
 },
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B"},
-"cleanURLParameters":["yeartype","agency","vendor","category"],
-"urlParamMap":{"yeartype":"type_of_year","agency":"agency_id","vendor":"vendor_id","category":"spending_category_id"},
-"chartTitle":"M/WBE Total Spending Share",
+"cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry"],
+"urlParamMap":{"agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id",
+	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
+"chartTitle":"M/WBE Active Expense Contracts Share",
 "widgetDataLoader":"
     
     $where_filters = array();
@@ -44,11 +45,10 @@
         $where_filter = ' where ' . implode(' and ' , $where_filters);
     }
     
-    $sql = 'select rm.minority_type_id, rm.minority_type_name ,year_value, sum(total_spending_amount) total_spending
-    from {aggregateon_mwbe_spending_coa_entities} a1 
+    $sql = 'select rm.minority_type_id, rm.minority_type_name ,year_value, sum(maximum_contract_amount) current_amount_sum
+    from {aggregateon_mwbe_contracts_cumulative_spending} a1 
     join {ref_minority_type} rm on rm.minority_type_id = a1.minority_type_id
-    join {ref_month} rmo on rmo.month_id =  a1.month_id
-    join {ref_year} ry on rmo.year_id = ry.year_id       
+    join {ref_year} ry on a1.fiscal_year_id = ry.year_id       
    ' . $where_filter . '
     group by rm.minority_type_id, rm.minority_type_name,year_value  ';
     
@@ -65,22 +65,22 @@
 	 
 	 	switch($row['minority_type_id']){
 	 		case '2':
-	 		$series[$row['year_value']]->y += $row['total_spending']; 
+	 		$series[$row['year_value']]->y += $row['current_amount_sum']; 
 	 		break;
 	 		case '3':
-	 		$series[$row['year_value']]->y += $row['total_spending']; 
+	 		$series[$row['year_value']]->y += $row['current_amount_sum']; 
 	 		break;
 	 		case '4':
-	 		$series[$row['year_value']]->y += $row['total_spending']; 
+	 		$series[$row['year_value']]->y += $row['current_amount_sum']; 
 	 		break;
 	 		case '5':
-	 		$series[$row['year_value']]->y += $row['total_spending']; 
+	 		$series[$row['year_value']]->y += $row['current_amount_sum']; 
 	 		break;
 	 		case '9':
-	 		$series[$row['year_value']]->y += $row['total_spending']; 
+	 		$series[$row['year_value']]->y += $row['current_amount_sum']; 
 	 		break;
 	 		case '7':
-	 		$non_mwbe_data[$row['year_value']] = $row['total_spending']; 
+	 		$non_mwbe_data[$row['year_value']] = $row['current_amount_sum']; 
 	 		break;
 	 	}	
 	 }
@@ -91,7 +91,6 @@
 	
 	$series_new = array();
 	$index = 0;
-		
 	foreach($series as $key=>$row){
 		if($key <= $year && $key >= $year - 4){
 			if(_getRequestParamValue('yeartype') == 'C'){
