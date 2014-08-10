@@ -30,9 +30,10 @@
 },
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B"},
-"cleanURLParameters":["yeartype","agency","vendor","category"],
-"urlParamMap":{"yeartype":"type_of_year","agency":"agency_id","vendor":"vendor_id","category":"spending_category_id"},
-"chartTitle":"M/WBE Total Spending Share",
+"cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe"],
+"urlParamMap":{"mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id",
+	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
+"chartTitle":"Top Ten Prime Vendors by Active Expense Contracts",
 "widgetDataLoader":"
     
     $where_filters = array();
@@ -44,80 +45,41 @@
         $where_filter = ' where ' . implode(' and ' , $where_filters);
     }
     
-    $sql = 'select rm.minority_type_id, rm.minority_type_name ,year_value, sum(total_spending_amount) total_spending
-    from {aggregateon_mwbe_spending_coa_entities} a1 
-    join {ref_minority_type} rm on rm.minority_type_id = a1.minority_type_id
-    join {ref_month} rmo on rmo.month_id =  a1.month_id
-    join {ref_year} ry on rmo.year_id = ry.year_id       
-   ' . $where_filter . '
-    group by rm.minority_type_id, rm.minority_type_name,year_value  ';
+    $sql = ' select
+		v.legal_name
+		, sum(maximum_contract_amount) current_amount_sum
+		, count(contract_number) total_contracts		
+	from {aggregateon_mwbe_contracts_cumulative_spending} a1     
+    join {vendor} v on v.vendor_id =  a1.vendor_id
+   ' . $where_filter . '     
+   group by v.legal_name  
+    order by 2 desc limit 10';
     
     $node->data  = _checkbook_project_execute_sql($sql);
     
 ",
 "widgetUpdateJSONConfig":"
-
-	$series =  array();
-	$non_mwbe_data = array();
-	$year_id = _getRequestParamValue('year');
-	$year = _getYearValueFromID($year_id);
-	 foreach ($node->data as $row){
-	 
-	 	switch($row['minority_type_id']){
-	 		case '2':
-	 		$series[$row['year_value']]->y += $row['total_spending']; 
-	 		break;
-	 		case '3':
-	 		$series[$row['year_value']]->y += $row['total_spending']; 
-	 		break;
-	 		case '4':
-	 		$series[$row['year_value']]->y += $row['total_spending']; 
-	 		break;
-	 		case '5':
-	 		$series[$row['year_value']]->y += $row['total_spending']; 
-	 		break;
-	 		case '9':
-	 		$series[$row['year_value']]->y += $row['total_spending']; 
-	 		break;
-	 		case '7':
-	 		$non_mwbe_data[$row['year_value']] = $row['total_spending']; 
-	 		break;
-	 	}	
-	 }
-	
-	$i = 0;
-	$categories = array();
-	ksort($series);
 	
 	$series_new = array();
+	
+	
 	$index = 0;
-		
-	foreach($series as $key=>$row){
-		if($key <= $year && $key >= $year - 4){
-			if(_getRequestParamValue('yeartype') == 'C'){
-				 $year_display = 'CY ' . $key;
-			}else{
-				$year_display = 'FY ' . $key;
-			}
-	 		$tooltip_label = 
-	 						'Year: ' . $year_display.  '<br/>' .
-	 						'Amount: '. custom_number_formatter_format($series[$key]->y,2,'$')   . '<br/>' ; 
-		
-			$series_new[$index]->y = $series[$key]->y/($series[$key]->y + $non_mwbe_data[$key] ) * 100;
+	foreach($node->data as $row){
+	 		$tooltip_label =
+	 						'Contracting Agency: ' . $row['legal_name'] .  '<br/>' .
+	 						'Number of M/WBE Contracts: ' . $row['total_contracts'].  '<br/>' .
+	 						'Amount: ' . custom_number_formatter_format($row['current_amount_sum'] ,2, '$').  '<br/>' 
+	 						; 
+			$series_new[$index]->y = (float)$row['current_amount_sum'];
 			$series_new[$index]->tooltip_label = $tooltip_label;
-			$series_new[$index]->custom_label = custom_number_formatter_format($series[$key]->y/($series[$key]->y + $non_mwbe_data[$key] ) *100,1,null,'%') ; 
-			$categories[] = $key ;
-			$index += 1; 	
-		}	
+			$index += 1;
 	}
 
 	$node->widgetConfig->chartConfig->series[0]->name = 'Fiscal Years';
 	$node->widgetConfig->chartConfig->series[0]->type = 'column';
-	$node->widgetConfig->chartConfig->series[0]->pointWidth = 80;
+	$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
 	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
-	$node->widgetConfig->chartConfig->xAxis->categories = $categories;
-
-																		 
+	
 ",
 "chartConfig" : {
 	"colors":["#7DB7E5"],
@@ -126,17 +88,12 @@
                 "cursor": "pointer"   ,
                 "stacking": "normal",
                 "dataLabels": {
-                    "enabled": true,
-                    "format": "{point.custom_label}",
-                    "style": {
-                		"color": "#FFFFFF",
-                		"fontSize": "24px"
-            		}
+                    "enabled": false
                 }             
             }
     },
     "xAxis": {
-        "categories": [],
+        "categories": [0,1,2,3,4,5,6,7,8,9],
         "labels": {"enabled": false}
     },
     "series": [
@@ -144,8 +101,7 @@
             "name": "FY",
             "type": "column",
             "pointWidth": 50,
-            "data": [
-            		]
+            "data": []
         }
     ],
     "title": {"text": ""},
@@ -163,7 +119,7 @@
 
 
 <function>
-yAxisFormatter^^'formatter' : function(){return this.value + '%';}##
+yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
 tooltipformatter^^'formatter' :
 function() {return this.point.tooltip_label ;
 }
