@@ -12,7 +12,7 @@
     ",
 	"noDataInitialLoad":true,
     "totalAggregateColumns":["check_amount_sum"],
-	"columns": ["yeartype.yeartype","check_amount_sum","expenditure_object.expenditure_object","expenditure_object.expenditure_object.original_expenditure_object_name","year.year","industry.industry.industry_type_id"],
+	"columns": ["yeartype.yeartype","check_amount_sum","expenditure_object.expenditure_object","expenditure_object.expenditure_object.original_expenditure_object_name","year.year"],
 	"limit":5,
     "enableExpand":true,
     "getTotalDataCount":true,
@@ -55,12 +55,6 @@
         }
 
         return $parameters;
-    ",
-    "adjustColumns":"
-        $adjusted_columns = $node->widgetConfig->columns;
-        if(!$node->is_mwbe && ($key = array_search('industry.industry.industry_type_id', $adjusted_columns)) !== false) unset($adjusted_columns[$key]);
-
-        return $adjusted_columns;
     ",
     "summaryView":{
         "template":"spending_exp_category_summary",
