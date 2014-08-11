@@ -25,7 +25,7 @@
         $node->widgetConfig->getData=false;
         load_widget_data($node);
         if($node->totalDataCount > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
-        $header='<div class=\"tableHeader\"><h2>Spending by Industries</h2><span class=\"contCount\"> Number of Contracts:  ' . number_format($node->totalDataCount) . '</span></div>';
+        $header='<div class=\"tableHeader\"><h2>Spending by Industries</h2><span class=\"contCount\"> Number of Industries:  ' . number_format($node->totalDataCount) . '</span></div>';
         return $header;
     ",
     "footer":"
