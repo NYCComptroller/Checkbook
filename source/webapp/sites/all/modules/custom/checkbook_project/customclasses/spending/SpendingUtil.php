@@ -246,8 +246,20 @@ class SpendingUtil{
     static function getIndustryNameLinkUrl($node, $row){
         //industry_name_link
         return '/contract_details'
-        . '/industry/'. $row[industry_industry_industry_type_id]
+        . '/industry/'. $row['industry_industry_industry_type_id']
         . _checkbook_project_get_year_url_param_string()
+        . _checkbook_append_url_params();
+    }
+
+    /** Returns Industry Ytd Spending Link Url based on values from current path & data row */
+    static function getIndustryYtdSpendingLinkUrl($node, $row){
+        //ytd_spending_link
+        return '/panel_html/spending_transactions/spending/transactions'
+        .  _checkbook_project_get_year_url_param_string(false,false,true)
+        . '/smnid/' . $node->nid
+        . _checkbook_project_get_url_param_string("vendor")
+        . _checkbook_project_get_url_param_string("category")
+        . '/industry/'. $row['industry_industry_industry_type_id']
         . _checkbook_append_url_params();
     }
 }
