@@ -25,7 +25,7 @@
         return $header;
     ",
     "footer":"
-        $url = RequestUtil::getSpendingFooterUrl($node);
+        $url = SpendingUtil::getSpendingFooterUrl($node);
         $footer = '';
         if($node->totalDataCount > 0)
              $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
@@ -49,11 +49,11 @@
         },
         "vendor_name_link": {
             "type": "expression2",
-            "expression": "'<a href=\"/spending_landing' .  _checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . '/vendor/'. $row[vendor_vendor] .'\">' . $row[vendor_vendor_legal_name] . '</a>'"
+            "expression": "'<a href=\"' . SpendingUtil::getVendorNameLinkUrl($node,$row) . '\">' . $row[vendor_vendor_legal_name] . '</a>'"
         } ,
         "vendor_amount_link":{
             "type":"expression2",
-            "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/spending_transactions/spending/transactions' . _checkbook_project_get_year_url_param_string(false,false,true) . _checkbook_append_url_params() ._checkbook_project_get_url_param_string(\"agency\")  . '/smnid/' . $node->nid . _checkbook_project_get_url_param_string(\"category\") . '/vendor/'. $row[vendor_vendor] . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
+            "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getVendorAmountLinkUrl($node,$row) . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
         },
         "percent_spending":{
             "type":"expression2",
