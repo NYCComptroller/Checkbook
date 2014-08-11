@@ -124,4 +124,130 @@ class SpendingUtil{
 
     }
 
+    /** Returns Spending Footer Url based on values from current path */
+    static function getSpendingFooterUrl($node){
+        return '/panel_html/spending_transactions/spending/transactions'
+        . _checkbook_project_get_url_param_string("vendor")
+        . _checkbook_project_get_url_param_string("agency")
+        . _checkbook_project_get_url_param_string("category")
+        . _checkbook_project_get_url_param_string("industry")
+        . '/dtsmnid/' . $node->nid
+        . _checkbook_project_get_year_url_param_string(false,false,true)
+        . _checkbook_append_url_params();
+    }
+
+    /** Returns Spending Footer Url based on values from current path */
+    static function getSpendingLinkUrl($node, $row){
+        return '/panel_html/spending_transactions/spending/transactions'
+        . _checkbook_project_get_url_param_string("vendor")
+        . _checkbook_project_get_url_param_string("agency")
+        . _checkbook_project_get_url_param_string("category")
+        . _checkbook_project_get_url_param_string("industry")
+        . '/dtsmnid/' . $node->nid
+        . _checkbook_project_get_year_url_param_string(false,false,true)
+        . _checkbook_append_url_params();
+
+    }
+
+    /** Returns Spending Footer Url based on values from current path */
+    static function getAgencyNameLinkUrl($node, $row){
+        //agency_name_link
+        $url = '/spending_landing'
+        . _checkbook_project_get_url_param_string("vendor")
+        . _checkbook_project_get_url_param_string("category")
+        . _checkbook_project_get_year_url_param_string()
+        . _checkbook_append_url_params()
+        . '/agency/' . (isset($row["agency_id"]) ? $row["agency_id"] : $row["agency_agency"]);
+
+        return $url;
+    }
+
+    /** Returns Agency Amount Link Url based on values from current path & data row */
+    static function getAgencyAmountLinkUrl($node, $row){
+        //agency_amount_link
+        return '/panel_html/spending_transactions/spending/transactions'
+        .  _checkbook_project_get_year_url_param_string(false,false,true)
+        . '/smnid/' . $node->nid
+        . _checkbook_project_get_url_param_string("vendor")
+        . _checkbook_project_get_url_param_string("category")
+        . '/agency/'. $row["agency_agency"]
+        . _checkbook_append_url_params();
+    }
+
+    /** Returns Vendor Name Link Url based on values from current path & data row */
+    static function getVendorNameLinkUrl($node, $row){
+        //vendor_name_link
+        return '/spending_landing'
+        . _checkbook_project_get_url_param_string("agency")
+        . _checkbook_project_get_url_param_string("category")
+        . _checkbook_project_get_year_url_param_string()
+        . '/vendor/' . (isset($row["vendor_id"]) ? $row["vendor_id"] : $row["vendor_vendor"])
+        . _checkbook_append_url_params();
+    }
+
+    /** Returns Vendor Amount Link Url based on values from current path & data row */
+    static function getVendorAmountLinkUrl($node, $row){
+        //vendor_amount_link
+        return '/panel_html/spending_transactions/spending/transactions'
+        . _checkbook_project_get_url_param_string("agency")
+        . _checkbook_project_get_url_param_string("category")
+        . _checkbook_project_get_year_url_param_string(false,false,true)
+        . '/smnid/' . $node->nid
+        . '/vendor/'. $row["vendor_vendor"]
+        . _checkbook_append_url_params();
+    }
+
+    /** Returns Department Amount Link Url based on values from current path & data row */
+    static function getDepartmentAmountLinkUrl($node, $row){
+        //department_amount_link
+        return '/panel_html/spending_transactions/spending/transactions'
+        . _checkbook_project_get_year_url_param_string(false,false,true)
+        . '/smnid/' . $node->nid
+        . _checkbook_project_get_url_param_string("vendor")
+        . _checkbook_project_get_url_param_string("category")
+        . '/agency/' . $row["agency_agency"]
+        . '/dept/' . $row["department_department"]
+        . _checkbook_append_url_params();
+    }
+
+    /** Returns Check Amount Sum Link Url based on values from current path & data row */
+    static function getCheckAmountSumLinkUrl($node, $row){
+        //formatted_check_amount_sum_link
+        return '/panel_html/spending_transactions/spending/transactions'
+        .  _checkbook_project_get_year_url_param_string(false,false,true)
+        . '/smnid/' . $node->nid
+        . _checkbook_project_get_url_param_string("agency")
+        . _checkbook_project_get_url_param_string("vendor")
+        . _checkbook_project_get_url_param_string("category")
+        . '/expcategory/' .  $row["expenditure_object_expenditure_object"]
+        . _checkbook_append_url_params();
+    }
+
+    /** Returns Contract Amount Link Url based on values from current path & data row */
+    static function getContractAmountLinkUrl($node, $row){
+        //contract_amount_link
+        return '/panel_html/spending_transactions/spending/transactions'
+        . '/smnid/' . $node->nid
+        . _checkbook_project_get_year_url_param_string(false,false,true)
+        .  _checkbook_project_get_contract_url($row["document_id_document_id"], $row["agreement_id_agreement_id"])
+        . _checkbook_append_url_params();
+    }
+
+    /** Returns Contract Number Link Url based on values from current path & data row */
+    static function getContractNumberLinkUrl($node, $row){
+        //contract_number_link
+        return '/contract_details'
+            . _checkbook_project_get_contract_url($row["document_id_document_id"], $row["agreement_id_agreement_id"])
+            . _checkbook_append_url_params()
+            .'/newwindow';
+    }
+
+    /** Returns Industry Name Link Url based on values from current path & data row */
+    static function getIndustryNameLinkUrl($node, $row){
+        //industry_name_link
+        return '/contract_details'
+        . '/industry/'. $row[industry_industry_industry_type_id]
+        . _checkbook_project_get_year_url_param_string()
+        . _checkbook_append_url_params();
+    }
 }

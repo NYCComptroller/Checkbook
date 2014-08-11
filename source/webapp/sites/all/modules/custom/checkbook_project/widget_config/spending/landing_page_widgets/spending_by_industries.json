@@ -29,7 +29,7 @@
         return $header;
     ",
     "footer":"
-        $url = '/panel_html/spending_transactions/spending/transactions' . _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_url_param_string(\"category\") . '/dtsmnid/' . $node->nid . _checkbook_project_get_year_url_param_string(false,false,true) . _checkbook_append_url_params();
+$url = SpendingUtil::getSpendingFooterUrl($node);
         $footer = '';
         if($node->totalDataCount > 0)
             $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
@@ -40,7 +40,7 @@
     "derivedColumns": {
         "industry_name_link": {
             "type": "expression2",
-            "expression": "'<a href=\"/spending_landing' . '/industry/'. $row[industry_industry_industry_type_id] . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() .'\">' . $row[industry_industry_industry_type_name] . '</a>'"
+            "expression": "'<a href=\"' . SpendingUtil::getIndustryNameLinkUrl($node,$row) . '\">' . $row[industry_industry_industry_type_name] . '</a>'"
         },
         "formatted_check_amount_sum": {
             "type": "expression2",
@@ -48,7 +48,7 @@
         },
         "ytd_spending_link":{
             "type":"expression2",
-            "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/spending_transactions/spending/transactions' . _checkbook_project_get_year_url_param_string(false,false,true) . _checkbook_append_url_params() ._checkbook_project_get_url_param_string(\"vendor\") . '/smnid/' . $node->nid .  _checkbook_project_get_url_param_string(\"category\") . '/agency/'. $row[agency_agency] . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
+            "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getAgencyAmountLinkUrl($node, $row) . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
         },
         "percent_spending": {
             "type":"expression2",

@@ -24,7 +24,7 @@
         return $header;
     ",
     "footer":"
-        $url = RequestUtil::getSpendingFooterUrl($node);
+        $url = RequestUtil::SpendingUtil($node);
         $footer = '';
         if($node->totalDataCount > 0)
              $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
@@ -43,7 +43,7 @@
         },
         "agency_name_link": {
             "type": "expression2",
-            "expression": "'<a href=\"/spending_landing' .  _checkbook_append_url_params() . _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . '/agency/'. $row[agency_agency] .'\">' . $row[agency_name_formatted] . '</a>'"
+            "expression": "'<a href=\"' . SpendingUtil::getAgencyNameLinkUrl($node,$row) . '\">' . $row[agency_name_formatted] . '</a>'"
         },
         "vendor_name_formatted": {
             "type": "expression2",
@@ -51,7 +51,7 @@
         },
         "vendor_name_link": {
             "type": "expression2",
-            "expression": "'<a href=\"/spending_landing' . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . '/vendor/'. $row[vendor_vendor] .'\">' . $row[vendor_name_formatted] . '</a>'"
+            "expression": "'<a href=\"' . SpendingUtil::getCheckAmountSumLinkUrl($node,$row) . '\">' . $row[vendor_name_formatted] . '</a>'"
         } ,
         "formatted_check_amount_sum": {
             "type": "expression2",
@@ -63,16 +63,11 @@
         },
         "contract_amount_link":{
             "type":"expression2",
-            "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/spending_transactions/spending/transactions'
-                                                                                                     .  _checkbook_project_get_contract_url($row[document_id_document_id], $row[agreement_id_agreement_id])
-                                                                                                     . '/smnid/' . $node->nid
-                                                                                                     . _checkbook_append_url_params()
-                                                                                                     . _checkbook_project_get_year_url_param_string(false,false,true)
-                                                                                                     . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
+            "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getCheckAmountSumLinkUrl($node,$row) . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
         },
         "contract_number_link":{
             "type":"expression2",
-            "expression":"'<a class=\"new_window\" href=\"/contract_details'  . _checkbook_project_get_contract_url($row[document_id_document_id], $row[agreement_id_agreement_id]) . _checkbook_append_url_params()  .'/newwindow\">'  . $row[document_id_document_id] . '</a>'"
+            "expression":"'<a class=\"new_window\" href=\' . SpendingUtil::getContractNumberLinkUrl($node,$row) . '\">'  . $row[document_id_document_id] . '</a>'"
         }
     },
     "adjustParameters":"

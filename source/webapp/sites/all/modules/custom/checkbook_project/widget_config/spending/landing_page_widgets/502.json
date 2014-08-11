@@ -54,7 +54,7 @@
         return $header;
     ",
     "footer":"
-        $url = RequestUtil::getSpendingFooterUrl($node);
+        $url = SpendingUtil::getSpendingFooterUrl($node);
 
         $footer = '';
         if($node->totalDataCount > 0)
@@ -67,7 +67,7 @@
     "derivedColumns": {
             "agency_name_link": {
                 "type": "expression2",
-                "expression": "'<a href=\"/spending_landing' .  _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . '/agency/'. $row[agency_id] .'\">' . $row[agency_name] . '</a>'"
+                "expression": "'<a href=\"' . SpendingUtil::getAgencyNameLinkUrl($node,$row) . '\">' . $row[agency_name] . '</a>'"
             },
             "vendor_name_formatted": {
                 "type": "expression2",
@@ -75,7 +75,7 @@
             },
             "vendor_name_link": {
                 "type": "expression2",
-                "expression": "'<a href=\"/spending_landing' .  _checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . '/vendor/'. $row[vendor_id] .'\">' . $row[vendor_name_formatted] . '</a>'"
+                "expression": "'<a href=\"' . SpendingUtil::getVendorNameLinkUrl($node,$row) . '\">' . $row[vendor_name_formatted] . '</a>'"
             },
             "vendor_name_link2": {
                 "type": "expression2",
