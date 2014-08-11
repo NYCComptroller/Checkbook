@@ -71,11 +71,18 @@ if(preg_match('/yeartype\/C/',$_GET['q'])){
   $revenue_link =  l('<span class="nav-title">Revenue</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
 }
 
-$mwbe_amount = $node->data[5]['check_amount_sum'];
+if(preg_match('/contracts/',$_GET['q'])){
+	$mwbe_amount = $node->data[6]['current_amount_sum'];
+	$active_domain_link = RequestUtil::getTopNavURL("contracts") ;
+}else{
+	$mwbe_amount = $node->data[5]['check_amount_sum'];
+	$active_domain_link = RequestUtil::getTopNavURL("spending") ;
+}
+
 if($mwbe_amount  == 0){
 	$mwbe_link = l('<span class="nav-title">M/WBE</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
 }else{
-	$active_domain_link = RequestUtil::getTopNavURL("spending") ;
+	
 	$mwbe_link = l('<span class="nav-title">M/WBE</span><br>&nbsp;'. custom_number_formatter_format($mwbe_amount ,1,'$'),$active_domain_link. "/mwbe/2~3~4~5~9",$options);
 	
 	$mwbe_filters =  "<div class='main-nav-drop-down' style='display:none'>
@@ -89,7 +96,7 @@ if($mwbe_amount  == 0){
 			<li class='no-click'>Other</li>
 			<li class='no-click'><a href=" . $active_domain_link . "/mwbe/7" . ">Non-M/WBE</a></li>
 			<li class='no-click'><a href=" . $active_domain_link . "/mwbe/11" . ">Individuals & Others</a></li>
-			<li class='no-click'><a href=" . $active_domain_link . "/mwbe/1~2~3~4~5" . ">Clear Filter</a></li>
+			<li class='no-click'><a href=" . $active_domain_link . "/mwbe/2~3~4~5~9" . ">Clear Filter</a></li>
   		</ul>
   		</div>
   		";
@@ -133,6 +140,11 @@ switch ($arg){
     $eclass = ' active';
     break;
 }
+
+if(preg_match('/mwbe/',$_GET['q'])){
+	$mwbeclass = ' active';
+}
+
 //TODO: remove placeholder &nbsp; when numbers under each domain are active
 
 
@@ -142,8 +154,10 @@ switch ($arg){
   <tr>
     <td class="budget first<?php if($expclass){print $expclass;}?>"><div class="expense-container"><?php print $budget_link; ?></div><div class='indicator'></div></td>   
     <td class="revenue<?php if($rclass){print $rclass;}?>"><div class="expense-container"><?php print $revenue_link ?></div><div class='indicator'></div></td>   
-    <td class="spending<?php if($chclass){print $chclass;}?>"><div class="expense-container"><?php print $spending_link; ?></div><div class='indicator'></div></td>
-    <td class="contracts<?php if($cclass){print $cclass;}?>"><div class="expense-container"><?php print $contracts_link ?></div><div class='indicator'></div></td>
+    <td class="spending<?php if($chclass){print $chclass;}?>"><div class="expense-container"><?php print $spending_link; ?></div>
+    				<?php if(!$mwbeclass){?><div class='indicator'></div><?php }?></td>
+    <td class="contracts<?php if($cclass){print $cclass;}?>"><div class="expense-container"><?php print $contracts_link ?></div>
+    				<?php if(!$mwbeclass){?><div class='indicator'></div><?php }?></td>
     <td class="employees<?php if($eclass){print $eclass;}?>"><div class="expense-container"><?php print $payroll_link ?></div><div class='indicator'></div></td>
   </tr>
 </table>
@@ -154,8 +168,8 @@ switch ($arg){
 <div class="top-navigation-right">
 <table class="expense">
   <tr>
-    <td class="mwbe<?php if($eclass){print $eclass;}?>"><div class="expense-container"><?php print $mwbe_link ?><div><?php print $mwbe_filters; ?></div></div><div class='indicator'></div></td>
-    <td class="subvendors<?php if($eclass){print $eclass;}?>"><div class="expense-container"><?php print $subvendors_link ?></div><div class='indicator'></div></td>
+    <td class="mwbe<?php if($mwbeclass){print $mwbeclass;}?>"><div class="expense-container"><?php print $mwbe_link ?><div><?php print $mwbe_filters; ?></div></div><div class='indicator'></div></td>
+    <td class="subvendors<?php if($svclass){print $svclass;}?>"><div class="expense-container"><?php print $subvendors_link ?></div><div class='indicator'></div></td>
   </tr>
 </table>
 </div>

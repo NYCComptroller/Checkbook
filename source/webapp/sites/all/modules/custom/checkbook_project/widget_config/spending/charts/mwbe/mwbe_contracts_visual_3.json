@@ -45,12 +45,21 @@
         $where_filter = ' where ' . implode(' and ' , $where_filters);
     }
     
+    if(preg_match('/revenue/',$_GET['q'])){
+    	$where_filter .= \" and rd.document_code in ('RCT1') \";
+    }else if(preg_match('/pending/',$_GET['q'])){
+    	
+    }else{
+    	$where_filter .= \" and rd.document_code in ('CT1','CTA1') \";
+    } 
+       
     $sql = ' select
 		ra.agency_name
 		, sum(maximum_contract_amount) current_amount_sum
 		, count(contract_number) total_contracts		
 	from {aggregateon_mwbe_contracts_cumulative_spending} a1     
     join {ref_agency} ra on ra.agency_id =  a1.agency_id
+    join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
    ' . $where_filter . '     
    group by ra.agency_name  
     order by 2 desc limit 10';
