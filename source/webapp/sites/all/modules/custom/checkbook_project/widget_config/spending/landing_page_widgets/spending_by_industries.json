@@ -8,7 +8,7 @@
     "dataset": "checkbook:spending_mwbe_data",
     "noDataInitialLoad":true,
     "totalAggregateColumns":["check_amount_sum"],
-    "columns": ["yeartype.yeartype","check_amount_sum","agency.agency","agency.agency.agency_short_name","year.year","agency.agency.agency_name","industry.industry.industry_type_id","industry.industry.industry_type_name"],
+    "columns": ["yeartype.yeartype","check_amount_sum","year.year","industry.industry.industry_type_id","industry.industry.industry_type_name"],
     "adjustParameters":"
         if(null != _getRequestParamValue('industry')) return $parameters;
 
@@ -29,7 +29,7 @@
         return $header;
     ",
     "footer":"
-$url = SpendingUtil::getSpendingFooterUrl($node);
+        $url = SpendingUtil::getSpendingFooterUrl($node);
         $footer = '';
         if($node->totalDataCount > 0)
             $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
@@ -48,7 +48,7 @@ $url = SpendingUtil::getSpendingFooterUrl($node);
         },
         "ytd_spending_link":{
             "type":"expression2",
-            "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getAgencyAmountLinkUrl($node, $row) . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
+            "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getIndustryYtdSpendingLinkUrl($node, $row) . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
         },
         "percent_spending": {
             "type":"expression2",
