@@ -587,6 +587,15 @@ body.page-smart-search #filter-header{margin-top:5px;}
 /*************************************
 ***   EXPENSE MENU TABLE STYLING   ***
 *************************************/
+.contextual-links-region .top-navigation-left{
+    width: 655px;
+    float: left;
+    margin-right: 23px;
+}
+.contextual-links-region .top-navigation-right{
+    width: 262px;
+    float: left;
+}
 .preview-tile {
     position: absolute;
     width: 186px;
@@ -666,10 +675,10 @@ table.expense td.spending.active .expense-container a {
     background: url("../images/icon_spending_a.png") no-repeat center 5px;
 }
 table.expense td.contracts .expense-container a {
-    background: url("../images/icon_contracts.png") no-repeat center 5px;
+    background: url("../images/icon_contracts.png") no-repeat center 10px;
 }
 table.expense td.contracts.active .expense-container a {
-    background: url("../images/icon_contracts_a.png") no-repeat center 5px;
+    background: url("../images/icon_contracts_a.png") no-repeat center 10px;
 }
 table.expense td.employees .expense-container a {
     background: url("../images/icon_employees.png") no-repeat center 5px;
@@ -677,6 +686,20 @@ table.expense td.employees .expense-container a {
 table.expense td.employees.active .expense-container a {
     background: url("../images/icon_employees_a.png") no-repeat center 5px;
 }
+table.expense td.mwbe .expense-container a {
+    background: url("../images/icon_mwbe.png") no-repeat center 5px;
+}
+table.expense td.mwbe.active .expense-container a {
+    background: url("../images/icon_mwbe_a.png") no-repeat center 5px;
+}
+table.expense td.subvendors .expense-container a {
+    background: url("../images/icon_subvendor.png") no-repeat center 5px;
+}
+table.expense td.subvendors.active .expense-container a {
+    background: url("../images/icon_subvendor_a.png") no-repeat center 5px;
+}
+
+
 td.active div.indicator {
     background: url("../images/carrot.png") no-repeat scroll center 0 transparent;
     height: 17px;
@@ -711,6 +734,15 @@ h3.grid_year_title{text-transform: none;}
 /* chart */
 .highcharts-container{
     margin:4px auto 0px auto;
+}
+.chart-left,
+.chart-right{float:left;}
+.chart-right{
+    height:319px;
+    background: url("../images/visualization_divide.png") no-repeat left center;
+}
+.chart-left .highcharts-container{
+    float:left;
 }
 .top-chart {
     margin-bottom: 31px;
