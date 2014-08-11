@@ -45,10 +45,20 @@
         $where_filter = ' where ' . implode(' and ' , $where_filters);
     }
     
+    if(preg_match('/revenue/',$_GET['q'])){
+    	$where_filter .= \" and rd.document_code in ('RCT1') \";
+    }else if(preg_match('/pending/',$_GET['q'])){
+    	
+    }else{
+    	$where_filter .= \" and rd.document_code in ('CT1','CTA1') \";
+    }
+    
+    
     $sql = 'select rm.minority_type_id, rm.minority_type_name ,year_value, sum(maximum_contract_amount) current_amount_sum
     from {aggregateon_mwbe_contracts_cumulative_spending} a1 
     join {ref_minority_type} rm on rm.minority_type_id = a1.minority_type_id
-    join {ref_year} ry on a1.fiscal_year_id = ry.year_id       
+    join {ref_year} ry on a1.fiscal_year_id = ry.year_id
+    join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
    ' . $where_filter . '
     group by rm.minority_type_id, rm.minority_type_name,year_value  ';
     
