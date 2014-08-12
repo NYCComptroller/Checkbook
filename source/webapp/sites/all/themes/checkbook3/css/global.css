@@ -587,12 +587,12 @@ body.page-smart-search #filter-header{margin-top:5px;}
 /*************************************
 ***   EXPENSE MENU TABLE STYLING   ***
 *************************************/
-.contextual-links-region .top-navigation-left{
+.top-navigation-left{
     width: 655px;
     float: left;
     margin-right: 23px;
 }
-.contextual-links-region .top-navigation-right{
+.top-navigation-right{
     width: 262px;
     float: left;
 }
@@ -610,7 +610,7 @@ table.expense{
     border-radius: 2px;
 }
 table.expense td {
-    width: 187px;
+    width: 125px;
     height: 78px;
     border: 1px solid #bfbfbf;
     padding: 0;
@@ -735,15 +735,38 @@ h3.grid_year_title{text-transform: none;}
 .highcharts-container{
     margin:4px auto 0px auto;
 }
-.chart-left,
-.chart-right{float:left;}
+.chart-left{
+    float:left;
+    width:50%;
+}
 .chart-right{
-    height:319px;
-    background: url("../images/visualization_divide.png") no-repeat left center;
+    position:relative;
+    float:left;
+    width:50%;
 }
 .chart-left .highcharts-container{
     float:left;
 }
+.chart-left .highcharts-grid {
+    display: none !important;
+}
+.chart-right{
+    height:319px;
+    background: url("../images/visualization_divide.png") no-repeat left center;
+}
+.chart-right .wrap{
+    border: 1px solid #82b6df;
+    background-color: #f0f0f0;
+    color: #3e5d7e;
+    position: absolute;
+    top: 93px;
+    left: 54px;
+    text-align: center;
+    padding:20px 20px 15px 20px;
+}
+
+.chart-right .wrap .number{font-size: 65px;}
+.chart-right .wrap .text{font-size: 18px;}
 .top-chart {
     margin-bottom: 31px;
 }
