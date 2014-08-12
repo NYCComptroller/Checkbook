@@ -139,8 +139,8 @@ class SpendingUtil{
     /** Returns Spending Footer Url based on values from current path */
     static function getSpendingLinkUrl($node, $row){
         return '/panel_html/spending_transactions/spending/transactions'
-        . _checkbook_project_get_url_param_string("vendor")
         . _checkbook_project_get_url_param_string("agency")
+        . _checkbook_project_get_url_param_string("vendor")
         . _checkbook_project_get_url_param_string("category")
         . _checkbook_project_get_url_param_string("industry")
         . '/dtsmnid/' . $node->nid
@@ -153,11 +153,12 @@ class SpendingUtil{
     static function getAgencyNameLinkUrl($node, $row){
         //agency_name_link
         $url = '/spending_landing'
+            . '/agency/' . (isset($row["agency_id"]) ? $row["agency_id"] : $row["agency_agency"])
         . _checkbook_project_get_url_param_string("vendor")
         . _checkbook_project_get_url_param_string("category")
+            . _checkbook_project_get_url_param_string("industry")
         . _checkbook_project_get_year_url_param_string()
-        . _checkbook_append_url_params()
-        . '/agency/' . (isset($row["agency_id"]) ? $row["agency_id"] : $row["agency_agency"]);
+        . _checkbook_append_url_params();
 
         return $url;
     }
@@ -166,11 +167,12 @@ class SpendingUtil{
     static function getAgencyAmountLinkUrl($node, $row){
         //agency_amount_link
         return '/panel_html/spending_transactions/spending/transactions'
-        .  _checkbook_project_get_year_url_param_string(false,false,true)
         . '/smnid/' . $node->nid
+        . '/agency/'. $row["agency_agency"]
         . _checkbook_project_get_url_param_string("vendor")
         . _checkbook_project_get_url_param_string("category")
-        . '/agency/'. $row["agency_agency"]
+        . _checkbook_project_get_url_param_string("industry")
+        .  _checkbook_project_get_year_url_param_string(false,false,true)
         . _checkbook_append_url_params();
     }
 
@@ -180,6 +182,7 @@ class SpendingUtil{
         return '/spending_landing'
         . _checkbook_project_get_url_param_string("agency")
         . _checkbook_project_get_url_param_string("category")
+        . _checkbook_project_get_url_param_string("industry")
         . _checkbook_project_get_year_url_param_string()
         . '/vendor/' . (isset($row["vendor_id"]) ? $row["vendor_id"] : $row["vendor_vendor"])
         . _checkbook_append_url_params();
@@ -190,10 +193,11 @@ class SpendingUtil{
         //vendor_amount_link
         return '/panel_html/spending_transactions/spending/transactions'
         . _checkbook_project_get_url_param_string("agency")
+        . '/vendor/'. $row["vendor_vendor"]
         . _checkbook_project_get_url_param_string("category")
+        . _checkbook_project_get_url_param_string("industry")
         . _checkbook_project_get_year_url_param_string(false,false,true)
         . '/smnid/' . $node->nid
-        . '/vendor/'. $row["vendor_vendor"]
         . _checkbook_append_url_params();
     }
 
@@ -203,10 +207,11 @@ class SpendingUtil{
         return '/panel_html/spending_transactions/spending/transactions'
         . _checkbook_project_get_year_url_param_string(false,false,true)
         . '/smnid/' . $node->nid
-        . _checkbook_project_get_url_param_string("vendor")
-        . _checkbook_project_get_url_param_string("category")
         . '/agency/' . $row["agency_agency"]
         . '/dept/' . $row["department_department"]
+        . _checkbook_project_get_url_param_string("vendor")
+        . _checkbook_project_get_url_param_string("category")
+        . _checkbook_project_get_url_param_string("industry")
         . _checkbook_append_url_params();
     }
 
@@ -219,6 +224,7 @@ class SpendingUtil{
         . _checkbook_project_get_url_param_string("agency")
         . _checkbook_project_get_url_param_string("vendor")
         . _checkbook_project_get_url_param_string("category")
+        . _checkbook_project_get_url_param_string("industry")
         . '/expcategory/' .  $row["expenditure_object_expenditure_object"]
         . _checkbook_append_url_params();
     }

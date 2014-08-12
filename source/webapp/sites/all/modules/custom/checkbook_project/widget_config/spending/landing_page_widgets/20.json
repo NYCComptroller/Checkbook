@@ -51,7 +51,7 @@
         },
         "vendor_name_link": {
             "type": "expression2",
-            "expression": "'<a href=\"' . SpendingUtil::getCheckAmountSumLinkUrl($node,$row) . '\">' . $row[vendor_name_formatted] . '</a>'"
+            "expression": "'<a href=\"' . SpendingUtil::getVendorNameLinkUrl($node,$row) . '\">' . $row[vendor_name_formatted] . '</a>'"
         } ,
         "formatted_check_amount_sum": {
             "type": "expression2",
@@ -63,7 +63,7 @@
         },
         "contract_amount_link":{
             "type":"expression2",
-            "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getCheckAmountSumLinkUrl($node,$row) . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
+            "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getCheckAmountLinkUrl($node,$row) . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
         },
         "contract_number_link":{
             "type":"expression2",
