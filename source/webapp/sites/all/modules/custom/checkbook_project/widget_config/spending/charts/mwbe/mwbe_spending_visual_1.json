@@ -14,28 +14,27 @@ echo '<div class=\"chart-right\">
 ",
 "header":"
        $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
-       $header .= ChartUtil::generateGridViewLink($node);
+       $header .= ChartUtil::generateWidgetGridViewLink($node);
        return $header;
     ",
  "gridConfig":{
-        "template":"highchart_spending_fy_grid_view",
+        "template":"chart_grid_view",
+        "domain":"spending",
         "html_class":"chart-grid-view-table three-columns",
         "table_columns": [
             {
-                  "labelAlias": "month",
-              "column": "month_month_month_name",
-                  "sortColumn":"sort_order"
+                  "labelAlias": "M/WBE Category",
+                  "columnType": "text"
              },
-            {
-                  "colLabel": "$node->widgetConfig->chartConfig->series[0]->name",
-              "column": "previous_spending",
-                   "eval":true
-            },
-            {
-                  "colLabel": "$node->widgetConfig->chartConfig->series[1]->name",
-              "column": "current_spending",
-                   "eval":true
-            }
+             {
+                  "labelAlias": "Amount",
+                  "columnType": "number",
+                  "formatType": "amount"
+             },
+             {
+                  "labelAlias": "Percent",
+                  "columnType": "number"
+             }
         ]
 },
 "no_results_content":"No Results Found",
@@ -112,6 +111,20 @@ echo '<div class=\"chart-right\">
     $node->widgetConfig->chartConfig->series[0]->data[1]->tooltip_label = custom_number_formatter_format($toal_non_mwbe,2,'$') . ' (' .
 																		 custom_number_formatter_format($toal_non_mwbe/($total_mwbe + $toal_non_mwbe) *100,1,null,'%') . ')';
 																		 
+																		 
+	$node->widgetConfig->gridConfig->data[] = array('Aisan American',$mwbe_data['aa'] ,
+										custom_number_formatter_format($mwbe_data['aa']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
+	$node->widgetConfig->gridConfig->data[] = array('Black American',$mwbe_data['ba'] ,
+										custom_number_formatter_format($mwbe_data['ba']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
+	$node->widgetConfig->gridConfig->data[] = array('Women',$mwbe_data['w'],
+										custom_number_formatter_format($mwbe_data['w']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
+	$node->widgetConfig->gridConfig->data[] = array('Hispanic American',$mwbe_data['ha'],
+										custom_number_formatter_format($mwbe_data['ha']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
+	$node->widgetConfig->gridConfig->data[] = array('Emerging',$mwbe_data['e'],
+										custom_number_formatter_format($mwbe_data['e']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
+	$node->widgetConfig->gridConfig->data[] = array('Non M/WBE',$toal_non_mwbe,
+										custom_number_formatter_format($toal_non_mwbe/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
+																	 
 ",
 "chartConfig" : {
 	"colors":["#7DB7E5"],
