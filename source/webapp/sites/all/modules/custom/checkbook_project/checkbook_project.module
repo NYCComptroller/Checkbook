@@ -127,6 +127,15 @@ function checkbook_project_menu(){
         'access callback' => true,
         'type'=>MENU_CALLBACK
     );
+    
+    
+    $items['gridview/popup/widget/%widget'] = array(
+    		'page callback' => '_checkbook_project_grid_view_widget_popup',
+    		'page arguments' => array(3),
+    		'access callback' => true,
+    		'type'=>MENU_CALLBACK
+    );
+    
 
     $items['nodedisplay/node/%node'] = array(
         'page callback' => '_checkbook_project_node_display',
@@ -402,6 +411,15 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'gridview/contracts_highchart_pending_agency_vendor',
             'arguments' => array('node' => NULL)
         ),
+    		
+    	//Generic Grid views template.
+		// contracts
+	    	'chart_grid_view' => array(
+	    		'template' => 'gridview/chart_grid_view',
+	    		'arguments' => array('node' => NULL)
+	    	),    		
+	    
+    		
         // Contracts Templates
         'contracts_nyc_totals' => array(
                     'template' => 'php_widgets/contract/contracts_nyc_totals',
