@@ -245,8 +245,11 @@ class SpendingUtil{
     /** Returns Industry Name Link Url based on values from current path & data row */
     static function getIndustryNameLinkUrl($node, $row){
         //industry_name_link
-        return '/contract_details'
+        return '/spending_landing'
         . '/industry/'. $row['industry_industry_industry_type_id']
+        . _checkbook_project_get_url_param_string("agency")
+        . _checkbook_project_get_url_param_string("vendor")
+        . _checkbook_project_get_url_param_string("category")
         . _checkbook_project_get_year_url_param_string()
         . _checkbook_append_url_params();
     }
