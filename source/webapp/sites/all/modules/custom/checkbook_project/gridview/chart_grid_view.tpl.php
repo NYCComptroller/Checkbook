@@ -23,8 +23,11 @@ switch($node->widgetConfig->gridConfig>domain){
  
 	case "spending":
 		include_once('spending_title.php');
-	break;
-
+		break;
+	case "contracts":
+		include_once('contracts_title.php');
+		break;
+		
 }
 
 include_once('page_title.php');
