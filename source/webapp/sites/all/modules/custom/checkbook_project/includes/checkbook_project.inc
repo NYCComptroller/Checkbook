@@ -281,6 +281,39 @@ function _checkbook_project_grid_view_popup($node){
     return $html;
 }
 
+
+function _checkbook_project_grid_view_widget_popup($node){
+	$url = $_GET['q'];
+	$_GET['original_q'] = drupal_get_path_alias($_GET['q']);
+	$_GET['q'] = drupal_get_path_alias($_GET['refURL']);
+
+	//widget_set_uid($node,"gridpopup");
+	widget_config($node);
+
+	if(isset($node->widgetConfig->gridConfig->adjustWidgetConfig)){
+		eval($node->widgetConfig->gridConfig->adjustWidgetConfig);
+	}
+
+	$node->widgetConfig->getTotalDataCount=true;
+	$node->widgetConfig->displayType = 'gridview';
+
+	//prepare anything we'll need before loading
+	widget_prepare($node);
+	//invoke widget specific prepare
+	widget_invoke($node, 'widget_prepare');
+	widget_data($node);
+	
+	if(isset($node->widgetConfig->widgetUpdateJSONConfig)){
+		eval($node->widgetConfig->widgetUpdateJSONConfig);
+	}
+	
+	$themekey = $node->widgetConfig->gridConfig->template;
+
+	$html = theme($themekey,array('node'=>$node));
+	$_GET['q'] = $url;
+	return $html;
+}
+
 /**
  * Page callback for popupdatatable.. Only called on initial load ...
  * @param unknown_type $node

@@ -17,6 +17,10 @@ function _checkbook_export_grid_transactions(){
 
     $nodeId = _getRequestParamValue('node',false);
     $node = node_load($nodeId);
+    if($node ==null ){
+    	
+    	$node = widget_load($nodeId);
+    }
     $_GET['q'] = urldecode(drupal_get_path_alias($_GET['refURL']));
     widget_config($node);
 
@@ -34,7 +38,11 @@ function _checkbook_export_grid_transactions(){
     $isAsc = ($_REQUEST['sSortDir_0'] == 'asc');
 
     widget_data($node);
-
+    if(isset($node->widgetConfig->widgetUpdateJSONConfig)){
+    	eval($node->widgetConfig->widgetUpdateJSONConfig);
+    }
+    
+    
     $columns = $node->widgetConfig->gridConfig->table_columns;
     $data = NULL;
 
@@ -54,7 +62,22 @@ function _checkbook_export_grid_transactions(){
         $i++;
     }
 
-    if(is_array($node->data)){
+    if(isset($node->widgetConfig->gridConfig->data)){
+    	foreach($node->widgetConfig->gridConfig->table_columns as $column){
+    		echo $column->labelAlias . ",";
+    	}
+    	echo "\r\n";
+    	foreach ($node->widgetConfig->gridConfig->data as $datarow) {
+    		$index = 0;
+    		while($index <count($node->widgetConfig->gridConfig->table_columns)){    			
+    				echo $datarow[$index].",";
+    			$index +=1;
+    		}
+    		echo "\r\n";
+    	}
+    	
+    }
+    else if(is_array($node->data)){
         $dataRecords = $node->data;
 
         //Custom column for ordering
