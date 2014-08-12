@@ -754,7 +754,6 @@ function load_widget_data($node, $resultFormatter) {
           
           if ($config->totalAggregateColumns) {
           	foreach($config->totalAggregateColumns as $aggregateColumn){
-          		log_error($datasetName);
           		$result = $dataQueryController->queryCube(
           		$datasetName,
           		array($aggregateColumn), $parameters, $orderBy,
