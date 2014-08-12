@@ -125,7 +125,22 @@
 	$node->widgetConfig->chartConfig->series[0]->pointWidth = 80;
 	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
 	$node->widgetConfig->chartConfig->xAxis->categories = $categories;
-
+	if(_getRequestParamValue('status') == 'A'){
+		$status = 'Active';
+	}else if(_getRequestParamValue('status') == 'R'){
+		$status = 'Registered';
+	}
+	
+	if(preg_match('/revenue/',$_GET['q'])){
+		$contract_type = 'Revenue';
+	}if(preg_match('/pending_expense/',$_GET['q'])){
+		$contract_type = 'Pending Expense';
+	}if(preg_match('/pending_revenue/',$_GET['q'])){
+		$contract_type = 'Pending Revenue';
+	}else{
+		$contract_type = 'Expense';
+	}
+	$node->widgetConfig->chartTitle = 'M/WBE ' . $status . ' ' . $contract_type .  ' Contracts Share';
 																		 
 ",
 "chartConfig" : {
