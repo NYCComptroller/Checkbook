@@ -596,6 +596,52 @@ body.page-smart-search #filter-header{margin-top:5px;}
     width: 262px;
     float: left;
 }
+.top-navigation-right .mwbe .main-nav-drop-down{
+    position:relative;
+}
+.top-navigation-right .mwbe .main-nav-drop-down ul{
+    position:absolute;
+    z-index: 9999;
+    background-color: #efefef;
+    width:113px;
+    border:1px solid #acacac;
+    border-top:3px solid #0073bd;
+    padding:5px;
+    -webkit-box-shadow: inset -3px 13px 12px -13px rgba(0,0,0,0.75);
+    -moz-box-shadow: inset -3px 13px 12px -13px rgba(0,0,0,0.75);
+    box-shadow: inset -3px 13px 12px -13px rgba(0,0,0,0.75);
+}
+.top-navigation-right .mwbe .main-nav-drop-down ul li{
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: 11px;
+    color:#000;
+    text-align: left;
+}
+.top-navigation-right .mwbe .main-nav-drop-down ul li.title{
+    padding:5px;
+    padding-left:6px;
+}
+.top-navigation-right .mwbe .main-nav-drop-down ul li a{
+    color:#1F82C9;
+    padding-top:0px;
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: 11px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    text-align: left;
+    border: 1px solid #efefef;
+    padding:5px;
+    width:auto;
+}
+.top-navigation-right .mwbe .main-nav-drop-down ul a:hover{
+    border:1px solid #999;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    border: 1px solid #d3d3d3; 
+    background: #e6e6e6 url('/sites/all/themes/checkbook3/jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png') 50% 50% repeat-x;
+}
 .preview-tile {
     position: absolute;
     width: 186px;
@@ -686,16 +732,16 @@ table.expense td.employees .expense-container a {
 table.expense td.employees.active .expense-container a {
     background: url("../images/icon_employees_a.png") no-repeat center 5px;
 }
-table.expense td.mwbe .expense-container a {
+table.expense td.mwbe .expense-container > a {
     background: url("../images/icon_mwbe.png") no-repeat center 5px;
 }
-table.expense td.mwbe.active .expense-container a {
+table.expense td.mwbe.active .expense-container > a {
     background: url("../images/icon_mwbe_a.png") no-repeat center 5px;
 }
-table.expense td.subvendors .expense-container a {
+table.expense td.subvendors .expense-container > a {
     background: url("../images/icon_subvendor.png") no-repeat center 5px;
 }
-table.expense td.subvendors.active .expense-container a {
+table.expense td.subvendors.active .expense-container > a {
     background: url("../images/icon_subvendor_a.png") no-repeat center 5px;
 }
 
