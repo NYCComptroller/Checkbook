@@ -33,7 +33,7 @@
 "cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry"],
 "urlParamMap":{"agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id",
 	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
-"chartTitle":"M/WBE Active Expense Contracts Share",
+"chartTitle":"M/WBE Spending by Active Expense Contracts",
 "widgetDataLoader":"
     
     $where_filters = array();
@@ -67,6 +67,7 @@
      ';
     
     $node->data  = _checkbook_project_execute_sql($sql);
+    
     
 ",
 "widgetUpdateJSONConfig":"
@@ -113,6 +114,23 @@
 	$curr_series_obj->pointWidth = 15;
 	$curr_series_obj->data = $series_current;		
 	$node->widgetConfig->chartConfig->series[] = $curr_series_obj;
+	
+	if(_getRequestParamValue('status') == 'A'){
+		$status = 'Active';
+	}else if(_getRequestParamValue('status') == 'R'){
+		$status = 'Registered';
+	}
+	
+	if(preg_match('/revenue/',$_GET['q'])){
+		$contract_type = 'Revenue';
+	}if(preg_match('/pending_expense/',$_GET['q'])){
+		$contract_type = 'Pending Expense';
+	}if(preg_match('/pending_revenue/',$_GET['q'])){
+		$contract_type = 'Pending Revenue';
+	}else{
+		$contract_type = 'Expense';
+	}
+	$node->widgetConfig->chartTitle = 'M/WBE Spending by ' . $status . ' ' . $contract_type .  ' Contracts';
 ",
 "chartConfig" : {
     "plotOptions": {

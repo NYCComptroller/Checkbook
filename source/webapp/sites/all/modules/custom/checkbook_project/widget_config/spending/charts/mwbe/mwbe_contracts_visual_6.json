@@ -66,7 +66,22 @@ echo '<div class=\"chart-right\">
     group by rm.minority_type_id, rm.minority_type_name  ';
     
     $node->data  = _checkbook_project_execute_sql($sql);
-    
+	if(_getRequestParamValue('status') == 'A'){
+		$status = 'Active';
+	}else if(_getRequestParamValue('status') == 'R'){
+		$status = 'Registered';
+	}
+	
+	if(preg_match('/revenue/',$_GET['q'])){
+		$contract_type = 'Revenue';
+	}if(preg_match('/pending_expense/',$_GET['q'])){
+		$contract_type = 'Pending Expense';
+	}if(preg_match('/pending_revenue/',$_GET['q'])){
+		$contract_type = 'Pending Revenue';
+	}else{
+		$contract_type = 'Expense';
+	}
+	$node->widgetConfig->chartTitle = 'M/WBE ' . $status . ' ' . $contract_type .  ' Contracts Share';    
 ",
 "widgetUpdateJSONConfig":"
 

@@ -38,17 +38,17 @@ if(preg_match('/vendor/',$_GET['q'])){
   $revenue_link =  l('<span class="nav-title">Revenue</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
   $payroll_link = l('<span class="nav-title">Payroll</span><br>'.custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);  
 }else{
-  if($node->data[3]['budget_current'] == 0){
+  if($node->data[3]['budget_current'] == 0 || preg_match('/mwbe/',$_GET['q']) ){
     $budget_link = l('<span class="nav-title">Budget</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') ,'',$options_disabled);
   }else{
     $budget_link = l('<span class="nav-title">Budget</span><br>&nbsp;'. custom_number_formatter_format($node->data[3]['budget_current'] ,1,'$'),RequestUtil::getTopNavURL("budget"),$options) ;
   }
-  if($node->data[4]['revenue_amount_sum'] == 0 ){
+  if($node->data[4]['revenue_amount_sum'] == 0  || preg_match('/mwbe/',$_GET['q']) ){
     $revenue_link =  l('<span class="nav-title">Revenue</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
   }else{
     $revenue_link =  l('<span class="nav-title">Revenue</span><br>&nbsp;'. custom_number_formatter_format($node->data[4]['revenue_amount_sum'] ,1,'$') ,RequestUtil::getTopNavURL("revenue"),$options);
   }
-  if($node->data[1]['total_gross_pay'] == 0){
+  if($node->data[1]['total_gross_pay'] == 0 || preg_match('/mwbe/',$_GET['q']) ){
     $payroll_link = l('<span class="nav-title">Payroll</span><br>'.custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
   }else{
     $payroll_link = l('<span class="nav-title">Payroll</span><br>'.custom_number_formatter_format($node->data[1]['total_gross_pay'] ,1,'$'),RequestUtil::getTopNavURL("payroll"),$options);
