@@ -15,8 +15,8 @@
         "year":"cum_spend.cum_spend.fiscal_year_id",
         "yeartype":"cum_spend.cum_spend.type_of_year",
         "vendor":"cum_spend.cum_spend.vendor_id",
-        "mwbe_vendor":"cum_spend.cum_spend.vendor_id"
-
+        "mwbe_vendor":"cum_spend.cum_spend.vendor_id",
+        "mwbe":"cum_spend.cum_spend.minority_type_id"
     }  ,
     "columns":["vendor.vendor", "vendor.vendor.legal_name", "txcount"],
     "orderBy":"-txcount",
