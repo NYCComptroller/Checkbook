@@ -52,7 +52,7 @@
         },
         "percent_spending": {
             "type":"expression2",
-            "expression": "SpendingUtil::getPercentYtdSpending($node, $row)",
+            "expression": "SpendingUtil::getPercentYtdSpending($node, $row)"
         }
 
     },
