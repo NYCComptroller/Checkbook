@@ -4,28 +4,27 @@
 "html_class":"",
 "header":"
        $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
-       $header .= ChartUtil::generateGridViewLink($node);
+       $header .= ChartUtil::generateWidgetGridViewLink($node);
        return $header;
     ",
  "gridConfig":{
-        "template":"highchart_spending_fy_grid_view",
+        "template":"chart_grid_view",
+        "domain":"contracts",
         "html_class":"chart-grid-view-table three-columns",
         "table_columns": [
             {
-                  "labelAlias": "month",
-              "column": "month_month_month_name",
-                  "sortColumn":"sort_order"
+                  "labelAlias": "Contracting Agency",
+                  "columnType": "text"
              },
-            {
-                  "colLabel": "$node->widgetConfig->chartConfig->series[0]->name",
-              "column": "previous_spending",
-                   "eval":true
-            },
-            {
-                  "colLabel": "$node->widgetConfig->chartConfig->series[1]->name",
-              "column": "current_spending",
-                   "eval":true
-            }
+             {
+                  "labelAlias": "Number",
+                  "columnType": "number"
+             },
+             {
+                  "labelAlias": "Amount",
+                  "columnType": "number",
+                  "formatType": "amount"
+             }
         ]
 },
 "no_results_content":"No Results Found",
@@ -81,6 +80,7 @@
 	 						; 
 			$series_new[$index]->y = (float)$row['current_amount_sum'];
 			$series_new[$index]->tooltip_label = $tooltip_label;
+			$node->widgetConfig->gridConfig->data[] = array($row['agency_name'],$row['total_contracts'],$row['current_amount_sum'] );
 			$index += 1;
 	}
 

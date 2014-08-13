@@ -4,28 +4,28 @@
 "html_class":"",
 "header":"
        $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
-       $header .= ChartUtil::generateGridViewLink($node);
+       $header .= ChartUtil::generateWidgetGridViewLink($node);
        return $header;
     ",
  "gridConfig":{
-        "template":"highchart_spending_fy_grid_view",
+        "template":"chart_grid_view",
+        "domain":"contracts",
         "html_class":"chart-grid-view-table three-columns",
         "table_columns": [
             {
-                  "labelAlias": "month",
-              "column": "month_month_month_name",
-                  "sortColumn":"sort_order"
+                  "labelAlias": "Month",
+                  "columnType": "text"
              },
-            {
-                  "colLabel": "$node->widgetConfig->chartConfig->series[0]->name",
-              "column": "previous_spending",
-                   "eval":true
-            },
-            {
-                  "colLabel": "$node->widgetConfig->chartConfig->series[1]->name",
-              "column": "current_spending",
-                   "eval":true
-            }
+             {
+                  "labelAlias": "Previous",
+                  "columnType": "number",
+                  "formatType": "amount"
+             },
+             {
+                  "labelAlias": "Current",
+                  "columnType": "number",
+                  "formatType": "amount"
+             }
         ]
 },
 "no_results_content":"No Results Found",
@@ -86,6 +86,7 @@
 	 						'Amount: '. custom_number_formatter_format($row['spending_amount_sum'],2,'$')   . '<br/>' ; 
 		$item = new stdClass();
 		$item->y = (float)$row['spending_amount_sum'];
+		$item->month = $row['month_name'];
 		$item->tooltip_label = $tooltip_label;
 		$item->custom_label = custom_number_formatter_format($series[$key]->y/($series[$key]->y + $non_mwbe_data[$key] ) *100,1,null,'%') ;	
 	    if($row['year_value'] == $year){
@@ -93,7 +94,16 @@
 	    }else{
 	    	$series_previous[] = $item;
 	    }
+	    
 	}
+	$index = 0;
+	$node->widgetConfig->gridConfig->table_columns[1]->labelAlias =  $year;
+	
+	while($index <= 11){
+	    $node->widgetConfig->gridConfig->data[] = array($series_current[$index]->month,$series_current[$index]->y,$series_previous[$index]->y );	    	
+		$index +=1;
+	}
+	
 	if(_getRequestParamValue('yeartype') == 'C'){
 				 $year_display = 'CY ';
 	}else{
@@ -107,6 +117,7 @@
 		$prev_series_obj->pointWidth = 15;
 		$prev_series_obj->data = $series_previous;
 		$node->widgetConfig->chartConfig->series[] = $prev_series_obj;		
+		$node->widgetConfig->gridConfig->table_columns[2]->labelAlias =  $year -1;
 	}
 	$curr_series_obj = new stdClass();
 	$curr_series_obj->name = $year_display . ' ' . $year;
