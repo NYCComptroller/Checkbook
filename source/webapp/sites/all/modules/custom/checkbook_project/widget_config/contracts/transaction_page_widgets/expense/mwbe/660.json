@@ -14,7 +14,8 @@
         "calyear":"cum_spend.cum_spend.fiscal_year_id",
         "year":"cum_spend.cum_spend.fiscal_year_id",
         "yeartype":"cum_spend.cum_spend.type_of_year",
-        "vendor":"cum_spend.cum_spend.vendor_id"
+        "vendor":"cum_spend.cum_spend.vendor_id",
+        "mwbe_vendor":"cum_spend.cum_spend.vendor_id"
 
     }  ,
     "columns":["vendor.vendor", "vendor.vendor.legal_name", "txcount"],
@@ -22,9 +23,9 @@
     "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"M/WBE Vendor",
-    "urlParameterName":"vendor",
-    "autocompleteParamName":"vendor_auto",
-    "autocompleteID":"fvendorId",
+    "urlParameterName":"mwbe_vendor",
+    "autocompleteParamName":"mwbe_vendor_auto",
+    "autocompleteID":"fmwbeVendorId",
     "autocompleteField":"vendor_name",
     "maxSelect":5,
     "adjustParameters":"
