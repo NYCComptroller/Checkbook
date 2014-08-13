@@ -49,7 +49,6 @@ include_once('export_link.php');
   <?php
   
         if (isset($node->widgetConfig->gridConfig->data) && is_array($node->widgetConfig->gridConfig->data)) {
-			log_error($node->widgetConfig->gridConfig->data );
             foreach ($node->widgetConfig->gridConfig->data as $datarow) {
               echo "<tr>";
               $index = 0;

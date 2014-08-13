@@ -79,6 +79,9 @@ if(preg_match('/contracts/',$_GET['q'])){
 	$active_domain_link = RequestUtil::getTopNavURL("spending") ;
 }
 
+$active_domain_link = preg_replace('/\/mwbe\/[^\/]*/','',$active_domain_link); 
+log_error($active_domain_link);
+
 if($mwbe_amount  == 0){
 	$mwbe_link = l('<span class="nav-title">M/WBE</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
 }else{
@@ -88,15 +91,15 @@ if($mwbe_amount  == 0){
 	$mwbe_filters =  "<div class='main-nav-drop-down' style='display:none'>
   		<ul>
   			<li class='no-click title'>M/WBE Category</li>
-  			<li class='no-click'><a href=" . $active_domain_link . "/mwbe/4~5" . ">Asian American</a></li>
-  			<li class='no-click'><a href=" . $active_domain_link . "/mwbe/2" . ">Black American</a></li>
-  			<li class='no-click'><a href=" . $active_domain_link . "/mwbe/9" . ">Women</a></li>
-  			<li class='no-click'><a href=" . $active_domain_link . "/mwbe/3" . ">Hispanic American</a></li>
-  			<li class='no-click'><a href=" . $active_domain_link . "/mwbe/1" . ">Emerging</a></li>
+  			<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/4~5" . "'>Asian American</a></li>
+  			<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/2" . "'>Black American</a></li>
+  			<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/9" . "'>Women</a></li>
+  			<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/3" . "'>Hispanic American</a></li>
+  			<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/1" . "'>Emerging</a></li>
 			<li class='no-click title'>Other</li>
-			<li class='no-click'><a href=" . $active_domain_link . "/mwbe/7" . ">Non-M/WBE</a></li>
-			<li class='no-click'><a href=" . $active_domain_link . "/mwbe/11" . ">Individuals & Others</a></li>
-			<li class='no-click'><a href=" . $active_domain_link . "/mwbe/2~3~4~5~9" . ">Clear Filter</a></li>
+			<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/7" . "'>Non-M/WBE</a></li>
+			<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/11" . "'>Individuals & Others</a></li>
+			<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/2~3~4~5~9" . "'>Clear Filter</a></li>
   		</ul>
   		</div>
   		";
