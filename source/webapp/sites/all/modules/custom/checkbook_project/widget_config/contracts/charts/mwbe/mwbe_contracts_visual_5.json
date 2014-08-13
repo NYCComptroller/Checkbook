@@ -1,7 +1,7 @@
 {
 "widgetType": "highcharts",
 "widgetDatahandler": "highcharts",
-"html_class":"chart-left",
+"html_class":"",
 "header":"
        $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
        $header .= ChartUtil::generateGridViewLink($node);
