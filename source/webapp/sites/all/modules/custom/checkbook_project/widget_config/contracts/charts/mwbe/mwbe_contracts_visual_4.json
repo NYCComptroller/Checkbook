@@ -23,7 +23,7 @@
              },
              {
                   "labelAlias": "Prime Vendor",
-                  "columnType": "text"
+                  "columnType": "text number-left"
              },
              {
                   "labelAlias": "Contracting Agency",
