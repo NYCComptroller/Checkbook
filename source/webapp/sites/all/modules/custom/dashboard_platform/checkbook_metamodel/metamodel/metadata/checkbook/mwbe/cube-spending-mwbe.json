@@ -224,7 +224,7 @@
                     "function": "SUM(COALESCE(total_spending_amount,0))"
                 },
                 "total_contract_amount_sum": {
-                    "function": "SUM(COALESCE(total_contract_amount,0))"
+                    "function": "MAX(COALESCE(total_contract_amount,0))"
                 }
             }
         },
@@ -297,7 +297,7 @@
                     "function": "SUM(COALESCE(total_spending_amount,0))"
                 },
                 "total_contract_amount_sum": {
-                    "function": "SUM(COALESCE(total_contract_amount,0))"
+                    "function": "MAX(COALESCE(total_contract_amount,0))"
                 },
                 "vendor_count": {
                     "function": "COUNT(DISTINCT vendor_id)"
