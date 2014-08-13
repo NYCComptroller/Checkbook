@@ -7,24 +7,28 @@
        return $header;
     ",
  "gridConfig":{
-        "template":"highchart_spending_fy_grid_view",
+        "template":"chart_grid_view",
+        "domain":"spending",
         "html_class":"chart-grid-view-table three-columns",
         "table_columns": [
             {
-                  "labelAlias": "month",
-              "column": "month_month_month_name",
-                  "sortColumn":"sort_order"
+                  "labelAlias": "Contract ID",
+                  "columnType": "text"
              },
-            {
-                  "colLabel": "$node->widgetConfig->chartConfig->series[0]->name",
-              "column": "previous_spending",
-                   "eval":true
-            },
-            {
-                  "colLabel": "$node->widgetConfig->chartConfig->series[1]->name",
-              "column": "current_spending",
-                   "eval":true
-            }
+             {
+                  "labelAlias": "Amount",
+                  "columnType": "number",
+                  "formatType": "amount"             
+             },
+             {
+                  "labelAlias": "Prime Vendor",
+                  "columnType": "text"
+             },
+             {
+                  "labelAlias": "Contracting Agency",
+                  "columnType": "text"
+             }
+             
         ]
 },
 "no_results_content":"No Results Found",
@@ -72,6 +76,11 @@
 	 						; 
 			$series_new[$index]->y = (float)$row['total_spending_amount'];
 			$series_new[$index]->tooltip_label = $tooltip_label;
+			$node->widgetConfig->gridConfig->data[] = array($row['document_id'],
+														$row['total_spending_amount'],
+														 $row['legal_name'] ,
+														 $row['agency_name']
+														);			
 			$index += 1;
 	}
 
