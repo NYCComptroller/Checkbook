@@ -1,31 +1,26 @@
 {
 "widgetType": "highcharts",
 "widgetDatahandler": "highcharts",
-"html_class":"chart-left",
+"html_class":"",
 "header":"
        $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
-       $header .= ChartUtil::generateGridViewLink($node);
+       $header .= ChartUtil::generateWidgetGridViewLink($node);
        return $header;
     ",
  "gridConfig":{
-        "template":"highchart_spending_fy_grid_view",
+        "template":"chart_grid_view",
+        "domain":"contracts",
         "html_class":"chart-grid-view-table three-columns",
         "table_columns": [
             {
-                  "labelAlias": "month",
-              "column": "month_month_month_name",
-                  "sortColumn":"sort_order"
+                  "labelAlias": "Year",
+                  "columnType": "text"
              },
-            {
-                  "colLabel": "$node->widgetConfig->chartConfig->series[0]->name",
-              "column": "previous_spending",
-                   "eval":true
-            },
-            {
-                  "colLabel": "$node->widgetConfig->chartConfig->series[1]->name",
-              "column": "current_spending",
-                   "eval":true
-            }
+             {
+                  "labelAlias": "Amount",
+                  "columnType": "number",
+                  "formatType": "amount"
+             }
         ]
 },
 "no_results_content":"No Results Found",
@@ -116,6 +111,7 @@
 			$series_new[$index]->tooltip_label = $tooltip_label;
 			$series_new[$index]->custom_label = custom_number_formatter_format($series[$key]->y/($series[$key]->y + $non_mwbe_data[$key] ) *100,1,null,'%') ; 
 			$categories[] = $key ;
+			$node->widgetConfig->gridConfig->data[] = array($year_display,$series[$key]->y );
 			$index += 1; 	
 		}	
 	}

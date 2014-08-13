@@ -3,28 +3,33 @@
 "widgetDatahandler": "highcharts",
 "header":"
        $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
-       $header .= ChartUtil::generateGridViewLink($node);
+       $header .= ChartUtil::generateWidgetGridViewLink($node);
        return $header;
     ",
  "gridConfig":{
-        "template":"highchart_spending_fy_grid_view",
+        "template":"chart_grid_view",
+        "domain":"spending",
         "html_class":"chart-grid-view-table three-columns",
         "table_columns": [
             {
-                  "labelAlias": "month",
-              "column": "month_month_month_name",
-                  "sortColumn":"sort_order"
+                  "labelAlias": "Prime Vendor",
+                  "columnType": "text"
              },
-            {
-                  "colLabel": "$node->widgetConfig->chartConfig->series[0]->name",
-              "column": "previous_spending",
-                   "eval":true
-            },
-            {
-                  "colLabel": "$node->widgetConfig->chartConfig->series[1]->name",
-              "column": "current_spending",
-                   "eval":true
-            }
+             {
+                  "labelAlias": "M/WBE Share",
+                  "columnType": "number"             
+             },
+             {
+                  "labelAlias": "M/WBE Spending",
+                  "columnType": "number",
+                  "formatType": "amount"
+             },
+             {
+                  "labelAlias": "Non M/WBE",
+                  "columnType": "number",
+                  "formatType": "amount"
+             }
+             
         ]
 },
 "no_results_content":"No Results Found",
@@ -81,6 +86,11 @@
 	 						; 
 			$series_new[$index]->y = (float)$row['total_mwbe'];
 			$series_new[$index]->tooltip_label = $tooltip_label;
+			$node->widgetConfig->gridConfig->data[] = array($row['legal_name'],
+														custom_number_formatter_format($row['total_mwbe']/($row['total_mwbe'] + $row['total_non_mwbe'] ) *100 ,1,null, '%'),
+														 $row['total_mwbe'],
+														 $row['total_non_mwbe']
+														);
 			$index += 1;
 	}
 

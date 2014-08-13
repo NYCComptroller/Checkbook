@@ -34,9 +34,13 @@
         return $footer;
     ",
     "derivedColumns": {
+        "agency_name_formatted": {
+            "type": "expression2",
+            "expression": "_get_tooltip_markup($row['agency_agency_agency_name'],47)"
+        },
         "agency_name_link": {
             "type": "expression2",
-            "expression": "'<a href=\"' . SpendingUtil::getAgencyNameLinkUrl($node,$row) . '\">' . $row[agency_agency_agency_name] . '</a>'"
+            "expression": "'<a href=\"' . SpendingUtil::getAgencyNameLinkUrl($node,$row) . '\">' . (!$node->is_mwbe ? $row[agency_agency_agency_name] : $row[agency_name_formatted]) . '</a>'"
         },
         "formatted_check_amount_sum": {
             "type": "expression2",
@@ -48,7 +52,7 @@
         },
         "percent_spending":{
             "type":"expression2",
-            "expression": " number_format($row['check_amount_sum']/$node->totalAggregateColumns['check_amount_sum']*100 ,2) . '%'",
+            "expression": "SpendingUtil::getPercentYtdSpending($node, $row)",
             "visibility_flag": "is_mwbe"
         }
     },

@@ -1,39 +1,52 @@
 {
 "widgetType": "highcharts",
 "widgetDatahandler": "highcharts",
-"html_class":"chart-left",
+"html_class":"",
 "header":"
        $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
-       $header .= ChartUtil::generateGridViewLink($node);
+       $header .= ChartUtil::generateWidgetGridViewLink($node);
        return $header;
     ",
  "gridConfig":{
-        "template":"highchart_spending_fy_grid_view",
+        "template":"chart_grid_view",
+        "domain":"contracts",
         "html_class":"chart-grid-view-table three-columns",
         "table_columns": [
             {
-                  "labelAlias": "month",
-              "column": "month_month_month_name",
-                  "sortColumn":"sort_order"
+                  "labelAlias": "Contracting Agency",
+                  "columnType": "text"
              },
-            {
-                  "colLabel": "$node->widgetConfig->chartConfig->series[0]->name",
-              "column": "previous_spending",
-                   "eval":true
-            },
-            {
-                  "colLabel": "$node->widgetConfig->chartConfig->series[1]->name",
-              "column": "current_spending",
-                   "eval":true
-            }
+             {
+                  "labelAlias": "Number",
+                  "columnType": "number"
+             },
+             {
+                  "labelAlias": "Amount",
+                  "columnType": "number",
+                  "formatType": "amount"
+             }
         ]
 },
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B"},
+"defaultParametersPending":{},
 "cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe"],
+"cleanURLParametersPending":["agency","awdmethod","vendor","status","csize","cindustry","mwbe"],
 "urlParamMap":{"mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id",
-	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
-"chartTitle":"Top Ten Prime Vendors by Active Expense Contracts",
+	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},	
+"urlParamMapPending":{"mwbe":"minority_type_id","agency":"document_agency_id","vendor":"vendor_id",			
+			"awdmethod":"award_method_id",
+			"csize":"award_size_id","cindustry":"industry_type_id"},
+"widgetPreprocessJSON":"
+	if(preg_match('/pending/',$_GET['q'])){
+		$node->widgetConfig->urlParamMap = $node->widgetConfig->urlParamMapPending;
+		$node->widgetConfig->defaultParameters = $node->widgetConfig->defaultParametersPending;
+		$node->widgetConfig->cleanURLParameters = $node->widgetConfig->cleanURLParametersPending;
+	}
+	
+",				
+"chartTitle":"Top Ten Agencies by Active Expense Contracts",
+
 "widgetDataLoader":"
     
     $where_filters = array();
@@ -44,28 +57,42 @@
     if(count($where_filters) > 0){
         $where_filter = ' where ' . implode(' and ' , $where_filters);
     }
- 
+    $table = 'aggregateon_mwbe_contracts_cumulative_spending';
     if(preg_match('/revenue/',$_GET['q'])){
     	$where_filter .= \" and rd.document_code in ('RCT1') \";
     }else if(preg_match('/pending/',$_GET['q'])){
     	
     }else{
     	$where_filter .= \" and rd.document_code in ('CT1','CTA1') \";
-    }
+    } 
     
+    
+    
+    if(preg_match('/pending/',$_GET['q'])){
     $sql = ' select
-		v.legal_name
+		a1.document_agency_name agency_name
+		, sum(revised_maximum_amount) current_amount_sum
+		, count(contract_number) total_contracts		
+		from {pending_contracts} a1     
+    	join {ref_agency} ra on ra.agency_id =  a1.document_agency_id
+   	 	join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
+   		' . $where_filter . '     
+   		group by a1.document_agency_name  
+    	order by 2 desc limit 10';
+    }else{   
+    $sql = ' select
+		ra.agency_name
 		, sum(maximum_contract_amount) current_amount_sum
 		, count(contract_number) total_contracts		
-	from {aggregateon_mwbe_contracts_cumulative_spending} a1     
-    join {vendor} v on v.vendor_id =  a1.vendor_id
-    join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
-   ' . $where_filter . '     
-   group by v.legal_name  
-    order by 2 desc limit 10';
-    
+		from {aggregateon_mwbe_contracts_cumulative_spending} a1     
+    	join {ref_agency} ra on ra.agency_id =  a1.agency_id
+   	 	join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
+   		' . $where_filter . '     
+   		group by ra.agency_name  
+    	order by 2 desc limit 10';
+    }
     $node->data  = _checkbook_project_execute_sql($sql);
-	  
+    
 ",
 "widgetUpdateJSONConfig":"
 	
@@ -75,12 +102,13 @@
 	$index = 0;
 	foreach($node->data as $row){
 	 		$tooltip_label =
-	 						'Contracting Agency: ' . $row['legal_name'] .  '<br/>' .
+	 						'Contracting Agency: ' . $row['agency_name'] .  '<br/>' .
 	 						'Number of M/WBE Contracts: ' . $row['total_contracts'].  '<br/>' .
 	 						'Amount: ' . custom_number_formatter_format($row['current_amount_sum'] ,2, '$').  '<br/>' 
 	 						; 
 			$series_new[$index]->y = (float)$row['current_amount_sum'];
 			$series_new[$index]->tooltip_label = $tooltip_label;
+			$node->widgetConfig->gridConfig->data[] = array($row['agency_name'],$row['total_contracts'],$row['current_amount_sum'] );
 			$index += 1;
 	}
 
@@ -103,8 +131,7 @@
 	}else{
 		$contract_type = 'Expense';
 	}
-	$node->widgetConfig->chartTitle = 'Top Ten Prime Vendors by  ' . $status . ' ' . $contract_type .  ' Contracts';  
-	
+	$node->widgetConfig->chartTitle = 'Top Ten Agencies by ' . $status . ' ' . $contract_type .  ' Contracts';	
 ",
 "chartConfig" : {
 	"colors":["#7DB7E5"],

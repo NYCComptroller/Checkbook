@@ -1,7 +1,7 @@
 {
 "widgetType": "highcharts",
 "widgetDatahandler": "highcharts",
-"html_class":"chart-left",
+"html_class":"",
 "footer":"
 
 echo '<div class=\"chart-right\">
