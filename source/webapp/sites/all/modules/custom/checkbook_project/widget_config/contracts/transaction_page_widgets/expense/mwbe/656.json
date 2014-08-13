@@ -15,7 +15,7 @@
         "startdate":"effective_begin_date","enddate":"effective_end_date","regdate":"registered_date","cindustry":"industry_type_id",
         "csize":"award_size_id","modamt":"dollar_difference"
     },
-    "allowRequestParams":["smnid"],
+    "allowRequestParams":["smnid","mwbe_vendor"],
     "paramTypeConfig":{"curamtr":"rangeid","vendornm":"like","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range",
         "startdate":"range","enddate":"range","regdate":"range","modamt":"ne"},
     "defaultParameters":{"status_flag@checkbook:mwbe_contracts_coa_aggregates":"A","is_prime_or_sub":"P"},
@@ -289,6 +289,8 @@ cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
 cUrl = adjustUrlParameter(cUrl,'curamtr',oCurAmount);
 cUrl = adjustUrlParameter(cUrl,'awdmethod',oAwdMethod);
 cUrl = adjustUrlParameter(cUrl,'cindustry',oIndustryType);
+cUrl = adjustUrlParameter(cUrl,'mwbe_vendor',omwbeVendorId);
+cUrl = adjustUrlParameter(cUrl,'mwbe',ominorityTypeId);
 
 //remove advance search param if narrow down search is present for amount
 //if(oCurAmount != null && oCurAmount.length > 0 ){

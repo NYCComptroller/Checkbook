@@ -24,7 +24,7 @@
     "filterName":"M/WBE Category",
     "urlParameterName":"mwbe",
     "autocompleteParamName":"mwbe_auto",
-    "autocompleteID":"fMinorityTypeId",
+    "autocompleteID":"fminorityTypeId",
     "autocompleteField":"minority_type_name",
     "adjustParameters":"
     checkbook_faceted_search_adjust_param($node);
