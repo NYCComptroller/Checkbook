@@ -5,8 +5,10 @@
 "footer":"
 
 echo '<div class=\"chart-right\">
-		<div class=\"number\"><span>' . $node->mwbe_share_percent . '</span></div>
-		<div class=\"text\"><span>M/WBE Share</span></div>	
+        <div class=\"wrap\">
+    		<div class=\"number\"><span>' . $node->mwbe_share_percent . '</span></div>
+    		<div class=\"text\"><span>M/WBE Share</span></div>
+        </div>
 	 </div>
 ';
 ",
