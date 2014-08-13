@@ -54,7 +54,7 @@
                     "levels": [
                         {
                             "name": "cum_spend",
-                            "datasetName": "contracts_coa_aggregates",
+                            "datasetName": "mwbe_contracts_coa_aggregates",
                             "sourceColumnName": "original_agreement_id"
                         }
                     ]
@@ -109,9 +109,9 @@
         }
     },
     "references": {
-        "all_agreement_transactions__aggregateon_contracts_cumulative_spending": [
+        "all_agreement_transactions__aggregateon_mwbe_contracts_cumulative_spending": [
             {"datasetName": "all_agreement_transactions", "columnNames": ["original_agreement_id"]},
-            {"datasetName": "contracts_coa_aggregates", "columnNames": ["original_agreement_id"]}
+            {"datasetName": "mwbe_contracts_coa_aggregates", "columnNames": ["original_agreement_id"]}
         ],
         "all_agreement_transactions__ref_document_code": [
             {"datasetName": "all_agreement_transactions", "columnNames": ["document_code_id"]},
