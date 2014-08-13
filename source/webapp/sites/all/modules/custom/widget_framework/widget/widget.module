@@ -412,7 +412,11 @@ function widget_prepare(&$node) {
 	if (isset($_REQUEST['data'])) {
 		$node->widgetConfig->dataOnly = TRUE;
 	}
-
+	
+	if(isset($node->widgetConfig->widgetPreprocessJSON)){
+		$parameters =  eval($node->widgetConfig->widgetPreprocessJSON);
+	}
+	
 	//copy request params and apply default and additional params
 	//$node->widgetConfig->requestParams = $_REQUEST;
 	if (isset($node->widgetConfig->cleanURLParameters)) {

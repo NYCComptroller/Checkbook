@@ -29,10 +29,24 @@
 },
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B"},
+"defaultParametersPending":{},
 "cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe"],
+"cleanURLParametersPending":["agency","awdmethod","vendor","status","csize","cindustry","mwbe"],
 "urlParamMap":{"mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id",
-	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
+	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},	
+"urlParamMapPending":{"mwbe":"minority_type_id","agency":"document_agency_id","vendor":"vendor_id",			
+			"awdmethod":"award_method_id",
+			"csize":"award_size_id","cindustry":"industry_type_id"},
+"widgetPreprocessJSON":"
+	if(preg_match('/pending/',$_GET['q'])){
+		$node->widgetConfig->urlParamMap = $node->widgetConfig->urlParamMapPending;
+		$node->widgetConfig->defaultParameters = $node->widgetConfig->defaultParametersPending;
+		$node->widgetConfig->cleanURLParameters = $node->widgetConfig->cleanURLParametersPending;
+	}
+	
+",				
 "chartTitle":"Top Ten Agencies by Active Expense Contracts",
+
 "widgetDataLoader":"
     
     $where_filters = array();
@@ -43,7 +57,7 @@
     if(count($where_filters) > 0){
         $where_filter = ' where ' . implode(' and ' , $where_filters);
     }
-    
+    $table = 'aggregateon_mwbe_contracts_cumulative_spending';
     if(preg_match('/revenue/',$_GET['q'])){
     	$where_filter .= \" and rd.document_code in ('RCT1') \";
     }else if(preg_match('/pending/',$_GET['q'])){
@@ -51,18 +65,32 @@
     }else{
     	$where_filter .= \" and rd.document_code in ('CT1','CTA1') \";
     } 
-       
+    
+    
+    
+    if(preg_match('/pending/',$_GET['q'])){
+    $sql = ' select
+		a1.document_agency_name agency_name
+		, sum(revised_maximum_amount) current_amount_sum
+		, count(contract_number) total_contracts		
+		from {pending_contracts} a1     
+    	join {ref_agency} ra on ra.agency_id =  a1.document_agency_id
+   	 	join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
+   		' . $where_filter . '     
+   		group by a1.document_agency_name  
+    	order by 2 desc limit 10';
+    }else{   
     $sql = ' select
 		ra.agency_name
 		, sum(maximum_contract_amount) current_amount_sum
 		, count(contract_number) total_contracts		
-	from {aggregateon_mwbe_contracts_cumulative_spending} a1     
-    join {ref_agency} ra on ra.agency_id =  a1.agency_id
-    join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
-   ' . $where_filter . '     
-   group by ra.agency_name  
-    order by 2 desc limit 10';
-    
+		from {aggregateon_mwbe_contracts_cumulative_spending} a1     
+    	join {ref_agency} ra on ra.agency_id =  a1.agency_id
+   	 	join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
+   		' . $where_filter . '     
+   		group by ra.agency_name  
+    	order by 2 desc limit 10';
+    }
     $node->data  = _checkbook_project_execute_sql($sql);
     
 ",
