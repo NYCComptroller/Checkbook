@@ -49,6 +49,7 @@ include_once('export_link.php');
   <?php
   
         if (isset($node->widgetConfig->gridConfig->data) && is_array($node->widgetConfig->gridConfig->data)) {
+			log_error($node->widgetConfig->gridConfig->data );
             foreach ($node->widgetConfig->gridConfig->data as $datarow) {
               echo "<tr>";
               $index = 0;
@@ -58,6 +59,7 @@ include_once('export_link.php');
 				}else{
 					echo "<td><div class='" .$node->widgetConfig->gridConfig->table_columns[$index]->columnType ."'>".$datarow[$index]."</div></td>";
 				}
+				
 				$index +=1;	
 			  }             
               echo "<td>&nbsp</td>";
@@ -79,13 +81,13 @@ include_once('export_link.php');
 		                            "aExportFn":"function",
 									"mDataProp": function ( source, type, val ) {
 										if (type == "set") {
-										source.total_amount = val;
-										source.total_amount_display =  "<div>" + custom_number_format(val) + "</div>";
+										source.total_amount' . $index . ' = val;
+										source.total_amount_display' . $index . ' =  "<div>" + custom_number_format(val) + "</div>";
 										return;
 										}else if (type == "display") {
-										return source.total_amount_display;
+										return source.total_amount_display' . $index . ';
 										}
-										return source.total_amount;
+										return source.total_amount' . $index . ';
 									},
 		 							"sClass":"' . $column->columnType .'",
 		                            "asSorting": [ "asc","desc" ]
@@ -107,7 +109,7 @@ include_once('export_link.php');
 	
 	$aoColumnDefs .= '
 	{
-	"aTargets": [3],
+	"aTargets": [' . $index . '],
 	"sWidth":"15px"
 	}
     ';		
