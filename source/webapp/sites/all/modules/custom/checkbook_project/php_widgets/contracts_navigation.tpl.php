@@ -80,7 +80,6 @@ if(preg_match('/contracts/',$_GET['q'])){
 }
 
 $active_domain_link = preg_replace('/\/mwbe\/[^\/]*/','',$active_domain_link); 
-log_error($active_domain_link);
 
 if($mwbe_amount  == 0){
 	$mwbe_link = l('<span class="nav-title">M/WBE</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
