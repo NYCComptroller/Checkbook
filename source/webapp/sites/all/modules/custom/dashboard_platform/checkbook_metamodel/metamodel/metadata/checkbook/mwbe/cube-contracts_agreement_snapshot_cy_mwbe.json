@@ -9,8 +9,18 @@
     "cubes": {
         "all_agreement_transactions_cy": {
             "sourceDatasetName": "all_agreement_transactions_cy",
-            "dimensions": [                               				
-				{
+            "dimensions": [
+                {
+                    "name": "minority_type",
+                    "levels": [
+                        {
+                            "name": "minority_type",
+                            "datasetName": "minority_type",
+                            "sourceColumnName": "minority_type_id"
+                        }
+                    ]
+                }    ,
+                {
                     "name": "agency",
                     "levels": [
                        		{

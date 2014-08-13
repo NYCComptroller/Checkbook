@@ -8,7 +8,17 @@
     "cubes": {
         "all_agreement_transactions": {
             "sourceDatasetName": "all_agreement_transactions",
-            "dimensions": [                               				
+            "dimensions": [
+                {
+                    "name": "minority_type",
+                    "levels": [
+                        {
+                            "name": "minority_type",
+                            "datasetName": "minority_type",
+                            "sourceColumnName": "minority_type_id"
+                        }
+                    ]
+                }    ,
 				{
                     "name": "agency",
                     "levels": [
