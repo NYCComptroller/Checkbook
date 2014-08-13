@@ -271,4 +271,11 @@ class SpendingUtil{
         . '/industry/'. $row['industry_industry_industry_type_id']
         . _checkbook_append_url_params();
     }
+
+    /** Returns Ytd Spending percent */
+    static function getPercentYtdSpending($node, $row){
+        $ytd_spending = $row['check_amount_sum']/$node->totalAggregateColumns['check_amount_sum']*100;
+        $ytd_spending = $ytd_spending < 0 ? 0.00 : $ytd_spending;
+        return  custom_number_formatter_format($ytd_spending,2,'','%');
+    }
 }
