@@ -126,7 +126,7 @@ function print_schema() {
     'fields' => array(
       'path' => array(
         'type' => 'varchar',
-        'length' => 128,
+        'length' => 255,
         'not null' => TRUE,
         'description' => 'Page path',
       ),
@@ -174,4 +174,14 @@ function print_update_7101(&$sandbox) {
   $link_pos['block'] = 'block';
   $link_pos['help'] = 'help';
   variable_set('print_html_link_pos', $link_pos);
+}
+
+/**
+ * Increase size of the path field in the print_page_counter table
+ */
+function print_update_7103(&$sandbox) {
+  db_drop_primary_key('print_page_counter');
+  db_change_field('print_page_counter', 'path', 'path',
+    array('type' => 'varchar', 'length' => 255, 'not null' => TRUE, 'description' => 'Page path'),
+    array('primary key' => array('path')));
 }

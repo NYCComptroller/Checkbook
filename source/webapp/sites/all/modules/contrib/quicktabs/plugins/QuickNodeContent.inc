@@ -21,12 +21,18 @@ class QuickNodeContent extends QuickContent {
       '#size' => 20,
       '#default_value' => isset($tab['nid']) ? $tab['nid'] : '',
     );
-    $form['node']['teaser'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Teaser view'),
-      '#default_value' => isset($tab['teaser']) ? $tab['teaser'] : 0,
-    );
-    $form['node']['hide_title'] = array(
+    $entity_info = entity_get_info('node');
+    $view_modes = array();
+    foreach ($entity_info['view modes'] as $view_mode_name => $view_mode) {
+      $view_modes[$view_mode_name] = $view_mode['label'];
+    }
+    $form['node']['view_mode'] = array(
+      '#type' => 'select',
+      '#title' => t('View mode'),
+      '#options' => $view_modes,
+      '#default_value' => isset($tab['view_mode']) ? $tab['view_mode'] : 'full',
+     );
+     $form['node']['hide_title'] = array(
       '#type' => 'checkbox',
       '#title' => t('Hide the title of this node'),
       '#default_value' => isset($tab['hide_title']) ? $tab['hide_title'] : 1,
@@ -44,14 +50,14 @@ class QuickNodeContent extends QuickContent {
       // The first element of the args array is the qt_name, which we don't need
       // for this content type.
       array_shift($args);
-      list($item['nid'], $item['teaser'], $item['hide_title']) = $args;
+      list($item['nid'], $item['view_mode'], $item['hide_title']) = $args;
     }
     $output = array();
     if (isset($item['nid'])) {
       $node = node_load($item['nid']);
       if (!empty($node)) {
         if (node_access('view', $node)) {
-          $buildmode = $item['teaser'] ? 'teaser' : 'full';
+          $buildmode = $item['view_mode'];
           $nstruct = node_view($node, $buildmode);
           if ($item['hide_title']) {
             $nstruct['#node']->title = NULL;
@@ -67,6 +73,6 @@ class QuickNodeContent extends QuickContent {
   }
   
   public function getAjaxKeys() {
-    return array('nid', 'teaser', 'hide_title');
+    return array('nid', 'view_mode', 'hide_title');
   }
 }
