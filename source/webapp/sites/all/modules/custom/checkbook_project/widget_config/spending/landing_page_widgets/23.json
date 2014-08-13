@@ -52,7 +52,7 @@
         },
         "percent_spending":{
             "type":"expression2",
-            "expression": " number_format($row['check_amount_sum']/$node->totalAggregateColumns['check_amount_sum']*100 ,2) . '%'",
+            "expression": "SpendingUtil::getPercentYtdSpending($node, $row)",
             "visibility_flag": "is_mwbe"
         }
     },
