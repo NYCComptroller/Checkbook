@@ -27,11 +27,11 @@ if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:mwbe_contracts_coa_
     },
 "vendor_name_link": {
       "type": "expression2",
-      "expression": "'<a href=\"/contracts_revenue_landing'  . _checkbook_project_get_url_param_string(\"agency\")   .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\"). _checkbook_project_get_url_param_string(\"awdmethod\") .  _checkbook_project_get_url_param_string(\"status\")  .   _checkbook_project_get_year_url_param_string() .   '/vendor/' .$row[vendor_vendor]  .  '?expandBottomCont=true\">' .$row[vendor_name_formatted]. '</a>'"
+      "expression": "'<a href=\"/contracts_revenue_landing'  . _checkbook_project_get_url_param_string(\"mwbe\") . _checkbook_project_get_url_param_string(\"agency\")   .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\"). _checkbook_project_get_url_param_string(\"awdmethod\") .  _checkbook_project_get_url_param_string(\"status\")  .   _checkbook_project_get_year_url_param_string() .   '/vendor/' .$row[vendor_vendor]  .  '?expandBottomCont=true\">' .$row[vendor_name_formatted]. '</a>'"
     } ,
 "spent_amount_link": {
       "type": "expression2",
-      "expression": "'<a href=\"/spending/transactions/cvendor/' .$row[vendor_vendor] .  _checkbook_project_get_url_param_string(\"status\") . _checkbook_project_get_url_param_string(\"agency\",\"cagency\")   ._checkbook_project_get_url_param_string(\"awdmethod\")  .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\") .  ContractURLHelper::_checkbook_project_spending_get_year_url_param_string() .  '\">' . '$ ' . custom_number_formatter_format($row['spending_amount_sum'],2). '</a>'"
+      "expression": "'<a href=\"/spending/transactions/cvendor/' .$row[vendor_vendor] .  _checkbook_project_get_url_param_string(\"status\") . _checkbook_project_get_url_param_string(\"agency\",\"cagency\")   ._checkbook_project_get_url_param_string(\"awdmethod\")  . _checkbook_project_get_url_param_string(\"mwbe\") .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\") .  ContractURLHelper::_checkbook_project_spending_get_year_url_param_string() .  '\">' . '$ ' . custom_number_formatter_format($row['spending_amount_sum'],2). '</a>'"
     } ,
 "formatted_original_amount_sum": {
       "type": "expression2",
@@ -63,6 +63,7 @@ $url .= _checkbook_project_get_url_param_string('vendor');
 $url .= _checkbook_project_get_url_param_string('awdmethod');
 $url .= _checkbook_project_get_url_param_string('csize');
 $url .= _checkbook_project_get_url_param_string('cindustry');
+$url .= _checkbook_project_get_url_param_string('mwbe');
 $url .= _checkbook_project_get_year_url_param_string();
 $url .= '/smnid/' .  $node->nid;
 $url .= '/doctype/RCT1';
