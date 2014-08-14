@@ -511,14 +511,14 @@ function widget_data_tables_widget_view(&$node) {
                      $sAjaxSource .= "/$key/$value" ;
                 }
             }
-
             if(is_array($node->widgetConfig->allowRequestParamValues)){
                 foreach($node->widgetConfig->allowRequestParamValues as $paramKey=>$paramValue) {
                     $sAjaxSource .= "/$paramKey/$paramValue" ;
                 }
             }
+            $sAjaxSource = $sAjaxSource._checkbook_append_url_params($sAjaxSource);
 
-            $sAjaxSource = $sAjaxSource._checkbook_append_url_params();
+
             $node->widgetConfig->dataTableOptions->sAjaxSource =  escapeSpecialCharacters(html_entity_decode($sAjaxSource,ENT_QUOTES));
 
             $node->widgetConfig->dataTableOptions->fnServerData= "##function ( sSource, aoData, fnCallback ) {
