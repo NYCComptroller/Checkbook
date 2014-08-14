@@ -1180,6 +1180,7 @@ function widget_merge_config($parent_config, $child_config){
   $child_config->cleanURLParameters = $parent_config->cleanURLParameters;
   $child_config->cleanURLParameters[] = $child_config->autocompleteParamName;
   $child_config->paramTypeConfig = $parent_config->paramTypeConfig;
+  $child_config->preProcessConfiguration = $parent_config->preProcessConfiguration;
   $autocompleteParamName = $child_config->autocompleteParamName;
   if(isset($autocompleteParamName)){
     $child_config->paramTypeConfig->$autocompleteParamName = "autocomplete";
