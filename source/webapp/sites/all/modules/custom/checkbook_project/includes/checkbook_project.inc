@@ -1472,13 +1472,20 @@ function _checkbook_max_data_year(){
       "cal_year_value"=>$result[1]['year_value'], "cal_year_id"=>$result[1]['year_id']);
 }
 
-function _checkbook_append_url_params(){
-
+function _checkbook_append_url_params($source = null){
     $datasource = _getRequestParamValue('datasource');
     $mwbe = _getRequestParamValue('mwbe');
 
     $url = isset($datasource) ? "/datasource/checkbook_oge" : "";
-    $url = isset($mwbe) ? "/mwbe/".$mwbe : "";
+
+    if($source){
+        $source = explode("/",$source);
+        if(!in_array("mwbe",$source)){
+            $url = isset($mwbe) ? "/mwbe/".$mwbe : "";
+        }
+    }else{
+        $url = isset($mwbe) ? "/mwbe/".$mwbe : "";
+    }
 
     return $url;
 }

@@ -1,4 +1,4 @@
-/**
+    /**
  * Function to get name of filter
  *
  * @param {String} filterName

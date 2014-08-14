@@ -16,7 +16,7 @@
         "startdate":"effective_begin_date","enddate":"effective_end_date","regdate":"registered_date","cindustry":"industry_type_id",
         "csize":"award_size_id","modamt":"dollar_difference"
     },
-    "allowRequestParams":["smnid","mwbe_vendor","mwbe"],
+    "allowRequestParams":["smnid"],
     "paramTypeConfig":{"curamtr":"rangeid","vendornm":"like","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range",
         "startdate":"range","enddate":"range","regdate":"range","modamt":"ne"},
     "defaultParameters":{"status_flag@checkbook:mwbe_contracts_coa_aggregates":"A","is_prime_or_sub":"P"},
