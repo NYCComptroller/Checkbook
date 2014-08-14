@@ -1,0 +1,36 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":667,
+    "no_results_content":"No Results Found",
+    "defaultParameters":{
+        "cum_spend.cum_spend.status_flag":"A"
+    },
+    "limit":10,
+    "startWith":0,
+    "autocomplete":false,
+    "filterName":"Amount",
+    "urlParameterName":"curamtr",
+    "urlParameterType":"rangeid",
+    "autocompleteID":"fCurAmount",
+    "urlParamMap":{
+        "doctype":"document_code.document_code.document_code",
+        "contstatus":"cum_spend.cum_spend.status_flag",
+        "calyear":"cum_spend.cum_spend.fiscal_year_id",
+        "year":"cum_spend.cum_spend.fiscal_year_id",
+        "yeartype":"cum_spend.cum_spend.type_of_year"
+    }  ,
+    "columns":["g100m_count", "g50m_le100m_count", "g25m_le50m_count", "g10m_le25m_count", "ge1m_le10m_count", "less1m_count"],
+    "orderBy":"",
+    "adjustParameters":"
+if(function_exists('_checkbook_project_adjustContractParameterFilters')){
+_checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
+}
+
+if(function_exists('_checkbook_project_applyParameterFilters')){
+$adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+return $adjustedParameters;
+}
+return $parameters;
+",
+"template":"individual_filter"
+}
