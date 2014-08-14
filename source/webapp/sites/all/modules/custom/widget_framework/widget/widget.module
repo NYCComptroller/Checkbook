@@ -647,7 +647,19 @@ function load_widget_data($node, $resultFormatter) {
                       $serieParameters[$key] = explode("~",$value);;
                     }
                   }
-                }                
+                }
+                // getting data using data controller
+                if(is_array($serieParameters))
+                    foreach($serieParameters as $key => $value){
+                        if(!isset($value)){
+                            unset($serieParameters[$key]);
+                            continue;
+                        }
+                        if(!is_array($value)){
+                            $serieParameters[$key] = explode("~",$value);
+                        }
+                    }
+
                 if(isset($serie->adjustSerieParameters)){
                     $serieParameters =  eval($serie->adjustSerieParameters);
                 }
@@ -660,17 +672,7 @@ function load_widget_data($node, $resultFormatter) {
                 $serieOrderBy = isset($serie->orderBy) ? $serie->orderBy : $orderBy;
                 $serieStartWith = isset($serie->startWith) ? $serie->startWith : $startWith;
                 $serieLimit = isset($serie->limit) ? $serie->limit : $limit;
-                // getting data using data controller
-                if(is_array($serieParameters))
-                foreach($serieParameters as $key => $value){
-                	if(!isset($value)){
-                		unset($serieParameters[$key]);
-                		continue;
-                	}
-                	if(!is_array($value)){
-                		$serieParameters[$key] = explode("~",$value);
-                	}
-                }
+
                 $records = $isSerieList
                 ? $dataQueryController->queryDataset(
                         $serieDatasetName,
