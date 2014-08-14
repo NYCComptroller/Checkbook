@@ -328,39 +328,44 @@
 	} );}##"
 },
 "customExternalJS":"function prepareTableListFilterUrl(){
-        var agencyIds = getNamedFilterCriteria('fagencyId');
-        if(agencyIds.length==0 && eval(document.getElementById('fHideAgencyId'))){
-             agencyIds = document.getElementById('fHideAgencyId').value;
-        }
-        var oVendorIds = getNamedFilterCriteria('fvendorId');
-        var oVendorNms = getNamedFilterCriteria('fvendorNm');
-        var oCategoryIds = getNamedFilterCriteria('fCat' +
-'egoryId');
-         var oSpendCategoryIds = getNamedFilterCriteria('fSpendCategoryId');
-        var oCheckAmount = getNamedFilterCriteria('fCheckAmount');
-        var oDeptIds = getNamedFilterCriteria('fdeptId');
-        var oDeptNms = getNamedFilterCriteria('fdeptNm');
-        var oSpendCategoryNms = getNamedFilterCriteria('fCategoryNm');
-         var  cUrl = oTable.fnSettings().sAjaxSource;
+    var agencyIds = getNamedFilterCriteria('fagencyId');
+    if(agencyIds.length==0 && eval(document.getElementById('fHideAgencyId'))){
+        agencyIds = document.getElementById('fHideAgencyId').value;
+    }
+    var oVendorIds = getNamedFilterCriteria('fvendorId');
+    var oVendorNms = getNamedFilterCriteria('fvendorNm');
+    var oCategoryIds = getNamedFilterCriteria('fCat' + 'egoryId');
+    var oSpendCategoryIds = getNamedFilterCriteria('fSpendCategoryId');
+    var oCheckAmount = getNamedFilterCriteria('fCheckAmount');
+    var oDeptIds = getNamedFilterCriteria('fdeptId');
+    var oDeptNms = getNamedFilterCriteria('fdeptNm');
+    var oSpendCategoryNms = getNamedFilterCriteria('fCategoryNm');
+    var oMwbeVendorId = getNamedFilterCriteria('fmwbeVendorId');
+    var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
 
-        var cUrlArray = cUrl.split('/');
-        var dtsmnidNameIndex = jQuery.inArray('dtsmnid', cUrlArray);
+    var cUrl = oTable.fnSettings().sAjaxSource;
 
-           if (dtsmnidNameIndex != -1 && cUrlArray[(dtsmnidNameIndex+1)] == 20) {
-            cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
-            cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
-           }else{
-            cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
-            cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
-           }
-           cUrl = adjustUrlParameter(cUrl,'vendornm_exact',oVendorNms);
-           cUrl = adjustUrlParameter(cUrl,'expcategory',oCategoryIds);
-           cUrl = adjustUrlParameter(cUrl,'category',oSpendCategoryIds );
-           cUrl = adjustUrlParameter(cUrl,'checkamtr',oCheckAmount);
-           cUrl = adjustUrlParameter(cUrl,'dept',oDeptIds);
-                  cUrl = adjustUrlParameter(cUrl,'deptnm',oDeptNms);
-           cUrl = adjustUrlParameter(cUrl,'expcategorynm',oSpendCategoryNms);
-         //}
-       return cUrl;
+    var cUrlArray = cUrl.split('/');
+    var dtsmnidNameIndex = jQuery.inArray('dtsmnid', cUrlArray);
+
+    if (dtsmnidNameIndex != -1 && cUrlArray[(dtsmnidNameIndex+1)] == 20) {
+        cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
+        cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
+    }
+    else {
+        cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
+        cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
+    }
+    cUrl = adjustUrlParameter(cUrl,'vendornm_exact',oVendorNms);
+    cUrl = adjustUrlParameter(cUrl,'expcategory',oCategoryIds);
+    cUrl = adjustUrlParameter(cUrl,'category',oSpendCategoryIds );
+    cUrl = adjustUrlParameter(cUrl,'checkamtr',oCheckAmount);
+    cUrl = adjustUrlParameter(cUrl,'dept',oDeptIds);
+    cUrl = adjustUrlParameter(cUrl,'deptnm',oDeptNms);
+    cUrl = adjustUrlParameter(cUrl,'expcategorynm',oSpendCategoryNms);
+    cUrl = adjustUrlParameter(cUrl,'mwbe_vendor',oMwbeVendorId);
+    cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
+
+    return cUrl;
     }"
 }

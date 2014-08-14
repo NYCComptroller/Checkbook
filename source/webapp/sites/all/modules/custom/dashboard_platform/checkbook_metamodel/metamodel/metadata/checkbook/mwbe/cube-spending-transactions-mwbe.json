@@ -10,6 +10,16 @@
             "sourceDatasetName": "fact_disbursement_line_item_mwbe",
             "dimensions": [
                 {
+                    "name": "minority_type",
+                    "levels": [
+                        {
+                            "name": "minority_type",
+                            "datasetName": "minority_type",
+                            "sourceColumnName": "minority_type_id"
+                        }
+                    ]
+                },
+                {
                     "name": "agency",
                     "levels": [
                         {
