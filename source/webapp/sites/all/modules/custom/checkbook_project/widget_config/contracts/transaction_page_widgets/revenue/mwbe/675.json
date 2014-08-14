@@ -12,17 +12,21 @@
         "contstatus":"cum_spend.cum_spend.status_flag",
         "calyear":"cum_spend.cum_spend.fiscal_year_id",
         "year":"cum_spend.cum_spend.fiscal_year_id",
-        "yeartype":"cum_spend.cum_spend.type_of_year"
+        "yeartype":"cum_spend.cum_spend.type_of_year",
+        "vendor":"cum_spend.cum_spend.vendor_id",
+        "mwbe_vendor":"cum_spend.cum_spend.vendor_id",
+        "mwbe":"cum_spend.cum_spend.minority_type_id"
     }  ,
-    "columns":["industry.industry", "industry.industry.industry_type_name", "txcount"],
+    "columns":["minority_type.minority_type", "minority_type.minority_type.minority_type_name", "txcount"],
     "orderBy":"-txcount",
     "getTotalDataCount":true,
     "facetPager":true,
-    "filterName":"Contract Industry",
-    "urlParameterName":"cindustry",
-    "autocompleteParamName":"cindustry_auto",
-    "autocompleteID":"fIndustryTypeId",
-    "autocompleteField":"industry_type_name",
+    "filterName":"M/WBE Category",
+    "urlParameterName":"mwbe",
+    "autocompleteParamName":"mwbe_auto",
+    "autocompleteID":"fminorityTypeId",
+    "autocompleteField":"minority_type_name",
+    "maxSelect":5,
     "adjustParameters":"
     checkbook_faceted_search_adjust_param($node);
 if(function_exists('_checkbook_project_adjustContractParameterFilters')){
@@ -30,7 +34,7 @@ _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_regi
 }
 if(function_exists('_checkbook_project_applyParameterFilters')){
 $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-$adjustedParameters['industry.industry'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+$adjustedParameters['minority_type.minority_type'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
 return $adjustedParameters;
 }
 return $parameters;
