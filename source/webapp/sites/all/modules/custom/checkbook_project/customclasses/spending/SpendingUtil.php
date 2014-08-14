@@ -153,12 +153,12 @@ class SpendingUtil{
     static function getAgencyNameLinkUrl($node, $row){
         //agency_name_link
         $url = '/spending_landing'
-            . '/agency/' . (isset($row["agency_id"]) ? $row["agency_id"] : $row["agency_agency"])
-        . _checkbook_project_get_url_param_string("vendor")
-        . _checkbook_project_get_url_param_string("category")
+            . _checkbook_project_get_url_param_string("vendor")
+            . _checkbook_project_get_url_param_string("category")
             . _checkbook_project_get_url_param_string("industry")
-        . _checkbook_project_get_year_url_param_string()
-        . _checkbook_append_url_params();
+            . _checkbook_project_get_year_url_param_string()
+            . _checkbook_append_url_params()
+            . '/agency/' . (isset($row["agency_id"]) ? $row["agency_id"] : $row["agency_agency"]);
 
         return $url;
     }
@@ -184,8 +184,8 @@ class SpendingUtil{
         . _checkbook_project_get_url_param_string("category")
         . _checkbook_project_get_url_param_string("industry")
         . _checkbook_project_get_year_url_param_string()
-        . '/vendor/' . (isset($row["vendor_id"]) ? $row["vendor_id"] : $row["vendor_vendor"])
-        . _checkbook_append_url_params();
+        . _checkbook_append_url_params()
+        . '/vendor/' . (isset($row["vendor_id"]) ? $row["vendor_id"] : $row["vendor_vendor"]);
     }
 
     /** Returns Vendor Amount Link Url based on values from current path & data row */
@@ -243,21 +243,21 @@ class SpendingUtil{
     static function getContractNumberLinkUrl($node, $row){
         //contract_number_link
         return '/contract_details'
-            . _checkbook_project_get_contract_url($row["document_id_document_id"], $row["agreement_id_agreement_id"])
-            . _checkbook_append_url_params()
-            .'/newwindow';
+        . _checkbook_append_url_params()
+        . _checkbook_project_get_contract_url($row["document_id_document_id"], $row["agreement_id_agreement_id"])
+        .'/newwindow';
     }
 
     /** Returns Industry Name Link Url based on values from current path & data row */
     static function getIndustryNameLinkUrl($node, $row){
         //industry_name_link
         return '/spending_landing'
-        . '/industry/'. $row['industry_industry_industry_type_id']
         . _checkbook_project_get_url_param_string("agency")
         . _checkbook_project_get_url_param_string("vendor")
         . _checkbook_project_get_url_param_string("category")
         . _checkbook_project_get_year_url_param_string()
-        . _checkbook_append_url_params();
+        . _checkbook_append_url_params()
+        . '/industry/'. $row['industry_industry_industry_type_id'];
     }
 
     /** Returns Industry Ytd Spending Link Url based on values from current path & data row */
