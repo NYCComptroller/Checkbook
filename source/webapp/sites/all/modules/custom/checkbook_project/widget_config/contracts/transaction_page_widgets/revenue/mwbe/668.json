@@ -12,7 +12,9 @@
         "contstatus":"cum_spend.cum_spend.status_flag",
         "calyear":"cum_spend.cum_spend.fiscal_year_id",
         "year":"cum_spend.cum_spend.fiscal_year_id",
-        "yeartype":"cum_spend.cum_spend.type_of_year"
+        "yeartype":"cum_spend.cum_spend.type_of_year",
+        "mwbe_vendor":"cum_spend.cum_spend.vendor_id",
+        "mwbe":"cum_spend.cum_spend.minority_type_id"
     }  ,
     "columns":["agency.agency", "agency.agency.agency_name", "txcount"],
     "orderBy":"-txcount",

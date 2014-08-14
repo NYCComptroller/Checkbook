@@ -3,7 +3,8 @@
     "parentNid":667,
     "no_results_content":"No Results Found",
     "defaultParameters":{
-        "cum_spend.cum_spend.status_flag":"A"
+        "cum_spend.cum_spend.status_flag":"A",
+        "minority_type_id":"2~3~4~5~9"
     },
     "limit":10,
     "startWith":0,
@@ -12,16 +13,18 @@
         "contstatus":"cum_spend.cum_spend.status_flag",
         "calyear":"cum_spend.cum_spend.fiscal_year_id",
         "year":"cum_spend.cum_spend.fiscal_year_id",
-        "yeartype":"cum_spend.cum_spend.type_of_year"
+        "yeartype":"cum_spend.cum_spend.type_of_year",
+        "mwbe_vendor":"cum_spend.cum_spend.vendor_id",
+        "mwbe":"cum_spend.cum_spend.minority_type_id"
     }  ,
     "columns":["vendor.vendor", "vendor.vendor.legal_name", "txcount"],
     "orderBy":"-txcount",
     "getTotalDataCount":true,
     "facetPager":true,
-    "filterName":"Vendor",
-    "urlParameterName":"vendor",
-    "autocompleteParamName":"vendor_auto",
-    "autocompleteID":"fvendorId",
+    "filterName":"M/WBE Vendor",
+    "urlParameterName":"mwbe_vendor",
+    "autocompleteParamName":"mwbe_vendor_auto",
+    "autocompleteID":"fmwbeVendorId",
     "autocompleteField":"vendor_name",
     "maxSelect":5,
     "adjustParameters":"
