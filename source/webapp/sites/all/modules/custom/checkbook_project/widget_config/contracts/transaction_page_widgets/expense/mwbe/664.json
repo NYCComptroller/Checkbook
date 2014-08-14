@@ -1,6 +1,7 @@
 {
     "widgetType":"phpparser",
     "parentNid":656,
+    "autocomplete":false,
     "no_results_content":"No Results Found",
     "defaultParameters":{
         "cum_spend.cum_spend.status_flag":"A"
