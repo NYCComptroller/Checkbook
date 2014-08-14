@@ -39,5 +39,29 @@ return $adjustedParameters;
 }
 return $parameters;
 ",
+"transformationPHP":"
+$data = array();
+$count = 0;$ids='';
+foreach($node->data as $row){
+if(MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']) != 'Asian American'){
+$new_row = array('minority_type_minority_type' => $row['minority_type_minority_type'],
+'minority_type_minority_type_minority_type_name' => MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']),
+'txcount' => $row['txcount']
+);
+array_push($data, $new_row);
+}else if(MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']) == 'Asian American'){
+$count = $count+$row['txcount'];
+$ids .= $row['minority_type_minority_type'].'~';
+}
+}
+$ids = isset($ids)?trim($ids,'~'):'';
+if($count > 0){
+array_push($data, array('minority_type_minority_type' => $ids,
+'minority_type_minority_type_minority_type_name' => 'Asian American',
+'txcount' => $count
+));
+}
+return $data;
+",
 "template":"individual_filter"
 }
