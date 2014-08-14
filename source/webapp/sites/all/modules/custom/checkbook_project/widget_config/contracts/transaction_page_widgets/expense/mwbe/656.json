@@ -138,6 +138,10 @@ return $header;
 "formatted_percent_diff": {
 "type": "expression2",
 "expression": "round($row['percent_difference'],2) . '%'"
+},
+"formatted_minority_name": {
+"type": "expression2",
+"expression": "MappingUtil::getMinorityCategoryById($row['minority_type_id'])"
 }
 },
 "table_columns": [
@@ -164,7 +168,7 @@ return $header;
 {"labelAlias": "reg_date","column": "registered_date"},
 {"labelAlias": "pin","column": "tracking_number"},
 {"labelAlias": "apt_pin","column": "brd_awd_no"},
-{"labelAlias": "mwbe_category","column": "minority_type_name"}
+{"labelAlias": "mwbe_category","column":"formatted_minority_name","sortSourceColumn": "minority_type_name"}
 ],
 "adjustParameters":"
 if(function_exists('_checkbook_project_adjustContractParameterFilters')){
