@@ -590,7 +590,7 @@ body.page-smart-search #filter-header{margin-top:5px;}
 .top-navigation-left{
     width: 655px;
     float: left;
-    margin-right: 23px;
+    margin-right: 22px;
 }
 .top-navigation-right{
     width: 262px;
@@ -603,7 +603,7 @@ body.page-smart-search #filter-header{margin-top:5px;}
     position:absolute;
     z-index: 9999;
     background-color: #efefef;
-    width:113px;
+    width:118px;
     border:1px solid #acacac;
     border-top:3px solid #0073bd;
     padding:5px;
@@ -620,6 +620,7 @@ body.page-smart-search #filter-header{margin-top:5px;}
 .top-navigation-right .mwbe .main-nav-drop-down ul li.title{
     padding:5px;
     padding-left:6px;
+    font-weight: bold;
 }
 .top-navigation-right .mwbe .main-nav-drop-down ul li a{
     color:#1F82C9;
@@ -642,6 +643,11 @@ body.page-smart-search #filter-header{margin-top:5px;}
     border: 1px solid #d3d3d3; 
     background: #e6e6e6 url('/sites/all/themes/checkbook3/jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png') 50% 50% repeat-x;
 }
+.top-navigation-right .featured-dashboard-title{
+    position: absolute;
+    right: 75px;
+    color:#1F82C9;
+}
 .preview-tile {
     position: absolute;
     width: 186px;
@@ -656,7 +662,7 @@ table.expense{
     border-radius: 2px;
 }
 table.expense td {
-    width: 125px;
+    width: 130px;
     height: 78px;
     border: 1px solid #bfbfbf;
     padding: 0;
@@ -687,6 +693,9 @@ table.expense td.active a {
 table.expense td a {
     color: #5a6a79;
     text-decoration: none;
+}
+table.expense td.subvendors span.nav-title{
+    font-size: 12px;
 }
 span.nav-title {
     font-size: 14px;
@@ -744,7 +753,23 @@ table.expense td.subvendors .expense-container > a {
 table.expense td.subvendors.active .expense-container > a {
     background: url("../images/icon_subvendor_a.png") no-repeat center 5px;
 }
+table.expense td.mwbe .expense-container > a > div,
+table.expense td.subvendors .expense-container > a > div{
+    background: url("../images/arrow-gray_nofill.png") no-repeat 100px 23px;
+}
+table.expense td.mwbe .expense-container > a:hover > div,
+table.expense td.subvendors .expense-container > a:hover > div{
+    background: url("../images/arrow-gray.png") no-repeat 100px 23px;
+}
 
+table.expense td.mwbe.active .expense-container > a > div,
+table.expense td.subvendors.active .expense-container > a > div{
+    background: url("../images/arrow-white_nofill.png") no-repeat 100px 23px;
+}
+table.expense td.mwbe.active .expense-container > a:hover > div,
+table.expense td.subvendors.active .expense-container > a:hover > div{
+    background: url("../images/arrow-white.png") no-repeat 100px 23px;
+} 
 
 td.active div.indicator {
     background: url("../images/carrot.png") no-repeat scroll center 0 transparent;
