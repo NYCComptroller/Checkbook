@@ -1476,17 +1476,21 @@ function _checkbook_append_url_params($source = null){
     $datasource = _getRequestParamValue('datasource');
     $mwbe = _getRequestParamValue('mwbe');
 
-    $url = isset($datasource) ? "/datasource/checkbook_oge" : "";
-
-    if($source){
-        $source = explode("/",$source);
-        if(!in_array("mwbe",$source)){
+    $url = "";
+    if(isset($datasource)) {
+        $url = "/datasource/checkbook_oge";
+    }
+    else {
+        if($source) {
+            $source = explode("/",$source);
+            if(!in_array("mwbe",$source)){
+                $url = isset($mwbe) ? "/mwbe/".$mwbe : "";
+            }
+        }
+        else {
             $url = isset($mwbe) ? "/mwbe/".$mwbe : "";
         }
-    }else{
-        $url = isset($mwbe) ? "/mwbe/".$mwbe : "";
     }
-
     return $url;
 }
 
