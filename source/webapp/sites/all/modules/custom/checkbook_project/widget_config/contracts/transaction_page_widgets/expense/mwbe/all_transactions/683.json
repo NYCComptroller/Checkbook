@@ -1,0 +1,44 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":679,
+    "no_results_content":"No Results Found",
+    "defaultParameters":{
+        "cum_spend.cum_spend.status_flag":"A",
+        "minority_type_id":"2~3~4~5~9"
+    },
+    "limit":10,
+    "startWith":0,
+    "urlParamMap":{
+        "doctype":"document_code.document_code.document_code",
+        "contstatus":"cum_spend.cum_spend.status_flag",
+        "calyear":"cum_spend.cum_spend.fiscal_year_id",
+        "year":"cum_spend.cum_spend.fiscal_year_id",
+        "yeartype":"cum_spend.cum_spend.type_of_year",
+        "vendor":"cum_spend.cum_spend.vendor_id",
+        "mwbe_vendor":"cum_spend.cum_spend.vendor_id",
+        "mwbe":"cum_spend.cum_spend.minority_type_id"
+    }  ,
+    "columns":["vendor.vendor", "vendor.vendor.legal_name", "txcount"],
+    "orderBy":"-txcount",
+    "getTotalDataCount":true,
+    "facetPager":true,
+    "filterName":"M/WBE Vendor",
+    "urlParameterName":"mwbe_vendor",
+    "autocompleteParamName":"mwbe_vendor_auto",
+    "autocompleteID":"fmwbeVendorId",
+    "autocompleteField":"vendor_name",
+    "maxSelect":5,
+    "adjustParameters":"
+    checkbook_faceted_search_adjust_param($node);
+if(function_exists('_checkbook_project_adjustContractParameterFilters')){
+_checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
+}
+if(function_exists('_checkbook_project_applyParameterFilters')){
+$adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+$adjustedParameters['vendor.vendor'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+return $adjustedParameters;
+}
+return $parameters;
+",
+"template":"individual_filter"
+}
