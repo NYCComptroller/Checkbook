@@ -1,11 +1,26 @@
 {
 "widgetType": "phpparser",
-"cleanURLParameters":["doctype","contstatus","year","calyear","yeartype","agency","vendor","vendornm","contdesc","agrmnttype","agencyh","contnum","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","modamt"],
-	"urlParamMap":{"doctype":"document_code.document_code.document_code","contstatus":"cum_spend.cum_spend.status_flag" ,"year":"cum_spend.cum_spend.fiscal_year_id","calyear":"cum_spend.cum_spend.fiscal_year_id","yeartype":"cum_spend.cum_spend.type_of_year","agency":"agency_id","vendor":"vendor_id","vendornm":"vendor_name","contdesc":"description","agrmnttype":"agreement_type_id","agencyh":"agency_history_id","contnum":"contract_number","aptpin":"brd_awd_no","pin":"tracking_number","awdmethod":"award_method_id","curamt":"maximum_contract_amount","startdate":"effective_begin_date","enddate":"effective_end_date","regdate":"registered_date","cindustry":"industry_type_id","csize":"award_size_id","modamt":"dollar_difference"},
+"cleanURLParameters":["mwbe_vendor","mwbe","doctype","contstatus","year","calyear","yeartype","agency","vendor","vendornm","contdesc","agrmnttype","agencyh","contnum","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","modamt"],
+	"urlParamMap":{"mwbe_vendor":"cum_spend.cum_spend.vendor_id",
+                    "mwbe":"cum_spend.cum_spend.minority_type_id",
+                    "doctype":"document_code.document_code.document_code",
+                    "contstatus":"cum_spend.cum_spend.status_flag" ,
+                    "year":"cum_spend.cum_spend.fiscal_year_id",
+                    "calyear":"cum_spend.cum_spend.fiscal_year_id","yeartype":"cum_spend.cum_spend.type_of_year",
+                    "agency":"agency_id","vendor":"vendor_id","vendornm":"vendor_name",
+                    "contdesc":"description","agrmnttype":"agreement_type_id",
+                    "agencyh":"agency_history_id","contnum":"contract_number","aptpin":"brd_awd_no",
+                    "pin":"tracking_number","awdmethod":"award_method_id","curamt":"maximum_contract_amount",
+                    "startdate":"effective_begin_date","enddate":"effective_end_date","regdate":"registered_date",
+                    "cindustry":"industry_type_id","csize":"award_size_id","modamt":"dollar_difference"},
 	"paramTypeConfig":{"vendornm":"like","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","regdate":"range","modamt":"ne"},
 	"defaultParameters":{"cum_spend.cum_spend.status_flag":"A"},
 "dataset": "checkbook:agreement_snapshot",
 "columns": ["total_maximum_contract_amount"],
+"preProcessConfiguration":"
+    $node->is_mwbe = _checkbook_check_is_mwbe_page();
+if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:fact_disbursement_line_item_mwbe';
+",
 "adjustParameters":"
 	    if(function_exists('_checkbook_project_adjustContractParameterFilters')){
 		 _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
