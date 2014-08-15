@@ -1,0 +1,68 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":679,
+    "autocomplete":false,
+    "no_results_content":"No Results Found",
+    "defaultParameters":{
+        "cum_spend.cum_spend.status_flag":"A"
+    },
+    "limit":10,
+    "startWith":0,
+    "urlParamMap":{
+        "doctype":"document_code.document_code.document_code",
+        "contstatus":"cum_spend.cum_spend.status_flag",
+        "calyear":"cum_spend.cum_spend.fiscal_year_id",
+        "year":"cum_spend.cum_spend.fiscal_year_id",
+        "yeartype":"cum_spend.cum_spend.type_of_year",
+        "vendor":"cum_spend.cum_spend.vendor_id",
+        "mwbe_vendor":"cum_spend.cum_spend.vendor_id",
+        "mwbe":"cum_spend.cum_spend.minority_type_id"
+    }  ,
+    "columns":["minority_type.minority_type", "minority_type.minority_type.minority_type_name", "txcount"],
+    "orderBy":"-txcount",
+    "getTotalDataCount":true,
+    "facetPager":true,
+    "filterName":"M/WBE Category",
+    "urlParameterName":"mwbe",
+    "autocompleteParamName":"mwbe_auto",
+    "autocompleteID":"fminorityTypeId",
+    "autocompleteField":"minority_type_name",
+    "maxSelect":5,
+    "adjustParameters":"
+    checkbook_faceted_search_adjust_param($node);
+if(function_exists('_checkbook_project_adjustContractParameterFilters')){
+_checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
+}
+if(function_exists('_checkbook_project_applyParameterFilters')){
+$adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+$adjustedParameters['minority_type.minority_type'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+return $adjustedParameters;
+}
+return $parameters;
+",
+"transformationPHP":"
+$data = array();
+$count = 0;$ids='';
+foreach($node->data as $row){
+if(MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']) != 'Asian American'){
+$new_row = array('minority_type_minority_type' => $row['minority_type_minority_type'],
+'minority_type_minority_type_minority_type_name' => MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']),
+'txcount' => $row['txcount']
+);
+array_push($data, $new_row);
+}else if(MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']) == 'Asian American'){
+$count = $count+$row['txcount'];
+$ids .= $row['minority_type_minority_type'].'~';
+}
+}
+$ids = isset($ids)?trim($ids,'~'):'';
+if($count > 0){
+array_push($data, array('minority_type_minority_type' => $ids,
+'minority_type_minority_type_minority_type_name' => 'Asian American',
+'txcount' => $count
+));
+}
+return $data;
+",
+"template":"individual_filter"
+}
