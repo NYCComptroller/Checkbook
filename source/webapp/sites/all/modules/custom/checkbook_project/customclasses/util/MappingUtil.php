@@ -25,7 +25,7 @@ class MappingUtil {
         'Non-M/WBE' => array(7),
         'Women' => array(9),
         'Individuals and Others' => array(11),
-        'Total M/WBE' => array(2,3,4,5,7,9,11),
+        'Total M/WBE' => array(2,3,4,5,9),
 //        array('?') =>'Emerging'
     );
 
