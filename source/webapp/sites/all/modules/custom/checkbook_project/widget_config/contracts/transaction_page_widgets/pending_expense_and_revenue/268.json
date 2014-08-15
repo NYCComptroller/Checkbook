@@ -1,9 +1,9 @@
 {
 	"widgetType": "phpparser",
 	"no_results_content":"No Results Found",
-"cleanURLParameters":["doctype","agency","vendorcode","vendornm","contdesc","agrmnttypecode","contnum","aptpin","pin","curamt","startdate","enddate","recdate","csize","modamt","awdmethod","cindustry"],
+"cleanURLParameters":["mwbe","doctype","agency","vendorcode","vendornm","contdesc","agrmnttypecode","contnum","aptpin","pin","curamt","startdate","enddate","recdate","csize","modamt","awdmethod","cindustry"],
 "defaultParameters":{},
-	"urlParamMap":{"doctype":"document_code.document_code.document_code","agency":"document_agency_id","vendorcode":"vendor_customer_code","vendornm":"vendor_legal_name","contdesc":"description","agrmnttypecode":"cont_type_code","contnum":"contract_number","aptpin":"board_award_number","pin":"tracking_number","curamt":"revised_maximum_amount","startdate":"revised_start_date","enddate":"revised_end_date","recdate":"cif_received_date","csize":"award_size_id","modamt":"dollar_difference","awdmethod":"award_method_id","cindustry":"industry_type_id"},
+	"urlParamMap":{"mwbe":"minority_type_id","doctype":"document_code.document_code.document_code","agency":"document_agency_id","vendorcode":"vendor_customer_code","vendornm":"vendor_legal_name","contdesc":"description","agrmnttypecode":"cont_type_code","contnum":"contract_number","aptpin":"board_award_number","pin":"tracking_number","curamt":"revised_maximum_amount","startdate":"revised_start_date","enddate":"revised_end_date","recdate":"cif_received_date","csize":"award_size_id","modamt":"dollar_difference","awdmethod":"award_method_id","cindustry":"industry_type_id"},
 	"paramTypeConfig":{"vendornm":"like","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","recdate":"range","modamt":"ne"},
 	  "dataset":"checkbook:pending_contracts",
 	  "columns":["total_revised_maximum_amount"],
