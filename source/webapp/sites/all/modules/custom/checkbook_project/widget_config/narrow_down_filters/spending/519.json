@@ -6,7 +6,7 @@
     "orderBy":["-txcount" , "vendor.vendor.legal_name"], 
 	"getTotalDataCount":true,    
 	"facetPager":true,
-    "filterName":"Payee",
+    "filterName":"Prime Vendor",
     "urlParameterName":"vendor",
     "autocompleteParamName":"vendor_auto",    
     "autocompleteID":"fvendorId", 	
