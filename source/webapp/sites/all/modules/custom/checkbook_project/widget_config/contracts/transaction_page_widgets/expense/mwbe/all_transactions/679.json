@@ -21,7 +21,7 @@ return $header;
 "html_class": "initiative-table",
 "no_results_content":"No Results Found",
 "dataset": "checkbook:all_agreement_transactions",
-"columns": ["master_contract_number","master_agreement_id","has_children","contract_number","original_agreement_id","description","document_version","original_contract_amount","maximum_contract_amount","rfed_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","document_code@checkbook:ref_document_code","industry_type_name"],
+"columns": ["is_prime_or_sub","minority_type_id","minority_type_name","master_contract_number","master_agreement_id","has_children","contract_number","original_agreement_id","description","document_version","original_contract_amount","maximum_contract_amount","rfed_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","document_code@checkbook:ref_document_code","industry_type_name"],
 "caption":"",
 "derivedColumns": {
 "child_contrats_link":{
@@ -245,7 +245,7 @@ var mastercode = jQuery(oElement).attr('mastercode');
 
 //fallback for error
 magid = (magid == null || magid.length == 0) ?  '0' : magid;
-var sUrl = '/dashboard_platform/data_tables/ajax_data/node/'+ (mastercode == 'MA1' ? '509' : '271') +'/magid/'+magid;
+var sUrl = '/dashboard_platform/data_tables/ajax_data/node/'+ (mastercode == 'MA1' ? '665' : '666') +'/magid/'+magid;
 sUrl = sUrl + ( (contstatus == null || contstatus.length == 0) ?  '' : '/contstatus/'+contstatus);
 
 
