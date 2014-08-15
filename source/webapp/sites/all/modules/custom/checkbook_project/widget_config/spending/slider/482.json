@@ -22,9 +22,7 @@
                         unset($serieParameters['industry_type_id']);
                         return $serieParameters;
                     }
-                    if(isset($serieParameters['minority_type_id']))
-                        $serieParameters['minority_type_id'] = explode('~',$serieParameters['minority_type_id']);
-                    else
+                    if(!isset($serieParameters['minority_type_id']))
                         $serieParameters['minority_type_id'] = data_controller_get_operator_factory_instance()->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, 2);
                     return $serieParameters;
                 "
