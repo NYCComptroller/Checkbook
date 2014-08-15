@@ -439,7 +439,7 @@ class RequestUtil{
     /** Returns top navigation URL */
     static function getTopNavURL($domain){
         $year = _getRequestParamValue("year");
-        if($year == null || _checkbook_check_isEDCPage()){
+        if($year == null){
           $year = _getCurrentYearID();
         }
         switch($domain){
