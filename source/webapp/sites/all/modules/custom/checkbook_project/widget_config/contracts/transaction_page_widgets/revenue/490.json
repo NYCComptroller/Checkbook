@@ -1,0 +1,27 @@
+{
+    "widgetType": "phpparser",
+    "cleanURLParameters":["mwbe_vendor","mwbe","doctype","agency","vendor","vendornm","contdesc","agrmnttype","agencyh","contnum","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize"],
+    "urlParamMap":{"mwbe_vendor":"vendor_id",
+        "mwbe":"minority_type_id","doctype":"document_code.document_code.document_code","agency":"agency_id","vendor":"vendor_id","vendornm":"vendor_name","contdesc":"description","agrmnttype":"agreement_type_id","agencyh":"agency_history_id","contnum":"contract_number","aptpin":"brd_awd_no","pin":"tracking_number","awdmethod":"award_method_id","curamt":"maximum_contract_amount","startdate":"effective_begin_date","enddate":"effective_end_date","regdate":"registered_date","cindustry":"industry_type_id","csize":"award_size_id"},
+    "allowRequestParams":["contstatus"],
+    "paramTypeConfig":{"vendornm":"like","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","regdate":"range"},
+    "defaultParameters":{"latest_flag":"Y"},
+    "dataset": "checkbook:agreement_snapshot",
+    "columns": ["total_maximum_contract_amount"],
+    "preProcessConfiguration":"
+    $node->is_mwbe = _checkbook_check_is_mwbe_page();
+if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:all_agreement_transactions';
+",
+    "adjustParameters":"
+if(function_exists('_checkbook_project_adjustContractParameterFilters')){
+_checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered_all');
+}
+
+if(function_exists('_checkbook_project_applyParameterFilters')){
+$adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+return $adjustedParameters;
+}
+return $parameters;
+",
+"template":"active_registered_contract_transaction_total_amount"
+}
