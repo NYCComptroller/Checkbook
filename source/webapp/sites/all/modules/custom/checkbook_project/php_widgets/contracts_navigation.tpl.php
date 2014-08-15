@@ -82,10 +82,10 @@ if(preg_match('/contracts/',$_GET['q'])){
 $active_domain_link = preg_replace('/\/mwbe\/[^\/]*/','',$active_domain_link); 
 
 if($mwbe_amount  == 0){
-	$mwbe_link = l('<span class="nav-title">M/WBE</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
+	$mwbe_link = l('<div><span class="nav-title">M/WBE</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div>','',$options_disabled);
 }else{
 	
-	$mwbe_link = l('<span class="nav-title">M/WBE</span><br>&nbsp;'. custom_number_formatter_format($mwbe_amount ,1,'$'),$active_domain_link. "/mwbe/2~3~4~5~9",$options);
+	$mwbe_link = l('<div><span class="nav-title">M/WBE</span><br>&nbsp;'. custom_number_formatter_format($mwbe_amount ,1,'$') . '</div>',$active_domain_link. "/mwbe/2~3~4~5~9",$options);
 	
 	$mwbe_filters =  "<div class='main-nav-drop-down' style='display:none'>
   		<ul>
@@ -106,9 +106,9 @@ if($mwbe_amount  == 0){
 	
 }
 if($spending_amount  == 0){
-	$subvendors_link = l('<span class="nav-title">Sub Vendors</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);	
+	$subvendors_link = l('<div><span class="nav-title">M/WBE Sub Vendors</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div>','',$options_disabled);	
 }else{
-	$subvendors_link = l('<span class="nav-title">Sub Vendors</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
+	$subvendors_link = l('<div><span class="nav-title">M/WBE Sub Vendors</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div>','',$options_disabled);
 }
 
 
