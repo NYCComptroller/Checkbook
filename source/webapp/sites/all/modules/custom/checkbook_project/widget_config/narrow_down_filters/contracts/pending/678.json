@@ -5,7 +5,7 @@
     "no_results_content":"No Results Found",
     "allowRequestParams":["contstatus"],
     "urlParamMap":{"doctype":"document_code.document_code.document_code"}  ,
-    "columns":["minority_type.minority_type", "minority_type_name", "txcount"],
+    "columns":["minority_type.minority_type", "minority_type_name.minority_type_name", "txcount"],
     "orderBy":"-txcount",
     "getTotalDataCount":true,
     "facetPager":true,
