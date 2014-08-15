@@ -110,7 +110,7 @@
                     "levels": [
                         {
                             "name": "ctx",
-                            "datasetName": "contracts_spending_transactions",
+                            "datasetName": "contracts_mwbe_spending_transactions",
                             "sourceColumnName": "disbursement_line_item_id"
                         }
                     ]
@@ -149,9 +149,9 @@
             {"datasetName": "fact_disbursement_line_item_mwbe", "columnNames": ["spending_category_id"]},
             {"datasetName": "spending_category", "columnNames": ["spending_category_id"]}
         ],
-        "fact_disbursement_line_item_mwbe__contracts_spending_transactions": [
+        "fact_disbursement_line_item_mwbe__contracts_mwbe_spending_transactions": [
             {"datasetName": "fact_disbursement_line_item_mwbe", "columnNames": ["disbursement_line_item_id"]},
-            {"datasetName": "contracts_spending_transactions", "columnNames": ["disbursement_line_item_id"]}
+            {"datasetName": "contracts_mwbe_spending_transactions", "columnNames": ["disbursement_line_item_id"]}
         ]
     }
 }
