@@ -180,7 +180,9 @@
 				master_agreement_id,
 				rsc.spending_category_id,
 				lower(rsc.spending_category_name) || '[' || rsc.spending_category_code || ']' spending_category_name_code,
-				rsc.spending_category_name
+				rsc.spending_category_name,
+				dlid.minority_type_name,
+				dlid.minority_type_id
 			 from disbursement_line_item_details  dlid left join ref_year ry on dlid.check_eft_issued_nyc_year_id = ry.year_id
 			 left join ref_spending_category rsc on rsc.spending_category_id = dlid.spending_category_id
 			 where 
@@ -230,6 +232,8 @@
             <field column="spending_category_id" name="spending_category_id" />
             <field column="spending_category_name" name="spending_category_name" />
             <field column="spending_category_name_code" name="spending_category_name_code" />
+            <field column="minority_type_name" name="minority_type_name" />
+            <field column="minority_type_id" name="minority_type_id" />
         </entity>
         <entity dataSource="db2" name="spending_oge"
                 pk="id"
@@ -443,7 +447,9 @@
                 expenditure_object_codes,
                 expenditure_object_names,
                 (case when(latest_flag = 'Y') then 'Y' else 'N' end) latest_flag,
-                'Registered' status
+                'Registered' status,
+                minority_type_name,
+				minority_type_id
                 from agreement_snapshot a
             left join ref_document_code dc on a.document_code_id = dc.document_code_id
             left join ref_award_category rac on a.award_category_id = rac.award_category_id
@@ -497,6 +503,8 @@
             <field column="expenditure_object_names" name="expenditure_object_name" splitBy=","/>
             <field column="status" name="contract_status" />
             <field column="document_code" name="document_code" />
+            <field column="minority_type_name" name="minority_type_name" />
+            <field column="minority_type_id" name="minority_type_id" />
         </entity>
         <entity dataSource="db2" name="contracts_oge" transformer="RegexTransformer"
                 pk="id"
