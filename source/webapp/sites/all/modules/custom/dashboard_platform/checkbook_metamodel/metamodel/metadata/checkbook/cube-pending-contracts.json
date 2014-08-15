@@ -18,6 +18,15 @@
                             }
                     ]
                 },
+                {
+                    "name": "minority_type",
+                    "levels": [
+                        {
+                            "name": "minority_type",
+                            "sourceColumnName": "minority_type_id"
+                        }
+                    ]
+                },
 				{
                     "name": "awarding_agency_name",
                     "levels": [

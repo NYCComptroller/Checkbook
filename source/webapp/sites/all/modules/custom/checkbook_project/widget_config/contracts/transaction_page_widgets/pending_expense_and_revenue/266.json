@@ -1,15 +1,18 @@
 {
 "widgetType": "data_tables",
 "widgetSubType": "dataTableList",
-"cleanURLParameters":["vendor","curamtr","doctype","agency","vendorcode","vendornm","contdesc","agrmnttypecode","contnum","aptpin","pin","curamt","startdate","enddate","recdate","csize","modamt","awdmethod","cindustry"],
+"cleanURLParameters":["mwbe","vendor","curamtr","doctype","agency","vendorcode","vendornm","contdesc","agrmnttypecode","contnum","aptpin","pin","curamt","startdate","enddate","recdate","csize","modamt","awdmethod","cindustry"],
 "defaultParameters":{},
-	"urlParamMap":{"vendor":"vendor_id","curamtr":"revised_maximum_amount","doctype":"document_code@checkbook:ref_document_code","agency":"document_agency_id","vendorcode":"vendor_customer_code","vendornm":"vendor_legal_name","contdesc":"description","agrmnttypecode":"cont_type_code","contnum":"contract_number","aptpin":"board_award_number","pin":"tracking_number","curamt":"revised_maximum_amount","startdate":"revised_start_date","enddate":"revised_end_date","recdate":"cif_received_date","csize":"award_size_id","modamt":"dollar_difference","awdmethod":"award_method_id","cindustry":"industry_type_id"},
+"urlParamMap":{"mwbe":"minority_type_id","vendor":"vendor_id","curamtr":"revised_maximum_amount","doctype":"document_code@checkbook:ref_document_code","agency":"document_agency_id","vendorcode":"vendor_customer_code","vendornm":"vendor_legal_name","contdesc":"description","agrmnttypecode":"cont_type_code","contnum":"contract_number","aptpin":"board_award_number","pin":"tracking_number","curamt":"revised_maximum_amount","startdate":"revised_start_date","enddate":"revised_end_date","recdate":"cif_received_date","csize":"award_size_id","modamt":"dollar_difference","awdmethod":"award_method_id","cindustry":"industry_type_id"},
 "allowRequestParams":["smnid"],
 	"paramTypeConfig":{"curamtr":"rangeid","vendornm":"like","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","recdate":"range","modamt":"ne"},
 "header":"
 	$header = NULL;
 	$header .= widget_data_tables_export_link($node);
 	return $header;
+",
+"preProcessConfiguration":"
+    $node->is_mwbe = _checkbook_check_is_mwbe_page();
 ",
 "useList":true,
 "getTotalDataCount":true,
@@ -19,7 +22,7 @@
 "html_class": "initiative-table",
 "no_results_content":"No Results Found",
 "dataset": "checkbook:pending_contracts",
-"columns": ["fms_contract_number","contract_number","fms_parent_contract_number","description","document_version","revised_maximum_amount","vendor_legal_name","cif_received_date","document_agency_name","contract_type_name"
+"columns": ["minority_type_id","minority_type_name","fms_contract_number","contract_number","fms_parent_contract_number","description","document_version","revised_maximum_amount","vendor_legal_name","cif_received_date","document_agency_name","contract_type_name"
 ,"award_method_name","revised_start_date","revised_end_date","board_award_number","tracking_number","original_or_modified","document_code@checkbook:ref_document_code","original_agreement_id","industry_type_name@checkbook:industry_type","dollar_difference","percent_difference","original_maximum_amount"],
 "caption":"",
 "derivedColumns": {
@@ -74,7 +77,11 @@
 "formatted_percent_diff": {
       "type": "expression2",
       "expression": "round($row['percent_difference'],2) . '%'"
-    }
+    },
+"formatted_minority_name": {
+"type": "expression2",
+"expression": "MappingUtil::getMinorityCategoryById($row['minority_type_id'])"
+}
 },
 "table_columns": [
         {"labelAlias": "contract_id","column": "contract_link","sortSourceColumn":"contract_number"},
@@ -95,7 +102,8 @@
 	    {"labelAlias": "award_method","column": "award_method_formatted","sortSourceColumn":"award_method_name"},
         {"labelAlias": "contract_industry","column": "industry_name_formatted","sortSourceColumn":"industry_type_name@checkbook:industry_type"},
 	    {"labelAlias": "pin","column": "tracking_number"},
-	    {"labelAlias": "apt_pin","column": "board_award_number"}
+	    {"labelAlias": "apt_pin","column": "board_award_number"},
+        {"labelAlias": "mwbe_category","column":"formatted_minority_name","sortSourceColumn": "minority_type_name","visibility_flag":"is_mwbe"}
 	  ],
 "adjustParameters":"
            if(function_exists('_checkbook_project_adjustContractParameterFilters')){
@@ -220,6 +228,11 @@
         {
             "sClass": "text",
             "sWidth": "180px","asSorting": [ "asc","desc" ]
+        },
+        {
+            "sClass": "text",
+            "sWidth": "180px","asSorting": [ "asc","desc" ],
+            "visibility_flag":"is_mwbe"
         }
     ],
     "bInfo": true,
