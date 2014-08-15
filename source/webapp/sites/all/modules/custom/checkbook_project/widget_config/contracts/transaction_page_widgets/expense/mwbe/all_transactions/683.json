@@ -3,21 +3,12 @@
     "parentNid":679,
     "no_results_content":"No Results Found",
     "defaultParameters":{
-        "cum_spend.cum_spend.status_flag":"A",
+        "latest_flag":"Y",
         "minority_type_id":"2~3~4~5~9"
     },
     "limit":10,
     "startWith":0,
-    "urlParamMap":{
-        "doctype":"document_code.document_code.document_code",
-        "contstatus":"cum_spend.cum_spend.status_flag",
-        "calyear":"cum_spend.cum_spend.fiscal_year_id",
-        "year":"cum_spend.cum_spend.fiscal_year_id",
-        "yeartype":"cum_spend.cum_spend.type_of_year",
-        "vendor":"cum_spend.cum_spend.vendor_id",
-        "mwbe_vendor":"cum_spend.cum_spend.vendor_id",
-        "mwbe":"cum_spend.cum_spend.minority_type_id"
-    }  ,
+    "urlParamMap":{"doctype":"document_code.document_code.document_code"},
     "columns":["vendor.vendor", "vendor.vendor.legal_name", "txcount"],
     "orderBy":"-txcount",
     "getTotalDataCount":true,
