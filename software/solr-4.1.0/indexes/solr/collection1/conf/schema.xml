@@ -102,6 +102,8 @@
         <field name="department_name" type="string_custom" indexed="true" stored="true"/>
         <field name="department_name_code" type="string_custom" indexed="true" stored="true"/>
         <field name="department_name_text" type="text_general" indexed="true" stored="true"/>
+        <field name="minority_type_name" type="string_custom" indexed="true" stored="true"/>
+        <field name="minority_type_id" type="string_custom" indexed="true" stored="true"/>
 
         <!--
             Checkbook 2.0

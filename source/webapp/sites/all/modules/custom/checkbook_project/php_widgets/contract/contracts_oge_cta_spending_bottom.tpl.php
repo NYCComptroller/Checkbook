@@ -25,6 +25,7 @@
 $vendor_contract_summary = array();
 $vendor_contract_yearly_summary = array();
 
+
 foreach ($node->results_contract_history as $contract_row) {
     if (!isset($vendor_contract_summary[$contract_row['vendor_name']]['current_amount'])) {
         $vendor_contract_summary[$contract_row['vendor_name']]['current_amount'] = $contract_row['current_amount_commodity_level'];
@@ -41,6 +42,7 @@ foreach ($node->results_contract_history as $contract_row) {
     }
     $vendor_contract_yearly_summary[$contract_row['vendor_name']][$contract_row['document_fiscal_year']]['no_of_mods'] += 1;
 }
+
 
 $vendor_spending_yearly_summary = array();
 foreach ($node->results_spending as $spending_row) {
@@ -77,6 +79,7 @@ foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
 
     /* CONTRACT HISTORY BY PRIME VENDOR */
     //Main table header
+    $tbl_contract_history = array();
     $tbl_contract_history['header']['title'] = "<h3>CONTRACT HISTORY BY PRIME VENDOR</h3>";
     $tbl_contract_history['header']['columns'] = array(
         array('value' => WidgetUtil::generateLabelMappingNoDiv("fiscal_year"), 'type' => 'text'),
@@ -99,6 +102,7 @@ foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
             array('value' => custom_number_formatter_format($results_contract_history_fy['current_amount'] - $results_contract_history_fy['original_amount'], 2, '$'), 'type' => 'number')
         );
         //Inner table header
+        $tbl_contract_history_inner = array();
         $tbl_contract_history_inner['header']['columns'] = array(
             array('value' => WidgetUtil::generateLabelMappingNoDiv('start_date'), 'type' => 'date'),
             array('value' => WidgetUtil::generateLabelMappingNoDiv('end_date'), 'type' => 'date'),
@@ -128,9 +132,9 @@ foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
         $tbl_contract_history['body']['rows'][$index_contract_history]['inner_table'] = $tbl_contract_history_inner;
         $index_contract_history++;
     }
-
     /* SPENDING TRANSACTIONS BY PRIME VENDOR */
     //Main table header
+    $tbl_spending_transaction = array();
     $tbl_spending_transaction['header']['title'] = "<h3>SPENDING TRANSACTIONS BY PRIME VENDOR</h3>";
     $tbl_spending_transaction['header']['columns'] = array(
         array('value' => WidgetUtil::generateLabelMappingNoDiv("fiscal_year"), 'type' => 'text'),
@@ -150,6 +154,7 @@ foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
                 array('value' => custom_number_formatter_format($results_spending_history_fy['amount_spent'], 2, '$'), 'type' => 'number')
             );
             //Inner table header
+            $tbl_spending_transaction_inner = array();
             $tbl_spending_transaction_inner['header']['columns'] = array(
 //                array('value' => WidgetUtil::generateLabelMappingNoDiv('start_date'), 'type' => 'text'),
                 array('value' => WidgetUtil::generateLabelMappingNoDiv('check_amount'), 'type' => 'number'),
@@ -168,13 +173,18 @@ foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
                         array('value' => $contract_spending['agency_name'], 'type' => 'text'),
                         array('value' => $contract_spending['department_name'], 'type' => 'text')
                     );
+                    $index_spending_transaction_inner++;
                 }
-                $index_spending_transaction_inner++;
+                
             }
             $index_spending_transaction++;
             $tbl_spending_transaction['body']['rows'][$index_spending_transaction]['inner_table'] = $tbl_spending_transaction_inner;
+            
+
+            
             $index_spending_transaction++;
         }
+        
     }
 
     $index_spending++;
