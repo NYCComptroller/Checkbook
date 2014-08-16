@@ -56,6 +56,9 @@
       $showCondition = "";
 
       $count1 = 0;
+      
+//      log_error($sortedArray);
+      
       foreach ($sortedArray as $key => $items) {
         if ($key != null) {
           if ($count1 % 2 == 0) {

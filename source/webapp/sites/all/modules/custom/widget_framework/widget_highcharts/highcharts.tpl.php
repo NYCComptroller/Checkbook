@@ -48,9 +48,17 @@ jQuery(document).ready(function() {
         Highcharts.chartarray.push(chart); //array defined in highcharts-globals.js
 
     //Display grid view link
-    jQuery('.chart-grid-view').show();
+    
     });
 </script>
 <?php }}?>
+
+
+<script type="text/javascript">
+jQuery(document).ready(function() {
+
+    jQuery('.chart-grid-view').show();
+});
+</script>
 
 
