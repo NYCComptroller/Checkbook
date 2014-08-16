@@ -35,6 +35,10 @@
                   . custom_number_formatter_format($node->data[0]['total_amount_for_transaction'],2)
                   .'<div class="amount-title">Total '.$contactStatusLabel.' Current Contract Amount</div></div>';
 
+    }else if(_checkbook_check_is_mwbe_page()){
+        print '<div class="transactions-total-amount">$'
+            . custom_number_formatter_format($node->data[0]['total_amount_for_transaction'],2)
+            .'<div class="amount-title">Total M/WBE '.$contactStatusLabel.' Current Contract Amount</div></div>';
     }else{
        print '<div class="transactions-total-amount">$'
           . custom_number_formatter_format($node->data[0]['total_maximum_contract_amount'],2)
