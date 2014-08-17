@@ -42,6 +42,9 @@ if($node->widgetConfig->filterName == 'M/WBE Category'){
             $count = $count + $value[2];
             $id = "4~5";
             unset($checked[$key]);
+        }else{
+            array_push($checked,array($value[0],MappingUtil::getMinorityCategoryById($value[0]),$value[2]));
+            unset($checked[$key]);
         }
     }
     if($count > 0 )array_push($checked,array($id,'Asian American',$count));
@@ -82,7 +85,7 @@ if(strtolower($filter_name) == 'vendor'){
             autocomplete_param_name="<?php print $autocomplete_param_name ?>" nodeid="<?php print $node->nid ;?>" id="<?php print $autocomplete_id ?>"></div>
         <?php } ?>
   <div class="checked-items">
-    <?php    
+    <?php
     foreach ($checked as $row) {
       $row[0] = str_replace('__','/', $row[0]);      
       $row[1] = str_replace('__','/', $row[1]);      
