@@ -25,7 +25,8 @@ if ($contactCategory == 'revenue') {
   $contactCategoryLabel = 'Revenue';
 }
 
-$summaryTitle = NodeSummaryUtil::getInitNodeSummaryTitle();
+$summaryTitle = (_checkbook_check_is_mwbe_page())? 'M/WBE ':'';
+$summaryTitle .= NodeSummaryUtil::getInitNodeSummaryTitle();
 print "<h2 class='contract-title' class='title'>{$summaryTitle}<br/>Pending {$contactCategoryLabel} Contracts Transactions</h2>";
 global $checkbook_breadcrumb_title;
 $checkbook_breadcrumb_title =  "$summaryTitle Pending $contactCategoryLabel Contracts Transactions";  
