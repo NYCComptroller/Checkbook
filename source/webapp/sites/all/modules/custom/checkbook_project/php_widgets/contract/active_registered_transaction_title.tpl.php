@@ -29,7 +29,8 @@ $contactCategoryLabel = 'Expense';
 if ($contactCategory == 'revenue') {
   $contactCategoryLabel = 'Revenue';
 }
-$summaryTitle = NodeSummaryUtil::getInitNodeSummaryTitle();
+$summaryTitle = (_checkbook_check_is_mwbe_page())? 'M/WBE ':'';
+$summaryTitle .= NodeSummaryUtil::getInitNodeSummaryTitle();
 
 $summaryTitle = $summaryTitle != '' ? $summaryTitle.'<br/>' : '';
 
