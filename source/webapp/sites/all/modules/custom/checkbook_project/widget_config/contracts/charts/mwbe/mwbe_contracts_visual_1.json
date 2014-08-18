@@ -56,8 +56,8 @@
     join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
    ' . $where_filter . '
     group by rm.minority_type_id, rm.minority_type_name,year_value  ';
-    
     $node->data  = _checkbook_project_execute_sql($sql);
+    
     
 ",
 "widgetUpdateJSONConfig":"
@@ -126,6 +126,17 @@
 			$index += 1; 	
 		}	
 	}
+	$no_data_found = true;
+	foreach($series as $point){
+		if(isset($point->y)){
+			$no_data_found = false;
+		}		
+	}
+	if($no_data_found){
+		$node->totalDataCount = 0;
+	}
+	
+
 
 	$node->widgetConfig->chartConfig->series[0]->name = 'Fiscal Years';
 	$node->widgetConfig->chartConfig->series[0]->type = 'column';
