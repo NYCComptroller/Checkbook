@@ -127,7 +127,7 @@
 	}else{
 		$contract_type = 'Expense';
 	}
-	$node->widgetConfig->chartTitle = 'Top Ten Prime Vendors by  ' . $status . ' ' . $contract_type .  ' Contracts';  
+	$node->widgetConfig->chartTitle = 'Top Ten Prime Vendors by ' .MappingUtil::getCurrenEhtnicityName() . ' ' . $status . ' ' . $contract_type .  ' Contracts';  
 	
 ",
 "chartConfig" : {
