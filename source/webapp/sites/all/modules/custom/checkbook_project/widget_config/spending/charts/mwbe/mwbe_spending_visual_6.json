@@ -48,7 +48,7 @@
     }
     
     $sql = ' select
-		max(total_contract_amount) total_contract_amount,
+		sum(total_spending_amount) total_spending_amount,
 		agency_name,
 		document_id,
 		legal_name		
@@ -75,14 +75,14 @@
 	foreach($node->data as $row){
 	 		$tooltip_label = 
 	 						'Contract ID: ' . $row['document_id'].  '<br/>' .
-	 						'Amount: ' . custom_number_formatter_format($row['total_contract_amount'] ,2, '$').  '<br/>' .
+	 						'Amount: ' . custom_number_formatter_format($row['total_spending_amount'] ,2, '$').  '<br/>' .
 	 						'Prime Vendor: ' . $row['legal_name'] .  '<br/>' .
 	 						'Contracting Agency: ' . $row['agency_name'] .  '<br/>' 
 	 						; 
-			$series_new[$index]->y = (float)$row['total_contract_amount'];
+			$series_new[$index]->y = (float)$row['total_spending_amount'];
 			$series_new[$index]->tooltip_label = $tooltip_label;
 			$node->widgetConfig->gridConfig->data[] = array($row['document_id'],
-														$row['total_contract_amount'],
+														$row['total_spending_amount'],
 														 $row['legal_name'] ,
 														 $row['agency_name']
 														);			

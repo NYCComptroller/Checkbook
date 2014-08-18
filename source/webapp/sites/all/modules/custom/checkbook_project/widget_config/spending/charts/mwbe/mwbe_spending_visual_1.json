@@ -3,11 +3,11 @@
 "widgetDatahandler": "highcharts",
 "html_class":"chart-left",
 "footer":"
-
+	
 echo '<div class=\"chart-right\">
         <div class=\"wrap\">
     		<div class=\"number\"><span>' . $node->mwbe_share_percent . '</span></div>
-    		<div class=\"text\"><span>M/WBE Share</span></div>
+    		<div class=\"text\"><span>' . MappingUtil::getCurrenEhtnicityName() . ' Share</span></div>
         </div>
 	 </div>
 ';
@@ -63,7 +63,7 @@ echo '<div class=\"chart-right\">
     
 ",
 "widgetUpdateJSONConfig":"
-
+	$node->widgetConfig->chartTitle = 'Spending by ' . MappingUtil::getCurrenEhtnicityName() .' Share';
 	$mwbe_data = array();
 	 foreach ($node->data as $row){
 	 
@@ -94,7 +94,32 @@ echo '<div class=\"chart-right\">
 	$total_mwbe = $mwbe_data['ba'] + $mwbe_data['ha'] + $mwbe_data['aa'] + $mwbe_data['w'] ; 
 	$toal_non_mwbe = $mwbe_data['nm'];
 	
-	$node->mwbe_share_percent = custom_number_formatter_format($total_mwbe/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') ;
+	
+	$mwbe_filter = _getRequestParamValue('mwbe');
+	
+	$amount_column = 'total_mwbe';
+	switch($mwbe_filter){
+		case '4~5' :
+			$node->mwbe_share_percent = custom_number_formatter_format($mwbe_data['aa']/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') ;
+			break;
+		case '2' :
+			$node->mwbe_share_percent = custom_number_formatter_format($mwbe_data['ba']/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') ;
+			break;
+		case '3' :
+			$node->mwbe_share_percent = custom_number_formatter_format($mwbe_data['ha']/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') ;
+			break;
+		case '9' :
+			$node->mwbe_share_percent = custom_number_formatter_format($mwbe_data['w']/( $toal_non_mwbe+ $total_mwbe) *100,1,null,'%') ;
+			break;
+		case '2~3~4~5~9' :
+			$node->mwbe_share_percent = custom_number_formatter_format($mwbe_data['w']/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') ;
+			break;
+		
+	}
+	
+	
+	
+	
 	
 	$node->widgetConfig->chartConfig->series[0]->data[0]->y = $total_mwbe;
 	$node->widgetConfig->chartConfig->series[0]->data[0]->custom_label = custom_number_formatter_format($total_mwbe,2,'$') . ' (' .
@@ -109,10 +134,6 @@ echo '<div class=\"chart-right\">
 																			 
 	$node->widgetConfig->chartConfig->series[0]->data[1]->custom_label = custom_number_formatter_format($toal_non_mwbe,2,'$') . ' (' .
 																		 custom_number_formatter_format($toal_non_mwbe/($total_mwbe + $toal_non_mwbe) *100,1,null,'%') . ')';
-    $node->widgetConfig->chartConfig->series[0]->data[1]->tooltip_label =
-																'Non-M/WBE: '. 
-    															custom_number_formatter_format($toal_non_mwbe,2,'$') . ' (' .
-																custom_number_formatter_format($toal_non_mwbe/($total_mwbe + $toal_non_mwbe) *100,1,null,'%') . ')';
 																		 
 																		 
 	$node->widgetConfig->gridConfig->data[] = array('Aisan American',$mwbe_data['aa'] ,
@@ -186,6 +207,11 @@ echo '<div class=\"chart-right\">
 
 <function>
 tooltipformatter^^'formatter' :
-function() {return this.point.tooltip_label ;
+function() { 
+	if(this.point.tooltip_label == ''){
+		return false;
+	}else{
+		return this.point.tooltip_label ;
+	}
 }
 </function>

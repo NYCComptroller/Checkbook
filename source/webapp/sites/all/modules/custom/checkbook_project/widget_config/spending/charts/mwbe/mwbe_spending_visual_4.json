@@ -136,7 +136,8 @@
                 "stacking": "normal",
                 "dataLabels": {
                     "enabled": false
-                }             
+                },
+                "minPointLength":3             
             }
     },
     "xAxis": {
@@ -153,6 +154,7 @@
     ],
     "title": {"text": ""},
     "yAxis": {
+     	"min":0,
         "startOnTick":true,
         "title": {"text": ""},
         "labels":{"rotation": 0,"function":"yAxisFormatter"}
