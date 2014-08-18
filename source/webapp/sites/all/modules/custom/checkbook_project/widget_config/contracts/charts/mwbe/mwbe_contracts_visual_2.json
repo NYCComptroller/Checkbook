@@ -30,8 +30,8 @@
 },
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B"},
-"cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry"],
-"urlParamMap":{"agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id",
+"cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe"],
+"urlParamMap":{"mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id",
 	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
 "chartTitle":"M/WBE Spending by Active Expense Contracts",
 "widgetDataLoader":"
@@ -54,7 +54,6 @@
     
     $year_id = _getRequestParamValue('year');
 	$where_filter .= ' and a1.fiscal_year_id in (' . $year_id . ','.  ($year_id -1) . ')';
-	$where_filter .= ' and a1.minority_type_id in (2,3,4,5,9)';   
     $sql = 'select rmo.month_name ,year_value, sum(spending_amount) spending_amount_sum
     from {aggregateon_mwbe_contracts_spending_by_month} a1 
     join {ref_minority_type} rm on rm.minority_type_id = a1.minority_type_id
@@ -141,7 +140,7 @@
 	}else{
 		$contract_type = 'Expense';
 	}
-	$node->widgetConfig->chartTitle = 'M/WBE Spending by ' . $status . ' ' . $contract_type .  ' Contracts';
+	$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Spending by ' . $status . ' ' . $contract_type .  ' Contracts';
 ",
 "chartConfig" : {
     "plotOptions": {
@@ -157,6 +156,8 @@
     ],
     "title": {"text": ""},
     "yAxis": {
+     	"min":0,
+     	"minRange": 0.1,    
         "startOnTick":true,
         "title": {"text": ""},
         "labels":{"rotation": 0,"function":"yAxisFormatter"}
