@@ -53,24 +53,35 @@
 	$series =  array();
 	$non_mwbe_data = array();
 	$year_id = _getRequestParamValue('year');
+	$mwbe_page_cats = explode('~',_getRequestParamValue('mwbe'));
 	$year = _getYearValueFromID($year_id);
 	 foreach ($node->data as $row){
 	 
 	 	switch($row['minority_type_id']){
 	 		case '2':
-	 		$series[$row['year_value']]->y += $row['total_spending']; 
+	 		if(in_array(2,$mwbe_page_cats))
+	 			$series[$row['year_value']]->y += $row['total_spending'];
+	 		$series[$row['year_value']]->mwbe_total += $row['total_spending']; 
 	 		break;
 	 		case '3':
-	 		$series[$row['year_value']]->y += $row['total_spending']; 
+	 		if(in_array(3,$mwbe_page_cats))
+	 			$series[$row['year_value']]->y += $row['total_spending']; 
+	 		$series[$row['year_value']]->mwbe_total += $row['total_spending'];
 	 		break;
 	 		case '4':
-	 		$series[$row['year_value']]->y += $row['total_spending']; 
+	 		if(in_array(4,$mwbe_page_cats))
+	 			$series[$row['year_value']]->y += $row['total_spending']; 
+	 		$series[$row['year_value']]->mwbe_total += $row['total_spending'];
 	 		break;
 	 		case '5':
-	 		$series[$row['year_value']]->y += $row['total_spending']; 
+	 		if(in_array(5,$mwbe_page_cats))
+	 			$series[$row['year_value']]->y += $row['total_spending']; 
+	 		$series[$row['year_value']]->mwbe_total += $row['total_spending'];
 	 		break;
 	 		case '9':
-	 		$series[$row['year_value']]->y += $row['total_spending']; 
+	 		if(in_array(9,$mwbe_page_cats))
+	 			$series[$row['year_value']]->y += $row['total_spending']; 
+	 		$series[$row['year_value']]->mwbe_total += $row['total_spending'];
 	 		break;
 	 		case '7':
 	 		$non_mwbe_data[$row['year_value']] = $row['total_spending']; 
@@ -96,15 +107,15 @@
 	 						'Year: ' . $year_display.  '<br/>' .
 	 						'Amount: '. custom_number_formatter_format($series[$key]->y,2,'$')   . '<br/>' ; 
 		
-			$series_new[$index]->y = $series[$key]->y/($series[$key]->y + $non_mwbe_data[$key] ) * 100;
+			$series_new[$index]->y = $series[$key]->y/($series[$key]->mwbe_total + $non_mwbe_data[$key] ) * 100;
 			$series_new[$index]->tooltip_label = $tooltip_label;
-			$series_new[$index]->custom_label = custom_number_formatter_format($series[$key]->y/($series[$key]->y + $non_mwbe_data[$key] ) *100,1,null,'%') ; 
+			$series_new[$index]->custom_label = custom_number_formatter_format($series[$key]->y/($series[$key]->mwbe_total + $non_mwbe_data[$key] ) *100,1,null,'%') ; 
 			$categories[] = $key ;
 			$node->widgetConfig->gridConfig->data[] = array($year_display,$series[$key]->y );
 			$index += 1; 	
 		}	
 	}
-
+	$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() .  ' Spending Share';
 	$node->widgetConfig->chartConfig->series[0]->name = 'Fiscal Years';
 	$node->widgetConfig->chartConfig->series[0]->type = 'column';
 	$node->widgetConfig->chartConfig->series[0]->pointWidth = 80;

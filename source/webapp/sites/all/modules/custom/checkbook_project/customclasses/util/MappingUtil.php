@@ -39,4 +39,17 @@ class MappingUtil {
     static function getMinorityCategoryMappings() {
         return self::$minority_type_category_map_multi;
     }
+    
+    
+    static function getCurrenEhtnicityName() {
+    	$mwbe_url_params = explode('~',_getRequestParamValue('mwbe'));
+    	
+    	foreach(self::$minority_type_category_map_multi as $key=>$values){
+    		if(count(array_diff($mwbe_url_params, $values)) == 0){
+    			return $key;
+    		}
+    	}
+    }
+    
+    
 } 
