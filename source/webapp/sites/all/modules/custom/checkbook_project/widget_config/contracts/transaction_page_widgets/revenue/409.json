@@ -9,7 +9,7 @@
 "columns": ["total_maximum_contract_amount"],
 "preProcessConfiguration":"
     $node->is_mwbe = _checkbook_check_is_mwbe_page();
-    if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:fact_disbursement_line_item_mwbe';
+    if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:all_agreement_transactions';
 ",
 "adjustParameters":"
 	    if(function_exists('_checkbook_project_adjustContractParameterFilters')){
