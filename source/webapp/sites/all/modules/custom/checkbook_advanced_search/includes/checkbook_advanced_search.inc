@@ -576,7 +576,7 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
         $redirect_url = 'contract/all/transactions';
         $contracts_year = null;
     } else {
-        $redirect_url = 'contract/transactions';
+        $redirect_url = 'contract/search/transactions';
     }
 
     if (!empty($contracts_mwbe_category)) {
