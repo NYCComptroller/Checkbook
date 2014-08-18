@@ -192,6 +192,8 @@ echo '<div class=\"chart-right\">
     ],
     "title": {"text": ""},
     "yAxis": {
+     	"min":0,
+     	"minRange": 0.1,    
         "startOnTick":true,
         "title": {"text": ""},
         "gridLineColor": "transparent",
