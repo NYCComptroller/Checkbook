@@ -61,7 +61,6 @@ function _checkbook_export_grid_transactions(){
         }
         $i++;
     }
-
     if(isset($node->widgetConfig->gridConfig->data)){
     	foreach($node->widgetConfig->gridConfig->table_columns as $column){
     		echo $column->labelAlias . ",";
@@ -77,7 +76,7 @@ function _checkbook_export_grid_transactions(){
     	}
     	
     }
-    else if(is_array($node->data)){
+    else if(is_array($node->data) and count($node->data) > 0){
         $dataRecords = $node->data;
 
         //Custom column for ordering
