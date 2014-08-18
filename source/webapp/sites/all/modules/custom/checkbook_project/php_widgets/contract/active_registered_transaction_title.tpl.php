@@ -29,7 +29,12 @@ $contactCategoryLabel = 'Expense';
 if ($contactCategory == 'revenue') {
   $contactCategoryLabel = 'Revenue';
 }
-$summaryTitle = (_checkbook_check_is_mwbe_page())? 'M/WBE ':'';
+$current_url = explode('/',$_SERVER['REQUEST_URI']);
+if($current_url[1] == 'contract' && ($current_url[2] == 'search' || $current_url[2] == 'all')&& $current_url[3] == 'transactions'){
+    $summaryTitle = "";
+}else{
+    $summaryTitle = (_checkbook_check_is_mwbe_page())? 'M/WBE ':'';
+}
 $summaryTitle .= NodeSummaryUtil::getInitNodeSummaryTitle();
 
 $summaryTitle = $summaryTitle != '' ? $summaryTitle.'<br/>' : '';
