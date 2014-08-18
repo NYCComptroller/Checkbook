@@ -29,9 +29,9 @@
 },
 "no_results_content":"No Results Found",
 
-"cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe"],
+"cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe","year"],
 "cleanURLParametersPending":["agency","awdmethod","vendor","status","csize","cindustry","mwbe"],
-"urlParamMap":{"mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id",
+"urlParamMap":{"year":"fiscal_year_id","mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id",
 	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},	
 "urlParamMapPending":{"mwbe":"minority_type_id","agency":"document_agency_id","vendor":"vendor_id",			
 			"awdmethod":"award_method_id",
@@ -61,7 +61,7 @@
     }else if(preg_match('/pending/',$_GET['q'])){
     	
     }else{
-    	$where_filter .= \" and rd.document_code in ('CT1','CTA1') \";
+    	$where_filter .= \" and rd.document_code in ('MA1','CT1','CTA1') \";
     }
     if(preg_match('/pending/',$_GET['q'])){    
     	$sql = ' select
@@ -86,7 +86,6 @@
    		group by v.legal_name  
     	order by 2 desc limit 10';
     }
-    
     $node->data  = _checkbook_project_execute_sql($sql);
 	  
 ",
@@ -98,7 +97,7 @@
 	$index = 0;
 	foreach($node->data as $row){
 	 		$tooltip_label =
-	 						'Contracting Agency: ' . $row['legal_name'] .  '<br/>' .
+	 						'Prime Vendor: ' . $row['legal_name'] .  '<br/>' .
 	 						'Number of M/WBE Contracts: ' . $row['total_contracts'].  '<br/>' .
 	 						'Amount: ' . custom_number_formatter_format($row['current_amount_sum'] ,2, '$').  '<br/>' 
 	 						; 
@@ -127,7 +126,7 @@
 	}else{
 		$contract_type = 'Expense';
 	}
-	$node->widgetConfig->chartTitle = 'Top Ten Prime Vendors by  ' . $status . ' ' . $contract_type .  ' Contracts';  
+	$node->widgetConfig->chartTitle = 'Top Ten Prime Vendors by ' .MappingUtil::getCurrenEhtnicityName() . ' ' . $status . ' ' . $contract_type .  ' Contracts';  
 	
 ",
 "chartConfig" : {
@@ -155,6 +154,8 @@
     ],
     "title": {"text": ""},
     "yAxis": {
+     	"min":0,
+     	"minRange": 0.1,    
         "startOnTick":true,
         "title": {"text": ""},
         "labels":{"rotation": 0,"function":"yAxisFormatter"}

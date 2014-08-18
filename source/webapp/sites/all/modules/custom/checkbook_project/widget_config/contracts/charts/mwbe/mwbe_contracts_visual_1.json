@@ -66,23 +66,34 @@
 	$non_mwbe_data = array();
 	$year_id = _getRequestParamValue('year');
 	$year = _getYearValueFromID($year_id);
+	$mwbe_page_cats = explode('~',_getRequestParamValue('mwbe'));
 	 foreach ($node->data as $row){
 	 
 	 	switch($row['minority_type_id']){
 	 		case '2':
-	 		$series[$row['year_value']]->y += $row['current_amount_sum']; 
+	 		if(in_array(2,$mwbe_page_cats))
+	 			$series[$row['year_value']]->y += $row['current_amount_sum'];
+	 		$series[$row['year_value']]->mwbe_total += $row['current_amount_sum']; 
 	 		break;
 	 		case '3':
-	 		$series[$row['year_value']]->y += $row['current_amount_sum']; 
+	 		if(in_array(3,$mwbe_page_cats))
+	 			$series[$row['year_value']]->y += $row['current_amount_sum'];
+	 		$series[$row['year_value']]->mwbe_total += $row['current_amount_sum']; 
 	 		break;
 	 		case '4':
-	 		$series[$row['year_value']]->y += $row['current_amount_sum']; 
+	 		if(in_array(4,$mwbe_page_cats))
+	 			$series[$row['year_value']]->y += $row['current_amount_sum'];
+	 		$series[$row['year_value']]->mwbe_total += $row['current_amount_sum']; 
 	 		break;
 	 		case '5':
-	 		$series[$row['year_value']]->y += $row['current_amount_sum']; 
+	 		if(in_array(5,$mwbe_page_cats))
+	 			$series[$row['year_value']]->y += $row['current_amount_sum'];
+	 		$series[$row['year_value']]->mwbe_total += $row['current_amount_sum']; 
 	 		break;
 	 		case '9':
-	 		$series[$row['year_value']]->y += $row['current_amount_sum']; 
+	 		if(in_array(9,$mwbe_page_cats))
+	 			$series[$row['year_value']]->y += $row['current_amount_sum'];	 		
+	 		$series[$row['year_value']]->mwbe_total += $row['current_amount_sum']; 
 	 		break;
 	 		case '7':
 	 		$non_mwbe_data[$row['year_value']] = $row['current_amount_sum']; 
@@ -107,9 +118,9 @@
 	 						'Year: ' . $year_display.  '<br/>' .
 	 						'Amount: '. custom_number_formatter_format($series[$key]->y,2,'$')   . '<br/>' ; 
 		
-			$series_new[$index]->y = $series[$key]->y/($series[$key]->y + $non_mwbe_data[$key] ) * 100;
+			$series_new[$index]->y = $series[$key]->y/($series[$key]->mwbe_total + $non_mwbe_data[$key] ) * 100;
 			$series_new[$index]->tooltip_label = $tooltip_label;
-			$series_new[$index]->custom_label = custom_number_formatter_format($series[$key]->y/($series[$key]->y + $non_mwbe_data[$key] ) *100,1,null,'%') ; 
+			$series_new[$index]->custom_label = custom_number_formatter_format($series[$key]->y/($series[$key]->mwbe_total + $non_mwbe_data[$key] ) *100,1,null,'%') ; 
 			$categories[] = $key ;
 			$node->widgetConfig->gridConfig->data[] = array($year_display,$series[$key]->y );
 			$index += 1; 	
@@ -136,7 +147,7 @@
 	}else{
 		$contract_type = 'Expense';
 	}
-	$node->widgetConfig->chartTitle = 'M/WBE ' . $status . ' ' . $contract_type .  ' Contracts Share';
+	$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() .' ' . $status . ' ' . $contract_type .  ' Contracts Share';
 																		 
 ",
 "chartConfig" : {
@@ -145,6 +156,7 @@
             "series": {
                 "cursor": "pointer"   ,
                 "stacking": "normal",
+                "minPointLength":30 ,
                 "dataLabels": {
                     "enabled": true,
                     "format": "{point.custom_label}",
@@ -170,6 +182,8 @@
     ],
     "title": {"text": ""},
     "yAxis": {
+     	"min":0,
+     	"minRange": 0.1,    
         "startOnTick":true,
         "title": {"text": ""},
         "labels":{"rotation": 0,"function":"yAxisFormatter"}

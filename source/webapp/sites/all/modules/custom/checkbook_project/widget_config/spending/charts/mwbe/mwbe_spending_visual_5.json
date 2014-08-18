@@ -36,7 +36,7 @@
 "defaultParameters":{"type_of_year":"B"},
 "cleanURLParameters":["yeartype","agency","vendor","category","year"],
 "urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"vendor_id","category":"spending_category_id"},
-"chartTitle":"Top 10 Vendors by M/WBE Spending",
+"chartTitle":"Top Ten Prime Vendors by M/WBE Spending",
 "widgetDataLoader":"
     
     $where_filters = array();
@@ -49,6 +49,27 @@
     }
     
     $sql = 'select legal_name , 
+ 	SUM(
+       CASE 
+            WHEN minority_type_id = 4 THEN total_spending_amount
+            WHEN minority_type_id = 5 THEN total_spending_amount            
+            ELSE 0
+	END) aa_mwbe,
+	SUM(
+       CASE 
+            WHEN minority_type_id = 2 THEN total_spending_amount            
+            ELSE 0
+	END) ba_mwbe,
+	SUM(
+       CASE 
+            WHEN minority_type_id = 9 THEN total_spending_amount            
+            ELSE 0
+	END) w_mwbe,	
+	SUM(
+       CASE 
+            WHEN minority_type_id = 3 THEN total_spending_amount            
+            ELSE 0
+	END) ha_mwbe,    
 	SUM(
        CASE WHEN minority_type_id = 2 THEN total_spending_amount
             WHEN minority_type_id = 3 THEN total_spending_amount
@@ -75,20 +96,41 @@
 	
 	$series_new = array();
 	
+	$mwbe_filter = _getRequestParamValue('mwbe');
+	
+	$amount_column = 'total_mwbe';
+	switch($mwbe_filter){
+		case '4~5' :
+			$amount_column = 'aa_mwbe';
+			break;
+		case '2' :
+			$amount_column = 'ba_mwbe';
+			break;
+		case '3' :
+			$amount_column = 'ha_mwbe';
+			break;
+		case '9' :
+			$amount_column = 'w_mwbe';
+			break;
+
+		
+	}
+	
+	$node->widgetConfig->chartTitle = 'Top Ten Prime Vendors by ' . MappingUtil::getCurrenEhtnicityName() .' Spending';	
 	
 	$index = 0;
 	foreach($node->data as $row){
 	 		$tooltip_label = 
 	 						'Prime Vendor: ' . $row['legal_name'].  '<br/>' .
-	 						'M/WBE Share: ' . custom_number_formatter_format($row['total_mwbe']/($row['total_mwbe'] + $row['total_non_mwbe'] ) *100 ,1,null, '%').  '<br/>' .
-	 						'M/WBE Spending: ' . custom_number_formatter_format( $row['total_mwbe'],2,'$').  '<br/>' .
-	 						'Non M/WBE: ' . custom_number_formatter_format( $row['total_non_mwbe'],2,'$').  '<br/>' 
+	 						MappingUtil::getCurrenEhtnicityName() .' Share: ' . custom_number_formatter_format($row[$amount_column]/($row['total_mwbe'] + $row['total_non_mwbe'] ) *100 ,1,null, '%').  '<br/>' .
+	 						MappingUtil::getCurrenEhtnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>' .
+	 						'Non-M/WBE: ' . custom_number_formatter_format( $row['total_non_mwbe'],2,'$').  '<br/>' 
 	 						; 
 			$series_new[$index]->y = (float)$row['total_mwbe'];
 			$series_new[$index]->tooltip_label = $tooltip_label;
 			$node->widgetConfig->gridConfig->data[] = array($row['legal_name'],
-														custom_number_formatter_format($row['total_mwbe']/($row['total_mwbe'] + $row['total_non_mwbe'] ) *100 ,1,null, '%'),
-														 $row['total_mwbe'],
+														custom_number_formatter_format($row[$amount_column]/($row['total_mwbe'] + $row['total_non_mwbe'] ) *100 ,1,null, '%'),
+														 $row[$amount_column],
 														 $row['total_non_mwbe']
 														);
 			$index += 1;
@@ -125,6 +167,8 @@
     ],
     "title": {"text": ""},
     "yAxis": {
+     	"min":0,
+     	"minRange": 0.1,    
         "startOnTick":true,
         "title": {"text": ""},
         "labels":{"rotation": 0,"function":"yAxisFormatter"}

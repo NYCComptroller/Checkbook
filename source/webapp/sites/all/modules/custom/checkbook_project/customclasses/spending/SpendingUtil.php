@@ -278,4 +278,14 @@ class SpendingUtil{
         $ytd_spending = $ytd_spending < 0 ? 0.00 : $ytd_spending;
         return  custom_number_formatter_format($ytd_spending,2,'','%');
     }
+
+    /**
+     * Returns true if this is from spending advanced search for citywide
+     OR if this is from the transaction page for M/WBE.
+     */
+    function showMwbeFields() {
+        $is_mwbe = _checkbook_check_is_mwbe_page();
+        $is_mwbe = $is_mwbe || (!_checkbook_check_isEDCPage() && _getRequestParamValue('dtsmnid') == null);
+        return $is_mwbe;
+    }
 }

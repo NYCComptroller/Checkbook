@@ -80,14 +80,7 @@ if(preg_match('/contracts/',$_GET['q'])){
 }
 
 $active_domain_link = preg_replace('/\/mwbe\/[^\/]*/','',$active_domain_link); 
-
-if($mwbe_amount  == 0){
-	$mwbe_link = l('<div><span class="nav-title">M/WBE</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div>','',$options_disabled);
-}else{
-	
-	$mwbe_link = l('<div><span class="nav-title">M/WBE</span><br>&nbsp;'. custom_number_formatter_format($mwbe_amount ,1,'$') . '</div>',$active_domain_link. "/mwbe/2~3~4~5~9",$options);
-	
-	$mwbe_filters =  "<div class='main-nav-drop-down' style='display:none'>
+$mwbe_filters =  "<div class='main-nav-drop-down' style='display:none'>
   		<ul>
   			<li class='no-click title'>M/WBE Category</li>
   			<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/2~3~4~5~9" . "'>Total M/WBE</a></li>
@@ -99,10 +92,16 @@ if($mwbe_amount  == 0){
 			<li class='no-click title'>Other</li>
 			<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/7" . "'>Non-M/WBE</a></li>
 			<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/11" . "'>Individuals & Others</a></li>
-			
+		
   		</ul>
   		</div>
   		";
+if($mwbe_amount  == 0){
+	$mwbe_link = l('<div><span class="nav-title">M/WBE</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div>','',$options_disabled);
+}else{
+	
+	$mwbe_link = l('<div><span class="nav-title">M/WBE</span><br>&nbsp;'. custom_number_formatter_format($mwbe_amount ,1,'$') . '</div>',$active_domain_link. "/mwbe/2~3~4~5~9",$options);
+	
 	
 }
 if($spending_amount  == 0){
