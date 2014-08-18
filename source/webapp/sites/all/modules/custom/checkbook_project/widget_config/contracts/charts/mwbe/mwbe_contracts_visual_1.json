@@ -156,6 +156,7 @@
             "series": {
                 "cursor": "pointer"   ,
                 "stacking": "normal",
+                "minPointLength":30 ,
                 "dataLabels": {
                     "enabled": true,
                     "format": "{point.custom_label}",
