@@ -12,7 +12,12 @@
 	return $header;
 ",
 "preProcessConfiguration":"
-    $node->is_mwbe = _checkbook_check_is_mwbe_page();
+    $current_url = explode('/',$_SERVER['REQUEST_URI']);
+    if($current_url[1] == 'contract' && $current_url[1] == 'search' && $current_url[1] == 'transactions'){
+        $node->is_mwbe = true;
+    }else{
+        $node->is_mwbe = _checkbook_check_is_mwbe_page();
+    }
 ",
 "useList":true,
 "getTotalDataCount":true,
