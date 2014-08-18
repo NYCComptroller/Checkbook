@@ -62,7 +62,7 @@
 "no_results_content":"No Results Found",
 "dataset": "checkbook:fact_disbursement_line_item",
 "preProcessConfiguration":"
-    $node->is_mwbe = _checkbook_check_is_mwbe_page();
+    $node->is_mwbe = SpendingUtil::showMwbeFields();
     if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:fact_disbursement_line_item_mwbe';
 ",
 "columns": [
