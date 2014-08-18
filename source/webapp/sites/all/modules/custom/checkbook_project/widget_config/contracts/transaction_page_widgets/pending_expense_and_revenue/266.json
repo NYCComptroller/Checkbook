@@ -1,9 +1,9 @@
 {
 "widgetType": "data_tables",
 "widgetSubType": "dataTableList",
-"cleanURLParameters":["mwbe","vendor","curamtr","doctype","agency","vendorcode","vendornm","contdesc","agrmnttypecode","contnum","aptpin","pin","curamt","startdate","enddate","recdate","csize","modamt","awdmethod","cindustry"],
+"cleanURLParameters":["mwbe","mwbe_vendor","vendor","curamtr","doctype","agency","vendorcode","vendornm","contdesc","agrmnttypecode","contnum","aptpin","pin","curamt","startdate","enddate","recdate","csize","modamt","awdmethod","cindustry"],
 "defaultParameters":{},
-"urlParamMap":{"mwbe":"minority_type_id","vendor":"vendor_id","curamtr":"revised_maximum_amount","doctype":"document_code@checkbook:ref_document_code","agency":"document_agency_id","vendorcode":"vendor_customer_code","vendornm":"vendor_legal_name","contdesc":"description","agrmnttypecode":"cont_type_code","contnum":"contract_number","aptpin":"board_award_number","pin":"tracking_number","curamt":"revised_maximum_amount","startdate":"revised_start_date","enddate":"revised_end_date","recdate":"cif_received_date","csize":"award_size_id","modamt":"dollar_difference","awdmethod":"award_method_id","cindustry":"industry_type_id"},
+"urlParamMap":{"mwbe_vendor":"vendor_id","mwbe":"minority_type_id","vendor":"vendor_id","curamtr":"revised_maximum_amount","doctype":"document_code@checkbook:ref_document_code","agency":"document_agency_id","vendorcode":"vendor_customer_code","vendornm":"vendor_legal_name","contdesc":"description","agrmnttypecode":"cont_type_code","contnum":"contract_number","aptpin":"board_award_number","pin":"tracking_number","curamt":"revised_maximum_amount","startdate":"revised_start_date","enddate":"revised_end_date","recdate":"cif_received_date","csize":"award_size_id","modamt":"dollar_difference","awdmethod":"award_method_id","cindustry":"industry_type_id"},
 "allowRequestParams":["smnid"],
 	"paramTypeConfig":{"curamtr":"rangeid","vendornm":"like","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","recdate":"range","modamt":"ne"},
 "header":"
@@ -265,6 +265,7 @@
         var oAwdMethod = getNamedFilterCriteria('fAwdMethodId');
         var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
         var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
+        var oMwbeVendorId = getNamedFilterCriteria('fmwbeVendorId');
 
         var  cUrl = oTable.fnSettings().sAjaxSource;
         cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
@@ -273,6 +274,8 @@
         cUrl = adjustUrlParameter(cUrl,'awdmethod',oAwdMethod);
         cUrl = adjustUrlParameter(cUrl,'cindustry',oIndustryType);
         cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
+        cUrl = adjustUrlParameter(cUrl,'mwbe_vendor',oMwbeVendorId);
+
 
         //remove advance search param if narrow down search is present for amount
         // if(oCurAmount != null && oCurAmount.length > 0 ){
