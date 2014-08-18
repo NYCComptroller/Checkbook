@@ -127,10 +127,10 @@
 	 	$tooltip_label = 
 	 						'Year: ' . $year.  '<br/>' .
 	 						'Month: '. $months[$i] . '<br/>' . 
-							'Aisan American ' . custom_number_formatter_format($series_aa[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_aa[$i]->y,1,null,'%') . ')' .  '<br/>' 
-							. 'Black American ' . custom_number_formatter_format($series_ba[$i]->total,2,'$')  . ' (' .custom_number_formatter_format($series_ba[$i]->y,1,null,'%') . ')' . '<br/>' 
-							. 'Women ' . custom_number_formatter_format($series_w[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_w[$i]->y,1,null,'%') . ')' . '<br/>' 
-							. 'Hispanic American ' . custom_number_formatter_format($series_ha[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_ha[$i]->y,1,null,'%') . ')' . '<br/>'; 
+							'Aisan American: ' . custom_number_formatter_format($series_aa[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_aa[$i]->y,1,null,'%') . ')' .  '<br/>' 
+							. 'Black American: ' . custom_number_formatter_format($series_ba[$i]->total,2,'$')  . ' (' .custom_number_formatter_format($series_ba[$i]->y,1,null,'%') . ')' . '<br/>' 
+							. 'Women: ' . custom_number_formatter_format($series_w[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_w[$i]->y,1,null,'%') . ')' . '<br/>' 
+							. 'Hispanic American: ' . custom_number_formatter_format($series_ha[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_ha[$i]->y,1,null,'%') . ')' . '<br/>'; 
 		$series_ba[$i]->tooltip_label = $tooltip_label;
 		$series_ha[$i]->tooltip_label = $tooltip_label;
 		$series_aa[$i]->tooltip_label = $tooltip_label;
@@ -185,6 +185,7 @@
                 }             
             }
     },
+    "colors":["#EB8E27","#B8D8ED","#99B473","#7DB8E1"],
     "chart":{
     	"height":"275"
     },

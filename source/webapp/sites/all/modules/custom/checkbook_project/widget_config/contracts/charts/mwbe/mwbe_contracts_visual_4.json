@@ -47,7 +47,7 @@
 	}
 	
 ",	
-"chartTitle":"Top 10 M/WBE Active Expense Contracts by Current Amount",
+"chartTitle":"Top Ten M/WBE Active Expense Contracts by Current Amount",
 "widgetDataLoader":"
     
     $where_filters = array();

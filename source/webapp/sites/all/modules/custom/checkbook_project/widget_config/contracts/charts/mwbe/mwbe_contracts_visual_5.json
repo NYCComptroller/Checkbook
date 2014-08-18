@@ -98,7 +98,7 @@
 	$index = 0;
 	foreach($node->data as $row){
 	 		$tooltip_label =
-	 						'Contracting Agency: ' . $row['legal_name'] .  '<br/>' .
+	 						'Prime Vendor: ' . $row['legal_name'] .  '<br/>' .
 	 						'Number of M/WBE Contracts: ' . $row['total_contracts'].  '<br/>' .
 	 						'Amount: ' . custom_number_formatter_format($row['current_amount_sum'] ,2, '$').  '<br/>' 
 	 						; 

@@ -100,16 +100,19 @@ echo '<div class=\"chart-right\">
 	$node->widgetConfig->chartConfig->series[0]->data[0]->custom_label = custom_number_formatter_format($total_mwbe,2,'$') . ' (' .
 																		 custom_number_formatter_format($total_mwbe/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') . ')';																		 
 	$node->widgetConfig->chartConfig->series[0]->data[0]->tooltip_label = 
-							'Aisan American ' . custom_number_formatter_format($mwbe_data['aa'],2,'$')  . ' (' . custom_number_formatter_format($mwbe_data['aa']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' .  '<br/>' 
-							. 'Black American ' . custom_number_formatter_format($mwbe_data['ba'],2,'$')  . ' (' .custom_number_formatter_format($mwbe_data['ba']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' . '<br/>' 
-							. 'Women ' . custom_number_formatter_format($mwbe_data['w'],2,'$')  . ' (' . custom_number_formatter_format($mwbe_data['w']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' . '<br/>' 
-							. 'Hispanic American ' . custom_number_formatter_format($mwbe_data['ha'],2,'$')  . ' (' . custom_number_formatter_format($mwbe_data['ha']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' . '<br/>' 
-							. 'Emerging ' . custom_number_formatter_format($mwbe_data['e'],2,'$')  . ' (' . custom_number_formatter_format($mwbe_data['e']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' . '<br/>';
-	$node->widgetConfig->chartConfig->series[0]->data[1]->y = $toal_non_mwbe;																		 
+							'Aisan American: ' . custom_number_formatter_format($mwbe_data['aa'],2,'$')  . ' (' . custom_number_formatter_format($mwbe_data['aa']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' .  '<br/>' 
+							. 'Black American: ' . custom_number_formatter_format($mwbe_data['ba'],2,'$')  . ' (' .custom_number_formatter_format($mwbe_data['ba']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' . '<br/>' 
+							. 'Women: ' . custom_number_formatter_format($mwbe_data['w'],2,'$')  . ' (' . custom_number_formatter_format($mwbe_data['w']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' . '<br/>' 
+							. 'Hispanic American: ' . custom_number_formatter_format($mwbe_data['ha'],2,'$')  . ' (' . custom_number_formatter_format($mwbe_data['ha']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' . '<br/>' 
+							. 'Emerging: ' . custom_number_formatter_format($mwbe_data['e'],2,'$')  . ' (' . custom_number_formatter_format($mwbe_data['e']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' . '<br/>';
+	$node->widgetConfig->chartConfig->series[0]->data[1]->y = $toal_non_mwbe;
+																			 
 	$node->widgetConfig->chartConfig->series[0]->data[1]->custom_label = custom_number_formatter_format($toal_non_mwbe,2,'$') . ' (' .
 																		 custom_number_formatter_format($toal_non_mwbe/($total_mwbe + $toal_non_mwbe) *100,1,null,'%') . ')';
-    $node->widgetConfig->chartConfig->series[0]->data[1]->tooltip_label = custom_number_formatter_format($toal_non_mwbe,2,'$') . ' (' .
-																		 custom_number_formatter_format($toal_non_mwbe/($total_mwbe + $toal_non_mwbe) *100,1,null,'%') . ')';
+    $node->widgetConfig->chartConfig->series[0]->data[1]->tooltip_label =
+																'Non-M/WBE: '. 
+    															custom_number_formatter_format($toal_non_mwbe,2,'$') . ' (' .
+																custom_number_formatter_format($toal_non_mwbe/($total_mwbe + $toal_non_mwbe) *100,1,null,'%') . ')';
 																		 
 																		 
 	$node->widgetConfig->gridConfig->data[] = array('Aisan American',$mwbe_data['aa'] ,
