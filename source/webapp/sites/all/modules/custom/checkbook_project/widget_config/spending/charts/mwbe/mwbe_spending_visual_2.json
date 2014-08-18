@@ -129,6 +129,7 @@
     "plotOptions": {
             "series": {
                 "cursor": "pointer"   ,
+                "minPointLength":30 ,                
                 "stacking": "normal",
                 "dataLabels": {
                     "enabled": true,
