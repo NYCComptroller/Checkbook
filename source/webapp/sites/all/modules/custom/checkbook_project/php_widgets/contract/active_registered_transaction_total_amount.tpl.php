@@ -36,9 +36,15 @@
                   .'<div class="amount-title">Total '.$contactStatusLabel.' Current Contract Amount</div></div>';
 
     }else if(_checkbook_check_is_mwbe_page()){
+        $current_url = explode('/',$_SERVER['REQUEST_URI']);
+        if($current_url[1] == 'contract' && ($current_url[2] == 'search' || $current_url[2] == 'all')&& $current_url[3] == 'transactions'){
+            $summaryTitle = "";
+        }else{
+            $summaryTitle = (_checkbook_check_is_mwbe_page())? 'Total M/WBE ':'';
+        }
         print '<div class="transactions-total-amount">$'
             . custom_number_formatter_format($node->data[0]['total_maximum_contract_amount'],2)
-            .'<div class="amount-title">Total M/WBE '.$contactStatusLabel.' Current Contract Amount</div></div>';
+            .'<div class="amount-title">'.$summaryTitle.$contactStatusLabel.' Current Contract Amount</div></div>';
     }else{
        print '<div class="transactions-total-amount">$'
           . custom_number_formatter_format($node->data[0]['total_maximum_contract_amount'],2)
