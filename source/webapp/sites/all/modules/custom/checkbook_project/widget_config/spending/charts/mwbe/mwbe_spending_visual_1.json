@@ -112,7 +112,7 @@ echo '<div class=\"chart-right\">
 			$node->mwbe_share_percent = custom_number_formatter_format($mwbe_data['w']/( $toal_non_mwbe+ $total_mwbe) *100,1,null,'%') ;
 			break;
 		case '2~3~4~5~9' :
-			$node->mwbe_share_percent = custom_number_formatter_format($mwbe_data['w']/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') ;
+			$node->mwbe_share_percent = custom_number_formatter_format($total_mwbe/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') ;
 			break;
 		
 	}
