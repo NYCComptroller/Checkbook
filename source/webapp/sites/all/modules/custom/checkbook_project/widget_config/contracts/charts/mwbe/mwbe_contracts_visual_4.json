@@ -134,7 +134,7 @@
 	}else{
 		$contract_type = 'Expense';
 	}
-	$node->widgetConfig->chartTitle = 'Top 10 M/WBE ' . $status . ' ' . $contract_type .  ' Contracts  by Current Amount';
+	$node->widgetConfig->chartTitle = 'Top Ten ' . MappingUtil::getCurrenEhtnicityName() . ' ' . $status . ' ' . $contract_type .  ' Contracts  by Current Amount';
 ",
 "chartConfig" : {
 	"colors":["#7DB7E5"],
