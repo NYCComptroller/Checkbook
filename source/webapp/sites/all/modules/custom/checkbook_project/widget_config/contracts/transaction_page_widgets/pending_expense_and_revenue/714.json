@@ -1,0 +1,279 @@
+{
+    "widgetType": "data_tables",
+    "widgetSubType": "dataTableList",
+    "cleanURLParameters":["mwbe","mwbe_vendor","vendor","curamtr","doctype","agency","vendorcode","vendornm","contdesc","agrmnttypecode","contnum","aptpin","pin","curamt","startdate","enddate","recdate","csize","modamt","awdmethod","cindustry"],
+    "defaultParameters":{},
+    "urlParamMap":{"mwbe_vendor":"vendor_id","mwbe":"minority_type_id","vendor":"vendor_id","curamtr":"revised_maximum_amount","doctype":"document_code@checkbook:ref_document_code","agency":"document_agency_id","vendorcode":"vendor_customer_code","vendornm":"vendor_legal_name","contdesc":"description","agrmnttypecode":"cont_type_code","contnum":"contract_number","aptpin":"board_award_number","pin":"tracking_number","curamt":"revised_maximum_amount","startdate":"revised_start_date","enddate":"revised_end_date","recdate":"cif_received_date","csize":"award_size_id","modamt":"dollar_difference","awdmethod":"award_method_id","cindustry":"industry_type_id"},
+    "allowRequestParams":["smnid"],
+    "paramTypeConfig":{"curamtr":"rangeid","vendornm":"like","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","recdate":"range","modamt":"ne"},
+    "header":"
+    $header = NULL;
+$header .= widget_data_tables_export_link($node);
+return $header;
+",
+"useList":true,
+"getTotalDataCount":true,
+"limit":"35",
+"stickyHeader":true,
+"noDataInitialLoad":true,
+"html_class": "initiative-table",
+"no_results_content":"No Results Found",
+"dataset": "checkbook:pending_contracts",
+"columns": ["minority_type_id","minority_type_name","fms_contract_number","contract_number","fms_parent_contract_number","description","document_version","revised_maximum_amount","vendor_legal_name","cif_received_date","document_agency_name","contract_type_name"
+,"award_method_name","revised_start_date","revised_end_date","board_award_number","tracking_number","original_or_modified","document_code@checkbook:ref_document_code","original_agreement_id","industry_type_name@checkbook:industry_type","dollar_difference","percent_difference","original_maximum_amount"],
+"caption":"",
+"derivedColumns": {
+"formatted__maximum_amount": {
+"type": "expression2",
+"expression": "custom_number_formatter_basic_format($row['revised_maximum_amount'])"
+},
+"formatted__original_maximum_amount": {
+"type": "expression2",
+"expression": "custom_number_formatter_basic_format($row['original_maximum_amount'])"
+},
+"parent_contract_link": {
+"type": "expression2",
+"expression": "empty($row['fms_parent_contract_number']) ? '' : $row['fms_parent_contract_number']"
+},
+"formatted__original_or_modified": {
+"type": "expression2",
+"expression": " $row['original_or_modified'] == 'N' ? 'Original' : 'Modified'; "
+},
+"purpose_formatted": {
+"type": "expression2",
+"expression": "_get_tooltip_markup($row['description'],30)"
+},
+"contract_link": {
+"type": "expression2",
+"expression": "_pending_contracts_link_contract_details($row[fms_contract_number],$row[original_agreement_id],$row['document_code@checkbook:ref_document_code'],$row[contract_number],$row[document_version])"
+},
+"award_method_formatted": {
+"type": "expression2",
+"expression": "_get_tooltip_markup($row['award_method_name'],40)"
+},
+"contract_type_formatted": {
+"type": "expression2",
+"expression": "_get_tooltip_markup($row['contract_type_name'],40)"
+},
+"agency_formatted": {
+"type": "expression2",
+"expression": "_get_tooltip_markup($row['document_agency_name'],34)"
+},
+"vendor_formatted": {
+"type": "expression2",
+"expression": "_get_tooltip_markup($row['vendor_legal_name'],34)"
+},
+"industry_name_formatted": {
+"type": "expression2",
+"expression": "_get_tooltip_markup($row['industry_type_name@checkbook:industry_type'],30)"
+},
+"formatted_dollar_diff": {
+"type": "expression2",
+"expression": "custom_number_formatter_basic_format($row['dollar_difference'])"
+},
+"formatted_percent_diff": {
+"type": "expression2",
+"expression": "round($row['percent_difference'],2) . '%'"
+},
+"formatted_minority_name": {
+"type": "expression2",
+"expression": "MappingUtil::getMinorityCategoryById($row['minority_type_id'])"
+}
+},
+"table_columns": [
+{"labelAlias": "contract_id","column": "contract_link","sortSourceColumn":"contract_number"},
+{"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description"},
+{"labelAlias": "recv_date","column": "cif_received_date"},
+{"labelAlias": "prime_vendor","column": "vendor_formatted","sortSourceColumn":"vendor_legal_name"},
+{"labelAlias": "current_amount","column": "formatted__maximum_amount","sortSourceColumn":"revised_maximum_amount","headerClass":"centrig"},
+{"labelAlias": "original_amount","column": "formatted__original_maximum_amount","sortSourceColumn":"original_maximum_amount","headerClass":"centrig"},
+{"labelAlias": "start_date","column": "revised_start_date"},
+{"labelAlias": "end_date","column": "revised_end_date"},
+{"labelAlias": "dollar_diff","column": "formatted_dollar_diff","sortSourceColumn":"dollar_difference","headerClass":"centrig"},
+{"labelAlias": "percent_diff","column": "formatted_percent_diff","sortSourceColumn":"percent_difference","headerClass":"centrig"},
+{"labelAlias": "version","column": "document_version","headerClass":"centrig fifty"},
+{"labelAlias": "fms_doc_id","column":"parent_contract_link","sortSourceColumn":"fms_parent_contract_number"},
+{"labelAlias": "contract_agency","column": "agency_formatted","sortSourceColumn":"document_agency_name"},
+{"labelAlias": "contract_type","column": "contract_type_formatted","sortSourceColumn":"contract_type_name"},
+{"labelAlias": "orig_or_mod","column": "formatted__original_or_modified","sortSourceColumn":"original_or_modified","exportColumn":"formatted__original_or_modified"},
+{"labelAlias": "award_method","column": "award_method_formatted","sortSourceColumn":"award_method_name"},
+{"labelAlias": "contract_industry","column": "industry_name_formatted","sortSourceColumn":"industry_type_name@checkbook:industry_type"},
+{"labelAlias": "pin","column": "tracking_number"},
+{"labelAlias": "apt_pin","column": "board_award_number"},
+{"labelAlias": "mwbe_category","column":"formatted_minority_name","sortSourceColumn": "minority_type_name"}
+],
+"adjustParameters":"
+if(function_exists('_checkbook_project_adjustContractParameterFilters')){
+_checkbook_project_adjustContractParameterFilters($node,$parameters,'pending');
+}
+
+if(function_exists('_checkbook_project_applyParameterFilters')){
+$adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+return $adjustedParameters;
+}
+return $parameters;
+",
+"adjustDataTableOptions":"
+$adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
+
+$rpp = _getRequestParamValue('rpp');
+if(is_numeric($rpp) ){
+$adjustDataTableOptions->iDisplayLength = (int)$rpp;
+}
+
+$smnid = _getRequestParamValue('smnid');
+if(  !($smnid == 481 || $smnid == 362 || $smnid == 445) ){
+foreach($node->widgetConfig->table_columns as $key => $table_column){
+if($table_column->labelAlias == 'dollar_diff' || $table_column->labelAlias == 'percent_diff'){
+unset($node->widgetConfig->table_columns[$key]);
+unset($adjustDataTableOptions->aoColumns[$key]);
+}
+}
+}
+if($smnid == 481 ||  $smnid == 362 || $smnid == 445){
+$adjustDataTableOptions->aaSorting[0][0] = 8;
+}
+$node->widgetConfig->table_columns = array_values($node->widgetConfig->table_columns);
+$adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoColumns);
+
+",
+"dataTableOptions":{
+"bRetrieve": true,
+"bServerSide": true,
+"bProcessing": true,
+"bFilter": false,
+"bPaginate": true,
+"iDisplayLength": 35,
+"sPaginationType": "full_numbers",
+"sDom": "<pr><t><ip>",
+"oLanguage": {
+"sInfo": "Displaying transactions _START_ - _END_ of _TOTAL_",
+"sProcessing": "<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+},
+"aoColumns": [
+{
+"sClass": "text",
+"sWidth": "170px","asSorting": [ "asc","desc" ]
+},
+{
+"sClass": "text",
+"sWidth": "155px","asSorting": [ "asc","desc" ]
+},
+{
+"sClass": "text",
+"sWidth": "115px","asSorting": [ "asc","desc" ]
+},
+{
+"sClass": "text",
+"sWidth": "200px","asSorting": [ "desc","asc" ]
+},
+{
+"sClass": "number",
+"sWidth": "140px","asSorting": [ "desc","asc" ]
+},
+{
+"sClass": "number",
+"sWidth": "140px","asSorting": [ "desc","asc" ]
+},
+{
+"sClass": "text number-left",
+"sWidth": "170px","asSorting": [ "asc","desc" ]
+},
+{
+"sClass": "number",
+"sWidth": "90px","asSorting": [ "desc","asc" ]
+},
+{
+"sClass": "text number-left",
+"sWidth": "170px","asSorting": [ "asc","desc" ]
+},
+{   "sClass":"number",
+"sWidth":"75px","asSorting": [ "desc","asc" ]
+},
+{
+"sClass": "number",
+"sWidth": "100px","asSorting": [ "asc","desc" ]
+},
+{
+"sClass": "text",
+"sWidth": "155px","asSorting": [ "asc","desc" ]
+},
+{
+"sClass": "text",
+"sWidth": "155px","asSorting": [ "asc","desc" ]
+},
+{
+"sClass": "text",
+"sWidth": "155px","asSorting": [ "asc","desc" ]
+},
+{
+"sClass": "text",
+"sWidth": "155px","asSorting": [ "asc","desc" ]
+},
+{
+"sClass": "text",
+"sWidth": "155px","asSorting": [ "asc","desc" ]
+},
+{
+"sClass": "text",
+"sWidth": "155px","asSorting": [ "asc","desc" ]
+},
+{
+"sClass": "text",
+"sWidth": "360px","asSorting": [ "asc","desc" ]
+},
+{
+"sClass": "text",
+"sWidth": "180px","asSorting": [ "asc","desc" ]
+},
+{
+"sClass": "text",
+"sWidth": "180px","asSorting": [ "asc","desc" ]
+}
+],
+"bInfo": true,
+"aaSorting": [
+[
+4,
+"desc"
+]
+],
+"sScrollX": "100%",
+"bScrollCollapse": true,
+"fnInitComplete": "##function () { new FixedColumns( oTable, {
+\"iLeftColumns\": 1,
+\"iLeftWidth\": 170
+} );}##"
+},
+"customExternalJS":"function prepareTableListFilterUrl(){
+
+var agencyIds = getNamedFilterCriteria('fagencyId');
+if(agencyIds.length==0 && eval(document.getElementById('fHideAgencyId'))){
+agencyIds = document.getElementById('fHideAgencyId').value;
+}
+var oVendorIds = getNamedFilterCriteria('fvendorId');
+var oCurAmount = getNamedFilterCriteria('fCurAmount');
+var oAwdMethod = getNamedFilterCriteria('fAwdMethodId');
+var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
+var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
+var oMwbeVendorId = getNamedFilterCriteria('fmwbeVendorId');
+
+var  cUrl = oTable.fnSettings().sAjaxSource;
+cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
+cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
+cUrl = adjustUrlParameter(cUrl,'curamtr',oCurAmount);
+cUrl = adjustUrlParameter(cUrl,'awdmethod',oAwdMethod);
+cUrl = adjustUrlParameter(cUrl,'cindustry',oIndustryType);
+cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
+cUrl = adjustUrlParameter(cUrl,'mwbe_vendor',oMwbeVendorId);
+
+
+//remove advance search param if narrow down search is present for amount
+// if(oCurAmount != null && oCurAmount.length > 0 ){
+//      cUrl = adjustUrlParameter(cUrl,'curamt','');
+// }
+
+return cUrl;
+}
+"
+}
