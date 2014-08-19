@@ -65,26 +65,26 @@
     }
     if(preg_match('/pending/',$_GET['q'])){    
     	$sql = ' select
-			v.legal_name
+			v.legal_name,a1.vendor_id
 			, sum(revised_maximum_amount) current_amount_sum
 			, count(fms_contract_number) total_contracts		
 		from {pending_contracts} a1     
 	    join {vendor} v on v.vendor_id =  a1.vendor_id
 	    join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
    		' . $where_filter . '     
-   		group by v.legal_name  
-    	order by 2 desc limit 10';
+   		group by v.legal_name  ,a1.vendor_id
+    	order by 3 desc limit 10';
     }else{    
     	$sql = ' select
-			v.legal_name
+			v.legal_name ,a1.vendor_id
 			, sum(maximum_contract_amount) current_amount_sum
 			, count(contract_number) total_contracts		
 		from {aggregateon_mwbe_contracts_cumulative_spending} a1     
 	    join {vendor} v on v.vendor_id =  a1.vendor_id
 	    join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
    		' . $where_filter . '     
-   		group by v.legal_name  
-    	order by 2 desc limit 10';
+   		group by v.legal_name  ,a1.vendor_id
+    	order by 3 desc limit 10';
     }
     $node->data  = _checkbook_project_execute_sql($sql);
 	  
@@ -101,6 +101,10 @@
 	 						'Number of M/WBE Contracts: ' . $row['total_contracts'].  '<br/>' .
 	 						'Amount: ' . custom_number_formatter_format($row['current_amount_sum'] ,2, '$').  '<br/>' 
 	 						; 
+			$link= CustomURLHelper::prepareUrl('contracts_landing', ContractURLHelper::$landingPageParams, array('expandBottomCont'=>'true'), 
+						array('vendor'=>$row['vendor_id']) );
+			$series_new[$index]->url = 	$link;					
+
 			$series_new[$index]->y = (float)$row['current_amount_sum'];
 			$series_new[$index]->tooltip_label = $tooltip_label;
 			$node->widgetConfig->gridConfig->data[] = array($row['legal_name'],$row['total_contracts'],$row['current_amount_sum'] );
@@ -142,7 +146,8 @@
                 "stacking": "normal",
                 "dataLabels": {
                     "enabled": false
-                }             
+                }  ,
+                "point": {"events": {"function": "clickEvent"}}           
             }
     },
     "xAxis": {
@@ -178,4 +183,5 @@ yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
 tooltipformatter^^'formatter' :
 function() {return this.point.tooltip_label ;
 }
+##clickEvent^^"click": function(){location.href = Drupal.settings.basePath+this.url; }
 </function>

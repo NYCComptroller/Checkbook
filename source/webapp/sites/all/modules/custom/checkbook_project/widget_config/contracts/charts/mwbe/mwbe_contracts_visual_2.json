@@ -46,22 +46,24 @@
     }
     if(preg_match('/revenue/',$_GET['q'])){
     	$where_filter .= \" and rd.document_code in ('RCT1') \";
+    	$node->document_codes = 'RCT1';
     }else if(preg_match('/pending/',$_GET['q'])){
-    	
+    	$node->document_codes = 'MMA1~MA1~MAR~CT1~CTA1~CTR';    	
     }else{
     	$where_filter .= \" and rd.document_code in ('MA1','CT1','CTA1') \";
+    	$node->document_codes = 'MA1~CT1~CTA1';
     }
     
     $year_id = _getRequestParamValue('year');
 	$where_filter .= ' and a1.fiscal_year_id in (' . $year_id . ','.  ($year_id -1) . ')';
-    $sql = 'select rmo.month_name ,year_value, sum(spending_amount) spending_amount_sum
+    $sql = 'select rmo.month_name ,a1.month_id,year_value, sum(spending_amount) spending_amount_sum
     from {aggregateon_mwbe_contracts_spending_by_month} a1 
     join {ref_minority_type} rm on rm.minority_type_id = a1.minority_type_id
     join {ref_month} rmo on a1.month_id = rmo.month_id
     join {ref_year} ry on a1.fiscal_year_id = ry.year_id  
     join {ref_document_code} rd on a1.document_code_id = rd.document_code_id     
    ' . $where_filter . '
-    group by year_value, rmo.month_value ,rmo.month_name
+    group by year_value, rmo.month_value ,rmo.month_name,a1.month_id
     order by year_value,  rmo.month_value
      ';
     
@@ -80,6 +82,7 @@
 	$series_prev = array();
 	
 	foreach($node->data as $row){
+	
 		$tooltip_label = 
 	 						'Month: ' . $row['month_name'].  '<br/>' .
 	 						'Amount: '. custom_number_formatter_format($row['spending_amount_sum'],2,'$')   . '<br/>' ; 
@@ -87,7 +90,12 @@
 		$item->y = (float)$row['spending_amount_sum'];
 		$item->month = $row['month_name'];
 		$item->tooltip_label = $tooltip_label;
-		$item->custom_label = custom_number_formatter_format($series[$key]->y/($series[$key]->y + $non_mwbe_data[$key] ) *100,1,null,'%') ;	
+		$item->custom_label = custom_number_formatter_format($series[$key]->y/($series[$key]->y + $non_mwbe_data[$key] ) *100,1,null,'%') ;
+		
+        $url = CustomURLHelper::prepareUrl('contract/spending/transactions',  ContractURLHelper::$transactionPageParams, NULL, 
+       			array('doctype' => $node->document_codes, 'month' => $row['month_id'],'newwindow'=>NULL));
+		$item->url =  $url;		
+			
 	    if($row['year_value'] == $year){
 	    	 $series_current[] = $item;
 	    }else{
@@ -145,7 +153,8 @@
 "chartConfig" : {
     "plotOptions": {
             "series": {
-                "cursor": "pointer"
+                "cursor": "pointer",
+                "point": {"events": {"function": "clickEvent"}}
               }
     },
     "xAxis": {
@@ -176,4 +185,5 @@ yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
 tooltipformatter^^'formatter' :
 function() {return this.point.tooltip_label ;
 }
+##clickEvent^^"click": function(){  window.open(Drupal.settings.basePath+this.options.url, '_blank', 'menubar=no,toolbar=no,location=no,resizable=yes,scrollbars=yes,personalbar=no,chrome=yes,height=700,width=980');}
 </function>
