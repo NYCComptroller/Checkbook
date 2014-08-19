@@ -78,9 +78,14 @@
 	$year_id = _getRequestParamValue('year');
 	$year = _getYearValueFromID($year_id);
 	
-	$series_current = array();
-	$series_prev = array();
-	
+	$series_current_temp = array();
+	$series_prev_temp = array();
+	if( _getRequestParamValue('yeartype') == 'C' ){
+		$categories = array('January','February','March','April','May','June','July','August','September','October','November','December');
+	}else{
+		$categories = array('July','August','September','October','November','December','January','February','March','April','May','June');
+		$node->widgetConfig->chartConfig->xAxis->categories = $categories;
+	}
 	foreach($node->data as $row){
 	
 		$tooltip_label = 
@@ -95,19 +100,29 @@
         $url = CustomURLHelper::prepareUrl('contract/spending/transactions',  ContractURLHelper::$transactionPageParams, NULL, 
        			array('doctype' => $node->document_codes, 'month' => $row['month_id'],'newwindow'=>NULL));
 		$item->url =  $url;		
-			
 	    if($row['year_value'] == $year){
-	    	 $series_current[] = $item;
+	    	 $series_current_temp[trim($row['month_name'])] = $item;
 	    }else{
-	    	$series_previous[] = $item;
+	    	$series_previous_temp[trim($row['month_name'])] = $item;
 	    }
 	    
 	}
+	
+	
+
+	$series_current = array();
+	$series_previous = array();
+	
+	foreach($categories as $category){
+		$series_current[] = $series_current_temp[$category];
+		$series_previous[] = $series_previous_temp[$category] ; 
+	}
+	
 	$index = 0;
 	$node->widgetConfig->gridConfig->table_columns[1]->labelAlias =  $year;
 	
 	while($index <= 11){
-	    $node->widgetConfig->gridConfig->data[] = array($series_current[$index]->month,$series_current[$index]->y,$series_previous[$index]->y );	    	
+	    $node->widgetConfig->gridConfig->data[] = array($categories[$index],$series_current[$index]->y,$series_previous[$index]->y );	    	
 		$index +=1;
 	}
 	
