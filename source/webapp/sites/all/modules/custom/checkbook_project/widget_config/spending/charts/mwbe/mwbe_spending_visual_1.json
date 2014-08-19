@@ -163,7 +163,6 @@ echo '<div class=\"chart-right\">
 	"colors":["#7DB7E5"],
     "plotOptions": {
             "series": {
-                "cursor": "pointer"   ,
                 "dataLabels": {
                     "enabled": true,
                     "format": "{point.custom_label}"
