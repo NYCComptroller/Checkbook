@@ -95,7 +95,7 @@ return $header;
 },
 "table_columns": [
 {"labelAlias": "contract_id","column": "contract_link","sortSourceColumn":"contract_number"},
-{"labelAlias": "sub_contract_reference_id","column": "","sortSourceColumn":""},
+{"labelAlias": "sub_contract_reference_id","column": "","sortSourceColumn":"contract_number"},
 {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description"},
 {"labelAlias": "version","column": "document_version","headerClass":"centrig"},
 {"labelAlias": "current_amount","column": "formatted_current_amount","sortSourceColumn":"maximum_contract_amount","headerClass":"centrig"},
