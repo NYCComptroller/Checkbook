@@ -63,7 +63,16 @@ echo '<div class=\"chart-right\">
     
 ",
 "widgetUpdateJSONConfig":"
-	$node->widgetConfig->chartTitle = 'Spending by ' . MappingUtil::getCurrenEhtnicityName() .' Share';
+
+	$mwbe_filter = _getRequestParamValue('mwbe');
+	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){	
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName()  . ' Spending';
+	}else{
+		$node->widgetConfig->chartTitle = 'Spending by ' . MappingUtil::getCurrenEhtnicityName() .' Share';
+		
+	}
+
+	
 	$mwbe_data = array();
 	 foreach ($node->data as $row){
 	 

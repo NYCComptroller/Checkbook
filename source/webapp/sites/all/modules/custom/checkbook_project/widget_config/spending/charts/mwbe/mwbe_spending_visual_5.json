@@ -116,7 +116,13 @@
 		
 	}
 	
-	$node->widgetConfig->chartTitle = 'Top Ten Prime Vendors by ' . MappingUtil::getCurrenEhtnicityName() .' Spending';	
+	$mwbe_filter = _getRequestParamValue('mwbe');
+	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){			
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName()  . ' Top Ten Prime Vendors Spending';
+	}else{
+		$node->widgetConfig->chartTitle = 'Top Ten Prime Vendors by ' . MappingUtil::getCurrenEhtnicityName() .' Spending';		
+	}
+		
 	
 	$index = 0;
 	foreach($node->data as $row){
