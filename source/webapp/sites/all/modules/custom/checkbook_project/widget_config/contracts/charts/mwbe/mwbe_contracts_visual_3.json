@@ -17,7 +17,7 @@
                   "columnType": "text"
              },
              {
-                  "labelAlias": "Number",
+                  "labelAlias": "Number of MWBE Contracts",
                   "columnType": "number"
              },
              {
