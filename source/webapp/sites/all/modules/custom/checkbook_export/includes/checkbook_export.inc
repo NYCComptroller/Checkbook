@@ -70,7 +70,11 @@ function _checkbook_export_grid_transactions(){
     		$index = 0;
     		while($index <count($node->widgetConfig->gridConfig->table_columns)){ 
     			$columnValue = html_entity_decode($datarow[$index]);
-    			$columnValue = str_replace('"',chr(34).'"',$columnValue);    			
+    			$columnValue = str_replace('"',chr(34).'"',$columnValue); 
+				if($node->widgetConfig->gridConfig->table_columns[$index]->formatType =="amount"){
+					$columnValue = ($columnValue == null) ? 0:$columnValue;
+				}
+    			
     			echo (($index == 0) ? ('"'.$columnValue.'"') : (',"'.$columnValue.'"'));
     			$index +=1;
     		}
