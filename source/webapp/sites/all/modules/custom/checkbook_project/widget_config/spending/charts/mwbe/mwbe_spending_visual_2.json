@@ -115,7 +115,9 @@
 			$index += 1; 	
 		}	
 	}
-	$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() .  ' Spending Share';
+	
+	
+	$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() .  ' Total Spending Share';
 	$node->widgetConfig->chartConfig->series[0]->name = 'Fiscal Years';
 	$node->widgetConfig->chartConfig->series[0]->type = 'column';
 	$node->widgetConfig->chartConfig->series[0]->pointWidth = 80;
