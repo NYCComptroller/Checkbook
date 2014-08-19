@@ -68,8 +68,10 @@ function _checkbook_export_grid_transactions(){
     	echo "\r\n";
     	foreach ($node->widgetConfig->gridConfig->data as $datarow) {
     		$index = 0;
-    		while($index <count($node->widgetConfig->gridConfig->table_columns)){    			
-    				echo $datarow[$index].",";
+    		while($index <count($node->widgetConfig->gridConfig->table_columns)){ 
+    			$columnValue = html_entity_decode($datarow[$index]);
+    			$columnValue = str_replace('"',chr(34).'"',$columnValue);    			
+    			echo (($index == 0) ? ('"'.$columnValue.'"') : (',"'.$columnValue.'"'));
     			$index +=1;
     		}
     		echo "\r\n";
