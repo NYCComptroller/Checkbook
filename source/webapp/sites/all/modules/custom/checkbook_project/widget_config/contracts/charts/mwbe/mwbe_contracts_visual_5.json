@@ -126,7 +126,12 @@
 	}else{
 		$contract_type = 'Expense';
 	}
-	$node->widgetConfig->chartTitle = 'Top Ten Prime Vendors by ' .MappingUtil::getCurrenEhtnicityName() . ' ' . $status . ' ' . $contract_type .  ' Contracts';  
+	$mwbe_filter = _getRequestParamValue('mwbe');
+	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){		
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Top Ten Prime Vendors by ' . $status . ' ' . $contract_type .  ' Contracts';
+	}else{
+		$node->widgetConfig->chartTitle =  'Top Ten ' .  MappingUtil::getCurrenEhtnicityName() . ' Prime Vendors by '  .$status . ' ' . $contract_type .  ' Contracts';
+	}  
 	
 ",
 "chartConfig" : {

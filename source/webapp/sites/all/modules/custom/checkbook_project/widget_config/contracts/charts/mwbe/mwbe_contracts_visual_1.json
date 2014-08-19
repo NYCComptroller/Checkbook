@@ -45,7 +45,7 @@
     }else if(preg_match('/pending/',$_GET['q'])){
     	
     }else{
-    	$where_filter .= \" and rd.document_code in ('CT1','CTA1') \";
+    	$where_filter .= \" and rd.document_code in ('MA1','CT1','CTA1') \";
     }
     
     

@@ -28,6 +28,18 @@ class MappingUtil {
         'Total M/WBE' => array(2,3,4,5,9),
 //        array('?') =>'Emerging'
     );
+    
+    
+    private static $minority_type_category_map_multi_chart = array(
+    		'Black American' => array(2),
+    		'Hispanic American' => array(3),
+    		'Asian American' => array(4,5),
+    		'Non-M/WBE' => array(7),
+    		'Women' => array(9),
+    		'Individuals and Others' => array(11),
+    		'M/WBE' => array(2,3,4,5,9),
+    		//        array('?') =>'Emerging'
+    );
 
 
     /** Returns the M/WBE category name based on the minority_type_id mapping */
@@ -44,7 +56,7 @@ class MappingUtil {
     static function getCurrenEhtnicityName() {
     	$mwbe_url_params = explode('~',_getRequestParamValue('mwbe'));
     	
-    	foreach(self::$minority_type_category_map_multi as $key=>$values){
+    	foreach(self::$minority_type_category_map_multi_chart as $key=>$values){
     		if(count(array_diff($mwbe_url_params, $values)) == 0){
     			return $key;
     		}
