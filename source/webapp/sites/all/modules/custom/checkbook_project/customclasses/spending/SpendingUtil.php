@@ -124,7 +124,12 @@ class SpendingUtil{
 
     }
 
-    /** Returns Spending Footer Url based on values from current path */
+    /**
+     * Returns Spending Footer Url based on values from current path
+     *
+     * @param $node
+     * @return string
+     */
     static function getSpendingFooterUrl($node){
         return '/panel_html/spending_transactions/spending/transactions'
         . _checkbook_project_get_url_param_string("vendor")
@@ -136,7 +141,13 @@ class SpendingUtil{
         . _checkbook_append_url_params();
     }
 
-    /** Returns Spending Footer Url based on values from current path */
+    /**
+     * Returns Spending Footer Url based on values from current path
+     *
+     * @param $node
+     * @param $row
+     * @return string
+     */
     static function getSpendingLinkUrl($node, $row){
         return '/panel_html/spending_transactions/spending/transactions'
         . _checkbook_project_get_url_param_string("agency")
@@ -149,7 +160,12 @@ class SpendingUtil{
 
     }
 
-    /** Returns Spending Footer Url based on values from current path */
+    /** Returns Spending Footer Url based on values from current path,
+     *
+     * @param $node
+     * @param $row
+     * @return string
+     */
     static function getAgencyNameLinkUrl($node, $row){
         //agency_name_link
         $url = '/spending_landing'
@@ -163,7 +179,13 @@ class SpendingUtil{
         return $url;
     }
 
-    /** Returns Agency Amount Link Url based on values from current path & data row */
+    /**
+     * Returns Agency Amount Link Url based on values from current path & data row
+     *
+     * @param $node
+     * @param $row
+     * @return string
+     */
     static function getAgencyAmountLinkUrl($node, $row){
         //agency_amount_link
         return '/panel_html/spending_transactions/spending/transactions'
@@ -176,7 +198,13 @@ class SpendingUtil{
         . _checkbook_append_url_params();
     }
 
-    /** Returns Vendor Name Link Url based on values from current path & data row */
+    /**
+     * Returns Vendor Name Link Url based on values from current path & data row,
+     *
+     * @param $node
+     * @param $row
+     * @return string
+     */
     static function getVendorNameLinkUrl($node, $row){
         //vendor_name_link
         return '/spending_landing'
@@ -188,7 +216,13 @@ class SpendingUtil{
         . '/vendor/' . (isset($row["vendor_id"]) ? $row["vendor_id"] : $row["vendor_vendor"]);
     }
 
-    /** Returns Vendor Amount Link Url based on values from current path & data row */
+    /**
+     * Returns Vendor Amount Link Url based on values from current path & data row
+     *
+     * @param $node
+     * @param $row
+     * @return string
+     */
     static function getVendorAmountLinkUrl($node, $row){
         //vendor_amount_link
         return '/panel_html/spending_transactions/spending/transactions'
@@ -201,7 +235,13 @@ class SpendingUtil{
         . _checkbook_append_url_params();
     }
 
-    /** Returns Department Amount Link Url based on values from current path & data row */
+    /**
+     * Returns Department Amount Link Url based on values from current path & data row
+     *
+     * @param $node
+     * @param $row
+     * @return string
+     */
     static function getDepartmentAmountLinkUrl($node, $row){
         //department_amount_link
         return '/panel_html/spending_transactions/spending/transactions'
@@ -229,7 +269,13 @@ class SpendingUtil{
         . _checkbook_append_url_params();
     }
 
-    /** Returns Contract Amount Link Url based on values from current path & data row */
+    /**
+     * Returns Contract Amount Link Url based on values from current path & data row
+     *
+     * @param $node
+     * @param $row
+     * @return string
+     */
     static function getContractAmountLinkUrl($node, $row){
         //contract_amount_link
         return '/panel_html/spending_transactions/spending/transactions'
@@ -239,7 +285,13 @@ class SpendingUtil{
         . _checkbook_append_url_params();
     }
 
-    /** Returns Contract Number Link Url based on values from current path & data row */
+    /**
+     * Returns Contract Number Link Url based on values from current path & data row
+     *
+     * @param $node
+     * @param $row
+     * @return string
+     */
     static function getContractNumberLinkUrl($node, $row){
         //contract_number_link
         return '/contract_details'
@@ -248,7 +300,13 @@ class SpendingUtil{
         .'/newwindow';
     }
 
-    /** Returns Industry Name Link Url based on values from current path & data row */
+    /**
+     * Returns Industry Name Link Url based on values from current path & data row
+     *
+     * @param $node
+     * @param $row
+     * @return string
+     */
     static function getIndustryNameLinkUrl($node, $row){
         //industry_name_link
         return '/spending_landing'
@@ -260,7 +318,13 @@ class SpendingUtil{
         . '/industry/'. $row['industry_industry_industry_type_id'];
     }
 
-    /** Returns Industry Ytd Spending Link Url based on values from current path & data row */
+    /**
+     * Returns Industry Ytd Spending Link Url based on values from current path & data row
+     *
+     * @param $node
+     * @param $row
+     * @return string
+     */
     static function getIndustryYtdSpendingLinkUrl($node, $row){
         //ytd_spending_link
         return '/panel_html/spending_transactions/spending/transactions'
@@ -280,12 +344,31 @@ class SpendingUtil{
     }
 
     /**
+     * Checks to see if this is from the Advanced search page,
+     * if so, need to append the data source but not the m/wbe parameter.
+     */
+    static function getDataSourceParams(){
+        if(self::isAdvancedSearchResults()) {
+            $data_source = _getRequestParamValue("datasource");
+            return isset($data_source) ? "/datasource/checkbook_oge" : "";
+        }
+        return _checkbook_append_url_params();
+    }
+
+    /**
      * Returns true if this is from spending advanced search for citywide
      OR if this is from the transaction page for M/WBE.
      */
     function showMwbeFields() {
         $is_mwbe = _checkbook_check_is_mwbe_page();
-        $is_mwbe = $is_mwbe || (!_checkbook_check_isEDCPage() && _getRequestParamValue('dtsmnid') == null);
+        $is_mwbe = $is_mwbe || (!_checkbook_check_isEDCPage() && self::isAdvancedSearchResults());
         return $is_mwbe;
+    }
+
+    /**
+     * Returns true if this is from spending advanced search cityWide
+     */
+    function isAdvancedSearchResults() {
+        return (_getRequestParamValue('dtsmnid') == null);
     }
 }
