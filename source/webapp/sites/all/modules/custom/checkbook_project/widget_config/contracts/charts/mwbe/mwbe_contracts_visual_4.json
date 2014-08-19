@@ -64,7 +64,7 @@
     }else if(preg_match('/pending/',$_GET['q'])){
     	
     }else{
-    	$where_filter .= \" and rd.document_code in ('CT1','CTA1') \";
+    	$where_filter .= \" and rd.document_code in ('MA1','CT1','CTA1') \";
     }
     if(preg_match('/pending/',$_GET['q'])){    
     	$sql = ' select
@@ -134,7 +134,12 @@
 	}else{
 		$contract_type = 'Expense';
 	}
-	$node->widgetConfig->chartTitle = 'Top Ten ' . MappingUtil::getCurrenEhtnicityName() . ' ' . $status . ' ' . $contract_type .  ' Contracts  by Current Amount';
+	$mwbe_filter = _getRequestParamValue('mwbe');
+	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){	
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Top Ten ' . $status . ' ' . $contract_type .  ' Contracts  by Current Amount';
+	}else{
+		$node->widgetConfig->chartTitle = 'Top Ten ' . MappingUtil::getCurrenEhtnicityName() . ' ' . $status . ' ' . $contract_type .  ' Contracts  by Current Amount';
+	}
 ",
 "chartConfig" : {
 	"colors":["#7DB7E5"],
