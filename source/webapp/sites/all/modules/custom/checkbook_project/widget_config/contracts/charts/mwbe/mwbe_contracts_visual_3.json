@@ -77,7 +77,7 @@
     	join {ref_agency} ra on ra.agency_id =  a1.document_agency_id
    	 	join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
    		' . $where_filter . '     
-   		group by a1.document_agency_name  
+   		group by a1.document_agency_name  ,a1.document_agency_id
     	order by 3 desc limit 10';
     }else{   
     $sql = ' select
