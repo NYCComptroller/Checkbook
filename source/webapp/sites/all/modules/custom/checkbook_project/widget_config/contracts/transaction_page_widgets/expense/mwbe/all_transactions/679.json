@@ -179,7 +179,7 @@ return $parameters;
 {"sClass":"number","sWidth":"125px","asSorting": [ "desc","asc" ]},
 {"sClass":"number","sWidth":"125px","asSorting": [ "desc","asc" ]},
 {"sClass":"text pad-left","sWidth":"170px","asSorting": [ "asc","desc" ]},
-{"sClass":"text pad-left","sWidth":"170px","asSorting": [ "asc","desc" ]},
+{"sClass":"number pad-left","sWidth":"100px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"160px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"165px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"165px","asSorting": [ "asc","desc" ]},
