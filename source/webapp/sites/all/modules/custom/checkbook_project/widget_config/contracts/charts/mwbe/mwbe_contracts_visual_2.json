@@ -97,13 +97,17 @@
 		$item->tooltip_label = $tooltip_label;
 		$item->custom_label = custom_number_formatter_format($series[$key]->y/($series[$key]->y + $non_mwbe_data[$key] ) *100,1,null,'%') ;
 		
-        $url = CustomURLHelper::prepareUrl('contract/spending/transactions',  ContractURLHelper::$transactionPageParams, NULL, 
-       			array('doctype' => $node->document_codes, 'month' => $row['month_id'],'newwindow'=>NULL));
-		$item->url =  $url;		
 	    if($row['year_value'] == $year){
 	    	 $series_current_temp[trim($row['month_name'])] = $item;
+	        $url = CustomURLHelper::prepareUrl('contract/spending/transactions',  ContractURLHelper::$transactionPageParams, NULL, 
+       			array('doctype' => $node->document_codes, 'month' => $row['month_id'],'newwindow'=>NULL));
+			$item->url =  $url;		
+	    	 
 	    }else{
 	    	$series_previous_temp[trim($row['month_name'])] = $item;
+	    	        $url = CustomURLHelper::prepareUrl('contract/spending/transactions',  ContractURLHelper::$transactionPageParams, NULL, 
+       			array('doctype' => $node->document_codes, 'month' => $row['month_id'],'newwindow'=>NULL),true);
+			$item->url =  $url;			    	
 	    }
 	    
 	}
