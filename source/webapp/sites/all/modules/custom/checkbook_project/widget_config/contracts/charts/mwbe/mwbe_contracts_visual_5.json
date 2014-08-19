@@ -18,7 +18,8 @@
              },
              {
                   "labelAlias": "Number of M/WBE Contracts",
-                  "columnType": "number"
+                  "columnType": "number",
+                  "formatType": "number"
              },
              {
                   "labelAlias": "Amount",
