@@ -10,6 +10,7 @@
         "template":"chart_grid_view",
         "domain":"spending",
         "html_class":"chart-grid-view-table three-columns",
+        "sortColumn":1,
         "table_columns": [
             {
                   "labelAlias": "Contract ID",
