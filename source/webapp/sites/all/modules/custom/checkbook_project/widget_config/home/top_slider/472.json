@@ -2,6 +2,13 @@
     "widgetType": "phpparser",
     "no_results_content": "No Results Found",
     "cleanURLParameters":["year","calyear","agency","yeartype","awdmethod","vendor","csize","cindustry","magid","mwbe"],
+    "widgetPreprocessJSON":"
+    
+    if(preg_match('/smnid/',$_GET['q'])){
+    	unset($node->widgetConfig->model->series[5]->seriesURLParamMap->mwbe);
+    	unset($node->widgetConfig->model->series[6]->seriesURLParamMap->mwbe);
+    }
+    ",
     "model": {
         "join": {
             "method": "Union"
