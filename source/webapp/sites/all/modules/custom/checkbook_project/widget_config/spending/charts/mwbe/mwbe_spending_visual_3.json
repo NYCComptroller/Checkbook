@@ -177,7 +177,6 @@
 "chartConfig" : {
     "plotOptions": {
             "series": {
-                "cursor": "pointer"   ,
                 "stacking": "normal",
                 "dataLabels": {
                     "enabled": true,

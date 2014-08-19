@@ -172,7 +172,8 @@ function _widget_data_tables_ajaxdata_json($node){
             $rowarray = array();
             if(is_array($node->widgetConfig->table_columns)){
                 foreach ($node->widgetConfig->table_columns as $row){
-                    if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == _getRequestParamValue('datasource')))){
+                    if(check_node_flag_visibilty($row->visibility_flag, $node)){
+                        if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == _getRequestParamValue('datasource')))){
                         if($node->customDataPaddings[$row->column] > 0){
                             $style = "style='margin-right:" . $node->customDataPaddings[$row->column] *8  . "px'";
                         }
@@ -180,6 +181,7 @@ function _widget_data_tables_ajaxdata_json($node){
                             $style = "";
                         }
                         $rowarray[] = '<div ' . $style . '>' . $datarow[$row->column] . '</div>';
+                    }
                     }
                 }
             }
@@ -224,7 +226,8 @@ function _widget_data_tables_list_wt_prepare_json($node){
         foreach ($node->data as $datarow) {
             $rowarray = array();
             foreach ($node->widgetConfig->table_columns as $row){
-                if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == _getRequestParamValue('datasource')))){
+                if(check_node_flag_visibilty($row->visibility_flag, $node)){
+                    if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == _getRequestParamValue('datasource')))){
                     if ($row->isWidget){
                         $widgetnode = node_load($row->widgetNid);
                         widget_set_uid($widgetnode,$i . '-' . uniqid());
@@ -256,6 +259,7 @@ function _widget_data_tables_list_wt_prepare_json($node){
                     } else {
                         $rowarray[] =  $datarow[$row->column];
                     }
+                }
                 }
             }
             $response['aaData'][] = $rowarray;
@@ -631,7 +635,7 @@ function widget_data_tables_add_js($node){
         $aoCols = get_object_vars($value);
         
         $visibility_flag = check_node_flag_visibilty($aoCols['visibility_flag'],$node);
-        if( ((isset($aoCols['datasource']) && _getRequestParamValue('datasource') == isset($aoCols['datasource'])))){
+        if($visibility_flag && ((isset($aoCols['datasource']) && _getRequestParamValue('datasource') == isset($aoCols['datasource'])))){
             array_push($newAolcols, $value);
         }else if((!isset($aoCols['datasource'])) && $visibility_flag){
         	array_push($newAolcols, $value);

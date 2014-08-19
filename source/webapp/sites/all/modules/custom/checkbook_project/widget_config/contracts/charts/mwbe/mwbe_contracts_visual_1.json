@@ -45,7 +45,7 @@
     }else if(preg_match('/pending/',$_GET['q'])){
     	
     }else{
-    	$where_filter .= \" and rd.document_code in ('CT1','CTA1') \";
+    	$where_filter .= \" and rd.document_code in ('MA1','CT1','CTA1') \";
     }
     
     
@@ -149,14 +149,15 @@
 		$status = 'Registered';
 	}
 	
+	$contract_type = 'Expense';
 	if(preg_match('/revenue/',$_GET['q'])){
 		$contract_type = 'Revenue';
-	}if(preg_match('/pending_expense/',$_GET['q'])){
+	}
+	if(preg_match('/pending_exp/',$_GET['q'])){
 		$contract_type = 'Pending Expense';
-	}if(preg_match('/pending_revenue/',$_GET['q'])){
+	}
+	if(preg_match('/pending_rev/',$_GET['q'])){
 		$contract_type = 'Pending Revenue';
-	}else{
-		$contract_type = 'Expense';
 	}
 	$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() .' ' . $status . ' ' . $contract_type .  ' Contracts Share';
 																		 
@@ -165,7 +166,6 @@
 	"colors":["#7DB7E5"],
     "plotOptions": {
             "series": {
-                "cursor": "pointer"   ,
                 "stacking": "normal",
                 "minPointLength":30 ,
                 "dataLabels": {
