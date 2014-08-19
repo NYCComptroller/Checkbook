@@ -60,11 +60,8 @@
 "noDataInitialLoad":true,
 "html_class": "initiative-table transaction-table",
 "no_results_content":"No Results Found",
-"dataset": "checkbook:fact_disbursement_line_item",
-"preProcessConfiguration":"
-    $node->is_mwbe = SpendingUtil::showMwbeFields();
-    if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:fact_disbursement_line_item_mwbe';
-",
+"dataset": "checkbook:fact_disbursement_line_item_mwbe",
+"preProcessConfiguration":"$node->is_mwbe = true;",
 "columns": [
     "budget_name@checkbook:oge_contract",
     "oge_contract_number@checkbook:oge_contract",
