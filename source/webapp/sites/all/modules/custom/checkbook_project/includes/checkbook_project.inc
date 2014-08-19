@@ -1405,13 +1405,16 @@ function format_string_to_date($string){
  * @return request parameter value
  */
 function _getLastRequestParamValue($url =  null, $param = null){
-
     $value = NULL;
     if($url == null) $url = $_GET['q'];
     $urlPath = drupal_get_path_alias($url);
     $pathParams = explode('/', $urlPath);
-    if($param == null)
+    if($param == null){    	
         $paramName = $pathParams[count($pathParams)-2];
+        if($paramName == "mwbe"){
+        	$paramName = $pathParams[count($pathParams)-4];
+        }
+    }
     else
         $paramName = $param;
     $index = array_search($paramName,$pathParams);
