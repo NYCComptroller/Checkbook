@@ -38,7 +38,32 @@
         $where_filter = ' where ' . implode(' and ' , $where_filters);
     }
     
-    $sql = 'select  agency_name , 
+    $mwbe_filter = _getRequestParamValue('mwbe');
+    $sort_column = 8;
+	switch($mwbe_filter){
+		case '4~5' :
+			$sort_column = 3;
+			break;
+		case '2' :
+			$sort_column = 4;
+			break;
+		case '9' :
+			$sort_column = 5;
+			break;
+		case '3' :
+			$sort_column = 6;
+			break;
+		case '11' :
+			$sort_column = 7;
+			break;
+		case '7' :
+			$sort_column = 9;
+			break;		
+		
+	}
+    
+    
+    $sql = 'select  agency_name , a1.agency_id,
     SUM(
        CASE 
             WHEN minority_type_id = 4 THEN total_spending_amount
@@ -59,7 +84,12 @@
        CASE 
             WHEN minority_type_id = 3 THEN total_spending_amount            
             ELSE 0
-	END) ha_mwbe,	
+	END) ha_mwbe,
+	SUM(
+       CASE 
+            WHEN minority_type_id = 11 THEN total_spending_amount            
+            ELSE 0
+	END) io_nonmwbe,		
 	SUM(
        CASE WHEN minority_type_id = 2 THEN total_spending_amount
             WHEN minority_type_id = 3 THEN total_spending_amount
@@ -76,8 +106,8 @@
 	from {aggregateon_mwbe_spending_coa_entities} a1     
     join {ref_agency} ra on ra.agency_id =  a1.agency_id  
    ' . $where_filter . '
-        group by  agency_name
-    order by 2 desc limit 10';
+        group by  agency_name,a1.agency_id
+    order by ' . $sort_column . ' desc limit 10';
     
     $node->data  = _checkbook_project_execute_sql($sql);
     
@@ -103,11 +133,24 @@
 		case '9' :
 			$amount_column = 'w_mwbe';
 			break;
-
+		case '11' :
+			$amount_column = 'io_nonmwbe';
+			break;	
+		case '7' :
+			$amount_column = 'total_non_mwbe';
+			break;	
+		
+	}
+	$mwbe_filter = _getRequestParamValue('mwbe');
+	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){	
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName()  . ' Spending';
+		
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName()  . ' Top Ten Agencies Spending';
+	}else{
+		$node->widgetConfig->chartTitle = 'Top Ten Agencies by ' . MappingUtil::getCurrenEhtnicityName() .' Spending';
 		
 	}
 	
-	$node->widgetConfig->chartTitle = 'Top Ten Agencies by ' . MappingUtil::getCurrenEhtnicityName() .' Spending';
 	$index = 0;
 	foreach($node->data as $row){
 	 		$tooltip_label = 
@@ -116,6 +159,9 @@
 	 						 MappingUtil::getCurrenEhtnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>' .
 	 						'Non-M/WBE: ' . custom_number_formatter_format( $row['total_non_mwbe'],2,'$').  '<br/>' 
 	 						; 
+			$link= CustomURLHelper::prepareUrl('spending_landing', SpendingUtil::$landingPageParams, array('expandBottomCont'=>'true'), array('agency'=>$row['agency_id']) );	 						
+			$series_new[$index]->url = $link;
+	 						
 			$series_new[$index]->y = (float)$row[$amount_column];
 			$series_new[$index]->tooltip_label = $tooltip_label;
 			$node->widgetConfig->gridConfig->data[] = array($row['agency_name'],(float)$row[$amount_column] );
@@ -132,12 +178,13 @@
 	"colors":["#7DB7E5"],
     "plotOptions": {
             "series": {
-                "cursor": "pointer"   ,
+                "cursor": "pointer"   ,            
                 "stacking": "normal",
                 "dataLabels": {
                     "enabled": false
                 },
-                "minPointLength":3             
+                "minPointLength":3    ,
+                "point": {"events": {"function": "clickEvent"}}         
             }
     },
     "xAxis": {
@@ -173,4 +220,5 @@ yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
 tooltipformatter^^'formatter' :
 function() {return this.point.tooltip_label ;
 }
+##clickEvent^^"click": function(){ location.href = Drupal.settings.basePath+this.options.url;}
 </function>

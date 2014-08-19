@@ -55,6 +55,8 @@ include_once('export_link.php');
               while($index <count($node->widgetConfig->gridConfig->table_columns)){
 				if($node->widgetConfig->gridConfig->table_columns[$index]->formatType == "amount"){
 					echo "<td>".$datarow[$index]."</td>";
+				}elseif($node->widgetConfig->gridConfig->table_columns[$index]->formatType == "number"){
+					echo "<td>".$datarow[$index]."</td>";
 				}else{
 					echo "<td><div class='" .$node->widgetConfig->gridConfig->table_columns[$index]->columnType ."'>".$datarow[$index]."</div></td>";
 				}
@@ -93,7 +95,27 @@ include_once('export_link.php');
 		                        },
 		                    ';
 
-		}else{
+		}elseif($column->formatType == 'number'){
+
+			$aoColumnDefs .= '	{
+				"aTargets": [' . $index.'],
+					"aExportFn":"function",
+					"mDataProp": function ( source, type, val ) {
+							if (type == "set") {
+							source.total_contracts' . $index . ' = val;
+							source.total_contracts_display' . $index . ' =  "<div>" + addCommas(val) + "</div>";
+							return;
+					}else if (type == "display") {
+						return source.total_contracts_display' . $index . ';
+					}
+					return source.total_contracts' . $index . ';
+					},
+					"sClass":"' . $column->columnType .'",
+					"asSorting": [ "desc", "asc" ]
+					},
+				';
+		}
+		else{
 
 			$aoColumnDefs .= '
 		                        {
