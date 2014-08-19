@@ -122,14 +122,15 @@
 		$status = 'Registered';
 	}
 	
+	$contract_type = 'Expense';
 	if(preg_match('/revenue/',$_GET['q'])){
 		$contract_type = 'Revenue';
-	}if(preg_match('/pending_expense/',$_GET['q'])){
+	}
+	if(preg_match('/pending_exp/',$_GET['q'])){
 		$contract_type = 'Pending Expense';
-	}if(preg_match('/pending_revenue/',$_GET['q'])){
+	}
+	if(preg_match('/pending_rev/',$_GET['q'])){
 		$contract_type = 'Pending Revenue';
-	}else{
-		$contract_type = 'Expense';
 	}
 	$mwbe_filter = _getRequestParamValue('mwbe');
 	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){		
