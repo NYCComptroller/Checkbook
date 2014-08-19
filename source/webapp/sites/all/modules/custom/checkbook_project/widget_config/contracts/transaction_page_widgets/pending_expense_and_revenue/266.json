@@ -11,14 +11,6 @@
 	$header .= widget_data_tables_export_link($node);
 	return $header;
 ",
-"preProcessConfiguration":"
-    $current_url = explode('/',$_SERVER['REQUEST_URI']);
-    if($current_url[1] == 'contract' && $current_url[2] == 'search' && $current_url[3] == 'transactions'){
-        $node->is_mwbe = true;
-    }else{
-        $node->is_mwbe = _checkbook_check_is_mwbe_page();
-    }
-",
 "useList":true,
 "getTotalDataCount":true,
 "limit":"35",
@@ -107,8 +99,7 @@
 	    {"labelAlias": "award_method","column": "award_method_formatted","sortSourceColumn":"award_method_name"},
         {"labelAlias": "contract_industry","column": "industry_name_formatted","sortSourceColumn":"industry_type_name@checkbook:industry_type"},
 	    {"labelAlias": "pin","column": "tracking_number"},
-	    {"labelAlias": "apt_pin","column": "board_award_number"},
-        {"labelAlias": "mwbe_category","column":"formatted_minority_name","sortSourceColumn": "minority_type_name","visibility_flag":"is_mwbe"}
+	    {"labelAlias": "apt_pin","column": "board_award_number"}
 	  ],
 "adjustParameters":"
            if(function_exists('_checkbook_project_adjustContractParameterFilters')){
@@ -233,11 +224,6 @@
         {
             "sClass": "text",
             "sWidth": "180px","asSorting": [ "asc","desc" ]
-        },
-        {
-            "sClass": "text",
-            "sWidth": "180px","asSorting": [ "asc","desc" ],
-            "visibility_flag":"is_mwbe"
         }
     ],
     "bInfo": true,
