@@ -10,11 +10,13 @@
  "gridConfig":{
         "template":"chart_grid_view",
         "domain":"contracts",
+        "sortColumn":0,
         "html_class":"chart-grid-view-table three-columns",
         "table_columns": [
             {
                   "labelAlias": "Month",
-                  "columnType": "text"
+                  "columnType": "text",
+                  "formatType": "month"
              },
              {
                   "labelAlias": "Previous",
