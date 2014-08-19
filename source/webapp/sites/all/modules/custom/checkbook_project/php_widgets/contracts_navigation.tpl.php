@@ -79,6 +79,11 @@ if(preg_match('/contracts/',$_GET['q'])){
 	$active_domain_link = RequestUtil::getTopNavURL("spending") ;
 }
 
+if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
+	$mwbe_amount =  0;
+}
+
+
 $active_domain_link = preg_replace('/\/mwbe\/[^\/]*/','',$active_domain_link); 
 $mwbe_filters =  "<div class='main-nav-drop-down' style='display:none'>
   		<ul>
@@ -96,6 +101,15 @@ $mwbe_filters =  "<div class='main-nav-drop-down' style='display:none'>
   		</ul>
   		</div>
   		";
+
+if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
+	$mwbe_amount =  0;
+	$mwbe_filters =  "<div class='main-nav-drop-down' style='display:none'>  		
+  		</div>
+  		";
+	
+}
+
 if($mwbe_amount  == 0){
 	$mwbe_link = l('<div><span class="nav-title">M/WBE</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div>','',$options_disabled);
 }else{
@@ -143,7 +157,7 @@ switch ($arg){
     break;
 }
 
-if(preg_match('/mwbe/',$_GET['q'])){
+if(preg_match('/mwbe/',$_GET['q']) && !preg_match('/smnid/',$_GET['q']) ){
 	$mwbeclass = ' active';
 }
 
