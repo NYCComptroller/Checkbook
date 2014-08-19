@@ -157,8 +157,19 @@ switch ($arg){
     break;
 }
 
-if(preg_match('/mwbe/',$_GET['q']) && !preg_match('/smnid/',$_GET['q']) ){
+if(preg_match('/mwbe/',$_GET['q'])){
 	$mwbeclass = ' active';
+}
+
+
+if(!preg_match('/smnid/',$_GET['q']) && (
+		preg_match('/spending\/transactions/',$_GET['q'])
+		|| preg_match('/contract\/all\/transactions/',$_GET['q'])
+		|| preg_match('/contract\/search\/transactions/',$_GET['q'])
+	)
+	
+){
+	$mwbeclass = ' ';
 }
 
 //TODO: remove placeholder &nbsp; when numbers under each domain are active
