@@ -165,7 +165,6 @@
 	"colors":["#7DB7E5"],
     "plotOptions": {
             "series": {
-                "cursor": "pointer"   ,
                 "stacking": "normal",
                 "minPointLength":30 ,
                 "dataLabels": {
