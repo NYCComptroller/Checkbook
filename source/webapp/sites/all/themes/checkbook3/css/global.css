@@ -1761,7 +1761,7 @@ td.endCol div,
     margin: 0px;
 }
 .dataTable td.childcontracts .jspPane table td div {
-    margin: 13px 0 13px 5px;
+    margin: 13px 0 13px 0px;
 }
 .dataTable td.childcontracts .jspPane table td.number-left div {
      margin: 13px 0 13px 15px;
@@ -1798,6 +1798,11 @@ td.expander span.loader {
     background: url("../images/ajax-loader.gif") no-repeat scroll right center transparent;
 }
 .jspPane{margin-left:25px !important;}
+
+.dataTable td.childcontracts .jspPane {
+    margin-left:30px !important;
+    padding: 0px 14px 0px 0px;
+}
 .jspVerticalBar{
     background: none repeat scroll 0 0 red;
     height: 100%;
