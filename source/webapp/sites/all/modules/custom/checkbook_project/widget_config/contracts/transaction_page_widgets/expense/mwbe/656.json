@@ -44,16 +44,9 @@ return $header;
 "derivedColumns": {
 "child_contrats_link":{
 "type": "expression2",
-"expression": " ($row['has_children'] == 'Y') ? '<span id=dtl_expand class=\"toggler collapsed\"  magid=\"' . $row['original_agreement_id'] . '\" '
-. _checkbook_append_url_params()
-. ( _getRequestParamValue('smnid') != '' ?  ('smnid=\"' . _getRequestParamValue('smnid') . '\"' ) : '')
-. ( _getRequestParamValue('year') != '' ?  ('year=\"' . _getRequestParamValue('year') . '\"' ) : '')
-. ( _getRequestParamValue('calyear') != '' ?  ('calyear=\"' . _getRequestParamValue('calyear') . '\"' ) : '')
-. ( _getRequestParamValue('yeartype') != '' ?  ('yeartype=\"' . _getRequestParamValue('yeartype') . '\"' ) : '')
-. ( _getRequestParamValue('contstatus') != '' ?  ('contstatus=\"' . _getRequestParamValue('contstatus') . '\"' ) : '')
-. ('mastercode=\"' . $row['document_code@checkbook:ref_document_code'] . '\"' )
-. '></span>' : '' "
+"expression": "ContractURLHelper::prepareExpandLink($row, $node)"
 },
+
 "contract_link": {
 "type": "expression2",
 "expression": "ContractURLHelper::prepareExpenseContractLink($row, $node)"
@@ -330,6 +323,7 @@ sUrl = sUrl + ( (yeartype == null || yeartype.length == 0) ?  '' : '/yeartype/'+
 sUrl = sUrl + ( (contstatus == null || contstatus.length == 0) ?  '' : '/contstatus/'+contstatus);
 
 var smnid = jQuery(oElement).attr('smnid');
+
 jQuery.ajax({
 url: sUrl,
 dataType: 'json',
@@ -344,7 +338,6 @@ var row = data[i];
 
 if(smnid == 480 || smnid == 366){
 sOut += '<tr>';
-sOut += '<td  style=\"width:30px\">'+ '&nbsp;'+'</td>';
 sOut += '<td class=\"text\" style=\"width:180px\">'+ (row[1] == null ? '': row[1])+'</td>';
 sOut += '<td class=\"text\" style=\"width:180px\">'+ (row[2] == null ? '': row[2])+'</td>';
 sOut += '<td class=\"text\"  style=\"width:210px\">'+ (row[3] == null ? '': row[3])+'</td>';
@@ -371,7 +364,6 @@ sOut += '<td class=\"text\" style=\"width:150px;\">'+ (row[23] == null ? '': row
 
 }else{
 sOut += '<tr>';
-//sOut += '<td  style=\"width:10px\">'+ '&nbsp;'+'</td>';
 sOut += '<td class=\"text\" style=\"width:180px\">'+ (row[1] == null ? '': row[1])+'</td>';
 sOut += '<td class=\"text\" style=\"width:180px\">'+ (row[2] == null ? '': row[2])+'</td>';
 sOut += '<td class=\"text\"  style=\"width:210px\">'+ (row[3] == null ? '': row[3])+'</td>';
