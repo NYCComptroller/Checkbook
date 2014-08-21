@@ -1512,38 +1512,11 @@ function _checkbook_check_is_mwbe_page() {
     return null != _getRequestParamValue('mwbe');
 }
 
+/** Returns Boolean if this is a sub vendor page */
+function _checkbook_check_is_sub_vendor_page() {
+    return preg_match('"/svendor"',$_GET['q']);
+}
 
-///** Returns the M/WBE category name based on the minority_type_id mapping */
-//function _checkbook_project_get_mwbe_category_by_id($minority_type_id){
-//
-//
-//    $results = '';
-//    switch($minority_type_id) {
-//        case 2:
-//            $results = 'Black American';
-//            break;
-//        case 3:
-//            $results = 'Hispanic American';
-//            break;
-//        case 4:
-//        case 5:
-//            $results = 'Asian American';
-//            break;
-//        case 7:
-//            $results = 'Non-M/WBE';
-//            break;
-//        case 9:
-//            $results = 'Women';
-//            break;
-//        case 11:
-//            $results = 'Individuals and Others';
-//            break;
-////        case ?:
-////            $results = 'Emerging';
-////            break;
-//    }
-//    return $results;
-//}
 
 function _checkbook_is_oge_contract($cont_num){	
 	$rows = _checkbook_project_querydataset('checkbook_oge:oge_contract',array('fms_contract_number'),array('fms_contract_number'=>$cont_num));

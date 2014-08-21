@@ -44,16 +44,9 @@ return $header;
 "derivedColumns": {
 "child_contrats_link":{
 "type": "expression2",
-"expression": " ($row['has_children'] == 'Y') ? '<span id=dtl_expand class=\"toggler collapsed\"  magid=\"' . $row['original_agreement_id'] . '\" '
-. _checkbook_append_url_params()
-. ( _getRequestParamValue('smnid') != '' ?  ('smnid=\"' . _getRequestParamValue('smnid') . '\"' ) : '')
-. ( _getRequestParamValue('year') != '' ?  ('year=\"' . _getRequestParamValue('year') . '\"' ) : '')
-. ( _getRequestParamValue('calyear') != '' ?  ('calyear=\"' . _getRequestParamValue('calyear') . '\"' ) : '')
-. ( _getRequestParamValue('yeartype') != '' ?  ('yeartype=\"' . _getRequestParamValue('yeartype') . '\"' ) : '')
-. ( _getRequestParamValue('contstatus') != '' ?  ('contstatus=\"' . _getRequestParamValue('contstatus') . '\"' ) : '')
-. ('mastercode=\"' . $row['document_code@checkbook:ref_document_code'] . '\"' )
-. '></span>' : '' "
+"expression": "ContractURLHelper::prepareExpandLink($row, $node)"
 },
+
 "contract_link": {
 "type": "expression2",
 "expression": "ContractURLHelper::prepareExpenseContractLink($row, $node)"
@@ -149,7 +142,7 @@ return $header;
 }
 },
 "table_columns": [
-{"label": "<div>&nbsp;</div>","colLabel": "","column": "child_contrats_link","export":false},
+{"label": "<div></div>","colLabel": "","column": "child_contrats_link","export":false},
 {"labelAlias": "contract_id","column": "contract_link","sortSourceColumn":"contract_number"},
 {"labelAlias": "sub_contract_reference_id","column": "","sortSourceColumn":"contract_number","exportColumn":""},
 {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description"},
@@ -253,7 +246,7 @@ $adjustDataTableOptions->fnInitComplete = '##function () { new FixedColumns( oTa
 {"sClass":"number","sWidth":"125px","asSorting": [ "desc","asc" ]},
 {"sClass":"number pad-left","sWidth":"175px","asSorting": [ "desc","asc" ]},
 {"sClass":"text pad-left","sWidth":"175px","asSorting": [ "desc","asc" ]},
-{"sClass":"number pad-left","sWidth":"100px","asSorting": [ "asc","desc" ]},
+{"sClass":"text vers-num","sWidth":"220px","asSorting": [ "asc","desc" ]},
 {"sClass":"text pad-left","sWidth":"220px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"230px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"230px","asSorting": [ "asc","desc" ]},
@@ -261,8 +254,8 @@ $adjustDataTableOptions->fnInitComplete = '##function () { new FixedColumns( oTa
 {"sClass":"text","sWidth":"220px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"100px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"100px","asSorting": [ "asc","desc" ]},
-{"sClass":"number","sWidth":"100px","asSorting": [ "asc","desc" ]},
-{"sClass":"text pad-left","sWidth":"160px","asSorting": [ "asc","desc" ]},
+{"sClass":"text","sWidth":"100px","asSorting": [ "asc","desc" ]},
+{"sClass":"text","sWidth":"160px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"150px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"150px","asSorting": [ "asc","desc" ]}
 ],
@@ -330,6 +323,7 @@ sUrl = sUrl + ( (yeartype == null || yeartype.length == 0) ?  '' : '/yeartype/'+
 sUrl = sUrl + ( (contstatus == null || contstatus.length == 0) ?  '' : '/contstatus/'+contstatus);
 
 var smnid = jQuery(oElement).attr('smnid');
+
 jQuery.ajax({
 url: sUrl,
 dataType: 'json',
@@ -344,7 +338,6 @@ var row = data[i];
 
 if(smnid == 480 || smnid == 366){
 sOut += '<tr>';
-sOut += '<td  style=\"width:30px\">'+ '&nbsp;'+'</td>';
 sOut += '<td class=\"text\" style=\"width:180px\">'+ (row[1] == null ? '': row[1])+'</td>';
 sOut += '<td class=\"text\" style=\"width:180px\">'+ (row[2] == null ? '': row[2])+'</td>';
 sOut += '<td class=\"text\"  style=\"width:210px\">'+ (row[3] == null ? '': row[3])+'</td>';
@@ -371,28 +364,27 @@ sOut += '<td class=\"text\" style=\"width:150px;\">'+ (row[23] == null ? '': row
 
 }else{
 sOut += '<tr>';
-sOut += '<td  style=\"width:10px\">'+ '&nbsp;'+'</td>';
 sOut += '<td class=\"text\" style=\"width:180px\">'+ (row[1] == null ? '': row[1])+'</td>';
 sOut += '<td class=\"text\" style=\"width:180px\">'+ (row[2] == null ? '': row[2])+'</td>';
 sOut += '<td class=\"text\"  style=\"width:210px\">'+ (row[3] == null ? '': row[3])+'</td>';
 sOut += '<td class=\"text vers-num\"  style=\"width:75px\">'+ (row[4] == null ? '': row[4])+'</td>';
 sOut += '<td class=\"text no-sort number-left\"  style=\"width:155px\">'+ (row[5] == null ? '': row[5])+'</td>';
-sOut += '<td class=\"text no-sort number-left\"  style=\"width:155px\">'+ (row[6] == null ? '': row[6])+'</td>';
+sOut += '<td class=\"number\"  style=\"width:125px\">'+ (row[6] == null ? '': row[6])+'</td>';
 sOut += '<td class=\"number\"  style=\"width:125px\">'+ (row[7] == null ? '': row[7])+'</td>';
 sOut += '<td class=\"number\"  style=\"width:125px\">'+ (row[8] == null ? '': row[8])+'</td>';
-sOut += '<td class=\"number\"  style=\"width:125px\">'+ (row[9] == null ? '': row[9])+'</td>';
-sOut += '<td class=\"text number-left\"  style=\"width:190px\">'+ (row[10] == null ? '': row[10])+'</td>';
-sOut += '<td class=\"text\"  style=\"width:190px\">'+ (row[11] == null ? '': row[11])+'</td>';
-sOut += '<td class=\"text\"  style=\"width:230px\">'+ (row[12] == null ? '': row[12])+'</td>';
-sOut += '<td class=\"text\"  style=\"width:230px\">'+ (row[13] == null ? '': row[13])+'</td>';
-sOut += '<td class=\"text\"  style=\"width:220px\">'+ (row[14] == null ? '': row[14])+'</td>';
-sOut += '<td class=\"text\"  style=\"width:220px\">'+ (row[15] == null ? '': row[15])+'</td>';
-sOut += '<td class=\"text\"  style=\"width:100px\">'+ (row[16] == null ? '': row[16])+'</td>';
-sOut += '<td class=\"text\"  style=\"width:100px\">'+ (row[17] == null ? '': row[17])+'</td>';
+sOut += '<td class=\"text pad-left\"  style=\"width:175px\">'+ (row[9] == null ? '': row[9])+'</td>';
+sOut += '<td class=\"text vers-num\"  style=\"width:220px\">'+ (row[10] == null ? '': row[10])+'</td>';
+sOut += '<td class=\"text pad-left\"  style=\"width:220px\">'+ (row[11] == null ? '': row[11])+'</td>';
+sOut += '<td class=\"text\"  style=\"width:230px\">'+ (row[14] == null ? '': row[14])+'</td>';
+sOut += '<td class=\"text\"  style=\"width:230px\">'+ (row[15] == null ? '': row[15])+'</td>';
+sOut += '<td class=\"text\"  style=\"width:220px\">'+ (row[16] == null ? '': row[16])+'</td>';
+sOut += '<td class=\"text\"  style=\"width:220px\">'+ (row[17] == null ? '': row[17])+'</td>';
 sOut += '<td class=\"text\"  style=\"width:100px\">'+ (row[18] == null ? '': row[18])+'</td>';
-sOut += '<td class=\"text\"  style=\"width:160px\">'+ (row[19] == null ? '': row[19])+'</td>';
-sOut += '<td class=\"text\"  style=\"width:150px;\">'+ (row[20] == null ? '': row[20])+'</td>';
-sOut += '<td class=\"text\"  style=\"width:150px;\">'+ (row[21] == null ? '': row[21])+'</td>';
+sOut += '<td class=\"text\"  style=\"width:100px\">'+ (row[19] == null ? '': row[19])+'</td>';
+sOut += '<td class=\"text\"  style=\"width:100px\">'+ (row[20] == null ? '': row[20])+'</td>';
+sOut += '<td class=\"text\"  style=\"width:160px\">'+ (row[21] == null ? '': row[21])+'</td>';
+sOut += '<td class=\"text\"  style=\"width:150px;\">'+ (row[22] == null ? '': row[22])+'</td>';
+sOut += '<td class=\"text\"  style=\"width:150px;\">'+ (row[23] == null ? '': row[23])+'</td>';
 
 }
 sOut += '</tr>';
