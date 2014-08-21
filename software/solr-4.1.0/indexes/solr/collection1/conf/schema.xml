@@ -104,6 +104,9 @@
         <field name="department_name_text" type="text_general" indexed="true" stored="true"/>
         <field name="minority_type_name" type="string_custom" indexed="true" stored="true"/>
         <field name="minority_type_id" type="string_custom" indexed="true" stored="true"/>
+        <field name="is_prime_or_sub" type="string_custom" indexed="true" stored="true"/>
+        <field name="sub_contract_id" type="string_custom" indexed="true" stored="true"/>
+        <field name="prime_vendor_id" type="string_custom" indexed="true" stored="true"/>
 
         <!--
             Checkbook 2.0
@@ -201,7 +204,7 @@
         <field name="spending_commodity_line" type="string_custom" indexed="true" stored="true"/>
         <field name="spending_budget_name" type="string_custom" indexed="true" stored="true"/>
         <field name="spending_budget_name_autocomplete" type="string_autocomplete" indexed="true"/>
-
+        <field name="payment_id" type="string_custom" indexed="true" stored="true"/>
 
         <!--
             Checkbook 2.0

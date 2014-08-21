@@ -1,5 +1,5 @@
 <dataConfig>
-    <dataSource name="db1" type="JdbcDataSource" driver="org.postgresql.Driver" url="jdbc:postgresql://192.168.3.23/checkbook" user="webuser1" password="webuser1" readOnly="true" autoCommit="false" transactionIsolation="TRANSACTION_READ_COMMITTED" holdability="CLOSE_CURSORS_AT_COMMIT"/>
+    <dataSource name="db1" type="JdbcDataSource" driver="org.postgresql.Driver" url="jdbc:postgresql://192.168.3.23/checkbook_mwbe" user="webuser1" password="webuser1" readOnly="true" autoCommit="false" transactionIsolation="TRANSACTION_READ_COMMITTED" holdability="CLOSE_CURSORS_AT_COMMIT"/>
     <dataSource name="db2" type="JdbcDataSource" driver="org.postgresql.Driver" url="jdbc:postgresql://192.168.3.23/checkbook_ogent" user="webuser1" password="webuser1" readOnly="true" autoCommit="false" transactionIsolation="TRANSACTION_READ_COMMITTED" holdability="CLOSE_CURSORS_AT_COMMIT"/>
     <document>
         <entity dataSource="db1" name="budget" query="select
@@ -181,13 +181,17 @@
 				rsc.spending_category_id,
 				lower(rsc.spending_category_name) || '[' || rsc.spending_category_code || ']' spending_category_name_code,
 				rsc.spending_category_name,
-				dlid.minority_type_name,
-				dlid.minority_type_id
-			 from disbursement_line_item_details  dlid left join ref_year ry on dlid.check_eft_issued_nyc_year_id = ry.year_id
-			 left join ref_spending_category rsc on rsc.spending_category_id = dlid.spending_category_id
+				adt.minority_type_name,
+				adt.minority_type_id,
+                adt.payment_id, 
+                adt.prime_vendor_id, 
+                adt.is_prime_or_sub, 
+                adt.sub_contract_id
+			 from all_disbursement_transactions  adt left join ref_year ry on adt.check_eft_issued_nyc_year_id = ry.year_id
+			 left join ref_spending_category rsc on rsc.spending_category_id = adt.spending_category_id
 			 where 
 			'${dataimporter.request.clean}' != 'false'
-      			OR dlid.job_id >= ${dataimporter.request.jobID} 
+      			OR adt.job_id >= ${dataimporter.request.jobID} 
 			">
             <field column="id" name="id" />
             <field column="domain1" name="domain" />
@@ -234,6 +238,10 @@
             <field column="spending_category_name_code" name="spending_category_name_code" />
             <field column="minority_type_name" name="minority_type_name" />
             <field column="minority_type_id" name="minority_type_id" />
+            <field column="payment_id" name="payment_id" />
+            <field column="prime_vendor_id" name="prime_vendor_id" />
+            <field column="is_prime_or_sub" name="is_prime_or_sub" />
+            <field column="sub_contract_id" name="sub_contract_id" />
         </entity>
         <entity dataSource="db2" name="spending_oge"
                 pk="id"
@@ -449,8 +457,11 @@
                 (case when(latest_flag = 'Y') then 'Y' else 'N' end) latest_flag,
                 'Registered' status,
                 minority_type_name,
-				minority_type_id
-                from agreement_snapshot a
+				minority_type_id,
+                is_prime_or_sub, 
+                sub_contract_id, 
+                prime_vendor_id
+                from all_agreement_transactions a
             left join ref_document_code dc on a.document_code_id = dc.document_code_id
             left join ref_award_category rac on a.award_category_id = rac.award_category_id
             where dc.document_code in ('MMA1', 'MA1', 'MAR', 'CT1', 'CTR', 'DO1', 'CTA1', 'RCT1')                 
@@ -505,6 +516,9 @@
             <field column="document_code" name="document_code" />
             <field column="minority_type_name" name="minority_type_name" />
             <field column="minority_type_id" name="minority_type_id" />
+            <field column="prime_vendor_id" name="prime_vendor_id" />
+            <field column="is_prime_or_sub" name="is_prime_or_sub" />
+            <field column="sub_contract_id" name="sub_contract_id" />
         </entity>
         <entity dataSource="db2" name="contracts_oge" transformer="RegexTransformer"
                 pk="id"
