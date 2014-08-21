@@ -264,4 +264,18 @@ class ContractURLHelper{
         return $url;
     }
 
+    static function prepareExpandLink($row, $node) {
+
+        $link = ($row['has_children'] == 'Y') ? '<span id=dtl_expand class="toggler collapsed"  magid="' . $row['original_agreement_id'] . '" '
+            . ( _getRequestParamValue('mwbe') != '' ?  ('mwbe="' . _getRequestParamValue('mwbe') . '" ' ) : '')
+            . ( _getRequestParamValue('smnid') != '' ?  ('smnid="' . _getRequestParamValue('smnid') . '" ' ) : '')
+            . ( _getRequestParamValue('year') != '' ?  ('year="' . _getRequestParamValue('year') . '" ' ) : '')
+            . ( _getRequestParamValue('calyear') != '' ?  ('calyear="' . _getRequestParamValue('calyear') . '" ' ) : '')
+            . ( _getRequestParamValue('yeartype') != '' ?  ('yeartype="' . _getRequestParamValue('yeartype') . '" ' ) : '')
+            . ( _getRequestParamValue('contstatus') != '' ?  ('contstatus="' . _getRequestParamValue('contstatus') . '" ' ) : '')
+            . ('mastercode="' . $row['document_code@checkbook:ref_document_code'] . '"' )
+            . '></span>' : '';
+
+        return $link;
+    }
 }
