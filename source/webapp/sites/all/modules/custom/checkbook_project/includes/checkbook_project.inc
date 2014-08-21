@@ -553,7 +553,19 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
            //adjust dataset
            $yearTypeCol = $node->widgetConfig->urlParamMap->$yearTypeParam;
            $reqYearType = $node->widgetConfig->requestParams[$yearTypeCol];
-           if(isset($reqYearType) && ($reqYearType == 'C') && !_checkbook_check_isEDCPage() && !_getRequestParamValue('mwbe')){
+           $current_url = explode('/',$_SERVER['REQUEST_URI']);
+           if(($current_url[1] == 'contract' && $current_url[2] == 'search' && $current_url[3] == 'transactions') || in_array($node->nid, array(656,679,667,688))){
+               $advanced_search = true;
+           }
+           if(isset($reqYearType) && ($reqYearType == 'C') && !_checkbook_check_isEDCPage() && ($advanced_search || _getRequestParamValue('mwbe'))){
+               if(isset($node->widgetConfig->dataset)){
+                   $node->widgetConfig->dataset = 'checkbook:all_agreement_transactions_cy';
+               }else if(isset($node->widgetConfig->model->series) && is_array($node->widgetConfig->model->series)){
+                   foreach($node->widgetConfig->model->series as $series){
+                       $series->dataset = 'checkbook:all_agreement_transactions_cy';
+                   }
+               }
+           }elseif(isset($reqYearType) && ($reqYearType == 'C') && !_checkbook_check_isEDCPage() && !$advanced_search && !_getRequestParamValue('mwbe')){
                if(isset($node->widgetConfig->dataset)){
                     $node->widgetConfig->dataset = 'checkbook:agreement_snapshot_cy';
                }else if(isset($node->widgetConfig->model->series) && is_array($node->widgetConfig->model->series)){
@@ -562,16 +574,6 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
                    }
                }
            }
-
-            if(isset($reqYearType) && ($reqYearType == 'C') && _getRequestParamValue('mwbe')){
-                if(isset($node->widgetConfig->dataset)){
-                    $node->widgetConfig->dataset = 'checkbook:all_agreement_transactions_cy';
-                }else if(isset($node->widgetConfig->model->series) && is_array($node->widgetConfig->model->series)){
-                    foreach($node->widgetConfig->model->series as $series){
-                        $series->dataset = 'checkbook:all_agreement_transactions_cy';
-                    }
-                }
-            }
 
            //adjust status
            $contractStatusCol = $node->widgetConfig->urlParamMap->$contractStatusParam;
@@ -904,7 +906,6 @@ function _checkbook_project_applyParameterFilters($node, $parameters){
             $adjustedParameters[$param] = $conditions;
         }
     }
-
     return $adjustedParameters;
 }
 
