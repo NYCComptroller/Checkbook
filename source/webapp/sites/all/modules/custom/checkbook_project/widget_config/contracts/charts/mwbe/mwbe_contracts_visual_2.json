@@ -134,8 +134,10 @@
 	
 	if(_getRequestParamValue('yeartype') == 'C'){
 				 $year_display = 'CY ';
+				 $node->widgetConfig->gridConfig->table_columns[0]->labelAlias = 'CY year'; 				 
 	}else{
 				$year_display = 'FY ' ;
+				$node->widgetConfig->gridConfig->table_columns[0]->labelAlias = 'FY year';				
 	}
 
 	if(count($series_previous) > 0){
