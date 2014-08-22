@@ -123,22 +123,20 @@
 		$series_current[] = $series_current_temp[$category];
 		$series_previous[] = $series_previous_temp[$category] ; 
 	}
-	
+	if(_getRequestParamValue('yeartype') == 'C'){
+				 $year_display = 'CY ';
+	}else{
+				$year_display = 'FY ' ;
+	}	
 	$index = 0;
-	$node->widgetConfig->gridConfig->table_columns[1]->labelAlias =  $year;
+	$node->widgetConfig->gridConfig->table_columns[1]->labelAlias = $year_display . ' ' .  $year;
 	
 	while($index <= 11){
 	    $node->widgetConfig->gridConfig->data[] = array($categories[$index],$series_current[$index]->y,$series_previous[$index]->y );	    	
 		$index +=1;
 	}
 	
-	if(_getRequestParamValue('yeartype') == 'C'){
-				 $year_display = 'CY ';
-				 $node->widgetConfig->gridConfig->table_columns[0]->labelAlias = 'CY year'; 				 
-	}else{
-				$year_display = 'FY ' ;
-				$node->widgetConfig->gridConfig->table_columns[0]->labelAlias = 'FY year';				
-	}
+
 
 	if(count($series_previous) > 0){
 		$prev_series_obj = new stdClass();
@@ -147,7 +145,7 @@
 		$prev_series_obj->pointWidth = 15;
 		$prev_series_obj->data = $series_previous;
 		$node->widgetConfig->chartConfig->series[] = $prev_series_obj;		
-		$node->widgetConfig->gridConfig->table_columns[2]->labelAlias =  $year -1;
+		$node->widgetConfig->gridConfig->table_columns[2]->labelAlias =  $year_display . ' ' . ($year -1);
 	}
 	$curr_series_obj = new stdClass();
 	$curr_series_obj->name = $year_display . ' ' . $year;
