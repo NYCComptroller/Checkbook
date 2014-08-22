@@ -111,8 +111,10 @@
 		if($key <= $year && $key >= $year - 4){
 			if(_getRequestParamValue('yeartype') == 'C'){
 				 $year_display = 'CY ' . $key;
+				 $node->widgetConfig->gridConfig->table_columns[0]->labelAlias = 'CY year'; 
 			}else{
 				$year_display = 'FY ' . $key;
+				$node->widgetConfig->gridConfig->table_columns[0]->labelAlias = 'FY year';
 			}
 	 		$tooltip_label = 
 	 						'Year: ' . $year_display.  '<br/>' .
