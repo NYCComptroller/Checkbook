@@ -114,7 +114,7 @@
 	 						'Contracting Agency: ' . $row['agency_name'] .  '<br/>' 
 	 						; 
 	 						
-			$link_url = 'contracts_landing' . _checkbook_project_get_url_param_string('status')  .  _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() .
+			$link_url = strstr($_GET['q'],'\/',true) . _checkbook_project_get_url_param_string('status')  .  _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() .
 								 '?expandBottomContURL=/panel_html/contract_transactions'
                         . ( in_array($row['document_code'], array('MMA1','MA1')) ? '/contract_details' : '' )
                         . ( in_array($row['document_code'], array('MMA1','MA1')) ? '/magid/' : '/agid/' )
