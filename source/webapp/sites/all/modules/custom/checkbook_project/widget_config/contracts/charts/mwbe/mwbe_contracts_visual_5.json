@@ -103,7 +103,7 @@
 	 						'Number of M/WBE Contracts: ' . $row['total_contracts'].  '<br/>' .
 	 						'Amount: ' . custom_number_formatter_format($row['current_amount_sum'] ,2, '$').  '<br/>' 
 	 						; 
-			$link= CustomURLHelper::prepareUrl('contracts_landing', ContractURLHelper::$landingPageParams, array('expandBottomCont'=>'true'), 
+			$link= CustomURLHelper::prepareUrl(strstr($_GET['q'],'\/',true), ContractURLHelper::$landingPageParams, array('expandBottomCont'=>'true'), 
 						array('vendor'=>$row['vendor_id']) );
 			$series_new[$index]->url = 	$link;					
 
