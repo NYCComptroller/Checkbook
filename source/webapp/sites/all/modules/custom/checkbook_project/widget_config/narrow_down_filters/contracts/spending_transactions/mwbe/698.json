@@ -15,6 +15,9 @@
     "autocompleteID":"fmwbeVendorId",
     "autocompleteField":"vendor_name",
     "maxSelect":5,
+    "urlParamMap":{
+        "doctype":"document_code.document_code.document_code"
+    },
     "adjustParameters":"
         checkbook_faceted_search_adjust_param($node);
         $year = $parameters['disb_fiscal_year_id'];
