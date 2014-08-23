@@ -114,16 +114,20 @@ class DefaultCacheFactory extends CacheFactory {
         if (isset($this->handlerInstances[$handlerKey])) {
             $handler = $this->handlerInstances[$handlerKey];
         }
-        else {
+     	else {
             $handler = $this->prepareSharedCacheHandler($cacheDataSourceName);
             if (isset($handler)) {
-                $handler = new ProxyCacheHandler($prefix, $handler, $allowCopyInLocalCache);
+                $serverNamePrefix = '[' . strtoupper($_SERVER['SERVER_NAME']) . ']';
+                $handler = new ProxyCacheHandler(
+                    $prefix,
+                    new ProxyCacheHandler($serverNamePrefix, $handler, FALSE),
+                    $allowCopyInLocalCache);
             }
             else {
                 $handler = $this->getLocalCacheHandler($prefix);
             }
 
-            $this->handlerInstances[$handlerKey] = $handler;
+            $this->handlers[$handlerKey] = $handler;
         }
 
         return $handler;

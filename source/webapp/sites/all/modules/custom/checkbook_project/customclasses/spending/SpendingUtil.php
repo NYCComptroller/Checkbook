@@ -332,6 +332,7 @@ class SpendingUtil{
         . '/smnid/' . $node->nid
         . _checkbook_project_get_url_param_string("vendor")
         . _checkbook_project_get_url_param_string("category")
+        . _checkbook_project_get_url_param_string("agency")
         . '/industry/'. $row['industry_industry_industry_type_id']
         . _checkbook_append_url_params();
     }
@@ -359,16 +360,25 @@ class SpendingUtil{
      * Returns true if this is from spending advanced search for citywide
      OR if this is from the transaction page for M/WBE.
      */
-    function showMwbeFields() {
+    static function showMwbeFields() {
         $is_mwbe = _checkbook_check_is_mwbe_page();
         $is_mwbe = $is_mwbe || (!_checkbook_check_isEDCPage() && self::isAdvancedSearchResults());
         return $is_mwbe;
     }
 
     /**
-     * Returns true if this is from spending advanced search cityWide
+     * Returns true if this is from spending advanced search
      */
-    function isAdvancedSearchResults() {
-        return (_getRequestParamValue('dtsmnid') == null);
+    static function isAdvancedSearchResults() {
+        return !self::isSpendingLanding();
+    }
+
+    /**
+     * Returns true if this is the spending landing page
+     */
+    static function isSpendingLanding() {
+        $url_ref = $_SERVER['HTTP_REFERER'];
+        $match_landing = '"/spending_landing/"';
+        return preg_match($match_landing,$url_ref);
     }
 }
