@@ -15,6 +15,9 @@
     "autocompleteID":"fminorityTypeId",
     "autocompleteField":"minority_type_name",
     "maxSelect":5,
+    "urlParamMap":{
+        "doctype":"document_code.document_code.document_code"
+    },
     "adjustParameters":"
         checkbook_faceted_search_adjust_param($node);
         $year = $parameters['disb_fiscal_year_id'];
@@ -25,7 +28,7 @@
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
         }
-        $adjustedParameters['minority_type.minority_type'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+        $adjustedParameters['minority_type_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
         return $adjustedParameters;
     ",
     "transformationPHP":"
