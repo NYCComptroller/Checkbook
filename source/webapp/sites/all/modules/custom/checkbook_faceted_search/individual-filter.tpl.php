@@ -38,7 +38,7 @@ $tooltip = "";
 $count =0;
 if($node->widgetConfig->filterName == 'M/WBE Category'){
     foreach($checked as $key=>$value){
-        if(in_array(4, $value) || in_array(5, $value)){
+        if($value[0] == 4 || $value[0] == 5){
             $count = $count + $value[2];
             $id = "4~5";
             unset($checked[$key]);
