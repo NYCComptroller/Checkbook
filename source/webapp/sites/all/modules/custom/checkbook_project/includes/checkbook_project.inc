@@ -1485,8 +1485,8 @@ function _checkbook_append_url_params($source = null){
         $url = "/datasource/checkbook_oge";
     }
     else {
-        $current_url = explode('/',$_SERVER['REQUEST_URI']);
-        if(($current_url[1] == 'contract' && ($current_url[2] == 'search' || $current_url[2] == 'all') && $current_url[3] == 'transactions')){
+        $current_url = explode('/',$_SERVER['HTTP_REFERER']);
+        if(($current_url[3] == 'contract' && ($current_url[4] == 'search' || $current_url[4] == 'all') && $current_url[5] == 'transactions')){
             $advanced_search = true;
         }
         if(!$advanced_search){
