@@ -69,6 +69,15 @@ foreach ($spending_parameter_mapping as $key=>$title){
   if($key == "vendor_name" && !$spending_results["vendor_id"]){
     $value = $spending_results["vendor_name"];
   }
+  if($key == "minority_type_name" && !$spending_results["minority_type_name"]){
+    $value = 'N/A';
+  }
+  if($key == 'is_prime_or_sub' && $spending_results["is_prime_or_sub"] == 'P'){
+    $value = 'No';
+  }
+  if($key == 'is_prime_or_sub' && $spending_results["is_prime_or_sub"] == 'S'){
+    $value = 'Yes';
+  }
   if ($count % 2 == 0){
     if($title)
         $row[] = '<div class="field-label">'.$title.':</div><div class="field-content">'.$value.'</div>';

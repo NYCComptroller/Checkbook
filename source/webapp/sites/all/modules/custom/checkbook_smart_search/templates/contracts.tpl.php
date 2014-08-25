@@ -149,6 +149,15 @@ foreach ($contracts_parameter_mapping as $key => $title){
   }else if(array_key_exists($key, $linkable_fields)){
     $value = "<a href='" . $linkable_fields[$key]. "'>". $value ."</a>";
   }
+  if($key == "minority_type_name" && !$contracts_results["minority_type_name"]){
+      $value = 'N/A';
+  }
+  if($key == 'is_prime_or_sub' && $contracts_results["is_prime_or_sub"] == 'P'){
+      $value = 'No';
+  }
+  if($key == 'is_prime_or_sub' && $contracts_results["is_prime_or_sub"] == 'S'){
+      $value = 'Yes';
+  }
   if ($count % 2 == 0){
     if($title)
         $row[] = '<div class="field-label">'.$title.':</div><div class="field-content">'. $value .'</div>';

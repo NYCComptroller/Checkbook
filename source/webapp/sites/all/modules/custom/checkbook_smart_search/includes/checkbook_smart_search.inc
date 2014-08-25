@@ -86,7 +86,7 @@ function _checkbook_smart_search_get_results(){
         "spending_category_name" => $selected_spending_categories,
         "contract_category_name" => $selected_contract_categories,
         "contract_status" => $selected_contract_status);
-
+    
     return theme('checkbook_smart_search_results', array('search_results'=> $search_results['search_results'],
         'active_contracts' => $search_results['active_contracts'],
         'facet_results' => $facetResults,
@@ -353,6 +353,7 @@ function _checkbook_smart_search_autocomplete(){
     $query = "terms/?terms.fl=agency_name"
              ."&terms.fl=oge_agency_name"
              ."&terms.fl=vendor_name"
+             ."&terms.fl=minority_type_name"
              ."&terms.fl=revenue_category_name"
              ."&terms.fl=expenditure_object_name"
              ."&terms.regex=". $search_term ."&wt=php";
@@ -383,7 +384,14 @@ function _checkbook_smart_search_autocomplete(){
                 foreach ($value as $a=>$b){
                     $count++;
                     $url = "/smart_search?search_term=*|*vendor_names=";
-                    array_push($matches, array("url"=>$url,"category"=>"Vendors" ,"label" => $a, "value" => urlencode($a)));
+                    array_push($matches, array("url"=>$url,"category"=>"Vendors (Prime Vendor, Sub Vendor, M/WBE Vendor)" ,"label" => $a, "value" => urlencode($a)));
+                }
+                break;
+            case 'minority_type_name':
+                foreach ($value as $a=>$b){
+                    $count++;
+                    $url = "/smart_search?search_term=*|*minority_type_name=";
+                    array_push($matches, array("url"=>$url,"category"=>"M/WBE Category" ,"label" => $a, "value" => urlencode($a)));
                 }
                 break;
             /*case 'revenue_category_name':
@@ -741,13 +749,15 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
         else
             $parameter_mapping = array(
                 "spending_category_name" => "Spending Category",
+                "minority_type_name" => "M/WBE Category",
                 "agency_name" => "Agency",
                 "department_name" => "Department",
                 "vendor_name" => "Payee Name",
                 "expenditure_object_name" => "Expense Category",
                 "contract_number" => "Contract ID",
                 "check_amount" => "Check Amount",
-                "check_eft_issued_date" => "Issue Date"
+                "check_eft_issued_date" => "Issue Date",
+                "is_prime_or_sub" => "Sub Vendor"
             );
       break;
     case "contracts":
@@ -779,6 +789,7 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
         else{
             $parameter_mapping = array(
                 "contract_status"=>"Status",
+                "minority_type_name" => "M/WBE Category",
                 "contract_category_name"=>"Category",
                 "vendor_name"=>"Prime Vendor",
                 "agency_name"=>"Agency",
@@ -797,6 +808,7 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
                 "registration_date"=>"Registration date",
                 "expense_category_name"=>"Expense Category",
                 "received_date"=>"Received date",
+                "is_prime_or_sub" => "Sub Vendor",
                 "" => "");
         }
 
