@@ -57,7 +57,7 @@
 
     },
     "summaryView": {
-        "template":"spending_agency_summary",
+        "template":"spending_industry_summary",
         "templateTitleEval":"
             $catName = RequestUtil::getSpendingCategoryName();
             $mwbe_title = _checkbook_check_is_mwbe_page() ? 'M/WBE ' : '';

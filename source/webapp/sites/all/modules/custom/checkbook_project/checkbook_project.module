@@ -538,6 +538,10 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'php_widgets/spending/summary/vendor_summary',
             'arguments' => array('node' => NULL)
         ),
+        'spending_industry_summary' => array(
+            'template' => 'php_widgets/spending/summary/industry_summary',
+            'arguments' => array('node' => NULL)
+        ),
         //---------------End Spending Summary Templates---------------
 
         'no_records_found' => array(
