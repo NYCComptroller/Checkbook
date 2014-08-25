@@ -160,7 +160,7 @@ $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoCol
 "sWidth": "155px","asSorting": [ "asc","desc" ]
 },
 {
-"sClass": "text",
+"sClass": "text pad-left",
 "sWidth": "115px","asSorting": [ "asc","desc" ]
 },
 {
