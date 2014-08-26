@@ -301,9 +301,8 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
   $facets = $variables['facets'];
   $active_contracts = $variables['active_contracts'];
   $selected_filters = $variables['selected_facet_results'];
-
   $output = NULL;
-  $ogeAgencies = $agencies = $vendors = $expenseCategories = $revenueCategories = $fiscalYears = $domains = $contractCategory = $contractStatus = $spendingCategory = array();
+  $ogeAgencies = $agencies = $vendors = $expenseCategories = $revenueCategories = $fiscalYears = $domains = $contractCategory = $contractStatus = $spendingCategory = $contractMWBECategory = $spendingMWBECategory = array();
   $reqOGEAgencies = $reqAgencies = $reqFiscalYears = $reqDomains = $reqVendors = $reqExpenseCategories = $reqRevenueCategories = $reqSpendCategories = array();
 
   //arrays for the selected facet values from the URL
@@ -335,6 +334,10 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
             break;
           case 'contract_status':
             $reqContStatus[] = $value;
+            break;
+          case 'minority_type_name':
+            $reqContractMWBECategories[] = $value;
+            $reqSpendingMWBECategories[] = $value;
             break;
       }
   }
@@ -369,6 +372,10 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
       case 'contract_status':
         $contractStatus[] = $value[$key];
         break;
+      case 'minority_type_name':
+        $contractMWBECategory[] = $value[$key];
+        $spendingMWBECategory[] = $value[$key];
+        break;
     }
   }
 
@@ -387,6 +394,16 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
             }
             $subCat['spending']['Spending Category']['name'] = 'fspendingCatName';
           }
+
+            if (count($spendingMWBECategory) > 0) {
+                foreach ($spendingMWBECategory as $key => $value) {
+                    foreach ($value as $spendingmwbe => $spendingmwbeCount) {
+                        $checked = (in_array($spendingmwbe, array_values_recursive($spendingMWBECategory[0]))) ? 'checked' : '';
+                        $subCat['spending']['M/WBE Category'][] = array($spendingmwbe, $spendingmwbe, $spendingmwbeCount, $checked);
+                    }
+                }
+                $subCat['spending']['M/WBE Category']['name'] = 'fspendingMWBE';
+            }
         }
         if ($domainName == 'contracts' && $checked == 'checked') {
           if (count($contractCategory[0]) > 0) {
@@ -410,6 +427,17 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
             }
             $subCat['contracts']['Status']['name'] = 'fcontractStatus';
           }
+
+          if (count($contractMWBECategory) > 0) {
+              foreach ($contractMWBECategory as $key => $value) {
+                  foreach ($value as $contractmwbe => $contractmwbeCount) {
+                      $checked = (in_array($contractmwbe, array_values_recursive($contractMWBECategory[0]))) ? 'checked' : '';
+                      $subCat['contracts']['M/WBE Category'][] = array($contractmwbe, $contractmwbe, $contractmwbeCount, $checked);
+                  }
+              }
+              $subCat['contracts']['M/WBE Category']['name'] = 'fcontractMWBE';
+          }
+
         }
       }
     }
