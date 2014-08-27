@@ -205,6 +205,9 @@
         <field name="spending_budget_name" type="string_custom" indexed="true" stored="true"/>
         <field name="spending_budget_name_autocomplete" type="string_autocomplete" indexed="true"/>
         <field name="payment_id" type="string_custom" indexed="true" stored="true"/>
+        <field name="minority_type_name_spending" type="string_custom" indexed="true" stored="true"/>
+        <field name="minority_type_id_spending" type="string_custom" indexed="true" stored="true"/>
+
 
         <!--
             Checkbook 2.0
@@ -291,6 +294,8 @@
         <!--Fields used for multi-valued auto complete for multiple works-->
         <field name="contract_budget_name" type="string" indexed="true" stored="true" multiValued="true"/>
         <field name="contract_budget_name_autocomplete" type="text_autocomplete" indexed="true" stored="true" omitNorms="true" omitTermFreqAndPositions="true" multiValued="true"/>
+        <field name="minority_type_name_contract" type="string_custom" indexed="true" stored="true"/>
+        <field name="minority_type_id_contract" type="string_custom" indexed="true" stored="true"/>
 
     </fields>
 
