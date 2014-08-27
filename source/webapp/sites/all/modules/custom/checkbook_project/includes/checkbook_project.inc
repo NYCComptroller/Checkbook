@@ -1479,6 +1479,7 @@ function _checkbook_max_data_year(){
 function _checkbook_append_url_params($source = null){
     $datasource = _getRequestParamValue('datasource');
     $mwbe = _getRequestParamValue('mwbe');
+    $svendor = _getRequestParamValue('svendor');
 
     $url = "";
     if(isset($datasource)) {
@@ -1495,9 +1496,13 @@ function _checkbook_append_url_params($source = null){
                 if(!in_array("mwbe",$source)){
                     $url = isset($mwbe) ? "/mwbe/".$mwbe : "";
                 }
+                if(!in_array("svendor",$source)){
+                	$url = isset($svendor) ? "/svendor/".$svendor : "";
+                }
             }
             else {
                 $url = isset($mwbe) ? "/mwbe/".$mwbe : "";
+                $url = isset($svendor) ? "/svendor/".$svendor : "";
             }
         }
     }
