@@ -40,13 +40,7 @@
         $where_filter = ' where ' . implode(' and ' , $where_filters);
     }
     
-    if(preg_match('/revenue/',$_GET['q'])){
-    	$where_filter .= \" and rd.document_code in ('RCT1') \";
-    }else if(preg_match('/pending/',$_GET['q'])){
-    	
-    }else{
-    	$where_filter .= \" and rd.document_code in ('MA1','CT1','CTA1') \";
-    }
+	$where_filter .= ' and rd.document_code in (' . ContractUtil::getCurrentPageDocumentIds() . ') ';
     
     
     $sql = 'select rm.minority_type_id, rm.minority_type_name ,year_value, sum(maximum_contract_amount) current_amount_sum
@@ -150,15 +144,8 @@
 	}
 	
 	$contract_type = 'Expense';
-	if(preg_match('/revenue/',$_GET['q'])){
-		$contract_type = 'Revenue';
-	}
-	if(preg_match('/pending_exp/',$_GET['q'])){
-		$contract_type = 'Pending Expense';
-	}
-	if(preg_match('/pending_rev/',$_GET['q'])){
-		$contract_type = 'Pending Revenue';
-	}
+ 	$where_filter .= ' and rd.document_code in (' . ContractUtil::getCurrentPageDocumentIds() . ') ';
+
 	$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() .' ' . $status . ' ' . $contract_type .  ' Contracts Share';
 																		 
 ",
