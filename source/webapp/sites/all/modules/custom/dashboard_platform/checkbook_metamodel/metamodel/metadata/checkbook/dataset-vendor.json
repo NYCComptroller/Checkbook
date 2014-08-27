@@ -1,13 +1,21 @@
 {
     "datasets": {
-		"vendor": {
+    "subvendor": {
             "datasourceName": "main",
-            "source": "vendor",
+            "source": "subvendor",
             "columns": [
                 {
                     "name": "vendor_id",
                     "key": true}
-            ]}    ,
+    ]},
+	"vendor": {
+        "datasourceName": "main",
+        "source": "vendor",
+        "columns": [
+            {
+                "name": "vendor_id",
+                "key": true}
+     ]},
 	"vendor2": {
             "datasourceName": "main",
             "source": "vendor",
