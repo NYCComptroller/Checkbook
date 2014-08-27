@@ -56,6 +56,56 @@ namespace { //global
 
             return $data_source_amounts_differ;
         }
+        
+        static public function getCurrentPageDocumentIdsArray(){
+        	if(preg_match('/revenue/',$_GET['q'])){
+        		$document_codes = array('RCT1') ;
+        	}else if(preg_match('/pending_exp/',$_GET['q'])){
+        		$document_codes = array('MA1','CT1','CTA1');
+        	}else if(preg_match('/pending_rev/',$_GET['q'])){
+        		$document_codes = array('RCT1') ;
+        	}else{
+        		$document_codes = array('MA1','CT1','CTA1');
+        	}
+        	return $document_codes;
+        }
+
+        static public function getCurrentPageDocumentIds(){
+        	if(preg_match('/revenue/',$_GET['q'])){
+        		$document_codes = "'RCT1'" ;
+        	}else if(preg_match('/pending_exp/',$_GET['q'])){
+        		$document_codes ="'MA1','CT1','CTA1'";
+        	}else if(preg_match('/pending_rev/',$_GET['q'])){
+        		$document_codes = "'RCT1'" ;
+        	}else{
+        		$document_codes = "'MA1','CT1','CTA1'";
+        	}
+        	return $document_codes;
+        }
+        
+        
+        
+        static public function getCurrentContractStatusandType(){
+        	if(_getRequestParamValue('status') == 'A'){
+				$status = 'Active';
+			}else if(_getRequestParamValue('status') == 'R'){
+				$status = 'Registered';
+			}
+			
+			$contract_type = 'Expense';
+			if(preg_match('/revenue/',$_GET['q'])){
+				$contract_type = 'Revenue';
+			}
+			if(preg_match('/pending_exp/',$_GET['q'])){
+				$contract_type = 'Pending Expense';
+			}
+			if(preg_match('/pending_rev/',$_GET['q'])){
+				$contract_type = 'Pending Revenue';
+			}
+        	return $status . ' ' . $contract_type ;
+        }
+        
+        
     }
 }
 
