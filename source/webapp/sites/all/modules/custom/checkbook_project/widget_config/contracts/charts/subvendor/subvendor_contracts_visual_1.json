@@ -32,10 +32,9 @@
 },
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B"},
-"cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe"],
-"urlParamMap":{"mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id",
+"cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe","svendor"],
+"urlParamMap":{"svendor":"vendor_id","mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"prime_vendor_id",
 	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
-"chartTitle":"M/WBE Spending by Active Expense Contracts",
 "widgetDataLoader":"
     
     $where_filters = array();
@@ -46,15 +45,12 @@
     if(count($where_filters) > 0){
         $where_filter = ' where ' . implode(' and ' , $where_filters);
     }
-
-    
-    $where_filter .= ' and rd.document_code in (' . ContractUtil::getCurrentPageDocumentIds() . ') ';
-    $node->document_codes = ContractUtil::getCurrentPageDocumentIds();
+	$where_filter .= ' and rd.document_code in (' . ContractUtil::getCurrentPageDocumentIds() . ') ';
     
     $year_id = _getRequestParamValue('year');
 	$where_filter .= ' and a1.fiscal_year_id in (' . $year_id . ','.  ($year_id -1) . ')';
     $sql = 'select rmo.month_name ,a1.month_id,year_value, sum(spending_amount) spending_amount_sum
-    from {aggregateon_mwbe_contracts_spending_by_month} a1 
+    from {aggregateon_subven_contracts_spending_by_month} a1 
     join {ref_minority_type} rm on rm.minority_type_id = a1.minority_type_id
     join {ref_month} rmo on a1.month_id = rmo.month_id
     join {ref_year} ry on a1.fiscal_year_id = ry.year_id  
@@ -63,9 +59,7 @@
     group by year_value, rmo.month_value ,rmo.month_name,a1.month_id
     order by year_value,  rmo.month_value
      ';
-    
     $node->data  = _checkbook_project_execute_sql($sql);
-    
     
 ",
 "widgetUpdateJSONConfig":"
@@ -96,15 +90,15 @@
 		
 	    if($row['year_value'] == $year){
 	    	 $series_current_temp[trim($row['month_name'])] = $item;
-	        $link_url = CustomURLHelper::prepareUrl('contract/spending/transactions',  ContractURLHelper::$transactionPageParams, NULL, 
+	        $url = CustomURLHelper::prepareUrl('contract/spending/transactions',  ContractURLHelper::$transactionPageParams, NULL, 
        			array('doctype' => $node->document_codes, 'month' => $row['month_id'],'newwindow'=>NULL));
-			$item->url =  $link_url;		
+			$item->url =  $url;		
 	    	 
 	    }else{
 	    	$series_previous_temp[trim($row['month_name'])] = $item;
-	    	        $link_url = CustomURLHelper::prepareUrl('contract/spending/transactions',  ContractURLHelper::$transactionPageParams, NULL, 
+	    	        $url = CustomURLHelper::prepareUrl('contract/spending/transactions',  ContractURLHelper::$transactionPageParams, NULL, 
        			array('doctype' => $node->document_codes, 'month' => $row['month_id'],'newwindow'=>NULL),true);
-			$item->url =  $link_url;			    	
+			$item->url =  $url;			    	
 	    }
 	    
 	}
@@ -118,20 +112,20 @@
 		$series_current[] = $series_current_temp[$category];
 		$series_previous[] = $series_previous_temp[$category] ; 
 	}
-	if(_getRequestParamValue('yeartype') == 'C'){
-				 $year_display = 'CY ';
-	}else{
-				$year_display = 'FY ' ;
-	}	
+	
 	$index = 0;
-	$node->widgetConfig->gridConfig->table_columns[1]->labelAlias = $year_display . ' ' .  $year;
+	$node->widgetConfig->gridConfig->table_columns[1]->labelAlias =  $year;
 	
 	while($index <= 11){
 	    $node->widgetConfig->gridConfig->data[] = array($categories[$index],$series_current[$index]->y,$series_previous[$index]->y );	    	
 		$index +=1;
 	}
 	
-
+	if(_getRequestParamValue('yeartype') == 'C'){
+				 $year_display = 'CY ';
+	}else{
+				$year_display = 'FY ' ;
+	}
 
 	if(count($series_previous) > 0){
 		$prev_series_obj = new stdClass();
@@ -140,7 +134,7 @@
 		$prev_series_obj->pointWidth = 15;
 		$prev_series_obj->data = $series_previous;
 		$node->widgetConfig->chartConfig->series[] = $prev_series_obj;		
-		$node->widgetConfig->gridConfig->table_columns[2]->labelAlias =  $year_display . ' ' . ($year -1);
+		$node->widgetConfig->gridConfig->table_columns[2]->labelAlias =  $year -1;
 	}
 	$curr_series_obj = new stdClass();
 	$curr_series_obj->name = $year_display . ' ' . $year;
@@ -149,23 +143,7 @@
 	$curr_series_obj->data = $series_current;		
 	$node->widgetConfig->chartConfig->series[] = $curr_series_obj;
 	
-	if(_getRequestParamValue('status') == 'A'){
-		$status = 'Active';
-	}else if(_getRequestParamValue('status') == 'R'){
-		$status = 'Registered';
-	}
-	
-	$contract_type = 'Expense';
-	if(preg_match('/revenue/',$_GET['q'])){
-		$contract_type = 'Revenue';
-	}
-	if(preg_match('/pending_exp/',$_GET['q'])){
-		$contract_type = 'Pending Expense';
-	}
-	if(preg_match('/pending_rev/',$_GET['q'])){
-		$contract_type = 'Pending Revenue';
-	}
-	$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Spending by ' . $status . ' ' . $contract_type .  ' Contracts';
+	$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Sub Vendors Spending by ' . ContractUtil::getCurrentContractStatusandType() . ' Contracts';
 ",
 "chartConfig" : {
     "plotOptions": {

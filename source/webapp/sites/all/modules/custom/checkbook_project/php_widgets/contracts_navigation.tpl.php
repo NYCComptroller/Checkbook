@@ -38,17 +38,17 @@ if(preg_match('/vendor/',$_GET['q'])){
   $revenue_link =  l('<span class="nav-title">Revenue</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
   $payroll_link = l('<span class="nav-title">Payroll</span><br>'.custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);  
 }else{
-  if($node->data[3]['budget_current'] == 0 || preg_match('/mwbe/',$_GET['q']) ){
+  if($node->data[3]['budget_current'] == 0 ){
     $budget_link = l('<span class="nav-title">Budget</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') ,'',$options_disabled);
   }else{
     $budget_link = l('<span class="nav-title">Budget</span><br>&nbsp;'. custom_number_formatter_format($node->data[3]['budget_current'] ,1,'$'),RequestUtil::getTopNavURL("budget"),$options) ;
   }
-  if($node->data[4]['revenue_amount_sum'] == 0  || preg_match('/mwbe/',$_GET['q']) ){
+  if($node->data[4]['revenue_amount_sum'] == 0 ){
     $revenue_link =  l('<span class="nav-title">Revenue</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
   }else{
     $revenue_link =  l('<span class="nav-title">Revenue</span><br>&nbsp;'. custom_number_formatter_format($node->data[4]['revenue_amount_sum'] ,1,'$') ,RequestUtil::getTopNavURL("revenue"),$options);
   }
-  if($node->data[1]['total_gross_pay'] == 0 || preg_match('/mwbe/',$_GET['q']) ){
+  if($node->data[1]['total_gross_pay'] == 0  ){
     $payroll_link = l('<span class="nav-title">Payroll</span><br>'.custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
   }else{
     $payroll_link = l('<span class="nav-title">Payroll</span><br>'.custom_number_formatter_format($node->data[1]['total_gross_pay'] ,1,'$'),RequestUtil::getTopNavURL("payroll"),$options);
@@ -109,19 +109,24 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
   		";
 	
 }
+$svendor_amount = 1000;
+if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
+	$svendor_amount =  0;
+	$svendor_filters =  "<div class='main-nav-drop-down' style='display:none'>
+  		</div>
+  		";
+
+}
 
 if($mwbe_amount  == 0){
 	$mwbe_link = l('<div><span class="nav-title">M/WBE</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div>','',$options_disabled);
-}else{
-	
+}else{	
 	$mwbe_link = l('<div><span class="nav-title">M/WBE</span><br>&nbsp;'. custom_number_formatter_format($mwbe_amount ,1,'$') . '</div>',$active_domain_link. "/mwbe/2~3~4~5~9",$options);
-	
-	
 }
-if($spending_amount  == 0){
+if($svendor_amount  == 0){
 	$subvendors_link = l('<div><span class="nav-title">M/WBE Sub Vendors</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div>','',$options_disabled);	
 }else{
-	$subvendors_link = l('<div><span class="nav-title">M/WBE Sub Vendors</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div>','',$options_disabled);
+	$subvendors_link = l('<div><span class="nav-title">M/WBE Sub Vendors</span><br>&nbsp;'. custom_number_formatter_format($svendor_amount ,1,'$') . '</div>',$active_domain_link. "/svendor/all",$options);
 }
 
 
