@@ -184,7 +184,8 @@ class WidgetUtil
         "industry_name"=>"Industry",
         "sub_contract_reference_id"=>"Sub Contract<br/>Reference ID",
         "mwbe_category"=>"M/WBE<br/>Category",
-
+        "mwbe_ethnicity"=>"M/WBE<br/>Ethnicity",
+        "no_of_sub_contracts" => "Number of<br/>Sub Contracts",
     );
 
     //For number cols, need to find out if they are uniform number of digits for formatting

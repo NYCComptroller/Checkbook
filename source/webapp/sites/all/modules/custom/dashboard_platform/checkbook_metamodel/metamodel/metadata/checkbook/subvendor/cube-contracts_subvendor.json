@@ -63,7 +63,7 @@
                     "levels": [
                        		{
                             	"name": "vendor",
-                            	"datasetName": "vendor",
+                            	"datasetName": "subvendor",
                             	"sourceColumnName": "vendor_id"
                             }
                     ]
@@ -236,7 +236,7 @@
                     "levels": [
                        		{
                             	"name": "vendor",
-                            	"datasetName": "vendor",
+                            	"datasetName": "subvendor",
                             	"sourceColumnName": "vendor_id"
                             }
                     ]
@@ -295,7 +295,7 @@
 	"references": {
         "subven_contracts_coa_aggregates__vendor_contract": [
                 {"datasetName": "subven_contracts_coa_aggregates", "columnNames": ["vendor_id"]},
-                {"datasetName": "vendor", "columnNames": ["vendor_id"]}
+                {"datasetName": "subvendor", "columnNames": ["vendor_id"]}
         ],
 		"subven_contracts_coa_aggregates__agency": [
                 {"datasetName": "subven_contracts_coa_aggregates", "columnNames": ["agency_id"]},
