@@ -252,6 +252,8 @@
         var contractCategories = getSearchFilterCriteria('fcontractCatName');
         var contractStatus = getSearchFilterCriteria('fcontractStatus');
         var spendingCategories = getSearchFilterCriteria('fspendingCatName');
+        var spendingMWBECategories = getSearchFilterCriteria('fspendingMWBE');
+        var contractMWBECategories = getSearchFilterCriteria('fcontractMWBE');
 
         var searchTerm = '';
         var cUrl = null;
@@ -298,10 +300,15 @@
             if(spendingCategories){
                 cUrl += "spending_categories=" + encodeURIComponent(spendingCategories) + '*|*';
             }
+            if(spendingMWBECategories){
+                cUrl += "spending_minority=" + encodeURIComponent(spendingMWBECategories) + '*|*';
+            }
+            if(contractMWBECategories){
+                cUrl += "contract_minority=" + encodeURIComponent(contractMWBECategories) + '*|*';
+            }
         }
     
         cUrl = cUrl.substring(0, cUrl.length - 3);
-
         return cUrl;
     }
 

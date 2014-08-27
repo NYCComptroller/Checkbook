@@ -238,6 +238,8 @@
             <field column="spending_category_name_code" name="spending_category_name_code" />
             <field column="minority_type_name" name="minority_type_name" />
             <field column="minority_type_id" name="minority_type_id" />
+            <field column="minority_type_name" name="minority_type_name_spending" />
+            <field column="minority_type_id" name="minority_type_id_spending" />
             <field column="payment_id" name="payment_id" />
             <field column="prime_vendor_id" name="prime_vendor_id" />
             <field column="is_prime_or_sub" name="is_prime_or_sub" />
@@ -516,6 +518,8 @@
             <field column="document_code" name="document_code" />
             <field column="minority_type_name" name="minority_type_name" />
             <field column="minority_type_id" name="minority_type_id" />
+            <field column="minority_type_name" name="minority_type_name_contract" />
+            <field column="minority_type_id" name="minority_type_id_contract" />
             <field column="prime_vendor_id" name="prime_vendor_id" />
             <field column="is_prime_or_sub" name="is_prime_or_sub" />
             <field column="sub_contract_id" name="sub_contract_id" />

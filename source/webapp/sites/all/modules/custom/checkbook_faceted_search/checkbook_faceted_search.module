@@ -335,8 +335,10 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
           case 'contract_status':
             $reqContStatus[] = $value;
             break;
-          case 'minority_type_name':
+          case 'contract_minority':
             $reqContractMWBECategories[] = $value;
+            break;
+          case 'spending_minority':
             $reqSpendingMWBECategories[] = $value;
             break;
       }
@@ -372,9 +374,11 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
       case 'contract_status':
         $contractStatus[] = $value[$key];
         break;
-      case 'minority_type_name':
-        $contractMWBECategory[] = $value[$key];
-        $spendingMWBECategory[] = $value[$key];
+      case 'contract_minority':
+        $contractMWBECategory[] = $value['minority_type_name_contract'];
+        break;
+      case 'spending_minority':
+        $spendingMWBECategory[] = $value['minority_type_name_spending'];
         break;
     }
   }
@@ -396,9 +400,10 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
           }
 
             if (count($spendingMWBECategory) > 0) {
+
                 foreach ($spendingMWBECategory as $key => $value) {
                     foreach ($value as $spendingmwbe => $spendingmwbeCount) {
-                        $checked = (in_array($spendingmwbe, array_values_recursive($spendingMWBECategory[0]))) ? 'checked' : '';
+                        $checked = (in_array($spendingmwbe, array_values_recursive($reqSpendingMWBECategories[0]))) ? 'checked' : '';
                         $subCat['spending']['M/WBE Category'][] = array($spendingmwbe, $spendingmwbe, $spendingmwbeCount, $checked);
                     }
                 }
@@ -431,7 +436,7 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
           if (count($contractMWBECategory) > 0) {
               foreach ($contractMWBECategory as $key => $value) {
                   foreach ($value as $contractmwbe => $contractmwbeCount) {
-                      $checked = (in_array($contractmwbe, array_values_recursive($contractMWBECategory[0]))) ? 'checked' : '';
+                      $checked = (in_array($contractmwbe, array_values_recursive($reqContractMWBECategories[0]))) ? 'checked' : '';
                       $subCat['contracts']['M/WBE Category'][] = array($contractmwbe, $contractmwbe, $contractmwbeCount, $checked);
                   }
               }
