@@ -11,7 +11,7 @@
         },
         "aggregateon_total_subven_contracts": {
             "datasourceName": "main",
-            "source": "aggregateon_total_subven_contracts"
+            "source": "aggregateon_subven_total_contracts"
         }
         		        
      },
@@ -59,13 +59,23 @@
                     ]
                 },                                 
 				{
-                    "name": "vendor",
+                    "name": "sub_vendor",
                     "levels": [
                        		{
-                            	"name": "vendor",
+                            	"name": "sub_vendor",
                             	"datasetName": "subvendor",
                             	"sourceColumnName": "vendor_id"
                             }
+                    ]
+                }      ,
+                {
+                    "name": "vendor",
+                    "levels": [
+                        {
+                            "name": "vendor",
+                            "datasetName": "vendor",
+                            "sourceColumnName": "prime_vendor_id"
+                        }
                     ]
                 }      ,
 				{
@@ -232,13 +242,23 @@
                     ]
                 },                                 
 				{
-                    "name": "vendor",
+                    "name": "sub_vendor",
                     "levels": [
                        		{
-                            	"name": "vendor",
+                            	"name": "sub_vendor",
                             	"datasetName": "subvendor",
                             	"sourceColumnName": "vendor_id"
                             }
+                    ]
+                }      ,
+                {
+                    "name": "vendor",
+                    "levels": [
+                        {
+                            "name": "vendor",
+                            "datasetName": "vendor",
+                            "sourceColumnName": "prime_vendor_id"
+                        }
                     ]
                 }      ,
 				{
@@ -293,7 +313,7 @@
         }
     },
 	"references": {
-        "subven_contracts_coa_aggregates__vendor_contract": [
+        "subven_contracts_coa_aggregates__sub_vendor_contract": [
                 {"datasetName": "subven_contracts_coa_aggregates", "columnNames": ["vendor_id"]},
                 {"datasetName": "subvendor", "columnNames": ["vendor_id"]}
         ],
