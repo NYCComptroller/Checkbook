@@ -67,7 +67,7 @@ function checkbook_advanced_search_form($form, $form_state)
     $agency_attributes = _checkbook_advanced_search_get_agency_attributes();
     $fund_class = _checkbook_advanced_search_get_fund_class_and_id();
     $year_range = "'-" . (date("Y") - 1900) . ":+" . (2500 - date("Y")) . "'";
-    $revenue_fys = array(0 => "All Fiscal Years") + _checkbook_advanced_search_get_year('revenue');
+    //$revenue_fys = array(0 => "All Fiscal Years") + _checkbook_advanced_search_get_year('revenue');
     $form['opening_div'] = array(
         '#type' => 'markup',
         '#markup' => $create_alert_view.'<div class = "advanced-search-accordion">',

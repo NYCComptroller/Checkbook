@@ -186,6 +186,7 @@ class WidgetUtil
         "mwbe_category"=>"M/WBE<br/>Category",
         "mwbe_ethnicity"=>"M/WBE<br/>Ethnicity",
         "no_of_sub_contracts" => "Number of<br/>Sub Contracts",
+        "sub_contract_purpose" => "Sub Contract<br/>Purpose",
     );
 
     //For number cols, need to find out if they are uniform number of digits for formatting
