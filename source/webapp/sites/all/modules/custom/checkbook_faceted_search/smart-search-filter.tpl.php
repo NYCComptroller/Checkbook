@@ -100,18 +100,23 @@ foreach ($render_array as $title => $value) {
             echo '<div class="rows">';
             foreach ($b as $sub_cat) {
               $name = $b['name'];
+              $value = $sub_cat[1];
+              $count = $sub_cat[2];
               if (is_array($sub_cat)) {
                 $checked = (in_array('checked', $sub_cat)) ? ' checked="checked" ' : '';
                 $active = ($checked) ? ' class="active"' : '';
                 echo '<div class="row">';
                 echo '<div class="checkbox">';
-                if ($sub_cat[0]) {
-                  echo '<input name="' . $name . '" type="checkbox"' . $checked . 'value="' . $sub_cat[0] . '" onClick="javascript:applySearchFilters();">';
-                }
-                echo '</div>';
-                echo '<div class="name">' . htmlentities($sub_cat[1]) . '</div>';
-                echo '<div class="number"><span' . $active . '>' . number_format($sub_cat[2]) . '</span></div>';
-                echo '</div>';
+//                if($name == 'fspendingMWBE' || $name == 'fcontractMWBE') {
+//                    $value = mwbe_category_mapping_by_name($sub_cat[1]);
+//                }
+                 if ($sub_cat[0]) {
+                   echo '<input name="' . $name . '" type="checkbox"' . $checked . 'value="' . $sub_cat[0] . '" onClick="javascript:applySearchFilters();">';
+                 }
+                 echo '</div>';
+                 echo '<div class="name">' . htmlentities($value) . '</div>';
+                 echo '<div class="number"><span' . $active . '>' . number_format($count) . '</span></div>';
+                 echo '</div>';
               }
             }
             echo '</div></div></div>';
