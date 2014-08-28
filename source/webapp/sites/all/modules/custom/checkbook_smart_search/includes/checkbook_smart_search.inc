@@ -53,8 +53,8 @@ function _checkbook_smart_search_get_results(){
     $contract_status = _checkbook_smart_search_get_facet_results($search_terms, "contract_status");
     $spending_categories = _checkbook_smart_search_get_facet_results($search_terms, "spending_categories");
     //Adding MWBE category
-    $spending_mwbe_categories = _checkbook_smart_search_get_facet_results($search_terms, "minority_type_name_spending", $domain = 'spending');
-    $contract_mwbe_categories = _checkbook_smart_search_get_facet_results($search_terms, "minority_type_name_contract", $domain = 'contracts');
+    $spending_mwbe_categories = _checkbook_smart_search_get_facet_results($search_terms, "minority_type_name_spending");
+    $contract_mwbe_categories = _checkbook_smart_search_get_facet_results($search_terms, "minority_type_name_contract");
 
 
     $facetResults = array(
@@ -84,8 +84,8 @@ function _checkbook_smart_search_get_results(){
     $selected_contract_status = _checkbook_smart_search_get_selected_facet_results($search_terms, "contract_status");
     $selected_contract_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "contract_categories");
 
-    $selected_contract_mwbe_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "minority_type_name_contract", $domain = 'contracts');
-    $selected_spending_mwbe_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "minority_type_name_spending", $domain = 'spending');
+    $selected_contract_mwbe_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "minority_type_name_contract");
+    $selected_spending_mwbe_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "minority_type_name_spending");
 
     $selected_facet_results = array("domain" => $selected_domains,
         "agency_name" => $selected_agencies,
@@ -184,8 +184,8 @@ function _checkbook_smart_search_get_results_query_search_term($search_terms){
         "spending_categories" => "spending_category_name",
         "contract_categories" => "contract_category_name",
         "contract_status" => "contract_status",
-        "contract_minority" => "minority_type_name_contract",
-        "spending_minority" => "minority_type_name_spending"
+        "minority_type_name_contract" => "minority_type_name_contract",
+        "minority_type_name_spending" => "minority_type_name_spending"
     );
 
     $searchTerm = $search_terms[0];
@@ -227,8 +227,6 @@ function _checkbook_smart_search_solr_results($query){
 /** Returns only selected facet values from current URL */
 function _checkbook_smart_search_get_selected_facet_results($search_terms, $facet_name, $domain = null){
 
-
-
     $parameter_mapping = array(
         "oge_agency_names" => "oge_agency_name",
         "agency_names" => "agency_name",
@@ -267,35 +265,15 @@ function _checkbook_smart_search_get_selected_facet_results($search_terms, $face
         }
     }
     if($count > 0){
-        if($domain == 'spending'){
-            $query = "select/?q=". $search_string
-                ."&fq=(domain:spending)"
-                ."&facet=true"
-                ."&fq=-latest_flag:N"
-                ."&facet.sort=count"
-                ."&facet.field=".$parameter_mapping[$facet_name]
-                ."&wt=php"
-                ."&facet.mincount=1";
-        }
-        if($domain == 'contracts'){
-            $query = "select/?q=". $search_string
-                ."&fq=(domain:contracts)"
-                ."&facet=true"
-                ."&fq=-latest_flag:N"
-                ."&facet.sort=count"
-                ."&facet.field=".$parameter_mapping[$facet_name]
-                ."&wt=php"
-                ."&facet.mincount=1";
-        }
-        if($domain == null){
-            $query = "select/?q=". $search_string
-                ."&facet=true"
-                ."&fq=-latest_flag:N"
-                ."&facet.sort=count"
-                ."&facet.field=".$parameter_mapping[$facet_name]
-                ."&wt=php"
-                ."&facet.mincount=1";
-        }
+
+        $query = "select/?q=". $search_string
+            ."&facet=true"
+            ."&fq=-latest_flag:N"
+            ."&facet.sort=count"
+            ."&facet.field=".$parameter_mapping[$facet_name]
+            ."&wt=php"
+            ."&facet.mincount=1";
+
 
         $selected_facet_results = _checkbook_smart_search_solr_results($query);
         foreach($selected_facet_results['facet_counts']['facet_fields'] as $name => $value){
@@ -355,35 +333,16 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
                 $search_string .= "&fq="  . $sub_query;
         }
 
-        if($domain == 'spending') {
-            $query = "select/?q=". $search_string
-                ."&fq=(domain:spending)"
-                ."&facet=true"
-                ."&fq=-latest_flag:N"
-                ."&facet.sort=count"
-                ."&facet.field=".$parameter_mapping[$facet_name]
-                ."&wt=php"
-                ."&facet.mincount=1";
-        }
-        if($domain == 'contracts') {
-            $query = "select/?q=". $search_string
-                ."&fq=(domain:contracts)"
-                ."&facet=true"
-                ."&fq=-latest_flag:N"
-                ."&facet.sort=count"
-                ."&facet.field=".$parameter_mapping[$facet_name]
-                ."&wt=php"
-                ."&facet.mincount=1";
-        }
-        if($domain == null){
-            $query = "select/?q=". $search_string
-                ."&facet=true"
-                ."&fq=-latest_flag:N"
-                ."&facet.sort=count"
-                ."&facet.field=".$parameter_mapping[$facet_name]
-                ."&wt=php"
-                ."&facet.mincount=1";
-        }
+
+        $query = "select/?q=". $search_string
+            ."&facet=true"
+            ."&fq=-latest_flag:N"
+            ."&facet.sort=count"
+            ."&facet.field=".$parameter_mapping[$facet_name]
+            ."&wt=php"
+            ."&facet.mincount=1";
+
+
         if ($offset){
           $query .= "&facet.offset=".$offset;
         }
@@ -394,6 +353,7 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
         }
 
         $facet_results = _checkbook_smart_search_solr_results($query);
+
         return $facet_results;
 }
 

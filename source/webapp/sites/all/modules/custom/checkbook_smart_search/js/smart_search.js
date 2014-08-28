@@ -301,14 +301,14 @@
                 cUrl += "spending_categories=" + encodeURIComponent(spendingCategories) + '*|*';
             }
             if(spendingMWBECategories){
-                cUrl += "spending_minority=" + encodeURIComponent(spendingMWBECategories) + '*|*';
+                cUrl += "minority_type_name_spending=" + encodeURIComponent(spendingMWBECategories) + '*|*';
             }
             if(contractMWBECategories){
-                cUrl += "contract_minority=" + encodeURIComponent(contractMWBECategories) + '*|*';
+                cUrl += "minority_type_name_contract=" + encodeURIComponent(contractMWBECategories) + '*|*';
             }
         }
-    
         cUrl = cUrl.substring(0, cUrl.length - 3);
+
         return cUrl;
     }
 
