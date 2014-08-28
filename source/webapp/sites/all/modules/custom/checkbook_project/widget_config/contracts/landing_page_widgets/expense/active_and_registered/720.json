@@ -4,27 +4,31 @@
     "no_results_content":"No Results Found",
     "defaultParameters":{"type_of_year":"B","document_code.document_code.document_code":"MA1~CTA1~CT1","status_flag":"A"},
     "cleanURLParameters":["mwbe","year","calyear","agency","yeartype","vendor","status","cvendor","cagency","cvendor","csize","cindustry","awdmethod"],
-    "urlParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","vendor":"prime_vendor_id","status":"status_flag","cvendor":"prime_vendor_id","cagency":"agency_id","cvendor":"prime_vendor_id","csize":"award_size_id","cindustry":"industry_type_id","awdmethod":"award_method_id"},
+    "urlParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year",
+                   "vendor":"prime_vendor_id","status":"status_flag","cvendor":"prime_vendor_id","cagency":"agency_id","cvendor":"prime_vendor_id",
+                   "csize":"award_size_id","cindustry":"industry_type_id","awdmethod":"award_method_id"},
 "dataset": "checkbook:subven_contracts_coa_aggregates",
 "noDataInitialLoad":true,
-"columns": ["minority_type.minority_type.minority_type_name","vendor.vendor","total_contracts","vendor.vendor.legal_name","original_amount_sum","current_amount_sum","yeartype.yeartype","spending_amount_sum"],
+"columns": ["subvendor.subvendor","subvendor.subvendor.legal_name","minority_type.minority_type.minority_type_name",
+            "vendor.vendor","total_contracts","original_amount_sum","current_amount_sum",
+            "yeartype.yeartype","spending_amount_sum"],
 "adjustParameters":"
-$adjustedParameters = $parameters;
-if(function_exists('_checkbook_project_applyParameterFilters')){
-$adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-}
-return $adjustedParameters;
+    $adjustedParameters = $parameters;
+    if(function_exists('_checkbook_project_applyParameterFilters')){
+    $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+    }
+    return $adjustedParameters;
 ",
 "limit":5,
 "enableExpand":true,
 "derivedColumns": {
-"vendor_name_formatted": {
+"subvendor_name_formatted": {
 "type": "expression2",
-"expression": "_get_tooltip_markup($row['vendor_vendor_legal_name'],60)"
+"expression": "_get_tooltip_markup($row['subvendor_subvendor_legal_name'],60)"
 },
-"vendor_name_link": {
+"subvendor_name_link": {
 "type": "expression2",
-"expression": "'<a href=\"/contracts_landing'  . _checkbook_project_get_url_param_string(\"agency\") . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\")  .   _checkbook_project_get_url_param_string(\"awdmethod\") .  _checkbook_project_get_url_param_string(\"status\")  .   _checkbook_project_get_year_url_param_string() . '/vendor/' .$row[vendor_vendor] .  '?expandBottomCont=true\">' .$row[vendor_name_formatted]. '</a>'"
+"expression": "'<a href=\"/contracts_landing'  . _checkbook_project_get_url_param_string(\"agency\") . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\")  .   _checkbook_project_get_url_param_string(\"awdmethod\") .  _checkbook_project_get_url_param_string(\"status\")  .   _checkbook_project_get_year_url_param_string() . '/svendor/' .$row[subvendor_subvendor] .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>'"
 } ,
 "spent_amount_no_link": {
 "type": "expression2",
@@ -54,7 +58,7 @@ return $adjustedParameters;
 $node->widgetConfig->getData=false;
 load_widget_data($node);
 if($node->totalDataCount > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
-$header='<div class=\"tableHeader\"><h2>Top ' . $count . 'Prime Vendors</h2><span class=\"contCount\"> Number of Prime Vendors:  ' . number_format($node->totalDataCount) . '</span></div>';
+$header='<div class=\"tableHeader\"><h2>Top ' . $count . 'Sub Vendors</h2><span class=\"contCount\"> Number of Sub Vendors:  ' . number_format($node->totalDataCount) . '</span></div>';
 return $header;
 ",
 "footer":"
@@ -77,7 +81,7 @@ return $footer;
 ",
 "summaryView":{
 "template":"contract_summary_expense_expense",
-"entityColumnName":"vendor_vendor_legal_name",
+"entityColumnName":"subvendor_subvendor_legal_name",
 "templateTitle":"Sub Vendor Spending Transactions"
 },
 "widgetTitle":"Sub Vendors",
@@ -85,8 +89,8 @@ return $footer;
 "table_columns": [
 {
 "labelAlias": "sub_vendor_name",
-"column": "vendor_name_link",
-"sortSourceColumn":"vendor.vendor.legal_name"
+"column": "subvendor_name_link",
+"sortSourceColumn":"subvendor_subvendor_legal_name"
 },
 {
 "labelAlias": "no_of_sub_contracts",
@@ -120,8 +124,8 @@ return $footer;
 "dataTableOptions":{
 "aoColumns": [
 { "bSortable": false, "sWidth":"230px", "sClass":"text" },
-{"sClass":"number","sWidth":"120px","asSorting": [ "desc","asc"  ] },
-{"sClass":"number","sWidth":"150px" ,"asSorting": [ "desc","asc"  ] },
+{"sClass":"number","sWidth":"150px","asSorting": [ "desc","asc"  ] },
+{"sClass":"text pad-left","sWidth":"200px" ,"asSorting": [ "desc","asc"  ] },
 {"sClass":"number","sWidth":"150px" ,"asSorting": [ "desc","asc"  ] },
 {"sClass":"number","sWidth":"217px" ,"asSorting": [ "desc","asc"  ] },
 {"sClass":"number","sWidth":"160px" ,"asSorting": [ "desc" ,"asc" ]},
