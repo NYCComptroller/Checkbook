@@ -302,8 +302,8 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
   $active_contracts = $variables['active_contracts'];
   $selected_filters = $variables['selected_facet_results'];
   $output = NULL;
-  $ogeAgencies = $agencies = $vendors = $expenseCategories = $revenueCategories = $fiscalYears = $domains = $contractCategory = $contractStatus = $spendingCategory = $contractMWBECategory = $spendingMWBECategory = array();
-  $reqOGEAgencies = $reqAgencies = $reqFiscalYears = $reqDomains = $reqVendors = $reqExpenseCategories = $reqRevenueCategories = $reqSpendCategories = array();
+  $ogeAgencies = $agencies = $vendors = $vendor_type = $expenseCategories = $revenueCategories = $fiscalYears = $domains = $contractCategory = $contractStatus = $spendingCategory = $contractMWBECategory = $spendingMWBECategory = array();
+  $reqOGEAgencies = $reqAgencies = $reqFiscalYears = $reqDomains = $reqVendors = $reqVendorType = $reqExpenseCategories = $reqRevenueCategories = $reqSpendCategories = array();
 
   //arrays for the selected facet values from the URL
   foreach($selected_filters as $key => $value){
@@ -322,6 +322,9 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
             break;
           case 'vendor_name':
             $reqVendors[] = $value;
+            break;
+          case 'vendor_type':
+            $reqVendorType[] = $value;
             break;
           case 'expenditure_object_name':
             $reqExpenseCategories[] = $value;
@@ -361,6 +364,9 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
         break;
       case 'vendor_name':
         $vendors[] = $value[$key];
+        break;
+      case 'vendor_type':
+        $vendor_type[] = $value[$key];
         break;
       case 'expenditure_object_name':
         $expenseCategories[] = $value[$key];
@@ -494,20 +500,42 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
         $checked = in_array($vendorName, array_values_recursive($reqVendors[0]));
         $vendorValue = urlencode($vendorName);
         if ($checked) {
-          $output['Prime Vendor']['checked'][] = array($vendorValue, $vendorName, $count);
+          $output['Vendor']['checked'][] = array($vendorValue, $vendorName, $count);
         }
         else {
-          $output['Prime Vendor']['unchecked'][] = array($vendorValue, $vendorName, $count);
+          $output['Vendor']['unchecked'][] = array($vendorValue, $vendorName, $count);
         }
       }
     }
-    $output['Prime Vendor']['name'] = 'fvendorName';
+    $output['Vendor']['name'] = 'fvendorName';
     foreach($reqVendors[0] as $key => $value){
         if(!in_array($value['name'], array_values_recursive($output['Prime Vendor']['checked']))){
             $output['Prime Vendor']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
         }
     }
   }
+  // Vendor type
+   if (count($vendor_type) > 0) {
+       foreach ($vendor_type[0] as $vendorName => $count) {
+           if ($count > 0) {
+               $checked = in_array($vendorName, array_values_recursive($reqVendorType[0]));
+               $vendorValue = urlencode($vendorName);
+               if ($checked) {
+                   $output['Vendor Type']['checked'][] = array($vendorValue, $vendorName, $count);
+               }
+               else {
+                   $output['Vendor Type']['unchecked'][] = array($vendorValue, $vendorName, $count);
+               }
+           }
+       }
+       $output['Vendor Type']['name'] = 'fvendorType';
+       foreach($reqVendorType[0] as $key => $value){
+           if(!in_array($value['name'], array_values_recursive($output['Vendor Type']['checked']))){
+               $output['Vendor Type']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
+           }
+       }
+  }
+
   if (count($expenseCategories) > 0) {
     foreach ($expenseCategories[0] as $expenseCategoryName => $count) {
       if ($count > 0) {

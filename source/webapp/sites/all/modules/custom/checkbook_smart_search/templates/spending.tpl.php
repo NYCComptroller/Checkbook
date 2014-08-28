@@ -19,6 +19,7 @@
 */
 ?>
 <?php
+
 $spending_parameter_mapping = _checkbook_smart_search_domain_fields('spending', $IsOge);
 
 if($IsOge)
@@ -71,6 +72,13 @@ foreach ($spending_parameter_mapping as $key=>$title){
   }
   if($key == "minority_type_name" && !$spending_results["minority_type_name"]){
     $value = 'N/A';
+  }
+  if($key == "minority_type_name" && $spending_results["minority_type_name"]){
+      $id = $spending_results["minority_type_id"];
+      if($id == '4' || $id == '5'){
+          $id = '4~5';
+      }
+      $value = "<a href='/spending_landing/yeartype/B/year/115/mwbe/".$id ."'>" .mwbe_category_mapping($spending_results["minority_type_id"]) ."</a>";
   }
   if($key == 'is_prime_or_sub' && $spending_results["is_prime_or_sub"] == 'P'){
     $value = 'No';
