@@ -36,13 +36,18 @@ pre-packaged for direct installation by copying, as described below.
  `/var/lib/pgsql/9.3/data/pg_hba.conf` if CentOS 6.4) and apply the 
  changes listed below: 
  
- 
-#'local' is for Unix domain socket connections only
+# 'local' is for Unix domain socket connections only
+
        local     all         all              md5
-#IPv4 local connections: 
+       
+# IPv4 local connections: 
+
        host      all       0.0.0.0/0          md5
-#IPv6 local connection: 
+       
+# IPv6 local connection: 
+
        host      all          all             md5
+       
 
  *Note: This configuration is set so any user can log into the database 
  providing the username: localhost, postgres, etc. with the password: postgres. 
@@ -53,8 +58,8 @@ pre-packaged for direct installation by copying, as described below.
  changing its authentication mechanism could affect up other things.
  The long-term solution is for Checkbook to have its own PG user.*
 
- Then restart PostgreSQL:
-
+5. Then restart PostgreSQL:
+          
           $ sudo service postgresql-9.3 restart
 
  Verify that the user postgres can connect to the checkbook database with
@@ -62,10 +67,10 @@ pre-packaged for direct installation by copying, as described below.
 
           $ PGPASSWORD=postgres psql -U postgres checkbook
           
-Next, verify that the localhost user can connect to the checkbook database 
-with password authentication. Later SOLR will connect to the database
-using U-localhost and -PGPASSWORD=postgres. The following command will 
-verify if that connection is succesfull. 
+6. Next, verify that the localhost user can connect to the checkbook database 
+   with password authentication. Later SOLR will connect to the database
+   using U-localhost and -PGPASSWORD=postgres. The following command will 
+   verify if that connection is succesfull. 
 
           $ PGPASSWORD=postgres psql -U localhost checkbook
 
@@ -75,7 +80,7 @@ verify if that connection is succesfull.
           Type "help" for help.
           checkbook=# \q  (to quit)
 
-5. Tell Solr how to connect to PostgreSQL:
+7. Tell Solr how to connect to PostgreSQL:
 
  Edit `/opt/solr-4.1.0/indexes/solr/collection1/conf/db-config.xml`
  to insert the correct database details.  There is no line break or
@@ -89,7 +94,7 @@ verify if that connection is succesfull.
  "postgres", for testing.  However, in a production environment those
  would be different, and this is where you would need to set them.*
 
-6. Start Solr inside Tomcat:
+8. Start Solr inside Tomcat:
 
  To run Tomcat, you'll need a Java runtime environment.  If your
  system doesn't already have one, you can install it like this under
@@ -108,7 +113,7 @@ verify if that connection is succesfull.
  Solr is now running.  For troubleshooting errors, see the detailed
  logs in `/opt/apache-tomcat-6.0.35/logs/`.
 
-7. Start Solr indexing.
+9. Start Solr indexing.
 
  Visit this url in a browser start indexing:
  <http://localhost:8080/solr-checkbook/dataimport?command=full-import&clean=true&jobID=0>
