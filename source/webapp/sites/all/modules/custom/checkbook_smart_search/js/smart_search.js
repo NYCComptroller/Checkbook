@@ -246,6 +246,7 @@
         var ogeAgencyNames = getSearchFilterCriteria('fogeName');
         var agencyNames = getSearchFilterCriteria('fagencyName');
         var vendorNames = getSearchFilterCriteria('fvendorName');
+        var vendorType = getSearchFilterCriteria('fvendorType');
         var expenseCategories = getSearchFilterCriteria('fexpenseCategoryName');
         var revenueCategories = getSearchFilterCriteria('frevenueCategoryName');
         var fiscalYears = getSearchFilterCriteria('fyear');
@@ -254,6 +255,7 @@
         var spendingCategories = getSearchFilterCriteria('fspendingCatName');
         var spendingMWBECategories = getSearchFilterCriteria('fspendingMWBE');
         var contractMWBECategories = getSearchFilterCriteria('fcontractMWBE');
+
 
         var searchTerm = '';
         var cUrl = null;
@@ -280,6 +282,9 @@
         }
         if(vendorNames){
             cUrl += "vendor_names=" + encodeURIComponent(vendorNames) + '*|*';
+        }
+        if(vendorType){
+            cUrl += "vendor_type=" + encodeURIComponent(vendorType) + '*|*';
         }
         if(fiscalYears){
             cUrl += "fiscal_years=" + encodeURIComponent(fiscalYears) + '*|*';

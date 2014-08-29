@@ -152,6 +152,13 @@ foreach ($contracts_parameter_mapping as $key => $title){
   if($key == "minority_type_name" && !$contracts_results["minority_type_name"]){
       $value = 'N/A';
   }
+  if($key == "minority_type_name" && $contracts_results["minority_type_name"]){
+      $id = $contracts_results["minority_type_id"];
+      if($id == '4' || $id == '5'){
+          $id = '4~5';
+      }
+      $value = "<a href='/contracts_landing/status/A/yeartype/B/year/115/mwbe/".$id ."'>" .mwbe_category_mapping($contracts_results["minority_type_id"]) ."</a>";
+  }
   if($key == 'is_prime_or_sub' && $contracts_results["is_prime_or_sub"] == 'P'){
       $value = 'No';
   }
