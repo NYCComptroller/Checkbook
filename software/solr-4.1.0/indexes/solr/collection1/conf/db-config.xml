@@ -182,7 +182,9 @@
 				lower(rsc.spending_category_name) || '[' || rsc.spending_category_code || ']' spending_category_name_code,
 				rsc.spending_category_name,
 				adt.minority_type_name,
+				case when adt.minority_type_id in (4,5,10) then 'Asian American' when adt.minority_type_id in (2) then 'Black American' when adt.minority_type_id in (7) then 'Non-M/WBE' when adt.minority_type_id in (9) then 'Women' else adt.minority_type_name end as minority_type_name_spending,
 				adt.minority_type_id,
+				case when adt.minority_type_id in (4,5,10) then 10 else adt.minority_type_id end as minority_type_id_spending,
                 adt.payment_id, 
                 adt.prime_vendor_id, 
                 adt.is_prime_or_sub, 
@@ -240,8 +242,8 @@
             <field column="spending_category_name_code" name="spending_category_name_code" />
             <field column="minority_type_name" name="minority_type_name" />
             <field column="minority_type_id" name="minority_type_id" />
-            <field column="minority_type_name" name="minority_type_name_spending" />
-            <field column="minority_type_id" name="minority_type_id_spending" />
+            <field column="minority_type_name_spending" name="minority_type_name_spending" />
+            <field column="minority_type_id_spending" name="minority_type_id_spending" />
             <field column="payment_id" name="payment_id" />
             <field column="prime_vendor_id" name="prime_vendor_id" />
             <field column="is_prime_or_sub" name="is_prime_or_sub" />
@@ -463,7 +465,9 @@
                 (case when(latest_flag = 'Y') then 'Y' else 'N' end) latest_flag,
                 'Registered' status,
                 minority_type_name,
+				case when adt.minority_type_id in (4,5,10) then 'Asian American' when adt.minority_type_id in (2) then 'Black American' when adt.minority_type_id in (7) then 'Non-M/WBE' when adt.minority_type_id in (9) then 'Women' else adt.minority_type_name end as minority_type_name_contract,
 				minority_type_id,
+				case when minority_type_id in (4,5,10) then 10 else minority_type_id end as minority_type_id_contract,
                 is_prime_or_sub, 
                 sub_contract_id, 
                 prime_vendor_id,
@@ -524,8 +528,8 @@
             <field column="document_code" name="document_code" />
             <field column="minority_type_name" name="minority_type_name" />
             <field column="minority_type_id" name="minority_type_id" />
-            <field column="minority_type_name" name="minority_type_name_contract" />
-            <field column="minority_type_id" name="minority_type_id_contract" />
+            <field column="minority_type_name_contract" name="minority_type_name_contract" />
+            <field column="minority_type_id_contract" name="minority_type_id_contract" />
             <field column="prime_vendor_id" name="prime_vendor_id" />
             <field column="is_prime_or_sub" name="is_prime_or_sub" />
             <field column="sub_contract_id" name="sub_contract_id" />

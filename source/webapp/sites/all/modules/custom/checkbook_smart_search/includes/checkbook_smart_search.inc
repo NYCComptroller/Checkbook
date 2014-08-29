@@ -39,6 +39,7 @@ function _checkbook_smart_search_get_results(){
     $oges = _checkbook_smart_search_get_facet_results($search_terms, "oge_agency_names", NULL, -1);
     $agencies = _checkbook_smart_search_get_facet_results($search_terms, "agency_names", NULL, -1);
     $vendors = _checkbook_smart_search_get_facet_results($search_terms, "vendor_names", NULL, 100);
+    $vendor_type = _checkbook_smart_search_get_facet_results($search_terms, "vendor_type", NULL, 100);
     $all_vendors = _checkbook_smart_search_get_facet_results($search_terms, "vendor_names", NULL, -1);
     $vendor_number = count($all_vendors['facet_counts']['facet_fields']['vendor_name']);
     $vendor_pages = floor($vendor_number / 100);
@@ -52,32 +53,30 @@ function _checkbook_smart_search_get_results(){
     $contract_categories = _checkbook_smart_search_get_facet_results($search_terms, "contract_categories");
     $contract_status = _checkbook_smart_search_get_facet_results($search_terms, "contract_status");
     $spending_categories = _checkbook_smart_search_get_facet_results($search_terms, "spending_categories");
-    //Adding MWBE category
     $spending_mwbe_categories = _checkbook_smart_search_get_facet_results($search_terms, "minority_type_name_spending");
     $contract_mwbe_categories = _checkbook_smart_search_get_facet_results($search_terms, "minority_type_name_contract");
-
 
     $facetResults = array(
         "domain" => $domains['facet_counts']['facet_fields'],
         "agency_name" => $agencies['facet_counts']['facet_fields'],
         "oge_agency_name" => $oges['facet_counts']['facet_fields'],
         "vendor_name" => $vendors['facet_counts']['facet_fields'],
+        "vendor_type" => $vendor_type['facet_counts']['facet_fields'],
         "expenditure_object_name" => $expense_categories['facet_counts']['facet_fields'],
         "fiscal_year" => $fiscal_years['facet_counts']['facet_fields'],
         "spending_category_name" => $spending_categories['facet_counts']['facet_fields'],
         "contract_category_name" => $contract_categories['facet_counts']['facet_fields'],
         "contract_status" => $contract_status['facet_counts']['facet_fields'],
-        //Adding MWBE category
         "spending_minority" => $spending_mwbe_categories['facet_counts']['facet_fields'],
         "contract_minority" => $contract_mwbe_categories['facet_counts']['facet_fields']
     );
-
 
     //Selected Facet Filters
     $selected_domains = _checkbook_smart_search_get_selected_facet_results($search_terms, "domains");
     $selected_agencies = _checkbook_smart_search_get_selected_facet_results($search_terms, "agency_names");
     $selected_oges = _checkbook_smart_search_get_selected_facet_results($search_terms, "oge_agency_names");
     $selected_vendors = _checkbook_smart_search_get_selected_facet_results($search_terms, "vendor_names");
+    $selected_vendor_type = _checkbook_smart_search_get_selected_facet_results($search_terms, "vendor_type");
     $selected_expense_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "expense_categories");
     $selected_fiscal_years = _checkbook_smart_search_get_selected_facet_results($search_terms, "fiscal_years");
     $selected_spending_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "spending_categories");
@@ -91,6 +90,7 @@ function _checkbook_smart_search_get_results(){
         "agency_name" => $selected_agencies,
         "oge_agency_name" => $selected_oges,
         "vendor_name" => $selected_vendors,
+        "vendor_type" => $selected_vendor_type,
         "expenditure_object_name" => $selected_expense_categories,
         "fiscal_year" => $selected_fiscal_years,
         "spending_category_name" => $selected_spending_categories,
@@ -179,6 +179,7 @@ function _checkbook_smart_search_get_results_query_search_term($search_terms){
         "fiscal_years" => "fiscal_year",
         "domains" => "domain",
         "vendor_names" => "vendor_name",
+        "vendor_type" => "vendor_type",
         "expense_categories" => "expenditure_object_name",
         "revenue_categories" => "revenue_category_name",
         "spending_categories" => "spending_category_name",
@@ -233,6 +234,7 @@ function _checkbook_smart_search_get_selected_facet_results($search_terms, $face
         "fiscal_years" => "fiscal_year",
         "domains" => "domain",
         "vendor_names" => "vendor_name",
+        "vendor_type" => "vendor_type",
         "expense_categories" => "expenditure_object_name",
         "revenue_categories" => "revenue_category_name",
         "spending_categories" => "spending_category_name",
@@ -301,6 +303,7 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
           "fiscal_years" => "fiscal_year",
           "domains" => "domain",
           "vendor_names" => "vendor_name",
+          "vendor_type" => "vendor_type",
           "expense_categories" => "expenditure_object_name",
           "revenue_categories" => "revenue_category_name",
           "spending_categories" => "spending_category_name",
@@ -456,6 +459,7 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
                               "fiscal_years" => "fiscal_year",
                               "domains" => "domain",
                               "vendor_names" => "vendor_name",
+                              "vendor_type" => "vendor_type",
                               "expense_categories" => "expenditure_object_name",
                               "revenue_categories" => "revenue_category_name",
                               "spending_categories" => "spending_category_name",
@@ -1050,3 +1054,30 @@ function _checkbook_smart_search_expensecategory_facet($page){
     $results = _checkbook_smart_search_get_facet_results($search_terms, "expense_categories", $offset, $double_limit, TRUE, TRUE);
     print theme('facet_results', array('results'=>$results['facet_counts']['facet_fields']['expenditure_object_name'], 'name'=> 'fexpenseCategoryName'));
 }
+
+
+function mwbe_category_mapping($category_id){
+    switch($category_id){
+        case '2': return 'Black American';
+        case '3': return 'Hispanic American';
+        case '4': return 'Asian American';
+        case '5': return 'Asian American';
+        case '7': return 'Non-M/WBE';
+        case '9': return 'Women';
+        case '11': return 'Individuals and Others';
+    }
+}
+
+function mwbe_category_mapping_by_name($category_name){
+    switch($category_name){
+        case 'african american': return 'Black American';
+        case 'hispanic american': return 'Hispanic American';
+        case 'asian-indian': return 'Asian American';
+        case 'asian-pacific': return 'Asian American';
+        case 'asian american': return 'Asian American';
+        case 'non-minority': return 'Non-M/WBE';
+        case 'caucasian woman': return 'Women';
+        case 'individuals & others': return 'Individuals and Others';
+    }
+}
+
