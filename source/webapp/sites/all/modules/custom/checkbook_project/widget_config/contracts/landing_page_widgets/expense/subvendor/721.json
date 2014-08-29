@@ -4,10 +4,10 @@
     "no_results_content":"No Results Found",
     "getTotalDataCount":true,
     "defaultParameters":{"type_of_year":"B","document_code.document_code.document_code":"CTA1~CT1","status_flag":"A"},
-    "cleanURLParameters":["mwbe","year","calyear","agency","yeartype","vendor","status","agid","cagency","cvendor",
-                          "svendor","csize","cindustry","awdmethod"],
+    "cleanURLParameters":["subvendor","mwbe","year","calyear","agency","yeartype","vendor","status","agid","cagency","cvendor",
+                          "csize","cindustry","awdmethod"],
     "urlParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id",
-                   "yeartype":"type_of_year","vendor":"prime_vendor_id","status":"status_flag","svendor":"vendor_id",
+                   "yeartype":"type_of_year","vendor":"prime_vendor_id","status":"status_flag","subvendor":"vendor_id",
                    "agid":"original_agreement.original_agreement","cagency":"agency_id","cvendor":"prime_vendor_id",
                    "csize":"award_size_id","cindustry":"industry_type_id","awdmethod":"award_method_id"},
 "dataset": "checkbook:subven_contracts_coa_aggregates",
@@ -41,7 +41,7 @@
     },
     "agency_name_link": {
         "type": "expression2",
-        "expression": "'<a href=\"/contracts_landing' .  _checkbook_project_get_url_param_string(\"status\") . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string(\"vendor\") . _checkbook_project_get_url_param_string(\"svendor\")  .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\")  . _checkbook_project_get_url_param_string(\"awdmethod\") .   _checkbook_project_get_year_url_param_string() . '/agency/'. $row[agency_agency].'?expandBottomCont=true\">' .$row[agency_name_formatted]. '</a>'"
+        "expression": "'<a href=\"/contracts_landing' .  _checkbook_project_get_url_param_string(\"status\") . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string(\"vendor\") . _checkbook_project_get_url_param_string(\"subvendor\")  .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\")  . _checkbook_project_get_url_param_string(\"awdmethod\") .   _checkbook_project_get_year_url_param_string() . '/agency/'. $row[agency_agency].'?expandBottomCont=true\">' .$row[agency_name_formatted]. '</a>'"
     },
     "contract_link": {
         "type": "expression2",
@@ -53,7 +53,7 @@
     } ,
     "subvendor_name_link": {
         "type": "expression2",
-        "expression": "'<a href=\"/contracts_landing'  . _checkbook_project_get_url_param_string(\"agency\") .  _checkbook_project_get_url_param_string(\"status\") . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\")  . _checkbook_project_get_url_param_string(\"awdmethod\") . _checkbook_project_get_url_param_string(\"vendor\") .   _checkbook_project_get_year_url_param_string()  .   '/svendor/' .$row[subvendor_subvendor].  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>'"
+        "expression": "'<a href=\"/contracts_landing'  . _checkbook_project_get_url_param_string(\"agency\") .  _checkbook_project_get_url_param_string(\"status\") . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\")  . _checkbook_project_get_url_param_string(\"awdmethod\") . _checkbook_project_get_url_param_string(\"vendor\") .   _checkbook_project_get_year_url_param_string()  .   '/subvendor/' .$row[subvendor_subvendor].  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>'"
     } ,
     "spent_amount_link": {
         "type": "expression2",
@@ -98,7 +98,7 @@ $url = '/panel_html/contract_details/contract/transactions/contcat/expense'. _ch
 $url .= _checkbook_append_url_params();
 $url .= _checkbook_project_get_url_param_string('agency');
 $url .= _checkbook_project_get_url_param_string('vendor');
-$url .= _checkbook_project_get_url_param_string('svendor');
+$url .= _checkbook_project_get_url_param_string('subvendor');
 $url .= _checkbook_project_get_url_param_string('awdmethod');
 $url .= _checkbook_project_get_url_param_string('csize');
 $url .= _checkbook_project_get_url_param_string('cindustry');
