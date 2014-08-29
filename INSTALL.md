@@ -22,7 +22,7 @@ The Checkbook deployment process is getting closer to that ideal, but
 it is not there yet.  We know that more work is needed to smooth and
 standardize deployment, and we are conducting that work in the open,
 with participation from all interested parties.  The code's authors,
-who are intimiately familiar with every step of the process, naturally
+who are intimately familiar with every step of the process, naturally
 can and do regularly deploy production instances to
 <http://checkbooknyc.com/> -- but various improvements need to be made
 to these instructions before that process is equally easy for
@@ -99,8 +99,8 @@ The following assumptions are also made about the installation:
  * The webroot is `/var/www/html`.
    (It could be somewhere else; `/var/www/html` is just the location
    we use in these instructions.)
- * The Drupal database is named `checkbook_drupal`.
- * The PostgreSQL database is named `checkbook`.
+
+The initial installation of the GNU/Linux server with LAMP stack takes on average 20 minutes. 
 
 Steps to install:
 
@@ -204,8 +204,8 @@ Steps to install:
     webapp from Checkbook:
 
         $ sudo su www-data
-        $ cp -a source/webapp /var/www/html
-        $ ls /var/www/html
+        $ cp -a source/webapp/* /var/www/html
+        $ ls /var/www/html/
         authorize.php index.php          INSTALL.txt     profiles/  themes/
         CHANGELOG.txt INSTALL.mysql.txt  LICENSE.txt     README.txt update.php
         COPYRIGHT.txt INSTALL.pgsql.txt  MAINTAINERS.txt robots.txt UPGRADE.txt
@@ -217,8 +217,9 @@ Steps to install:
     need to adjust these instructions in the appropriate way.  Also,
     all of this assumes that directory `/var/www/` already exists and
     is owned by user `www-data` and group `www-data`.  If that's not
-    the case, you may need to properly create and set permissions
-    there too. `sudo chown -R www-data.www-data /var/www` would be one
+    the case, you may need to properly create and set root permissions
+    for the www-data user with the following command. 
+     `sudo chown -R www-data.www-data /var/www` would be one
     way to do that on Ubuntu 12.04.)
 
     Make sure the `sites/default/files/` directory has read, write,
@@ -304,21 +305,36 @@ Steps to install:
     installation, you would want to use a better password of course.
 
 7.  Install the Checkbook (PostgreSQL) database.
+    Begin by inilitizing the PostgreSQL database with the following command: 
+       $ service postgresql-9.3 initdb
+       $ service postgresql-9.3 start;
 
     Create and import the database into PostgreSQL using the following commands:
 
         $ cd data
-        $ unzip checkbook_demo_database_for_postgres_db_20130524.zip
-        Archive:  checkbook_demo_database_for_postgres_db_20130524.zip
-          inflating: checkbook_demo_database_for_postgres_db_20130524.sql
+        $ unzip checkbook_demo_database_for_postgres_db_20140708.zip
+        Archive:  checkbook_demo_database_for_postgres_db_20140708.zip
+          inflating: checkbook_demo_database_for_postgres_db_20140708.sql
+        $ unzip checkbook_demo_database_for_postgres_ogent_db_20140708.zip
+        Archive:  checkbook_demo_database_for_postgres_ogent_db_20140708.zip
+          inflating: checkbook_demo_database_for_postgres_ogent_db_20140708.sql
         $ cd ..
         $ sudo su postgres
-        $ psql
+        bash-4.1$ psql
         postgres=# create database checkbook ;
+        postgres=# create database checkbook_ogent ;
         postgres=# \q
           _(to exit from the database interactive prompt)_
-        $ psql checkbook -f data/checkbook_demo_database_for_postgres_db_20130524.sql
-
+        bash-4.1$ psql checkbook -f         data/checkbook_demo_database_for_postgres_db_20140708/checkbook_demo_database_for_postgres_db_20140708.sql
+        bash-4.1$ psql checkbook -f         data/checkbook_demo_database_for_postgres_ogent_db_20140708/checkbook_demo_database_for_postgres_ogent_db_20140708.sql
+         bash-4.1$ exit
+       
+    
+    Set the PostgreSQL database user's username and password with the following command:
+    $ sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"
+    
+    Verify that PostgreSQL can accept password authentication from the postgres user with the following command: 
+    $ PGPASSWORD=postgres psql -U postgres checkbook
     *Notes:*
 
     The demo dataset loaded above assumes the PostgreSQL database user
@@ -341,8 +357,8 @@ Steps to install:
 
 8.  Check the basic database settings in `settings.php`.
 
-    Look for this text in `/var/www/html/sites/default/settings.php`:
-
+    Look for: $databases = array (); text in the following file `/var/www/html/sites/default/settings.php`:
+    Insert the following settings listed below. 
         $databases = array(
             'default' => array(
                 'default' => array(
@@ -358,6 +374,18 @@ Steps to install:
             'checkbook' => array(
                 'main' => array(
                     'database' => 'checkbook',
+                    'username' => 'postgres',
+                    'password' => 'postgres',
+                    'host' => '127.0.0.1',
+                    'port' => '5432',
+                    'driver' => 'pgsql',
+                    'prefix' => '',
+                    'schema' => 'public'
+                ),
+              ),
+             'checkbook_ogent' => array(
+                'main' => array(
+                    'database' => 'checkbook_ogent',
                     'username' => 'postgres',
                     'password' => 'postgres',
                     'host' => '127.0.0.1',
