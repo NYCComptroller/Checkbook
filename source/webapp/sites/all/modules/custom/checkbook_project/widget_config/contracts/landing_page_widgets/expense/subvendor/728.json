@@ -3,8 +3,8 @@
 "widgetSubType":"ajaxSimple",
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B","document_code.document_code.document_code":"MA1~CTA1~CT1","status_flag":"A"},
-"cleanURLParameters":["svendor","mwbe","year","calyear","agency","yeartype","vendor","status","cagency","cvendor","csize","cindustry","awdmethod"],
-"urlParamMap":{"svendor":"vendor_id","mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year",
+"cleanURLParameters":["subvendor","mwbe","year","calyear","agency","yeartype","vendor","status","cagency","cvendor","csize","cindustry","awdmethod"],
+"urlParamMap":{"subvendor":"vendor_id","mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year",
                "awdmethod":"award_method_id","vendor":"prime_vendor_id","status":"status_flag","cagency":"agency_id","cvendor":"prime_vendor_id",
                "csize":"award_size_id","cindustry":"industry_type_id","awdmethod":"award_method_id"},
 "dataset": "checkbook:subven_contracts_coa_aggregates",
@@ -21,7 +21,7 @@ return $adjustedParameters;
 "derivedColumns": {
 "contract_industry_link": {
 "type": "expression2",
-"expression": "'<a href=\"/contracts_landing'  . _checkbook_project_get_url_param_string(\"agency\") . _checkbook_project_get_url_param_string(\"svendor\")  . _checkbook_append_url_params() .   _checkbook_project_get_url_param_string(\"vendor\",\"vendor\")  .  _checkbook_project_get_url_param_string(\"awdmethod\") .  _checkbook_project_get_url_param_string(\"status\")  .  _checkbook_project_get_url_param_string(\"csize\")  .   _checkbook_project_get_year_url_param_string() .'/cindustry/' .$row[industry_industry]. '?expandBottomCont=true\">' .$row[industry_industry_industry_type_name]. '</a>'"
+"expression": "'<a href=\"/contracts_landing'  . _checkbook_project_get_url_param_string(\"agency\") . _checkbook_project_get_url_param_string(\"subvendor\")  . _checkbook_append_url_params() .   _checkbook_project_get_url_param_string(\"vendor\",\"vendor\")  .  _checkbook_project_get_url_param_string(\"awdmethod\") .  _checkbook_project_get_url_param_string(\"status\")  .  _checkbook_project_get_url_param_string(\"csize\")  .   _checkbook_project_get_year_url_param_string() .'/cindustry/' .$row[industry_industry]. '?expandBottomCont=true\">' .$row[industry_industry_industry_type_name]. '</a>'"
 } ,
 "spent_amount_link": {
 "type": "expression2",
@@ -60,7 +60,7 @@ return $header;
 $url = '/panel_html/contract_details/contract/transactions/contcat/expense'. _checkbook_project_get_url_param_string('status','contstatus');
 $url .= _checkbook_project_get_url_param_string('agency');
 $url .= _checkbook_project_get_url_param_string('vendor');
-$url .= _checkbook_project_get_url_param_string('svendor');
+$url .= _checkbook_project_get_url_param_string('subvendor');
 $url .= _checkbook_project_get_url_param_string('awdmethod');
 $url .= _checkbook_project_get_url_param_string('csize');
 $url .= _checkbook_project_get_url_param_string('cindustry');
