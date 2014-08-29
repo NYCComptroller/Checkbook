@@ -1,0 +1,390 @@
+{
+    "datasets": {
+        "spending_subven_data": {
+            "datasourceName": "main",
+            "source": "aggregateon_subven_spending_coa_entities"
+        },
+        "contracts_subven_spending": {
+            "datasourceName": "main",
+            "source": "aggregateon_subven_spending_contract"
+        },
+        "contracts_subven_vendor_spending": {
+            "datasourceName": "main",
+            "source": "aggregateon_subven_spending_vendor"
+        }
+    },
+    "cubes": {
+        "spending_subven_data": {
+            "sourceDatasetName": "spending_subven_data",
+            "dimensions": [
+                {
+                    "name": "agency",
+                    "levels": [
+                        {
+                            "name": "agency",
+                            "datasetName": "agency",
+                            "sourceColumnName": "agency_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "category",
+                    "levels": [
+                        {
+                            "name": "category",
+                            "datasetName": "category",
+                            "sourceColumnName": "spending_category_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "sub_vendor",
+                    "levels": [
+                        {
+                            "name": "sub_vendor",
+                            "datasetName": "sub_vendor",
+                            "sourceColumnName": "vendor_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "prime_vendor",
+                    "levels": [
+                        {
+                            "name": "prime_vendor",
+                            "datasetName": "prime_vendor",
+                            "sourceColumnName": "prime_vendor_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "minority_type",
+                    "levels": [
+                        {
+                            "name": "minority_type",
+                            "datasetName": "minority_type",
+                            "sourceColumnName": "minority_type_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "industry_type",
+                    "levels": [
+                        {
+                            "name": "industry_type",
+                            "datasetName": "industry_type",
+                            "sourceColumnName": "industry_type_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "month",
+                    "levels": [
+                        {
+                            "name": "month",
+                            "datasetName": "month",
+                            "sourceColumnName": "month_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "year",
+                    "levels": [
+                        {
+                            "name": "year",
+                            "datasetName": "year",
+                            "sourceColumnName": "year_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "yeartype",
+                    "levels": [
+                        {
+                            "name": "yeartype",
+                            "datasetName": "year",
+                            "sourceColumnName": "type_of_year"
+                        }
+                    ]
+                }
+            ],
+            "measures": {
+                "sub_vendor_count": {
+                    "function": "COUNT(DISTINCT vendor_id)"
+                },
+                "ytd_spending_sub_vendors": {
+                    "function": "SUM(total_spending_amount)"
+                },
+                "ytd_spending_vendors": {
+                    "function": "SUM(total_spending_amount)"
+                }
+            }
+        },
+        "contracts_subven_spending": {
+            "sourceDatasetName": "contracts_subven_spending",
+            "dimensions": [
+                {
+                    "name": "agency",
+                    "levels": [
+                        {
+                            "name": "agency",
+                            "datasetName": "agency",
+                            "sourceColumnName": "agency_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "date",
+                    "levels": [
+                        {
+                            "name": "date",
+                            "datasetName": "date_id",
+                            "sourceColumnName": "record_date_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "year",
+                    "levels": [
+                        {
+                            "name": "year",
+                            "datasetName": "year",
+                            "sourceColumnName": "year_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "yeartype",
+                    "levels": [
+                        {
+                            "name": "yeartype",
+                            "datasetName": "year",
+                            "sourceColumnName": "type_of_year"
+                        }
+                    ]
+                },
+                {
+                    "name": "vendor",
+                    "levels": [
+                        {
+                            "name": "vendor",
+                            "datasetName": "vendor",
+                            "sourceColumnName": "vendor_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "sub_contract_purpose",
+                    "levels": [
+                        {
+                            "name": "sub_contract_purpose",
+                            "sourceColumnName": "description"
+                        }
+                    ]
+                },
+                {
+                    "name": "document_id",
+                    "levels": [
+                        {
+                            "name": "document_id",
+                            "sourceColumnName": "document_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "agreement_id",
+                    "levels": [
+                        {
+                            "name": "agreement_id",
+                            "sourceColumnName": "agreement_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "sub_vendor",
+                    "levels": [
+                        {
+                            "name": "sub_vendor",
+                            "datasetName": "sub_vendor",
+                            "sourceColumnName": "vendor_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "prime_vendor",
+                    "levels": [
+                        {
+                            "name": "prime_vendor",
+                            "datasetName": "prime_vendor",
+                            "sourceColumnName": "prime_vendor_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "minority_type",
+                    "levels": [
+                        {
+                            "name": "minority_type",
+                            "datasetName": "minority_type",
+                            "sourceColumnName": "minority_type_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "industry",
+                    "levels": [
+                        {
+                            "name": "industry",
+                            "datasetName": "industry_type",
+                            "sourceColumnName": "industry_type_id"
+                        }
+                    ]
+                }
+            ],
+            "measures": {
+                "check_amount_sum": {
+                    "function": "SUM(COALESCE(total_spending_amount,0))"
+                },
+                "total_contract_amount_sum": {
+                    "function": "MAX(COALESCE(total_contract_amount,0))"
+                },
+                "total_contracts": {
+                    "function": "COUNT(contract_number)"
+                }
+            }
+        },
+        "contracts_subven_vendor_spending": {
+            "sourceDatasetName": "contracts_subven_vendor_spending",
+            "dimensions": [
+                {
+                    "name": "year",
+                    "levels": [
+                        {
+                            "name": "year",
+                            "datasetName": "year",
+                            "sourceColumnName": "year_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "yeartype",
+                    "levels": [
+                        {
+                            "name": "yeartype",
+                            "datasetName": "year",
+                            "sourceColumnName": "type_of_year"
+                        }
+                    ]
+                },
+                {
+                    "name": "agency",
+                    "levels": [
+                        {
+                            "name": "agency",
+                            "datasetName": "agency",
+                            "sourceColumnName": "agency_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "month",
+                    "levels": [
+                        {
+                            "name": "month",
+                            "datasetName": "month",
+                            "sourceColumnName": "month_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "sub_vendor",
+                    "levels": [
+                        {
+                            "name": "sub_vendor",
+                            "datasetName": "sub_vendor",
+                            "sourceColumnName": "vendor_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "prime_vendor",
+                    "levels": [
+                        {
+                            "name": "prime_vendor",
+                            "datasetName": "prime_vendor",
+                            "sourceColumnName": "prime_vendor_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "minority_type",
+                    "levels": [
+                        {
+                            "name": "minority_type",
+                            "datasetName": "minority_type",
+                            "sourceColumnName": "minority_type_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "industry",
+                    "levels": [
+                        {
+                            "name": "industry",
+                            "datasetName": "industry_type",
+                            "sourceColumnName": "industry_type_id"
+                        }
+                    ]
+                }
+            ],
+            "measures": {
+                "check_amount_sum": {
+                    "function": "SUM(COALESCE(total_spending_amount,0))"
+                },
+                "total_contract_amount_sum": {
+                    "function": "MAX(COALESCE(total_contract_amount,0))"
+                },
+                "sub_vendor_count": {
+                    "function": "COUNT(DISTINCT vendor_id)"
+                },
+                "total_sub_contracts": {
+                    "function": "COUNT(DISTINCT total_sub_contracts)"
+                }
+            }
+        }
+    },
+	"references": {
+        "contracts_subven_spending__history_agreement": [
+                {"datasetName": "contracts_subven_spending", "columnNames": ["agreement_id"]},
+                {"datasetName": "history_agreement", "columnNames": ["agreement_id"]}
+        ],
+        "contracts_subven_spending__vendor": [
+            {"datasetName": "contracts_subven_spending", "columnNames": ["vendor_id"]},
+            {"datasetName": "vendor", "columnNames": ["vendor_id"]}
+        ],
+        "contracts_subven_spending__industry": [
+            {"datasetName": "contracts_subven_spending", "columnNames": ["industry_type_id"]},
+            {"datasetName": "industry_type", "columnNames": ["industry_type_id"]}
+        ],
+        "contracts_subven_spending__agency": [
+            {"datasetName": "contracts_subven_spending", "columnNames": ["agency_id"]},
+            {"datasetName": "agency", "columnNames": ["agency_id"]}
+        ],
+        "spending_subven_data__industry": [
+            {"datasetName": "spending_subven_data", "columnNames": ["industry_type_id"]},
+            {"datasetName": "industry_type", "columnNames": ["industry_type_id"]}
+        ],
+        "spending_subven_data__agency": [
+            {"datasetName": "spending_subven_data", "columnNames": ["agency_id"]},
+            {"datasetName": "agency", "columnNames": ["agency_id"]}
+        ],
+        "spending_subven_data__spending_data": [
+            {"datasetName": "spending_subven_data", "columnNames": ["agency_id","year_id","type_of_year"]},
+            {"datasetName": "spending_data", "columnNames": ["agency_id","year_id","type_of_year"]}
+        ],
+        "spending_subven_data__spending_data_no_payroll": [
+            {"datasetName": "spending_subven_data", "columnNames": ["agency_id","year_id","type_of_year"]},
+            {"datasetName": "spending_data_no_payroll", "columnNames": ["agency_id","year_id","type_of_year"]}
+        ]
+    }
+}

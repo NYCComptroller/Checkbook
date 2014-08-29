@@ -31,8 +31,7 @@ class SpendingUtil{
         $categoryDetails = _checkbook_project_querydataset('checkbook:category',$columns, array('spending_category_id'=>$categoryId));
         return $categoryDetails;
     }
-    
-    
+
     static  public function getSpendingTransactionsTitle(){
       $agency_id = _getRequestParamValue("agency");
       $title = "";                
@@ -138,6 +137,7 @@ class SpendingUtil{
         . _checkbook_project_get_url_param_string("industry")
         . '/dtsmnid/' . $node->nid
         . _checkbook_project_get_year_url_param_string(false,false,true)
+        . _checkbook_project_get_url_param_string("subvendor")
         . _checkbook_append_url_params();
     }
 
@@ -345,6 +345,35 @@ class SpendingUtil{
     }
 
     /**
+     * Returns percent paid to sub vendors defined as:
+     * The sum of all checks issued to all sub vendors associated to each agency
+     * within the selected fiscal year or calendar year divided by the sum of all checks
+     * issued to all vendors associated to the same agency and within the same fiscal (without payroll)
+     * year or calendar multiplied by 100% and display the results as '% Paid Sub Vendors'
+     *
+     * @param $row
+     * @return string
+     */
+    static function getSubVendorsPercentPaid($row){
+        return self::calculatePercent($row['ytd_spending_sub_vendors'], $row['check_amount_sum@checkbook:spending_data_no_payroll']);
+    }
+
+    /**
+     * Given a numerator and denominator, calculates the percent.
+     * Returns value with up to 2 decimal places.
+     * If the value is negative, 0 is returned.
+     *
+     * @param $numerator
+     * @param $denominator
+     * @return string
+     */
+    static function calculatePercent($numerator, $denominator){
+        $results = $numerator/$denominator*100;
+        $results = $results < 0 ? 0.00 : $results;
+        return custom_number_formatter_format($results,2,'','%');
+    }
+
+    /**
      * Checks to see if this is from the Advanced search page,
      * if so, need to append the data source but not the m/wbe parameter.
      */
@@ -380,5 +409,46 @@ class SpendingUtil{
         $url_ref = $_SERVER['HTTP_REFERER'];
         $match_landing = '"/spending_landing/"';
         return preg_match($match_landing,$url_ref);
+    }
+
+
+    /**
+     * Returns the vendor type
+     */
+    static function getVendorType($node) {
+        $vendor_type = ($node->is_sub_vendor) ? ($node->is_mwbe ? 'SM' : 'S') : ($node->is_mwbe ? 'PM' : 'P');
+        return $vendor_type;
+    }
+
+    /**
+     * Spending transaction page should be shown for citywide, oge, m/wbe
+     * @return bool
+     */
+    static function showSpendingTransactionPage(){
+        $subvendor_exist = _checkbook_check_is_sub_vendor_page();
+        $ma1_mma1_contracts_exist = _checkbook_project_ma1_mma1_exist();
+        $edc_records_exist = _checkbook_check_isEDCPage() && _checkbook_project_recordsExists(6);
+        $mwbe_records_exist = _checkbook_check_is_mwbe_page() && !$subvendor_exist && _checkbook_project_recordsExists(706);
+        $citywide_exist =  !$subvendor_exist && !$mwbe_records_exist && !$edc_records_exist && _checkbook_project_recordsExists(6);
+
+        if($ma1_mma1_contracts_exist || $subvendor_exist) return false;
+
+        return ($edc_records_exist || $mwbe_records_exist || $citywide_exist);
+    }
+
+    /**
+     * Spending transaction no results page should be shown for citywide, oge, m/wbe
+     * @return bool
+     */
+    static function showNoSpendingTransactionPage(){
+        $subvendor_exist = _checkbook_check_is_sub_vendor_page();
+        $ma1_mma1_contracts_exist = _checkbook_project_ma1_mma1_exist();
+        $edc_records_exist = _checkbook_check_isEDCPage() && _checkbook_project_recordsExists(6);
+        $mwbe_records_exist = _checkbook_check_is_mwbe_page() && !$subvendor_exist && _checkbook_project_recordsExists(706);
+        $citywide_exist =  !$subvendor_exist && !$mwbe_records_exist && !$edc_records_exist && _checkbook_project_recordsExists(6);
+
+        if($ma1_mma1_contracts_exist || $subvendor_exist) return false;
+
+        return $subvendor_exist || $ma1_mma1_contracts_exist || $edc_records_exist;
     }
 }

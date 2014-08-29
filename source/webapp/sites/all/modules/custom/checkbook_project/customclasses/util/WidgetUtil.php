@@ -181,11 +181,15 @@ class WidgetUtil
     	"prime_vendor_address"=>"Prime Vendor<br/>Address",
         "percent_spending"=>"%<br/>Spending",
         "sub_vendor_name"=>"Sub<br/>Vendor",
+        "is_sub_vendor"=>"Sub<br/>Vendor",
         "industry_name"=>"Industry",
         "sub_contract_reference_id"=>"Sub Contract<br/>Reference ID",
         "mwbe_category"=>"M/WBE<br/>Category",
+        "num_sub_vendors"=>"Number of<br/>Sub Vendors",
+        "ytd_spending_sub_vendors"=>"YTD Spending<br/>Sub Vendors",
+        "ytd_spending_agency"=>"YTD Spending<br/>Agency",
+        "sub_vendors_percent_paid"=>"% Paid<br/>Sub Vendors",
         "mwbe_ethnicity"=>"M/WBE<br/>Ethnicity",
-        "no_of_sub_contracts" => "Number of<br/>Sub Contracts",
         "sub_contract_purpose" => "Sub Contract<br/>Purpose",
     );
 

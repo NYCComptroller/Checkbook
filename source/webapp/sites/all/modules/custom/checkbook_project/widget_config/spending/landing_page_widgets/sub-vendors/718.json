@@ -1,0 +1,146 @@
+{
+    "widgetType": "data_tables",
+    "widgetSubType":"ajaxSimple",
+    "no_results_content":"No Results Found",
+    "defaultParameters":{"type_of_year":"B","spending_category_id":null},
+    "cleanURLParameters":["year","agency","yeartype","calyear","vendor","category","agid","magid","mwbe","industry"],
+    "urlParamMap":{
+        "year":"year_id",
+        "agency":"agency_id",
+        "yeartype":"type_of_year",
+        "calyear":"year_id",
+        "vendor":"vendor_id",
+        "category":"spending_category_id",
+        "agid":"agreement_id.agreement_id",
+        "magid":"agreement_id.agreement_id",
+        "mwbe":"minority_type_id",
+        "industry":"industry_type_id"
+    },
+    "dataset": "checkbook:contracts_subven_spending",
+    "noDataInitialLoad":true,
+    "columns": [
+        "sub_contract_purpose.sub_contract_purpose",
+        "document_id.document_id",
+        "sub_vendor.sub_vendor",
+        "sub_vendor.sub_vendor.legal_name",
+        "prime_vendor.prime_vendor",
+        "prime_vendor.prime_vendor.legal_name",
+        "check_amount_sum"
+    ],
+    "limit":5,
+    "enableExpand":true,
+    "getTotalDataCount":true,
+    "disableViewAll":true,
+    "header":"
+        $node->widgetConfig->getData=false;
+        load_widget_data($node);
+        if($node->totalDataCount > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
+        $header='<div class=\"tableHeader\"><h2>Top ' .  $count . 'Sub Contracts</h2><span class=\"contCount\"> Number of Sub Contracts:  ' . number_format($node->totalDataCount) . '</span></div>';
+        return $header;
+    ",
+    "footer":"
+        $url = SpendingUtil::getSpendingFooterUrl($node);
+        $footer = '';
+        if($node->totalDataCount > 0)
+             $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
+        else
+              $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
+        return $footer;
+    ",
+    "derivedColumns": {
+        "contract_number_link":{
+            "type":"expression2",
+            "expression":"'<a class=\"new_window\" href=\"' . SpendingUtil::getContractNumberLinkUrl($node,$row) . '\">'  . $row[document_id_document_id] . '</a>'"
+        },
+        "sub_vendor_name_formatted": {
+            "type":"expression2",
+            "expression":"_get_tooltip_markup($row['sub_vendor_sub_vendor_legal_name'],36)"
+        },
+        "sub_vendor_name_link": {
+            "type":"expression2",
+            "expression":"'<a href=\"' . SpendingUtil::getVendorNameLinkUrl($node,$row) . '\">' . $row[sub_vendor_name_formatted] . '</a>'"
+        },
+        "sub_vendor_name_link2": {
+            "type":"expression2",
+            "expression":"($row[sub_vendor_sub_vendor] == null )?$row['sub_vendor_sub_vendor_legal_name']:$row[sub_vendor_name_link]"
+        },
+        "prime_vendor_name_formatted": {
+            "type":"expression2",
+            "expression":"_get_tooltip_markup($row['prime_vendor_prime_vendor_legal_name'],36)"
+        },
+        "prime_vendor_name_link": {
+            "type":"expression2",
+            "expression":"'<a href=\"' . SpendingUtil::getVendorNameLinkUrl($node,$row) . '\">' . $row[prime_vendor_name_formatted] . '</a>'"
+        },
+        "prime_vendor_name_link2": {
+            "type":"expression2",
+            "expression":"($row[prime_vendor_prime_vendor] == null )?$row['prime_vendor_prime_vendor_legal_name']:$row[prime_vendor_name_link]"
+        },
+        "sub_contract_purpose_formatted": {
+            "type": "expression2",
+            "expression": "_get_tooltip_markup($row['sub_contract_purpose_sub_contract_purpose'],40)"
+        },
+        "formatted_check_amount_sum": {
+            "type": "expression2",
+            "expression": " custom_number_formatter_format($row['check_amount_sum'],2,'$')"
+        },
+        "contract_amount_link":{
+            "type":"expression2",
+            "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getContractAmountLinkUrl($node,$row) . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
+        }
+    },
+    "adjustParameters":"
+        if(!$node->is_mwbe) {
+            unset($parameters['minority_type_id']);
+            unset($parameters['industry_type_id']);
+        }
+
+        return $parameters;
+    ",
+    "summaryView":{
+        "template":"spending_contract_summary",
+        "templateTitleEval":"
+            $catName = RequestUtil::getSpendingCategoryName();
+            $mwbe_title = _checkbook_check_is_mwbe_page() ? 'M/WBE ' : '';
+            return ($mwbe_title . 'Contracts ' . $catName . ' Transactions');
+        "
+    },
+    "WidgetTitleEval":"
+        $catName = RequestUtil::getSpendingCategoryName();
+        $mwbe_title = _checkbook_check_is_mwbe_page() ? 'M/WBE ' : '';
+        return ($mwbe_title . 'Contracts ' . $catName . ' Transactions');
+    ",
+    "table_title":"",
+    "table_columns": [
+        {"labelAlias":"contract_id","column":"contract_number_link","sortSourceColumn":"document_id.document_id"},
+        {"labelAlias":"sub_vendor_name","column":"sub_vendor_name_link2","sortSourceColumn":"sub_vendor.sub_vendor.legal_name"},
+        {"labelAlias":"sub_contract_purpose","column":"sub_contract_purpose_formatted"},
+        {"labelAlias":"prime_vendor","column":"prime_vendor_name_link2","sortSourceColumn":"prime_vendor.prime_vendor.legal_name"},
+        {"labelAlias":"ytd_spending","column":"contract_amount_link","sortSourceColumn":"check_amount_sum"},
+        {"label": "","column": ""}
+    ],
+    "dataTableOptions":{
+        "aoColumns": [
+              {"sClass":"text","sWidth":"160px","bSortable":false},
+              {"sClass":"text","sWidth":"180px","bSortable":false},
+              {"sClass":"text","sWidth":"180px","bSortable":false},
+              {"sClass":"text","sWidth":"180px","bSortable":false},
+              {"sClass":"number","sWidth":"130px","asSorting":["desc","asc"]},
+              {"sWidth":"15px","bSortable":false}
+            ],
+        "bServerSide": true,
+        "bFilter": false,
+        "bPaginate": false,
+        "bProcessing":true,
+        "bLengthChange": false,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "aaSorting": [[ 4, "desc" ]],
+        "fnServerParams": "##function ( aoData ) {
+                   reloadExpandCollapseWidget(this,aoData);
+        }##",
+        "oLanguage":{
+            "sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+        }
+    }
+}

@@ -1,0 +1,34 @@
+{
+    "datasets": {
+		"sub_vendor": {
+            "datasourceName": "main",
+            "source": "subvendor",
+            "columns": [
+                {
+                    "name": "vendor_id",
+                    "key": true}
+            ]}    ,
+	"sub_vendor2": {
+            "datasourceName": "main",
+            "source": "subvendor",
+            "columns": [
+                {
+                    "name": "vendor_history_id",
+                    "key": true}
+            ]}    ,            
+	"sub_vendor_history": {
+            "datasourceName": "main",
+            "source": "subvendor_history",
+            "columns": [
+                {
+                    "name": "vendor_history_id",
+                    "key": true}
+            ]}                        
+    },
+    "references": {        
+        "sub_vendor_history__vendor": [
+                {"datasetName": "sub_vendor", "columnNames": ["vendor_id"]},
+                {"datasetName": "sub_vendor_history", "columnNames": ["vendor_id"]}
+        ]        
+    }    
+}
