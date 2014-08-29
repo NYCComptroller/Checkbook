@@ -19,6 +19,7 @@ pre-packaged for direct installation by copying, as described below.
  writing to its log directory as `root`.  This is not ideal; probably
  Tomcat should run as `www-data`.  However, we have not tested that
  configuration yet, so for now we are documenting running as `root`.*
+ 
 
 3. Ensure that Solr will be able to connect to the PostgreSQL DB.
 
@@ -32,38 +33,45 @@ pre-packaged for direct installation by copying, as described below.
 
  Open up the PostgreSQL configuration file (a file somewhere
  like `/etc/postgresql/9.1/main/pg_hba.conf` if Ubuntu 12.04 or
- `/var/lib/pgsql/9.3/data/pg_hba.conf` if CentOS 6.4) and change
+ `/var/lib/pgsql/9.3/data/pg_hba.conf` if CentOS 6.4) and apply the 
+ changes listed below: 
+ 
+ 
+#'local' is for Unix domain socket connections only
+       local     all         all              md5
+#IPv4 local connections: 
+       host      all       0.0.0.0/0          md5
+#IPv6 local connection: 
+       host      all          all             md5
 
-          `local  all        postgres          peer`
-
- to this:
-
-          `local  all        postgres          md5`
-
- *Note: If there is no `local  all  postgres  peer` line, but there is
- a  `local  all  all  peer`, then leave that line in place and simply
- precede it with a new `local  all  postgres  md5` line.  The third
- value in the line is the user, and PostgreSQL's rule is to accept the
- first matching line, so by putting that line first, the md5
- authentication method will be used for the `postgres` user while
- `peer` will continue to be used for all other users.*
-
+ *Note: This configuration is set so any user can log into the database 
+ providing the username: localhost, postgres, etc. with the password: postgres. 
+ This configuration is simply for initial setup and can be customized to your 
+ preference. 
+ 
  *Note: Again, that "postgres" user is the main PG database user, and
  changing its authentication mechanism could affect up other things.
  The long-term solution is for Checkbook to have its own PG user.*
 
  Then restart PostgreSQL:
 
-          $ sudo service postgresql restart
+          $ sudo service postgresql-9.3 restart
 
- Now PostgreSQL can accept password authentication.  You can use this
- command to test that it worked:
+ Verify that the user postgres can connect to the checkbook database with
+ the following command. 
 
           $ PGPASSWORD=postgres psql -U postgres checkbook
+          
+Next, verify that the localhost user can connect to the checkbook database 
+with password authentication. Later SOLR will connect to the database
+using U-localhost and -PGPASSWORD=postgres. The following command will 
+verify if that connection is succesfull. 
+
+          $ PGPASSWORD=postgres psql -U localhost checkbook
 
  The expected result is something like this:
 
-          psql (9.1.9)
+          psql (9.3.5)
           Type "help" for help.
           checkbook=# \q  (to quit)
 
