@@ -9,7 +9,7 @@
         "agency":"agency_id",
         "yeartype":"type_of_year",
         "calyear":"year_id",
-        "vendor":"vendor_id",
+        "vendor":"prime_vendor.prime_vendor",
         "category":"spending_category_id",
         "agid":"agreement_id.agreement_id",
         "mwbe":"minority_type_id",

@@ -14,7 +14,7 @@
     ],
     "urlParamMap":{
         "agency":"agency_id",
-        "vendor":"vendor_id",
+        "vendor":"prime_vendor.prime_vendor",
         "category":"spending_category_id",
         "year":"year_id",
         "yeartype":"type_of_year",

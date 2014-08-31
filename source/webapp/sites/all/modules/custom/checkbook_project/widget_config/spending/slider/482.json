@@ -1,7 +1,7 @@
 {
     "widgetType": "phpparser",
     "no_results_content": "No Results Found",
-    "cleanURLParameters":["year","calyear","agency","yeartype","vendor","mwbe","industry","subvendor"],
+    "cleanURLParameters":["year","calyear","agency","yeartype","vendor","mwbe","industry","vendor","subvendor"],
     "model": {
         "join": {"method": "Union"},
         "series": [
@@ -14,7 +14,7 @@
                     if($node->is_sub_vendor) $node->widgetConfig->model->series[0]->dataset = 'checkbook:spending_subven_data';
                 ",
                 "columns": ["check_amount_sum","category.category"],
-                "seriesURLParamMap":{"year":"year.year","agency":"agency_id","yeartype":"type_of_year","vendor":"vendor.vendor","mwbe":"minority_type_id","industry":"industry_type_id"},
+                "seriesURLParamMap":{"year":"year.year","agency":"agency_id","yeartype":"type_of_year","vendor":"prime_vendor.prime_vendor","mwbe":"minority_type_id","industry":"industry_type_id"},
                 "allowedParams":["year.year","agency_id","type_of_year","vendor.vendor","minority_type_id","industry_type_id"],
                 "seriesDefaultParameters":{"year.year":"1","type_of_year":"B"},
                 "adjustSerieParameters":"
