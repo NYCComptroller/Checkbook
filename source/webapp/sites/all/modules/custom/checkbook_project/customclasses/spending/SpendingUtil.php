@@ -271,6 +271,25 @@ class SpendingUtil{
     }
 
     /**
+     * Returns Prime Vendor Amount Link Url based on values from current path & data row
+     *
+     * @param $node
+     * @param $row
+     * @return string
+     */
+    static function getPrimeVendorAmountLinkUrl($node, $row){
+        //vendor_amount_link
+        return '/panel_html/spending_transactions/spending/transactions'
+        . _checkbook_project_get_url_param_string("agency")
+        . '/vendor/'. $row["prime_vendor_prime_vendor"]
+        . _checkbook_project_get_url_param_string("category")
+        . _checkbook_project_get_url_param_string("industry")
+        . _checkbook_project_get_year_url_param_string(false,false,true)
+        . '/smnid/' . $node->nid
+        . _checkbook_append_url_params();
+    }
+
+    /**
      * Returns Department Amount Link Url based on values from current path & data row
      *
      * @param $node

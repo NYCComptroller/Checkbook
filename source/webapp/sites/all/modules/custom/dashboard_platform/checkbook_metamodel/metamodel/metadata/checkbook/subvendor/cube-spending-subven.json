@@ -361,6 +361,9 @@
                 },
                 "total_sub_contracts": {
                     "function": "COUNT(DISTINCT total_sub_contracts)"
+                },
+                "ytd_spending_sub_vendors": {
+                    "function": "SUM(total_spending_amount)"
                 }
             }
         }
