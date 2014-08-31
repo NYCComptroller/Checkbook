@@ -31,7 +31,7 @@
     "useList":true,
     "no_results_content":"No Results Found",
     "cleanURLParameters":["year","yeartype","agency","vendor","category","subvendor"],
-    "urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","subvendor":"vendor_id","category":"spending_category_id"},
+    "urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","subvendor":"vendor_id","vendor":"prime_vendor_id","category":"spending_category_id"},
     "defaultParameters":{"total_spending_amount":"0"},
     "defaultParamTypeConfig":{"total_spending_amount":"ne"},
     "adjustParameters":"
