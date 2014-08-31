@@ -34,7 +34,8 @@
         "prime_vendor.prime_vendor",
         "prime_vendor.prime_vendor.legal_name",
         "minority_type.minority_type",
-        "total_sub_contracts"
+        "total_sub_contracts",
+        "ytd_spending_sub_vendors"
     ],
     "enableExpand":true,
     "disableViewAll":true,
@@ -92,6 +93,10 @@
             "prime_vendor_name_link2": {
                 "type":"expression2",
                 "expression":"($row[prime_vendor_prime_vendor] == null )?$row['prime_vendor_prime_vendor_legal_name']:$row[prime_vendor_name_link]"
+            },
+            "ytd_spending_sub_vendors_link":{
+                "type":"expression2",
+                "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getSubVendorYtdSpendingUrl($node,$row) . '\">' . custom_number_formatter_format($row['ytd_spending_sub_vendors'],2,'$') . '</a>'"
             }
     },
     "WidgetTitleEval":"
@@ -104,16 +109,16 @@
             {"labelAlias":"no_of_contracts","column":"total_sub_contracts","sortSourceColumn":"total_sub_contracts"},
             {"labelAlias":"mwbe_ethnicity","column":"mwbe_ethnicity","sortSourceColumn":"minority_type.minority_type"},
             {"labelAlias":"prime_vendor","column":"prime_vendor_name_link2","sortSourceColumn":"prime_vendor.prime_vendor"},
-            {"labelAlias":"ytd_spending","column":"mwbe_ethnicity","sortSourceColumn":"minority_type.minority_type"},
+            {"labelAlias":"ytd_spending_sub_vendors","column":"ytd_spending_sub_vendors_link","sortSourceColumn":"ytd_spending_sub_vendors"},
             {"label":"","column":""}
     ],
     "dataTableOptions":{
         "aoColumns": [
-            {"sClass":"text","sWidth":"230px","bSortable":false},
-            {"sClass":"number","sWidth":"200px","bSortable":true,"asSorting":["asc","desc"]},
-            {"sClass":"text pad-left","sWidth":"250px","bSortable":false},
-            {"sClass":"text","sWidth":"230px","bSortable":false},
-            {"sClass":"number","bSortable":true,"asSorting":["desc","asc"]},
+            {"sClass":"text","sWidth":"170px","bSortable":false},
+            {"sClass":"number","sWidth":"50px","bSortable":true,"asSorting":["asc","desc"]},
+            {"sClass":"text pad-left","sWidth":"100px","bSortable":false},
+            {"sClass":"text pad-left","sWidth":"170px","bSortable":false},
+            {"sClass":"number","sWidth":"100px","bSortable":true,"asSorting":["desc","asc"]},
             {"sWidth":"15px","bSortable":false}
         ],
         "bServerSide": true,
