@@ -126,7 +126,7 @@ if($mwbe_amount  == 0){
 if($svendor_amount  == 0){
 	$subvendors_link = l('<div><span class="nav-title">M/WBE Sub Vendors</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div>','',$options_disabled);	
 }else{
-	$subvendors_link = l('<div><span class="nav-title">M/WBE Sub Vendors</span><br>&nbsp;'. custom_number_formatter_format($svendor_amount ,1,'$') . '</div>',$active_domain_link. "/svendor/all",$options);
+	$subvendors_link = l('<div><span class="nav-title">M/WBE Sub Vendors</span><br>&nbsp;'. custom_number_formatter_format($svendor_amount ,1,'$') . '</div>',$active_domain_link. "/subvendor/all",$options);
 }
 
 
