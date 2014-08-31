@@ -228,7 +228,7 @@
                         {
                             "name": "prime_vendor",
                             "datasetName": "prime_vendor",
-                            "sourceColumnName": "prime_vendor_id"
+                            "sourceColumnName": "vendor_id"
                         }
                     ]
                 },
@@ -369,6 +369,10 @@
         "contracts_subven_spending__history_agreement": [
                 {"datasetName": "contracts_subven_spending", "columnNames": ["agreement_id"]},
                 {"datasetName": "history_agreement", "columnNames": ["agreement_id"]}
+        ],
+        "contracts_subven_spending__prime_vendor": [
+            {"datasetName": "contracts_subven_spending", "columnNames": ["prime_vendor_id"]},
+            {"datasetName": "prime_vendor", "columnNames": ["vendor_id"]}
         ],
         "contracts_subven_spending__vendor": [
             {"datasetName": "contracts_subven_spending", "columnNames": ["vendor_id"]},
