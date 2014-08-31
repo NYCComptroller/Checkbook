@@ -25,7 +25,7 @@
     "limit": 10,
     "orderBy": "-check_amount_sum",
     "cleanURLParameters":["year","yeartype","agency","vendor","category"],
-    "urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"vendor_id","category":"spending_category_id"},
+    "urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor.prime_vendor","category":"spending_category_id"},
     "defaultParameters":{"check_amount_sum":"0","vendor_id":""},
     "defaultParamTypeConfig":{"check_amount_sum":"ne","vendor_id":"ne"},
     "adjustParameters":"

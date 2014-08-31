@@ -44,7 +44,7 @@
                 }
                 return $adjustedParameters;
     ",
-    "urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"vendor_id","category":"spending_category_id"},
+    "urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor.prime_vendor","category":"spending_category_id"},
     "transformationPHP": "
         $data = array();$categories=array();
         foreach ($node->data as $row){
