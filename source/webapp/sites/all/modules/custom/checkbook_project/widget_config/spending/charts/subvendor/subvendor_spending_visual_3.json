@@ -42,7 +42,7 @@
                 return $adjustedParameters;
     ",
      "transformationPHP": "
-     $node->widgetConfig->chartTitle = 'Top Ten Contracts by Disbursement Amount';
+     $node->widgetConfig->chartTitle = 'Top Ten Contracts by Sub Vendors Disbursement Amount';
      return $node->data;
     ",
     "model": {
