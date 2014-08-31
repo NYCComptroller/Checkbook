@@ -1,16 +1,17 @@
 {
     "widgetType": "phpparser",
     "no_results_content": "No Results Found",
-    "cleanURLParameters":["year","calyear","agency","yeartype","vendor","mwbe","industry"],
+    "cleanURLParameters":["year","calyear","agency","yeartype","vendor","mwbe","industry","subvendor"],
     "model": {
         "join": {"method": "Union"},
         "series": [
             {
                 "dataset": "checkbook:spending_data",
                 "preProcessConfiguration":"
-                    $node->is_mwbe = _checkbook_check_is_mwbe_page();
+                    $node->is_sub_vendor = _checkbook_check_is_sub_vendor_page();
+                    $node->is_mwbe = _checkbook_check_is_mwbe_page() && !$node->is_sub_vendor;
                     if($node->is_mwbe) $node->widgetConfig->model->series[0]->dataset = 'checkbook:spending_mwbe_data';
-
+                    if($node->is_sub_vendor) $node->widgetConfig->model->series[0]->dataset = 'checkbook:spending_subven_data';
                 ",
                 "columns": ["check_amount_sum","category.category"],
                 "seriesURLParamMap":{"year":"year.year","agency":"agency_id","yeartype":"type_of_year","vendor":"vendor.vendor","mwbe":"minority_type_id","industry":"industry_type_id"},

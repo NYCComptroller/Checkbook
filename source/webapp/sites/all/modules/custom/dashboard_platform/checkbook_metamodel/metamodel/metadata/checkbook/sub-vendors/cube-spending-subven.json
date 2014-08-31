@@ -106,6 +106,15 @@
                             "sourceColumnName": "type_of_year"
                         }
                     ]
+                },
+                {
+                    "name": "agreement_id",
+                    "levels": [
+                        {
+                            "name": "agreement_id",
+                            "sourceColumnName": "agreement_id"
+                        }
+                    ]
                 }
             ],
             "measures": {
@@ -116,6 +125,9 @@
                     "function": "SUM(total_spending_amount)"
                 },
                 "ytd_spending_vendors": {
+                    "function": "SUM(total_spending_amount)"
+                },
+                "check_amount_sum": {
                     "function": "SUM(total_spending_amount)"
                 }
             }
