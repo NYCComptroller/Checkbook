@@ -12,7 +12,6 @@
         "vendor":"vendor_id",
         "category":"spending_category_id",
         "agid":"agreement_id.agreement_id",
-        "magid":"agreement_id.agreement_id",
         "mwbe":"minority_type_id",
         "industry":"industry_type_id"
     },
@@ -25,7 +24,8 @@
         "sub_vendor.sub_vendor.legal_name",
         "prime_vendor.prime_vendor",
         "prime_vendor.prime_vendor.legal_name",
-        "check_amount_sum"
+        "check_amount_sum",
+        "agreement_id.agreement_id"
     ],
     "limit":5,
     "enableExpand":true,
@@ -58,7 +58,7 @@
         },
         "sub_vendor_name_link": {
             "type":"expression2",
-            "expression":"'<a href=\"' . SpendingUtil::getVendorNameLinkUrl($node,$row) . '\">' . $row[sub_vendor_name_formatted] . '</a>'"
+            "expression":"'<a href=\"' . SpendingUtil::getSubVendorNameLinkUrl($node,$row) . '\">' . $row[sub_vendor_name_formatted] . '</a>'"
         },
         "sub_vendor_name_link2": {
             "type":"expression2",
@@ -70,7 +70,7 @@
         },
         "prime_vendor_name_link": {
             "type":"expression2",
-            "expression":"'<a href=\"' . SpendingUtil::getVendorNameLinkUrl($node,$row) . '\">' . $row[prime_vendor_name_formatted] . '</a>'"
+            "expression":"'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row[prime_vendor_name_formatted] . '</a>'"
         },
         "prime_vendor_name_link2": {
             "type":"expression2",
@@ -101,14 +101,14 @@
         "template":"spending_contract_summary",
         "templateTitleEval":"
             $catName = RequestUtil::getSpendingCategoryName();
-            $mwbe_title = _checkbook_check_is_mwbe_page() ? 'M/WBE ' : '';
-            return ($mwbe_title . 'Contracts ' . $catName . ' Transactions');
+            $title = _checkbook_check_is_sub_vendor_page() ? 'Sub Vendors ' : '';
+            return ($title . 'Contracts ' . $catName . ' Transactions');
         "
     },
     "WidgetTitleEval":"
         $catName = RequestUtil::getSpendingCategoryName();
-        $mwbe_title = _checkbook_check_is_mwbe_page() ? 'M/WBE ' : '';
-        return ($mwbe_title . 'Contracts ' . $catName . ' Transactions');
+        $title = _checkbook_check_is_sub_vendor_page() ? 'Sub Vendors ' : '';
+        return ($title . 'Contracts ' . $catName . ' Transactions');
     ",
     "table_title":"",
     "table_columns": [

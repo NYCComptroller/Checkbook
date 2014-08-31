@@ -78,14 +78,14 @@
         "template":"spending_vendor_summary",
         "templateTitleEval":"
             $catName = RequestUtil::getSpendingCategoryName();
-            $mwbe_title = _checkbook_check_is_mwbe_page() ? 'M/WBE ' : '';
-            return ($mwbe_title . 'Prime Vendors ' . $catName . ' Transactions');
+            $title = _checkbook_check_is_sub_vendor_page() ? 'Sub Vendors ' : '';
+            return ($title . 'Prime Vendors ' . $catName . ' Transactions');
         "
     },
     "WidgetTitleEval":"
         $catName = RequestUtil::getSpendingCategoryName();
-        $mwbe_title = _checkbook_check_is_mwbe_page() ? 'M/WBE ' : '';
-        return ($mwbe_title . 'Prime Vendors ' . $catName . ' Transactions');
+        $title = _checkbook_check_is_sub_vendor_page() ? 'Sub Vendors ' : '';
+        return ($title . 'Prime Vendors ' . $catName . ' Transactions');
     ",
     "table_title":"",
     "table_columns": [

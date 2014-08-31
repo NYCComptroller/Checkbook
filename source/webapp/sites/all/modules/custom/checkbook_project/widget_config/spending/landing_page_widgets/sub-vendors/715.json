@@ -115,8 +115,8 @@
     },
     "WidgetTitleEval":"
         $catName = RequestUtil::getSpendingCategoryName();
-        $mwbe_title = _checkbook_check_is_mwbe_page() ? 'M/WBE ' : '';
-        return ($mwbe_title . 'Checks ' . $catName . ' Transactions');
+        $title = _checkbook_check_is_sub_vendor_page() ? 'Sub Vendors ' : '';
+        return ($title . 'Checks ' . $catName . ' Transactions');
     ",
     "table_columns": [
             {"labelAlias":"issue_date","column":"issuedate_issuedate"},

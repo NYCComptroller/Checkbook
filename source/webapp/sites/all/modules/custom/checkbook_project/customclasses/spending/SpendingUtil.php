@@ -137,7 +137,6 @@ class SpendingUtil{
         . _checkbook_project_get_url_param_string("industry")
         . '/dtsmnid/' . $node->nid
         . _checkbook_project_get_year_url_param_string(false,false,true)
-        . _checkbook_project_get_url_param_string("subvendor")
         . _checkbook_append_url_params();
     }
 
@@ -214,6 +213,42 @@ class SpendingUtil{
         . _checkbook_project_get_year_url_param_string()
         . _checkbook_append_url_params()
         . '/vendor/' . (isset($row["vendor_id"]) ? $row["vendor_id"] : $row["vendor_vendor"]);
+    }
+
+    /**
+     * Returns Sub Vendor Name Link Url based on values from current path & data row,
+     *
+     * @param $node
+     * @param $row
+     * @return string
+     */
+    static function getSubVendorNameLinkUrl($node, $row){
+        //vendor_name_link
+        return '/spending_landing'
+        . _checkbook_project_get_url_param_string("agency")
+        . _checkbook_project_get_url_param_string("category")
+        . _checkbook_project_get_url_param_string("industry")
+        . _checkbook_project_get_year_url_param_string()
+        . _checkbook_project_get_url_param_string("mwbe")
+        . '/subvendor/' . $row["sub_vendor_sub_vendor"];
+    }
+
+    /**
+     * Returns Prime Vendor Name Link Url based on values from current path & data row,
+     *
+     * @param $node
+     * @param $row
+     * @return string
+     */
+    static function getPrimeVendorNameLinkUrl($node, $row){
+        //vendor_name_link
+        return '/spending_landing'
+        . _checkbook_project_get_url_param_string("agency")
+        . _checkbook_project_get_url_param_string("category")
+        . _checkbook_project_get_url_param_string("industry")
+        . _checkbook_project_get_year_url_param_string()
+        . _checkbook_append_url_params()
+        . '/vendor/' . $row["prime_vendor_prime_vendor"];
     }
 
     /**
@@ -335,6 +370,42 @@ class SpendingUtil{
         . _checkbook_project_get_url_param_string("agency")
         . '/industry/'. $row['industry_industry_industry_type_id']
         . _checkbook_append_url_params();
+    }
+
+    /**
+     * Returns Sub Vendor YTD Spending Link Url based on values from current path & data row
+     *
+     * @param $node
+     * @param $row
+     * @return string
+     */
+    static function getSubVendorYtdSpendingUrl($node, $row){
+        //ytd_spending_sub_vendors_link
+        return '/panel_html/spending_transactions/spending/transactions'
+        . _checkbook_project_get_url_param_string("agency")
+        . _checkbook_project_get_url_param_string("category")
+        . _checkbook_project_get_url_param_string("industry")
+        . _checkbook_project_get_year_url_param_string(false,false,true)
+        . '/smnid/' . $node->nid
+        . _checkbook_append_url_params();
+    }
+    /**
+     * Returns Agency YTD Spending Link Url based on values from current path & data row.
+     * This is for sub vendors Top 5 Agencies widget
+     *
+     * @param $node
+     * @param $row
+     * @return string
+     */
+    static function getAgencyYtdSpendingUrl($node, $row){
+        //ytd_spending_sub_vendors_link
+        return '/spending/transactions'
+        . '/agency/'. $row["agency_agency"]
+        . _checkbook_project_get_url_param_string("vendor")
+        . _checkbook_project_get_url_param_string("category")
+        . _checkbook_project_get_url_param_string("industry")
+        . _checkbook_project_get_year_url_param_string(false,false,true)
+        . '/smnid/' . $node->nid . '/dtsmnid/' . $node->nid .'/newwindow';
     }
 
     /** Returns Ytd Spending percent */

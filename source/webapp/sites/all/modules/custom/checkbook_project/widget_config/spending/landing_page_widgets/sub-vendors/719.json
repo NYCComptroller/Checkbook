@@ -75,7 +75,7 @@
             },
             "sub_vendor_name_link": {
                 "type":"expression2",
-                "expression":"'<a href=\"' . SpendingUtil::getVendorNameLinkUrl($node,$row) . '\">' . $row[sub_vendor_name_formatted] . '</a>'"
+                "expression":"'<a href=\"' . SpendingUtil::getSubVendorNameLinkUrl($node,$row) . '\">' . $row[sub_vendor_name_formatted] . '</a>'"
             },
             "sub_vendor_name_link2": {
                 "type":"expression2",
@@ -87,7 +87,7 @@
             },
             "prime_vendor_name_link": {
                 "type":"expression2",
-                "expression":"'<a href=\"' . SpendingUtil::getVendorNameLinkUrl($node,$row) . '\">' . $row[prime_vendor_name_formatted] . '</a>'"
+                "expression":"'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row[prime_vendor_name_formatted] . '</a>'"
             },
             "prime_vendor_name_link2": {
                 "type":"expression2",
@@ -96,8 +96,8 @@
     },
     "WidgetTitleEval":"
         $catName = RequestUtil::getSpendingCategoryName();
-        $mwbe_title = _checkbook_check_is_mwbe_page() ? 'M/WBE ' : '';
-        return ($mwbe_title . 'Checks ' . $catName . ' Transactions');
+        $title = _checkbook_check_is_sub_vendor_page() ? 'Sub Vendors ' : '';
+        return ($title . 'Checks ' . $catName . ' Transactions');
     ",
     "table_columns": [
             {"labelAlias":"sub_vendor_name","column":"sub_vendor_name_link2","sortSourceColumn":"sub_vendor.sub_vendor"},

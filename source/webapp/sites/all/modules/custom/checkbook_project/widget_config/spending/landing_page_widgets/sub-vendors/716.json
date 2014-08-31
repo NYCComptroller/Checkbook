@@ -68,15 +68,15 @@
         },
         "ytd_spending_sub_vendors_link":{
             "type":"expression2",
-            "expression": "'<a class=\"bottomContainerReload\" href=\"' . '' . '\">' . custom_number_formatter_format($row['ytd_spending_sub_vendors'],2,'$') . '</a>'"
+            "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getSubVendorYtdSpendingUrl($node,$row) . '\">' . custom_number_formatter_format($row['ytd_spending_sub_vendors'],2,'$') . '</a>'"
         },
         "sub_vendors_percent_paid_formatted":{
             "type":"expression2",
-            "expression": "'<a class=\"bottomContainerReload\" href=\"' . '' . '\">' . custom_number_formatter_format($row['check_amount_sum@checkbook:spending_data_no_payroll'],2,'$') . '</a>'"
+            "expression": "custom_number_formatter_format($row['check_amount_sum@checkbook:spending_data_no_payroll'],2,'$')"
         },
         "ytd_spending_agency_link":{
             "type":"expression2",
-            "expression": "'<a class=\"bottomContainerReload\" href=\"' . '' . '\">' . custom_number_formatter_format($row['check_amount_sum@checkbook:spending_data'],2,'$') . '</a>'"
+            "expression": "'<a class=\"new_window\" href=\"' . SpendingUtil::getAgencyYtdSpendingUrl($node,$row) . '\">' . custom_number_formatter_format($row['check_amount_sum@checkbook:spending_data'],2,'$') . '</a>'"
         }
     },
     "adjustParameters":"
@@ -90,14 +90,14 @@
         "template":"spending_agency_summary",
         "templateTitleEval":"
             $catName = RequestUtil::getSpendingCategoryName();
-            $mwbe_title = _checkbook_check_is_mwbe_page() ? 'M/WBE ' : '';
-            return ($mwbe_title . 'Agencies ' . $catName . ' Transactions');
+            $title = _checkbook_check_is_sub_vendor_page() ? 'Sub Vendors ' : '';
+            return ($title . 'Agencies ' . $catName . ' Transactions');
         "
     },
     "WidgetTitleEval":"
         $catName = RequestUtil::getSpendingCategoryName();
-        $mwbe_title = _checkbook_check_is_mwbe_page() ? 'M/WBE ' : '';
-        return ($mwbe_title . 'Agencies ' . $catName . ' Transactions');
+        $title = _checkbook_check_is_sub_vendor_page() ? 'Sub Vendors ' : '';
+        return ($title . 'Agencies ' . $catName . ' Transactions');
     ",
     "table_title":"",
     "table_columns": [
