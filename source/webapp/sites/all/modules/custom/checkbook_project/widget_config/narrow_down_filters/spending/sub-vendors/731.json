@@ -1,10 +1,10 @@
 {
     "widgetType":"phpparser",
-    "parentNid":706,
+    "parentNid":723,
     "limit":100,
     "startWith":0,
-    "columns":["vendornm.vendornm", "txcount"],
-    "orderBy":["-txcount", "vendornm.vendornm"],
+    "columns":["sub_vendor.sub_vendor.legal_name", "txcount"],
+    "orderBy":["-txcount", "sub_vendor.sub_vendor.legal_name"],
 	"getTotalDataCount":true,    
 	"facetPager":true,
     "filterName":"Vendor",
@@ -23,7 +23,7 @@
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
         }
-        $adjustedParameters['vendornm.vendornm'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+        $adjustedParameters['sub_vendor.sub_vendor.legal_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
         return $adjustedParameters;
     ",      
     "template":"individual_filter"
