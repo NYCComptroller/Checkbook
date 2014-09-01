@@ -7,7 +7,6 @@
         "expcategory",
         "category",
         "year",
-        "yeartype",
         "syear",
         "calyear",
         "scalyear",
@@ -28,7 +27,6 @@
         "expcategory":"expenditure_object_id",
         "category":"spending_category_id",
         "year":"year_id",
-        "yeartype":"year_type",
         "syear":"check_eft_issued_nyc_year_id",
         "calyear":"calendar_fiscal_year_id",
         "scalyear":"calendar_fiscal_year_id",
@@ -182,18 +180,22 @@
     {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type.minority_type","exportColumn":"mwbe_category_name"}
 ],
 "adjustParameters":"
-    $yearType = $parameters['year_type'][0];
-    $year = $parameters['year_id'][0];
-
-    if(isset($yearType)){
-        if($yearType == 'B')
-        $parameters['check_eft_issued_nyc_year_id'] = $year;
-        else if($yearType == 'C')
-        $parameters['calendar_fiscal_year_id'] = $year;
+    $cat = $parameters['spending_category_id'];
+    if(isset($parameters['vendor_id@checkbook:contracts_spending_transactions'])
+    ||  isset($parameters['document_agency_id@checkbook:contracts_spending_transactions'])
+    ||  isset($parameters['award_method_id@checkbook:contracts_spending_transactions'])
+    ||  isset($parameters['award_size_id@checkbook:contracts_spending_transactions'])
+    ||  isset($parameters['industry_type_id@checkbook:contracts_spending_transactions'])) {
+        $year = $parameters['check_eft_issued_nyc_year_id'];
+        $calyear = $parameters['calendar_fiscal_year_id'];
+        if(isset($year)){
+            $parameters['fiscal_year_id@checkbook:contracts_spending_transactions'] = $year;
+            $parameters['type_of_year@checkbook:contracts_spending_transactions'] = 'B';
+        } else if(isset($calyear )){
+            $parameters['fiscal_year_id@checkbook:contracts_spending_transactions'] = $calyear ;
+            $parameters['type_of_year@checkbook:contracts_spending_transactions'] = 'C';
+        }
     }
-
-    unset($parameters['year_type']);
-    unset($parameters['year_id']);
 
     if(!$node->is_mwbe) unset($parameters['minority_type_id']);
 
@@ -235,9 +237,9 @@
         },
         "bInfo": true,
         "aoColumns":[
-            {"sClass":"text","sWidth":"229px","bSortable": false},
-            {"sClass":"text","sWidth":"150px","bSortable": false,"asSorting":["asc","desc"]},
-            {"sClass":"text","sWidth":"90px","asSorting":["asc","desc"]},
+            {"sClass":"text","sWidth":"200px","bSortable": false},
+            {"sClass":"number","sWidth":"50px","bSortable": false,"asSorting":["asc","desc"]},
+            {"sClass":"text pad-left","sWidth":"120px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
             {"sClass":"number pad-left","sWidth":"135px","asSorting":["desc","asc"]},
             {"sClass":"text pad-left","sWidth":"165px","asSorting":["asc","desc"]},

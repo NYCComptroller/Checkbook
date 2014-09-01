@@ -1,6 +1,6 @@
 {
     "widgetType":"phpparser",
-    "parentNid":706,
+    "parentNid":723,
     "limit":100,
     "startWith":0,
     "columns":["expobjectname.expobjectname", "txcount"],
@@ -24,19 +24,7 @@
         $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
     }
     $adjustedParameters['expobjectname.expobjectname'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
-    //Using child_contract_agency_id column in OGE domainO
-    if(_checkbook_check_isEDCPage()){
-        foreach($adjustedParameters as $key=>$value){
-            if($key == 'master_child_contract_agency_id'){
-               $adjustedParameters['contract_agency_id'] = $value;
-               unset($adjustedParameters[$key]);
-            }
-            if($key == 'master_child_contract_vendor_id'){
-               $adjustedParameters['contract_vendor_id'] = $value;
-               unset($adjustedParameters[$key]);
-            }
-        }
-    }
+    
     return $adjustedParameters;
     ",
     "template":"individual_filter"
