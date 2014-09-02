@@ -73,14 +73,6 @@
             "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getPrimeVendorAmountLinkUrl($node,$row) . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
         }
     },
-    "adjustParameters":"
-        if(!$node->is_mwbe) {
-            unset($parameters['minority_type_id']);
-            unset($parameters['industry_type_id']);
-        }
-
-        return $parameters;
-    ",
     "summaryView":{
         "template":"spending_vendor_summary",
         "templateTitleEval":"

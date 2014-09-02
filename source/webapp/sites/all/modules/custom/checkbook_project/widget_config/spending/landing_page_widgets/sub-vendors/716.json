@@ -78,13 +78,6 @@
             "expression": "'<a class=\"new_window\" href=\"' . SpendingUtil::getAgencyYtdSpendingUrl($node,$row) . '\">' . custom_number_formatter_format($row['check_amount_sum@checkbook:spending_data'],2,'$') . '</a>'"
         }
     },
-    "adjustParameters":"
-        if(!$node->is_mwbe) {
-            unset($parameters['minority_type_id']);
-            unset($parameters['industry_type_id']);
-        }
-        return $parameters;
-    ",
     "summaryView":{
         "template":"spending_agency_summary",
         "templateTitleEval":"

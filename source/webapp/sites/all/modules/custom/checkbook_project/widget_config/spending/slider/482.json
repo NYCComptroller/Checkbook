@@ -8,17 +8,20 @@
             {
                 "dataset": "checkbook:spending_data",
                 "preProcessConfiguration":"
-                    $node->is_sub_vendor = _checkbook_check_is_sub_vendor_page();
-                    $node->is_mwbe = _checkbook_check_is_mwbe_page() && !$node->is_sub_vendor;
+                    $is_sub_vendor = _checkbook_check_is_sub_vendor_page();
+                    $is_mwbe = _checkbook_check_is_mwbe_page();
+                    $node->is_sub_vendor = $is_sub_vendor;
+                    $node->is_mwbe = $is_mwbe && !$is_sub_vendor;
+                    $node->is_mwbe_sub_vendor = $is_mwbe && $is_sub_vendor;
                     if($node->is_mwbe) $node->widgetConfig->model->series[0]->dataset = 'checkbook:spending_mwbe_data';
-                    if($node->is_sub_vendor) $node->widgetConfig->model->series[0]->dataset = 'checkbook:spending_subven_data';
+                    if($node->is_sub_vendor || $node->is_mwbe_sub_vendor) $node->widgetConfig->model->series[0]->dataset = 'checkbook:spending_subven_data';
                 ",
                 "columns": ["check_amount_sum","category.category"],
                 "seriesURLParamMap":{"year":"year.year","agency":"agency_id","yeartype":"type_of_year","vendor":"prime_vendor.prime_vendor","mwbe":"minority_type_id","industry":"industry_type_id"},
                 "allowedParams":["year.year","agency_id","type_of_year","vendor.vendor","minority_type_id","industry_type_id"],
                 "seriesDefaultParameters":{"year.year":"1","type_of_year":"B"},
                 "adjustSerieParameters":"
-                    if(!$node->is_mwbe) {
+                    if(!$node->is_mwbe && !$node->is_mwbe_sub_vendor) {
                         unset($serieParameters['minority_type_id']);
                         unset($serieParameters['industry_type_id']);
                         return $serieParameters;

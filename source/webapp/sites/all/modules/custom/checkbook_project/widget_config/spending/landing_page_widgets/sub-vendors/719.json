@@ -40,14 +40,6 @@
     ],
     "enableExpand":true,
     "disableViewAll":true,
-    "adjustParameters":"
-
-        if(!$node->is_mwbe) {
-            unset($parameters['minority_type_id']);
-        }
-
-        return $parameters;
-    ",
     "header":"
         $node->widgetConfig->getData=false;
         load_widget_data($node);
