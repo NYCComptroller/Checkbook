@@ -14,7 +14,8 @@
     ],
     "urlParamMap":{
         "agency":"agency_id",
-        "vendor":"prime_vendor.prime_vendor",
+        "vendor":"prime_vendor_id",
+        "subvendor":"vendor_id",
         "category":"spending_category_id",
         "year":"year_id",
         "yeartype":"year_type",
@@ -28,15 +29,17 @@
     "html_class":"",
     "no_results_content":"No Results Found",
     "dataset":"checkbook:subcontract_spending_details",
-    "columns":[
-        "issuedate.issuedate",
-        "agency.agency",
-        "agency.agency.agency_name",
-        "sub_vendor.sub_vendor",
-        "sub_vendor.sub_vendor.legal_name",
-        "prime_vendor.prime_vendor",
-        "prime_vendor.prime_vendor.legal_name",
-        "chkamt.chkamt"
+    "useList":true,
+    "columns": [
+        "check_eft_issued_date",
+        "agency_id",
+        "agency_name",
+        "vendor_id",
+        "vendor_name",
+        "legal_name@checkbook:sub_vendor",
+        "prime_vendor_id",
+        "legal_name@checkbook:prime_vendor",
+        "check_amount"
     ],
     "enableExpand":true,
     "disableViewAll":true,
@@ -82,11 +85,11 @@
     "derivedColumns": {
             "agency_name_link": {
                 "type":"expression2",
-                "expression":"'<a href=\"' . SpendingUtil::getAgencyNameLinkUrl($node,$row) . '\">' . $row[agency_agency_agency_name] . '</a>'"
+                "expression":"'<a href=\"' . SpendingUtil::getAgencyNameLinkUrl($node,$row) . '\">' . $row[agency_name] . '</a>'"
             },
             "sub_vendor_name_formatted": {
                 "type":"expression2",
-                "expression":"_get_tooltip_markup($row['sub_vendor_sub_vendor_legal_name'],36)"
+                "expression":"_get_tooltip_markup($row['legal_name@checkbook:sub_vendor'],36)"
             },
             "sub_vendor_name_link": {
                 "type":"expression2",
@@ -94,11 +97,11 @@
             },
             "sub_vendor_name_link2": {
                 "type":"expression2",
-                "expression":"($row[sub_vendor_sub_vendor] == null )?$row['sub_vendor_sub_vendor_legal_name']:$row[sub_vendor_name_link]"
+                "expression":"($row[sub_vendor_id] == null )?$row['legal_name@checkbook:sub_vendor']:$row[sub_vendor_name_link]"
             },
             "prime_vendor_name_formatted": {
                 "type":"expression2",
-                "expression":"_get_tooltip_markup($row['prime_vendor_prime_vendor_legal_name'],36)"
+                "expression":"_get_tooltip_markup($row['legal_name@checkbook:prime_vendor'],36)"
             },
             "prime_vendor_name_link": {
                 "type":"expression2",
@@ -106,11 +109,11 @@
             },
             "prime_vendor_name_link2": {
                 "type":"expression2",
-                "expression":"($row[prime_vendor_prime_vendor] == null )?$row['prime_vendor_prime_vendor_legal_name']:$row[prime_vendor_name_link]"
+                "expression":"($row[prime_vendor_id] == null )?$row['legal_name@checkbook:prime_vendor']:$row[prime_vendor_name_link]"
             },
             "formatted_check_amount": {
                 "type":"expression2",
-                "expression":"custom_number_formatter_format($row['chkamt_chkamt'],2,'$')"
+                "expression":"custom_number_formatter_format($row['check_amount'],2,'$')"
             }
     },
     "WidgetTitleEval":"
@@ -119,11 +122,11 @@
         return ($title . 'Checks ' . $catName . ' Transactions');
     ",
     "table_columns": [
-            {"labelAlias":"issue_date","column":"issuedate_issuedate"},
-            {"labelAlias":"agency_name","column":"agency_name_link","sortSourceColumn":"agency.agency.agency_name"},
-            {"labelAlias":"sub_vendor_name","column":"sub_vendor_name_link2","sortSourceColumn":"sub_vendor.sub_vendor.legal_name"},
-            {"labelAlias":"prime_vendor","column":"prime_vendor_name_link2","sortSourceColumn":"prime_vendor.prime_vendor.legal_name"},
-            {"labelAlias":"check_amount","column":"formatted_check_amount","sortSourceColumn":"chkamt.chkamt"},
+            {"labelAlias":"issue_date","column":"check_eft_issued_date"},
+            {"labelAlias":"agency_name","column":"agency_name_link","sortSourceColumn":"agency_name"},
+            {"labelAlias":"sub_vendor_name","column":"sub_vendor_name_link2","sortSourceColumn":"legal_name@checkbook:sub_vendor"},
+            {"labelAlias":"prime_vendor","column":"prime_vendor_name_link2","sortSourceColumn":"legal_name@checkbook:prime_vendor"},
+            {"labelAlias":"check_amount","column":"formatted_check_amount","sortSourceColumn":"check_amount"},
             {"label":"","column":""}
     ],
     "dataTableOptions":{
