@@ -21,7 +21,6 @@
         "yeartype.yeartype",
         "check_amount_sum",
         "sub_vendor_count",
-        "sub_vendor.sub_vendor",
         "prime_vendor.prime_vendor",
         "prime_vendor.prime_vendor.legal_name",
         "total_contract_amount_sum",
