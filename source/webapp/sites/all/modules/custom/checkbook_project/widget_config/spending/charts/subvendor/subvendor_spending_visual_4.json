@@ -6,7 +6,7 @@
         return $header;
     ",
     "gridConfig":{
-        "template":"highchart_spending_vendor_grid_view",
+        "template":"highchart_spending_prime_vendor_grid_view",
         "html_class":"chart-grid-view-table two-columns",
         "table_columns": [
             {

@@ -384,10 +384,20 @@ function checkbook_project_theme($existing, $type, $theme, $path){
         'highchart_spending_agency_grid_view' => array(
             'template' => 'gridview/spending_highchart_agency',
             'arguments' => array('node' => NULL)
-        ),'highchart_spending_vendor_grid_view' => array(
+        ),
+        'highchart_spending_vendor_grid_view' => array(
             'template' => 'gridview/spending_highchart_vendor',
             'arguments' => array('node' => NULL)
-        ),'highchart_spending_contract_grid_view' => array(
+        ),
+        'highchart_spending_subvendor_grid_view' => array(
+            'template' => 'gridview/spending_highchart_subvendor',
+            'arguments' => array('node' => NULL)
+        ),
+        'highchart_spending_prime_vendor_grid_view' => array(
+        'template' => 'gridview/spending_highchart_prime_vendor',
+        'arguments' => array('node' => NULL)
+    ),
+        'highchart_spending_contract_grid_view' => array(
             'template' => 'gridview/spending_highchart_contract',
             'arguments' => array('node' => NULL)
         ),
