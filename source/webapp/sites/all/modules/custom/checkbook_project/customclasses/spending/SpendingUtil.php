@@ -248,7 +248,7 @@ class SpendingUtil{
         . _checkbook_project_get_url_param_string("industry")
         . _checkbook_project_get_year_url_param_string()
         . _checkbook_append_url_params()
-        . '/vendor/' . $row["prime_vendor_prime_vendor"];
+        . '/vendor/' . (isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["prime_vendor_prime_vendor"]);
     }
 
     /**
