@@ -363,13 +363,13 @@
                     "function": "SUM(COALESCE(total_spending_amount,0))"
                 },
                 "total_contract_amount_sum": {
-                    "function": "MAX(COALESCE(total_contract_amount,0))"
+                    "function": "SUM(COALESCE(total_contract_amount,0))"
                 },
                 "sub_vendor_count": {
                     "function": "COUNT(DISTINCT vendor_id)"
                 },
                 "total_sub_contracts": {
-                    "function": "COUNT(DISTINCT total_sub_contracts)"
+                    "function": "SUM(total_sub_contracts)"
                 },
                 "ytd_spending_sub_vendors": {
                     "function": "SUM(total_spending_amount)"
@@ -409,10 +409,6 @@
         "spending_subven_data__spending_data": [
             {"datasetName": "spending_subven_data", "columnNames": ["agency_id","year_id","type_of_year"]},
             {"datasetName": "spending_data", "columnNames": ["agency_id","year_id","type_of_year"]}
-        ],
-        "spending_subven_data__spending_data_no_payroll": [
-            {"datasetName": "spending_subven_data", "columnNames": ["agency_id","year_id","type_of_year"]},
-            {"datasetName": "spending_data_no_payroll", "columnNames": ["agency_id","year_id","type_of_year"]}
         ]
     }
 }

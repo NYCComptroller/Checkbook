@@ -4,10 +4,6 @@
             "datasourceName": "main",
             "source": "aggregateon_spending_coa_entities"
         },
-        "spending_data_no_payroll": {
-            "datasourceName": "main",
-            "source": "aggregateon_spending_coa_entities"
-        },
         "contracts_spending": {
             "datasourceName": "main",
             "source": "aggregateon_spending_contract"
@@ -119,106 +115,9 @@
             "measures": {
                 "check_amount_sum": {
                     "function": "SUM(total_spending_amount)"
-                }
-            }
-        },
-        "spending_data_no_payroll": {
-            "sourceDatasetName": "spending_data_no_payroll",
-            "dimensions": [
-                {
-                    "name": "fund_class",
-                    "levels": [
-                        {
-                            "name": "fund_class",
-                            "datasetName": "fund_class",
-                            "sourceColumnName": "fund_class_id"
-                        }
-                    ]
                 },
-                {
-                    "name": "agency",
-                    "levels": [
-                        {
-                            "name": "agency",
-                            "datasetName": "agency",
-                            "sourceColumnName": "agency_id"
-                        }
-                    ]
-                },
-                {
-                    "name": "department",
-                    "levels": [
-                        {
-                            "name": "department",
-                            "datasetName": "department",
-                            "sourceColumnName": "department_id"
-                        }
-                    ]
-                },
-                {
-                    "name": "year",
-                    "levels": [
-                        {
-                            "name": "year",
-                            "datasetName": "year",
-                            "sourceColumnName": "year_id"
-                        }
-                    ]
-                },
-                {
-                    "name": "yeartype",
-                    "levels": [
-                        {
-                            "name": "yeartype",
-                            "datasetName": "year",
-                            "sourceColumnName": "type_of_year"
-                        }
-                    ]
-                },
-                {
-                    "name": "month",
-                    "levels": [
-                        {
-                            "name": "month",
-                            "datasetName": "month",
-                            "sourceColumnName": "month_id"
-                        }
-                    ]
-                },
-                {
-                    "name": "vendor",
-                    "levels": [
-                        {
-                            "name": "vendor",
-                            "datasetName": "vendor",
-                            "sourceColumnName": "vendor_id"
-                        }
-                    ]
-                },
-                {
-                    "name": "category",
-                    "levels": [
-                        {
-                            "name": "category",
-                            "datasetName": "category",
-                            "sourceColumnName": "spending_category_id"
-                        }
-                    ]
-                },
-                {
-                    "name": "expenditure_object",
-                    "levels": [
-                        {
-                            "name": "expenditure_object",
-                            "datasetName": "expenditure_object",
-                            "sourceColumnName": "expenditure_object_id"
-                        }
-                    ]
-                }
-            ],
-            "measures": {
-                "check_amount_sum": {
-                    "function": "SUM(total_spending_amount)"
+                "check_amount_sum_no_payroll": {
+                    "function": "SUM(CASE WHEN spending_category_id !=2 THEN total_spending_amount ELSE 0 END)"
                 }
             }
         },

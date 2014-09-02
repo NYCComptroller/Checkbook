@@ -445,7 +445,7 @@ class SpendingUtil{
      * @return string
      */
     static function getSubVendorsPercentPaid($row){
-        return self::calculatePercent($row['ytd_spending_sub_vendors'], $row['check_amount_sum@checkbook:spending_data_no_payroll']);
+        return self::calculatePercent($row['ytd_spending_sub_vendors'], $row['check_amount_sum_no_payroll@checkbook:spending_data']);
     }
 
     /**

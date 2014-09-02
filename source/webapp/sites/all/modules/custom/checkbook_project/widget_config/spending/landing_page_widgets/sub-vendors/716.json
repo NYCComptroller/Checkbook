@@ -2,8 +2,7 @@
     "widgetType": "data_tables",
     "widgetSubType":"ajaxSimple",
     "no_results_content":"No Results Found",
-    "defaultParameters":{"type_of_year":"B","spending_category_id@checkbook:spending_data_no_payroll":"2"},
-    "defaultParamTypeConfig":{"spending_category_id@checkbook:spending_data_no_payroll":"ne"},
+    "defaultParameters":{"type_of_year":"B"},
     "cleanURLParameters":[
         "year",
         "agency",
@@ -35,7 +34,7 @@
         "ytd_spending_sub_vendors",
         "ytd_spending_vendors",
         "check_amount_sum@checkbook:spending_data",
-        "check_amount_sum@checkbook:spending_data_no_payroll"
+        "check_amount_sum_no_payroll@checkbook:spending_data"
     ],
     "limit":5,
     "enableExpand":true,
@@ -72,7 +71,7 @@
         },
         "sub_vendors_percent_paid_formatted":{
             "type":"expression2",
-            "expression": "custom_number_formatter_format($row['check_amount_sum@checkbook:spending_data_no_payroll'],2,'$')"
+            "expression": "SpendingUtil::getSubVendorsPercentPaid($row)"
         },
         "ytd_spending_agency_link":{
             "type":"expression2",
@@ -104,7 +103,7 @@
         {"labelAlias":"agency_name","column":"agency_name_link"},
         {"labelAlias":"num_sub_vendors","column":"sub_vendor_count","sortSourceColumn":"sub_vendor_count"},
         {"labelAlias":"ytd_spending_sub_vendors","column":"ytd_spending_sub_vendors_link","sortSourceColumn":"ytd_spending_sub_vendors"},
-        {"labelAlias":"sub_vendors_percent_paid","column":"sub_vendors_percent_paid_formatted","sortSourceColumn":"check_amount_sum_checkbook_spending_data_no_payroll"},
+        {"labelAlias":"sub_vendors_percent_paid","column":"sub_vendors_percent_paid_formatted","sortSourceColumn":"check_amount_sum_no_payroll_checkbook_spending_data"},
         {"labelAlias":"ytd_spending_agency","column":"ytd_spending_agency_link","sortSourceColumn":"check_amount_sum_checkbook_spending_data"},
         {"label":"","column":""}
     ],
