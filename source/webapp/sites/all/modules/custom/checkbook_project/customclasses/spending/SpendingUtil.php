@@ -511,7 +511,7 @@ class SpendingUtil{
     }
 
     /**
-     * Spending transaction page should be shown for citywide, oge, m/wbe
+     * Spending transaction page should be shown for citywide, oge
      * @return bool
      */
     static function showSpendingTransactionPage(){
@@ -527,7 +527,7 @@ class SpendingUtil{
     }
 
     /**
-     * Spending transaction no results page should be shown for citywide, oge, m/wbe
+     * Spending transaction no results page should be shown for citywide, oge
      * @return bool
      */
     static function showNoSpendingTransactionPage(){

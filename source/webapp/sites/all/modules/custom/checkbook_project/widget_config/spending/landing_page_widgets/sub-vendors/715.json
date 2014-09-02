@@ -39,7 +39,8 @@
         "legal_name@checkbook:sub_vendor",
         "prime_vendor_id",
         "legal_name@checkbook:prime_vendor",
-        "check_amount"
+        "check_amount",
+        "minority_type_id"
     ],
     "enableExpand":true,
     "disableViewAll":true,
@@ -57,10 +58,6 @@
 
         unset($parameters['year_type']);
         unset($parameters['year_id']);
-
-        if(!$node->is_mwbe) {
-            unset($parameters['minority_type_id']);
-        }
 
         return $parameters;
     ",

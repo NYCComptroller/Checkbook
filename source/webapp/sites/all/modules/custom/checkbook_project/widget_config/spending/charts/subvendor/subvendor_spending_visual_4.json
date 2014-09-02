@@ -24,8 +24,8 @@
     "datasets":[{"name":"prime_vendor","column":"prime_vendor_prime_vendor_legal_name","type":"string","isArray":true}],
     "limit": 10,
     "orderBy": "-check_amount_sum",
-    "cleanURLParameters":["year","yeartype","agency","vendor","category"],
-    "urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor.prime_vendor","category":"spending_category_id"},
+    "cleanURLParameters":["year","yeartype","agency","vendor","category","mwbe"],
+    "urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor.prime_vendor","category":"spending_category_id","mwbe":"minority_type_id"},
     "defaultParameters":{"check_amount_sum":"0","vendor_id":""},
     "defaultParamTypeConfig":{"check_amount_sum":"ne","vendor_id":"ne"},
     "adjustParameters":"
