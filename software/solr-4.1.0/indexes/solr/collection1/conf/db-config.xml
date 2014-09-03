@@ -465,7 +465,7 @@
                 (case when(latest_flag = 'Y') then 'Y' else 'N' end) latest_flag,
                 'Registered' status,
                 minority_type_name,
-				case when adt.minority_type_id in (4,5,10) then 'Asian American' when adt.minority_type_id in (2) then 'Black American' when adt.minority_type_id in (7) then 'Non-M/WBE' when adt.minority_type_id in (9) then 'Women' else adt.minority_type_name end as minority_type_name_contract,
+				case when minority_type_id in (4,5,10) then 'Asian American' when minority_type_id in (2) then 'Black American' when minority_type_id in (7) then 'Non-M/WBE' when minority_type_id in (9) then 'Women' else minority_type_name end as minority_type_name_contract,
 				minority_type_id,
 				case when minority_type_id in (4,5,10) then 10 else minority_type_id end as minority_type_id_contract,
                 is_prime_or_sub, 
