@@ -39,7 +39,7 @@ function _checkbook_smart_search_get_results(){
     $oges = _checkbook_smart_search_get_facet_results($search_terms, "oge_agency_names", NULL, -1);
     $agencies = _checkbook_smart_search_get_facet_results($search_terms, "agency_names", NULL, -1);
     $vendors = _checkbook_smart_search_get_facet_results($search_terms, "vendor_names", NULL, 100);
-    $vendor_type = _checkbook_smart_search_get_facet_results($search_terms, "vendor_type", NULL, 100);
+    $vendor_type = _checkbook_smart_search_get_facet_results($search_terms, "vendor_type", NULL, 1);
     $all_vendors = _checkbook_smart_search_get_facet_results($search_terms, "vendor_names", NULL, -1);
     $vendor_number = count($all_vendors['facet_counts']['facet_fields']['vendor_name']);
     $vendor_pages = floor($vendor_number / 100);
@@ -53,6 +53,7 @@ function _checkbook_smart_search_get_results(){
     $contract_categories = _checkbook_smart_search_get_facet_results($search_terms, "contract_categories");
     $contract_status = _checkbook_smart_search_get_facet_results($search_terms, "contract_status");
     $spending_categories = _checkbook_smart_search_get_facet_results($search_terms, "spending_categories");
+    $mwbe_category = _checkbook_smart_search_get_facet_results($search_terms, "minority_type_name");
     $spending_mwbe_categories = _checkbook_smart_search_get_facet_results($search_terms, "minority_type_name_spending");
     $contract_mwbe_categories = _checkbook_smart_search_get_facet_results($search_terms, "minority_type_name_contract");
 
@@ -68,7 +69,8 @@ function _checkbook_smart_search_get_results(){
         "contract_category_name" => $contract_categories['facet_counts']['facet_fields'],
         "contract_status" => $contract_status['facet_counts']['facet_fields'],
         "spending_minority" => $spending_mwbe_categories['facet_counts']['facet_fields'],
-        "contract_minority" => $contract_mwbe_categories['facet_counts']['facet_fields']
+        "contract_minority" => $contract_mwbe_categories['facet_counts']['facet_fields'],
+        "mwbe_category" => $mwbe_category['facet_counts']['facet_fields']
     );
 
     //Selected Facet Filters
@@ -82,9 +84,9 @@ function _checkbook_smart_search_get_results(){
     $selected_spending_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "spending_categories");
     $selected_contract_status = _checkbook_smart_search_get_selected_facet_results($search_terms, "contract_status");
     $selected_contract_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "contract_categories");
-
     $selected_contract_mwbe_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "minority_type_name_contract");
     $selected_spending_mwbe_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "minority_type_name_spending");
+    $selected_mwbe_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "minority_type_name");
 
     $selected_facet_results = array("domain" => $selected_domains,
         "agency_name" => $selected_agencies,
@@ -97,7 +99,8 @@ function _checkbook_smart_search_get_results(){
         "contract_category_name" => $selected_contract_categories,
         "contract_status" => $selected_contract_status,
         "contract_minority" => $selected_contract_mwbe_categories,
-        "spending_minority" => $selected_spending_mwbe_categories
+        "spending_minority" => $selected_spending_mwbe_categories,
+        "mwbe_category" => $selected_mwbe_categories
     );
 
     return theme('checkbook_smart_search_results', array('search_results'=> $search_results['search_results'],
@@ -186,7 +189,8 @@ function _checkbook_smart_search_get_results_query_search_term($search_terms){
         "contract_categories" => "contract_category_name",
         "contract_status" => "contract_status",
         "minority_type_name_contract" => "minority_type_name_contract",
-        "minority_type_name_spending" => "minority_type_name_spending"
+        "minority_type_name_spending" => "minority_type_name_spending",
+        "minority_type_name" => "minority_type_name"
     );
 
     $searchTerm = $search_terms[0];
@@ -241,7 +245,8 @@ function _checkbook_smart_search_get_selected_facet_results($search_terms, $face
         "contract_categories" => "contract_category_name",
         "contract_status" => "contract_status",
         "minority_type_name_contract" => "minority_type_name_contract",
-        "minority_type_name_spending" => "minority_type_name_spending"
+        "minority_type_name_spending" => "minority_type_name_spending",
+        "minority_type_name" => "minority_type_name"
     );
 
     $search_string = $search_terms[0];
@@ -310,7 +315,8 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
           "contract_categories" => "contract_category_name",
           "contract_status" => "contract_status",
           "minority_type_name_contract" => "minority_type_name_contract",
-          "minority_type_name_spending" => "minority_type_name_spending"
+          "minority_type_name_spending" => "minority_type_name_spending",
+          "minority_type_name" => "minority_type_name"
         );
 
         $search_string = $search_terms[0];
@@ -344,7 +350,6 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
             ."&facet.field=".$parameter_mapping[$facet_name]
             ."&wt=php"
             ."&facet.mincount=1";
-
 
         if ($offset){
           $query .= "&facet.offset=".$offset;
@@ -386,6 +391,7 @@ function _checkbook_smart_search_autocomplete(){
              ."&terms.regex=". $search_term ."&wt=php";
 
 	$contents = _checkbook_smart_search_solr_results($query);
+
     $matches = array();
     $count = 0;
     foreach($contents['terms'] as $key=>$value){
@@ -1079,5 +1085,14 @@ function mwbe_category_mapping_by_name($category_name){
         case 'caucasian woman': return 'Women';
         case 'individuals & others': return 'Individuals and Others';
     }
+}
+
+function vendor_type_mapping($vendortype_initials){
+    switch($vendortype_initials){
+        case 's': return 'Sub Vendor';
+        case 'sm': return 'M/WBE Vendor';
+        case 'pm': return 'Prime Vendor';
+    }
+
 }
 
