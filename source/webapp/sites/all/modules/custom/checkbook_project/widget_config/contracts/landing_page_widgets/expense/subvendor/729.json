@@ -90,7 +90,7 @@ return $header;
 "sortSourceColumn":"award_size.award_size.award_size_name"
 },
 {
-"labelAlias": "no_of_contracts",
+"labelAlias": "num_sub_contracts",
 "column": "formatted_total_contracts",
 "sortSourceColumn":"total_contracts"
 },

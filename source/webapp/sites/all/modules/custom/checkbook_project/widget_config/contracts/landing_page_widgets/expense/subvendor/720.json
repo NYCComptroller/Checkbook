@@ -94,7 +94,7 @@ return $footer;
 "sortSourceColumn":"subvendor_subvendor_legal_name"
 },
 {
-"labelAlias": "no_of_sub_contracts",
+"labelAlias": "num_sub_contracts",
 "column": "formatted_total_contracts",
 "sortSourceColumn":"total_contracts"
 },

@@ -93,7 +93,7 @@ return $footer;
 "sortSourceColumn":"award_method.award_method.award_method_name"
 },
 {
-"labelAlias": "no_of_contracts",
+"labelAlias": "num_sub_contracts",
 "column": "formatted_total_contracts",
 "sortSourceColumn":"total_contracts"
 },
