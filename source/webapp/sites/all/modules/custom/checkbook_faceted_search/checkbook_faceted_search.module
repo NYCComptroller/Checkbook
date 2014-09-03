@@ -302,8 +302,8 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
   $active_contracts = $variables['active_contracts'];
   $selected_filters = $variables['selected_facet_results'];
   $output = NULL;
-  $ogeAgencies = $agencies = $vendors = $vendor_type = $expenseCategories = $revenueCategories = $fiscalYears = $domains = $contractCategory = $contractStatus = $spendingCategory = $contractMWBECategory = $spendingMWBECategory = array();
-  $reqOGEAgencies = $reqAgencies = $reqFiscalYears = $reqDomains = $reqVendors = $reqVendorType = $reqExpenseCategories = $reqRevenueCategories = $reqSpendCategories = array();
+  $ogeAgencies = $agencies = $vendors = $vendor_type = $expenseCategories = $revenueCategories = $fiscalYears = $domains = $contractCategory = $contractStatus = $spendingCategory = $MWBECategory = $contractMWBECategory = $spendingMWBECategory = array();
+  $reqOGEAgencies = $reqAgencies = $reqFiscalYears = $reqDomains = $reqVendors = $reqVendorType = $reqExpenseCategories = $reqRevenueCategories = $reqSpendCategories = $reqMWBECategory = array();
 
   //arrays for the selected facet values from the URL
   foreach($selected_filters as $key => $value){
@@ -344,10 +344,14 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
           case 'spending_minority':
             $reqSpendingMWBECategories[] = $value;
             break;
+          case 'mwbe_category':
+            $reqMWBECategory[] = $value;
+            break;
       }
   }
 
   //arrays for the facet values
+
   foreach ($facets as $key => $value) {
     switch ($key) {
       case 'agency_name':
@@ -385,6 +389,9 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
         break;
       case 'spending_minority':
         $spendingMWBECategory[] = $value['minority_type_name_spending'];
+        break;
+      case 'mwbe_category':
+        $MWBECategory[] = $value['minority_type_name'];
         break;
     }
   }
@@ -494,6 +501,7 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
             }
         }
       }
+
   if (count($vendors) > 0) {
     foreach ($vendors[0] as $vendorName => $count) {
       if ($count > 0) {
@@ -515,6 +523,7 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
     }
   }
   // Vendor type
+
    if (count($vendor_type) > 0) {
        foreach ($vendor_type[0] as $vendorName => $count) {
            if ($count > 0) {
@@ -597,6 +606,27 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
         }
     }
   }
+
+    if (count($MWBECategory) > 0) {
+        foreach ($MWBECategory[0] as $MWBECategoryName => $count) {
+            if ($count > 0) {
+                $checked = in_array($MWBECategoryName, array_values_recursive($reqMWBECategory[0]));
+                $MWBECategoryValue = urlencode($MWBECategoryName);
+                if ($checked) {
+                    $output['M/WBE Category']['checked'][] = array($MWBECategoryValue, $MWBECategoryName, $count);
+                }
+                else {
+                    $output['M/WBE Category']['unchecked'][] = array($MWBECategoryValue, $MWBECategoryName, $count);
+                }
+            }
+        }
+        $output['M/WBE Category']['name'] = 'fmwbeCategory';
+        foreach($reqMWBECategory[0] as $key => $value){
+            if(!in_array($value['name'], array_values_recursive($output['M/WBE Category']['checked']))){
+                $output['M/WBE Category']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
+            }
+        }
+    }
 
   $variables['render_array'] = $output;
   $variables['sub_cat_array'] = $subCat;

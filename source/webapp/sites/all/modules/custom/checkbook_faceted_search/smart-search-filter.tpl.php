@@ -100,22 +100,17 @@ foreach ($render_array as $title => $value) {
             echo '<div class="rows">';
             foreach ($b as $sub_cat) {
               $name = $b['name'];
-              $value = $sub_cat[1];
-              $count = $sub_cat[2];
               if (is_array($sub_cat)) {
                 $checked = (in_array('checked', $sub_cat)) ? ' checked="checked" ' : '';
                 $active = ($checked) ? ' class="active"' : '';
                 echo '<div class="row">';
                 echo '<div class="checkbox">';
-//                if($name == 'fspendingMWBE' || $name == 'fcontractMWBE') {
-//                    $value = mwbe_category_mapping_by_name($sub_cat[1]);
-//                }
                  if ($sub_cat[0]) {
                    echo '<input name="' . $name . '" type="checkbox"' . $checked . 'value="' . $sub_cat[0] . '" onClick="javascript:applySearchFilters();">';
                  }
                  echo '</div>';
-                 echo '<div class="name">' . htmlentities($value) . '</div>';
-                 echo '<div class="number"><span' . $active . '>' . number_format($count) . '</span></div>';
+                 echo '<div class="name">' . htmlentities($sub_cat[1]) . '</div>';
+                 echo '<div class="number"><span' . $active . '>' . number_format($sub_cat[2]) . '</span></div>';
                  echo '</div>';
               }
             }
@@ -130,13 +125,20 @@ foreach ($render_array as $title => $value) {
   else {
     $autocomplete_id = "autocomplete_" . $value['name'];
     $disabled = ($value['checked'] && count($value['checked']) >= 5) ? "disabled" : '';
-    echo '<div class="autocomplete"><input id="' . $autocomplete_id . '" ' . $disabled . ' type="text"></div>';
+    if($title != 'Vendor Type' && $title != 'M/WBE Category'){
+        echo '<div class="autocomplete"><input id="' . $autocomplete_id . '" ' . $disabled . ' type="text"></div>';
+    }
     echo '<div class="checked-items">';
     if ($value['checked']) {
       foreach ($value['checked'] as $row) {
         echo '<div class="row">';
         echo '<div class="checkbox"><input type="checkbox" value="' . $row[0] . '" name="' . $value['name'] . '" checked="checked" onClick="javascript:applySearchFilters();"></div>';
-        echo '<div class="name">' . htmlentities($row[1]) . '</div>';
+        if($title == 'Vendor Type'){
+            echo '<div class="name">' . htmlentities(vendor_type_mapping($row[1])) . '</div>';
+        }
+        else{
+            echo '<div class="name">' . htmlentities($row[1]) . '</div>';
+        }
         echo '<div class="number"><span class="active">' . number_format($row[2]) . '</span></div>';
         echo '</div>';
       }
@@ -148,7 +150,12 @@ foreach ($render_array as $title => $value) {
       foreach ($value['unchecked'] as $row) {
         echo '<div class="row">';
         echo '<div class="checkbox"><input type="checkbox" value="' . $row[0] . '" ' . $disabled . ' name="' . $value['name'] . '" onClick="javascript:applySearchFilters();"></div>';
-        echo '<div class="name">' . htmlentities($row[1]) . '</div>';
+        if($title == 'Vendor Type'){
+            echo '<div class="name">' . htmlentities(vendor_type_mapping($row[1])) . '</div>';
+        }
+        else{
+            echo '<div class="name">' . htmlentities($row[1]) . '</div>';
+        }
         echo '<div class="number"><span>' . htmlentities(number_format($row[2])) . '</span></div>';
         echo '</div>';
       }
@@ -161,6 +168,17 @@ foreach ($render_array as $title => $value) {
   ?>
 </div>
 <script type="text/javascript">
+jQuery('.filter-content-fmwbeCategory').hide();
+var url = location.href;
+var str1 = url.split('*|*');
+if(str1.length > 1){
+    for(var i=1; i < str1.length; i++){
+        var str2 = str1[i].split('=');
+        if(str2[0] == 'minority_type_name'){
+            jQuery('.filter-content-fmwbeCategory').show();
+        }
+    }
+}
 
 jQuery('.filter-title > .open').each(function(){
     jQuery('div.filter-content-fagencyName .options').mCustomScrollbar("destroy");
@@ -197,6 +215,7 @@ function scroll_facet(){
       };
       jQuery('div.filter-content-fagencyName .options').mCustomScrollbar(opts);
       jQuery('div.filter-content-fyear .options').mCustomScrollbar(opts);
+
       var vendorpage = 0;
       var vpagelimit = Drupal.settings.checkbook_smart_search.vendor_pages;
       jQuery('div.filter-content-fvendorName .options').mCustomScrollbar({
