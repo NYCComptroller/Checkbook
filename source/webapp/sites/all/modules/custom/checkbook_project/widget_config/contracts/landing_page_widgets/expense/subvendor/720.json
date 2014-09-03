@@ -32,17 +32,18 @@
 },
 "minority_type_link":{
 "type": "expression2",
-"expression": "'<a href=\"/contracts_landing'  . _checkbook_project_get_url_param_string(\"agency\")
+"expression": "'<a href=\"/contracts_landing' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string(\"agency\")
                     . _checkbook_project_get_url_param_string(\"cindustry\")
                     . _checkbook_project_get_url_param_string(\"csize\")
                     . _checkbook_project_get_url_param_string(\"awdmethod\")
                     . _checkbook_project_get_url_param_string(\"status\")
+                    . _checkbook_project_get_url_param_string(\"vendor\")
                     . _checkbook_project_get_url_param_string(\"subvendor\")
                     . '/mwbe/'. $row['minority_type_id_map'] .  '?expandBottomCont=true\">' . MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']).'</a>'"
 },
 "subvendor_name_link": {
 "type": "expression2",
-"expression": "'<a href=\"/contracts_landing'  . _checkbook_project_get_url_param_string(\"agency\") . _checkbook_project_get_url_param_string(\"mwbe\") .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\")  .   _checkbook_project_get_url_param_string(\"awdmethod\") .  _checkbook_project_get_url_param_string(\"status\")  .   _checkbook_project_get_year_url_param_string() . '/subvendor/' .$row[subvendor_subvendor] .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>'"
+"expression": "'<a href=\"/contracts_landing'  . _checkbook_project_get_url_param_string(\"vendor\") . _checkbook_project_get_url_param_string(\"agency\") . _checkbook_project_get_url_param_string(\"mwbe\") .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\")  .   _checkbook_project_get_url_param_string(\"awdmethod\") .  _checkbook_project_get_url_param_string(\"status\")  .   _checkbook_project_get_year_url_param_string() . '/subvendor/' .$row[subvendor_subvendor] .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>'"
 } ,
 "spent_amount_no_link": {
 "type": "expression2",
