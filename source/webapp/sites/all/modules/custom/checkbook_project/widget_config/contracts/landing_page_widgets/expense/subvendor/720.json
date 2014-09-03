@@ -9,7 +9,7 @@
                    "csize":"award_size_id","cindustry":"industry_type_id","awdmethod":"award_method_id","subvendor":"vendor_id"},
 "dataset": "checkbook:subven_contracts_coa_aggregates",
 "noDataInitialLoad":true,
-"columns": ["subvendor.subvendor","subvendor.subvendor.legal_name","minority_type.minority_type.minority_type_name",
+"columns": ["subvendor.subvendor","subvendor.subvendor.legal_name","minority_type.minority_type.minority_type_name","minority_type.minority_type",
             "vendor.vendor","total_contracts","original_amount_sum","current_amount_sum",
             "yeartype.yeartype","spending_amount_sum"],
 "adjustParameters":"
@@ -25,6 +25,20 @@
 "subvendor_name_formatted": {
 "type": "expression2",
 "expression": "_get_tooltip_markup($row['subvendor_subvendor_legal_name'],60)"
+},
+"minority_type_id_map":{
+"type": "expression2",
+"expression":"($row['minority_type_minority_type'] == 4 || $row['minority_type_minority_type'] == 5) ? '4~5': $row['minority_type_minority_type']"
+},
+"minority_type_link":{
+"type": "expression2",
+"expression": "'<a href=\"/contracts_landing'  . _checkbook_project_get_url_param_string(\"agency\")
+                    . _checkbook_project_get_url_param_string(\"cindustry\")
+                    . _checkbook_project_get_url_param_string(\"csize\")
+                    . _checkbook_project_get_url_param_string(\"awdmethod\")
+                    . _checkbook_project_get_url_param_string(\"status\")
+                    . '/subvendor/'. $row['subvendor_subvendor'] . '/mwbe/'. $row['minority_type_id_map'] .  '?expandBottomCont=true\">'
+                    . MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']).'</a>'"
 },
 "subvendor_name_link": {
 "type": "expression2",
@@ -99,7 +113,7 @@ return $footer;
 },
 {
 "labelAlias": "mwbe_category",
-"column": "minority_type_minority_type_minority_type_name"
+"column": "minority_type_link"
 },
 {
 "labelAlias": "current_amount",
