@@ -437,6 +437,23 @@ class SpendingUtil{
     }
 
     /**
+     * Returns Payee Name Link Url
+     * @param $node
+     * @param $row
+     * @return string
+     */
+    static function getPayeeNameLinkUrl($node, $row){
+        $url = '/spending_landing'
+            . _checkbook_project_get_year_url_param_string(false,false,false,true)
+            . SpendingUtil::getDataSourceParams()
+            . $row['agency_param']
+            . _checkbook_project_get_url_param_string('category')
+            . ($row['is_sub_vendor'] ? ('/subvendor/'. $row['vendor_id']) : ('/vendor/'. $row['vendor_id']) )
+            . '?expandBottomCont=true';
+        return  $url;
+    }
+
+    /**
      * Returns percent paid to sub vendors defined as:
      * The sum of all checks issued to all sub vendors associated to each agency
      * within the selected fiscal year or calendar year divided by the sum of all checks

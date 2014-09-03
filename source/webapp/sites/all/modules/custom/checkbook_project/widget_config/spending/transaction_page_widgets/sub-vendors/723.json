@@ -55,30 +55,28 @@
     "html_class": "initiative-table transaction-table",
     "no_results_content":"No Results Found",
     "dataset": "checkbook:subcontract_spending_details",
-    "preProcessConfiguration":"$node->is_mwbe = true;",
+    "preProcessConfiguration":"
+        $node->is_sub_vendor = _checkbook_check_is_sub_vendor_page();
+        $node->is_mwbe = _checkbook_check_is_mwbe_page();
+        if($node->is_sub_vendor &&  $node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:spending_subven_data';
+    ",
     "columns": [
         "disbursement_number",
         "agency_id",
         "vendor_id",
         "vendor_name",
-//        "vendor_type",
         "legal_name@checkbook:sub_vendor",
         "prime_vendor_id",
         "legal_name@checkbook:prime_vendor",
         "check_eft_issued_date",
         "agency_name",
-//        "department_name",
-//        "department_short_name",
         "check_amount",
         "expenditure_object_name",
-//        "budget_name",
         "reference_document_number",
         "purpose",
         "purpose_cy",
         "reporting_code",
         "spending_category_name",
-//        "expenditure_object_id",
-//        "department_id",
         "spending_category_id",
         "agreement_id",
         "reference_document_code",
@@ -87,10 +85,6 @@
         "minority_type_id"
     ],
     "derivedColumns": {
-//        "disbursement_number_derived":{
-//            "type": "expression2",
-//            "expression": "($row[spending_category_name]=='Payroll')?'N/A':$row[disbursement_number]"
-//        },
         "agency_name_formatted":{
             "type": "expression2",
             "expression": "_get_tooltip_markup($row[agency_name], 30)"
@@ -109,7 +103,7 @@
         },
         "vendor_name_link": {
             "type": "expression2",
-            "expression": " RequestUtil::isNewWindow() ||  $row[spending_category_id]==2 ?  $row[vendor_name_formatted] : ('<a href=/spending_landing' . _checkbook_project_get_year_url_param_string(false,false,false,true) . SpendingUtil::getDataSourceParams() . $row['agency_param'] . _checkbook_project_get_url_param_string('category') . (_checkbook_check_isEDCPage() ? ('/agency/'. $row[agency_id]) :'') . '/vendor/'. $row[vendor_id] . '?expandBottomCont=true>'. $row[vendor_name_formatted] .'</a>') "
+            "expression": " RequestUtil::isNewWindow() ||  $row[spending_category_id]==2 ?  $row[vendor_name_formatted] : ('<a href=' . SpendingUtil::getPayeeNameLinkUrl($node, $row) . '>'. $row[vendor_name_formatted] .'</a>') "
         },
         "is_sub_vendor": {
             "type":"expression2",
@@ -147,56 +141,16 @@
             "type":"expression2",
             "expression":"MappingUtil::getMinorityCategoryById($row[minority_type_id])"
         }
-//        "agency_param":{
-//            "type": "expression2",
-//            "expression": "(_checkbook_check_isEDCPage()? _checkbook_project_get_url_param_string(\"agency\") :'')"
-//        }
-//        "fms_document_link": {
-//            "type": "expression2",
-//            "expression": "($row[spending_category_name] == 'Payroll' ||  $row[spending_category_name] == 'Others') ? 'N/A' : '' "
-//        }
-//        "purpose_cy_formatted":{
-//            "type": "expression2",
-//            "expression": "_get_tooltip_markup($row[purpose_cy], 30)"
-//        },
-//        "contract_purpose_cy_text":{
-//            "type": "expression2",
-//            "expression": "($row[spending_category_name] == 'Payroll' ||  $row[spending_category_name] == 'Others') ? 'N/A' : $row[purpose_cy_formatted]"
-//        },
-//        "contract_purpose_cy_export":{
-//            "type": "expression2",
-//            "expression": "($row[spending_category_name] == 'Payroll' ||  $row[spending_category_name] == 'Others') ? 'N/A' : $row[purpose_cy]"
-//        },
-//        "budget_code_formatted":{
-//            "type": "expression2",
-//            "expression": "_get_tooltip_markup($row[budget_name],30)"
-//        },
-//        "expense_cat_formatted":{
-//            "type": "expression2",
-//            "expression": "_get_tooltip_markup($row[expenditure_object_name],40)"
-//        },
-//        "dept_name_formatted":{
-//            "type": "expression2",
-//            "expression": "_get_tooltip_markup($row[department_name],40)"
-//        },
-//        "budget_name_formatted":{
-//            "type": "expression2",
-//            "expression": "_get_tooltip_markup($row['budget_name@checkbook:oge_contract'],36)"
-//        }
     },
     "table_columns": [
-//        {"labelAlias":"document_id","column":"disbursement_number_derived","sortSourceColumn":"disbursement_number","exportColumn":"disbursement_number_derived"},
         {"labelAlias":"payee_name","column":"vendor_name_link","sortSourceColumn":"vendor_name","exportColumn":"vendor_name_export"},
-        {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","export":false},
+        {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"vendor_type","exportColumn":"is_sub_vendor"},
         {"labelAlias":"issue_date","column":"issue_date_formatted","sortSourceColumn":"check_eft_issued_date","headerClass":"issuedate","exportColumn":"issue_date_formatted"},
         {"labelAlias":"agency_name","column":"agency_name_link","sortSourceColumn":"agency_name"},
-//        //{"labelAlias":"dept_name","column":"dept_name_formatted","sortSourceColumn":"department_name"},
         {"labelAlias":"check_amount","column":"formatted_check_amount","sortSourceColumn":"check_amount","headerClass":"centrig"},
-//        //{"labelAlias":"expense_category","column":"expense_cat_formatted","sortSourceColumn":"expenditure_object_name"},
         {"labelAlias":"contract_id","column":"reference_document_number_link","sortSourceColumn":"reference_document_number","exportColumn":"reference_document_number_export"},
-        {"labelAlias":"sub_contract_reference_id","column":"sub_contract_id"},
+        {"labelAlias":"sub_contract_reference_id","column":"sub_contract_id","exportColumn":"sub_contract_id"},
         {"labelAlias":"contract_purpose","column":"contract_purpose_text","sortSourceColumn":"purpose","exportColumn":"contract_purpose_export"},
-//        //{"labelAlias":"capital_project","column":"reporting_code"},
         {"labelAlias":"spending_category","column":"spending_category_name"},
         {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name"}
     ],
@@ -301,22 +255,18 @@
         },
         "bInfo": true,
         "aoColumns":[
-//            {"sClass":"text","sWidth":"196px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"200px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"50px","bSortable": false,"asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"130px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"200px","asSorting":["asc","desc"]},
-//            //{"sClass":"text pad-left","sWidth":"200px","asSorting":["asc","desc"]},
             {"sClass":"number pad-left","sWidth":"135px","asSorting":["desc","asc"]},
-//            //{"sClass":"text pad-left","sWidth":"180px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"165px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"100px","bSortable": false,"asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"165px","asSorting":["asc","desc"]},
-//            //{"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]}
         ],
-        "aaSorting":[[4,"desc"]], //4--6
+        "aaSorting":[[4,"desc"]],
         "sScrollX": "100%",
 		"bScrollCollapse": false,
         "fnInitComplete": "##function () { new FixedColumns( oTable, {
