@@ -255,6 +255,7 @@
         var spendingCategories = getSearchFilterCriteria('fspendingCatName');
         var spendingMWBECategories = getSearchFilterCriteria('fspendingMWBE');
         var contractMWBECategories = getSearchFilterCriteria('fcontractMWBE');
+        var mwbeCategory = getSearchFilterCriteria('fmwbeCategory');
 
 
         var searchTerm = '';
@@ -294,6 +295,9 @@
         }
         if(revenueCategories){
             cUrl += "revenue_categories=" + encodeURIComponent(revenueCategories) + '*|*';
+        }
+        if(mwbeCategory) {
+            cUrl += "minority_type_name=" + encodeURIComponent(mwbeCategory) + '*|*';
         }
         if(domainNames){
             if(contractCategories){
