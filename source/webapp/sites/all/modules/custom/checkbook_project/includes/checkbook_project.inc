@@ -1479,7 +1479,7 @@ function _checkbook_max_data_year(){
 function _checkbook_append_url_params($source = null){
     $datasource = _getRequestParamValue('datasource');
     $mwbe = _getRequestParamValue('mwbe');
-    $subvendor = _getRequestParamValue('subvendor');
+    $svendor = _getRequestParamValue('subvendor');
 
     $url = "";
     if(isset($datasource)) {
@@ -1497,12 +1497,12 @@ function _checkbook_append_url_params($source = null){
                     $url = isset($mwbe) ? "/mwbe/".$mwbe : "";
                 }
                 if(!in_array("subvendor",$source)){
-                	$url = isset($subvendor) ? "/subvendor/".$subvendor : "";
+                	$url = isset($svendor) ? "/subvendor/".$svendor : "";
                 }
             }
             else {
                 $url = isset($mwbe) ? "/mwbe/".$mwbe : "";
-                $url .= isset($subvendor) ? "/subvendor/".$subvendor : "";
+                $url = isset($svendor) ? "/subvendor/".$svendor : "";
             }
         }
     }
