@@ -130,7 +130,7 @@ class SpendingUtil{
      * @return string
      */
     static function getSpendingFooterUrl($node){
-        return '/panel_html/spending_transactions/spending/transactions'
+        $url = '/panel_html/spending_transactions/spending/transactions'
         . _checkbook_project_get_url_param_string("vendor")
         . _checkbook_project_get_url_param_string("agency")
         . _checkbook_project_get_url_param_string("category")
@@ -138,6 +138,8 @@ class SpendingUtil{
         . '/dtsmnid/' . $node->nid
         . _checkbook_project_get_year_url_param_string(false,false,true)
         . _checkbook_append_url_params();
+
+        return $url;
     }
 
     /**

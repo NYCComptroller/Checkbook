@@ -1502,7 +1502,7 @@ function _checkbook_append_url_params($source = null){
             }
             else {
                 $url = isset($mwbe) ? "/mwbe/".$mwbe : "";
-                $url = isset($subvendor) ? "/subvendor/".$subvendor : "";
+                $url .= isset($subvendor) ? "/subvendor/".$subvendor : "";
             }
         }
     }
