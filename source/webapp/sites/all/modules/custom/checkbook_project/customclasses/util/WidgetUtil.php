@@ -186,6 +186,7 @@ class WidgetUtil
         "sub_contract_reference_id"=>"Sub Contract<br/>Reference ID",
         "mwbe_category"=>"M/WBE<br/>Category",
         "num_sub_vendors"=>"Number of<br/>Sub Vendors",
+        "num_sub_contracts"=>"Number of<br/>Sub Contracts",
         "ytd_spending_sub_vendors"=>"YTD Spending<br/>Sub Vendors",
         "ytd_spending_agency"=>"YTD Spending<br/>Agency",
         "sub_vendors_percent_paid"=>"% Paid<br/>Sub Vendors",
