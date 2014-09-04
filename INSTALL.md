@@ -326,7 +326,7 @@ Steps to install:
         postgres=# \q
           _(to exit from the database interactive prompt)_
         bash-4.1$ psql checkbook -f         data/checkbook_demo_database_for_postgres_db_20140708/checkbook_demo_database_for_postgres_db_20140708.sql
-        bash-4.1$ psql checkbook -f         data/checkbook_demo_database_for_postgres_ogent_db_20140708/checkbook_demo_database_for_postgres_ogent_db_20140708.sql
+        bash-4.1$ psql checkbook_ogent -f         data/checkbook_demo_database_for_postgres_ogent_db_20140708/checkbook_demo_database_for_postgres_ogent_db_20140708.sql
          bash-4.1$ exit
        
     
