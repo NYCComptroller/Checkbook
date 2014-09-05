@@ -1091,7 +1091,8 @@ function vendor_type_mapping($vendortype_initials){
     switch($vendortype_initials){
         case 's': return 'Sub Vendor';
         case 'sm': return 'M/WBE Vendor';
-        case 'pm': return 'Prime Vendor';
+        case 'pm':
+        case 'p' : return 'Prime Vendor';
     }
 
 }
