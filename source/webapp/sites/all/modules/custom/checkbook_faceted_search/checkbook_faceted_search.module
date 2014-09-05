@@ -413,11 +413,11 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
           }
 
             if (count($spendingMWBECategory) > 0) {
-
                 foreach ($spendingMWBECategory as $key => $value) {
                     foreach ($value as $spendingmwbe => $spendingmwbeCount) {
+                        $spendingmwbeValue = urlencode($spendingmwbe);
                         $checked = (in_array($spendingmwbe, array_values_recursive($reqSpendingMWBECategories[0]))) ? 'checked' : '';
-                        $subCat['spending']['M/WBE Category'][] = array($spendingmwbe, $spendingmwbe, $spendingmwbeCount, $checked);
+                        $subCat['spending']['M/WBE Category'][] = array($spendingmwbeValue, $spendingmwbe, $spendingmwbeCount, $checked);
                     }
                 }
                 $subCat['spending']['M/WBE Category']['name'] = 'fspendingMWBE';
@@ -449,8 +449,9 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
           if (count($contractMWBECategory) > 0) {
               foreach ($contractMWBECategory as $key => $value) {
                   foreach ($value as $contractmwbe => $contractmwbeCount) {
+                      $contractmwbeValue = urlencode($contractmwbe);
                       $checked = (in_array($contractmwbe, array_values_recursive($reqContractMWBECategories[0]))) ? 'checked' : '';
-                      $subCat['contracts']['M/WBE Category'][] = array($contractmwbe, $contractmwbe, $contractmwbeCount, $checked);
+                      $subCat['contracts']['M/WBE Category'][] = array($contractmwbeValue, $contractmwbe, $contractmwbeCount, $checked);
                   }
               }
               $subCat['contracts']['M/WBE Category']['name'] = 'fcontractMWBE';
@@ -610,7 +611,7 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
     if (count($MWBECategory) > 0) {
         foreach ($MWBECategory[0] as $MWBECategoryName => $count) {
             if ($count > 0) {
-                $checked = in_array($MWBECategoryName, array_values_recursive($reqMWBECategory[0]));
+                $checked = in_array($MWBECategoryName, array_values_recursive($reqVendorType[0]));
                 $MWBECategoryValue = urlencode($MWBECategoryName);
                 if ($checked) {
                     $output['M/WBE Category']['checked'][] = array($MWBECategoryValue, $MWBECategoryName, $count);
@@ -621,9 +622,9 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
             }
         }
         $output['M/WBE Category']['name'] = 'fmwbeCategory';
-        foreach($reqMWBECategory[0] as $key => $value){
+        foreach($reqVendorType[0] as $key => $value){
             if(!in_array($value['name'], array_values_recursive($output['M/WBE Category']['checked']))){
-                $output['M/WBE Category']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
+                $output['Vendor Type']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
             }
         }
     }
