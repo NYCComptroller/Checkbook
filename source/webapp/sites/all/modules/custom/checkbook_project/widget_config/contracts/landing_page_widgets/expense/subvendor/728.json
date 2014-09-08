@@ -9,6 +9,7 @@
                "csize":"award_size_id","cindustry":"industry_type_id","awdmethod":"award_method_id"},
 "dataset": "checkbook:subven_contracts_coa_aggregates",
 "noDataInitialLoad":true,
+ "enableExpand":true,
 "columns": ["total_contracts","industry.industry","industry.industry.industry_type_name","original_amount_sum","current_amount_sum","yeartype.yeartype","spending_amount_sum"],
 "adjustParameters":"
 $adjustedParameters = $parameters;
