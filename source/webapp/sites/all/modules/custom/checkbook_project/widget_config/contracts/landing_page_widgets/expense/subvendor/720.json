@@ -10,8 +10,7 @@
 "dataset": "checkbook:subven_contracts_coa_aggregates",
 "noDataInitialLoad":true,
 "columns": ["subvendor.subvendor","subvendor.subvendor.legal_name","minority_type.minority_type.minority_type_name","minority_type.minority_type",
-            "vendor.vendor","total_contracts","original_amount_sum","current_amount_sum",
-            "yeartype.yeartype","spending_amount_sum"],
+            "total_contracts","original_amount_sum","current_amount_sum","yeartype.yeartype","spending_amount_sum"],
 "adjustParameters":"
     $adjustedParameters = $parameters;
     if(function_exists('_checkbook_project_applyParameterFilters')){
