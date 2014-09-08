@@ -205,6 +205,7 @@ function _checkbook_smart_search_get_results_query_search_term($search_terms){
         $subQuery = substr($subQuery, 0, -8);
         $searchTerm .= "&fq="  . $subQuery;
     }
+
     return $searchTerm;
 }
 
@@ -1089,10 +1090,11 @@ function mwbe_category_mapping_by_name($category_name){
 
 function vendor_type_mapping($vendortype_initials){
     switch($vendortype_initials){
+        case 'p' : return 'Prime';
         case 's': return 'Sub Vendor';
         case 'sm': return 'M/WBE Vendor';
-        case 'pm':
-        case 'p' : return 'Prime Vendor';
+        case 'pm': return 'Prime Vendor';
+
     }
 
 }
