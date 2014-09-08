@@ -122,63 +122,52 @@ foreach ($render_array as $title => $value) {
     }
     echo '</div></div>';
   }
-  else{
-          $autocomplete_id = "autocomplete_" . $value['name'];
-          $disabled = ($value['checked'] && count($value['checked']) >= 5) ? "disabled" : '';
-          if($title != 'Vendor Type' && $title != 'M/WBE Category'){
-              echo '<div class="autocomplete"><input id="' . $autocomplete_id . '" ' . $disabled . ' type="text"></div>';
-          }
-          echo '<div class="checked-items">';
-          if ($value['checked']) {
-              foreach ($value['checked'] as $row) {
-                  echo '<div class="row">';
-                  echo '<div class="checkbox"><input type="checkbox" value="' . $row[0] . '" name="' . $value['name'] . '" checked="checked" onClick="javascript:applySearchFilters();"></div>';
-                  if($title == 'Vendor Type'){
-                      echo '<div class="name">' . htmlentities(vendor_type_mapping($row[1])) . '</div>';
-                  }
-                  else{
-                      echo '<div class="name">' . htmlentities($row[1]) . '</div>';
-                  }
-                  echo '<div class="number"><span class="active">' . number_format($row[2]) . '</span></div>';
-                  echo '</div>';
-              }
-          }
-          echo '</div>';
-          echo '<div class="options">';
-          echo '<div class="rows">';
-          if ($value['unchecked']) {
-              foreach ($value['unchecked'] as $row) {
-                  echo '<div class="row">';
-                  echo '<div class="checkbox"><input type="checkbox" value="' . $row[0] . '" ' . $disabled . ' name="' . $value['name'] . '" onClick="javascript:applySearchFilters();"></div>';
-                  if($title == 'Vendor Type'){
-                      echo '<div class="name">' . htmlentities(vendor_type_mapping($row[1])) . '</div>';
-                  }
-                  else{
-                      echo '<div class="name">' . htmlentities($row[1]) . '</div>';
-                  }
-                  echo '<div class="number"><span>' . htmlentities(number_format($row[2])) . '</span></div>';
-                  echo '</div>';
-              }
-          }
-          echo '</div>';
-          echo '</div>';
+  else {
+    $autocomplete_id = "autocomplete_" . $value['name'];
+    $disabled = ($value['checked'] && count($value['checked']) >= 5) ? "disabled" : '';
+    if($title != 'Vendor Type' && $title != 'M/WBE Category'){
+        echo '<div class="autocomplete"><input id="' . $autocomplete_id . '" ' . $disabled . ' type="text"></div>';
+    }
+    echo '<div class="checked-items">';
+    if ($value['checked']) {
+      foreach ($value['checked'] as $row) {
+        echo '<div class="row">';
+        echo '<div class="checkbox"><input type="checkbox" value="' . $row[0] . '" name="' . $value['name'] . '" checked="checked" onClick="javascript:applySearchFilters();"></div>';
+        if($title == 'Vendor Type'){
+            echo '<div class="name">' . htmlentities(vendor_type_mapping($row[1])) . '</div>';
+        }
+        else{
+            echo '<div class="name">' . htmlentities($row[1]) . '</div>';
+        }
+        echo '<div class="number"><span class="active">' . number_format($row[2]) . '</span></div>';
+        echo '</div>';
       }
+    }
+    echo '</div>';
+    echo '<div class="options">';
+    echo '<div class="rows">';
+    if ($value['unchecked']) {
+      foreach ($value['unchecked'] as $row) {
+        echo '<div class="row">';
+        echo '<div class="checkbox"><input type="checkbox" value="' . $row[0] . '" ' . $disabled . ' name="' . $value['name'] . '" onClick="javascript:applySearchFilters();"></div>';
+        if($title == 'Vendor Type'){
+            echo '<div class="name">' . htmlentities(vendor_type_mapping($row[1])) . '</div>';
+        }
+        else{
+            echo '<div class="name">' . htmlentities($row[1]) . '</div>';
+        }
+        echo '<div class="number"><span>' . htmlentities(number_format($row[2])) . '</span></div>';
+        echo '</div>';
+      }
+    }
+    echo '</div>';
+    echo '</div>';
+  }
   echo '</div></div>';
 }
   ?>
 </div>
 <script type="text/javascript">
-//jQuery('.filter-content-fmwbeCategory').hide();
-//var url = location.href;
-//var str1 = url.split('*|*');
-//if(str1.length > 1){
-//    for(var i=1; i < str1.length; i++){
-//        var str2 = str1[i].split('=');
-//        if(str2[0] == 'minority_type_name'){
-//            jQuery('.filter-content-fmwbeCategory').show();
-//        }
-//    }
-//}
 
 jQuery('.filter-title > .open').each(function(){
     jQuery('div.filter-content-fagencyName .options').mCustomScrollbar("destroy");
