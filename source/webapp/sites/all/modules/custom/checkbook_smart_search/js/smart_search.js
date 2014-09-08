@@ -257,12 +257,10 @@
         var contractMWBECategories = getSearchFilterCriteria('fcontractMWBE');
         var mwbeCategory = getSearchFilterCriteria('fmwbeCategory');
 
-
         var searchTerm = '';
         var cUrl = null;
 
         var qsParm = getQuerystringValues();
-
         if(!qsParm){
             searchTerm = ""
         }else if(qsParm["search_term"]){
