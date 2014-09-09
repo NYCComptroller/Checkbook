@@ -1090,11 +1090,10 @@ function mwbe_category_mapping_by_name($category_name){
 
 function vendor_type_mapping($vendortype_initials){
     switch($vendortype_initials){
-        case 'p' : return 'Prime';
+        case 'p' : return 'Prime Vendor';
         case 's': return 'Sub Vendor';
-        case 'sm': return 'M/WBE Vendor';
-        case 'pm': return 'Prime Vendor';
-
+        case 'sm': return 'Sub Vendor M/WBE';
+        case 'pm': return 'Prime Vendor M/WBE';
     }
 
 }
