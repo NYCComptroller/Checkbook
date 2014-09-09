@@ -116,7 +116,7 @@
         "bLengthChange": false,
         "bInfo": false,
         "bAutoWidth": false,
-        "aaSorting": [[4, "desc"]],
+        "aaSorting": [[2, "desc"]],
         "fnServerParams": "##function ( aoData ) {
                    reloadExpandCollapseWidget(this,aoData);
         }##",
