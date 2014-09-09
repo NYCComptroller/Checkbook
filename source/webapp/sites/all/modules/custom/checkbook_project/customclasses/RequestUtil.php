@@ -558,5 +558,30 @@ class RequestUtil{
       return $url;
     }
     
+
+    static function getLandingPageUrl($domain){
+    	$year = _getCurrentYearID();
+    	switch($domain){
+    		case "contracts":
+    			$path ="contracts_landing/status/A/yeartype/B/year/".$year;
+    			break;
+    		case "spending":
+    			$path ="spending_landing/yeartype/B/year/".$year;
+    			break;
+    		case "payroll":
+    			$path ="payroll/yeartype/B/year/".$year;
+    			break;
+    		case "budget":
+    			$path ="budget/yeartype/B/year/".$year;
+    			break;
+    		case "revenue":
+    			$path ="revenue/yeartype/B/year/".$year;
+    			break;
+    	}
+    
+    	return $path;
+    }
+    
+    
     
 }

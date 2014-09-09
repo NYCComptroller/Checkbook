@@ -173,7 +173,6 @@ function _checkbook_mwbe_agency_grading_getdata(){
     join {ref_agency} ra on ra.agency_id =  a1.agency_id
    ' . $where_filter . '
         group by  agency_name,a1.agency_id
-   		limit 50
     ';
 	
 	
