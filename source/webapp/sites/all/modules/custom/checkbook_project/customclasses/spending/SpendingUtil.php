@@ -454,6 +454,24 @@ class SpendingUtil{
     }
 
     /**
+     * Returns M/WBE Category Link Url
+     * @param $node
+     * @param $row
+     * @return string
+     */
+    static function getMWBECategoryLinkUrl($node, $row){
+        $url = '/spending_landing'
+            . _checkbook_project_get_year_url_param_string(false,false,false,true)
+            . _checkbook_project_get_url_param_string("agency")
+            . _checkbook_project_get_url_param_string("category")
+            . _checkbook_project_get_url_param_string("industry")
+            . '/mwbe/'. $row['minority_type_id']
+            . '/subvendor/'. $row['vendor_id']
+            . '?expandBottomCont=true';
+        return  $url;
+    }
+
+    /**
      * Returns percent paid to sub vendors defined as:
      * The sum of all checks issued to all sub vendors associated to each agency
      * within the selected fiscal year or calendar year divided by the sum of all checks
