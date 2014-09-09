@@ -73,9 +73,9 @@
             "type":"expression2",
             "expression": "SpendingUtil::getSubVendorsPercentPaid($row)"
         },
-        "ytd_spending_agency_link":{
+        "ytd_spending_agency_formatted":{
             "type":"expression2",
-            "expression": "'<a class=\"new_window\" href=\"' . SpendingUtil::getAgencyYtdSpendingUrl($node,$row) . '\">' . custom_number_formatter_format($row['check_amount_sum@checkbook:spending_data'],2,'$') . '</a>'"
+            "expression":"custom_number_formatter_format($row['check_amount_sum@checkbook:spending_data'],2,'$')"
         }
     },
     "summaryView":{
@@ -97,7 +97,7 @@
         {"labelAlias":"num_sub_vendors","column":"sub_vendor_count","sortSourceColumn":"sub_vendor_count"},
         {"labelAlias":"ytd_spending_sub_vendors","column":"ytd_spending_sub_vendors_link","sortSourceColumn":"ytd_spending_sub_vendors"},
         {"labelAlias":"sub_vendors_percent_paid","column":"sub_vendors_percent_paid_formatted","sortSourceColumn":"check_amount_sum_no_payroll_checkbook_spending_data"},
-        {"labelAlias":"ytd_spending_agency","column":"ytd_spending_agency_link","sortSourceColumn":"check_amount_sum_checkbook_spending_data"},
+        {"labelAlias":"ytd_spending_agency","column":"ytd_spending_agency_formatted","sortSourceColumn":"check_amount_sum_checkbook_spending_data"},
         {"label":"","column":""}
     ],
     "dataTableOptions":{
@@ -116,7 +116,7 @@
         "bLengthChange": false,
         "bInfo": false,
         "bAutoWidth": false,
-        "aaSorting": [[4, "desc"]],
+        "aaSorting": [[2, "desc"]],
         "fnServerParams": "##function ( aoData ) {
                    reloadExpandCollapseWidget(this,aoData);
         }##",

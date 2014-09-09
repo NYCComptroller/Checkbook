@@ -59,9 +59,13 @@
         return $footer;
     ",
     "derivedColumns": {
-            "mwbe_ethnicity": {
+            "mwbe_category_name": {
                 "type":"expression2",
                 "expression":"MappingUtil::getMinorityCategoryById($row[minority_type_minority_type])"
+            },
+            "mwbe_category_name_link": {
+                "type": "expression2",
+                "expression": " RequestUtil::isNewWindow() ? $row[mwbe_category_name]  : ('<a href=' . SpendingUtil::getMWBECategoryLinkUrl($node, $row) . '>'. $row[mwbe_category_name] .'</a>') "
             },
             "sub_vendor_name_formatted": {
                 "type":"expression2",
@@ -69,11 +73,11 @@
             },
             "sub_vendor_name_link": {
                 "type":"expression2",
-                "expression":"'<a href=\"' . SpendingUtil::getSubVendorNameLinkUrl($node,$row) . '\">' . $row[sub_vendor_name_formatted] . '</a>'"
+                "expression":"'<a href=\"' . SpendingUtil::getSubVendorNameLinkUrl($node,$row) . '\">' . $row['sub_vendor_name_formatted'] . '</a>'"
             },
             "sub_vendor_name_link2": {
                 "type":"expression2",
-                "expression":"($row[sub_vendor_sub_vendor] == null )?$row['sub_vendor_sub_vendor_legal_name']:$row[sub_vendor_name_link]"
+                "expression":"($row[sub_vendor_sub_vendor] == null )?$row['sub_vendor_sub_vendor_legal_name']:$row['sub_vendor_name_link']"
             },
             "prime_vendor_name_formatted": {
                 "type":"expression2",
@@ -100,7 +104,7 @@
     "table_columns": [
             {"labelAlias":"sub_vendor_name","column":"sub_vendor_name_link2","sortSourceColumn":"sub_vendor.sub_vendor"},
             {"labelAlias":"no_of_contracts","column":"total_sub_contracts","sortSourceColumn":"total_sub_contracts"},
-            {"labelAlias":"mwbe_ethnicity","column":"mwbe_ethnicity","sortSourceColumn":"minority_type.minority_type"},
+            {"labelAlias":"mwbe_category","column":"mwbe_category_name_link","sortSourceColumn":"minority_type.minority_type","exportColumn":"mwbe_category_name"},
             {"labelAlias":"prime_vendor","column":"prime_vendor_name_link2","sortSourceColumn":"prime_vendor.prime_vendor"},
             {"labelAlias":"ytd_spending_sub_vendors","column":"ytd_spending_sub_vendors_link","sortSourceColumn":"ytd_spending_sub_vendors"},
             {"label":"","column":""}

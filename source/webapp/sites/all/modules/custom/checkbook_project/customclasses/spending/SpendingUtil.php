@@ -21,7 +21,7 @@
 
 class SpendingUtil{
 
-    static $landingPageParams = array("agency"=>"agency","vendor"=>"vendor","category"=>"category");
+    static $landingPageParams = array("agency"=>"agency","vendor"=>"vendor","subvendor"=>"subvendor","category"=>"category","industry"=>"industry","mwbe"=>"mwbe");
 
     static function getSpendingCategoryDetails($categoryId, $columns=array('spending_category_id','display_name')){
         if(!isset($categoryId)){
@@ -168,16 +168,8 @@ class SpendingUtil{
      * @return string
      */
     static function getAgencyNameLinkUrl($node, $row){
-        //agency_name_link
-        $url = '/spending_landing'
-            . _checkbook_project_get_url_param_string("vendor")
-            . _checkbook_project_get_url_param_string("category")
-            . _checkbook_project_get_url_param_string("industry")
-            . _checkbook_project_get_year_url_param_string()
-            . _checkbook_append_url_params()
-            . '/agency/' . (isset($row["agency_id"]) ? $row["agency_id"] : $row["agency_agency"]);
-
-        return $url;
+        $custom_params = array('agency'=>(isset($row["agency_id"]) ? $row["agency_id"] : $row["agency_agency"]));
+        return self::getLandingPageWidgetUrl($custom_params);
     }
 
     /**
@@ -207,14 +199,8 @@ class SpendingUtil{
      * @return string
      */
     static function getVendorNameLinkUrl($node, $row){
-        //vendor_name_link
-        return '/spending_landing'
-        . _checkbook_project_get_url_param_string("agency")
-        . _checkbook_project_get_url_param_string("category")
-        . _checkbook_project_get_url_param_string("industry")
-        . _checkbook_project_get_year_url_param_string()
-        . _checkbook_append_url_params()
-        . '/vendor/' . (isset($row["vendor_id"]) ? $row["vendor_id"] : $row["vendor_vendor"]);
+        $custom_params = array('vendor'=>(isset($row["vendor_id"]) ? $row["vendor_id"] : $row["vendor_vendor"]));
+        return self::getLandingPageWidgetUrl($custom_params);
     }
 
     /**
@@ -225,14 +211,8 @@ class SpendingUtil{
      * @return string
      */
     static function getSubVendorNameLinkUrl($node, $row){
-        //vendor_name_link
-        return '/spending_landing'
-        . _checkbook_project_get_url_param_string("agency")
-        . _checkbook_project_get_url_param_string("category")
-        . _checkbook_project_get_url_param_string("industry")
-        . _checkbook_project_get_year_url_param_string()
-        . _checkbook_project_get_url_param_string("mwbe")
-        . '/subvendor/' . $row["sub_vendor_sub_vendor"];
+        $custom_params = array('subvendor'=>$row['sub_vendor_sub_vendor']);
+        return self::getLandingPageWidgetUrl($custom_params);
     }
 
     /**
@@ -243,14 +223,8 @@ class SpendingUtil{
      * @return string
      */
     static function getPrimeVendorNameLinkUrl($node, $row){
-        //vendor_name_link
-        return '/spending_landing'
-        . _checkbook_project_get_url_param_string("agency")
-        . _checkbook_project_get_url_param_string("category")
-        . _checkbook_project_get_url_param_string("industry")
-        . _checkbook_project_get_year_url_param_string()
-        . _checkbook_append_url_params()
-        . '/vendor/' . (isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["prime_vendor_prime_vendor"]);
+        $custom_params = array('vendor'=>(isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["prime_vendor_prime_vendor"]));
+        return self::getLandingPageWidgetUrl($custom_params);
     }
 
     /**
@@ -364,14 +338,8 @@ class SpendingUtil{
      * @return string
      */
     static function getIndustryNameLinkUrl($node, $row){
-        //industry_name_link
-        return '/spending_landing'
-        . _checkbook_project_get_url_param_string("agency")
-        . _checkbook_project_get_url_param_string("vendor")
-        . _checkbook_project_get_url_param_string("category")
-        . _checkbook_project_get_year_url_param_string()
-        . _checkbook_append_url_params()
-        . '/industry/'. $row['industry_industry_industry_type_id'];
+        $custom_params = array('industry'=>$row['industry_industry_industry_type_id']);
+        return self::getLandingPageWidgetUrl($custom_params);
     }
 
     /**
@@ -451,6 +419,58 @@ class SpendingUtil{
             . ($row['is_sub_vendor'] ? ('/subvendor/'. $row['vendor_id']) : ('/vendor/'. $row['vendor_id']) )
             . '?expandBottomCont=true';
         return  $url;
+    }
+
+    /**
+     * Returns M/WBE Category Link Url
+     * @param $node
+     * @param $row
+     * @return string
+     */
+    static function getMWBECategoryLinkUrl($node, $row){
+        $url = '/spending_landing'
+            . _checkbook_project_get_year_url_param_string(false,false,false,true)
+            . _checkbook_project_get_url_param_string("agency")
+            . _checkbook_project_get_url_param_string("category")
+            . _checkbook_project_get_url_param_string("industry")
+            . '/mwbe/'. $row['minority_type_id']
+            . '/subvendor/'. $row['vendor_id']
+            . '?expandBottomCont=true';
+        return  $url;
+    }
+
+    /**
+     *  Returns a spending landing page Url with custom parameters appended but instead of persisted
+     *
+     * @param array $custom_params
+     * @return string
+     */
+    static function getLandingPageWidgetUrl($custom_params = array()){
+
+        $path = '/spending_landing';
+        $url =  $path . _checkbook_project_get_year_url_param_string();
+
+        $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
+        $url_params = self::$landingPageParams;
+        $exclude_params = array_keys($custom_params);
+        if(is_array($url_params)){
+            foreach($url_params as $key => $value){
+                if(!in_array($key,$exclude_params)){
+                    $url .=  CustomURLHelper::get_url_param($pathParams,$key,$value);
+                }
+            }
+        }
+
+        if(is_array($custom_params)){
+            foreach($custom_params as $key => $value){
+                $url .= "/$key";
+                if(isset($value)){
+                    $url .= "/$value";
+                }
+            }
+        }
+
+        return $url;
     }
 
     /**

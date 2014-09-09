@@ -10,8 +10,8 @@
         "html_class":"chart-grid-view-table two-columns",
         "table_columns": [
             {
-                "labelAlias": "sub_vendor",
-                "column": "sub_vendor.sub_vendor.legal_name"
+                "labelAlias": "sub_vendor_name",
+                "column": "sub_vendor_sub_vendor_legal_name"
             },
             {
                 "labelAlias": "amount",
