@@ -4,6 +4,7 @@
     "cleanURLParameters":[
         "agency",
         "vendor",
+        "subvendor",
         "category",
         "year",
         "yeartype",
