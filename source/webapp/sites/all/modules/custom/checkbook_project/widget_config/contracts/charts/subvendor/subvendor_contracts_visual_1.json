@@ -32,8 +32,8 @@
 },
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B"},
-"cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe","svendor"],
-"urlParamMap":{"svendor":"vendor_id","mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"prime_vendor_id",
+"cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe","subvendor"],
+"urlParamMap":{"subvendor":"vendor_id","mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"prime_vendor_id",
 	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
 "widgetDataLoader":"
     
