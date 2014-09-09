@@ -137,12 +137,12 @@ return $footer;
 ],
 "dataTableOptions":{
 "aoColumns": [
-{ "bSortable": false, "sWidth":"250px", "sClass":"text" },
-{"sClass":"number","sWidth":"200px","asSorting": [ "desc","asc"  ] },
-{"sClass":"number pad-left","sWidth":"200px" ,"asSorting": [ "desc","asc"  ] },
-{"sClass":"number","sWidth":"200px" ,"asSorting": [ "desc","asc"  ] },
-{"sClass":"number","sWidth":"200px" ,"asSorting": [ "desc","asc"  ] },
-{"sClass":"number","sWidth":"200px" ,"asSorting": [ "desc" ,"asc" ]},
+{ "bSortable": false, "sWidth":"350px", "sClass":"text" },
+{"sClass":"number","sWidth":"280px","asSorting": [ "desc","asc"  ] },
+{"sClass":"text pad-left","sWidth":"150px" ,"asSorting": [ "desc","asc"  ] },
+{"sClass":"number","sWidth":"220px" ,"asSorting": [ "desc","asc"  ] },
+{"sClass":"number","sWidth":"220px" ,"asSorting": [ "desc","asc"  ] },
+{"sClass":"number","sWidth":"220px" ,"asSorting": [ "desc" ,"asc" ]},
 { "bSortable": false,"sWidth":"20px" }
 ] ,
 "bServerSide": true,
