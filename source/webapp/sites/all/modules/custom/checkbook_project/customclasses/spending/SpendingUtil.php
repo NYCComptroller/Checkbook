@@ -428,15 +428,11 @@ class SpendingUtil{
      * @return string
      */
     static function getMWBECategoryLinkUrl($node, $row){
-        $url = '/spending_landing'
-            . _checkbook_project_get_year_url_param_string(false,false,false,true)
-            . _checkbook_project_get_url_param_string("agency")
-            . _checkbook_project_get_url_param_string("category")
-            . _checkbook_project_get_url_param_string("industry")
-            . '/mwbe/'. $row['minority_type_id']
-            . '/subvendor/'. $row['vendor_id']
-            . '?expandBottomCont=true';
-        return  $url;
+        $custom_params = array(
+            'mwbe'=>(isset($row["minority_type_id"]) ? $row["minority_type_id"] : $row["minority_type_minority_type"]),
+            'subvendor'=>(isset($row["vendor_id"]) ? $row["vendor_id"] : $row["sub_vendor_sub_vendor"])
+        );
+        return self::getLandingPageWidgetUrl($custom_params) . '?expandBottomCont=true';
     }
 
     /**
