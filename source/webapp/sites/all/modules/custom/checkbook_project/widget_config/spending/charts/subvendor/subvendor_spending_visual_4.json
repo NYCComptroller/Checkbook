@@ -11,7 +11,7 @@
         "table_columns": [
             {
                 "labelAlias": "prime_vendor",
-                "column": "prime_vendor.prime_vendor.legal_name"
+                "column": "prime_vendor_prime_vendor_legal_name"
             },
             {
                 "labelAlias": "amount",
