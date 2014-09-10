@@ -369,14 +369,8 @@ class SpendingUtil{
      * @return string
      */
     static function getSubVendorYtdSpendingUrl($node, $row){
-        //ytd_spending_sub_vendors_link
-        return '/panel_html/spending_transactions/spending/transactions'
-        . _checkbook_project_get_url_param_string("agency")
-        . _checkbook_project_get_url_param_string("category")
-        . _checkbook_project_get_url_param_string("industry")
-        . _checkbook_project_get_year_url_param_string(false,false,true)
-        . '/smnid/' . $node->nid
-        . _checkbook_append_url_params();
+        $custom_params = array('agency'=>$row['agency_agency']);
+        return '/' . self::getSpendingTransactionPageUrl($custom_params). '/smnid/' . $node->nid;
     }
     /**
      * Returns Agency YTD Spending Link Url based on values from current path & data row.
@@ -444,6 +438,40 @@ class SpendingUtil{
     static function getLandingPageWidgetUrl($custom_params = array()){
 
         $path = 'spending_landing';
+        $url =  $path . _checkbook_project_get_year_url_param_string();
+
+        $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
+        $url_params = self::$landingPageParams;
+        $exclude_params = array_keys($custom_params);
+        if(is_array($url_params)){
+            foreach($url_params as $key => $value){
+                if(!in_array($key,$exclude_params)){
+                    $url .=  CustomURLHelper::get_url_param($pathParams,$key,$value);
+                }
+            }
+        }
+
+        if(is_array($custom_params)){
+            foreach($custom_params as $key => $value){
+                $url .= "/$key";
+                if(isset($value)){
+                    $url .= "/$value";
+                }
+            }
+        }
+
+        return $url;
+    }
+
+    /**
+     *  Returns a spending transaction page Url with custom parameters appended but instead of persisted
+     *
+     * @param array $custom_params
+     * @return string
+     */
+    static function getSpendingTransactionPageUrl($custom_params = array()){
+
+        $path = 'panel_html/spending_transactions/spending/transactions';
         $url =  $path . _checkbook_project_get_year_url_param_string();
 
         $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
