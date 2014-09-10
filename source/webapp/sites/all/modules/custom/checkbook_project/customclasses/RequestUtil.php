@@ -18,6 +18,8 @@
 * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+require_once(realpath(drupal_get_path('module', 'checkbook_project')) .'/customclasses/constants/Constants.php');
+
 class RequestUtil{
 
     //Links for landing pages. This can be avoided if ajax requests can be identified uniquely.
@@ -241,27 +243,58 @@ class RequestUtil{
     }
 
     /**
-     * Returns Spending visualization title based on 'category'/'featured dashboard' values from current path.
+     * Returns chart title based on 'category'/'featured dashboard'/'domain' for sub vendor
+     * using values from current path.
      *
-     * @param array $minority_type_id
+     * @param string $domain
      * @param string $defaultTitle
+     * @param string $vendor_type
      * @return string
      */
-    static function getSpendingVisualizationTitle($minority_type_id, $defaultTitle = 'Total Spending'){
+    static function getSubVendorChartTitle($domain,$defaultTitle = 'Total Spending') {
         $title = '';
 
-        if($minority_type_id != null) {
-            $minority_category = MappingUtil::getMinorityCategoryById($minority_type_id);
-            if(_checkbook_check_is_sub_vendor_ethnicity_page()) {
-                $title = $minority_category . ' ';
-            }
-            else if(_checkbook_check_is_sub_vendor_level_page()) {
-                $title = '<p class="sub-chart-title">M/WBE Category: '.$minority_category.'</p>';
-            }
+        if(_checkbook_check_is_sub_vendor_ethnicity_page()) {
+            $title = MappingUtil::getCurrenEhtnicityName() . ' ';
         }
-
+        else if(_checkbook_check_is_sub_vendor_level_page()) {
+            $minority_category = self::getLatestMinorityCategory($domain,VendorType::$SUB_VENDOR);
+            $title = '<p class="sub-chart-title">M/WBE Category: '.$minority_category.'</p>';
+        }
         $title .= RequestUtil::getSpendingCategoryName($defaultTitle);
         return html_entity_decode($title);
+    }
+
+    /**
+     * returns the latest minority category by domain, vendor type and the selected year.
+     *
+     * @param $domain
+     * @param $vendor_type
+     * @return mixed
+     */
+    static function getLatestMinorityCategory($domain,$vendor_type){
+        $sub_vendor_id = _getRequestParamValue('subvendor');
+        $year_id = _getRequestParamValue('year');
+        $type_of_year = _getRequestParamValue('yeartype');
+
+        if(empty($year_id)) $year_id = _getRequestParamValue('calyear');
+        if(empty($type_of_year)) $type_of_year = 'B';
+        if(empty($year_id)) $year_id = _getCurrentYearID();
+
+        $data_set = "";
+        switch($domain) {
+            case Domain::$SPENDING:
+                $data_set = "checkbook:spending_vendor_latest_mwbe_category";
+                break;
+            case Domain::$CONTRACTS:
+                $data_set = "checkbook:contract_vendor_latest_mwbe_category";
+                break;
+        }
+        $minority_types = _checkbook_project_querydataset($data_set,array('minority_type_id'),array('vendor_id'=>$sub_vendor_id,'year_id'=>$year_id,'type_of_year'=>$type_of_year));
+        $minority_type_id = $minority_types[0]['minority_type_id'];
+        $minority_category = MappingUtil::getMinorityCategoryById($minority_type_id);
+
+        return $minority_category;
     }
 
     /** Returns Spending page title and Breadcrumb */
