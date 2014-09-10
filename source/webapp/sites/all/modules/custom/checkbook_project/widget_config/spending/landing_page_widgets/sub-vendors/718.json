@@ -91,7 +91,7 @@
         }
     },
     "summaryView":{
-        "template":"spending_contract_summary",
+        "template":"spending_sub_contract_summary",
         "templateTitleEval":"
             $catName = RequestUtil::getSpendingCategoryName();
             $title = _checkbook_check_is_sub_vendor_page() ? 'Sub Vendors ' : '';
