@@ -169,7 +169,7 @@ class SpendingUtil{
      */
     static function getAgencyNameLinkUrl($node, $row){
         $custom_params = array('agency'=>(isset($row["agency_id"]) ? $row["agency_id"] : $row["agency_agency"]));
-        return self::getLandingPageWidgetUrl($custom_params);
+        return '/' . self::getLandingPageWidgetUrl($custom_params);
     }
 
     /**
@@ -200,7 +200,7 @@ class SpendingUtil{
      */
     static function getVendorNameLinkUrl($node, $row){
         $custom_params = array('vendor'=>(isset($row["vendor_id"]) ? $row["vendor_id"] : $row["vendor_vendor"]));
-        return self::getLandingPageWidgetUrl($custom_params);
+        return '/' . self::getLandingPageWidgetUrl($custom_params);
     }
 
     /**
@@ -212,7 +212,7 @@ class SpendingUtil{
      */
     static function getSubVendorNameLinkUrl($node, $row){
         $custom_params = array('subvendor'=>$row['sub_vendor_sub_vendor']);
-        return self::getLandingPageWidgetUrl($custom_params);
+        return '/' . self::getLandingPageWidgetUrl($custom_params);
     }
 
     /**
@@ -224,7 +224,7 @@ class SpendingUtil{
      */
     static function getPrimeVendorNameLinkUrl($node, $row){
         $custom_params = array('vendor'=>(isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["prime_vendor_prime_vendor"]));
-        return self::getLandingPageWidgetUrl($custom_params);
+        return '/' . self::getLandingPageWidgetUrl($custom_params);
     }
 
     /**
@@ -339,7 +339,7 @@ class SpendingUtil{
      */
     static function getIndustryNameLinkUrl($node, $row){
         $custom_params = array('industry'=>$row['industry_industry_industry_type_id']);
-        return self::getLandingPageWidgetUrl($custom_params);
+        return '/' . self::getLandingPageWidgetUrl($custom_params);
     }
 
     /**
@@ -432,7 +432,7 @@ class SpendingUtil{
             'mwbe'=>(isset($row["minority_type_id"]) ? $row["minority_type_id"] : $row["minority_type_minority_type"]),
             'subvendor'=>(isset($row["vendor_id"]) ? $row["vendor_id"] : $row["sub_vendor_sub_vendor"])
         );
-        return self::getLandingPageWidgetUrl($custom_params) . '?expandBottomCont=true';
+        return '/' . self::getLandingPageWidgetUrl($custom_params) . '?expandBottomCont=true';
     }
 
     /**
@@ -443,7 +443,7 @@ class SpendingUtil{
      */
     static function getLandingPageWidgetUrl($custom_params = array()){
 
-        $path = '/spending_landing';
+        $path = 'spending_landing';
         $url =  $path . _checkbook_project_get_year_url_param_string();
 
         $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
