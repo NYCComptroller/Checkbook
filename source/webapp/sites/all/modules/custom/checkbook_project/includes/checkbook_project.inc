@@ -503,6 +503,11 @@ function _checkbook_project_get_name_for_argument($keyword,$id){
             $agencies = _checkbook_project_querydataset('checkbook:ref_document_code',array('document_code','document_code_id'),array($keyword=>$id));
             return htmlentities(ucwords(strtolower($agencies[0]['document_code_id'])));
             break;
+        case "sub_vendor_id":
+            $keyword = "vendor_id";
+            $sub_vendors = _checkbook_project_querydataset('checkbook:sub_vendor',array('vendor_id','legal_name'),array($keyword=>$id));
+            return htmlentities(ucwords(strtolower($sub_vendors[0]['legal_name'])));
+            break;
 
 		default:
 			return $id;
@@ -1528,6 +1533,26 @@ function _checkbook_check_is_sub_vendor_page() {
     return preg_match('"/subvendor"',$_GET['q']);
 }
 
+/**
+ * Returns Boolean describing if this is a "Sub Vendor Level" page (sub vendor page for a particular sub vendor)
+ *
+ * "subvendor/all" -> returns false,
+ * "subvendor/{sub_vendor_id}" -> returns true,
+ *
+ * @return int
+ */
+function _checkbook_check_is_sub_vendor_level_page() {
+    return _checkbook_check_is_sub_vendor_page() && _getRequestParamValue("subvendor") != "all";
+}
+
+/**
+ * Returns Boolean describing if this is a "Sub Vendor Ethnicity Page"
+ *
+ * @return int
+ */
+function _checkbook_check_is_sub_vendor_ethnicity_page() {
+    return _checkbook_check_is_sub_vendor_page() && _checkbook_check_is_mwbe_page();
+}
 
 function _checkbook_is_oge_contract($cont_num){	
 	$rows = _checkbook_project_querydataset('checkbook_oge:oge_contract',array('fms_contract_number'),array('fms_contract_number'=>$cont_num));
