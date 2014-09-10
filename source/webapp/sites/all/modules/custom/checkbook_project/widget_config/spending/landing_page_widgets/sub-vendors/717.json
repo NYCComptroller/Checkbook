@@ -3,13 +3,14 @@
     "widgetSubType":"ajaxSimple",
     "no_results_content":"No Results Found",
     "defaultParameters":{"type_of_year":"B","spending_category_id":""},
-    "cleanURLParameters":["year","agency","yeartype","calyear","vendor","category","mwbe","industry"],
+    "cleanURLParameters":["year","agency","vendor","subvendor","yeartype","calyear","vendor","category","mwbe","industry"],
     "urlParamMap":{
         "year":"year_id",
         "agency":"agency.agency",
         "yeartype":"type_of_year",
         "calyear":"year_id",
         "vendor":"prime_vendor.prime_vendor",
+        "subvendor":"sub_vendor.sub_vendor",
         "category":"spending_category_id",
         "mwbe":"minority_type_id",
         "industry":"industry_type_id"
