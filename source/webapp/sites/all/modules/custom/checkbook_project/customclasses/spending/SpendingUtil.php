@@ -369,7 +369,13 @@ class SpendingUtil{
      * @return string
      */
     static function getSubVendorYtdSpendingUrl($node, $row){
-        $custom_params = array('agency'=>$row['agency_agency']);
+        $custom_params = null;
+
+        if(isset($row['agency_agency']))
+            $custom_params = array('agency'=>$row['agency_agency']);
+        else if(isset($row['sub_vendor_sub_vendor']))
+            $custom_params = array('subvendor'=>$row['sub_vendor_sub_vendor']);
+
         return '/' . self::getSpendingTransactionPageUrl($custom_params). '/smnid/' . $node->nid;
     }
     /**
