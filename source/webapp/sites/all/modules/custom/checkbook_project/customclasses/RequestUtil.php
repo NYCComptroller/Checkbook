@@ -240,6 +240,30 @@ class RequestUtil{
         return $defaultName;
     }
 
+    /**
+     * Returns Spending visualization title based on 'category'/'featured dashboard' values from current path.
+     *
+     * @param array $minority_type_id
+     * @param string $defaultTitle
+     * @return string
+     */
+    static function getSpendingVisualizationTitle($minority_type_id, $defaultTitle = 'Total Spending'){
+        $title = '';
+
+        if($minority_type_id != null) {
+            $minority_category = MappingUtil::getMinorityCategoryById($minority_type_id);
+            if(_checkbook_check_is_sub_vendor_ethnicity_page()) {
+                $title = $minority_category . ' ';
+            }
+            else if(_checkbook_check_is_sub_vendor_level_page()) {
+                $title = '<p class="sub-chart-title">M/WBE Category: '.$minority_category.'</p>';
+            }
+        }
+
+        $title .= RequestUtil::getSpendingCategoryName($defaultTitle);
+        return html_entity_decode($title);
+    }
+
     /** Returns Spending page title and Breadcrumb */
     static function getSpendingBreadcrumbTitle(){
       $bottomURL = $_REQUEST['expandBottomContURL'];

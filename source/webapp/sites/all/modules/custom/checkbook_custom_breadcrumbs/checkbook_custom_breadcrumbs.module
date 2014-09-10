@@ -117,7 +117,7 @@ function _get_contracts_breadcrumb_title_drilldown(){
 
 
 /**
- * Custom function to get title for contracts landing pages
+ * Custom function to get title for spending landing pages
  **/
 function _get_spending_breadcrumb_title_drilldown(){
 
@@ -134,6 +134,10 @@ function _get_spending_breadcrumb_title_drilldown(){
                 break;
             case 'industry':
                 $title = _checkbook_project_get_name_for_argument("industry_type_id",$value);
+                break;
+            case 'subvendor':
+                if($value != 'all')
+                    $title = _checkbook_project_get_name_for_argument("sub_vendor_id",$value);
                 break;
             default:
     }
