@@ -108,7 +108,7 @@
             {"labelAlias":"no_of_contracts","column":"total_sub_contracts","sortSourceColumn":"total_sub_contracts"},
             {"labelAlias":"mwbe_category","column":"mwbe_category_name_link","sortSourceColumn":"minority_type.minority_type","exportColumn":"mwbe_category_name"},
             {"labelAlias":"prime_vendor","column":"prime_vendor_name_link2","sortSourceColumn":"prime_vendor.prime_vendor"},
-            {"labelAlias":"ytd_spending_sub_vendors","column":"ytd_spending_sub_vendors_link","sortSourceColumn":"ytd_spending_sub_vendors"},
+            {"labelAlias":"ytd_spending","column":"ytd_spending_sub_vendors_link","sortSourceColumn":"ytd_spending_sub_vendors"},
             {"label":"","column":""}
     ],
     "dataTableOptions":{
