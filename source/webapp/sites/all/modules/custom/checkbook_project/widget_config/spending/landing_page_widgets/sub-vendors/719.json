@@ -4,6 +4,7 @@
     "cleanURLParameters":[
         "agency",
         "vendor",
+        "subvendor",
         "category",
         "year",
         "yeartype",
@@ -16,6 +17,7 @@
     "urlParamMap":{
         "agency":"agency_id",
         "vendor":"prime_vendor.prime_vendor",
+        "subvendor":"sub_vendor.sub_vendor",
         "category":"spending_category_id",
         "year":"year_id",
         "yeartype":"type_of_year",
@@ -36,7 +38,8 @@
         "prime_vendor.prime_vendor.legal_name",
         "minority_type.minority_type",
         "total_sub_contracts",
-        "ytd_spending_sub_vendors"
+        "ytd_spending_sub_vendors",
+        "check_amount_sum"
     ],
     "enableExpand":true,
     "disableViewAll":true,
@@ -59,9 +62,13 @@
         return $footer;
     ",
     "derivedColumns": {
-            "mwbe_ethnicity": {
+            "mwbe_category_name": {
                 "type":"expression2",
                 "expression":"MappingUtil::getMinorityCategoryById($row[minority_type_minority_type])"
+            },
+            "mwbe_category_name_link": {
+                "type": "expression2",
+                "expression": " RequestUtil::isNewWindow() ? $row[mwbe_category_name]  : ('<a href=' . SpendingUtil::getMWBECategoryLinkUrl($node, $row) . '>'. $row[mwbe_category_name] .'</a>') "
             },
             "sub_vendor_name_formatted": {
                 "type":"expression2",
@@ -90,19 +97,29 @@
             "ytd_spending_sub_vendors_link":{
                 "type":"expression2",
                 "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getSubVendorYtdSpendingUrl($node,$row) . '\">' . custom_number_formatter_format($row['ytd_spending_sub_vendors'],2,'$') . '</a>'"
+            },
+            "formatted_check_amount_sum": {
+                "type": "expression2",
+                "expression": "custom_number_formatter_format($row['check_amount_sum'],2,'$')"
             }
     },
     "WidgetTitleEval":"
         $catName = RequestUtil::getSpendingCategoryName();
-        $title = _checkbook_check_is_sub_vendor_page() ? 'Sub Vendors ' : '';
-        return ($title . 'Checks ' . $catName . ' Transactions');
+        return ('Sub Vendors ' . $catName . ' Transactions');
     ",
+    "summaryView":{
+        "template":"spending_sub_vendor_summary",
+        "templateTitleEval":"
+        $catName = RequestUtil::getSpendingCategoryName();
+        return ('Sub Vendors ' . $catName . ' Transactions');
+    "
+    },
     "table_columns": [
             {"labelAlias":"sub_vendor_name","column":"sub_vendor_name_link2","sortSourceColumn":"sub_vendor.sub_vendor"},
             {"labelAlias":"no_of_contracts","column":"total_sub_contracts","sortSourceColumn":"total_sub_contracts"},
-            {"labelAlias":"mwbe_ethnicity","column":"mwbe_ethnicity","sortSourceColumn":"minority_type.minority_type"},
+            {"labelAlias":"mwbe_category","column":"mwbe_category_name_link","sortSourceColumn":"minority_type.minority_type","exportColumn":"mwbe_category_name"},
             {"labelAlias":"prime_vendor","column":"prime_vendor_name_link2","sortSourceColumn":"prime_vendor.prime_vendor"},
-            {"labelAlias":"ytd_spending_sub_vendors","column":"ytd_spending_sub_vendors_link","sortSourceColumn":"ytd_spending_sub_vendors"},
+            {"labelAlias":"ytd_spending","column":"ytd_spending_sub_vendors_link","sortSourceColumn":"ytd_spending_sub_vendors"},
             {"label":"","column":""}
     ],
     "dataTableOptions":{

@@ -83,6 +83,9 @@ h2.chart-title {
     text-align: center;
     margin-top:11px;
 }
+p.sub-chart-title {
+    color: #000000;
+ }
 h3 {
     color: #3C5E7C;
     font-size:20px;

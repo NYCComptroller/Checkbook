@@ -338,12 +338,12 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
           case 'contract_status':
             $reqContStatus[] = $value;
             break;
-          case 'contract_minority':
-            $reqContractMWBECategories[] = $value;
-            break;
-          case 'spending_minority':
-            $reqSpendingMWBECategories[] = $value;
-            break;
+//          case 'contract_minority':
+//            $reqContractMWBECategories[] = $value;
+//            break;
+//          case 'spending_minority':
+//            $reqSpendingMWBECategories[] = $value;
+//            break;
           case 'mwbe_category':
             $reqMWBECategory[] = $value;
             break;
@@ -384,12 +384,12 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
       case 'contract_status':
         $contractStatus[] = $value[$key];
         break;
-      case 'contract_minority':
-        $contractMWBECategory[] = $value['minority_type_name_contract'];
-        break;
-      case 'spending_minority':
-        $spendingMWBECategory[] = $value['minority_type_name_spending'];
-        break;
+//      case 'contract_minority':
+//        $contractMWBECategory[] = $value['minority_type_name_contract'];
+//        break;
+//      case 'spending_minority':
+//        $spendingMWBECategory[] = $value['minority_type_name_spending'];
+//        break;
       case 'mwbe_category':
         $MWBECategory[] = $value['minority_type_name'];
         break;
@@ -412,16 +412,16 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
             $subCat['spending']['Spending Category']['name'] = 'fspendingCatName';
           }
 
-            if (count($spendingMWBECategory) > 0) {
-                foreach ($spendingMWBECategory as $key => $value) {
-                    foreach ($value as $spendingmwbe => $spendingmwbeCount) {
-                        $spendingmwbeValue = urlencode($spendingmwbe);
-                        $checked = (in_array($spendingmwbe, array_values_recursive($reqSpendingMWBECategories[0]))) ? 'checked' : '';
-                        $subCat['spending']['M/WBE Category'][] = array($spendingmwbeValue, $spendingmwbe, $spendingmwbeCount, $checked);
-                    }
-                }
-                $subCat['spending']['M/WBE Category']['name'] = 'fspendingMWBE';
-            }
+//            if (count($spendingMWBECategory) > 0) {
+//                foreach ($spendingMWBECategory as $key => $value) {
+//                    foreach ($value as $spendingmwbe => $spendingmwbeCount) {
+//                        $spendingmwbeValue = urlencode($spendingmwbe);
+//                        $checked = (in_array($spendingmwbe, array_values_recursive($reqSpendingMWBECategories[0]))) ? 'checked' : '';
+//                        $subCat['spending']['M/WBE Category'][] = array($spendingmwbeValue, $spendingmwbe, $spendingmwbeCount, $checked);
+//                    }
+//                }
+//                $subCat['spending']['M/WBE Category']['name'] = 'fspendingMWBE';
+//            }
         }
         if ($domainName == 'contracts' && $checked == 'checked') {
           if (count($contractCategory[0]) > 0) {
@@ -446,16 +446,16 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
             $subCat['contracts']['Status']['name'] = 'fcontractStatus';
           }
 
-          if (count($contractMWBECategory) > 0) {
-              foreach ($contractMWBECategory as $key => $value) {
-                  foreach ($value as $contractmwbe => $contractmwbeCount) {
-                      $contractmwbeValue = urlencode($contractmwbe);
-                      $checked = (in_array($contractmwbe, array_values_recursive($reqContractMWBECategories[0]))) ? 'checked' : '';
-                      $subCat['contracts']['M/WBE Category'][] = array($contractmwbeValue, $contractmwbe, $contractmwbeCount, $checked);
-                  }
-              }
-              $subCat['contracts']['M/WBE Category']['name'] = 'fcontractMWBE';
-          }
+//          if (count($contractMWBECategory) > 0) {
+//              foreach ($contractMWBECategory as $key => $value) {
+//                  foreach ($value as $contractmwbe => $contractmwbeCount) {
+//                      $contractmwbeValue = urlencode($contractmwbe);
+//                      $checked = (in_array($contractmwbe, array_values_recursive($reqContractMWBECategories[0]))) ? 'checked' : '';
+//                      $subCat['contracts']['M/WBE Category'][] = array($contractmwbeValue, $contractmwbe, $contractmwbeCount, $checked);
+//                  }
+//              }
+//              $subCat['contracts']['M/WBE Category']['name'] = 'fcontractMWBE';
+//          }
 
         }
       }

@@ -1,0 +1,14 @@
+{
+    "datasets": {
+        "contract_vendor_latest_mwbe_category": {
+            "datasourceName": "main",
+            "source": "contract_vendor_latest_mwbe_category",
+            "columns": [
+                {
+                    "name": "vendor_id",
+                    "key": true
+                }
+            ]
+        }
+    }
+}

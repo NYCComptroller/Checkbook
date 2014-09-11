@@ -1,0 +1,186 @@
+<?php
+/**
+* This file is part of the Checkbook NYC financial transparency software.
+* 
+* Copyright (C) 2012, 2013 New York City
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as
+* published by the Free Software Foundation, either version 3 of the
+* License, or (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+* 
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/**
+ * Implements hook_menu()
+ */
+
+function checkbook_mwbe_agency_grading_menu() {
+  return array(
+    'mwbe_agency_grading' => array(
+      'type' => MENU_CALLBACK,
+      'page callback' => '_checkbook_mwbe_agency_grading',
+      'page arguments' => array(3),
+      'access callback' => TRUE
+    )    
+  );
+}
+
+
+/**
+ * Implements hook_theme()
+ */
+function checkbook_mwbe_agency_grading_theme($existing, $type, $theme, $path) {
+	return array(
+			'mwbe_agency_grading_main' => array(
+					'template' => 'templates/mwbe_agency_grading_main',
+					'arguments' => array('left_content' => NULL, 'right_content' => NULL)
+			),
+			'mwbe_agency_grading_right_side_bar' => array(
+					'template' => 'templates/mwbe_agency_grading_right_side_bar',
+					'arguments' => array()
+			),
+			'mwbe_agency_grading_left_table' => array(
+					'template' => 'templates/mwbe_agency_grading_left_table',
+					'arguments' => array()
+			),
+			'mwbe_agency_grading_row_chart' => array(
+					'template' => 'templates/mwbe_agency_grading_row_chart',
+					'arguments' => array()
+			)
+	);
+}
+
+function _checkbook_mwbe_agency_grading(){
+	$agencies_data =  _checkbook_mwbe_agency_grading_getdata();
+	_checkbook_mwbe_agency_grading_left($agencies_data);
+	$left_content =  _checkbook_mwbe_agency_grading_left($agencies_data);
+	$right_content = _checkbook_mwbe_agency_grading_right($agencies_data);
+	
+	return theme('mwbe_agency_grading_main',array('left_content'=>$left_content,'right_content'=>$right_content));
+}
+
+function _checkbook_mwbe_agency_grading_left($agencies_data){	
+	
+	$left_content_agencies = array();
+	$mwbe_cats = _getRequestParamValue('mwbe');
+	if($mwbe_cats == null){
+		$mwbe_cats = 'aa_mwbe~ba_mwbe~ha_mwbe~w_mwbe';
+	}
+	foreach($agencies_data as $row){
+		$data_row = array();
+		$spending_amount =  0;
+		foreach(explode('~',$mwbe_cats) as $mwbe_cat){
+			$spending_amount += $row[$mwbe_cat];
+			$data_row[$mwbe_cat] = $row[$mwbe_cat];			
+		}	
+		$left_content_agencies[] = array('spending_amount'=>$spending_amount,'agency_name'=>$row['agency_name'],'data_row'=>$data_row);
+	}	
+	uasort($left_content_agencies,'_checkbook_agency_grading_comp');
+	return theme('mwbe_agency_grading_left_table',array('left_agencies_data' => $left_content_agencies));	
+	
+}
+
+
+function _checkbook_agency_grading_comp($a, $b){
+	if ($a['spending_amount'] == $b['spending_amount']) {
+		return 0;
+	}
+	return ($a['spending_amount'] > $b['spending_amount']) ? -1 : 1;
+	
+}
+
+function _checkbook_mwbe_agency_grading_right($agencies_data){
+	
+	$nyc_data = array();	
+	$nyc_data['agencies'] = count($agencies_data);
+	foreach($agencies_data as $row){		
+		$nyc_data['total_mwbe'] += $row['total_mwbe'];
+		$nyc_data['total_non_mwbe'] += $row['total_non_mwbe'];
+		$nyc_data['total_io'] += $row['io_nonmwbe'];
+		$nyc_data['total'] += $row['total_mwbe'] + $row['total_non_mwbe'] + $row['io_nonmwbe'];
+	}
+	$nyc_data['mwbe_share'] = custom_number_formatter_format($nyc_data['total_mwbe']/($nyc_data['total_mwbe'] + $nyc_data['total_non_mwbe'] ) * 100,1,null,'%');
+	$nyc_data['total_mwbe']	 = custom_number_formatter_format($nyc_data['total_mwbe'],1,'$')	;
+	$nyc_data['total_non_mwbe']	 = custom_number_formatter_format($nyc_data['total_non_mwbe'],1,'$')	;
+	$nyc_data['total_io']	 = custom_number_formatter_format($nyc_data['total_io'],1,'$')	;
+	$nyc_data['total']	 = custom_number_formatter_format($nyc_data['total'],1,'$')	;
+	
+	$html_right = theme('mwbe_agency_grading_right_side_bar',array('nyc_data'=>$nyc_data));
+	return $html_right;
+}
+
+function _checkbook_mwbe_agency_grading_getdata(){
+	$where_filters = array();
+	$urlParamMap = array("year_id"=>"year", "type_of_year"=>"yeartype");
+	foreach($urlParamMap as $column=>$path_param){
+		$where_filters[] = _widget_build_sql_condition(' a1.' . $column, _getRequestParamValue($path_param));
+	}
+	
+	if(count($where_filters) > 0){
+		$where_filter = ' where ' . implode(' and ' , $where_filters);
+	}
+	
+	
+	$sql = 'select  agency_name , a1.agency_id,
+    SUM(
+       CASE
+            WHEN minority_type_id = 4 THEN total_spending_amount
+            WHEN minority_type_id = 5 THEN total_spending_amount
+            ELSE 0
+	END) aa_mwbe,
+	SUM(
+       CASE
+            WHEN minority_type_id = 2 THEN total_spending_amount
+            ELSE 0
+	END) ba_mwbe,
+	SUM(
+       CASE
+            WHEN minority_type_id = 9 THEN total_spending_amount
+            ELSE 0
+	END) w_mwbe,
+	SUM(
+       CASE
+            WHEN minority_type_id = 3 THEN total_spending_amount
+            ELSE 0
+	END) ha_mwbe,
+	SUM(
+       CASE
+            WHEN minority_type_id = 11 THEN total_spending_amount
+            ELSE 0
+	END) io_mwbe,
+	SUM(
+       CASE WHEN minority_type_id = 2 THEN total_spending_amount
+            WHEN minority_type_id = 3 THEN total_spending_amount
+            WHEN minority_type_id = 4 THEN total_spending_amount
+            WHEN minority_type_id = 5 THEN total_spending_amount
+             WHEN minority_type_id = 9 THEN total_spending_amount
+            ELSE 0
+	END) total_mwbe,
+		SUM(
+       CASE
+             WHEN minority_type_id = 7 THEN total_spending_amount
+            ELSE 0
+	END) n_mwbe
+	from {aggregateon_mwbe_spending_coa_entities} a1
+    join {ref_agency} ra on ra.agency_id =  a1.agency_id
+   ' . $where_filter . '
+        group by  agency_name,a1.agency_id
+    ';
+	
+	
+	log_error($sql);
+	return  _checkbook_project_execute_sql($sql);
+
+}
+
+
+
+
