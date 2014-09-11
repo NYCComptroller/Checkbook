@@ -169,7 +169,7 @@ class SpendingUtil{
      */
     static function getAgencyNameLinkUrl($node, $row){
         $custom_params = array('agency'=>(isset($row["agency_id"]) ? $row["agency_id"] : $row["agency_agency"]));
-        return self::getLandingPageWidgetUrl($custom_params);
+        return '/' . self::getLandingPageWidgetUrl($custom_params);
     }
 
     /**
@@ -200,7 +200,7 @@ class SpendingUtil{
      */
     static function getVendorNameLinkUrl($node, $row){
         $custom_params = array('vendor'=>(isset($row["vendor_id"]) ? $row["vendor_id"] : $row["vendor_vendor"]));
-        return self::getLandingPageWidgetUrl($custom_params);
+        return '/' . self::getLandingPageWidgetUrl($custom_params);
     }
 
     /**
@@ -212,7 +212,7 @@ class SpendingUtil{
      */
     static function getSubVendorNameLinkUrl($node, $row){
         $custom_params = array('subvendor'=>$row['sub_vendor_sub_vendor']);
-        return self::getLandingPageWidgetUrl($custom_params);
+        return '/' . self::getLandingPageWidgetUrl($custom_params);
     }
 
     /**
@@ -224,7 +224,7 @@ class SpendingUtil{
      */
     static function getPrimeVendorNameLinkUrl($node, $row){
         $custom_params = array('vendor'=>(isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["prime_vendor_prime_vendor"]));
-        return self::getLandingPageWidgetUrl($custom_params);
+        return '/' . self::getLandingPageWidgetUrl($custom_params);
     }
 
     /**
@@ -339,7 +339,7 @@ class SpendingUtil{
      */
     static function getIndustryNameLinkUrl($node, $row){
         $custom_params = array('industry'=>$row['industry_industry_industry_type_id']);
-        return self::getLandingPageWidgetUrl($custom_params);
+        return '/' . self::getLandingPageWidgetUrl($custom_params);
     }
 
     /**
@@ -369,14 +369,14 @@ class SpendingUtil{
      * @return string
      */
     static function getSubVendorYtdSpendingUrl($node, $row){
-        //ytd_spending_sub_vendors_link
-        return '/panel_html/spending_transactions/spending/transactions'
-        . _checkbook_project_get_url_param_string("agency")
-        . _checkbook_project_get_url_param_string("category")
-        . _checkbook_project_get_url_param_string("industry")
-        . _checkbook_project_get_year_url_param_string(false,false,true)
-        . '/smnid/' . $node->nid
-        . _checkbook_append_url_params();
+        $custom_params = null;
+
+        if(isset($row['agency_agency']))
+            $custom_params = array('agency'=>$row['agency_agency']);
+        else if(isset($row['sub_vendor_sub_vendor']))
+            $custom_params = array('subvendor'=>$row['sub_vendor_sub_vendor']);
+
+        return '/' . self::getSpendingTransactionPageUrl($custom_params). '/smnid/' . $node->nid;
     }
     /**
      * Returns Agency YTD Spending Link Url based on values from current path & data row.
@@ -428,15 +428,11 @@ class SpendingUtil{
      * @return string
      */
     static function getMWBECategoryLinkUrl($node, $row){
-        $url = '/spending_landing'
-            . _checkbook_project_get_year_url_param_string(false,false,false,true)
-            . _checkbook_project_get_url_param_string("agency")
-            . _checkbook_project_get_url_param_string("category")
-            . _checkbook_project_get_url_param_string("industry")
-            . '/mwbe/'. $row['minority_type_id']
-            . '/subvendor/'. $row['vendor_id']
-            . '?expandBottomCont=true';
-        return  $url;
+        $custom_params = array(
+            'mwbe'=>(isset($row["minority_type_id"]) ? $row["minority_type_id"] : $row["minority_type_minority_type"]),
+            'subvendor'=>(isset($row["vendor_id"]) ? $row["vendor_id"] : $row["sub_vendor_sub_vendor"])
+        );
+        return '/' . self::getLandingPageWidgetUrl($custom_params) . '?expandBottomCont=true';
     }
 
     /**
@@ -447,7 +443,41 @@ class SpendingUtil{
      */
     static function getLandingPageWidgetUrl($custom_params = array()){
 
-        $path = '/spending_landing';
+        $path = 'spending_landing';
+        $url =  $path . _checkbook_project_get_year_url_param_string();
+
+        $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
+        $url_params = self::$landingPageParams;
+        $exclude_params = array_keys($custom_params);
+        if(is_array($url_params)){
+            foreach($url_params as $key => $value){
+                if(!in_array($key,$exclude_params)){
+                    $url .=  CustomURLHelper::get_url_param($pathParams,$key,$value);
+                }
+            }
+        }
+
+        if(is_array($custom_params)){
+            foreach($custom_params as $key => $value){
+                $url .= "/$key";
+                if(isset($value)){
+                    $url .= "/$value";
+                }
+            }
+        }
+
+        return $url;
+    }
+
+    /**
+     *  Returns a spending transaction page Url with custom parameters appended but instead of persisted
+     *
+     * @param array $custom_params
+     * @return string
+     */
+    static function getSpendingTransactionPageUrl($custom_params = array()){
+
+        $path = 'panel_html/spending_transactions/spending/transactions';
         $url =  $path . _checkbook_project_get_year_url_param_string();
 
         $pathParams = explode('/',drupal_get_path_alias($_GET['q']));

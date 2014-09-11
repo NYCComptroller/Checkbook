@@ -29,6 +29,7 @@ scripts[] = js/transactions.js
 scripts[] = js/cookie_breadcrumbs.js
 scripts[] = js/jquery.sticky.js
 
+files[] = customclasses/constants/Constants.php
 files[] = customclasses/contract/ContractUtil.php
 files[] = customclasses/masterAgreementDetails.php
 files[] = customclasses/childAgreementDetails.php

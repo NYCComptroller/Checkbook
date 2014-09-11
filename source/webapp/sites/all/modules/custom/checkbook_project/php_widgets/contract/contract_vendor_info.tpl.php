@@ -31,7 +31,7 @@ if(_getRequestParamValue("magid") != ""){
   $ag_id = _getRequestParamValue("agid");
 }
 
-$queryVendorDetails = "SELECT rb.business_type_code, fa.agreement_id,fa.original_agreement_id,  fa.vendor_id, va.address_id, legal_name AS vendor_name, a.address_line_1, a.address_line_2, a.city, a.state, a.zip, a.country,
+$queryVendorDetails = "SELECT fa.contract_number, rb.business_type_code, fa.agreement_id,fa.original_agreement_id,  fa.vendor_id, va.address_id, legal_name AS vendor_name, a.address_line_1, a.address_line_2, a.city, a.state, a.zip, a.country,
 	                            (CASE WHEN (rb.business_type_code = 'MNRT' OR rb.business_type_code = 'WMNO') THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor,
 	                            (CASE WHEN rm.minority_type_id in (4,5) then 'Asian American' ELSE rm.minority_type_name END)AS ethnicity
 	                        FROM {agreement_snapshot} fa
@@ -48,8 +48,11 @@ $queryVendorCount = " select count(*) total_contracts_sum from {agreement_snapsh
 (select vendor_id from {agreement_snapshot} where original_agreement_id =". $ag_id . "limit 1)
    and latest_flag = 'Y'";
 
+
+
 $results1 = _checkbook_project_execute_sql_by_data_source($queryVendorDetails,_get_current_datasource());
 $node->data = $results1;
+
 foreach($node->data as $key => $value){
     if($value['business_type_code'] == "MNRT" || $value['business_type_code'] == "WMNO"){
         $node->data[0]["mwbe_vendor"] = "Yes";
@@ -69,8 +72,15 @@ else{
    $vendor_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
                   .$node->data[0]['vendor_id'].'?expandBottomCont=true';
 }
-  
+$contract_number = $node->data[0]['contract_number'];
+$querySubVendorCount = "SELECT COUNT(*) AS sub_vendor_count FROM subcontract_details
+                        WHERE contract_number = '". $contract_number . "'
+                        AND latest_flag = 'Y'
+                        LIMIT 1";
 
+$results3 = _checkbook_project_execute_sql_by_data_source($querySubVendorCount,_get_current_datasource());
+$res->data = $results3;
+$total_subvendor_count = $res->data[0]['sub_vendor_count'];
 ?>
   <ul class="left">
   <?php if( _get_current_datasource() == "checkbook" && !preg_match('/newwindow/',$_GET['q'])){?>
@@ -97,9 +107,46 @@ else{
   ?>    
     <li><span class="gi-list-item">Address:</span> <?php echo $address;?></li>
     <li><span class="gi-list-item">Total Number of NYC Contracts:</span> <?php echo $total_cont;?></li>
+    <li><span class="gi-list-item">Total Number of Sub Vendors:</span> <?php echo $total_subvendor_count; ?></li>
 <?php if( _get_current_datasource() == "checkbook" ){?>    
     <li><span class="gi-list-item">M/WBE Vendor:</span> <?php echo $node->data[0]['mwbe_vendor'] ;?></li>
     
-    <li><span class="gi-list-item">Ethnicity:</span> <?php echo $ethnicity ;?></li>
+    <li><span class="gi-list-item">M/WBE Category:</span> <?php echo $ethnicity ;?></li>
 <?php }?>    
 </ul>
+<?php
+
+$querySubVendorinfo = "SELECT SUM(maximum_contract_amount) AS total_current_amt, SUM(original_contract_amount) AS total_original_amt, SUM(rfed_amount) AS total_spent_todate
+FROM {subcontract_details}
+WHERE contract_number = '". $contract_number . "'
+AND latest_flag = 'Y'
+LIMIT 1";
+
+$results4 = _checkbook_project_execute_sql_by_data_source($querySubVendorinfo,_get_current_datasource());
+$res->data = $results4;
+
+$total_current_amount = $res->data[0]['total_current_amt'];
+$total_original_amount = $res->data[0]['total_original_amt'];
+$total_spent_todate = $res->data[0]['total_spent_todate'];
+?>
+<h4>
+    Sub Vendor Information
+</h4>
+</div>
+<div class="dollar-amounts">
+    <div class="spent-to-date"><?php echo custom_number_formatter_format($total_spent_todate, 2, "$");?>
+        <div class="amount-title">Total Spent
+            to Date
+        </div>
+    </div>
+    <div class="original-amount"><?php echo custom_number_formatter_format($total_original_amount, 2, '$');?>
+        <div class="amount-title">Total Original
+            Amount
+        </div>
+    </div>
+    <div class="current-amount"><?php echo custom_number_formatter_format($total_current_amount, 2, '$');?>
+        <div class="amount-title">Total Current
+            Amount
+        </div>
+    </div>
+</div>

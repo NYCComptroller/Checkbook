@@ -6,6 +6,8 @@
     "cleanURLParameters":[
         "year",
         "agency",
+        "vendor",
+        "subvendor",
         "yeartype",
         "calyear",
         "category",
@@ -20,6 +22,7 @@
         "calyear":"year_id",
         "category":"spending_category_id",
         "vendor":"prime_vendor.prime_vendor",
+        "subvendor":"sub_vendor.sub_vendor",
         "mwbe":"minority_type_id",
         "industry":"industry_type_id"
     },
@@ -76,6 +79,10 @@
         "ytd_spending_agency_formatted":{
             "type":"expression2",
             "expression":"custom_number_formatter_format($row['check_amount_sum@checkbook:spending_data'],2,'$')"
+        },
+        "formatted_check_amount_sum": {
+            "type": "expression2",
+            "expression": "custom_number_formatter_format($row['ytd_spending_sub_vendors'],2,'$')"
         }
     },
     "summaryView":{
