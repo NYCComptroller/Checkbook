@@ -7,7 +7,28 @@
  */
 
 class MappingUtil {
-	
+
+    private static $vendor_type_value_map = array(
+        'pv' => 'P~PM',
+        'sv' => 'S~SM',
+        'mv' => 'SM~PM',
+    );
+
+    private static $vendor_type_name_map = array(
+        'sv' => 'Sub Vendor',
+        'pv' => 'Prime Vendor',
+        'mv' => 'M/WBE Vendor',
+    );
+
+    /** Returns the vendor type value based on the vendor_type mapping */
+    static function getVendorTypeValue($vendor_type) {
+        return self::$vendor_type_value_map[$vendor_type];
+    }
+
+    /** Returns the vendor type name based on the vendor_type mapping */
+    static function getVendorTypeName($vendor_type) {
+        return self::$vendor_type_name_map[$vendor_type];
+    }
 
     private static $minority_type_category_map = array(
         2 => 'Black American',
