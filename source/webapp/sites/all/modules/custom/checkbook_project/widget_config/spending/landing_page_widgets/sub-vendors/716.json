@@ -82,7 +82,7 @@
         },
         "formatted_check_amount_sum": {
             "type": "expression2",
-            "expression": "custom_number_formatter_format($row['check_amount_sum@checkbook:spending_data'],2,'$')"
+            "expression": "custom_number_formatter_format($row['ytd_spending_sub_vendors'],2,'$')"
         }
     },
     "summaryView":{
