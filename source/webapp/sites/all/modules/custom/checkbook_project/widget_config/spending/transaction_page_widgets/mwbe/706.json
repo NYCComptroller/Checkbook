@@ -221,7 +221,7 @@
                 unset($parameters['minority_type_id']);
             }
         }
-$parameters = blah($parameters);
+
         //This is for sub vendor page to have only sub venders returned, exclude this for advanced search results
         $subvendor = _getRequestParamValue('subvendor');
         if(isset($subvendor)) {
