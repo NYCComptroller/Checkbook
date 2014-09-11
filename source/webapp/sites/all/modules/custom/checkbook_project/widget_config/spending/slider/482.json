@@ -17,8 +17,16 @@
                     if($node->is_sub_vendor || $node->is_mwbe_sub_vendor) $node->widgetConfig->model->series[0]->dataset = 'checkbook:spending_subven_data';
                 ",
                 "columns": ["check_amount_sum","category.category"],
-                "seriesURLParamMap":{"year":"year.year","agency":"agency_id","yeartype":"type_of_year","vendor":"prime_vendor.prime_vendor","mwbe":"minority_type_id","industry":"industry_type_id"},
-                "allowedParams":["year.year","agency_id","type_of_year","vendor.vendor","minority_type_id","industry_type_id"],
+                "seriesURLParamMap":{
+                    "year":"year.year",
+                    "agency":"agency_id",
+                    "yeartype":"type_of_year",
+                    "vendor":"prime_vendor.prime_vendor",
+                    "subvendor":"sub_vendor.sub_vendor",
+                    "mwbe":"minority_type_id",
+                    "industry":"industry_type_id"
+                },
+                "allowedParams":["year.year","agency_id","type_of_year","prime_vendor.prime_vendor","sub_vendor.sub_vendor","minority_type_id","industry_type_id"],
                 "seriesDefaultParameters":{"year.year":"1","type_of_year":"B"},
                 "adjustSerieParameters":"
                     if(!$node->is_mwbe && !$node->is_mwbe_sub_vendor) {

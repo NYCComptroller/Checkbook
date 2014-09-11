@@ -205,12 +205,9 @@
 
         //This is for sub vendor page to have only sub venders returned, exclude this for advanced search results
         $subvendor = _getRequestParamValue('subvendor');
-        if(isset($subvendor)) {
+        if(isset($subvendor) && $subvendor == all) {
             $data_controller_instance = data_controller_get_operator_factory_instance();
-            $parameters['prime_vendor_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
-            if($subvendor == all) {
-                $parameters['vendor_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
-            }
+            $parameters['vendor_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
         }
 
         $adjustedParameters = $parameters;
