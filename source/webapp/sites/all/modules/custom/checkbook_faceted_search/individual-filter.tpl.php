@@ -50,6 +50,11 @@ if($node->widgetConfig->filterName == 'M/WBE Category'){
     if($count > 0 )array_push($checked,array($id,'Asian American',$count));
 }
 
+//Data alteration for Vendor Type Facet
+if($node->widgetConfig->filterName == 'Vendor Type'){
+
+}
+
 if(count($checked) == 0){
     $display_facet ="none";
     $span = "";
