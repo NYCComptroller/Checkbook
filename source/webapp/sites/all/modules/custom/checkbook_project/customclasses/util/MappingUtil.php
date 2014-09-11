@@ -83,10 +83,13 @@ class MappingUtil {
     static function getMinorityCategoryMappings() {
         return self::$minority_type_category_map_multi;
     }
-    
-    
-    static function getCurrenEhtnicityName() {
-    	$mwbe_url_params = explode('~',_getRequestParamValue('mwbe'));
+
+    /**
+     * @param null $minority_type_ids
+     * @return int|string
+     */
+    static function getCurrenEhtnicityName($minority_type_ids = null) {
+    	$mwbe_url_params = isset($minority_type_ids) ? $minority_type_ids : explode('~',_getRequestParamValue('mwbe'));
     	
     	foreach(self::$minority_type_category_map_multi_chart as $key=>$values){
     		if(count(array_diff($mwbe_url_params, $values)) == 0){

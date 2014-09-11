@@ -12,8 +12,11 @@
         "aggregateon_total_subven_contracts": {
             "datasourceName": "main",
             "source": "aggregateon_subven_total_contracts"
+        },
+        "contract_vendor_latest_mwbe_category": {
+            "datasourceName": "main",
+            "source": "contract_vendor_latest_mwbe_category"
         }
-        		        
      },
 
     "cubes": {
