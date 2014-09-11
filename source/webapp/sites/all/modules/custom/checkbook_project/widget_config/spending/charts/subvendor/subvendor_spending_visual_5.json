@@ -39,13 +39,13 @@
         $data = array();
         $categories=array();
         foreach ($node->data as $row){
-            $link= CustomURLHelper::prepareUrl('spending_landing', SpendingUtil::$landingPageParams, array('expandBottomCont'=>'true'), array('vendor'=>$row['vendor_vendor']) );
+            $link = SpendingUtil::getLandingPageWidgetUrl(array('subvendor'=>$row['sub_vendor_sub_vendor'])) . '?expandBottomCont=true';
             $categories[]=html_entity_decode($row['sub_vendor_sub_vendor_legal_name'],ENT_QUOTES);
             $data[] = (object)array('year'=>$row['fiscal_year_id'],'y'=>$row['check_amount_sum'],'url'=>$link,'name'=>strtoupper(html_entity_decode($row['sub_vendor_sub_vendor_legal_name'],ENT_QUOTES)));
         }
         $node->widgetConfig->chartConfig->series[0]->data = $data;$node->widgetConfig->chartConfig->xAxis->categories = $categories;
         $node->widgetConfig->chartConfig->series[0]->name = 'Disbursement Amount';
-        $node->widgetConfig->chartTitle = 'Top Ten Sub Vendors by Disbursement Amount';
+        $node->widgetConfig->chartTitle = RequestUtil::getSubVendorChartTitle('spending','Top Ten Sub Vendors by Disbursement Amount');
 
         return $node->data;
     ",

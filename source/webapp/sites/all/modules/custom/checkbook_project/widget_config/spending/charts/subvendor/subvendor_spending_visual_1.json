@@ -53,13 +53,13 @@
             },
             {
                 "dataset": "checkbook:spending_subven_data",
-                "orderBy":"","columns": ["check_amount_sum","month.month", "month.month.month_value","minority_type.minority_type"],
+                "orderBy":"","columns": ["check_amount_sum","month.month", "month.month.month_value"],
                 "columnPrefix": "previous_"
             },
             {
                 "dataset": "checkbook:spending_subven_data",
                 "orderBy":"",
-                "columns": ["check_amount_sum","month.month", "month.month.month_value","minority_type.minority_type"],
+                "columns": ["check_amount_sum","month.month", "month.month.month_value"],
                 "columnPrefix": "current_"
             }
         ]
@@ -121,7 +121,7 @@
         $node->widgetConfig->chartConfig->series[0]->data = $seriesPreviousData;
         $node->widgetConfig->chartConfig->series[1]->data = $seriesCurrentData;
         $node->widgetConfig->chartConfig->xAxis->categories = $categories;
-        $node->widgetConfig->chartTitle = RequestUtil::getSpendingVisualizationTitle($row['previous_minority_type_minority_type'],'Sub Vendors Total Spending');
+        $node->widgetConfig->chartTitle = RequestUtil::getSubVendorChartTitle('spending','Sub Vendors Total Spending');
 
         if($year == 2010){
             foreach($node->data as $row){

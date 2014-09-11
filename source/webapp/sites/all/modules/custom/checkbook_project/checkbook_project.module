@@ -548,8 +548,20 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'php_widgets/spending/summary/contract_summary',
             'arguments' => array('node' => NULL)
         ),
+        'spending_sub_contract_summary' => array(
+            'template' => 'php_widgets/spending/summary/sub_contract_summary',
+            'arguments' => array('node' => NULL)
+        ),
         'spending_vendor_summary' => array(
             'template' => 'php_widgets/spending/summary/vendor_summary',
+            'arguments' => array('node' => NULL)
+        ),
+        'spending_sub_vendor_summary' => array(
+            'template' => 'php_widgets/spending/summary/sub_vendor_summary',
+            'arguments' => array('node' => NULL)
+        ),
+        'spending_prime_vendor_summary' => array(
+            'template' => 'php_widgets/spending/summary/prime_vendor_summary',
             'arguments' => array('node' => NULL)
         ),
         'spending_industry_summary' => array(
