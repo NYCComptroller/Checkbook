@@ -352,7 +352,7 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
             ."&wt=php"
             ."&facet.mincount=1";
 
-        if ($offset){
+        if ($offset && $offset > 0){
           $query .= "&facet.offset=".$offset;
         }
         if ($limit && $limit >= 0 && !$fromScroll){
