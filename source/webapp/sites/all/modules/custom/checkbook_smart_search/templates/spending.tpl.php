@@ -28,10 +28,22 @@ if($IsOge)
         "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id'].'/datasource/checkbook_oge'.  '/agency/' . $spending_results['agency_id'] . "/year/" . _getCurrentYearID() . "/yeartype/B/vendor/".$spending_results["vendor_id"],
     );
 else
-    $linkable_fields = array(
-        "agency_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getCurrentYearID() . "/yeartype/B/agency/".$spending_results["agency_id"],
-        "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getCurrentYearID() . "/yeartype/B/vendor/".$spending_results["vendor_id"],
-    );
+{
+    if($spending_results['is_prime_or_sub'] == 'S'){
+        $linkable_fields = array(
+            "agency_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getCurrentYearID() . "/yeartype/B/agency/".$spending_results["agency_id"],
+            "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getCurrentYearID() . "/yeartype/B/subvendor/".$spending_results["vendor_id"],
+        );
+    }
+    else{
+        $linkable_fields = array(
+            "agency_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getCurrentYearID() . "/yeartype/B/agency/".$spending_results["agency_id"],
+            "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getCurrentYearID() . "/yeartype/B/vendor/".$spending_results["vendor_id"],
+        );
+    }
+
+}
+
 
 if(!$IsOge)
 $date_fields = array("check_eft_issued_date");
