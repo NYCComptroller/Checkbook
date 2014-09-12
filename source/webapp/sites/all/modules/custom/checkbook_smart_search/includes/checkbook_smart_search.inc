@@ -39,7 +39,7 @@ function _checkbook_smart_search_get_results(){
     $oges = _checkbook_smart_search_get_facet_results($search_terms, "oge_agency_names", NULL, -1);
     $agencies = _checkbook_smart_search_get_facet_results($search_terms, "agency_names", NULL, -1);
     $vendors = _checkbook_smart_search_get_facet_results($search_terms, "vendor_names", NULL, 100);
-    $vendor_type = _checkbook_smart_search_get_facet_results($search_terms, "vendor_type", NULL, 1);
+    $vendor_type = _checkbook_smart_search_get_facet_results($search_terms, "vendor_type", NULL, 100);
     $all_vendors = _checkbook_smart_search_get_facet_results($search_terms, "vendor_names", NULL, -1);
     $vendor_number = count($all_vendors['facet_counts']['facet_fields']['vendor_name']);
     $vendor_pages = floor($vendor_number / 100);
@@ -231,7 +231,7 @@ function _checkbook_smart_search_solr_results($query){
 }
 
 /** Returns only selected facet values from current URL */
-function _checkbook_smart_search_get_selected_facet_results($search_terms, $facet_name, $domain = null){
+function _checkbook_smart_search_get_selected_facet_results($search_terms, $facet_name){
 
     $parameter_mapping = array(
         "oge_agency_names" => "oge_agency_name",
@@ -301,7 +301,7 @@ function _checkbook_smart_search_get_selected_facet_results($search_terms, $face
 }
 
 /** Returns Facet results */
-function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $domain = null, $offset = null, $limit = null, $exclude = FALSE, $fromScroll = FALSE){
+function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $offset = null, $limit = null, $exclude = FALSE, $fromScroll = FALSE){
 
         $parameter_mapping = array(
           "oge_agency_names" => "oge_agency_name",
