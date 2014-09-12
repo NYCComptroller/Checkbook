@@ -117,6 +117,7 @@
     "table_columns": [
             {"labelAlias":"sub_vendor_name","column":"sub_vendor_name_link2","sortSourceColumn":"sub_vendor.sub_vendor"},
             {"labelAlias":"no_of_contracts","column":"total_sub_contracts","sortSourceColumn":"total_sub_contracts"},
+            {"label":"","column":""},
             {"labelAlias":"mwbe_category","column":"mwbe_category_name_link","sortSourceColumn":"minority_type.minority_type","exportColumn":"mwbe_category_name"},
             {"labelAlias":"prime_vendor","column":"prime_vendor_name_link2","sortSourceColumn":"prime_vendor.prime_vendor"},
             {"labelAlias":"ytd_spending","column":"ytd_spending_sub_vendors_link","sortSourceColumn":"ytd_spending_sub_vendors"},
@@ -124,12 +125,13 @@
     ],
     "dataTableOptions":{
         "aoColumns": [
-            {"sClass":"text","sWidth":"170px","bSortable":false},
-            {"sClass":"number","sWidth":"50px","bSortable":true,"asSorting":["asc","desc"]},
-            {"sClass":"text pad-left","sWidth":"100px","bSortable":false},
-            {"sClass":"text pad-left","sWidth":"170px","bSortable":false},
-            {"sClass":"number","sWidth":"100px","bSortable":true,"asSorting":["desc","asc"]},
-            {"sWidth":"15px","bSortable":false}
+            {"sClass":"text","sWidth":"180px","bSortable":false},
+            {"sClass":"number","sWidth":"170px","asSorting":["desc","asc"]},
+            {"bSortable":false,"sWidth":"100px"},
+            {"sClass":"text","sWidth":"180px","asSorting":["desc","asc"],"bSortable":false},
+            {"sClass":"text","sWidth":"180px","asSorting":["desc","asc"],"bSortable":false},
+            {"sClass":"number","sWidth":"80px","asSorting":["desc","asc"]},
+            {"bSortable":false,"sWidth":"15px"}
         ],
         "bServerSide": true,
         "bFilter": false,
@@ -138,7 +140,7 @@
         "bLengthChange": false,
         "bInfo": false,
         "bAutoWidth": false,
-        "aaSorting": [[ 4, "desc" ]],
+        "aaSorting": [[ 5, "desc" ]],
         "fnServerParams": "##function ( aoData ) {
                    reloadExpandCollapseWidget(this,aoData);
         }##",
