@@ -787,7 +787,6 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
         else
             $parameter_mapping = array(
                 "spending_category_name" => "Spending Category",
-                "minority_type_name" => "M/WBE Category",
                 "agency_name" => "Agency",
                 "department_name" => "Department",
                 "vendor_name" => "Payee Name",
@@ -795,7 +794,8 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
                 "contract_number" => "Contract ID",
                 "check_amount" => "Check Amount",
                 "check_eft_issued_date" => "Issue Date",
-                "is_prime_or_sub" => "Sub Vendor"
+                "is_prime_or_sub" => "Sub Vendor",
+                "minority_type_name" => "M/WBE Category"
             );
       break;
     case "contracts":
@@ -827,7 +827,6 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
         else{
             $parameter_mapping = array(
                 "contract_status"=>"Status",
-                "minority_type_name" => "M/WBE Category",
                 "contract_category_name"=>"Category",
                 "vendor_name"=>"Prime Vendor",
                 "agency_name"=>"Agency",
@@ -846,6 +845,7 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
                 "registration_date"=>"Registration date",
                 "expense_category_name"=>"Expense Category",
                 "received_date"=>"Received date",
+                "minority_type_name" => "M/WBE Category",
                 "is_prime_or_sub" => "Sub Vendor",
                 "" => "");
         }
