@@ -229,6 +229,8 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
       );
     }
   }
+    if(isset($parameters['minority_type_id']))
+        $parameters['minority_type_id'] = explode('~',$parameters['minority_type_id']);
 }
 
 /**
@@ -236,15 +238,30 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
  * @param $data_records
  */
 function checkbook_api_adjustContractDataSetResults(&$data_records) {
-    //Derive minority category from minority_type_id
+
     foreach($data_records as $key => $data_record) {
-        $minority_type_id = $data_record['minority_type_id'];
-        if(isset($minority_type_id)) {
-            $data_records[$key]['minority_type_id'] = MappingUtil::getMinorityCategoryById($minority_type_id);
+        //Derive minority category from minority_type_id
+        if(isset($data_record['minority_type_id'])) {
+            $data_records[$key]['minority_type_id'] = MappingUtil::getMinorityCategoryById($data_record['minority_type_id']);
+        }
+        //Derive sub vendor column from vendor type
+        if(isset($data_record['vendor_type'])) {
+            $data_records[$key]['vendor_type'] = (preg_match('/S/', $data_record['vendor_type'])) ? 'Yes' : 'No';
         }
     }
 }
 
+/**
+ * Function to adjust the parameters before for the api sql call for spending
+ *
+ * @param $data_set
+ * @param $parameters
+ * @param $criteria
+ */
+function checkbook_api_adjustSpendingParameterFilters(&$data_set, &$parameters, $criteria) {
+    if(isset($parameters['minority_type_id']))
+        $parameters['minority_type_id'] = explode('~',$parameters['minority_type_id']);
+}
 /**
  * Used to adjust columns in the data set after sql call.  This is to handle derived columns
  * @param $data_records
@@ -252,9 +269,13 @@ function checkbook_api_adjustContractDataSetResults(&$data_records) {
 function checkbook_api_adjustSpendingDataSetResults(&$data_records) {
     //Derive minority category from minority_type_id
     foreach($data_records as $key => $data_record) {
-        $minority_type_id = $data_record['minority_type_id'];
-        if(isset($minority_type_id)) {
-            $data_records[$key]['minority_type_id'] = MappingUtil::getMinorityCategoryById($minority_type_id);
+        //Derive minority category from minority_type_id
+        if(isset($data_record['minority_type_id'])) {
+            $data_records[$key]['minority_type_id'] = MappingUtil::getMinorityCategoryById($data_record['minority_type_id']);
+        }
+        //Derive sub vendor column from vendor type
+        if(isset($data_record['vendor_type'])) {
+            $data_records[$key]['vendor_type'] = (preg_match('/S/', $data_record['vendor_type'])) ? 'Yes' : 'No';
         }
     }
 }

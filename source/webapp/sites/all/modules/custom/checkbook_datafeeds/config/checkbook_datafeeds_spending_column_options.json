@@ -16,7 +16,9 @@
                     "Issue Date":"Issue Date",
                     "M/WBE Category":"M/WBE Category",
                     "Payee Name":"Payee Name",
-                    "Spending Category":"Spending Category"
+                    "Spending Category":"Spending Category",
+                    "Sub Contract Reference ID":"Sub Contract Reference ID",
+                    "Sub Vendor":"Sub Vendor"
                 },
                 "xml":{
                     "agency":"agency",
@@ -32,7 +34,9 @@
                     "issue_date":"issue_date",
                     "mwbe_category":"mwbe_category",
                     "payee_name":"payee_name",
-                    "spending_category":"spending_category"
+                    "spending_category":"spending_category",
+                    "sub_contract_reference_id":"sub_contract_reference_id",
+                    "sub_vendor":"sub_vendor"
                 }
             }
         },
