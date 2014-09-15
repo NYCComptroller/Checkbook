@@ -2301,8 +2301,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
                 }
             }
             if ($values['mwbe_category'] && $values['mwbe_category'] != 'Select Category') {
-               // $criteria['value']['minority_type_id'] = str_replace("~",",",$values['mwbe_category']);
-                $criteria['range']['minority_type_id'] = explode('~',$values['mwbe_category']);
+                $criteria['value']['minority_type_id'] = $values['mwbe_category'];
             }
             break;
     }
@@ -5016,10 +5015,7 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
                 }
             }
             if ($values['mwbe_category'] && $values['mwbe_category'] != 'Select Category') {
-                //$criteria['value']['minority_type_id'] = $values['mwbe_category'];
-                //$criteria['value']['minority_type_id'] = str_replace("~",",",$values['mwbe_category']);
-
-                $criteria['range']['minority_type_id'] = explode('~',$values['mwbe_category']);
+                $criteria['value']['minority_type_id'] = $values['mwbe_category'];
             }
             break;
     }

@@ -24,6 +24,8 @@
                                     "Purpose":"Purpose",
                                     "Received Date":"Received Date",
                                     "Start Date":"Start Date",
+                                    "Sub Contract Reference ID":"Sub Contract Reference ID",
+                                    "Sub Vendor":"Sub Vendor",
                                     "Version":"Version"
                                 },
                                 "xml":{
@@ -48,6 +50,8 @@
                                     "registration_date":"registration_date",
                                     "spent_to_date":"spent_to_date",
                                     "start_date":"start_date",
+                                    "sub_contract_reference_id":"sub_contract_reference_id",
+                                    "sub_vendor":"sub_vendor",
                                     "version":"version",
                                     "year":"year"
                                 }
@@ -78,6 +82,8 @@
                                     "Registration Date":"Registration Date",
                                     "Spent to date":"Spent to date",
                                     "Start Date":"Start Date",
+                                    "Sub Contract Reference ID":"Sub Contract Reference ID",
+                                    "Sub Vendor":"Sub Vendor",
                                     "Version":"Version",
                                     "Year":"Year"
                                 },
@@ -103,6 +109,8 @@
                                     "registration_date":"registration_date",
                                     "spent_to_date":"spent_to_date",
                                     "start_date":"start_date",
+                                    "sub_contract_reference_id":"sub_contract_reference_id",
+                                    "sub_vendor":"sub_vendor",
                                     "version":"version",
                                     "year":"year"
                                 }
@@ -120,6 +128,7 @@
                                     "Current Amount":"Current Amount",
                                     "Document Code":"Document Code",
                                     "End Date":"End Date",
+                                    "M/WBE Category":"M/WBE Category",
                                     "Original Amount":"Original Amount",
                                     "Parent Contract ID":"Parent Contract ID",
                                     "PIN":"PIN",
@@ -127,6 +136,8 @@
                                     "Purpose":"Purpose",
                                     "Registration Date":"Registration Date",
                                     "Start Date":"Start Date",
+                                    "Sub Contract Reference ID":"Sub Contract Reference ID",
+                                    "Sub Vendor":"Sub Vendor",
                                     "Version":"Version",
                                     "Year":"Year"
                                 },
@@ -138,6 +149,7 @@
                                     "current_amount":"current_amount",
                                     "document_code":"document_code",
                                     "end_date":"end_date",
+                                    "mwbe_category":"mwbe_category",
                                     "original_amount":"original_amount",
                                     "parent_contract_id":"parent_contract_id",
                                     "pin":"pin",
@@ -145,6 +157,8 @@
                                     "purpose":"purpose",
                                     "registration_date":"registration_date",
                                     "start_date":"start_date",
+                                    "sub_contract_reference_id":"sub_contract_reference_id",
+                                    "sub_vendor":"sub_vendor",
                                     "version":"version",
                                     "year":"year"
                                 }

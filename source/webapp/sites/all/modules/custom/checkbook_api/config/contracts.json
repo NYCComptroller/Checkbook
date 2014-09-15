@@ -21,10 +21,11 @@
         },
         "dataset":{
             "sortColumn":"-registered_date",
-            "name":"checkbook:agreement_snapshot",
+            "name":"checkbook:all_agreement_transactions",
             "columnTypes":{
                 "expenditure_object_codes":"trueLike",
-                "contract_number":"like"
+                "contract_number":"like",
+                "minority_type_id":"in"
             },
             "displayConfiguration":{
                 "xml":{
@@ -51,10 +52,35 @@
                         "apt_pin":"brd_awd_no",
                         "document_code":"document_code@checkbook:ref_document_code",
                         "contract_industry":"industry_type_name",
-                        "minority_type_id":"minority_type_id"
+                        "mwbe_category":"minority_type_id",
+                        "sub_contract_reference_id":"sub_contract_id",
+                        "sub_vendor":"vendor_type"
                     },
-                    "rowElements":["agency", "prime_vendor", "contract_id", "version", "year", "parent_contract_id", "purpose", "original_amount", "current_amount", "spent_to_date", "registration_date"
-                        , "apt_pin", "pin", "contract_type", "award_method", "expense_category", "start_date", "end_date", "document_code", "contract_industry","minority_type_id"]
+                    "rowElements":[
+                        "agency",
+                        "prime_vendor",
+                        "contract_id",
+                        "version",
+                        "year",
+                        "parent_contract_id",
+                        "purpose",
+                        "original_amount",
+                        "current_amount",
+                        "spent_to_date",
+                        "registration_date",
+                        "apt_pin",
+                        "pin",
+                        "contract_type",
+                        "award_method",
+                        "expense_category",
+                        "start_date",
+                        "end_date",
+                        "document_code",
+                        "contract_industry",
+                        "minority_type_id",
+                        "sub_contract_id",
+                        "vendor_type"
+                    ]
                 },
                 "csv":{
                     "elementsColumn":{
@@ -78,11 +104,15 @@
                         "APT PIN":"brd_awd_no",
                         "Document Code":"document_code@checkbook:ref_document_code",
                         "Contract Industry":"industry_type_name",
-                        "M/WBE Category":"minority_type_id"
+                        "M/WBE Category":"minority_type_id",
+                        "Sub Contract Reference ID":"sub_contract_id",
+                        "Sub Vendor":"vendor_type",
+                        "mwbe_category":"minority_type_id",
+                        "sub_contract_reference_id":"sub_contract_id"
                     }
                 }
             },
-            "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($dataSet,$parameters,$criteria);}",
+            "adjustParameters":"if(function_exists('checkbook_api_adjustSpendingParameterFilters')){checkbook_api_adjustSpendingParameterFilters($parameters);}",
             "adjustDataSetResults":"if(function_exists('checkbook_api_adjustContractDataSetResults')){checkbook_api_adjustContractDataSetResults($data_records);}"
         },
         "requestParameters":{
@@ -99,7 +129,6 @@
             "start_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"},
             "end_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"},
             "registration_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"},
-
             "status":{
                 "valueType":"value",
                 "dataType":"text"
@@ -118,7 +147,7 @@
                 "dataType":"text"
             },
             "minority_type_id":{
-                "valueType":"range",
+                "valueType":"value",
                 "dataType":"text",
                 "maxLength":"9"
             }
@@ -144,10 +173,11 @@
         },
         "dataset":{
             "sortColumn":"-registered_date",
-            "name":"checkbook:agreement_snapshot",
+            "name":"checkbook:all_agreement_transactions",
             "columnTypes":{
                 "expenditure_object_codes":"trueLike",
-                "contract_number":"like"
+                "contract_number":"like",
+                "minority_type_id":"in"
             },
             "displayConfiguration":{
                 "xml":{
@@ -173,10 +203,34 @@
                         "apt_pin":"brd_awd_no",
                         "document_code":"document_code@checkbook:ref_document_code",
                         "contract_industry":"industry_type_name",
-                        "minority_type_id":"minority_type_id"
+                        "minority_type_id":"minority_type_id",
+                        "sub_contract_reference_id":"sub_contract_id",
+                        "sub_vendor":"vendor_type"
                     },
-                    "rowElements":["agency", "prime_vendor", "contract_id", "version", "parent_contract_id", "purpose", "original_amount", "current_amount", "spent_to_date", "registration_date"
-                        , "apt_pin", "pin", "contract_type", "award_method", "expense_category", "start_date", "end_date", "document_code", "contract_industry","minority_type_id"]
+                    "rowElements":[
+                        "agency",
+                        "prime_vendor",
+                        "contract_id",
+                        "version",
+                        "parent_contract_id",
+                        "purpose",
+                        "original_amount",
+                        "current_amount",
+                        "spent_to_date",
+                        "registration_date",
+                        "apt_pin",
+                        "pin",
+                        "contract_type",
+                        "award_method",
+                        "expense_category",
+                        "start_date",
+                        "end_date",
+                        "document_code",
+                        "contract_industry",
+                        "minority_type_id",
+                        "sub_contract_id",
+                        "vendor_type"
+                    ]
                 },
                 "csv":{
                     "elementsColumn":{
@@ -199,7 +253,9 @@
                         "APT PIN":"brd_awd_no",
                         "Document Code":"document_code@checkbook:ref_document_code",
                         "Contract Industry":"industry_type_name",
-                        "M/WBE Category":"minority_type_id"
+                        "M/WBE Category":"minority_type_id",
+                        "Sub Contract Reference ID":"sub_contract_id",
+                        "Sub Vendor":"vendor_type"
                     }
                 }
             },
@@ -281,7 +337,7 @@
                 "dataType":"text"
             },
             "minority_type_id":{
-                "valueType":"range",
+                "valueType":"value",
                 "dataType":"text",
                 "maxLength":"9"
             }
@@ -307,9 +363,10 @@
         },
         "dataset":{
             "sortColumn":"-registered_date",
-            "name":"checkbook:agreement_snapshot",
+            "name":"checkbook:all_agreement_transactions",
             "columnTypes":{
-                "contract_number":"like"
+                "contract_number":"like",
+                "minority_type_id":"in"
             },
             "displayConfiguration":{
                 "xml":{
@@ -334,10 +391,32 @@
                         "apt_pin":"brd_awd_no",
                         "document_code":"document_code@checkbook:ref_document_code",
                         "contract_industry":"industry_type_name",
-                        "minority_type_id":"minority_type_id"
+                        "minority_type_id":"minority_type_id",
+                        "sub_contract_reference_id":"sub_contract_id",
+                        "sub_vendor":"vendor_type"
                     },
-                    "rowElements":["agency", "prime_vendor", "contract_id", "version", "year", "parent_contract_id", "purpose", "original_amount", "current_amount", "registration_date"
-                        , "apt_pin", "pin", "contract_type", "award_method", "start_date", "end_date", "document_code", "contract_industry","minority_type_id"]
+                    "rowElements":[
+                        "agency",
+                        "prime_vendor",
+                        "contract_id",
+                        "version",
+                        "year",
+                        "parent_contract_id",
+                        "purpose",
+                        "original_amount",
+                        "current_amount",
+                        "registration_date",
+                        "apt_pin",
+                        "pin",
+                        "contract_type",
+                        "award_method",
+                        "start_date", "end_date",
+                        "document_code",
+                        "contract_industry",
+                        "minority_type_id",
+                        "sub_contract_id",
+                        "vendor_type"
+                    ]
                 },
                 "csv":{
                     "elementsColumn":{
@@ -360,7 +439,9 @@
                         "Contract Category":"award_category_name@checkbook:award_category",
                         "Document Code":"document_code@checkbook:ref_document_code",
                         "Contract Industry":"industry_type_name",
-                        "M/WBE Category":"minority_type_id"
+                        "M/WBE Category":"minority_type_id",
+                        "Sub Contract Reference ID":"sub_contract_id",
+                        "Sub Vendor":"vendor_type"
                     }
                 }
             },
@@ -423,7 +504,6 @@
                 "dataType":"date",
                 "format":"YYYY-MM-DD"
             },
-
             "status":{
                 "valueType":"value",
                 "dataType":"text"
@@ -442,7 +522,7 @@
                 "dataType":"text"
             },
             "minority_type_id":{
-                "valueType":"range",
+                "valueType":"value",
                 "dataType":"text",
                 "maxLength":"9"
             }
@@ -466,9 +546,10 @@
         },
         "dataset":{
             "sortColumn":"-registered_date",
-            "name":"checkbook:agreement_snapshot",
+            "name":"checkbook:all_agreement_transactions",
             "columnTypes":{
-                "contract_number":"like"
+                "contract_number":"like",
+                "minority_type_id":"in"
             },
             "displayConfiguration":{
                 "xml":{
@@ -492,10 +573,32 @@
                         "apt_pin":"brd_awd_no",
                         "document_code":"document_code@checkbook:ref_document_code",
                         "contract_industry":"industry_type_name",
-                        "minority_type_id":"minority_type_id"
+                        "minority_type_id":"minority_type_id",
+                        "sub_contract_reference_id":"sub_contract_id",
+                        "sub_vendor":"vendor_type"
                     },
-                    "rowElements":["agency", "prime_vendor", "contract_id", "version", "parent_contract_id", "purpose", "original_amount", "current_amount", "registration_date"
-                        , "apt_pin", "pin", "contract_type", "award_method", "start_date", "end_date", "document_code", "contract_industry","minority_type_id"]
+                    "rowElements":[
+                        "agency",
+                        "prime_vendor",
+                        "contract_id",
+                        "version",
+                        "parent_contract_id",
+                        "purpose",
+                        "original_amount",
+                        "current_amount",
+                        "registration_date",
+                        "apt_pin",
+                        "pin",
+                        "contract_type",
+                        "award_method",
+                        "start_date",
+                        "end_date",
+                        "document_code",
+                        "contract_industry",
+                        "minority_type_id",
+                        "sub_contract_id",
+                        "vendor_type"
+                    ]
                 },
                 "csv":{
                     "elementsColumn":{
@@ -517,7 +620,9 @@
                         "Contract Category":"award_category_name@checkbook:award_category",
                         "Document Code":"document_code@checkbook:ref_document_code",
                         "Contract Industry":"industry_type_name",
-                        "M/WBE Category":"minority_type_id"
+                        "M/WBE Category":"minority_type_id",
+                        "Sub Contract Reference ID":"sub_contract_id",
+                        "Sub Vendor":"vendor_type"
                     }
                 }
             },
@@ -570,7 +675,6 @@
                 "dataType":"date",
                 "format":"YYYY-MM-DD"
             },
-
             "status":{
                 "valueType":"value",
                 "dataType":"text"
@@ -613,9 +717,10 @@
         },
         "dataset":{
             "sortColumn":"-cif_received_date",
-            "name":"checkbook:pending_contracts",
+            "name":"checkbook:all_agreement_transactions",
             "columnTypes":{
-                "contract_number":"like"
+                "contract_number":"like",
+                "minority_type_id":"in"
             },
             "displayConfiguration":{
                 "xml":{
@@ -638,13 +743,36 @@
                         "document_code":"document_code@checkbook:ref_document_code",
                         "version":"document_version",
                         "original_amount":"original_maximum_amount",
-                        "purpose":"description",
                         "original_modified":"original_or_modified_desc",
                         "contract_industry":"industry_type_name@checkbook:industry_type",
-                        "minority_type_id":"minority_type_id"
+                        "minority_type_id":"minority_type_id",
+                        "sub_contract_reference_id":"sub_contract_id",
+                        "sub_vendor":"vendor_type"
                     },
-                    "rowElements":["agency", "prime_vendor", "contract_id", "purpose", "parent_contract_id", "current_amount", "received_date"
-                        , "apt_pin", "pin", "contract_type", "award_method", "start_date", "end_date", "document_code", "version", "original_amount", "purpose", "original_modified", "contract_industry","minority_type_id"]
+                    "rowElements":[
+                        "agency",
+                        "prime_vendor",
+                        "contract_id",
+                        "purpose",
+                        "parent_contract_id",
+                        "current_amount",
+                        "received_date",
+                        "apt_pin",
+                        "pin",
+                        "contract_type",
+                        "award_method",
+                        "start_date",
+                        "end_date",
+                        "document_code",
+                        "version",
+                        "original_amount",
+                        "purpose",
+                        "original_modified",
+                        "contract_industry",
+                        "minority_type_id",
+                        "sub_contract_id",
+                        "vendor_type"
+                    ]
                 },
                 "csv":{
                     "elementsColumn":{
@@ -664,10 +792,11 @@
                         "Document Code":"document_code@checkbook:ref_document_code",
                         "Version":"document_version",
                         "Original Amount":"original_maximum_amount",
-                        "Purpose":"description",
                         "Original Modified":"original_or_modified_desc",
                         "Contract Industry":"industry_type_name@checkbook:industry_type",
-                        "M/WBE Category":"minority_type_id"
+                        "M/WBE Category":"minority_type_id",
+                        "Sub Contract Reference ID":"sub_contract_id",
+                        "Sub Vendor":"vendor_type"
                     }
                 }
             },
@@ -739,7 +868,7 @@
                 "dataType":"text"
             },
             "minority_type_id":{
-                "valueType":"range",
+                "valueType":"value",
                 "dataType":"text",
                 "maxLength":"9"
             }

@@ -21,7 +21,8 @@
             "columnTypes":{
                 "reference_document_number":"like",
                 "reporting_code":"like",
-                "disbursement_number":"like"
+                "disbursement_number":"like",
+                "minority_type_id":"in"
             },
             "displayConfiguration":{
                 "xml":{
@@ -41,10 +42,28 @@
                         "capital_project":"reporting_code",
                         "issue_date":"check_eft_issued_date",
                         "spending_category":"spending_category_name",
-                        "mwbe_category":"minority_type_id"
+                        "mwbe_category":"minority_type_id",
+                        "sub_contract_reference_id":"sub_contract_id",
+                        "sub_vendor":"vendor_type"
                     },
-                    "rowElements":["agency", "fiscal_year", "calendar_year", "document_id", "payee_name", "department", "check_amount", "expense_category"
-                        , "contract_ID", "contract_purpose", "capital_project", "issue_date", "spending_category","minority_type_id"]
+                    "rowElements":[
+                        "agency",
+                        "fiscal_year",
+                        "calendar_year",
+                        "document_id",
+                        "payee_name",
+                        "department",
+                        "check_amount",
+                        "expense_category",
+                        "contract_ID",
+                        "contract_purpose",
+                        "capital_project",
+                        "issue_date",
+                        "spending_category",
+                        "minority_type_id",
+                        "sub_contract_id",
+                        "vendor_type"
+                    ]
                 },
                 "csv":{
                     "elementsColumn":{
@@ -61,10 +80,13 @@
                         "Contract Purpose":"purpose",
                         "Capital Project":"reporting_code",
                         "Spending Category":"spending_category_name",
-                        "M/WBE Category":"minority_type_id"
+                        "M/WBE Category":"minority_type_id",
+                        "Sub Contract Reference ID":"sub_contract_id",
+                        "Sub Vendor":"vendor_type"
                     }
                 }
             },
+            "adjustParameters":"if(function_exists('checkbook_api_adjustSpendingParameterFilters')){checkbook_api_adjustSpendingParameterFilters($dataSet,$parameters,$criteria);}",
             "adjustDataSetResults":"if(function_exists('checkbook_api_adjustSpendingDataSetResults')){checkbook_api_adjustSpendingDataSetResults($data_records);}"
         },
         "requestParameters":{
@@ -129,7 +151,7 @@
                 "maxLength":"2"
             },
             "minority_type_id":{
-                "valueType":"range",
+                "valueType":"value",
                 "dataType":"text",
                 "maxLength":"9"
             }
