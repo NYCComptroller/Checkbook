@@ -14,6 +14,7 @@
                     "Expense Category":"Expense Category",
                     "Fiscal year":"Fiscal year",
                     "Issue Date":"Issue Date",
+                    "M/WBE Category":"M/WBE Category",
                     "Payee Name":"Payee Name",
                     "Spending Category":"Spending Category"
                 },
@@ -29,6 +30,7 @@
                     "expense_category":"expense_category",
                     "fiscal_year":"fiscal_year",
                     "issue_date":"issue_date",
+                    "mwbe_category":"mwbe_category",
                     "payee_name":"payee_name",
                     "spending_category":"spending_category"
                 }
