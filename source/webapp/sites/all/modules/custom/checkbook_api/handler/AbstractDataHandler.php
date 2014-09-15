@@ -49,6 +49,10 @@ abstract class AbstractDataHandler {
     // Load data:
     $data_records = $this->getDataRecords();
 
+      if (isset($this->requestDataSet->adjustDataSetResults)) {
+          eval($this->requestDataSet->adjustDataSetResults);
+      }
+
     // Format Data:
     $data_response = NULL;
     if (is_array($data_records) && count($data_records) > 0) {

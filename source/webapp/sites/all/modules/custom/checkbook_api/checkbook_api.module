@@ -231,6 +231,33 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
   }
 }
 
+/**
+ * Used to adjust columns in the data set after sql call.  This is to handle derived columns
+ * @param $data_records
+ */
+function checkbook_api_adjustContractDataSetResults(&$data_records) {
+    //Derive minority category from minority_type_id
+    foreach($data_records as $key => $data_record) {
+        $minority_type_id = $data_record['minority_type_id'];
+        if(isset($minority_type_id)) {
+            $data_records[$key]['minority_type_id'] = MappingUtil::getMinorityCategoryById($minority_type_id);
+        }
+    }
+}
+
+/**
+ * Used to adjust columns in the data set after sql call.  This is to handle derived columns
+ * @param $data_records
+ */
+function checkbook_api_adjustSpendingDataSetResults(&$data_records) {
+    //Derive minority category from minority_type_id
+    foreach($data_records as $key => $data_record) {
+        $minority_type_id = $data_record['minority_type_id'];
+        if(isset($minority_type_id)) {
+            $data_records[$key]['minority_type_id'] = MappingUtil::getMinorityCategoryById($minority_type_id);
+        }
+    }
+}
 
 function checkbook_api_change_datasource($datasource,$param){
 	if($datasource != null){

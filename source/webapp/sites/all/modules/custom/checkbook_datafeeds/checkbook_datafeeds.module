@@ -1625,6 +1625,18 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#name' => 'vendor',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'vendor', $first_time_load, ''),
             );
+            $form['filter']['mwbe_category'] = array(
+                '#type' => 'select',
+                '#title' => t('M/WBE Category:'),
+                '#options' => _mwbe_category_options(),
+                '#prefix' => '<div class="datafield mwbecategory">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch')),
+                '#multiple' => FALSE,
+                '#id' => 'edit-mwbe-category',
+                '#name' => 'mwbe_category',
+                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'mwbe_category', $first_time_load, ''),
+            );
             $form['filter']['contract_type'] = array(
                 '#type' => 'select',
                 '#title' => t('Contract Type:'),
@@ -2075,6 +2087,10 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
                 );
                 $user_criteria['Prime Vendor'] = $values['vendor'];
             }
+            if ($values['mwbe_category']) {
+                $form['filter']['mwbe_category'] = array('#markup' => '<div><strong>M/WBE Category:</strong> ' . MappingUtil::getCurrenEhtnicityName(explode('~',$values['mwbe_category'])) . '</div>');
+                $user_criteria['M/WBE Category'] = $values['mwbe_category'];
+            }
             break;
     }
     if ($values['apt_pin']) {
@@ -2283,6 +2299,10 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
                 else {
                     $criteria['value']['vendor_code'] = $values['vendor'];
                 }
+            }
+            if ($values['mwbe_category'] && $values['mwbe_category'] != 'Select Category') {
+               // $criteria['value']['minority_type_id'] = str_replace("~",",",$values['mwbe_category']);
+                $criteria['range']['minority_type_id'] = explode('~',$values['mwbe_category']);
             }
             break;
     }
@@ -4239,6 +4259,18 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                     ),
                 ),
             );
+            $form['filter']['mwbe_category'] = array(
+                '#type' => 'select',
+                '#title' => t('M/WBE Category:'),
+                '#options' => _mwbe_category_options(),
+                '#prefix' => '<div class="datafield mwbecategory">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch')),
+                '#multiple' => FALSE,
+                '#id' => 'edit-mwbe-category',
+                '#name' => 'mwbe_category',
+                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'mwbe_category', $first_time_load, ''),
+            );
             $form['filter']['payee_name'] = array(
                 '#type' => 'textfield',
                 '#title' => t('Payee Name:'),
@@ -4817,6 +4849,10 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
         $form['filter']['expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> ' . $values['expense_type'] . '</div>');
         $user_criteria['Expense Type'] = $values['expense_type'];
     }
+    if ($values['mwbe_category']) {
+        $form['filter']['mwbe_category'] = array('#markup' => '<div><strong>M/WBE Category:</strong> ' . MappingUtil::getCurrenEhtnicityName(explode('~',$values['mwbe_category'])) . '</div>');
+        $user_criteria['M/WBE Category'] = $values['mwbe_category'];
+    }
     if ($values['issuedfrom'] && $values['issuedto']) {
         $form['filter']['issued_date'] = array(
             '#markup' => '<div><strong>Issued Date:</strong><br />After: ' . $values['issuedfrom'] . ' Before: ' . $values['issuedto'] . '</div>'
@@ -4978,6 +5014,12 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
                 else {
                     $criteria['value']['payee_code'] = $values['payee_name'];
                 }
+            }
+            if ($values['mwbe_category'] && $values['mwbe_category'] != 'Select Category') {
+                //$criteria['value']['minority_type_id'] = $values['mwbe_category'];
+                //$criteria['value']['minority_type_id'] = str_replace("~",",",$values['mwbe_category']);
+
+                $criteria['range']['minority_type_id'] = explode('~',$values['mwbe_category']);
             }
             break;
     }
@@ -5681,6 +5723,29 @@ function _expcat_options($agency, $dept, $sc, $year, $data_source = null) {
             return $output;
             break;
     }
+}
+
+/**
+ * Get mwbe category name and id using mapping
+ *
+ * Total M/WBE 2,3,4,5,7,9,11
+ * Asian American 4,5
+ * Black American 2
+ * Women 9
+ * Hispanic American 3
+ * Emerging ?
+ * Non-M/WBE 7
+ * Individuals and Others 11
+ * @return array
+ */
+function _mwbe_category_options()
+{
+    $minority_cat_map = MappingUtil::getMinorityCategoryMappings();
+    $results = array('' => 'Select Category');
+    foreach($minority_cat_map as $category => $minority_types) {
+        $results[implode('~',$minority_types)] = $category;
+    }
+    return $results;
 }
 
 /**
