@@ -1617,7 +1617,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
             );
             $form['filter']['vendor'] = array(
                 '#type' => 'textfield',
-                '#title' => t('Prime Vendor:'),
+                '#title' => t('Vendor:'),
                 '#attributes' => array('class' => array('watch')),
                 '#prefix' => '<div class="datafield vendor">',
                 '#suffix' => '</div>',
@@ -1756,6 +1756,17 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#id' => 'edit-category',
                 '#name' => 'category',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'category', $first_time_load, 'expense'),
+            );
+            $form['filter']['purpose'] = array(
+
+                '#type' => 'textfield',
+                '#title' => t('Purpose:'),
+                '#prefix' => '<div class="datafield purpose">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch')),
+                '#id' => 'edit-purpose',
+                '#name' => 'purpose',
+                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'purpose', $first_time_load, ''),
             );
             $form['filter']['agency'] = array(
                 '#type' => 'select',
@@ -2085,7 +2096,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
                 $form['filter']['vendor'] = array(
                     '#markup' => '<div><strong>Prime Vendor:</strong> ' . $values['vendor'] . '</div>',
                 );
-                $user_criteria['Prime Vendor'] = $values['vendor'];
+                $user_criteria['Vendor'] = $values['vendor'];
             }
             if ($values['mwbe_category']) {
                 $form['filter']['mwbe_category'] = array('#markup' => '<div><strong>M/WBE Category:</strong> ' . MappingUtil::getCurrenEhtnicityName(explode('~',$values['mwbe_category'])) . '</div>');
