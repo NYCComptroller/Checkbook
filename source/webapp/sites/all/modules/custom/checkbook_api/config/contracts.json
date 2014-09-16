@@ -21,7 +21,7 @@
         },
         "dataset":{
             "sortColumn":"-registered_date",
-            "name":"checkbook:all_agreement_transactions",
+            "name":"checkbook:agreement_snapshot",
             "columnTypes":{
                 "expenditure_object_codes":"trueLike",
                 "contract_number":"like",
@@ -41,6 +41,7 @@
                         "current_amount":"maximum_contract_amount",
                         "spent_to_date":"spending_amount@checkbook:contracts_coa_aggregates",
                         "prime_vendor":"vendor_name",
+                        "vendor":"vendor_name",
                         "agency":"agency_name",
                         "contract_type":"agreement_type_name",
                         "award_method":"award_method_name",
@@ -59,6 +60,7 @@
                     "rowElements":[
                         "agency",
                         "prime_vendor",
+                        "vendor",
                         "contract_id",
                         "version",
                         "year",
@@ -93,6 +95,7 @@
                         "Current Amount":"maximum_contract_amount",
                         "Spent to date":"spending_amount@checkbook:contracts_coa_aggregates",
                         "Prime Vendor":"vendor_name",
+                        "Vendor":"vendor_name",
                         "Agency":"agency_name",
                         "Contract Type":"agreement_type_name",
                         "Award Method":"award_method_name",
@@ -173,7 +176,7 @@
         },
         "dataset":{
             "sortColumn":"-registered_date",
-            "name":"checkbook:all_agreement_transactions",
+            "name":"checkbook:agreement_snapshot",
             "columnTypes":{
                 "expenditure_object_codes":"trueLike",
                 "contract_number":"like",
@@ -192,6 +195,7 @@
                         "current_amount":"maximum_contract_amount",
                         "spent_to_date":"rfed_amount",
                         "prime_vendor":"vendor_name",
+                        "vendor":"vendor_name",
                         "agency":"agency_name",
                         "contract_type":"agreement_type_name",
                         "award_method":"award_method_name",
@@ -210,6 +214,7 @@
                     "rowElements":[
                         "agency",
                         "prime_vendor",
+                        "vendor",
                         "contract_id",
                         "version",
                         "parent_contract_id",
@@ -242,6 +247,7 @@
                         "Current Amount":"maximum_contract_amount",
                         "Spent to date":"rfed_amount",
                         "Prime Vendor":"vendor_name",
+                        "Vendor":"vendor_name",
                         "Agency":"agency_name",
                         "Contract Type":"agreement_type_name",
                         "Award Method":"award_method_name",
@@ -363,7 +369,7 @@
         },
         "dataset":{
             "sortColumn":"-registered_date",
-            "name":"checkbook:all_agreement_transactions",
+            "name":"checkbook:agreement_snapshot",
             "columnTypes":{
                 "contract_number":"like",
                 "minority_type_id":"in"
@@ -381,6 +387,7 @@
                         "original_amount":"original_contract_amount",
                         "current_amount":"maximum_contract_amount",
                         "prime_vendor":"vendor_name",
+                        "vendor":"vendor_name",
                         "agency":"agency_name",
                         "contract_type":"agreement_type_name",
                         "award_method":"award_method_name",
@@ -398,6 +405,7 @@
                     "rowElements":[
                         "agency",
                         "prime_vendor",
+                        "vendor",
                         "contract_id",
                         "version",
                         "year",
@@ -428,6 +436,7 @@
                         "Original Amount":"original_contract_amount",
                         "Current Amount":"maximum_contract_amount",
                         "Prime Vendor":"vendor_name",
+                        "Vendor":"vendor_name",
                         "Agency":"agency_name",
                         "Contract Type":"agreement_type_name",
                         "Award Method":"award_method_name",
@@ -546,7 +555,7 @@
         },
         "dataset":{
             "sortColumn":"-registered_date",
-            "name":"checkbook:all_agreement_transactions",
+            "name":"checkbook:agreement_snapshot",
             "columnTypes":{
                 "contract_number":"like",
                 "minority_type_id":"in"
@@ -563,6 +572,7 @@
                         "original_amount":"original_contract_amount",
                         "current_amount":"maximum_contract_amount",
                         "prime_vendor":"vendor_name",
+                        "vendor":"vendor_name",
                         "agency":"agency_name",
                         "contract_type":"agreement_type_name",
                         "award_method":"award_method_name",
@@ -580,6 +590,7 @@
                     "rowElements":[
                         "agency",
                         "prime_vendor",
+                        "vendor",
                         "contract_id",
                         "version",
                         "parent_contract_id",
@@ -609,6 +620,7 @@
                         "Original Amount":"original_contract_amount",
                         "Current Amount":"maximum_contract_amount",
                         "Prime Vendor":"vendor_name",
+                        "Vendor":"vendor_name",
                         "Agency":"agency_name",
                         "Contract Type":"agreement_type_name",
                         "Award Method":"award_method_name",
@@ -717,7 +729,7 @@
         },
         "dataset":{
             "sortColumn":"-cif_received_date",
-            "name":"checkbook:all_agreement_transactions",
+            "name":"checkbook:pending_contracts",
             "columnTypes":{
                 "contract_number":"like",
                 "minority_type_id":"in"
@@ -731,6 +743,7 @@
                         "purpose":"description",
                         "current_amount":"revised_maximum_amount",
                         "prime_vendor":"vendor_legal_name",
+                        "vendor":"vendor_legal_name",
                         "agency":"document_agency_name",
                         "contract_type":"contract_type_name",
                         "award_method":"award_method_name",
@@ -752,6 +765,7 @@
                     "rowElements":[
                         "agency",
                         "prime_vendor",
+                        "vendor",
                         "contract_id",
                         "purpose",
                         "parent_contract_id",
@@ -781,6 +795,7 @@
                         "Purpose":"description",
                         "Current Amount":"revised_maximum_amount",
                         "Prime Vendor":"vendor_legal_name",
+                        "Vendor":"vendor_legal_name",
                         "Received Date":"cif_received_date",
                         "Agency":"document_agency_name",
                         "Contract Type":"contract_type_name",
@@ -868,7 +883,7 @@
                 "dataType":"text"
             },
             "minority_type_id":{
-                "valueType":"value",
+                "valueType":"range",
                 "dataType":"text",
                 "maxLength":"9"
             }

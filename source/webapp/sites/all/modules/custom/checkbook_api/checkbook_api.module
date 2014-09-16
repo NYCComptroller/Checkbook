@@ -247,6 +247,10 @@ function checkbook_api_adjustContractDataSetResults(&$data_records) {
         //Derive sub vendor column from vendor type
         if(isset($data_record['vendor_type'])) {
             $data_records[$key]['vendor_type'] = (preg_match('/S/', $data_record['vendor_type'])) ? 'Yes' : 'No';
+            //If Sub vendor field = "Yes" following should be "N/A": Expense Category
+            if($data_records[$key]['vendor_type'] == 'Yes') {
+                $data_records[$key]['expenditure_object_name'] = 'N/A';
+            }
         }
     }
 }
@@ -263,7 +267,9 @@ function checkbook_api_adjustSpendingParameterFilters(&$data_set, &$parameters, 
         $parameters['minority_type_id'] = explode('~',$parameters['minority_type_id']);
 }
 /**
- * Used to adjust columns in the data set after sql call.  This is to handle derived columns
+ * Used to adjust columns in the data set after sql call.
+ * This is to handle derived columns
+ *
  * @param $data_records
  */
 function checkbook_api_adjustSpendingDataSetResults(&$data_records) {
@@ -276,6 +282,13 @@ function checkbook_api_adjustSpendingDataSetResults(&$data_records) {
         //Derive sub vendor column from vendor type
         if(isset($data_record['vendor_type'])) {
             $data_records[$key]['vendor_type'] = (preg_match('/S/', $data_record['vendor_type'])) ? 'Yes' : 'No';
+            //If Sub vendor field = "Yes" following should be "N/A": Capital Project,Department,Document ID,Expense Category
+            if($data_records[$key]['vendor_type'] == 'Yes') {
+                $data_records[$key]['reporting_code'] = 'N/A';
+                $data_records[$key]['department_name'] = 'N/A';
+                $data_records[$key]['disbursement_number'] = 'N/A';
+                $data_records[$key]['expenditure_object_name'] = 'N/A';
+            }
         }
     }
 }
