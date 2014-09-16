@@ -12,8 +12,8 @@ class Domain {
 }
 
 class VendorType {
-    public static $PRIME_VENDOR = 'prime_vendor';
-    public static $SUB_VENDOR = 'sub_vendor';
+    public static $PRIME_VENDOR = 'P';
+    public static $SUB_VENDOR = 'S';
 }
 
 

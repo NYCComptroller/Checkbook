@@ -28,10 +28,22 @@ if($IsOge)
         "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id'].'/datasource/checkbook_oge'.  '/agency/' . $spending_results['agency_id'] . "/year/" . _getCurrentYearID() . "/yeartype/B/vendor/".$spending_results["vendor_id"],
     );
 else
-    $linkable_fields = array(
-        "agency_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getCurrentYearID() . "/yeartype/B/agency/".$spending_results["agency_id"],
-        "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getCurrentYearID() . "/yeartype/B/vendor/".$spending_results["vendor_id"],
-    );
+{
+    if($spending_results['is_prime_or_sub'] == 'S'){
+        $linkable_fields = array(
+            "agency_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getCurrentYearID() . "/yeartype/B/agency/".$spending_results["agency_id"],
+            "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getCurrentYearID() . "/yeartype/B/subvendor/".$spending_results["vendor_id"],
+        );
+    }
+    else{
+        $linkable_fields = array(
+            "agency_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getCurrentYearID() . "/yeartype/B/agency/".$spending_results["agency_id"],
+            "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getCurrentYearID() . "/yeartype/B/vendor/".$spending_results["vendor_id"],
+        );
+    }
+
+}
+
 
 if(!$IsOge)
 $date_fields = array("check_eft_issued_date");
@@ -78,7 +90,7 @@ foreach ($spending_parameter_mapping as $key=>$title){
       if($id == '4' || $id == '5'){
           $id = '4~5';
       }
-      $value = "<a href='/spending_landing/yeartype/B/year/115/mwbe/".$id ."'>" .mwbe_category_mapping($spending_results["minority_type_id"]) ."</a>";
+      $value = "<a href='/spending_landing/yeartype/B/year/115/mwbe/".$id ."'>" .$spending_results["minority_type_name"] ."</a>";
   }
   if($key == 'is_prime_or_sub' && $spending_results["is_prime_or_sub"] == 'P'){
     $value = 'No';

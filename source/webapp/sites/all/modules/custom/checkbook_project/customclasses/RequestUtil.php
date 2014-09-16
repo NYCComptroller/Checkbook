@@ -243,25 +243,49 @@ class RequestUtil{
     }
 
     /**
-     * Returns chart title based on 'category'/'featured dashboard'/'domain' for sub vendor
+     * Returns chart title for a prime or sub vendor page based on 'category'/'featured dashboard'/'domain'
      * using values from current path.
+     *
+     * The page title above the visualization for Prime vendor Level and Sub vendor level pages:
+     *
+     * 1. Follow a three-line format when the M/WBE Category is equal to any of the following:
+     *    Asian American, Black American, Women or Hispanic
+     * 2. Follow a two-line format when the M/WBE Category is equal to any of the following:
+     *    Individual & Others or Non M/WBE
      *
      * @param string $domain
      * @param string $defaultTitle
-     * @param string $vendor_type
      * @return string
      */
-    static function getSubVendorChartTitle($domain,$defaultTitle = 'Total Spending') {
-        $title = '';
+    static function getTitleByVendorType($domain,$defaultTitle = 'Total Spending') {
+        $title = $minority_category = $minority_type_id = '';
 
-        if(_checkbook_check_is_sub_vendor_ethnicity_page()) {
-            $title = MappingUtil::getCurrenEhtnicityName() . ' ';
+        if(_checkbook_check_is_mwbe_page()) {
+            $minority_type_id = _getRequestParamValue('mwbe');
         }
-        else if(_checkbook_check_is_sub_vendor_level_page()) {
-            $minority_category = self::getLatestMinorityCategory($domain,VendorType::$SUB_VENDOR);
-            $title = '<p class="sub-chart-title">M/WBE Category: '.$minority_category.'</p>';
+        else {
+            $lastReqParam = _getLastRequestParamValue();
+            foreach($lastReqParam as $key => $value){
+                switch($key){
+                    case 'vendor':
+                        $minority_type_id = self::getLatestMinorityTypeByVendorType($domain,$value,VendorType::$PRIME_VENDOR);
+                        break;
+                    case 'subvendor':
+                        if($value != 'all')
+                            $minority_type_id = self::getLatestMinorityTypeByVendorType($domain,$value,VendorType::$SUB_VENDOR);
+                        break;
+                    default:
+                }
+            }
         }
+        $minority_type_ids = explode('~',$minority_type_id);
+        $minority_category = MappingUtil::getCurrenEhtnicityName($minority_type_ids);
+        $MWBE_certified = MappingUtil::isMWBECertified($minority_type_ids);
+        $title = $MWBE_certified
+            ? '<p class="sub-chart-title">M/WBE Category: '.$minority_category.'</p>'
+            : $minority_category . ' ';
         $title .= RequestUtil::getSpendingCategoryName($defaultTitle);
+
         return html_entity_decode($title);
     }
 
@@ -269,11 +293,11 @@ class RequestUtil{
      * returns the latest minority category by domain, vendor type and the selected year.
      *
      * @param $domain
+     * @param $vendor_id
      * @param $vendor_type
      * @return mixed
      */
-    static function getLatestMinorityCategory($domain,$vendor_type){
-        $sub_vendor_id = _getRequestParamValue('subvendor');
+    static function getLatestMinorityTypeByVendorType($domain,$vendor_id,$vendor_type){
         $year_id = _getRequestParamValue('year');
         $type_of_year = _getRequestParamValue('yeartype');
 
@@ -290,11 +314,11 @@ class RequestUtil{
                 $data_set = "checkbook:contract_vendor_latest_mwbe_category";
                 break;
         }
-        $minority_types = _checkbook_project_querydataset($data_set,array('minority_type_id'),array('vendor_id'=>$sub_vendor_id,'year_id'=>$year_id,'type_of_year'=>$type_of_year));
+        $parameters = array('vendor_id'=>$vendor_id,"is_prime_or_sub"=>$vendor_type,'type_of_year'=>$type_of_year,'year_id'=>$year_id);
+        $minority_types = _checkbook_project_querydataset($data_set,array('minority_type_id'),$parameters);
         $minority_type_id = $minority_types[0]['minority_type_id'];
-        $minority_category = MappingUtil::getMinorityCategoryById($minority_type_id);
 
-        return $minority_category;
+        return $minority_type_id;
     }
 
     /** Returns Spending page title and Breadcrumb */

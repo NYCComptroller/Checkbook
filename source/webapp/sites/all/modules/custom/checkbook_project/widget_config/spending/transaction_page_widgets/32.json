@@ -5,8 +5,9 @@
                           "fundcls","bdgcodenm","captprj","expdoc","vendornm","deptnm","expcategorynm",
                           "syear","scalyear","magid","agid","cvendor","cagency","awdmethod","status","csize",
                           "cindustry","expcategorycode","month","scomline",
-                          "comline","comline_exact","budname_exact","budname","entcontnum_exact","entcontnum","industry","mwbe"],
-    "urlParamMap":{"year":"check_eft_issued_nyc_year_id","calyear":"calendar_fiscal_year_id","agency":"agency_id",
+                          "comline","comline_exact","budname_exact","budname","entcontnum_exact","entcontnum","industry","mwbe","subvendor"],
+    "urlParamMap":{
+        "year":"check_eft_issued_nyc_year_id","calyear":"calendar_fiscal_year_id","agency":"agency_id",
         "mcagency":"master_child_contract_agency_id","agencyh":"agency_history_id","vendor":"vendor_id",
         "mcvendor":"master_child_contract_vendor_id","expcategory":"expenditure_object_id",
         "checkamtr":"check_amount","dept":"department_id","contnum":"reference_document_number",
@@ -26,7 +27,9 @@
         "budname_exact":"oge_budget_name",
         "budname":"oge_budget_name",
         "mwbe":"minority_type_id",
-        "industry":"industry_type_id"},
+        "industry":"industry_type_id",
+        "subvendor":"vendor_id"
+    },
     "paramTypeConfig":{"checkamtr":"rangeid","checkamt":"range","chkdate":"range","captprj":"like","vendornm":"like",
         "contnum":"like","bdgcodenm":"like","expdoc":"like","syear":"le","scalyear":"le",
         "budname":"like","comline":"like","entcontnum":"like","scomline":"le",
@@ -34,7 +37,8 @@
     "dataset": "checkbook:fact_disbursement_line_item",
     "preProcessConfiguration":"
         $node->is_mwbe = _checkbook_check_is_mwbe_page();
-        if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:fact_disbursement_line_item_mwbe';
+        $node->is_subvendor = _checkbook_check_is_sub_vendor_page();
+        if($node->is_subvendor) $node->widgetConfig->dataset = 'checkbook:subcontract_spending_details';
     ",
     "adjustParameters":"
             $cat = $parameters['spending_category_id'];
@@ -78,6 +82,21 @@
                     }
                 }
             }
+
+        //Sub vendor page, need to use prime_vendor_id
+        if($node->is_subvendor) {
+            $subvendor = _getRequestParamValue('subvendor');
+            if(isset($adjustedParameters['vendor_id'])) {
+                $adjustedParameters['prime_vendor_id'] = $adjustedParameters['vendor_id'];
+            }
+            if($subvendor == 'all') {
+                $data_controller_instance = data_controller_get_operator_factory_instance();
+                $adjustedParameters['vendor_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
+            }
+            else {
+                $adjustedParameters['vendor_id'] = $subvendor;
+            }
+        }
             return $adjustedParameters;
     ",
     "columns": ["check_amount_sum"],

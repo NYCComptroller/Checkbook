@@ -12,15 +12,17 @@
             "expense_category":"expenditure_object_code",
             "contract_ID":"reference_document_number",
             "capital_project_code":"reporting_code",
-            "spending_category":"spending_category_code@checkbook:spending_category"
+            "spending_category":"spending_category_code@checkbook:spending_category",
+            "minority_type_id":"minority_type_id"
         },
         "dataset":{
             "sortColumn":"-check_amount",
-            "name":"checkbook:fact_disbursement_line_item",
+            "name":"checkbook:spending_transactions_all",
             "columnTypes":{
                 "reference_document_number":"like",
                 "reporting_code":"like",
-                "disbursement_number":"like"
+                "disbursement_number":"like",
+                "minority_type_id":"in"
             },
             "displayConfiguration":{
                 "xml":{
@@ -39,10 +41,29 @@
                         "contract_purpose":"purpose",
                         "capital_project":"reporting_code",
                         "issue_date":"check_eft_issued_date",
-                        "spending_category":"spending_category_name"
+                        "spending_category":"spending_category_name",
+                        "mwbe_category":"minority_type_id",
+                        "sub_contract_reference_id":"sub_contract_id",
+                        "sub_vendor":"vendor_type"
                     },
-                    "rowElements":["agency", "fiscal_year", "calendar_year", "document_id", "payee_name", "department", "check_amount", "expense_category"
-                        , "contract_ID", "contract_purpose", "capital_project", "issue_date", "spending_category"]
+                    "rowElements":[
+                        "agency",
+                        "fiscal_year",
+                        "calendar_year",
+                        "document_id",
+                        "payee_name",
+                        "department",
+                        "check_amount",
+                        "expense_category",
+                        "contract_ID",
+                        "contract_purpose",
+                        "capital_project",
+                        "issue_date",
+                        "spending_category",
+                        "minority_type_id",
+                        "sub_contract_id",
+                        "vendor_type"
+                    ]
                 },
                 "csv":{
                     "elementsColumn":{
@@ -58,10 +79,15 @@
                         "Contract ID":"reference_document_number",
                         "Contract Purpose":"purpose",
                         "Capital Project":"reporting_code",
-                        "Spending Category":"spending_category_name"
+                        "Spending Category":"spending_category_name",
+                        "M/WBE Category":"minority_type_id",
+                        "Sub Contract Reference ID":"sub_contract_id",
+                        "Sub Vendor":"vendor_type"
                     }
                 }
-            }
+            },
+            "adjustParameters":"if(function_exists('checkbook_api_adjustSpendingParameterFilters')){checkbook_api_adjustSpendingParameterFilters($dataSet,$parameters,$criteria);}",
+            "adjustDataSetResults":"if(function_exists('checkbook_api_adjustSpendingDataSetResults')){checkbook_api_adjustSpendingDataSetResults($data_records);}"
         },
         "requestParameters":{
             "fiscal_year":{
@@ -123,6 +149,11 @@
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
+            },
+            "minority_type_id":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"9"
             }
         }
     },

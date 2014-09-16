@@ -29,7 +29,11 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
 
         }
         else {
-            $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". _getFiscalYearID() .'/vendor/'.$contracts_results['vendor_id'];
+            if($contracts_results["is_prime_or_sub"] == 'S'){
+                $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". _getFiscalYearID() .'/subvendor/'.$contracts_results['vendor_id'];
+            }else{
+                $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". _getFiscalYearID() .'/vendor/'.$contracts_results['vendor_id'];
+            }
             $agency_link = "/contracts_landing/status/" .$status."/yeartype/B/year/"._getFiscalYearID().'/agency/'.$contracts_results['agency_id'];
         }
         $contract_Id_link = "/contracts_landing/status/" .$status;
@@ -40,7 +44,11 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
             $agency_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/"._getFiscalYearID().'/agency/'.$contracts_results['agency_id'];
         }
         else{
-            $vendor_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/year/"._getFiscalYearID() .'/vendor/'.$contracts_results['vendor_id'];
+            if($contracts_results["is_prime_or_sub"] == 'S'){
+                $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". _getFiscalYearID() .'/subvendor/'.$contracts_results['vendor_id'];
+            }else{
+                $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". _getFiscalYearID() .'/vendor/'.$contracts_results['vendor_id'];
+            }
             $agency_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/year/"._getFiscalYearID().'/agency/'.$contracts_results['agency_id'];
         }
         $contract_Id_link = "/contracts_revenue_landing/status/" .$status;
@@ -157,7 +165,7 @@ foreach ($contracts_parameter_mapping as $key => $title){
       if($id == '4' || $id == '5'){
           $id = '4~5';
       }
-      $value = "<a href='/contracts_landing/status/A/yeartype/B/year/115/mwbe/".$id ."'>" .mwbe_category_mapping($contracts_results["minority_type_id"]) ."</a>";
+      $value = "<a href='/contracts_landing/status/A/yeartype/B/year/115/mwbe/".$id ."'>" .$contracts_results["minority_type_name"] ."</a>";
   }
   if($key == 'is_prime_or_sub' && $contracts_results["is_prime_or_sub"] == 'P'){
       $value = 'No';
