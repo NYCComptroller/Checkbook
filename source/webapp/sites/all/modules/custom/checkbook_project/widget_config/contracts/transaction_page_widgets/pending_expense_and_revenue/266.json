@@ -251,7 +251,7 @@
         var oAwdMethod = getNamedFilterCriteria('fAwdMethodId');
         var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
         var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
-        var oMwbeVendorId = getNamedFilterCriteria('fmwbeVendorId');
+        var oVendorType = getNamedFilterCriteria('fvendorType');
 
         var  cUrl = oTable.fnSettings().sAjaxSource;
         cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
@@ -260,7 +260,7 @@
         cUrl = adjustUrlParameter(cUrl,'awdmethod',oAwdMethod);
         cUrl = adjustUrlParameter(cUrl,'cindustry',oIndustryType);
         cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
-        cUrl = adjustUrlParameter(cUrl,'mwbe_vendor',oMwbeVendorId);
+        cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
 
 
         //remove advance search param if narrow down search is present for amount

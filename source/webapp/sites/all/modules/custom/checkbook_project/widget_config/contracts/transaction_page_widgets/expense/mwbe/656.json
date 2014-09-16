@@ -2,10 +2,10 @@
     "widgetType": "data_tables",
     "widgetSubType": "dataTableList",
     "stickyHeader":true,
-    "cleanURLParameters":["mwbe_vendor","mwbe","doctype","contstatus","year","calyear","yeartype","agency","vendor","curamtr","vendornm","contdesc","agrmnttype",
+    "cleanURLParameters":["vendortype","mwbe","doctype","contstatus","year","calyear","yeartype","agency","vendor","curamtr","vendornm","contdesc","agrmnttype",
         "agencyh","contnum","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry",
         "csize","modamt"],
-    "urlParamMap":{"mwbe_vendor":"vendor_id@checkbook:mwbe_contracts_coa_aggregates",
+    "urlParamMap":{"vendortype":"vendor_type",
         "mwbe":"minority_type_id@checkbook:mwbe_contracts_coa_aggregates","doctype":"document_code@checkbook:ref_document_code",
         "contstatus":"status_flag@checkbook:mwbe_contracts_coa_aggregates" ,"year":"fiscal_year_id@checkbook:mwbe_contracts_coa_aggregates",
         "calyear":"fiscal_year_id@checkbook:mwbe_contracts_coa_aggregates","yeartype":"type_of_year@checkbook:mwbe_contracts_coa_aggregates" ,
@@ -168,6 +168,9 @@ return $header;
 {"labelAlias": "mwbe_category","column":"formatted_minority_name","sortSourceColumn": "minority_type_name"}
 ],
 "adjustParameters":"
+if(isset($parameters['vendor_type'])){
+    $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
+}
 if(function_exists('_checkbook_project_adjustContractParameterFilters')){
 _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
 }
@@ -288,7 +291,7 @@ var oVendorIds = getNamedFilterCriteria('fvendorId');
 var oCurAmount = getNamedFilterCriteria('fCurAmount');
 var oAwdMethod = getNamedFilterCriteria('fAwdMethodId');
 var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
-var oMwbeVendorId = getNamedFilterCriteria('fmwbeVendorId');
+var oVendorType = getNamedFilterCriteria('fvendorType');
 var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
 
 var  cUrl = oTable.fnSettings().sAjaxSource;
@@ -297,7 +300,7 @@ cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
 cUrl = adjustUrlParameter(cUrl,'curamtr',oCurAmount);
 cUrl = adjustUrlParameter(cUrl,'awdmethod',oAwdMethod);
 cUrl = adjustUrlParameter(cUrl,'cindustry',oIndustryType);
-cUrl = adjustUrlParameter(cUrl,'mwbe_vendor',oMwbeVendorId);
+cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
 cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
 
 
