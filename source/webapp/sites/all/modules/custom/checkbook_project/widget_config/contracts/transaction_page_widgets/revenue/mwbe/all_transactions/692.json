@@ -2,31 +2,32 @@
     "widgetType":"phpparser",
     "parentNid":688,
     "no_results_content":"No Results Found",
+    "autocomplete":false,
     "defaultParameters":{
-        "latest_flag":"Y",
-        "minority_type_id":"2~3~4~5~9"
+        "latest_flag":"Y"
     },
     "limit":10,
     "startWith":0,
     "urlParamMap":{"doctype":"document_code.document_code.document_code"},
-    "columns":["vendor.vendor", "vendor.vendor.legal_name", "txcount"],
+    "columns":["vendor_type.vendor_type", "txcount"],
     "orderBy":"-txcount",
     "getTotalDataCount":true,
     "facetPager":true,
-    "filterName":"M/WBE Vendor",
-    "urlParameterName":"mwbe_vendor",
-    "autocompleteParamName":"mwbe_vendor_auto",
-    "autocompleteID":"fmwbeVendorId",
-    "autocompleteField":"vendor_name",
+    "filterName":"Vendor Type",
+    "urlParameterName":"vendortype",
+    "autocompleteID":"fvendorType",
     "maxSelect":5,
     "adjustParameters":"
-    checkbook_faceted_search_adjust_param($node);
+if(isset($parameters['vendor_type'])){
+$parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
+}
+checkbook_faceted_search_adjust_param($node);
 if(function_exists('_checkbook_project_adjustContractParameterFilters')){
 _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
 }
 if(function_exists('_checkbook_project_applyParameterFilters')){
 $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-$adjustedParameters['vendor.vendor'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+$adjustedParameters['vendor_type'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
 return $adjustedParameters;
 }
 return $parameters;
