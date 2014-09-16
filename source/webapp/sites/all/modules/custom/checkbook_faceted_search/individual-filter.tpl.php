@@ -52,7 +52,10 @@ if($node->widgetConfig->filterName == 'M/WBE Category'){
 
 //Data alteration for Vendor Type Facet
 if($node->widgetConfig->filterName == 'Vendor Type'){
-
+  $vendor_types = _getRequestParamValue('vendortype');
+  $vendor_type_data = MappingUtil::getVendorTypes($unchecked, $vendor_types);
+  $unchecked = $vendor_type_data['unchecked'];
+  $checked = $vendor_type_data['checked'];
 }
 
 if(count($checked) == 0){

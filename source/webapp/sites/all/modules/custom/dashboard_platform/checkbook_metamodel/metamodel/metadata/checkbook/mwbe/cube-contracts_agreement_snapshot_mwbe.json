@@ -87,7 +87,17 @@
                             "sourceColumnName": "vendor_type"
                         }
                     ]
+                },
+                {
+                    "name": "vendor_name",
+                    "levels": [
+                        {
+                            "name": "vendor_name",
+                            "sourceColumnName": "vendor_name"
+                        }
+                    ]
                 }
+
             ],
             "measures": {
                 "txcount": {

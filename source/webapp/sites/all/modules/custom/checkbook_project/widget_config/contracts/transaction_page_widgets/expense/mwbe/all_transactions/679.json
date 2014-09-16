@@ -1,8 +1,8 @@
 {
     "widgetType": "data_tables",
     "widgetSubType": "dataTableList",
-    "cleanURLParameters":["mwbe_vendor","mwbe","doctype","agency","vendor","curamtr","vendornm","contdesc","agrmnttype","agencyh","contnum","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize"],
-    "urlParamMap":{"mwbe_vendor":"vendor_id",
+    "cleanURLParameters":["vendortype","mwbe_vendor","mwbe","doctype","agency","vendor","curamtr","vendornm","contdesc","agrmnttype","agencyh","contnum","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize"],
+    "urlParamMap":{"vendortype":"vendor_type",
         "mwbe":"minority_type_id","doctype":"document_code@checkbook:ref_document_code","agency":"agency_id","vendor":"vendor_id","curamtr":"maximum_contract_amount","vendornm":"vendor_name","contdesc":"description","agrmnttype":"agreement_type_id","agencyh":"agency_history_id","contnum":"contract_number","aptpin":"brd_awd_no","pin":"tracking_number","awdmethod":"award_method_id","curamt":"maximum_contract_amount","startdate":"effective_begin_date","enddate":"effective_end_date","regdate":"registered_date","cindustry":"industry_type_id","csize":"award_size_id"
     },
     "allowRequestParams":["contstatus"],
@@ -143,13 +143,16 @@ return $header;
 
 ],
 "adjustParameters":"
+if(isset($parameters['vendor_type'])){
+    $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
+}
 if(function_exists('_checkbook_project_adjustContractParameterFilters')){
-_checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered_all');
+    _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered_all');
 }
 
 if(function_exists('_checkbook_project_applyParameterFilters')){
-$adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-return $adjustedParameters;
+    $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+    return $adjustedParameters;
 }
 
 return $parameters;
