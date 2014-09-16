@@ -15,6 +15,9 @@
     "autocompleteField":"document_agency_name", 	
 	"maxSelect":1,        
     "adjustParameters":"
+if(isset($parameters['vendor_type'])){
+$parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
+}
     if(function_exists('_checkbook_project_adjustContractParameterFilters')){
         _checkbook_project_adjustContractParameterFilters($node,$parameters,'pending');
     }
