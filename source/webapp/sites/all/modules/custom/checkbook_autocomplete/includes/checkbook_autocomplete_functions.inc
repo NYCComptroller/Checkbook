@@ -106,7 +106,7 @@ function _checkbook_autocomplete_contracts_vendor($status, $category, $contract_
             case 'checkbook':
                 $query = 'select/?q=vendor_name_code_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name_code&fq=domain:contracts&wt=php&facet.limit=10';
                 $query .= '&fq=-agency_type:oge';
-                $matches = _get_contracts_datafeeds_autocomplete_results('vendor_name_code', $query, $status, $category, $contract_type, $agency, $award_method, $year, $data_source);
+                $matches = _get_contracts_datafeeds_autocomplete_results('vendor_name_code', $query, $status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $data_source);
                 break;
             case 'checkbook_oge':
                 $query = 'select/?q=vendor_name_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name&fq=domain:contracts&wt=php&facet.limit=10';
