@@ -4,11 +4,10 @@
     "autocomplete":false,
     "no_results_content":"No Results Found",
     "urlParamMap":{
-        "doctype":"document_code.document_code.document_code",
-        "minority_type_id":"2~3~4~5~9"
+        "doctype":"document_code.document_code.document_code"
     },
     "dataset":"checkbook:pending_contracts",
-    "columns":["vendor.vendor", "vendor_legal_name.vendor_legal_name", "txcount"],
+    "columns":["vendor_type.vendor_type", "txcount"],
     "orderBy":"-txcount",
     "getTotalDataCount":true,
     "facetPager":true,

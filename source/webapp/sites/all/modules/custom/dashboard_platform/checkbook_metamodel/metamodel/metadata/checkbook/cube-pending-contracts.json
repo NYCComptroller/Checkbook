@@ -19,6 +19,15 @@
                     ]
                 },
                 {
+                    "name": "vendor_type",
+                    "levels": [
+                        {
+                            "name": "vendor_type",
+                            "sourceColumnName": "vendor_type"
+                        }
+                    ]
+                },
+                {
                     "name": "minority_type",
                     "levels": [
                         {
