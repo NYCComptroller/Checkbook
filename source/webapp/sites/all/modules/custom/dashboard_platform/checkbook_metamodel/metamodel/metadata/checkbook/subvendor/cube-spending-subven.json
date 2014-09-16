@@ -11,6 +11,10 @@
         "contracts_subven_vendor_spending": {
             "datasourceName": "main",
             "source": "aggregateon_subven_spending_vendor"
+        },
+        "spending_vendor_latest_mwbe_category": {
+            "datasourceName": "main",
+            "source": "spending_vendor_latest_mwbe_category"
         }
     },
     "cubes": {

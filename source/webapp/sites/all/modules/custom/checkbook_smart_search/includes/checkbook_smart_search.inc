@@ -39,7 +39,7 @@ function _checkbook_smart_search_get_results(){
     $oges = _checkbook_smart_search_get_facet_results($search_terms, "oge_agency_names", NULL, -1);
     $agencies = _checkbook_smart_search_get_facet_results($search_terms, "agency_names", NULL, -1);
     $vendors = _checkbook_smart_search_get_facet_results($search_terms, "vendor_names", NULL, 100);
-    $vendor_type = _checkbook_smart_search_get_facet_results($search_terms, "vendor_type", NULL, 1);
+    $vendor_type = _checkbook_smart_search_get_facet_results($search_terms, "vendor_type", NULL, 100);
     $all_vendors = _checkbook_smart_search_get_facet_results($search_terms, "vendor_names", NULL, -1);
     $vendor_number = count($all_vendors['facet_counts']['facet_fields']['vendor_name']);
     $vendor_pages = floor($vendor_number / 100);
@@ -231,7 +231,7 @@ function _checkbook_smart_search_solr_results($query){
 }
 
 /** Returns only selected facet values from current URL */
-function _checkbook_smart_search_get_selected_facet_results($search_terms, $facet_name, $domain = null){
+function _checkbook_smart_search_get_selected_facet_results($search_terms, $facet_name){
 
     $parameter_mapping = array(
         "oge_agency_names" => "oge_agency_name",
@@ -301,7 +301,7 @@ function _checkbook_smart_search_get_selected_facet_results($search_terms, $face
 }
 
 /** Returns Facet results */
-function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $domain = null, $offset = null, $limit = null, $exclude = FALSE, $fromScroll = FALSE){
+function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $offset = null, $limit = null, $exclude = FALSE, $fromScroll = FALSE){
 
         $parameter_mapping = array(
           "oge_agency_names" => "oge_agency_name",
@@ -352,7 +352,7 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
             ."&wt=php"
             ."&facet.mincount=1";
 
-        if ($offset){
+        if ($offset && $offset > 0){
           $query .= "&facet.offset=".$offset;
         }
         if ($limit && $limit >= 0 && !$fromScroll){
@@ -787,7 +787,6 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
         else
             $parameter_mapping = array(
                 "spending_category_name" => "Spending Category",
-                "minority_type_name" => "M/WBE Category",
                 "agency_name" => "Agency",
                 "department_name" => "Department",
                 "vendor_name" => "Payee Name",
@@ -795,7 +794,8 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
                 "contract_number" => "Contract ID",
                 "check_amount" => "Check Amount",
                 "check_eft_issued_date" => "Issue Date",
-                "is_prime_or_sub" => "Sub Vendor"
+                "is_prime_or_sub" => "Sub Vendor",
+                "minority_type_name" => "M/WBE Category"
             );
       break;
     case "contracts":
@@ -827,7 +827,6 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
         else{
             $parameter_mapping = array(
                 "contract_status"=>"Status",
-                "minority_type_name" => "M/WBE Category",
                 "contract_category_name"=>"Category",
                 "vendor_name"=>"Prime Vendor",
                 "agency_name"=>"Agency",
@@ -846,6 +845,7 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
                 "registration_date"=>"Registration date",
                 "expense_category_name"=>"Expense Category",
                 "received_date"=>"Received date",
+                "minority_type_name" => "M/WBE Category",
                 "is_prime_or_sub" => "Sub Vendor",
                 "" => "");
         }
@@ -913,6 +913,8 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
 						"check_eft_issued_date_export" => "Issue Date",
 						"spending_entity_contract_number" => "Entity Contract#",
 						"spending_budget_name" => "Budget Name",
+                        "minority_type_name" => "M/WBE Category",
+                        "is_prime_or_sub" => "Sub Vendor",
 						"" => "",);
 			break;
 		case "contracts":
@@ -939,6 +941,8 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
 						"received_date"=>"Received date",
 						"contract_entity_contract_number" => "Entity Contract#",
 						"contract_budget_name" => "Budget Name",
+                        "minority_type_name" => "M/WBE Category",
+                        "is_prime_or_sub" => "Sub Vendor",
 				);		
 
 			break;
