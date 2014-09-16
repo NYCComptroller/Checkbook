@@ -359,6 +359,7 @@ Steps to install:
 
     Look for: $databases = array (); text in the following file `/var/www/html/sites/default/settings.php`:
     Insert the following settings listed below. 
+        
         $databases = array(
             'default' => array(
                 'default' => array(
