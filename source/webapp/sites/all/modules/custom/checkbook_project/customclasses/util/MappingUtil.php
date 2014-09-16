@@ -21,8 +21,12 @@ class MappingUtil {
     );
 
     /** Returns the vendor type value based on the vendor_type mapping */
-    static function getVendorTypeValue($vendor_type) {
-        return self::$vendor_type_value_map[$vendor_type];
+    static function getVendorTypeValue($vendor_types) {
+        $param = "";
+        foreach($vendor_types as $key=>$value){
+            $param .= self::$vendor_type_value_map[$value].'~';
+        }
+        return explode('~',substr($param, 0, -1));
     }
 
     /** Returns the vendor type name based on the vendor_type mapping */
@@ -204,11 +208,31 @@ class MappingUtil {
 
     static function getCurrentSubVendorTopNavFilters($active_domain_link){
     	 
-    	 
-    	 
-    	 
     }
-    
-    
+
+    static function getVendorTypes($nodeData, $param){
+        $unchecked = array();
+        $checked = array();
+        $params = explode('~', $param);
+        $vendor_counts = array();
+        foreach($nodeData as $row){
+            if(in_array($row[0],array('P','PM'))){
+                $vendor_counts['pv'] = $vendor_counts['pv']+ $row[2];
+            }
+            if(in_array($row[0],array('S','SM'))){
+                $vendor_counts['sv'] = $vendor_counts['sv']+ $row[2];
+            }
+            if(in_array($row[0],array('PM','SM'))){
+                $vendor_counts['mv'] = $vendor_counts['mv']+ $row[2];
+            }
+        }
+        foreach($vendor_counts as $key=>$value){
+            if(in_array($key, $params))
+                array_push($checked, array($key, self::getVendorTypeName($key),$value));
+            else
+                array_push($unchecked, array($key, self::getVendorTypeName($key),$value));
+        }
+        return array('unchecked'=>$unchecked, "checked"=>$checked);
+    }
     
 } 
