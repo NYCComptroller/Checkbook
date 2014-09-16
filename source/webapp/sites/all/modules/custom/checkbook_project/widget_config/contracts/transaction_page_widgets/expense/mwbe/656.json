@@ -168,6 +168,10 @@ return $header;
 {"labelAlias": "mwbe_category","column":"formatted_minority_name","sortSourceColumn": "minority_type_name"}
 ],
 "adjustParameters":"
+$subvendor = _getRequestParamValue('subvendor');
+if($subvendor){
+    $parameters['is_prime_or_sub'] = 'S';
+}
 if(function_exists('_checkbook_project_adjustContractParameterFilters')){
 _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
 }
