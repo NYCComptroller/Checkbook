@@ -6,10 +6,10 @@
         "agencyh","contnum","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry",
         "csize","modamt"],
     "urlParamMap":{"vendortype":"vendor_type",
-        "mwbe":"minority_type_id@checkbook:mwbe_contracts_coa_aggregates","doctype":"document_code@checkbook:ref_document_code",
-        "contstatus":"status_flag@checkbook:mwbe_contracts_coa_aggregates" ,"year":"fiscal_year_id@checkbook:mwbe_contracts_coa_aggregates",
-        "calyear":"fiscal_year_id@checkbook:mwbe_contracts_coa_aggregates","yeartype":"type_of_year@checkbook:mwbe_contracts_coa_aggregates" ,
-        "agency":"agency_id","vendor":"vendor_id@checkbook:mwbe_contracts_coa_aggregates","curamtr":"maximum_contract_amount",
+        "mwbe":"minority_type_id@checkbook:all_contracts_coa_aggregates","doctype":"document_code@checkbook:ref_document_code",
+        "contstatus":"status_flag@checkbook:all_contracts_coa_aggregates" ,"year":"fiscal_year_id@checkbook:all_contracts_coa_aggregates",
+        "calyear":"fiscal_year_id@checkbook:all_contracts_coa_aggregates","yeartype":"type_of_year@checkbook:all_contracts_coa_aggregates" ,
+        "agency":"agency_id","vendor":"vendor_id@checkbook:all_contracts_coa_aggregates","curamtr":"maximum_contract_amount",
         "vendornm":"vendor_name",
         "contdesc":"description","agrmnttype":"agreement_type_id","agencyh":"agency_history_id","contnum":"contract_number",
         "aptpin":"brd_awd_no","pin":"tracking_number","awdmethod":"award_method_id","curamt":"maximum_contract_amount",
@@ -19,7 +19,7 @@
     "allowRequestParams":["smnid"],
     "paramTypeConfig":{"curamtr":"rangeid","vendornm":"like","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range",
         "startdate":"range","enddate":"range","regdate":"range","modamt":"ne"},
-    "defaultParameters":{"status_flag@checkbook:mwbe_contracts_coa_aggregates":"A","is_prime_or_sub":"P"},
+    "defaultParameters":{"status_flag@checkbook:all_contracts_coa_aggregates":"A"},
     "header":"
     $header = NULL;
 $header .= widget_data_tables_export_link($node);
@@ -33,9 +33,9 @@ return $header;
 "no_results_content":"No Results Found",
 "dataset": "checkbook:all_agreement_transactions",
 "columns": ["is_prime_or_sub","minority_type_id","minority_type_name","master_contract_number","master_agreement_id","fms_commodity_line@checkbook:oge_contract_contract","budget_name@checkbook:oge_contract_contract","oge_contract_number@checkbook:oge_contract_contract",
-"fiscal_year_id@checkbook:mwbe_contracts_coa_aggregates","type_of_year@checkbook:mwbe_contracts_coa_aggregates", "has_children","contract_number",
+"fiscal_year_id@checkbook:all_contracts_coa_aggregates","type_of_year@checkbook:all_contracts_coa_aggregates", "has_children","contract_number",
 "original_agreement_id","description","document_version","original_contract_amount","maximum_contract_amount",
-"spending_amount@checkbook:mwbe_contracts_coa_aggregates","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name",
+"spending_amount@checkbook:all_contracts_coa_aggregates","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name",
 "award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no",
 "tracking_number","master_agreement_yn","document_code@checkbook:ref_document_code","industry_type_name","dollar_difference","percent_difference"],
 "columns_datasource":{"fms_commodity_line@checkbook:oge_contract_contract":"checkbook_oge","oge_contract_number@checkbook:oge_contract_contract":"checkbook_oge",
@@ -72,8 +72,8 @@ return $header;
 "expression": "
 '<a href=\"/spending/transactions'
 .  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id']
-.  ( $row['type_of_year@checkbook:mwbe_contracts_coa_aggregates'] == 'B' ? ('/year/'. $row['fiscal_year_id@checkbook:mwbe_contracts_coa_aggregates'].'/syear/'. $row['fiscal_year_id@checkbook:mwbe_contracts_coa_aggregates']) : ('/calyear/'.$row['fiscal_year_id@checkbook:mwbe_contracts_coa_aggregates']. '/scalyear/'.$row['fiscal_year_id@checkbook:mwbe_contracts_coa_aggregates']) )
-.  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['spending_amount@checkbook:mwbe_contracts_coa_aggregates']) . '</a>'
+.  ( $row['type_of_year@checkbook:all_contracts_coa_aggregates'] == 'B' ? ('/year/'. $row['fiscal_year_id@checkbook:all_contracts_coa_aggregates'].'/syear/'. $row['fiscal_year_id@checkbook:all_contracts_coa_aggregates']) : ('/calyear/'.$row['fiscal_year_id@checkbook:all_contracts_coa_aggregates']. '/scalyear/'.$row['fiscal_year_id@checkbook:all_contracts_coa_aggregates']) )
+.  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['spending_amount@checkbook:all_contracts_coa_aggregates']) . '</a>'
 "
 },
 "vendor_formatted": {
@@ -84,8 +84,8 @@ return $header;
 "type": "expression2",
 "expression": " '<a href=\"/contracts_landing'
 . _checkbook_append_url_params()
-.  (isset($row['fiscal_year_id@checkbook:mwbe_contracts_coa_aggregates']) ? '/year/'.$row['fiscal_year_id@checkbook:mwbe_contracts_coa_aggregates'] : '')
-.  (isset($row['type_of_year@checkbook:mwbe_contracts_coa_aggregates']) ? '/yeartype/'.$row['type_of_year@checkbook:mwbe_contracts_coa_aggregates'] : '')
+.  (isset($row['fiscal_year_id@checkbook:all_contracts_coa_aggregates']) ? '/year/'.$row['fiscal_year_id@checkbook:all_contracts_coa_aggregates'] : '')
+.  (isset($row['type_of_year@checkbook:all_contracts_coa_aggregates']) ? '/yeartype/'.$row['type_of_year@checkbook:all_contracts_coa_aggregates'] : '')
 .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
 .  '/vendor/' . $row['vendor_id']
 .  '?expandBottomCont=true\">'. $row['vendor_formatted'] . '</a>'  "
@@ -98,8 +98,8 @@ return $header;
 "type": "expression2",
 "expression": " '<a href=\"/contracts_landing'
 ._checkbook_append_url_params()
-.  (isset($row['fiscal_year_id@checkbook:mwbe_contracts_coa_aggregates']) ? '/year/'.$row['fiscal_year_id@checkbook:mwbe_contracts_coa_aggregates'] : '')
-.  (isset($row['type_of_year@checkbook:mwbe_contracts_coa_aggregates']) ? '/yeartype/'.$row['type_of_year@checkbook:mwbe_contracts_coa_aggregates'] : '')
+.  (isset($row['fiscal_year_id@checkbook:all_contracts_coa_aggregates']) ? '/year/'.$row['fiscal_year_id@checkbook:all_contracts_coa_aggregates'] : '')
+.  (isset($row['type_of_year@checkbook:all_contracts_coa_aggregates']) ? '/yeartype/'.$row['type_of_year@checkbook:all_contracts_coa_aggregates'] : '')
 .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
 . '/agency/' . $row['agency_id']
 .  '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "
@@ -150,7 +150,7 @@ return $header;
 {"labelAlias": "fms_doc_id","column":"parent_contract_link","export":false, "exportColumn":"parent_contract_export", "sortSourceColumn":"master_contract_number"},
 {"labelAlias": "current_amount","column": "formatted_current_amount","sortSourceColumn":"maximum_contract_amount"},
 {"labelAlias": "original_amount","column": "formatted_original_amount","sortSourceColumn":"original_contract_amount"},
-{"labelAlias": "spent_to_date","column": "formatted_spent_to_date","sortSourceColumn":"spending_amount@checkbook:mwbe_contracts_coa_aggregates"},
+{"labelAlias": "spent_to_date","column": "formatted_spent_to_date","sortSourceColumn":"spending_amount@checkbook:all_contracts_coa_aggregates"},
 {"labelAlias": "dollar_diff","column": "formatted_dollar_diff","sortSourceColumn":"dollar_difference"},
 {"labelAlias": "percent_diff","column": "formatted_percent_diff","sortSourceColumn":"percent_difference"},
 {"labelAlias": "prime_vendor","column": "vendor_name_link","sortSourceColumn":"vendor_name"},
@@ -171,6 +171,12 @@ return $header;
 if(isset($parameters['vendor_type'])){
     $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
 }
+
+$subvendor = _getRequestParamValue('subvendor');
+$mwbe = _getRequestParamValue('mwbe');
+if($subvendor) $parameters['is_prime_or_sub'] = 'S';
+else if($mwbe) $parameters['is_prime_or_sub'] = 'P';
+
 if(function_exists('_checkbook_project_adjustContractParameterFilters')){
 _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
 }

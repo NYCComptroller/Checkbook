@@ -726,7 +726,7 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
         $spending_fiscal_year = null;
     }
 
-    $redirect_url = 'spending/transactions';
+    $redirect_url = 'spending/search/transactions';
     //append data source if not default (checkbook)
     if($data_source != 'checkbook') $redirect_url .= '/datasource/' . $data_source;
 
