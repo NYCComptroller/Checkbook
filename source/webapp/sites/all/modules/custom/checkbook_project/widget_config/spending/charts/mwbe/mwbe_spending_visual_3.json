@@ -97,8 +97,6 @@
     group by rm.minority_type_id, rm.minority_type_name, month_value,month_name,year_value  ';
     
     $node->data_sub_ven  = _checkbook_project_execute_sql($sql2);
-    dsm($node->data);
-    dsm($node->data_sub_ven);
     
 ",
 "widgetUpdateJSONConfig":"
