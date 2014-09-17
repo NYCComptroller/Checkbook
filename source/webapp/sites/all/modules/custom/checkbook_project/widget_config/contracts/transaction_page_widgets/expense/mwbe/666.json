@@ -13,6 +13,12 @@
 if(isset($parameters['vendor_type'])){
 $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
 }
+
+$subvendor = _getRequestParamValue('subvendor');
+$mwbe = _getRequestParamValue('mwbe');
+if($subvendor) $parameters['vendor_type'] = 'S';
+elseif($mwbe) $parameters['vendor_type'] = 'P';
+
     $year = _getRequestParamValue('year');
 $calYear = _getRequestParamValue('calyear');
 if(!isset($year) && isset($calYear)){
@@ -151,7 +157,7 @@ return $node->data;
 "vendor_name_link": {
 "type": "expression2",
 "expression": " '<a href=\"/contracts_landing'
-.  (isset($row['fiscal_year_id@checkbook:mwbe_contracts_coa_aggregates']) ? ('/year/'.$row['fiscal_year_id@checkbook:mwbe_contracts_coa_aggregates'] . '/yeartype/'.$row['type_of_year@checkbook:mwbe_contracts_coa_aggregates']) : _checkbook_project_get_year_url_param_string())
+.  (isset($row['fiscal_year_id@checkbook:all_contracts_coa_aggregates']) ? ('/year/'.$row['fiscal_year_id@checkbook:all_contracts_coa_aggregates'] . '/yeartype/'.$row['type_of_year@checkbook:all_contracts_coa_aggregates']) : _checkbook_project_get_year_url_param_string())
 .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
 .  '/vendor/' . $row['vendor_id']
 .  '?expandBottomCont=true\">'. $row['vendor_formatted'] . '</a>'  "
@@ -169,7 +175,7 @@ return $node->data;
 "agency_name_link": {
 "type": "expression2",
 "expression": " '<a href=\"/contracts_landing'
-.  (isset($row['fiscal_year_id@checkbook:mwbe_contracts_coa_aggregates']) ? ('/year/'.$row['fiscal_year_id@checkbook:mwbe_contracts_coa_aggregates'] . '/yeartype/'.$row['type_of_year@checkbook:mwbe_contracts_coa_aggregates']) : _checkbook_project_get_year_url_param_string())
+.  (isset($row['fiscal_year_id@checkbook:all_contracts_coa_aggregates']) ? ('/year/'.$row['fiscal_year_id@checkbook:all_contracts_coa_aggregates'] . '/yeartype/'.$row['type_of_year@checkbook:all_contracts_coa_aggregates']) : _checkbook_project_get_year_url_param_string())
 .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
 .  '/agency/' . $row['agency_id']
 .  '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "

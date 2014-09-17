@@ -3,19 +3,19 @@
     "parentNid":656,
     "no_results_content":"No Results Found",
     "defaultParameters":{
-        "cum_spend.cum_spend.status_flag":"A"
+        "all_cum_spend.all_cum_spend.status_flag":"A"
     },
     "limit":10,
     "startWith":0,
     "urlParamMap":{
         "doctype":"document_code.document_code.document_code",
-        "contstatus":"cum_spend.cum_spend.status_flag",
-        "calyear":"cum_spend.cum_spend.fiscal_year_id",
-        "year":"cum_spend.cum_spend.fiscal_year_id",
-        "yeartype":"cum_spend.cum_spend.type_of_year",
-        "vendor":"cum_spend.cum_spend.vendor_id",
-        "mwbe_vendor":"cum_spend.cum_spend.vendor_id",
-        "mwbe":"cum_spend.cum_spend.minority_type_id"
+        "contstatus":"all_cum_spend.all_cum_spend.status_flag",
+        "calyear":"all_cum_spend.all_cum_spend.fiscal_year_id",
+        "year":"all_cum_spend.all_cum_spend.fiscal_year_id",
+        "yeartype":"all_cum_spend.all_cum_spend.type_of_year",
+        "vendor":"all_cum_spend.all_cum_spend.vendor_id",
+        "mwbe_vendor":"all_cum_spend.all_cum_spend.vendor_id",
+        "mwbe":"all_cum_spend.all_cum_spend.minority_type_id"
     }  ,
     "columns":["vendor.vendor", "vendor.vendor.legal_name", "txcount"],
     "orderBy":"-txcount",
@@ -31,7 +31,13 @@
 if(isset($parameters['vendor_type'])){
 $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
 }
-    checkbook_faceted_search_adjust_param($node);
+
+$subvendor = _getRequestParamValue('subvendor');
+$mwbe = _getRequestParamValue('mwbe');
+if($subvendor) $parameters['vendor_type'] = 'S';
+elseif($mwbe) $parameters['vendor_type'] = 'P';
+
+checkbook_faceted_search_adjust_param($node);
 if(function_exists('_checkbook_project_adjustContractParameterFilters')){
 _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
 }
