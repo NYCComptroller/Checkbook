@@ -61,6 +61,16 @@
                     ]
                 },
                 {
+                    "name": "all_cum_spend",
+                    "levels": [
+                        {
+                            "name": "all_cum_spend",
+                            "datasetName": "all_contracts_coa_aggregates",
+                            "sourceColumnName": "original_agreement_id"
+                        }
+                    ]
+                },
+                {
                     "name": "industry",
                     "levels": [
                         {
@@ -131,6 +141,10 @@
         "all_agreement_transactions_cy__aggregateon_mwbe_contracts_cumulative_spending": [
             {"datasetName": "all_agreement_transactions_cy", "columnNames": ["original_agreement_id"]},
             {"datasetName": "mwbe_contracts_coa_aggregates", "columnNames": ["original_agreement_id"]}
+        ],
+        "all_agreement_transactions_cy__aggregateon_all_contracts_cumulative_spending": [
+            {"datasetName": "all_agreement_transactions_cy", "columnNames": ["original_agreement_id"]},
+            {"datasetName": "all_contracts_coa_aggregates", "columnNames": ["original_agreement_id"]}
         ],
         "agreement_snapshot__ref_document_code": [
             {"datasetName": "all_agreement_transactions_cy", "columnNames": ["document_code_id"]},
