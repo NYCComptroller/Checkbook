@@ -92,7 +92,6 @@ if(strtolower($filter_name) == 'vendor'){
         $unchecked = $unchecked_data;
         $checked = $checked_data;
     }
-    $filter_name = "Prime Vendor";
 }
 ?>
 <div class="filter-content <?php if( $hide_filter != "") print "disabled"; ?>"><div <?php print $hide_filter; ?>>
