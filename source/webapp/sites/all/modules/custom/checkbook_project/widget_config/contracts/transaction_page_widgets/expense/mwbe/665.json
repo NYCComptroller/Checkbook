@@ -16,8 +16,8 @@ $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor
 
 $subvendor = _getRequestParamValue('subvendor');
 $mwbe = _getRequestParamValue('mwbe');
-if($subvendor) $parameters['vendor_type'] = 'S';
-elseif($mwbe) $parameters['vendor_type'] = 'P';
+if($subvendor) $parameters['is_prime_or_sub'] = 'S';
+else if($mwbe) $parameters['is_prime_or_sub'] = 'P';
 
 if(!isset($parameters['fiscal_year_id@checkbook:all_contracts_coa_aggregates'])){
 $parameters['latest_flag'] = 'Y';

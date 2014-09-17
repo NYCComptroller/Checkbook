@@ -16,8 +16,8 @@ $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor
 
 $subvendor = _getRequestParamValue('subvendor');
 $mwbe = _getRequestParamValue('mwbe');
-if($subvendor) $parameters['vendor_type'] = 'S';
-elseif($mwbe) $parameters['vendor_type'] = 'P';
+if($subvendor) $parameters['is_prime_or_sub'] = 'S';
+else if($mwbe) $parameters['is_prime_or_sub'] = 'P';
 
     $year = _getRequestParamValue('year');
 $calYear = _getRequestParamValue('calyear');
