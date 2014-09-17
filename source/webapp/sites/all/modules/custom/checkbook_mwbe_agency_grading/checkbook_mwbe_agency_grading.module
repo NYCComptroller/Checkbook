@@ -70,14 +70,11 @@ function _checkbook_mwbe_agency_grading(){
 function _checkbook_mwbe_agency_grading_left($agencies_data){	
 	
 	$left_content_agencies = array();
-	$mwbe_cats = _getRequestParamValue('mwbe');
-	if($mwbe_cats == null){
-		$mwbe_cats = 'aa_mwbe~ba_mwbe~ha_mwbe~w_mwbe';
-	}
+	$mwbe_cats = _mwbe_agency_grading_current_cats();
 	foreach($agencies_data as $row){
 		$data_row = array();
 		$spending_amount =  0;
-		foreach(explode('~',$mwbe_cats) as $mwbe_cat){
+		foreach($mwbe_cats as $mwbe_cat){
 			$spending_amount += $row[$mwbe_cat];
 			$data_row[$mwbe_cat] = $row[$mwbe_cat];			
 		}	
@@ -101,8 +98,12 @@ function _checkbook_mwbe_agency_grading_right($agencies_data){
 	
 	$nyc_data = array();	
 	$nyc_data['agencies'] = count($agencies_data);
+	$mwbe_cats = _mwbe_agency_grading_current_cats();
 	foreach($agencies_data as $row){		
 		$nyc_data['total_mwbe'] += $row['total_mwbe'];
+		foreach($mwbe_cats as $cat){
+			$nyc_data['total_spending_chart'] += $row[$cat];
+		}
 		$nyc_data['total_non_mwbe'] += $row['total_non_mwbe'];
 		$nyc_data['total_io'] += $row['io_nonmwbe'];
 		$nyc_data['total'] += $row['total_mwbe'] + $row['total_non_mwbe'] + $row['io_nonmwbe'];
@@ -176,11 +177,16 @@ function _checkbook_mwbe_agency_grading_getdata(){
     ';
 	
 	
-	log_error($sql);
 	return  _checkbook_project_execute_sql($sql);
 
 }
 
 
+
+function _mwbe_agency_grading_current_cats(){
+	$url_cats = explode('~',_getRequestParamValue('mwbe_filter'));
+	$mwbe_cats =  (count($url_cats) > 0)?$url_cats: array('aa_mwbe','ba_mwbe','ha_mwbe','w_mwbe');
+	return $mwbe_cats;
+} 
 
 

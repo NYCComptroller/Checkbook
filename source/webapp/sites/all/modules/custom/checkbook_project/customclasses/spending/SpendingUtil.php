@@ -610,4 +610,112 @@ class SpendingUtil{
 
         return $subvendor_exist || $ma1_mma1_contracts_exist || $edc_records_exist;
     }
+    
+    
+    static function getMWBENYCLegend($year, $yeartype){
+    	
+    	$where_filter =  "where year_id = $year and type_of_year = '$yeartype' ";
+    	
+    	$prime_sql = 'select rm.minority_type_id, rm.minority_type_name , sum(total_spending_amount) total_spending
+	    from aggregateon_mwbe_spending_coa_entities a1
+	    join ref_minority_type rm on rm.minority_type_id = a1.minority_type_id
+	   ' . $where_filter . '
+	    group by rm.minority_type_id, rm.minority_type_name  ';
+    	
+    	$prime_spending_rows = _checkbook_project_execute_sql($prime_sql);
+    	foreach($prime_spending_rows as $row){
+    		switch($row['minority_type_id']){
+    			case '2':
+    				$mwbe_spending_prime += $row['total_spending'];
+    				break;
+    			case '3':
+    				$mwbe_spending_prime += $row['total_spending'];
+    				break;
+    			case '4':
+    				$mwbe_spending_prime += $row['total_spending'];
+    				break;
+    			case '5':
+    				$mwbe_spending_prime += $row['total_spending'];
+    				break;
+    			case '7':
+    				$non_mwbe_spending_prime += $row['total_spending'];
+    				break;
+    			case '9':
+    				$mwbe_spending_prime += $row['total_spending'];
+    				break;
+    		}
+    	}
+    	
+    	$sub_sql = 'select rm.minority_type_id, rm.minority_type_name , sum(total_spending_amount) total_spending
+	    from aggregateon_subven_spending_coa_entities a1
+	    join ref_minority_type rm on rm.minority_type_id = a1.minority_type_id
+	   ' . $where_filter . '
+	    group by rm.minority_type_id, rm.minority_type_name  ';
+    	 
+    	$sub_spending_rows = _checkbook_project_execute_sql($sub_sql);
+    	foreach($sub_spending_rows as $row){
+    		switch($row['minority_type_id']){
+    			case '2':
+    				$mwbe_spending_sub += $row['total_spending'];
+    				break;
+    			case '3':
+    				$mwbe_spending_sub += $row['total_spending'];
+    				break;
+    			case '4':
+    				$mwbe_spending_sub += $row['total_spending'];
+    				break;
+    			case '5':
+    				$mwbe_spending_sub += $row['total_spending'];
+    				break;
+    			case '7':
+    				$non_mwbe_spending_sub += $row['total_spending'];
+    				break;
+    			case '9':
+    				$mwbe_spending_sub += $row['total_spending'];
+    				break;
+    		}
+    	}
+    	$mwbe_share = custom_number_formatter_format(($mwbe_spending_prime + $mwbe_spending_sub )/($non_mwbe_spending_prime + $mwbe_spending_prime) *100,1,null,'%') ;
+    	$mwbe_spending = custom_number_formatter_format($mwbe_spending_prime + $mwbe_spending_sub,2,'$');
+    	$non_mwbe = custom_number_formatter_format($non_mwbe_spending_prime,2,'$');
+    	
+    	return '<div class="chart-nyc-legend">
+    			<div class="legend-title"><span>NYC Total M/WBE</span></div>
+    			<div class="legend-item"><span>M/WBE Share: ' . $mwbe_share . ' </span></div>
+    			<div class="legend-item"><span>M/WBE Spending: ' .$mwbe_spending . ' </span></div>
+    			<div class="legend-item"><span>Non M/WBE: ' . $non_mwbe . '</span></div>    			
+    			</div>
+    			';
+    	
+    	
+    }
+
+    
+    function _show_mwbe_custom_legend(){
+    	$mwbe_cats = _getRequestParamValue('mwbe');
+    	if(	($mwbe_cats =='4~5' || $mwbe_cats =='2' || $mwbe_cats =='3' || $mwbe_cats =='9' ) && !(_getRequestParamValue('vendor') > 0 ) ){
+    		return true;
+    	}
+    	
+    	if(	!(_getRequestParamValue('vendor') > 0 ) && ( _getRequestParamValue('agency') > 0 || _getRequestParamValue('industry') > 0 ) ){
+    		return true;
+    	}
+    	
+    	return false;
+    }
+    
+    
+    function _mwbe_spending_use_subvendor(){
+    	if(_getRequestParamValue('vendor') > 0 || _getRequestParamValue('mwbe') == '7' || _getRequestParamValue('mwbe') == '11')
+    	{
+    		return true;
+    	}else{
+    		return false;
+    	}
+    } 
 }
+
+
+
+
+

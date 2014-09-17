@@ -821,9 +821,7 @@ h3.grid_year_title{text-transform: none;}
 .chart-left .highcharts-container{
     float:left;
 }
-.chart-left .highcharts-grid {
-    display: none !important;
-}
+
 .chart-right{
     height:319px;
     background: url("../images/visualization_divide.png") no-repeat left center;
@@ -855,7 +853,7 @@ h3.grid_year_title{text-transform: none;}
     margin-right: auto;
     position: relative;
     text-align: center;
-    width: 200px;
+    width: 240px;
     z-index: 25;
     padding-left:75px;
 }
@@ -2650,3 +2648,29 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
 {
     display: none;
 }
+
+
+
+/*Visulaization legend Styles */
+.chart-nyc-legend
+{
+    float: right;
+    left: -30px;
+    position: relative;
+    top: 135px;
+}
+    
+.chart-nyc-legend .legend-title
+{
+	text-decoration: underline;
+	font-weight: bold;
+    color: #3c5e7c;
+    margin-bottom: 20px;
+}
+
+.chart-nyc-legend .legend-item
+{
+    color: #3c5e7c;
+    margin-bottom: 3px;
+} 
+    

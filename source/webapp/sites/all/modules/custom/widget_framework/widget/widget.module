@@ -1441,11 +1441,36 @@ function _get_default_datasource(){
 
 
 function _widget_build_sql_condition($column, $value){
+
 	$values_array = explode('~',$value);
-	if(count($values_array) > 0){
+	if(count($values_array) > 1){
 		return  $column . ' in ' . '(\'' . implode('\',\'', $values_array) . '\')';
 	}else{
 		return  $column . '=' . '\'' . $value . '\'';
 	}
 	
 }
+
+
+function _widget_join_merge_data($array1,$array2, $keys = array()){
+	foreach($array1 as $row1_key=>$row1){
+		foreach($array2 as $row2){
+			$merge = true;
+			foreach($keys as $key){
+				if($row1[$key] != $row2[$key]) $merge = false;
+			}
+			if($merge){
+				foreach($row2 as $row2_key=>$value){
+					if(!in_array($row2_key,$keys)){
+						$array1[$row1_key][$row2_key] += $value;
+					}
+				}
+			}
+			
+		}
+	}	
+	return $array1;
+	
+}
+
+
