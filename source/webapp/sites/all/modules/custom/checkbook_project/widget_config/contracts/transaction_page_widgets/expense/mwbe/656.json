@@ -153,7 +153,7 @@ return $header;
 {"labelAlias": "spent_to_date","column": "formatted_spent_to_date","sortSourceColumn":"spending_amount@checkbook:all_contracts_coa_aggregates"},
 {"labelAlias": "dollar_diff","column": "formatted_dollar_diff","sortSourceColumn":"dollar_difference"},
 {"labelAlias": "percent_diff","column": "formatted_percent_diff","sortSourceColumn":"percent_difference"},
-{"labelAlias": "prime_vendor","column": "vendor_name_link","sortSourceColumn":"vendor_name"},
+{"labelAlias": "vendor_name","column": "vendor_name_link","sortSourceColumn":"vendor_name"},
 {"labelAlias": "sub_vendor_name","column":"formatted_is_sub_vendor","sortSourceColumn": "is_prime_or_sub","exportColumn":"formatted_is_sub_vendor"},
 {"labelAlias": "contract_agency","column": "agency_name_link","sortSourceColumn":"agency_name"},
 {"labelAlias": "contract_type","column": "contract_type_formatted","sortSourceColumn":"agreement_type_name"},
