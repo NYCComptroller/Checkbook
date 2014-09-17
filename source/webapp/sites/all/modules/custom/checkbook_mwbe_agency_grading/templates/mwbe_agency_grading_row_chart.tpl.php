@@ -7,7 +7,8 @@ jQuery(document).ready(function ($) {
          renderTo: 'chart_container_<?php echo $id; ?>',
          defaultSeriesType: 'bar',
          margin: [10,10,10,10],
-         height:50         
+         height:50    ,
+         animation: false     
       },
       title: {
          text: null
@@ -49,8 +50,9 @@ jQuery(document).ready(function ($) {
          series: {
             stacking: 'percent',
             borderWidth: 1,
-            minPointLength: 0,
+            minPointLength: 3,
             pointWidth: 18,
+            animation: false,
             shadow: false            
          }
       },
