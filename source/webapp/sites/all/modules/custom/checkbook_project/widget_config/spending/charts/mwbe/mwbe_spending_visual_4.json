@@ -127,7 +127,7 @@ if(SpendingUtil::_show_mwbe_custom_legend()){
     
     $node->data  = _checkbook_project_execute_sql($sql);
     
-    if(_getRequestParamValue('vendor') > 0 || _getRequestParamValue('mwbe') == '7' || _getRequestParamValue('mwbe') == '11'  ){
+    if(SpendingUtil::_mwbe_spending_use_subvendor()){
     	$node->data_sub_ven = array();
     }
     else{
@@ -200,13 +200,13 @@ if(SpendingUtil::_show_mwbe_custom_legend()){
 	}
 	
 	$index = 0;
-	if(_getRequestParamValue('vendor') > 0 || _getRequestParamValue('mwbe') == '7' || _getRequestParamValue('mwbe') == '11'){
+	if(SpendingUtil::_mwbe_spending_use_subvendor()){
 		unset($node->widgetConfig->gridConfig->table_columns[3]);
 		unset($node->widgetConfig->gridConfig->table_columns[1]);
 		$node->widgetConfig->gridConfig->table_columns = array_values($node->widgetConfig->gridConfig->table_columns);
 	}
 	foreach($node->data_merged as $row){
-			if(_getRequestParamValue('vendor') > 0){
+			if(SpendingUtil::_mwbe_spending_use_subvendor()){
 	 			$tooltip_label = 
 	 						'Agency: ' . $row['agency_name'].  '<br/>' .
 	 						 MappingUtil::getCurrenEhtnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>' 	 			 

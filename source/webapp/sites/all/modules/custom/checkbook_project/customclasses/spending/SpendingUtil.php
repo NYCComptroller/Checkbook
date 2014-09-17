@@ -703,6 +703,16 @@ class SpendingUtil{
     	
     	return false;
     }
+    
+    
+    function _mwbe_spending_use_subvendor(){
+    	if(_getRequestParamValue('vendor') > 0 || _getRequestParamValue('mwbe') == '7' || _getRequestParamValue('mwbe') == '11')
+    	{
+    		return true;
+    	}else{
+    		return false;
+    	}
+    } 
 }
 
 
