@@ -33,10 +33,11 @@ if(isset($parameters['vendor_type'])){
 $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
 }
 
+
 $subvendor = _getRequestParamValue('subvendor');
 $mwbe = _getRequestParamValue('mwbe');
-if($subvendor) $parameters['vendor_type'] = 'S';
-elseif($mwbe) $parameters['vendor_type'] = 'P';
+if($subvendor) $parameters['is_prime_or_sub'] = 'S';
+else if($mwbe) $parameters['is_prime_or_sub'] = 'P';
 
     checkbook_faceted_search_adjust_param($node);
 if(function_exists('_checkbook_project_adjustContractParameterFilters')){
