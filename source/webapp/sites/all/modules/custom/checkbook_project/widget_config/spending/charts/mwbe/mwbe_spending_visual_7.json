@@ -164,7 +164,7 @@ if(SpendingUtil::_show_mwbe_custom_legend()){
 		$node->widgetConfig->chartTitle = 'Top Ten Sub Vendors by ' . MappingUtil::getCurrenEhtnicityName() .' Spending';		
 	}
 	
-	if(_getRequestParamValue('vendor') > 0){
+	if(SpendingUtil::_mwbe_spending_use_subvendor()){
 		unset($node->widgetConfig->gridConfig->table_columns[3]);
 		unset($node->widgetConfig->gridConfig->table_columns[1]);
 		$node->widgetConfig->gridConfig->table_columns = array_values($node->widgetConfig->gridConfig->table_columns);
@@ -172,7 +172,7 @@ if(SpendingUtil::_show_mwbe_custom_legend()){
 	
 	$index = 0;
 	foreach($node->data as $row){
-			if(_getRequestParamValue('vendor') > 0){
+			if(SpendingUtil::_mwbe_spending_use_subvendor()){
 				$tooltip_label = 
 	 						'Sub Vendor: ' . $row['legal_name'].  '<br/>' .	 						
 	 						MappingUtil::getCurrenEhtnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>'  
@@ -191,7 +191,7 @@ if(SpendingUtil::_show_mwbe_custom_legend()){
 
 			$series_new[$index]->y = (float)$row[$amount_column];
 			$series_new[$index]->tooltip_label = $tooltip_label;
-			if(_getRequestParamValue('vendor') > 0){
+			if(SpendingUtil::_mwbe_spending_use_subvendor()){
 				$node->widgetConfig->gridConfig->data[] = array($row['legal_name'],														
 														 $row[$amount_column]
 														);
