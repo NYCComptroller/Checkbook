@@ -263,6 +263,8 @@ function print_block_info() {
  * Implements hook_block_view().
  */
 function print_block_view($delta = '') {
+  $block = array();
+
   switch ($delta) {
     case 'print-links':
       $nid = preg_replace('!^node/!', '', $_GET['q']);
@@ -465,9 +467,15 @@ function print_node_insert($node) {
  */
 function print_node_update($node) {
   if (user_access('administer print') || user_access('node-specific print configuration')) {
-    if (!isset($node->print_display)) $node->print_display = variable_get('print_display_' . $node->type, PRINT_TYPE_SHOW_LINK_DEFAULT);
-    if (!isset($node->print_display_comment)) $node->print_display_comment = variable_get('print_display_comment_' . $node->type, PRINT_TYPE_COMMENT_LINK_DEFAULT);
-    if (!isset($node->print_display_urllist)) $node->print_display_urllist = variable_get('print_display_urllist_' . $node->type, PRINT_TYPE_URLLIST_DEFAULT);
+    if (!isset($node->print_display) || $node->print_display === NULL) {
+      $node->print_display = variable_get('print_display_' . $node->type, PRINT_TYPE_SHOW_LINK_DEFAULT);
+    }
+    if (!isset($node->print_display_comment) || $node->print_display_comment === NULL) {
+      $node->print_display_comment = variable_get('print_display_comment_' . $node->type, PRINT_TYPE_COMMENT_LINK_DEFAULT);
+    }
+    if (!isset($node->print_display_urllist) || $node->print_display_urllist === NULL) {
+      $node->print_display_urllist = variable_get('print_display_urllist_' . $node->type, PRINT_TYPE_URLLIST_DEFAULT);
+    }
 
     _print_node_conf_modify($node->nid, $node->print_display, $node->print_display_comment, $node->print_display_urllist);
   }

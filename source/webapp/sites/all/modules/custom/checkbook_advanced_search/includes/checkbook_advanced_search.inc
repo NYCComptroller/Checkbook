@@ -1044,7 +1044,7 @@ function _checkbook_advanced_search_create_alert_results_ajax($form, &$form_stat
     /* Load Customize Results Form */
     $redirect_url = '/' . checkbook_advanced_search_form_submit($form, $form_state) . '/createalert';
     $results_html = '<div class="create-alert-customize-results">';
-    $results_html .= '<iframe visibility="hidden" src="'.$redirect_url.'" id="checkbook_advanced_search_result_iframe" style="overflow-x:hidden; overflow-y:scroll;height:600px;width:996px;"></iframe>';
+    $results_html .= '<iframe visibility="hidden" src="'.$redirect_url.'" id="checkbook_advanced_search_result_iframe" frameBorder="0" style="overflow-x:hidden; overflow-y:scroll;height:600px;width:996px;"></iframe>';
     $results_html .= '</div>';
     $commands[] = ajax_command_replace('.create-alert-customize-results', $results_html);
 
