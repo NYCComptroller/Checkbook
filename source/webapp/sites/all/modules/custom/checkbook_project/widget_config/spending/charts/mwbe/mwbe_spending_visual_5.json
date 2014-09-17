@@ -1,6 +1,12 @@
 {
 "widgetType": "highcharts",
 "widgetDatahandler": "highcharts",
+"footer":"
+if(SpendingUtil::_show_mwbe_custom_legend()){
+	echo SpendingUtil::getMWBENYCLegend(_getRequestParamValue('year'), _getRequestParamValue('yeartype'));
+}	
+	 
+",
 "header":"
        $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
        $header .= ChartUtil::generateWidgetGridViewLink($node);
@@ -181,18 +187,25 @@
         group by  legal_name, a1.prime_vendor_id
    ';
    
-   $sql = ' select s1.vendor_id, s1.legal_name,
-   			s1.aa_mwbe + s2.aa_mwbe aa_mwbe,
-   			s1.ba_mwbe + s2.ba_mwbe ba_mwbe,
-   			s1.w_mwbe + s2.w_mwbe w_mwbe,
-   			s1.ha_mwbe + s2.ha_mwbe ha_mwbe,
-   			s1.io_nonmwbe + s2.io_nonmwbe io_nonmwbe,
-   			s1.total_mwbe + s2.total_mwbe total_mwbe ,
+   
+   if(_getRequestParamValue('vendor') > 0 || _getRequestParamValue('mwbe') == '7' || _getRequestParamValue('mwbe') == '11'  ){
+   	$sql = $sql1 . '  
+   			order by ' . $sort_column . ' desc limit 10';
+   			;
+   }else{
+   	$sql = ' select s1.vendor_id, s1.legal_name,
+   			s1.aa_mwbe + coalesce(s2.aa_mwbe,0) aa_mwbe,
+   			s1.ba_mwbe + coalesce(s2.ba_mwbe,0) ba_mwbe,
+   			s1.w_mwbe + coalesce(s2.w_mwbe,0) w_mwbe,
+   			s1.ha_mwbe + coalesce( s2.ha_mwbe,0) ha_mwbe,
+   			s1.io_nonmwbe + coalesce(s2.io_nonmwbe,0) io_nonmwbe,
+   			s1.total_mwbe + coalesce(s2.total_mwbe,0) total_mwbe ,
    			s1.total_non_mwbe  				 
-   			from ( ' . $sql1 . ' ) s1  join 
+   			from ( ' . $sql1 . ' ) s1  left join 
    			 ( '  . $sql2 . ' ) s2 on s1.vendor_id = s2.vendor_id  
    			order by ' . $sort_column . ' desc limit 10';
    			;
+   	}		
     $node->data  = _checkbook_project_execute_sql($sql);
     
 ",
@@ -231,15 +244,40 @@
 		$node->widgetConfig->chartTitle = 'Top Ten Prime Vendors by ' . MappingUtil::getCurrenEhtnicityName() .' Spending';		
 	}
 		
-	
+	$index = 0;
+	if(_getRequestParamValue('vendor') > 0 || _getRequestParamValue('mwbe') == '7' || _getRequestParamValue('mwbe') == '11'){
+		unset($node->widgetConfig->gridConfig->table_columns[3]);
+		unset($node->widgetConfig->gridConfig->table_columns[1]);
+		$node->widgetConfig->gridConfig->table_columns = array_values($node->widgetConfig->gridConfig->table_columns);
+	}
+		
 	$index = 0;
 	foreach($node->data as $row){
-	 		$tooltip_label = 
+	
+		if(_getRequestParamValue('vendor') > 0 || _getRequestParamValue('mwbe') == '7' || _getRequestParamValue('mwbe') == '11'){
+		 		$tooltip_label = 
+	 						'Prime Vendor: ' . $row['legal_name'].  '<br/>' .
+	 						MappingUtil::getCurrenEhtnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>' 
+	 						;
+				$node->widgetConfig->gridConfig->data[] = array($row['legal_name'],
+														 $row[$amount_column]
+														);
+	
+		}else{
+			 		$tooltip_label = 
 	 						'Prime Vendor: ' . $row['legal_name'].  '<br/>' .
 	 						MappingUtil::getCurrenEhtnicityName() .' Share: ' . custom_number_formatter_format($row[$amount_column]/($row['total_mwbe'] + $row['total_non_mwbe'] ) *100 ,1,null, '%').  '<br/>' .
 	 						MappingUtil::getCurrenEhtnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>' .
 	 						'Non-M/WBE: ' . custom_number_formatter_format( $row['total_non_mwbe'],2,'$').  '<br/>' 
-	 						; 
+	 						;
+				$node->widgetConfig->gridConfig->data[] = array($row['legal_name'],
+														custom_number_formatter_format($row[$amount_column]/($row['total_mwbe'] + $row['total_non_mwbe'] ) *100 ,1,null, '%'),
+														 $row[$amount_column],
+														 $row['total_non_mwbe']
+														);
+	 						
+		}
+ 
 
 			$link= CustomURLHelper::prepareUrl('spending_landing', SpendingUtil::$landingPageParams, array('expandBottomCont'=>'true'), array('vendor'=>$row['vendor_id']) );	 						
 			$series_new[$index]->url = $link;
@@ -247,11 +285,6 @@
 
 			$series_new[$index]->y = (float)$row[$amount_column];
 			$series_new[$index]->tooltip_label = $tooltip_label;
-			$node->widgetConfig->gridConfig->data[] = array($row['legal_name'],
-														custom_number_formatter_format($row[$amount_column]/($row['total_mwbe'] + $row['total_non_mwbe'] ) *100 ,1,null, '%'),
-														 $row[$amount_column],
-														 $row['total_non_mwbe']
-														);
 			$index += 1;
 	}
 
@@ -260,9 +293,15 @@
 	$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
 	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
 	
+	if(SpendingUtil::_show_mwbe_custom_legend()&& count($node->data) > 0){
+		$node->widgetConfig->html_class = 'chart-left';
+	}
+	
+	
 ",
 "chartConfig" : {
 	"colors":["#7DB7E5"],
+	"chart" : {"width":750},
     "plotOptions": {
             "series": {
                 "cursor": "pointer"   ,            

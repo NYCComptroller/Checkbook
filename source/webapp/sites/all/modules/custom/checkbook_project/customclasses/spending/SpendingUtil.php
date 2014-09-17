@@ -692,7 +692,16 @@ class SpendingUtil{
 
     
     function _show_mwbe_custom_legend(){
-    	return true;
+    	$mwbe_cats = _getRequestParamValue('mwbe');
+    	if(	($mwbe_cats =='4~5' || $mwbe_cats =='2' || $mwbe_cats =='3' || $mwbe_cats =='9' ) && !(_getRequestParamValue('vendor') > 0 ) ){
+    		return true;
+    	}
+    	
+    	if(	!(_getRequestParamValue('vendor') > 0 ) && ( _getRequestParamValue('agency') > 0 || _getRequestParamValue('industry') > 0 ) ){
+    		return true;
+    	}
+    	
+    	return false;
     }
 }
 
