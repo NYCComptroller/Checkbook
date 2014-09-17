@@ -115,7 +115,7 @@ function print_mail_schema() {
     'fields' => array(
       'path' => array(
         'type' => 'varchar',
-        'length' => 128,
+        'length' => 255,
         'not null' => TRUE,
         'description' => 'Page path',
       ),
@@ -200,4 +200,14 @@ function print_mail_update_7102(&$sandbox) {
   $link_pos['block'] = 'block';
   $link_pos['help'] = 'help';
   variable_set('print_mail_link_pos', $link_pos);
+}
+
+/**
+ * Increase size of the path field in the print_mail_page_counter table
+ */
+function print_mail_update_7103(&$sandbox) {
+  db_drop_primary_key('print_mail_page_counter');
+  db_change_field('print_mail_page_counter', 'path', 'path',
+    array('type' => 'varchar', 'length' => 255, 'not null' => TRUE, 'description' => 'Page path'),
+    array('primary key' => array('path')));
 }

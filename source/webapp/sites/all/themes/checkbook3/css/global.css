@@ -1169,6 +1169,19 @@ span.create-alert-instructions ul li {
     padding-left: 7px;
 }
 
+span.create-alert-results-loading {
+    margin: 0 auto;
+    width: 130px;
+}
+span.create-alert-results-loading .ajax-progress.ajax-progress-throbber {
+    float: left;
+    padding-bottom:5px;
+}
+span.create-alert-results-loading p {
+    float: left;
+    margin-top:5px;
+}
+
 div.create-alert-schedule-alert {
     margin-left: 40px;
 }
@@ -1187,7 +1200,6 @@ div.create-alert-schedule-alert select{
 #region-header-first .advanced-search-create-alert {
     display:block;
     width:65px;
-    height:36px;
     background: url("../images/create-alert-large.png") no-repeat top center transparent;
     float: right;
     position: absolute;
@@ -1204,14 +1216,8 @@ div.create-alert-schedule-alert select{
     position: relative;
 }
 
-#ui-dialog-title-block-checkbook-advanced-search-checkbook-advanced-search-form span.active{
-
-}
-#ui-dialog-title-block-checkbook-advanced-search-checkbook-advanced-search-form span.inactive{
+.create-alert-header span.inactive{
     opacity: 0.3;
-}
-#checkbook_advanced_search_result_iframe {
-
 }
 
 /* Advanced Search */
@@ -1476,7 +1482,8 @@ div.create-alert-schedule-alert select{
 #spending-advanced-search div.spending-submit,
 #contracts-advanced-search div.contracts-submit,
 #checkbook-advanced-search-form div.revenue-submit,
-#checkbook-advanced-search-form div.budget-submit{
+#checkbook-advanced-search-form div.budget-submit,
+#checkbook-advanced-search-form div.payroll-submit{
     padding-top: 10px;
     clear:both;
     text-align: right;
@@ -2096,6 +2103,23 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
 .assoc-contracts-list .contractLinkNote a,
 .oge-assoc-contracts-list .contractLinkNote a{
     margin:0px 0px 0px 5px;
+}
+
+.activeExpenseContractNote.toolTip {
+    display:none;
+    position:absolute;
+    top:100px;
+    width:210px;
+    left:20px;
+    padding:3px 10px;
+    background-color: #f4f4f4;
+    color:#3b5f7f;
+    border:1px solid #c5c5c3;
+    -webkit-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.5);
+    -moz-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.5);
+    box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.5);
+    text-transform: none;
+    margin:0px;
 }
 
 .oge-assoc-contracts-list .assoc_item .contract-title{

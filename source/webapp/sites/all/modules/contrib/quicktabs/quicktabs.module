@@ -1,4 +1,5 @@
 <?php
+define('QUICKTABS_DELTA_NONE', 999999);
 
 /**
  * Implements hook_help().
@@ -134,6 +135,7 @@ function quicktabs_block_info() {
   $blocks = array();
   foreach (quicktabs_load_multiple() as $qt_name => $quicktabs) {
     $blocks[$qt_name]['info'] = $quicktabs->title;
+    $blocks[$qt_name]['cache'] = DRUPAL_NO_CACHE;
   }
   return $blocks;
 }
@@ -202,10 +204,13 @@ function quicktabs_build_quicktabs($name, $settings = array(), $custom_tabs = ar
   }
   $renderer = isset($settings['renderer']) ? $settings['renderer'] : 'quicktabs';
   unset($settings['renderer']);
+  $needs_sorting = FALSE;
+  $weight = 0;
   foreach ($custom_tabs as &$tab) {
+    $needs_sorting = $needs_sorting || isset($tab['weight']);
     $tab += array(
       'type' => 'prerendered',
-      'weight' => 0,
+      'weight' => $weight++,
     );
   }
   $contents = array_merge($custom_tabs, $contents);
@@ -228,8 +233,9 @@ function quicktabs_build_quicktabs($name, $settings = array(), $custom_tabs = ar
     }
   }
   // Only sort by weight if the tabs haven't already been sorted by some other
-  // mechanism, e.g. Views in the case of the Views style plugin.
-  if (!isset($settings['sorted']) || !$settings['sorted']) {
+  // mechanism, e.g. Views in the case of the Views style plugin and there was
+  // a weight given for one of the tabs.
+  if ($needs_sorting && (!isset($settings['sorted']) || !$settings['sorted'])) {
     array_multisort($weight, SORT_ASC, $contents);
   }
   else {
@@ -284,6 +290,53 @@ function quicktabs_load_multiple($names = array()) {
   ctools_include('export');
   $defaults = empty($names) ? ctools_export_load_object('quicktabs', 'all') : ctools_export_load_object('quicktabs', 'names', $names);
   return $defaults;
+}
+
+/**
+ * Creates a new quicktab instance.
+ */
+function quicktabs_save($quicktab) {
+  module_invoke_all('quicktabs_presave', $quicktab);
+
+  $exists = quicktabs_load($quicktab->machine_name);
+  if ($exists && empty($exists->in_code_only)) {
+    $ret = drupal_write_record('quicktabs', $quicktab, 'machine_name');
+    if ($ret == SAVED_UPDATED) {
+      quicktabs_i18n_update_strings(array($quicktab->machine_name));
+    }
+    else {
+      return FALSE;
+    }
+  }
+  else {
+    $ret = drupal_write_record('quicktabs', $quicktab);
+    if ($ret == SAVED_NEW) {
+      quicktabs_i18n_update_strings(array($quicktab->machine_name));
+      module_invoke_all('quicktabs_insert', $quicktab);
+    }
+    else {
+      return FALSE;
+    }
+  }
+  module_invoke_all('quicktabs_save', $quicktab);
+  return $quicktab;
+}
+
+/**
+ * Updates an existing quicktab instance.
+ */
+function quicktabs_update($quicktab) {
+  quicktabs_save($quicktab);
+  module_invoke_all('quicktabs_update', $quicktab);
+  return $quicktab;
+}
+
+/**
+ * Deletes a quicktab instance.
+ */
+function quicktabs_delete($machine_name) {
+  db_query('DELETE FROM {quicktabs} WHERE machine_name = :machine_name', array(':machine_name' => $machine_name));
+  module_invoke_all('quicktabs_delete', $machine_name);
 }
 
 /**

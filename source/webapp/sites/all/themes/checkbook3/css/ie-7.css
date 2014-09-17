@@ -1284,11 +1284,35 @@ body.page-featured-trends #featured-trends-thumbnails{
     background: url("../images/create-alert-large.png") no-repeat top center transparent;
     float: right;
     position: absolute;
-    top:-38px;
-    right: 35px;
-    height: 35px;
+    top:-37px !important;
+    right: 24px !important;
     margin: 0px;
     line-height: 88px;
     cursor: pointer;
     color: #1F82C9;
+}
+
+#edit-checkbook-spending-fiscal-year,
+#edit-checkbook-oge-spending-fiscal-year {
+    float: left !important;
+}
+
+#edit-payroll-clear {
+    float: right !important;
+}
+span.export {
+    top: 10px !important;
+}
+span.alerts {
+    top:-10px !important;
+}
+
+
+.budget-submit .ajax-progress,
+.revenue-submit .ajax-progress,
+.spending-submit .ajax-progress,
+.contracts-submit .ajax-progress,
+.payroll-submit .ajax-progress {
+    display: none !important;
+    visibility: hidden !important;
 }

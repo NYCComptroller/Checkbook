@@ -7,6 +7,7 @@ Table of contents:
  * Requirements
  * Optional configuration for scalability and performance
  * Installation
+ * Troubleshooting
  
 Introduction
 ------------
@@ -21,7 +22,7 @@ The Checkbook deployment process is getting closer to that ideal, but
 it is not there yet.  We know that more work is needed to smooth and
 standardize deployment, and we are conducting that work in the open,
 with participation from all interested parties.  The code's authors,
-who are intimiately familiar with every step of the process, naturally
+who are intimately familiar with every step of the process, naturally
 can and do regularly deploy production instances to
 <http://checkbooknyc.com/> -- but various improvements need to be made
 to these instructions before that process is equally easy for
@@ -98,8 +99,8 @@ The following assumptions are also made about the installation:
  * The webroot is `/var/www/html`.
    (It could be somewhere else; `/var/www/html` is just the location
    we use in these instructions.)
- * The Drupal database is named `checkbook_drupal`.
- * The PostgreSQL database is named `checkbook`.
+
+The initial installation of the GNU/Linux server with LAMP stack takes on average 20 minutes. 
 
 Steps to install:
 
@@ -115,7 +116,8 @@ Steps to install:
 
 2.  Ensure you have the necessary dependencies installed.
 
-    On Ubuntu 12.04 Server, that looks like this:
+    On Ubuntu 12.04 Server, that looks like this (Debian GNU/Linux
+    should be pretty similar):
 
         $ sudo apt-get update
         $ sudo apt-get install php5
@@ -133,9 +135,47 @@ Steps to install:
         $ sudo apt-get install openjdk-6-jre-headless
         $ sudo apt-get install zip
 
-    Debian GNU/Linux would be pretty similar to the above.  For other
-    operating systems, you'll have to translate the above to the native
-    package management system.
+    On CentOS 6.4 (Red Hat RHEL should similar), it's this:
+
+        $ sudo yum install php.x86_64
+        $ sudo yum install php-gd.x86_64
+        $ sudo yum install php-intl.x86_64
+        $ sudo yum install php-mysql.x86_64
+        $ sudo yum install php-pgsql.x86_64
+        $ sudo yum install php-xml
+        $ sudo yum install mysql-server.x86_64
+        $ sudo yum install git.x86_64
+        $ sudo yum install httpd.x86_64
+        $ sudo yum install java-1.6.0-openjdk.x86_64
+        $ sudo yum install zip.x86_64
+
+        # For drush (the Drupal Shell), we have to install it via the
+        # Pear PHP package management system, because drush apparently
+        # isn't natively packaged in CentOS 6.4 yet.  So:
+
+        $ sudo yum -y install php-pear
+        $ sudo pear upgrade
+        $ sudo pear channel-discover pear.drush.org
+        $ sudo pear install drush/drush
+
+        # For PostgreSQL, we want version 9.x, but base CentOS 6.4
+        # only packages PostgreSQL 8.x.  So first download the RPM
+        # file from the PostgreSQL Yum/RPM Building Project at
+        # http://yum.postgresql.org/repopackages.php (look for the
+        # "CentOS 6 - x86_64" link, which as of this writing points to
+        # http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-centos93-9.3-1.noarch.rpm).
+
+        $ sudo rpm -ivh http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-centos93-9.3-1.noarch.rpm
+
+        # That installed the repos RPM -- in other words, it made the
+        # yum/rpm system aware of the PostgreSQL package repository
+        # from which you can now install the actual packages.  Do so:
+
+        $ sudo yum install postgresql93-server
+        $ sudo yum install postgresql93-contrib
+
+    For other operating systems, you'll have to translate the above to
+    the appropriate package management system.
 
     *Note: the process of installing Apache Solr will be described
     later, as Checkbook currently installs Solr in an unusual way.*
@@ -164,8 +204,8 @@ Steps to install:
     webapp from Checkbook:
 
         $ sudo su www-data
-        $ cp -a source/webapp /var/www/html
-        $ ls /var/www/html
+        $ cp -a source/webapp/* /var/www/html
+        $ ls /var/www/html/
         authorize.php index.php          INSTALL.txt     profiles/  themes/
         CHANGELOG.txt INSTALL.mysql.txt  LICENSE.txt     README.txt update.php
         COPYRIGHT.txt INSTALL.pgsql.txt  MAINTAINERS.txt robots.txt UPGRADE.txt
@@ -173,11 +213,19 @@ Steps to install:
         includes/     INSTALL.sqlite.txt modules/        sites/     xmlrpc.php
         $ 
 
-    (This assumes that directory `/var/www/` exists and is owned by user
-    `www-data` and group `www-data`.  If that's not the case, you may
-    need to properly create and set permissions on the destination.  On
-    Ubuntu 12.04, `sudo chown -R www-data.www-data /var/www` would be one
-    way to do that.)
+    (If the `/var/www/html` directory is already there, then you'll
+    need to adjust these instructions in the appropriate way.  Also,
+    all of this assumes that directory `/var/www/` already exists and
+    is owned by user `www-data` and group `www-data`.  If that's not
+    the case, you may need to properly create and set root permissions
+    for the www-data user with the following command. 
+     `sudo chown -R www-data.www-data /var/www` would be one
+    way to do that on Ubuntu 12.04.)
+
+    Make sure the `sites/default/files/` directory has read, write,
+    *and* execute permissions for the web server user:
+
+        $ chmod ug+rwx /var/www/html/sites/default/files
 
     Finally, copy the `default.settings.php` file to
     `settings.php`. There is no actual line break below nor backslash --
@@ -193,7 +241,7 @@ Steps to install:
     **Highcharts:**
     - Download version 3.0.1 from <http://www.highcharts.com/products/highcharts>:
 
-            $ wget http://www.highcharts.com/downloads/zips/Highcharts-3.0.1.zip
+            $ wget http://code.highcharts.com/zips/Highcharts-3.0.1.zip
     - Unpack it into the appropriate place in the web application:
 
             $ mkdir -p /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highcharts/
@@ -208,7 +256,7 @@ Steps to install:
     **Highstock:**
     - Download version 1.2.4 from <http://www.highcharts.com/products/highstock>:
 
-            $ wget http://www.highcharts.com/downloads/zips/Highstock-1.2.4.zip
+            $ wget http://code.highcharts.com/zips/Highstock-1.2.4.zip
     - Unpack it:
 
             $ mkdir -p /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/
@@ -240,32 +288,53 @@ Steps to install:
 
     *Notes:*
 
+    On some operating systems (e.g., CentOS 6.4), the MySQL daemon may
+    not have been invoked at system startup, and furthermore the MySQL
+    root password may not have been set yet.  To deal with these
+    situations respectively, do `sudo service mysqld start` and
+    `mysqladmin -u root password "some_password"`.
+
     The path `data/checkbook_drupal.sql` is relative to the top of this
     source tree; you may need to give an absolute path or a different
     relative path when you issue the MySQL `source` command above,
     depending on where you invoked mysql.
 
-    In this demo, we are givig the MySQL user "checkbook@localhost" the
-    password 'checkbook', to match the default setting in
+    In this demo, we are giving the MySQL user "checkbook@localhost"
+    the password 'checkbook', to match the default setting in
     `/var/www/html/sites/default/settings.php`.  For a production
     installation, you would want to use a better password of course.
 
 7.  Install the Checkbook (PostgreSQL) database.
+    Begin by inilitizing the PostgreSQL database with the following command: 
+       $ service postgresql-9.3 initdb
+       $ service postgresql-9.3 start;
 
     Create and import the database into PostgreSQL using the following commands:
 
         $ cd data
-        $ unzip checkbook_demo_database_for_postgres_db_20130524.zip
-        Archive:  checkbook_demo_database_for_postgres_db_20130524.zip
-          inflating: checkbook_demo_database_for_postgres_db_20130524.sql
+        $ unzip checkbook_demo_database_for_postgres_db_20140708.zip
+        Archive:  checkbook_demo_database_for_postgres_db_20140708.zip
+          inflating: checkbook_demo_database_for_postgres_db_20140708.sql
+        $ unzip checkbook_demo_database_for_postgres_ogent_db_20140708.zip
+        Archive:  checkbook_demo_database_for_postgres_ogent_db_20140708.zip
+          inflating: checkbook_demo_database_for_postgres_ogent_db_20140708.sql
         $ cd ..
         $ sudo su postgres
-        $ psql
+        bash-4.1$ psql
         postgres=# create database checkbook ;
+        postgres=# create database checkbook_ogent ;
         postgres=# \q
           _(to exit from the database interactive prompt)_
-        $ psql checkbook -f data/checkbook_demo_database_for_postgres_db_20130524.sql
-
+        bash-4.1$ psql checkbook -f         data/checkbook_demo_database_for_postgres_db_20140708/checkbook_demo_database_for_postgres_db_20140708.sql
+        bash-4.1$ psql checkbook_ogent -f         data/checkbook_demo_database_for_postgres_ogent_db_20140708/checkbook_demo_database_for_postgres_ogent_db_20140708.sql
+         bash-4.1$ exit
+       
+    
+    Set the PostgreSQL database user's username and password with the following command:
+    $ sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"
+    
+    Verify that PostgreSQL can accept password authentication from the postgres user with the following command: 
+    $ PGPASSWORD=postgres psql -U postgres checkbook
     *Notes:*
 
     The demo dataset loaded above assumes the PostgreSQL database user
@@ -288,8 +357,9 @@ Steps to install:
 
 8.  Check the basic database settings in `settings.php`.
 
-    Look for this text in `/var/www/html/sites/default/settings.php`:
-
+    Look for: $databases = array (); text in the following file `/var/www/html/sites/default/settings.php`:
+    Insert the following settings listed below. 
+        
         $databases = array(
             'default' => array(
                 'default' => array(
@@ -305,6 +375,18 @@ Steps to install:
             'checkbook' => array(
                 'main' => array(
                     'database' => 'checkbook',
+                    'username' => 'postgres',
+                    'password' => 'postgres',
+                    'host' => '127.0.0.1',
+                    'port' => '5432',
+                    'driver' => 'pgsql',
+                    'prefix' => '',
+                    'schema' => 'public'
+                ),
+              ),
+             'checkbook_ogent' => array(
+                'main' => array(
+                    'database' => 'checkbook_ogent',
                     'username' => 'postgres',
                     'password' => 'postgres',
                     'host' => '127.0.0.1',
@@ -391,7 +473,7 @@ Steps to install:
             //Export data outputDirectory
             $conf['check_book']['export_data_dir'] = 'exportdata';
 
-     Make sure to create the directory `sites/default/files/refdata`
+     Make sure to create the directory `sites/default/files/exportdata`
      too, and ensure it's writeable by `www-data`.
    - This setting is used to limit the number of records for the export file:
 
@@ -484,3 +566,62 @@ Steps to install:
 
  * Click on export in advances search results page to verfiy that
     export is working.
+
+Troubleshooting
+---------------
+
+We're slowly collecting troubleshooting tips based on people's
+installation experiences in the real world.  If you encounter a new
+problem, please raise it in one of the feedback forums (e.g., as a
+GitHub issue or as a post in the discussion group -- see README.md),
+and once we've figured out the solution we'll list it here too.
+
+  * Installation on a Virtual Machine.
+
+    https://github.com/NYCComptroller/Checkbook/issues/26#issuecomment-34296699
+    describes how user @sapariduo installed CheckbookNYC on a virtual
+    machine, with the Host machine running Windows 7 and the Virtual
+    Machine running Centos 6.4.
+
+    To do this, he set up 2 virtual networks.  1 (NAT) used DHCP from
+    the host machine, therefore having the same subnet address as the
+    Host.  The other virtual network used a static IP address ("Host
+    Only Configuration"), for the Checkbook server on CentOS 6.4.  The
+    objective of this configuration was to allow the CentOS machine to
+    be able to connect with the external network, so that a very
+    minimal CentOS installation could be used without any need for any
+    desktop features there, and allowing the Windows browser to
+    connect to the Checkbook application on the CentOS VM.
+
+    Here are some extra things he needed to do to make this work:
+
+    - Set up or verify hostname of the server on
+      `/etc/sysconfig/network` and put the static IP address and
+      hostname on `/etc/hosts`.
+
+    - In `/etc/httpd/conf/httpd.conf`:
+
+      1. Find entry "ServerName", untag and set parameter with
+         yourdomain:80 or yourIP:80
+
+      2. Find entry "NameVirtualHost", untag and set parameter with *:80
+
+      3. Set VirtualHost Configuration and use your domain or your IP
+         on ServerName element
+
+    - Configuration needed for PostgreSQL to make Solr able to connect:
+
+      1. Change parameter on `/var/lib/pgsql/9.3./data/pg_hba.conf`:
+         "local all all ident" --> "local all all trust"
+
+      Then monitor whether Solr is able to connect with Postgres, from
+      `/opt/apache-tomcat-6.0.35/logs/catalina.out`.  If there is still
+      an error in the JDBC Postgres connection, try changeing this
+      parameter too:
+      "host all all 127.0.0.1/32 ident" --> "host all all 127.0.0.1/32 trust"
+
+    Then restart HTTPD and Tomcat:
+
+    `service httpd restart` 
+
+    `./bin/shutdown.sh` (from within the apache-tomcat directory)

@@ -9,6 +9,8 @@ pre-packaged for direct installation by copying, as described below.
           $ sudo cp -a software/solr-4.1.0 /opt/solr-4.1.0
           $ sudo cp -a software/apache-tomcat-6.0.35 /opt/apache-tomcat-6.0.35
 
+ *Note: you may need to create the `/opt` directory first on some systems.*
+
 2. Create the Tomcat log directory.
 
           $ sudo mkdir /opt/apache-tomcat-6.0.35/logs
@@ -17,6 +19,7 @@ pre-packaged for direct installation by copying, as described below.
  writing to its log directory as `root`.  This is not ideal; probably
  Tomcat should run as `www-data`.  However, we have not tested that
  configuration yet, so for now we are documenting running as `root`.*
+ 
 
 3. Ensure that Solr will be able to connect to the PostgreSQL DB.
 
@@ -26,42 +29,60 @@ pre-packaged for direct installation by copying, as described below.
  instructions.  It's really about setting the postgres DB user's
  password, and therefore should be documented in INSTALL.md.*
 
-4. Update the Solr database settings:
+4. Set the PostgreSQL connection authentication configuration:
 
- Update `/opt/solr-4.1.0/indexes/solr/collection1/conf/db-config.xml`
- with the correct username, password and db name for the PostgreSQL
- database.  By default, they are "`postgres`", "`postgres`" and
- "`checkbook`" respectively.
+ Open up the PostgreSQL configuration file (a file somewhere
+ like `/etc/postgresql/9.1/main/pg_hba.conf` if Ubuntu 12.04 or
+ `/var/lib/pgsql/9.3/data/pg_hba.conf` if CentOS 6.4) and apply the 
+ changes listed below: 
+ 
+# 'local' is for Unix domain socket connections only
 
- Next, open up the PostgreSQL configuration file (a file somewhere
- like `/etc/postgresql/9.1/main/pg_hba.conf`) and change this line
+       local     all         all              md5
+       
+# IPv4 local connections: 
 
-          `local  all        postgres          peer`
+       host      all       0.0.0.0/0          md5
+       
+# IPv6 local connection: 
 
- to this:
+       host      all          all             md5
+       
 
-          `local  all        postgres          md5`
-
+ *Note: This configuration is set so any user can log into the database 
+ providing the username: localhost, postgres, etc. with the password: postgres. 
+ This configuration is simply for initial setup and can be customized to your 
+ preference. 
+ 
  *Note: Again, that "postgres" user is the main PG database user, and
  changing its authentication mechanism could affect up other things.
  The long-term solution is for Checkbook to have its own PG user.*
 
- Then restart PostgreSQL:
+5. Then restart PostgreSQL:
+          
+          $ sudo service postgresql-9.3 restart
 
-          $ sudo service postgresql restart
-
- Now PostgreSQL can accept password authentication.  You can use this
- command to test that it worked:
+ Verify that the user postgres can connect to the checkbook database with
+ the following command. 
 
           $ PGPASSWORD=postgres psql -U postgres checkbook
+          
+6. Next, verify that the localhost user can connect to the checkbook database 
+   with password authentication. Later SOLR will connect to the database
+   using U-localhost and -PGPASSWORD=postgres. The following command will 
+   verify if that connection is succesfull. 
+
+          $ PGPASSWORD=postgres psql -U localhost checkbook
 
  The expected result is something like this:
 
-          psql (9.1.9)
+          psql (9.3.5)
           Type "help" for help.
           checkbook=# \q  (to quit)
 
- Next edit `/opt/solr-4.1.0/indexes/solr/collection1/conf/db-config.xml`
+7. Tell Solr how to connect to PostgreSQL:
+
+ Edit `/opt/solr-4.1.0/indexes/solr/collection1/conf/db-config.xml`
  to insert the correct database details.  There is no line break or
  backslash here; the backslash just indicates line continuation:
           
@@ -73,7 +94,7 @@ pre-packaged for direct installation by copying, as described below.
  "postgres", for testing.  However, in a production environment those
  would be different, and this is where you would need to set them.*
 
-5. Start Solr inside Tomcat:
+8. Start Solr inside Tomcat:
 
  To run Tomcat, you'll need a Java runtime environment.  If your
  system doesn't already have one, you can install it like this under
@@ -92,7 +113,7 @@ pre-packaged for direct installation by copying, as described below.
  Solr is now running.  For troubleshooting errors, see the detailed
  logs in `/opt/apache-tomcat-6.0.35/logs/`.
 
-6. Start Solr indexing.
+9. Start Solr indexing.
 
  Visit this url in a browser start indexing:
  <http://localhost:8080/solr-checkbook/dataimport?command=full-import&clean=true&jobID=0>
@@ -102,3 +123,11 @@ pre-packaged for direct installation by copying, as described below.
 
  Detailed logs for troubleshooting errors can be found at
  </opt/apache-tomcat-6.0.35/logs/>.
+
+ *Note: You may need to open up the server's firewall to enable a web
+ browser to reach port 8080.  Firewall configuration varies widely
+ from system to system, so we cannot document all the possibilities
+ here, but if it's iptables, then `iptables -F` should flush all
+ existing firewall rules.  You probably wouldn't want to do that on a
+ production server, but that approach might make sense for a test
+ instance, especially one running in a virtual machine.*

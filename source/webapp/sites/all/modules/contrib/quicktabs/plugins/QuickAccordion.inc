@@ -4,7 +4,7 @@
  * Renders the content using the jQuery UI Accordion widget.
  */
 class QuickAccordion extends QuickRenderer {
-  
+
   public static function optionsForm($qt) {
     $form = array();
     $form['history'] = array(
@@ -29,7 +29,7 @@ class QuickAccordion extends QuickRenderer {
     );
     return $form;
   }
-  
+
   public function render() {
     $quickset = $this->quickset;
     $qsid = 'quickset-' . $quickset->getName();
@@ -57,7 +57,7 @@ class QuickAccordion extends QuickRenderer {
     }
     return $render_array;
   }
-  
+
   /**
    * Add any necessary js, css and libraries for the render array.
    */
@@ -75,10 +75,12 @@ class QuickAccordion extends QuickRenderer {
     );
 
     $javascript = drupal_add_js();
-    foreach ($javascript['settings']['data'] as $key => $settings) {
-      if (key($settings) == 'quicktabs') {
-        $qtkey = $key;
-        break;
+    if (isset($javascript['settings']['data'])) {
+      foreach ($javascript['settings']['data'] as $key => $settings) {
+        if (key($settings) == 'quicktabs') {
+          $qtkey = $key;
+          break;
+        }
       }
     }
 

@@ -534,7 +534,7 @@ class RequestUtil{
     /** Returns top navigation URL */
     static function getTopNavURL($domain){
         $year = _getRequestParamValue("year");
-        if($year == null ){
+        if($year == null){
           $year = _getCurrentYearID();
         }
         switch($domain){
