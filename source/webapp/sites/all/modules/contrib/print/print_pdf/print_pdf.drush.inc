@@ -13,12 +13,13 @@
 define('TCPDF_DOWNLOAD_URI', 'http://sourceforge.net/projects/tcpdf/files/latest');
 
 // URI to the the latest dompdf version.. Hardcoded version unfortunately
-define('DOMPDF_DOWNLOAD_URI', 'http://dompdf.googlecode.com/files/dompdf_0-6-0_beta3.tar.gz');
+define('DOMPDF_DOWNLOAD_URI', 'https://github.com/dompdf/dompdf/releases/download/v0.6.1/dompdf-0.6.1.zip');
 
 // wkhtmltopdf is a binary, requiring a different download for each platform
-define('WKHTMLTOPDF_AMD64_DOWNLOAD_URI', 'http://wkhtmltopdf.googlecode.com/files/wkhtmltopdf-0.11.0_rc1-static-amd64.tar.bz2');
-define('WKHTMLTOPDF_I386_DOWNLOAD_URI', 'http://wkhtmltopdf.googlecode.com/files/wkhtmltopdf-0.11.0_rc1-static-i386.tar.bz2');
-define('WKHTMLTOPDF_WIN_DOWNLOAD_URI', 'http://wkhtmltopdf.googlecode.com/files/wkhtmltox-0.11.0_rc1-installer.exe');
+define('WKHTMLTOPDF_AMD64_DOWNLOAD_URI', 'http://downloads.sourceforge.net/project/wkhtmltopdf/0.12.0/wkhtmltox-linux-amd64_0.12.0-03c001d.tar.xz');
+define('WKHTMLTOPDF_I386_DOWNLOAD_URI', 'http://downloads.sourceforge.net/project/wkhtmltopdf/0.12.0/wkhtmltox-linux-i386_0.12.0-03c001d.tar.xz');
+define('WKHTMLTOPDF_WIN64_DOWNLOAD_URI', 'http://downloads.sourceforge.net/project/wkhtmltopdf/0.12.0/wkhtmltox-win64_0.12.0-03c001d.exe');
+define('WKHTMLTOPDF_WIN_DOWNLOAD_URI', 'http://downloads.sourceforge.net/project/wkhtmltopdf/0.12.0/wkhtmltox-win32_0.12.0-03c001d.exe');
 define('WKHTMLTOPDF_OSX_DOWNLOAD_URI', 'http://wkhtmltopdf.googlecode.com/files/wkhtmltopdf-OSX-0.10.0_rc2-static.tar.bz2');
 
 /**
@@ -158,6 +159,10 @@ function _drush_print_pdf_download_extract($filename) {
       case 'application/x-bzip2':
         // Decompress the tar bz2 archive
         $arch_ret = drush_shell_exec('tar xjf ' . $filename);
+        break;
+      case 'application/x-xz':
+        // Decompress the tar xz archive
+        $arch_ret = drush_shell_exec('tar xJf %s', $filename);
         break;
     }
   }

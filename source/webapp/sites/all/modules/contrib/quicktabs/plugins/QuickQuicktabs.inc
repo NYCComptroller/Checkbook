@@ -5,10 +5,10 @@
  * Includes support for ajax rendered content.
  */
 class QuickQuicktabs extends QuickRenderer {
-  
+
   public function render() {
     $quickset = $this->quickset;
-    
+
     $render_array = array();
 
     $active_tab = $quickset->getActiveTab();
@@ -23,12 +23,12 @@ class QuickQuicktabs extends QuickRenderer {
         '#theme' => 'qt_quicktabs',
         '#options' => array('attributes' => array(
           'id' => 'quicktabs-' . $qt_name,
-          'class' => 'quicktabs-wrapper quicktabs-style-' . drupal_strtolower($settings['style']),
+          'class' => 'quicktabs-wrapper quicktabs-style-' . drupal_html_class($settings['style']),
         )),
-        'tabs' => array('#theme' => 'qt_quicktabs_tabset', '#options' => array('active' => $active_tab, 'style' => drupal_strtolower($settings['style'])), 'tablinks' => $tabs),
+        'tabs' => array('#theme' => 'qt_quicktabs_tabset', '#options' => array('active' => $active_tab, 'style' => drupal_html_class($settings['style'])), 'tablinks' => $tabs),
         // The main content area, each quicktab container needs a unique id.
         'container' => array(
-          '#prefix' => '<div id="quicktabs-container-' . $qt_name .'" class="quicktabs_main quicktabs-style-' . drupal_strtolower($settings['style']) .'">',
+          '#prefix' => '<div id="quicktabs-container-' . $qt_name .'" class="quicktabs_main quicktabs-style-' . drupal_html_class($settings['style']) .'">',
           '#suffix' => '</div>',
           'divs' => array(),
         ),
@@ -55,7 +55,7 @@ class QuickQuicktabs extends QuickRenderer {
 
   /**
    * Build the actual tab links, with appropriate href, title and attributes.
-   * 
+   *
    * @param $active_tab The index of the active tab.
    */
   protected function build_tablinks($active_tab) {
@@ -118,10 +118,12 @@ class QuickQuicktabs extends QuickRenderer {
     }
     // Add our JS settings
     $javascript = drupal_add_js();
-    foreach ($javascript['settings']['data'] as $key => $settings) {
-      if (key($settings) == 'quicktabs') {
-        $qtkey = $key;
-        break;
+    if (isset($javascript['settings']['data'])) {
+      foreach ($javascript['settings']['data'] as $key => $settings) {
+        if (key($settings) == 'quicktabs') {
+          $qtkey = $key;
+          break;
+        }
       }
     }
     $name = $this->quickset->getName();
@@ -132,24 +134,27 @@ class QuickQuicktabs extends QuickRenderer {
     }
     return $attached;
   }
-  
+
   /**
    * Helper function to construct link options for tab links.
    */
   protected function construct_link_options($tabkey) {
     $qt_name = $this->quickset->getName();
+    $settings = $this->quickset->getSettings();
+
     $id = 'quicktabs-tab-' . implode('-', array($qt_name, $tabkey));
-  
+
     // Need to construct the correct querystring for the tab links.
     $query = drupal_get_query_parameters(NULL, array("qt-$qt_name", 'q', 'page'));
     $query["qt-{$qt_name}"] = $tabkey;
-  
+
     $link_options = array(
       'attributes' => array(
         'id' => $id,
       ),
       'query' => $query,
       'fragment' => 'qt-' . $qt_name,
+      'html' => isset($settings['html']) ? $settings['html'] : FALSE,
     );
     return $link_options;
   }

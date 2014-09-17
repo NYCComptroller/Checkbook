@@ -4,7 +4,7 @@
  * Renders the content using the jQuery UI Tabs widget.
  */
 class QuickUiTabs extends QuickRenderer {
-  
+
   public static function optionsForm($qt) {
     $form = array();
     $form['history'] = array(
@@ -49,10 +49,10 @@ class QuickUiTabs extends QuickRenderer {
     return $render_array;
   }
 
-  
+
   /**
    * Build the actual tab links, with appropriate href, title and attributes.
-   * 
+   *
    * @param $active_tab The index of the active tab.
    */
   protected function build_tablinks($active_tab) {
@@ -91,10 +91,12 @@ class QuickUiTabs extends QuickRenderer {
     );
 
     $javascript = drupal_add_js();
-    foreach ($javascript['settings']['data'] as $key => $settings) {
-      if (key($settings) == 'quicktabs') {
-        $qtkey = $key;
-        break;
+    if (isset($javascript['settings']['data'])) {
+      foreach ($javascript['settings']['data'] as $key => $settings) {
+        if (key($settings) == 'quicktabs') {
+          $qtkey = $key;
+          break;
+        }
       }
     }
 
