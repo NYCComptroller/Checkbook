@@ -4,7 +4,11 @@
 "html_class":"chart-left",
 "footer":"
 	
-$nyc_legend_html = 	SpendingUtil::getMWBENYCLegend(_getRequestParamValue('year'), _getRequestParamValue('yeartype'));
+
+if(SpendingUtil::_show_mwbe_custom_legend()){
+	$nyc_legend_html = 	SpendingUtil::getMWBENYCLegend(_getRequestParamValue('year'), _getRequestParamValue('yeartype'));
+}	
+	 
 	
 echo '<div class=\"chart-right\">
         <div class=\"wrap\">
