@@ -1,45 +1,55 @@
 <?php
-ini_set('error_reporting', E_ALL ^ E_DEPRECATED ^ E_NOTICE);
+
 /**
  * @file
  * Drupal site-specific configuration file.
  *
  * IMPORTANT NOTE:
- * This file may have been set to read-only by the Drupal installation
- * program. If you make changes to this file, be sure to protect it again
- * after making your modifications. Failure to remove write permissions
- * to this file is a security risk.
+ * This file may have been set to read-only by the Drupal installation program.
+ * If you make changes to this file, be sure to protect it again after making
+ * your modifications. Failure to remove write permissions to this file is a
+ * security risk.
  *
- * The configuration file to be loaded is based upon the rules below.
+ * The configuration file to be loaded is based upon the rules below. However
+ * if the multisite aliasing file named sites/sites.php is present, it will be
+ * loaded, and the aliases in the array $sites will override the default
+ * directory rules below. See sites/example.sites.php for more information about
+ * aliases.
  *
- * The configuration directory will be discovered by stripping the
- * website's hostname from left to right and pathname from right to
- * left. The first configuration file found will be used and any
- * others will be ignored. If no other configuration file is found
- * then the default configuration file at 'sites/default' will be used.
+ * The configuration directory will be discovered by stripping the website's
+ * hostname from left to right and pathname from right to left. The first
+ * configuration file found will be used and any others will be ignored. If no
+ * other configuration file is found then the default configuration file at
+ * 'sites/default' will be used.
  *
  * For example, for a fictitious site installed at
- * http://www.drupal.org/mysite/test/, the 'settings.php'
- * is searched in the following directories:
+ * http://www.drupal.org:8080/mysite/test/, the 'settings.php' file is searched
+ * for in the following directories:
  *
+ * - sites/8080.www.drupal.org.mysite.test
  * - sites/www.drupal.org.mysite.test
  * - sites/drupal.org.mysite.test
  * - sites/org.mysite.test
  *
+ * - sites/8080.www.drupal.org.mysite
  * - sites/www.drupal.org.mysite
  * - sites/drupal.org.mysite
  * - sites/org.mysite
  *
+ * - sites/8080.www.drupal.org
  * - sites/www.drupal.org
  * - sites/drupal.org
  * - sites/org
  *
  * - sites/default
  *
- * If you are installing on a non-standard port number, prefix the
+ * Note that if you are installing on a non-standard port number, prefix the
  * hostname with that number. For example,
  * http://www.drupal.org:8080/mysite/test/ could be loaded from
  * sites/8080.www.drupal.org.mysite.test/.
+ *
+ * @see example.sites.php
+ * @see conf_path()
  */
 
 /**
@@ -137,7 +147,7 @@ ini_set('error_reporting', E_ALL ^ E_DEPRECATED ^ E_NOTICE);
  *     'authmap'   => 'shared_',
  *   ),
  * @endcode
- * You can also use a reference to a schema/database as a prefix. This maybe
+ * You can also use a reference to a schema/database as a prefix. This may be
  * useful if your Drupal installation exists in a schema that is not the default
  * or you want to access several databases from the same code base at the same
  * time.
@@ -152,6 +162,29 @@ ini_set('error_reporting', E_ALL ^ E_DEPRECATED ^ E_NOTICE);
  *   );
  * @endcode
  * NOTE: MySQL and SQLite's definition of a schema is a database.
+ *
+ * Advanced users can add or override initial commands to execute when
+ * connecting to the database server, as well as PDO connection settings. For
+ * example, to enable MySQL SELECT queries to exceed the max_join_size system
+ * variable, and to reduce the database connection timeout to 5 seconds:
+ *
+ * @code
+ * $databases['default']['default'] = array(
+ *   'init_commands' => array(
+ *     'big_selects' => 'SET SQL_BIG_SELECTS=1',
+ *   ),
+ *   'pdo' => array(
+ *     PDO::ATTR_TIMEOUT => 5,
+ *   ),
+ * );
+ * @endcode
+ *
+ * WARNING: These defaults are designed for database portability. Changing them
+ * may cause unexpected behavior, including potential data loss.
+ *
+ * @see DatabaseConnection_mysql::__construct
+ * @see DatabaseConnection_pgsql::__construct
+ * @see DatabaseConnection_sqlite::__construct
  *
  * Database configuration format:
  * @code
@@ -177,31 +210,7 @@ ini_set('error_reporting', E_ALL ^ E_DEPRECATED ^ E_NOTICE);
  *   );
  * @endcode
  */
-$databases = array(
-    'default' => array(
-        'default' => array(
-            'database' => 'checkbook_drupal',
-            'username' => 'checkbook',
-            'password' => 'checkbook',
-            'host' => 'localhost',
-            'port' => '',
-            'driver' => 'mysql',
-            'prefix' => '',
-        ),
-    ),
-    'checkbook' => array(
-        'main' => array(
-            'database' => 'checkbook',
-            'username' => 'postgres',
-            'password' => 'postgres',
-            'host' => '127.0.0.1',
-            'port' => '5432',
-            'driver' => 'pgsql',
-            'prefix' => '',
-            'schema' => 'public'
-        ),
-    ),
-);
+$databases = array();
 
 /**
  * Access control for update.php script.
@@ -220,10 +229,10 @@ $update_free_access = FALSE;
  * Salt for one-time login links and cancel links, form tokens, etc.
  *
  * This variable will be set to a random value by the installer. All one-time
- * login links will be invalidated if the value is changed.  Note that this
- * variable must have the same value on every web server.  If this variable is
- * empty, a hash of the serialized database credentials will be used as a
- * fallback salt.
+ * login links will be invalidated if the value is changed. Note that if your
+ * site is deployed on a cluster of web servers, you must ensure that this
+ * variable has the same value on each server. If this variable is empty, a hash
+ * of the serialized database credentials will be used as a fallback salt.
  *
  * For enhanced security, you may set this variable to a value using the
  * contents of a file outside your docroot that is never saved together
@@ -233,7 +242,7 @@ $update_free_access = FALSE;
  *   $drupal_hash_salt = file_get_contents('/home/example/salt.txt');
  *
  */
-$drupal_hash_salt = 'I8slT_fBMEFboM4TKNFgetVZgTAzBA1Br8LecFCAuAw';
+$drupal_hash_salt = '';
 
 /**
  * Base URL (optional).
@@ -255,15 +264,15 @@ $drupal_hash_salt = 'I8slT_fBMEFboM4TKNFgetVZgTAzBA1Br8LecFCAuAw';
  * It is not allowed to have a trailing slash; Drupal will add it
  * for you.
  */
-//$base_url = 'http://localhost/Checkbook';  // NO trailing slash!
+# $base_url = 'http://www.example.com';  // NO trailing slash!
 
 /**
  * PHP settings:
  *
  * To see what PHP settings are possible, including whether they can be set at
  * runtime (by using ini_set()), read the PHP documentation:
- * http://www.php.net/manual/en/ini.list.php
- * See drupal_initialize_variables() in includes/bootstrap.inc for required
+ * http://www.php.net/manual/ini.list.php
+ * See drupal_environment_initialize() in includes/bootstrap.inc for required
  * runtime settings and the .htaccess file for non-runtime settings. Settings
  * defined there should not be duplicated here so as to avoid conflict issues.
  */
@@ -298,7 +307,7 @@ ini_set('session.cookie_lifetime', 2000000);
  * output filter may not have sufficient memory to process it.  If you
  * experience this issue, you may wish to uncomment the following two lines
  * and increase the limits of these variables.  For more information, see
- * http://php.net/manual/en/pcre.configuration.php.
+ * http://php.net/manual/pcre.configuration.php.
  */
 # ini_set('pcre.backtrack_limit', 200000);
 # ini_set('pcre.recursion_limit', 200000);
@@ -426,7 +435,7 @@ ini_set('session.cookie_lifetime', 2000000);
 /**
  * String overrides:
  *
- * To override specific strings on your site with or without enabling locale
+ * To override specific strings on your site with or without enabling the Locale
  * module, add an entry to this list. This functionality allows you to change
  * a small number of your site's default English language interface strings.
  *
@@ -481,56 +490,64 @@ ini_set('session.cookie_lifetime', 2000000);
  */
 $conf['404_fast_paths_exclude'] = '/\/(?:styles)\//';
 $conf['404_fast_paths'] = '/\.(?:txt|png|gif|jpe?g|css|js|ico|swf|flv|cgi|bat|pl|dll|exe|asp)$/i';
-$conf['404_fast_html'] = '<html xmlns="http://www.w3.org/1999/xhtml"><head><title>404 Not Found</title></head><body><h1>Not Found</h1><p>The requested URL "@path" was not found on this server.</p></body></html>';
+$conf['404_fast_html'] = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>404 Not Found</title></head><body><h1>Not Found</h1><p>The requested URL "@path" was not found on this server.</p></body></html>';
 
 /**
- * By default, fast 404s are returned as part of the normal page request
- * process, which will properly serve valid pages that happen to match and will
- * also log actual 404s to the Drupal log. Alternatively you can choose to
- * return a 404 now by uncommenting the following line. This will reduce server
- * load, but will cause even valid pages that happen to match the pattern to
- * return 404s, rather than the actual page. It will also prevent the Drupal
- * system log entry. Ensure you understand the effects of this before enabling.
+ * By default the page request process will return a fast 404 page for missing
+ * files if they match the regular expression set in '404_fast_paths' and not
+ * '404_fast_paths_exclude' above. 404 errors will simultaneously be logged in
+ * the Drupal system log.
  *
- * To enable this functionality, remove the leading hash sign below.
+ * You can choose to return a fast 404 page earlier for missing pages (as soon
+ * as settings.php is loaded) by uncommenting the line below. This speeds up
+ * server response time when loading 404 error pages and prevents the 404 error
+ * from being logged in the Drupal system log. In order to prevent valid pages
+ * such as image styles and other generated content that may match the
+ * '404_fast_html' regular expression from returning 404 errors, it is necessary
+ * to add them to the '404_fast_paths_exclude' regular expression above. Make
+ * sure that you understand the effects of this feature before uncommenting the
+ * line below.
  */
 # drupal_fast_404();
+
+/**
+ * External access proxy settings:
+ *
+ * If your site must access the Internet via a web proxy then you can enter
+ * the proxy settings here. Currently only basic authentication is supported
+ * by using the username and password variables. The proxy_user_agent variable
+ * can be set to NULL for proxies that require no User-Agent header or to a
+ * non-empty string for proxies that limit requests to a specific agent. The
+ * proxy_exceptions variable is an array of host names to be accessed directly,
+ * not via proxy.
+ */
+# $conf['proxy_server'] = '';
+# $conf['proxy_port'] = 8080;
+# $conf['proxy_username'] = '';
+# $conf['proxy_password'] = '';
+# $conf['proxy_user_agent'] = '';
+# $conf['proxy_exceptions'] = array('127.0.0.1', 'localhost');
 
 /**
  * Authorized file system operations:
  *
  * The Update manager module included with Drupal provides a mechanism for
  * site administrators to securely install missing updates for the site
- * directly through the web user interface by providing either SSH or FTP
- * credentials. This allows the site to update the new files as the user who
- * owns all the Drupal files, instead of as the user the webserver is running
- * as. However, some sites might wish to disable this functionality, and only
- * update the code directly via SSH or FTP themselves. This setting completely
+ * directly through the web user interface. On securely-configured servers,
+ * the Update manager will require the administrator to provide SSH or FTP
+ * credentials before allowing the installation to proceed; this allows the
+ * site to update the new files as the user who owns all the Drupal files,
+ * instead of as the user the webserver is running as. On servers where the
+ * webserver user is itself the owner of the Drupal files, the administrator
+ * will not be prompted for SSH or FTP credentials (note that these server
+ * setups are common on shared hosting, but are inherently insecure).
+ *
+ * Some sites might wish to disable the above functionality, and only update
+ * the code directly via SSH or FTP themselves. This setting completely
  * disables all functionality related to these authorized file operations.
+ *
+ * @see http://drupal.org/node/244924
  *
  * Remove the leading hash signs to disable.
  */
 # $conf['allow_authorize_operations'] = FALSE;
-
-//****************CheckBook Project Settings*******
-
-//****************datafeeds************************
-//absolute directory path to store generated files on DB system
-//Make sure this directory exisits on DB system and
-//writable to configured datafeed user
-$conf['check_book']['data_feeds']['db_file_dir'] = '/data/datafeeds';
-//relative directory path to 'sites/default/files' to store generated files
-$conf['check_book']['data_feeds']['output_file_dir'] = 'datafeeds';
-$conf['check_book']['data_feeds']['site_url'] = 'http://dev.checkbook.nyc.reisys.com';
-//Reference data outputDirectory
-$conf['check_book']['ref_data_dir'] = 'refdata';
-//Export data outputDirectory
-$conf['check_book']['export_data_dir'] = 'exportdata';
-//Solr URL
-$conf['check_book']['solr']['url'] = 'http://192.168.3.23:8088/solr-checkbook/';
-//no of records to limit for datatables
-$conf['check_book']['datatables']['iTotalDisplayRecords'] = 200000;
-
-$conf['check_book']['data_feeds']['command'] = 'PGPASSWORD=webuser1 psql -h mdw4 -U webuser1 checkbook';
-
-

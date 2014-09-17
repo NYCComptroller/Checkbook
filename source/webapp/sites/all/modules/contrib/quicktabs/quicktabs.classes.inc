@@ -244,7 +244,7 @@ class QuickSet {
   public function getActiveTab() {
     $active_tab = isset($this->settings['default_tab']) ? $this->settings['default_tab'] : key($this->contents);
     $active_tab = isset($_GET['qt-' . $this->name]) ? $_GET['qt-' . $this->name] : $active_tab;
-    $active_tab = (isset($active_tab) && isset($this->contents[$active_tab])) ? $active_tab : 0;
+    $active_tab = (isset($active_tab) && isset($this->contents[$active_tab])) ? $active_tab : QUICKTABS_DELTA_NONE;
     return $active_tab;
   }
 }

@@ -5,7 +5,7 @@
  * content.
  */
 class QuickBlockContent extends QuickContent {
-  
+
   public static function getType() {
     return 'block';
   }
@@ -65,18 +65,25 @@ class QuickBlockContent extends QuickContent {
         $pos = strpos($item['bid'], '_delta_');
         $module = drupal_substr($item['bid'], 0, $pos);
         $delta = drupal_substr($item['bid'], $pos + 7);
-  
-        $block = block_load($module, $delta);
-        $block->region = 'quicktabs_tabpage';
-  
-        if ($block_arr = _block_render_blocks(array($block))) {
-          if ($item['hide_title']) {
-            $block_arr["{$block->module}_{$block->delta}"]->subject = FALSE;
+
+        // Make sure the user can access the block.
+        if ($this->accessBlock($module, $delta)) {
+
+          $block = block_load($module, $delta);
+          $block->region = 'quicktabs_tabpage';
+
+          if ($block_arr = _block_render_blocks(array($block))) {
+            if ($item['hide_title']) {
+              $block_arr["{$block->module}_{$block->delta}"]->subject = FALSE;
+            }
+            if (!empty($block_arr["{$block->module}_{$block->delta}"]->content)) {
+              $build = _block_get_renderable_array($block_arr);
+              $output = $build;
+            }
           }
-          if (!empty($block_arr["{$block->module}_{$block->delta}"]->content)) {
-            $build = _block_get_renderable_array($block_arr);
-            $output = $build;
-          }
+        }
+        elseif (!$hide_empty) {
+          $output['#markup'] = theme('quicktabs_tab_access_denied', $item);
         }
       }
       elseif (!$hide_empty) {
@@ -90,4 +97,28 @@ class QuickBlockContent extends QuickContent {
   public function getAjaxKeys() {
     return array('bid', 'hide_title');
   }
+
+  /**
+   * Checks if the current user can access a block.
+   */
+  private function accessBlock($module, $delta) {
+    // Get current user's rids.
+    global $user;
+    $rids = array_keys($user->roles);
+
+    // Get authorized rids.
+    $authorized_rids = db_select('block_role', 'br')
+      ->fields('br', array('rid'))
+      ->condition('module', $module, '=')
+      ->condition('delta',  $delta,  '=')
+      ->execute()
+      ->fetchCol('rid');
+
+    // Return whether the user can access the block:
+    // - Either all roles have access - no record in {block_role}
+    // - Or only specific roles have access - in which case rids should match.
+    return (count($authorized_rids) == 0)
+      || (count(array_intersect($authorized_rids, $rids)) != 0);
+  }
 }
+

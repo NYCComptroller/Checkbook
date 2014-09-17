@@ -18,21 +18,32 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 ?>
+<div class="activeExpenseContractNote toolTip">Includes all multiyear contracts whose end date is greater than today’s date or completed in the current fiscal year</div>
 <div class="nyc_totals_links">
   <table>
     <tbody>
     <tr>
       <?php
       $class = "";
-      if (preg_match("/^contracts_landing/", $_GET['q']) & _getRequestParamValue("status") == "A") {
+      $is_active_expense_contracts = false;
+      $is_active_expense_contracts = preg_match("/^contracts_landing/", $_GET['q']) & _getRequestParamValue("status") == "A";
+      if ($is_active_expense_contracts) {
         $class = ' class="active"';
+
       }
       $active_link = ContractURLHelper::prepareActRegContractsSliderFilter('contracts_landing', 'A');
       $count = "<span class='count'>" . number_format($node->data[0]['total_contracts']) . "</span>";
       $dollars = "<span class='dollars'>" . custom_number_formatter_format($node->data[0]['current_amount_sum'],1,'$') . "</span>";      
       ?>
       <td<?php echo $class; ?>>
-        <div class="positioning">
+          <?php
+          $class = ' class="positioning"';
+          $is_edc_prime_vendor = _getRequestParamValue("vendor") == "5616";
+          if ($is_active_expense_contracts && $is_edc_prime_vendor) {
+              $class = ' class="positioning activeExpenseContract"';
+          }
+          ?>
+        <div<?php echo $class; ?>>
       <?php if($node->data[0]['total_contracts'] > 0 ){?>
           <a href="/<?php echo $active_link; ?>?expandBottomCont=true"><?php echo $count; ?><br>Active<br>Expense Contracts<br><?php echo $dollars; ?></a>
         <?php }else{?>
@@ -143,5 +154,6 @@
     </tbody>
   </table>
 </div>
+
 
 

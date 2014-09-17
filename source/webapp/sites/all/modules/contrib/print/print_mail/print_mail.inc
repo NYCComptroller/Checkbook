@@ -116,8 +116,8 @@ function print_mail_form($form, &$form_state) {
     '#required' => TRUE,
   );
   if (!empty($title)) {
-    // To prevent useless translation strings, try to translate only node titles
-    if (drupal_substr($path, 0, 5) == 'node/') {
+    // To prevent useless translation strings, try to translate only non-node titles
+    if (drupal_substr($path, 0, 5) != 'node/') {
       $title = t($title);
     }
 
@@ -149,10 +149,6 @@ function print_mail_form($form, &$form_state) {
     '#name' => 'submit',
     '#type' => 'submit',
     '#value' => t('Send email'),
-  );
-  $form['btn_clear'] = array(
-    '#type' => 'markup',
-    '#markup' => '<input type="reset" name="clear" id="edit-btn-clear" value="' . t('Clear form') . '" class="form-submit" />',
   );
   $form['btn_cancel'] = array(
     '#name' => 'cancel',

@@ -33,7 +33,7 @@ function print_pdf_views_data() {
     'left_field' => 'nid',
     'field' => 'path',
 //    'type' => 'INNER',
-    'handler' => 'print_pdf_join_page_counter',
+    'handler' => 'print_join_page_counter',
   );
 
   // print_pdf_node_conf fields
