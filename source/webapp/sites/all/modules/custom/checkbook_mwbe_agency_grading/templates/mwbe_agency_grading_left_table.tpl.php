@@ -1,6 +1,7 @@
 <?php 
 
 	_widget_highcharts_include_plugin();
+	
 
 ?>
 <div class="checkbook-grading-left">
