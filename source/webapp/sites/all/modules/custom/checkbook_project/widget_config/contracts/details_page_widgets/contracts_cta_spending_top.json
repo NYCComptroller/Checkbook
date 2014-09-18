@@ -1,0 +1,30 @@
+{
+"widgetType": "phpparser",
+"template":"contracts_cta_spending_top",
+"noDataInitialLoad":true,
+"phpcode":"
+$agid = _getRequestParamValue('agid');
+
+$q0 = 'SELECT contract_number FROM agreement_snapshot WHERE original_agreement_id = '. $agid .' LIMIT 1';
+
+$result_contract_number = _checkbook_project_execute_sql_by_data_source($q0);
+
+$contract_id = $result_contract_number[0]['contract_number'];
+
+$q1='SELECT
+vendor_name,
+SUM(maximum_contract_amount) current_amount,
+SUM(original_contract_amount) original_amount,
+SUM(rfed_amount) spent_to_date
+FROM agreement_snapshot
+WHERE latest_flag = \\'Y\\' and contract_number = \\''.$contract_id.'\\'
+GROUP BY vendor_name LIMIT 1';
+
+$results_prime_vendor_info = _checkbook_project_execute_sql_by_data_source($q1);
+$node->results_prime_vendor_info = $results_prime_vendor_info;
+
+$template = $node->widgetConfig->template;
+return theme($template, array('node'=> $node));
+
+"
+}

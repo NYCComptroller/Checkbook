@@ -217,6 +217,7 @@ class WidgetUtil
     }
 
     static function generateTable($table_definition, $is_main = true) {
+
         $html = '';
         $border = "";
 //        $border = 'border: 1px solid black !important; ';
@@ -225,6 +226,7 @@ class WidgetUtil
         $header_columns = isset($table_definition["header"]["columns"]) ? $table_definition["header"]["columns"] : null;
         $table_body = isset($table_definition["body"]) ? $table_definition["body"] : null;
         $table_rows = isset($table_definition["body"]["rows"]) ? $table_definition["body"]["rows"] : null;
+
 
         //Title
         if($header_title)
@@ -276,6 +278,21 @@ class WidgetUtil
                         for ($tbl_index = 0; $tbl_index < count($table_rows[$row_index]['child_tables']); $tbl_index++) {
 //                            $html .= "<tr class='showHide' style='border: 1px solid black !important;'>";                            
                         	$html .=  WidgetUtil::generateTable($table_rows[$row_index]['child_tables'][$tbl_index]);
+                        }
+                        $html .= "</div>";
+                        $html .= "</td>";
+                        $html .= "</tr>";
+                    }
+                    elseif(isset($table_rows[$row_index]['embed_node'])) {
+                        $display_main = $outer_table_count > 0 ? "display: none;" : "";
+                        $outer_table_count++;
+                        $col_span = count($table_rows[$row_index-1]['columns']);
+                        $html .= "<tr class='showHide' style='" .$display_main . "'>";
+                        $html .= "<td colspan='".$col_span."'>";
+                        $html .= "<div>";
+                        for ($tbl_index = 0; $tbl_index < count($table_rows[$row_index]['embed_node']); $tbl_index++) {
+//                            $html .= "<tr class='showHide' style='border: 1px solid black !important;'>";
+                            $html .=  $table_rows[$row_index]['embed_node'][$tbl_index];
                         }
                         $html .= "</div>";
                         $html .= "</td>";
