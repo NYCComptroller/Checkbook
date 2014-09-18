@@ -146,7 +146,7 @@ foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
             array('value' => $results_contract_history_fy['no_of_mods'], 'type' => 'number'),
             array('value' => custom_number_formatter_format($results_contract_history_fy['current_amount'], 2, '$'), 'type' => 'number'),
             array('value' => custom_number_formatter_format($results_contract_history_fy['original_amount'], 2, '$'), 'type' => 'number'),
-            array('value' => custom_number_formatter_format($results_contract_history_fy['current_amount'] - $results_contract_history_fy['original_amount'], 2, '$'), 'type' => 'number')
+           // array('value' => custom_number_formatter_format($results_contract_history_fy['current_amount'] - $results_contract_history_fy['original_amount'], 2, '$'), 'type' => 'number')
         );
         //Inner table header
         $tbl_contract_history_inner = array();
