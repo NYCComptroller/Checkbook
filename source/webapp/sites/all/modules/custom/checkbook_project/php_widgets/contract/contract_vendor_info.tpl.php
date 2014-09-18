@@ -73,7 +73,7 @@ else{
                   .$node->data[0]['vendor_id'].'?expandBottomCont=true';
 }
 $contract_number = $node->data[0]['contract_number'];
-$querySubVendorCount = "SELECT COUNT(*) AS sub_vendor_count FROM subcontract_details
+$querySubVendorCount = "SELECT DISTINCT COUNT(*) AS sub_vendor_count FROM subcontract_details
                         WHERE contract_number = '". $contract_number . "'
                         AND latest_flag = 'Y'
                         LIMIT 1";

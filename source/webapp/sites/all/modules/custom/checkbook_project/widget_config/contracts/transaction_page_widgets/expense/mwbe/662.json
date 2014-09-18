@@ -14,8 +14,8 @@
         "calyear":"all_cum_spend.all_cum_spend.fiscal_year_id",
         "year":"all_cum_spend.all_cum_spend.fiscal_year_id",
         "yeartype":"all_cum_spend.all_cum_spend.type_of_year",
-        "vendor":"all_cum_spend.all_cum_spend.vendor_id",
-        "mwbe_vendor":"all_cum_spend.all_cum_spend.vendor_id",
+        "subvendor":"all_cum_spend.all_cum_spend.vendor_id",
+        "vendor":"all_cum_spend.all_cum_spend.prime_vendor_id",
         "mwbe":"all_cum_spend.all_cum_spend.minority_type_id"
     }  ,
     "columns":["award_method.award_method", "award_method.award_method.award_method_name", "txcount"],

@@ -74,7 +74,24 @@ if(strtolower($filter_name) == 'agency'){
     }
 }
 if(strtolower($filter_name) == 'vendor'){
-    $filter_name = "Prime Vendor";
+    $current_url = explode('/',$_SERVER['REQUEST_URI']);
+    if(($current_url[1] == 'contract' && $current_url[2] == 'search' && $current_url[3] == 'transactions') ||
+        (in_array('contracts_landing',$current_url) && (in_array('mwbe',$current_url)) || (in_array('subvendor',$current_url))))
+    {
+        $vendornm_facet = true;
+    }
+    if($vendornm_facet){
+        $unchecked_data = array();
+        $checked_data = array();
+        foreach($unchecked as $key=>$value){
+            array_push($unchecked_data, array($value[1], $value[1], $value[2]));
+        }
+        foreach($checked as $key=>$value){
+            array_push($checked_data, array($value[1], $value[1], $value[2]));
+        }
+        $unchecked = $unchecked_data;
+        $checked = $checked_data;
+    }
 }
 ?>
 <div class="filter-content <?php if( $hide_filter != "") print "disabled"; ?>"><div <?php print $hide_filter; ?>>
