@@ -13,16 +13,16 @@
         "calyear":"all_cum_spend.all_cum_spend.fiscal_year_id",
         "year":"all_cum_spend.all_cum_spend.fiscal_year_id",
         "yeartype":"all_cum_spend.all_cum_spend.type_of_year",
-        "vendor":"all_cum_spend.all_cum_spend.vendor_id",
-        "mwbe_vendor":"all_cum_spend.all_cum_spend.vendor_id",
+        "subvendor":"all_cum_spend.all_cum_spend.vendor_id",
+        "vendor":"all_cum_spend.all_cum_spend.prime_vendor_id",
         "mwbe":"all_cum_spend.all_cum_spend.minority_type_id"
     }  ,
-    "columns":["vendor.vendor", "vendor.vendor.legal_name", "txcount"],
+    "columns":["vendor.vendor", "vendor_name.vendor_name", "txcount"],
     "orderBy":"-txcount",
     "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Vendor",
-    "urlParameterName":"vendor",
+    "urlParameterName":"vendornm1",
     "autocompleteParamName":"vendor_auto",
     "autocompleteID":"fvendorId",
     "autocompleteField":"vendor_name",
@@ -43,7 +43,7 @@ _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_regi
 }
 if(function_exists('_checkbook_project_applyParameterFilters')){
 $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-$adjustedParameters['vendor.vendor'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+$adjustedParameters['vendor_name.vendor_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
 return $adjustedParameters;
 }
 return $parameters;
