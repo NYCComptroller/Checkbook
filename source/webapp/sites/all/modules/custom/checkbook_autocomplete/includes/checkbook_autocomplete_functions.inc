@@ -554,6 +554,89 @@ function _checkbook_autocomplete_spending_budgetname($year, $agency, $expcategor
     }
 }
 
+function _checkbook_autocomplete_spending_dept($year, $agency, $spending_cat, $data_source = 'checkbook') {
+    $year_string = null;
+
+    if ($year && startsWith($year, 'F')) {
+        $year = ltrim($year, 'FY');
+        $year_string = " AND disbursement_line_item_details.fiscal_year = '" . $year . "' ";
+    }
+    elseif ($year && startsWith($year, 'C')) {
+        $year = ltrim($year, 'CY');
+        $year_string = " AND disbursement_line_item_details.calendar_fiscal_year = '" . $year . "' ";
+    }
+    $agency_string = $agency ? " AND disbursement_line_item_details.agency_code = '" . $agency . "' " : "";
+    $spending_cat_string = $spending_cat ? " AND ref_spending_category.spending_category_code = '" . $spending_cat . "' " : "";
+    $query = "SELECT DISTINCT department_name
+            FROM disbursement_line_item_details, ref_spending_category
+            WHERE disbursement_line_item_details.spending_category_id = ref_spending_category.spending_category_id " .
+        $agency_string . $year_string . $spending_cat_string . "ORDER BY department_name ASC";
+
+    $db_name = "main";
+    $results = _checkbook_project_execute_sql($query, $db_name,  $data_source);
+    if(count($results) == 0){
+        $options = array('label' => 'No Matches Found','value' => '');
+    }else{
+        foreach ($results as $result) {
+            $options[$result['department_name']] = $result['department_name'];
+        }
+    }
+    $matches = array();
+    if(isset($options['label'])) {
+        $matches[] = $options['label'];
+    }
+    else {
+        foreach($options as $key => $value)
+            $matches[] = htmlentities($value);
+    }
+    drupal_json_output($matches);
+}
+
+function _checkbook_autocomplete_spending_expcategory($agency, $dept, $spending_cat, $year, $data_source = 'checkbook') {
+    $options = $year_type = $year_value = $year_string = $agency_string = $dept_string = null;
+
+    if ($year && startsWith($year, 'F')) {
+        $year = ltrim($year, 'FY');
+        $year_string = " AND disbursement_line_item_details.fiscal_year = '" . $year . "' ";
+    }
+    elseif ($year && startsWith($year, 'C')) {
+        $year = ltrim($year, 'CY');
+        $year_string = " AND disbursement_line_item_details.calendar_fiscal_year = '" . $year . "' ";
+    }
+    if ($agency) {
+        $agency_string = " AND disbursement_line_item_details.agency_code = '" . $agency . "' ";
+    }
+
+    $spending_cat_string = ($spending_cat)?" ref_spending_category.spending_category_id = " . $spending_cat:" ref_spending_category.spending_category_id IN (1,2,3,4,5)";
+
+    if ($dept){
+        $dept_string = " AND disbursement_line_item_details.department_code = '" . $dept . "' ";
+    }
+    $query = "SELECT DISTINCT expenditure_object_name|| '[' || expenditure_object_code || ']' expenditure_object_code
+              FROM disbursement_line_item_details, ref_spending_category
+              WHERE disbursement_line_item_details.spending_category_id = ref_spending_category.spending_category_id AND " .$spending_cat_string.$year_string.$agency_string.$dept_string. "
+              ORDER BY expenditure_object_code ASC";
+
+    $db_name = "main";
+    $results = _checkbook_project_execute_sql($query, $db_name,  $data_source);
+    if(count($results) == 0){
+        $options = array('label' => 'No Matches Found','value' => '');
+    }else{
+        foreach ($results as $result) {
+            $options[$result['expenditure_object_code']] = $result['expenditure_object_code'];
+        }
+    }
+    $matches = array();
+    if(isset($options['label'])) {
+        $matches[] = $options['label'];
+    }
+    else {
+        foreach($options as $key => $value)
+            $matches[] = htmlentities($value);
+    }
+    drupal_json_output($matches);
+}
+
 // Payroll autocomplete menu callback functions:
 /**
  * Get autocomplete results for civil service title from Solr.
