@@ -3,7 +3,7 @@
     "parentNid":706,
     "limit":100,
     "startWith":0,
-    "columns":["vendor.vendor", "vendornm.vendornm", "txcount"],
+    "columns":["vendornm.vendornm", "txcount"],
     "orderBy":"-txcount",
     "getTotalDataCount":true,
     "facetPager":true,
@@ -33,6 +33,7 @@
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
         }
         $adjustedParameters['vendornm.vendornm'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+
         return $adjustedParameters;
     ",      
     "template":"individual_filter"
