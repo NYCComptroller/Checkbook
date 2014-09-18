@@ -6,7 +6,7 @@
         "mcagency","agencyh","year","calyear","mcvendor","expcategory","category","checkamtr","dept",
         "contnum","checkamt","chkdate","fundcls","bdgcodenm","captprj","expdoc","vendornm","deptnm","expcategorynm","syear",
         "scalyear","magid","agid","cvendor","cagency","awdmethod","status","csize","cindustry","expcategorycode","month",
-        "industry","mwbe","vendor","svendor","subvendor"
+        "industry","mwbe","vendor","svendor","subvendor","vendortype"
     ],
     "urlParamMap":{
         "contnum_exact":"reference_document_number",
@@ -33,7 +33,7 @@
         "cindustry":"industry_type_id@checkbook:contracts_spending_transactions",
         "expcategorycode":"expenditure_object_code", "month":"check_eft_issued_cal_month_id",
         "mwbe":"minority_type_id","industry":"industry_type_id",
-        "vendor":"prime_vendor_id","svendor":"prime_vendor_id","subvendor":"vendor_id"
+        "vendor":"prime_vendor_id","svendor":"prime_vendor_id","subvendor":"vendor_id","vendortype":"vendor_type"
     },
     "paramTypeConfig":{
         "vendornm_exact":"eqignorecase","expdoc_exact":"eqignorecase","captprj_exact":"eqignorecase",
@@ -84,9 +84,14 @@
         "reference_document_code",
         "sub_contract_id",
         "industry_type_id",
-        "minority_type_id"
+        "minority_type_id",
+        "is_prime_or_sub"
     ],
     "derivedColumns": {
+        "is_sub_vendor": {
+            "type":"expression2",
+            "expression":"(preg_match('/S/', $row[vendor_type])) ? 'Yes' : 'No'"
+        },
         "disbursement_number_derived":{
             "type": "expression2",
             "expression": "($row[spending_category_name]=='Payroll' || $row[disbursement_number] == '')?'N/A':$row[disbursement_number]"
@@ -110,10 +115,6 @@
         "vendor_name_link": {
             "type": "expression2",
             "expression": " RequestUtil::isNewWindow() ||  $row[spending_category_id]==2 ?  $row[vendor_name_formatted] : ('<a href=' . SpendingUtil::getPayeeNameLinkUrl($node, $row) . '>'. $row[vendor_name_formatted] .'</a>') "
-        },
-        "is_sub_vendor": {
-            "type":"expression2",
-            "expression":"(preg_match('/S/', $row[vendor_type])) ? 'Yes' : 'No'"
         },
         "issue_date_formatted":{
             "type": "expression2",
@@ -232,6 +233,15 @@
             }
         }
 
+        if(isset($parameters['vendor_type'])){
+            $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
+        }
+
+        $subvendor = _getRequestParamValue('subvendor');
+        $mwbe = _getRequestParamValue('mwbe');
+        if($subvendor) $parameters['is_prime_or_sub'] = 'S';
+        else if($mwbe) $parameters['is_prime_or_sub'] = 'P';
+
         $adjustedParameters = $parameters;
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
@@ -310,6 +320,7 @@
         var oDeptNms = getNamedFilterCriteria('fdeptNm');
         var oSpendCategoryNms = getNamedFilterCriteria('fCategoryNm');
         var oMwbeVendorId = getNamedFilterCriteria('fmwbeVendorId');
+        var oVendorType = getNamedFilterCriteria('fvendorType');
         var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
 
         var cUrl = oTable.fnSettings().sAjaxSource;
@@ -333,6 +344,7 @@
         cUrl = adjustUrlParameter(cUrl,'deptnm',oDeptNms);
         cUrl = adjustUrlParameter(cUrl,'expcategorynm',oSpendCategoryNms);
         cUrl = adjustUrlParameter(cUrl,'mwbe_vendor',oMwbeVendorId);
+        cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
         cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
 
         return cUrl;
