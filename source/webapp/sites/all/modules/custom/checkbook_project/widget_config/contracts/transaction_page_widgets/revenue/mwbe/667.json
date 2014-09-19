@@ -19,7 +19,7 @@ return $header;
 "html_class": "initiative-table",
 "no_results_content":"No Results Found",
 "dataset": "checkbook:all_agreement_transactions",
-"columns": ["is_prime_or_sub","minority_type_id","minority_type_name","fiscal_year_id@checkbook:mwbe_contracts_coa_aggregates","type_of_year@checkbook:mwbe_contracts_coa_aggregates", "contract_number","original_agreement_id","description","document_version","original_contract_amount","maximum_contract_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","document_code@checkbook:ref_document_code","industry_type_name","dollar_difference","percent_difference"],
+"columns": ["sub_contract_id","is_prime_or_sub","minority_type_id","minority_type_name","fiscal_year_id@checkbook:mwbe_contracts_coa_aggregates","type_of_year@checkbook:mwbe_contracts_coa_aggregates", "contract_number","original_agreement_id","description","document_version","original_contract_amount","maximum_contract_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","document_code@checkbook:ref_document_code","industry_type_name","dollar_difference","percent_difference"],
 "caption":"",
 "derivedColumns": {
 "contract_link": {
@@ -95,7 +95,7 @@ return $header;
 },
 "table_columns": [
 {"labelAlias": "contract_id","column": "contract_link","sortSourceColumn":"contract_number"},
-{"labelAlias": "sub_contract_reference_id","column": "","sortSourceColumn":"contract_number","exportColumn":""},
+{"labelAlias": "sub_contract_reference_id","column": "sub_contract_id"},
 {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description"},
 {"labelAlias": "version","column": "document_version","headerClass":"centrig"},
 {"labelAlias": "current_amount","column": "formatted_current_amount","sortSourceColumn":"maximum_contract_amount","headerClass":"centrig"},
@@ -170,7 +170,7 @@ $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoCol
 "aoColumns":[
 {"sClass":"text","sWidth":"195px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"195px","asSorting": [ "asc","desc" ]},
-{"sClass":"text","sWidth":"165px","asSorting": [ "asc","desc" ]},
+{"sClass":"number number-left","sWidth":"165px","asSorting": [ "asc","desc" ]},
 {"sClass":"number","sWidth":"75px","asSorting": [ "desc","asc" ]},
 {"sClass":"number","sWidth":"120px","asSorting": [ "desc","asc" ]},
 {"sClass":"number","sWidth":"120px","asSorting": [ "desc","asc" ]},
