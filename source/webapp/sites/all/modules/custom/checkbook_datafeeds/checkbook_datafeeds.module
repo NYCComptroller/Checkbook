@@ -4004,15 +4004,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#default_value' => $dept,
                 '#id' => 'edit-dept',
                 '#name' => 'dept',
-                '#ajax' => array(
-                    'callback' => 'checkbook_datafeeds_dept_ajax',
-                    'wrapper' => 'expense-category',
-                    'progress' => array(
-                        'message' => NULL,
-                        'type' => 'throbber',
-                    ),
-                    'parameters' => array('data_source' => $data_source),
-                ),
+                '#validated' => true
             );
             $form['filter']['expense_category'] = array(
                 '#type' => 'select',
@@ -4025,6 +4017,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#id' => 'edit-expense-category',
                 '#name' => 'expense_category',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'expense_category', $first_time_load, ''),
+                '#validated' => true
             );
             $form['filter']['expense_type'] = array(
                 '#type' => 'select',
@@ -4159,15 +4152,6 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#suffix' => '</div></div>',
                 '#id' => 'edit-year',
                 '#name' => 'year',
-                '#ajax' => array(
-                    'callback' => 'checkbook_datafeeds_year_ajax',
-                    'wrapper' => 'dynamic-fields',
-                    'progress' => array(
-                        'message' => NULL,
-                        'type' => 'throbber',
-                    ),
-                    'parameters' => array('data_source' => $data_source),
-                ),
             );
             $form['filter']['issuedfrom'] = array(
                 '#type' => 'textfield',
@@ -4229,14 +4213,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#default_value' => $dept,
                 '#id' => 'edit-dept',
                 '#name' => 'dept',
-                '#ajax' => array(
-                    'callback' => 'checkbook_datafeeds_dept_ajax',
-                    'wrapper' => 'expense-category',
-                    'progress' => array(
-                        'message' => NULL,
-                        'type' => 'throbber',
-                    ),
-                ),
+                '#validated' => true
             );
             $form['filter']['expense_category'] = array(
                 '#type' => 'select',
@@ -4249,6 +4226,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#id' => 'edit-expense-category',
                 '#name' => 'expense_category',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'expense_category', $first_time_load, ''),
+                '#validated' => true
             );
             $form['filter']['expense_type'] = array(
                 '#type' => 'select',
@@ -4374,14 +4352,6 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#suffix' => '</div></div>',
                 '#id' => 'edit-year',
                 '#name' => 'year',
-                '#ajax' => array(
-                    'callback' => 'checkbook_datafeeds_year_ajax',
-                    'wrapper' => 'dynamic-fields',
-                    'progress' => array(
-                        'message' => NULL,
-                        'type' => 'throbber',
-                    ),
-                ),
             );
             $form['filter']['issuedfrom'] = array(
                 '#type' => 'textfield',
@@ -4710,7 +4680,7 @@ function checkbook_datafeeds_contracts_filter_selected_columns($selected_columns
 
     $domain_filter = $domain;
     $domain_filter .= $status == 'pending' ? '_pending' : '_active';
-    $domain_filter .= '_'.$expense_category;
+    $domain_filter .= $status == 'pending' ? '' :  '_'.$expense_category;
     if ($year == 'All Years') $domain_filter .= "_all_years";
 
     //Get columns which should be included for the current data source

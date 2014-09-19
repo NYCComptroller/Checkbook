@@ -610,9 +610,9 @@ body.page-smart-search #filter-header{margin-top:5px;}
     border:1px solid #acacac;
     border-top:3px solid #0073bd;
     padding:5px;
-    -webkit-box-shadow: inset -3px 13px 12px -13px rgba(0,0,0,0.75);
-    -moz-box-shadow: inset -3px 13px 12px -13px rgba(0,0,0,0.75);
-    box-shadow: inset -3px 13px 12px -13px rgba(0,0,0,0.75);
+    -webkit-box-shadow:  -3px 13px 12px -13px rgba(0,0,0,0.75);
+    -moz-box-shadow:  -3px 13px 12px -13px rgba(0,0,0,0.75);
+    box-shadow:  -3px 13px 12px -13px rgba(0,0,0,0.75);
 }
 .top-navigation-right .mwbe .main-nav-drop-down ul li{
     font-family: 'Roboto', Arial, sans-serif;

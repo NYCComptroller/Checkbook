@@ -463,6 +463,10 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'php_widgets/contract/contracts_cta_spending_bottom',
             'arguments' => array('node' => NULL)
         ),
+        'contracts_cta_spending_top' => array(
+            'template' => 'php_widgets/contract/contracts_cta_spending_top',
+            'arguments' => array('node' => NULL)
+        ),
     		
     		
         /*'contracts_ca_assoc_contracts_list' => array(
@@ -661,6 +665,7 @@ function checkbook_project_block_configure($delta){
       );
       break;
   }
+    dsm($form);
   return $form;
 }
 

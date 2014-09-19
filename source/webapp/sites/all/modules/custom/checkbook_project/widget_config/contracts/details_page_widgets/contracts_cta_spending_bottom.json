@@ -1,0 +1,59 @@
+{
+"widgetType": "phpparser",
+"template":"contracts_cta_spending_bottom",
+"noDataInitialLoad":true,
+"phpcode":"
+$is_sub = 'S';
+$agid = _getRequestParamValue('agid');
+
+$q0 = 'select contract_number from agreement_snapshot where original_agreement_id = '. $agid .' limit 1';
+
+$result_contract_number = _checkbook_project_execute_sql_by_data_source($q0);
+
+$contract_id = $result_contract_number[0]['contract_number'];
+
+$q1 =    'select
+sd.sub_contract_id,
+sd.contract_number,
+sh.vendor_id,
+sh.legal_name,
+sd.source_updated_fiscal_year,
+rd1.date start_date,
+rd2.date end_date,
+sd.description,
+sd.original_contract_amount,
+sd.maximum_contract_amount
+from subcontract_details sd
+join ref_date rd1 on rd1.date_id = effective_begin_date_id
+join ref_date rd2 on rd2.date_id = effective_end_date_id
+join subvendor_history sh on sh.vendor_history_id = sd.vendor_history_id
+where sd.contract_number=    \\''.$contract_id.'\\'
+order by sh.vendor_id, sd.source_updated_fiscal_year desc';
+
+$results_contract_history = _checkbook_project_execute_sql_by_data_source($q1);
+
+$node->results_contract_history = $results_contract_history;
+
+
+$q2 = 'select
+adt.sub_contract_id,
+adt.vendor_id,
+adt.vendor_name,
+adt.fiscal_year,
+rd1.date issue_date,
+adt.check_amount,
+adt.agency_name,
+adt.agency_id
+from all_disbursement_transactions adt
+join ref_date rd1 on rd1.date_id = adt.check_eft_issued_date_id
+where adt.is_prime_or_sub =  \\'' .$is_sub. '\\'  and adt.contract_number = \\'' .$contract_id. '\\'
+order by adt.vendor_id, adt.fiscal_year desc , rd1.date desc , adt.check_amount desc ';
+
+$results_spending = _checkbook_project_execute_sql_by_data_source($q2);
+
+$node->results_spending = $results_spending;
+$template = $node->widgetConfig->template;
+return theme($template, array('node'=> $node));
+
+"
+}

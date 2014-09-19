@@ -1,12 +1,12 @@
 {
     "contracts_active_expense":{
         "searchCriteriaMap":{
-            "fiscal_year":"fiscal_year@checkbook:contracts_coa_aggregates",
-            "calendar_year":"fiscal_year@checkbook:contracts_coa_aggregates",
+            "fiscal_year":"fiscal_year@checkbook:all_contracts_coa_aggregates",
+            "calendar_year":"fiscal_year@checkbook:all_contracts_coa_aggregates",
             "agency_code":"agency_code",
             "vendor_code":"vendor_code",
             "current_amount":"maximum_contract_amount",
-            "spent_to_date":"spending_amount@checkbook:contracts_coa_aggregates",
+            "spent_to_date":"spending_amount@checkbook:all_contracts_coa_aggregates",
             "award_method":"award_method_code",
             "expense_category":"expenditure_object_codes",
             "contract_id":"contract_number",
@@ -21,7 +21,7 @@
         },
         "dataset":{
             "sortColumn":"-registered_date",
-            "name":"checkbook:agreement_snapshot",
+            "name":"checkbook:all_agreement_transactions",
             "columnTypes":{
                 "expenditure_object_codes":"trueLike",
                 "contract_number":"like",
@@ -35,11 +35,11 @@
                         "contract_id":"contract_number",
                         "purpose":"description",
                         "version":"document_version",
-                        "year":"fiscal_year@checkbook:contracts_coa_aggregates",
+                        "year":"fiscal_year@checkbook:all_contracts_coa_aggregates",
                         "parent_contract_id":"master_contract_number",
                         "original_amount":"original_contract_amount",
                         "current_amount":"maximum_contract_amount",
-                        "spent_to_date":"spending_amount@checkbook:contracts_coa_aggregates",
+                        "spent_to_date":"spending_amount@checkbook:all_contracts_coa_aggregates",
                         "prime_vendor":"vendor_name",
                         "vendor":"vendor_name",
                         "agency":"agency_name",
@@ -89,11 +89,11 @@
                         "Contract ID":"contract_number",
                         "Purpose":"description",
                         "Version":"document_version",
-                        "Year":"fiscal_year@checkbook:contracts_coa_aggregates",
+                        "Year":"fiscal_year@checkbook:all_contracts_coa_aggregates",
                         "Parent Contract ID":"master_contract_number",
                         "Original Amount":"original_contract_amount",
                         "Current Amount":"maximum_contract_amount",
-                        "Spent to date":"spending_amount@checkbook:contracts_coa_aggregates",
+                        "Spent to date":"spending_amount@checkbook:all_contracts_coa_aggregates",
                         "Prime Vendor":"vendor_name",
                         "Vendor":"vendor_name",
                         "Agency":"agency_name",
@@ -115,7 +115,7 @@
                     }
                 }
             },
-            "adjustParameters":"if(function_exists('checkbook_api_adjustSpendingParameterFilters')){checkbook_api_adjustSpendingParameterFilters($parameters);}",
+            "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($dataSet,$parameters,$criteria);}",
             "adjustDataSetResults":"if(function_exists('checkbook_api_adjustContractDataSetResults')){checkbook_api_adjustContractDataSetResults($data_records);}"
         },
         "requestParameters":{
@@ -176,7 +176,7 @@
         },
         "dataset":{
             "sortColumn":"-registered_date",
-            "name":"checkbook:agreement_snapshot",
+            "name":"checkbook:all_agreement_transactions",
             "columnTypes":{
                 "expenditure_object_codes":"trueLike",
                 "contract_number":"like",
@@ -351,8 +351,8 @@
     },
     "contracts_active_revenue":{
         "searchCriteriaMap":{
-            "fiscal_year":"fiscal_year@checkbook:contracts_coa_aggregates",
-            "calendar_year":"fiscal_year@checkbook:contracts_coa_aggregates",
+            "fiscal_year":"fiscal_year@checkbook:all_contracts_coa_aggregates",
+            "calendar_year":"fiscal_year@checkbook:all_contracts_coa_aggregates",
             "agency_code":"agency_code",
             "vendor_code":"vendor_code",
             "current_amount":"maximum_contract_amount",
@@ -369,7 +369,7 @@
         },
         "dataset":{
             "sortColumn":"-registered_date",
-            "name":"checkbook:agreement_snapshot",
+            "name":"checkbook:all_agreement_transactions",
             "columnTypes":{
                 "contract_number":"like",
                 "minority_type_id":"in"
@@ -382,7 +382,7 @@
                         "contract_id":"contract_number",
                         "purpose":"description",
                         "version":"document_version",
-                        "year":"fiscal_year@checkbook:contracts_coa_aggregates",
+                        "year":"fiscal_year@checkbook:all_contracts_coa_aggregates",
                         "parent_contract_id":"master_contract_number",
                         "original_amount":"original_contract_amount",
                         "current_amount":"maximum_contract_amount",
@@ -431,7 +431,7 @@
                         "Contract ID":"contract_number",
                         "Purpose":"description",
                         "Version":"document_version",
-                        "Year":"fiscal_year@checkbook:contracts_coa_aggregates",
+                        "Year":"fiscal_year@checkbook:all_contracts_coa_aggregates",
                         "Parent Contract ID":"master_contract_number",
                         "Original Amount":"original_contract_amount",
                         "Current Amount":"maximum_contract_amount",
@@ -555,7 +555,7 @@
         },
         "dataset":{
             "sortColumn":"-registered_date",
-            "name":"checkbook:agreement_snapshot",
+            "name":"checkbook:all_agreement_transactions",
             "columnTypes":{
                 "contract_number":"like",
                 "minority_type_id":"in"
@@ -758,9 +758,9 @@
                         "original_amount":"original_maximum_amount",
                         "original_modified":"original_or_modified_desc",
                         "contract_industry":"industry_type_name@checkbook:industry_type",
-                        "minority_type_id":"minority_type_id",
-                        "sub_contract_reference_id":"sub_contract_id",
-                        "sub_vendor":"vendor_type"
+                        "minority_type_id":"minority_type_id"
+//                        "sub_contract_reference_id":"sub_contract_id",
+//                        "sub_vendor":"vendor_type"
                     },
                     "rowElements":[
                         "agency",
@@ -783,9 +783,9 @@
                         "purpose",
                         "original_modified",
                         "contract_industry",
-                        "minority_type_id",
-                        "sub_contract_id",
-                        "vendor_type"
+                        "minority_type_id"
+//                        "sub_contract_id",
+//                        "vendor_type"
                     ]
                 },
                 "csv":{
@@ -809,9 +809,9 @@
                         "Original Amount":"original_maximum_amount",
                         "Original Modified":"original_or_modified_desc",
                         "Contract Industry":"industry_type_name@checkbook:industry_type",
-                        "M/WBE Category":"minority_type_id",
-                        "Sub Contract Reference ID":"sub_contract_id",
-                        "Sub Vendor":"vendor_type"
+                        "M/WBE Category":"minority_type_id"
+//                        "Sub Contract Reference ID":"sub_contract_id",
+//                        "Sub Vendor":"vendor_type"
                     }
                 }
             },

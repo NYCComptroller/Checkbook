@@ -20,12 +20,12 @@
                                     "Original Modified":"Original Modified",
                                     "Parent Contract ID":"Parent Contract ID",
                                     "PIN":"PIN",
+                                    "Vendor":"Vendor",
                                     "Purpose":"Purpose",
                                     "Received Date":"Received Date",
                                     "Start Date":"Start Date",
-                                    "Sub Contract Reference ID":"Sub Contract Reference ID",
-                                    "Sub Vendor":"Sub Vendor",
-                                    "Vendor":"Vendor",
+//                                    "Sub Contract Reference ID":"Sub Contract Reference ID",
+//                                    "Sub Vendor":"Sub Vendor",
                                     "Version":"Version"
                                 },
                                 "xml":{
@@ -45,13 +45,13 @@
                                     "original_amount":"original_amount",
                                     "parent_contract_id":"parent_contract_id",
                                     "pin":"pin",
+                                    "vendor":"vendor",
                                     "purpose":"purpose",
                                     "registration_date":"registration_date",
                                     "spent_to_date":"spent_to_date",
                                     "start_date":"start_date",
-                                    "sub_contract_reference_id":"sub_contract_reference_id",
-                                    "sub_vendor":"sub_vendor",
-                                    "vendor":"vendor",
+//                                    "sub_contract_reference_id":"sub_contract_reference_id",
+//                                    "sub_vendor":"sub_vendor",
                                     "version":"version",
                                     "year":"year"
                                 }
@@ -83,7 +83,6 @@
                                     "Start Date":"Start Date",
                                     "Sub Contract Reference ID":"Sub Contract Reference ID",
                                     "Sub Vendor":"Sub Vendor",
-                                    "Vendor":"Vendor",
                                     "Version":"Version",
                                     "Year":"Year"
                                 },

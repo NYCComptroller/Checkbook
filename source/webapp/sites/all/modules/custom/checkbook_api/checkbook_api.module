@@ -113,6 +113,7 @@ function checkbook_api_generate_ref_data() {
  * @param $data_set
  * @param $parameters
  * @param $criteria
+ * @param null $datasource
  */
 function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, $criteria,$datasource = null) {
   $contract_status = $criteria['value']['status'];
@@ -124,35 +125,36 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
       $data_controller_instance = data_controller_get_operator_factory_instance();
 
       // Either Fiscal or Calendar year is provided:
-      $fy = checkbook_api_change_datasource($datasource,$parameters['fiscal_year@checkbook:contracts_coa_aggregates']);
+      $fy = checkbook_api_change_datasource($datasource,$parameters['fiscal_year@checkbook:all_contracts_coa_aggregates']);
       if (isset($fy)) {
+
         // Adjust dataset:
         if (isset($criteria['value']['calendar_year'])) {
-          $data_set->name = (strtolower($type_of_data) != 'contracts_oge') ? checkbook_api_change_datasource($datasource,'checkbook:agreement_snapshot_cy') : $data_set->name;
+          $data_set->name = (strtolower($type_of_data) != 'contracts_oge') ? checkbook_api_change_datasource($datasource,'checkbook:all_agreement_transactions_cy') : $data_set->name;
           if(strtolower($type_of_data) == 'contracts_oge')
                 $parameters[checkbook_api_change_datasource($datasource,'type_of_year')] = 'C';
           else
-                $parameters[checkbook_api_change_datasource($datasource,'type_of_year@checkbook:contracts_coa_aggregates')] = 'C';
+                $parameters[checkbook_api_change_datasource($datasource,'type_of_year@checkbook:all_contracts_coa_aggregates')] = 'C';
         }
         else {
           if(strtolower($type_of_data) == 'contracts_oge')
             $parameters[checkbook_api_change_datasource($datasource,'type_of_year')] = 'B';
           else
-            $parameters[checkbook_api_change_datasource($datasource,'type_of_year@checkbook:contracts_coa_aggregates')] = 'B';
+            $parameters[checkbook_api_change_datasource($datasource,'type_of_year@checkbook:all_contracts_coa_aggregates')] = 'B';
         }
 
         if ($contract_status == 'registered') {
             if(strtolower($type_of_data) == 'contracts_oge')
                 $parameters[checkbook_api_change_datasource($datasource,'status_flag')] = 'R';
             else
-                $parameters[checkbook_api_change_datasource($datasource,'status_flag@checkbook:contracts_coa_aggregates')] = 'R';
+                $parameters[checkbook_api_change_datasource($datasource,'status_flag@checkbook:all_contracts_coa_aggregates')] = 'R';
         }
         else {
           if ($contract_status == 'active') {
               if(strtolower($type_of_data) == 'contracts_oge')
                     $parameters[checkbook_api_change_datasource($datasource,'status_flag')] = 'A';
               else
-                    $parameters[checkbook_api_change_datasource($datasource,'status_flag@checkbook:contracts_coa_aggregates')] = 'A';
+                    $parameters[checkbook_api_change_datasource($datasource,'status_flag@checkbook:all_contracts_coa_aggregates')] = 'A';
           }
         }
 
@@ -163,7 +165,7 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
             $req_year = $req_years[0]['year_id'];
         }
         else{
-            $req_year = $parameters[checkbook_api_change_datasource($datasource,'fiscal_year@checkbook:contracts_coa_aggregates')];
+            $req_year = $parameters[checkbook_api_change_datasource($datasource,'fiscal_year@checkbook:all_contracts_coa_aggregates')];
         }
         if (isset($req_year)) {
           $ge_condition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, $req_year);
@@ -198,16 +200,10 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
       else {
         // All years:
         $parameters['latest_flag'] = 'Y';
-
-        /*if($contractStatus =='active'){
-          $leCondition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, array(date('Y-m-d')));
-          $parameters['effective_begin_date'] = $leCondition;
-        }*/
       }
       break;
 
     case "pending":
-      // $parameters['latest_flag'] = 'Y';
       break;
 
     default:
