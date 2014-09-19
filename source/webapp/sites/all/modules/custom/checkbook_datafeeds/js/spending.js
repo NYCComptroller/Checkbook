@@ -10,6 +10,67 @@
             $('input:radio[name="datafeeds-spending-domain-filter"][value="checkbook"]').attr('checked', 'checked').button("refresh");
             $('input:hidden[name="data_source"]').val("checkbook");
         }
+
+        //On change of "Year"
+        $('#edit-year').change(function () {
+            var agency = emptyToZero($('#edit-agency').val());
+            if(agency != 0)
+                onYearChange();
+        });
+        function onYearChange() {
+            var year = 0;
+            if($('input:radio[name=date_filter]:checked').val() == 0){
+                year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
+            }
+            //var dept = emptyToZero($('#edit-dept').val());
+            var agency = emptyToZero($('#edit-agency').val());
+            var spending_cat = emptyToZero($('#edit-expense-type').val());
+            var data_source = $('input:radio[name=datafeeds-spending-domain-filter]:checked').val();
+            $.ajax({
+                url: '/autocomplete/spending/dept/' + year + '/' + agency + '/' + spending_cat + '/' + data_source
+                ,success: function(data) {
+                    var html = '<option select="selected" value="0" >Select Department</option>';
+                    if(data[0]){
+                        if(data[0]!= 'No Matches Found'){
+                            for (var i = 0; i < data.length; i++) {
+                                html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
+                            }
+                        }
+                        else { html=html + '<option value="">' + data[0]  + '</option>'; }
+                    }
+                    $('#edit-dept').html(html);
+                    onDeptChange();
+                }
+            });
+        }
+
+        function onDeptChange() {
+            var year = 0;
+            if($('input:radio[name=date_filter]:checked').val() == 0){
+                year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
+            }
+            //var expense_cat = emptyToZero($('#edit-expense-category').val());
+            var agency = emptyToZero($('#edit-agency').val());
+            var dept = emptyToZero($('#edit-dept').val());
+            var spending_cat = emptyToZero($('#edit-expense-type').val());
+            var data_source = $('input:radio[name=datafeeds-spending-domain-filter]:checked').val();
+
+            $.ajax({
+                url: '/autocomplete/spending/expcategory/' + agency + '/' + dept + '/' + spending_cat + '/' + year + '/' + data_source
+                ,success: function(data) {
+                    var html = '<option select="selected" value="0" >Select Expense Category</option>';
+                    if(data[0]){
+                        if(data[0]!= 'No Matches Found'){
+                            for (var i = 0; i < data.length; i++) {
+                                html=html + '<option value="' + data[i] + ' ">' + data[i]  + '</option>';
+                            }
+                        }
+                        else { html=html + '<option value="">' + data[0]  + '</option>'; }
+                    }
+                    $('#edit-expense-category').html(html);
+                }
+            });
+        }
     });
 
     $.fn.disableStuff = function () {
@@ -77,7 +138,7 @@
             $('#edit-column-select').multiSelect('deselect_all');
         });
     };
-
+    
     Drupal.behaviors.spendingDataFeeds = {
         attach:function (context, settings) {
             var p = /\[(.*?)\]$/;

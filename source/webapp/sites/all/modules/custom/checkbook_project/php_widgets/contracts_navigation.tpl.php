@@ -216,7 +216,7 @@ if(!preg_match('/smnid/',$_GET['q']) && (
   <tr>
     <td class="mwbe<?php if($mwbeclass){print $mwbeclass;}?>"><div class="expense-container"><?php print $mwbe_link ?><div><?php print $mwbe_filters; ?></div></div>
     			<?php if($featured_dashboard == "mwbe"){?><div class='indicator'></div><?php }?></td>
-    <td class="subvendors<?php if($svclass){print $svclass;}?>"><div class="expense-container"><?php print $subvendors_link ?><div><?php print $svendor_filters; ?></div></div>
+    <td class="mwbe subvendors<?php if($svclass){print $svclass;}?>"><div class="expense-container"><?php print $subvendors_link ?><div><?php print $svendor_filters; ?></div></div>
     			<?php if($featured_dashboard == "subvendor"){?><div class='indicator'></div><?php }?></td>
   </tr>
 </table>
