@@ -79,6 +79,10 @@ return $header;
 "type": "expression2",
 "expression": "_get_tooltip_markup($row['industry_type_name'],30)"
 },
+"formatted_minority_name": {
+"type": "expression2",
+"expression": "MappingUtil::getMinorityCategoryById($row['minority_type_id'])"
+},
 "formatted_is_sub_vendor": {
 "type": "expression2",
 "expression": "($row['is_prime_or_sub'] == 'P')?'No':'Yes'"
@@ -135,14 +139,14 @@ return $parameters;
 "bInfo": true,
 
 "aoColumns":[
-{"sClass":"text","sWidth":"195px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"165px","asSorting": [ "asc","desc" ]},
 {"sClass":"number number-left","sWidth":"165px","asSorting": [ "asc","desc" ]},
+{"sClass":"text pad-left","sWidth":"190px","asSorting": [ "asc","desc" ]},
 {"sClass":"number","sWidth":"75px","asSorting": [ "desc","asc" ]},
 {"sClass":"number","sWidth":"120px","asSorting": [ "desc","asc" ]},
 {"sClass":"text pad-left","sWidth":"120px","asSorting": [ "desc","asc" ]},
-{"sClass":"number pad-left","sWidth":"100px","asSorting": [ "asc","desc" ]},
-{"sClass":"text","sWidth":"135px","asSorting": [ "asc","desc" ]},
+{"sClass":"text pad-left","sWidth":"150px","asSorting": [ "asc","desc" ]},
+{"sClass":"text pad-left","sWidth":"135px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"135px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"135px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"135px","asSorting": [ "asc","desc" ]},
