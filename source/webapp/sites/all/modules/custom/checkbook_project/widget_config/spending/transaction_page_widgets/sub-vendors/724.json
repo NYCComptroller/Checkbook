@@ -1,217 +1,170 @@
 {
-    "widgetType": "data_tables",
-    "widgetSubType": "dataTableList",
-    "cleanURLParameters":[
-        "agency",
-        "vendor",
-        "expcategory",
-        "category",
-        "year",
-        "yeartype",
-        "syear",
-        "calyear",
-        "scalyear",
-        "checkamt",
-        "checkamtr",
-        "contnum_exact",
-        "contnum",
-        "vendornm",
-        "vendornm_exact",
-        "expcategorynm",
-        "mwbe",
-        "agid",
-        "magid"
-    ],
-    "urlParamMap":{
-        "agency":"agency_id",
-        "vendor":"vendor_id",
-        "expcategory":"expenditure_object_id",
-        "category":"spending_category_id",
-        "year":"year_id",
-        "yeartype":"year_type",
-        "syear":"check_eft_issued_nyc_year_id",
-        "calyear":"calendar_fiscal_year_id",
-        "scalyear":"calendar_fiscal_year_id",
-        "checkamt":"check_amount",
-        "checkamtr":"check_amount",
-        "contnum_exact":"reference_document_number",
-        "contnum":"contnum.contnum",
-        "vendornm":"vendor_name",
-        "vendornm_exact":"vendor_name",
-        "expcategorynm":"master_agreement_id",
-        "mwbe":"minority_type_id",
-        "agid":"agreement_id",
-        "magid":"master_agreement_id"
-    },
-    "paramTypeConfig":{
-        "year":"year_id",
-        "syear":"le",
-        "scalyear":"le",
-        "checkamt":"range",
-        "checkamtr":"rangeid",
-        "contnum_exact":"eqignorecase",
-        "contnum":"like",
-        "vendornm":"like",
-        "vendornm_exact":"eqignorecase",
-        "expcategorynm":"eqignorecase"
-    },
-    "allowRequestParams":["dtsmnid","smnid"],
-    "header":"$header = NULL;$header .= widget_data_tables_export_link($node);return $header;",
-//    "useList":true,
-    "stickyHeader":true,
-    "getTotalDataCount":true,
-    "limit":"35",
-    "noDataInitialLoad":true,
-    "html_class": "initiative-table transaction-table",
-    "no_results_content":"No Results Found",
-    "dataset": "checkbook:contracts_subven_spending_transactions",
-    "columns": [
-        "sub_vendor.sub_vendor",
-        "sub_vendor.sub_vendor.legal_name",
-        "issuedate.issuedate",
-        "agency.agency",
-        "agency.agency.agency_name",
-        "contnum.contnum",
-        "purpose.purpose",
-        "category.category",
-        "category.category.spending_category_name",
-        "chkamt.chkamt",
-        "minority_type.minority_type"
-    ],
+"widgetType":"data_tables",
+"widgetSubType":"dataTableList",
+"cleanURLParameters":[
+    "deptnm","expcategorynm","year","calyear","yeartype","status","agency","vendor","category",
+    "checkamtr","dept","syear","scalyear","magid","agid","cvendor","cagency","awdmethod","csize","cindustry",
+    "doctype","month","industry","mwbe","vendor","svendor","subvendor","vendortype"
+],
+"urlParamMap":{
+    "year":"disb_fiscal_year_id",
+    "calyear":"disb_fiscal_year_id","yeartype":"type_of_year","status":"status_flag","agency":"disb_agency_id",
+    "category":"disb_spending_category_id","checkamtr":"check_amount","syear":"disb_fiscal_year_id",
+    "scalyear":"disb_fiscal_year_id","magid":"master_agreement_id","agid":"disb_agreement_id",
+    "cvendor":"vendor_id","cagency":"document_agency_id","awdmethod":"award_method_id","csize":"award_size_id",
+    "cindustry":"industry_type_id","doctype":"document_code@checkbook:ref_document_code",
+    "month":"check_eft_issued_cal_month_id",
+    "mwbe":"minority_type_id","industry":"industry_type_id",
+    "vendor":"prime_vendor_id","subvendor":"vendor_id","vendortype":"vendor_type"
+},
+"paramTypeConfig":{"checkamtr":"rangeid","syear":"le","scalyear":"le","deptnm":"eqignorecase"},
+"header":"
+	$header = NULL;
+	$header .= widget_data_tables_export_link($node);
+	return $header; 
+",
+"useList":true,
+"stickyHeader":true,
+"getTotalDataCount":true,
+"limit":"20",
+"noDataInitialLoad":true,
+"html_class":"initiative-table",
+"no_results_content":"No Results Found",
+"dataset":"checkbook:contracts_subven_spending_transactions",
+"columns": [
+    "disb_disbursement_number",
+    "disb_check_eft_issued_date",
+    "disb_agency_name",
+    "disb_check_amount",
+    "disb_contract_number",
+    "disb_purpose",
+    "disb_reporting_code",
+    "disb_spending_category_name",
+    "disb_agency_id",
+    "vendor_id",
+    "disb_vendor_name",
+    "disb_sub_contract_id",
+    "legal_name@checkbook:sub_vendor",
+    "prime_vendor_id",
+    "legal_name@checkbook:prime_vendor",
+    "disb_spending_category_id",
+    "disb_agreement_id",
+    "document_code@checkbook:ref_document_code",
+    "minority_type_id"
+],
+"caption":"",
 "derivedColumns": {
-    "payee_name_formatted": {
+    "is_sub_vendor": {
         "type":"expression2",
-        "expression":"_get_tooltip_markup($row['sub_vendor_sub_vendor_legal_name'],36)"
-    },
-    "payee_name_link": {
-        "type":"expression2",
-        "expression":"'<a href=\"' . SpendingUtil::getVendorNameLinkUrl($node,$row) . '\">' . $row[payee_name_formatted] . '</a>'"
-    },
-    "payee_name_link2": {
-        "type":"expression2",
-        "expression":"($row[sub_vendor_sub_vendor] == null )?$row['sub_vendor_sub_vendor_legal_name']:$row[payee_name_link]"
-    },
-    "is_sub_vendor_formatted": {
-        "type":"expression2",
-        "expression":"(true)?'Yes':'No'"
-    },
-    "issue_date_formatted":{
-        "type": "expression2",
-        "expression": "(_checkbook_check_isEDCPage()? 'N/A' : $row[issuedate_issuedate])"
+        "expression":"'Yes'"
     },
     "agency_name_formatted":{
-        "type": "expression2",
-        "expression": "_get_tooltip_markup($row[agency_agency_agency_name], 30)"
+        "type":"expression2",
+        "expression":"_get_tooltip_markup($row[disb_agency_name], 30)"
     },
     "agency_name_link": {
+        "type":"expression2",
+        "expression":" RequestUtil::isNewWindow() ? $row[agency_name_formatted]  : ('<a href=/spending_landing' . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . _checkbook_project_get_url_param_string('category') . '/agency/'. $row[disb_agency_id]. '?expandBottomCont=true>'. $row[agency_name_formatted] .'</a>') "
+    },
+    "vendor_name_formatted":{
+        "type":"expression2",
+        "expression":"_get_tooltip_markup($row[disb_vendor_name], 30)"
+    },
+    "agency_param":{
+        "type":"expression2",
+        "expression":"(_checkbook_check_isEDCPage()? _checkbook_project_get_url_param_string(\"agency\") :'')"
+    },
+    "vendor_name_formatted":{
         "type": "expression2",
-        "expression": " RequestUtil::isNewWindow() ? $row[agency_name_formatted]  : ('<a href=/spending_landing' . _checkbook_project_get_year_url_param_string(false,false,false,true) . SpendingUtil::getDataSourceParams()  . _checkbook_project_get_url_param_string('category') . '/agency/'. $row[agency_agency_agency_name]. '?expandBottomCont=true>'. $row[agency_name_formatted] .'</a>') "
+        "expression": "_get_tooltip_markup($row['disb_vendor_name'], 34)"
+    },
+    "vendor_name_export":{
+        "type": "expression2",
+        "expression": "$row['disb_vendor_name']"
+    },
+    "vendor_name_link": {
+        "type": "expression2",
+        "expression": " RequestUtil::isNewWindow() ||  $row[disb_spending_category_id]==2 ?  $row[vendor_name_formatted] : ('<a href=' . SpendingUtil::getPayeeNameLinkUrl($node, $row) . '>'. $row[vendor_name_formatted] .'</a>') "
     },
     "formatted_check_amount": {
-        "type": "expression2",
-        "expression": "custom_number_formatter_basic_format($row['chkamt.chkamt'])"
+        "type":"expression2",
+        "expression":"custom_number_formatter_basic_format($row['disb_check_amount'])"
     },
-    "reference_document_number_export": {
-        "type": "expression2",
-        "expression": "($row[spending_category_name] == 'Payroll' ||  $row[spending_category_name] == 'Others') ? 'N/A' : $row[contnum_contnum]"
-    } ,
-    "reference_document_number_link": {
-        "type": "expression2",
-        "expression": "(ContractURLHelper::prepareSpendingContractLink($row, $node))?ContractURLHelper::prepareSpendingContractLink($row, $node):'N/A'"
+    "contract_number_link_actual": {
+        "type":"expression2",
+        "expression":"($row[disb_spending_category_name] == 'Payroll' ||  $row[disb_spending_category_name] == 'Others') ? 'n/a' : $row[disb_contract_number]"
+    },
+    "contract_number_link": {
+        "type":"expression2",
+        "expression":"ContractURLHelper::prepareSpendingContractTransactionsLink($row, $node)"
     },
     "purpose_formatted":{
-        "type": "expression2",
-        "expression": "_get_tooltip_markup($row[purpose_purpose], 30)"
+        "type":"expression2",
+        "expression":"_get_tooltip_markup($row[disb_purpose], 30)"
     },
     "contract_purpose_text":{
-        "type": "expression2",
-        "expression": "($row[category_category_spending_category_name] == 'Payroll' ||  $row[category_category_spending_category_name] == 'Others') ? 'N/A' : $row[purpose_formatted]"
-    },
-    "contract_purpose_export":{
-        "type": "expression2",
-        "expression": "($row[category_category_spending_category_name] == 'Payroll' ||  $row[category_category_spending_category_name] == 'Others') ? 'N/A' : $row[purpose_purpose]"
+        "type":"expression2",
+        "expression":"($row[spending_category_name] == 'Payroll' ||  $row[disb_spending_category_name] == 'Others') ? 'n/a' : $row[purpose_formatted]"
     },
     "mwbe_category_name": {
         "type":"expression2",
-        "expression":"MappingUtil::getMinorityCategoryById($row[minority_type_minority_type])"
+        "expression":"MappingUtil::getMinorityCategoryById($row[minority_type_id])"
     }
-
-//    "agency_param":{
-//        "type": "expression2",
-//        "expression": "(_checkbook_check_isEDCPage()? _checkbook_project_get_url_param_string(\"agency\") :'')"
-//    }
-//    "vendor_name_link": {
-//        "type": "expression2",
-//        "expression": " RequestUtil::isNewWindow() ||  $row[spending_category_id]==2 ?  $row[vendor_name_formatted] : ('<a href=/spending_landing' . _checkbook_project_get_year_url_param_string(false,false,false,true) . SpendingUtil::getDataSourceParams() . $row['agency_param'] . _checkbook_project_get_url_param_string('category') . (_checkbook_check_isEDCPage() ? ('/agency/'. $row[agency_id]) :'') . '/vendor/'. $row[vendor_id] . '?expandBottomCont=true>'. $row[vendor_name_formatted] .'</a>') "
-//    } ,
-
-
-
-//    "fms_document_link": {
-//        "type": "expression2",
-//        "expression": "($row[spending_category_name] == 'Payroll' ||  $row[spending_category_name] == 'Others') ? 'N/A' : '' "
-//    },
-//    "purpose_formatted":{
-//        "type": "expression2",
-//        "expression": "_get_tooltip_markup($row[purpose], 30)"
-//    },
-//    "purpose_cy_formatted":{
-//        "type": "expression2",
-//        "expression": "_get_tooltip_markup($row[purpose_cy], 30)"
-//    },
-//    "contract_purpose_cy_text":{
-//        "type": "expression2",
-//        "expression": "($row[spending_category_name] == 'Payroll' ||  $row[spending_category_name] == 'Others') ? 'N/A' : $row[purpose_cy_formatted]"
-//    },
-//    "contract_purpose_cy_export":{
-//        "type": "expression2",
-//        "expression": "($row[spending_category_name] == 'Payroll' ||  $row[spending_category_name] == 'Others') ? 'N/A' : $row[purpose_cy]"
-//    },
-
 },
 "table_columns": [
-    {"labelAlias":"payee_name","column":"payee_name_link2","sortSourceColumn":"sub_vendor.sub_vendor.legal_name"},
-    {"labelAlias":"is_sub_vendor","column":"is_sub_vendor_formatted","sortSourceColumn":"sub_vendor.sub_vendor","export":false},
-    {"labelAlias":"issue_date","column":"issue_date_formatted","sortSourceColumn":"issuedate.issuedate","exportColumn":"issue_date_formatted"},
-    {"labelAlias":"agency_name","column":"agency_name_link","sortSourceColumn":"agency.agency.agency_name"},
-    {"labelAlias":"check_amount","column":"formatted_check_amount","sortSourceColumn":"chkamt.chkamt"},
-    {"labelAlias":"contract_id","column":"reference_document_number_link","sortSourceColumn":"contnum.contnum","exportColumn":"reference_document_number_export"},
-    {"labelAlias":"sub_contract_reference_id","column":"is_sub_vendor_formatted","sortSourceColumn":"sub_vendor.sub_vendor","export":false},
-    {"labelAlias":"contract_purpose","column":"contract_purpose_text","sortSourceColumn":"purpose.purpose","exportColumn":"contract_purpose_export"},
-    {"labelAlias":"spending_category","column":"category_category_spending_category_name","sortSourceColumn":"category.category"},
-    {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type.minority_type","exportColumn":"mwbe_category_name"}
+    {"labelAlias":"payee_name","column":"vendor_name_link","sortSourceColumn":"disb_vendor_name","exportColumn":"vendor_name_export"},
+    {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"vendor_type","export":false},
+    {"label":"","column":""},
+    {"labelAlias":"issue_date","column":"disb_check_eft_issued_date"},
+    {"labelAlias":"agency_name","column":"agency_name_link","sortSourceColumn":"disb_agency_name"},
+    {"labelAlias":"check_amount","column":"formatted_check_amount","sortSourceColumn":"disb_check_amount"},
+    {"labelAlias":"contract_id","column":"contract_number_link","sortSourceColumn":"disb_contract_number"},
+    {"labelAlias":"sub_contract_reference_id","column":"disb_sub_contract_id","exportColumn":"disb_sub_contract_id"},
+    {"labelAlias":"contract_purpose","column":"contract_purpose_text","sortSourceColumn":"disb_purpose"},
+    {"labelAlias":"spending_category","column":"disb_spending_category_name"},
+    {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name"}
+],
+"exportColumnSqlOverride":[
+    {
+        "column":"mwbe_category_name",
+        "sourceColumn":"minority_type_id",
+        "sql":"
+            case
+            when minority_type_id = 2 then 'Black American'
+            when minority_type_id = 3 then 'Hispanic American'
+            when minority_type_id = 7 then 'Non-M/WBE'
+            when minority_type_id = 9 then 'Women'
+            when minority_type_id = 11 then 'Individuals and Others'
+            else 'Asian American'
+            end as minority_type_name
+        "
+    }
 ],
 "adjustParameters":"
-    $yearType = $parameters['year_type'][0];
-    $year = $parameters['year_id'][0];
 
-    if(isset($yearType)){
-        if($yearType == 'B')
-        $parameters['check_eft_issued_nyc_year_id'] = $year;
-        else if($yearType == 'C')
-        $parameters['calendar_fiscal_year_id'] = $year;
+    $year = $parameters['disb_fiscal_year_id'];
+    if(isset($year)) {
+        $parameters['disb_fiscal_year_id'] = $year;
     }
 
-    unset($parameters['year_type']);
-    unset($parameters['year_id']);
-
-    if(!$node->is_mwbe) unset($parameters['minority_type_id']);
-
-    $dtsmnid = _getRequestParamValue('dtsmnid');
-    if($dtsmnid == 20) {//From spending landing page
+    //This is for sub vendor page to have only sub venders returned, exclude this for advanced search results
+    $subvendor = _getRequestParamValue('subvendor');
+    if(isset($subvendor)) {
         $data_controller_instance = data_controller_get_operator_factory_instance();
-        $parameters['agreement_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
-        $parameters['contract_number'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
-    }
-
-    $smnid = _getRequestParamValue('smnid');
-    if($smnid == 371) { //From contracts landing page
-        $minority_type_id = $parameters['minority_type_id'][0];
-        if(isset($minority_type_id)) {
-            $parameters['contract_minority_type_id'] = $minority_type_id;
-            unset($parameters['minority_type_id']);
+        $parameters['prime_vendor_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
+        if($subvendor == all) {
+            $parameters['vendor_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
         }
     }
+
+//    if(isset($parameters['vendor_type'])) {
+//        $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
+//    }
+
+//    $subvendor = _getRequestParamValue('subvendor');
+//    $mwbe = _getRequestParamValue('mwbe');
+//    if($subvendor) $parameters['is_prime_or_sub'] = 'S';
+//    else if($mwbe) $parameters['is_prime_or_sub'] = 'P';
 
     $adjustedParameters = $parameters;
     if(function_exists('_checkbook_project_applyParameterFilters')){
@@ -219,40 +172,50 @@
     }
     return $adjustedParameters;
 ",
+"adjustDataTableOptions":"
+          $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
+
+          $rpp = _getRequestParamValue('rpp');
+             if(is_numeric($rpp) ){
+                    $adjustDataTableOptions->iDisplayLength = (int)$rpp;
+             }
+",
 "dataTableOptions":{
-        "bRetrieve": true,
+         "bRetrieve": true,
         "bServerSide": true,
         "bProcessing":true,
         "bFilter": false,
+        "iDisplayLength":20,
         "bPaginate": true,
-         "iDisplayLength":35,
         "sPaginationType":"full_numbers",
         "bLengthChange": false,
         "sDom":"<pr><t><ip>",
         "oLanguage": {
-                "sInfo": "Displaying transactions _START_ - _END_ of _TOTAL_",
+                "sInfo":"Displaying transactions _START_ - _END_ of _TOTAL_",
                 "sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
         },
         "bInfo": true,
-        "aoColumns":[
-            {"sClass":"text","sWidth":"229px","bSortable": false},
-            {"sClass":"text","sWidth":"150px","bSortable": false,"asSorting":["asc","desc"]},
-            {"sClass":"text","sWidth":"90px","asSorting":["asc","desc"]},
-            {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
-            {"sClass":"number pad-left","sWidth":"135px","asSorting":["desc","asc"]},
-            {"sClass":"text pad-left","sWidth":"165px","asSorting":["asc","desc"]},
-            {"sClass":"text","sWidth":"150px","bSortable": false,"asSorting":["asc","desc"]},
-            {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
-            {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
-            {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]}
-],
-        "aaSorting":[[4,"desc"]],
-        "sScrollX": "100%",
-		"bScrollCollapse": false,
-        "fnInitComplete": "##function () { new FixedColumns( oTable, {
-		\"iLeftColumns\": 1,
-		\"iLeftWidth\": 229
-	} );}##"
+         "aoColumns":[
+            {"sClass":"text","sWidth":"200px","asSorting":["asc","desc"]},
+            {"sClass":"number","sWidth":"80px","asSorting":["asc","desc"]},
+            {"sWidth":"20px","bSortable": false},
+            {"sClass":"text pad-left","sWidth":"100px","asSorting":["asc","desc"]},
+            {"sClass":"text pad-left","sWidth":"200px","asSorting":["asc","desc"]},
+            {"sClass":"number","sWidth":"130px","asSorting":["desc","asc"]},
+            {"sClass":"text pad-left","sWidth":"150px","asSorting":["asc","desc"]},
+            {"sClass":"number","sWidth":"110px","asSorting":["asc","desc"]},
+            {"sClass":"text pad-left","sWidth":"100px","asSorting":["asc","desc"]},
+            {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]},
+            {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]}
+        ],
+         "aaSorting":[[5,"desc"]],
+       		"sScrollX":"100%",
+
+ 		"bScrollCollapse": false,
+        "fnInitComplete":"##function () { new FixedColumns( oTable, {
+ 		\"iLeftColumns\": 1,
+		\"iLeftWidth\": 200
+ 	} );}##"
 },
 "customExternalJS":"function prepareTableListFilterUrl(){
     var agencyIds = getNamedFilterCriteria('fagencyId');
@@ -260,37 +223,23 @@
         agencyIds = document.getElementById('fHideAgencyId').value;
     }
     var oVendorIds = getNamedFilterCriteria('fvendorId');
-    var oVendorNms = getNamedFilterCriteria('fvendorNm');
-    var oCategoryIds = getNamedFilterCriteria('fCat' + 'egoryId');
+    var oCategoryIds = getNamedFilterCriteria('fCategoryNm');
     var oSpendCategoryIds = getNamedFilterCriteria('fSpendCategoryId');
     var oCheckAmount = getNamedFilterCriteria('fCheckAmount');
-    var oDeptIds = getNamedFilterCriteria('fdeptId');
-    var oDeptNms = getNamedFilterCriteria('fdeptNm');
-    var oSpendCategoryNms = getNamedFilterCriteria('fCategoryNm');
+    var oDeptIds = getNamedFilterCriteria('fdeptNm');
     var oMwbeVendorId = getNamedFilterCriteria('fmwbeVendorId');
     var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
 
-    var cUrl = oTable.fnSettings().sAjaxSource;
-
-    var cUrlArray = cUrl.split('/');
-    var dtsmnidNameIndex = jQuery.inArray('dtsmnid', cUrlArray);
-
-    if (dtsmnidNameIndex != -1 && cUrlArray[(dtsmnidNameIndex+1)] == 20) {
-        cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
-        cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
-    }
-    else {
-        cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
-        cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
-    }
-    cUrl = adjustUrlParameter(cUrl,'vendornm_exact',oVendorNms);
-    cUrl = adjustUrlParameter(cUrl,'expcategory',oCategoryIds);
+    var  cUrl = oTable.fnSettings().sAjaxSource;
+    cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
+    cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
+    cUrl = adjustUrlParameter(cUrl,'expcategorynm',oCategoryIds);
     cUrl = adjustUrlParameter(cUrl,'category',oSpendCategoryIds );
     cUrl = adjustUrlParameter(cUrl,'checkamtr',oCheckAmount);
-    cUrl = adjustUrlParameter(cUrl,'expcategorynm',oSpendCategoryNms);
+    cUrl = adjustUrlParameter(cUrl,'deptnm',oDeptIds);
     cUrl = adjustUrlParameter(cUrl,'mwbe_vendor',oMwbeVendorId);
     cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
 
-    return cUrl;
+       return cUrl;
     }"
 }
