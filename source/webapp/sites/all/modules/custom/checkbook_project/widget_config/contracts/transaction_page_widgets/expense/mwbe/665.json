@@ -7,7 +7,7 @@
     "getTotalDataCount":false,
     "dataset": "checkbook:all_agreement_transactions",
     "orderBy":"-maximum_contract_amount",
-    "columns": ["is_prime_or_sub","minority_type_id","minority_type_name","fiscal_year_id@checkbook:all_contracts_coa_aggregates","type_of_year@checkbook:all_contracts_coa_aggregates", "document_code@checkbook:ref_document_code","has_children","original_agreement_id","contract_number","master_agreement_id","master_contract_number","description","document_version","original_contract_amount","maximum_contract_amount","spending_amount@checkbook:all_contracts_coa_aggregates","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","industry_type_name","dollar_difference","percent_difference"],
+    "columns": ["sub_contract_id","is_prime_or_sub","minority_type_id","minority_type_name","fiscal_year_id@checkbook:all_contracts_coa_aggregates","type_of_year@checkbook:all_contracts_coa_aggregates", "document_code@checkbook:ref_document_code","has_children","original_agreement_id","contract_number","master_agreement_id","master_contract_number","description","document_version","original_contract_amount","maximum_contract_amount","spending_amount@checkbook:all_contracts_coa_aggregates","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","industry_type_name","dollar_difference","percent_difference"],
     "caption":"",
     "adjustParameters":"
 if(isset($parameters['vendor_type'])){
@@ -151,7 +151,7 @@ return $parameters;
 "table_columns": [
 {"label": "&nbsp;","column": "child_contrats_link"},
 {"label": "Contract ID","column": "contract_link","sortSourceColumn":"contract_number"},
-{"label": "sub_contract_reference_id","column": "","sortSourceColumn":""},
+{"label": "sub_contract_reference_id","column": "sub_contract_id"},
 {"label": "<span>Purpose</span>","column": "purpose_formatted","sortSourceColumn":"description"},
 {"label": "Version","column": "document_version"},
 {"label": "FMS Document/ Parent Contract ID","column":"parent_contract_link"},

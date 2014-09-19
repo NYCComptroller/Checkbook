@@ -32,7 +32,7 @@ return $header;
 "html_class": "initiative-table",
 "no_results_content":"No Results Found",
 "dataset": "checkbook:all_agreement_transactions",
-"columns": ["is_prime_or_sub","minority_type_id","minority_type_name","master_contract_number","master_agreement_id","fms_commodity_line@checkbook:oge_contract_contract","budget_name@checkbook:oge_contract_contract","oge_contract_number@checkbook:oge_contract_contract",
+"columns": ["sub_contract_id","is_prime_or_sub","minority_type_id","minority_type_name","master_contract_number","master_agreement_id","fms_commodity_line@checkbook:oge_contract_contract","budget_name@checkbook:oge_contract_contract","oge_contract_number@checkbook:oge_contract_contract",
 "fiscal_year_id@checkbook:all_contracts_coa_aggregates","type_of_year@checkbook:all_contracts_coa_aggregates", "has_children","contract_number",
 "original_agreement_id","description","document_version","original_contract_amount","maximum_contract_amount",
 "spending_amount@checkbook:all_contracts_coa_aggregates","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name",
@@ -144,7 +144,7 @@ return $header;
 "table_columns": [
 {"label": "<div></div>","colLabel": "","column": "child_contrats_link","export":false},
 {"labelAlias": "contract_id","column": "contract_link","sortSourceColumn":"contract_number"},
-{"labelAlias": "sub_contract_reference_id","column": "","sortSourceColumn":"contract_number","exportColumn":""},
+{"labelAlias": "sub_contract_reference_id","column": "sub_contract_id"},
 {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description"},
 {"labelAlias": "version","column": "document_version"},
 {"labelAlias": "fms_doc_id","column":"parent_contract_link","export":false, "exportColumn":"parent_contract_export", "sortSourceColumn":"master_contract_number"},
@@ -245,7 +245,7 @@ $adjustDataTableOptions->fnInitComplete = '##function () { new FixedColumns( oTa
 "aoColumns": [
 {"sClass":"expander","bSortable": false,"sWidth":"30px"},
 {"sClass":"text", "sWidth":"180px","asSorting": [ "asc","desc" ]},
-{"sClass":"text", "sWidth":"180px","asSorting": [ "asc","desc" ]},
+{"sClass":"number number-left", "sWidth":"180px","asSorting": [ "asc","desc" ]},
 {"sClass":"text", "sWidth":"210px","asSorting": [ "asc","desc" ]},
 {"sClass":"text vers-num", "sWidth":"75px","asSorting": [ "desc","asc" ]},
 {"sClass":"text no-sort number-left","bSortable": false, "sWidth":"155px","asSorting": [ "asc","desc" ]},
