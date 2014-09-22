@@ -232,7 +232,7 @@
                 $parameters['vendor_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
             }
         }
-        else if(isset($mwbe)) {
+        else if(isset($mwbe) && isset($parameters['prime_vendor_id'])) {
             $parameters['vendor_id'] = $parameters['prime_vendor_id'];
             unset($parameters['prime_vendor_id']);
         }
