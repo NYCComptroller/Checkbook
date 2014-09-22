@@ -440,6 +440,12 @@ h4 {
     float:right;
     margin: 3px 130px 0px 0px;
 }
+#checkbook-advanced-search-form .ui-state-active,
+#checkbook-advanced-search-form .ui-widget-content .ui-state-active,
+#checkbook-advanced-search-form .ui-widget-header .ui-state-active{
+    border-bottom: 0 !important;
+}
+
 #region-header-first .advanced-search-create-alert {
     float:right;
     margin: 3px 130px 0px 0px;
