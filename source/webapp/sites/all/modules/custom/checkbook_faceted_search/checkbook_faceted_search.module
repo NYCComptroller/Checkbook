@@ -265,7 +265,7 @@ function checkbook_faceted_search_preprocess_individual_filter(&$variables){
   $variables['autocomplete_id'] = $data['autocomplete_id'];
   $variables['autocomplete_field_name'] = $data['autocomplete_field_name'];
   $variables['autocomplete_param_name'] = $data['autocomplete_param_name'];
-  if(($node->nid == 518 || $node->nid == 540 || $node->nid == 566 || $node->nid == 709)&& !preg_match("/\/agency\//",$_GET['q'])){
+  if(($node->nid == 518 || $node->nid == 540 || $node->nid == 566 || $node->nid == 709 || $node->nid == 702)&& !preg_match("/\/agency\//",$_GET['q'])){
     $variables['hide_filter'] = ' style="display:none" ';
   }else{
     $variables['hide_filter'] = "";
