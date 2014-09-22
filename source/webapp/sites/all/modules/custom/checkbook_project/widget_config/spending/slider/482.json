@@ -30,7 +30,7 @@
                 "seriesDefaultParameters":{"year.year":"1","type_of_year":"B"},
                 "adjustSerieParameters":"
 
-                    if(!$node->is_sub_vendor) {
+                    if(!$node->is_sub_vendor && isset($serieParameters['prime_vendor.prime_vendor'])) {
                         $serieParameters['vendor.vendor'] = $serieParameters['prime_vendor.prime_vendor'];
                         unset($serieParameters['prime_vendor.prime_vendor']);
                     }
@@ -42,6 +42,7 @@
                     if(!isset($serieParameters['minority_type_id']))
                         $serieParameters['minority_type_id'] = data_controller_get_operator_factory_instance()->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, 2);
                     return $serieParameters;
+
                 "
             }
         ]
