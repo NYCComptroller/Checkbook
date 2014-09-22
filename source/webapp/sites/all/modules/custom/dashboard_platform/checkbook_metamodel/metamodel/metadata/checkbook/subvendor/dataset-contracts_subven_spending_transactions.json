@@ -41,45 +41,54 @@
                         {
                             "name": "vendor",
                             "datasetName": "vendor",
-                            "sourceColumnName": "disb_vendor_id"
+                            "sourceColumnName": "vendor_id"
                         }
                     ]
                 },
                 {
-                    "name": "expenditure_object",
+                    "name": "vendornm",
                     "levels": [
                         {
-                            "name": "expenditure_object",
-                            "datasetName": "expenditure_object",
-                            "sourceColumnName": "disb_expenditure_object_id"
+                            "name": "vendornm",
+                            "sourceColumnName": "disb_vendor_name"
                         }
                     ]
                 },
                 {
-                    "name": "expenditure_object_nm",
+                    "name": "sub_vendor_name",
                     "levels": [
                         {
-                            "name": "expenditure_object_nm",
-                            "sourceColumnName": "disb_expenditure_object_name"
-                        }
-                    ]
-                },                
-                {
-                    "name": "dept",
-                    "levels": [
-                        {
-                            "name": "dept",
-                            "datasetName": "department",
-                            "sourceColumnName": "disb_department_id"
+                            "name": "sub_vendor_name",
+                            "datasetName": "sub_vendor",
+                            "sourceColumnName": "legal_name"
                         }
                     ]
                 },
                 {
-                	"name": "deptnm",
+                    "name": "prime_vendor",
                     "levels": [
                         {
-                            "name": "deptnm",
-                            "sourceColumnName": "disb_department_short_name"
+                            "name": "prime_vendor",
+                            "sourceColumnName": "prime_vendor_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "prime_vendor_name",
+                    "levels": [
+                        {
+                            "name": "prime_vendor_name",
+                            "datasetName": "prime_vendor",
+                            "sourceColumnName": "legal_name"
+                        }
+                    ]
+                },
+                {
+                    "name": "vendor_type",
+                    "levels": [
+                        {
+                            "name": "vendor_type",
+                            "sourceColumnName": "vendor_type"
                         }
                     ]
                 },
@@ -136,6 +145,14 @@
         "contracts_subven_spending_transactions__ref_document_code": [
             {"datasetName": "contracts_subven_spending_transactions", "columnNames": ["document_code_id"]},
             {"datasetName": "ref_document_code", "columnNames": ["document_code_id"]}
+        ],
+        "contracts_subven_spending_transactions__sub_vendor": [
+            {"datasetName": "contracts_subven_spending_transactions", "columnNames": ["vendor_id"]},
+            {"datasetName": "sub_vendor", "columnNames": ["vendor_id"]}
+        ],
+        "contracts_subven_spending_transactions__prime_vendor": [
+            {"datasetName": "contracts_subven_spending_transactions", "columnNames": ["prime_vendor_id"]},
+            {"datasetName": "prime_vendor", "columnNames": ["vendor_id"]}
         ]
     }
 }

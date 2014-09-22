@@ -198,16 +198,6 @@
                         }
                     ]
                 },
-//                {
-//                    "name": "sub_vendor_id",
-//                    "levels": [
-//                        {
-//                            "name": "sub_vendor",
-//                            "datasetName": "sub_vendor",
-//                            "sourceColumnName": "vendor_id"
-//                        }
-//                    ]
-//                },
                 {
                     "name": "sub_vendor_name",
                     "levels": [

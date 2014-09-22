@@ -54,12 +54,13 @@
 			, sum(maximum_contract_amount) current_amount_sum
 			, count(contract_number) total_contracts		
 		from {aggregateon_subven_contracts_cumulative_spending} a1     
-	    join {vendor} v on v.vendor_id =  a1.vendor_id
+	    join {vendor} v on v.vendor_id =  a1.prime_vendor_id
 	    join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
    		' . $where_filter . '     
    		group by v.legal_name  ,a1.vendor_id
     	order by 3 desc limit 10';
     $node->data  = _checkbook_project_execute_sql($sql);
+	  
 	  
 ",
 "widgetUpdateJSONConfig":"
@@ -106,9 +107,9 @@
 	}
 	$mwbe_filter = _getRequestParamValue('mwbe');
 	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){		
-		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Top Ten Prime Vendors by ' . $status . ' ' . $contract_type .  ' Contracts';
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Top Ten Sub Vendors by ' . $status . ' ' . $contract_type .  ' Contracts';
 	}else{
-		$node->widgetConfig->chartTitle =  'Top Ten ' .  MappingUtil::getCurrenEhtnicityName() . ' Prime Vendors by '  .$status . ' ' . $contract_type .  ' Contracts';
+		$node->widgetConfig->chartTitle =  'Top Ten ' .  MappingUtil::getCurrenEhtnicityName() . ' Sub Vendors by '  .$status . ' ' . $contract_type .  ' Contracts';
 	}  
 	
 ",
