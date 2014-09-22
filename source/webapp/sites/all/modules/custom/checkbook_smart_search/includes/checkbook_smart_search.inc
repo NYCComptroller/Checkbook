@@ -151,6 +151,7 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
     $current_date = date("c").'Z';
 
     $search_string = _checkbook_smart_search_get_results_query_search_term($search_terms);
+
     $query = "select/?q=". $search_string
         ."&start=". ($page_no*$no_of_results)
         ."&fq=-latest_flag:N"
@@ -197,6 +198,23 @@ function _checkbook_smart_search_get_results_query_search_term($search_terms){
 
     for($i=1;$i < count($search_terms);$i++){
         $reqParams  = explode('=', $search_terms[$i]);
+        if($reqParams[0] == 'vendor_type'){
+            $vtypeParam = explode('~',$reqParams[1]);
+            $reqParams[1] = '';
+            foreach($vtypeParam as $vtype){
+                if($vtype == 'pv'){
+                    $reqParams[1] .= 'p~pm~';
+                }
+                if($vtype == 'sv'){
+                    $reqParams[1] .= 's~sm~';
+                }
+                if($vtype == 'mv'){
+                    $reqParams[1] .= 'sm~pm~';
+                }
+            }
+            $reqParams[1] = substr($reqParams[1],0,-1);
+        }
+
         $filters = explode('~',urldecode($reqParams[1]));
         $subQuery = "";
         foreach($filters as $value){
@@ -253,27 +271,41 @@ function _checkbook_smart_search_get_selected_facet_results($search_terms, $face
     $search_string = $search_terms[0];
     $request_facet_param = array();
     $result = array();
-
     for($i=1;$i < count($search_terms);$i++){
         $req_params  = explode('=', $search_terms[$i]); // ("domains", "payroll~spending") ("fiscal_years", "2014~2013")
+        if($req_params[0] == 'vendor_type'){
+            $vtypeParam = explode('~',$req_params[1]);
+            $req_params[1] = '';
+            foreach($vtypeParam as $vtype){
+                if($vtype == 'pv'){
+                    $req_params[1] .= 'p~pm~';
+                }
+                if($vtype == 'sv'){
+                    $req_params[1] .= 's~sm~';
+                }
+                if($vtype == 'mv'){
+                    $req_params[1] .= 'sm~pm~';
+                }
+            }
+            $req_params[1] = substr($req_params[1],0,-1);
+        }
         $filters = explode('~',urldecode($req_params[1]));
         $sub_query = "";
-
-
         foreach($filters as $value){
             if($req_params[0] == $facet_name){
                 $count = 1;
                 $request_facet_param[] = $value;
             }
-            $sub_query .=  "(". $parameter_mapping[$req_params[0]] .":" .
-                _checkbook_smart_search_escapeSolrValue('"'.$value.'"').")%20OR%20";
+                $sub_query .=  "(". $parameter_mapping[$req_params[0]] .":" .
+                    _checkbook_smart_search_escapeSolrValue('"'.$value.'"').")%20OR%20";
         }
+
         if(strlen($sub_query) > 0){
             $search_string .= "&fq="  . substr($sub_query, 0, -8);
         }
     }
-    if($count > 0){
 
+    if($count > 0){
         $query = "select/?q=". $search_string
             ."&facet=true"
             ."&fq=-latest_flag:N"
@@ -282,14 +314,15 @@ function _checkbook_smart_search_get_selected_facet_results($search_terms, $face
             ."&wt=php"
             ."&facet.mincount=1";
 
-
         $selected_facet_results = _checkbook_smart_search_solr_results($query);
         foreach($selected_facet_results['facet_counts']['facet_fields'] as $name => $value){
             if(count($value) > 0){
                 foreach($request_facet_param as $a => $b){
-                    foreach($value as $facet=>$facet_count)
-                        if($facet == $b)
+                    foreach($value as $facet=>$facet_count){
+                        if($facet == $b){
                             $result[] = array('name' => $facet, 'count' => $facet_count);
+                        }
+                    }
                 }
             }
         }
@@ -321,9 +354,29 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
         );
 
         $search_string = $search_terms[0];
+
         $termcount = 0;
         for($i=1;$i < count($search_terms);$i++){
             $req_params  = explode('=', $search_terms[$i]);
+
+            if($req_params[0] == 'vendor_type'){
+                $vtypeParam = explode('~',$req_params[1]);
+                $req_params[1] = '';
+                foreach($vtypeParam as $vtype){
+                    if($vtype == 'pv'){
+                        $req_params[1] .= 'p~pm~';
+                    }
+                    if($vtype == 'sv'){
+                        $req_params[1] .= 's~sm~';
+                    }
+                    if($vtype == 'mv'){
+                        $req_params[1] .= 'sm~pm~';
+                    }
+                }
+
+                $req_params[1] = substr($req_params[1],0,-1);
+            }
+
             $filters = explode('~',urldecode($req_params[1]));
             $sub_query = "";
 
@@ -1101,4 +1154,3 @@ function vendor_type_mapping($vendortype_initials){
     }
 
 }
-
