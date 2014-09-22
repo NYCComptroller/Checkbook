@@ -104,8 +104,30 @@ namespace { //global
 			}
         	return $status . ' ' . $contract_type ;
         }
-        
-        
+
+        /* Returns M/WBE category for the given vendor id in the given year and year type */
+
+        static public function get_contract_vendor_minority_category($vendor_id, $year_id, $year_type){
+            STATIC $mwbe_vendors;
+            if(!isset($mwbe_vendors)){
+                $query = "SELECT vendor_id, year_id, type_of_year
+                            FROM contract_vendor_latest_mwbe_category
+                            WHERE is_prime_or_sub='P' AND minority_type_id IN (2,3,4,5,9)
+                            GROUP BY vendor_id, year_id, type_of_year";
+                $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+                foreach($results as $row){
+                    $mwbe_vendors[$row['vendor_id']][$row['year_id']][$row['type_of_year']] = $row['vendor_id'];
+                }
+            }
+            if($mwbe_vendors[$vendor_id][$year_id][$year_type] == $vendor_id){
+                if(!_getRequestParamValue('mwbe'))
+                    return '/mwbe/2~3~4~5~9';
+            }
+            return null;
+        }
+
+
+
     }
 }
 

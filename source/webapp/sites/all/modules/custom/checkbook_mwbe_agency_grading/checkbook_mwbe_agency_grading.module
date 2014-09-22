@@ -60,9 +60,10 @@ function checkbook_mwbe_agency_grading_theme($existing, $type, $theme, $path) {
 
 function _checkbook_mwbe_agency_grading(){
 	$agencies_data =  _checkbook_mwbe_agency_grading_getdata();
-	_checkbook_mwbe_agency_grading_left($agencies_data);
 	$left_content =  _checkbook_mwbe_agency_grading_left($agencies_data);
 	$right_content = _checkbook_mwbe_agency_grading_right($agencies_data);
+	$links = array(l(t('Home'), ''),'MWBE Agency Grading');
+	drupal_set_breadcrumb($links);
 	
 	return theme('mwbe_agency_grading_main',array('left_content'=>$left_content,'right_content'=>$right_content));
 }
@@ -80,7 +81,7 @@ function _checkbook_mwbe_agency_grading_left($agencies_data){
 		}	
 		$left_content_agencies[] = array('spending_amount'=>$spending_amount,'agency_name'=>$row['agency_name'],'data_row'=>$data_row);
 	}	
-	uasort($left_content_agencies,'_checkbook_agency_grading_comp');
+	usort($left_content_agencies,'_checkbook_agency_grading_comp');
 	return theme('mwbe_agency_grading_left_table',array('left_agencies_data' => $left_content_agencies));	
 	
 }
@@ -184,8 +185,13 @@ function _checkbook_mwbe_agency_grading_getdata(){
 
 
 function _mwbe_agency_grading_current_cats(){
-	$url_cats = explode('~',_getRequestParamValue('mwbe_filter'));
-	$mwbe_cats =  (count($url_cats) > 0)?$url_cats: array('aa_mwbe','ba_mwbe','ha_mwbe','w_mwbe');
+	
+	if(_getRequestParamValue('mwbe_filter') != null){
+		$url_cats = explode('~',_getRequestParamValue('mwbe_filter'));
+		return $url_cats;
+	}else{
+		return array('aa_mwbe','ba_mwbe','ha_mwbe','w_mwbe');
+	}
 	return $mwbe_cats;
 } 
 
