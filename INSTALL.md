@@ -331,10 +331,13 @@ Steps to install:
        
     
     Set the PostgreSQL database user's username and password with the following command:
-    $ sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"
+
+        $ sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"
     
-    Verify that PostgreSQL can accept password authentication from the postgres user with the following command: 
-    $ PGPASSWORD=postgres psql -U postgres checkbook
+    Verify that PostgreSQL can accept password authentication from the postgres user with the following command:
+
+        $ PGPASSWORD=postgres psql -U postgres checkbook
+    
     *Notes:*
 
     The demo dataset loaded above assumes the PostgreSQL database user
