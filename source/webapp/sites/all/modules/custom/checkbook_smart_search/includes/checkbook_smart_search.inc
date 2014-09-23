@@ -518,15 +518,14 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
                               "agency_names" => "agency_name",
                               "fiscal_years" => "fiscal_year",
                               "domains" => "domain",
-                              "vendor_names" => "vendor_name",
                               "vendor_type" => "vendor_type",
+                              "vendor_names" => "vendor_name",
                               "expense_categories" => "expenditure_object_name",
                               "revenue_categories" => "revenue_category_name",
                               "spending_categories" => "spending_category_name",
                               "contract_categories" => "contract_category_name",
-                              "contract_status" => "contract_status",
-                              "minority_type_name_contract" => "minority_type_name_contract",
-                              "minority_type_name_spending" => "minority_type_name_spending"
+                              "contract_status" => "contract_status"
+
     );
 
     $autocomplete_text = trim(htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES));//eco
@@ -558,6 +557,23 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
     $search_string = $search_text; //*:*
     for($i=1;$i < count($search_terms);$i++){
         $req_params  = explode('=', $search_terms[$i]);
+        if($req_params[0] == 'vendor_type'){
+            $vtypeParam = explode('~',$req_params[1]);
+            $req_params[1] = '';
+            foreach($vtypeParam as $vtype){
+                if($vtype == 'pv'){
+                    $req_params[1] .= 'p~pm~';
+                }
+                if($vtype == 'sv'){
+                    $req_params[1] .= 's~sm~';
+                }
+                if($vtype == 'mv'){
+                    $req_params[1] .= 'sm~pm~';
+                }
+            }
+
+            $req_params[1] = substr($req_params[1],0,-1);
+        }
         $filters = explode('~',$value = urldecode($req_params[1]));
         $sub_query = "";
         foreach($filters as $key=>$value){
@@ -575,7 +591,6 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
                   ."&facet.field=".$parameter_mapping[$facet_name] // oge_agency_name
                   ."&facet.limit=10"
                   ."&wt=php";
-
     $results = _checkbook_smart_search_solr_results($query);
 
     if ($results['response']['numFound'] != 0) {
