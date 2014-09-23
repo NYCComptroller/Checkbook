@@ -410,15 +410,13 @@ class SpendingUtil{
      * @param $row
      * @return string
      */
-    static function getPayeeNameLinkUrl($node, $row){
-        $url = '/spending_landing'
-            . _checkbook_project_get_year_url_param_string(false,false,false,true)
-            . SpendingUtil::getDataSourceParams()
-            . $row['agency_param']
-            . _checkbook_project_get_url_param_string('category')
-            . ($row['is_sub_vendor'] ? ('/subvendor/'. $row['vendor_id']) : ('/vendor/'. $row['vendor_id']) )
-            . '?expandBottomCont=true';
-        return  $url;
+    static function getPayeeNameLinkUrl($node, $row) {
+        $custom_params = null;
+
+        if(isset($row['is_sub_vendor']))
+            $custom_params = $row['is_sub_vendor'] == 'Yes' ? array('subvendor'=>$row['vendor_id']) : array('vendor'=>$row['vendor_id']);
+
+        return '/' . self::getLandingPageWidgetUrl($custom_params) . '?expandBottomCont=true';
     }
 
     /**
@@ -438,51 +436,38 @@ class SpendingUtil{
     /**
      *  Returns a spending landing page Url with custom parameters appended but instead of persisted
      *
-     * @param array $custom_params
+     * @param array $override_params
      * @return string
      */
-    static function getLandingPageWidgetUrl($custom_params = array()){
-
-        $path = 'spending_landing';
-        $url =  $path . _checkbook_project_get_year_url_param_string();
-
-        $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
-        $url_params = self::$landingPageParams;
-        $exclude_params = array_keys($custom_params);
-        if(is_array($url_params)){
-            foreach($url_params as $key => $value){
-                if(!in_array($key,$exclude_params)){
-                    $url .=  CustomURLHelper::get_url_param($pathParams,$key,$value);
-                }
-            }
-        }
-
-        if(is_array($custom_params)){
-            foreach($custom_params as $key => $value){
-                $url .= "/$key";
-                if(isset($value)){
-                    $url .= "/$value";
-                }
-            }
-        }
-
-        return $url;
+    static function getLandingPageWidgetUrl($override_params = array()) {
+        return self::getSpendingUrl('spending_landing',$override_params);
     }
 
     /**
      *  Returns a spending transaction page Url with custom parameters appended but instead of persisted
      *
-     * @param array $custom_params
+     * @param array $override_params
      * @return string
      */
-    static function getSpendingTransactionPageUrl($custom_params = array()){
+    static function getSpendingTransactionPageUrl($override_params = array()) {
+        return self::getSpendingUrl('panel_html/spending_transactions/spending/transactions',$override_params);
+    }
 
-        $path = 'panel_html/spending_transactions/spending/transactions';
+    /**
+     * Function build the url using the path and the current Spending URL parameters.
+     * The Url parameters can be overridden by the override parameter array.
+     *
+     * @param $path
+     * @param array $override_params
+     * @return string
+     */
+    static function getSpendingUrl($path, $override_params = array()) {
+
         $url =  $path . _checkbook_project_get_year_url_param_string();
 
         $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
         $url_params = self::$landingPageParams;
-        $exclude_params = array_keys($custom_params);
+        $exclude_params = array_keys($override_params);
         if(is_array($url_params)){
             foreach($url_params as $key => $value){
                 if(!in_array($key,$exclude_params)){
@@ -491,8 +476,8 @@ class SpendingUtil{
             }
         }
 
-        if(is_array($custom_params)){
-            foreach($custom_params as $key => $value){
+        if(is_array($override_params)){
+            foreach($override_params as $key => $value){
                 $url .= "/$key";
                 if(isset($value)){
                     $url .= "/$value";
