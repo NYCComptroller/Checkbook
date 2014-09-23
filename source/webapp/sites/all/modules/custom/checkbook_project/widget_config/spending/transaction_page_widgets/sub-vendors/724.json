@@ -9,15 +9,15 @@
 "urlParamMap":{
     "year":"disb_fiscal_year_id",
     "calyear":"disb_fiscal_year_id","yeartype":"type_of_year","status":"status_flag","agency":"disb_agency_id",
-    "category":"disb_spending_category_id","checkamtr":"check_amount","syear":"disb_fiscal_year_id",
+    "category":"disb_spending_category_id","checkamtr":"disb_check_amount","syear":"disb_fiscal_year_id",
     "scalyear":"disb_fiscal_year_id","magid":"master_agreement_id","agid":"disb_agreement_id",
     "cvendor":"vendor_id","cagency":"document_agency_id","awdmethod":"award_method_id","csize":"award_size_id",
     "cindustry":"industry_type_id","doctype":"document_code@checkbook:ref_document_code",
     "month":"check_eft_issued_cal_month_id",
-    "mwbe":"minority_type_id","industry":"industry_type_id",
-    "vendor":"prime_vendor_id","subvendor":"vendor_id","vendortype":"vendor_type"
+    "mwbe":"disb_minority_type_id","industry":"industry_type_id",
+    "vendor":"prime_vendor_id","subvendor":"vendor_id","vendortype":"disb_vendor_type"
 },
-"paramTypeConfig":{"checkamtr":"rangeid","syear":"le","scalyear":"le","deptnm":"eqignorecase"},
+"paramTypeConfig":{"checkamtr":"rangeid","syear":"le","scalyear":"le","deptnm":"eqignorecase","doctype":"in"},
 "header":"
 	$header = NULL;
 	$header .= widget_data_tables_export_link($node);
@@ -50,7 +50,9 @@
     "disb_spending_category_id",
     "disb_agreement_id",
     "document_code@checkbook:ref_document_code",
-    "minority_type_id"
+    "disb_minority_type_id",
+    "disb_vendor_type",
+    "disb_sub_contract_id"
 ],
 "caption":"",
 "derivedColumns": {
@@ -74,17 +76,17 @@
         "type":"expression2",
         "expression":"(_checkbook_check_isEDCPage()? _checkbook_project_get_url_param_string(\"agency\") :'')"
     },
-    "vendor_name_formatted":{
+    "payee_name_formatted":{
         "type": "expression2",
         "expression": "_get_tooltip_markup($row['disb_vendor_name'], 34)"
     },
-    "vendor_name_export":{
+    "payee_name_export":{
         "type": "expression2",
         "expression": "$row['disb_vendor_name']"
     },
-    "vendor_name_link": {
+    "payee_name_link": {
         "type": "expression2",
-        "expression": " RequestUtil::isNewWindow() ||  $row[disb_spending_category_id]==2 ?  $row[vendor_name_formatted] : ('<a href=' . SpendingUtil::getPayeeNameLinkUrl($node, $row) . '>'. $row[vendor_name_formatted] .'</a>') "
+        "expression": " RequestUtil::isNewWindow() ||  $row[disb_spending_category_id]==2 ?  $row[payee_name_formatted] : ('<a href=\"' . SpendingUtil::getPayeeNameLinkUrl($node,$row) . '?expandBottomCont=true' . '\">'. $row[payee_name_formatted] .'</a>') "
     },
     "formatted_check_amount": {
         "type":"expression2",
@@ -108,12 +110,12 @@
     },
     "mwbe_category_name": {
         "type":"expression2",
-        "expression":"MappingUtil::getMinorityCategoryById($row[minority_type_id])"
+        "expression":"MappingUtil::getMinorityCategoryById($row[disb_minority_type_id])"
     }
 },
 "table_columns": [
-    {"labelAlias":"payee_name","column":"vendor_name_link","sortSourceColumn":"disb_vendor_name","exportColumn":"vendor_name_export"},
-    {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"vendor_type","export":false},
+    {"labelAlias":"payee_name","column":"payee_name_link","sortSourceColumn":"disb_vendor_name","exportColumn":"payee_name_export"},
+    {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"disb_vendor_type","export":false},
     {"label":"","column":""},
     {"labelAlias":"issue_date","column":"disb_check_eft_issued_date"},
     {"labelAlias":"agency_name","column":"agency_name_link","sortSourceColumn":"disb_agency_name"},
@@ -122,19 +124,19 @@
     {"labelAlias":"sub_contract_reference_id","column":"disb_sub_contract_id","exportColumn":"disb_sub_contract_id"},
     {"labelAlias":"contract_purpose","column":"contract_purpose_text","sortSourceColumn":"disb_purpose"},
     {"labelAlias":"spending_category","column":"disb_spending_category_name"},
-    {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name"}
+    {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"disb_minority_type_id","exportColumn":"mwbe_category_name"}
 ],
 "exportColumnSqlOverride":[
     {
         "column":"mwbe_category_name",
-        "sourceColumn":"minority_type_id",
+        "sourceColumn":"disb_minority_type_id",
         "sql":"
             case
-            when minority_type_id = 2 then 'Black American'
-            when minority_type_id = 3 then 'Hispanic American'
-            when minority_type_id = 7 then 'Non-M/WBE'
-            when minority_type_id = 9 then 'Women'
-            when minority_type_id = 11 then 'Individuals and Others'
+            when disb_minority_type_id = 2 then 'Black American'
+            when disb_minority_type_id = 3 then 'Hispanic American'
+            when disb_minority_type_id = 7 then 'Non-M/WBE'
+            when disb_minority_type_id = 9 then 'Women'
+            when disb_minority_type_id = 11 then 'Individuals and Others'
             else 'Asian American'
             end as minority_type_name
         "
@@ -147,8 +149,8 @@
         $parameters['disb_fiscal_year_id'] = $year;
     }
 
-    //This is for sub vendor page to have only sub venders returned, exclude this for advanced search results
     $subvendor = _getRequestParamValue('subvendor');
+    $mwbe = _getRequestParamValue('mwbe');
     if(isset($subvendor)) {
         $data_controller_instance = data_controller_get_operator_factory_instance();
         $parameters['prime_vendor_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
@@ -156,15 +158,17 @@
             $parameters['vendor_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
         }
     }
+    else if(isset($mwbe) && isset($parameters['prime_vendor_id'])) {
+        $parameters['vendor_id'] = $parameters['prime_vendor_id'];
+        unset($parameters['prime_vendor_id']);
+    }
 
-//    if(isset($parameters['vendor_type'])) {
-//        $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
-//    }
+    if(isset($parameters['disb_vendor_type'])){
+        $parameters['disb_vendor_type'] = MappingUtil::getVendorTypeValue($parameters['disb_vendor_type']);
+    }
 
 //    $subvendor = _getRequestParamValue('subvendor');
-//    $mwbe = _getRequestParamValue('mwbe');
 //    if($subvendor) $parameters['is_prime_or_sub'] = 'S';
-//    else if($mwbe) $parameters['is_prime_or_sub'] = 'P';
 
     $adjustedParameters = $parameters;
     if(function_exists('_checkbook_project_applyParameterFilters')){
@@ -203,7 +207,7 @@
             {"sClass":"text pad-left","sWidth":"200px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"130px","asSorting":["desc","asc"]},
             {"sClass":"text pad-left","sWidth":"150px","asSorting":["asc","desc"]},
-            {"sClass":"number","sWidth":"110px","asSorting":["asc","desc"]},
+            {"sClass":"number","sWidth":"100px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"100px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]}
@@ -227,7 +231,7 @@
     var oSpendCategoryIds = getNamedFilterCriteria('fSpendCategoryId');
     var oCheckAmount = getNamedFilterCriteria('fCheckAmount');
     var oDeptIds = getNamedFilterCriteria('fdeptNm');
-    var oMwbeVendorId = getNamedFilterCriteria('fmwbeVendorId');
+    var oVendorType = getNamedFilterCriteria('fvendorType');
     var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
 
     var  cUrl = oTable.fnSettings().sAjaxSource;
@@ -237,7 +241,7 @@
     cUrl = adjustUrlParameter(cUrl,'category',oSpendCategoryIds );
     cUrl = adjustUrlParameter(cUrl,'checkamtr',oCheckAmount);
     cUrl = adjustUrlParameter(cUrl,'deptnm',oDeptIds);
-    cUrl = adjustUrlParameter(cUrl,'mwbe_vendor',oMwbeVendorId);
+    cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
     cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
 
        return cUrl;
