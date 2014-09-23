@@ -85,16 +85,17 @@
 
         //Sub vendor page, need to use prime_vendor_id
         if($node->is_subvendor) {
-            $subvendor = _getRequestParamValue('subvendor');
-            if(isset($adjustedParameters['vendor_id'])) {
-                $adjustedParameters['prime_vendor_id'] = $adjustedParameters['vendor_id'];
+            $sub_vendor = _getRequestParamValue('subvendor');
+            $vendor = _getRequestParamValue('vendor');
+            if(isset($vendor)) {
+                $adjustedParameters['prime_vendor_id'] = $vendor;
             }
-            if($subvendor == 'all') {
+            if($sub_vendor == 'all') {
                 $data_controller_instance = data_controller_get_operator_factory_instance();
                 $adjustedParameters['vendor_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
             }
             else {
-                $adjustedParameters['vendor_id'] = $subvendor;
+                $adjustedParameters['vendor_id'] = $sub_vendor;
             }
         }
             return $adjustedParameters;

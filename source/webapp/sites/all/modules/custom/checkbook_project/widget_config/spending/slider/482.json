@@ -29,6 +29,11 @@
                 "allowedParams":["year.year","agency_id","type_of_year","prime_vendor.prime_vendor","sub_vendor.sub_vendor","minority_type_id","industry_type_id"],
                 "seriesDefaultParameters":{"year.year":"1","type_of_year":"B"},
                 "adjustSerieParameters":"
+
+                    if(!$node->is_sub_vendor && isset($serieParameters['prime_vendor.prime_vendor'])) {
+                        $serieParameters['vendor.vendor'] = $serieParameters['prime_vendor.prime_vendor'];
+                        unset($serieParameters['prime_vendor.prime_vendor']);
+                    }
                     if(!$node->is_mwbe && !$node->is_mwbe_sub_vendor) {
                         unset($serieParameters['minority_type_id']);
                         unset($serieParameters['industry_type_id']);
@@ -37,6 +42,7 @@
                     if(!isset($serieParameters['minority_type_id']))
                         $serieParameters['minority_type_id'] = data_controller_get_operator_factory_instance()->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, 2);
                     return $serieParameters;
+
                 "
             }
         ]

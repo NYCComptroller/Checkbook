@@ -55,7 +55,6 @@
     "html_class": "initiative-table transaction-table",
     "no_results_content":"No Results Found",
     "dataset": "checkbook:spending_transactions_all",
-    "preProcessConfiguration":"$node->is_mwbe = true;",
     "columns": [
         "disbursement_number",
         "agency_id",
@@ -104,17 +103,17 @@
             "type": "expression2",
             "expression": " RequestUtil::isNewWindow() ? $row[agency_name_formatted]  : ('<a href=/spending_landing' . _checkbook_project_get_year_url_param_string(false,false,false,true) . SpendingUtil::getDataSourceParams()  . _checkbook_project_get_url_param_string('category') . ($row[is_sub_vendor] ? ('/subvendor/all') : ('/vendor/'. $row[vendor_id]) ) . '/agency/'. $row[agency_id]. '?expandBottomCont=true>'. $row[agency_name_formatted] .'</a>') "
         },
-        "vendor_name_formatted":{
+        "payee_name_formatted":{
             "type": "expression2",
             "expression": "_get_tooltip_markup($row['vendor_name'], 34)"
         },
-        "vendor_name_export":{
+        "payee_name_export":{
             "type": "expression2",
             "expression": "$row['vendor_name']"
         },
-        "vendor_name_link": {
+        "payee_name_link": {
             "type": "expression2",
-            "expression": " RequestUtil::isNewWindow() ||  $row[spending_category_id]==2 ?  $row[vendor_name_formatted] : ('<a href=' . SpendingUtil::getPayeeNameLinkUrl($node, $row) . '>'. $row[vendor_name_formatted] .'</a>') "
+            "expression": " RequestUtil::isNewWindow() ||  $row[spending_category_id]==2 ?  $row[payee_name_formatted] : ('<a href=\"' . SpendingUtil::getPayeeNameLinkUrl($node,$row) . '?expandBottomCont=true' . '\">'. $row[payee_name_formatted] .'</a>') "
         },
         "issue_date_formatted":{
             "type": "expression2",
@@ -159,7 +158,7 @@
     },
     "table_columns": [
         {"labelAlias":"document_id","column":"disbursement_number_derived","sortSourceColumn":"disbursement_number","exportColumn":"disbursement_number_derived"},
-        {"labelAlias":"payee_name","column":"vendor_name_link","sortSourceColumn":"vendor_name","exportColumn":"vendor_name_export"},
+        {"labelAlias":"payee_name","column":"payee_name_link","sortSourceColumn":"vendor_name","exportColumn":"payee_name_export"},
         {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"vendor_type","exportColumn":"is_sub_vendor"},
         {"labelAlias":"issue_date","column":"issue_date_formatted","sortSourceColumn":"check_eft_issued_date","headerClass":"issuedate","exportColumn":"issue_date_formatted"},
         {"labelAlias":"agency_name","column":"agency_name_link","sortSourceColumn":"agency_name"},
@@ -224,8 +223,8 @@
             }
         }
 
-        //This is for sub vendor page to have only sub venders returned, exclude this for advanced search results
         $subvendor = _getRequestParamValue('subvendor');
+        $mwbe = _getRequestParamValue('mwbe');
         if(isset($subvendor)) {
             $data_controller_instance = data_controller_get_operator_factory_instance();
             $parameters['prime_vendor_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
@@ -233,15 +232,17 @@
                 $parameters['vendor_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
             }
         }
+        else if(isset($mwbe) && isset($parameters['prime_vendor_id'])) {
+            $parameters['vendor_id'] = $parameters['prime_vendor_id'];
+            unset($parameters['prime_vendor_id']);
+        }
 
         if(isset($parameters['vendor_type'])){
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
         }
 
         $subvendor = _getRequestParamValue('subvendor');
-        $mwbe = _getRequestParamValue('mwbe');
         if($subvendor) $parameters['is_prime_or_sub'] = 'S';
-        else if($mwbe) $parameters['is_prime_or_sub'] = 'P';
 
         $adjustedParameters = $parameters;
         if(function_exists('_checkbook_project_applyParameterFilters')){
