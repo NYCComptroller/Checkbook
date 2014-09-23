@@ -88,7 +88,7 @@
                     "levels": [
                         {
                             "name": "vendor_type",
-                            "sourceColumnName": "vendor_type"
+                            "sourceColumnName": "disb_vendor_type"
                         }
                     ]
                 },
