@@ -536,6 +536,7 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
                   ."&facet.field=".$parameter_mapping[$facet_name] // oge_agency_name
                   ."&facet.limit=10"
                   ."&wt=php";
+
     $results = _checkbook_smart_search_solr_results($query);
 
     if ($results['response']['numFound'] != 0) {
@@ -560,7 +561,7 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
  *  @return the matching words
 **/
 function _checkbook_smart_search_agency_autocomplete(){
-    $agencies = _checkbook_smart_search_get_searchstring_autocomplete("agency_names","agency_name_autocomplete");
+    $agencies = _checkbook_smart_search_get_searchstring_autocomplete("agency_names","agency_name");
     return $agencies;
 }
 
