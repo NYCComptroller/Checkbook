@@ -307,6 +307,7 @@ foreach ($render_array as $title => $value) {
         jQuery('div.filter-content-fyear .options').mCustomScrollbar("destroy");
         jQuery('div.filter-content-fvendorName .options').mCustomScrollbar("destroy");
         jQuery('div.filter-content-fexpenseCategoryName .options').mCustomScrollbar("destroy");
+        jQuery('div.filter-content-fmwbeCategory .options').mCustomScrollbar("destroy");
         scroll_facet();
     });
 
@@ -324,6 +325,7 @@ foreach ($render_array as $title => $value) {
             jQuery('div.filter-content-fyear .options').mCustomScrollbar("destroy");
             jQuery('div.filter-content-fvendorName .options').mCustomScrollbar("destroy");
             jQuery('div.filter-content-fexpenseCategoryName .options').mCustomScrollbar("destroy");
+            jQuery('div.filter-content-fmwbeCategory .options').mCustomScrollbar("destroy");
             scroll_facet();
         }
     });
@@ -336,6 +338,7 @@ foreach ($render_array as $title => $value) {
             theme:'dark'
         };
         jQuery('div.filter-content-fagencyName .options').mCustomScrollbar(opts);
+        jQuery('div.filter-content-fmwbeCategory .options').mCustomScrollbar(opts);
         jQuery('div.filter-content-fyear .options').mCustomScrollbar(opts);
 
         var vendorpage = 0;
