@@ -8,12 +8,12 @@
     },
     "limit":100,
     "urlParamMap":{"doctype":"document_code.document_code.document_code"}  ,
-    "columns":["vendor.vendor", "vendor_name.vendor_name", "txcount"],
+    "columns":["vendor_name.vendor_name", "txcount"],
     "orderBy":["-txcount","vendor_name.vendor_name"],
     "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Vendor",
-    "urlParameterName":"vendor",
+    "urlParameterName":"vendornm1",
     "autocompleteParamName":"vendor_auto",
     "autocompleteID":"fvendorId",
     "autocompleteField":"vendor_name",
@@ -22,6 +22,12 @@
 if(isset($parameters['vendor_type'])){
     $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
 }
+
+$subvendor = _getRequestParamValue('subvendor');
+$mwbe = _getRequestParamValue('mwbe');
+if($subvendor) $parameters['is_prime_or_sub'] = 'S';
+else if($mwbe) $parameters['is_prime_or_sub'] = 'P';
+
     checkbook_faceted_search_adjust_param($node);
 if(function_exists('_checkbook_project_adjustContractParameterFilters')){
 _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered_all');
@@ -29,7 +35,7 @@ _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_regi
 
 if(function_exists('_checkbook_project_applyParameterFilters')){
 $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-$adjustedParameters['vendor.vendor'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+$adjustedParameters['vendor_name.vendor_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
 return $adjustedParameters;
 }
 return $parameters;

@@ -1,8 +1,8 @@
 {
     "widgetType": "data_tables",
     "widgetSubType": "dataTableList",
-    "cleanURLParameters":["vendortype","mwbe_vendor","mwbe","doctype","agency","vendor","curamtr","vendornm","contdesc","agrmnttype","agencyh","contnum","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize"],
-    "urlParamMap":{"vendortype":"vendor_type",
+    "cleanURLParameters":["vendornm1","vendortype","mwbe_vendor","mwbe","doctype","agency","vendor","curamtr","vendornm","contdesc","agrmnttype","agencyh","contnum","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize"],
+    "urlParamMap":{"vendortype":"vendor_type","vendornm1":"vendor_name",
         "mwbe":"minority_type_id","doctype":"document_code@checkbook:ref_document_code","agency":"agency_id","vendor":"vendor_id","curamtr":"maximum_contract_amount","vendornm":"vendor_name","contdesc":"description","agrmnttype":"agreement_type_id","agencyh":"agency_history_id","contnum":"contract_number","aptpin":"brd_awd_no","pin":"tracking_number","awdmethod":"award_method_id","curamt":"maximum_contract_amount","startdate":"effective_begin_date","enddate":"effective_end_date","regdate":"registered_date","cindustry":"industry_type_id","csize":"award_size_id"
     },
     "allowRequestParams":["contstatus"],
@@ -229,7 +229,7 @@ var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
 
 var  cUrl = oTable.fnSettings().sAjaxSource;
 cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
-cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
+cUrl = adjustUrlParameter(cUrl,'vendornm1',oVendorIds);
 cUrl = adjustUrlParameter(cUrl,'curamtr',oCurAmount);
 cUrl = adjustUrlParameter(cUrl,'awdmethod',oAwdMethod);
 cUrl = adjustUrlParameter(cUrl,'cindustry',oIndustryType);

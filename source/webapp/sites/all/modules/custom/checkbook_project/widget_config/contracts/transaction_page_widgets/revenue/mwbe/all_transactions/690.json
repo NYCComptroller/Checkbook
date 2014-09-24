@@ -8,12 +8,12 @@
     },
     "limit":100,
     "urlParamMap":{"doctype":"document_code.document_code.document_code"}  ,
-    "columns":["vendor.vendor", "vendor.vendor.legal_name", "txcount"],
-    "orderBy":["-txcount","vendor.vendor.legal_name"],
+    "columns":["vendor_name.vendor_name", "txcount"],
+    "orderBy":["-txcount","vendor_name.vendor_name"],
     "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Vendor",
-    "urlParameterName":"vendor",
+    "urlParameterName":"vendornm1",
     "autocompleteParamName":"vendor_auto",
     "autocompleteID":"fvendorId",
     "autocompleteField":"vendor_name",
@@ -29,7 +29,7 @@ _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_regi
 
 if(function_exists('_checkbook_project_applyParameterFilters')){
 $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-$adjustedParameters['vendor.vendor'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+$adjustedParameters['vendor_name.vendor_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
 return $adjustedParameters;
 }
 return $parameters;
