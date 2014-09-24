@@ -4,18 +4,20 @@
 "cleanURLParameters":[
     "deptnm","expcategorynm","year","calyear","yeartype","status","agency","vendor","category",
     "checkamtr","dept","syear","scalyear","magid","agid","cvendor","cagency","awdmethod","csize","cindustry",
-    "doctype","month","industry","mwbe","vendor","svendor","subvendor","vendortype"
+    "doctype","month","industry","mwbe","vendor","svendor","subvendor","vendortype","vendornm"
 ],
 "urlParamMap":{
     "year":"disb_fiscal_year_id",
     "calyear":"disb_fiscal_year_id","yeartype":"type_of_year","status":"status_flag","agency":"disb_agency_id",
     "category":"disb_spending_category_id","checkamtr":"disb_check_amount","syear":"disb_fiscal_year_id",
     "scalyear":"disb_fiscal_year_id","magid":"master_agreement_id","agid":"disb_agreement_id",
-    "cvendor":"vendor_id","cagency":"document_agency_id","awdmethod":"award_method_id","csize":"award_size_id",
+    "cagency":"document_agency_id","awdmethod":"award_method_id","csize":"award_size_id",
     "cindustry":"industry_type_id","doctype":"document_code@checkbook:ref_document_code",
     "month":"check_eft_issued_cal_month_id",
     "mwbe":"disb_minority_type_id","industry":"industry_type_id",
-    "vendor":"prime_vendor_id","subvendor":"vendor_id","vendortype":"disb_vendor_type"
+    "cvendor":"prime_vendor_id","vendor":"prime_vendor_id","subvendor":"vendor_id","vendortype":"disb_vendor_type",
+    "vendornm":"disb_vendor_name","vendor_facet":"disb_vendor_name","vendornm_exact":"disb_vendor_name"
+
 },
 "paramTypeConfig":{"checkamtr":"rangeid","syear":"le","scalyear":"le","deptnm":"eqignorecase","doctype":"in"},
 "header":"
@@ -56,9 +58,13 @@
 ],
 "caption":"",
 "derivedColumns": {
+    "vendor_type_calculated": {
+        "type":"expression2",
+        "expression":"(preg_match('/S/', $row[disb_vendor_type])) ? 'Yes' : 'No'"
+    },
     "is_sub_vendor": {
         "type":"expression2",
-        "expression":"'Yes'"
+        "expression":"(_getRequestParamValue('cvendor') != null) ? 'No' : $row[vendor_type_calculated]"
     },
     "agency_name_formatted":{
         "type":"expression2",
@@ -68,21 +74,17 @@
         "type":"expression2",
         "expression":" RequestUtil::isNewWindow() ? $row[agency_name_formatted]  : ('<a href=/spending_landing' . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . _checkbook_project_get_url_param_string('category') . '/agency/'. $row[disb_agency_id]. '?expandBottomCont=true>'. $row[agency_name_formatted] .'</a>') "
     },
-    "vendor_name_formatted":{
-        "type":"expression2",
-        "expression":"_get_tooltip_markup($row[disb_vendor_name], 30)"
-    },
     "agency_param":{
         "type":"expression2",
         "expression":"(_checkbook_check_isEDCPage()? _checkbook_project_get_url_param_string(\"agency\") :'')"
     },
     "payee_name_formatted":{
         "type": "expression2",
-        "expression": "_get_tooltip_markup($row['disb_vendor_name'], 34)"
+        "expression":"(_getRequestParamValue('cvendor') != null) ? _get_tooltip_markup($row['legal_name@checkbook:prime_vendor'], 30) : _get_tooltip_markup($row[disb_vendor_name], 30)"
     },
     "payee_name_export":{
         "type": "expression2",
-        "expression": "$row['disb_vendor_name']"
+        "expression": "$row['payee_name_formatted']"
     },
     "payee_name_link": {
         "type": "expression2",
@@ -149,26 +151,9 @@
         $parameters['disb_fiscal_year_id'] = $year;
     }
 
-    $subvendor = _getRequestParamValue('subvendor');
-    $mwbe = _getRequestParamValue('mwbe');
-    if(isset($subvendor)) {
-        $data_controller_instance = data_controller_get_operator_factory_instance();
-        $parameters['prime_vendor_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
-        if($subvendor == all) {
-            $parameters['vendor_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
-        }
-    }
-    else if(isset($mwbe) && isset($parameters['prime_vendor_id'])) {
-        $parameters['vendor_id'] = $parameters['prime_vendor_id'];
-        unset($parameters['prime_vendor_id']);
-    }
-
     if(isset($parameters['disb_vendor_type'])){
         $parameters['disb_vendor_type'] = MappingUtil::getVendorTypeValue($parameters['disb_vendor_type']);
     }
-
-//    $subvendor = _getRequestParamValue('subvendor');
-//    if($subvendor) $parameters['is_prime_or_sub'] = 'S';
 
     $adjustedParameters = $parameters;
     if(function_exists('_checkbook_project_applyParameterFilters')){
@@ -207,7 +192,7 @@
             {"sClass":"text pad-left","sWidth":"200px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"130px","asSorting":["desc","asc"]},
             {"sClass":"text pad-left","sWidth":"150px","asSorting":["asc","desc"]},
-            {"sClass":"number","sWidth":"100px","asSorting":["asc","desc"]},
+            {"sClass":"number","sWidth":"110px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"100px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]}
@@ -227,6 +212,7 @@
         agencyIds = document.getElementById('fHideAgencyId').value;
     }
     var oVendorIds = getNamedFilterCriteria('fvendorId');
+    var oVendorNms = getNamedFilterCriteria('fvendorNm');
     var oCategoryIds = getNamedFilterCriteria('fCategoryNm');
     var oSpendCategoryIds = getNamedFilterCriteria('fSpendCategoryId');
     var oCheckAmount = getNamedFilterCriteria('fCheckAmount');
@@ -237,6 +223,7 @@
     var  cUrl = oTable.fnSettings().sAjaxSource;
     cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
     cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
+    cUrl = adjustUrlParameter(cUrl,'vendornm_exact',oVendorNms);
     cUrl = adjustUrlParameter(cUrl,'expcategorynm',oCategoryIds);
     cUrl = adjustUrlParameter(cUrl,'category',oSpendCategoryIds );
     cUrl = adjustUrlParameter(cUrl,'checkamtr',oCheckAmount);
