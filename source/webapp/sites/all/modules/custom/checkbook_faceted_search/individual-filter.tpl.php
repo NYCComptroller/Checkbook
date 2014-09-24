@@ -74,9 +74,7 @@ if(strtolower($filter_name) == 'agency'){
     }
 }
 if(strtolower($filter_name) == 'vendor'){
-    $current_url = explode('/',$_SERVER['REQUEST_URI']);
-    if(($current_url[1] == 'contract' && $current_url[2] == 'search' && $current_url[3] == 'transactions') ||
-        (in_array('contracts_landing',$current_url) && (in_array('mwbe',$current_url)) || (in_array('subvendor',$current_url))))
+    if(in_array($node->nid, array(681, 658, 690, 669)))
     {
         $vendornm_facet = true;
     }

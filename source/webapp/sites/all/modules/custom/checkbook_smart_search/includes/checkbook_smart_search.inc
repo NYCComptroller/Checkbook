@@ -199,20 +199,7 @@ function _checkbook_smart_search_get_results_query_search_term($search_terms){
     for($i=1;$i < count($search_terms);$i++){
         $reqParams  = explode('=', $search_terms[$i]);
         if($reqParams[0] == 'vendor_type'){
-            $vtypeParam = explode('~',$reqParams[1]);
-            $reqParams[1] = '';
-            foreach($vtypeParam as $vtype){
-                if($vtype == 'pv'){
-                    $reqParams[1] .= 'p~pm~';
-                }
-                if($vtype == 'sv'){
-                    $reqParams[1] .= 's~sm~';
-                }
-                if($vtype == 'mv'){
-                    $reqParams[1] .= 'sm~pm~';
-                }
-            }
-            $reqParams[1] = substr($reqParams[1],0,-1);
+            $reqParams[1] = get_vendor_type_mapping($reqParams[1]);
         }
 
         $filters = explode('~',urldecode($reqParams[1]));
@@ -274,20 +261,7 @@ function _checkbook_smart_search_get_selected_facet_results($search_terms, $face
     for($i=1;$i < count($search_terms);$i++){
         $req_params  = explode('=', $search_terms[$i]); // ("domains", "payroll~spending") ("fiscal_years", "2014~2013")
         if($req_params[0] == 'vendor_type'){
-            $vtypeParam = explode('~',$req_params[1]);
-            $req_params[1] = '';
-            foreach($vtypeParam as $vtype){
-                if($vtype == 'pv'){
-                    $req_params[1] .= 'p~pm~';
-                }
-                if($vtype == 'sv'){
-                    $req_params[1] .= 's~sm~';
-                }
-                if($vtype == 'mv'){
-                    $req_params[1] .= 'sm~pm~';
-                }
-            }
-            $req_params[1] = substr($req_params[1],0,-1);
+            $req_params[1] = get_vendor_type_mapping($req_params[1]);
         }
         $filters = explode('~',urldecode($req_params[1]));
         $sub_query = "";
@@ -360,21 +334,7 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
             $req_params  = explode('=', $search_terms[$i]);
 
             if($req_params[0] == 'vendor_type'){
-                $vtypeParam = explode('~',$req_params[1]);
-                $req_params[1] = '';
-                foreach($vtypeParam as $vtype){
-                    if($vtype == 'pv'){
-                        $req_params[1] .= 'p~pm~';
-                    }
-                    if($vtype == 'sv'){
-                        $req_params[1] .= 's~sm~';
-                    }
-                    if($vtype == 'mv'){
-                        $req_params[1] .= 'sm~pm~';
-                    }
-                }
-
-                $req_params[1] = substr($req_params[1],0,-1);
+                $req_params[1] = get_vendor_type_mapping($req_params[1]);
             }
 
             $filters = explode('~',urldecode($req_params[1]));
@@ -413,7 +373,6 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
         } elseif ($limit){
           $query .= "&facet.limit=". $limit;
         }
-
         $facet_results = _checkbook_smart_search_solr_results($query);
 
         return $facet_results;
@@ -518,15 +477,14 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
                               "agency_names" => "agency_name",
                               "fiscal_years" => "fiscal_year",
                               "domains" => "domain",
-                              "vendor_names" => "vendor_name",
                               "vendor_type" => "vendor_type",
+                              "vendor_names" => "vendor_name",
                               "expense_categories" => "expenditure_object_name",
                               "revenue_categories" => "revenue_category_name",
                               "spending_categories" => "spending_category_name",
                               "contract_categories" => "contract_category_name",
-                              "contract_status" => "contract_status",
-                              "minority_type_name_contract" => "minority_type_name_contract",
-                              "minority_type_name_spending" => "minority_type_name_spending"
+                              "contract_status" => "contract_status"
+
     );
 
     $autocomplete_text = trim(htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES));//eco
@@ -558,6 +516,9 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
     $search_string = $search_text; //*:*
     for($i=1;$i < count($search_terms);$i++){
         $req_params  = explode('=', $search_terms[$i]);
+        if($req_params[0] == 'vendor_type'){
+            $req_params[1] = get_vendor_type_mapping($req_params[1]);
+        }
         $filters = explode('~',$value = urldecode($req_params[1]));
         $sub_query = "";
         foreach($filters as $key=>$value){
@@ -600,7 +561,7 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
  *  @return the matching words
 **/
 function _checkbook_smart_search_agency_autocomplete(){
-    $agencies = _checkbook_smart_search_get_searchstring_autocomplete("agency_names","agency_name_autocomplete");
+    $agencies = _checkbook_smart_search_get_searchstring_autocomplete("agency_names","agency_name");
     return $agencies;
 }
 
@@ -1153,4 +1114,22 @@ function vendor_type_mapping($vendortype_initials){
         case 'pm': return 'Prime Vendor M/WBE';
     }
 
+}
+
+function get_vendor_type_mapping($reqParams){
+    $vtypeParam = explode('~',$reqParams);
+    $reqParams = '';
+    foreach($vtypeParam as $vtype){
+        if($vtype == 'pv'){
+            $reqParams .= 'p~pm~';
+        }
+        if($vtype == 'sv'){
+            $reqParams .= 's~sm~';
+        }
+        if($vtype == 'mv'){
+            $reqParams .= 'sm~pm~';
+        }
+    }
+    $reqParams = substr($reqParams,0,-1);
+    return $reqParams;
 }
