@@ -123,7 +123,7 @@ namespace { //global
                 if(!_getRequestParamValue('mwbe'))
                     return '/mwbe/2~3~4~5~9';
             }
-            return null;
+            return '';
         }
 
 
