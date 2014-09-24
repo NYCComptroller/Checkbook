@@ -8,7 +8,7 @@
     "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Vendor",
-    "urlParameterName":"vendornm_exact",
+    "urlParameterName":"vendornm",
     "urlParameterNameType":"eqtext",
     "autocompleteParamName":"vendornm_exact_auto",
     "autocompleteID":"fvendorNm",
