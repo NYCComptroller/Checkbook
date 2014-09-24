@@ -69,17 +69,8 @@
                     "levels": [
                         {
                             "name": "prime_vendor",
-                            "sourceColumnName": "prime_vendor_id"
-                        }
-                    ]
-                },
-                {
-                    "name": "prime_vendor_name",
-                    "levels": [
-                        {
-                            "name": "prime_vendor_name",
                             "datasetName": "prime_vendor",
-                            "sourceColumnName": "legal_name"
+                            "sourceColumnName": "prime_vendor_id"
                         }
                     ]
                 },

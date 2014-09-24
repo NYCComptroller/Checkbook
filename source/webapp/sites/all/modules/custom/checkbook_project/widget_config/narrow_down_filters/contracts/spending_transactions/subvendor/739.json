@@ -3,7 +3,10 @@
     "parentNid":724,
     "limit":100,
     "startWith":0,
-    "columns":["vendornm.vendornm", "txcount"],
+    "columns":["vendornm.vendornm","txcount"],
+    "urlParamMap":{
+        "doctype":"document_code.document_code.document_code"
+    },
     "orderBy":"-txcount",
     "getTotalDataCount":true,
     "facetPager":true,
@@ -15,12 +18,6 @@
     "autocompleteField":"vendor_name",
     "maxSelect":5,
     "adjustParameters":"
-//        if(isset($parameters['vendor_type'])){
-//            $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
-//        }
-
-        //$parameters['is_prime_or_sub'] = 'S'
-
         checkbook_faceted_search_adjust_param($node);
         if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
             $parameters = _checkbook_project_adjust_spending_parameter_filters($node, $parameters);
@@ -31,6 +28,14 @@
         $adjustedParameters['vendornm.vendornm'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
 
         return $adjustedParameters;
-    ",      
+    ",
+    "adjustColumns":"
+        if(null != _getRequestParamValue('cvendor')) {
+            $columns = $node->widgetConfig->columns;
+            $columns[0] = 'prime_vendor.prime_vendor.legal_name';
+            return $columns;
+        }
+        return $node->widgetConfig->columns;
+    ",
     "template":"individual_filter"
 }

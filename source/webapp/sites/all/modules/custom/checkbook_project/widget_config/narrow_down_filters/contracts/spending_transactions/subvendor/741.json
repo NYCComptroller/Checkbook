@@ -8,7 +8,9 @@
     "urlParameterName":"checkamtr",
     "urlParameterType":"rangeid",
     "autocompleteID":"fCheckAmount",
-    "urlParamMap":{"doctype":"document_code.document_code.document_code"}  ,
+    "urlParamMap": {
+        "doctype":"document_code.document_code.document_code"
+    },
     "adjustParameters":"
    	 	$year = $parameters['disb_fiscal_year_id'];
 		if(isset($year)) {

@@ -29,6 +29,7 @@
     "html_class":"",
     "no_results_content":"No Results Found",
     "dataset":"checkbook:contracts_subven_vendor_spending",
+    "preProcessConfiguration":"$node->is_mwbe = _checkbook_check_is_mwbe_page();",
     "columns":[
         "sub_vendor.sub_vendor",
         "sub_vendor.sub_vendor.legal_name",

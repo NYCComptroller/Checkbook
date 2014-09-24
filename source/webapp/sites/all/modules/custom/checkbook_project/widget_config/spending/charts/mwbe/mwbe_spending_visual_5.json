@@ -200,7 +200,8 @@ if(SpendingUtil::_show_mwbe_custom_legend()){
    			s1.ha_mwbe + coalesce( s2.ha_mwbe,0) ha_mwbe,
    			s1.io_nonmwbe + coalesce(s2.io_nonmwbe,0) io_nonmwbe,
    			s1.total_mwbe + coalesce(s2.total_mwbe,0) total_mwbe ,
-   			s1.total_non_mwbe  				 
+   			s1.total_non_mwbe,
+   			coalesce(s2.total_mwbe,0) total_subven_mwbe  				 
    			from ( ' . $sql1 . ' ) s1  left join 
    			 ( '  . $sql2 . ' ) s2 on s1.vendor_id = s2.vendor_id  
    			order by ' . $sort_column . ' desc limit 10';
@@ -268,12 +269,12 @@ if(SpendingUtil::_show_mwbe_custom_legend()){
 	 						'Prime Vendor: ' . $row['legal_name'].  '<br/>' .
 	 						MappingUtil::getCurrenEhtnicityName() .' Share: ' . custom_number_formatter_format($row[$amount_column]/($row['total_mwbe'] + $row['total_non_mwbe'] ) *100 ,1,null, '%').  '<br/>' .
 	 						MappingUtil::getCurrenEhtnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>' .
-	 						'Non-M/WBE: ' . custom_number_formatter_format( $row['total_non_mwbe'],2,'$').  '<br/>' 
+	 						'Non-M/WBE: ' . custom_number_formatter_format( $row['total_non_mwbe'] -  $row['total_subven_mwbe'],2,'$').  '<br/>' 
 	 						;
 				$node->widgetConfig->gridConfig->data[] = array($row['legal_name'],
 														custom_number_formatter_format($row[$amount_column]/($row['total_mwbe'] + $row['total_non_mwbe'] ) *100 ,1,null, '%'),
 														 $row[$amount_column],
-														 $row['total_non_mwbe']
+														 $row['total_non_mwbe'] - $row['total_subven_mwbe']
 														);
 	 						
 		}

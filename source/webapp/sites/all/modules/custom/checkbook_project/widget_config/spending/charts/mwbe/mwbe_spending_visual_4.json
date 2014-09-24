@@ -167,7 +167,26 @@ if(SpendingUtil::_show_mwbe_custom_legend()){
 	
 		$node->data_sub_ven  = _checkbook_project_execute_sql($sql2);
 	}
-	$merged_array = _widget_join_merge_data($node->data,$node->data_sub_ven, array('agency_id','agency_name'));
+	
+	//$merged_array = _widget_join_merge_data($node->data,$node->data_sub_ven, array('agency_id','agency_name'));
+	$merged_array = array();
+	
+	foreach($node->data as $row1){
+		
+		foreach($node->data_sub_ven as $row2){
+			if($row1['agency_id'] == $row2['agency_id']){
+				$row1['ethinicty_mwbe'] = $row1['ethinicty_mwbe'] + $row2['ethinicty_mwbe'];
+				$row1['total_mwbe'] = $row1['total_mwbe'] + $row2['total_mwbe'];
+				$row1['total_subven_non_mwbe'] =  $row2['total_mwbe'];
+				 
+			}
+			
+		}
+		$merged_array[] = $row1;
+		
+	}
+	
+	
 	usort($merged_array,
 			function($a, $b)
 			{
@@ -219,7 +238,7 @@ if(SpendingUtil::_show_mwbe_custom_legend()){
 	 						'Agency: ' . $row['agency_name'].  '<br/>' .
 	 						 MappingUtil::getCurrenEhtnicityName() . ' Share: ' . custom_number_formatter_format($row[$amount_column]/($row['total_mwbe'] + $row['total_non_mwbe'] ) *100 ,1,null, '%').  '<br/>' .
 	 						 MappingUtil::getCurrenEhtnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>' .
-	 						'Non-M/WBE: ' . custom_number_formatter_format( $row['total_non_mwbe'],2,'$').  '<br/>' 
+	 						'Non-M/WBE: ' . custom_number_formatter_format( $row['total_non_mwbe'] - $row['total_subven_non_mwbe']  ,2,'$').  '<br/>' 
 	 						;	 	
 	 			$node->widgetConfig->gridConfig->data[] = array($row['agency_name'],
 									custom_number_formatter_format($row[$amount_column]/($row['total_mwbe'] + $row['total_non_mwbe'] ) *100 ,1,null, '%'),
