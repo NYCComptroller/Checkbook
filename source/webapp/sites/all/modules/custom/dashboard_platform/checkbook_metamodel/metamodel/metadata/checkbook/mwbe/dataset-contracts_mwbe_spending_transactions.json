@@ -46,6 +46,24 @@
                     ]
                 },
                 {
+                    "name": "vendornm",
+                    "levels": [
+                        {
+                            "name": "vendornm",
+                            "sourceColumnName": "disb_vendor_name"
+                        }
+                    ]
+                },
+                {
+                    "name": "vendor_type",
+                    "levels": [
+                        {
+                            "name": "vendor_type",
+                            "sourceColumnName": "disb_vendor_type"
+                        }
+                    ]
+                },
+                {
                     "name": "expenditure_object",
                     "levels": [
                         {
