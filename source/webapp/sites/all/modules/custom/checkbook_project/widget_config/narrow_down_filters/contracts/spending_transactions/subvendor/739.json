@@ -30,9 +30,12 @@
         return $adjustedParameters;
     ",
     "adjustColumns":"
-        $columns = $node->widgetConfig->columns;
-        $columns[0] = 'prime_vendor.prime_vendor.legal_name';
-        return $columns;
+        if(null != _getRequestParamValue('cvendor')) {
+            $columns = $node->widgetConfig->columns;
+            $columns[0] = 'prime_vendor.prime_vendor.legal_name';
+            return $columns;
+        }
+        return $node->widgetConfig->columns;
     ",
     "template":"individual_filter"
 }
