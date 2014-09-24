@@ -231,7 +231,8 @@ if(SpendingUtil::_show_mwbe_custom_legend()){
 	 						 MappingUtil::getCurrenEhtnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>' 	 			 
 	 						;
 	 			$node->widgetConfig->gridConfig->data[] = array($row['agency_name'],									
-									(float)$row[$amount_column] );					
+									(float)$row[$amount_column] );	
+				$node->widgetConfig->gridConfig->sortColumn =  1;				
 	 						
 	 		}else{
 	 			$tooltip_label = 
