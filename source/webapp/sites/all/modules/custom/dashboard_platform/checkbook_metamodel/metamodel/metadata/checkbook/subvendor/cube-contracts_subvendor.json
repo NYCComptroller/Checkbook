@@ -188,10 +188,10 @@
                     ]
                 },
                 {
-                    "name": "sub_agid",
+                    "name": "sub_contract_number",
                     "levels": [
                         {
-                            "name": "sub_agid",
+                            "name": "sub_contract_number",
                             "datasetName": "sub_vendor_agid",
                             "sourceColumnName": "contract_number"
                         }
