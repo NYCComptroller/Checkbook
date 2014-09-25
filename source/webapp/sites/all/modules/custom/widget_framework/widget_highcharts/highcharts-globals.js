@@ -37,7 +37,9 @@ Highcharts.setOptions({
     y:0,
     itemStyle:{
       fontSize:'11px'
-    }
+    },
+    borderRadius: 5,
+    borderWidth: 1
   },
 
   exporting:{

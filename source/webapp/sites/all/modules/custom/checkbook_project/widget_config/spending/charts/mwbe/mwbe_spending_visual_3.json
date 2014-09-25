@@ -42,11 +42,6 @@
                   "labelAlias": "Hispanic American",
                   "columnType": "number",
                   "formatType": "amount"
-             },             
-             {
-                  "labelAlias": "Emerging",
-                  "columnType": "number",
-                  "formatType": "amount"
              }
         ]
 },
@@ -178,7 +173,7 @@
 	 	$tooltip_label = 
 	 						'Year: ' . $year.  '<br/>' .
 	 						'Month: '. $months[$i] . '<br/>' . 
-							'Aisan American: ' . custom_number_formatter_format($series_aa[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_aa[$i]->y,1,null,'%') . ')' .  '<br/>' 
+							'Asian American: ' . custom_number_formatter_format($series_aa[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_aa[$i]->y,1,null,'%') . ')' .  '<br/>' 
 							. 'Black American: ' . custom_number_formatter_format($series_ba[$i]->total,2,'$')  . ' (' .custom_number_formatter_format($series_ba[$i]->y,1,null,'%') . ')' . '<br/>' 
 							. 'Women: ' . custom_number_formatter_format($series_w[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_w[$i]->y,1,null,'%') . ')' . '<br/>' 
 							. 'Hispanic American: ' . custom_number_formatter_format($series_ha[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_ha[$i]->y,1,null,'%') . ')' . '<br/>'; 
@@ -192,8 +187,7 @@
 														$series_aa[$i]->total,
 														$series_ba[$i]->total,
 														$series_w[$i]->total,
-														$series_ha[$i]->total,
-														0
+														$series_ha[$i]->total
 														 );
 		 	
 		$i +=1;

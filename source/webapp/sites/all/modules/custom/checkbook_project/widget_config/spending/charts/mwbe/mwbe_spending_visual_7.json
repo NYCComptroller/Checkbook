@@ -19,7 +19,7 @@ if(SpendingUtil::_show_mwbe_custom_legend()){
         "sortColumn":2,
         "table_columns": [
              {
-                  "labelAlias": "Prime Vendor",
+                  "labelAlias": "Sub Vendor",
                   "columnType": "text"
              },
              {
@@ -195,6 +195,7 @@ if(SpendingUtil::_show_mwbe_custom_legend()){
 				$node->widgetConfig->gridConfig->data[] = array($row['legal_name'],														
 														 $row[$amount_column]
 														);
+				$node->widgetConfig->gridConfig->sortColumn =  1;														
 			}else{
 				$node->widgetConfig->gridConfig->data[] = array($row['legal_name'],
 														custom_number_formatter_format($row[$amount_column]/($row['total_mwbe'] + $row['total_non_mwbe'] ) *100 ,1,null, '%'),
