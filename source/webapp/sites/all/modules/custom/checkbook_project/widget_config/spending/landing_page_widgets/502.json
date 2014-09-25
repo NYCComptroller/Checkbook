@@ -102,8 +102,8 @@
     "dataTableOptions":{
         "aoColumns": [
                   {"bSortable": true,"sClass":"text","sWidth":"100px","asSorting": ["asc","desc"]},
-                  {"bSortable": false,"sClass":"text","sWidth":"210px"},
-                  {"bSortable": false,"sClass":"text","sWidth":"250px"},
+                  {"bSortable": false,"sClass":"text","sWidth":"245px"},
+                  {"bSortable": false,"sClass":"text pad-left","sWidth":"250px"},
                   {"bSortable": false,"sClass":"text","sWidth":"210px"},
                   {"sClass":"number","asSorting": [ "desc","asc" ]},
                   {"bSortable": false,"sWidth":"15px" }
