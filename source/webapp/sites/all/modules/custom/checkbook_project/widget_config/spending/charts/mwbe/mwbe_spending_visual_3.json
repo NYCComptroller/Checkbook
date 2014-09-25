@@ -42,11 +42,6 @@
                   "labelAlias": "Hispanic American",
                   "columnType": "number",
                   "formatType": "amount"
-             },             
-             {
-                  "labelAlias": "Emerging",
-                  "columnType": "number",
-                  "formatType": "amount"
              }
         ]
 },
@@ -192,8 +187,7 @@
 														$series_aa[$i]->total,
 														$series_ba[$i]->total,
 														$series_w[$i]->total,
-														$series_ha[$i]->total,
-														0
+														$series_ha[$i]->total
 														 );
 		 	
 		$i +=1;
