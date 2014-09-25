@@ -19,7 +19,7 @@ if(SpendingUtil::_show_mwbe_custom_legend()){
         "sortColumn":2,
         "table_columns": [
              {
-                  "labelAlias": "Prime Vendor",
+                  "labelAlias": "Sub Vendor",
                   "columnType": "text"
              },
              {
