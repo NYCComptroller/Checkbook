@@ -21,7 +21,7 @@
 <?php print eval($node->widgetConfig->header);  ?>
 
 <?php if(($node->totalDataCount == 0 && isset($node->totalDataCount) ) || count($node->data) == 0 ) {  ?>
-<div id="node-chart-<?php print widget_unique_identifier($node)?>" class="highcharts-wrapper <?php echo $node->widgetConfig->html_class ?>">
+<div id="node-chart-<?php print widget_unique_identifier($node)?>" class="highcharts-wrapper">
   <?php if(isset($node->widgetConfig->chartConfig->title->text ))  {?>
   	<h2  class="text-center"><?php echo $node->widgetConfig->chartConfig->title->text ?></h2>
   <?php } ?>
