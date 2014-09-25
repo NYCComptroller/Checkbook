@@ -211,8 +211,6 @@ echo '<div class=\"chart-right\">
 										custom_number_formatter_format($mwbe_data['w']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
 	$node->widgetConfig->gridConfig->data[] = array('Hispanic American',$mwbe_data['ha'],
 										custom_number_formatter_format($mwbe_data['ha']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
-	$node->widgetConfig->gridConfig->data[] = array('Emerging',$mwbe_data['e'],
-										custom_number_formatter_format($mwbe_data['e']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
 	$node->widgetConfig->gridConfig->data[] = array('Non-M/WBE',$toal_non_mwbe -  $total_mwbe_subven,
 										custom_number_formatter_format(($toal_non_mwbe - $total_mwbe_subven)/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
 																	 
@@ -252,10 +250,7 @@ echo '<div class=\"chart-right\">
             			"name": "Point 2",
             			"y":200,
             			"custom_label":"",
-            			"tooltip_label":"",
-            			"dataLabels": {
-                    		"enabled": false
-                    	}            			
+            			"tooltip_label":""	
             		}]
         }
     ],

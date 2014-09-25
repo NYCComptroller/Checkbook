@@ -33,7 +33,7 @@ if(SpendingUtil::_show_mwbe_custom_legend()){
              },
              {
                   "labelAlias": "Contracting Agency",
-                  "columnType": "text"
+                  "columnType": "text number-left"
              }
              
         ]

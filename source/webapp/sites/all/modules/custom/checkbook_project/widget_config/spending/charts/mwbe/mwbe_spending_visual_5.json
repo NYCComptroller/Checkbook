@@ -263,6 +263,7 @@ if(SpendingUtil::_show_mwbe_custom_legend()){
 				$node->widgetConfig->gridConfig->data[] = array($row['legal_name'],
 														 $row[$amount_column]
 														);
+				$node->widgetConfig->gridConfig->sortColumn =  1; 														
 	
 		}else{
 			 		$tooltip_label = 

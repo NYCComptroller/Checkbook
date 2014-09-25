@@ -66,6 +66,19 @@ function _checkbook_export_grid_transactions(){
     		echo $column->labelAlias . ",";
     	}
     	echo "\r\n";
+    	
+    	
+    	$sortindex = ($node->widgetConfig->gridConfig->sortColumn > 0)? $node->widgetConfig->gridConfig->sortColumn  : count($node->widgetConfig->gridConfig->table_columns) - 1 ;
+
+    	$sortindexFormat = $node->widgetConfig->gridConfig->table_columns[$sortindex]->formatType;
+    	foreach($node->widgetConfig->gridConfig->data as &$dataRecord){
+    		$dataRecord['sort_column'] = $sortindex;
+    		if(isset($sortindexFormat)){
+    			$dataRecord['formatType'] = $sortindexFormat;
+    		}
+    		
+    	}
+    	_checkbook_export_grid_sort($node);
     	foreach ($node->widgetConfig->gridConfig->data as $datarow) {
     		$index = 0;
     		while($index <count($node->widgetConfig->gridConfig->table_columns)){ 
@@ -119,6 +132,37 @@ function _checkbook_export_grid_transactions(){
     drupal_add_http_header("Expires", "-1");
     echo $data;
 }
+
+
+function _checkbook_export_grid_sort($node){
+	$node->widgetConfig->gridConfig->data;
+	
+	usort($node->widgetConfig->gridConfig->data,
+	function($a, $b)
+	{
+		$index = $a['sort_column'];
+		
+		if($a['formatType'] == "month"){
+			$months =  array("January"=> 1, "February"=>  2, "March"=>  3, "April"=>  4, "May"=>  5, "June"=>  6,
+						            "July"=>  7, "August"=>  8, "September"=>  9, "October"=>  10, "November"=> 11, "December"=> 12);
+			
+			if ($months[$a[$index]] == $months[$b[$index]]) {
+				return 0;
+			}
+			return ($months[$a[$index]] > $months[$b[$index]]) ? -1 : 1;
+			
+			
+		}else{
+			if ($a[$index] == $b[$index]) {
+				return 0;
+			}
+			return ($a[$index] > $b[$index]) ? -1 : 1;
+		}
+	}
+	);
+	
+}
+
 
 /**
  * Function to handle export data
