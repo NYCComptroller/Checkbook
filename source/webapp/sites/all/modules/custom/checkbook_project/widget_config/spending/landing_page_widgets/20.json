@@ -105,8 +105,8 @@
         "aoColumns": [
               {"bSortable":false,"sClass":"text","sWidth":"160px"},
               {"bSortable":false,"sClass":"text","sWidth":"170px"},
-              {"bSortable":false,"sClass":"text","sWidth":"170px"},
-              {"bSortable":false,"sClass":"text","sWidth":"150px"},
+              {"bSortable":false,"sClass":"text pad-left","sWidth":"170px"},
+              {"bSortable":false,"sClass":"text pad-left","sWidth":"150px"},
               {"sClass":"number","asSorting": ["desc","asc"], "sWidth":"109px"},
               {"sClass":"number","asSorting": ["desc","asc" ],"sWidth":"166px"},
               {"bSortable":false,"sWidth":"15px"}
