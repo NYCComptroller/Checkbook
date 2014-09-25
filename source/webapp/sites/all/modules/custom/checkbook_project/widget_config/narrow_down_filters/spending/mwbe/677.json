@@ -17,11 +17,6 @@
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
         }
 
-        $subvendor = _getRequestParamValue('subvendor');
-        $mwbe = _getRequestParamValue('mwbe');
-        if($subvendor) $parameters['is_prime_or_sub'] = 'S';
-        else if($mwbe) $parameters['is_prime_or_sub'] = 'P';
-
         checkbook_faceted_search_adjust_param($node);
         if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
              $parameters = _checkbook_project_adjust_spending_parameter_filters($node, $parameters);

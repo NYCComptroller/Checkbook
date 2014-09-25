@@ -9,21 +9,15 @@
     "facetPager":true,
     "filterName":"Vendor",
     "urlParameterName":"vendornm",
-    "urlParameterNameType":"eqtext",
-    "autocompleteParamName":"vendornm_exact_auto",
+    "autocompleteParamName":"vendor_auto",
     "autocompleteID":"fvendorNm",
-    "autocompleteField":"vendor_name",
-
+    "autocompleteField":"vendornm.vendornm.vendor_name",
+    "urlParamMap":{"vendornm":"vendornm.vendornm","vendornm_exact":"vendornm.vendornm"},
     "maxSelect":5,
     "adjustParameters":"
         if(isset($parameters['vendor_type'])){
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
         }
-
-        $subvendor = _getRequestParamValue('subvendor');
-        $mwbe = _getRequestParamValue('mwbe');
-        if($subvendor) $parameters['is_prime_or_sub'] = 'S';
-        else if($mwbe) $parameters['is_prime_or_sub'] = 'P';
 
         checkbook_faceted_search_adjust_param($node);
         if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
