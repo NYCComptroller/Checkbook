@@ -2,7 +2,7 @@
 "widgetType": "data_tables",
 "widgetSubType":"ajaxSimple",
 "no_results_content":"No Results Found",
-"cleanURLParameters":["mwbe","agency","vendor","awdmethod","contnum","contcat","pin","aptpin","csize","cindustry"],
+"cleanURLParameters":["year","yeartype","mwbe","agency","vendor","awdmethod","contnum","contcat","pin","aptpin","csize","cindustry"],
 "defaultParameters":{"document_code.document_code.document_code":"MA1~MMA1~MAR"},
 "urlParamMap":{"mwbe":"minority_type_id","agency":"document_agency_id.document_agency_id","vendor":"vendor.vendor","contcat":"document_code@checkbook:ref_document_code","contnum":"contract_number.contract_number","awdmethod":"award_method_id","pin":"tracking_number.tracking_number","aptpin":"board_award_number.board_award_number","csize":"award_size.award_size","cindustry":"industry.industry"},
 "dataset": "checkbook:pending_contracts",
@@ -32,7 +32,7 @@
     },
 "vendor_name_link": {
       "type": "expression2",
-     "expression": "'<a href=\"/contracts_pending_exp_landing' ._checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string(\"mwbe\") . _checkbook_project_get_url_param_string(\"agency\")  .  _checkbook_project_get_url_param_string(\"cindustry\")  .  _checkbook_project_get_url_param_string(\"csize\") .    _checkbook_project_get_url_param_string(\"awdmethod\") .  _checkbook_project_get_url_param_string(\"status\")   . '/vendor/' .$row[vendor_vendor] . '?expandBottomCont=true\">' .$row[vendor_name_formatted]. '</a>'"
+     "expression": "'<a href=\"/contracts_pending_exp_landing'. ContractUtil::get_pending_contract_vendor_minority_category($row[vendor_vendor]) . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string(\"mwbe\") . _checkbook_project_get_url_param_string(\"agency\")  .  _checkbook_project_get_url_param_string(\"cindustry\")  .  _checkbook_project_get_url_param_string(\"csize\") .    _checkbook_project_get_url_param_string(\"awdmethod\") .  _checkbook_project_get_url_param_string(\"status\")   . '/vendor/' .$row[vendor_vendor] . '?expandBottomCont=true\">' .$row[vendor_name_formatted]. '</a>'"
     },
 "contract_number_link": {
       "type": "expression2",
