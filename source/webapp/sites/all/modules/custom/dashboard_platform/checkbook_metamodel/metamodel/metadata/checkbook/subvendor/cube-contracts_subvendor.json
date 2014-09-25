@@ -186,6 +186,16 @@
                             "sourceColumnName": "minority_type_id"
                         }
                     ]
+                },
+                {
+                    "name": "sub_agid",
+                    "levels": [
+                        {
+                            "name": "sub_agid",
+                            "datasetName": "sub_vendor_agid",
+                            "sourceColumnName": "contract_number"
+                        }
+                    ]
                 }
             ],
             "measures": {
@@ -293,7 +303,7 @@
                             	"sourceColumnName": "document_code_id"
                             }
                     ]
-                }                                                                                                         
+                }
             ],
             "measures": {
                 "total_contracts_sum": {

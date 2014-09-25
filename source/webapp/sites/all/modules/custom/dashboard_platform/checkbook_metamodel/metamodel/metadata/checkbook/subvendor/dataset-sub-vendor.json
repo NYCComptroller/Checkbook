@@ -1,5 +1,14 @@
 {
     "datasets": {
+        "sub_vendor_agid":{
+            "datasourceName": "main",
+            "source": "SELECT distinct original_agreement_id, contract_number FROM agreement_snapshot WHERE latest_flag = 'Y'",
+            "columns": [
+                {
+                    "name": "contract_number",
+                    "key": true}
+            ]
+        },
 		"sub_vendor": {
             "datasourceName": "main",
             "source": "subvendor",
