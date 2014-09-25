@@ -127,6 +127,26 @@ namespace { //global
         }
 
 
+        /* Returns M/WBE category of a vendor id in citywide pending contracts*/
+
+        static public function get_pending_contract_vendor_minority_category($vendor_id){
+            STATIC $mwbe_vendors;
+            if(!isset($mwbe_vendors)){
+                $query = "SELECT vendor_id FROM pending_contracts WHERE is_prime_or_sub='P' AND minority_type_id IN (2,3,4,5,9)
+                            GROUP BY vendor_id";
+                $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+                foreach($results as $row){
+                    $mwbe_vendors[$row['vendor_id']] = $row['vendor_id'];
+                }
+            }
+            if($mwbe_vendors[$vendor_id] == $vendor_id){
+                if(!_getRequestParamValue('mwbe'))
+                    return '/mwbe/2~3~4~5~9';
+            }
+            return '';
+        }
+
+
 
     }
 }
