@@ -250,10 +250,7 @@ echo '<div class=\"chart-right\">
             			"name": "Point 2",
             			"y":200,
             			"custom_label":"",
-            			"tooltip_label":"",
-            			"dataLabels": {
-                    		"enabled": false
-                    	}            			
+            			"tooltip_label":""	
             		}]
         }
     ],
