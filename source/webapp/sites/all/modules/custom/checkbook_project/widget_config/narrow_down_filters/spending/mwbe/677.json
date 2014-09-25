@@ -2,6 +2,7 @@
     "widgetType":"phpparser",
     "parentNid":706,
     "no_results_content":"No Results Found",
+    "autocomplete":false,
     "limit":10,
     "startWith":0,
     "columns":["vendor_type.vendor_type", "txcount"],
