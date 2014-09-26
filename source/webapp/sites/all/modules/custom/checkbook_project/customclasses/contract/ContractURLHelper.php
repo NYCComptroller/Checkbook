@@ -24,9 +24,10 @@ class ContractURLHelper{
     static $landingPageParams = array("status"=>"status","vendor"=>"vendor","agency"=>"agency","awdmethod"=>"awdmethod","cindustry"=>"cindustry","csize"=>"csize");
     static $transactionPageParams = array("status"=>"status","vendor"=>"cvendor","agency"=>"cagency","awdmethod"=>"awdmethod","cindustry"=>"cindustry","csize"=>"csize");
 
-    static function prepareExpenseContractLink($row, $node, $parent = false) {
+    static function prepareExpenseContractLink($row, $node, $parent = false, $original_agreement_id = null) {
 
         $link = NULL;
+        $row['original_agreement_id'] = ($original_agreement_id)? $original_agreement_id : $row['original_agreement_id'];
         if($parent && strlen($row['master_contract_number']) > 0){
             $agrParamName = 'magid';
             $docTypeStr = substr($row['master_contract_number'],0,3);
