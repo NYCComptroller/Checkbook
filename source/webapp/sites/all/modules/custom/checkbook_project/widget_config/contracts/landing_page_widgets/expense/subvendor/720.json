@@ -112,6 +112,10 @@ return $footer;
 "sortSourceColumn":"total_contracts"
 },
 {
+"label": "",
+"column": ""
+},
+{
 "labelAlias": "mwbe_category",
 "column": "minority_type_link"
 },
@@ -138,8 +142,9 @@ return $footer;
 "dataTableOptions":{
 "aoColumns": [
 { "bSortable": false, "sWidth":"350px", "sClass":"text" },
-{"sClass":"number","sWidth":"280px","asSorting": [ "desc","asc"  ] },
-{"sClass":"text pad-left","sWidth":"150px" ,"asSorting": [ "desc","asc"  ] },
+{"sClass":"number","sWidth":"250px","asSorting": [ "desc","asc"  ] },
+{ "bSortable": false,"sWidth":"70px" },
+{"bSortable": false,"sClass":"text pad-left","sWidth":"150px"},
 {"sClass":"number","sWidth":"220px" ,"asSorting": [ "desc","asc"  ] },
 {"sClass":"number","sWidth":"220px" ,"asSorting": [ "desc","asc"  ] },
 {"sClass":"number","sWidth":"220px" ,"asSorting": [ "desc" ,"asc" ]},
@@ -152,7 +157,7 @@ return $footer;
 "bLengthChange": false,
 "bInfo": false,
 "bAutoWidth": false,
-"aaSorting": [[ 3, "desc" ]],
+"aaSorting": [[ 4, "desc" ]],
 "fnServerParams": "##function ( aoData ) {
 reloadExpandCollapseWidget(this,aoData);
 }##",
