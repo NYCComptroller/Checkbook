@@ -7,7 +7,7 @@
     "getTotalDataCount":false,
     "dataset": "checkbook:all_agreement_transactions",
     "orderBy":"-maximum_contract_amount",
-    "columns": ["sub_contract_id","is_prime_or_sub","minority_type_id","minority_type_name","ending_year_id","document_code@checkbook:ref_document_code","has_children","original_agreement_id","contract_number","master_agreement_id","master_contract_number","description","document_version","original_contract_amount","maximum_contract_amount","rfed_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","industry_type_name","dollar_difference","percent_difference"],
+    "columns": ["sub_contract_id","is_prime_or_sub","minority_type_id","minority_type_name","ending_year_id","document_code@checkbook:ref_document_code","has_children","contract_original_agreement_id","contract_number","master_agreement_id","master_contract_number","description","document_version","original_contract_amount","maximum_contract_amount","rfed_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","industry_type_name","dollar_difference","percent_difference"],
     "caption":"",
     "adjustParameters":"
 if(isset($parameters['vendor_type'])){
@@ -45,7 +45,7 @@ return $parameters;
 {
 "dataset": "checkbook:all_agreement_transactions",
 "useList":true,
-"columns": ["is_prime_or_sub","minority_type_id","minority_type_name","ending_year_id","document_code@checkbook:ref_document_code","has_children","original_agreement_id","contract_number","master_agreement_id","master_contract_number","description","document_version","original_contract_amount","maximum_contract_amount","rfed_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","industry_type_name","dollar_difference","percent_difference"],
+"columns": ["is_prime_or_sub","minority_type_id","minority_type_name","ending_year_id","document_code@checkbook:ref_document_code","has_children","contract_original_agreement_id","contract_number","master_agreement_id","master_contract_number","description","document_version","original_contract_amount","maximum_contract_amount","rfed_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","industry_type_name","dollar_difference","percent_difference"],
 "orderBy":"-maximum_contract_amount",
 "seriesDefaultParameters":{"master_agreement_id":-1},//default master_agreement_id to avoid load
 "adjustSerieParameters":"
@@ -73,7 +73,7 @@ return $serieParameters;
 {
 "dataset": "checkbook:all_agreement_transactions",
 "useList":true,
-"columns": ["ending_year_id","document_code@checkbook:ref_document_code","has_children","original_agreement_id","contract_number","master_agreement_id","master_contract_number","description","document_version","original_contract_amount","maximum_contract_amount","rfed_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","industry_type_name","dollar_difference","percent_difference"],
+"columns": ["ending_year_id","document_code@checkbook:ref_document_code","has_children","contract_original_agreement_id","contract_number","master_agreement_id","master_contract_number","description","document_version","original_contract_amount","maximum_contract_amount","rfed_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","industry_type_name","dollar_difference","percent_difference"],
 "orderBy":"-maximum_contract_amount",
 "seriesDefaultParameters":{"master_agreement_id":-1},//default master_agreement_id to avoid load
 "adjustSerieParameters":"
@@ -136,7 +136,7 @@ return $node->data;
 "formatted_spent_to_date": {
 "type": "expression2",
 "expression": " '<a href=\"/spending/transactions'
-.  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id']
+.  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['contract_original_agreement_id']
 .  ( _getRequestParamValue('yeartype') == 'B' ? ('/year/'. _getRequestParamValue('year').'/syear/'. _getRequestParamValue('year')) :
 (_getRequestParamValue('yeartype') == 'C' ? ('/calyear/'. _getRequestParamValue('year').'/scalyear/'. _getRequestParamValue('year')) :
 ('/year/'.$row['ending_year_id']. '/syear/'.$row['ending_year_id']) )

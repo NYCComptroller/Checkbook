@@ -20,7 +20,7 @@ return $header;
 "html_class": "initiative-table",
 "no_results_content":"No Results Found",
 "dataset": "checkbook:all_agreement_transactions",
-"columns": ["sub_contract_id","is_prime_or_sub","minority_type_id","minority_type_name","contract_number","original_agreement_id","description","document_version","original_contract_amount","maximum_contract_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","document_code@checkbook:ref_document_code","industry_type_name"],
+"columns": ["sub_contract_id","is_prime_or_sub","minority_type_id","minority_type_name","contract_number","contract_original_agreement_id","description","document_version","original_contract_amount","maximum_contract_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","document_code@checkbook:ref_document_code","industry_type_name"],
 "caption":"",
 "derivedColumns": {
 "contract_link": {
@@ -28,7 +28,7 @@ return $header;
 "expression": " '<a href=/contracts_revenue_landing'
 . _checkbook_project_get_url_param_string('contstatus','status')
 . _checkbook_project_get_year_url_param_string()
-. '?expandBottomContURL=/panel_html/contract_transactions/' . ($row['master_agreement_yn'] == 'Y' ? 'magid' : 'agid') . '/' . $row['original_agreement_id'] .  '/doctype/' . $row['document_code@checkbook:ref_document_code']
+. '?expandBottomContURL=/panel_html/contract_transactions/' . ($row['master_agreement_yn'] == 'Y' ? 'magid' : 'agid') . '/' . $row['contract_original_agreement_id'] .  '/doctype/' . $row['document_code@checkbook:ref_document_code']
 .  ' >'. $row['contract_number'] . '</a>' "
 },
 "formatted_original_amount": {

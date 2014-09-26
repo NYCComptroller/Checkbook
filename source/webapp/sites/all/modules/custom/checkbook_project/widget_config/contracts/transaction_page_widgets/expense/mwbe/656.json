@@ -34,7 +34,7 @@ return $header;
 "dataset": "checkbook:all_agreement_transactions",
 "columns": ["sub_contract_id","is_prime_or_sub","minority_type_id","minority_type_name","master_contract_number","master_agreement_id","fms_commodity_line@checkbook:oge_contract_contract","budget_name@checkbook:oge_contract_contract","oge_contract_number@checkbook:oge_contract_contract",
 "fiscal_year_id@checkbook:all_contracts_coa_aggregates","type_of_year@checkbook:all_contracts_coa_aggregates", "has_children","contract_number",
-"original_agreement_id","description","document_version","original_contract_amount","maximum_contract_amount",
+"contract_original_agreement_id","description","document_version","original_contract_amount","maximum_contract_amount",
 "spending_amount@checkbook:all_contracts_coa_aggregates","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name",
 "award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no",
 "tracking_number","master_agreement_yn","document_code@checkbook:ref_document_code","industry_type_name","dollar_difference","percent_difference"],
@@ -71,7 +71,7 @@ return $header;
 "type": "expression2",
 "expression": "
 '<a href=\"/spending/transactions'
-.  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id']
+.  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['contract_original_agreement_id']
 .  ( $row['type_of_year@checkbook:all_contracts_coa_aggregates'] == 'B' ? ('/year/'. $row['fiscal_year_id@checkbook:all_contracts_coa_aggregates'].'/syear/'. $row['fiscal_year_id@checkbook:all_contracts_coa_aggregates']) : ('/calyear/'.$row['fiscal_year_id@checkbook:all_contracts_coa_aggregates']. '/scalyear/'.$row['fiscal_year_id@checkbook:all_contracts_coa_aggregates']) )
 .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['spending_amount@checkbook:all_contracts_coa_aggregates']) . '</a>'
 "
