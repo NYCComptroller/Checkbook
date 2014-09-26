@@ -36,10 +36,12 @@ Highcharts.setOptions({
     x:40,
     y:0,
     itemStyle:{
-      fontSize:'11px'
+      fontSize:'11px',
+      fontWeight:'normal'
     },
     borderRadius: 5,
-    borderWidth: 1
+    borderWidth: 1,
+    symbolRadius: 2
   },
 
   exporting:{

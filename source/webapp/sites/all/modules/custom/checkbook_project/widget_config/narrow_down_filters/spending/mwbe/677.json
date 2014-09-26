@@ -2,6 +2,7 @@
     "widgetType":"phpparser",
     "parentNid":706,
     "no_results_content":"No Results Found",
+    "autocomplete":false,
     "limit":10,
     "startWith":0,
     "columns":["vendor_type.vendor_type", "txcount"],
@@ -16,11 +17,6 @@
         if(isset($parameters['vendor_type'])){
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
         }
-
-        $subvendor = _getRequestParamValue('subvendor');
-        $mwbe = _getRequestParamValue('mwbe');
-        if($subvendor) $parameters['is_prime_or_sub'] = 'S';
-        else if($mwbe) $parameters['is_prime_or_sub'] = 'P';
 
         checkbook_faceted_search_adjust_param($node);
         if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
