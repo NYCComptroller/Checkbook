@@ -240,8 +240,7 @@
                 unset($parameters['prime_vendor_id']);
             }
         }
-
-        if((isset($dtsmnid) && $dtsmnid != 23) || (!isset($smnid) && $smnid != 23)) $parameters['is_prime_or_sub'] = 'P';
+        if((isset($dtsmnid) && $dtsmnid != 23) || (isset($smnid) && $smnid != 23)) $parameters['is_prime_or_sub'] = 'P';
 
         if(isset($parameters['vendor_type'])){
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
