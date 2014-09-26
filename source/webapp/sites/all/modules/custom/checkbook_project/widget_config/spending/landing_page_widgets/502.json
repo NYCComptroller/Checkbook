@@ -92,21 +92,23 @@
         return ($mwbe_title . 'Checks ' . $catName . ' Transactions');
     ",
     "table_columns": [
-            {"labelAlias": "issue_date","column": "check_eft_issued_date"},
-            {"labelAlias": "agency_name","column": "agency_name_link","sortSourceColumn":"agency_name"},
-            {"labelAlias": "prime_vendor","column": "vendor_name_link2","sortSourceColumn":"vendor_name"},
-            {"labelAlias": "expense_category","column":"expenditure_object_name"},
-            {"labelAlias": "check_amount","column": "formatted_check_amount","sortSourceColumn":"check_amount"},
-            {"label": "","column": ""}
+        {"labelAlias": "issue_date","column": "check_eft_issued_date"},
+        {"labelAlias": "agency_name","column": "agency_name_link","sortSourceColumn":"agency_name"},
+        {"labelAlias": "prime_vendor","column": "vendor_name_link2","sortSourceColumn":"vendor_name"},
+        {"label": "","column": ""},
+        {"labelAlias": "expense_category","column":"expenditure_object_name"},
+        {"labelAlias": "check_amount","column": "formatted_check_amount","sortSourceColumn":"check_amount"},
+        {"label": "","column": ""}
     ],
     "dataTableOptions":{
         "aoColumns": [
-                  {"bSortable": true,"sClass":"text","sWidth":"100px","asSorting": ["asc","desc"]},
-                  {"bSortable": false,"sClass":"text","sWidth":"245px"},
-                  {"bSortable": false,"sClass":"text pad-left","sWidth":"250px"},
-                  {"bSortable": false,"sClass":"text","sWidth":"210px"},
-                  {"sClass":"number","asSorting": [ "desc","asc" ]},
-                  {"bSortable": false,"sWidth":"15px" }
+            {"bSortable": true,"sClass":"text","sWidth":"100px","asSorting": ["asc","desc"]},
+            {"bSortable": false,"sClass":"text pad-left","sWidth":"255px"},
+            {"bSortable": false,"sClass":"text pad-left","sWidth":"250px"},
+            {"bSortable": false,"sWidth":"5px" },
+            {"bSortable": false,"sClass":"text pad-left","sWidth":"210px"},
+            {"sClass":"number","asSorting": [ "desc","asc" ]},
+            {"bSortable": false,"sWidth":"15px" }
         ],
         "bServerSide": true,
         "bFilter": false,
@@ -115,7 +117,7 @@
         "bLengthChange": false,
         "bInfo": false,
         "bAutoWidth": false,
-        "aaSorting": [[ 4, "desc" ]],
+        "aaSorting": [[ 5, "desc" ]],
         "fnServerParams": "##function ( aoData ) {
                    reloadExpandCollapseWidget(this,aoData);
         }##",
