@@ -49,11 +49,11 @@ return $header;
 
 "contract_link": {
 "type": "expression2",
-"expression": "ContractURLHelper::prepareExpenseContractLink($row, $node)"
+"expression": "ContractURLHelper::prepareExpenseContractLink($row, $node, false, $row['contract_original_agreement_id'])"
 },
 "parent_contract_link": {
 "type": "expression2",
-"expression": "(($row['master_agreement_yn'] == 'Y') ? 'N/A' : ContractURLHelper::prepareExpenseContractLink($row, $node, true))"
+"expression": "(($row['master_agreement_yn'] == 'Y') ? 'N/A' : ContractURLHelper::prepareExpenseContractLink($row, $node, true, $row['contract_original_agreement_id']))"
 },
 "parent_contract_export":{
 "type": "expression2",
