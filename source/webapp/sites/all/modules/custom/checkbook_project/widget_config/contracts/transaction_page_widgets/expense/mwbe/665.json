@@ -7,7 +7,7 @@
     "getTotalDataCount":false,
     "dataset": "checkbook:all_agreement_transactions",
     "orderBy":"-maximum_contract_amount",
-    "columns": ["sub_contract_id","is_prime_or_sub","minority_type_id","minority_type_name","fiscal_year_id@checkbook:all_contracts_coa_aggregates","type_of_year@checkbook:all_contracts_coa_aggregates", "document_code@checkbook:ref_document_code","has_children","original_agreement_id","contract_number","master_agreement_id","master_contract_number","description","document_version","original_contract_amount","maximum_contract_amount","spending_amount@checkbook:all_contracts_coa_aggregates","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","industry_type_name","dollar_difference","percent_difference"],
+    "columns": ["sub_contract_id","is_prime_or_sub","minority_type_id","minority_type_name","fiscal_year_id@checkbook:all_contracts_coa_aggregates","type_of_year@checkbook:all_contracts_coa_aggregates", "document_code@checkbook:ref_document_code","has_children","contract_original_agreement_id","contract_number","master_agreement_id","master_contract_number","description","document_version","original_contract_amount","maximum_contract_amount","spending_amount@checkbook:all_contracts_coa_aggregates","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","industry_type_name","dollar_difference","percent_difference"],
     "caption":"",
     "adjustParameters":"
 if(isset($parameters['vendor_type'])){
@@ -61,7 +61,7 @@ return $parameters;
 "expression": " $row['document_code@checkbook:ref_document_code'] == 'DO1' ? 'N/A' :
 (
 '<a href=\"/spending/transactions'
-.  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id']
+.  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['contract_original_agreement_id']
 .  ( $row['type_of_year@checkbook:all_contracts_coa_aggregates'] == 'B' ? ('/year/'. $row['fiscal_year_id@checkbook:all_contracts_coa_aggregates'].'/syear/'. $row['fiscal_year_id@checkbook:all_contracts_coa_aggregates']) : ('/calyear/'.$row['fiscal_year_id@checkbook:all_contracts_coa_aggregates']. '/scalyear/'.$row['fiscal_year_id@checkbook:all_contracts_coa_aggregates']) )
 .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['spending_amount@checkbook:all_contracts_coa_aggregates']) . '</a>'
 )
