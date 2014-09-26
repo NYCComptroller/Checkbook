@@ -232,18 +232,19 @@
             if($subvendor == all) {
                 $parameters['vendor_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
             }
+            $parameters['is_prime_or_sub'] = 'S';
         }
-        else if(isset($mwbe) && isset($parameters['prime_vendor_id'])) {
-            $parameters['vendor_id'] = $parameters['prime_vendor_id'];
-            unset($parameters['prime_vendor_id']);
+        else if(isset($mwbe)) {
+            if(isset($parameters['prime_vendor_id'])) {
+                $parameters['vendor_id'] = $parameters['prime_vendor_id'];
+                unset($parameters['prime_vendor_id']);
+            }
+            if($dtsmnid != 23) $parameters['is_prime_or_sub'] = 'P';
         }
 
         if(isset($parameters['vendor_type'])){
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
         }
-
-        $subvendor = _getRequestParamValue('subvendor');
-        if($subvendor) $parameters['is_prime_or_sub'] = 'S';
 
         $adjustedParameters = $parameters;
         if(function_exists('_checkbook_project_applyParameterFilters')){
