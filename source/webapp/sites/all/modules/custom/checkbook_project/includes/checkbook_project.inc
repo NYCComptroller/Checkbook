@@ -1415,18 +1415,28 @@ function _getLastRequestParamValue($url =  null, $param = null){
     if($url == null) $url = $_GET['q'];
     $urlPath = drupal_get_path_alias($url);
     $pathParams = explode('/', $urlPath);
+    
+    $replacedPathParams = array();
+    foreach($pathParams as $key){
+    	if($key == "mwbe" || $key == "dashboard"){
+    		$skip_next =  true;
+    	}elseif(!$skip_next){
+    		$replacedPathParams[] =  $key; 
+    		$skip_next =  false;
+    	}else{
+    		$skip_next =  false;
+    	}
+    }
+    
     if($param == null){    	
-        $paramName = $pathParams[count($pathParams)-2];
-        if($paramName == "mwbe"){
-        	$paramName = $pathParams[count($pathParams)-4];
-        }
+        $paramName = $replacedPathParams[count($replacedPathParams)-2];
     }
     else
         $paramName = $param;
-    $index = array_search($paramName,$pathParams);
+    $index = array_search($paramName,$replacedPathParams);
 
     if($index != FALSE){
-        $value =  filter_xss($pathParams[($index+1)]);
+        $value =  filter_xss($replacedPathParams[($index+1)]);
     }
     $reqParams = array($paramName => $value);
     return $reqParams;
