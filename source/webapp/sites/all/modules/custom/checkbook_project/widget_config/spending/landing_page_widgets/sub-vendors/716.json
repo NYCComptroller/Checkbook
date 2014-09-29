@@ -109,7 +109,7 @@
     ],
     "dataTableOptions":{
         "aoColumns": [
-            {"sClass":"text","sWidth":"185px","bSortable":false},
+            {"sClass":"text","sWidth":"200px","bSortable":false},
             {"sClass":"number","sWidth":"185px","asSorting":["desc","asc"]},
             {"sClass":"number","sWidth":"185px","asSorting":["desc","asc"]},
             {"sClass":"number","sWidth":"185px","asSorting":["desc","asc"]},
