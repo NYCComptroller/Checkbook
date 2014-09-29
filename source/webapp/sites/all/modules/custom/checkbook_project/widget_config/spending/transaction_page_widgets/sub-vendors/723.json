@@ -151,7 +151,8 @@
         {"labelAlias":"sub_contract_reference_id","column":"sub_contract_id"},
         {"labelAlias":"contract_purpose","column":"contract_purpose_text","sortSourceColumn":"purpose","exportColumn":"contract_purpose_export"},
         {"labelAlias":"spending_category","column":"spending_category_name"},
-        {"labelAlias":"mwbe_category","column":"mwbe_category_name_link","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name"}
+        {"labelAlias":"mwbe_category","column":"mwbe_category_name_link","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name"},
+        {"label": "","column": ""}
     ],
     "exportColumnSqlOverride":[
         {
@@ -259,8 +260,9 @@
             {"sClass":"text pad-left","sWidth":"165px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"100px","bSortable": false,"asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"165px","asSorting":["asc","desc"]},
-            {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
-            {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]}
+            {"sClass":"text pad-left","sWidth":"150px","asSorting":["asc","desc"]},
+            {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]},
+            {"bSortable": false,"sWidth":"10px" }
         ],
         "aaSorting":[[4,"desc"]],
         "sScrollX": "100%",
