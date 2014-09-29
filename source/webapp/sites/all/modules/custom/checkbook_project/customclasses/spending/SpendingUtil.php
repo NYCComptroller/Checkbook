@@ -21,7 +21,7 @@
 
 class SpendingUtil{
 
-    static $landingPageParams = array("agency"=>"agency","vendor"=>"vendor","subvendor"=>"subvendor","category"=>"category","industry"=>"industry","mwbe"=>"mwbe");
+    static $landingPageParams = array("agency"=>"agency","vendor"=>"vendor","subvendor"=>"subvendor","category"=>"category","industry"=>"industry","mwbe"=>"mwbe","dashboard"=>"dashboard");
 
     static function getSpendingCategoryDetails($categoryId, $columns=array('spending_category_id','display_name')){
         if(!isset($categoryId)){
