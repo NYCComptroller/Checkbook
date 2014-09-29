@@ -69,7 +69,6 @@ if(preg_match('/yeartype\/C/',$_GET['q'])){
 
 
 
-
 // Disable featured dashboatrd for other government entities. 
 if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 	$mwbe_amount =  0;
@@ -112,7 +111,7 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 	
 	$svendor_filters =  "<div class='main-nav-drop-down' style='display:none'>
 			<ul>
-  				<li class='no-click'><a href='/" . $total_sub_vendors_link . "/subvendors/all" . "'>Total SubVendors</a></li>
+  				<li class='no-click'><a href='/" . $total_sub_vendors_link . "/dashboard/dsv" . "'>Total SubVendors</a></li>
 			</ul>
   		</div>
   		";
@@ -122,14 +121,14 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 if($mwbe_amount  == 0){
 	$mwbe_link = l('<div><span class="nav-title">M/WBE</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div>','',$options_disabled);
 }else{	
-	$mwbe_link = l('<div><span class="nav-title">M/WBE</span><br>&nbsp;'. custom_number_formatter_format($mwbe_amount ,1,'$') . '</div>',$mwbe_active_domain_link. "/mwbe/2~3~4~5~9",$options);
+	$mwbe_link = l('<div><span class="nav-title">M/WBE</span><br>&nbsp;'. custom_number_formatter_format($mwbe_amount ,1,'$') . '</div>',$mwbe_active_domain_link. "/mwbe/2~3~4~5~9/dashboard/dm",$options);
 }
 
 
 if($svendor_amount  == 0){
 	$subvendors_link = l('<div><span class="nav-title">' .$mwbe_prefix  .' Sub Vendors</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div>','',$options_disabled);	
 }else{
-	$subvendors_link = l('<div><span class="nav-title">' .$mwbe_prefix  .' Sub Vendors</span><br>&nbsp;'. custom_number_formatter_format($svendor_amount ,1,'$') . '</div>',$svendor_active_domain_link. "/subvendor/all",$options);
+	$subvendors_link = l('<div><span class="nav-title">' .$mwbe_prefix  .' Sub Vendors</span><br>&nbsp;'. custom_number_formatter_format($svendor_amount ,1,'$') . '</div>',$svendor_active_domain_link. "/dashboard/dsv",$options);
 }
 
 
@@ -168,16 +167,19 @@ switch ($arg){
 if(preg_match('/mwbe/',$_GET['q']) && preg_match('/subvendor/',$_GET['q']) ){
 	$mwbeclass = ' active';
 	$svclass = ' active';
-	$featured_dashboard = 'subvendor';
 }elseif(preg_match('/mwbe/',$_GET['q']) ){
 	$mwbeclass = ' active';
 	$svclass = ' active';
-	$featured_dashboard = 'mwbe';	
 }elseif(preg_match('/subvendor/',$_GET['q']) ){
 	$svclass = ' active';
-	$featured_dashboard = 'subvendor';	
 }
 
+
+if(preg_match('/dashboard\/dm/',$_GET['q'])  ){
+	$featured_dashboard = 'mwbe';
+}elseif(preg_match('/dashboard\/dsv/',$_GET['q']) ){
+	$featured_dashboard = 'subvendor';
+}
 
 if(!preg_match('/smnid/',$_GET['q']) && (
 		preg_match('/spending\/transactions/',$_GET['q'])

@@ -113,29 +113,29 @@ class MappingUtil {
     	$filters_html =  "<div class='main-nav-drop-down' style='display:none'>
   		<ul>
   			<li class='no-click title'>M/WBE Category</li>
-  			<li class='no-click'><a href='/" . RequestUtil::getLandingPageUrl($domain) . "/mwbe/2~3~4~5~9" . "'>Total M/WBE</a></li>";
+  			<li class='no-click'><a href='/" . RequestUtil::getLandingPageUrl($domain) . "/mwbe/2~3~4~5~9/dashboard/dm" . "'>Total M/WBE</a></li>";
     	
     	
     	if(array_intersect($applicable_minority_types,array(4,5))){
-    		$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/4~5" . "'>Asian American</a></li>";
+    		$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/4~5/dashboard/dm" . "'>Asian American</a></li>";
     	}
     	if(array_intersect($applicable_minority_types,array(2))){
-    		$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/2" . "'>Black American</a></li>";
+    		$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/2/dashboard/dm" . "'>Black American</a></li>";
     	}
     	if(array_intersect($applicable_minority_types,array(9))){
-    		$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/9" . "'>Women</a></li>";
+    		$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/9/dashboard/dm" . "'>Women</a></li>";
     	}
     	if(array_intersect($applicable_minority_types,array(3))){
-    		$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/3" . "'>Hispanic American</a></li>";
+    		$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/3/dashboard/dm" . "'>Hispanic American</a></li>";
     	}
 
     	if(array_intersect($applicable_minority_types,array(7,11))){
     		$filters_html .=  "<li class='no-click title'>Other</li>";
     		if(array_intersect($applicable_minority_types,array(7))){
-    			$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/7" . "'>Non-M/WBE</a></li>";
+    			$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/7/dashboard/dsv" . "'>Non-M/WBE</a></li>";
     		}
     		if(array_intersect($applicable_minority_types,array(11))){
-    			$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/11" . "'>Individuals & Others</a></li>";
+    			$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/11/dashboard/dsv" . "'>Individuals & Others</a></li>";
     		}    		
     	}
 		
