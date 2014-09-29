@@ -11,8 +11,16 @@
         if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:spending_mwbe_data';
     ",
     "noDataInitialLoad":true,
-    "totalAggregateColumns":["check_amount_sum"],
-    "columns": ["yeartype.yeartype","check_amount_sum","agency.agency","agency.agency.agency_short_name","year.year","agency.agency.agency_name"],
+    "totalAggregateColumns":["check_amount_sum","check_amount_sum@checkbook:spending_subven_data"],
+    "columns": [
+        "yeartype.yeartype",
+        "agency.agency",
+        "agency.agency.agency_short_name",
+        "year.year",
+        "agency.agency.agency_name",
+        "check_amount_sum",
+        "check_amount_sum@checkbook:spending_subven_data"
+    ],
     "limit":5,
     "enableExpand":true,
     "getTotalDataCount":true,
@@ -42,9 +50,17 @@
             "type": "expression2",
             "expression": "'<a href=\"' . SpendingUtil::getAgencyNameLinkUrl($node,$row) . '\">' . (!$node->is_mwbe ? $row[agency_agency_agency_name] : $row[agency_name_formatted]) . '</a>'"
         },
-        "formatted_check_amount_sum": {
+        "formatted_check_amount_sum_mwbe": {
+            "type": "expression2",
+            "expression": "custom_number_formatter_format($row['check_amount_sum'] + $row['check_amount_sum@checkbook:spending_subven_data'],2,'$')"
+        },
+        "formatted_check_amount_sum_citywide": {
             "type": "expression2",
             "expression": "custom_number_formatter_format($row['check_amount_sum'],2,'$')"
+        },
+        "formatted_check_amount_sum": {
+            "type": "expression2",
+            "expression": "$node->is_mwbe ? $row['formatted_check_amount_sum_mwbe'] :  $row['formatted_check_amount_sum_mwbe']"
         },
         "agency_amount_link":{
             "type":"expression2",
@@ -52,8 +68,7 @@
         },
         "percent_spending":{
             "type":"expression2",
-            "expression": "SpendingUtil::getPercentYtdSpending($node, $row)",
-            "visibility_flag": "is_mwbe"
+            "expression": "SpendingUtil::getPercentYtdSpendingVendorSubVendor($node, $row)"
         }
     },
     "adjustParameters":"

@@ -379,6 +379,10 @@
         "contracts_mwbe_vendor_spending__industry": [
             {"datasetName": "contracts_mwbe_vendor_spending", "columnNames": ["industry_type_id"]},
             {"datasetName": "industry_type", "columnNames": ["industry_type_id"]}
+        ],
+        "spending_mwbe_data__spending_subven_data": [
+            {"datasetName": "spending_mwbe_data", "columnNames": ["agency_id","year_id","type_of_year"]},
+            {"datasetName": "spending_subven_data", "columnNames": ["agency_id","year_id","type_of_year"]}
         ]
     }        
 }

@@ -760,12 +760,15 @@ function load_widget_data($node, $resultFormatter) {
           
           if ($config->totalAggregateColumns) {
           	foreach($config->totalAggregateColumns as $aggregateColumn){
-          		$result = $dataQueryController->queryCube(
-          		$datasetName,
-          		array($aggregateColumn), $parameters, $orderBy,
-          		$startWith, $limit,
-          		$resultFormatter);
-          		$node->totalAggregateColumns[$aggregateColumn] = $result[0][$aggregateColumn];          	
+                $ds = $datasetName;
+                $column = $aggregateColumn;
+                if (strpos($aggregateColumn,'@') !== false) {
+                    $col_array = explode("@",$aggregateColumn);
+                    $column = $col_array[0];
+                    $ds = $col_array[1];
+                }
+          		$result = $dataQueryController->queryCube($ds,array($column), $parameters, $orderBy,$startWith, $limit,$resultFormatter);
+          		$node->totalAggregateColumns[$aggregateColumn] = $result[0][$column];
           	}
           }
 
