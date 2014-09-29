@@ -1539,7 +1539,7 @@ function _checkbook_check_is_mwbe_page() {
 
 /** Returns Boolean if this is a sub vendor page */
 function _checkbook_check_is_sub_vendor_page() {
-    return preg_match('"/subvendor"',$_GET['q']);
+    return preg_match('"/dashboard\/dsv"',$_GET['q']);
 }
 
 /**
