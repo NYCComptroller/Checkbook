@@ -33,7 +33,7 @@ if(_getRequestParamValue("magid") != ""){
 
 $queryVendorDetails = "SELECT fa.contract_number, rb.business_type_code, fa.agreement_id,fa.original_agreement_id,  fa.vendor_id, va.address_id, legal_name AS vendor_name, a.address_line_1, a.address_line_2, a.city, a.state, a.zip, a.country,
 	                            (CASE WHEN (rb.business_type_code = 'MNRT' OR rb.business_type_code = 'WMNO') THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor,
-	                            (CASE WHEN rm.minority_type_id in (4,5) then 'Asian American' ELSE rm.minority_type_name END)AS ethnicity
+	                            (CASE WHEN fa.minority_type_id in (4,5) then 'Asian American' ELSE fa.minority_type_name END)AS ethnicity
 	                        FROM {agreement_snapshot} fa
 	                            LEFT JOIN {vendor_history} vh ON fa.vendor_history_id = vh.vendor_history_id
 	                            LEFT JOIN {vendor_address} va ON vh.vendor_history_id = va.vendor_history_id
