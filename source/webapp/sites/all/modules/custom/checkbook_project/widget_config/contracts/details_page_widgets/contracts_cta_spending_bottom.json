@@ -5,8 +5,15 @@
 "phpcode":"
 $is_sub = 'S';
 $agid = _getRequestParamValue('agid');
-
+$magid = _getRequestParamValue('magid');
+if($agid){
 $q0 = 'select contract_number from agreement_snapshot where original_agreement_id = '. $agid .' limit 1';
+}
+if($magid){
+$q0 = 'select contract_number from agreement_snapshot where master_agreement_id = '. $magid .' limit 1';
+}
+
+
 
 $result_contract_number = _checkbook_project_execute_sql_by_data_source($q0);
 

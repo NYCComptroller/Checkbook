@@ -20,7 +20,7 @@
 ?>
 <div>
   <h3>
-    Spending Transactions
+    Spending Transactions By Prime Vendor
   </h3>
 
   <table class="dataTable cta-spending-history outerTable">
