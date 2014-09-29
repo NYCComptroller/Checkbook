@@ -36,6 +36,13 @@
 	$new_window="";
   }
   foreach ($node->data as $contract) {
+    $contract_number = $contract['contract_number'];
+    $q1 = "SELECT DISTINCT COUNT(sub_contract_id) AS sub_vendor_count FROM subcontract_details
+                        WHERE contract_number = '". $contract_number . "'
+                        AND latest_flag = 'Y'
+                        LIMIT 1";
+      $subcontract_details = _checkbook_project_execute_sql_by_data_source($q1);
+
     if ($count % 2 == 0) {
       $class = "class=\"odd\"";
     }
@@ -61,7 +68,27 @@
                    id="master_assoc_cta_expand"></span>
 
         <div class='contract-title-text'>Contract Spending for <?php echo $child_contract_link ?> </div>
-        <div class="rfed-amount"><?php echo custom_number_formatter_format($contract['rfed_amount'], 2, '$');?></div>
+
+          <div class="dollar-amounts">
+              <div class="spent-to-date"><?php echo custom_number_formatter_format($contract['rfed_amount'], 2, "$");?>
+                  <div class="amount-title">Spent to Date
+                  </div>
+              </div>
+              <div class="original-amount"><?php echo custom_number_formatter_format($contract['original_contract_amount'], 2, '$');?>
+                  <div class="amount-title">Original Amount
+                  </div>
+              </div>
+              <div class="current-amount"><?php echo custom_number_formatter_format($contract['maximum_contract_amount'], 2, '$');?>
+                  <div class="amount-title">Current Amount
+                  </div>
+              </div>
+              <div class="spent-to-date"><?php if($subcontract_details['sub_vendor_count']) { echo $subcontract_details['sub_vendor_count']; } else echo 'N/A';?>
+                  <div class="amount-title">Number of Sub Vendors
+                  </div>
+              </div>
+          </div>
+
+
       </div>
 
       <div class="resultsContainer<?php print $count?>">&nbsp</div>

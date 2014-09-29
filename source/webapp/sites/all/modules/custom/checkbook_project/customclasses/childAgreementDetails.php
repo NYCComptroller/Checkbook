@@ -26,7 +26,7 @@ class childAgreementDetails {
     
     $ag_id = _getRequestParamValue("agid");
 
-    $query1 = "SELECT l1.contract_number,
+    $query1 = "SELECT l1.contract_number, a.master_contract_number,
            l2.vendor_id AS vendor_id_checkbook_vendor_history,
            l529.legal_name AS legal_name_checkbook_vendor,
            l1.description,
@@ -46,6 +46,7 @@ class childAgreementDetails {
            l1399.date AS date_chckbk_date_id_rgstrd_date_id_checkbook_history_agreemnt_2,
            rat.agreement_type_name
       FROM history_agreement AS l1
+           LEFT OUTER JOIN agreement_snapshot AS a ON l1.master_agreement_id = a.master_agreement_id
            LEFT OUTER JOIN vendor_history AS l2 ON l2.vendor_history_id = l1.vendor_history_id
            LEFT OUTER JOIN vendor AS l529 ON l529.vendor_id = l2.vendor_id
            LEFT OUTER JOIN ref_agency_history AS l530 ON l530.agency_history_id = l1.agency_history_id

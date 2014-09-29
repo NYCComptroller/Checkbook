@@ -20,7 +20,7 @@
 ?>
 <div>
   <h3>
-    Contract History
+    Contract History By Prime Vendor
   </h3>
   <table class="dataTable cta-history outerTable">
     <thead>
