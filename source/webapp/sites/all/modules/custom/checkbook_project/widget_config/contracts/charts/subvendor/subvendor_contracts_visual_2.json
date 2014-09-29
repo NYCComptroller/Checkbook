@@ -28,7 +28,7 @@
 "defaultParameters":{"type_of_year":"B"},
 "defaultParametersPending":{},
 "cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe","year","subvendor"],
-"urlParamMap":{"year":"fiscal_year_id","mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"prime_vendor_id",
+"urlParamMap":{"subvendor":"vendor_id","year":"fiscal_year_id","mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"prime_vendor_id",
 	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},	
 
 "widgetDataLoader":"
