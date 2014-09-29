@@ -50,7 +50,8 @@ adt.fiscal_year,
 rd1.date issue_date,
 adt.check_amount,
 adt.agency_name,
-adt.agency_id
+adt.agency_id,
+adt.check_eft_issued_date
 from all_disbursement_transactions adt
 join ref_date rd1 on rd1.date_id = adt.check_eft_issued_date_id
 where adt.is_prime_or_sub =  \\'' .$is_sub. '\\'  and adt.contract_number = \\'' .$contract_id. '\\'
