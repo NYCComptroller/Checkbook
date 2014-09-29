@@ -132,7 +132,7 @@
                   {"bSortable": true,"sClass":"text","sWidth":"130px","asSorting": ["asc","desc"]},
                   {"bSortable": false,"sClass":"text","sWidth":"250px"},
                   {"bSortable": false,"sClass":"text","sWidth":"230px"},
-                  {"bSortable": false,"sClass":"text","sWidth":"230px"},
+                  {"bSortable": false,"sClass":"text pad-left","sWidth":"230px"},
                   {"sClass":"number","asSorting":["desc","asc"]},
                   {"bSortable": false,"sWidth":"15px"}
         ],
