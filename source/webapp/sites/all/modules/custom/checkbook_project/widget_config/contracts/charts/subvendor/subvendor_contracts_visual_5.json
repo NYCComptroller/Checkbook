@@ -29,7 +29,7 @@
 "cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe","year","subvendor"],
 "urlParamMap":{"subvendor":"vendor_id","year":"fiscal_year_id","mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id",
 			"vendor":"prime_vendor_id","status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},	
-"chartTitle":"Top Ten Prime Vendors by Sub Vendors Active Expense Contracts",
+"chartTitle":"Top Ten Sub Vendors by Sub Vendors Active Expense Contracts",
 "widgetDataLoader":"
     
     $where_filters = array();
@@ -66,7 +66,7 @@
 	$index = 0;
 	foreach($node->data as $row){
 	 		$tooltip_label =
-	 						'Prime Vendor: ' . $row['legal_name'] .  '<br/>' .
+	 						'Sub Vendor: ' . $row['legal_name'] .  '<br/>' .
 	 						'Amount: ' . custom_number_formatter_format($row['current_amount_sum'] ,2, '$').  '<br/>' 
 	 						; 
 			$link= CustomURLHelper::prepareUrl(strstr($_GET['q'],'\/',true), ContractURLHelper::$landingPageParams, array('expandBottomCont'=>'true'), 
