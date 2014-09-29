@@ -1481,11 +1481,16 @@ function _checkbook_max_data_year(){
       "cal_year_value"=>$result[1]['year_value'], "cal_year_id"=>$result[1]['year_id']);
 }
 
-function _checkbook_append_url_params($source = null){
-    $datasource = _getRequestParamValue('datasource');
-    $mwbe = _getRequestParamValue('mwbe');
-    $svendor = _getRequestParamValue('subvendor');
+/*
+ * Will add mwbe, subvendor and datasource parameters to url.  Precedence ,$source > $overidden_params > requestparam 
+ */
 
+function _checkbook_append_url_params($source = null,$overidden_params = array()){
+    $datasource = (isset($overidden_params['datasource'])) ? $overidden_params['datasource'] :_getRequestParamValue('datasource');
+    $mwbe = (isset($overidden_params['mwbe'])) ? $overidden_params['mwbe'] : _getRequestParamValue('mwbe');
+    $svendor = (isset($overidden_params['subvendor'])) ? $overidden_params['subvendor'] : _getRequestParamValue('subvendor');
+    $dashboard = (isset($overidden_params['dashboard'])) ? $overidden_params['dashboard'] : _getRequestParamValue('dashboard');
+    
     $url = "";
     if(isset($datasource)) {
         $url = "/datasource/checkbook_oge";
@@ -1503,11 +1508,15 @@ function _checkbook_append_url_params($source = null){
                 }
                 if(!in_array("subvendor",$source)){
                 	$url = isset($svendor) ? "/subvendor/".$svendor : "";
+                }                
+                if(!in_array("dashboard",$source)){
+                	$url = isset($dashboard) ? "/dashboard/".$dashboard : "";
                 }
             }
             else {
                 $url = isset($mwbe) ? "/mwbe/".$mwbe : "";
                 $url .= isset($svendor) ? "/subvendor/".$svendor : "";
+                $url .= isset($dashboard) ? "/dashboard/".$dashboard : "";
             }
         }
     }
