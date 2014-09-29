@@ -4,6 +4,7 @@
             "data_type":{
                 "csv":{
                     "Agency":"Agency",
+                    "Associated Prime Vendor":"Associated Prime Vendor",
                     "Calendar year":"Calendar year",
                     "Capital Project":"Capital Project",
                     "Check Amount":"Check Amount",
@@ -22,6 +23,7 @@
                 },
                 "xml":{
                     "agency":"agency",
+                    "associated_prime_vendor":"associated_prime_vendor",
                     "calendar_year":"calendar_year",
                     "capital_project":"capital_project",
                     "check_amount":"check_amount",

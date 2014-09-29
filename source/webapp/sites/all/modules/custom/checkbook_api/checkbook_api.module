@@ -247,6 +247,9 @@ function checkbook_api_adjustContractDataSetResults(&$data_records) {
             if($data_records[$key]['vendor_type'] == 'Yes') {
                 $data_records[$key]['expenditure_object_name'] = 'N/A';
             }
+            else { //If Sub vendor field = "No" following should be "N/A": Associated Prime Vendor
+                $data_records[$key]['prime_vendor_name'] = 'N/A';
+            }
         }
     }
 }
@@ -278,12 +281,15 @@ function checkbook_api_adjustSpendingDataSetResults(&$data_records) {
         //Derive sub vendor column from vendor type
         if(isset($data_record['vendor_type'])) {
             $data_records[$key]['vendor_type'] = (preg_match('/S/', $data_record['vendor_type'])) ? 'Yes' : 'No';
-            //If Sub vendor field = "Yes" following should be "N/A": Capital Project,Department,Document ID,Expense Category
+            //If Sub vendor field = "Yes" following should be "N/A": Capital Project,Department,Document ID,Expense Category, Associated Prime Vendor
             if($data_records[$key]['vendor_type'] == 'Yes') {
                 $data_records[$key]['reporting_code'] = 'N/A';
                 $data_records[$key]['department_name'] = 'N/A';
                 $data_records[$key]['disbursement_number'] = 'N/A';
                 $data_records[$key]['expenditure_object_name'] = 'N/A';
+            }
+            else { //If Sub vendor field = "No" following should be "N/A": Associated Prime Vendor
+                $data_records[$key]['prime_vendor_name'] = 'N/A';
             }
         }
     }

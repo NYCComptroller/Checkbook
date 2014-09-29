@@ -24,8 +24,6 @@
                                     "Purpose":"Purpose",
                                     "Received Date":"Received Date",
                                     "Start Date":"Start Date",
-//                                    "Sub Contract Reference ID":"Sub Contract Reference ID",
-//                                    "Sub Vendor":"Sub Vendor",
                                     "Version":"Version"
                                 },
                                 "xml":{
@@ -50,8 +48,6 @@
                                     "registration_date":"registration_date",
                                     "spent_to_date":"spent_to_date",
                                     "start_date":"start_date",
-//                                    "sub_contract_reference_id":"sub_contract_reference_id",
-//                                    "sub_vendor":"sub_vendor",
                                     "version":"version",
                                     "year":"year"
                                 }
@@ -65,6 +61,8 @@
                             "data_type":{
                                 "csv":{
                                     "Agency":"Agency",
+                                    "APT PIN":"APT PIN",
+                                    "Associated Prime Vendor":"Associated Prime Vendor",
                                     "Award Method":"Award Method",
                                     "Contract ID":"Contract ID",
                                     "Contract Industry":"Contract Industry",
@@ -88,6 +86,8 @@
                                 },
                                 "xml":{
                                     "agency":"agency",
+                                    "apt_pin":"apt_pin",
+                                    "associated_prime_vendor":"associated_prime_vendor",
                                     "award_method":"award_method",
                                     "budget_name":"budget_name",
                                     "commodity_line":"commodity_line",
@@ -119,6 +119,8 @@
                             "data_type":{
                                 "csv":{
                                     "Agency":"Agency",
+                                    "APT PIN":"APT PIN",
+                                    "Associated Prime Vendor":"Associated Prime Vendor",
                                     "Award Method":"Award Method",
                                     "Contract Category":"Contract Category",
                                     "Contract ID":"Contract ID",
@@ -142,6 +144,8 @@
                                 },
                                 "xml":{
                                     "agency":"agency",
+                                    "apt_pin":"apt_pin",
+                                    "associated_prime_vendor":"associated_prime_vendor",
                                     "award_method":"award_method",
                                     "contract_industry":"contract_industry",
                                     "contract_type":"contract_type",
