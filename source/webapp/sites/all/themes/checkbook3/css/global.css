@@ -2126,6 +2126,7 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
     box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.5);
     text-transform: none;
     margin:0px;
+
 }
 
 .oge-assoc-contracts-list .assoc_item .contract-title{
@@ -2702,4 +2703,58 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
     color: #3c5e7c;
     margin-bottom: 3px;
 } 
-    
+body.page-mwbe-agency-grading-year .panel-panel.grid-3{
+    border: 1px solid #CACACA;
+    padding-bottom: 10px;
+    width: 218px;
+}
+
+body.page-mwbe-agency-grading-year .grid-3 .legend .title {
+    color: #2E2E2E;
+    text-align: left;
+    background-color: #E9E9E9;
+    border-bottom: 1px solid #CACACA;
+    padding: 10px;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+body.page-mwbe-agency-grading-year .grid-3 .legend_entry td{
+    padding: 10px 10px 0 10px;
+    height: 18px;
+}
+body.page-mwbe-agency-grading-year .grid-3 .desc span{
+    text-align: left;
+    padding: 0 5px;
+    max-width: 88px;
+    text-transform: uppercase;
+}
+body.page-mwbe-agency-grading-year .grid-3 .checkbook-grading-right .label{
+    font-size: 11px;
+    font-weight: normal;
+    line-height: 16px;
+    margin-top: 5px;
+    text-transform: uppercase;
+    text-align: center;
+}
+body.page-mwbe-agency-grading-year .grid-3 .checkbook-grading-right .value {
+    color: #5C5C5C;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    width: 105px;
+    margin-right: 32px;
+    display: block;
+    margin: 0 auto;
+}
+body.page-mwbe-agency-grading-year #grading_table{
+    border: 1px solid #cacaca; */
+}
+body.page-mwbe-agency-grading-year #grading_table .number{
+    padding-right:20px;
+}
+body.page-mwbe-agency-grading-year .checkbook-grading-left .dataTables_paginate{
+    padding-top: 2px;
+}
+body.page-mwbe-agency-grading-year .dataTables_wrapper{
+    border:none;
+}
