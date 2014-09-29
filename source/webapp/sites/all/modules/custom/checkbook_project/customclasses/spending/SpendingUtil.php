@@ -92,7 +92,6 @@ class SpendingUtil{
 
     }
 
-
     static public function getExpenseCatIds(){
         $bottomURL = $_REQUEST['expandBottomContURL'];
         $expCatId = NULL;$expCatIds = array();
@@ -173,7 +172,7 @@ class SpendingUtil{
     }
 
     /**
-     * Returns Agency Amount Link Url based on values from current path & data row
+     * Returns Agency Amount Link Url based on values from current path & data row.
      *
      * @param $node
      * @param $row
@@ -181,14 +180,8 @@ class SpendingUtil{
      */
     static function getAgencyAmountLinkUrl($node, $row){
         //agency_amount_link
-        return '/panel_html/spending_transactions/spending/transactions'
-        . '/smnid/' . $node->nid
-        . '/agency/'. $row["agency_agency"]
-        . _checkbook_project_get_url_param_string("vendor")
-        . _checkbook_project_get_url_param_string("category")
-        . _checkbook_project_get_url_param_string("industry")
-        .  _checkbook_project_get_year_url_param_string(false,false,true)
-        . _checkbook_append_url_params();
+        $custom_params = array('agency'=>$row["agency_agency"]);
+        return '/' . self::getSpendingTransactionPageUrl($custom_params). '/smnid/' . $node->nid;
     }
 
     /**
@@ -405,6 +398,23 @@ class SpendingUtil{
     }
 
     /**
+     * Returns Ytd Spending percent for both vendor and sub vendor spending
+     *  NYCCHKBK-4263
+     *
+     * @param $node
+     * @param $row
+     * @return string
+     */
+    static function getPercentYtdSpendingVendorSubVendor($node, $row){
+        $sum_vendor_sub_vendor = $row['check_amount_sum'] + $row['check_amount_sum@checkbook:spending_subven_data'];
+        $sum_vendor_sub_vendor_total = $node->totalAggregateColumns['check_amount_sum'] + $node->totalAggregateColumns['check_amount_sum@checkbook:spending_subven_data'];
+
+        $ytd_spending = $sum_vendor_sub_vendor/$sum_vendor_sub_vendor_total*100;
+        $ytd_spending = $ytd_spending < 0 ? 0.00 : $ytd_spending;
+        return  custom_number_formatter_format($ytd_spending,2,'','%');
+    }
+
+    /**
      * Returns Payee Name Link Url
      * @param $node
      * @param $row
@@ -554,7 +564,6 @@ class SpendingUtil{
         $match_landing = '"/spending_landing/"';
         return preg_match($match_landing,$url_ref);
     }
-
 
     /**
      * Returns the vendor type
