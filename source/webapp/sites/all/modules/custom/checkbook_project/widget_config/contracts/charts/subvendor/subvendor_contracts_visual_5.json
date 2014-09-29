@@ -84,7 +84,7 @@
 	$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
 	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
 
-	$node->widgetConfig->chartTitle =   MappingUtil::getCurrenEhtnicityName() . ' Top Ten Sub Vendors'  . ContractUtil::getCurrentContractStatusandType() . ' Contracts' ;
+	$node->widgetConfig->chartTitle =   MappingUtil::getCurrenEhtnicityName() . ' Top Ten Sub Vendors '  . ContractUtil::getCurrentContractStatusandType() . ' Contracts' ;
 	
 ",
 "chartConfig" : {
