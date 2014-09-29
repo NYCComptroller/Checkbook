@@ -204,7 +204,7 @@ foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
             //Inner table header
             $tbl_spending_transaction_inner = array();
             $tbl_spending_transaction_inner['header']['columns'] = array(
-                array('value' => WidgetUtil::generateLabelMappingNoDiv('start_date'), 'type' => 'text'),
+                array('value' => WidgetUtil::generateLabelMappingNoDiv('date'), 'type' => 'text'),
                 array('value' => WidgetUtil::generateLabelMappingNoDiv('check_amount'), 'type' => 'number'),
                 //array('value' => WidgetUtil::generateLabelMappingNoDiv('expense_category'), 'type' => 'text'),
                 array('value' => WidgetUtil::generateLabelMappingNoDiv('agency_name'), 'type' => 'text'),
