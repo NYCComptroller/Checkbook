@@ -190,7 +190,8 @@
                 case when adt.is_prime_or_sub in ('S') then 'Yes' when adt.is_prime_or_sub in ('P') then 'No' else is_prime_or_sub end as is_prime_or_sub,
                 adt.sub_contract_id,
                 adt.vendor_type,
-                adt.is_minority_vendor
+                adt.is_minority_vendor,
+                adt.prime_vendor_name
 			 from all_disbursement_transactions  adt left join ref_year ry on adt.check_eft_issued_nyc_year_id = ry.year_id
 			 left join ref_spending_category rsc on rsc.spending_category_id = adt.spending_category_id
 			 where 
@@ -250,6 +251,7 @@
             <field column="sub_contract_id" name="sub_contract_id" />
             <field column="vendor_type" name="vendor_type" />
             <field column="is_minority_vendor" name="is_minority_vendor" />
+            <field column="prime_vendor_name" name="prime_vendor_name" />
         </entity>
         <entity dataSource="db2" name="spending_oge"
                 pk="id"
@@ -472,7 +474,8 @@
                 sub_contract_id, 
                 prime_vendor_id,
                 is_minority_vendor,
-                vendor_type
+                vendor_type,
+                prime_vendor_name
                 from all_agreement_transactions a
             left join ref_document_code dc on a.document_code_id = dc.document_code_id
             left join ref_award_category rac on a.award_category_id = rac.award_category_id
@@ -535,6 +538,7 @@
             <field column="sub_contract_id" name="sub_contract_id" />
             <field column="vendor_type" name="vendor_type" />
             <field column="is_minority_vendor" name="is_minority_vendor" />
+            <field column="prime_vendor_name" name="prime_vendor_name" />
         </entity>
         <entity dataSource="db2" name="contracts_oge" transformer="RegexTransformer"
                 pk="id"
