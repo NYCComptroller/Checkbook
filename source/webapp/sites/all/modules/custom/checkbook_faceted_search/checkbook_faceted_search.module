@@ -518,8 +518,8 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
     }
     $output['Vendor']['name'] = 'fvendorName';
     foreach($reqVendors[0] as $key => $value){
-        if(!in_array($value['name'], array_values_recursive($output['Prime Vendor']['checked']))){
-            $output['Prime Vendor']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
+        if(!in_array($value['name'], array_values_recursive($output['Vendor']['checked']))){
+            $output['Vendor']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
         }
     }
   }
