@@ -2006,6 +2006,23 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
 {
     float: left;
 }
+/*next two styles relate to this page /contracts_landing/status/A/mwbe/4~5/yeartype/B/year/116?expandBottomContURL=/panel_html/contract_transactions/contract_details/magid/2031629/doctype/MA1/mwbe/4~5*/
+/*if it affects other pages be more specific with selector*/
+.contract-information .dollar-amounts{
+    border-top: 1px dotted #CACACA;
+    border-left: 1px dotted #CACACA;
+    width: 351px;
+    padding-top: 20px;
+}
+.contract-information .original-amount{
+    margin-right: 0;
+}
+.contract-information .dollar-amounts > div {
+    color: #5C5C5C;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+}
 .dollar-amounts,
 .inside .transactions-container{float: right;}
 .contract-details{
