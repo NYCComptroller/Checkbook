@@ -72,6 +72,15 @@
                     ]
                 },
                 {
+                    "name": "vendornm",
+                    "levels": [
+                        {
+                            "name": "vendornm",
+                            "sourceColumnName": "vendor_name"
+                        }
+                    ]
+                },
+                {
                     "name": "expenditure_object",
                     "levels": [
                         {

@@ -3,6 +3,7 @@
     "parentNid":723,
     "startWith":0,
 	"columns":["agency.agency", "agency.agency.agency_name", "txcount"],
+    "defaultParameters":{"is_prime_or_sub":"S"},
 	"orderBy":"-txcount",    
     "facetNoPager":true,
     "filterName":"Agency",
@@ -12,6 +13,9 @@
     "autocompleteField":"agency_name", 
     "maxSelect":1,
     "adjustParameters":"
+    if(isset($parameters['vendor_type'])){
+        $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
+    }
     if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
     	$parameters = _checkbook_project_adjust_spending_parameter_filters($node, $parameters);
     }

@@ -6,6 +6,7 @@
     "startWith":0,
     "autocomplete":false,
     "columns":["minority_type.minority_type", "minority_type.minority_type.minority_type_name", "txcount"],
+    "defaultParameters":{"is_prime_or_sub":"S"},
     "orderBy":"-txcount",
     "getTotalDataCount":true,
     "facetPager":true,
@@ -16,6 +17,9 @@
     "autocompleteField":"minority_type_name",
     "maxSelect":5,
     "adjustParameters":"
+        if(isset($parameters['vendor_type'])){
+            $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
+        }
         checkbook_faceted_search_adjust_param($node);
         if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
             $parameters = _checkbook_project_adjust_spending_parameter_filters($node, $parameters);
