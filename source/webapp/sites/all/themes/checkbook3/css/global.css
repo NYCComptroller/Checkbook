@@ -2688,6 +2688,7 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
     float: right;
     position: relative;
     top: 135px;
+    padding-right: 2-px;
 }
     
 .chart-nyc-legend .legend-title
