@@ -98,7 +98,15 @@
 	$node->widgetConfig->chartConfig->series[0]->type = 'column';
 	$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
 	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
-	$node->widgetConfig->chartTitle =  MappingUtil::getCurrenEhtnicityName() . ' Top Ten '  .  ContractUtil::getCurrentContractStatusandType() .  ' Sub Vendors Contracts  by Current Amount';
+	
+	$last_param = _getLastRequestParamValue();
+	if($last_param =='vendor'){
+		$node->widgetConfig->chartTitle =  'Prime Vendor Top Ten '  .  ContractUtil::getCurrentContractStatusandType() .  ' Sub Vendors Contracts  by Current Amount';
+	}elseif($last_param =='subvendor'){
+		$node->widgetConfig->chartTitle =  'Sub Vendor Top Ten '  .  ContractUtil::getCurrentContractStatusandType() .  ' Sub Vendors Contracts  by Current Amount';
+	}else{
+		$node->widgetConfig->chartTitle =  MappingUtil::getCurrenEhtnicityName() . ' Top Ten '  .  ContractUtil::getCurrentContractStatusandType() .  ' Sub Vendors Contracts  by Current Amount';
+	}
 ",
 "chartConfig" : {
 	"colors":["#7DB7E5"],
