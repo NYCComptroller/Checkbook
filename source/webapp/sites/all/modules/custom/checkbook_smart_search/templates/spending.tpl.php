@@ -92,11 +92,14 @@ foreach ($spending_parameter_mapping as $key=>$title){
       }
       $value = "<a href='/spending_landing/yeartype/B/year/115/mwbe/".$id ."'>" .$spending_results["minority_type_name"] ."</a>";
   }
-  if($key == 'is_prime_or_sub' && $spending_results["is_prime_or_sub"] == 'P'){
+  if($key == 'is_prime_or_sub' && $spending_results["is_prime_or_sub"] == 'P' || $contracts_results["is_prime_or_sub"] == 'No'){
     $value = 'No';
   }
-  if($key == 'is_prime_or_sub' && $spending_results["is_prime_or_sub"] == 'S'){
+  if($key == 'is_prime_or_sub' && $spending_results["is_prime_or_sub"] == 'S' || $contracts_results["is_prime_or_sub"] == 'Yes'){
     $value = 'Yes';
+  }
+  if($key == 'prime_vendor_name' && $spending_results["is_prime_or_sub"] == 'P' || $contracts_results["is_prime_or_sub"] == 'No'){
+     $value = 'N/A';
   }
   if ($count % 2 == 0){
     if($title)
