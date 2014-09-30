@@ -4,6 +4,7 @@
     "limit":100,
     "startWith":0,
     "columns":["expobjectname.expobjectname", "txcount"],
+    "defaultParameters":{"is_prime_or_sub":"S"},
     "orderBy":["-txcount", "expobjectname.expobjectname"],
 	"getTotalDataCount":true,    
 	"facetPager":true,	    
@@ -15,6 +16,9 @@
     "autocompleteField":"expenditure_object_name", 
     "maxSelect":5,
     "adjustParameters":"
+    if(isset($parameters['vendor_type'])){
+        $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
+    }
     $page = $_REQUEST['page'];
 	checkbook_faceted_search_adjust_param($node);
     if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
