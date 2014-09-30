@@ -187,7 +187,7 @@
 				case when adt.minority_type_id in (4,5,10) then 10 else adt.minority_type_id end as minority_type_id_spending,
                 adt.payment_id, 
                 adt.prime_vendor_id, 
-                adt.is_prime_or_sub, 
+                case when adt.is_prime_or_sub in ('S') then 'Yes' when adt.is_prime_or_sub in ('P') then 'No' else is_prime_or_sub end as is_prime_or_sub,
                 adt.sub_contract_id,
                 adt.vendor_type,
                 adt.is_minority_vendor
@@ -468,7 +468,7 @@
 				case when minority_type_id in (4,5,10) then 'Asian American' when minority_type_id in (2) then 'Black American' when minority_type_id in (7) then 'Non-M/WBE' when minority_type_id in (9) then 'Women' else minority_type_name end as minority_type_name_contract,
 				minority_type_id,
 				case when minority_type_id in (4,5,10) then 10 else minority_type_id end as minority_type_id_contract,
-                is_prime_or_sub, 
+                case when is_prime_or_sub in ('S') then 'Yes' when is_prime_or_sub in ('P') then 'No' else is_prime_or_sub end as is_prime_or_sub,
                 sub_contract_id, 
                 prime_vendor_id,
                 is_minority_vendor,

@@ -66,7 +66,9 @@ $tbl_spending['header']['columns'] = array(
     array('value' => WidgetUtil::generateLabelMappingNoDiv("original_amount"), 'type' => 'number'),
     array('value' => WidgetUtil::generateLabelMappingNoDiv("spent_to_date"), 'type' => 'number')
 );
-$contract_number = $node->results_contract_history['contract_number'];
+
+$contract_number = $node->results_contract_history[0]['contract_number'];
+
 $querySubVendorinfo = "SELECT SUM(maximum_contract_amount) AS total_current_amt, SUM(original_contract_amount) AS total_original_amt, SUM(rfed_amount) AS total_spent_todate
 FROM {subcontract_details}
 WHERE contract_number = '".$contract_number."'
