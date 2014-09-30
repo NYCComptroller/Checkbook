@@ -83,8 +83,14 @@
 	$node->widgetConfig->chartConfig->series[0]->type = 'column';
 	$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
 	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
-
-	$node->widgetConfig->chartTitle =   MappingUtil::getCurrenEhtnicityName() . ' Top Ten Sub Vendors '  . ContractUtil::getCurrentContractStatusandType() . ' Contracts' ;
+	$last_param = _getLastRequestParamValue();
+	if($last_param =='vendor'){
+		$node->widgetConfig->chartTitle =   'Prime Vendor Top Ten Sub Vendors '  . ContractUtil::getCurrentContractStatusandType() . ' Contracts' ;
+	}elseif($last_param =='subvendor'){
+		$node->widgetConfig->chartTitle =   'Sub Vendor Top Ten Sub Vendors '  . ContractUtil::getCurrentContractStatusandType() . ' Contracts' ;
+	}else{
+		$node->widgetConfig->chartTitle =   MappingUtil::getCurrenEhtnicityName() . ' Top Ten Sub Vendors '  . ContractUtil::getCurrentContractStatusandType() . ' Contracts' ;
+	}
 	
 ",
 "chartConfig" : {

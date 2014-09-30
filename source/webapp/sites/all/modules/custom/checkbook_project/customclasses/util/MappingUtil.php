@@ -129,7 +129,7 @@ class MappingUtil {
     		$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/3/dashboard/dm" . "'>Hispanic American</a></li>";
     	}
 
-    	if(array_intersect($applicable_minority_types,array(7,11))){
+/*    	if(array_intersect($applicable_minority_types,array(7,11))){
     		$filters_html .=  "<li class='no-click title'>Other</li>";
     		if(array_intersect($applicable_minority_types,array(7))){
     			$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/7/dashboard/dsv" . "'>Non-M/WBE</a></li>";
@@ -138,7 +138,7 @@ class MappingUtil {
     			$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/11/dashboard/dsv" . "'>Individuals & Others</a></li>";
     		}    		
     	}
-		
+*/		
   		$filters_html .=  "</ul>
   		</div>";
     	

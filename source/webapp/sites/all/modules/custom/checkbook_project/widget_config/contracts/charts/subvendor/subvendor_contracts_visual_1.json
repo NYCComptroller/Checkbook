@@ -143,7 +143,13 @@
 	$curr_series_obj->data = $series_current;		
 	$node->widgetConfig->chartConfig->series[] = $curr_series_obj;
 	
-	$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Sub Vendors Spending by ' . ContractUtil::getCurrentContractStatusandType() . ' Contracts';
+	
+	$last_param = _getLastRequestParamValue();
+	if($last_param =='vendor'){
+		$node->widgetConfig->chartTitle = 'Prime Vendor Sub Vendors Spending by ' . ContractUtil::getCurrentContractStatusandType() . ' Contracts';
+	}else{
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Sub Vendors Spending by ' . ContractUtil::getCurrentContractStatusandType() . ' Contracts';
+	}
 ",
 "chartConfig" : {
     "plotOptions": {
