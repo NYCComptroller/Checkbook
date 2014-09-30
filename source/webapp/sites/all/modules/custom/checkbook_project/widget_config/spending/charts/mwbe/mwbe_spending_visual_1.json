@@ -221,7 +221,9 @@ echo '<div class=\"chart-right\">
             "series": {
                 "dataLabels": {
                     "enabled": true,
-                    "format": "{point.custom_label}"
+                    "format": "{point.custom_label}",
+                    "crop": false,
+                	"overflow": "none"
                 }             
             }
     },
