@@ -45,7 +45,6 @@ $spending_link = "/spending/transactions/agid/" . _getRequestParamValue("agid") 
   <div class="contract-id">
     <h2 class="contract-title">Contract ID: <span
       class="contract-number"><?php echo $node->data[0]['contract_number'];?></span></h2><br />
-      <span>Parent Contract: <?php if($node->data[0]['master_contract_number']) { echo $node->data[0]['master_contract_number']; } else { echo 'N/A';}?></span>
 	<?php
     if ( _getRequestParamValue("datasource") == "checkbook_oge" && !preg_match('/newwindow/',$_GET['q']) && $node->data_source_amounts_differ) {
 			$alt_txt = "This contract agreement has addtional information as a prime vendor. <br><br> Click this icon to view this contract as a prime vendor. ";
@@ -57,10 +56,7 @@ $spending_link = "/spending/transactions/agid/" . _getRequestParamValue("agid") 
 			echo "<div class='contractLinkNote'><a class='new_window' href='". $url ."' alt='" . $alt_txt . "'  >View as agency</a></div>";
 		}
 	?>      
-<?php 
-
-
-
+<?php
 
 if(isset($node->magid)){
   $master_link_html = '<span class="master-contract-link">Parent Contract: <a class="bottomContainerReload" href=/panel_html/contract_transactions/contract_details/magid/' .  $node->magid . '/doctype/' . $node->document_code. $datasource . ' class=\"bottomContainerReload\">' .  $node->contract_number . '</a></span>';
