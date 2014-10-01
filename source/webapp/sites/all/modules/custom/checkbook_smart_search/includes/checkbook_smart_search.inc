@@ -810,7 +810,8 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
                 "check_eft_issued_date" => "Issue Date",
                 "is_prime_or_sub" => "Sub Vendor",
                 "minority_type_name" => "M/WBE Category",
-                "prime_vendor_name" => "Associated Prime Vendor"
+                "prime_vendor_name" => "Associated Prime Vendor",
+                "" => ""
             );
       break;
     case "contracts":

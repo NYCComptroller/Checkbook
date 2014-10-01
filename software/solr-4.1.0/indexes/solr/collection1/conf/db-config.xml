@@ -191,7 +191,7 @@
                 adt.sub_contract_id,
                 adt.vendor_type,
                 adt.is_minority_vendor,
-                adt.prime_vendor_name
+                case when adt.is_prime_or_sub in ('P') then 'N/A' else adt.prime_vendor_name end as prime_vendor_name
 			 from all_disbursement_transactions  adt left join ref_year ry on adt.check_eft_issued_nyc_year_id = ry.year_id
 			 left join ref_spending_category rsc on rsc.spending_category_id = adt.spending_category_id
 			 where 
@@ -475,7 +475,7 @@
                 prime_vendor_id,
                 is_minority_vendor,
                 vendor_type,
-                prime_vendor_name
+                case when is_prime_or_sub in ('P') then 'N/A' else prime_vendor_name end as prime_vendor_name
                 from all_agreement_transactions a
             left join ref_document_code dc on a.document_code_id = dc.document_code_id
             left join ref_award_category rac on a.award_category_id = rac.award_category_id

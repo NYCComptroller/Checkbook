@@ -7,6 +7,7 @@
 */
 ?>
 <?php
+
 $contracts_parameter_mapping = _checkbook_smart_search_domain_fields('contracts', $IsOge);
 if(strtolower($contracts_results['contract_status']) == 'registered'){
 
@@ -172,13 +173,13 @@ foreach ($contracts_parameter_mapping as $key => $title){
       }
       $value = "<a href='/contracts_landing/status/A/yeartype/B/year/115/mwbe/".$id ."'>" .$contracts_results["minority_type_name"] ."</a>";
   }
-  if($key == 'is_prime_or_sub' && $contracts_results["is_prime_or_sub"] == 'P' || $contracts_results["is_prime_or_sub"] == 'No'){
+  if($key == 'is_prime_or_sub' && $contracts_results["is_prime_or_sub"] == 'P' ){
       $value = 'No';
   }
-  if($key == 'is_prime_or_sub' && $contracts_results["is_prime_or_sub"] == 'S' || $contracts_results["is_prime_or_sub"] == 'Yes'){
+  if($key == 'is_prime_or_sub' && $contracts_results["is_prime_or_sub"] == 'S' ){
       $value = 'Yes';
   }
-  if($key == 'prime_vendor_name' && $contracts_results["is_prime_or_sub"] == 'P' || $contracts_results["is_prime_or_sub"] == 'No'){
+  if($key == 'prime_vendor_name' && $contracts_results["is_prime_or_sub"] == 'P' ){
       $value = 'N/A';
   }
   if ($count % 2 == 0){
