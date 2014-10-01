@@ -48,7 +48,6 @@ else
 if(!$IsOge)
 $date_fields = array("check_eft_issued_date");
 $amount_fields = array("check_amount");
-
 $count = 1;
 $row = array();
 $rows = array();
@@ -92,13 +91,13 @@ foreach ($spending_parameter_mapping as $key=>$title){
       }
       $value = "<a href='/spending_landing/yeartype/B/year/115/mwbe/".$id ."'>" .$spending_results["minority_type_name"] ."</a>";
   }
-  if($key == 'is_prime_or_sub' && $spending_results["is_prime_or_sub"] == 'P' || $spending_results["is_prime_or_sub"] == 'No'){
+  if($key == 'is_prime_or_sub' && $spending_results["is_prime_or_sub"] == 'P' ){
     $value = 'No';
   }
-  if($key == 'is_prime_or_sub' && $spending_results["is_prime_or_sub"] == 'S' || $spending_results["is_prime_or_sub"] == 'Yes'){
+  if($key == 'is_prime_or_sub' && $spending_results["is_prime_or_sub"] == 'S' ){
     $value = 'Yes';
   }
-  if($key == 'prime_vendor_name' && $spending_results["is_prime_or_sub"] == 'P' || $spending_results["is_prime_or_sub"] == 'No'){
+  if($key == 'prime_vendor_name' && $spending_results["is_prime_or_sub"] == 'P' ){
      $value = 'N/A';
   }
   if ($count % 2 == 0){
