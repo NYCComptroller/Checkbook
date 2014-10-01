@@ -12,6 +12,11 @@
     ",
     "noDataInitialLoad":true,
     "totalAggregateColumns":["check_amount_sum","check_amount_sum@checkbook:spending_subven_data"],
+    "adjustTotalAggregateColumnsParameters":"
+        $params = $parameters;
+        unset($params['minority_type_id@checkbook:spending_subven_data']);
+        return $params;
+    ",
     "columns": [
         "yeartype.yeartype",
         "agency.agency",
@@ -76,8 +81,14 @@
             unset($parameters['minority_type_id']);
             unset($parameters['industry_type_id']);
         }
+        else {
+            if(isset($parameters['minority_type_id'])) {
+                $parameters['minority_type_id@checkbook:spending_subven_data'] = $parameters['minority_type_id'];
+            }
+        }
 
-        return $parameters;
+
+return $parameters;
     ",
     "summaryView":{
         "template":"spending_agency_summary",
