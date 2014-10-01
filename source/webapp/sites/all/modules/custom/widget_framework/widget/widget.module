@@ -760,14 +760,20 @@ function load_widget_data($node, $resultFormatter) {
           
           if ($config->totalAggregateColumns) {
           	foreach($config->totalAggregateColumns as $aggregateColumn){
+                $params = $parameters;
                 $ds = $datasetName;
                 $column = $aggregateColumn;
+                //Handle multiple cube joins
                 if (strpos($aggregateColumn,'@') !== false) {
                     $col_array = explode("@",$aggregateColumn);
                     $column = $col_array[0];
                     $ds = $col_array[1];
                 }
-          		$result = $dataQueryController->queryCube($ds,array($column), $parameters, $orderBy,$startWith, $limit,$resultFormatter);
+                //Adjust aggregate parameters before sql call
+                if(isset($config->adjustTotalAggregateColumnsParameters)){
+                    $params =  eval($config->adjustTotalAggregateColumnsParameters);
+                }
+                $result = $dataQueryController->queryCube($ds,array($column), $params, $orderBy,$startWith, $limit,$resultFormatter);
           		$node->totalAggregateColumns[$aggregateColumn] = $result[0][$column];
           	}
           }
