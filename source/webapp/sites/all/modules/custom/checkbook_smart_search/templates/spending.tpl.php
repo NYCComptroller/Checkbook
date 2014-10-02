@@ -100,6 +100,7 @@ foreach ($spending_parameter_mapping as $key=>$title){
 //  if($key == 'prime_vendor_name' && $spending_results["is_prime_or_sub"] == 'P' ){
 //     $value = 'N/A';
 //  }
+    
   if ($count % 2 == 0){
     if($title)
         $row[] = '<div class="field-label">'.$title.':</div><div class="field-content">'.$value.'</div>';
