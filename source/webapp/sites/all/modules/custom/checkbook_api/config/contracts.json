@@ -835,8 +835,8 @@
                         "Original Amount":"original_maximum_amount",
                         "Original Modified":"original_or_modified_desc",
                         "Contract Industry":"industry_type_name@checkbook:industry_type",
-                        "M/WBE Category":"minority_type_id",
-                        "M/WBE Category":"minority_type_name"
+                        "M/WBE Category":"minority_type_name",
+                        "M/WBE Category":"minority_type_id"
 //                        "Sub Contract Reference ID":"sub_contract_id",
 //                        "Sub Vendor":"vendor_type"
                     }
