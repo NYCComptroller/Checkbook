@@ -784,8 +784,6 @@
                         "contract_industry":"industry_type_name@checkbook:industry_type",
                         "minority_type_id":"minority_type_id",
                         "minority_type_name":"minority_type_name"
-//                        "sub_contract_reference_id":"sub_contract_id",
-//                        "sub_vendor":"vendor_type"
                     },
                     "rowElements":[
                         "agency",
@@ -810,8 +808,6 @@
                         "contract_industry",
                         "minority_type_id",
                         "minority_type_name"
-//                        "sub_contract_id",
-//                        "vendor_type"
                     ]
                 },
                 "csv":{
@@ -837,8 +833,6 @@
                         "Contract Industry":"industry_type_name@checkbook:industry_type",
                         "M/WBE Category":"minority_type_name",
                         "M/WBE Category":"minority_type_id"
-//                        "Sub Contract Reference ID":"sub_contract_id",
-//                        "Sub Vendor":"vendor_type"
                     }
                 }
             },
