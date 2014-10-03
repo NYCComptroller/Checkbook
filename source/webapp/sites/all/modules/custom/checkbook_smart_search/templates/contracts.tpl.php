@@ -30,7 +30,7 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
 
         }
         else {
-            if($contracts_results["is_prime_or_sub"] == 'S'){
+            if($contracts_results["is_prime_or_sub"] == 'Yes'){
                 $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". _getFiscalYearID() .'/subvendor/'.$contracts_results['vendor_id'];
             }else{
                 $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". _getFiscalYearID() .'/vendor/'.$contracts_results['vendor_id'];
@@ -45,7 +45,7 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
             $agency_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/"._getFiscalYearID().'/agency/'.$contracts_results['agency_id'];
         }
         else{
-            if($contracts_results["is_prime_or_sub"] == 'S'){
+            if($contracts_results["is_prime_or_sub"] == 'Yes'){
                 $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". _getFiscalYearID() .'/subvendor/'.$contracts_results['vendor_id'];
             }else{
                 $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". _getFiscalYearID() .'/vendor/'.$contracts_results['vendor_id'];
@@ -173,15 +173,16 @@ foreach ($contracts_parameter_mapping as $key => $title){
       }
       $value = "<a href='/contracts_landing/status/A/yeartype/B/year/115/mwbe/".$id ."'>" .$contracts_results["minority_type_name"] ."</a>";
   }
-  if($key == 'is_prime_or_sub' && $contracts_results["is_prime_or_sub"] == 'P' ){
-      $value = 'No';
-  }
-  if($key == 'is_prime_or_sub' && $contracts_results["is_prime_or_sub"] == 'S' ){
-      $value = 'Yes';
-  }
-  if($key == 'prime_vendor_name' && $contracts_results["is_prime_or_sub"] == 'P' ){
-      $value = 'N/A';
-  }
+//  if($key == 'is_prime_or_sub' && $contracts_results["is_prime_or_sub"] == 'P' ){
+//      $value = 'No';
+//  }
+//  if($key == 'is_prime_or_sub' && $contracts_results["is_prime_or_sub"] == 'S' ){
+//      $value = 'Yes';
+//  }
+//  if($key == 'prime_vendor_name' && $contracts_results["is_prime_or_sub"] == 'P' ){
+//      $value = 'N/A';
+//  }
+
   if ($count % 2 == 0){
     if($title)
         $row[] = '<div class="field-label">'.$title.':</div><div class="field-content">'. $value .'</div>';

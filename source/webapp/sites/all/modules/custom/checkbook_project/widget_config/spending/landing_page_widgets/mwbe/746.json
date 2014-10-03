@@ -5,26 +5,16 @@
     "defaultParameters":{"type_of_year":"B"},
     "cleanURLParameters":["year","agency","yeartype","calyear","category","vendor","mwbe","industry"],
     "urlParamMap":{"year":"year_id","agency":"agency_id","yeartype":"type_of_year","calyear":"year_id","category":"spending_category_id","vendor":"vendor_id","mwbe":"minority_type_id","industry":"industry_type_id"},
-    "dataset": "checkbook:spending_data",
-    "preProcessConfiguration":"
-        $node->is_mwbe = _checkbook_check_is_mwbe_page();
-        if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:spending_mwbe_data';
-    ",
+    "dataset": "checkbook:spending_subven_data",
     "noDataInitialLoad":true,
-    "totalAggregateColumns":["check_amount_sum","check_amount_sum@checkbook:spending_subven_data"],
-    "adjustTotalAggregateColumnsParameters":"
-        $params = $parameters;
-        unset($params['minority_type_id@checkbook:spending_subven_data']);
-        return $params;
-    ",
+    "totalAggregateColumns":["check_amount_sum"],
     "columns": [
         "yeartype.yeartype",
         "agency.agency",
         "agency.agency.agency_short_name",
         "year.year",
         "agency.agency.agency_name",
-        "check_amount_sum",
-        "check_amount_sum@checkbook:spending_subven_data"
+        "check_amount_sum"
     ],
     "limit":5,
     "enableExpand":true,
@@ -53,19 +43,11 @@
         },
         "agency_name_link": {
             "type": "expression2",
-            "expression": "'<a href=\"' . SpendingUtil::getAgencyNameLinkUrl($node,$row) . '\">' . (!$node->is_mwbe ? $row[agency_agency_agency_name] : $row[agency_name_formatted]) . '</a>'"
-        },
-        "formatted_check_amount_sum_mwbe": {
-            "type": "expression2",
-            "expression": "custom_number_formatter_format($row['check_amount_sum'] + $row['check_amount_sum@checkbook:spending_subven_data'],2,'$')"
-        },
-        "formatted_check_amount_sum_citywide": {
-            "type": "expression2",
-            "expression": "custom_number_formatter_format($row['check_amount_sum'],2,'$')"
+            "expression": "'<a href=\"' . SpendingUtil::getAgencyNameLinkUrl($node,$row) . '\">' . $row[agency_name_formatted] . '</a>'"
         },
         "formatted_check_amount_sum": {
             "type": "expression2",
-            "expression": "$node->is_mwbe ? $row['formatted_check_amount_sum_mwbe'] :  $row['formatted_check_amount_sum_mwbe']"
+            "expression": "custom_number_formatter_format($row['check_amount_sum'],2,'$')"
         },
         "agency_amount_link":{
             "type":"expression2",
@@ -73,35 +55,19 @@
         },
         "percent_spending":{
             "type":"expression2",
-            "expression": "SpendingUtil::getPercentYtdSpendingVendorSubVendor($node, $row)"
+            "expression": "SpendingUtil::getPercentYtdSpending($node, $row)"
         }
     },
-    "adjustParameters":"
-        if(!$node->is_mwbe) {
-            unset($parameters['minority_type_id']);
-            unset($parameters['industry_type_id']);
-        }
-        else {
-            if(isset($parameters['minority_type_id'])) {
-                $parameters['minority_type_id@checkbook:spending_subven_data'] = $parameters['minority_type_id'];
-            }
-        }
-
-
-return $parameters;
-    ",
     "summaryView":{
         "template":"spending_agency_summary",
         "templateTitleEval":"
             $catName = RequestUtil::getSpendingCategoryName();
-            $mwbe_title = _checkbook_check_is_mwbe_page() ? 'M/WBE ' : '';
-            return ($mwbe_title . 'Agencies ' . $catName . ' Transactions');
+            return ('M/WBE Agencies ' . $catName . ' Transactions');
         "
     },
     "WidgetTitleEval":"
         $catName = RequestUtil::getSpendingCategoryName();
-        $mwbe_title = _checkbook_check_is_mwbe_page() ? 'M/WBE ' : '';
-        return ($mwbe_title . 'Agencies ' . $catName . ' Transactions');
+        return ('M/WBE Agencies ' . $catName . ' Transactions');
     ",
     "table_title":"",
     "table_columns": [
@@ -121,8 +87,7 @@ return $parameters;
         "labelAlias": "percent_spending",
         "column": "percent_spending",
         "header": "false",
-        "sortSourceColumn":"check_amount_sum",
-        "visibility_flag": "is_mwbe"
+        "sortSourceColumn":"check_amount_sum"
     },
     {
         "label": "",
@@ -131,13 +96,10 @@ return $parameters;
   ],
     "dataTableOptions":{
         "aoColumns": [
-            {"bSortable": false,"sClass":"text","visibility_flag":"-is_mwbe"},
-            {"sClass":"number","sWidth":"150px","asSorting":["desc","asc"],"visibility_flag":"-is_mwbe"},
-            {"bSortable": false,"sWidth":"15px","visibility_flag":"-is_mwbe"},
-            {"bSortable": false,"sClass":"text","visibility_flag":"is_mwbe"},
-            {"sClass":"number","sWidth":"75px","asSorting":["desc","asc"],"visibility_flag":"is_mwbe"},
-            {"sClass":"number","sWidth":"75px","asSorting":["desc","asc"],"visibility_flag":"is_mwbe"},
-            {"bSortable": false,"sWidth":"15px","visibility_flag":"is_mwbe"}
+            {"sClass":"text","sWidth":"75px","bSortable":false},
+            {"sClass":"number","sWidth":"50px","asSorting":["desc","asc"]},
+            {"sClass":"number","sWidth":"75px","asSorting":["desc","asc"]},
+            {"bSortable": false,"sWidth":"10px"}
         ],
         "bServerSide": true,
         "bFilter": false,

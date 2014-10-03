@@ -12,7 +12,7 @@
             "expense_category":"expenditure_object_code",
             "contract_ID":"reference_document_number",
             "capital_project_code":"reporting_code",
-            "spending_category":"spending_category_code@checkbook:spending_category",
+            "spending_category":"spending_category_code@checkbook:spending_category_subven",
             "minority_type_id":"minority_type_id",
             "associated_prime_vendor":"associated_prime_vendor"
         },
@@ -46,7 +46,8 @@
                         "mwbe_category":"minority_type_id",
                         "sub_contract_reference_id":"sub_contract_id",
                         "sub_vendor":"vendor_type",
-                        "associated_prime_vendor":"prime_vendor_name"
+                        "associated_prime_vendor":"prime_vendor_name",
+                        "minority_type_name":"minority_type_name"
                     },
                     "rowElements":[
                         "agency",
@@ -65,7 +66,8 @@
                         "minority_type_id",
                         "sub_contract_id",
                         "vendor_type",
-                        "associated_prime_vendor"
+                        "associated_prime_vendor",
+                        "minority_type_name"
                     ]
                 },
                 "csv":{
@@ -86,7 +88,8 @@
                         "M/WBE Category":"minority_type_id",
                         "Sub Contract Reference ID":"sub_contract_id",
                         "Sub Vendor":"vendor_type",
-                        "Associated Prime Vendor":"prime_vendor_name"
+                        "Associated Prime Vendor":"prime_vendor_name",
+                        "M/WBE Category":"minority_type_name"
                     }
                 }
             },
