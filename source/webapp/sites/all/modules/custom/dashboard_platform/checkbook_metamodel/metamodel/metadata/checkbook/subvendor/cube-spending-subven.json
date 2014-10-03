@@ -413,6 +413,10 @@
         "spending_subven_data__spending_data": [
             {"datasetName": "spending_subven_data", "columnNames": ["agency_id","year_id","type_of_year"]},
             {"datasetName": "spending_data", "columnNames": ["agency_id","year_id","type_of_year"]}
+        ],
+        "spending_subven_data__spending_mwbe_data": [
+            {"datasetName": "spending_subven_data", "columnNames": ["agency_id","year_id","type_of_year"]},
+            {"datasetName": "spending_mwbe_data", "columnNames": ["agency_id","year_id","type_of_year"]}
         ]
     }
 }
