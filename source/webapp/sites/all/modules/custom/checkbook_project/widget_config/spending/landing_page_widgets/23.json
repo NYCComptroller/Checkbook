@@ -73,7 +73,7 @@
         },
         "percent_spending":{
             "type":"expression2",
-            "expression": "SpendingUtil::getPercentYtdSpendingVendorSubVendor($node, $row)"
+            "expression": "SpendingUtil::getPercentYtdSpendingVendorSubVendor($node, $row, 'spending_data')"
         }
     },
     "adjustParameters":"

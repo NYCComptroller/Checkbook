@@ -403,11 +403,12 @@ class SpendingUtil{
      *
      * @param $node
      * @param $row
+     * @param $data_set
      * @return string
      */
-    static function getPercentYtdSpendingVendorSubVendor($node, $row){
-        $sum_vendor_sub_vendor = $row['check_amount_sum'] + $row['check_amount_sum@checkbook:spending_subven_data'];
-        $sum_vendor_sub_vendor_total = $node->totalAggregateColumns['check_amount_sum'] + $node->totalAggregateColumns['check_amount_sum@checkbook:spending_subven_data'];
+    static function getPercentYtdSpendingVendorSubVendor($node, $row, $data_set){
+        $sum_vendor_sub_vendor = $row['check_amount_sum'] + $row['check_amount_sum@checkbook:'.$data_set];
+        $sum_vendor_sub_vendor_total = $node->totalAggregateColumns['check_amount_sum'] + $node->totalAggregateColumns['check_amount_sum@checkbook:'.$data_set];
 
         $ytd_spending = $sum_vendor_sub_vendor/$sum_vendor_sub_vendor_total*100;
         $ytd_spending = $ytd_spending < 0 ? 0.00 : $ytd_spending;
