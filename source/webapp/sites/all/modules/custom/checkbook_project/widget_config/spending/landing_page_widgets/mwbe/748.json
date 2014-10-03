@@ -1,0 +1,130 @@
+{
+    "widgetType":"data_tables",
+    "widgetSubType":"ajaxSimple",
+    "cleanURLParameters":[
+        "agency",
+        "vendor",
+        "category",
+        "year",
+        "yeartype",
+        "check_eft_issued_nyc_year_id",
+        "calendar_fiscal_year_id",
+        "mwbe",
+        "industry"
+    ],
+    "defaultParameters":{"type_of_year":"B","spending_category.spending_category":""},
+    "urlParamMap":{
+        "agency":"agency_id",
+        "vendor":"prime_vendor.prime_vendor",
+        "category":"spending_category_id",
+        "year":"year_id",
+        "yeartype":"type_of_year",
+        "check_eft_issued_nyc_year_id":"check_eft_issued_date",
+        "calendar_fiscal_year_id":"calendar_fiscal_year_id",
+        "mwbe":"minority_type_id"
+    },
+    "getTotalDataCount":true,
+    "limit":"5",
+    "noDataInitialLoad":true,
+    "html_class":"",
+    "no_results_content":"No Results Found",
+    "dataset":"checkbook:contracts_subven_vendor_spending",
+    "columns":[
+        "sub_vendor.sub_vendor",
+        "sub_vendor.sub_vendor.legal_name",
+        "prime_vendor.prime_vendor",
+        "prime_vendor.prime_vendor.legal_name",
+        "minority_type.minority_type",
+        "total_sub_contracts",
+        "ytd_spending_sub_vendors"
+    ],
+    "enableExpand":true,
+    "disableViewAll":true,
+    "header":"
+        $node->widgetConfig->getData=false;
+        load_widget_data($node);
+        if($node->totalDataCount > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
+        $header='<div class=\"tableHeader\"><h2>Top ' .  $count . 'Sub Vendors</h2><span class=\"contCount\"> Number of Sub Vendors:  ' . number_format($node->totalDataCount) . '</span></div>';
+        return $header;
+    ",
+    "footer":"
+        $url = SpendingUtil::getSpendingFooterUrl($node);
+
+        $footer = '';
+        if($node->totalDataCount > 0)
+             $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
+        else
+              $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
+
+        return $footer;
+    ",
+    "derivedColumns": {
+            "mwbe_category": {
+                "type":"expression2",
+                "expression":"MappingUtil::getMinorityCategoryById($row[minority_type_minority_type])"
+            },
+            "sub_vendor_name_formatted": {
+                "type":"expression2",
+                "expression":"_get_tooltip_markup($row['sub_vendor_sub_vendor_legal_name'],36)"
+            },
+            "sub_vendor_name_link": {
+                "type":"expression2",
+                "expression":"'<a href=\"' . SpendingUtil::getSubVendorNameLinkUrl($node,$row) . '\">' . $row[sub_vendor_name_formatted] . '</a>'"
+            },
+            "sub_vendor_name_link2": {
+                "type":"expression2",
+                "expression":"($row[sub_vendor_sub_vendor] == null )?$row['sub_vendor_sub_vendor_legal_name']:$row[sub_vendor_name_link]"
+            },
+            "prime_vendor_name_formatted": {
+                "type":"expression2",
+                "expression":"_get_tooltip_markup($row['prime_vendor_prime_vendor_legal_name'],36)"
+            },
+            "prime_vendor_name_link": {
+                "type":"expression2",
+                "expression":"'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row[prime_vendor_name_formatted] . '</a>'"
+            },
+            "prime_vendor_name_link2": {
+                "type":"expression2",
+                "expression":"($row[prime_vendor_prime_vendor] == null )?$row['prime_vendor_prime_vendor_legal_name']:$row[prime_vendor_name_link]"
+            },
+            "ytd_spending_sub_vendors_link":{
+                "type":"expression2",
+                "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getSubVendorYtdSpendingUrl($node,$row) . '\">' . custom_number_formatter_format($row['ytd_spending_sub_vendors'],2,'$') . '</a>'"
+            }
+    },
+    "WidgetTitleEval":"
+        $catName = RequestUtil::getSpendingCategoryName();
+        $title = _checkbook_check_is_sub_vendor_page() ? 'Sub Vendors ' : '';
+        return ($title . 'Checks ' . $catName . ' Transactions');
+    ",
+    "table_columns": [
+            {"labelAlias":"sub_vendor_name","column":"sub_vendor_name_link2","sortSourceColumn":"sub_vendor.sub_vendor"},
+            {"labelAlias":"no_of_contracts","column":"total_sub_contracts","sortSourceColumn":"total_sub_contracts"},
+            {"labelAlias":"mwbe_category","column":"mwbe_category","sortSourceColumn":"minority_type.minority_type"},
+            {"labelAlias":"prime_vendor","column":"prime_vendor_name_link2","sortSourceColumn":"prime_vendor.prime_vendor"},
+            {"labelAlias":"ytd_spending_sub_vendors","column":"ytd_spending_sub_vendors_link","sortSourceColumn":"ytd_spending_sub_vendors"},
+            {"label":"","column":""}
+    ],
+    "dataTableOptions":{
+        "aoColumns": [
+            {"sClass":"text","sWidth":"170px","bSortable":false},
+            {"sClass":"number","sWidth":"50px","bSortable":true,"asSorting":["asc","desc"]},
+            {"sClass":"text pad-left","sWidth":"100px","bSortable":false},
+            {"sClass":"text pad-left","sWidth":"170px","bSortable":false},
+            {"sClass":"number","sWidth":"100px","bSortable":true,"asSorting":["desc","asc"]},
+            {"sWidth":"15px","bSortable":false}
+        ],
+        "bServerSide": true,
+        "bFilter": false,
+        "bPaginate": false,
+        "bProcessing":true,
+        "bLengthChange": false,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "aaSorting": [[ 4, "desc" ]],
+        "fnServerParams": "##function ( aoData ) {
+                   reloadExpandCollapseWidget(this,aoData);
+        }##",
+    "oLanguage":{ "sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
+   }
+}

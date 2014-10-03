@@ -7,7 +7,13 @@
         "spending_transactions_all": {
             "datasourceName": "main",
             "source": "all_disbursement_transactions"
+        },
+        "spending_category_subven": {
+            "datasourceName": "main",
+            "source": "ref_spending_category"        
         }
+        
+        
     },
     "cubes":   {
         "subcontract_spending_details": {
@@ -365,6 +371,10 @@
         "spending_transactions_all__prime_vendor": [
             {"datasetName": "spending_transactions_all", "columnNames": ["prime_vendor_id"]},
             {"datasetName": "prime_vendor", "columnNames": ["vendor_id"]}
+        ],
+        "spending_transactions_all__spending_category_subven": [
+            {"datasetName": "spending_transactions_all", "columnNames": ["spending_category_id"]},
+            {"datasetName": "spending_category_subven", "columnNames": ["spending_category_id"]}
         ]
     }
 }

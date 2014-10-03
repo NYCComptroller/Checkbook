@@ -29,7 +29,7 @@ if($IsOge)
     );
 else
 {
-    if($spending_results['is_prime_or_sub'] == 'S'){
+    if($spending_results['is_prime_or_sub'] == 'Yes'){
         $linkable_fields = array(
             "agency_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getCurrentYearID() . "/yeartype/B/agency/".$spending_results["agency_id"],
             "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getCurrentYearID() . "/yeartype/B/subvendor/".$spending_results["vendor_id"],
@@ -91,15 +91,16 @@ foreach ($spending_parameter_mapping as $key=>$title){
       }
       $value = "<a href='/spending_landing/yeartype/B/year/115/mwbe/".$id ."'>" .$spending_results["minority_type_name"] ."</a>";
   }
-  if($key == 'is_prime_or_sub' && $spending_results["is_prime_or_sub"] == 'P' ){
-    $value = 'No';
-  }
-  if($key == 'is_prime_or_sub' && $spending_results["is_prime_or_sub"] == 'S' ){
-    $value = 'Yes';
-  }
-  if($key == 'prime_vendor_name' && $spending_results["is_prime_or_sub"] == 'P' ){
-     $value = 'N/A';
-  }
+//  if($key == 'is_prime_or_sub' && $spending_results["is_prime_or_sub"] == 'P' ){
+//    $value = 'No';
+//  }
+//  if($key == 'is_prime_or_sub' && $spending_results["is_prime_or_sub"] == 'S' ){
+//    $value = 'Yes';
+//  }
+//  if($key == 'prime_vendor_name' && $spending_results["is_prime_or_sub"] == 'P' ){
+//     $value = 'N/A';
+//  }
+    
   if ($count % 2 == 0){
     if($title)
         $row[] = '<div class="field-label">'.$title.':</div><div class="field-content">'.$value.'</div>';
