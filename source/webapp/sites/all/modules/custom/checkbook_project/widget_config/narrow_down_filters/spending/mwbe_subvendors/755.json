@@ -4,6 +4,7 @@
     "limit":100,
     "startWith":0,
     "columns":["category.category", "category.category.spending_category_name", "txcount"],
+    "defaultParameters":{"is_prime_or_sub":"S"},
     "orderBy":"-txcount",
     "autocomplete":false,
     "filterName":"Spending Category",
@@ -11,7 +12,6 @@
     "autocompleteID":"fSpendCategoryId",
     "maxSelect":5,
     "adjustParameters":"
-        $parameters['is_prime_or_sub'] = 'S';
         if(isset($parameters['vendor_type'])){
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
         }

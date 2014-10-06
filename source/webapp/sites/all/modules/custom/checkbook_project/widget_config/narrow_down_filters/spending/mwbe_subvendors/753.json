@@ -6,6 +6,7 @@
     "limit":10,
     "startWith":0,
     "columns":["vendor_type.vendor_type", "txcount"],
+    "defaultParameters":{"is_prime_or_sub":"S"},
     "orderBy":"-txcount",
     "getTotalDataCount":true,
     "facetPager":true,
@@ -14,7 +15,6 @@
     "autocompleteID":"fvendorType",
     "maxSelect":5,
     "adjustParameters":"
-        $parameters['is_prime_or_sub'] = 'S';
         if(isset($parameters['vendor_type'])){
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
         }
