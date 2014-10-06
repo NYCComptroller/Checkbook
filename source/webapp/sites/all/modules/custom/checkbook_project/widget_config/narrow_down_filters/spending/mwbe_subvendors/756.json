@@ -6,6 +6,7 @@
     "startWith":0,
     "autocomplete":false,
     "columns":["minority_type.minority_type", "minority_type.minority_type.minority_type_name", "txcount"],
+    "defaultParameters":{"is_prime_or_sub":"S"},
     "orderBy":"-txcount",
     "getTotalDataCount":true,
     "facetPager":true,
@@ -16,7 +17,6 @@
     "autocompleteField":"minority_type_name",
     "maxSelect":5,
     "adjustParameters":"
-        $parameters['is_prime_or_sub'] = 'S';
         if(isset($parameters['vendor_type'])){
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
         }

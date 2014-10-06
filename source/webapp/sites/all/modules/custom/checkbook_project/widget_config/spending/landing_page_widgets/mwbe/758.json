@@ -11,10 +11,6 @@
     "html_class": "",
     "no_results_content":"No Results Found",
     "dataset": "checkbook:fact_disbursement_line_item",
-    "preProcessConfiguration":"
-        $node->is_mwbe = _checkbook_check_is_mwbe_page();
-        if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:fact_disbursement_line_item_mwbe';
-    ",
     "columns": ["check_eft_issued_date","vendor_name","agency_name","check_amount","expenditure_object_name","agency_id","vendor_id","expenditure_object_id","department_name","industry_type_id"],
     "enableExpand":true,
     "disableViewAll":true,
@@ -33,18 +29,7 @@
         unset($parameters['year_type']);
         unset($parameters['year_id']);
 
-        if(!$node->is_mwbe) {
-            unset($parameters['minority_type_id']);
-            unset($parameters['industry_type_id']);
-        }
-
         return $parameters;
-    ",
-    "adjustColumns":"
-        $adjusted_columns = $node->widgetConfig->columns;
-        if(!$node->is_mwbe && ($key = array_search('industry.industry.industry_type_id', $adjusted_columns)) !== false) unset($adjusted_columns[$key]);
-
-        return $adjusted_columns;
     ",
     "header":"
         $node->widgetConfig->getData=false;
@@ -88,8 +73,7 @@
     },
     "WidgetTitleEval":"
         $catName = RequestUtil::getSpendingCategoryName();
-        $mwbe_title = _checkbook_check_is_mwbe_page() ? 'M/WBE ' : '';
-        return ($mwbe_title . 'Checks ' . $catName . ' Transactions');
+        return ('M/WBE Checks ' . $catName . ' Transactions');
     ",
     "table_columns": [
         {"labelAlias": "issue_date","column": "check_eft_issued_date"},

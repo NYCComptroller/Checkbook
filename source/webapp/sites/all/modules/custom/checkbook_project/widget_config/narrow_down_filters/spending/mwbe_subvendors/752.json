@@ -13,9 +13,9 @@
     "autocompleteID":"fvendorNm",
     "autocompleteField":"vendornm.vendornm.vendor_name",
     "urlParamMap":{"vendornm":"vendornm.vendornm","vendornm_exact":"vendornm.vendornm"},
+    "defaultParameters":{"is_prime_or_sub":"S"},
     "maxSelect":5,
     "adjustParameters":"
-        $parameters['is_prime_or_sub'] = 'S';
         if(isset($parameters['vendor_type'])){
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
         }

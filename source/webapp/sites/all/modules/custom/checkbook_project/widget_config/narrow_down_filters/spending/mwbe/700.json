@@ -9,7 +9,8 @@
     "urlParameterName":"agency",
     "autocompleteParamName":"agency_auto",    
     "autocompleteID":"fagencyId",
-    "autocompleteField":"agency_name", 
+    "autocompleteField":"agency_name",
+    "defaultParameters":{"vendor_type":"pv","is_prime_or_sub":"P"},
     "maxSelect":1,
     "adjustParameters":"
     if(isset($parameters['vendor_type'])){
@@ -21,20 +22,7 @@
     if(function_exists('_checkbook_project_applyParameterFilters')){
         $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
     }
-    $adjustedParameters['agency.agency'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);    
-     //Using child_contract_agency_id column in OGE domainO
-    if(_checkbook_check_isEDCPage()){
-        foreach($adjustedParameters as $key=>$value){
-            if($key == 'master_child_contract_agency_id'){
-               $adjustedParameters['contract_agency_id'] = $value;
-               unset($adjustedParameters[$key]);
-            }
-            if($key == 'master_child_contract_vendor_id'){
-               $adjustedParameters['contract_vendor_id'] = $value;
-               unset($adjustedParameters[$key]);
-            }
-        }
-    }
+    $adjustedParameters['agency.agency'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
     return $adjustedParameters;
     ",   
     "template":"individual_filter"
