@@ -14,7 +14,8 @@
         "total_contract_amount_sum",
         "prime_vendor.prime_vendor",
         "prime_vendor.prime_vendor.legal_name",
-        "year.year"
+        "year.year",
+        "latest_minority_type_id@checkbook:spending_vendor_latest_mwbe_category"
     ],
     "limit":5,
     "enableExpand":true,
