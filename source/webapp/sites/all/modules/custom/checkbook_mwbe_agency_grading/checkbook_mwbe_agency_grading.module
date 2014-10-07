@@ -105,9 +105,9 @@ function _checkbook_mwbe_agency_grading_right($agencies_data){
 		foreach($mwbe_cats as $cat){
 			$nyc_data['total_spending_chart'] += $row[$cat];
 		}
-		$nyc_data['total_non_mwbe'] += $row['total_non_mwbe'];
+		$nyc_data['total_non_mwbe'] += $row['n_mwbe'];
 		$nyc_data['total_io'] += $row['io_nonmwbe'];
-		$nyc_data['total'] += $row['total_mwbe'] + $row['total_non_mwbe'] + $row['io_nonmwbe'];
+		$nyc_data['total'] += $row['total_mwbe'] + $row['n_mwbe'] ;
 	}
 	$nyc_data['mwbe_share'] = custom_number_formatter_format($nyc_data['total_mwbe']/($nyc_data['total_mwbe'] + $nyc_data['total_non_mwbe'] ) * 100,1,null,'%');
 	$nyc_data['total_mwbe']	 = custom_number_formatter_format($nyc_data['total_mwbe'],1,'$')	;

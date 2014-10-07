@@ -663,6 +663,103 @@ class RequestUtil{
     	return $path;
     }
     
+
     
     
+    static function getNextMWBEDashboardState($current_state =  null){
+    	if($current_state == null){
+    		$current_state = _getRequestParamValue('dashboard');
+    	}	    
+		return  "/dashboard/" . self::getNextMWBEDashboardStateParam($current_state);
+    	
+    }
+    
+    static function getNextSubvendorDashboardState($current_state =  null){
+    	if($current_state == null){
+    		$current_state = _getRequestParamValue('dashboard');
+    	}
+    	return  "/dashboard/" . self::getNextSubvendorDashboardStateParam($current_state);
+    }
+    
+    /*
+     * 
+     * 
+     * 
+     *  If MWBE is clicked first the flow becomes prim flow. states mp and sp
+     *  If subvendor is clicked first the flow becomes subvendor flow. states ms and ms
+     */
+    static function getNextMWBEDashboardStateParam($current_state =  null){
+    	if($current_state == null){
+    		$current_state = _getRequestParamValue('dashboard');
+    	}
+    	switch($current_state){
+    		case "mp" :
+    			return "mp";
+    			break;
+    		case "sp" :
+    			return "mp" ;
+    			break;
+    		case "ms" :
+    			return "ms";
+    			break;
+    		case "ss" :
+    			return "ms";
+    			break;
+    	}
+    	return  "mp";
+    	 
+    }
+    
+    /*
+    *
+    *
+    *
+    *  If MWBE is clicked first the flow becomes prim flow. states mp and sp
+    *  If subvendor is clicked first the flow becomes subvendor flow. states ms and ms
+    */    
+    static function getNextSubvendorDashboardStateParam($current_state =  null){
+    	if($current_state == null){
+    		$current_state = _getRequestParamValue('dashboard');
+    	}
+    	 
+    	switch($current_state){
+    		case "mp" :
+    			return "sp";
+    			break;
+    		case "sp" :
+    			return "sp" ;
+    			break;
+    		case "ms" :
+    			return "ss";
+    			break;
+    		case "ss" :
+    			return "ss";
+    			break;
+    	}
+    	return  "sp";
+    }
+    
+    /*
+     * 
+     * 
+     * If subvendor is clicked first the flow becomes subvendor flow
+     * 
+     */
+    static function isDashboardFlowSubvendor($current_state =  null){
+    	if($current_state == null){
+    		$current_state = _getRequestParamValue('dashboard');
+    	}
+    	
+    	switch($current_state){
+    		case "ms" :
+    			return true;
+    			break;
+    		case "ss" :
+    			return true ;
+    			break;
+    		default:
+    			return false;
+    			break;
+    	}
+    }
 }
