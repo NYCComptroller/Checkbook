@@ -204,7 +204,7 @@ class SpendingUtil{
      * @return string
      */
     static function getSubVendorNameLinkUrl($node, $row){
-        $custom_params = array('subvendor'=>$row['sub_vendor_sub_vendor']);
+        $custom_params = array('dashboard'=>'sm','subvendor'=>$row['sub_vendor_sub_vendor']);
         return '/' . self::getLandingPageWidgetUrl($custom_params);
     }
 
@@ -216,7 +216,9 @@ class SpendingUtil{
      * @return string
      */
     static function getPrimeVendorNameLinkUrl($node, $row){
-        $custom_params = array('vendor'=>(isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["prime_vendor_prime_vendor"]));
+        $dashboard = _getRequestParamValue("dashboard");
+        $dashboard = $dashboard == "ms" ? "mp" : $dashboard;
+        $custom_params = array("dashboard"=>$dashboard,"vendor"=>(isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["prime_vendor_prime_vendor"]));
         return '/' . self::getLandingPageWidgetUrl($custom_params);
     }
 
@@ -566,13 +568,22 @@ class SpendingUtil{
         return preg_match($match_landing,$url_ref);
     }
 
-    /**
-     * Returns the vendor type
-     */
-    static function getVendorType($node) {
-        $vendor_type = ($node->is_sub_vendor) ? ($node->is_mwbe ? 'SM' : 'S') : ($node->is_mwbe ? 'PM' : 'P');
-        return $vendor_type;
-    }
+//    /**
+//     * Sets the vendor_type and is_prime_or_sub parameters based on the current dashboard
+//     */
+//    static function getVendorParameters($parameters) {
+//        $dashboard = _getRequestParamValue('dashboard');
+//        if(isset($dashboard)) {
+//            $parameters['vendor_type'] = preg_match('"p"',$dashboard) ? array('P','PM') : array('S','SM');
+//            $parameters['is_prime_or_sub'] = preg_match('"s"',$dashboard) ? 'S' : 'P';
+//        }
+//        else {
+//            $parameters['vendor_type'] = array('P','PM');
+//            $parameters['is_prime_or_sub'] = 'P';
+//        }
+//        return $parameters;
+//    }
+
 
     /**
      * Spending transaction page should be shown for citywide, oge
