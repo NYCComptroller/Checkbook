@@ -44,6 +44,17 @@ class MappingUtil {
         11 => 'Individuals and Others',
 //        array('?') =>'Emerging'
     );
+
+    private static $minority_type_category_map_by_name = array(
+        'African American' => 'Black American',
+        'Hispanic American' => 'Hispanic American',
+        'Asian-Pacific' => 'Asian American',
+        'Asian-Indian' => 'Asian American',
+        'Non-Minority' => 'Non-M/WBE',
+        'Caucasian Woman' => 'Women',
+        'Individuals & Others' => 'Individuals and Others',
+//        array('?') =>'Emerging'
+    );
     private static $minority_type_category_map_multi = array(
         'Total M/WBE' => array(2,3,4,5,9),
         'Asian American' => array(4,5),
@@ -81,6 +92,11 @@ class MappingUtil {
     /** Returns the M/WBE category name based on the minority_type_id mapping */
     static function getMinorityCategoryById($minority_type_id) {
         return self::$minority_type_category_map[$minority_type_id];
+    }
+
+    /** Returns the M/WBE category name based on the minority_type_id mapping */
+    static function getMinorityCategoryByName($minority_type_name) {
+        return self::$minority_type_category_map_by_name[$minority_type_name];
     }
 
     /** Returns the M/WBE category name and it's minority_type_id mapping as an array */

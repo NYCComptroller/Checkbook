@@ -13,7 +13,7 @@
             "contract_ID":"reference_document_number",
             "capital_project_code":"reporting_code",
             "spending_category":"spending_category_code@checkbook:spending_category_subven",
-            "minority_type_id":"minority_type_id",
+            "mwbe_category":"minority_type_id",
             "associated_prime_vendor":"associated_prime_vendor"
         },
         "dataset":{
@@ -39,15 +39,14 @@
                         "check_amount":"check_amount",
                         "expense_category":"expenditure_object_name",
                         "contract_ID":"reference_document_number",
-                        "contract_purpose":"purpose",
+                        "purpose":"purpose",
                         "capital_project":"reporting_code",
                         "issue_date":"check_eft_issued_date",
                         "spending_category":"spending_category_name",
-                        "mwbe_category":"minority_type_id",
                         "sub_contract_reference_id":"sub_contract_id",
                         "sub_vendor":"vendor_type",
                         "associated_prime_vendor":"prime_vendor_name",
-                        "minority_type_name":"minority_type_name"
+                        "mwbe_category":"minority_type_name"
                     },
                     "rowElements":[
                         "agency",
@@ -59,15 +58,16 @@
                         "check_amount",
                         "expense_category",
                         "contract_ID",
-                        "contract_purpose",
+                        "purpose",
                         "capital_project",
                         "issue_date",
                         "spending_category",
-                        "minority_type_id",
                         "sub_contract_id",
                         "vendor_type",
                         "associated_prime_vendor",
-                        "minority_type_name"
+                        "sub_contract_reference_id",
+                        "mwbe_category",
+                        "sub_vendor"
                     ]
                 },
                 "csv":{
@@ -157,7 +157,7 @@
                 "dataType":"text",
                 "maxLength":"2"
             },
-            "minority_type_id":{
+            "mwbe_category":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"9"
