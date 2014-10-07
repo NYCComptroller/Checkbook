@@ -125,24 +125,29 @@ class MappingUtil {
     	
     	$applicable_minority_types = self::getCurrentMWBEApplicableFilters($domain);
     	 
-    	
+    	$mwbe_featured_dashboard_param = RequestUtil::getNextMWBEDashboardState();
     	$filters_html =  "<div class='main-nav-drop-down' style='display:none'>
   		<ul>
   			<li class='no-click title'>M/WBE Category</li>
-  			<li class='no-click'><a href='/" . RequestUtil::getLandingPageUrl($domain) . "/mwbe/2~3~4~5~9/dashboard/dm" . "'>Total M/WBE</a></li>";
+  			<li class='no-click'><a href='/" . RequestUtil::getLandingPageUrl($domain) . "/mwbe/2~3~4~5~9" .$mwbe_featured_dashboard_param   			
+																	  			.	_checkbook_project_get_url_param_string("agency")
+																	  			. _checkbook_project_get_url_param_string("vendor")  .
+															  				"'>Total M/WBE</a></li>
+			<li class='no-click'><a href='/" . RequestUtil::getLandingPageUrl($domain) . "/mwbe/2~3~4~5~9" .$mwbe_featured_dashboard_param . "'>M/WBE Home</a></li>  					
+  					";
     	
     	
     	if(array_intersect($applicable_minority_types,array(4,5))){
-    		$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/4~5/dashboard/dm" . "'>Asian American</a></li>";
+    		$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/4~5" . $mwbe_featured_dashboard_param . "'>Asian American</a></li>";
     	}
     	if(array_intersect($applicable_minority_types,array(2))){
-    		$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/2/dashboard/dm" . "'>Black American</a></li>";
+    		$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/2" . $mwbe_featured_dashboard_param . "'>Black American</a></li>";
     	}
     	if(array_intersect($applicable_minority_types,array(9))){
-    		$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/9/dashboard/dm" . "'>Women</a></li>";
+    		$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/9" . $mwbe_featured_dashboard_param . "'>Women</a></li>";
     	}
     	if(array_intersect($applicable_minority_types,array(3))){
-    		$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/3/dashboard/dm" . "'>Hispanic American</a></li>";
+    		$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/3" . $mwbe_featured_dashboard_param . "'>Hispanic American</a></li>";
     	}
 
 /*    	if(array_intersect($applicable_minority_types,array(7,11))){
@@ -168,7 +173,15 @@ class MappingUtil {
     	
     	switch($domain){
     		case "spending":
-    			$urlParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"vendor_id","category"=>"spending_category_id");
+    			if(RequestUtil::isDashboardFlowSubvendor()){
+    				$table = "aggregateon_subven_spending_coa_entities";
+    				$urlParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"prime_vendor_id");
+    			}else{
+    				$table = "aggregateon_mwbe_spending_coa_entities";
+    				$urlParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"vendor_id");
+    			}
+    			//$urlParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"vendor_id","category"=>"spending_category_id");
+    			
     			$where_filters = array();
     			
     			foreach($urlParamMap as $param=>$value){
@@ -181,8 +194,10 @@ class MappingUtil {
     				$where_filter = ' where ' . implode(' and ' , $where_filters);
     			}
     			
+    			
+    			
     			$sql = 'select a1.minority_type_id
-				    from aggregateon_mwbe_spending_coa_entities a1
+				    from ' . $table. ' a1
 				   ' . $where_filter . '
 				    group by a1.minority_type_id  ';
     			
@@ -191,8 +206,17 @@ class MappingUtil {
     			
 	    	break;	
 	    	case "contracts":
-	    		$urlParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","awdmethod"=>"award_method_id","vendor"=>"vendor_id",
-									"status"=>"status_flag","csize"=>"award_size_id","cindustry"=>"industry_type_id");
+	    		if(RequestUtil::isDashboardFlowSubvendor()){
+	    			$table = "aggregateon_subven_contracts_cumulative_spending";
+	    			$urlParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","vendor"=>"prime_vendor_id");
+	    		}else{
+	    			$table = "aggregateon_mwbe_contracts_cumulative_spending";
+	    			$urlParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","vendor"=>"vendor_id");
+	    		}
+	    		//$urlParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","awdmethod"=>"award_method_id","vendor"=>"vendor_id",
+				//					"status"=>"status_flag","csize"=>"award_size_id","cindustry"=>"industry_type_id");
+	    		
+	    			   
 	    		$where_filters = array();
 	    		foreach($urlParamMap as $param=>$value){
 	    			if(_getRequestParamValue($param) != null){
@@ -204,7 +228,7 @@ class MappingUtil {
 	    			$where_filter = ' where ' . implode(' and ' , $where_filters);
 	    		}
 	    		
-	    		$where_filter .= ' and rd.document_code in (' . ContractUtil::getCurrentPageDocumentIds() . ') ';
+	    		//$where_filter .= ' and rd.document_code in (' . ContractUtil::getCurrentPageDocumentIds() . ') ';
 	    		
 	    		
 	    		$sql = 'select a1.minority_type_id

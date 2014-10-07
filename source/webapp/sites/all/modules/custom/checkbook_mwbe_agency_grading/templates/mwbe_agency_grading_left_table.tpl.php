@@ -60,7 +60,6 @@
         	        "aoColumnDefs": [
         	                         {
      		                        	"aTargets": [0],
-     		                        	"asSorting": [  ],
      		                        	"sClass":"text"
      		                         },
         	                         {
