@@ -192,7 +192,9 @@ class SpendingUtil{
      * @return string
      */
     static function getVendorNameLinkUrl($node, $row){
-        $custom_params = array('vendor'=>(isset($row["vendor_id"]) ? $row["vendor_id"] : $row["vendor_vendor"]));
+        $dashboard = _getRequestParamValue("dashboard");
+        $dashboard = $dashboard == "ms" ? "mp" : $dashboard;
+        $custom_params = array("dashboard"=>$dashboard,"vendor"=>(isset($row["vendor_id"]) ? $row["vendor_id"] : $row["vendor_vendor"]));
         return '/' . self::getLandingPageWidgetUrl($custom_params);
     }
 
@@ -216,9 +218,31 @@ class SpendingUtil{
      * @return string
      */
     static function getPrimeVendorNameLinkUrl($node, $row){
+
         $dashboard = _getRequestParamValue("dashboard");
-        $dashboard = $dashboard == "ms" ? "mp" : $dashboard;
-        $custom_params = array("dashboard"=>$dashboard,"vendor"=>(isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["prime_vendor_prime_vendor"]));
+        $latest_minority_type_id = null;
+        if(isset($row["minority_type_id"]))
+            $latest_minority_type_id = $row["minority_type_id"];
+        else if(isset($row["latest_minority_type_id@checkbook:spending_vendor_latest_mwbe_category"]))
+            $latest_minority_type_id = $row["latest_minority_type_id@checkbook:spending_vendor_latest_mwbe_category"];
+
+        $custom_params = null;
+
+        if(MappingUtil::isMWBECertified(array($latest_minority_type_id))) {
+            $custom_params = array (
+                "dashboard"=>($dashboard == "ms" ? "mp" : $dashboard),
+                "mwbe"=>$latest_minority_type_id,
+                "vendor"=>(isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["prime_vendor_prime_vendor"])
+            );
+        }
+        else {
+            $custom_params = array (
+                "dashboard"=>null,
+                "mwbe"=>null,
+                "vendor"=>(isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["prime_vendor_prime_vendor"])
+            );
+        }
+
         return '/' . self::getLandingPageWidgetUrl($custom_params);
     }
 
@@ -491,8 +515,8 @@ class SpendingUtil{
 
         if(is_array($override_params)){
             foreach($override_params as $key => $value){
-                $url .= "/$key";
                 if(isset($value)){
+                    $url .= "/$key";
                     $url .= "/$value";
                 }
             }
