@@ -128,8 +128,8 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 				<li class='no-click'><a href='/" . $sub_vendors_home_link  
 															.	_checkbook_project_get_url_param_string("agency")  
 															. _checkbook_project_get_url_param_string("vendor")  .
-															"/subvendor/all/dashboard/dsv" . "'>Total SubVendors</a></li>
-  				<li class='no-click'><a href='/" . $sub_vendors_home_link . "/subvendor/all"  . $svendor_featured_dashboard_param . "'>SubVendors Home</a></li>
+															"/subvendor/all/dashboard/ss'>Total SubVendors</a></li>
+  				<li class='no-click'><a href='/" . $sub_vendors_home_link . "/subvendor/all/dashboard/ss'>SubVendors Home</a></li>
 			</ul>
   		</div>
   		";
@@ -152,14 +152,14 @@ if(!preg_match('/smnid/',$_GET['q']) && (
 if($mwbe_amount  == 0){
 	$mwbe_link = l('<div><span class="nav-title">M/WBE</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div>','',$options_disabled);
 }else{	
-	$mwbe_link = l('<div><span class="nav-title">M/WBE</span><br>&nbsp;'. custom_number_formatter_format($mwbe_amount ,1,'$') . '</div>',$mwbe_active_domain_link. "/mwbe/2~3~4~5~9/" . $mwbe_featured_dashboard_param,$options);
+	$mwbe_link = l('<div><span class="nav-title">M/WBE</span><br>&nbsp;'. custom_number_formatter_format($mwbe_amount ,1,'$') . '</div>',$mwbe_active_domain_link. "/mwbe/2~3~4~5~9" . $mwbe_featured_dashboard_param,$options);
 }
 
 
 if($svendor_amount  == 0){
 	$subvendors_link = l('<div><span class="nav-title">' .$mwbe_prefix  .' Sub Vendors</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div>','',$options_disabled);	
 }else{
-	$subvendors_link = l('<div><span class="nav-title">' .$mwbe_prefix  .' Sub Vendors</span><br>&nbsp;'. custom_number_formatter_format($svendor_amount ,1,'$') . '</div>',$svendor_active_domain_link. "/subvendor/all/" . $svendor_featured_dashboard_param ,$options);
+	$subvendors_link = l('<div><span class="nav-title">' .$mwbe_prefix  .' Sub Vendors</span><br>&nbsp;'. custom_number_formatter_format($svendor_amount ,1,'$') . '</div>',$svendor_active_domain_link. "/subvendor/all" . $svendor_featured_dashboard_param ,$options);
 }
 
 
