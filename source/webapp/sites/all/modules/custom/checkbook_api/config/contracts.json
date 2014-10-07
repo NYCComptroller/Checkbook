@@ -17,7 +17,7 @@
             "category":"document_code@checkbook:ref_document_code",
             "pin":"tracking_number",
             "apt_pin":"brd_awd_no",
-            "minority_type_id":"minority_type_id",
+            "mwbe_category":"minority_type_id",
             "associated_prime_vendor":"associated_prime_vendor"
         },
         "dataset":{
@@ -58,7 +58,7 @@
                         "sub_contract_reference_id":"sub_contract_id",
                         "sub_vendor":"vendor_type",
                         "associated_prime_vendor":"prime_vendor_name",
-                        "minority_type_name":"minority_type_name"
+                        "mwbe_category":"minority_type_name"
                     },
                     "rowElements":[
                         "agency",
@@ -86,7 +86,8 @@
                         "sub_contract_id",
                         "vendor_type",
                         "associated_prime_vendor",
-                        "minority_type_name"
+                        "mwbe_category",
+                        "sub_vendor"
                     ]
                 },
                 "csv":{
@@ -156,7 +157,7 @@
                 "valueType":"value",
                 "dataType":"text"
             },
-            "minority_type_id":{
+            "mwbe_category":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"9"
@@ -179,7 +180,7 @@
             "category":"document_code@checkbook:ref_document_code",
             "pin":"tracking_number",
             "apt_pin":"brd_awd_no",
-            "minority_type_id":"minority_type_id",
+            "mwbe_category":"minority_type_id",
             "associated_prime_vendor":"associated_prime_vendor"
         },
         "dataset":{
@@ -219,7 +220,7 @@
                         "sub_contract_reference_id":"sub_contract_id",
                         "sub_vendor":"vendor_type",
                         "associated_prime_vendor":"prime_vendor_name",
-                        "minority_type_name":"minority_type_name"
+                        "mwbe_category":"minority_type_name"
                     },
                     "rowElements":[
                         "agency",
@@ -246,7 +247,8 @@
                         "sub_contract_id",
                         "vendor_type",
                         "associated_prime_vendor",
-                        "minority_type_name"
+                        "mwbe_category",
+                        "sub_vendor"
                     ]
                 },
                 "csv":{
@@ -356,7 +358,7 @@
                 "valueType":"value",
                 "dataType":"text"
             },
-            "minority_type_id":{
+            "mwbe_category":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"9"
@@ -379,7 +381,7 @@
             "category":"document_code@checkbook:ref_document_code",
             "pin":"tracking_number",
             "apt_pin":"brd_awd_no",
-            "minority_type_id":"minority_type_id",
+            "mwbe_category":"minority_type_id",
             "associated_prime_vendor":"associated_prime_vendor"
         },
         "dataset":{
@@ -417,7 +419,7 @@
                         "sub_contract_reference_id":"sub_contract_id",
                         "sub_vendor":"vendor_type",
                         "associated_prime_vendor":"prime_vendor_name",
-                        "minority_type_name":"minority_type_name"
+                        "mwbe_category":"minority_type_name"
                     },
                     "rowElements":[
                         "agency",
@@ -442,7 +444,8 @@
                         "sub_contract_id",
                         "vendor_type",
                         "associated_prime_vendor",
-                        "minority_type_name"
+                        "mwbe_category",
+                        "sub_vendor"
                     ]
                 },
                 "csv":{
@@ -551,7 +554,7 @@
                 "valueType":"value",
                 "dataType":"text"
             },
-            "minority_type_id":{
+            "mwbe_category":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"9"
@@ -572,7 +575,7 @@
             "category":"document_code@checkbook:ref_document_code",
             "pin":"tracking_number",
             "apt_pin":"brd_awd_no",
-            "minority_type_id":"minority_type_id"
+            "mwbe_category":"minority_type_id"
         },
         "dataset":{
             "sortColumn":"-registered_date",
@@ -607,7 +610,7 @@
                         "minority_type_id":"minority_type_id",
                         "sub_contract_reference_id":"sub_contract_id",
                         "sub_vendor":"vendor_type",
-                        "minority_type_name":"minority_type_name"
+                        "mwbe_category":"minority_type_name"
                     },
                     "rowElements":[
                         "agency",
@@ -631,7 +634,8 @@
                         "minority_type_id",
                         "sub_contract_id",
                         "vendor_type",
-                        "minority_type_name"
+                        "mwbe_category",
+                        "sub_vendor"
                     ]
                 },
                 "csv":{
@@ -728,7 +732,7 @@
                 "valueType":"value",
                 "dataType":"text"
             },
-            "minority_type_id":{
+            "mwbe_category":{
                 "valueType":"range",
                 "dataType":"text",
                 "maxLength":"9"
@@ -749,7 +753,7 @@
             "category":"document_code@checkbook:ref_document_code",
             "pin":"tracking_number",
             "apt_pin":"brd_awd_no",
-            "minority_type_id":"minority_type_id"
+            "mwbe_category":"minority_type_id"
         },
         "dataset":{
             "sortColumn":"-cif_received_date",
@@ -782,8 +786,7 @@
                         "original_amount":"original_maximum_amount",
                         "original_modified":"original_or_modified_desc",
                         "contract_industry":"industry_type_name@checkbook:industry_type",
-                        "minority_type_id":"minority_type_id",
-                        "minority_type_name":"minority_type_name"
+                        "mwbe_category":"minority_type_id"
                     },
                     "rowElements":[
                         "agency",
@@ -806,8 +809,7 @@
                         "purpose",
                         "original_modified",
                         "contract_industry",
-                        "minority_type_id",
-                        "minority_type_name"
+                        "minority_type_id"
                     ]
                 },
                 "csv":{
@@ -831,7 +833,6 @@
                         "Original Amount":"original_maximum_amount",
                         "Original Modified":"original_or_modified_desc",
                         "Contract Industry":"industry_type_name@checkbook:industry_type",
-                        "M/WBE Category":"minority_type_name",
                         "M/WBE Category":"minority_type_id"
                     }
                 }
@@ -903,7 +904,7 @@
                 "valueType":"value",
                 "dataType":"text"
             },
-            "minority_type_id":{
+            "mwbe_category":{
                 "valueType":"range",
                 "dataType":"text",
                 "maxLength":"9"
