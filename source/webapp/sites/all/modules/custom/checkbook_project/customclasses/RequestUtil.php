@@ -736,7 +736,7 @@ class RequestUtil{
     			return "ss";
     			break;
     	}
-    	return  "sp";
+    	return  "ss";
     }
     
     /*
