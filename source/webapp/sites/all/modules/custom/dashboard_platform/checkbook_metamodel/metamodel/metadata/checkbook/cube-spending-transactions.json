@@ -9,102 +9,147 @@
         "spending_transactions_by_categories": {
             "sourceDatasetName": "fact_disbursement_line_item",
             "dimensions": [
-                    {
-                        "name": "agency",
-                        "levels": [
-                                    {
-                                        "name": "agency",
-                                        "datasetName": "agency",
-                                        "sourceColumnName": "agency_id"
-                                    }
-                        ]
-                    },
-                    {
-                        "name": "vendor",
-                        "levels": [
-                                    {
-                                    "name": "vendor",
-                                    "datasetName": "vendor",
-                                    "sourceColumnName": "vendor_id"
-                                    }
-                        ]
-                    },
-                    {
-                        "name": "vendornm",
-                        "levels": [
-                                    {
-                                    "name": "vendornm",
-                                    "sourceColumnName": "vendor_name"
-                                    }
-                        ]
-                    },                    
-                    {
-                        "name": "expenditure_object",
-                        "levels": [
-                                    {
-                                    "name": "expenditure_object",
-                                    "datasetName": "expenditure_object",
-                                    "sourceColumnName": "expenditure_object_id"
-                                    }
-                        ]
-                    },
-                    {
-                        "name": "expobjectname",
-                        "levels": [
-                                    {
-                                    "name": "expobjectname",                                   
-                                    "sourceColumnName": "expenditure_object_name"
-                                    }
-                        ]
-                    },
-                    {
-                        "name": "dept",
-                        "levels": [
-                                    {
-                                    "name": "dept",
-                                    "datasetName": "department",
-                                    "sourceColumnName": "department_id"
-                                    }
-                        ]
-                    },
-                    {
-                        "name": "deptshortname",
-                        "levels": [
-                                    {
-                                    "name": "deptshortname",
-                                    "sourceColumnName": "department_short_name"
-                                    }
-                        ]
-                    },
-                    {
-                        "name": "deptname",
-                        "levels": [
-                                    {
-                                    "name": "deptname",
-                                    "sourceColumnName": "department_name"
-                                    }
-                        ]
-                    },                    
-                    {
-                        "name": "category",
-                        "levels": [
+                {
+                    "name": "disbursement_line_item_id",
+                    "levels": [
+                        {
+                            "name": "disbursement_line_item_id",
+                            "sourceColumnName": "disbursement_line_item_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "chkamnt",
+                    "levels": [
+                        {
+                            "name": "chkamnt",
+                            "sourceColumnName": "check_amount"
+                        }
+                    ]
+                },
+                {
+                    "name": "year",
+                    "levels": [
+                        {
+                            "name": "year",
+                            "sourceColumnName": "check_eft_issued_nyc_year_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "issuedate",
+                    "levels": [
+                        {
+                            "name": "issuedate",
+                            "sourceColumnName": "check_eft_issued_date"
+                        }
+                    ]
+                },
+                {
+                    "name": "agency",
+                    "levels": [
                                 {
-                                    "name": "category",
-                                    "datasetName": "category",
-                                    "sourceColumnName": "spending_category_id"
+                                    "name": "agency",
+                                    "datasetName": "agency",
+                                    "sourceColumnName": "agency_id"
                                 }
-                        ]
-                    },
-                    {
-                        "name": "ctx",
-                        "levels": [
+                    ]
+                },
+                {
+                    "name": "agencynm",
+                    "levels": [
+                        {
+                            "name": "agencynm",
+                            "sourceColumnName": "agency_name"
+                        }
+                    ]
+                },
+                {
+                    "name": "vendor",
+                    "levels": [
+                                {
+                                "name": "vendor",
+                                "datasetName": "vendor",
+                                "sourceColumnName": "vendor_id"
+                                }
+                    ]
+                },
+                {
+                    "name": "vendornm",
+                    "levels": [
+                                {
+                                "name": "vendornm",
+                                "sourceColumnName": "vendor_name"
+                                }
+                    ]
+                },
+                {
+                    "name": "expenditure_object",
+                    "levels": [
+                                {
+                                "name": "expenditure_object",
+                                "datasetName": "expenditure_object",
+                                "sourceColumnName": "expenditure_object_id"
+                                }
+                    ]
+                },
+                {
+                    "name": "expobjectname",
+                    "levels": [
+                                {
+                                "name": "expobjectname",
+                                "sourceColumnName": "expenditure_object_name"
+                                }
+                    ]
+                },
+                {
+                    "name": "dept",
+                    "levels": [
+                                {
+                                "name": "dept",
+                                "datasetName": "department",
+                                "sourceColumnName": "department_id"
+                                }
+                    ]
+                },
+                {
+                    "name": "deptshortname",
+                    "levels": [
+                                {
+                                "name": "deptshortname",
+                                "sourceColumnName": "department_short_name"
+                                }
+                    ]
+                },
+                {
+                    "name": "deptname",
+                    "levels": [
+                                {
+                                "name": "deptname",
+                                "sourceColumnName": "department_name"
+                                }
+                    ]
+                },
+                {
+                    "name": "category",
+                    "levels": [
                             {
-                                "name": "ctx",
-                                "datasetName": "contracts_spending_transactions",
-                                "sourceColumnName": "disbursement_line_item_id"
+                                "name": "category",
+                                "datasetName": "category",
+                                "sourceColumnName": "spending_category_id"
                             }
-                        ]
-                    }
+                    ]
+                },
+                {
+                    "name": "ctx",
+                    "levels": [
+                        {
+                            "name": "ctx",
+                            "datasetName": "contracts_spending_transactions",
+                            "sourceColumnName": "disbursement_line_item_id"
+                        }
+                    ]
+                }
             ],
             "measures": {
                 "txcount": {
@@ -142,6 +187,14 @@
         "fact_disbursement_line_item__contracts_spending_transactions": [
             {"datasetName": "fact_disbursement_line_item", "columnNames": ["disbursement_line_item_id"]},
             {"datasetName": "contracts_spending_transactions", "columnNames": ["disbursement_line_item_id"]}
+        ],
+        "fact_disbursement_line_item__spending_latest_mwbe_category_by_vendor": [
+            {"datasetName": "fact_disbursement_line_item", "columnNames": ["vendor_id","check_eft_issued_nyc_year_id"]},
+            {"datasetName": "spending_latest_mwbe_category_by_vendor", "columnNames": ["vendor_id","year_id"]}
+        ],
+        "fact_disbursement_line_item__spending_latest_mwbe_category_by_vendor_and_agency": [
+            {"datasetName": "fact_disbursement_line_item", "columnNames": ["agency_id","vendor_id","check_eft_issued_nyc_year_id"]},
+            {"datasetName": "spending_latest_mwbe_category_by_vendor_and_agency", "columnNames": ["agency_id","vendor_id","year_id"]}
         ]
     }
 }
