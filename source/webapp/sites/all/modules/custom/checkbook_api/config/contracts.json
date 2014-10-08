@@ -87,7 +87,8 @@
                         "vendor_type",
                         "associated_prime_vendor",
                         "mwbe_category",
-                        "sub_vendor"
+                        "sub_vendor",
+                        "sub_contract_reference_id"
                     ]
                 },
                 "csv":{
@@ -248,7 +249,8 @@
                         "vendor_type",
                         "associated_prime_vendor",
                         "mwbe_category",
-                        "sub_vendor"
+                        "sub_vendor",
+                        "sub_contract_reference_id"
                     ]
                 },
                 "csv":{
@@ -445,7 +447,8 @@
                         "vendor_type",
                         "associated_prime_vendor",
                         "mwbe_category",
-                        "sub_vendor"
+                        "sub_vendor",
+                        "sub_contract_reference_id"
                     ]
                 },
                 "csv":{
@@ -635,7 +638,8 @@
                         "sub_contract_id",
                         "vendor_type",
                         "mwbe_category",
-                        "sub_vendor"
+                        "sub_vendor",
+                        "sub_contract_reference_id"
                     ]
                 },
                 "csv":{
@@ -809,7 +813,7 @@
                         "purpose",
                         "original_modified",
                         "contract_industry",
-                        "minority_type_id"
+                        "mwbe_category"
                     ]
                 },
                 "csv":{
