@@ -3,16 +3,21 @@
     "widgetSubType":"ajaxSimple",
     "no_results_content":"No Results Found",
     "defaultParameters":{"type_of_year":"B","spending_category_id":""},
-    "cleanURLParameters":["year","agency","yeartype","calyear","vendor","category","mwbe","industry"],
-    "urlParamMap":{"year":"year_id","agency":"agency_id","yeartype":"type_of_year","calyear":"year_id","vendor":"vendor_id","category":"spending_category_id","mwbe":"minority_type_id","industry":"industry_type_id"},
+    "cleanURLParameters":["year","agency","yeartype","calyear","vendor","category"],
+    "urlParamMap":{"year":"year_id","agency":"agency_id","yeartype":"type_of_year","calyear":"year_id","vendor":"vendor_id","category":"spending_category_id"},
     "dataset": "checkbook:contracts_vendor_spending",
-        "preProcessConfiguration":"
-        $node->is_mwbe = _checkbook_check_is_mwbe_page();
-        if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:contracts_mwbe_vendor_spending';
-    ",
     "noDataInitialLoad":true,
     "totalAggregateColumns":["check_amount_sum"],
-    "columns": ["yeartype.yeartype","check_amount_sum","total_contract_amount_sum","vendor.vendor","vendor.vendor.legal_name","year.year"],
+    "columns": [
+        "yeartype.yeartype",
+        "check_amount_sum",
+        "total_contract_amount_sum",
+        "vendor.vendor",
+        "vendor.vendor.legal_name",
+        "year.year",
+        "latest_minority_type_id@checkbook:spending_latest_mwbe_category_by_vendor",
+        "latest_minority_type_id@checkbook:spending_latest_mwbe_category_by_vendor_and_agency"
+    ],
     "limit":5,
     "enableExpand":true,
     "getTotalDataCount":true,
@@ -54,53 +59,32 @@
         "vendor_amount_link":{
             "type":"expression2",
             "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getVendorAmountLinkUrl($node,$row) . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
-        },
-        "percent_spending":{
-            "type":"expression2",
-            "expression": "SpendingUtil::getPercentYtdSpending($node, $row)",
-            "visibility_flag": "is_mwbe"
         }
     },
-    "adjustParameters":"
-        if(!$node->is_mwbe) {
-            unset($parameters['minority_type_id']);
-            unset($parameters['industry_type_id']);
-        }
-
-        return $parameters;
-    ",
     "summaryView":{
         "template":"spending_vendor_summary",
         "templateTitleEval":"
             $catName = RequestUtil::getSpendingCategoryName();
-            $mwbe_title = _checkbook_check_is_mwbe_page() ? 'M/WBE ' : '';
-            return ($mwbe_title . 'Prime Vendors ' . $catName . ' Transactions');
+            return ('Prime Vendors ' . $catName . ' Transactions');
         "
     },
     "WidgetTitleEval":"
         $catName = RequestUtil::getSpendingCategoryName();
-        $mwbe_title = _checkbook_check_is_mwbe_page() ? 'M/WBE ' : '';
-        return ($mwbe_title . 'Prime Vendors ' . $catName . ' Transactions');
+        return ('Prime Vendors ' . $catName . ' Transactions');
     ",
     "table_title":"",
     "table_columns": [
         {"labelAlias": "prime_vendor","column": "vendor_name_link","sortSourceColumn":"vendor.vendor.legal_name"},
         {"labelAlias": "ytd_spending","column": "vendor_amount_link","header": "false","sortSourceColumn":"check_amount_sum","headerClass":"sixty"},
-        {"labelAlias": "percent_spending","column": "percent_spending","header": "false","sortSourceColumn":"check_amount_sum","visibility_flag": "is_mwbe"},
         {"labelAlias": "total_contract_amount","column": "formatted_total_contract_amount_sum","sortSourceColumn":"total_contract_amount_sum","header": "false"},
         {"label": "","column": ""}
     ],
     "dataTableOptions":{
         "aoColumns": [
-            {"bSortable": false,"sClass":"text","sWidth":"180px","visibility_flag":"-is_mwbe"},
-            {"sClass":"number","asSorting":["desc","asc"],"visibility_flag":"-is_mwbe"},
-            {"sClass":"number","asSorting":["desc","asc"],"visibility_flag":"-is_mwbe"},
-            {"bSortable": false,"sWidth":"15px","visibility_flag":"-is_mwbe"},
-            {"bSortable": false,"sClass":"text","visibility_flag":"is_mwbe"},
-            {"sClass":"number","sWidth":"180px","asSorting":["desc","asc"],"visibility_flag":"is_mwbe"},
-            {"sClass":"number","sWidth":"180px","asSorting":["desc","asc"],"visibility_flag":"is_mwbe"},
-            {"sClass":"number","sWidth":"180px","asSorting":["desc","asc"],"visibility_flag":"is_mwbe"},
-            {"bSortable": false,"sWidth":"15px","visibility_flag":"is_mwbe"}
+            {"bSortable": false,"sClass":"text","sWidth":"180px"},
+            {"sClass":"number","asSorting":["desc","asc"]},
+            {"sClass":"number","asSorting":["desc","asc"]},
+            {"bSortable": false,"sWidth":"15px"}
         ] ,
         "bServerSide": true,
         "bFilter": false,

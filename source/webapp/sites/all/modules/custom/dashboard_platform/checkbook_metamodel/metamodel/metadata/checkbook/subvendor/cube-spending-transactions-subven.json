@@ -20,6 +20,15 @@
             "sourceDatasetName": "subcontract_spending_details",
             "dimensions": [
                 {
+                    "name": "year",
+                    "levels": [
+                        {
+                            "name": "year",
+                            "sourceColumnName": "check_eft_issued_nyc_year_id"
+                        }
+                    ]
+                },
+                {
                     "name": "issuedate",
                     "levels": [
                         {
@@ -363,6 +372,14 @@
         "subcontract_spending_details__prime_vendor": [
             {"datasetName": "subcontract_spending_details", "columnNames": ["prime_vendor_id"]},
             {"datasetName": "prime_vendor", "columnNames": ["vendor_id"]}
+        ],
+        "subcontract_spending_details__spending_latest_mwbe_category_by_vendor": [
+            {"datasetName": "subcontract_spending_details", "columnNames": ["prime_vendor_id","check_eft_issued_nyc_year_id"]},
+            {"datasetName": "spending_latest_mwbe_category_by_vendor", "columnNames": ["vendor_id","year_id"]}
+        ],
+        "subcontract_spending_details__spending_latest_mwbe_category_by_vendor_and_agency": [
+            {"datasetName": "subcontract_spending_details", "columnNames": ["agency_id","prime_vendor_id","check_eft_issued_nyc_year_id"]},
+            {"datasetName": "spending_latest_mwbe_category_by_vendor_and_agency", "columnNames": ["agency_id","vendor_id","year_id"]}
         ],
         "spending_transactions_all__sub_vendor": [
             {"datasetName": "spending_transactions_all", "columnNames": ["vendor_id"]},
