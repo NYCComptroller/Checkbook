@@ -89,7 +89,8 @@ foreach ($spending_parameter_mapping as $key=>$title){
       if($id == '4' || $id == '5'){
           $id = '4~5';
       }
-      $value = "<a href='/spending_landing/yeartype/B/year/115/mwbe/".$id ."'>" .$spending_results["minority_type_name"] ."</a>";
+
+      $value = "<a href='/spending_landing/yeartype/B/year/". _getFiscalYearID() ."/mwbe/".$id ."'>" .$spending_results["minority_type_name"] ."</a>";
   }
 //  if($key == 'is_prime_or_sub' && $spending_results["is_prime_or_sub"] == 'P' ){
 //    $value = 'No';
