@@ -30,7 +30,6 @@
     "html_class":"",
     "no_results_content":"No Results Found",
     "dataset":"checkbook:contracts_subven_vendor_spending",
-    "preProcessConfiguration":"$node->is_mwbe = _checkbook_check_is_mwbe_page();",
     "columns":[
         "sub_vendor.sub_vendor",
         "sub_vendor.sub_vendor.legal_name",
@@ -38,18 +37,12 @@
         "prime_vendor.prime_vendor.legal_name",
         "minority_type.minority_type",
         "total_sub_contracts",
-        "ytd_spending_sub_vendors"
+        "ytd_spending_sub_vendors",
+        "latest_minority_type_id@checkbook:spending_latest_mwbe_category_by_vendor",
+        "latest_minority_type_id@checkbook:spending_latest_mwbe_category_by_vendor_and_agency"
     ],
     "enableExpand":true,
     "disableViewAll":true,
-    "adjustParameters":"
-
-        if(!$node->is_mwbe) {
-            unset($parameters['minority_type_id']);
-        }
-
-        return $parameters;
-    ",
     "header":"
         $node->widgetConfig->getData=false;
         load_widget_data($node);

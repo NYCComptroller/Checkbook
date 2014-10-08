@@ -221,10 +221,10 @@ class SpendingUtil{
 
         $dashboard = _getRequestParamValue("dashboard");
         $latest_minority_type_id = null;
-        if(isset($row["minority_type_id"]))
-            $latest_minority_type_id = $row["minority_type_id"];
-        else if(isset($row["latest_minority_type_id@checkbook:spending_vendor_latest_mwbe_category"]))
-            $latest_minority_type_id = $row["latest_minority_type_id@checkbook:spending_vendor_latest_mwbe_category"];
+        if(isset($row["latest_minority_type_id@checkbook:spending_latest_mwbe_category_by_vendor_and_agency"]))
+            $latest_minority_type_id = $row["latest_minority_type_id@checkbook:spending_latest_mwbe_category_by_vendor_and_agency"];
+        else if(isset($row["latest_minority_type_id@checkbook:spending_latest_mwbe_category_by_vendor"]))
+            $latest_minority_type_id = $row["latest_minority_type_id@checkbook:spending_latest_mwbe_category_by_vendor"];
 
         $custom_params = null;
 
@@ -237,8 +237,7 @@ class SpendingUtil{
         }
         else {
             $custom_params = array (
-                "dashboard"=>null,
-                "mwbe"=>null,
+                "dashboard"=>null,"mwbe"=>null,"subvendor"=>null,"category"=>null,"industry"=>null,
                 "vendor"=>(isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["prime_vendor_prime_vendor"])
             );
         }

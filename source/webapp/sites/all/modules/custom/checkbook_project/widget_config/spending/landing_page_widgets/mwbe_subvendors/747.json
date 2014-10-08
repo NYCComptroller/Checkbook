@@ -9,13 +9,15 @@
     "noDataInitialLoad":true,
     "totalAggregateColumns":["check_amount_sum"],
     "columns": [
-        "yeartype.yeartype",
         "check_amount_sum",
         "total_contract_amount_sum",
         "prime_vendor.prime_vendor",
         "prime_vendor.prime_vendor.legal_name",
         "year.year",
-        "latest_minority_type_id@checkbook:spending_vendor_latest_mwbe_category"
+        "yeartype.yeartype",
+        "agency.agency",
+        "latest_minority_type_id@checkbook:spending_latest_mwbe_category_by_vendor",
+        "latest_minority_type_id@checkbook:spending_latest_mwbe_category_by_vendor_and_agency"
     ],
     "limit":5,
     "enableExpand":true,

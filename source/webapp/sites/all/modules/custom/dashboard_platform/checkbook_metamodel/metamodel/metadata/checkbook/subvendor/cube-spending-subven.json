@@ -398,9 +398,13 @@
             {"datasetName": "contracts_subven_spending", "columnNames": ["agency_id"]},
             {"datasetName": "agency", "columnNames": ["agency_id"]}
         ],
-        "contracts_subven_vendor_spending__spending_vendor_latest_mwbe_category": [
-            {"datasetName": "contracts_subven_vendor_spending", "columnNames": ["prime_vendor_id","year_id","type_of_year"]},
-            {"datasetName": "spending_vendor_latest_mwbe_category", "columnNames": ["vendor_id","year_id","type_of_year"]}
+        "contracts_subven_spending__spending_latest_mwbe_category_by_vendor": [
+            {"datasetName": "contracts_subven_spending", "columnNames": ["prime_vendor_id","year_id","type_of_year"]},
+            {"datasetName": "spending_latest_mwbe_category_by_vendor", "columnNames": ["vendor_id","year_id","type_of_year"]}
+        ],
+        "contracts_subven_spending__spending_latest_mwbe_category_by_vendor_and_agency": [
+            {"datasetName": "contracts_subven_spending", "columnNames": ["agency_id","prime_vendor_id","year_id","type_of_year"]},
+            {"datasetName": "spending_latest_mwbe_category_by_vendor_and_agency", "columnNames": ["agency_id","vendor_id","year_id","type_of_year"]}
         ],
         "spending_subven_data__industry": [
             {"datasetName": "spending_subven_data", "columnNames": ["industry_type_id"]},
@@ -417,6 +421,14 @@
         "spending_subven_data__spending_mwbe_data": [
             {"datasetName": "spending_subven_data", "columnNames": ["agency_id","year_id","type_of_year"]},
             {"datasetName": "spending_mwbe_data", "columnNames": ["agency_id","year_id","type_of_year"]}
+        ],
+        "contracts_subven_vendor_spending__spending_latest_mwbe_category_by_vendor": [
+            {"datasetName": "contracts_subven_vendor_spending", "columnNames": ["prime_vendor_id","year_id","type_of_year"]},
+            {"datasetName": "spending_latest_mwbe_category_by_vendor", "columnNames": ["vendor_id","year_id","type_of_year"]}
+        ],
+        "contracts_subven_vendor_spending__spending_latest_mwbe_category_by_vendor_and_agency": [
+            {"datasetName": "contracts_subven_vendor_spending", "columnNames": ["agency_id","prime_vendor_id","year_id","type_of_year"]},
+            {"datasetName": "spending_latest_mwbe_category_by_vendor_and_agency", "columnNames": ["agency_id","vendor_id","year_id","type_of_year"]}
         ]
     }
 }
