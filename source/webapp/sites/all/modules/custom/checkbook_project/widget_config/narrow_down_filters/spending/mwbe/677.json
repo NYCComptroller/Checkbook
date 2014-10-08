@@ -6,6 +6,7 @@
     "limit":10,
     "startWith":0,
     "columns":["vendor_type.vendor_type", "txcount"],
+    "defaultParameters":{"vendor_type":"pv","is_prime_or_sub":"P"},
     "orderBy":"-txcount",
     "getTotalDataCount":true,
     "facetPager":true,
@@ -17,7 +18,6 @@
         if(isset($parameters['vendor_type'])){
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
         }
-
         checkbook_faceted_search_adjust_param($node);
         if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
              $parameters = _checkbook_project_adjust_spending_parameter_filters($node, $parameters);

@@ -13,12 +13,12 @@
     "autocompleteID":"fvendorNm",
     "autocompleteField":"vendornm.vendornm.vendor_name",
     "urlParamMap":{"vendornm":"vendornm.vendornm","vendornm_exact":"vendornm.vendornm"},
+    "defaultParameters":{"vendor_type":"pv","is_prime_or_sub":"P"},
     "maxSelect":5,
     "adjustParameters":"
         if(isset($parameters['vendor_type'])){
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
         }
-
         checkbook_faceted_search_adjust_param($node);
         if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
             $parameters = _checkbook_project_adjust_spending_parameter_filters($node, $parameters);

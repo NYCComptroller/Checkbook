@@ -16,15 +16,11 @@ if(SpendingUtil::_show_mwbe_custom_legend()){
         "template":"chart_grid_view",
         "domain":"spending",
         "html_class":"chart-grid-view-table three-columns",
-        "sortColumn":2,
+        "sortColumn":1,
         "table_columns": [
              {
-                  "labelAlias": "Sub Vendor",
+                  "labelAlias": "Prime Vendor",
                   "columnType": "text"
-             },
-             {
-                  "labelAlias": "M/WBE Share",
-                  "columnType": "number"             
              },
              {
                   "labelAlias": "M/WBE Spending",
@@ -41,19 +37,20 @@ if(SpendingUtil::_show_mwbe_custom_legend()){
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B"},
 "cleanURLParameters":["yeartype","agency","vendor","category","year"],
-"urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","category":"spending_category_id"},
-"chartTitle":"Top Ten Sub Vendors by M/WBE Spending",
+"urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"vendor_id","category":"spending_category_id"},
+"urlParamMapSubVendor":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","category":"spending_category_id"},
+"chartTitle":"Top Ten Prime Vendors by M/WBE Spending",
 "widgetDataLoader":"
     
     $where_filters = array();
     foreach($node->widgetConfig->requestParams as $param=>$value){
         $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
     }
-    
+
     if(count($where_filters) > 0){
         $where_filter = ' where ' . implode(' and ' , $where_filters);
     }
- 
+
 	$mwbe_filter = _getRequestParamValue('mwbe');
     $sort_column = 8;
 	switch($mwbe_filter){
@@ -74,67 +71,64 @@ if(SpendingUtil::_show_mwbe_custom_legend()){
 			break;
 		case '7' :
 			$sort_column = 9;
-			break;		
-		
+			break;
+
 	}
-     
-    
-    $sql = 'select legal_name , a1.vendor_id,
+
+    $sql1 = 'select legal_name , a1.prime_vendor_id vendor_id,
  	SUM(
-       CASE 
+       CASE
             WHEN minority_type_id = 4 THEN total_spending_amount
-            WHEN minority_type_id = 5 THEN total_spending_amount            
+            WHEN minority_type_id = 5 THEN total_spending_amount
             ELSE 0
 	END) aa_mwbe,
 	SUM(
-       CASE 
-            WHEN minority_type_id = 2 THEN total_spending_amount            
+       CASE
+            WHEN minority_type_id = 2 THEN total_spending_amount
             ELSE 0
 	END) ba_mwbe,
 	SUM(
-       CASE 
-            WHEN minority_type_id = 9 THEN total_spending_amount            
+       CASE
+            WHEN minority_type_id = 9 THEN total_spending_amount
             ELSE 0
-	END) w_mwbe,	
+	END) w_mwbe,
 	SUM(
-       CASE 
-            WHEN minority_type_id = 3 THEN total_spending_amount            
+       CASE
+            WHEN minority_type_id = 3 THEN total_spending_amount
             ELSE 0
-	END) ha_mwbe,  
+	END) ha_mwbe,
 	SUM(
-       CASE 
-            WHEN minority_type_id = 11 THEN total_spending_amount            
+       CASE
+            WHEN minority_type_id = 11 THEN total_spending_amount
             ELSE 0
-	END) io_nonmwbe,	  
+	END) io_nonmwbe,
 	SUM(
        CASE WHEN minority_type_id = 2 THEN total_spending_amount
             WHEN minority_type_id = 3 THEN total_spending_amount
             WHEN minority_type_id = 4 THEN total_spending_amount
             WHEN minority_type_id = 5 THEN total_spending_amount
-             WHEN minority_type_id = 9 THEN total_spending_amount
+            WHEN minority_type_id = 9 THEN total_spending_amount
             ELSE 0
 	END) total_mwbe,
 		SUM(
-       CASE 
+       CASE
              WHEN minority_type_id = 7 THEN total_spending_amount
             ELSE 0
 	END) total_non_mwbe
-	from aggregateon_subven_spending_coa_entities a1     
-    join subvendor ra on ra.vendor_id =  a1.vendor_id  
+	from aggregateon_subven_spending_coa_entities a1
+    join vendor ra on ra.vendor_id =  a1.prime_vendor_id
    ' . $where_filter . '
-        group by  legal_name, a1.vendor_id
-    order by ' . $sort_column . ' desc limit 10';
-    
-   
+        group by  legal_name, a1.prime_vendor_id';
+
+    $sql = $sql1 . ' order by ' . $sort_column . ' desc limit 10';
     $node->data  = _checkbook_project_execute_sql($sql);
-    
+
 ",
 "widgetUpdateJSONConfig":"
-	
 	$series_new = array();
-	
+
 	$mwbe_filter = _getRequestParamValue('mwbe');
-	
+
 	$amount_column = 'total_mwbe';
 	switch($mwbe_filter){
 		case '4~5' :
@@ -151,68 +145,50 @@ if(SpendingUtil::_show_mwbe_custom_legend()){
 			break;
 		case '11' :
 			$amount_column = 'io_nonmwbe';
-			break;	
+			break;
 		case '7' :
 			$amount_column = 'total_non_mwbe';
-			break;			
+			break;
 	}
-	
+
 	$mwbe_filter = _getRequestParamValue('mwbe');
-	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){			
-		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName()  . ' Top Ten Sub Vendors Spending';
+	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName()  . ' Top Ten Prime Vendors Spending';
 	}else{
-		$node->widgetConfig->chartTitle = 'Top Ten Sub Vendors by ' . MappingUtil::getCurrenEhtnicityName() .' Spending';		
+		$node->widgetConfig->chartTitle = 'Top Ten Prime Vendors by ' . MappingUtil::getCurrenEhtnicityName() .' Spending';
 	}
-	
-	if(SpendingUtil::_mwbe_spending_use_subvendor()){
-		unset($node->widgetConfig->gridConfig->table_columns[3]);
-		unset($node->widgetConfig->gridConfig->table_columns[1]);
-		$node->widgetConfig->gridConfig->table_columns = array_values($node->widgetConfig->gridConfig->table_columns);
-	}		
-	
+
 	$index = 0;
 	foreach($node->data as $row){
-			if(SpendingUtil::_mwbe_spending_use_subvendor()){
-				$tooltip_label = 
-	 						'Sub Vendor: ' . $row['legal_name'].  '<br/>' .	 						
-	 						MappingUtil::getCurrenEhtnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>'  
-	 						; 
-			}else{
-	 			$tooltip_label = 
-	 						'Prime Vendor: ' . $row['legal_name'].  '<br/>' .
-	 						MappingUtil::getCurrenEhtnicityName() .' Share: ' . custom_number_formatter_format($row[$amount_column]/($row['total_mwbe'] + $row['total_non_mwbe'] ) *100 ,1,null, '%').  '<br/>' .
-	 						MappingUtil::getCurrenEhtnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>' .
-	 						'Non-M/WBE: ' . custom_number_formatter_format( $row['total_non_mwbe'],2,'$').  '<br/>' 
-	 						; 
-			}
-			$link= CustomURLHelper::prepareUrl('spending_landing', SpendingUtil::$landingPageParams, array('expandBottomCont'=>'true'), array('subvendor'=>$row['vendor_id']) );	 						
-			$series_new[$index]->url = $link;
+
+        $tooltip_label =
+            'Prime Vendor: ' . $row['legal_name'].  '<br/>' .
+            MappingUtil::getCurrenEhtnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>' .
+            'Non-M/WBE: ' . custom_number_formatter_format( $row['total_non_mwbe'] -  $row['total_subven_mwbe'],2,'$').  '<br/>';
+        $node->widgetConfig->gridConfig->data[] = array(
+            $row['legal_name'],
+            $row[$amount_column],
+            $row['total_non_mwbe'] - $row['total_subven_mwbe']
+        );
+
+        $link= CustomURLHelper::prepareUrl('spending_landing', SpendingUtil::$landingPageParams, array('expandBottomCont'=>'true'), array('vendor'=>$row['vendor_id']) );
+        $series_new[$index]->url = $link;
 
 
-			$series_new[$index]->y = (float)$row[$amount_column];
-			$series_new[$index]->tooltip_label = $tooltip_label;
-			if(SpendingUtil::_mwbe_spending_use_subvendor()){
-				$node->widgetConfig->gridConfig->data[] = array($row['legal_name'],														
-														 $row[$amount_column]
-														);
-				$node->widgetConfig->gridConfig->sortColumn =  1;														
-			}else{
-				$node->widgetConfig->gridConfig->data[] = array($row['legal_name'],
-														custom_number_formatter_format($row[$amount_column]/($row['total_mwbe'] + $row['total_non_mwbe'] ) *100 ,1,null, '%'),
-														 $row[$amount_column],
-														 $row['total_non_mwbe']
-														);
-			}
-			$index += 1;
+        $series_new[$index]->y = (float)$row[$amount_column];
+        $series_new[$index]->tooltip_label = $tooltip_label;
+        $index += 1;
 	}
 
 	$node->widgetConfig->chartConfig->series[0]->name = 'Fiscal Years';
 	$node->widgetConfig->chartConfig->series[0]->type = 'column';
 	$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
 	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
-	if(SpendingUtil::_show_mwbe_custom_legend() && count($node->data) > 0){
+
+	if(SpendingUtil::_show_mwbe_custom_legend()&& count($node->data) > 0){
 		$node->widgetConfig->html_class = 'chart-left';
 	}
+	
 	
 ",
 "chartConfig" : {

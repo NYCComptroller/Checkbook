@@ -171,7 +171,7 @@ foreach ($contracts_parameter_mapping as $key => $title){
       if($id == '4' || $id == '5'){
           $id = '4~5';
       }
-      $value = "<a href='/contracts_landing/status/A/yeartype/B/year/115/mwbe/".$id ."'>" .$contracts_results["minority_type_name"] ."</a>";
+      $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". _getFiscalYearID() ."/mwbe/".$id ."'>" .$contracts_results["minority_type_name"] ."</a>";
   }
 //  if($key == 'is_prime_or_sub' && $contracts_results["is_prime_or_sub"] == 'P' ){
 //      $value = 'No';
