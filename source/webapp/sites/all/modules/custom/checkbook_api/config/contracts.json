@@ -756,7 +756,7 @@
             "received_date":"cif_received_date",
             "category":"document_code@checkbook:ref_document_code",
             "pin":"tracking_number",
-            "apt_pin":"brd_awd_no",
+            "apt_pin":"board_award_number",
             "mwbe_category":"minority_type_id"
         },
         "dataset":{
@@ -782,7 +782,7 @@
                         "start_date":"start_date",
                         "end_date":"end_date",
                         "pin":"tracking_number",
-                        "apt_pin":"brd_awd_no",
+                        "apt_pin":"board_award_number",
                         "parent_contract_id":"fms_parent_contract_number",
                         "received_date":"cif_received_date",
                         "document_code":"document_code@checkbook:ref_document_code",
@@ -831,7 +831,7 @@
                         "Start Date":"start_date",
                         "End Date":"end_date",
                         "PIN":"tracking_number",
-                        "APT PIN":"brd_awd_no",
+                        "APT PIN":"board_award_number",
                         "Document Code":"document_code@checkbook:ref_document_code",
                         "Version":"document_version",
                         "Original Amount":"original_maximum_amount",
