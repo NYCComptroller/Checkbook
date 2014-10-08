@@ -121,7 +121,7 @@ namespace { //global
             }
             if($mwbe_vendors[$vendor_id][$year_id][$year_type] == $vendor_id){
                 if(!_getRequestParamValue('mwbe'))
-                    return '/dashboard/mp/mwbe//mwbe/2~3~4~5~9';
+                    return '/dashboard/mp/mwbe/2~3~4~5~9';
             }
             return '';
         }
