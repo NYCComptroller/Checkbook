@@ -61,8 +61,8 @@ if(SpendingUtil::_show_mwbe_custom_legend()){
 		document_code,
 		agreement_id,
 		legal_name		
-	from {aggregateon_mwbe_spending_contract} a1     
-    join {vendor} v on v.vendor_id =  a1.vendor_id
+	from {aggregateon_subven_spending_contract} a1
+    join {vendor} v on v.vendor_id =  a1.prime_vendor_id
     join {ref_agency} ra on ra.agency_id =  a1.agency_id
    ' . $where_filter . '    
    group by    agency_name,

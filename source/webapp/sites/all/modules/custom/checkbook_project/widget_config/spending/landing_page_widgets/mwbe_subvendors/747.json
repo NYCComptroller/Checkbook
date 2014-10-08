@@ -14,7 +14,8 @@
         "total_contract_amount_sum",
         "prime_vendor.prime_vendor",
         "prime_vendor.prime_vendor.legal_name",
-        "year.year"
+        "year.year",
+        "latest_minority_type_id@checkbook:spending_vendor_latest_mwbe_category"
     ],
     "limit":5,
     "enableExpand":true,
@@ -52,7 +53,7 @@
         },
         "vendor_name_link": {
             "type": "expression2",
-            "expression": "'<a href=\"' . SpendingUtil::getVendorNameLinkUrl($node,$row) . '\">' . $row['prime_vendor_prime_vendor_legal_name'] . '</a>'"
+            "expression": "'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row['prime_vendor_prime_vendor_legal_name'] . '</a>'"
         },
         "vendor_amount_link":{
             "type":"expression2",

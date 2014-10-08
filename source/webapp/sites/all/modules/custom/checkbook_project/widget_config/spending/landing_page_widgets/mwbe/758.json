@@ -10,8 +10,8 @@
     "noDataInitialLoad":true,
     "html_class": "",
     "no_results_content":"No Results Found",
-    "dataset": "checkbook:subcontract_spending_details",
-    "columns": ["check_eft_issued_date","vendor_name","agency_name","check_amount","expenditure_object_name","agency_id","vendor_id","industry_type_id"],
+    "dataset": "checkbook:fact_disbursement_line_item",
+    "columns": ["check_eft_issued_date","vendor_name","agency_name","check_amount","expenditure_object_name","agency_id","vendor_id","expenditure_object_id","department_name","industry_type_id"],
     "enableExpand":true,
     "disableViewAll":true,
     "adjustParameters":"
@@ -79,15 +79,19 @@
         {"labelAlias": "issue_date","column": "check_eft_issued_date"},
         {"labelAlias": "agency_name","column": "agency_name_link","sortSourceColumn":"agency_name"},
         {"labelAlias": "prime_vendor","column": "vendor_name_link2","sortSourceColumn":"vendor_name"},
+        {"label": "","column": ""},
+        {"labelAlias": "expense_category","column":"expenditure_object_name"},
         {"labelAlias": "check_amount","column": "formatted_check_amount","sortSourceColumn":"check_amount"},
         {"label": "","column": ""}
     ],
     "dataTableOptions":{
         "aoColumns": [
             {"bSortable": true,"sClass":"text","sWidth":"100px","asSorting": ["asc","desc"]},
-            {"bSortable": false,"sClass":"text pad-left","sWidth":"280px"},
-            {"bSortable": false,"sClass":"text pad-left","sWidth":"280px"},
-            {"sClass":"number","sWidth":"100px","asSorting": [ "desc","asc" ]},
+            {"bSortable": false,"sClass":"text pad-left","sWidth":"260px"},
+            {"bSortable": false,"sClass":"text pad-left","sWidth":"250px"},
+            {"bSortable": false,"sWidth":"5px" },
+            {"bSortable": false,"sClass":"text pad-left","sWidth":"210px"},
+            {"sClass":"number","asSorting": [ "desc","asc" ]},
             {"bSortable": false,"sWidth":"15px" }
         ],
         "bServerSide": true,
@@ -97,7 +101,7 @@
         "bLengthChange": false,
         "bInfo": false,
         "bAutoWidth": false,
-        "aaSorting": [[ 3, "desc" ]],
+        "aaSorting": [[ 5, "desc" ]],
         "fnServerParams": "##function ( aoData ) {
                    reloadExpandCollapseWidget(this,aoData);
         }##",

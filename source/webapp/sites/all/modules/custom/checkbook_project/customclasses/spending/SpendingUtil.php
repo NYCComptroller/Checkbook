@@ -192,7 +192,9 @@ class SpendingUtil{
      * @return string
      */
     static function getVendorNameLinkUrl($node, $row){
-        $custom_params = array('vendor'=>(isset($row["vendor_id"]) ? $row["vendor_id"] : $row["vendor_vendor"]));
+        $dashboard = _getRequestParamValue("dashboard");
+        $dashboard = $dashboard == "ms" ? "mp" : $dashboard;
+        $custom_params = array("dashboard"=>$dashboard,"vendor"=>(isset($row["vendor_id"]) ? $row["vendor_id"] : $row["vendor_vendor"]));
         return '/' . self::getLandingPageWidgetUrl($custom_params);
     }
 
@@ -204,7 +206,7 @@ class SpendingUtil{
      * @return string
      */
     static function getSubVendorNameLinkUrl($node, $row){
-        $custom_params = array('subvendor'=>$row['sub_vendor_sub_vendor']);
+        $custom_params = array('dashboard'=>'sm','subvendor'=>$row['sub_vendor_sub_vendor']);
         return '/' . self::getLandingPageWidgetUrl($custom_params);
     }
 
@@ -216,7 +218,31 @@ class SpendingUtil{
      * @return string
      */
     static function getPrimeVendorNameLinkUrl($node, $row){
-        $custom_params = array('vendor'=>(isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["prime_vendor_prime_vendor"]));
+
+        $dashboard = _getRequestParamValue("dashboard");
+        $latest_minority_type_id = null;
+        if(isset($row["minority_type_id"]))
+            $latest_minority_type_id = $row["minority_type_id"];
+        else if(isset($row["latest_minority_type_id@checkbook:spending_vendor_latest_mwbe_category"]))
+            $latest_minority_type_id = $row["latest_minority_type_id@checkbook:spending_vendor_latest_mwbe_category"];
+
+        $custom_params = null;
+
+        if(MappingUtil::isMWBECertified(array($latest_minority_type_id))) {
+            $custom_params = array (
+                "dashboard"=>($dashboard == "ms" ? "mp" : $dashboard),
+                "mwbe"=>$latest_minority_type_id,
+                "vendor"=>(isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["prime_vendor_prime_vendor"])
+            );
+        }
+        else {
+            $custom_params = array (
+                "dashboard"=>null,
+                "mwbe"=>null,
+                "vendor"=>(isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["prime_vendor_prime_vendor"])
+            );
+        }
+
         return '/' . self::getLandingPageWidgetUrl($custom_params);
     }
 
@@ -403,11 +429,12 @@ class SpendingUtil{
      *
      * @param $node
      * @param $row
+     * @param $data_set
      * @return string
      */
-    static function getPercentYtdSpendingVendorSubVendor($node, $row){
-        $sum_vendor_sub_vendor = $row['check_amount_sum'] + $row['check_amount_sum@checkbook:spending_subven_data'];
-        $sum_vendor_sub_vendor_total = $node->totalAggregateColumns['check_amount_sum'] + $node->totalAggregateColumns['check_amount_sum@checkbook:spending_subven_data'];
+    static function getPercentYtdSpendingVendorSubVendor($node, $row, $data_set){
+        $sum_vendor_sub_vendor = $row['check_amount_sum'] + $row['check_amount_sum@checkbook:'.$data_set];
+        $sum_vendor_sub_vendor_total = $node->totalAggregateColumns['check_amount_sum'] + $node->totalAggregateColumns['check_amount_sum@checkbook:'.$data_set];
 
         $ytd_spending = $sum_vendor_sub_vendor/$sum_vendor_sub_vendor_total*100;
         $ytd_spending = $ytd_spending < 0 ? 0.00 : $ytd_spending;
@@ -488,8 +515,8 @@ class SpendingUtil{
 
         if(is_array($override_params)){
             foreach($override_params as $key => $value){
-                $url .= "/$key";
                 if(isset($value)){
+                    $url .= "/$key";
                     $url .= "/$value";
                 }
             }
@@ -565,13 +592,22 @@ class SpendingUtil{
         return preg_match($match_landing,$url_ref);
     }
 
-    /**
-     * Returns the vendor type
-     */
-    static function getVendorType($node) {
-        $vendor_type = ($node->is_sub_vendor) ? ($node->is_mwbe ? 'SM' : 'S') : ($node->is_mwbe ? 'PM' : 'P');
-        return $vendor_type;
-    }
+//    /**
+//     * Sets the vendor_type and is_prime_or_sub parameters based on the current dashboard
+//     */
+//    static function getVendorParameters($parameters) {
+//        $dashboard = _getRequestParamValue('dashboard');
+//        if(isset($dashboard)) {
+//            $parameters['vendor_type'] = preg_match('"p"',$dashboard) ? array('P','PM') : array('S','SM');
+//            $parameters['is_prime_or_sub'] = preg_match('"s"',$dashboard) ? 'S' : 'P';
+//        }
+//        else {
+//            $parameters['vendor_type'] = array('P','PM');
+//            $parameters['is_prime_or_sub'] = 'P';
+//        }
+//        return $parameters;
+//    }
+
 
     /**
      * Spending transaction page should be shown for citywide, oge

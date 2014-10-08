@@ -1,47 +1,64 @@
 {
     "widgetType": "phpparser",
     "no_results_content": "No Results Found",
-    "cleanURLParameters":["year","calyear","agency","yeartype","vendor","mwbe","industry","vendor","subvendor"],
+    "cleanURLParameters":["year","calyear","agency","yeartype","mwbe","industry","vendor","subvendor","dashboard"],
     "model": {
         "join": {"method": "Union"},
         "series": [
             {
-                "dataset": "checkbook:spending_data",
-                "preProcessConfiguration":"
-                    $is_sub_vendor = _checkbook_check_is_sub_vendor_page();
-                    $is_mwbe = _checkbook_check_is_mwbe_page();
-                    $node->is_sub_vendor = $is_sub_vendor;
-                    $node->is_mwbe = $is_mwbe && !$is_sub_vendor;
-                    $node->is_mwbe_sub_vendor = $is_mwbe && $is_sub_vendor;
-                    if($node->is_mwbe) $node->widgetConfig->model->series[0]->dataset = 'checkbook:spending_mwbe_data';
-                    if($node->is_sub_vendor || $node->is_mwbe_sub_vendor) $node->widgetConfig->model->series[0]->dataset = 'checkbook:spending_subven_data';
-                ",
+                "dataset": "checkbook:spending_transactions_all",
                 "columns": ["check_amount_sum","category.category"],
                 "seriesURLParamMap":{
-                    "year":"year.year",
+                    "year":"check_eft_issued_nyc_year_id",
+                    "calyear":"calendar_fiscal_year_id",
                     "agency":"agency_id",
-                    "yeartype":"type_of_year",
-                    "vendor":"prime_vendor.prime_vendor",
-                    "subvendor":"sub_vendor.sub_vendor",
                     "mwbe":"minority_type_id",
-                    "industry":"industry_type_id"
+                    "industry":"industry_type_id",
+                    "category":"spending_category_id"
                 },
-                "allowedParams":["year.year","agency_id","type_of_year","prime_vendor.prime_vendor","sub_vendor.sub_vendor","minority_type_id","industry_type_id"],
-                "seriesDefaultParameters":{"year.year":"1","type_of_year":"B"},
+                "allowedParams":["check_eft_issued_nyc_year_id","calendar_fiscal_year_id","agency_id","minority_type_id","industry_type_id","spending_category_id","vendor_type"],
                 "adjustSerieParameters":"
 
-                    if(!$node->is_sub_vendor && isset($serieParameters['prime_vendor.prime_vendor'])) {
-                        $serieParameters['vendor.vendor'] = $serieParameters['prime_vendor.prime_vendor'];
-                        unset($serieParameters['prime_vendor.prime_vendor']);
+                $yearType = $serieParameters['year_type'][0];
+                $year = $serieParameters['year_id'][0];
+
+                if(isset($yearType)){
+                if($yearType == 'B')
+                    $serieParameters['check_eft_issued_nyc_year_id'] = $year;
+                else if($yearType == 'C')
+                    $serieParameters['calendar_fiscal_year_id'] = $year;
+                }
+
+                unset($serieParameters['year_type']);
+                unset($serieParameters['year_id']);
+
+
+                $vendor_type = array('P','PM');
+                $is_prime_or_sub = 'P';
+                $dashboard = _getRequestParamValue('dashboard');
+                $vendor = _getRequestParamValue('vendor');
+                $subvendor = _getRequestParamValue('subvendor');
+
+                if(isset($dashboard)) {
+                    $vendor_type = preg_match('\"p\"',$dashboard) ? array('P','PM') : array('S','SM');
+                    $is_prime_or_sub = preg_match('\"s\"',$dashboard) ? 'S' : 'P';
+                }
+                $serieParameters['vendor_type'] = $vendor_type;
+                $serieParameters['is_prime_or_sub'] = $is_prime_or_sub;
+
+                if(isset($vendor)) {
+                    if($is_prime_or_sub == 'P') {
+                        $serieParameters['vendor_id'] = $vendor;
                     }
-                    if(!$node->is_mwbe && !$node->is_mwbe_sub_vendor) {
-                        unset($serieParameters['minority_type_id']);
-                        unset($serieParameters['industry_type_id']);
-                        return $serieParameters;
+                    else {
+                        $serieParameters['prime_vendor_id'] = $vendor;
                     }
-                    if(!isset($serieParameters['minority_type_id']))
-                        $serieParameters['minority_type_id'] = data_controller_get_operator_factory_instance()->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, 2);
-                    return $serieParameters;
+                }
+
+                if(isset($subvendor)) {
+                    $serieParameters['vendor_id'] = $subvendor;
+                }
+                return $serieParameters;
 
                 "
             }

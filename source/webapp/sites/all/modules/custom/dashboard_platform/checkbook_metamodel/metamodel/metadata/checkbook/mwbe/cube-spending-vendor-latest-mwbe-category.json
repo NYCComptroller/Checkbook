@@ -1,0 +1,60 @@
+{
+    "datasets": {
+        "spending_vendor_latest_mwbe_category": {
+            "datasourceName": "main",
+            "source": "spending_vendor_latest_mwbe_category"
+        }
+    },
+    "cubes":   {
+        "spending_vendor_latest_mwbe_category": {
+            "sourceDatasetName": "spending_vendor_latest_mwbe_category",
+            "dimensions": [
+                {
+                    "name": "vendor",
+                    "levels": [
+                        {
+                            "name": "vendor",
+                            "datasetName": "vendor",
+                            "sourceColumnName": "vendor_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "minority_type",
+                    "levels": [
+                        {
+                            "name": "minority_type",
+                            "datasetName": "minority_type",
+                            "sourceColumnName": "minority_type_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "year",
+                    "levels": [
+                        {
+                            "name": "year",
+                            "datasetName": "year",
+                            "sourceColumnName": "year_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "yeartype",
+                    "levels": [
+                        {
+                            "name": "yeartype",
+                            "datasetName": "year",
+                            "sourceColumnName": "type_of_year"
+                        }
+                    ]
+                }
+            ],
+            "measures": {
+                "latest_minority_type_id": {
+                    "function": "MAX(minority_type_id)"
+                }
+            }
+        }
+    }
+}

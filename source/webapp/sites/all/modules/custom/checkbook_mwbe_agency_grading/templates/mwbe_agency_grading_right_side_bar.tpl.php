@@ -37,12 +37,6 @@ $mwbe_cats =  _mwbe_agency_grading_current_cats();
 						<td class="color"><img src="/<?php print drupal_get_path("module","checkbook_mwbe_agency_grading")?>/images/legend-color-4.png"></td>
 						<td class="desc"><span name="legend_description">Non-M/WBE</span></td>
 					</tr>
-					<tr class="legend_entry">
-						<td><!-- <span name="lengend_checkbox"></span> --><input type="checkbox" <?php echo (in_array('io_mwbe',$mwbe_cats))?  'checked=""':'';?>
-									 value="io_mwbe" name="mwbe_right_filter"></td>
-						<td class="color"><img src="/<?php print drupal_get_path("module","checkbook_mwbe_agency_grading")?>/images/legend-color-5.png"></td>
-						<td class="desc"><span name="legend_description">Individuals &amp; Other</span></td>
-					</tr>
 					</tbody></table>
 					</div>
 				</form>
@@ -63,19 +57,9 @@ $mwbe_cats =  _mwbe_agency_grading_current_cats();
 		          <span class="value"><?php print $nyc_data['total_mwbe']; ?></span>
 	 			</div>
 	 			
-	 			<div>
+	 			<div class="last">
 		          <label class="label"> Non-M/WBE: </label>
 		          <span class="value"><?php print $nyc_data['total_non_mwbe']; ?></span>
-	 			</div>
-	
-	 			<div>
-		          <label class="label"> Individuals & Other: </label>
-		          <span class="value"><?php print $nyc_data['total_io']; ?></span>
-	 			</div>
-	 			
-	 			<div class="last">
-		          <label class="label"> Total: </label>
-		          <span class="value"><?php print $nyc_data['total']; ?></span>
 	 			</div>
  			</div>
  			
