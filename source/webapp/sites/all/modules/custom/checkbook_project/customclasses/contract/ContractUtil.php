@@ -105,7 +105,7 @@ namespace { //global
         	return $status . ' ' . $contract_type ;
         }
 
-        /* Returns M/WBE category for the given vendor id in the given year and year type */
+        /* Returns M/WBE category for the given vendor id in the given year and year type for city-wide Active/Registered Contracts*/
 
         static public function get_contract_vendor_minority_category($vendor_id, $year_id, $year_type){
             STATIC $mwbe_vendors;
@@ -121,11 +121,25 @@ namespace { //global
             }
             if($mwbe_vendors[$vendor_id][$year_id][$year_type] == $vendor_id){
                 if(!_getRequestParamValue('mwbe'))
-                    return '/mwbe/2~3~4~5~9';
+                    return '/dashboard/mp/mwbe//mwbe/2~3~4~5~9';
             }
             return '';
         }
 
+        /* Returns M/WBE category for the given vendor id in the given year and year type for contracts Advanced Serach results*/
+
+        static public function get_contract_vendor_link($vendor_id, $is_prime_or_sub, $minority_type_id){
+               if($is_prime_or_sub == "S" && in_array($minority_type_id, array(2,3,4,5,9))){
+                    return "/dashboard/ms/subvendor/".$vendor_id;
+               }elseif($is_prime_or_sub == "S" && !in_array($minority_type_id, array(2,3,4,5,9))){
+                    return "/dashboard/ss/subvendor/".$vendor_id;
+               }else if($is_prime_or_sub == "P" && in_array($minority_type_id, array(2,3,4,5,9))){
+                    return "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
+               }else{
+                   return "/vendor/".$vendor_id;
+               }
+
+        }
 
         /* Returns M/WBE category of a vendor id in citywide pending contracts*/
 
@@ -141,7 +155,7 @@ namespace { //global
             }
             if($mwbe_vendors[$vendor_id] == $vendor_id){
                 if(!_getRequestParamValue('mwbe'))
-                    return '/mwbe/2~3~4~5~9';
+                    return '/dashboard/mp/mwbe/2~3~4~5~9';
             }
             return '';
         }
