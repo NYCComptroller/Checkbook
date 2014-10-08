@@ -18,6 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 ?>
+
 <h3>Associated Contracts</h3>
 <table id="assoc_contracts_list">
   <thead>
@@ -52,7 +53,10 @@
     else {
       $class = "class=\"even\"";
     }
-    
+    $first = '';
+    if($count == 0){
+        $first = "first-item";
+    }
     if(preg_match("/newwindow/",current_path())){
 		$child_contract_link=$contract['contract_number'];
     	
@@ -67,7 +71,7 @@
     <td class="assoc_item">
       <div class="contract-title clearfix">
              <span agurl="/minipanels/contracts_cta_history/agid/<?php echo $contract['original_agreement_id'] . $new_window; ?>"
-                   class="toggler collapsed <?php echo $clickClass . " " . $class; ?>"
+                   class="toggler collapsed <?php echo $clickClass . " ". $first . " " . $class; ?>"
                    id="master_assoc_cta_expand"></span>
 
         <div class='contract-title-text'>Contract Spending for <?php echo $child_contract_link ?> </div>
