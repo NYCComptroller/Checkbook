@@ -187,14 +187,6 @@
         "fact_disbursement_line_item__contracts_spending_transactions": [
             {"datasetName": "fact_disbursement_line_item", "columnNames": ["disbursement_line_item_id"]},
             {"datasetName": "contracts_spending_transactions", "columnNames": ["disbursement_line_item_id"]}
-        ],
-        "fact_disbursement_line_item__spending_latest_mwbe_category_by_vendor": [
-            {"datasetName": "fact_disbursement_line_item", "columnNames": ["vendor_id","check_eft_issued_nyc_year_id"]},
-            {"datasetName": "spending_latest_mwbe_category_by_vendor", "columnNames": ["vendor_id","year_id"]}
-        ],
-        "fact_disbursement_line_item__spending_latest_mwbe_category_by_vendor_and_agency": [
-            {"datasetName": "fact_disbursement_line_item", "columnNames": ["agency_id","vendor_id","check_eft_issued_nyc_year_id"]},
-            {"datasetName": "spending_latest_mwbe_category_by_vendor_and_agency", "columnNames": ["agency_id","vendor_id","year_id"]}
         ]
     }
 }

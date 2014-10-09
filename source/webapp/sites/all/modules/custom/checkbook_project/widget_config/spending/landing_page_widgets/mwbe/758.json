@@ -10,7 +10,7 @@
     "noDataInitialLoad":true,
     "html_class": "",
     "no_results_content":"No Results Found",
-    "dataset": "checkbook:fact_disbursement_line_item",
+    "dataset": "checkbook:fact_disbursement_line_item_mwbe",
     "columns": ["check_eft_issued_date","vendor_name","agency_name","check_amount","expenditure_object_name","agency_id","vendor_id","expenditure_object_id","department_name","industry_type_id"],
     "enableExpand":true,
     "disableViewAll":true,
