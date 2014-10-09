@@ -191,6 +191,9 @@
                 adt.sub_contract_id,
                 adt.vendor_type,
                 adt.is_minority_vendor,
+                'N/A' commodity_line,
+                'N/A' budget_name,
+                'N/A' entity_contract_number,
                 case when adt.is_prime_or_sub in ('P') then 'N/A' else adt.prime_vendor_name end as prime_vendor_name
 			 from all_disbursement_transactions  adt left join ref_year ry on adt.check_eft_issued_nyc_year_id = ry.year_id
 			 left join ref_spending_category rsc on rsc.spending_category_id = adt.spending_category_id
@@ -252,6 +255,9 @@
             <field column="vendor_type" name="vendor_type" />
             <field column="is_minority_vendor" name="is_minority_vendor" />
             <field column="prime_vendor_name" name="prime_vendor_name" />
+            <field column="entity_contract_number" name="spending_entity_contract_number" />
+            <field column="commodity_line" name="spending_commodity_line" />
+            <field column="budget_name" name="spending_budget_name" />
         </entity>
         <entity dataSource="db2" name="spending_oge"
                 pk="id"
@@ -475,6 +481,9 @@
                 prime_vendor_id,
                 is_minority_vendor,
                 vendor_type,
+                'N/A' commodity_line,
+                'N/A' budget_name,
+                'N/A' entity_contract_number,
                 case when is_prime_or_sub in ('P') then 'N/A' else prime_vendor_name end as prime_vendor_name
                 from all_agreement_transactions a
             left join ref_document_code dc on a.document_code_id = dc.document_code_id
@@ -539,6 +548,9 @@
             <field column="vendor_type" name="vendor_type" />
             <field column="is_minority_vendor" name="is_minority_vendor" />
             <field column="prime_vendor_name" name="prime_vendor_name" />
+            <field column="entity_contract_number" name="contract_entity_contract_number" splitBy=","/>
+            <field column="commodity_line" name="contract_commodity_line" splitBy="," />
+            <field column="budget_name" name="contract_budget_name" splitBy=","  />
         </entity>
         <entity dataSource="db2" name="contracts_oge" transformer="RegexTransformer"
                 pk="id"
