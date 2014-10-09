@@ -20,9 +20,7 @@
         "agency.agency.agency_name",
         "agreement_id.agreement_id",
         "agency.agency",
-        "year.year",
-        "latest_minority_type_id@checkbook:spending_latest_mwbe_category_by_vendor",
-        "latest_minority_type_id@checkbook:spending_latest_mwbe_category_by_vendor_and_agency"
+        "year.year"
     ],
     "limit":5,
     "enableExpand":true,

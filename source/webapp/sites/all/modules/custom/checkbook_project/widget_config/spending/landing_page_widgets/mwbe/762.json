@@ -14,8 +14,7 @@
         "vendor.vendor",
         "vendor.vendor.legal_name",
         "year.year",
-        "yeartype.yeartype",
-        "latest_minority_type_id@checkbook:spending_latest_mwbe_category_by_vendor"
+        "yeartype.yeartype"
     ],
     "limit":5,
     "enableExpand":true,

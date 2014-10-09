@@ -382,14 +382,6 @@
             {"datasetName": "contracts_mwbe_spending", "columnNames": ["agency_id"]},
             {"datasetName": "agency", "columnNames": ["agency_id"]}
         ],
-        "contracts_mwbe_spending__spending_latest_mwbe_category_by_vendor": [
-            {"datasetName": "contracts_mwbe_spending", "columnNames": ["vendor_id","year_id","type_of_year"]},
-            {"datasetName": "spending_latest_mwbe_category_by_vendor", "columnNames": ["vendor_id","year_id","type_of_year"]}
-        ],
-        "contracts_mwbe_spending__spending_latest_mwbe_category_by_vendor_and_agency": [
-            {"datasetName": "contracts_mwbe_spending", "columnNames": ["agency_id","vendor_id","year_id","type_of_year"]},
-            {"datasetName": "spending_latest_mwbe_category_by_vendor_and_agency", "columnNames": ["agency_id","vendor_id","year_id","type_of_year"]}
-        ],
         "spending_mwbe_data__industry": [
             {"datasetName": "spending_mwbe_data", "columnNames": ["industry_type_id"]},
             {"datasetName": "industry_type", "columnNames": ["industry_type_id"]}
@@ -401,14 +393,6 @@
         "contracts_mwbe_vendor_spending__industry": [
             {"datasetName": "contracts_mwbe_vendor_spending", "columnNames": ["industry_type_id"]},
             {"datasetName": "industry_type", "columnNames": ["industry_type_id"]}
-        ],
-        "contracts_mwbe_vendor_spending__spending_latest_mwbe_category_by_vendor": [
-            {"datasetName": "contracts_mwbe_vendor_spending", "columnNames": ["vendor_id","year_id","type_of_year"]},
-            {"datasetName": "spending_latest_mwbe_category_by_vendor", "columnNames": ["vendor_id","year_id","type_of_year"]}
-        ],
-        "contracts_mwbe_vendor_spending__spending_latest_mwbe_category_by_vendor_and_agency": [
-            {"datasetName": "contracts_mwbe_vendor_spending", "columnNames": ["agency_id","vendor_id","year_id","type_of_year"]},
-            {"datasetName": "spending_latest_mwbe_category_by_vendor_and_agency", "columnNames": ["agency_id","vendor_id","year_id","type_of_year"]}
         ]
     }        
 }
