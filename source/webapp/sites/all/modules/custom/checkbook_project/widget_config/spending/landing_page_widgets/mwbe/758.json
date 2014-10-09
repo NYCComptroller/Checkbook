@@ -60,7 +60,7 @@
             },
             "vendor_name_link": {
                 "type": "expression2",
-                "expression": "'<a href=\"' . SpendingUtil::getVendorNameLinkUrl($node,$row) . '\">' . $row[vendor_name_formatted] . '</a>'"
+                "expression": "'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node, $row) . '\">' . $row[vendor_name_formatted] . '</a>'"
             },
             "vendor_name_link2": {
                 "type": "expression2",

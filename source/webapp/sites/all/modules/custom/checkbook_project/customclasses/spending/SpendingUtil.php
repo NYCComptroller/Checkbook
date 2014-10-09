@@ -185,20 +185,6 @@ class SpendingUtil{
     }
 
     /**
-     * Returns Vendor Name Link Url based on values from current path & data row,
-     *
-     * @param $node
-     * @param $row
-     * @return string
-     */
-    static function getVendorNameLinkUrl($node, $row){
-        $dashboard = _getRequestParamValue("dashboard");
-        $dashboard = $dashboard == "ms" ? "mp" : $dashboard;
-        $custom_params = array("dashboard"=>$dashboard,"vendor"=>(isset($row["vendor_id"]) ? $row["vendor_id"] : $row["vendor_vendor"]));
-        return '/' . self::getLandingPageWidgetUrl($custom_params);
-    }
-
-    /**
      * Returns Sub Vendor Name Link Url based on values from current path & data row,
      *
      * @param $node
@@ -219,30 +205,66 @@ class SpendingUtil{
      */
     static function getPrimeVendorNameLinkUrl($node, $row){
 
+        $year_id = _getRequestParamValue("year");
+        $year_type = _getRequestParamValue("yeartype");
         $dashboard = _getRequestParamValue("dashboard");
-        $latest_minority_type_id = null;
-        if(isset($row["latest_minority_type_id@checkbook:spending_latest_mwbe_category_by_vendor_and_agency"]))
-            $latest_minority_type_id = $row["latest_minority_type_id@checkbook:spending_latest_mwbe_category_by_vendor_and_agency"];
-        else if(isset($row["latest_minority_type_id@checkbook:spending_latest_mwbe_category_by_vendor"]))
-            $latest_minority_type_id = $row["latest_minority_type_id@checkbook:spending_latest_mwbe_category_by_vendor"];
+        $mwbe = _getRequestParamValue("mwbe");
+        $agency_id = _getRequestParamValue("agency_id");
+        $vendor_id = isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["prime_vendor_prime_vendor"];
+        if(!isset($vendor_id)) {
+            $vendor_id = isset($row["vendor_id"]) ? $row["vendor_id"] : $row["vendor_vendor"];
+        }
+        $latest_certified_minority_type_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type);
 
-        $custom_params = null;
-
-        if(MappingUtil::isMWBECertified(array($latest_minority_type_id))) {
+        if(isset($latest_certified_minority_type_id)) {
             $custom_params = array (
-                "dashboard"=>($dashboard == "ms" ? "mp" : $dashboard),
-                "mwbe"=>$latest_minority_type_id,
-                "vendor"=>(isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["prime_vendor_prime_vendor"])
+                "dashboard"=>!isset($dashboard) ? 'mp' : $dashboard,
+                "mwbe"=>!isset($mwbe) ? '2~3~4~5~9' : $mwbe,
+                "vendor"=>$vendor_id
             );
         }
         else {
-            $custom_params = array (
-                "dashboard"=>null,"mwbe"=>null,"subvendor"=>null,"category"=>null,"industry"=>null,
-                "vendor"=>(isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["prime_vendor_prime_vendor"])
-            );
+            $custom_params = array ("dashboard"=>null,"mwbe"=>null,"vendor"=>$vendor_id);
+        }
+        return '/' . self::getLandingPageWidgetUrl($custom_params);
+    }
+
+
+    /**
+     * Returns M/WBE category for the given vendor id in the given year and year type for
+     *
+     * @param $vendor_id
+     * @param $agency_id
+     * @param $year_id
+     * @param $year_type
+     * @return string
+     */
+    static public function getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type){
+        STATIC $spending_vendor_latest_mwbe_category;
+
+        $latest_minority_type_id = null;
+        if(!isset($spending_vendor_latest_mwbe_category)){
+            $query = "SELECT vendor_id, agency_id, year_id, type_of_year,minority_type_id
+                      FROM spending_vendor_latest_mwbe_category
+                      WHERE is_prime_or_sub='P' AND minority_type_id IN (2,3,4,5,9)
+                      GROUP BY vendor_id, agency_id, year_id, type_of_year, minority_type_id";
+
+            $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+            foreach($results as $row){
+                if(isset($row['agency_id'])) {
+                    $spending_vendor_latest_mwbe_category[$row['vendor_id']][$row['agency_id']][$row['year_id']][$row['type_of_year']]['minority_type_id'] = $row['minority_type_id'];
+                }
+                else {
+                    $spending_vendor_latest_mwbe_category[$row['vendor_id']][$row['year_id']][$row['type_of_year']]['minority_type_id'] = $row['minority_type_id'];
+                }
+
+            }
         }
 
-        return '/' . self::getLandingPageWidgetUrl($custom_params);
+        $latest_minority_type_id = isset($agency_id)
+            ? $spending_vendor_latest_mwbe_category[$vendor_id][$agency_id][$year_id][$year_type]['minority_type_id']
+            : $spending_vendor_latest_mwbe_category[$vendor_id][$year_id][$year_type]['minority_type_id'];
+        return $latest_minority_type_id;
     }
 
     /**

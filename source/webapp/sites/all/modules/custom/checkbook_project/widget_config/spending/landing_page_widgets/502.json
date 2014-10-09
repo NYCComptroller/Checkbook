@@ -2,32 +2,16 @@
     "widgetType": "data_tables",
     "widgetSubType": "ajaxSimple",
     "cleanURLParameters":["agency","vendor","category","year","yeartype","check_eft_issued_nyc_year_id","calendar_fiscal_year_id"],
-    "urlParamMap":{
-        "agency":"agency_id",
-        "vendor":"vendor_id",
-        "category":"spending_category_id",
-        "year":"year_id",
-        "yeartype":"year_type",
-        "check_eft_issued_nyc_year_id":"check_eft_issued_nyc_year_id",
-        "calendar_fiscal_year_id":"calendar_fiscal_year_id"
-    },
+    "urlParamMap":{"agency":"agency_id","vendor":"vendor_id","category":"spending_category_id","year":"year_id","yeartype":"year_type",
+        "check_eft_issued_nyc_year_id":"check_eft_issued_nyc_year_id","calendar_fiscal_year_id":"calendar_fiscal_year_id"},
+    "useList":true,
     "getTotalDataCount":true,
     "limit":"5",
     "noDataInitialLoad":true,
     "html_class": "",
     "no_results_content":"No Results Found",
     "dataset": "checkbook:fact_disbursement_line_item",
-    "columns": [
-        "issuedate.issuedate",
-        "vendornm.vendornm",
-        "agencynm.agencynm",
-        "chkamnt.chkamnt",
-        "expobjectname.expobjectname",
-        "agency.agency",
-        "vendor.vendor",
-        "expenditure_object.expenditure_object",
-        "deptname.deptname"
-    ],
+    "columns": ["check_eft_issued_date","vendor_name","agency_name","check_amount","expenditure_object_name","agency_id","vendor_id","expenditure_object_id","department_name"],
     "enableExpand":true,
     "disableViewAll":true,
     "adjustParameters":"
@@ -68,23 +52,23 @@
     "derivedColumns": {
             "agency_name_link": {
                 "type": "expression2",
-                "expression": "'<a href=\"' . SpendingUtil::getAgencyNameLinkUrl($node,$row) . '\">' . $row['agencynm_agencynm'] . '</a>'"
+                "expression": "'<a href=\"' . SpendingUtil::getAgencyNameLinkUrl($node,$row) . '\">' . $row[agency_name] . '</a>'"
             },
             "vendor_name_formatted": {
                 "type": "expression2",
-                "expression": "_get_tooltip_markup($row['vendornm_vendornm'],36)"
+                "expression": "_get_tooltip_markup($row['vendor_name'],36)"
             },
             "vendor_name_link": {
                 "type": "expression2",
-                "expression": "'<a href=\"' . SpendingUtil::getVendorNameLinkUrl($node,$row) . '\">' . $row[vendor_name_formatted] . '</a>'"
+                "expression": "'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row[vendor_name_formatted] . '</a>'"
             },
             "vendor_name_link2": {
                 "type": "expression2",
-                "expression": "($row[vendor_id] == null )?$row['vendornm_vendornm']:$row[vendor_name_link]"
+                "expression": "($row[vendor_id] == null )?$row['vendor_name']:$row[vendor_name_link]"
             },
             "formatted_check_amount": {
                 "type": "expression2",
-                "expression": "custom_number_formatter_format($row['chkamnt_chkamnt'],2,'$')"
+                "expression": "custom_number_formatter_format($row['check_amount'],2,'$')"
             }
     },
     "WidgetTitleEval":"
@@ -92,12 +76,12 @@
         return ('Checks ' . $catName . ' Transactions');
     ",
     "table_columns": [
-        {"labelAlias":"issue_date","column":"issuedate_issuedate","sortSourceColumn":"issuedate.issuedate"},
-        {"labelAlias":"agency_name","column":"agency_name_link","sortSourceColumn":"agencynm.agencynm"},
-        {"labelAlias":"prime_vendor","column":"vendor_name_link2","sortSourceColumn":"vendornm.vendornm"},
+        {"labelAlias": "issue_date","column": "check_eft_issued_date"},
+        {"labelAlias": "agency_name","column": "agency_name_link","sortSourceColumn":"agency_name"},
+        {"labelAlias": "prime_vendor","column": "vendor_name_link2","sortSourceColumn":"vendor_name"},
         {"label": "","column": ""},
-        {"labelAlias":"expense_category","column":"expobjectname_expobjectname","sortSourceColumn":"expobjectname.expobjectname"},
-        {"labelAlias":"check_amount","column": "formatted_check_amount","sortSourceColumn":"chkamnt.chkamnt"},
+        {"labelAlias": "expense_category","column":"expenditure_object_name"},
+        {"labelAlias": "check_amount","column": "formatted_check_amount","sortSourceColumn":"check_amount"},
         {"label": "","column": ""}
     ],
     "dataTableOptions":{

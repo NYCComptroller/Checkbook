@@ -52,7 +52,7 @@
         },
         "vendor_name_link": {
             "type": "expression2",
-            "expression": "'<a href=\"' . SpendingUtil::getVendorNameLinkUrl($node,$row) . '\">' . $row[vendor_vendor_legal_name] . '</a>'"
+            "expression": "'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row[vendor_vendor_legal_name] . '</a>'"
         } ,
         "vendor_amount_link":{
             "type":"expression2",
