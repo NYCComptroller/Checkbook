@@ -99,7 +99,7 @@ $total_subvendor_count = $res->data[0]['sub_vendor_count'];
       $ethnicities = array();
       foreach($node->data as $row){
         if($row['ethnicity'] != null and trim($row['ethnicity']) != '' ){
-          $ethnicities[] = $row['ethnicity'];
+          $ethnicities[] = MappingUtil::getMinorityCategoryByName($row['ethnicity']);
         }
       } 
       $ethnicity = implode(',',$ethnicities);
