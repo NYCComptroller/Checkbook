@@ -12,12 +12,9 @@
         "template":"chart_grid_view",
         "domain":"spending",
         "html_class":"chart-grid-view-table three-columns",
-        "sortColumn":1,
+        "sortColumn":0,
         "table_columns": [
-            {
-                  "labelAlias": "Year",
-                  "columnType": "text"
-             },
+            
  			 {
                   "labelAlias": "Month",
                   "columnType": "text",
@@ -105,7 +102,6 @@
 	$series_w =  array();
 	$series_aa =  array();
 	$series_e =  array();
-	$months = array('January','February','March','April','May','June','July','August','September','October','November','December');
 	
 	 $year = '';
 	 foreach ($node->data as $row){
@@ -153,13 +149,16 @@
 	 		break;
 	 	}	 	 	
 	 }
-	 
+	 $months = array('January','February','March','April','May','June','July','August','September','October','November','December');
 	if(_getRequestParamValue('yeartype') == 'C'){
-		 $year = 'CY ' . $year;
+		 $year = 'CY ' . $year;		 
+		$months_pos = array(0,1,2,3,4,5,6,7,8,9,10,11);
 	}else{
 		$year = 'FY ' . $year;
+		$months_pos = array(6,7,8,9,10,11,0,1,2,3,4,5);
 	}
 	
+
 	$i = 0;
 	while($i <=11){
 		$series_ba[$i]->total =  $series_ba[$i]->y;
@@ -170,8 +169,7 @@
 	 	$series_aa[$i]->y = $series_aa[$i]->y/$non_mwbe_data[$i]*100;
 		$series_w[$i]->total =  $series_w[$i]->y;
 	 	$series_w[$i]->y = $series_w[$i]->y/$non_mwbe_data[$i]*100;
-	 	$tooltip_label = 
-	 						'Year: ' . $year.  '<br/>' .
+	 	$tooltip_label = 	'Year: ' . $year. '<br/>' .  						
 	 						'Month: '. $months[$i] . '<br/>' . 
 							'Asian American: ' . custom_number_formatter_format($series_aa[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_aa[$i]->y,1,null,'%') . ')' .  '<br/>' 
 							. 'Black American: ' . custom_number_formatter_format($series_ba[$i]->total,2,'$')  . ' (' .custom_number_formatter_format($series_ba[$i]->y,1,null,'%') . ')' . '<br/>' 
@@ -181,8 +179,8 @@
 		$series_ha[$i]->tooltip_label = $tooltip_label;
 		$series_aa[$i]->tooltip_label = $tooltip_label;
 		$series_w[$i]->tooltip_label = $tooltip_label; 		
-		
-		$node->widgetConfig->gridConfig->data[] = array($year,
+		$index = array_search($months[$i],$months_os);
+		$node->widgetConfig->gridConfig->data[] = array(
 														$months[$i],
 														$series_aa[$i]->total,
 														$series_ba[$i]->total,
@@ -192,30 +190,35 @@
 		 	
 		$i +=1;
 	}
+	
+	
+	foreach($months_pos as $index){
+		$series_w_points[] = $series_w[$index];
+		$series_aa_points[] = $series_aa[$index];
+		$series_ba_points[] = $series_ba[$index];
+		$series_ha_points[] = $series_ha[$index];
+	}
+
 
 	$node->widgetConfig->chartConfig->series[0]->name = 'Women';
 	$node->widgetConfig->chartConfig->series[0]->type = 'column';
 	$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
-	ksort($series_w);
-	$node->widgetConfig->chartConfig->series[0]->data = $series_w; 
+	$node->widgetConfig->chartConfig->series[0]->data = $series_w_points; 
 
 	$node->widgetConfig->chartConfig->series[1]->name = 'Asian American';
 	$node->widgetConfig->chartConfig->series[1]->type = 'column';
 	$node->widgetConfig->chartConfig->series[1]->pointWidth = 30;
-	ksort($series_aa);
-	$node->widgetConfig->chartConfig->series[1]->data = $series_aa;
+	$node->widgetConfig->chartConfig->series[1]->data = $series_aa_points;
 	
 	$node->widgetConfig->chartConfig->series[2]->name = 'Black American';
 	$node->widgetConfig->chartConfig->series[2]->type = 'column';
 	$node->widgetConfig->chartConfig->series[2]->pointWidth = 30;
-	ksort($series_ba);
-	$node->widgetConfig->chartConfig->series[2]->data = $series_ba;  
+	$node->widgetConfig->chartConfig->series[2]->data = $series_ba_points;  
 
 	$node->widgetConfig->chartConfig->series[3]->name = 'Hispanic American';
 	$node->widgetConfig->chartConfig->series[3]->type = 'column';
 	$node->widgetConfig->chartConfig->series[3]->pointWidth = 30;
-	ksort($series_ha);
-	$node->widgetConfig->chartConfig->series[3]->data = $series_ha;  
+	$node->widgetConfig->chartConfig->series[3]->data = $series_ha_points;  
 
 																		 
 ",

@@ -69,7 +69,7 @@ class MappingUtil {
     
     static $mwbe_prefix = "M/WBE" ;
     
-    private static $minority_type_category_map_multi_chart = array(
+    public static $minority_type_category_map_multi_chart = array(
     		'Black American' => array(2),
     		'Hispanic American' => array(3),
     		'Asian American' => array(4,5),
@@ -126,28 +126,24 @@ class MappingUtil {
     	$applicable_minority_types = self::getCurrentMWBEApplicableFilters($domain);
     	 
     	$mwbe_featured_dashboard_param = RequestUtil::getNextMWBEDashboardState();
+    	$active_domain_link =  preg_replace('/\/mwbe\/[^\/]*/','',$active_domain_link);    	
     	$filters_html =  "<div class='main-nav-drop-down' style='display:none'>
   		<ul>
   			<li class='no-click title'>M/WBE Category</li>
-  			<li class='no-click'><a href='/" . RequestUtil::getLandingPageUrl($domain) . "/mwbe/2~3~4~5~9" .$mwbe_featured_dashboard_param   			
-																	  			.	_checkbook_project_get_url_param_string("agency")
-																	  			. _checkbook_project_get_url_param_string("vendor")  .
-															  				"'>Total M/WBE</a></li>
-			<li class='no-click'><a href='/" . RequestUtil::getLandingPageUrl($domain) . "/mwbe/2~3~4~5~9" .$mwbe_featured_dashboard_param . "'>M/WBE Home</a></li>  					
   					";
     	
     	
     	if(array_intersect($applicable_minority_types,array(4,5))){
-    		$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/4~5" . $mwbe_featured_dashboard_param . "'>Asian American</a></li>";
+    		$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/4~5'>Asian American</a></li>";
     	}
     	if(array_intersect($applicable_minority_types,array(2))){
-    		$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/2" . $mwbe_featured_dashboard_param . "'>Black American</a></li>";
+    		$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/2'>Black American</a></li>";
     	}
     	if(array_intersect($applicable_minority_types,array(9))){
-    		$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/9" . $mwbe_featured_dashboard_param . "'>Women</a></li>";
+    		$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/9'>Women</a></li>";
     	}
     	if(array_intersect($applicable_minority_types,array(3))){
-    		$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/3" . $mwbe_featured_dashboard_param . "'>Hispanic American</a></li>";
+    		$filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/3'>Hispanic American</a></li>";
     	}
 
 /*    	if(array_intersect($applicable_minority_types,array(7,11))){
@@ -160,7 +156,13 @@ class MappingUtil {
     		}    		
     	}
 */		
-  		$filters_html .=  "</ul>
+  		$filters_html .=  "
+  			<li class='no-click'><a href='/" . RequestUtil::getLandingPageUrl($domain) . "/mwbe/2~3~4~5~9" .$mwbe_featured_dashboard_param   			
+																	  			.	_checkbook_project_get_url_param_string("agency")
+																	  			. _checkbook_project_get_url_param_string("vendor")  .
+															  				"'>Total M/WBE</a></li>
+			<li class='no-click'><a href='/" . RequestUtil::getLandingPageUrl($domain) . "/mwbe/2~3~4~5~9" .$mwbe_featured_dashboard_param . "'>M/WBE Home</a></li>  					
+  				</ul>
   		</div>";
     	
     	return $filters_html;
@@ -175,10 +177,10 @@ class MappingUtil {
     		case "spending":
     			if(RequestUtil::isDashboardFlowSubvendor()){
     				$table = "aggregateon_subven_spending_coa_entities";
-    				$urlParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"prime_vendor_id");
+    				$urlParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"prime_vendor_id","category"=>"spending_category_id");
     			}else{
     				$table = "aggregateon_mwbe_spending_coa_entities";
-    				$urlParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"vendor_id");
+    				$urlParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"vendor_id","category"=>"spending_category_id");
     			}
     			//$urlParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"vendor_id","category"=>"spending_category_id");
     			
@@ -208,10 +210,13 @@ class MappingUtil {
 	    	case "contracts":
 	    		if(RequestUtil::isDashboardFlowSubvendor()){
 	    			$table = "aggregateon_subven_contracts_cumulative_spending";
-	    			$urlParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","vendor"=>"prime_vendor_id");
+					$urlParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","awdmethod"=>"award_method_id","vendor"=>"prime_vendor_id",
+									"status"=>"status_flag","csize"=>"award_size_id","cindustry"=>"industry_type_id");
+	    			
 	    		}else{
 	    			$table = "aggregateon_mwbe_contracts_cumulative_spending";
-	    			$urlParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","vendor"=>"vendor_id");
+	    			$urlParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","awdmethod"=>"award_method_id","vendor"=>"vendor_id",
+									"status"=>"status_flag","csize"=>"award_size_id","cindustry"=>"industry_type_id");
 	    		}
 	    		//$urlParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","awdmethod"=>"award_method_id","vendor"=>"vendor_id",
 				//					"status"=>"status_flag","csize"=>"award_size_id","cindustry"=>"industry_type_id");

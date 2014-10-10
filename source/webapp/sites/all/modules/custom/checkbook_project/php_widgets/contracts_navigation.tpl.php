@@ -88,32 +88,23 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 	
 	$is_mwbe_certified = MappingUtil::isMWBECertified(explode('~',_getRequestParamValue('mwbe')));
 	$mwbe_prefix = ($is_mwbe_certified)? MappingUtil::$mwbe_prefix :'';
+	$mwbe_active_domain_link = RequestUtil::getDashboardTopNavURL("mwbe") ;
+
+	
+	$svendor_amount = $node->data[8]['current_amount_sum'];
+	$svendor_active_domain_link = RequestUtil::getDashboardTopNavURL("subvendor") ;
 	
 	if(preg_match('/contracts/',$_GET['q'])){
 		$mwbe_amount = $node->data[6]['current_amount_sum'] + $node->data[10]['current_amount_sum'];
-		$mwbe_active_domain_link = RequestUtil::getTopNavURL("contracts") ;
-		$mwbe_active_domain_link = preg_replace('/\/mwbe\/[^\/]*/','',$mwbe_active_domain_link);
-		$mwbe_active_domain_link = preg_replace('/\/subvendor\/[^\/]*/','',$mwbe_active_domain_link);
-		$mwbe_active_domain_link = preg_replace('/\/dashboard\/[^\/]*/','',$mwbe_active_domain_link);
+		//$mwbe_active_domain_link = RequestUtil::getTopNavURL("contracts") ;
 		$mwbe_filters = MappingUtil::getCurrentMWBETopNavFilters($mwbe_active_domain_link,"contracts");
-		
-		$svendor_amount = $node->data[8]['current_amount_sum'];
-		$svendor_active_domain_link = RequestUtil::getTopNavURL("contracts") ;
-		$svendor_active_domain_link = preg_replace('/\/subvendor\/[^\/]*/','',$svendor_active_domain_link);
-		$sub_vendors_home_link = RequestUtil::getLandingPageUrl("contracts") ;
+		$sub_vendors_home_link = RequestUtil::getLandingPageUrl("contracts", _getRequestParamValue("year")) ;
 	}else{
 		$mwbe_amount = $node->data[5]['check_amount_sum'] + $node->data[9]['check_amount_sum'];
-		$mwbe_active_domain_link = RequestUtil::getTopNavURL("spending") ;
-		$mwbe_active_domain_link = preg_replace('/\/mwbe\/[^\/]*/','',$mwbe_active_domain_link);
-		$mwbe_active_domain_link = preg_replace('/\/subvendor\/[^\/]*/','',$mwbe_active_domain_link);
-		$mwbe_active_domain_link = preg_replace('/\/dashboard\/[^\/]*/','',$mwbe_active_domain_link);
 		$mwbe_filters = MappingUtil::getCurrentMWBETopNavFilters($mwbe_active_domain_link,"spending");
 		
 		$svendor_amount = $node->data[7]['check_amount_sum'];
-		$svendor_active_domain_link = RequestUtil::getTopNavURL("spending") ;
-		$svendor_active_domain_link = preg_replace('/\/subvendor\/[^\/]*/','',$svendor_active_domain_link);
-		$svendor_active_domain_link = preg_replace('/\/dashboard\/[^\/]*/','',$svendor_active_domain_link);
-		$sub_vendors_home_link = RequestUtil::getLandingPageUrl("spending") ;
+		$sub_vendors_home_link = RequestUtil::getLandingPageUrl("spending",_getRequestParamValue("year")) ;
 	}
 	
 	$featured_dashboard = _getRequestParamValue("dashboard");	
@@ -139,7 +130,6 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 
 
 
-
 if(!preg_match('/smnid/',$_GET['q']) && (
 		preg_match('/spending\/transactions/',$_GET['q'])
 		|| preg_match('/contract\/all\/transactions/',$_GET['q'])
@@ -150,16 +140,16 @@ if(!preg_match('/smnid/',$_GET['q']) && (
 }
 
 if($mwbe_amount  == 0){
-	$mwbe_link = l('<div><span class="nav-title">M/WBE</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div>','',$options_disabled);
+	$mwbe_link = l('<div><span class="nav-title">' . RequestUtil::getDashboardTopNavTitle("mwbe") . '</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div>','',$options_disabled);
 }else{	
-	$mwbe_link = l('<div><span class="nav-title">M/WBE</span><br>&nbsp;'. custom_number_formatter_format($mwbe_amount ,1,'$') . '</div>',$mwbe_active_domain_link. "/mwbe/2~3~4~5~9" . $mwbe_featured_dashboard_param,$options);
+	$mwbe_link = l('<div><span class="nav-title">' . RequestUtil::getDashboardTopNavTitle("mwbe") . '</span><br>&nbsp;'. custom_number_formatter_format($mwbe_amount ,1,'$') . '</div>',$mwbe_active_domain_link,$options);
 }
 
 
 if($svendor_amount  == 0){
-	$subvendors_link = l('<div><span class="nav-title">' .$mwbe_prefix  .' Sub Vendors</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div>','',$options_disabled);	
+	$subvendors_link = l('<div><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div>','',$options_disabled);	
 }else{
-	$subvendors_link = l('<div><span class="nav-title">' .$mwbe_prefix  .' Sub Vendors</span><br>&nbsp;'. custom_number_formatter_format($svendor_amount ,1,'$') . '</div>',$svendor_active_domain_link. "/subvendor/all" . $svendor_featured_dashboard_param ,$options);
+	$subvendors_link = l('<div><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format($svendor_amount ,1,'$') . '</div>',$svendor_active_domain_link ,$options);
 }
 
 

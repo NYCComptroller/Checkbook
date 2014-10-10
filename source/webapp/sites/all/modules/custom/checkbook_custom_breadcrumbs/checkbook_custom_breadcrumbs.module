@@ -58,28 +58,28 @@ function _set_alert_breadcrumb_title_drilldown(){
 * Custom function to set title for contracts landing pages
 **/
 function _set_contracts_breadcrumb_title_drilldown(){
-    drupal_set_title(_get_contracts_breadcrumb_title_drilldown());
+    drupal_set_title(_get_contracts_breadcrumb_title_drilldown(),PASS_THROUGH);
 }
 
 /**
 * Custom function to set title for Spending landing pages
 **/
 function _set_spending_breadcrumb_title_drilldown(){
-  drupal_set_title(_get_spending_breadcrumb_title_drilldown());
+  drupal_set_title(_get_spending_breadcrumb_title_drilldown(),PASS_THROUGH);
 }
 
 /**
 * Custom function to set title for Budget landing pages
 **/
 function _set_budget_breadcrumb_title_drilldown(){
-  drupal_set_title(_get_budget_breadcrumb_title_drilldown());
+  drupal_set_title(_get_budget_breadcrumb_title_drilldown(),PASS_THROUGH);
 }
 
 /**
 * Custom function to set title for Revenue landing pages
 **/
 function _set_revenue_breadcrumb_title_drilldown(){
-  drupal_set_title(_get_revenue_breadcrumb_title_drilldown());
+  drupal_set_title(_get_revenue_breadcrumb_title_drilldown(),PASS_THROUGH);
 }
 
 /**
@@ -214,7 +214,7 @@ function _get_revenue_breadcrumb_title_drilldown(){
 * Custom function to set title for contracts landing pages
 **/
 function _set_pending_contracts_breadcrumb_title_drilldown(){
-    drupal_set_title(_get_pending_contracts_breadcrumb_title_drilldown());
+    drupal_set_title(_get_pending_contracts_breadcrumb_title_drilldown(),PASS_THROUGH);
 }
 
 /**
@@ -327,7 +327,7 @@ function _set_contracts_breadcrumb_title(){
   }
 
     $breadcrumb[count($breadcrumb) -1] = $title;
-  drupal_set_title($title);
+  drupal_set_title($title,PASS_THROUGH);
   //drupal_set_breadcrumb($breadcrumb);
 }
 
@@ -401,7 +401,7 @@ function _set_pending_contracts_breadcrumb_title(){
         $title = $values['pending_contracts_award_size_id'];
     }
     $breadcrumb[count($breadcrumb) -1] = $title;
-    drupal_set_title($title);
+    drupal_set_title($title,PASS_THROUGH);
 }
 
 
