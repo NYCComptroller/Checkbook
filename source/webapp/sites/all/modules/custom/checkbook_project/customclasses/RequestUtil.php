@@ -640,8 +640,10 @@ class RequestUtil{
     }
     
 
-    static function getLandingPageUrl($domain){
-    	$year = _getCurrentYearID();
+    static function getLandingPageUrl($domain,$year = null){
+    	if($year == null){
+    		$year = _getCurrentYearID();
+    	}
     	switch($domain){
     		case "contracts":
     			$path ="contracts_landing/status/A/yeartype/B/year/".$year;
@@ -759,6 +761,49 @@ class RequestUtil{
     			break;
     		default:
     			return false;
+    			break;
+    	}
+    }
+    
+    static function getDashboardTopNavURL($dashboard_filter){
+    	$url = $_GET['q'];
+    	switch($dashboard_filter){
+    		case "mwbe":
+    	    	if(_getRequestParamValue("dashboard") !=  null){    				
+    				$url = preg_replace('/\/dashboard\/[^\/]*/','',$url);    				   				    				    				
+    			}
+    			$url .=  "/dashboard/" . self::getNextMWBEDashboardStateParam();
+    			if(_getRequestParamValue("mwbe") == null){
+    				$url .=  "/mwbe/2~3~4~5~9";
+    			}
+    			break;
+    		case "subvendor":
+    			if(_getRequestParamValue("dashboard") != null){    				
+    				$url = preg_replace('/\/dashboard\/[^\/]*/','',$url);    				   				    				    				
+    			}
+    			$url .=  "/dashboard/" . self::getNextSubvendorDashboardStateParam();    			
+    			break;
+    	}
+    	
+    	return $url;
+    }
+    
+    
+    static function getDashboardTopNavTitle($dashboard_filter){    	
+    	switch($dashboard_filter){
+    		case "mwbe":
+    			if(self::isDashboardFlowSubvendor()){
+    				return "M/WBE (Sub Vendors)";
+    			}else{
+    				return "M/WBE";
+    			}    			
+    			break;
+    		case "subvendor":
+    	    	if(_getRequestParamValue("mwbe") != null){
+    				return "Sub Vendors (M/WBE)";
+    			}else{
+    				return "Sub Vendors";
+    			}    			    			
     			break;
     	}
     }
