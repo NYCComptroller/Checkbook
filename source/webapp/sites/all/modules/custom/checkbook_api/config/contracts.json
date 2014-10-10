@@ -572,7 +572,8 @@
             "category":"document_code@checkbook:ref_document_code",
             "pin":"tracking_number",
             "apt_pin":"brd_awd_no",
-            "mwbe_category":"minority_type_id"
+            "mwbe_category":"minority_type_id",
+            "associated_prime_vendor":"associated_prime_vendor"
         },
         "dataset":{
             "sortColumn":"-registered_date",
@@ -606,6 +607,7 @@
                         "contract_industry":"industry_type_name",
                         "sub_contract_reference_id":"sub_contract_id",
                         "sub_vendor":"vendor_type",
+                        "associated_prime_vendor":"prime_vendor_name",
                         "mwbe_category":"minority_type_name"
                     },
                     "rowElements":[
@@ -629,6 +631,7 @@
                         "contract_industry",
                         "sub_contract_id",
                         "vendor_type",
+                        "associated_prime_vendor",
                         "mwbe_category",
                         "sub_vendor",
                         "sub_contract_reference_id"
@@ -658,6 +661,7 @@
                         "M/WBE Category":"minority_type_id",
                         "Sub Contract Reference ID":"sub_contract_id",
                         "Sub Vendor":"vendor_type",
+                        "Associated Prime Vendor":"prime_vendor_name",
                         "M/WBE Category":"minority_type_name"
                     }
                 }
