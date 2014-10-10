@@ -237,9 +237,6 @@ function checkbook_api_adjustContractDataSetResults(&$data_records) {
 
     foreach($data_records as $key => $data_record) {
         //Derive minority category from minority_type_id
-        if(isset($data_record['minority_type_id'])) {
-            $data_records[$key]['minority_type_id'] = MappingUtil::getMinorityCategoryById($data_record['minority_type_id']);
-        }
         if(isset($data_record['minority_type_name'])) {
             $data_records[$key]['minority_type_name'] = MappingUtil::getMinorityCategoryByName($data_record['minority_type_name']);
         }
@@ -277,12 +274,7 @@ function checkbook_api_adjustSpendingParameterFilters(&$data_set, &$parameters, 
 function checkbook_api_adjustSpendingDataSetResults(&$data_records) {
     //Derive minority category from minority_type_id
     foreach($data_records as $key => $data_record) {
-        //Derive minority category from minority_type_id
-
-        if(isset($data_record['minority_type_id'])) {
-            $data_records[$key]['minority_type_id'] = MappingUtil::getMinorityCategoryById($data_record['minority_type_id']);
-        }
-
+        //Derive minority category
         if(isset($data_record['minority_type_name'])) {
             $data_records[$key]['minority_type_name'] = MappingUtil::getMinorityCategoryByName($data_record['minority_type_name']);
         }
