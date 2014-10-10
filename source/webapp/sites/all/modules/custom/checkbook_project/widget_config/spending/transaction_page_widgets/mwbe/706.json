@@ -43,7 +43,7 @@
         "scalyear":"le","deptnm":"eqignorecase","expcategorynm":"eqignorecase"
     },
     "allowRequestParams":["dtsmnid","smnid"],
-    "defaultParameters":{"vendor_type":"pv","is_prime_or_sub":"P"},
+    "defaultParameters":{"vendor_type":"pv~sv","is_prime_or_sub":"P~S"},
     "header":"
         $header = NULL;
         $header .= widget_data_tables_export_link($node);

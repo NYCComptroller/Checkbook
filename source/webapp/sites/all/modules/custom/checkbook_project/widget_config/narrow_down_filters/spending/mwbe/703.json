@@ -13,7 +13,7 @@
     "autocompleteID":"fvendorNm",
     "autocompleteField":"vendornm.vendornm.vendor_name",
     "urlParamMap":{"vendornm":"vendornm.vendornm","vendornm_exact":"vendornm.vendornm"},
-    "defaultParameters":{"vendor_type":"pv","is_prime_or_sub":"P"},
+    "defaultParameters":{"vendor_type":"pv~sv","is_prime_or_sub":"P~S"},
     "maxSelect":5,
     "adjustParameters":"
         if(isset($parameters['vendor_type'])){
