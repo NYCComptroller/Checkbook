@@ -31,7 +31,7 @@ if(_getRequestParamValue("magid") != ""){
   $ag_id = _getRequestParamValue("agid");
 }
 
-$queryVendorDetails = "SELECT fa.contract_number, rb.business_type_code, fa.agreement_id,fa.original_agreement_id,  fa.vendor_id, va.address_id, legal_name AS vendor_name, a.address_line_1, a.address_line_2, a.city, a.state, a.zip, a.country,
+$queryVendorDetails = "SELECT fa.minority_type_id, fa.contract_number, rb.business_type_code, fa.agreement_id,fa.original_agreement_id,  fa.vendor_id, va.address_id, legal_name AS vendor_name, a.address_line_1, a.address_line_2, a.city, a.state, a.zip, a.country,
 	                            (CASE WHEN (rb.business_type_code = 'MNRT' OR rb.business_type_code = 'WMNO') THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor,
 	                            (CASE WHEN fa.minority_type_id in (4,5) then 'Asian American' ELSE fa.minority_type_name END)AS ethnicity
 	                        FROM {agreement_snapshot} fa
@@ -88,7 +88,11 @@ $total_subvendor_count = $res->data[0]['sub_vendor_count'];
   <?php }else{ ?>
   	<li><span class="gi-list-item">Prime Vendor:</span> <?php echo $node->data[0]['vendor_name'] ;?></li>
   <?php } ?>   
-  <?php 
+  <?php
+      $minority_type_id = $node->data[0]['minority_type_id'];
+      if($minority_type_id == 4 || $minority_type_id == 5){
+          $minority_type_id == '4~5';
+      }
       $address = $node->data[0]['address_line_1'] ;
       $address .= " "  .  $node->data[0]['address_line_2'];
       $address .= " "  .  $node->data[0]['city'];
@@ -111,7 +115,7 @@ $total_subvendor_count = $res->data[0]['sub_vendor_count'];
 <?php if( _get_current_datasource() == "checkbook" ){?>    
     <li><span class="gi-list-item">M/WBE Vendor:</span> <?php echo $node->data[0]['mwbe_vendor'] ;?></li>
     
-    <li><span class="gi-list-item">M/WBE Category:</span> <?php echo $ethnicity ;?></li>
+    <li><span class="gi-list-item">M/WBE Category:</span> <a href="/contracts_landing/status/A/yeartype/B/year/<?php echo _getFiscalYearID();?>/mwbe/<?php echo $minority_type_id; ?>/dashboard/mp"><?php echo $ethnicity ;?></a></li>
 <?php }?>    
 </ul>
 <?php
@@ -129,11 +133,11 @@ $total_current_amount = $res->data[0]['total_current_amt'];
 $total_original_amount = $res->data[0]['total_original_amt'];
 $total_spent_todate = $res->data[0]['total_spent_todate'];
 ?>
-<h4>
-    Sub Vendor Information
-</h4>
-</div>
+
 <div class="dollar-amounts">
+    <h4>
+        Sub Vendor Information
+    </h4>
     <div class="spent-to-date"><?php echo custom_number_formatter_format($total_spent_todate, 2, "$");?>
         <div class="amount-title">Total Spent
             to Date
@@ -150,3 +154,5 @@ $total_spent_todate = $res->data[0]['total_spent_todate'];
         </div>
     </div>
 </div>
+</div>
+

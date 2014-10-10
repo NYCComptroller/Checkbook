@@ -2011,7 +2011,7 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
 .contract-information .dollar-amounts{
     border-top: 1px dotted #CACACA;
     border-left: 1px dotted #CACACA;
-    width: 351px;
+    width: 340px;
     padding-top: 20px;
 }
 .contract-information .original-amount{
@@ -2034,6 +2034,9 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
     width: 550px;
     padding-top: 20px;
     vertical-align: top;
+}
+.dollar-amounts > h4{
+    margin-left: 20px;
 }
 .oge-ca-details .contract-details{
     width:100%;
@@ -2197,6 +2200,9 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
     text-align: center;
     width: 105px;
     margin-right: 32px;
+}
+.contract-vendor-details .dollar-amounts > div{
+    margin-right: 7px;
 }
 .dollar-amounts > div:first-child,
 .inside .transactions-container .transactions-total-amount,
