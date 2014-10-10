@@ -32,14 +32,24 @@
                 unset($serieParameters['year_type']);
                 unset($serieParameters['year_id']);
 
-
                 $vendor_type = array('P','PM');
                 $is_prime_or_sub = 'P';
                 $dashboard = _getRequestParamValue('dashboard');
                 $vendor = _getRequestParamValue('vendor');
                 $subvendor = _getRequestParamValue('subvendor');
-
-                if(isset($dashboard)) {
+                $bottomURL = $_REQUEST['expandBottomContURL'];
+                if(isset($bottomURL)){
+                    $pathParams = explode('/', $bottomURL);
+                    if(preg_match('/dtsmnid/',$bottomURL)){
+                        $index = array_search('dtsmnid',$pathParams);
+                        $dtsmnid =  filter_xss($pathParams[($index+1)]);
+                    }
+                }
+                if(isset($dtsmnid) && $dtsmnid == 759) { //Top 10 agencies - has sub and prime data
+                    $vendor_type = array('P','PM','S','SM');
+                    $is_prime_or_sub = array('P','S');
+                }
+                else if(isset($dashboard)) {
                     $vendor_type = preg_match('\"p\"',$dashboard) ? array('P','PM') : array('S','SM');
                     $is_prime_or_sub = preg_match('\"s\"',$dashboard) ? 'S' : 'P';
                 }
