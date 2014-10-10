@@ -34,7 +34,7 @@
         "contnum":"like","bdgcodenm":"like","expdoc":"like","syear":"le","scalyear":"le",
         "budname":"like","comline":"like","entcontnum":"like","scomline":"le",
         "entcontnum_exact":"eqignorecase","comline_exact":"eqignorecase","budname_exact":"eqignorecase"},
-    "dataset": "checkbook:fact_disbursement_line_item",
+    "dataset": "checkbook:spending_transactions_all",
     "adjustParameters":"
         $cat = $parameters['spending_category_id'];
         if(isset($parameters['ctx.ctx.vendor_id'])  ||  isset($parameters['ctx.ctx.document_agency_id'])  ||  isset($parameters['ctx.ctx.award_method_id'])  || isset($parameters['ctx.ctx.award_size_id'])  ||  isset($parameters['ctx.ctx.industry_type_id']) ){
@@ -48,11 +48,15 @@
                 $parameters['ctx.ctx.type_of_year'] = 'C';
             }
         }
-            $adjustedParameters = $parameters;
-            if(function_exists('_checkbook_project_applyParameterFilters')){
-                  $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-            }
-            return $adjustedParameters;
+
+        $parameters['vendor_type'] = array('P','PM','S','SM');
+        $parameters['is_prime_or_sub'] = array('P','S');
+
+        $adjustedParameters = $parameters;
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+              $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        }
+        return $adjustedParameters;
     ",
     "columns": ["check_amount_sum"],
     "template":"spending_transaction_total_amount"
