@@ -32,6 +32,33 @@
         $('#edit-column-select-expense').multiSelect('deselect_all');
         $('#edit-column-select-revenue').multiSelect('deselect_all');
         $('#edit-column-select-pending').multiSelect('deselect_all');
+
+        $('#edit-column-select-expense option[value="Year"]').attr('disabled','disabled');
+        $('#edit-column-select-expense option[value="year"]').attr('disabled','disabled');
+        $('#edit-column-select-expense').multiSelect('refresh');
+        if(!$('#ms-edit-column-select-expense .ms-selection').next().is("a")){
+            $('#ms-edit-column-select-expense .ms-selection').after('<a class="deselect">Remove All</a>');
+            $('#ms-edit-column-select-expense .ms-selection').after('<a class="select">Add All</a>');
+        }
+        $('#ms-edit-column-select-expense a.select').click(function () {
+            $('#edit-column-select-expense').multiSelect('select_all');
+        });
+        $('#ms-edit-column-select-expense a.deselect').click(function () {
+            $('#edit-column-select-expense').multiSelect('deselect_all');
+        });
+        $('#edit-column-select-revenue option[value="Year"]').attr('disabled','disabled');
+        $('#edit-column-select-revenue option[value="year"]').attr('disabled','disabled');
+        $('#edit-column-select-revenue').multiSelect('refresh');
+        if(!$('#ms-edit-column-select-revenue .ms-selection').next().is("a")){
+            $('#ms-edit-column-select-revenue .ms-selection').after('<a class="deselect">Remove All</a>');
+            $('#ms-edit-column-select-revenue .ms-selection').after('<a class="select">Add All</a>');
+        }
+        $('#ms-edit-column-select-revenue a.select').click(function () {
+            $('#edit-column-select-revenue').multiSelect('select_all');
+        });
+        $('#ms-edit-column-select-revenue a.deselect').click(function () {
+            $('#edit-column-select-revenue').multiSelect('deselect_all');
+        });
     }
 
     Drupal.behaviors.contractsDataFeeds = {
