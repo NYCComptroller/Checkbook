@@ -138,7 +138,7 @@ $total_spent_todate = $res->data[0]['total_spent_todate'];
     <h4>
         Sub Vendor Information
     </h4>
-    <div class="spent-to-date"><?php echo custom_number_formatter_format($total_spent_todate, 2, "$");?>
+    <div class="spent-to-date"><a target="_blank" href="/contract/spending/transactions/agid/<?php echo $ag_id; ?>/status/A/subvendor/all/dashboard/ss/yeartype/C/year/<?php echo _getCurrentYearID();?>/syear/<?php echo _getCurrentYearID();?>/smnid/721/newwindow"><?php echo custom_number_formatter_format($total_spent_todate, 2, "$");?></a>
         <div class="amount-title">Total Spent
             to Date
         </div>
