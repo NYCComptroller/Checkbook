@@ -694,6 +694,19 @@ class RequestUtil{
     	if($current_state == null){
     		$current_state = _getRequestParamValue('dashboard');
     	}
+    	
+    	if($current_state == null){
+    		if(preg_match('/contracts/',$_GET['q'])){
+    			$domain = "contracts";
+    		}else{
+    			$domain = "spending";
+    		}
+    		$applicable_filters= MappingUtil::getCurrentPrimeMWBEApplicableFilters($domain);
+    		if(count($applicable_filters) == 0){
+    			return 'ms';
+    		}
+    	}
+    	
     	switch($current_state){
     		case "mp" :
     			return "mp";
@@ -724,6 +737,7 @@ class RequestUtil{
     		$current_state = _getRequestParamValue('dashboard');
     	}
     	 
+    	
     	switch($current_state){
     		case "mp" :
     			return "sp";
@@ -757,6 +771,25 @@ class RequestUtil{
     			return true;
     			break;
     		case "ss" :
+    			return true ;
+    			break;
+    		default:
+    			return false;
+    			break;
+    	}
+    }
+    
+    
+    static function isDashboardFlowPrimevendor($current_state =  null){
+    	if($current_state == null){
+    		$current_state = _getRequestParamValue('dashboard');
+    	}
+    	 
+    	switch($current_state){
+    		case "pm" :
+    			return true;
+    			break;
+    		case "ps" :
     			return true ;
     			break;
     		default:
@@ -799,9 +832,9 @@ class RequestUtil{
     			}    			
     			break;
     		case "subvendor":
-    	    	if(_getRequestParamValue("mwbe") != null){
+				if(self::isDashboardFlowPrimevendor()){
     				return "Sub Vendors (M/WBE)";
-    			}else{
+    			}else{    			
     				return "Sub Vendors";
     			}    			    			
     			break;

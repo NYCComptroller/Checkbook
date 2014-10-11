@@ -122,8 +122,11 @@ class MappingUtil {
     
     static function getCurrentMWBETopNavFilters($active_domain_link, $domain){    	
     	
-    	
-    	$applicable_minority_types = self::getCurrentMWBEApplicableFilters($domain);
+    	if(RequestUtil::isDashboardFlowPrimevendor()){
+    		$applicable_minority_types = self::getCurrentPrimeMWBEApplicableFilters($domain);
+    	}else{
+    		$applicable_minority_types = self::getCurrentSubMWBEApplicableFilters($domain);
+    	}
     	 
     	$mwbe_featured_dashboard_param = RequestUtil::getNextMWBEDashboardState();
     	$active_domain_link =  preg_replace('/\/mwbe\/[^\/]*/','',$active_domain_link);    	
@@ -171,19 +174,13 @@ class MappingUtil {
     }
     
     
-    static function getCurrentMWBEApplicableFilters($domain){
+    static function getCurrentPrimeMWBEApplicableFilters($domain){
     	
     	switch($domain){
     		case "spending":
-    			if(RequestUtil::isDashboardFlowSubvendor()){
-    				$table = "aggregateon_subven_spending_coa_entities";
-    				$urlParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"prime_vendor_id","category"=>"spending_category_id");
-    			}else{
-    				$table = "aggregateon_mwbe_spending_coa_entities";
-    				$urlParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"vendor_id","category"=>"spending_category_id");
-    			}
-    			//$urlParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"vendor_id","category"=>"spending_category_id");
-    			
+
+				$table = "aggregateon_mwbe_spending_coa_entities";
+    			$urlParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"vendor_id","category"=>"spending_category_id");
     			$where_filters = array();
     			
     			foreach($urlParamMap as $param=>$value){
@@ -208,20 +205,9 @@ class MappingUtil {
     			
 	    	break;	
 	    	case "contracts":
-	    		if(RequestUtil::isDashboardFlowSubvendor()){
-	    			$table = "aggregateon_subven_contracts_cumulative_spending";
-					$urlParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","awdmethod"=>"award_method_id","vendor"=>"prime_vendor_id",
+	    		$table = "aggregateon_mwbe_contracts_cumulative_spending";
+	    		$urlParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","awdmethod"=>"award_method_id","vendor"=>"vendor_id",
 									"status"=>"status_flag","csize"=>"award_size_id","cindustry"=>"industry_type_id");
-	    			
-	    		}else{
-	    			$table = "aggregateon_mwbe_contracts_cumulative_spending";
-	    			$urlParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","awdmethod"=>"award_method_id","vendor"=>"vendor_id",
-									"status"=>"status_flag","csize"=>"award_size_id","cindustry"=>"industry_type_id");
-	    		}
-	    		//$urlParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","awdmethod"=>"award_method_id","vendor"=>"vendor_id",
-				//					"status"=>"status_flag","csize"=>"award_size_id","cindustry"=>"industry_type_id");
-	    		
-	    			   
 	    		$where_filters = array();
 	    		foreach($urlParamMap as $param=>$value){
 	    			if(_getRequestParamValue($param) != null){
@@ -251,9 +237,74 @@ class MappingUtil {
     	return $applicable_minority_types;
     }
 
-    static function getCurrentSubVendorTopNavFilters($active_domain_link){
+    
+    static function getCurrentSubMWBEApplicableFilters($domain){
     	 
+    	switch($domain){
+    		case "spending":
+    			
+    			$table = "aggregateon_subven_spending_coa_entities";
+    			$urlParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"prime_vendor_id","category"=>"spending_category_id");
+    			
+    			$where_filters = array();
+    			 
+    			foreach($urlParamMap as $param=>$value){
+    				if(_getRequestParamValue($param) != null){
+    					$where_filters[] = _widget_build_sql_condition(' a1.' . $value, _getRequestParamValue($param));
+    				}
+    			}
+    			 
+    			if(count($where_filters) > 0){
+    				$where_filter = ' where ' . implode(' and ' , $where_filters);
+    			}
+    			 
+    			 
+    			 
+    			$sql = 'select a1.minority_type_id
+				    from ' . $table. ' a1
+				   ' . $where_filter . '
+				    group by a1.minority_type_id  ';
+    			 
+    			 
+    			$data = _checkbook_project_execute_sql($sql);
+    			 
+    			break;
+    		case "contracts":
+    		
+    			$table = "aggregateon_subven_contracts_cumulative_spending";
+    			$urlParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","awdmethod"=>"award_method_id","vendor"=>"prime_vendor_id",
+    						"status"=>"status_flag","csize"=>"award_size_id","cindustry"=>"industry_type_id");
+    				
+    			$where_filters = array();
+    			foreach($urlParamMap as $param=>$value){
+    				if(_getRequestParamValue($param) != null){
+    					$where_filters[] = _widget_build_sql_condition(' a1.' . $value, _getRequestParamValue($param));
+    				}
+    			}
+    	   
+    			if(count($where_filters) > 0){
+    				$where_filter = ' where ' . implode(' and ' , $where_filters);
+    			}
+    	   
+    			//$where_filter .= ' and rd.document_code in (' . ContractUtil::getCurrentPageDocumentIds() . ') ';
+    	   
+    	   
+    			$sql = 'select a1.minority_type_id
+				    from {aggregateon_mwbe_contracts_cumulative_spending} a1
+	    				join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
+				   ' . $where_filter . '
+				    group by a1.minority_type_id';
+    			$data  = _checkbook_project_execute_sql($sql);
+    			break;
+    	}
+    	$applicable_minority_types = array();
+    	foreach($data as $row){
+    		$applicable_minority_types[] = $row['minority_type_id'];
+    	}
+    	return $applicable_minority_types;
     }
+    
+   
 
     static function getVendorTypes($nodeData, $param){
         $unchecked = array();
