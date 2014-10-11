@@ -4,6 +4,7 @@
     "cleanURLParameters":[
         "agency",
         "vendor",
+        "subvendor",
         "category",
         "year",
         "yeartype",
@@ -16,6 +17,7 @@
     "urlParamMap":{
         "agency":"agency_id",
         "vendor":"prime_vendor.prime_vendor",
+        "subvendor":"sub_vendor.sub_vendor",
         "category":"spending_category_id",
         "year":"year_id",
         "yeartype":"type_of_year",
