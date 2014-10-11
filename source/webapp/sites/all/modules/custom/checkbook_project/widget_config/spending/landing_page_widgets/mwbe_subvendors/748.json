@@ -23,7 +23,8 @@
         "yeartype":"type_of_year",
         "check_eft_issued_nyc_year_id":"check_eft_issued_date",
         "calendar_fiscal_year_id":"calendar_fiscal_year_id",
-        "mwbe":"minority_type_id"
+        "mwbe":"minority_type_id",
+        "industry":"industry.industry"
     },
     "getTotalDataCount":true,
     "limit":"5",
