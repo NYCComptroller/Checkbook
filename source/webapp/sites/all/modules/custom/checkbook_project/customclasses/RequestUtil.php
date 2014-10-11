@@ -814,6 +814,10 @@ class RequestUtil{
     			if(_getRequestParamValue("dashboard") != null){    				
     				$url = preg_replace('/\/dashboard\/[^\/]*/','',$url);    				   				    				    				
     			}
+    			if(_getRequestParamValue("dashboard") == 'ms' && _getRequestParamValue("mwbe") == '2~3~4~5~9'){
+    				$url = preg_replace('/\/mwbe\/[^\/]*/','',$url);
+    			}
+    			
     			$url .=  "/dashboard/" . self::getNextSubvendorDashboardStateParam();    			
     			break;
     	}
