@@ -107,7 +107,7 @@ namespace { //global
 
         /* Returns M/WBE category for the given vendor id in the given year and year type for city-wide Active/Registered Contracts*/
 
-        static public function get_contract_vendor_minority_category($vendor_id, $year_id, $year_type){
+        static public function get_contract_vendor_minority_category($vendor_id, $year_id, $year_type,$agency_id = null){
             STATIC $mwbe_vendors;
             if(!isset($mwbe_vendors)){
                 $query = "SELECT vendor_id, year_id, type_of_year
@@ -118,8 +118,9 @@ namespace { //global
                 foreach($results as $row){
                     $mwbe_vendors[$row['vendor_id']][$row['year_id']][$row['type_of_year']] = $row['vendor_id'];
                 }
-            }
-            if($mwbe_vendors[$vendor_id][$year_id][$year_type] == $vendor_id){
+                
+            }            
+            if($mwbe_vendors[$vendor_id][$year_id][$year_type] == $vendor_id){            	
                 if(!_getRequestParamValue('mwbe'))
                     return '/dashboard/mp/mwbe/2~3~4~5~9';
             }
