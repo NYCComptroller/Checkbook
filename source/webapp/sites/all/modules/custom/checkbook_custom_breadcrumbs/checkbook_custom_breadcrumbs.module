@@ -97,6 +97,10 @@ function _get_contracts_breadcrumb_title_drilldown(){
                 break;
             case 'vendor':
                 $title = _checkbook_project_get_name_for_argument("vendor_id",$value);
+                $ethnicity_id = ContractUtil::getLatestMwbeCategoryByVendor($value);
+                if($ethnicity_id > 0){
+                	$title .= " <br/>" . MappingUtil::getMinorityCategoryById($ethnicity_id);;
+                }                
                 break;
             case 'awdmethod':
                 $title = _checkbook_project_get_name_for_argument("award_method_id",$value);
@@ -131,13 +135,23 @@ function _get_spending_breadcrumb_title_drilldown(){
                 break;
             case 'vendor':
                 $title = _checkbook_project_get_name_for_argument("vendor_id",$value);
+                
+                $ethnicity_id = SpendingUtil::getLatestMwbeCategoryByVendor($value);
+                if($ethnicity_id > 0){
+                	$title .= " <br/>" . MappingUtil::getMinorityCategoryById($ethnicity_id);;
+                }
                 break;
             case 'industry':
                 $title = _checkbook_project_get_name_for_argument("industry_type_id",$value);
                 break;
             case 'subvendor':
-                if($value != 'all')
+                if($value != 'all'){
                     $title = _checkbook_project_get_name_for_argument("sub_vendor_id",$value);
+                    $ethnicity_id = SpendingUtil::getLatestMwbeCategoryByVendor($value);
+                    if($ethnicity_id > 0){
+                    	$title .= " <br/>" . MappingUtil::getMinorityCategoryById($ethnicity_id);;
+                    }
+                }
                 break;
             default:
     }
