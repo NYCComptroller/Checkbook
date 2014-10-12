@@ -73,6 +73,7 @@ if(preg_match('/yeartype\/C/',$_GET['q'])){
 }
 
 
+$current_dashboard = _getRequestParamValue("dashboard");
 
 // Disable featured dashboatrd for other government entities. 
 if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
@@ -95,12 +96,21 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 	$svendor_active_domain_link = RequestUtil::getDashboardTopNavURL("subvendor") ;
 	
 	if(preg_match('/contracts/',$_GET['q'])){
-		$mwbe_amount = $node->data[6]['current_amount_sum'] + $node->data[10]['current_amount_sum'];
+		
+		if($current_dashboard == "mp" || $current_dashboard == "sp" || $current_dashboard == null){
+			$mwbe_amount = $node->data[6]['current_amount_sum'] + $node->data[10]['current_amount_sum'];
+		}else{
+			$mwbe_amount =  $node->data[10]['current_amount_sum'];
+		}
 		//$mwbe_active_domain_link = RequestUtil::getTopNavURL("contracts") ;
 		$mwbe_filters = MappingUtil::getCurrentMWBETopNavFilters($mwbe_active_domain_link,"contracts");
 		$sub_vendors_home_link = RequestUtil::getLandingPageUrl("contracts", _getRequestParamValue("year")) ;
 	}else{
-		$mwbe_amount = $node->data[5]['check_amount_sum'] + $node->data[9]['check_amount_sum'];
+		if($current_dashboard == "mp" || $current_dashboard == "sp" || $current_dashboard == null){
+			$mwbe_amount = $node->data[5]['check_amount_sum'] + $node->data[9]['check_amount_sum'];
+		}else{
+			$mwbe_amount =  $node->data[9]['check_amount_sum'];
+		}
 		$mwbe_filters = MappingUtil::getCurrentMWBETopNavFilters($mwbe_active_domain_link,"spending");
 		
 		$svendor_amount = $node->data[7]['check_amount_sum'];
