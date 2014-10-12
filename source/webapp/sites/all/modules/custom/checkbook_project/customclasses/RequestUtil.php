@@ -786,10 +786,10 @@ class RequestUtil{
     	}
     	 
     	switch($current_state){
-    		case "pm" :
+    		case "mp" :
     			return true;
     			break;
-    		case "ps" :
+    		case "sp" :
     			return true ;
     			break;
     		default:
