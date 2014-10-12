@@ -330,5 +330,38 @@ class MappingUtil {
         }
         return array('unchecked'=>$unchecked, "checked"=>$checked);
     }
+
+    static function getVendorEthinictyTitle($vendor_id, $domain){
+    	switch($domain){
+    		case "spending":
+    			$current_ethnicity_from_filter = MappingUtil::getCurrenEhtnicityName();
+    			if( $current_ethnicity_from_filter != null && $current_ethnicity_from_filter != "M/WBE" ){
+    				$title = " <br/>" . MappingUtil::getMinorityCategoryById($ethnicity_id);
+    			}else{
+    				
+    				$ethnicity_id = SpendingUtil::getLatestMwbeCategoryByVendor($vendor_id);
+    				if($ethnicity_id > 0){
+    					$title = " <br/>" . MappingUtil::getMinorityCategoryById($ethnicity_id);
+    				}
+    			}
+    			
+    			break;
+    		case "contracts":
+    			$current_ethnicity_from_filter = MappingUtil::getCurrenEhtnicityName();
+    			if( $current_ethnicity_from_filter != null && $current_ethnicity_from_filter != "M/WBE" ){
+    				$title = " <br/>" . MappingUtil::getMinorityCategoryById($ethnicity_id);
+    			}else{
+    				$ethnicity_id = ContractUtil::getLatestMwbeCategoryByVendor($vendor_id);
+    				if($ethnicity_id > 0){
+    					$title = " <br/>" . MappingUtil::getMinorityCategoryById($ethnicity_id);
+    				}
+    			}
+    			
+    			break;
+    			
+    	}
+    	return $title;
+    }  
+    
     
 } 
