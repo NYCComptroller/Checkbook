@@ -121,7 +121,6 @@ class MappingUtil {
     
     
     static function getCurrentMWBETopNavFilters($active_domain_link, $domain){    	
-    	
     	if(RequestUtil::isDashboardFlowPrimevendor()){
     		$applicable_minority_types = self::getCurrentPrimeMWBEApplicableFilters($domain);
     	}else{
@@ -199,6 +198,7 @@ class MappingUtil {
 				    from ' . $table. ' a1
 				   ' . $where_filter . '
 				    group by a1.minority_type_id  ';
+    			
     			
     			
     			$data = _checkbook_project_execute_sql($sql);    			
