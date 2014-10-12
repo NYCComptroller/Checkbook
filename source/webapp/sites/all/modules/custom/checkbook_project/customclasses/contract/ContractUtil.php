@@ -109,7 +109,7 @@ namespace { //global
 
         static public function get_contract_vendor_minority_category($vendor_id, $year_id, $year_type,$agency_id = null){
         	
-        	$latest_minority_id = getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id = null, $year_type = null, $is_prime_or_sub = null);
+        	$latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id = null, $year_type = null, $is_prime_or_sub = null);
         	
             if($latest_minority_id != null){            	
                 if(!_getRequestParamValue('mwbe'))
