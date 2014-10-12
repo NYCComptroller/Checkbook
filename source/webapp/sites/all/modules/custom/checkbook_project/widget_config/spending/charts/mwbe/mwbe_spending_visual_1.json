@@ -227,7 +227,7 @@ echo '<div class=\"chart-right\">
                 }             
             }
     },
-    "chart" : {"width":480},
+    "chart" : {"width":480, "marginBottom": 70},
     "xAxis": {
         "categories": ["M/WBE","Non-M/WBE"],
         "lineWidth": 0,

@@ -694,6 +694,19 @@ class RequestUtil{
     	if($current_state == null){
     		$current_state = _getRequestParamValue('dashboard');
     	}
+    	
+    	if($current_state == null){
+    		if(preg_match('/contracts/',$_GET['q'])){
+    			$domain = "contracts";
+    		}else{
+    			$domain = "spending";
+    		}
+    		$applicable_filters= MappingUtil::getCurrentPrimeMWBEApplicableFilters($domain);
+    		if(count($applicable_filters) == 0){
+    			return 'ms';
+    		}
+    	}
+    	
     	switch($current_state){
     		case "mp" :
     			return "mp";
@@ -724,6 +737,7 @@ class RequestUtil{
     		$current_state = _getRequestParamValue('dashboard');
     	}
     	 
+    	
     	switch($current_state){
     		case "mp" :
     			return "sp";
@@ -765,6 +779,25 @@ class RequestUtil{
     	}
     }
     
+    
+    static function isDashboardFlowPrimevendor($current_state =  null){
+    	if($current_state == null){
+    		$current_state = _getRequestParamValue('dashboard');
+    	}
+    	 
+    	switch($current_state){
+    		case "mp" :
+    			return true;
+    			break;
+    		case "sp" :
+    			return true ;
+    			break;
+    		default:
+    			return false;
+    			break;
+    	}
+    }
+    
     static function getDashboardTopNavURL($dashboard_filter){
     	$url = $_GET['q'];
     	switch($dashboard_filter){
@@ -781,6 +814,10 @@ class RequestUtil{
     			if(_getRequestParamValue("dashboard") != null){    				
     				$url = preg_replace('/\/dashboard\/[^\/]*/','',$url);    				   				    				    				
     			}
+    			if(_getRequestParamValue("dashboard") == 'ms' && _getRequestParamValue("mwbe") == '2~3~4~5~9'){
+    				$url = preg_replace('/\/mwbe\/[^\/]*/','',$url);
+    			}
+    			
     			$url .=  "/dashboard/" . self::getNextSubvendorDashboardStateParam();    			
     			break;
     	}
@@ -799,9 +836,9 @@ class RequestUtil{
     			}    			
     			break;
     		case "subvendor":
-    	    	if(_getRequestParamValue("mwbe") != null){
+				if(self::isDashboardFlowPrimevendor()){
     				return "Sub Vendors (M/WBE)";
-    			}else{
+    			}else{    			
     				return "Sub Vendors";
     			}    			    			
     			break;

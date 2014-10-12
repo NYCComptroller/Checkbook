@@ -192,7 +192,7 @@ class SpendingUtil{
      * @return string
      */
     static function getSubVendorNameLinkUrl($node, $row){
-        $custom_params = array('dashboard'=>'sm','subvendor'=>$row['sub_vendor_sub_vendor']);
+        $custom_params = array("subvendor"=>$row["sub_vendor_sub_vendor"]);
         return '/' . self::getLandingPageWidgetUrl($custom_params);
     }
 
@@ -262,7 +262,7 @@ class SpendingUtil{
 
         switch($is_prime_or_sub) {
             case "S":
-                $dashboard = $is_mwbe_certified ? "ms" : "mp";
+                $dashboard = $is_mwbe_certified ? "ms" : "ss";
                 $mwbe = $is_mwbe_certified ? (isset($mwbe) ? $mwbe : "2~3~4~5~9") : null;
                 break;
             case "P":
@@ -290,9 +290,25 @@ class SpendingUtil{
      * @param string $is_prime_or_sub
      * @return null
      */
-    static public function getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type, $is_prime_or_sub){
+    static public function getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id = null, $year_type = null, $is_prime_or_sub = null){
         STATIC $spending_vendor_latest_mwbe_category;
 
+        if($agency_id == null){
+        	$agency_id =  _getRequestParamValue('agency');
+        }
+        
+        if($year_id == null){
+        	$year_id =  _getRequestParamValue('year');
+        }
+
+        if($year_type == null){
+        	$year_type =  _getRequestParamValue('yeartype');
+        }
+        
+        if($is_prime_or_sub == null){
+        	$is_prime_or_sub =  $is_prime_or_sub = (RequestUtil::isDashboardFlowSubvendor()) ? "S":"P";
+        }
+        
         $latest_minority_type_id = null;
         if(!isset($spending_vendor_latest_mwbe_category)){
             $query = "SELECT vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub

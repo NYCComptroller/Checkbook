@@ -3,12 +3,28 @@
     "widgetSubType":"ajaxSimple",
     "no_results_content":"No Results Found",
     "defaultParameters":{"type_of_year":"B"},
-    "cleanURLParameters":["year","agency","yeartype","calyear","category","vendor","industry","mwbe"],
-    "urlParamMap":{"year":"year_id","agency":"agency_id","yeartype":"type_of_year","calyear":"year_id","category":"spending_category_id","vendor":"vendor_id","mwbe":"minority_type_id","industry":"industry_type_id"},
+    "cleanURLParameters":["year","agency","yeartype","calyear","category","vendor","subvendor","industry","mwbe"],
+    "urlParamMap":{
+        "year":"year_id",
+        "agency":"agency_id",
+        "yeartype":"type_of_year",
+        "calyear":"year_id",
+        "category":"spending_category_id",
+        "subvendor":"vendor_id",
+        "vendor":"prime_vendor_id",
+        "mwbe":"minority_type_id",
+        "industry":"industry_type_id"
+    },
     "dataset": "checkbook:spending_subven_data",
     "noDataInitialLoad":true,
     "totalAggregateColumns":["check_amount_sum"],
-    "columns": ["yeartype.yeartype","check_amount_sum","year.year","industry_type.industry_type.industry_type_id","industry_type.industry_type.industry_type_name"],
+    "columns": [
+        "yeartype.yeartype",
+        "check_amount_sum",
+        "year.year",
+        "industry_type.industry_type",
+        "industry_type.industry_type.industry_type_name"
+    ],
     "adjustParameters":"
         if(null != _getRequestParamValue('industry')) return $parameters;
 

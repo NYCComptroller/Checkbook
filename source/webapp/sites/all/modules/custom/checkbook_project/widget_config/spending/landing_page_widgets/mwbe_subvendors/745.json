@@ -1,9 +1,19 @@
 {
     "widgetType": "data_tables",
     "widgetSubType": "ajaxSimple",
-    "cleanURLParameters":["agency","vendor","category","year","yeartype","check_eft_issued_nyc_year_id","calendar_fiscal_year_id","mwbe","industry"],
-    "urlParamMap":{"agency":"agency_id","vendor":"prime_vendor_id","category":"spending_category_id","year":"year_id","yeartype":"year_type",
-                   "check_eft_issued_nyc_year_id":"check_eft_issued_nyc_year_id","calendar_fiscal_year_id":"calendar_fiscal_year_id","mwbe":"minority_type_id","industry":"industry_type_id"},
+    "cleanURLParameters":["agency","vendor","subvendor","category","year","yeartype","check_eft_issued_nyc_year_id","calendar_fiscal_year_id","mwbe","industry"],
+    "urlParamMap":{
+        "agency":"agency_id",
+        "vendor":"prime_vendor_id",
+        "subvendor":"vendor_id",
+        "category":"spending_category_id",
+        "year":"year_id",
+        "yeartype":"year_type",
+        "check_eft_issued_nyc_year_id":"check_eft_issued_nyc_year_id",
+        "calendar_fiscal_year_id":"calendar_fiscal_year_id",
+        "mwbe":"minority_type_id",
+        "industry":"industry_type_id"
+    },
     "useList":true,
     "getTotalDataCount":true,
     "limit":"5",

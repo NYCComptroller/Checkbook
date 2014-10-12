@@ -1,12 +1,6 @@
 {
 "widgetType": "highcharts",
 "widgetDatahandler": "highcharts",
-"footer":"
-if(SpendingUtil::_show_mwbe_custom_legend()){
-	echo SpendingUtil::getMWBENYCLegend(_getRequestParamValue('year'), _getRequestParamValue('yeartype'));
-}	
-	 
-",
 "header":"
        $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
        $header .= ChartUtil::generateWidgetGridViewLink($node);
@@ -26,12 +20,7 @@ if(SpendingUtil::_show_mwbe_custom_legend()){
                   "labelAlias": "M/WBE Spending",
                   "columnType": "number",
                   "formatType": "amount"
-             },
-             {
-                  "labelAlias": "Non M/WBE",
-                  "columnType": "number",
-                  "formatType": "amount"
-             }             
+             }        
         ]
 },
 "no_results_content":"No Results Found",
@@ -163,8 +152,8 @@ if(SpendingUtil::_show_mwbe_custom_legend()){
 
         $tooltip_label =
         'Prime Vendor: ' . $row['legal_name'].  '<br/>' .
-        MappingUtil::getCurrenEhtnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>' .
-        'Non-M/WBE: ' . custom_number_formatter_format( $row['total_non_mwbe'],2,'$').  '<br/>';
+        MappingUtil::getCurrenEhtnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$')
+      ;
 
         $link= CustomURLHelper::prepareUrl('spending_landing', SpendingUtil::$landingPageParams, array('expandBottomCont'=>'true'), array('subvendor'=>$row['vendor_id']) );
         $series_new[$index]->url = $link;
@@ -174,8 +163,7 @@ if(SpendingUtil::_show_mwbe_custom_legend()){
         $series_new[$index]->tooltip_label = $tooltip_label;
         $node->widgetConfig->gridConfig->data[] = array(
             $row['legal_name'],
-            $row[$amount_column],
-            $row['total_non_mwbe']
+            $row[$amount_column]
         );
         $index += 1;
 	}
@@ -184,9 +172,6 @@ if(SpendingUtil::_show_mwbe_custom_legend()){
 	$node->widgetConfig->chartConfig->series[0]->type = 'column';
 	$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
 	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
-	if(SpendingUtil::_show_mwbe_custom_legend() && count($node->data) > 0){
-		$node->widgetConfig->html_class = 'chart-left';
-	}
 	
 ",
 "chartConfig" : {
