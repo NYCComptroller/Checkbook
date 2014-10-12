@@ -1,12 +1,6 @@
 {
 "widgetType": "highcharts",
 "widgetDatahandler": "highcharts",
-"footer":"
-if(SpendingUtil::_show_mwbe_custom_legend()){
-	echo SpendingUtil::getMWBENYCLegend(_getRequestParamValue('year'), _getRequestParamValue('yeartype'));
-}	
-	 
-",
 "header":"
        $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
        $header .= ChartUtil::generateWidgetGridViewLink($node);
@@ -114,9 +108,6 @@ if(SpendingUtil::_show_mwbe_custom_legend()){
 	$node->widgetConfig->chartConfig->series[0]->type = 'column';
 	$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
 	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
-	if(SpendingUtil::_show_mwbe_custom_legend()){
-		$node->widgetConfig->html_class = 'chart-left';
-	}
 	
 ",
 "chartConfig" : {

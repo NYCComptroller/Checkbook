@@ -3,8 +3,20 @@
     "widgetSubType":"ajaxSimple",
     "no_results_content":"No Results Found",
     "defaultParameters":{"type_of_year":"B","spending_category_id":null},
-    "cleanURLParameters":["year","agency","yeartype","calyear","vendor","category","agid","magid","mwbe","industry"],
-    "urlParamMap":{"year":"year_id","agency":"agency_id","yeartype":"type_of_year","calyear":"year_id","vendor":"vendor_id","category":"spending_category_id","agid":"agreement_id.agreement_id","magid":"agreement_id.agreement_id","mwbe":"minority_type_id","industry":"industry_type_id"},
+    "cleanURLParameters":["year","agency","yeartype","calyear","vendor","subvendor","category","agid","magid","mwbe","industry"],
+    "urlParamMap":{
+        "year":"year_id",
+        "agency":"agency_id",
+        "yeartype":"type_of_year",
+        "calyear":"year_id",
+        "vendor":"prime_vendor.prime_vendor",
+        "subvendor":"sub_vendor.sub_vendor",
+        "category":"spending_category_id",
+        "agid":"agreement_id.agreement_id",
+        "magid":"agreement_id.agreement_id",
+        "mwbe":"minority_type_id",
+        "industry":"industry_type_id"
+    },
     "dataset": "checkbook:contracts_subven_spending",
     "noDataInitialLoad":true,
     "columns": [

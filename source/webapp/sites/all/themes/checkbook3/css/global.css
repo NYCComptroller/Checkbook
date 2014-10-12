@@ -703,7 +703,8 @@ table.expense td a {
     color: #5a6a79;
     text-decoration: none;
 }
-table.expense td.subvendors span.nav-title{
+table.expense td.subvendors span.nav-title,
+table.expense td.mwbe span.nav-title{
     font-size: 12px;
 }
 span.nav-title {

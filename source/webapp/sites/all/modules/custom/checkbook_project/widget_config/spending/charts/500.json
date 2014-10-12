@@ -36,10 +36,13 @@
             return $adjustedParameters;
 ",
 "transformationPHP": "
+
     $data = array();
     $categories=array();
     foreach ($node->data as $row){
-        $link= CustomURLHelper::prepareUrl('spending_landing', SpendingUtil::$landingPageParams, array('expandBottomCont'=>'true'), array('vendor'=>$row['vendor_vendor']) );
+        //$link= CustomURLHelper::prepareUrl('spending_landing', SpendingUtil::$landingPageParams, array('expandBottomCont'=>'true'), array('vendor'=>$row['vendor_vendor']) );
+        $link =  substr(SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) ,1);
+        
         $categories[]=html_entity_decode($row['vendor_vendor_legal_name'],ENT_QUOTES);
         $data[] = (object)array('year'=>$row['fiscal_year_id'],'y'=>$row['check_amount_sum'],'url'=>$link,'name'=>strtoupper(html_entity_decode($row['vendor_vendor_legal_name'],ENT_QUOTES)));
     }
