@@ -1,0 +1,187 @@
+{
+    "widgetType": "data_tables",
+    "widgetSubType":"ajaxSimple",
+    "no_results_content":"No Results Found",
+    "getTotalDataCount":true,
+    "defaultParameters":{"type_of_year":"B","document_code.document_code.document_code":"CTA1~CT1","status_flag":"A"},
+    "cleanURLParameters":["subvendor","mwbe","year","calyear","agency","yeartype","vendor","status","agid","cagency","cvendor",
+        "csize","cindustry","awdmethod"],
+    "urlParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id",
+        "yeartype":"type_of_year","vendor":"prime_vendor_id","status":"status_flag","subvendor":"vendor_id",
+        "agid":"original_agreement.original_agreement","cagency":"agency_id","cvendor":"prime_vendor_id",
+        "csize":"award_size_id","cindustry":"industry_type_id","awdmethod":"award_method_id"},
+    "dataset": "checkbook:subven_contracts_coa_aggregates",
+    "noDataInitialLoad":true,
+    "columns": ["sub_contract_number.sub_contract_number.original_agreement_id","subvendor.subvendor","subvendor.subvendor.legal_name","vendor.vendor","vendor.vendor.legal_name",
+        "agency.agency","contract_purpose.contract_purpose","contract_number.contract_number",
+        "agency.agency.agency_short_name","original_amount_sum","current_amount_sum",
+        "yeartype.yeartype","spending_amount_sum","original_agreement.original_agreement",
+        "document_code.document_code.document_code","agency.agency.agency_name"],
+    "adjustParameters":"
+    $adjustedParameters = $parameters;
+if(function_exists('_checkbook_project_applyParameterFilters')){
+$adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+}
+return $adjustedParameters;
+",
+"limit":5,
+"enableExpand":true,
+"derivedColumns": {
+"agency_name_formatted": {
+"type": "expression2",
+"expression": "_get_tooltip_markup($row['agency_agency_agency_name'],32)"
+},
+"vendor_name_formatted": {
+"type": "expression2",
+"expression": "_get_tooltip_markup($row['vendor_vendor_legal_name'],32)"
+},
+"subvendor_name_formatted": {
+"type": "expression2",
+"expression": "_get_tooltip_markup($row['subvendor_subvendor_legal_name'],32)"
+},
+"agency_name_link": {
+"type": "expression2",
+"expression": "'<a href=\"/contracts_landing' .  _checkbook_project_get_url_param_string(\"status\") . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string(\"vendor\") .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\")  . _checkbook_project_get_url_param_string(\"awdmethod\") .   _checkbook_project_get_year_url_param_string() . '/agency/'. $row[agency_agency].'?expandBottomCont=true\">' .$row[agency_name_formatted]. '</a>'"
+},
+"contract_link": {
+"type": "expression2",
+"expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/contract_transactions/agid/' .$row[sub_contract_number_sub_contract_number_original_agreement_id] . _checkbook_append_url_params() .  '/doctype/'   . $row[document_code_document_code_document_code]    . '\">' . $row['contract_number_contract_number'] . '</a>'"
+} ,
+"vendor_name_link": {
+"type": "expression2",
+"expression": "'<a href=\"/contracts_landing'  . _checkbook_project_get_url_param_string(\"agency\") .  _checkbook_project_get_url_param_string(\"status\") . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\") ._checkbook_project_get_url_param_string(\"svendor\")  . _checkbook_project_get_url_param_string(\"awdmethod\") .   _checkbook_project_get_year_url_param_string()  .   '/vendor/' .$row[vendor_vendor].  '?expandBottomCont=true\">' .$row[vendor_name_formatted]. '</a>'"
+} ,
+"subvendor_name_link": {
+"type": "expression2",
+"expression": "'<a href=\"/contracts_landing'  . _checkbook_project_get_url_param_string(\"agency\") .  _checkbook_project_get_url_param_string(\"status\") . _checkbook_project_get_url_param_string(\"mwbe\") .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\")  . _checkbook_project_get_url_param_string(\"awdmethod\") . _checkbook_project_get_url_param_string(\"vendor\") .   _checkbook_project_get_year_url_param_string()  .   '/subvendor/' .$row[subvendor_subvendor].  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>'"
+} ,
+"spent_amount_link": {
+"type": "expression2",
+"expression": "'<a class=\"new_window\" href=\"/contract/spending/transactions/agid/' .$row[original_agreement_original_agreement]  . (_checkbook_check_isEDCPage() ? ('/svendor/' .$row[vendor_vendor]) :'' ) .  _checkbook_project_get_url_param_string(\"status\")  .  ContractURLHelper::_checkbook_project_spending_get_year_url_param_string()  . '/smnid/' . $node->nid .  '/newwindow\">' . '$' . custom_number_formatter_format($row['spending_amount_sum'],2). '</a>'"
+} ,
+"formatted_original_amount_sum": {
+"type": "expression2",
+"expression": " '$' . custom_number_formatter_format($row['original_amount_sum'],2)"
+},
+"formatted_total_current_amount_sum": {
+"type": "expression2",
+"expression": " '$' . custom_number_formatter_format($row['current_amount_sum'],2)"
+},
+"purpose_formatted": {
+"type": "expression2",
+"expression": "_get_tooltip_markup($row['contract_purpose_contract_purpose'],32)"
+}
+},
+"disableViewAll":true,
+"header":"
+if(_checkbook_check_isEDCPage()){
+unset($node->widgetConfig->limit);
+$node->widgetConfig->getData=true;
+load_widget_data($node);
+$total = 0;$oge_contracts = array();
+foreach($node->data as $key=>$row){
+array_push($oge_contracts, $row['contract_number.contract_number']);
+}
+$oge_contracts = array_unique($oge_contracts);
+$total_oge_contracts = count($oge_contracts);
+}else{
+$node->widgetConfig->getData=false;
+load_widget_data($node);
+}
+$total_count = (_checkbook_check_isEDCPage()) ? number_format($total_oge_contracts) : number_format($node->totalDataCount);
+if($total_count > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
+$header='<div class=\"tableHeader\"><h2>Top ' . $count. 'Contracts</h2><span class=\"contCount\"> Number of Stand Alone Contracts: ' . $total_count . '</span></div>';
+return $header;
+",
+"footer":"
+$url = '/panel_html/contract_details/contract/transactions/contcat/expense'. _checkbook_project_get_url_param_string('status','contstatus');
+$url .= _checkbook_append_url_params();
+$url .= _checkbook_project_get_url_param_string('agency');
+$url .= _checkbook_project_get_url_param_string('vendor');
+$url .= _checkbook_project_get_url_param_string('awdmethod');
+$url .= _checkbook_project_get_url_param_string('csize');
+$url .= _checkbook_project_get_url_param_string('cindustry');
+$url .= _checkbook_project_get_year_url_param_string();
+$url .= '/smnid/' .  $node->nid;
+$url .= '/doctype/CTA1~CT1';
+$footer = '';
+if($node->totalDataCount > 0)
+$footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
+else
+$footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
+
+return $footer;
+",
+"summaryView":{
+"template":"contract_summary_expense_contract",
+"templateTitle":"Sub Contract Spending Transactions"
+},
+"widgetTitle":"Contracts",
+"table_title":"",
+"table_columns": [
+{
+"labelAlias": "contract_id",
+"column": "contract_link"
+},
+{
+"labelAlias": "contract_purpose",
+"column": "purpose_formatted"
+},
+{
+"labelAlias": "contract_agency",
+"column": "agency_name_link",
+"sortSourceColumn":"agency.agency.agency_short_name"
+},
+{
+"labelAlias": "prime_vendor",
+"column": "vendor_name_link",
+"sortSourceColumn":"vendor.vendor.legal_name"
+},
+{
+"labelAlias": "current_amount",
+"column": "formatted_total_current_amount_sum",
+"sortSourceColumn":"current_amount_sum"
+},
+{
+"labelAlias": "original_amount",
+"column": "formatted_original_amount_sum",
+"sortSourceColumn":"original_amount_sum"
+},
+
+{
+"labelAlias": "spent_to_date",
+"column": "spent_amount_link",
+"sortSourceColumn":"spending_amount_sum"
+},
+{
+"label": "",
+"column": ""
+}
+],
+"dataTableOptions":{
+"aoColumns": [
+{ "bSortable": false,"sWidth":"150px", "sClass":"text" },
+{ "bSortable": false,"sWidth":"146px","sClass":"text" },
+{ "bSortable": false,"sWidth":"170px", "sClass":"text pad-left" },
+{ "bSortable": false ,"sWidth":"150px", "sClass":"text"},
+{ "bSortable": true,"sWidth":"80px", "sClass":"number" ,"asSorting": [ "desc" ,"asc" ]},
+{ "bSortable": true,"sWidth":"110", "sClass":"number","asSorting": [ "desc" ,"asc" ]},
+{ "bSortable": true,"sWidth":"110px", "sClass":"number" ,"asSorting": [ "desc" ,"asc" ]},
+{ "bSortable": false,"sWidth":"15px" }
+] ,
+"bServerSide": true,
+"bFilter": false,
+"bPaginate": false,
+"bProcessing":true,
+"bLengthChange": false,
+"bInfo": false,
+"bAutoWidth": false,
+"aaSorting": [[ 4, "desc" ]],
+"oLanguage":{
+"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+},
+"fnServerParams": "##function ( aoData ) {
+reloadExpandCollapseWidget(this,aoData);
+}##"
+}
+}
