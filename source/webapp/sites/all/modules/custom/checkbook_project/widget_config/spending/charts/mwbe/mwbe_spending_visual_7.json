@@ -157,19 +157,12 @@
 	
 	$index = 0;
 	foreach($node->data as $row){
-			if(SpendingUtil::_mwbe_spending_use_subvendor()){
+			
 				$tooltip_label = 
 	 						'Sub Vendor: ' . $row['legal_name'].  '<br/>' .	 						
 	 						MappingUtil::getCurrenEhtnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>'  
 	 						; 
-			}else{
-	 			$tooltip_label = 
-	 						'Prime Vendor: ' . $row['legal_name'].  '<br/>' .
-	 						MappingUtil::getCurrenEhtnicityName() .' Share: ' . custom_number_formatter_format($row[$amount_column]/($row['total_mwbe'] + $row['total_non_mwbe'] ) *100 ,1,null, '%').  '<br/>' .
-	 						MappingUtil::getCurrenEhtnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>' .
-	 						'Non-M/WBE: ' . custom_number_formatter_format( $row['total_non_mwbe'],2,'$').  '<br/>' 
-	 						; 
-			}
+			
 			$link= CustomURLHelper::prepareUrl('spending_landing', SpendingUtil::$landingPageParams, array('expandBottomCont'=>'true'), array('subvendor'=>$row['vendor_id']) );
 			$link = RequestUtil::replaceParamFromString($link,'dashboard','ss');	 						
 			$series_new[$index]->url = $link;
@@ -183,10 +176,8 @@
 														);
 				$node->widgetConfig->gridConfig->sortColumn =  1;														
 			}else{
-				$node->widgetConfig->gridConfig->data[] = array($row['legal_name'],
-														custom_number_formatter_format($row[$amount_column]/($row['total_mwbe'] + $row['total_non_mwbe'] ) *100 ,1,null, '%'),
-														 $row[$amount_column],
-														 $row['total_non_mwbe']
+				$node->widgetConfig->gridConfig->data[] = array($row['legal_name'],														
+														 $row[$amount_column]
 														);
 			}
 			$index += 1;

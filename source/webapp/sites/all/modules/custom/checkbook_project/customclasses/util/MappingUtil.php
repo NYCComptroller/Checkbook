@@ -163,7 +163,7 @@ class MappingUtil {
 																	  			.	_checkbook_project_get_url_param_string("agency")
 																	  			. _checkbook_project_get_url_param_string("vendor")  .
 															  				"'>Total M/WBE</a></li>
-			<li class='no-click'><a href='/" . RequestUtil::getLandingPageUrl($domain) . "/mwbe/2~3~4~5~9" .$mwbe_featured_dashboard_param . "'>M/WBE Home</a></li>  					
+			<li class='no-click'><a href='/" . RequestUtil::getLandingPageUrl($domain) . "/mwbe/2~3~4~5~9/dashboard/mp'>M/WBE Home</a></li>  					
   				</ul>
   		</div>";
     	
