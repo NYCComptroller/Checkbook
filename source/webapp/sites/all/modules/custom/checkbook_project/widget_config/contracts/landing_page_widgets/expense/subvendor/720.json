@@ -38,6 +38,7 @@
                     . _checkbook_project_get_url_param_string(\"status\")
                     . _checkbook_project_get_url_param_string(\"vendor\")
                     . _checkbook_project_get_url_param_string(\"subvendor\")
+                    . _checkbook_project_get_url_param_string(\"dashboard\")
                     . '/mwbe/'. $row['minority_type_id_map'] .  '?expandBottomCont=true\">' . MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']).'</a>'"
 },
 "subvendor_name_link": {
