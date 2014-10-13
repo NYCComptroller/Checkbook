@@ -170,11 +170,11 @@ class ContractURLHelper{
         }
         $url .= _checkbook_append_url_params();
         if( preg_match("/^contracts_pending/", drupal_get_path_alias($_GET['q'])) ){
-          $allowedFilters =  array("agency","vendor","awrdmthd","csize","cindustry","agid");
+          $allowedFilters =  array("agency","vendor","awrdmthd","csize","cindustry","agid","dashboard");
           $url .= "/yeartype/B/year/"._getCurrentYearID();
         }
         else{
-          $allowedFilters =  array("year","calyear","agency","yeartype","awdmethod","vendor","csize","cindustry","agid");
+          $allowedFilters =  array("year","calyear","agency","yeartype","awdmethod","vendor","csize","cindustry","agid","dashboard");
         }
         for($i=1;$i < count($pathParams);$i++){
 
@@ -192,11 +192,11 @@ class ContractURLHelper{
         $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
         $url = $page;
         if( preg_match("/^contracts_pending/", drupal_get_path_alias($_GET['q'])) ){
-          $allowedFilters =  array("year","calyear","agency","yeartype","awrdmthd","vendor","csize","cindustry","mwbe");
+          $allowedFilters =  array("year","calyear","agency","yeartype","awrdmthd","vendor","csize","cindustry","mwbe","dashboard");
                
         }
         else{
-          $allowedFilters =  array("year","calyear","agency","yeartype","awdmethod","vendor","csize","cindustry","mwbe");
+          $allowedFilters =  array("year","calyear","agency","yeartype","awdmethod","vendor","csize","cindustry","mwbe","dashboard");
         }  
         for($i=1;$i < count($pathParams);$i++){
         
