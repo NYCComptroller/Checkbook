@@ -168,12 +168,12 @@
         {"labelAlias":"expense_category","column":"expense_cat_formatted","sortSourceColumn":"expenditure_object_name"},
         {"labelAlias":"contract_id","column":"reference_document_number_link","sortSourceColumn":"reference_document_number","exportColumn":"reference_document_number_export"},
         {"labelAlias":"sub_contract_reference_id","column":"sub_contract_id","exportColumn":"sub_contract_id"},
-        {"label":"","column":""},
+        {"label":"","column":"","export":false},
         {"labelAlias":"contract_purpose","column":"contract_purpose_text","sortSourceColumn":"purpose","exportColumn":"contract_purpose_export"},
         {"labelAlias":"capital_project","column":"reporting_code"},
         {"labelAlias":"spending_category","column":"spending_category_name"},
         {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name"},
-        {"label":"","column":""}
+        {"label":"","column":"","export":false}
     ],
     "exportColumnSqlOverride":[
         {
