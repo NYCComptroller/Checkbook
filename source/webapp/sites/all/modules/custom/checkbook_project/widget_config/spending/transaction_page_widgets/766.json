@@ -189,6 +189,11 @@
                 else 'Asian American'
                 end as minority_type_name
                 "
+        },
+        {
+        "column":"is_sub_vendor",
+        "sourceColumn":"is_prime_or_sub",
+        "sql":"case when is_prime_or_sub = 'P' then 'No' else 'Yes' end as is_sub_vendor"
         }
     ],
     "adjustParameters":"
