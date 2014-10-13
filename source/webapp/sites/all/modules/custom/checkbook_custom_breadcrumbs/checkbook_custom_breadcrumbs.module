@@ -108,6 +108,10 @@ function _get_contracts_breadcrumb_title_drilldown(){
             case 'cindustry':
                 $title = _checkbook_project_get_name_for_argument("industry_type_id",$value);
                 break;
+            case 'subvendor':
+   				$title = _checkbook_project_get_name_for_argument("sub_vendor_id",$value);
+                $title .= MappingUtil::getVendorEthinictyTitle($value,"contracts");
+                	break;
             default:
         }
     }
