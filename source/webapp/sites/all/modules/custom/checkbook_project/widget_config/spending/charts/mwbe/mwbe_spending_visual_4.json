@@ -64,22 +64,22 @@
 			break;
 		case '9' :
 			$sort_column = 5;
-			$ethinicty_case = ' WHEN minority_type_id = 5 THEN total_spending_amount
+			$ethinicty_case = ' WHEN minority_type_id = 9 THEN total_spending_amount
             				';
 			break;
 		case '3' :
 			$sort_column = 6;
-			$ethinicty_case = ' WHEN minority_type_id = 6 THEN total_spending_amount
+			$ethinicty_case = ' WHEN minority_type_id = 3 THEN total_spending_amount
             				 ';
 			break;
 		case '11' :
 			$sort_column = 7;
-			$ethinicty_case = ' WHEN minority_type_id = 7 THEN total_spending_amount
+			$ethinicty_case = ' WHEN minority_type_id = 11 THEN total_spending_amount
             				 ';
 			break;
 		case '7' :
 			$sort_column = 9;
-			$ethinicty_case = ' WHEN minority_type_id = 9 THEN total_spending_amount
+			$ethinicty_case = ' WHEN minority_type_id = 7 THEN total_spending_amount
             				 ';
 			break;	
 		case '2~3~4~5~9' :
@@ -118,6 +118,8 @@
    ' . $where_filter . '
         group by  agency_name,a1.agency_id order by agency_name
     ';
+    
+    log_error($sql);
     
     $node->data  = _checkbook_project_execute_sql($sql);
     
@@ -164,7 +166,7 @@
 	
 	//$merged_array = _widget_join_merge_data($node->data,$node->data_sub_ven, array('agency_id','agency_name'));
 	$merged_array = array();
-	
+
 	foreach($node->data as $row1){
 		
 		foreach($node->data_sub_ven as $row2){
@@ -190,6 +192,7 @@
 				return ($a['ethinicty_mwbe'] > $b['ethinicty_mwbe']) ? -1 : 1;
 			}
 	);
+	
 	$node->data_merged =  $merged_array;
 	
 ",
