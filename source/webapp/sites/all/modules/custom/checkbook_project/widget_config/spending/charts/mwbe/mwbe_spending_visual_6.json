@@ -34,8 +34,8 @@
 },
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B"},
-"cleanURLParameters":["yeartype","agency","vendor","category","year","mwbe"],
-"urlParamMap":{"mwbe":"minority_type_id","year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"vendor_id","category":"spending_category_id"},
+"cleanURLParameters":["yeartype","agency","vendor","category","year","mwbe","industry"],
+"urlParamMap":{"mwbe":"minority_type_id","year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"vendor_id","category":"spending_category_id","industry":"industry_type_id"},
 "chartTitle":"Top Ten Contracts by M/WBE Spending",
 "widgetDataLoader":"
     
