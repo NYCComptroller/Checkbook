@@ -53,19 +53,19 @@
     	$sql = ' select
 			maximum_contract_amount,
 			agency_name,
-			contract_number,
+			a1.contract_number,
 			v.legal_name,
 			document_code,
-			original_agreement_id		
+			sco.original_agreement_id		
 		from {aggregateon_subven_contracts_cumulative_spending} a1     
     	join {subvendor} v on v.vendor_id =  a1.vendor_id
     	join {vendor} pv on pv.vendor_id =  a1.prime_vendor_id
     	join {ref_agency} ra on ra.agency_id =  a1.agency_id
     	join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
+    	join (SELECT distinct original_agreement_id, contract_number FROM agreement_snapshot WHERE latest_flag = \\'Y\\') sco on sco.contract_number = a1.contract_number
    		' . $where_filter . '       
-    	order by 1 desc limit 10';
+    	order by 1 desc limit 10';    	
     $node->data  = _checkbook_project_execute_sql($sql);
-	 log_error($sql);   
 ",
 "widgetUpdateJSONConfig":"
 	
