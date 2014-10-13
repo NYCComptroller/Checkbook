@@ -29,7 +29,6 @@
     "html_class":"initiative-table",
     "no_results_content":"No Results Found",
     "dataset":"checkbook:contracts_mwbe_spending_transactions",
-    "preProcessConfiguration":"$node->is_mwbe = true;",
     "columns": [
         "disb_disbursement_number",
         "disb_vendor_name",
@@ -124,16 +123,16 @@
         {"labelAlias":"document_id","column":"disb_disbursement_number"},
         {"labelAlias":"payee_name","column":"payee_name_link","sortSourceColumn":"disb_vendor_name"},
         {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"disb_vendor_type","exportColumn":"is_sub_vendor"},
-        {"label":"","column":""},
+        {"label":"","column":"","export":false},
         {"labelAlias":"issue_date","column":"disb_check_eft_issued_date"},
         {"labelAlias":"agency_name","column":"agency_name_link","sortSourceColumn":"disb_agency_name"},
         {"labelAlias":"dept_name","column":"disb_department_short_name"},
         {"labelAlias":"check_amount","column":"formatted_check_amount","sortSourceColumn":"disb_check_amount"},
-        {"label":"","column":""},
+        {"label":"","column":"","export":false},
         {"labelAlias":"expense_category","column":"disb_expenditure_object_name"},
         {"labelAlias":"contract_id","column":"contract_number_link","sortSourceColumn":"disb_contract_number"},
-        {"labelAlias":"sub_contract_reference_id","column":"sub_contract_reference_id_formatted"},
-        {"label":"","column":""},
+        {"labelAlias":"sub_contract_reference_id","column":"sub_contract_reference_id_formatted","export":false},
+        {"label":"","column":"","export":false},
         {"labelAlias":"contract_purpose","column":"contract_purpose_text","sortSourceColumn":"disb_purpose"},
         {"labelAlias":"capital_project","column":"disb_reporting_code"},
         {"labelAlias":"spending_category","column":"disb_spending_category_name"},
@@ -153,6 +152,11 @@
                 else 'Asian American'
                 end as minority_type_name
             "
+        },
+        {
+            "column":"is_sub_vendor",
+            "sourceColumn":"disb_vendor_type",
+            "sql":"case when is_prime_or_sub = 'P' then 'No' else 'Yes' end as disb_vendor_type"
         }
     ],
     "adjustParameters":"
