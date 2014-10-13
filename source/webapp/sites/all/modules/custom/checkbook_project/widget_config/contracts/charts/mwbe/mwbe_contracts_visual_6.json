@@ -77,6 +77,7 @@
 	 						; 
 			$link= CustomURLHelper::prepareUrl(strstr($_GET['q'],'\/',true), ContractURLHelper::$landingPageParams, array('expandBottomCont'=>'true'), 
 						array('subvendor'=>$row['vendor_id']) );
+			$link = RequestUtil::replaceParamFromString($link,'dashboard','ss');	
 			$series_new[$index]->url = 	$link;					
 
 			$series_new[$index]->y = (float)$row['current_amount_sum'];

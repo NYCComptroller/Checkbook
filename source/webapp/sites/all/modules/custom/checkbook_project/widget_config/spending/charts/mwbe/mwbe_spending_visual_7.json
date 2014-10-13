@@ -170,7 +170,8 @@
 	 						'Non-M/WBE: ' . custom_number_formatter_format( $row['total_non_mwbe'],2,'$').  '<br/>' 
 	 						; 
 			}
-			$link= CustomURLHelper::prepareUrl('spending_landing', SpendingUtil::$landingPageParams, array('expandBottomCont'=>'true'), array('subvendor'=>$row['vendor_id']) );	 						
+			$link= CustomURLHelper::prepareUrl('spending_landing', SpendingUtil::$landingPageParams, array('expandBottomCont'=>'true'), array('subvendor'=>$row['vendor_id']) );
+			$link = RequestUtil::replaceParamFromString($link,'dashboard','ss');	 						
 			$series_new[$index]->url = $link;
 
 
