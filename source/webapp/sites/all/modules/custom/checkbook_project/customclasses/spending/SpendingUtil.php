@@ -193,9 +193,8 @@ class SpendingUtil{
      */
     static function getSubVendorNameLinkUrl($node, $row){
         $dashboard = _getRequestParamValue("dashboard");
-        $mwbe = _getRequestParamValue("mwbe");
         $custom_params = array(
-            "mwbe"=>$dashboard == "mp" ? $mwbe : null,
+            "mwbe"=>null,
             "dashboard"=>$dashboard == "mp" ? "sp" : "ss",
             "subvendor"=>$row["sub_vendor_sub_vendor"]
         );
