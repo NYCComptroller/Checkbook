@@ -192,7 +192,7 @@ class SpendingUtil{
      * @return string
      */
     static function getSubVendorNameLinkUrl($node, $row){
-        $custom_params = array("subvendor"=>$row["sub_vendor_sub_vendor"]);
+        $custom_params = array("dashboard"=>"ms","subvendor"=>$row["sub_vendor_sub_vendor"]);
         return '/' . self::getLandingPageWidgetUrl($custom_params);
     }
 
@@ -445,7 +445,7 @@ class SpendingUtil{
      * @return string
      */
     static function getIndustryNameLinkUrl($node, $row){
-        $custom_params = array('industry'=>$row['industry_industry_industry_type_id']);
+        $custom_params = array('industry'=>isset($row['industry_industry_industry_type_id']) ? $row['industry_industry_industry_type_id'] : $row['industry_type_industry_type']);
         return '/' . self::getLandingPageWidgetUrl($custom_params);
     }
 
