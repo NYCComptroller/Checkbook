@@ -153,7 +153,7 @@ if($mwbe_amount  == 0){
 	$mwbe_link = l('<div><span class="nav-title">' . RequestUtil::getDashboardTopNavTitle("mwbe") . '</span><br>&nbsp;'. custom_number_formatter_format($mwbe_amount ,1,'$') . '</div>',$mwbe_active_domain_link,$options);
 }
 
-dsm($svendor_amount);
+
 if($svendor_amount  == 0){
 	$svclass = '';
 	$subvendors_link = l('<div><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div>','',$options_disabled);	
