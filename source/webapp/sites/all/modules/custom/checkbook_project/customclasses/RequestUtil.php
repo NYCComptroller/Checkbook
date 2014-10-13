@@ -844,4 +844,8 @@ class RequestUtil{
     			break;
     	}
     }
+    
+    static function replaceParamFromString($string,$param,$value){
+    	return preg_replace('/\/' .$param .'\/[^\/]*/','/' . $param .'/' . $value,$string);
+    }
 }
