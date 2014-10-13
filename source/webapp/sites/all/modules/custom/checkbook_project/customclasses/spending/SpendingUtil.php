@@ -192,9 +192,11 @@ class SpendingUtil{
      * @return string
      */
     static function getSubVendorNameLinkUrl($node, $row){
+        $dashboard = _getRequestParamValue("dashboard");
+        $mwbe = _getRequestParamValue("mwbe");
         $custom_params = array(
-            "mwbe"=>null,
-            "dashboard"=>"ss",
+            "mwbe"=>$dashboard == "mp" ? $mwbe : null,
+            "dashboard"=>$dashboard == "mp" ? "sp" : "ss",
             "subvendor"=>$row["sub_vendor_sub_vendor"]
         );
         return '/' . self::getLandingPageWidgetUrl($custom_params);
