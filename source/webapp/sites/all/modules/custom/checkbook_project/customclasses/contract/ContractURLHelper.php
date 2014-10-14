@@ -178,8 +178,9 @@ class ContractURLHelper{
         }
         for($i=1;$i < count($pathParams);$i++){
 
-            if(in_array($pathParams[$i] ,$allowedFilters) ){
-                 $url .= '/'.$pathParams[$i].'/'.$pathParams[($i+1)];
+            if(in_array($pathParams[$i] ,$allowedFilters)){
+                $newPathParams = explode('/', $url);
+                $url .= (!in_array($pathParams[$i] ,$newPathParams)) ? '/'.$pathParams[$i].'/'.$pathParams[($i+1)] : '';
             }
             $i++;
         }
@@ -201,7 +202,8 @@ class ContractURLHelper{
         for($i=1;$i < count($pathParams);$i++){
         
           if(in_array($pathParams[$i] ,$allowedFilters) ){
-            $url .= '/'.$pathParams[$i].'/'.$pathParams[($i+1)];
+              $newPathParams = explode('/', $url);
+              $url .= (!in_array($pathParams[$i] ,$newPathParams)) ? '/'.$pathParams[$i].'/'.$pathParams[($i+1)] : '';
           }
           $i++;
         }     
