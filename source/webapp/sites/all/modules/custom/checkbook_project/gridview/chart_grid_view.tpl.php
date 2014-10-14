@@ -140,8 +140,15 @@ include_once('export_link.php');
 					"asSorting": [ "desc", "asc" ]
 					},
 				';
-		}
-		else{
+		}elseif($column->formatType == 'padding'){
+
+			$aoColumnDefs .= '
+				{
+					"aTargets": [' . $index . '],
+					"sWidth":"' . $column->sWidth . '"
+				},
+			    ';
+		}else{
 
 			$aoColumnDefs .= '
 		                        {

@@ -1,0 +1,205 @@
+{
+"widgetType": "highcharts",
+"widgetDatahandler": "highcharts",
+"html_class":"",
+"header":"
+       $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
+       $header .= ChartUtil::generateWidgetGridViewLink($node);
+       return $header;
+    ",
+ "gridConfig":{
+        "template":"chart_grid_view",
+        "domain":"contracts",
+        "html_class":"chart-grid-view-table three-columns",
+        "table_columns": [
+            {
+                  "labelAlias": "Year",
+                  "columnType": "text"
+             },
+             {
+                  "labelAlias": "Amount",
+                  "columnType": "number",
+                  "formatType": "amount"
+             }
+        ]
+},
+"no_results_content":"No Results Found",
+"defaultParameters":{"type_of_year":"B"},
+"cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry"],
+"urlParamMap":{"agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"prime_vendor_id","subvendor":"vendor_id",
+	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
+"chartTitle":"M/WBE Active Expense Contracts Share",
+"widgetDataLoader":"
+    
+    $where_filters = array();
+    
+    
+    	$where_filters2 = array();
+    	foreach($node->widgetConfig->requestParams as $param=>$value){
+       	 $where_filters2[] = _widget_build_sql_condition(' a1.' . $param, $value);
+    	}
+    
+    	if(count($where_filters2) > 0){
+        	$where_filter2 = ' where ' . implode(' and ' , $where_filters2);
+    	}
+    
+		$where_filter2 .= ' and rd.document_code in (' . ContractUtil::getCurrentPageDocumentIds() . ') ';
+    
+    
+    	$sql2 = 'select rm.minority_type_id, rm.minority_type_name ,year_value, sum(maximum_contract_amount) current_amount_sum
+    		from {aggregateon_subven_contracts_cumulative_spending} a1 
+    		join {ref_minority_type} rm on rm.minority_type_id = a1.minority_type_id
+    		join {ref_year} ry on a1.fiscal_year_id = ry.year_id
+    		join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
+   			' . $where_filter2 . '
+    		group by rm.minority_type_id, rm.minority_type_name,year_value  ';
+    	$node->data  = _checkbook_project_execute_sql($sql2);
+   
+    
+",
+"widgetUpdateJSONConfig":"
+
+	$series =  array();
+	$non_mwbe_data = array();
+	$year_id = _getRequestParamValue('year');
+	$year = _getYearValueFromID($year_id);
+	$mwbe_page_cats = explode('~',_getRequestParamValue('mwbe'));
+	 foreach ($node->data as $row){
+	 
+	 	switch($row['minority_type_id']){
+	 		case '2':
+	 		if(in_array(2,$mwbe_page_cats))
+	 			$series[$row['year_value']]->y += $row['current_amount_sum'];
+	 		$series[$row['year_value']]->mwbe_total += $row['current_amount_sum']; 
+	 		break;
+	 		case '3':
+	 		if(in_array(3,$mwbe_page_cats))
+	 			$series[$row['year_value']]->y += $row['current_amount_sum'];
+	 		$series[$row['year_value']]->mwbe_total += $row['current_amount_sum']; 
+	 		break;
+	 		case '4':
+	 		if(in_array(4,$mwbe_page_cats))
+	 			$series[$row['year_value']]->y += $row['current_amount_sum'];
+	 		$series[$row['year_value']]->mwbe_total += $row['current_amount_sum']; 
+	 		break;
+	 		case '5':
+	 		if(in_array(5,$mwbe_page_cats))
+	 			$series[$row['year_value']]->y += $row['current_amount_sum'];
+	 		$series[$row['year_value']]->mwbe_total += $row['current_amount_sum']; 
+	 		break;
+	 		case '9':
+	 		if(in_array(9,$mwbe_page_cats))
+	 			$series[$row['year_value']]->y += $row['current_amount_sum'];	 		
+	 		$series[$row['year_value']]->mwbe_total += $row['current_amount_sum']; 
+	 		break;
+	 		case '7':
+	 		$non_mwbe_data[$row['year_value']] = $row['current_amount_sum']; 
+	 		break;
+	 	}	
+	 }
+	
+	$i = 0;
+	$categories = array();
+	ksort($series);
+	
+	$series_new = array();
+	$index = 0;
+	foreach($series as $key=>$row){
+		if($key <= $year && $key >= $year - 4){
+			if(_getRequestParamValue('yeartype') == 'C'){
+				 $year_display = 'CY ' . $key;
+			}else{
+				$year_display = 'FY ' . $key;
+			}
+	 		$tooltip_label = 
+	 						'Year: ' . $year_display.  '<br/>' .
+	 						'Amount: '. custom_number_formatter_format($series[$key]->y,2,'$')   . '<br/>' ; 
+		
+			$series_new[$index]->y = $series[$key]->y/($series[$key]->mwbe_total + $non_mwbe_data[$key] ) * 100;
+			$series_new[$index]->tooltip_label = $tooltip_label;
+			$series_new[$index]->custom_label = custom_number_formatter_format($series[$key]->y/($series[$key]->mwbe_total + $non_mwbe_data[$key] ) *100,1,null,'%') ; 
+			$categories[] = $key ;
+			$node->widgetConfig->gridConfig->data[] = array($year_display,$series[$key]->y );
+			$index += 1; 	
+		}	
+	}
+	$no_data_found = true;
+	foreach($series as $point){
+		if(isset($point->y)){
+			$no_data_found = false;
+		}		
+	}
+	if($no_data_found){
+		$node->totalDataCount = 0;
+	}
+	
+
+
+	$node->widgetConfig->chartConfig->series[0]->name = 'Fiscal Years';
+	$node->widgetConfig->chartConfig->series[0]->type = 'column';
+	$node->widgetConfig->chartConfig->series[0]->pointWidth = 80;
+	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
+	$node->widgetConfig->chartConfig->xAxis->categories = $categories;
+	if(_getRequestParamValue('status') == 'A'){
+		$status = 'Active';
+	}else if(_getRequestParamValue('status') == 'R'){
+		$status = 'Registered';
+	}
+	
+	$contract_type = 'Expense';
+ 	$where_filter .= ' and rd.document_code in (' . ContractUtil::getCurrentPageDocumentIds() . ') ';
+
+	$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() .' ' . $status . ' ' . $contract_type .  ' Contracts Share';
+																		 
+",
+"chartConfig" : {
+	"colors":["#7DB7E5"],
+    "plotOptions": {
+            "series": {
+                "stacking": "normal",
+                "minPointLength":30 ,
+                "dataLabels": {
+                    "enabled": true,
+                    "format": "{point.custom_label}",
+                    "style": {
+                		"color": "#FFFFFF",
+                		"fontSize": "24px"
+            		}
+                }             
+            }
+    },
+    "xAxis": {
+        "categories": [],
+        "labels": {"enabled": false}
+    },
+    "series": [
+        {
+            "name": "FY",
+            "type": "column",
+            "pointWidth": 50,
+            "data": [
+            		]
+        }
+    ],
+    "title": {"text": ""},
+    "yAxis": {
+     	"min":0,
+     	"minRange": 0.1,    
+        "startOnTick":true,
+        "title": {"text": ""},
+        "labels":{"rotation": 0,"function":"yAxisFormatter"}
+    } ,
+    "legend": {
+        "enabled": false       
+    },
+    "tooltip":{"function":"tooltipformatter"}
+    }
+}
+
+
+<function>
+yAxisFormatter^^'formatter' : function(){return this.value + '%';}##
+tooltipformatter^^'formatter' :
+function() {return this.point.tooltip_label ;
+}
+</function>
