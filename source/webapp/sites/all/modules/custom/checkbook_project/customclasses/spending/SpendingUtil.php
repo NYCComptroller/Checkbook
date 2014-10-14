@@ -540,8 +540,9 @@ class SpendingUtil{
      * @return string
      */
     static function getMWBECategoryLinkUrl($node, $row){
+        $dashboard = _getRequestParamValue("dashboard");
         $custom_params = array(
-            'dashboard'=>"mp",
+            'dashboard'=>$dashboard == "ms" ? "ms" : "mp",
             'mwbe'=>(isset($row["minority_type_id"]) ? $row["minority_type_id"] : $row["minority_type_minority_type"])
         );
         return '/' . self::getLandingPageWidgetUrl($custom_params) . '?expandBottomCont=true';
