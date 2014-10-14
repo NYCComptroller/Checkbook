@@ -44,7 +44,6 @@ else
 
 }
 
-
 if(!$IsOge)
 $date_fields = array("check_eft_issued_date");
 $amount_fields = array("check_amount");
@@ -89,19 +88,13 @@ foreach ($spending_parameter_mapping as $key=>$title){
       if($id == '4' || $id == '5'){
           $id = '4~5';
       }
-
-      $value = "<a href='/spending_landing/yeartype/B/year/". _getFiscalYearID() ."/mwbe/".$id ."'>" .$spending_results["minority_type_name"] ."</a>";
+      if($id == '7' || $id == '11'){
+          $value = $spending_results["minority_type_name"];
+      }
+      else{
+          $value = "<a href='/spending_landing/yeartype/B/year/". _getFiscalYearID() ."/mwbe/".$id ."'>" .$spending_results["minority_type_name"] ."</a>";
+      }
   }
-//  if($key == 'is_prime_or_sub' && $spending_results["is_prime_or_sub"] == 'P' ){
-//    $value = 'No';
-//  }
-//  if($key == 'is_prime_or_sub' && $spending_results["is_prime_or_sub"] == 'S' ){
-//    $value = 'Yes';
-//  }
-//  if($key == 'prime_vendor_name' && $spending_results["is_prime_or_sub"] == 'P' ){
-//     $value = 'N/A';
-//  }
-    
   if ($count % 2 == 0){
     if($title)
         $row[] = '<div class="field-label">'.$title.':</div><div class="field-content">'.$value.'</div>';

@@ -171,18 +171,13 @@ foreach ($contracts_parameter_mapping as $key => $title){
       if($id == '4' || $id == '5'){
           $id = '4~5';
       }
-      $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". _getFiscalYearID() ."/mwbe/".$id ."'>" .$contracts_results["minority_type_name"] ."</a>";
+      if($id == '7' || $id == '11'){
+        $value = $contracts_results["minority_type_name"];
+      }
+      else{
+        $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". _getFiscalYearID() ."/mwbe/".$id ."'>" .$contracts_results["minority_type_name"] ."</a>";
+      }
   }
-//  if($key == 'is_prime_or_sub' && $contracts_results["is_prime_or_sub"] == 'P' ){
-//      $value = 'No';
-//  }
-//  if($key == 'is_prime_or_sub' && $contracts_results["is_prime_or_sub"] == 'S' ){
-//      $value = 'Yes';
-//  }
-//  if($key == 'prime_vendor_name' && $contracts_results["is_prime_or_sub"] == 'P' ){
-//      $value = 'N/A';
-//  }
-
   if ($count % 2 == 0){
     if($title)
         $row[] = '<div class="field-label">'.$title.':</div><div class="field-content">'. $value .'</div>';
