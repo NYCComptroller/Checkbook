@@ -123,8 +123,8 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 				<li class='no-click'><a href='/" . $sub_vendors_home_link  
 															.	_checkbook_project_get_url_param_string("agency")  
 															. _checkbook_project_get_url_param_string("vendor")  .
-															"/dashboard/ss'>Total SubVendors</a></li>
-  				<li class='no-click'><a href='/" . $sub_vendors_home_link . "/dashboard/ss'>SubVendors Home</a></li>
+															"/dashboard/ss'>Total Sub Vendors</a></li>
+  				<li class='no-click'><a href='/" . $sub_vendors_home_link . "/dashboard/ss'>Sub Vendors Home</a></li>
 			</ul>
   		</div>
   		";
