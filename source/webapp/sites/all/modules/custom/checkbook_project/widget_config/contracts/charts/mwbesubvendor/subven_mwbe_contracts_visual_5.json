@@ -14,7 +14,7 @@
         "sortColumn":2,
         "table_columns": [
             {
-                  "labelAlias": "Sub Vendor",
+                  "labelAlias": "Prime Vendor",
                   "columnType": "text"
              },
              {
@@ -32,9 +32,10 @@
 "no_results_content":"No Results Found",
 
 "cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe","year"],
-"urlParamMap":{"year":"fiscal_year_id","mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"prime_vendor_id",
+"urlParamMap":{"year":"fiscal_year_id","mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id",
+	"vendor":"prime_vendor_id","subvendor":"vendor_id",
 	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},	
-"chartTitle":"Top Ten Sub Vendors by Active Expense Contracts",
+"chartTitle":"Top Ten Prime Vendors by Active Expense Contracts",
 "widgetDataLoader":"
     
     $where_filters = array();
@@ -48,19 +49,19 @@
  
  	$where_filter .= ' and rd.document_code in (' . ContractUtil::getCurrentPageDocumentIds() . ') ';
 
-    
+  
     	$sql = ' select
 			v.legal_name ,a1.vendor_id
 			, sum(maximum_contract_amount) current_amount_sum
 			, count(contract_number) total_contracts		
 		from {aggregateon_subven_contracts_cumulative_spending} a1     
-	    join {vendor} v on v.vendor_id =  a1.prime_vendor_id
+	    join {vendor} v on v.vendor_id =  a1.vendor_id
 	    join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
    		' . $where_filter . '     
    		group by v.legal_name  ,a1.vendor_id
     	order by 3 desc limit 10';
+
     $node->data  = _checkbook_project_execute_sql($sql);
-	  
 	  
 ",
 "widgetUpdateJSONConfig":"
@@ -71,13 +72,12 @@
 	$index = 0;
 	foreach($node->data as $row){
 	 		$tooltip_label =
-	 						'Sub Vendor: ' . $row['legal_name'] .  '<br/>' .
+	 						'Prime Vendor: ' . $row['legal_name'] .  '<br/>' .
 	 						'Number of M/WBE Contracts: ' . $row['total_contracts'].  '<br/>' .
 	 						'Amount: ' . custom_number_formatter_format($row['current_amount_sum'] ,2, '$').  '<br/>' 
 	 						; 
 			$link= CustomURLHelper::prepareUrl(strstr($_GET['q'],'\/',true), ContractURLHelper::$landingPageParams, array('expandBottomCont'=>'true'), 
-						array('subvendor'=>$row['vendor_id']) );
-			$link = RequestUtil::replaceParamFromString($link,'dashboard',RequestUtil::getNextSubvendorDashboardStateParam());	
+						array('vendor'=>$row['vendor_id']) );
 			$series_new[$index]->url = 	$link;					
 
 			$series_new[$index]->y = (float)$row['current_amount_sum'];
@@ -108,9 +108,9 @@
 	}
 	$mwbe_filter = _getRequestParamValue('mwbe');
 	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){		
-		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Top Ten Sub Vendors by ' . $status . ' ' . $contract_type .  ' Contracts';
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Top Ten Prime Vendors by ' . $status . ' ' . $contract_type .  ' Contracts';
 	}else{
-		$node->widgetConfig->chartTitle =  'Top Ten ' .  MappingUtil::getCurrenEhtnicityName() . ' Sub Vendors by '  .$status . ' ' . $contract_type .  ' Contracts';
+		$node->widgetConfig->chartTitle =  'Top Ten ' .  MappingUtil::getCurrenEhtnicityName() . ' Prime Vendors by '  .$status . ' ' . $contract_type .  ' Contracts';
 	}  
 	
 ",

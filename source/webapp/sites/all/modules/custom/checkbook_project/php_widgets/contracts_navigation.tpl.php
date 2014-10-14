@@ -92,7 +92,6 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 	$mwbe_active_domain_link = RequestUtil::getDashboardTopNavURL("mwbe") ;
 
 	
-	$svendor_amount = $node->data[8]['current_amount_sum'];
 	$svendor_active_domain_link = RequestUtil::getDashboardTopNavURL("subvendor") ;
 	if(preg_match('/contracts/',$_GET['q'])){
 		
@@ -102,7 +101,8 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 			$mwbe_amount =  $node->data[10]['current_amount_sum'];
 		}
 		//$mwbe_active_domain_link = RequestUtil::getTopNavURL("contracts") ;
-		$svendor_amount = $node->data[8]['check_amount_sum'];
+		$svendor_amount = $node->data[8]['current_amount_sum'];
+		$mwbe_active_domain_link = preg_replace('/\/subvendor\/[^\/]*/','',$mwbe_active_domain_link);
 		$mwbe_filters = MappingUtil::getCurrentMWBETopNavFilters($mwbe_active_domain_link,"contracts");
 		$sub_vendors_home_link = RequestUtil::getLandingPageUrl("contracts", _getRequestParamValue("year")) ;
 	}else{
@@ -111,6 +111,7 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 		}else{
 			$mwbe_amount =  $node->data[9]['check_amount_sum'];
 		}
+		$mwbe_active_domain_link = preg_replace('/\/subvendor\/[^\/]*/','',$mwbe_active_domain_link);
 		$mwbe_filters = MappingUtil::getCurrentMWBETopNavFilters($mwbe_active_domain_link,"spending");
 		
 		$svendor_amount = $node->data[7]['check_amount_sum'];
@@ -124,8 +125,8 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 				<li class='no-click'><a href='/" . $sub_vendors_home_link  
 															.	_checkbook_project_get_url_param_string("agency")  
 															. _checkbook_project_get_url_param_string("vendor")  .
-															"/dashboard/ss'>Total SubVendors</a></li>
-  				<li class='no-click'><a href='/" . $sub_vendors_home_link . "/dashboard/ss'>SubVendors Home</a></li>
+															"/dashboard/ss'>Total Sub Vendors</a></li>
+  				<li class='no-click'><a href='/" . $sub_vendors_home_link . "/dashboard/ss'>Sub Vendors Home</a></li>
 			</ul>
   		</div>
   		";

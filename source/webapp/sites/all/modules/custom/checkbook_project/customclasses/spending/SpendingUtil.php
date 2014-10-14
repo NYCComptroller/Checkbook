@@ -192,9 +192,10 @@ class SpendingUtil{
      * @return string
      */
     static function getSubVendorNameLinkUrl($node, $row){
+        $dashboard = _getRequestParamValue("dashboard");
         $custom_params = array(
             "mwbe"=>null,
-            "dashboard"=>"ss",
+            "dashboard"=>$dashboard == "mp" ? "sp" : "ss",
             "subvendor"=>$row["sub_vendor_sub_vendor"]
         );
         return '/' . self::getLandingPageWidgetUrl($custom_params);
@@ -218,11 +219,11 @@ class SpendingUtil{
             $vendor_id = isset($row["vendor_id"]) ? $row["vendor_id"] : $row["vendor_vendor"];
         }
         $dtsmnid = _getRequestParamValue("dtsmnid");
-        if(isset($dtsmnid) && $dtsmnid == 759) { //Has sub and prime data
+        if(isset($dtsmnid)) { //Has sub and prime data
             $is_prime_or_sub = (preg_match('/S/', $row["vendor_type"])) ? "S" : "P";
         }
         else {
-            $is_prime_or_sub = (preg_match('/s/', $dashboard)) ? "S" : "P";
+            $is_prime_or_sub = "P";
         }
         $latest_certified_minority_type_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type, $is_prime_or_sub);
         $is_mwbe_certified = isset($latest_certified_minority_type_id);

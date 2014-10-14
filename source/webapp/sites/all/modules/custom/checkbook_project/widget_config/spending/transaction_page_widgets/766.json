@@ -160,7 +160,7 @@
     "table_columns": [
         {"labelAlias":"document_id","column":"disbursement_number_derived","sortSourceColumn":"disbursement_number","exportColumn":"disbursement_number_derived"},
         {"labelAlias":"payee_name","column":"payee_name_link","sortSourceColumn":"vendor_name","exportColumn":"payee_name_export"},
-        {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"vendor_type","exportColumn":"is_sub_vendor"},
+        {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"vendor_type","exportColumn":"vendor_type"},
         {"labelAlias":"issue_date","column":"issue_date_formatted","sortSourceColumn":"check_eft_issued_date","headerClass":"issuedate","exportColumn":"issue_date_formatted"},
         {"labelAlias":"agency_name","column":"agency_name_link","sortSourceColumn":"agency_name"},
         {"labelAlias":"dept_name","column":"dept_name_formatted","sortSourceColumn":"department_name"},
@@ -189,6 +189,11 @@
                 else 'Asian American'
                 end as minority_type_name
                 "
+        },
+        {
+            "column":"is_sub_vendor",
+            "sourceColumn":"vendor_type",
+            "sql":"case when is_prime_or_sub = 'P' then 'No' else 'Yes' end as vendor_type"
         }
     ],
     "adjustParameters":"

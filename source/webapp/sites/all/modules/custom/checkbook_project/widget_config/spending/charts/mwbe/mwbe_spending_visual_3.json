@@ -44,9 +44,9 @@
 },
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B"},
-"cleanURLParameters":["year","yeartype","agency","vendor","category"],
-"urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"vendor_id","category":"spending_category_id"},
-"urlParamMapSubVendor":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","category":"spending_category_id"},
+"cleanURLParameters":["year","yeartype","agency","vendor","category","industry"],
+"urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"vendor_id","category":"spending_category_id","industry":"industry_type_id"},
+"urlParamMapSubVendor":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","category":"spending_category_id","industry":"industry_type_id"},
 "chartTitle":"Analysis by M/WBE Share",
 "widgetDataLoader":"
     
