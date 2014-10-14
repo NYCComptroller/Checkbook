@@ -179,16 +179,16 @@ $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoCol
 "sWidth": "140px","asSorting": [ "desc","asc" ]
 },
 {
-"sClass": "text number-left",
-"sWidth": "170px","asSorting": [ "asc","desc" ]
+"sClass": "text  number-left pad-left",
+"sWidth": "100px","asSorting": [ "asc","desc" ]
 },
 {
-"sClass": "number",
+"sClass": "text number-left",
 "sWidth": "90px","asSorting": [ "desc","asc" ]
 },
 {
 "sClass": "text number-left",
-"sWidth": "170px","asSorting": [ "asc","desc" ]
+"sWidth": "90px","asSorting": [ "asc","desc" ]
 },
 {   "sClass":"number",
 "sWidth":"75px","asSorting": [ "desc","asc" ]
@@ -202,8 +202,8 @@ $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoCol
 "sWidth": "155px","asSorting": [ "asc","desc" ]
 },
 {
-"sClass": "text",
-"sWidth": "155px","asSorting": [ "asc","desc" ]
+"sClass": "text pad-left",
+"sWidth": "175px","asSorting": [ "asc","desc" ]
 },
 {
 "sClass": "text",
