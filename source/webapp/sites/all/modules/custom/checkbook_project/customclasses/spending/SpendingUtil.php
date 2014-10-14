@@ -217,13 +217,7 @@ class SpendingUtil{
         if(!isset($vendor_id)) {
             $vendor_id = isset($row["vendor_id"]) ? $row["vendor_id"] : $row["vendor_vendor"];
         }
-        $dtsmnid = _getRequestParamValue("dtsmnid");
-        if(isset($dtsmnid)) { //Has sub and prime data
-            $is_prime_or_sub = (preg_match('/S/', $row["vendor_type"])) ? "S" : "P";
-        }
-        else {
-            $is_prime_or_sub = "P";
-        }
+        $is_prime_or_sub = RequestUtil::isDashboardFlowSubvendor() ? "S":"P";
         $latest_certified_minority_type_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type, $is_prime_or_sub);
         $is_mwbe_certified = isset($latest_certified_minority_type_id);
 
