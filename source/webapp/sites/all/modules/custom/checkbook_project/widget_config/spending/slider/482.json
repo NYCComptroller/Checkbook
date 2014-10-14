@@ -50,8 +50,8 @@
                     $is_prime_or_sub = array('P','S');
                 }
                 else if(isset($dashboard)) {
-                    $vendor_type = preg_match('\"p\"',$dashboard) ? array('P','PM') : array('S','SM');
                     $is_prime_or_sub = preg_match('\"s\"',$dashboard) ? 'S' : 'P';
+                    $vendor_type = $is_prime_or_sub == 'P' ? array('P','PM') : array('S','SM');
                 }
                 $serieParameters['vendor_type'] = $vendor_type;
                 $serieParameters['is_prime_or_sub'] = $is_prime_or_sub;

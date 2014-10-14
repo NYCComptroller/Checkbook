@@ -353,12 +353,13 @@ function _checkbook_export_generateExportFile($node,$headers){
                         $pos = strpos($sql,$source_column);
                         if ($pos !== false) {
                             $override_sql = substr_replace($sql,$override_sql,$pos,strlen($source_column));
+                            $sql = $override_sql;
                         }
                     }
                 }
             }
             if($override_sql != null) {
-                $node->data = $override_sql;
+                $node->data = $sql;
             }
         }
 

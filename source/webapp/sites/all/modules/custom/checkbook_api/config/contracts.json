@@ -54,8 +54,8 @@
                         "apt_pin":"brd_awd_no",
                         "document_code":"document_code@checkbook:ref_document_code",
                         "contract_industry":"industry_type_name",
-                        "sub_contract_reference_id":"sub_contract_id",
-                        "sub_vendor":"vendor_type",
+                        "subcontract_reference_id":"sub_contract_id",
+                        "subvendor":"vendor_type",
                         "associated_prime_vendor":"prime_vendor_name",
                         "mwbe_category":"minority_type_name"
                     },
@@ -85,8 +85,8 @@
                         "vendor_type",
                         "associated_prime_vendor",
                         "mwbe_category",
-                        "sub_vendor",
-                        "sub_contract_reference_id"
+                        "subvendor",
+                        "subcontract_reference_id"
                     ]
                 },
                 "csv":{
@@ -116,7 +116,7 @@
                         "Sub Contract Reference ID":"sub_contract_id",
                         "Sub Vendor":"vendor_type",
                         "mwbe_category":"minority_type_id",
-                        "sub_contract_reference_id":"sub_contract_id",
+                        "subcontract_reference_id":"sub_contract_id",
                         "Associated Prime Vendor":"prime_vendor_name",
                         "M/WBE Category":"minority_type_name"
                     }
@@ -215,8 +215,8 @@
                         "apt_pin":"brd_awd_no",
                         "document_code":"document_code@checkbook:ref_document_code",
                         "contract_industry":"industry_type_name",
-                        "sub_contract_reference_id":"sub_contract_id",
-                        "sub_vendor":"vendor_type",
+                        "subcontract_reference_id":"sub_contract_id",
+                        "subvendor":"vendor_type",
                         "associated_prime_vendor":"prime_vendor_name",
                         "mwbe_category":"minority_type_name"
                     },
@@ -245,8 +245,8 @@
                         "vendor_type",
                         "associated_prime_vendor",
                         "mwbe_category",
-                        "sub_vendor",
-                        "sub_contract_reference_id"
+                        "subvendor",
+                        "subcontract_reference_id"
                     ]
                 },
                 "csv":{
@@ -413,8 +413,8 @@
                         "apt_pin":"brd_awd_no",
                         "document_code":"document_code@checkbook:ref_document_code",
                         "contract_industry":"industry_type_name",
-                        "sub_contract_reference_id":"sub_contract_id",
-                        "sub_vendor":"vendor_type",
+                        "subcontract_reference_id":"sub_contract_id",
+                        "subvendor":"vendor_type",
                         "associated_prime_vendor":"prime_vendor_name",
                         "mwbe_category":"minority_type_name"
                     },
@@ -441,8 +441,8 @@
                         "vendor_type",
                         "associated_prime_vendor",
                         "mwbe_category",
-                        "sub_vendor",
-                        "sub_contract_reference_id"
+                        "subvendor",
+                        "subcontract_reference_id"
                     ]
                 },
                 "csv":{
@@ -605,8 +605,8 @@
                         "apt_pin":"brd_awd_no",
                         "document_code":"document_code@checkbook:ref_document_code",
                         "contract_industry":"industry_type_name",
-                        "sub_contract_reference_id":"sub_contract_id",
-                        "sub_vendor":"vendor_type",
+                        "subcontract_reference_id":"sub_contract_id",
+                        "subvendor":"vendor_type",
                         "associated_prime_vendor":"prime_vendor_name",
                         "mwbe_category":"minority_type_name"
                     },
@@ -633,8 +633,8 @@
                         "vendor_type",
                         "associated_prime_vendor",
                         "mwbe_category",
-                        "sub_vendor",
-                        "sub_contract_reference_id"
+                        "subvendor",
+                        "subcontract_reference_id"
                     ]
                 },
                 "csv":{

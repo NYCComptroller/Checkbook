@@ -92,7 +92,6 @@
     
     }
     
-    log_error($sql);
     $node->data  = _checkbook_project_execute_sql($sql);
 	    
 ",

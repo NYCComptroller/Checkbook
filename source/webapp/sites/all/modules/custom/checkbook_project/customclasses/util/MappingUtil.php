@@ -244,7 +244,8 @@ class MappingUtil {
     		case "spending":
     			
     			$table = "aggregateon_subven_spending_coa_entities";
-    			$urlParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"prime_vendor_id","category"=>"spending_category_id");
+    			$urlParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id",
+    					"vendor"=>"prime_vendor_id","category"=>"spending_category_id");
     			
     			$where_filters = array();
     			 
