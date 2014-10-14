@@ -22,7 +22,9 @@
                   "formatType": "amount"
              },  
              {
-                  "labelAlias": ""
+                  "labelAlias": "",
+                  "formatType": "padding",
+                  "sWidth":"350px"
              }          
         ]
 },
