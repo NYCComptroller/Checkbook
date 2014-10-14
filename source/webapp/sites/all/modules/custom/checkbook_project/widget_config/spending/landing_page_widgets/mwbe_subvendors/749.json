@@ -97,7 +97,7 @@
         }
     },
     "summaryView":{
-        "template":"spending_contract_summary",
+        "template":"spending_sub_contract_summary",
         "templateTitleEval":"
             $catName = RequestUtil::getSpendingCategoryName();
             return ('M/WBE Contracts ' . $catName . ' Transactions');
