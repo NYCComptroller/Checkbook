@@ -304,13 +304,13 @@
     <td>Other Government Entities</td>
     <td>Budget name. The user shall be able to search using budget name. The search will return all results that match the first three letters of the budget name.</td>
     <td><ul>
-            <li>Total Spending</li>
-            <li>Payroll Spending</li>
-            <li>Capital Spending</li>
-            <li>Contract Spending</li>
-            <li>Trust &amp; Agency Spending</li>
-            <li>Other Spending</li>
-        </ul>
+        <li>Total Spending</li>
+        <li>Payroll Spending</li>
+        <li>Capital Spending</li>
+        <li>Contract Spending</li>
+        <li>Trust &amp; Agency Spending</li>
+        <li>Other Spending</li>
+    </ul>
     </td>
     <td>FA - EDUCATIONAL  ALLIANCE RENOVATIONS</td>
 </tr>
@@ -322,13 +322,13 @@
     <td>Other Government Entities</td>
     <td></td>
     <td><ul>
-            <li>Total Spending</li>
-            <li>Payroll Spending</li>
-            <li>Capital Spending</li>
-            <li>Contract Spending</li>
-            <li>Trust &amp; Agency Spending</li>
-            <li>Other Spending</li>
-        </ul>
+        <li>Total Spending</li>
+        <li>Payroll Spending</li>
+        <li>Capital Spending</li>
+        <li>Contract Spending</li>
+        <li>Trust &amp; Agency Spending</li>
+        <li>Other Spending</li>
+    </ul>
     </td>
     <td>1</td>
 </tr>
@@ -340,13 +340,13 @@
     <td>Other Government Entities</td>
     <td>Identification code associated with OGE contract. The user would need to enter the contract number manually.</td>
     <td><ul>
-            <li>Total Spending</li>
-            <li>Payroll Spending</li>
-            <li>Capital Spending</li>
-            <li>Contract Spending</li>
-            <li>Trust &amp; Agency Spending</li>
-            <li>Other Spending</li>
-        </ul>
+        <li>Total Spending</li>
+        <li>Payroll Spending</li>
+        <li>Capital Spending</li>
+        <li>Contract Spending</li>
+        <li>Trust &amp; Agency Spending</li>
+        <li>Other Spending</li>
+    </ul>
     </td>
     <td>48440001</td>
 </tr>
@@ -358,15 +358,33 @@
     <td>Other Government Entities</td>
     <td>Identifies which government entities the user would want to search. Includes EDC and TDC.See here for other government entities codes.</td>
     <td><ul>
+        <li>Total Spending</li>
+        <li>Payroll Spending</li>
+        <li>Capital Spending</li>
+        <li>Contract Spending</li>
+        <li>Trust &amp; Agency Spending</li>
+        <li>Other Spending</li>
+    </ul>
+    </td>
+    <td>z81</td>
+</tr>
+<tr>
+    <td>mwbe_category</td>
+    <td>N</td>
+    <td>value</td>
+    <td>String- Maximum 2 characters</td>
+    <td>Citywide Agencies</td>
+    <td>User shall be able to extract data for specific mwbe categories, by specifying the mwbe category code in the request XML.For all m/wbe categories results, user need not give any m/wbe category codes in the request. By default, it shall display results for all categories.See here for mwbe categories list.For mwbe categories with two codes, include both the codes in the request xml. For example, for Asian american, give input as 4~5.</td>
+    <td>
+        <ul>
             <li>Total Spending</li>
-            <li>Payroll Spending</li>
             <li>Capital Spending</li>
             <li>Contract Spending</li>
             <li>Trust &amp; Agency Spending</li>
             <li>Other Spending</li>
         </ul>
     </td>
-    <td>z81</td>
+    <td>3</td>
 </tr>
 </tbody>
 </table>
@@ -376,45 +394,53 @@
 <p>User would be able to select which columns he would like to view in his output. Below mentioned are the possible column names for contracts domain (including OGE column names). The user should include the required column names in the request xml in an element called &lt;response_columns&gt;</p>
 <div class="api-center">
     <table>
-    <tbody>
+        <tbody>
         <tr>
             <td class="api-td-left"><table class="api-table">
-            <thead>
-            <tr>
-                <th  colspan="2">Response Column Names(Citywide)</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>agency</td>
-                <td>expense_category</td>
-            </tr>
-            <tr>
-                <td>fiscal_year</td>
-                <td>calendar_year</td>
-            </tr>
-            <tr>
-                <td>spending_category</td>
-                <td>contract_id</td>
-            </tr>
-            <tr>
-                <td>document_id</td>
-                <td>purpose</td>
-            </tr>
-            <tr>
-                <td>payee_name</td>
-                <td>issue_date</td>
-            </tr>
-            <tr>
-                <td>check_amount</td>
-                <td>capital_project</td>
-            </tr>
-            <tr>
-                <td>department</td>
-                <td>&nbsp;</td>
-            </tr>
-            </tbody>
-        </table></td>
+                <thead>
+                <tr>
+                    <th  colspan="2">Response Column Names(Citywide)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>agency</td>
+                    <td>expense_category</td>
+                </tr>
+                <tr>
+                    <td>fiscal_year</td>
+                    <td>calendar_year</td>
+                </tr>
+                <tr>
+                    <td>spending_category</td>
+                    <td>contract_id</td>
+                </tr>
+                <tr>
+                    <td>document_id</td>
+                    <td>purpose</td>
+                </tr>
+                <tr>
+                    <td>payee_name</td>
+                    <td>issue_date</td>
+                </tr>
+                <tr>
+                    <td>check_amount</td>
+                    <td>capital_project</td>
+                </tr>
+                <tr>
+                    <td>department</td>
+                    <td>mwbe_category</td>
+                </tr>
+                <tr>
+                    <td>subvendor</td>
+                    <td>associated_prime_vendor</td>
+                </tr>
+                <tr>
+                    <td>subcontract_reference_id</td>
+                    <td>&nbsp;</td>
+                </tr>
+                </tbody>
+            </table></td>
             <td class="api-td-right"><table class="api-table">
                 <thead>
                 <tr>
@@ -453,15 +479,15 @@
                 </tbody>
             </table></td>
         </tr>
-    </tbody>
-   </table>
+        </tbody>
+    </table>
 </div>
 <a href="#top" class="float-right">Back to the top</a>
 <a name="predefined-xml-entities"></a>
 <h3>Predefined Entities in XML</h3>
 <p>The user has to encode the names using the predefined entities list embedded below, while searching using names (payee_name, budget_name, vendor_name, and purpose). The table below lists the five XML predefined entities. The "Name" column mentions the entity's name. The "Character" column shows the character. To render the character, the format &name; is used; for example, &amp;amp; renders as &.</p>
 <table class="api-table">
-<tbody>
+    <tbody>
     <tr>
         <th>Name</th>
         <th>Character</th>
@@ -510,7 +536,7 @@
         <td>gilbane building&gt;</td>
         <td>gilbane building&amp;gt;</td>
     </tr>
-</tbody>
+    </tbody>
 </table>
 <a href="#top" class="float-right">Back to the top</a>
 <a name="sample-xml"></a>
@@ -566,6 +592,11 @@
             &lt;type&gt;value&lt;/type&gt;
             &lt;value&gt;o&lt;/value&gt;
         &lt;/criteria&gt;
+       &lt;criteria&gt;
+            &lt;name&gt;mwbe_category&lt;/name&gt;
+            &lt;type&gt;value&lt;/type&gt;
+            &lt;value&gt;3&lt;/value&gt;
+        &lt;/criteria&gt;
     &lt;/search_criteria&gt;
     &lt;response_columns&gt;
         &lt;column&gt;agency&lt;/column&gt;
@@ -579,6 +610,10 @@
         &lt;column&gt;capital_project&lt;/column&gt;
         &lt;column&gt;issue_date&lt;/column&gt;
         &lt;column&gt;spending_category&lt;/column&gt;
+        &lt;column&gt;mwbe_category&lt;/column&gt;
+        &lt;column&gt;subvendor&lt;/column&gt;
+        &lt;column&gt;associated_prime_vendor&lt;/column&gt;
+        &lt;column&gt;subcontract_reference_id&lt;/column&gt;
     &lt;/response_columns&gt;
 &lt;/request&gt;
 </pre>
@@ -633,6 +668,11 @@
                     &lt;type&gt;value&lt;/type&gt;
                     &lt;value&gt;o&lt;/value&gt;
                 &lt;/criteria&gt;
+              &lt;criteria&gt;
+                &lt;name&gt;mwbe_category&lt;/name&gt;
+                &lt;type&gt;value&lt;/type&gt;
+               &lt;value&gt;3&lt;/value&gt;
+            &lt;/criteria&gt;
             &lt;/search_criteria&gt;
             &lt;response_columns&gt;
                 &lt;column&gt;agency&lt;/column&gt;
@@ -646,6 +686,10 @@
                 &lt;column&gt;capital_project&lt;/column&gt;
                 &lt;column&gt;issue_date&lt;/column&gt;
                 &lt;column&gt;spending_category&lt;/column&gt;
+                &lt;column&gt;mwbe_category&lt;/column&gt;
+                &lt;column&gt;subvendor&lt;/column&gt;
+                &lt;column&gt;associated_prime_vendor&lt;/column&gt;
+                &lt;column&gt;subcontract_reference_id&lt;/column&gt;
             &lt;/response_columns&gt;
         &lt;/request&gt;
     &lt;/request_criteria&gt;
@@ -677,6 +721,10 @@
                 &lt;capital_project/&gt;
                 &lt;issue_date&gt;2012-10-01&lt;/issue_date&gt;
                 &lt;spending_category&gt;Others&lt;/spending_category&gt;
+                &lt;mwbe_category&gt;Hispanic American&lt;/mwbe_category&gt;
+                &lt;subvendor&gt;No&lt;/subvendor&gt;
+                &lt;associated_prime_vendor&gt;N/A&lt;/associated_prime_vendor&gt;
+                &lt;subcontract_reference_id/&gt;
             &lt;/transaction&gt;
         &lt;/spending_transactions&gt;
     &lt;/result_records&gt;
@@ -766,7 +814,7 @@
 </pre>
 <a href="#top" class="float-right">Back to the top</a>
 <h3 class="title">Sample Response: Spending Transactions (Other Government Entities)</h3>
- <pre>&lt;response&gt;
+<pre>&lt;response&gt;
     &lt;status&gt;
        &lt;result&gt;success&lt;/result&gt;
     &lt;/status&gt;
@@ -874,9 +922,9 @@
  </pre>
 <a href="#top" class="float-right">Back to the top</a>
 <h3 class="title">Status Codes and Messages</h3>
-   <p>Status messages are categorized and displayed as status codes with short description for the user to understand the cause of the error. In case of an error no result records will be displayed and the error message will be displayed inside the &lt;message&gt; XML element as shown below. See here for <a href="#" class="status-codes">list of Status codes and Messages</a>.</p>
+<p>Status messages are categorized and displayed as status codes with short description for the user to understand the cause of the error. In case of an error no result records will be displayed and the error message will be displayed inside the &lt;message&gt; XML element as shown below. See here for <a href="#" class="status-codes">list of Status codes and Messages</a>.</p>
 
-       Example:
+Example:
 •	Result is Success <pre>
 &lt;status&gt;
        &lt;result&gt;success&lt;/result&gt;
