@@ -271,6 +271,7 @@ class SpendingUtil{
                 break;
             case "P":
                 $dashboard = isset($dashboard) ? $dashboard : ($is_mwbe_certified ? "mp" : null);
+//                $dashboard = $is_mwbe_certified ? (isset($dashboard) ? $dashboard : "mp") : null;
                 $mwbe = $is_mwbe_certified ? (isset($mwbe) ? $mwbe : "2~3~4~5~9") : null;
                 break;
         }
@@ -347,14 +348,8 @@ class SpendingUtil{
      */
     static function getVendorAmountLinkUrl($node, $row){
         //vendor_amount_link
-        return '/panel_html/spending_transactions/spending/transactions'
-        . _checkbook_project_get_url_param_string("agency")
-        . '/vendor/'. $row["vendor_vendor"]
-        . _checkbook_project_get_url_param_string("category")
-        . _checkbook_project_get_url_param_string("industry")
-        . _checkbook_project_get_year_url_param_string(false,false,true)
-        . '/smnid/' . $node->nid
-        . _checkbook_append_url_params();
+        $custom_params = array('vendor'=>isset($row["vendor_vendor"]) ? $row["vendor_vendor"] : $row["prime_vendor_prime_vendor"]);
+        return '/' . self::getSpendingTransactionPageUrl($custom_params). '/smnid/' . $node->nid;
     }
 
     /**
@@ -461,15 +456,8 @@ class SpendingUtil{
      * @return string
      */
     static function getIndustryYtdSpendingLinkUrl($node, $row){
-        //ytd_spending_link
-        return '/panel_html/spending_transactions/spending/transactions'
-        .  _checkbook_project_get_year_url_param_string(false,false,true)
-        . '/smnid/' . $node->nid
-        . _checkbook_project_get_url_param_string("vendor")
-        . _checkbook_project_get_url_param_string("category")
-        . _checkbook_project_get_url_param_string("agency")
-        . '/industry/'. $row['industry_industry_industry_type_id']
-        . _checkbook_append_url_params();
+        $custom_params = array('industry'=>isset($row['industry_industry_industry_type_id']) ? $row['industry_industry_industry_type_id'] : $row['industry_type_industry_type']);
+        return '/' . self::getSpendingTransactionPageUrl($custom_params). '/smnid/' . $node->nid;
     }
 
     /**
@@ -480,13 +468,7 @@ class SpendingUtil{
      * @return string
      */
     static function getSubVendorYtdSpendingUrl($node, $row){
-        $custom_params = null;
-
-        if(isset($row['agency_agency']))
-            $custom_params = array('agency'=>$row['agency_agency']);
-        else if(isset($row['sub_vendor_sub_vendor']))
-            $custom_params = array('subvendor'=>$row['sub_vendor_sub_vendor']);
-
+        $custom_params = array('subvendor'=>$row['sub_vendor_sub_vendor']);
         return '/' . self::getSpendingTransactionPageUrl($custom_params). '/smnid/' . $node->nid;
     }
     /**
