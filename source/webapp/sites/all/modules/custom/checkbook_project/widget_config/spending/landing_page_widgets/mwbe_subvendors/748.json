@@ -41,7 +41,8 @@
         "total_sub_contracts",
         "ytd_spending_sub_vendors",
         "year.year",
-        "agency.agency"
+        "agency.agency",
+        "check_amount_sum"
     ],
     "enableExpand":true,
     "disableViewAll":true,
@@ -99,12 +100,22 @@
             "ytd_spending_sub_vendors_link":{
                 "type":"expression2",
                 "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getSubVendorYtdSpendingUrl($node,$row) . '\">' . custom_number_formatter_format($row['ytd_spending_sub_vendors'],2,'$') . '</a>'"
+            },
+            "formatted_check_amount_sum": {
+                "type": "expression2",
+                "expression": "custom_number_formatter_format($row['check_amount_sum'],2,'$')"
             }
+    },
+    "summaryView":{
+        "template":"spending_sub_vendor_summary",
+        "templateTitleEval":"
+        $catName = RequestUtil::getSpendingCategoryName();
+        return ('M/WBE Sub Vendors ' . $catName . ' Transactions');
+    "
     },
     "WidgetTitleEval":"
         $catName = RequestUtil::getSpendingCategoryName();
-        $title = _checkbook_check_is_sub_vendor_page() ? 'Sub Vendors ' : '';
-        return ($title . 'Checks ' . $catName . ' Transactions');
+        return ('M/WBE Sub Vendors ' . $catName . ' Transactions');
     ",
     "table_columns": [
             {"labelAlias":"sub_vendor_name","column":"sub_vendor_name_link2","sortSourceColumn":"sub_vendor.sub_vendor"},
