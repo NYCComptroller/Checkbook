@@ -145,39 +145,26 @@ if(!preg_match('/smnid/',$_GET['q']) && (
 	$mwbeclass = ' ';
 }
 
-if($mwbe_amount  == 0){
-	$mwbeclass = '';
+if($mwbe_amount  == 0){	
 	$mwbe_link = l('<div><span class="nav-title">' . RequestUtil::getDashboardTopNavTitle("mwbe") . '</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div>','',$options_disabled);
 }else{	
-	if(preg_match('/\/vendor/',$_GET['q'])  ){
-		$mwbeclass = ' active';		
-	}
 	$mwbe_link = l('<div><span class="nav-title">' . RequestUtil::getDashboardTopNavTitle("mwbe") . '</span><br>&nbsp;'. custom_number_formatter_format($mwbe_amount ,1,'$') . '</div>',$mwbe_active_domain_link,$options);
 }
 
 
-if($svendor_amount  == 0){
-	$svclass = '';
+if($svendor_amount  == 0){	
 	$subvendors_link = l('<div><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div>','',$options_disabled);	
 }else{
-	if(preg_match('/\/vendor/',$_GET['q'])  ){
-		$svclass = ' active';
-	}
 	$subvendors_link = l('<div><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format($svendor_amount ,1,'$') . '</div>',$svendor_active_domain_link ,$options);
 }
 
 $featured_dashboard = _getRequestParamValue("dashboard");
 if($featured_dashboard != null){
-	if($mwbe_amount  == 0){
-		$mwbeclass = '';
-	}else{
-		$mwbeclass = ' active';
-	}
-	if($svendor_amount  == 0){
-		$svclass = '';
-	}else{
-		$svclass = ' active';
-	}
+	$mwbeclass = ' active';
+	$svclass = ' active';	
+}else{
+	$mwbeclass = '';
+	$svclass = '';
 }
 
  
