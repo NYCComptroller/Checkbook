@@ -72,11 +72,20 @@ foreach ($spending_parameter_mapping as $key=>$title){
     $value = custom_number_formatter_format($value, 2 , '$');
   }
   if($key == 'contract_number' &&  $spending_results['agreement_id']){
-    $value = "<a class=\"new_window\" href=\"/contract_details"
-      . (($IsOge)?'/datasource/checkbook_oge' :'')
-      . _checkbook_project_get_contract_url($value, $spending_results['agreement_id']) . '/newwindow\">'
-      . $value . "</a>";
+      if($spending_results['is_prime_or_sub'] == 'Yes'){
+          $value = "<a class=\"new_window\" href=\"/contract_details"
+              . (($IsOge)?'/datasource/checkbook_oge' :'')
+              . _checkbook_project_get_contract_url($value, $spending_results['contract_original_agreement_id']) . '/newwindow\">'
+              . $value . "</a>";
+      }
+      else{
+          $value = "<a class=\"new_window\" href=\"/contract_details"
+              . (($IsOge)?'/datasource/checkbook_oge' :'')
+              . _checkbook_project_get_contract_url($value, $spending_results['agreement_id']) . '/newwindow\">'
+              . $value . "</a>";
+      }
   }
+
   if($key == "vendor_name" && !$spending_results["vendor_id"]){
     $value = $spending_results["vendor_name"];
   }

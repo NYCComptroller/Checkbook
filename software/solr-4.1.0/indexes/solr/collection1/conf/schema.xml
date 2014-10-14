@@ -110,6 +110,8 @@
         <field name="is_minority_vendor" type="string_custom" indexed="true" stored="true"/>
         <field name="vendor_type" type="string_custom" indexed="true" stored="true"/>
         <field name="prime_vendor_name" type="string_custom" indexed="true" stored="true"/>
+        <field name="contract_original_agreement_id" type="string_custom" indexed="true" stored="true"/>
+
 
         <!--
             Checkbook 2.0
