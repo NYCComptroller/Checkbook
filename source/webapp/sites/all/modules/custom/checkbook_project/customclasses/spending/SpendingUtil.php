@@ -266,8 +266,8 @@ class SpendingUtil{
 
         switch($is_prime_or_sub) {
             case "S":
-                $dashboard = isset($dashboard) ? $dashboard : ($is_mwbe_certified ? "ms" : "ss");
-                $mwbe = $is_mwbe_certified ? (isset($mwbe) ? $mwbe : "2~3~4~5~9") : null;
+                $dashboard = isset($dashboard) ? $dashboard : "ss";
+                $mwbe = null;
                 break;
             case "P":
                 $dashboard = isset($dashboard) ? $dashboard : ($is_mwbe_certified ? "mp" : null);
