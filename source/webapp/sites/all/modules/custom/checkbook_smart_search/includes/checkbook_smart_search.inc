@@ -932,6 +932,7 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
 						"spending_budget_name" => "Budget Name",
                         "minority_type_name" => "M/WBE Category",
                         "is_prime_or_sub" => "Sub Vendor",
+                        "prime_vendor_name" => "Associated Prime Vendor",
 						"" => "",);
 			break;
 		case "contracts":
@@ -960,6 +961,7 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
 						"contract_budget_name" => "Budget Name",
                         "minority_type_name" => "M/WBE Category",
                         "is_prime_or_sub" => "Sub Vendor",
+                        "prime_vendor_name" => "Associated Prime Vendor",
 				);		
 
 			break;
