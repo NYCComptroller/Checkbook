@@ -138,7 +138,9 @@
         </entity>
         <entity dataSource="db1" name="spending"
                 pk="id"
-                deletedPkQuery="select 'spending:' || agency_id || ':' || disbursement_line_item_id id from disbursement_line_item_deleted where job_id >= ${dataimporter.request.jobID}"
+                deletedPkQuery="select 'spending:' || agency_id || ':' || disbursement_line_item_id id from disbursement_line_item_deleted where job_id >= ${dataimporter.request.jobID}
+                                UNION
+                                select 'spending:' || agency_id || ':' || disbursement_line_item_id id from subcontract_spending_deleted where job_id >= ${dataimporter.request.jobID}"
                 query="select
 				'spending:' || agency_id || ':' || disbursement_line_item_id id,
 				'spending' domain1,
@@ -199,7 +201,7 @@
 			 left join ref_spending_category rsc on rsc.spending_category_id = adt.spending_category_id
 			 where 
 			'${dataimporter.request.clean}' != 'false'
-      			OR adt.job_id >= ${dataimporter.request.jobID} 
+      			OR adt.job_id >= ${dataimporter.request.jobID}
 			">
             <field column="id" name="id" />
             <field column="domain1" name="domain" />
@@ -428,7 +430,10 @@
         </entity>
         <entity dataSource="db1" name="contracts" transformer="RegexTransformer"
                 pk="id"
-                deletedPkQuery="select 'contracts:'|| agreement_id id from agreement_snapshot_deleted where job_id >= ${dataimporter.request.jobID} "
+                deletedPkQuery="select 'contracts:'|| agreement_id id from agreement_snapshot_deleted where job_id >= ${dataimporter.request.jobID}
+                                UNION
+                                select 'contracts:'|| agreement_id id from sub_agreement_snapshot_deleted where job_id >= ${dataimporter.request.jobID}
+                               "
                 query="
 				select
                 'contracts:' || agreement_id id,
