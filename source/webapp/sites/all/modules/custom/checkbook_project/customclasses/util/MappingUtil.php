@@ -245,7 +245,7 @@ class MappingUtil {
     			
     			$table = "aggregateon_subven_spending_coa_entities";
     			$urlParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id",
-    					"subvendor"=>"vendor_id","vendor"=>"prime_vendor_id","category"=>"spending_category_id");
+    					"vendor"=>"prime_vendor_id","category"=>"spending_category_id");
     			
     			$where_filters = array();
     			 
@@ -274,7 +274,7 @@ class MappingUtil {
     		
     			$table = "aggregateon_subven_contracts_cumulative_spending";
     			$urlParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","awdmethod"=>"award_method_id","vendor"=>"prime_vendor_id",
-    						"subvendor"=>"vendor_id","status"=>"status_flag","csize"=>"award_size_id","cindustry"=>"industry_type_id");
+    						"status"=>"status_flag","csize"=>"award_size_id","cindustry"=>"industry_type_id");
     				
     			$where_filters = array();
     			foreach($urlParamMap as $param=>$value){
