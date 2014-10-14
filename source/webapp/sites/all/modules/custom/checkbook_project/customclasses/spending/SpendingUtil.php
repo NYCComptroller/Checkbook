@@ -212,7 +212,6 @@ class SpendingUtil{
 
         $year_id = _getRequestParamValue("year");
         $year_type = _getRequestParamValue("yeartype");
-        $dashboard = _getRequestParamValue("dashboard");
         $agency_id = _getRequestParamValue("agency_id");
         $vendor_id = isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["prime_vendor_prime_vendor"];
         if(!isset($vendor_id)) {
@@ -262,16 +261,16 @@ class SpendingUtil{
      * @return string
      */
     static function getVendorPageUrl($vendor_id, $is_mwbe_certified, $is_prime_or_sub){
-        $dashboard = null;
         $mwbe = _getRequestParamValue("mwbe");
+        $dashboard = _getRequestParamValue("dashboard");
 
         switch($is_prime_or_sub) {
             case "S":
-                $dashboard = $is_mwbe_certified ? "ms" : "ss";
+                $dashboard = isset($dashboard) ? $dashboard : ($is_mwbe_certified ? "ms" : "ss");
                 $mwbe = $is_mwbe_certified ? (isset($mwbe) ? $mwbe : "2~3~4~5~9") : null;
                 break;
             case "P":
-                $dashboard = $is_mwbe_certified ? "mp" : null;
+                $dashboard = isset($dashboard) ? $dashboard : ($is_mwbe_certified ? "mp" : null);
                 $mwbe = $is_mwbe_certified ? (isset($mwbe) ? $mwbe : "2~3~4~5~9") : null;
                 break;
         }

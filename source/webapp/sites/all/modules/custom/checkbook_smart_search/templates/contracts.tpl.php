@@ -55,13 +55,17 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
         $contract_Id_link = "/contracts_revenue_landing/status/" .$status;
     }
 
-    $contract_Id_link .= _checkbook_project_get_year_url_param_string(). (($IsOge) ? '/datasource/checkbook_oge/agency/'.$contracts_results['oge_agency_id'] : '') ."?expandBottomContURL=/panel_html/contract_transactions/"."/contract_details";
+    $contract_Id_link .= _checkbook_project_get_year_url_param_string(). (($IsOge) ? '/datasource/checkbook_oge/agency/'.$contracts_results['oge_agency_id'] : '') ."/dashboard/ss?expandBottomContURL=/panel_html/contract_transactions/"."/contract_details";
     if($contracts_results['document_code'] == 'MA1' || $contracts_results['document_code'] == 'MMA1' || $contracts_results['document_code'] == 'RCT1'){
         $contract_Id_link .= "/magid/".$contracts_results['original_agreement_id']."/doctype/".$contracts_results["document_code"];
     }else{
     	$master_contract_Id_link = $contract_Id_link . "/magid/".$contracts_results['master_agreement_id']."/doctype/MMA1";
-    	$contract_Id_link .= "/agid/".$contracts_results['original_agreement_id']."/doctype/".$contracts_results["document_code"];
-        
+        if($contracts_results['is_prime_or_sub'] == 'Yes'){
+            $contract_Id_link .= "/agid/".$contracts_results['contract_original_agreement_id']."/doctype/".$contracts_results["document_code"];
+        }
+        else{
+            $contract_Id_link .= "/agid/".$contracts_results['original_agreement_id']."/doctype/".$contracts_results["document_code"];
+        }
     }
     $contract_Id_link = ($IsOge) ? $contract_Id_link.'/datasource/checkbook_oge' : $contract_Id_link;
 
@@ -171,18 +175,13 @@ foreach ($contracts_parameter_mapping as $key => $title){
       if($id == '4' || $id == '5'){
           $id = '4~5';
       }
-      $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". _getFiscalYearID() ."/mwbe/".$id ."'>" .$contracts_results["minority_type_name"] ."</a>";
+      if($id == '7' || $id == '11'){
+        $value = $contracts_results["minority_type_name"];
+      }
+      else{
+        $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". _getFiscalYearID() ."/mwbe/".$id ."'>" .$contracts_results["minority_type_name"] ."</a>";
+      }
   }
-//  if($key == 'is_prime_or_sub' && $contracts_results["is_prime_or_sub"] == 'P' ){
-//      $value = 'No';
-//  }
-//  if($key == 'is_prime_or_sub' && $contracts_results["is_prime_or_sub"] == 'S' ){
-//      $value = 'Yes';
-//  }
-//  if($key == 'prime_vendor_name' && $contracts_results["is_prime_or_sub"] == 'P' ){
-//      $value = 'N/A';
-//  }
-
   if ($count % 2 == 0){
     if($title)
         $row[] = '<div class="field-label">'.$title.':</div><div class="field-content">'. $value .'</div>';
