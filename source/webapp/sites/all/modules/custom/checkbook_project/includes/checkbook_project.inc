@@ -1633,3 +1633,15 @@ function _get_toggle_view_links(){
     }
     return null;
 }
+
+function _is_mwbe_vendor($vendor_id, $year_id, $yeartype){
+    $query1="SELECT minority_type_id FROM contract_vendor_latest_mwbe_category WHERE vendor_id =".$vendor_id." AND agency_id IS NULL AND year_id = ".$year_id." AND type_of_year = '".$yeartype."' AND minority_type_id NOT IN (7,11) LIMIT 1";
+    $results1 = _checkbook_project_execute_sql_by_data_source($query1,_get_default_datasource());
+    $res = $results1;
+    if($res[0]['minority_type_id'] != ''){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
