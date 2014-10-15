@@ -24,21 +24,21 @@ $spending_parameter_mapping = _checkbook_smart_search_domain_fields('spending', 
 
 if($IsOge)
     $linkable_fields = array(
-        "oge_agency_name" => "/spending_landing/category/".$spending_results['spending_category_id'].'/datasource/checkbook_oge'."/year/" . _getCurrentYearID() . "/yeartype/B/agency/".$spending_results["agency_id"],
-        "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id'].'/datasource/checkbook_oge'.  '/agency/' . $spending_results['agency_id'] . "/year/" . _getCurrentYearID() . "/yeartype/B/vendor/".$spending_results["vendor_id"],
+        "oge_agency_name" => "/spending_landing/category/".$spending_results['spending_category_id'].'/datasource/checkbook_oge'."/year/" . _getFiscalYearID() . "/yeartype/B/agency/".$spending_results["agency_id"],
+        "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id'].'/datasource/checkbook_oge'.  '/agency/' . $spending_results['agency_id'] . "/year/" . _getFiscalYearID() . "/yeartype/B/vendor/".$spending_results["vendor_id"],
     );
 else
 {
     if($spending_results['is_prime_or_sub'] == 'Yes'){
         $linkable_fields = array(
-            "agency_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getCurrentYearID() . "/yeartype/B/agency/".$spending_results["agency_id"],
-            "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getCurrentYearID() . "/yeartype/B/subvendor/".$spending_results["vendor_id"],
+            "agency_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getFiscalYearID() . "/yeartype/B/agency/".$spending_results["agency_id"],
+            "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getFiscalYearID() . "/yeartype/B/subvendor/".$spending_results["vendor_id"]."/dashboard/ss",
         );
     }
     else{
         $linkable_fields = array(
-            "agency_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getCurrentYearID() . "/yeartype/B/agency/".$spending_results["agency_id"],
-            "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getCurrentYearID() . "/yeartype/B/vendor/".$spending_results["vendor_id"],
+            "agency_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getFiscalYearID() . "/yeartype/B/agency/".$spending_results["agency_id"],
+            "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getFiscalYearID() . "/yeartype/B/vendor/".$spending_results["vendor_id"],
         );
     }
 

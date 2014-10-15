@@ -976,6 +976,7 @@ span.grid_export, span.exportSmartSearch {
 }
 
 .panel-panel.grid-12 .bottom-nav-container.panel-pane.pane-node,
+.panel-panel.grid-12 .bottom-nav-container.panel-pane.pane-custom,
 .pane-contracts-cta-history,
 .float-clear{
     float:left;
