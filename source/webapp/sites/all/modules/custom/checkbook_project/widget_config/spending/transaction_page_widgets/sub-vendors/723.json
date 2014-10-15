@@ -137,11 +137,11 @@
         },
         "mwbe_category_name": {
             "type":"expression2",
-            "expression":"MappingUtil::getMinorityCategoryById($row[minority_type_id])"
+            "expression":"MappingUtil::getMinorityCategoryById($row['minority_type_id'])"
         },
         "mwbe_category_name_link": {
             "type": "expression2",
-            "expression": " RequestUtil::isNewWindow() ? $row[mwbe_category_name]  : ('<a href=' . SpendingUtil::getMWBECategoryLinkUrl($node, $row) . '>'. $row[mwbe_category_name] .'</a>') "
+            "expression": " RequestUtil::isNewWindow() || !MappingUtil::isMWBECertified(array($row['minority_type_id'])) ? $row[mwbe_category_name]  : ('<a href=' . SpendingUtil::getMWBECategoryLinkUrl($node, $row) . '>'. $row[mwbe_category_name] .'</a>') "
         }
     },
     "table_columns": [
