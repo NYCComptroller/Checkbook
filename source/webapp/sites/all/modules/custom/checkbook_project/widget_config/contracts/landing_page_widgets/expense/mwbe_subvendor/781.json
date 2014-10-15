@@ -3,7 +3,7 @@
     "widgetSubType":"ajaxSimple",
     "no_results_content":"No Results Found",
     "getTotalDataCount":true,
-    "defaultParameters":{"type_of_year":"B","document_code.document_code.document_code":"CTA1~CT1","status_flag":"A"},
+    "defaultParameters":{"type_of_year":"B","document_code.document_code.document_code":"CTA1~CT1","status_flag":"A","minority_type_id":"2~3~4~5~9"},
     "cleanURLParameters":["subvendor","mwbe","year","calyear","agency","yeartype","vendor","status","agid","cagency","cvendor",
         "csize","cindustry","awdmethod"],
     "urlParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id",
