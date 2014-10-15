@@ -508,6 +508,11 @@ function _checkbook_project_get_name_for_argument($keyword,$id){
             $sub_vendors = _checkbook_project_querydataset('checkbook:sub_vendor',array('vendor_id','legal_name'),array($keyword=>$id));
             return htmlentities(ucwords(strtolower($sub_vendors[0]['legal_name'])));
             break;
+        case "minority_type_id":
+            $keyword = "minority_type_id";
+            $mwbe = _checkbook_project_querydataset('checkbook:minority_type',array('minority_type_id','minority_type_name'),array($keyword=>$id));
+            return htmlentities(ucwords(strtolower($mwbe[0]['minority_type_name'])));
+            break;
 
 		default:
 			return $id;
