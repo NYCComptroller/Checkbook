@@ -162,11 +162,14 @@ class MappingUtil {
     		}    		
     	}
 */		
-  		$filters_html .=  "
-  			<li class='no-click'><a href='/" . RequestUtil::getLandingPageUrl($domain) . "/mwbe/2~3~4~5~9" .$mwbe_featured_dashboard_param   			
+    	if(RequestUtil::showTotalMWBELink()){
+    		$mwbe_total_link_html  ="<li class='no-click'><a href='/" . RequestUtil::getLandingPageUrl($domain) . "/mwbe/2~3~4~5~9/dashboard/mp"   			
 																	  			.	_checkbook_project_get_url_param_string("agency")
 																	  			. _checkbook_project_get_url_param_string("vendor")  .
-															  				"'>Total M/WBE</a></li>
+															  				"'>Total M/WBE</a></li>";
+    	}
+  		$filters_html .=  "
+  			 " . $mwbe_total_link_html . "
 			<li class='no-click'><a href='/" . RequestUtil::getLandingPageUrl($domain) . "/mwbe/2~3~4~5~9/dashboard/mp'>M/WBE Home</a></li>  					
   				</ul>
   		</div>";

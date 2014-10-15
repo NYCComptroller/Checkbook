@@ -31,8 +31,8 @@
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B"},
 "cleanURLParameters":["yeartype","agency","vendor","category","year"],
-"urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"vendor_id","category":"spending_category_id"},
-"urlParamMapSubVendor":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","category":"spending_category_id"},
+"urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","category":"spending_category_id"},
+"urlParamMapSubVendor":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"vendor_id","category":"spending_category_id"},
 "chartTitle":"Top Ten Agencies by M/WBE Spending",
 "widgetDataLoader":"
 
@@ -145,6 +145,7 @@
 			}
 	);
 	$node->data_merged =  $merged_array;
+
 	
 ",
 "widgetUpdateJSONConfig":"
