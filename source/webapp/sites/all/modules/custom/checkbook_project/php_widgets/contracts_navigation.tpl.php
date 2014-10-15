@@ -120,12 +120,15 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 	
 	$mwbe_featured_dashboard_param = RequestUtil::getNextMWBEDashboardState();
 	$svendor_featured_dashboard_param = RequestUtil::getNextSubvendorDashboardState();
-	$svendor_filters =  "<div class='main-nav-drop-down' style='display:none'>
-			<ul>
-				<li class='no-click'><a href='/" . $sub_vendors_home_link  
+	if(RequestUtil::showTotalSubvendorsLink()){
+		$subvendor_total_link_html = "<li class='no-click'><a href='/" . $sub_vendors_home_link  
 															.	_checkbook_project_get_url_param_string("agency")  
 															. _checkbook_project_get_url_param_string("vendor")  .
-															"/dashboard/ss'>Total Sub Vendors</a></li>
+															"/dashboard/ss'>Total Sub Vendors</a></li>";
+	}
+	$svendor_filters =  "<div class='main-nav-drop-down' style='display:none'>
+			<ul>
+				" . $subvendor_total_link_html . "
   				<li class='no-click'><a href='/" . $sub_vendors_home_link . "/dashboard/ss'>Sub Vendors Home</a></li>
 			</ul>
   		</div>
@@ -217,7 +220,6 @@ if(preg_match('/mwbe/',$_GET['q']) && preg_match('/subvendor/',$_GET['q']) ){
 
 
 //TODO: remove placeholder &nbsp; when numbers under each domain are active
-
 
 ?>
 <div class="top-navigation-left">

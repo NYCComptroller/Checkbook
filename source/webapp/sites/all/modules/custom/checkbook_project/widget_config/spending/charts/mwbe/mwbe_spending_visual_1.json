@@ -13,7 +13,7 @@ if(SpendingUtil::_show_mwbe_custom_legend()){
 echo '<div class=\"chart-right\">
         <div class=\"wrap\">
     		<div class=\"number\"><span>' . $node->mwbe_share_percent . '</span></div>
-    		<div class=\"text\"><span>' . MappingUtil::getCurrenEhtnicityName() . ' Share</span></div>
+    		<div class=\"text\"><span>M/WBE Share</span></div>
         </div>'
       . $nyc_legend_html .  
 	 '</div>';
