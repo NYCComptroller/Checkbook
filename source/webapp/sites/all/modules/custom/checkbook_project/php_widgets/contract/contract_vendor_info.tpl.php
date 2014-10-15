@@ -145,7 +145,7 @@ $total_current_amount = $res->data[0]['total_current_amt'];
 $total_original_amount = $res->data[0]['total_original_amt'];
 $total_spent_todate = $res->data[0]['total_spent_todate'];
 ?>
-
+<?php if(!_getRequestParamValue("datasource") == "checkbook_oge"){?>
 <div class="dollar-amounts">
     <h4>
         Sub Vendor Information
@@ -171,5 +171,6 @@ $total_spent_todate = $res->data[0]['total_spent_todate'];
         </div>
     </div>
 </div>
+<?php } ?>
 </div>
 
