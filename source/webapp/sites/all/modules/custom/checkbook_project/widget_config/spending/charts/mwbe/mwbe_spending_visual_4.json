@@ -119,7 +119,6 @@
         group by  agency_name,a1.agency_id order by agency_name
     ';
     
-    log_error($sql);
     
     $node->data  = _checkbook_project_execute_sql($sql);
     
@@ -160,7 +159,7 @@
 	   ' . $where_filter2 . '
 	        group by  agency_name,a1.agency_id  order by agency_name
 	    ';
-	
+
 		$node->data_sub_ven  = _checkbook_project_execute_sql($sql2);
 	}
 	
@@ -193,7 +192,9 @@
 			}
 	);
 	
+	
 	$node->data_merged =  $merged_array;
+	
 	
 ",
 "widgetUpdateJSONConfig":"
