@@ -820,6 +820,7 @@ class RequestUtil{
     			}
     			break;
     		case "subvendor":
+    			
     			if(_getRequestParamValue("dashboard") != null){    				
     				$url = preg_replace('/\/dashboard\/[^\/]*/','',$url);    				   				    				    				
     			}
@@ -888,7 +889,7 @@ class RequestUtil{
     
     static function isContractsSpendingLandingPage(){
     	$first_part = preg_replace('/\/.*/',''   ,$_GET['q']);	
-    	if(in_array($contracts_spending_landing_links,$first_part)){
+    	if(in_array($first_part,self::$contracts_spending_landing_links)){
     		return true;
     	}else{
     		return false;
