@@ -76,9 +76,12 @@ $maximum_contract_amount =  ( _getRequestParamValue("datasource") == "checkbook_
   </div>
   <div class="dollar-amounts">
     <div class="spent-to-date">
+      <?php if(!preg_match('/newwindow/',$_GET['q'])){ ?>
       <a <?php echo $newwindowclass ?>
          href="<?php echo $spending_link; ?>"><?php echo custom_number_formatter_format($node->spent_amount, 2, "$");?></a>
-
+     <?php } else { ?>
+        <?php echo custom_number_formatter_format($node->spent_amount, 2, "$");?>
+        <?php } ?>
       <div class="amount-title">Spent
         to Date
       </div>

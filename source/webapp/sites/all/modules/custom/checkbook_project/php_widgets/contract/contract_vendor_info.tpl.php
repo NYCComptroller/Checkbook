@@ -123,9 +123,12 @@ $total_subvendor_count = $res->data[0]['sub_vendor_count'];
     <li><span class="gi-list-item">Total Number of Sub Vendors:</span> <?php echo $total_subvendor_count; ?></li>
 <?php if( _get_current_datasource() == "checkbook" ){?>    
     <li><span class="gi-list-item">M/WBE Vendor:</span> <?php echo $node->data[0]['mwbe_vendor'] ;?></li>
-    
+<?php if(!preg_match('/newwindow/',$_GET['q'])){ ?>
     <li><span class="gi-list-item">M/WBE Category:</span> <a href="/contracts_landing/status/A/yeartype/B/year/<?php echo _getFiscalYearID();?>/mwbe/<?php echo $minority_type_id; ?>/dashboard/mp"><?php echo $ethnicity ;?></a></li>
-<?php }?>    
+<?php } else { ?>
+<li><span class="gi-list-item">M/WBE Category: </span><?php echo  $ethnicity ;?></li>
+     <?php }
+} ?>
 </ul>
 <?php
 
@@ -147,7 +150,12 @@ $total_spent_todate = $res->data[0]['total_spent_todate'];
     <h4>
         Sub Vendor Information
     </h4>
-    <div class="spent-to-date"><a target="_blank" href="/contract/spending/transactions/agid/<?php echo $ag_id; ?>/status/A/subvendor/all/dashboard/ss/yeartype/C/year/<?php echo _getCurrentYearID();?>/syear/<?php echo _getCurrentYearID();?>/smnid/721/newwindow"><?php echo custom_number_formatter_format($total_spent_todate, 2, "$");?></a>
+    <div class="spent-to-date">
+        <?php if(!preg_match('/newwindow/',$_GET['q'])){ ?>
+        <a target="_blank" href="/contract/spending/transactions/agid/<?php echo $ag_id; ?>/status/A/subvendor/all/dashboard/ss/yeartype/C/year/<?php echo _getCurrentYearID();?>/syear/<?php echo _getCurrentYearID();?>/smnid/721/newwindow"><?php echo custom_number_formatter_format($total_spent_todate, 2, "$");?></a>
+        <?php } else {
+            echo custom_number_formatter_format($total_spent_todate, 2, "$");?>
+        <?php } ?>
         <div class="amount-title">Total Spent
             to Date
         </div>
