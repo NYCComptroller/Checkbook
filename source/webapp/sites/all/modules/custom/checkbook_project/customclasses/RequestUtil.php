@@ -895,4 +895,112 @@ class RequestUtil{
     		return false;
     	}
     }
+    
+    static function showTotalSubvendorsLink(){
+    	if(preg_match('/contracts/',$_GET['q'])){
+    		$domain = "contracts";
+    	}else{
+    		$domain = "spending";
+    	}
+    	
+    	switch($domain){
+    		case "spending":
+    			$table = "aggregateon_subven_spending_coa_entities";
+    			$urlParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"prime_vendor_id");
+    			break;
+    		case "contracts":
+    			$table = "aggregateon_subven_contracts_cumulative_spending";
+    			$urlParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","vendor"=>"prime_vendor_id");
+    			$default_params = array("status_flag"=>"A");
+    			break;
+    	}
+    	$where_filters = array();
+    	 
+    	foreach($urlParamMap as $param=>$value){
+    		if(_getRequestParamValue($param) != null){
+    			$where_filters[] = _widget_build_sql_condition(' a1.' . $value, _getRequestParamValue($param));
+    		}
+    	}
+    	 
+    	foreach($default_params as $param=>$value){
+    		if(_getRequestParamValue($param) != null){
+    			$where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
+    		}
+    	}
+    	 
+    	 
+    	$where_filter = ' where ' . implode(' and ' , $where_filters) ;
+    	 
+    	 
+    	
+    	 
+    	$sql = 'select count(*) count
+				    from ' . $table. ' a1
+				   ' . $where_filter
+    					    
+    					   ;
+    					    
+    					   $data = _checkbook_project_execute_sql($sql);
+    					   if($data[0]['count'] > 1){
+    					   	return true;
+    					   }else{
+    					   	return false;
+    					   }
+    					    
+    	
+    }
+    
+    static function showTotalMWBELink(){
+    	if(preg_match('/contracts/',$_GET['q'])){
+    		$domain = "contracts";
+    	}else{
+    		$domain = "spending";
+    	}
+    	 
+    	switch($domain){
+    		case "spending":    	
+    			$table = "aggregateon_mwbe_spending_coa_entities";
+    			$urlParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"vendor_id");
+    			break;
+    		case "contracts":
+    			$table = "aggregateon_mwbe_contracts_cumulative_spending";
+    			$urlParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","vendor"=>"vendor_id");    
+    			$default_params = array("status_flag"=>"A");
+    			break;
+    	}
+    	$where_filters = array();
+    	
+    	foreach($urlParamMap as $param=>$value){
+    		if(_getRequestParamValue($param) != null){
+    			$where_filters[] = _widget_build_sql_condition(' a1.' . $value, _getRequestParamValue($param));
+    		}
+    	}
+    	
+    	foreach($default_params as $param=>$value){
+    		if(_getRequestParamValue($param) != null){
+    			$where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
+    		}
+    	}
+    	
+    	
+    	$where_filter = ' where ' . implode(' and ' , $where_filters) . 
+    					' and a1.minority_type_id in (2,3,4,5,9)';
+    	
+    	
+
+    	
+    	$sql = 'select count(*) count
+				    from ' . $table. ' a1
+				   ' . $where_filter 
+    	
+    	;
+    	
+    	$data = _checkbook_project_execute_sql($sql);
+    	if($data[0]['count'] > 1){
+    		return true;
+    	}else{
+    		return false;
+    	}
+
+    }
 }
