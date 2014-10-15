@@ -102,7 +102,7 @@
 						PutCookie();
 					}
 				}	
-				$('#node-widget-472 a').click(function (event) {
+				$('#node-widget-472 .top-navigation-left a').click(function (event) {
 	                $.cookie(CookieName,null,{ path: '/' });
 	            });				
 				$('#year_list_chzn li').live("click",function (event) {
