@@ -19,7 +19,11 @@ class MappingUtil {
         'pv' => 'Prime Vendor',
         'mv' => 'M/WBE Vendor',
     );
-
+    
+    
+    public static $spendingMWBEParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"vendor_id","category"=>"spending_category_id");
+    public static $contractsMWBEParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","awdmethod"=>"award_method_id","vendor"=>"vendor_id",
+    	"status"=>"status_flag","csize"=>"award_size_id","cindustry"=>"industry_type_id");
     /** Returns the vendor type value based on the vendor_type mapping */
     static function getVendorTypeValue($vendor_types) {
         $param = "";
@@ -179,10 +183,10 @@ class MappingUtil {
     		case "spending":
 
 				$table = "aggregateon_mwbe_spending_coa_entities";
-    			$urlParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"vendor_id","category"=>"spending_category_id");
+    			//$urlParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"vendor_id","category"=>"spending_category_id");
     			$where_filters = array();
     			
-    			foreach($urlParamMap as $param=>$value){
+    			foreach(self::$spendingMWBEParamMap as $param=>$value){
     				if(_getRequestParamValue($param) != null){
     					$where_filters[] = _widget_build_sql_condition(' a1.' . $value, _getRequestParamValue($param));
     				}
@@ -209,7 +213,7 @@ class MappingUtil {
 	    		$urlParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","awdmethod"=>"award_method_id","vendor"=>"vendor_id",
 									"status"=>"status_flag","csize"=>"award_size_id","cindustry"=>"industry_type_id");
 	    		$where_filters = array();
-	    		foreach($urlParamMap as $param=>$value){
+	    		foreach(self::$contractsMWBEParamMap as $param=>$value){
 	    			if(_getRequestParamValue($param) != null){
     					$where_filters[] = _widget_build_sql_condition(' a1.' . $value, _getRequestParamValue($param));
     				}
