@@ -24,6 +24,8 @@ class RequestUtil{
 
     //Links for landing pages. This can be avoided if ajax requests can be identified uniquely.
     static $landing_links = array("contracts_landing","contracts_revenue_landing","contracts_pending_rev_landing","contracts_pending_exp_landing");
+    static $contracts_spending_landing_links = array("spending_landing",
+    					"contracts_landing","contracts_revenue_landing","contracts_pending_rev_landing","contracts_pending_exp_landing");
 
     /** Checks if the page bottom container is expanded */
     static function isExpandBottomContainer(){
@@ -799,14 +801,21 @@ class RequestUtil{
     }
     
     static function getDashboardTopNavURL($dashboard_filter){
-    	$url = $_GET['q'];
+    	
+    	
+    	if(self::isContractsSpendingLandingPage()){
+    		$url = $_GET['q'];
+    	}else{
+    		$url = self::getCurrentDomainURLFromParams();
+    	}
+    	
     	switch($dashboard_filter){
     		case "mwbe":
     	    	if(_getRequestParamValue("dashboard") !=  null){    				
     				$url = preg_replace('/\/dashboard\/[^\/]*/','',$url);    				   				    				    				
     			}
     			$url .=  "/dashboard/" . self::getNextMWBEDashboardStateParam();
-    			if(_getRequestParamValue("mwbe") == null){
+    			if(!preg_match('/mwbe/',$url)){
     				$url .=  "/mwbe/2~3~4~5~9";
     			}
     			break;
@@ -847,5 +856,42 @@ class RequestUtil{
     
     static function replaceParamFromString($string,$param,$value){
     	return preg_replace('/\/' .$param .'\/[^\/]*/','/' . $param .'/' . $value,$string);
+    }
+    
+    
+    static function getCurrentDomainURLFromParams(){
+    	if(preg_match('/contracts/',$_GET['q'])){
+    		$reqParams = MappingUtil::$contractsMWBEParamMap;
+    		$prefix = 'contracts_landing';
+    	}else{
+    		$reqParams = MappingUtil::$spendingMWBEParamMap;
+    		$prefix = 'spending_landing';    		
+    	}
+    	
+    	
+    	foreach($reqParams as $key=>$value){
+    		
+    		$value = _getRequestParamValue($key); 
+    		if($key == "year" && $value == null) {
+    			$value = _getFiscalYearID();
+    		}
+    		if($key == "yeartype" && $value == null) {
+    			$value = 'B';
+    		}
+    		$prefix .= ( $value != null) ? "/$key/" . $value:"";
+    		
+    	}
+    	
+    	return $prefix;
+    }
+    
+    
+    static function isContractsSpendingLandingPage(){
+    	$first_part = preg_replace('/\/.*/',''   ,$_GET['q']);	
+    	if(in_array($contracts_spending_landing_links,$first_part)){
+    		return true;
+    	}else{
+    		return false;
+    	}
     }
 }
