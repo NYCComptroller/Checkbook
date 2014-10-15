@@ -7,7 +7,7 @@
     "getTotalDataCount":false,
     "dataset": "checkbook:all_agreement_transactions",
     "orderBy":"-maximum_contract_amount",
-    "columns": ["sub_contract_id","is_prime_or_sub","minority_type_id","minority_type_name","fiscal_year_id@checkbook:all_contracts_coa_aggregates","type_of_year@checkbook:all_contracts_coa_aggregates", "document_code@checkbook:ref_document_code","has_children","contract_original_agreement_id","contract_number","master_agreement_id","master_contract_number","description","document_version","original_contract_amount","maximum_contract_amount","spending_amount@checkbook:all_contracts_coa_aggregates","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","industry_type_name","dollar_difference","percent_difference"],
+    "columns": ["prime_vendor_name","sub_contract_id","is_prime_or_sub","minority_type_id","minority_type_name","fiscal_year_id@checkbook:all_contracts_coa_aggregates","type_of_year@checkbook:all_contracts_coa_aggregates", "document_code@checkbook:ref_document_code","has_children","contract_original_agreement_id","contract_number","master_agreement_id","master_contract_number","description","document_version","original_contract_amount","maximum_contract_amount","spending_amount@checkbook:all_contracts_coa_aggregates","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","industry_type_name","dollar_difference","percent_difference"],
     "caption":"",
     "adjustParameters":"
 if(isset($parameters['vendor_type'])){
@@ -146,6 +146,10 @@ return $parameters;
 "formatted_minority_name": {
 "type": "expression2",
 "expression": "MappingUtil::getMinorityCategoryById($row['minority_type_id'])"
+},
+"formatted_associated_vendor": {
+"type": "expression2",
+"expression": "($row['is_prime_or_sub'] == 'P')?'N/A':$row['prime_vendor_name']"
 }
 },
 "table_columns": [
@@ -162,6 +166,7 @@ return $parameters;
 {"label": "Percent Difference","column": "formatted_percent_diff","sortSourceColumn":"percent_difference"},
 {"label": "Vendor","column": "vendor_name_link","sortSourceColumn":"vendor_name"},
 {"label": "sub_vendor_name","column": "is_prime_or_sub"},
+{"labelAlias": "associated_prime_vendor","column": "formatted_associated_vendor","sortSourceColumn":"prime_vendor_name"},
 {"label": "Agency","column": "agency_name_link","sortSourceColumn":"agency_name"},
 {"label": "Contract<br/>Type","column":"contract_type_formatted","sortSourceColumn": "agreement_type_name"},
 {"label": "Award Method","column":"award_method_formatted","sortSourceColumn": "award_method_name"},
