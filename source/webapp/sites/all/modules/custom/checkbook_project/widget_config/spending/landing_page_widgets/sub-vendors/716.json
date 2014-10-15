@@ -70,7 +70,7 @@
         },
         "ytd_spending_sub_vendors_link":{
             "type":"expression2",
-            "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getSubVendorYtdSpendingUrl($node,$row) . '\">' . custom_number_formatter_format($row['ytd_spending_sub_vendors'],2,'$') . '</a>'"
+            "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getAgencyAmountLinkUrl($node,$row) . '\">' . custom_number_formatter_format($row['ytd_spending_sub_vendors'],2,'$') . '</a>'"
         },
         "sub_vendors_percent_paid_formatted":{
             "type":"expression2",
