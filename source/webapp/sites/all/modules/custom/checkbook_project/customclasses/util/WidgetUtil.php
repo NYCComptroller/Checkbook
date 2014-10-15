@@ -192,7 +192,7 @@ class WidgetUtil
         "sub_vendors_percent_paid"=>"% Paid<br/>Sub Vendors",
         "mwbe_ethnicity"=>"M/WBE<br/>Ethnicity",
         "sub_contract_purpose" => "Sub Contract<br/>Purpose",
-        "associated_prime_vendor" => "Associated Prime<br/>Vendor Name",
+        "associated_prime_vendor" => "Associated Prime<br/>Vendor",
     );
 
     //For number cols, need to find out if they are uniform number of digits for formatting
