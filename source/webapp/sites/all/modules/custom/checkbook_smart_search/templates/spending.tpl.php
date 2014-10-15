@@ -20,6 +20,7 @@
 ?>
 <?php
 
+
 $spending_parameter_mapping = _checkbook_smart_search_domain_fields('spending', $IsOge);
 
 if($IsOge)
@@ -34,7 +35,7 @@ else
             "agency_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getFiscalYearID() . "/yeartype/B/agency/".$spending_results["agency_id"],
             "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getFiscalYearID() . "/yeartype/B/subvendor/".$spending_results["vendor_id"]."/dashboard/ss",
         );
-    }elseif($spending_results['is_minority_vendor'] == 'Y'){
+    }elseif(SpendingUtil::getLatestMwbeCategoryByVendor($spending_results["vendor_id"], NULL, _getFiscalYearID(), 'B') != ''){
         $linkable_fields = array(
             "agency_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getFiscalYearID() . "/yeartype/B/agency/".$spending_results["agency_id"],
             "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getFiscalYearID() . "/yeartype/B/vendor/".$spending_results["vendor_id"]."/dashboard/mp",
@@ -46,7 +47,6 @@ else
             "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getFiscalYearID() . "/yeartype/B/vendor/".$spending_results["vendor_id"],
         );
     }
-
 }
 
 if(!$IsOge)
