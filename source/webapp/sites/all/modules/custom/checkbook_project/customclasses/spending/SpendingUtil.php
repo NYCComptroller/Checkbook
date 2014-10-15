@@ -210,24 +210,27 @@ class SpendingUtil{
      */
     static function getPrimeVendorNameLinkUrl($node, $row){
 
-        $year_id = _getRequestParamValue("year");
-        $year_type = _getRequestParamValue("yeartype");
-        $agency_id = _getRequestParamValue("agency_id");
+        $custom_params = null;
+        $dashboard = _getRequestParamValue("dashboard");
         $vendor_id = isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["prime_vendor_prime_vendor"];
         if(!isset($vendor_id)) {
             $vendor_id = isset($row["vendor_id"]) ? $row["vendor_id"] : $row["vendor_vendor"];
         }
-        $dtsmnid = _getRequestParamValue("dtsmnid");
-        if(isset($dtsmnid)) { //Has sub and prime data
-            $is_prime_or_sub = (preg_match('/S/', $row["vendor_type"])) ? "S" : "P";
+
+        if(!isset($dashboard)) {
+            $year_id = _getRequestParamValue("year");
+            $year_type = _getRequestParamValue("yeartype");
+            $agency_id = _getRequestParamValue("agency_id");
+            $is_prime_or_sub = "P";
+
+            $latest_certified_minority_type_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type, $is_prime_or_sub);
+            $is_mwbe_certified = isset($latest_certified_minority_type_id);
+            $custom_params = $is_mwbe_certified ? array("dashboard"=>"mp","vendor"=>$vendor_id) : array("vendor" =>$vendor_id);
         }
         else {
-            $is_prime_or_sub = "P";
+            $custom_params = array("vendor" =>$vendor_id);
         }
-        $latest_certified_minority_type_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type, $is_prime_or_sub);
-        $is_mwbe_certified = isset($latest_certified_minority_type_id);
-
-        return self::getVendorPageUrl($vendor_id, $is_mwbe_certified, $is_prime_or_sub);
+        return '/' . self::getLandingPageWidgetUrl($custom_params);
     }
 
     /**
@@ -240,6 +243,7 @@ class SpendingUtil{
      */
     static function getPayeeNameLinkUrl($node, $row){
 
+        $custom_params = null;
         $year = _getRequestParamValue("year");
         $calyear = _getRequestParamValue("calyear");
         $year_type = isset($calyear) ? "C" : "B";
@@ -250,37 +254,14 @@ class SpendingUtil{
         $latest_certified_minority_type_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type, $is_prime_or_sub);
         $is_mwbe_certified = isset($latest_certified_minority_type_id);
 
-        return self::getVendorPageUrl($vendor_id, $is_mwbe_certified, $is_prime_or_sub);
-    }
-
-    /**
-     * Sets teh correct vendor, dashboard and mwbe params for the vendor page redirect
-     * @param $vendor_id
-     * @param $is_mwbe_certified
-     * @param $is_prime_or_sub
-     * @return string
-     */
-    static function getVendorPageUrl($vendor_id, $is_mwbe_certified, $is_prime_or_sub){
-        $mwbe = _getRequestParamValue("mwbe");
-        $dashboard = _getRequestParamValue("dashboard");
-
         switch($is_prime_or_sub) {
             case "S":
-                $dashboard = isset($dashboard) ? $dashboard : "ss";
-                $mwbe = null;
+                $custom_params = array("dashboard"=>"sp","subvendor"=>$vendor_id);
                 break;
             case "P":
-                $dashboard = isset($dashboard) ? $dashboard : ($is_mwbe_certified ? "mp" : null);
-//                $dashboard = $is_mwbe_certified ? (isset($dashboard) ? $dashboard : "mp") : null;
-                $mwbe = $is_mwbe_certified ? (isset($mwbe) ? $mwbe : "2~3~4~5~9") : null;
+                $custom_params = $is_mwbe_certified ? array("dashboard"=>"mp","vendor"=>$vendor_id) : array("vendor" =>$vendor_id);
                 break;
         }
-
-        $custom_params = array (
-            "dashboard"=>$dashboard,
-            "mwbe"=>$mwbe,
-            $is_prime_or_sub == "P" ? "vendor" : "subvendor"=>$vendor_id
-        );
         return '/' . self::getLandingPageWidgetUrl($custom_params);
     }
 

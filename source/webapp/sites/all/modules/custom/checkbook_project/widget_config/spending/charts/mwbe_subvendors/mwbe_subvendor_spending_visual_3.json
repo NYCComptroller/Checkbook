@@ -35,38 +35,37 @@
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B"},
 "cleanURLParameters":["yeartype","agency","vendor","category","year","mwbe"],
-"urlParamMap":{"mwbe":"minority_type_id","year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"vendor_id","category":"spending_category_id"},
+"urlParamMap":{"mwbe":"minority_type_id","year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","subvendor":"vendor_id","category":"spending_category_id"},
 "chartTitle":"Top Ten Contracts by M/WBE Spending",
 "widgetDataLoader":"
-    
     $where_filters = array();
     foreach($node->widgetConfig->requestParams as $param=>$value){
         $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
     }
-    
+
     if(count($where_filters) > 0){
         $where_filter = ' where ' . implode(' and ' , $where_filters);
     }
-    
+
     $sql = ' select
 		sum(total_spending_amount) total_spending_amount,
 		agency_name,
 		document_id,
 		document_code,
 		agreement_id,
-		legal_name		
+		legal_name
 	from {aggregateon_subven_spending_contract} a1
     join {vendor} v on v.vendor_id =  a1.prime_vendor_id
     join {ref_agency} ra on ra.agency_id =  a1.agency_id
-   ' . $where_filter . '    
+   ' . $where_filter . '
    group by    agency_name,
 		document_id,
 		document_code,
-		agreement_id,		
+		agreement_id,
 		legal_name
     order by 1 desc limit 10';
 
-    
+
     $node->data  = _checkbook_project_execute_sql($sql);
     
 ",
