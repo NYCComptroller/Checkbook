@@ -295,7 +295,7 @@ class MappingUtil {
     	   
     	   
     			$sql = 'select a1.minority_type_id
-				    from {aggregateon_mwbe_contracts_cumulative_spending} a1
+				    from {' . $table . '} a1
 	    				join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
 				   ' . $where_filter . '
 				    group by a1.minority_type_id';
