@@ -31,7 +31,7 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
         }
         else {
             if($contracts_results["is_prime_or_sub"] == 'Yes'){
-                $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". _getFiscalYearID() .'/subvendor/'.$contracts_results['vendor_id'];
+                $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". _getFiscalYearID() .'/subvendor/'.$contracts_results['vendor_id']."/dashboard/ss";
             }else{
                 $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". _getFiscalYearID() .'/vendor/'.$contracts_results['vendor_id'];
             }
@@ -46,7 +46,7 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
         }
         else{
             if($contracts_results["is_prime_or_sub"] == 'Yes'){
-                $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". _getFiscalYearID() .'/subvendor/'.$contracts_results['vendor_id'];
+                $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". _getFiscalYearID() .'/subvendor/'.$contracts_results['vendor_id']."/dashboard/ss";
             }else{
                 $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". _getFiscalYearID() .'/vendor/'.$contracts_results['vendor_id'];
             }
