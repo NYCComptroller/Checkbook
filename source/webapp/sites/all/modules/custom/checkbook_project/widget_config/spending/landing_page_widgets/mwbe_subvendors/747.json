@@ -25,7 +25,8 @@
         "prime_vendor.prime_vendor.legal_name",
         "year.year",
         "yeartype.yeartype",
-        "agency.agency"
+        "agency.agency",
+        "minority_type.minority_type"
     ],
     "limit":5,
     "enableExpand":true,
@@ -49,6 +50,14 @@
         return $footer;
     ",
     "derivedColumns": {
+        "mwbe_category_name": {
+            "type":"expression2",
+            "expression":"MappingUtil::getMinorityCategoryById($row['minority_type_minority_type'])"
+        },
+        "mwbe_category_name_link": {
+            "type": "expression2",
+            "expression": " RequestUtil::isNewWindow() || !MappingUtil::isMWBECertified(array($row['minority_type_minority_type'])) ? $row['mwbe_category_name']  : ('<a href=' . SpendingUtil::getMWBECategoryLinkUrl($node, $row) . '>'. $row[mwbe_category_name] .'</a>') "
+        },
         "formatted_check_amount_sum": {
             "type": "expression2",
             "expression": "custom_number_formatter_format($row['check_amount_sum'],2,'$')"
@@ -88,6 +97,7 @@
     "table_title":"",
     "table_columns": [
         {"labelAlias": "prime_vendor","column": "vendor_name_link","sortSourceColumn":"prime_vendor.prime_vendor.legal_name"},
+        {"labelAlias":"mwbe_category","column":"mwbe_category_name_link","sortSourceColumn":"minority_type.minority_type"},
         {"labelAlias": "ytd_spending","column": "vendor_amount_link","header": "false","sortSourceColumn":"check_amount_sum","headerClass":"sixty"},
         {"labelAlias": "percent_spending","column": "percent_spending","header": "false","sortSourceColumn":"check_amount_sum"},
         {"labelAlias": "total_contract_amount","column": "formatted_total_contract_amount_sum","sortSourceColumn":"total_contract_amount_sum","header": "false"},
@@ -96,9 +106,10 @@
     "dataTableOptions":{
         "aoColumns": [
             {"bSortable": false,"sClass":"text"},
-            {"sClass":"number","sWidth":"180px","asSorting":["desc","asc"]},
-            {"sClass":"number","sWidth":"180px","asSorting":["desc","asc"]},
-            {"sClass":"number","sWidth":"180px","asSorting":["desc","asc"]},
+            {"sClass":"text","sWidth":"150px","asSorting":["desc","asc"]},
+            {"sClass":"number","sWidth":"150px","asSorting":["desc","asc"]},
+            {"sClass":"number","sWidth":"150px","asSorting":["desc","asc"]},
+            {"sClass":"number","sWidth":"150px","asSorting":["desc","asc"]},
             {"bSortable": false,"sWidth":"15px"}
         ] ,
         "bServerSide": true,
@@ -108,7 +119,7 @@
         "bLengthChange": false,
         "bInfo": false,
         "bAutoWidth": false,
-        "aaSorting": [[ 1, "desc" ]],
+        "aaSorting": [[ 2, "desc" ]],
         "fnServerParams": "##function ( aoData ) {
         reloadExpandCollapseWidget(this,aoData);
         }##",
