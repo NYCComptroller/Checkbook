@@ -54,8 +54,11 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
         }
         $contract_Id_link = "/contracts_revenue_landing/status/" .$status;
     }
-
-    $contract_Id_link .= _checkbook_project_get_year_url_param_string(). (($IsOge) ? '/datasource/checkbook_oge/agency/'.$contracts_results['oge_agency_id'] : '') ."/dashboard/ss?expandBottomContURL=/panel_html/contract_transactions/"."/contract_details";
+    if($contracts_results['is_prime_or_sub'] == 'Yes'){
+        $contract_Id_link .= _checkbook_project_get_year_url_param_string(). (($IsOge) ? '/datasource/checkbook_oge/agency/'.$contracts_results['oge_agency_id'] : '') ."/dashboard/ss?expandBottomContURL=/panel_html/contract_transactions/"."/contract_details";
+    }else{
+        $contract_Id_link .= _checkbook_project_get_year_url_param_string(). (($IsOge) ? '/datasource/checkbook_oge/agency/'.$contracts_results['oge_agency_id'] : '') ."?expandBottomContURL=/panel_html/contract_transactions/"."/contract_details";
+    }
     if($contracts_results['document_code'] == 'MA1' || $contracts_results['document_code'] == 'MMA1' || $contracts_results['document_code'] == 'RCT1'){
         $contract_Id_link .= "/magid/".$contracts_results['original_agreement_id']."/doctype/".$contracts_results["document_code"];
     }else{

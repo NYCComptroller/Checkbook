@@ -53,6 +53,8 @@ $queryVendorCount = " select count(*) total_contracts_sum from {agreement_snapsh
 $results1 = _checkbook_project_execute_sql_by_data_source($queryVendorDetails,_get_current_datasource());
 $node->data = $results1;
 
+
+
 foreach($node->data as $key => $value){
     if($value['business_type_code'] == "MNRT" || $value['business_type_code'] == "WMNO"){
         $node->data[0]["mwbe_vendor"] = "Yes";
@@ -69,8 +71,14 @@ if(_getRequestParamValue("doctype")=="RCT1"){
                  . $node->data[0]['vendor_id'] . '?expandBottomCont=true';
 }
 else{
-   $vendor_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
-                  .$node->data[0]['vendor_id'].'?expandBottomCont=true';
+   if(_is_mwbe_vendor($node->data[0]['vendor_id'], _getCurrentYearID(), 'B')){
+       $vendor_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
+        .$node->data[0]['vendor_id'].'/dashboard/mp?expandBottomCont=true';
+   }
+    else{
+        $vendor_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
+            .$node->data[0]['vendor_id'].'?expandBottomCont=true';
+    }
 }
 $contract_number = $node->data[0]['contract_number'];
 $querySubVendorCount = "SELECT DISTINCT COUNT(*) AS sub_vendor_count FROM subcontract_details
@@ -90,24 +98,25 @@ $total_subvendor_count = $res->data[0]['sub_vendor_count'];
   <?php } ?>   
   <?php
       $minority_type_id = $node->data[0]['minority_type_id'];
-      if($minority_type_id == 4 || $minority_type_id == 5){
-          $minority_type_id == '4~5';
-      }
+
       $address = $node->data[0]['address_line_1'] ;
       $address .= " "  .  $node->data[0]['address_line_2'];
       $address .= " "  .  $node->data[0]['city'];
       $address .= " "  .  $node->data[0]['state'];
       $address .= " "  .  $node->data[0]['zip'];
       $address .= " "  .  $node->data[0]['country'];
-      
+
       $ethnicities = array();
       foreach($node->data as $row){
         if($row['ethnicity'] != null and trim($row['ethnicity']) != '' ){
-          $ethnicities[] = MappingUtil::getMinorityCategoryByName($row['ethnicity']);
+          $ethnicities[] = MappingUtil::getMinorityCategoryById($minority_type_id);
         }
-      } 
+      }
       $ethnicity = implode(',',$ethnicities);
-      
+      if($minority_type_id == "4" || $minority_type_id == "5"){
+        $minority_type_id = "4~5";
+      }
+
   ?>    
     <li><span class="gi-list-item">Address:</span> <?php echo $address;?></li>
     <li><span class="gi-list-item">Total Number of NYC Contracts:</span> <?php echo $total_cont;?></li>

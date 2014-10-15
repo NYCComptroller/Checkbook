@@ -97,10 +97,10 @@
         }
     },
     "summaryView":{
-        "template":"spending_contract_summary",
+        "template":"spending_sub_contract_summary",
         "templateTitleEval":"
             $catName = RequestUtil::getSpendingCategoryName();
-            return ('M/WBE Contracts ' . $catName . ' Transactions');
+        return ('M/WBE Contracts ' . $catName . ' Transactions');
         "
     },
     "WidgetTitleEval":"
@@ -112,7 +112,7 @@
         {"labelAlias":"contract_id","column": "contract_number_link"},
         {"labelAlias":"sub_contract_purpose","column":"sub_contract_purpose_formatted"},
         {"labelAlias":"contract_agency","column": "agency_name_link","sortSourceColumn":"agency.agency.agency_name"},
-{"labelAlias":"prime_vendor","column":"prime_vendor_name","sortSourceColumn":"prime_vendor.prime_vendor.legal_name"},
+        {"labelAlias":"prime_vendor","column":"prime_vendor_name","sortSourceColumn":"prime_vendor.prime_vendor.legal_name"},
         {"labelAlias":"ytd_spending","column": "contract_amount_link","sortSourceColumn":"check_amount_sum"},
         {"labelAlias":"total_contract_amount","column": "formatted_total_contract_amount_sum","sortSourceColumn":"total_contract_amount_sum"},
         {"label": "","column": ""}

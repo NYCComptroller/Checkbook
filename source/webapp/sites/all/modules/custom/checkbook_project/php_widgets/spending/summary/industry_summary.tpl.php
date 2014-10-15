@@ -24,12 +24,15 @@ if(is_array($records)){
     $row = $records[0];
     $title = eval($node->widgetConfig->summaryView->templateTitleEval);
     $industry_name = WidgetUtil::getLabel("industry_name");
+    $industry_type_name = isset($row['industry_industry_industry_type_name'])
+        ? $row['industry_industry_industry_type_name']
+        : $row['industry_type_industry_type_industry_type_name'];
     $ytdspending = WidgetUtil::getLabel("ytd_spending");
 $summaryContent =  <<<EOD
 <div class="contract-details-heading">
 	<div class="contract-id">
 		<h2 class="contract-title">{$title}</h2>
-		<div class="spending-tx-subtitle">{$industry_name}: {$row['industry_industry_industry_type_name']}</div>
+		<div class="spending-tx-subtitle">{$industry_name}: {$industry_type_name}</div>
 	</div>
 	<div class="dollar-amounts">
         <div class="ytd-spending-amount">

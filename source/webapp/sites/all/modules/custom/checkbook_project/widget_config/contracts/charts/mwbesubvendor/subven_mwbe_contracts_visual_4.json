@@ -38,17 +38,6 @@
 "urlParamMap":{"year":"fiscal_year_id","mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id",
 	"vendor":"prime_vendor_id","subvendor":"vendor_id",
 	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},	
-"urlParamMapPending":{"mwbe":"minority_type_id","agency":"document_agency_id","vendor":"vendor_id",			
-			"awdmethod":"award_method_id",
-			"csize":"award_size_id","cindustry":"industry_type_id"},
-"widgetPreprocessJSON":"
-	if(preg_match('/pending/',$_GET['q'])){
-		$node->widgetConfig->urlParamMap = $node->widgetConfig->urlParamMapPending;
-		$node->widgetConfig->defaultParameters = $node->widgetConfig->defaultParametersPending;
-		$node->widgetConfig->cleanURLParameters = $node->widgetConfig->cleanURLParametersPending;
-	}
-	
-",	
 "chartTitle":"Top Ten M/WBE Active Expense Contracts by Current Amount",
 "widgetDataLoader":"
     
@@ -66,18 +55,19 @@
     	$sql = ' select
 			maximum_contract_amount,
 			agency_name,
-			contract_number,
-			legal_name,
+			a1.contract_number,
+			v.legal_name,
 			document_code,
-			original_agreement_id		
+			sco.original_agreement_id		
 		from {aggregateon_subven_contracts_cumulative_spending} a1     
-    	join {vendor} v on v.vendor_id =  a1.vendor_id
+    	join {vendor} v on v.vendor_id =  a1.prime_vendor_id
+    	join {subvendor} v2 on v2.vendor_id =  a1.vendor_id
     	join {ref_agency} ra on ra.agency_id =  a1.agency_id
     	join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
+    	join (SELECT distinct original_agreement_id, contract_number FROM agreement_snapshot WHERE latest_flag = \\'Y\\') sco on sco.contract_number = a1.contract_number
    		' . $where_filter . '       
     	order by 1 desc limit 10';
     
-
 
     $node->data  = _checkbook_project_execute_sql($sql);
 	    

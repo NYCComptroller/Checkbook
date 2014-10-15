@@ -151,7 +151,7 @@
 	foreach($node->data as $row){
 
         $tooltip_label =
-        'Prime Vendor: ' . $row['legal_name'].  '<br/>' .
+        'Sub Vendor: ' . $row['legal_name'].  '<br/>' .
         MappingUtil::getCurrenEhtnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$')
       ;
 
