@@ -50,13 +50,21 @@
             "type": "expression2",
             "expression": "_get_tooltip_markup($row['vendor_vendor_legal_name'],40)"
         },
-        "vendor_name_link": {
+        "citywide_vendor_name_link": {
             "type": "expression2",
             "expression": "'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row[vendor_vendor_legal_name] . '</a>'"
-        } ,
+        },
+        "oge_vendor_name_link": {
+            "type": "expression2",
+            "expression": "'<a href=\"/spending_landing' .  _checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . '/vendor/'. $row[vendor_vendor] .'\">' . $row[vendor_vendor_legal_name] . '</a>'"
+        },
+        "vendor_name_link": {
+            "type": "expression2",
+            "expression": "_checkbook_check_isEDCPage() ? $row['oge_vendor_name_link'] : $row['citywide_vendor_name_link']"
+        },
         "vendor_amount_link":{
             "type":"expression2",
-            "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getVendorAmountLinkUrl($node,$row) . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
+            "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/spending_transactions/spending/transactions' . _checkbook_project_get_year_url_param_string(false,false,true) . _checkbook_append_url_params() ._checkbook_project_get_url_param_string(\"agency\")  . '/smnid/' . $node->nid . _checkbook_project_get_url_param_string(\"category\") . '/vendor/'. $row[vendor_vendor] . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
         }
     },
     "summaryView":{
