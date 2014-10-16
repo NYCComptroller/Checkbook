@@ -5,11 +5,7 @@
 	"cleanURLParameters":["vendor","year","yeartype","calyear","category","vendor","expcategory","agency","mwbe","industry"],
 	"urlParamMap":{"year":"year.year","yeartype":"type_of_year","calyear":"year_id","category":"spending_category_id","vendor":"vendor_id","expcategory":"expenditure_object.expenditure_object","agency":"agency_id","mwbe":"minority_type_id","industry":"industry_type_id"},
 	"defaultParameters":{"year.year":22,"type_of_year":"B"},
-	"dataset": "checkbook:spending_data",
-    "preProcessConfiguration":"
-        $node->is_mwbe = _checkbook_check_is_mwbe_page();
-        if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:spending_mwbe_data';
-    ",
+	"dataset": "checkbook:spending_mwbe_data",
 	"noDataInitialLoad":true,
     "totalAggregateColumns":["check_amount_sum"],
 	"columns": ["yeartype.yeartype","check_amount_sum","expenditure_object.expenditure_object","expenditure_object.expenditure_object.original_expenditure_object_name","year.year"],
@@ -44,47 +40,33 @@
         },
         "percent_spending":{
             "type":"expression2",
-            "expression": "SpendingUtil::getPercentYtdSpending($node, $row)",
-            "visibility_flag": "is_mwbe"
+            "expression": "SpendingUtil::getPercentYtdSpending($node, $row)"
         }
 	},
-    "adjustParameters":"
-        if(!$node->is_mwbe) {
-            unset($parameters['minority_type_id']);
-            unset($parameters['industry_type_id']);
-        }
-
-        return $parameters;
-    ",
     "summaryView":{
         "template":"spending_exp_category_summary",
         "templateTitleEval":"
             $catName = RequestUtil::getSpendingCategoryName();
-            $mwbe_title = _checkbook_check_is_mwbe_page() ? 'M/WBE ' : '';
-            return ($mwbe_title . 'Expense Categories ' . $catName . ' Transactions');
+            return ('M/WBE Expense Categories ' . $catName . ' Transactions');
         "
     },
     "WidgetTitleEval":"
         $catName = RequestUtil::getSpendingCategoryName();
-        $mwbe_title = _checkbook_check_is_mwbe_page() ? 'M/WBE ' : '';
-        return ($mwbe_title . 'Expense Categories ' . $catName . ' Transactions');
+        return ('M/WBE Expense Categories ' . $catName . ' Transactions');
     ",
 	"table_title":"",
 	"table_columns": [
 		{"labelAlias":"expense_category","column":"expenditure_object_expenditure_object_original_expenditure_object_name","header": "false"},
 		{"labelAlias":"ytd_spending","column":"formatted_check_amount_sum_link","header": "false","sortSourceColumn":"check_amount_sum"},
-        {"labelAlias":"percent_spending","column":"percent_spending","header": "false","sortSourceColumn":"check_amount_sum","visibility_flag": "is_mwbe"},
+        {"labelAlias":"percent_spending","column":"percent_spending","header": "false","sortSourceColumn":"check_amount_sum"},
         {"label": "","column": ""}
 	],
 	"dataTableOptions":{
         "aoColumns": [
-            {"sClass":"text","bSortable": false,"visibility_flag": "-is_mwbe"},
-            {"sWidth":"143px","sClass":"number","asSorting":["desc","asc"],"visibility_flag": "-is_mwbe"},
-            {"bSortable": false,"sWidth":"15px","visibility_flag": "-is_mwbe"},
-            {"sClass":"text","bSortable": false,"visibility_flag": "is_mwbe"},
-            {"sWidth":"75px","sClass":"number","asSorting":["desc","asc"],"visibility_flag": "is_mwbe"},
-            {"sWidth":"75px","sClass":"number","asSorting":["desc","asc"],"visibility_flag": "is_mwbe"},
-            {"bSortable": false,"sWidth":"15px","visibility_flag": "is_mwbe"}
+            {"sWidth":"100px","sClass":"text","bSortable": false},
+            {"sWidth":"80px","sClass":"number","asSorting":["desc","asc"]},
+            {"sWidth":"80px","sClass":"number","asSorting":["desc","asc"]},
+            {"bSortable": false,"sWidth":"15px"}
         ],
         "bServerSide": true,
         "bFilter": false,
