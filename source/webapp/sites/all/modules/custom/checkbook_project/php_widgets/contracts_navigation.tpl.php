@@ -100,6 +100,7 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 		}else{
 			$mwbe_amount =  $node->data[10]['current_amount_sum'];
 		}
+		$mwbe_prime_amount = $node->data[6]['current_amount_sum'];
 		//$mwbe_active_domain_link = RequestUtil::getTopNavURL("contracts") ;
 		$svendor_amount = $node->data[8]['current_amount_sum'];
 		$mwbe_active_domain_link = preg_replace('/\/subvendor\/[^\/]*/','',$mwbe_active_domain_link);
@@ -111,6 +112,9 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 		}else{
 			$mwbe_amount =  $node->data[9]['check_amount_sum'];
 		}
+		
+		$mwbe_prime_amount = $node->data[5]['current_amount_sum'];
+		
 		$mwbe_active_domain_link = preg_replace('/\/subvendor\/[^\/]*/','',$mwbe_active_domain_link);
 		$mwbe_filters = MappingUtil::getCurrentMWBETopNavFilters($mwbe_active_domain_link,"spending");
 		
@@ -148,8 +152,14 @@ if(!preg_match('/smnid/',$_GET['q']) && (
 	$mwbeclass = ' ';
 }
 
+if($mwbe_prime_amount == 0 && $mwbe_amount != 0){
+	$mwbe_title = 	"M/WBE (Sub Vendors)";
+}else{
+	$mwbe_title =  RequestUtil::getDashboardTopNavTitle("mwbe");
+}
+
 if($mwbe_amount  == 0){	
-	$mwbe_link = l('<div><span class="nav-title">' . RequestUtil::getDashboardTopNavTitle("mwbe") . '</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div>','',$options_disabled);
+	$mwbe_link = l('<div><span class="nav-title">' . $mwbe_title . '</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div>','',$options_disabled);
 }else{	
 	$mwbe_link = l('<div><span class="nav-title">' . RequestUtil::getDashboardTopNavTitle("mwbe") . '</span><br>&nbsp;'. custom_number_formatter_format($mwbe_amount ,1,'$') . '</div>',$mwbe_active_domain_link,$options);
 }
