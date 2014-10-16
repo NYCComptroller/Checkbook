@@ -33,7 +33,7 @@ $current_url = explode('/',$_SERVER['REQUEST_URI']);
 if($current_url[1] == 'contract' && ($current_url[2] == 'search' || $current_url[2] == 'all')&& $current_url[3] == 'transactions'){
     $summaryTitle = "";
 }else if(_checkbook_check_is_mwbe_page()){
-    $summaryTitle = MappingUtil::getCurrenEhtnicityName()." ";
+    $summaryTitle = RequestUtil::getDashboardTitle()." ";
 }
 $summaryTitle .= NodeSummaryUtil::getInitNodeSummaryTitle();
 
