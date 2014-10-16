@@ -54,7 +54,7 @@
                     "levels": [
                         {
                             "name": "cum_spend",
-                            "datasetName": "mwbe_contracts_coa_aggregates",
+                            "datasetName": "all_contracts_coa_aggregates",
                             "sourceColumnName": "original_agreement_id"
                         }
                     ]
