@@ -140,7 +140,10 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 	
 }
 
-
+if(preg_match('/mwbe\/7/',$_GET['q']) || preg_match('/mwbe\/11/',$_GET['q'])){
+	$mwbe_amount = 0;
+	$svendor_amount  == 0;
+}
 
 
 if(!preg_match('/smnid/',$_GET['q']) && (
