@@ -93,7 +93,7 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 
 	
 	$svendor_active_domain_link = RequestUtil::getDashboardTopNavURL("subvendor") ;
-	if(preg_match('/contracts/',$_GET['q'])){
+	if(preg_match('/contract/',$_GET['q'])){
 		
 		if($current_dashboard == "mp" || $current_dashboard == "sp" || $current_dashboard == null){
 			$mwbe_amount = $node->data[6]['current_amount_sum'] + $node->data[10]['current_amount_sum'];
