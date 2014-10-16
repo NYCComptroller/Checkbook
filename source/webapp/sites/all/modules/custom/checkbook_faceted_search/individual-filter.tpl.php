@@ -38,12 +38,15 @@ $tooltip = "";
 $count =0;
 if($node->widgetConfig->filterName == 'M/WBE Category'){
     $dashboard = _getRequestParamValue('dashboard');
-    foreach($checked as $key=>$value){
+    foreach($unchecked as $key => $value){
         if($dashboard != 'ss'){
             if($value[0] == 7 || $value[0] == 11){
-                unset($checked[$key]);
+                unset($unchecked[$key]);
             }
         }
+    }
+
+    foreach($checked as $key=>$value){
         if($value[0] == 4 || $value[0] == 5){
             $count = $count + $value[2];
             $id = "4~5";
