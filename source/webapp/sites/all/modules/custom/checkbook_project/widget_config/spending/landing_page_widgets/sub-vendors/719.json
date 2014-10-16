@@ -103,17 +103,11 @@
                 "expression": "custom_number_formatter_format($row['check_amount_sum'],2,'$')"
             }
     },
-    "WidgetTitleEval":"
-        $catName = RequestUtil::getSpendingCategoryName();
-        return ('Sub Vendors ' . $catName . ' Transactions');
-    ",
     "summaryView":{
         "template":"spending_sub_vendor_summary",
-        "templateTitleEval":"
-        $catName = RequestUtil::getSpendingCategoryName();
-        return ('Sub Vendors ' . $catName . ' Transactions');
-    "
+        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Sub Vendors');"
     },
+    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Sub Vendors');",
     "table_columns": [
             {"labelAlias":"sub_vendor_name","column":"sub_vendor_name_link2","sortSourceColumn":"sub_vendor.sub_vendor"},
             {"labelAlias":"no_of_contracts","column":"total_sub_contracts","sortSourceColumn":"total_sub_contracts"},
