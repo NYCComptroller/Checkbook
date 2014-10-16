@@ -32,7 +32,7 @@ if(_getRequestParamValue("magid") != ""){
 }
 
 $queryVendorDetails = "SELECT fa.minority_type_id, fa.contract_number, rb.business_type_code, fa.agreement_id,fa.original_agreement_id,  fa.vendor_id, va.address_id, legal_name AS vendor_name, a.address_line_1, a.address_line_2, a.city, a.state, a.zip, a.country,
-	                            (CASE WHEN (rb.business_type_code = 'MNRT' OR rb.business_type_code = 'WMNO') THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor,
+	                            (CASE WHEN (rb.business_type_code = 'MNRT' OR rb.business_type_code = 'WMNO') AND vb.status = 2 THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor,
 	                            (CASE WHEN fa.minority_type_id in (4,5) then 'Asian American' ELSE fa.minority_type_name END)AS ethnicity
 	                        FROM {agreement_snapshot} fa
 	                            LEFT JOIN {vendor_history} vh ON fa.vendor_history_id = vh.vendor_history_id
@@ -41,7 +41,7 @@ $queryVendorDetails = "SELECT fa.minority_type_id, fa.contract_number, rb.busine
 	                            LEFT JOIN {ref_address_type} ra ON va.address_type_id = ra.address_type_id
 	                            LEFT JOIN {vendor_business_type} vb ON vh.vendor_history_id = vb.vendor_history_id
 	                            LEFT JOIN {ref_business_type} rb ON vb.business_type_id = rb.business_type_id
-	                            LEFT JOIN {ref_minority_type} rm ON vb.minority_type_id = rm.minority_type_id'
+	                            LEFT JOIN {ref_minority_type} rm ON vb.minority_type_id = rm.minority_type_id
 	                        WHERE ra.address_type_code = 'PR' and fa.latest_flag = 'Y' and fa.original_agreement_id = " . $ag_id. "LIMIT 1";
 
 $queryVendorCount = " select count(*) total_contracts_sum from {agreement_snapshot} where vendor_id =
