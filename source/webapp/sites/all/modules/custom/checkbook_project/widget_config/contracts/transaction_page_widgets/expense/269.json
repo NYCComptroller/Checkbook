@@ -18,10 +18,14 @@
 "dataset": "checkbook:agreement_snapshot",
 "columns": ["total_maximum_contract_amount"],
 "preProcessConfiguration":"
-    $node->is_mwbe = _checkbook_check_is_mwbe_page();
-if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:all_agreement_transactions';
+    $dashboard = _getRequestParamValue('dashboard');
+if($dashboard) $node->widgetConfig->dataset = 'checkbook:all_agreement_transactions';
 ",
 "adjustParameters":"
+        $dashboard = _getRequestParamValue('dashboard');
+        if($dashboard == 'ss' || $dashboard == 'sp' || $dashboard == 'ms') $parameters['is_prime_or_sub'] = 'S';
+        else if($dashboard == 'mp') $parameters['is_prime_or_sub'] = 'P';
+
 	    if(function_exists('_checkbook_project_adjustContractParameterFilters')){
 		 _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
 	    }
