@@ -60,6 +60,9 @@ include_once('export_link.php');
 				}elseif($node->widgetConfig->gridConfig->table_columns[$index]->formatType == "month"){
 					echo "<td>".$datarow[$index]."</td>";
 				}
+				elseif($node->widgetConfig->gridConfig->table_columns[$index]->formatType == "monthfy"){
+					echo "<td>".$datarow[$index]."</td>";
+				}
 				else{
 					echo "<td><div class='" .$node->widgetConfig->gridConfig->table_columns[$index]->columnType ."'>".$datarow[$index]."</div></td>";
 				}
@@ -140,6 +143,29 @@ include_once('export_link.php');
 					"asSorting": [ "desc", "asc" ]
 					},
 				';
+		}elseif($column->formatType == 'monthfy'){
+
+			$aoColumnDefs .= '	{
+				"aTargets": [' . $index.'],
+					"aExportFn":"function",
+					"mDataProp": function ( source, type, val ) {
+						if (type == "set") {
+            				var months_fy = {
+									January: 7, February: 8, March: 9, April: 10, May: 11, June: 12,						            
+						            July: 1, August: 2, September: 3, October: 4, November:5, December:6              						
+						        };
+							source.month' . $index . ' = months_fy[val];
+							source.month_display' . $index . ' =  "<div class=\"text\">" + val + "</div>";
+							return;
+						}else if (type == "display") {
+							return source.month_display' . $index . ';
+						}
+						return source.month' . $index . ';
+					},
+					"sClass":"' . $column->columnType .'",
+					"asSorting": [ "asc", "desc" ]
+					},
+				';
 		}elseif($column->formatType == 'padding'){
 
 			$aoColumnDefs .= '
@@ -168,6 +194,7 @@ include_once('export_link.php');
 	}
     ';		
 	
+	$sortOrder = (isset($node->widgetConfig->gridConfig->sortOrder))? $node->widgetConfig->gridConfig->sortOrder:"desc";	
 	$sortColumn = (isset($node->widgetConfig->gridConfig->sortColumn))? $node->widgetConfig->gridConfig->sortColumn:$index - 1;
     $dataTableOptions ='
                     {
@@ -175,7 +202,7 @@ include_once('export_link.php');
                         "bInfo":false,
                         "bLengthChange":false,
                         "iDisplayLength":10,
-                        "aaSorting":[[ ' . ($sortColumn)  .  ' ,"desc"]],
+                        "aaSorting":[[ ' . ($sortColumn)  .  ' ,"' . $sortOrder . '"]],
                         "bPaginate": false,
                         "sAltAjaxSource":"'. check_plain($_GET['q']) .'",
             			"fnDrawCallback"  :  function( oSettings ) {

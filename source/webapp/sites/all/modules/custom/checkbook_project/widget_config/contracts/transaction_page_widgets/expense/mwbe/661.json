@@ -18,8 +18,6 @@
         "calyear":"all_cum_spend.all_cum_spend.fiscal_year_id",
         "year":"all_cum_spend.all_cum_spend.fiscal_year_id",
         "yeartype":"all_cum_spend.all_cum_spend.type_of_year",
-        "subvendor":"all_cum_spend.all_cum_spend.vendor_id",
-        "vendor":"all_cum_spend.all_cum_spend.prime_vendor_id",
         "mwbe":"all_cum_spend.all_cum_spend.minority_type_id"
     }  ,
     "columns":["g100m_count", "g50m_le100m_count", "g25m_le50m_count", "g10m_le25m_count", "ge1m_le10m_count", "less1m_count"],

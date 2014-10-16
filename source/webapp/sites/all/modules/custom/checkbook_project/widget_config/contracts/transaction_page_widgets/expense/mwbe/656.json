@@ -9,8 +9,8 @@
         "mwbe":"minority_type_id@checkbook:all_contracts_coa_aggregates","doctype":"document_code@checkbook:ref_document_code",
         "contstatus":"status_flag@checkbook:all_contracts_coa_aggregates" ,"year":"fiscal_year_id@checkbook:all_contracts_coa_aggregates",
         "calyear":"fiscal_year_id@checkbook:all_contracts_coa_aggregates","yeartype":"type_of_year@checkbook:all_contracts_coa_aggregates" ,
-        "agency":"agency_id","vendor":"prime_vendor_id@checkbook:all_contracts_coa_aggregates","curamtr":"maximum_contract_amount",
-        "vendornm":"vendor_name","subvendor":"vendor_id@checkbook:all_contracts_coa_aggregates",
+        "agency":"agency_id","vendor":"prime_vendor_id","curamtr":"maximum_contract_amount",
+        "vendornm":"vendor_name","subvendor":"vendor_id",
         "contdesc":"description","agrmnttype":"agreement_type_id","agencyh":"agency_history_id","contnum":"contract_number",
         "aptpin":"brd_awd_no","pin":"tracking_number","awdmethod":"award_method_id","curamt":"maximum_contract_amount",
         "startdate":"effective_begin_date","enddate":"effective_end_date","regdate":"registered_date","cindustry":"industry_type_id",
@@ -87,7 +87,7 @@ return $header;
 .  (isset($row['fiscal_year_id@checkbook:all_contracts_coa_aggregates']) ? '/year/'.$row['fiscal_year_id@checkbook:all_contracts_coa_aggregates'] : '')
 .  (isset($row['type_of_year@checkbook:all_contracts_coa_aggregates']) ? '/yeartype/'.$row['type_of_year@checkbook:all_contracts_coa_aggregates'] : '')
 .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
-.  '/vendor/' . $row['vendor_id']
+.  (($row['is_prime_or_sub'] == 'P') ? '/vendor/' : '/subvendor/') . $row['vendor_id']
 .  '?expandBottomCont=true\">'. $row['vendor_formatted'] . '</a>'  "
 },
 "agency_formatted": {
@@ -260,7 +260,7 @@ $adjustDataTableOptions->fnInitComplete = '##function () { new FixedColumns( oTa
 {"sClass":"number pad-left","sWidth":"175px","asSorting": [ "desc","asc" ]},
 {"sClass":"text pad-left","sWidth":"175px","asSorting": [ "desc","asc" ]},
 {"sClass":"text vers-num","sWidth":"220px","asSorting": [ "asc","desc" ]},
-{"sClass":"text pad-left","sWidth":"220px","asSorting": [ "asc","desc" ]},
+{"sClass":"text pad-left","sWidth":"300px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"230px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"230px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"230px","asSorting": [ "asc","desc" ]},
@@ -364,7 +364,7 @@ sOut += '<td class=\"number\"  style=\"width:125px\">'+ (row[9] == null ? '': ro
 sOut += '<td class=\"number pad-left\"  style=\"width:175px\">'+ (row[10] == null ? '': row[10])+'</td>';
 sOut += '<td class=\"number pad-left\"  style=\"width:175px\">'+ (row[11] == null ? '': row[11])+'</td>';
 sOut += '<td class=\"text pad-left\"  style=\"width:220px\">'+ (row[12] == null ? '': row[12])+'</td>';
-sOut += '<td class=\"text pad-left\"  style=\"width:220px\">'+ (row[13] == null ? '': row[13])+'</td>';
+sOut += '<td class=\"text pad-left\"  style=\"width:300px\">'+ (row[13] == null ? '': row[13])+'</td>';
 sOut += '<td class=\"text\"  style=\"width:230px\">'+ (row[14] == null ? '': row[14])+'</td>';
 sOut += '<td class=\"text\"  style=\"width:230px\">'+ (row[15] == null ? '': row[15])+'</td>';
 sOut += '<td class=\"text\"  style=\"width:230px\">'+ (row[16] == null ? '': row[16])+'</td>';

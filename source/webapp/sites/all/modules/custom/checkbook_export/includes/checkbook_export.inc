@@ -343,6 +343,7 @@ function _checkbook_export_generateExportFile($node,$headers){
             $sql = $node->data;
             $table_columns = $node->widgetConfig->table_columns;
             $export_columns = $node->widgetConfig->exportColumnSqlOverride;
+            $isList = $node->widgetConfig->useList;
 
             foreach($export_columns as $export_column){
                 $column = $export_column->column;
@@ -351,6 +352,14 @@ function _checkbook_export_generateExportFile($node,$headers){
                     if($table_column->column == $column){
                         $override_sql = $export_column->sql;
                         $pos = strpos($sql,$source_column);
+                        if($isList) {
+                            //Handle alias
+                            $pos -= 3;
+                            $alias_source_column = substr($sql, $pos, strlen($source_column)+3);
+                            $replace = array($source_column=>$alias_source_column);
+                            $override_sql = str_replace(array_keys($replace), array_values($replace), $override_sql);
+                            $source_column = $alias_source_column;
+                        }
                         if ($pos !== false) {
                             $override_sql = substr_replace($sql,$override_sql,$pos,strlen($source_column));
                             $sql = $override_sql;

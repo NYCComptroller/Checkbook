@@ -38,12 +38,15 @@ $tooltip = "";
 $count =0;
 if($node->widgetConfig->filterName == 'M/WBE Category'){
     $dashboard = _getRequestParamValue('dashboard');
-    foreach($checked as $key=>$value){
-        if($dashboard != 'ss'){
+    foreach($unchecked as $key => $value){
+        if(isset($dashboard) && $dashboard != 'ss'){
             if($value[0] == 7 || $value[0] == 11){
-                unset($checked[$key]);
+                unset($unchecked[$key]);
             }
         }
+    }
+
+    foreach($checked as $key=>$value){
         if($value[0] == 4 || $value[0] == 5){
             $count = $count + $value[2];
             $id = "4~5";
@@ -80,6 +83,9 @@ if(strtolower($filter_name) == 'agency'){
     }
 }
 if(strtolower($filter_name) == 'vendor'){
+    if(_checkbook_check_isEDCPage()){
+        $filter_name = 'Prime Vendor';
+    }
     if(in_array($node->nid, array(681, 658, 690, 669)))
     {
         $vendornm_facet = true;

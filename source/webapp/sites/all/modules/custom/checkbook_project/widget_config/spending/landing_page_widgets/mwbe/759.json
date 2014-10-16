@@ -11,6 +11,9 @@
     "adjustTotalAggregateColumnsParameters":"
         $params = $parameters;
         unset($params['minority_type_id@checkbook:spending_subven_data']);
+        unset($params['industry_type_id@checkbook:spending_subven_data']);
+        unset($params['vendor_id@checkbook:spending_subven_data']);
+        unset($params['agency_id@checkbook:spending_subven_data']);
         return $params;
     ",
     "columns": [
@@ -75,6 +78,15 @@
     "adjustParameters":"
     if(isset($parameters['minority_type_id'])) {
         $parameters['minority_type_id@checkbook:spending_subven_data'] = $parameters['minority_type_id'];
+    }
+    if(isset($parameters['industry_type_id'])) {
+        $parameters['industry_type_id@checkbook:spending_subven_data'] = $parameters['industry_type_id'];
+    }
+    if(isset($parameters['vendor_id'])) {
+        $parameters['vendor_id@checkbook:spending_subven_data'] = $parameters['vendor_id'];
+    }
+    if(isset($parameters['agency_id'])) {
+        $parameters['agency_id@checkbook:spending_subven_data'] = $parameters['agency_id'];
     }
 
     return $parameters;
