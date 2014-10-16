@@ -244,6 +244,7 @@ class SpendingUtil{
     static function getPayeeNameLinkUrl($node, $row){
 
         $custom_params = null;
+        $dashboard = _getRequestParamValue("dashboard");
         $year = _getRequestParamValue("year");
         $calyear = _getRequestParamValue("calyear");
         $year_type = isset($calyear) ? "C" : "B";
@@ -256,7 +257,7 @@ class SpendingUtil{
 
         switch($is_prime_or_sub) {
             case "S":
-                $custom_params = array("dashboard"=>"sp","subvendor"=>$vendor_id);
+                $custom_params = array("dashboard"=>($dashboard == "ms" ? "ss" :  "sp"),"subvendor"=>$vendor_id);
                 break;
             case "P":
                 $custom_params = $is_mwbe_certified ? array("dashboard"=>"mp","vendor"=>$vendor_id) : array("vendor" =>$vendor_id);
