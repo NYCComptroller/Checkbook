@@ -104,18 +104,22 @@
     "table_columns": [
             {"labelAlias":"sub_vendor_name","column":"sub_vendor_name_link2","sortSourceColumn":"sub_vendor.sub_vendor"},
             {"labelAlias":"no_of_contracts","column":"total_sub_contracts","sortSourceColumn":"total_sub_contracts"},
+            {"label":"","column":"","export":false},
             {"labelAlias":"mwbe_category","column":"mwbe_category_name_link","sortSourceColumn":"minority_type.minority_type"},
+            {"label":"","column":"","export":false},
             {"labelAlias":"prime_vendor","column":"prime_vendor_name_link2","sortSourceColumn":"prime_vendor.prime_vendor"},
             {"labelAlias":"ytd_spending_sub_vendors","column":"ytd_spending_sub_vendors_link","sortSourceColumn":"ytd_spending_sub_vendors"},
             {"label":"","column":""}
     ],
     "dataTableOptions":{
         "aoColumns": [
+            {"sClass":"text","sWidth":"140px","bSortable":false},
+            {"sClass":"number","sWidth":"20px","bSortable":true,"asSorting":["asc","desc"]},
+            {"sWidth":"40px","bSortable":false},
+            {"sClass":"text","sWidth":"100px","bSortable":false},
+            {"sWidth":"30px","bSortable":false},
             {"sClass":"text","sWidth":"170px","bSortable":false},
-            {"sClass":"number","sWidth":"50px","bSortable":true,"asSorting":["asc","desc"]},
-            {"sClass":"text pad-left","sWidth":"100px","bSortable":false},
-            {"sClass":"text pad-left","sWidth":"170px","bSortable":false},
-            {"sClass":"number","sWidth":"100px","bSortable":true,"asSorting":["desc","asc"]},
+            {"sClass":"number","sWidth":"90px","bSortable":true,"asSorting":["desc","asc"]},
             {"sWidth":"15px","bSortable":false}
         ],
         "bServerSide": true,
@@ -125,7 +129,7 @@
         "bLengthChange": false,
         "bInfo": false,
         "bAutoWidth": false,
-        "aaSorting": [[ 4, "desc" ]],
+        "aaSorting": [[ 6, "desc" ]],
         "fnServerParams": "##function ( aoData ) {
                    reloadExpandCollapseWidget(this,aoData);
         }##",
