@@ -34,7 +34,7 @@
     "datasets":[{"name":"agency_short","column":"agency_formatted","type":"string","isArray":true}],
     "limit": 10,
     "orderBy": "-check_amount_sum",
-    "cleanURLParameters":["year","yeartype","agency","vendor","category","mwbe"],
+    "cleanURLParameters":["year","yeartype","agency","vendor","subvendor","category","mwbe"],
     "defaultParameters":{"check_amount_sum":"0"},
     "defaultParamTypeConfig":{"check_amount_sum":"ne"},
     "adjustParameters":"
@@ -44,7 +44,7 @@
                 }
                 return $adjustedParameters;
     ",
-    "urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor.prime_vendor","category":"spending_category_id","mwbe":"minority_type_id"},
+    "urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor.prime_vendor","subvendor":"sub_vendor.sub_vendor","category":"spending_category_id","mwbe":"minority_type_id"},
     "transformationPHP": "
         $data = array();$categories=array();
         foreach ($node->data as $row){
