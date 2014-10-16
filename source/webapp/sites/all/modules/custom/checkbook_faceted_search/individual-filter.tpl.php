@@ -39,7 +39,7 @@ $count =0;
 if($node->widgetConfig->filterName == 'M/WBE Category'){
     $dashboard = _getRequestParamValue('dashboard');
     foreach($unchecked as $key => $value){
-        if($dashboard != 'ss'){
+        if(isset($dashboard) && $dashboard != 'ss'){
             if($value[0] == 7 || $value[0] == 11){
                 unset($unchecked[$key]);
             }
