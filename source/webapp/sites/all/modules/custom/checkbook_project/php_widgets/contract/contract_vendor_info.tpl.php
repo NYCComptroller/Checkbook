@@ -71,7 +71,7 @@ if(_getRequestParamValue("doctype")=="RCT1"){
                  . $node->data[0]['vendor_id'] . '?expandBottomCont=true';
 }
 else{
-   if(_is_mwbe_vendor($node->data[0]['vendor_id'], _getCurrentYearID(), 'B')){
+   if($node->data[0]["mwbe_vendor"] == 'Yes'){
        $vendor_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
         .$node->data[0]['vendor_id'].'/dashboard/mp?expandBottomCont=true';
    }
@@ -123,7 +123,7 @@ $total_subvendor_count = $res->data[0]['sub_vendor_count'];
     <li><span class="gi-list-item">Total Number of Sub Vendors:</span> <?php echo $total_subvendor_count; ?></li>
 <?php if( _get_current_datasource() == "checkbook" ){?>    
     <li><span class="gi-list-item">M/WBE Vendor:</span> <?php echo $node->data[0]['mwbe_vendor'] ;?></li>
-<?php if(!preg_match('/newwindow/',$_GET['q'])){ ?>
+<?php if(!preg_match('/newwindow/',$_GET['q']) && $node->data[0]["mwbe_vendor"] == 'Yes'){ ?>
     <li><span class="gi-list-item">M/WBE Category:</span> <a href="/contracts_landing/status/A/yeartype/B/year/<?php echo _getFiscalYearID();?>/mwbe/<?php echo $minority_type_id; ?>/dashboard/mp"><?php echo $ethnicity ;?></a></li>
 <?php } else { ?>
 <li><span class="gi-list-item">M/WBE Category: </span><?php echo  $ethnicity ;?></li>
