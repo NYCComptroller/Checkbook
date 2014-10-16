@@ -59,7 +59,13 @@ $spending_link = "/spending/transactions/agid/" . _getRequestParamValue("agid") 
 <?php
 
 if(isset($node->magid)){
-  $master_link_html = '<span class="master-contract-link">Parent Contract: <a class="bottomContainerReload" href=/panel_html/contract_transactions/contract_details/magid/' .  $node->magid . '/doctype/' . $node->document_code. $datasource . ' class=\"bottomContainerReload\">' .  $node->contract_number . '</a></span>';
+if(!preg_match("/newwindow/",current_path())){
+    $master_link_html = '<span class="master-contract-link">Parent Contract: <a class="bottomContainerReload" href=/panel_html/contract_transactions/contract_details/magid/' .  $node->magid . '/doctype/' . $node->document_code. $datasource . ' class=\"bottomContainerReload\">' .  $node->contract_number . '</a></span>';
+}
+else
+{
+    $master_link_html = '<span class="master-contract-link">Parent Contract: '.  $node->contract_number . '</span>';
+}
   echo  $master_link_html;
 }
 
@@ -120,12 +126,8 @@ $maximum_contract_amount =  ( _getRequestParamValue("datasource") == "checkbook_
           <?php }else{ echo $node->data[0]['legal_name_checkbook_vendor']; } ?>
           </span></li>
     <?php
- 
 	}
-
     ?>
-    
-    
       <li><span class="gi-list-item">Purpose:</span> <?php echo $node->data[0]['description'];?></li>
       <li><span class="gi-list-item">Contract Type:</span> <?php echo $node->data[0]['agreement_type_name'];?></li>
       
