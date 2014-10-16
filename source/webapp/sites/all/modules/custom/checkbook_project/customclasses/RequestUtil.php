@@ -121,22 +121,22 @@ class RequestUtil{
         $smnid = RequestUtil::getRequestKeyValueFromURL("smnid",$bottomURL);
         $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
         if(preg_match('/^contracts_landing/',current_path()) && preg_match('/status\/A/',current_path())){
-          $title = $title . ' Active Expense Contracts Transactions' ;
+          $title = $title . ' ' . RequestUtil::getDashboardTitle() .' Active Expense Contracts Transactions' ;
         }
         elseif(preg_match('/^contracts_landing/',current_path()) && preg_match('/status\/R/',current_path())){
-          $title = $title . ' Registered Expense Contracts Transactions' ;
+          $title = $title . ' ' . RequestUtil::getDashboardTitle() .' Registered Expense Contracts Transactions' ;
         }
         elseif(preg_match('/^contracts_revenue_landing/',current_path()) && preg_match('/status\/A/',current_path())){
-          $title = $title . ' Active Revenue Contracts Transactions' ;
+          $title = $title . ' ' . RequestUtil::getDashboardTitle() .' Active Revenue Contracts Transactions' ;
         }
         elseif(preg_match('/^contracts_revenue_landing/',current_path()) && preg_match('/status\/R/',current_path())){
-          $title = $title . ' Registered Revenue Contracts Transactions' ;
+          $title = $title . ' ' . RequestUtil::getDashboardTitle() .' Registered Revenue Contracts Transactions' ;
         }
         elseif(preg_match('/^contracts_pending_exp_landing/',current_path())){
-          $title = $title . ' Pending Expense Contracts Transactions' ;
+          $title = $title . ' ' . RequestUtil::getDashboardTitle() .' Pending Expense Contracts Transactions' ;
         }
         elseif(preg_match('/^contracts_pending_rev_landing/',current_path())){
-          $title = $title . ' Pending Revenue Contracts Transactions' ;
+          $title = $title . ' ' . RequestUtil::getDashboardTitle() .' Pending Revenue Contracts Transactions' ;
         }    
       }
       elseif(preg_match('/^contracts_landing/',current_path()) && preg_match('/status\/A/',current_path())){
@@ -356,22 +356,22 @@ class RequestUtil{
             $title = _checkbook_project_get_name_for_argument("master_agreement_id",RequestUtil::getRequestKeyValueFromURL("magid",$bottomURL)) ;
           }                            
           if(preg_match('/\/category\/1/',$bottomURL)){
-            $title = $title. ' Contract Spending Transactions' ;
+            $title = $title. ' ' . RequestUtil::getDashboardTitle() .' Contract Spending Transactions' ;
           }
           elseif(preg_match('/\/category\/2/',$bottomURL)){
-            $title = $title. ' Payroll Spending Transactions' ;
+            $title = $title. ' ' . RequestUtil::getDashboardTitle() .' Payroll Spending Transactions' ;
           }
           elseif(preg_match('/\/category\/3/',$bottomURL)){
-            $title = $title . ' Capital Contracts Spending Transactions' ;
+            $title = $title . ' ' . RequestUtil::getDashboardTitle() .' Capital Contracts Spending Transactions' ;
           }
           elseif(preg_match('/\/category\/4/',$bottomURL)){
-            $title = $title . ' Others Spending Transactions' ;
+            $title = $title . ' ' . RequestUtil::getDashboardTitle() .' Others Spending Transactions' ;
           }
           elseif(preg_match('/\/category\/5/',$bottomURL)){
-            $title = $title . ' Trust & Agency Spending Transactions' ;
+            $title = $title . ' ' . RequestUtil::getDashboardTitle() .' Trust & Agency Spending Transactions' ;
           }
           else{
-            $title = $title . ' Total Spending Transactions' ;
+            $title = $title . ' ' . RequestUtil::getDashboardTitle() .' Total Spending Transactions' ;
           }  
         }       
       }
