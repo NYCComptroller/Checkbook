@@ -87,17 +87,9 @@
     },
     "summaryView":{
         "template":"spending_agency_summary",
-        "templateTitleEval":"
-            $catName = RequestUtil::getSpendingCategoryName();
-            $title = _checkbook_check_is_sub_vendor_page() ? 'Sub Vendors ' : '';
-            return ($title . 'Agencies ' . $catName . ' Transactions');
-        "
+        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Agencies');"
     },
-    "WidgetTitleEval":"
-        $catName = RequestUtil::getSpendingCategoryName();
-        $title = _checkbook_check_is_sub_vendor_page() ? 'Sub Vendors ' : '';
-        return ($title . 'Agencies ' . $catName . ' Transactions');
-    ",
+    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Agencies');",
     "table_title":"",
     "table_columns": [
         {"labelAlias":"agency_name","column":"agency_name_link"},

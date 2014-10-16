@@ -74,15 +74,9 @@
     },
     "summaryView": {
         "template":"spending_industry_summary",
-        "templateTitleEval":"
-            $catName = RequestUtil::getSpendingCategoryName();
-            return ('M/WBE Spending by Industries ' . $catName . ' Transactions');
-        "
+        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Spending by Industries');"
     },
-    "WidgetTitleEval":"
-        $catName = RequestUtil::getSpendingCategoryName();
-        return ('M/WBE Spending by Industries ' . $catName . ' Transactions');
-    ",
+    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Spending by Industries');",
     "table_title":"",
     "table_columns": [
         {"labelAlias": "industry_name","column": "industry_name_link","sortSourceColumn":"industry_type_name"},

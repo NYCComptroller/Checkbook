@@ -33,7 +33,7 @@ if(_checkbook_check_isEDCPage()){
     $spending_amount = $node->data[2]['check_amount_sum'];
 }
 
-if(preg_match('/vendor/',$_GET['q'])){
+if(preg_match('/\/vendor/',$_GET['q'])){
 	$budget_link = l('<span class="nav-title">Budget</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') ,'',$options_disabled);
 	$revenue_link = l('<span class="nav-title">Revenue</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
 	$payroll_link = l('<span class="nav-title">Payroll</span><br>'.custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
@@ -93,7 +93,7 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 
 	
 	$svendor_active_domain_link = RequestUtil::getDashboardTopNavURL("subvendor") ;
-	if(preg_match('/contracts/',$_GET['q'])){
+	if(preg_match('/contract/',$_GET['q'])){
 		
 		if($current_dashboard == "mp" || $current_dashboard == "sp" || $current_dashboard == null){
 			$mwbe_amount = $node->data[6]['current_amount_sum'] + $node->data[10]['current_amount_sum'];
@@ -140,7 +140,10 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 	
 }
 
-
+if(preg_match('/mwbe\/7/',$_GET['q']) || preg_match('/mwbe\/11/',$_GET['q'])){
+	$mwbe_amount = 0;
+	$svendor_amount  == 0;
+}
 
 
 if(!preg_match('/smnid/',$_GET['q']) && (
