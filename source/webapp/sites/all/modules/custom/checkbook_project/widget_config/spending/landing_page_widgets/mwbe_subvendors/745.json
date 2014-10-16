@@ -91,10 +91,7 @@
                 "expression": "custom_number_formatter_format($row['check_amount'],2,'$')"
             }
     },
-    "WidgetTitleEval":"
-        $catName = RequestUtil::getSpendingCategoryName();
-        return ('M/WBE Checks ' . $catName . ' Transactions');
-    ",
+    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Checks');",
     "table_columns": [
         {"labelAlias": "issue_date","column": "check_eft_issued_date"},
         {"labelAlias": "agency_name","column": "agency_name_link","sortSourceColumn":"agency_name"},
