@@ -1640,7 +1640,7 @@ function _get_toggle_view_links(){
 }
 
 function _is_mwbe_vendor($ag_id){
-    $query1= "SELECT (CASE WHEN (rb.business_type_code = 'MNRT' OR rb.business_type_code = 'WMNO') THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor,
+    $query1= "SELECT (CASE WHEN (rb.business_type_code = 'MNRT' OR rb.business_type_code = 'WMNO') AND vb.status = 2 THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor,
 	                 (CASE WHEN fa.minority_type_id in (4,5) then 'Asian American' ELSE fa.minority_type_name END)AS ethnicity
               FROM {agreement_snapshot} fa
 	          LEFT JOIN {vendor_history} vh ON fa.vendor_history_id = vh.vendor_history_id
