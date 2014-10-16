@@ -344,12 +344,12 @@ class MappingUtil {
     		case "spending":
     			$current_ethnicity_from_filter = MappingUtil::getCurrenEhtnicityName();
     			if( $current_ethnicity_from_filter != null && $current_ethnicity_from_filter != "M/WBE" ){
-    				$title = " <br/>MWBE category: " . $current_ethnicity_from_filter;
+    				$title = " <br/><span class=\"second-line\">MWBE Category: " . $current_ethnicity_from_filter . "</span>";
     			}else{
     				
     				$ethnicity_id = SpendingUtil::getLatestMwbeCategoryByVendor($vendor_id);
     				if($ethnicity_id > 0){
-    					$title = " <br/>MWBE category: " . MappingUtil::getMinorityCategoryById($ethnicity_id);
+    					$title = " <br/><span class=\"second-line\">MWBE Category: " . MappingUtil::getMinorityCategoryById($ethnicity_id). "</span>";
     				}
     			}
     			
@@ -357,11 +357,11 @@ class MappingUtil {
     		case "contracts":
     			$current_ethnicity_from_filter = MappingUtil::getCurrenEhtnicityName();
     			if( $current_ethnicity_from_filter != null && $current_ethnicity_from_filter != "M/WBE" ){
-    				$title = " <br/>MWBE category: " . $current_ethnicity_from_filter;
+    				$title = " <br/><span class=\"second-line\">MWBE category: " . $current_ethnicity_from_filter . "</span>";
     			}else{
     				$ethnicity_id = ContractUtil::getLatestMwbeCategoryByVendor($vendor_id);
     				if($ethnicity_id > 0){
-    					$title = " <br/>MWBE category: " . MappingUtil::getMinorityCategoryById($ethnicity_id);
+    					$title = " <br/><span class=\"second-line\">MWBE Category: " . MappingUtil::getMinorityCategoryById($ethnicity_id) . "</span>";
     				}
     			}
     			
