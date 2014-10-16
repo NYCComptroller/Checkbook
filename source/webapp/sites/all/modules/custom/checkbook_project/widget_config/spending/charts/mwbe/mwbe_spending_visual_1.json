@@ -40,7 +40,7 @@ echo '<div class=\"chart-right\">
                   "formatType": "amount"
              },
              {
-                  "labelAlias": "Percent",
+                  "labelAlias": "Percentage",
                   "columnType": "number"
              }
         ]
