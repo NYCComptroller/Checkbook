@@ -83,7 +83,15 @@ namespace { //global
         	return $document_codes;
         }
         
-        
+        static public function getSubvendorDashboard(){
+            $dashboard = _getRequestParamValue('dashboard');
+            if($dashboard == 'mp')
+                return '/dashboard/sp';
+            else if($dashboard == 'ms')
+                return '/dashboard/ss';
+            else
+                return '/dashboard/'.$dashboard;
+        }
         
         static public function getCurrentContractStatusandType(){
         	if(_getRequestParamValue('status') == 'A'){
