@@ -260,7 +260,7 @@ $adjustDataTableOptions->fnInitComplete = '##function () { new FixedColumns( oTa
 {"sClass":"number pad-left","sWidth":"175px","asSorting": [ "desc","asc" ]},
 {"sClass":"text pad-left","sWidth":"175px","asSorting": [ "desc","asc" ]},
 {"sClass":"text vers-num","sWidth":"220px","asSorting": [ "asc","desc" ]},
-{"sClass":"text pad-left","sWidth":"220px","asSorting": [ "asc","desc" ]},
+{"sClass":"text pad-left","sWidth":"300px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"230px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"230px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"230px","asSorting": [ "asc","desc" ]},
@@ -364,7 +364,7 @@ sOut += '<td class=\"number\"  style=\"width:125px\">'+ (row[9] == null ? '': ro
 sOut += '<td class=\"number pad-left\"  style=\"width:175px\">'+ (row[10] == null ? '': row[10])+'</td>';
 sOut += '<td class=\"number pad-left\"  style=\"width:175px\">'+ (row[11] == null ? '': row[11])+'</td>';
 sOut += '<td class=\"text pad-left\"  style=\"width:220px\">'+ (row[12] == null ? '': row[12])+'</td>';
-sOut += '<td class=\"text pad-left\"  style=\"width:220px\">'+ (row[13] == null ? '': row[13])+'</td>';
+sOut += '<td class=\"text pad-left\"  style=\"width:300px\">'+ (row[13] == null ? '': row[13])+'</td>';
 sOut += '<td class=\"text\"  style=\"width:230px\">'+ (row[14] == null ? '': row[14])+'</td>';
 sOut += '<td class=\"text\"  style=\"width:230px\">'+ (row[15] == null ? '': row[15])+'</td>';
 sOut += '<td class=\"text\"  style=\"width:230px\">'+ (row[16] == null ? '': row[16])+'</td>';
