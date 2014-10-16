@@ -41,8 +41,8 @@ $queryVendorDetails = "SELECT fa.minority_type_id, fa.contract_number, rb.busine
 	                            LEFT JOIN {ref_address_type} ra ON va.address_type_id = ra.address_type_id
 	                            LEFT JOIN {vendor_business_type} vb ON vh.vendor_history_id = vb.vendor_history_id
 	                            LEFT JOIN {ref_business_type} rb ON vb.business_type_id = rb.business_type_id
-	                            LEFT JOIN {ref_minority_type} rm ON vb.minority_type_id = rm.minority_type_id
-	                        WHERE ra.address_type_code = 'PR' and fa.latest_flag = 'Y' and fa.original_agreement_id = " . $ag_id;
+	                            LEFT JOIN {ref_minority_type} rm ON vb.minority_type_id = rm.minority_type_id'
+	                        WHERE ra.address_type_code = 'PR' and fa.latest_flag = 'Y' and fa.original_agreement_id = " . $ag_id. "LIMIT 1";
 
 $queryVendorCount = " select count(*) total_contracts_sum from {agreement_snapshot} where vendor_id =
 (select vendor_id from {agreement_snapshot} where original_agreement_id =". $ag_id . "limit 1)
