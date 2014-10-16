@@ -11,7 +11,7 @@
     "urlParameterName":"vendornm",
     "autocompleteParamName":"vendor_auto",
     "autocompleteID":"fvendorNm",
-    "autocompleteField":"vendornm.vendornm.vendor_name",
+    "autocompleteField":"vendornm.vendornm",
     "urlParamMap":{"vendornm":"vendornm.vendornm","vendornm_exact":"vendornm.vendornm"},
     "maxSelect":5,
     "adjustParameters":"
@@ -27,7 +27,7 @@
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
         }
         $adjustedParameters['vendornm.vendornm'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
-
+		
         return $adjustedParameters;
     ",      
     "template":"individual_filter"
