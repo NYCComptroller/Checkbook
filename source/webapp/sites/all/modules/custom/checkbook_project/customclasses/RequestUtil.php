@@ -140,27 +140,28 @@ class RequestUtil{
         }    
       }
       elseif(preg_match('/^contracts_landing/',current_path()) && preg_match('/status\/A/',current_path())){
-        $title = _get_contracts_breadcrumb_title_drilldown() . ' Active Expense Contracts' ;
+        $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Active Expense Contracts' ;
       }
       elseif(preg_match('/^contracts_landing/',current_path()) && preg_match('/status\/R/',current_path())){
-        $title = _get_contracts_breadcrumb_title_drilldown() . ' Registered Expense Contracts' ;
+        $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() .' Registered Expense Contracts' ;
       }
       elseif(preg_match('/^contracts_revenue_landing/',current_path()) && preg_match('/status\/A/',current_path())){
-        $title = _get_contracts_breadcrumb_title_drilldown() . ' Active Revenue Contracts' ;
+        $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Active Revenue Contracts' ;
       }
       elseif(preg_match('/^contracts_revenue_landing/',current_path()) && preg_match('/status\/R/',current_path())){
-        $title = _get_contracts_breadcrumb_title_drilldown() . ' Registered Revenue Contracts' ;
+        $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() .' Registered Revenue Contracts' ;
       }
       elseif(preg_match('/^contracts_pending_exp_landing/',current_path())){
-        $title = _get_pending_contracts_breadcrumb_title_drilldown() . ' Pending Expense Contracts' ;
+        $title = _get_pending_contracts_breadcrumb_title_drilldown() . ' ' . RequestUtil::getDashboardTitle() .' Pending Expense Contracts' ;
       }
       elseif(preg_match('/^contracts_pending_rev_landing/',current_path())){
-        $title = _get_pending_contracts_breadcrumb_title_drilldown() . ' Pending Revenue Contracts' ;
+        $title = _get_pending_contracts_breadcrumb_title_drilldown() . ' ' . RequestUtil::getDashboardTitle() .' Pending Revenue Contracts' ;
       }
       else{
         GLOBAL $checkbook_breadcrumb_title;
         $title = $checkbook_breadcrumb_title;
       }
+      
       return html_entity_decode($title);
     }
 
@@ -375,22 +376,22 @@ class RequestUtil{
         }       
       }
       elseif(preg_match('/\/category\/1/',current_path())){
-        $title = _get_spending_breadcrumb_title_drilldown() . ' Contract Spending' ;
+        $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() .' Contract Spending' ;
       }
       elseif(preg_match('/\/category\/2/',current_path())){
-        $title = _get_spending_breadcrumb_title_drilldown() . ' Payroll Spending' ;
+        $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() .' Payroll Spending' ;
       }
       elseif(preg_match('/\/category\/3/',current_path())){
-        $title = _get_spending_breadcrumb_title_drilldown() . ' Capital Contracts Spending' ;
+        $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() .' Capital Contracts Spending' ;
       }
       elseif(preg_match('/\/category\/4/',current_path())){
-        $title = _get_spending_breadcrumb_title_drilldown() . ' Others Spending' ;
+        $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() .' Others Spending' ;
       }
       elseif(preg_match('/\/category\/5/',current_path())){
-        $title = _get_spending_breadcrumb_title_drilldown() . ' Trust & Agency Spending' ;
+        $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() .' Trust & Agency Spending' ;
       }
       else{
-        $title = _get_spending_breadcrumb_title_drilldown() . ' Total Spending' ;
+        $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() .' Total Spending' ;
       }
       return html_entity_decode($title);
     }
@@ -855,6 +856,29 @@ class RequestUtil{
     	}
     }
     
+    
+    static function getDashboardTitle($dashboard = null){
+    	if($dashboard == null){
+    		$dashboard = _getRequestParamValue('dashboard');
+    	}
+    	switch($dashboard){
+    		case "mp" :
+    			return "M/WBE";
+    			break;
+    		case "sp" :
+    			return "Sub Vendors (M/WBE)" ;
+    			break;
+    		case "ms" :
+    			return "M/WBE (Sub Vendors)";
+    			break;
+    		case "ss" :
+    			return "Sub Vendors";
+    			break;
+    	} 
+    	 
+    }
+    
+    
     static function replaceParamFromString($string,$param,$value){
     	return preg_replace('/\/' .$param .'\/[^\/]*/','/' . $param .'/' . $value,$string);
     }
@@ -1003,4 +1027,5 @@ class RequestUtil{
     	}
 
     }
+    
 }
