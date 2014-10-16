@@ -37,7 +37,13 @@ $tooltip = "";
 //Checking 'Asian-American' filter in MWBE Category Facet
 $count =0;
 if($node->widgetConfig->filterName == 'M/WBE Category'){
+    $dashboard = _getRequestParamValue('dashboard');
     foreach($checked as $key=>$value){
+        if($dashboard != 'ss'){
+            if($value[0] == 7 || $value[0] == 11){
+                unset($checked[$key]);
+            }
+        }
         if($value[0] == 4 || $value[0] == 5){
             $count = $count + $value[2];
             $id = "4~5";
