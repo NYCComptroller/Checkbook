@@ -763,8 +763,8 @@ table.expense td.subvendors .expense-container > a {
 table.expense td.subvendors.active .expense-container > a {
     background: url("../images/icon_subvendor_a.png") no-repeat center 5px;
 }
-table.expense td.mwbe .expense-container > a > div,
-table.expense td.subvendors .expense-container > a > div{
+table.expense td.mwbe .expense-container > a > div.active,
+table.expense td.subvendors .expense-container > a > div.active{
     background: url("../images/arrow-gray_nofill.png") no-repeat 100px 23px;
 }
 table.expense td.mwbe .expense-container > a:hover > div,
