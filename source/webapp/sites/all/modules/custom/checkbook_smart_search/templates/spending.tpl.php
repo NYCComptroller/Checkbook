@@ -33,18 +33,18 @@ else
     if($spending_results['is_prime_or_sub'] == 'Yes'){
         $linkable_fields = array(
             "agency_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getFiscalYearID() . "/yeartype/B/agency/".$spending_results["agency_id"],
-            "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getFiscalYearID() . "/yeartype/B/subvendor/".$spending_results["vendor_id"]."/dashboard/ss",
+            "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . $spending_results["fiscal_year_id"] . "/yeartype/B/subvendor/".$spending_results["vendor_id"]."/dashboard/ss",
         );
-    }elseif(SpendingUtil::getLatestMwbeCategoryByVendor($spending_results["vendor_id"], NULL, _getFiscalYearID(), 'B') != ''){
+    }elseif(SpendingUtil::getLatestMwbeCategoryByVendor($spending_results["vendor_id"], NULL, $spending_results["fiscal_year_id"], 'B') != ''){
         $linkable_fields = array(
             "agency_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getFiscalYearID() . "/yeartype/B/agency/".$spending_results["agency_id"],
-            "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getFiscalYearID() . "/yeartype/B/vendor/".$spending_results["vendor_id"]."/dashboard/mp",
+            "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . $spending_results["fiscal_year_id"] . "/yeartype/B/vendor/".$spending_results["vendor_id"]."/dashboard/mp",
         );
     }
     else{
         $linkable_fields = array(
             "agency_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getFiscalYearID() . "/yeartype/B/agency/".$spending_results["agency_id"],
-            "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . _getFiscalYearID() . "/yeartype/B/vendor/".$spending_results["vendor_id"],
+            "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . $spending_results["fiscal_year_id"] . "/yeartype/B/vendor/".$spending_results["vendor_id"],
         );
     }
 }
