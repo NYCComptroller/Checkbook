@@ -762,6 +762,12 @@ class SpendingUtil{
     	
     }
 
+    static function getTransactionPageTitle($widgetTitle){
+        $catName = RequestUtil::getSpendingCategoryName();
+        $title = RequestUtil::getDashboardTitle();
+        return ($title . " " . $widgetTitle . " " . $catName . " Transactions");
+    }
+
     
     function _show_mwbe_custom_legend(){
     	$mwbe_cats = _getRequestParamValue('mwbe');
@@ -784,7 +790,7 @@ class SpendingUtil{
     	}else{
     		return false;
     	}
-    } 
+    }
 }
 
 

@@ -85,15 +85,9 @@
     },
     "summaryView":{
         "template":"spending_prime_vendor_summary",
-        "templateTitleEval":"
-            $catName = RequestUtil::getSpendingCategoryName();
-            return ('M/WBE Prime Vendors ' . $catName . ' Transactions');
-        "
+        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Prime Vendors');"
     },
-    "WidgetTitleEval":"
-        $catName = RequestUtil::getSpendingCategoryName();
-        return ('M/WBE Prime Vendors ' . $catName . ' Transactions');
-    ",
+    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Prime Vendors');",
     "table_title":"",
     "table_columns": [
         {"labelAlias": "prime_vendor","column": "vendor_name_link","sortSourceColumn":"prime_vendor.prime_vendor.legal_name"},

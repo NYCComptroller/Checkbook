@@ -92,17 +92,9 @@
     },
     "summaryView":{
         "template":"spending_sub_contract_summary",
-        "templateTitleEval":"
-            $catName = RequestUtil::getSpendingCategoryName();
-            $title = _checkbook_check_is_sub_vendor_page() ? 'Sub Vendors ' : '';
-            return ($title . 'Contracts ' . $catName . ' Transactions');
-        "
+        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Contracts');"
     },
-    "WidgetTitleEval":"
-        $catName = RequestUtil::getSpendingCategoryName();
-        $title = _checkbook_check_is_sub_vendor_page() ? 'Sub Vendors ' : '';
-        return ($title . 'Contracts ' . $catName . ' Transactions');
-    ",
+    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Contracts');",
     "table_title":"",
     "table_columns": [
         {"labelAlias":"contract_id","column":"contract_number_link","sortSourceColumn":"document_id.document_id"},
