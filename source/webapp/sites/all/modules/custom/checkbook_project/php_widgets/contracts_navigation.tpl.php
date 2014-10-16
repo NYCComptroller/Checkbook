@@ -33,7 +33,7 @@ if(_checkbook_check_isEDCPage()){
     $spending_amount = $node->data[2]['check_amount_sum'];
 }
 
-if(preg_match('/vendor/',$_GET['q'])){
+if(preg_match('/\/vendor/',$_GET['q'])){
 	$budget_link = l('<span class="nav-title">Budget</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') ,'',$options_disabled);
 	$revenue_link = l('<span class="nav-title">Revenue</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
 	$payroll_link = l('<span class="nav-title">Payroll</span><br>'.custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
