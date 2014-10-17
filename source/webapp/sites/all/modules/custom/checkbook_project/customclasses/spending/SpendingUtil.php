@@ -257,7 +257,10 @@ class SpendingUtil{
 
         switch($is_prime_or_sub) {
             case "S":
-                $custom_params = array("dashboard"=>($dashboard == "ms" ? "ss" :  "sp"),"subvendor"=>$vendor_id);
+                $custom_params = array(
+                    "dashboard"=>!isset($dashboard) || $dashboard == "mp" ? "sp" : "ss",
+                    "subvendor"=>$vendor_id
+                );
                 break;
             case "P":
                 $custom_params = $is_mwbe_certified ? array("dashboard"=>"mp","vendor"=>$vendor_id) : array("vendor" =>$vendor_id);
