@@ -167,7 +167,7 @@
 	
 		 		$tooltip_label = 
 	 						'Prime Vendor: ' . $row['legal_name'].  '<br/>' .
-	 						MappingUtil::getCurrenEhtnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>' 
+	 						'M/WBE Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>' 
 	 						;
 				$node->widgetConfig->gridConfig->data[] = array($row['legal_name'],
 														 $row[$amount_column]
