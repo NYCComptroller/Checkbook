@@ -195,7 +195,7 @@ class SpendingUtil{
         $dashboard = _getRequestParamValue("dashboard");
         $custom_params = array(
             "mwbe"=>null,
-            "dashboard"=>$dashboard == "mp" ? "sp" : "ss",
+            "dashboard"=>$dashboard == "mp" || $dashboard == "sp" ? "sp" : "ss",
             "subvendor"=>$row["sub_vendor_sub_vendor"]
         );
         return '/' . self::getLandingPageWidgetUrl($custom_params);
@@ -258,7 +258,7 @@ class SpendingUtil{
         switch($is_prime_or_sub) {
             case "S":
                 $custom_params = array(
-                    "dashboard"=>!isset($dashboard) || $dashboard == "mp" ? "sp" : "ss",
+                    "dashboard"=>!isset($dashboard) || $dashboard == "mp" || $dashboard == "sp" ? "sp" : "ss",
                     "subvendor"=>$vendor_id
                 );
                 break;
