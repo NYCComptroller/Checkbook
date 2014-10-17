@@ -30,6 +30,7 @@
     "html_class":"",
     "no_results_content":"No Results Found",
     "dataset":"checkbook:contracts_subven_vendor_spending",
+    "totalAggregateColumns":["check_amount_sum"],
     "columns":[
         "sub_vendor.sub_vendor",
         "sub_vendor.sub_vendor.legal_name",
@@ -37,7 +38,9 @@
         "prime_vendor.prime_vendor.legal_name",
         "minority_type.minority_type",
         "total_sub_contracts",
-        "ytd_spending_sub_vendors"
+        "total_contract_amount_sum",
+        "ytd_spending_sub_vendors",
+        "check_amount_sum"
     ],
     "enableExpand":true,
     "disableViewAll":true,
@@ -95,6 +98,14 @@
             "ytd_spending_sub_vendors_link":{
                 "type":"expression2",
                 "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getSubVendorYtdSpendingUrl($node,$row) . '\">' . custom_number_formatter_format($row['ytd_spending_sub_vendors'],2,'$') . '</a>'"
+            },
+            "formatted_total_contract_amount_sum": {
+                "type": "expression2",
+                "expression": "custom_number_formatter_format($row['total_contract_amount_sum'],2,'$')"
+            },
+            "percent_spending":{
+                "type":"expression2",
+                "expression": "SpendingUtil::getPercentYtdSpending($node, $row)"
             }
     },
     "WidgetTitleEval":"
@@ -102,24 +113,22 @@
         return ('Sub Vendors Checks ' . $catName . ' Transactions');
     ",
     "table_columns": [
-            {"labelAlias":"sub_vendor_name","column":"sub_vendor_name_link2","sortSourceColumn":"sub_vendor.sub_vendor"},
-            {"labelAlias":"no_of_contracts","column":"total_sub_contracts","sortSourceColumn":"total_sub_contracts"},
-            {"label":"","column":"","export":false},
-            {"labelAlias":"mwbe_category","column":"mwbe_category_name_link","sortSourceColumn":"minority_type.minority_type"},
-            {"label":"","column":"","export":false},
-            {"labelAlias":"prime_vendor","column":"prime_vendor_name_link2","sortSourceColumn":"prime_vendor.prime_vendor"},
-            {"labelAlias":"ytd_spending_sub_vendors","column":"ytd_spending_sub_vendors_link","sortSourceColumn":"ytd_spending_sub_vendors"},
-            {"label":"","column":""}
+        {"labelAlias":"sub_vendor_name","column":"sub_vendor_name_link2","sortSourceColumn":"sub_vendor.sub_vendor"},
+        {"labelAlias":"mwbe_category","column":"mwbe_category_name_link","sortSourceColumn":"minority_type.minority_type"},
+        {"labelAlias":"ytd_spending","column":"ytd_spending_sub_vendors_link","sortSourceColumn":"check_amount_sum"},
+        {"labelAlias":"percent_spending","column":"percent_spending","sortSourceColumn":"check_amount_sum"},
+        {"labelAlias":"num_sub_contracts","column":"total_sub_contracts","sortSourceColumn":"total_sub_contracts"},
+        {"labelAlias": "total_contract_amount","column": "formatted_total_contract_amount_sum","sortSourceColumn":"total_contract_amount_sum","header": "false"},
+        {"label":"","column":""}
     ],
     "dataTableOptions":{
         "aoColumns": [
-            {"sClass":"text","sWidth":"140px","bSortable":false},
-            {"sClass":"number","sWidth":"20px","bSortable":true,"asSorting":["asc","desc"]},
-            {"sWidth":"40px","bSortable":false},
-            {"sClass":"text","sWidth":"100px","bSortable":false},
-            {"sWidth":"30px","bSortable":false},
             {"sClass":"text","sWidth":"170px","bSortable":false},
-            {"sClass":"number","sWidth":"90px","bSortable":true,"asSorting":["desc","asc"]},
+            {"sClass":"text pad-left","sWidth":"100px","bSortable":false},
+            {"sClass":"number","sWidth":"100px","bSortable":true,"asSorting":["desc","asc"]},
+            {"sClass":"number","sWidth":"70px","bSortable":true,"asSorting":["asc","desc"]},
+            {"sClass":"number","sWidth":"70px","bSortable":true,"asSorting":["asc","desc"]},
+            {"sClass":"number","sWidth":"70px","bSortable":true,"asSorting":["asc","desc"]},
             {"sWidth":"15px","bSortable":false}
         ],
         "bServerSide": true,
@@ -129,7 +138,7 @@
         "bLengthChange": false,
         "bInfo": false,
         "bAutoWidth": false,
-        "aaSorting": [[ 6, "desc" ]],
+        "aaSorting": [[ 2, "desc" ]],
         "fnServerParams": "##function ( aoData ) {
                    reloadExpandCollapseWidget(this,aoData);
         }##",
