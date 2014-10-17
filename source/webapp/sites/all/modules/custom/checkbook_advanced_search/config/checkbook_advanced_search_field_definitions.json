@@ -99,7 +99,7 @@
         "attributes":{
             "size":30,
             "maxlength":150,
-            "title":"Prime Vendor"
+            "title":"Vendor"
         }
     },
     "type":{
