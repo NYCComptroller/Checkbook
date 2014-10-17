@@ -10,6 +10,8 @@
 
 
 $contracts_parameter_mapping = _checkbook_smart_search_domain_fields('contracts', $IsOge);
+
+dsm($contracts_results);
 if(strtolower($contracts_results['contract_status']) == 'registered'){
 
    $current_date = date("c").'Z';
@@ -24,6 +26,13 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
            $status = "R";
    }
 
+    if($contracts_results['fiscal_year_id']){
+        $fiscal_year_id = $contracts_results['fiscal_year_id'];
+    }
+    else{
+        $fiscal_year_id = _getFiscalYearID();
+    }
+
     if(strtolower($contracts_results['contract_category_name']) == 'expense'){
         if($IsOge){
             $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/datasource/checkbook_oge/year/". _getFiscalYearID() . '/agency/' . $contracts_results['agency_id'] .'/vendor/'.$contracts_results['vendor_id'];
@@ -32,13 +41,13 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
         }
         else {
             if($contracts_results["is_prime_or_sub"] == 'Yes'){
-                $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". $contracts_results['fiscal_year_id'] .'/subvendor/'.$contracts_results['vendor_id']."/dashboard/ss";
-            }else if(ContractUtil::getLatestMwbeCategoryByVendor($contracts_results['vendor_id'], NULL, $contracts_results['fiscal_year_id'],'B') != ''){
-                $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". $contracts_results['fiscal_year_id'] .'/vendor/'.$contracts_results['vendor_id']."/dashboard/mp";
+                $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". $fiscal_year_id .'/subvendor/'.$contracts_results['vendor_id']."/dashboard/ss";
+            }else if(ContractUtil::getLatestMwbeCategoryByVendor($contracts_results['vendor_id'], NULL, $fiscal_year_id,'B') != ''){
+                $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". $fiscal_year_id .'/vendor/'.$contracts_results['vendor_id']."/dashboard/mp";
             }else{
-                $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". $contracts_results['fiscal_year_id'] .'/vendor/'.$contracts_results['vendor_id'];
+                $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". $fiscal_year_id .'/vendor/'.$contracts_results['vendor_id'];
             }
-            $agency_link = "/contracts_landing/status/" .$status."/yeartype/B/year/"._getFiscalYearID().'/agency/'.$contracts_results['agency_id'];
+            $agency_link = "/contracts_landing/status/" .$status."/yeartype/B/year/".$fiscal_year_id.'/agency/'.$contracts_results['agency_id'];
         }
         $contract_Id_link = "/contracts_landing/status/" .$status;
 
@@ -49,13 +58,13 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
         }
         else{
             if( $contracts_results["is_prime_or_sub"] == 'Yes'){
-                $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". $contracts_results['fiscal_year_id'] .'/subvendor/'.$contracts_results['vendor_id']."/dashboard/ss";
-            }else if(ContractUtil::getLatestMwbeCategoryByVendor($contracts_results['vendor_id'], NULL, $contracts_results['fiscal_year_id'],'B') != ''){
-                $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". $contracts_results['fiscal_year_id'] .'/vendor/'.$contracts_results['vendor_id']."/dashboard/mp";
+                $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". $fiscal_year_id .'/subvendor/'.$contracts_results['vendor_id']."/dashboard/ss";
+            }else if(ContractUtil::getLatestMwbeCategoryByVendor($contracts_results['vendor_id'], NULL, $fiscal_year_id,'B') != ''){
+                $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". $fiscal_year_id .'/vendor/'.$contracts_results['vendor_id']."/dashboard/mp";
             }else{
-                $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". $contracts_results['fiscal_year_id'] .'/vendor/'.$contracts_results['vendor_id'];
+                $vendor_link = "/contracts_landing/status/" .$status."/yeartype/B/year/". $fiscal_year_id .'/vendor/'.$contracts_results['vendor_id'];
             }
-            $agency_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/year/"._getFiscalYearID().'/agency/'.$contracts_results['agency_id'];
+            $agency_link = "/contracts_revenue_landing/status/" .$status."/yeartype/B/year/".$fiscal_year_id.'/agency/'.$contracts_results['agency_id'];
         }
         $contract_Id_link = "/contracts_revenue_landing/status/" .$status;
     }
@@ -165,7 +174,6 @@ foreach ($contracts_parameter_mapping as $key => $title){
   }else{
   	$value = str_ireplace($SearchTerm,'<em>'. $temp . '</em>', $value);
   }
-
   if(in_array($key, $amount_fields)){
     $value = custom_number_formatter_format($value, 2 , '$');
   }else if(in_array($key, $date_fields)){
@@ -174,6 +182,9 @@ foreach ($contracts_parameter_mapping as $key => $title){
     }
   }else if(array_key_exists($key, $linkable_fields)){
     $value = "<a href='" . $linkable_fields[$key]. "'>". $value ."</a>";
+  }
+  if($title == "Prime Vendor"){
+      $title = "Vendor";
   }
   if($key == "minority_type_name" && !$contracts_results["minority_type_name"]){
       $value = 'N/A';

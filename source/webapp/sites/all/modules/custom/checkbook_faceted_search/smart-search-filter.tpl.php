@@ -138,7 +138,7 @@ foreach ($render_array as $title => $value) {
                 $url = $_SERVER['REQUEST_URI'];
                 $type = explode('*|*', $url);
                 for($i=0; $i<sizeof($type); $i++){
-                    if(strpos($type[$i], 'vendor_type') == 0){
+                    if(preg_match('/^vendor_type/', $type[$i])){
                         $val = explode('=', $type[$i]);
                     }
                 }
