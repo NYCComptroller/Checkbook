@@ -27,6 +27,7 @@ class RequestUtil{
     static $contracts_spending_landing_links = array("spending_landing",
     					"contracts_landing","contracts_revenue_landing","contracts_pending_rev_landing","contracts_pending_exp_landing");
 
+    static $is_subvendor_flow = null;
     /** Checks if the page bottom container is expanded */
     static function isExpandBottomContainer(){
         $referer = $_SERVER['HTTP_REFERER'];
@@ -234,7 +235,7 @@ class RequestUtil{
     /** Returns Spending Transaction page title based on 'category'/'featured dashboard' value from current path */
     static function getSpendingTransactionTitle($defaultName = 'Total Spending'){
         $categoryId = _getRequestParamValue('category');
-        $dashboard_title = RequestUtil::getDashboardTitle();
+        $dashboard_title = RequestUtil::getDashboardTitle();        
         if(isset($categoryId)){
             $categoryDetails = SpendingUtil::getSpendingCategoryDetails($categoryId,'display_name');
             if(is_array($categoryDetails)){
@@ -758,6 +759,13 @@ class RequestUtil{
     	return  "ss";
     }
     
+    
+    static function setSubvendorDashboardFlowFlag(){
+    	self::$is_subvendor_flow = true;
+    }
+    
+    
+    
     /*
      * 
      * 
@@ -765,6 +773,12 @@ class RequestUtil{
      * 
      */
     static function isDashboardFlowSubvendor($current_state =  null){
+    	
+    	
+    	if(self::$is_subvendor_flow ){
+    		return true;
+    	}
+    	
     	if($current_state == null){
     		$current_state = _getRequestParamValue('dashboard');
     	}
@@ -800,6 +814,26 @@ class RequestUtil{
     			break;
     	}
     }
+
+    
+    static function isDashboardSubvendor($current_state =  null){
+    	if($current_state == null){
+    		$current_state = _getRequestParamValue('dashboard');
+    	}
+    	 
+    	switch($current_state){
+    		case "sp" :
+    			return true;
+    			break;
+    		case "ss" :
+    			return true ;
+    			break;
+    		default:
+    			return false;
+    			break;
+    	}
+    }
+        
     
     static function getDashboardTopNavURL($dashboard_filter){
     	

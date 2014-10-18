@@ -296,7 +296,7 @@ class SpendingUtil{
         }
         
         if($is_prime_or_sub == null){
-        	$is_prime_or_sub =  $is_prime_or_sub = (RequestUtil::isDashboardFlowSubvendor()) ? "S":"P";
+        	$is_prime_or_sub =  $is_prime_or_sub = (RequestUtil::isDashboardSubvendor()) ? "S":"P";
         }
         
         $latest_minority_type_id = null;
