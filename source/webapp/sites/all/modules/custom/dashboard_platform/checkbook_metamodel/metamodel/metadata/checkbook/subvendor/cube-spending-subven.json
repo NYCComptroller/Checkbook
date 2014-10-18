@@ -213,6 +213,16 @@
                     ]
                 },
                 {
+                    "name": "sub_contract",
+                    "levels": [
+                        {
+                            "name": "sub_contract",
+                            "datasetName": "spending_sub_vendor_agid",
+                            "sourceColumnName": "prime_vendor_id"
+                        }
+                    ]
+                },
+                {
                     "name": "sub_vendor",
                     "levels": [
                         {
@@ -397,6 +407,10 @@
         "contracts_subven_spending__agency": [
             {"datasetName": "contracts_subven_spending", "columnNames": ["agency_id"]},
             {"datasetName": "agency", "columnNames": ["agency_id"]}
+        ],
+        "contracts_subven_spending__spending_sub_vendor_agid": [
+            {"datasetName": "contracts_subven_spending", "columnNames": ["prime_vendor_id"]},
+            {"datasetName": "spending_sub_vendor_agid", "columnNames": ["vendor_id"]}
         ],
         "spending_subven_data__industry": [
             {"datasetName": "spending_subven_data", "columnNames": ["industry_type_id"]},
