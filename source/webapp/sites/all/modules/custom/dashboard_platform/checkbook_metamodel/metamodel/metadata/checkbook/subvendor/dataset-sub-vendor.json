@@ -10,16 +10,6 @@
                 }
             ]
         },
-        "spending_sub_vendor_agid": {
-            "datasourceName": "main",
-            "source": "aggregateon_spending_contract",
-            "columns": [
-                {
-                    "name": "vendor_id",
-                    "key": true
-                }
-            ]
-        },
         "sub_vendor": {
             "datasourceName": "main",
             "source": "subvendor",

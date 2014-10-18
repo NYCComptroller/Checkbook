@@ -415,9 +415,36 @@ class SpendingUtil{
      */
     static function getContractNumberLinkUrl($node, $row){
         //contract_number_link
+        $agreement_id = isset($row["agreement_id_agreement_id"])
+            ? $row["agreement_id_agreement_id"]
+            : $row["agreement_id"];
+        $document_id = isset($row["document_id_document_id"])
+            ? $row["document_id_document_id"]
+            : $row["reference_document_code"];
         return '/contract_details'
         . _checkbook_append_url_params()
-        . _checkbook_project_get_contract_url($row["document_id_document_id"], $row["agreement_id_agreement_id"])
+        . _checkbook_project_get_contract_url($document_id,$agreement_id)
+        .'/newwindow';
+    }
+
+    /**
+     * Returns Sub Contract Number Link Url based on values from current path & data row
+     *
+     * @param $node
+     * @param $row
+     * @return string
+     */
+    static function getSubContractNumberLinkUrl($node, $row){
+        //contract_number_link
+        $agreement_id = isset($row["sub_contract_number_sub_contract_number_original_agreement_id"])
+            ? $row["sub_contract_number_sub_contract_number_original_agreement_id"]
+            : $row["original_agreement_id@checkbook:sub_vendor_agid"];
+        $document_id = isset($row["document_id_document_id"])
+            ? $row["document_id_document_id"]
+            : $row["reference_document_code"];
+        return '/contract_details'
+        . _checkbook_append_url_params()
+        . _checkbook_project_get_contract_url($document_id, $agreement_id)
         .'/newwindow';
     }
 
