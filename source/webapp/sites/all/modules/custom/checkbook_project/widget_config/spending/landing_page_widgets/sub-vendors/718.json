@@ -25,8 +25,8 @@
         "prime_vendor.prime_vendor",
         "prime_vendor.prime_vendor.legal_name",
         "check_amount_sum",
-        "sub_contract.sub_contract.agreement_id",
-        "sub_contract.sub_contract"
+        "sub_contract_number.sub_contract_number",
+        "sub_contract_number.sub_contract_number.original_agreement_id"
     ],
     "limit":5,
     "enableExpand":true,
