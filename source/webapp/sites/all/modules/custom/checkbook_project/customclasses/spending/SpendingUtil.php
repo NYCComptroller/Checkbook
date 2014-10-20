@@ -192,17 +192,44 @@ class SpendingUtil{
      * @return string
      */
     static function getSubVendorNameLinkUrl($node, $row){
-        $dashboard = _getRequestParamValue("dashboard");
-        $custom_params = array(
-            "mwbe"=>null,
-            "dashboard"=>$dashboard == "mp" || $dashboard == "sp" ? "sp" : "ss",
-            "subvendor"=>$row["sub_vendor_sub_vendor"]
-        );
-        return '/' . self::getLandingPageWidgetUrl($custom_params);
+        $override_params = null;
+        $vendor_id = $row["sub_vendor_sub_vendor"];
+        $year_id = _getRequestParamValue("year");
+        $year_type = _getRequestParamValue("yeartype");
+        $agency_id = _getRequestParamValue("agency_id");
+        $is_prime_or_sub = "S";
+        $latest_certified_minority_type_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type, $is_prime_or_sub);
+        $is_mwbe_certified = isset($latest_certified_minority_type_id);
+        $current_dashboard = _getRequestParamValue("dashboard");
+
+        //if M/WBE certified, go to citywide else if NOT M/WBE certified, go to M/WBE dashboard
+        $new_dashboard = $is_mwbe_certified ? "sp" : "ss";
+
+        //if switching between dashboard, persist only agency filter (mwbe & vendor if applicable)
+        if($current_dashboard != $new_dashboard) {
+            $override_params = array(
+                "dashboard"=>$new_dashboard,
+                "mwbe"=>$is_mwbe_certified ? "2~3~4~5~9" : null,
+                "agency"=>$agency_id,
+                "vendor"=>$vendor_id,
+                "subvendor"=>null,
+                "category"=>null,
+                "industry"=>null
+            );
+        }
+        //if remaining in the same dashboard persist all filters (drill-down) except sub vendor
+        else {
+            $override_params = array(
+                "dashboard"=>$new_dashboard,
+                "subvendor"=>null,
+                "vendor"=>$vendor_id
+            );
+        }
+        return '/' . self::getLandingPageWidgetUrl($override_params);
     }
 
     /**
-     * Returns Prime Vendor Name Link Url based on values from current path & data row,
+     * Returns Prime Vendor Name Link Url based on values from current path & data row
      *
      * @param $node
      * @param $row
@@ -210,27 +237,16 @@ class SpendingUtil{
      */
     static function getPrimeVendorNameLinkUrl($node, $row){
 
-        $custom_params = null;
-        $dashboard = _getRequestParamValue("dashboard");
         $vendor_id = isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["prime_vendor_prime_vendor"];
         if(!isset($vendor_id)) {
             $vendor_id = isset($row["vendor_id"]) ? $row["vendor_id"] : $row["vendor_vendor"];
         }
+        $year_id = _getRequestParamValue("year");
+        $year_type = _getRequestParamValue("yeartype");
+        $agency_id = _getRequestParamValue("agency_id");
+        $dashboard = _getRequestParamValue("dashboard");
 
-        if(!isset($dashboard)) {
-            $year_id = _getRequestParamValue("year");
-            $year_type = _getRequestParamValue("yeartype");
-            $agency_id = _getRequestParamValue("agency_id");
-            $is_prime_or_sub = "P";
-
-            $latest_certified_minority_type_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type, $is_prime_or_sub);
-            $is_mwbe_certified = isset($latest_certified_minority_type_id);
-            $custom_params = $is_mwbe_certified ? array("dashboard"=>"mp","vendor"=>$vendor_id) : array("vendor" =>$vendor_id);
-        }
-        else {
-            $custom_params = array("vendor" =>$vendor_id);
-        }
-        return '/' . self::getLandingPageWidgetUrl($custom_params);
+        return self::getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard);
     }
 
     /**
@@ -243,32 +259,133 @@ class SpendingUtil{
      */
     static function getPayeeNameLinkUrl($node, $row){
 
-        $custom_params = null;
-        $dashboard = _getRequestParamValue("dashboard");
         $year = _getRequestParamValue("year");
         $calyear = _getRequestParamValue("calyear");
         $year_type = isset($calyear) ? "C" : "B";
         $year_id = isset($calyear) ? $calyear : (isset($year) ? $year : _getCurrentYearID());
         $vendor_id = $row["vendor_id"];
-        $is_prime_or_sub = $row["is_sub_vendor"] == "Yes" ? "S" : "P";
         $agency_id = _getRequestParamValue("agency_id");
-        $latest_certified_minority_type_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type, $is_prime_or_sub);
-        $is_mwbe_certified = isset($latest_certified_minority_type_id);
+        $dashboard = _getRequestParamValue("dashboard");
 
-        switch($is_prime_or_sub) {
-            case "S":
-                $custom_params = array(
-                    "dashboard"=>!isset($dashboard) || $dashboard == "mp" || $dashboard == "sp" ? "sp" : "ss",
-                    "subvendor"=>$vendor_id
-                );
-                break;
-            case "P":
-                $custom_params = $is_mwbe_certified ? array("dashboard"=>"mp","vendor"=>$vendor_id) : array("vendor" =>$vendor_id);
-                break;
-        }
-        return '/' . self::getLandingPageWidgetUrl($custom_params);
+        return $row["is_sub_vendor"] == "No"
+            ? self::getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard)
+            : self::getSubVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard);
+
     }
 
+    /**
+     * Returns Prime Vendor Name Link Url based on values from current path & data row
+     *
+     * if vendor is M/WBE certified - go to M/WBE dashboard
+     * if vendor is NOT M/WBE certified - go to citywide (default) dashboard
+     *
+     * if switching from citywide->M/WBE OR M/WBE->citywide,
+     * then persist only agency filter (mwbe & vendor if applicable)
+     *
+     * if remaining in the same dashboard persist all filters (drill-down) except sub vendor
+     *
+     * @param $vendor_id
+     * @param $agency_id
+     * @param $year_id
+     * @param $year_type
+     * @param $current_dashboard
+     * @return string
+     */
+    static function getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $current_dashboard){
+
+        $override_params = null;
+        $latest_certified_minority_type_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type, "P");
+        $is_mwbe_certified = isset($latest_certified_minority_type_id);
+
+        //if M/WBE certified, go to M/WBE dashboard else if NOT M/WBE certified, go to citywide
+        $new_dashboard = $is_mwbe_certified ? "mp" : null;
+
+        //if switching between dashboard, persist only agency filter (mwbe & vendor if applicable)
+        if($current_dashboard != $new_dashboard) {
+            $override_params = array(
+                "dashboard"=>$new_dashboard,
+                "mwbe"=>$is_mwbe_certified ? "2~3~4~5~9" : null,
+                "agency"=>$agency_id,
+                "vendor"=>$vendor_id,
+                "subvendor"=>null,
+                "category"=>null,
+                "industry"=>null
+            );
+        }
+        //if remaining in the same dashboard persist all filters (drill-down) except sub vendor
+        else {
+            $override_params = array(
+                "dashboard"=>$new_dashboard,
+                "subvendor"=>null,
+                "vendor"=>$vendor_id
+            );
+        }
+        return '/' . self::getLandingPageWidgetUrl($override_params);
+    }
+
+    /**
+     * Returns Sub Vendor Name Link Url based on values from current path & data row
+     *
+     * if sub vendor is M/WBE certified - go to Sub Vendor (M/WBE) dashboard
+     * if sub vendor is NOT M/WBE certified - go to Sub Vendor dashboard
+     *
+     * if switching from citywide->M/WBE OR M/WBE->citywide,
+     * then persist only agency filter (mwbe & vendor if applicable)
+     *
+     * if remaining in the same dashboard persist all filters (drill-down) except sub vendor
+     *
+     * @param $vendor_id
+     * @param $agency_id
+     * @param $year_id
+     * @param $year_type
+     * @param $current_dashboard
+     * @return string
+     */
+    static function getSubVendorLink($vendor_id, $agency_id, $year_id, $year_type, $current_dashboard){
+
+        $override_params = null;
+        $new_dashboard = null;
+        $latest_certified_minority_type_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type, "S");
+        $is_mwbe_certified = isset($latest_certified_minority_type_id);
+
+        //if M/WBE certified, go to Sub Vendor else if NOT M/WBE certified, go to Sub Vendor (M/WBE) dashboard
+        switch($current_dashboard) {
+            case "mp":
+                $new_dashboard = $is_mwbe_certified ? "sp" : "ss";
+                break;
+            case "sp":
+                $new_dashboard = $is_mwbe_certified ? "sp" : "sp";
+                break;
+            case "ss":
+                $new_dashboard = $is_mwbe_certified ? "ss" : "ss";
+                break;
+            default:
+                $new_dashboard = $is_mwbe_certified ? "sp" : "ss";
+                break;
+        }
+
+        //if switching between dashboard, persist only agency filter (mwbe & subvendor if applicable)
+        if($current_dashboard != $new_dashboard) {
+            $override_params = array(
+                "dashboard"=>$new_dashboard,
+                "mwbe"=>$is_mwbe_certified ? "2~3~4~5~9" : null,
+                "agency"=>$agency_id,
+                "subvendor"=>$vendor_id,
+                "vendor"=>null,
+                "category"=>null,
+                "industry"=>null
+            );
+        }
+        //if remaining in the same dashboard persist all filters (drill-down) except vendor
+        else {
+            $override_params = array(
+                "dashboard"=>$new_dashboard,
+                "subvendor"=>$vendor_id,
+                "vendor"=>null
+            );
+        }
+        return '/' . self::getLandingPageWidgetUrl($override_params);
+    }
 
     /**
      * Returns M/WBE category for the given vendor id in the given year and year type
@@ -405,6 +522,93 @@ class SpendingUtil{
         .  _checkbook_project_get_contract_url($row["document_id_document_id"], $row["agreement_id_agreement_id"])
         . _checkbook_append_url_params();
     }
+
+    /**
+     * @param $row
+     * @param $node
+     * @return null|string
+     */
+//    static function prepareContractNumberLink($row, $node) {
+//        if($row['spending_category_name'] == 'Payroll' ||  $row['spending_category_name'] == 'Others') {
+//            return 'N/A';
+//        }
+//
+//        if(empty($row[agreement_id])){
+//            return $row[reference_document_number];
+//        }
+//self::getSpendingContractDetailsPageUrl();
+//        $link = NULL;
+//        $docType = $row['reference_document_code'];
+//
+//        $link = "<a class='new_window' href='/contract_details" . _checkbook_append_url_params() . _checkbook_project_get_contract_url($row[reference_document_number], $row[agreement_id])  ."/newwindow'>"  . $row[reference_document_number] . "</a>";
+//
+//        return $link;
+//    }
+//
+//    /**
+//     * @param $row
+//     * @param $node
+//     * @return null|string
+//     */
+//    static function prepareSubContractNumberLink($row, $node) {
+//        //'<a class=\"new_window\" href=\"' . SpendingUtil::getSubContractNumberLinkUrl($node,$row) . '\">'  . $row[document_id_document_id] . '</a>'
+//        if(isset($row['spending_category_name'])) {
+//            if($row['spending_category_name'] == 'Payroll' ||  $row['spending_category_name'] == 'Others') {
+//                return 'N/A';
+//            }
+//        }
+//
+//        $agreement_id = isset($row["sub_contract_number_sub_contract_number_original_agreement_id"])
+//            ? $row["sub_contract_number_sub_contract_number_original_agreement_id"]
+//            : $row["original_agreement_id@checkbook:sub_vendor_agid"];
+//        $document_id = isset($row["document_id_document_id"])
+//            ? $row["document_id_document_id"]
+//            : $row["reference_document_code"];
+//
+//        if(empty($row[$agreement_id])){
+//            return $row[$document_id];
+//        }
+//
+//        $contract_type = _get_contract_type($document_id);
+//        if(strtolower($contract_type) == 'mma1' || strtolower($contract_type) == 'ma1'){
+//            return '/magid/'.$agreement_id.'/doctype/'.$contract_type;
+//        }else{
+//            return '/agid/'.$agreement_id.'/doctype/'.$contract_type;
+//        }
+//        $custom_params = array()
+//
+//        $custom_params = array('industry'=>isset($row['industry_industry_industry_type_id']) ? $row['industry_industry_industry_type_id'] : $row['industry_type_industry_type']);
+//
+//        $link = NULL;
+//        $docType = $row['reference_document_code'];
+//
+//        $contract_type = _get_contract_type($contnum);
+//        if(strtolower($contract_type) == 'mma1' || strtolower($contract_type) == 'ma1'){
+//            return '/magid/'.$agreement_id.'/doctype/'.$contract_type;
+//        }else{
+//            return '/agid/'.$agreement_id.'/doctype/'.$contract_type;
+//        }
+//        $url = self::getSpendingContractDetailsPageUrl();
+//
+//            //_checkbook_project_get_contract_url($row[reference_document_number], $row[agreement_id])  ."/newwindow'
+//
+//            $custom_params = array('industry'=>isset($row['industry_industry_industry_type_id']) ? $row['industry_industry_industry_type_id'] : $row['industry_type_industry_type']);
+//        return '/' . self::getLandingPageWidgetUrl($custom_params);
+//
+//        if( RequestUtil::isExpandBottomContainer() ){
+//            $link = '<a href=/panel_html/contract_transactions/contract_details/agid/' . $row['agreement_id'] .  '/doctype/' . $docType .  _checkbook_append_url_params() . ' class=bottomContainerReload>'. $row['reference_document_number'] . '</a>';
+//        }else if( RequestUtil::isNewWindow() ){
+//            $link = '<span href=/contracts_landing/status/A'
+//                . _checkbook_project_get_year_url_param_string()
+//                . _checkbook_append_url_params()
+//                . '?expandBottomContURL=/panel_html/contract_transactions/contract_details/agid/' . $row['agreement_id'] .  '/doctype/' . $docType . _checkbook_append_url_params()
+//                .  ' class=loadParentWindow>'. $row['reference_document_number'] . '</span>';
+//        }else {
+//            $link = "<a class='new_window' href='/contract_details" . _checkbook_append_url_params() . _checkbook_project_get_contract_url($row[reference_document_number], $row[agreement_id])  ."/newwindow'>"  . $row[reference_document_number] . "</a>";
+//        }
+//
+//        return $link;
+//    }
 
     /**
      * Returns Contract Number Link Url based on values from current path & data row
@@ -563,6 +767,16 @@ class SpendingUtil{
     }
 
     /**
+     *  Returns a spending contract details page Url with custom parameters appended but instead of persisted
+     *
+     * @param array $override_params
+     * @return string
+     */
+    static function getSpendingContractDetailsPageUrl($override_params = array()) {
+        return self::getSpendingUrl('contract_details',$override_params);
+    }
+
+    /**
      * Function build the url using the path and the current Spending URL parameters.
      * The Url parameters can be overridden by the override parameter array.
      *
@@ -663,23 +877,6 @@ class SpendingUtil{
         $match_landing = '"/spending_landing/"';
         return preg_match($match_landing,$url_ref);
     }
-
-//    /**
-//     * Sets the vendor_type and is_prime_or_sub parameters based on the current dashboard
-//     */
-//    static function getVendorParameters($parameters) {
-//        $dashboard = _getRequestParamValue('dashboard');
-//        if(isset($dashboard)) {
-//            $parameters['vendor_type'] = preg_match('"p"',$dashboard) ? array('P','PM') : array('S','SM');
-//            $parameters['is_prime_or_sub'] = preg_match('"s"',$dashboard) ? 'S' : 'P';
-//        }
-//        else {
-//            $parameters['vendor_type'] = array('P','PM');
-//            $parameters['is_prime_or_sub'] = 'P';
-//        }
-//        return $parameters;
-//    }
-
 
     /**
      * Spending transaction page should be shown for citywide, oge
