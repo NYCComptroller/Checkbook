@@ -25,9 +25,9 @@
 },
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B"},
-"cleanURLParameters":["yeartype","agency","vendor","category","year"],
-"urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"vendor_id","category":"spending_category_id"},
-"urlParamMapSubVendor":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","category":"spending_category_id"},
+"cleanURLParameters":["yeartype","agency","vendor","category","year","industry","mwbe"],
+"urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"vendor_id","category":"spending_category_id","industry":"industry_type_id","mwbe":"minority_type_id"},
+"urlParamMapSubVendor":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","category":"spending_category_id","industry":"industry_type_id","mwbe":"minority_type_id"},
 "chartTitle":"Top Ten Prime Vendors by M/WBE Spending",
 "widgetDataLoader":"
     
@@ -110,6 +110,7 @@
         group by  legal_name, a1.prime_vendor_id';
 
     $sql = $sql1 . ' order by ' . $sort_column . ' desc limit 10';
+
     $node->data  = _checkbook_project_execute_sql($sql);
 
 ",

@@ -12,7 +12,7 @@
         "mwbe",
         "industry"
     ],
-    "defaultParameters":{"type_of_year":"B","spending_category.spending_category":""},
+    "defaultParameters":{"type_of_year":"B"},
     "urlParamMap":{
         "agency":"agency_id",
         "vendor":"prime_vendor.prime_vendor",

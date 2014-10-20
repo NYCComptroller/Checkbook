@@ -32,9 +32,9 @@ if(_getRequestParamValue("magid") != ""){
 }
 
 if(_getRequestParamValue("datasource") != "checkbook_oge"){
-    $queryVendorDetails = "SELECT fa.contract_number, rb.business_type_code, fa.agreement_id,fa.original_agreement_id,  fa.vendor_id, va.address_id, legal_name AS vendor_name, a.address_line_1, a.address_line_2, a.city, a.state, a.zip, a.country,
-	                            (CASE WHEN (rb.business_type_code = 'MNRT' OR rb.business_type_code = 'WMNO') AND vb.status = 2 THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor,
-	                            (CASE WHEN fa.minority_type_id in (4,5) then 'Asian American' ELSE fa.minority_type_name END)AS ethnicity
+    $queryVendorDetails = "SELECT fa.minority_type_id, fa.contract_number, rb.business_type_code, fa.agreement_id,fa.original_agreement_id,  fa.vendor_id, va.address_id, legal_name AS vendor_name, a.address_line_1, a.address_line_2, a.city, a.state, a.zip, a.country,
+	                            (CASE WHEN fa.minority_type_id IN (2,3,4,5,9)  THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor,
+	                            (CASE WHEN fa.minority_type_id IN (4,5) then 'Asian American' ELSE fa.minority_type_name END)AS ethnicity
 	                        FROM {agreement_snapshot} fa
 	                            LEFT JOIN {vendor_history} vh ON fa.vendor_history_id = vh.vendor_history_id
 	                            LEFT JOIN {vendor_address} va ON vh.vendor_history_id = va.vendor_history_id
@@ -43,10 +43,10 @@ if(_getRequestParamValue("datasource") != "checkbook_oge"){
 	                            LEFT JOIN {vendor_business_type} vb ON vh.vendor_history_id = vb.vendor_history_id
 	                            LEFT JOIN {ref_business_type} rb ON vb.business_type_id = rb.business_type_id
 	                            LEFT JOIN {ref_minority_type} rm ON vb.minority_type_id = rm.minority_type_id
-	                        WHERE ra.address_type_code = 'PR' and fa.latest_flag = 'Y' and fa.original_agreement_id = " . $ag_id. "LIMIT 1";
+	                        WHERE ra.address_type_code = 'PR' AND fa.latest_flag = 'Y' AND fa.original_agreement_id = " . $ag_id. "LIMIT 1";
 }else{
     $queryVendorDetails = "SELECT  fa.contract_number, rb.business_type_code, fa.agreement_id,fa.original_agreement_id,  fa.vendor_id, va.address_id, legal_name AS vendor_name, a.address_line_1, a.address_line_2, a.city, a.state, a.zip, a.country,
-	                            (CASE WHEN (rb.business_type_code = 'MNRT' OR rb.business_type_code = 'WMNO') AND vb.status = 2 THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor
+	                            (CASE WHEN fa.minority_type_id IN (2,3,4,5,9)  THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor,
 	                         FROM {agreement_snapshot} fa
 	                            LEFT JOIN {vendor_history} vh ON fa.vendor_history_id = vh.vendor_history_id
 	                            LEFT JOIN {vendor_address} va ON vh.vendor_history_id = va.vendor_history_id
@@ -55,7 +55,7 @@ if(_getRequestParamValue("datasource") != "checkbook_oge"){
 	                            LEFT JOIN {vendor_business_type} vb ON vh.vendor_history_id = vb.vendor_history_id
 	                            LEFT JOIN {ref_business_type} rb ON vb.business_type_id = rb.business_type_id
 	                            LEFT JOIN {ref_minority_type} rm ON vb.minority_type_id = rm.minority_type_id
-	                        WHERE ra.address_type_code = 'PR' and fa.latest_flag = 'Y' and fa.original_agreement_id = " . $ag_id. "LIMIT 1";
+	                        WHERE ra.address_type_code = 'PR' AND fa.latest_flag = 'Y' AND fa.original_agreement_id = " . $ag_id. "LIMIT 1";
 }
 
 
@@ -69,12 +69,11 @@ $results1 = _checkbook_project_execute_sql_by_data_source($queryVendorDetails,_g
 $node->data = $results1;
 
 
-
-foreach($node->data as $key => $value){
-    if($value['business_type_code'] == "MNRT" || $value['business_type_code'] == "WMNO"){
-        $node->data[0]["mwbe_vendor"] = "Yes";
-    }
-}
+//foreach($node->data as $key => $value){
+//    if($value['business_type_code'] == "MNRT" || $value['business_type_code'] == "WMNO"){
+//        $node->data[0]["mwbe_vendor"] = "Yes";
+//    }
+//}
 $total_cont  = 0;
 $results2 = _checkbook_project_execute_sql_by_data_source($queryVendorCount,_get_current_datasource());
 //log_error($_SERVER);
