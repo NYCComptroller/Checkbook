@@ -51,16 +51,15 @@
 
   
     	$sql = ' select
-			v.legal_name ,a1.vendor_id
+			v.legal_name ,a1.prime_vendor_id
 			, sum(maximum_contract_amount) current_amount_sum
 			, count(contract_number) total_contracts		
 		from {aggregateon_subven_contracts_cumulative_spending} a1     
-	    join {vendor} v on v.vendor_id =  a1.vendor_id
+	    join {vendor} v on v.vendor_id =  a1.prime_vendor_id
 	    join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
    		' . $where_filter . '     
-   		group by v.legal_name  ,a1.vendor_id
+   		group by v.legal_name  ,a1.prime_vendor_id
     	order by 3 desc limit 10';
-
     $node->data  = _checkbook_project_execute_sql($sql);
 	  
 ",
@@ -77,7 +76,7 @@
 	 						'Amount: ' . custom_number_formatter_format($row['current_amount_sum'] ,2, '$').  '<br/>' 
 	 						; 
 			$link= CustomURLHelper::prepareUrl(strstr($_GET['q'],'\/',true), ContractURLHelper::$landingPageParams, array('expandBottomCont'=>'true'), 
-						array('vendor'=>$row['vendor_id']) );
+						array('vendor'=>$row['prim_vendor_id']) );
 			$series_new[$index]->url = 	$link;					
 
 			$series_new[$index]->y = (float)$row['current_amount_sum'];
