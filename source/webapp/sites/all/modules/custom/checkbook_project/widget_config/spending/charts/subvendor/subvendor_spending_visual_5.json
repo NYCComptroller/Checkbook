@@ -39,7 +39,8 @@
         $data = array();
         $categories=array();
         foreach ($node->data as $row){
-            $link = SpendingUtil::getLandingPageWidgetUrl(array('subvendor'=>$row['sub_vendor_sub_vendor'])) . '?expandBottomCont=true';
+            //$link = SpendingUtil::getLandingPageWidgetUrl(array('subvendor'=>$row['sub_vendor_sub_vendor'])) . '?expandBottomCont=true';
+            $link = substr(SpendingUtil::getSubVendorNameLinkUrl($node, $row),1);
             $categories[]=html_entity_decode($row['sub_vendor_sub_vendor_legal_name'],ENT_QUOTES);
             $data[] = (object)array('year'=>$row['fiscal_year_id'],'y'=>$row['check_amount_sum'],'url'=>$link,'name'=>strtoupper(html_entity_decode($row['sub_vendor_sub_vendor_legal_name'],ENT_QUOTES)));
         }
