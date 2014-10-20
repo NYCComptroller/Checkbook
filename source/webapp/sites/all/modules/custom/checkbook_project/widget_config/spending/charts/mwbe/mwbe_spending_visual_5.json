@@ -176,8 +176,9 @@
 	
  
 
-			$link= CustomURLHelper::prepareUrl('spending_landing', SpendingUtil::$landingPageParams, array('expandBottomCont'=>'true'), array('vendor'=>$row['vendor_id']) );	 						
-			$series_new[$index]->url = $link;
+			//$link= CustomURLHelper::prepareUrl('spending_landing', SpendingUtil::$landingPageParams, array('expandBottomCont'=>'true'), array('vendor'=>$row['vendor_id']) );
+			$link = SpendingUtil::getPrimeVendorNameLinkUrl($node, $row); 	
+			$series_new[$index]->url = substr($link,1);
 
 
 			$series_new[$index]->y = (float)$row[$amount_column];

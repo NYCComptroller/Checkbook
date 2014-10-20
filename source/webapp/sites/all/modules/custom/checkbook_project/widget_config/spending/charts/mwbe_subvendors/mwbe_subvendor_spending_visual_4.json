@@ -155,7 +155,8 @@
         MappingUtil::getCurrenEhtnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$')
       ;
 
-        $link= CustomURLHelper::prepareUrl('spending_landing', SpendingUtil::$landingPageParams, array('expandBottomCont'=>'true'), array('subvendor'=>$row['vendor_id']) );
+       // $link= CustomURLHelper::prepareUrl('spending_landing', SpendingUtil::$landingPageParams, array('expandBottomCont'=>'true'), array('subvendor'=>$row['vendor_id']) );
+		$link = substr(SpendingUtil::getSubVendorNameLinkUrl($node, $row),1);
         $series_new[$index]->url = $link;
 
 
