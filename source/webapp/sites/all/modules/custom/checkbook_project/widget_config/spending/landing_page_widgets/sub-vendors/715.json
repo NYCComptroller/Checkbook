@@ -95,7 +95,7 @@
             },
             "sub_vendor_name_link2": {
                 "type":"expression2",
-                "expression":"($row[sub_vendor_id] == null )?$row['legal_name@checkbook:sub_vendor']:$row[sub_vendor_name_link]"
+                "expression":"($row[vendor_id] == null )?$row['legal_name@checkbook:sub_vendor']:$row[sub_vendor_name_link]"
             },
             "prime_vendor_name_formatted": {
                 "type":"expression2",
