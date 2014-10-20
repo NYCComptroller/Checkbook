@@ -142,13 +142,13 @@ namespace { //global
         	if($year_type == null){
         		$year_type =  _getRequestParamValue('yeartype');
         	}
-        
 
         	$latest_minority_type_id = null;
+            $agency_query = ($agency_id) ? ' AND agency_id = '. $agency_id : '';
         	if(!isset($contract_vendor_latest_mwbe_category)){
         		$query = "SELECT vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub
                       FROM contract_vendor_latest_mwbe_category
-                      WHERE minority_type_id IN (2,3,4,5,9) AND year_id = '".$year_id."' AND type_of_year = '".$year_type."'
+                      WHERE minority_type_id IN (2,3,4,5,9) AND year_id = '".$year_id."' AND type_of_year = '".$year_type."' . ' ' . $agency_query . ' '.
                       GROUP BY vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub";
         
         		$results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
@@ -172,12 +172,11 @@ namespace { //global
         /* Returns M/WBE category for the given vendor id in the given year and year type for contracts Advanced Serach results*/
 
         static public function get_contract_vendor_link($vendor_id, $is_prime_or_sub, $minority_type_id){
-               if($is_prime_or_sub == "S" && in_array($minority_type_id, array(2,3,4,5,9))){
-                    return "/dashboard/ms/subvendor/".$vendor_id;
-               }elseif($is_prime_or_sub == "S" && !in_array($minority_type_id, array(2,3,4,5,9))){
-                    return "/dashboard/ss/subvendor/".$vendor_id;
+
+               if($is_prime_or_sub == "P" && in_array($minority_type_id, array(2,3,4,5,9)) && _getRequestParamValue('dashboard')){
+                   return "/dashboard/". _getRequestParamValue('dashboard') ."/mwbe/2~3~4~5~9/vendor/".$vendor_id;
                }else if($is_prime_or_sub == "P" && in_array($minority_type_id, array(2,3,4,5,9))){
-                    return "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
+                   return "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
                }else{
                    return "/vendor/".$vendor_id;
                }
