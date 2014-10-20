@@ -32,7 +32,7 @@ if(_getRequestParamValue("magid") != ""){
 }
 
 if(_getRequestParamValue("datasource") != "checkbook_oge"){
-    $queryVendorDetails = "SELECT fa.contract_number, rb.business_type_code, fa.agreement_id,fa.original_agreement_id,  fa.vendor_id, va.address_id, legal_name AS vendor_name, a.address_line_1, a.address_line_2, a.city, a.state, a.zip, a.country,
+    $queryVendorDetails = "SELECT fa.minority_type_id, fa.contract_number, rb.business_type_code, fa.agreement_id,fa.original_agreement_id,  fa.vendor_id, va.address_id, legal_name AS vendor_name, a.address_line_1, a.address_line_2, a.city, a.state, a.zip, a.country,
 	                            (CASE WHEN (rb.business_type_code = 'MNRT' OR rb.business_type_code = 'WMNO') AND vb.status = 2 THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor,
 	                            (CASE WHEN fa.minority_type_id in (4,5) then 'Asian American' ELSE fa.minority_type_name END)AS ethnicity
 	                        FROM {agreement_snapshot} fa
@@ -67,7 +67,6 @@ $queryVendorCount = " select count(*) total_contracts_sum from {agreement_snapsh
 
 $results1 = _checkbook_project_execute_sql_by_data_source($queryVendorDetails,_get_current_datasource());
 $node->data = $results1;
-
 
 
 foreach($node->data as $key => $value){
