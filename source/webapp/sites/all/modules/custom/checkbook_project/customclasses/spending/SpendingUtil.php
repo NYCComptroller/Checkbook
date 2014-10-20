@@ -197,35 +197,9 @@ class SpendingUtil{
         $year_id = _getRequestParamValue("year");
         $year_type = _getRequestParamValue("yeartype");
         $agency_id = _getRequestParamValue("agency_id");
-        $is_prime_or_sub = "S";
-        $latest_certified_minority_type_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type, $is_prime_or_sub);
-        $is_mwbe_certified = isset($latest_certified_minority_type_id);
-        $current_dashboard = _getRequestParamValue("dashboard");
+        $dashboard = _getRequestParamValue("dashboard");
 
-        //if M/WBE certified, go to citywide else if NOT M/WBE certified, go to M/WBE dashboard
-        $new_dashboard = $is_mwbe_certified ? "sp" : "ss";
-
-        //if switching between dashboard, persist only agency filter (mwbe & vendor if applicable)
-        if($current_dashboard != $new_dashboard) {
-            $override_params = array(
-                "dashboard"=>$new_dashboard,
-                "mwbe"=>$is_mwbe_certified ? "2~3~4~5~9" : null,
-                "agency"=>$agency_id,
-                "vendor"=>$vendor_id,
-                "subvendor"=>null,
-                "category"=>null,
-                "industry"=>null
-            );
-        }
-        //if remaining in the same dashboard persist all filters (drill-down) except sub vendor
-        else {
-            $override_params = array(
-                "dashboard"=>$new_dashboard,
-                "subvendor"=>null,
-                "vendor"=>$vendor_id
-            );
-        }
-        return '/' . self::getLandingPageWidgetUrl($override_params);
+        return self::getSubVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard);
     }
 
     /**
