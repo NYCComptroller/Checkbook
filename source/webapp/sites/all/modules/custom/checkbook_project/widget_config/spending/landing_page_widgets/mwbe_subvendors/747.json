@@ -25,8 +25,7 @@
         "prime_vendor.prime_vendor.legal_name",
         "year.year",
         "yeartype.yeartype",
-        "agency.agency",
-        "minority_type.minority_type"
+        "agency.agency"
     ],
     "limit":5,
     "enableExpand":true,
