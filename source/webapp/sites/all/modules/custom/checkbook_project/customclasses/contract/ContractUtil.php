@@ -211,9 +211,14 @@ namespace { //global
 
         static public function get_pending_contract_vendor_minority_category($vendor_id){
             STATIC $mwbe_vendors;
+            $agency_id =  _getRequestParamValue('agency');
+            $agency_query = isset($agency_id) ? "agency_id = " . $agency_id : "agency_id IS NULL";
+            $year_id = _getCurrentYearID();
             if(!isset($mwbe_vendors)){
-                $query = "SELECT vendor_id FROM pending_contracts WHERE is_prime_or_sub='P' AND minority_type_id IN (2,3,4,5,9)
-                            GROUP BY vendor_id";
+                $query = "SELECT vendor_id FROM pending_contracts WHERE is_prime_or_sub='P'AND minority_type_id IN (2,3,4,5,9)"
+                         ." AND year_id = ". $year_id
+                         ." AND year_type = 'B'" . "  AND " . $agency_query
+                         ." GROUP BY vendor_id";
                 $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
                 foreach($results as $row){
                     $mwbe_vendors[$row['vendor_id']] = $row['vendor_id'];
