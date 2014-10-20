@@ -2094,7 +2094,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
             }
             if ($values['vendor']) {
                 $form['filter']['vendor'] = array(
-                    '#markup' => '<div><strong>Prime Vendor:</strong> ' . $values['vendor'] . '</div>',
+                    '#markup' => '<div><strong>Vendor:</strong> ' . $values['vendor'] . '</div>',
                 );
                 $user_criteria['Vendor'] = $values['vendor'];
             }
@@ -2291,8 +2291,10 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
                 preg_match($pattern, $values['vendor'], $vmatches);
                 if ($vmatches) {
                     $criteria['value']['prime_vendor'] = trim($vmatches[1], '[ ]');
+                    $criteria['value']['vendor'] = trim($vmatches[1], '[ ]');
                 } else {
                     $criteria['value']['prime_vendor'] = $values['vendor'];
+                    $criteria['value']['vendor'] = $values['vendor'];
                 }
             }
             break;
