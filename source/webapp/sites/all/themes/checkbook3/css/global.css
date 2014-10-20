@@ -608,6 +608,7 @@ body.page-smart-search #filter-header{margin-top:5px;}
 .top-navigation-right .mwbe .main-nav-drop-down{
     position:relative;
 }
+
 .top-navigation-right .mwbe .main-nav-drop-down ul{
     position:absolute;
     z-index: 9999;
@@ -2783,4 +2784,10 @@ body.page-mwbe-agency-grading-year .checkbook-grading-left .dataTables_paginate{
 }
 body.page-mwbe-agency-grading-year .dataTables_wrapper{
     border:none;
+}
+
+
+#page-title .second-line{
+	font-size: 18px;
+	text-transform: none;
 }

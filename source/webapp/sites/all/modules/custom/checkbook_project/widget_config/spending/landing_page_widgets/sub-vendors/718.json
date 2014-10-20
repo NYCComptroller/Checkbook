@@ -12,7 +12,6 @@
         "vendor":"prime_vendor.prime_vendor",
         "subvendor":"sub_vendor.sub_vendor",
         "category":"spending_category_id",
-        "agid":"agreement_id.agreement_id",
         "mwbe":"minority_type_id",
         "industry":"industry_type_id"
     },
@@ -26,7 +25,8 @@
         "prime_vendor.prime_vendor",
         "prime_vendor.prime_vendor.legal_name",
         "check_amount_sum",
-        "agreement_id.agreement_id"
+        "sub_contract_number.sub_contract_number",
+        "sub_contract_number.sub_contract_number.original_agreement_id"
     ],
     "limit":5,
     "enableExpand":true,
@@ -51,7 +51,7 @@
     "derivedColumns": {
         "contract_number_link":{
             "type":"expression2",
-            "expression":"'<a class=\"new_window\" href=\"' . SpendingUtil::getContractNumberLinkUrl($node,$row) . '\">'  . $row[document_id_document_id] . '</a>'"
+            "expression":"'<a class=\"new_window\" href=\"' . SpendingUtil::getSubContractNumberLinkUrl($node,$row) . '\">'  . $row[document_id_document_id] . '</a>'"
         },
         "sub_vendor_name_formatted": {
             "type":"expression2",

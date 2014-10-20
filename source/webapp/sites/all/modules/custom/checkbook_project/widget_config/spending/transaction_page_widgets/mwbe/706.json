@@ -198,6 +198,9 @@
         }
     ],
     "adjustParameters":"
+        $dtsmnid = _getRequestParamValue('dtsmnid');
+        if((isset($dtsmnid) && $dtsmnid != 759) || (isset($smnid) && $smnid != 759)) $parameters['is_prime_or_sub'] = 'P';
+
         if(isset($parameters['vendor_type'])){
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
         }

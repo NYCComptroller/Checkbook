@@ -160,7 +160,7 @@
 			
 				$tooltip_label = 
 	 						'Sub Vendor: ' . $row['legal_name'].  '<br/>' .	 						
-	 						MappingUtil::getCurrenEhtnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>'  
+	 						'M/WBE Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>'  
 	 						; 
 			
 			$link= CustomURLHelper::prepareUrl('spending_landing', SpendingUtil::$landingPageParams, array('expandBottomCont'=>'true'), array('subvendor'=>$row['vendor_id']) );

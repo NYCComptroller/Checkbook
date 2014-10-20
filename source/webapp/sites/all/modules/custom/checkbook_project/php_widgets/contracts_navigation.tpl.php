@@ -102,7 +102,12 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 		}
 		$mwbe_prime_amount = $node->data[6]['current_amount_sum'];
 		//$mwbe_active_domain_link = RequestUtil::getTopNavURL("contracts") ;
-		$svendor_amount = $node->data[8]['current_amount_sum'];
+		$svendor_amount = $node->data[8]['current_amount_sum'];		
+		if( $mwbe_prime_amount ==  null  && $mwbe_amount != 0){
+			RequestUtil::$is_prime_mwbe_amount_zero_sub_mwbe_not_zero = true;
+			$mwbe_active_domain_link = preg_replace('/\/dashboard\/../','/dashboard/ms',$mwbe_active_domain_link);
+		}
+		
 		$mwbe_active_domain_link = preg_replace('/\/subvendor\/[^\/]*/','',$mwbe_active_domain_link);
 		$mwbe_filters = MappingUtil::getCurrentMWBETopNavFilters($mwbe_active_domain_link,"contracts");
 		$sub_vendors_home_link = RequestUtil::getLandingPageUrl("contracts", _getRequestParamValue("year")) ;
@@ -113,7 +118,12 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 			$mwbe_amount =  $node->data[9]['check_amount_sum'];
 		}
 		
-		$mwbe_prime_amount = $node->data[5]['current_amount_sum'];
+		$mwbe_prime_amount = $node->data[5]['check_amount_sum'];
+		
+		if( $mwbe_prime_amount == null && $mwbe_amount != 0){
+			RequestUtil::$is_prime_mwbe_amount_zero_sub_mwbe_not_zero = true;
+			$mwbe_active_domain_link = preg_replace('/\/dashboard\/../','/dashboard/ms',$mwbe_active_domain_link);
+		}
 		
 		$mwbe_active_domain_link = preg_replace('/\/subvendor\/[^\/]*/','',$mwbe_active_domain_link);
 		$mwbe_filters = MappingUtil::getCurrentMWBETopNavFilters($mwbe_active_domain_link,"spending");
@@ -155,14 +165,15 @@ if(!preg_match('/smnid/',$_GET['q']) && (
 	$mwbeclass = ' ';
 }
 
-if($mwbe_prime_amount == 0 && $mwbe_amount != 0){
+/*
+if( $mwbe_prime_amount ==  null  && $mwbe_amount != 0){
 	$mwbe_title = 	"M/WBE (Sub Vendors)";
 }else{
 	$mwbe_title =  RequestUtil::getDashboardTopNavTitle("mwbe");
 }
-
+*/
 if($mwbe_amount  == 0){	
-	$mwbe_link = l('<div><span class="nav-title">' . $mwbe_title . '</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div>','',$options_disabled);
+	$mwbe_link = l('<div><span class="nav-title">' . RequestUtil::getDashboardTopNavTitle("mwbe") . '</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div>','',$options_disabled);
 }else{	
 	$mwbe_link = l('<div><span class="nav-title">' . RequestUtil::getDashboardTopNavTitle("mwbe") . '</span><br>&nbsp;'. custom_number_formatter_format($mwbe_amount ,1,'$') . '</div>',$mwbe_active_domain_link,$options);
 }
@@ -174,13 +185,18 @@ if($svendor_amount  == 0){
 	$subvendors_link = l('<div><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format($svendor_amount ,1,'$') . '</div>',$svendor_active_domain_link ,$options);
 }
 
+$indicator_left = true;
 $featured_dashboard = _getRequestParamValue("dashboard");
 if($featured_dashboard != null){
-	$mwbeclass = ' active';
-	$svclass = ' active';	
+	$indicator_left = false;
 }else{
-	$mwbeclass = '';
-	$svclass = '';
+	$indicator_left = true;
+}
+if($featured_dashboard == "mp" ||$featured_dashboard == "ms" || ($featured_dashboard != null && $mwbe_amount > 0 ) || RequestUtil::$is_prime_mwbe_amount_zero_sub_mwbe_not_zero ){
+	$mwbeclass = ' active';	
+}
+if( $featured_dashboard == "sp" || $featured_dashboard == "ss" || ($featured_dashboard != null && $svendor_amount > 0 ) || RequestUtil::$is_prime_mwbe_amount_zero_sub_mwbe_not_zero ){
+	$svclass = ' active';
 }
 
  
@@ -241,9 +257,9 @@ if(preg_match('/mwbe/',$_GET['q']) && preg_match('/subvendor/',$_GET['q']) ){
     <td class="budget first<?php if($expclass){print $expclass;}?>"><div class="expense-container"><?php print $budget_link; ?></div><div class='indicator'></div></td>   
     <td class="revenue<?php if($rclass){print $rclass;}?>"><div class="expense-container"><?php print $revenue_link ?></div><div class='indicator'></div></td>   
     <td class="spending<?php if($chclass){print $chclass;}?>"><div class="expense-container"><?php print $spending_link; ?></div>
-    				<?php if(!$mwbeclass){?><div class='indicator'></div><?php }?></td>
+    				<?php if($indicator_left){?><div class='indicator'></div><?php }?></td>
     <td class="contracts<?php if($cclass){print $cclass;}?>"><div class="expense-container"><?php print $contracts_link ?></div>
-    				<?php if(!$mwbeclass){?><div class='indicator'></div><?php }?></td>
+    				<?php if($indicator_left){?><div class='indicator'></div><?php }?></td>
     <td class="employees<?php if($eclass){print $eclass;}?>"><div class="expense-container"><?php print $payroll_link ?></div><div class='indicator'></div></td>
   </tr>
 </table>
