@@ -27,7 +27,7 @@ class RequestUtil{
     static $contracts_spending_landing_links = array("spending_landing",
     					"contracts_landing","contracts_revenue_landing","contracts_pending_rev_landing","contracts_pending_exp_landing");
 
-    static $is_subvendor_flow = null;
+    static $is_prime_mwbe_amount_zero_sub_mwbe_not_zero = null;
     /** Checks if the page bottom container is expanded */
     static function isExpandBottomContainer(){
         $referer = $_SERVER['HTTP_REFERER'];
@@ -760,10 +760,6 @@ class RequestUtil{
     }
     
     
-    static function setSubvendorDashboardFlowFlag(){
-    	self::$is_subvendor_flow = true;
-    }
-    
     
     
     /*
@@ -775,7 +771,7 @@ class RequestUtil{
     static function isDashboardFlowSubvendor($current_state =  null){
     	
     	
-    	if(self::$is_subvendor_flow ){
+    	if(self::$is_prime_mwbe_amount_zero_sub_mwbe_not_zero ){
     		return true;
     	}
     	

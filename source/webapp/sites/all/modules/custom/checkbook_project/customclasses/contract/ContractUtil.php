@@ -128,7 +128,7 @@ namespace { //global
         
         
         
-        static public function getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id = null, $year_type = null, $is_prime_or_sub = null){
+        static public function getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id = null, $year_type = null, $is_prime_or_sub = "P"){
         	STATIC $contract_vendor_latest_mwbe_category;
         
         	if($agency_id == null){
@@ -143,10 +143,7 @@ namespace { //global
         		$year_type =  _getRequestParamValue('yeartype');
         	}
         
-        	if($is_prime_or_sub == null){
-        		$is_prime_or_sub =  $is_prime_or_sub = (RequestUtil::isDashboardFlowSubvendor()) ? "S":"P";
-        	}
-        
+
         	$latest_minority_type_id = null;
         	if(!isset($contract_vendor_latest_mwbe_category)){
         		$query = "SELECT vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub
