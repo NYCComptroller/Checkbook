@@ -113,19 +113,15 @@ namespace { //global
         	return $status . ' ' . $contract_type ;
         }
 
-        /* Returns M/WBE category for the given vendor id in the given year and year type for city-wide Active/Registered Contracts*/
 
-        static public function get_contract_vendor_minority_category($vendor_id, $year_id, $year_type,$agency_id = null, $is_prime_or_sub = 'P'){
-        	
-        	$latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id = null, $year_type = null, $is_prime_or_sub);
+        /* Returns M/WBE category for the given vendor id in the given year and year type for city-wide Active/Registered Contracts Transactions Pages*/
 
-            if(in_array($latest_minority_id, array(2,3,4,5,9)) && _getRequestParamValue('dashboard') == 'mp'){
-                $url = _checkbook_project_get_url_param_string("cindustry"). _checkbook_project_get_url_param_string("csize")
-                        . _checkbook_project_get_url_param_string("awdmethod") ."/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
-                return $url;
-            }else if(in_array($latest_minority_id, array(2,3,4,5,9)) && _getRequestParamValue('dashboard') != 'mp'){
-                $url = "/mwbe/2~3~4~5~9/vendor/".$vendor_id;
-                return $url;
+        static public function get_contract_vendor_minority_category($vendor_id, $year_id = null, $year_type = null,$agency_id = null, $is_prime_or_sub = 'P'){
+
+            $latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, $is_prime_or_sub);
+
+            if(in_array($latest_minority_id, array(2,3,4,5,9))){
+                return "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
             }else{
                 return "/vendor/".$vendor_id;
             }
@@ -133,7 +129,9 @@ namespace { //global
             return '';
         }
 
-        static public function get_contracts_vendor_link($vendor_id, $year_id, $year_type,$agency_id = null, $is_prime_or_sub = 'P'){
+        /* Returns M/WBE category for the given vendor id in the given year and year type for city-wide Active/Registered Contracts Landing Pages*/
+
+        static public function get_contracts_vendor_link($vendor_id, $year_id = null, $year_type = null,$agency_id = null, $is_prime_or_sub = 'P'){
 
             $latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, $is_prime_or_sub);
             $url = _checkbook_project_get_url_param_string("agency") .  _checkbook_project_get_url_param_string("status") . _checkbook_project_get_year_url_param_string();
@@ -151,10 +149,35 @@ namespace { //global
             return '';
         }
 
+        
+        
+        static public function get_contracts_vendor_link_sub($vendor_id, $year_id = null, $year_type = null,$agency_id = null){
+        
+        	$latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, "S");
+        	$url = _checkbook_project_get_url_param_string("agency") .  _checkbook_project_get_url_param_string("status") . _checkbook_project_get_year_url_param_string();
+        
+        	$current_dashboard = _getRequestParamValue("dashboard");
+        	$is_mwbe_certified = isset($latest_minority_id);
+        	 
+        	//if M/WBE certified, go to M/WBE (Sub Vendor) else if NOT M/WBE certified, go to Sub Vendor dashboard
+        	$new_dashboard = $is_mwbe_certified ? "ms" : "ss";
+        	 
+        	if($current_dashboard != $new_dashboard ){
+        		return $url. "/dashboard/" . $new_dashboard . ($is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "" ) . "/subvendor/".$vendor_id;
+        	}else{
+        		$url .= _checkbook_project_get_url_param_string("cindustry"). _checkbook_project_get_url_param_string("csize")
+        		. _checkbook_project_get_url_param_string("awdmethod") ."/dashboard/" . $new_dashboard .
+        		($is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "" ) . "/subvendor/".$vendor_id;
+        		return $url;
+        	}
+        
+        	return '';
+        }
+        
+        
 
         static public function getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id = null, $year_type = null, $is_prime_or_sub = "P"){
         	STATIC $contract_vendor_latest_mwbe_category;
-        
         	if($agency_id == null){
         		$agency_id =  _getRequestParamValue('agency');
         	}
@@ -184,7 +207,7 @@ namespace { //global
         			if(isset($row['agency_id'])) {
         				$contract_vendor_latest_mwbe_category[$row['vendor_id']][$row['agency_id']][$row['is_prime_or_sub']]['minority_type_id'] = $row['minority_type_id'];
         			}
-        			else {
+        			else{
         				$contract_vendor_latest_mwbe_category[$row['vendor_id']][$row['is_prime_or_sub']]['minority_type_id'] = $row['minority_type_id'];
         			}
         
@@ -240,16 +263,20 @@ namespace { //global
 
         static public function get_pending_contract_vendor_minority_category($vendor_id){
             STATIC $mwbe_vendors;
+            $agency_id =  _getRequestParamValue('agency');
+            $agency_query = isset($agency_id) ? "agency_id = " . $agency_id : "agency_id IS NULL";
+            $year_id = _getCurrentYearID();
             if(!isset($mwbe_vendors)){
-                $query = "SELECT vendor_id FROM pending_contracts WHERE is_prime_or_sub='P' AND minority_type_id IN (2,3,4,5,9)
-                            GROUP BY vendor_id";
+                $query = "SELECT vendor_id FROM pending_contracts WHERE is_prime_or_sub='P'AND minority_type_id IN (2,3,4,5,9)"
+                         ." AND year_id = ". $year_id
+                         ." AND year_type = 'B'" . "  AND " . $agency_query
+                         ." GROUP BY vendor_id";
                 $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
                 foreach($results as $row){
                     $mwbe_vendors[$row['vendor_id']] = $row['vendor_id'];
                 }
             }
             if($mwbe_vendors[$vendor_id] == $vendor_id){
-                if(!_getRequestParamValue('mwbe'))
                     return '/dashboard/mp/mwbe/2~3~4~5~9';
             }
             return '';

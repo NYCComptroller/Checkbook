@@ -90,7 +90,7 @@
     "dataTableOptions":{
         "aoColumns": [
             {"sClass":"text","sWidth":"200px","bSortable":false},
-            {"sClass":"number","sWidth":"150px","bSortable":false},
+            {"sClass":"number","sWidth":"150px","asSorting":["desc","asc"]},
             {"sClass":"number","sWidth":"200px","asSorting":["desc","asc"]},
             {"sClass":"number","sWidth":"250px","asSorting":["desc","asc"]},
             {"sWidth":"15px","bSortable":false}

@@ -96,7 +96,7 @@ return $footer;
   ],
 "dataTableOptions":{
 "aoColumns": [ 
-  { "bSortable": false,"sClass":"text","sWidth":"180px"},
+  { "bSortable": false,"sClass":"text","sWidth":"250px"},
       {"sClass":"number","asSorting": [ "desc","asc"  ]},
       {"sClass":"number","asSorting": [ "desc","asc"  ]},
       {"bSortable": false,"sWidth":"15px" }
