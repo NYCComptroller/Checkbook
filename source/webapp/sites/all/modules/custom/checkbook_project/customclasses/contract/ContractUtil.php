@@ -113,25 +113,25 @@ namespace { //global
         	return $status . ' ' . $contract_type ;
         }
 
-        /* Returns M/WBE category for the given vendor id in the given year and year type for city-wide Active/Registered Contracts*/
 
-        static public function get_contract_vendor_minority_category($vendor_id, $year_id, $year_type,$agency_id = null, $is_prime_or_sub = 'P'){
-        	
-        	$latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id = null, $year_type = null, $is_prime_or_sub);
+        /* Returns M/WBE category for the given vendor id in the given year and year type for city-wide Active/Registered Contracts Transactions Pages*/
+
+        static public function get_contract_vendor_minority_category($vendor_id, $year_id = null, $year_type = null,$agency_id = null, $is_prime_or_sub = 'P'){
+
+            $latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, $is_prime_or_sub);
 
             if(in_array($latest_minority_id, array(2,3,4,5,9)) && _getRequestParamValue('dashboard') == 'mp'){
-                $url = _checkbook_project_get_url_param_string("cindustry"). _checkbook_project_get_url_param_string("csize")
-                        . _checkbook_project_get_url_param_string("awdmethod") ."/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
-                return $url;
+                return "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
             }else if(in_array($latest_minority_id, array(2,3,4,5,9)) && _getRequestParamValue('dashboard') != 'mp'){
-                $url = "/mwbe/2~3~4~5~9/vendor/".$vendor_id;
-                return $url;
+                return "/mwbe/2~3~4~5~9/vendor/".$vendor_id;
             }else{
                 return "/vendor/".$vendor_id;
             }
 
             return '';
         }
+
+        /* Returns M/WBE category for the given vendor id in the given year and year type for city-wide Active/Registered Contracts Landing Pages*/
 
         static public function get_contracts_vendor_link($vendor_id, $year_id = null, $year_type = null,$agency_id = null, $is_prime_or_sub = 'P'){
 
