@@ -193,7 +193,7 @@ class SpendingUtil{
      */
     static function getSubVendorNameLinkUrl($node, $row){
         $override_params = null;
-        $vendor_id = $row["sub_vendor_sub_vendor"];
+        $vendor_id = isset($row["sub_vendor_sub_vendor"]) ? $row["sub_vendor_sub_vendor"] : $row["vendor_id"];
         $year_id = _getRequestParamValue("year");
         $year_type = _getRequestParamValue("yeartype");
         $agency_id = _getRequestParamValue("agency_id");
