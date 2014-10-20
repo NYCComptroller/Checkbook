@@ -83,7 +83,7 @@ return $header;
 "vendor_name_link": {
 "type": "expression2",
 "expression": " '<a href=\"/contracts_landing'
-. ContractUtil::get_contracts_vendor_link_sub($row['vendor_id'], null, null, null, 'S')
+. ContractUtil::get_contracts_vendor_link_sub($row['vendor_id'], null, null, null, $row['is_prime_or_sub'])
 . '?expandBottomCont=true\">'. $row['vendor_formatted'] . '</a>'  "
 },
 "agency_formatted": {
