@@ -132,9 +132,26 @@ namespace { //global
 
             return '';
         }
-        
-        
-        
+
+        static public function get_contracts_vendor_link($vendor_id, $year_id, $year_type,$agency_id = null, $is_prime_or_sub = 'P'){
+
+            $latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, $is_prime_or_sub);
+            $url = _checkbook_project_get_url_param_string("agency") .  _checkbook_project_get_url_param_string("status") . _checkbook_project_get_year_url_param_string();
+
+            if(in_array($latest_minority_id, array(2,3,4,5,9)) && _getRequestParamValue('dashboard') == 'mp'){
+                $url .= _checkbook_project_get_url_param_string("cindustry"). _checkbook_project_get_url_param_string("csize")
+                      . _checkbook_project_get_url_param_string("awdmethod") ."/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
+                return $url;
+            }else if(in_array($latest_minority_id, array(2,3,4,5,9)) && _getRequestParamValue('dashboard') != 'mp'){
+                return $url ."/mwbe/2~3~4~5~9/vendor/".$vendor_id;
+            }else{
+                return $url. "/vendor/".$vendor_id;
+            }
+
+            return '';
+        }
+
+
         static public function getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id = null, $year_type = null, $is_prime_or_sub = "P"){
         	STATIC $contract_vendor_latest_mwbe_category;
         
