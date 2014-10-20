@@ -69,10 +69,14 @@
 	 						'Prime Vendor: ' . $row['legal_name'] .  '<br/>' .
 	 						'Amount: ' . custom_number_formatter_format($row['current_amount_sum'] ,2, '$').  '<br/>' 
 	 						; 
-			$link= CustomURLHelper::prepareUrl(strstr($_GET['q'],'\/',true), ContractURLHelper::$landingPageParams, array('expandBottomCont'=>'true'), 
-						array('vendor'=>$row['vendor_id']) );
-			$series_new[$index]->url = 	$link;					
+			//$link= CustomURLHelper::prepareUrl(strstr($_GET['q'],'\/',true), ContractURLHelper::$landingPageParams, array('expandBottomCont'=>'true'), 
+			//			array('vendor'=>$row['vendor_id']) );
 
+			$link = strstr($_GET['q'],'/',true) .  ContractUtil::get_contracts_vendor_link($row['vendor_id'],_getRequestParamValue('year'),
+				_getRequestParamValue('yeartype'), _getRequestParamValue('agency')) .  
+				'?expandBottomCont=true';
+			$series_new[$index]->url = 	$link;	
+			
 			$series_new[$index]->y = (float)$row['current_amount_sum'];
 			$series_new[$index]->tooltip_label = $tooltip_label;
 			$node->widgetConfig->gridConfig->data[] = array($row['legal_name'],$row['current_amount_sum'] );

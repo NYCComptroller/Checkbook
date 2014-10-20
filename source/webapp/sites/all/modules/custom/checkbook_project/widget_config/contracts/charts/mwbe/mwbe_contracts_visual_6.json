@@ -54,7 +54,7 @@
 			, sum(maximum_contract_amount) current_amount_sum
 			, count(contract_number) total_contracts		
 		from {aggregateon_subven_contracts_cumulative_spending} a1     
-	    join {vendor} v on v.vendor_id =  a1.prime_vendor_id
+	    join {subvendor} v on v.vendor_id =  a1.vendor_id
 	    join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
    		' . $where_filter . '     
    		group by v.legal_name  ,a1.vendor_id
@@ -75,9 +75,12 @@
 	 						'Number of M/WBE Contracts: ' . $row['total_contracts'].  '<br/>' .
 	 						'Amount: ' . custom_number_formatter_format($row['current_amount_sum'] ,2, '$').  '<br/>' 
 	 						; 
-			$link= CustomURLHelper::prepareUrl(strstr($_GET['q'],'\/',true), ContractURLHelper::$landingPageParams, array('expandBottomCont'=>'true'), 
-						array('subvendor'=>$row['vendor_id']) );
-			$link = RequestUtil::replaceParamFromString($link,'dashboard',RequestUtil::getNextSubvendorDashboardStateParam());	
+			//$link= CustomURLHelper::prepareUrl(strstr($_GET['q'],'\/',true), ContractURLHelper::$landingPageParams, array('expandBottomCont'=>'true'), 
+			//			array('subvendor'=>$row['vendor_id']) );
+			//$link = RequestUtil::replaceParamFromString($link,'dashboard',RequestUtil::getNextSubvendorDashboardStateParam());
+			$link = strstr($_GET['q'],'/',true) .  ContractUtil::get_contracts_vendor_link_sub($row['vendor_id'],_getRequestParamValue('year'),
+				_getRequestParamValue('yeartype'), _getRequestParamValue('agency')) .  
+				'?expandBottomCont=true';	
 			$series_new[$index]->url = 	$link;					
 
 			$series_new[$index]->y = (float)$row['current_amount_sum'];
