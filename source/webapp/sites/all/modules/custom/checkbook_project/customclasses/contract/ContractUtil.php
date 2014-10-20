@@ -133,7 +133,7 @@ namespace { //global
             return '';
         }
 
-        static public function get_contracts_vendor_link($vendor_id, $year_id, $year_type,$agency_id = null, $is_prime_or_sub = 'P'){
+        static public function get_contracts_vendor_link($vendor_id, $year_id = null, $year_type = null,$agency_id = null, $is_prime_or_sub = 'P'){
 
             $latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, $is_prime_or_sub);
             $url = _checkbook_project_get_url_param_string("agency") .  _checkbook_project_get_url_param_string("status") . _checkbook_project_get_year_url_param_string();
