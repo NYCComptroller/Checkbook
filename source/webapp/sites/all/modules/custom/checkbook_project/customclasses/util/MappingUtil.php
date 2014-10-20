@@ -341,7 +341,7 @@ class MappingUtil {
         return array('unchecked'=>$unchecked, "checked"=>$checked);
     }
 
-    static function getVendorEthinictyTitle($vendor_id, $domain){
+    static function getVendorEthinictyTitle($vendor_id, $domain,$is_prime_or_sub = "P"){
     	switch($domain){
     		case "spending":
     			$current_ethnicity_from_filter = MappingUtil::getCurrenEhtnicityName();
@@ -353,7 +353,7 @@ class MappingUtil {
     				$title = " <br/><span class=\"second-line\">M/WBE Category: " . $current_ethnicity_from_filter . "</span>";
     			}else{
     				
-    				$ethnicity_id = SpendingUtil::getLatestMwbeCategoryByVendor($vendor_id);
+    				$ethnicity_id = SpendingUtil::getLatestMwbeCategoryByVendor($vendor_id, null, null, null, $is_prime_or_sub);
     				if($ethnicity_id > 0){
     					$title = " <br/><span class=\"second-line\">M/WBE Category: " . MappingUtil::getMinorityCategoryById($ethnicity_id). "</span>";
     				}
@@ -365,7 +365,7 @@ class MappingUtil {
     			if( $current_ethnicity_from_filter != null && $current_ethnicity_from_filter != "M/WBE" ){
     				$title = " <br/><span class=\"second-line\">M/WBE category: " . $current_ethnicity_from_filter . "</span>";
     			}else{
-    				$ethnicity_id = ContractUtil::getLatestMwbeCategoryByVendor($vendor_id);
+    				$ethnicity_id = ContractUtil::getLatestMwbeCategoryByVendor($vendor_id, null, null, null, $is_prime_or_sub);
     				if($ethnicity_id > 0){
     					$title = " <br/><span class=\"second-line\">M/WBE Category: " . MappingUtil::getMinorityCategoryById($ethnicity_id) . "</span>";
     				}

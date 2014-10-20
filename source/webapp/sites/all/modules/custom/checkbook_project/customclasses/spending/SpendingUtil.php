@@ -397,7 +397,7 @@ class SpendingUtil{
      * @param string $is_prime_or_sub
      * @return null
      */
-    static public function getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id = null, $year_type = null, $is_prime_or_sub = null){
+    static public function getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id = null, $year_type = null, $is_prime_or_sub = "P"){
         STATIC $spending_vendor_latest_mwbe_category;
 
         if($agency_id == null){
@@ -412,9 +412,7 @@ class SpendingUtil{
         	$year_type =  _getRequestParamValue('yeartype');
         }
         
-        if($is_prime_or_sub == null){
-        	$is_prime_or_sub =  $is_prime_or_sub = (RequestUtil::isDashboardSubvendor()) ? "S":"P";
-        }
+
         
         $latest_minority_type_id = null;
         if(!isset($spending_vendor_latest_mwbe_category)){
