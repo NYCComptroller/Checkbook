@@ -173,14 +173,11 @@ namespace { //global
 
         static public function get_contract_vendor_link($vendor_id, $is_prime_or_sub, $minority_type_id){
 
-               if($is_prime_or_sub == "P" && in_array($minority_type_id, array(2,3,4,5,9)) && _getRequestParamValue('dashboard')){
-                   return "/dashboard/". _getRequestParamValue('dashboard') ."/mwbe/2~3~4~5~9/vendor/".$vendor_id;
-               }else if($is_prime_or_sub == "P" && in_array($minority_type_id, array(2,3,4,5,9))){
+               if($is_prime_or_sub == "P" && in_array($minority_type_id, array(2,3,4,5,9))){
                    return "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
-               }else{
+               }else if($is_prime_or_sub == "P" && in_array($minority_type_id, array(2,3,4,5,9))){
                    return "/vendor/".$vendor_id;
                }
-
         }
 
         /* Returns M/WBE category of a vendor id in citywide pending contracts*/
