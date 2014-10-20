@@ -115,7 +115,7 @@
         },
         "payee_name_link": {
             "type": "expression2",
-            "expression": " RequestUtil::isNewWindow() ||  $row[spending_category_id]==2 ?  $row[payee_name_formatted] : ('<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '?expandBottomCont=true' . '\">'. $row[payee_name_formatted] .'</a>') "
+            "expression": " RequestUtil::isNewWindow() ||  $row[spending_category_id]==2 ?  $row[payee_name_formatted] : ('<a href=\"' . SpendingUtil::getPayeeNameLinkUrl($node,$row) . '?expandBottomCont=true' . '\">'. $row[payee_name_formatted] .'</a>') "
         },
         "issue_date_formatted":{
             "type": "expression2",
