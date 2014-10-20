@@ -120,10 +120,8 @@ namespace { //global
 
             $latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, $is_prime_or_sub);
 
-            if(in_array($latest_minority_id, array(2,3,4,5,9)) && _getRequestParamValue('dashboard') == 'mp'){
+            if(in_array($latest_minority_id, array(2,3,4,5,9))){
                 return "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
-            }else if(in_array($latest_minority_id, array(2,3,4,5,9)) && _getRequestParamValue('dashboard') != 'mp'){
-                return "/mwbe/2~3~4~5~9/vendor/".$vendor_id;
             }else{
                 return "/vendor/".$vendor_id;
             }
