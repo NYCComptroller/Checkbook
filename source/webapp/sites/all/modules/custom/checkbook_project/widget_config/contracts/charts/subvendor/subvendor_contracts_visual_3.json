@@ -23,7 +23,7 @@
                   "formatType": "amount"
              },
              {
-                  "labelAlias": "Prime Vendor",
+                  "labelAlias": "Sub Vendor",
                   "columnType": "text number-left"
              },
              {
@@ -77,7 +77,7 @@
 	 		$tooltip_label = 
 	 						'Contract ID: ' . $row['contract_number'].  '<br/>' .
 	 						'Amount: ' . custom_number_formatter_format($row['maximum_contract_amount'] ,2, '$').  '<br/>' .
-	 						'Prime Vendor: ' . $row['legal_name'] .  '<br/>' .
+	 						'Sub Vendor: ' . $row['legal_name'] .  '<br/>' .
 	 						'Contracting Agency: ' . $row['agency_name'] .  '<br/>' 
 	 						; 
 	 						
