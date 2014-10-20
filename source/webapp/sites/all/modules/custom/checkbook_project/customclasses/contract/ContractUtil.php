@@ -168,14 +168,15 @@ namespace { //global
         	}
 
         	$latest_minority_type_id = null;
+            $agency_query = isset($agency_id) ? "agency_id = " . $agency_id : "agency_id IS NULL";
 
         	if(!isset($contract_vendor_latest_mwbe_category)){
         		$query = "SELECT vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub
                       FROM contract_vendor_latest_mwbe_category
-                      WHERE minority_type_id IN (2,3,4,5,9) AND year_id = '".$year_id
-                            ."' AND type_of_year = '".$year_type
-                            ."' AND agency_id = " . $agency_id
-                            ."' AND is_prime_or_sub = " . $is_prime_or_sub
+                      WHERE minority_type_id IN (2,3,4,5,9) AND year_id = ".$year_id
+                            ." AND type_of_year = '".$year_type . "'"
+                            ."  AND " . $agency_query
+                            ." AND is_prime_or_sub = '" . $is_prime_or_sub . "'"
                       ." GROUP BY vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub";
         
         		$results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
@@ -189,7 +190,7 @@ namespace { //global
         
         		}
         	}
-        
+
         	$latest_minority_type_id = isset($agency_id)
         	? $contract_vendor_latest_mwbe_category[$vendor_id][$agency_id][$is_prime_or_sub]['minority_type_id']
         	: $contract_vendor_latest_mwbe_category[$vendor_id][$is_prime_or_sub]['minority_type_id'];
