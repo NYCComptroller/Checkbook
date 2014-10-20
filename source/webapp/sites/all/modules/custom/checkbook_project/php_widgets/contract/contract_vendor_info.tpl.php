@@ -31,8 +31,9 @@ if(_getRequestParamValue("magid") != ""){
   $ag_id = _getRequestParamValue("agid");
 }
 
-$queryVendorDetails = "SELECT fa.minority_type_id, fa.contract_number, rb.business_type_code, fa.agreement_id,fa.original_agreement_id,  fa.vendor_id, va.address_id, legal_name AS vendor_name, a.address_line_1, a.address_line_2, a.city, a.state, a.zip, a.country,
-	                            (CASE WHEN (rb.business_type_code = 'MNRT' OR rb.business_type_code = 'WMNO') THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor,
+if(_getRequestParamValue("datasource") != "checkbook_oge"){
+    $queryVendorDetails = "SELECT fa.contract_number, rb.business_type_code, fa.agreement_id,fa.original_agreement_id,  fa.vendor_id, va.address_id, legal_name AS vendor_name, a.address_line_1, a.address_line_2, a.city, a.state, a.zip, a.country,
+	                            (CASE WHEN (rb.business_type_code = 'MNRT' OR rb.business_type_code = 'WMNO') AND vb.status = 2 THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor,
 	                            (CASE WHEN fa.minority_type_id in (4,5) then 'Asian American' ELSE fa.minority_type_name END)AS ethnicity
 	                        FROM {agreement_snapshot} fa
 	                            LEFT JOIN {vendor_history} vh ON fa.vendor_history_id = vh.vendor_history_id
@@ -42,7 +43,21 @@ $queryVendorDetails = "SELECT fa.minority_type_id, fa.contract_number, rb.busine
 	                            LEFT JOIN {vendor_business_type} vb ON vh.vendor_history_id = vb.vendor_history_id
 	                            LEFT JOIN {ref_business_type} rb ON vb.business_type_id = rb.business_type_id
 	                            LEFT JOIN {ref_minority_type} rm ON vb.minority_type_id = rm.minority_type_id
-	                        WHERE ra.address_type_code = 'PR' and fa.latest_flag = 'Y' and fa.original_agreement_id = " . $ag_id;
+	                        WHERE ra.address_type_code = 'PR' and fa.latest_flag = 'Y' and fa.original_agreement_id = " . $ag_id. "LIMIT 1";
+}else{
+    $queryVendorDetails = "SELECT  fa.contract_number, rb.business_type_code, fa.agreement_id,fa.original_agreement_id,  fa.vendor_id, va.address_id, legal_name AS vendor_name, a.address_line_1, a.address_line_2, a.city, a.state, a.zip, a.country,
+	                            (CASE WHEN (rb.business_type_code = 'MNRT' OR rb.business_type_code = 'WMNO') AND vb.status = 2 THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor
+	                         FROM {agreement_snapshot} fa
+	                            LEFT JOIN {vendor_history} vh ON fa.vendor_history_id = vh.vendor_history_id
+	                            LEFT JOIN {vendor_address} va ON vh.vendor_history_id = va.vendor_history_id
+	                            LEFT JOIN {address} a ON va.address_id = a.address_id
+	                            LEFT JOIN {ref_address_type} ra ON va.address_type_id = ra.address_type_id
+	                            LEFT JOIN {vendor_business_type} vb ON vh.vendor_history_id = vb.vendor_history_id
+	                            LEFT JOIN {ref_business_type} rb ON vb.business_type_id = rb.business_type_id
+	                            LEFT JOIN {ref_minority_type} rm ON vb.minority_type_id = rm.minority_type_id
+	                        WHERE ra.address_type_code = 'PR' and fa.latest_flag = 'Y' and fa.original_agreement_id = " . $ag_id. "LIMIT 1";
+}
+
 
 $queryVendorCount = " select count(*) total_contracts_sum from {agreement_snapshot} where vendor_id =
 (select vendor_id from {agreement_snapshot} where original_agreement_id =". $ag_id . "limit 1)
@@ -71,7 +86,7 @@ if(_getRequestParamValue("doctype")=="RCT1"){
                  . $node->data[0]['vendor_id'] . '?expandBottomCont=true';
 }
 else{
-   if(_is_mwbe_vendor($node->data[0]['vendor_id'], _getCurrentYearID(), 'B')){
+   if($node->data[0]["mwbe_vendor"] == 'Yes'){
        $vendor_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
         .$node->data[0]['vendor_id'].'/dashboard/mp?expandBottomCont=true';
    }
@@ -120,10 +135,11 @@ $total_subvendor_count = $res->data[0]['sub_vendor_count'];
   ?>    
     <li><span class="gi-list-item">Address:</span> <?php echo $address;?></li>
     <li><span class="gi-list-item">Total Number of NYC Contracts:</span> <?php echo $total_cont;?></li>
+
+<?php if( _get_current_datasource() == "checkbook" ){?>
     <li><span class="gi-list-item">Total Number of Sub Vendors:</span> <?php echo $total_subvendor_count; ?></li>
-<?php if( _get_current_datasource() == "checkbook" ){?>    
     <li><span class="gi-list-item">M/WBE Vendor:</span> <?php echo $node->data[0]['mwbe_vendor'] ;?></li>
-<?php if(!preg_match('/newwindow/',$_GET['q'])){ ?>
+<?php if(!preg_match('/newwindow/',$_GET['q']) && $node->data[0]["mwbe_vendor"] == 'Yes'){ ?>
     <li><span class="gi-list-item">M/WBE Category:</span> <a href="/contracts_landing/status/A/yeartype/B/year/<?php echo _getFiscalYearID();?>/mwbe/<?php echo $minority_type_id; ?>/dashboard/mp"><?php echo $ethnicity ;?></a></li>
 <?php } else { ?>
 <li><span class="gi-list-item">M/WBE Category: </span><?php echo  $ethnicity ;?></li>

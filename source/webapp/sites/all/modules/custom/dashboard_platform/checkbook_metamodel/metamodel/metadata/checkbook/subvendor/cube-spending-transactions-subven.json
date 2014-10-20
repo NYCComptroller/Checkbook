@@ -384,6 +384,10 @@
         "spending_transactions_all__spending_category_subven": [
             {"datasetName": "spending_transactions_all", "columnNames": ["spending_category_id"]},
             {"datasetName": "spending_category_subven", "columnNames": ["spending_category_id"]}
+        ],
+        "spending_transactions_all__sub_vendor_agid": [
+            {"datasetName": "spending_transactions_all", "columnNames": ["reference_document_number"]},
+            {"datasetName": "sub_vendor_agid", "columnNames": ["contract_number"]}
         ]
     }
 }

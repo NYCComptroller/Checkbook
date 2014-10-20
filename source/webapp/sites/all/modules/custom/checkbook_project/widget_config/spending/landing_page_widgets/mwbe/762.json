@@ -86,6 +86,7 @@
     "table_title":"",
     "table_columns": [
         {"labelAlias": "prime_vendor","column": "vendor_name_link","sortSourceColumn":"vendor.vendor.legal_name"},
+        {"label":"","column":"","export":false},
         {"labelAlias":"mwbe_category","column":"mwbe_category_name_link","sortSourceColumn":"minority_type.minority_type"},
         {"labelAlias": "ytd_spending","column": "vendor_amount_link","header": "false","sortSourceColumn":"check_amount_sum","headerClass":"sixty"},
         {"labelAlias": "percent_spending","column": "percent_spending","header": "false","sortSourceColumn":"check_amount_sum"},
@@ -95,10 +96,11 @@
     "dataTableOptions":{
         "aoColumns": [
             {"bSortable": false,"sClass":"text"},
-            {"sClass":"text pad-left","sWidth":"150px","bSortable":false},
-            {"sClass":"number","sWidth":"150px","asSorting":["desc","asc"]},
-            {"sClass":"number","sWidth":"150px","asSorting":["desc","asc"]},
-            {"sClass":"number","sWidth":"150px","asSorting":["desc","asc"]},
+            {"sWidth":"30px","bSortable":false},
+            {"sClass":"text pad-left","sWidth":"140px","bSortable":false},
+            {"sClass":"number","sWidth":"140px","asSorting":["desc","asc"]},
+            {"sClass":"number","sWidth":"140px","asSorting":["desc","asc"]},
+            {"sClass":"number","sWidth":"140px","asSorting":["desc","asc"]},
             {"bSortable": false,"sWidth":"15px"}
         ] ,
         "bServerSide": true,
@@ -108,7 +110,7 @@
         "bLengthChange": false,
         "bInfo": false,
         "bAutoWidth": false,
-        "aaSorting": [[ 2, "desc" ]],
+        "aaSorting": [[ 3, "desc" ]],
         "fnServerParams": "##function ( aoData ) {
         reloadExpandCollapseWidget(this,aoData);
         }##",

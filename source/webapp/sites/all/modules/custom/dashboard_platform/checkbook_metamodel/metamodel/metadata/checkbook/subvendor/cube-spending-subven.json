@@ -213,6 +213,16 @@
                     ]
                 },
                 {
+                    "name": "sub_contract_number",
+                    "levels": [
+                        {
+                            "name": "sub_contract_number",
+                            "datasetName": "sub_vendor_agid",
+                            "sourceColumnName": "document_id"
+                        }
+                    ]
+                },
+                {
                     "name": "sub_vendor",
                     "levels": [
                         {

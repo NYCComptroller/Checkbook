@@ -124,15 +124,18 @@ class MappingUtil {
     
     
     
-    static function getCurrentMWBETopNavFilters($active_domain_link, $domain){    	
-    	if(RequestUtil::isDashboardFlowPrimevendor()){
-    		$applicable_minority_types = self::getCurrentPrimeMWBEApplicableFilters($domain);
-    	}else{
+    static function getCurrentMWBETopNavFilters($active_domain_link, $domain){ 
+    	if(RequestUtil::isDashboardFlowSubvendor()){
     		$applicable_minority_types = self::getCurrentSubMWBEApplicableFilters($domain);
+    	}else{
+    		$applicable_minority_types = self::getCurrentPrimeMWBEApplicableFilters($domain);
     	}
-    	 
+
+    	
     	$mwbe_featured_dashboard_param = RequestUtil::getNextMWBEDashboardState();
-    	$active_domain_link =  preg_replace('/\/mwbe\/[^\/]*/','',$active_domain_link);    	
+    	$active_domain_link =  preg_replace('/\/mwbe\/[^\/]*/','',$active_domain_link);   
+
+    	
     	$filters_html =  "<div class='main-nav-drop-down' style='display:none'>
   		<ul>
   			<li class='no-click title'>M/WBE Category</li>
@@ -207,7 +210,6 @@ class MappingUtil {
 				    group by a1.minority_type_id  ';
     			
     			
-    			
     			$data = _checkbook_project_execute_sql($sql);    			
     			
 	    	break;	
@@ -240,7 +242,7 @@ class MappingUtil {
     	$applicable_minority_types = array();
     	foreach($data as $row){
     		$applicable_minority_types[] = $row['minority_type_id'];
-    	}
+    	}    	
     	return $applicable_minority_types;
     }
 
@@ -339,17 +341,21 @@ class MappingUtil {
         return array('unchecked'=>$unchecked, "checked"=>$checked);
     }
 
-    static function getVendorEthinictyTitle($vendor_id, $domain){
+    static function getVendorEthinictyTitle($vendor_id, $domain,$is_prime_or_sub = "P"){
     	switch($domain){
     		case "spending":
     			$current_ethnicity_from_filter = MappingUtil::getCurrenEhtnicityName();
+    			
+    			
+    			 
+    			
     			if( $current_ethnicity_from_filter != null && $current_ethnicity_from_filter != "M/WBE" ){
-    				$title = " <br/>MWBE category: " . $current_ethnicity_from_filter;
+    				$title = " <br/><span class=\"second-line\">M/WBE Category: " . $current_ethnicity_from_filter . "</span>";
     			}else{
     				
-    				$ethnicity_id = SpendingUtil::getLatestMwbeCategoryByVendor($vendor_id);
+    				$ethnicity_id = SpendingUtil::getLatestMwbeCategoryByVendor($vendor_id, null, null, null, $is_prime_or_sub);
     				if($ethnicity_id > 0){
-    					$title = " <br/>MWBE category: " . MappingUtil::getMinorityCategoryById($ethnicity_id);
+    					$title = " <br/><span class=\"second-line\">M/WBE Category: " . MappingUtil::getMinorityCategoryById($ethnicity_id). "</span>";
     				}
     			}
     			
@@ -357,11 +363,11 @@ class MappingUtil {
     		case "contracts":
     			$current_ethnicity_from_filter = MappingUtil::getCurrenEhtnicityName();
     			if( $current_ethnicity_from_filter != null && $current_ethnicity_from_filter != "M/WBE" ){
-    				$title = " <br/>MWBE category: " . $current_ethnicity_from_filter;
+    				$title = " <br/><span class=\"second-line\">M/WBE category: " . $current_ethnicity_from_filter . "</span>";
     			}else{
-    				$ethnicity_id = ContractUtil::getLatestMwbeCategoryByVendor($vendor_id);
+    				$ethnicity_id = ContractUtil::getLatestMwbeCategoryByVendor($vendor_id, null, null, null, $is_prime_or_sub);
     				if($ethnicity_id > 0){
-    					$title = " <br/>MWBE category: " . MappingUtil::getMinorityCategoryById($ethnicity_id);
+    					$title = " <br/><span class=\"second-line\">M/WBE Category: " . MappingUtil::getMinorityCategoryById($ethnicity_id) . "</span>";
     				}
     			}
     			

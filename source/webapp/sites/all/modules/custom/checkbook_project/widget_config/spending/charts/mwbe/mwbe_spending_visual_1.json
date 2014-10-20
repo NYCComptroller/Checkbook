@@ -31,7 +31,7 @@ echo '<div class=\"chart-right\">
         "sortColumn":1,
         "table_columns": [
             {
-                  "labelAlias": "M/WBE Category",
+                  "labelAlias": "Category",
                   "columnType": "text"
              },
              {
@@ -40,7 +40,7 @@ echo '<div class=\"chart-right\">
                   "formatType": "amount"
              },
              {
-                  "labelAlias": "Percent",
+                  "labelAlias": "Percentage",
                   "columnType": "number"
              }
         ]

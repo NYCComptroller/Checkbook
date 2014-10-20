@@ -34,7 +34,7 @@ if (_getRequestParamValue("doctype") == "RCT1") {
     . $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
 }
 else {
-    if(_is_mwbe_vendor($node->data[0]['vendor_id_checkbook_vendor_history'], _getCurrentYearID(), 'B')){
+    if(_is_mwbe_vendor(_getRequestParamValue("magid"))){
         $vendor_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
             . $node->data[0]['vendor_id_checkbook_vendor_history'] . '/dashboard/mp?expandBottomCont=true';
     }
@@ -44,7 +44,6 @@ else {
     }
     $agency_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/agency/'
         . $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
-
 }
 
 $spending_link = "/spending/transactions/magid/" . _getRequestParamValue("magid") . $datasource . "/newwindow";

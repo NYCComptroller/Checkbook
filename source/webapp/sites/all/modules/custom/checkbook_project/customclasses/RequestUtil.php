@@ -27,6 +27,7 @@ class RequestUtil{
     static $contracts_spending_landing_links = array("spending_landing",
     					"contracts_landing","contracts_revenue_landing","contracts_pending_rev_landing","contracts_pending_exp_landing");
 
+    static $is_prime_mwbe_amount_zero_sub_mwbe_not_zero = null;
     /** Checks if the page bottom container is expanded */
     static function isExpandBottomContainer(){
         $referer = $_SERVER['HTTP_REFERER'];
@@ -234,11 +235,11 @@ class RequestUtil{
     /** Returns Spending Transaction page title based on 'category'/'featured dashboard' value from current path */
     static function getSpendingTransactionTitle($defaultName = 'Total Spending'){
         $categoryId = _getRequestParamValue('category');
-        $mwbe_title = _checkbook_check_is_mwbe_page() ? 'M/WBE ' : '';
+        $dashboard_title = RequestUtil::getDashboardTitle();        
         if(isset($categoryId)){
             $categoryDetails = SpendingUtil::getSpendingCategoryDetails($categoryId,'display_name');
             if(is_array($categoryDetails)){
-                return "Total " . $mwbe_title . $categoryDetails[0]['display_name'];
+                return "Total " . $dashboard_title . $categoryDetails[0]['display_name'];
             }
         }
 
@@ -758,6 +759,9 @@ class RequestUtil{
     	return  "ss";
     }
     
+    
+    
+    
     /*
      * 
      * 
@@ -765,6 +769,12 @@ class RequestUtil{
      * 
      */
     static function isDashboardFlowSubvendor($current_state =  null){
+    	
+    	
+    	if(self::$is_prime_mwbe_amount_zero_sub_mwbe_not_zero ){
+    		return true;
+    	}
+    	
     	if($current_state == null){
     		$current_state = _getRequestParamValue('dashboard');
     	}
@@ -800,6 +810,26 @@ class RequestUtil{
     			break;
     	}
     }
+
+    
+    static function isDashboardSubvendor($current_state =  null){
+    	if($current_state == null){
+    		$current_state = _getRequestParamValue('dashboard');
+    	}
+    	 
+    	switch($current_state){
+    		case "sp" :
+    			return true;
+    			break;
+    		case "ss" :
+    			return true ;
+    			break;
+    		default:
+    			return false;
+    			break;
+    	}
+    }
+        
     
     static function getDashboardTopNavURL($dashboard_filter){
     	

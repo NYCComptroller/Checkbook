@@ -41,12 +41,14 @@ include_once('export_link.php');
     <tbody>
     <?php
         if (isset($node->data) && is_array($node->data)) {
+
             foreach ($node->data as $datarow) {
+				$vendor_name = (isset($datarow['legal_name@checkbook:vendor']))? $datarow['legal_name@checkbook:vendor']:$datarow['legal_name@checkbook:prime_vendor'] ;
                 echo '<tr>
                 <td><div>' . $datarow['document_id'] . '</div></td>
                 <td>' . $datarow['total_spending_amount'] . '</td>
                 <td>&nbsp;&nbsp;</td>
-                <td><div>' . $datarow['legal_name@checkbook:vendor'] . '</div></td>
+                <td><div>' . $vendor_name . '</div></td>
                 <td><div>' . $datarow['agency_name@checkbook:agency'] . '</div></td>
                 <td>&nbsp;</td>
                 </tr>';
