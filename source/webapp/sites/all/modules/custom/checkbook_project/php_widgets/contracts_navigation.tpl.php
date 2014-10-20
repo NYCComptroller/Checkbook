@@ -93,6 +93,7 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 
 	
 	$svendor_active_domain_link = RequestUtil::getDashboardTopNavURL("subvendor") ;
+	$svendor_active_domain_link = preg_replace('/\/industry\/[^\/]*/','',$svendor_active_domain_link);
 	if(preg_match('/contract/',$_GET['q'])){
 		
 		if($current_dashboard == "mp" || $current_dashboard == "sp" || $current_dashboard == null){
