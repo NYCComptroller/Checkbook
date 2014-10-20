@@ -193,7 +193,7 @@ class SpendingUtil{
      */
     static function getSubVendorNameLinkUrl($node, $row){
         $override_params = null;
-        $vendor_id = $row["sub_vendor_sub_vendor"];
+        $vendor_id = isset($row["sub_vendor_sub_vendor"]) ? $row["sub_vendor_sub_vendor"] : $row["vendor_id"];
         $year_id = _getRequestParamValue("year");
         $year_type = _getRequestParamValue("yeartype");
         $agency_id = _getRequestParamValue("agency_id");
@@ -300,7 +300,7 @@ class SpendingUtil{
     /**
      * Returns Sub Vendor Name Link Url based on values from current path & data row
      *
-     * if sub vendor is M/WBE certified - go to Sub Vendor (M/WBE) dashboard
+     * if sub vendor is M/WBE certified - go to M/WBE (Sub Vendor) dashboard
      * if sub vendor is NOT M/WBE certified - go to Sub Vendor dashboard
      *
      * if switching from citywide->M/WBE OR M/WBE->citywide,
@@ -322,21 +322,8 @@ class SpendingUtil{
         $latest_certified_minority_type_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type, "S");
         $is_mwbe_certified = isset($latest_certified_minority_type_id);
 
-        //if M/WBE certified, go to Sub Vendor else if NOT M/WBE certified, go to Sub Vendor (M/WBE) dashboard
-        switch($current_dashboard) {
-            case "mp":
-                $new_dashboard = $is_mwbe_certified ? "sp" : "ss";
-                break;
-            case "sp":
-                $new_dashboard = $is_mwbe_certified ? "sp" : "sp";
-                break;
-            case "ss":
-                $new_dashboard = $is_mwbe_certified ? "ss" : "ss";
-                break;
-            default:
-                $new_dashboard = $is_mwbe_certified ? "sp" : "ss";
-                break;
-        }
+        //if M/WBE certified, go to M/WBE (Sub Vendor) else if NOT M/WBE certified, go to Sub Vendor dashboard
+        $new_dashboard = $is_mwbe_certified ? "ms" : "ss";
 
         //if switching between dashboard, persist only agency filter (mwbe & subvendor if applicable)
         if($current_dashboard != $new_dashboard) {
