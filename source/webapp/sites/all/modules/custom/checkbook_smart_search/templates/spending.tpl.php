@@ -37,15 +37,20 @@ if($IsOge)
     );
 else
 {
-    if($spending_results['is_prime_or_sub'] == 'Yes'){
+    if($spending_results['is_prime_or_sub'] == 'Yes' && SpendingUtil::getLatestMwbeCategoryByVendor($spending_results["vendor_id"], NULL, $fiscal_year_id, 'B') == ''){
         $linkable_fields = array(
             "agency_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . $fiscal_year_id . "/yeartype/B/agency/".$spending_results["agency_id"],
             "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . $fiscal_year_id . "/yeartype/B/subvendor/".$spending_results["vendor_id"]."/dashboard/ss",
         );
-    }elseif(SpendingUtil::getLatestMwbeCategoryByVendor($spending_results["vendor_id"], NULL, $fiscal_year_id, 'B') != ''){
+    }elseif($spending_results['is_prime_or_sub'] == 'No' && SpendingUtil::getLatestMwbeCategoryByVendor($spending_results["vendor_id"], NULL, $fiscal_year_id, 'B') != ''){
         $linkable_fields = array(
             "agency_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . $fiscal_year_id . "/yeartype/B/agency/".$spending_results["agency_id"],
             "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . $fiscal_year_id . "/yeartype/B/vendor/".$spending_results["vendor_id"]."/dashboard/mp",
+        );
+    }elseif($spending_results['is_prime_or_sub'] == 'Yes' && SpendingUtil::getLatestMwbeCategoryByVendor($spending_results["vendor_id"], NULL, $fiscal_year_id, 'B') != ''){
+        $linkable_fields = array(
+            "agency_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . $fiscal_year_id . "/yeartype/B/agency/".$spending_results["agency_id"],
+            "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . $fiscal_year_id . "/yeartype/B/vendor/".$spending_results["vendor_id"]."/dashboard/ms",
         );
     }
     else{
