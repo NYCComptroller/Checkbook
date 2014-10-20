@@ -40,7 +40,7 @@
         if($current_url[1] == 'contract' && ($current_url[2] == 'search' || $current_url[2] == 'all')&& $current_url[3] == 'transactions'){
             $summaryTitle = "";
         }else{
-            $summaryTitle = (_checkbook_check_is_mwbe_page())? 'Total '.MappingUtil::getCurrenEhtnicityName()." ":'';
+            $summaryTitle = (_checkbook_check_is_mwbe_page())? 'Total '.RequestUtil::getDashboardTitle()." ":'';
             $summaryTitle = str_replace('Total Total','Total',$summaryTitle);
         }
         print '<div class="transactions-total-amount">$'
