@@ -126,7 +126,7 @@ namespace { //global
                     return "/vendor/".$vendor_id;
                 }
             }else if($is_prime_or_sub == 'S'){
-               return get_contracts_vendor_link_sub($vendor_id, $year_id = null, $year_type = null,$agency_id = null);
+               return self::get_contracts_vendor_link_sub($vendor_id, $year_id = null, $year_type = null,$agency_id = null);
             }
 
             return '';
