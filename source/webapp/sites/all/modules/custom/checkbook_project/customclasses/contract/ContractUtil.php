@@ -115,14 +115,21 @@ namespace { //global
 
         /* Returns M/WBE category for the given vendor id in the given year and year type for city-wide Active/Registered Contracts*/
 
-        static public function get_contract_vendor_minority_category($vendor_id, $year_id, $year_type,$agency_id = null){
+        static public function get_contract_vendor_minority_category($vendor_id, $year_id, $year_type,$agency_id = null, $is_prime_or_sub = 'P'){
         	
-        	$latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id = null, $year_type = null, $is_prime_or_sub = null);
-        	
-            if($latest_minority_id != null){            	
-                if(!_getRequestParamValue('mwbe'))
-                    return '/dashboard/mp/mwbe/2~3~4~5~9';
+        	$latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id = null, $year_type = null, $is_prime_or_sub);
+
+            if(in_array($latest_minority_id, array(2,3,4,5,9)) && _getRequestParamValue('dashboard') == 'mp'){
+                $url = _checkbook_project_get_url_param_string("cindustry"). _checkbook_project_get_url_param_string("csize")
+                        . _checkbook_project_get_url_param_string("awdmethod") ."/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
+                return $url;
+            }else if(in_array($latest_minority_id, array(2,3,4,5,9)) && _getRequestParamValue('dashboard') != 'mp'){
+                $url = "/mwbe/2~3~4~5~9/vendor/".$vendor_id;
+                return $url;
+            }else{
+                return "/vendor/".$vendor_id;
             }
+
             return '';
         }
         
@@ -144,11 +151,11 @@ namespace { //global
         	}
 
         	$latest_minority_type_id = null;
-            $agency_query = ($agency_id) ? ' AND agency_id = '. $agency_id : '';
+
         	if(!isset($contract_vendor_latest_mwbe_category)){
         		$query = "SELECT vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub
                       FROM contract_vendor_latest_mwbe_category
-                      WHERE minority_type_id IN (2,3,4,5,9) AND year_id = '".$year_id."' AND type_of_year = '".$year_type."' . ' ' . $agency_query . ' '.
+                      WHERE minority_type_id IN (2,3,4,5,9) AND year_id = '".$year_id."' AND type_of_year = '".$year_type."' AND agency_id = " . $agency_id ."
                       GROUP BY vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub";
         
         		$results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
