@@ -644,16 +644,19 @@ class RequestUtil{
     }
     
 
-    static function getLandingPageUrl($domain,$year = null){
+    static function getLandingPageUrl($domain,$year = null,$yearType = null){
     	if($year == null){
     		$year = _getCurrentYearID();
     	}
+    	if($yearType == null){
+    		$yearType = 'B';
+    	}
     	switch($domain){
     		case "contracts":
-    			$path ="contracts_landing/status/A/yeartype/B/year/".$year;
+    			$path ="contracts_landing/status/A/yeartype/" . $yearType ."/year/".$year;
     			break;
     		case "spending":
-    			$path ="spending_landing/yeartype/B/year/".$year;
+    			$path ="spending_landing/yeartype/" . $yearType ."/year/".$year;
     			break;
     		case "payroll":
     			$path ="payroll/yeartype/B/year/".$year;
