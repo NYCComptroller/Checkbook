@@ -225,7 +225,6 @@ namespace { //global
                 }
             }
             if($mwbe_vendors[$vendor_id] == $vendor_id){
-                if(!_getRequestParamValue('mwbe'))
                     return '/dashboard/mp/mwbe/2~3~4~5~9';
             }
             return '';
