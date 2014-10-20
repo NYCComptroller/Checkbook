@@ -90,15 +90,15 @@
 		
 	    if($row['year_value'] == $year){
 	    	 $series_current_temp[trim($row['month_name'])] = $item;
-	        $url = CustomURLHelper::prepareUrl('contract/spending/transactions',  ContractURLHelper::$transactionPageParams, NULL, 
+	        $url1 = CustomURLHelper::prepareUrl('contract/spending/transactions',  ContractURLHelper::$transactionPageParams, NULL, 
        			array('doctype' => $node->document_codes, 'month' => $row['month_id'],'newwindow'=>NULL));
-			$item->url =  $url;		
+			$item->url =  $url1;		
 	    	 
 	    }else{
 	    	$series_previous_temp[trim($row['month_name'])] = $item;
-	    	        $url = CustomURLHelper::prepareUrl('contract/spending/transactions',  ContractURLHelper::$transactionPageParams, NULL, 
+	    	        $url1 = CustomURLHelper::prepareUrl('contract/spending/transactions',  ContractURLHelper::$transactionPageParams, NULL, 
        			array('doctype' => $node->document_codes, 'month' => $row['month_id'],'newwindow'=>NULL),true);
-			$item->url =  $url;			    	
+			$item->url =  $url1;			    	
 	    }
 	    
 	}
