@@ -19,7 +19,7 @@
 */
 ?>
 
-<h3 class="grid_title"><?= htmlentities($title); ?></h3>
+<h3 class="grid_title"><?= $title; ?></h3>
 <h3 class="grid_chart_title"><?php print $node->widgetConfig->chartTitle;?></h3>
 
 <?php
