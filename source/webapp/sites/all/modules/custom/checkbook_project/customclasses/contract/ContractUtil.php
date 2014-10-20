@@ -119,11 +119,14 @@ namespace { //global
         static public function get_contract_vendor_minority_category($vendor_id, $year_id = null, $year_type = null,$agency_id = null, $is_prime_or_sub = 'P'){
 
             $latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, $is_prime_or_sub);
-
-            if(in_array($latest_minority_id, array(2,3,4,5,9))){
-                return "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
-            }else{
-                return "/vendor/".$vendor_id;
+            if($is_prime_or_sub == 'P'){
+                if(in_array($latest_minority_id, array(2,3,4,5,9))){
+                    return "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
+                }else{
+                    return "/vendor/".$vendor_id;
+                }
+            }else if($is_prime_or_sub == 'S'){
+               return get_contracts_vendor_link_sub($vendor_id, $year_id = null, $year_type = null,$agency_id = null);
             }
 
             return '';
@@ -220,6 +223,34 @@ namespace { //global
         	return $latest_minority_type_id;
         }
 
+
+        static public function getLatestMwbeCategoryByVendorByTransactionYear($vendor_id, $year_id = null, $year_type = null){
+
+            if($year_id == null){
+                $year_id =  _getRequestParamValue('year');
+            }
+
+            if($year_type == null){
+                $year_type =  _getRequestParamValue('yeartype');
+            }
+
+                $query = "SELECT vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub
+                      FROM contract_vendor_latest_mwbe_category
+                      WHERE minority_type_id IN (2,3,4,5,9)
+                      AND vendor_id =".$vendor_id."
+                      AND year_id =".$year_id."
+                      AND type_of_year ='".$year_type."'
+                      GROUP BY vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub LIMIT 1";
+
+                $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+
+                if($results[0]['minority_type_id'] != ''){
+                   return true;
+                }
+                else{
+                    return false;
+                }
+        }
         /* Returns M/WBE category for the given vendor id in the given year and year type for contracts Advanced Serach results*/
 
         static public function get_contract_vendor_link($vendor_id, $is_prime_or_sub, $minority_type_id){
