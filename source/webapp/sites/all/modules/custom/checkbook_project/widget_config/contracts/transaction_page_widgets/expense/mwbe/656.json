@@ -83,12 +83,8 @@ return $header;
 "vendor_name_link": {
 "type": "expression2",
 "expression": " '<a href=\"/contracts_landing'
-. _checkbook_append_url_params()
-.  (isset($row['fiscal_year_id@checkbook:all_contracts_coa_aggregates']) ? '/year/'.$row['fiscal_year_id@checkbook:all_contracts_coa_aggregates'] : '')
-.  (isset($row['type_of_year@checkbook:all_contracts_coa_aggregates']) ? '/yeartype/'.$row['type_of_year@checkbook:all_contracts_coa_aggregates'] : '')
-.  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
-.  (($row['is_prime_or_sub'] == 'P') ? '/vendor/' : '/subvendor/') . $row['vendor_id']
-.  '?expandBottomCont=true\">'. $row['vendor_formatted'] . '</a>'  "
+. ContractUtil::get_contracts_vendor_link_sub($row['vendor_id'], null, null, null, 'S')
+. '?expandBottomCont=true\">'. $row['vendor_formatted'] . '</a>'  "
 },
 "agency_formatted": {
 "type": "expression2",
