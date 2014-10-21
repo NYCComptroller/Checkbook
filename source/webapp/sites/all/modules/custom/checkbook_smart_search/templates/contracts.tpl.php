@@ -24,12 +24,12 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
            $contracts_results['status'] =  'Registered';
            $status = "R";
    }
-
-    if($contracts_results['fiscal_year_id']){
-        $fiscal_year_id = $contracts_results['fiscal_year_id'];
+    $effective_end_year_id = _getYearIDFromValue($contracts_results['effective_end_year']);
+    if($effective_end_year_id < _getCurrentYearID()){
+        $fiscal_year_id = $effective_end_year_id;
     }
     else{
-        $fiscal_year_id = _getFiscalYearID();
+        $fiscal_year_id = _getCurrentYearID();
     }
 
     if(strtolower($contracts_results['contract_category_name']) == 'expense'){
@@ -212,7 +212,11 @@ foreach ($contracts_parameter_mapping as $key => $title){
             if($id == '4' || $id == '5'){
                 $id = '4~5';
             }
-        $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". _getFiscalYearID() ."/mwbe/".$id ."'>" . MappingUtil::getMinorityCategoryById(ContractUtil::getLatestMwbeCategoryByVendorByTransactionYear($contracts_results["vendor_id"], $fiscal_year_id, 'B'))."</a>";
+        if($contracts_results["is_prime_or_sub"] == 'Yes'){
+            $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". _getFiscalYearID() ."/mwbe/".$id ."/dashboard/ms'>" . MappingUtil::getMinorityCategoryById(ContractUtil::getLatestMwbeCategoryByVendorByTransactionYear($contracts_results["vendor_id"], $fiscal_year_id, 'B'))."</a>";
+        }else{
+            $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". _getFiscalYearID() ."/mwbe/".$id ."/dashboard/mp'>" . MappingUtil::getMinorityCategoryById(ContractUtil::getLatestMwbeCategoryByVendorByTransactionYear($contracts_results["vendor_id"], $fiscal_year_id, 'B'))."</a>";
+        }
     }elseif($key == "minority_type_name" && $contracts_results["minority_type_name"]){
         $value = $contracts_results["minority_type_name"];
     }

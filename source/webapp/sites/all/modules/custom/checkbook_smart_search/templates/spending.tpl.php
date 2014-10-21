@@ -27,7 +27,7 @@ if($spending_results['fiscal_year_id']){
     $fiscal_year_id = $spending_results['fiscal_year_id'];
 }
 else{
-    $fiscal_year_id = _getFiscalYearID();
+    $fiscal_year_id = _getCurrentYearID();
 }
 
 if($IsOge)
@@ -130,7 +130,13 @@ foreach ($spending_parameter_mapping as $key=>$title){
         if($id == '4' || $id == '5'){
             $id = '4~5';
         }
-        $value = "<a href='/spending_landing/yeartype/B/year/". _getFiscalYearID() ."/mwbe/".$id ."'>" . MappingUtil::getMinorityCategoryById(ContractUtil::getLatestMwbeCategoryByVendorByTransactionYear($spending_results["vendor_id"], $fiscal_year_id, 'B'))."</a>";
+        if($spending_results['is_prime_or_sub'] == 'Yes'){
+            $value = "<a href='/spending_landing/yeartype/B/year/". _getFiscalYearID() ."/mwbe/".$id ."/dashboard/ms'>" . MappingUtil::getMinorityCategoryById(ContractUtil::getLatestMwbeCategoryByVendorByTransactionYear($spending_results["vendor_id"], $fiscal_year_id, 'B'))."</a>";
+        }
+        else{
+            $value = "<a href='/spending_landing/yeartype/B/year/". _getFiscalYearID() ."/mwbe/".$id ."/dashboard/mp'>" . MappingUtil::getMinorityCategoryById(ContractUtil::getLatestMwbeCategoryByVendorByTransactionYear($spending_results["vendor_id"], $fiscal_year_id, 'B'))."</a>";
+        }
+
     }elseif($key == "minority_type_name" && $spending_results["minority_type_name"]){
         $value = $spending_results["minority_type_name"];
     }
