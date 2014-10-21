@@ -99,7 +99,7 @@ return $footer;
 "entityColumnName":"subvendor_subvendor_legal_name",
 "templateTitle":"Sub Vendor Spending Transactions"
 },
-"widgetTitle":"Sub Vendors",
+"widgetTitle":"",
 "table_title":"",
 "table_columns": [
 {
