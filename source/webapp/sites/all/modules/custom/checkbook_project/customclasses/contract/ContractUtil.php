@@ -157,7 +157,7 @@ namespace { //global
         static public function get_contracts_vendor_link_sub($vendor_id, $year_id = null, $year_type = null,$agency_id = null){
         
         	$latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, "S");
-        	$url = _checkbook_project_get_url_param_string("agency") .  _checkbook_project_get_url_param_string("status") . _checkbook_project_get_year_url_param_string();
+        	$url = _checkbook_project_get_url_param_string("agency") .  _checkbook_project_get_url_param_string("contstatus","status") . _checkbook_project_get_year_url_param_string();
         
         	$current_dashboard = _getRequestParamValue("dashboard");
         	$is_mwbe_certified = isset($latest_minority_id);
