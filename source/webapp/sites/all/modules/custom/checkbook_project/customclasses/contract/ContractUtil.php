@@ -242,7 +242,7 @@ namespace { //global
                 $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
 
                 if($results[0]['minority_type_id'] != ''){
-                   return true;
+                   return $results[0]['minority_type_id'];
                 }
                 else{
                     return false;
