@@ -19,6 +19,9 @@
             "agency.agency.agency_name","subvendor.subvendor"],
 "defaultParamTypeConfig":{"dollar_difference":"ne"},
 "adjustParameters":"
+    if(_getRequestParamValue('dashboard') == 'ss'){
+        unset($parameters['minority_type_id']);
+    }
     $adjustedParameters = $parameters;
     if(function_exists('_checkbook_project_applyParameterFilters')){
         $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);

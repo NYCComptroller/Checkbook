@@ -11,6 +11,9 @@
 "noDataInitialLoad":true,
 "columns": ["total_contracts","agency.agency","agency.agency.agency_short_name","original_amount_sum","current_amount_sum","yeartype.yeartype","spending_amount_sum","agency.agency.agency_name"],
 "adjustParameters":"
+if(_getRequestParamValue('dashboard') == 'ss'){
+    unset($parameters['minority_type_id']);
+}
     $adjustedParameters = $parameters;
     if(function_exists('_checkbook_project_applyParameterFilters')){
     $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);

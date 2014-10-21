@@ -18,6 +18,9 @@
             "yeartype.yeartype","spending_amount_sum","original_agreement.original_agreement",
             "document_code.document_code.document_code","agency.agency.agency_name"],
 "adjustParameters":"
+    if(_getRequestParamValue('dashboard') == 'ss'){
+        unset($parameters['minority_type_id']);
+    }
     $adjustedParameters = $parameters;
     if(function_exists('_checkbook_project_applyParameterFilters')){
     $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
