@@ -191,21 +191,32 @@ foreach ($contracts_parameter_mapping as $key => $title){
   if($title == "Prime Vendor"){
       $title = "Vendor";
   }
-  if($key == "minority_type_name" && !$contracts_results["minority_type_name"]){
-      $value = 'N/A';
-  }
-  if($key == "minority_type_name" && $contracts_results["minority_type_name"]){
-      $id = $contracts_results["minority_type_id"];
-      if($id == '4' || $id == '5'){
-          $id = '4~5';
-      }
-      if($id == '7' || $id == '11'){
+
+//  if($key == "minority_type_name" && $contracts_results["minority_type_name"]){
+//      $id = $contracts_results["minority_type_id"];
+//      if($id == '4' || $id == '5'){
+//          $id = '4~5';
+//      }
+//      if($id == '7' || $id == '11'){
+//        $value = $contracts_results["minority_type_name"];
+//      }
+//      else{
+//        $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". _getFiscalYearID() ."/mwbe/".$id ."'>" .$contracts_results["minority_type_name"] ."</a>";
+//      }
+//  }
+    if($key == "minority_type_name" && !$contracts_results["minority_type_name"]){
+        $value = 'N/A';
+    }
+    elseif($key == "minority_type_name" && ContractUtil::getLatestMwbeCategoryByVendorByTransactionYear($contracts_results["vendor_id"], $fiscal_year_id, 'B') != ''){
+            $id = ContractUtil::getLatestMwbeCategoryByVendorByTransactionYear($contracts_results["vendor_id"], $fiscal_year_id, 'B');
+            if($id == '4' || $id == '5'){
+                $id = '4~5';
+            }
+        $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". _getFiscalYearID() ."/mwbe/".$id ."'>" . MappingUtil::getMinorityCategoryById(ContractUtil::getLatestMwbeCategoryByVendorByTransactionYear($contracts_results["vendor_id"], $fiscal_year_id, 'B'))."</a>";
+    }elseif($key == "minority_type_name" && $contracts_results["minority_type_name"]){
         $value = $contracts_results["minority_type_name"];
-      }
-      else{
-        $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". _getFiscalYearID() ."/mwbe/".$id ."'>" .$contracts_results["minority_type_name"] ."</a>";
-      }
-  }
+    }
+
   if ($count % 2 == 0){
     if($title)
         $row[] = '<div class="field-label">'.$title.':</div><div class="field-content">'. $value .'</div>';
