@@ -81,7 +81,8 @@
         "sub_contract_id",
         "industry_type_id",
         "minority_type_id",
-        "is_prime_or_sub"
+        "is_prime_or_sub",
+        "original_agreement_id@checkbook:sub_vendor_agid"
     ],
     "derivedColumns": {
         "is_sub_vendor": {
@@ -126,7 +127,7 @@
         } ,
         "reference_document_number_link": {
             "type": "expression2",
-            "expression": "(ContractURLHelper::prepareSpendingContractLink($row, $node))?ContractURLHelper::prepareSpendingContractLink($row, $node):'N/A'"
+            "expression": "($row[spending_category_name] == 'Payroll' ||  $row[spending_category_name] == 'Others') ? 'N/A' : '<a class=\"new_window\" href=\"' . SpendingUtil::getSubContractNumberLinkUrl($node,$row) . '\">'  . $row[reference_document_number] . '</a>'"
         },
         "purpose_formatted":{
             "type": "expression2",

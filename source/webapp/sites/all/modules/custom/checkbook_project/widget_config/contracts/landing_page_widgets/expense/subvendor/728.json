@@ -12,6 +12,9 @@
  "enableExpand":true,
 "columns": ["total_contracts","industry.industry","industry.industry.industry_type_name","original_amount_sum","current_amount_sum","yeartype.yeartype","spending_amount_sum"],
 "adjustParameters":"
+if(_getRequestParamValue('dashboard') == 'ss'){
+    unset($parameters['minority_type_id']);
+}
 $adjustedParameters = $parameters;
 if(function_exists('_checkbook_project_applyParameterFilters')){
 $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);

@@ -119,11 +119,14 @@ namespace { //global
         static public function get_contract_vendor_minority_category($vendor_id, $year_id = null, $year_type = null,$agency_id = null, $is_prime_or_sub = 'P'){
 
             $latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, $is_prime_or_sub);
-
-            if(in_array($latest_minority_id, array(2,3,4,5,9))){
-                return "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
-            }else{
-                return "/vendor/".$vendor_id;
+            if($is_prime_or_sub == 'P'){
+                if(in_array($latest_minority_id, array(2,3,4,5,9))){
+                    return "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
+                }else{
+                    return "/vendor/".$vendor_id;
+                }
+            }else if($is_prime_or_sub == 'S'){
+               return self::get_contracts_vendor_link_sub($vendor_id, $year_id = null, $year_type = null,$agency_id = null);
             }
 
             return '';
@@ -177,7 +180,7 @@ namespace { //global
         
 
         static public function getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id = null, $year_type = null, $is_prime_or_sub = "P"){
-        	STATIC $contract_vendor_latest_mwbe_category;
+        	//STATIC $contract_vendor_latest_mwbe_category;
         	if($agency_id == null){
         		$agency_id =  _getRequestParamValue('agency');
         	}

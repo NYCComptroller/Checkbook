@@ -43,7 +43,7 @@
     "derivedColumns": {
         "purpose_formatted": {
             "type": "expression2",
-            "expression": "_get_tooltip_markup($row['contract_purpose_contract_purpose'],40)"
+            "expression": "!isset($row['contract_purpose_contract_purpose']) ? 'N/A' : _get_tooltip_markup($row['contract_purpose_contract_purpose'],40)"
         },
         "agency_name_formatted": {
             "type": "expression2",
