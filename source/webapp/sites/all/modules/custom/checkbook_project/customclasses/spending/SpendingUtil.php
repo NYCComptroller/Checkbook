@@ -131,6 +131,7 @@ class SpendingUtil{
     static function getSpendingFooterUrl($node){
         $url = '/panel_html/spending_transactions/spending/transactions'
         . _checkbook_project_get_url_param_string("vendor")
+        . _checkbook_project_get_url_param_string("subvendor")
         . _checkbook_project_get_url_param_string("agency")
         . _checkbook_project_get_url_param_string("category")
         . _checkbook_project_get_url_param_string("industry")

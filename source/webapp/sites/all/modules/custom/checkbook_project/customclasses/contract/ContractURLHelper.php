@@ -170,11 +170,11 @@ class ContractURLHelper{
         }
         $url .= _checkbook_append_url_params();
         if( preg_match("/^contracts_pending/", drupal_get_path_alias($_GET['q'])) ){
-          $allowedFilters =  array("agency","vendor","awrdmthd","csize","cindustry","agid","dashboard");
+          $allowedFilters =  array("agency","vendor","awrdmthd","csize","cindustry","agid","dashboard","subvendor","mwbe");
           $url .= "/yeartype/B/year/"._getCurrentYearID();
         }
         else{
-          $allowedFilters =  array("year","calyear","agency","yeartype","awdmethod","vendor","csize","cindustry","agid","dashboard");
+          $allowedFilters =  array("year","calyear","agency","yeartype","awdmethod","vendor","csize","cindustry","agid","dashboard","subvendor","mwbe");
         }
         for($i=1;$i < count($pathParams);$i++){
 
