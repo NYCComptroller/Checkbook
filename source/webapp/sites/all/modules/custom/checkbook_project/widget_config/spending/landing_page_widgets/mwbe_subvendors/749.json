@@ -32,7 +32,9 @@
         "agency.agency.agency_name",
         "agreement_id.agreement_id",
         "agency.agency",
-        "year.year"
+        "year.year",
+        "sub_contract_number.sub_contract_number",
+        "sub_contract_number.sub_contract_number.original_agreement_id"
     ],
     "limit":5,
     "enableExpand":true,
@@ -93,7 +95,7 @@
         },
         "contract_number_link":{
             "type":"expression2",
-            "expression":"'<a class=\"new_window\" href=\"' . SpendingUtil::getContractNumberLinkUrl($node,$row) . '\">'  . $row[document_id_document_id] . '</a>'"
+            "expression":"'<a class=\"new_window\" href=\"' . SpendingUtil::getSubContractNumberLinkUrl($node,$row) . '\">'  . $row[document_id_document_id] . '</a>'"
         }
     },
     "summaryView":{
