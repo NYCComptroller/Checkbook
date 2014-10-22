@@ -103,6 +103,15 @@
                 "expression": "custom_number_formatter_format($row['check_amount_sum'],2,'$')"
             }
     },
+    "adjustParameters":"
+        $parameters['is_all_categories'] = isset($parameters['spending_category_id']) ? 'N' : 'Y';
+
+        $adjustedParameters = $parameters;
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        }
+        return $adjustedParameters;
+    ",
     "summaryView":{
         "template":"spending_sub_vendor_summary",
         "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Sub Vendors');"
