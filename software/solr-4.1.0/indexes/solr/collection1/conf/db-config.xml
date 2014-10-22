@@ -32,7 +32,7 @@
 			post_closing_adjustment_amount,
 			accrued_expense_amount,
 			7 domain_ordering,
-            updated_date date_ordering,
+            updated_date date_ordering
 			from budget
 			 where
 			'${dataimporter.request.clean}' != 'false' OR job_id >= ${dataimporter.request.jobID} ">
