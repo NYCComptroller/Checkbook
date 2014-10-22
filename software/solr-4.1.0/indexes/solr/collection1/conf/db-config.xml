@@ -514,6 +514,7 @@
                 3 domain_ordering,
                 registered_date date_ordering,
                 effective_end_year,
+                effective_end_year_id,
                 contract_original_agreement_id,
                 case when is_prime_or_sub in ('P') then 'N/A' else prime_vendor_name end as prime_vendor_name
                 from all_agreement_transactions a
@@ -585,6 +586,7 @@
             <field column="domain_ordering" name="domain_ordering" />
             <field column="date_ordering" name="date_ordering" />
             <field column="effective_end_year" name="effective_end_year" />
+            <field column="effective_end_year_id" name="effective_end_year_id" />
             <field column="contract_original_agreement_id" name="contract_original_agreement_id"/>
         </entity>
         <entity dataSource="db2" name="contracts_oge" transformer="RegexTransformer"
@@ -625,6 +627,7 @@
                 registered_date,
                 4 domain_ordering,
                 effective_end_year,
+                effective_end_year_id,
                 registered_date date_ordering,
                 (CASE WHEN master_agreement_yn = 'Y' THEN a.original_contract_amount ELSE ogecon.original_amount END) original_amount,
                 (CASE WHEN master_agreement_yn = 'Y' THEN a.maximum_contract_amount ELSE ogecon.current_amount END )current_amount,
@@ -749,6 +752,7 @@
             <field column="domain_ordering" name="domain_ordering" />
             <field column="date_ordering" name="date_ordering" />
             <field column="effective_end_year" name="effective_end_year" />
+            <field column="effective_end_year_id" name="effective_end_year_id" />
         </entity>
         <entity dataSource="db1" name="pending_contracts" query="
 		    select
@@ -784,6 +788,7 @@
                 cif_fiscal_year fiscal_year,
                 cif_fiscal_year_id fiscal_year_id,
                 fms_contract_number,
+                8 domain_ordering,
                 document_version
             from pending_contracts p
             left join ref_document_code dc on p.document_code_id = dc.document_code_id
@@ -822,6 +827,7 @@
             <field column="document_code" name="document_code" />
             <field column="fiscal_year" name="fiscal_year" />
             <field column="fiscal_year_id" name="fiscal_year_id" />
+            <field column="domain_ordering" name="domain_ordering" />
         </entity>
     </document>
 </dataConfig>
