@@ -45,6 +45,7 @@ class DataSetHandler {
     $request_limit = (isset($criteria['global']['max_records'])) ? $criteria['global']['max_records'] : NULL;
     $response_columns_criteria = $criteria['responseColumns'];
     $response_format = $criteria['global']['response_format'];
+    $required_columns = $criteria['required_columns'];
 
     $data_set = $this->configuration->dataset;
     $data_set->configuration = $this->configuration;
@@ -62,6 +63,14 @@ class DataSetHandler {
         $columns = array_values($elements_columns);
       }
 
+        if(isset($required_columns)) {
+            foreach ($required_columns as $required_column) {
+                if (array_search($required_column, $columns) == FALSE) {
+                    $columns[] = $required_column;
+                }
+            }
+
+        }
 
       // Prepare offset:
       $start_with = (isset($request_start_with)) ? $request_start_with : 0;

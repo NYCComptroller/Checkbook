@@ -68,7 +68,8 @@
                         "subcontract_reference_id",
                         "mwbe_category",
                         "subvendor"
-                    ]
+                    ],
+                    "required_non_display_columns":["vendor_type"]
                 },
                 "csv":{
                     "elementsColumn":{
@@ -90,7 +91,8 @@
                         "Sub Vendor":"vendor_type",
                         "Associated Prime Vendor":"prime_vendor_name",
                         "M/WBE Category":"minority_type_name"
-                    }
+                    },
+                    "required_non_display_columns":["vendor_type"]
                 }
             },
             "adjustParameters":"if(function_exists('checkbook_api_adjustSpendingParameterFilters')){checkbook_api_adjustSpendingParameterFilters($dataSet,$parameters,$criteria);}",
