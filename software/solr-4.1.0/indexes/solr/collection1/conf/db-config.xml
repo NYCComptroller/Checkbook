@@ -30,7 +30,9 @@
 			encumbered_amount,
 			cash_expense_amount,
 			post_closing_adjustment_amount,
-			accrued_expense_amount
+			accrued_expense_amount,
+			7 domain_ordering,
+            updated_date date_ordering
 			from budget
 			 where
 			'${dataimporter.request.clean}' != 'false' OR job_id >= ${dataimporter.request.jobID} ">
@@ -60,6 +62,8 @@
             <field column="cash_expense_amount" name="cash_expense_amount" />
             <field column="post_closing_adjustment_amount" name="post_closing_adjustment_amount" />
             <field column="accrued_expense_amount" name="accrued_expense_amount" />
+            <field column="domain_ordering" name="domain_ordering" />
+            <field column="date_ordering" name="date_ordering" />
         </entity>
         <entity dataSource="db1" name="revenue" query="select
 			'revenue:' || revenue_id id,
@@ -95,6 +99,8 @@
 			funding_class_code,
 			lower(funding_class_name)	|| '[' || funding_class_code || ']' funding_class_name_code,
 			adopted_amount,
+			last_modified_date date_ordering,
+			6 domain_ordering,
 			current_modified_budget_amount
 			from revenue_details
 			where
@@ -127,6 +133,8 @@
             <field column="funding_class_name_code" name="funding_class_name_code" />
             <field column="adopted_amount" name="adopted_amount" />
             <field column="current_modified_budget_amount" name="current_budget_amount" />
+            <field column="domain_ordering" name="domain_ordering" />
+            <field column="date_ordering" name="date_ordering" />
             <!--
                 In Revenue domain, 'fiscal_year' field is 'budget fiscal year' column in db.
                 'display_fiscal_year' is 'fiscal year' column in db.
@@ -196,6 +204,8 @@
                 'N/A' commodity_line,
                 'N/A' budget_name,
                 'N/A' entity_contract_number,
+                1 domain_ordering,
+                check_eft_issued_date date_ordering,
                 adt.contract_original_agreement_id,
                 case when adt.is_prime_or_sub in ('P') then 'N/A' else adt.prime_vendor_name end as prime_vendor_name
 			 from all_disbursement_transactions  adt left join ref_year ry on adt.check_eft_issued_nyc_year_id = ry.year_id
@@ -262,6 +272,8 @@
             <field column="commodity_line" name="spending_commodity_line" />
             <field column="budget_name" name="spending_budget_name" />
             <field column="contract_original_agreement_id" name="contract_original_agreement_id" />
+            <field column="domain_ordering" name="domain_ordering" />
+            <field column="date_ordering" name="date_ordering" />
         </entity>
         <entity dataSource="db2" name="spending_oge"
                 pk="id"
@@ -312,6 +324,8 @@
                 rsc.spending_category_name,
                 oc.oge_contract_number as entity_contract_number,
                 oc.fms_commodity_line  as commodity_line,
+                2 domain_ordering,
+                check_eft_issued_date date_ordering,
                 oc.budget_name as budget_name
                 from disbursement_line_item_details  dlid left join ref_year ry on dlid.check_eft_issued_nyc_year_id = ry.year_id
                 left join ref_spending_category rsc on rsc.spending_category_id = dlid.spending_category_id
@@ -368,6 +382,8 @@
             <field column="entity_contract_number" name="spending_entity_contract_number" />
             <field column="commodity_line" name="spending_commodity_line" />
             <field column="budget_name" name="spending_budget_name" />
+            <field column="domain_ordering" name="domain_ordering" />
+            <field column="date_ordering" name="date_ordering" />
         </entity>
         <entity dataSource="db1" name="payroll"
                 query="
@@ -398,6 +414,8 @@
 			base_pay,
 			annual_salary,
 			overtime_pay,
+			5 domain_ordering,
+            pay_date date_ordering,
 			other_payments			
 			from payroll			 
 			 where 			 
@@ -429,6 +447,8 @@
             <field column="overtime_pay" name="overtime_pay" />
             <field column="annual_salary" name="annual_salary" />
             <field column="other_payments" name="other_payments" />
+            <field column="domain_ordering" name="domain_ordering" />
+            <field column="date_ordering" name="date_ordering" />
         </entity>
         <entity dataSource="db1" name="contracts" transformer="RegexTransformer"
                 pk="id"
@@ -491,6 +511,10 @@
                 'N/A' commodity_line,
                 'N/A' budget_name,
                 'N/A' entity_contract_number,
+                3 domain_ordering,
+                registered_date date_ordering,
+                effective_end_year,
+                effective_end_year_id,
                 contract_original_agreement_id,
                 case when is_prime_or_sub in ('P') then 'N/A' else prime_vendor_name end as prime_vendor_name
                 from all_agreement_transactions a
@@ -559,6 +583,10 @@
             <field column="entity_contract_number" name="contract_entity_contract_number"/>
             <field column="commodity_line" name="contract_commodity_line"/>
             <field column="budget_name" name="contract_budget_name"/>
+            <field column="domain_ordering" name="domain_ordering" />
+            <field column="date_ordering" name="date_ordering" />
+            <field column="effective_end_year" name="effective_end_year" />
+            <field column="effective_end_year_id" name="effective_end_year_id" />
             <field column="contract_original_agreement_id" name="contract_original_agreement_id"/>
         </entity>
         <entity dataSource="db2" name="contracts_oge" transformer="RegexTransformer"
@@ -597,6 +625,10 @@
                 brd_awd_no apt_pin,
                 tracking_number pin,
                 registered_date,
+                4 domain_ordering,
+                effective_end_year,
+                effective_end_year_id,
+                registered_date date_ordering,
                 (CASE WHEN master_agreement_yn = 'Y' THEN a.original_contract_amount ELSE ogecon.original_amount END) original_amount,
                 (CASE WHEN master_agreement_yn = 'Y' THEN a.maximum_contract_amount ELSE ogecon.current_amount END )current_amount,
                 '' fiscal_year,
@@ -717,6 +749,10 @@
             <field column="entity_contract_number" name="contract_entity_contract_number" splitBy=","/>
             <field column="commodity_line" name="contract_commodity_line" splitBy="," />
             <field column="budget_name" name="contract_budget_name" splitBy=","  />
+            <field column="domain_ordering" name="domain_ordering" />
+            <field column="date_ordering" name="date_ordering" />
+            <field column="effective_end_year" name="effective_end_year" />
+            <field column="effective_end_year_id" name="effective_end_year_id" />
         </entity>
         <entity dataSource="db1" name="pending_contracts" query="
 		    select
@@ -752,6 +788,7 @@
                 cif_fiscal_year fiscal_year,
                 cif_fiscal_year_id fiscal_year_id,
                 fms_contract_number,
+                8 domain_ordering,
                 document_version
             from pending_contracts p
             left join ref_document_code dc on p.document_code_id = dc.document_code_id
@@ -790,6 +827,7 @@
             <field column="document_code" name="document_code" />
             <field column="fiscal_year" name="fiscal_year" />
             <field column="fiscal_year_id" name="fiscal_year_id" />
+            <field column="domain_ordering" name="domain_ordering" />
         </entity>
     </document>
 </dataConfig>
