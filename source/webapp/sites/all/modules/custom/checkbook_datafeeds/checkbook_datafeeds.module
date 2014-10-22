@@ -2145,6 +2145,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         '#markup' => '<div><strong>File Type:</strong> ' . $form_state['step_information']['type']['stored_values']['format'] . '</div>',
     );
     $criteria = checkbook_datafeeds_process_contracts_values($form, $form_state, $data_source);
+   // $criteria['required_columns'] = checkbook_datafeeds_contracts_add_required_columns($response_type, $data_source,$values['df_contract_status'],$values['category'],$values['year']);
     $form_state['step_information']['confirmation']['stored_values']['criteria'] = $criteria;
     $form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $user_criteria;
     $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $response_type, 'contracts');
@@ -4658,6 +4659,25 @@ function checkbook_datafeeds_spending_filter_selected_columns($selected_columns,
 }
 
 /**
+ * This function is to filter out columns which are needed in the result set to derive others but will not be displayed
+ *
+ * @param $response_type
+ * @param $data_source
+ * @return mixed
+ */
+function checkbook_datafeeds_spending_add_required_columns($response_type, $data_source)
+{
+    //Get column configurations
+    $domain = 'spending';
+    $domain = $data_source == 'checkbook_oge' ? $domain.'_oge' : $domain;
+    $domain_config = ConfigUtil::getDomainConfiguration($domain);
+    //Get columns which should be required to get but not display
+    $required_columns = $domain_config->$domain->dataset->displayConfiguration->$response_type->required_non_display_columns;
+
+    return $required_columns;
+}
+
+/**
  * Filters selected columns to only contain columns configured for this domain snd data_source
  *
  * @param array $selected_columns
@@ -4690,6 +4710,34 @@ function checkbook_datafeeds_contracts_filter_selected_columns($selected_columns
     //Filter out selected columns which are not configured to show for this data source
     $filtered_columns = array_intersect_key($selected_columns, (array)$columns_included);
     return $filtered_columns;
+}
+
+/**
+ * This function is to filter out columns which are needed in the result set to derive others but will not be displayed
+ *
+ * @param $response_type
+ * @param $data_source
+ * @param $status
+ * @param $expense_category
+ * @param $year
+ * @return mixed
+ */
+function checkbook_datafeeds_contracts_add_required_columns($response_type, $data_source, $status, $expense_category, $year)
+{
+    ///Get column configurations
+    $domain = 'contracts';
+    $domain = $data_source == 'checkbook_oge' ? $domain.'_oge' : $domain;
+    $domain_config = ConfigUtil::getDomainConfiguration($domain);
+
+    $domain_filter = $domain;
+    $domain_filter .= $status == 'pending' ? '_pending' : '_active';
+    $domain_filter .= $status == 'pending' ? '' :  '_'.$expense_category;
+    if ($year == 'All Years') $domain_filter .= "_all_years";
+
+    //Get columns which should be required to get but not display
+    $required_columns = $domain_config->$domain->dataset->displayConfiguration->$response_type->required_non_display_columns;
+
+    return $required_columns;
 }
 
 /**
@@ -4878,6 +4926,7 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
         '#markup' => '<div><strong>File Type:</strong> ' . $form_state['step_information']['type']['stored_values']['format'] . '</div>',
     );
     $criteria = checkbook_datafeeds_process_spending_values($form, $form_state, $data_source);
+    $criteria['required_columns'] = checkbook_datafeeds_spending_add_required_columns($response_type, $data_source);
     $form_state['step_information']['confirmation']['stored_values']['criteria'] = $criteria;
     $form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $user_criteria;
     $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $response_type, 'spending');

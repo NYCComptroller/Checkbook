@@ -108,6 +108,15 @@
                 "expression": "SpendingUtil::getPercentYtdSpending($node, $row)"
             }
     },
+    "adjustParameters":"
+        $parameters['is_all_categories'] = isset($parameters['spending_category_id']) ? 'N' : 'Y';
+
+        $adjustedParameters = $parameters;
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        }
+        return $adjustedParameters;
+    ",
     "WidgetTitleEval":"
         $catName = RequestUtil::getSpendingCategoryName();
         return ('Sub Vendors Checks ' . $catName . ' Transactions');
