@@ -165,10 +165,6 @@
             "type": "expression2",
             "expression": "($row[spending_category_name] == 'Payroll' ||  $row[spending_category_name] == 'Others') ? 'N/A' : $row[purpose]"
         },
-        "mwbe_category_name": {
-            "type":"expression2",
-            "expression":"MappingUtil::getMinorityCategoryById($row[minority_type_id])"
-        },
         "expense_cat_formatted":{
             "type": "expression2",
             "expression": "_get_tooltip_markup($row[expenditure_object_name],40)"
@@ -176,6 +172,14 @@
         "dept_name_formatted":{
             "type": "expression2",
             "expression": "_get_tooltip_markup($row[department_name],40)"
+        },
+        "mwbe_category_name": {
+            "type":"expression2",
+            "expression":"MappingUtil::getMinorityCategoryById($row['minority_type_id'])"
+        },
+        "mwbe_category_name_link": {
+            "type": "expression2",
+            "expression": " RequestUtil::isNewWindow() || !MappingUtil::isMWBECertified(array($row['minority_type_id'])) ? $row['mwbe_category_name']  : ('<a href=' . SpendingUtil::getMWBECategoryLinkUrl($node, $row) . '>'. $row[mwbe_category_name] .'</a>') "
         }
     },
     "table_columns": [
@@ -195,7 +199,7 @@
         {"labelAlias":"contract_purpose","column":"contract_purpose_text","sortSourceColumn":"purpose","exportColumn":"contract_purpose_export"},
         {"labelAlias":"capital_project","column":"reporting_code"},
         {"labelAlias":"spending_category","column":"spending_category_name"},
-        {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name"},
+        {"labelAlias":"mwbe_category","column":"mwbe_category_name_link","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name"},
         {"label":"","column":"","export":false}
     ],
     "exportColumnSqlOverride":[
