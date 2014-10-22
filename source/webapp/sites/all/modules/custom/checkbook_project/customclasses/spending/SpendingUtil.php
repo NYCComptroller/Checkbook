@@ -243,8 +243,8 @@ class SpendingUtil{
         $dashboard = _getRequestParamValue("dashboard");
 
         return $row["is_sub_vendor"] == "No"
-            ? self::getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard)
-            : self::getSubVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard);
+            ? self::getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, true)
+            : self::getSubVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, true);
 
     }
 
@@ -264,9 +264,10 @@ class SpendingUtil{
      * @param $year_id
      * @param $year_type
      * @param $current_dashboard
+     * @param $payee_name
      * @return string
      */
-    static function getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $current_dashboard){
+    static function getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $current_dashboard, $payee_name = false){
 
         $override_params = null;
         $latest_certified_minority_type_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type, "P");
@@ -294,6 +295,10 @@ class SpendingUtil{
                 "subvendor"=>null,
                 "vendor"=>$vendor_id
             );
+            //payee name will never have a drill down, this is to avoid ajax issues on drill down
+            if($payee_name) {
+                $override_params["mwbe"] = $is_mwbe_certified ? "2~3~4~5~9" : null;
+            }
         }
         return '/' . self::getLandingPageWidgetUrl($override_params);
     }
@@ -314,12 +319,12 @@ class SpendingUtil{
      * @param $year_id
      * @param $year_type
      * @param $current_dashboard
+     * @param $payee_name
      * @return string
      */
-    static function getSubVendorLink($vendor_id, $agency_id, $year_id, $year_type, $current_dashboard){
+    static function getSubVendorLink($vendor_id, $agency_id, $year_id, $year_type, $current_dashboard, $payee_name = false){
 
         $override_params = null;
-        $new_dashboard = null;
         $latest_certified_minority_type_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type, "S");
         $is_mwbe_certified = isset($latest_certified_minority_type_id);
 
@@ -345,6 +350,10 @@ class SpendingUtil{
                 "subvendor"=>$vendor_id,
                 "vendor"=>null
             );
+            //payee name will never have a drill down, this is to avoid ajax issues on drill down
+            if($payee_name) {
+                $override_params["mwbe"] = $is_mwbe_certified ? "2~3~4~5~9" : null;
+            }
         }
         return '/' . self::getLandingPageWidgetUrl($override_params);
     }
