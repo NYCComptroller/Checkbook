@@ -24,7 +24,7 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
            $contracts_results['status'] =  'Registered';
            $status = "R";
    }
-    $effective_end_year_id = _getYearIDFromValue($contracts_results['effective_end_year']);
+    $effective_end_year_id =$contracts_results['effective_end_year_id'];
     if($effective_end_year_id < _getCurrentYearID()){
         $fiscal_year_id = $effective_end_year_id;
     }

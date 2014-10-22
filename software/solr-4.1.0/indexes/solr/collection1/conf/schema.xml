@@ -303,6 +303,7 @@
         <field name="minority_type_name_contract" type="string_custom" indexed="true" stored="true"/>
         <field name="minority_type_id_contract" type="string_custom" indexed="true" stored="true"/>
         <field name="effective_end_year" type="int" indexed="true" stored="true"/>
+        <field name="effective_end_year_id" type="int" indexed="true" stored="true"/>
     </fields>
 
 
