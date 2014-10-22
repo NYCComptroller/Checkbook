@@ -111,7 +111,8 @@
         <field name="vendor_type" type="string_custom" indexed="true" stored="true"/>
         <field name="prime_vendor_name" type="string_custom" indexed="true" stored="true"/>
         <field name="contract_original_agreement_id" type="string_custom" indexed="true" stored="true"/>
-
+        <field name="domain_ordering" type="string_custom" indexed="true" stored="true"/>
+        <field name="date_ordering" type="string_custom" indexed="true" stored="true"/>
 
         <!--
             Checkbook 2.0
@@ -301,7 +302,8 @@
         <field name="contract_budget_name_autocomplete" type="text_autocomplete" indexed="true" stored="true" omitNorms="true" omitTermFreqAndPositions="true" multiValued="true"/>
         <field name="minority_type_name_contract" type="string_custom" indexed="true" stored="true"/>
         <field name="minority_type_id_contract" type="string_custom" indexed="true" stored="true"/>
-
+        <field name="effective_end_year" type="int" indexed="true" stored="true"/>
+        <field name="effective_end_year_id" type="int" indexed="true" stored="true"/>
     </fields>
 
 
