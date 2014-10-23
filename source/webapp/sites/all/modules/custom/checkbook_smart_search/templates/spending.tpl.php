@@ -109,18 +109,6 @@ foreach ($spending_parameter_mapping as $key=>$title){
   if($key == "minority_type_name" && !$spending_results["minority_type_name"]){
     $value = 'N/A';
   }
-//  if($key == "minority_type_name" && $spending_results["minority_type_name"]){
-//      $id = $spending_results["minority_type_id"];
-//      if($id == '4' || $id == '5'){
-//          $id = '4~5';
-//      }
-//      if($id == '7' || $id == '11'){
-//          $value = $spending_results["minority_type_name"];
-//      }
-//      else{
-//          $value = "<a href='/spending_landing/yeartype/B/year/". _getFiscalYearID() ."/mwbe/".$id ."'>" .$spending_results["minority_type_name"] ."</a>";
-//      }
-//  }
 
     if($key == "minority_type_name" && !$spending_results["minority_type_name"]){
         $value = 'N/A';
@@ -131,10 +119,10 @@ foreach ($spending_parameter_mapping as $key=>$title){
             $id = '4~5';
         }
         if($spending_results['is_prime_or_sub'] == 'Yes'){
-            $value = "<a href='/spending_landing/yeartype/B/year/". _getFiscalYearID() ."/mwbe/".$id ."/dashboard/ms'>" . MappingUtil::getMinorityCategoryById(ContractUtil::getLatestMwbeCategoryByVendorByTransactionYear($spending_results["vendor_id"], $fiscal_year_id, 'B'))."</a>";
+            $value = "<a href='/spending_landing/yeartype/B/year/". $fiscal_year_id ."/mwbe/".$id ."/dashboard/ms'>" . MappingUtil::getMinorityCategoryById(ContractUtil::getLatestMwbeCategoryByVendorByTransactionYear($spending_results["vendor_id"], $fiscal_year_id, 'B'))."</a>";
         }
         else{
-            $value = "<a href='/spending_landing/yeartype/B/year/". _getFiscalYearID() ."/mwbe/".$id ."/dashboard/mp'>" . MappingUtil::getMinorityCategoryById(ContractUtil::getLatestMwbeCategoryByVendorByTransactionYear($spending_results["vendor_id"], $fiscal_year_id, 'B'))."</a>";
+            $value = "<a href='/spending_landing/yeartype/B/year/". $fiscal_year_id ."/mwbe/".$id ."/dashboard/mp'>" . MappingUtil::getMinorityCategoryById(ContractUtil::getLatestMwbeCategoryByVendorByTransactionYear($spending_results["vendor_id"], $fiscal_year_id, 'B'))."</a>";
         }
 
     }elseif($key == "minority_type_name" && $spending_results["minority_type_name"]){

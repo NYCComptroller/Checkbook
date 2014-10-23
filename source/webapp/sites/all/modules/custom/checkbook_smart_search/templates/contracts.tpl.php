@@ -192,18 +192,6 @@ foreach ($contracts_parameter_mapping as $key => $title){
       $title = "Vendor";
   }
 
-//  if($key == "minority_type_name" && $contracts_results["minority_type_name"]){
-//      $id = $contracts_results["minority_type_id"];
-//      if($id == '4' || $id == '5'){
-//          $id = '4~5';
-//      }
-//      if($id == '7' || $id == '11'){
-//        $value = $contracts_results["minority_type_name"];
-//      }
-//      else{
-//        $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". _getFiscalYearID() ."/mwbe/".$id ."'>" .$contracts_results["minority_type_name"] ."</a>";
-//      }
-//  }
     if($key == "minority_type_name" && !$contracts_results["minority_type_name"]){
         $value = 'N/A';
     }
@@ -213,9 +201,9 @@ foreach ($contracts_parameter_mapping as $key => $title){
                 $id = '4~5';
             }
         if($contracts_results["is_prime_or_sub"] == 'Yes'){
-            $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". _getFiscalYearID() ."/mwbe/".$id ."/dashboard/ms'>" . MappingUtil::getMinorityCategoryById(ContractUtil::getLatestMwbeCategoryByVendorByTransactionYear($contracts_results["vendor_id"], $fiscal_year_id, 'B'))."</a>";
+            $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". $fiscal_year_id ."/mwbe/".$id ."/dashboard/ms'>" . MappingUtil::getMinorityCategoryById(ContractUtil::getLatestMwbeCategoryByVendorByTransactionYear($contracts_results["vendor_id"], $fiscal_year_id, 'B'))."</a>";
         }else{
-            $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". _getFiscalYearID() ."/mwbe/".$id ."/dashboard/mp'>" . MappingUtil::getMinorityCategoryById(ContractUtil::getLatestMwbeCategoryByVendorByTransactionYear($contracts_results["vendor_id"], $fiscal_year_id, 'B'))."</a>";
+            $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". $fiscal_year_id ."/mwbe/".$id ."/dashboard/mp'>" . MappingUtil::getMinorityCategoryById(ContractUtil::getLatestMwbeCategoryByVendorByTransactionYear($contracts_results["vendor_id"], $fiscal_year_id, 'B'))."</a>";
         }
     }elseif($key == "minority_type_name" && $contracts_results["minority_type_name"]){
         $value = $contracts_results["minority_type_name"];
