@@ -6,7 +6,7 @@ jQuery(document).ready(function ($) {
       chart: {
          renderTo: 'chart_container_<?php echo $id; ?>',
          defaultSeriesType: 'bar',
-         margin: [10,10,10,10],
+         backgroundColor:'rgba(255, 255, 255, 0.002)',
          height:50    ,
          animation: false     
       },
