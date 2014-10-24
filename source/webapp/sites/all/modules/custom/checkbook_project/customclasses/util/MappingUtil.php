@@ -73,6 +73,8 @@ class MappingUtil {
     
     static $mwbe_prefix = "M/WBE" ;
     
+    static $total_mwbe_cats = "2~3~4~5~9";
+    
     public static $minority_type_category_map_multi_chart = array(
     		'Black American' => array(2),
     		'Hispanic American' => array(3),
@@ -166,14 +168,14 @@ class MappingUtil {
     	}
 */		
     	if(RequestUtil::showTotalMWBELink()){
-    		$mwbe_total_link_html  ="<li class='no-click'><a href='/" . RequestUtil::getLandingPageUrl($domain,_getRequestParamValue("year"),_getRequestParamValue("yeartype")) . "/mwbe/2~3~4~5~9/dashboard/mp"   			
+    		$mwbe_total_link_html  ="<li class='no-click'><a href='/" . RequestUtil::getLandingPageUrl($domain,_getRequestParamValue("year"),_getRequestParamValue("yeartype")) . "/mwbe/" . MappingUtil::$total_mwbe_cats ."/dashboard/mp"   			
 																	  			.	_checkbook_project_get_url_param_string("agency")
 																	  			. _checkbook_project_get_url_param_string("vendor")  .
 															  				"'>Total M/WBE</a></li>";
     	}
   		$filters_html .=  "
   			 " . $mwbe_total_link_html . "
-			<li class='no-click'><a href='/" . RequestUtil::getLandingPageUrl($domain) . "/mwbe/2~3~4~5~9/dashboard/mp'>M/WBE Home</a></li>  					
+			<li class='no-click'><a href='/" . RequestUtil::getLandingPageUrl($domain) . "/mwbe/" . MappingUtil::$total_mwbe_cats ."/dashboard/mp'>M/WBE Home</a></li>  					
   				</ul>
   		</div>";
     	
