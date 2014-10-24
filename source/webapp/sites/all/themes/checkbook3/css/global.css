@@ -1725,9 +1725,6 @@ td.pad-left div{
     margin: 13px 0 13px 0px;
 }
 
-.checkbook-grading-left .dataTable td div {
-    margin: 5px 0 5px 0px;
-}
 
 td.text div {
     float: left;
@@ -2734,7 +2731,19 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
 {
     color: #3c5e7c;
     margin-bottom: 3px;
-} 
+}
+
+
+body.page-mwbe-agency-grading .checkbook-grading-left .dataTable td div {
+    margin-top: 5px;
+}
+
+
+body.page-mwbe-agency-grading .download_link {
+    float: right;
+    margin-bottom: 51px;
+    margin-top: -15px;
+}
 body.page-mwbe-agency-grading .panel-panel.grid-3{
     border: 1px solid #CACACA;
     padding-bottom: 10px;
@@ -2796,3 +2805,9 @@ body.page-mwbe-agency-grading .dataTables_wrapper{
 	font-size: 18px;
 	text-transform: none;
 }
+
+
+
+   float: right;
+    margin-bottom: 51px;
+    margin-top: -15px;
