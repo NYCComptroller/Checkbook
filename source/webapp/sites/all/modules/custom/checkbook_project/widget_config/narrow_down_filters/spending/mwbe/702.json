@@ -5,7 +5,6 @@
     "startWith":0,
     "columns":["deptname.deptname", "txcount"],
     "orderBy":["-txcount","deptname.deptname"],
-    "defaultParameters":{"vendor_type":"pv~sv","is_prime_or_sub":"P~S"},
 	"getTotalDataCount":true,    
 	"facetPager":true,
     "filterName":"Department",

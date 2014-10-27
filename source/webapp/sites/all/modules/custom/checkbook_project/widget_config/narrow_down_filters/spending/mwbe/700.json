@@ -10,7 +10,6 @@
     "autocompleteParamName":"agency_auto",    
     "autocompleteID":"fagencyId",
     "autocompleteField":"agency_name",
-    "defaultParameters":{"vendor_type":"pv~sv","is_prime_or_sub":"P~S"},
     "maxSelect":1,
     "adjustParameters":"
     if(isset($parameters['vendor_type'])){
