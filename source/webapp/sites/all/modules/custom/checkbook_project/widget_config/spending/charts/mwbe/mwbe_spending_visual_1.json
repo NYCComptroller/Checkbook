@@ -188,7 +188,7 @@ echo '<div class=\"chart-right\">
 	$node->widgetConfig->chartConfig->series[0]->data[0]->custom_label = custom_number_formatter_format($total_mwbe + $total_mwbe_subven ,2,'$') . ' (' .
 																		 custom_number_formatter_format(($total_mwbe + $total_mwbe_subven )/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') . ')';																		 
 	$node->widgetConfig->chartConfig->series[0]->data[0]->tooltip_label = 
-							'Aisan American: ' . custom_number_formatter_format($mwbe_data['aa'] + $mwbe_subven_data['aa'] ,2,'$')  . ' (' . 
+							'Asian American: ' . custom_number_formatter_format($mwbe_data['aa'] + $mwbe_subven_data['aa'] ,2,'$')  . ' (' . 
 									custom_number_formatter_format(($mwbe_data['aa'] + $mwbe_subven_data['aa'])/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' .  '<br/>' 
 							. 'Black American: ' . custom_number_formatter_format($mwbe_data['ba']+ $mwbe_subven_data['ba'],2,'$')  . ' (' .
 									custom_number_formatter_format(($mwbe_data['ba'] + $mwbe_subven_data['ba'])/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' . '<br/>' 
@@ -203,7 +203,7 @@ echo '<div class=\"chart-right\">
 																		 custom_number_formatter_format($toal_non_mwbe/($total_mwbe + $toal_non_mwbe) *100,1,null,'%') . ')';
 																		 
 																		 
-	$node->widgetConfig->gridConfig->data[] = array('Aisan American',$mwbe_data['aa'] ,
+	$node->widgetConfig->gridConfig->data[] = array('Asian American',$mwbe_data['aa'] ,
 										custom_number_formatter_format($mwbe_data['aa']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
 	$node->widgetConfig->gridConfig->data[] = array('Black American',$mwbe_data['ba'] ,
 										custom_number_formatter_format($mwbe_data['ba']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
