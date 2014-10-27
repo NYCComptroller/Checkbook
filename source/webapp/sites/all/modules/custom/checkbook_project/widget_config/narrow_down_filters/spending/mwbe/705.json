@@ -4,7 +4,6 @@
     "limit":100,
     "startWith":0,
     "columns":["category.category", "category.category.spending_category_name", "txcount"],
-    "defaultParameters":{"vendor_type":"pv~sv","is_prime_or_sub":"P~S"},
     "orderBy":"-txcount",
     "autocomplete":false,
     "filterName":"Spending Category",
