@@ -106,7 +106,7 @@
     "table_title":"",
     "table_columns": [
         {"labelAlias":"contract_id","column": "contract_number_link"},
-        {"labelAlias":"sub_contract_purpose","column":"sub_contract_purpose_formatted"},
+        {"labelAlias":"contract_purpose","column":"sub_contract_purpose_formatted"},
         {"labelAlias":"contract_agency","column": "agency_name_link","sortSourceColumn":"agency.agency.agency_name"},
         {"labelAlias":"prime_vendor","column":"prime_vendor_name","sortSourceColumn":"prime_vendor.prime_vendor.legal_name"},
         {"labelAlias":"ytd_spending","column": "contract_amount_link","sortSourceColumn":"check_amount_sum"},
