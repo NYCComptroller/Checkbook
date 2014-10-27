@@ -111,28 +111,17 @@ foreach ($spending_parameter_mapping as $key=>$title){
         $value = 'N/A';
     }
     elseif($key == "minority_type_name" && $spending_results["minority_type_name"]){
-        if(SpendingUtil::getLatestMwbeCategoryByVendorByTransactionYear($spending_results["vendor_id"], $fiscal_year_id, 'B') != ''){
-            $id = SpendingUtil::getLatestMwbeCategoryByVendorByTransactionYear($spending_results["vendor_id"], $fiscal_year_id, 'B');
-            if($id == '4' || $id == '5'){
-                $id = '4~5';
-            }
-            if($spending_results['is_prime_or_sub'] == 'Yes'){
-                $value = "<a href='/spending_landing/yeartype/B/year/". $fiscal_year_id ."/mwbe/".$id ."/dashboard/ms'>" . MappingUtil::getMinorityCategoryById(SpendingUtil::getLatestMwbeCategoryByVendorByTransactionYear($spending_results["vendor_id"], $fiscal_year_id, 'B'))."</a>";
-            }
-            else{
-                $value = "<a href='/spending_landing/yeartype/B/year/". $fiscal_year_id ."/mwbe/".$id ."/dashboard/mp'>" . MappingUtil::getMinorityCategoryById(SpendingUtil::getLatestMwbeCategoryByVendorByTransactionYear($spending_results["vendor_id"], $fiscal_year_id, 'B'))."</a>";
-            }
-        }elseif($spending_results['minority_type_id'] != '7' && $spending_results['minority_type_id'] != '11'){
-            $id = $spending_results['minority_type_id'];
-            if($id == '4' || $id == '5'){
-                $id = '4~5';
-            }
-            $value = "<a href='/spending_landing/yeartype/B/year/". $fiscal_year_id ."/mwbe/".$id."'>" . $spending_results["minority_type_name"]."</a>";
-        }else{
+        $id = $spending_results["minority_type_id"];
+        if($id == '4' || $id == '5'){
+            $id = '4~5';
+        }
+        if($spending_results['minority_type_id'] != '7' && $spending_results['minority_type_id'] != '11'){
+            $value = "<a href='/spending_landing/yeartype/B/year/". _getCurrentYearID() ."/mwbe/".$id ."/dashboard/mp'>" .$spending_results["minority_type_name"]."</a>";
+        }
+        else{
             $value = $spending_results["minority_type_name"];
         }
     }
-
 
   if ($count % 2 == 0){
     if($title)

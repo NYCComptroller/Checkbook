@@ -196,24 +196,14 @@ foreach ($contracts_parameter_mapping as $key => $title){
         $value = 'N/A';
     }
     elseif($key == "minority_type_name" && $contracts_results["minority_type_name"]){
-        if(ContractUtil::getLatestMwbeCategoryByVendorByTransactionYear($contracts_results["vendor_id"], $fiscal_year_id, 'B') != ''){
-            $id = ContractUtil::getLatestMwbeCategoryByVendorByTransactionYear($contracts_results["vendor_id"], $fiscal_year_id, 'B');
+        $id = $contracts_results["minority_type_id"];
             if($id == '4' || $id == '5'){
                 $id = '4~5';
             }
-            if($contracts_results['is_prime_or_sub'] == 'Yes'){
-                $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". $fiscal_year_id ."/mwbe/".$id ."/dashboard/ms'>" . MappingUtil::getMinorityCategoryById(ContractUtil::getLatestMwbeCategoryByVendorByTransactionYear($contracts_results["vendor_id"], $fiscal_year_id, 'B'))."</a>";
-            }
-            else{
-                $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". $fiscal_year_id ."/mwbe/".$id ."/dashboard/mp'>" . MappingUtil::getMinorityCategoryById(ContractUtil::getLatestMwbeCategoryByVendorByTransactionYear($contracts_results["vendor_id"], $fiscal_year_id, 'B'))."</a>";
-            }
-        }elseif($contracts_results['minority_type_id'] != '7' && $contracts_results['minority_type_id'] != '11'){
-            $id = $contracts_results['minority_type_id'];
-            if($id == '4' || $id == '5'){
-                $id = '4~5';
-            }
-            $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". $fiscal_year_id ."/mwbe/".$id."'>" . $contracts_results["minority_type_name"]."</a>";
-        }else{
+        if($contracts_results['minority_type_id'] != '7' && $contracts_results['minority_type_id'] != '11'){
+            $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". _getCurrentYearID() ."/mwbe/".$id ."/dashboard/mp'>" .$contracts_results["minority_type_name"]."</a>";
+        }
+        else{
             $value = $contracts_results["minority_type_name"];
         }
     }

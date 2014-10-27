@@ -32,10 +32,10 @@
 			post_closing_adjustment_amount,
 			accrued_expense_amount,
 			7 domain_ordering,
-            updated_date date_ordering
+            budget_fiscal_year date_ordering
 			from budget
 			 where
-			'${dataimporter.request.clean}' != 'false' OR job_id >= ${dataimporter.request.jobID} ">
+			'${dataimporter.request.clean}' != 'false' OR job_id >= ${dataimporter.request.jobID} order by date_ordering desc ">
             <field column="id" name="id" />
             <field column="domain1" name="domain" />
             <field column="agency_id" name="agency_id" />
@@ -99,12 +99,12 @@
 			funding_class_code,
 			lower(funding_class_name)	|| '[' || funding_class_code || ']' funding_class_name_code,
 			adopted_amount,
-			last_modified_date date_ordering,
+			fiscal_year date_ordering,
 			6 domain_ordering,
 			current_modified_budget_amount
 			from revenue_details
 			where
-                '${dataimporter.request.clean}' != 'false' OR job_id >= ${dataimporter.request.jobID} ">
+                '${dataimporter.request.clean}' != 'false' OR job_id >= ${dataimporter.request.jobID} order by date_ordering desc">
             <field column="id" name="id" />
             <field column="domain1" name="domain" />
             <field column="agency_id" name="agency_id" />
@@ -212,7 +212,7 @@
 			 left join ref_spending_category rsc on rsc.spending_category_id = adt.spending_category_id
 			 where 
 			'${dataimporter.request.clean}' != 'false'
-      			OR adt.job_id >= ${dataimporter.request.jobID}
+      			OR adt.job_id >= ${dataimporter.request.jobID} order by date_ordering desc
 			">
             <field column="id" name="id" />
             <field column="domain1" name="domain" />
@@ -332,7 +332,7 @@
                 left join oge_contract oc on oc.fms_contract_number = dlid.contract_number and oc.fms_commodity_line = dlid.agreement_commodity_line_number
 			 where
 			'${dataimporter.request.clean}' != 'false'
-      			OR dlid.job_id >= ${dataimporter.request.jobID}
+      			OR dlid.job_id >= ${dataimporter.request.jobID} order by date_ordering desc
 			">
             <field column="id" name="id" />
             <field column="domain1" name="domain" />
@@ -419,7 +419,7 @@
 			other_payments			
 			from payroll			 
 			 where 			 
-			'${dataimporter.request.clean}' != 'false' OR job_id >= ${dataimporter.request.jobID}  
+			'${dataimporter.request.clean}' != 'false' OR job_id >= ${dataimporter.request.jobID} order by date_ordering desc
 		">
             <field column="id" name="id" />
             <field column="domain1" name="domain" />
@@ -522,7 +522,7 @@
             left join ref_award_category rac on a.award_category_id = rac.award_category_id
             where dc.document_code in ('MMA1', 'MA1', 'MAR', 'CT1', 'CTR', 'DO1', 'CTA1', 'RCT1')                 
                   and ( '${dataimporter.request.clean}' != 'false'
-      			OR  a.job_id >= ${dataimporter.request.jobID} )
+      			OR  a.job_id >= ${dataimporter.request.jobID} ) order by date_ordering desc
 		">
             <field column="id" name="id" />
             <field column="original_agreement_id" name="original_agreement_id" />
@@ -697,7 +697,7 @@
                 ) commodity_lines on commodity_lines.id = 'contracts:' || agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END) || 'oge'
             where dc.document_code in ('MMA1', 'MA1', 'MAR', 'CT1', 'CTR', 'DO1', 'CTA1', 'RCT1')
                   and ( '${dataimporter.request.clean}' != 'false'
-      			OR  a.job_id >= ${dataimporter.request.jobID} )
+      			OR  a.job_id >= ${dataimporter.request.jobID} ) order by date_ordering desc
 		">
             <field column="id" name="id" />
             <field column="original_agreement_id" name="original_agreement_id" />
