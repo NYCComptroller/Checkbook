@@ -651,5 +651,5 @@ function array_values_recursive($ary)
 
 function checkbook_faceted_search_replaceSlash($string)
 {
-    return str_replace('/', '__', $string);
+    return str_replace('__', '/', $string);
 }

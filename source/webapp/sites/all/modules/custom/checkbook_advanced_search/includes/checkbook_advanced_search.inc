@@ -737,11 +737,7 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
         $redirect_url .= _checkbook_advanced_search_year_arg($spending_fiscal_year, 'year');
     }
     if (!empty($spending_payee_name)) {
-        if ($spending_payee_name_exact == $spending_payee_name) {
-            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_payee_name, 'vendornm_exact');
-        } else {
-            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_payee_name, 'vendornm');
-        }
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_payee_name, 'vendornm');
     }
     if (!empty($spending_contract_num)) {
         if ($spending_contract_num_exact == $spending_contract_num) {
