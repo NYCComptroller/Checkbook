@@ -85,7 +85,7 @@ function _checkbook_mwbe_agency_grading_left($agencies_data){
 			$spending_amount += $row[$mwbe_cat];
 			$data_row[$mwbe_cat] = $row[$mwbe_cat];			
 		}	
-		$left_content_agencies[] = array('spending_amount'=>$spending_amount,'agency_name'=>$row['agency_name'],'data_row'=>$data_row);
+		$left_content_agencies[] = array('spending_amount'=>$spending_amount,'agency_id'=>$row['agency_id'],'agency_name'=>$row['agency_name'],'data_row'=>$data_row);
 	}	
 	usort($left_content_agencies,'_checkbook_agency_grading_comp');
 	return theme('mwbe_agency_grading_left_table',array('left_agencies_data' => $left_content_agencies));	
