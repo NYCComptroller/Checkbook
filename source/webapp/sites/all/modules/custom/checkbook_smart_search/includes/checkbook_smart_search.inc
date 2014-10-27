@@ -155,10 +155,10 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
     $query = "select/?q=". $search_string
         ."&start=". ($page_no*$no_of_results)
         ."&fq=-latest_flag:N"
+        ."&sort=domain_ordering+asc,date_ordering+desc"
         ."&wt=php";
 
     $search_results = _checkbook_smart_search_solr_results($query);
-
     // Active Contracts Results
     $act_start_date_filter = "start_date:[*%20TO%20".$current_date."]";
     $act_end_date_filter = "end_date:[".$current_date."%20TO%20*]";
@@ -168,6 +168,7 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
         ."&fq=". $act_end_date_filter
         ."&fq=latest_flag:Y"
         ."&fq=contract_status:registered"
+        ."&sort=domain_ordering+asc,date_ordering+desc"
         ."&wt=php";
 
     $active_contracts = _checkbook_smart_search_solr_results($active_contracts_query);
