@@ -984,9 +984,9 @@ class RequestUtil{
     			$where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
     		}
     	}
-    	 
-    	 
-    	$where_filter = ' where ' . implode(' and ' , $where_filters) ;
+
+
+    	$where_filter = !empty($where_filters) ? (' where ' . implode(' and ' , $where_filters)) : '';
     	 
     	 
     	
@@ -1038,10 +1038,11 @@ class RequestUtil{
     			$where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
     		}
     	}
-    	
-    	
-    	$where_filter = ' where ' . implode(' and ' , $where_filters) . 
-    					' and a1.minority_type_id in (2,3,4,5,9)';
+
+
+    	$where_filter = ' where ' . implode(' and ' , $where_filters) .
+                        (!empty($where_filters) ? ' and' : '') .
+                        ' a1.minority_type_id in (2,3,4,5,9)';
     	
     	
 
