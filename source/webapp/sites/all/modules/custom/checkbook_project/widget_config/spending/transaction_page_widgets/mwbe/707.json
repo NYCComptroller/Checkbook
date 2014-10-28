@@ -8,14 +8,14 @@
     "urlParamMap":{
         "deptnm":"disb_department_short_name","expcategorynm":"disb_expenditure_object_name","year":"disb_fiscal_year_id",
         "calyear":"disb_fiscal_year_id","yeartype":"type_of_year","status":"status_flag","agency":"disb_agency_id",
-        "vendor":"vendor_id","expcategory":"disb_expenditure_object_id","category":"disb_spending_category_id",
+        "vendor":"disb_vendor_id","expcategory":"disb_expenditure_object_id","category":"disb_spending_category_id",
         "checkamtr":"disb_check_amount","dept":"disb_department_id","syear":"disb_fiscal_year_id",
         "scalyear":"disb_fiscal_year_id","magid":"disb_master_agreement_id","agid":"disb_agreement_id",
-        "cvendor":"vendor_id","cagency":"document_agency_id","awdmethod":"award_method_id","csize":"award_size_id",
+        "cvendor":"disb_vendor_id","cagency":"document_agency_id","awdmethod":"award_method_id","csize":"award_size_id",
         "cindustry":"industry_type_id","doctype":"document_code@checkbook:ref_document_code",
         "month":"disb_check_eft_issued_cal_month_id",
         "mwbe":"disb_minority_type_id","industry":"industry_type_id"},
-    "paramTypeConfig":{"checkamtr":"rangeid","syear":"le","scalyear":"le","deptnm":"eqignorecase","expcategorynm":"eqignorecase"},
+    "paramTypeConfig":{"doctype":"in","checkamtr":"rangeid","syear":"le","scalyear":"le","deptnm":"eqignorecase","expcategorynm":"eqignorecase"},
     "header":"
         $header = NULL;
         $header .= widget_data_tables_export_link($node);
@@ -196,7 +196,7 @@
         "bInfo": true,
         "aoColumns":[
             {"sClass":"text","sWidth":"170px","asSorting":["asc","desc"]},
-            {"sClass":"text","sWidth":"180px","asSorting":["asc","desc"]},
+            {"sClass":"text","sWidth":"190px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"90px","bSortable": false,"asSorting":["asc","desc"]},
             {"bSortable":false,"sWidth":"50px"},
             {"sClass":"text","sWidth":"90px","asSorting":["asc","desc"]},
@@ -232,18 +232,16 @@
         var oSpendCategoryIds = getNamedFilterCriteria('fSpendCategoryId');
         var oCheckAmount = getNamedFilterCriteria('fCheckAmount');
         var oDeptIds = getNamedFilterCriteria('fdeptNm');
-        var oMwbeVendorId = getNamedFilterCriteria('fmwbeVendorId');
         var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
 
         var  cUrl = oTable.fnSettings().sAjaxSource;
         cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
-        cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
+        cUrl = adjustUrlParameter(cUrl,'cvendor',oVendorIds);
         cUrl = adjustUrlParameter(cUrl,'vendornm_exact',oVendorNms);
         cUrl = adjustUrlParameter(cUrl,'expcategorynm',oCategoryIds);
         cUrl = adjustUrlParameter(cUrl,'category',oSpendCategoryIds );
         cUrl = adjustUrlParameter(cUrl,'checkamtr',oCheckAmount);
         cUrl = adjustUrlParameter(cUrl,'deptnm',oDeptIds);
-        cUrl = adjustUrlParameter(cUrl,'mwbe_vendor',oMwbeVendorId);
         cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
 
            return cUrl;
