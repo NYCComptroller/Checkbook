@@ -155,7 +155,8 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
     $query = "select/?q=". $search_string
         ."&start=". ($page_no*$no_of_results)
         ."&fq=-latest_flag:N"
-        ."&sort=domain_ordering+asc,date_ordering+desc"
+        //."&fq=fiscal_year:[2010+TO+"._getYearValueFromID(_getCurrentYearID())."]"
+        //."&sort=domain_ordering+asc,date_ordering+desc"
         ."&wt=php";
 
     $search_results = _checkbook_smart_search_solr_results($query);
@@ -168,7 +169,8 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
         ."&fq=". $act_end_date_filter
         ."&fq=latest_flag:Y"
         ."&fq=contract_status:registered"
-        ."&sort=domain_ordering+asc,date_ordering+desc"
+        //."&fq=fiscal_year:[2010+TO+"._getYearValueFromID(_getCurrentYearID())."]"
+        //."&sort=domain_ordering+asc,date_ordering+desc"
         ."&wt=php";
 
     $active_contracts = _checkbook_smart_search_solr_results($active_contracts_query);
@@ -284,6 +286,7 @@ function _checkbook_smart_search_get_selected_facet_results($search_terms, $face
         $query = "select/?q=". $search_string
             ."&facet=true"
             ."&fq=-latest_flag:N"
+            //."&fq=fiscal_year:[2010+TO+"._getYearValueFromID(_getCurrentYearID())."]"
             ."&facet.sort=count"
             ."&facet.field=".$parameter_mapping[$facet_name]
             ."&wt=php"
@@ -361,6 +364,7 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
         $query = "select/?q=". $search_string
             ."&facet=true"
             ."&fq=-latest_flag:N"
+            //."&fq=fiscal_year:[2010+TO+"._getYearValueFromID(_getCurrentYearID())."]"
             ."&facet.sort=count"
             ."&facet.field=".$parameter_mapping[$facet_name]
             ."&wt=php"
@@ -534,6 +538,7 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
                   .$autocomplete_text //&fq=oge_agency_name_autocomplete:(eco*)
                   ."&facet=true"
                   ."&fq=-latest_flag:N"
+                  //."&fq=fiscal_year:[2010+TO+"._getYearValueFromID(_getCurrentYearID())."]"
                   ."&facet.field=".$parameter_mapping[$facet_name] // oge_agency_name
                   ."&facet.limit=10"
                   ."&wt=php";
