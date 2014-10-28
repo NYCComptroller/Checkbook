@@ -2739,11 +2739,6 @@ body.page-mwbe-agency-grading .checkbook-grading-left .dataTable td div {
 }
 
 
-body.page-mwbe-agency-grading .download_link {
-    position: absolute;
-    right: 0;
-    top: 20px;
-}
 body.page-mwbe-agency-grading .panel-panel.grid-3{
     border: 1px solid #CACACA;
     padding-bottom: 10px;

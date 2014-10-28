@@ -68,8 +68,10 @@ function _checkbook_mwbe_agency_grading(){
 	$agencies_data =  _checkbook_mwbe_agency_grading_getdata();
 	$left_content =  _checkbook_mwbe_agency_grading_left($agencies_data);
 	$right_content = _checkbook_mwbe_agency_grading_right($agencies_data);
-	$links = array(l(t('Home'), ''),'M/WBE Agency Ranking');
+	$links = array(l(t('Home'), ''),'M/WBE Agency Summary');
 	drupal_set_breadcrumb($links);
+	drupal_set_title("M/WBE Agency Summary");
+	
 	
 	return theme('mwbe_agency_grading_main',array('left_content'=>$left_content,'right_content'=>$right_content));
 }
