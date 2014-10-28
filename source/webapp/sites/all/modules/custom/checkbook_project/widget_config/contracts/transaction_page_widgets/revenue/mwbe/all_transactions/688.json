@@ -20,7 +20,7 @@ return $header;
 "html_class": "initiative-table",
 "no_results_content":"No Results Found",
 "dataset": "checkbook:all_agreement_transactions",
-"columns": ["sub_contract_id","is_prime_or_sub","minority_type_id","minority_type_name","contract_number","contract_original_agreement_id","description","document_version","original_contract_amount","maximum_contract_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","document_code@checkbook:ref_document_code","industry_type_name"],
+"columns": ["prime_vendor_name","sub_contract_id","is_prime_or_sub","minority_type_id","minority_type_name","contract_number","contract_original_agreement_id","description","document_version","original_contract_amount","maximum_contract_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","document_code@checkbook:ref_document_code","industry_type_name"],
 "caption":"",
 "derivedColumns": {
 "contract_link": {
@@ -88,6 +88,10 @@ return $header;
 "formatted_is_sub_vendor": {
 "type": "expression2",
 "expression": "($row['is_prime_or_sub'] == 'P')?'No':'Yes'"
+},
+"formatted_associated_vendor": {
+"type": "expression2",
+"expression": "($row['is_prime_or_sub'] == 'P')?'N/A':$row['prime_vendor_name']"
 }
 },
 "table_columns": [
@@ -99,6 +103,7 @@ return $header;
 {"labelAlias": "original_amount","column": "formatted_original_amount","sortSourceColumn":"original_contract_amount","headerClass":"centrig"},
 {"labelAlias": "vendor_name","column": "vendor_name_link","sortSourceColumn":"vendor_name"},
 {"labelAlias": "sub_vendor_name","column":"formatted_is_sub_vendor","sortSourceColumn": "is_prime_or_sub","exportColumn":"formatted_is_sub_vendor"},
+{"labelAlias": "associated_prime_vendor","column": "formatted_associated_vendor","sortSourceColumn":"prime_vendor_name"},
 {"labelAlias": "contract_agency","column": "agency_name_link","sortSourceColumn":"agency_name"},
 {"labelAlias": "contract_type","column": "contract_type_formatted","sortSourceColumn":"agreement_type_name"},
 {"labelAlias": "award_method","column": "award_method_formatted","sortSourceColumn":"award_method_name"},
@@ -148,6 +153,7 @@ return $parameters;
 {"sClass":"text pad-left","sWidth":"120px","asSorting": [ "desc","asc" ]},
 {"sClass":"text pad-left","sWidth":"150px","asSorting": [ "asc","desc" ]},
 {"sClass":"number number-left","sWidth":"70px","asSorting": [ "asc","desc" ]},
+{"sClass":"text number-left pad-left","sWidth":"170px","asSorting": [ "asc","desc" ]},
 {"sClass":"text pad-left","sWidth":"135px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"150px","asSorting": [ "asc","desc" ]},
 {"sClass":"text pad-left","sWidth":"135px","asSorting": [ "asc","desc" ]},
