@@ -14,7 +14,7 @@ $mwbe_cats =  _mwbe_agency_grading_current_cats();
 						<td class="desc"><span name="legend_description">Asian American</span></td>
 					</tr>
 					<tr class="legend_entry">
-						<td><!-- <span name="lengend_checkbox"></span> --><input type="checkbox" <?php echo (in_array('aa_mwbe',$mwbe_cats))?  'checked=""':'';?> 
+						<td><!-- <span name="lengend_checkbox"></span> --><input type="checkbox" <?php echo (in_array('ba_mwbe',$mwbe_cats))?  'checked=""':'';?> 
 						  			value="ba_mwbe" name="mwbe_right_filter"></td>
 						<td class="color"><img src="/<?php print drupal_get_path("module","checkbook_mwbe_agency_grading")?>/images/legend-color-1.png"></td>
 						<td class="desc"><span name="legend_description">Black American</span></td>
