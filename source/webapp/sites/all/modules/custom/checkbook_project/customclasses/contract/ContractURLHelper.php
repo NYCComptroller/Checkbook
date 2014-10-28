@@ -27,7 +27,9 @@ class ContractURLHelper{
     static function prepareExpenseContractLink($row, $node, $parent = false, $original_agreement_id = null) {
 
         $link = NULL;
+        if(isset($row['contract_original_agreement_id'])) $row['original_agreement_id'] = $row['contract_original_agreement_id'];
         $row['original_agreement_id'] = ($original_agreement_id)? $original_agreement_id : $row['original_agreement_id'];
+
         if($parent && strlen($row['master_contract_number']) > 0){
             $agrParamName = 'magid';
             $docTypeStr = substr($row['master_contract_number'],0,3);
@@ -269,7 +271,7 @@ class ContractURLHelper{
 
     static function prepareExpandLink($row, $node) {
 
-        $link = ($row['has_children'] == 'Y') ? '<span id=dtl_expand class="toggler collapsed"  magid="' . $row['original_agreement_id'] . '" '
+        $link = ($row['has_children'] == 'Y') ? '<span id=dtl_expand class="toggler collapsed"  magid="' . ((isset($row['contract_original_agreement_id']))?$row['contract_original_agreement_id'] : $row['original_agreement_id']) . '" '
             . ( _getRequestParamValue('mwbe') != '' ?  ('mwbe="' . _getRequestParamValue('mwbe') . '" ' ) : '')
             . ( _getRequestParamValue('smnid') != '' ?  ('smnid="' . _getRequestParamValue('smnid') . '" ' ) : '')
             . ( _getRequestParamValue('year') != '' ?  ('year="' . _getRequestParamValue('year') . '" ' ) : '')
