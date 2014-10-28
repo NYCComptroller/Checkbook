@@ -12,6 +12,9 @@
 				"doctype":"document_code.document_code.document_code"
 			  }  ,    
     "adjustParameters":"
+        if(isset($parameters['disb_vendor_type'])){
+            $parameters['disb_vendor_type'] = MappingUtil::getVendorTypeValue($parameters['disb_vendor_type']);
+        }
    	 	$year = $parameters['disb_fiscal_year_id'];
 		if(isset($year)){
 		$parameters['fiscal_year_id'] = $year;

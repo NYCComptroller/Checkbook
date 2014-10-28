@@ -4,7 +4,6 @@
     "no_results_content":"No Results Found",
     "limit":10,
     "startWith":0,
-    "defaultParameters":{"minority_type.minority_type.minority_type_id":"2~3~4~5~9"},
     "columns":["vendor_type.vendor_type","txcount"],
     "orderBy":"-txcount",
     "getTotalDataCount":true,

@@ -1,7 +1,6 @@
 {
     "widgetType":"phpparser",
     "parentNid":707,
-    "orderBy":"-txcount",
     "limit":100,
     "startWith":0,
     "columns":["category.category", "category.category.spending_category_name", "txcount"],
@@ -15,6 +14,9 @@
 				"doctype":"document_code.document_code.document_code"
 			  }  ,    
     "adjustParameters":"
+    if(isset($parameters['disb_vendor_type'])){
+        $parameters['disb_vendor_type'] = MappingUtil::getVendorTypeValue($parameters['disb_vendor_type']);
+    }
 	checkbook_faceted_search_adjust_param($node);
     $year = $parameters['disb_fiscal_year_id'];
     if(isset($year)){
