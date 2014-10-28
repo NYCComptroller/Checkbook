@@ -2145,7 +2145,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         '#markup' => '<div><strong>File Type:</strong> ' . $form_state['step_information']['type']['stored_values']['format'] . '</div>',
     );
     $criteria = checkbook_datafeeds_process_contracts_values($form, $form_state, $data_source);
-   // $criteria['required_columns'] = checkbook_datafeeds_contracts_add_required_columns($response_type, $data_source,$values['df_contract_status'],$values['category'],$values['year']);
+    $criteria['required_columns'] = checkbook_datafeeds_contracts_add_required_columns($response_type, $data_source,$values['df_contract_status'],$values['category'],$values['year']);
     $form_state['step_information']['confirmation']['stored_values']['criteria'] = $criteria;
     $form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $user_criteria;
     $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $response_type, 'contracts');
