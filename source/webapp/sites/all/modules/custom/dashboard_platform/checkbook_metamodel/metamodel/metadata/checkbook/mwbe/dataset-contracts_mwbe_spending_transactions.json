@@ -21,7 +21,7 @@
                         {
                             "name": "minority_type",
                             "datasetName": "minority_type",
-                            "sourceColumnName": "minority_type_id"
+                            "sourceColumnName": "disb_minority_type_id"
                         }
                     ]
                 },

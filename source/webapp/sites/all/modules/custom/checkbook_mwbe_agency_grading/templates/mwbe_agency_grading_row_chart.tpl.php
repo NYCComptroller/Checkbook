@@ -44,7 +44,9 @@ jQuery(document).ready(function ($) {
       tooltip: {
          formatter: function() {
             return this.series.name +' - $'+this.y+' ('+ Math.round(this.percentage) +'%)';
-         }
+         },
+         animation:false,
+         shadow:false
       },
       plotOptions: {
          series: {
