@@ -240,15 +240,17 @@ function checkbook_api_adjustContractDataSetResults(&$data_records) {
         if(isset($data_record['minority_type_name'])) {
             $data_records[$key]['minority_type_name'] = MappingUtil::getMinorityCategoryByName($data_record['minority_type_name']);
         }
+        
         //Derive sub vendor column from vendor type
         if(isset($data_record['vendor_type'])) {
             $data_records[$key]['vendor_type'] = (preg_match('/S/', $data_record['vendor_type'])) ? 'Yes' : 'No';
-        }
-        if(array_key_exists('expenditure_object_name', $data_record) && !isset($data_record['expenditure_object_name'])) {
-            $data_records[$key]['expenditure_object_name'] = 'N/A';
-        }
-        if(array_key_exists('prime_vendor_name', $data_record) && !isset($data_record['prime_vendor_name'])) {
-            $data_records[$key]['prime_vendor_name'] = 'N/A';
+            //If Sub vendor field = "Yes" following should be "N/A": Expense Category
+            if($data_records[$key]['vendor_type'] == 'Yes') {
+                $data_records[$key]['expenditure_object_name'] = 'N/A';
+            }
+            else { //If Sub vendor field = "No" following should be "N/A": Associated Prime Vendor
+                $data_records[$key]['prime_vendor_name'] = 'N/A';
+            }
         }
     }
 }

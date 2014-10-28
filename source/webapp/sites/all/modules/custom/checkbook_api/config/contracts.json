@@ -87,7 +87,8 @@
                         "mwbe_category",
                         "subvendor",
                         "subcontract_reference_id"
-                    ]
+                    ],
+                    "required_non_display_columns":["vendor_type"]
                 },
                 "csv":{
                     "elementsColumn":{
@@ -119,7 +120,8 @@
                         "subcontract_reference_id":"sub_contract_id",
                         "Associated Prime Vendor":"prime_vendor_name",
                         "M/WBE Category":"minority_type_name"
-                    }
+                    },
+                    "required_non_display_columns":["vendor_type"]
                 }
             },
             "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($dataSet,$parameters,$criteria);}",
@@ -247,7 +249,8 @@
                         "mwbe_category",
                         "subvendor",
                         "subcontract_reference_id"
-                    ]
+                    ],
+                    "required_non_display_columns":["vendor_type"]
                 },
                 "csv":{
                     "elementsColumn":{
@@ -276,7 +279,8 @@
                         "Sub Vendor":"vendor_type",
                         "Associated Prime Vendor":"prime_vendor_name",
                         "M/WBE Category":"minority_type_name"
-                    }
+                    },
+                    "required_non_display_columns":["vendor_type"]
                 }
             },
             "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($dataSet,$parameters,$criteria);}",
@@ -443,7 +447,8 @@
                         "mwbe_category",
                         "subvendor",
                         "subcontract_reference_id"
-                    ]
+                    ],
+                    "required_non_display_columns":["vendor_type"]
                 },
                 "csv":{
                     "elementsColumn":{
@@ -472,7 +477,8 @@
                         "Sub Vendor":"vendor_type",
                         "Associated Prime Vendor":"prime_vendor_name",
                         "M/WBE Category":"minority_type_name"
-                    }
+                    },
+                    "required_non_display_columns":["vendor_type"]
                 }
             },
             "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($dataSet,$parameters,$criteria);}",
@@ -635,7 +641,8 @@
                         "mwbe_category",
                         "subvendor",
                         "subcontract_reference_id"
-                    ]
+                    ],
+                    "required_non_display_columns":["vendor_type"]
                 },
                 "csv":{
                     "elementsColumn":{
@@ -663,7 +670,8 @@
                         "Sub Vendor":"vendor_type",
                         "Associated Prime Vendor":"prime_vendor_name",
                         "M/WBE Category":"minority_type_name"
-                    }
+                    },
+                    "required_non_display_columns":["vendor_type"]
                 }
             },
             "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($dataSet,$parameters,$criteria);}",
