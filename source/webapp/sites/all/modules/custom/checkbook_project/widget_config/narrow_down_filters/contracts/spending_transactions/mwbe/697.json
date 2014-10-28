@@ -20,7 +20,6 @@
         "mwbe":"minority_type.minority_type"
     },
     "adjustParameters":"
-    blah2($parameters);
         checkbook_faceted_search_adjust_param($node);
         if(isset($parameters['disb_vendor_type'])){
             $parameters['disb_vendor_type'] = MappingUtil::getVendorTypeValue($parameters['disb_vendor_type']);
