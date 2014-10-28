@@ -32,7 +32,7 @@
 			post_closing_adjustment_amount,
 			accrued_expense_amount,
 			7 domain_ordering,
-            updated_date date_ordering
+            budget_fiscal_year date_ordering
 			from budget
 			 where
 			'${dataimporter.request.clean}' != 'false' OR job_id >= ${dataimporter.request.jobID} ">
@@ -99,7 +99,7 @@
 			funding_class_code,
 			lower(funding_class_name)	|| '[' || funding_class_code || ']' funding_class_name_code,
 			adopted_amount,
-			last_modified_date date_ordering,
+			fiscal_year date_ordering,
 			6 domain_ordering,
 			current_modified_budget_amount
 			from revenue_details
@@ -419,7 +419,7 @@
 			other_payments			
 			from payroll			 
 			 where 			 
-			'${dataimporter.request.clean}' != 'false' OR job_id >= ${dataimporter.request.jobID}  
+			'${dataimporter.request.clean}' != 'false' OR job_id >= ${dataimporter.request.jobID}
 		">
             <field column="id" name="id" />
             <field column="domain1" name="domain" />

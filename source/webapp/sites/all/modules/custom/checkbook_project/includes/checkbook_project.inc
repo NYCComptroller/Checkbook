@@ -1600,7 +1600,7 @@ function _checkbook_is_oge_parent_contract($cont_num){
 function _checkbook_get_oge_agency_id($vendor_id){
     $vendors = _checkbook_project_querydataset('checkbook:vendor',array('vendor_id','legal_name'),array('vendor_id'=>$vendor_id));
     $vendor_name = $vendors[0]['legal_name'];
-    $agencies = _checkbook_project_querydataset('checkbook_oge:agency',array('agency_id','agency_name'),array('agency_name'=>$vendor_name, 'is_oge_agency'=>'Y'));
+    $agencies = _checkbook_project_querydataset('checkbook_oge:agency',array('agency_id','agency_name'),array('agency_name'=>$vendor_name, 'is_display'=>'Y', 'is_oge_agency'=>'Y'));
     return htmlentities($agencies[0]['agency_id']);
 }
 

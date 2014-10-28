@@ -2,7 +2,8 @@
 
 	_widget_highcharts_include_plugin();
 	
-
+	$download_link = "/mwbe_agency_grading_csv/year/" . _getRequestParamValue("year") . "/yeartype/" .  _getRequestParamValue("yeartype") ;
+	
 ?>
 <div class="checkbook-grading-left">
 <table id="grading_table">
@@ -19,9 +20,11 @@
 			foreach($left_agencies_data as $row){
 				$agency = $row['agency_name'];
 				$chart = theme('mwbe_agency_grading_row_chart',array('id'=>$id, 'data_row'=>$row['data_row']));
-				if( $row['spending_amount'] > 0){				
+				if( $row['spending_amount'] > 0){
+					$link = "/spending_landing/year/" . _getRequestParamValue("year") . 
+							"/yeartype/" .  _getRequestParamValue("yeartype") . "/agency/" .  $row["agency_id"] . "/dashboard/mp/mwbe/" . MappingUtil::$total_mwbe_cats; 				
 					echo "<tr>
-						<td><div>" . $agency . " </div></td>
+						<td><div><a href=\"" .  $link . "\">" . $agency . "</a></div></td>
 						<td>" . $chart . "  </td>
 						<td>" . $row['spending_amount'] . "  </td>
 						</tr>	

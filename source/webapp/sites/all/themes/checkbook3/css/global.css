@@ -655,7 +655,7 @@ body.page-smart-search #filter-header{margin-top:5px;}
 }
 .top-navigation-right .featured-dashboard-title{
     position: absolute;
-    right: 75px;
+    right: 50px;
     color:#1F82C9;
 }
 .preview-tile {
@@ -1724,6 +1724,8 @@ td.pad-left div{
 .dataTable td div {
     margin: 13px 0 13px 0px;
 }
+
+
 td.text div {
     float: left;
     text-align: left;
@@ -2729,14 +2731,26 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
 {
     color: #3c5e7c;
     margin-bottom: 3px;
-} 
-body.page-mwbe-agency-grading-year .panel-panel.grid-3{
+}
+
+
+body.page-mwbe-agency-grading .checkbook-grading-left .dataTable td div {
+    margin-top: 5px;
+}
+
+
+body.page-mwbe-agency-grading .download_link {
+    float: right;
+    margin-bottom: 51px;
+    margin-top: -15px;
+}
+body.page-mwbe-agency-grading .panel-panel.grid-3{
     border: 1px solid #CACACA;
     padding-bottom: 10px;
     width: 218px;
 }
 
-body.page-mwbe-agency-grading-year .grid-3 .legend .title {
+body.page-mwbe-agency-grading .grid-3 .legend .title {
     color: #2E2E2E;
     text-align: left;
     background-color: #E9E9E9;
@@ -2745,17 +2759,17 @@ body.page-mwbe-agency-grading-year .grid-3 .legend .title {
     font-size: 12px;
     text-transform: uppercase;
 }
-body.page-mwbe-agency-grading-year .grid-3 .legend_entry td{
+body.page-mwbe-agency-grading .grid-3 .legend_entry td{
     padding: 10px 10px 0 10px;
     height: 18px;
 }
-body.page-mwbe-agency-grading-year .grid-3 .desc span{
+body.page-mwbe-agency-grading .grid-3 .desc span{
     text-align: left;
     padding: 0 5px;
     max-width: 88px;
     text-transform: uppercase;
 }
-body.page-mwbe-agency-grading-year .grid-3 .checkbook-grading-right .label{
+body.page-mwbe-agency-grading .grid-3 .checkbook-grading-right .label{
     font-size: 11px;
     font-weight: normal;
     line-height: 16px;
@@ -2763,7 +2777,7 @@ body.page-mwbe-agency-grading-year .grid-3 .checkbook-grading-right .label{
     text-transform: uppercase;
     text-align: center;
 }
-body.page-mwbe-agency-grading-year .grid-3 .checkbook-grading-right .value {
+body.page-mwbe-agency-grading .grid-3 .checkbook-grading-right .value {
     color: #5C5C5C;
     font-size: 18px;
     font-weight: bold;
@@ -2773,16 +2787,16 @@ body.page-mwbe-agency-grading-year .grid-3 .checkbook-grading-right .value {
     display: block;
     margin: 0 auto;
 }
-body.page-mwbe-agency-grading-year #grading_table{
+body.page-mwbe-agency-grading #grading_table{
     border: 1px solid #cacaca; */
 }
-body.page-mwbe-agency-grading-year #grading_table .number{
+body.page-mwbe-agency-grading #grading_table .number{
     padding-right:20px;
 }
-body.page-mwbe-agency-grading-year .checkbook-grading-left .dataTables_paginate{
+body.page-mwbe-agency-grading .checkbook-grading-left .dataTables_paginate{
     padding-top: 2px;
 }
-body.page-mwbe-agency-grading-year .dataTables_wrapper{
+body.page-mwbe-agency-grading .dataTables_wrapper{
     border:none;
 }
 
@@ -2791,3 +2805,4 @@ body.page-mwbe-agency-grading-year .dataTables_wrapper{
 	font-size: 18px;
 	text-transform: none;
 }
+
