@@ -285,7 +285,33 @@ namespace { //global
             return '';
         }
 
+       /* Returns minority type category URL for contracts transaction and advanced search results pages */
+        static public function get_mwbe_category_url($minority_type_category_id){
+            $minority_type_category_name = MappingUtil::getMinorityCategoryById($minority_type_category_id);
+            $mwbe_cats = MappingUtil::getMinorityCategoryMappings();
+            $minority_type_category_string = implode('~', $mwbe_cats[$minority_type_category_name]);
 
+            $current_url = explode('/',$_SERVER['HTTP_REFERER']);
+            $status_index = array_search('contstatus',$current_url);
+            $category_index = array_search('contcat',$current_url);
+
+            $status = filter_xss($current_url[($status_index+1)]);
+            $category = filter_xss($current_url[($category_index+1)]);
+
+            if($category == 'expense' && $status != 'P'){
+                $url = '/contracts_landing/status/'.$status.'/yeartype/B/year/'._getFiscalYearID().'/dashboard/mp/mwbe/'.$minority_type_category_string;
+            }else if($category == 'revenue' && $status != 'P'){
+                $url = '/contracts_revenue_landing/status/'.$status.'/yeartype/B/year/'._getFiscalYearID().'/dashboard/mp/mwbe/'.$minority_type_category_string;
+            }else if($category == 'expense' && $status == 'P'){
+                $url = '/contracts_pending_exp_landing/status/P/yeartype/B/year/'._getFiscalYearID().'/dashboard/mp/mwbe/'.$minority_type_category_string;
+            }else if($category == 'revenue' && $status == 'P'){
+                $url = '/contracts_pending_rev_landing/status/P/yeartype/B/year/'._getFiscalYearID().'/dashboard/mp/mwbe/'.$minority_type_category_string;
+            }
+
+            $result = (!in_array($minority_type_category_id,array(7,11)))?"<a href='".$url."'>".$minority_type_category_name."</a>" : $minority_type_category_name;
+
+            return $result;
+        }
 
     }
 }

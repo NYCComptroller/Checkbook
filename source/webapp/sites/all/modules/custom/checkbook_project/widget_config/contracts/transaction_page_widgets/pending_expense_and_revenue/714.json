@@ -75,6 +75,10 @@ return $header;
 "type": "expression2",
 "expression": "round($row['percent_difference'],2) . '%'"
 },
+"formatted_minority_name_link": {
+"type": "expression2",
+"expression": "ContractUtil::get_mwbe_category_url($row['minority_type_id'])"
+},
 "formatted_minority_name": {
 "type": "expression2",
 "expression": "MappingUtil::getMinorityCategoryById($row['minority_type_id'])"
@@ -100,7 +104,7 @@ return $header;
 {"labelAlias": "contract_industry","column": "industry_name_formatted","sortSourceColumn":"industry_type_name@checkbook:industry_type"},
 {"labelAlias": "pin","column": "tracking_number"},
 {"labelAlias": "apt_pin","column": "board_award_number"},
-{"labelAlias": "mwbe_category","column":"formatted_minority_name","sortSourceColumn": "minority_type_name"}
+{"labelAlias": "mwbe_category","column":"formatted_minority_name_link","sortSourceColumn": "minority_type_name","exportColumn":"minority_type_name"}
 ],
 "adjustParameters":"
 if(isset($parameters['vendor_type'])){
