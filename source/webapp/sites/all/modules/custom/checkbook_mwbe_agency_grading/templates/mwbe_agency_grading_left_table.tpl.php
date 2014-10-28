@@ -10,10 +10,11 @@
 <div class="checkbook-grading-left">
 <table id="grading_table">
 	<thead>
-		<tr>
+		<tr id="scroll_wrapper_head">
 			<th><div><span>Agency</span></div></th>
 			<th><div><span>Spending<br/> Chart</span></div></th>
-			<th><div><span>Spending</span></div></th>
+			<th><div><span>YTD<br/>Spending</span></div></th>
+			<th>&nbsp</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -29,6 +30,7 @@
 						<td><div><a href=\"" .  $link . "\">" . $agency . "</a></div></td>
 						<td>" . $chart . "  </td>
 						<td>" . $row['spending_amount'] . "  </td>
+						<td></td>
 						</tr>	
 					"	;
 				}
@@ -39,7 +41,6 @@
 	</tbody>
 	
 </table>
-
 </div>
 
 
@@ -62,6 +63,8 @@
         	        },
         	        "bInfo": true,
         	        "aaSorting":[[2,"desc"]],
+        	        "fnInitComplete":function () { fnCustomInitComplete();},  
+        	        "sScrollX": "100%",      	        
         	        "aoColumnDefs": [
         	                         {
      		                        	"aTargets": [0],
@@ -91,6 +94,24 @@
         		}
                 );
 	} );
+
+
+    function fnCustomInitComplete() {
+        var topSpacing = <?php echo (user_is_logged_in() ? 66 : 0);  ?>
+
+        var tableOffsetTop = jQuery('#grading_table').offset().top;
+        var tableHeight = jQuery('#grading_table').height();
+        var docHeight = jQuery(document).height();
+        var bottomSpacing = docHeight - (tableOffsetTop + tableHeight) ;
+ //       bottomSpacing = 500;
+//        alert(docHeight);
+//        alert(tableOffsetTop);
+//        alert(tableHeight);
+//		alert(topSpacing);
+//		alert(bottomSpacing);
+        jQuery('.dataTables_scrollHead').sticky({ getWidthFrom:'#scroll_wrapper_head',topSpacing: <?php echo "topSpacing"; ?>, bottomSpacing: <?php echo "bottomSpacing"; ?>});
+
+    }	
 </script>
 
 
