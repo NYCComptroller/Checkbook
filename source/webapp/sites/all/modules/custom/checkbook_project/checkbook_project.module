@@ -36,11 +36,13 @@ function checkbook_project_url_outbound_alter(&$path, &$options, $original_path)
 	if(strpos($path, 'ctools') === 0) {
 		return true;
 	}
+	
 
 	if( 	
 			($path == 'spending_landing')  ||
 			($path == 'spending/agencies')  ||
-			($path == 'spending/vendors') 
+			($path == 'spending/vendors') ||
+			($path == 'mwbe_agency_grading')  
 		){
 
         $path .="/yeartype/B/year/"._getCurrentYearID();

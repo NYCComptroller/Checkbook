@@ -29,7 +29,13 @@ function checkbook_mwbe_agency_grading_menu() {
       'page callback' => '_checkbook_mwbe_agency_grading',
       'page arguments' => array(3),
       'access callback' => TRUE
-    )    
+    ),
+  	'mwbe_agency_grading_csv' => array(
+  				'type' => MENU_CALLBACK,
+  				'page callback' => '_checkbook_mwbe_agency_grading_csv',
+  				'page arguments' => array(3),
+  				'access callback' => TRUE
+  		)
   );
 }
 
@@ -62,7 +68,7 @@ function _checkbook_mwbe_agency_grading(){
 	$agencies_data =  _checkbook_mwbe_agency_grading_getdata();
 	$left_content =  _checkbook_mwbe_agency_grading_left($agencies_data);
 	$right_content = _checkbook_mwbe_agency_grading_right($agencies_data);
-	$links = array(l(t('Home'), ''),'MWBE Agency Grading');
+	$links = array(l(t('Home'), ''),'M/WBE Agency Ranking');
 	drupal_set_breadcrumb($links);
 	
 	return theme('mwbe_agency_grading_main',array('left_content'=>$left_content,'right_content'=>$right_content));
@@ -79,7 +85,7 @@ function _checkbook_mwbe_agency_grading_left($agencies_data){
 			$spending_amount += $row[$mwbe_cat];
 			$data_row[$mwbe_cat] = $row[$mwbe_cat];			
 		}	
-		$left_content_agencies[] = array('spending_amount'=>$spending_amount,'agency_name'=>$row['agency_name'],'data_row'=>$data_row);
+		$left_content_agencies[] = array('spending_amount'=>$spending_amount,'agency_id'=>$row['agency_id'],'agency_name'=>$row['agency_name'],'data_row'=>$data_row);
 	}	
 	usort($left_content_agencies,'_checkbook_agency_grading_comp');
 	return theme('mwbe_agency_grading_left_table',array('left_agencies_data' => $left_content_agencies));	
@@ -120,18 +126,38 @@ function _checkbook_mwbe_agency_grading_right($agencies_data){
 }
 
 function _checkbook_mwbe_agency_grading_getdata(){
+	$sql1 = _checkbook_mwbe_agency_grading_generate_sql("aggregateon_mwbe_spending_coa_entities");
+	$sql2 = _checkbook_mwbe_agency_grading_generate_sql("aggregateon_subven_spending_coa_entities");
+	
+	$sql = 'select  a1.agency_name , a1.agency_id,
+	coalesce(a1.aa_mwbe,0) + coalesce(a2.aa_mwbe,0) aa_mwbe,
+	coalesce(a1.ba_mwbe,0) + coalesce(a2.ba_mwbe,0) ba_mwbe,
+	coalesce(a1.w_mwbe,0) + coalesce(a2.w_mwbe,0) w_mwbe,
+	coalesce(a1.ha_mwbe,0) + coalesce(a2.ha_mwbe,0) ha_mwbe,
+	coalesce(a1.total_mwbe,0) + coalesce(a2.total_mwbe,0) total_mwbe,
+	coalesce(a1.n_mwbe,0) + coalesce(a1.n_mwbe,0) n_mwbe
+	from ( ' . $sql1 . ' ) a1
+    left join ( ' . $sql2 . ' ) a2 
+	on a1.agency_id = a2.agency_id
+    ';
+	return  _checkbook_project_execute_sql($sql);
+
+}
+
+function _checkbook_mwbe_agency_grading_generate_sql($table){
+	
 	$where_filters = array();
 	$urlParamMap = array("year_id"=>"year", "type_of_year"=>"yeartype");
 	foreach($urlParamMap as $column=>$path_param){
-		$where_filters[] = _widget_build_sql_condition(' a1.' . $column, _getRequestParamValue($path_param));
+		$where_filters[] = _widget_build_sql_condition(' a.' . $column, _getRequestParamValue($path_param));
 	}
-	
+
 	if(count($where_filters) > 0){
 		$where_filter = ' where ' . implode(' and ' , $where_filters);
 	}
-	
-	
-	$sql = 'select  agency_name , a1.agency_id,
+
+
+	$sql = 'select  ra.agency_name , a.agency_id,
     SUM(
        CASE
             WHEN minority_type_id = 4 THEN total_spending_amount
@@ -171,16 +197,18 @@ function _checkbook_mwbe_agency_grading_getdata(){
              WHEN minority_type_id = 7 THEN total_spending_amount
             ELSE 0
 	END) n_mwbe
-	from {aggregateon_mwbe_spending_coa_entities} a1
-    join {ref_agency} ra on ra.agency_id =  a1.agency_id
+	from {' . $table . '} a
+    join {ref_agency} ra on ra.agency_id =  a.agency_id
    ' . $where_filter . '
-        group by  agency_name,a1.agency_id
+        group by  ra.agency_name,a.agency_id
     ';
-	
-	
-	return  _checkbook_project_execute_sql($sql);
+
+
+	return $sql;
 
 }
+
+
 
 
 
@@ -196,3 +224,32 @@ function _mwbe_agency_grading_current_cats(){
 } 
 
 
+
+
+
+function _checkbook_mwbe_agency_grading_csv(){
+	$agencies_data =  _checkbook_mwbe_agency_grading_getdata();
+	
+	$data = "Agency, Asian American, Black American, Women, Hispanic, Total M/WBE, Non M/WBE";
+	foreach($agencies_data as $row){
+		if($row['total_mwbe'] > 0){
+			$data .= PHP_EOL;
+			$data .=  $row['agency_name'];
+			$data .=  "," . $row['aa_mwbe'];
+			$data .=  "," . $row['ba_mwbe'];
+			$data .=  "," . $row['w_mwbe'];
+			$data .=  "," . $row['ha_mwbe'];		
+			$data .=  "," . $row['total_mwbe'];
+			$data .=  "," . $row['n_mwbe'];
+		}
+	}
+	
+	drupal_add_http_header("Content-Type", "text/csv");
+	drupal_add_http_header("Content-Length",strlen($data));
+	drupal_add_http_header("Content-Disposition", "attachment; filename=TransactionsData.csv");
+	drupal_add_http_header("Pragma", "cache");
+	drupal_add_http_header("Expires", "-1");
+	
+	echo ($data);
+	
+}

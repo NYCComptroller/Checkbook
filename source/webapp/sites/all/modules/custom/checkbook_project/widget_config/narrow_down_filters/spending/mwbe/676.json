@@ -6,7 +6,6 @@
     "startWith":0,
     "autocomplete":false,
     "columns":["minority_type.minority_type", "minority_type.minority_type.minority_type_name", "txcount"],
-    "defaultParameters":{"vendor_type":"pv~sv","is_prime_or_sub":"P~S"},
     "orderBy":"-txcount",
     "getTotalDataCount":true,
     "facetPager":true,
