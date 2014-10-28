@@ -5,7 +5,7 @@
 	$download_link = "/mwbe_agency_grading_csv/year/" . _getRequestParamValue("year") . "/yeartype/" .  _getRequestParamValue("yeartype") ;
 	
 ?>
-<div class="download_link"><a href="<?php echo $download_link; ?>">Download as CSV</a></div>
+<div class="download_link"><a href="<?php echo $download_link; ?>"><span class="export">Export</span></a></div>
 
 <div class="checkbook-grading-left">
 <table id="grading_table">
