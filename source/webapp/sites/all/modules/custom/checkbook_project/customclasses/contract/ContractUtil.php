@@ -314,10 +314,9 @@ namespace { //global
         }
 
         static public function getMWBECategoryLinkUrl($minority_type_id){
-            $urlPath = drupal_get_path_alias($_GET['q']);
-            $pathParams = explode('/', $urlPath);
+            $current_url = explode('/',$_SERVER['HTTP_REFERER']);dsm($current_url);
             $minority_type_id = ($minority_type_id == 4 || $minority_type_id == 5) ? '4~5': $minority_type_id;
-            $url =  '/contracts_landing'._checkbook_project_get_year_url_param_string()
+            $url =  '/'. $current_url[3]._checkbook_project_get_year_url_param_string()
                     . _checkbook_project_get_url_param_string("agency")
                     . _checkbook_project_get_url_param_string("cindustry")
                     . _checkbook_project_get_url_param_string("csize")
