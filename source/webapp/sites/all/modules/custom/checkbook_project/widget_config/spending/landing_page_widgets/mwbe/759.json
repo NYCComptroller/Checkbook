@@ -93,15 +93,9 @@
     ",
     "summaryView":{
         "template":"spending_agency_summary",
-        "templateTitleEval":"
-            $catName = RequestUtil::getSpendingCategoryName();
-            return ('M/WBE Agencies ' . $catName . ' Transactions');
-        "
+        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Agencies');"
     },
-    "WidgetTitleEval":"
-        $catName = RequestUtil::getSpendingCategoryName();
-        return ('M/WBE Agencies ' . $catName . ' Transactions');
-    ",
+    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Agencies');",
     "table_title":"",
     "table_columns": [
     {
