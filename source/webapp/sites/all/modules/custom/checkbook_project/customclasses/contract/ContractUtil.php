@@ -314,7 +314,7 @@ namespace { //global
         }
 
         static public function getMWBECategoryLinkUrl($minority_type_id){
-            $current_url = explode('/',$_SERVER['HTTP_REFERER']);dsm($current_url);
+            $current_url = explode('/',$_SERVER['HTTP_REFERER']);
             $minority_type_id = ($minority_type_id == 4 || $minority_type_id == 5) ? '4~5': $minority_type_id;
             $url =  '/'. $current_url[3]._checkbook_project_get_year_url_param_string()
                     . _checkbook_project_get_url_param_string("agency")
