@@ -80,15 +80,9 @@
     },
     "summaryView":{
         "template":"spending_contract_summary",
-        "templateTitleEval":"
-            $catName = RequestUtil::getSpendingCategoryName();
-            return ('M/WBE Contracts ' . $catName . ' Transactions');
-        "
+        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Contracts');"
     },
-    "WidgetTitleEval":"
-        $catName = RequestUtil::getSpendingCategoryName();
-        return ('M/WBE Contracts ' . $catName . ' Transactions');
-    ",
+    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Contracts');",
     "table_title":"",
     "table_columns": [
         {"labelAlias": "contract_id","column": "contract_number_link"},
