@@ -4,7 +4,13 @@ Solr Installation for Checkbook NYC
 Checkbook NYC runs Solr inside Tomcat, and comes with both of them
 pre-packaged for direct installation by copying, as described below.
 
-1. Copy the Solr and Tomcat directories to the right places.
+**Requirements**
+
+Apache Tomcat requires the java runtime environment.  
+
+**Installation Steps**
+
+1. Copy the Solr and Tomcat directories from the Checkbook project to your system.
 
           $ sudo cp -a software/solr-4.1.0 /opt/solr-4.1.0
           $ sudo cp -a software/apache-tomcat-6.0.35 /opt/apache-tomcat-6.0.35
@@ -17,103 +23,75 @@ pre-packaged for direct installation by copying, as described below.
 
  *Note: as the above implies, Tomcat will be running as `root` and
  writing to its log directory as `root`.  This is not ideal; probably
- Tomcat should run as `www-data`.  However, we have not tested that
+ Tomcat should run as `www-data` or `apache`.  However, we have not tested that
  configuration yet, so for now we are documenting running as `root`.*
  
-
-3. Ensure that Solr will be able to connect to the PostgreSQL DB.
-
-          $ sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"
-
- *Note: Hmm, this step does not really belong in the Solr installation
- instructions.  It's really about setting the postgres DB user's
- password, and therefore should be documented in INSTALL.md.*
-
-4. Set the PostgreSQL connection authentication configuration:
+3. Set the PostgreSQL connection authentication configuration.
 
  Open up the PostgreSQL configuration file (a file somewhere
- like `/etc/postgresql/9.1/main/pg_hba.conf` if Ubuntu 12.04 or
+ like `/etc/postgresql/9.3/main/pg_hba.conf` if Ubuntu 12.04 or
  `/var/lib/pgsql/9.3/data/pg_hba.conf` if CentOS 6.4) and apply the 
  changes listed below: 
  
-# 'local' is for Unix domain socket connections only
+ **'local' is for Unix domain socket connections only**
 
-       local     all         all              md5
+        local     all         all              md5
+
+ **IPv4 local connections: **
+
+        host      all       0.0.0.0/0          md5
+
+ **IPv6 local connection: **
+
+        host      all          all             md5
        
-# IPv4 local connections: 
-
-       host      all       0.0.0.0/0          md5
-       
-# IPv6 local connection: 
-
-       host      all          all             md5
-       
-
- *Note: This configuration is set so any user can log into the database 
- providing the username: localhost, postgres, etc. with the password: postgres. 
- This configuration is simply for initial setup and can be customized to your 
- preference. 
- 
- *Note: Again, that "postgres" user is the main PG database user, and
+ *Note:  This configuration is simply for initial setup and can be customized to your 
+ preference. The "postgres" user is the main database user, and
  changing its authentication mechanism could affect up other things.
- The long-term solution is for Checkbook to have its own PG user.*
+ The long-term solution is for Checkbook to have its own user.*
 
-5. Then restart PostgreSQL:
+4. Restart PostgreSQL.
           
           $ sudo service postgresql-9.3 restart
 
- Verify that the user postgres can connect to the checkbook database with
- the following command. 
+5. Verify that the user postgres can connect to the checkbook database with
+ the following commands.  `<host>` can be replace with `localhost` 
+ or ip address. 
 
           $ PGPASSWORD=postgres psql -U postgres checkbook
+          $ PGPASSWORD=postgres psql -U postgres -h <host> checkbook
           
-6. Next, verify that the localhost user can connect to the checkbook database 
-   with password authentication. Later SOLR will connect to the database
-   using U-localhost and -PGPASSWORD=postgres. The following command will 
-   verify if that connection is succesfull. 
-
-          $ PGPASSWORD=postgres psql -U localhost checkbook
-
  The expected result is something like this:
 
           psql (9.3.5)
           Type "help" for help.
           checkbook=# \q  (to quit)
 
-7. Tell Solr how to connect to PostgreSQL:
+6. Configure Solr's PostgreSQL configuration.
 
  Edit `/opt/solr-4.1.0/indexes/solr/collection1/conf/db-config.xml`
- to insert the correct database details.  There is no line break or
- backslash here; the backslash just indicates line continuation:
+to look something like this in the `<dataSource>` tags:
           
-          url="jdbc:postgresql://localhost/checkbook" \
+          url="jdbc:postgresql://localhost/checkbook" 
           user="postgres" password="postgres"
+          
+ *Note: In a production environment the default username and 
+password of "postgres" should be changed to something more suitable.  
 
- *Note: Actually, you may not need to edit it if you're just testing,
- as the shipped file has the username "postgres" with password
- "postgres", for testing.  However, in a production environment those
- would be different, and this is where you would need to set them.*
+7. Start Solr inside Tomcat.
 
-8. Start Solr inside Tomcat:
-
- To run Tomcat, you'll need a Java runtime environment.  If your
- system doesn't already have one, you can install it like this under
- Ubuntu 12.04:
-
-          $ sudo apt-get update
-          $ sudo apt-get install openjdk-6-jre-headless
-
- Now that Java is installed, start up Tomcat:
+ To start up Tomcat:
 
           $ cd /opt/apache-tomcat-6.0.35/bin
           $ sudo ./startup.sh
 
- That starts up Tomcat, and Solr within Tomcat.  Visit
- <http://localhost:8080/solr-checkbook/> in a browser to verify that
+  Then visit <http://localhost:8080/solr-checkbook/> in a browser to verify that
  Solr is now running.  For troubleshooting errors, see the detailed
  logs in `/opt/apache-tomcat-6.0.35/logs/`.
 
-9. Start Solr indexing.
+ *Note: On systems with less memory, like 32 bit systems, you may need to modify the java memory settings `Xms7130M -Xmx7130M` in `/opt/apache-tomcat-6.0.35/bin/catalina.sh`.
+
+8. Start Solr indexing.
 
  Visit this url in a browser start indexing:
  <http://localhost:8080/solr-checkbook/dataimport?command=full-import&clean=true&jobID=0>
@@ -122,7 +100,7 @@ pre-packaged for direct installation by copying, as described below.
  <http://localhost:8080/solr-checkbook/dataimport>.
 
  Detailed logs for troubleshooting errors can be found at
- </opt/apache-tomcat-6.0.35/logs/>.
+ `/opt/apache-tomcat-6.0.35/logs/`.
 
  *Note: You may need to open up the server's firewall to enable a web
  browser to reach port 8080.  Firewall configuration varies widely
