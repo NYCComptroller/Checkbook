@@ -25,11 +25,11 @@
 "derivedColumns": {
  "agency_name_formatted": {
       "type": "expression2",
-      "expression": "_get_tooltip_markup($row['agency_agency_agency_name'],35)"
+      "expression": "_get_tooltip_markup($row['agency_agency_agency_name'],50)"
     },
      "vendor_name_formatted": {
       "type": "expression2",
-      "expression": "_get_tooltip_markup($row['vendor_vendor_legal_name'],38)"
+      "expression": "_get_tooltip_markup($row['vendor_vendor_legal_name'],44)"
     },
     "agency_name_link": {
       "type": "expression2",
@@ -53,7 +53,7 @@
     },
 "purpose_formatted": {
       "type": "expression2",
-      "expression": "_get_tooltip_markup($row['contract_purpose_contract_purpose'],44)"
+      "expression": "_get_tooltip_markup($row['contract_purpose_contract_purpose'],40)"
     }
 },
 "disableViewAll":true,
@@ -122,10 +122,10 @@ return $footer;
   ],
 "dataTableOptions":{
 "aoColumns": [
- { "bSortable": false,"sClass":"text","sWidth":"150px" },
-      { "bSortable": false,"sClass":"text","sWidth":"260px" },
-      { "bSortable": false,"sClass":"text", "sWidth":"246px"},
-      { "bSortable": false,"sClass":"text", "sWidth":"110px"},
+ { "bSortable": false,"sClass":"text","sWidth":"170px" },
+ { "bSortable": false,"sClass":"text","sWidth":"235px" },
+ { "bSortable": false,"sClass":"text", "sWidth":"200px"},
+ { "bSortable": false,"sClass":"text", "sWidth":"170px"},
   { "bSortable": true,"sClass":"number","sWidth":"85px" ,"asSorting": [ "desc","asc" ], "sWidth":"79px"},
   { "bSortable": true,"sClass":"number","sWidth":"85px" ,"asSorting": [ "desc","asc" ], "sWidth":"78px"},
   { "bSortable": false,"sWidth":"15px" }
