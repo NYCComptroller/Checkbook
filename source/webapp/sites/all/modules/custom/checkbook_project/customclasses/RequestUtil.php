@@ -850,7 +850,11 @@ class RequestUtil{
     			}
     			$url .=  "/dashboard/" . self::getNextMWBEDashboardStateParam();
     			if(!preg_match('/mwbe/',$url)){
-    				$url .=  "/mwbe/2~3~4~5~9";
+    				if(_getRequestParamValue("mwbe") !=  null){
+    					$url .=  "/mwbe/" . _getRequestParamValue("mwbe");
+    				}else{
+    					$url .=  "/mwbe/2~3~4~5~9";
+    				}
     			}
     			break;
     		case "subvendor":
