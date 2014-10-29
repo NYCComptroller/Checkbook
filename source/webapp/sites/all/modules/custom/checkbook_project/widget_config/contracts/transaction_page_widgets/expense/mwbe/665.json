@@ -19,6 +19,9 @@ $mwbe = _getRequestParamValue('mwbe');
 if($subvendor) $parameters['is_prime_or_sub'] = 'S';
 else if($mwbe) $parameters['is_prime_or_sub'] = 'P';
 
+$smnid = _getRequestParamValue('smnid');
+if($smnid == 720) $parameters['is_prime_or_sub'] = 'S';
+
 if(!isset($parameters['fiscal_year_id@checkbook:all_contracts_coa_aggregates'])){
 $parameters['latest_flag'] = 'Y';
 $parameters['status_flag@checkbook:all_contracts_coa_aggregates'] = 'A';
