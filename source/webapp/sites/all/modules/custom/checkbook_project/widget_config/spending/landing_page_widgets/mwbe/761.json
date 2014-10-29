@@ -45,15 +45,9 @@
 	},
     "summaryView":{
         "template":"spending_exp_category_summary",
-        "templateTitleEval":"
-            $catName = RequestUtil::getSpendingCategoryName();
-            return ('M/WBE Expense Categories ' . $catName . ' Transactions');
-        "
+        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Expense Categories');"
     },
-    "WidgetTitleEval":"
-        $catName = RequestUtil::getSpendingCategoryName();
-        return ('M/WBE Expense Categories ' . $catName . ' Transactions');
-    ",
+    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Expense Categories');",
 	"table_title":"",
 	"table_columns": [
 		{"labelAlias":"expense_category","column":"expenditure_object_expenditure_object_original_expenditure_object_name","header": "false"},

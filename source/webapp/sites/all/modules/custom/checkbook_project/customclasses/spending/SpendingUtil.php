@@ -744,6 +744,21 @@ class SpendingUtil{
     }
 
     /**
+     * Returns M/WBE Category Link Url for the prime vendor
+     * @param $node
+     * @param $row
+     * @return string
+     */
+    static function getPrimeMWBECategoryLinkUrl($node, $row){
+        $dashboard = _getRequestParamValue("dashboard");
+        $custom_params = array(
+            'dashboard'=>(preg_match('/p/', $dashboard)) ? "mp" : "ms",
+            'mwbe'=>(isset($row["prime_minority_type_id"]) ? $row["prime_minority_type_id"] : $row["prime_minority_type_prime_minority_type"])
+        );
+        return '/' . self::getLandingPageWidgetUrl($custom_params) . '?expandBottomCont=true';
+    }
+
+    /**
      *  Returns a spending landing page Url with custom parameters appended but instead of persisted
      *
      * @param array $override_params

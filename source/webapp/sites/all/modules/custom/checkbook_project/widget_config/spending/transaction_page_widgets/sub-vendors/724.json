@@ -15,7 +15,7 @@
     "cindustry":"industry_type_id","doctype":"document_code@checkbook:ref_document_code",
     "month":"disb_check_eft_issued_cal_month_id",
     "mwbe":"disb_minority_type_id","industry":"industry_type_id",
-    "cvendor":"prime_vendor_id","vendor":"prime_vendor_id","subvendor":"vendor_id","vendortype":"disb_vendor_type",
+    "cvendor":"disb_vendor_id","vendor":"disb_vendor_id","subvendor":"disb_vendor_id","vendortype":"disb_vendor_type",
     "vendornm":"disb_vendor_name","vendor_facet":"disb_vendor_name","vendornm_exact":"disb_vendor_name"
 
 },
@@ -43,11 +43,9 @@
     "disb_reporting_code",
     "disb_spending_category_name",
     "disb_agency_id",
-    "vendor_id",
+    "disb_vendor_id",
     "disb_vendor_name",
     "disb_sub_contract_id",
-    "legal_name@checkbook:sub_vendor",
-    "prime_vendor_id",
     "legal_name@checkbook:prime_vendor",
     "disb_spending_category_id",
     "disb_agreement_id",
@@ -232,7 +230,7 @@
 
     var  cUrl = oTable.fnSettings().sAjaxSource;
     cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
-    cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
+    cUrl = adjustUrlParameter(cUrl,'subvendor',oVendorIds);
     cUrl = adjustUrlParameter(cUrl,'vendornm_exact',oVendorNms);
     cUrl = adjustUrlParameter(cUrl,'expcategorynm',oCategoryIds);
     cUrl = adjustUrlParameter(cUrl,'category',oSpendCategoryIds );
