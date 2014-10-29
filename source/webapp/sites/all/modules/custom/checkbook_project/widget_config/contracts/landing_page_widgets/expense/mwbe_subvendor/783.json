@@ -11,7 +11,7 @@
         "cindustry":"industry_type_id","awdmethod":"award_method_id"},
     "dataset": "checkbook:subven_contracts_coa_aggregates",
     "noDataInitialLoad":true,
-    "columns": ["vendor.vendor","total_contracts","vendor.vendor.legal_name","original_amount_sum","current_amount_sum",
+    "columns": ["minority_type.minority_type","vendor.vendor","total_contracts","vendor.vendor.legal_name","original_amount_sum","current_amount_sum",
         "yeartype.yeartype","spending_amount_sum"],
     "adjustParameters":"
     $adjustedParameters = $parameters;
@@ -51,6 +51,14 @@ return $adjustedParameters;
 "formatted_total_contracts": {
 "type": "expression2",
 "expression": " number_format($row['total_contracts'])"
+},
+"mwbe_category_name": {
+"type":"expression2",
+"expression":"MappingUtil::getMinorityCategoryById($row['minority_type_minority_type'])"
+},
+"mwbe_category_name_link": {
+"type": "expression2",
+"expression": "!MappingUtil::isMWBECertified(array($row['minority_type_minority_type'])) ? $row['mwbe_category_name']  : ('<a href=' . ContractUtil::getMWBECategoryLinkUrl($row['minority_type_minority_type']) . '>'. $row[mwbe_category_name] .'</a>') "
 }
 },
 "disableViewAll":true,
@@ -71,6 +79,7 @@ $url .= _checkbook_project_get_url_param_string('awdmethod');
 $url .= _checkbook_project_get_url_param_string('csize');
 $url .= _checkbook_project_get_url_param_string('cindustry');
 $url .= _checkbook_project_get_url_param_string('subvendor');
+$url .= _checkbook_project_get_url_param_string('dashboard');
 $url .= _checkbook_project_get_year_url_param_string();
 $url .= '/smnid/' .  $node->nid;
 $url .= '/doctype/MA1~CTA1~CT1';
@@ -93,6 +102,11 @@ return $footer;
 "labelAlias": "prime_vendor",
 "column": "vendor_name_link",
 "sortSourceColumn":"vendor.vendor.legal_name"
+},
+{
+"labelAlias":"mwbe_category",
+"column":"mwbe_category_name_link",
+"sortSourceColumn":"minority_type.minority_type"
 },
 {
 "labelAlias": "no_of_contracts",
@@ -121,11 +135,11 @@ return $footer;
 ],
 "dataTableOptions":{
 "aoColumns": [
-{ "bSortable": false, "sWidth":"249px", "sClass":"text" },
-{"sClass":"number","sWidth":"120px","asSorting": [ "desc","asc"  ] },
-{"sClass":"number","sWidth":"177px" ,"asSorting": [ "desc","asc"  ] },
-{"sClass":"number","sWidth":"217px" ,"asSorting": [ "desc","asc"  ] },
-{"sClass":"number","sWidth":"160px" ,"asSorting": [ "desc" ,"asc" ]},
+{ "bSortable": false,"sClass":"text","sWidth":"405px" },
+{ "bSortable": false, "sWidth":"150px", "sClass":"text pad-left" },
+{"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"90px"},
+{"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"214px"},
+{"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"214px"},
 { "bSortable": false,"sWidth":"15px" }
 ] ,
 "bServerSide": true,
@@ -135,7 +149,7 @@ return $footer;
 "bLengthChange": false,
 "bInfo": false,
 "bAutoWidth": false,
-"aaSorting": [[ 2, "desc" ]],
+"aaSorting": [[ 3, "desc" ]],
 "fnServerParams": "##function ( aoData ) {
 reloadExpandCollapseWidget(this,aoData);
 }##",
