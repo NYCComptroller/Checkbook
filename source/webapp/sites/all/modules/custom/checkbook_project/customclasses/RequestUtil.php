@@ -862,7 +862,7 @@ class RequestUtil{
     			if(_getRequestParamValue("dashboard") != null){    				
     				$url = preg_replace('/\/dashboard\/[^\/]*/','',$url);    				   				    				    				
     			}
-    			if(_getRequestParamValue("dashboard") == 'ms' && _getRequestParamValue("mwbe") == '2~3~4~5~9'){
+				if(_getRequestParamValue("dashboard") == 'ms' && _getRequestParamValue("mwbe") == '2~3~4~5~9' && _getRequestParamValue("tm_wbe") != 'Y'){
     				$url = preg_replace('/\/mwbe\/[^\/]*/','',$url);
     			}
     			
@@ -884,7 +884,7 @@ class RequestUtil{
     			}    			
     			break;
     		case "subvendor":
-				if(self::isDashboardFlowPrimevendor()){
+				if(self::isDashboardFlowPrimevendor() || _getRequestParamValue("tm_wbe") == 'Y' ){
     				return "Sub Vendors (M/WBE)";
     			}else{    			
     				return "Sub Vendors";
@@ -1012,7 +1012,7 @@ class RequestUtil{
     	if(self::get_top_nav_records_count($urlParamMap, $default_params,$table) > 0){
     		$dashboard = "mp";    		
     	}elseif(self::get_top_nav_records_count($urlParamMapSubven, $default_params,$table_subven) > 0){
-    		$dashboard = "ms";    		
+    		$dashboard = "ms/tm_wbe/Y";    		
     	}else{
     		return "";
     	}
@@ -1021,6 +1021,7 @@ class RequestUtil{
     				_checkbook_project_get_url_param_string("agency")
     			. _checkbook_project_get_url_param_string("vendor")  ;
     }
+    
     
     
     function get_top_nav_records_count($urlParamMap, $default_params,$table){
@@ -1036,7 +1037,7 @@ class RequestUtil{
     			$where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
     	}
     	
-    	if(count($where_filter) > 0){
+    	if(count($where_filters) > 0){
     		$where_filter = ' where ' . implode(' and ' , $where_filters) ;
     	}
     	
@@ -1046,7 +1047,6 @@ class RequestUtil{
     					   	
     					   ;
 		$data = _checkbook_project_execute_sql($sql);
-		
     	return $data[0]['count'];
     }
     
