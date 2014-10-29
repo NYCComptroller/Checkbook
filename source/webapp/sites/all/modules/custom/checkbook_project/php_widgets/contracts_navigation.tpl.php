@@ -148,6 +148,10 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 	
 }
 
+if(_getRequestParamValue("tm_wbe") == 'Y'){
+	$svendor_amount = $mwbe_amount;
+}
+
 if(preg_match('/mwbe\/7/',$_GET['q']) || preg_match('/mwbe\/11/',$_GET['q'])){
 	$mwbe_amount = 0;
 	$svendor_amount  == 0;
