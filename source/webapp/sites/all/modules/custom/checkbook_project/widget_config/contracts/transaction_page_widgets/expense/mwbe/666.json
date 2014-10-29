@@ -19,6 +19,9 @@ $mwbe = _getRequestParamValue('mwbe');
 if($subvendor) $parameters['is_prime_or_sub'] = 'S';
 else if($mwbe) $parameters['is_prime_or_sub'] = 'P';
 
+$smnid = _getRequestParamValue('smnid');
+if($smnid == 720) $parameters['is_prime_or_sub'] = 'S';
+
     $year = _getRequestParamValue('year');
 $calYear = _getRequestParamValue('calyear');
 if(!isset($year) && isset($calYear)){
