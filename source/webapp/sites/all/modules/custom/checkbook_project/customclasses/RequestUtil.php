@@ -953,7 +953,7 @@ class RequestUtil{
     	}
     }
     
-    static function showTotalSubvendorsLink(){
+   static function getTotalSubvendorsLink(){
     	if(preg_match('/contracts/',$_GET['q'])){
     		$domain = "contracts";
     	}else{
@@ -964,50 +964,26 @@ class RequestUtil{
     		case "spending":
     			$table = "aggregateon_subven_spending_coa_entities";
     			$urlParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"prime_vendor_id");
+    			$sub_vendors_total_link = RequestUtil::getLandingPageUrl("spending",_getRequestParamValue("year"),_getRequestParamValue("yeartype")) ;
     			break;
     		case "contracts":
     			$table = "aggregateon_subven_contracts_cumulative_spending";
     			$urlParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","vendor"=>"prime_vendor_id");
     			$default_params = array("status_flag"=>"A");
+    			$sub_vendors_total_link = RequestUtil::getLandingPageUrl("contracts", _getRequestParamValue("year"),_getRequestParamValue("yeartype")) ;
     			break;
-    	}
-    	$where_filters = array();
-    	 
-    	foreach($urlParamMap as $param=>$value){
-    		if(_getRequestParamValue($param) != null){
-    			$where_filters[] = _widget_build_sql_condition(' a1.' . $value, _getRequestParamValue($param));
-    		}
-    	}
-    	 
-    	foreach($default_params as $param=>$value){
-    		if(_getRequestParamValue($param) != null){
-    			$where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
-    		}
-    	}
-
-
-    	$where_filter = !empty($where_filters) ? (' where ' . implode(' and ' , $where_filters)) : '';
-    	 
-    	 
-    	
-    	 
-    	$sql = 'select count(*) count
-				    from ' . $table. ' a1
-				   ' . $where_filter
-    					    
-    					   ;
-    					    
-    					   $data = _checkbook_project_execute_sql($sql);
-    					   if($data[0]['count'] > 1){
-    					   	return true;
-    					   }else{
-    					   	return false;
-    					   }
-    					    
+    	}    	
+		if(self::get_top_nav_records_count($urlParamMap, $default_params,$table) > 0){			
+			return "/". $sub_vendors_total_link  .	_checkbook_project_get_url_param_string("agency")  
+															. _checkbook_project_get_url_param_string("vendor")  .
+															"/dashboard/ss";
+		}else{
+			return "";
+		}  
     	
     }
     
-    static function showTotalMWBELink(){
+    static function getTotalMWBELink(){
     	if(preg_match('/contracts/',$_GET['q'])){
     		$domain = "contracts";
     	}else{
@@ -1017,14 +993,34 @@ class RequestUtil{
     	switch($domain){
     		case "spending":    	
     			$table = "aggregateon_mwbe_spending_coa_entities";
+    			$table_subven = "aggregateon_subven_spending_coa_entities";
     			$urlParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"vendor_id");
+    			$urlParamMapSubven = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"prime_vendor_id");
+    			$default_params = array("minority_type_id"=>"2~3~4~5~9");
     			break;
     		case "contracts":
     			$table = "aggregateon_mwbe_contracts_cumulative_spending";
-    			$urlParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","vendor"=>"vendor_id");    
-    			$default_params = array("status_flag"=>"A");
+    			$table_subven = "aggregateon_subven_contracts_cumulative_spending";
+    			$urlParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","vendor"=>"vendor_id");
+    			$urlParamMapSubven = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","vendor"=>"prime_vendor_id");
+    			$default_params = array("status_flag"=>"A","minority_type_id"=>"2~3~4~5~9");
     			break;
+    	}    	
+    	if(self::get_top_nav_records_count($urlParamMap, $default_params,$table) > 0){
+    		$dashboard = "mp";    		
+    	}elseif(self::get_top_nav_records_count($urlParamMapSubven, $default_params,$table_subven) > 0){
+    		$dashboard = "ms";    		
+    	}else{
+    		return "";
     	}
+    	return '/' . RequestUtil::getLandingPageUrl($domain,_getRequestParamValue("year"),_getRequestParamValue("yeartype")) . "/mwbe/" . MappingUtil::$total_mwbe_cats
+    	. "/dashboard/" . $dashboard . 
+    				_checkbook_project_get_url_param_string("agency")
+    			. _checkbook_project_get_url_param_string("vendor")  ;
+    }
+    
+    
+    function get_top_nav_records_count($urlParamMap, $default_params,$table){
     	$where_filters = array();
     	
     	foreach($urlParamMap as $param=>$value){
@@ -1033,33 +1029,21 @@ class RequestUtil{
     		}
     	}
     	
-    	foreach($default_params as $param=>$value){
-    		if(_getRequestParamValue($param) != null){
+    	foreach($default_params as $param=>$value){    		
     			$where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
-    		}
     	}
-
-
-    	$where_filter = ' where ' . implode(' and ' , $where_filters) .
-                        (!empty($where_filters) ? ' and' : '') .
-                        ' a1.minority_type_id in (2,3,4,5,9)';
     	
     	
-
+    	$where_filter = ' where ' . implode(' and ' , $where_filters) ;
     	
     	$sql = 'select count(*) count
 				    from ' . $table. ' a1
-				   ' . $where_filter 
-    	
-    	;
-    	
-    	$data = _checkbook_project_execute_sql($sql);
-    	if($data[0]['count'] > 1){
-    		return true;
-    	}else{
-    		return false;
-    	}
-
+				   ' . $where_filter
+    					   	
+    					   ;
+		$data = _checkbook_project_execute_sql($sql);
+		
+    	return $data[0]['count'];
     }
     
 }

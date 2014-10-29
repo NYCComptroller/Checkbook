@@ -167,11 +167,9 @@ class MappingUtil {
     		}    		
     	}
 */		
-    	if(RequestUtil::showTotalMWBELink()){
-    		$mwbe_total_link_html  ="<li class='no-click'><a href='/" . RequestUtil::getLandingPageUrl($domain,_getRequestParamValue("year"),_getRequestParamValue("yeartype")) . "/mwbe/" . MappingUtil::$total_mwbe_cats ."/dashboard/mp"   			
-																	  			.	_checkbook_project_get_url_param_string("agency")
-																	  			. _checkbook_project_get_url_param_string("vendor")  .
-															  				"'>Total M/WBE</a></li>";
+    	$total_mwbe_link = RequestUtil::getTotalMWBELink();
+    	if($total_mwbe_link !=  null && $total_mwbe_link != ""){
+    		$mwbe_total_link_html  ="<li class='no-click'><a href='" . $total_mwbe_link."'>Total M/WBE</a></li>";
     	}
   		$filters_html .=  "
   			 " . $mwbe_total_link_html . "
