@@ -12,6 +12,10 @@
 "columns": ["subvendor.subvendor","subvendor.subvendor.legal_name","minority_type.minority_type.minority_type_name","minority_type.minority_type",
             "total_contracts","original_amount_sum","current_amount_sum","yeartype.yeartype","spending_amount_sum"],
 "adjustParameters":"
+    $dashboard = _getRequestParamValue('dashboard');
+    if($dashboard == 'ss' || $dashboard == 'sp'){
+        unset($parameters['minority_type_id']);
+    }
     $adjustedParameters = $parameters;
     if(function_exists('_checkbook_project_applyParameterFilters')){
     $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
@@ -31,7 +35,7 @@
 },
 "minority_type_link":{
 "type": "expression2",
-"expression": "'<a href=\"/contracts_landing' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string(\"agency\")
+"expression": "($row['minority_type_minority_type'] == 7 || $row['minority_type_minority_type'] == 11 ) ? MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']) :('<a href=\"/contracts_landing' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string(\"agency\")
                     . _checkbook_project_get_url_param_string(\"cindustry\")
                     . _checkbook_project_get_url_param_string(\"csize\")
                     . _checkbook_project_get_url_param_string(\"awdmethod\")
@@ -39,7 +43,7 @@
                     . _checkbook_project_get_url_param_string(\"vendor\")
                     . _checkbook_project_get_url_param_string(\"subvendor\")
                     . '/dashboard/ms'
-                    . '/mwbe/'. $row['minority_type_id_map'] .  '?expandBottomCont=true\">' . MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']).'</a>'"
+                    . '/mwbe/'. $row['minority_type_id_map'] .  '?expandBottomCont=true\">' . MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']).'</a>')"
 },
 "subvendor_name_link": {
 "type": "expression2",
