@@ -45,15 +45,9 @@
     },
     "summaryView":{
         "template":"spending_dept_summary",
-        "templateTitleEval":"
-            $catName = RequestUtil::getSpendingCategoryName();
-            return ('M/WBE Departments ' . $catName . ' Transactions');
-        "
+        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Departments');"
     },
-    "WidgetTitleEval":"
-        $catName = RequestUtil::getSpendingCategoryName();
-        return ('M/WBE Departments ' . $catName . ' Transactions');
-    ",
+    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Departments');",
     "table_title":"",
     "table_columns": [
         {"labelAlias": "dept_name","column": "department_department_department_name","header": "false","sortSourceColumn":"department.department.department_name"},
