@@ -180,9 +180,9 @@ return $parameters;
 "bInfo": true,
 "aoColumns": [
 {"sClass":"expander","bSortable": false,"sWidth":"30px"},
-{"sClass":"text", "sWidth":"170px","asSorting": [ "asc","desc" ]},
+{"sClass":"text", "sWidth":"120px","asSorting": [ "asc","desc" ]},
 {"sClass":"number number-left", "sWidth":"170px","asSorting": [ "asc","desc" ]},
-{"sClass":"text", "sWidth":"175px","asSorting": [ "asc","desc" ]},
+{"sClass":"text pad-left", "sWidth":"175px","asSorting": [ "asc","desc" ]},
 {"sClass":"number", "sWidth":"75px","asSorting": [ "desc","asc" ]},
 {"sClass":"number  pad-left no-sort","bSortable": false, "sWidth":"130px","asSorting": [ "asc","desc" ]},
 {"sClass":"number","sWidth":"125px","asSorting": [ "desc","asc" ]},
@@ -278,9 +278,9 @@ var row = data[i];
 
 sOut += '<tr>';
 sOut += '<td  style=\"width:30px\">'+ '&nbsp;'+'</td>';
-sOut += '<td class=\"text\" style=\"width:170px\">'+ (row[1] == null ? '': row[1])+'</td>';
+sOut += '<td class=\"text\" style=\"width:120px\">'+ (row[1] == null ? '': row[1])+'</td>';
 sOut += '<td class=\"text\" style=\"width:170px\">'+ (row[2] == null ? '': row[2])+'</td>';
-sOut += '<td class=\"text\"  style=\"width:175px\">'+ (row[3] == null ? '': row[3])+'</td>';
+sOut += '<td class=\"text pad-left\"  style=\"width:175px\">'+ (row[3] == null ? '': row[3])+'</td>';
 sOut += '<td class=\"number\"  style=\"width:75px\">'+ (row[4] == null ? '': row[4])+'</td>';
 sOut += '<td class=\"number  pad-left no-sort\"  style=\"width:130px\">'+ (row[5] == null ? '': row[5])+'</td>';
 sOut += '<td class=\"number\"  style=\"width:125px\">'+ (row[6] == null ? '': row[6])+'</td>';
