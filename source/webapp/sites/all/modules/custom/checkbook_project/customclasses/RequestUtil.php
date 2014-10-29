@@ -918,7 +918,7 @@ class RequestUtil{
     
     
     static function getCurrentDomainURLFromParams(){
-    	if(preg_match('/contracts/',$_GET['q'])){
+    	if(preg_match('/contract/',$_GET['q'])){
     		$reqParams = MappingUtil::$contractsMWBEParamMap;
     		$prefix = 'contracts_landing';
     	}else{
@@ -939,7 +939,6 @@ class RequestUtil{
     		$prefix .= ( $value != null) ? "/$key/" . $value:"";
     		
     	}
-    	
     	return $prefix;
     }
     
@@ -954,7 +953,7 @@ class RequestUtil{
     }
     
    static function getTotalSubvendorsLink(){
-    	if(preg_match('/contracts/',$_GET['q'])){
+    	if(preg_match('/contract/',$_GET['q'])){
     		$domain = "contracts";
     	}else{
     		$domain = "spending";
@@ -984,7 +983,7 @@ class RequestUtil{
     }
     
     static function getTotalMWBELink(){
-    	if(preg_match('/contracts/',$_GET['q'])){
+    	if(preg_match('/contract/',$_GET['q'])){
     		$domain = "contracts";
     	}else{
     		$domain = "spending";
@@ -1033,8 +1032,9 @@ class RequestUtil{
     			$where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
     	}
     	
-    	
-    	$where_filter = ' where ' . implode(' and ' , $where_filters) ;
+    	if(count($where_filter) > 0){
+    		$where_filter = ' where ' . implode(' and ' , $where_filters) ;
+    	}
     	
     	$sql = 'select count(*) count
 				    from ' . $table. ' a1
