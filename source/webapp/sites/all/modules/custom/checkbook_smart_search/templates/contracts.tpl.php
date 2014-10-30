@@ -206,10 +206,10 @@ foreach ($contracts_parameter_mapping as $key => $title){
             }
         if($contracts_results['minority_type_id'] != '7' && $contracts_results['minority_type_id'] != '11'){
             if($contracts_results['is_prime_or_sub'] == 'Yes'){
-                $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". _getCurrentYearID() ."/mwbe/".$id ."/dashboard/ms'>" .$contracts_results["minority_type_name"]."</a>";
+                $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". $fiscal_year_id ."/mwbe/".$id ."/dashboard/ms'>" .$contracts_results["minority_type_name"]."</a>";
             }
             else{
-                $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". _getCurrentYearID() ."/mwbe/".$id ."/dashboard/mp'>" .$contracts_results["minority_type_name"]."</a>";
+                $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". $fiscal_year_id ."/mwbe/".$id ."/dashboard/mp'>" .$contracts_results["minority_type_name"]."</a>";
             }
         }
         else{

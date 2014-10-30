@@ -567,7 +567,7 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
            if(($current_url[1] == 'contract' && $current_url[2] == 'search' && $current_url[3] == 'transactions') || in_array($node->nid, array(656,679,667,688))){
                $advanced_search = true;
            }
-           if(isset($reqYearType) && ($reqYearType == 'C') && !_checkbook_check_isEDCPage() && ($advanced_search || _getRequestParamValue('mwbe'))){
+           if(isset($reqYearType) && ($reqYearType == 'C') && !_checkbook_check_isEDCPage() && ($advanced_search || _getRequestParamValue('mwbe') || _getRequestParamValue('dashboard'))){
                if(isset($node->widgetConfig->dataset)){
                    $node->widgetConfig->dataset = 'checkbook:all_agreement_transactions_cy';
                }else if(isset($node->widgetConfig->model->series) && is_array($node->widgetConfig->model->series)){
@@ -575,7 +575,7 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
                        $series->dataset = 'checkbook:all_agreement_transactions_cy';
                    }
                }
-           }elseif(isset($reqYearType) && ($reqYearType == 'C') && !_checkbook_check_isEDCPage() && !$advanced_search && !_getRequestParamValue('mwbe')){
+           }elseif(isset($reqYearType) && ($reqYearType == 'C') && !_checkbook_check_isEDCPage() && !$advanced_search && !_getRequestParamValue('mwbe') && !_getRequestParamValue('dashboard')){
                if(isset($node->widgetConfig->dataset)){
                     $node->widgetConfig->dataset = 'checkbook:agreement_snapshot_cy';
                }else if(isset($node->widgetConfig->model->series) && is_array($node->widgetConfig->model->series)){
@@ -739,6 +739,19 @@ function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$par
     $dtsmnid = _getRequestParamValue('dtsmnid');
     $smnid = _getRequestParamValue('smnid');
     $nid = isset($dtsmnid) ? $dtsmnid : $smnid;
+    if(!isset($nid)) {
+        $bottomURL = $_REQUEST['expandBottomContURL'];
+        if(isset($bottomURL)){
+            $pathParams = explode('/', $bottomURL);
+            if(preg_match('/dtsmnid/',$bottomURL)){
+                $index = array_search('dtsmnid',$pathParams);
+                $dtsmnid =  filter_xss($pathParams[($index+1)]);
+                $index = array_search('smnid',$pathParams);
+                $smnid =  filter_xss($pathParams[($index+1)]);
+                $nid = isset($dtsmnid) ? $dtsmnid : $smnid;
+            }
+        }
+    }
     switch($nid) {
         case 759:
             $parameters['is_prime_or_sub'] = array('P','S');

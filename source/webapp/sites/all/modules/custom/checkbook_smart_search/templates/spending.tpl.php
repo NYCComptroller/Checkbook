@@ -117,10 +117,10 @@ foreach ($spending_parameter_mapping as $key=>$title){
         }
         if($spending_results['minority_type_id'] != '7' && $spending_results['minority_type_id'] != '11'){
             if($spending_results['is_prime_or_sub'] == 'Yes'){
-                $value = "<a href='/spending_landing/yeartype/B/year/". _getCurrentYearID() ."/mwbe/".$id ."/dashboard/ms'>" .$spending_results["minority_type_name"]."</a>";
+                $value = "<a href='/spending_landing/yeartype/B/year/". $fiscal_year_id ."/mwbe/".$id ."/dashboard/ms'>" .$spending_results["minority_type_name"]."</a>";
             }
             else{
-                $value = "<a href='/spending_landing/yeartype/B/year/". _getCurrentYearID() ."/mwbe/".$id ."/dashboard/mp'>" .$spending_results["minority_type_name"]."</a>";
+                $value = "<a href='/spending_landing/yeartype/B/year/". $fiscal_year_id ."/mwbe/".$id ."/dashboard/mp'>" .$spending_results["minority_type_name"]."</a>";
             }
 
         }
