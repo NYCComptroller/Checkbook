@@ -188,6 +188,16 @@
                     ]
                 },
                 {
+                    "name": "prime_minority_type",
+                    "levels": [
+                        {
+                            "name": "prime_minority_type",
+                            "datasetName": "minority_type",
+                            "sourceColumnName": "prime_minority_type_id"
+                        }
+                    ]
+                },
+                {
                     "name": "sub_contract_number",
                     "levels": [
                         {
