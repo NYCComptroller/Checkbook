@@ -26,8 +26,7 @@
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B"},
 "cleanURLParameters":["yeartype","agency","vendor","subvendor","category","year","industry","mwbe"],
-"urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","subvendor":"vendor_id","category":"spending_category_id","industry":"industry_type_id","mwbe":"minority_type_id"},
-"urlParamMapSubVendor":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","subvendor":"vendor_id","category":"spending_category_id","industry":"industry_type_id","mwbe":"minority_type_id"},
+"urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","subvendor":"vendor_id","category":"spending_category_id","industry":"industry_type_id","mwbe":"prime_minority_type_id"},
 "chartTitle":"Top Ten Prime Vendors by M/WBE Spending",
 "widgetDataLoader":"
     
@@ -67,41 +66,41 @@
     $sql1 = 'select legal_name , a1.prime_vendor_id vendor_id,
  	SUM(
        CASE
-            WHEN minority_type_id = 4 THEN total_spending_amount
-            WHEN minority_type_id = 5 THEN total_spending_amount
+            WHEN prime_minority_type_id = 4 THEN total_spending_amount
+            WHEN prime_minority_type_id = 5 THEN total_spending_amount
             ELSE 0
 	END) aa_mwbe,
 	SUM(
        CASE
-            WHEN minority_type_id = 2 THEN total_spending_amount
+            WHEN prime_minority_type_id = 2 THEN total_spending_amount
             ELSE 0
 	END) ba_mwbe,
 	SUM(
        CASE
-            WHEN minority_type_id = 9 THEN total_spending_amount
+            WHEN prime_minority_type_id = 9 THEN total_spending_amount
             ELSE 0
 	END) w_mwbe,
 	SUM(
        CASE
-            WHEN minority_type_id = 3 THEN total_spending_amount
+            WHEN prime_minority_type_id = 3 THEN total_spending_amount
             ELSE 0
 	END) ha_mwbe,
 	SUM(
        CASE
-            WHEN minority_type_id = 11 THEN total_spending_amount
+            WHEN prime_minority_type_id = 11 THEN total_spending_amount
             ELSE 0
 	END) io_nonmwbe,
 	SUM(
-       CASE WHEN minority_type_id = 2 THEN total_spending_amount
-            WHEN minority_type_id = 3 THEN total_spending_amount
-            WHEN minority_type_id = 4 THEN total_spending_amount
-            WHEN minority_type_id = 5 THEN total_spending_amount
-            WHEN minority_type_id = 9 THEN total_spending_amount
+       CASE WHEN prime_minority_type_id = 2 THEN total_spending_amount
+            WHEN prime_minority_type_id = 3 THEN total_spending_amount
+            WHEN prime_minority_type_id = 4 THEN total_spending_amount
+            WHEN prime_minority_type_id = 5 THEN total_spending_amount
+            WHEN prime_minority_type_id = 9 THEN total_spending_amount
             ELSE 0
 	END) total_mwbe,
 		SUM(
        CASE
-             WHEN minority_type_id = 7 THEN total_spending_amount
+             WHEN prime_minority_type_id = 7 THEN total_spending_amount
             ELSE 0
 	END) total_non_mwbe
 	from aggregateon_subven_spending_coa_entities a1
