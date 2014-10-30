@@ -764,30 +764,11 @@ table.expense td.subvendors .expense-container > a {
 table.expense td.subvendors.active .expense-container > a {
     background: url("../images/icon_subvendor_a.png") no-repeat center 5px;
 }
-table.expense td.mwbe .expense-container{
-    position: relative;
+table.expense td.mwbe .expense-container > a > div,
+table.expense td.subvendors .expense-container > a > div{
+    background: url("../images/arrow-gray_nofill.png") no-repeat 100px 23px;
 }
-table.expense td.mwbe .expense-container > a .drop-down-menu-triangle{
-    background: transparent url("../images/arrow-gray_nofill.png") no-repeat;
-    width: 23px;
-    height: 20px;
-    position: absolute;
-    top:63px;
-    right:5px;
-}
-body.page-spending-landing-yeartype-b table.expense td.mwbe .expense-container > a .top-navigation-amount{
-    width:121px;
-}
-table.expense td.mwbe .expense-container > a .top-navigation-amount{
-    width: 50px;
-    margin: 0 auto;
-}
-table.expense td.mwbe.subvendors .expense-container > a .top-navigation-amount{
-    width:75px;
-}
-table.expense td.mwbe .expense-container > a:hover .drop-down-menu-triangle{
-    background: url("../images/arrow-gray.png") no-repeat;
-}
+
 
 
 table.expense td.mwbe.active .expense-container > a > div,
