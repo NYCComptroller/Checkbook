@@ -673,26 +673,89 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
 
 
 function _checkbook_project_adjust_spending_parameter_filters(&$node, &$parameters){
-  $cat = $parameters['spending_category_id'];
-  if(isset($parameters['ctx.ctx.vendor_id']) || isset($parameters['ctx.ctx.document_agency_id']) || isset($parameters['ctx.ctx.award_method_id']) || isset($parameters['ctx.ctx.award_size_id']) || isset($parameters['ctx.ctx.industry_type_id'])){
-    $year = $parameters['check_eft_issued_nyc_year_id'];
-    $calyear = $parameters['calendar_fiscal_year_id'];
-    if(isset($year)){
-      $parameters['ctx.ctx.fiscal_year_id'] = $year;
-      $parameters['ctx.ctx.type_of_year'] = 'B';
-    }else if(isset($calyear )){
-      $parameters['ctx.ctx.fiscal_year_id'] = $calyear ;
-      $parameters['ctx.ctx.type_of_year'] = 'C';
+    $cat = $parameters['spending_category_id'];
+    if(isset($parameters['ctx.ctx.vendor_id']) || isset($parameters['ctx.ctx.document_agency_id']) || isset($parameters['ctx.ctx.award_method_id']) || isset($parameters['ctx.ctx.award_size_id']) || isset($parameters['ctx.ctx.industry_type_id'])){
+        $year = $parameters['check_eft_issued_nyc_year_id'];
+        $calyear = $parameters['calendar_fiscal_year_id'];
+        if(isset($year)){
+            $parameters['ctx.ctx.fiscal_year_id'] = $year;
+            $parameters['ctx.ctx.type_of_year'] = 'B';
+        } else if(isset($calyear )){
+            $parameters['ctx.ctx.fiscal_year_id'] = $calyear ;
+            $parameters['ctx.ctx.type_of_year'] = 'C';
+        }
     }
-  }
-  $dtsmnid = _getRequestParamValue('dtsmnid');
-  if($dtsmnid == 20){//From spending landing page
-    $data_controller_instance = data_controller_get_operator_factory_instance();
-    $parameters['agreement_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
-    $parameters['contract_number'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
-  }
-  return $parameters;
+    $dtsmnid = _getRequestParamValue('dtsmnid');
+    if($dtsmnid == 20){//From spending landing page
+        $data_controller_instance = data_controller_get_operator_factory_instance();
+        $parameters['agreement_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
+        $parameters['contract_number'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
+    }
+
+//    /**
+//     * Transaction page from M/WBE Dashboard landing page
+//     * Top 10 agencies widget (759) - sub and prime data
+//     * Top 10 Sub Vendors widget (763) - sub data
+//     * All Others widgets - prime data
+//     */
+//    $dtsmnid = _getRequestParamValue('dtsmnid');
+//    $smnid = _getRequestParamValue('smnid');
+//    $dashboard = _getRequestParamValue('dashboard');
+//    if($dashboard == 'mp') {
+//
+//        if($dashboard == 'mp') {
+//            switch($dtsmnid) {
+//                case 759:
+//                    $parameters['is_prime_or_sub'] = array('P','S');
+//                    break;
+//                case 763:
+//                    $parameters['is_prime_or_sub'] = array('S');
+//                    break;
+//                default:
+//                    $parameters['is_prime_or_sub'] = array('P');
+//                    break;
+//            }
+//        }
+//        if(isset($parameters['vendor_type'])){
+//            $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
+//        }
+//    }
+    return $parameters;
 }
+
+
+/**
+ * Transaction page from M/WBE Dashboard landing page
+ * Top 10 agencies widget (759) - sub and prime data
+ * Top 10 Sub Vendors widget (763) - sub data
+ * All Others widgets - prime data
+ *
+ * @param $node
+ * @param $parameters
+ * @return mixed
+ */
+function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$parameters){
+
+    $dtsmnid = _getRequestParamValue('dtsmnid');
+    $smnid = _getRequestParamValue('smnid');
+    $nid = isset($dtsmnid) ? $dtsmnid : $smnid;
+    switch($nid) {
+        case 759:
+            $parameters['is_prime_or_sub'] = array('P','S');
+            break;
+        case 763:
+            $parameters['is_prime_or_sub'] = array('S');
+            break;
+        default:
+            $parameters['is_prime_or_sub'] = array('P');
+            break;
+    }
+    if(isset($parameters['vendor_type'])){
+        $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
+    }
+    return $parameters;
+}
+
 
 /**
  * Function to adjust custom parameters passed to data controller module
@@ -1076,7 +1139,6 @@ function _checkbook_project_get_year_url_param_string($applySpendingYear=false, 
         return  "/yeartype/B/year/". $curYear . ($applySpendingYear ? ('/syear/'.$curYear) : '');
     }
 }
-
 
 /**
 * returns keyvalue pair string is present in URL
