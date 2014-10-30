@@ -38,9 +38,8 @@
 
                 if(isset($dashboard)) {
                     if($dashboard == 'mp') {
-                        if(function_exists('_checkbook_project_adjust_mwbe_spending_parameter_filters')){
-                            $serieParameters = _checkbook_project_adjust_mwbe_spending_parameter_filters($node, $serieParameters);
-                        }
+                        $serieParameters['vendor_type'] = array('P','PM');
+                        $serieParameters['is_prime_or_sub'] = 'P';
                     }
                     else {
                         $is_prime_or_sub = preg_match('\"s\"',$dashboard) ? 'S' : 'P';

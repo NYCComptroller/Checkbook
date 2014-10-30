@@ -739,19 +739,7 @@ function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$par
     $dtsmnid = _getRequestParamValue('dtsmnid');
     $smnid = _getRequestParamValue('smnid');
     $nid = isset($dtsmnid) ? $dtsmnid : $smnid;
-    if(!isset($nid)) {
-        $bottomURL = $_REQUEST['expandBottomContURL'];
-        if(isset($bottomURL)){
-            $pathParams = explode('/', $bottomURL);
-            if(preg_match('/dtsmnid/',$bottomURL)){
-                $index = array_search('dtsmnid',$pathParams);
-                $dtsmnid =  filter_xss($pathParams[($index+1)]);
-                $index = array_search('smnid',$pathParams);
-                $smnid =  filter_xss($pathParams[($index+1)]);
-                $nid = isset($dtsmnid) ? $dtsmnid : $smnid;
-            }
-        }
-    }
+
     switch($nid) {
         case 759:
             $parameters['is_prime_or_sub'] = array('P','S');
