@@ -2,7 +2,7 @@
     "widgetType": "data_tables",
     "widgetSubType": "dataTableList",
     "stickyHeader":true,
-    "cleanURLParameters":["vendornm1","vendortype","mwbe","doctype","contstatus","year","calyear","yeartype","agency","vendor","curamtr","vendornm","contdesc","agrmnttype",
+    "cleanURLParameters":["subvendor","vendornm1","vendortype","mwbe","doctype","contstatus","year","calyear","yeartype","agency","vendor","curamtr","vendornm","contdesc","agrmnttype",
         "agencyh","contnum","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry",
         "csize","modamt"],
     "urlParamMap":{"vendortype":"vendor_type","vendornm1":"vendor_name",
