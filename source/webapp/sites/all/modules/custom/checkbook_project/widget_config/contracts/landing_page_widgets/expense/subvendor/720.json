@@ -13,7 +13,7 @@
             "total_contracts","original_amount_sum","current_amount_sum","yeartype.yeartype","spending_amount_sum"],
 "adjustParameters":"
     $dashboard = _getRequestParamValue('dashboard');
-    if($dashboard == 'ss' || $dashboard == 'sp'){
+    if(($dashboard == 'ss' || $dashboard == 'sp') && !_getRequestParamValue('mwbe')){
         unset($parameters['minority_type_id']);
     }
     $adjustedParameters = $parameters;
