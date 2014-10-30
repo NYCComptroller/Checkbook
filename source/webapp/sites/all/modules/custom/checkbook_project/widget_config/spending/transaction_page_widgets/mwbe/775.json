@@ -5,7 +5,8 @@
                           "fundcls","bdgcodenm","captprj","expdoc","vendornm","deptnm","expcategorynm",
                           "syear","scalyear","magid","agid","cvendor","cagency","awdmethod","status","csize",
                           "cindustry","expcategorycode","month","scomline",
-                          "comline","comline_exact","budname_exact","budname","entcontnum_exact","entcontnum","industry","mwbe","subvendor"],
+                          "comline","comline_exact","budname_exact","budname","entcontnum_exact","entcontnum","industry","mwbe","subvendor","vendortype"
+    ],
     "urlParamMap":{
         "year":"check_eft_issued_nyc_year_id","calyear":"calendar_fiscal_year_id","agency":"agency_id",
         "mcagency":"master_child_contract_agency_id","agencyh":"agency_history_id","vendor":"vendor_id",
@@ -28,7 +29,7 @@
         "budname":"oge_budget_name",
         "mwbe":"minority_type_id",
         "industry":"industry_type_id",
-        "subvendor":"vendor_id"
+        "subvendor":"vendor_id","vendortype":"vendor_type"
     },
     "paramTypeConfig":{"checkamtr":"rangeid","checkamt":"range","chkdate":"range","captprj":"like","vendornm":"like",
         "contnum":"like","bdgcodenm":"like","expdoc":"like","syear":"le","scalyear":"le",
@@ -49,8 +50,9 @@
             }
         }
 
-        $parameters['vendor_type'] = array('P','PM','S','SM');
-        $parameters['is_prime_or_sub'] = array('P','S');
+        if(function_exists('_checkbook_project_adjust_mwbe_spending_parameter_filters')){
+            $parameters = _checkbook_project_adjust_mwbe_spending_parameter_filters($node, $parameters);
+        }
 
         $adjustedParameters = $parameters;
         if(function_exists('_checkbook_project_applyParameterFilters')){
