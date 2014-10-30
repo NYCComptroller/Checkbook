@@ -26,7 +26,7 @@
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B"},
 "cleanURLParameters":["yeartype","agency","vendor","subvendor","category","year","industry","mwbe"],
-"urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","subvendor":"vendor_id","category":"spending_category_id","industry":"industry_type_id","mwbe":"prime_minority_type_id"},
+"urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","subvendor":"vendor_id","category":"spending_category_id","industry":"industry_type_id","mwbe":"minority_type_id"},
 "chartTitle":"Top Ten Prime Vendors by M/WBE Spending",
 "widgetDataLoader":"
     
