@@ -40,56 +40,7 @@
     }
 
     $mwbe_filter = _getRequestParamValue('mwbe');
-    $sort_column = 8;
-	switch($mwbe_filter){
-		case '4~5' :
-			$sort_column = 3;
-			$ethinicty_case = ' WHEN minority_type_id = 4 THEN total_spending_amount
-            				WHEN minority_type_id = 5 THEN total_spending_amount ';
-			break;
-		case '2' :
-			$sort_column = 4;
-			$ethinicty_case = ' WHEN minority_type_id = 2 THEN total_spending_amount
-            				';
-			break;
-		case '9' :
-			$sort_column = 5;
-			$ethinicty_case = ' WHEN minority_type_id = 5 THEN total_spending_amount
-            				';
-			break;
-		case '3' :
-			$sort_column = 6;
-			$ethinicty_case = ' WHEN minority_type_id = 6 THEN total_spending_amount
-            				 ';
-			break;
-		case '11' :
-			$sort_column = 7;
-			$ethinicty_case = ' WHEN minority_type_id = 7 THEN total_spending_amount
-            				 ';
-			break;
-		case '7' :
-			$sort_column = 9;
-			$ethinicty_case = ' WHEN minority_type_id = 9 THEN total_spending_amount
-            				 ';
-			break;
-		case '2~3~4~5~9' :
-			$sort_column = 9;
-			$ethinicty_case = ' WHEN minority_type_id = 2 THEN total_spending_amount
-           						 WHEN minority_type_id = 3 THEN total_spending_amount
-            					 WHEN minority_type_id = 4 THEN total_spending_amount
-            					 WHEN minority_type_id = 5 THEN total_spending_amount
-             					 WHEN minority_type_id = 9 THEN total_spending_amount
-            				 ';
-			break;
-
-	}
-
     $sql = 'select  agency_name , a1.agency_id,
-    SUM(
-       CASE
-            ' . $ethinicty_case . '
-            ELSE 0
-	END) ethinicty_mwbe,
 	SUM(
        CASE WHEN minority_type_id = 2 THEN total_spending_amount
             WHEN minority_type_id = 3 THEN total_spending_amount
@@ -97,12 +48,7 @@
             WHEN minority_type_id = 5 THEN total_spending_amount
             WHEN minority_type_id = 9 THEN total_spending_amount
             ELSE 0
-	END) total_mwbe,
-		SUM(
-       CASE
-             WHEN minority_type_id = 7 THEN total_spending_amount
-            ELSE 0
-	END) total_non_mwbe
+	END) total_mwbe
 	from {aggregateon_subven_spending_coa_entities} a1
     join {ref_agency} ra on ra.agency_id =  a1.agency_id
    ' . $where_filter . '
@@ -110,35 +56,7 @@
     ';
 
     $node->data  = _checkbook_project_execute_sql($sql);
-    $node->data_sub_ven = array();
-	$merged_array = array();
-
-	foreach($node->data as $row1){
-
-		foreach($node->data_sub_ven as $row2){
-			if($row1['agency_id'] == $row2['agency_id']){
-				$row1['ethinicty_mwbe'] = $row1['ethinicty_mwbe'] + $row2['ethinicty_mwbe'];
-				$row1['total_mwbe'] = $row1['total_mwbe'] + $row2['total_mwbe'];
-				$row1['total_subven_non_mwbe'] =  $row2['total_mwbe'];
-
-			}
-
-		}
-		$merged_array[] = $row1;
-
-	}
-
-
-	usort($merged_array,
-			function($a, $b)
-			{
-				if ($a['ethinicty_mwbe'] == $b['ethinicty_mwbe']) {
-					return 0;
-				}
-				return ($a['ethinicty_mwbe'] > $b['ethinicty_mwbe']) ? -1 : 1;
-			}
-	);
-	$node->data_merged =  $merged_array;
+	$node->data_merged =  $node->data;
 	
 ",
 "widgetUpdateJSONConfig":"
@@ -148,7 +66,7 @@
 	
 	$mwbe_filter = _getRequestParamValue('mwbe');
 	
-	$amount_column = 'ethinicty_mwbe';
+	$amount_column = 'total_mwbe';
 	
 	$mwbe_filter = _getRequestParamValue('mwbe');
 	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){	
