@@ -2,20 +2,20 @@
 "widgetType": "data_tables",
 "widgetSubType":"ajaxSimple",
 "no_results_content":"No Results Found",
-"defaultParameters":{"type_of_year":"B","document_code.document_code.document_code":"MA1~CTA1~CT1","status_flag":"A","minority_type_id":"2~3~4~5~9"},
+"defaultParameters":{"type_of_year":"B","document_code.document_code.document_code":"MA1~CTA1~CT1","status_flag":"A","prime_minority_type_id":"2~3~4~5~9"},
 "cleanURLParameters":["subvendor","mwbe","year","calyear","agency","yeartype","vendor","status","cvendor","cagency","cvendor",
                       "csize","cindustry","awdmethod"],
-"urlParamMap":{"subvendor":"vendor_id","mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id",
+"urlParamMap":{"subvendor":"vendor_id","mwbe":"prime_minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id",
                "agency":"agency_id","yeartype":"type_of_year","vendor":"prime_vendor_id","status":"status_flag",
                "cvendor":"prime_vendor_id","cagency":"agency_id","cvendor":"prime_vendor_id","csize":"award_size_id",
                "cindustry":"industry_type_id","awdmethod":"award_method_id"},
 "dataset": "checkbook:subven_contracts_coa_aggregates",
 "noDataInitialLoad":true,
-"columns": ["minority_type.minority_type","vendor.vendor","total_contracts","vendor.vendor.legal_name","original_amount_sum","current_amount_sum",
+"columns": ["prime_minority_type.prime_minority_type","vendor.vendor","total_contracts","vendor.vendor.legal_name","original_amount_sum","current_amount_sum",
             "yeartype.yeartype","spending_amount_sum"],
 "adjustParameters":"
     if(_getRequestParamValue('dashboard') == 'ss'){
-        unset($parameters['minority_type_id']);
+        unset($parameters['prime_minority_type_id']);
     }
     $adjustedParameters = $parameters;
     if(function_exists('_checkbook_project_applyParameterFilters')){
@@ -56,11 +56,11 @@ return $adjustedParameters;
     },
     "mwbe_category_name": {
         "type":"expression2",
-        "expression":"MappingUtil::getMinorityCategoryById($row['minority_type_minority_type'])"
+        "expression":"MappingUtil::getMinorityCategoryById($row['prime_minority_type_prime_minority_type'])"
     },
     "mwbe_category_name_link": {
         "type": "expression2",
-        "expression": "!MappingUtil::isMWBECertified(array($row['minority_type_minority_type'])) ? $row['mwbe_category_name']  : ('<a href=' . ContractUtil::getMWBECategoryLinkUrl($row['minority_type_minority_type']) . '>'. $row[mwbe_category_name] .'</a>') "
+        "expression": "!MappingUtil::isMWBECertified(array($row['prime_minority_type_prime_minority_type'])) ? $row['mwbe_category_name']  : ('<a href=' . ContractUtil::getMWBECategoryLinkUrl($row['prime_minority_type_prime_minority_type']) . '>'. $row[mwbe_category_name] .'</a>') "
     }
 },
 "disableViewAll":true,
@@ -109,7 +109,7 @@ $url .= _checkbook_project_get_url_param_string('dashboard');
     {
         "labelAlias":"mwbe_category",
         "column":"mwbe_category_name_link",
-        "sortSourceColumn":"minority_type.minority_type"
+        "sortSourceColumn":"prime_minority_type.prime_minority_type"
     },
     {
         "labelAlias": "num_sub_contracts",
