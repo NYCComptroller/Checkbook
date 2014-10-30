@@ -671,6 +671,20 @@ class SpendingUtil{
     }
 
     /**
+     * Returns M/WBE Category Link Url for the advanced search page
+     * @param $node
+     * @param $row
+     * @return string
+     */
+    static function getAdvancedSearchMWBECategoryLinkUrl($node, $row){
+        $custom_params = array(
+            'dashboard'=>$row["is_sub_vendor"] == "No" ? "mp" : "ms",
+            'mwbe'=>(isset($row["minority_type_id"]) ? $row["minority_type_id"] : $row["minority_type_minority_type"])
+        );
+        return '/' . self::getLandingPageWidgetUrl($custom_params) . '?expandBottomCont=true';
+    }
+
+    /**
      * Returns M/WBE Category Link Url for the prime vendor
      * @param $node
      * @param $row
