@@ -15,19 +15,19 @@
     "autocompleteField":"department_name",
     "maxSelect":5,
     "adjustParameters":"
-    if(isset($parameters['vendor_type'])){
-        $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
-    }
-	checkbook_faceted_search_adjust_param($node);
-    if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
-    	$parameters = _checkbook_project_adjust_spending_parameter_filters($node, $parameters);
-    }
-    if(function_exists('_checkbook_project_applyParameterFilters')){
-        $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-    }
-    $adjustedParameters['deptname.deptname'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+        if(function_exists('_checkbook_project_adjust_mwbe_spending_parameter_filters')){
+            $parameters = _checkbook_project_adjust_mwbe_spending_parameter_filters($node, $parameters);
+        }
+        checkbook_faceted_search_adjust_param($node);
+        if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
+            $parameters = _checkbook_project_adjust_spending_parameter_filters($node, $parameters);
+        }
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        }
+        $adjustedParameters['deptname.deptname'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
 
-    return $adjustedParameters;
+        return $adjustedParameters;
     ",        
     "template":"individual_filter"
 }

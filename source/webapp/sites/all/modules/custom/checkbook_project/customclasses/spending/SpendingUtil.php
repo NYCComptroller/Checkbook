@@ -130,7 +130,6 @@ class SpendingUtil{
      */
     static function getSpendingFooterUrl($node){
         $override_params = array(
-            "vendortype"=>self::getVendorTypeUrlParam($node),
             "dtsmnid"=>$node->nid
         );
         return '/' . self::getSpendingTransactionPageUrl($override_params);
