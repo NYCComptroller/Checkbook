@@ -691,35 +691,6 @@ function _checkbook_project_adjust_spending_parameter_filters(&$node, &$paramete
         $parameters['agreement_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
         $parameters['contract_number'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
     }
-
-//    /**
-//     * Transaction page from M/WBE Dashboard landing page
-//     * Top 10 agencies widget (759) - sub and prime data
-//     * Top 10 Sub Vendors widget (763) - sub data
-//     * All Others widgets - prime data
-//     */
-//    $dtsmnid = _getRequestParamValue('dtsmnid');
-//    $smnid = _getRequestParamValue('smnid');
-//    $dashboard = _getRequestParamValue('dashboard');
-//    if($dashboard == 'mp') {
-//
-//        if($dashboard == 'mp') {
-//            switch($dtsmnid) {
-//                case 759:
-//                    $parameters['is_prime_or_sub'] = array('P','S');
-//                    break;
-//                case 763:
-//                    $parameters['is_prime_or_sub'] = array('S');
-//                    break;
-//                default:
-//                    $parameters['is_prime_or_sub'] = array('P');
-//                    break;
-//            }
-//        }
-//        if(isset($parameters['vendor_type'])){
-//            $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
-//        }
-//    }
     return $parameters;
 }
 
