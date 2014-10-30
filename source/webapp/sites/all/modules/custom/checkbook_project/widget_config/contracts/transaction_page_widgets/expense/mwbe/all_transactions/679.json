@@ -112,7 +112,7 @@ return $header;
 },
 "formatted_minority_name_link": {
 "type": "expression2",
-"expression": "ContractUtil::get_mwbe_category_url($row['minority_type_id'])"
+"expression": "ContractUtil::get_mwbe_category_url($row['minority_type_id'], $row['is_prime_or_sub'])"
 },
 "formatted_is_sub_vendor": {
 "type": "expression2",
