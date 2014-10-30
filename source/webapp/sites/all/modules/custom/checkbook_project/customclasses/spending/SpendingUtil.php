@@ -129,17 +129,11 @@ class SpendingUtil{
      * @return string
      */
     static function getSpendingFooterUrl($node){
-        $url = '/panel_html/spending_transactions/spending/transactions'
-        . _checkbook_project_get_url_param_string("vendor")
-        . _checkbook_project_get_url_param_string("subvendor")
-        . _checkbook_project_get_url_param_string("agency")
-        . _checkbook_project_get_url_param_string("category")
-        . _checkbook_project_get_url_param_string("industry")
-        . '/dtsmnid/' . $node->nid
-        . _checkbook_project_get_year_url_param_string(false,false,true)
-        . _checkbook_append_url_params();
-
-        return $url;
+        $override_params = array(
+            "vendortype"=>self::getVendorTypeUrlParam($node),
+            "dtsmnid"=>$node->nid
+        );
+        return '/' . self::getSpendingTransactionPageUrl($override_params);
     }
 
     /**
@@ -180,9 +174,13 @@ class SpendingUtil{
      * @return string
      */
     static function getAgencyAmountLinkUrl($node, $row){
-        //agency_amount_link
-        $custom_params = array('agency'=>$row["agency_agency"]);
-        return '/' . self::getSpendingTransactionPageUrl($custom_params). '/smnid/' . $node->nid;
+        $dashboard = _getRequestParamValue('dashboard');
+        $override_params = array(
+            'agency'=>$row["agency_agency"],
+            "vendortype"=>self::getVendorTypeUrlParam($node),
+            "smnid"=>$node->nid
+        );
+        return '/' . self::getSpendingTransactionPageUrl($override_params);
     }
 
     /**
@@ -446,9 +444,12 @@ class SpendingUtil{
      * @return string
      */
     static function getVendorAmountLinkUrl($node, $row){
-        //vendor_amount_link
-        $custom_params = array('vendor'=>isset($row["vendor_vendor"]) ? $row["vendor_vendor"] : $row["prime_vendor_prime_vendor"]);
-        return '/' . self::getSpendingTransactionPageUrl($custom_params). '/smnid/' . $node->nid;
+        $override_params = array(
+            'vendor'=>isset($row["vendor_vendor"]) ? $row["vendor_vendor"] : $row["prime_vendor_prime_vendor"],
+            "vendortype"=>self::getVendorTypeUrlParam($node),
+            'smnid'=>$node->nid
+        );
+        return '/' . self::getSpendingTransactionPageUrl($override_params);
     }
 
     /**
@@ -490,18 +491,21 @@ class SpendingUtil{
         . _checkbook_append_url_params();
     }
 
-    /** Returns Check Amount Sum Link Url based on values from current path & data row */
+    /**
+     * Returns Check Amount Sum Link Url based on values from current path & data row
+     *
+     * Transaction page from M/WBE Dashboard landing page
+     * @param $node
+     * @param $row
+     * @return string
+     */
     static function getCheckAmountSumLinkUrl($node, $row){
-        //formatted_check_amount_sum_link
-        return '/panel_html/spending_transactions/spending/transactions'
-        .  _checkbook_project_get_year_url_param_string(false,false,true)
-        . '/smnid/' . $node->nid
-        . _checkbook_project_get_url_param_string("agency")
-        . _checkbook_project_get_url_param_string("vendor")
-        . _checkbook_project_get_url_param_string("category")
-        . _checkbook_project_get_url_param_string("industry")
-        . '/expcategory/' .  $row["expenditure_object_expenditure_object"]
-        . _checkbook_append_url_params();
+            $override_params = array(
+                'expcategory'=>$row["expenditure_object_expenditure_object"],
+                "vendortype"=>self::getVendorTypeUrlParam($node),
+                "smnid"=>$node->nid
+            );
+            return '/' . self::getSpendingTransactionPageUrl($override_params);
     }
 
     /**
@@ -512,100 +516,14 @@ class SpendingUtil{
      * @return string
      */
     static function getContractAmountLinkUrl($node, $row){
-        //contract_amount_link
-        return '/panel_html/spending_transactions/spending/transactions'
-        . '/smnid/' . $node->nid
-        . _checkbook_project_get_year_url_param_string(false,false,true)
-        .  _checkbook_project_get_contract_url($row["document_id_document_id"], $row["agreement_id_agreement_id"])
-        . _checkbook_append_url_params();
+        $contract_url_part = _checkbook_project_get_contract_url($row["document_id_document_id"], $row["agreement_id_agreement_id"]);
+        $override_params = array(
+            "vendortype"=>self::getVendorTypeUrlParam($node),
+            "smnid"=>$node->nid
+        );
+        return '/' . self::getSpendingTransactionPageUrl($override_params) . $contract_url_part;
     }
 
-    /**
-     * @param $row
-     * @param $node
-     * @return null|string
-     */
-//    static function prepareContractNumberLink($row, $node) {
-//        if($row['spending_category_name'] == 'Payroll' ||  $row['spending_category_name'] == 'Others') {
-//            return 'N/A';
-//        }
-//
-//        if(empty($row[agreement_id])){
-//            return $row[reference_document_number];
-//        }
-//self::getSpendingContractDetailsPageUrl();
-//        $link = NULL;
-//        $docType = $row['reference_document_code'];
-//
-//        $link = "<a class='new_window' href='/contract_details" . _checkbook_append_url_params() . _checkbook_project_get_contract_url($row[reference_document_number], $row[agreement_id])  ."/newwindow'>"  . $row[reference_document_number] . "</a>";
-//
-//        return $link;
-//    }
-//
-//    /**
-//     * @param $row
-//     * @param $node
-//     * @return null|string
-//     */
-//    static function prepareSubContractNumberLink($row, $node) {
-//        //'<a class=\"new_window\" href=\"' . SpendingUtil::getSubContractNumberLinkUrl($node,$row) . '\">'  . $row[document_id_document_id] . '</a>'
-//        if(isset($row['spending_category_name'])) {
-//            if($row['spending_category_name'] == 'Payroll' ||  $row['spending_category_name'] == 'Others') {
-//                return 'N/A';
-//            }
-//        }
-//
-//        $agreement_id = isset($row["sub_contract_number_sub_contract_number_original_agreement_id"])
-//            ? $row["sub_contract_number_sub_contract_number_original_agreement_id"]
-//            : $row["original_agreement_id@checkbook:sub_vendor_agid"];
-//        $document_id = isset($row["document_id_document_id"])
-//            ? $row["document_id_document_id"]
-//            : $row["reference_document_code"];
-//
-//        if(empty($row[$agreement_id])){
-//            return $row[$document_id];
-//        }
-//
-//        $contract_type = _get_contract_type($document_id);
-//        if(strtolower($contract_type) == 'mma1' || strtolower($contract_type) == 'ma1'){
-//            return '/magid/'.$agreement_id.'/doctype/'.$contract_type;
-//        }else{
-//            return '/agid/'.$agreement_id.'/doctype/'.$contract_type;
-//        }
-//        $custom_params = array()
-//
-//        $custom_params = array('industry'=>isset($row['industry_industry_industry_type_id']) ? $row['industry_industry_industry_type_id'] : $row['industry_type_industry_type']);
-//
-//        $link = NULL;
-//        $docType = $row['reference_document_code'];
-//
-//        $contract_type = _get_contract_type($contnum);
-//        if(strtolower($contract_type) == 'mma1' || strtolower($contract_type) == 'ma1'){
-//            return '/magid/'.$agreement_id.'/doctype/'.$contract_type;
-//        }else{
-//            return '/agid/'.$agreement_id.'/doctype/'.$contract_type;
-//        }
-//        $url = self::getSpendingContractDetailsPageUrl();
-//
-//            //_checkbook_project_get_contract_url($row[reference_document_number], $row[agreement_id])  ."/newwindow'
-//
-//            $custom_params = array('industry'=>isset($row['industry_industry_industry_type_id']) ? $row['industry_industry_industry_type_id'] : $row['industry_type_industry_type']);
-//        return '/' . self::getLandingPageWidgetUrl($custom_params);
-//
-//        if( RequestUtil::isExpandBottomContainer() ){
-//            $link = '<a href=/panel_html/contract_transactions/contract_details/agid/' . $row['agreement_id'] .  '/doctype/' . $docType .  _checkbook_append_url_params() . ' class=bottomContainerReload>'. $row['reference_document_number'] . '</a>';
-//        }else if( RequestUtil::isNewWindow() ){
-//            $link = '<span href=/contracts_landing/status/A'
-//                . _checkbook_project_get_year_url_param_string()
-//                . _checkbook_append_url_params()
-//                . '?expandBottomContURL=/panel_html/contract_transactions/contract_details/agid/' . $row['agreement_id'] .  '/doctype/' . $docType . _checkbook_append_url_params()
-//                .  ' class=loadParentWindow>'. $row['reference_document_number'] . '</span>';
-//        }else {
-//            $link = "<a class='new_window' href='/contract_details" . _checkbook_append_url_params() . _checkbook_project_get_contract_url($row[reference_document_number], $row[agreement_id])  ."/newwindow'>"  . $row[reference_document_number] . "</a>";
-//        }
-//
-//        return $link;
-//    }
 
     /**
      * Returns Contract Number Link Url based on values from current path & data row
@@ -669,8 +587,12 @@ class SpendingUtil{
      * @return string
      */
     static function getIndustryYtdSpendingLinkUrl($node, $row){
-        $custom_params = array('industry'=>isset($row['industry_industry_industry_type_id']) ? $row['industry_industry_industry_type_id'] : $row['industry_type_industry_type']);
-        return '/' . self::getSpendingTransactionPageUrl($custom_params). '/smnid/' . $node->nid;
+        $override_params = array(
+            'industry'=>isset($row['industry_industry_industry_type_id']) ? $row['industry_industry_industry_type_id'] : $row['industry_type_industry_type'],
+            "vendortype"=>self::getVendorTypeUrlParam($node),
+            'smnid'=>$node->nid
+        );
+        return '/' . self::getSpendingTransactionPageUrl($override_params);
     }
 
     /**
@@ -681,8 +603,13 @@ class SpendingUtil{
      * @return string
      */
     static function getSubVendorYtdSpendingUrl($node, $row){
-        $custom_params = array('subvendor'=>$row['sub_vendor_sub_vendor']);
-        return '/' . self::getSpendingTransactionPageUrl($custom_params). '/smnid/' . $node->nid;
+        $sub_vendor_param_name = $node->nid == 763 ? 'vendor' : 'subvendor';
+        $override_params = array(
+            $sub_vendor_param_name=>$row['sub_vendor_sub_vendor'],
+            "vendortype"=>self::getVendorTypeUrlParam($node),
+            'smnid'=>$node->nid
+        );
+        return '/' . self::getSpendingTransactionPageUrl($override_params);
     }
     /**
      * Returns Agency YTD Spending Link Url based on values from current path & data row.
@@ -821,6 +748,42 @@ class SpendingUtil{
         }
 
         return $url;
+    }
+
+    /**
+     * Transaction page from M/WBE Dashboard landing page:
+     *
+     * Top 10 agencies widget (759) - sub and prime data
+     * Top 10 Sub Vendors widget (763) - sub data
+     * All Others widgets - prime data
+     *
+     * @param $node
+     * @return string
+     */
+    static function getVendorTypeUrlParam($node){
+        $dashboard = _getRequestParamValue('dashboard');
+        $vendortype = null;
+        $nid = $node->nid;
+        /**
+         * Transaction page from M/WBE Dashboard landing page
+         * Top 10 agencies widget (759) - sub and prime data
+         * Top 10 Sub Vendors widget (763) - sub data
+         * All Others widgets - prime data
+         */
+        if($dashboard == 'mp') {
+            switch($nid) {
+                case 759:
+                    $vendortype .= 'sv~pv~mv';
+                    break;
+                case 763:
+                    $vendortype .= 'sv~mv';
+                    break;
+                default:
+                    $vendortype .= 'pv~mv';
+                    break;
+            }
+        }
+        return $vendortype;
     }
 
     /**
