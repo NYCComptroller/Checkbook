@@ -326,7 +326,7 @@ namespace { //global
                     . _checkbook_project_get_url_param_string("status")
                     . _checkbook_project_get_url_param_string("vendor")
                     . _checkbook_project_get_url_param_string("subvendor")
-                    . _checkbook_project_get_url_param_string("dashboard")
+                    . '/dashboard/mp'
                     . '/mwbe/'. $minority_type_id .  '?expandBottomCont=true';
             return $url;
         }
