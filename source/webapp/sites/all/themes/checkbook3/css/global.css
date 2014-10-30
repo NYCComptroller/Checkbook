@@ -775,10 +775,12 @@ table.expense td.mwbe .expense-container > a .drop-down-menu-triangle{
     top:63px;
     right:5px;
 }
+body.page-spending-landing-yeartype-b table.expense td.mwbe .expense-container > a .top-navigation-amount{
+    width:121px;
+}
 table.expense td.mwbe .expense-container > a .top-navigation-amount{
     width: 50px;
     margin: 0 auto;
-    white-space: nowrap;
 }
 table.expense td.mwbe.subvendors .expense-container > a .top-navigation-amount{
     width:75px;
