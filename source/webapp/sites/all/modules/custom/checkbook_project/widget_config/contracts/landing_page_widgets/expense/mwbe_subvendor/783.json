@@ -138,8 +138,9 @@ return $footer;
 { "bSortable": false,"sClass":"text","sWidth":"405px" },
 { "bSortable": false, "sWidth":"150px", "sClass":"text pad-left" },
 {"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"90px"},
-{"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"214px"},
-{"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"214px"},
+{"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"200px"},
+{"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"200px"},
+{"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"200px"},
 { "bSortable": false,"sWidth":"15px" }
 ] ,
 "bServerSide": true,
