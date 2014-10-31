@@ -87,7 +87,7 @@
         },
         "contract_amount_link":{
             "type":"expression2",
-            "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getContractAmountLinkUrl($node,$row) . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
+            "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getSubContractAmountLinkUrl($node,$row) . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
         }
     },
     "summaryView":{
