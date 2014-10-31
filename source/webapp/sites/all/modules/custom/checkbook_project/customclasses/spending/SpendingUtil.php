@@ -130,7 +130,8 @@ class SpendingUtil{
      */
     static function getSpendingFooterUrl($node){
         $override_params = array(
-            "dtsmnid"=>$node->nid
+            "dtsmnid"=>$node->nid,
+            "fvendor"=>self::getVendorFacetParameter($node)
         );
         return '/' . self::getSpendingTransactionPageUrl($override_params);
     }
@@ -173,9 +174,9 @@ class SpendingUtil{
      * @return string
      */
     static function getAgencyAmountLinkUrl($node, $row){
-        $dashboard = _getRequestParamValue('dashboard');
         $override_params = array(
             'agency'=>$row["agency_agency"],
+            "fvendor"=>self::getVendorFacetParameter($node),
             "smnid"=>$node->nid
         );
         return '/' . self::getSpendingTransactionPageUrl($override_params);
@@ -497,11 +498,12 @@ class SpendingUtil{
      * @return string
      */
     static function getCheckAmountSumLinkUrl($node, $row){
-            $override_params = array(
-                'expcategory'=>$row["expenditure_object_expenditure_object"],
-                "smnid"=>$node->nid
-            );
-            return '/' . self::getSpendingTransactionPageUrl($override_params);
+        $override_params = array(
+            'expcategory'=>$row["expenditure_object_expenditure_object"],
+            "fvendor"=>self::getVendorFacetParameter($node),
+            "smnid"=>$node->nid
+        );
+        return '/' . self::getSpendingTransactionPageUrl($override_params);
     }
 
     /**
@@ -514,6 +516,7 @@ class SpendingUtil{
     static function getContractAmountLinkUrl($node, $row){
         $contract_url_part = _checkbook_project_get_contract_url($row["document_id_document_id"], $row["agreement_id_agreement_id"]);
         $override_params = array(
+            "fvendor"=>self::getVendorFacetParameter($node),
             "smnid"=>$node->nid
         );
         return '/' . self::getSpendingTransactionPageUrl($override_params) . $contract_url_part;
@@ -584,7 +587,8 @@ class SpendingUtil{
     static function getIndustryYtdSpendingLinkUrl($node, $row){
         $override_params = array(
             'industry'=>isset($row['industry_industry_industry_type_id']) ? $row['industry_industry_industry_type_id'] : $row['industry_type_industry_type'],
-            'smnid'=>$node->nid
+            "fvendor"=>self::getVendorFacetParameter($node),
+            "smnid"=>$node->nid
         );
         return '/' . self::getSpendingTransactionPageUrl($override_params);
     }
@@ -597,9 +601,9 @@ class SpendingUtil{
      * @return string
      */
     static function getSubVendorYtdSpendingUrl($node, $row){
-        $sub_vendor_param_name = $node->nid == 763 ? 'vendor' : 'subvendor';
         $override_params = array(
-            $sub_vendor_param_name=>$row['sub_vendor_sub_vendor'],
+            'subvendor'=>$row['sub_vendor_sub_vendor'],
+            'fvendor'=>$row['sub_vendor_sub_vendor'],
             'smnid'=>$node->nid
         );
         return '/' . self::getSpendingTransactionPageUrl($override_params);
@@ -690,6 +694,21 @@ class SpendingUtil{
             'mwbe'=>(isset($row["prime_minority_type_id"]) ? $row["prime_minority_type_id"] : $row["prime_minority_type_prime_minority_type"])
         );
         return '/' . self::getLandingPageWidgetUrl($custom_params) . '?expandBottomCont=true';
+    }
+
+    /**
+     * Returns the vendor or sub vendor id for the vendor facets
+     * @param $node
+     * @return null|request
+     */
+    static function getVendorFacetParameter($node){
+        $dashboard = _getRequestParamValue('dashboard');
+        $facet_vendor_param = null;
+
+        if($dashboard == "mp") {
+            $facet_vendor_param = _getRequestParamValue("vendor");
+        }
+        return $facet_vendor_param;
     }
 
     /**
