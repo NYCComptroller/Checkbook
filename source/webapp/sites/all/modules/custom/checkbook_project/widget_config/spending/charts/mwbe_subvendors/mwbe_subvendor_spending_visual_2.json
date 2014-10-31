@@ -63,7 +63,7 @@
 
 	}
 
-    $sql1 = 'select legal_name , a1.prime_vendor_id vendor_id,
+    $sql1 = 'select legal_name , a1.prime_vendor_id vendor_id,prime_minority_type_id,
  	SUM(
        CASE
             WHEN prime_minority_type_id = 4 THEN total_spending_amount
@@ -106,17 +106,19 @@
 	from aggregateon_subven_spending_coa_entities a1
     join vendor ra on ra.vendor_id =  a1.prime_vendor_id
    ' . $where_filter . '
-        group by  legal_name, a1.prime_vendor_id';
+        group by  legal_name, a1.prime_vendor_id,a1.prime_minority_type_id';
 
     $sql = $sql1 . ' order by ' . $sort_column . ' desc limit 10';
-
     $node->data  = _checkbook_project_execute_sql($sql);
 
 ",
 "widgetUpdateJSONConfig":"
 	$series_new = array();
 
-	$mwbe_filter = _getRequestParamValue('mwbe');
+    $mwbe_filter = '';
+    foreach($node->data as $row){
+        $mwbe_filter .= $mwbe_filter == '' ? $row['prime_minority_type_id'] : '~'.$row['prime_minority_type_id'];
+    }
 
 	$amount_column = 'total_mwbe';
 	switch($mwbe_filter){
@@ -146,7 +148,6 @@
 	}else{
 		$node->widgetConfig->chartTitle = 'Top Ten Prime Vendors by ' . MappingUtil::getCurrenEhtnicityName() .' Spending';
 	}
-
 	$index = 0;
 	foreach($node->data as $row){
 
@@ -173,7 +174,6 @@
 	$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
 	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
 
-	
 ",
 "chartConfig" : {
 	"colors":["#7DB7E5"],
