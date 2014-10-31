@@ -6,7 +6,7 @@
         "mcagency","agencyh","year","calyear","mcvendor","expcategory","category","checkamtr","dept",
         "contnum","checkamt","chkdate","fundcls","bdgcodenm","captprj","expdoc","vendornm","deptnm","expcategorynm","syear",
         "scalyear","magid","agid","cvendor","cagency","awdmethod","status","csize","cindustry","expcategorycode","month",
-        "industry","mwbe","vendor","svendor","subvendor","vendortype"
+        "industry","mwbe","vendor","svendor","subvendor","vendortype","fvendor"
     ],
     "urlParamMap":{
         "contnum_exact":"reference_document_number",
@@ -33,7 +33,7 @@
         "cindustry":"industry_type_id@checkbook:contracts_spending_transactions",
         "expcategorycode":"expenditure_object_code", "month":"check_eft_issued_cal_month_id",
         "mwbe":"minority_type_id","industry":"industry_type_id",
-        "vendor":"prime_vendor_id","svendor":"prime_vendor_id","subvendor":"vendor_id","vendortype":"vendor_type"
+        "vendor":"prime_vendor_id","svendor":"prime_vendor_id","subvendor":"vendor_id","vendortype":"vendor_type","fvendor":"vendor_id"
     },
     "defaultParameters":{"is_prime_or_sub":"S"},
     "paramTypeConfig":{
@@ -225,8 +225,6 @@
         if(agencyIds.length==0 && eval(document.getElementById('fHideAgencyId'))){
             agencyIds = document.getElementById('fHideAgencyId').value;
         }
-        var oVendorIds = getNamedFilterCriteria('fvendorId');
-        var oVendorNms = getNamedFilterCriteria('fvendorNm');
         var oCategoryIds = getNamedFilterCriteria('fCat' + 'egoryId');
         var oSpendCategoryIds = getNamedFilterCriteria('fSpendCategoryId');
         var oCheckAmount = getNamedFilterCriteria('fCheckAmount');
@@ -234,22 +232,24 @@
         var oDeptNms = getNamedFilterCriteria('fdeptNm');
         var oSpendCategoryNms = getNamedFilterCriteria('fCategoryNm');
         var oVendorType = getNamedFilterCriteria('fvendorType');
+        var oVendorIds = getNamedFilterCriteria('fvendorId');
         var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
 
         var cUrl = oTable.fnSettings().sAjaxSource;
 
         var cUrlArray = cUrl.split('/');
-        var dtsmnidNameIndex = jQuery.inArray('dtsmnid', cUrlArray);
-
-        if (dtsmnidNameIndex != -1 && cUrlArray[(dtsmnidNameIndex+1)] == 20) {
-            cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
-            cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
-        }
-        else {
-            cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
-            cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
-        }
-        cUrl = adjustUrlParameter(cUrl,'vendornm',oVendorNms);
+//        var dtsmnidNameIndex = jQuery.inArray('dtsmnid', cUrlArray);
+//
+//        if (dtsmnidNameIndex != -1 && cUrlArray[(dtsmnidNameIndex+1)] == 20) {
+//            cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
+//            cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
+//        }
+//        else {
+//            cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
+//            cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
+//        }
+        cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
+        cUrl = adjustUrlParameter(cUrl,'fvendor',oVendorIds);
         cUrl = adjustUrlParameter(cUrl,'expcategory',oCategoryIds);
         cUrl = adjustUrlParameter(cUrl,'category',oSpendCategoryIds );
         cUrl = adjustUrlParameter(cUrl,'checkamtr',oCheckAmount);

@@ -3,17 +3,17 @@
     "parentNid":723,
     "limit":100,
     "startWith":0,
-    "columns":["vendornm.vendornm", "txcount"],
+    "columns":["vendor.vendor", "vendornm.vendornm", "txcount"],
     "defaultParameters":{"is_prime_or_sub":"S"},
     "orderBy":"-txcount",
     "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Vendor",
-    "urlParameterName":"vendornm",
+    "urlParameterName":"fvendor",
     "autocompleteParamName":"vendor_auto",
-    "autocompleteID":"fvendorNm",
-    "autocompleteField":"vendor_name",
-    "urlParamMap":{"vendornm":"vendornm.vendornm"},
+    "autocompleteID":"fvendorId",
+    "autocompleteField":"vendornm.vendornm",
+    "urlParamMap":{"dept":"dept.dept","fvendor":"vendor.vendor"},
     "maxSelect":5,
     "adjustParameters":"
         if(isset($parameters['vendor_type'])){
@@ -26,7 +26,7 @@
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
         }
-        $adjustedParameters['vendornm.vendornm'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+        $adjustedParameters['vendor.vendor'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
 
         return $adjustedParameters;
     ",
