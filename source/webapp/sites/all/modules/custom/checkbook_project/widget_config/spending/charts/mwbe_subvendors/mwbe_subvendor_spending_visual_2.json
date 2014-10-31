@@ -63,52 +63,67 @@
 
 	}
 
-    $sql1 = 'select legal_name , a1.prime_vendor_id vendor_id,prime_minority_type_id,
- 	SUM(
-       CASE
-            WHEN prime_minority_type_id = 4 THEN total_spending_amount
-            WHEN prime_minority_type_id = 5 THEN total_spending_amount
-            ELSE 0
-	END) aa_mwbe,
-	SUM(
-       CASE
-            WHEN prime_minority_type_id = 2 THEN total_spending_amount
-            ELSE 0
-	END) ba_mwbe,
-	SUM(
-       CASE
-            WHEN prime_minority_type_id = 9 THEN total_spending_amount
-            ELSE 0
-	END) w_mwbe,
-	SUM(
-       CASE
-            WHEN prime_minority_type_id = 3 THEN total_spending_amount
-            ELSE 0
-	END) ha_mwbe,
-	SUM(
-       CASE
-            WHEN prime_minority_type_id = 11 THEN total_spending_amount
-            ELSE 0
-	END) io_nonmwbe,
-	SUM(
-       CASE WHEN prime_minority_type_id = 2 THEN total_spending_amount
-            WHEN prime_minority_type_id = 3 THEN total_spending_amount
-            WHEN prime_minority_type_id = 4 THEN total_spending_amount
-            WHEN prime_minority_type_id = 5 THEN total_spending_amount
-            WHEN prime_minority_type_id = 9 THEN total_spending_amount
-            ELSE 0
-	END) total_mwbe,
-		SUM(
-       CASE
-             WHEN prime_minority_type_id = 7 THEN total_spending_amount
-            ELSE 0
-	END) total_non_mwbe
-	from aggregateon_subven_spending_coa_entities a1
-    join vendor ra on ra.vendor_id =  a1.prime_vendor_id
-   ' . $where_filter . '
-        group by  legal_name, a1.prime_vendor_id,a1.prime_minority_type_id';
+$sql = '
+select legal_name, vendor_id, prime_minority_type_id, total_spending_amount \n
+from (\n
+    select legal_name, a1.prime_vendor_id vendor_id,prime_minority_type_id, \n
+    SUM( CASE WHEN prime_minority_type_id = 4 THEN total_spending_amount WHEN prime_minority_type_id = 5 THEN total_spending_amount ELSE 0 END) total_spending_amount \n
+    from aggregateon_subven_spending_coa_entities a1 join vendor ra on ra.vendor_id = a1.prime_vendor_id \n
+    ' . $where_filter . ' \n
+    group by legal_name, a1.prime_vendor_id,a1.prime_minority_type_id \n \n
 
-    $sql = $sql1 . ' order by ' . $sort_column . ' desc limit 10';
+    UNION \n \n
+
+    select legal_name, a1.prime_vendor_id vendor_id,prime_minority_type_id, \n
+    SUM( CASE WHEN prime_minority_type_id = 2 THEN total_spending_amount ELSE 0 END) total_spending_amount \n
+    from aggregateon_subven_spending_coa_entities a1 join vendor ra on ra.vendor_id = a1.prime_vendor_id \n
+    ' . $where_filter . ' \n
+    group by legal_name, a1.prime_vendor_id,a1.prime_minority_type_id \n \n
+
+    UNION \n \n
+
+    select legal_name, a1.prime_vendor_id vendor_id,prime_minority_type_id, \n
+    SUM( CASE WHEN prime_minority_type_id = 9 THEN total_spending_amount ELSE 0 END) total_spending_amount \n
+    from aggregateon_subven_spending_coa_entities a1 join vendor ra on ra.vendor_id = a1.prime_vendor_id \n
+    ' . $where_filter . ' \n
+    group by legal_name, a1.prime_vendor_id,a1.prime_minority_type_id \n \n
+
+    UNION \n \n
+
+    select legal_name, a1.prime_vendor_id vendor_id,prime_minority_type_id, \n
+    SUM( CASE WHEN prime_minority_type_id = 3 THEN total_spending_amount ELSE 0 END) total_spending_amount \n
+    from aggregateon_subven_spending_coa_entities a1 join vendor ra on ra.vendor_id = a1.prime_vendor_id \n
+    ' . $where_filter . ' \n
+    group by legal_name, a1.prime_vendor_id,a1.prime_minority_type_id \n \n
+
+    UNION \n \n
+
+    select legal_name, a1.prime_vendor_id vendor_id,prime_minority_type_id, \n
+    SUM( CASE WHEN prime_minority_type_id = 11 THEN total_spending_amount ELSE 0 END) total_spending_amount \n
+    from aggregateon_subven_spending_coa_entities a1 join vendor ra on ra.vendor_id = a1.prime_vendor_id \n
+    ' . $where_filter . ' \n
+    group by legal_name, a1.prime_vendor_id,a1.prime_minority_type_id \n \n
+
+    UNION \n \n
+
+    select legal_name, a1.prime_vendor_id vendor_id,prime_minority_type_id, \n
+    SUM( CASE WHEN prime_minority_type_id = 2 THEN total_spending_amount WHEN prime_minority_type_id = 3 THEN total_spending_amount WHEN prime_minority_type_id = 4 THEN total_spending_amount WHEN prime_minority_type_id = 5 THEN total_spending_amount WHEN prime_minority_type_id = 9 THEN total_spending_amount ELSE 0 END) total_spending_amount \n
+    from aggregateon_subven_spending_coa_entities a1 join vendor ra on ra.vendor_id = a1.prime_vendor_id \n
+    ' . $where_filter . ' \n
+    group by legal_name, a1.prime_vendor_id,a1.prime_minority_type_id \n
+
+    UNION \n \n
+
+    select legal_name, a1.prime_vendor_id vendor_id,prime_minority_type_id, \n
+    SUM( CASE WHEN prime_minority_type_id = 7 THEN total_spending_amount ELSE 0 END) total_spending_amount \n
+    from aggregateon_subven_spending_coa_entities a1 join vendor ra on ra.vendor_id = a1.prime_vendor_id \n
+    ' . $where_filter . ' \n
+    group by legal_name, a1.prime_vendor_id,a1.prime_minority_type_id \n
+) all_spending where all_spending.total_spending_amount > 0 \n
+order by all_spending.total_spending_amount desc limit 10 \n
+';
+//log_error('SQQQLLL: \n\n\n' . $sql);
+
     $node->data  = _checkbook_project_execute_sql($sql);
 
 ",
@@ -117,7 +132,10 @@
 
     $mwbe_filter = '';
     foreach($node->data as $row){
-        $mwbe_filter .= $mwbe_filter == '' ? $row['prime_minority_type_id'] : '~'.$row['prime_minority_type_id'];
+        $pos = strpos($mwbe_filter,$row['prime_minority_type_id']);
+        if($pos === false) {
+            $mwbe_filter .= $mwbe_filter == '' ? $row['prime_minority_type_id'] : '~'.$row['prime_minority_type_id'];
+        }
     }
 
 	$amount_column = 'total_mwbe';
@@ -142,6 +160,8 @@
 			break;
 	}
 
+    $amount_column = 'total_spending_amount';
+
 	$mwbe_filter = _getRequestParamValue('mwbe');
 	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){
 		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName()  . ' Top Ten Prime Vendors Spending';
@@ -153,13 +173,12 @@
 
         $tooltip_label =
             'Prime Vendor: ' . $row['legal_name'].  '<br/>' .
-            MappingUtil::getCurrenEhtnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$');
+            MappingUtil::getMinorityCategoryById($row['prime_minority_type_id']) . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$');
         $node->widgetConfig->gridConfig->data[] = array(
             $row['legal_name'],
             $row[$amount_column]
         );
 
-        //$link= CustomURLHelper::prepareUrl('spending_landing', SpendingUtil::$landingPageParams, array('expandBottomCont'=>'true'), array('vendor'=>$row['vendor_id']) );
         $link = substr(SpendingUtil::getPrimeVendorNameLinkUrl($node, $row),1);
         $series_new[$index]->url = $link;
 
