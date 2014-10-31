@@ -272,7 +272,6 @@
         var dtsmnidNameIndex = jQuery.inArray('dtsmnid', cUrlArray);
 
         cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
-        cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
         cUrl = adjustUrlParameter(cUrl,'fvendor',oVendorIds);
         cUrl = adjustUrlParameter(cUrl,'expcategory',oCategoryIds);
         cUrl = adjustUrlParameter(cUrl,'category',oSpendCategoryIds );
