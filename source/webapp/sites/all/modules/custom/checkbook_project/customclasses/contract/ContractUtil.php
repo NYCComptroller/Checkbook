@@ -144,7 +144,7 @@ namespace { //global
                       . _checkbook_project_get_url_param_string("awdmethod") ."/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
                 return $url;
             }else if(in_array($latest_minority_id, array(2,3,4,5,9)) && _getRequestParamValue('dashboard') != 'mp'){
-                return $url ."/mwbe/2~3~4~5~9/vendor/".$vendor_id;
+                return $url ."/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
             }else{
                 return $url. "/vendor/".$vendor_id;
             }
