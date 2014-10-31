@@ -768,8 +768,10 @@ table.expense td.mwbe .expense-container > a > div,
 table.expense td.subvendors .expense-container > a > div{
     background: url("../images/arrow-gray_nofill.png") no-repeat 100px 23px;
 }
-
-
+table.expense td.mwbe .expense-container > a:hover > div,
+table.expense td.subvendors .expense-container > a:hover > div{
+    background: url("../images/arrow-gray.png") no-repeat 100px 23px;
+}
 
 table.expense td.mwbe.active .expense-container > a > div,
 table.expense td.subvendors.active .expense-container > a > div{
