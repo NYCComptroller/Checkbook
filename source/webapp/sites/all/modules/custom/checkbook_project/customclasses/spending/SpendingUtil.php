@@ -458,15 +458,12 @@ class SpendingUtil{
      * @return string
      */
     static function getPrimeVendorAmountLinkUrl($node, $row){
-        //vendor_amount_link
-        return '/panel_html/spending_transactions/spending/transactions'
-        . _checkbook_project_get_url_param_string("agency")
-        . '/vendor/'. $row["prime_vendor_prime_vendor"]
-        . _checkbook_project_get_url_param_string("category")
-        . _checkbook_project_get_url_param_string("industry")
-        . _checkbook_project_get_year_url_param_string(false,false,true)
-        . '/smnid/' . $node->nid
-        . _checkbook_append_url_params();
+        $override_params = array(
+            'vendor'=>$row["prime_vendor_prime_vendor"],
+            "fvendor"=>self::getVendorFacetParameter($node),
+            "smnid"=>$node->nid
+        );
+        return '/' . self::getSpendingTransactionPageUrl($override_params);
     }
 
     /**
@@ -515,6 +512,28 @@ class SpendingUtil{
      */
     static function getContractAmountLinkUrl($node, $row){
         $contract_url_part = _checkbook_project_get_contract_url($row["document_id_document_id"], $row["agreement_id_agreement_id"]);
+        $override_params = array(
+            "fvendor"=>self::getVendorFacetParameter($node),
+            "smnid"=>$node->nid
+        );
+        return '/' . self::getSpendingTransactionPageUrl($override_params) . $contract_url_part;
+    }
+
+    /**
+     * Returns Sub Contract Amount Link Url based on values from current path & data row
+     *
+     * @param $node
+     * @param $row
+     * @return string
+     */
+    static function getSubContractAmountLinkUrl($node, $row){
+        $agreement_id = isset($row["sub_contract_number_sub_contract_number_original_agreement_id"])
+            ? $row["sub_contract_number_sub_contract_number_original_agreement_id"]
+            : $row["original_agreement_id@checkbook:sub_vendor_agid"];
+        $document_id = isset($row["document_id_document_id"])
+            ? $row["document_id_document_id"]
+            : $row["reference_document_code"];
+        $contract_url_part = _checkbook_project_get_contract_url($document_id, $agreement_id);
         $override_params = array(
             "fvendor"=>self::getVendorFacetParameter($node),
             "smnid"=>$node->nid
@@ -707,6 +726,9 @@ class SpendingUtil{
 
         if($dashboard == "mp") {
             $facet_vendor_param = _getRequestParamValue("vendor");
+        }
+        else if($dashboard == "ss") {
+            $facet_vendor_param = _getRequestParamValue("subvendor");
         }
         return $facet_vendor_param;
     }
