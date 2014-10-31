@@ -8,11 +8,11 @@
     "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Vendor",
-    "urlParameterName":"vendor",
+    "urlParameterName":"fvendor",
     "autocompleteParamName":"vendor_auto",
     "autocompleteID":"fvendorId",
     "autocompleteField":"vendornm.vendornm",
-    "urlParamMap":{"dept":"dept.dept"},
+    "urlParamMap":{"dept":"dept.dept","fvendor":"vendor.vendor"},
     "maxSelect":5,
     "adjustParameters":"
         if(function_exists('_checkbook_project_adjust_mwbe_spending_parameter_filters')){

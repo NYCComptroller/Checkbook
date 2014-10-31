@@ -10,7 +10,8 @@
         "check_eft_issued_nyc_year_id",
         "calendar_fiscal_year_id",
         "mwbe",
-        "industry"
+        "industry",
+        "subvendor"
     ],
     "defaultParameters":{"type_of_year":"B"},
     "urlParamMap":{
@@ -22,7 +23,8 @@
         "check_eft_issued_nyc_year_id":"check_eft_issued_date",
         "calendar_fiscal_year_id":"calendar_fiscal_year_id",
         "industry":"industry_type_id",
-        "mwbe":"minority_type_id"
+        "mwbe":"minority_type_id",
+        "subvendor":"sub_vendor.sub_vendor"
     },
     "getTotalDataCount":true,
     "limit":"5",
@@ -122,7 +124,7 @@
         return $adjustedParameters;
     ",
     "summaryView":{
-//        "template":"spending_sub_vendor_summary",
+        "template":"spending_sub_vendor_summary",
         "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Sub Vendors');"
     },
     "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Sub Vendors');",
