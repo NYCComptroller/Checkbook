@@ -12,7 +12,7 @@
         "vendor":"prime_vendor_id",
         "subvendor":"vendor_id",
         "category":"spending_category_id",
-        "mwbe":"prime_minority_type_id",
+        "mwbe":"minority_type_id",
         "industry":"industry_type_id"
     },
     "dataset": "checkbook:contracts_subven_vendor_spending",

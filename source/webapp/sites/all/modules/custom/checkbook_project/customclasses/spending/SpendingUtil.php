@@ -176,7 +176,6 @@ class SpendingUtil{
         $dashboard = _getRequestParamValue('dashboard');
         $override_params = array(
             'agency'=>$row["agency_agency"],
-            "vendortype"=>self::getVendorTypeUrlParam($node),
             "smnid"=>$node->nid
         );
         return '/' . self::getSpendingTransactionPageUrl($override_params);
@@ -445,7 +444,6 @@ class SpendingUtil{
     static function getVendorAmountLinkUrl($node, $row){
         $override_params = array(
             'vendor'=>isset($row["vendor_vendor"]) ? $row["vendor_vendor"] : $row["prime_vendor_prime_vendor"],
-            "vendortype"=>self::getVendorTypeUrlParam($node),
             'smnid'=>$node->nid
         );
         return '/' . self::getSpendingTransactionPageUrl($override_params);
@@ -501,7 +499,6 @@ class SpendingUtil{
     static function getCheckAmountSumLinkUrl($node, $row){
             $override_params = array(
                 'expcategory'=>$row["expenditure_object_expenditure_object"],
-                "vendortype"=>self::getVendorTypeUrlParam($node),
                 "smnid"=>$node->nid
             );
             return '/' . self::getSpendingTransactionPageUrl($override_params);
@@ -517,7 +514,6 @@ class SpendingUtil{
     static function getContractAmountLinkUrl($node, $row){
         $contract_url_part = _checkbook_project_get_contract_url($row["document_id_document_id"], $row["agreement_id_agreement_id"]);
         $override_params = array(
-            "vendortype"=>self::getVendorTypeUrlParam($node),
             "smnid"=>$node->nid
         );
         return '/' . self::getSpendingTransactionPageUrl($override_params) . $contract_url_part;
@@ -588,7 +584,6 @@ class SpendingUtil{
     static function getIndustryYtdSpendingLinkUrl($node, $row){
         $override_params = array(
             'industry'=>isset($row['industry_industry_industry_type_id']) ? $row['industry_industry_industry_type_id'] : $row['industry_type_industry_type'],
-            "vendortype"=>self::getVendorTypeUrlParam($node),
             'smnid'=>$node->nid
         );
         return '/' . self::getSpendingTransactionPageUrl($override_params);
@@ -605,7 +600,6 @@ class SpendingUtil{
         $sub_vendor_param_name = $node->nid == 763 ? 'vendor' : 'subvendor';
         $override_params = array(
             $sub_vendor_param_name=>$row['sub_vendor_sub_vendor'],
-            "vendortype"=>self::getVendorTypeUrlParam($node),
             'smnid'=>$node->nid
         );
         return '/' . self::getSpendingTransactionPageUrl($override_params);
