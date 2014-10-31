@@ -192,7 +192,7 @@ foreach ($contracts_parameter_mapping as $key => $title){
   }else if(array_key_exists($key, $linkable_fields)){
     $value = "<a href='" . $linkable_fields[$key]. "'>". $value ."</a>";
   }
-  if($title == "Prime Vendor"){
+  if(!$IsOge && $title == "Prime Vendor"){
       $title = "Vendor";
   }
 
