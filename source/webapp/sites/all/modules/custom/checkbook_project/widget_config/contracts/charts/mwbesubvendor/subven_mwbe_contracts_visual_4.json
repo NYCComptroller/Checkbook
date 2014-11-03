@@ -33,8 +33,8 @@
         ]
 },
 "no_results_content":"No Results Found",
-"cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe","year"],
-"cleanURLParametersPending":["agency","awdmethod","vendor","status","csize","cindustry","mwbe"],
+"cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe","year","subvendor"],
+"cleanURLParametersPending":["agency","awdmethod","vendor","status","csize","cindustry","mwbe","subvendor"],
 "urlParamMap":{"year":"fiscal_year_id","mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id",
 	"vendor":"prime_vendor_id","subvendor":"vendor_id",
 	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},	
