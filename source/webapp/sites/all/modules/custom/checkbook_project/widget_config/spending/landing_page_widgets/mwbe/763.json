@@ -69,10 +69,6 @@
                 "type":"expression2",
                 "expression":"MappingUtil::getMinorityCategoryById($row['minority_type_minority_type'])"
             },
-            "mwbe_category_name_link": {
-                "type": "expression2",
-                "expression": " RequestUtil::isNewWindow() || !MappingUtil::isMWBECertified(array($row['minority_type_minority_type'])) ? $row['mwbe_category_name']  : ('<a href=' . SpendingUtil::getMWBECategoryLinkUrl($node, $row) . '>'. $row[mwbe_category_name] .'</a>') "
-            },
             "sub_vendor_name_formatted": {
                 "type":"expression2",
                 "expression":"_get_tooltip_markup($row['sub_vendor_sub_vendor_legal_name'],36)"
@@ -130,7 +126,7 @@
     "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Sub Vendors');",
     "table_columns": [
         {"labelAlias":"sub_vendor_name","column":"sub_vendor_name_link2","sortSourceColumn":"sub_vendor.sub_vendor"},
-        {"labelAlias":"mwbe_category","column":"mwbe_category_name_link","sortSourceColumn":"minority_type.minority_type"},
+        {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type.minority_type"},
         {"labelAlias":"ytd_spending","column":"ytd_spending_sub_vendors_link","sortSourceColumn":"check_amount_sum"},
         {"labelAlias":"percent_spending","column":"percent_spending","sortSourceColumn":"check_amount_sum"},
         {"labelAlias":"num_sub_contracts","column":"total_sub_contracts","sortSourceColumn":"total_sub_contracts"},

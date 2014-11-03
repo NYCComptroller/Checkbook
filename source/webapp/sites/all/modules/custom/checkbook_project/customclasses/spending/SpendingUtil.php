@@ -687,6 +687,23 @@ class SpendingUtil{
     }
 
     /**
+     * Returns true/false if M/WBE Category should be a link
+     *
+     * @param $node
+     * @param $row
+     * @return string
+     */
+    static function showMWBECategoryLink($node,$row){
+        $dtsmnid = _getRequestParamValue("dtsmnid");
+        $smnid = _getRequestParamValue("smnid");
+
+        $showLink = !RequestUtil::isNewWindow() &&
+            MappingUtil::isMWBECertified(array($row['minority_type_id'])) &&
+            $dtsmnid != 763 && $smnid != 763 && $dtsmnid != 747 && $smnid != 747;
+        return $showLink;
+    }
+
+    /**
      * Returns M/WBE Category Link Url for the advanced search page
      * @param $node
      * @param $row
