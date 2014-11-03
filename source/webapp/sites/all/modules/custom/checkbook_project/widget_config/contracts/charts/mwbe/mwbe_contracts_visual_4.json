@@ -66,9 +66,11 @@
 			revised_maximum_amount maximum_contract_amount,
 			a1.document_agency_name agency_name,
 			fms_contract_number contract_number,
+			contract_number pending_contract_number,
 			vendor_legal_name legal_name,
 			document_code,
-			original_master_agreement_id original_agreement_id				
+			original_master_agreement_id original_agreement_id,	
+			version_number			
 		from {pending_contracts} a1     
     	join {vendor} v on v.vendor_id =  a1.vendor_id
     	join {ref_agency} ra on ra.agency_id =  a1.document_agency_id
@@ -108,13 +110,23 @@
 	 						'Prime Vendor: ' . $row['legal_name'] .  '<br/>' .
 	 						'Contracting Agency: ' . $row['agency_name'] .  '<br/>' 
 	 						; 
-	 						
-			$link_url = strstr($_GET['q'],'\/',true) . _checkbook_project_get_url_param_string('status')  .  _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() .
+	 			
+	 		if(preg_match('/pending/',$_GET['q'])){
+	 		
+	 			$link_url = _pending_contracts_link_contract_details($row['pending_contract_number'], $row['original_agreement_id'], $row['document_code'], 
+	 							$row['contract_number'] , $row['version_number'], 'bar');
+	 		
+	 			
+	 			//$link_url = strstr($_GET['q'],'\/',true) . _checkbook_project_get_url_param_string('status')  .  _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() .
+				//				 '?expandBottomContURL=/minipanels/pending_contract_transactions/contract/' .  $row['pending_contract_number'] . '/version/' . $row['version_number'];
+	 		}else{	 						
+				$link_url = strstr($_GET['q'],'\/',true) . _checkbook_project_get_url_param_string('status')  .  _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() .
 								 '?expandBottomContURL=/panel_html/contract_transactions'
                         . ( in_array($row['document_code'], array('MMA1','MA1')) ? '/contract_details' : '' )
                         . ( in_array($row['document_code'], array('MMA1','MA1')) ? '/magid/' : '/agid/' )
                         .  $row['original_agreement_id'] . '/doctype/' . $row['document_code']
-                        . _checkbook_append_url_params()	 ;						
+                        . _checkbook_append_url_params()	 ;
+            }						
 	 		$series_new[$index]->url = $link_url; 
 			$series_new[$index]->y = (float)$row['maximum_contract_amount'];
 			$series_new[$index]->tooltip_label = $tooltip_label;
