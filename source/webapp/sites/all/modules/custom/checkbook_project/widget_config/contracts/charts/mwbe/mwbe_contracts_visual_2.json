@@ -116,7 +116,9 @@
 	
 	foreach($categories as $category){
 		$series_current[] = $series_current_temp[$category];
-		$series_previous[] = $series_previous_temp[$category] ; 
+		if(_getRequestParamValue('year') > 111){
+			$series_previous[] = $series_previous_temp[$category] ;
+		} 
 	}
 	if(_getRequestParamValue('yeartype') == 'C'){
 				 $year_display = 'CY ';
@@ -131,7 +133,6 @@
 		$index +=1;
 	}
 	
-
 
 	if(count($series_previous) > 0){
 		$prev_series_obj = new stdClass();
