@@ -100,12 +100,13 @@ function addPaddingToDataCells(table){
 //hover show/hide list for mwbe menu item
 Drupal.behaviors.hoveOverMWBE = {
     attach: function(context, settings){
-	        $(".top-navigation-right td.mwbe").hover(function(){
-	            $(this).addClass("hover");
-	            $(this).find('.main-nav-drop-down').css('display', 'block');
-            }, function(){
-                $(this).removeClass("hover");
-                $(this).find('.main-nav-drop-down').css('display', 'none');
+	        $(".drop-down-menu-triangle").hover(function(){
+	            $(this).closest(".mwbe").addClass("hover");
+	            $(this).closest(".mwbe").find('.main-nav-drop-down').css('display', 'block');
+	
+	        }, function(){
+                $(this).closest(".mwbe").removeClass("hover");
+                $(this).closest(".mwbe").find('.main-nav-drop-down').css('display', 'none');
         });
     }
 }
