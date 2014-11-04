@@ -140,10 +140,10 @@ $url .= _checkbook_project_get_url_param_string('dashboard');
 "aoColumns": [
 { "bSortable": false,"sClass":"text","sWidth":"405px" },
 { "bSortable": false, "sWidth":"150px", "sClass":"text pad-left" },
-{"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"90px"},
-{"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"214px"},
-{"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"214px"},
-{"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"214px"},
+{"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"135px"},
+{"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"150px"},
+{"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"150px"},
+{"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"150px"},
 { "bSortable": false,"sWidth":"15px" }
 ] ,
 "bServerSide": true,
