@@ -607,6 +607,8 @@ body.page-smart-search #filter-header{margin-top:5px;}
 }
 .top-navigation-right .mwbe .main-nav-drop-down{
     position:relative;
+    margin-left: -102px;
+    margin-top: 15px;
 }
 
 .top-navigation-right .mwbe .main-nav-drop-down ul{
@@ -767,7 +769,7 @@ table.expense td.subvendors.active .expense-container > a {
 table.expense td.mwbe .expense-container{
     position: relative;
 }
-table.expense td.mwbe .expense-container > a .drop-down-menu-triangle{
+table.expense td.mwbe .expense-container .drop-down-menu-triangle{
     background: transparent url("../images/arrow-gray_nofill.png") no-repeat;
     width: 23px;
     height: 20px;
@@ -785,7 +787,7 @@ table.expense td.mwbe .expense-container > a .top-navigation-amount{
 table.expense td.mwbe.subvendors .expense-container > a .top-navigation-amount{
     width:75px;
 }
-table.expense td.mwbe .expense-container > a:hover .drop-down-menu-triangle{
+table.expense td.mwbe .expense-container .drop-down-menu-triangle:hover{
     background: url("../images/arrow-gray.png") no-repeat;
 }
 
