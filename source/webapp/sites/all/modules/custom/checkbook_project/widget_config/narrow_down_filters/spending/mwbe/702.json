@@ -18,6 +18,9 @@
         if(function_exists('_checkbook_project_adjust_mwbe_spending_parameter_filters')){
             $parameters = _checkbook_project_adjust_mwbe_spending_parameter_filters($node, $parameters);
         }
+        if(function_exists('_checkbook_project_adjust_date_spending_parameter_filters')){
+            $parameters = _checkbook_project_adjust_date_spending_parameter_filters($node, $parameters);
+        }
         checkbook_faceted_search_adjust_param($node);
         if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
             $parameters = _checkbook_project_adjust_spending_parameter_filters($node, $parameters);

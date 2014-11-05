@@ -15,20 +15,9 @@
     "enableExpand":true,
     "disableViewAll":true,
     "adjustParameters":"
-
-        $yearType = $parameters['year_type'][0];
-        $year = $parameters['year_id'][0];
-
-        if(isset($yearType)){
-            if($yearType == 'B')
-                $parameters['check_eft_issued_nyc_year_id'] = $year;
-            else if($yearType == 'C')
-                $parameters['calendar_fiscal_year_id'] = $year;
+        if(function_exists('_checkbook_project_adjust_date_spending_parameter_filters')){
+            $parameters = _checkbook_project_adjust_date_spending_parameter_filters($node, $parameters);
         }
-
-        unset($parameters['year_type']);
-        unset($parameters['year_id']);
-
         return $parameters;
     ",
     "header":"

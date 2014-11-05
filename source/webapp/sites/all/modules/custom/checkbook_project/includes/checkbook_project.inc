@@ -671,7 +671,6 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
 }
 
 
-
 function _checkbook_project_adjust_spending_parameter_filters(&$node, &$parameters){
     $cat = $parameters['spending_category_id'];
     if(isset($parameters['ctx.ctx.vendor_id']) || isset($parameters['ctx.ctx.document_agency_id']) || isset($parameters['ctx.ctx.award_method_id']) || isset($parameters['ctx.ctx.award_size_id']) || isset($parameters['ctx.ctx.industry_type_id'])){
@@ -691,6 +690,30 @@ function _checkbook_project_adjust_spending_parameter_filters(&$node, &$paramete
         $parameters['agreement_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
         $parameters['contract_number'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
     }
+    return $parameters;
+}
+
+/**
+ * Handle calendar/fiscal year parameters in centralized function for spending
+ *
+ * @param $node
+ * @param $parameters
+ * @return mixed
+ */
+function _checkbook_project_adjust_date_spending_parameter_filters(&$node, &$parameters){
+    $yearType = $parameters['year_type'][0];
+    $year = $parameters['year_id'][0];
+
+    if(isset($yearType)){
+        if($yearType == 'B')
+            $parameters['check_eft_issued_nyc_year_id'] = $year;
+        else if($yearType == 'C')
+            $parameters['calendar_fiscal_year_id'] = $year;
+    }
+
+    unset($parameters['year_type']);
+    unset($parameters['year_id']);
+
     return $parameters;
 }
 
