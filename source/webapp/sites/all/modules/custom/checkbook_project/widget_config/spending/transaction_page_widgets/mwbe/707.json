@@ -56,7 +56,15 @@
     "derivedColumns": {
         "is_sub_vendor": {
             "type":"expression2",
-            "expression":"(preg_match('/S/', $row[disb_vendor_type])) ? 'Yes' : 'No'"
+            "expression":"'No'"
+        },
+        "associated_prime_vendor_name":{
+            "type": "expression2",
+            "expression":"'N/A'"
+        },
+        "associated_prime_vendor_name_export":{
+            "type": "expression2",
+            "expression":"'N/A'"
         },
         "agency_name_formatted":{
             "type":"expression2",
@@ -124,6 +132,7 @@
         {"labelAlias":"payee_name","column":"payee_name_link","sortSourceColumn":"disb_vendor_name"},
         {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"disb_vendor_type","exportColumn":"is_sub_vendor"},
         {"label":"","column":"","export":false},
+        {"labelAlias":"associated_prime_vendor","column":"associated_prime_vendor_name","sortSourceColumn":"disb_vendor_type","exportColumn":"associated_prime_vendor_name_export"},
         {"labelAlias":"issue_date","column":"disb_check_eft_issued_date"},
         {"labelAlias":"agency_name","column":"agency_name_link","sortSourceColumn":"disb_agency_name"},
         {"labelAlias":"dept_name","column":"disb_department_short_name"},
@@ -199,6 +208,7 @@
             {"sClass":"text","sWidth":"190px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"90px","bSortable": false,"asSorting":["asc","desc"]},
             {"bSortable":false,"sWidth":"50px"},
+            {"sClass":"text","sWidth":"170px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"90px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"200px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"90px","asSorting":["asc","desc"]},
@@ -213,7 +223,7 @@
             {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]}
         ],
-        "aaSorting":[[7,"desc"]],
+        "aaSorting":[[8,"desc"]],
         "sScrollX":"100%",
         "bScrollCollapse": false,
         "fnInitComplete":"##function () { new FixedColumns( oTable, {
