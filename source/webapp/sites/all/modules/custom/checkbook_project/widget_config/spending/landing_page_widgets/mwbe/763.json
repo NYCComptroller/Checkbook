@@ -71,7 +71,7 @@
             },
             "sub_vendor_name_formatted": {
                 "type":"expression2",
-                "expression":"_get_tooltip_markup($row['sub_vendor_sub_vendor_legal_name'],36)"
+                "expression":"_get_tooltip_markup($row['sub_vendor_sub_vendor_legal_name'],50)"
             },
             "sub_vendor_name_link": {
                 "type":"expression2",
@@ -80,18 +80,6 @@
             "sub_vendor_name_link2": {
                 "type":"expression2",
                 "expression":"($row[sub_vendor_sub_vendor] == null )?$row['sub_vendor_sub_vendor_legal_name']:$row[sub_vendor_name_link]"
-            },
-            "prime_vendor_name_formatted": {
-                "type":"expression2",
-                "expression":"_get_tooltip_markup($row['prime_vendor_prime_vendor_legal_name'],36)"
-            },
-            "prime_vendor_name_link": {
-                "type":"expression2",
-                "expression":"'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row[prime_vendor_name_formatted] . '</a>'"
-            },
-            "prime_vendor_name_link2": {
-                "type":"expression2",
-                "expression":"($row[prime_vendor_prime_vendor] == null )?$row['prime_vendor_prime_vendor_legal_name']:$row[prime_vendor_name_link]"
             },
             "ytd_spending_sub_vendors_link":{
                 "type":"expression2",
@@ -135,13 +123,13 @@
     ],
     "dataTableOptions":{
         "aoColumns": [
-            {"sClass":"text","sWidth":"170px","bSortable":false},
+            {"sClass":"text","sWidth":"190px","bSortable":false},
             {"sClass":"text pad-left","sWidth":"100px","bSortable":false},
-            {"sClass":"number","sWidth":"100px","bSortable":true,"asSorting":["desc","asc"]},
+            {"sClass":"number","sWidth":"70px","bSortable":true,"asSorting":["desc","asc"]},
             {"sClass":"number","sWidth":"70px","bSortable":true,"asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"70px","bSortable":true,"asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"70px","bSortable":true,"asSorting":["asc","desc"]},
-            {"sWidth":"15px","bSortable":false}
+            {"sWidth":"5px","bSortable":false}
         ],
         "bServerSide": true,
         "bFilter": false,
