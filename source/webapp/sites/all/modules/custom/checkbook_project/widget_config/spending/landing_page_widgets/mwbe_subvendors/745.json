@@ -76,7 +76,7 @@
             },
             "prime_vendor_name_formatted": {
                 "type":"expression2",
-                "expression":"_get_tooltip_markup($row['legal_name@checkbook:prime_vendor'],36)"
+                "expression":"_get_tooltip_markup($row['legal_name@checkbook:prime_vendor'],50)"
             },
             "prime_vendor_name_link": {
                 "type":"expression2",
@@ -104,7 +104,7 @@
             {"bSortable": true,"sClass":"text","sWidth":"100px","asSorting": ["asc","desc"]},
             {"bSortable": false,"sClass":"text pad-left","sWidth":"280px"},
             {"bSortable": false,"sClass":"text pad-left","sWidth":"280px"},
-            {"sClass":"number","sWidth":"100px","asSorting": [ "desc","asc" ]},
+            {"sClass":"number","sWidth":"50px","asSorting": [ "desc","asc" ]},
             {"bSortable": false,"sWidth":"15px" }
         ],
         "bServerSide": true,
