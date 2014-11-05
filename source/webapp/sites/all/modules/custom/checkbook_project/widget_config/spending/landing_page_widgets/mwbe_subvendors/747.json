@@ -95,8 +95,8 @@
     ],
     "dataTableOptions":{
         "aoColumns": [
-            {"bSortable": false,"sClass":"text"},
-            {"sClass":"text","sWidth":"150px","bSortable": false},
+            {"sClass":"text","sWidth":"240px","bSortable": false},
+            {"sClass":"text","sWidth":"70px","bSortable": false},
             {"sClass":"number","sWidth":"150px","asSorting":["desc","asc"]},
             {"sClass":"number","sWidth":"150px","asSorting":["desc","asc"]},
             {"sClass":"number","sWidth":"150px","asSorting":["desc","asc"]},
