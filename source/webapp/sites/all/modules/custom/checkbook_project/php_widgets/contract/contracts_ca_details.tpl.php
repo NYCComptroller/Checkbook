@@ -50,7 +50,7 @@ $spending_link = "/spending/transactions/agid/" . _getRequestParamValue("agid") 
 <div class="contract-details-heading <?php echo $oge_class ;?>">
   <div class="contract-id">
     <h2 class="contract-title">Contract ID: <span
-      class="contract-number"><?php echo $node->data[0]['contract_number'];?></span></h2><br />
+      class="contract-number"><?php echo $node->data[0]['contract_number'];?></span></h2>
 	<?php
     if ( _getRequestParamValue("datasource") == "checkbook_oge" && !preg_match('/newwindow/',$_GET['q']) && $node->data_source_amounts_differ) {
 			$alt_txt = "This contract agreement has addtional information as a prime vendor. <br><br> Click this icon to view this contract as a prime vendor. ";
