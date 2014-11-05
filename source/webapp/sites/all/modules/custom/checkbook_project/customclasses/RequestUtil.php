@@ -940,6 +940,10 @@ class RequestUtil{
     		if($key == "yeartype" && $value == null) {
     			$value = 'B';
     		}
+    		
+    		if($key == "status" && $value == null) {
+    			$value = 'A';
+    		}
     		$prefix .= ( $value != null) ? "/$key/" . $value:"";
     		
     	}
