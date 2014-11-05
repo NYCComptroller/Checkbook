@@ -57,11 +57,11 @@
         },
         "vendor_name_formatted": {
             "type": "expression2",
-            "expression": "_get_tooltip_markup($row['vendor_vendor_legal_name'],40)"
+            "expression": "_get_tooltip_markup($row['vendor_vendor_legal_name'],50)"
         },
         "vendor_name_link": {
             "type": "expression2",
-            "expression": "'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row[vendor_vendor_legal_name] . '</a>'"
+            "expression": "'<a href=\"' . SpendingUtil::getPrimeVendorNameLinkUrl($node,$row) . '\">' . $row[vendor_name_formatted] . '</a>'"
         } ,
         "vendor_amount_link":{
             "type":"expression2",
@@ -80,7 +80,6 @@
     "table_title":"",
     "table_columns": [
         {"labelAlias": "prime_vendor","column": "vendor_name_link","sortSourceColumn":"vendor.vendor.legal_name"},
-        {"label":"","column":"","export":false},
         {"labelAlias":"mwbe_category","column":"mwbe_category_name_link","sortSourceColumn":"minority_type.minority_type"},
         {"labelAlias": "ytd_spending","column": "vendor_amount_link","header": "false","sortSourceColumn":"check_amount_sum","headerClass":"sixty"},
         {"labelAlias": "percent_spending","column": "percent_spending","header": "false","sortSourceColumn":"check_amount_sum"},
@@ -89,13 +88,12 @@
     ],
     "dataTableOptions":{
         "aoColumns": [
-            {"bSortable": false,"sClass":"text"},
-            {"sWidth":"30px","bSortable":false},
-            {"sClass":"text pad-left","sWidth":"140px","bSortable":false},
+            {"sClass":"text","sWidth":"210px","bSortable": false},
+            {"sClass":"text pad-left","sWidth":"110px","bSortable":false},
+            {"sClass":"number","sWidth":"110px","asSorting":["desc","asc"]},
             {"sClass":"number","sWidth":"140px","asSorting":["desc","asc"]},
             {"sClass":"number","sWidth":"140px","asSorting":["desc","asc"]},
-            {"sClass":"number","sWidth":"140px","asSorting":["desc","asc"]},
-            {"bSortable": false,"sWidth":"15px"}
+            {"bSortable": false,"sWidth":"5px"}
         ] ,
         "bServerSide": true,
         "bFilter": false,
@@ -104,7 +102,7 @@
         "bLengthChange": false,
         "bInfo": false,
         "bAutoWidth": false,
-        "aaSorting": [[ 3, "desc" ]],
+        "aaSorting": [[ 2, "desc" ]],
         "fnServerParams": "##function ( aoData ) {
         reloadExpandCollapseWidget(this,aoData);
         }##",
