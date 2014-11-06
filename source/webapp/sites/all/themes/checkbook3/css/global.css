@@ -795,10 +795,10 @@ table.expense td.mwbe.active .expense-container > a > div,
 table.expense td.subvendors.active .expense-container > a > div{
     background: url("../images/arrow-white_nofill.png") no-repeat 100px 23px;
 }
-table.expense td.mwbe.active .expense-container > a:hover > div,
-table.expense td.subvendors.active .expense-container > a:hover > div{
-    background: url("../images/arrow-white.png") no-repeat 100px 23px;
-} 
+/*table.expense td.mwbe.active .expense-container > a:hover > div,*/
+/*table.expense td.subvendors.active .expense-container > a:hover > div{*/
+    /*background: url("../images/arrow-white.png") no-repeat 100px 23px;*/
+/*} */
 
 td.active div.indicator {
     background: url("../images/carrot.png") no-repeat scroll center 0 transparent;
