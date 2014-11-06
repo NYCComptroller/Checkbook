@@ -391,7 +391,7 @@ sOut += '<td class=\"text no-sort number-left\"  style=\"width:155px\">'+ (row[5
 sOut += '<td class=\"number\"  style=\"width:125px\">'+ (row[6] == null ? '': row[6])+'</td>';
 sOut += '<td class=\"number\"  style=\"width:125px\">'+ (row[7] == null ? '': row[7])+'</td>';
 sOut += '<td class=\"number\"  style=\"width:125px\">'+ (row[8] == null ? '': row[8])+'</td>';
-sOut += '<td class=\"text pad-left\"  style=\"width:220px\">'+ (row[11] == null ? '': row[11])+'</td>';
+sOut += '<td class=\"text pad-left\"  style=\"width:175px\">'+ (row[11] == null ? '': row[11])+'</td>';
 sOut += '<td class=\"text pad-left\"  style=\"width:220px\">'+ (row[12] == null ? '': row[12])+'</td>';
 sOut += '<td class=\"text pad-left\"  style=\"width:300px\">'+ (row[13] == null ? '': row[13])+'</td>';
 sOut += '<td class=\"text\"  style=\"width:230px\">'+ (row[14] == null ? '': row[14])+'</td>';
