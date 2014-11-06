@@ -157,6 +157,10 @@ return $parameters;
 "formatted_associated_vendor": {
 "type": "expression2",
 "expression": "($row['is_prime_or_sub'] == 'P')?'N/A':$row['prime_vendor_name']"
+},
+"associated_sub_vendor": {
+"type": "expression2",
+"expression": "($row['is_prime_or_sub'] == 'P')?'NO':'YES'"
 }
 },
 "table_columns": [
@@ -172,7 +176,7 @@ return $parameters;
 {"label": "Dollar Difference","column": "formatted_dollar_diff","sortSourceColumn":"dollar_difference"},
 {"label": "Percent Difference","column": "formatted_percent_diff","sortSourceColumn":"percent_difference"},
 {"label": "Vendor","column": "vendor_name_link","sortSourceColumn":"vendor_name"},
-{"label": "sub_vendor_name","column": "is_prime_or_sub"},
+{"label": "sub_vendor_name","column": "associated_sub_vendor"},
 {"labelAlias": "associated_prime_vendor","column": "formatted_associated_vendor","sortSourceColumn":"prime_vendor_name"},
 {"label": "Agency","column": "agency_name_link","sortSourceColumn":"agency_name"},
 {"label": "Contract<br/>Type","column":"contract_type_formatted","sortSourceColumn": "agreement_type_name"},
