@@ -24,19 +24,8 @@
 $sub_contract_reference = array();
 $vendor_contract_summary = array();
 $vendor_contract_yearly_summary = array();
+
 foreach ($node->results_contract_history as $contract_row) {
-
-    if (!isset($vendor_contract_summary[$contract_row['legal_name']]['current_amount'])) {
-        $vendor_contract_summary[$contract_row['legal_name']]['current_amount'] += $contract_row['maximum_contract_amount'];
-    }
-
-    if (!isset($vendor_contract_summary[$contract_row['legal_name']]['original_amount'])) {
-        $vendor_contract_summary[$contract_row['legal_name']]['original_amount'] += $contract_row['original_contract_amount'];
-    }
-
-    if (!isset($vendor_contract_summary[$contract_row['legal_name']]['minority_type_id'])) {
-        $vendor_contract_summary[$contract_row['legal_name']]['minority_type_id'] = $contract_row['minority_type_id'];
-    }
 
 //    if (!isset($vendor_contract_yearly_summary[$contract_row['legal_name']][$contract_row['source_updated_fiscal_year']]['current_amount'])) {
 //        $vendor_contract_yearly_summary[$contract_row['legal_name']][$contract_row['source_updated_fiscal_year']]['current_amount'] = $contract_row['maximum_contract_amount'];
@@ -44,7 +33,6 @@ foreach ($node->results_contract_history as $contract_row) {
 //    if (!isset($vendor_contract_yearly_summary[$contract_row['legal_name']][$contract_row['source_updated_fiscal_year']]['original_amount'])) {
 //        $vendor_contract_yearly_summary[$contract_row['legal_name']][$contract_row['source_updated_fiscal_year']]['original_amount'] = $contract_row['original_contract_amount'];
 //    }
-//
 //    $vendor_contract_yearly_summary[$contract_row['legal_name']][$contract_row['source_updated_fiscal_year']]['no_of_mods'] += 1;
 
     $sub_contract_reference[$contract_row['legal_name']][$contract_row['sub_contract_id']][] = $contract_row['sub_contract_id'];
@@ -58,24 +46,29 @@ foreach ($node->results_contract_history as $contract_row) {
 
     $vendor_contract_yearly_summary[$contract_row['sub_contract_id']][$contract_row['source_updated_fiscal_year']]['no_of_mods'] += 1;
 
-}
+    $vendor_contract_summary[$contract_row['legal_name']][$contract_row['sub_contract_id']]['original_amount'] = $contract_row['original_contract_amount'];
+    $vendor_contract_summary[$contract_row['legal_name']][$contract_row['sub_contract_id']]['current_amount'] = $contract_row['maximum_contract_amount'];
+    $vendor_contract_summary[$contract_row['legal_name']][$contract_row['sub_contract_id']]['minority_type_id'] = $contract_row['minority_type_id'];
 
+    $vendor_contract_summary[$contract_row['legal_name']]['current_amount'] += $vendor_contract_summary[$contract_row['legal_name']][$contract_row['sub_contract_id']]['current_amount'];
+    $vendor_contract_summary[$contract_row['legal_name']]['original_amount'] +=  $vendor_contract_summary[$contract_row['legal_name']][$contract_row['sub_contract_id']]['original_amount'];
+
+    if (!isset($vendor_contract_summary[$contract_row['legal_name']]['minority_type_id'])) {
+        $vendor_contract_summary[$contract_row['legal_name']]['minority_type_id'] = $contract_row['minority_type_id'];
+    }
+
+}
 
 $vendor_spending_yearly_summary = array();
 foreach ($node->results_spending as $spending_row) {
-
     $vendor_spending_yearly_summary[$spending_row['vendor_name']][$spending_row['sub_contract_id']][] = $spending_row['sub_contract_id'];
 
 //    $vendor_spending_yearly_summary[$spending_row['vendor_name']][$spending_row['fiscal_year']]['no_of_trans'] += 1;
 //    $vendor_spending_yearly_summary[$spending_row['vendor_name']][$spending_row['fiscal_year']]['amount_spent'] += $spending_row['check_amount'];
 
     $vendor_contract_summary[$spending_row['vendor_name']]['check_amount'] += $spending_row['check_amount'];
-
-
     $vendor_spending_yearly_summary[$spending_row['sub_contract_id']][$spending_row['fiscal_year']]['no_of_trans'] += 1;
     $vendor_spending_yearly_summary[$spending_row['sub_contract_id']][$spending_row['fiscal_year']]['amount_spent'] += $spending_row['check_amount'];
-
-    //$vendor_contract_summary[$spending_row['vendor_name']]['check_amount'] += $spending_row['check_amount'];
 
 }
 
@@ -131,13 +124,16 @@ $index_spending = 0;
 
 foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
 
+    $original_amount = $vendor_summary['original_amount'];
+    $current_amount = $vendor_summary['current_amount'];
+
     $open = $index_spending == 0 ? '' : 'open';
     //Main table columns
     $tbl_spending['body']['rows'][$index_spending]['columns'] = array(
         array('value' => "<a class='showHide " . $open . " expandTwo' ></a>" . $vendor, 'type' => 'text'),
         array('value' => MappingUtil::getMinorityCategoryById($vendor_summary['minority_type_id']), 'type' => 'text'),
-        array('value' => custom_number_formatter_format($vendor_summary['current_amount'], 2, '$'), 'type' => 'number'),
-        array('value' => custom_number_formatter_format($vendor_summary['original_amount'], 2, '$'), 'type' => 'number'),
+        array('value' => custom_number_formatter_format($current_amount, 2, '$'), 'type' => 'number'),
+        array('value' => custom_number_formatter_format($original_amount, 2, '$'), 'type' => 'number'),
         array('value' => custom_number_formatter_format($vendor_summary['check_amount'], 2, '$'), 'type' => 'number')
     );
 
@@ -255,24 +251,20 @@ foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
                     );
                     $index_spending_transaction_inner++;
                 }
-
             }
             $index_spending_transaction++;
             $tbl_spending_transaction['body']['rows'][$index_spending_transaction]['inner_table'] = $tbl_spending_transaction_inner;
             $index_spending_transaction++;
         }
-
     }
         $index_sub_contract_reference++;
         $tbl_subcontract_reference['body']['rows'][$index_sub_contract_reference]['child_tables'] = array($tbl_contract_history, $tbl_spending_transaction);
         $index_sub_contract_reference++;
-
     }
 
     $index_spending++;
     $tbl_spending['body']['rows'][$index_spending]['child_tables'] = array($tbl_subcontract_reference);
     $index_spending++;
-
 }
 $html = "<div class='contracts-spending-bottom'>" . WidgetUtil::generateTable($tbl_spending) . "</div>" ;
 echo $html;
