@@ -155,7 +155,7 @@
 
     $year = $parameters['disb_fiscal_year_id'];
     if(isset($year)) {
-        $parameters['disb_fiscal_year_id'] = $year;
+        $parameters['fiscal_year_id'] = $year;
     }
 
     if(isset($parameters['disb_vendor_type'])){
