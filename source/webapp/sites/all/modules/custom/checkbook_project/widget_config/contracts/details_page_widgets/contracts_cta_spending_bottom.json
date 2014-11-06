@@ -24,11 +24,14 @@ rd1.date start_date,
 rd2.date end_date,
 sd.description,
 sd.original_contract_amount,
-sd.maximum_contract_amount
+sd.maximum_contract_amount,
+(case when mnrt.minority_type_id is null then 7 else mnrt.minority_type_id end) minority_type_id
 from subcontract_details sd
 join ref_date rd1 on rd1.date_id = effective_begin_date_id
 join ref_date rd2 on rd2.date_id = effective_end_date_id
 join subvendor_history sh on sh.vendor_history_id = sd.vendor_history_id
+left join (SELECT a.vendor_id, b.minority_type_id, b.minority_type_name
+FROM (select vendor_id, max(vendor_history_id) as vendor_history_id from subvendor_min_bus_type group by 1) a JOIN subvendor_min_bus_type b ON a.vendor_history_id = b.vendor_history_id) mnrt on sh.vendor_id = mnrt.vendor_id
 where sd.contract_number=    \\''.$contract_id.'\\'
 order by sh.vendor_id, sd.source_updated_fiscal_year desc';
 

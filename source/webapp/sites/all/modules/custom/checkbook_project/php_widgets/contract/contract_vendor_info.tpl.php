@@ -94,7 +94,7 @@ else{
     }
 }
 $contract_number = $node->data[0]['contract_number'];
-$querySubVendorCount = "SELECT DISTINCT COUNT(*) AS sub_vendor_count FROM subcontract_details
+$querySubVendorCount = "SELECT  COUNT(DISTINCT vendor_id) AS sub_vendor_count  FROM sub_agreement_snapshot
                         WHERE contract_number = '". $contract_number . "'
                         AND latest_flag = 'Y'
                         LIMIT 1";

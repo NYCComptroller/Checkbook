@@ -151,26 +151,35 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
     $current_date = date("c").'Z';
 
     $search_string = _checkbook_smart_search_get_results_query_search_term($search_terms);
-
     $query = "select/?q=". $search_string
         ."&start=". ($page_no*$no_of_results)
         ."&fq=-latest_flag:N"
-        //."&fq=fiscal_year:[2010+TO+"._getYearValueFromID(_getCurrentYearID())."]"
-        //."&sort=domain_ordering+asc,date_ordering+desc"
+        //."&fq=fiscal_year:[2010%20TO%20"._getYearValueFromID(_getCurrentYearID())."]"
+        ."&fq=fiscal_year:[2010%20TO%20*]"
+        ."&sort=domain_ordering+asc,date_ordering+desc"
         ."&wt=php";
+
 
     $search_results = _checkbook_smart_search_solr_results($query);
     // Active Contracts Results
+
     $act_start_date_filter = "start_date:[*%20TO%20".$current_date."]";
     $act_end_date_filter = "end_date:[".$current_date."%20TO%20*]";
+    $effective_end_year = "effective_end_year:[2010%20TO%20*]";
+    $effective_begin_year = "effective_begin_year:[*%20TO%20".currentFiscalYear()."]";
+    $registered_year = "\{!frange%20l=-1%20incl=false\}sub(effective_end_year,fiscal_year)";
     $act_search_string = str_replace('&fq=(contract_status:"pending")','',$search_string);
     $active_contracts_query = "select/?q=" . $act_search_string
-        ."&fq=". $act_start_date_filter
-        ."&fq=". $act_end_date_filter
+        //."&fq=". $act_start_date_filter
+        //."&fq=". $act_end_date_filter
+        ."&fq=".$effective_end_year
+        ."&fq=".$effective_begin_year
+        ."&fq=".$registered_year
         ."&fq=latest_flag:Y"
         ."&fq=contract_status:registered"
-        //."&fq=fiscal_year:[2010+TO+"._getYearValueFromID(_getCurrentYearID())."]"
-        //."&sort=domain_ordering+asc,date_ordering+desc"
+        //."&fq=fiscal_year:[2010%20TO%20"._getYearValueFromID(_getCurrentYearID())."]"
+        ."&fq=fiscal_year:[2010%20TO%20*]"
+        ."&sort=domain_ordering+asc,date_ordering+desc"
         ."&wt=php";
 
     $active_contracts = _checkbook_smart_search_solr_results($active_contracts_query);
@@ -286,7 +295,9 @@ function _checkbook_smart_search_get_selected_facet_results($search_terms, $face
         $query = "select/?q=". $search_string
             ."&facet=true"
             ."&fq=-latest_flag:N"
-            //."&fq=fiscal_year:[2010+TO+"._getYearValueFromID(_getCurrentYearID())."]"
+            //."&fq=fiscal_year:[2010%20TO%20"._getYearValueFromID(_getCurrentYearID())."]"
+            ."&fq=fiscal_year:[2010%20TO%20*]"
+            ."&sort=domain_ordering+asc,date_ordering+desc"
             ."&facet.sort=count"
             ."&facet.field=".$parameter_mapping[$facet_name]
             ."&wt=php"
@@ -364,7 +375,9 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
         $query = "select/?q=". $search_string
             ."&facet=true"
             ."&fq=-latest_flag:N"
-            //."&fq=fiscal_year:[2010+TO+"._getYearValueFromID(_getCurrentYearID())."]"
+            //."&fq=fiscal_year:[2010%20TO%20"._getYearValueFromID(_getCurrentYearID())."]"
+            ."&fq=fiscal_year:[2010%20TO%20*]"
+            ."&sort=domain_ordering+asc,date_ordering+desc"
             ."&facet.sort=count"
             ."&facet.field=".$parameter_mapping[$facet_name]
             ."&wt=php"
@@ -538,7 +551,9 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
                   .$autocomplete_text //&fq=oge_agency_name_autocomplete:(eco*)
                   ."&facet=true"
                   ."&fq=-latest_flag:N"
-                  //."&fq=fiscal_year:[2010+TO+"._getYearValueFromID(_getCurrentYearID())."]"
+                  //."&fq=fiscal_year:[2010%20TO%20"._getYearValueFromID(_getCurrentYearID())."]"
+                  ."&fq=fiscal_year:[2010%20TO%20*]"
+                  ."&sort=domain_ordering+asc,date_ordering+desc"
                   ."&facet.field=".$parameter_mapping[$facet_name] // oge_agency_name
                   ."&facet.limit=10"
                   ."&wt=php";
@@ -1038,6 +1053,9 @@ function _checkbook_smart_search_get_results_csv($search_terms,$page_no, $no_of_
   $domain = $_REQUEST['domain'];
   $query = "select/?q=". $search_string
                ."&fq=-latest_flag:N"
+               //."&fq=fiscal_year:[2010%20TO%20"._getYearValueFromID(_getCurrentYearID())."]"
+               ."&fq=fiscal_year:[2010%20TO%20*]"
+               ."&sort=domain_ordering+asc,date_ordering+desc"
                ."&start=". ($page_no*$no_of_results)
                ."&wt=csv"
                ."&rows=" . $no_of_results ;
