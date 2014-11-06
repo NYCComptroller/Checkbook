@@ -6,7 +6,7 @@
     "columns":["category.category", "category.category.spending_category_name", "txcount"],
     "orderBy":"-txcount",    
     "autocomplete":false,
-    "filterName":"Expense Type",
+    "filterName":"Spending Category",
     "urlParameterName":"category",
     "autocompleteID":"fSpendCategoryId",
     "maxSelect":5,
