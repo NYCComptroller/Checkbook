@@ -86,7 +86,7 @@ if(strtolower($filter_name) == 'vendor'){
     if(_checkbook_check_isEDCPage()){
         $filter_name = 'Prime Vendor';
     }
-    if(in_array($node->nid, array(681, 658, 690, 669)))
+    if(in_array($node->nid, array(681, 690, 669)))
     {
         $vendornm_facet = true;
     }

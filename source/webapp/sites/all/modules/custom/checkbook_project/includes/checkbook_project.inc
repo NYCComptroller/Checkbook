@@ -670,7 +670,6 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
 
 }
 
-
 function _checkbook_project_adjust_spending_parameter_filters(&$node, &$parameters){
     $cat = $parameters['spending_category_id'];
     if(isset($parameters['ctx.ctx.vendor_id']) || isset($parameters['ctx.ctx.document_agency_id']) || isset($parameters['ctx.ctx.award_method_id']) || isset($parameters['ctx.ctx.award_size_id']) || isset($parameters['ctx.ctx.industry_type_id'])){
@@ -1163,6 +1162,28 @@ function _checkbook_project_get_url_param_string($key,$key_alias =  null){
   return '';
 
  }
+
+/**
+ * Forms the url parameter string for the fvendor param.  This is used to populate
+ * the vendor name facet for pages with sub and prime vendors
+ * @param $key
+ * @param null $key_alias
+ * @return string
+ */
+function _checkbook_project_get_vendor_facet_url_param_string(){
+    $fvendor = null;
+    $vendor = _getRequestParamValue('vendor');
+    $subvendor = _getRequestParamValue('subvendor');
+
+    if($vendor != null && $subvendor != null)
+        $fvendor = $vendor . '~' . $subvendor;
+    else if ($vendor != null)
+        $fvendor = $vendor;
+    else if($subvendor != null)
+        $fvendor = $subvendor;
+    return $fvendor != null ? '/fvendor/'.$fvendor : '';
+
+}
  
  /**
   * return helper function to get master agreement id from chidl agreement id
