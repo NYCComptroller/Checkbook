@@ -139,12 +139,12 @@ return $adjustedParameters;
 ],
 "dataTableOptions":{
 "aoColumns": [
-{ "bSortable": false,"sClass":"text","sWidth":"405px" },
-{ "bSortable": false, "sWidth":"150px", "sClass":"text pad-left" },
-{"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"135px"},
-{"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"150px"},
-{"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"150px"},
-{"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"150px"},
+{ "bSortable": false, "sWidth":"200px", "sClass":"text" },
+{ "bSortable": false, "sWidth":"120px", "sClass":"text pad-left" },
+{"sClass":"number","sWidth":"100px","asSorting": [ "desc","asc"  ] },
+{"sClass":"number","sWidth":"120px" ,"asSorting": [ "desc","asc"  ] },
+{"sClass":"number","sWidth":"120px" ,"asSorting": [ "desc","asc"  ] },
+{"sClass":"number","sWidth":"120px" ,"asSorting": [ "desc" ,"asc" ]},
 { "bSortable": false,"sWidth":"15px" }
 ] ,
 "bServerSide": true,
