@@ -372,10 +372,6 @@
     cUrl = adjustUrlParameter(cUrl,'cindustry',oIndustryType);
     cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
     cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
-
-    var dashboard = getParameterByName('dashboard');
-    cUrl = adjustUrlParameter(cUrl,'dashboard',dashboard);
-
     return cUrl;
     }
 
