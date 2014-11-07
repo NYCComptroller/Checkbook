@@ -561,12 +561,19 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
         case "active_registered":
 
            //adjust dataset
-           $yearTypeCol = $node->widgetConfig->urlParamMap->$yearTypeParam;
-           $reqYearType = $node->widgetConfig->requestParams[$yearTypeCol];
-           $current_url = explode('/',$_SERVER['REQUEST_URI']);
-           if(($current_url[1] == 'contract' && $current_url[2] == 'search' && $current_url[3] == 'transactions') || in_array($node->nid, array(656,679,667,688))){
-               $advanced_search = true;
-           }
+            $yearTypeCol = $node->widgetConfig->urlParamMap->$yearTypeParam;
+            $reqYearType = $node->widgetConfig->requestParams[$yearTypeCol];
+            $current_url = $_SERVER['HTTP_REFERER'];
+            if(preg_match("/contract\/search\/transactions/",$current_url)) {
+                $advanced_search = true;
+            }
+            else {
+                $current_url = $_SERVER['REQUEST_URI'];
+                if(preg_match("/contract\/search\/transactions/",$current_url)) {
+                    $advanced_search = true;
+                }
+            }
+
            if(isset($reqYearType) && ($reqYearType == 'C') && !_checkbook_check_isEDCPage() && ($advanced_search || _getRequestParamValue('mwbe') || _getRequestParamValue('dashboard'))){
                if(isset($node->widgetConfig->dataset)){
                    $node->widgetConfig->dataset = 'checkbook:all_agreement_transactions_cy';

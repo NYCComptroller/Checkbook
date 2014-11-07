@@ -188,6 +188,9 @@ namespace { //global
         	if($year_id == null){
         		$year_id =  _getRequestParamValue('year');
         	}
+            if($year_id == null){
+                $year_id =  _getRequestParamValue('calyear');
+            }
         
         	if($year_type == null){
         		$year_type =  _getRequestParamValue('yeartype');
