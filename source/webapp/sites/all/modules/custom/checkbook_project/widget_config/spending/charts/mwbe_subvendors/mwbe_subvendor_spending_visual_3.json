@@ -49,22 +49,22 @@
 
     $sql = ' select
 		sum(total_spending_amount) total_spending_amount,
-		agency_name,
-		document_id,
+        ra.agency_name,
+        vendor_agid.original_agreement_id as agreement_id,
 		document_code,
-		agreement_id,
+        a1.document_id,
 		legal_name
 	from {aggregateon_subven_spending_contract} a1
     join {vendor} v on v.vendor_id =  a1.prime_vendor_id
+    join {agreement_snapshot} vendor_agid on vendor_agid.contract_number = a1.document_id and vendor_agid.latest_flag = '.\"'Y'\".'
     join {ref_agency} ra on ra.agency_id =  a1.agency_id
    ' . $where_filter . '
-   group by    agency_name,
-		document_id,
+   group by ra.agency_name,
+        vendor_agid.original_agreement_id,
 		document_code,
-		agreement_id,
+        a1.document_id,
 		legal_name
     order by 1 desc limit 10';
-
 
     $node->data  = _checkbook_project_execute_sql($sql);
     
