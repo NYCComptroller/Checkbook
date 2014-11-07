@@ -30,6 +30,13 @@ $tbl['header']['columns'] = array(
     array('value' => WidgetUtil::generateLabelMappingNoDiv("encumbered_amount"), 'type' => 'number'),
     array('value' => WidgetUtil::generateLabelMappingNoDiv("spent_to_date"), 'type' => 'number')
     );
+echo "<h3>Spending by Expense Category</h3>";
+echo '<table>
+      <tr>
+        <th>EXPENSE CATEGORY</th>
+        <th>ENCUMBERED AMOUNT</th>
+        <th>SPENT TO DATE</th>
+      </tr>';
 
 $count = 0;
 if (count($node->data) > 0) {
@@ -47,6 +54,13 @@ if (count($node->data) > 0) {
             $spent_to_date_value = custom_number_formatter_format($row['spending_amount'], 2, '$');
             $spent_to_date = custom_number_formatter_format($row['spending_amount'], 2, '$');
         }
+
+        echo '<tr>
+              <td>'.$row['expenditure_object_name'].'</td>
+              <td>'.custom_number_formatter_format($row['encumbered_amount'], 2, '$').'</td>
+              <td>'.$spent_to_date.'</td>
+              </tr>';
+
         //Main table columns
         $tbl['body']['rows'][$count]['columns'] = array(
             array('value' => $row['expenditure_object_name'], 'type' => 'text'),
