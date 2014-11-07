@@ -260,36 +260,35 @@
     }
 
     $doctype = $node->widgetConfig->requestParams['document_code@checkbook:ref_document_code'];
-    if(isset($doctype)){
-    $doctypes = explode('~', $doctype);
-    if(! (in_array('MA1', $doctypes)  || in_array('MMA1', $doctypes) )){
-    array_shift($node->widgetConfig->table_columns);
-    array_shift($adjustDataTableOptions->aoColumns);
-
-    $adjustDataTableOptions->aaSorting = array(array(5,'desc'));
-    }
+    if(isset($doctype)) {
+        $doctypes = explode('~', $doctype);
+        if(! (in_array('MA1', $doctypes)  || in_array('MMA1', $doctypes) )){
+            array_shift($node->widgetConfig->table_columns);
+            array_shift($adjustDataTableOptions->aoColumns);
+            $adjustDataTableOptions->aaSorting = array(array(5,'desc'));
+        }
     }
 
     $smnid = _getRequestParamValue('smnid');
-    if(  !($smnid == 480 || $smnid == 366) ){
-    foreach($node->widgetConfig->table_columns as $key => $table_column){
-    if($table_column->labelAlias == 'dollar_diff' || $table_column->labelAlias == 'percent_diff'){
-    unset($node->widgetConfig->table_columns[$key]);
-    unset($adjustDataTableOptions->aoColumns[$key]);
-    }
-    }
+    if(  !($smnid == 480 || $smnid == 366) ) {
+        foreach($node->widgetConfig->table_columns as $key => $table_column) {
+            if($table_column->labelAlias == 'dollar_diff' || $table_column->labelAlias == 'percent_diff') {
+                unset($node->widgetConfig->table_columns[$key]);
+                unset($adjustDataTableOptions->aoColumns[$key]);
+            }
+        }
     }
     if($smnid == 480 ||  $smnid == 366 ){
-    $adjustDataTableOptions->aaSorting[0][0] = 8;
+        $adjustDataTableOptions->aaSorting[0][0] = 8;
     }
     $node->widgetConfig->table_columns = array_values($node->widgetConfig->table_columns);
     $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoColumns);
 
     if(!preg_match('/MMA/',_getRequestParamValue('doctype') ) and !preg_match('/MA/',_getRequestParamValue('doctype') )){
-    $adjustDataTableOptions->fnInitComplete = '##function () { new FixedColumns( oTable, {
-    \"iLeftColumns\": 1,
-    \"iLeftWidth\": 30
-    } );}##';
+        $adjustDataTableOptions->fnInitComplete = '##function () { new FixedColumns( oTable, {
+            \"iLeftColumns\": 1,
+            \"iLeftWidth\": 210
+        } );}##';
     }
     ",
     "dataTableOptions":{
