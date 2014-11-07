@@ -8,7 +8,6 @@
     ],
     "urlParamMap":{
         "vendortype":"vendor_type",
-        //"vendornm1":"vendor_name",
         "mwbe":"minority_type_id@checkbook:all_contracts_coa_aggregates",
         "doctype":"document_code@checkbook:ref_document_code",
         "contstatus":"status_flag@checkbook:all_contracts_coa_aggregates",
@@ -127,7 +126,8 @@
             "type": "expression2",
             "expression": "
             '<a href=\"/spending/transactions'
-            .  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id@checkbook:all_contracts_coa_aggregates'] .( (_getRequestParamValue(\"dashboard\") != null) ? '/dashboard/'._getRequestParamValue(\"dashboard\") : '' )
+            .  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id@checkbook:all_contracts_coa_aggregates']
+            .  _checkbook_project_get_url_param_string(\"dashboard\") . _checkbook_project_get_url_param_string(\"mwbe\")
             .  ( $row['type_of_year@checkbook:all_contracts_coa_aggregates'] == 'B' ? ('/year/'. $row['fiscal_year_id@checkbook:all_contracts_coa_aggregates'].'/syear/'. $row['fiscal_year_id@checkbook:all_contracts_coa_aggregates']) : ('/calyear/'.$row['fiscal_year_id@checkbook:all_contracts_coa_aggregates']. '/scalyear/'.$row['fiscal_year_id@checkbook:all_contracts_coa_aggregates']) )
             .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['spending_amount@checkbook:all_contracts_coa_aggregates']) . '</a>'
             "
@@ -373,6 +373,8 @@
     cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
     cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
 
+    var dashboard = getParameterByName('dashboard');
+    cUrl = adjustUrlParameter(cUrl,'dashboard',dashboard);
 
     return cUrl;
     }
@@ -385,8 +387,9 @@
     var yeartype = jQuery(oElement).attr('yeartype');
     var contstatus = jQuery(oElement).attr('contstatus');
     var mastercode = jQuery(oElement).attr('mastercode');
+    var mwbe = jQuery(oElement).attr('mwbe');
+    var dashboard = jQuery(oElement).attr('dashboard');
 
-    //fallback for error
     magid = (magid == null || magid.length == 0) ?  '0' : magid;
 
     var sUrl = '/dashboard_platform/data_tables/ajax_data/node/'+ (mastercode == 'MA1' ? '666' : '665') +'/magid/'+magid+'/contstatus/A';
@@ -394,6 +397,8 @@
     sUrl = sUrl + ( (calyear == null || calyear.length == 0) ?  '' : '/calyear/'+calyear);
     sUrl = sUrl + ( (yeartype == null || yeartype.length == 0) ?  '' : '/yeartype/'+yeartype);
     sUrl = sUrl + ( (contstatus == null || contstatus.length == 0) ?  '' : '/contstatus/'+contstatus);
+    sUrl = sUrl + ( (mwbe == null || mwbe.length == 0) ?  '' : '/mwbe/'+mwbe);
+   sUrl = sUrl + ( (dashboard == null || dashboard.length == 0) ?  '' : '/dashboard/'+dashboard);
 
     var smnid = jQuery(oElement).attr('smnid');
 

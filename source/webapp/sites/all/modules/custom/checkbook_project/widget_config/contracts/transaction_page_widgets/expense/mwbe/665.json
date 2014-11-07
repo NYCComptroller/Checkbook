@@ -66,6 +66,7 @@ return $parameters;
 '<a href=\"/spending/transactions'
 .  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['contract_original_agreement_id']
 .  ( $row['type_of_year@checkbook:all_contracts_coa_aggregates'] == 'B' ? ('/year/'. $row['fiscal_year_id@checkbook:all_contracts_coa_aggregates'].'/syear/'. $row['fiscal_year_id@checkbook:all_contracts_coa_aggregates']) : ('/calyear/'.$row['fiscal_year_id@checkbook:all_contracts_coa_aggregates']. '/scalyear/'.$row['fiscal_year_id@checkbook:all_contracts_coa_aggregates']) )
+.  _checkbook_project_get_url_param_string(\"dashboard\") . _checkbook_project_get_url_param_string(\"mwbe\")
 .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['spending_amount@checkbook:all_contracts_coa_aggregates']) . '</a>'
 )
 "
