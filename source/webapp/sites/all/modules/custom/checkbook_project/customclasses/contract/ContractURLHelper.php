@@ -272,6 +272,7 @@ class ContractURLHelper{
     static function prepareExpandLink($row, $node) {
 
         $link = ($row['has_children'] == 'Y') ? '<span id=dtl_expand class="toggler collapsed"  magid="' . ((isset($row['contract_original_agreement_id']))?$row['contract_original_agreement_id'] : $row['original_agreement_id']) . '" '
+            . ( _getRequestParamValue('dashboard') != '' ?  ('dashboard="' . _getRequestParamValue('dashboard') . '" ' ) : '')
             . ( _getRequestParamValue('mwbe') != '' ?  ('mwbe="' . _getRequestParamValue('mwbe') . '" ' ) : '')
             . ( _getRequestParamValue('smnid') != '' ?  ('smnid="' . _getRequestParamValue('smnid') . '" ' ) : '')
             . ( _getRequestParamValue('year') != '' ?  ('year="' . _getRequestParamValue('year') . '" ' ) : '')

@@ -144,7 +144,7 @@ return $node->data;
 .  ( _getRequestParamValue('yeartype') == 'B' ? ('/year/'. _getRequestParamValue('year').'/syear/'. _getRequestParamValue('year')) :
 (_getRequestParamValue('yeartype') == 'C' ? ('/calyear/'. _getRequestParamValue('year').'/scalyear/'. _getRequestParamValue('year')) :
 ('/year/'.$row['ending_year_id']. '/syear/'.$row['ending_year_id']) )
-)
+).  _checkbook_project_get_url_param_string(\"dashboard\") . _checkbook_project_get_url_param_string(\"mwbe\")
 .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['rfed_amount']) . '</a>'
 "
 },
