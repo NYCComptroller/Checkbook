@@ -6,7 +6,7 @@
         "mcagency","agencyh","year","yeartype","calyear","mcvendor","expcategory","category","checkamtr","dept",
         "contnum","checkamt","chkdate","fundcls","bdgcodenm","captprj","expdoc","vendornm","deptnm","expcategorynm","syear",
         "scalyear","magid","agid","cvendor","cagency","awdmethod","status","csize","cindustry","expcategorycode","month",
-        "industry","mwbe","vendor","svendor","subvendor","vendortype"
+        "industry","mwbe","vendor","svendor","subvendor","vendortype","fvendor"
     ],
     "urlParamMap":{
         "contnum_exact":"reference_document_number",
@@ -31,7 +31,7 @@
         "cindustry":"industry_type_id@checkbook:contracts_spending_transactions",
         "expcategorycode":"expenditure_object_code", "month":"check_eft_issued_cal_month_id",
         "mwbe":"minority_type_id","industry":"industry_type_id",
-        "vendor":"prime_vendor_id","svendor":"prime_vendor_id","subvendor":"vendor_id","vendortype":"vendor_type"
+        "vendor":"prime_vendor_id","svendor":"prime_vendor_id","subvendor":"vendor_id","vendortype":"vendor_type","fvendor":"vendor_id"
     },
     "paramTypeConfig":{
         "vendornm_exact":"eqignorecase","expdoc_exact":"eqignorecase","captprj_exact":"eqignorecase",
@@ -240,7 +240,6 @@
             agencyIds = document.getElementById('fHideAgencyId').value;
         }
         var oVendorIds = getNamedFilterCriteria('fvendorId');
-        var oVendorNms = getNamedFilterCriteria('fvendorNm');
         var oCategoryIds = getNamedFilterCriteria('fCat' + 'egoryId');
         var oSpendCategoryIds = getNamedFilterCriteria('fSpendCategoryId');
         var oCheckAmount = getNamedFilterCriteria('fCheckAmount');
@@ -256,8 +255,7 @@
         var dtsmnidNameIndex = jQuery.inArray('dtsmnid', cUrlArray);
 
         cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
-        cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
-        cUrl = adjustUrlParameter(cUrl,'vendornm',oVendorNms);
+        cUrl = adjustUrlParameter(cUrl,'fvendor',oVendorIds);
         cUrl = adjustUrlParameter(cUrl,'expcategory',oCategoryIds);
         cUrl = adjustUrlParameter(cUrl,'category',oSpendCategoryIds );
         cUrl = adjustUrlParameter(cUrl,'checkamtr',oCheckAmount);
