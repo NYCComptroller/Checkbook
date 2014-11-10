@@ -786,6 +786,9 @@ table.expense td.mwbe .expense-container > a .top-navigation-amount{
 table.expense td.mwbe.subvendors .expense-container > a .top-navigation-amount{
     width:75px;
 }
+table.expense td.mwbe.subvendors.active .expense-container > a .top-navigation-amount{
+    width: 121px;
+}
 table.expense td.mwbe .expense-container .drop-down-menu-triangle:hover{
     background: url("../images/arrow-gray.png") no-repeat;
 }
