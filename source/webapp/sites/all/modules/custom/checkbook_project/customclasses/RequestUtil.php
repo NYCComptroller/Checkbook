@@ -543,7 +543,7 @@ class RequestUtil{
         }
         switch($domain){
           case "contracts":            
-              $path ="contracts_landing/status/A/yeartype/B/year/".$year._checkbook_append_url_params();
+              $path ="contracts_landing/status/A/yeartype/B/year/".$year._checkbook_append_url_params(null, array(),true);
               if(_getRequestParamValue("agency") > 0){
                 $path =  $path . "/agency/" . _getRequestParamValue("agency")  ;
               }else if(_checkbook_check_isEDCPage()){
@@ -555,7 +555,7 @@ class RequestUtil{
               }
               break;
           case "spending":
-              $path ="spending_landing/yeartype/B/year/".$year._checkbook_append_url_params();
+              $path ="spending_landing/yeartype/B/year/".$year._checkbook_append_url_params(null, array(),true);
               if(_getRequestParamValue("agency") > 0){
                 $path =  $path . "/agency/" . _getRequestParamValue("agency")  ;
               }else if(_checkbook_check_isEDCPage()){
