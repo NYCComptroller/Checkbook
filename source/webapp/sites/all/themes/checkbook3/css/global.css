@@ -2091,7 +2091,12 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
 .oge-assoc-contracts-list .contractLinkNote {
     position:relative;
 }
-
+.page-contracts-landing #assoc_contracts_list_wrapper .dollar-amounts div{
+    margin: 0;
+}
+.page-contracts-landing #assoc_contracts_list_wrapper .contract-title{
+    margin: 10px 0 -30px 0;
+}
 .contract-details-heading .contract-id .master-contract-link{
     margin:10px 0px;
 }
@@ -2821,3 +2826,16 @@ body.page-mwbe-agency-grading .dataTables_wrapper{
 	text-transform: none;
 }
 
+.spending_by_expense_category th,
+.spending_by_expense_category td{
+    padding:8px 0px 8px 15px;
+}
+.spending_by_expense_category th{
+    display: inline-block;
+    text-align: center !important;
+}
+.contracts-spending-bottom h3{
+    display: block;
+    float: left;
+    margin: 33px 0 0 0;
+}
