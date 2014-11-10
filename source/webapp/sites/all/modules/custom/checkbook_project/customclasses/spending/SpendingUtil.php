@@ -443,8 +443,10 @@ class SpendingUtil{
      * @return string
      */
     static function getVendorAmountLinkUrl($node, $row){
+        $vendor = isset($row["vendor_vendor"]) ? $row["vendor_vendor"] : $row["prime_vendor_prime_vendor"];
         $override_params = array(
-            'vendor'=>isset($row["vendor_vendor"]) ? $row["vendor_vendor"] : $row["prime_vendor_prime_vendor"],
+            'vendor'=>$vendor,
+            "fvendor"=>$vendor,
             'smnid'=>$node->nid
         );
         return '/' . self::getSpendingTransactionPageUrl($override_params);
@@ -465,6 +467,29 @@ class SpendingUtil{
         );
         return '/' . self::getSpendingTransactionPageUrl($override_params);
     }
+
+//    /**
+//     * Given the prime vendor, gets a ~ separated list of sub vendors
+//     * @param $prime_vendor_id
+//     * @return array|null|string
+//     */
+//    static function getSubVendorIdsByPrime($prime_vendor_id){
+//
+//        $year_id = _getRequestParamValue('year');
+//        $type_of_year = _getRequestParamValue('yeartype');
+//
+//
+//        $parameters = array('prime_vendor_id'=>$prime_vendor_id,'type_of_year'=>$type_of_year,'year_id'=>$year_id);
+//        $results = _checkbook_project_querydataset( "checkbook:contracts_subven_vendor_spending",array('vendor_id'),$parameters);
+//
+//        foreach($results as $sub_vendor) {
+//            $sub_vendors[] = $sub_vendor['vendor_id'];
+//        }
+//        $sub_vendors = array_unique($sub_vendors);
+//        $sub_vendors = is_array($sub_vendors) ? implode("~", $sub_vendors) : null;
+//        return $sub_vendors;
+//
+//    }
 
     /**
      * Returns Department Amount Link Url based on values from current path & data row
