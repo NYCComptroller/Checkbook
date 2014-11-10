@@ -20,6 +20,7 @@
     "columns": [
         "sub_contract_purpose.sub_contract_purpose",
         "document_id.document_id",
+        "agreement_id.agreement_id",
         "sub_vendor.sub_vendor",
         "sub_vendor.sub_vendor.legal_name",
         "prime_vendor.prime_vendor",
