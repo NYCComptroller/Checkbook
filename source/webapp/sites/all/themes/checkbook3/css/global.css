@@ -2765,7 +2765,9 @@ body.page-mwbe-agency-grading .checkbook-grading-left .dataTable td div {
 body.page-mwbe-agency-grading .panel-panel.grid-3{
     margin-top: 48px;
 }
-
+body.page-mwbe-agency-grading .panel-panel.grid-3 .right-side-bar-summary-items div{
+    margin-bottom: 20px;
+}
 body.page-mwbe-agency-grading .panel-panel.grid-3{
     border: 1px solid #CACACA;
     padding-bottom: 10px;
