@@ -552,9 +552,7 @@ class SpendingUtil{
      * @return string
      */
     static function getSubContractAmountLinkUrl($node, $row){
-        $agreement_id = isset($row["sub_contract_number_sub_contract_number_original_agreement_id"])
-            ? $row["sub_contract_number_sub_contract_number_original_agreement_id"]
-            : $row["original_agreement_id@checkbook:sub_vendor_agid"];
+        $agreement_id = $row["agreement_id_agreement_id"];
         $document_id = isset($row["document_id_document_id"])
             ? $row["document_id_document_id"]
             : $row["reference_document_code"];
