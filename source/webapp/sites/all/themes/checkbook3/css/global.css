@@ -2762,7 +2762,9 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
 body.page-mwbe-agency-grading .checkbook-grading-left .dataTable td div {
     margin-top: 5px;
 }
-
+body.page-mwbe-agency-grading .panel-panel .grid-3{
+    margin-top: 48px;
+}
 
 body.page-mwbe-agency-grading .panel-panel.grid-3{
     border: 1px solid #CACACA;
@@ -2825,10 +2827,16 @@ body.page-mwbe-agency-grading .dataTables_wrapper{
 	font-size: 18px;
 	text-transform: none;
 }
-
-.spending_by_expense_category th,
-.spending_by_expense_category td{
-    padding:8px 0px 8px 15px;
+.spending_by_expense_category th{
+    widows: 33%;
+}
+.spending_by_expense_category th span,
+.spending_by_expense_category td span{
+    margin:8px 0px 8px 15px;
+}
+.spending_by_expense_category th span{
+    width:86px;
+    display: block;
 }
 .spending_by_expense_category th{
     display: inline-block;
