@@ -2762,7 +2762,7 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
 body.page-mwbe-agency-grading .checkbook-grading-left .dataTable td div {
     margin-top: 5px;
 }
-body.page-mwbe-agency-grading .panel-panel .grid-3{
+body.page-mwbe-agency-grading .panel-panel.grid-3{
     margin-top: 48px;
 }
 
