@@ -31,7 +31,7 @@ $tbl['header']['columns'] = array(
     array('value' => WidgetUtil::generateLabelMappingNoDiv("spent_to_date"), 'type' => 'number')
     );
 echo "<h3>Spending by Expense Category</h3>";
-echo '<table>
+echo '<table class="spending_by_expense_category">
       <tr>
         <th>EXPENSE CATEGORY</th>
         <th>ENCUMBERED AMOUNT</th>
