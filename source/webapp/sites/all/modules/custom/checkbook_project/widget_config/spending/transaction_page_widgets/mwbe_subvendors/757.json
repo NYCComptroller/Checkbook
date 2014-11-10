@@ -163,7 +163,7 @@
         {"labelAlias":"contract_purpose","column":"contract_purpose_text","sortSourceColumn":"purpose","exportColumn":"contract_purpose_export"},
         {"labelAlias":"capital_project","column":"reporting_code"},
         {"labelAlias":"spending_category","column":"spending_category_name"},
-        {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name"},
+        {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name_formatted"},
         {"label":"","column":""}
     ],
     "exportColumnSqlOverride":[
