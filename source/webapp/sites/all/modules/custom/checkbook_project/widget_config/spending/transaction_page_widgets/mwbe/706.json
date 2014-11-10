@@ -259,12 +259,11 @@
             agencyIds = document.getElementById('fHideAgencyId').value;
         }
         var oVendorIds = getNamedFilterCriteria('fvendorId');
-        var oCategoryIds = getNamedFilterCriteria('fCat' + 'egoryId');
+        var oExpenseCategoryIds = getNamedFilterCriteria('fCategoryNm');
         var oSpendCategoryIds = getNamedFilterCriteria('fSpendCategoryId');
         var oCheckAmount = getNamedFilterCriteria('fCheckAmount');
         var oDeptIds = getNamedFilterCriteria('fdeptId');
         var oDeptNms = getNamedFilterCriteria('fdeptNm');
-        var oSpendCategoryNms = getNamedFilterCriteria('fCategoryNm');
         var oVendorType = getNamedFilterCriteria('fvendorType');
         var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
 
@@ -275,12 +274,11 @@
 
         cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
         cUrl = adjustUrlParameter(cUrl,'fvendor',oVendorIds);
-        cUrl = adjustUrlParameter(cUrl,'expcategory',oCategoryIds);
+        cUrl = adjustUrlParameter(cUrl,'expcategory',oExpenseCategoryIds);
         cUrl = adjustUrlParameter(cUrl,'category',oSpendCategoryIds );
         cUrl = adjustUrlParameter(cUrl,'checkamtr',oCheckAmount);
         cUrl = adjustUrlParameter(cUrl,'dept',oDeptIds);
         cUrl = adjustUrlParameter(cUrl,'deptnm',oDeptNms);
-        cUrl = adjustUrlParameter(cUrl,'expcategorynm',oSpendCategoryNms);
         cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
         cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
 

@@ -3,16 +3,16 @@
     "parentNid":706,
     "limit":100,
     "startWith":0,
-    "columns":["expobjectname.expobjectname", "txcount"],
+    "columns":["expenditure_object.expenditure_object","expobjectname.expobjectname", "txcount"],
     "orderBy":["-txcount", "expobjectname.expobjectname"],
 	"getTotalDataCount":true,    
 	"facetPager":true,	    
     "filterName":"Expense Category",
-    "urlParameterName":"expcategorynm",
-    "urlParameterNameType":"eqtext",    
+    "urlParameterName":"expcategory",
     "autocompleteParamName":"expcategorynm_auto",    
     "autocompleteID":"fCategoryNm",
-    "autocompleteField":"expenditure_object_name", 
+    "autocompleteField":"expenditure_object_name",
+    "urlParamMap":{"expcategory":"expenditure_object.expenditure_object"},
     "maxSelect":5,
     "adjustParameters":"
         if(function_exists('_checkbook_project_adjust_mwbe_spending_parameter_filters')){
@@ -29,7 +29,7 @@
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
         }
-        $adjustedParameters['expobjectname.expobjectname'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+        $adjustedParameters['expenditure_object.expenditure_object'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
 
         return $adjustedParameters;
     ",
