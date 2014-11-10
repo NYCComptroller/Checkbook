@@ -6,22 +6,22 @@
     "allowRequestParams":["contstatus"],
     "paramTypeConfig":{"vendornm":"like","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","regdate":"range"},
     "defaultParameters":{"latest_flag":"Y"},
-    "preProcessConfiguration":"
-    $node->is_mwbe = _checkbook_check_is_mwbe_page();
-if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:all_agreement_transactions';
-",
-    "dataset": "checkbook:agreement_snapshot",
+    "dataset": "checkbook:all_agreement_transactions",
     "columns": ["total_maximum_contract_amount"],
     "adjustParameters":"
-if(function_exists('_checkbook_project_adjustContractParameterFilters')){
-_checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered_all');
-}
+        if(isset($parameters['vendor_type'])){
+        $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
+        }
+        if(function_exists('_checkbook_project_adjustContractParameterFilters')){
+        _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered_all');
+        }
 
-if(function_exists('_checkbook_project_applyParameterFilters')){
-$adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-return $adjustedParameters;
-}
-return $parameters;
-",
-"template":"active_registered_contract_transaction_total_amount"
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+        $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        return $adjustedParameters;
+        }
+
+        return $parameters;
+    ",
+    "template":"active_registered_contract_transaction_total_amount"
 }
