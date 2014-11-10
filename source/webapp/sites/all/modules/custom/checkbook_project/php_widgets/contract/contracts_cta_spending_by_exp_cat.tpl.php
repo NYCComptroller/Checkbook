@@ -33,9 +33,9 @@ $tbl['header']['columns'] = array(
 echo "<h3>Spending by Expense Category</h3>";
 echo '<table class="spending_by_expense_category">
       <tr>
-        <th>EXPENSE CATEGORY</th>
-        <th>ENCUMBERED AMOUNT</th>
-        <th>SPENT TO DATE</th>
+        <th><span>EXPENSE CATEGORY</span></th>
+        <th><span>ENCUMBERED AMOUNT</span></th>
+        <th><span>SPENT TO DATE</span></th>
       </tr>';
 
 $count = 0;
@@ -56,9 +56,9 @@ if (count($node->data) > 0) {
         }
 
         echo '<tr>
-              <td>'.$row['expenditure_object_name'].'</td>
-              <td>'.custom_number_formatter_format($row['encumbered_amount'], 2, '$').'</td>
-              <td>'.$spent_to_date.'</td>
+              <td><span>'.$row['expenditure_object_name'].'</span></td>
+              <td><span>'.custom_number_formatter_format($row['encumbered_amount'], 2, '$').'</span></td>
+              <td><span>'.$spent_to_date.'</span></td>
               </tr>';
 
         //Main table columns
