@@ -784,7 +784,7 @@ table.expense td.mwbe .expense-container > a .top-navigation-amount{
     margin: 0 auto;
 }
 table.expense td.mwbe.subvendors .expense-container > a .top-navigation-amount{
-    width:75px;
+    width:121px;
 }
 table.expense td.mwbe.subvendors.active .expense-container > a .top-navigation-amount{
     width: 121px;
