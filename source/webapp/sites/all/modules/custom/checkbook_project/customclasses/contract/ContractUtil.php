@@ -184,17 +184,19 @@ namespace { //global
         	if($agency_id == null){
         		$agency_id =  _getRequestParamValue('agency');
         	}
-        
+            if($year_type == null){
+                $year_type =  _getRequestParamValue('yeartype');
+            }
         	if($year_id == null){
         		$year_id =  _getRequestParamValue('year');
         	}
             if($year_id == null){
                 $year_id =  _getRequestParamValue('calyear');
             }
-        
-        	if($year_type == null){
-        		$year_type =  _getRequestParamValue('yeartype');
-        	}
+            if($year_id == null){
+                $year_type = "B";
+                $year_id = _getCurrentYearID();
+            }
 
         	$latest_minority_type_id = null;
             $agency_query = isset($agency_id) ? "agency_id = " . $agency_id : "agency_id IS NULL";
