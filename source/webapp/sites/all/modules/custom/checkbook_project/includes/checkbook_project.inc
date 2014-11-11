@@ -1614,7 +1614,7 @@ function _checkbook_append_url_params($source = null,$overidden_params = array()
                 }
             }
             else {
-            	if(!$top_nav ||  ( isset($mwbe) && _getRequestParamValue('vendor') > 0 )){
+            	if(!$top_nav ||  ( isset($mwbe) && _getRequestParamValue('vendor') > 0 && _getRequestParamValue('dashboard') != "ms" )){
 	                $url = isset($mwbe) ? "/mwbe/".$mwbe : "";
 	               // $url .= isset($svendor) ? "/subvendor/".$svendor : "";
 	                $url .= isset($dashboard) ? "/dashboard/".$dashboard : "";
