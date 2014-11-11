@@ -839,6 +839,19 @@ class RequestUtil{
     	
     	if(self::isContractsSpendingLandingPage()){
     		$url = $_GET['q'];
+    		
+    		if(preg_match('/contract/',$url)){    			
+    			$prefix = 'contracts_landing';
+    			if(preg_match('/status/',$url)){
+    				$url = preg_replace('/\/status\/./','/status/A',$url);
+    			}else{
+    				$prefix .= '/status/A';
+    			}
+    		}else{
+    			$prefix = 'spending_landing';
+    		}
+    		$url = preg_replace('/^[^\/]*/',$prefix,$url);
+    		
     	}else{
     		$url = self::getCurrentDomainURLFromParams();
     	}
