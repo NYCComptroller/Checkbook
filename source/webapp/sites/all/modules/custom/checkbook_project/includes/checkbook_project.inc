@@ -1190,6 +1190,12 @@ function _checkbook_project_get_vendor_facet_url_param_string($node = null){
         case 727:
         case 728:
         case 729:
+        case 781:
+        case 782:
+        case 785:
+        case 786:
+        case 787:
+        case 788:
             if($subvendor != null)
                 $fvendor = $subvendor;
             break;
