@@ -995,7 +995,9 @@ span.grid_export, span.exportSmartSearch {
 .contracts-oge-spending-bottom td div >  .float-clear + .float-clear{
 	margin-top: 20px;
 }
-
+.contracts-oge-spending-bottom h3{
+    clear: both;
+}
 .panel-panel.grid-12 .bottom-nav-container.panel-pane.pane-node,
 .panel-panel.grid-12 .bottom-nav-container.panel-pane.pane-custom,
 .pane-contracts-cta-history,
