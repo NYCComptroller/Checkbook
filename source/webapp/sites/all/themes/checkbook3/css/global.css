@@ -1928,6 +1928,9 @@ table#assoc_contracts_list .assoc_item{
     border:1px solid #cacaca;
     padding: 0px 21px 0px 13px;
 }
+#assoc_contracts_list .dollar-amounts{
+    margin-bottom:0;
+}
 table#assoc_contracts_list .assoc_item .dataTable.outerTable{
     border:1px solid #cacaca;
 }
