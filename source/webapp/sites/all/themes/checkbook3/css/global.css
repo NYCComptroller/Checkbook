@@ -2871,3 +2871,6 @@ body.page-mwbe-agency-grading .dataTables_wrapper{
     float: left;
     margin: 33px 0 0 0;
 }
+.contracts-spending-bottom table{
+    clear: both;
+}
