@@ -1171,23 +1171,29 @@ function _checkbook_project_get_url_param_string($key,$key_alias =  null){
  }
 
 /**
- * Forms the url parameter string for the fvendor param.  This is used to populate
- * the vendor name facet for pages with sub and prime vendors
- * @param $key
- * @param null $key_alias
+ * Forms the url parameter string for the fvendor param.
+ * This is used to populate the vendor name facet for pages with sub and prime vendors
+ *
+ * @param null $node
  * @return string
  */
-function _checkbook_project_get_vendor_facet_url_param_string(){
+function _checkbook_project_get_vendor_facet_url_param_string($node = null){
     $fvendor = null;
     $vendor = _getRequestParamValue('vendor');
     $subvendor = _getRequestParamValue('subvendor');
+    $nid = $node != null ? $node->nid : null;
 
-    if($vendor != null && $subvendor != null)
-        $fvendor = $vendor . '~' . $subvendor;
-    else if ($vendor != null)
-        $fvendor = $vendor;
-    else if($subvendor != null)
-        $fvendor = $subvendor;
+    switch($nid) {
+        case 720:
+            if($subvendor != null)
+                $fvendor = $subvendor;
+            break;
+        default:
+            if($vendor != null)
+                $fvendor = $vendor;
+            break;
+    }
+
     return $fvendor != null ? '/fvendor/'.$fvendor : '';
 
 }
