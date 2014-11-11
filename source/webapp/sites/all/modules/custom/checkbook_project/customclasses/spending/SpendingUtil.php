@@ -499,16 +499,13 @@ class SpendingUtil{
      * @return string
      */
     static function getDepartmentAmountLinkUrl($node, $row){
-        //department_amount_link
-        return '/panel_html/spending_transactions/spending/transactions'
-        . _checkbook_project_get_year_url_param_string(false,false,true)
-        . '/smnid/' . $node->nid
-        . '/agency/' . $row["agency_agency"]
-        . '/dept/' . $row["department_department"]
-        . _checkbook_project_get_url_param_string("vendor")
-        . _checkbook_project_get_url_param_string("category")
-        . _checkbook_project_get_url_param_string("industry")
-        . _checkbook_append_url_params();
+        $override_params = array(
+            'agency'=>$row["agency_agency"],
+            'dept'=>$row["department_department"],
+            "fvendor"=>self::getVendorFacetParameter($node),
+            "smnid"=>$node->nid
+        );
+        return '/' . self::getSpendingTransactionPageUrl($override_params);
     }
 
     /**
