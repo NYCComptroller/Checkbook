@@ -4,6 +4,35 @@ jQuery(document).ready(function ($) {
     } else {
         $("#page").addClass("not-ie");
     }
+
+    //create tool tops for featured dashboard title
+    var featureddashboard = function(){
+        // add processed class to all anchors after ajax
+        $(".featured-dashboard-title a").each(function(){
+            if (!$(this).hasClass('processed')) {
+                $('<div class="toolTip">' + $(this).attr('alt') + '<div class="bottom"></div></div>').insertBefore(this);
+                $(this).addClass('processed');
+            }
+        });
+        $('.featured-dashboard-title').hover(
+            function(){
+                $(this).find('.toolTip').css('display', 'block')},
+            function(){
+                $(this).find('.toolTip').css('display', 'none');
+            }
+        );
+    }
+
+
+    //check if ajax is being fired on the page or not
+    if ($.active > 0) {
+        $( document ).ajaxComplete(function() {
+          featureddashboard();
+        });
+    }
+    else {
+         featureddashboard();
+    }
 });
 
 
