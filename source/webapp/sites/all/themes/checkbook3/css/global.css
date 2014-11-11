@@ -2114,6 +2114,7 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
     background: url("../images/note-icon.png") no-repeat scroll right 0 transparent;
 }
 
+.featured-dashboard-title .toolTip,
 .oge-ma-details .toolTip,
 .cb-ma-details .toolTip,
 .oge-ca-details .toolTip,
@@ -2140,6 +2141,18 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
     top:-89px;
 }
 
+.featured-dashboard-title a{
+    text-decoration:none;
+    cursor: default;
+}
+
+.featured-dashboard-title .toolTip{
+    top: -65px;
+    width: 222px;
+    margin: 0 0 0 140px;
+}
+
+.featured-dashboard-title .toolTip .bottom,
 .oge-ma-details .toolTip .bottom,
 .cb-ma-details .toolTip .bottom,
 .oge-ca-details .toolTip .bottom,
@@ -2154,6 +2167,10 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
     background: url("../images/drop-arrow.png") no-repeat scroll right 0 transparent;
     bottom:-18px;
     right:12px;
+}
+
+.featured-dashboard-title .toolTip .bottom{
+    right: 111px;
 }
 
 .assoc-contracts-list .contractLinkNote a,

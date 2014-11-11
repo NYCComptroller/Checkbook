@@ -247,10 +247,6 @@ if(preg_match('/mwbe/',$_GET['q']) && preg_match('/subvendor/',$_GET['q']) ){
 */
 
 
-
-
-
-
 //TODO: remove placeholder &nbsp; when numbers under each domain are active
 
 ?>
@@ -271,8 +267,9 @@ if(preg_match('/mwbe/',$_GET['q']) && preg_match('/subvendor/',$_GET['q']) ){
 
 
 <div class="top-navigation-right">
-<div class="featured-dashboard-title"><span title="The amounts represented in the featured dashboards are subset amounts of either the Spending or Contract Domains">
-	<?php echo (preg_match('/contract/',$_GET['q']))?"Contracts ":"Spending " ;?>Featured Dashboard</span>
+<div class="featured-dashboard-title"><a href="#" alt="The amounts represented in the featured dashboards are subset amounts of either the Spending or Contract Domains">
+
+	<?php echo (preg_match('/contract/',$_GET['q']))?"Contracts ":"Spending " ;?>Featured Dashboard</a>
 </div>
 <div class="featured-dashboard-table">
 <table class="expense">
