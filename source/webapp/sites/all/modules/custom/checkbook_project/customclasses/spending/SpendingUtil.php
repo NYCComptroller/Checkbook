@@ -720,7 +720,7 @@ class SpendingUtil{
 
         $showLink = !RequestUtil::isNewWindow() &&
             MappingUtil::isMWBECertified(array($row['minority_type_id'])) &&
-            $dtsmnid != 763 && $smnid != 763 && $dtsmnid != 747 && $smnid != 747;
+            $dtsmnid != 763 && $smnid != 763 && $dtsmnid != 747 && $smnid != 747 && $dtsmnid != 717 && $smnid != 717;
         return $showLink;
     }
 

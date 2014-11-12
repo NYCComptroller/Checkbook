@@ -54,10 +54,6 @@
             "type":"expression2",
             "expression":"MappingUtil::getMinorityCategoryById($row['prime_minority_type_prime_minority_type'])"
         },
-        "prime_mwbe_category_name_link": {
-            "type": "expression2",
-            "expression": " RequestUtil::isNewWindow() || !MappingUtil::isMWBECertified(array($row['prime_minority_type_prime_minority_type'])) ? $row['prime_mwbe_category_name']  : ('<a href=' . SpendingUtil::getPrimeMWBECategoryLinkUrl($node, $row) . '>'. $row[prime_mwbe_category_name] .'</a>') "
-        },
         "formatted_check_amount_sum": {
             "type": "expression2",
             "expression": "custom_number_formatter_format($row['check_amount_sum'],2,'$')"
@@ -91,7 +87,7 @@
     "table_title":"",
     "table_columns": [
         {"labelAlias":"prime_vendor","column":"prime_vendor_name_link2","sortSourceColumn":"prime_vendor.prime_vendor.legal_name"},
-        {"labelAlias":"mwbe_category","column":"prime_mwbe_category_name_link","sortSourceColumn":"prime_minority_type.prime_minority_type"},
+        {"labelAlias":"mwbe_category","column":"prime_mwbe_category_name","sortSourceColumn":"prime_minority_type.prime_minority_type"},
         {"labelAlias":"num_sub_vendors","column":"sub_vendor_count","sortSourceColumn":"sub_vendor_count"},
         {"labelAlias":"ytd_spending","column":"prime_vendor_amount_link","sortSourceColumn":"check_amount_sum"},
         {"labelAlias":"total_contract_amount","column":"formatted_total_contract_amount_sum","sortSourceColumn":"total_contract_amount_sum"},
