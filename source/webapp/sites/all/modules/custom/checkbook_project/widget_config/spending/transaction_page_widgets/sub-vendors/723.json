@@ -142,7 +142,7 @@
         },
         "mwbe_category_name": {
             "type": "expression2",
-            "expression": " RequestUtil::isNewWindow() || !MappingUtil::isMWBECertified(array($row['minority_type_id'])) ? $row[mwbe_category_name_formatted]  : ('<a href=' . SpendingUtil::getMWBECategoryLinkUrl($node, $row) . '>'. $row[mwbe_category_name_formatted] .'</a>') "
+            "expression": " !SpendingUtil::showMWBECategoryLink($node,$row) ? $row['mwbe_category_name_formatted']  : ('<a href=' . SpendingUtil::getMWBECategoryLinkUrl($node, $row) . '>'. $row[mwbe_category_name_formatted] .'</a>') "
         }
     },
     "table_columns": [
