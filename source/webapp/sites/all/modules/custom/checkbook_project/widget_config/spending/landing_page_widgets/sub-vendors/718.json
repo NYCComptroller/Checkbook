@@ -13,7 +13,8 @@
         "subvendor":"sub_vendor.sub_vendor",
         "category":"spending_category_id",
         "mwbe":"minority_type_id",
-        "industry":"industry_type_id"
+        "industry":"industry_type_id",
+        "agid":"agreement_id"
     },
     "dataset": "checkbook:contracts_subven_spending",
     "noDataInitialLoad":true,
