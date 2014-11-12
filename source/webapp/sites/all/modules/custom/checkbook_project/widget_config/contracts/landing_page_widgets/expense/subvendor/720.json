@@ -29,21 +29,9 @@
 "type": "expression2",
 "expression": "_get_tooltip_markup($row['subvendor_subvendor_legal_name'],60)"
 },
-"minority_type_id_map":{
-"type": "expression2",
-"expression":"($row['minority_type_minority_type'] == 4 || $row['minority_type_minority_type'] == 5) ? '4~5': $row['minority_type_minority_type']"
-},
 "minority_type_link":{
 "type": "expression2",
-"expression": "($row['minority_type_minority_type'] == 7 || $row['minority_type_minority_type'] == 11 ) ? MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']) :('<a href=\"/contracts_landing' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string(\"agency\")
-                    . _checkbook_project_get_url_param_string(\"cindustry\")
-                    . _checkbook_project_get_url_param_string(\"csize\")
-                    . _checkbook_project_get_url_param_string(\"awdmethod\")
-                    . _checkbook_project_get_url_param_string(\"status\")
-                    . _checkbook_project_get_url_param_string(\"vendor\")
-                    . _checkbook_project_get_url_param_string(\"subvendor\")
-                    . '/dashboard/ms'
-                    . '/mwbe/'. $row['minority_type_id_map'] .  '?expandBottomCont=true\">' . MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']).'</a>')"
+"expression": "ContractUtil::getMWBECategory($node,$row)"
 },
 "subvendor_name_link": {
 "type": "expression2",
