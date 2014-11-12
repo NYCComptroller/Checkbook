@@ -41,7 +41,7 @@ $mwbe_cats =  _mwbe_agency_grading_current_cats();
 					</div>
 				</form>
 			</div>
-			<div clas="right-side-bar-summary-items">
+			<div class="right-side-bar-summary-items">
 				<div class="first">
 		          <label class="label"> Number of Agencies:</label>
 		          <span class="value"><?php print $nyc_data['agencies']; ?></span>
