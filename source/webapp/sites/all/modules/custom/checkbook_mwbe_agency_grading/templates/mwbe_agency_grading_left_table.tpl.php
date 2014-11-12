@@ -12,8 +12,8 @@
 	<thead>
 		<tr id="scroll_wrapper_head">
 			<th><div><span>Agency</span></div></th>
-			<th><div><span>Spending<br/> Chart</span></div></th>
-			<th><div><span>YTD<br/>Spending</span></div></th>
+			<th><div><span>Spending Chart</span></div></th>
+			<th><div><span>YTD Spending</span></div></th>
 			<th>&nbsp</th>
 		</tr>
 	</thead>
@@ -68,7 +68,8 @@
         	        "aoColumnDefs": [
         	                         {
      		                        	"aTargets": [0],
-     		                        	"sClass":"text"
+     		                        	"sClass":"text",
+     		                        	"sWidth":"270px"
      		                         },
         	                         {
       		                        	"aTargets": [1],

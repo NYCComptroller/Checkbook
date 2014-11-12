@@ -137,7 +137,7 @@ function _checkbook_mwbe_agency_grading_getdata(){
 	coalesce(a1.w_mwbe,0) + coalesce(a2.w_mwbe,0) w_mwbe,
 	coalesce(a1.ha_mwbe,0) + coalesce(a2.ha_mwbe,0) ha_mwbe,
 	coalesce(a1.total_mwbe,0) + coalesce(a2.total_mwbe,0) total_mwbe,
-	coalesce(a1.n_mwbe,0) + coalesce(a2.n_mwbe,0) n_mwbe
+	coalesce(a1.n_mwbe,0)  n_mwbe
 	from ( ' . $sql1 . ' ) a1
     left join ( ' . $sql2 . ' ) a2 
 	on a1.agency_id = a2.agency_id
