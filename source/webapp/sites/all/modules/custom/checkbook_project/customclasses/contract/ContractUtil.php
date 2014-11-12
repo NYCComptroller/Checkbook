@@ -113,6 +113,61 @@ namespace { //global
         	return $status . ' ' . $contract_type ;
         }
 
+        /**
+         * Based on the dashboard and minority type,
+         * this will return either a link or just the M/WBE category name.
+         *
+         * NYCCHKBK-4676:
+         *   Do not hyperlink the M/WBE category within Top 5 Sub vendors widget if you are looking at prime data[M/WBE Featured Dashboard].
+         *   Do not hyperlink the M/WBE category within Top 5 Prime vendors widget if you are looking at sub data[M/WBE(sub vendors) featured dashboard].
+         *   The Details link from these widgets, also should follow same rule of not hyperlinking the M/WBE category.
+         *
+         * @param $node
+         * @param $row
+         * @return string
+         */
+        static public function getMWBECategory($node,$row){
+
+            $minority_type_id = isset($row["prime_minority_type_prime_minority_type"])
+                ? $row["prime_minority_type_prime_minority_type"]
+                : $row["minority_type_minority_type"];
+            $minority_category = MappingUtil::getMinorityCategoryById($minority_type_id);
+            $is_mwbe_certified = MappingUtil::isMWBECertified(array($minority_type_id));
+            $dtsmnid = _getRequestParamValue("dtsmnid");
+            $smnid = _getRequestParamValue("smnid");
+            $dashboard = _getRequestParamValue("dashboard");
+
+            if($dtsmnid != null) $nid = $dtsmnid;
+            else if($smnid != null) $nid = $smnid;
+            else $nid = $node->nid;
+
+            $no_link = $dashboard == "mp" && $nid == 720;
+            $no_link = $no_link || (preg_match('/s/', $dashboard) && ($nid == 725 || $nid == 783));
+
+            $showLink = !RequestUtil::isNewWindow()
+                && $is_mwbe_certified
+                && !$no_link;
+
+            if(!$showLink) {
+                $return_value = $minority_category;
+            }
+            else {
+                $return_value = '<a href="/contracts_landing'
+                    . _checkbook_project_get_year_url_param_string()
+                    . _checkbook_project_get_url_param_string("agency")
+                    . _checkbook_project_get_url_param_string("cindustry")
+                    . _checkbook_project_get_url_param_string("csize")
+                    . _checkbook_project_get_url_param_string("awdmethod")
+                    . _checkbook_project_get_url_param_string("status")
+                    . _checkbook_project_get_url_param_string("vendor")
+                    . _checkbook_project_get_url_param_string("subvendor")
+                    . '/dashboard/' . ((preg_match('/p/', $dashboard)) ? "mp" : "ms")
+                    . '/mwbe/'. $minority_type_id .  '?expandBottomCont=true">' . $minority_category . '</a>';
+            }
+
+            return $return_value;
+        }
+
 
         /* Returns M/WBE category for the given vendor id in the given year and year type for city-wide Active/Registered Contracts Transactions Pages*/
 
@@ -292,7 +347,22 @@ namespace { //global
 
        /* Returns minority type category URL for contracts transaction and advanced search results pages */
         static public function get_mwbe_category_url($minority_type_category_id, $is_prime_or_sub = null){
+
+            /* Begin update for NYCCHKBK-4676 */
             $minority_type_category_name = MappingUtil::getMinorityCategoryById($minority_type_category_id);
+            $dtsmnid = _getRequestParamValue("dtsmnid");
+            $smnid = _getRequestParamValue("smnid");
+            $dashboard = _getRequestParamValue("dashboard");
+
+            if($dtsmnid != null) $nid = $dtsmnid;
+            else if($smnid != null) $nid = $smnid;
+
+            $no_link = $dashboard == "mp" && $nid == 720;
+            $no_link = $no_link || (preg_match('/s/', $dashboard) && ($nid == 725 || $nid == 783));
+
+            if($no_link) return $minority_type_category_name;
+            /* End update for NYCCHKBK-4676 */
+
             $mwbe_cats = MappingUtil::getMinorityCategoryMappings();
             $minority_type_category_string = implode('~', $mwbe_cats[$minority_type_category_name]);
 

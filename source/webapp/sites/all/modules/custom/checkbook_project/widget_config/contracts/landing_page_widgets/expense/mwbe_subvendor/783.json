@@ -52,13 +52,9 @@ return $adjustedParameters;
 "type": "expression2",
 "expression": " number_format($row['total_contracts'])"
 },
-"mwbe_category_name": {
-"type":"expression2",
-"expression":"MappingUtil::getMinorityCategoryById($row['prime_minority_type_prime_minority_type'])"
-},
-"mwbe_category_name_link": {
+"mwbe_category_name_link":{
 "type": "expression2",
-"expression": "!MappingUtil::isMWBECertified(array($row['prime_minority_type_prime_minority_type'])) ? $row['mwbe_category_name']  : ('<a href=' . ContractUtil::getMWBECategoryLinkUrl($row['prime_minority_type_prime_minority_type']) . '>'. $row[mwbe_category_name] .'</a>') "
+"expression": "ContractUtil::getMWBECategory($node,$row)"
 }
 },
 "disableViewAll":true,
