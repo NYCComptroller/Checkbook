@@ -142,7 +142,7 @@ return $footer;
 "aoColumns": [
 { "bSortable": false, "sWidth":"200px", "sClass":"text" },
 { "bSortable": false, "sWidth":"120px", "sClass":"text pad-left" },
-{"sClass":"number","sWidth":"100px","asSorting": [ "desc","asc"  ] },
+{"sClass":"number pad-left","sWidth":"120px","asSorting": [ "desc","asc"  ] },
 {"sClass":"number","sWidth":"120px" ,"asSorting": [ "desc","asc"  ] },
 {"sClass":"number","sWidth":"120px" ,"asSorting": [ "desc","asc"  ] },
 {"sClass":"number","sWidth":"120px" ,"asSorting": [ "desc" ,"asc" ]},
