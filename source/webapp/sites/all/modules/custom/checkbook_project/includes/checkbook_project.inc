@@ -740,6 +740,12 @@ function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$par
     $smnid = _getRequestParamValue('smnid');
     $nid = isset($dtsmnid) ? $dtsmnid : $smnid;
 
+    $magid =  _getRequestParamValue('magid');
+    if($smnid == 764 && $magid != null) {
+        $parameters['master_contract_industry_type_id'] = $parameters['industry_type_id'];
+        unset($parameters['industry_type_id']);
+    }
+
     switch($nid) {
         case 759:
             $parameters['is_prime_or_sub'] = array('P','S');
