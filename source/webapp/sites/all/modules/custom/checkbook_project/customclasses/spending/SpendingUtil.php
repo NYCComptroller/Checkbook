@@ -443,10 +443,11 @@ class SpendingUtil{
      * @return string
      */
     static function getVendorAmountLinkUrl($node, $row){
+        $nid = $node->nid;
         $vendor = isset($row["vendor_vendor"]) ? $row["vendor_vendor"] : $row["prime_vendor_prime_vendor"];
         $override_params = array(
             'vendor'=>$vendor,
-            "fvendor"=>$vendor,
+            "fvendor"=>$nid == 747 ? null : $vendor,
             'smnid'=>$node->nid
         );
         return '/' . self::getSpendingTransactionPageUrl($override_params);
