@@ -154,8 +154,7 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
     $query = "select/?q=". $search_string
         ."&start=". ($page_no*$no_of_results)
         ."&fq=-latest_flag:N"
-        //."&fq=fiscal_year:[2010%20TO%20"._getYearValueFromID(_getCurrentYearID())."]"
-        //."&fq=fiscal_year:[2010%20TO%20*]"
+        ."&fq=fiscal_year:[2010%20TO%20*]%20OR%20agency_type:oge"
         ."&sort=domain_ordering+asc,date_ordering+desc"
         ."&wt=php";
 
@@ -177,8 +176,7 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
         ."&fq=".$registered_year
         ."&fq=latest_flag:Y"
         ."&fq=contract_status:registered"
-        //."&fq=fiscal_year:[2010%20TO%20"._getYearValueFromID(_getCurrentYearID())."]"
-        //."&fq=fiscal_year:[2010%20TO%20*]"
+        ."&fq=fiscal_year:[2010%20TO%20*]%20OR%20agency_type:oge"
         ."&sort=domain_ordering+asc,date_ordering+desc"
         ."&wt=php";
 
@@ -295,8 +293,7 @@ function _checkbook_smart_search_get_selected_facet_results($search_terms, $face
         $query = "select/?q=". $search_string
             ."&facet=true"
             ."&fq=-latest_flag:N"
-            //."&fq=fiscal_year:[2010%20TO%20"._getYearValueFromID(_getCurrentYearID())."]"
-            //."&fq=fiscal_year:[2010%20TO%20*]"
+            ."&fq=fiscal_year:[2010%20TO%20*]%20OR%20agency_type:oge"
             ."&sort=domain_ordering+asc,date_ordering+desc"
             ."&facet.sort=count"
             ."&facet.field=".$parameter_mapping[$facet_name]
