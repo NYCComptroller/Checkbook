@@ -87,6 +87,14 @@
         "is_prime_or_sub"
     ],
     "derivedColumns": {
+        "associated_prime_vendor_name":{
+            "type": "expression2",
+            "expression":"(preg_match('/S/', $row[vendor_type])) ? _get_tooltip_markup($row['prime_vendor_name'], 34) : 'N/A'"
+        },
+        "associated_prime_vendor_name_export":{
+            "type": "expression2",
+            "expression":"(preg_match('/S/', $row[vendor_type])) ? $row['prime_vendor_name'] : 'N/A'"
+        },
         "is_sub_vendor": {
             "type":"expression2",
             "expression":"(preg_match('/S/', $row[vendor_type])) ? 'Yes' : 'No'"
@@ -133,7 +141,7 @@
         },
         "purpose_formatted":{
             "type": "expression2",
-            "expression": "_get_tooltip_markup($row[purpose], 30)"
+            "expression": "_get_tooltip_markup($row[purpose], 40)"
         },
         "contract_purpose_text":{
             "type": "expression2",
@@ -164,6 +172,8 @@
         {"labelAlias":"document_id","column":"disbursement_number_derived","sortSourceColumn":"disbursement_number","exportColumn":"disbursement_number_derived"},
         {"labelAlias":"payee_name","column":"payee_name_link","sortSourceColumn":"vendor_name","exportColumn":"payee_name_export"},
         {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"vendor_type","exportColumn":"is_sub_vendor"},
+        {"label":"","column":"","export":false},
+        {"labelAlias":"associated_prime_vendor","column":"associated_prime_vendor_name","sortSourceColumn":"prime_vendor_name","exportColumn":"associated_prime_vendor_name_export"},
         {"labelAlias":"issue_date","column":"issue_date_formatted","sortSourceColumn":"check_eft_issued_date","headerClass":"issuedate","exportColumn":"issue_date_formatted"},
         {"labelAlias":"agency_name","column":"agency_name_link","sortSourceColumn":"agency_name"},
         {"labelAlias":"dept_name","column":"dept_name_formatted","sortSourceColumn":"department_name"},
@@ -197,6 +207,11 @@
             "column":"is_sub_vendor",
             "sourceColumn":"vendor_type",
             "sql":"case when is_prime_or_sub = 'P' then 'No' else 'Yes' end as vendor_type"
+        },
+        {
+            "column":"associated_prime_vendor_name",
+            "sourceColumn":"prime_vendor_name",
+            "sql":"case when prime_vendor_name IS NULL then 'N/A' else prime_vendor_name end"
         }
     ],
     "adjustParameters":"
@@ -231,21 +246,23 @@
             {"sClass":"text","sWidth":"196px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"229px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"50px","asSorting":["asc","desc"]},
+            {"bSortable":false,"sWidth":"50px"},
+            {"sClass":"text","sWidth":"140px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"130px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"200px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"200px","asSorting":["asc","desc"]},
             {"sClass":"number pad-left","sWidth":"135px","asSorting":["desc","asc"]},
             {"sClass":"text pad-left","sWidth":"180px","asSorting":["asc","desc"]},
-            {"sClass":"text pad-left","sWidth":"165px","asSorting":["asc","desc"]},
-            {"sClass":"number","sWidth":"150px","asSorting":["asc","desc"]},
+            {"sClass":"text","sWidth":"180px","asSorting":["asc","desc"]},
+            {"sClass":"number","sWidth":"130px","asSorting":["asc","desc"]},
             {"bSortable":false,"sWidth":"50px"},
-            {"sClass":"text pad-left","sWidth":"165px","asSorting":["asc","desc"]},
+            {"sClass":"text pad-left","sWidth":"180px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
             {"bSortable":false,"sWidth":"10px"}
         ],
-        "aaSorting":[[6,"desc"]],
+        "aaSorting":[[8,"desc"]],
         "sScrollX": "100%",
 		"bScrollCollapse": false,
         "fnInitComplete": "##function () { new FixedColumns( oTable, {
