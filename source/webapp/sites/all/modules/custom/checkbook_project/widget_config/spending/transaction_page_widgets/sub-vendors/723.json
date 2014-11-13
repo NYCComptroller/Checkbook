@@ -84,13 +84,21 @@
         "original_agreement_id@checkbook:sub_vendor_agid"
     ],
     "derivedColumns": {
+        "associated_prime_vendor_name":{
+            "type": "expression2",
+            "expression":"_get_tooltip_markup($row['legal_name@checkbook:prime_vendor'], 34)"
+        },
+        "associated_prime_vendor_name_export":{
+            "type": "expression2",
+            "expression":"$row['legal_name@checkbook:prime_vendor']"
+        },
         "is_sub_vendor": {
             "type":"expression2",
             "expression":"'Yes'"
         },
         "agency_name_formatted":{
             "type": "expression2",
-            "expression": "_get_tooltip_markup($row[agency_name], 30)"
+            "expression": "_get_tooltip_markup($row[agency_name], 40)"
         },
         "agency_name_link": {
             "type": "expression2",
@@ -98,7 +106,7 @@
         },
         "payee_name_formatted":{
             "type": "expression2",
-            "expression": "_get_tooltip_markup($row['vendor_name'], 34)"
+            "expression": "_get_tooltip_markup($row['vendor_name'], 40)"
         },
         "payee_name_export":{
             "type": "expression2",
@@ -147,12 +155,15 @@
     },
     "table_columns": [
         {"labelAlias":"payee_name","column":"payee_name_link","sortSourceColumn":"vendor_name","exportColumn":"payee_name_export"},
-        {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","export":false},
+        {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"vendor_type","exportColumn":"is_sub_vendor"},
+        {"label":"","column":"","export":false},
+        {"labelAlias":"associated_prime_vendor","column":"associated_prime_vendor_name","sortSourceColumn":"legal_name@checkbook:prime_vendor","exportColumn":"associated_prime_vendor_name_export"},
         {"labelAlias":"issue_date","column":"issue_date_formatted","sortSourceColumn":"check_eft_issued_date","headerClass":"issuedate","exportColumn":"issue_date_formatted"},
         {"labelAlias":"agency_name","column":"agency_name_link","sortSourceColumn":"agency_name"},
         {"labelAlias":"check_amount","column":"formatted_check_amount","sortSourceColumn":"check_amount","headerClass":"centrig"},
+        {"label":"","column":"","export":false},
         {"labelAlias":"contract_id","column":"reference_document_number_link","sortSourceColumn":"reference_document_number","exportColumn":"reference_document_number_export"},
-        {"labelAlias":"sub_contract_reference_id","column":"sub_contract_id"},
+        {"labelAlias":"sub_contract_reference_id","column":"sub_contract_id","exportColumn":"sub_contract_id"},
         {"labelAlias":"contract_purpose","column":"contract_purpose_text","sortSourceColumn":"purpose","exportColumn":"contract_purpose_export"},
         {"labelAlias":"spending_category","column":"spending_category_name"},
         {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name_formatted"},
@@ -203,19 +214,22 @@
         },
         "bInfo": true,
         "aoColumns":[
-            {"sClass":"text","sWidth":"200px","asSorting":["asc","desc"]},
-            {"sClass":"number","sWidth":"50px","bSortable": false,"asSorting":["asc","desc"]},
+            {"sClass":"text","sWidth":"250px","asSorting":["asc","desc"]},
+            {"sClass":"number","sWidth":"50px","asSorting":["asc","desc"]},
+            {"bSortable":false,"sWidth":"50px"},
+            {"sClass":"text","sWidth":"229px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"130px","asSorting":["asc","desc"]},
-            {"sClass":"text pad-left","sWidth":"200px","asSorting":["asc","desc"]},
-            {"sClass":"number pad-left","sWidth":"135px","asSorting":["desc","asc"]},
-            {"sClass":"text pad-left","sWidth":"165px","asSorting":["asc","desc"]},
-            {"sClass":"number","sWidth":"100px","bSortable": false,"asSorting":["asc","desc"]},
-            {"sClass":"text pad-left","sWidth":"165px","asSorting":["asc","desc"]},
-            {"sClass":"text pad-left","sWidth":"150px","asSorting":["asc","desc"]},
-            {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]},
-            {"bSortable": false,"sWidth":"10px" }
+            {"sClass":"text","sWidth":"210px","asSorting":["asc","desc"]},
+            {"sClass":"number","sWidth":"110px","asSorting":["desc","asc"]},
+            {"bSortable":false,"sWidth":"50px"},
+            {"sClass":"text","sWidth":"145px","asSorting":["asc","desc"]},
+            {"sClass":"number","sWidth":"125px","asSorting":["asc","desc"]},
+            {"sClass":"text pad-left","sWidth":"175px","asSorting":["asc","desc"]},
+            {"sClass":"text pad-left","sWidth":"145px","asSorting":["asc","desc"]},
+            {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
+            {"bSortable":false,"sWidth":"10px"}
         ],
-        "aaSorting":[[4,"desc"]],
+        "aaSorting":[[6,"desc"]],
         "sScrollX": "100%",
 		"bScrollCollapse": false,
         "fnInitComplete": "##function () { new FixedColumns( oTable, {
@@ -241,16 +255,6 @@
         var cUrl = oTable.fnSettings().sAjaxSource;
 
         var cUrlArray = cUrl.split('/');
-//        var dtsmnidNameIndex = jQuery.inArray('dtsmnid', cUrlArray);
-//
-//        if (dtsmnidNameIndex != -1 && cUrlArray[(dtsmnidNameIndex+1)] == 20) {
-//            cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
-//            cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
-//        }
-//        else {
-//            cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
-//            cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
-//        }
         cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
         cUrl = adjustUrlParameter(cUrl,'fvendor',oVendorIds);
         cUrl = adjustUrlParameter(cUrl,'expcategory',oCategoryIds);
