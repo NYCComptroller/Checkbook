@@ -3,8 +3,8 @@
 "widgetSubType":"ajaxSimple",
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B","spending_category_id":2},
-"cleanURLParameters":["year","agency","yeartype","calyear","vendor"],
- "urlParamMap":{"year":"year_id","agency":"agency_id","yeartype":"type_of_year","calyear":"year_id","vendor":"vendor_id"},
+"cleanURLParameters":["year","agency","yeartype","calyear","vendor","fvendor"],
+ "urlParamMap":{"year":"year_id","agency":"agency_id","yeartype":"type_of_year","calyear":"year_id","fvendor":"vendor_id","vendor":"vendor_id"},
 "dataset": "checkbook:spending_data",
 "noDataInitialLoad":true,
 "columns": ["yeartype.yeartype","check_amount_sum","agency.agency","agency.agency.agency_short_name","year.year","agency.agency.agency_name"],
@@ -20,7 +20,7 @@ $header='<div class=\"tableHeader\"><h2>Top ' .  $count . 'Agencies</h2><span cl
 return $header;
 ",
 "footer":"
-$url = '/panel_html/spending_transactions/spending/transactions'. _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"agency\")  . '/dtsmnid/' . $node->nid .'/category/2' . _checkbook_project_get_year_url_param_string(false,false,true);
+$url = '/panel_html/spending_transactions/spending/transactions'. _checkbook_project_get_url_param_string(\"vendor\",\"fvendor\") ._checkbook_project_get_url_param_string(\"agency\")  . '/dtsmnid/' . $node->nid .'/category/2' . _checkbook_project_get_year_url_param_string(false,false,true);
 $footer = '';
 if($node->totalDataCount > 0)
      $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
@@ -39,7 +39,7 @@ return $footer;
     },
  "agency_amount_link":{
     "type":"expression2",
-        "expression": "'<a href=\"/spending_landing/category/2'._checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_year_url_param_string() .'?expandBottomContURL=/panel_html/spending_transactions/spending/transactions' . _checkbook_project_get_year_url_param_string(false,false,true)  ._checkbook_project_get_url_param_string(\"vendor\")  . '/smnid/' . $node->nid .  '/category/2/agency/'. $row[agency_agency] . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
+        "expression": "'<a href=\"/spending_landing/category/2'._checkbook_project_get_url_param_string(\"vendor\",\"fvendor\") ._checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_year_url_param_string() .'?expandBottomContURL=/panel_html/spending_transactions/spending/transactions' . _checkbook_project_get_year_url_param_string(false,false,true)  ._checkbook_project_get_url_param_string(\"vendor\")  . '/smnid/' . $node->nid .  '/category/2/agency/'. $row[agency_agency] . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
 
   }
 },
