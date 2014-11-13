@@ -19,6 +19,8 @@
 */
 ?>
 <?php
+$smnid = _getRequestParamValue('smnid');
+$dashboard= _getRequestParamValue('dashboard');
 $contactStatus = _getRequestParamValue('contstatus');
 $contactStatusLabel = 'Active';
 if ($contactStatus == 'R') {
@@ -32,10 +34,13 @@ if ($contactCategory == 'revenue') {
 $current_url = explode('/',$_SERVER['REQUEST_URI']);
 if($current_url[1] == 'contract' && ($current_url[2] == 'search' || $current_url[2] == 'all')&& $current_url[3] == 'transactions'){
     $summaryTitle = "";
-}else if(_checkbook_check_is_mwbe_page() || _getRequestParamValue('dashboard')){
+}else if(_checkbook_check_is_mwbe_page() || $dashboard){
     $summaryTitle = RequestUtil::getDashboardTitle()." ";
 }
-$summaryTitle .= NodeSummaryUtil::getInitNodeSummaryTitle();
+//Handle Sub Vendor widget to not repeat dashboard Sub Vendor in title
+if(!($dashboard == "ss" && $smnid == 720)) {
+    $summaryTitle .= NodeSummaryUtil::getInitNodeSummaryTitle();
+}
 
 $summaryTitle = $summaryTitle != '' ? $summaryTitle.'<br/>' : '';
 
