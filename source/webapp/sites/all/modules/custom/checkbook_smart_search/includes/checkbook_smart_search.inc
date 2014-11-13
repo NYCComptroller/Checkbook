@@ -155,7 +155,7 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
         ."&start=". ($page_no*$no_of_results)
         ."&fq=-latest_flag:N"
         //."&fq=fiscal_year:[2010%20TO%20"._getYearValueFromID(_getCurrentYearID())."]"
-        ."&fq=fiscal_year:[2010%20TO%20*]"
+        //."&fq=fiscal_year:[2010%20TO%20*]"
         ."&sort=domain_ordering+asc,date_ordering+desc"
         ."&wt=php";
 
@@ -178,7 +178,7 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
         ."&fq=latest_flag:Y"
         ."&fq=contract_status:registered"
         //."&fq=fiscal_year:[2010%20TO%20"._getYearValueFromID(_getCurrentYearID())."]"
-        ."&fq=fiscal_year:[2010%20TO%20*]"
+        //."&fq=fiscal_year:[2010%20TO%20*]"
         ."&sort=domain_ordering+asc,date_ordering+desc"
         ."&wt=php";
 
@@ -296,7 +296,7 @@ function _checkbook_smart_search_get_selected_facet_results($search_terms, $face
             ."&facet=true"
             ."&fq=-latest_flag:N"
             //."&fq=fiscal_year:[2010%20TO%20"._getYearValueFromID(_getCurrentYearID())."]"
-            ."&fq=fiscal_year:[2010%20TO%20*]"
+            //."&fq=fiscal_year:[2010%20TO%20*]"
             ."&sort=domain_ordering+asc,date_ordering+desc"
             ."&facet.sort=count"
             ."&facet.field=".$parameter_mapping[$facet_name]
@@ -343,9 +343,10 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
         );
 
         $search_string = $search_terms[0];
-
+        $fiscal_year_flag = true;
         $termcount = 0;
         for($i=1;$i < count($search_terms);$i++){
+
             $req_params  = explode('=', $search_terms[$i]);
 
             if($req_params[0] == 'vendor_type'){
@@ -371,17 +372,15 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
                 $search_string .= "&fq="  . $sub_query;
         }
 
-
-        $query = "select/?q=". $search_string
-            ."&facet=true"
-            ."&fq=-latest_flag:N"
-            //."&fq=fiscal_year:[2010%20TO%20"._getYearValueFromID(_getCurrentYearID())."]"
-            ."&fq=fiscal_year:[2010%20TO%20*]"
-            ."&sort=domain_ordering+asc,date_ordering+desc"
-            ."&facet.sort=count"
-            ."&facet.field=".$parameter_mapping[$facet_name]
-            ."&wt=php"
-            ."&facet.mincount=1";
+            $query = "select/?q=". $search_string
+                ."&facet=true"
+                ."&fq=-latest_flag:N"
+                ."&fq=fiscal_year:[2010%20TO%20*]%20OR%20agency_type:oge"
+                ."&sort=domain_ordering+asc,date_ordering+desc"
+                ."&facet.sort=count"
+                ."&facet.field=".$parameter_mapping[$facet_name]
+                ."&wt=php"
+                ."&facet.mincount=1";
 
         if ($offset && $offset > 0){
           $query .= "&facet.offset=".$offset;
@@ -551,8 +550,7 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
                   .$autocomplete_text //&fq=oge_agency_name_autocomplete:(eco*)
                   ."&facet=true"
                   ."&fq=-latest_flag:N"
-                  //."&fq=fiscal_year:[2010%20TO%20"._getYearValueFromID(_getCurrentYearID())."]"
-                  ."&fq=fiscal_year:[2010%20TO%20*]"
+                  ."&fq=fiscal_year:[2010%20TO%20*]%20OR%20agency_type:oge"
                   ."&sort=domain_ordering+asc,date_ordering+desc"
                   ."&facet.field=".$parameter_mapping[$facet_name] // oge_agency_name
                   ."&facet.limit=10"
@@ -1053,8 +1051,7 @@ function _checkbook_smart_search_get_results_csv($search_terms,$page_no, $no_of_
   $domain = $_REQUEST['domain'];
   $query = "select/?q=". $search_string
                ."&fq=-latest_flag:N"
-               //."&fq=fiscal_year:[2010%20TO%20"._getYearValueFromID(_getCurrentYearID())."]"
-               ."&fq=fiscal_year:[2010%20TO%20*]"
+               ."&fq=fiscal_year:[2010%20TO%20*]%20OR%20agency_type:oge"
                ."&sort=domain_ordering+asc,date_ordering+desc"
                ."&start=". ($page_no*$no_of_results)
                ."&wt=csv"
