@@ -37,8 +37,11 @@ if($current_url[1] == 'contract' && ($current_url[2] == 'search' || $current_url
 }else if(_checkbook_check_is_mwbe_page() || $dashboard){
     $summaryTitle = RequestUtil::getDashboardTitle()." ";
 }
-//Handle Sub Vendor widget to not repeat dashboard Sub Vendor in title
-if(!($dashboard == "ss" && $smnid == 720)) {
+//Handle Sub Vendor widget to not repeat 'Sub Vendor' in title in certain dashboards
+$suppress_widget_title = ($dashboard == "ss" && $smnid == 720) || //Sub Vendors
+                         ($dashboard == "sp" && $smnid == 720) || //Sub Vendors (M/WBE)
+                         ($dashboard == "ms" && $smnid == 784); //M/WBE (Sub Vendors)
+if(!$suppress_widget_title) {
     $summaryTitle .= NodeSummaryUtil::getInitNodeSummaryTitle();
 }
 
