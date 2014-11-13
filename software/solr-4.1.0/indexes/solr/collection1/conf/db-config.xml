@@ -798,6 +798,7 @@
                 cif_fiscal_year fiscal_year,
                 cif_fiscal_year_id fiscal_year_id,
                 fms_contract_number,
+                cif_received_date date_ordering,
                 8 domain_ordering,
                 document_version
             from pending_contracts p
@@ -838,6 +839,7 @@
             <field column="fiscal_year" name="fiscal_year" />
             <field column="fiscal_year_id" name="fiscal_year_id" />
             <field column="domain_ordering" name="domain_ordering" />
+            <field column="date_ordering" name="date_ordering" />
         </entity>
     </document>
 </dataConfig>
