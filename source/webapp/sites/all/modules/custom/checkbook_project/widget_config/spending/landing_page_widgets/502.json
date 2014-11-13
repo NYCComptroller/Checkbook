@@ -1,8 +1,8 @@
 {
 "widgetType": "data_tables",
 "widgetSubType": "ajaxSimple",
-"cleanURLParameters":["agency","vendor","category","year","yeartype","check_eft_issued_nyc_year_id","calendar_fiscal_year_id"],
-"urlParamMap":{"agency":"agency_id","vendor":"vendor_id","category":"spending_category_id","year":"year_id","yeartype":"year_type",
+"cleanURLParameters":["agency","vendor","category","year","yeartype","check_eft_issued_nyc_year_id","calendar_fiscal_year_id","fvendor"],
+"urlParamMap":{"agency":"agency_id","fvendor":"vendor_id","vendor":"vendor_id","category":"spending_category_id","year":"year_id","yeartype":"year_type",
                "check_eft_issued_nyc_year_id":"check_eft_issued_nyc_year_id","calendar_fiscal_year_id":"calendar_fiscal_year_id"},
 "useList":true,
 "getTotalDataCount":true,
@@ -40,7 +40,7 @@
     return $header;
 ",
 "footer":"
-    $url = '/panel_html/spending_transactions/spending/transactions'. _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"agency\")  . '/dtsmnid/' . $node->nid ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string(false,false,true). _checkbook_append_url_params();
+    $url = '/panel_html/spending_transactions/spending/transactions'. _checkbook_project_get_url_param_string(\"vendor\",'fvendor') ._checkbook_project_get_url_param_string(\"agency\")  . '/dtsmnid/' . $node->nid ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string(false,false,true). _checkbook_append_url_params();
 
     $footer = '';
     if($node->totalDataCount > 0)

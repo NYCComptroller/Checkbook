@@ -745,23 +745,52 @@ function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$par
         $parameters['master_contract_industry_type_id'] = $parameters['industry_type_id'];
         unset($parameters['industry_type_id']);
     }
-
-    switch($nid) {
-        case 759:
-            $parameters['is_prime_or_sub'] = array('P','S');
-            break;
-        case 763:
-            $parameters['is_prime_or_sub'] = array('S');
-            break;
-        default:
-            $parameters['is_prime_or_sub'] = array('P');
-            break;
+    
+    if(  isset($parameters['vendor_id@checkbook:contracts_spending_transactions'])  ||  isset($parameters['document_agency_id@checkbook:contracts_spending_transactions'])  ||  isset($parameters['award_method_id@checkbook:contracts_spending_transactions'])
+    ||  isset($parameters['award_size_id@checkbook:contracts_spending_transactions'])  ||  isset($parameters['industry_type_id@checkbook:contracts_spending_transactions'])
+    ){
+    	$year = $parameters['check_eft_issued_nyc_year_id'];
+    	$calyear = $parameters['calendar_fiscal_year_id'];
+    	if(isset($year)){
+    		$parameters['fiscal_year_id@checkbook:contracts_spending_transactions'] = $year;
+    		$parameters['type_of_year@checkbook:contracts_spending_transactions'] = 'B';
+    	}else if(isset($calyear )){
+    		$parameters['fiscal_year_id@checkbook:contracts_spending_transactions'] = $calyear ;
+    		$parameters['type_of_year@checkbook:contracts_spending_transactions'] = 'C';
+    	}
     }
-    if(isset($parameters['vendor_type'])){
-        $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
+        
+    if($dtsmnid == 20){//From spending landing page
+    	$data_controller_instance = data_controller_get_operator_factory_instance();
+    	$parameters['agreement_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
+    	$parameters['contract_number'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
     }
+    
+    
+	if(isset($parameters['vendor_type'])){
+		$parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
+	}else{
+		switch($nid) {
+			case 759:
+				$parameters['is_prime_or_sub'] = array('P','S');
+				break;
+			case 763:
+				$parameters['is_prime_or_sub'] = array('S');
+				break;
+			default:
+				if(_getRequestParamValue('dashboard') == null){
+					$parameters['is_prime_or_sub'] = array('P','S');
+				}else{
+					$parameters['is_prime_or_sub'] = array('P');
+				}
+				break;
+		}
+	}
+    
     return $parameters;
 }
+
+
 
 
 /**
