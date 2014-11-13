@@ -700,7 +700,9 @@ class SpendingUtil{
      */
     static function getMWBECategoryLinkUrl($node, $row){
         $dashboard = _getRequestParamValue("dashboard");
-        $dashboard = (isset($dashboard)) ? $dashboard : "mp";
+        if($dashboard == null){
+        	$dashboard = ($row['is_sub_vendor'] == "Yes") ? "ms" : "mp";
+        }
         $custom_params = array(
             'dashboard'=>(preg_match('/p/', $dashboard)) ? "mp" : "ms",
             'mwbe'=>(isset($row["minority_type_id"]) ? $row["minority_type_id"] : $row["minority_type_minority_type"])
