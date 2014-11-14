@@ -84,10 +84,8 @@ return $parameters;
 "vendor_name_link": {
 "type": "expression2",
 "expression": " '<a href=\"/contracts_landing'
-.  (isset($row['fiscal_year_id@checkbook:all_contracts_coa_aggregates']) ? ('/year/'.$row['fiscal_year_id@checkbook:all_contracts_coa_aggregates'] . '/yeartype/'.$row['type_of_year@checkbook:all_contracts_coa_aggregates']) : _checkbook_project_get_year_url_param_string())
-.  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
-.  '/vendor/' . $row['vendor_id']
-.  '?expandBottomCont=true\">'. $row['vendor_formatted'] . '</a>'  "
+. ContractUtil::get_contract_vendor_minority_category($row['vendor_id'], null, null, null, $row['is_prime_or_sub'])
+. '?expandBottomCont=true\">'. $row['vendor_formatted'] . '</a>'  "
 },
 "agency_name_link_old": {
 "type": "expression2",
@@ -102,9 +100,11 @@ return $parameters;
 "agency_name_link": {
 "type": "expression2",
 "expression": " '<a href=\"/contracts_landing'
-.  (isset($row['fiscal_year_id@checkbook:all_contracts_coa_aggregates']) ? ('/year/'.$row['fiscal_year_id@checkbook:all_contracts_coa_aggregates'] . '/yeartype/'.$row['type_of_year@checkbook:all_contracts_coa_aggregates']) : _checkbook_project_get_year_url_param_string())
+._checkbook_append_url_params()
+.  (isset($row['fiscal_year_id@checkbook:all_contracts_coa_aggregates']) ? '/year/'.$row['fiscal_year_id@checkbook:all_contracts_coa_aggregates'] : '')
+.  (isset($row['type_of_year@checkbook:all_contracts_coa_aggregates']) ? '/yeartype/'.$row['type_of_year@checkbook:all_contracts_coa_aggregates'] : '')
 .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
-.  '/agency/' . $row['agency_id']
+. '/agency/' . $row['agency_id']
 .  '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "
 },
 "display_effective_begin_date": {
