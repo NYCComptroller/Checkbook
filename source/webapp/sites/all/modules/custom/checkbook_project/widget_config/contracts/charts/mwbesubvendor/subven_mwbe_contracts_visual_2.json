@@ -32,7 +32,7 @@
 },
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B"},
-"cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe"],
+"cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe","subvendor"],
 "urlParamMap":{"mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"prime_vendor_id","subvendor":"vendor_id",
 	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
 "chartTitle":"M/WBE Spending by Active Expense Contracts",
@@ -63,7 +63,6 @@
     group by year_value, rmo.month_value ,rmo.month_name,a1.month_id
     order by year_value,  rmo.month_value
      ';
-    
     $node->data  = _checkbook_project_execute_sql($sql);
     
     
@@ -103,7 +102,7 @@
 	    }else{
 	    	$series_previous_temp[trim($row['month_name'])] = $item;
 	    	        $link_url = CustomURLHelper::prepareUrl('contract/spending/transactions',  ContractURLHelper::$transactionPageParams, NULL, 
-       			array('doctype' => $node->document_codes, 'month' => $row['month_id'],'newwindow'=>NULL),true);
+       			array('doctype' => $node->document_codes, 'month' => $row['month_id'],'subvendor' => _getRequestParamValue('subvendor'),'newwindow'=>NULL),true);
 			$item->url =  $link_url;			    	
 	    }
 	    
