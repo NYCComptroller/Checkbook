@@ -191,7 +191,7 @@
 	"colors":["#7DB7E5"],
     "plotOptions": {
             "series": {
-                "minPointLength":30 ,                
+                "minPointLength":40 ,                
                 "stacking": "normal",
                 "dataLabels": {
                     "enabled": true,
