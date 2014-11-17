@@ -87,31 +87,32 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
   		";
 }else{
 	
-	$is_mwbe_certified = MappingUtil::isMWBECertified(explode('~',_getRequestParamValue('mwbe')));
-	$mwbe_prefix = ($is_mwbe_certified)? MappingUtil::$mwbe_prefix :'';
+	// Get mwbe and subvendor links.	
 	$mwbe_active_domain_link = RequestUtil::getDashboardTopNavURL("mwbe") ;
-
 	$svendor_active_domain_link = RequestUtil::getDashboardTopNavURL("subvendor") ;
 	$svendor_active_domain_link = preg_replace('/\/industry\/[^\/]*/','',$svendor_active_domain_link);
+	
+	
+	// calcluate amount for mwbe and subvendors top nav. 
 	if(preg_match('/contract/',$_GET['q'])){
-		
+		// for prime flow include prime + sub; for sub vendor flow include sub.
 		if($current_dashboard == "mp" || $current_dashboard == "sp" || $current_dashboard == null){
 			$mwbe_amount = $node->data[6]['current_amount_sum'] + $node->data[10]['current_amount_sum'];
 		}else{
 			$mwbe_amount =  $node->data[10]['current_amount_sum'];
 		}
 		$mwbe_prime_amount = $node->data[6]['current_amount_sum'];
-		//$mwbe_active_domain_link = RequestUtil::getTopNavURL("contracts") ;
 		$svendor_amount = $node->data[8]['current_amount_sum'];		
+		// if prime is zero and sub amount is no n zero. change dashboard to ms
 		if( $mwbe_prime_amount ==  null  && $mwbe_amount != 0){
 			RequestUtil::$is_prime_mwbe_amount_zero_sub_mwbe_not_zero = true;
 			$mwbe_active_domain_link = preg_replace('/\/dashboard\/../','/dashboard/ms',$mwbe_active_domain_link);
 		}
-		
-		//$mwbe_active_domain_link = preg_replace('/\/subvendor\/[^\/]*/','',$mwbe_active_domain_link);
+		// call function to get mwbe drop down filters.
 		$mwbe_filters = MappingUtil::getCurrentMWBETopNavFilters($mwbe_active_domain_link,"contracts");
 		$sub_vendors_home_link = RequestUtil::getLandingPageUrl("contracts") ;		
 	}else{
+		//for prime flow include prime + sub; for sub vendor flow include sub.
 		if($current_dashboard == "mp" || $current_dashboard == "sp" || $current_dashboard == null){
 			$mwbe_amount = $node->data[5]['check_amount_sum'] + $node->data[9]['check_amount_sum'];
 		}else{
@@ -119,22 +120,22 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 		}
 		
 		$mwbe_prime_amount = $node->data[5]['check_amount_sum'];
-		
+		// if prime is zero and sub amount is no n zero. change dashboard to ms
 		if( $mwbe_prime_amount == null && $mwbe_amount != 0){
 			RequestUtil::$is_prime_mwbe_amount_zero_sub_mwbe_not_zero = true;
 			$mwbe_active_domain_link = preg_replace('/\/dashboard\/../','/dashboard/ms',$mwbe_active_domain_link);
 		}
 		
-		//$mwbe_active_domain_link = preg_replace('/\/subvendor\/[^\/]*/','',$mwbe_active_domain_link);
+		// call function to get mwbe drop down filters.
 		$mwbe_filters = MappingUtil::getCurrentMWBETopNavFilters($mwbe_active_domain_link,"spending");
 		
 		$svendor_amount = $node->data[7]['check_amount_sum'];		
 		$sub_vendors_home_link = RequestUtil::getLandingPageUrl("spending") ;
 	}
-	
-	$mwbe_featured_dashboard_param = RequestUtil::getNextMWBEDashboardState();
-	$svendor_featured_dashboard_param = RequestUtil::getNextSubvendorDashboardState();
-	$total_subven_link = RequestUtil::getTotalSubvendorsLink();
+	// construct sub vendors drop down links.
+	// call function to get toal subvvendors link
+	$total_subven_link = RequestUtil::getTotalSubvendorsLink();	
+
 	if($total_subven_link !=""){
 		$subvendor_total_link_html = "<li class='no-click'><a href='" . $total_subven_link . "'>Total Sub Vendors</a></li>";
 	}
@@ -147,17 +148,19 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
   		";
 	
 }
-
+// tm_wbe is an exception case for total MWBE link. When prime data is not present but sub data is present for the agency vendor combination.
 if(_getRequestParamValue("tm_wbe") == 'Y'){
 	$svendor_amount = $mwbe_amount;
 }
 
+
+// make amounts zero for non mwbe and indviduals and others mwbe categories.
 if(preg_match('/mwbe\/7/',$_GET['q']) || preg_match('/mwbe\/11/',$_GET['q'])){
 	$mwbe_amount = 0;
 	$svendor_amount  == 0;
 }
 
-
+// dont hightlight mwbe for advanced search pages.
 if(!preg_match('/smnid/',$_GET['q']) && (
 		preg_match('/spending\/transactions/',$_GET['q'])
 		|| preg_match('/contract\/all\/transactions/',$_GET['q'])
@@ -195,6 +198,8 @@ if($featured_dashboard != null){
 }else{
 	$indicator_left = true;
 }
+
+// conditions for making mwbe active.
 if($featured_dashboard == "mp" ||$featured_dashboard == "ms" || ($featured_dashboard != null && $mwbe_amount > 0 ) || RequestUtil::$is_prime_mwbe_amount_zero_sub_mwbe_not_zero ){
 	$mwbeclass = ' active';	
 }
