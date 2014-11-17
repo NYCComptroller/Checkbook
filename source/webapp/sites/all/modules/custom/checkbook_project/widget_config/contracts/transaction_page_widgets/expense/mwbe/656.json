@@ -390,9 +390,9 @@
     magid = (magid == null || magid.length == 0) ?  '0' : magid;
 
     var sUrl = '/dashboard_platform/data_tables/ajax_data/node/'+ (mastercode == 'MA1' ? '666' : '665') +'/magid/'+magid+'/contstatus/A';
-    sUrl = sUrl + ( (year == null || year.length == 0) ?  '' : '/year/'+year);
-    sUrl = sUrl + ( (calyear == null || calyear.length == 0) ?  '' : '/calyear/'+calyear);
-    sUrl = sUrl + ( (yeartype == null || yeartype.length == 0) ?  '' : '/yeartype/'+yeartype);
+    //sUrl = sUrl + ( (year == null || year.length == 0) ?  '' : '/year/'+year);
+    //sUrl = sUrl + ( (calyear == null || calyear.length == 0) ?  '' : '/calyear/'+calyear);
+    //sUrl = sUrl + ( (yeartype == null || yeartype.length == 0) ?  '' : '/yeartype/'+yeartype);
     sUrl = sUrl + ( (contstatus == null || contstatus.length == 0) ?  '' : '/contstatus/'+contstatus);
     sUrl = sUrl + ( (mwbe == null || mwbe.length == 0) ?  '' : '/mwbe/'+mwbe);
    sUrl = sUrl + ( (dashboard == null || dashboard.length == 0) ?  '' : '/dashboard/'+dashboard);
