@@ -102,7 +102,6 @@ echo '<div class=\"chart-right\">
 	}else{
 		$node->widgetConfig->chartTitle = 'Spending by ' . MappingUtil::getCurrenEhtnicityName() .' Share';		
 	}
-	
 	$mwbe_data = array();
 	 foreach ($node->data as $row){
 	 
@@ -157,7 +156,6 @@ echo '<div class=\"chart-right\">
 	$total_mwbe_subven = $mwbe_subven_data['ba'] + $mwbe_subven_data['ha'] + $mwbe_subven_data['aa'] + $mwbe_subven_data['w'] ; 
 	$toal_non_mwbe = $mwbe_data['nm'];
 	
-	
 	$mwbe_filter = _getRequestParamValue('mwbe');
 	
 	$amount_column = 'total_mwbe';
@@ -179,7 +177,6 @@ echo '<div class=\"chart-right\">
 			break;
 		
 	}
-	
 	
 	
 	
@@ -224,7 +221,7 @@ echo '<div class=\"chart-right\">
                     "format": "{point.custom_label}",
                     "crop": false,
                 	"overflow": "none"
-                }             
+                }                            
             }
     },
     "chart" : {"width":480, "marginBottom": 70},
@@ -258,7 +255,6 @@ echo '<div class=\"chart-right\">
     ],
     "title": {"text": ""},
     "yAxis": {
-     	"min":0,
      	"minRange": 0.1,    
         "startOnTick":true,
         "title": {"text": ""},
