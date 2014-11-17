@@ -1881,7 +1881,7 @@ table.dataTable td.childcontracts {
     position: relative;
 }
 td.childcontracts div.sub-table-wrapper {
-    height: 200px;
+    height: 100px;
     position: relative;
 }
 .jspScrollable .jspContainer {
