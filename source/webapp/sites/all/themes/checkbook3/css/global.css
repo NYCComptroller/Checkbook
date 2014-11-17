@@ -2780,7 +2780,9 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
     margin-bottom: 3px;
 }
 
-
+body.page-mwbe-agency-grading .dataTables_scrollBody{
+	overflow:hidden !important;
+}
 body.page-mwbe-agency-grading .checkbook-grading-left .dataTable td div {
     margin-top: 5px;
 }
@@ -2874,3 +2876,6 @@ body.page-mwbe-agency-grading .dataTables_wrapper{
 .contracts-spending-bottom table{
     clear: both;
 }
+
+
+
