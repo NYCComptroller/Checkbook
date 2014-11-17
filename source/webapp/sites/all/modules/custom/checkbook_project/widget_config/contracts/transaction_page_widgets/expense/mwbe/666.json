@@ -40,6 +40,7 @@ $config->dataset = 'checkbook:all_agreement_transactions_cy';
 
 return $parameters;
 ",
+"limit":200,
 "model": {
 "join": {
 "method": "Union"
