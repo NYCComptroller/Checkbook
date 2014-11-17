@@ -875,6 +875,7 @@ class RequestUtil{
     			if(_getRequestParamValue("dashboard") != null){    				
     				$url = preg_replace('/\/dashboard\/[^\/]*/','',$url);    				   				    				    				
     			}
+    			// tm_wbe is an exception case for total MWBE link. When prime data is not present but sub data is present for the agency vendor combination.
 				if(_getRequestParamValue("dashboard") == 'ms' && _getRequestParamValue("mwbe") == '2~3~4~5~9' && _getRequestParamValue("tm_wbe") != 'Y'){
     				$url = preg_replace('/\/mwbe\/[^\/]*/','',$url);
     			}
@@ -897,6 +898,7 @@ class RequestUtil{
     			}    			
     			break;
     		case "subvendor":
+    			// tm_wbe is an exception case for total MWBE link. When prime data is not present but sub data is present for the agency vendor combination.
 				if(self::isDashboardFlowPrimevendor() || _getRequestParamValue("tm_wbe") == 'Y' ){
     				return "Sub Vendors (M/WBE)";
     			}else{    			
@@ -1029,6 +1031,7 @@ class RequestUtil{
     	if(self::get_top_nav_records_count($urlParamMap, $default_params,$table) > 0){
     		$dashboard = "mp";    		
     	}elseif(self::get_top_nav_records_count($urlParamMapSubven, $default_params,$table_subven) > 0){
+    		// tm_wbe is an exception case for total MWBE link. When prime data is not present but sub data is present for the agency vendor combination.  
     		$dashboard = "ms/tm_wbe/Y";    		
     	}else{
     		return "";
