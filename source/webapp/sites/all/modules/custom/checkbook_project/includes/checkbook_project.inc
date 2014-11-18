@@ -739,6 +739,7 @@ function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$par
     $dtsmnid = _getRequestParamValue('dtsmnid');
     $smnid = _getRequestParamValue('smnid');
     $nid = isset($dtsmnid) ? $dtsmnid : $smnid;
+    $current_node_nid = $node->nid;
 
     $magid =  _getRequestParamValue('magid');
     if($smnid == 764 && $magid != null) {
@@ -779,14 +780,17 @@ function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$par
 				break;
 			default:
 				if(_getRequestParamValue('dashboard') == null){
-					$parameters['is_prime_or_sub'] = array('P','S');
+                    //Static Amount for Citywide = Prime Only
+                    if($current_node_nid == 775)
+					    $parameters['is_prime_or_sub'] = array('P');
+                    else
+                        $parameters['is_prime_or_sub'] = array('P','S');
 				}else{
 					$parameters['is_prime_or_sub'] = array('P');
 				}
 				break;
 		}
 	}
-    
     return $parameters;
 }
 
