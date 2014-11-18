@@ -17,7 +17,7 @@
         "vendor_facet":"vendor_name",
         "vendornm_exact":"vendor_name",
         "vendornm":"vendor_name",
-        "year":"year_id","yeartype":"year_type","agency":"agency_id",
+        "year":"year_id","calyear":"year_id","yeartype":"year_type","agency":"agency_id",
         "mcagency":"master_child_contract_agency_id","agencyh":"agency_history_id",
         "mcvendor":"master_child_contract_vendor_id","expcategory":"expenditure_object_id",
         "checkamtr":"check_amount","dept":"department_id","contnum":"reference_document_number",
