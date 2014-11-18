@@ -276,6 +276,7 @@
         agencyIds = document.getElementById('fHideAgencyId').value;
         }
         var oVendorIds = getNamedFilterCriteria('fvendorId');
+        var oVendorNms = getNamedFilterCriteria('fvendorNm');
         var oCategoryIds = getNamedFilterCriteria('fCat' + 'egoryId');
         var oSpendCategoryIds = getNamedFilterCriteria('fSpendCategoryId');
         var oCheckAmount = getNamedFilterCriteria('fCheckAmount');
@@ -292,6 +293,7 @@
 
         cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
         cUrl = adjustUrlParameter(cUrl,'fvendor',oVendorIds);
+        cUrl = adjustUrlParameter(cUrl,'vendornm_exact',oVendorNms);
         cUrl = adjustUrlParameter(cUrl,'expcategory',oCategoryIds);
         cUrl = adjustUrlParameter(cUrl,'category',oSpendCategoryIds );
         cUrl = adjustUrlParameter(cUrl,'checkamtr',oCheckAmount);
