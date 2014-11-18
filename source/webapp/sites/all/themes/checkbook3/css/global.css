@@ -2780,6 +2780,9 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
     margin-bottom: 3px;
 }
 
+body.page-mwbe-agency-grading #section-header{
+    margin-bottom: 0;
+}
 body.page-mwbe-agency-grading .dataTables_scrollBody{
 	overflow:hidden !important;
 }
