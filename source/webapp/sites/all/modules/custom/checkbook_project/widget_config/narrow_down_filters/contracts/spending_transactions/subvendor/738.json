@@ -17,6 +17,10 @@
         if(isset($parameters['disb_vendor_type'])){
             $parameters['disb_vendor_type'] = MappingUtil::getVendorTypeValue($parameters['disb_vendor_type']);
         }
+        $year = $parameters['disb_fiscal_year_id'];
+        if(isset($year)){
+            $parameters['fiscal_year_id'] = $year;
+        }
         $adjustedParameters = $parameters;
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);

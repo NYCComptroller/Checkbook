@@ -527,6 +527,10 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'php_widgets/contract/summary/expense/contract',
             'arguments' => array('node' => NULL)
         ),
+        'sub_contract_summary_expense_contract' => array(
+            'template' => 'php_widgets/contract/summary/expense/sub_contract',
+            'arguments' => array('node' => NULL)
+        ),
         'contract_summary_expense_contract_modification' => array(
             'template' => 'php_widgets/contract/summary/expense/contract_modification',
             'arguments' => array('node' => NULL)
