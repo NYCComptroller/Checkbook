@@ -5,11 +5,12 @@
 	$download_link = "/mwbe_agency_grading_csv/year/" . _getRequestParamValue("year") . "/yeartype/" .  _getRequestParamValue("yeartype") ;
 	
 ?>
-<div class="download_link"><a href="<?php echo $download_link; ?>"><span class="export">Export</span></a></div>
+<div class="download_link" ><a href="<?php echo $download_link; ?>"><span class="export">Export</span></a></div>
 
 <div class="checkbook-grading-left">
-<table id="grading_table">
-	<thead>
+<div class="empty_div11">&nbsp</div>
+<table id="grading_table"  >
+	<thead class="hidden_body" style="display:none" >
 		<tr id="scroll_wrapper_head">
 			<th><div><span>Agency</span></div></th>
 			<th><div><span>Spending Chart</span></div></th>
@@ -17,7 +18,7 @@
 			<th>&nbsp</th>
 		</tr>
 	</thead>
-	<tbody>
+	<tbody class="hidden_body" style="display:none" >
 		<?php 
 			$id = 0;
 			foreach($left_agencies_data as $row){
@@ -49,6 +50,8 @@
 
     var oTable;
     jQuery(document).ready(function() {
+    	jQuery(".hidden_body").toggle();
+
         oTable = jQuery('#grading_table').dataTable(
         		{
         			"bFilter": false,
@@ -98,6 +101,7 @@
 
 
     function fnCustomInitComplete() {
+
         var topSpacing = <?php echo (user_is_logged_in() ? 66 : 0);  ?>
 
         var tableOffsetTop = jQuery('#grading_table').offset().top;
