@@ -166,7 +166,7 @@ $total_spent_todate = $res->data[0]['total_spent_todate'];
     </h4>
     <div class="spent-to-date">
         <?php if(!preg_match('/newwindow/',$_GET['q'])){ ?>
-        <a target="_blank" href="/contract/spending/transactions/agid/<?php echo $ag_id; ?>/status/A/subvendor/all/dashboard/ss/yeartype/C/year/<?php echo _getCurrentYearID();?>/syear/<?php echo _getCurrentYearID();?>/smnid/721/newwindow"><?php echo custom_number_formatter_format($total_spent_todate, 2, "$");?></a>
+        <a class="new_window" href="/contract/spending/transactions/contnum/<?php echo $contract_number; ?>/status/A/dashboard/ss/yeartype/B/year/<?php echo _getCurrentYearID();?>/syear/<?php echo _getCurrentYearID();?>/smnid/721/newwindow"><?php echo custom_number_formatter_format($total_spent_todate, 2, "$");?></a>
         <?php } else {
             echo custom_number_formatter_format($total_spent_todate, 2, "$");?>
         <?php } ?>

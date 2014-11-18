@@ -5,11 +5,13 @@
     "getTotalDataCount":true,
     "defaultParameters":{"type_of_year":"B","document_code.document_code.document_code":"CTA1~CT1","status_flag":"A","minority_type_id":"2~3~4~5~9"},
     "cleanURLParameters":["subvendor","mwbe","year","calyear","agency","yeartype","vendor","status","agid","cagency","cvendor",
-                          "csize","cindustry","awdmethod"],
+                          "csize","cindustry","awdmethod","contnum"],
     "urlParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id",
                    "yeartype":"type_of_year","vendor":"prime_vendor_id","status":"status_flag","subvendor":"vendor_id",
                    "agid":"original_agreement.original_agreement","cagency":"agency_id","cvendor":"prime_vendor_id",
-                   "csize":"award_size_id","cindustry":"industry_type_id","awdmethod":"award_method_id"},
+                   "csize":"award_size_id","cindustry":"industry_type_id","awdmethod":"award_method_id"
+                    ,"contnum":"contract_number.contract_number"
+            },
 "dataset": "checkbook:subven_contracts_coa_aggregates",
 "noDataInitialLoad":true,
 "columns": ["sub_contract_number.sub_contract_number.original_agreement_id","subvendor.subvendor","subvendor.subvendor.legal_name","vendor.vendor","vendor.vendor.legal_name",
@@ -120,7 +122,19 @@ return $footer;
 ",
 "summaryView":{
     "template":"contract_summary_expense_contract",
-    "templateTitle":"Sub Contract Spending Transactions"
+    "templateTitle":"Sub Contract Spending Transactions",
+    "disable_limit":true,
+    "preprocess_data":"
+                       foreach($node->data as $key => $node_data){
+                            $temp['original_amount_sum'] += $node_data['original_amount_sum'];
+                            $temp['current_amount_sum'] += $node_data['current_amount_sum'];
+                            $temp['spending_amount_sum'] += $node_data['spending_amount_sum'];
+                        }
+                        $node->data[0]['original_amount_sum'] = $temp['original_amount_sum'];
+                        $node->data[0]['current_amount_sum'] = $temp['current_amount_sum'];
+                        $node->data[0]['spending_amount_sum'] = $temp['spending_amount_sum'];
+
+"
 },
 "widgetTitle":"Contracts",
 "table_title":"",
