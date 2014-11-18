@@ -288,7 +288,7 @@
     if(!preg_match('/MMA/',_getRequestParamValue('doctype') ) and !preg_match('/MA/',_getRequestParamValue('doctype') )){
         $adjustDataTableOptions->fnInitComplete = '##function () { new FixedColumns( oTable, {
             \"iLeftColumns\": 1,
-            \"iLeftWidth\": 50
+            \"iLeftWidth\": 210
         } );}##';
     }
     ",

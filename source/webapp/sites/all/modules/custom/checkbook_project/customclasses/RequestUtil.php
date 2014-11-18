@@ -899,7 +899,7 @@ class RequestUtil{
     			break;
     		case "subvendor":
     			// tm_wbe is an exception case for total MWBE link. When prime data is not present but sub data is present for the agency vendor combination.
-				if(self::isDashboardFlowPrimevendor() ||  RequestUtil::$is_prime_mwbe_amount_zero_sub_mwbe_not_zero ||_getRequestParamValue("tm_wbe") == 'Y' ){
+				if(self::isDashboardFlowPrimevendor()  ||_getRequestParamValue("tm_wbe") == 'Y' ){
     				return "Sub Vendors (M/WBE)";
     			}else{    			
     				return "Sub Vendors";
