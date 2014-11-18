@@ -204,16 +204,6 @@
                     ]
                 },
                 {
-                    "name": "department",
-                    "levels": [
-                        {
-                            "name": "department",
-                            "datasetName": "department",
-                            "sourceColumnName": "department_id"
-                        }
-                    ]
-                },
-                {
                     "name": "vendor",
                     "levels": [
                         {
@@ -267,25 +257,6 @@
                         {
                             "name": "vendor_type",
                             "sourceColumnName": "vendor_type"
-                        }
-                    ]
-                },
-                {
-                    "name": "expenditure_object",
-                    "levels": [
-                        {
-                            "name": "expenditure_object",
-                            "datasetName": "expenditure_object",
-                            "sourceColumnName": "expenditure_object_id"
-                        }
-                    ]
-                },
-                {
-                    "name": "document_id",
-                    "levels": [
-                        {
-                            "name": "document_id",
-                            "sourceColumnName": "document_id"
                         }
                     ]
                 },
