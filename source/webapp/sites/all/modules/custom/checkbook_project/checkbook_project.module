@@ -84,8 +84,8 @@ function checkbook_project_token_info(){
   $info['tokens']['custom_checkbook']['year_string'] = array(
     'name' => t('Year String'),
     'description' => t("The Year String for URL"),
-  );  
-   
+  );
+
   return $info;
 }
 
@@ -149,8 +149,6 @@ function checkbook_project_menu(){
 
   	return $items;
 }
-
-
 
 /**
  * Hook to load custom project specific utility functions during bootstrap..
@@ -216,6 +214,10 @@ function checkbook_project_theme($existing, $type, $theme, $path){
         ),
         'spending_transaction_total_amount' => array(
             'template' => 'php_widgets/spending/transaction_total_amount',
+            'arguments' => array('node' => NULL)
+        ),
+        'spending_transaction_ytd_spending' => array(
+            'template' => 'php_widgets/spending/transaction_ytd_spending',
             'arguments' => array('node' => NULL)
         ),
         'spending_contract_transactions_narrow_down_filters' => array(
