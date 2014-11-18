@@ -26,7 +26,7 @@
         }
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-            $adjustedParameters['vendor.vendor'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+           $adjustedParameters['vendornm.vendornm'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
             return $adjustedParameters;
         }
         return $parameters;
