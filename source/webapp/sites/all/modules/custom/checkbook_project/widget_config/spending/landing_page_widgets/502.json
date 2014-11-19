@@ -51,9 +51,13 @@
     return $footer;
 ",
 "derivedColumns": {
+        "agency_name_formatted": {
+            "type": "expression2",
+            "expression": "_get_tooltip_markup($row['agency_name'],36)"
+        },
         "agency_name_link": {
             "type": "expression2",
-            "expression": "'<a href=\"/spending_landing' .  _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . '/agency/'. $row[agency_id] .'\">' . $row[agency_name] . '</a>'"
+            "expression": "'<a href=\"/spending_landing' .  _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . _checkbook_append_url_params() . '/agency/'. $row[agency_id] .'\">' . $row[agency_name_formatted] . '</a>'"
         },
         "vendor_name_formatted": {
             "type": "expression2",
@@ -117,7 +121,7 @@
 "aoColumns": [
           { "bSortable": true,"sClass":"text","sWidth":"100px","asSorting": ["asc","desc"]},
           { "bSortable": false,"sClass":"text","sWidth":"210px"},
-          { "bSortable": false,"sClass":"text","sWidth":"250px"},
+          { "bSortable": false,"sClass":"text pad-left","sWidth":"250px"},
           { "bSortable": false,"sClass":"text","sWidth":"210px"},
           { "sClass":"number","asSorting": [ "desc","asc" ]},
           { "bSortable": false,"sWidth":"15px" }],
