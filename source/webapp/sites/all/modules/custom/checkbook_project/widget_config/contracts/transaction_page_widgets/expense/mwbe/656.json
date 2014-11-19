@@ -101,7 +101,7 @@
     "derivedColumns": {
         "child_contrats_link":{
             "type": "expression2",
-            "expression": "ContractURLHelper::prepareExpandLink($row, $node,'has_mwbe_children')"
+            "expression": "ContractURLHelper::prepareExpandLink($row, $node)"
         },
         "contract_link": {
             "type": "expression2",
