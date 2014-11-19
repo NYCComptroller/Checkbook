@@ -9,6 +9,16 @@
                     "key":true
                 }
             ]
+        },
+        "contracts_all_spending_transactions": {
+            "datasourceName": "main",
+            "source": "contracts_all_spending_transactions",
+            "columns":[
+                {
+                    "name":"disbursement_line_item_id",
+                    "key":true
+                }
+            ]
         }
     },
     "cubes":   {
@@ -81,7 +91,7 @@
                             "sourceColumnName": "disb_expenditure_object_name"
                         }
                     ]
-                },                
+                },
                 {
                     "name": "dept",
                     "levels": [
@@ -93,7 +103,154 @@
                     ]
                 },
                 {
-                	"name": "deptnm",
+                    "name": "deptnm",
+                    "levels": [
+                        {
+                            "name": "deptnm",
+                            "sourceColumnName": "disb_department_short_name"
+                        }
+                    ]
+                },
+                {
+                    "name": "category",
+                    "levels": [
+                        {
+                            "name": "category",
+                            "datasetName": "category",
+                            "sourceColumnName": "disb_spending_category_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "document_code",
+                    "levels": [
+                        {
+                            "name": "document_code",
+                            "datasetName": "ref_document_code",
+                            "sourceColumnName": "document_code_id"
+                        }
+                    ]
+                }
+            ],
+            "measures": {
+                "txcount": {
+                    "function": "COUNT(*)"
+                },
+                "g100m_count": {
+                    "function": "SUM(CASE WHEN COALESCE(disb_check_amount,0) > 100000000 THEN 1 ELSE 0 END)"
+                },
+                "g50m_le100m_count": {
+                    "function": "SUM(CASE WHEN COALESCE(disb_check_amount,0) > 50000000 AND COALESCE(disb_check_amount,0) <= 100000000 THEN 1 ELSE 0 END)"
+                },
+                "g25m_le50m_count": {
+                    "function": "SUM(CASE WHEN COALESCE(disb_check_amount,0) > 25000000 AND COALESCE(disb_check_amount,0) <= 50000000 THEN 1 ELSE 0 END)"
+                },
+                "g10m_le25m_count": {
+                    "function": "SUM(CASE WHEN COALESCE(disb_check_amount,0) > 10000000 AND COALESCE(disb_check_amount,0) <= 25000000 THEN 1 ELSE 0 END)"
+                },
+                "ge1m_le10m_count": {
+                    "function": "SUM(CASE WHEN COALESCE(disb_check_amount,0) >= 1000000 AND COALESCE(disb_check_amount,0) <= 10000000 THEN 1 ELSE 0 END)"
+                },
+                "less1m_count": {
+                    "function": "SUM(CASE WHEN COALESCE(disb_check_amount,0) < 1000000 THEN 1 ELSE 0 END)"
+                },
+                "check_amount_sum": {
+                    "function": "SUM(COALESCE(disb_check_amount,0))"
+                }
+            }
+        },
+        "contracts_all_spending_transactions": {
+            "sourceDatasetName": "contracts_all_spending_transactions",
+            "dimensions": [
+                {
+                    "name": "minority_type",
+                    "levels": [
+                        {
+                            "name": "minority_type",
+                            "datasetName": "minority_type",
+                            "sourceColumnName": "disb_minority_type_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "agency",
+                    "levels": [
+                        {
+                            "name": "agency",
+                            "datasetName": "agency",
+                            "sourceColumnName": "disb_agency_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "vendor",
+                    "levels": [
+                        {
+                            "name": "vendor",
+                            "datasetName": "vendor",
+                            "sourceColumnName": "disb_vendor_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "vendornm",
+                    "levels": [
+                        {
+                            "name": "vendornm",
+                            "sourceColumnName": "disb_vendor_name"
+                        }
+                    ]
+                },
+                {
+                    "name": "prime_vendor",
+                    "levels": [
+                        {
+                            "name": "prime_vendor",
+                            "datasetName": "prime_vendor",
+                            "sourceColumnName": "prime_vendor_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "vendor_type",
+                    "levels": [
+                        {
+                            "name": "vendor_type",
+                            "sourceColumnName": "disb_vendor_type"
+                        }
+                    ]
+                },
+                {
+                    "name": "expenditure_object",
+                    "levels": [
+                        {
+                            "name": "expenditure_object",
+                            "datasetName": "expenditure_object",
+                            "sourceColumnName": "disb_expenditure_object_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "expenditure_object_nm",
+                    "levels": [
+                        {
+                            "name": "expenditure_object_nm",
+                            "sourceColumnName": "disb_expenditure_object_name"
+                        }
+                    ]
+                },
+                {
+                    "name": "dept",
+                    "levels": [
+                        {
+                            "name": "dept",
+                            "datasetName": "department",
+                            "sourceColumnName": "disb_department_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "deptnm",
                     "levels": [
                         {
                             "name": "deptnm",
@@ -154,6 +311,14 @@
         "contracts_mwbe_spending_transactions__ref_document_code": [
             {"datasetName": "contracts_mwbe_spending_transactions", "columnNames": ["document_code_id"]},
             {"datasetName": "ref_document_code", "columnNames": ["document_code_id"]}
+        ],
+        "contracts_all_spending_transactions__ref_document_code": [
+            {"datasetName": "contracts_all_spending_transactions", "columnNames": ["document_code_id"]},
+            {"datasetName": "ref_document_code", "columnNames": ["document_code_id"]}
+        ],
+        "contracts_all_spending_transactions__prime_vendor": [
+            {"datasetName": "contracts_all_spending_transactions", "columnNames": ["prime_vendor_id"]},
+            {"datasetName": "prime_vendor", "columnNames": ["vendor_id"]}
         ]
     }
 }
