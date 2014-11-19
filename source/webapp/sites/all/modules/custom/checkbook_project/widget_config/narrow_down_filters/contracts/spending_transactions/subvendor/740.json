@@ -5,7 +5,9 @@
     "limit":10,
     "startWith":0,
     "columns":["vendor_type.vendor_type", "txcount"],
-    "urlParamMap":{"doctype":"document_code.document_code.document_code"}  ,
+    "urlParamMap":{
+        "doctype":"document_code.document_code.document_code"
+    },
     "orderBy":"-txcount",
     "getTotalDataCount":true,
     "facetPager":true,

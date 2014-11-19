@@ -15,7 +15,7 @@
     "cindustry":"industry_type_id","doctype":"document_code@checkbook:ref_document_code",
     "month":"disb_check_eft_issued_cal_month_id",
     "mwbe":"disb_minority_type_id","industry":"industry_type_id",
-    "cvendor":"disb_vendor_id","vendor":"disb_vendor_id","subvendor":"disb_vendor_id","vendortype":"disb_vendor_type",
+    "cvendor":"prime_vendor_id","vendor":"prime_vendor_id","subvendor":"disb_vendor_id","vendortype":"disb_vendor_type",
     "vendornm":"disb_vendor_name","vendor_facet":"disb_vendor_name","vendornm_exact":"disb_vendor_name",
     "contnum":"disb_contract_number"
 
@@ -71,7 +71,7 @@
     },
     "is_sub_vendor": {
         "type":"expression2",
-        "expression":"(_getRequestParamValue('cvendor') != null) ? 'No' : $row[vendor_type_calculated]"
+        "expression":"(preg_match('/S/', $row[disb_vendor_type])) ? 'Yes' : 'No'"
     },
     "agency_name_formatted":{
         "type":"expression2",
