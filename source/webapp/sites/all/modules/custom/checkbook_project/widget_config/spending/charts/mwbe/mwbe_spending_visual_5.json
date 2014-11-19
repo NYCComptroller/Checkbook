@@ -20,12 +20,7 @@
                   "labelAlias": "M/WBE Spending",
                   "columnType": "number",
                   "formatType": "amount"
-             },  
-             {
-                  "labelAlias": "",
-                  "formatType": "padding",
-                  "sWidth":"150px"
-             }          
+             }   
         ]
 },
 "no_results_content":"No Results Found",
