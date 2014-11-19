@@ -121,7 +121,17 @@
         $node->widgetConfig->chartConfig->series[0]->data = $seriesPreviousData;
         $node->widgetConfig->chartConfig->series[1]->data = $seriesCurrentData;
         $node->widgetConfig->chartConfig->xAxis->categories = $categories;
-        $node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Sub Vendors ' . RequestUtil::getSpendingCategoryName('Total Spending');
+
+
+        $categoryId = _getRequestParamValue('category');
+        if(isset($categoryId)){
+            $categoryDetails = SpendingUtil::getSpendingCategoryDetails($categoryId,'display_name');
+            if(is_array($categoryDetails)){
+                $spend_cat = $categoryDetails[0]['display_name'];
+            }
+        }
+        else $spend_cat = 'Total Spending';
+        $node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Sub Vendors ' . $spend_cat;
         if($year == 2010){
             foreach($node->data as $row){
                 if($row['previous_check_amount_sum'] = null);
