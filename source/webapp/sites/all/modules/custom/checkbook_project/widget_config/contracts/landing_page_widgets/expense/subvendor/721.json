@@ -29,6 +29,10 @@
     }
     return $adjustedParameters;
 ",
+"preProcessConfiguration":"
+if(_getRequestParamValue('contnum') == null)
+    $node->widgetConfig->summaryView->template = 'sub_contract_summary_expense_contract';
+",
 "limit":5,
 "enableExpand":true,
 "derivedColumns": {
@@ -121,18 +125,18 @@ $footer = \"<a class='show-details bottomContainerReload' href='$url' style='dis
 return $footer;
 ",
 "summaryView":{
-    "template":"sub_contract_summary_expense_contract",
+    "template":"contract_summary_expense_contract",
     "templateTitle":"Sub Contract Spending Transactions",
     "disable_limit":true,
     "preprocess_data":"
-                       foreach($node->data as $key => $node_data){
-                            $temp['original_amount_sum'] += $node_data['original_amount_sum'];
-                            $temp['current_amount_sum'] += $node_data['current_amount_sum'];
-                            $temp['spending_amount_sum'] += $node_data['spending_amount_sum'];
-                        }
-                        $node->data[0]['original_amount_sum'] = $temp['original_amount_sum'];
-                        $node->data[0]['current_amount_sum'] = $temp['current_amount_sum'];
-                        $node->data[0]['spending_amount_sum'] = $temp['spending_amount_sum'];
+    foreach($node->data as $key => $node_data){
+    $temp['original_amount_sum'] += $node_data['original_amount_sum'];
+    $temp['current_amount_sum'] += $node_data['current_amount_sum'];
+    $temp['spending_amount_sum'] += $node_data['spending_amount_sum'];
+    }
+    $node->data[0]['original_amount_sum'] = $temp['original_amount_sum'];
+    $node->data[0]['current_amount_sum'] = $temp['current_amount_sum'];
+    $node->data[0]['spending_amount_sum'] = $temp['spending_amount_sum'];
 "
 },
 "widgetTitle":"Contracts",
