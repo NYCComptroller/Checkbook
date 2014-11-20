@@ -23,88 +23,103 @@ return $header;
 ,"award_method_name","revised_start_date","revised_end_date","board_award_number","tracking_number","original_or_modified","document_code@checkbook:ref_document_code","original_agreement_id","industry_type_name@checkbook:industry_type","dollar_difference","percent_difference","original_maximum_amount"],
 "caption":"",
 "derivedColumns": {
-"formatted__maximum_amount": {
-"type": "expression2",
-"expression": "custom_number_formatter_basic_format($row['revised_maximum_amount'])"
-},
-"formatted__original_maximum_amount": {
-"type": "expression2",
-"expression": "custom_number_formatter_basic_format($row['original_maximum_amount'])"
-},
-"parent_contract_link": {
-"type": "expression2",
-"expression": "empty($row['fms_parent_contract_number']) ? '' : $row['fms_parent_contract_number']"
-},
-"formatted__original_or_modified": {
-"type": "expression2",
-"expression": " $row['original_or_modified'] == 'N' ? 'Original' : 'Modified'; "
-},
-"purpose_formatted": {
-"type": "expression2",
-"expression": "_get_tooltip_markup($row['description'],30)"
-},
-"contract_link": {
-"type": "expression2",
-"expression": "_pending_contracts_link_contract_details($row[fms_contract_number],$row[original_agreement_id],$row['document_code@checkbook:ref_document_code'],$row[contract_number],$row[document_version])"
-},
-"award_method_formatted": {
-"type": "expression2",
-"expression": "_get_tooltip_markup($row['award_method_name'],40)"
-},
-"contract_type_formatted": {
-"type": "expression2",
-"expression": "_get_tooltip_markup($row['contract_type_name'],40)"
-},
-"agency_formatted": {
-"type": "expression2",
-"expression": "_get_tooltip_markup($row['document_agency_name'],34)"
-},
-"vendor_formatted": {
-"type": "expression2",
-"expression": "_get_tooltip_markup($row['vendor_legal_name'],34)"
-},
-"industry_name_formatted": {
-"type": "expression2",
-"expression": "_get_tooltip_markup($row['industry_type_name@checkbook:industry_type'],30)"
-},
-"formatted_dollar_diff": {
-"type": "expression2",
-"expression": "custom_number_formatter_basic_format($row['dollar_difference'])"
-},
-"formatted_percent_diff": {
-"type": "expression2",
-"expression": "round($row['percent_difference'],2) . '%'"
-},
-"formatted_minority_name_link": {
-"type": "expression2",
-"expression": "ContractUtil::get_mwbe_category_url($row['minority_type_id'])"
-},
-"formatted_minority_name": {
-"type": "expression2",
-"expression": "MappingUtil::getMinorityCategoryById($row['minority_type_id'])"
-}
+    "formatted__maximum_amount": {
+        "type": "expression2",
+        "expression": "custom_number_formatter_basic_format($row['revised_maximum_amount'])"
+    },
+    "formatted__original_maximum_amount": {
+        "type": "expression2",
+        "expression": "custom_number_formatter_basic_format($row['original_maximum_amount'])"
+    },
+    "parent_contract_link": {
+        "type": "expression2",
+        "expression": "empty($row['fms_parent_contract_number']) ? '' : $row['fms_parent_contract_number']"
+    },
+    "formatted__original_or_modified": {
+        "type": "expression2",
+        "expression": " $row['original_or_modified'] == 'N' ? 'Original' : 'Modified'; "
+    },
+    "purpose_formatted": {
+        "type": "expression2",
+        "expression": "_get_tooltip_markup($row['description'],40)"
+    },
+    "contract_link": {
+        "type": "expression2",
+        "expression": "_pending_contracts_link_contract_details($row[fms_contract_number],$row[original_agreement_id],$row['document_code@checkbook:ref_document_code'],$row[contract_number],$row[document_version])"
+    },
+    "award_method_formatted": {
+        "type": "expression2",
+        "expression": "_get_tooltip_markup($row['award_method_name'],40)"
+    },
+    "contract_type_formatted": {
+        "type": "expression2",
+        "expression": "_get_tooltip_markup($row['contract_type_name'],40)"
+    },
+    "agency_formatted": {
+        "type": "expression2",
+        "expression": "_get_tooltip_markup($row['document_agency_name'],34)"
+    },
+    "vendor_formatted": {
+        "type": "expression2",
+        "expression": "_get_tooltip_markup($row['vendor_legal_name'],34)"
+    },
+    "industry_name_formatted": {
+        "type": "expression2",
+        "expression": "_get_tooltip_markup($row['industry_type_name@checkbook:industry_type'],30)"
+    },
+    "formatted_dollar_diff": {
+        "type": "expression2",
+        "expression": "custom_number_formatter_basic_format($row['dollar_difference'])"
+    },
+    "formatted_percent_diff": {
+        "type": "expression2",
+        "expression": "round($row['percent_difference'],2) . '%'"
+    },
+    "formatted_minority_name_link": {
+        "type": "expression2",
+        "expression": "ContractUtil::get_mwbe_category_url($row['minority_type_id'])"
+    },
+    "formatted_minority_name": {
+        "type": "expression2",
+        "expression": "MappingUtil::getMinorityCategoryById($row['minority_type_id'])"
+    },
+    "sub_contract_id": {
+        "type": "expression2",
+        "expression": "'N/A'"
+    },
+    "formatted_is_sub_vendor": {
+        "type": "expression2",
+        "expression": "'No'"
+    },
+    "formatted_associated_vendor": {
+        "type": "expression2",
+        "expression": "'N/A'"
+    }
 },
 "table_columns": [
-{"labelAlias": "contract_id","column": "contract_link","sortSourceColumn":"contract_number"},
-{"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description"},
-{"labelAlias": "recv_date","column": "cif_received_date"},
-{"labelAlias": "vendor_name","column": "vendor_formatted","sortSourceColumn":"vendor_legal_name"},
-{"labelAlias": "current_amount","column": "formatted__maximum_amount","sortSourceColumn":"revised_maximum_amount","headerClass":"centrig"},
-{"labelAlias": "original_amount","column": "formatted__original_maximum_amount","sortSourceColumn":"original_maximum_amount","headerClass":"centrig"},
-{"labelAlias": "start_date","column": "revised_start_date"},
-{"labelAlias": "end_date","column": "revised_end_date"},
-{"labelAlias": "dollar_diff","column": "formatted_dollar_diff","sortSourceColumn":"dollar_difference","headerClass":"centrig"},
-{"labelAlias": "percent_diff","column": "formatted_percent_diff","sortSourceColumn":"percent_difference","headerClass":"centrig"},
-{"labelAlias": "version","column": "document_version","headerClass":"centrig fifty"},
-{"labelAlias": "fms_doc_id","column":"parent_contract_link","sortSourceColumn":"fms_parent_contract_number"},
-{"labelAlias": "contract_agency","column": "agency_formatted","sortSourceColumn":"document_agency_name"},
-{"labelAlias": "contract_type","column": "contract_type_formatted","sortSourceColumn":"contract_type_name"},
-{"labelAlias": "orig_or_mod","column": "formatted__original_or_modified","sortSourceColumn":"original_or_modified","exportColumn":"formatted__original_or_modified"},
-{"labelAlias": "award_method","column": "award_method_formatted","sortSourceColumn":"award_method_name"},
-{"labelAlias": "contract_industry","column": "industry_name_formatted","sortSourceColumn":"industry_type_name@checkbook:industry_type"},
-{"labelAlias": "pin","column": "tracking_number"},
-{"labelAlias": "apt_pin","column": "board_award_number"},
-{"labelAlias": "mwbe_category","column":"formatted_minority_name_link","sortSourceColumn": "minority_type_name","exportColumn":"minority_type_name"}
+    {"labelAlias": "contract_id","column": "contract_link","sortSourceColumn":"contract_number"},
+    {"labelAlias": "sub_contract_reference_id","column": "sub_contract_id"},
+    {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description"},
+    {"labelAlias": "recv_date","column": "cif_received_date"},
+    {"labelAlias": "vendor_name","column": "vendor_formatted","sortSourceColumn":"vendor_legal_name"},
+    {"labelAlias": "sub_vendor_name","column":"formatted_is_sub_vendor","sortSourceColumn": "is_prime_or_sub","exportColumn":"formatted_is_sub_vendor"},
+    {"labelAlias": "associated_prime_vendor","column": "formatted_associated_vendor","sortSourceColumn":"prime_vendor_name"},
+    {"labelAlias": "current_amount","column": "formatted__maximum_amount","sortSourceColumn":"revised_maximum_amount","headerClass":"centrig"},
+    {"labelAlias": "original_amount","column": "formatted__original_maximum_amount","sortSourceColumn":"original_maximum_amount","headerClass":"centrig"},
+    {"labelAlias": "start_date","column": "revised_start_date"},
+    {"labelAlias": "end_date","column": "revised_end_date"},
+    {"labelAlias": "dollar_diff","column": "formatted_dollar_diff","sortSourceColumn":"dollar_difference","headerClass":"centrig"},
+    {"labelAlias": "percent_diff","column": "formatted_percent_diff","sortSourceColumn":"percent_difference","headerClass":"centrig"},
+    {"labelAlias": "version","column": "document_version","headerClass":"centrig fifty"},
+    {"labelAlias": "fms_doc_id","column":"parent_contract_link","sortSourceColumn":"fms_parent_contract_number"},
+    {"labelAlias": "contract_agency","column": "agency_formatted","sortSourceColumn":"document_agency_name"},
+    {"labelAlias": "contract_type","column": "contract_type_formatted","sortSourceColumn":"contract_type_name"},
+    {"labelAlias": "orig_or_mod","column": "formatted__original_or_modified","sortSourceColumn":"original_or_modified","exportColumn":"formatted__original_or_modified"},
+    {"labelAlias": "award_method","column": "award_method_formatted","sortSourceColumn":"award_method_name"},
+    {"labelAlias": "contract_industry","column": "industry_name_formatted","sortSourceColumn":"industry_type_name@checkbook:industry_type"},
+    {"labelAlias": "pin","column": "tracking_number"},
+    {"labelAlias": "apt_pin","column": "board_award_number"},
+    {"labelAlias": "mwbe_category","column":"formatted_minority_name_link","sortSourceColumn": "minority_type_name","exportColumn":"minority_type_name"}
 ],
 "adjustParameters":"
 if(isset($parameters['vendor_type'])){
@@ -138,7 +153,7 @@ unset($adjustDataTableOptions->aoColumns[$key]);
 }
 }
 if($smnid == 481 ||  $smnid == 362 || $smnid == 445){
-$adjustDataTableOptions->aaSorting[0][0] = 8;
+$adjustDataTableOptions->aaSorting[0][0] = 7;
 }
 $node->widgetConfig->table_columns = array_values($node->widgetConfig->table_columns);
 $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoColumns);
@@ -158,93 +173,32 @@ $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoCol
 "sProcessing": "<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
 },
 "aoColumns": [
-{
-"sClass": "text",
-"sWidth": "170px","asSorting": [ "asc","desc" ]
-},
-{
-"sClass": "text",
-"sWidth": "155px","asSorting": [ "asc","desc" ]
-},
-{
-"sClass": "text pad-left",
-"sWidth": "115px","asSorting": [ "asc","desc" ]
-},
-{
-"sClass": "text",
-"sWidth": "200px","asSorting": [ "desc","asc" ]
-},
-{
-"sClass": "number",
-"sWidth": "140px","asSorting": [ "desc","asc" ]
-},
-{
-"sClass": "number",
-"sWidth": "140px","asSorting": [ "desc","asc" ]
-},
-{
-"sClass": "text  number-left pad-left",
-"sWidth": "100px","asSorting": [ "asc","desc" ]
-},
-{
-"sClass": "text number-left",
-"sWidth": "90px","asSorting": [ "desc","asc" ]
-},
-{
-"sClass": "text number-left",
-"sWidth": "90px","asSorting": [ "asc","desc" ]
-},
-{   "sClass":"number",
-"sWidth":"75px","asSorting": [ "desc","asc" ]
-},
-{
-"sClass": "number",
-"sWidth": "100px","asSorting": [ "asc","desc" ]
-},
-{
-"sClass": "text",
-"sWidth": "155px","asSorting": [ "asc","desc" ]
-},
-{
-"sClass": "text pad-left",
-"sWidth": "175px","asSorting": [ "asc","desc" ]
-},
-{
-"sClass": "text",
-"sWidth": "155px","asSorting": [ "asc","desc" ]
-},
-{
-"sClass": "text",
-"sWidth": "155px","asSorting": [ "asc","desc" ]
-},
-{
-"sClass": "text",
-"sWidth": "155px","asSorting": [ "asc","desc" ]
-},
-{
-"sClass": "text",
-"sWidth": "155px","asSorting": [ "asc","desc" ]
-},
-{
-"sClass": "text",
-"sWidth": "360px","asSorting": [ "asc","desc" ]
-},
-{
-"sClass": "text",
-"sWidth": "180px","asSorting": [ "asc","desc" ]
-},
-{
-"sClass": "text",
-"sWidth": "180px","asSorting": [ "asc","desc" ]
-}
+    {"sClass": "text","sWidth": "170px","asSorting": [ "asc","desc" ]},
+    {"sClass":"number", "sWidth":"120px","asSorting": [ "asc","desc" ]},
+    {"sClass": "text pad-left","sWidth": "155px","asSorting": [ "asc","desc" ]},
+    {"sClass": "text pad-left","sWidth": "115px","asSorting": [ "asc","desc" ]},
+    {"sClass": "text","sWidth": "200px","asSorting": [ "desc","asc" ]},
+    {"sClass":"number pad-left","sWidth":"50px","asSorting": [ "asc","desc" ]},
+    {"sClass":"number pad-left","sWidth":"150px","asSorting": [ "asc","desc" ]},
+    {"sClass": "number","sWidth": "120px","asSorting": [ "desc","asc" ]},
+    {"sClass": "number","sWidth": "120px","asSorting": [ "desc","asc" ]},
+    {"sClass": "text  number-left pad-left","sWidth": "100px","asSorting": [ "asc","desc" ]},
+    {"sClass": "text number-left","sWidth": "90px","asSorting": [ "desc","asc" ]},
+    {"sClass": "text number-left","sWidth": "90px","asSorting": [ "asc","desc" ]},
+    {"sClass":"number","sWidth":"75px","asSorting": [ "desc","asc" ]},
+    {"sClass": "number","sWidth": "100px","asSorting": [ "asc","desc" ]},
+    {"sClass": "text","sWidth": "155px","asSorting": [ "asc","desc" ]},
+    {"sClass": "text pad-left","sWidth": "175px","asSorting": [ "asc","desc" ]},
+    {"sClass": "text","sWidth": "155px","asSorting": [ "asc","desc" ]},
+    {"sClass": "text","sWidth": "155px","asSorting": [ "asc","desc" ]},
+    {"sClass": "text","sWidth": "155px","asSorting": [ "asc","desc" ]},
+    {"sClass": "text","sWidth": "155px","asSorting": [ "asc","desc" ]},
+    {"sClass": "text","sWidth": "360px","asSorting": [ "asc","desc" ]},
+    {"sClass": "text","sWidth": "180px","asSorting": [ "asc","desc" ]},
+    {"sClass": "text","sWidth": "180px","asSorting": [ "asc","desc" ]}
 ],
 "bInfo": true,
-"aaSorting": [
-[
-4,
-"desc"
-]
-],
+"aaSorting": [[7,"desc"]],
 "sScrollX": "100%",
 "bScrollCollapse": true,
 "fnInitComplete": "##function () { new FixedColumns( oTable, {
