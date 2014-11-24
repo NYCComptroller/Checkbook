@@ -2044,6 +2044,10 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
     width: 340px;
     padding-top: 20px;
 }
+/*NYCCHKBK-4746*/
+div.bottomContainer #contract-details h2.contract-title {
+    white-space: nowrap;
+}
 .contract-information .original-amount{
     margin-right: 0;
 }
