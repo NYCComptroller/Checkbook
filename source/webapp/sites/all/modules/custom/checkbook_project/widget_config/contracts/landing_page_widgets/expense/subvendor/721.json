@@ -139,7 +139,7 @@ return $footer;
     $node->data[0]['spending_amount_sum'] = $temp['spending_amount_sum'];
 "
 },
-"widgetTitle":"Contracts",
+"widgetTitle":"Sub Contracts",
 "table_title":"",
 "table_columns": [
     {
