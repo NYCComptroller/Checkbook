@@ -4,8 +4,23 @@
 "no_results_content":"No Results Found",
 "getTotalDataCount":true,
 "defaultParameters":{"type_of_year":"B","document_code.document_code.document_code":"CTA1~CT1","status_flag":"A"},
-"cleanURLParameters":["mwbe","year","calyear","agency","yeartype","vendor","status","agid","cagency","cvendor","csize","cindustry","awdmethod"],
- "urlParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","vendor":"vendor_id","status":"status_flag","agid":"original_agreement.original_agreement","cagency":"agency_id","cvendor":"vendor_id","csize":"award_size_id","cindustry":"industry_type_id","awdmethod":"award_method_id"},
+"cleanURLParameters":["mwbe","year","calyear","agency","yeartype","vendor","status","agid","cagency","cvendor","csize","cindustry","awdmethod","contnum"],
+ "urlParamMap":{
+     "mwbe":"minority_type_id",
+     "calyear":"fiscal_year_id",
+     "year":"fiscal_year_id",
+     "agency":"agency_id",
+     "yeartype":"type_of_year",
+     "vendor":"vendor_id",
+     "status":"status_flag",
+     "agid":"original_agreement.original_agreement",
+     "cagency":"agency_id",
+     "cvendor":"vendor_id",
+     "csize":"award_size_id",
+     "cindustry":"industry_type_id",
+     "awdmethod":"award_method_id",
+    "contnum":"contract_number.contract_number"
+ },
 "preProcessConfiguration":"
     $node->is_mwbe = _checkbook_check_is_mwbe_page();
 if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:mwbe_contracts_coa_aggregates';
