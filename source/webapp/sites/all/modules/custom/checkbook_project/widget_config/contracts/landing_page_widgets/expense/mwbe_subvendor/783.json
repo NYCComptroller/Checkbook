@@ -23,13 +23,17 @@ return $adjustedParameters;
 "limit":5,
 "enableExpand":true,
 "derivedColumns": {
+"current_prime_minority_type_id": {
+"type": "expression2",
+"expression": "$row['prime_minority_type_prime_minority_type']"
+},
 "vendor_name_formatted": {
 "type": "expression2",
 "expression": "_get_tooltip_markup($row['vendor_vendor_legal_name'],60)"
 },
 "vendor_name_link": {
 "type": "expression2",
-"expression": "'<a href=\"/contracts_landing' .  ContractUtil::get_contracts_vendor_link($row[vendor_vendor],_getRequestParamValue('year'),$row[yeartype_yeartype]) .  '?expandBottomCont=true\">' .$row[vendor_name_formatted]. '</a>'"
+"expression": "'<a href=\"/contracts_landing' .  ContractUtil::get_contracts_vendor_link_by_mwbe_category($row) .  '?expandBottomCont=true\">' .$row[vendor_name_formatted]. '</a>'"
 } ,
 "spent_amount_no_link": {
 "type": "expression2",
