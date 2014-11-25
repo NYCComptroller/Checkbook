@@ -12,7 +12,7 @@
 "dataset": "checkbook:subven_contracts_coa_aggregates",
 "noDataInitialLoad":true,
 "columns": ["prime_minority_type.prime_minority_type","vendor.vendor","total_contracts","vendor.vendor.legal_name","original_amount_sum","current_amount_sum",
-            "yeartype.yeartype","spending_amount_sum"],
+            "yeartype.yeartype","spending_amount_sum","prime_minority_type.prime_minority_type"],
 "adjustParameters":"
     if(_getRequestParamValue('dashboard') == 'ss'){
         unset($parameters['prime_minority_type_id']);
@@ -26,14 +26,18 @@ return $adjustedParameters;
 "limit":5,
 "enableExpand":true,
 "derivedColumns": {
+    "current_prime_minority_type_id": {
+        "type": "expression2",
+        "expression": "$row['prime_minority_type_prime_minority_type']"
+    },
     "vendor_name_formatted": {
         "type": "expression2",
         "expression": "_get_tooltip_markup($row['vendor_vendor_legal_name'],60)"
     },
     "vendor_name_link": {
         "type": "expression2",
-        "expression": "'<a href=\"/contracts_landing' .  ContractUtil::get_contracts_vendor_link($row[vendor_vendor],_getRequestParamValue('year'),$row[yeartype_yeartype]) .  '?expandBottomCont=true\">' .$row[vendor_name_formatted]. '</a>'"
-    } ,
+        "expression": "'<a href=\"/contracts_landing' .  ContractUtil::get_contracts_vendor_link_by_mwbe_category($row) .  '?expandBottomCont=true\">' .$row[vendor_name_formatted]. '</a>'"
+    },
     "spent_amount_no_link": {
         "type": "expression2",
         "expression": "'$' . custom_number_formatter_format($row['spending_amount_sum'],2)"

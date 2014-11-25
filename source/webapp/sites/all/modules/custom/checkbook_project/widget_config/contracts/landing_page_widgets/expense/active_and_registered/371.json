@@ -12,7 +12,10 @@
                  "awdmethod":"award_method_id","mwbe":"minority_type_id"},
 "preProcessConfiguration":"
     $node->is_mwbe = _checkbook_check_is_mwbe_page();
-    if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:mwbe_contracts_coa_aggregates';
+    if($node->is_mwbe) {
+        $node->widgetConfig->dataset = 'checkbook:mwbe_contracts_coa_aggregates';
+        $node->widgetConfig->columns[] = 'minority_type.minority_type';
+    }
 ",
 "dataset": "checkbook:contracts_coa_aggregates",
 "noDataInitialLoad":true,
@@ -42,10 +45,14 @@
       "type": "expression2",
       "expression": "'<a href=\"/contracts_landing' . _checkbook_append_url_params() ._checkbook_project_get_url_param_string(\"vendor\")  .  _checkbook_project_get_url_param_string(\"cindustry\")  .  _checkbook_project_get_url_param_string(\"csize\") .    _checkbook_project_get_url_param_string(\"awdmethod\") .  _checkbook_project_get_url_param_string(\"status\") .   _checkbook_project_get_year_url_param_string() .'/agency/' . $row[agency_agency]. '?expandBottomCont=true\">' .$row[agency_name_formatted]. '</a>'"
     },
-"vendor_name_link": {
-      "type": "expression2",
-      "expression": "'<a href=\"/contracts_landing' . ContractUtil::get_contracts_vendor_link($row[vendor_vendor],_getRequestParamValue('year'),$row[yeartype_yeartype]) . '?expandBottomCont=true\">' .$row[vendor_name_formatted]. '</a>'"
-    } ,
+    "current_prime_minority_type_id": {
+        "type": "expression2",
+        "expression": "$row['minority_type_minority_type']"
+    },
+    "vendor_name_link": {
+        "type": "expression2",
+        "expression": "'<a href=\"/contracts_landing' .  ContractUtil::get_contracts_vendor_link_by_mwbe_category($row) .  '?expandBottomCont=true\">' .$row[vendor_name_formatted]. '</a>'"
+    },
 "spent_amount_link": {
       "type": "expression2",
       "expression": "'<a class=\"new_window\" href=\"/spending/transactions/magid/' .$row[original_agreement_original_agreement] .  ContractURLHelper:: _checkbook_project_spending_get_year_url_param_string() . _checkbook_append_url_params() . '/smnid/' . $node->nid. '/newwindow\">' . '$' . custom_number_formatter_format($row['spending_amount_sum'],2). '</a>'"

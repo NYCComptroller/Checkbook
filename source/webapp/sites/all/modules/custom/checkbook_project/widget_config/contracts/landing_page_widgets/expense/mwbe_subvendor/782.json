@@ -13,11 +13,11 @@
         "csize":"award_size_id","cindustry":"industry_type_id","awdmethod":"award_method_id"},
     "dataset": "checkbook:subven_contracts_coa_aggregates",
     "noDataInitialLoad":true,
-    "columns": ["sub_contract_number.sub_contract_number.original_agreement_id","agency.agency","vendor.vendor","contract_purpose.contract_purpose","contract_number.contract_number",
+    "columns": ["sub_contract_number.sub_contract_number.original_agreement_id","agency.agency","vendor.vendor","vendor.vendor.legal_name","contract_purpose.contract_purpose","contract_number.contract_number",
         "agency.agency.agency_short_name","subvendor.subvendor.legal_name","original_amount_sum","current_amount_sum",
         "yeartype.yeartype","dollar_difference","percent_difference","spending_amount_sum",
         "original_agreement.original_agreement","document_code.document_code.document_code",
-        "agency.agency.agency_name","subvendor.subvendor"],
+        "agency.agency.agency_name","subvendor.subvendor","prime_minority_type.prime_minority_type"],
     "defaultParamTypeConfig":{"dollar_difference":"ne"},
     "adjustParameters":"
     $adjustedParameters = $parameters;
@@ -52,13 +52,17 @@ return $adjustedParameters;
 "type": "expression2",
 "expression": "'<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row[subvendor_subvendor],_getRequestParamValue('year'),$row[yeartype_yeartype]) .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>'"
 } ,
+"current_prime_minority_type_id": {
+"type": "expression2",
+"expression": "$row['prime_minority_type_prime_minority_type']"
+},
 "vendor_name_formatted": {
 "type": "expression2",
 "expression": "_get_tooltip_markup($row['vendor_vendor_legal_name'],32)"
 },
 "vendor_name_link": {
 "type": "expression2",
-"expression": "'<a href=\"/contracts_landing'  . _checkbook_project_get_url_param_string(\"agency\") .  _checkbook_project_get_url_param_string(\"status\") . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\") ._checkbook_project_get_url_param_string(\"svendor\")  . _checkbook_project_get_url_param_string(\"awdmethod\") .   _checkbook_project_get_year_url_param_string()  .   '/vendor/' .$row[vendor_vendor].  '?expandBottomCont=true\">' .$row[vendor_name_formatted]. '</a>'"
+"expression": "'<a href=\"/contracts_landing' .  ContractUtil::get_contracts_vendor_link_by_mwbe_category($row) .  '?expandBottomCont=true\">' .$row[vendor_name_formatted]. '</a>'"
 } ,
 "contract_link": {
 "type": "expression2",
@@ -176,9 +180,9 @@ return $footer;
 "dataTableOptions":{
 "aoColumns": [
 { "bSortable": false, "sWidth":"150px","sClass":"text" },
-{ "bSortable": false, "sWidth":"132px","sClass":"text"  },
+{ "bSortable": false, "sWidth":"100px","sClass":"text"  },
 { "bSortable": false, "sWidth":"118px","sClass":"text"  },
-{ "bSortable": false, "sWidth":"90px","sClass":"text" },
+{ "bSortable": false, "sWidth":"118px","sClass":"text" },
 { "bSortable": true, "sWidth":"79px", "sClass":"number"  ,"asSorting": [ "desc" ,"asc" ]},
 { "bSortable": true, "sWidth":"78px", "sClass":"number"  ,"asSorting": [ "desc" ,"asc" ]},
 { "bSortable": true, "sWidth":"90px","sClass":"number" ,"asSorting": [ "desc","asc"  ]},
