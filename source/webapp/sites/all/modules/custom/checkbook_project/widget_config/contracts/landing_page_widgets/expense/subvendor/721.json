@@ -67,11 +67,11 @@ if(_getRequestParamValue('contnum') == null)
     "subvendor_name_link": {
         "type": "expression2",
         "expression": "'<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row[subvendor_subvendor],_getRequestParamValue('year'),$row[yeartype_yeartype]) .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>'"
-    } ,
+    },
     "spent_amount_link": {
         "type": "expression2",
-        "expression": "'<a class=\"new_window\" href=\"/contract/spending/transactions/agid/' .$row[original_agreement_original_agreement]  . (_checkbook_check_isEDCPage() ? ('/svendor/' .$row[vendor_vendor]) :'' ) .  _checkbook_project_get_url_param_string(\"status\")  .  ContractURLHelper::_checkbook_project_spending_get_year_url_param_string()  . '/smnid/' . $node->nid .  '/newwindow\">' . '$' . custom_number_formatter_format($row['spending_amount_sum'],2). '</a>'"
-    } ,
+        "expression": "'<a class=\"new_window\" href=\"/contract/spending/transactions/contnum/' .$row[contract_number_contract_number]  . (_checkbook_check_isEDCPage() ? ('/svendor/' .$row[vendor_vendor]) :'' ) .  _checkbook_project_get_url_param_string(\"status\")  .  ContractURLHelper::_checkbook_project_spending_get_year_url_param_string()  . '/smnid/' . $node->nid .  '/newwindow\">' . '$' . custom_number_formatter_format($row['spending_amount_sum'],2). '</a>'"
+    },
     "formatted_original_amount_sum": {
         "type": "expression2",
         "expression": " '$' . custom_number_formatter_format($row['original_amount_sum'],2)"
