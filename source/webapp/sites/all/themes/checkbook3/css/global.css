@@ -1641,6 +1641,9 @@ input[type="url"], input[type="week"] {
 .dataTables_wrapper th.text, .outerTable th.text{
     text-align: left;
 }
+table.dataTable.outerTable h3 {
+    marging:0;
+}
 table.dataTable th.sorting span, table.dataTable th.sorting_asc span, table.dataTable th.sorting_desc span {
     padding-left:15px;
     display:block;
