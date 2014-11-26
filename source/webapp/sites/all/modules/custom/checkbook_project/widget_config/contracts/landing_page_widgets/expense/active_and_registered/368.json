@@ -22,8 +22,7 @@
     "contnum":"contract_number.contract_number"
  },
 "preProcessConfiguration":"
-    $node->is_mwbe = _checkbook_check_is_mwbe_page();
-    if($node->is_mwbe) {
+    if(!_checkbook_check_isEDCPage()) {
         $node->widgetConfig->dataset = 'checkbook:mwbe_contracts_coa_aggregates';
         $node->widgetConfig->columns[] = 'minority_type.minority_type';
     }
