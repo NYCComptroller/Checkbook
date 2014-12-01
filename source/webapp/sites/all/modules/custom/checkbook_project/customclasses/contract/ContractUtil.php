@@ -194,10 +194,10 @@ namespace { //global
          * @return string
          */
         static public function get_contracts_vendor_link_by_mwbe_category($row){
-            $vendor_id = $row["vendor_vendor"];
+            $vendor_id = $row["vendor_vendor"] != null ? $row["vendor_vendor"] : $row["vendor_id"];
             $year_id = _getRequestParamValue("year");
             $year_type = $row["yeartype_yeartype"];
-            $is_prime_or_sub = "P";
+            $is_prime_or_sub = $row["is_prime_or_sub"] != null ? $row["is_prime_or_sub"] : "P";
             $agency_id = null;
             $minority_type_id = $row["current_prime_minority_type_id"];
 
