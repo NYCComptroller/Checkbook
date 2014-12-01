@@ -98,7 +98,7 @@ function _get_contracts_breadcrumb_title_drilldown($ethinicty =  true){
             case 'vendor':
                 $title = _checkbook_project_get_name_for_argument("vendor_id",$value);
                 if($ethinicty){
-                	$title .= MappingUtil::getVendorEthinictyTitle($value,"contracts");
+                	$title .= MappingUtil::getPrimeVendorEthinictyTitle($value,"contracts");
                 }                  
                 break;
             case 'awdmethod':
@@ -113,7 +113,7 @@ function _get_contracts_breadcrumb_title_drilldown($ethinicty =  true){
             case 'subvendor':
    				$title = _checkbook_project_get_name_for_argument("sub_vendor_id",$value);
    				if($ethinicty){
-                	$title .= MappingUtil::getVendorEthinictyTitle($value,"contracts", "S");
+                	$title .= MappingUtil::getSubVendorEthinictyTitle($value,"contracts");
    				}
                 	break;
             default:
@@ -141,7 +141,7 @@ function _get_spending_breadcrumb_title_drilldown($ethinicty = true){
             case 'vendor':
                 $title = _checkbook_project_get_name_for_argument("vendor_id",$value);
                 if($ethinicty){                
-                	$title .= MappingUtil::getVendorEthinictyTitle($value,"spending");
+                	$title .= MappingUtil::getPrimeVendorEthinictyTitle($value,"spending");
                 }
                 break;
             case 'industry':
@@ -151,7 +151,7 @@ function _get_spending_breadcrumb_title_drilldown($ethinicty = true){
                 if($value != 'all'){
                     $title = _checkbook_project_get_name_for_argument("sub_vendor_id",$value);
                     if($ethinicty){
-                    	$title .= MappingUtil::getVendorEthinictyTitle($value,"spending", "S");
+                    	$title .= MappingUtil::getSubVendorEthinictyTitle($value,"spending");
                     }
                 }
                 break;
