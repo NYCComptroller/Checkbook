@@ -133,6 +133,10 @@
             .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['spending_amount@checkbook:all_contracts_coa_aggregates']) . '</a>'
             "
         },
+        "current_prime_minority_type_id": {
+            "type": "expression2",
+            "expression": "$row['minority_type_id']"
+        },
         "vendor_formatted": {
             "type": "expression2",
             "expression": "_get_tooltip_markup($row['vendor_name'],30)"
@@ -140,7 +144,7 @@
         "vendor_name_link": {
             "type": "expression2",
             "expression": " '<a href=\"/contracts_landing'
-            . ContractUtil::get_contract_vendor_minority_category($row['vendor_id'], null, null, null, $row['is_prime_or_sub'])
+            . ContractUtil::get_contracts_vendor_link_by_mwbe_category($row)
             . '?expandBottomCont=true\">'. $row['vendor_formatted'] . '</a>'  "
         },
         "agency_formatted": {
