@@ -129,10 +129,14 @@ $total = 5;
 $noOfResultsPerPage = 10;
 $startIndex = $transaction_no = ($_REQUEST['page'])? ($_REQUEST['page']*10)+1:1;
 $endIndex = (($startIndex+9) < $noOfTotalResults)? ($startIndex+9) : $noOfTotalResults;
+$domain_counts = $facet_results['domain']['domain'];
 
 if($noOfTotalResults > 0){
 
       //Begin of Facet results
+    foreach($domain_counts as $key=>$value) {
+        $noOfResults .= $noOfResults == '' ? $key.'|'.$value : '~'.$key.'|'.$value;
+    }
 
     print "<div class='smart-search-right'>". theme('smart_search_filter', array('facets'=> $facet_results,
       'active_contracts'=>$active_contracts, 'selected_facet_results' => $selected_facet_results));
@@ -143,7 +147,7 @@ if($noOfTotalResults > 0){
     print "</div>";
   //print "<table class='SmartSearchResults'><tr><td>";
   print "<div class='smart-search-left'>";
-  print '<span class="exportSmartSearch" value="' . $noOfTotalResults. '" >Export</span>';
+  print '<span class="exportSmartSearch" value="' . $noOfResults. '" >Export</span>';
   //Begin of Pagination at the top
   pager_default_initialize($noOfTotalResults, $noOfResultsPerPage);
   $output = theme('pager', array('quantity' => $total));
