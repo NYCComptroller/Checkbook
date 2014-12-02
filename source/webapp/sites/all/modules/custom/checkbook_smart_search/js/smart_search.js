@@ -84,12 +84,43 @@
                                 }
                             });
                             $('.ui-dialog-buttonpane').append('<div class="exportDialogMessage">*Required Field</div>');
+
+                            //On change of domain
+                            $('input:radio[name=domain]').change(function () {
+                                onChangeDomain($('input[name=domain]:checked').val());
+                            });
+
+                            function onChangeDomain(domain) {
+                                var totalRecords = 0;
+                                var selectedRecords = 0;
+                                var message = '';
+                                var domainCounts = $('.exportSmartSearch').attr("value");
+                                var arrayDomainCounts = domainCounts.split('~');
+                                var selectedDomain = $('input[name=domain]:checked').val();
+                                $.each(arrayDomainCounts,function(i, val) {
+                                    var domainCount = val.split('|');
+                                    if(selectedDomain == domainCount[0])
+                                        selectedRecords = domainCount[1];
+                                    totalRecords += parseInt(domainCount[1]);
+                                });
+                                message = "Maximum of 200,000 records available for download from "+addCommas(selectedRecords)+" available "+selectedDomain+" records. " +
+                                    "The report will be in Comma Delimited format. Only one domain can be selected at a time to download the data.";
+                                /*if(totalRecords > 200000){
+                                    message = "Maximum of 200,000 records available for download from "+addCommas(selectedRecords)+" available "+selectedDomain+" records. " +
+                                        "The report will be in Comma Delimited format. Only one domain can be selected at a time to download the data.";
+                                }else{
+                                    message = addCommas(selectedRecords)+" "+selectedDomain+" records are available for download. " +
+                                        "The report will be in Comma Delimited format. Only one domain can be selected at a time to download the data.";
+                                }*/
+                                $('#export-message').html(message);
+                            }
                         }
                     );
-                    
-                    
                     return false;
                 });
+
+
+
             }
         };       
         

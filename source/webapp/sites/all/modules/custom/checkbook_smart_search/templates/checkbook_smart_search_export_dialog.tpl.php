@@ -19,22 +19,11 @@
 */
 ?>
 <?php
-$total_records =  check_plain($_REQUEST["totalRecords"]);
 $max_records = 200000;
 $search_terms = explode('*|*', $_REQUEST['searchTerm']);
 $domains = explode("~", $_REQUEST['resultsdomains'] );
-/*
-$domains = array();
-foreach($search_terms as $search_term){
-  $terms = explode("=", $search_term);
-  if($terms[0] == "domains"){
-    $domains = explode("~", $terms[1] );
-  }
-}
-if( count($domains) == 0 ){
-  $domains = explode("~", $_REQUEST['resultsdomains'] );
-}
-*/
+$domain_record_counts =  explode("~", check_plain($_REQUEST["totalRecords"]));
+
 $all_domains = false;
 if(count($domains) ==  0 ) {
   $checked = "spending"; 
@@ -56,6 +45,16 @@ if(count($domains) ==  0 ) {
     $checked =  "revenue";
   } 
 }
+
+$total_records = $domain_records = 0;
+foreach($domain_record_counts as $domain_record_count) {
+    $domain_count =  explode("|", $domain_record_count);
+    if($checked == $domain_count[0]) {
+        $domain_records = $domain_count[1];
+    }
+    $total_records +=  $domain_count[1];
+}
+
 if($total_records > 0){  
 ?>
     <div id='dialog'>
@@ -105,13 +104,15 @@ if($total_records > 0){
     </div>
     <span id="export-message">
         <?php
-        if($total_records > $max_records){
-            echo "Maximum of ".number_format($max_records)." records available for download from ".number_format($total_records)." available records. The report will be in Comma
+        echo "Maximum of ".number_format($max_records)." records available for download from ".number_format($domain_records)." available ".$checked." records. The report will be in Comma
+            Delimited format. Only one domain can be selected at a time to download the data.";
+        /*if($total_records > $max_records){
+            echo "Maximum of ".number_format($max_records)." records available for download from ".number_format($domain_records)." available ".$checked." records. The report will be in Comma
             Delimited format. Only one domain can be selected at a time to download the data.";
         }else{
-          echo number_format($total_records). " of records are available for download. The report will be in Comma
+          echo number_format($domain_records)." ".$checked." records are available for download. The report will be in Comma
           Delimited format. Only one domain can be selected at a time to download the data.";
-        }
+        }*/
          ?>
     </span>
 <?php
