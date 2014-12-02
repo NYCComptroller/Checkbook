@@ -36,8 +36,6 @@
     "columns":[
         "sub_vendor.sub_vendor",
         "sub_vendor.sub_vendor.legal_name",
-        "prime_vendor.prime_vendor",
-        "prime_vendor.prime_vendor.legal_name",
         "minority_type.minority_type",
         "total_sub_contracts",
         "total_contract_amount_sum",
