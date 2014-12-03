@@ -7,23 +7,14 @@
     "urlParamMap":{"year":"year_id","agency":"agency_id","yeartype":"type_of_year","calyear":"year_id","category":"spending_category_id","vendor":"vendor_id","mwbe":"minority_type_id","industry":"industry_type_id"},
     "dataset": "checkbook:spending_mwbe_data",
     "noDataInitialLoad":true,
-    "totalAggregateColumns":["check_amount_sum","check_amount_sum@checkbook:spending_subven_data"],
-    "adjustTotalAggregateColumnsParameters":"
-        $params = $parameters;
-        unset($params['minority_type_id@checkbook:spending_subven_data']);
-        unset($params['industry_type_id@checkbook:spending_subven_data']);
-        unset($params['vendor_id@checkbook:spending_subven_data']);
-        unset($params['agency_id@checkbook:spending_subven_data']);
-        return $params;
-    ",
+    "totalAggregateColumns":["check_amount_sum"],
     "columns": [
         "yeartype.yeartype",
         "agency.agency",
         "agency.agency.agency_short_name",
         "year.year",
         "agency.agency.agency_name",
-        "check_amount_sum",
-        "check_amount_sum@checkbook:spending_subven_data"
+        "check_amount_sum"
     ],
     "limit":5,
     "enableExpand":true,
@@ -56,7 +47,7 @@
         },
         "formatted_check_amount_sum_mwbe": {
             "type": "expression2",
-            "expression": "custom_number_formatter_format($row['check_amount_sum'] + $row['check_amount_sum@checkbook:spending_subven_data'],2,'$')"
+            "expression": "custom_number_formatter_format($row['check_amount_sum'],2,'$')"
         },
         "formatted_check_amount_sum_citywide": {
             "type": "expression2",
@@ -72,25 +63,9 @@
         },
         "percent_spending":{
             "type":"expression2",
-            "expression": "SpendingUtil::getPercentYtdSpendingVendorSubVendor($node, $row, 'spending_data')"
+            "expression": "SpendingUtil::getPercentYtdSpending($node, $row)"
         }
     },
-    "adjustParameters":"
-    if(isset($parameters['minority_type_id'])) {
-        $parameters['minority_type_id@checkbook:spending_subven_data'] = $parameters['minority_type_id'];
-    }
-    if(isset($parameters['industry_type_id'])) {
-        $parameters['industry_type_id@checkbook:spending_subven_data'] = $parameters['industry_type_id'];
-    }
-    if(isset($parameters['vendor_id'])) {
-        $parameters['vendor_id@checkbook:spending_subven_data'] = $parameters['vendor_id'];
-    }
-    if(isset($parameters['agency_id'])) {
-        $parameters['agency_id@checkbook:spending_subven_data'] = $parameters['agency_id'];
-    }
-
-    return $parameters;
-    ",
     "summaryView":{
         "template":"spending_agency_summary",
         "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Agencies');"
