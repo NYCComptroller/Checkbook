@@ -110,7 +110,9 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 		}
 		// call function to get mwbe drop down filters.
 		$mwbe_filters = MappingUtil::getCurrentMWBETopNavFilters($mwbe_active_domain_link,"contracts");
-		$sub_vendors_home_link = RequestUtil::getLandingPageUrl("contracts") ;		
+
+        // call function to get sub vendors drop down filters.
+        $svendor_filters = MappingUtil::getCurrentSubVendorsTopNavFilters($svendor_active_domain_link,"contracts");
 	}else{
 		//for prime flow include prime + sub; for sub vendor flow include sub.
 		if($current_dashboard == "mp" || $current_dashboard == "sp" || $current_dashboard == null){
@@ -128,24 +130,13 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 		
 		// call function to get mwbe drop down filters.
 		$mwbe_filters = MappingUtil::getCurrentMWBETopNavFilters($mwbe_active_domain_link,"spending");
-		
-		$svendor_amount = $node->data[7]['check_amount_sum'];		
-		$sub_vendors_home_link = RequestUtil::getLandingPageUrl("spending") ;
-	}
-	// construct sub vendors drop down links.
-	// call function to get toal subvvendors link
-	$total_subven_link = RequestUtil::getTotalSubvendorsLink();	
 
-	if($total_subven_link !=""){
-		$subvendor_total_link_html = "<li class='no-click'><a href='" . $total_subven_link . "'>Total Sub Vendors</a></li>";
+        // call function to get sub vendors drop down filters.
+        $svendor_filters = MappingUtil::getCurrentSubVendorsTopNavFilters($svendor_active_domain_link,"spending");
+		
+		$svendor_amount = $node->data[7]['check_amount_sum'];
 	}
-	$svendor_filters =  "<div class='main-nav-drop-down' style='display:none'>
-			<ul>
-				" . $subvendor_total_link_html . "
-  				<li class='no-click'><a href='/" . $sub_vendors_home_link . "/dashboard/ss'>Sub Vendors Home</a></li>
-			</ul>
-  		</div>
-  		";
+
 	
 }
 // tm_wbe is an exception case for total MWBE link. When prime data is not present but sub data is present for the agency vendor combination.

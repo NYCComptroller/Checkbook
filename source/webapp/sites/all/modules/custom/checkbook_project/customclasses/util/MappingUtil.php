@@ -123,9 +123,14 @@ class MappingUtil {
     		}
     	}
     }
-    
-    
-    
+
+    /**
+     * Function to populate the M/WBE dashboard drop down filters
+     *
+     * @param $active_domain_link
+     * @param $domain
+     * @return string
+     */
     static function getCurrentMWBETopNavFilters($active_domain_link, $domain){ 
     	if(RequestUtil::isDashboardFlowSubvendor()){
     		$applicable_minority_types = self::getCurrentSubMWBEApplicableFilters($domain);
@@ -180,6 +185,60 @@ class MappingUtil {
     	return $filters_html;
     	
     	
+    }
+
+    /**
+     * Function to populate the Sub Vendors dashboard drop down filters
+     *
+     * @param $active_domain_link
+     * @param $domain
+     * @return string
+     */
+    static function getCurrentSubVendorsTopNavFilters($active_domain_link, $domain){
+
+        $mwbe_filters_html = "";
+
+        //M/WBE filters should be included in mp and sp dashboards
+        if(RequestUtil::isDashboardFlowPrimevendor()) {
+            $applicable_minority_types = self::getCurrentSubMWBEApplicableFilters($domain);
+            $active_domain_link =  preg_replace('/\/mwbe\/[^\/]*/','',$active_domain_link);
+
+            if(array_intersect($applicable_minority_types,array(4,5))){
+                $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/4~5'>Asian American</a></li>";
+            }
+            if(array_intersect($applicable_minority_types,array(2))){
+                $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/2'>Black American</a></li>";
+            }
+            if(array_intersect($applicable_minority_types,array(9))){
+                $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/9'>Women</a></li>";
+            }
+            if(array_intersect($applicable_minority_types,array(3))){
+                $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/3'>Hispanic American</a></li>";
+            }
+
+            if($mwbe_filters_html != "") {
+                $mwbe_filters_html =  "<li class='no-click title'>M/WBE Category</li>" . $mwbe_filters_html;
+            }
+        }
+
+        //Sub vendors home link
+        $sub_vendors_home_link = RequestUtil::getLandingPageUrl($domain);
+        $home_link_html = "<li class='no-click'><a href='/" . $sub_vendors_home_link . "/dashboard/ss'>Sub Vendors Home</a></li>";
+
+        //Sub vendors total link
+        $total_subven_link = RequestUtil::getTotalSubvendorsLink();
+        $total_link_html = $total_subven_link !=  null && $total_subven_link != ""
+            ? "<li class='no-click'><a href='" . $total_subven_link . "'>Total Sub Vendors</a></li>"
+            : "";
+
+        //Append all links
+        $filters_html  =  "<div class='main-nav-drop-down' style='display:none'>";
+        $filters_html .=    "<ul>";
+        $filters_html .=        $mwbe_filters_html . $home_link_html . $total_link_html;
+        $filters_html .=    "</ul>";
+        $filters_html .=  "</div>";
+
+        return $filters_html;
     }
     
     
