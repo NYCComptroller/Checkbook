@@ -726,7 +726,7 @@ function _checkbook_project_adjust_date_spending_parameter_filters(&$node, &$par
 
 /**
  * Transaction page from M/WBE Dashboard landing page
- * Top 10 agencies widget (759) - sub and prime data
+ * Top 10 agencies widget (759) - sub and prime data - reverted in NYCCHKBK-4798
  * Top 10 Sub Vendors widget (763) - sub data
  * All Others widgets - prime data
  *
@@ -772,9 +772,6 @@ function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$par
 		$parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
 	}else{
 		switch($nid) {
-			case 759:
-				$parameters['is_prime_or_sub'] = array('P','S');
-				break;
 			case 763:
 				$parameters['is_prime_or_sub'] = array('S');
 				break;
