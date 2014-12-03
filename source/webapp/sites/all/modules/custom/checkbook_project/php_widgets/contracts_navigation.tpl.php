@@ -114,7 +114,7 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 	}else{
 		//for prime flow include prime + sub; for sub vendor flow include sub.
 		if($current_dashboard == "mp" || $current_dashboard == "sp" || $current_dashboard == null){
-			$mwbe_amount = $node->data[5]['check_amount_sum'] + $node->data[9]['check_amount_sum'];
+			$mwbe_amount = $node->data[5]['check_amount_sum'];
 		}else{
 			$mwbe_amount =  $node->data[9]['check_amount_sum'];
 		}
@@ -169,14 +169,6 @@ if(!preg_match('/smnid/',$_GET['q']) && (
 ){
 	$mwbeclass = ' ';
 }
-
-/*
-if( $mwbe_prime_amount ==  null  && $mwbe_amount != 0){
-	$mwbe_title = 	"M/WBE (Sub Vendors)";
-}else{
-	$mwbe_title =  RequestUtil::getDashboardTopNavTitle("mwbe");
-}
-*/
 
 if($mwbe_amount  == 0){	
 	$mwbe_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' . RequestUtil::getDashboardTopNavTitle("mwbe") . '</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div></div>','',$options_disabled);	
@@ -238,18 +230,6 @@ switch ($arg){
     $eclass = ' active';
     break;
 }
-
-/*
-if(preg_match('/mwbe/',$_GET['q']) && preg_match('/subvendor/',$_GET['q']) ){
-	$mwbeclass = ' active';
-	$svclass = ' active';
-}elseif(preg_match('/mwbe/',$_GET['q']) ){
-	$mwbeclass = ' active';
-	$svclass = ' active';
-}elseif(preg_match('/subvendor/',$_GET['q']) ){
-	$svclass = ' active';
-}
-*/
 
 
 //TODO: remove placeholder &nbsp; when numbers under each domain are active
