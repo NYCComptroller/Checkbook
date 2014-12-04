@@ -129,71 +129,45 @@ echo '<div class=\"chart-right\">
 	 		break;
 	 	}	 
 	 }
-	$mwbe_subven_data = array();
-	foreach ($node->data_subven as $row){
-	 
-	 	switch($row['minority_type_id']){
-	 		case '2':
-	 		$mwbe_subven_data['ba'] += $row['total_spending']; 
-	 		break;
-	 		case '3':
-	 		$mwbe_subven_data['ha'] += $row['total_spending']; 
-	 		break;
-	 		case '4':
-	 		$mwbe_subven_data['aa'] += $row['total_spending']; 
-	 		break;
-	 		case '5':
-	 		$mwbe_subven_data['aa'] += $row['total_spending']; 
-	 		break;
-	 		case '9':
-	 		$mwbe_subven_data['w'] += $row['total_spending']; 
-	 		break;
-	 	}	 
-	 } 
 	 
 	 
 	$total_mwbe = $mwbe_data['ba'] + $mwbe_data['ha'] + $mwbe_data['aa'] + $mwbe_data['w'] ;
-	$total_mwbe_subven = $mwbe_subven_data['ba'] + $mwbe_subven_data['ha'] + $mwbe_subven_data['aa'] + $mwbe_subven_data['w'] ; 
 	$toal_non_mwbe = $mwbe_data['nm'];
 	
 	$mwbe_filter = _getRequestParamValue('mwbe');
 	
 	$amount_column = 'total_mwbe';
-	switch($mwbe_filter){
-		case '4~5' :
-			$node->mwbe_share_percent = custom_number_formatter_format(($mwbe_data['aa'] + $mwbe_subven_data['aa'] )/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') ;
-			break;
-		case '2' :
-			$node->mwbe_share_percent = custom_number_formatter_format(($mwbe_data['ba'] + $mwbe_subven_data['ba'])/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') ;
-			break;
-		case '3' :
-			$node->mwbe_share_percent = custom_number_formatter_format(($mwbe_data['ha'] + $mwbe_subven_data['ha'])/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') ;
-			break;
-		case '9' :
-			$node->mwbe_share_percent = custom_number_formatter_format(($mwbe_data['w'] + $mwbe_subven_data['w'])/( $toal_non_mwbe+ $total_mwbe) *100,1,null,'%') ;
-			break;
-		case '2~3~4~5~9' :
-			$node->mwbe_share_percent = custom_number_formatter_format(($total_mwbe + $total_mwbe_subven)/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') ;
-			break;
-		
-	}
-	
-	
-	
-	
+    switch($mwbe_filter){
+        case '4~5' :
+            $node->mwbe_share_percent = custom_number_formatter_format($mwbe_data['aa']/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') ;
+        break;
+        case '2' :
+            $node->mwbe_share_percent = custom_number_formatter_format($mwbe_data['ba']/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') ;
+        break;
+        case '3' :
+            $node->mwbe_share_percent = custom_number_formatter_format($mwbe_data['ha']/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') ;
+        break;
+        case '9' :
+            $node->mwbe_share_percent = custom_number_formatter_format($mwbe_data['w']/( $toal_non_mwbe+ $total_mwbe) *100,1,null,'%') ;
+        break;
+        case '2~3~4~5~9' :
+            $node->mwbe_share_percent = custom_number_formatter_format($total_mwbe/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') ;
+        break;
+    }
+
 	$node->widgetConfig->chartConfig->series[0]->data[0]->y = $total_mwbe + $total_mwbe_subven ;
 	$node->widgetConfig->chartConfig->series[0]->data[0]->custom_label = custom_number_formatter_format($total_mwbe + $total_mwbe_subven ,2,'$') . ' (' .
-																		 custom_number_formatter_format(($total_mwbe + $total_mwbe_subven )/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') . ')';																		 
-	$node->widgetConfig->chartConfig->series[0]->data[0]->tooltip_label = 
-							'Asian American: ' . custom_number_formatter_format($mwbe_data['aa'] + $mwbe_subven_data['aa'] ,2,'$')  . ' (' . 
-									custom_number_formatter_format(($mwbe_data['aa'] + $mwbe_subven_data['aa'])/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' .  '<br/>' 
-							. 'Black American: ' . custom_number_formatter_format($mwbe_data['ba']+ $mwbe_subven_data['ba'],2,'$')  . ' (' .
-									custom_number_formatter_format(($mwbe_data['ba'] + $mwbe_subven_data['ba'])/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' . '<br/>' 
-							. 'Women: ' . custom_number_formatter_format($mwbe_data['w'] + $mwbe_subven_data['w'],2,'$')  . ' (' . 
-									custom_number_formatter_format(($mwbe_data['w'] + $mwbe_subven_data['w'])/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' . '<br/>' 
-							. 'Hispanic American: ' . custom_number_formatter_format($mwbe_data['ha'] + $mwbe_subven_data['ha'],2,'$')  . ' (' . 
-									custom_number_formatter_format(($mwbe_data['ha'] + $mwbe_subven_data['ha'])/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' . '<br/>' 
-							;
+																		 custom_number_formatter_format(($total_mwbe + $total_mwbe_subven )/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') . ')';
+    $node->widgetConfig->chartConfig->series[0]->data[0]->tooltip_label =
+        'Asian American: ' . custom_number_formatter_format($mwbe_data['aa'],2,'$')  . ' (' .
+        custom_number_formatter_format(($mwbe_data['aa'])/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' .  '<br/>'
+        . 'Black American: ' . custom_number_formatter_format($mwbe_data['ba'],2,'$')  . ' (' .
+        custom_number_formatter_format(($mwbe_data['ba'])/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' . '<br/>'
+        . 'Women: ' . custom_number_formatter_format($mwbe_data['w'],2,'$')  . ' (' .
+        custom_number_formatter_format(($mwbe_data['w'])/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' . '<br/>'
+        . 'Hispanic American: ' . custom_number_formatter_format($mwbe_data['ha'],2,'$')  . ' (' .
+        custom_number_formatter_format(($mwbe_data['ha'])/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' . '<br/>'
+        ;
 	$node->widgetConfig->chartConfig->series[0]->data[1]->y = $toal_non_mwbe;
 																			 
 	$node->widgetConfig->chartConfig->series[0]->data[1]->custom_label = custom_number_formatter_format($toal_non_mwbe,2,'$') . ' (' .
