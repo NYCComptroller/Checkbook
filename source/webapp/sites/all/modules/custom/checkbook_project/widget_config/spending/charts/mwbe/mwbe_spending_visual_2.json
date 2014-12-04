@@ -48,32 +48,6 @@
     group by rm.minority_type_id, rm.minority_type_name,year_value  ';
     
     $node->data  = _checkbook_project_execute_sql($sql);
-    
-    
-    
-    
- 	$where_filters2 = array();
-    foreach($node->widgetConfig->urlParamMapSubVendor as $param=>$key){
-        $value = _getRequestParamValue($param) ;
-    	if( $value != null && $value != ''){
-    		$where_filters2[] = _widget_build_sql_condition(' a1.' . $key, _getRequestParamValue($param));
-		}
-    }
-    
-    if(count($where_filters2) > 0){
-        $where_filter2 = ' where ' . implode(' and ' , $where_filters2);
-    }
-    
-
-    
-    $sql2 = 'select rm.minority_type_id, rm.minority_type_name ,year_value, sum(total_spending_amount) total_spending
-    from {aggregateon_subven_spending_coa_entities} a1 
-    join {ref_minority_type} rm on rm.minority_type_id = a1.minority_type_id
-    join {ref_month} rmo on rmo.month_id =  a1.month_id
-    join {ref_year} ry on a1.year_id = ry.year_id       
-   ' . $where_filter2 . '
-    group by rm.minority_type_id, rm.minority_type_name,year_value  ';
-    $node->data_subven  = _checkbook_project_execute_sql($sql2);    
 ",
 "widgetUpdateJSONConfig":"
 
@@ -115,40 +89,6 @@
 	 		break;
 	 	}	
 	 }
-	 
-	 
-	 foreach ($node->data_subven as $row){
-	 
-	 	switch($row['minority_type_id']){
-	 		case '2':
-	 		if(in_array(2,$mwbe_page_cats))
-	 			$series[$row['year_value']]->y += $row['total_spending'];
-	 		$series[$row['year_value']]->mwbe_total += $row['total_spending']; 
-	 		break;
-	 		case '3':
-	 		if(in_array(3,$mwbe_page_cats))
-	 			$series[$row['year_value']]->y += $row['total_spending']; 
-	 		$series[$row['year_value']]->mwbe_total += $row['total_spending'];
-	 		break;
-	 		case '4':
-	 		if(in_array(4,$mwbe_page_cats))
-	 			$series[$row['year_value']]->y += $row['total_spending']; 
-	 		$series[$row['year_value']]->mwbe_total += $row['total_spending'];
-	 		break;
-	 		case '5':
-	 		if(in_array(5,$mwbe_page_cats))
-	 			$series[$row['year_value']]->y += $row['total_spending']; 
-	 		$series[$row['year_value']]->mwbe_total += $row['total_spending'];
-	 		break;
-	 		case '9':
-	 		if(in_array(9,$mwbe_page_cats))
-	 			$series[$row['year_value']]->y += $row['total_spending']; 
-	 		$series[$row['year_value']]->mwbe_total += $row['total_spending'];
-	 		break;	 		
-	 	}	
-	 }
-	 
-	 
 	
 	$i = 0;
 	$categories = array();

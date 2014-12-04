@@ -121,49 +121,8 @@
     
     
     $node->data  = _checkbook_project_execute_sql($sql);
-    
-    if(SpendingUtil::_mwbe_spending_use_subvendor()){
-    	$node->data_sub_ven = array();
-    }
-    else{
-    
-    	$where_filters2 = array();
-		foreach($node->widgetConfig->urlParamMapSubVendor as $param=>$key){
-			$value = _getRequestParamValue($param) ;
-			if( $value != null && $value != ''){
-				$where_filters2[] = _widget_build_sql_condition(' a1.' . $key, _getRequestParamValue($param));
-			}
-		}
-	
-	
-		if(count($where_filters2) > 0){
-			$where_filter2 = ' where ' . implode(' and ' , $where_filters2);
-		}
-	
-		$sql2 = 'select  agency_name , a1.agency_id,
-	    SUM(
-	       CASE
-	            ' . $ethinicty_case .'
-	            ELSE 0
-		END) ethinicty_mwbe,
-		SUM(
-	       CASE WHEN minority_type_id = 2 THEN total_spending_amount
-	            WHEN minority_type_id = 3 THEN total_spending_amount
-	            WHEN minority_type_id = 4 THEN total_spending_amount
-	            WHEN minority_type_id = 5 THEN total_spending_amount
-	             WHEN minority_type_id = 9 THEN total_spending_amount
-	            ELSE 0
-		END) total_mwbe
-		from {aggregateon_subven_spending_coa_entities} a1
-	    join {ref_agency} ra on ra.agency_id =  a1.agency_id
-	   ' . $where_filter2 . '
-	        group by  agency_name,a1.agency_id  order by agency_name
-	    ';
 
-		$node->data_sub_ven  = _checkbook_project_execute_sql($sql2);
-	}
-	
-	//$merged_array = _widget_join_merge_data($node->data,$node->data_sub_ven, array('agency_id','agency_name'));
+    $node->data_sub_ven = array();
 	$merged_array = array();
 
 	foreach($node->data as $row1){
