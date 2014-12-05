@@ -21,7 +21,7 @@
 
 class SpendingUtil{
 
-    static $landingPageParams = array("agency"=>"agency","vendor"=>"vendor","subvendor"=>"subvendor","category"=>"category","industry"=>"industry","mwbe"=>"mwbe","dashboard"=>"dashboard");
+    static $landingPageParams = array("category"=>"category","industry"=>"industry","mwbe"=>"mwbe","dashboard"=>"dashboard","agency"=>"agency","vendor"=>"vendor","subvendor"=>"subvendor");
 
     static function getSpendingCategoryDetails($categoryId, $columns=array('spending_category_id','display_name')){
         if(!isset($categoryId)){
@@ -694,18 +694,36 @@ class SpendingUtil{
 
     /**
      * Returns M/WBE Category Link Url
+     *
+     * NYCCHKBK-4676:
+     *   Do not hyperlink the M/WBE category within Top 5 Sub vendors widget if you are looking at prime data[M/WBE Featured Dashboard].
+     *   Do not hyperlink the M/WBE category within Top 5 Prime vendors widget if you are looking at sub data[M/WBE(sub vendors) featured dashboard].
+     *   The Details link from these widgets, also should follow same rule of not hyperlinking the M/WBE category.
+     * NYCCHKBK-4798:
+     *   From Top 5 Sub vendors widget, link should go to SP to maintain correct data
+     *
      * @param $node
      * @param $row
      * @return string
      */
     static function getMWBECategoryLinkUrl($node, $row){
+        $dtsmnid = _getRequestParamValue("dtsmnid");
+        $smnid = _getRequestParamValue("smnid");
         $dashboard = _getRequestParamValue("dashboard");
+
+        if($dtsmnid != null) $nid = $dtsmnid;
+        else if($smnid != null) $nid = $smnid;
+        else $nid = $node->nid;
+
         if($dashboard == null){
         	$dashboard = ($row['is_sub_vendor'] == "Yes") ? "ms" : "mp";
         }
+        $dashboard = (preg_match('/p/', $dashboard)) ? "mp" : "ms";
+        //From sub vendors widget
+        if($nid == 719) $dashboard = "sp";
         $custom_params = array(
-            'dashboard'=>(preg_match('/p/', $dashboard)) ? "mp" : "ms",
-            'mwbe'=>(isset($row["minority_type_id"]) ? $row["minority_type_id"] : $row["minority_type_minority_type"])
+        'dashboard'=> $dashboard,
+        'mwbe'=>(isset($row["minority_type_id"]) ? $row["minority_type_id"] : $row["minority_type_minority_type"])
         );
         return '/' . self::getLandingPageWidgetUrl($custom_params) . '?expandBottomCont=true';
     }
