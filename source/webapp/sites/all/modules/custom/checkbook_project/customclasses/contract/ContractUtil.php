@@ -121,7 +121,8 @@ namespace { //global
          *   Do not hyperlink the M/WBE category within Top 5 Sub vendors widget if you are looking at prime data[M/WBE Featured Dashboard].
          *   Do not hyperlink the M/WBE category within Top 5 Prime vendors widget if you are looking at sub data[M/WBE(sub vendors) featured dashboard].
          *   The Details link from these widgets, also should follow same rule of not hyperlinking the M/WBE category.
-         *
+         * NYCCHKBK-4798:
+         *   From Top 5 Sub vendors widget, link should go to SP to maintain correct data
          * @param $node
          * @param $row
          * @return string
@@ -144,6 +145,10 @@ namespace { //global
             $no_link = $dashboard == "mp" && $nid == 720;
             $no_link = $no_link || (preg_match('/s/', $dashboard) && ($nid == 725 || $nid == 783));
 
+            $dashboard = (preg_match('/p/', $dashboard)) ? "mp" : "ms";
+            //From sub vendors widget
+            if($nid == 720) $dashboard = "sp";
+
             $showLink = !RequestUtil::isNewWindow()
                 && $is_mwbe_certified
                 && !$no_link;
@@ -161,7 +166,7 @@ namespace { //global
                     . _checkbook_project_get_url_param_string("status")
                     . _checkbook_project_get_url_param_string("vendor")
                     . _checkbook_project_get_url_param_string("subvendor")
-                    . '/dashboard/' . ((preg_match('/p/', $dashboard)) ? "mp" : "ms")
+                    . '/dashboard/' . $dashboard
                     . '/mwbe/'. $minority_type_id .  '?expandBottomCont=true">' . $minority_category . '</a>';
             }
 
@@ -407,6 +412,8 @@ namespace { //global
             $category = filter_xss($current_url[($category_index+1)]);
 
             $dashboard = ($is_prime_or_sub == 'S') ? 'ms' :'mp';
+            //From sub vendors widget
+            if($nid == 720) $dashboard = "sp";
 
             if($category == 'expense' && $status != 'P'){
                 $url = '/contracts_landing/status/'.$status.'/yeartype/B/year/'._getFiscalYearID().'/dashboard/'. $dashboard .'/mwbe/'.$minority_type_category_string;
@@ -418,6 +425,14 @@ namespace { //global
                 $url = '/contracts_pending_rev_landing/status/P/yeartype/B/year/'._getFiscalYearID().'/dashboard/'. $dashboard .'/mwbe/'.$minority_type_category_string;
             }
 
+            $url .= _checkbook_project_get_url_param_string("agency")
+            . _checkbook_project_get_url_param_string("cindustry")
+            . _checkbook_project_get_url_param_string("csize")
+            . _checkbook_project_get_url_param_string("awdmethod")
+            . _checkbook_project_get_url_param_string("status")
+            . _checkbook_project_get_url_param_string("vendor")
+            . _checkbook_project_get_url_param_string("subvendor");
+
             $result = (!in_array($minority_type_category_id,array(7,11)))?"<a href='".$url."'>".$minority_type_category_name."</a>" : $minority_type_category_name;
 
             return $result;
@@ -426,6 +441,8 @@ namespace { //global
         static public function getMWBECategoryLinkUrl($minority_type_id){
             $current_url = explode('/',$_SERVER['HTTP_REFERER']);
             $minority_type_id = ($minority_type_id == 4 || $minority_type_id == 5) ? '4~5': $minority_type_id;
+            $nid =
+            $dashboard = "mp";
             $url =  '/'. $current_url[3]._checkbook_project_get_year_url_param_string()
                     . _checkbook_project_get_url_param_string("agency")
                     . _checkbook_project_get_url_param_string("cindustry")
@@ -438,7 +455,6 @@ namespace { //global
                     . '/mwbe/'. $minority_type_id .  '?expandBottomCont=true';
             return $url;
         }
-
     }
 }
 
