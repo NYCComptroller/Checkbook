@@ -68,31 +68,7 @@ echo '<div class=\"chart-right\">
    ' . $where_filter . '
     group by rm.minority_type_id, rm.minority_type_name  ';
     $node->data  = _checkbook_project_execute_sql($sql);
-    
-    
-    $where_filters2 = array();
-    foreach($node->widgetConfig->urlParamMapSubVendor as $param=>$key){
-        $value = _getRequestParamValue($param) ;
-    	if( $value != null && $value != ''){
-    		$where_filters2[] = _widget_build_sql_condition(' a1.' . $key, _getRequestParamValue($param));
-		}
-    }
-    
-    if(count($where_filters2) > 0){
-        $where_filter2 = ' where ' . implode(' and ' , $where_filters);
-    }
-    
-    
-    $sql2 = 'select rm.minority_type_id, rm.minority_type_name , sum(total_spending_amount) total_spending
-    from aggregateon_subven_spending_coa_entities a1 
-    join ref_minority_type rm on rm.minority_type_id = a1.minority_type_id     
-   ' . $where_filter2 . '
-    group by rm.minority_type_id, rm.minority_type_name  ';
-    
-    $node->data_subven  = _checkbook_project_execute_sql($sql2);
-    
-    
-    
+
 ",
 "widgetUpdateJSONConfig":"
 
@@ -132,7 +108,7 @@ echo '<div class=\"chart-right\">
 	 
 	 
 	$total_mwbe = $mwbe_data['ba'] + $mwbe_data['ha'] + $mwbe_data['aa'] + $mwbe_data['w'] ;
-	$toal_non_mwbe = $mwbe_data['nm'];
+	$toal_non_mwbe = $mwbe_data['nm'] + $mwbe_data['io'];
 	
 	$mwbe_filter = _getRequestParamValue('mwbe');
 	
@@ -155,9 +131,9 @@ echo '<div class=\"chart-right\">
         break;
     }
 
-	$node->widgetConfig->chartConfig->series[0]->data[0]->y = $total_mwbe + $total_mwbe_subven ;
-	$node->widgetConfig->chartConfig->series[0]->data[0]->custom_label = custom_number_formatter_format($total_mwbe + $total_mwbe_subven ,2,'$') . ' (' .
-																		 custom_number_formatter_format(($total_mwbe + $total_mwbe_subven )/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') . ')';
+	$node->widgetConfig->chartConfig->series[0]->data[0]->y = $total_mwbe;
+	$node->widgetConfig->chartConfig->series[0]->data[0]->custom_label = custom_number_formatter_format($total_mwbe,2,'$') . ' (' .
+																		 custom_number_formatter_format(($total_mwbe)/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') . ')';
     $node->widgetConfig->chartConfig->series[0]->data[0]->tooltip_label =
         'Asian American: ' . custom_number_formatter_format($mwbe_data['aa'],2,'$')  . ' (' .
         custom_number_formatter_format(($mwbe_data['aa'])/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' .  '<br/>'
@@ -182,8 +158,8 @@ echo '<div class=\"chart-right\">
 										custom_number_formatter_format($mwbe_data['w']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
 	$node->widgetConfig->gridConfig->data[] = array('Hispanic American',$mwbe_data['ha'],
 										custom_number_formatter_format($mwbe_data['ha']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
-	$node->widgetConfig->gridConfig->data[] = array('Non-M/WBE',$toal_non_mwbe -  $total_mwbe_subven,
-										custom_number_formatter_format(($toal_non_mwbe - $total_mwbe_subven)/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
+	$node->widgetConfig->gridConfig->data[] = array('Non-M/WBE',$toal_non_mwbe,
+										custom_number_formatter_format(($toal_non_mwbe)/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
 																	 
 ",
 "chartConfig" : {
