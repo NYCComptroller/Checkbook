@@ -97,7 +97,7 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 	if(preg_match('/contract/',$_GET['q'])){
 		// for prime flow include prime + sub; for sub vendor flow include sub.
 		if($current_dashboard == "mp" || $current_dashboard == "sp" || $current_dashboard == null){
-			$mwbe_amount = $node->data[6]['current_amount_sum'] + $node->data[10]['current_amount_sum'];
+			$mwbe_amount = $node->data[6]['current_amount_sum'];
 		}else{
 			$mwbe_amount =  $node->data[10]['current_amount_sum'];
 		}
