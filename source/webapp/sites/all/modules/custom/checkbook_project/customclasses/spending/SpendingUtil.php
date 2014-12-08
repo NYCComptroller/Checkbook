@@ -994,9 +994,9 @@ class SpendingUtil{
     
     
     static function getMWBENYCLegend($year, $yeartype){
-    	
+
     	$where_filter =  "where year_id = $year and type_of_year = '$yeartype' ";
-    	
+
     	$prime_sql = 'select rm.minority_type_id, rm.minority_type_name , sum(total_spending_amount) total_spending
 	    from aggregateon_mwbe_spending_coa_entities a1
 	    join ref_minority_type rm on rm.minority_type_id = a1.minority_type_id
@@ -1026,38 +1026,8 @@ class SpendingUtil{
     				break;
     		}
     	}
-    	
-    	$sub_sql = 'select rm.minority_type_id, rm.minority_type_name , sum(total_spending_amount) total_spending
-	    from aggregateon_subven_spending_coa_entities a1
-	    join ref_minority_type rm on rm.minority_type_id = a1.minority_type_id
-	   ' . $where_filter . '
-	    group by rm.minority_type_id, rm.minority_type_name  ';
-    	 
-    	$sub_spending_rows = _checkbook_project_execute_sql($sub_sql);
-    	foreach($sub_spending_rows as $row){
-    		switch($row['minority_type_id']){
-    			case '2':
-    				$mwbe_spending_sub += $row['total_spending'];
-    				break;
-    			case '3':
-    				$mwbe_spending_sub += $row['total_spending'];
-    				break;
-    			case '4':
-    				$mwbe_spending_sub += $row['total_spending'];
-    				break;
-    			case '5':
-    				$mwbe_spending_sub += $row['total_spending'];
-    				break;
-    			case '7':
-    				$non_mwbe_spending_sub += $row['total_spending'];
-    				break;
-    			case '9':
-    				$mwbe_spending_sub += $row['total_spending'];
-    				break;
-    		}
-    	}
-    	$mwbe_share = custom_number_formatter_format(($mwbe_spending_prime + $mwbe_spending_sub )/($non_mwbe_spending_prime + $mwbe_spending_prime) *100,1,null,'%') ;
-    	$mwbe_spending = custom_number_formatter_format($mwbe_spending_prime + $mwbe_spending_sub,2,'$');
+    	$mwbe_share = custom_number_formatter_format(($mwbe_spending_prime )/($non_mwbe_spending_prime + $mwbe_spending_prime) *100,1,null,'%') ;
+    	$mwbe_spending = custom_number_formatter_format($mwbe_spending_prime,2,'$');
     	$non_mwbe = custom_number_formatter_format($non_mwbe_spending_prime,2,'$');
     	
     	return '<div class="chart-nyc-legend">
