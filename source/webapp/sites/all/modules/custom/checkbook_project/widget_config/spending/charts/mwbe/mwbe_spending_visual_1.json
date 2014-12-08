@@ -108,7 +108,7 @@ echo '<div class=\"chart-right\">
 	 
 	 
 	$total_mwbe = $mwbe_data['ba'] + $mwbe_data['ha'] + $mwbe_data['aa'] + $mwbe_data['w'] ;
-	$toal_non_mwbe = $mwbe_data['nm'] + $mwbe_data['io'];
+	$toal_non_mwbe = $mwbe_data['nm'];
 	
 	$mwbe_filter = _getRequestParamValue('mwbe');
 	
