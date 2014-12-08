@@ -234,7 +234,7 @@ class MappingUtil {
         //Append all links
         $filters_html  =  "<div class='main-nav-drop-down' style='display:none'>";
         $filters_html .=    "<ul>";
-        $filters_html .=        $mwbe_filters_html . $home_link_html . $total_link_html;
+        $filters_html .=        $mwbe_filters_html . $total_link_html . $home_link_html;
         $filters_html .=    "</ul>";
         $filters_html .=  "</div>";
 
