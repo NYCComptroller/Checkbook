@@ -1,7 +1,7 @@
 {
     "widgetType": "phpparser",
     "no_results_content": "No Results Found",
-    "cleanURLParameters":["year","calyear","agency","yeartype","awdmethod","vendor","csize","cindustry","magid","mwbe","subvendor","category"],
+    "cleanURLParameters":["year","calyear","agency","yeartype","awdmethod","vendor","csize","cindustry","magid","mwbe","subvendor"],
     "widgetPreprocessJSON":"
     
     if(!preg_match('/smnid/',$_GET['q']) && ( 
@@ -77,8 +77,8 @@
                                 "columns": [
                     "check_amount_sum"
                 ],
-               "seriesURLParamMap":{"vendor":"vendor_id","year":"year.year","calyear":"year.year","agency":"agency_id","yeartype":"type_of_year","mwbe":"minority_type_id","category":"category.category"},
-               "allowedParams":["vendor_id","year.year","agency_id","type_of_year","minority_type_id","category.category"],
+               "seriesURLParamMap":{"vendor":"vendor_id","year":"year.year","calyear":"year.year","agency":"agency_id","yeartype":"type_of_year","mwbe":"minority_type_id"},
+               "allowedParams":["vendor_id","year.year","agency_id","type_of_year","minority_type_id"],
                "seriesDefaultParameters":{"type_of_year":"B","minority_type_id":"2~3~4~5~9"}
             }  ,
             {
@@ -97,8 +97,8 @@
                                 "columns": [
                     "check_amount_sum"
                 ],
-               "seriesURLParamMap":{"subvendor":"vendor_id","vendor":"prime_vendor_id","year":"year.year","calyear":"year.year","agency":"agency_id","yeartype":"type_of_year","mwbe":"minority_type_id","category":"category.category"},
-               "allowedParams":["prime_vendor_id","vendor_id","year.year","agency_id","type_of_year","minority_type_id","category.category"],
+               "seriesURLParamMap":{"subvendor":"vendor_id","vendor":"prime_vendor_id","year":"year.year","calyear":"year.year","agency":"agency_id","yeartype":"type_of_year","mwbe":"minority_type_id"},
+               "allowedParams":["prime_vendor_id","vendor_id","year.year","agency_id","type_of_year","minority_type_id"],
                "seriesDefaultParameters":{"type_of_year":"B"}
             }  ,
             {
@@ -117,8 +117,8 @@
                                 "columns": [
                     "check_amount_sum"
                 ],
-               "seriesURLParamMap":{"subvendor":"vendor_id","vendor":"prime_vendor_id","year":"year.year","calyear":"year.year","agency":"agency_id","yeartype":"type_of_year","mwbe":"minority_type_id","category":"category.category"},
-               "allowedParams":["vendor_id","prime_vendor_id","year.year","agency_id","type_of_year","minority_type_id","category.category"],
+               "seriesURLParamMap":{"subvendor":"vendor_id","vendor":"prime_vendor_id","year":"year.year","calyear":"year.year","agency":"agency_id","yeartype":"type_of_year","mwbe":"minority_type_id"},
+               "allowedParams":["vendor_id","prime_vendor_id","year.year","agency_id","type_of_year","minority_type_id"],
                "seriesDefaultParameters":{"type_of_year":"B","minority_type_id":"2~3~4~5~9"}
             }  ,
             {
