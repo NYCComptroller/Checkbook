@@ -855,8 +855,12 @@ class RequestUtil{
     	}else{
     		$url = self::getCurrentDomainURLFromParams();
     	}
-    	
-    	switch($dashboard_filter){
+
+        //Default to total spending
+        if(_getRequestParamValue("category") !=  null)
+            $url = preg_replace('/\/category\/[^\/]*/','',$url);
+
+        switch($dashboard_filter){
     		case "mwbe":
     	    	if(_getRequestParamValue("dashboard") !=  null){    				
     				$url = preg_replace('/\/dashboard\/[^\/]*/','',$url);    				   				    				    				
