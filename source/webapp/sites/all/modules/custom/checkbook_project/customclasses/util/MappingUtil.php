@@ -197,12 +197,10 @@ class MappingUtil {
     static function getCurrentSubVendorsTopNavFilters($active_domain_link, $domain){
 
         $mwbe_filters_html = "";
-
-        $dashboard = _getRequestParamValue('dashboard');
         $tm_wbe = _getRequestParamValue('tm_wbe');
 
         //M/WBE filters should be included in mp and sp dashboards
-        if(RequestUtil::isDashboardFlowPrimevendor() || ($dashboard == "ss" && $tm_wbe == "Y")) {
+        if(RequestUtil::isDashboardFlowPrimevendor() || $tm_wbe == "Y") {
             $applicable_minority_types = self::getCurrentSubMWBEApplicableFilters($domain);
             $active_domain_link =  preg_replace('/\/mwbe\/[^\/]*/','',$active_domain_link);
 
