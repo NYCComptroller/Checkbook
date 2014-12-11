@@ -84,7 +84,8 @@
         "sub_contract_id",
         "industry_type_id",
         "minority_type_id",
-        "is_prime_or_sub"
+        "is_prime_or_sub",
+        "original_agreement_id@checkbook:sub_vendor_agid"
     ],
     "derivedColumns": {
         "associated_prime_vendor_name":{
@@ -134,10 +135,22 @@
         "reference_document_number_export": {
             "type": "expression2",
             "expression": "($row[spending_category_name] == 'Payroll' ||  $row[spending_category_name] == 'Others') ? 'N/A' : $row[reference_document_number]"
-        } ,
-        "reference_document_number_link": {
+        },
+        "sub_vendor_reference_document_number_link":{
+            "type":"expression2",
+            "expression": "($row[spending_category_name] == 'Payroll' ||  $row[spending_category_name] == 'Others') ? 'N/A' : '<a class=\"new_window\" href=\"' . SpendingUtil::getSubContractNumberLinkUrl($node,$row) . '\">'  . $row[reference_document_number] . '</a>'"
+        },
+        "prime_vendor_reference_document_number_link": {
             "type": "expression2",
             "expression": "(ContractURLHelper::prepareSpendingContractLink($row, $node))?ContractURLHelper::prepareSpendingContractLink($row, $node):'N/A'"
+        },
+        "reference_document_number_link_logic": {
+            "type": "expression2",
+            "expression": "(preg_match('/S/', $row[vendor_type])) ? $row['sub_vendor_reference_document_number_link'] : $row['prime_vendor_reference_document_number_link']"
+        },
+        "reference_document_number_link":{
+            "type":"expression2",
+            "expression": "($row[spending_category_name] == 'Payroll' ||  $row[spending_category_name] == 'Others') ? 'N/A' : $row['reference_document_number_link_logic']"
         },
         "purpose_formatted":{
             "type": "expression2",
