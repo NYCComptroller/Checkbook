@@ -259,6 +259,12 @@ switch ($arg){
     break;
 }
 
+//css to indicate no child menus for featured dashboards
+$fdexpclass = "expense-container";
+if(_checkbook_check_isEDCPage()) {
+    $fdexpclass .= " no-menu";
+}
+
 
 //TODO: remove placeholder &nbsp; when numbers under each domain are active
 
@@ -287,9 +293,9 @@ switch ($arg){
 <div class="featured-dashboard-table">
 <table class="expense">
   <tr>
-    <td class="mwbe<?php if($mwbeclass){print $mwbeclass;}?>"><div class="expense-container"><?php print $mwbe_link ?><?php print '<div class="drop-down-menu-triangle">'  . $mwbe_filters .'</div>' ?></div>
+    <td class="mwbe<?php if($mwbeclass){print $mwbeclass;}?>"><div class="<?php print $fdexpclass;?>"><?php print $mwbe_link ?><?php print '<div class="drop-down-menu-triangle">'  . $mwbe_filters .'</div>' ?></div>
     			<?php if($featured_dashboard == "mp" ||$featured_dashboard == "ms"){?><div class='indicator'></div><?php }?></td>
-    <td class="mwbe subvendors<?php if($svclass){print $svclass;}?>"><div class="expense-container"><?php print $subvendors_link ?><?php print '<div class="drop-down-menu-triangle">'  . $svendor_filters .'</div>' ?></div>
+    <td class="mwbe subvendors<?php if($svclass){print $svclass;}?>"><div class="<?php print $fdexpclass;?>"><?php print $subvendors_link ?><?php print '<div class="drop-down-menu-triangle">'  . $svendor_filters .'</div>' ?></div>
     			<?php if($featured_dashboard == "sp" ||$featured_dashboard == "ss"){?><div class='indicator'></div><?php }?></td>
   </tr>
 </table>
