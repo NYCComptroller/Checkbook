@@ -104,14 +104,15 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
 
 
 }else if(strtolower($contracts_results['contract_status']) == 'pending'){
+    $current_year = "/yeartype/B/year/". _getFiscalYearID();
     if(strtolower($contracts_results['contract_category_name']) == 'expense'){
-        $agency_link = "/contracts_pending_exp_landing/agency/".$contracts_results['agency_id'];
-        $vendor_link = "/contracts_pending_exp_landing/vendor/".$contracts_results['vendor_id'];
+        $agency_link = "/contracts_pending_exp_landing".$current_year."/agency/".$contracts_results['agency_id'];
+        $vendor_link = "/contracts_pending_exp_landing".$current_year."/vendor/".$contracts_results['vendor_id'];
         $contract_Id_link = "/contracts_pending_exp_landing/";
 
     }else{
-        $agency_link = "/contracts_pending_rev_landing/agency/".$contracts_results['agency_id'];
-        $vendor_link = "/contracts_pending_rev_landing/vendor/".$contracts_results['vendor_id'];
+        $agency_link = "/contracts_pending_rev_landing".$current_year."/agency/".$contracts_results['agency_id'];
+        $vendor_link = "/contracts_pending_rev_landing".$current_year."/vendor/".$contracts_results['vendor_id'];
         $contract_Id_link = "/contracts_pending_rev_landing/";
     }
 
