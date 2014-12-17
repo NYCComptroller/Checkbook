@@ -20,8 +20,6 @@
 ?>
 <?php
 
-
-
 $options = array('html'=>true);
 $options_disabled = array('html'=>true,"attributes"=>array("class"=>"noclick"));
 
@@ -95,28 +93,61 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 	
 	// calcluate amount for mwbe and subvendors top nav. 
 	if(preg_match('/contract/',$_GET['q'])){
-		// for prime flow include prime + sub; for sub vendor flow include sub.
-		if($current_dashboard == "mp" || $current_dashboard == "sp" || $current_dashboard == null){
-			$mwbe_amount = $node->data[6]['current_amount_sum'];
-            $mwbe_subven_amount = $node->data[10]['current_amount_sum'];
-		}else{
-			$mwbe_amount =  $node->data[10]['current_amount_sum'];
+
+        /*For M/WBE and Sub Vendors dashboard, need to consider both active & registered expense contracts for highlighting.
+        This will resolve the case where there is active contracts, so user should be able to click on the dashboards. */
+
+        /* Active Contracts */
+        $active_mwbe_amount = $node->data[11]['current_amount_sum'];
+        $active_mwbe_subven_amount = $node->data[13]['current_amount_sum'];
+        $active_subven_amount = $node->data[12]['current_amount_sum'];
+
+        /* Registered Contracts */
+        $registered_mwbe_amount = $node->data[6]['current_amount_sum'];
+        $registered_mwbe_subven_amount = $node->data[10]['current_amount_sum'];
+        $registered_subven_amount = $node->data[8]['current_amount_sum'];
+
+        /* Active & Registered Contracts */
+        $active_registered_mwbe_amount = $active_mwbe_amount + $registered_mwbe_amount;
+        $active_registered_mwbe_subven_amount = $active_mwbe_subven_amount + $registered_mwbe_subven_amount;
+        $active_registered_subven_amount = $active_subven_amount + $registered_subven_amount;
+
+        // for prime flow include prime + sub; for sub vendor flow include sub.
+        if($current_dashboard == "mp" || $current_dashboard == "sp" || $current_dashboard == null){
+            $mwbe_amount = $registered_mwbe_amount;
+            $mwbe_subven_amount = $registered_mwbe_subven_amount;
+
+            $mwbe_amount_active_inc = $active_registered_mwbe_amount;
+            $mwbe_subven_amount_active_inc = $active_registered_mwbe_subven_amount;
+        }else{
+            $mwbe_amount = $registered_mwbe_subven_amount;
             $mwbe_subven_amount = 0;
-		}
-		$mwbe_prime_amount = $node->data[6]['current_amount_sum'];
-		$svendor_amount = $node->data[8]['current_amount_sum'];		
-		// if prime is zero and sub amount is not zero. change dashboard to ms
-		if( $mwbe_prime_amount ==  null  && $mwbe_subven_amount > 0){
+
+            $mwbe_amount_active_inc = $active_registered_mwbe_subven_amount;
+            $mwbe_subven_amount_active_inc = 0;
+        }
+
+        $mwbe_prime_amount = $registered_mwbe_amount;
+        $svendor_amount = $registered_subven_amount;
+
+        $mwbe_prime_amount_active_inc = $active_registered_mwbe_amount;
+        $svendor_amount_active_inc = $active_registered_subven_amount;
+
+        // if prime is zero and sub amount is not zero. change dashboard to ms
+        if( $mwbe_prime_amount_active_inc ==  0  && $mwbe_subven_amount_active_inc > 0){
             $mwbe_amount += $mwbe_subven_amount;
-			RequestUtil::$is_prime_mwbe_amount_zero_sub_mwbe_not_zero = true;
-			$mwbe_active_domain_link = preg_replace('/\/dashboard\/../','/dashboard/ms',$mwbe_active_domain_link);
-		}
-		// call function to get mwbe drop down filters.
-		$mwbe_filters = MappingUtil::getCurrentMWBETopNavFilters($mwbe_active_domain_link,"contracts");
+            $mwbe_amount_active_inc += $mwbe_subven_amount_active_inc;
+            RequestUtil::$is_prime_mwbe_amount_zero_sub_mwbe_not_zero = true;
+            $mwbe_active_domain_link = preg_replace('/\/dashboard\/../','/dashboard/ms',$mwbe_active_domain_link);
+        }
+
+        // call function to get mwbe drop down filters.
+        $mwbe_filters = MappingUtil::getCurrentMWBETopNavFilters($mwbe_active_domain_link,"contracts");
 
         // call function to get sub vendors drop down filters.
         $svendor_filters = MappingUtil::getCurrentSubVendorsTopNavFilters($svendor_active_domain_link,"contracts");
-	}else{
+	}
+    else{
 		//for prime flow include prime + sub; for sub vendor flow include sub.
 		if($current_dashboard == "mp" || $current_dashboard == "sp" || $current_dashboard == null){
 			$mwbe_amount = $node->data[5]['check_amount_sum'];
@@ -167,14 +198,14 @@ if(!preg_match('/smnid/',$_GET['q']) && (
 	$mwbeclass = ' ';
 }
 
-if($mwbe_amount  == 0){	
+if($mwbe_amount  == 0 && $mwbe_amount_active_inc == 0){
 	$mwbe_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' . RequestUtil::getDashboardTopNavTitle("mwbe") . '</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div></div>','',$options_disabled);	
 }else{	
 	$mwbe_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' . RequestUtil::getDashboardTopNavTitle("mwbe") . '</span><br>&nbsp;'. custom_number_formatter_format($mwbe_amount ,1,'$') . '</div></div>',$mwbe_active_domain_link,$options);	
 }
 
 
-if($svendor_amount  == 0){	
+if($svendor_amount  == 0 && $svendor_amount_active_inc == 0){
 	$subvendors_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div></div>','',$options_disabled);			
 }else{
 	$subvendors_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format($svendor_amount ,1,'$') . '</div></div>',$svendor_active_domain_link ,$options);	
@@ -189,10 +220,10 @@ if($featured_dashboard != null){
 }
 
 // conditions for making mwbe active.
-if($featured_dashboard == "mp" ||$featured_dashboard == "ms" || ($featured_dashboard != null && $mwbe_amount > 0 ) || RequestUtil::$is_prime_mwbe_amount_zero_sub_mwbe_not_zero ){
+if($featured_dashboard == "mp" ||$featured_dashboard == "ms" || ($featured_dashboard != null && ($mwbe_amount > 0 || $mwbe_amount_active_inc > 0) ) || RequestUtil::$is_prime_mwbe_amount_zero_sub_mwbe_not_zero ){
 	$mwbeclass = ' active';	
 }
-if( $featured_dashboard == "sp" || $featured_dashboard == "ss" || ($featured_dashboard != null && $svendor_amount > 0 ) || RequestUtil::$is_prime_mwbe_amount_zero_sub_mwbe_not_zero ){
+if( $featured_dashboard == "sp" || $featured_dashboard == "ss" || ($featured_dashboard != null && ($svendor_amount > 0 || $svendor_amount_active_inc > 0) ) || RequestUtil::$is_prime_mwbe_amount_zero_sub_mwbe_not_zero ){
 	$svclass = ' active';
 }
 
