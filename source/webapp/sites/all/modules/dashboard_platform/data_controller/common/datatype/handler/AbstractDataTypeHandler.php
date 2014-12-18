@@ -77,6 +77,10 @@ abstract class AbstractDataTypeHandler extends AbstractObject implements DataTyp
             if (($v === 'NULL') || ($v === 'N/A')) {
                 return NULL;
             }
+            //Handle case where we want to show N/A in the results
+            if (($v === 'NOT_APPLICABLE_COLUMN')) {
+                return 'N/A';
+            }
         }
 
         return $adjustedValue;
