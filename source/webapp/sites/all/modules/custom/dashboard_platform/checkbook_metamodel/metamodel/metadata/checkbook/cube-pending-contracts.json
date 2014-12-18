@@ -367,6 +367,10 @@
         "pending_contracts__ref_industry_type": [
             {"datasetName": "pending_contracts", "columnNames": ["industry_type_id"]},
             {"datasetName": "industry_type", "columnNames": ["industry_type_id"]}
+        ],
+        "pending_contracts__prime_not_applicable": [
+            {"datasetName": "pending_contracts", "columnNames": ["is_prime_or_sub"]},
+            {"datasetName": "prime_not_applicable", "columnNames": ["is_prime_or_sub"]}
         ]
     }
 }
