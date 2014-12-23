@@ -8,14 +8,14 @@
       </th>
     </tr>
     <tr>
-      <td><span class='alert-required-field'></span>Description:</td>
+      <td><span class='alert-required-field' style='color:red;'>*</span>Description:</td>
       <td>
         <input type='text' name='alert_label' size="25" />
         <div class="description">This is how the alert will be described in the email text.</div>
       </td>
     </tr>
     <tr>
-      <td><span class='alert-required-field'></span>Email:</td>
+      <td><span class='alert-required-field' style='color:red;'>*</span>Email:</td>
       <td>
         <input type='text' name='alert_email' size="50" />
       </td>

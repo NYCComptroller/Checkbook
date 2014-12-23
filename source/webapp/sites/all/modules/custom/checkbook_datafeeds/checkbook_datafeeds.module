@@ -3241,7 +3241,7 @@ function checkbook_datafeeds_revenue($form, &$form_state) {
     );
     $form['filter'] = array(
         '#type' => 'fieldset',
-        '#title' => t('4. Filter the Data:'),
+        '#title' => t('3. Filter the Data:'),
         '#collapsible' => TRUE,
     );
     $form['filter']['budget_fiscal_year'] = array(
@@ -3362,7 +3362,7 @@ function checkbook_datafeeds_revenue($form, &$form_state) {
 
     $form['columns'] = array(
         '#type' => 'fieldset',
-        '#title' => t('3. Select Columns:'),
+        '#title' => t('4. Select Columns:'),
         '#collapsible' => TRUE,
     );
     $form['columns']['column_select'] = array(
