@@ -23,20 +23,30 @@ $records = $node->data;
 if(is_array($records)){
     $row = $records[0];
 
+    $noContr = WidgetUtil::getLabel("no_of_contracts");
+    if(_getRequestParamValue('smnid') == 791) {
+        $noContr = WidgetUtil::getLabel("no_of_contracts");
+        $mwbe_category = 'M/WBE Category: '.MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']);
+    }
+    if(_getRequestParamValue('smnid') == 720) {
+        $noContr = WidgetUtil::getLabel("num_sub_contracts");
+        $mwbe_category = 'M/WBE Category: '.MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']);
+    }
     $originalAmount = custom_number_formatter_format($row['original_amount_sum'],2,'$');
     $currentAmount = custom_number_formatter_format($row['current_amount_sum'],2,'$');
     $spentToDateAmount = custom_number_formatter_format($row['spending_amount_sum'],2,'$');
     $spnttodt = WidgetUtil::getLabel("spent_to_date");
     $oamnt = WidgetUtil::getLabel("original_amount");
     $camnt = WidgetUtil::getLabel("current_amount");
-    $noContr = WidgetUtil::getLabel("no_of_contracts");
     $vendor= WidgetUtil::getLabel("vendor_name");
     $totalContracts = number_format($row['total_contracts']);
 $summaryContent =  <<<EOD
 <div class="contract-details-heading">
 	<div class="contract-id">
 		<h2 class="contract-title">{$node->widgetConfig->summaryView->templateTitle}</h2>
-		<div class="contract-id">{$row[$node->widgetConfig->summaryView->entityColumnName]}</div>
+		<div class="contract-id">{$row[$node->widgetConfig->summaryView->entityColumnName]}<br>
+		    {$mwbe_category}
+		</div>
 	</div>
 	<div class="dollar-amounts">
 		<div class="spent-to-date">
