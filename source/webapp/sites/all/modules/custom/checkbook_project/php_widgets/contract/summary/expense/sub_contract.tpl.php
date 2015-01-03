@@ -22,7 +22,6 @@
 $records = $node->data;
 if(is_array($records)){
     $row = $records[0];
-
     $originalAmount = custom_number_formatter_format($row['original_amount_sum'],2,'$');
     $currentAmount = custom_number_formatter_format($row['current_amount_sum'],2,'$');
     $spentToDateAmount = custom_number_formatter_format($row['spending_amount_sum'],2,'$');
@@ -33,6 +32,13 @@ if(is_array($records)){
     $purpose = WidgetUtil::getLabel("contract_purpose");
     $agency = WidgetUtil::getLabel("contract_agency");
     $vendor= WidgetUtil::getLabel("sub_vendor_name");
+
+    if(_getRequestParamValue('smnid') == 721){
+        $purpose = WidgetUtil::getLabel("sub_contract_purpose");
+        $associated_prime_vendor_value = $row['vendor_vendor_legal_name'];
+        $associated_prime_vendor = WidgetUtil::getLabel("associated_prime_vendor");
+    }
+
     $summaryContent =  <<<EOD
 <div class="contract-details-heading">
 	<div class="contract-id">
@@ -64,6 +70,9 @@ if(is_array($records)){
 		</li>
 		<li class="vendor">
 			<span class="gi-list-item">{$vendor}:</span> {$row['subvendor_subvendor_legal_name']}
+		</li>
+		<li class="associated-prime-vendor">
+			<span class="gi-list-item">{$associated_prime_vendor}:</span> {$associated_prime_vendor_value}
 		</li>
 	</ul>
 </div>
