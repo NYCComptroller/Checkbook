@@ -25,6 +25,26 @@ if(is_array($records)){
     $title = eval($node->widgetConfig->summaryView->templateTitleEval);
     $agency_name = WidgetUtil::getLabel("agency_name");
     $ytdspending = WidgetUtil::getLabel("ytd_spending");
+
+    if(_getRequestParamValue('smnid') == 759){
+        $percent_spending_value = $row['percent_spending'];
+        $percent_spending = WidgetUtil::getLabel("percent_spending");
+    }
+    if(_getRequestParamValue('smnid') == 716){
+        $percent_spending_value = '';
+        $percent_spending = '';
+        $ytdspending = WidgetUtil::getLabel("ytd_spending_sub_vendors");
+        $percent_paid_value = $row['sub_vendors_percent_paid_formatted'];
+        $percent_paid = WidgetUtil::getLabel("sub_vendors_percent_paid");
+        $no_of_subvendors_value = $row['sub_vendor_count'];
+        $no_of_subvendors = WidgetUtil::getLabel("num_sub_vendors");
+        $ytd_spending_agency_value = $row['ytd_spending_agency_formatted'];
+        $ytd_spending_agency = WidgetUtil::getLabel("ytd_spending_agency");
+
+    }
+    //sub_vendors_percent_paid_formatted
+
+
 $summaryContent =  <<<EOD
 <div class="contract-details-heading">
 	<div class="contract-id">
@@ -35,6 +55,22 @@ $summaryContent =  <<<EOD
         <div class="ytd-spending-amount">
             {$row['formatted_check_amount_sum']}
             <div class="amount-title">{$ytdspending}</div>
+        </div>
+        <div class="number-of-subvendors">
+            {$no_of_subvendors_value}
+            <div class="amount-title">{$no_of_subvendors}</div>
+        </div>
+        <div class="percent-paid-amount">
+            {$percent_paid_value}
+            <div class="amount-title">{$percent_paid}</div>
+        </div>
+        <div class="ytd-spending-agency">
+            {$ytd_spending_agency_value}
+            <div class="amount-title">{$ytd_spending_agency}</div>
+        </div>
+        <div class="percent-spending-amount">
+            {$percent_spending_value}
+            <div class="amount-title">{$percent_spending}</div>
         </div>
     </div>
 </div>

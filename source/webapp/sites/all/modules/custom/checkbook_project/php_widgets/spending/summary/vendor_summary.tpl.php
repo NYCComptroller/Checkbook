@@ -27,12 +27,15 @@ if(is_array($records)){
     $vendor_name = WidgetUtil::getLabel("vendor_name");
     $ytdspending = WidgetUtil::getLabel("ytd_spending");
     $totcontamnt = WidgetUtil::getLabel("total_contract_amount");
+    $mwbe_category_label = WidgetUtil::getLabel("mwbe_category");
+    $mwbe_category = MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']);
+    $percent_spending = WidgetUtil::getLabel("percent_spending");
     
 $summaryContent =  <<<EOD
 <div class="contract-details-heading">
 	<div class="contract-id">
 		<h2 class="contract-title">{$title}</h2>
-		<div class="spending-tx-subtitle">{$vendor_name}: {$row['vendor_vendor_legal_name']}</div>
+		<div class="spending-tx-subtitle">{$vendor_name}: {$row['vendor_vendor_legal_name']} <br> {$mwbe_category_label}: {$mwbe_category}</div>
 	</div>
 	<div class="dollar-amounts">
         <div class="total-spending-contract-amount">
@@ -42,6 +45,10 @@ $summaryContent =  <<<EOD
         <div class="ytd-spending-amount">
             {$row['formatted_check_amount_sum']}
             <div class="amount-title">{$ytdspending}</div>
+        </div>
+        <div class="percent-spending-amount">
+            {$row['percent_spending']}
+            <div class="amount-title">{$percent_spending}</div>
         </div>
     </div>
 </div>
