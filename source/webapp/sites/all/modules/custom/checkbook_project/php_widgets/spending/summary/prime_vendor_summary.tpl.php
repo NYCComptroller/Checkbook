@@ -27,6 +27,12 @@ if(is_array($records)){
     $vendor_name = WidgetUtil::getLabel("prime_vendor_name");
     $ytdspending = WidgetUtil::getLabel("ytd_spending");
     $totcontamnt = WidgetUtil::getLabel("total_contract_amount");
+
+    if(_getRequestParamValue('smnid') == 717){
+        $no_of_subvendor_value = $row['sub_vendor_count'];
+        $no_of_subvendor = WidgetUtil::getLabel("num_sub_vendors");
+    }
+
     
 $summaryContent =  <<<EOD
 <div class="contract-details-heading">
@@ -42,6 +48,10 @@ $summaryContent =  <<<EOD
         <div class="ytd-spending-amount">
             {$row['formatted_check_amount_sum']}
             <div class="amount-title">{$ytdspending}</div>
+        </div>
+        <div class="number-of-subvendors">
+            {$no_of_subvendor_value}
+            <div class="amount-title">{$no_of_subvendor}</div>
         </div>
     </div>
 </div>

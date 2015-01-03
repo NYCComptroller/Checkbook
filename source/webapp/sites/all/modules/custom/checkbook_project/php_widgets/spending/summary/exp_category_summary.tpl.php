@@ -24,7 +24,8 @@ if(is_array($records)){
     $row = $records[0];
     $title = eval($node->widgetConfig->summaryView->templateTitleEval);
     $ytdspending = WidgetUtil::getLabel("ytd_spending");
-    $expcat = WidgetUtil::getLabel("expense_category");    
+    $expcat = WidgetUtil::getLabel("expense_category");
+    $percent_spending = WidgetUtil::getLabel("percent_spending");
 $summaryContent =  <<<EOD
 <div class="contract-details-heading">
 	<div class="contract-id">
@@ -35,6 +36,10 @@ $summaryContent =  <<<EOD
         <div class="ytd-spending-amount">
             {$row['formatted_check_amount_sum']}
             <div class="amount-title">{$ytdspending}</div>
+        </div>
+        <div class="percent-spending-amount">
+            {$row['percent_spending']}
+            <div class="amount-title">{$percent_spending}</div>
         </div>
     </div>
 </div>
