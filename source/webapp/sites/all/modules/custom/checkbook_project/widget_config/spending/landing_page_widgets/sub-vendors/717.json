@@ -81,9 +81,9 @@
     },
     "summaryView":{
         "template":"spending_prime_vendor_summary",
-        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Prime Vendors');"
+        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Prime Vendor');"
     },
-    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Prime Vendors');",
+    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Prime Vendor');",
     "table_title":"",
     "table_columns": [
         {"labelAlias":"prime_vendor","column":"prime_vendor_name_link2","sortSourceColumn":"prime_vendor.prime_vendor.legal_name"},
