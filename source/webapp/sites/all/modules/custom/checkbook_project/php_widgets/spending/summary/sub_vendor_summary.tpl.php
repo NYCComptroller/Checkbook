@@ -21,6 +21,7 @@
 <?php
 
 $records = $node->data;
+
 if(is_array($records)){
     $row = $records[0];
     $title = eval($node->widgetConfig->summaryView->templateTitleEval);
@@ -37,16 +38,24 @@ if(is_array($records)){
         $percent_spending = '';
         $associated_prime_vendor_value = $row['prime_vendor_prime_vendor_legal_name'];
         $associated_prime_vendor = WidgetUtil::getLabel("associated_prime_vendor");
+        $associated_prime_vendor = '<br>'.$associated_prime_vendor .': '.$associated_prime_vendor_value ;
         $no_of_subcontracts_value = $row['total_sub_contracts'];
         $no_of_subcontracts =  WidgetUtil::getLabel("num_sub_contracts");
     }
+    if(_getRequestParamValue('smnid') == 763){
+        $percent_spending_value = '';
+        $percent_spending = '';
+        $no_of_subcontracts_value = $row['total_sub_contracts'];
+        $no_of_subcontracts =  WidgetUtil::getLabel("num_sub_contracts");
+    }
+
 
     
 $summaryContent =  <<<EOD
 <div class="contract-details-heading">
 	<div class="contract-id">
 		<h2 class="contract-title">{$title}</h2>
-		<div class="spending-tx-subtitle">{$vendor_name}: {$row['sub_vendor_sub_vendor_legal_name']} <br> {$associated_prime_vendor}: {$associated_prime_vendor_value}<br> {$mwbe_category_label}: {$mwbe_category}</div>
+		<div class="spending-tx-subtitle">{$vendor_name}: {$row['sub_vendor_sub_vendor_legal_name']} {$associated_prime_vendor} <br> {$mwbe_category_label}: {$mwbe_category}</div>
 	</div>
 	<div class="dollar-amounts">
         <div class="ytd-spending-amount">

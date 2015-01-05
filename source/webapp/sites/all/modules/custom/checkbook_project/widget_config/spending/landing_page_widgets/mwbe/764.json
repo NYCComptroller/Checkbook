@@ -80,9 +80,9 @@
     },
     "summaryView":{
         "template":"spending_contract_summary",
-        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Contracts');"
+        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Contract');"
     },
-    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Contracts');",
+    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Contract');",
     "table_title":"",
     "table_columns": [
         {"labelAlias": "contract_id","column": "contract_number_link"},
