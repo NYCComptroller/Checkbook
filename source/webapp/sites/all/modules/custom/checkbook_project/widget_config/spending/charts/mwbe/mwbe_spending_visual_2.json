@@ -27,7 +27,7 @@
 "cleanURLParameters":["yeartype","agency","vendor","category","industry"],
 "urlParamMap":{"yeartype":"type_of_year","agency":"agency_id","vendor":"vendor_id","category":"spending_category_id","industry":"industry_type_id"},
 "urlParamMapSubVendor":{"yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","category":"spending_category_id","industry":"industry_type_id"},
-"chartTitle":"M/WBE Total Spending Share",
+"chartTitle":"M/WBE Total Prime Spending Share",
 "widgetDataLoader":"
     
     $where_filters = array();
@@ -122,9 +122,10 @@
         $categoryDetails = SpendingUtil::getSpendingCategoryDetails($categoryId,'display_name');
         if(is_array($categoryDetails)){
             $spend_cat = $categoryDetails[0]['display_name'];
+            $spend_cat = str_replace('Spending', 'Prime Spending', $spend_cat);
         }
     }
-    else $spend_cat = 'Total Spending';
+    else $spend_cat = 'Total Prime Spending';
 	$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' ' . $spend_cat . ' Share';
 	$node->widgetConfig->chartConfig->series[0]->name = 'Fiscal Years';
 	$node->widgetConfig->chartConfig->series[0]->type = 'column';

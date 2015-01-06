@@ -50,7 +50,7 @@ echo '<div class=\"chart-right\">
 "cleanURLParameters":["year","yeartype","agency","vendor","category","industry"],
 "urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"vendor_id","category":"spending_category_id","industry":"industry_type_id"},
 "urlParamMapSubVendor":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","category":"spending_category_id","industry":"industry_type_id"},
-"chartTitle":"Spending by M/WBE Share",
+"chartTitle":"Prime Spending by M/WBE Share",
 "widgetDataLoader":"
     
     $where_filters = array();
@@ -74,9 +74,9 @@ echo '<div class=\"chart-right\">
 
 	$mwbe_filter = _getRequestParamValue('mwbe');
 	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){	
-		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName()  . ' Spending';
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName()  . ' Prime Spending';
 	}else{
-		$node->widgetConfig->chartTitle = 'Spending by ' . MappingUtil::getCurrenEhtnicityName() .' Share';		
+		$node->widgetConfig->chartTitle = 'Prime Spending by ' . MappingUtil::getCurrenEhtnicityName() .' Share';
 	}
 	$mwbe_data = array();
 	 foreach ($node->data as $row){
