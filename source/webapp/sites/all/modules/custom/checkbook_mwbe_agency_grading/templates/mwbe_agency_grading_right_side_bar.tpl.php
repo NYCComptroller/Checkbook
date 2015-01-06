@@ -3,7 +3,7 @@ $mwbe_cats =  _mwbe_agency_grading_current_cats();
 ?>
 <div class="checkbook-grading-right">
 			<div class="legend">
-				<div class="title">New York City Spending</div>
+				<div class="title">M/WBE Category Spending</div>
 		    	<form action="" name="mglegend">
 					<div class="checkbox-grading-legend">	
 					<table>
@@ -53,7 +53,7 @@ $mwbe_cats =  _mwbe_agency_grading_current_cats();
 	 			</div>
 	 			
 	 			<div>
-		          <label class="label"> M/WBE:</label>
+		          <label class="label"> M/WBE Spending:</label>
 		          <span class="value"><?php print $nyc_data['total_mwbe']; ?></span>
 	 			</div>
 	 			
