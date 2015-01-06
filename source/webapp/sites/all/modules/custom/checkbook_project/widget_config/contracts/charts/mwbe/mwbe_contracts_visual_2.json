@@ -65,8 +65,8 @@
      ';
     
     $node->data  = _checkbook_project_execute_sql($sql);
-    
-    
+
+
 ",
 "widgetUpdateJSONConfig":"
 
@@ -126,10 +126,10 @@
 				$year_display = 'FY ' ;
 	}	
 	$index = 0;
-	$node->widgetConfig->gridConfig->table_columns[1]->labelAlias = $year_display . ' ' .  $year;
+	$node->widgetConfig->gridConfig->table_columns[1]->labelAlias = $year_display . ' ' .  ($year - 1);
 	
 	while($index <= 11){
-	    $node->widgetConfig->gridConfig->data[] = array($categories[$index],$series_current[$index]->y,$series_previous[$index]->y );	    	
+	    $node->widgetConfig->gridConfig->data[] = array($categories[$index],$series_previous[$index]->y,$series_current[$index]->y );
 		$index +=1;
 	}
 	
@@ -141,7 +141,7 @@
 		$prev_series_obj->pointWidth = 15;
 		$prev_series_obj->data = $series_previous;
 		$node->widgetConfig->chartConfig->series[] = $prev_series_obj;		
-		$node->widgetConfig->gridConfig->table_columns[2]->labelAlias =  $year_display . ' ' . ($year -1);
+		$node->widgetConfig->gridConfig->table_columns[2]->labelAlias =  $year_display . ' ' . ($year);
 	}
 	$curr_series_obj = new stdClass();
 	$curr_series_obj->name = $year_display . ' ' . $year;
