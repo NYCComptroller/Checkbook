@@ -454,6 +454,29 @@ namespace { //global
                     . '/mwbe/'. $minority_type_id .  '?expandBottomCont=true';
             return $url;
         }
+
+        /**
+         * Gets the Spent to date link Url for the Sub Vendors widget
+         * @param $node
+         * @param $row
+         * @return string
+         */
+        static public function getSubVendorSpentToDateLinkUrl($node,$row){
+            $dashboard = _getRequestParamValue("dashboard");
+            $url = "/contract/spending/transactions/subvendor/" . $row["subvendor_subvendor"]
+                . _checkbook_append_url_params()
+                . _checkbook_project_get_url_param_string("status")
+                . _checkbook_project_get_url_param_string("agency","cagency")
+                . _checkbook_project_get_url_param_string("awdmethod")
+                .  _checkbook_project_get_url_param_string("cindustry")
+                .  _checkbook_project_get_url_param_string("csize")
+                .  '/doctype/CT1~CTA1~MA1'.ContractURLHelper::_checkbook_project_spending_get_year_url_param_string()
+                . '/smnid/' . $node->nid
+                . '/newwindow';
+            if($dashboard == "mp" && $node->nid == 720)
+                $url = str_replace("dashboard/mp","dashboard/ms",$url);
+            return $url;
+        }
     }
 }
 
