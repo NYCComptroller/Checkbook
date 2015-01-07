@@ -579,6 +579,11 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
         $redirect_url = 'contract/search/transactions';
     }
 
+    //Pending Contracts should always be in the current FY.
+    if($contracts_contract_status == "P") {
+        $contracts_year = "fy~" . _getCurrentYearID();
+    }
+
     if (!empty($contracts_mwbe_category)) {
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_mwbe_category, 'mwbe');
     }
