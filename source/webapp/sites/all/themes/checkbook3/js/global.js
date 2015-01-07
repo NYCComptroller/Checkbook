@@ -297,6 +297,25 @@ Drupal.behaviors.hoveOverMWBE = {
 
             $('.chart-title').css("display","block");
 
+            //Spotlight Videos
+            if($('#video-list-pager').children().length == 0)
+                if ($('#allVideoList').length > 0) {
+                    $('#allVideoList')
+                        .after('<div id="video-list-pager" class="spotlight-video-pager"></div>')
+                        .cycle({
+                            fx:'fade',
+                            timeout:45000,
+                            height:'315px',
+                            width:'100%',
+                            fit:1,
+                            speed:1000,
+                            pause:true,
+                            pager:'#video-list-pager',
+                            prev:'#prev1',
+                            next:'#next1'
+                        });
+                }
+
             // NYC Budget Total Expenditure
             $('.page-budget .slider-pager a:last').click(function () {
                 $('#total-expenditure').fadeIn();
