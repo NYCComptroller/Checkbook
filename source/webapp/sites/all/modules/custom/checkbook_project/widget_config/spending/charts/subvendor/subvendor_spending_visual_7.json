@@ -118,7 +118,9 @@
 			$index += 1;
 		}
 	}
-
+    if(empty($series_new)) {
+        $node->data = array();
+    }
     $categoryId = _getRequestParamValue('category');
     if(isset($categoryId)){
         $categoryDetails = SpendingUtil::getSpendingCategoryDetails($categoryId,'display_name');
