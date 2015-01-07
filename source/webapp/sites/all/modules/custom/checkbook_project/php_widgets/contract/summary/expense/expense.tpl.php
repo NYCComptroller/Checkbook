@@ -23,10 +23,7 @@ $records = $node->data;
 if(is_array($records)){
     $row = $records[0];
     $noContr = WidgetUtil::getLabel("no_of_contracts");
-    if(_getRequestParamValue('smnid') == 791) {
-        $noContr = WidgetUtil::getLabel("no_of_contracts");
-        $mwbe_category = WidgetUtil::getLabel("mwbe_category").': '.MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']);
-    }
+
     if(_getRequestParamValue('smnid') == 720) {
         $noContr = WidgetUtil::getLabel("num_sub_contracts");
         $mwbe_category = WidgetUtil::getLabel("mwbe_category").': '.MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']);
@@ -38,6 +35,17 @@ if(is_array($records)){
     if(_getRequestParamValue('smnid') == 726 || _getRequestParamValue('smnid') == 727 || _getRequestParamValue('smnid') == 728 || _getRequestParamValue('smnid') == 729) {
         $noContr = WidgetUtil::getLabel("num_sub_contracts");
     }
+    if(_getRequestParamValue('smnid') == 783) {
+        $mwbe_category = WidgetUtil::getLabel("mwbe_category").': '.MappingUtil::getMinorityCategoryById($row['current_prime_minority_type_id']);
+    }
+    if(_getRequestParamValue('smnid') == 784) {
+        $mwbe_category = WidgetUtil::getLabel("mwbe_category").': '.MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']);
+    }
+    if(_getRequestParamValue('smnid') == 791) {
+        $noContr = WidgetUtil::getLabel("no_of_contracts");
+        $mwbe_category = WidgetUtil::getLabel("mwbe_category").': '.MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']);
+    }
+
     $originalAmount = custom_number_formatter_format($row['original_amount_sum'],2,'$');
     $currentAmount = custom_number_formatter_format($row['current_amount_sum'],2,'$');
     $spentToDateAmount = custom_number_formatter_format($row['spending_amount_sum'],2,'$');
