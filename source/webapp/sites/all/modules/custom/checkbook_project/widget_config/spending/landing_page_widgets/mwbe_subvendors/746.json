@@ -18,6 +18,12 @@
     "dataset": "checkbook:spending_subven_data",
     "noDataInitialLoad":true,
     "totalAggregateColumns":["check_amount_sum"],
+    "adjustTotalAggregateColumnsParameters":"
+        if(_getRequestParamValue('smnid') == 746) {
+            unset($parameters['agency_id']);
+        }
+        return $parameters;
+    ",
     "columns": [
         "yeartype.yeartype",
         "agency.agency",

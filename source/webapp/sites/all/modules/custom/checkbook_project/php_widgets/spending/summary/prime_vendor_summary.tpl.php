@@ -32,6 +32,10 @@ if(is_array($records)){
         $no_of_subvendor_value = $row['sub_vendor_count'];
         $no_of_subvendor = WidgetUtil::getLabel("num_sub_vendors");
     }
+    if(_getRequestParamValue('smnid') == 747){
+        $percent_spending_value = $row['percent_spending'];
+        $percent_spending = WidgetUtil::getLabel("percent_spending");
+    }
 
     
 $summaryContent =  <<<EOD
@@ -52,6 +56,10 @@ $summaryContent =  <<<EOD
         <div class="number-of-subvendors">
             {$no_of_subvendor_value}
             <div class="amount-title">{$no_of_subvendor}</div>
+        </div>
+        <div class="percent-spending-amount">
+            {$percent_spending_value}
+            <div class="amount-title">{$percent_spending}</div>
         </div>
     </div>
 </div>
