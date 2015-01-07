@@ -29,7 +29,7 @@ if(is_array($records)){
     $ytdspending = WidgetUtil::getLabel("ytd_spending");
     $mwbe_category_label = WidgetUtil::getLabel("mwbe_category");
     $mwbe_category = MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']);
-    if(_getRequestParamValue('smnid') == 759){
+    if(_getRequestParamValue('smnid') == 759 || _getRequestParamValue('smnid') == 748){
         $percent_spending_value = $row['percent_spending'];
         $percent_spending = WidgetUtil::getLabel("percent_spending");
     }
@@ -43,8 +43,8 @@ if(is_array($records)){
         $no_of_subcontracts =  WidgetUtil::getLabel("num_sub_contracts");
     }
     if(_getRequestParamValue('smnid') == 763){
-        $percent_spending_value = '';
-        $percent_spending = '';
+        $percent_spending_value = $row['percent_spending'];
+        $percent_spending = WidgetUtil::getLabel("percent_spending");
         $no_of_subcontracts_value = $row['total_sub_contracts'];
         $no_of_subcontracts =  WidgetUtil::getLabel("num_sub_contracts");
     }

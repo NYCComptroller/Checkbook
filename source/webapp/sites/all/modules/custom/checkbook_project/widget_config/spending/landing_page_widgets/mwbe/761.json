@@ -8,6 +8,12 @@
 	"dataset": "checkbook:spending_mwbe_data",
 	"noDataInitialLoad":true,
     "totalAggregateColumns":["check_amount_sum"],
+    "adjustTotalAggregateColumnsParameters":"
+        if(_getRequestParamValue('smnid') == 761) {
+            unset($parameters['expenditure_object.expenditure_object']);
+        }
+        return $parameters;
+    ",
 	"columns": ["yeartype.yeartype","check_amount_sum","expenditure_object.expenditure_object","expenditure_object.expenditure_object.original_expenditure_object_name","year.year"],
 	"limit":5,
     "enableExpand":true,

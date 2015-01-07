@@ -26,7 +26,7 @@ if(is_array($records)){
     $agency_name = WidgetUtil::getLabel("agency_name");
     $ytdspending = WidgetUtil::getLabel("ytd_spending");
 
-    if(_getRequestParamValue('smnid') == 759){
+    if(_getRequestParamValue('smnid') == 759 || _getRequestParamValue('smnid') == 746){
         $percent_spending_value = $row['percent_spending'];
         $percent_spending = WidgetUtil::getLabel("percent_spending");
     }

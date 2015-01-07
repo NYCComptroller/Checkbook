@@ -18,6 +18,14 @@
     "dataset": "checkbook:spending_subven_data",
     "noDataInitialLoad":true,
     "totalAggregateColumns":["check_amount_sum"],
+    "adjustTotalAggregateColumnsParameters":"
+        if(_getRequestParamValue('smnid') == 750) {
+            unset($parameters['industry_type_id']);
+            $data_controller_instance = data_controller_get_operator_factory_instance();
+            $parameters['industry_type_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
+        }
+        return $parameters;
+    ",
     "columns": [
         "yeartype.yeartype",
         "check_amount_sum",
