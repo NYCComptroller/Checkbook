@@ -47,6 +47,10 @@
         "percent_spending":{
             "type":"expression2",
             "expression": "SpendingUtil::getPercentYtdSpending($node, $row)"
+        },
+        "formatted_expense_category": {
+            "type": "expression2",
+            "expression": "_get_tooltip_markup($row['expenditure_object_expenditure_object_original_expenditure_object_name'],40)"
         }
 	},
     "summaryView":{
@@ -56,17 +60,17 @@
     "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Expense Category');",
 	"table_title":"",
 	"table_columns": [
-		{"labelAlias":"expense_category","column":"expenditure_object_expenditure_object_original_expenditure_object_name","header": "false"},
+		{"labelAlias":"expense_category","column":"formatted_expense_category","header": "false"},
 		{"labelAlias":"ytd_spending","column":"formatted_check_amount_sum_link","header": "false","sortSourceColumn":"check_amount_sum"},
         {"labelAlias":"percent_spending","column":"percent_spending","header": "false","sortSourceColumn":"check_amount_sum"},
         {"label": "","column": ""}
 	],
 	"dataTableOptions":{
         "aoColumns": [
-            {"sWidth":"100px","sClass":"text","bSortable": false},
-            {"sWidth":"80px","sClass":"number","asSorting":["desc","asc"]},
-            {"sWidth":"80px","sClass":"number","asSorting":["desc","asc"]},
-            {"bSortable": false,"sWidth":"15px"}
+            {"sWidth":"150px","sClass":"text","bSortable": false},
+            {"sWidth":"40px","sClass":"number","asSorting":["desc","asc"]},
+            {"sWidth":"40px","sClass":"number","asSorting":["desc","asc"]},
+            {"bSortable": false,"sWidth":"10px"}
         ],
         "bServerSide": true,
         "bFilter": false,
