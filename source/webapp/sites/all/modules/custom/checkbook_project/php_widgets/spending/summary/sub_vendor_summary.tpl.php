@@ -24,7 +24,10 @@ $records = $node->data;
 
 if(is_array($records)){
     $row = $records[0];
+    var_dump($row);
+    dsm($row);
     $title = eval($node->widgetConfig->summaryView->templateTitleEval);
+    $totcontamnt = WidgetUtil::getLabel("total_contract_amount");
     $vendor_name = WidgetUtil::getLabel("sub_vendor_name");
     $ytdspending = WidgetUtil::getLabel("ytd_spending");
     $mwbe_category_label = WidgetUtil::getLabel("mwbe_category");
@@ -49,7 +52,6 @@ if(is_array($records)){
         $no_of_subcontracts =  WidgetUtil::getLabel("num_sub_contracts");
     }
 
-
     
 $summaryContent =  <<<EOD
 <div class="contract-details-heading">
@@ -58,6 +60,10 @@ $summaryContent =  <<<EOD
 		<div class="spending-tx-subtitle">{$vendor_name}: {$row['sub_vendor_sub_vendor_legal_name']} {$associated_prime_vendor} <br> {$mwbe_category_label}: {$mwbe_category}</div>
 	</div>
 	<div class="dollar-amounts">
+	    <div class="total-spending-contract-amount">
+            {$row['formatted_total_contract_amount_sum']}
+            <div class="amount-title">{$totcontamnt}</div>
+        </div>
         <div class="ytd-spending-amount">
             {$row['formatted_check_amount_sum']}
             <div class="amount-title">{$ytdspending}</div>
