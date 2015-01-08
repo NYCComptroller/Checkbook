@@ -24,8 +24,6 @@ $records = $node->data;
 
 if(is_array($records)){
     $row = $records[0];
-    var_dump($row);
-    dsm($row);
     $title = eval($node->widgetConfig->summaryView->templateTitleEval);
     $totcontamnt = WidgetUtil::getLabel("total_contract_amount");
     $vendor_name = WidgetUtil::getLabel("sub_vendor_name");
