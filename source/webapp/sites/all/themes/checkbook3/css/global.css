@@ -881,7 +881,7 @@ h3.grid_year_title{text-transform: none;}
     margin-right: auto;
     position: relative;
     text-align: center;
-    width: 256px;
+    width: 240px;
     z-index: 25;
     padding-left:75px;
 }
@@ -896,32 +896,6 @@ h3.grid_year_title{text-transform: none;}
     width: 22px;
 }
 .slider-pager a.activeSlide {
-    background: url("../images/pager_on.png") no-repeat scroll 0 0 transparent;
-    color: #FFFFFF;
-}
-
-/* spotlight video pagination */
-.spotlight-video-pager {
-    bottom: 15px;
-    margin-left: auto;
-    margin-right: auto;
-    position: relative;
-    text-align: center;
-    width: 240px;
-    z-index: 25;
-    padding-left:160px;
-}
-.spotlight-video-pager a {
-    background: url("../images/pager_off.png") repeat scroll 0 0 transparent;
-    display: block;
-    float:left;
-    height: 22px;
-    margin-left: 10px;
-    text-indent: -9999px !important;
-    text-transform: capitalize;
-    width: 22px;
-}
-.spotlight-video-pager a.activeSlide {
     background: url("../images/pager_on.png") no-repeat scroll 0 0 transparent;
     color: #FFFFFF;
 }
@@ -2773,68 +2747,10 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
 
 
 
-/* Instructional Video Dropdown */
 .page-instructional-videos .pane-title{
 	font-size: 18px;
 	margin-top:10px;
 	margin-bottom: 10px;
-}
-/*Alicia*/
-.instructional-video-container {
-    width: 460px;
-    float:left;
-}
-
-.instructional-video-container:first-child {
-    width: 460px;
-    float:left;
-    padding-right: 18px;
-}
-
-.instructional-video-nav-dropdowns {
-    display:block;
-    float:left;
-}
-
-.instructional-video-filter-highlight{
-    font-weight:bold;
-    font-size:13px;
-    color:#5c5c5c;
-}
-
-.instructional-video-horizontal-rule {
-    background-color: #3C5E7C;
-    height: 2px;
-    border: 0;
-}
-.instructional-video-open {
-    color: #D8EEFC;
-    width:940px;
-    padding: 14px 0px 14px 0px;
-    height: 12px;
-
-}
-.instructional-video-open span {
-    background: url("../images/arrow-up.png") no-repeat scroll 138px 3px transparent;
-    cursor: pointer;
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    user-select: none;
-    line-height:12px;
-    display:block;
-    background: url("../images/arrow-up.png") no-repeat scroll 169px 3px transparent;
-}
-
-.instructional-open span.open {
-    background: url("../images/arrow-down.png") no-repeat scroll 138px 1px transparent;
-}
-.instructional-video-content {
-    /*height:260px;*/
-    height:100%;
-    width:940px;
-    display:none;
-    float:right;
-    padding: 14px 0px 14px 0px;
 }
 
 .createalert #section-header
