@@ -42,7 +42,8 @@ function checkbook_project_url_outbound_alter(&$path, &$options, $original_path)
 			($path == 'spending_landing')  ||
 			($path == 'spending/agencies')  ||
 			($path == 'spending/vendors') ||
-			($path == 'mwbe_agency_grading')  
+			($path == 'mwbe_agency_grading') ||
+            ($path == 'mwbe_agency_grading/sub_vendor_data')
 		){
 
         $path .="/yeartype/B/year/"._getCurrentYearID();

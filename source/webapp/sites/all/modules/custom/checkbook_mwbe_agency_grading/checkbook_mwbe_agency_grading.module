@@ -23,20 +23,33 @@
  */
 
 function checkbook_mwbe_agency_grading_menu() {
-  return array(
-    'mwbe_agency_grading' => array(
-      'type' => MENU_CALLBACK,
-      'page callback' => '_checkbook_mwbe_agency_grading',
-      'page arguments' => array(3),
-      'access callback' => TRUE
-    ),
-  	'mwbe_agency_grading_csv' => array(
-  				'type' => MENU_CALLBACK,
-  				'page callback' => '_checkbook_mwbe_agency_grading_csv',
-  				'page arguments' => array(3),
-  				'access callback' => TRUE
-  		)
-  );
+    $items = array();
+    $items['mwbe_agency_grading'] = array(
+        'page callback' => '_checkbook_mwbe_agency_grading',
+        'page arguments' => array(3),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['mwbe_agency_grading/prime_vendor_data'] = array(
+        'title' => 'Prime Vendor Data',
+        'type' => MENU_DEFAULT_LOCAL_TASK,
+        'weight' => 0,
+    );
+    $items['mwbe_agency_grading/sub_vendor_data'] = array(
+        'title' => 'Sub Vendor Data',
+        'page callback' => '_checkbook_mwbe_agency_grading',
+        'access callback' => TRUE,
+        'page arguments' => array(3),
+        'type' => MENU_LOCAL_TASK,
+        'weight' => 1,
+    );
+    $items['mwbe_agency_grading_csv']  = array(
+        'type' => MENU_CALLBACK,
+        'page callback' => '_checkbook_mwbe_agency_grading_csv',
+        'page arguments' => array(3),
+        'access callback' => TRUE
+  		);
+    return($items);
 }
 
 
@@ -65,6 +78,7 @@ function checkbook_mwbe_agency_grading_theme($existing, $type, $theme, $path) {
 }
 
 function _checkbook_mwbe_agency_grading(){
+
 	$agencies_data =  _checkbook_mwbe_agency_grading_getdata();
 	$left_content =  _checkbook_mwbe_agency_grading_left($agencies_data);
 	$right_content = _checkbook_mwbe_agency_grading_right($agencies_data);
@@ -128,20 +142,25 @@ function _checkbook_mwbe_agency_grading_right($agencies_data){
 }
 
 function _checkbook_mwbe_agency_grading_getdata(){
-	$sql1 = _checkbook_mwbe_agency_grading_generate_sql("aggregateon_mwbe_spending_coa_entities");
-	$sql2 = _checkbook_mwbe_agency_grading_generate_sql("aggregateon_subven_spending_coa_entities");
-	
+
+    $is_prime = _getRequestParamValue('mwbe_agency_grading');
+    $is_prime_csv = _getRequestParamValue('mwbe_agency_grading_csv');
+    if($is_prime == 'sub_vendor_data' || $is_prime_csv == 'sub_vendor_data' ){
+        $sql1 = _checkbook_mwbe_agency_grading_generate_sql("aggregateon_subven_spending_coa_entities");
+    }else{
+       $sql1 = _checkbook_mwbe_agency_grading_generate_sql("aggregateon_mwbe_spending_coa_entities");
+    }
+
 	$sql = 'select  a1.agency_name , a1.agency_id,
-	coalesce(a1.aa_mwbe,0) + coalesce(a2.aa_mwbe,0) aa_mwbe,
-	coalesce(a1.ba_mwbe,0) + coalesce(a2.ba_mwbe,0) ba_mwbe,
-	coalesce(a1.w_mwbe,0) + coalesce(a2.w_mwbe,0) w_mwbe,
-	coalesce(a1.ha_mwbe,0) + coalesce(a2.ha_mwbe,0) ha_mwbe,
-	coalesce(a1.total_mwbe,0) + coalesce(a2.total_mwbe,0) total_mwbe,
+	coalesce(a1.aa_mwbe,0) aa_mwbe,
+	coalesce(a1.ba_mwbe,0)  ba_mwbe,
+	coalesce(a1.w_mwbe,0)  w_mwbe,
+	coalesce(a1.ha_mwbe,0)  ha_mwbe,
+	coalesce(a1.total_mwbe,0)  total_mwbe,
 	coalesce(a1.n_mwbe,0)  n_mwbe
 	from ( ' . $sql1 . ' ) a1
-    left join ( ' . $sql2 . ' ) a2 
-	on a1.agency_id = a2.agency_id
-    ';
+    order by a1.total_mwbe desc';
+
 	return  _checkbook_project_execute_sql($sql);
 
 }
@@ -203,14 +222,10 @@ function _checkbook_mwbe_agency_grading_generate_sql($table){
     join {ref_agency} ra on ra.agency_id =  a.agency_id
    ' . $where_filter . '
         group by  ra.agency_name,a.agency_id
-    ';
-
+   ';
 
 	return $sql;
-
 }
-
-
 
 
 
@@ -226,10 +241,8 @@ function _mwbe_agency_grading_current_cats(){
 } 
 
 
-
-
-
 function _checkbook_mwbe_agency_grading_csv(){
+
 	$agencies_data =  _checkbook_mwbe_agency_grading_getdata();
 	
 	$data = "Agency, Asian American, Black American, Women, Hispanic American, M/WBE Spending, Non M/WBE";
