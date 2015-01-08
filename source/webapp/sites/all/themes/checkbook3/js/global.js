@@ -298,23 +298,23 @@ Drupal.behaviors.hoveOverMWBE = {
             $('.chart-title').css("display","block");
 
             //Spotlight Videos
-            if($('#video-list-pager').children().length == 0)
-                if ($('#allVideoList').length > 0) {
-                    $('#allVideoList')
-                        .after('<div id="video-list-pager" class="spotlight-video-pager"></div>')
-                        .cycle({
-                            fx:'fade',
-                            timeout:45000,
-                            height:'315px',
-                            width:'100%',
-                            fit:1,
-                            speed:1000,
-                            pause:true,
-                            pager:'#video-list-pager',
-                            prev:'#prev1',
-                            next:'#next1'
-                        });
-                }
+//            if($('#video-list-pager').children().length == 0)
+//                if ($('#allVideoList').length > 0) {
+//                    $('#allVideoList')
+//                        .after('<div id="video-list-pager" class="spotlight-video-pager"></div>')
+//                        .cycle({
+//                            fx:'fade',
+//                            timeout:45000,
+//                            height:'315px',
+//                            width:'100%',
+//                            fit:1,
+//                            speed:1000,
+//                            pause:true,
+//                            pager:'#video-list-pager',
+//                            prev:'#prev1',
+//                            next:'#next1'
+//                        });
+//                }
 
             // NYC Budget Total Expenditure
             $('.page-budget .slider-pager a:last').click(function () {
@@ -1892,16 +1892,16 @@ $('.simultExpandCollapseWidget').live("click",
    );
 
     //Instructional Videos
-    var instructionalVideos = '#spending-instructional-video-list .instructional-video-open span, #contracts-instructional-video-list .instructional-video-open span, #featured-dashboards-instructional-video-list .instructional-video-open span';
-    $(instructionalVideos).live("click",
-        function (event) {
-            $(this).parent().parent().find('.instructional-video-content').slideUp(300);
-            if(!$(this).hasClass('open')) {
-                $(this).parent().parent().find('.instructional-video-content').slideToggle(300);
-            }
-            $(this).toggleClass('open');
-        }
-    );
+//    var instructionalVideos = '#spending-instructional-video-list .instructional-video-open span, #contracts-instructional-video-list .instructional-video-open span, #featured-dashboards-instructional-video-list .instructional-video-open span';
+//    $(instructionalVideos).live("click",
+//        function (event) {
+//            $(this).parent().parent().find('.instructional-video-content').slideUp(300);
+//            if(!$(this).hasClass('open')) {
+//                $(this).parent().parent().find('.instructional-video-content').slideToggle(300);
+//            }
+//            $(this).toggleClass('open');
+//        }
+//    );
 
 
 }(jQuery));
