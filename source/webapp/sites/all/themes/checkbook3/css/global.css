@@ -2800,6 +2800,7 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
     font-weight:bold;
     font-size:13px;
     color:#5c5c5c;
+}
 
 .instructional-video-horizontal-rule {
     background-color: #3C5E7C;
@@ -2853,7 +2854,7 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
     float: right;
     position: relative;
     top: 135px;
-    padding-right: 2px;
+    padding-right: 2-px;
 }
     
 .chart-nyc-legend .legend-title
