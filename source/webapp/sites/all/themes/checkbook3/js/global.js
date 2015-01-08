@@ -1891,7 +1891,17 @@ $('.simultExpandCollapseWidget').live("click",
        }
    );
 
-
+    //Instructional Videos
+    var instructionalVideos = '#spending-instructional-video-list .instructional-video-open span, #contracts-instructional-video-list .instructional-video-open span, #featured-dashboards-instructional-video-list .instructional-video-open span';
+    $(instructionalVideos).live("click",
+        function (event) {
+            $(this).parent().parent().find('.instructional-video-content').slideUp(300);
+            if(!$(this).hasClass('open')) {
+                $(this).parent().parent().find('.instructional-video-content').slideToggle(300);
+            }
+            $(this).toggleClass('open');
+        }
+    );
 
 
 }(jQuery));
