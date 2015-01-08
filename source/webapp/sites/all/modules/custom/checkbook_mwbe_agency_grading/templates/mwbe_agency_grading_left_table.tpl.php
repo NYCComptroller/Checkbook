@@ -1,8 +1,14 @@
 <?php 
 
 	_widget_highcharts_include_plugin();
-	
-	$download_link = "/mwbe_agency_grading_csv/year/" . _getRequestParamValue("year") . "/yeartype/" .  _getRequestParamValue("yeartype") ;
+
+    $is_prime = _getRequestParamValue('mwbe_agency_grading');
+    if($is_prime == 'sub_vendor_data'){
+        $download_link = "/mwbe_agency_grading_csv/sub_vendor_data/year/" . _getRequestParamValue("year") . "/yeartype/" .  _getRequestParamValue("yeartype") ;
+    }else{
+        $download_link = "/mwbe_agency_grading_csv/year/" . _getRequestParamValue("year") . "/yeartype/" .  _getRequestParamValue("yeartype") ;
+    }
+
 	
 ?>
 <div class="download_link" ><a href="<?php echo $download_link; ?>"><span class="export">Export</span></a></div>
