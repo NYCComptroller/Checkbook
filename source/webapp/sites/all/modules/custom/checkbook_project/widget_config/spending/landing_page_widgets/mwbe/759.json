@@ -45,7 +45,7 @@
     "derivedColumns": {
         "agency_name_formatted": {
             "type": "expression2",
-            "expression": "_get_tooltip_markup($row['agency_agency_agency_name'],47)"
+            "expression": "_get_tooltip_markup($row['agency_agency_agency_name'],40)"
         },
         "agency_name_link": {
             "type": "expression2",
@@ -104,9 +104,9 @@
   ],
     "dataTableOptions":{
         "aoColumns": [
-            {"bSortable": false,"sClass":"text","sWidth":"75px"},
-            {"sClass":"number","sWidth":"50px","asSorting":["desc","asc"]},
-            {"sClass":"number","sWidth":"75px","asSorting":["desc","asc"]},
+            {"bSortable": false,"sClass":"text","sWidth":"200px"},
+            {"sClass":"number","sWidth":"40px","asSorting":["desc","asc"]},
+            {"sClass":"number","sWidth":"40px","asSorting":["desc","asc"]},
             {"bSortable": false,"sWidth":"10px"}
         ],
         "bServerSide": true,
