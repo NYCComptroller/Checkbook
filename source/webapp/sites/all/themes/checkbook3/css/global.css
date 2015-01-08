@@ -900,6 +900,32 @@ h3.grid_year_title{text-transform: none;}
     color: #FFFFFF;
 }
 
+/* spotlight video pagination */
+.spotlight-video-pager {
+    bottom: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    text-align: center;
+    width: 240px;
+    z-index: 25;
+    padding-left:160px;
+}
+.spotlight-video-pager a {
+    background: url("../images/pager_off.png") repeat scroll 0 0 transparent;
+    display: block;
+    float:left;
+    height: 22px;
+    margin-left: 10px;
+    text-indent: -9999px !important;
+    text-transform: capitalize;
+    width: 22px;
+}
+.spotlight-video-pager a.activeSlide {
+    background: url("../images/pager_on.png") no-repeat scroll 0 0 transparent;
+    color: #FFFFFF;
+}
+
 /* no data case */
 #no-records {
     color: #3C5E7C;
