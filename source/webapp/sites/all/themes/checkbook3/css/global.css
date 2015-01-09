@@ -912,17 +912,17 @@ h3.grid_year_title{text-transform: none;}
     padding-left:160px;
 }
 .spotlight-video-pager a {
-    background: url("../images/pager_off.png") repeat scroll 0 0 transparent;
+    background: url("../images/pager_off_small.png") repeat scroll 0 0 transparent;
     display: block;
     float:left;
-    height: 22px;
+    height: 15px;
     margin-left: 10px;
     text-indent: -9999px !important;
     text-transform: capitalize;
-    width: 22px;
+    width: 15px;
 }
 .spotlight-video-pager a.activeSlide {
-    background: url("../images/pager_on.png") no-repeat scroll 0 0 transparent;
+    background: url("../images/pager_on_small.png") no-repeat scroll 0 0 transparent;
     color: #FFFFFF;
 }
 
@@ -2772,7 +2772,7 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
 .ui-dialog-titlebar #ui-dialog-title-dialog{line-height:19px;}
 
 
-/* Instructional Video Drop Down */
+/* Instructional Video Toggles */
 .page-instructional-videos .pane-title{
     font-size: 18px;
     margin-top:10px;
@@ -2782,7 +2782,7 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
     width: 460px;
     float:left;
 }
-.instructional-video-container:first-child {
+.instructional-video-content div:nth-child(odd) {
     width: 460px;
     float:left;
     padding-right: 18px;
@@ -2790,6 +2790,7 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
 .instructional-video-nav-dropdowns {
     display:block;
     float:left;
+    padding-bottom: 10px;
 }
 .instructional-video-filter-highlight{
     font-weight:bold;
@@ -2809,7 +2810,6 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
 
 }
 .instructional-video-open span {
-    background: url("../images/arrow-up.png") no-repeat scroll 138px 3px transparent;
     cursor: pointer;
     -moz-user-select: none;
     -khtml-user-select: none;
@@ -2818,8 +2818,8 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
     display:block;
     background: url("../images/arrow-up.png") no-repeat scroll 169px 3px transparent;
 }
-.instructional-open span.open {
-    background: url("../images/arrow-down.png") no-repeat scroll 138px 1px transparent;
+.instructional-video-open span.open {
+    background: url("../images/arrow-down.png") no-repeat scroll 169px 3px transparent;
 }
 .instructional-video-content {
     height:100%;
@@ -2827,6 +2827,10 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
     display:none;
     float:right;
     padding: 14px 0px 14px 0px;
+}
+.instructional-video-text {
+    padding-top: 20px;
+    padding-bottom: 10px;
 }
 
 .createalert #section-header
