@@ -2801,6 +2801,7 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
     background-color: #3C5E7C;
     height: 2px;
     border: 0;
+    clear: both;
 }
 .instructional-video-open {
     color: #D8EEFC;
@@ -2816,10 +2817,20 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
     user-select: none;
     line-height:12px;
     display:block;
-    background: url("../images/arrow-up.png") no-repeat scroll 169px 3px transparent;
+    float: left;
+    padding-right: 5px;
+}
+.instructional-video-toggle {
+    background-image: url("../images/arrow-up-medium.png");
+    background-repeat: no-repeat;
+    height:20px;
+    width:20px;
 }
 .instructional-video-open span.open {
-    background: url("../images/arrow-down.png") no-repeat scroll 169px 3px transparent;
+    background-image: url("../images/arrow-down-medium.png");
+    background-repeat: no-repeat;
+    height:20px;
+    width:20px;
 }
 .instructional-video-content {
     height:100%;
