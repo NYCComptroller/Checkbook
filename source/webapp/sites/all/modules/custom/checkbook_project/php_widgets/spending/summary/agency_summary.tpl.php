@@ -78,3 +78,12 @@ EOD;
 
     print $summaryContent;
 }
+
+?>
+<script>
+    (function ($) {
+        $("div").filter(function() {
+            return this.childNodes.length === 0;
+        }).hide();
+    }(jQuery));
+</script>
