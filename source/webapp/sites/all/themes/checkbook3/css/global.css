@@ -2779,8 +2779,7 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
     margin-bottom: 10px;
 }
 .instructional-video-container {
-    width: 460px;
-    float:left;
+    padding-bottom: 10px;
 }
 .instructional-video-content div:nth-child(odd) {
     width: 460px;
@@ -2793,9 +2792,10 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
     padding-bottom: 10px;
 }
 .instructional-video-filter-highlight{
-    font-weight:bold;
+    font-weight:800;
     font-size:13px;
     color:#5c5c5c;
+    text-transform: uppercase;
 }
 .instructional-video-horizontal-rule {
     background-color: #3C5E7C;
@@ -2838,6 +2838,11 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
     display:none;
     float:right;
     padding: 14px 0px 14px 0px;
+}
+.instructional-video-title {
+    display: block;
+    padding-bottom: 10px;
+    font-weight: 600;
 }
 .instructional-video-text {
     padding-top: 20px;
