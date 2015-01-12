@@ -170,7 +170,12 @@ echo '<div class=\"chart-right\">
                     "format": "{point.custom_label}",
                     "crop": false,
                 	"overflow": "none"
-                }                            
+                },
+                "states": {
+                    "hover": {
+                        "enabled": false
+                    }
+                }
             }
     },
     "chart" : {"width":480, "marginBottom": 70},
@@ -217,14 +222,20 @@ echo '<div class=\"chart-right\">
     }
 }
 
-
 <function>
 tooltipformatter^^'formatter' :
-function() { 
-	if(this.point.tooltip_label == ''){
-		return false;
-	}else{
-		return this.point.tooltip_label ;
-	}
+function() {
+
+    if(this.point.tooltip_label == ''){
+        return false;
+    }
+    else {
+        jQuery('.highcharts-series').children().eq(0).attr('fill', '#96d0fe');
+        jQuery('.highcharts-series').children().eq(0).hover(
+            function() {jQuery( this ).attr('fill', '#96d0fe');},
+            function() {jQuery( this ).attr('fill', '#7DB7E5');}
+        );
+        return this.point.tooltip_label;
+    }
 }
 </function>
