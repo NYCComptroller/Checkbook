@@ -2821,13 +2821,13 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
     padding-right: 5px;
 }
 .instructional-video-toggle {
-    background-image: url("../images/arrow-up-medium.png");
+    background-image: url("../images/arrow-down-medium.png");
     background-repeat: no-repeat;
     height:20px;
     width:20px;
 }
 .instructional-video-open span.open {
-    background-image: url("../images/arrow-down-medium.png");
+    background-image: url("../images/arrow-up-medium.png");
     background-repeat: no-repeat;
     height:20px;
     width:20px;
