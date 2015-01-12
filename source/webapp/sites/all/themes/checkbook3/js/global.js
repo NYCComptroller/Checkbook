@@ -1892,14 +1892,14 @@ $('.simultExpandCollapseWidget').live("click",
    );
 
     //Instructional Videos
-    var instructionalVideos = '#spending-instructional-video-list .instructional-video-open span, #contracts-instructional-video-list .instructional-video-open span, #featured-dashboards-instructional-video-list .instructional-video-open span';
+    var instructionalVideos = '.instructional-video-toggle, .instructional-video-filter-highlight';
     $(instructionalVideos).live("click",
         function (event) {
             $(this).parent().parent().find('.instructional-video-content').slideUp(300);
-            if(!$(this).hasClass('open')) {
+            if(!$(this).parent().find('.instructional-video-toggle').hasClass('open')) {
                 $(this).parent().parent().find('.instructional-video-content').slideToggle(300);
             }
-            $(this).toggleClass('open');
+            $(this).parent().find('.instructional-video-toggle').toggleClass('open');
         }
     );
 
