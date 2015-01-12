@@ -758,8 +758,6 @@ function checkbook_datafeeds_budget($form, &$form_state) {
     $form['budget_next'] = array(
         '#type' => 'submit',
         '#value' => t('Submit'),
-        //'#name' => 'budget_next',
-        '#suffix' => '</div>',
         '#submit' => array('checkbook_datafeeds_budget_next_submit'),
     );
     return $form;
