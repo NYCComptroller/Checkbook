@@ -19,11 +19,11 @@
 */
 ?>
 <?php
-    /*$contactCategory = _getRequestParamValue('contcat');
-    $contactCategoryLabel = 'Expense';
-    if($contactCategory == 'revenue'){
-        $contactCategoryLabel = 'Revenue';
-    }*/
+    $current_url = $_SERVER['HTTP_REFERER'];
+    //Advanced Search page should not have static text
+    $advanced_search_page = preg_match("/contract\/search\/transactions/",$current_url);
+    $advanced_search_page = $advanced_search_page || preg_match("/contract\/all\/transactions/",$current_url);
+    if($advanced_search_page) return;
 
     $contactStatus = _getRequestParamValue('contstatus');
     $contactStatusLabel = 'Active';
