@@ -144,8 +144,8 @@ echo '<div class=\"chart-right\">
         . 'Hispanic American: ' . custom_number_formatter_format($mwbe_data['ha'],2,'$')  . ' (' .
         custom_number_formatter_format(($mwbe_data['ha'])/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' . '<br/>'
         ;
-	$node->widgetConfig->chartConfig->series[0]->data[1]->y = $toal_non_mwbe;
-																			 
+    $node->widgetConfig->chartConfig->series[0]->data[1]->y = $toal_non_mwbe;
+
 	$node->widgetConfig->chartConfig->series[0]->data[1]->custom_label = custom_number_formatter_format($toal_non_mwbe,2,'$') . ' (' .
 																		 custom_number_formatter_format($toal_non_mwbe/($total_mwbe + $toal_non_mwbe) *100,1,null,'%') . ')';
 																		 
@@ -171,7 +171,12 @@ echo '<div class=\"chart-right\">
                     "format": "{point.custom_label}",
                     "crop": false,
                 	"overflow": "none"
-                }                            
+                },
+                "states": {
+                    "hover": {
+                        "enabled": false
+                    }
+                }
             }
     },
     "chart" : {"width":480, "marginBottom": 70},
@@ -199,7 +204,7 @@ echo '<div class=\"chart-right\">
             			"name": "Point 2",
             			"y":200,
             			"custom_label":"",
-            			"tooltip_label":""	
+            			"tooltip_label":""
             		}]
         }
     ],
@@ -216,16 +221,22 @@ echo '<div class=\"chart-right\">
     },
     "tooltip":{"function":"tooltipformatter"}
     }
+
 }
-
-
 <function>
 tooltipformatter^^'formatter' :
-function() { 
+function() {
+
 	if(this.point.tooltip_label == ''){
 		return false;
-	}else{
-		return this.point.tooltip_label ;
+	}
+	else {
+	    jQuery('.highcharts-series').children().eq(0).attr('fill', '#96d0fe');
+	    jQuery('.highcharts-series').children().eq(0).hover(
+            function() {jQuery( this ).attr('fill', '#96d0fe');},
+            function() {jQuery( this ).attr('fill', '#7DB7E5');}
+        );
+		return this.point.tooltip_label;
 	}
 }
 </function>
