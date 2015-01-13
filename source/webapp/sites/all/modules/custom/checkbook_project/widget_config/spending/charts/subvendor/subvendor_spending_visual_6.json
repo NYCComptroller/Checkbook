@@ -6,7 +6,7 @@
 	
 
 if(SpendingUtil::_show_mwbe_custom_legend()){
-	$nyc_legend_html = 	SpendingUtil::getMWBENYCLegend(_getRequestParamValue('year'), _getRequestParamValue('yeartype'));
+	$nyc_legend_html = 	SpendingUtil::getSubMWBENYCLegend(_getRequestParamValue('year'), _getRequestParamValue('yeartype'));
 }	
 	 
 	
