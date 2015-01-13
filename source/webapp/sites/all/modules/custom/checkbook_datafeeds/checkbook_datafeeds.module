@@ -2734,21 +2734,21 @@ function _checkbook_datafeeds_payroll_column_options($datatype) {
     }
     else {
         if ($datatype == 'xml') {
-            $options = array(
-                "agency_name" => "agency",
-                "base_pay" => "base_pay",
-                "calendar_fiscal_year" => "calendar_year",
-                "civil_service_title" => "title",
-                "fiscal_year" => "fiscal_year",
-                "gross_pay" => "gross_pay",
-                "gross_pay_ytd" => "gross_pay_ytd",
-                "non_salaried_amount" => "hourly_rate",
-                "other_payments" => "other_payments",
-                "overtime_pay" => "overtime_payments",
-                "pay_frequency" => "pay_frequency",
-                "pay_date" => "pay_date",
-                "salaried_amount" => "annual_salary",
-            );
+            $options =  drupal_map_assoc(array(
+                "agency",
+                "base_pay",
+                "calendar_year",
+                "title",
+                "fiscal_year",
+                "gross_pay",
+                "gross_pay_ytd",
+                "hourly_rate",
+                "other_payments",
+                "overtime_payments",
+                "pay_frequency",
+                "pay_date",
+                "annual_salary",
+            ));
         }
     }
     return $options;
@@ -3436,7 +3436,7 @@ function _checkbook_datafeeds_revenue_column_options($datatype) {
     }
     else {
         if ($datatype == 'xml') {
-            return array(
+            return drupal_map_assoc(array(
                 "adopted",
                 "agency",
                 "budget_fiscal_year",
@@ -3449,7 +3449,7 @@ function _checkbook_datafeeds_revenue_column_options($datatype) {
                 "revenue_category",
                 "revenue_class",
                 "revenue_source",
-            );
+            ));
         }
     }
 }
