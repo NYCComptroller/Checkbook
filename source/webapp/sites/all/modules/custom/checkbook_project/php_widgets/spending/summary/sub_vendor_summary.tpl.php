@@ -30,6 +30,8 @@ if(is_array($records)){
     $ytdspending = WidgetUtil::getLabel("ytd_spending");
     $mwbe_category_label = WidgetUtil::getLabel("mwbe_category");
     $mwbe_category = MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']);
+    $totcontamnt_value = $row['formatted_total_contract_amount_sum'];
+
     if(_getRequestParamValue('smnid') == 759 || _getRequestParamValue('smnid') == 748){
         $percent_spending_value = $row['percent_spending'];
         $percent_spending = WidgetUtil::getLabel("percent_spending");
@@ -42,6 +44,9 @@ if(is_array($records)){
         $associated_prime_vendor = '<br>'.$associated_prime_vendor .': '.$associated_prime_vendor_value ;
         $no_of_subcontracts_value = $row['total_sub_contracts'];
         $no_of_subcontracts =  WidgetUtil::getLabel("num_sub_contracts");
+        $totcontamnt_value = '';
+        $totcontamnt = '';
+
     }
     if(_getRequestParamValue('smnid') == 763){
         $percent_spending_value = $row['percent_spending'];
@@ -58,10 +63,6 @@ $summaryContent =  <<<EOD
 		<div class="spending-tx-subtitle">{$vendor_name}: {$row['sub_vendor_sub_vendor_legal_name']} {$associated_prime_vendor} <br> {$mwbe_category_label}: {$mwbe_category}</div>
 	</div>
 	<div class="dollar-amounts">
-	    <div class="total-spending-contract-amount">
-            {$row['formatted_total_contract_amount_sum']}
-            <div class="amount-title">{$totcontamnt}</div>
-        </div>
         <div class="ytd-spending-amount">
             {$row['formatted_check_amount_sum']}
             <div class="amount-title">{$ytdspending}</div>
@@ -73,6 +74,10 @@ $summaryContent =  <<<EOD
         <div class="percent-spending-amount">
             {$percent_spending_value}
             <div class="amount-title">{$percent_spending}</div>
+        </div>
+        <div class="total-spending-contract-amount">
+            {$totcontamnt_value}
+            <div class="amount-title">{$totcontamnt}</div>
         </div>
     </div>
 </div>
