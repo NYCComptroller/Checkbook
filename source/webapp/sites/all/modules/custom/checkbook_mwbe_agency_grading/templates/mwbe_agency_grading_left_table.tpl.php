@@ -31,8 +31,15 @@
 				$agency = $row['agency_name'];
 				$chart = theme('mwbe_agency_grading_row_chart',array('id'=>$id, 'data_row'=>$row['data_row']));
 				if( $row['spending_amount'] > 0){
-					$link = "/spending_landing/year/" . _getRequestParamValue("year") . 
-							"/yeartype/" .  _getRequestParamValue("yeartype") . "/agency/" .  $row["agency_id"] . "/dashboard/mp/mwbe/" . MappingUtil::$total_mwbe_cats; 				
+                    if($is_prime == 'sub_vendor_data'){
+                        $link = "/spending_landing/year/" . _getRequestParamValue("year") .
+                            "/yeartype/" .  _getRequestParamValue("yeartype") . "/agency/" .  $row["agency_id"] . "/dashboard/sp/mwbe/" . MappingUtil::$total_mwbe_cats;
+                    }
+                    else{
+                        $link = "/spending_landing/year/" . _getRequestParamValue("year") .
+                            "/yeartype/" .  _getRequestParamValue("yeartype") . "/agency/" .  $row["agency_id"] . "/dashboard/mp/mwbe/" . MappingUtil::$total_mwbe_cats;
+                    }
+
 					echo "<tr>
 						<td><div><a href=\"" .  $link . "\">" . $agency . "</a></div></td>
 						<td>" . $chart . "  </td>
