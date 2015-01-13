@@ -19,10 +19,14 @@
 */
 ?>
 <?php
-    $current_url = $_SERVER['HTTP_REFERER'];
+    $http_ref = $_SERVER['HTTP_REFERER'];
+    $current_url = $_GET['q'];
+
     //Advanced Search page should not have static text
     $advanced_search_page = preg_match("/contract\/search\/transactions/",$current_url);
     $advanced_search_page = $advanced_search_page || preg_match("/contract\/all\/transactions/",$current_url);
+    $advanced_search_page = $advanced_search_page || preg_match("/contract\/search\/transactions/",$http_ref);
+    $advanced_search_page = $advanced_search_page || preg_match("/contract\/all\/transactions/",$http_ref);
     if($advanced_search_page) return;
 
     $contactStatus = _getRequestParamValue('contstatus');
