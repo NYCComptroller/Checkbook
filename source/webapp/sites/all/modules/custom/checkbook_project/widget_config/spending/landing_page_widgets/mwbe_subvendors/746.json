@@ -107,9 +107,9 @@
     "dataTableOptions":{
         "aoColumns": [
             {"sClass":"text","sWidth":"260px","bSortable":false},
-            {"sClass":"number","sWidth":"200px","asSorting":["desc","asc"]},
+            {"sClass":"number","sWidth":"100px","asSorting":["desc","asc"]},
             {"sClass":"number","sWidth":"300px","asSorting":["desc","asc"]},
-            {"bSortable": false,"sWidth":"10px"}
+            {"bSortable": false,"sWidth":"15px"}
         ],
         "bServerSide": true,
         "bFilter": false,
