@@ -87,20 +87,22 @@
     "table_title":"",
     "table_columns": [
         {"labelAlias":"prime_vendor","column":"prime_vendor_name_link2","sortSourceColumn":"prime_vendor.prime_vendor.legal_name"},
-        {"labelAlias":"mwbe_category","column":"prime_mwbe_category_name","sortSourceColumn":"prime_minority_type.prime_minority_type"},
         {"labelAlias":"num_sub_vendors","column":"sub_vendor_count","sortSourceColumn":"sub_vendor_count"},
+        {"label":"","column":""},
+        {"labelAlias":"mwbe_category","column":"prime_mwbe_category_name","sortSourceColumn":"prime_minority_type.prime_minority_type"},
         {"labelAlias":"ytd_spending","column":"prime_vendor_amount_link","sortSourceColumn":"check_amount_sum"},
         {"labelAlias":"total_contract_amount","column":"formatted_total_contract_amount_sum","sortSourceColumn":"total_contract_amount_sum"},
         {"label":"","column":""}
     ],
     "dataTableOptions":{
         "aoColumns": [
-            {"sClass":"text","bSortable":false},
-            {"sClass":"text","sWidth":"150px","bSortable": false},
-            {"sClass":"number","sWidth":"150px","asSorting":["desc","asc"]},
-            {"sClass":"number","sWidth":"150px","asSorting":["desc","asc"]},
-            {"sClass":"number","sWidth":"150px","asSorting":["desc","asc"]},
-            {"sWidth":"15px","bSortable":false}
+            {"sClass":"text","sWidth":"160px","bSortable":false},
+            {"sClass":"number","sWidth":"85px","asSorting":["desc","asc"]},
+            {"bSortable":false,"sWidth":"80px"},
+            {"sClass":"text","sWidth":"160px","asSorting":["desc","asc"],"bSortable":false},
+            {"sClass":"text","sWidth":"120px","asSorting":["desc","asc"],"bSortable":false},
+            {"sClass":"number","sWidth":"120px","asSorting":["desc","asc"]},
+            {"bSortable":false,"sWidth":"5px"}
         ] ,
         "bServerSide": true,
         "bFilter": false,
