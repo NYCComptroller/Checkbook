@@ -792,6 +792,9 @@ table.expense td.mwbe.subvendors.active .expense-container > a .top-navigation-a
 table.expense td.mwbe .expense-container .drop-down-menu-triangle:hover{
     background: url("../images/arrow-gray.png") no-repeat;
 }
+div.expense-container.no-menu .drop-down-menu-triangle:hover{
+    background: url("../images/arrow-gray_nofill.png") no-repeat !important;
+}
 
 table.expense td.mwbe.active .expense-container > a > div,
 table.expense td.subvendors.active .expense-container > a > div{
