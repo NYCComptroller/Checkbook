@@ -63,6 +63,10 @@ $summaryContent =  <<<EOD
 		<div class="spending-tx-subtitle">{$vendor_name}: {$row['sub_vendor_sub_vendor_legal_name']} {$associated_prime_vendor} <br> {$mwbe_category_label}: {$mwbe_category}</div>
 	</div>
 	<div class="dollar-amounts">
+	    <div class="total-spending-contract-amount">
+            {$totcontamnt_value}
+            <div class="amount-title">{$totcontamnt}</div>
+        </div>
         <div class="ytd-spending-amount">
             {$row['formatted_check_amount_sum']}
             <div class="amount-title">{$ytdspending}</div>
@@ -75,13 +79,18 @@ $summaryContent =  <<<EOD
             {$percent_spending_value}
             <div class="amount-title">{$percent_spending}</div>
         </div>
-        <div class="total-spending-contract-amount">
-            {$totcontamnt_value}
-            <div class="amount-title">{$totcontamnt}</div>
-        </div>
     </div>
 </div>
 EOD;
 
     print $summaryContent;
 }
+?>
+
+<script>
+    (function ($) {
+        $("div").filter(function() {
+            return this.childNodes.length === 0;
+        }).hide();
+    }(jQuery));
+</script>
