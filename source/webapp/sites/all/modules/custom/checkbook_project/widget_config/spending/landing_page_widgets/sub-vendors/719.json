@@ -128,9 +128,9 @@
     ],
     "dataTableOptions":{
         "aoColumns": [
-            {"sClass":"text","sWidth":"180px","bSortable":false},
-            {"sClass":"number","sWidth":"170px","asSorting":["desc","asc"]},
-            {"bSortable":false,"sWidth":"100px"},
+            {"sClass":"text","sWidth":"160px","bSortable":false},
+            {"sClass":"number","sWidth":"125px","asSorting":["desc","asc"]},
+            {"bSortable":false,"sWidth":"80px"},
             {"sClass":"text","sWidth":"180px","asSorting":["desc","asc"],"bSortable":false},
             {"sClass":"text","sWidth":"180px","asSorting":["desc","asc"],"bSortable":false},
             {"sClass":"number","sWidth":"80px","asSorting":["desc","asc"]},
