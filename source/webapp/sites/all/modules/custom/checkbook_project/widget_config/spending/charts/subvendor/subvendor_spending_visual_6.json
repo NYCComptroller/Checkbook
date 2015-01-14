@@ -72,7 +72,7 @@ echo '<div class=\"chart-right\">
 "widgetUpdateJSONConfig":"
 
 	$mwbe_filter = _getRequestParamValue('mwbe');
-	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){	
+	if($mwbe_filter =='4~5' || $mwbe_filter =='4' || $mwbe_filter =='5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){
 		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName()  . ' Sub Spending';
 	}else{
 		$node->widgetConfig->chartTitle = 'Sub Spending by ' . MappingUtil::getCurrenEhtnicityName() .' Share';
@@ -114,6 +114,8 @@ echo '<div class=\"chart-right\">
 	$amount_column = 'total_mwbe';
     switch($mwbe_filter){
         case '4~5' :
+        case '4' :
+        case '5' :
             $node->mwbe_share_percent = custom_number_formatter_format($mwbe_data['aa']/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') ;
         break;
         case '2' :
