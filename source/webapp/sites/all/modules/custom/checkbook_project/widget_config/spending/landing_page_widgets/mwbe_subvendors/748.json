@@ -148,11 +148,11 @@
     "dataTableOptions":{
         "aoColumns": [
             {"sClass":"text","sWidth":"180px","bSortable":false},
-            {"sClass":"text pad-left","sWidth":"100px","bSortable":false},
-            {"sClass":"number","sWidth":"90px","bSortable":true,"asSorting":["desc","asc"]},
-            {"sClass":"number","sWidth":"70px","bSortable":true,"asSorting":["asc","desc"]},
-            {"sClass":"number","sWidth":"70px","bSortable":true,"asSorting":["asc","desc"]},
-            {"sClass":"number","sWidth":"70px","bSortable":true,"asSorting":["asc","desc"]},
+            {"sClass":"text pad-left","sWidth":"95px","bSortable":false},
+            {"sClass":"number","sWidth":"50px","bSortable":true,"asSorting":["desc","asc"]},
+            {"sClass":"number","sWidth":"100px","bSortable":true,"asSorting":["asc","desc"]},
+            {"sClass":"number","sWidth":"100px","bSortable":true,"asSorting":["asc","desc"]},
+            {"sClass":"number","sWidth":"100px","bSortable":true,"asSorting":["asc","desc"]},
             {"sWidth":"5px","bSortable":false}
         ],
         "bServerSide": true,
