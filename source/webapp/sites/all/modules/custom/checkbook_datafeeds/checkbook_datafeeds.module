@@ -3001,26 +3001,26 @@ function checkbook_datafeeds_payroll_confirmation_previous_submit($form, &$form_
     $form_state['step_information'][$current_step]['stored_values'] = $form_state['values'];
     $current_step = 'payroll';
     $form_state['values'] = $form_state['step_information'][$current_step]['stored_values'];
-    if ($form_state['step_information']['type']['stored_values']['format'] == 'csv') {
-        if ($form_state['values']['column_select']['Fiscal year'] == 'Fiscal year') {
-            unset($form_state['values']['column_select']['Fiscal year']);
-            $form_state['values']['column_select']['Year'] = 'Year';
-        }
-        elseif ($form_state['values']['column_select']['Calendar Year'] == 'Calendar Year') {
-            unset($form_state['values']['column_select']['Calendar Year']);
-            $form_state['values']['column_select']['Year'] = 'Year';
-        }
-    }
-    elseif ($form_state['step_information']['type']['stored_values']['format'] == 'xml') {
-        if ($form_state['values']['column_select']['fiscal_year'] == 'fiscal_year') {
-            unset($form_state['values']['column_select']['fiscal_year']);
-            $form_state['values']['column_select']['year'] = 'year';
-        }
-        elseif ($form_state['values']['column_select']['calendar_year'] == 'calendar_year') {
-            unset($form_state['values']['column_select']['calendar_year']);
-            $form_state['values']['column_select']['year'] = 'year';
-        }
-    }
+//    if ($form_state['step_information']['type']['stored_values']['format'] == 'csv') {
+//        if ($form_state['values']['column_select']['Fiscal year'] == 'Fiscal year') {
+//            unset($form_state['values']['column_select']['Fiscal year']);
+//            $form_state['values']['column_select']['Year'] = 'Year';
+//        }
+//        elseif ($form_state['values']['column_select']['Calendar Year'] == 'Calendar Year') {
+//            unset($form_state['values']['column_select']['Calendar Year']);
+//            $form_state['values']['column_select']['Year'] = 'Year';
+//        }
+//    }
+//    elseif ($form_state['step_information']['type']['stored_values']['format'] == 'xml') {
+//        if ($form_state['values']['column_select']['fiscal_year'] == 'fiscal_year') {
+//            unset($form_state['values']['column_select']['fiscal_year']);
+//            $form_state['values']['column_select']['year'] = 'year';
+//        }
+//        elseif ($form_state['values']['column_select']['calendar_year'] == 'calendar_year') {
+//            unset($form_state['values']['column_select']['calendar_year']);
+//            $form_state['values']['column_select']['year'] = 'year';
+//        }
+//    }
     $form_state['rebuild'] = TRUE;
 }
 
