@@ -9,28 +9,26 @@
                 "dataset": "checkbook:spending_transactions_all",
                 "columns": ["check_amount_sum","category.category"],
                 "seriesURLParamMap":{
-                    "year":"check_eft_issued_nyc_year_id",
-                    "calyear":"calendar_fiscal_year_id",
                     "agency":"agency_id",
                     "mwbe":"minority_type_id",
                     "industry":"industry_type_id",
                     "category":"spending_category_id"
                 },
-                "allowedParams":["check_eft_issued_nyc_year_id","calendar_fiscal_year_id","agency_id","minority_type_id","industry_type_id","spending_category_id","vendor_type"],
+                "allowedParams":["year","yeartype","agency_id","minority_type_id","industry_type_id","spending_category_id","vendor_type"],
                 "adjustSerieParameters":"
 
-                $yearType = $serieParameters['year_type'][0];
-                $year = $serieParameters['year_id'][0];
+                $yearType = $serieParameters['yeartype'][0];
+                $year = $serieParameters['year'][0];
 
                 if(isset($yearType)){
-                if($yearType == 'B')
-                    $serieParameters['check_eft_issued_nyc_year_id'] = $year;
-                else if($yearType == 'C')
-                    $serieParameters['calendar_fiscal_year_id'] = $year;
+                    if($yearType == 'B')
+                        $serieParameters['check_eft_issued_nyc_year_id'] = $year;
+                    else if($yearType == 'C')
+                        $serieParameters['calendar_fiscal_year_id'] = $year;
                 }
 
-                unset($serieParameters['year_type']);
-                unset($serieParameters['year_id']);
+                unset($serieParameters['yeartype']);
+                unset($serieParameters['year']);
 
                 $dashboard = _getRequestParamValue('dashboard');
                 $vendor = _getRequestParamValue('vendor');
