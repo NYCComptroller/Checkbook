@@ -25,6 +25,9 @@ $records = $node->data;
 if(is_array($records)){
     $row = $records[0];
     $title = eval($node->widgetConfig->summaryView->templateTitleEval);
+    if(_getRequestParamValue('dtsmnid') == 719){
+        $title = 'Sub Vendors Total Spending Transactions';
+    }
     $totcontamnt = WidgetUtil::getLabel("total_contract_amount");
     $vendor_name = WidgetUtil::getLabel("sub_vendor_name");
     $ytdspending = WidgetUtil::getLabel("ytd_spending");
@@ -37,6 +40,7 @@ if(is_array($records)){
         $percent_spending = WidgetUtil::getLabel("percent_spending");
     }
     if(_getRequestParamValue('smnid') == 719){
+        $title = 'Sub Vendor Total Spending Transactions';
         $percent_spending_value = '';
         $percent_spending = '';
         $associated_prime_vendor_value = $row['prime_vendor_prime_vendor_legal_name'];
