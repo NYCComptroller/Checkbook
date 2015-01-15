@@ -194,7 +194,7 @@ class SpendingUtil{
         $vendor_id = isset($row["sub_vendor_sub_vendor"]) ? $row["sub_vendor_sub_vendor"] : $row["vendor_id"];
         $year_id = _getRequestParamValue("year");
         $year_type = _getRequestParamValue("yeartype");
-        $agency_id = _getRequestParamValue("agency_id");
+        $agency_id = _getRequestParamValue("agency");
         $dashboard = _getRequestParamValue("dashboard");
 
         return self::getSubVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard);
