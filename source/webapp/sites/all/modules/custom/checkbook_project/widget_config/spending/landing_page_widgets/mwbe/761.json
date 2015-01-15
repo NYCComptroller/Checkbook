@@ -57,7 +57,7 @@
         "template":"spending_exp_category_summary",
         "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Expense Category');"
     },
-    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Expense Category');",
+    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Expense Categories');",
 	"table_title":"",
 	"table_columns": [
 		{"labelAlias":"expense_category","column":"formatted_expense_category","header": "false"},

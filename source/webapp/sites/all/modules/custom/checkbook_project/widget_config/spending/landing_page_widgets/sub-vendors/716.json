@@ -89,7 +89,7 @@
         "template":"spending_agency_summary",
         "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Agency');"
     },
-    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Agency');",
+    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Agencies');",
     "table_title":"",
     "table_columns": [
         {"labelAlias":"agency_name","column":"agency_name_link"},

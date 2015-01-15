@@ -116,7 +116,7 @@
         "template":"spending_sub_vendor_summary",
         "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Sub Vendor');"
     },
-    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Sub Vendor');",
+    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Sub Vendors');",
     "table_columns": [
             {"labelAlias":"sub_vendor_name","column":"sub_vendor_name_link2","sortSourceColumn":"sub_vendor.sub_vendor"},
             {"labelAlias":"num_sub_contracts","column":"total_sub_contracts","sortSourceColumn":"total_sub_contracts"},
