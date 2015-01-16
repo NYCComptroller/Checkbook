@@ -26,6 +26,14 @@ if(is_array($records)){
     $ytdspending = WidgetUtil::getLabel("ytd_spending");
     $expcat = WidgetUtil::getLabel("expense_category");
     $percent_spending = WidgetUtil::getLabel("percent_spending");
+    $percent_spending_value = $row['percent_spending'];
+
+    if(_getRequestParamValue('smnid') == 22){
+        $percent_spending = '';
+        $percent_spending_value = '';
+    }
+
+
 $summaryContent =  <<<EOD
 <div class="contract-details-heading">
 	<div class="contract-id">
@@ -38,7 +46,7 @@ $summaryContent =  <<<EOD
             <div class="amount-title">{$ytdspending}</div>
         </div>
         <div class="percent-spending-amount">
-            {$row['percent_spending']}
+            {$percent_spending_value}
             <div class="amount-title">{$percent_spending}</div>
         </div>
     </div>
