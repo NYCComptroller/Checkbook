@@ -51,6 +51,16 @@ if(!preg_match("/newwindow/",current_path())){
   $newwindowclass= 'class="new_window"';
 }
 
+
+$contract_number = $node->data[0]['contract_number'];
+$querySubVendorCount = "SELECT  COUNT(DISTINCT vendor_id) AS sub_vendor_count  FROM sub_agreement_snapshot
+                        WHERE contract_number = '". $contract_number . "'
+                        AND latest_flag = 'Y'
+                        LIMIT 1";
+
+$results3 = _checkbook_project_execute_sql_by_data_source($querySubVendorCount,_get_current_datasource());
+$res->data = $results3;
+$total_subvendor_count = $res->data[0]['sub_vendor_count'];
 ?>
 <div class="contract-details-heading <?php echo $oge_class ;?>">
   <div class="contract-id">
@@ -127,6 +137,12 @@ if(!preg_match("/newwindow/",current_path())){
       <li><span
         class="gi-list-item">FMS Document:</span> <?php echo $node->data[0]['document_code_checkbook_ref_document_code'];?>
       </li>
+        <?php
+        if ( _getRequestParamValue("datasource") != "checkbook_oge") {
+            ?>
+            <li><span class="gi-list-item">Total Number of Sub Vendors:</span> <?php echo $total_subvendor_count; ?>
+            </li>
+        <?php } ?>
     </ul>
     <ul class="right">
       <li><span
