@@ -82,7 +82,7 @@ EOD;
 ?>
 <script>
     (function ($) {
-        $("div").filter(function() {
+        $("div.contract-details-heading div").filter(function() {
             return this.childNodes.length === 0;
         }).hide();
     }(jQuery));
