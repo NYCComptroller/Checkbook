@@ -97,9 +97,9 @@
         $node->widgetConfig->getData=false;
         load_widget_data($node);
     }
-    $total_count = (_checkbook_check_isEDCPage()) ? number_format($total_oge_contracts) : number_format($node->totalDataCount);
+    $total_count = (_checkbook_check_isEDCPage()) ? $total_oge_contracts : $node->totalDataCount;
     if($total_count > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
-    $header='<div class=\"tableHeader\"><h2>Top ' . $count. 'Contracts</h2><span class=\"contCount\"> Number of Stand Alone Contracts: ' . $total_count . '</span></div>';
+    $header='<div class=\"tableHeader\"><h2>Top ' . $count. 'Contracts</h2><span class=\"contCount\"> Number of Stand Alone Contracts: ' . number_format($total_count) . '</span></div>';
     return $header;
 ",
 "footer":"
