@@ -94,14 +94,14 @@ else{
     }
 }
 $contract_number = $node->data[0]['contract_number'];
-$querySubVendorCount = "SELECT  COUNT(DISTINCT vendor_id) AS sub_vendor_count  FROM sub_agreement_snapshot
-                        WHERE contract_number = '". $contract_number . "'
-                        AND latest_flag = 'Y'
-                        LIMIT 1";
-
-$results3 = _checkbook_project_execute_sql_by_data_source($querySubVendorCount,_get_current_datasource());
-$res->data = $results3;
-$total_subvendor_count = $res->data[0]['sub_vendor_count'];
+//$querySubVendorCount = "SELECT  COUNT(DISTINCT vendor_id) AS sub_vendor_count  FROM sub_agreement_snapshot
+//                        WHERE contract_number = '". $contract_number . "'
+//                        AND latest_flag = 'Y'
+//                        LIMIT 1";
+//
+//$results3 = _checkbook_project_execute_sql_by_data_source($querySubVendorCount,_get_current_datasource());
+//$res->data = $results3;
+//$total_subvendor_count = $res->data[0]['sub_vendor_count'];
 ?>
   <ul class="left">
   <?php if( _get_current_datasource() == "checkbook" && !preg_match('/newwindow/',$_GET['q'])){?>
@@ -135,7 +135,7 @@ $total_subvendor_count = $res->data[0]['sub_vendor_count'];
     <li><span class="gi-list-item">Total Number of NYC Contracts:</span> <?php echo $total_cont;?></li>
 
 <?php if( _get_current_datasource() == "checkbook" ){?>
-    <li><span class="gi-list-item">Total Number of Sub Vendors:</span> <?php echo $total_subvendor_count; ?></li>
+    <!-- Total Number of Sub Vendors -->
     <li><span class="gi-list-item">M/WBE Vendor:</span> <?php echo $node->data[0]['mwbe_vendor'] ;?></li>
 <?php if(!preg_match('/newwindow/',$_GET['q']) && $node->data[0]["mwbe_vendor"] == 'Yes'){ ?>
     <li><span class="gi-list-item">M/WBE Category:</span> <a href="/contracts_landing/status/A/yeartype/B/year/<?php echo _getFiscalYearID();?>/mwbe/<?php echo $minority_type_id; ?>/dashboard/mp"><?php echo $ethnicity ;?></a></li>
