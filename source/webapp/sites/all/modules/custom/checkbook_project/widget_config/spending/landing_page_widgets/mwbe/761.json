@@ -67,7 +67,7 @@
 	],
 	"dataTableOptions":{
         "aoColumns": [
-            {"sWidth":"150px","sClass":"text","bSortable": false},
+            {"sWidth":"210px","sClass":"text","bSortable": false},
             {"sWidth":"40px","sClass":"number","asSorting":["desc","asc"]},
             {"sWidth":"40px","sClass":"number","asSorting":["desc","asc"]},
             {"bSortable": false,"sWidth":"10px"}
