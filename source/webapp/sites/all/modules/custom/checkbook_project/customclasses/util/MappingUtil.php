@@ -176,9 +176,12 @@ class MappingUtil {
     	if($total_mwbe_link !=  null && $total_mwbe_link != ""){
     		$mwbe_total_link_html  ="<li class='no-click'><a href='" . $total_mwbe_link."'>Total M/WBE</a></li>";
     	}
+
+        $year = _getRequestParamValue('year');
+        $yearType = _getRequestParamValue('yeartype');
   		$filters_html .=  "
   			 " . $mwbe_total_link_html . "
-			<li class='no-click'><a href='/" . RequestUtil::getLandingPageUrl($domain) . "/mwbe/" . MappingUtil::$total_mwbe_cats ."/dashboard/mp'>M/WBE Home</a></li>  					
+			<li class='no-click'><a href='/" . RequestUtil::getLandingPageUrl($domain,$year,$yearType) . "/mwbe/" . MappingUtil::$total_mwbe_cats ."/dashboard/mp'>M/WBE Home</a></li>
   				</ul>
   		</div>";
     	
