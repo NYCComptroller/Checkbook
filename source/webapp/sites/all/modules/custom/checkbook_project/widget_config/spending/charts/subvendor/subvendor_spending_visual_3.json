@@ -1,139 +1,156 @@
 {
-    "widgetType": "highcharts",
-    "header":"
-        $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
-        $header .= ChartUtil::generateWidgetGridViewLink($node);
-        return $header;
+"widgetType": "highcharts",
+"widgetDatahandler": "highcharts",
+"header":"
+       $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
+       $header .= ChartUtil::generateWidgetGridViewLink($node);
+       return $header;
     ",
-    "footer":" $footer =''; return $footer; ",
-    "gridConfig":{
-        "template":"highchart_spending_contract_grid_view",
-        "html_class":"chart-grid-view-table four-columns",
+ "gridConfig":{
+        "template":"chart_grid_view",
+        "domain":"spending",
+        "html_class":"chart-grid-view-table three-columns",
+        "sortColumn":1,
         "table_columns": [
             {
-                "labelAlias": "contract_id",
-                "column": "document_id"
-            },
-            {
-                "labelAlias": "amount",
-                "column": "total_spending_amount"
-            },
-            {
-                "labelAlias": "prime_vendor",
-                "column": "legal_name@checkbook:prime_vendor"
-            },
-            {
-                "labelAlias": "contract_agency",
-                "column": "agency_name@checkbook:agency"
-            }
+                  "labelAlias": "Contract ID",
+                  "columnType": "text"
+             },
+             {
+                  "labelAlias": "Amount",
+                  "columnType": "number",
+                  "formatType": "amount"             
+             },
+             {
+                  "labelAlias": "Prime Vendor",
+                  "columnType": "text  number-left"
+             },
+             {
+                  "labelAlias": "Contracting Agency",
+                  "columnType": "text number-left"
+             }
+             
         ]
-    },
-    "useList":true,
-    "no_results_content":"No Results Found",
-    "cleanURLParameters":["year","yeartype","agency","vendor","category","subvendor","mwbe"],
-    "urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","subvendor":"vendor_id","vendor":"prime_vendor_id","category":"spending_category_id","mwbe":"minority_type_id"},
-    "defaultParameters":{"total_spending_amount":"0"},
-    "defaultParamTypeConfig":{"total_spending_amount":"ne"},
-    "adjustParameters":"
-                $adjustedParameters = $parameters;
-                if(function_exists('_checkbook_project_applyParameterFilters')){
-                      $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-                }
-                return $adjustedParameters;
-    ",
-     "transformationPHP": "
-        $node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Top Ten Contracts by Sub Vendors Disbursement Amount';
-     return $node->data;
-    ",
-    "model": {
-        "join": {
-            "method": "Union"
-        },
-        "series": [{
-            "dataset": "checkbook:contracts_subven_spending","orderBy":"-total_spending_amount",
-            "columns": ["vendor_id","prime_vendor_id","legal_name@checkbook:prime_vendor","agency_name@checkbook:agency","agency_id","document_id","agreement_id","total_spending_amount","document_code"]
+},
+"no_results_content":"No Results Found",
+"defaultParameters":{"type_of_year":"B"},
+"cleanURLParameters":["yeartype","agency","vendor","subvendor","category","year","industry","mwbe"],
+"urlParamMap":{"mwbe":"minority_type_id","year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","subvendor":"vendor_id","category":"spending_category_id","industry":"industry_type_id","mwbe":"minority_type_id"},
+"chartTitle":"Top Ten Contracts by M/WBE Spending",
+"widgetDataLoader":"
+    $where_filters = array();
+    foreach($node->widgetConfig->requestParams as $param=>$value){
+        $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
+    }
+
+    if(count($where_filters) > 0){
+        $where_filter = ' where ' . implode(' and ' , $where_filters);
+    }
+
+    $sql = ' select
+		sum(total_spending_amount) total_spending_amount,
+        ra.agency_name,
+        vendor_agid.original_agreement_id as agreement_id,
+		document_code,
+        a1.document_id,
+		legal_name
+	from {aggregateon_subven_spending_contract} a1
+    join {vendor} v on v.vendor_id =  a1.prime_vendor_id
+    join {agreement_snapshot} vendor_agid on vendor_agid.contract_number = a1.document_id and vendor_agid.latest_flag = '.\"'Y'\".'
+    join {ref_agency} ra on ra.agency_id =  a1.agency_id
+   ' . $where_filter . '
+   group by ra.agency_name,
+        vendor_agid.original_agreement_id,
+		document_code,
+        a1.document_id,
+		legal_name
+    order by 1 desc limit 10';
+
+    $node->data  = _checkbook_project_execute_sql($sql);
+    
+",
+"widgetUpdateJSONConfig":"
+	
+	$series_new = array();
+	$mwbe_filter = _getRequestParamValue('mwbe');
+    $node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Top Ten Contracts by Sub Vendors Disbursement Amount';
+	
+	$index = 0;
+	foreach($node->data as $row){
+	 		$tooltip_label = 
+	 						'Contract ID: ' . $row['document_id'].  '<br/>' .
+	 						'Amount: ' . custom_number_formatter_format($row['total_spending_amount'] ,2, '$').  '<br/>' .
+	 						'Prime Vendor: ' . $row['legal_name'] .  '<br/>' .
+	 						'Contracting Agency: ' . $row['agency_name'] .  '<br/>' 
+	 						; 
+	 						
+			$link = 'contract_details'
+                       . ( in_array($row['document_code'], array('MMA1','MA1')) ? '/magid/' : '/agid/' )
+                       .  $row['agreement_id'] .  _checkbook_append_url_params() . '/doctype/' . $row['document_code'] . '/newwindow';	 						
+	 		$series_new[$index]->url = $link;
+	 						
+			$series_new[$index]->y = (float)$row['total_spending_amount'];
+			$series_new[$index]->tooltip_label = $tooltip_label;
+			$node->widgetConfig->gridConfig->data[] = array($row['document_id'],
+														$row['total_spending_amount'],
+														 $row['legal_name'] ,
+														 $row['agency_name']
+														);			
+			$index += 1;
+	}
+
+	$node->widgetConfig->chartConfig->series[0]->name = 'Fiscal Years';
+	$node->widgetConfig->chartConfig->series[0]->type = 'column';
+	$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
+	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
+	
+",
+"chartConfig" : {
+	"colors":["#7DB7E5"],
+	"chart" : {"width":750},
+    "plotOptions": {
+            "series": {
+                "cursor": "pointer"   ,
+                "stacking": "normal",
+                "dataLabels": {
+                    "enabled": false
+                } ,
+              	"point": {"events": {"function": "clickEvent"}}                            
             }
-        ]
-      },
-    "derivedColumns": {
-        "agency_formatted": {
-            "type": "expression2",
-            "expression": "strtoupper(html_entity_decode($row[\"agency_name@checkbook:agency\"],ENT_QUOTES))"
-        },
-        "prime_vendor_formatted": {
-            "type": "expression2",
-            "expression": "strtoupper(html_entity_decode($row[\"legal_name@checkbook:prime_vendor\"],ENT_QUOTES))"
-        },
-        "column_link":{
-            "type":"expression2",
-            "expression":" 'contract_details'
-                           . ( in_array($row['document_code'], array('MMA1','MA1')) ? '/magid/' : '/agid/' )
-                           .  $row['agreement_id'] .  _checkbook_append_url_params() . '/doctype/' . $row['document_code'] . '/newwindow' "
-        }
     },
-    "limit": "10",
-    "datasets" : [
+    "xAxis": {
+        "categories": [0,1,2,3,4,5,6,7,8,9],
+        "labels": {"enabled": false}
+    },
+    "series": [
         {
-            "name": "contracts",
-            "type":"string",
-            "columns":[{
-                        "name":"y",
-                        "url":"column_link",
-                        "value":"total_spending_amount",
-                        "agency":"agency_formatted",
-                        "prime_vendor":"prime_vendor_formatted",
-                        "contractnum":"document_id"
-            }],
-            "isArray":true,
-            "allowNullValues":true
+            "name": "FY",
+            "type": "column",
+            "pointWidth": 50,
+            "data": []
         }
     ],
-    "chartConfig" : {
-        "colors":["#7DB7E5"],
-        "plotOptions":{
-            "series": {
-                "cursor": "pointer",
-                "point": {"events": {"function": "clickEvent"}}
-            }
-        },
-        "xAxis": {
-            "title": {"text": ""},
-            "labels": {
-                "enabled": false,
-                "align": "left",
-                "verticalAlign": "bottom",
-                "floating": "true",
-                "layout": "horizontal"
-            }
-        },
-        "series": [{
-            "name": "Contract Amount",
-            "type": "column",
-            "pointWidth": 30,
-            "data": {"ds":"contracts"}
-        }],
+    "title": {"text": ""},
+    "yAxis": {
+     	"min":0,
+     	"minRange": 0.1,    
+        "startOnTick":true,
         "title": {"text": ""},
-        "yAxis": {
-            "startOnTick":true,
-            "title": {"text": ""},
-            "labels":{"rotation": 0,"function":"yAxisFormatter"}
-        },
-        "legend": {
-            "enabled": false,
-            "align": "left",
-            "verticalAlign": "bottom",
-            "floating": "true",
-            "layout": "horizontal"
-        },
-        "tooltip":{
-            "function":"tooltipformatter"
-        }
+        "labels":{"rotation": 0,"function":"yAxisFormatter"}
+    } ,
+    "legend": {
+        "enabled": false       
+    },
+    "tooltip":{"function":"tooltipformatter"}
     }
 }
 
+
 <function>
 yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
-tooltipformatter^^'formatter' : function() {return  'Contract ID: ' + this.point.contractnum + '<br/>' + 'Amount: ' + abbrNum(this.y, 2, '$') + '<br/>' + 'Prime Vendor: ' + this.point.prime_vendor  + '<br/>' + 'Agency: ' + this.point.agency ;}
+tooltipformatter^^'formatter' :
+function() {return this.point.tooltip_label ;
+}
 ##clickEvent^^"click": function(){
         var newWindow = window.open(Drupal.settings.basePath+this.options.url, '_blank', 'menubar=no,toolbar=no,location=no,resizable=yes,scrollbars=yes,personalbar=no,chrome=yes,height=700,width=980');
         function disableClicks(){
@@ -154,4 +171,3 @@ tooltipformatter^^'formatter' : function() {return  'Contract ID: ' + this.point
     }
 }
 </function>
-
