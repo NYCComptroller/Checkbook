@@ -1098,6 +1098,11 @@ class SpendingUtil{
     static function getTransactionPageTitle($widgetTitle){
         $catName = RequestUtil::getSpendingCategoryName();
         $title = RequestUtil::getDashboardTitle();
+
+        if (strpos($title,'Sub Vendors') !== false && strpos($widgetTitle,'Sub Vendors') !== false) {
+            $widgetTitle = '';
+        }
+
         return ($title . " " . $widgetTitle . " " . $catName . " Transactions");
     }
 
