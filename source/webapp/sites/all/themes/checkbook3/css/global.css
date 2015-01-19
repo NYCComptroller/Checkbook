@@ -2796,7 +2796,7 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
 }
 .instructional-video-filter-highlight{
     font-weight:800;
-    font-size:13px;
+    font-size:14px;
     color:#5c5c5c;
     text-transform: uppercase;
 }
@@ -2846,6 +2846,7 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
     display: block;
     padding-bottom: 10px;
     font-weight: 600;
+    font-size:13px;
 }
 .instructional-video-text {
     padding-top: 20px;
