@@ -223,7 +223,9 @@ class MappingUtil {
         }
 
         //Sub vendors home link
-        $sub_vendors_home_link = RequestUtil::getLandingPageUrl($domain);
+        $year = _getRequestParamValue('year');
+        $yearType = _getRequestParamValue('yeartype');
+        $sub_vendors_home_link = RequestUtil::getLandingPageUrl($domain,$year,$yearType);
         $home_link_html = "<li class='no-click'><a href='/" . $sub_vendors_home_link . "/dashboard/ss'>Sub Vendors Home</a></li>";
 
         //Sub vendors total link
