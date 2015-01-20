@@ -51,7 +51,8 @@ class NodeSummaryUtil
     }
 
     static function getInitNodeSummaryTitle($nid = null){
-      
+        $bottomURL = $_REQUEST['expandBottomContURL'];
+        $smnid = RequestUtil::getRequestKeyValueFromURL("smnid",$bottomURL);
         if($nid == null)
           $nid = self::getNodeId();
 
@@ -63,14 +64,19 @@ class NodeSummaryUtil
         //For custom widgets
         if(!$node) $node = _widget_node_load_file($nid);
         widget_config($node);
-
         $title = NULL;
-        if(isset($node->widgetConfig->widgetTitle)){
-            $title = $node->widgetConfig->widgetTitle;
-        }else if(isset($node->widgetConfig->WidgetTitleEval)){
-            $title = eval($node->widgetConfig->WidgetTitleEval);
-        }else if(isset($node->widgetConfig->table_title)){
-            $title = $node->widgetConfig->table_title;
+        if($smnid){
+            if(isset($node->widgetConfig->summaryView->templateTitleEval)){
+                $title = eval($node->widgetConfig->summaryView->templateTitleEval);
+            }
+        }else{
+            if(isset($node->widgetConfig->widgetTitle)){
+                $title = $node->widgetConfig->widgetTitle;
+            }else if(isset($node->widgetConfig->WidgetTitleEval)){
+                $title = eval($node->widgetConfig->WidgetTitleEval);
+            }else if(isset($node->widgetConfig->table_title)){
+                $title = $node->widgetConfig->table_title;
+            }
         }
 
         return $title;
