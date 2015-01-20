@@ -114,7 +114,7 @@
     ",
     "summaryView":{
         "template":"spending_sub_vendor_summary",
-        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Sub Vendor');"
+        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Sub Vendors');"
     },
     "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Sub Vendors');",
     "table_columns": [
