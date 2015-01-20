@@ -2290,7 +2290,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
     font-weight: bold;
     text-align: center;
     width: 105px;
-    margin-right: 32px;
+    margin-right: 15px;
 }
 .contract-vendor-details .dollar-amounts > div{
     margin-right: 7px;
@@ -2298,7 +2298,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 .dollar-amounts > div:first-child,
 .inside .transactions-container .transactions-total-amount,
 .contract-information .dollar-difference{
-    margin-right:0px;
+    margin-right:15px;
 }
 .dollar-amounts > div > div,
 .inside .transactions-container .transactions-total-amount > div,
