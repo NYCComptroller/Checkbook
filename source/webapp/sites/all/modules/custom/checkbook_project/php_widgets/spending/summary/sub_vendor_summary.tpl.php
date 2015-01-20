@@ -35,7 +35,7 @@ if(is_array($records)){
     $mwbe_category = MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']);
     $totcontamnt_value = $row['formatted_total_contract_amount_sum'];
 
-    if(_getRequestParamValue('smnid') == 759 || _getRequestParamValue('smnid') == 748){
+    if(_getRequestParamValue('smnid') == 759 ){
         $percent_spending_value = $row['percent_spending'];
         $percent_spending = WidgetUtil::getLabel("percent_spending");
     }
@@ -52,7 +52,7 @@ if(is_array($records)){
         $totcontamnt = '';
 
     }
-    if(_getRequestParamValue('smnid') == 763){
+    if(_getRequestParamValue('smnid') == 763 || _getRequestParamValue('smnid') == 748){
         $percent_spending_value = $row['percent_spending'];
         $percent_spending = WidgetUtil::getLabel("percent_spending");
         $no_of_subcontracts_value = $row['total_sub_contracts'];
@@ -75,13 +75,13 @@ $summaryContent =  <<<EOD
             {$row['formatted_check_amount_sum']}
             <div class="amount-title">{$ytdspending}</div>
         </div>
-        <div class="number-of-subcontracts">
-            {$no_of_subcontracts_value}
-            <div class="amount-title">{$no_of_subcontracts}</div>
-        </div>
         <div class="percent-spending-amount">
             {$percent_spending_value}
             <div class="amount-title">{$percent_spending}</div>
+        </div>
+        <div class="number-of-subcontracts">
+            {$no_of_subcontracts_value}
+            <div class="amount-title">{$no_of_subcontracts}</div>
         </div>
     </div>
 </div>
