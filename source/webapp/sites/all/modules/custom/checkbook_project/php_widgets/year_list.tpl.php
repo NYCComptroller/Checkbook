@@ -223,14 +223,19 @@ if($display){
         }
     }
     $year_data_array = array_merge($fiscal_year_data_array,$calendar_year_data_array);
+
+    if(_getRequestParamValue('contstatus') == 'P'){
+        return;
+    }
     $year_list = "<select id='year_list'>";
     foreach($year_data_array as $key => $value){
         $year_list .= "<option ".$value['selected']." value=".$value['value']." link='" . $value['link'] . "'  >".$value['display_text']."</option>";
     }
     
     $year_list .= "</select>";
+
     if($isSelected)
-      print "<span class=\"filter\" >Filter: </span>" . $year_list;
-}
+        print "<span class=\"filter\" >Filter: </span>" . $year_list;
+ }
 
 
