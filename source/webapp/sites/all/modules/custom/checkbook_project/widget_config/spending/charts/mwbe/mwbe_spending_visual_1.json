@@ -215,7 +215,9 @@ echo '<div class=\"chart-right\">
      	"minRange": 0.1,    
         "startOnTick":true,
         "title": {"text": ""},
-        "gridLineColor": "transparent",
+        "lineWidth": 0,
+        "minorGridLineWidth": 0,
+        "gridLineColor": "#ffffff",
         "labels": {"enabled":false}
     } ,
     "legend": {
@@ -233,12 +235,22 @@ function() {
 		return false;
 	}
 	else {
-	    jQuery('.highcharts-series').children().eq(0).attr('fill', '#96d0fe');
-	    jQuery('.highcharts-series').children().eq(0).hover(
-            function() {jQuery( this ).attr('fill', '#96d0fe');},
-            function() {jQuery( this ).attr('fill', '#7DB7E5');}
-        );
-		return this.point.tooltip_label;
+        var parentElement = jQuery('.highcharts-series')[0];
+        var childElement = parentElement.firstChild;
+        var fill1 = document.createAttribute('fill');
+        fill1.value = '#96d0fe';
+        childElement.setAttributeNode(fill1);
+        childElement.onmouseover = function () {
+            var fill2 = document.createAttribute('fill');
+            fill2.value = '#96d0fe';
+            this.setAttributeNode(fill2);
+        };
+        childElement.onmouseleave = function () {
+            var fill3 = document.createAttribute('fill');
+            fill3.value = '#7DB7E5';
+            this.setAttributeNode(fill3);
+        };
+        return this.point.tooltip_label;
 	}
 }
 </function>
