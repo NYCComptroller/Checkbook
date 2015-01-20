@@ -333,10 +333,20 @@ class RequestUtil{
       }
       elseif(isset($bottomURL) && preg_match('/transactions/',$bottomURL)){
         $dtsmnid = RequestUtil::getRequestKeyValueFromURL("dtsmnid",$bottomURL);
+        $smnid = RequestUtil::getRequestKeyValueFromURL("smnid",$bottomURL);
         if($dtsmnid > 0){
           $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
         }
-        else{          
+        else if($smnid > 0){
+            if($smnid == 719){ // This is an exception case to avoid "Sub Vendor" appearing twice
+                $title = 'Sub Vendor Total Spending Transactions';
+            }
+            else{
+                $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
+            }
+
+        }
+        else{
           $last_id = _getLastRequestParamValue($bottomURL);
           if($last_id['vendor'] > 0){
             $title = _checkbook_project_get_name_for_argument("vendor_id",RequestUtil::getRequestKeyValueFromURL("vendor",$bottomURL)) ;
@@ -394,6 +404,7 @@ class RequestUtil{
       else{
         $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() .' Total Spending' ;
       }
+
       return html_entity_decode($title);
     }
 
