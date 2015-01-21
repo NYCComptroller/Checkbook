@@ -39,8 +39,7 @@ if($current_url[1] == 'contract' && ($current_url[2] == 'search' || $current_url
 }
 //Handle Sub Vendor widget to not repeat 'Sub Vendor' in title in certain dashboards
 $suppress_widget_title = ($dashboard == "ss" && $smnid == 720) || //Sub Vendors
-                         ($dashboard == "sp" && $smnid == 720) || //Sub Vendors (M/WBE)
-                         ($dashboard == "ms" && $smnid == 784); //M/WBE (Sub Vendors)
+                         ($dashboard == "sp" && $smnid == 720); //Sub Vendors (M/WBE)
 if(!$suppress_widget_title) {
     $summaryTitle .= NodeSummaryUtil::getInitNodeSummaryTitle();
 }
