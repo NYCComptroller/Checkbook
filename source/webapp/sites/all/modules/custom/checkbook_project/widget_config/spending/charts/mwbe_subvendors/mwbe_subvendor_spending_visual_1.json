@@ -10,23 +10,32 @@
         "template":"chart_grid_view",
         "domain":"spending",
         "html_class":"chart-grid-view-table three-columns",
-        "sortColumn":1,
+        "sortColumn":2,
         "table_columns": [
             {
-                  "labelAlias": "Agency",
-                  "columnType": "text"
-             },
-             {
-                  "labelAlias": "M/WBE Spending",
-                  "columnType": "number",
-                  "formatType": "amount"
-             }
+                "labelAlias": "Agency",
+                "columnType": "text"
+            },
+            {
+                "labelAlias": "M/WBE Share",
+                "columnType": "number"
+            },
+            {
+                "labelAlias": "M/WBE Spending",
+                "columnType": "number",
+                "formatType": "amount"
+            },
+            {
+                "labelAlias": "Non-MWBE",
+                "columnType": "number",
+                "formatType": "amount"
+            }
         ]
 },
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B"},
-"cleanURLParameters":["yeartype","agency","vendor","subvendor","category","year","industry","mwbe"],
-"urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","subvendor":"vendor_id","category":"spending_category_id","industry":"industry_type_id","mwbe":"minority_type_id"},
+"cleanURLParameters":["yeartype","agency","vendor","subvendor","category","year","industry"],
+"urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","subvendor":"vendor_id","category":"spending_category_id","industry":"industry_type_id"},
 "chartTitle":"Top Ten Agencies by M/WBE Spending",
 "widgetDataLoader":"
 
@@ -40,24 +49,77 @@
     }
 
     $mwbe_filter = _getRequestParamValue('mwbe');
-    $sql = 'select  agency_name , a1.agency_id,
-	SUM(
-       CASE WHEN minority_type_id = 2 THEN total_spending_amount
+    $sort_column = 8;
+    switch($mwbe_filter){
+        case '4~5' :
+            $sort_column = 3;
+            $ethinicty_case = ' WHEN minority_type_id = 4 THEN total_spending_amount
+            WHEN minority_type_id = 5 THEN total_spending_amount ';
+        break;
+        case '2' :
+            $sort_column = 4;
+            $ethinicty_case = ' WHEN minority_type_id = 2 THEN total_spending_amount
+            ';
+        break;
+        case '9' :
+            $sort_column = 5;
+            $ethinicty_case = ' WHEN minority_type_id = 9 THEN total_spending_amount
+            ';
+        break;
+            case '3' :
+            $sort_column = 6;
+            $ethinicty_case = ' WHEN minority_type_id = 3 THEN total_spending_amount
+            ';
+        break;
+            case '11' :
+            $sort_column = 7;
+            $ethinicty_case = ' WHEN minority_type_id = 11 THEN total_spending_amount
+            ';
+        break;
+            case '7' :
+            $sort_column = 9;
+            $ethinicty_case = ' WHEN minority_type_id = 7 THEN total_spending_amount
+            ';
+        break;
+            case '2~3~4~5~9' :
+            $sort_column = 9;
+            $ethinicty_case = ' WHEN minority_type_id = 2 THEN total_spending_amount
             WHEN minority_type_id = 3 THEN total_spending_amount
             WHEN minority_type_id = 4 THEN total_spending_amount
             WHEN minority_type_id = 5 THEN total_spending_amount
             WHEN minority_type_id = 9 THEN total_spending_amount
-            ELSE 0
-	END) total_mwbe
-	from {aggregateon_subven_spending_coa_entities} a1
+            ';
+        break;
+
+    }
+
+    $sql = 'select  agency_name , a1.agency_id,
+    SUM(
+    CASE
+    ' . $ethinicty_case . '
+    ELSE 0
+    END) ethinicty_mwbe,
+    SUM(
+    CASE WHEN minority_type_id = 2 THEN total_spending_amount
+    WHEN minority_type_id = 3 THEN total_spending_amount
+    WHEN minority_type_id = 4 THEN total_spending_amount
+    WHEN minority_type_id = 5 THEN total_spending_amount
+    WHEN minority_type_id = 9 THEN total_spending_amount
+    ELSE 0
+    END) total_mwbe,
+    SUM(
+    CASE
+    WHEN minority_type_id = 7 THEN total_spending_amount
+    ELSE 0
+    END) total_non_mwbe
+    from {aggregateon_subven_spending_coa_entities} a1
     join {ref_agency} ra on ra.agency_id =  a1.agency_id
-   ' . $where_filter . '
-        group by  agency_name,a1.agency_id order by agency_name
+    ' . $where_filter . '
+    group by  agency_name,a1.agency_id order by total_mwbe desc
     ';
 
     $node->data  = _checkbook_project_execute_sql($sql);
 	$node->data_merged =  $node->data;
-	
 ",
 "widgetUpdateJSONConfig":"
 	
@@ -81,13 +143,24 @@
 	$index = 0;
 	foreach($node->data_merged as $row){
 
+//        $tooltip_label =
+//        'Agency: ' . $row['agency_name'].  '<br/>' .
+//        MappingUtil::getCurrenEhtnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>'
+//        ;
+//        $node->widgetConfig->gridConfig->data[] = array(
+//        $row['agency_name'],
+//        (float)$row[$amount_column] );
+
         $tooltip_label =
         'Agency: ' . $row['agency_name'].  '<br/>' .
-        MappingUtil::getCurrenEhtnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>' 
-        ;
-        $node->widgetConfig->gridConfig->data[] = array(
-        $row['agency_name'],
-        (float)$row[$amount_column] );
+        MappingUtil::getCurrenEhtnicityName() . ' Share: ' . custom_number_formatter_format($row[$amount_column]/($row['total_mwbe'] + $row['total_non_mwbe'] ) *100 ,1,null, '%').  '<br/>' .
+        MappingUtil::getCurrenEhtnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>' .
+        'Non-M/WBE: ' . custom_number_formatter_format( $row['total_non_mwbe'] - $row['total_subven_non_mwbe']  ,2,'$').  '<br/>';
+
+        $node->widgetConfig->gridConfig->data[] = array($row['agency_name'],
+        custom_number_formatter_format($row[$amount_column]/($row['total_mwbe'] + $row['total_non_mwbe'] ) *100 ,1,null, '%'),
+        (float)$row[$amount_column] ,
+        (float)$row['total_non_mwbe']);
 
         $link= CustomURLHelper::prepareUrl('spending_landing', SpendingUtil::$landingPageParams, array('expandBottomCont'=>'true'), array('agency'=>$row['agency_id']) );
 			$series_new[$index]->url = $link;
