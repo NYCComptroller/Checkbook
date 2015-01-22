@@ -52,6 +52,8 @@
     $sort_column = 8;
     switch($mwbe_filter){
         case '4~5' :
+        case '4' :
+        case '5' :
             $sort_column = 3;
             $ethinicty_case = ' WHEN minority_type_id = 4 THEN total_spending_amount
             WHEN minority_type_id = 5 THEN total_spending_amount ';
@@ -131,7 +133,7 @@
 	$amount_column = 'total_mwbe';
 	
 	$mwbe_filter = _getRequestParamValue('mwbe');
-	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){	
+	if($mwbe_filter =='4~5' || $mwbe_filter =='4' || $mwbe_filter =='5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){
 		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName()  . ' Spending';
 		
 		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName()  . ' Top Ten Agencies Spending';

@@ -34,16 +34,16 @@
     foreach($node->widgetConfig->requestParams as $param=>$value){
         $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
     }
-    
+
     if(count($where_filters) > 0){
         $where_filter = ' where ' . implode(' and ' , $where_filters);
     }
-    
+
     $sql = 'select rm.minority_type_id, rm.minority_type_name ,year_value, sum(total_spending_amount) total_spending
     from {aggregateon_subven_spending_coa_entities} a1
     join {ref_minority_type} rm on rm.minority_type_id = a1.minority_type_id
     join {ref_month} rmo on rmo.month_id =  a1.month_id
-    join {ref_year} ry on a1.year_id = ry.year_id       
+    join {ref_year} ry on a1.year_id = ry.year_id
    ' . $where_filter . '
     group by rm.minority_type_id, rm.minority_type_name,year_value  ';
 
@@ -54,9 +54,18 @@
 	$series =  array();
 	$non_mwbe_data = array();
 	$year_id = _getRequestParamValue('year');
-    $mwbe_page_cats = _getRequestParamValue('mwbe') != null
-        ? explode('~',_getRequestParamValue('mwbe'))
+
+    $mwbe_param = _getRequestParamValue('mwbe');
+    $mwbe_page_cats = $mwbe_param != null
+        ? explode('~',$mwbe_param)
         : explode('~',MappingUtil::$total_mwbe_cats);
+    if($mwbe_param == 4) {
+        $mwbe_page_cats[] = 5;
+    }
+    else if($mwbe_param == 5) {
+        $mwbe_page_cats[] = 4;
+    }
+
 	$year = _getYearValueFromID($year_id);
 	 foreach ($node->data as $row){
 
@@ -137,7 +146,7 @@
 	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
 	$node->widgetConfig->chartConfig->xAxis->categories = $categories;
 
-																		 
+
 ",
 "chartConfig" : {
 	"colors":["#7DB7E5"],
