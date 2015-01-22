@@ -2293,7 +2293,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
     margin-left: 32px;
 }
 .contract-vendor-details .dollar-amounts > div{
-    margin-right: 7px;
+    margin-left: 0px;
 }
 .dollar-amounts > div:first-child,
 .inside .transactions-container .transactions-total-amount,
