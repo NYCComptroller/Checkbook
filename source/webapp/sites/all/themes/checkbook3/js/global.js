@@ -309,12 +309,59 @@ Drupal.behaviors.hoveOverMWBE = {
                             width:'100%',
                             fit:1,
                             speed:1000,
-                            pause:true,
+//                            pause:true,
                             pager:'#video-list-pager',
                             prev:'#prev1',
                             next:'#next1'
                         });
                 }
+
+            var iframeClick = function () {
+                var windowLostBlur = function () {
+                        jQuery(window).focus();
+
+                        //if the current iframe is hovered, flag it as blurred and pause the slider
+                        $('#allVideoList div.mouseenter').each(function () {
+                            $(this).removeClass('mouseenter');
+                            $(this).addClass('blur');
+                            $('#allVideoList').cycle('pause');
+                        });
+                    };
+                jQuery(window).focus();
+                jQuery('div.video-container iframe').mouseenter(function(){
+                    jQuery('div.video-container iframe').focus();
+
+                    //if the current iframe is not blurred, flag it as mouseenter and pause the slider
+                    if(!$(this).closest('div.video-container').hasClass('blur')) {
+                        $(this).closest('div.video-container').removeClass('mouseleave');
+                        $(this).closest('div.video-container').addClass('mouseenter');
+                        $('#allVideoList').cycle('pause');
+                    }
+                });
+                jQuery('div.video-container iframe').mouseleave(function(){
+
+                    //if the current iframe is not blurred, flag it as mouseleave and resume the slider
+                    if(!$(this).closest('div.video-container').hasClass('blur')) {
+                        $(this).closest('div.video-container').removeClass('mouseenter');
+                        $(this).closest('div.video-container').addClass('mouseleave');
+                        $('#allVideoList').cycle('resume');
+                    }
+                });
+              jQuery(window).blur(function () {
+                    windowLostBlur();
+                });
+            };
+            iframeClick();
+
+            //if non-active sliders are clicked, resume the sliders & reset the iframe states
+            $('#video-list-pager a').click(function () {
+                $('div.video-container').each(function () {
+                    $(this).removeClass('mouseenter');
+                    $(this).removeClass('mouseleave');
+                    $(this).removeClass('blur');
+                    $('#allVideoList').cycle('resume');
+                });
+            });
 
             // NYC Budget Total Expenditure
             $('.page-budget .slider-pager a:last').click(function () {
