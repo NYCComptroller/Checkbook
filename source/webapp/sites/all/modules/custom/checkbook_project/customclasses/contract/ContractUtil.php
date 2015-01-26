@@ -199,12 +199,16 @@ namespace { //global
          * @return string
          */
         static public function get_contracts_vendor_link_by_mwbe_category($row){
+
             $vendor_id = $row["vendor_vendor"] != null ? $row["vendor_vendor"] : $row["vendor_id"];
             $year_id = _getRequestParamValue("year");
             $year_type = $row["yeartype_yeartype"];
             $is_prime_or_sub = $row["is_prime_or_sub"] != null ? $row["is_prime_or_sub"] : "P";
             $agency_id = null;
             $minority_type_id = $row["current_prime_minority_type_id"];
+
+            $smnid = _getRequestParamValue("smnid");
+            if($smnid == 720 || $smnid == 784) return self::get_contracts_vendor_link_sub($vendor_id, $year_id, $year_type,$agency_id);
 
             $latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, $is_prime_or_sub);
             $latest_minority_id = isset($latest_minority_id) ? $latest_minority_id : $minority_type_id;
