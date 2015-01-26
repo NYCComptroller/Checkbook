@@ -93,7 +93,7 @@ h3 {
     margin-bottom: 12px;
     text-transform: uppercase;
 }
-#contract_history h3 {
+#contract_history h3, #spending_transactions h3 {
     margin-bottom: 12px !important;
 }
 h4 {
