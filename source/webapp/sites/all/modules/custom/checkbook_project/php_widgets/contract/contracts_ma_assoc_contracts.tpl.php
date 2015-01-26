@@ -89,7 +89,7 @@
                   <div class="amount-title">Current Amount
                   </div>
               </div>
-              <div class="spent-to-date"><?php if($subcontract_details[0]['sub_vendor_count']) { echo $subcontract_details[0]['sub_vendor_count']; } else echo 'N/A';?>
+              <div class="spent-to-date"><?php if($subcontract_details[0]['sub_vendor_count']) { echo $subcontract_details[0]['sub_vendor_count']; } else echo '0';?>
                   <div class="amount-title">Number of Sub Vendors
                   </div>
               </div>
