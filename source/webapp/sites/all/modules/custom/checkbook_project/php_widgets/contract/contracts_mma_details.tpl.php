@@ -140,7 +140,7 @@ $total_subvendor_count = $res->data[0]['sub_vendor_count'];
         <?php
         if ( _getRequestParamValue("datasource") != "checkbook_oge") {
             ?>
-            <li><span class="gi-list-item">Total Number of Sub Vendors:</span> <?php echo $total_subvendor_count; ?>
+            <li><span class="gi-list-item">Total Number of Sub Vendors:</span> <?php if($total_subvendor_count > 0) { echo $total_subvendor_count; } else { echo 'N/A'; } ?>
             </li>
         <?php } ?>
     </ul>
