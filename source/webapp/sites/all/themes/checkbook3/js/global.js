@@ -318,18 +318,20 @@ Drupal.behaviors.hoveOverMWBE = {
 
             var iframeClick = function () {
                 var windowLostBlur = function () {
-                        jQuery(window).focus();
 
-                        //if the current iframe is hovered, flag it as blurred and pause the slider
+                    //if the current iframe is hovered, flag it as blurred and pause the slider
+                    if ($('#allVideoList div.mouseenter').length > 0) {
+                        jQuery(window).focus();
                         $('#allVideoList div.mouseenter').each(function () {
                             $(this).removeClass('mouseenter');
                             $(this).addClass('blur');
                             $('#allVideoList').cycle('pause');
                         });
-                    };
+                        jQuery(window).blur();
+                    }
+                };
                 jQuery(window).focus();
                 jQuery('div.video-container iframe').mouseenter(function(){
-                    jQuery('div.video-container iframe').focus();
 
                     //if the current iframe is not blurred, flag it as mouseenter and pause the slider
                     if(!$(this).closest('div.video-container').hasClass('blur')) {
