@@ -309,10 +309,19 @@ Drupal.behaviors.hoveOverMWBE = {
                             width:'100%',
                             fit:1,
                             speed:1000,
-//                            pause:true,
                             pager:'#video-list-pager',
                             prev:'#prev1',
-                            next:'#next1'
+                            next:'#next1',
+                            before: function() {
+                                //reset the video before transition to eliminate flicker
+                                $('div.video-container').each(function () {
+                                    if($(this).hasClass('reset')) {
+                                        $(this).removeClass('reset');
+                                        var video = $(this).find('iframe');
+                                        resetVideo(video);
+                                    }
+                                });
+                            }
                         });
                 }
 
@@ -355,15 +364,27 @@ Drupal.behaviors.hoveOverMWBE = {
             };
             iframeClick();
 
-            //if non-active sliders are clicked, resume the sliders & reset the iframe states
+            //if non-active sliders are clicked, resume the sliders & reset the iframe/video states
             $('#video-list-pager a').click(function () {
                 $('div.video-container').each(function () {
                     $(this).removeClass('mouseenter');
                     $(this).removeClass('mouseleave');
-                    $(this).removeClass('blur');
+                    if($(this).hasClass('blur')) {
+                        $(this).removeClass('blur');
+                        $(this).addClass('reset');
+                    }
                     $('#allVideoList').cycle('resume');
                 });
             });
+
+            /*
+             Given an iframe with a video, this function will reset the video by resetting the src
+             */
+            var resetVideo = function(video) {
+                var video_source = $(video).attr("src");
+                $(video).attr("src","");
+                $(video).attr("src",video_source);
+            };
 
             // NYC Budget Total Expenditure
             $('.page-budget .slider-pager a:last').click(function () {
