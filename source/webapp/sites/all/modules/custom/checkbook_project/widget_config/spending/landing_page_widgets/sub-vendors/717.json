@@ -91,16 +91,18 @@
         {"label":"","column":""},
         {"labelAlias":"mwbe_category","column":"prime_mwbe_category_name","sortSourceColumn":"prime_minority_type.prime_minority_type"},
         {"labelAlias":"ytd_spending","column":"prime_vendor_amount_link","sortSourceColumn":"check_amount_sum"},
+        {"label":"","column":""},
         {"labelAlias":"total_contract_amount","column":"formatted_total_contract_amount_sum","sortSourceColumn":"total_contract_amount_sum"},
         {"label":"","column":""}
     ],
     "dataTableOptions":{
         "aoColumns": [
             {"sClass":"text","sWidth":"160px","bSortable":false},
-            {"sClass":"number","sWidth":"85px","asSorting":["desc","asc"]},
-            {"bSortable":false,"sWidth":"80px"},
+            {"sClass":"number","sWidth":"125px","asSorting":["desc","asc"]},
+            {"bSortable":false,"sWidth":"90px"},
             {"sClass":"text","sWidth":"160px","asSorting":["desc","asc"],"bSortable":false},
-            {"sClass":"text","sWidth":"120px","asSorting":["desc","asc"],"bSortable":false},
+            {"sClass":"number","sWidth":"80px","asSorting":["desc","asc"]},
+            {"bSortable":false,"sWidth":"110px"},
             {"sClass":"number","sWidth":"120px","asSorting":["desc","asc"]},
             {"bSortable":false,"sWidth":"5px"}
         ] ,
@@ -111,7 +113,7 @@
         "bLengthChange": false,
         "bInfo": false,
         "bAutoWidth": false,
-        "aaSorting": [[3,"desc"]],
+        "aaSorting": [[4,"desc"]],
         "fnServerParams": "##function ( aoData ) {
         reloadExpandCollapseWidget(this,aoData);
         }##",
