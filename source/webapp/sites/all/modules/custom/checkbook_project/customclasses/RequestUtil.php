@@ -120,6 +120,9 @@ class RequestUtil{
       else if(isset($bottomURL) && preg_match('/transactions/',$bottomURL)){
         $smnid = RequestUtil::getRequestKeyValueFromURL("smnid",$bottomURL);
         $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
+        if($smnid == 720){
+            $title = '';
+        }
 
         if(preg_match('/^contracts_landing/',current_path()) && preg_match('/status\/A/',current_path())){
           $title = RequestUtil::getDashboardTitle() .' '. $title . ' ' .' Active Expense Contracts Transactions' ;
