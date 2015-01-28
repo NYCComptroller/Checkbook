@@ -1148,7 +1148,7 @@ Drupal.behaviors.hoveOverMWBE = {
                 var active_accordion_window = initializeActiveAccordionWindow(page_clicked_from, data_source);
 
 
-                var createAlertsDiv = "<span class='create-alert-instructions'>Follow the three step process to schedule alerts.<ul><li>Please select one of the following domains and also select the desired filters.<\/li><li>Click 'Next' button to view and customize the results.<\/li><li>Click 'Clear All' to clear out the filters applied.<\/li><\/ul><\/br></span>";
+                var createAlertsDiv = "<span class='create-alert-instructions'>Follow the three step process to schedule alert.<ul><li>Please select one of the following domains and also select the desired filters.<\/li><li>Click 'Next' button to view and customize the results.<\/li><li>Click 'Clear All' to clear out the filters applied.<\/li><\/ul><\/br></span>";
                 createAlertsDiv += "<span style='visibility: hidden;display: none;' class='create-alert-results-loading'><div class='ajax-progress ajax-progress-throbber'><div class='throbber'>&nbsp;</div></div><p>Please Wait...</p></span>";
                 createAlertsDiv += "<div class='create-alert-customize-results' style='display: none'><br/><br/><br/></div>";
                 createAlertsDiv += "<div class='create-alert-schedule-alert' style='display: none'>&nbsp;<br/><br/></div>";
@@ -1159,7 +1159,7 @@ Drupal.behaviors.hoveOverMWBE = {
                 initializeAccordionAttributes('advanced_search_create_alerts');
 
                 $('#block-checkbook-advanced-search-checkbook-advanced-search-form').dialog({
-                    title:"<span class='create-alert-header'><span class='active'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>3. Schedule Alerts</span></span>",
+                    title:"<span class='create-alert-header'><span class='active'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>3. Schedule Alert</span></span>",
                     position:['center', 'center'],
                     width:800,
                     modal:true,
@@ -1287,7 +1287,7 @@ Drupal.behaviors.hoveOverMWBE = {
                         $('div.ui-dialog').css('height','385px');
 
                         /* Update header */
-                        header = "<span class='create-alert-header'><span class='inactive'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='active'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>3. Schedule Alerts</span></span>";
+                        header = "<span class='create-alert-header'><span class='inactive'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='active'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>3. Schedule Alert</span></span>";
                         $('.create-alert-header').replaceWith(header);
 
                         /* Update wizard instructions */
@@ -1315,7 +1315,7 @@ Drupal.behaviors.hoveOverMWBE = {
                         $('div.ui-dialog').css('width','800px');
 
                         /* Update header */
-                        header = "<span class='create-alert-header'><span class='inactive'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='active'>3. Schedule Alerts</span></span>";
+                        header = "<span class='create-alert-header'><span class='inactive'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='active'>3. Schedule Alert</span></span>";
                         $('.create-alert-header').replaceWith(header);
 
                         /* Update wizard instructions */
@@ -1342,7 +1342,7 @@ Drupal.behaviors.hoveOverMWBE = {
                         /* Show the schedule alert page */
                         $('.create-alert-schedule-alert').css('display','inline');
 
-                        /* Load Schedule Alerts Form */
+                        /* Load Schedule Alert Form */
                         $.fn.onScheduleAlertClick();
 
                         /* Update hidden field for new step */
@@ -1386,11 +1386,11 @@ Drupal.behaviors.hoveOverMWBE = {
                         $('div.ui-dialog').css('width','800px');
                         
                         /* Update header */
-                        header = "<span class='create-alert-header'><span class='active'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>3. Schedule Alerts</span></span>";
+                        header = "<span class='create-alert-header'><span class='active'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>3. Schedule Alert</span></span>";
                         $('.create-alert-header').replaceWith(header);
 
                         /* Update wizard instructions */
-                        instructions = "<span class='create-alert-instructions'>Follow the three step process to schedule alerts.<ul><li>Please select one of the following domains and also select the desired filters.<\/li><li>Click 'Next' button to view and customize the results.<\/li><li>Click 'Clear All' to clear out the filters applied.<\/li><\/ul><\/br></span>";
+                        instructions = "<span class='create-alert-instructions'>Follow the three step process to schedule alert.<ul><li>Please select one of the following domains and also select the desired filters.<\/li><li>Click 'Next' button to view and customize the results.<\/li><li>Click 'Clear All' to clear out the filters applied.<\/li><\/ul><\/br></span>";
                         $('.create-alert-instructions').replaceWith(instructions);
 
                         /* Hide the results page */
@@ -1417,14 +1417,14 @@ Drupal.behaviors.hoveOverMWBE = {
                         $('div.ui-dialog').css('height','auto');
 
                         /* Update header */
-                        header = "<span class='create-alert-header'><span class='inactive'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='active'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>3. Schedule Alerts</span></span>";
+                        header = "<span class='create-alert-header'><span class='inactive'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='active'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>3. Schedule Alert</span></span>";
                         $('.create-alert-header').replaceWith(header);
 
                         /* Update wizard instructions */
                         instructions = "<span class='create-alert-instructions'>Further narrow down the results using the 'Narrow down your search' functionality.<ul><li>Click 'Export' button to download the results into excel.<\/li><li>Click 'Back' to go back to Step1: Select Criteria<\/li><li>Click 'Next' button to Schedule Alert.<\/li><\/ul><\/br></span>";
                         $('.create-alert-instructions').replaceWith(instructions);
 
-                        /* Hide the schedule alerts page */
+                        /* Hide the schedule alert page */
                         $('.create-alert-schedule-alert').replaceWith("<div class='create-alert-schedule-alert'>&nbsp;<br/><br/></div>");
                         $('.create-alert-schedule-alert').css('display','none');
 
