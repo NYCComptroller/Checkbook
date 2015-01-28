@@ -311,17 +311,7 @@ Drupal.behaviors.hoveOverMWBE = {
                             speed:1000,
                             pager:'#video-list-pager',
                             prev:'#prev1',
-                            next:'#next1',
-                            before: function() {
-                                //reset the video before transition to eliminate flicker
-                                $('div.video-container').each(function () {
-                                    if($(this).hasClass('reset')) {
-                                        $(this).removeClass('reset');
-                                        var video = $(this).find('iframe');
-                                        resetVideo(video);
-                                    }
-                                });
-                            }
+                            next:'#next1'
                         });
                 }
 
@@ -366,14 +356,15 @@ Drupal.behaviors.hoveOverMWBE = {
 
             //if non-active sliders are clicked, resume the sliders & reset the iframe/video states
             $('#video-list-pager a').click(function () {
+                $('#allVideoList').cycle('resume');
                 $('div.video-container').each(function () {
                     $(this).removeClass('mouseenter');
                     $(this).removeClass('mouseleave');
                     if($(this).hasClass('blur')) {
                         $(this).removeClass('blur');
-                        $(this).addClass('reset');
+                        var video = $(this).find('iframe');
+                        resetVideo(video);
                     }
-                    $('#allVideoList').cycle('resume');
                 });
             });
 
