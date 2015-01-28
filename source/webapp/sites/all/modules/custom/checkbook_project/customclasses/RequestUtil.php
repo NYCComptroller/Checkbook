@@ -116,28 +116,28 @@ class RequestUtil{
       elseif(preg_match('/contract/',$bottomURL) && preg_match('/pending_contract_transactions/',$bottomURL)){
           $contract_number = RequestUtil::getRequestKeyValueFromURL("contract",$bottomURL);
           return $contract_number;
-
       }
       else if(isset($bottomURL) && preg_match('/transactions/',$bottomURL)){
         $smnid = RequestUtil::getRequestKeyValueFromURL("smnid",$bottomURL);
         $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
+
         if(preg_match('/^contracts_landing/',current_path()) && preg_match('/status\/A/',current_path())){
-          $title = $title . ' ' . RequestUtil::getDashboardTitle() .' Active Expense Contracts Transactions' ;
+          $title = RequestUtil::getDashboardTitle() .' '. $title . ' ' .' Active Expense Contracts Transactions' ;
         }
         elseif(preg_match('/^contracts_landing/',current_path()) && preg_match('/status\/R/',current_path())){
-          $title = $title . ' ' . RequestUtil::getDashboardTitle() .' Registered Expense Contracts Transactions' ;
+          $title = RequestUtil::getDashboardTitle()  .' '. $title . ' ' .' Registered Expense Contracts Transactions' ;
         }
         elseif(preg_match('/^contracts_revenue_landing/',current_path()) && preg_match('/status\/A/',current_path())){
-          $title = $title . ' ' . RequestUtil::getDashboardTitle() .' Active Revenue Contracts Transactions' ;
+          $title = RequestUtil::getDashboardTitle() .' '. $title . ' ' .' Active Revenue Contracts Transactions' ;
         }
         elseif(preg_match('/^contracts_revenue_landing/',current_path()) && preg_match('/status\/R/',current_path())){
-          $title = $title . ' ' . RequestUtil::getDashboardTitle() .' Registered Revenue Contracts Transactions' ;
+          $title = RequestUtil::getDashboardTitle() .' '. $title . ' ' .' Registered Revenue Contracts Transactions' ;
         }
         elseif(preg_match('/^contracts_pending_exp_landing/',current_path())){
-          $title = $title . ' ' . RequestUtil::getDashboardTitle() .' Pending Expense Contracts Transactions' ;
+          $title = RequestUtil::getDashboardTitle() .' '. $title . ' ' .' Pending Expense Contracts Transactions' ;
         }
         elseif(preg_match('/^contracts_pending_rev_landing/',current_path())){
-          $title = $title . ' ' . RequestUtil::getDashboardTitle() .' Pending Revenue Contracts Transactions' ;
+          $title = RequestUtil::getDashboardTitle() .' '. $title . ' ' .' Pending Revenue Contracts Transactions' ;
         }    
       }
       elseif(preg_match('/^contracts_landing/',current_path()) && preg_match('/status\/A/',current_path())){
@@ -338,13 +338,7 @@ class RequestUtil{
           $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
         }
         else if($smnid > 0){
-            if($smnid == 719){ // This is an exception case to avoid "Sub Vendor" appearing twice
-                $title = 'Sub Vendor Total Spending Transactions';
-            }
-            else{
-                $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
-            }
-
+          $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
         }
         else{
           $last_id = _getLastRequestParamValue($bottomURL);
