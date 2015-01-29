@@ -119,8 +119,9 @@ class RequestUtil{
       }
       else if(isset($bottomURL) && preg_match('/transactions/',$bottomURL)){
         $smnid = RequestUtil::getRequestKeyValueFromURL("smnid",$bottomURL);
+        $dashboard = RequestUtil::getRequestKeyValueFromURL("dashboard",$bottomURL);
         $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
-        if($smnid == 720){
+        if($smnid == 720 && $dashboard != 'mp'){
             $title = '';
         }
 
