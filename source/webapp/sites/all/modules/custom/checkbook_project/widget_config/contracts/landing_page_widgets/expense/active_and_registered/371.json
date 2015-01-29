@@ -5,9 +5,9 @@
 "getTotalDataCount":true,
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B","document_code.document_code.document_code":"MMA1~MA1","status_flag":"A"},
-"cleanURLParameters":["year","calyear","agency","yeartype","vendor","status","magid","cagency","cvendor","csize","cindustry","awdmethod","mwbe"],
+"cleanURLParameters":["year","calyear","agency","yeartype","vendor","status","contstatus","magid","cagency","cvendor","csize","cindustry","awdmethod","mwbe"],
  "urlParamMap":{"calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","vendor":"vendor_id",
-                 "status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id","magid":"original_agreement.original_agreement",
+                 "status":"status_flag","contstatus":"status_flag","csize":"award_size_id","cindustry":"industry_type_id","magid":"original_agreement.original_agreement",
                  "cagency":"agency_id","cvendor":"vendor_id","csize":"award_size_id","cindustry":"industry_type_id",
                  "awdmethod":"award_method_id","mwbe":"minority_type_id"},
 "preProcessConfiguration":"
@@ -54,7 +54,7 @@
     },
 "spent_amount_link": {
       "type": "expression2",
-      "expression": "'<a class=\"new_window\" href=\"/spending/transactions/magid/' .$row[original_agreement_original_agreement] .  ContractURLHelper:: _checkbook_project_spending_get_year_url_param_string() . _checkbook_append_url_params() . '/smnid/' . $node->nid. '/newwindow\">' . '$' . custom_number_formatter_format($row['spending_amount_sum'],2). '</a>'"
+      "expression": "'<a class=\"new_window\" href=\"/spending/transactions/magid/' .$row[original_agreement_original_agreement] .  ContractURLHelper:: _checkbook_project_spending_get_year_url_param_string() . _checkbook_append_url_params() . _checkbook_project_get_url_param_string('status','contstatus') . '/smnid/' . $node->nid. '/newwindow\">' . '$' . custom_number_formatter_format($row['spending_amount_sum'],2). '</a>'"
     } ,
 "contract_link": {
       "type": "expression2",
