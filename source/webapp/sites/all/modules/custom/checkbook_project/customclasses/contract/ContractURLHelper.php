@@ -68,9 +68,10 @@ class ContractURLHelper{
         $link = NULL;
         $docType = $row['document_code@checkbook:ref_document_code'];
         $agrParamName = 'magid';//in_array($docType, array('MMA1','MA1')) ? 'magid' : 'agid';
+        $agid = isset($row['original_agreement_id']) ? $row['original_agreement_id'] : $row['contract_original_agreement_id'];
 
         if( RequestUtil::isExpandBottomContainer() ){
-          $link = '<a href=/panel_html/contract_transactions/' .$agrParamName . '/' . $row['original_agreement_id'] .  '/doctype/' . $docType .  ' class=bottomContainerReload>'. $row['contract_number'] . '</a>';
+          $link = '<a href=/panel_html/contract_transactions/' .$agrParamName . '/' . $agid .  '/doctype/' . $docType .  ' class=bottomContainerReload>'. $row['contract_number'] . '</a>';
         } else {
           $link = '<a href=/contracts_revenue_landing'
               . _checkbook_project_get_url_param_string('contstatus','status')
@@ -79,7 +80,7 @@ class ContractURLHelper{
                       ( $row['type_of_year@checkbook:contracts_coa_aggregates'] == 'B' ? ('/yeartype/B/year/'. $row['fiscal_year_id@checkbook:contracts_coa_aggregates']) : ('/yeartype/C/calyear/'.$row['fiscal_year_id@checkbook:contracts_coa_aggregates']) )
                       : (_checkbook_project_get_year_url_param_string())
                   )
-              . '?expandBottomContURL=/panel_html/contract_transactions/' .$agrParamName . '/' . $row['original_agreement_id'] .  '/doctype/' . $docType
+              . '?expandBottomContURL=/panel_html/contract_transactions/' .$agrParamName . '/' . $agid .  '/doctype/' . $docType
               .  ' >'. $row['contract_number'] . '</a>';
         }
 
