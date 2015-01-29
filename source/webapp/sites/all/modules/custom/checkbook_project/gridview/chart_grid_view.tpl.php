@@ -37,7 +37,7 @@ include_once('export_link.php');
 <table id="table_<?php echo widget_unique_identifier($node);?>" class="<?php echo $node->widgetConfig->gridConfig->html_class; ?>">
   <thead>
     <tr>
-    <?php 
+    <?php
     	foreach($node->widgetConfig->gridConfig->table_columns as $column){
 			echo "<th class='" . $column->columnType . "'><div><span>" . $column->labelAlias . "</div></span></th>";
 		}
@@ -47,12 +47,13 @@ include_once('export_link.php');
   </thead>
   <tbody>
   <?php
-  
+
+
         if (isset($node->widgetConfig->gridConfig->data) && is_array($node->widgetConfig->gridConfig->data)) {
             foreach ($node->widgetConfig->gridConfig->data as $datarow) {
               echo "<tr>";
               $index = 0;
-              while($index <count($node->widgetConfig->gridConfig->table_columns)){
+              while($index < count($node->widgetConfig->gridConfig->table_columns)){
 				if($node->widgetConfig->gridConfig->table_columns[$index]->formatType == "amount"){
 					echo "<td>".$datarow[$index]."</td>";
 				}elseif($node->widgetConfig->gridConfig->table_columns[$index]->formatType == "number"){
@@ -66,9 +67,9 @@ include_once('export_link.php');
 				else{
 					echo "<td><div class='" .$node->widgetConfig->gridConfig->table_columns[$index]->columnType ."'>".$datarow[$index]."</div></td>";
 				}
-				
-				$index +=1;	
-			  }             
+
+				$index +=1;
+			  }
               echo "<td>&nbsp</td>";
               echo "</tr>";
             }
@@ -128,8 +129,8 @@ include_once('export_link.php');
 					"mDataProp": function ( source, type, val ) {
 							if (type == "set") {
             				var months = {
-						            January: 1, February: 2, March: 3, April: 4, May: 5, June: 6,
-						            July: 7, August: 8, September: 9, October: 10, November:11, December:12
+						            July: 1, August: 2, September: 3, October: 4, November:5, December:6,
+                                    January: 7, February: 8, March: 9, April: 10, May: 11, June: 12
 						        };
 							source.month' . $index . ' = months[val];
 							source.month_display' . $index . ' =  "<div class=\"text\">" + val + "</div>";
@@ -194,7 +195,7 @@ include_once('export_link.php');
 	}
     ';		
 	
-	$sortOrder = (isset($node->widgetConfig->gridConfig->sortOrder))? $node->widgetConfig->gridConfig->sortOrder:"desc";	
+	$sortOrder = (isset($node->widgetConfig->gridConfig->sortOrder))? $node->widgetConfig->gridConfig->sortOrder:"asc";
 	$sortColumn = (isset($node->widgetConfig->gridConfig->sortColumn))? $node->widgetConfig->gridConfig->sortColumn:$index - 1;
     $dataTableOptions ='
                     {
@@ -207,7 +208,7 @@ include_once('export_link.php');
                         "sAltAjaxSource":"'. check_plain($_GET['q']) .'",
             			"fnDrawCallback"  :  function( oSettings ) {
             			addPaddingToDataCells(this);
-            			},                                                
+            			},
                         "aoColumnDefs": [
                             ' . $aoColumnDefs . '
 
