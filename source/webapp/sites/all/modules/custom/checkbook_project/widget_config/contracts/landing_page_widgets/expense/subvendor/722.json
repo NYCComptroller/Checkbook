@@ -44,7 +44,7 @@
     },
     "subvendor_name_formatted": {
         "type": "expression2",
-        "expression": "_get_tooltip_markup($row['subvendor_subvendor_legal_name'],40)"
+        "expression": "_get_tooltip_markup($row['subvendor_subvendor_legal_name'],25)"
     },
     "agency_name_link": {
         "type": "expression2",
@@ -173,7 +173,7 @@
 { "bSortable": false, "sWidth":"150px","sClass":"text" },
 { "bSortable": false, "sWidth":"132px","sClass":"text"  },
 { "bSortable": false, "sWidth":"118px","sClass":"text"  },
-{ "bSortable": false, "sWidth":"90px","sClass":"text" },
+{ "bSortable": false, "sWidth":"93px","sClass":"text" },
 { "bSortable": true, "sWidth":"79px", "sClass":"number"  ,"asSorting": [ "desc" ,"asc" ]},
 { "bSortable": true, "sWidth":"78px", "sClass":"number"  ,"asSorting": [ "desc" ,"asc" ]},
 { "bSortable": true, "sWidth":"90px","sClass":"number" ,"asSorting": [ "desc","asc"  ]},
