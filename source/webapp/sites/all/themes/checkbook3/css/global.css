@@ -772,8 +772,18 @@ table.expense td.subvendors.active .expense-container > a {
 table.expense td.mwbe .expense-container{
     position: relative;
 }
+/*Not active*/
 table.expense td.mwbe .expense-container .drop-down-menu-triangle{
     background: transparent url("../images/arrow-gray_nofill.png") no-repeat;
+    width: 23px;
+    height: 20px;
+    position: absolute;
+    top:63px;
+    right:5px;
+}
+/*Active*/
+table.expense td.active .expense-container .drop-down-menu-triangle{
+    background: transparent url("../images/arrow-white_nofill.png") no-repeat;
     width: 23px;
     height: 20px;
     position: absolute;
@@ -799,14 +809,10 @@ div.expense-container.no-menu .drop-down-menu-triangle:hover{
     background: url("../images/arrow-gray_nofill.png") no-repeat !important;
 }
 
-table.expense td.mwbe.active .expense-container > a > div,
-table.expense td.subvendors.active .expense-container > a > div{
-    background: url("../images/arrow-white_nofill.png") no-repeat 100px 23px;
+/*active & hovered*/
+table.expense td.active .expense-container .drop-down-menu-triangle:hover{
+    background: url("../images/arrow-white.png") no-repeat;
 }
-/*table.expense td.mwbe.active .expense-container > a:hover > div,*/
-/*table.expense td.subvendors.active .expense-container > a:hover > div{*/
-    /*background: url("../images/arrow-white.png") no-repeat 100px 23px;*/
-/*} */
 
 td.active div.indicator {
     background: url("../images/carrot.png") no-repeat scroll center 0 transparent;
