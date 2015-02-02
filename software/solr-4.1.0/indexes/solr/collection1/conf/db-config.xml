@@ -333,7 +333,6 @@
 			 where
 			'${dataimporter.request.clean}' != 'false'
       			OR dlid.job_id >= ${dataimporter.request.jobID}
-      			AND ry.year_value > 2010
 			">
             <field column="id" name="id" />
             <field column="domain1" name="domain" />
