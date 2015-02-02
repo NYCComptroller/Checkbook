@@ -331,10 +331,9 @@
                 left join ref_spending_category rsc on rsc.spending_category_id = dlid.spending_category_id
                 left join oge_contract oc on oc.fms_contract_number = dlid.contract_number and oc.fms_commodity_line = dlid.agreement_commodity_line_number
 			 where
-			 ry.year_value > 2010
-			 AND
 			'${dataimporter.request.clean}' != 'false'
       			OR dlid.job_id >= ${dataimporter.request.jobID}
+      			AND ry.year_value > 2010
 			">
             <field column="id" name="id" />
             <field column="domain1" name="domain" />
