@@ -93,22 +93,16 @@
 		$item->tooltip_label = $tooltip_label;
 		$item->custom_label = custom_number_formatter_format($series[$key]->y/($series[$key]->y + $non_mwbe_data[$key] ) *100,1,null,'%') ;
 		
-	    if($row['year_value'] == $year){
-	    	 $series_current_temp[trim($row['month_name'])] = $item;
-	        $link_url = CustomURLHelper::prepareUrl('contract/spending/transactions',  ContractURLHelper::$transactionPageParams, NULL, 
-       			array('doctype' => $node->document_codes, 'month' => $row['month_id']));
-			$item->url =  $link_url . (_getRequestParamValue('subvendor') != null ? _getRequestParamValue('subvendor') : '') . '/newwindow';
-	    	 
-	    }else{
-	    	$series_previous_temp[trim($row['month_name'])] = $item;
-	    	        $link_url = CustomURLHelper::prepareUrl('contract/spending/transactions',  ContractURLHelper::$transactionPageParams, NULL, 
-       			array('doctype' => $node->document_codes, 'month' => $row['month_id']),true);
-			$item->url =  $link_url . (_getRequestParamValue('subvendor') != null ? _getRequestParamValue('subvendor') : '') . '/newwindow';
-	    }
-	    
+        if($row['year_value'] == $year) {
+            $series_current_temp[trim($row['month_name'])] = $item;
+            $link_url = CustomURLHelper::prepareUrl('contract/spending/transactions',  ContractURLHelper::$transactionPageParams, NULL, array('doctype' => $node->document_codes, 'month' => $row['month_id']));
+        }
+        else {
+            $series_previous_temp[trim($row['month_name'])] = $item;
+            $link_url = CustomURLHelper::prepareUrl('contract/spending/transactions',  ContractURLHelper::$transactionPageParams, NULL, array('doctype' => $node->document_codes, 'month' => $row['month_id']),true);
+        }
+        $item->url =  $link_url . (_getRequestParamValue('subvendor') != null ? '/subvendor/' . _getRequestParamValue('subvendor') : '') . '/newwindow';
 	}
-	
-	
 
 	$series_current = array();
 	$series_previous = array();
