@@ -52,14 +52,50 @@
                     var domains = '';
                     $.each($('input[name=fdomainName]:checked'),function(){
                     	domains = domains + "~" + this.value;
-                    });   
+                    });
                     if(domains == '' ){
                     	$.each($('input[name=fdomainName]'),function(){
-                        	domains = domains + "~" + this.value;
-                        }); 
+                            domains = domains + "~" + this.value;
+                        });
                     }
                     var dialogUrl = '/exportSmartSearch/form?search_term=' + getParameterByName("search_term") + '&totalRecords=' + $(this).attr("value")
-                    					+ '&resultsdomains=' + domains ;
+                    					+ '&resultsdomains=' + domains;
+
+                    var checked_domains = '';
+                    $.each($('input[name=fdomainName]:checked'),function(){
+                        checked_domains = checked_domains == '' ? this.value : checked_domains + "~" + this.value;
+                    });
+                    if(checked_domains == '' ){
+                        $.each($('input[name=fdomainName]'),function(){
+                            checked_domains = checked_domains == '' ? this.value : checked_domains + "~" + this.value;
+                        });
+                    }
+                    var array_domains = checked_domains.split('~');
+
+                    //Re-order checked priority as doesn't match the facet order
+                    var array_checked_domains = [];
+                    if($.inArray('spending',array_domains) > -1) array_checked_domains.push('spending');
+                    if($.inArray('payroll',array_domains) > -1) array_checked_domains.push('payroll');
+                    if($.inArray('contracts',array_domains) > -1) array_checked_domains.push('contracts');
+                    if($.inArray('budget',array_domains) > -1) array_checked_domains.push('budget');
+                    if($.inArray('revenue',array_domains) > -1) array_checked_domains.push('revenue');
+
+                    var dialog_html = '';
+                    dialog_html += '<div id="errorMessages"></div>';
+                    dialog_html += '<p>Type of Data<span>*</span>:</p>';
+                    dialog_html += '<table>';
+                    dialog_html += '<tr>';
+                    dialog_html += '<td><input type="radio" name="domain" value="spending"' + getCheckboxAttributes('spending',array_checked_domains) + ' />&nbsp;Spending</td>';
+                    dialog_html += '<td><input type="radio" name="domain" value="payroll"' + getCheckboxAttributes('payroll',array_checked_domains) + ' />&nbsp;Payroll</td>';
+                    dialog_html += '<td><input type="radio" name="domain" value="contracts"' + getCheckboxAttributes('contracts',array_checked_domains) + ' />&nbsp;Contracts</td>';
+                    dialog_html += '</tr>';
+                    dialog_html += '<tr>';
+                    dialog_html += '<td><input type="radio" name="domain" value="budget"' + getCheckboxAttributes('budget',array_checked_domains) + ' />&nbsp;Budget</td>';
+                    dialog_html += '<td><input type="radio" name="domain" value="revenue"' + getCheckboxAttributes('revenue',array_checked_domains) + ' />&nbsp;Revenue</td>';
+                    dialog_html += '</tr>';
+                    dialog_html += '</table>';
+                    dialog_html += '<span id="export-message"></span>';
+
                     // load remote content
                     dialog.load(
                         dialogUrl,
@@ -70,11 +106,13 @@
                                 title:'Download Search Results',
                                 dialogClass:"export",
                                 width:700,
+                                open:function(){
+                                    $("#dialog").html(dialog_html);
+                                },
                                 buttons:{
                                     "Download Data":function () {
                                     	var inputs = "<input type='hidden' name='search_term' value='" +  getParameterByName("search_term") + "'/>"
-                                        + "<input type='hidden' name='domain' value='" + $('input[name=domain]:checked').val() + "'/>"                                        
-                                    ;
+                                        + "<input type='hidden' name='domain' value='" + $('input[name=domain]:checked').val() + "'/>";
                                     	var url = '/exportSmartSearch/download';
                                         $('<form action="' + url + '" method="get">' + inputs + '</form>').appendTo('body').submit().remove();
                                     },
@@ -84,6 +122,7 @@
                                 }
                             });
                             $('.ui-dialog-buttonpane').append('<div class="exportDialogMessage">*Required Field</div>');
+                            onChangeDomain('spending');
 
                             //On change of domain
                             $('input:radio[name=domain]').change(function () {
@@ -93,7 +132,6 @@
                             function onChangeDomain(domain) {
                                 var totalRecords = 0;
                                 var selectedRecords = 0;
-                                var message = '';
                                 var domainCounts = $('.exportSmartSearch').attr("value");
                                 var arrayDomainCounts = domainCounts.split('~');
                                 var selectedDomain = $('input[name=domain]:checked').val();
@@ -103,15 +141,9 @@
                                         selectedRecords = domainCount[1];
                                     totalRecords += parseInt(domainCount[1]);
                                 });
-                                message = "Maximum of 200,000 records available for download from "+addCommas(selectedRecords)+" available "+selectedDomain+" records. " +
+                                var message = "Maximum of 200,000 records available for download from "+addCommas(selectedRecords)+" available "+selectedDomain+" records. " +
                                     "The report will be in Comma Delimited format. Only one domain can be selected at a time to download the data.";
-                                /*if(totalRecords > 200000){
-                                    message = "Maximum of 200,000 records available for download from "+addCommas(selectedRecords)+" available "+selectedDomain+" records. " +
-                                        "The report will be in Comma Delimited format. Only one domain can be selected at a time to download the data.";
-                                }else{
-                                    message = addCommas(selectedRecords)+" "+selectedDomain+" records are available for download. " +
-                                        "The report will be in Comma Delimited format. Only one domain can be selected at a time to download the data.";
-                                }*/
+
                                 $('#export-message').html(message);
                             }
                         }
@@ -119,7 +151,10 @@
                     return false;
                 });
 
-
+                function getCheckboxAttributes(domain,array_domains) {
+                    var checked_domain = array_domains[0];
+                    return (checked_domain == domain ? ' checked' : '') + ($.inArray(domain,array_domains) > -1 ? '' : ' disabled');
+                }
 
             }
         };       
