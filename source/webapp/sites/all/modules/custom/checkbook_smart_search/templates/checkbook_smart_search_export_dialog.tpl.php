@@ -55,76 +55,12 @@ foreach($domain_record_counts as $domain_record_count) {
     $total_records +=  $domain_count[1];
 }
 
-if($total_records > 0){  
-?>
-    <div id='dialog'>
-        <div id='errorMessages'></div>
-        <p>Type of Data<span>*</span>:</p>
-        <table>
-            <tr>
-                <?php 
-                  if($checked == 'spending') $checked_flag = "checked";
-                  if(!$all_domains && !in_array("spending",$domains)) $disabled = "disabled"
-                ?>
-                <td><input type='radio' name='domain' <?php print $checked_flag; print $disabled; ?> value='spending'/>&nbsp;Spending</td>
-                <?php 
-                  $checked_flag = '';
-                  $disabled = '';
-                  if($checked == 'payroll') $checked_flag = "checked"; 
-                  if(!$all_domains && !in_array("payroll",$domains)) $disabled = "disabled"
-                ?>
-                <td><input type='radio' name='domain' <?php print $checked_flag; print $disabled; ?> value='payroll'/>&nbsp;Payroll</td>
-                <?php 
-                  $checked_flag = '';
-                  $disabled = '';
-                  if($checked == 'contracts') $checked_flag = "checked"; 
-                  if(!$all_domains && !in_array("contracts",$domains)) $disabled = "disabled"
-                ?>
-                <td><input type='radio' name='domain' <?php print $checked_flag; print $disabled; ?> value='contracts'/>&nbsp;Contracts</td>
-            </tr>
-            <tr>
-                <?php 
-                  $checked_flag = '';
-                  $disabled = '';
-                  if($checked == 'budget') $checked_flag = "checked"; 
-                  if(!$all_domains && !in_array("budget",$domains)) $disabled = "disabled"
-                ?>
-                <td><input type='radio' name='domain' <?php print $checked_flag; print $disabled; ?> value='budget'/>&nbsp;Budget</td>
-                <?php 
-                  $checked_flag = '';
-                  $disabled = '';
-                  if($checked == 'revenue') $checked_flag = "checked"; 
-                  if(!$all_domains && !in_array("revenue",$domains)) $disabled = "disabled"
-                ?>
-                
-                <td><input type='radio' name='domain' <?php print $checked_flag; print $disabled; ?> value='revenue'/>&nbsp;Revenue</td>
-            </tr>
-            
-        </table>
-    </div>
-    <span id="export-message">
-        <?php
-        echo "Maximum of ".number_format($max_records)." records available for download from ".number_format($domain_records)." available ".$checked." records. The report will be in Comma
-            Delimited format. Only one domain can be selected at a time to download the data.";
-        /*if($total_records > $max_records){
-            echo "Maximum of ".number_format($max_records)." records available for download from ".number_format($domain_records)." available ".$checked." records. The report will be in Comma
-            Delimited format. Only one domain can be selected at a time to download the data.";
-        }else{
-          echo number_format($domain_records)." ".$checked." records are available for download. The report will be in Comma
-          Delimited format. Only one domain can be selected at a time to download the data.";
-        }*/
-         ?>
-    </span>
-<?php
-}else{
-?>
-    <div id='dialog'>
-        <table class="no-records clearfix">
-            <tr>
-                <td>No records are available for download.</td>
-            </tr>
-        </table>
-    </div>
-<?php
-}
-?>
+
+$output = '<div id="dialog">
+    <div id="errorMessages"></div>
+    <p>Type of Data<span>*</span>:</p>
+</div>
+<span id="export-message">
+</span>';
+
+print $output;
