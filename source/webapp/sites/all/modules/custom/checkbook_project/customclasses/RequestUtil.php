@@ -849,25 +849,20 @@ class RequestUtil{
     	if(self::isContractsSpendingLandingPage()){
     		$url = $_GET['q'];
     		
-    		if(preg_match('/contract/',$url)){    			
-    			$prefix = 'contracts_landing';
-    			if(preg_match('/status/',$url)){
-    				$url = preg_replace('/\/status\/./','/status/A',$url);
-    			}else{
-    				$prefix .= '/status/A';
-    			}
-    		}else{
-    			$prefix = 'spending_landing';
+    		if(preg_match('/contract/',$url)){
+                //Default to active status
+                $override_params = array("status"=>"A");
+                $url =  ContractUtil::getLandingPageWidgetUrl($override_params);
     		}
-    		$url = preg_replace('/^[^\/]*/',$prefix,$url);
+            else{
+                //Default to total spending
+                $override_params = array("category"=>null);
+                $url =  SpendingUtil::getLandingPageWidgetUrl($override_params);
+    		}
     		
     	}else{
     		$url = self::getCurrentDomainURLFromParams();
     	}
-
-        //Default to total spending
-        if(_getRequestParamValue("category") !=  null)
-            $url = preg_replace('/\/category\/[^\/]*/','',$url);
 
         switch($dashboard_filter){
     		case "mwbe":
