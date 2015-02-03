@@ -291,7 +291,7 @@
             {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
             {"bSortable":false,"sWidth":"10px"}
         ],
-        "aaSorting":[[7,"desc"]],
+        "aaSorting":[[8,"desc"]],
         "sScrollX": "100%",
 		"bScrollCollapse": false,
         "fnInitComplete": "##function () { new FixedColumns( oTable, {
