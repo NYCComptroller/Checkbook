@@ -82,7 +82,9 @@
 	}else{
 		$categories = array('July','August','September','October','November','December','January','February','March','April','May','June');
 		$node->widgetConfig->chartConfig->xAxis->categories = $categories;
+        $node->widgetConfig->gridConfig->table_columns[0]->formatType = 'monthfy';
 	}
+
 	foreach($node->data as $row){
 	
 		$tooltip_label = 

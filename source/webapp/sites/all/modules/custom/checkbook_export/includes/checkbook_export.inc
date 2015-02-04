@@ -68,7 +68,7 @@ function _checkbook_export_grid_transactions(){
     	echo "\r\n";
     	
     	
-    	$sortindex = ($node->widgetConfig->gridConfig->sortColumn > 0)? $node->widgetConfig->gridConfig->sortColumn  : count($node->widgetConfig->gridConfig->table_columns) - 1 ;
+    	$sortindex = ($node->widgetConfig->gridConfig->sortColumn >= 0)? $node->widgetConfig->gridConfig->sortColumn  : count($node->widgetConfig->gridConfig->table_columns) - 1 ;
 
     	$sortindexFormat = $node->widgetConfig->gridConfig->table_columns[$sortindex]->formatType;
     	foreach($node->widgetConfig->gridConfig->data as &$dataRecord){
@@ -142,17 +142,26 @@ function _checkbook_export_grid_sort($node){
 	{
 		$index = $a['sort_column'];
 		
-		if($a['formatType'] == "month"){
-			$months =  array("January"=> 1, "February"=>  2, "March"=>  3, "April"=>  4, "May"=>  5, "June"=>  6,
-						            "July"=>  7, "August"=>  8, "September"=>  9, "October"=>  10, "November"=> 11, "December"=> 12);
-			
+		if($a['formatType'] == "monthfy"){
+            $months =  array("July"=> 1, "August"=>  2, "September"=>  3, "October"=>  4, "November"=>  5, "December"=>  6,
+                "January"=>  7, "February"=>  8, "March"=>  9, "April"=>  10, "May"=> 11, "June"=> 12);
+
 			if ($months[$a[$index]] == $months[$b[$index]]) {
 				return 0;
 			}
-			return ($months[$a[$index]] > $months[$b[$index]]) ? -1 : 1;
-			
-			
-		}else{
+			return ($months[$a[$index]] < $months[$b[$index]]) ? -1 : 1;
+		}
+        else if($a['formatType'] == "month") {
+            $months =  array("January"=> 1, "February"=>  2, "March"=>  3, "April"=>  4, "May"=>  5, "June"=>  6,
+                "July"=>  7, "August"=>  8, "September"=>  9, "October"=>  10, "November"=> 11, "December"=> 12);
+
+            if ($months[$a[$index]] == $months[$b[$index]]) {
+                return 0;
+            }
+            return ($months[$a[$index]] < $months[$b[$index]]) ? -1 : 1;
+
+        }
+        else{
 			if ($a[$index] == $b[$index]) {
 				return 0;
 			}
