@@ -67,6 +67,26 @@ elif [ $1 == "FMSV" ] ; then
 	
 elif [ $1 == "RevenueBudget" ] ; then
 	./removeMalformedRevenueBudgetRecords.sh $fileName
+	
+elif [ $1 == "SubVendor" ] ; then
+        ./removeMalformedSubConBusTypeRecords.sh $fileName
+
+elif [ $1 == "SubConStatus" ] ; then
+        ./removeMalformedSubConStatusRecords.sh $fileName
+
+elif [ $1 == "SubContract" ] ; then
+	iconv -f ISO88592 -t UTF8 < $fileName > $tempFileName
+	rm -rf $fileName
+	mv $tempFileName $fileName 
+	rm -rf $tempFileName
+        ./removeMalformedSubContractRecords.sh $fileName
+
+elif [ $1 == "SubSpending" ] ; then
+	iconv -f ISO88592 -t UTF8 < $fileName > $tempFileName
+        rm -rf $fileName
+        mv $tempFileName $fileName
+	rm -rf $tempFileName
+        ./removeMalformedSubSpendingRecords.sh $fileName
 
 fi
 
