@@ -2756,6 +2756,8 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
     line-height: 12px;
 }
 
+.footer-column li { text-transform: none; }
+
 
 /*Export styles*/
 
