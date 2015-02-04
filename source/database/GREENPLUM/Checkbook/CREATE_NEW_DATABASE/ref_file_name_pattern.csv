@@ -19,3 +19,7 @@ FC,_COA_RSFCLS_,AIEC_DLY_COA_RSFCLS_20[0-9][0-9][0-1][0-9][0-3][0-9][0-2][0-9][0
 PC,checkbookpendingcontracts,checkbookpendingcontracts.txt,OAISIS_feed.txt
 RB,_BUD_93L1_,AIE4_DLY_BUD_93L1_20[0-9][0-9][0-1][0-9][0-3][0-9][0-2][0-9][0-5][0-9][0-5][0-9].txt,revenue_budget.txt
 PS,PAYROLL_SUMMARY_A,PAYROLL_SUMMARY_AREI_%_20[0-9][0-9][0-1][0-9][0-3][0-9][0-2][0-9][0-5][0-9][0-5][0-9].txt,PMS_summary_feed.txt
+SV,_BTY_,AIE((G_DLY_SCNTRC_)|(H_DLY_SCNTRC_))BTY_20[0-9][0-9][0-1][0-9][0-3][0-9][0-2][0-9][0-5][0-9][0-5][0-9].txt,scntrc_bus_type_data_feed.txt
+SS,_STA_,AIE((G_DLY_SCNTRC_)|(H_DLY_SCNTRC_))STA_20[0-9][0-9][0-1][0-9][0-3][0-9][0-2][0-9][0-5][0-9][0-5][0-9].txt,scntrc_status_data_feed.txt
+SC,_DET_,AIE((G_DLY_SCNTRC_)|(H_DLY_SCNTRC_))DET_20[0-9][0-9][0-1][0-9][0-3][0-9][0-2][0-9][0-5][0-9][0-5][0-9].txt,scntrc_details_data_feed.txt
+SF,_PMT_,AIE((G_DLY_SCNTRC_)|(H_DLY_SCNTRC_))PMT_20[0-9][0-9][0-1][0-9][0-3][0-9][0-2][0-9][0-5][0-9][0-5][0-9].txt,scntrc_pymt_data_feed.txt
