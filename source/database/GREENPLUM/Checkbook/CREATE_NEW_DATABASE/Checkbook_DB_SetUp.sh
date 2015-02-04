@@ -40,3 +40,10 @@ psql -d $DB_NAME -f $SCRIPT_DIR/VendorScripts.sql
 
 psql -d $DB_NAME -f $SCRIPT_DIR/CreateOGETransactionsData.sql 
 
+
+echo "--subcontract scripts"
+psql -d $DB_NAME -f $SCRIPT_DIR/SubContractStatusScripts.sql 
+psql -d $DB_NAME -f $SCRIPT_DIR/SubVendorScripts.sql
+psql -d $DB_NAME -f $SCRIPT_DIR/SubFMSScripts.sql 
+psql -d $DB_NAME -f $SCRIPT_DIR/SubContractVendorBusTypeScripts.sql 
+psql -d $DB_NAME -f $SCRIPT_DIR/SubCONScripts.sql

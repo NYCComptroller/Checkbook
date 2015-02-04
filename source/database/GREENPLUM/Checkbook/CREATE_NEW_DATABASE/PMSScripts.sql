@@ -1212,6 +1212,7 @@ $BODY$
 DECLARE
 	l_count bigint;
 	l_fk_update smallint;
+	l_job_id bigint;
 	
 BEGIN
 	l_fk_update := etl.updateForeignKeysForPMSSummary(p_load_file_id_in,p_load_id_in);
@@ -1219,6 +1220,11 @@ BEGIN
 	IF l_fk_update <> 1 THEN
 		RETURN -1;
 	END IF;
+	
+		SELECT job_id
+		FROM   etl.etl_data_load	       
+		WHERE  load_id = p_load_id_in  INTO  l_job_id;
+		
 		
 	INSERT INTO payroll_summary(payroll_summary_id,agency_history_id,pay_cycle_code,
     				    expenditure_object_history_id, payroll_number,payroll_description,department_history_id,
@@ -1247,13 +1253,15 @@ BEGIN
 				agency_name,department_name,vendor_name,department_code,expenditure_object_name,expenditure_object_code,budget_code_id,
 				budget_code,budget_name,fund_class_code,spending_category_id,
 				spending_category_name,calendar_fiscal_year_id,calendar_fiscal_year,fiscal_year,
-				agency_short_name,department_short_name,load_id)
+				minority_type_id, minority_type_name,
+				agency_short_name,department_short_name,load_id, job_id)
 	SELECT 	payroll_summary_id,pay_date_id,fiscal_year_id,calendar_month_id,
 		fund_class_id,coalesce(total_amt,0) as check_amount,agency_id,agency,b.expenditure_object_id,department_id,pay_date::date,
 		agency_name,department_name,department_name,uoa,b.expenditure_object_name,b.expenditure_object_code,budget_code_id,
 		bud_code,budget_code_name,'001',2 as spending_category_id,
 		'Payroll',calendar_fiscal_year_id,calendar_fiscal_year,a.fiscal_year,
-		agency_short_name,department_short_name,p_load_id_in
+		11 as minority_type_id, 'Individuals & Others' as minority_type_name,
+		agency_short_name,department_short_name,p_load_id_in, l_job_id
 	FROM 	etl.stg_payroll_summary a JOIN (select * from ref_expenditure_object where expenditure_object_code = '!PS!') b ON  a.pms_fy = b.fiscal_year
 	WHERE  action_flag = 'I';
 	

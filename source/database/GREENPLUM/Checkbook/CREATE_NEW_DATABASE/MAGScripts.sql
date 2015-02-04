@@ -1047,7 +1047,8 @@ BEGIN
 					effective_end_date, effective_end_date_id,registered_date, 
 					registered_date_id,brd_awd_no,tracking_number,
 					registered_year, registered_year_id,latest_flag,original_version_flag,
-					effective_begin_year,effective_begin_year_id,effective_end_year,effective_end_year_id,master_agreement_yn,
+					effective_begin_year,effective_begin_year_id,effective_end_year,effective_end_year_id,
+					 minority_type_id, minority_type_name, master_agreement_yn,
 					load_id,last_modified_date, job_id)
 	SELECT 	a.original_master_agreement_id, a.starting_year,a.starting_year_id,a.document_version,b.document_code_id,b.agency_history_id, ah.agency_id,ag.agency_code,ah.agency_name,
 	        a.master_agreement_id, (CASE WHEN a.ending_year IS NOT NULL THEN ending_year 
@@ -1063,14 +1064,27 @@ BEGIN
 		ROUND((( coalesce(b.maximum_spending_limit,0) - coalesce(b.original_contract_amount,0)) * 100 )::decimal / coalesce(b.original_contract_amount,0),2) END) as percent_difference,
 		e.agreement_type_id,
 		e.agreement_type_code, e.agreement_type_name,f.award_category_id, f.award_category_code, f.award_category_name,am.award_method_id,am.award_method_code,am.award_method_name,g.expenditure_object_codes,
-		g.expenditure_object_names,	(CASE WHEN e.agreement_type_code = '05' THEN 1 ELSE k.industry_type_id END) as industry_type_id, 
-		(CASE WHEN e.agreement_type_code = '05' THEN 'Construction Services' ELSE l.industry_type_name END) as industry_type_name,(CASE WHEN b.maximum_spending_limit IS NULL THEN 5 WHEN b.maximum_spending_limit <= 5000 THEN 4 WHEN b.maximum_spending_limit > 5000 
+		g.expenditure_object_names,	
+		(CASE WHEN e.agreement_type_code in ('51','70') AND f.award_category_code = '23' THEN 3 
+      WHEN e.agreement_type_code = '70' AND f.award_category_code in ('30','40') THEN 4
+      WHEN e.agreement_type_code = '70' THEN 6
+	  WHEN e.agreement_type_code in ('05','48','52') THEN 1
+	  WHEN e.agreement_type_code in ('46','51','81','82') THEN 2
+	  ELSE k.industry_type_id END) as industry_type_id,  
+	(CASE WHEN e.agreement_type_code in ('51','70') AND f.award_category_code = '23' THEN 'Professional Services' 
+      WHEN e.agreement_type_code = '70' AND f.award_category_code in ('30','40') THEN 'Standardized Services'
+      WHEN e.agreement_type_code = '70' THEN 'Human Services'
+	  WHEN e.agreement_type_code in ('05','48','52') THEN 'Construction Services'
+	  WHEN e.agreement_type_code in ('46','51','81','82') THEN 'Goods'
+		ELSE l.industry_type_name END) as industry_type_name,
+		(CASE WHEN b.maximum_spending_limit IS NULL THEN 5 WHEN b.maximum_spending_limit <= 5000 THEN 4 WHEN b.maximum_spending_limit > 5000 
 		AND b.maximum_spending_limit <= 100000 THEN 3 	WHEN  b.maximum_spending_limit > 100000 AND b.maximum_spending_limit <= 1000000 THEN 2 WHEN b.maximum_spending_limit > 1000000 THEN 1 
 		ELSE 5 END) as award_size_id,h.date as effective_begin_date, h.date_id as effective_begin_date_id,
 		i.date as effective_end_date, i.date_id as effective_end_date_id,j.date as registered_date, 
 		j.date_id as registered_date_id,b.board_approved_award_no,b.tracking_number,
 		b.registered_fiscal_year, registered_fiscal_year_id,b.latest_flag,a.original_version_flag,
-		a.effective_begin_fiscal_year,a.effective_begin_fiscal_year_id,a.effective_end_fiscal_year,a.effective_end_fiscal_year_id, 'Y' as master_agreement_yn, 
+		a.effective_begin_fiscal_year,a.effective_begin_fiscal_year_id,a.effective_end_fiscal_year,a.effective_end_fiscal_year_id, 
+		m.minority_type_id, m.minority_type_name, 'Y' as master_agreement_yn, 
 		coalesce(b.updated_load_id, b.created_load_id),coalesce(b.updated_date, b.created_date), p_job_id_in
 	FROM	tmp_master_agreement_snapshot a JOIN history_master_agreement b ON a.master_agreement_id = b.master_agreement_id 
 		LEFT JOIN vendor_history c ON b.vendor_history_id = c.vendor_history_id
@@ -1089,7 +1103,8 @@ BEGIN
 		LEFT JOIN ref_date i ON i.date_id = b.effective_end_date_id
 		LEFT JOIN ref_date j ON j.date_id = b.registered_date_id
 		LEFT JOIN ref_award_category_industry k ON k.award_category_code = f.award_category_code 
-		LEFT JOIN ref_industry_type l ON k.industry_type_id = l.industry_type_id;
+		LEFT JOIN ref_industry_type l ON k.industry_type_id = l.industry_type_id
+		LEFT JOIN vendor_min_bus_type m ON b.vendor_history_id = m.vendor_history_id;
 
 		-- Populating the agreement_snapshot tables for Calendar Year (CY)
 	
@@ -1180,7 +1195,8 @@ BEGIN
 					effective_end_date, effective_end_date_id,registered_date, 
 					registered_date_id,brd_awd_no,tracking_number,
 					registered_year, registered_year_id,latest_flag,original_version_flag,
-					effective_begin_year,effective_begin_year_id,effective_end_year,effective_end_year_id,master_agreement_yn,
+					effective_begin_year,effective_begin_year_id,effective_end_year,effective_end_year_id,
+					minority_type_id, minority_type_name, master_agreement_yn,
 					load_id,last_modified_date, job_id)
 	SELECT 	a.original_master_agreement_id, a.starting_year,a.starting_year_id,a.document_version,b.document_code_id, b.agency_history_id, ah.agency_id,ag.agency_code,ah.agency_name,
 	        a.master_agreement_id, (CASE WHEN a.ending_year IS NOT NULL THEN ending_year 
@@ -1196,14 +1212,27 @@ BEGIN
 		ROUND((( coalesce(b.maximum_spending_limit,0) - coalesce(b.original_contract_amount,0)) * 100 )::decimal / coalesce(b.original_contract_amount,0),2) END) as percent_difference,	
 		e.agreement_type_id,
 		e.agreement_type_code, e.agreement_type_name,f.award_category_id, f.award_category_code, f.award_category_name,am.award_method_id,am.award_method_code,am.award_method_name,g.expenditure_object_codes,		
-		g.expenditure_object_names,(CASE WHEN e.agreement_type_code = '05' THEN 1 ELSE k.industry_type_id END) as industry_type_id, 
-		(CASE WHEN e.agreement_type_code = '05' THEN 'Construction Services' ELSE l.industry_type_name END) as industry_type_name,(CASE WHEN b.maximum_spending_limit IS NULL THEN 5 WHEN b.maximum_spending_limit <= 5000 THEN 4 WHEN b.maximum_spending_limit > 5000 
+		g.expenditure_object_names,
+		(CASE WHEN e.agreement_type_code in ('51','70') AND f.award_category_code = '23' THEN 3 
+      WHEN e.agreement_type_code = '70' AND f.award_category_code in ('30','40') THEN 4
+      WHEN e.agreement_type_code = '70' THEN 6
+	  WHEN e.agreement_type_code in ('05','48','52') THEN 1
+	  WHEN e.agreement_type_code in ('46','51','81','82') THEN 2
+	  ELSE k.industry_type_id END) as industry_type_id,  
+	(CASE WHEN e.agreement_type_code in ('51','70') AND f.award_category_code = '23' THEN 'Professional Services' 
+      WHEN e.agreement_type_code = '70' AND f.award_category_code in ('30','40') THEN 'Standardized Services'
+      WHEN e.agreement_type_code = '70' THEN 'Human Services'
+	  WHEN e.agreement_type_code in ('05','48','52') THEN 'Construction Services'
+	  WHEN e.agreement_type_code in ('46','51','81','82') THEN 'Goods'
+		ELSE l.industry_type_name END) as industry_type_name,
+		(CASE WHEN b.maximum_spending_limit IS NULL THEN 5 WHEN b.maximum_spending_limit <= 5000 THEN 4 WHEN b.maximum_spending_limit > 5000 
 		AND b.maximum_spending_limit <= 100000 THEN 3 	WHEN  b.maximum_spending_limit > 100000 AND b.maximum_spending_limit <= 1000000 THEN 2 WHEN b.maximum_spending_limit > 1000000 THEN 1 
 		ELSE 5 END) as award_size_id,h.date as effective_begin_date, h.date_id as effective_begin_date_id,
 		i.date as effective_end_date, i.date_id as effective_end_date_id,j.date as registered_date, 
 		j.date_id as registered_date_id,b.board_approved_award_no,b.tracking_number,
 		b.registered_calendar_year, registered_calendar_year_id,b.latest_flag,a.original_version_flag,
-		a.effective_begin_calendar_year,a.effective_begin_calendar_year_id,a.effective_end_calendar_year,a.effective_end_calendar_year_id, 'Y' as master_agreement_yn,
+		a.effective_begin_calendar_year,a.effective_begin_calendar_year_id,a.effective_end_calendar_year,a.effective_end_calendar_year_id, 
+		m.minority_type_id, m.minority_type_name, 'Y' as master_agreement_yn,
 		coalesce(b.updated_load_id, b.created_load_id),coalesce(b.updated_date, b.created_date), p_job_id_in
 	FROM	tmp_master_agreement_snapshot_cy a JOIN history_master_agreement b ON a.master_agreement_id = b.master_agreement_id 
 		LEFT JOIN vendor_history c ON b.vendor_history_id = c.vendor_history_id
@@ -1222,7 +1251,8 @@ BEGIN
 		LEFT JOIN ref_date i ON i.date_id = b.effective_end_date_id
 		LEFT JOIN ref_date j ON j.date_id = b.registered_date_id
 		LEFT JOIN ref_award_category_industry k ON k.award_category_code = f.award_category_code 
-		LEFT JOIN ref_industry_type l ON k.industry_type_id = l.industry_type_id;
+		LEFT JOIN ref_industry_type l ON k.industry_type_id = l.industry_type_id
+		LEFT JOIN vendor_min_bus_type m ON b.vendor_history_id = m.vendor_history_id;
 	
 	-- Associate contracts/agreements to the original version of the master agreement
 	
@@ -1273,7 +1303,10 @@ BEGIN
 	-- updating maximum_spending_limit in disbursement_line_item_details
 
 	UPDATE disbursement_line_item_details a
-	SET	maximum_spending_limit = c.maximum_contract_amount
+	SET	maximum_spending_limit = c.maximum_contract_amount,
+		master_contract_industry_type_id = c.industry_type_id,
+		master_contract_minority_type_id = c.minority_type_id,
+		master_purpose = c.description
 	FROM	tmp_contracts_for_disbs b, agreement_snapshot c
 	WHERE	a.disbursement_line_item_id = b.disbursement_line_item_id
 		AND a.master_agreement_id = c.original_agreement_id AND master_agreement_yn = 'Y' AND a.fiscal_year between c.starting_year AND c.ending_year;
@@ -1281,10 +1314,13 @@ BEGIN
 	-- updating maximum_spending_limit_cy in disbursement_line_item_details
 
 	UPDATE disbursement_line_item_details a
-	SET	maximum_spending_limit_cy = c.maximum_contract_amount
+	SET	maximum_spending_limit_cy = c.maximum_contract_amount,
+		master_contract_industry_type_id_cy = c.industry_type_id,
+		master_contract_minority_type_id_cy = c.minority_type_id,
+		master_purpose_cy = c.description
 	FROM	tmp_contracts_for_disbs b, agreement_snapshot_cy c
 	WHERE	a.disbursement_line_item_id = b.disbursement_line_item_id
-		AND a.master_agreement_id = c.original_agreement_id AND master_agreement_yn = 'Y' AND a.fiscal_year between c.starting_year AND c.ending_year;
+		AND a.master_agreement_id = c.original_agreement_id AND master_agreement_yn = 'Y' AND a.calendar_fiscal_year between c.starting_year AND c.ending_year;
 	
 		
 		

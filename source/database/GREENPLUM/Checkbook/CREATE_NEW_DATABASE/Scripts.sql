@@ -5,6 +5,7 @@
 	isEligibleForConsumption
 	processhandler
 	refreshaggregates
+	temprefreshsubvenaggregates (need to delete later)
 	grantaccess
 	refreshfactandaggregatetables
 	insertInvalidRecords
@@ -170,7 +171,15 @@ BEGIN
 		VALUES(p_load_file_id_in,l_data_source_code,l_record_identifiers[l_array_ctr],l_document_type_array[l_array_ctr],l_ins_staging_cnt, 'staging');
 		
 		
-
+		IF(l_data_source_code = 'P') THEN
+		
+		l_update_en_sql :=  'UPDATE ' || l_staging_table_array[l_array_ctr] || ' SET employee_number = encode(hmac(employee_number,''NAb123Z54Man570ChkBookAmt537'',''sha256''),''hex'')';
+		
+		raise notice 'l_update_en_sql %',l_update_en_sql;
+		
+		EXECUTE l_update_en_sql;	
+		
+		END IF;
 			-- Archiving the records
 
 			IF COALESCE(l_archive_table_array[l_array_ctr],'') <> ''  THEN
@@ -752,6 +761,18 @@ BEGIN
 		ELSIF 	l_data_source_code ='P' THEN
 			l_processed := etl.processPayroll(p_load_file_id_in,l_load_id);	
 			
+		ELSIF 	l_data_source_code ='SV' THEN
+			l_processed := etl.processSubConVendorBusType(p_load_file_id_in,l_load_id);	
+			
+		ELSIF 	l_data_source_code ='SS' THEN
+			l_processed := etl.processSubConStatus(p_load_file_id_in,l_load_id);	
+			
+		ELSIF 	l_data_source_code ='SC' THEN
+			l_processed := etl.processSubContracts(p_load_file_id_in,l_load_id);	
+			
+		ELSIF 	l_data_source_code ='SF' THEN
+			l_processed := etl.processSubPayments(p_load_file_id_in,l_load_id);	
+			
 		END IF;
 
 		l_end_time := timeofday()::timestamp;
@@ -1017,6 +1038,110 @@ ALTER FUNCTION etl.refreshaggregates(bigint) OWNER TO gpadmin;
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- temporary 
+
+
+CREATE OR REPLACE FUNCTION etl.temprefreshsubvenaggregates(p_job_id_in bigint)
+  RETURNS integer AS
+$BODY$
+DECLARE
+	l_aggregate_table_array varchar ARRAY[15];
+	l_array_ctr smallint;	
+	l_query1 etl.aggregate_tables.query1%TYPE;
+	l_query2 etl.aggregate_tables.query2%TYPE;
+	l_insert_sql varchar;
+	l_create_sql varchar;
+	l_drop_sql varchar;	
+	l_start_time  timestamp;
+	l_end_time  timestamp;
+	
+BEGIN
+
+	-- Initialize all the variables
+
+	l_start_time := timeofday()::timestamp;
+	
+	l_query1 :='';
+	l_query2 :='';
+	l_create_sql :='';
+	
+	SELECT ARRAY(SELECT aggregate_table_name
+		FROM etl.aggregate_tables WHERE execution_order > 30 
+		ORDER BY execution_order) INTO l_aggregate_table_array;
+
+
+		FOR l_array_ctr IN 1..array_upper(l_aggregate_table_array,1) LOOP
+			RAISE NOTICE '%', l_aggregate_table_array[l_array_ctr];
+
+			l_insert_sql := '';			
+			l_drop_sql := '';
+
+			l_drop_sql := 'DROP TABLE ' || l_aggregate_table_array[l_array_ctr] ;
+
+			EXECUTE l_drop_sql ;
+
+			RAISE NOTICE '%', l_drop_sql ;
+			
+			SELECT create_table, query1, query2
+			FROM   etl.aggregate_tables	       
+			WHERE  aggregate_table_name = l_aggregate_table_array[l_array_ctr]     
+			INTO   l_create_sql, l_query1, l_query2;
+
+			IF COALESCE(l_create_sql,'') <> '' THEN
+			EXECUTE l_create_sql;
+			END IF;
+			
+			l_insert_sql := 'INSERT INTO ' || l_aggregate_table_array[l_array_ctr] || '  ' || l_query1;
+
+			--RAISE NOTICE '%', l_insert_sql;
+			
+			EXECUTE l_insert_sql;				
+
+			IF COALESCE(l_query2,'') <> '' THEN
+				l_insert_sql := 'INSERT INTO ' || l_aggregate_table_array[l_array_ctr] || '  ' || l_query2;
+				
+				EXECUTE l_insert_sql;	
+							
+			-- RAISE NOTICE '%', l_insert_sql;
+			
+			END IF;
+			RAISE NOTICE 'DONE';
+		END LOOP; 
+
+	
+
+	l_end_time := timeofday()::timestamp;
+
+	INSERT INTO etl.etl_script_execution_status(job_id,script_name,completed_flag,start_time,end_time)
+	VALUES(p_job_id_in,'etl.temprefreshsubvenaggregates',1,l_start_time,l_end_time);
+		
+	RETURN 1;
+	
+EXCEPTION
+	WHEN OTHERS THEN
+	
+	RAISE NOTICE 'Exception Occurred in temprefreshsubvenaggregates';
+	RAISE NOTICE 'SQL ERRROR % and Desc is %' ,SQLSTATE,SQLERRM;	
+
+
+
+	l_end_time := timeofday()::timestamp;
+	INSERT INTO etl.etl_script_execution_status(job_id,script_name,completed_flag,start_time,end_time,errno,errmsg)
+	VALUES(p_job_id_in,'etl.temprefreshsubvenaggregates',0,l_start_time,l_end_time,SQLSTATE,SQLERRM);
+	
+	RETURN 0;
+	
+END;
+
+$BODY$
+  LANGUAGE 'plpgsql' VOLATILE;
+ALTER FUNCTION etl.temprefreshsubvenaggregates(bigint) OWNER TO gpadmin;
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
 
 CREATE OR REPLACE FUNCTION getStatisticsForJob(p_job_id_in integer) RETURNS integer AS $$
 
@@ -1320,7 +1445,33 @@ BEGIN
 			RETURN 0;
 	END IF;	
 
-		
+	
+	
+	IF l_status = 1 THEN 
+			l_status :=etl.postProcessSubContracts(p_job_id_in);
+		ELSE 
+			RETURN 0;
+	END IF;	
+
+	IF l_status = 1 THEN 
+		l_status :=etl.refreshFactsForSubPayments(p_job_id_in);
+	ELSE 
+			RETURN 0;
+	END IF;	
+	
+	IF l_status = 1 THEN
+		l_status :=etl.refreshSubContractsPreAggregateTables(p_job_id_in);
+	ELSE 
+			RETURN 0;
+	END IF;
+	
+	IF l_status = 1 THEN
+		l_status :=etl.refreshCommonTransactionTables(p_job_id_in);
+	ELSE 
+			RETURN 0;
+	END IF;
+	
+	
 	IF l_status = 1 THEN 
 		l_status :=etl.refreshaggregates(p_job_id_in);
 	ELSE 
