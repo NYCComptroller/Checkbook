@@ -719,11 +719,12 @@ class SpendingUtil{
         	$dashboard = ($row['is_sub_vendor'] == "Yes") ? "ms" : "mp";
         }
         $dashboard = (preg_match('/p/', $dashboard)) ? "mp" : "ms";
+        $mwbe = isset($row["minority_type_id"]) ? $row["minority_type_id"] : $row["minority_type_minority_type"];
         //From sub vendors widget
         if($nid == 719) $dashboard = "sp";
         $custom_params = array(
-        'dashboard'=> $dashboard,
-        'mwbe'=>(isset($row["minority_type_id"]) ? $row["minority_type_id"] : $row["minority_type_minority_type"])
+            'dashboard'=> $dashboard,
+            'mwbe' => $mwbe == 4 || $mwbe == 5 ? '4~5' : $mwbe
         );
         return '/' . self::getLandingPageWidgetUrl($custom_params) . '?expandBottomCont=true';
     }
@@ -752,9 +753,10 @@ class SpendingUtil{
      * @return string
      */
     static function getAdvancedSearchMWBECategoryLinkUrl($node, $row){
+        $mwbe = isset($row["minority_type_id"]) ? $row["minority_type_id"] : $row["minority_type_minority_type"];
         $custom_params = array(
             'dashboard'=>$row["is_sub_vendor"] == "No" ? "mp" : "ms",
-            'mwbe'=>(isset($row["minority_type_id"]) ? $row["minority_type_id"] : $row["minority_type_minority_type"])
+            'mwbe' => $mwbe == 4 || $mwbe == 5 ? '4~5' : $mwbe
         );
         return '/' . self::getLandingPageWidgetUrl($custom_params) . '?expandBottomCont=true';
     }
@@ -767,9 +769,10 @@ class SpendingUtil{
      */
     static function getPrimeMWBECategoryLinkUrl($node, $row){
         $dashboard = _getRequestParamValue("dashboard");
+        $mwbe = isset($row["prime_minority_type_id"]) ? $row["prime_minority_type_id"] : $row["prime_minority_type_prime_minority_type"];
         $custom_params = array(
             'dashboard'=>(preg_match('/p/', $dashboard)) ? "mp" : "ms",
-            'mwbe'=>(isset($row["prime_minority_type_id"]) ? $row["prime_minority_type_id"] : $row["prime_minority_type_prime_minority_type"])
+            'mwbe' => $mwbe == 4 || $mwbe == 5 ? '4~5' : $mwbe
         );
         return '/' . self::getLandingPageWidgetUrl($custom_params) . '?expandBottomCont=true';
     }
