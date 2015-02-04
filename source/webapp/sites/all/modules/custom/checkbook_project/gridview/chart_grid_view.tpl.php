@@ -82,6 +82,7 @@ include_once('export_link.php');
 	$index = 0;
 	$aoColumnDefs = '';
 	foreach($node->widgetConfig->gridConfig->table_columns as $column){
+
 		if($column->formatType == 'amount'){
 			$aoColumnDefs .= '
 		                        {
@@ -121,7 +122,7 @@ include_once('export_link.php');
 					"asSorting": [ "desc", "asc" ]
 					},
 				';
-		}elseif($column->formatType == 'month'){
+		}elseif($column->formatType == 'month' && _getRequestParamValue('yeartype') == 'C'){
 
 			$aoColumnDefs .= '	{
 				"aTargets": [' . $index.'],
@@ -129,8 +130,8 @@ include_once('export_link.php');
 					"mDataProp": function ( source, type, val ) {
 							if (type == "set") {
             				var months = {
-						            July: 1, August: 2, September: 3, October: 4, November:5, December:6,
-                                    January: 7, February: 8, March: 9, April: 10, May: 11, June: 12
+						            January: 12, February: 11, March: 10, April: 9, May: 8, June: 7,
+						            July: 6, August: 5, September: 4, October: 3, November:2, December:1
 						        };
 							source.month' . $index . ' = months[val];
 							source.month_display' . $index . ' =  "<div class=\"text\">" + val + "</div>";
@@ -144,7 +145,7 @@ include_once('export_link.php');
 					"asSorting": [ "desc", "asc" ]
 					},
 				';
-		}elseif($column->formatType == 'monthfy'){
+		}elseif(($column->formatType == 'monthfy' || $column->formatType == 'month') && _getRequestParamValue('yeartype') == 'B'){
 
 			$aoColumnDefs .= '	{
 				"aTargets": [' . $index.'],
@@ -152,8 +153,8 @@ include_once('export_link.php');
 					"mDataProp": function ( source, type, val ) {
 						if (type == "set") {
             				var months_fy = {
-									January: 7, February: 8, March: 9, April: 10, May: 11, June: 12,						            
-						            July: 1, August: 2, September: 3, October: 4, November:5, December:6              						
+									January: 6, February: 5, March: 4, April: 3, May: 2, June: 1,
+						            July: 12, August: 11, September: 10, October: 9, November:8, December:7
 						        };
 							source.month' . $index . ' = months_fy[val];
 							source.month_display' . $index . ' =  "<div class=\"text\">" + val + "</div>";
@@ -164,7 +165,7 @@ include_once('export_link.php');
 						return source.month' . $index . ';
 					},
 					"sClass":"' . $column->columnType .'",
-					"asSorting": [ "asc", "desc" ]
+					"asSorting": [ "desc", "asc" ]
 					},
 				';
 		}elseif($column->formatType == 'padding'){
@@ -195,7 +196,7 @@ include_once('export_link.php');
 	}
     ';		
 	
-	$sortOrder = (isset($node->widgetConfig->gridConfig->sortOrder))? $node->widgetConfig->gridConfig->sortOrder:"asc";
+	$sortOrder = (isset($node->widgetConfig->gridConfig->sortOrder))? $node->widgetConfig->gridConfig->sortOrder:"desc";
 	$sortColumn = (isset($node->widgetConfig->gridConfig->sortColumn))? $node->widgetConfig->gridConfig->sortColumn:$index - 1;
     $dataTableOptions ='
                     {

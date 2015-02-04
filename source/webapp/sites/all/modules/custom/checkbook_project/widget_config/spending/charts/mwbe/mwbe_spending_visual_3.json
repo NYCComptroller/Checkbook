@@ -13,7 +13,7 @@
         "domain":"spending",
         "html_class":"chart-grid-view-table three-columns",
         "sortColumn":0,
-        "sortOrder":"asc",
+        "sortOrder":"desc",
         "table_columns": [
             
  			 {
