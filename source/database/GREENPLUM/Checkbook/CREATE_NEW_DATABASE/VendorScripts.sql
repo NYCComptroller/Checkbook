@@ -454,6 +454,29 @@ BEGIN
 					VALUES(p_load_file_id_in,'V',l_count,'Number of records inserted into vendor_business_type');
 	END IF;
 	
+	-- Start Changes for M/WBE
+	
+	TRUNCATE  vendor_min_bus_type;
+	
+INSERT INTO vendor_min_bus_type(vendor_id, vendor_history_id, business_type_id, minority_type_id, business_type_code, business_type_name, minority_type_name ) 
+SELECT d.vendor_id, a.vendor_history_id, a.business_type_id as business_type_id,
+		(case when a.business_type_id = 2 then 11   when a.business_type_id = 5 then 9 else a.minority_type_id end) as minority_type_id,
+		c.business_type_code as business_type_code, 	c.business_type_name as business_type_name,
+		(case when a.business_type_id = 2 then 'Individuals & Others' when a.business_type_id = 5 then 'Caucasian Woman'  else b.minority_type_name end) as minority_type_name
+FROM
+(SELECT vendor_history_id , business_type_id ,minority_type_id 
+FROM vendor_business_type 
+WHERE status =2 AND (business_type_id=2 or minority_type_id is not null or (vendor_history_id in 
+(SELECT DISTINCT vendor_history_id 
+FROM vendor_business_type  WHERE  business_type_id = 5 AND status = 2 AND vendor_history_id not in 
+(SELECT DISTINCT vendor_history_id FROM vendor_business_type WHERE minority_type_id is not null AND status = 2)) AND business_type_id=5))) a 
+LEFT JOIN ref_minority_type b ON a.minority_type_id = b.minority_type_id 
+LEFT JOIN ref_business_type c ON a.business_type_id = c.business_type_id
+LEFT JOIN vendor_history d ON a.vendor_history_id = d.vendor_history_id;
+
+	-- End Changes for M/WBE
+	
+	
 	RETURN 1;
 	
 EXCEPTION

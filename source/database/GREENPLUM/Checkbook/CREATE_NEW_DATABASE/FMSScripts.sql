@@ -1040,9 +1040,42 @@ BEGIN
 						VALUES(p_load_file_id_in,'F',l_count, '# of records updated in disbursement');	
 	END IF;	
 	
+		RAISE NOTICE 'FMS 16';
+		
+/* Start changes for mwbe
+
+	CREATE TEMPORARY TABLE tmp_disbs_min_bustype_full AS
+	SELECT a.disbursement_id, a.vendor_history_id, b.business_type_id as vendor_business_type_id, b.minority_type_id as vendor_minority_type_id	
+	FROM	disbursement a JOIN (select vendor_history_id , business_type_id ,minority_type_id from vendor_business_type 
+				where status =2 and (business_type_id=2 or minority_type_id is not null or (vendor_history_id in 
+					(select distinct vendor_history_id from vendor_business_type 
+					  where  business_type_id = 5 and status = 2 and vendor_history_id not in (select distinct vendor_history_id from vendor_business_type where minority_type_id is not null and status = 2)) AND business_type_id=5))) b
+					  ON a.vendor_history_id = b.vendor_history_id WHERE coalesce(a.updated_load_id, a.created_load_id) = p_load_id_in AND privacy_flag = 'F'
+	DISTRIBUTED BY (disbursement_id);	
 	
-	RAISE NOTICE 'FMS 16';
+	UPDATE disbursement a
+	SET  vendor_business_type_id = b.vendor_business_type_id,
+	     vendor_minority_type_id = b.vendor_minority_type_id
+	FROM	tmp_disbs_min_bustype_full b
+	WHERE	a.disbursement_id = b.disbursement_id;
 	
+	UPDATE disbursement disb
+	SET vendor_business_type_id = (case when disb.bustype_exmp = 'EXMP' AND disb.bustype_exmp_status = 2 then 2
+			when disb.bustype_mnrt = 'MNRT' AND disb.bustype_mnrt_status = 2 then 4
+			WHEN disb.bustype_wmno = 'WMNO' AND disb.bustype_wmno_status = 2 then 5
+			when disb.bustype_locb = 'LOCB' AND disb.bustype_locb_status = 2 then 3
+			WHEN disb.bustype_eent = 'EENT' AND disb.bustype_eent_status = 2 then 1
+           		else NULL end),
+          vendor_minority_type_id = (case when disb.bustype_exmp = 'EXMP' AND disb.bustype_exmp_status = 2 then 11
+			when disb.bustype_mnrt = 'MNRT' AND disb.bustype_mnrt_status = 2 then d.minority_type_id 
+			WHEN disb.bustype_wmno = 'WMNO' AND disb.bustype_wmno_status = 2 then 9
+           		else NULL end)
+     WHERE   privacy_flag = 'P' AND  coalesce(disb.updated_load_id, disb.created_load_id) = p_load_id_in;		
+
+  -- End changes for mwbe */
+
+		RAISE NOTICE 'FMS 16.mwbe';
+		
 	-- Disbursement line item changes
 	
 	
@@ -1289,6 +1322,7 @@ BEGIN
 						budget_code_id,budget_code,budget_name,reporting_code,location_id,location_code,fund_class_name,fund_class_code,
 						spending_category_id,spending_category_name,calendar_fiscal_year_id,calendar_fiscal_year,
 						agreement_accounting_line_number, agreement_commodity_line_number, agreement_vendor_line_number, reference_document_number,reference_document_code,
+						minority_type_id, minority_type_name,
 						load_id,last_modified_date,file_type,job_id)
 	SELECT  b.disbursement_line_item_id,a.disbursement_id,b.line_number,b.disbursement_number,a.check_eft_issued_date_id,
 		f.nyc_year_id,l.year_value,f.calendar_month_id,
@@ -1309,8 +1343,8 @@ BEGIN
 		 	   ELSE 'Others'
 		 END) as spending_category_name,x.year_id,x.year_value,
 		 b.agreement_accounting_line_number, b.agreement_commodity_line_number, b.agreement_vendor_line_number, b.reference_document_number,b.reference_document_code,
-		 coalesce(a.updated_load_id, a.created_load_id),
-		 coalesce(a.updated_date, a.created_date),b.file_type,p_job_id_in
+		 vmb.minority_type_id, vmb.minority_type_name,
+		 coalesce(a.updated_load_id, a.created_load_id), coalesce(a.updated_date, a.created_date),b.file_type,p_job_id_in
 		FROM disbursement a JOIN disbursement_line_item b ON a.disbursement_id = b.disbursement_id
 			JOIN ref_agency_history c ON b.agency_history_id = c.agency_history_id
 			JOIN ref_agency m on c.agency_id = m.agency_id
@@ -1329,6 +1363,7 @@ BEGIN
 			JOIN ref_month y on f.calendar_month_id = y.month_id
 			JOIN ref_year x on y.year_id = x.year_id
 			JOIN etl.etl_data_load z ON coalesce(a.updated_load_id, a.created_load_id) = z.load_id
+			LEFT JOIN vendor_min_bus_type vmb ON e.vendor_history_id = vmb.vendor_history_id
 		WHERE z.job_id = p_job_id_in AND z.data_source_code IN ('C','M','F');
 		
 		
@@ -1340,7 +1375,10 @@ BEGIN
 												maximum_contract_amount_cy numeric(16,2), maximum_spending_limit numeric(16,2), maximum_spending_limit_cy numeric(16,2),
 												purpose varchar, purpose_cy varchar, contract_number varchar, master_contract_number varchar, contract_vendor_id integer, contract_vendor_id_cy integer,
 												master_contract_vendor_id integer, master_contract_vendor_id_cy integer, contract_agency_id smallint, contract_agency_id_cy smallint, master_contract_agency_id smallint,
-												master_contract_agency_id_cy smallint, master_purpose varchar, master_purpose_cy varchar, contract_document_code varchar, master_contract_document_code varchar)
+												master_contract_agency_id_cy smallint, master_purpose varchar, master_purpose_cy varchar, contract_document_code varchar, master_contract_document_code varchar, 
+												industry_type_id smallint, industry_type_name varchar, agreement_type_code varchar, award_method_code varchar,
+												contract_industry_type_id smallint, contract_industry_type_id_cy smallint, master_contract_industry_type_id smallint, master_contract_industry_type_id_cy smallint,
+												contract_minority_type_id smallint, contract_minority_type_id_cy smallint, master_contract_minority_type_id smallint, master_contract_minority_type_id_cy smallint)
 	DISTRIBUTED  BY (disbursement_line_item_id);
 	
 	INSERT INTO tmp_agreement_con(disbursement_line_item_id,agreement_id,fiscal_year,calendar_fiscal_year)
@@ -1354,7 +1392,9 @@ BEGIN
 	-- Getting maximum_contract_amount, master_agreement_id, purpose, contract_number,  contract_vendor_id, contract_agency_id for FY from non master contracts.
 	
 	CREATE TEMPORARY TABLE tmp_agreement_con_fy(disbursement_line_item_id bigint,agreement_id bigint,master_agreement_id bigint, contract_number varchar,
-						maximum_contract_amount_fy numeric(16,2), purpose_fy varchar, contract_vendor_id_fy integer, contract_agency_id_fy smallint, contract_document_code_fy varchar )
+						maximum_contract_amount_fy numeric(16,2), purpose_fy varchar, contract_vendor_id_fy integer, contract_agency_id_fy smallint, contract_document_code_fy varchar, 
+						industry_type_id smallint, industry_type_name varchar, agreement_type_code varchar, award_method_code varchar,
+						contract_industry_type_id_fy smallint, contract_minority_type_id_fy smallint)
 	DISTRIBUTED  BY (disbursement_line_item_id);
 	
 	INSERT INTO tmp_agreement_con_fy
@@ -1363,7 +1403,13 @@ BEGIN
 	b.description as purpose_fy ,
 	b.vendor_id as contract_vendor_id_fy,
 	b.agency_id as contract_agency_id_fy,
-	e.document_code as contract_document_code_fy
+	e.document_code as contract_document_code_fy,
+	b.industry_type_id as industry_type_id,
+	b.industry_type_name as industry_type_name,
+	b.agreement_type_code as agreement_type_code,
+	b.award_method_code as award_method_code,
+	b.industry_type_id as contract_industry_type_id_fy,
+	b.minority_type_id as contract_minority_type_id_fy
 		FROM tmp_agreement_con a JOIN agreement_snapshot b ON a.agreement_id = b.original_agreement_id AND a.fiscal_year between b.starting_year and b.ending_year
 		JOIN disbursement_line_item c ON a.disbursement_line_item_id = c.disbursement_line_item_id
 		JOIN disbursement d ON c.disbursement_id = d.disbursement_id 
@@ -1376,7 +1422,13 @@ BEGIN
 	b.description as purpose_fy ,
 	b.vendor_id as contract_vendor_id_fy,
 	b.agency_id as contract_agency_id_fy,
-	e.document_code as contract_document_code_fy
+	e.document_code as contract_document_code_fy,
+	b.industry_type_id as industry_type_id,
+	b.industry_type_name as industry_type_name,
+	b.agreement_type_code as agreement_type_code,
+	b.award_method_code as award_method_code,
+	b.industry_type_id as contract_industry_type_id_fy,
+	b.minority_type_id as contract_minority_type_id_fy
 		FROM tmp_agreement_con a JOIN agreement_snapshot b ON a.agreement_id = b.original_agreement_id AND b.latest_flag='Y'
 		JOIN disbursement_line_item c ON a.disbursement_line_item_id = c.disbursement_line_item_id
 		JOIN disbursement d ON c.disbursement_id = d.disbursement_id
@@ -1391,14 +1443,21 @@ BEGIN
 		contract_number = b.contract_number,
 		contract_vendor_id = b.contract_vendor_id_fy,
 		contract_agency_id = b.contract_agency_id_fy,
-		contract_document_code = b.contract_document_code_fy
+		contract_document_code = b.contract_document_code_fy,
+		industry_type_id = b.industry_type_id,
+		industry_type_name = b.industry_type_name,
+		agreement_type_code = b.agreement_type_code,
+		award_method_code = b.award_method_code,
+		contract_industry_type_id = b.contract_industry_type_id_fy,
+		contract_minority_type_id = b.contract_minority_type_id_fy
 	FROM tmp_agreement_con_fy b
 	WHERE a.disbursement_line_item_id = b.disbursement_line_item_id;
 	
 	-- Getting maximum_spending_limit, master_contract_number, master_contract_vendor_id, master_contract_agency_id for FY for master agreements
 	
 	CREATE TEMPORARY TABLE tmp_agreement_con_master_fy(disbursement_line_item_id bigint, master_agreement_id bigint, master_contract_number varchar, maximum_spending_limit_fy numeric(16,2), 
-	master_contract_vendor_id_fy integer, master_contract_agency_id_fy smallint, master_purpose_fy varchar, master_contract_document_code_fy varchar)
+	master_contract_vendor_id_fy integer, master_contract_agency_id_fy smallint, master_purpose_fy varchar, master_contract_document_code_fy varchar, 
+	master_contract_industry_type_id_fy smallint, master_contract_minority_type_id_fy smallint)
 	DISTRIBUTED  BY (disbursement_line_item_id);
 	
 	INSERT INTO tmp_agreement_con_master_fy
@@ -1408,7 +1467,9 @@ BEGIN
 	b.vendor_id as master_contract_vendor_id_fy,
 	b.agency_id as master_contract_agency_id_fy,
 	b.description as master_purpose_fy,
-	e.document_code as master_contract_document_code_fy
+	e.document_code as master_contract_document_code_fy,
+	b.industry_type_id as master_contract_industry_type_id_fy,
+	b.minority_type_id as master_contract_minority_type_id_fy
 	FROM tmp_agreement_con a JOIN agreement_snapshot b ON a.master_agreement_id = b.original_agreement_id AND b.master_agreement_yn = 'Y' AND a.fiscal_year between b.starting_year and b.ending_year
 		JOIN disbursement_line_item c ON a.disbursement_line_item_id = c.disbursement_line_item_id
 		JOIN disbursement d ON c.disbursement_id = d.disbursement_id 
@@ -1421,7 +1482,9 @@ BEGIN
 	b.vendor_id as master_contract_vendor_id_fy,
 	b.agency_id as master_contract_agency_id_fy,
 	b.description as master_purpose_fy ,
-	e.document_code as master_contract_document_code_fy
+	e.document_code as master_contract_document_code_fy,
+	b.industry_type_id as master_contract_industry_type_id_fy,
+	b.minority_type_id as master_contract_minority_type_id_fy
 	FROM tmp_agreement_con a JOIN agreement_snapshot b ON a.master_agreement_id = b.original_agreement_id AND b.master_agreement_yn = 'Y' AND b.latest_flag='Y'
 		JOIN disbursement_line_item c ON a.disbursement_line_item_id = c.disbursement_line_item_id
 		JOIN disbursement d ON c.disbursement_id = d.disbursement_id 
@@ -1437,7 +1500,9 @@ BEGIN
 		master_contract_vendor_id = b.master_contract_vendor_id_fy,
 		master_contract_agency_id = b.master_contract_agency_id_fy,
 		master_purpose = b.master_purpose_fy,
-		master_contract_document_code = b.master_contract_document_code_fy
+		master_contract_document_code = b.master_contract_document_code_fy,
+		master_contract_industry_type_id = b.master_contract_industry_type_id_fy,
+		master_contract_minority_type_id = b.master_contract_minority_type_id_fy
 	FROM tmp_agreement_con_master_fy b
 	WHERE a.disbursement_line_item_id = b.disbursement_line_item_id;
 	
@@ -1489,10 +1554,11 @@ BEGIN
 	WHERE a.disbursement_line_item_id = b.disbursement_line_item_id; */
 	
 	
-	-- Getting maximum_contract_amount, master_agreement_id, purpose, contract_number,  contract_vendor_id, contract_agency_id for FY from non master contracts.
+	-- Getting maximum_contract_amount, master_agreement_id, purpose, contract_number,  contract_vendor_id, contract_agency_id for CY from non master contracts.
 	
 	CREATE TEMPORARY TABLE tmp_agreement_con_cy(disbursement_line_item_id bigint,agreement_id bigint,
-						maximum_contract_amount_cy numeric(16,2), purpose_cy varchar, contract_vendor_id_cy integer, contract_agency_id_cy smallint)
+						maximum_contract_amount_cy numeric(16,2), purpose_cy varchar, contract_vendor_id_cy integer, contract_agency_id_cy smallint, 
+						contract_industry_type_id_cy smallint, contract_minority_type_id_cy smallint)
 	DISTRIBUTED  BY (disbursement_line_item_id);
 	
 	INSERT INTO tmp_agreement_con_cy
@@ -1500,8 +1566,10 @@ BEGIN
 	b.maximum_contract_amount as maximum_contract_amount_cy ,
 	b.description as purpose_cy ,
 	b.vendor_id as contract_vendor_id_cy,
-	b.agency_id as contract_agency_id_cy
-		FROM tmp_agreement_con a JOIN agreement_snapshot_cy b ON a.agreement_id = b.original_agreement_id AND a.fiscal_year between b.starting_year and b.ending_year
+	b.agency_id as contract_agency_id_cy,
+	b.industry_type_id as contract_industry_type_id_cy,
+	b.minority_type_id as contract_minority_type_id_cy
+		FROM tmp_agreement_con a JOIN agreement_snapshot_cy b ON a.agreement_id = b.original_agreement_id AND a.calendar_fiscal_year between b.starting_year and b.ending_year
 		JOIN disbursement_line_item c ON a.disbursement_line_item_id = c.disbursement_line_item_id
 		JOIN ref_document_code e ON b.document_code_id = e.document_code_id;
 		
@@ -1511,7 +1579,9 @@ BEGIN
 	b.maximum_contract_amount as maximum_contract_amount_cy ,
 	b.description as purpose_cy ,
 	b.vendor_id as contract_vendor_id_cy,
-	b.agency_id as contract_agency_id_cy
+	b.agency_id as contract_agency_id_cy,
+	b.industry_type_id as contract_industry_type_id_cy,
+	b.minority_type_id as contract_minority_type_id_cy
 		FROM tmp_agreement_con a JOIN agreement_snapshot_cy b ON a.agreement_id = b.original_agreement_id AND b.latest_flag='Y'
 		JOIN disbursement_line_item c ON a.disbursement_line_item_id = c.disbursement_line_item_id
 		JOIN disbursement d ON c.disbursement_id = d.disbursement_id
@@ -1523,14 +1593,17 @@ BEGIN
 	SET maximum_contract_amount_cy = b.maximum_contract_amount_cy,
 		purpose_cy = b.purpose_cy,
 		contract_vendor_id_cy = b.contract_vendor_id_cy,
-		contract_agency_id_cy = b.contract_agency_id_cy
+		contract_agency_id_cy = b.contract_agency_id_cy,
+		contract_industry_type_id_cy = b.contract_industry_type_id_cy,
+		contract_minority_type_id_cy = b.contract_minority_type_id_cy
 	FROM tmp_agreement_con_cy b
 	WHERE a.disbursement_line_item_id = b.disbursement_line_item_id;
 	
 	-- Getting maximum_spending_limit, master_contract_number, master_contract_vendor_id, master_contract_agency_id for FY for master agreements
 	
 	CREATE TEMPORARY TABLE tmp_agreement_con_master_cy(disbursement_line_item_id bigint, master_agreement_id bigint,  maximum_spending_limit_cy numeric(16,2), 
-	master_contract_vendor_id_cy integer, master_contract_agency_id_cy smallint, master_purpose_cy varchar)
+	master_contract_vendor_id_cy integer, master_contract_agency_id_cy smallint, master_purpose_cy varchar, 
+	master_contract_industry_type_id_cy smallint, master_contract_minority_type_id_cy smallint)
 	DISTRIBUTED  BY (disbursement_line_item_id);
 	
 	
@@ -1539,8 +1612,10 @@ BEGIN
 	b.maximum_contract_amount as maximum_spending_limit_cy ,
 	b.vendor_id as master_contract_vendor_id_cy,
 	b.agency_id as master_contract_agency_id_cy,
-	b.description as master_purpose_cy
-	FROM tmp_agreement_con a JOIN agreement_snapshot_cy b ON a.master_agreement_id = b.original_agreement_id AND b.master_agreement_yn = 'Y' AND a.fiscal_year between b.starting_year and b.ending_year
+	b.description as master_purpose_cy,
+	b.industry_type_id as master_contract_industry_type_id_cy,
+	b.minority_type_id as master_contract_minority_type_id_cy
+	FROM tmp_agreement_con a JOIN agreement_snapshot_cy b ON a.master_agreement_id = b.original_agreement_id AND b.master_agreement_yn = 'Y' AND a.calendar_fiscal_year between b.starting_year and b.ending_year
 		JOIN disbursement_line_item c ON a.disbursement_line_item_id = c.disbursement_line_item_id
 		JOIN ref_document_code e ON b.document_code_id = e.document_code_id;
 		
@@ -1550,7 +1625,9 @@ BEGIN
 	b.maximum_contract_amount as maximum_spending_limit_cy ,
 	b.vendor_id as master_contract_vendor_id_cy,
 	b.agency_id as master_contract_agency_id_cy,
-	b.description as master_purpose_cy 
+	b.description as master_purpose_cy,
+	b.industry_type_id as master_contract_industry_type_id_cy,
+	b.minority_type_id as master_contract_minority_type_id_cy
 	FROM tmp_agreement_con a JOIN agreement_snapshot_cy b ON a.master_agreement_id = b.original_agreement_id AND b.master_agreement_yn = 'Y' AND b.latest_flag='Y'
 		JOIN disbursement_line_item c ON a.disbursement_line_item_id = c.disbursement_line_item_id
 		JOIN disbursement d ON c.disbursement_id = d.disbursement_id 
@@ -1564,7 +1641,9 @@ BEGIN
 	SET maximum_spending_limit_cy = b.maximum_spending_limit_cy,
 		master_contract_vendor_id_cy = b.master_contract_vendor_id_cy,
 		master_contract_agency_id_cy = b.master_contract_agency_id_cy,
-		master_purpose_cy = b.master_purpose_cy
+		master_purpose_cy = b.master_purpose_cy,
+		master_contract_industry_type_id_cy = b.master_contract_industry_type_id_cy,
+		master_contract_minority_type_id_cy = b.master_contract_minority_type_id_cy
 	FROM tmp_agreement_con_master_cy b
 	WHERE a.disbursement_line_item_id = b.disbursement_line_item_id;
 	
@@ -1597,11 +1676,63 @@ BEGIN
 		master_child_contract_agency_id_cy = coalesce(b.master_contract_agency_id_cy,b.contract_agency_id_cy),
 		master_child_contract_vendor_id = coalesce(b.master_contract_vendor_id,b.contract_vendor_id),
 		master_child_contract_vendor_id_cy = coalesce(b.master_contract_vendor_id_cy,b.contract_vendor_id_cy),
-		master_child_contract_number = coalesce(b.master_contract_number,b.contract_number)
+		master_child_contract_number = coalesce(b.master_contract_number,b.contract_number),
+		industry_type_id = b.industry_type_id,
+		industry_type_name = b.industry_type_name,
+		agreement_type_code = b.agreement_type_code,
+		award_method_code = b.award_method_code,
+		contract_industry_type_id = b.contract_industry_type_id,
+		contract_industry_type_id_cy = b.contract_industry_type_id_cy,
+		master_contract_industry_type_id = b.master_contract_industry_type_id,
+		master_contract_industry_type_id_cy = b.master_contract_industry_type_id_cy,
+		contract_minority_type_id = b.contract_minority_type_id,
+		contract_minority_type_id_cy = b.contract_minority_type_id_cy,
+		master_contract_minority_type_id = b.master_contract_minority_type_id,
+		master_contract_minority_type_id_cy = b.master_contract_minority_type_id_cy
 	FROM	tmp_agreement_con  b
 	WHERE   a.disbursement_line_item_id = b.disbursement_line_item_id;
 	
+
+	UPDATE disbursement_line_item_details a
+	SET minority_type_id = (case when b.bustype_exmp = 'EXMP' AND b.bustype_exmp_status = 2 then 11
+			when b.bustype_mnrt = 'MNRT' AND b.bustype_mnrt_status = 2 then c.minority_type_id 
+			WHEN b.bustype_wmno = 'WMNO' AND b.bustype_wmno_status = 2 then 9
+           		else NULL end),
+		minority_type_name = (case when b.bustype_exmp = 'EXMP' AND b.bustype_exmp_status = 2 then 'Individuals & Others'
+			when b.bustype_mnrt = 'MNRT' AND b.bustype_mnrt_status = 2 then c.minority_type_name 
+			WHEN b.bustype_wmno = 'WMNO' AND b.bustype_wmno_status = 2 then 'Caucasian Woman'
+           		else NULL end)
+	FROM disbursement  b LEFT JOIN  ref_minority_type c on b.minority_type_id = c.minority_type_id
+	WHERE a.disbursement_id = b.disbursement_id AND job_id = p_job_id_in
+	AND a.spending_category_id <> 2 and file_type = 'P';
 	
+	
+UPDATE disbursement_line_item_details
+SET minority_type_id=11,
+minority_type_name = 'Individuals & Others'
+WHERE job_id = p_job_id_in AND agreement_type_code IN ('35','36','39','40','44','65','68','79','85') 
+AND ( minority_type_id IS NULL OR minority_type_id IN (1,6,7,8));
+
+UPDATE disbursement_line_item_details
+SET minority_type_id=11,
+minority_type_name = 'Individuals & Others'
+WHERE job_id = p_job_id_in AND award_method_code IN ('07','08','09','17','18','44','45','55')
+AND ( minority_type_id IS NULL OR minority_type_id IN (1,6,7,8));
+
+UPDATE disbursement_line_item_details a
+SET minority_type_id=11,
+minority_type_name = 'Individuals & Others'
+FROM disbursement b 
+WHERE a.disbursement_id = b.disbursement_id AND a.job_id = p_job_id_in
+AND b.vendor_org_classification IN (1,5,6,7,8,9,12,13,14,15,19,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36) 
+AND ( a.minority_type_id IS NULL OR a.minority_type_id IN (1,6,7,8));
+
+UPDATE disbursement_line_item_details
+SET minority_type_id=7,
+	minority_type_name = 'Non-Minority'
+WHERE job_id = p_job_id_in 	AND ( minority_type_id IS NULL OR minority_type_id IN (1,6,7,8));
+
+
 	-- needs to delete after first load
 	/*
 	INSERT INTO disbursement_line_item_deleted(disbursement_line_item_id, load_id, deleted_date, job_id)
