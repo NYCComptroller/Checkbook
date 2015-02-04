@@ -4329,6 +4329,354 @@ CREATE TABLE tmp_vendor_update (
   industry_type_id smallint 
 );
 
+-- Start Changes for Sub Contracts
+
+create sequence   seq_stg_scntrc_details_uniq_id;
+create sequence   seq_stg_scntrc_status_uniq_id;
+create sequence   seq_stg_scntrc_bus_type_uniq_id;
+create sequence   seq_stg_scntrc_pymt_uniq_id;
+
+
+CREATE EXTERNAL TABLE ext_stg_scntrc_details_data_feed
+(
+  doc_cd character varying(8),
+  doc_dept_cd character varying(4),
+  doc_id character varying(20),
+  vendor_cust_cd character varying(20),
+  cntrc_typ character varying,
+  scntrc_id character varying,
+  aprv_sta character varying,
+  aprv_reas_id character varying,
+  aprv_reas_nm character varying,
+  aprv_reas_nm_up character varying,
+  scntrc_dscr character varying,
+  scntrc_dscr_up character varying,
+  scntrc_mwbe_cert character varying,
+  indus_cls character varying,
+  scntrc_strt_dt character varying(100),
+  scntrc_end_dt character varying(100),
+  scntrc_max_am character varying(100),
+  tot_scntrc_pymt character varying(100),
+  scntrc_pymt_act character varying,
+  scntrc_mode character varying,
+  scntrc_vers_no character varying,
+  scntrc_vend_cd character varying(20),
+  scntrc_lgl_nm character varying(100),
+  scntrc_lgl_nm_up character varying(100),
+  scntrc_trkg_no character varying,
+  scntrc_trkg_no_up character varying,
+  lgl_nm character varying(100),
+  lgl_nm_up character varying(100),
+  doc_ref character varying,
+  col30 character varying
+)
+ LOCATION (
+    'gpfdist://mdw1:8081/datafiles/scntrc_details_data_feed.txt'
+)
+ FORMAT 'text' (delimiter '|' null '\\N' escape '~' fill missing fields)
+ENCODING 'UTF8';
+
+
+CREATE  TABLE stg_scntrc_details
+(
+  doc_cd character varying(8),
+  doc_dept_cd character varying(4),
+  doc_id character varying(20),
+  vendor_cust_cd character varying(20),
+  cntrc_typ smallint,
+  scntrc_id character varying(20),
+  aprv_sta smallint,
+  aprv_reas_id character varying(3),
+  aprv_reas_nm character varying(30),
+  aprv_reas_nm_up character varying(30),
+  scntrc_dscr character varying(256),
+  scntrc_dscr_up character varying(256),
+  scntrc_mwbe_cert smallint,
+  indus_cls smallint,
+  scntrc_strt_dt date,
+  scntrc_end_dt date,
+  scntrc_max_am numeric(16,2),
+  tot_scntrc_pymt numeric(16,2),
+  scntrc_pymt_act smallint,
+  scntrc_mode smallint,
+  scntrc_vers_no integer,
+  scntrc_vend_cd character varying(20),
+  scntrc_lgl_nm character varying(60),
+  scntrc_lgl_nm_up character varying(60),
+  scntrc_trkg_no character varying(30),
+  scntrc_trkg_no_up character varying(30),
+  lgl_nm character varying(60),
+  lgl_nm_up character varying(60),
+  doc_ref character varying(75),
+  doc_appl_last_dt date,
+  reg_dt date,
+  document_code_id smallint,
+  agency_history_id smallint,
+  vendor_history_id integer,
+	effective_begin_date_id int,
+	effective_end_date_id int,
+	source_updated_date_id int,
+	registered_date_id int,
+  	registered_fiscal_year smallint,
+	registered_fiscal_year_id smallint, 
+	registered_calendar_year smallint,
+	registered_calendar_year_id smallint,
+	effective_begin_fiscal_year smallint,
+	effective_begin_fiscal_year_id smallint, 
+	effective_begin_calendar_year smallint,
+	effective_begin_calendar_year_id smallint,
+	effective_end_fiscal_year smallint,
+	effective_end_fiscal_year_id smallint, 
+	effective_end_calendar_year smallint,
+	effective_end_calendar_year_id smallint,
+	source_updated_calendar_year smallint,
+	source_updated_calendar_year_id smallint,
+	source_updated_fiscal_year_id smallint,
+	source_updated_fiscal_year smallint,
+  uniq_id bigint DEFAULT nextval('etl.seq_stg_scntrc_details_uniq_id'::regclass),
+  invalid_flag character(1),
+  invalid_reason character varying
+)
+DISTRIBUTED BY (uniq_id);
+
+
+CREATE TABLE archive_scntrc_details (LIKE stg_scntrc_details) DISTRIBUTED BY (uniq_id);
+ALTER TABLE archive_scntrc_details ADD COLUMN load_file_id bigint;
+
+CREATE TABLE invalid_scntrc_details (LIKE archive_scntrc_details) DISTRIBUTED BY (uniq_id);
+
+
+
+
+CREATE EXTERNAL TABLE ext_stg_scntrc_status_data_feed
+(
+  doc_cd character varying(8),
+  doc_dept_cd character varying(4),
+  doc_id character varying(20),
+  vendor_cust_cd character varying(20),
+  scntrc_sta character varying,
+  cntrc_typ character varying,
+  tot_scntrc_max_am character varying(100),
+  tot_scntrc_pymt character varying(100),
+  col9 character varying
+)
+ LOCATION (
+    'gpfdist://mdw1:8081/datafiles/scntrc_status_data_feed.txt'
+)
+ FORMAT 'text' (delimiter '|' null '\\N' escape '~' fill missing fields)
+ENCODING 'UTF8';
+
+CREATE  TABLE stg_scntrc_status
+(
+  doc_cd character varying(8),
+  doc_dept_cd character varying(4),
+  doc_id character varying(20),
+  vendor_cust_cd character varying(20),
+  scntrc_sta smallint,
+  cntrc_typ smallint,
+  tot_scntrc_max_am numeric(16,2),
+  tot_scntrc_pymt numeric(16,2),
+  uniq_id bigint DEFAULT nextval('etl.seq_stg_scntrc_status_uniq_id'::regclass),
+  invalid_flag character(1),
+  invalid_reason character varying
+) DISTRIBUTED BY (uniq_id);
+
+
+CREATE TABLE archive_scntrc_status (LIKE stg_scntrc_status) DISTRIBUTED BY (uniq_id);
+ALTER TABLE archive_scntrc_status ADD COLUMN load_file_id bigint;
+
+CREATE TABLE invalid_scntrc_status (LIKE archive_scntrc_status) DISTRIBUTED BY (uniq_id);
+
+
+CREATE EXTERNAL TABLE ext_stg_scntrc_bus_type_data_feed
+(
+  doc_cd character varying(8),
+  doc_dept_cd character varying(4),
+  doc_id character varying(20),
+  vendor_cust_cd character varying(20),
+  scntrc_id character varying,
+  scntrc_vend_cd character varying(20),
+  bus_typ character varying,
+  bus_typ_sta character varying,
+  cert_strt_dt character varying(100),
+  init_dt character varying(100),
+  disp_cert_strt_dt character varying(100),
+  cert_end_dt character varying(100),
+  cert_no character varying(30),
+  min_typ character varying(10),
+  col15 character varying
+)
+ LOCATION (
+    'gpfdist://mdw1:8081/datafiles/scntrc_bus_type_data_feed.txt'
+)
+ FORMAT 'text' (delimiter '|' null '\\N' escape '~' fill missing fields)
+ENCODING 'UTF8';
+
+CREATE  TABLE stg_scntrc_bus_type
+(
+  doc_cd character varying(8),
+  doc_dept_cd character varying(4),
+  doc_id character varying(20),
+  vendor_cust_cd character varying(20),
+  scntrc_id character varying(20),
+  scntrc_vend_cd character varying(20),
+  bus_typ character varying(10),
+  bus_typ_sta integer,
+  cert_strt_dt date,
+  init_dt date,
+  disp_cert_strt_dt date,
+  cert_end_dt date,
+  cert_no character varying(30),
+  min_typ integer,
+  uniq_id bigint DEFAULT nextval('etl.seq_stg_scntrc_bus_type_uniq_id'::regclass),
+  invalid_flag character(1),
+  invalid_reason character varying
+) DISTRIBUTED BY (uniq_id);
+
+
+CREATE TABLE archive_scntrc_bus_type (LIKE stg_scntrc_bus_type) DISTRIBUTED BY (uniq_id);
+ALTER TABLE archive_scntrc_bus_type ADD COLUMN load_file_id bigint;
+
+CREATE TABLE invalid_scntrc_bus_type (LIKE archive_scntrc_bus_type) DISTRIBUTED BY (uniq_id);
+
+
+
+CREATE EXTERNAL TABLE ext_stg_scntrc_pymt_data_feed
+(
+  doc_cd character varying(8),
+  doc_dept_cd character varying(4),
+  doc_id character varying(20),
+  vendor_cust_cd character varying(20),
+  scntrc_id character varying,
+  scntrc_pymt_id character varying,
+  lgl_nm character varying,
+  lgl_nm_up character varying,
+  scntrc_lgl_nm character varying,
+  scntrc_vend_cd character varying(20),
+  scntrc_lgl_nm_up character varying,
+  scntrc_pymt_dt character varying(100),
+  scntrc_pymt_am character varying(100),
+  scntrc_pymt_dscr character varying,
+  scntrc_pymt_dscr_up character varying,
+  scntrc_prf_pymt character varying,
+  scntrc_prf_pymt_up character varying,
+  scntrc_fnl_pymt_fl character varying,
+  doc_ref character varying,
+  col20 character varying
+)
+ LOCATION (
+    'gpfdist://mdw1:8081/datafiles/scntrc_pymt_data_feed.txt'
+)
+ FORMAT 'text' (delimiter '|' null '\\N' escape '~' fill missing fields)
+ENCODING 'UTF8';
+
+
+CREATE  TABLE stg_scntrc_pymt
+(
+  doc_cd character varying(8),
+  doc_dept_cd character varying(4),
+  doc_id character varying(20),
+  vendor_cust_cd character varying(20),
+  scntrc_id character varying(20),
+  scntrc_pymt_id character varying(20),
+  lgl_nm character varying(60),
+  lgl_nm_up character varying(60),
+  scntrc_lgl_nm character varying(60),
+  scntrc_vend_cd character varying(20),
+  scntrc_lgl_nm_up character varying(60),
+  scntrc_pymt_dt date,
+  scntrc_pymt_am numeric(16,2),
+  scntrc_pymt_dscr character varying(256),
+  scntrc_pymt_dscr_up character varying(256),
+  scntrc_prf_pymt character varying(256),
+  scntrc_prf_pymt_up character varying(256),
+  scntrc_fnl_pymt_fl character varying(3),
+  doc_ref character varying(75),
+  agreement_id bigint,
+  document_code_id smallint,
+  agency_history_id smallint,
+  vendor_history_id integer,
+  check_eft_issued_date_id int,
+  check_eft_issued_nyc_year_id smallint,  
+  uniq_id bigint DEFAULT nextval('etl.seq_stg_scntrc_pymt_uniq_id'::regclass),
+  invalid_flag character(1),
+  invalid_reason character varying
+) DISTRIBUTED BY (uniq_id);
+
+
+CREATE TABLE archive_scntrc_pymt (LIKE stg_scntrc_pymt) DISTRIBUTED BY (uniq_id);
+ALTER TABLE archive_scntrc_pymt ADD COLUMN load_file_id bigint;
+
+CREATE TABLE invalid_scntrc_pymt (LIKE archive_scntrc_pymt) DISTRIBUTED BY (uniq_id);
+
+
+
+CREATE TABLE tmp_stg_scntrc_vendor(
+ 	vend_cust_cd varchar(20),	
+ 	lgl_nm varchar(60),
+ 	vendor_history_id integer, 
+ 	uniq_id bigint
+ 	)	DISTRIBUTED BY (uniq_id);
+ 	
+ 	
+ 		
+	
+CREATE TABLE tmp_scntrc_all_vendors(
+	uniq_id bigint,
+	vendor_customer_code varchar, 
+	vendor_history_id integer, 
+	vendor_id integer, 					
+	is_new_vendor char(1), 
+	is_name_changed char(1), 
+	is_bus_type_changed char(1), 					
+	lgl_nm varchar(60)
+	)	DISTRIBUTED BY (uniq_id);
+	
+CREATE TABLE tmp_scntrc_all_vendors_uniq_id(
+	uniq_id bigint
+	)	DISTRIBUTED BY (uniq_id);
+
+CREATE TABLE tmp_scntrc_vendor_update (
+     	vendor_id integer,
+     	legal_name varchar(60)
+		)	DISTRIBUTED BY (vendor_id);	
+		
+/*		
+CREATE TABLE scntrc_vendor_id_seq(uniq_id bigint,vendor_id int DEFAULT nextval('public.seq_subvendor_vendor_id'))
+DISTRIBUTED BY (uniq_id);
+
+CREATE TABLE scntrc_vendor_history_id_seq(uniq_id bigint,vendor_history_id int DEFAULT nextval('public.seq_subvendor_history_vendor_history_id'))
+DISTRIBUTED BY (uniq_id);
+
+CREATE TABLE scntrc_vendor_business_id_seq(uniq_id bigint,vendor_business_type_id int DEFAULT nextval('public.seq_subvendor_bus_type_vendor_bus_type_id'))
+DISTRIBUTED BY (uniq_id);	
+
+CREATE TABLE sub_agreement_id_seq(uniq_id bigint, agreement_id bigint default nextval('public.seq_sub_agreement_agreement_id'))
+DISTRIBUTED BY (uniq_id);
+*/
+
+CREATE TABLE malformed_scntrc_details_data_feed(
+	record varchar,
+	load_file_id integer)
+DISTRIBUTED BY (load_file_id);
+
+
+CREATE TABLE malformed_scntrc_status_data_feed(
+	record varchar,
+	load_file_id integer)
+DISTRIBUTED BY (load_file_id);
+
+CREATE TABLE malformed_scntrc_bus_type_data_feed(
+	record varchar,
+	load_file_id integer)
+DISTRIBUTED BY (load_file_id);
+
+CREATE TABLE malformed_scntrc_pymt_data_feed(
+	record varchar,
+	load_file_id integer)
+DISTRIBUTED BY (load_file_id);
+
+-- End Changes for Sub Contracts
 
 
 -- Create Indexes
