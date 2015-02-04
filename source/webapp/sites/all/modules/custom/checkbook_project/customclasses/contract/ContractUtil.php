@@ -425,9 +425,9 @@ namespace { //global
             }else if($category == 'revenue' && $status != 'P'){
                 $url = '/contracts_revenue_landing/status/'.$status.'/yeartype/B/year/'._getFiscalYearID().'/dashboard/'. $dashboard .'/mwbe/'.$minority_type_category_string;
             }else if($category == 'expense' && $status == 'P'){
-                $url = '/contracts_pending_exp_landing/status/P/yeartype/B/year/'._getFiscalYearID().'/dashboard/'. $dashboard .'/mwbe/'.$minority_type_category_string;
+                $url = '/contracts_pending_exp_landing/yeartype/B/year/'._getFiscalYearID().'/dashboard/'. $dashboard .'/mwbe/'.$minority_type_category_string;
             }else if($category == 'revenue' && $status == 'P'){
-                $url = '/contracts_pending_rev_landing/status/P/yeartype/B/year/'._getFiscalYearID().'/dashboard/'. $dashboard .'/mwbe/'.$minority_type_category_string;
+                $url = '/contracts_pending_rev_landing/yeartype/B/year/'._getFiscalYearID().'/dashboard/'. $dashboard .'/mwbe/'.$minority_type_category_string;
             }
 
             $url .= _checkbook_project_get_url_param_string("agency")
