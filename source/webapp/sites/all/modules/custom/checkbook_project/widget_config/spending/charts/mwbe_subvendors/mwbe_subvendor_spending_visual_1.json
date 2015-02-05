@@ -43,12 +43,17 @@
     foreach($node->widgetConfig->requestParams as $param=>$value){
         $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
     }
+    $mwbe_filter = _getRequestParamValue('mwbe');
+    $where_filters_mwbe = $where_filters;
+    $where_filters_mwbe[] = _widget_build_sql_condition('minority_type_id', $mwbe_filter);
 
     if(count($where_filters) > 0){
         $where_filter = ' where ' . implode(' and ' , $where_filters);
     }
+    if(count($where_filters_mwbe) > 0){
+        $where_filters_mwbe = ' where ' . implode(' and ' , $where_filters_mwbe);
+    }
 
-    $mwbe_filter = _getRequestParamValue('mwbe');
     $sort_column = 8;
     switch($mwbe_filter){
         case '4~5' :
@@ -95,12 +100,22 @@
 
     }
 
-    $sql = 'select  agency_name , a1.agency_id,
+    $sql = 'SELECT X.agency_name, X.agency_id, X.ethinicty_mwbe, Y.total_mwbe, Y.total_non_mwbe FROM';
+
+    $sql .= '(select  agency_name , a1.agency_id,
     SUM(
     CASE
     ' . $ethinicty_case . '
     ELSE 0
-    END) ethinicty_mwbe,
+    END) ethinicty_mwbe
+    from {aggregateon_subven_spending_coa_entities} a1
+    join {ref_agency} ra on ra.agency_id =  a1.agency_id
+    ' . $where_filters_mwbe . '
+    group by  agency_name,a1.agency_id) X';
+
+    $sql .= ' JOIN ';
+
+    $sql .= '(select  agency_name , a1.agency_id,
     SUM(
     CASE WHEN minority_type_id = 2 THEN total_spending_amount
     WHEN minority_type_id = 3 THEN total_spending_amount
@@ -117,8 +132,9 @@
     from {aggregateon_subven_spending_coa_entities} a1
     join {ref_agency} ra on ra.agency_id =  a1.agency_id
     ' . $where_filter . '
-    group by  agency_name,a1.agency_id order by total_mwbe desc
-    ';
+    group by  agency_name,a1.agency_id) Y';
+
+    $sql .= ' ON X.agency_id = Y.agency_id ORDER BY X.ethinicty_mwbe desc';
 
     $node->data  = _checkbook_project_execute_sql($sql);
 	$node->data_merged =  $node->data;
@@ -144,15 +160,6 @@
 	
 	$index = 0;
 	foreach($node->data_merged as $row){
-
-//        $tooltip_label =
-//        'Agency: ' . $row['agency_name'].  '<br/>' .
-//        MappingUtil::getCurrenEhtnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>'
-//        ;
-//        $node->widgetConfig->gridConfig->data[] = array(
-//        $row['agency_name'],
-//        (float)$row[$amount_column] );
-
         $tooltip_label =
         'Agency: ' . $row['agency_name'].  '<br/>' .
         MappingUtil::getCurrenEhtnicityName() . ' Share: ' . custom_number_formatter_format($row[$amount_column]/($row['total_mwbe'] + $row['total_non_mwbe'] ) *100 ,1,null, '%').  '<br/>' .
