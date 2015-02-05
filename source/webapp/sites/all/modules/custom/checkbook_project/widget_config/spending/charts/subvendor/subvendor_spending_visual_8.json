@@ -218,9 +218,12 @@
         "title": {"text": ""},
         "labels":{"rotation": 0,"function":"yAxisFormatter"}
     } ,
-    "tooltip":{"function":"tooltipformatter"}
+    "tooltip":{"function":"tooltipformatter"},
+    "legend":{
+        "align":"left",
+        "x": 48
     }
-}
+}}
 
 
 <function>
