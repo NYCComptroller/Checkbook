@@ -28,6 +28,7 @@
     <thead>
         <tr><th class='text'><?php echo WidgetUtil::generateLabelMapping("contract_id") ;?></th>
         <th class='number'><?php echo WidgetUtil::generateLabelMapping("current_amount") ;?></th>
+            <th>&nbsp;&nbsp;&nbsp;</th>
         <th class='text'><?php echo WidgetUtil::generateLabelMapping("prime_vendor") ;?></th>
         <th class='text'><?php echo WidgetUtil::generateLabelMapping("contract_agency") ;?></th>
             <th>&nbsp</th>
@@ -42,6 +43,7 @@
                 echo '<tr>
                 <td><div>' . $datarow['contract_number_contract_number'] . '</div></td>
                 <td>' . $datarow['total_revised_maximum_amount'] . '</td>
+                <td>&nbsp;&nbsp;&nbsp;</td>
                 <td><div>' . $datarow['vendor_legal_name_vendor_legal_name'] . '</div></td>
                 <td><div>' . $datarow['document_agency_name_document_agency_name'] . '</div></td>
                 <td>&nbsp</td>
@@ -68,7 +70,7 @@ echo eval($node->widgetConfig->gridConfig->footer);
             			},                                                
                         "aoColumnDefs": [
                             {
-                                "aTargets": [0,2,3],
+                                "aTargets": [0,2,4],
                                 "sClass":"text",
                                 "asSorting": [ "asc","desc" ]
                             },
@@ -88,10 +90,11 @@ echo eval($node->widgetConfig->gridConfig->footer);
                                 },
                                 "sClass":"number",
                                 "asSorting": [ "desc", "asc" ],
-                                "sWidth":"75px"
+                                "sWidth":"140px"
                             },
+                            {"aTargets":[2],"sWidth":"140px"},
                             {
-                              "aTargets": [4],
+                              "aTargets": [5],
                               "sWidth":"15px"
                             }
 
