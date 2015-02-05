@@ -27,14 +27,6 @@ $vendor_contract_yearly_summary = array();
 
 foreach ($node->results_contract_history as $contract_row) {
 
-//    if (!isset($vendor_contract_yearly_summary[$contract_row['legal_name']][$contract_row['source_updated_fiscal_year']]['current_amount'])) {
-//        $vendor_contract_yearly_summary[$contract_row['legal_name']][$contract_row['source_updated_fiscal_year']]['current_amount'] = $contract_row['maximum_contract_amount'];
-//    }
-//    if (!isset($vendor_contract_yearly_summary[$contract_row['legal_name']][$contract_row['source_updated_fiscal_year']]['original_amount'])) {
-//        $vendor_contract_yearly_summary[$contract_row['legal_name']][$contract_row['source_updated_fiscal_year']]['original_amount'] = $contract_row['original_contract_amount'];
-//    }
-//    $vendor_contract_yearly_summary[$contract_row['legal_name']][$contract_row['source_updated_fiscal_year']]['no_of_mods'] += 1;
-
     $sub_contract_reference[$contract_row['legal_name']][$contract_row['sub_contract_id']][] = $contract_row['sub_contract_id'];
 
     if (!isset($vendor_contract_yearly_summary[$contract_row['sub_contract_id']][$contract_row['source_updated_fiscal_year']]['current_amount'])) {
@@ -45,16 +37,16 @@ foreach ($node->results_contract_history as $contract_row) {
     }
 
     $vendor_contract_yearly_summary[$contract_row['sub_contract_id']][$contract_row['source_updated_fiscal_year']]['no_of_mods'] += 1;
-
     $vendor_contract_summary[$contract_row['legal_name']][$contract_row['sub_contract_id']]['original_amount'] = $contract_row['original_contract_amount'];
     $vendor_contract_summary[$contract_row['legal_name']][$contract_row['sub_contract_id']]['current_amount'] = $contract_row['maximum_contract_amount'];
     $vendor_contract_summary[$contract_row['legal_name']][$contract_row['sub_contract_id']]['minority_type_id'] = $contract_row['minority_type_id'];
 
-    $vendor_contract_summary[$contract_row['legal_name']]['current_amount'] += $vendor_contract_summary[$contract_row['legal_name']][$contract_row['sub_contract_id']]['current_amount'];
-    $vendor_contract_summary[$contract_row['legal_name']]['original_amount'] +=  $vendor_contract_summary[$contract_row['legal_name']][$contract_row['sub_contract_id']]['original_amount'];
-
-    if (!isset($vendor_contract_summary[$contract_row['legal_name']]['minority_type_id'])) {
-        $vendor_contract_summary[$contract_row['legal_name']]['minority_type_id'] = $contract_row['minority_type_id'];
+    if($contract_row['latest_flag'] == 'Y'){
+        $vendor_contract_summary[$contract_row['legal_name']]['current_amount'] = $vendor_contract_summary[$contract_row['legal_name']][$contract_row['sub_contract_id']]['current_amount'];
+        $vendor_contract_summary[$contract_row['legal_name']]['original_amount'] =  $vendor_contract_summary[$contract_row['legal_name']][$contract_row['sub_contract_id']]['original_amount'];
+        if (!isset($vendor_contract_summary[$contract_row['legal_name']]['minority_type_id'])) {
+            $vendor_contract_summary[$contract_row['legal_name']]['minority_type_id'] = $contract_row['minority_type_id'];
+        }
     }
 
 }
