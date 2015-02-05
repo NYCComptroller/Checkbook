@@ -1797,6 +1797,7 @@ td.text div {
 td.number div {
     float: right;
     text-align: right;
+    width: 70px;
 }
 td.number-center {
     text-align: center;
