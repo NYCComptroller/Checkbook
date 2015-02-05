@@ -9,6 +9,7 @@
  "gridConfig":{
         "template":"chart_grid_view",
         "domain":"spending",
+        "sortColumn":1,
         "html_class":"chart-grid-view-table three-columns",
         "table_columns": [
             {
