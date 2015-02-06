@@ -56,6 +56,7 @@ $queryVendorDetails = "SELECT
 
 $results1 = _checkbook_project_execute_sql($queryVendorDetails);
 $node->data = $results1;
+dsm($node->data);
 foreach($node->data as $key => $value){
     if($value['business_type_code'] == "MNRT" || $value['business_type_code'] == "WMNO"){
         $node->data[0]["mwbe_vendor"] = "Yes";
@@ -70,8 +71,13 @@ if($node->data[0]["vendor_id"]){
         $total_cont +=$row['total_contracts_sum'];
     }
 
-$vendor_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
+ $vendor_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
               .$node->data[0]['vendor_id'].'?expandBottomCont=true';
+
+ if($node->data[0]["mwbe_vendor"] == "Yes"){
+       $vendor_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
+            .$node->data[0]['vendor_id'].'/dashboard/mp?expandBottomCont=true';
+ }
 }else{
     $total_cont  = 0;
     if($node->data[0]['document_code'] == 'RCT1')
@@ -79,6 +85,7 @@ $vendor_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yea
     else
         $vendor_link = '/contracts_pending_exp_landing/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'.$node->data[0]['vendor_vendor'] .'?expandBottomCont=true';
 }
+
 
 
 
