@@ -3011,5 +3011,8 @@ body.page-mwbe-agency-grading #page-title{
 .contracts-spending-bottom table{
     clear: both;
 }
-
+.context-business-spotlight h1 {
+    color: #2a639a !important;
+    font-family: "Georgia",serif;
+}
 
