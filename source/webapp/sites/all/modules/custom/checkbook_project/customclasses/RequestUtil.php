@@ -850,9 +850,10 @@ class RequestUtil{
     		$url = $_GET['q'];
     		
     		if(preg_match('/contract/',$url)){
+                $url =  ContractUtil::getLandingPageWidgetUrl(null);
                 //Default to active status
-                $override_params = array("status"=>"A");
-                $url =  ContractUtil::getLandingPageWidgetUrl($override_params);
+                if(preg_match('/status/',$url))
+                    $url = preg_replace('/\/status\/./','/status/A',$url);
     		}
             else{
                 //Default to total spending
