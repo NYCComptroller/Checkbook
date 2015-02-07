@@ -7,7 +7,7 @@
                     "contstatus":"cum_spend.cum_spend.status_flag" ,
                     "year":"cum_spend.cum_spend.fiscal_year_id",
                     "calyear":"cum_spend.cum_spend.fiscal_year_id","yeartype":"cum_spend.cum_spend.type_of_year",
-                    "agency":"agency_id","vendor":"vendor_id","vendornm":"vendor_name",
+                    "agency":"agency_id","vendor":"prime_vendor_id","vendornm":"vendor_name",
                     "fvendor":"vendor_id","subvendor":"vendor_id",
                     "contdesc":"description","agrmnttype":"agreement_type_id",
                     "agencyh":"agency_history_id","contnum":"contract_number","aptpin":"brd_awd_no",
@@ -16,16 +16,12 @@
                     "cindustry":"industry_type_id","csize":"award_size_id","modamt":"dollar_difference"},
 	"paramTypeConfig":{"vendornm":"like","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","regdate":"range","modamt":"ne"},
 	"defaultParameters":{"cum_spend.cum_spend.status_flag":"A"},
-"dataset": "checkbook:agreement_snapshot",
+"dataset": "checkbook:all_agreement_transactions",
 "columns": ["total_maximum_contract_amount"],
-"preProcessConfiguration":"
-    $dashboard = _getRequestParamValue('dashboard');
-if($dashboard) $node->widgetConfig->dataset = 'checkbook:all_agreement_transactions';
-",
 "adjustParameters":"
         $dashboard = _getRequestParamValue('dashboard');
         if($dashboard == 'ss' || $dashboard == 'sp' || $dashboard == 'ms') $parameters['is_prime_or_sub'] = 'S';
-        else if($dashboard == 'mp') $parameters['is_prime_or_sub'] = 'P';
+        else if($dashboard == 'mp' || $dashboard == null) $parameters['is_prime_or_sub'] = 'P';
 
         $smnid = _getRequestParamValue('smnid');
         if($smnid == 720) $parameters['is_prime_or_sub'] = 'S';
