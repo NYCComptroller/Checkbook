@@ -848,12 +848,16 @@ class RequestUtil{
     	
     	if(self::isContractsSpendingLandingPage()){
     		$url = $_GET['q'];
-    		
+
     		if(preg_match('/contract/',$url)){
                 $url =  ContractUtil::getLandingPageWidgetUrl(null);
                 //Default to active status
-                if(preg_match('/status/',$url))
+                if(preg_match('/status/',$url)) {
                     $url = preg_replace('/\/status\/./','/status/A',$url);
+                }
+                else {
+                    $url = preg_replace('/contracts_landing\//', 'contracts_landing/status/A/', $url);
+                }
     		}
             else{
                 //Default to total spending
@@ -881,7 +885,7 @@ class RequestUtil{
     			break;
     		case "subvendor":
     			
-    			if(_getRequestParamValue("dashboard") != null){    				
+    			if(_getRequestParamValue("dashboard") != null){
     				$url = preg_replace('/\/dashboard\/[^\/]*/','',$url);    				   				    				    				
     			}
     			// tm_wbe is an exception case for total MWBE link. When prime data is not present but sub data is present for the agency vendor combination.
