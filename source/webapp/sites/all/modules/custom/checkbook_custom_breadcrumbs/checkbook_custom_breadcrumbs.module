@@ -99,7 +99,7 @@ function _get_contracts_breadcrumb_title_drilldown($ethinicty =  true){
                 $title = _checkbook_project_get_name_for_argument("vendor_id",$value);
                 if($ethinicty){
                 	$title .= MappingUtil::getPrimeVendorEthinictyTitle($value,"contracts");
-                }                  
+                }
                 break;
             case 'awdmethod':
                 $title = _checkbook_project_get_name_for_argument("award_method_id",$value);
@@ -236,7 +236,7 @@ function _set_pending_contracts_breadcrumb_title_drilldown(){
 /**
  * Custom function to set title for contracts landing pages
  **/
-function _get_pending_contracts_breadcrumb_title_drilldown(){
+function _get_pending_contracts_breadcrumb_title_drilldown($ethinicty = true){
 
     $lastReqParam = _getLastRequestParamValue();
     $title = "New York City";
@@ -248,6 +248,9 @@ function _get_pending_contracts_breadcrumb_title_drilldown(){
                 break;
             case 'vendor':
                 $title = _checkbook_project_get_name_for_argument("pending_contracts_vendor_id",$value);
+                if($ethinicty){
+                    $title .= MappingUtil::getPrimeVendorEthinictyTitle($value,"contracts");
+                }
                 break;
             case 'awdmethod':
                 $title = _checkbook_project_get_name_for_argument("award_method_id",$value);
