@@ -176,6 +176,10 @@
     "formatted_associated_vendor": {
     "type": "expression2",
     "expression": "($row['is_prime_or_sub'] == 'P')?'N/A':$row['prime_vendor_name']"
+    },
+    "associated_vendor_name": {
+    "type": "expression2",
+    "expression": "_get_tooltip_markup($row['formatted_associated_vendor'],30)"
     }
     },
     "table_columns": [
@@ -190,7 +194,7 @@
     {"labelAlias": "spent_to_date","column": "formatted_spent_to_date","sortSourceColumn":"rfed_amount"},
     {"labelAlias": "vendor_name","column": "vendor_name_link","sortSourceColumn":"vendor_name"},
     {"labelAlias": "sub_vendor_name","column":"formatted_is_sub_vendor","sortSourceColumn": "is_prime_or_sub","exportColumn":"formatted_is_sub_vendor"},
-    {"labelAlias": "associated_prime_vendor","column": "formatted_associated_vendor","sortSourceColumn":"prime_vendor_name"},
+    {"labelAlias": "associated_prime_vendor","column": "associated_vendor_name","sortSourceColumn":"prime_vendor_name"},
     {"labelAlias": "contract_agency","column": "agency_name_link","sortSourceColumn":"agency_name"},
     {"labelAlias": "contract_type","column": "contract_type_formatted","sortSourceColumn":"agreement_type_name"},
     {"labelAlias": "award_method","column": "award_method_formatted","sortSourceColumn":"award_method_name"},
@@ -239,7 +243,7 @@
     {"sClass":"number number-left", "sWidth":"170px","asSorting": [ "asc","desc" ]},
     {"sClass":"text pad-left", "sWidth":"175px","asSorting": [ "asc","desc" ]},
     {"sClass":"number", "sWidth":"75px","asSorting": [ "desc","asc" ]},
-    {"sClass":"number  pad-left no-sort","bSortable": false, "sWidth":"130px","asSorting": [ "asc","desc" ]},
+    {"sClass":"version  pad-left no-sort","bSortable": false, "sWidth":"140px","asSorting": [ "asc","desc" ]},
     {"sClass":"number","sWidth":"125px","asSorting": [ "desc","asc" ]},
     {"sClass":"number","sWidth":"125px","asSorting": [ "desc","asc" ]},
     {"sClass":"number","sWidth":"125px","asSorting": [ "desc","asc" ]},
@@ -334,7 +338,7 @@
     sOut += '<td class=\"text\" style=\"width:170px\">'+ (row[2] == null ? '': row[2])+'</td>';
     sOut += '<td class=\"text pad-left\"  style=\"width:175px\">'+ (row[3] == null ? '': row[3])+'</td>';
     sOut += '<td class=\"number\"  style=\"width:75px\">'+ (row[4] == null ? '': row[4])+'</td>';
-    sOut += '<td class=\"number  pad-left no-sort\"  style=\"width:130px\">'+ (row[5] == null ? '': row[5])+'</td>';
+    sOut += '<td class=\"text pad-left no-sort\"  style=\"width:140px\">'+ (row[5] == null ? '': row[5])+'</td>';
     sOut += '<td class=\"number\"  style=\"width:125px\">'+ (row[6] == null ? '': row[6])+'</td>';
     sOut += '<td class=\"number\"  style=\"width:125px\">'+ (row[7] == null ? '': row[7])+'</td>';
     sOut += '<td class=\"number\"  style=\"width:125px\">'+ (row[8] == null ? '': row[8])+'</td>';
