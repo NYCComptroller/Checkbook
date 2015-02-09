@@ -60,6 +60,7 @@
    		' . $where_filter . '     
    		group by v.legal_name  ,a1.prime_vendor_id
     	order by 3 desc limit 10';
+
     $node->data  = _checkbook_project_execute_sql($sql);
 	  
 ",
@@ -77,11 +78,12 @@
 	 						; 
 			//$link= CustomURLHelper::prepareUrl(strstr($_GET['q'],'\/',true), ContractURLHelper::$landingPageParams, array('expandBottomCont'=>'true'), 
 			//			array('vendor'=>$row['prim_vendor_id']) );
-			$link = strstr($_GET['q'],'/',true) .  ContractUtil::get_contracts_vendor_link($row['vendor_id'],_getRequestParamValue('year'),
+			$link = strstr($_GET['q'],'/',true) .  ContractUtil::get_contracts_vendor_link($row['prime_vendor_id'],_getRequestParamValue('year'),
 				_getRequestParamValue('yeartype'), _getRequestParamValue('agency')) .  
 				'?expandBottomCont=true';
-			$series_new[$index]->url = 	$link;				
+			$series_new[$index]->url = 	$link;
 
+_getRequestParamValue('yeartype'), _getRequestParamValue('agency')));
 			$series_new[$index]->y = (float)$row['current_amount_sum'];
 			$series_new[$index]->tooltip_label = $tooltip_label;
 			$node->widgetConfig->gridConfig->data[] = array($row['legal_name'],$row['total_contracts'],$row['current_amount_sum'] );
