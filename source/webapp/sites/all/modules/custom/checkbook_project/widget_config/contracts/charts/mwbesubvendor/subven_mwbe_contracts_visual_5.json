@@ -83,7 +83,6 @@
 				'?expandBottomCont=true';
 			$series_new[$index]->url = 	$link;
 
-_getRequestParamValue('yeartype'), _getRequestParamValue('agency')));
 			$series_new[$index]->y = (float)$row['current_amount_sum'];
 			$series_new[$index]->tooltip_label = $tooltip_label;
 			$node->widgetConfig->gridConfig->data[] = array($row['legal_name'],$row['total_contracts'],$row['current_amount_sum'] );
@@ -122,7 +121,7 @@ _getRequestParamValue('yeartype'), _getRequestParamValue('agency')));
 	"colors":["#7DB7E5"],
     "plotOptions": {
             "series": {
-                "cursor": "pointer"   ,
+                "cursor": "pointer" ,
                 "stacking": "normal",
                 "dataLabels": {
                     "enabled": false
