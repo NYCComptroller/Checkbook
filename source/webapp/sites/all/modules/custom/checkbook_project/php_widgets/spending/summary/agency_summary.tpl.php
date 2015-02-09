@@ -20,13 +20,14 @@
 ?>
 <?php
 $records = $node->data;
+
 if(is_array($records)){
     $row = $records[0];
     $title = eval($node->widgetConfig->summaryView->templateTitleEval);
     $agency_name = WidgetUtil::getLabel("agency_name");
     $ytdspending = WidgetUtil::getLabel("ytd_spending");
 
-    if(_getRequestParamValue('smnid') == 759 || _getRequestParamValue('smnid') == 746){
+    if(_getRequestParamValue('smnid') == 759 || _getRequestParamValue('smnid') == 746 || _getRequestParamValue('smnid') == 780){
         $percent_spending_value = $row['percent_spending'];
         $percent_spending = WidgetUtil::getLabel("percent_spending");
     }
@@ -42,6 +43,7 @@ if(is_array($records)){
         $ytd_spending_agency = WidgetUtil::getLabel("ytd_spending_agency");
 
     }
+
     //sub_vendors_percent_paid_formatted
 
 
