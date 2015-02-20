@@ -388,6 +388,7 @@
     <copyField source="fms_pending_contract_number" dest="text" />
     <copyField source="apt_pin" dest="text" />
     <copyField source="civil_service_title" dest="text" />
+    <copyField source="minority_type_name" dest="text" />
     <copyField source="civil_service_title" dest="civil_service_title_autocomplete" />
     <copyField source="budget_code_name_code" dest="budget_code_name_code_autocomplete" />
     <copyField source="revenue_class_name_code" dest="revenue_class_name_code_autocomplete" />
