@@ -800,7 +800,14 @@
                 fms_contract_number,
                 cif_received_date date_ordering,
                 8 domain_ordering,
-                document_version
+                document_version,
+                case when minority_type_id in (4,5,10) then 'Asian American' when minority_type_id in (2) then 'Black American' when minority_type_id in (7) then 'Non-M/WBE' when minority_type_id in (9) then 'Women' else minority_type_name end as minority_type_name_contract,
+        case when minority_type_id in (4,5,10) then 'Asian American' when minority_type_id in (2) then 'Black American' when minority_type_id in (7) then 'Non-M/WBE' when minority_type_id in (9) then 'Women' else minority_type_name end as minority_type_name,
+        minority_type_id,
+        case when minority_type_id in (4,5,10) then 10 else minority_type_id end as minority_type_id_contract,
+                case when is_prime_or_sub in ('S') then 'Yes' when is_prime_or_sub in ('P') then 'No' else is_prime_or_sub end as is_prime_or_sub,
+                is_minority_vendor,
+                vendor_type
             from pending_contracts p
             left join ref_document_code dc on p.document_code_id = dc.document_code_id
             left join ref_agency ra on p.document_agency_id = ra.agency_id
@@ -840,6 +847,13 @@
             <field column="fiscal_year_id" name="fiscal_year_id" />
             <field column="domain_ordering" name="domain_ordering" />
             <field column="date_ordering" name="date_ordering" />
+            <field column="minority_type_name" name="minority_type_name" />
+            <field column="minority_type_id" name="minority_type_id" />
+            <field column="is_prime_or_sub" name="is_prime_or_sub" />
+            <field column="vendor_type" name="vendor_type" />
+            <field column="is_minority_vendor" name="is_minority_vendor" />
+            <field column="minority_type_name_contract" name="minority_type_name_contract" />
+            <field column="minority_type_id_contract" name="minority_type_id_contract" />
         </entity>
     </document>
 </dataConfig>

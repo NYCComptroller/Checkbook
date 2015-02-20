@@ -211,7 +211,11 @@ foreach ($contracts_parameter_mapping as $key => $title){
                 $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". $fiscal_year_id ."/mwbe/".$id ."/dashboard/ms'>" .$contracts_results["minority_type_name"]."</a>";
             }
             else{
-                $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". $fiscal_year_id ."/mwbe/".$id ."/dashboard/mp'>" .$contracts_results["minority_type_name"]."</a>";
+                if(strtolower($contracts_results['contract_status']) == 'pending'){
+                    $value = "<a href='/contracts_pending_exp_landing/yeartype/B/year/". _getFiscalYearID() ."/mwbe/".$id ."/dashboard/mp'>" .$contracts_results["minority_type_name"]."</a>";
+                }else{
+                    $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". $fiscal_year_id ."/mwbe/".$id ."/dashboard/mp'>" .$contracts_results["minority_type_name"]."</a>";
+                }
             }
         }
         else{
