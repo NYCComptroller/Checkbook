@@ -111,6 +111,7 @@
                         }
                     ]
                 }
+
             ],
             "measures": {
                 "check_amount_sum": {
@@ -198,6 +199,15 @@
                         {
                             "name": "agreement_id",
                             "sourceColumnName": "agreement_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "document_code",
+                    "levels": [
+                        {
+                            "name": "document_code",
+                            "sourceColumnName": "document_code"
                         }
                     ]
                 }
