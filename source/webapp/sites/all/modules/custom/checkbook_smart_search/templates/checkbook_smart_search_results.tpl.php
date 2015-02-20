@@ -149,7 +149,12 @@ if($noOfTotalResults > 0){
   print "<div class='smart-search-left'>";
   print '<span class="exportSmartSearch" value="' . $noOfResults. '" >Export</span>';
   //Begin of Pagination at the top
-  pager_default_initialize($noOfTotalResults, $noOfResultsPerPage);
+    if($noOfTotalResults > 1000000){
+        pager_default_initialize(1000000, $noOfResultsPerPage);
+    }else{
+        pager_default_initialize($noOfTotalResults, $noOfResultsPerPage);
+    }
+  //pager_default_initialize($noOfTotalResults, $noOfResultsPerPage);
   $output = theme('pager', array('quantity' => $total));
   if($output==""){
    $output= '<div class="item-list"><ul class="pager">
@@ -200,8 +205,12 @@ if($noOfTotalResults > 0){
 
   print "<div id='smart-search-transactions'>Showing: " . number_format($startIndex) . " to ". number_format($endIndex) ." of ". number_format($noOfTotalResults) ." entries</div>";
   //Begin of Pagination at the bottom
-
-  pager_default_initialize($noOfTotalResults, $noOfResultsPerPage);
+    if($noOfTotalResults > 1000000){
+        pager_default_initialize(1000000, $noOfResultsPerPage);
+    }else{
+        pager_default_initialize($noOfTotalResults, $noOfResultsPerPage);
+    }
+  //pager_default_initialize($noOfTotalResults, $noOfResultsPerPage);
   $output = theme('pager', array('quantity' => $total));
   if($output==""){
     $output= '<div class=" item-list"><ul class="pager">
