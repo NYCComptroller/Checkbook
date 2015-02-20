@@ -404,6 +404,10 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'gridview/spending_highchart_contract',
             'arguments' => array('node' => NULL)
         ),
+        'highchart_spending_contract_disbursement_grid_view' => array(
+            'template' => 'gridview/spending_highchart_contract_disbursement',
+            'arguments' => array('node' => NULL)
+        ),
         'highchart_contract_grid_view' => array(
             'template' => 'gridview/contacts_nyc_highchart',
             'arguments' => array('node' => NULL)
