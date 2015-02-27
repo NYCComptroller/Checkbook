@@ -463,7 +463,7 @@ class RequestUtil{
             $title = "Expense Budget Details";
          }
          else{
-           $title = _get_budget_breadcrumb_title_drilldown() . ' Exepnse Budget' ;
+           $title = _get_budget_breadcrumb_title_drilldown() . ' Expense Budget' ;
          }
 
          return html_entity_decode($title);
