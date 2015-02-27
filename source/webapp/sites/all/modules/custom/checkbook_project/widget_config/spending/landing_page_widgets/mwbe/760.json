@@ -51,7 +51,7 @@
     },
     "summaryView":{
         "template":"spending_dept_summary",
-        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Departments');"
+        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Department');"
     },
     "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Departments');",
     "table_title":"",
