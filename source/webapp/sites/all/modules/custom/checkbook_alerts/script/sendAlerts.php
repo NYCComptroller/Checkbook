@@ -25,7 +25,7 @@
 
 _drush_bootstrap_drupal_full();
 
-$recipients = db_query("SELECT DISTINCT recipient FROM checkbook_alerts");
+$recipients = db_query("SELECT DISTINCT recipient FROM checkbook_alerts WHERE un_subscribed_date IS NULL");
 
 foreach($recipients as $recipient){
 
@@ -51,6 +51,9 @@ foreach($recipients as $recipient){
       $alert->new_count=$newRecords;      
       if($alert->recipient_type=="EMAIL"){
         $alertsToEmail[]=$alert;
+          db_insert('checkbook_alerts_sent')
+              ->fields(array('checkbook_alerts_sysid' => $alert->checkbook_alerts_sysid,'sent_date' => date("Y-m-d H:i:s")))
+              ->execute();
       }else if($alert->recipient_type=="TWITTER"){
         _checkbook_alerts_process_twitter($alert);
       }
