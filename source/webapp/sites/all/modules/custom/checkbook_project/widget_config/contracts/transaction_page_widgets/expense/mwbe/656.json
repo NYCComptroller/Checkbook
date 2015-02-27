@@ -189,21 +189,25 @@
             "type": "expression2",
             "expression": "round($row['percent_difference'],2) . '%'"
         },
-        "formatted_minority_name": {
-            "type": "expression2",
-            "expression": "MappingUtil::getMinorityCategoryById($row['minority_type_id'])"
+        "mwbe_category_name_formatted": {
+            "type":"expression2",
+            "expression":"MappingUtil::getMinorityCategoryById($row['minority_type_id'])"
         },
-        "formatted_minority_name_link": {
+        "mwbe_category_name": {
             "type": "expression2",
             "expression": "ContractUtil::get_mwbe_category_url($row['minority_type_id'], $row['is_prime_or_sub'])"
         },
-        "formatted_is_sub_vendor": {
-            "type": "expression2",
+        "is_sub_vendor": {
+            "type":"expression2",
             "expression": "($row['is_prime_or_sub'] == 'P')?'No':'Yes'"
         },
-        "formatted_associated_vendor": {
-            "type": "expression2",
-            "expression": "($row['is_prime_or_sub'] == 'P')?'N/A':$row['prime_vendor_name']"
+        "associated_prime_vendor_name":{
+        "type": "expression2",
+        "expression":"(preg_match('/S/', $row[vendor_type])) ? _get_tooltip_markup($row['prime_vendor_name'], 34) : 'N/A'"
+        },
+        "associated_prime_vendor_name_export":{
+        "type": "expression2",
+        "expression":"(preg_match('/S/', $row[vendor_type])) ? $row['prime_vendor_name'] : 'N/A'"
         }
     },
     "table_columns": [
@@ -219,8 +223,8 @@
         {"labelAlias": "dollar_diff","column": "formatted_dollar_diff","sortSourceColumn":"dollar_difference"},
         {"labelAlias": "percent_diff","column": "formatted_percent_diff","sortSourceColumn":"percent_difference"},
         {"labelAlias": "vendor_name","column": "vendor_name_link","sortSourceColumn":"vendor_name"},
-        {"labelAlias": "sub_vendor_name","column":"formatted_is_sub_vendor","sortSourceColumn": "is_prime_or_sub","exportColumn":"formatted_is_sub_vendor"},
-        {"labelAlias": "associated_prime_vendor","column": "formatted_associated_vendor","sortSourceColumn":"prime_vendor_name"},
+        {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"is_prime_or_sub","exportColumn":"is_sub_vendor"},
+        {"labelAlias":"associated_prime_vendor","column":"associated_prime_vendor_name","sortSourceColumn":"prime_vendor_name","exportColumn":"associated_prime_vendor_name_export"},
         {"labelAlias": "contract_agency","column": "agency_name_link","sortSourceColumn":"agency_name"},
         {"labelAlias": "contract_type","column": "contract_type_formatted","sortSourceColumn":"agreement_type_name"},
         {"labelAlias": "award_method","column": "award_method_formatted","sortSourceColumn":"award_method_name"},
@@ -231,7 +235,33 @@
         {"labelAlias": "reg_date","column": "registered_date"},
         {"labelAlias": "pin","column": "tracking_number"},
         {"labelAlias": "apt_pin","column": "brd_awd_no"},
-        {"labelAlias": "mwbe_category","column":"formatted_minority_name_link","sortSourceColumn": "minority_type_name","exportColumn":"minority_type_name"}
+        {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name_formatted"}
+    ],
+    "exportColumnSqlOverride":[
+        {
+            "column":"mwbe_category_name",
+            "sourceColumn":"minority_type_id",
+            "sql":"
+            case
+            when minority_type_id = 2 then 'Black American'
+            when minority_type_id = 3 then 'Hispanic American'
+            when minority_type_id = 7 then 'Non-M/WBE'
+            when minority_type_id = 9 then 'Women'
+            when minority_type_id = 11 then 'Individuals and Others'
+            else 'Asian American'
+            end as minority_type_name
+            "
+        },
+        {
+            "column":"is_sub_vendor",
+            "sourceColumn":"is_prime_or_sub",
+            "sql":"case when is_prime_or_sub = 'P' then 'No' else 'Yes' end as vendor_type"
+        },
+        {
+        "column":"associated_prime_vendor_name",
+        "sourceColumn":"prime_vendor_name",
+        "sql":"case when l1.is_prime_or_sub = 'P' then 'N/A' else prime_vendor_name end"
+        }
     ],
     "adjustParameters":"
         if(isset($parameters['vendor_type'])){
