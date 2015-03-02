@@ -66,8 +66,8 @@ class masterAgreementDetails {
     
     
     if(_get_current_datasource() ==_get_default_datasource() ){
-    	$query2 = "select rfed_amount from {agreement_snapshot_expanded} where original_agreement_id = " .$mag_id . "
-     		and master_agreement_yn = 'Y'  and status_flag = 'A'  order by fiscal_year  desc  limit 1"  ;
+    	$query2 = "select rfed_amount from {agreement_snapshot} where original_agreement_id = " .$mag_id . "
+     		and master_agreement_yn = 'Y'  and latest_flag = 'Y'"  ;
     	 
 	    $results2 = _checkbook_project_execute_sql_by_data_source($query2,_get_default_datasource());
 	    $spent_amount = 0;
