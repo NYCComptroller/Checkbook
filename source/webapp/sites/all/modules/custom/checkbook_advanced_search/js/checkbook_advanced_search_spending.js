@@ -214,6 +214,10 @@
                 year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
             }
             var agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
+
+            //Don't update drop downs if no agency is selected
+            if(agency == 0) return;
+
             var dept = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
             var exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
             var data_source = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
