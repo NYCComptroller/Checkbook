@@ -90,7 +90,7 @@ echo eval($node->widgetConfig->header);
     </tbody>
 </table>
 </div>
-<div class="footnote"><p>(*) Date of inception of Hudson Yards Infrastructure Corporation was August 19, 2004.</p>
+<div class="footnote"><!-- p>(*) Date of inception of Hudson Yards Infrastructure Corporation was August 19, 2004.</p -->
     <p>HYIC first DIB collection was on September 21, 2005 and issued its first bonds on December 21, 2006.</p>
     <p>(1) District Improvement Bonuses (DIB)</p>
     <p>(2) Property Tax Equivalency Payments (TEP)</p>

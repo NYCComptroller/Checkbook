@@ -31,7 +31,7 @@
 	}
 	rsort($years);
 	$header = '';
-    $header .= ',,,,,,1997-2013,,,,,'."\n";
+    $header .= ',,,,,,1997-2014,,,,,'."\n";
     $header .= ',,,,,,(average annual employment in thousands),,,,,'."\n";
 
     foreach ($years as $year){
@@ -73,7 +73,7 @@
 
 echo "\n"."\n"."(a) Includes rounding  adjustments"."\n"."\n"
         ."(b) Six month average"."\n"."\n"
-        ."NA:Not Available"."\n\n"
+
 .'"'."Notes: This schedule is provided in lieu of a schedule of principal employees because it provides more meaningful information. Other than the City of New York, no single
 employer employs more than 2 percent of total nonagricultural employees.".'"'."\n\n".
 "Data are not seasonally adjusted."."\n\n".'"'.

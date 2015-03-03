@@ -20,7 +20,8 @@
 ?>
 <?php
 	$header = 'Fiscal Year';
-
+    $header .=  ",General Bonded Debt" ;
+    $header .=  ",Debt Secure by Revenue other than property tax" ;
     $header .=  ",General Obligation Bonds (in millions)" ;
     $header .=  ",Percentage of Actual Taxable Value of Property," ;
     $header .=  ",Per Capita General Obligations";
@@ -33,6 +34,8 @@
         $percent_sign = ($count == 1) ? '%':'';
 
         $rowString = $row['fiscal_year'] ;
+        $rowString .= ',' . '"'. number_format($row['general_bonded_debt']) .'"';
+        $rowString .= ',' . '"'. number_format($row['debt_by_revenue_ot_prop_tax']) .'"';
         $rowString .= ',' . '"'. number_format($row['general_obligation_bonds']) .'"';
         $rowString .= ',' . '"'. number_format($row['percentage_atcual_taxable_property'], 2).'"'.','.$percent_sign;
         $rowString .= ',' . '"'. number_format($row['per_capita_general_obligations']).'"';

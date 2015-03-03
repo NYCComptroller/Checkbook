@@ -36,7 +36,7 @@ echo eval($node->widgetConfig->header);
     <thead>
     <tr>
     	<th>&nbsp;</th>
-    	<th colspan="4" class="centrig bb"><div>2000-2012<sup>*</sup></div></th>
+    	<th colspan="4" class="centrig bb"><div>2000-2013<sup>*</sup></div></th>
     </tr>
 	<tr>
         <th class="number" ><div class="trendCen">Year</div></th>
@@ -68,7 +68,7 @@ echo eval($node->widgetConfig->header);
     </tbody>
 </table>
     <div class="footnote">
-         <p>Note: Data Not Available</p>
+         <p>*Amounts as of May 30, 2014</p>
          <p>Source: U.S Department of Commerce,Bureau of Economic Analysis.</p>
     </div>
 <?php 

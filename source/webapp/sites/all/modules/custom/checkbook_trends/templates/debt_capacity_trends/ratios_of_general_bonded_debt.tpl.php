@@ -36,9 +36,13 @@ echo eval($node->widgetConfig->header);
     <thead>
 	<tr>
         <th class="number"><div class="trendCen" >Fiscal<br>Year</div></th>
+        <th class="number"><div class="trendCen" >General<br>Bonded<br>Debt</div></th>
+        <th class="number"><div class="trendCen" >Debt Secure<br>by Revenue<br>other than<br>property tax</div></th>
         <th class="number"><div class="trendCen" >General<br>Obligation<br>Bonds<br/>(in millions)</div></th>
         <th class="number"><div class="trendCen" >Percentage of<br>Actual Taxable<br>Value of Property</div></th>
         <th class="number"><div class="trendCen" >Per<br>Capita<br/>General<br>Obligations</div></th>
+        <th class="number"><div class="trendCen" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></th>
+
     </tr>
     </thead>
 
@@ -50,9 +54,12 @@ echo eval($node->widgetConfig->header);
                 $percent_sign = ($count == 1) ? '<span class="endItem">%</span>' : '<span class="endItem" style="visibility:hidden;">%</span>';
 
 			    echo "<tr><td class='number bonded'><div class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
+                echo "<td class='number bonded'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['general_bonded_debt']) . "</div></td>";
+                echo "<td class='number bonded'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['debt_by_revenue_ot_prop_tax']) . "</div></td>";
     			echo "<td class='number bonded'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['general_obligation_bonds']) . "</div></td>";
     			echo "<td class='number bonded'><div class='tdCen'>" . number_format($row['percentage_atcual_taxable_property'],2) . $percent_sign. "</div></td>";
     			echo "<td class='number bonded'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['per_capita_general_obligations']) . "</div></td>";
+                echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 			    echo "</tr>";
                 $count++;
     		}
