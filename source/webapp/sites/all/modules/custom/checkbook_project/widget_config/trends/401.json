@@ -18,8 +18,8 @@
         "bSort":false,
        	"sScrollX": "100%",
  	"bScrollCollapse": false,
-         "sScrollXInner": "1400px",
-         "bAutoWidth": false,
+         //"sScrollXInner": "1400px",
+         //"bAutoWidth": false,
         "fnPreDrawCallback":"##function( oSettings ) {
             jQuery('.trendsShowOnLoad').show();
             return true;
@@ -63,7 +63,9 @@
         { "sWidth": "30px"},
         {"sWidth":"55px"},
         { "sWidth": "30px"},        
-        {"sWidth":"55px"},        
+        {"sWidth":"55px"},
+        { "sWidth": "30px"},
+        {"sWidth":"55px"},
         {"sWidth":"25px"}
         ]       
        },
