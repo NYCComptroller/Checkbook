@@ -46,7 +46,7 @@ rsort($years);
   <tbody>
   <tr>
     <td width="240"><div>&nbsp;</div></td>
-    <td class="bb"><div>1997-2013<br>(average annual employment in thousands)</div></td>
+    <td class="bb"><div>1997-2014<br>(average annual employment in thousands)</div></td>
   </tr>
   </tbody>
 </table>
@@ -139,7 +139,6 @@ rsort($years);
     <div class="footnote">
         <p>(A) Includes rounding  adjustments</p>
         <p>(B) Six month average</p>
-        <p>NA:Not Available</p>
 
         <p>Notes: This schedule is provided in lieu of a schedule of principal employees because it provides more meaningful information. Other than the City of New York, no single
 employer employs more than 2 percent of total nonagricultural employees.</p>

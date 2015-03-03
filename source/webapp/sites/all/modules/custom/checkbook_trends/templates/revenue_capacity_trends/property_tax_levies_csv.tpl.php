@@ -19,12 +19,12 @@
 */
 ?>
 <?php
-
+echo "\n".'Property Tax Levies and Collections - Ten Year Trend'."\n"."\n";
 	$header = 'Fiscal year';
     $header .=  ",Taxes Levied for the Fiscal Year"  ;
     $header .=  ",Collected Within the Fiscal Year of the Levy - Amount"  ;
     $header .=  ",Collected Within the Fiscal Year of the Levy - Percentage of Levy,"  ;
-    $header .=  ",Collected in Subsequent Years"  ;
+    $header .=  ",Collected Within the Fiscal Year of the Levy - Collected in Subsequent Years"  ;
     $header .=  ",Non-Cash Liquidations and Adjustments to Levy(1)"  ;
     $header .=  ",Total Collections and Adjustments to Date - Amount"  ;
     $header .=  ",Total Collections and Adjustments to Date - Percentage of Levy,"  ;

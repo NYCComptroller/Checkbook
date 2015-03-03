@@ -44,8 +44,7 @@ if(preg_match('/featuredtrends/',$_GET['q'])){
     <tr>
         <th class="number rowspan2Top"><div class="trendCen" >Fiscal</div></th>
         <th rowspan="2" class="number"><div class="trendCen" >Taxes Levied<br>for the<br>Fiscal Year</div></th>
-        <th colspan="2" class="centrig bb"><div class="trendCen" >Collected Within the<br>Fiscal Year of the Levy</div></th>
-        <th rowspan="2" class="number"'><div class="trendCen" >Collected<br>in Subsequent<br>Years</div></th>
+        <th colspan="3" class="centrig bb"><div class="trendCen" >Collected Within the<br>Fiscal Year of the Levy</div></th>
         <th rowspan="2" class="number"><div class="trendCen" >Non-Cash<br>Liquidations<br>and Adjustments<br>to Levy<sup>(1)</sup></div></th>
         <th colspan="2" class="centrig bb"><div>Total Collections<br>and Adjustments to Date</div></th>
         <th rowspan="2" class="number"><div class="trendCen" >Remaining<br>Uncollected<br>July 1, 2011</div></th>
@@ -55,6 +54,7 @@ if(preg_match('/featuredtrends/',$_GET['q'])){
 	  <th class="number rowspan2Bot"><div class="trendCen" >Year</div></th>
       <th class="number"><div class="trendCen" >Amount</div></th>
       <th class="number"><div class="trendCen" >Percentage<br>of the Levy</div></th>
+      <th class="number"'><div class="trendCen" >Collected<br>in Subsequent<br>Years</div></th>
       <th class="number"><div class="trendCen" >Amount</div></th>
       <th class="number"><div class="trendCen" >Percentage<br>of the Levy</div></th>
     </tr>

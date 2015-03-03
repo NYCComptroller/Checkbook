@@ -64,8 +64,7 @@
         $count++;
    	}
 
-    echo "\n".'"'."(*) Date of inception of Hudson Yards Infrastructure Corporation was August 19, 2004.".'"'
-        ."\n".'"'."HYIC first DIB collection was on September 21, 2005 and issued its first bonds on December 21, 2006.".'"'
+    echo "\n".'"'."HYIC first DIB collection was on September 21, 2005 and issued its first bonds on December 21, 2006.".'"'
         ."\n".'"'."(1) District Improvement Bonuses (DIB)".'"'
         ."\n".'"'."(2) Property Tax Equivalency Payments (TEP)".'"'
         ."\n".'"'."(3) Interest Support Payments (ISP)".'"'
