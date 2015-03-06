@@ -23,7 +23,9 @@
 $revenue_parameter_mapping = _checkbook_smart_search_domain_fields('revenue');
 
 $linkable_fields = array("agency_name" => "/agency/". $revenue_results["agency_id"],);
-
+if($revenue_results['fiscal_year'] < 2010){
+    $linkable_fields = array();
+}
 $amount_fields = array("adopted_amount", "current_budget_amount", "posting_amount");
 
 $count = 1;

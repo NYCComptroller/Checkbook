@@ -105,7 +105,12 @@ foreach ($render_array as $title => $value) {
                                 echo '<div class="row">';
                                 echo '<div class="checkbox">';
                                 if ($sub_cat[0]) {
-                                    echo '<input name="' . $name . '" type="checkbox"' . $checked . 'value="' . $sub_cat[0] . '" onClick="javascript:applySearchFilters();">';
+                                    if($a == 'Status'){
+                                        echo '<input name="' . $name . '" type="radio"' . $checked . 'value="' . $sub_cat[0] . '" onClick="javascript:applySearchFilters();">';
+                                    }
+                                    else{
+                                        echo '<input name="' . $name . '" type="checkbox"' . $checked . 'value="' . $sub_cat[0] . '" onClick="javascript:applySearchFilters();">';
+                                    }
                                 }
                                 echo '</div>';
                                 echo '<div class="name">' . htmlentities($sub_cat[1]) . '</div>';

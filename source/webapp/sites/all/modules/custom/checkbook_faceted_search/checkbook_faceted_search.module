@@ -439,7 +439,7 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
                 $checked = (in_array($status, array_values_recursive($reqContStatus[0]))) ? 'checked' : '';
                 $subCat['contracts']['Status'][] = array($status, $status, $statusCount, $checked);
                 if (strtolower($status) == 'registered') {
-                  $subCat['contracts']['Status'][] = array('', 'Active', $active_contracts['response']['numFound']);
+                  $subCat['contracts']['Status'][] = array('active', 'Active', $active_contracts['response']['numFound']);
                 }
               }
             }

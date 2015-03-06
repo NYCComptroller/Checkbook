@@ -24,7 +24,9 @@ $budget_parameter_mapping = _checkbook_smart_search_domain_fields('budget');
 $linkable_fields = array("agency_name" => "/budget/year/" . _getCurrentYearID() . "/yeartype/B/agency/".$budget_results["agency_id"],
                          "expenditure_object_name" => "/budget/year/". _getCurrentYearID() . "/yeartype/B/expcategory/".$budget_results["expenditure_object_id"],
                         );
-
+if($budget_results['fiscal_year'] < 2010){
+    $linkable_fields = array();
+}
 $amount_fields = array("adopted_amount", "current_budget_amount", "total_expenditure","pre_encumbered_amount","encumbered_amount","accrued_expense_amount","cash_expense_amount","post_closing_adjustment_amount");
 
 $count = 1;

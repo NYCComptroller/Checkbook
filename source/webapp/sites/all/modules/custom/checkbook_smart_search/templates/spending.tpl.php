@@ -68,6 +68,9 @@ $count = 1;
 $row = array();
 $rows = array();
 $spending_results["check_eft_issued_date"] = ($IsOge)? "N/A" : $spending_results["check_eft_issued_date"];
+if($fiscal_year_id < 111){
+    $linkable_fields = array();
+}
 foreach ($spending_parameter_mapping as $key=>$title){
   if($key == 'expenditure_object_name'){
     $value = $spending_results[$key][0];
@@ -122,7 +125,9 @@ foreach ($spending_parameter_mapping as $key=>$title){
             else{
                 $value = "<a href='/spending_landing/yeartype/B/year/". $fiscal_year_id ."/mwbe/".$id ."/dashboard/mp'>" .$spending_results["minority_type_name"]."</a>";
             }
-
+            if($fiscal_year_id < 111){
+                $value = $spending_results["minority_type_name"];
+            }
         }
         else{
             $value = $spending_results["minority_type_name"];
