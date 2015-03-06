@@ -13,6 +13,7 @@ $contracts_parameter_mapping = _checkbook_smart_search_domain_fields('contracts'
 
 if(strtolower($contracts_results['contract_status']) == 'registered'){
 
+   $fiscal_year = $contracts_results['fiscal_year'];
    $current_date = date("c").'Z';
    $start_date = date("c", strtotime($contracts_results['start_date']));
    $end_date = date("c", strtotime($contracts_results['end_date']));
@@ -102,7 +103,6 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
         $contracts_results['parent_contract_number'] = "<a href='". $master_contract_Id_link."'>".$contracts_results['parent_contract_number']."</a>";
     }
 
-
 }else if(strtolower($contracts_results['contract_status']) == 'pending'){
     $current_year = "/yeartype/B/year/". _getFiscalYearID();
     if(strtolower($contracts_results['contract_category_name']) == 'expense'){
@@ -137,6 +137,7 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
 }
 
 
+
 if($IsOge && !in_array($contracts_results['contract_type_code'],array('MMA1', 'MA1'))){
     $linkable_fields = array("oge_contracting_agency_name" => $agency_link,
                              "agency_name" => $agency_link,
@@ -148,6 +149,10 @@ if($IsOge && !in_array($contracts_results['contract_type_code'],array('MMA1', 'M
 			"vendor_name" => $vendor_link,
 	);
 	
+}
+// for contracts with fiscal year 2009 and earlier, links should be disabled
+if($fiscal_year < 2010){
+    $linkable_fields = array();
 }
 
 if($IsOge && in_array($contracts_results['contract_type_code'],array('MMA1'))){
@@ -179,9 +184,9 @@ foreach ($contracts_parameter_mapping as $key => $title){
   }
   $temp = substr($value, strpos(strtoupper($value), strtoupper($SearchTerm)),strlen($SearchTerm));
   if($key =="contract_number"){
-  	$value = "<a href='".$contract_Id_link ."'>".$contracts_results['contract_number']."</a>";
+    $value = "<a href='".$contract_Id_link ."'>".$contracts_results['contract_number']."</a>";
   }else if($key =="parent_contract_number"){
-  	$value = "<a href='".$master_contract_Id_link ."'>".$contracts_results['parent_contract_number']."</a>";    	
+    $value = "<a href='".$master_contract_Id_link ."'>".$contracts_results['parent_contract_number']."</a>";
   }else{
   	$value = str_ireplace($SearchTerm,'<em>'. $temp . '</em>', $value);
   }
@@ -216,6 +221,9 @@ foreach ($contracts_parameter_mapping as $key => $title){
                 }else{
                     $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". $fiscal_year_id ."/mwbe/".$id ."/dashboard/mp'>" .$contracts_results["minority_type_name"]."</a>";
                 }
+            }
+            if($fiscal_year < 2010){
+                $value = $contracts_results["minority_type_name"];
             }
         }
         else{

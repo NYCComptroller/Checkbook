@@ -30,6 +30,9 @@ $linkable_fields = array("civil_service_title" => "/payroll/employee/transaction
                          "agency_name" => "/payroll/agency/". $agency_id
                         );
 
+if($payroll_results['fiscal_year'] < 2010){
+    $linkable_fields = array();
+}
 
 $date_fields = array("pay_date");
 $amount_fields = array("annual_salary", "gross_pay", "base_pay", "other_payments", "overtime_pay");
