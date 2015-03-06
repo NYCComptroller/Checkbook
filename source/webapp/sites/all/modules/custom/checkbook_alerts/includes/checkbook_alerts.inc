@@ -58,7 +58,7 @@ function _checkbook_alerts_transactions(){
     $alertEndDate = strtotime(date("Y-m-d", mktime()) . " + 365 day");
   }
   $alertEndDate=date("Y-m-d H:i:s",$alertEndDate);
-  
+
   $alert=array(
     'recipient'=>$_GET['alert_email'],
     'label'=>$_GET['alert_label'],
@@ -70,7 +70,7 @@ function _checkbook_alerts_transactions(){
     'minimum_days'=>$_GET['alert_minimum_days'],
     'date_end'=>$alertEndDate,
     'date_last_new_results'=>date("Y-m-d H:i:s"),
-      'domain'=>'spending',
+      'domain'=>_checkbook_alerts_get_domain(),
       'created_date'=>date("Y-m-d H:i:s"),
       'un_subscribed_date'=>null
   );
@@ -110,6 +110,33 @@ function _checkbook_alerts_transactions(){
     "html"=>theme($_GET['alert_theme_file'],$subData)
   );
   echo json_encode($res);
+}
+
+/**
+ * Based on the current user url, derives to current domain used for reporting.
+ * @return string
+ */
+function _checkbook_alerts_get_domain() {
+
+    $user_url = $_GET['userURL'];
+    $domain = "";
+
+    if(preg_match('/budget/',$user_url)) {
+        $domain = 'budget';
+    }
+    else if(preg_match('/revenue/',$user_url)) {
+        $domain = 'revenue';
+    }
+    else if(preg_match('/spending/',$user_url)) {
+        $domain = 'spending';
+    }
+    else if(preg_match('/contract/',$user_url)) {
+        $domain = 'contracts';
+    }
+    else if(preg_match('/payroll/',$user_url)) {
+        $domain = 'payroll';
+    }
+    return $domain;
 }
 
 function _checkbook_alerts_alertFrequency($days){
