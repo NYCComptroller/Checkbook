@@ -260,5 +260,13 @@
             "title":"M/WBE Category",
             "options":"$mwbe_category_attributes"
         }
+    },
+    "industry":{
+        "field_type":"select",
+        "field_name":"industry",
+        "attributes":{
+            "title":"Industry",
+            "options":"$industry_attributes"
+        }
     }
 }
