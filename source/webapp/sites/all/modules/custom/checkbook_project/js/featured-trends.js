@@ -34,7 +34,7 @@
         else if(slide == 3)
         	$('#breadcrumb span.last').text("Personal Income");
         else if(slide == 4)
-        	$('#breadcrumb span.last').text("Ratios of Outstanding Debt");
+        	$('#breadcrumb span.last').text("Ratios of Outstanding Debt by Type");
         
         $('body.page-featured-trends #featured-trends .inside').cycle(
             {
@@ -61,7 +61,7 @@
                             return '<div id="personal-income" class="navigation">Personal Income</div>';
                             break;
                         case 4:
-                            return '<div id="debt-ratio" class="last navigation">Ratios of Outstanding Debt</div>';
+                            return '<div id="debt-ratio" class="last navigation">Ratios of Outstanding Debt<br>by Type</div>';
                             break;
                     }
                 }
@@ -80,7 +80,7 @@
         else if(this.id == 'personal-income')
         	$('#breadcrumb span.last').text("Personal Income");
         else if(this.id == 'debt-ratio')
-        	$('#breadcrumb span.last').text("Ratios of Outstanding Debt");
+        	$('#breadcrumb span.last').text("Ratios of Outstanding Debt by Type");
 
         return true;
 
