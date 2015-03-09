@@ -1777,6 +1777,18 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#name' => 'agency',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'agency', $first_time_load, 'Citywide (All Agencies)'),
             );
+            $form['filter']['industry'] = array(
+                '#type' => 'select',
+                '#title' => t('Industry:'),
+                '#options' => _industry_options(),
+                '#prefix' => '<div class="datafield industry">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch')),
+                '#multiple' => FALSE,
+                '#id' => 'edit-industry',
+                '#name' => 'industry',
+                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'industry', $first_time_load, ''),
+            );
             $form['filter']['apt_pin'] = array(
                 '#type' => 'textfield',
                 '#title' => t('APT PIN:'),
@@ -2100,6 +2112,13 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
                 $form['filter']['mwbe_category'] = array('#markup' => '<div><strong>M/WBE Category:</strong> ' . MappingUtil::getCurrenEhtnicityName(explode('~',$values['mwbe_category'])) . '</div>');
                 $user_criteria['M/WBE Category'] = $values['mwbe_category'];
             }
+            if ($values['industry']) {
+                preg_match("/.*?(\\[.*?\\])/is", $values['industry'], $matches);
+                $industry_type_name = str_replace($matches[1],"",$matches[0]);
+                $industry_type_id = trim($matches[1], '[ ]');
+                $form['filter']['industry'] = array('#markup' => '<div><strong>Industry:</strong> ' . $industry_type_name . '</div>');
+                $user_criteria['Industry'] = $industry_type_id;
+            }
             break;
     }
     if ($values['apt_pin']) {
@@ -2314,6 +2333,10 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
             }
             if ($values['mwbe_category'] && $values['mwbe_category'] != 'Select Category') {
                 $criteria['value']['mwbe_category'] = $values['mwbe_category'];
+            }
+            if ($values['industry'] && $values['industry'] != 'Select Industry') {
+                preg_match($pattern, $values['industry'], $imatches);
+                $criteria['value']['industry_type_id'] = trim($imatches[1], '[ ]');
             }
             break;
     }
@@ -4260,6 +4283,18 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
                 '#name' => 'mwbe_category',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'mwbe_category', $first_time_load, ''),
             );
+            $form['filter']['industry'] = array(
+                '#type' => 'select',
+                '#title' => t('Industry:'),
+                '#options' => _industry_options(),
+                '#prefix' => '<div class="datafield industry">',
+                '#suffix' => '</div>',
+                '#attributes' => array('class' => array('watch')),
+                '#multiple' => FALSE,
+                '#id' => 'edit-industry',
+                '#name' => 'industry',
+                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'industry', $first_time_load, ''),
+            );
             $form['filter']['payee_name'] = array(
                 '#type' => 'textfield',
                 '#title' => t('Payee Name:'),
@@ -4881,6 +4916,13 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
         $form['filter']['mwbe_category'] = array('#markup' => '<div><strong>M/WBE Category:</strong> ' . MappingUtil::getCurrenEhtnicityName(explode('~',$values['mwbe_category'])) . '</div>');
         $user_criteria['M/WBE Category'] = $values['mwbe_category'];
     }
+    if ($values['industry']) {
+        preg_match("/.*?(\\[.*?\\])/is", $values['industry'], $matches);
+        $industry_type_name = str_replace($matches[1],"",$matches[0]);
+        $industry_type_id = trim($matches[1], '[ ]');
+        $form['filter']['industry'] = array('#markup' => '<div><strong>Industry:</strong> ' . $industry_type_name . '</div>');
+        $user_criteria['Industry'] = $industry_type_id;
+    }
     if ($values['issuedfrom'] && $values['issuedto']) {
         $form['filter']['issued_date'] = array(
             '#markup' => '<div><strong>Issued Date:</strong><br />After: ' . $values['issuedfrom'] . ' Before: ' . $values['issuedto'] . '</div>'
@@ -5046,6 +5088,10 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
             }
             if ($values['mwbe_category'] && $values['mwbe_category'] != 'Select Category') {
                 $criteria['value']['mwbe_category'] = $values['mwbe_category'];
+            }
+            if ($values['industry'] && $values['industry'] != 'Select Industry') {
+                preg_match($pattern, $values['industry'], $imatches);
+                $criteria['value']['industry_type_id'] = trim($imatches[1], '[ ]');
             }
             break;
     }
@@ -5772,6 +5818,24 @@ function _mwbe_category_options()
         $results[implode('~',$minority_types)] = $category;
     }
     return $results;
+}
+
+/**
+ * Get the industry type name and id using the data controller
+ */
+function _industry_options() {
+    try {
+        $dataController = data_controller_get_instance();
+        $industry_types = $dataController->queryDataset('checkbook:industry_type', array('industry_type_id', 'industry_type_name'), NULL, 'industry_type_name', 0, 10, NULL);
+        $industry_types_val = array('Select Industry');
+        foreach ($industry_types as $industry_type) {
+            $industry_types_val[$industry_type['industry_type_name'] . ' [' . $industry_type['industry_type_id'] . ']'] = $industry_type['industry_type_name'];
+        }
+        return $industry_types_val;
+    } catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
+        return;
+    }
 }
 
 /**
