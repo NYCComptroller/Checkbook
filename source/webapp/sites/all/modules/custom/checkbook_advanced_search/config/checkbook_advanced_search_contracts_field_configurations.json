@@ -14,6 +14,7 @@
                 {"field_name":"category","column":"column-right"},
                 {"field_name":"purpose","column":"column-right"},
                 {"field_name":"agency","column":"column-right"},
+                {"field_name":"industry","column":"column-right"},
                 {"field_name":"apt_pin","column":"column-right"},
                 {"field_name":"award_method","column":"column-right"},
                 {"field_name":"start_date","column":"column-right"},

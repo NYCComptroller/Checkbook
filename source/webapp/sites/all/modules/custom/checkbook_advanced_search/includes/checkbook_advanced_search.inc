@@ -176,6 +176,27 @@ function _checkbook_advanced_search_get_mwbe_category_and_id()
     }
     return $results;
 }
+
+/**
+ * Gets the industry types and id using the data controller
+ * @return array
+ */
+function _checkbook_advanced_search_get_industry_type_and_id()
+{
+    try {
+        $dataController = data_controller_get_instance();
+        $industry_types = $dataController->queryDataset('checkbook:industry_type', array('industry_type_id', 'industry_type_name'), NULL, 'industry_type_name', 0, 10, NULL);
+        $industry_types_val = array('Select Industry');
+        foreach ($industry_types as $industry_type) {
+            $industry_types_val[$industry_type['industry_type_id']] = $industry_type['industry_type_name'];
+        }
+        return $industry_types_val;
+    } catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
+        return;
+    }
+}
+
 /*
  * Get expense name and id using the data controller
  * @return array
