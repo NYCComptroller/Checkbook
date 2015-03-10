@@ -255,10 +255,12 @@ function _checkbook_advanced_search_autocomplete_spending_department($year, $age
     if ($year) {
         $year_type = substr($year, 0, 2);
         $year_value = substr($year, 3, strlen($year));
-        if ($year_type == 'fy') {
-            $year_string = "AND disbursement_line_item_details.check_eft_issued_nyc_year_id = '" . $year_value . "' ";
-        } elseif ($year_type == 'cy') {
-            $year_string = "AND disbursement_line_item_details.calendar_fiscal_year_id = '" . $year_value . "' ";
+        if($year_value != 'all') {
+            if ($year_type == 'fy') {
+                $year_string = "AND disbursement_line_item_details.check_eft_issued_nyc_year_id = '" . $year_value . "' ";
+            } elseif ($year_type == 'cy') {
+                $year_string = "AND disbursement_line_item_details.calendar_fiscal_year_id = '" . $year_value . "' ";
+            }
         }
     }
     $agency_string = $agency ? "AND disbursement_line_item_details.agency_id = '" . $agency . "' " : "";
@@ -439,10 +441,12 @@ function _checkbook_advanced_search_autocomplete_payroll_employee_name($pay_freq
         if($year){
             $year_type = substr($year, 0, 2);
             $year_value = substr($year, 3,strlen($year));
-            if($year_type == 'fy'){
-                $query .= '&fq=fiscal_year_id:'.$year_value;
-            }elseif($year_type == 'cy'){
-                $query .= '&fq=calendar_fiscal_year_id:'.$year_value;
+            if($year_value != 'all') {
+                if($year_type == 'fy'){
+                    $query .= '&fq=fiscal_year_id:'.$year_value;
+                }elseif($year_type == 'cy'){
+                    $query .= '&fq=calendar_fiscal_year_id:'.$year_value;
+                }
             }
         }
         $matches = _checkbook_autocomplete_solr_results($query, 'civil_service_title');
