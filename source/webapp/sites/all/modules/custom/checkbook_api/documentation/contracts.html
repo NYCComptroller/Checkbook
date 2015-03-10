@@ -287,6 +287,17 @@ Contract Parameters – All the parameters are optional, meaning that you can se
     <td> User shall be able to extract data for specific mwbe categories, by specifying the mwbe category code in the request XML.For all mwbe categories results, user need not give any mwbe category codes in the request. By default, it shall display results for all categories.See here for mwbe categories list.For mwbe categories with two codes, include both the codes in the request xml. For example, for Asian american, give input as 4~5.</td>
     <td>3</td>
 </tr>
+<tr>
+    <td>industry</td>
+    <td>N</td>
+    <td>value</td>
+    <td>Allows you to select 7 possible industry types. Values must be one of the following: Arch and Engineerng, Construction Services, Goods, Human Services, Not Classified, Professional Services, Standardized Services.</td>
+    <td>Citywide Agencies</td>
+    <td valign="top">Expense<br />Revenue </td>
+    <td valign="top">Active<br />Registered<br />Pending</td>
+    <td>User shall be able to extract data for specific industry, by specifying the industry type in the request XML.For all industry type results, user need not give any industry type in the request. By default, it shall display results for all industry types.</td>
+    <td>Goods</td>
+</tr>
 </tbody>
 </table>
 <a href="#top" class="float-right">Back to the top</a>
@@ -340,7 +351,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
             </tr>
             <tr>
                 <td>apt_pin</td>
-                <td>contract_industry</td>
+                <td>industry</td>
             </tr>
             <tr>
                 <td>year</td>
@@ -391,7 +402,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
             </tr>
             <tr>
                 <td>document_code</td>
-                <td>contract_industry</td>
+                <td>industry</td>
             </tr>
             <tr>
                 <td>version</td>
@@ -444,7 +455,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
             </tr>
             <tr>
                 <td>agency</td>
-                <td>contract_industry</td>
+                <td>industry</td>
             </tr>
             <tr>
                 <td>document_code</td>
@@ -490,7 +501,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
                 <td>agency</td>
             </tr>
             <tr>
-                <td>contract_industry</td>
+                <td>industry</td>
                 <td>document_code</td>
             </tr>
             <tr>
@@ -541,7 +552,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
         </tr>
         <tr>
             <td>document_code</td>
-            <td>contract_industry</td>
+            <td>industry</td>
         </tr>
         <tr>
             <td>year</td>
@@ -710,7 +721,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
             &lt;column&gt;expense_category&lt;/column&gt;
                &lt;column&gt;start_date&lt;/column&gt;
                &lt;column&gt;end_date&lt;/column&gt;
-               &lt;column&gt;contract_industry&lt;/column&gt;
+               &lt;column&gt;industry&lt;/column&gt;
                &lt;column&gt;year&lt;/column&gt;
                &lt;column&gt;document_code&lt;/column&gt;
                &lt;column&gt;mwbe_category&lt;/column&gt;
@@ -822,7 +833,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
             &lt;column&gt;expense_category&lt;/column&gt;
                &lt;column&gt;start_date&lt;/column&gt;
                &lt;column&gt;end_date&lt;/column&gt;
-               &lt;column&gt;contract_industry&lt;/column&gt;
+               &lt;column&gt;industry&lt;/column&gt;
                &lt;column&gt;year&lt;/column&gt;
                &lt;column&gt;document_code&lt;/column&gt;
                &lt;column&gt;mwbe_category&lt;/column&gt;
@@ -855,7 +866,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
          &lt;version&gt;1&lt;/version&gt;
 &lt;pin&gt;212&lt;/pin&gt;
 &lt;apt_pin&gt;322&lt;/apt_pin&gt;
-        &lt;contract_industry&gt;Goods&lt;/contract_industry&gt;
+        &lt;industry&gt;Goods&lt;/industry&gt;
 &lt;mwbe_category&gt;Hispanic American&lt;/mwbe_category&gt;
 &lt;subvendor&gt;No&lt;/subvendor&gt;
 &lt;associated_prime_vendor&gt;N/A&lt;/associated_prime_vendor&gt;
@@ -956,7 +967,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
            &lt;column&gt;award_method&lt;/column&gt;
            &lt;column&gt;start_date&lt;/column&gt;
            &lt;column&gt;end_date&lt;/column&gt;
-           &lt;column&gt;contract_industry&lt;/column&gt;
+           &lt;column&gt;industry&lt;/column&gt;
            &lt;column&gt;document_code&lt;/column&gt;
           &lt;column&gt;mwbe_category&lt;/column&gt;
 &lt;/response_columns&gt;
@@ -1058,7 +1069,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
            &lt;column&gt;award_method&lt;/column&gt;
            &lt;column&gt;start_date&lt;/column&gt;
            &lt;column&gt;end_date&lt;/column&gt;
-           &lt;column&gt;contract_industry&lt;/column&gt;
+           &lt;column&gt;industry&lt;/column&gt;
            &lt;column&gt;document_code&lt;/column&gt;
           &lt;column&gt;mwbe_category&lt;/column&gt;
 &lt;/response_columns&gt;
@@ -1085,7 +1096,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
          &lt;document_code&gt;CT1&lt;/document_code&gt;
 &lt;pin&gt;212&lt;/pin&gt;
 &lt;apt_pin&gt;322&lt;/apt_pin&gt;
-        &lt;contract_industry&gt;Goods&lt;/contract_industry&gt;
+        &lt;industry&gt;Goods&lt;/industry&gt;
 &lt;mwbe_category&gt;Hispanic American&lt;/mwbe_category&gt;
 &lt;/transaction&gt;
  &lt;/transactions&gt;
@@ -1188,7 +1199,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
         &lt;column&gt;start_date&lt;/column&gt;
         &lt;column&gt;end_date&lt;/column&gt;
         &lt;column&gt;pin&lt;/column&gt;
-        &lt;column&gt;contract_industry&lt;/column&gt; 
+        &lt;column&gt;industry&lt;/column&gt;
         &lt;column&gt;document_code&lt;/column&gt;
         &lt;column&gt;budget_name&lt;/column&gt;
         &lt;column&gt;commodity_line&lt;/column&gt;
@@ -1303,7 +1314,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
          &lt;document_code&gt;CTA1&lt;/document_code&gt;
 &lt;pin&gt;801SBS120110&lt;/pin&gt;
 &lt;apt_pin&gt;80112S0002001A001&lt;/apt_pin&gt; 
-         &lt;contract_industry&gt;Not Classified&lt;/contract_industry&gt;
+         &lt;industry&gt;Not Classified&lt;/industry&gt;
                        &lt;entity_contract_number&gt;48410001&lt;/entity_contract_number&gt;
                        &lt;budget_name&gt;FA - APOLLO THEATER LIGHT AND SOUND UPGRADES&lt;/budget_name&gt;
                        &lt;commodity_line&gt;1&lt;/commodity_line&gt;
