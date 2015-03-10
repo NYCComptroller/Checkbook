@@ -386,6 +386,24 @@
     </td>
     <td>3</td>
 </tr>
+<tr>
+    <td>industry</td>
+    <td>N</td>
+    <td>value</td>
+    <td>Allows you to select 7 possible industry types. Values must be one of the following: Arch and Engineerng, Construction Services, Goods, Human Services, Not Classified, Professional Services, Standardized Services.</td>
+    <td>Citywide Agencies</td>
+    <td>User shall be able to extract data for specific industry, by specifying the industry type in the request XML.For all industry type results, user need not give any industry type in the request. By default, it shall display results for all industry types.</td>
+    <td>
+        <ul>
+            <li>Total Spending</li>
+            <li>Capital Spending</li>
+            <li>Contract Spending</li>
+            <li>Trust &amp; Agency Spending</li>
+            <li>Other Spending</li>
+        </ul>
+    </td>
+    <td>Goods</td>
+</tr>
 </tbody>
 </table>
 <a href="#top" class="float-right">Back to the top</a>
@@ -437,7 +455,7 @@
                 </tr>
                 <tr>
                     <td>subcontract_reference_id</td>
-                    <td>&nbsp;</td>
+                    <td>industry</td>
                 </tr>
                 </tbody>
             </table></td>
@@ -608,6 +626,7 @@
         &lt;column&gt;expense_category&lt;/column&gt;
         &lt;column&gt;contract_ID&lt;/column&gt;
         &lt;column&gt;capital_project&lt;/column&gt;
+        &lt;column&gt;industry&lt;/column&gt;
         &lt;column&gt;issue_date&lt;/column&gt;
         &lt;column&gt;spending_category&lt;/column&gt;
         &lt;column&gt;mwbe_category&lt;/column&gt;
@@ -706,6 +725,7 @@
                 &lt;expense_category&gt;FED SEC 8 RENT SUBSIDY&lt;/expense_category&gt;
                 &lt;contract_ID/&gt;
                 &lt;capital_project/&gt;
+                &lt;industry/&gt;
                 &lt;issue_date&gt;2012-10-01&lt;/issue_date&gt;
                 &lt;spending_category&gt;Others&lt;/spending_category&gt;
             &lt;/transaction&gt;
@@ -719,6 +739,7 @@
                 &lt;expense_category&gt;FED SEC 8 RENT SUBSIDY&lt;/expense_category&gt;
                 &lt;contract_ID/&gt;
                 &lt;capital_project/&gt;
+                &lt;industry/&gt;
                 &lt;issue_date&gt;2012-10-01&lt;/issue_date&gt;
                 &lt;spending_category&gt;Others&lt;/spending_category&gt;
                 &lt;mwbe_category&gt;Hispanic American&lt;/mwbe_category&gt;
