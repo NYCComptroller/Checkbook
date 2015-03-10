@@ -476,7 +476,7 @@
                 award_method_name,
                 award_method_id,
                 agreement_type_name,
-				agreement_type_id,
+		        agreement_type_id,
                 expenditure_object_names,
                 description,
                 COALESCE(effective_begin_date,'1900-01-01') effective_begin_date,
@@ -489,9 +489,11 @@
                 registered_date,
                 original_contract_amount original_amount,
                 maximum_contract_amount current_amount,
-                registered_year fiscal_year,
-                registered_year_id fiscal_year_id,
-                rac.award_category_code,                
+                registered_year registered_fiscal_year,
+                registered_year_id registered_fiscal_year_id,
+		        REPLACE(active_fiscal_year.fiscal_year, ', ', ',') As fiscal_year,
+		        REPLACE(active_fiscal_year.fiscal_year_id, ', ', ',') As fiscal_year_id,
+                rac.award_category_code,
                 lower(rac.award_category_name) || '[' ||  rac.award_category_code || ']' award_category_name_code,
                 dc.document_code,
                 lower(award_method_name) || '[' || award_method_code || ']' award_method_name_code,
@@ -499,34 +501,44 @@
                 expenditure_object_names,
                 (case when(latest_flag = 'Y') then 'Y' else 'N' end) latest_flag,
                 'Registered' status,
-                minority_type_name,
-				case when minority_type_id in (4,5,10) then 'Asian American' when minority_type_id in (2) then 'Black American' when minority_type_id in (7) then 'Non-M/WBE' when minority_type_id in (9) then 'Women' else minority_type_name end as minority_type_name_contract,
-				minority_type_id,
-				case when minority_type_id in (4,5,10) then 10 else minority_type_id end as minority_type_id_contract,
+                case when minority_type_id in (4,5,10) then 'Asian American' when minority_type_id in (2) then 'Black American' when minority_type_id in (7) then 'Non-M/WBE' when minority_type_id in (9) then 'Women' else minority_type_name end as minority_type_name,
+                case when minority_type_id in (4,5,10) then 'Asian American' when minority_type_id in (2) then 'Black American' when minority_type_id in (7) then 'Non-M/WBE' when minority_type_id in (9) then 'Women' else minority_type_name end as minority_type_name_contract,
+                minority_type_id,
+                case when minority_type_id in (4,5,10) then 10 else minority_type_id end as minority_type_id_contract,
                 case when is_prime_or_sub in ('S') then 'Yes' when is_prime_or_sub in ('P') then 'No' else is_prime_or_sub end as is_prime_or_sub,
-                sub_contract_id, 
+                case when is_prime_or_sub in ('P') then 'N/A' else prime_vendor_name end as prime_vendor_name,
+                sub_contract_id,
                 prime_vendor_id,
                 is_minority_vendor,
-                vendor_type,
                 'N/A' commodity_line,
                 'N/A' budget_name,
                 'N/A' entity_contract_number,
                 3 domain_ordering,
                 registered_date date_ordering,
                 effective_end_year,
+                effective_end_year_id,
                 effective_begin_year,
                 effective_begin_year_id,
-                effective_end_year_id,
                 contract_original_agreement_id,
-                case when registered_year < effective_end_year then 'true' when registered_year = effective_end_year then 'true' else 'false' end as active_contracts,
-                case when is_prime_or_sub in ('P') then 'N/A' else prime_vendor_name end as prime_vendor_name
+                vendor_type
                 from all_agreement_transactions a
-            left join ref_document_code dc on a.document_code_id = dc.document_code_id
-            left join ref_award_category rac on a.award_category_id = rac.award_category_id
-            where dc.document_code in ('MMA1', 'MA1', 'MAR', 'CT1', 'CTR', 'DO1', 'CTA1', 'RCT1')                 
-                  and ( '${dataimporter.request.clean}' != 'false'
+                left join ref_document_code dc on a.document_code_id = dc.document_code_id
+                left join ref_award_category rac on a.award_category_id = rac.award_category_id
+	    LEFT JOIN
+	    (SELECT agreement_id, GROUP_CONCAT(DISTINCT X.fiscal_year) AS fiscal_year, GROUP_CONCAT(DISTINCT Y.year_id) AS fiscal_year_id
+		FROM
+		(SELECT agreement_id, generate_series(effective_begin_year,effective_end_year,1) as fiscal_year
+			FROM all_agreement_transactions a
+			LEFT  JOIN ref_document_code dc ON a.document_code_id = dc.document_code_id
+			WHERE a.latest_flag = 'Y' AND dc.document_code in ('MMA1', 'MA1', 'MAR', 'CT1', 'CTR', 'DO1', 'CTA1', 'RCT1')
+			AND ( '${dataimporter.request.clean}' != 'false'
       			OR  a.job_id >= ${dataimporter.request.jobID} )
-		">
+ 		 ) X LEFT JOIN ref_year Y ON X.fiscal_year = Y.year_value
+            WHERE X.fiscal_year < 2018 GROUP BY 1 ) active_fiscal_year ON a.agreement_id = active_fiscal_year.agreement_id
+            WHERE a.latest_flag = 'Y' AND dc.document_code in ('MMA1', 'MA1', 'MAR', 'CT1', 'CTR', 'DO1', 'CTA1', 'RCT1')
+            and ( '${dataimporter.request.clean}' != 'false'
+      		OR  a.job_id >= ${dataimporter.request.jobID} )
+      		">
             <field column="id" name="id" />
             <field column="original_agreement_id" name="original_agreement_id" />
             <field column="master_agreement_id" name="master_agreement_id" />
@@ -560,8 +572,9 @@
             <field column="original_amount" name="original_amount" />
             <field column="current_amount" name="current_amount" />
             <field column="fiscal_year" name="fiscal_year" />
-            <field column="fiscal_year" name="reg_fiscal_year_exp" />
             <field column="fiscal_year_id" name="fiscal_year_id" />
+            <field column="registered_fiscal_year" name="registered_fiscal_year" />
+            <field column="registered_fiscal_year_id" name="registered_fiscal_year_id" />
             <field column="agreement_type_id" name="contract_type_id" />
             <field column="latest_flag" name="latest_flag" />
             <field column="award_category_code" name="award_category_code" />
@@ -597,15 +610,15 @@
         <entity dataSource="db2" name="contracts_oge" transformer="RegexTransformer"
                 pk="id"
                 query="
-				select
-                'contracts:' || agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END) || 'oge' id,
+                select
+                'contracts:' || a.agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END) || 'oge' id,
                 original_agreement_id,
                 master_agreement_id,
                 'contracts' domain1,
                 (case when(document_code ='RCT1') then 'Revenue' else 'Expense' end) category,
                 '' agency_name,
                 a.agency_name oge_contracting_agency_name,
-                a.oge_agency_id, 
+                a.oge_agency_id,
                 a.oge_agency_name,
                 'oge' agency_type,
                 a.agency_id,
@@ -632,17 +645,17 @@
                 registered_date,
                 4 domain_ordering,
                 effective_end_year,
-                effective_begin_year,
                 effective_end_year_id,
+                effective_begin_year,
                 effective_begin_year_id,
-                case when registered_year < effective_end_year then 'true' when registered_year = effective_end_year then 'true' else 'false' end as active_contracts,
                 registered_date date_ordering,
                 (CASE WHEN master_agreement_yn = 'Y' THEN a.original_contract_amount ELSE ogecon.original_amount END) original_amount,
                 (CASE WHEN master_agreement_yn = 'Y' THEN a.maximum_contract_amount ELSE ogecon.current_amount END )current_amount,
-                '' fiscal_year,
-                'N/A' reg_fiscal_year,
-                'N/A' exp_registration_date,
-                '' fiscal_year_id,
+                REPLACE(active_fiscal_year.fiscal_year, ', ', ',') As fiscal_year,
+		        REPLACE(active_fiscal_year.fiscal_year_id, ', ', ',') As fiscal_year_id,
+                registered_year registered_fiscal_year,
+                registered_year_id registered_fiscal_year_id,
+                registered_date,
                 rac.award_category_code,
                 lower(rac.award_category_name) || '[' ||  rac.award_category_code || ']' award_category_name_code,
                 dc.document_code,
@@ -668,7 +681,7 @@
                     left join ref_document_code dc on a.document_code_id = dc.document_code_id
                     left join ref_award_category rac on a.award_category_id = rac.award_category_id
                     left join oge_contract oc on oc.fms_contract_number = a.contract_number  AND a.vendor_id = oc.vendor_id
-                    where dc.document_code in ('MMA1', 'MA1', 'MAR', 'CT1', 'CTR', 'DO1', 'CTA1', 'RCT1')
+                    where a.latest_flag = 'Y' AND dc.document_code in ('MMA1', 'MA1', 'MAR', 'CT1', 'CTR', 'DO1', 'CTA1', 'RCT1')
                     and ( '${dataimporter.request.clean}' != 'false'
                     OR  a.job_id >= ${dataimporter.request.jobID} )
                     group by 'contracts:' || agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END)
@@ -683,7 +696,7 @@
                     left join ref_document_code dc on a.document_code_id = dc.document_code_id
                     left join ref_award_category rac on a.award_category_id = rac.award_category_id
                     left join oge_contract oc on oc.fms_contract_number = a.contract_number  AND a.vendor_id = oc.vendor_id
-                    where dc.document_code in ('MMA1', 'MA1', 'MAR', 'CT1', 'CTR', 'DO1', 'CTA1', 'RCT1')
+                    where a.latest_flag = 'Y' AND dc.document_code in ('MMA1', 'MA1', 'MAR', 'CT1', 'CTR', 'DO1', 'CTA1', 'RCT1')
                     and ( '${dataimporter.request.clean}' != 'false'
                     OR  a.job_id >= ${dataimporter.request.jobID} )
                     group by 'contracts:' || agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END)
@@ -692,20 +705,33 @@
                 (
                     select
                     'contracts:' || agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END) || 'oge' id,
-                    GROUP_CONCAT(distinct trim(oc.fms_commodity_line::varchar)) As values
+                    GROUP_CONCAT(distinct trim(oc.fms_commodity_line)) As values
                     from agreement_snapshot a
                     LEFT JOIN oge_contract_vendor_level ogecon ON a.contract_number = ogecon.fms_contract_number AND a.vendor_id = ogecon.vendor_id
                     left join ref_document_code dc on a.document_code_id = dc.document_code_id
                     left join ref_award_category rac on a.award_category_id = rac.award_category_id
                     left join oge_contract oc on oc.fms_contract_number = a.contract_number  AND a.vendor_id = oc.vendor_id
-                    where dc.document_code in ('MMA1', 'MA1', 'MAR', 'CT1', 'CTR', 'DO1', 'CTA1', 'RCT1')
+                    where a.latest_flag = 'Y' AND dc.document_code in ('MMA1', 'MA1', 'MAR', 'CT1', 'CTR', 'DO1', 'CTA1', 'RCT1')
                     and ( '${dataimporter.request.clean}' != 'false'
                     OR  a.job_id >= ${dataimporter.request.jobID} )
                     group by 'contracts:' || agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END)
                 ) commodity_lines on commodity_lines.id = 'contracts:' || agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END) || 'oge'
-            where dc.document_code in ('MMA1', 'MA1', 'MAR', 'CT1', 'CTR', 'DO1', 'CTA1', 'RCT1')
-                  and ( '${dataimporter.request.clean}' != 'false'
+
+		LEFT JOIN
+	    (SELECT agreement_id, vendor_id, GROUP_CONCAT(DISTINCT X.fiscal_year) AS fiscal_year, GROUP_CONCAT(DISTINCT Y.year_id) AS fiscal_year_id
+		FROM
+		(SELECT agreement_id, vendor_id, generate_series(effective_begin_year,effective_end_year,1) as fiscal_year
+			FROM agreement_snapshot a
+			LEFT  JOIN ref_document_code dc ON a.document_code_id = dc.document_code_id
+			WHERE a.latest_flag = 'Y' AND dc.document_code in ('MMA1', 'MA1', 'MAR', 'CT1', 'CTR', 'DO1', 'CTA1', 'RCT1')
+			AND ( '${dataimporter.request.clean}' != 'false'
       			OR  a.job_id >= ${dataimporter.request.jobID} )
+ 		 ) X LEFT JOIN ref_year Y ON X.fiscal_year = Y.year_value
+WHERE X.fiscal_year < 2018 GROUP BY 1,2 ) active_fiscal_year ON a.agreement_id = active_fiscal_year.agreement_id AND a.vendor_id = active_fiscal_year.vendor_id
+ where a.latest_flag = 'Y' AND dc.document_code in ('MMA1', 'MA1', 'MAR', 'CT1', 'CTR', 'DO1', 'CTA1', 'RCT1')
+                  and ( '${dataimporter.request.clean}' != 'false'
+      		OR  a.job_id >= ${dataimporter.request.jobID} )
+
 		">
             <field column="id" name="id" />
             <field column="original_agreement_id" name="original_agreement_id" />
@@ -741,8 +767,10 @@
             <field column="exp_registration_date" name="exp_registration_date" />
             <field column="original_amount" name="original_amount" />
             <field column="current_amount" name="current_amount" />
-            <field column="fiscal_year" name="reg_fiscal_year_exp" />
+            <field column="fiscal_year" name="fiscal_year" />
             <field column="fiscal_year_id" name="fiscal_year_id" />
+            <field column="registered_fiscal_year" name="registered_fiscal_year" />
+            <field column="registered_fiscal_year_id" name="registered_fiscal_year_id" />
             <field column="agreement_type_id" name="contract_type_id" />
             <field column="latest_flag" name="latest_flag" />
             <field column="award_category_code" name="award_category_code" />
