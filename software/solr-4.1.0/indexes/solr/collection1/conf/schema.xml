@@ -92,9 +92,10 @@
         <field name="oge_agency_id" type="string_custom" indexed="true" stored="true" />
         <field name="oge_agency_name_autocomplete" type="string_autocomplete" indexed="true"/>
         <field name="agency_type" type="string_custom" indexed="true" stored="true" />
-        <field name="fiscal_year_id" type="string_custom" indexed="true" stored="true"/>
-        <field name="fiscal_year" type="string_custom" indexed="true" stored="true"/>
-        <field name="reg_fiscal_year_exp" type="string_custom" indexed="true" stored="true"/>        
+        <field name="fiscal_year_id" type="string_custom" indexed="true" stored="true" multiValued="true"/>
+        <field name="fiscal_year" type="string_custom" indexed="true" stored="true" multiValued="true"/>
+        <field name="registered_fiscal_year_id" type="string_custom" indexed="true" stored="true"/>
+        <field name="registered_fiscal_year" type="string_custom" indexed="true" stored="true"/>
         <field name="calendar_fiscal_year_id" type="string_custom" indexed="true" stored="true"/>
         <field name="calendar_fiscal_year" type="string_custom" indexed="true" stored="true"/>
         <field name="department_id" type="string_custom" indexed="true" stored="true" />
