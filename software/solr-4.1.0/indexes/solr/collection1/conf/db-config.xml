@@ -458,7 +458,7 @@
                                "
                 query="
 				select
-                'contracts:' || agreement_id id,
+                'contracts:' || a.agreement_id id,
                 original_agreement_id,
                 master_agreement_id,
                 'contracts' domain1,
@@ -534,7 +534,7 @@
 			AND ( '${dataimporter.request.clean}' != 'false'
       			OR  a.job_id >= ${dataimporter.request.jobID} )
  		 ) X LEFT JOIN ref_year Y ON X.fiscal_year = Y.year_value
-            WHERE X.fiscal_year < 2018 GROUP BY 1 ) active_fiscal_year ON a.agreement_id = active_fiscal_year.agreement_id
+            WHERE X.fiscal_year not in (2018,2019,2020,2021,2022) GROUP BY 1 ) active_fiscal_year ON a.agreement_id = active_fiscal_year.agreement_id
             WHERE a.latest_flag = 'Y' AND dc.document_code in ('MMA1', 'MA1', 'MAR', 'CT1', 'CTR', 'DO1', 'CTA1', 'RCT1')
             and ( '${dataimporter.request.clean}' != 'false'
       		OR  a.job_id >= ${dataimporter.request.jobID} )
@@ -727,7 +727,7 @@
 			AND ( '${dataimporter.request.clean}' != 'false'
       			OR  a.job_id >= ${dataimporter.request.jobID} )
  		 ) X LEFT JOIN ref_year Y ON X.fiscal_year = Y.year_value
-WHERE X.fiscal_year < 2018 GROUP BY 1,2 ) active_fiscal_year ON a.agreement_id = active_fiscal_year.agreement_id AND a.vendor_id = active_fiscal_year.vendor_id
+WHERE X.fiscal_year not in (2018,2019,2020,2021,2022) GROUP BY 1,2 ) active_fiscal_year ON a.agreement_id = active_fiscal_year.agreement_id AND a.vendor_id = active_fiscal_year.vendor_id
  where a.latest_flag = 'Y' AND dc.document_code in ('MMA1', 'MA1', 'MAR', 'CT1', 'CTR', 'DO1', 'CTA1', 'RCT1')
                   and ( '${dataimporter.request.clean}' != 'false'
       		OR  a.job_id >= ${dataimporter.request.jobID} )
