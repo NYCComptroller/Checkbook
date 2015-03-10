@@ -567,7 +567,7 @@ function _checkbook_autocomplete_spending_dept($year, $agency, $spending_cat, $d
     }
     $agency_string = $agency ? " AND disbursement_line_item_details.agency_code = '" . $agency . "' " : "";
     $spending_cat_string = $spending_cat ? " AND ref_spending_category.spending_category_code = '" . $spending_cat . "' " : "";
-    $query = "SELECT DISTINCT department_name
+    $query = "SELECT DISTINCT department_name|| '[' || department_code || ']' department_name
             FROM disbursement_line_item_details, ref_spending_category
             WHERE disbursement_line_item_details.spending_category_id = ref_spending_category.spending_category_id " .
         $agency_string . $year_string . $spending_cat_string . "ORDER BY department_name ASC";
