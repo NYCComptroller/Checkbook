@@ -79,6 +79,7 @@
         "reference_document_code",
         "sub_contract_id",
         "industry_type_id",
+        "industry_type_name",
         "minority_type_id",
         "is_prime_or_sub",
         "original_agreement_id@checkbook:sub_vendor_agid"
@@ -151,6 +152,10 @@
         "mwbe_category_name": {
             "type": "expression2",
             "expression": " !SpendingUtil::showMWBECategoryLink($node,$row) ? $row['mwbe_category_name_formatted']  : ('<a href=' . SpendingUtil::getMWBECategoryLinkUrl($node, $row) . '>'. $row[mwbe_category_name_formatted] .'</a>') "
+        },
+        "industry_name_formatted": {
+            "type": "expression2",
+            "expression": "_get_tooltip_markup($row['industry_type_name'],36)"
         }
     },
     "table_columns": [
@@ -162,6 +167,7 @@
         {"labelAlias":"agency_name","column":"agency_name_link","sortSourceColumn":"agency_name"},
         {"labelAlias":"check_amount","column":"formatted_check_amount","sortSourceColumn":"check_amount","headerClass":"centrig"},
         {"label":"","column":"","export":false},
+        {"labelAlias":"industry_name","column":"industry_name_formatted","sortSourceColumn":"industry_type_name"},
         {"labelAlias":"contract_id","column":"reference_document_number_link","sortSourceColumn":"reference_document_number","exportColumn":"reference_document_number_export"},
         {"labelAlias":"sub_contract_reference_id","column":"sub_contract_id","exportColumn":"sub_contract_id"},
         {"labelAlias":"contract_purpose","column":"contract_purpose_text","sortSourceColumn":"purpose","exportColumn":"contract_purpose_export"},
@@ -222,6 +228,7 @@
             {"sClass":"text","sWidth":"210px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"110px","asSorting":["desc","asc"]},
             {"bSortable":false,"sWidth":"50px"},
+            {"sClass":"text","sWidth":"130px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"145px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"125px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"175px","asSorting":["asc","desc"]},
