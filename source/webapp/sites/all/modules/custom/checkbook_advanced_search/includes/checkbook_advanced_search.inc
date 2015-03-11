@@ -592,6 +592,8 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
     $contracts_year = trim($form[$filter_dimension][$data_source . '_contracts_year']['#value']);
     $contracts_mwbe_category = trim($form[$filter_dimension][$data_source . '_contracts_mwbe_category']['#value']);
     $contracts_mwbe_category = $contracts_mwbe_category == "Select Category" ? 0 : $contracts_mwbe_category;
+    $contracts_industry_type_id = trim($form[$filter_dimension][$data_source . '_contracts_industry']['#value']);
+    $contracts_industry_type_id = $contracts_industry_type_id == "Select Industry" ? 0 : $contracts_industry_type_id;
 
     if ($contracts_year == 'fy~all') {
         $redirect_url = 'contract/all/transactions';
@@ -607,6 +609,9 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
 
     if (!empty($contracts_mwbe_category)) {
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_mwbe_category, 'mwbe');
+    }
+    if (!empty($contracts_industry_type_id)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_industry_type_id, 'cindustry');
     }
     if (!empty($contracts_contract_status)) {
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_status, 'contstatus');
@@ -748,6 +753,9 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
     $spending_mwbe_category = trim($form[$filter_dimension][$data_source . '_spending_mwbe_category']['#value']);
     $spending_mwbe_category = $spending_mwbe_category == "Select Category" ? 0 : $spending_mwbe_category;
 
+    $spending_industry_type_id = trim($form[$filter_dimension][$data_source . '_spending_industry']['#value']);
+    $spending_industry_type_id = $spending_industry_type_id == "Select Industry" ? 0 : $spending_industry_type_id;
+
     if ($spending_fiscal_year == 'fy~all') {
         $spending_fiscal_year = null;
     }
@@ -758,6 +766,9 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
 
     if (!empty($spending_mwbe_category)) {
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_mwbe_category, 'mwbe');
+    }
+    if (!empty($spending_industry_type_id)) {
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_industry_type_id, 'industry');
     }
     if (!empty($spending_fiscal_year) && $spending_date_filter == 0) {
         $redirect_url .= _checkbook_advanced_search_year_arg($spending_fiscal_year, 'year');
