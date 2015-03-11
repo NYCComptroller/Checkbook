@@ -86,7 +86,7 @@ class WidgetUtil
         "dept_name" => "Department",
         "agency_name" => "Agency",
         "contract_size" => "Contract<br/>Size",
-        "contract_industry" => "Contract<br/>Industry",
+        "contract_industry" => "Industry",
         "title" => "Title",
         "month" => "Month",
         "amount" => "Amount",
