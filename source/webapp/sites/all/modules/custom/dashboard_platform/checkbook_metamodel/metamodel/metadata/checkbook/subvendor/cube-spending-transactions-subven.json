@@ -318,6 +318,16 @@
                     ]
                 },
                 {
+                    "name": "industry",
+                    "levels": [
+                        {
+                            "name": "industry",
+                            "datasetName": "industry_type",
+                            "sourceColumnName": "industry_type_id"
+                        }
+                    ]
+                },
+                {
                     "name": "ctx",
                     "levels": [
                         {

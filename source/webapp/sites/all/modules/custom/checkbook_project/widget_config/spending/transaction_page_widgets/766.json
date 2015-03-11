@@ -323,6 +323,7 @@
         var oSpendCategoryNms = getNamedFilterCriteria('fCategoryNm');
         var oVendorType = getNamedFilterCriteria('fvendorType');
         var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
+        var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
 
         var cUrl = oTable.fnSettings().sAjaxSource;
 
@@ -347,6 +348,7 @@
         cUrl = adjustUrlParameter(cUrl,'expcategorynm',oSpendCategoryNms);
         cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
         cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
+        cUrl = adjustUrlParameter(cUrl,'industry',oIndustryType);
 
         return cUrl;
     }"
