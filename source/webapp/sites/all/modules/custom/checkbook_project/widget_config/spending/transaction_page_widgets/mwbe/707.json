@@ -53,7 +53,9 @@
         "disb_minority_type_id",
         "disb_vendor_type",
         "disb_sub_contract_id",
-        "legal_name@checkbook:prime_vendor"
+        "legal_name@checkbook:prime_vendor",
+        "industry_type_id",
+        "industry_type_name@checkbook:industry_type"
     ],
     "caption":"",
     "derivedColumns": {
@@ -132,6 +134,10 @@
         "document_id_formatted": {
             "type":"expression2",
             "expression":"$row[disb_disbursement_number] == null ? 'N/A' : $row[disb_disbursement_number]"
+        },
+        "industry_name_formatted": {
+            "type": "expression2",
+            "expression": "_get_tooltip_markup($row['industry_type_name@checkbook:industry_type'],36)"
         }
     },
     "table_columns": [
@@ -146,6 +152,7 @@
         {"labelAlias":"check_amount","column":"formatted_check_amount","sortSourceColumn":"disb_check_amount"},
         {"label":"","column":"","export":false},
         {"labelAlias":"expense_category","column":"disb_expenditure_object_name"},
+        {"labelAlias":"industry_name","column":"industry_name_formatted","sortSourceColumn":"industry_type_name@checkbook:industry_type"},
         {"labelAlias":"contract_id","column":"contract_number_link","sortSourceColumn":"disb_contract_number"},
         {"labelAlias":"sub_contract_reference_id","column":"sub_contract_reference_id_formatted","sortSourceColumn":"disb_sub_contract_id","exportColumn":"sub_contract_reference_id_formatted"},
         {"label":"","column":"","export":false},
@@ -235,6 +242,7 @@
             {"sClass":"number","sWidth":"135px","asSorting":["desc","asc"]},
             {"bSortable":false,"sWidth":"20px"},
             {"sClass":"text pad-left","sWidth":"180px","asSorting":["asc","desc"]},
+            {"sClass":"text pad-left","sWidth":"180px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"100px","bSortable": false,"asSorting":["asc","desc"]},
             {"bSortable":false,"sWidth":"50px"},
@@ -264,6 +272,7 @@
         var oCheckAmount = getNamedFilterCriteria('fCheckAmount');
         var oDeptIds = getNamedFilterCriteria('fdeptNm');
         var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
+        var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
 
         var  cUrl = oTable.fnSettings().sAjaxSource;
         cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
@@ -275,6 +284,7 @@
         cUrl = adjustUrlParameter(cUrl,'checkamtr',oCheckAmount);
         cUrl = adjustUrlParameter(cUrl,'deptnm',oDeptIds);
         cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
+        cUrl = adjustUrlParameter(cUrl,'industry',oIndustryType);
 
            return cUrl;
     }"

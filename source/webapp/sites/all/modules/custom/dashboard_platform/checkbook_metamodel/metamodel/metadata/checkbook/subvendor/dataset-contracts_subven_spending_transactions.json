@@ -102,6 +102,16 @@
                             "sourceColumnName": "document_code_id"
                         }
                     ]
+                },
+                {
+                    "name": "industry",
+                    "levels": [
+                        {
+                            "name": "industry",
+                            "datasetName": "industry_type",
+                            "sourceColumnName": "industry_type_id"
+                        }
+                    ]
                 }
             ],
             "measures": {
@@ -144,6 +154,10 @@
         "contracts_subven_spending_transactions__prime_vendor": [
             {"datasetName": "contracts_subven_spending_transactions", "columnNames": ["prime_vendor_id"]},
             {"datasetName": "prime_vendor", "columnNames": ["vendor_id"]}
+        ],
+        "contracts_subven_spending_transactions__industry_type": [
+            {"datasetName": "contracts_subven_spending_transactions", "columnNames": ["industry_type_id"]},
+            {"datasetName": "industry_type", "columnNames": ["industry_type_id"]}
         ]
     }
 }
