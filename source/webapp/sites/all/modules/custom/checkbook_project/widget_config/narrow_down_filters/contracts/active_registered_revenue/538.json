@@ -18,7 +18,7 @@
     "orderBy":"-txcount",
 	"getTotalDataCount":true,    
 	"facetPager":true,    
-    "filterName":"Contract Industry",
+    "filterName":"Industry",
     "urlParameterName":"cindustry",
     "autocompleteParamName":"cindustry_auto",    
     "autocompleteID":"fIndustryTypeId", 	

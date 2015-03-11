@@ -159,7 +159,7 @@
 
         if(count($industryTypes) > 0){
             $output .= "<table id='chkamtfilter'>";
-            $output .= "<thead><th colspan='3'>By Contract Industry</th></thead>";
+            $output .= "<thead><th colspan='3'>By Industry</th></thead>";
             $i=0;
             $displayRows = NULL;
             $hiddenRows = NULL;
