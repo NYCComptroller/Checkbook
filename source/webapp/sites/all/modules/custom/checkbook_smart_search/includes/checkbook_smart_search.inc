@@ -153,8 +153,8 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
     $search_string = _checkbook_smart_search_get_results_query_search_term($search_terms);
     $query = "select/?q=". $search_string
         ."&start=". ($page_no*$no_of_results)
-        ."&fq=-latest_flag:N"
-        ."&fq=fiscal_year:*%20OR%20agency_type:oge"
+       // ."&fq=-latest_flag:N"
+        //."&fq=agency_type:oge"
         ."&sort=domain_ordering+asc,date_ordering+desc"
         ."&wt=php";
 
@@ -171,12 +171,12 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
     $active_contracts_query = "select/?q=" . $act_search_string
         //."&fq=". $act_start_date_filter
         //."&fq=". $act_end_date_filter
-        ."&fq=".$effective_end_year
-        ."&fq=".$effective_begin_year
-        ."&fq=".$registered_year
-        ."&fq=latest_flag:Y"
+        //."&fq=".$effective_end_year
+        //."&fq=".$effective_begin_year
+        //."&fq=".$registered_year
+        //."&fq=latest_flag:Y"
         ."&fq=contract_status:registered"
-        ."&fq=fiscal_year:*%20OR%20agency_type:oge"
+        //."&fq=agency_type:oge"
         ."&sort=domain_ordering+asc,date_ordering+desc"
         ."&wt=php";
 
@@ -292,8 +292,9 @@ function _checkbook_smart_search_get_selected_facet_results($search_terms, $face
     if($count > 0){
         $query = "select/?q=". $search_string
             ."&facet=true"
-            ."&fq=-latest_flag:N"
-            ."&fq=fiscal_year:*%20OR%20agency_type:oge"
+            //."&fq=-latest_flag:N"
+            //."&fq=fiscal_year:[*%20TO%202016]%20OR%20agency_type:oge"
+            //."&fq=agency_type:oge"
             //."&sort=domain_ordering+asc,date_ordering+desc"
             ."&facet.sort=count"
             ."&facet.field=".$parameter_mapping[$facet_name]
@@ -371,8 +372,8 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
 
             $query = "select/?q=". $search_string
                 ."&facet=true"
-                ."&fq=-latest_flag:N"
-                ."&fq=fiscal_year:*%20OR%20agency_type:oge"
+                //."&fq=-latest_flag:N"
+                //."&fq=agency_type:oge"
                 //."&sort=domain_ordering+asc,date_ordering+desc"
                 ."&facet.sort=count"
                 ."&facet.field=".$parameter_mapping[$facet_name]
@@ -546,8 +547,8 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
     $query = "select/?q=". $search_string // *:*
                   .$autocomplete_text //&fq=oge_agency_name_autocomplete:(eco*)
                   ."&facet=true"
-                  ."&fq=-latest_flag:N"
-                  ."&fq=fiscal_year:*%20OR%20agency_type:oge"
+                  //."&fq=-latest_flag:N"
+                  //."&fq=agency_type:oge"
                   //."&sort=domain_ordering+asc,date_ordering+desc"
                   ."&facet.field=".$parameter_mapping[$facet_name] // oge_agency_name
                   ."&facet.limit=10"
@@ -1047,8 +1048,8 @@ function _checkbook_smart_search_get_results_csv($search_terms,$page_no, $no_of_
   $search_string = _checkbook_smart_search_get_results_query_search_term($search_terms);
   $domain = $_REQUEST['domain'];
   $query = "select/?q=". $search_string
-               ."&fq=-latest_flag:N"
-               ."&fq=fiscal_year:*%20OR%20agency_type:oge"
+               //."&fq=-latest_flag:N"
+               //."&fq=agency_type:oge"
                ."&sort=domain_ordering+asc,date_ordering+desc"
                ."&start=". ($page_no*$no_of_results)
                ."&wt=csv"

@@ -24,7 +24,7 @@ $budget_parameter_mapping = _checkbook_smart_search_domain_fields('budget');
 $linkable_fields = array("agency_name" => "/budget/year/" . _getCurrentYearID() . "/yeartype/B/agency/".$budget_results["agency_id"],
                          "expenditure_object_name" => "/budget/year/". _getCurrentYearID() . "/yeartype/B/expcategory/".$budget_results["expenditure_object_id"],
                         );
-if($budget_results['fiscal_year'] < 2010){
+if($budget_results['fiscal_year'][0] < 2010){
     $linkable_fields = array();
 }
 $amount_fields = array("adopted_amount", "current_budget_amount", "total_expenditure","pre_encumbered_amount","encumbered_amount","accrued_expense_amount","cash_expense_amount","post_closing_adjustment_amount");
@@ -33,12 +33,13 @@ $count = 1;
 $row = array();
 $rows = array();
 foreach ($budget_parameter_mapping as $key=>$title){
+    $value = $budget_results[$key];
     if($key == 'expenditure_object_name'){
         $value = $budget_results[$key][0];
       }
-      else{
-        $value = $budget_results[$key];
-      }
+    if($key == 'fiscal_year'){
+        $value = $budget_results[$key][0];
+    }
 
     $temp = substr($value, strpos(strtoupper($value), strtoupper($SearchTerm)),strlen($SearchTerm));
     $value = str_ireplace($SearchTerm,'<em>'. $temp . '</em>', $value);
