@@ -75,13 +75,15 @@ function _checkbook_alerts_transactions(){
       'un_subscribed_date'=>null
   );
 
-  if(($a=$alerts->fetchObject())!=null){
-    $alert['checkbook_alerts_sysid']=$a->checkbook_alerts_sysid;
-    $alert['active']=$a->active;
-    $alert['active_date']=$a->active_date;
-    drupal_write_record('checkbook_alerts',$alert,array("checkbook_alerts_sysid"));
-  }else{
-    drupal_write_record('checkbook_alerts',$alert);
+  if(($a=$alerts->fetchObject())!=null) {
+      $alert['checkbook_alerts_sysid']=$a->checkbook_alerts_sysid;
+      $alert['active']=$a->active;
+      $alert['active_date']=$a->active_date;
+      $alert['un_subscribed_date']=$a->null;
+      drupal_write_record('checkbook_alerts',$alert,array("checkbook_alerts_sysid"));
+  }
+  else {
+      drupal_write_record('checkbook_alerts',$alert);
   }
   $alertFrequency=_checkbook_alerts_alertFrequency($_GET['alert_minimum_days']);
 
@@ -200,17 +202,53 @@ function _checkbook_alerts_process_twitter($alert){
                ->performRequest();
 }
 
+/**
+ * Function will check if the value provided is for a single alert or all alerts
+ * and populate the un subscribe date for those records.
+ *
+ * Single alert -> value is hash of checkbook_alerts_sysid|label|recipient appended to the sys_id:
+ *
+ * All Alerts for a user ->value is hash of this recipient
+ *
+ * @return string
+ */
 function _checkbook_alerts_unsubscribe(){
-  $alert=arg(2);
+    $alert = arg(2);
+    $num_alerts = 0;
 
-//  db_query('DELETE FROM checkbook_alerts WHERE CONCAT(checkbook_alerts_sysid,MD5(CONCAT(checkbook_alerts_sysid,label,recipient)))=:alert OR MD5(recipient)=:alert',array(':alert'=>$alert));
-
-    db_update('checkbook_alerts')
-        ->fields(array('un_subscribed_date' => date("Y-m-d H:i:s")))
+    $result = db_select('checkbook_alerts')
+        ->fields('checkbook_alerts', array('checkbook_alerts_sysid','recipient'))
+        ->isNull('un_subscribed_date')
         ->where('CONCAT(checkbook_alerts_sysid,MD5(CONCAT(checkbook_alerts_sysid,label,recipient))) = :alert', array(':alert' => $alert))
-        ->execute();
+        ->execute()
+        ->fetchAssoc();
 
-  return theme('checkbook_alerts_unsubscribe_theme');
+    if($result) {
+        $num_alerts = 1;
+        db_update('checkbook_alerts')
+            ->fields(array('un_subscribed_date' => date("Y-m-d H:i:s")))
+            ->where('checkbook_alerts_sysid = :checkbook_alerts_sysid', array(':checkbook_alerts_sysid' => $result['checkbook_alerts_sysid']))
+            ->execute();
+    }
+    else {
+        $query = db_select('checkbook_alerts')
+            ->where('MD5(recipient) = :alert', array(':alert' => $alert))
+            ->isNull('un_subscribed_date');
+        $query
+            ->groupBy($query->addField('checkbook_alerts', 'recipient'))
+            ->addExpression('COUNT(checkbook_alerts_sysid)', 'num_alerts');
+        $result = $query->execute()->fetchAssoc();
+
+        if($result && count($result) > 0) {
+            $num_alerts = $result['num_alerts'];
+            db_update('checkbook_alerts')
+                ->fields(array('un_subscribed_date' => date("Y-m-d H:i:s")))
+                ->where('recipient = :recipient', array(':recipient' => $result['recipient']))
+                ->execute();
+        }
+    }
+
+    return theme('checkbook_alerts_unsubscribe_theme',array('numAlerts'=>$num_alerts));
 }
 
 function _checkbook_alerts_activate(){
