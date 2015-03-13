@@ -59,21 +59,21 @@ function _checkbook_alerts_transactions(){
   }
   $alertEndDate=date("Y-m-d H:i:s",$alertEndDate);
 
-  $alert=array(
-    'recipient'=>$_GET['alert_email'],
-    'label'=>$_GET['alert_label'],
-    'recipient_type'=>'EMAIL',
-    'ref_url'=>$_GET['refURL'],
-    'user_url'=>$_GET['userURL'],
-    'number_of_results'=>_checkbook_alerts_get_data_count(),
-    'minimum_results'=>$_GET['alert_minimum_results'],
-    'minimum_days'=>$_GET['alert_minimum_days'],
-    'date_end'=>$alertEndDate,
-    'date_last_new_results'=>date("Y-m-d H:i:s"),
-      'domain'=>_checkbook_alerts_get_domain(),
-      'created_date'=>date("Y-m-d H:i:s"),
-      'un_subscribed_date'=>null
-  );
+    $alert=array(
+        'recipient'=>$_GET['alert_email'],
+        'label'=>$_GET['alert_label'],
+        'recipient_type'=>'EMAIL',
+        'ref_url'=>$_GET['refURL'],
+        'user_url'=>$_GET['userURL'],
+        'number_of_results'=>_checkbook_alerts_get_data_count(),
+        'minimum_results'=>$_GET['alert_minimum_results'],
+        'minimum_days'=>$_GET['alert_minimum_days'],
+        'date_end'=>$alertEndDate,
+        'date_last_new_results'=>date("Y-m-d H:i:s"),
+        'domain'=>_checkbook_alerts_get_domain(),
+        'created_date'=>date("Y-m-d H:i:s"),
+        'un_subscribed_date'=>null
+    );
 
   if(($a=$alerts->fetchObject())!=null) {
       $alert['checkbook_alerts_sysid']=$a->checkbook_alerts_sysid;
@@ -87,11 +87,13 @@ function _checkbook_alerts_transactions(){
   }
   $alertFrequency=_checkbook_alerts_alertFrequency($_GET['alert_minimum_days']);
 
-  $subData=array(
-    "alertFrequency"=>$alertFrequency,
-    "label"=>$_GET['alert_label'],
-     "alert2"=>$alert,
-  );
+    $link_expire_date = date("Y-m-d H:i:s",strtotime("+7 day", strtotime($alert["created_date"])));
+    $subData = array (
+        "alertFrequency"=>$alertFrequency,
+        "label"=>$_GET['alert_label'],
+        "alert2"=>$alert,
+        "link_expire_date"=>date("m-d-Y", strtotime($link_expire_date)),
+    );
 
   $module="checkbook_alerts";
   $key=md5(date("Y-m-d H:i:s"));
@@ -162,21 +164,11 @@ function _checkbook_alerts_alertFrequency($days){
 }
 
 function _checkbook_alerts_process_email($alerts){
-  //$module="checkbook_alerts";
-  //$key=md5(date("Y-m-d H:i:s"));
   $msg=theme('checkbook_alerts_email_theme',array(
     'alerts'=>$alerts
   ));
 
-  //$message=drupal_mail($module,$key,$alerts[0]->recipient,language_default(),array(),"",false);
-
-  //$message['subject']="Checkbook NYC Alert";
-  //$message['body'][] = $msg;
   mail($alerts[0]->recipient,"Checkbook NYC Alert",$msg,"From: checkbook@reisys.com\r\nContent-Type: text/html;");
-  //$system=drupal_mail_system($module,$key);
-  //$message=$system->format($message);
-
-  //$message['result']=$system->mail($message);
 }
 
 function _checkbook_alerts_process_twitter($alert){
@@ -212,7 +204,7 @@ function _checkbook_alerts_process_twitter($alert){
  *
  * @return string
  */
-function _checkbook_alerts_unsubscribe(){
+function _checkbook_alerts_unsubscribe() {
     $alert = arg(2);
     $num_alerts = 0;
 
@@ -251,15 +243,48 @@ function _checkbook_alerts_unsubscribe(){
     return theme('checkbook_alerts_unsubscribe_theme',array('numAlerts'=>$num_alerts));
 }
 
-function _checkbook_alerts_activate(){
-  $alert=arg(2);
+/**
+ * Function will activate the alert alert if the following conditions are met:
+ *
+ * 1. Alert is not already active
+ * 2. Alert was created in the past 7 days
+ * 3. Alert has not been un-subscribed from
+ *
+ * @return string
+ */
+function _checkbook_alerts_activate() {
+    $arg = arg(2);
 
-    db_update('checkbook_alerts')
-        ->fields(array('active' => 'Y','active_date' => date("Y-m-d H:i:s")))
-        ->where('CONCAT(checkbook_alerts_sysid,MD5(CONCAT(checkbook_alerts_sysid,label,recipient))) = :alert', array(':alert' => $alert))
-        ->execute();
+    //Un-subscribed
+    $message = 'Your alert activation link is no longer active. You have unsubscribed from this alert.';
 
-  return theme('checkbook_alerts_activated_theme',array("arg2" => $alert));
+    $alert = db_select('checkbook_alerts')
+        ->fields('checkbook_alerts', array('checkbook_alerts_sysid','created_date','active'))
+        ->where('CONCAT(checkbook_alerts_sysid,MD5(CONCAT(checkbook_alerts_sysid,label,recipient))) = :arg',array(':arg' => $arg))
+        ->isNull('un_subscribed_date')
+        ->execute()
+        ->fetchAssoc();
+
+    if($alert) {
+        //Already Active
+        if($alert['active'] == 'Y') {
+            $message = 'The alert is already active.';
+        }
+        //Expired
+        else if(time() > strtotime('+7 day', strtotime($alert['created_date']))) {
+            $message = 'Your alert activation link has expired. Please schedule a new alert using the alerts functionality.';
+        }
+        //Activate
+        else {
+            $message = 'Your alert has been successfully activated.';
+            db_update('checkbook_alerts')
+                ->fields(array('active' => 'Y','active_date' => date("Y-m-d H:i:s")))
+                ->where('CONCAT(checkbook_alerts_sysid,MD5(CONCAT(checkbook_alerts_sysid,label,recipient))) = :arg', array(':arg' => $arg))
+                ->execute();
+        }
+    }
+
+    return theme('checkbook_alerts_activated_theme',array("message" => $message));
 }
 
 function _checkbook_alerts_twitter_callback(){
