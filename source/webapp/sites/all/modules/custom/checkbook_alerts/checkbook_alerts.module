@@ -82,7 +82,6 @@ function checkbook_alerts_theme($existing, $type, $theme, $path) {
     ),
     'checkbook_alerts_email_theme'=>array(
       'template'=>'checkbook_alerts_email',
-      //'path'=>'sites/all/modules/custom/checkbook_alerts',      
       'arguments'=>array(
         'alerts'=>array(),
         'unsubscribe'=>null
@@ -93,7 +92,6 @@ function checkbook_alerts_theme($existing, $type, $theme, $path) {
     ),
     'checkbook_alerts_activated_theme'=>array(
       'template'=>'checkbook_alerts_activated'
-      //'path'=>'sites/all/modules/custom/check
     ),
     'checkbook_alerts_unsubscribe_theme'=>array(
       'template'=>'checkbook_alerts_unsubscribe'
