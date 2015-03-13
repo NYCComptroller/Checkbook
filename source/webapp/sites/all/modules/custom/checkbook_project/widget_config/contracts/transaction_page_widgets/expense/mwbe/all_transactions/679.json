@@ -66,121 +66,121 @@
     ],
     "caption":"",
     "derivedColumns": {
-    "child_contrats_link":{
-    "type": "expression2",
-    "expression": " ($row['has_children'] == 'Y') ? '<span id=dtl_expand class=\"toggler collapsed\"  magid=\"' . $row['contract_original_agreement_id'] . '\" '
-    . ( _getRequestParamValue('contstatus') != '' ?  ('contstatus=\"' . _getRequestParamValue('contstatus') . '\"' ) : '')
-    . (' mastercode=\"' . $row['document_code@checkbook:ref_document_code'] . '\"' )
-    . '></span>' : '' "
-    },
-    "contract_link": {
-    "type": "expression2",
-    "expression": " '<a href=/contracts_landing'
-    . _checkbook_project_get_url_param_string('contstatus','status')
-    . _checkbook_project_get_year_url_param_string()
-    . '?expandBottomContURL=/panel_html/contract_transactions/contract_details/' . ( ($row['master_agreement_yn'] == 'Y' ? 'magid' : 'agid') . '/' . $row['contract_original_agreement_id'] ) .  '/doctype/' . $row['document_code@checkbook:ref_document_code']
-    .  ' >'. $row['contract_number'] . '</a>' "
-    },
-    "parent_contract_link": {
-    "type": "expression2",
-    "expression": "(($row['master_agreement_yn'] == 'Y') ? 'N/A' : ContractURLHelper::prepareExpenseContractLink($row, $node, true, $row['contract_original_agreement_id']))"
-    },
-    "parent_contract_export":{
-    "type": "expression2",
-    "expression": "(($row['master_agreement_yn'] == 'Y') ? 'N/A' : $row['master_contract_number'])"
-    },
-    "formatted_original_amount": {
-    "type": "expression2",
-    "expression": "custom_number_formatter_basic_format($row['original_contract_amount'])"
-    },
-    "formatted_current_amount": {
-    "type": "expression2",
-    "expression": "custom_number_formatter_basic_format($row['maximum_contract_amount'])"
-    },
-    "formatted_spent_to_date_sub_vendor": {
-    "type": "expression2",
-    "expression": "
-    '<a href=\"/spending/search/transactions'
-    .  (($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['agreement_id'])
-    .  _checkbook_project_get_year_url_param_string(true)
-    .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['rfed_amount']) . '</a>'
-    "
-    },
-    "formatted_spent_to_date_prime_vendor": {
-    "type": "expression2",
-    "expression": "
-    '<a href=\"/spending/search/transactions'
-    .  (($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['contract_original_agreement_id'])
-    .  _checkbook_project_get_year_url_param_string(true)
-    .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['rfed_amount']) . '</a>'
-    "
-    },
-    "formatted_spent_to_date": {
-    "type": "expression2",
-    "expression": "($row['is_prime_or_sub'] == 'P') ? $row['formatted_spent_to_date_prime_vendor'] : $row['formatted_spent_to_date_sub_vendor']"
-    },
-    "vendor_formatted": {
-    "type": "expression2",
-    "expression": "_get_tooltip_markup($row['vendor_name'],30)"
-    },
-    "vendor_name_link": {
-    "type": "expression2",
-    "expression": " '<a href=\"/contracts_landing'
-    . ContractUtil::get_contract_vendor_minority_category($row['vendor_id'], null, null, null, $row['is_prime_or_sub'])
-    .  '?expandBottomCont=true\">'. $row['vendor_formatted'] . '</a>'  "
-    },
-    "agency_formatted": {
-    "type": "expression2",
-    "expression": "_get_tooltip_markup($row['agency_name'],30)"
-    },
-    "agency_name_link": {
-    "type": "expression2",
-    "expression": " '<a href=\"/contracts_landing'
-    .  _checkbook_project_get_year_url_param_string()
-    .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
-    . '/agency/' . $row['agency_id']
-    .  '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "
-    },
-    "purpose_formatted": {
-    "type": "expression2",
-    "expression": "_get_tooltip_markup($row['description'],36)"
-    },
-    "expense_cat_formatted": {
-    "type": "expression2",
-    "expression": "_get_tooltip_markup($row['expenditure_object_names'],36)"
-    },
-    "award_method_formatted": {
-    "type": "expression2",
-    "expression": "_get_tooltip_markup($row['award_method_name'],36)"
-    },
-    "contract_type_formatted": {
-    "type": "expression2",
-    "expression": "_get_tooltip_markup($row['agreement_type_name'],36)"
-    },
-    "industry_name_formatted": {
-    "type": "expression2",
-    "expression": "_get_tooltip_markup($row['industry_type_name'],36)"
-    },
-    "formatted_minority_name": {
-    "type": "expression2",
-    "expression": "MappingUtil::getMinorityCategoryById($row['minority_type_id'])"
-    },
-    "formatted_minority_name_link": {
-    "type": "expression2",
-    "expression": "ContractUtil::get_mwbe_category_url($row['minority_type_id'], $row['is_prime_or_sub'])"
-    },
-    "formatted_is_sub_vendor": {
-    "type": "expression2",
-    "expression": "($row['is_prime_or_sub'] == 'P')?'No':'Yes'"
-    },
-    "formatted_associated_vendor": {
-    "type": "expression2",
-    "expression": "($row['is_prime_or_sub'] == 'P')?'N/A':$row['prime_vendor_name']"
-    },
-    "associated_vendor_name": {
-    "type": "expression2",
-    "expression": "_get_tooltip_markup($row['formatted_associated_vendor'],30)"
-    }
+        "child_contrats_link":{
+            "type": "expression2",
+            "expression": " ($row['has_children'] == 'Y') ? '<span id=dtl_expand class=\"toggler collapsed\"  magid=\"' . $row['contract_original_agreement_id'] . '\" '
+            . ( _getRequestParamValue('contstatus') != '' ?  ('contstatus=\"' . _getRequestParamValue('contstatus') . '\"' ) : '')
+            . (' mastercode=\"' . $row['document_code@checkbook:ref_document_code'] . '\"' )
+            . '></span>' : '' "
+        },
+        "contract_link": {
+            "type": "expression2",
+            "expression": " '<a href=/contracts_landing'
+            . _checkbook_project_get_url_param_string('contstatus','status')
+            . _checkbook_project_get_year_url_param_string()
+            . '?expandBottomContURL=/panel_html/contract_transactions/contract_details/' . ( ($row['master_agreement_yn'] == 'Y' ? 'magid' : 'agid') . '/' . $row['contract_original_agreement_id'] ) .  '/doctype/' . $row['document_code@checkbook:ref_document_code']
+            .  ' >'. $row['contract_number'] . '</a>' "
+        },
+        "parent_contract_link": {
+            "type": "expression2",
+            "expression": "(($row['master_agreement_yn'] == 'Y') ? 'N/A' : ContractURLHelper::prepareExpenseContractLink($row, $node, true, $row['contract_original_agreement_id']))"
+        },
+        "parent_contract_export":{
+            "type": "expression2",
+            "expression": "(($row['master_agreement_yn'] == 'Y') ? 'N/A' : $row['master_contract_number'])"
+        },
+        "formatted_original_amount": {
+            "type": "expression2",
+            "expression": "custom_number_formatter_basic_format($row['original_contract_amount'])"
+        },
+        "formatted_current_amount": {
+            "type": "expression2",
+            "expression": "custom_number_formatter_basic_format($row['maximum_contract_amount'])"
+        },
+        "formatted_spent_to_date_sub_vendor": {
+            "type": "expression2",
+            "expression": "
+            '<a href=\"/spending/search/transactions'
+            .  (($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['agreement_id'])
+            .  _checkbook_project_get_year_url_param_string(true)
+            .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['rfed_amount']) . '</a>'
+            "
+        },
+        "formatted_spent_to_date_prime_vendor": {
+            "type": "expression2",
+            "expression": "
+            '<a href=\"/spending/search/transactions'
+            .  (($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['contract_original_agreement_id'])
+            .  _checkbook_project_get_year_url_param_string(true)
+            .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['rfed_amount']) . '</a>'
+            "
+        },
+        "formatted_spent_to_date": {
+            "type": "expression2",
+            "expression": "($row['is_prime_or_sub'] == 'P') ? $row['formatted_spent_to_date_prime_vendor'] : $row['formatted_spent_to_date_sub_vendor']"
+        },
+        "vendor_formatted": {
+            "type": "expression2",
+            "expression": "_get_tooltip_markup($row['vendor_name'],30)"
+        },
+        "vendor_name_link": {
+            "type": "expression2",
+            "expression": " '<a href=\"/contracts_landing'
+            . ContractUtil::get_contract_vendor_minority_category($row['vendor_id'], null, null, null, $row['is_prime_or_sub'])
+            .  '?expandBottomCont=true\">'. $row['vendor_formatted'] . '</a>'  "
+        },
+        "agency_formatted": {
+            "type": "expression2",
+            "expression": "_get_tooltip_markup($row['agency_name'],30)"
+        },
+        "agency_name_link": {
+            "type": "expression2",
+            "expression": " '<a href=\"/contracts_landing'
+            .  _checkbook_project_get_year_url_param_string()
+            .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
+            . '/agency/' . $row['agency_id']
+            .  '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "
+        },
+        "purpose_formatted": {
+            "type": "expression2",
+            "expression": "_get_tooltip_markup($row['description'],36)"
+        },
+        "expense_cat_formatted": {
+            "type": "expression2",
+            "expression": "_get_tooltip_markup($row['expenditure_object_names'],36)"
+        },
+            "award_method_formatted": {
+            "type": "expression2",
+            "expression": "_get_tooltip_markup($row['award_method_name'],36)"
+        },
+            "contract_type_formatted": {
+            "type": "expression2",
+            "expression": "_get_tooltip_markup($row['agreement_type_name'],36)"
+        },
+        "industry_name_formatted": {
+            "type": "expression2",
+            "expression": "_get_tooltip_markup($row['industry_type_name'],36)"
+        },
+        "mwbe_category_name_formatted": {
+            "type":"expression2",
+            "expression":"MappingUtil::getMinorityCategoryById($row['minority_type_id'])"
+        },
+        "mwbe_category_name": {
+            "type": "expression2",
+            "expression": "ContractUtil::get_mwbe_category_url($row['minority_type_id'], $row['is_prime_or_sub'])"
+        },
+        "is_sub_vendor": {
+            "type":"expression2",
+            "expression": "($row['is_prime_or_sub'] == 'P')?'No':'Yes'"
+        },
+        "associated_prime_vendor_name":{
+            "type": "expression2",
+            "expression":"(preg_match('/S/', $row[vendor_type])) ? _get_tooltip_markup($row['prime_vendor_name'], 34) : 'N/A'"
+        },
+        "associated_prime_vendor_name_export":{
+            "type": "expression2",
+            "expression":"(preg_match('/S/', $row[vendor_type])) ? $row['prime_vendor_name'] : 'N/A'"
+        }
     },
     "table_columns": [
     {"label": "&nbsp;","colLabel": "","column": "child_contrats_link","export":false},
@@ -193,8 +193,10 @@
     {"labelAlias": "original_amount","column": "formatted_original_amount","sortSourceColumn":"original_contract_amount"},
     {"labelAlias": "spent_to_date","column": "formatted_spent_to_date","sortSourceColumn":"rfed_amount"},
     {"labelAlias": "vendor_name","column": "vendor_name_link","sortSourceColumn":"vendor_name"},
-    {"labelAlias": "sub_vendor_name","column":"formatted_is_sub_vendor","sortSourceColumn": "is_prime_or_sub","exportColumn":"formatted_is_sub_vendor"},
-    {"labelAlias": "associated_prime_vendor","column": "associated_vendor_name","sortSourceColumn":"prime_vendor_name"},
+{"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"is_prime_or_sub","exportColumn":"is_sub_vendor"},
+{"labelAlias":"associated_prime_vendor","column":"associated_prime_vendor_name","sortSourceColumn":"prime_vendor_name","exportColumn":"associated_prime_vendor_name_export"},
+//    {"labelAlias": "sub_vendor_name","column":"formatted_is_sub_vendor","sortSourceColumn": "is_prime_or_sub","exportColumn":"formatted_is_sub_vendor"},
+//    {"labelAlias": "associated_prime_vendor","column": "associated_vendor_name","sortSourceColumn":"prime_vendor_name"},
     {"labelAlias": "contract_agency","column": "agency_name_link","sortSourceColumn":"agency_name"},
     {"labelAlias": "contract_type","column": "contract_type_formatted","sortSourceColumn":"agreement_type_name"},
     {"labelAlias": "award_method","column": "award_method_formatted","sortSourceColumn":"award_method_name"},
@@ -205,8 +207,34 @@
     {"labelAlias": "reg_date","column": "registered_date"},
     {"labelAlias": "pin","column": "tracking_number"},
     {"labelAlias": "apt_pin","column": "brd_awd_no"},
-    {"labelAlias": "mwbe_category","column":"formatted_minority_name_link","sortSourceColumn": "minority_type_name","exportColumn":"minority_type_name"}
-
+//    {"labelAlias": "mwbe_category","column":"formatted_minority_name_link","sortSourceColumn": "minority_type_name","exportColumn":"minority_type_name"}
+    {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name_formatted"}
+    ],
+    "exportColumnSqlOverride":[
+        {
+            "column":"mwbe_category_name",
+            "sourceColumn":"minority_type_id",
+            "sql":"
+            case
+            when minority_type_id = 2 then 'Black American'
+            when minority_type_id = 3 then 'Hispanic American'
+            when minority_type_id = 7 then 'Non-M/WBE'
+            when minority_type_id = 9 then 'Women'
+            when minority_type_id = 11 then 'Individuals and Others'
+            else 'Asian American'
+            end as minority_type_name
+            "
+        },
+        {
+            "column":"is_sub_vendor",
+            "sourceColumn":"is_prime_or_sub",
+            "sql":"case when is_prime_or_sub = 'P' then 'No' else 'Yes' end as vendor_type"
+        },
+        {
+            "column":"associated_prime_vendor_name",
+            "sourceColumn":"prime_vendor_name",
+            "sql":"case when l1.is_prime_or_sub = 'P' then 'N/A' else prime_vendor_name end"
+        }
     ],
     "adjustParameters":"
     if(isset($parameters['vendor_type'])){
