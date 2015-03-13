@@ -49,7 +49,19 @@ function _checkbook_smart_search_get_results(){
     $expense_categories_number = count($all_expense_categories['facet_counts']['facet_fields']['expenditure_object_name']);
     $expense_category_pages = floor($expense_categories_number / 100);
     drupal_add_js(array('checkbook_smart_search' => array('expense_category_pages' => $expense_category_pages)), 'setting');
-    $fiscal_years = _checkbook_smart_search_get_facet_results($search_terms, "fiscal_years");
+
+    foreach($search_terms as $id => $keyvaluepair){
+        $keys = explode("=", $keyvaluepair);
+        if($keys[1] == 'registered'){
+            $fiscal_years = _checkbook_smart_search_get_facet_results($search_terms, "registered_fiscal_year");
+        }
+        else if($keys[1] == 'active'){
+            $fiscal_years = _checkbook_smart_search_get_facet_results($search_terms, "fiscal_years");
+        }
+        else{
+            $fiscal_years = _checkbook_smart_search_get_facet_results($search_terms, "fiscal_years");
+        }
+    }
     $contract_categories = _checkbook_smart_search_get_facet_results($search_terms, "contract_categories");
     $contract_status = _checkbook_smart_search_get_facet_results($search_terms, "contract_status");
     $spending_categories = _checkbook_smart_search_get_facet_results($search_terms, "spending_categories");
@@ -65,6 +77,7 @@ function _checkbook_smart_search_get_results(){
         "vendor_type" => $vendor_type['facet_counts']['facet_fields'],
         "expenditure_object_name" => $expense_categories['facet_counts']['facet_fields'],
         "fiscal_year" => $fiscal_years['facet_counts']['facet_fields'],
+        "registered_fiscal_year" => $fiscal_years['facet_counts']['facet_fields'],
         "spending_category_name" => $spending_categories['facet_counts']['facet_fields'],
         "contract_category_name" => $contract_categories['facet_counts']['facet_fields'],
         "contract_status" => $contract_status['facet_counts']['facet_fields'],
@@ -80,7 +93,18 @@ function _checkbook_smart_search_get_results(){
     $selected_vendors = _checkbook_smart_search_get_selected_facet_results($search_terms, "vendor_names");
     $selected_vendor_type = _checkbook_smart_search_get_selected_facet_results($search_terms, "vendor_type");
     $selected_expense_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "expense_categories");
-    $selected_fiscal_years = _checkbook_smart_search_get_selected_facet_results($search_terms, "fiscal_years");
+    foreach($search_terms as $id => $keyvaluepair){
+        $keys = explode("=", $keyvaluepair);
+        if($keys[1] == 'registered'){
+            $selected_fiscal_years = _checkbook_smart_search_get_selected_facet_results($search_terms, "registered_fiscal_year");
+        }
+        else if($keys[1] == 'active'){
+            $selected_fiscal_years = _checkbook_smart_search_get_selected_facet_results($search_terms, "fiscal_years");
+        }
+        else{
+            $selected_fiscal_years = _checkbook_smart_search_get_selected_facet_results($search_terms, "fiscal_years");
+        }
+    }
     $selected_spending_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "spending_categories");
     $selected_contract_status = _checkbook_smart_search_get_selected_facet_results($search_terms, "contract_status");
     $selected_contract_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "contract_categories");
@@ -95,6 +119,7 @@ function _checkbook_smart_search_get_results(){
         "vendor_type" => $selected_vendor_type,
         "expenditure_object_name" => $selected_expense_categories,
         "fiscal_year" => $selected_fiscal_years,
+        "registered_fiscal_year" => $selected_fiscal_years,
         "spending_category_name" => $selected_spending_categories,
         "contract_category_name" => $selected_contract_categories,
         "contract_status" => $selected_contract_status,
@@ -102,9 +127,9 @@ function _checkbook_smart_search_get_results(){
         "spending_minority" => $selected_spending_mwbe_categories,
         "mwbe_category" => $selected_mwbe_categories
     );
-
     return theme('checkbook_smart_search_results', array('search_results'=> $search_results['search_results'],
         'active_contracts' => $search_results['active_contracts'],
+        'registered_contracts' => $search_results['registered_contracts'],
         'facet_results' => $facetResults,
         'selected_facet_results' => $selected_facet_results));
 }
@@ -153,36 +178,41 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
     $search_string = _checkbook_smart_search_get_results_query_search_term($search_terms);
     $query = "select/?q=". $search_string
         ."&start=". ($page_no*$no_of_results)
-       // ."&fq=-latest_flag:N"
-        //."&fq=agency_type:oge"
+        ."&fq=contract_status:registered"
         ."&sort=domain_ordering+asc,date_ordering+desc"
         ."&wt=php";
 
-
     $search_results = _checkbook_smart_search_solr_results($query);
-    // Active Contracts Results
 
-    $act_start_date_filter = "start_date:[*%20TO%20".$current_date."]";
-    $act_end_date_filter = "end_date:[".$current_date."%20TO%20*]";
-    $effective_end_year = "effective_end_year:[*%20TO%20*]";
-    $effective_begin_year = "effective_begin_year:[*%20TO%20".currentFiscalYear()."]";
-    $registered_year = "\{!frange%20l=-1%20incl=false\}sub(effective_end_year,fiscal_year)";
     $act_search_string = str_replace('&fq=(contract_status:"pending")','',$search_string);
+    foreach($search_terms as $id => $keyvaluepair){
+        $keys = explode("=", $keyvaluepair);
+        if($keys[0] == 'registered_fiscal_year'){
+            $act_search_string = str_replace('registered_fiscal_year','fiscal_year',$act_search_string);
+        }
+    }
+
     $active_contracts_query = "select/?q=" . $act_search_string
-        //."&fq=". $act_start_date_filter
-        //."&fq=". $act_end_date_filter
-        //."&fq=".$effective_end_year
-        //."&fq=".$effective_begin_year
-        //."&fq=".$registered_year
-        //."&fq=latest_flag:Y"
         ."&fq=contract_status:registered"
-        //."&fq=agency_type:oge"
-        ."&sort=domain_ordering+asc,date_ordering+desc"
+       // ."&sort=domain_ordering+asc,date_ordering+desc"
         ."&wt=php";
 
     $active_contracts = _checkbook_smart_search_solr_results($active_contracts_query);
 
-    return array('search_results'=> $search_results,'active_contracts' => $active_contracts);
+
+    $reg_search_string = str_replace('&fq=(contract_status:"pending")','',$search_string);
+    foreach($search_terms as $id => $keyvaluepair){
+        $keys = explode("=", $keyvaluepair);
+        if($keys[0] == 'fiscal_years'){
+            $reg_search_string = str_replace('fiscal_year','registered_fiscal_year',$reg_search_string);
+        }
+    }
+    $registered_contracts_query = "select/?q=" . $reg_search_string
+        ."&fq=contract_status:registered"
+        //."&sort=domain_ordering+asc,date_ordering+desc"
+        ."&wt=php";
+    $registered_contracts = _checkbook_smart_search_solr_results($registered_contracts_query);
+    return array('search_results'=> $search_results,'active_contracts' => $active_contracts,'registered_contracts' => $registered_contracts);
 }
 
 /** Returns solr results based on the search criteria from current URL */
@@ -191,6 +221,7 @@ function _checkbook_smart_search_get_results_query_search_term($search_terms){
         "oge_agency_names" => "oge_agency_name",
         "agency_names" => "agency_name",
         "fiscal_years" => "fiscal_year",
+        "registered_fiscal_year" => "registered_fiscal_year",
         "domains" => "domain",
         "vendor_names" => "vendor_name",
         "vendor_type" => "vendor_type",
@@ -211,8 +242,11 @@ function _checkbook_smart_search_get_results_query_search_term($search_terms){
         if($reqParams[0] == 'vendor_type'){
             $reqParams[1] = get_vendor_type_mapping($reqParams[1]);
         }
-
+        if($reqParams[0] == 'contract_status'){
+            $reqParams[1] = get_contract_status_mapping($reqParams[1]);
+        }
         $filters = explode('~',urldecode($reqParams[1]));
+
         $subQuery = "";
         foreach($filters as $value){
             $subQuery .=  "(". $parameterMapping[$reqParams[0]] .":" . _checkbook_smart_search_escapeSolrValue('"'.$value.'"').")%20OR%20";
@@ -252,6 +286,7 @@ function _checkbook_smart_search_get_selected_facet_results($search_terms, $face
         "oge_agency_names" => "oge_agency_name",
         "agency_names" => "agency_name",
         "fiscal_years" => "fiscal_year",
+        "registered_fiscal_year" => "registered_fiscal_year",
         "domains" => "domain",
         "vendor_names" => "vendor_name",
         "vendor_type" => "vendor_type",
@@ -273,6 +308,11 @@ function _checkbook_smart_search_get_selected_facet_results($search_terms, $face
         if($req_params[0] == 'vendor_type'){
             $req_params[1] = get_vendor_type_mapping($req_params[1]);
         }
+        if($req_params[0] == 'contract_status'){
+            if($req_params[1] == 'active'){
+                $req_params[1] = 'registered';
+            }
+        }
         $filters = explode('~',urldecode($req_params[1]));
         $sub_query = "";
         foreach($filters as $value){
@@ -292,10 +332,6 @@ function _checkbook_smart_search_get_selected_facet_results($search_terms, $face
     if($count > 0){
         $query = "select/?q=". $search_string
             ."&facet=true"
-            //."&fq=-latest_flag:N"
-            //."&fq=fiscal_year:[*%20TO%202016]%20OR%20agency_type:oge"
-            //."&fq=agency_type:oge"
-            //."&sort=domain_ordering+asc,date_ordering+desc"
             ."&facet.sort=count"
             ."&facet.field=".$parameter_mapping[$facet_name]
             ."&wt=php"
@@ -327,6 +363,7 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
           "oge_agency_names" => "oge_agency_name",
           "agency_names" => "agency_name",
           "fiscal_years" => "fiscal_year",
+          "registered_fiscal_year" => "registered_fiscal_year",
           "domains" => "domain",
           "vendor_names" => "vendor_name",
           "vendor_type" => "vendor_type",
@@ -350,6 +387,11 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
             if($req_params[0] == 'vendor_type'){
                 $req_params[1] = get_vendor_type_mapping($req_params[1]);
             }
+            if($req_params[0] == 'contract_status'){
+                if($req_params[1] == 'active'){
+                    $req_params[1] = 'registered';
+                }
+            }
 
             $filters = explode('~',urldecode($req_params[1]));
             $sub_query = "";
@@ -372,9 +414,6 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
 
             $query = "select/?q=". $search_string
                 ."&facet=true"
-                //."&fq=-latest_flag:N"
-                //."&fq=agency_type:oge"
-                //."&sort=domain_ordering+asc,date_ordering+desc"
                 ."&facet.sort=count"
                 ."&facet.field=".$parameter_mapping[$facet_name]
                 ."&wt=php"
@@ -491,6 +530,7 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
                               "oge_agency_names" => "oge_agency_name",
                               "agency_names" => "agency_name",
                               "fiscal_years" => "fiscal_year",
+                              "registered_fiscal_year" => "registered_fiscal_year",
                               "domains" => "domain",
                               "vendor_type" => "vendor_type",
                               "vendor_names" => "vendor_name",
@@ -547,9 +587,6 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
     $query = "select/?q=". $search_string // *:*
                   .$autocomplete_text //&fq=oge_agency_name_autocomplete:(eco*)
                   ."&facet=true"
-                  //."&fq=-latest_flag:N"
-                  //."&fq=agency_type:oge"
-                  //."&sort=domain_ordering+asc,date_ordering+desc"
                   ."&facet.field=".$parameter_mapping[$facet_name] // oge_agency_name
                   ."&facet.limit=10"
                   ."&wt=php";
@@ -618,7 +655,7 @@ function _checkbook_smart_search_expensecategory_autocomplete(){
  *  @return the matching words
 **/
 function _checkbook_smart_search_fiscalyear_autocomplete(){
-    $fiscal_years = _checkbook_smart_search_get_searchstring_autocomplete("fiscal_years","fiscal_year");
+    $fiscal_years = _checkbook_smart_search_get_searchstring_autocomplete("fiscal_years","registered_fiscal_year");
     return $fiscal_years;
 }
 
@@ -1156,4 +1193,15 @@ function get_vendor_type_mapping($reqParams){
     }
     $reqParams = substr($reqParams,0,-1);
     return $reqParams;
+}
+
+function get_contract_status_mapping($reqParams){
+    switch($reqParams){
+        case 'registered': return 'registered';
+                           break;
+        case 'pending': return 'pending';
+                        break;
+        case 'active': return 'registered';
+                       break;
+    }
 }

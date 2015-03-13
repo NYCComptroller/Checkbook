@@ -139,7 +139,7 @@ if($noOfTotalResults > 0){
     }
 
     print "<div class='smart-search-right'>". theme('smart_search_filter', array('facets'=> $facet_results,
-      'active_contracts'=>$active_contracts, 'selected_facet_results' => $selected_facet_results));
+      'active_contracts'=>$active_contracts, 'registered_contracts'=>$registered_contracts, 'selected_facet_results' => $selected_facet_results));
 
     //End of Facet results
 

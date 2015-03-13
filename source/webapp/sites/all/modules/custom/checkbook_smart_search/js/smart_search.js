@@ -316,12 +316,14 @@
         var expenseCategories = getSearchFilterCriteria('fexpenseCategoryName');
         var revenueCategories = getSearchFilterCriteria('frevenueCategoryName');
         var fiscalYears = getSearchFilterCriteria('fyear');
+        var regfiscalYears = getSearchFilterCriteria('regfyear');
         var contractCategories = getSearchFilterCriteria('fcontractCatName');
         var contractStatus = getSearchFilterCriteria('fcontractStatus');
         var spendingCategories = getSearchFilterCriteria('fspendingCatName');
         var spendingMWBECategories = getSearchFilterCriteria('fspendingMWBE');
         var contractMWBECategories = getSearchFilterCriteria('fcontractMWBE');
         var mwbeCategory = getSearchFilterCriteria('fmwbeCategory');
+
 
         var searchTerm = '';
         var cUrl = null;
@@ -351,8 +353,11 @@
         if(vendorType){
             cUrl += "vendor_type=" + encodeURIComponent(vendorType) + '*|*';
         }
-        if(fiscalYears){
-            cUrl += "fiscal_years=" + encodeURIComponent(fiscalYears) + '*|*';
+        if(fiscalYears  && contractStatus=="active" || (regfiscalYears && contractStatus=="active")){
+            cUrl += "fiscal_years=" + encodeURIComponent((fiscalYears) ? fiscalYears : regfiscalYears) + '*|*';
+        }
+        if(regfiscalYears && contractStatus=="registered" || (fiscalYears && contractStatus=="registered")){
+            cUrl += "registered_fiscal_year=" + encodeURIComponent((regfiscalYears) ? regfiscalYears : fiscalYears) + '*|*';
         }
         if(expenseCategories){
             cUrl += "expense_categories=" + encodeURIComponent(expenseCategories) + '*|*';
