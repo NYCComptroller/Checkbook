@@ -655,10 +655,14 @@ function _checkbook_smart_search_expensecategory_autocomplete(){
  *  @return the matching words
 **/
 function _checkbook_smart_search_fiscalyear_autocomplete(){
-    $fiscal_years = _checkbook_smart_search_get_searchstring_autocomplete("fiscal_years","registered_fiscal_year");
+    $fiscal_years = _checkbook_smart_search_get_searchstring_autocomplete("fiscal_years","fiscal_year");
     return $fiscal_years;
 }
 
+function _checkbook_smart_search_regfiscalyear_autocomplete(){
+    $fiscal_years = _checkbook_smart_search_get_searchstring_autocomplete("registered_fiscal_year","registered_fiscal_year");
+    return $fiscal_years;
+}
 
 
 /** Escape special characters from regular expression string */
