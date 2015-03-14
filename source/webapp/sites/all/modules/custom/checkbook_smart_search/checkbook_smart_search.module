@@ -102,6 +102,12 @@ function checkbook_smart_search_menu(){
         'file' => 'includes/checkbook_smart_search.inc',
         'type' => MENU_CALLBACK
     );
+    $items['smart_search/autocomplete/regfiscalyear'] = array(
+        'page callback' => '_checkbook_smart_search_regfiscalyear_autocomplete',
+        'access callback' => TRUE,
+        'file' => 'includes/checkbook_smart_search.inc',
+        'type' => MENU_CALLBACK
+    );
     $items['exportSmartSearch/form'] = array(
         'page callback' => '_checkbook_smart_search_export_form',
         'access callback' => TRUE,

@@ -271,6 +271,27 @@
                         }
                      }
             });
+            $('#autocomplete_regfyear',context).autocomplete({
+                source:"/smart_search/autocomplete/regfiscalyear" + search_term,
+                focus: function (event, ui) {
+                    if(ui.item.label.toLowerCase() == 'no matches found'){
+                        return false;
+                    }else{
+                        $(event.target).val(ui.item.label);
+                        return false;
+                    }
+                },
+                select: function (event, ui) {
+                    if(ui.item.label.toLowerCase() == 'no matches found'){
+                        return false;
+                    }else{
+                        var url = getFacetAutocompleteUrl("registered_fiscal_year",encodeURIComponent(ui.item.value));
+                        $(event.target).val(ui.item.label);
+                        window.location = url;
+                        return false;
+                    }
+                }
+            });
         }
     }
     Drupal.behaviors.clear_search = {
