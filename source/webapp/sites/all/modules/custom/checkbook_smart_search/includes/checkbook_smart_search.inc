@@ -97,9 +97,11 @@ function _checkbook_smart_search_get_results(){
         $keys = explode("=", $keyvaluepair);
         if($keys[1] == 'registered'){
             $selected_fiscal_years = _checkbook_smart_search_get_selected_facet_results($search_terms, "registered_fiscal_years");
+            break;
         }
         else if($keys[1] == 'active'){
             $selected_fiscal_years = _checkbook_smart_search_get_selected_facet_results($search_terms, "fiscal_years");
+            break;
         }
         else{
             $selected_fiscal_years = _checkbook_smart_search_get_selected_facet_results($search_terms, "fiscal_years");
