@@ -45,6 +45,14 @@ for($i=1;$i < count($searchTerms);$i++){
                                 <img src='".$clear_icon."'></a></li>";
       }
       break;
+      case 'registered_fiscal_years':
+          $regreqFiscalYears = explode("~", $filters[1]);
+          foreach($regreqFiscalYears as $key=>$value){
+              $clearUrl = _checkbook_smart_search_clear_url($filters[0],$value);
+              $filterCriteria .= "<li><span class='search-terms'>Fiscal Year: <strong>". $value ."</strong></span><a class='clear-filter' href='".$clearUrl."'>
+                                <img src='".$clear_icon."'></a></li>";
+          }
+          break;
     case 'domains':
       $reqDomains = explode("~", $filters[1]);
       foreach($reqDomains as $key=>$value){

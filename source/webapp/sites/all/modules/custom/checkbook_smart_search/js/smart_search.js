@@ -285,7 +285,7 @@
                     if(ui.item.label.toLowerCase() == 'no matches found'){
                         return false;
                     }else{
-                        var url = getFacetAutocompleteUrl("registered_fiscal_year",encodeURIComponent(ui.item.value));
+                        var url = getFacetAutocompleteUrl("registered_fiscal_years",encodeURIComponent(ui.item.value));
                         $(event.target).val(ui.item.label);
                         window.location = url;
                         return false;
@@ -374,11 +374,11 @@
         if(vendorType){
             cUrl += "vendor_type=" + encodeURIComponent(vendorType) + '*|*';
         }
-        if(fiscalYears  && contractStatus=="active" || (regfiscalYears && contractStatus=="active")){
+        if((fiscalYears  && !contractStatus) || (fiscalYears  && contractStatus=="active") || (regfiscalYears && contractStatus=="active")){
             cUrl += "fiscal_years=" + encodeURIComponent((fiscalYears) ? fiscalYears : regfiscalYears) + '*|*';
         }
-        if(regfiscalYears && contractStatus=="registered" || (fiscalYears && contractStatus=="registered")){
-            cUrl += "registered_fiscal_year=" + encodeURIComponent((regfiscalYears) ? regfiscalYears : fiscalYears) + '*|*';
+        if((regfiscalYears && !contractStatus && domainNames == 'contracts') || (regfiscalYears && contractStatus=="registered" && domainNames == 'contracts' ) || (fiscalYears && contractStatus=="registered" && domainNames == 'contracts')){
+            cUrl += "registered_fiscal_years=" + encodeURIComponent((regfiscalYears) ? regfiscalYears : fiscalYears) + '*|*';
         }
         if(expenseCategories){
             cUrl += "expense_categories=" + encodeURIComponent(expenseCategories) + '*|*';
@@ -410,6 +410,7 @@
 
         return cUrl;
     }
+
 
 /**
  *  Returns the selected filter parameters on the form

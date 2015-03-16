@@ -356,7 +356,6 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
     }
 
   //arrays for the facet values
-
   foreach ($facets as $key => $value) {
     switch ($key) {
       case 'agency_name':
