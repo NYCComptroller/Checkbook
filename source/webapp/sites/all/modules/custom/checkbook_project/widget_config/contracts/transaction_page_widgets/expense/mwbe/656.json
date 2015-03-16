@@ -222,6 +222,7 @@
         {"labelAlias": "spent_to_date","column": "formatted_spent_to_date","sortSourceColumn":"spending_amount@checkbook:all_contracts_coa_aggregates"},
         {"labelAlias": "dollar_diff","column": "formatted_dollar_diff","sortSourceColumn":"dollar_difference"},
         {"labelAlias": "percent_diff","column": "formatted_percent_diff","sortSourceColumn":"percent_difference"},
+        {"label":"","column":"","export":false},
         {"labelAlias": "vendor_name","column": "vendor_name_link","sortSourceColumn":"vendor_name"},
         {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"is_prime_or_sub","exportColumn":"is_sub_vendor"},
         {"labelAlias":"associated_prime_vendor","column":"associated_prime_vendor_name","sortSourceColumn":"prime_vendor_name","exportColumn":"associated_prime_vendor_name_export"},
@@ -352,8 +353,9 @@
     {"sClass":"number","sWidth":"125px","asSorting": [ "desc","asc" ]},
     {"sClass":"number","sWidth":"125px","asSorting": [ "desc","asc" ]},
     {"sClass":"number","sWidth":"125px","asSorting": [ "desc","asc" ]},
-    {"sClass":"number pad-left","sWidth":"175px","asSorting": [ "desc","asc" ]},
-    {"sClass":"text pad-left","sWidth":"175px","asSorting": [ "desc","asc" ]},
+    {"sClass":"number pad-left","sWidth":"125px","asSorting": [ "desc","asc" ]},
+    {"bSortable":false,"sWidth":"50px"},
+    {"sClass":"text","sWidth":"175px","asSorting": [ "desc","asc" ]},
     {"sClass":"text vers-num","sWidth":"220px","asSorting": [ "asc","desc" ]},
     {"sClass":"text pad-left","sWidth":"300px","asSorting": [ "asc","desc" ]},
     {"sClass":"text","sWidth":"230px","asSorting": [ "asc","desc" ]},
@@ -457,8 +459,8 @@
     sOut += '<td class=\"number\"  style=\"width:125px\">'+ (row[7] == null ? '': row[7])+'</td>';
     sOut += '<td class=\"number\"  style=\"width:125px\">'+ (row[8] == null ? '': row[8])+'</td>';
     sOut += '<td class=\"number\"  style=\"width:125px\">'+ (row[9] == null ? '': row[9])+'</td>';
-    sOut += '<td class=\"number pad-left\"  style=\"width:175px\">'+ (row[10] == null ? '': row[10])+'</td>';
-    sOut += '<td class=\"text pad-left\"  style=\"width:175px\">'+ (row[11] == null ? '': row[11])+'</td>';
+    sOut += '<td class=\"number pad-left\"  style=\"width:125px\">'+ (row[10] == null ? '': row[10])+'</td>';
+    sOut += '<td class=\"pad-left\"  style=\"width:175px\">'+ (row[11] == null ? '': row[11])+'</td>';
     sOut += '<td class=\"text vers-num\"  style=\"width:220px\">'+ (row[12] == null ? '': row[12])+'</td>';
     sOut += '<td class=\"text pad-left\"  style=\"width:300px\">'+ (row[13] == null ? '': row[13])+'</td>';
     sOut += '<td class=\"text\"  style=\"width:230px\">'+ (row[14] == null ? '': row[14])+'</td>';
@@ -483,8 +485,9 @@
     sOut += '<td class=\"number\"  style=\"width:125px\">'+ (row[6] == null ? '': row[6])+'</td>';
     sOut += '<td class=\"number\"  style=\"width:125px\">'+ (row[7] == null ? '': row[7])+'</td>';
     sOut += '<td class=\"number\"  style=\"width:125px\">'+ (row[8] == null ? '': row[8])+'</td>';
-    sOut += '<td class=\"text pad-left\"  style=\"width:175px\">'+ (row[11] == null ? '': row[11])+'</td>';
-    sOut += '<td class=\"text pad-left\"  style=\"width:220px\">'+ (row[12] == null ? '': row[12])+'</td>';
+    sOut += '<td style=\"width:50px\">&nbsp;</td>';
+    sOut += '<td class=\"text\"  style=\"width:175px\">'+ (row[11] == null ? '': row[11])+'</td>';
+    sOut += '<td class=\"text ver-num\"  style=\"width:220px\">'+ (row[12] == null ? '': row[12])+'</td>';
     sOut += '<td class=\"text pad-left\"  style=\"width:300px\">'+ (row[13] == null ? '': row[13])+'</td>';
     sOut += '<td class=\"text\"  style=\"width:230px\">'+ (row[14] == null ? '': row[14])+'</td>';
     sOut += '<td class=\"text\"  style=\"width:230px\">'+ (row[15] == null ? '': row[15])+'</td>';
