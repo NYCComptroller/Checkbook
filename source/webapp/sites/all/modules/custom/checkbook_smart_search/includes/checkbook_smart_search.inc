@@ -548,7 +548,8 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
 //                              "spending_categories" => "spending_category_name",
 //                              "contract_categories" => "contract_category_name",
                               "contract_status" => "contract_status",
-                              "minority_type_name" => "minority_type_name"
+                              "minority_type_name" => "minority_type_name",
+                              "industry_type_name" => "industry_type_name"
 
     );
 
