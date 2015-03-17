@@ -68,8 +68,8 @@ function _checkbook_smart_search_get_results(){
     $contract_status = _checkbook_smart_search_get_facet_results($search_terms, "contract_status");
     $spending_categories = _checkbook_smart_search_get_facet_results($search_terms, "spending_categories");
     $mwbe_category = _checkbook_smart_search_get_facet_results($search_terms, "minority_type_name");
-    $spending_mwbe_categories = _checkbook_smart_search_get_facet_results($search_terms, "minority_type_name_spending");
-    $contract_mwbe_categories = _checkbook_smart_search_get_facet_results($search_terms, "minority_type_name_contract");
+//    $spending_mwbe_categories = _checkbook_smart_search_get_facet_results($search_terms, "minority_type_name_spending");
+//    $contract_mwbe_categories = _checkbook_smart_search_get_facet_results($search_terms, "minority_type_name_contract");
 
     $facetResults = array(
         "domain" => $domains['facet_counts']['facet_fields'],
@@ -83,8 +83,8 @@ function _checkbook_smart_search_get_results(){
         "spending_category_name" => $spending_categories['facet_counts']['facet_fields'],
         "contract_category_name" => $contract_categories['facet_counts']['facet_fields'],
         "contract_status" => $contract_status['facet_counts']['facet_fields'],
-        "spending_minority" => $spending_mwbe_categories['facet_counts']['facet_fields'],
-        "contract_minority" => $contract_mwbe_categories['facet_counts']['facet_fields'],
+//        "spending_minority" => $spending_mwbe_categories['facet_counts']['facet_fields'],
+//        "contract_minority" => $contract_mwbe_categories['facet_counts']['facet_fields'],
         "mwbe_category" => $mwbe_category['facet_counts']['facet_fields']
     );
 
@@ -112,8 +112,8 @@ function _checkbook_smart_search_get_results(){
     $selected_spending_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "spending_categories");
     $selected_contract_status = _checkbook_smart_search_get_selected_facet_results($search_terms, "contract_status");
     $selected_contract_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "contract_categories");
-    $selected_contract_mwbe_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "minority_type_name_contract");
-    $selected_spending_mwbe_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "minority_type_name_spending");
+//    $selected_contract_mwbe_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "minority_type_name_contract");
+//    $selected_spending_mwbe_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "minority_type_name_spending");
     $selected_mwbe_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "minority_type_name");
 
     $selected_facet_results = array("domain" => $selected_domains,
@@ -127,8 +127,8 @@ function _checkbook_smart_search_get_results(){
         "spending_category_name" => $selected_spending_categories,
         "contract_category_name" => $selected_contract_categories,
         "contract_status" => $selected_contract_status,
-        "contract_minority" => $selected_contract_mwbe_categories,
-        "spending_minority" => $selected_spending_mwbe_categories,
+//        "contract_minority" => $selected_contract_mwbe_categories,
+//        "spending_minority" => $selected_spending_mwbe_categories,
         "mwbe_category" => $selected_mwbe_categories
     );
     return theme('checkbook_smart_search_results', array('search_results'=> $search_results['search_results'],
@@ -233,8 +233,8 @@ function _checkbook_smart_search_get_results_query_search_term($search_terms){
         "spending_categories" => "spending_category_name",
         "contract_categories" => "contract_category_name",
         "contract_status" => "contract_status",
-        "minority_type_name_contract" => "minority_type_name_contract",
-        "minority_type_name_spending" => "minority_type_name_spending",
+//        "minority_type_name_contract" => "minority_type_name_contract",
+//        "minority_type_name_spending" => "minority_type_name_spending",
         "minority_type_name" => "minority_type_name"
     );
 
@@ -297,8 +297,8 @@ function _checkbook_smart_search_get_selected_facet_results($search_terms, $face
         "spending_categories" => "spending_category_name",
         "contract_categories" => "contract_category_name",
         "contract_status" => "contract_status",
-        "minority_type_name_contract" => "minority_type_name_contract",
-        "minority_type_name_spending" => "minority_type_name_spending",
+//        "minority_type_name_contract" => "minority_type_name_contract",
+//        "minority_type_name_spending" => "minority_type_name_spending",
         "minority_type_name" => "minority_type_name"
     );
 
@@ -374,8 +374,8 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
           "spending_categories" => "spending_category_name",
           "contract_categories" => "contract_category_name",
           "contract_status" => "contract_status",
-          "minority_type_name_contract" => "minority_type_name_contract",
-          "minority_type_name_spending" => "minority_type_name_spending",
+//          "minority_type_name_contract" => "minority_type_name_contract",
+//          "minority_type_name_spending" => "minority_type_name_spending",
           "minority_type_name" => "minority_type_name"
         );
 
