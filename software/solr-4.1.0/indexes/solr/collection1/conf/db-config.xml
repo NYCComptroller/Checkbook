@@ -276,8 +276,8 @@
             <field column="contract_original_agreement_id" name="contract_original_agreement_id" />
             <field column="domain_ordering" name="domain_ordering" />
             <field column="date_ordering" name="date_ordering" />
-            <field column="industry_type_id" name="spending_industry_type_id" />
-            <field column="industry_type_name" name="spending_industry_type_name" />
+            <field column="industry_type_id" name="industry_type_id" />
+            <field column="industry_type_name" name="industry_type_name" />
         </entity>
         <entity dataSource="db2" name="spending_oge"
                 pk="id"
@@ -612,8 +612,8 @@
             <field column="effective_begin_year" name="effective_begin_year" />
             <field column="effective_begin_year_id" name="effective_begin_year_id" />
             <field column="contract_original_agreement_id" name="contract_original_agreement_id"/>
-            <field column="industry_type_id" name="contract_industry_type_id" />
-            <field column="industry_type_name" name="contract_industry_type_name" />
+            <field column="industry_type_id" name="industry_type_id" />
+            <field column="industry_type_name" name="industry_type_name" />
         </entity>
         <entity dataSource="db2" name="contracts_oge" transformer="RegexTransformer"
                 pk="id"
@@ -893,8 +893,8 @@
             <field column="is_minority_vendor" name="is_minority_vendor" />
             <field column="minority_type_name_contract" name="minority_type_name_contract" />
             <field column="minority_type_id_contract" name="minority_type_id_contract" />
-            <field column="industry_type_id" name="contract_industry_type_id" />
-            <field column="industry_type_name" name="contract_industry_type_name" />
+            <field column="industry_type_id" name="industry_type_id" />
+            <field column="industry_type_name" name="industry_type_name" />
         </entity>
     </document>
 </dataConfig>
