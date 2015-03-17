@@ -191,7 +191,7 @@
 				rsc.spending_category_id,
 				lower(rsc.spending_category_name) || '[' || rsc.spending_category_code || ']' spending_category_name_code,
 				rsc.spending_category_name,
-				adt.minority_type_name,
+				case when adt.minority_type_id in (4,5,10) then 'Asian American' when adt.minority_type_id in (2) then 'Black American' when adt.minority_type_id in (7) then 'Non-M/WBE' when adt.minority_type_id in (9) then 'Women' else adt.minority_type_name end as minority_type_name_,
 				case when adt.minority_type_id in (4,5,10) then 'Asian American' when adt.minority_type_id in (2) then 'Black American' when adt.minority_type_id in (7) then 'Non-M/WBE' when adt.minority_type_id in (9) then 'Women' else adt.minority_type_name end as minority_type_name_spending,
 				adt.minority_type_id,
 				case when adt.minority_type_id in (4,5,10) then 10 else adt.minority_type_id end as minority_type_id_spending,
