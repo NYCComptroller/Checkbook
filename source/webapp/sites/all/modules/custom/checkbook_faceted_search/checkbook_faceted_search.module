@@ -430,14 +430,16 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
                 $checked = (in_array($status, array_values_recursive($reqContStatus[0]))) ? 'checked' : '';
                 //$subCat['contracts']['Status'][] = array($status, $status, $statusCount, $checked);
                 if (strtolower($status) == 'registered') {
-                  $subCat['contracts']['Status'][] = array('registered', 'Registered', $registered_contracts['response']['numFound'], $checked);
+                    if($registered_contracts['response']['numFound'] > 0){
+                        $subCat['contracts']['Status'][] = array('registered', 'Registered', $registered_contracts['response']['numFound'], $checked);
+                    }
                 }else if(strtolower($status) == 'active'){
-                    $subCat['contracts']['Status'][] = array('active', 'Active', $active_contracts['response']['numFound'], $checked);
+                    if($active_contracts['response']['numFound'] > 0){
+                        $subCat['contracts']['Status'][] = array('active', 'Active', $active_contracts['response']['numFound'], $checked);
+                    }
                 }else{
                     $subCat['contracts']['Status'][] = array($status, $status, $statusCount, $checked);
                 }
-
-
               }
             }
             $subCat['contracts']['Status']['name'] = 'fcontractStatus';
