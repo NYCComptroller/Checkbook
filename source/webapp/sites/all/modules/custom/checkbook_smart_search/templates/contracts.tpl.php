@@ -13,7 +13,7 @@ $contracts_parameter_mapping = _checkbook_smart_search_domain_fields('contracts'
 
 if(strtolower($contracts_results['contract_status']) == 'registered'){
 
-   $fiscal_year = $contracts_results['fiscal_year'];
+   $reg_fiscal_year = $contracts_results['registered_fiscal_year'];
    $current_date = date("c").'Z';
    $start_date = date("c", strtotime($contracts_results['start_date']));
    $end_date = date("c", strtotime($contracts_results['end_date']));
@@ -151,7 +151,7 @@ if($IsOge && !in_array($contracts_results['contract_type_code'],array('MMA1', 'M
 	
 }
 // for contracts with fiscal year 2009 and earlier, links should be disabled
-if($fiscal_year < 2010){
+if($reg_fiscal_year < 2010){
     $linkable_fields = array();
 }
 
@@ -222,7 +222,7 @@ foreach ($contracts_parameter_mapping as $key => $title){
                     $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". $fiscal_year_id ."/mwbe/".$id ."/dashboard/mp'>" .$contracts_results["minority_type_name"]."</a>";
                 }
             }
-            if($fiscal_year < 2010){
+            if($reg_fiscal_year < 2010){
                 $value = $contracts_results["minority_type_name"];
             }
         }
