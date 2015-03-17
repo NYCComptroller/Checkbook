@@ -68,6 +68,7 @@ function _checkbook_smart_search_get_results(){
     $contract_status = _checkbook_smart_search_get_facet_results($search_terms, "contract_status");
     $spending_categories = _checkbook_smart_search_get_facet_results($search_terms, "spending_categories");
     $mwbe_category = _checkbook_smart_search_get_facet_results($search_terms, "minority_type_name");
+    $industry_type_name = _checkbook_smart_search_get_facet_results($search_terms, "industry_type_name");
 //    $spending_mwbe_categories = _checkbook_smart_search_get_facet_results($search_terms, "minority_type_name_spending");
 //    $contract_mwbe_categories = _checkbook_smart_search_get_facet_results($search_terms, "minority_type_name_contract");
 
@@ -85,7 +86,8 @@ function _checkbook_smart_search_get_results(){
         "contract_status" => $contract_status['facet_counts']['facet_fields'],
 //        "spending_minority" => $spending_mwbe_categories['facet_counts']['facet_fields'],
 //        "contract_minority" => $contract_mwbe_categories['facet_counts']['facet_fields'],
-        "mwbe_category" => $mwbe_category['facet_counts']['facet_fields']
+        "mwbe_category" => $mwbe_category['facet_counts']['facet_fields'],
+        "industry_type_name" => $industry_type_name['facet_counts']['facet_fields'],
     );
 
     //Selected Facet Filters
@@ -115,6 +117,7 @@ function _checkbook_smart_search_get_results(){
 //    $selected_contract_mwbe_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "minority_type_name_contract");
 //    $selected_spending_mwbe_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "minority_type_name_spending");
     $selected_mwbe_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "minority_type_name");
+    $selected_industry_type_name = _checkbook_smart_search_get_selected_facet_results($search_terms, "industry_type_name");
 
     $selected_facet_results = array("domain" => $selected_domains,
         "agency_name" => $selected_agencies,
@@ -129,7 +132,8 @@ function _checkbook_smart_search_get_results(){
         "contract_status" => $selected_contract_status,
 //        "contract_minority" => $selected_contract_mwbe_categories,
 //        "spending_minority" => $selected_spending_mwbe_categories,
-        "mwbe_category" => $selected_mwbe_categories
+        "mwbe_category" => $selected_mwbe_categories,
+        "industry_type_name" => $selected_industry_type_name
     );
     return theme('checkbook_smart_search_results', array('search_results'=> $search_results['search_results'],
         'active_contracts' => $search_results['active_contracts'],
@@ -235,7 +239,8 @@ function _checkbook_smart_search_get_results_query_search_term($search_terms){
         "contract_status" => "contract_status",
 //        "minority_type_name_contract" => "minority_type_name_contract",
 //        "minority_type_name_spending" => "minority_type_name_spending",
-        "minority_type_name" => "minority_type_name"
+        "minority_type_name" => "minority_type_name",
+        "industry_type_name" => "industry_type_name"
     );
 
     $searchTerm = $search_terms[0];
@@ -299,7 +304,8 @@ function _checkbook_smart_search_get_selected_facet_results($search_terms, $face
         "contract_status" => "contract_status",
 //        "minority_type_name_contract" => "minority_type_name_contract",
 //        "minority_type_name_spending" => "minority_type_name_spending",
-        "minority_type_name" => "minority_type_name"
+        "minority_type_name" => "minority_type_name",
+        "industry_type_name" => "industry_type_name"
     );
 
     $search_string = $search_terms[0];
@@ -376,7 +382,8 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
           "contract_status" => "contract_status",
 //          "minority_type_name_contract" => "minority_type_name_contract",
 //          "minority_type_name_spending" => "minority_type_name_spending",
-          "minority_type_name" => "minority_type_name"
+          "minority_type_name" => "minority_type_name",
+          "industry_type_name" => "industry_type_name"
         );
 
         $search_string = $search_terms[0];
@@ -873,6 +880,7 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
                 "department_name" => "Department",
                 "vendor_name" => "Payee Name",
                 "expenditure_object_name" => "Expense Category",
+                "industry_type_name" => "Industry",
                 "contract_number" => "Contract ID",
                 "check_amount" => "Check Amount",
                 "check_eft_issued_date" => "Issue Date",
@@ -928,6 +936,7 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
                 "apt_pin"=>"APT PIN",
                 "registration_date"=>"Registration date",
                 "expense_category_name"=>"Expense Category",
+                "industry_type_name" => "Industry",
                 "received_date"=>"Received date",
                 "minority_type_name" => "M/WBE Category",
                 "is_prime_or_sub" => "Sub Vendor",
@@ -992,6 +1001,7 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
 						"department_name" => "Department",
 						"vendor_name" => "Payee Name",
 						"expenditure_object_name" => "Expense Category",
+                        "industry_type_name" => "Industry",
 						"contract_number" => "Contract ID",
 						"spending_commodity_line" => "Commodity Line",
 						"check_amount" => "Check Amount",
@@ -1024,6 +1034,7 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
 						"apt_pin"=>"APT PIN",
 						"registration_date"=>"Registration date",
 						"expense_category_name"=>"Expense Category",
+                        "industry_type_name" => "Industry",
 						"received_date"=>"Received date",
 						"contract_entity_contract_number" => "Entity Contract#",
 						"contract_budget_name" => "Budget Name",
