@@ -207,7 +207,9 @@
                 1 domain_ordering,
                 check_eft_issued_date date_ordering,
                 adt.contract_original_agreement_id,
-                case when adt.is_prime_or_sub in ('P') then 'N/A' else adt.prime_vendor_name end as prime_vendor_name
+                case when adt.is_prime_or_sub in ('P') then 'N/A' else adt.prime_vendor_name end as prime_vendor_name,
+                industry_type_id,
+                industry_type_name
 			 from all_disbursement_transactions  adt left join ref_year ry on adt.check_eft_issued_nyc_year_id = ry.year_id
 			 left join ref_spending_category rsc on rsc.spending_category_id = adt.spending_category_id
 			 where 
@@ -274,6 +276,8 @@
             <field column="contract_original_agreement_id" name="contract_original_agreement_id" />
             <field column="domain_ordering" name="domain_ordering" />
             <field column="date_ordering" name="date_ordering" />
+            <field column="industry_type_id" name="spending_industry_type_id" />
+            <field column="industry_type_name" name="spending_industry_type_name" />
         </entity>
         <entity dataSource="db2" name="spending_oge"
                 pk="id"
@@ -520,7 +524,9 @@
                 effective_begin_year,
                 effective_begin_year_id,
                 contract_original_agreement_id,
-                vendor_type
+                vendor_type,
+                industry_type_id,
+                industry_type_name
                 from all_agreement_transactions a
                 left join ref_document_code dc on a.document_code_id = dc.document_code_id
                 left join ref_award_category rac on a.award_category_id = rac.award_category_id
@@ -606,6 +612,8 @@
             <field column="effective_begin_year" name="effective_begin_year" />
             <field column="effective_begin_year_id" name="effective_begin_year_id" />
             <field column="contract_original_agreement_id" name="contract_original_agreement_id"/>
+            <field column="industry_type_id" name="contract_industry_type_id" />
+            <field column="industry_type_name" name="contract_industry_type_name" />
         </entity>
         <entity dataSource="db2" name="contracts_oge" transformer="RegexTransformer"
                 pk="id"
@@ -835,10 +843,13 @@
         case when minority_type_id in (4,5,10) then 10 else minority_type_id end as minority_type_id_contract,
                 case when is_prime_or_sub in ('S') then 'Yes' when is_prime_or_sub in ('P') then 'No' else is_prime_or_sub end as is_prime_or_sub,
                 is_minority_vendor,
-                vendor_type
+                vendor_type,
+                ri.industry_type_id,
+                ri.industry_type_name
             from pending_contracts p
             left join ref_document_code dc on p.document_code_id = dc.document_code_id
             left join ref_agency ra on p.document_agency_id = ra.agency_id
+            left join ref_industry_type ri on ri.industry_type_id = p.industry_type_id
 		">
             <field column="id" name="id" />
             <field column="domain1" name="domain" />
@@ -882,6 +893,8 @@
             <field column="is_minority_vendor" name="is_minority_vendor" />
             <field column="minority_type_name_contract" name="minority_type_name_contract" />
             <field column="minority_type_id_contract" name="minority_type_id_contract" />
+            <field column="industry_type_id" name="contract_industry_type_id" />
+            <field column="industry_type_name" name="contract_industry_type_name" />
         </entity>
     </document>
 </dataConfig>
