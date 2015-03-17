@@ -214,6 +214,8 @@
         <field name="payment_id" type="string_custom" indexed="true" stored="true"/>
         <field name="minority_type_name_spending" type="string_custom" indexed="true" stored="true"/>
         <field name="minority_type_id_spending" type="string_custom" indexed="true" stored="true"/>
+        <field name="spending_industry_type_name" type="string_custom" indexed="true" stored="true"/>
+        <field name="spending_industry_type_id" type="string_custom" indexed="true" stored="true"/>
 
 
         <!--
@@ -295,6 +297,8 @@
         <field name="award_method_name_code" type="string_custom" indexed="true" stored="true"/>
         <field name="expenditure_object_codes" type="string_custom" indexed="true" stored="true"/>
         <field name="expenditure_object_names" type="string_custom" indexed="true" stored="true"/>
+        <field name="contract_industry_type_name" type="string_custom" indexed="true" stored="true"/>
+        <field name="contract_industry_type_id" type="string_custom" indexed="true" stored="true"/>
         
         <field name="contract_entity_contract_number" type="string_custom" indexed="true" stored="true" multiValued="true"/>
         <field name="contract_commodity_line" type="string_custom" indexed="true" stored="true" multiValued="true"/>
