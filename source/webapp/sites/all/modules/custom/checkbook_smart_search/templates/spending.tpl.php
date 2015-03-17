@@ -24,7 +24,7 @@
 $spending_parameter_mapping = _checkbook_smart_search_domain_fields('spending', $IsOge);
 
 if($spending_results['fiscal_year_id'] != ''){
-    $fiscal_year_id = $spending_results['fiscal_year_id'];
+    $fiscal_year_id = $spending_results['fiscal_year_id'][0];
 }
 else{
     $fiscal_year_id = _getCurrentYearID();
