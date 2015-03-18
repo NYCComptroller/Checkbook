@@ -574,20 +574,12 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
                 }
             }
 
-           if(isset($reqYearType) && ($reqYearType == 'C') && !_checkbook_check_isEDCPage() && ($advanced_search || _getRequestParamValue('mwbe') || _getRequestParamValue('dashboard'))){
+           if(isset($reqYearType) && ($reqYearType == 'C') && !_checkbook_check_isEDCPage()) {
                if(isset($node->widgetConfig->dataset)){
                    $node->widgetConfig->dataset = 'checkbook:all_agreement_transactions_cy';
                }else if(isset($node->widgetConfig->model->series) && is_array($node->widgetConfig->model->series)){
                    foreach($node->widgetConfig->model->series as $series){
                        $series->dataset = 'checkbook:all_agreement_transactions_cy';
-                   }
-               }
-           }elseif(isset($reqYearType) && ($reqYearType == 'C') && !_checkbook_check_isEDCPage() && !$advanced_search && !_getRequestParamValue('mwbe') && !_getRequestParamValue('dashboard')){
-               if(isset($node->widgetConfig->dataset)){
-                    $node->widgetConfig->dataset = 'checkbook:agreement_snapshot_cy';
-               }else if(isset($node->widgetConfig->model->series) && is_array($node->widgetConfig->model->series)){
-                   foreach($node->widgetConfig->model->series as $series){
-                       $series->dataset = 'checkbook:agreement_snapshot_cy';
                    }
                }
            }
