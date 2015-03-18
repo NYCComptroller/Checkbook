@@ -146,12 +146,12 @@
             {"datasetName": "all_agreement_transactions_cy", "columnNames": ["original_agreement_id"]},
             {"datasetName": "all_contracts_coa_aggregates", "columnNames": ["original_agreement_id"]}
         ],
-        "agreement_snapshot__ref_document_code": [
+        "all_agreement_transactions_cy__ref_document_code": [
             {"datasetName": "all_agreement_transactions_cy", "columnNames": ["document_code_id"]},
             {"datasetName": "ref_document_code", "columnNames": ["document_code_id"]}
         ],
-        "agreement_snapshot__ref_award_category": [
-            {"datasetName": "agreement_snapshot", "columnNames": ["award_category_id"]},
+        "all_agreement_transactions_cy__ref_award_category": [
+            {"datasetName": "all_agreement_transactions_cy", "columnNames": ["award_category_id"]},
             {"datasetName": "award_category", "columnNames": ["award_category_id"]}
         ]
     }
