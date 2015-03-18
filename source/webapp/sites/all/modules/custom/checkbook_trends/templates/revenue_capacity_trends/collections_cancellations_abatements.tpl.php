@@ -73,8 +73,8 @@ echo eval($node->widgetConfig->header);
 	widget_data_tables_add_js($node);
 ?>
 <div class="footnote">
-<p>(1) Abatements and discounts inlcude SCRIE abatements(Senior Citizen Rent Increase Excemption), J51 Abatements, Section 626 Abatements and other minor discounts offered by the City to property owners.</p>
-<p>(2) The Tax levy amount is the amount from the City Council Resolution. In 2003, an 18% surcharge was imposed and is included in each following year.</p>
+<p>(1) Abatements and discounts include SCRIE abatements(Senior Citizen Rent Increase Excemption), J51 Abatements, Section 626 Abatements and other minor discounts offered by the City to property owners.</p>
+<p>(2) The Tax levy amounts are the amount from the City Council Resolution. In 2003, an 18% surcharge was imposed and is included in each following year.</p>
 <p>NOTES: Total uncollected balance at June 30, 2011 less allowance for uncollectible amounts equals net realizable amount (real estate taxes receivable).</p>
 <p>Levy may total over 100 percent due to imposed charges that include ICIP deferred charges (Industrial and Commercial Incentive Program), rebilling charges and other additional charges imposed by the Department of Finance (DOF). This information is
 included in the FAIRTAX LEVY report.</p>
