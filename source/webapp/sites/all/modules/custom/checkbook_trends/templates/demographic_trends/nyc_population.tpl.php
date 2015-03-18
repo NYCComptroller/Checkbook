@@ -69,7 +69,7 @@ echo eval($node->widgetConfig->header);
 </table>
     <div class="footnote">
          <p>*Amounts as of May 30, 2014</p>
-         <p>Source: U.S Department of Commerce,Bureau of Economic Analysis.</p>
+         <p>Source: U.S Department of Commerce, Bureau of Economic Analysis. US Census Bureau</p>
     </div>
 <?php 
 	widget_data_tables_add_js($node);
