@@ -720,8 +720,12 @@ Drupal.behaviors.hoveOverMWBE = {
                                     if(!isNumber(alertMinimumDays) || alertMinimumDays<1){
                                       alertMsgs.push("Alert frequency is not valid.");
                                     }
+                                    var selectedDate = $("input[name='alert_end[date]']").datepicker('getDate');
                                     if((alertEnd.length > 1 && alertEnd.length != 10) || (alertEnd.length > 1 && !alertEnd.match(dateRegEx))){
                                         alertMsgs.push("Expiration Date is not valid.");
+                                    }
+                                    else if(selectedDate != null && selectedDate < new Date()) {
+                                        alertMsgs.push("Expiration date should be greater than current date.");
                                     }
 
                                     if (alertMsgs.length > 0) {
@@ -1517,8 +1521,12 @@ Drupal.behaviors.hoveOverMWBE = {
                 if(!isNumber(alertMinimumDays) || alertMinimumDays<1){
                     alertMsgs.push("Alert frequency is not valid.");
                 }
+                var selectedDate = $("input[name='alert_end[date]']").datepicker('getDate');
                 if((alertEnd.length > 1 && alertEnd.length != 10) || (alertEnd.length > 1 && !alertEnd.match(dateRegEx))){
                     alertMsgs.push("Expiration Date is not valid.");
+                }
+                else if(selectedDate != null && selectedDate < new Date()) {
+                    alertMsgs.push("Expiration date should be greater than current date.");
                 }
 
                 if (alertMsgs.length > 0) {
