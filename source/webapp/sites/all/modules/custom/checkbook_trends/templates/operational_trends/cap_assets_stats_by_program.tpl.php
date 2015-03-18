@@ -127,11 +127,11 @@ rsort($years);
     </tbody>
 </table>
 <div class="footnote">
-  <p>(1) In 2004, the Department of Transportation (DOT) took ownership of 16 Waterway and 17 Highway Bridges which were previously owned by the Department of Parks and Recreation.</p>
+  <p>(1) In 2004, Department of Transportation (DOT) took ownership of 16 Waterway and 17 Highway Bridges which were previously owned by the Department of Parks.</p>
   <p>(2) These include both active and inactive facilities.</p>
-  <p>(3) In 2006, the Department of Correction transferred ownership of the Bronx House of Detention building to Economic Development Corporation under the Department of Small Business Services.</p>
+  <p>(3) In 2006, Department of Corrections transferred ownership of the Bronx House of Detention building to Economic Development Corporation under the Department of Small Business Services.</p>
   <p>(4) In 2006, the Fire Department included 4 reserve fireboats for hurricane preparedness.<br/>
-  <p>(5) In 2006, Icahn became the Parks Department fifth major stadium. Icahn is located on Randalls Island and serves as a track and field facility.</p>
+  <p>(5) In 2006, Icahn became the Park’s Department fifth major stadium. Icahn is located on Randalls Island and serves as a track and field facility.</p>
   <p>(6) Parks fiscal year 2005 acreage count includes a reduction of 92 acres.</p>
   <p>(7) The decrease in transfer stations and increase in piers and bulkheads were due to a reclassification in fiscal year 2007.</p>
   <p>(8) In fiscal year 2007, DOT reclassified one bridge structure to a waterway bridge, and demolished three other bridge structures.</p>
@@ -156,6 +156,10 @@ rsort($years);
   <p>(27) Yankee and Shea Stadia have been demolished. The two new Stadia, Citi Field and Yankee Stadium have leasing agreements in place with the Industrial Development Corporation.</p>
   <p>(28) In FY 2012, we included an Admin building with active enrollment</p>
   <p>(29) As of Fall 2012, CUNY started accepting students at its newest Community College called the New Community College. </p>
+  <p>(30) In FY 2014 the Police Department aquiried a new Bell 429 Partol Helicopter.</p>
+  <p>(31)  In FY 2014 the Fire Department opened the EMS3 Soundview Station.</p>
+  <p>(33) In FY 2014 the Sanitation Department closed down 3 Transfer: Bronx MTS, E 91st Street MTS and the South West Brooklyn MTS. They added a new Northshore MTS.</p>
+
   <p>Sources: Various City Agencies</p>
 </div>
 <?php 
