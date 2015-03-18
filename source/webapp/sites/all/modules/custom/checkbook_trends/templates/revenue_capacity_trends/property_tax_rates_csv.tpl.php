@@ -19,7 +19,6 @@
 */
 ?>
 <?php
-echo "\n".'Property Tax Rates - Fifteen Year Trend'."\n"."\n";
     $header = 'Fiscal year';
     $header .=  ",Basic Rate" ;
     $header .=  ",Obligation Debt" ;
