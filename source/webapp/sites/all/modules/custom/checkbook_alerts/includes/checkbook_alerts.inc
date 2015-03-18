@@ -249,6 +249,7 @@ function _checkbook_alerts_unsubscribe() {
  * 1. Alert is not already active
  * 2. Alert was created in the past 7 days
  * 3. Alert has not been un-subscribed from
+ * 4. Alert end date is not past
  *
  * @return string
  */
@@ -259,7 +260,7 @@ function _checkbook_alerts_activate() {
     $message = 'Your alert activation link is no longer active. You have unsubscribed from this alert.';
 
     $alert = db_select('checkbook_alerts')
-        ->fields('checkbook_alerts', array('checkbook_alerts_sysid','created_date','active'))
+        ->fields('checkbook_alerts', array('checkbook_alerts_sysid','created_date','date_end','active'))
         ->where('CONCAT(checkbook_alerts_sysid,MD5(CONCAT(checkbook_alerts_sysid,label,recipient))) = :arg',array(':arg' => $arg))
         ->isNull('un_subscribed_date')
         ->execute()
@@ -273,6 +274,10 @@ function _checkbook_alerts_activate() {
         //Expired
         else if(time() > strtotime('+7 day', strtotime($alert['created_date']))) {
             $message = 'Your alert activation link has expired. Please schedule a new alert using the alerts functionality.';
+        }
+        //End date is past
+        else if(time() > strtotime($alert['date_end'])) {
+            $message = 'Your alert has expired. Please schedule a new alert using the alerts functionality.';
         }
         //Activate
         else {
