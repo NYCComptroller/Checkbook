@@ -93,7 +93,7 @@
                     }
                 }
             },
-            "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($dataSet,$parameters,$criteria,'checkbook_oge');}"
+            "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($data_set,$parameters,$criteria,'checkbook_oge');}"
         },
         "requestParameters":{
             "fiscal_year":{"valueType":"value","dataType":"year","maxLength":"4"},
@@ -216,7 +216,7 @@
                     }
                 }
             },
-            "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($dataSet,$parameters,$criteria,'checkbook_oge');}"
+            "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($data_set,$parameters,$criteria,'checkbook_oge');}"
         },
         "requestParameters":{
             "other_government_entities_code":{"valueType":"value","dataType":"text","maxLength":"4"},

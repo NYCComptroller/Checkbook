@@ -127,7 +127,7 @@
                     "required_non_display_columns":["vendor_type"]
                 }
             },
-            "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($dataSet,$parameters,$criteria);}",
+            "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($data_set,$parameters,$criteria);}",
             "adjustDataSetResults":"if(function_exists('checkbook_api_adjustContractDataSetResults')){checkbook_api_adjustContractDataSetResults($data_records);}"
         },
         "requestParameters":{
@@ -293,7 +293,7 @@
                     "required_non_display_columns":["vendor_type"]
                 }
             },
-            "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($dataSet,$parameters,$criteria);}",
+            "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($data_set,$parameters,$criteria);}",
             "adjustDataSetResults":"if(function_exists('checkbook_api_adjustContractDataSetResults')){checkbook_api_adjustContractDataSetResults($data_records);}"
         },
         "requestParameters":{
@@ -498,7 +498,7 @@
                     "required_non_display_columns":["vendor_type"]
                 }
             },
-            "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($dataSet,$parameters,$criteria);}",
+            "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($data_set,$parameters,$criteria);}",
             "adjustDataSetResults":"if(function_exists('checkbook_api_adjustContractDataSetResults')){checkbook_api_adjustContractDataSetResults($data_records);}"
         },
         "requestParameters":{
@@ -698,7 +698,7 @@
                     "required_non_display_columns":["vendor_type"]
                 }
             },
-            "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($dataSet,$parameters,$criteria);}",
+            "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($data_set,$parameters,$criteria);}",
             "adjustDataSetResults":"if(function_exists('checkbook_api_adjustContractDataSetResults')){checkbook_api_adjustContractDataSetResults($data_records);}"
         },
         "requestParameters":{
@@ -876,7 +876,7 @@
                     }
                 }
             },
-            "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($dataSet,$parameters,$criteria);}",
+            "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($data_set,$parameters,$criteria);}",
             "adjustDataSetResults":"if(function_exists('checkbook_api_adjustContractDataSetResults')){checkbook_api_adjustContractDataSetResults($data_records);}"
         },
         "requestParameters":{

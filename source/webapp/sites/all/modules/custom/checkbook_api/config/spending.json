@@ -102,7 +102,7 @@
                     "required_non_display_columns":["vendor_type"]
                 }
             },
-            "adjustParameters":"if(function_exists('checkbook_api_adjustSpendingParameterFilters')){checkbook_api_adjustSpendingParameterFilters($dataSet,$parameters,$criteria);}",
+            "adjustParameters":"if(function_exists('checkbook_api_adjustSpendingParameterFilters')){checkbook_api_adjustSpendingParameterFilters($data_set,$parameters,$criteria);}",
             "adjustDataSetResults":"if(function_exists('checkbook_api_adjustSpendingDataSetResults')){checkbook_api_adjustSpendingDataSetResults($data_records);}"
         },
         "requestParameters":{
