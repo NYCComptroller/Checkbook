@@ -64,7 +64,7 @@
         $rowString .= ','  . '"'. (($row['total_primary_government']>0)?number_format($row['total_primary_government']):'-') . '"';
         echo $rowString . "\n";
    	}
-
-echo "\n"."\n".'"'."Note: Gross Debt, Percentage of Personal Income and Per Capital Gross Debt columns had to be removed. The figures changed year by year and they would not match the figures shown when that years CAFR was released.".'"'
+echo "\n"."\n".'"'."Sources: Comprehensive Annual Financial Reports of the Comptroller".'"';
+echo "\n"."\n".'"'."Note: Gross Debt, Percentage of Personal Income and Per Capital Gross Debt columns had to be removed. The figures changed year by year and they would not match the figures shown when that years CAFR was released.".'"';
 ?>
 
