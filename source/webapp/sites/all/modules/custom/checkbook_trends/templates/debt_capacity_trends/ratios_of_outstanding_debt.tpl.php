@@ -94,6 +94,7 @@ if(preg_match('/featuredtrends/',$_GET['q'])){
     </tbody>
 </table>
 <div class="footnote">
+<p>Sources: Comprehensive Annual Financial Reports of the Comptroller</p>
 <p>Note: Gross Debt, Percentage of Personal Income and Per Capital Gross Debt columns had to be removed. The figures changed year by year and they would not match the figures shown when that years CAFR was released.</p></div>
 <?php 
 	widget_data_tables_add_js($node);
