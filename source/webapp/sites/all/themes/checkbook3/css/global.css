@@ -1797,7 +1797,13 @@ td.text div {
 td.number div {
     float: right;
     text-align: right;
-    width: 70px;
+    width: 25px;
+}
+#table_766_wrapper td.number div,
+#table_317_wrapper td.number div{
+    float: right;
+    text-align: right;
+    width: 90px;
 }
 td.number-center {
     text-align: center;
