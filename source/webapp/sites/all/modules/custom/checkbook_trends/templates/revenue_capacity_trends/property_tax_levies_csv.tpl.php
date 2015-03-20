@@ -19,7 +19,6 @@
 */
 ?>
 <?php
-echo "\n".'Property Tax Levies and Collections - Ten Year Trend'."\n"."\n";
 	$header = 'Fiscal year';
     $header .=  ",Taxes Levied for the Fiscal Year"  ;
     $header .=  ",Collected Within the Fiscal Year of the Levy - Amount"  ;
