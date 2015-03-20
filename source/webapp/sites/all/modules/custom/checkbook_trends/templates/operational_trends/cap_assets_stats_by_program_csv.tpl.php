@@ -79,8 +79,10 @@ echo "\n"."\n".'"'."(1) In 2004, the Department of Transportation (DOT) took own
      ."\n".'"'."(27) Yankee and Shea Stadia have been demolished. The two new Stadia, Citi Field and Yankee Stadium have leasing agreements in place with the Industrial Development Corporation.".'"'
      ."\n".'"'."(28) In FY 2012, we included an Admin building with active enrollment. ".'"'
      ."\n".'"'."(29) As of Fall 2012, CUNY started accepting students at its newest Community College called the New Community College ".'"'
+     ."\n".'"'."(30) In FY 2014 the Police Department aquiried a new Bell 429 Partol Helicopter.".'"'
+     ."\n".'"'."(31)  In FY 2014 the Fire Department opened the EMS3 Soundview Station.".'"'
+     ."\n".'"'."(33) In FY 2014 the Sanitation Department closed down 3 Transfer: Bronx MTS, E 91st Street MTS and the South West Brooklyn MTS. They added a new Northshore MTS. ".'"'
      ."\n"."\n".'"'."Sources: Various City Agencies".'"';
-
 
 ?>
 
