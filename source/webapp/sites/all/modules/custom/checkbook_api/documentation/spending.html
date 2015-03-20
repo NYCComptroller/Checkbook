@@ -356,7 +356,7 @@
     <td>value</td>
     <td>String- Maximum 3 characters</td>
     <td>Other Government Entities</td>
-    <td>Identifies which government entities the user would want to search. Includes EDC and TDC.See here for other government entities codes.</td>
+    <td>Identifies which government entities the user would want to search. Currently includes only Includes EDC. Code for EDC is z81.</td>
     <td><ul>
         <li>Total Spending</li>
         <li>Payroll Spending</li>
@@ -374,7 +374,7 @@
     <td>value</td>
     <td>String- Maximum 2 characters</td>
     <td>Citywide Agencies</td>
-    <td>User shall be able to extract data for specific mwbe categories, by specifying the mwbe category code in the request XML.For all m/wbe categories results, user need not give any m/wbe category codes in the request. By default, it shall display results for all categories.See here for mwbe categories list.For mwbe categories with two codes, include both the codes in the request xml. For example, for Asian american, give input as 4~5.</td>
+    <td>User shall be able to extract data for specific mwbe categories, by specifying the mwbe category code in the request XML. For all m/wbe categories results, user need not give any m/wbe category codes in the request. By default, it shall display results for all categories. See here for <a href="/ref_code_list/mwbe">mwbe categories list</a>. For mwbe categories with two codes, include both the codes in the request XML. For example, for Asian american, give input as 4~5.</td>
     <td>
         <ul>
             <li>Total Spending</li>
@@ -390,9 +390,10 @@
     <td>industry</td>
     <td>N</td>
     <td>value</td>
-    <td>Allows you to select 7 possible industry types. Values must be one of the following: Arch and Engineerng, Construction Services, Goods, Human Services, Not Classified, Professional Services, Standardized Services.</td>
+    <td>String- Maximum 2 characters</td>
     <td>Citywide Agencies</td>
-    <td>User shall be able to extract data for specific industry, by specifying the industry type in the request XML.For all industry type results, user need not give any industry type in the request. By default, it shall display results for all industry types.</td>
+    <td>User shall be able to extract data for specific industry types, by specifying the industry type codes in the request XML.
+        By default, it shall display results for all industries. See here for <a href="/ref_code_list/industry">Industry Codes list</a>.</td>
     <td>
         <ul>
             <li>Total Spending</li>
@@ -402,7 +403,7 @@
             <li>Other Spending</li>
         </ul>
     </td>
-    <td>Goods</td>
+    <td>2</td>
 </tr>
 </tbody>
 </table>
