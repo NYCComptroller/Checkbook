@@ -1797,7 +1797,6 @@ td.text div {
 td.number div {
     float: right;
     text-align: right;
-    width: 25px;
 }
 #table_766_wrapper td.number div,
 #table_317_wrapper td.number div{
