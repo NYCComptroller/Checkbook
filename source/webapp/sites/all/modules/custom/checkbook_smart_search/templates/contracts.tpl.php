@@ -11,22 +11,41 @@
 
 $contracts_parameter_mapping = _checkbook_smart_search_domain_fields('contracts', $IsOge);
 
+
 if(strtolower($contracts_results['contract_status']) == 'registered'){
 
+    $search_terms = explode('*|*', $_REQUEST['search_term']);
+    $contract_status = '';
+    foreach($search_terms as $id => $keyvaluepair){
+        $keys = explode("=", $keyvaluepair);
+        if($keys[0] == 'registered_fiscal_years'){
+            $reg_year = $keys[1];
+        }
+        if($keys[0] == 'contract_status' && $keys[1] == 'active'){
+            $contract_status = 'Active';
+
+        }
+        if($keys[0] == 'contract_status' && $keys[1] == 'registered'){
+            $contract_status = 'Registered';
+        }
+    }
+   $act_fiscal_year = $contracts_results['fiscal_year'];
    $reg_fiscal_year = $contracts_results['registered_fiscal_year'];
    $current_date = date("c").'Z';
    $start_date = date("c", strtotime($contracts_results['start_date']));
    $end_date = date("c", strtotime($contracts_results['end_date']));
 
-   if($start_date <= $current_date && $end_date >= $current_date){
+    if($contract_status == 'Active'){
            $contracts_results['contract_status'] = 'Active';
            $status = "A";
-   }else{
+   }else if($contract_status == 'Registered'){
            $contracts_results['contract_status'] =  'Registered';
            $status = "R";
+   }else{
+       $contracts_results['contract_status'] =  'Active';
+       $status = "A";
    }
-    $effective_end_year_id =$contracts_results['effective_end_year_id'];
-
+    $effective_end_year_id = $contracts_results['effective_end_year_id'];
     if($effective_end_year_id != '' && $effective_end_year_id < _getCurrentYearID()){
         $fiscal_year_id = $effective_end_year_id;
     }
@@ -151,9 +170,10 @@ if($IsOge && !in_array($contracts_results['contract_type_code'],array('MMA1', 'M
 	
 }
 // for contracts with fiscal year 2009 and earlier, links should be disabled
-if($reg_fiscal_year < 2010){
+if(($contract_status == 'Registered' && $reg_fiscal_year < 2010) || ($effective_end_year_id < 111)){
     $linkable_fields = array();
 }
+
 
 if($IsOge && in_array($contracts_results['contract_type_code'],array('MMA1'))){
 	$contracts_parameter_mapping['oge_contracting_agency_name'] = "Contracting Agency";
@@ -222,7 +242,7 @@ foreach ($contracts_parameter_mapping as $key => $title){
                     $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". $fiscal_year_id ."/mwbe/".$id ."/dashboard/mp'>" .$contracts_results["minority_type_name"]."</a>";
                 }
             }
-            if($reg_fiscal_year < 2010){
+            if(($contract_status == 'Registered' && $reg_fiscal_year < 2010) || ($effective_end_year_id < 111)){
                 $value = $contracts_results["minority_type_name"];
             }
         }
