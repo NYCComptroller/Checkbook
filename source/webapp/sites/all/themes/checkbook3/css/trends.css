@@ -277,8 +277,9 @@ td.number div.dollarItem {float:left; margin-left:12px;}
 #table_353_wrapper td.number div.dollarItem,
 #table_351_wrapper td.number div.dollarItem,
 #table_360_wrapper td.number div.dollarItem {margin-left:40px;}
-#table_355_wrapper td.number div.dollarItem {float:left; margin-left:0px;}
-#table_406_wrapper td.number div.dollarItem {float:left; margin-left:0px;}
+#table_355_wrapper td.number div.dollarItem,
+#table_401_wrapper td.number div.dollarItem,
+#table_406_wrapper td.number div.dollarItem,
 #table_404_wrapper td.number div.dollarItem {float:left; margin-left:0px;}
 #table_399_wrapper td.number div.dollarItem {float:left; margin-left:95px;}
 
