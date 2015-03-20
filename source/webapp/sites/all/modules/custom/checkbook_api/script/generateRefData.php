@@ -28,6 +28,8 @@ $ref_data_queries = array(
   'agency_code_list' => "SELECT agency_code \\\"Agency Code\\\",agency_name \\\"Agency Name\\\"  FROM ref_agency where is_display = 'Y' ORDER BY agency_name",
   'vendor_code_list' => "SELECT vendor_customer_code \\\"Vendor Code\\\", legal_name \\\"Vendor Name\\\" FROM vendor",
   'department_code_list' => "SELECT distinct d.department_code \\\"Department Code\\\", d.department_name \\\"Department Name\\\",a.agency_code \\\"Agency Code\\\", a.agency_name \\\"Agency Name\\\" FROM ref_department d LEFT OUTER JOIN ref_agency a  ON d.agency_id = a.agency_id ORDER BY d.department_name",
+  'mwbe_code_list' => "SELECT DISTINCT minority_type_name \\\"Minority Type Name\\\", minority_type_id \\\"Minority Type Id\\\" FROM ref_minority_type",
+  'industry_code_list' => "SELECT DISTINCT industry_type_name \\\"Industry Type Name\\\", industry_type_id \\\"Industry Type Id\\\" FROM ref_industry_type",
 
   // Budget:
   'budget_code_list' => "SELECT distinct budget_code \\\"Budget Code\\\",attribute_name \\\"Budget Code Name\\\"  FROM ref_budget_code ORDER BY attribute_name",
@@ -46,7 +48,8 @@ $ref_data_queries = array(
   'spending_expense_category_code_list' => "SELECT expenditure_object_code \\\"Expense Category Code\\\",expenditure_object_name \\\"Expense Catergory Name\\\" FROM ref_expenditure_object ORDER BY expenditure_object_name",
   'capital_project_code_list' => "SELECT DISTINCT reporting_code \\\"Capital Project Code\\\" FROM disbursement_line_item_details where coalesce(reporting_code,'') <> '' ORDER BY reporting_code",
   'document_id_code_list' => "SELECT DISTINCT disbursement_number \\\"Document Id\\\" FROM disbursement_line_item_details ORDER BY disbursement_number",
-  'spending_category_code_list' => "SELECT DISTINCT spending_category_name \\\"Spending Category Name\\\", spending_category_code \\\"Spending Category Code\\\" FROM ref_spending_category"
+  'spending_category_code_list' => "SELECT DISTINCT spending_category_name \\\"Spending Category Name\\\", spending_category_code \\\"Spending Category Code\\\" FROM ref_spending_category",
+
 );
 
 $dir = variable_get('file_public_path', 'sites/default/files') . '/' . $conf['check_book']['data_feeds']['output_file_dir'];
