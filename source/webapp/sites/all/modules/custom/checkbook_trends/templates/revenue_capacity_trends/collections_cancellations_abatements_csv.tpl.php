@@ -19,13 +19,13 @@
 */
 ?>
 <?php
-    echo "\n".",,".'"'."Percent of Levy through June 30, 2013".'"'."\n";
+    echo "\n".",,".'"'."Percent of Levy through June 30, 2014".'"'."\n";
     $header = 'Fiscal year';
     $header .=  ",Tax Levy (in millions)" ;
     $header .=  ",Collections,";
     $header .=  ",Cancellations,";
     $header .=  ",Abatements and Discounts(1),";
-    $header .=  ",".'"'."Uncollected Balance June 30, 2013".'"'.',';
+    $header .=  ",".'"'."Uncollected Balance June 30, 2014".'"'.',';
 
 	echo $header . "\n";
 
