@@ -1253,6 +1253,7 @@ span.create-alert-results-loading p {
 
 div.create-alert-schedule-alert {
     margin-left: 40px;
+    clear: both;
 }
 
 div.create-alert-submit {

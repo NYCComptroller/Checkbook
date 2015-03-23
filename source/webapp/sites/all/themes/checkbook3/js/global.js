@@ -729,7 +729,7 @@ Drupal.behaviors.hoveOverMWBE = {
                                     }
 
                                     if (alertMsgs.length > 0) {
-                                        $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul>' + '<li>' + alertMsgs.join('<li/>') + '</ul></div>');
+                                        $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul>' + '<li>' + alertMsgs.join('</li><li>') + '</li></ul></div>');
                                     } else {
                                         $('#errorMessages').html('');
 
@@ -1344,7 +1344,7 @@ Drupal.behaviors.hoveOverMWBE = {
                         $('.create-alert-results-loading').css('display', 'block');
 
                         /* Show the schedule alert page */
-                        $('.create-alert-schedule-alert').css('display','inline');
+                        $('.create-alert-schedule-alert').css('display','block');
 
                         /* Load Schedule Alert Form */
                         $.fn.onScheduleAlertClick();
@@ -1530,7 +1530,7 @@ Drupal.behaviors.hoveOverMWBE = {
                 }
 
                 if (alertMsgs.length > 0) {
-                    $(alertDiv).find('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul>' + '<li>' + alertMsgs.join('<li/>') + '</ul></div>');
+                    $(alertDiv).find('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul>' + '<li>' + alertMsgs.join('</li><li>') + '</li></ul></div>');
                     /* back button needs to be enabled*/
                     $('#edit-back-submit').attr('disabled', false);
                     /* Update hidden field for new step */
