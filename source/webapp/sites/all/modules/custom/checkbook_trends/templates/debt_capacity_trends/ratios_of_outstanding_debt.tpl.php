@@ -22,7 +22,7 @@
 echo eval($node->widgetConfig->header);  
 if(preg_match('/featuredtrends/',$_GET['q'])){
   $links = array(l(t('Home'), ''), l(t('Trends'), 'featured-trends'),
-      '<a href="/featured-trends?slide=4">Ratios of Outstanding Debt</a>',
+      '<a href="/featured-trends?slide=4">Ratios of Outstanding Debt by Type</a>',
       'Ratios of Outstanding Debt by Type Details');
   drupal_set_breadcrumb($links);
 }
