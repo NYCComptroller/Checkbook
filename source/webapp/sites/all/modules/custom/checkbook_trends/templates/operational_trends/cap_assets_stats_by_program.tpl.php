@@ -158,7 +158,7 @@ rsort($years);
   <p>(29) As of Fall 2012, CUNY started accepting students at its newest Community College called the New Community College. </p>
   <p>(30) In FY 2014 the Police Department aquiried a new Bell 429 Partol Helicopter.</p>
   <p>(31)  In FY 2014 the Fire Department opened the EMS3 Soundview Station.</p>
-  <p>(33) In FY 2014 the Sanitation Department closed down 3 Transfer: Bronx MTS, E 91st Street MTS and the South West Brooklyn MTS. They added a new Northshore MTS.</p>
+  <p>(32) In FY 2014 the Sanitation Department closed down 3 Transfer: Bronx MTS, E 91st Street MTS and the South West Brooklyn MTS. They added a new Northshore MTS.</p>
 
   <p>Sources: Various City Agencies</p>
 </div>
