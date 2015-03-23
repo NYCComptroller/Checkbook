@@ -335,6 +335,7 @@ foreach ($render_array as $title => $value) {
         jQuery('div.filter-content-fvendorName .options').mCustomScrollbar("destroy");
         jQuery('div.filter-content-fexpenseCategoryName .options').mCustomScrollbar("destroy");
         jQuery('div.filter-content-fmwbeCategory .options').mCustomScrollbar("destroy");
+        jQuery('div.filter-content-findustryTypeName .options').mCustomScrollbar("destroy");
         scroll_facet();
     });
 
@@ -354,6 +355,7 @@ foreach ($render_array as $title => $value) {
             jQuery('div.filter-content-fvendorName .options').mCustomScrollbar("destroy");
             jQuery('div.filter-content-fexpenseCategoryName .options').mCustomScrollbar("destroy");
             jQuery('div.filter-content-fmwbeCategory .options').mCustomScrollbar("destroy");
+            jQuery('div.filter-content-findustryTypeName .options').mCustomScrollbar("destroy");
             scroll_facet();
         }
     });
@@ -369,6 +371,7 @@ foreach ($render_array as $title => $value) {
         jQuery('div.filter-content-fmwbeCategory .options').mCustomScrollbar(opts);
         jQuery('div.filter-content-fyear .options').mCustomScrollbar(opts);
         jQuery('div.filter-content-regfyear .options').mCustomScrollbar(opts);
+        jQuery('div.filter-content-findustryTypeName .options').mCustomScrollbar(opts);
 
         var vendorpage = 0;
         var vpagelimit = Drupal.settings.checkbook_smart_search.vendor_pages;
