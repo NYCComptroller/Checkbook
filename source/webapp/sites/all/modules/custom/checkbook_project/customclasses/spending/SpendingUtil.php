@@ -419,11 +419,11 @@ class SpendingUtil{
 
         $query = "SELECT vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub
                       FROM contract_vendor_latest_mwbe_category
-                      WHERE minority_type_id IN (2,3,4,5,9)
-                      AND vendor_id =".$vendor_id."
-                      AND year_id =".$year_id."
-                      AND type_of_year ='".$year_type."'
-                      GROUP BY vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub LIMIT 1";
+                      WHERE minority_type_id IN (2,3,4,5,9)";
+        $query .= isset($vendor_id) ? " AND vendor_id = ".$vendor_id : "";
+        $query .= " AND year_id =".$year_id."
+                    AND type_of_year ='".$year_type."'
+                    GROUP BY vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub LIMIT 1";
 
         $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
 
