@@ -37,7 +37,6 @@
                                     .append( "<a href='" + item.url + "'>" + htmlEntities(item.label) + "</a>" )
                                     .appendTo( ul );
                 }
-
 			});
 		}
     });
@@ -292,6 +291,27 @@
                     }
                 }
             });
+            $('#autocomplete_findustryTypeName',context).autocomplete({
+                source:"/smart_search/autocomplete/industrytype" + search_term,
+                focus: function (event, ui) {
+                    if(ui.item.label.toLowerCase() == 'no matches found'){
+                        return false;
+                    }else{
+                        $(event.target).val(ui.item.label);
+                        return false;
+                    }
+                },
+                select: function (event, ui) {
+                    if(ui.item.label.toLowerCase() == 'no matches found'){
+                        return false;
+                    }else{
+                        var url = getFacetAutocompleteUrl("industry_type_name",encodeURIComponent(ui.item.value));
+                        $(event.target).val(ui.item.label);
+                        window.location = url;
+                        return false;
+                    }
+                }
+            });
         }
     }
     Drupal.behaviors.clear_search = {
@@ -341,8 +361,6 @@
         var contractCategories = getSearchFilterCriteria('fcontractCatName');
         var contractStatus = getSearchFilterCriteria('fcontractStatus');
         var spendingCategories = getSearchFilterCriteria('fspendingCatName');
-        var spendingMWBECategories = getSearchFilterCriteria('fspendingMWBE');
-        var contractMWBECategories = getSearchFilterCriteria('fcontractMWBE');
         var mwbeCategory = getSearchFilterCriteria('fmwbeCategory');
         var industryTypes = getSearchFilterCriteria('findustryTypeName');
 
@@ -401,12 +419,6 @@
             }
             if(spendingCategories){
                 cUrl += "spending_categories=" + encodeURIComponent(spendingCategories) + '*|*';
-            }
-            if(spendingMWBECategories){
-                cUrl += "minority_type_name_spending=" + encodeURIComponent(spendingMWBECategories) + '*|*';
-            }
-            if(contractMWBECategories){
-                cUrl += "minority_type_name_contract=" + encodeURIComponent(contractMWBECategories) + '*|*';
             }
         }
         cUrl = cUrl.substring(0, cUrl.length - 3);
