@@ -119,7 +119,13 @@ function checkbook_smart_search_menu(){
         'access callback' => TRUE,
         'file' => 'includes/checkbook_smart_search.inc',
         'type' => MENU_CALLBACK
-    );    
+    );
+    $items['smart_search/autocomplete/industrytype'] = array(
+        'page callback' => '_checkbook_smart_search_industrytype_autocomplete',
+        'access callback' => TRUE,
+        'file' => 'includes/checkbook_smart_search.inc',
+        'type' => MENU_CALLBACK
+    );
 
     return $items;
 }

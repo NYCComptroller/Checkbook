@@ -84,7 +84,7 @@ function _checkbook_smart_search_get_results(){
         "contract_category_name" => $contract_categories['facet_counts']['facet_fields'],
         "contract_status" => $contract_status['facet_counts']['facet_fields'],
         "mwbe_category" => $mwbe_category['facet_counts']['facet_fields'],
-        "industry_type_name" => $industry_type_name['facet_counts']['facet_fields'],
+        "industry_type_name" => $industry_type_name['facet_counts']['facet_fields']
     );
 
     //Selected Facet Filters
@@ -183,6 +183,8 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
         ."&wt=php";
 
     $search_results = _checkbook_smart_search_solr_results($query);
+
+    //Active contracts
     $act_search_string = str_replace('&fq=(contract_status:"pending")','',$search_string);
     foreach($search_terms as $id => $keyvaluepair){
         $keys = explode("=", $keyvaluepair);
@@ -190,14 +192,13 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
             $act_search_string = str_replace('registered_fiscal_year','fiscal_year',$act_search_string);
         }
     }
-
     $active_contracts_query = "select/?q=" . $act_search_string
         ."&fq=contract_status:registered"
         ."&wt=php";
 
     $active_contracts = _checkbook_smart_search_solr_results($active_contracts_query);
 
-
+    // Registered Contracts
     $reg_search_string = str_replace('&fq=(contract_status:"pending")','',$search_string);
     foreach($search_terms as $id => $keyvaluepair){
         $keys = explode("=", $keyvaluepair);
@@ -208,6 +209,7 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
     $registered_contracts_query = "select/?q=" . $reg_search_string
         ."&fq=contract_status:registered"
         ."&wt=php";
+
     $registered_contracts = _checkbook_smart_search_solr_results($registered_contracts_query);
     return array('search_results'=> $search_results,'active_contracts' => $active_contracts,'registered_contracts' => $registered_contracts);
 }
@@ -666,6 +668,12 @@ function _checkbook_smart_search_regfiscalyear_autocomplete(){
     $fiscal_years = _checkbook_smart_search_get_searchstring_autocomplete("registered_fiscal_years","registered_fiscal_year");
     return $fiscal_years;
 }
+
+function _checkbook_smart_search_industrytype_autocomplete(){
+    $industry_type = _checkbook_smart_search_get_searchstring_autocomplete("industry_type_name","industry_type_name");
+    return $industry_type;
+}
+
 
 
 /** Escape special characters from regular expression string */
