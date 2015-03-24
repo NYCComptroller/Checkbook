@@ -37,8 +37,13 @@
                                     .append( "<a href='" + item.url + "'>" + htmlEntities(item.label) + "</a>" )
                                     .appendTo( ul );
                 }
+
 			});
 		}
+        $("#edit-submit").click(function(){
+          $('#edit-submit').attr("disabled", true);
+          $("#edit-search-box").attr("readonly", true);
+        })
     });
     Drupal.behaviors.exportSmartSearchTransactions = {
             attach:function (context, settings) {
