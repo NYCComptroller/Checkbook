@@ -597,20 +597,22 @@ function _checkbook_autocomplete_spending_expcategory($agency, $dept, $spending_
 
     if ($year && startsWith($year, 'F')) {
         $year = ltrim($year, 'FY');
-        $year_string = " AND disbursement_line_item_details.fiscal_year = '" . $year . "' ";
+        $year_string = " AND disbursement_line_item_details.fiscal_year = " . $year . " ";
     }
     elseif ($year && startsWith($year, 'C')) {
         $year = ltrim($year, 'CY');
-        $year_string = " AND disbursement_line_item_details.calendar_fiscal_year = '" . $year . "' ";
+        $year_string = " AND disbursement_line_item_details.calendar_fiscal_year = " . $year . " ";
     }
     if ($agency) {
-        $agency_string = " AND disbursement_line_item_details.agency_code = '" . $agency . "' ";
+        $agency_string = " AND disbursement_line_item_details.agency_code = " . $agency . " ";
     }
 
-    $spending_cat_string = ($spending_cat)?" ref_spending_category.spending_category_id = " . $spending_cat:" ref_spending_category.spending_category_id IN (1,2,3,4,5)";
+    $spending_cat_string = ($spending_cat)
+        ? " ref_spending_category.spending_category_code = '" . $spending_cat . "' "
+        : " ref_spending_category.spending_category_id IN (1,2,3,4,5)";
 
     if ($dept){
-        $dept_string = " AND disbursement_line_item_details.department_code = '" . $dept . "' ";
+        $dept_string = " AND disbursement_line_item_details.department_code = " . $dept . " ";
     }
     $query = "SELECT DISTINCT expenditure_object_name|| '[' || expenditure_object_code || ']' expenditure_object_code
               FROM disbursement_line_item_details, ref_spending_category
