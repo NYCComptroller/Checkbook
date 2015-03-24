@@ -376,11 +376,13 @@ class SpendingUtil{
         	$year_id =  _getRequestParamValue('year');
         }
 
+        if($year_id == null){
+            $year_id =  _getRequestParamValue('calyear');
+        }
+
         if($year_type == null){
         	$year_type =  _getRequestParamValue('yeartype');
         }
-        
-
         
         $latest_minority_type_id = null;
         if(!isset($spending_vendor_latest_mwbe_category)){
@@ -802,7 +804,8 @@ class SpendingUtil{
      * @return string
      */
     static function getLandingPageWidgetUrl($override_params = array()) {
-        return self::getSpendingUrl('spending_landing',$override_params);
+        $url = self::getSpendingUrl('spending_landing',$override_params);
+        return str_replace("calyear","year",$url);
     }
 
     /**
