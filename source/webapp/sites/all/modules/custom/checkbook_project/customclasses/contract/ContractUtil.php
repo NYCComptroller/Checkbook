@@ -279,7 +279,7 @@ namespace { //global
         
 
         static public function getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id = null, $year_type = null, $is_prime_or_sub = "P"){
-        	//STATIC $contract_vendor_latest_mwbe_category;
+        	STATIC $contract_vendor_latest_mwbe_category;
         	if($agency_id == null){
         		$agency_id =  _getRequestParamValue('agency');
         	}
@@ -296,6 +296,8 @@ namespace { //global
                 $year_type = "B";
                 $year_id = _getCurrentYearID();
             }
+
+
 
         	$latest_minority_type_id = null;
             $agency_query = isset($agency_id) ? "agency_id = " . $agency_id : "agency_id IS NULL";
@@ -321,7 +323,7 @@ namespace { //global
         		}
         	}
 
-        	$latest_minority_type_id = isset($agency_id)
+            $latest_minority_type_id = isset($agency_id)
         	? $contract_vendor_latest_mwbe_category[$vendor_id][$agency_id][$is_prime_or_sub]['minority_type_id']
         	: $contract_vendor_latest_mwbe_category[$vendor_id][$is_prime_or_sub]['minority_type_id'];
         	return $latest_minority_type_id;
