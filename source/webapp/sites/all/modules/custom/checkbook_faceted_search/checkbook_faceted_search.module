@@ -622,28 +622,7 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
             }
         }
     }
-
-    if (count($MWBECategory) > 0) {
-        foreach ($MWBECategory[0] as $MWBECategoryName => $count) {
-            if ($count > 0) {
-                $checked = in_array($MWBECategoryName, array_values_recursive($reqMWBECategory[0]));
-                $MWBECategoryValue = urlencode($MWBECategoryName);
-                if ($checked) {
-                    $output['M/WBE Category']['checked'][] = array($MWBECategoryValue, $MWBECategoryName, $count);
-                }
-                else {
-                    $output['M/WBE Category']['unchecked'][] = array($MWBECategoryValue, $MWBECategoryName, $count);
-                }
-            }
-        }
-        $output['M/WBE Category']['name'] = 'fmwbeCategory';
-        foreach($reqMWBECategory[0] as $key => $value){
-            if(!in_array($value['name'], array_values_recursive($output['M/WBE Category']['checked']))){
-                $output['M/WBE Category']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
-            }
-        }
-    }
-
+    //Industry
     if (count($industryType) > 0) {
         foreach ($industryType[0] as $industryTypeName => $count) {
             if ($count > 0) {
@@ -664,6 +643,27 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
             }
         }
 
+    }
+
+    if (count($MWBECategory) > 0) {
+        foreach ($MWBECategory[0] as $MWBECategoryName => $count) {
+            if ($count > 0) {
+                $checked = in_array($MWBECategoryName, array_values_recursive($reqMWBECategory[0]));
+                $MWBECategoryValue = urlencode($MWBECategoryName);
+                if ($checked) {
+                    $output['M/WBE Category']['checked'][] = array($MWBECategoryValue, $MWBECategoryName, $count);
+                }
+                else {
+                    $output['M/WBE Category']['unchecked'][] = array($MWBECategoryValue, $MWBECategoryName, $count);
+                }
+            }
+        }
+        $output['M/WBE Category']['name'] = 'fmwbeCategory';
+        foreach($reqMWBECategory[0] as $key => $value){
+            if(!in_array($value['name'], array_values_recursive($output['M/WBE Category']['checked']))){
+                $output['M/WBE Category']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
+            }
+        }
     }
 
   $variables['render_array'] = $output;
