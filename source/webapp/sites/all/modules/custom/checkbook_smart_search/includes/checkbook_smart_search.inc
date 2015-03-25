@@ -37,16 +37,20 @@ function _checkbook_smart_search_get_results(){
     */
     $domains = _checkbook_smart_search_get_facet_results($search_terms, "domains");
     $oges = _checkbook_smart_search_get_facet_results($search_terms, "oge_agency_names", NULL, -1);
+    //dsm('OGE Agency name count: '. count($oges['facet_counts']['facet_fields']['oge_agency_name']));
     $agencies = _checkbook_smart_search_get_facet_results($search_terms, "agency_names", NULL, -1);
+    //dsm('Agency count: '. count($agencies['facet_counts']['facet_fields']['agency_name']));
     $vendors = _checkbook_smart_search_get_facet_results($search_terms, "vendor_names", NULL, 100);
     $vendor_type = _checkbook_smart_search_get_facet_results($search_terms, "vendor_type", NULL, 100);
-    $all_vendors = _checkbook_smart_search_get_facet_results($search_terms, "vendor_names", NULL, -1);
+    $all_vendors = _checkbook_smart_search_get_facet_results($search_terms, "vendor_names", NULL, 1000);
     $vendor_number = count($all_vendors['facet_counts']['facet_fields']['vendor_name']);
+    //dsm('vendor count: '.$vendor_number);
     $vendor_pages = floor($vendor_number / 100);
     drupal_add_js(array('checkbook_smart_search' => array('vendor_pages' => $vendor_pages)), 'setting');
     $expense_categories = _checkbook_smart_search_get_facet_results($search_terms, "expense_categories", NULL, 100);
     $all_expense_categories = _checkbook_smart_search_get_facet_results($search_terms, "expense_categories", NULL, -1);
     $expense_categories_number = count($all_expense_categories['facet_counts']['facet_fields']['expenditure_object_name']);
+    //dsm('Expense category count: '.$expense_categories_number);
     $expense_category_pages = floor($expense_categories_number / 100);
     drupal_add_js(array('checkbook_smart_search' => array('expense_category_pages' => $expense_category_pages)), 'setting');
 
@@ -413,7 +417,6 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
                 ."&facet.field=".$parameter_mapping[$facet_name]
                 ."&wt=php"
                 ."&facet.mincount=1";
-
         if ($offset && $offset > 0){
           $query .= "&facet.offset=".$offset;
         }
@@ -423,7 +426,7 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
           $query .= "&facet.limit=". $limit;
         }
         $facet_results = _checkbook_smart_search_solr_results($query);
-
+        //dsm($query.' -> Query Time -> '. $facet_results["responseHeader"]["QTime"]);
         return $facet_results;
 }
 
@@ -801,7 +804,7 @@ function _checkbook_smart_search_export_form(){
 function _checkbook_smart_search_export_download(){
   drupal_add_http_header("Content-Type", "text/csv");
   //drupal_add_http_header("Content-Length",9);
-  drupal_add_http_header("Content-Disposition", "attachment; filename=TransactionsData.csv");
+  drupal_add_http_header("Content-Disposition", "attachment; filename=TransactionsData123.csv");
   drupal_add_http_header("Pragma", "cache");
   drupal_add_http_header("Expires", "-1");
   _checkbook_smart_search_export_data();
@@ -829,6 +832,19 @@ function _checkbook_smart_search_export_data(){
   $fields = _checkbook_smart_search_domain_export_fields($_REQUEST['domain'], 0);
   $fl = implode(",",array_keys($fields));
   echo implode(",",array_values($fields)) . "\n";
+  $statusflag = false;
+    foreach($search_terms as $id => $keyvaluepair){
+        $keys = explode("=", $keyvaluepair);
+        if($keys[0] == 'contract_status' && $keys[1] == 'registered'){
+            $statusflag = true;
+        }
+        else if($keys[0] == 'contract_status' && $keys[1] == 'active'){
+            $statusflag = false;
+        }
+        else{
+            $statusflag = false;
+        }
+    }
   
   while($remaining > 0 ){
     $results = _checkbook_smart_search_get_results_csv($search_terms, $page_num , $page_size,$fl, true);
@@ -840,6 +856,11 @@ function _checkbook_smart_search_export_data(){
      * and we convert it to N/A here.  This is because a null timestamp would return
      * and empty string and is not reliable for casting.
      */
+   if(!$statusflag){
+       $results = preg_replace("/Registered,Expense/","Active,Expense",$results);
+       $results = preg_replace("/Registered,Revenue/","Active,Revenue",$results);
+   }
+
     $results = preg_replace("/1970-01-01T05:00:00Z/","N/A",$results);
     echo preg_replace("/(\d{4})-(\d{2})-(\d{2})...:..:.../","$2/$3/$1",$results);
     ob_flush();
