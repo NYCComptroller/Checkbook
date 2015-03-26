@@ -164,12 +164,12 @@
             "mwbe_category":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"9"
+                "maxLength":"2"
             },
             "industry_type_id":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"9"
+                "maxLength":"2"
             }
         }
     },
@@ -373,12 +373,12 @@
             "mwbe_category":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"9"
+                "maxLength":"2"
             },
             "industry_type_id":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"9"
+                "maxLength":"2"
             }
         }
     },
@@ -577,12 +577,12 @@
             "mwbe_category":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"9"
+                "maxLength":"2"
             },
             "industry_type_id":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"9"
+                "maxLength":"2"
             }
         }
     },
@@ -946,12 +946,12 @@
             "mwbe_category":{
                 "valueType":"range",
                 "dataType":"text",
-                "maxLength":"9"
+                "maxLength":"2"
             },
             "industry_type_id":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"9"
+                "maxLength":"2"
             }
         }
     },
