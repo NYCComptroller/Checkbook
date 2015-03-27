@@ -333,6 +333,23 @@
             });
 		  }
     }
+// Filter Results Paginations
+    Drupal.behaviors.smartSearchResults = {
+        attach:function (context, settings) {
+            $('.item-list ul.pager li a').live('click', function(e){
+                e.preventDefault();
+                var curl = '/smart_search/ajax/results?'+jQuery(this).attr('href').split("?")[1];
+                jQuery.ajax({
+                    url:curl,
+                    type: "GET",
+                    success: function(data) {
+                        $('.smart-search-left').html(data);
+                    }
+                });
+                return false;
+            });
+        }
+    }
 
 }(jQuery));
 

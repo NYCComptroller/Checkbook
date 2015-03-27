@@ -151,18 +151,16 @@ if($noOfTotalResults > 0){
 
     //End of Facet results
 
-    //print "</td></tr></table>";
-    print "</div>";
-  //print "<table class='SmartSearchResults'><tr><td>";
-  print "<div class='smart-search-left'>";
+  print "</div>";
   print '<span class="exportSmartSearch" value="' . $noOfResults. '" >Export</span>';
+  print "<div class='smart-search-left'>";
   //Begin of Pagination at the top
     if($noOfTotalResults > 1000000){
         pager_default_initialize(1000000, $noOfResultsPerPage);
     }else{
         pager_default_initialize($noOfTotalResults, $noOfResultsPerPage);
     }
-  //pager_default_initialize($noOfTotalResults, $noOfResultsPerPage);
+
   $output = theme('pager', array('quantity' => $total));
   if($output==""){
    $output= '<div class="item-list"><ul class="pager">
@@ -218,7 +216,6 @@ if($noOfTotalResults > 0){
     }else{
         pager_default_initialize($noOfTotalResults, $noOfResultsPerPage);
     }
-  //pager_default_initialize($noOfTotalResults, $noOfResultsPerPage);
   $output = theme('pager', array('quantity' => $total));
   if($output==""){
     $output= '<div class=" item-list"><ul class="pager">
@@ -233,7 +230,6 @@ if($noOfTotalResults > 0){
 
   //End of Pagination at the bottom
 
-  //print "</td>";
   print "</div>";
   // End of search results
 }
