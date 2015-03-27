@@ -41,7 +41,7 @@
 			});
 		}
         $("#edit-submit").click(function(){
-          $('#edit-submit').attr("disabled", true);
+          $("#edit-submit").attr("readonly", true);
           $("#edit-search-box").attr("readonly", true);
         })
     });
@@ -339,9 +339,13 @@
             $('.item-list ul.pager li a').live('click', function(e){
                 e.preventDefault();
                 var curl = '/smart_search/ajax/results?'+jQuery(this).attr('href').split("?")[1];
+                var progress = jQuery('.smart-search-left .loading');
                 jQuery.ajax({
                     url:curl,
                     type: "GET",
+                    beforeSend:function () {
+                        progress.show();
+                    },
                     success: function(data) {
                         $('.smart-search-left').html(data);
                     }

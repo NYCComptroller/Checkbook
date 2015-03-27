@@ -176,7 +176,7 @@ if($noOfTotalResults > 0){
   
   
   //End of Pagination at the top
-
+  print "<div class='loading' style='display:none;'></div>";
   print "<ol class='search-results'>";
 
   foreach($search_results['response']['docs'] as $key=>$value){
