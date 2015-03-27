@@ -69,7 +69,7 @@ rsort($years);
         foreach ($years as $year)
            echo "<th><div>&nbsp;</div></th><th class='number'><div>" . $year . "</div></th>";
         ?>
-        <th>&nbsp;</th>
+        <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
     </tr>
 
     </thead>
@@ -112,7 +112,7 @@ rsort($years);
                         echo "<td class='" . $amount_class . " ' ><div>" . '-' . "</div></td>";
                 }
             }
-            echo "<td>&nbsp;</td>";
+            echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
             echo "</tr>";
         }
     ?>
