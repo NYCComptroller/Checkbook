@@ -154,7 +154,16 @@ div.filter-content-fdomainName div.options{
     background: url(/sites/all/themes/checkbook/images/loading.gif) no-repeat;
     display: none;
     position: absolute;
-    right: 30px;
+    left: 30px;
+    top: 10px;
+    height: 16px;
+    width: 16px;
+    text-align: center;
+}
+.smart-search-left .loading{
+    background: url(/sites/all/themes/checkbook/images/loading.gif) no-repeat;
+    display: none;
+    position: absolute;
     top: 10px;
     height: 16px;
     width: 16px;
