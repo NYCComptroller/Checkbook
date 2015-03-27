@@ -31,7 +31,6 @@ function _checkbook_smart_search_get_results(){
     $page_no = ($_REQUEST['page'])? $_REQUEST['page'] : 0; // 0
     $no_of_results = 10;
     $search_results = _checkbook_smart_search_results($search_terms, $page_no, $no_of_results);
-
     /* Facet Results
        These represent the side facet numbers and each is independent of what you select
     */
@@ -42,7 +41,7 @@ function _checkbook_smart_search_get_results(){
     //dsm('Agency count: '. count($agencies['facet_counts']['facet_fields']['agency_name']));
     $vendors = _checkbook_smart_search_get_facet_results($search_terms, "vendor_names", NULL, 100);
     $vendor_type = _checkbook_smart_search_get_facet_results($search_terms, "vendor_type", NULL, 100);
-    $all_vendors = _checkbook_smart_search_get_facet_results($search_terms, "vendor_names", NULL, 1000);
+    $all_vendors = _checkbook_smart_search_get_facet_results($search_terms, "vendor_names", NULL, -1);
     $vendor_number = count($all_vendors['facet_counts']['facet_fields']['vendor_name']);
     //dsm('vendor count: '.$vendor_number);
     $vendor_pages = floor($vendor_number / 100);
@@ -356,6 +355,22 @@ function _checkbook_smart_search_get_selected_facet_results($search_terms, $face
 
 }
 
+function _checkbook_smart_search_get_ajax_results($search_terms, $offset = null, $limit = null, $exclude = FALSE, $fromScroll = FALSE){
+
+    $current_date = date("c").'Z';
+
+    $search_string = _checkbook_smart_search_get_results_query_search_term($search_terms);
+    $query = "select/?q=". $search_string
+        ."&start=". ($page_no*$no_of_results)
+        ."&sort=domain_ordering+asc,date_ordering+desc"
+        ."&wt=php";
+
+    $search_results = _checkbook_smart_search_solr_results($query);
+
+    return array('search_results'=> $search_results);
+
+}
+
 /** Returns Facet results */
 function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $offset = null, $limit = null, $exclude = FALSE, $fromScroll = FALSE){
 
@@ -425,6 +440,7 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
         } elseif ($limit){
           $query .= "&facet.limit=". $limit;
         }
+
         $facet_results = _checkbook_smart_search_solr_results($query);
         //dsm($query.' -> Query Time -> '. $facet_results["responseHeader"]["QTime"]);
         return $facet_results;
@@ -1177,6 +1193,20 @@ function _checkbook_smart_search_expensecategory_facet($page){
     }
     $results = _checkbook_smart_search_get_facet_results($search_terms, "expense_categories", $offset, $double_limit, TRUE, TRUE);
     print theme('facet_results', array('results'=>$results['facet_counts']['facet_fields']['expenditure_object_name'], 'name'=> 'fexpenseCategoryName'));
+}
+
+function _checkbook_smart_search_ajax_results(){
+    $page = $_GET['page'];
+    $search_terms = explode('*|*', $_REQUEST['search_term']);
+    $search_terms[0] = urldecode($search_terms[0]); //"Education"
+
+    $search_terms[0] = ($search_terms[0] == "") ? "*:*" : ucwords(strtolower(_checkbook_smart_search_escapeSolrValue($search_terms[0])));
+
+    $page_no = ($_REQUEST['page'])? $_REQUEST['page'] : 0; // 0
+    $no_of_results = 10;
+    $search_results = _checkbook_smart_search_results($search_terms, $page_no, $no_of_results);
+    print theme('ajax_results', array('search_results'=> $search_results['search_results']));
+
 }
 
 

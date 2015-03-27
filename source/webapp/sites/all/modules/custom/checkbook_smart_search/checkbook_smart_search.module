@@ -126,6 +126,12 @@ function checkbook_smart_search_menu(){
         'file' => 'includes/checkbook_smart_search.inc',
         'type' => MENU_CALLBACK
     );
+    $items['smart_search/ajax/results'] = array(
+        'page callback' => '_checkbook_smart_search_ajax_results',
+        'access callback' => TRUE,
+        'file' => 'includes/checkbook_smart_search.inc',
+        'type' => MENU_CALLBACK,
+    );
 
     return $items;
 }
@@ -207,6 +213,10 @@ function checkbook_smart_search_theme(){
         ),
         'facet_results' => array(
             'template' => 'templates/facet_results',
+            'arguments' => array('results' => NULL,'name' => NULL)
+        ),
+        'ajax_results' => array(
+            'template' => 'templates/checkbook_smart_search_ajax_results',
             'arguments' => array('results' => NULL,'name' => NULL)
         ),
         'checkbook_smart_search_export_form' => array(
