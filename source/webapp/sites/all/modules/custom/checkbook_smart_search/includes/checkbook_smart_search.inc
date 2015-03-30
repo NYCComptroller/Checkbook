@@ -861,7 +861,7 @@ function _checkbook_smart_search_export_form(){
 function _checkbook_smart_search_export_download(){
   drupal_add_http_header("Content-Type", "text/csv");
   //drupal_add_http_header("Content-Length",9);
-  drupal_add_http_header("Content-Disposition", "attachment; filename=TransactionsData123.csv");
+  drupal_add_http_header("Content-Disposition", "attachment; filename=TransactionsData.csv");
   drupal_add_http_header("Pragma", "cache");
   drupal_add_http_header("Expires", "-1");
   _checkbook_smart_search_export_data();
@@ -992,7 +992,7 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
             $parameter_mapping = array(
                 "contract_status"=>"Status",
                 "contract_category_name"=>"Category",
-                "vendor_name"=>"Prime Vendor",
+                "vendor_name"=>"Vendor",
                 "agency_name"=>"Agency",
                 "contract_number"=>"Contract ID",
                 "version_number"=>"Version Number",
@@ -1089,7 +1089,7 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
 				$parameter_mapping = array(
 						"contract_status"=>"Status",
 						"contract_category_name"=>"Category",
-						"vendor_name"=>"Prime Vendor",
+						"vendor_name"=>"Vendor",
 						"agency_name_export"=>"Agency",
 						"contract_number"=>"Contract ID",
 						"contract_commodity_line" => "Commodity Line",

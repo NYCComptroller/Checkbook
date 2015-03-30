@@ -219,9 +219,9 @@ foreach ($contracts_parameter_mapping as $key => $title){
   }else if(array_key_exists($key, $linkable_fields)){
     $value = "<a href='" . $linkable_fields[$key]. "'>". $value ."</a>";
   }
-  if(!$IsOge && $title == "Prime Vendor"){
-      $title = "Vendor";
-  }
+//  if(!$IsOge && $title == "Prime Vendor"){
+//      $title = "Vendor";
+//  }
 
     if($key == "minority_type_name" && !$contracts_results["minority_type_name"]){
         $value = 'N/A';
