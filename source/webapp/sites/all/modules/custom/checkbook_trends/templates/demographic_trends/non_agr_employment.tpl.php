@@ -65,7 +65,7 @@ rsort($years);
             <?php
             foreach ($years as $year){
                 echo "<th></th>";
-                if($year == 2013)
+                if($year == 2014)
                     echo "<th class='number'><div>" . $year . "<sup>(b)</sup></div></th>";
                 else
                     echo "<th class='number'><div>" . $year . "</div></th>";
@@ -79,6 +79,7 @@ rsort($years);
 
     <?php
         $i = 0;
+
         foreach($table_rows as $row){
             $cat_class = "";
             if($row['highlight_yn'] == 'Y')
@@ -88,7 +89,6 @@ rsort($years);
             if( $row['amount_display_type'] != "" )
             $amount_class = "amount-" . $row['amount_display_type'];
             $amount_class .= " number ";
-
             $row['category'] = (isset($row['category'])?$row['category']:'&nbsp;');
             
             $conditionCategory = $row['category'];
@@ -98,6 +98,7 @@ rsort($years);
             		break;
             	case "Percentage Increase (Decrease) from Prior Year":
             		$conditionCategory = "<div class='" . $cat_class ."'>Percentage Increase (Decrease)<br><span style='padding-left:10px;'>from Prior Year</span></div>";
+                    $row[2014]['amount'] = $row[2014]['amount'] . '(b)';
             		break;
             	default:
             		$conditionCategory = "<div class='" . $cat_class . "' >" . str_replace('(a)','<sup>(a)</sup>',$row['category'])  . "</div>";
@@ -137,8 +138,8 @@ rsort($years);
     </tbody>
 </table>
     <div class="footnote">
-        <p>(A) Includes rounding  adjustments</p>
-        <p>(B) Six month average</p>
+        <p>(a) Includes rounding  adjustments</p>
+        <p>(b) Six month average</p>
 
         <p>Notes: This schedule is provided in lieu of a schedule of principal employees because it provides more meaningful information. Other than the City of New York, no single
 employer employs more than 2 percent of total nonagricultural employees.</p>

@@ -565,3 +565,7 @@ body.page-trends-node-404 #page-title {
 #table_420_wrapper tr > td:nth-child(9) .tdCen {margin-right:16px;}
 #table_420_wrapper tr > td:nth-child(10) .tdCen {margin-right:35px;}
 #table_420_wrapper tr > td:nth-child(11) .tdCen {margin-right:27px;}
+
+
+#table_358_wrapper .number.sorting_disabled sup,
+#table_358_wrapper .number > div {text-transform: lowercase;}
