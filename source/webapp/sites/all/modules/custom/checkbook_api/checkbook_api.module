@@ -298,6 +298,28 @@ function checkbook_api_adjustSpendingDataSetResults(&$data_records) {
 
 }
 
+function checkbook_api_adjustSpendingSql(&$sql_query) {
+    $sql_query =  str_replace("prime_vendor_name", "CASE WHEN is_prime_or_sub = 'S' THEN prime_vendor_name ELSE 'N/A' END AS prime_vendor_name",$sql_query);
+    $sql_query =  str_replace("vendor_type", "CASE WHEN is_prime_or_sub = 'P' THEN 'No' ELSE 'Yes' END AS vendor_type",$sql_query);
+    $sql_query =  str_replace("reporting_code", "CASE WHEN is_prime_or_sub = 'P' THEN reporting_code ELSE 'N/A' END AS reporting_code",$sql_query);
+    $sql_query =  str_replace("department_name", "CASE WHEN is_prime_or_sub = 'P' THEN department_name ELSE 'N/A' END AS department_name",$sql_query);
+    $sql_query =  str_replace("disbursement_number", "CASE WHEN is_prime_or_sub = 'P' THEN disbursement_number ELSE 'N/A' END AS disbursement_number",$sql_query);
+    $sql_query =  str_replace("expenditure_object_name", "CASE WHEN is_prime_or_sub = 'P' THEN expenditure_object_name ELSE 'N/A' END AS expenditure_object_name",$sql_query);
+}
+
+function checkbook_api_adjustContractSql(&$sql_query) {
+    if (strpos($sql_query,'l1.') !== false) {
+        $sql_query =  str_replace("l1.prime_vendor_name", "CASE WHEN l1.is_prime_or_sub = 'S' THEN l1.prime_vendor_name ELSE 'N/A' END AS prime_vendor_name",$sql_query);
+        $sql_query =  str_replace("l1.vendor_type", "CASE WHEN l1.is_prime_or_sub = 'P' THEN 'No' ELSE 'Yes' END AS vendor_type",$sql_query);
+        $sql_query =  str_replace("l1.expenditure_object_names", "CASE WHEN l1.is_prime_or_sub = 'P' THEN l1.expenditure_object_names ELSE 'N/A' END AS expenditure_object_name",$sql_query);
+    }
+    else {
+        $sql_query =  str_replace("prime_vendor_name", "CASE WHEN is_prime_or_sub = 'S' THEN prime_vendor_name ELSE 'N/A' END AS prime_vendor_name",$sql_query);
+        $sql_query =  str_replace("vendor_type", "CASE WHEN is_prime_or_sub = 'P' THEN 'No' ELSE 'Yes' END AS vendor_type",$sql_query);
+        $sql_query =  str_replace("expenditure_object_names", "CASE WHEN is_prime_or_sub = 'P' THEN expenditure_object_names ELSE 'N/A' END AS expenditure_object_name",$sql_query);
+    }
+}
+
 function checkbook_api_change_datasource($datasource,$param){
 	if($datasource != null){
 		return str_replace("checkbook:", $datasource . ":",$param);
