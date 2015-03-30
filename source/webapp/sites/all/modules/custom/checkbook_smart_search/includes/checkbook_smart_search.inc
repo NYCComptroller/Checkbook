@@ -36,43 +36,66 @@ function _checkbook_smart_search_get_results(){
     */
     $domains = _checkbook_smart_search_get_facet_results($search_terms, "domains");
     $oges = _checkbook_smart_search_get_facet_results($search_terms, "oge_agency_names", NULL, -1);
-    //dsm('OGE Agency name count: '. count($oges['facet_counts']['facet_fields']['oge_agency_name']));
     $agencies = _checkbook_smart_search_get_facet_results($search_terms, "agency_names", NULL, -1);
-    //dsm('Agency count: '. count($agencies['facet_counts']['facet_fields']['agency_name']));
     $vendors = _checkbook_smart_search_get_facet_results($search_terms, "vendor_names", NULL, 100);
     $vendor_type = _checkbook_smart_search_get_facet_results($search_terms, "vendor_type", NULL, 100);
-    $all_vendors = _checkbook_smart_search_get_facet_results($search_terms, "vendor_names", NULL, -1);
+    $all_vendors = _checkbook_smart_search_get_facet_results($search_terms, "vendor_names", NULL, 1000);
     $vendor_number = count($all_vendors['facet_counts']['facet_fields']['vendor_name']);
-    //dsm('vendor count: '.$vendor_number);
     $vendor_pages = floor($vendor_number / 100);
     drupal_add_js(array('checkbook_smart_search' => array('vendor_pages' => $vendor_pages)), 'setting');
     $expense_categories = _checkbook_smart_search_get_facet_results($search_terms, "expense_categories", NULL, 100);
     $all_expense_categories = _checkbook_smart_search_get_facet_results($search_terms, "expense_categories", NULL, -1);
     $expense_categories_number = count($all_expense_categories['facet_counts']['facet_fields']['expenditure_object_name']);
-    //dsm('Expense category count: '.$expense_categories_number);
     $expense_category_pages = floor($expense_categories_number / 100);
     drupal_add_js(array('checkbook_smart_search' => array('expense_category_pages' => $expense_category_pages)), 'setting');
-
-    foreach($search_terms as $id => $keyvaluepair){
-        $keys = explode("=", $keyvaluepair);
-        if($keys[1] == 'registered'){
-            $fiscal_years = _checkbook_smart_search_get_facet_results($search_terms, "registered_fiscal_years");
-            break;
-        }
-        else if($keys[1] == 'active'){
-            $fiscal_years = _checkbook_smart_search_get_facet_results($search_terms, "fiscal_years");
-            break;
-        }
-        else{
-            $fiscal_years = _checkbook_smart_search_get_facet_results($search_terms, "fiscal_years");
-        }
-    }
-    $contract_categories = _checkbook_smart_search_get_facet_results($search_terms, "contract_categories");
-    $contract_status = _checkbook_smart_search_get_facet_results($search_terms, "contract_status");
-    $spending_categories = _checkbook_smart_search_get_facet_results($search_terms, "spending_categories");
     $mwbe_category = _checkbook_smart_search_get_facet_results($search_terms, "minority_type_name");
     $industry_type_name = _checkbook_smart_search_get_facet_results($search_terms, "industry_type_name");
 
+    foreach($search_terms as $id => $keyvaluepair){
+        $keys = explode("=", $keyvaluepair);
+            if($keys[0] == 'domains'){
+                $tilda = strpos($keys[1], '~');
+                if($tilda) {
+                    $domain = explode('~',$keys[1]);
+                    foreach($domain as $key => $value){
+                        if($value == 'contracts'){
+                            $contract_categories = _checkbook_smart_search_get_facet_results($search_terms, "contract_categories");
+                            $contract_status = _checkbook_smart_search_get_facet_results($search_terms, "contract_status");
+                        }
+                        if($value == 'spending'){
+                            $spending_categories = _checkbook_smart_search_get_facet_results($search_terms, "spending_categories");
+                        }
+                    }
+                }
+                else{
+                    if($keys[1] == 'contracts'){
+                        $contract_categories = _checkbook_smart_search_get_facet_results($search_terms, "contract_categories");
+                        $contract_status = _checkbook_smart_search_get_facet_results($search_terms, "contract_status");
+                    }
+                    if($keys[1] == 'spending'){
+                        $spending_categories = _checkbook_smart_search_get_facet_results($search_terms, "spending_categories");
+                    }
+                }
+            }
+    }
+
+    $reg_flag = false;
+    $act_flag = false;
+    foreach($search_terms as $id => $keyvaluepair){
+        $keys = explode("=", $keyvaluepair);
+        if($keys[1] == 'registered'){
+            $reg_flag = true;
+        }
+        else{
+            $act_flag = true;
+        }
+    }
+
+    if($reg_flag){
+        $fiscal_years = _checkbook_smart_search_get_facet_results($search_terms, "registered_fiscal_years");
+    }else{
+        $fiscal_years = _checkbook_smart_search_get_facet_results($search_terms, "fiscal_years");
+    }
 
     $facetResults = array(
         "domain" => $domains['facet_counts']['facet_fields'],
@@ -97,19 +120,22 @@ function _checkbook_smart_search_get_results(){
     $selected_vendors = _checkbook_smart_search_get_selected_facet_results($search_terms, "vendor_names");
     $selected_vendor_type = _checkbook_smart_search_get_selected_facet_results($search_terms, "vendor_type");
     $selected_expense_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "expense_categories");
+    $act_flag = false;
+    $reg_flag = false;
     foreach($search_terms as $id => $keyvaluepair){
         $keys = explode("=", $keyvaluepair);
         if($keys[1] == 'registered'){
-            $selected_fiscal_years = _checkbook_smart_search_get_selected_facet_results($search_terms, "registered_fiscal_years");
-            break;
-        }
-        else if($keys[1] == 'active'){
-            $selected_fiscal_years = _checkbook_smart_search_get_selected_facet_results($search_terms, "fiscal_years");
-            break;
+            $reg_flag = true;
         }
         else{
-            $selected_fiscal_years = _checkbook_smart_search_get_selected_facet_results($search_terms, "fiscal_years");
+            $act_flag = true;
         }
+    }
+    if($reg_flag){
+        $selected_fiscal_years = _checkbook_smart_search_get_selected_facet_results($search_terms, "registered_fiscal_years");
+    }
+    else{
+        $selected_fiscal_years = _checkbook_smart_search_get_selected_facet_results($search_terms, "fiscal_years");
     }
     $selected_spending_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "spending_categories");
     $selected_contract_status = _checkbook_smart_search_get_selected_facet_results($search_terms, "contract_status");
@@ -187,33 +213,57 @@ function _checkbook_smart_search_results($search_terms, $page_no, $no_of_results
 
     $search_results = _checkbook_smart_search_solr_results($query);
 
-    //Active contracts
-    $act_search_string = str_replace('&fq=(contract_status:"pending")','',$search_string);
+    $contract_flag = false;
     foreach($search_terms as $id => $keyvaluepair){
         $keys = explode("=", $keyvaluepair);
-        if($keys[0] == 'registered_fiscal_years'){
-            $act_search_string = str_replace('registered_fiscal_year','fiscal_year',$act_search_string);
+        if($keys[0] == 'domains'){
+            $tilda = strpos($keys[1], '~');
+            if($tilda) {
+                $domain = explode('~',$keys[1]);
+                foreach($domain as $key => $value){
+                    if($value == 'contracts'){
+                        $contract_flag = true;
+                    }
+                }
+            }
+            else{
+                if($keys[1] == 'contracts'){
+                    $contract_flag = true;
+                }
+            }
         }
     }
-    $active_contracts_query = "select/?q=" . $act_search_string
-        ."&fq=contract_status:registered"
-        ."&wt=php";
 
-    $active_contracts = _checkbook_smart_search_solr_results($active_contracts_query);
-
-    // Registered Contracts
-    $reg_search_string = str_replace('&fq=(contract_status:"pending")','',$search_string);
-    foreach($search_terms as $id => $keyvaluepair){
-        $keys = explode("=", $keyvaluepair);
-        if($keys[0] == 'fiscal_years'){
-            $reg_search_string = str_replace('fiscal_year','registered_fiscal_year',$reg_search_string);
+    if($contract_flag){
+        //Active contracts count
+        $act_search_string = str_replace('&fq=(contract_status:"pending")','',$search_string);
+        foreach($search_terms as $id => $keyvaluepair){
+            $keys = explode("=", $keyvaluepair);
+            if($keys[0] == 'registered_fiscal_years'){
+                $act_search_string = str_replace('registered_fiscal_year','fiscal_year',$act_search_string);
+            }
         }
-    }
-    $registered_contracts_query = "select/?q=" . $reg_search_string
-        ."&fq=contract_status:registered"
-        ."&wt=php";
+        $active_contracts_query = "select/?q=" . $act_search_string
+            ."&fq=contract_status:registered"
+            ."&wt=php";
 
-    $registered_contracts = _checkbook_smart_search_solr_results($registered_contracts_query);
+        $active_contracts = _checkbook_smart_search_solr_results($active_contracts_query);
+
+        // Registered Contracts count
+        $reg_search_string = str_replace('&fq=(contract_status:"pending")','',$search_string);
+        foreach($search_terms as $id => $keyvaluepair){
+            $keys = explode("=", $keyvaluepair);
+            if($keys[0] == 'fiscal_years'){
+                $reg_search_string = str_replace('fiscal_year','registered_fiscal_year',$reg_search_string);
+            }
+        }
+        $registered_contracts_query = "select/?q=" . $reg_search_string
+            ."&fq=contract_status:registered"
+            ."&wt=php";
+
+        $registered_contracts = _checkbook_smart_search_solr_results($registered_contracts_query);
+    }
+
     return array('search_results'=> $search_results,'active_contracts' => $active_contracts,'registered_contracts' => $registered_contracts);
 }
 
@@ -355,21 +405,6 @@ function _checkbook_smart_search_get_selected_facet_results($search_terms, $face
 
 }
 
-function _checkbook_smart_search_get_ajax_results($search_terms, $offset = null, $limit = null, $exclude = FALSE, $fromScroll = FALSE){
-
-    $current_date = date("c").'Z';
-
-    $search_string = _checkbook_smart_search_get_results_query_search_term($search_terms);
-    $query = "select/?q=". $search_string
-        ."&start=". ($page_no*$no_of_results)
-        ."&sort=domain_ordering+asc,date_ordering+desc"
-        ."&wt=php";
-
-    $search_results = _checkbook_smart_search_solr_results($query);
-
-    return array('search_results'=> $search_results);
-
-}
 
 /** Returns Facet results */
 function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $offset = null, $limit = null, $exclude = FALSE, $fromScroll = FALSE){
@@ -392,7 +427,6 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
         );
 
         $search_string = $search_terms[0];
-        $fiscal_year_flag = true;
         $termcount = 0;
         for($i=1;$i < count($search_terms);$i++){
 
@@ -442,7 +476,7 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
         }
 
         $facet_results = _checkbook_smart_search_solr_results($query);
-        //dsm($query.' -> Query Time -> '. $facet_results["responseHeader"]["QTime"]);
+
         return $facet_results;
 }
 
@@ -555,12 +589,9 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
                               "contract_status" => "contract_status",
                               "minority_type_name" => "minority_type_name",
                               "industry_type_name" => "industry_type_name"
-
-
     );
 
     $autocomplete_text = trim(htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES));//eco
-
     $autocomplete_terms = explode(' ',$autocomplete_text); // (eco)
 
     if(count($autocomplete_terms) > 0){
@@ -683,11 +714,21 @@ function _checkbook_smart_search_fiscalyear_autocomplete(){
     return $fiscal_years;
 }
 
+/**
+ *  Outputs the registered fiscalyear suggestions for the given input.
+ *  @param $string
+ *  @return the matching words
+ **/
 function _checkbook_smart_search_regfiscalyear_autocomplete(){
     $fiscal_years = _checkbook_smart_search_get_searchstring_autocomplete("registered_fiscal_years","registered_fiscal_year");
     return $fiscal_years;
 }
 
+/**
+ *  Outputs the industry type suggestions for the given input.
+ *  @param $string
+ *  @return the matching words
+ **/
 function _checkbook_smart_search_industrytype_autocomplete(){
     $industry_type = _checkbook_smart_search_get_searchstring_autocomplete("industry_type_name","industry_type_name");
     return $industry_type;
