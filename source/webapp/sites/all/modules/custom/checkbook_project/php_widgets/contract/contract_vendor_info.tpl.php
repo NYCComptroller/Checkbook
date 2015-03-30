@@ -146,18 +146,20 @@ $contract_number = $node->data[0]['contract_number'];
 </ul>
 <?php
 
-$querySubVendorinfo = "SELECT SUM(maximum_contract_amount) AS total_current_amt, SUM(original_contract_amount) AS total_original_amt, SUM(rfed_amount) AS total_spent_todate
-FROM {subcontract_details}
-WHERE contract_number = '". $contract_number . "'
-AND latest_flag = 'Y'
-LIMIT 1";
+if (_getRequestParamValue("datasource") != "checkbook_oge") {
+    $querySubVendorinfo = "SELECT SUM(maximum_contract_amount) AS total_current_amt, SUM(original_contract_amount) AS total_original_amt, SUM(rfed_amount) AS total_spent_todate
+    FROM {subcontract_details}
+    WHERE contract_number = '". $contract_number . "'
+    AND latest_flag = 'Y'
+    LIMIT 1";
 
-$results4 = _checkbook_project_execute_sql_by_data_source($querySubVendorinfo,_get_current_datasource());
-$res->data = $results4;
+    $results4 = _checkbook_project_execute_sql_by_data_source($querySubVendorinfo,_get_current_datasource());
+    $res->data = $results4;
 
-$total_current_amount = $res->data[0]['total_current_amt'];
-$total_original_amount = $res->data[0]['total_original_amt'];
-$total_spent_todate = $res->data[0]['total_spent_todate'];
+    $total_current_amount = $res->data[0]['total_current_amt'];
+    $total_original_amount = $res->data[0]['total_original_amt'];
+    $total_spent_todate = $res->data[0]['total_spent_todate'];
+}
 ?>
 <?php if(!_getRequestParamValue("datasource") == "checkbook_oge"){?>
 <div class="dollar-amounts">
