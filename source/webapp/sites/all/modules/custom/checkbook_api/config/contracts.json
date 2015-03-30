@@ -951,7 +951,7 @@
             "mwbe_category":{
                 "valueType":"range",
                 "dataType":"text",
-                "maxLength":"2"
+                "maxLength":"3"
             },
             "industry_type_id":{
                 "valueType":"value",
