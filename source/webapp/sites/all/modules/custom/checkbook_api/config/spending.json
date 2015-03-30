@@ -103,7 +103,8 @@
                 }
             },
             "adjustParameters":"if(function_exists('checkbook_api_adjustSpendingParameterFilters')){checkbook_api_adjustSpendingParameterFilters($data_set,$parameters,$criteria);}",
-            "adjustDataSetResults":"if(function_exists('checkbook_api_adjustSpendingDataSetResults')){checkbook_api_adjustSpendingDataSetResults($data_records);}"
+            "adjustDataSetResults":"if(function_exists('checkbook_api_adjustSpendingDataSetResults')){checkbook_api_adjustSpendingDataSetResults($data_records);}",
+            "adjustSql":"if(function_exists('checkbook_api_adjustSpendingSql')){checkbook_api_adjustSpendingSql($sql_query);}"
         },
         "requestParameters":{
             "fiscal_year":{
