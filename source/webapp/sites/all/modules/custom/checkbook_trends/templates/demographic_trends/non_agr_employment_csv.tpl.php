@@ -35,7 +35,7 @@
     $header .= ',,,,,,(average annual employment in thousands),,,,,'."\n";
 
     foreach ($years as $year){
-        if($year == 2013)
+        if($year == 2014)
     	    $header = $header .  "," . $year .'(b)' ;
         else
     	    $header = $header .  "," . $year ;
@@ -46,8 +46,12 @@
         $rowString= null;
         foreach ($years as $year){
             if($i == count($table_rows)-1){
-                if($row[$year]['amount'] > 0)
-                    $amount = $row[$year]['amount'] . "%";
+                if($row[$year]['amount'] > 0){
+                    if($year == 2014)
+                        $amount = $row[$year]['amount'] . "(b)%";
+                    else
+                       $amount = $row[$year]['amount'] . "%";
+                }
                 else if($row[$year]['amount'] < 0)
                     $amount = '"' . "(" . abs($row[$year]['amount']) . "%)" . '"';
                 else
@@ -63,10 +67,12 @@
                     else
                         $amount = '"-"';
                 }
+
             }
             
             $rowString .= ',' . $amount;
         }
+
         $i++;
         echo '"'.$row['category'].'"'.$rowString . "\n";
    	}
