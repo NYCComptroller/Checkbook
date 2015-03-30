@@ -37,7 +37,7 @@ class CheckBookAPI {
    */
   function __construct($request_criteria) {
     // Increasing to handle memory limits when exporting.
-    ini_set('memory_limit', '256M');
+    ini_set('memory_limit', '512M');
 
     $this->request_criteria = $request_criteria;
     $this->setRequestHandler();
