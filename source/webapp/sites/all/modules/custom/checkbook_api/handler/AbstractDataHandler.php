@@ -117,6 +117,10 @@ abstract class AbstractDataHandler {
       $sql_query = get_db_query(TRUE, $this->requestDataSet->name, $this->requestDataSet->columns,
         $this->requestDataSet->parameters, $this->requestDataSet->sortColumn, $this->requestDataSet->startWith, $this->requestDataSet->limit, NULL);
 
+        if (isset($this->requestDataSet->adjustSql)) {
+            eval($this->requestDataSet->adjustSql);
+        }
+
       $token = $this->generateToken();
 
       $criteria = $this->requestSearchCriteria->getCriteria();
