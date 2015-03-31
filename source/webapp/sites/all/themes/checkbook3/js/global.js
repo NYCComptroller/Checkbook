@@ -1618,7 +1618,7 @@ Drupal.behaviors.hoveOverMWBE = {
                     /* On parent back button click, need to re-stick the header */
                     $('#edit-back-submit', window.parent.document).click(function (event) {
                         var step = $('input:hidden[name="step"]').val();
-                        if(step == 'schedule_alert') {
+                        if(step == 'schedule_alert' || 'customize_results') {
                             setTimeout(function() { fnCustomInitCompleteReload(); }, 250);
                         }
                     });
