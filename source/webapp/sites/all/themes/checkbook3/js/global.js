@@ -1218,7 +1218,7 @@ Drupal.behaviors.hoveOverMWBE = {
 
                     /* hide loading icon */
                     $('.create-alert-results-loading').css('visibility', 'hidden');
-                    $('.create-alert-results-loading').css('display', 'inline');
+                    $('.create-alert-results-loading').css('display', 'none');
                 }
                 else {
                     $('#edit-back-submit').attr('disabled', false);
