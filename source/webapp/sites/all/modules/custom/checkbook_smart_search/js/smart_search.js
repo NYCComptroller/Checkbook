@@ -40,10 +40,6 @@
 
 			});
 		}
-        $("#edit-submit").click(function(){
-          $("#edit-submit").attr("readonly", true);
-          $("#edit-search-box").attr("readonly", true);
-        })
     });
     Drupal.behaviors.exportSmartSearchTransactions = {
             attach:function (context, settings) {
