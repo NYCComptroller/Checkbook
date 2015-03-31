@@ -165,7 +165,7 @@
             "mwbe_category":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"3"
+                "maxLength":"9"
             },
             "industry_type_id":{
                 "valueType":"value",
@@ -375,7 +375,7 @@
             "mwbe_category":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"3"
+                "maxLength":"9"
             },
             "industry_type_id":{
                 "valueType":"value",
@@ -580,7 +580,7 @@
             "mwbe_category":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"3"
+                "maxLength":"9"
             },
             "industry_type_id":{
                 "valueType":"value",
@@ -771,7 +771,7 @@
             "mwbe_category":{
                 "valueType":"range",
                 "dataType":"text",
-                "maxLength":"3"
+                "maxLength":"9"
             },
             "industry_type_id":{
                 "valueType":"value",
@@ -951,7 +951,7 @@
             "mwbe_category":{
                 "valueType":"range",
                 "dataType":"text",
-                "maxLength":"3"
+                "maxLength":"9"
             },
             "industry_type_id":{
                 "valueType":"value",
