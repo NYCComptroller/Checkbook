@@ -157,6 +157,8 @@
 				agency_name,
 				agency_name || '[' || agency_id || ']' agency_name_id,
 				check_eft_issued_nyc_year_id fiscal_year_id,
+				calendar_fiscal_year_id,
+				calendar_fiscal_year,
 				ry.year_value   fiscal_year,
 				department_id,
 				department_code,
@@ -225,6 +227,8 @@
             <field column="agency_code" name="agency_code" />
             <field column="fiscal_year_id" name="fiscal_year_id" />
             <field column="fiscal_year" name="fiscal_year" />
+            <field column="calendar_fiscal_year_id" name="calendar_fiscal_year_id" />
+            <field column="calendar_fiscal_year" name="calendar_fiscal_year" />
             <field column="department_id" name="department_id" />
             <field column="department_code" name="department_code" />
             <field column="department_name" name="department_name" />
@@ -278,6 +282,7 @@
             <field column="date_ordering" name="date_ordering" />
             <field column="industry_type_id" name="industry_type_id" />
             <field column="industry_type_name" name="industry_type_name" />
+
         </entity>
         <entity dataSource="db2" name="spending_oge"
                 pk="id"
@@ -291,6 +296,8 @@
                 agency_name || '[' || dlid.agency_id || ']' agency_name_id,
                 'oge' agency_type,
                 check_eft_issued_nyc_year_id fiscal_year_id,
+                calendar_fiscal_year_id,
+				calendar_fiscal_year,
                 ry.year_value   fiscal_year,
                 dlid.department_id,
                 dlid.department_code,
@@ -349,6 +356,8 @@
             <field column="agency_type" name="agency_type" />
             <field column="fiscal_year_id" name="fiscal_year_id" />
             <field column="fiscal_year" name="fiscal_year" />
+            <field column="calendar_fiscal_year_id" name="calendar_fiscal_year_id" />
+            <field column="calendar_fiscal_year" name="calendar_fiscal_year" />
             <field column="department_id" name="department_id" />
             <field column="department_code" name="department_code" />
             <field column="department_name" name="department_name" />

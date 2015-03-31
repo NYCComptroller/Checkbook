@@ -1056,34 +1056,39 @@ function _checkbook_autocomplete_get_start_end_dates($year, $domain = NULL, $sta
         $year_type = substr($year, 0, 2);
         $year_value = str_replace($year_type, '', $year);
     }
-
     $query = "";
-    if (strtolower($year_type) == 'fy') {
-        $start_date = ($year_value - 1) . "-07-01T00:00:00.999Z";
-        $end_date = $year_value . "-06-30T23:59:59.999Z";
-    }
-    elseif (strtolower($year_type) == 'cy') {
-        $start_date = ($year_value) . "-01-01T00:00:00.999Z";
-        $end_date = $year_value . "-12-31T23:59:59.999Z";
-    }
-
     if ($domain == 'spending') {
-        $query .= '(check_eft_issued_date:[' . $start_date . '%20TO%20' . $end_date . '])';
+        if (strtolower($year_type) == 'fy') {
+            $query .= 'fiscal_year_id:'. $year_id;
+        }
+        elseif (strtolower($year_type) == 'cy') {
+            $query .= 'calendar_fiscal_year_id:'. $year_id;
+        }
     }
     else {
         if ($status == 'A') {
-            $query .= '(start_date:[*%20TO%20' . $start_date . ']%20AND%20end_date:[' . $end_date . '%20TO%20*])OR';
-            $query .= '(start_date:[*%20TO%20' . $end_date . ']%20AND%20end_date:[' . $end_date . '%20TO%20*])OR';
-            $query .= '(start_date:[*%20TO%20' . $start_date . ']%20AND%20end_date:[' . $start_date . '%20TO%20*])OR';
-            $query .= '(start_date:[' . $end_date . '%20TO%20*]%20AND%20start_date:[*%20TO%20' . $end_date . '])';
+            if (strtolower($year_type) == 'fy') {
+                $query .= 'fiscal_year_id:'. $year_id;
+            }
+            elseif (strtolower($year_type) == 'cy') {
+                $start_date = ($year_value) . "-12-31T23:59:59.999Z";
+                $end_date = ($year_value) . "-01-01T00:00:00.999Z";
+                $query .= '(start_date:[*%20TO%20' . $start_date . ']%20AND%20end_date:[' . $end_date . '%20TO%20*])';
+            }
         }
         else {
             if ($status == 'R') {
-                $query .= '(registration_date:[' . $start_date . '%20TO%20' . $end_date . '])';
+                if (strtolower($year_type) == 'fy') {
+                    $query .= 'registered_fiscal_year_id:'. $year_id;
+                }
+                elseif (strtolower($year_type) == 'cy') {
+                    $start_date = ($year_value) . "-01-01T00:00:00.999Z";
+                    $end_date = ($year_value) . "-12-31T23:59:59.999Z";
+                    $query .= '(registration_date:[' . $start_date . '%20TO%20' . $end_date . '])';
+                }
             }
         }
     }
-
     $query = '&fq=(' . $query . ')';
     return $query;
 }
