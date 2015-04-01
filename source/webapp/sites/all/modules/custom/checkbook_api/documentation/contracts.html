@@ -280,24 +280,24 @@ Contract Parameters – All the parameters are optional, meaning that you can se
     <td>mwbe_category</td>
     <td>N</td>
     <td>value</td>
+    <td>String- Maximum 9 characters</td>
+    <td>Citywide Agencies</td>
+    <td valign="top">Expense<br />Revenue </td>
+    <td valign="top">Active<br />Registered<br />Pending</td>
+    <td>User shall be able to extract data for specific mwbe categories, by specifying the mwbe category code in the request XML. For all m/wbe categories results, user need not give any m/wbe category codes in the request. By default, it shall display results for all categories. See here for <a href="/ref_code_list/mwbe">mwbe categories list</a>. For Total M/WBE, include all the m/wbe category codes in the request XML, which is 2~3~4~5~9.</td>
+    <td>3</td>
+</tr>
+<tr>
+    <td>industry_type_id</td>
+    <td>N</td>
+    <td>value</td>
     <td>String- Maximum 2 characters</td>
     <td>Citywide Agencies</td>
     <td valign="top">Expense<br />Revenue </td>
     <td valign="top">Active<br />Registered<br />Pending</td>
     <td>User shall be able to extract data for specific industry types, by specifying the industry type codes in the request XML.
         By default, it shall display results for all industries. See here for <a href="/ref_code_list/industry">industry codes list</a>.</td>
-    <td>3</td>
-</tr>
-<tr>
-    <td>industry</td>
-    <td>N</td>
-    <td>String- Maximum 2 characters</td>
-    <td>Allows you to select 7 possible industry types. Values must be one of the following: Arch and Engineerng, Construction Services, Goods, Human Services, Not Classified, Professional Services, Standardized Services.</td>
-    <td>Citywide Agencies</td>
-    <td valign="top">Expense<br />Revenue </td>
-    <td valign="top">Active<br />Registered<br />Pending</td>
-    <td>User shall be able to extract data for specific mwbe categories, by specifying the mwbe category code in the request XML. For all m/wbe categories results, user need not give any m/wbe category codes in the request. By default, it shall display results for all categories. See here for <a href="/ref_code_list/mwbe">mwbe categories list</a>. For mwbe categories with two codes, include both the codes in the request XML. For example, for Asian american, give input as 4~5.</td>
-    <td>Goods</td>
+    <td>1</td>
 </tr>
 </tbody>
 </table>
@@ -363,8 +363,8 @@ Contract Parameters – All the parameters are optional, meaning that you can se
                 <td>associated_prime_vendor</td>
             </tr>
             <tr>
-                <td>subvendor</td>
-                <td>subcontract_reference_id</td>
+                <td>sub_vendor</td>
+                <td>sub_contract_reference_id</td>
             </tr>
         </table>
     </td>
@@ -414,8 +414,8 @@ Contract Parameters – All the parameters are optional, meaning that you can se
                 <td>associated_prime_vendor</td>
             </tr>
             <tr>
-                <td>subvendor</td>
-                <td>subcontract_reference_id</td>
+                <td>sub_vendor</td>
+                <td>sub_contract_reference_id</td>
             </tr>
         </table>
     </td>
@@ -643,7 +643,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
               &lt;name&gt;status&lt;/name&gt;
               &lt;type&gt;value&lt;/type&gt;
               &lt;value&gt;active&lt;/value&gt;
-          &lt;/criteria&gt;’
+          &lt;/criteria&gt;
           &lt;criteria&gt;
               &lt;name&gt;category&lt;/name&gt;
               &lt;type&gt;value&lt;/type&gt;
@@ -700,7 +700,12 @@ Contract Parameters – All the parameters are optional, meaning that you can se
               &lt;criteria&gt;
                   &lt;name&gt;mwbe_category&lt;/name&gt;
                   &lt;type&gt;value&lt;/type&gt;
-                  &lt;start&gt;3&lt;/start&gt;
+                  &lt;value&gt;3&lt;/value&gt;
+              &lt;/criteria&gt;
+              &lt;criteria&gt;
+                  &lt;name&gt;industry_type_id&lt;/name&gt;
+                  &lt;type&gt;value&lt;/type&gt;
+                  &lt;value&gt;1&lt;/value&gt;
               &lt;/criteria&gt;
         &lt;/search_criteria&gt;
 
@@ -709,8 +714,8 @@ Contract Parameters – All the parameters are optional, meaning that you can se
                &lt;column&gt;prime_vendor&lt;/column&gt;
                &lt;column&gt;contract_id&lt;/column&gt;
                &lt;column&gt;version&lt;/column&gt;
-        &lt;column&gt;purpose &lt;/column&gt;
-            &lt;column&gt;parent_contract_id &lt;/column&gt;
+        &lt;column&gt;purpose&lt;/column&gt;
+            &lt;column&gt;parent_contract_id&lt;/column&gt;
                &lt;column&gt;original_amount&lt;/column&gt;
                &lt;column&gt;current_amount&lt;/column&gt;
         &lt;column&gt;spent_to_date&lt;/column&gt;
@@ -726,8 +731,8 @@ Contract Parameters – All the parameters are optional, meaning that you can se
                &lt;column&gt;year&lt;/column&gt;
                &lt;column&gt;document_code&lt;/column&gt;
                &lt;column&gt;mwbe_category&lt;/column&gt;
-               &lt;column&gt;subvendor&lt;/column&gt;
-               &lt;column&gt;subcontract_reference_id&lt;/column&gt;
+               &lt;column&gt;sub_vendor&lt;/column&gt;
+               &lt;column&gt;sub_contract_reference_id&lt;/column&gt;
                &lt;column&gt;associated_prime_vendor&lt;/column&gt;
         &lt;/response_columns&gt;
         &lt;/request&gt;
@@ -742,7 +747,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
                &lt;/status&gt;
  &lt;request_criteria&gt;
               &lt;request&gt;
-      &lt;type_of_data &gt;contracts&lt;/type_of_data&gt;
+      &lt;type_of_data &gt;Contracts&lt;/type_of_data&gt;
      &lt;records_from&gt;1&lt;/records_from&gt;
      &lt;max_records&gt;5&lt;/max_records&gt;
   &lt;search_criteria&gt;
@@ -750,7 +755,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
           &lt;name&gt;status&lt;/name&gt;
           &lt;type&gt;value&lt;/type&gt;
           &lt;value&gt;active&lt;/value&gt;
-      &lt;/criteria&gt;’
+      &lt;/criteria&gt;
       &lt;criteria&gt;
           &lt;name&gt;category&lt;/name&gt;
           &lt;type&gt;value&lt;/type&gt;
@@ -811,17 +816,22 @@ Contract Parameters – All the parameters are optional, meaning that you can se
           &lt;end&gt;2011-12-26&lt;/end&gt;
       &lt;/criteria&gt;
       &lt;criteria&gt;
-          &lt;name&gt;mwbe_category&lt;/name&gt;
-          &lt;type&gt;value&lt;/type&gt;
-          &lt;start&gt;3&lt;/start&gt;
-      &lt;/criteria&gt;
+                  &lt;name&gt;mwbe_category&lt;/name&gt;
+                  &lt;type&gt;value&lt;/type&gt;
+                  &lt;value&gt;3&lt;/value&gt;
+              &lt;/criteria&gt;
+              &lt;criteria&gt;
+                  &lt;name&gt;industry_type_id&lt;/name&gt;
+                  &lt;type&gt;value&lt;/type&gt;
+                  &lt;value&gt;1&lt;/value&gt;
+              &lt;/criteria&gt;
 &lt;/search_criteria&gt;
         &lt;response_columns&gt;
             &lt;column&gt;agency&lt;/column&gt;
                &lt;column&gt;prime_vendor&lt;/column&gt;
                &lt;column&gt;contract_id&lt;/column&gt;
                &lt;column&gt;version&lt;/column&gt;
-        &lt;column&gt;purpose &lt;/column&gt;
+        &lt;column&gt;purpose&lt;/column&gt;
             &lt;column&gt;parent_contract_id &lt;/column&gt;
                &lt;column&gt;original_amount&lt;/column&gt;
                &lt;column&gt;current_amount&lt;/column&gt;
@@ -838,8 +848,8 @@ Contract Parameters – All the parameters are optional, meaning that you can se
                &lt;column&gt;year&lt;/column&gt;
                &lt;column&gt;document_code&lt;/column&gt;
                &lt;column&gt;mwbe_category&lt;/column&gt;
-               &lt;column&gt;subvendor&lt;/column&gt;
-               &lt;column&gt;subcontract_reference_id&lt;/column&gt;
+               &lt;column&gt;sub_vendor&lt;/column&gt;
+               &lt;column&gt;sub_contract_reference_id&lt;/column&gt;
                &lt;column&gt;associated_prime_vendor&lt;/column&gt;
         &lt;/response_columns&gt;
 &lt;/request&gt;
@@ -869,9 +879,9 @@ Contract Parameters – All the parameters are optional, meaning that you can se
 &lt;apt_pin&gt;322&lt;/apt_pin&gt;
         &lt;industry&gt;Goods&lt;/industry&gt;
 &lt;mwbe_category&gt;Hispanic American&lt;/mwbe_category&gt;
-&lt;subvendor&gt;No&lt;/subvendor&gt;
+&lt;sub_vendor&gt;No&lt;/sub_vendor&gt;
 &lt;associated_prime_vendor&gt;N/A&lt;/associated_prime_vendor&gt;
-&lt;subcontract_reference_id/&gt;
+&lt;sub_contract_reference_id/&gt;
 &lt;/transaction&gt;
  &lt;/transactions&gt;
 &lt;/result_records&gt;
@@ -882,7 +892,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
 <h3 class="title">Sample Request: Contract Transactions Pending Expense(Citywide)</h3>
 <pre>
 &lt;request&gt;
-    &lt;type_of_data &gt;contracts&lt;/type_of_data&gt;
+    &lt;type_of_data &gt;Contracts&lt;/type_of_data&gt;
     &lt;records_from&gt;1&lt;/records_from&gt;
     &lt;max_records&gt;5&lt;/max_records&gt;
     &lt;search_criteria&gt;
@@ -946,17 +956,22 @@ Contract Parameters – All the parameters are optional, meaning that you can se
               &lt;end&gt;2011-12-26&lt;/end&gt;
           &lt;/criteria&gt;
 &lt;criteria&gt;
-          &lt;name&gt;mwbe_category&lt;/name&gt;
-          &lt;type&gt;value&lt;/type&gt;
-          &lt;start&gt;3&lt;/start&gt;
-      &lt;/criteria&gt;
+                  &lt;name&gt;mwbe_category&lt;/name&gt;
+                  &lt;type&gt;value&lt;/type&gt;
+                  &lt;value&gt;3&lt;/value&gt;
+              &lt;/criteria&gt;
+              &lt;criteria&gt;
+                  &lt;name&gt;industry_type_id&lt;/name&gt;
+                  &lt;type&gt;value&lt;/type&gt;
+                  &lt;value&gt;1&lt;/value&gt;
+              &lt;/criteria&gt;
     &lt;/search_criteria&gt;
     &lt;response_columns&gt;
         &lt;column&gt;agency&lt;/column&gt;
            &lt;column&gt;prime_vendor&lt;/column&gt;
            &lt;column&gt;contract_id&lt;/column&gt;
-           &lt;column&gt;purpose &lt;/column&gt;
-           &lt;column&gt;parent_contract_id &lt;/column&gt;
+           &lt;column&gt;purpose&lt;/column&gt;
+           &lt;column&gt;parent_contract_id&lt;/column&gt;
            &lt;column&gt;original_amount&lt;/column&gt;
            &lt;column&gt;current_amount&lt;/column&gt;
            &lt;column&gt;original_modified&lt;/column&gt;
@@ -984,7 +999,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
                &lt;/status&gt;
  &lt;request_criteria&gt;
               &lt;request&gt;
-      &lt;type_of_data &gt;contracts&lt;/type_of_data&gt;
+      &lt;type_of_data &gt;Contracts&lt;/type_of_data&gt;
      &lt;records_from&gt;1&lt;/records_from&gt;
      &lt;max_records&gt;1000&lt;/max_records&gt;
   &lt;search_criteria&gt;
@@ -1048,17 +1063,22 @@ Contract Parameters – All the parameters are optional, meaning that you can se
           &lt;end&gt;2011-12-26&lt;/end&gt;
       &lt;/criteria&gt;
 &lt;criteria&gt;
-          &lt;name&gt;mwbe_category&lt;/name&gt;
-          &lt;type&gt;value&lt;/type&gt;
-          &lt;start&gt;3&lt;/start&gt;
-      &lt;/criteria&gt;
+                  &lt;name&gt;mwbe_category&lt;/name&gt;
+                  &lt;type&gt;value&lt;/type&gt;
+                  &lt;value&gt;3&lt;/value&gt;
+              &lt;/criteria&gt;
+              &lt;criteria&gt;
+                  &lt;name&gt;industry_type_id&lt;/name&gt;
+                  &lt;type&gt;value&lt;/type&gt;
+                  &lt;value&gt;1&lt;/value&gt;
+              &lt;/criteria&gt;
 &lt;/search_criteria&gt;
     &lt;response_columns&gt;
         &lt;column&gt;agency&lt;/column&gt;
            &lt;column&gt;prime_vendor&lt;/column&gt;
            &lt;column&gt;contract_id&lt;/column&gt;
-           &lt;column&gt;purpose &lt;/column&gt;
-           &lt;column&gt;parent_contract_id &lt;/column&gt;
+           &lt;column&gt;purpose&lt;/column&gt;
+           &lt;column&gt;parent_contract_id&lt;/column&gt;
            &lt;column&gt;original_amount&lt;/column&gt;
            &lt;column&gt;current_amount&lt;/column&gt;
            &lt;column&gt;original_modified&lt;/column&gt;
