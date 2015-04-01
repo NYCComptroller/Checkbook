@@ -372,9 +372,9 @@
     <td>mwbe_category</td>
     <td>N</td>
     <td>value</td>
-    <td>String- Maximum 2 characters</td>
+    <td>String- Maximum 9 characters</td>
     <td>Citywide Agencies</td>
-    <td>User shall be able to extract data for specific mwbe categories, by specifying the mwbe category code in the request XML. For all m/wbe categories results, user need not give any m/wbe category codes in the request. By default, it shall display results for all categories. See here for <a href="/ref_code_list/mwbe">mwbe categories list</a>. For mwbe categories with two codes, include both the codes in the request XML. For example, for Asian american, give input as 4~5.</td>
+    <td>User shall be able to extract data for specific mwbe categories, by specifying the mwbe category code in the request XML. For all m/wbe categories results, user need not give any m/wbe category codes in the request. By default, it shall display results for all categories. See here for <a href="/ref_code_list/mwbe">mwbe categories list</a>. For Total M/WBE, include all the m/wbe category codes in the request XML, which is 2~3~4~5~9.</td>
     <td>
         <ul>
             <li>Total Spending</li>
@@ -387,7 +387,7 @@
     <td>3</td>
 </tr>
 <tr>
-    <td>industry</td>
+    <td>industry_type_id</td>
     <td>N</td>
     <td>value</td>
     <td>String- Maximum 2 characters</td>
@@ -451,11 +451,11 @@
                     <td>mwbe_category</td>
                 </tr>
                 <tr>
-                    <td>subvendor</td>
+                    <td>sub_vendor</td>
                     <td>associated_prime_vendor</td>
                 </tr>
                 <tr>
-                    <td>subcontract_reference_id</td>
+                    <td>sub_contract_reference_id</td>
                     <td>industry</td>
                 </tr>
                 </tbody>
@@ -616,6 +616,11 @@
             &lt;type&gt;value&lt;/type&gt;
             &lt;value&gt;3&lt;/value&gt;
         &lt;/criteria&gt;
+&lt;criteria&gt;
+            &lt;name&gt;industry_type_id&lt;/name&gt;
+            &lt;type&gt;value&lt;/type&gt;
+            &lt;value&gt;2&lt;/value&gt;
+        &lt;/criteria&gt;
     &lt;/search_criteria&gt;
     &lt;response_columns&gt;
         &lt;column&gt;agency&lt;/column&gt;
@@ -631,9 +636,9 @@
         &lt;column&gt;issue_date&lt;/column&gt;
         &lt;column&gt;spending_category&lt;/column&gt;
         &lt;column&gt;mwbe_category&lt;/column&gt;
-        &lt;column&gt;subvendor&lt;/column&gt;
+        &lt;column&gt;sub_vendor&lt;/column&gt;
         &lt;column&gt;associated_prime_vendor&lt;/column&gt;
-        &lt;column&gt;subcontract_reference_id&lt;/column&gt;
+        &lt;column&gt;sub_contract_reference_id&lt;/column&gt;
     &lt;/response_columns&gt;
 &lt;/request&gt;
 </pre>
@@ -693,6 +698,11 @@
                 &lt;type&gt;value&lt;/type&gt;
                &lt;value&gt;3&lt;/value&gt;
             &lt;/criteria&gt;
+&lt;criteria&gt;
+            &lt;name&gt;industry_type_id&lt;/name&gt;
+            &lt;type&gt;value&lt;/type&gt;
+            &lt;value&gt;2&lt;/value&gt;
+        &lt;/criteria&gt;
             &lt;/search_criteria&gt;
             &lt;response_columns&gt;
                 &lt;column&gt;agency&lt;/column&gt;
@@ -707,9 +717,9 @@
                 &lt;column&gt;issue_date&lt;/column&gt;
                 &lt;column&gt;spending_category&lt;/column&gt;
                 &lt;column&gt;mwbe_category&lt;/column&gt;
-                &lt;column&gt;subvendor&lt;/column&gt;
+                &lt;column&gt;sub_vendor&lt;/column&gt;
                 &lt;column&gt;associated_prime_vendor&lt;/column&gt;
-                &lt;column&gt;subcontract_reference_id&lt;/column&gt;
+                &lt;column&gt;sub_contract_reference_id&lt;/column&gt;
             &lt;/response_columns&gt;
         &lt;/request&gt;
     &lt;/request_criteria&gt;
@@ -744,9 +754,9 @@
                 &lt;issue_date&gt;2012-10-01&lt;/issue_date&gt;
                 &lt;spending_category&gt;Others&lt;/spending_category&gt;
                 &lt;mwbe_category&gt;Hispanic American&lt;/mwbe_category&gt;
-                &lt;subvendor&gt;No&lt;/subvendor&gt;
+                &lt;sub_vendor&gt;No&lt;/sub_vendor&gt;
                 &lt;associated_prime_vendor&gt;N/A&lt;/associated_prime_vendor&gt;
-                &lt;subcontract_reference_id/&gt;
+                &lt;sub_contract_reference_id/&gt;
             &lt;/transaction&gt;
         &lt;/spending_transactions&gt;
     &lt;/result_records&gt;
