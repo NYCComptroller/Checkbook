@@ -39,7 +39,7 @@ function _checkbook_smart_search_get_results(){
     $agencies = _checkbook_smart_search_get_facet_results($search_terms, "agency_names", NULL, -1);
     $vendors = _checkbook_smart_search_get_facet_results($search_terms, "vendor_names", NULL, 100);
     $vendor_type = _checkbook_smart_search_get_facet_results($search_terms, "vendor_type", NULL, 100);
-    $all_vendors = _checkbook_smart_search_get_facet_results($search_terms, "vendor_names", NULL, 1000);
+    $all_vendors = _checkbook_smart_search_get_facet_results($search_terms, "vendor_names", NULL, -1);
     $vendor_number = count($all_vendors['facet_counts']['facet_fields']['vendor_name']);
     $vendor_pages = floor($vendor_number / 100);
     drupal_add_js(array('checkbook_smart_search' => array('vendor_pages' => $vendor_pages)), 'setting');
