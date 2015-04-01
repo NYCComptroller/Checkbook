@@ -1055,6 +1055,7 @@ function _checkbook_autocomplete_get_start_end_dates($year, $domain = NULL, $sta
         }
         $year_type = substr($year, 0, 2);
         $year_value = str_replace($year_type, '', $year);
+        $year_id = _getYearIDFromValue($year_value);
     }
     $query = "";
     if ($domain == 'spending') {
