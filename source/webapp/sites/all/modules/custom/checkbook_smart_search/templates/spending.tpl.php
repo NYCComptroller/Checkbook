@@ -20,9 +20,7 @@
 ?>
 <?php
 
-
 $spending_parameter_mapping = _checkbook_smart_search_domain_fields('spending', $IsOge);
-
 if($spending_results['fiscal_year_id'] != ''){
     $fiscal_year_id = $spending_results['fiscal_year_id'][0];
 }
@@ -40,6 +38,11 @@ else
         $linkable_fields = array(
             "agency_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . $fiscal_year_id . "/yeartype/B/agency/".$spending_results["agency_id"],
             "vendor_name" => $spending_results['vendor_name'],
+        );
+    }elseif($spending_results['vendor_id'] == 1){
+        $linkable_fields = array(
+            "agency_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . $fiscal_year_id . "/yeartype/B/agency/".$spending_results["agency_id"],
+            "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . $fiscal_year_id . "/yeartype/B/vendor/".$spending_results["vendor_id"],
         );
     }elseif($spending_results['is_prime_or_sub'] == 'Yes' && SpendingUtil::getLatestMwbeCategoryBySpendingVendorByTransactionYear($spending_results["vendor_id"], $fiscal_year_id, 'B') == ''){
         $linkable_fields = array(
