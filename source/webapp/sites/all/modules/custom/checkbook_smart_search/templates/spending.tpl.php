@@ -29,7 +29,6 @@ if($spending_results['fiscal_year_id'] != ''){
 else{
     $fiscal_year_id = _getCurrentYearID();
 }
-
 if($IsOge)
     $linkable_fields = array(
         "oge_agency_name" => "/spending_landing/category/".$spending_results['spending_category_id'].'/datasource/checkbook_oge'."/year/" . _getFiscalYearID() . "/yeartype/B/agency/".$spending_results["agency_id"],
@@ -37,17 +36,22 @@ if($IsOge)
     );
 else
 {
-    if($spending_results['is_prime_or_sub'] == 'Yes' && SpendingUtil::getLatestMwbeCategoryByVendor($spending_results["vendor_id"],'', $fiscal_year_id, 'B') == ''){
+    if($spending_results['spending_category_name'] == 'Payroll'){
+        $linkable_fields = array(
+            "agency_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . $fiscal_year_id . "/yeartype/B/agency/".$spending_results["agency_id"],
+            "vendor_name" => $spending_results['vendor_name'],
+        );
+    }elseif($spending_results['is_prime_or_sub'] == 'Yes' && SpendingUtil::getLatestMwbeCategoryBySpendingVendorByTransactionYear($spending_results["vendor_id"], $fiscal_year_id, 'B') == ''){
         $linkable_fields = array(
             "agency_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . $fiscal_year_id . "/yeartype/B/agency/".$spending_results["agency_id"],
             "vendor_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . $fiscal_year_id . "/yeartype/B/subvendor/".$spending_results["vendor_id"]."/dashboard/ss",
         );
-    }elseif($spending_results['is_prime_or_sub'] == 'No' && SpendingUtil::getLatestMwbeCategoryByVendor($spending_results["vendor_id"], '', $fiscal_year_id, 'B') != ''){
+    }elseif($spending_results['is_prime_or_sub'] == 'No' && SpendingUtil::getLatestMwbeCategoryBySpendingVendorByTransactionYear($spending_results["vendor_id"], $fiscal_year_id, 'B') != ''){
         $linkable_fields = array(
             "agency_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . $fiscal_year_id . "/yeartype/B/agency/".$spending_results["agency_id"],
             "vendor_name" => "/spending_landing/yeartype/B/year/" . $fiscal_year_id . "/category/".$spending_results['spending_category_id']."/mwbe/2~3~4~5~9/dashboard/mp/vendor/".$spending_results["vendor_id"],
         );
-    }elseif($spending_results['is_prime_or_sub'] == 'Yes' && SpendingUtil::getLatestMwbeCategoryByVendor($spending_results["vendor_id"], '', $fiscal_year_id, 'B') != ''){
+    }elseif($spending_results['is_prime_or_sub'] == 'Yes' && SpendingUtil::getLatestMwbeCategoryBySpendingVendorByTransactionYear($spending_results["vendor_id"], $fiscal_year_id, 'B') != ''){
         $linkable_fields = array(
             "agency_name" => "/spending_landing/category/".$spending_results['spending_category_id']."/year/" . $fiscal_year_id . "/yeartype/B/agency/".$spending_results["agency_id"],
             "vendor_name" => "/spending_landing/yeartype/B/year/" . $fiscal_year_id . "/category/".$spending_results['spending_category_id']."/mwbe/2~3~4~5~9/dashboard/ms/subvendor/".$spending_results["vendor_id"],
