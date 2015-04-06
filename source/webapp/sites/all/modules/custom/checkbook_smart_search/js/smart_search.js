@@ -334,7 +334,16 @@
         attach:function (context, settings) {
             $('.item-list ul.pager li a').live('click', function(e){
                 e.preventDefault();
-                var curl = '/smart_search/ajax/results?'+jQuery(this).attr('href').split("?")[1];
+                var search_string = jQuery(this).attr('href').split("?")[1];
+                var search_term = search_string.split("*|*");
+                var newURL = '';
+                newURL = search_term[0];
+                for(var i=1; i<search_term.length; i++){
+                    var search_filter = search_term[i].split("=");
+                    value = encodeURIComponent(search_filter[1]);
+                    newURL = newURL +'*|*'+search_filter[0]+'='+value;
+                }
+                var curl = '/smart_search/ajax/results?'+ newURL;
                 var progress = jQuery('.smart-search-left .loading');
                 jQuery.ajax({
                     url:curl,
