@@ -9,8 +9,10 @@
     "urlParameterName":"agency",
     "autocompleteParamName":"agency_auto",    
     "autocompleteID":"fagencyId",
-    "autocompleteField":"agency_name", 
+    "autocompleteField":"agency_name",
+    "urlParamMap":{"vendornm":"vendornm.vendornm","fvendor":"vendornm.vendornm"},
     "maxSelect":1,
+    "widgetPreprocessJSON":"SpendingUtil::adjustVendorFacetJSON($node);",
     "adjustParameters":"
     if(isset($parameters['vendor_type'])){
         $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);

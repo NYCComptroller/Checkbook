@@ -2040,7 +2040,11 @@ function adjustUrlParameter(cUrl, name, value) {
  * @param {string} str subject
  */
 function replaceAllOccurrences(find, replace, str) {
-  return str.replace(new RegExp(find, 'g'), replace);
+    //This function should handle null/empty strings
+    if (str == null || str.length == 0)
+        return str;
+    else
+        return str.replace(new RegExp(find, 'g'), replace);
 }
 
 
