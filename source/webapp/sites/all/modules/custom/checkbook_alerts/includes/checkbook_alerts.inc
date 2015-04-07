@@ -267,17 +267,17 @@ function _checkbook_alerts_activate() {
         ->fetchAssoc();
 
     if($alert) {
+        //End date is past
+        if(time() > strtotime($alert['date_end'])) {
+            $message = 'Your alert has expired. Please schedule a new alert using the alerts functionality.';
+        }
         //Already Active
-        if($alert['active'] == 'Y') {
+        else if($alert['active'] == 'Y') {
             $message = 'The alert is already active.';
         }
         //Expired
         else if(time() > strtotime('+7 day', strtotime($alert['created_date']))) {
             $message = 'Your alert activation link has expired. Please schedule a new alert using the alerts functionality.';
-        }
-        //End date is past
-        else if(time() > strtotime($alert['date_end'])) {
-            $message = 'Your alert has expired. Please schedule a new alert using the alerts functionality.';
         }
         //Activate
         else {
