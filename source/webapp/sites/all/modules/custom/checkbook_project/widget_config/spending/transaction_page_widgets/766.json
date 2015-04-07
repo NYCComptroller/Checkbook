@@ -6,7 +6,7 @@
         "mcagency","agencyh","year","calyear","mcvendor","expcategory","category","checkamtr","dept",
         "contnum","checkamt","chkdate","fundcls","bdgcodenm","captprj","expdoc","vendornm","deptnm","expcategorynm","syear",
         "scalyear","magid","agid","cvendor","cagency","awdmethod","status","csize","cindustry","expcategorycode","month",
-        "industry","mwbe","vendor","svendor","subvendor","vendortype"
+        "industry","mwbe","vendor","svendor","subvendor","vendortype","fvendor"
     ],
     "urlParamMap":{
         "contnum_exact":"reference_document_number",
@@ -34,13 +34,14 @@
         "cindustry":"industry_type_id@checkbook:contracts_spending_transactions",
         "expcategorycode":"expenditure_object_code", "month":"check_eft_issued_cal_month_id",
         "mwbe":"minority_type_id","industry":"industry_type_id",
-        "vendor":"prime_vendor_id","svendor":"prime_vendor_id","subvendor":"vendor_id","vendortype":"vendor_type"
+        "vendor":"prime_vendor_id","svendor":"prime_vendor_id","subvendor":"vendor_id","vendortype":"vendor_type",
+        "fvendor":"vendor_name"
     },
     "paramTypeConfig":{
         "vendornm_exact":"eqignorecase","expdoc_exact":"eqignorecase","captprj_exact":"eqignorecase",
         "contnum_exact":"eqignorecase","checkamtr":"rangeid","checkamt":"range","chkdate":"range",
-        "captprj":"like","vendornm":"like","contnum":"like","bdgcodenm":"like","expdoc":"like","syear":"le",
-        "scalyear":"le","deptnm":"eqignorecase","expcategorynm":"eqignorecase"
+        "captprj":"like","contnum":"like","bdgcodenm":"like","expdoc":"like","syear":"le",
+        "scalyear":"le","deptnm":"eqignorecase","expcategorynm":"eqignorecase","vendornm":"like"//,"fvendor":"in"
     },
     "allowRequestParams":["dtsmnid","smnid"],
     "header":"
@@ -263,6 +264,7 @@
         }
         return $adjustedParameters;
     ",
+    "widgetPreprocessJSON":"SpendingUtil::adjustVendorFacetJSON($node);",
     "dataTableOptions":{
         "bRetrieve": true,
         "bServerSide": true,
@@ -338,7 +340,7 @@
             cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
             cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
         }
-
+        cUrl = adjustUrlParameter(cUrl,'fvendor',oVendorNms);
         cUrl = adjustUrlParameter(cUrl,'vendornm',oVendorNms);
         cUrl = adjustUrlParameter(cUrl,'expcategory',oCategoryIds);
         cUrl = adjustUrlParameter(cUrl,'category',oSpendCategoryIds );
@@ -349,7 +351,6 @@
         cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
         cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
         cUrl = adjustUrlParameter(cUrl,'industry',oIndustryType);
-
         return cUrl;
     }"
 }
