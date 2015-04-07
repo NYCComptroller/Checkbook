@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS trends_gen_fund_revenue_temp;
 CREATE TABLE trends_gen_fund_revenue_temp
 (
   category character varying,
+  fy_2014 numeric(20,2),
   fy_2013 numeric(20,2),
   fy_2012 numeric(20,2),
   fy_2011 numeric(20,2),
@@ -57,6 +58,7 @@ CREATE TABLE trends_gen_fund_revenue
 COPY  trends_gen_fund_revenue_temp FROM '/home/gpadmin/POSTGRESQL/Checkbook/TRENDS_DATA/trends_general_fund_revenues.csv' CSV HEADER QUOTE as '"';
 
 -- 5)	Below are the commands to populate the data from trends_gen_fund_revenue_temp to trends_gen_fund_revenue table.
+INSERT INTO trends_gen_fund_revenue (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2014, fy_2014, display_order, highlight_yn, amount_display_type, indentation_level from trends_gen_fund_revenue_temp;
 INSERT INTO trends_gen_fund_revenue (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2013, fy_2013, display_order, highlight_yn, amount_display_type, indentation_level from trends_gen_fund_revenue_temp;
 INSERT INTO trends_gen_fund_revenue (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2012, fy_2012, display_order, highlight_yn, amount_display_type, indentation_level from trends_gen_fund_revenue_temp;
 INSERT INTO trends_gen_fund_revenue (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2011, fy_2011, display_order, highlight_yn, amount_display_type, indentation_level from trends_gen_fund_revenue_temp;
@@ -93,6 +95,7 @@ DROP TABLE IF EXISTS trends_gen_fund_expenditure_temp;
 CREATE TABLE trends_gen_fund_expenditure_temp
 (
   category character varying,
+  fy_2014 numeric(20,2),
   fy_2013 numeric(20,2),
   fy_2012 numeric(20,2),
   fy_2011 numeric(20,2),
@@ -145,6 +148,7 @@ COPY  trends_gen_fund_expenditure_temp FROM '/home/gpadmin/POSTGRESQL/Checkbook/
 
  -- 5)            Below are the commands to populate the data from trends_gen_fund_expenditure_temp to trends_gen_fund_expenditure table.
 
+INSERT INTO trends_gen_fund_expenditure (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2014, fy_2014, display_order, highlight_yn, amount_display_type, indentation_level from trends_gen_fund_expenditure_temp;
 INSERT INTO trends_gen_fund_expenditure (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2013, fy_2013, display_order, highlight_yn, amount_display_type, indentation_level from trends_gen_fund_expenditure_temp;
 INSERT INTO trends_gen_fund_expenditure (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2012, fy_2012, display_order, highlight_yn, amount_display_type, indentation_level from trends_gen_fund_expenditure_temp;
 INSERT INTO trends_gen_fund_expenditure (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2011, fy_2011, display_order, highlight_yn, amount_display_type, indentation_level from trends_gen_fund_expenditure_temp;
@@ -180,6 +184,7 @@ DROP TABLE IF EXISTS trends_capital_projects_temp;
 CREATE TABLE trends_capital_projects_temp
 (
   category character varying,
+  fy_2014 numeric(20,2),
   fy_2013 numeric(20,2),
   fy_2012 numeric(20,2),
   fy_2011 numeric(20,2),
@@ -232,6 +237,7 @@ COPY  trends_capital_projects_temp FROM '/home/gpadmin/POSTGRESQL/Checkbook/TREN
 
  -- 5)            Below are the commands to populate the data from trends_capital_projects_temp to trends_capital_projects table.
 
+INSERT INTO trends_capital_projects (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2014, fy_2014, display_order, highlight_yn, amount_display_type, indentation_level from trends_capital_projects_temp;
 INSERT INTO trends_capital_projects (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2013, fy_2013, display_order, highlight_yn, amount_display_type, indentation_level from trends_capital_projects_temp;
 INSERT INTO trends_capital_projects (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2012, fy_2012, display_order, highlight_yn, amount_display_type, indentation_level from trends_capital_projects_temp;
 INSERT INTO trends_capital_projects (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2011, fy_2011, display_order, highlight_yn, amount_display_type, indentation_level from trends_capital_projects_temp;
@@ -628,6 +634,7 @@ DROP TABLE IF EXISTS trends_non_agricultural_wage_salary_employement_temp;
 CREATE TABLE trends_non_agricultural_wage_salary_employement_temp
 (
 category character varying,
+fy_2014 numeric(20,2),
 fy_2013 numeric(20,2),
 fy_2012 numeric(20,2),
 fy_2011 numeric(20,2),
@@ -672,6 +679,7 @@ display_yn char(1)
 
 COPY  trends_non_agricultural_wage_salary_employement_temp FROM '/home/gpadmin/POSTGRESQL/Checkbook/TRENDS_DATA/trends_non_agricultural_wage_salary_employement.csv' CSV HEADER QUOTE as '"';
 
+INSERT INTO trends_non_agricultural_wage_salary_employement (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2014, fy_2014, display_order, highlight_yn, amount_display_type, indentation_level from trends_non_agricultural_wage_salary_employement_temp;
 INSERT INTO trends_non_agricultural_wage_salary_employement (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2013, fy_2013, display_order, highlight_yn, amount_display_type, indentation_level from trends_non_agricultural_wage_salary_employement_temp;
 INSERT INTO trends_non_agricultural_wage_salary_employement (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2012, fy_2012, display_order, highlight_yn, amount_display_type, indentation_level from trends_non_agricultural_wage_salary_employement_temp;
 INSERT INTO trends_non_agricultural_wage_salary_employement (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2011, fy_2011, display_order, highlight_yn, amount_display_type, indentation_level from trends_non_agricultural_wage_salary_employement_temp;
@@ -706,6 +714,7 @@ DROP TABLE IF EXISTS trends_numberofcityemployees_temp;
 CREATE TABLE trends_numberofcityemployees_temp
 (
 category character varying,
+fy_2014 numeric(20,2),
 fy_2013 numeric(20,2),
 fy_2012 numeric(20,2),
 fy_2011 numeric(20,2),
@@ -751,6 +760,7 @@ display_yn char(1)
 
 COPY  trends_numberofcityemployees_temp FROM '/home/gpadmin/POSTGRESQL/Checkbook/TRENDS_DATA/trends_numberofcityemployees.csv' CSV HEADER QUOTE as '"';
 
+INSERT INTO trends_numberofcityemployees (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2014, fy_2014, display_order, highlight_yn, amount_display_type, indentation_level from trends_numberofcityemployees_temp;
 INSERT INTO trends_numberofcityemployees (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2013, fy_2013, display_order, highlight_yn, amount_display_type, indentation_level from trends_numberofcityemployees_temp;
 INSERT INTO trends_numberofcityemployees (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2012, fy_2012, display_order, highlight_yn, amount_display_type, indentation_level from trends_numberofcityemployees_temp;
 INSERT INTO trends_numberofcityemployees (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2011, fy_2011, display_order, highlight_yn, amount_display_type, indentation_level from trends_numberofcityemployees_temp;
@@ -835,6 +845,7 @@ DROP TABLE IF EXISTS trends_changes_in_fund_balances_temp;
 CREATE TABLE trends_changes_in_fund_balances_temp
 (
 category character varying,
+fy_2014 numeric(20,2),
 fy_2013 numeric(20,2),
 fy_2012 numeric(20,2),
 fy_2011 numeric(20,2),
@@ -881,7 +892,7 @@ display_yn char(1)
 
 COPY  trends_changes_in_fund_balances_temp FROM '/home/gpadmin/POSTGRESQL/Checkbook/TRENDS_DATA/trends_changes_in_fund_balances.csv' CSV HEADER QUOTE as '"';
 
-
+INSERT INTO trends_changes_in_fund_balances (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level,currency_symbol) select trim(category), 2014, fy_2014, display_order, highlight_yn, amount_display_type, indentation_level,currency_symbol from trends_changes_in_fund_balances_temp;
 INSERT INTO trends_changes_in_fund_balances (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level,currency_symbol) select trim(category), 2013, fy_2013, display_order, highlight_yn, amount_display_type, indentation_level,currency_symbol from trends_changes_in_fund_balances_temp;
 INSERT INTO trends_changes_in_fund_balances (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level,currency_symbol) select trim(category), 2012, fy_2012, display_order, highlight_yn, amount_display_type, indentation_level,currency_symbol from trends_changes_in_fund_balances_temp;
 INSERT INTO trends_changes_in_fund_balances (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level,currency_symbol) select trim(category), 2011, fy_2011, display_order, highlight_yn, amount_display_type, indentation_level,currency_symbol from trends_changes_in_fund_balances_temp;
@@ -917,6 +928,7 @@ DROP TABLE IF EXISTS trends_capital_assets_statistics_function_program_temp;
 CREATE TABLE trends_capital_assets_statistics_function_program_temp
 (
 category character varying,
+fy_2014 numeric(20,2),
 fy_2013 numeric(20,2),
 fy_2012 numeric(20,2),
 fy_2011 numeric(20,2),
@@ -962,6 +974,7 @@ display_yn char(1)
 
 	COPY  trends_capital_assets_statistics_function_program_temp FROM '/home/gpadmin/POSTGRESQL/Checkbook/TRENDS_DATA/trends_capital_assets_statistics_function_program.csv' CSV HEADER QUOTE as '"';
 
+INSERT INTO trends_capital_assets_statistics_function_program (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level,superscript_yn) select trim(category), 2014, fy_2014, display_order, highlight_yn, amount_display_type, indentation_level,superscript_yn from trends_capital_assets_statistics_function_program_temp;
 INSERT INTO trends_capital_assets_statistics_function_program (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level,superscript_yn) select trim(category), 2013, fy_2013, display_order, highlight_yn, amount_display_type, indentation_level,superscript_yn from trends_capital_assets_statistics_function_program_temp;
 INSERT INTO trends_capital_assets_statistics_function_program (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level,superscript_yn) select trim(category), 2012, fy_2012, display_order, highlight_yn, amount_display_type, indentation_level,superscript_yn from trends_capital_assets_statistics_function_program_temp;
 INSERT INTO trends_capital_assets_statistics_function_program (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level,superscript_yn) select trim(category), 2011, fy_2011, display_order, highlight_yn, amount_display_type, indentation_level,superscript_yn from trends_capital_assets_statistics_function_program_temp;
@@ -996,6 +1009,9 @@ DROP TABLE IF EXISTS trends_assesed_valuation_tax_rate_class_temp;
 CREATE TABLE trends_assesed_valuation_tax_rate_class_temp
 (
 category character varying,
+fy2014assesed_value_million numeric(20,2),
+fy2014percentage_taxable_real_estate numeric(20,2),
+fy2014_direct_tax_rate numeric(20,2),
 fy2013assesed_value_million numeric(20,2),
 fy2013percentage_taxable_real_estate numeric(20,2),
 fy2013_direct_tax_rate numeric(20,2),
@@ -1081,6 +1097,7 @@ display_yn char(1)
 
 COPY  trends_assesed_valuation_tax_rate_class_temp FROM '/home/gpadmin/POSTGRESQL/Checkbook/TRENDS_DATA/trends_assesed_valuation_tax_rate_class.csv' CSV HEADER QUOTE as '"';
 
+INSERT INTO trends_assesed_valuation_tax_rate_class (category, fiscal_year, assesed_value_million_amount,percentage_taxable_real_estate,direct_tax_rate, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2014,fy2014assesed_value_million,fy2014percentage_taxable_real_estate,fy2014_direct_tax_rate, display_order, highlight_yn, amount_display_type, indentation_level from trends_assesed_valuation_tax_rate_class_temp;
 INSERT INTO trends_assesed_valuation_tax_rate_class (category, fiscal_year, assesed_value_million_amount,percentage_taxable_real_estate,direct_tax_rate, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2013,fy2013assesed_value_million,fy2013percentage_taxable_real_estate,fy2013_direct_tax_rate, display_order, highlight_yn, amount_display_type, indentation_level from trends_assesed_valuation_tax_rate_class_temp;
 INSERT INTO trends_assesed_valuation_tax_rate_class (category, fiscal_year, assesed_value_million_amount,percentage_taxable_real_estate,direct_tax_rate, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2012,fy2012assesed_value_million,fy2012percentage_taxable_real_estate,fy2012_direct_tax_rate, display_order, highlight_yn, amount_display_type, indentation_level from trends_assesed_valuation_tax_rate_class_temp;
 INSERT INTO trends_assesed_valuation_tax_rate_class (category, fiscal_year, assesed_value_million_amount,percentage_taxable_real_estate,direct_tax_rate, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2011,fy2011assesed_value_million,fy2011percentage_taxable_real_estate,fy2011_direct_tax_rate, display_order, highlight_yn, amount_display_type, indentation_level from trends_assesed_valuation_tax_rate_class_temp;
@@ -1108,8 +1125,8 @@ update  trends_assesed_valuation_tax_rate_class set display_yn ='Y';
 
 alter table trends_assesed_valuation_tax_rate_class add column superscript_value character(1);
 
-update trends_assesed_valuation_tax_rate_class set superscript_value ='1' where category ='Total' and fiscal_year not in(2013,2012,2011,1995);
-update trends_assesed_valuation_tax_rate_class set superscript_value ='1' where display_order = 40 and fiscal_year =1995;
+update trends_assesed_valuation_tax_rate_class set superscript_value ='1' where category ='Total' and fiscal_year not in(2014,2013,2012,2011,1995);
+update trends_assesed_valuation_tax_rate_class set superscript_value ='1' where display_order = 50 and fiscal_year =1995;
 
 
 DROP TABLE trends_assesed_valuation_tax_rate_class_temp;
@@ -1341,7 +1358,8 @@ DROP TABLE trends_pledged_revenue_temp;
 DROP TABLE IF EXISTS trends_uncollected_parking_violation_temp;
 CREATE TABLE trends_uncollected_parking_violation_temp
 (
-category varchar,	
+category varchar,
+fy_2014	numeric(20,2),	
 fy_2013	numeric(20,2),
 fy_2012	numeric(20,2),
 fy_2011	numeric(20,2),
@@ -1384,6 +1402,7 @@ display_yn char(1)
 
 COPY  trends_uncollected_parking_violation_temp FROM '/home/gpadmin/POSTGRESQL/Checkbook/TRENDS_DATA/trends_uncollected_parking_violation.csv' CSV HEADER QUOTE as '"';
 
+INSERT INTO trends_uncollected_parking_violation (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2014, fy_2014, display_order, highlight_yn, amount_display_type, indentation_level from trends_uncollected_parking_violation_temp;
 INSERT INTO trends_uncollected_parking_violation (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2013, fy_2013, display_order, highlight_yn, amount_display_type, indentation_level from trends_uncollected_parking_violation_temp;
 INSERT INTO trends_uncollected_parking_violation (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2012, fy_2012, display_order, highlight_yn, amount_display_type, indentation_level from trends_uncollected_parking_violation_temp;
 INSERT INTO trends_uncollected_parking_violation (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2011, fy_2011, display_order, highlight_yn, amount_display_type, indentation_level from trends_uncollected_parking_violation_temp;
@@ -1417,7 +1436,8 @@ DROP TABLE trends_uncollected_parking_violation_temp;
 DROP TABLE IF EXISTS trends_changes_net_assets_temp;
 CREATE TABLE trends_changes_net_assets_temp
 (
-category varchar,	
+category varchar,
+fy_2014	numeric(20,2),	
 fy_2013	numeric(20,2),
 fy_2012	numeric(20,2),
 fy_2011	numeric(20,2),
@@ -1455,6 +1475,7 @@ display_yn char(1)
 
 COPY  trends_changes_net_assets_temp FROM '/home/gpadmin/POSTGRESQL/Checkbook/TRENDS_DATA/trends_changes_net_assets.csv' CSV HEADER QUOTE as '"';
 
+INSERT INTO trends_changes_net_assets (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2014, fy_2014, display_order, highlight_yn, amount_display_type, indentation_level from trends_changes_net_assets_temp;
 INSERT INTO trends_changes_net_assets (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2013, fy_2013, display_order, highlight_yn, amount_display_type, indentation_level from trends_changes_net_assets_temp;
 INSERT INTO trends_changes_net_assets (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2012, fy_2012, display_order, highlight_yn, amount_display_type, indentation_level from trends_changes_net_assets_temp;
 INSERT INTO trends_changes_net_assets (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2011, fy_2011, display_order, highlight_yn, amount_display_type, indentation_level from trends_changes_net_assets_temp;
@@ -1485,6 +1506,7 @@ DROP TABLE IF EXISTS trends_government_funds_temp;
 CREATE TABLE trends_government_funds_temp
 (
 category varchar,	
+fy_2014 numeric(20,2),
 fy_2013 numeric(20,2),
 fy_2012 numeric(20,2),
 fy_2011 numeric(20,2),
@@ -1527,6 +1549,7 @@ display_yn char(1)
 
 COPY  trends_government_funds_temp FROM '/home/gpadmin/POSTGRESQL/Checkbook/TRENDS_DATA/trends_government_funds.csv' CSV HEADER QUOTE as '"';
 
+INSERT INTO trends_government_funds (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2014, fy_2014, display_order, highlight_yn, amount_display_type, indentation_level from trends_government_funds_temp;
 INSERT INTO trends_government_funds (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2013, fy_2013, display_order, highlight_yn, amount_display_type, indentation_level from trends_government_funds_temp;
 INSERT INTO trends_government_funds (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2012, fy_2012, display_order, highlight_yn, amount_display_type, indentation_level from trends_government_funds_temp;
 INSERT INTO trends_government_funds (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2011, fy_2011, display_order, highlight_yn, amount_display_type, indentation_level from trends_government_funds_temp;
@@ -1620,6 +1643,7 @@ DROP TABLE IF EXISTS trends_legal_debt_margin_temp;
 CREATE TABLE trends_legal_debt_margin_temp
 (
 category varchar,	
+fy_2014	numeric(20,2),
 fy_2013	numeric(20,2),
 fy_2012	numeric(20,2),
 fy_2011	numeric(20,2),
@@ -1663,6 +1687,7 @@ display_yn char(1)
 
 COPY  trends_legal_debt_margin_temp FROM '/home/gpadmin/POSTGRESQL/Checkbook/TRENDS_DATA/trends_legal_debt_margin.csv' CSV HEADER QUOTE as '"';
 
+INSERT INTO trends_legal_debt_margin (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2014, fy_2014, display_order, highlight_yn, amount_display_type, indentation_level from trends_legal_debt_margin_temp;
 INSERT INTO trends_legal_debt_margin (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2013, fy_2013, display_order, highlight_yn, amount_display_type, indentation_level from trends_legal_debt_margin_temp;
 INSERT INTO trends_legal_debt_margin (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2012, fy_2012, display_order, highlight_yn, amount_display_type, indentation_level from trends_legal_debt_margin_temp;
 INSERT INTO trends_legal_debt_margin (category, fiscal_year, amount, display_order, highlight_yn, amount_display_type, indentation_level) select trim(category), 2011, fy_2011, display_order, highlight_yn, amount_display_type, indentation_level from trends_legal_debt_margin_temp;
@@ -1699,6 +1724,8 @@ DROP TABLE IF EXISTS trends_ratios_general_bonded_debt_outstanding_temp;
 CREATE TABLE trends_ratios_general_bonded_debt_outstanding_temp
 (
 fiscal_year smallint,
+general_bonded_debt numeric(20,2),
+debt_by_revenue_ot_prop_tax numeric(20,2),
 general_obligation_bonds numeric(20,2),
 percentage_atcual_taxable_property numeric(20,2),
 per_capita_general_obligations numeric(20,2)
@@ -1709,6 +1736,8 @@ DROP TABLE IF EXISTS trends_ratios_general_bonded_debt_outstanding;
 CREATE TABLE trends_ratios_general_bonded_debt_outstanding
 (
 fiscal_year smallint,
+general_bonded_debt numeric(20,2),
+debt_by_revenue_ot_prop_tax numeric(20,2),
 general_obligation_bonds numeric(20,2),
 percentage_atcual_taxable_property numeric(20,2),
 per_capita_general_obligations numeric(20,2),
@@ -1762,3 +1791,5 @@ SELECT 'trends_legal_debt_margin' as table_name, count(*) FROM trends_legal_debt
 SELECT 'trends_ratios_general_bonded_debt_outstanding' as table_name, count(*) FROM  trends_ratios_general_bonded_debt_outstanding 
 
 */
+
+

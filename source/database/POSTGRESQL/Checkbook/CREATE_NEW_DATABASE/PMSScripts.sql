@@ -787,7 +787,7 @@ BEGIN
 	SELECT DISTINCT  uniq_id
 	FROM etl.stg_payroll_summary;
 	
-	RAISE NOTICE 'UFK FOR PAYROLL SUMMARY 1.1';
+	
 	-- FK:pay_date_id
 	
 	INSERT INTO tmp_fk_pms_summay_values(uniq_id,pay_date_id,fiscal_year, fiscal_year_id, calendar_fiscal_year, calendar_fiscal_year_id,calendar_month_id)
@@ -802,7 +802,6 @@ BEGIN
 	SELECT uniq_id,b.fund_class_id
 	FROM etl.stg_payroll_summary a ,ref_fund_class b WHERE b.fund_class_code='001';
 	
-	RAISE NOTICE 'UFK FOR PAYROLL SUMMARY 1.2';
 	-- FK:Agency_history_id
 	
 	INSERT INTO tmp_fk_pms_summay_values(uniq_id,agency_history_id,agency_id,agency_name,agency_short_name)
@@ -844,7 +843,7 @@ BEGIN
 		VALUES(p_load_file_id_in,'PS',l_count, 'Number of records inserted into ref_agency from payroll summary');
 	END IF;
 	
-	RAISE NOTICE 'UFK FOR PAYROLL SUMMARY 1.3';
+	RAISE NOTICE '1.1';
 
 	-- Generate the agency history id for history records
 	
@@ -873,8 +872,6 @@ BEGIN
 		JOIN etl.ref_agency_history_id_seq d ON c.agency_history_id = d.agency_history_id
 	GROUP BY 1,3,4,5	;
 	
-	RAISE NOTICE 'UFK FOR PAYROLL SUMMARY 1.4';
-	
 	-- FK:department_history_id
 	-- Basis - PMS transactions are for general fund only
 	
@@ -900,7 +897,7 @@ BEGIN
 		JOIN ref_fund_class e ON '001' = e.fund_class_code
 	GROUP BY 1,2,3,4;
 
-	RAISE NOTICE 'UFK FOR PAYROLL SUMMARY 1.5';
+	RAISE NOTICE '1.4';
 						
 	-- Generate the department id for new records
 		
@@ -930,7 +927,7 @@ BEGIN
 		VALUES(p_load_file_id_in,'PS',l_count, 'Number of records inserted into ref_department from payroll summary');
 	END IF;
 	
-	RAISE NOTICE 'UFK FOR PAYROLL SUMMARY 1.6';
+	RAISE NOTICE '1.5';
 	-- Generate the department history id for history records
 	
 	TRUNCATE etl.ref_department_history_id_seq;
@@ -956,7 +953,7 @@ BEGIN
 		VALUES(p_load_file_id_in,'PS',l_count, 'Number of records inserted into ref_department_history from payroll summary');
 	END IF;
 	
-	RAISE NOTICE 'UFK FOR PAYROLL SUMMARY 1.7';
+	RAISE NOTICE '1.6';
 	
 	INSERT INTO tmp_fk_pms_summay_values(uniq_id,department_history_id,department_id,department_name,department_short_name)
 	SELECT	a.uniq_id, max(c.department_history_id),b.department_id,b.department_name,b.department_short_name 
@@ -976,7 +973,7 @@ BEGIN
 	GROUP BY 1,3,4	;
 
 
-	RAISE NOTICE 'UFK FOR PAYROLL SUMMARY 1.8';
+	RAISE NOTICE '1.8';
 	
 	CREATE TEMPORARY TABLE tmp_fk_values_pm_summary_new_exp_object(obj_cd varchar,fiscal_year smallint,uniq_id bigint)
 	;
@@ -1000,7 +997,7 @@ BEGIN
 	SELECT uniq_id
 	FROM   tmp_fk_values_pm_summary_new_exp_object;
 
-	RAISE NOTICE 'UFK FOR PAYROLL SUMMARY 1.9';
+	RAISE NOTICE '1.9';
 	
 	INSERT INTO ref_expenditure_object(expenditure_object_id,expenditure_object_code,
 		expenditure_object_name,fiscal_year,created_date,created_load_id,original_expenditure_object_name)
@@ -1025,7 +1022,7 @@ BEGIN
 	SELECT uniq_id
 	FROM   tmp_fk_values_pm_summary_new_exp_object;
 
-	RAISE NOTICE 'UFK FOR PAYROLL SUMMARY 1.10';
+	RAISE NOTICE '1.10';
 
 	INSERT INTO ref_expenditure_object_history(expenditure_object_history_id,expenditure_object_id,fiscal_year,expenditure_object_name,created_date,load_id)
 	SELECT a.expenditure_object_history_id,c.expenditure_object_id,b.fiscal_year,
@@ -1048,7 +1045,7 @@ BEGIN
 	GROUP BY 1,3,4	;
 
 
-	RAISE NOTICE 'UFK FOR PAYROLL SUMMARY 1.11';
+
 		
 	-- FK:budget_code_id
 
@@ -1103,7 +1100,7 @@ BEGIN
 		JOIN etl.ref_budget_code_id_seq f ON b.budget_code_id = f.budget_code_id
 	GROUP BY 1,3	;		
 
-	RAISE NOTICE 'UFK FOR PAYROLL SUMMARY 1.12';
+	RAISE NOTICE '1.5';
 	
 	
 	-- FK: Payroll Summary Id
@@ -1134,8 +1131,6 @@ BEGIN
 	INSERT INTO tmp_fk_pms_summay_values(uniq_id,payroll_summary_id,action_flag)
 	SELECT uniq_id,payroll_summary_id,'I' as action_flag
 	FROM etl.payroll_summary_id_seq;	
-	
-	RAISE NOTICE 'UFK FOR PAYROLL SUMMARY 1.13';
 	
 	UPDATE etl.stg_payroll_summary a
 	SET	
@@ -1189,7 +1184,7 @@ BEGIN
 		GROUP	BY 1) ct_table
 	WHERE	a.uniq_id = ct_table.uniq_id;	
 	
-RAISE NOTICE 'UFK FOR PAYROLL SUMMARY 1.14';
+	RAISE NOTICE '1.7';
 	
 	RETURN 1;
 	
@@ -1216,6 +1211,7 @@ $BODY$
 DECLARE
 	l_count bigint;
 	l_fk_update smallint;
+	l_job_id bigint;
 	
 BEGIN
 	l_fk_update := etl.updateForeignKeysForPMSSummary(p_load_file_id_in,p_load_id_in);
@@ -1223,6 +1219,11 @@ BEGIN
 	IF l_fk_update <> 1 THEN
 		RETURN -1;
 	END IF;
+	
+		SELECT job_id
+		FROM   etl.etl_data_load	       
+		WHERE  load_id = p_load_id_in  INTO  l_job_id;
+		
 		
 	INSERT INTO payroll_summary(payroll_summary_id,agency_history_id,pay_cycle_code,
     				    expenditure_object_history_id, payroll_number,payroll_description,department_history_id,
@@ -1251,13 +1252,15 @@ BEGIN
 				agency_name,department_name,vendor_name,department_code,expenditure_object_name,expenditure_object_code,budget_code_id,
 				budget_code,budget_name,fund_class_code,spending_category_id,
 				spending_category_name,calendar_fiscal_year_id,calendar_fiscal_year,fiscal_year,
-				agency_short_name,department_short_name,load_id)
+				minority_type_id, minority_type_name,
+				agency_short_name,department_short_name,load_id, job_id)
 	SELECT 	payroll_summary_id,pay_date_id,fiscal_year_id,calendar_month_id,
 		fund_class_id,coalesce(total_amt,0) as check_amount,agency_id,agency,b.expenditure_object_id,department_id,pay_date::date,
 		agency_name,department_name,department_name,uoa,b.expenditure_object_name,b.expenditure_object_code,budget_code_id,
 		bud_code,budget_code_name,'001',2 as spending_category_id,
 		'Payroll',calendar_fiscal_year_id,calendar_fiscal_year,a.fiscal_year,
-		agency_short_name,department_short_name,p_load_id_in
+		11 as minority_type_id, 'Individuals & Others' as minority_type_name,
+		agency_short_name,department_short_name,p_load_id_in, l_job_id
 	FROM 	etl.stg_payroll_summary a JOIN (select * from ref_expenditure_object where expenditure_object_code = '!PS!') b ON  a.pms_fy = b.fiscal_year
 	WHERE  action_flag = 'I';
 	
@@ -1266,7 +1269,8 @@ BEGIN
 	CREATE TEMPORARY TABLE tmp_payroll_summary_update AS
 	SELECT *
 	FROM etl.stg_payroll_summary
-	WHERE  action_flag = 'U' ;     
+	WHERE  action_flag = 'U'
+	  ;     
 
 	UPDATE payroll_summary a
 	SET    agency_history_id = b.agency_history_id,	      

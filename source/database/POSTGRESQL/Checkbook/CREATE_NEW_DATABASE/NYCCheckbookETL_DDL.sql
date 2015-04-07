@@ -150,7 +150,7 @@ CREATE FOREIGN TABLE foreign_tbl_coa_agency_feed(
 	col25	    VARCHAR,
 	col26	    VARCHAR
 	) SERVER postgresql_file_server
-	OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/COA_agency_feed.txt', format 'text', delimiter '|'  );
+	OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/COA_agency_feed.txt', format 'text', delimiter '|'  );
 
 
 CREATE TABLE ext_stg_coa_agency_feed(
@@ -205,7 +205,7 @@ CREATE TABLE ext_stg_coa_agency_feed(
  	col20	    VARCHAR,
  	col21	    VARCHAR
 	) SERVER postgresql_file_server
-	OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/COA_department_feed.txt', format 'text', delimiter '|'  );
+	OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/COA_department_feed.txt', format 'text', delimiter '|'  );
 
  CREATE TABLE ext_stg_coa_department_feed(
  	agency_code VARCHAR,
@@ -276,7 +276,7 @@ CREATE TABLE ext_stg_coa_agency_feed(
   	col42	    VARCHAR,
   	col43	    VARCHAR
   	) SERVER postgresql_file_server
-	OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/COA_expenditure_object_feed.txt', format 'text', delimiter '|'  );
+	OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/COA_expenditure_object_feed.txt', format 'text', delimiter '|'  );
 	
 	
 CREATE TABLE ext_stg_coa_expenditure_object_feed(
@@ -344,7 +344,7 @@ CREATE TABLE ext_stg_coa_expenditure_object_feed(
 	col16 varchar,
 	col17 varchar(1)
    	) SERVER postgresql_file_server
-	OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/COA_location_object_feed.txt', format 'text', delimiter '|'  );
+	OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/COA_location_object_feed.txt', format 'text', delimiter '|'  );
  
  CREATE TABLE ext_stg_coa_location_feed(
    	agency_code varchar(20),
@@ -386,7 +386,7 @@ CREATE TABLE ext_stg_coa_expenditure_object_feed(
 	rltd_ocls_cd varchar(3),
 	col18 varchar
 	 ) SERVER postgresql_file_server
-	OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/COA_object_class_feed.txt', format 'text', delimiter '|'  );
+	OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/COA_object_class_feed.txt', format 'text', delimiter '|'  );
 	
  CREATE TABLE ext_stg_coa_object_class_feed(
  	doc_dept_cd varchar,
@@ -425,7 +425,7 @@ rscat_nm_up character varying,
 tbl_last_dt  character varying,
 col13 character varying
 ) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/COA_revenue_category_feed.txt', format 'text', delimiter '|'  );
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/COA_revenue_category_feed.txt', format 'text', delimiter '|'  );
 
 CREATE TABLE ext_stg_coa_revenue_category_feed
 (
@@ -461,7 +461,7 @@ RSCLS_NM_UP character varying,
 TBL_LAST_DT character varying,
 col13 varchar
 ) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/COA_revenue_class_feed.txt', format 'text', delimiter '|'  );
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/COA_revenue_class_feed.txt', format 'text', delimiter '|'  );
 
 CREATE TABLE ext_stg_coa_revenue_class_feed
 (
@@ -589,7 +589,7 @@ dscr_ext character varying,
 srsrc_req character varying,
 col106 varchar
 ) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/COA_revenue_source_feed.txt', format 'text', delimiter '|'  );
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/COA_revenue_source_feed.txt', format 'text', delimiter '|'  );
 
 CREATE TABLE ext_stg_coa_revenue_source_feed(
 doc_dept_cd character varying,
@@ -726,7 +726,7 @@ func_attr_nm_up character varying,
 fin_plan_sav_fl character varying,
 col23 varchar
 ) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/COA_budget_code_feed.txt', format 'text', delimiter '|'  );
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/COA_budget_code_feed.txt', format 'text', delimiter '|'  );
 
 
 CREATE TABLE ext_stg_coa_budget_code_feed
@@ -1140,7 +1140,7 @@ ams_row_vers_no varchar,
 rsfcls_nm_up varchar,
 fund_category varchar
 ) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/COA_funding_class_feed.txt', format 'text', delimiter '|'  );
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/COA_funding_class_feed.txt', format 'text', delimiter '|'  );
 
 CREATE TABLE ext_stg_funding_class
 (
@@ -1220,7 +1220,7 @@ record_type char(1),doc_cd varchar(8),doc_dept_cd varchar(20), doc_id varchar(20
 	col86 varchar(100),col87 varchar(100),col88 varchar(100),col89 varchar(100),col90 varchar(100),
 	col91 varchar(100),col92 varchar(100),col93 varchar(100),col94 varchar(100),col95 varchar(100)
   	) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/MAG_feed_Header.txt', format 'text', delimiter '|'  );
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/MAG_feed_Header.txt', format 'text', delimiter '|'  );
 	
 	
 	
@@ -1236,7 +1236,7 @@ record_type char(1),doc_cd varchar(8),doc_dept_cd varchar(20), doc_id varchar(20
 	col36 varchar(100),col37 varchar(100),col38 varchar(100),col39 varchar(100),col40 varchar(255),
 	col41 varchar(100),col42 varchar(100)
   	) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/MAG_feed_Vendor.txt', format 'text', delimiter '|'  );
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/MAG_feed_Vendor.txt', format 'text', delimiter '|'  );
 	
 	CREATE FOREIGN TABLE foreign_tbl_mag_data_feed_detail(
 record_type char(1),doc_cd varchar(8),doc_dept_cd varchar(20), doc_id varchar(20),doc_vers_no varchar,
@@ -1254,7 +1254,7 @@ record_type char(1),doc_cd varchar(8),doc_dept_cd varchar(20), doc_id varchar(20
 	col61 varchar,col62 varchar,col63 varchar,col64 varchar,col65 varchar(100),
 	col66 varchar(100),col67 varchar(100),col68 varchar(100),col69 varchar(100)
   	) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/MAG_feed_Detail.txt', format 'text', delimiter '|'  );
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/MAG_feed_Detail.txt', format 'text', delimiter '|'  );
  
  CREATE TABLE ext_stg_mag_data_feed(
 record_type char(1),doc_cd varchar(8),doc_dept_cd varchar(20), doc_id varchar(20),doc_vers_no varchar,
@@ -1688,7 +1688,7 @@ CREATE TABLE invalid_mag_commodity (LIKE archive_mag_commodity) ;
  cert_end_dt varchar,
  init_dt varchar,col10 varchar 
  ) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/FMSV_feed.txt', format 'text', delimiter '|'  );
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/FMSV_feed.txt', format 'text', delimiter '|'  );
  
  CREATE TABLE ext_stg_fmsv_data_feed(
  record_type char(1),
@@ -1862,7 +1862,7 @@ CREATE FOREIGN TABLE foreign_tbl_con_ct_data_feed_header(
 	col112 varchar(100),
 	col113 varchar(100)
 	  	) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/CON_feed_CT_Header.txt', format 'text', delimiter '|'  );
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/CON_feed_CT_Header.txt', format 'text', delimiter '|'  );
 
 
 
@@ -1909,7 +1909,7 @@ CREATE FOREIGN TABLE foreign_tbl_con_ct_data_feed_vendor(
 	col39 varchar(255),
 	col40 varchar(100)
 	  	) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/CON_feed_CT_Vendor.txt', format 'text', delimiter '|'  );
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/CON_feed_CT_Vendor.txt', format 'text', delimiter '|'  );
 
 
 
@@ -1984,7 +1984,7 @@ CREATE FOREIGN TABLE foreign_tbl_con_ct_data_feed_detail(
 	col68 varchar(100),
 	col69 varchar(100)
 	  	) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/CON_feed_CT_Detail.txt', format 'text', delimiter '|'  );
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/CON_feed_CT_Detail.txt', format 'text', delimiter '|'  );
 
 
 CREATE FOREIGN TABLE foreign_tbl_con_ct_data_feed_acc_line(
@@ -2060,7 +2060,7 @@ CREATE FOREIGN TABLE foreign_tbl_con_ct_data_feed_acc_line(
 	col70 varchar,
 	col71 varchar(100)
 	  	) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/CON_feed_CT_Accounting_line.txt', format 'text', delimiter '|'  );
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/CON_feed_CT_Accounting_line.txt', format 'text', delimiter '|'  );
 
 
 CREATE FOREIGN TABLE foreign_tbl_con_po_data_feed_header(
@@ -2160,7 +2160,7 @@ CREATE FOREIGN TABLE foreign_tbl_con_po_data_feed_header(
 	col94 varchar(100),
 	col95 varchar
 	  	) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/CON_feed_PO_Header.txt', format 'text', delimiter '|'  );
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/CON_feed_PO_Header.txt', format 'text', delimiter '|'  );
 
 
 CREATE FOREIGN TABLE foreign_tbl_con_po_data_feed_vendor(
@@ -2203,7 +2203,7 @@ CREATE FOREIGN TABLE foreign_tbl_con_po_data_feed_vendor(
 	col37 varchar(100),
 	col38 varchar(100)
 	  	) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/CON_feed_PO_Vendor.txt', format 'text', delimiter '|'  );
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/CON_feed_PO_Vendor.txt', format 'text', delimiter '|'  );
 
 
 CREATE FOREIGN TABLE foreign_tbl_con_po_data_feed_detail(
@@ -2243,7 +2243,7 @@ CREATE FOREIGN TABLE foreign_tbl_con_po_data_feed_detail(
 	col34 varchar(100),
 	col35 varchar(100)
 	  	) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/CON_feed_PO_Detail.txt', format 'text', delimiter '|'  );
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/CON_feed_PO_Detail.txt', format 'text', delimiter '|'  );
 
 
 CREATE FOREIGN TABLE foreign_tbl_con_po_data_feed_acc_line(
@@ -2319,7 +2319,7 @@ CREATE FOREIGN TABLE foreign_tbl_con_po_data_feed_acc_line(
 	col70 varchar,
 	col71 varchar(100)
 	  	) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/CON_feed_PO_Accounting_line.txt', format 'text', delimiter '|'  );
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/CON_feed_PO_Accounting_line.txt', format 'text', delimiter '|'  );
 
 
 CREATE FOREIGN TABLE foreign_tbl_con_do1_data_feed_header(
@@ -2414,7 +2414,7 @@ CREATE FOREIGN TABLE foreign_tbl_con_do1_data_feed_header(
 	col89 varchar(100),
 	col90 varchar(100)
 	  	) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/CON_feed_DO_Header.txt', format 'text', delimiter '|'  );
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/CON_feed_DO_Header.txt', format 'text', delimiter '|'  );
 
 CREATE FOREIGN TABLE foreign_tbl_con_do1_data_feed_vendor(
 	record_type char(1),
@@ -2455,7 +2455,7 @@ CREATE FOREIGN TABLE foreign_tbl_con_do1_data_feed_vendor(
 	col36 varchar(100),
 	col37 varchar(100)
 	  	) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/CON_feed_DO_Vendor.txt', format 'text', delimiter '|'  );
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/CON_feed_DO_Vendor.txt', format 'text', delimiter '|'  );
 
 
 CREATE FOREIGN TABLE foreign_tbl_con_do1_data_feed_acc_line(
@@ -2529,7 +2529,7 @@ CREATE FOREIGN TABLE foreign_tbl_con_do1_data_feed_acc_line(
 	col68 varchar(100),
 	col69 varchar(100)
 	  	) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/CON_feed_DO_Accounting_line.txt', format 'text', delimiter '|'  );
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/CON_feed_DO_Accounting_line.txt', format 'text', delimiter '|'  );
 	
 	
 CREATE TABLE ext_stg_con_data_feed(
@@ -4191,7 +4191,7 @@ CREATE FOREIGN TABLE foreign_tbl_fms_data_feed_header(
 	col21 varchar(100),
 	col22 varchar(100)
 	  	) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/FMS_feed_Header.txt', format 'text', delimiter '|'  );
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/FMS_feed_Header.txt', format 'text', delimiter '|'  );
 
 
 CREATE FOREIGN TABLE foreign_tbl_fms_data_feed_vendor(
@@ -4215,7 +4215,7 @@ CREATE FOREIGN TABLE foreign_tbl_fms_data_feed_vendor(
 	col18 varchar(100),
 	col19 varchar(100)
  ) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/FMS_feed_Vendor.txt', format 'text', delimiter '|'  );	
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/FMS_feed_Vendor.txt', format 'text', delimiter '|'  );	
 
 CREATE FOREIGN TABLE foreign_tbl_fms_data_feed_acc_line(
 	record_type char(1),
@@ -4268,7 +4268,7 @@ CREATE FOREIGN TABLE foreign_tbl_fms_data_feed_acc_line(
 	col48 varchar(100),
 	col49 varchar(100)
 ) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/FMS_feed_Accounting_line.txt', format 'text', delimiter '|'  );	
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/FMS_feed_Accounting_line.txt', format 'text', delimiter '|'  );	
 
 
 CREATE TABLE ext_stg_fms_data_feed(
@@ -4560,7 +4560,7 @@ CREATE FOREIGN TABLE foreign_tbl_budget_feed
   updated_date character varying(60),
   col15 character varying
 ) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/BUDGET_feed.txt', format 'text', delimiter '|'  );	
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/BUDGET_feed.txt', format 'text', delimiter '|'  );	
 
 CREATE TABLE etl.ext_stg_budget_feed
 (
@@ -4800,7 +4800,7 @@ CREATE FOREIGN TABLE foreign_tbl_revenue(
 	pscd_clos_cl_nm varchar(45),
 	col varchar
 	) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/Revenue_feed.txt', format 'text', delimiter '|'  );	
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/Revenue_feed.txt', format 'text', delimiter '|'  );	
 
 CREATE TABLE ext_stg_revenue(
 	doc_rec_dt varchar(50),
@@ -5162,7 +5162,7 @@ CREATE FOREIGN TABLE foreign_tbl_revenue_budget
   col8 varchar,
   col9 varchar
 	) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/revenue_budget.txt', format 'text', delimiter '|'  );
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/revenue_budget.txt', format 'text', delimiter '|'  );
 
 
 CREATE TABLE etl.ext_stg_revenue_budget
@@ -5399,7 +5399,7 @@ CREATE FOREIGN TABLE foreign_tbl_pms_data_feed(
 	civil_service_suffix varchar,
 	civil_service_title varchar
 		) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/PMS_feed.txt', format 'text', delimiter '|'  );
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/PMS_feed.txt', format 'text', delimiter '|'  );
 	
 
 CREATE TABLE ext_stg_pms_data_feed(
@@ -5514,7 +5514,7 @@ CREATE FOREIGN TABLE foreign_tbl_pms_summary_data_feed(
 	total_amt varchar,
 	col15 varchar
 ) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/PMS_summary_feed.txt', format 'text', delimiter '|'  );
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/PMS_summary_feed.txt', format 'text', delimiter '|'  );
 
 CREATE TABLE ext_stg_pms_summary_data_feed(
 	pay_cycle varchar(20),
@@ -5622,7 +5622,7 @@ CREATE FOREIGN TABLE foreign_tbl_oaisis_feed(
 	original_or_modified varchar,
 	award_category_code character varying
 	) SERVER postgresql_file_server
-OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST_DIR/datafiles/OAISIS_feed.txt', format 'text', delimiter '|'  );
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/OAISIS_feed.txt', format 'text', delimiter '|'  );
 	
 	
 CREATE TABLE ext_stg_oaisis_feed(
@@ -5793,7 +5793,449 @@ CREATE TABLE tmp_vendor_update (
   industry_type_id smallint 
 );
 
+------------------------------------------subvendor tables -------------------------------------------------------------------
 
+DROP SEQUENCE IF EXISTS seq_stg_scntrc_details_uniq_id CASCADE;
+DROP SEQUENCE IF EXISTS seq_stg_scntrc_status_uniq_id CASCADE;
+DROP SEQUENCE IF EXISTS seq_stg_scntrc_bus_type_uniq_id CASCADE;
+DROP SEQUENCE IF EXISTS seq_stg_scntrc_pymt_uniq_id CASCADE;
+
+create sequence   seq_stg_scntrc_details_uniq_id;
+create sequence   seq_stg_scntrc_status_uniq_id;
+create sequence   seq_stg_scntrc_bus_type_uniq_id;
+create sequence   seq_stg_scntrc_pymt_uniq_id;
+
+
+CREATE FOREIGN TABLE foreign_tbl_scntrc_details_data_feed
+(
+  doc_cd character varying(8),
+  doc_dept_cd character varying(4),
+  doc_id character varying(20),
+  vendor_cust_cd character varying(20),
+  cntrc_typ character varying,
+  scntrc_id character varying,
+  aprv_sta character varying,
+  aprv_reas_id character varying,
+  aprv_reas_nm character varying,
+  aprv_reas_nm_up character varying,
+  scntrc_dscr character varying,
+  scntrc_dscr_up character varying,
+  scntrc_mwbe_cert character varying,
+  indus_cls character varying,
+  scntrc_strt_dt character varying(100),
+  scntrc_end_dt character varying(100),
+  scntrc_max_am character varying(100),
+  tot_scntrc_pymt character varying(100),
+  scntrc_pymt_act character varying,
+  scntrc_mode character varying,
+  scntrc_vers_no character varying,
+  scntrc_vend_cd character varying(20),
+  scntrc_lgl_nm character varying(100),
+  scntrc_lgl_nm_up character varying(100),
+  scntrc_trkg_no character varying,
+  scntrc_trkg_no_up character varying,
+  lgl_nm character varying(100),
+  lgl_nm_up character varying(100),
+  doc_ref character varying,
+  col30 character varying
+		) SERVER postgresql_file_server
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/scntrc_details_data_feed.txt', format 'text', delimiter '|'  );
+
+
+DROP  TABLE IF EXISTS ext_stg_scntrc_details_data_feed;
+
+CREATE  TABLE ext_stg_scntrc_details_data_feed
+(
+  doc_cd character varying(8),
+  doc_dept_cd character varying(4),
+  doc_id character varying(20),
+  vendor_cust_cd character varying(20),
+  cntrc_typ character varying,
+  scntrc_id character varying,
+  aprv_sta character varying,
+  aprv_reas_id character varying,
+  aprv_reas_nm character varying,
+  aprv_reas_nm_up character varying,
+  scntrc_dscr character varying,
+  scntrc_dscr_up character varying,
+  scntrc_mwbe_cert character varying,
+  indus_cls character varying,
+  scntrc_strt_dt character varying(100),
+  scntrc_end_dt character varying(100),
+  scntrc_max_am character varying(100),
+  tot_scntrc_pymt character varying(100),
+  scntrc_pymt_act character varying,
+  scntrc_mode character varying,
+  scntrc_vers_no character varying,
+  scntrc_vend_cd character varying(20),
+  scntrc_lgl_nm character varying(100),
+  scntrc_lgl_nm_up character varying(100),
+  scntrc_trkg_no character varying,
+  scntrc_trkg_no_up character varying,
+  lgl_nm character varying(100),
+  lgl_nm_up character varying(100),
+  doc_ref character varying,
+  col30 character varying
+);
+
+DROP  TABLE  IF EXISTS stg_scntrc_details;
+DROP  TABLE  IF EXISTS archive_scntrc_details;
+DROP  TABLE  IF EXISTS invalid_scntrc_details;
+
+CREATE  TABLE stg_scntrc_details
+(
+  doc_cd character varying(8),
+  doc_dept_cd character varying(4),
+  doc_id character varying(20),
+  vendor_cust_cd character varying(20),
+  cntrc_typ smallint,
+  scntrc_id character varying(20),
+  aprv_sta smallint,
+  aprv_reas_id character varying(3),
+  aprv_reas_nm character varying(30),
+  aprv_reas_nm_up character varying(30),
+  scntrc_dscr character varying(256),
+  scntrc_dscr_up character varying(256),
+  scntrc_mwbe_cert smallint,
+  indus_cls smallint,
+  scntrc_strt_dt date,
+  scntrc_end_dt date,
+  scntrc_max_am numeric(16,2),
+  tot_scntrc_pymt numeric(16,2),
+  scntrc_pymt_act smallint,
+  scntrc_mode smallint,
+  scntrc_vers_no integer,
+  scntrc_vend_cd character varying(20),
+  scntrc_lgl_nm character varying(60),
+  scntrc_lgl_nm_up character varying(60),
+  scntrc_trkg_no character varying(30),
+  scntrc_trkg_no_up character varying(30),
+  lgl_nm character varying(60),
+  lgl_nm_up character varying(60),
+  doc_ref character varying(75),
+  doc_appl_last_dt date,
+  reg_dt date,
+  document_code_id smallint,
+  agency_history_id smallint,
+  vendor_history_id integer,
+	effective_begin_date_id int,
+	effective_end_date_id int,
+	source_updated_date_id int,
+	registered_date_id int,
+  	registered_fiscal_year smallint,
+	registered_fiscal_year_id smallint, 
+	registered_calendar_year smallint,
+	registered_calendar_year_id smallint,
+	effective_begin_fiscal_year smallint,
+	effective_begin_fiscal_year_id smallint, 
+	effective_begin_calendar_year smallint,
+	effective_begin_calendar_year_id smallint,
+	effective_end_fiscal_year smallint,
+	effective_end_fiscal_year_id smallint, 
+	effective_end_calendar_year smallint,
+	effective_end_calendar_year_id smallint,
+	source_updated_calendar_year smallint,
+	source_updated_calendar_year_id smallint,
+	source_updated_fiscal_year_id smallint,
+	source_updated_fiscal_year smallint,
+  uniq_id bigint DEFAULT nextval('etl.seq_stg_scntrc_details_uniq_id'::regclass),
+  invalid_flag character(1),
+  invalid_reason character varying
+);
+
+
+CREATE TABLE archive_scntrc_details (LIKE stg_scntrc_details) ;
+ALTER TABLE archive_scntrc_details ADD COLUMN load_file_id bigint;
+
+CREATE TABLE invalid_scntrc_details (LIKE archive_scntrc_details);
+
+CREATE FOREIGN TABLE foreign_tbl_scntrc_status_data_feed
+(
+  doc_cd character varying(8),
+  doc_dept_cd character varying(4),
+  doc_id character varying(20),
+  vendor_cust_cd character varying(20),
+  scntrc_sta character varying,
+  cntrc_typ character varying,
+  tot_scntrc_max_am character varying(100),
+  tot_scntrc_pymt character varying(100),
+  col9 character varying
+) SERVER postgresql_file_server
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/scntrc_status_data_feed.txt', format 'text', delimiter '|'  );
+
+DROP   TABLE  IF EXISTS ext_stg_scntrc_status_data_feed;
+CREATE  TABLE ext_stg_scntrc_status_data_feed
+(
+  doc_cd character varying(8),
+  doc_dept_cd character varying(4),
+  doc_id character varying(20),
+  vendor_cust_cd character varying(20),
+  scntrc_sta character varying,
+  cntrc_typ character varying,
+  tot_scntrc_max_am character varying(100),
+  tot_scntrc_pymt character varying(100),
+  col9 character varying
+);
+
+DROP  TABLE  IF EXISTS stg_scntrc_status;
+DROP  TABLE  IF EXISTS archive_scntrc_status;
+DROP  TABLE  IF EXISTS invalid_scntrc_status;
+
+CREATE  TABLE stg_scntrc_status
+(
+  doc_cd character varying(8),
+  doc_dept_cd character varying(4),
+  doc_id character varying(20),
+  vendor_cust_cd character varying(20),
+  scntrc_sta smallint,
+  cntrc_typ smallint,
+  tot_scntrc_max_am numeric(16,2),
+  tot_scntrc_pymt numeric(16,2),
+  uniq_id bigint DEFAULT nextval('etl.seq_stg_scntrc_status_uniq_id'::regclass),
+  invalid_flag character(1),
+  invalid_reason character varying
+) ;
+
+
+CREATE TABLE archive_scntrc_status (LIKE stg_scntrc_status) ;
+ALTER TABLE archive_scntrc_status ADD COLUMN load_file_id bigint;
+
+CREATE TABLE invalid_scntrc_status (LIKE archive_scntrc_status) ;
+
+
+CREATE FOREIGN TABLE foreign_tbl_scntrc_bus_type_data_feed
+(
+  doc_cd character varying(8),
+  doc_dept_cd character varying(4),
+  doc_id character varying(20),
+  vendor_cust_cd character varying(20),
+  scntrc_id character varying,
+  scntrc_vend_cd character varying(20),
+  bus_typ character varying,
+  bus_typ_sta character varying,
+  cert_strt_dt character varying(100),
+  init_dt character varying(100),
+  disp_cert_strt_dt character varying(100),
+  cert_end_dt character varying(100),
+  cert_no character varying(30),
+  min_typ character varying(10),
+  col15 character varying
+) 		SERVER postgresql_file_server
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/scntrc_bus_type_data_feed.txt', format 'text', delimiter '|'  );
+
+
+DROP   TABLE  IF EXISTS ext_stg_scntrc_bus_type_data_feed;
+CREATE  TABLE ext_stg_scntrc_bus_type_data_feed
+(
+  doc_cd character varying(8),
+  doc_dept_cd character varying(4),
+  doc_id character varying(20),
+  vendor_cust_cd character varying(20),
+  scntrc_id character varying,
+  scntrc_vend_cd character varying(20),
+  bus_typ character varying,
+  bus_typ_sta character varying,
+  cert_strt_dt character varying(100),
+  init_dt character varying(100),
+  disp_cert_strt_dt character varying(100),
+  cert_end_dt character varying(100),
+  cert_no character varying(30),
+  min_typ character varying(10),
+  col15 character varying
+);
+
+
+DROP  TABLE  IF EXISTS stg_scntrc_bus_type;
+DROP  TABLE  IF EXISTS archive_scntrc_bus_type;
+DROP  TABLE  IF EXISTS invalid_scntrc_bus_type;
+
+CREATE  TABLE stg_scntrc_bus_type
+(
+  doc_cd character varying(8),
+  doc_dept_cd character varying(4),
+  doc_id character varying(20),
+  vendor_cust_cd character varying(20),
+  scntrc_id character varying(20),
+  scntrc_vend_cd character varying(20),
+  bus_typ character varying(10),
+  bus_typ_sta integer,
+  cert_strt_dt date,
+  init_dt date,
+  disp_cert_strt_dt date,
+  cert_end_dt date,
+  cert_no character varying(30),
+  min_typ integer,
+  uniq_id bigint DEFAULT nextval('etl.seq_stg_scntrc_bus_type_uniq_id'::regclass),
+  invalid_flag character(1),
+  invalid_reason character varying
+) ;
+
+
+CREATE TABLE archive_scntrc_bus_type (LIKE stg_scntrc_bus_type) ;
+ALTER TABLE archive_scntrc_bus_type ADD COLUMN load_file_id bigint;
+
+CREATE TABLE invalid_scntrc_bus_type (LIKE archive_scntrc_bus_type);
+
+
+
+CREATE  FOREIGN TABLE foreign_tbl_scntrc_pymt_data_feed
+(
+  doc_cd character varying(8),
+  doc_dept_cd character varying(4),
+  doc_id character varying(20),
+  vendor_cust_cd character varying(20),
+  scntrc_id character varying,
+  scntrc_pymt_id character varying,
+  lgl_nm character varying,
+  lgl_nm_up character varying,
+  scntrc_lgl_nm character varying,
+  scntrc_vend_cd character varying(20),
+  scntrc_lgl_nm_up character varying,
+  scntrc_pymt_dt character varying(100),
+  scntrc_pymt_am character varying(100),
+  scntrc_pymt_dscr character varying,
+  scntrc_pymt_dscr_up character varying,
+  scntrc_prf_pymt character varying,
+  scntrc_prf_pymt_up character varying,
+  scntrc_fnl_pymt_fl character varying,
+  doc_ref character varying,
+  col20 character varying
+) SERVER postgresql_file_server
+OPTIONS ( filename '/home/gpadmin/POSTGRESQL/Checkbook/GPFDIST/datafiles/scntrc_pymt_data_feed.txt', format 'text', delimiter '|'  );
+
+
+
+DROP   TABLE  IF EXISTS ext_stg_scntrc_pymt_data_feed;
+CREATE  TABLE ext_stg_scntrc_pymt_data_feed
+(
+  doc_cd character varying(8),
+  doc_dept_cd character varying(4),
+  doc_id character varying(20),
+  vendor_cust_cd character varying(20),
+  scntrc_id character varying,
+  scntrc_pymt_id character varying,
+  lgl_nm character varying,
+  lgl_nm_up character varying,
+  scntrc_lgl_nm character varying,
+  scntrc_vend_cd character varying(20),
+  scntrc_lgl_nm_up character varying,
+  scntrc_pymt_dt character varying(100),
+  scntrc_pymt_am character varying(100),
+  scntrc_pymt_dscr character varying,
+  scntrc_pymt_dscr_up character varying,
+  scntrc_prf_pymt character varying,
+  scntrc_prf_pymt_up character varying,
+  scntrc_fnl_pymt_fl character varying,
+  doc_ref character varying,
+  col20 character varying
+);
+
+
+
+DROP  TABLE  IF EXISTS stg_scntrc_pymt;
+DROP  TABLE  IF EXISTS archive_scntrc_pymt;
+DROP  TABLE  IF EXISTS invalid_scntrc_pymt;
+
+CREATE  TABLE stg_scntrc_pymt
+(
+  doc_cd character varying(8),
+  doc_dept_cd character varying(4),
+  doc_id character varying(20),
+  vendor_cust_cd character varying(20),
+  scntrc_id character varying(20),
+  scntrc_pymt_id character varying(20),
+  lgl_nm character varying(60),
+  lgl_nm_up character varying(60),
+  scntrc_lgl_nm character varying(60),
+  scntrc_vend_cd character varying(20),
+  scntrc_lgl_nm_up character varying(60),
+  scntrc_pymt_dt date,
+  scntrc_pymt_am numeric(16,2),
+  scntrc_pymt_dscr character varying(256),
+  scntrc_pymt_dscr_up character varying(256),
+  scntrc_prf_pymt character varying(256),
+  scntrc_prf_pymt_up character varying(256),
+  scntrc_fnl_pymt_fl character varying(3),
+  doc_ref character varying(75),
+  agreement_id bigint,
+  document_code_id smallint,
+  agency_history_id smallint,
+  vendor_history_id integer,
+  check_eft_issued_date_id int,
+  check_eft_issued_nyc_year_id smallint,  
+  uniq_id bigint DEFAULT nextval('etl.seq_stg_scntrc_pymt_uniq_id'::regclass),
+  invalid_flag character(1),
+  invalid_reason character varying
+) ;
+
+
+CREATE TABLE archive_scntrc_pymt (LIKE stg_scntrc_pymt) ;
+ALTER TABLE archive_scntrc_pymt ADD COLUMN load_file_id bigint;
+
+CREATE TABLE invalid_scntrc_pymt (LIKE archive_scntrc_pymt) ;
+
+
+
+DROP  TABLE  IF EXISTS tmp_stg_scntrc_vendor;
+CREATE TABLE tmp_stg_scntrc_vendor(
+ 	vend_cust_cd varchar(20),	
+ 	lgl_nm varchar(60),
+ 	vendor_history_id integer, 
+ 	uniq_id bigint
+ 	)	;
+ 	
+ 	
+DROP  TABLE  IF EXISTS tmp_scntrc_all_vendors;		
+CREATE TABLE tmp_scntrc_all_vendors(
+	uniq_id bigint,
+	vendor_customer_code varchar, 
+	vendor_history_id integer, 
+	vendor_id integer, 					
+	is_new_vendor char(1), 
+	is_name_changed char(1), 
+	is_bus_type_changed char(1), 					
+	lgl_nm varchar(60)
+	)	;
+	
+	
+DROP  TABLE  IF EXISTS tmp_scntrc_all_vendors_uniq_id;		 
+CREATE TABLE tmp_scntrc_all_vendors_uniq_id(
+	uniq_id bigint
+	);
+
+	
+DROP  TABLE  IF EXISTS tmp_scntrc_vendor_update;		 
+CREATE TABLE tmp_scntrc_vendor_update (
+     	vendor_id integer,
+     	legal_name varchar(60)
+		)	;	
+		
+
+DROP TABLE IF EXISTS malformed_scntrc_details_data_feed;
+CREATE TABLE malformed_scntrc_details_data_feed(
+	record varchar,
+	load_file_id integer);
+
+
+DROP TABLE IF EXISTS malformed_scntrc_status_data_feed;
+CREATE TABLE malformed_scntrc_status_data_feed(
+	record varchar,
+	load_file_id integer);
+
+
+DROP TABLE IF EXISTS malformed_scntrc_bus_type_data_feed;
+CREATE TABLE malformed_scntrc_bus_type_data_feed(
+	record varchar,
+	load_file_id integer);
+
+
+DROP TABLE IF EXISTS malformed_scntrc_pymt_data_feed;
+CREATE TABLE malformed_scntrc_pymt_data_feed(
+	record varchar,
+	load_file_id integer);
+	
+	
+	
 
 -- Create Indexes
  -- payroll indexes on 12/08/2012

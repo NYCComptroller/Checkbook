@@ -10,7 +10,7 @@ SpendingByCOAEntitiesAndFiscalYear,aggregateon_spending_coa_entities,"CREATE TAB
 	type_of_year char(1),
 	total_spending_amount numeric(16,2),
 	total_disbursements integer
-	) ","SELECT department_id,
+	)   ","SELECT department_id,
 		agency_id,
        	spending_category_id,
        	expenditure_object_id,   
@@ -94,7 +94,7 @@ SpendingByVendorId,aggregateon_spending_vendor,"CREATE TABLE aggregateon_spendin
 	total_spending_amount numeric(16,2), 
 	total_contract_amount numeric(16,2),
 	is_all_categories char(1)
-	) ","SELECT X.vendor_id, X.agency_id, X.spending_category_id,
+	) ","SELECT X.vendor_id, X.agency_id, X.spending_category_id,   
        X.year_id,
        X.type_of_year::varchar,
        X.total_spending_amount,
@@ -114,7 +114,7 @@ LEFT JOIN (SELECT vendor_id, agency_id, spending_category_id, year_id, sum(total
  GROUP BY 1,2,3,4) Y
  ON X.vendor_id = Y.vendor_id AND X.agency_id = Y.agency_id AND X.spending_category_id = Y.spending_category_id AND X.year_id = Y.year_id 
  UNION ALL
-   SELECT X.vendor_id, X.agency_id,  (CASE WHEN X.spending_category_id IS NULL THEN NULL ELSE NULL END)::smallint as spending_category_id,    
+   SELECT X.vendor_id, X.agency_id, (CASE WHEN X.spending_category_id IS NULL THEN NULL ELSE NULL END)::smallint as spending_category_id,     
        X.year_id,
        X.type_of_year::varchar,
        X.total_spending_amount,
@@ -810,7 +810,7 @@ ContractLandingTopGraph,aggregateon_contracts_spending_by_month,"CREATE TABLE ag
  spending_amount numeric(16,2),
  status_flag char(1),
  type_of_year char(1) 
-)","SELECT  a.original_agreement_id,
+) ","SELECT  a.original_agreement_id,
 		a.fiscal_year,
 		ry.year_id,
 		document_code_id,

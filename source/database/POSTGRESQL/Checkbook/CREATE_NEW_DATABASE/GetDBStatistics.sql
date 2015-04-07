@@ -183,4 +183,3 @@ END;
 
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE;
-ALTER FUNCTION etl.getdatabasestatistics() OWNER TO gpadmin;
