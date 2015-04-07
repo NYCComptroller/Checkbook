@@ -37,6 +37,14 @@ echo "--revenue budget scripts"
 psql -d $DB_NAME -f $SCRIPT_DIR/PendingContracts.sql  
 echo "--pendingscripts "
 psql -d $DB_NAME -f $SCRIPT_DIR/VendorScripts.sql 
+
+echo "--subvendor scripts "
+psql -d $DB_NAME -f $SCRIPT_DIR/SubCONScripts.sql 
+psql -d $DB_NAME -f $SCRIPT_DIR/SubContractStatusScripts.sql 
+psql -d $DB_NAME -f $SCRIPT_DIR/SubContractVendorBusTypeScripts.sql 
+psql -d $DB_NAME -f $SCRIPT_DIR/SubFMSScripts.sql 
+psql -d $DB_NAME -f $SCRIPT_DIR/SubVendorScripts.sql 
+
 echo "--External Tables Scripts "
 psql -d $DB_NAME -f $SCRIPT_DIR/ExternalTableScripts.sql 
 

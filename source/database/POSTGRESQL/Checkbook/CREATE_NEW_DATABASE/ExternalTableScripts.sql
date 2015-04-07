@@ -701,6 +701,73 @@ BEGIN
             col15
 	FROM etl.foreign_tbl_pms_summary_data_feed;
 
+	
+	ELSIF(l_data_source_code = 'SC') THEN
+	
+	TRUNCATE etl.ext_stg_scntrc_details_data_feed;
+	
+	INSERT INTO etl.ext_stg_scntrc_details_data_feed(
+            doc_cd, doc_dept_cd, doc_id, vendor_cust_cd, cntrc_typ, scntrc_id, 
+            aprv_sta, aprv_reas_id, aprv_reas_nm, aprv_reas_nm_up, scntrc_dscr, 
+            scntrc_dscr_up, scntrc_mwbe_cert, indus_cls, scntrc_strt_dt, 
+            scntrc_end_dt, scntrc_max_am, tot_scntrc_pymt, scntrc_pymt_act, 
+            scntrc_mode, scntrc_vers_no, scntrc_vend_cd, scntrc_lgl_nm, scntrc_lgl_nm_up, 
+            scntrc_trkg_no, scntrc_trkg_no_up, lgl_nm, lgl_nm_up, doc_ref, col30)
+    SELECT  doc_cd, doc_dept_cd, doc_id, vendor_cust_cd, cntrc_typ, scntrc_id, 
+            aprv_sta, aprv_reas_id, aprv_reas_nm, aprv_reas_nm_up, scntrc_dscr, 
+            scntrc_dscr_up, scntrc_mwbe_cert, indus_cls, scntrc_strt_dt, 
+            scntrc_end_dt, scntrc_max_am, tot_scntrc_pymt, scntrc_pymt_act, 
+            scntrc_mode, scntrc_vers_no, scntrc_vend_cd, scntrc_lgl_nm, scntrc_lgl_nm_up, 
+            scntrc_trkg_no, scntrc_trkg_no_up, lgl_nm, lgl_nm_up, doc_ref, col30 
+	FROM etl.foreign_tbl_scntrc_details_data_feed;
+	
+	
+	ELSIF(l_data_source_code = 'SS') THEN
+	
+	TRUNCATE etl.ext_stg_scntrc_status_data_feed;
+	
+	INSERT INTO etl.ext_stg_scntrc_status_data_feed(
+            doc_cd, doc_dept_cd, doc_id, vendor_cust_cd, scntrc_sta, cntrc_typ, 
+            tot_scntrc_max_am, tot_scntrc_pymt, col9)
+    SELECT doc_cd, doc_dept_cd, doc_id, vendor_cust_cd, scntrc_sta, cntrc_typ, 
+            tot_scntrc_max_am, tot_scntrc_pymt, col9 
+	FROM etl.foreign_tbl_scntrc_status_data_feed;
+	
+	
+	ELSIF(l_data_source_code = 'SV') THEN
+	
+	TRUNCATE etl.ext_stg_scntrc_bus_type_data_feed;
+	
+	INSERT INTO etl.ext_stg_scntrc_bus_type_data_feed(
+           doc_cd, doc_dept_cd, doc_id, vendor_cust_cd, scntrc_id, scntrc_vend_cd, 
+            bus_typ, bus_typ_sta, cert_strt_dt, init_dt, disp_cert_strt_dt, 
+            cert_end_dt, cert_no, min_typ,
+            col15)
+    SELECT doc_cd, doc_dept_cd, doc_id, vendor_cust_cd, scntrc_id, scntrc_vend_cd, 
+            bus_typ, bus_typ_sta, cert_strt_dt, init_dt, disp_cert_strt_dt, 
+            cert_end_dt, cert_no, min_typ,
+            col15 
+	FROM etl.foreign_tbl_scntrc_bus_type_data_feed;
+	
+	
+	
+	ELSIF(l_data_source_code = 'SF') THEN
+	
+	TRUNCATE etl.ext_stg_scntrc_pymt_data_feed;
+	
+	INSERT INTO etl.ext_stg_scntrc_pymt_data_feed(
+            doc_cd, doc_dept_cd, doc_id, vendor_cust_cd, scntrc_id, scntrc_pymt_id, 
+            lgl_nm, lgl_nm_up, scntrc_lgl_nm, scntrc_vend_cd, scntrc_lgl_nm_up, 
+            scntrc_pymt_dt, scntrc_pymt_am, scntrc_pymt_dscr, scntrc_pymt_dscr_up, 
+            scntrc_prf_pymt, scntrc_prf_pymt_up, scntrc_fnl_pymt_fl, doc_ref,
+            col20)
+    SELECT doc_cd, doc_dept_cd, doc_id, vendor_cust_cd, scntrc_id, scntrc_pymt_id, 
+            lgl_nm, lgl_nm_up, scntrc_lgl_nm, scntrc_vend_cd, scntrc_lgl_nm_up, 
+            scntrc_pymt_dt, scntrc_pymt_am, scntrc_pymt_dscr, scntrc_pymt_dscr_up, 
+            scntrc_prf_pymt, scntrc_prf_pymt_up, scntrc_fnl_pymt_fl, doc_ref,
+            col20
+	FROM etl.foreign_tbl_scntrc_pymt_data_feed;
+	
 	END IF;
 	
 	l_end_time := timeofday()::timestamp;

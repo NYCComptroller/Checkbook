@@ -172,3 +172,11 @@ FC,,,Missing key elements,,,"fy,funding_class_code,funding_class_name",,,,,1
 FC,,,Duplicate,,,"fy,funding_class_code",,,,,2
 RB,,,Missing key elements,,,"budget_fiscal_year,budget_code,revenue_source_code,agency_code,fund_class_code",,,,,1
 RB,,,Duplicate,,,"budget_fiscal_year,budget_code,revenue_source_code,agency_code,fund_class_code",,,,,2
+SV,,,Missing key elements,,,"doc_cd,doc_dept_cd,doc_id,scntrc_id,scntrc_vend_cd,bus_typ,cert_strt_dt",,,,,1
+SV,,,Duplicate,,,"doc_cd, doc_dept_cd,doc_id,scntrc_id,scntrc_vend_cd,bus_typ,min_typ",,,,,2
+SS,,,Missing key elements,,,"doc_cd,doc_dept_cd,doc_id",,,,,1
+SS,,,Duplicate,,,"doc_cd,doc_dept_cd,doc_id",,,,,2
+SC,,,Missing key elements,,,"doc_cd,doc_dept_cd,doc_id,scntrc_id,scntrc_vers_no,scntrc_strt_dt,scntrc_max_am",,,,,1
+SC,,,Duplicate,,,"doc_cd,doc_dept_cd,doc_id,scntrc_id,scntrc_vers_no",,,,,2
+SF,,,Missing key elements,,,"doc_cd,doc_dept_cd,doc_id,scntrc_id,scntrc_pymt_id,scntrc_pymt_dt,scntrc_pymt_am",,,,,1
+SF,,,Duplicate,,,"doc_cd,doc_dept_cd,doc_id,scntrc_id,scntrc_pymt_id",,,,,2

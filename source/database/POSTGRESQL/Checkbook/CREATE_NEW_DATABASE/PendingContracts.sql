@@ -352,7 +352,8 @@ BEGIN
 				      start_date_id,end_date_id,revised_start_date_id,revised_end_date_id,
 				      cif_received_date_id,document_agency_code,document_agency_name,document_agency_short_name,  
 				      original_agreement_id, funding_agency_id, funding_agency_code, funding_agency_name, funding_agency_short_name,
-				      dollar_difference, percent_difference,original_or_modified,original_or_modified_desc,award_size_id, award_category_id, industry_type_id, document_version, latest_flag )
+				      dollar_difference, percent_difference,original_or_modified,original_or_modified_desc,award_size_id, award_category_id, industry_type_id, document_version, 
+				      minority_type_id, minority_type_name, is_prime_or_sub, is_minority_vendor, vendor_type,latest_flag )
 	SELECT document_code_id,document_agency_id,con_no,parent_document_code_id,
 	      parent_document_agency_id,con_par_reg_num,con_cur_encumbrance as encumbrance_amount_original,(CASE WHEN con_cur_encumbrance IS NULL THEN 0 ELSE con_cur_encumbrance END) as encumbrance_amount, 
 	      con_original_max as original_maximum_amount_original, (CASE WHEN con_original_max IS NULL THEN 0 ELSE con_original_max END) as  original_maximum_amount, 
@@ -373,7 +374,8 @@ BEGIN
 		(CASE WHEN coalesce(con_rev_max,con_original_max) <= 5000 THEN 4 WHEN coalesce(con_rev_max,con_original_max)  > 5000 
 		            AND coalesce(con_rev_max,con_original_max)  <= 100000 THEN 3 WHEN  coalesce(con_rev_max,con_original_max) > 100000 AND coalesce(con_rev_max,con_original_max) <= 1000000 THEN 2 
 		            WHEN coalesce(con_rev_max,con_original_max) > 1000000 THEN 1 ELSE 5 END) as award_size_id, award_category_id, (CASE WHEN lpad(a.cont_code,2,'0') = '05' THEN 1 ELSE c.industry_type_id END) as industry_type_id,
-            (CASE WHEN con_version = '' THEN 0 ELSE con_version::int END) as document_version, 'N' as latest_flag
+            (CASE WHEN con_version = '' THEN 0 ELSE con_version::int END) as document_version, 
+            NULL as minority_type_id, NULL as minority_type_name,  'P' as is_prime_or_sub, NULL as is_minority_vendor, NULL as vendor_type,'N' as latest_flag
 	FROM  etl.stg_pending_contracts a 
 	LEFT JOIN ref_award_method b ON (case when length(a.am_code)= 1 THEN lpad(a.am_code,2,'0') ELSE a.am_code END) = b.award_method_code
 	LEFT JOIN ref_award_category_industry c ON c.award_category_code = a.award_category_code ;
@@ -444,7 +446,36 @@ BEGIN
 	FROM etl.vendor_id_seq_pending b
 	WHERE a.vendor_customer_code = b.vendor_customer_code ;
 	
+	UPDATE pending_contracts c
+	SET minority_type_id = (case when a.business_type_id = 2 then 11 
+	   							 when a.business_type_id = 5 then 9
+           						 else a.minority_type_id end),
+	    minority_type_name = (case  when a.business_type_id = 2 then 'Individuals & Others' 
+	   								when a.business_type_id = 5 then 'Caucasian Woman'
+           							else b.minority_type_name end)
+	FROM (select vendor_customer_code , business_type_id, minority_type_id from fmsv_business_type 
+				where status =2 and (business_type_id=2 or minority_type_id is not null or (vendor_customer_code in 
+					(select distinct vendor_customer_code from fmsv_business_type 
+					  where  business_type_id = 5 and status = 2 
+					and vendor_customer_code not in (select distinct vendor_customer_code from fmsv_business_type where minority_type_id is not null and status = 2))
+					AND business_type_id=5))) a JOIN ref_minority_type b ON a.minority_type_id = b.minority_type_id
+	WHERE a.vendor_customer_code = c.vendor_customer_code;
 	
+	
+	UPDATE pending_contracts a
+	SET minority_type_id=11,
+		minority_type_name = 'Individuals & Others'
+	WHERE  (case when length(a.award_method_code)= 1 THEN lpad(a.award_method_code,2,'0') ELSE a.award_method_code END) IN ('07','08','09','17','18','44','45','55') 
+	AND ( minority_type_id IS NULL OR minority_type_id IN (1,6,7,8));
+	
+	UPDATE pending_contracts a
+	SET minority_type_id=7,
+		minority_type_name = 'Non-Minority'
+	WHERE ( minority_type_id IS NULL OR minority_type_id IN (1,6,7,8));
+	
+	UPDATE pending_contracts
+	SET is_minority_vendor = (CASE WHEN minority_type_id in (2,3,4,5,9) THEN 'Y' ELSE 'N' END),
+		vendor_type = (CASE WHEN minority_type_id in (2,3,4,5,9) THEN 'PM' ELSE 'P' END) ;
 	
 	RETURN 1;
 	
