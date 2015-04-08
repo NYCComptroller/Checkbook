@@ -10,7 +10,7 @@ $message .= "Alert description : " . $alert->label . "<br>".PHP_EOL;
 $message .= "Alert frequency: " . $day  ."<br>". PHP_EOL;
 $message .= "Number of new records that match alert criteria: " . $alert->new_count. "<br>" . PHP_EOL;
 $message .= "Link to Checkbook NYC alert results: ". $alert->user_url. "<br>" . PHP_EOL;
-$message .= "To unsubscribe to this alert click here: " . $conf['check_book']['data_feeds']['site_url'].(substr($conf['check_book']['data_feeds']['site_url'],-1)=="/"?'':"/")."alert/unsubscribe/".$alert->checkbook_alerts_sysid.md5($alert->checkbook_alerts_sysid.$alert->label.$alert->recipient).
+$message .= "To unsubscribe from this alert click here: " . $conf['check_book']['data_feeds']['site_url'].(substr($conf['check_book']['data_feeds']['site_url'],-1)=="/"?'':"/")."alert/unsubscribe/".$alert->checkbook_alerts_sysid.md5($alert->checkbook_alerts_sysid.$alert->label.$alert->recipient).
     "<br><br><br>
 
 
@@ -20,7 +20,7 @@ $message .= "To unsubscribe to this alert click here: " . $conf['check_book']['d
 " . PHP_EOL;;
 }
 $message .= "
-To unsubscribe to all alerts sent to this email address click here: " . $conf['check_book']['data_feeds']['site_url'].'/alert/unsubscribe/'.md5($alert->recipient)."
+To unsubscribe from all alerts sent to this email address click here: " . $conf['check_book']['data_feeds']['site_url'].'/alert/unsubscribe/'.md5($alert->recipient)."
 
 
 
