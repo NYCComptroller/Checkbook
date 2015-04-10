@@ -499,7 +499,8 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
   if (count($vendors) > 0) {
     foreach ($vendors[0] as $vendorName => $count) {
       if ($count > 0) {
-        $checked = in_array($vendorName, array_values_recursive($reqVendors[0]));
+        //use strict param=true search so that integer values don't get mistaken as strings.
+        $checked = in_array($vendorName, array_values_recursive($reqVendors[0]), true);
         $vendorValue = urlencode($vendorName);
         if ($checked) {
           $output['Vendor']['checked'][] = array($vendorValue, $vendorName, $count);
