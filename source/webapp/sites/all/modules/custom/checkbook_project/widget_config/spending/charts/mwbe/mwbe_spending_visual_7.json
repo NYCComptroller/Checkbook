@@ -181,6 +181,7 @@
 				$node->widgetConfig->gridConfig->data[] = array($row['legal_name'],														
 														 $row[$amount_column]
 														);
+                $node->widgetConfig->gridConfig->sortColumn =  1;
 			}
 			$index += 1;
 	}
