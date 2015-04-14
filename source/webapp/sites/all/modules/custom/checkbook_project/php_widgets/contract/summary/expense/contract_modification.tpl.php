@@ -44,8 +44,11 @@ if(is_array($records)){
         $vendor = WidgetUtil::getLabel("sub_vendor_name");
         $vendor_value = $row['subvendor_subvendor_legal_name'];
     }
+    if(_getRequestParamValue('smnid') == 782) {
+        $vendor= WidgetUtil::getLabel("associated_prime_vendor");
+    }
 
-$summaryContent =  <<<EOD
+    $summaryContent =  <<<EOD
 <div class="contract-details-heading">
 	<div class="contract-id">
 		<h2 class="contract-title">{$node->widgetConfig->summaryView->templateTitle}</h2>
