@@ -749,20 +749,21 @@ Drupal.behaviors.hoveOverMWBE = {
                                           if(data.success){
                                             $this.dialog('close');
 
-                                              var dialog = $("#dialog");
-                                              if ($("#dialog").length == 0) {
-                                                  dialog = $('<div id="dialog" style="display:none"></div>');
+                                              var dialog = $("#dialog_schedule_confirm");
+                                              if ($("#dialog_schedule_confirm").length == 0) {
+                                                  dialog = $('<div id="dialog_schedule_confirm" style="display:none"></div>');
                                               }
                                               dialog.html(data.html);
-                                              dialog.dialog({position:"center",
+                                              dialog.dialog({position:['center', 'center'],
                                                   modal:true,
-                                                  title:'Alert',
-                                                  dialogClass:"alert",
-                                                  width:700,
-                                                  buttons:{
-                                                      "OK":function () {
-                                                          $this.dialog('close');
-                                                      }
+                                                  width:550,
+                                                  height:80,
+                                                  autoResize:true,
+                                                  resizable: false,
+                                                  dialogClass:'noTitleDialog',
+                                                  close: function(){
+                                                      var dialog = $("#dialog_schedule_confirm");
+                                                      $(dialog).replaceWith('<div id="dialog_schedule_confirm" style="display:none"></div>');
                                                   }
                                               });
                                           }else{
