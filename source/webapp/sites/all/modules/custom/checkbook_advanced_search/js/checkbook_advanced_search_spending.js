@@ -66,6 +66,7 @@
                 }
                 var agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
                 var dept = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
+                dept = dept.replace(/\//g,"__");
                 var exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
                 var data_source = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
                 $.ajax({
@@ -119,6 +120,7 @@
             }
             var agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
             var dept = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
+            dept = dept.replace(/\//g,"__");
             var exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
             var data_source = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
 
@@ -168,6 +170,7 @@
             }
             var agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
             var dept = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
+            dept = dept.replace(/\//g,"__");
             var exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
             var data_source = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
             $.ajax({
@@ -220,6 +223,7 @@
             if(agency == 0) return;
 
             var dept = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
+            dept = dept.replace(/\//g,"__");
             var exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
             var data_source = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
             $.ajax({
@@ -368,6 +372,7 @@
             }
             agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
             dept = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
+            dept = dept.replace(/\//g,"__");
             expcategory = (div.ele('exp_category').val()) ? (div.ele('exp_category').val()) : 0;
             exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
             mwbecat = (div.ele('mwbe_category').val()) ? (div.ele('mwbe_category').val()) : 0;
@@ -425,6 +430,7 @@
                     }
                     agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
                     dept = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
+                    dept = dept.replace(/\//g,"__");
                     expcategory = (div.ele('exp_category').val()) ? (div.ele('exp_category').val()) : 0;
                     exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
                     mwbecat = (div.ele('mwbe_category').val()) ? (div.ele('mwbe_category').val()) : 0;
