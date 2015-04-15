@@ -198,7 +198,8 @@ function _checkbook_export_transactions(){
     $columns = array();
     foreach($exportColumns as $column){
         if(!isset($column->datasource) || (isset($column->datasource) && ($column->datasource == _getRequestParamValue('datasource')))){
-            array_push($columns, $column);
+            if(check_node_flag_visibilty($column->visibility_flag, $node))
+                array_push($columns, $column);
         }
     }
 

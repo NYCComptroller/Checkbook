@@ -236,13 +236,14 @@ return $node->data;
 },
 "formatted_associated_vendor": {
 "type": "expression2",
-"expression": "($row['is_prime_or_sub'] == 'P')?'N/A':$row['prime_vendor_name']"
+"expression": "($row['is_prime_or_sub'] == 'P') ? 'N/A' :  _get_tooltip_markup($row['prime_vendor_name'], 34)"
 },
 "associated_sub_vendor": {
 "type": "expression2",
-"expression": "($row['is_prime_or_sub'] == 'P')?'NO':'YES'"
+"expression": "($row['is_prime_or_sub'] == 'P')?'No':'Yes'"
 }
 },
+"skipCustomPadding":true,
 "table_columns": [
 {"label": "&nbsp;","column": "child_contrats_link"},
 {"label": "Contract ID","column": "contract_link","sortSourceColumn":"contract_number"},

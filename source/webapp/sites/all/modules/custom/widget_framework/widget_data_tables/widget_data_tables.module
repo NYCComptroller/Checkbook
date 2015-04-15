@@ -109,7 +109,7 @@ function _widget_data_tables_ajaxdata($node){
 
 
 function _widget_add_padding_data($node){
-  
+  if($node->widgetConfig->skipCustomPadding) return;
   $index= 0;
   $paddings = array();
   $columns_max_length = array();
