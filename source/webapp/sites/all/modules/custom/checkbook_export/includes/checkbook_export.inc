@@ -41,9 +41,16 @@ function _checkbook_export_grid_transactions(){
     if(isset($node->widgetConfig->widgetUpdateJSONConfig)){
     	eval($node->widgetConfig->widgetUpdateJSONConfig);
     }
-    
-    
-    $columns = $node->widgetConfig->gridConfig->table_columns;
+
+
+    //remove blank columns
+    $cols = $node->widgetConfig->gridConfig->table_columns;
+    for($i=0; $i<count($cols); $i++){
+        if($cols[$i]->column){
+            $columns[$i] = $cols[$i];
+        }
+    }
+
     $data = NULL;
 
     $i=0;
