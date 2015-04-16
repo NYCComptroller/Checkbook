@@ -372,7 +372,7 @@
         {"sClass":"text","sWidth":"150px","asSorting": [ "asc","desc" ]},
         {"sClass":"text","sWidth":"150px","asSorting": [ "asc","desc" ]}
     ],
-    "aaSorting":[[10,"desc"]],
+    "aaSorting":[[8,"desc"]],
     "sScrollX": "100%",
     "bScrollCollapse": true
     }
