@@ -19,6 +19,10 @@
             "column": "current_amount_sum"
         },
         {
+            "labelAlias": "",
+            "column": ""
+        },
+        {
             "labelAlias": "prime_vendor",
             "column": "display_vendor_names"
         },
