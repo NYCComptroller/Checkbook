@@ -1,8 +1,9 @@
 {
     "widgetType":"phpparser",
     "parentNid":757,
-    "limit":100,
     "startWith":0,
+    "limit":100,
+    "maxSelect":1,
     "columns":["vendor.vendor", "vendornm.vendornm", "txcount"],
     "orderBy":"-txcount",
     "getTotalDataCount":true,
@@ -10,11 +11,10 @@
     "filterName":"Vendor",
     "urlParameterName":"fvendor",
     "autocompleteParamName":"vendor_auto",
-    "autocompleteID":"fvendorNm",
+    "autocompleteID":"fvendorId",
     "autocompleteField":"vendornm.vendornm.vendor_name",
     "urlParamMap":{"dept":"dept.dept","fvendor":"vendor.vendor"},
     "defaultParameters":{"is_prime_or_sub":"S"},
-    "maxSelect":5,
     "adjustParameters":"
         if(isset($parameters['vendor_type'])){
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);

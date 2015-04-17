@@ -1,7 +1,9 @@
 {
     "widgetType":"phpparser",
     "parentNid":706,
+    "startWith":0,
     "limit":100,
+    "maxSelect":1,
     "columns":["expenditure_object.expenditure_object", "expenditure_object.expenditure_object.expenditure_object_name", "txcount"],
     "orderBy":["-txcount" , "expenditure_object_name"], 
 	"getTotalDataCount":true,    
@@ -11,7 +13,6 @@
     "autocompleteParamName":"expcategory_auto",    
     "autocompleteID":"fCategoryId", 	
     "autocompleteField":"expenditure_object_name",
-    "maxSelect":5,
     "adjustParameters":"
         if(function_exists('_checkbook_project_adjust_mwbe_spending_parameter_filters')){
             $parameters = _checkbook_project_adjust_mwbe_spending_parameter_filters($node, $parameters);

@@ -2,17 +2,21 @@
     "widgetType":"phpparser",
     "parentNid":766,
     "startWith":0,
+    "limit":100,
 	"columns":["agency.agency", "agency.agency.agency_name", "txcount"],
 	"orderBy":"-txcount",    
     "facetNoPager":true,
     "filterName":"Agency",
     "urlParameterName":"agency",
-    "autocompleteParamName":"agency_auto",    
+    "autocompleteParamName":"agency_auto",
+    "urlParameterNameType":"eqtext",
     "autocompleteID":"fagencyId",
     "autocompleteField":"agency_name",
     "urlParamMap":{"vendornm":"vendornm.vendornm","fvendor":"vendornm.vendornm"},
-    "maxSelect":1,
+    "maxSelect":5,
     "widgetPreprocessJSON":"SpendingUtil::adjustVendorFacetJSON($node);",
+    "showAllRecords":true,
+    "allowFacetDeselect":true,
     "adjustParameters":"
     if(isset($parameters['vendor_type'])){
         $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);

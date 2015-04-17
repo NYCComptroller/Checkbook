@@ -236,7 +236,7 @@ class SpendingUtil{
         $year_type = isset($calyear) ? "C" : "B";
         $year_id = isset($calyear) ? $calyear : (isset($year) ? $year : _getCurrentYearID());
         $vendor_id = $row["vendor_id"];
-        $agency_id = _getRequestParamValue("agency_id");
+        $agency_id = $row["agency_id"];
         $dashboard = _getRequestParamValue("dashboard");
 
         return $row["is_sub_vendor"] == "No"
@@ -290,6 +290,7 @@ class SpendingUtil{
             $override_params = array(
                 "dashboard"=>$new_dashboard,
                 "subvendor"=>null,
+                "agency"=>$agency_id,
                 "vendor"=>$vendor_id
             );
             //payee name will never have a drill down, this is to avoid ajax issues on drill down
@@ -478,7 +479,7 @@ class SpendingUtil{
         $vendor = isset($row["vendor_vendor"]) ? $row["vendor_vendor"] : $row["prime_vendor_prime_vendor"];
         $override_params = array(
             'vendor'=>$vendor,
-            "fvendor"=>$nid == 747 ? null : $vendor,
+            "fvendor"=>self::getVendorFacetParameter($node),
             'smnid'=>$node->nid
         );
         return '/' . self::getSpendingTransactionPageUrl($override_params);
@@ -821,6 +822,9 @@ class SpendingUtil{
             $facet_vendor_param = _getRequestParamValue("vendor");
         }
         else if($dashboard == "ss") {
+            $facet_vendor_param = _getRequestParamValue("subvendor");
+        }
+        else if($dashboard == "ms") {
             $facet_vendor_param = _getRequestParamValue("subvendor");
         }
         return $facet_vendor_param;

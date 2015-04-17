@@ -2,8 +2,9 @@
     "widgetType":"phpparser",
     "parentNid":757,
     "no_results_content":"No Results Found",
-    "limit":10,
     "startWith":0,
+    "limit":10,
+    "maxSelect":1,
     "columns":["industry.industry", "industry.industry.industry_type_name", "txcount"],
     "defaultParameters":{"is_prime_or_sub":"S"},
     "urlParamMap":{
@@ -18,7 +19,6 @@
     "autocompleteParamName":"industry_auto",
     "autocompleteID":"fIndustryTypeId",
     "autocompleteField":"industry_type_name",
-    "maxSelect":5,
     "adjustParameters":"
         if(isset($parameters['vendor_type'])){
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);

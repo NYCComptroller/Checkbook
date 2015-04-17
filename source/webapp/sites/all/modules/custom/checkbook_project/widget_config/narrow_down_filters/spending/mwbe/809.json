@@ -2,8 +2,9 @@
     "widgetType":"phpparser",
     "parentNid":706,
     "no_results_content":"No Results Found",
-    "limit":10,
     "startWith":0,
+    "limit":10,
+    "maxSelect":1,
     "columns":["industry.industry", "industry.industry.industry_type_name", "txcount"],
     "urlParamMap":{
         "doctype":"document_code.document_code.document_code",
@@ -17,7 +18,6 @@
     "autocompleteParamName":"industry_auto",
     "autocompleteID":"fIndustryTypeId",
     "autocompleteField":"industry_type_name",
-    "maxSelect":5,
     "adjustParameters":"
         if(function_exists('_checkbook_project_adjust_mwbe_spending_parameter_filters')){
             $parameters = _checkbook_project_adjust_mwbe_spending_parameter_filters($node, $parameters);

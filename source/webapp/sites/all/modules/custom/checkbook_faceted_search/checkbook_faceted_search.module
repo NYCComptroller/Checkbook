@@ -105,59 +105,93 @@ function _checkbook_faceted_search_node_autocomplete(){
   return drupal_json_output($output);
 }
 
-function _checkbook_faceted_search_update_data($node){
-  $data = $node->data;
-  $output = array();
-  $output['filter_name'] = $node->widgetConfig->filterName;
-  $params = explode('~', _getRequestParamValue($node->widgetConfig->urlParameterName));
-  if ($params[0]) {
-    foreach ($params as $param) {
-      try {        
-        $dataController = data_controller_get_instance();
-        $parameters = $node->nodeAdjustedParamaterConfig;
-        $urlParamMap = ( array ) $node->widgetConfig->urlParamMap;
-        if(isset($node->widgetConfig->urlParameterNameType)){  
-          $paramValues =  explode('~', $param);
-          $patterns = array();
-          foreach($paramValues as $value){
-            $value = checkbook_faceted_search_replaceSlash($value);
-            $patterns[] = "(^" . _checkbook_regex_replace_pattern($value) . "$)";
-          }          
-          $parameters[$urlParamMap[$node->widgetConfig->urlParameterName]] = array(data_controller_get_operator_factory_instance()->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, implode($patterns,"|")));          
-        }else{
-          $parameters[$urlParamMap[$node->widgetConfig->urlParameterName]] = array(data_controller_get_operator_factory_instance()->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, $param));
+function _checkbook_faceted_search_update_data($node) {
+    $data = $node->data;
+    $output = array();
+    $output['filter_name'] = $node->widgetConfig->filterName;
+
+    $showAllRecords = isset($node->widgetConfig->showAllRecords) ? $node->widgetConfig->showAllRecords : false;
+    if(!$showAllRecords) {
+        $params = explode('~', _getRequestParamValue($node->widgetConfig->urlParameterName));
+        foreach ($data as $row) {
+            if($params[0]){
+                if(count($row) == 3){
+                    $output['checked'][] = array($row[str_replace('.','_',$node->widgetConfig->columns[0])]
+                    ,$row[str_replace('.','_',$node->widgetConfig->columns[1])]
+                    ,$row[str_replace('.','_',$node->widgetConfig->columns[2])]);
+                }
+                else{
+                    $output['checked'][] = array($row[str_replace('.','_',$node->widgetConfig->columns[0])]
+                    ,$row[str_replace('.','_',$node->widgetConfig->columns[0])]
+                    ,$row[str_replace('.','_',$node->widgetConfig->columns[1])]);
+                }
+            }
+            else{
+                if(count($row) == 3){
+                    $output['unchecked'][] = array($row[str_replace('.','_',$node->widgetConfig->columns[0])]
+                    ,$row[str_replace('.','_',$node->widgetConfig->columns[1])]
+                    ,$row[str_replace('.','_',$node->widgetConfig->columns[2])]);
+                }
+                else{
+                    $output['unchecked'][] = array($row[str_replace('.','_',$node->widgetConfig->columns[0])]
+                    ,$row[str_replace('.','_',$node->widgetConfig->columns[0])]
+                    ,$row[str_replace('.','_',$node->widgetConfig->columns[1])]);
+                }
+            }
         }
-        $resultFormatter = new SpecialCharacterResultFormatter(NULL,new ArrayResultFormatter());
-        $checked_items = $dataController->queryCube(_update_dataset_datasource($node->widgetConfig->dataset), $node->widgetConfig->columns, $parameters,null, null, null, $resultFormatter);
-      } catch (Exception $e) {
-        log_error($e->getMessage());
-      }
-      if($checked_items[0]['txcount']){
-        if(count($checked_items[0]) == 2){
-          $output['checked'][] = array($checked_items[0][str_replace('.','_',$node->widgetConfig->columns[0])]
-                                  ,$checked_items[0][str_replace('.','_',$node->widgetConfig->columns[0])]
-                                  ,$checked_items[0][str_replace('.','_',$node->widgetConfig->columns[1])]);
-        }else{        
-          $output['checked'][] = array($checked_items[0][str_replace('.','_',$node->widgetConfig->columns[0])]
-                                  ,$checked_items[0][str_replace('.','_',$node->widgetConfig->columns[1])]
-                                  ,$checked_items[0][str_replace('.','_',$node->widgetConfig->columns[2])]);
+    }
+    else {
+        $params = explode('~', _getRequestParamValue($node->widgetConfig->urlParameterName));
+        if ($params[0]) {
+            foreach ($params as $param) {
+                try {
+                    $dataController = data_controller_get_instance();
+                    $parameters = $node->nodeAdjustedParamaterConfig;
+                    $urlParamMap = ( array ) $node->widgetConfig->urlParamMap;
+                    if(isset($node->widgetConfig->urlParameterNameType)){
+                        $paramValues =  explode('~', $param);
+                        $patterns = array();
+                        foreach($paramValues as $value){
+                            $value = checkbook_faceted_search_replaceSlash($value);
+                            $patterns[] = "(^" . _checkbook_regex_replace_pattern($value) . "$)";
+                        }
+                        $parameters[$urlParamMap[$node->widgetConfig->urlParameterName]] = array(data_controller_get_operator_factory_instance()->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, implode($patterns,"|")));
+                    }else{
+                        $param = checkbook_faceted_search_replaceSlash($param);
+                        $parameters[$urlParamMap[$node->widgetConfig->urlParameterName]] = array(data_controller_get_operator_factory_instance()->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, $param));
+                    }
+                    $resultFormatter = new SpecialCharacterResultFormatter(NULL,new ArrayResultFormatter());
+                    $checked_items = $dataController->queryCube(_update_dataset_datasource($node->widgetConfig->dataset), $node->widgetConfig->columns, $parameters,null, null, null, $resultFormatter);
+                } catch (Exception $e) {
+                    log_error($e->getMessage());
+                }
+                if($checked_items[0]['txcount']){
+                    if(count($checked_items[0]) == 2){
+                        $output['checked'][] = array($checked_items[0][str_replace('.','_',$node->widgetConfig->columns[0])]
+                        ,$checked_items[0][str_replace('.','_',$node->widgetConfig->columns[0])]
+                        ,$checked_items[0][str_replace('.','_',$node->widgetConfig->columns[1])]);
+                    }else{
+                        $output['checked'][] = array($checked_items[0][str_replace('.','_',$node->widgetConfig->columns[0])]
+                        ,$checked_items[0][str_replace('.','_',$node->widgetConfig->columns[1])]
+                        ,$checked_items[0][str_replace('.','_',$node->widgetConfig->columns[2])]);
+                    }
+                }
+            }
         }
-      }
+        foreach ($data as $row) {
+            if(count($row) == 2){
+                $output['unchecked'][] = array($row[str_replace('.','_',$node->widgetConfig->columns[0])]
+                ,$row[str_replace('.','_',$node->widgetConfig->columns[0])]
+                ,$row[str_replace('.','_',$node->widgetConfig->columns[1])]);
+            }
+            else{
+                $output['unchecked'][] = array($row[str_replace('.','_',$node->widgetConfig->columns[0])]
+                ,$row[str_replace('.','_',$node->widgetConfig->columns[1])]
+                ,$row[str_replace('.','_',$node->widgetConfig->columns[2])]);
+            }
+        }
+
     }
-  }
-  
-  foreach ($data as $row) {    
-    if(count($row) == 2){
-      $output['unchecked'][] = array($row[str_replace('.','_',$node->widgetConfig->columns[0])]
-          ,$row[str_replace('.','_',$node->widgetConfig->columns[0])]
-          ,$row[str_replace('.','_',$node->widgetConfig->columns[1])]);  
-    }    
-    else{
-      $output['unchecked'][] = array($row[str_replace('.','_',$node->widgetConfig->columns[0])]
-          ,$row[str_replace('.','_',$node->widgetConfig->columns[1])]
-          ,$row[str_replace('.','_',$node->widgetConfig->columns[2])]);      
-    }
-  }
   $output['autocomplete_id'] = $node->widgetConfig->autocompleteID;
   $output['autocomplete_field_name'] = $node->widgetConfig->urlParameterName;
   $output['autocomplete_param_name'] = $node->widgetConfig->autocompleteParamName;
