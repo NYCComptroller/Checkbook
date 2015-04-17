@@ -40,6 +40,14 @@
 
 			});
 		}
+        $("#edit-submit").click(function(e) {
+            $("#edit-search-box").addClass('loadinggif');
+            $("#edit-search-box").attr("readonly", "readonly");
+            // This is to fix the issue with chrome when trying to disable the search button
+            setTimeout(function(){
+                $("#edit-submit").attr("disabled", 'disabled');
+            }, 1);
+        });
     });
     Drupal.behaviors.exportSmartSearchTransactions = {
             attach:function (context, settings) {
@@ -532,7 +540,3 @@ function getFacetAutocompleteUrl(category, value){
 function htmlEntities(str) {
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
-
-
-
-
