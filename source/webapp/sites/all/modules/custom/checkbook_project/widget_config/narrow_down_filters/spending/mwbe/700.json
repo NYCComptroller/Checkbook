@@ -2,6 +2,8 @@
     "widgetType":"phpparser",
     "parentNid":706,
     "startWith":0,
+    "limit":100,
+    "maxSelect":1,
 	"columns":["agency.agency", "agency.agency.agency_name", "txcount"],
 	"orderBy":"-txcount",    
     "facetNoPager":true,
@@ -10,7 +12,6 @@
     "autocompleteParamName":"agency_auto",    
     "autocompleteID":"fagencyId",
     "autocompleteField":"agency_name",
-    "maxSelect":1,
     "adjustParameters":"
         if(function_exists('_checkbook_project_adjust_mwbe_spending_parameter_filters')){
             $parameters = _checkbook_project_adjust_mwbe_spending_parameter_filters($node, $parameters);

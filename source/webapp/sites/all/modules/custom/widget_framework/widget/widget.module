@@ -584,7 +584,6 @@ function load_widget_data($node, $resultFormatter) {
             log_debug('Generate Db Query:' . $generateDBQuery);
             return;
         }
-
         // FIXME v2. use 'model'-only configuration
         if (isset($config->model)) {
                  $joinController = NULL;
@@ -1195,13 +1194,17 @@ function widget_merge_config($parent_config, $child_config){
     $child_config->paramTypeConfig->$autocompleteParamName = "autocomplete";
   }
   $urlParameterName = $child_config->urlParameterName;
-  
-  if(isset($child_config->urlParameterNameType)){
-    $child_config->paramTypeConfig->$urlParameterName = "neqignorecase";
-  }
-  else{
-    $child_config->paramTypeConfig->$urlParameterName = "ne";
-  }
+
+    $showAllRecords = isset($child_config->showAllRecords) ? $child_config->showAllRecords : false;
+    if($showAllRecords) {
+        if(isset($child_config->urlParameterNameType)){
+            $child_config->paramTypeConfig->$urlParameterName = "neqignorecase";
+        }
+        else{
+            $child_config->paramTypeConfig->$urlParameterName = "ne";
+        }
+    }
+
   foreach($child_config->urlParamMap  as $key=>$value){
     $parent_config->urlParamMap->$key = $value;
   }

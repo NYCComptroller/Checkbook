@@ -16,6 +16,8 @@
     "autocompleteField":"minority_type_name",
     "maxSelect":5,
     "widgetPreprocessJSON":"SpendingUtil::adjustVendorFacetJSON($node);",
+    "showAllRecords":true,
+    "allowFacetDeselect":true,
     "adjustParameters":"
         if(isset($parameters['vendor_type'])){
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);

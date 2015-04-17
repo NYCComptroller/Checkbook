@@ -1,8 +1,8 @@
 {
     "widgetType":"phpparser",
     "parentNid":766,
-    "limit":100,
     "startWith":0,
+    "limit":100,
     "columns":["vendornm.vendornm", "txcount"],
     "orderBy":"-txcount",
     "getTotalDataCount":true,
@@ -16,6 +16,8 @@
     "urlParamMap":{"vendornm":"vendornm.vendornm","vendornm_exact":"vendornm.vendornm"},
     "maxSelect":5,
     "widgetPreprocessJSON":"SpendingUtil::adjustVendorFacetJSON($node);",
+    "showAllRecords":true,
+    "allowFacetDeselect":true,
     "adjustParameters":"
         if(isset($parameters['vendor_type'])){
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);

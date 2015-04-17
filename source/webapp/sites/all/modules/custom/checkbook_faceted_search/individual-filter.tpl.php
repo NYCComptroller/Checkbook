@@ -34,6 +34,18 @@ if(isset($node->widgetConfig->maxSelect)){
 else{
 $tooltip = "";
 }
+
+//Amount Filter
+if($node->widgetConfig->filterName == 'Amount') {
+    $showAllRecords = isset($node->widgetConfig->showAllRecords) ? $node->widgetConfig->showAllRecords : false;
+    if(!$showAllRecords) {
+        $params = explode('~', _getRequestParamValue($node->widgetConfig->urlParameterName));
+        if($params[0]) {
+            $unchecked = null;
+        }
+    }
+}
+
 //Checking 'Asian-American' filter in MWBE Category Facet
 $count =0;
 if($node->widgetConfig->filterName == 'M/WBE Category'){
@@ -61,10 +73,11 @@ if($node->widgetConfig->filterName == 'M/WBE Category'){
 
 //Data alteration for Vendor Type Facet
 if($node->widgetConfig->filterName == 'Vendor Type'){
-  $vendor_types = _getRequestParamValue('vendortype');
-  $vendor_type_data = MappingUtil::getVendorTypes($unchecked, $vendor_types);
-  $unchecked = $vendor_type_data['unchecked'];
-  $checked = $vendor_type_data['checked'];
+    $vendor_types = _getRequestParamValue('vendortype');
+    $vendor_type_data = MappingUtil::getVendorTypes($checked, $vendor_types);
+    $checked = $vendor_type_data['checked'];
+    $vendor_type_data = MappingUtil::getVendorTypes($unchecked, $vendor_types);
+    $unchecked = $vendor_type_data['unchecked'];
 }
 
 if(count($checked) == 0){
@@ -121,11 +134,25 @@ if(strtolower($filter_name) == 'vendor'){
         <?php } ?>
   <div class="checked-items">
     <?php
+    if((isset($checked) && $node->widgetConfig->maxSelect == count($checked)) || count($checked) + count($unchecked) == 0 ){
+        $disabled = " DISABLED='true' " ;
+    }else{
+        $disabled = "" ;
+    }
+    //Facets that have Url parameters that match the current Url will be disabled from de-selecting by default.
+    //To enable the user to de-select the default criteria (for advanced search), set "allowFacetDeselect":true in the config
+    $disableFacet = !(isset($node->widgetConfig->allowFacetDeselect) ? $node->widgetConfig->allowFacetDeselect : false);
+    if($disableFacet) { //only URL parameters count and can be disabled
+        $url_ref = $_SERVER['HTTP_REFERER'];
+        $disableFacet = preg_match('"/'.$node->widgetConfig->urlParameterName.'/"',$url_ref);
+    }
+    $disableFacet = $disableFacet ? " DISABLED='true' " : "";
+
     foreach ($checked as $row) {
       $row[0] = str_replace('__','/', $row[0]);      
       $row[1] = str_replace('__','/', $row[1]);      
       echo '<div class="row">';
-      echo '<div class="checkbox"><input class="styled" name="' . $autocomplete_id . '" type="checkbox" checked="checked" value="' . urlencode(html_entity_decode($row[0],ENT_QUOTES)) . '" onClick="return applyTableListFilters();"></div>';
+      echo '<div class="checkbox"><input class="styled" name="' . $autocomplete_id . '" type="checkbox" ' . $disableFacet . 'checked="checked" value="' . urlencode(html_entity_decode($row[0],ENT_QUOTES)) . '" onClick="return applyTableListFilters();"></div>';
       echo '<div class="name">' . _break_text_custom2($row[1],15) . '</div>';
       echo '<div class="number"><span class="active">' . number_format($row[2]) . '</span></div>';
       echo '</div>';
@@ -139,7 +166,7 @@ if(strtolower($filter_name) == 'vendor'){
       $row[0] = str_replace('__','/', $row[0]);      
       $row[1] = str_replace('__','/', $row[1]);      
       echo '<div class="row">';
-      echo '<div class="checkbox"><input class="styled" name="' . $autocomplete_id . '" type="checkbox" '  .  $disabled .  'value="' . urlencode($row[0]) . '" onClick="return applyTableListFilters();"></div>';
+      echo '<div class="checkbox"><input class="styled" name="' . $autocomplete_id . '" type="checkbox" '  .  $disabled .  'value="' . urlencode(html_entity_decode($row[0],ENT_QUOTES)) . '" onClick="return applyTableListFilters();"></div>';
       echo '<div class="name">' . _break_text_custom2($row[1],15) . '</div>';
       echo '<div class="number"><span>' . number_format($row[2]) . '</span></div>';
       echo '</div>';

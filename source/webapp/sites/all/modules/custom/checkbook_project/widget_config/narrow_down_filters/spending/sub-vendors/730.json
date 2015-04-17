@@ -2,6 +2,8 @@
     "widgetType":"phpparser",
     "parentNid":723,
     "startWith":0,
+    "limit":100,
+    "maxSelect":1,
 	"columns":["agency.agency", "agency.agency.agency_name", "txcount"],
     "defaultParameters":{"is_prime_or_sub":"S"},
 	"orderBy":"-txcount",    
@@ -10,8 +12,7 @@
     "urlParameterName":"agency",
     "autocompleteParamName":"agency_auto",    
     "autocompleteID":"fagencyId",
-    "autocompleteField":"agency_name", 
-    "maxSelect":1,
+    "autocompleteField":"agency_name",
     "adjustParameters":"
     if(isset($parameters['vendor_type'])){
         $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
