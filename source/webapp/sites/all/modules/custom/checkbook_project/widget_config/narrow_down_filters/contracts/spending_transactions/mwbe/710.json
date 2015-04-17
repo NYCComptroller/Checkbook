@@ -2,6 +2,7 @@
     "widgetType":"phpparser",
     "parentNid":707,
     "limit":100,
+    "maxSelect":1,
     "urlParamMap":{
         "doctype":"document_code.document_code.document_code"
     },
@@ -14,7 +15,6 @@
     "autocompleteParamName":"vendor_auto",
     "autocompleteID":"fvendorId",
     "autocompleteField":"vendornm.vendornm",
-    "maxSelect":5,
     "adjustParameters":"
         if(isset($parameters['disb_vendor_type'])){
             $parameters['disb_vendor_type'] = MappingUtil::getVendorTypeValue($parameters['disb_vendor_type']);

@@ -4,6 +4,7 @@
     "columns":[ "deptnm.deptnm", "txcount"],
     "orderBy":"-txcount",
     "limit":100,
+    "maxSelect":1,
 	"getTotalDataCount":true,    
 	"facetPager":true,
     "filterName":"Department",
@@ -12,7 +13,6 @@
     "autocompleteParamName":"deptnm_auto",    
     "autocompleteID":"fdeptNm", 	
     "autocompleteField":"disb_department_short_name",
-    "maxSelect":5,
     "urlParamMap":{
 				"doctype":"document_code.document_code.document_code"
 			  }  ,    

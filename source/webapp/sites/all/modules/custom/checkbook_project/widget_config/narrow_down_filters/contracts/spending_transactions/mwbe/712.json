@@ -3,6 +3,7 @@
     "parentNid":707,
     "limit":100,
     "startWith":0,
+    "maxSelect":1,
     "columns":["expenditure_object_nm.expenditure_object_nm",  "txcount"],
     "orderBy":"-txcount",
 	"getTotalDataCount":true,    
@@ -12,7 +13,6 @@
     "autocompleteParamName":"expcategorynm_auto",    
     "autocompleteID":"fCategoryNm", 	
     "autocompleteField":"expenditure_object_nm.expenditure_object_nm",
-    "maxSelect":5,
     "urlParamMap":{
 				"doctype":"document_code.document_code.document_code"
 			  }  ,    

@@ -4,6 +4,7 @@
     "no_results_content":"No Results Found",
     "limit":10,
     "startWith":0,
+    "maxSelect":1,
     "columns":["vendor_type.vendor_type","txcount"],
     "orderBy":"-txcount",
     "getTotalDataCount":true,
@@ -11,7 +12,6 @@
     "filterName":"Vendor Type",
     "urlParameterName":"vendortype",
     "autocompleteID":"fvendorType",
-    "maxSelect":5,
     "urlParamMap":{"doctype":"document_code.document_code.document_code"},
     "adjustParameters":"
         if(isset($parameters['disb_vendor_type'])){
