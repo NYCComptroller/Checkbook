@@ -16,7 +16,9 @@
     "autocompleteParamName":"agency_auto",
     "autocompleteID":"fagencyId",
     "autocompleteField":"agency_name",
-    "maxSelect":1,
+    "maxSelect":5,
+    "showAllRecords":true,
+    "allowFacetDeselect":true,
     "adjustParameters":"
 
 if(isset($parameters['vendor_type'])){
