@@ -3024,3 +3024,7 @@ body.page-mwbe-agency-grading #page-title{
 body.page-node-804 #section-header {
     margin-bottom: 0px;
 }
+
+.loadinggif {
+    background: url(/sites/all/themes/checkbook/images/loading.gif) no-repeat center;
+}
