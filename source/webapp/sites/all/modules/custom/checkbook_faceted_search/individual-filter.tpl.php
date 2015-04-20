@@ -57,6 +57,17 @@ if($node->widgetConfig->filterName == 'Modified Expense Budget') {
     }
 }
 
+//Revenue Recognized Filter
+if($node->widgetConfig->filterName == 'Revenue Recognized') {
+    $showAllRecords = isset($node->widgetConfig->showAllRecords) ? $node->widgetConfig->showAllRecords : false;
+    if(!$showAllRecords) {
+        $params = explode('~', _getRequestParamValue($node->widgetConfig->urlParameterName));
+        if($params[0]) {
+            $unchecked = null;
+        }
+    }
+}
+
 //Checking 'Asian-American' filter in MWBE Category Facet
 $count =0;
 if($node->widgetConfig->filterName == 'M/WBE Category'){

@@ -2,6 +2,10 @@
     "widgetType":"phpparser",
     "parentNid":280,
     "startWith":0,
+    "limit":100,
+    "maxSelect":5,
+    "showAllRecords":true,
+    "allowFacetDeselect":true,
 	"columns":["category.category","category.category.revenue_category_name", "txcount"],
 	"orderBy":"-txcount",    
     "filterName":"Revenue Category",
@@ -10,9 +14,7 @@
     "urlParameterName":"revcat",
     "autocompleteParamName":"frevenueCategoryId_auto",    
     "autocompleteID":"frevenueCategoryId",
-    "autocompleteField":"category.category.revenue_category_name", 
-    "maxSelect":1,
-    "limit":100,
+    "autocompleteField":"category.category.revenue_category_name",
     "adjustParameters":"
     checkbook_faceted_search_adjust_param($node);
     if(function_exists('_checkbook_project_applyParameterFilters')){
