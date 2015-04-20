@@ -220,7 +220,7 @@ var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
 
 var  cUrl = oTable.fnSettings().sAjaxSource;
 cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
-cUrl = adjustUrlParameter(cUrl,'vendornm1',oVendorIds);
+cUrl = adjustUrlParameter(cUrl,'fvendor',oVendorIds);
 cUrl = adjustUrlParameter(cUrl,'curamtr',oCurAmount);
 cUrl = adjustUrlParameter(cUrl,'awdmethod',oAwdMethod);
 cUrl = adjustUrlParameter(cUrl,'cindustry',oIndustryType);
