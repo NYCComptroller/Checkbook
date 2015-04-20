@@ -2,19 +2,21 @@
     "widgetType":"phpparser",
     "parentNid":277,
     "startWith":0,
-    "maxSelect":1,
     "limit":100,
-	"columns":["object_class_id.object_class_id", "object_class_name.object_class_name", "txcount"],
+    "maxSelect":5,
+    "showAllRecords":true,
+    "allowFacetDeselect":true,
+	"columns":["object_class_name.object_class_name", "txcount"],
 	"orderBy":"-txcount",    
     "filterName":"Expense Category",
-    "urlParameterName":"expcategory",
-    "autocompleteParamName":"expcategory_auto", 
     "getTotalDataCount":true,    
     "facetPager":true,
-    "urlParameterNameType":"eqtext",    
-    "autocompleteID":"fExpCategory",
-    "autocompleteField":"object_class_name",
+    "urlParameterName":"expcategorynm",
+    "autocompleteParamName":"expcategorynm_auto",    
+    "autocompleteID":"fExpCategoryNm",
+    "autocompleteField":"object_class_name.object_class_name",
     "adjustParameters":"
+    checkbook_faceted_search_adjust_param($node);
     if(function_exists('_checkbook_project_applyParameterFilters')){
         $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
     }
