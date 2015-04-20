@@ -22,7 +22,7 @@
     "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Vendor",
-    "urlParameterName":"vendornm1",
+    "urlParameterName":"fvendor",
     "autocompleteParamName":"vendor_auto",
     "autocompleteID":"fvendorId",
     "autocompleteField":"vendor_name",
