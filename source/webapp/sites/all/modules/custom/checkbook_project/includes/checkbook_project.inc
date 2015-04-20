@@ -1220,6 +1220,7 @@ function _checkbook_project_get_vendor_facet_url_param_string($node = null){
         case 729:
         case 781:
         case 782:
+        case 783:
         case 785:
         case 786:
         case 787:
