@@ -2,6 +2,10 @@
     "widgetType":"phpparser",
     "parentNid":280,
     "startWith":0,
+    "limit":100,
+    "maxSelect":5,
+    "showAllRecords":true,
+    "allowFacetDeselect":true,
 	"columns":["fundingcode.fundingcode","funding.funding.funding_class_name", "txcount"],
 	"orderBy":"-txcount",    
     "filterName":"Funding Class",
@@ -10,9 +14,7 @@
     "urlParameterName":"fundsrccode",
     "autocompleteParamName":"ffundingSourceId_auto",    
     "autocompleteID":"ffundingSourceId",
-    "autocompleteField":"funding.funding.funding_class_name", 
-    "maxSelect":1,
-    "limit":100,
+    "autocompleteField":"funding.funding.funding_class_name",
     "adjustParameters":"
     checkbook_faceted_search_adjust_param($node);
     if(function_exists('_checkbook_project_applyParameterFilters')){
