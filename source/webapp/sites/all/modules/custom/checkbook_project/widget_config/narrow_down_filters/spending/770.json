@@ -13,7 +13,7 @@
     "urlParameterName":"vendortype",
     "autocompleteID":"fvendorType",
     "maxSelect":5,
-    "widgetPreprocessJSON":"SpendingUtil::adjustVendorFacetJSON($node);",
+    "widgetPreprocessJSON":"_checkbook_project_adjust_vendor_facet_json($node);",
     "showAllRecords":true,
     "allowFacetDeselect":true,
     "adjustParameters":"

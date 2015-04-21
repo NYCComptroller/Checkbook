@@ -36,7 +36,7 @@
         "modamt":"dollar_difference"
     },
     "allowRequestParams":["smnid"],
-    "paramTypeConfig":{"vendornm1":"eqignorecase","curamtr":"rangeid","vendornm":"like","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range",
+    "paramTypeConfig":{"vendornm1":"eqignorecase","curamtr":"rangeid","vendornm":"in","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range",
         "startdate":"range","enddate":"range","regdate":"range","modamt":"ne"},
     "defaultParameters":{"status_flag@checkbook:all_contracts_coa_aggregates":"A"},
     "header":"
@@ -398,6 +398,7 @@
     agencyIds = document.getElementById('fHideAgencyId').value;
     }
     var oVendorIds = getNamedFilterCriteria('fvendorId');
+    var oVendorNms = getNamedFilterCriteria('fvendorNm');
     var oCurAmount = getNamedFilterCriteria('fCurAmount');
     var oAwdMethod = getNamedFilterCriteria('fAwdMethodId');
     var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
@@ -407,6 +408,7 @@
     var  cUrl = oTable.fnSettings().sAjaxSource;
     cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
     cUrl = adjustUrlParameter(cUrl,'fvendor',oVendorIds);
+    cUrl = adjustUrlParameter(cUrl,'vendornm',oVendorNms);
     cUrl = adjustUrlParameter(cUrl,'curamtr',oCurAmount);
     cUrl = adjustUrlParameter(cUrl,'awdmethod',oAwdMethod);
     cUrl = adjustUrlParameter(cUrl,'cindustry',oIndustryType);

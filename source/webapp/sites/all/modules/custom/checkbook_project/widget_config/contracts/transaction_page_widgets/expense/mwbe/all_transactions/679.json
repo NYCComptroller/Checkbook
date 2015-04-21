@@ -16,7 +16,7 @@
     },
     "allowRequestParams":["contstatus"],
     "paramTypeConfig":{
-        "vendornm":"like","vendornm_exact":"eqignorecase","contdesc":"like","contnum":"like","aptpin":"like",
+        "vendornm":"in","vendornm_exact":"eqignorecase","contdesc":"like","contnum":"like","aptpin":"like",
         "pin":"like","curamt":"range","startdate":"range","enddate":"range","regdate":"range","curamtr":"rangeid"
     },
     "defaultParameters":{"latest_flag":"Y"},
@@ -193,10 +193,8 @@
     {"labelAlias": "original_amount","column": "formatted_original_amount","sortSourceColumn":"original_contract_amount"},
     {"labelAlias": "spent_to_date","column": "formatted_spent_to_date","sortSourceColumn":"rfed_amount"},
     {"labelAlias": "vendor_name","column": "vendor_name_link","sortSourceColumn":"vendor_name"},
-{"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"is_prime_or_sub","exportColumn":"is_sub_vendor"},
-{"labelAlias":"associated_prime_vendor","column":"associated_prime_vendor_name","sortSourceColumn":"prime_vendor_name","exportColumn":"associated_prime_vendor_name_export"},
-//    {"labelAlias": "sub_vendor_name","column":"formatted_is_sub_vendor","sortSourceColumn": "is_prime_or_sub","exportColumn":"formatted_is_sub_vendor"},
-//    {"labelAlias": "associated_prime_vendor","column": "associated_vendor_name","sortSourceColumn":"prime_vendor_name"},
+    {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"is_prime_or_sub","exportColumn":"is_sub_vendor"},
+    {"labelAlias":"associated_prime_vendor","column":"associated_prime_vendor_name","sortSourceColumn":"prime_vendor_name","exportColumn":"associated_prime_vendor_name_export"},
     {"labelAlias": "contract_agency","column": "agency_name_link","sortSourceColumn":"agency_name"},
     {"labelAlias": "contract_type","column": "contract_type_formatted","sortSourceColumn":"agreement_type_name"},
     {"labelAlias": "award_method","column": "award_method_formatted","sortSourceColumn":"award_method_name"},
@@ -207,7 +205,6 @@
     {"labelAlias": "reg_date","column": "registered_date"},
     {"labelAlias": "pin","column": "tracking_number"},
     {"labelAlias": "apt_pin","column": "brd_awd_no"},
-//    {"labelAlias": "mwbe_category","column":"formatted_minority_name_link","sortSourceColumn": "minority_type_name","exportColumn":"minority_type_name"}
     {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name_formatted"}
     ],
     "exportColumnSqlOverride":[
@@ -325,7 +322,7 @@
 
     var  cUrl = oTable.fnSettings().sAjaxSource;
     cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
-    cUrl = adjustUrlParameter(cUrl,'fvendor',oVendorIds);
+    cUrl = adjustUrlParameter(cUrl,'fvendor',oVendorNms);
     cUrl = adjustUrlParameter(cUrl,'vendornm',oVendorNms);
     cUrl = adjustUrlParameter(cUrl,'curamtr',oCurAmount);
     cUrl = adjustUrlParameter(cUrl,'awdmethod',oAwdMethod);

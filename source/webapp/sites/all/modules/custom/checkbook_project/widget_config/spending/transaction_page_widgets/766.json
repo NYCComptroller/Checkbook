@@ -264,7 +264,7 @@
         }
         return $adjustedParameters;
     ",
-    "widgetPreprocessJSON":"SpendingUtil::adjustVendorFacetJSON($node);",
+    "widgetPreprocessJSON":"_checkbook_project_adjust_vendor_facet_json($node);",
     "dataTableOptions":{
         "bRetrieve": true,
         "bServerSide": true,
