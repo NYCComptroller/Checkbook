@@ -783,7 +783,30 @@ function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$par
     return $parameters;
 }
 
+/**
+ * Function to update the JSON configuration at runtime for advance search spending results.
+ * The vendor facet will use 'LIKE' search initially, once the facet is populated and clicked the first time,
+ * the vendor name is exact and an 'IN' search can be used for speed and accuracy.
+ * @param $node
+ */
+function _checkbook_project_adjust_vendor_facet_json(&$node){
 
+    if(preg_match('/fvendor/',$_GET['q'])) {
+        //Vendor Facet
+        if($node->widgetConfig->filterName == 'Vendor') {
+            if(isset($node->widgetConfig->urlParamMap->fvendor))
+                unset($node->widgetConfig->urlParamMap->fvendor);
+            if(($key = array_search('fvendor', $node->widgetConfig->cleanURLParameters)) !== false)
+                unset($node->widgetConfig->cleanURLParameters[$key]);
+        }
+        else {
+            if(isset($node->widgetConfig->urlParamMap->vendornm))
+                unset($node->widgetConfig->urlParamMap->vendornm);
+            if(($key = array_search('vendornm', $node->widgetConfig->cleanURLParameters)) !== false)
+                unset($node->widgetConfig->cleanURLParameters[$key]);
+        }
+    }
+}
 
 
 /**

@@ -15,7 +15,7 @@
     "autocompleteID":"fminorityTypeId",
     "autocompleteField":"minority_type_name",
     "maxSelect":5,
-    "widgetPreprocessJSON":"SpendingUtil::adjustVendorFacetJSON($node);",
+    "widgetPreprocessJSON":"_checkbook_project_adjust_vendor_facet_json($node);",
     "showAllRecords":true,
     "allowFacetDeselect":true,
     "adjustParameters":"
