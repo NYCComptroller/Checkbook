@@ -156,7 +156,7 @@ function _checkbook_export_grid_sort($node, $order = null){
                            "January"=>  7, "February"=>  8, "March"=>  9, "April"=>  10, "May"=> 11, "June"=> 12);
 
                        if ($months[$a[$index]] == $months[$b[$index]]) {
-                           return 0;
+                           return 1;
                        }
                        return ($months[$a[$index]] > $months[$b[$index]]) ? -1 : 1;
                    }
@@ -165,14 +165,14 @@ function _checkbook_export_grid_sort($node, $order = null){
                            "July"=>  7, "August"=>  8, "September"=>  9, "October"=>  10, "November"=> 11, "December"=> 12);
 
                        if ($months[$a[$index]] == $months[$b[$index]]) {
-                           return 0;
+                           return 1;
                        }
                        return ($months[$a[$index]] > $months[$b[$index]]) ? -1 : 1;
 
                    }
                    else{
                        if ($a[$index] == $b[$index]) {
-                           return 0;
+                           return 1;
                        }
                        return ($a[$index] < $b[$index]) ? -1 : 1;
                    }
@@ -189,7 +189,7 @@ function _checkbook_export_grid_sort($node, $order = null){
                             "January"=>  7, "February"=>  8, "March"=>  9, "April"=>  10, "May"=> 11, "June"=> 12);
 
                         if ($months[$a[$index]] == $months[$b[$index]]) {
-                            return 0;
+                            return 1;
                         }
                         return ($months[$a[$index]] < $months[$b[$index]]) ? -1 : 1;
                     }
@@ -198,14 +198,14 @@ function _checkbook_export_grid_sort($node, $order = null){
                             "July"=>  7, "August"=>  8, "September"=>  9, "October"=>  10, "November"=> 11, "December"=> 12);
 
                         if ($months[$a[$index]] == $months[$b[$index]]) {
-                            return 0;
+                            return 1;
                         }
                         return ($months[$a[$index]] < $months[$b[$index]]) ? -1 : 1;
 
                     }
                     else{
                         if ($a[$index] == $b[$index]) {
-                            return 0;
+                            return 1;
                         }
                         return ($a[$index] > $b[$index]) ? -1 : 1;
                     }
