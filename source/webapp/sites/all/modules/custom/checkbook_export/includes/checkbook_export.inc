@@ -18,7 +18,6 @@ function _checkbook_export_grid_transactions(){
     $nodeId = _getRequestParamValue('node',false);
     $node = node_load($nodeId);
     if($node ==null ){
-    	
     	$node = widget_load($nodeId);
     }
     $_GET['q'] = urldecode(drupal_get_path_alias($_GET['refURL']));
@@ -32,6 +31,7 @@ function _checkbook_export_grid_transactions(){
     widget_invoke($node, 'widget_prepare');
 
     $sortColumn = $node->widgetConfig->gridConfig->table_columns[$_REQUEST['iSortCol_0']]->column;
+
     if(isset($node->widgetConfig->gridConfig->table_columns[$_REQUEST['iSortCol_0' ]]->sortColumn)){
         $sortColumn = $node->widgetConfig->gridConfig->table_columns[$_REQUEST['iSortCol_0']]->sortColumn;
     }
@@ -41,7 +41,6 @@ function _checkbook_export_grid_transactions(){
     if(isset($node->widgetConfig->widgetUpdateJSONConfig)){
     	eval($node->widgetConfig->widgetUpdateJSONConfig);
     }
-
 
     //remove blank columns
     $cols = $node->widgetConfig->gridConfig->table_columns;
@@ -73,9 +72,8 @@ function _checkbook_export_grid_transactions(){
     		echo $column->labelAlias . ",";
     	}
     	echo "\r\n";
-    	
-    	
-    	$sortindex = ($node->widgetConfig->gridConfig->sortColumn >= 0)? $node->widgetConfig->gridConfig->sortColumn  : count($node->widgetConfig->gridConfig->table_columns) - 1 ;
+
+        $sortindex = $_REQUEST['iSortCol_0'];
 
     	$sortindexFormat = $node->widgetConfig->gridConfig->table_columns[$sortindex]->formatType;
     	foreach($node->widgetConfig->gridConfig->data as &$dataRecord){
@@ -83,24 +81,28 @@ function _checkbook_export_grid_transactions(){
     		if(isset($sortindexFormat)){
     			$dataRecord['formatType'] = $sortindexFormat;
     		}
-    		
     	}
-    	_checkbook_export_grid_sort($node);
+        if($isAsc){
+            $order = 'asc';
+        }
+        else{
+            $order = 'desc';
+        }
+    	_checkbook_export_grid_sort($node, $order);
     	foreach ($node->widgetConfig->gridConfig->data as $datarow) {
     		$index = 0;
-    		while($index <count($node->widgetConfig->gridConfig->table_columns)){ 
+    		while($index <count($node->widgetConfig->gridConfig->table_columns)){
     			$columnValue = html_entity_decode($datarow[$index]);
-    			$columnValue = str_replace('"',chr(34).'"',$columnValue); 
+    			$columnValue = str_replace('"',chr(34).'"',$columnValue);
 				if($node->widgetConfig->gridConfig->table_columns[$index]->formatType =="amount"){
 					$columnValue = ($columnValue == null) ? 0:$columnValue;
 				}
-    			
     			echo (($index == 0) ? ('"'.$columnValue.'"') : (',"'.$columnValue.'"'));
     			$index +=1;
     		}
     		echo "\r\n";
     	}
-    	
+
     }
     else if(is_array($node->data) and count($node->data) > 0){
         $dataRecords = $node->data;
@@ -111,7 +113,6 @@ function _checkbook_export_grid_transactions(){
             $dataRecord['sort_order'] = $i;
             $i++;
         }
-
 
         sort_records($dataRecords, new PropertyBasedComparator_DefaultSortingConfiguration($sortColumn,$isAsc));
 
@@ -141,42 +142,77 @@ function _checkbook_export_grid_transactions(){
 }
 
 
-function _checkbook_export_grid_sort($node){
+function _checkbook_export_grid_sort($node, $order = null){
 	$node->widgetConfig->gridConfig->data;
-	
-	usort($node->widgetConfig->gridConfig->data,
-	function($a, $b)
-	{
-		$index = $a['sort_column'];
-		
-		if(($a['formatType'] == "monthfy" || $a['formatType'] == "month") && _getRequestParamValue('yeartype') == 'B'){
-            $months =  array("July"=> 1, "August"=>  2, "September"=>  3, "October"=>  4, "November"=>  5, "December"=>  6,
-                "January"=>  7, "February"=>  8, "March"=>  9, "April"=>  10, "May"=> 11, "June"=> 12);
+    if(isset($order)){
+       if($order == 'asc'){
+           usort($node->widgetConfig->gridConfig->data,
+               function($a, $b)
+               {
+                   $index = $a['sort_column'];
 
-			if ($months[$a[$index]] == $months[$b[$index]]) {
-				return 0;
-			}
-			return ($months[$a[$index]] < $months[$b[$index]]) ? -1 : 1;
-		}
-        else if($a['formatType'] == "month" && _getRequestParamValue('yeartype') == 'C') {
-            $months =  array("January"=> 1, "February"=>  2, "March"=>  3, "April"=>  4, "May"=>  5, "June"=>  6,
-                "July"=>  7, "August"=>  8, "September"=>  9, "October"=>  10, "November"=> 11, "December"=> 12);
+                   if(($a['formatType'] == "monthfy" || $a['formatType'] == "month") && _getRequestParamValue('yeartype') == 'B'){
+                       $months =  array("July"=> 1, "August"=>  2, "September"=>  3, "October"=>  4, "November"=>  5, "December"=>  6,
+                           "January"=>  7, "February"=>  8, "March"=>  9, "April"=>  10, "May"=> 11, "June"=> 12);
 
-            if ($months[$a[$index]] == $months[$b[$index]]) {
-                return 0;
-            }
-            return ($months[$a[$index]] < $months[$b[$index]]) ? -1 : 1;
+                       if ($months[$a[$index]] == $months[$b[$index]]) {
+                           return 0;
+                       }
+                       return ($months[$a[$index]] < $months[$b[$index]]) ? -1 : 1;
+                   }
+                   else if($a['formatType'] == "month" && _getRequestParamValue('yeartype') == 'C') {
+                       $months =  array("January"=> 1, "February"=>  2, "March"=>  3, "April"=>  4, "May"=>  5, "June"=>  6,
+                           "July"=>  7, "August"=>  8, "September"=>  9, "October"=>  10, "November"=> 11, "December"=> 12);
 
+                       if ($months[$a[$index]] == $months[$b[$index]]) {
+                           return 0;
+                       }
+                       return ($months[$a[$index]] < $months[$b[$index]]) ? -1 : 1;
+
+                   }
+                   else{
+                       if ($a[$index] == $b[$index]) {
+                           return 0;
+                       }
+                       return ($a[$index] < $b[$index]) ? -1 : 1;
+                   }
+               }
+           );
+       } else {
+            usort($node->widgetConfig->gridConfig->data,
+                function($a, $b)
+                {
+                    $index = $a['sort_column'];
+
+                    if(($a['formatType'] == "monthfy" || $a['formatType'] == "month") && _getRequestParamValue('yeartype') == 'B'){
+                        $months =  array("July"=> 1, "August"=>  2, "September"=>  3, "October"=>  4, "November"=>  5, "December"=>  6,
+                            "January"=>  7, "February"=>  8, "March"=>  9, "April"=>  10, "May"=> 11, "June"=> 12);
+
+                        if ($months[$a[$index]] == $months[$b[$index]]) {
+                            return 0;
+                        }
+                        return ($months[$a[$index]] > $months[$b[$index]]) ? -1 : 1;
+                    }
+                    else if($a['formatType'] == "month" && _getRequestParamValue('yeartype') == 'C') {
+                        $months =  array("January"=> 1, "February"=>  2, "March"=>  3, "April"=>  4, "May"=>  5, "June"=>  6,
+                            "July"=>  7, "August"=>  8, "September"=>  9, "October"=>  10, "November"=> 11, "December"=> 12);
+
+                        if ($months[$a[$index]] == $months[$b[$index]]) {
+                            return 0;
+                        }
+                        return ($months[$a[$index]] > $months[$b[$index]]) ? -1 : 1;
+
+                    }
+                    else{
+                        if ($a[$index] == $b[$index]) {
+                            return 0;
+                        }
+                        return ($a[$index] > $b[$index]) ? -1 : 1;
+                    }
+                }
+            );
         }
-        else{
-			if ($a[$index] == $b[$index]) {
-				return 0;
-			}
-			return ($a[$index] > $b[$index]) ? -1 : 1;
-		}
-	}
-	);
-	
+    }
 }
 
 
