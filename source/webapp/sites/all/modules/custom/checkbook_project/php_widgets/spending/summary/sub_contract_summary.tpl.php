@@ -28,7 +28,13 @@ if(is_array($records)){
     $sub_contract_purpose = WidgetUtil::getLabel("sub_contract_purpose");
     $sub_vendor_name= WidgetUtil::getLabel("sub_vendor_name");
     $prime_vendor_name= WidgetUtil::getLabel("prime_vendor");
-    
+    $smmnid = _getRequestParamValue('smnid');
+    switch($smmnid) {
+        case 718:
+        case 749:
+        $prime_vendor_name= WidgetUtil::getLabel("associated_prime_vendor");
+            break;
+    }
 $summaryContent =  <<<EOD
 <div class="contract-details-heading">
 	<div class="contract-id">
