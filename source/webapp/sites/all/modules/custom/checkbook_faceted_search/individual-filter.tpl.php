@@ -121,22 +121,6 @@ if(strtolower($filter_name) == 'vendor'){
     if(_checkbook_check_isEDCPage()){
         $filter_name = 'Prime Vendor';
     }
-    if(in_array($node->nid, array(681, 690, 669)))
-    {
-        $vendornm_facet = true;
-    }
-    if($vendornm_facet){
-        $unchecked_data = array();
-        $checked_data = array();
-        foreach($unchecked as $key=>$value){
-            array_push($unchecked_data, array($value[1], $value[1], $value[2]));
-        }
-        foreach($checked as $key=>$value){
-            array_push($checked_data, array($value[1], $value[1], $value[2]));
-        }
-        $unchecked = $unchecked_data;
-        $checked = $checked_data;
-    }
 }
 ?>
 <div class="filter-content <?php if( $hide_filter != "") print "disabled"; ?>"><div <?php print $hide_filter; ?>>
