@@ -1,6 +1,6 @@
 {
     "widgetType":"phpparser",
-    "parentNid":6,
+    "parentNid":652,
     "limit":100,
     "columns":["expenditure_object.expenditure_object", "expenditure_object.expenditure_object.expenditure_object_name", "txcount"],
     "orderBy":["-txcount" , "expenditure_object_name"], 

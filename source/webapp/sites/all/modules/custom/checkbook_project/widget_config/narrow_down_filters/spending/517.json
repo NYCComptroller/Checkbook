@@ -1,6 +1,6 @@
 {
     "widgetType":"phpparser",
-    "parentNid":6,    
+    "parentNid":652,
     "autocomplete":false,
     "filterName":"Amount",
     "urlParameterName":"checkamtr",

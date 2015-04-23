@@ -1,6 +1,6 @@
 {
     "widgetType":"phpparser",
-    "parentNid":6,
+    "parentNid":652,
     "limit":100,
     "startWith":0,
     "columns":["expobjectname.expobjectname", "txcount"],
@@ -13,7 +13,7 @@
     "autocompleteParamName":"expcategorynm_auto",    
     "autocompleteID":"fCategoryNm",
     "autocompleteField":"expenditure_object_name", 
-    "maxSelect":5,
+    "maxSelect":1,
     "adjustParameters":"
     $page = $_REQUEST['page'];
 	checkbook_faceted_search_adjust_param($node);

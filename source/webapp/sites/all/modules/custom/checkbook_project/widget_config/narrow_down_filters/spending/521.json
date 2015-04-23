@@ -1,6 +1,6 @@
 {
     "widgetType":"phpparser",
-    "parentNid":6,
+    "parentNid":652,
     "limit":100,
     "startWith":0,
     "columns":["category.category", "category.category.spending_category_name", "txcount"],
