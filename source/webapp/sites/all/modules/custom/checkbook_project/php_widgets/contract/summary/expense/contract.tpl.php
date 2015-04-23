@@ -33,6 +33,9 @@ if(is_array($records)){
     $purpose = WidgetUtil::getLabel("contract_purpose");
     $agency = WidgetUtil::getLabel("contract_agency");
     $vendor= WidgetUtil::getLabel("vendor_name");
+    if(_getRequestParamValue('smnid') == 781) {
+        $vendor= WidgetUtil::getLabel("associated_prime_vendor");
+    }
     $summaryContent =  <<<EOD
 <div class="contract-details-heading">
 	<div class="contract-id">
