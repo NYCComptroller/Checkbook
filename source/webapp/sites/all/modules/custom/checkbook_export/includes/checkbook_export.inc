@@ -43,10 +43,10 @@ function _checkbook_export_grid_transactions(){
     }
 
     //remove blank columns
-    $cols = $node->widgetConfig->gridConfig->table_columns;
-    for($i=0; $i<count($cols); $i++){
-        if($cols[$i]->column){
-            $columns[$i] = $cols[$i];
+    $columns = $node->widgetConfig->gridConfig->table_columns;
+    for($i=0; $i<count($columns); $i++){
+        if($columns[$i]->column){
+            $columns[$i] = $columns[$i];
         }
     }
 
@@ -158,7 +158,7 @@ function _checkbook_export_grid_sort($node, $order = null){
                        if ($months[$a[$index]] == $months[$b[$index]]) {
                            return 0;
                        }
-                       return ($months[$a[$index]] < $months[$b[$index]]) ? -1 : 1;
+                       return ($months[$a[$index]] > $months[$b[$index]]) ? -1 : 1;
                    }
                    else if($a['formatType'] == "month" && _getRequestParamValue('yeartype') == 'C') {
                        $months =  array("January"=> 1, "February"=>  2, "March"=>  3, "April"=>  4, "May"=>  5, "June"=>  6,
@@ -167,7 +167,7 @@ function _checkbook_export_grid_sort($node, $order = null){
                        if ($months[$a[$index]] == $months[$b[$index]]) {
                            return 0;
                        }
-                       return ($months[$a[$index]] < $months[$b[$index]]) ? -1 : 1;
+                       return ($months[$a[$index]] > $months[$b[$index]]) ? -1 : 1;
 
                    }
                    else{
@@ -191,7 +191,7 @@ function _checkbook_export_grid_sort($node, $order = null){
                         if ($months[$a[$index]] == $months[$b[$index]]) {
                             return 0;
                         }
-                        return ($months[$a[$index]] > $months[$b[$index]]) ? -1 : 1;
+                        return ($months[$a[$index]] < $months[$b[$index]]) ? -1 : 1;
                     }
                     else if($a['formatType'] == "month" && _getRequestParamValue('yeartype') == 'C') {
                         $months =  array("January"=> 1, "February"=>  2, "March"=>  3, "April"=>  4, "May"=>  5, "June"=>  6,
@@ -200,7 +200,7 @@ function _checkbook_export_grid_sort($node, $order = null){
                         if ($months[$a[$index]] == $months[$b[$index]]) {
                             return 0;
                         }
-                        return ($months[$a[$index]] > $months[$b[$index]]) ? -1 : 1;
+                        return ($months[$a[$index]] < $months[$b[$index]]) ? -1 : 1;
 
                     }
                     else{
