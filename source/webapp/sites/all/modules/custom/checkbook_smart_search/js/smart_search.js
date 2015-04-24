@@ -14,6 +14,14 @@
                         select: function (event, ui) {
                                 $(event.target).val(ui.item.label);
                                 window.location = ui.item.url;
+                                $("#edit-search-box").addClass('loadingtext');
+                                $("#edit-search-box").addClass('loadinggif');
+                                $("#edit-submit").addClass('loadingtext');
+                                $("#edit-search-box").attr("readonly", "readonly");
+                                // This is to fix the issue with chrome when trying to disable the search button
+                                setTimeout(function(){
+                                    $("#edit-submit").attr("disabled", 'disabled');
+                                }, 1);
                                 return false;
                         }
             })
@@ -41,7 +49,9 @@
 			});
 		}
         $("#edit-submit").click(function(e) {
+            $("#edit-search-box").addClass('loadingtext');
             $("#edit-search-box").addClass('loadinggif');
+            $("#edit-submit").addClass('loadingtext');
             $("#edit-search-box").attr("readonly", "readonly");
             // This is to fix the issue with chrome when trying to disable the search button
             setTimeout(function(){
