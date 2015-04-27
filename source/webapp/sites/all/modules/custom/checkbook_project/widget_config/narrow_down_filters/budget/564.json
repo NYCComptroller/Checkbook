@@ -2,7 +2,7 @@
     "widgetType":"phpparser",
     "parentNid":277,
     "startWith":0,
-    "maxSelect":1,
+    "maxSelect":5,
     "limit":100,
 	"columns":["budget_code.budget_code", "budget_code_name.budget_code_name", "txcount"],
 	"orderBy":"-txcount",    

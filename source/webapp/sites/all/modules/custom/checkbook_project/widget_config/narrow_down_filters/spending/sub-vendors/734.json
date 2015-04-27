@@ -3,6 +3,7 @@
     "parentNid":723,
     "limit":100,
     "startWith":0,
+    "maxSelect":5,
     "columns":["expobjectname.expobjectname", "txcount"],
     "defaultParameters":{"is_prime_or_sub":"S"},
     "orderBy":["-txcount", "expobjectname.expobjectname"],
@@ -13,8 +14,7 @@
     "urlParameterNameType":"eqtext",    
     "autocompleteParamName":"expcategorynm_auto",    
     "autocompleteID":"fCategoryNm",
-    "autocompleteField":"expenditure_object_name", 
-    "maxSelect":5,
+    "autocompleteField":"expenditure_object_name",
     "adjustParameters":"
         if(isset($parameters['vendor_type'])){
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);

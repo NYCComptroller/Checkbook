@@ -1,12 +1,13 @@
 {
     "widgetType":"phpparser",
-    "parentNid":280,    
+    "parentNid":280,
+    "startWith":0,
+    "maxSelect":5,
     "autocomplete":false,
     "filterName":"Revenue Recognized",
     "urlParameterName":"amtr",
     "urlParameterType":"rangeid2",
-    "autocompleteID":"frevenueAmount",     
-    "startWith":0,    
+    "autocompleteID":"frevenueAmount",
     "columns":["g5b_count", "g4b_le5b_count", "g3b_le4b_count", "g2b_le3b_count", "g1b_le2b_count", "less1b_count"],
     "orderBy":"",    
     "adjustParameters":"

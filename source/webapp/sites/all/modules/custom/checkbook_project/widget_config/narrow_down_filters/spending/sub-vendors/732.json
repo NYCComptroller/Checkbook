@@ -5,6 +5,7 @@
     "autocomplete":false,
     "limit":10,
     "startWith":0,
+    "maxSelect":5,
     "columns":["vendor_type.vendor_type", "txcount"],
     "defaultParameters":{"is_prime_or_sub":"S"},
     "orderBy":"-txcount",
@@ -13,7 +14,6 @@
     "filterName":"Vendor Type",
     "urlParameterName":"vendortype",
     "autocompleteID":"fvendorType",
-    "maxSelect":5,
     "adjustParameters":"
         if(isset($parameters['vendor_type'])){
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);

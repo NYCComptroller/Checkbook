@@ -1,6 +1,7 @@
 {
     "widgetType":"phpparser",
     "parentNid":266,
+    "maxSelect":5,
     "autocomplete":false,
     "no_results_content":"No Results Found",
     "allowRequestParams":["contstatus"],

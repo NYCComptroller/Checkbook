@@ -3,7 +3,7 @@
     "parentNid":706,
     "startWith":0,
     "limit":100,
-    "maxSelect":1,
+    "maxSelect":5,
     "columns":["deptname.deptname", "txcount"],
     "orderBy":["-txcount","deptname.deptname"],
 	"getTotalDataCount":true,    

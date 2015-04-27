@@ -3,7 +3,7 @@
     "parentNid":277,
     "limit":100,
     "startWith":0,
-    "maxSelect":1,
+    "maxSelect":5,
     "columns":["budget_code_name.budget_code_name", "txcount"],
     "orderBy":["-txcount", "budget_code_name.budget_code_name"],
 	"getTotalDataCount":true,    

@@ -8,6 +8,7 @@
     },
     "limit":10,
     "startWith":0,
+    "maxSelect":5,
     "urlParamMap":{
         "doctype":"document_code.document_code.document_code",
         "contstatus":"cum_spend.cum_spend.status_flag",
