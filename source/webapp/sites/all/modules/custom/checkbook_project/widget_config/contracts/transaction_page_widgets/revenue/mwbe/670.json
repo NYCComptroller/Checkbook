@@ -6,8 +6,9 @@
         "cum_spend.cum_spend.status_flag":"A",
         "minority_type_id":"2~3~4~5~9"
     },
-    "limit":10,
+    "limit":100,
     "startWith":0,
+    "maxSelect":5,
     "urlParamMap":{
         "doctype":"document_code.document_code.document_code",
         "contstatus":"cum_spend.cum_spend.status_flag",
@@ -27,7 +28,6 @@
     "autocompleteParamName":"mwbe_vendor_auto",
     "autocompleteID":"fmwbeVendorId",
     "autocompleteField":"vendor_name",
-    "maxSelect":5,
     "adjustParameters":"
 if(isset($parameters['vendor_type'])){
 $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);

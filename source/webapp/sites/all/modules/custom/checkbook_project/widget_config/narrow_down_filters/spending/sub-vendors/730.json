@@ -3,7 +3,7 @@
     "parentNid":723,
     "startWith":0,
     "limit":100,
-    "maxSelect":1,
+    "maxSelect":5,
 	"columns":["agency.agency", "agency.agency.agency_name", "txcount"],
     "defaultParameters":{"is_prime_or_sub":"S"},
 	"orderBy":"-txcount",    

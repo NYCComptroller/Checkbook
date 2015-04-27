@@ -28,7 +28,16 @@
  * $node
  * $name
  */
-if(isset($node->widgetConfig->maxSelect)){
+
+//Facets that have Url parameters that match the current Url will be disabled from de-selecting by default.
+//To enable the user to de-select the default criteria (for advanced search), set "allowFacetDeselect":true in the config
+$disableFacet = !(isset($node->widgetConfig->allowFacetDeselect) ? $node->widgetConfig->allowFacetDeselect : false);
+if($disableFacet) { //only URL parameters count and can be disabled
+    $url_ref = $_SERVER['HTTP_REFERER'];
+    $disableFacet = preg_match('"/'.$node->widgetConfig->urlParameterName.'/"',$url_ref);
+}
+
+if(isset($node->widgetConfig->maxSelect) && !$disableFacet){
   $tooltip = 'title="Select upto ' . $node->widgetConfig->maxSelect . '"';
 }
 else{
@@ -129,7 +138,7 @@ if(strtolower($filter_name) == 'vendor'){
   <div class="progress"></div>
   <?php  
     $pages = ceil($node->totalDataCount/$node->widgetConfig->limit);   
-    if((isset($checked) && $node->widgetConfig->maxSelect == count($checked)) || count($checked) + count($unchecked) == 0 ){
+    if((isset($checked) && $node->widgetConfig->maxSelect == count($checked)) || count($checked) + count($unchecked) == 0 || $disableFacet){
       $disabled = " DISABLED='true' " ;
     }else{
       $disabled = "" ;
@@ -144,13 +153,6 @@ if(strtolower($filter_name) == 'vendor'){
         $disabled = " DISABLED='true' " ;
     }else{
         $disabled = "" ;
-    }
-    //Facets that have Url parameters that match the current Url will be disabled from de-selecting by default.
-    //To enable the user to de-select the default criteria (for advanced search), set "allowFacetDeselect":true in the config
-    $disableFacet = !(isset($node->widgetConfig->allowFacetDeselect) ? $node->widgetConfig->allowFacetDeselect : false);
-    if($disableFacet) { //only URL parameters count and can be disabled
-        $url_ref = $_SERVER['HTTP_REFERER'];
-        $disableFacet = preg_match('"/'.$node->widgetConfig->urlParameterName.'/"',$url_ref);
     }
     $disableFacet = $disableFacet ? " DISABLED='true' " : "";
 

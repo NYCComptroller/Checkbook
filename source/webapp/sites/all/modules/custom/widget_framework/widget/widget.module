@@ -1195,14 +1195,11 @@ function widget_merge_config($parent_config, $child_config){
   }
   $urlParameterName = $child_config->urlParameterName;
 
-    $showAllRecords = isset($child_config->showAllRecords) ? $child_config->showAllRecords : false;
-    if($showAllRecords) {
-        if(isset($child_config->urlParameterNameType)){
-            $child_config->paramTypeConfig->$urlParameterName = "neqignorecase";
-        }
-        else{
-            $child_config->paramTypeConfig->$urlParameterName = "ne";
-        }
+    if(isset($child_config->urlParameterNameType)){
+        $child_config->paramTypeConfig->$urlParameterName = "neqignorecase";
+    }
+    else{
+        $child_config->paramTypeConfig->$urlParameterName = "ne";
     }
 
   foreach($child_config->urlParamMap  as $key=>$value){

@@ -5,6 +5,7 @@
     "autocomplete":false,
     "limit":10,
     "startWith":0,
+    "maxSelect":5,
     "columns":["vendor_type.vendor_type", "txcount"],
     "orderBy":"-txcount",
     "getTotalDataCount":true,
@@ -12,7 +13,6 @@
     "filterName":"Vendor Type",
     "urlParameterName":"vendortype",
     "autocompleteID":"fvendorType",
-    "maxSelect":5,
     "adjustParameters":"
         if(function_exists('_checkbook_project_adjust_mwbe_spending_parameter_filters')){
             $parameters = _checkbook_project_adjust_mwbe_spending_parameter_filters($node, $parameters);

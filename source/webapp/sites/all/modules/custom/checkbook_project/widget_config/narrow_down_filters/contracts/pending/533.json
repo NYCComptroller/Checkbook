@@ -14,7 +14,7 @@
     "autocompleteParamName":"cindustry_auto",    
     "autocompleteID":"fIndustryTypeId", 	
     "autocompleteField":"industry.industry.industry_type_name",
-    "maxSelect":1,
+    "maxSelect":5,
     "adjustParameters":"
 if(isset($parameters['vendor_type'])){
 $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);

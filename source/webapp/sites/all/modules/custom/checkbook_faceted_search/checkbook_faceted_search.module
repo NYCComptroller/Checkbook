@@ -110,7 +110,7 @@ function _checkbook_faceted_search_update_data($node) {
     $output = array();
     $output['filter_name'] = $node->widgetConfig->filterName;
 
-    $showAllRecords = isset($node->widgetConfig->showAllRecords) ? $node->widgetConfig->showAllRecords : false;
+    $showAllRecords = true;//isset($node->widgetConfig->showAllRecords) ? $node->widgetConfig->showAllRecords : false;
     if(!$showAllRecords) {
         $params = explode('~', _getRequestParamValue($node->widgetConfig->urlParameterName));
         foreach ($data as $row) {
@@ -178,16 +178,29 @@ function _checkbook_faceted_search_update_data($node) {
                 }
             }
         }
-        foreach ($data as $row) {
-            if(count($row) == 2){
-                $output['unchecked'][] = array($row[str_replace('.','_',$node->widgetConfig->columns[0])]
-                ,$row[str_replace('.','_',$node->widgetConfig->columns[0])]
-                ,$row[str_replace('.','_',$node->widgetConfig->columns[1])]);
-            }
-            else{
-                $output['unchecked'][] = array($row[str_replace('.','_',$node->widgetConfig->columns[0])]
-                ,$row[str_replace('.','_',$node->widgetConfig->columns[1])]
-                ,$row[str_replace('.','_',$node->widgetConfig->columns[2])]);
+
+        //Facets that have Url parameters that match the current Url will be disabled and show only the default checked items
+        $disableFacet = !(isset($node->widgetConfig->allowFacetDeselect) ? $node->widgetConfig->allowFacetDeselect : false);
+        if($disableFacet) { //only URL parameters count and can be disabled
+            $url_ref = $_SERVER['HTTP_REFERER'];
+            $disableFacet = preg_match('"/'.$node->widgetConfig->urlParameterName.'/"',$url_ref);
+        }
+
+        if($disableFacet) {
+            $output['unchecked'] = null;
+        }
+        else {
+            foreach ($data as $row) {
+                if(count($row) == 2){
+                    $output['unchecked'][] = array($row[str_replace('.','_',$node->widgetConfig->columns[0])]
+                    ,$row[str_replace('.','_',$node->widgetConfig->columns[0])]
+                    ,$row[str_replace('.','_',$node->widgetConfig->columns[1])]);
+                }
+                else{
+                    $output['unchecked'][] = array($row[str_replace('.','_',$node->widgetConfig->columns[0])]
+                    ,$row[str_replace('.','_',$node->widgetConfig->columns[1])]
+                    ,$row[str_replace('.','_',$node->widgetConfig->columns[2])]);
+                }
             }
         }
 

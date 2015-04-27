@@ -3,7 +3,7 @@
     "parentNid":723,
     "startWith":0,
     "limit":10,
-    "maxSelect":1,
+    "maxSelect":5,
     "autocomplete":false,
     "filterName":"Amount",
     "urlParameterName":"checkamtr",

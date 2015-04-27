@@ -7,6 +7,7 @@
     },
     "limit":10,
     "startWith":0,
+    "maxSelect":5,
     "autocomplete":false,
     "filterName":"Amount",
     "urlParameterName":"curamtr",

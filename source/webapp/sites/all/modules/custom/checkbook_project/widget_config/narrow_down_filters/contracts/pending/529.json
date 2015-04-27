@@ -12,8 +12,8 @@
     "urlParameterName":"agency",
     "autocompleteParamName":"agency_auto",    
     "autocompleteID":"fagencyId",
-    "autocompleteField":"document_agency_name", 	
-	"maxSelect":1,        
+    "autocompleteField":"document_agency_name",
+    "maxSelect":5,
     "adjustParameters":"
 if(isset($parameters['vendor_type'])){
 $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);

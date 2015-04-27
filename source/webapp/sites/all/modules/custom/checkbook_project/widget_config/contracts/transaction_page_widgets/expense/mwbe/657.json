@@ -7,6 +7,8 @@
         "all_cum_spend.all_cum_spend.status_flag":"A"
     },
     "startWith":0,
+    "limit":100,
+    "maxSelect":5,
     "urlParamMap":{
         "doctype":"document_code.document_code.document_code",
         "contstatus":"all_cum_spend.all_cum_spend.status_flag",
@@ -24,7 +26,6 @@
     "autocompleteParamName":"agency_auto",
     "autocompleteID":"fagencyId",
     "autocompleteField":"agency_name",
-    "maxSelect":1,
     "adjustParameters":"
         if(isset($parameters['vendor_type'])){
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);

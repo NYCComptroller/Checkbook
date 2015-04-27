@@ -3,6 +3,7 @@
     "parentNid":280,    
     "limit":100,
     "startWith":0,
+    "maxSelect":5,
     "columns":["class_name.class_name", "txcount"],
     "orderBy":["-txcount","class_name.class_name"],    
 	"getTotalDataCount":true,    
@@ -13,8 +14,6 @@
     "autocompleteParamName":"clsname_auto",    
     "autocompleteID":"fclsNm", 	
     "autocompleteField":"class_name.class_name",
-    "limit":100,
-    "maxSelect":1,
     "adjustParameters":"
 	checkbook_faceted_search_adjust_param($node);
     if(function_exists('_checkbook_project_applyParameterFilters')){

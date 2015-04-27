@@ -41,6 +41,11 @@
             }
         }
     }
+    $node->selectedFacetParameters = $adjustedParameters;
+
+    if(function_exists('_checkbook_project_adjust_advanced_search_spending_parameters')){
+        $adjustedParameters = _checkbook_project_adjust_advanced_search_spending_parameters($node,$adjustedParameters);
+    }
     return $adjustedParameters;
     ",   
     "template":"individual_filter"

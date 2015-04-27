@@ -2,7 +2,7 @@
     "widgetType":"phpparser",
     "parentNid":277,
     "startWith":0,
-    "maxSelect":1,
+    "maxSelect":5,
     "autocomplete":false,
     "filterName":"Modified Expense Budget",
     "urlParameterName":"curamtr",
