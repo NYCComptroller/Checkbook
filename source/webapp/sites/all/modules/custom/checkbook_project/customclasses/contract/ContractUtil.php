@@ -231,7 +231,7 @@ namespace { //global
                 $url .= "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
             }
             else {
-                $url .= "/vendor/".$vendor_id._checkbook_project_get_url_param_string("datasource");
+                $url .= _checkbook_project_get_url_param_string("datasource")."/vendor/".$vendor_id;
             }
             return $url;
         }
