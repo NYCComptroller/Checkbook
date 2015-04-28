@@ -7,17 +7,17 @@
         "doctype":"document_code.document_code.document_code"
 	},
     "dataset":"checkbook:pending_contracts",
-    "columns":["vendor.vendor", "vendor_legal_name.vendor_legal_name", "txcount"],
+    "columns":["vendor_legal_name.vendor_legal_name", "txcount"],
     "orderBy":"-txcount",   
 	"getTotalDataCount":true,    
 	"facetPager":true,    
     "filterName":"Vendor",
-    "urlParameterName":"vendor",
-    "autocompleteParamName":"vendor_auto",    
-    "autocompleteID":"fvendorId", 	
+    "urlParameterName":"vendornm_exact",
+    "autocompleteParamName":"vendor_auto",
+    "autocompleteID":"fvendorNm",
     "autocompleteField":"vendor_legal_name",
+    "urlParameterNameType":"eqtext",
     "maxSelect":5,
-    "showAllRecords":true,
     "allowFacetDeselect":true,
     "adjustParameters":"
         if(isset($parameters['vendor_type'])){
