@@ -3,6 +3,9 @@
     "parentNid":634,
     "no_results_content":"No Results Found",
     "startWith":0,
+    "limit":100,
+    "maxSelect":5,
+    "allowFacetDeselect":true,
     "urlParamMap":{
         "doctype":"document_code.document_code.document_code"
     }  ,
@@ -16,7 +19,6 @@
     "autocompleteParamName":"agency_auto",
     "autocompleteID":"fagencyId",
     "autocompleteField":"agency.agency.agency_name",
-	"maxSelect":1,
     "adjustParameters":"
     if(function_exists('_checkbook_project_adjustContractParameterFilters')){
         _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');

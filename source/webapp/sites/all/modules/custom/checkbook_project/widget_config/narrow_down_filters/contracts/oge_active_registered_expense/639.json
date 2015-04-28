@@ -4,7 +4,8 @@
     "no_results_content":"No Results Found",
     "limit":10,
     "startWith":0,
-    "maxSelect":1,
+    "maxSelect":5,
+    "allowFacetDeselect":true,
     "urlParamMap":{
         "doctype":"document_code.document_code.document_code"
     }  ,
