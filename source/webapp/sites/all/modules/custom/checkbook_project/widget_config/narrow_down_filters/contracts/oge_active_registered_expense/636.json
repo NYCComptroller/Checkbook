@@ -2,22 +2,24 @@
     "widgetType":"phpparser",
     "parentNid":634,
     "no_results_content":"No Results Found",
-    "limit":10,
+    "limit":100,
     "startWith":0,
+    "maxSelect":5,
+    "allowFacetDeselect":true,
     "urlParamMap":{
         "doctype":"document_code.document_code.document_code"
      },
     "defaultParameters":{"status_flag":"A","is_vendor_flag":"N","type_of_year":"B","if_for_all_years":"N"},
-    "columns":["vendor.vendor", "vendor.vendor.legal_name", "txcount"],
+    "columns":["vendor.vendor.legal_name", "txcount"],
     "orderBy":"-txcount",
 	"getTotalDataCount":true,
 	"facetPager":true,
     "filterName":"Vendor",
-    "urlParameterName":"vendor",
     "autocompleteParamName":"vendor_auto",
-    "autocompleteID":"fvendorId",
     "autocompleteField":"vendor_name",
-    "maxSelect":1,
+    "urlParameterName":"vendornm_exact",
+    "urlParameterNameType":"eqtext",
+    "autocompleteID":"fvendorNm",
     "adjustParameters":"
 	checkbook_faceted_search_adjust_param($node);
     if(function_exists('_checkbook_project_adjustContractParameterFilters')){

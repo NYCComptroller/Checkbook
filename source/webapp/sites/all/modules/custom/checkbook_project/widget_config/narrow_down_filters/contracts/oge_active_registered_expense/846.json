@@ -4,23 +4,18 @@
     "no_results_content":"No Results Found",
     "limit":10,
     "startWith":0,
-    "maxSelect":5,
-    "allowFacetDeselect":true,
     "urlParamMap":{
         "doctype":"document_code.document_code.document_code"
-    },
+     },
     "defaultParameters":{"status_flag":"A","is_vendor_flag":"N","type_of_year":"B","if_for_all_years":"N"},
-    "columns":["award_method.award_method", "award_method.award_method.award_method_name", "txcount"],
-    "orderBy":"-txcount",
-	"getTotalDataCount":true,
-	"facetPager":true,
-    "filterName":"Award Method",
-    "urlParameterName":"awdmethod",
-    "autocompleteParamName":"awdmethod_auto",
-    "autocompleteID":"fAwdMethodId",
-    "autocompleteField":"award_method_name",
+    "columns":["g100m_count", "g50m_le100m_count", "g25m_le50m_count", "g10m_le25m_count", "ge1m_le10m_count", "less1m_count"],
+    "orderBy":"",
+    "autocomplete":false,
+    "filterName":"Amount",
+    "urlParameterName":"curamtr",
+    "urlParameterType":"rangeid",
+    "autocompleteID":"fCurAmount",
     "adjustParameters":"
-	checkbook_faceted_search_adjust_param($node);
     if(function_exists('_checkbook_project_adjustContractParameterFilters')){
         _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
     }
@@ -28,12 +23,11 @@
         $parameters['is_vendor_flag'] = 'Y';
     }
     if(!(_getRequestParamValue('year') || _getRequestParamValue('calyear'))){
-       $parameters['latest_flag'] = 'Y';
-       $parameters['if_for_all_years'] = 'Y';
+        $parameters['latest_flag'] = 'Y';
+        $parameters['if_for_all_years'] = 'Y';
     }
     if(function_exists('_checkbook_project_applyParameterFilters')){
         $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-        $adjustedParameters['award_method.award_method'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
         return $adjustedParameters;
     }
     return $parameters;

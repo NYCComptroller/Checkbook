@@ -1,7 +1,7 @@
 {
     "widgetType":"data_tables",
     "widgetSubType":"dataTableList",
-    "cleanURLParameters":["doctype", "contstatus", "year", "calyear", "yeartype", "agency", "vendor", "curamtr", "vendornm", "contdesc", "agrmnttypecode", "agencyh", "contnum", "aptpin", "pin",
+    "cleanURLParameters":["doctype", "contstatus", "year", "calyear", "yeartype", "agency", "vendor", "curamtr", "vendornm", "vendornm_exact", "contdesc", "agrmnttypecode", "agencyh", "contnum", "aptpin", "pin",
         "awdmethod", "curamt", "startdate", "enddate", "regdate", "cindustry", "csize", "modamt", "entcontnum_exact", "entcontnum", "comline_exact", "comline", "budname_exact", "budname"],
     "urlParamMap":{
         "doctype":"document_code@checkbook:ref_document_code",
@@ -13,6 +13,7 @@
         "vendor":"vendor_id",
         "curamtr":"maximum_contract_amount",
         "vendornm":"vendor_name",
+        "vendornm_exact":"vendor_name",
         "contdesc":"description",
         "agrmnttypecode":"agreement_type_code",
         "agencyh":"agency_history_id",
@@ -44,6 +45,7 @@
         "budname_exact":"eqignorecase",
         "curamtr":"rangeid",
         "vendornm":"like",
+        "vendornm_exact":"eqignorecase",
         "contdesc":"like",
         "contnum":"like",
         "aptpin":"like",
@@ -329,6 +331,7 @@ return $header;
         agencyIds = document.getElementById('fHideAgencyId').value;
         }
         var oVendorIds = getNamedFilterCriteria('fvendorId');
+        var oVendorNms = getNamedFilterCriteria('fvendorNm');
         var oCurAmount = getNamedFilterCriteria('fCurAmount');
         var oAwdMethod = getNamedFilterCriteria('fAwdMethodId');
         var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
@@ -336,14 +339,10 @@ return $header;
         var  cUrl = oTable.fnSettings().sAjaxSource;
         cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
         cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
+        cUrl = adjustUrlParameter(cUrl,'vendornm_exact',oVendorNms);
         cUrl = adjustUrlParameter(cUrl,'curamtr',oCurAmount);
         cUrl = adjustUrlParameter(cUrl,'awdmethod',oAwdMethod);
         cUrl = adjustUrlParameter(cUrl,'cindustry',oIndustryType);
-
-        //remove advance search param if narrow down search is present for amount
-        //if(oCurAmount != null && oCurAmount.length > 0 ){
-        //     cUrl = adjustUrlParameter(cUrl,'curamt','');
-        // }
 
         return cUrl;
         }
