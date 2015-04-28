@@ -41,7 +41,7 @@
         "vendornm_exact":"eqignorecase","expdoc_exact":"eqignorecase","captprj_exact":"eqignorecase",
         "contnum_exact":"eqignorecase","checkamtr":"rangeid","checkamt":"range","chkdate":"range",
         "captprj":"like","contnum":"like","bdgcodenm":"like","expdoc":"like","syear":"le",
-        "scalyear":"le","deptnm":"eqignorecase","expcategorynm":"eqignorecase","vendornm":"like"//,"fvendor":"in"
+        "scalyear":"le","deptnm":"eqignorecase","expcategorynm":"eqignorecase","vendornm":"like"
     },
     "allowRequestParams":["dtsmnid","smnid"],
     "header":"
@@ -332,16 +332,9 @@
         var cUrlArray = cUrl.split('/');
         var dtsmnidNameIndex = jQuery.inArray('dtsmnid', cUrlArray);
 
-        if (dtsmnidNameIndex != -1 && cUrlArray[(dtsmnidNameIndex+1)] == 20) {
-            cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
-            cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
-        }
-        else {
-            cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
-            cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
-        }
-        cUrl = adjustUrlParameter(cUrl,'fvendor',oVendorNms);
-        cUrl = adjustUrlParameter(cUrl,'vendornm',oVendorNms);
+        cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
+        cUrl = adjustUrlParameter(cUrl,'vendornm',null);
+        cUrl = adjustUrlParameter(cUrl,'vendornm_exact',oVendorNms);
         cUrl = adjustUrlParameter(cUrl,'expcategory',oCategoryIds);
         cUrl = adjustUrlParameter(cUrl,'category',oSpendCategoryIds );
         cUrl = adjustUrlParameter(cUrl,'checkamtr',oCheckAmount);

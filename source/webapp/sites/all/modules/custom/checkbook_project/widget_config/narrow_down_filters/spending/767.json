@@ -3,6 +3,7 @@
     "parentNid":766,
     "startWith":0,
     "limit":100,
+    "maxSelect":5,
 	"columns":["agency.agency", "agency.agency.agency_name", "txcount"],
 	"orderBy":"-txcount",    
     "facetNoPager":true,
@@ -12,9 +13,6 @@
     "urlParameterNameType":"eqtext",
     "autocompleteID":"fagencyId",
     "autocompleteField":"agency_name",
-    "urlParamMap":{"vendornm":"vendornm.vendornm","fvendor":"vendornm.vendornm"},
-    "maxSelect":5,
-    "widgetPreprocessJSON":"_checkbook_project_adjust_vendor_facet_json($node);",
     "showAllRecords":true,
     "allowFacetDeselect":true,
     "adjustParameters":"
@@ -40,11 +38,6 @@
                unset($adjustedParameters[$key]);
             }
         }
-    }
-    $node->selectedFacetParameters = $adjustedParameters;
-
-    if(function_exists('_checkbook_project_adjust_advanced_search_spending_parameters')){
-        $adjustedParameters = _checkbook_project_adjust_advanced_search_spending_parameters($node,$adjustedParameters);
     }
     return $adjustedParameters;
     ",   

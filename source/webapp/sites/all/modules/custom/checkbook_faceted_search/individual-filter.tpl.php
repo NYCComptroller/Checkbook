@@ -106,8 +106,8 @@ if($node->widgetConfig->filterName == 'M/WBE Category'){
 if($node->widgetConfig->filterName == 'Vendor Type'){
     $vendor_types = _getRequestParamValue('vendortype');
     $vendor_type_data = MappingUtil::getVendorTypes($checked, $vendor_types);
-    $checked = $vendor_type_data['checked'];
     $vendor_type_data = MappingUtil::getVendorTypes($unchecked, $vendor_types);
+    $checked = $vendor_type_data['checked'];
     $unchecked = $vendor_type_data['unchecked'];
 }
 
