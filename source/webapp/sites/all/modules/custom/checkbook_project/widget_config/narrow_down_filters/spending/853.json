@@ -1,17 +1,16 @@
 {
     "widgetType":"phpparser",
     "parentNid":652,
-    "startWith":0,
-    "limit":100,
-    "maxSelect":5,
-    "columns":["agency.agency", "agency.agency.agency_name", "txcount"],
-	"orderBy":"-txcount",    
-    "facetNoPager":true,
-    "filterName":"Agency",
-    "urlParameterName":"agency",
-    "autocompleteParamName":"agency_auto",    
-    "autocompleteID":"fagencyId",
-    "autocompleteField":"agency_name",
+    "allowFacetDeselect":true,
+    "autocomplete":false,
+    "filterName":"Amount",
+    "urlParameterName":"checkamtr",
+    "urlParameterType":"rangeid",
+    "autocompleteID":"fCheckAmount",     
+    "startWith":0,    
+    "urlParamMap":{"doctype":"document_code.document_code.document_code"}  ,
+    "columns":["g100m_count", "g50m_le100m_count", "g25m_le50m_count", "g10m_le25m_count", "ge1m_le10m_count", "less1m_count"],
+    "orderBy":"",    
     "adjustParameters":"
     if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
     	$parameters = _checkbook_project_adjust_spending_parameter_filters($node, $parameters);
@@ -19,8 +18,7 @@
     if(function_exists('_checkbook_project_applyParameterFilters')){
         $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
     }
-    $adjustedParameters['agency.agency'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);    
-     //Using child_contract_agency_id column in OGE domainO
+    //Using child_contract_agency_id column in OGE domainO
     if(_checkbook_check_isEDCPage()){
         foreach($adjustedParameters as $key=>$value){
             if($key == 'master_child_contract_agency_id'){

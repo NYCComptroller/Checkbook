@@ -3,6 +3,7 @@
     "parentNid":652,
     "limit":100,
     "startWith":0,
+    "maxSelect":5,
     "columns":["expobjectname.expobjectname", "txcount"],
     "orderBy":["-txcount", "expobjectname.expobjectname"],
 	"getTotalDataCount":true,    
@@ -12,8 +13,7 @@
     "urlParameterNameType":"eqtext",    
     "autocompleteParamName":"expcategorynm_auto",    
     "autocompleteID":"fCategoryNm",
-    "autocompleteField":"expenditure_object_name", 
-    "maxSelect":1,
+    "autocompleteField":"expenditure_object_name",
     "adjustParameters":"
     $page = $_REQUEST['page'];
 	checkbook_faceted_search_adjust_param($node);
