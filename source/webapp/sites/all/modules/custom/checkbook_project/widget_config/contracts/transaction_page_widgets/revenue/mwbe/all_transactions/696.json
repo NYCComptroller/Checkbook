@@ -8,6 +8,8 @@
     },
     "limit":10,
     "startWith":0,
+    "maxSelect":5,
+    "allowFacetDeselect":true,
     "urlParamMap":{"doctype":"document_code.document_code.document_code"},
     "columns":["minority_type.minority_type", "minority_type.minority_type.minority_type_name", "txcount"],
     "orderBy":"-txcount",

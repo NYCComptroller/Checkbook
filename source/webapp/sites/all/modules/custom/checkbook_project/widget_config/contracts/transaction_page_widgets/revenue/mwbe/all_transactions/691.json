@@ -7,6 +7,8 @@
         "latest_flag":"Y"
     },
     "limit":100,
+    "maxSelect":5,
+    "allowFacetDeselect":true,
     "urlParamMap":{"doctype":"document_code.document_code.document_code"}  ,
     "columns":["vendor.vendor", "vendor.vendor.legal_name", "txcount"],
     "orderBy":["-txcount","vendor.vendor.legal_name"],
@@ -17,7 +19,6 @@
     "autocompleteParamName":"vendor_auto",
     "autocompleteID":"fvendorId",
     "autocompleteField":"vendor_name",
-    "maxSelect":5,
     "adjustParameters":"
 if(isset($parameters['vendor_type'])){
 $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);

@@ -6,6 +6,9 @@
     "defaultParameters":{
         "latest_flag":"Y"
     },
+    "limit":100,
+    "maxSelect":5,
+    "allowFacetDeselect":true,
     "urlParamMap":{"doctype":"document_code.document_code.document_code"}  ,
     "columns":["agency.agency", "agency.agency.agency_name", "txcount"],
     "orderBy":"-txcount",
@@ -16,7 +19,6 @@
     "autocompleteParamName":"agency_auto",
     "autocompleteID":"fagencyId",
     "autocompleteField":"agency_name",
-    "maxSelect":1,
     "adjustParameters":"
 if(isset($parameters['vendor_type'])){
 $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
