@@ -16,7 +16,7 @@
     },
     "allowRequestParams":["contstatus"],
     "paramTypeConfig":{
-        "vendornm":"in","vendornm_exact":"eqignorecase","contdesc":"like","contnum":"like","aptpin":"like",
+        "vendornm":"like","vendornm_exact":"eqignorecase","contdesc":"like","contnum":"like","aptpin":"like",
         "pin":"like","curamt":"range","startdate":"range","enddate":"range","regdate":"range","curamtr":"rangeid"
     },
     "defaultParameters":{"latest_flag":"Y"},
@@ -322,8 +322,7 @@
 
     var  cUrl = oTable.fnSettings().sAjaxSource;
     cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
-    cUrl = adjustUrlParameter(cUrl,'fvendor',oVendorNms);
-    cUrl = adjustUrlParameter(cUrl,'vendornm',oVendorNms);
+    cUrl = adjustUrlParameter(cUrl,'vendornm_exact',oVendorNms);
     cUrl = adjustUrlParameter(cUrl,'curamtr',oCurAmount);
     cUrl = adjustUrlParameter(cUrl,'awdmethod',oAwdMethod);
     cUrl = adjustUrlParameter(cUrl,'cindustry',oIndustryType);

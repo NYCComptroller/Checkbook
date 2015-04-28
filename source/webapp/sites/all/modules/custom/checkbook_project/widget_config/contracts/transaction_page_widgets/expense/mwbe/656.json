@@ -3,7 +3,7 @@
     "widgetSubType": "dataTableList",
     "stickyHeader":true,
     "cleanURLParameters":[
-        "subvendor","vendortype","mwbe","doctype","contstatus","year","calyear","yeartype","agency","vendor","curamtr","vendornm","contdesc","agrmnttype",
+        "subvendor","vendortype","mwbe","doctype","contstatus","year","calyear","yeartype","agency","vendor","curamtr","vendornm","vendornm_exact","contdesc","agrmnttype",
         "agencyh","contnum","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","modamt","fvendor"
     ],
     "urlParamMap":{
@@ -19,6 +19,7 @@
         "vendor":"prime_vendor_id",
         "curamtr":"maximum_contract_amount",
         "vendornm":"vendor_name",
+        "vendornm_exact":"vendor_name",
         "subvendor":"vendor_id",
         "contdesc":"description",
         "agrmnttype":"agreement_type_id",
@@ -36,7 +37,7 @@
         "modamt":"dollar_difference"
     },
     "allowRequestParams":["smnid"],
-    "paramTypeConfig":{"vendornm1":"eqignorecase","curamtr":"rangeid","vendornm":"in","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range",
+    "paramTypeConfig":{"vendornm_exact":"eqignorecase","curamtr":"rangeid","vendornm":"like","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range",
         "startdate":"range","enddate":"range","regdate":"range","modamt":"ne"},
     "defaultParameters":{"status_flag@checkbook:all_contracts_coa_aggregates":"A"},
     "header":"
@@ -408,7 +409,7 @@
     var  cUrl = oTable.fnSettings().sAjaxSource;
     cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
     cUrl = adjustUrlParameter(cUrl,'fvendor',oVendorIds);
-    cUrl = adjustUrlParameter(cUrl,'vendornm',oVendorNms);
+    cUrl = adjustUrlParameter(cUrl,'vendornm_exact',oVendorNms);
     cUrl = adjustUrlParameter(cUrl,'curamtr',oCurAmount);
     cUrl = adjustUrlParameter(cUrl,'awdmethod',oAwdMethod);
     cUrl = adjustUrlParameter(cUrl,'cindustry',oIndustryType);

@@ -566,6 +566,7 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
     $contracts_contract_status = trim($form[$filter_dimension][$data_source . '_contracts_status']['#value']);
     $contracts_contract_category = trim($form[$filter_dimension][$data_source . '_contracts_category']['#value']);
     $contracts_contract_vendor_name = trim($form[$filter_dimension][$data_source . '_contracts_vendor_name']['#value']);
+    $contracts_contract_vendor_name_exact = trim($form[$filter_dimension][$data_source . '_contracts_vendor_name_exact']['#value']);
     $contracts_contract_purpose = trim($form[$filter_dimension][$data_source . '_contracts_purpose']['#value']);
     $contracts_contract_type = trim($form[$filter_dimension][$data_source . '_contracts_type']['#value']);
     $contracts_contract_agency = trim($form[$filter_dimension][$data_source . '_contracts_agency']['#value']);
@@ -624,7 +625,11 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
             $redirect_url .= ($contracts_contract_category == 'revenue') ? '/doctype/RCT1' : '/doctype/MMA1~MA1~MAR~CTA1~CT1~CTR~DO1';
     }
     if (!empty($contracts_contract_vendor_name)) {
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_vendor_name, 'vendornm');
+        if ($contracts_contract_vendor_name_exact == $contracts_contract_vendor_name) {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_vendor_name_exact, 'vendornm_exact');
+        } else {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_vendor_name, 'vendornm');
+        }
     }
     if (!empty($contracts_contract_purpose)) {
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_purpose, 'contdesc');
