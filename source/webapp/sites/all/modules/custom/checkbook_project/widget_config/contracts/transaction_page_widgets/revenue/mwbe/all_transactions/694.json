@@ -7,6 +7,8 @@
         "latest_flag":"Y"
     },
     "limit":100,
+    "maxSelect":5,
+    "allowFacetDeselect":true,
     "urlParamMap":{"doctype":"document_code.document_code.document_code"}  ,
     "columns":["award_method.award_method", "award_method.award_method.award_method_name", "txcount"],
     "orderBy":"-txcount",
@@ -17,7 +19,6 @@
     "autocompleteParamName":"awdmethod_auto",
     "autocompleteID":"fAwdMethodId",
     "autocompleteField":"award_method_name",
-    "maxSelect":5,
     "adjustParameters":"
 if(isset($parameters['vendor_type'])){
 $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
