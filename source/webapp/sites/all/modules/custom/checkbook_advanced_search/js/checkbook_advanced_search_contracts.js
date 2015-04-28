@@ -94,7 +94,12 @@
             var year = div.ele('year').val() ? div.ele('year').val() : 0;
             var data_source = $('input:radio[name=contracts_advanced_search_domain_filter]:checked').val();
 
-            div.ele('vendor_name').autocomplete({source:'/advanced-search/autocomplete/contracts/vendor-name/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + data_source});
+            div.ele('vendor_name').autocomplete({
+                source:'/advanced-search/autocomplete/contracts/vendor-name/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + data_source,
+                select: function( event, ui ) {
+                    $(this).parent().next().val(ui.item.label) ;
+                }
+            });
             div.ele('contract_id').autocomplete({source:'/advanced-search/autocomplete/contracts/contract-num/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + data_source});
             div.ele('apt_pin').autocomplete({source:'/advanced-search/autocomplete/contracts/apt-pin/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + data_source});
             div.ele('pin').autocomplete({source:'/advanced-search/autocomplete/contracts/pin/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + data_source});
