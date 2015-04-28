@@ -349,10 +349,7 @@ cUrl = adjustUrlParameter(cUrl,'checkamtr',oCheckAmount);
 cUrl = adjustUrlParameter(cUrl,'dept',oDeptIds);
 cUrl = adjustUrlParameter(cUrl,'deptnm',oDeptNms);
 cUrl = adjustUrlParameter(cUrl,'expcategorynm',oSpendCategoryNms);
-//remove advance search param if narrow down search is present for amount
-//if(oCheckAmount != null && oCheckAmount.length > 0 ){
-//     cUrl = adjustUrlParameter(cUrl,'checkamt','');
-//}
+
 return cUrl;
 }"
 }

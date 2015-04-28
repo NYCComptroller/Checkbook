@@ -2,6 +2,7 @@
     "widgetType":"phpparser",
     "parentNid":6,
     "limit":100,
+    "maxSelect":5,
     "columns":["dept.dept", "dept.dept.department_name", "txcount"],
     "orderBy":["-txcount" , "department_name"], 
 	"getTotalDataCount":true,    
@@ -11,7 +12,6 @@
     "autocompleteParamName":"dept_auto",    
     "autocompleteID":"fdeptId", 	
     "autocompleteField":"department_name",
-    "maxSelect":5,
     "adjustParameters":"
 	checkbook_faceted_search_adjust_param($node);
     if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
