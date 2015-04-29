@@ -1,41 +1,34 @@
 
-<?php
-global $conf;
-$message = "<b>Below are the results of the triggered alert(s) from checkbooknyc.com: </b><br><br>".PHP_EOL;
+Below are the results of the triggered alert(s) from checkbooknyc.com:
 
+<?php global $conf; ?>
+<?php
 foreach($alerts as $alert)
 {
-    $day = $alert-> minimum_days  == 1 ?  "Every Day" :  "Every " . $alert->minimum_days . " days";
-$message .= "Alert description : " . $alert->label . "<br>".PHP_EOL;
-$message .= "Alert frequency: " . $day  ."<br>". PHP_EOL;
-$message .= "Number of new records that match alert criteria: " . $alert->new_count. "<br>" . PHP_EOL;
-$message .= "Link to Checkbook NYC alert results: ". $alert->user_url. "<br>" . PHP_EOL;
-$message .= "To unsubscribe from this alert click here: " . $conf['check_book']['data_feeds']['site_url'].(substr($conf['check_book']['data_feeds']['site_url'],-1)=="/"?'':"/")."alert/unsubscribe/".$alert->checkbook_alerts_sysid.md5($alert->checkbook_alerts_sysid.$alert->label.$alert->recipient).
-    "<br><br><br>
+    $description = $alert->label;
+    $frequency = $alert-> minimum_days  == 1 ?  "Every Day" :  "Every " . $alert->minimum_days . " days";
+    $number_records = $alert->new_count;
+    $results_link = $alert->user_url;
+    $unsubscribe_link = $conf['check_book']['data_feeds']['site_url'].(substr($conf['check_book']['data_feeds']['site_url'],-1)=="/"?'':"/")."alert/unsubscribe/".$alert->checkbook_alerts_sysid.md5($alert->checkbook_alerts_sysid.$alert->label.$alert->recipient);
+?>
+Alert description: <?=$description?>
+
+Alert frequency: <?=$frequency?>
+
+Number of new records that match alert criteria: <?=$number_records?>
 
 
+Link to Checkbook NYC alert results: <?=$results_link?>
 
 
+To unsubscribe from this alert click here: <?=$unsubscribe_link?>
 
-" . PHP_EOL;;
+<?php
 }
-$message .= "
-To unsubscribe from all alerts sent to this email address click here: " . $conf['check_book']['data_feeds']['site_url'].'/alert/unsubscribe/'.md5($alert->recipient)."
+?>
 
+To unsubscribe from all alerts sent to this email address click here:
+<?=$conf['check_book']['data_feeds']['site_url'].'/alert/unsubscribe/'.md5($alert->recipient)?>.
 
-
-
-<br><br><br>" . PHP_EOL;
-
-$message .= "Office of the Comptroller - City of New York";
-
-
-print($message);
-
-
-
-
-
-
-
+Office of the Comptroller - City of New York
 
