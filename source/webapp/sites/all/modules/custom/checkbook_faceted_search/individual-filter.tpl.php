@@ -156,28 +156,35 @@ if(strtolower($filter_name) == 'vendor'){
     }
     $disableFacet = $disableFacet ? " DISABLED='true' " : "";
 
+    $ct = 0;
     foreach ($checked as $row) {
-      $row[0] = str_replace('__','/', $row[0]);      
-      $row[1] = str_replace('__','/', $row[1]);      
-      echo '<div class="row">';
-      echo '<div class="checkbox"><input class="styled" name="' . $autocomplete_id . '" type="checkbox" ' . $disableFacet . 'checked="checked" value="' . urlencode(html_entity_decode($row[0],ENT_QUOTES)) . '" onClick="return applyTableListFilters();"></div>';
-      echo '<div class="name">' . _break_text_custom2($row[1],15) . '</div>';
-      echo '<div class="number"><span class="active">' . number_format($row[2]) . '</span></div>';
-      echo '</div>';
+        $row[0] = str_replace('__','/', $row[0]);
+        $row[1] = str_replace('__','/', $row[1]);
+        $id = $filter_name."_checked_".$ct;
+        echo '<div class="row">';
+        echo '<div class="checkbox"><input class="styled" id="'.$id.'" name="' . $autocomplete_id . '" type="checkbox" ' . $disableFacet . 'checked="checked" value="' . urlencode(html_entity_decode($row[0],ENT_QUOTES)) . '" onClick="return applyTableListFilters();"><label for="'.$id.'"></label></div>';
+        echo '<div class="name">' . _break_text_custom2($row[1],15) . '</div>';
+        echo '<div class="number"><span class="active">' . number_format($row[2]) . '</span></div>';
+        echo '</div>';
+        $ct++;
     }
     ?>
   </div>
   <div class="options">
     <div class="rows">
     <?php
+    $ct = 0;
     foreach ($unchecked as $row) {
-      $row[0] = str_replace('__','/', $row[0]);      
-      $row[1] = str_replace('__','/', $row[1]);      
-      echo '<div class="row">';
-      echo '<div class="checkbox"><input class="styled" name="' . $autocomplete_id . '" type="checkbox" '  .  $disabled .  'value="' . urlencode(html_entity_decode($row[0],ENT_QUOTES)) . '" onClick="return applyTableListFilters();"></div>';
-      echo '<div class="name">' . _break_text_custom2($row[1],15) . '</div>';
-      echo '<div class="number"><span>' . number_format($row[2]) . '</span></div>';
-      echo '</div>';
+        $row[0] = str_replace('__','/', $row[0]);
+        $row[1] = str_replace('__','/', $row[1]);
+        $id = $filter_name."_unchecked_".$ct;
+        echo '<div class="row">';
+        echo '<div class="row">';
+        echo '<div class="checkbox"><input class="styled" id="'.$id.'" name="' . $autocomplete_id . '" type="checkbox" '  .  $disabled .  'value="' . urlencode(html_entity_decode($row[0],ENT_QUOTES)) . '" onClick="return applyTableListFilters();"><label for="'.$id.'"></label></div>';
+        echo '<div class="name">' . _break_text_custom2($row[1],15) . '</div>';
+        echo '<div class="number"><span>' . number_format($row[2]) . '</span></div>';
+        echo '</div>';
+        $ct++;
     }
     ?>
     </div>
