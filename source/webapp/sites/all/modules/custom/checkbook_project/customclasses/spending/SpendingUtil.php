@@ -215,10 +215,11 @@ class SpendingUtil{
         }
         $year_id = _getRequestParamValue("year");
         $year_type = _getRequestParamValue("yeartype");
-        $agency_id = _getRequestParamValue("agency_id");
+        $agency_id = _getRequestParamValue("agency");
         $dashboard = _getRequestParamValue("dashboard");
+        $datasource = _getRequestParamValue("datasource");
 
-        return self::getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard);
+        return self::getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, '', $datasource);
     }
 
     /**
@@ -264,7 +265,7 @@ class SpendingUtil{
      * @param $payee_name
      * @return string
      */
-    static function getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $current_dashboard, $payee_name = false){
+    static function getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $current_dashboard, $payee_name = false, $datasource = false){
 
         $override_params = null;
         $latest_certified_minority_type_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type, "P");
@@ -291,6 +292,7 @@ class SpendingUtil{
                 "dashboard"=>$new_dashboard,
                 "subvendor"=>null,
                 "agency"=>$agency_id,
+                "datasource"=>$datasource,
                 "vendor"=>$vendor_id
             );
             //payee name will never have a drill down, this is to avoid ajax issues on drill down
