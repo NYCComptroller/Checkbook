@@ -209,3 +209,13 @@ div.filter-content-fdomainName div.options{
 .filter-title span.open{
     background:url("/sites/all/themes/checkbook3/images/arrow-up.png") no-repeat scroll 185px 3px transparent;
 }
+
+.smart-search-right div.disable_autocomplete{
+    padding: 10px 10px 0 10px;
+    width: 198px;
+}
+
+.smart-search-right div.disable_autocomplete input {
+    opacity:0.5;
+    width: 100%
+}
