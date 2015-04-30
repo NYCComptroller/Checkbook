@@ -273,7 +273,11 @@ foreach ($render_array as $title => $value) {
             $autocomplete_id = "autocomplete_" . $value['name'];
             $disabled = ($value['checked'] && count($value['checked']) >= 5) ? "disabled" : '';
             if($title != 'M/WBE Category' && $title != 'Vendor Type'){
-                echo '<div class="autocomplete"><input id="' . $autocomplete_id . '" ' . $disabled . ' type="text"></div>';
+                if((!count($value['checked']) && !count($value['unchecked']))){
+                    echo '<div class="disable_autocomplete"><input type="text" disabled="disabled"></div>';
+                }else{
+                    echo '<div class="autocomplete"><input id="' . $autocomplete_id . '" ' . $disabled . ' type="text"></div>';
+                }
             }
             echo '<div class="checked-items">';
             if ($value['checked']) {
