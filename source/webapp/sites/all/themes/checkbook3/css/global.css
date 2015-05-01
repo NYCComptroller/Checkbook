@@ -3055,7 +3055,7 @@ input[type=checkbox] + label:before {
 }
 /* Checked */
 input[type=checkbox]:checked + label:before {
-    content:"\2714";
+    content:"\2713";
     color:white;
     background-color: #209AD6;
     text-align:center;
@@ -3064,7 +3064,7 @@ input[type=checkbox]:checked + label:before {
 }
 /* Checked & Disabled */
 input[type=checkbox]:checked:disabled + label:before {
-    content:"\2714";
+    content:"\2713";
     color:#bbb;
     background-color: #eee;
     text-align:center;
