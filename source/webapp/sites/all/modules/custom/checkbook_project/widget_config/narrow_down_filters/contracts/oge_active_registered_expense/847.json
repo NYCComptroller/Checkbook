@@ -6,7 +6,9 @@
     "startWith":0,
     "maxSelect":5,
     "urlParamMap":{
-        "doctype":"document_code.document_code.document_code"
+        "doctype":"document_code.document_code.document_code",
+        "vendornm":"display_vendor.display_vendor.legal_name",
+        "vendornm_exact":"display_vendor.display_vendor.legal_name"
     },
     "defaultParameters":{"status_flag":"A","is_vendor_flag":"N","type_of_year":"B","if_for_all_years":"N"},
     "columns":["award_method.award_method", "award_method.award_method.award_method_name", "txcount"],

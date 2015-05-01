@@ -12,8 +12,8 @@
         "agency":"agency_id",
         "vendor":"vendor_id",
         "curamtr":"maximum_contract_amount",
-        "vendornm":"vendor_name",
-        "vendornm_exact":"vendor_name",
+        "vendornm":"legal_name@checkbook:vendor",
+        "vendornm_exact":"legal_name@checkbook:vendor",
         "contdesc":"description",
         "agrmnttypecode":"agreement_type_code",
         "agencyh":"agency_history_id",
@@ -80,7 +80,7 @@ return $header;
 "type_of_year", "has_children","contract_number",
 "original_agreement_id","description","original_contract_amount",
 "maximum_contract_amount","spending_amount_disb",
-"vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name",
+"vendor_name","agency_name","vendor_id","display_vendor_id","agency_id","agreement_type_name","award_method_name",
 "expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no",
 "tracking_number","master_agreement_yn","document_code@checkbook:ref_document_code","agency_name@checkbook:agency","legal_name@checkbook:vendor",
 "industry_type_name","dollar_difference","percent_difference","master_contract_number","master_agreement_id"],
@@ -225,7 +225,7 @@ return $header;
         if(function_exists('_checkbook_project_adjustContractParameterFilters')){
         _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
         }
-        if(_getRequestParamValue('vendor') || _getRequestParamValue('vendornm')){
+        if(_getRequestParamValue('vendor') || _getRequestParamValue('vendornm') || _getRequestParamValue('vendornm_exact')){
         $parameters['is_vendor_flag'] = 'Y';
         }
         if(!(_getRequestParamValue('year') || _getRequestParamValue('calyear'))){
@@ -343,7 +343,6 @@ return $header;
         cUrl = adjustUrlParameter(cUrl,'curamtr',oCurAmount);
         cUrl = adjustUrlParameter(cUrl,'awdmethod',oAwdMethod);
         cUrl = adjustUrlParameter(cUrl,'cindustry',oIndustryType);
-
         return cUrl;
         }
 
