@@ -15,11 +15,13 @@
         "table_columns": [
             {
                   "labelAlias": "Contracting Agency",
-                  "columnType": "text"
+                  "columnType": "text",
+                  "formatType": "text"
              },
              {
                   "labelAlias": "Number of MWBE Contracts",
-                  "columnType": "number"
+                  "columnType": "number",
+                  "formatType": "number"
              },
              {
                   "labelAlias": "Amount",
@@ -68,7 +70,7 @@
     $sql = ' select
 		ra.agency_name,a1.agency_id
 		, sum(maximum_contract_amount) current_amount_sum
-		, count(contract_number) total_contracts		
+		, count(contract_number) total_contracts
 		from {aggregateon_subven_contracts_cumulative_spending} a1     
     	join {ref_agency} ra on ra.agency_id =  a1.agency_id
    	 	join {ref_document_code} rd on a1.document_code_id = rd.document_code_id

@@ -15,11 +15,13 @@
         "table_columns": [
             {
                   "labelAlias": "Contracting Agency",
-                  "columnType": "text"
+                  "columnType": "text",
+                  "formatType": "text"
              },
              {
                   "labelAlias": "Number of MWBE Contracts",
-                  "columnType": "number"
+                  "columnType": "number",
+                  "formatType": "number"
              },
              {
                   "labelAlias": "Amount",
