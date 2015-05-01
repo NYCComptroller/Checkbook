@@ -33,7 +33,9 @@
 //To enable the user to de-select the default criteria (for advanced search), set "allowFacetDeselect":true in the config
 $disableFacet = !(isset($node->widgetConfig->allowFacetDeselect) ? $node->widgetConfig->allowFacetDeselect : false);
 if($disableFacet) { //only URL parameters count and can be disabled
-    $url_ref = $_SERVER['HTTP_REFERER'];
+    $query_string = $_GET['q'];
+    $is_new_window = preg_match('/newwindow/i',$query_string);
+    $url_ref = $is_new_window ? $_GET['q'] : $_SERVER['HTTP_REFERER'];
     $disableFacet = preg_match('"/'.$node->widgetConfig->urlParameterName.'/"',$url_ref);
 }
 
