@@ -52,7 +52,7 @@
                             	"sourceColumnName": "agency_id"
                             }
                     ]
-                }    ,
+                },
                 {
                     "name": "display_agency",
                     "levels": [
@@ -62,7 +62,7 @@
                                 "sourceColumnName": "display_agency_id"
                             }
                     ]
-                }    ,
+                },
 				{
                     "name": "vendor",
                     "levels": [
@@ -73,7 +73,17 @@
                             }
                     ]
                 },
-				{
+                {
+                    "name": "display_vendor",
+                    "levels": [
+                        {
+                            "name": "display_vendor",
+                            "datasetName": "vendor",
+                            "sourceColumnName": "display_vendor_id"
+                        }
+                    ]
+                },
+                {
                     "name": "document_code",
                     "levels": [
                        		{
