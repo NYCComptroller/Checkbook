@@ -80,9 +80,10 @@ $footer = \"<a class='show-details bottomContainerReload' href='$url'  style='di
 return $footer;
 ",
 "summaryView":{
-"template":"contract_summary_expense_expense",
-"entityColumnName":"agency_agency_agency_name",
-"templateTitle":"Agency Spending Transactions"
+    "template":"contract_summary_expense_expense",
+    "entityColumnName":"agency_agency_agency_name",
+    "templateTitle":"Agency Spending Transactions",
+    "preprocess_data":"$node->widgetConfig->summaryView->templateTitle = SpendingUtil::getSpentToDateTitle('Agency Spending');"
 },
 "widgetTitle":"Agencies",
 "table_title":"",

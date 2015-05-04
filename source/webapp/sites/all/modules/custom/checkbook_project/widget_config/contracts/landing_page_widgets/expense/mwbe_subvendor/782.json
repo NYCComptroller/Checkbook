@@ -123,8 +123,9 @@ $footer = \"<a class='show-details bottomContainerReload' href='$url' style='dis
 return $footer;
 ",
 "summaryView":{
-"template":"contract_summary_expense_contract_modification",
-"templateTitle":"Sub Contract Amount Modification Spending Transactions"
+    "template":"contract_summary_expense_contract_modification",
+    "templateTitle":"Sub Contract Amount Modification Spending Transactions",
+    "preprocess_data":"$node->widgetConfig->summaryView->templateTitle = SpendingUtil::getSpentToDateTitle('Sub Contract Amount Modification Spending');"
 },
 "widgetTitle":"Sub Contract Amount Modifications",
 "table_title":"",

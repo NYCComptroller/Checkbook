@@ -96,7 +96,8 @@ return $adjustedParameters;
 "summaryView":{
     "template":"contract_summary_expense_expense",
     "entityColumnName":"vendor_vendor_legal_name",
-    "templateTitle":"Prime Vendor Spending Transactions"
+    "templateTitle":"Prime Vendor Spending Transactions",
+    "preprocess_data":"$node->widgetConfig->summaryView->templateTitle = SpendingUtil::getSpentToDateTitle('Prime Vendor Spending');"
 },
 "widgetTitle":"Prime Vendors",
 "table_title":"",

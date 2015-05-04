@@ -1146,6 +1146,16 @@ class SpendingUtil{
 
         return ($title . " " . $widgetTitle . " " . $catName . " Transactions");
     }
+
+    static function getSpentToDateTitle($widgetTitle){
+        $title = RequestUtil::getDashboardTitle();
+
+        if (strpos($title,'Sub Vendors') !== false && strpos($widgetTitle,'Sub Vendors') !== false) {
+            $widgetTitle = 'Spending';
+        }
+
+        return ($title . " " . $widgetTitle . " Transactions");
+    }
     
     function _show_mwbe_custom_legend(){
     	$mwbe_cats = _getRequestParamValue('mwbe');

@@ -102,8 +102,9 @@ else
 return $footer;
 ",
 "summaryView":{
-"template":"contract_summary_expense_contract",
-"templateTitle":"Master Agreement Spending Transactions"
+    "template":"contract_summary_expense_contract",
+    "templateTitle":"Master Agreement Spending Transactions",
+    "preprocess_data":"$node->widgetConfig->summaryView->templateTitle = SpendingUtil::getSpentToDateTitle('Master Agreement Spending');"
 },
 "widgetTitle":"Master Agreements",
 "table_title":"",
