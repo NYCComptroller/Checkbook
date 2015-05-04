@@ -11,8 +11,8 @@
         "vendornm_exact":"display_vendor.display_vendor.legal_name",
         "vendor":"vendor.vendor"
     },
-    "defaultParameters":{"status_flag":"A","is_vendor_flag":"N","type_of_year":"B","if_for_all_years":"N"},
-    "columns":["vendor.vendor", "display_vendor.display_vendor.legal_name", "txcount"],
+    "defaultParameters":{"status_flag":"A","is_vendor_flag":"Y","type_of_year":"B","if_for_all_years":"N"},
+    "columns":["vendor.vendor", "vendor.vendor.legal_name", "txcount"],
     "orderBy":"-txcount",
     "getTotalDataCount":true,
     "facetPager":true,
