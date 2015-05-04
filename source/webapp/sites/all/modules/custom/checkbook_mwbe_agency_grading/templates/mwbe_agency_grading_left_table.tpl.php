@@ -1,17 +1,7 @@
-<?php 
-
+<?php
 	_widget_highcharts_include_plugin();
-
-    $is_prime = _getRequestParamValue('mwbe_agency_grading');
-    if($is_prime == 'sub_vendor_data'){
-        $download_link = "/mwbe_agency_grading_csv/sub_vendor_data/year/" . _getRequestParamValue("year") . "/yeartype/" .  _getRequestParamValue("yeartype") ;
-    }else{
-        $download_link = "/mwbe_agency_grading_csv/year/" . _getRequestParamValue("year") . "/yeartype/" .  _getRequestParamValue("yeartype") ;
-    }
-
-	
 ?>
-<div class="download_link" ><a href="<?php echo $download_link; ?>"><span class="export">Export</span></a></div>
+<div class="download_link" ><span class="summary_export">Export</span></div>
 
 <div class="checkbook-grading-left">
 <div class="empty_div11">&nbsp</div>
@@ -121,12 +111,6 @@
         var tableHeight = jQuery('#grading_table').height();
         var docHeight = jQuery(document).height();
         var bottomSpacing = docHeight - (tableOffsetTop + tableHeight) ;
- //       bottomSpacing = 500;
-//        alert(docHeight);
-//        alert(tableOffsetTop);
-//        alert(tableHeight);
-//		alert(topSpacing);
-//		alert(bottomSpacing);
         jQuery('.dataTables_scrollHead').sticky({ getWidthFrom:'#scroll_wrapper_head',topSpacing: <?php echo "topSpacing"; ?>, bottomSpacing: <?php echo "bottomSpacing"; ?>});
 
     }	
