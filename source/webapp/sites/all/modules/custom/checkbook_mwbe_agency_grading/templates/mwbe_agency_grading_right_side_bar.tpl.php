@@ -8,8 +8,8 @@ $mwbe_cats =  _mwbe_agency_grading_current_cats();
 					<div class="checkbox-grading-legend">	
 					<table>
 					<tbody><tr class="legend_entry">
-						<td><!-- <span name="lengend_checkbox"></span> --><input type="checkbox" <?php echo (in_array('aa_mwbe',$mwbe_cats))?  'checked=""':'';?> 
-									value="aa_mwbe" name="mwbe_right_filter"></td>
+						<td><!-- <span name="lengend_checkbox"></span> --><input id="chk_aa_mwbe" type="checkbox" <?php echo (in_array('aa_mwbe',$mwbe_cats))?  'checked=""':'';?>
+									value="aa_mwbe" name="mwbe_right_filter"><label for="chk_aa_mwbe"></label></td>
 						<td class="color"><img src="/<?php print drupal_get_path("module","checkbook_mwbe_agency_grading")?>/images/legend-color-0.png"></td>
 						<td class="desc"><span name="legend_description">Asian American</span></td>
 					</tr>
