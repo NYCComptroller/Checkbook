@@ -141,6 +141,7 @@ return $footer;
     $node->data[0]['original_amount_sum'] = $temp['original_amount_sum'];
     $node->data[0]['current_amount_sum'] = $temp['current_amount_sum'];
     $node->data[0]['spending_amount_sum'] = $temp['spending_amount_sum'];
+    $node->widgetConfig->summaryView->templateTitle = SpendingUtil::getSpentToDateTitle('Sub Contract Spending');
 "
 },
 "widgetTitle":"Sub Contracts",

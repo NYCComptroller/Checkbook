@@ -82,9 +82,10 @@ $header='<div class=\"tableHeader\"><h2>Contracts by Size</h2>
 return $header;
 ",
 "summaryView":{
-"template":"contract_summary_expense_expense",
-"entityColumnName":"award_size_award_size_award_size_name",
-"templateTitle":"Contract by Size Spending Transactions"
+    "template":"contract_summary_expense_expense",
+    "entityColumnName":"award_size_award_size_award_size_name",
+    "templateTitle":"Contract by Size Spending Transactions",
+    "preprocess_data":"$node->widgetConfig->summaryView->templateTitle = SpendingUtil::getSpentToDateTitle('Contract by Size Spending');"
 },
 "widgetTitle":"Contracts by Size",
 "table_title":"",
