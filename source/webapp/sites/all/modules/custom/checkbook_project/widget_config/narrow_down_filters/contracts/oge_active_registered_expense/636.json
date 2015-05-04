@@ -8,7 +8,8 @@
     "urlParamMap":{
         "doctype":"document_code.document_code.document_code",
         "vendornm":"display_vendor.display_vendor.legal_name",
-        "vendornm_exact":"display_vendor.display_vendor.legal_name"
+        "vendornm_exact":"display_vendor.display_vendor.legal_name",
+        "vendor":"vendor.vendor"
     },
     "defaultParameters":{"status_flag":"A","is_vendor_flag":"N","type_of_year":"B","if_for_all_years":"N"},
     "columns":["display_vendor.display_vendor.legal_name", "txcount"],
@@ -27,7 +28,7 @@
         if(function_exists('_checkbook_project_adjustContractParameterFilters')){
             _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
         }
-        if(_getRequestParamValue('vendor') || _getRequestParamValue('vendornm') || _getRequestParamValue('vendornm_exact')){
+        if(_getRequestParamValue('vendor') || _getRequestParamValue('vendornm')){
             $parameters['is_vendor_flag'] = 'Y';
         }
         if(!(_getRequestParamValue('year') || _getRequestParamValue('calyear'))){
@@ -36,7 +37,7 @@
         }
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-            $adjustedParameters['display_vendor.display_vendor'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+            $adjustedParameters['vendor.vendor'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
             return $adjustedParameters;
         }
         return $parameters;
