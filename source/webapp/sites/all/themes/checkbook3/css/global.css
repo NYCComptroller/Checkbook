@@ -1008,7 +1008,7 @@ h3.grid_year_title {
     position: relative;
     z-index: 5000;
 }
-span.grid_export, span.exportSmartSearch {
+span.grid_export, span.exportSmartSearch span.summary_export {
     background: url("../images/export.png") no-repeat scroll right 0 transparent;
     color: #209AD6;
     cursor: pointer;
@@ -2515,7 +2515,8 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 }
 
 .inside .transactions-container .transactions-total-amount{width:220px;}
-span.export {
+span.export,
+span.summary_export {
     background: url("../images/export.png") no-repeat scroll right 0 transparent;
     width: 70px;
     height:17px;

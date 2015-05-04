@@ -151,6 +151,27 @@ function _checkbook_mwbe_agency_grading_getdata(){
        $sql1 = _checkbook_mwbe_agency_grading_generate_sql("aggregateon_mwbe_spending_coa_entities");
     }
 
+    $order='';
+    $sortcol='';
+    if(!empty($_GET['q'])){
+        if($_GET['iSortCol_0'] == 0){
+            $sortcol = 'order by a1.agency_name';
+        }
+        else{
+            $sortcol = 'order by a1.total_mwbe';
+        }
+        if($_GET['sSortDir_0'] == 'desc'){
+            $order = 'desc';
+        }
+        else{
+            $order = 'asc';
+        }
+    }
+    else{
+        $sortcol = 'order by a1.total_mwbe';
+        $order = 'desc';
+    }
+
 	$sql = 'select  a1.agency_name , a1.agency_id,
 	coalesce(a1.aa_mwbe,0) aa_mwbe,
 	coalesce(a1.ba_mwbe,0)  ba_mwbe,
@@ -158,8 +179,8 @@ function _checkbook_mwbe_agency_grading_getdata(){
 	coalesce(a1.ha_mwbe,0)  ha_mwbe,
 	coalesce(a1.total_mwbe,0)  total_mwbe,
 	coalesce(a1.n_mwbe,0)  n_mwbe
-	from ( ' . $sql1 . ' ) a1
-    order by a1.total_mwbe desc';
+	from ( ' . $sql1 . ' ) a1 '
+    . $sortcol .' '.$order;
 
 	return  _checkbook_project_execute_sql($sql);
 
@@ -244,7 +265,6 @@ function _mwbe_agency_grading_current_cats(){
 function _checkbook_mwbe_agency_grading_csv(){
 
 	$agencies_data =  _checkbook_mwbe_agency_grading_getdata();
-	
 	$data = "Agency, Asian American, Black American, Women, Hispanic American, M/WBE Spending, Non M/WBE";
 	foreach($agencies_data as $row){
 		if($row['total_mwbe'] > 0){
@@ -253,7 +273,7 @@ function _checkbook_mwbe_agency_grading_csv(){
 			$data .=  "," . $row['aa_mwbe'];
 			$data .=  "," . $row['ba_mwbe'];
 			$data .=  "," . $row['w_mwbe'];
-			$data .=  "," . $row['ha_mwbe'];		
+			$data .=  "," . $row['ha_mwbe'];
 			$data .=  "," . $row['total_mwbe'];
 			$data .=  "," . $row['n_mwbe'];
 		}

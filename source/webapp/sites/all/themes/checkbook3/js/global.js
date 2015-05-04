@@ -951,11 +951,58 @@ Drupal.behaviors.hoveOverMWBE = {
                     }
                     inputs = inputs + "<input type='hidden' name='iSortingCols' value='" + iCounter + "'/>";
                 }
-
                 jQuery('<form action="' + url + '" method="get">' + inputs + '</form>').appendTo('body').submit().remove();
 
             });
         }
+    };
+
+    // MWBE Agency Summary export sorting
+    Drupal.behaviors.exportmwbeAgencySummary = {
+        attach:function (context, settings) {
+            $('span.summary_export').die().live("click", function () {
+
+            var oSettings = jQuery('#grading_table').dataTable().fnSettings();
+            var url ='';
+            var url_path = location.pathname.split("/");
+            for(var i=0; i<url_path.length; i++){
+                if(url_path[i] == 'mwbe_agency_grading'){
+                    url += 'mwbe_agency_grading_csv/';
+                }
+                else{
+                    url += url_path[i]+'/';
+                }
+            }
+
+            var inputs = "<input type='hidden' name='iDisplayStart' value='"+ oSettings._iDisplayStart +"'/>"
+                    + "<input type='hidden' name='iDisplayLength' value='"+ oSettings._iDisplayLength +"'/>"
+                ;
+
+            if ( oSettings.oFeatures.bSort !== false )
+            {
+                var iCounter = 0;
+
+                aaSort = ( oSettings.aaSortingFixed !== null ) ?
+                    oSettings.aaSortingFixed.concat( oSettings.aaSorting ) :
+                    oSettings.aaSorting.slice();
+
+                for ( i=0 ; i<aaSort.length ; i++ )
+                {
+                    aDataSort = oSettings.aoColumns[ aaSort[i][0] ].aDataSort;
+
+                    for ( j=0 ; j<aDataSort.length ; j++ )
+                    {
+                        inputs = inputs + "<input type='hidden' name='iSortCol_"+ iCounter + "' value='" + aDataSort[j] + "'/>";
+                        inputs = inputs + "<input type='hidden' name='sSortDir_"+ iCounter + "' value='" + aaSort[i][1] + "'/>";
+                        iCounter++;
+                    }
+                }
+                inputs = inputs + "<input type='hidden' name='iSortingCols' value='" + iCounter + "'/>";
+            }
+            jQuery('<form action="' + url + '" method="get">' + inputs + '</form>').appendTo('body').submit().remove();
+
+        });
+    }
     };
 
     Drupal.behaviors.advancedSearchEnterKeyPress = {
@@ -2126,5 +2173,8 @@ Drupal.behaviors.disableClickTopNav = {
 }
 
 // end of disabling code
+
+
+
 
 

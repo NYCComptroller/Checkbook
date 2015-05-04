@@ -14,26 +14,26 @@ $mwbe_cats =  _mwbe_agency_grading_current_cats();
 						<td class="desc"><span name="legend_description">Asian American</span></td>
 					</tr>
 					<tr class="legend_entry">
-						<td><!-- <span name="lengend_checkbox"></span> --><input type="checkbox" <?php echo (in_array('ba_mwbe',$mwbe_cats))?  'checked=""':'';?> 
-						  			value="ba_mwbe" name="mwbe_right_filter"></td>
+						<td><!-- <span name="lengend_checkbox"></span> --><input id="chk_ba_mwbe" type="checkbox" <?php echo (in_array('ba_mwbe',$mwbe_cats))?  'checked=""':'';?>
+						  			value="ba_mwbe" name="mwbe_right_filter"><label for="chk_ba_mwbe"></label></td>
 						<td class="color"><img src="/<?php print drupal_get_path("module","checkbook_mwbe_agency_grading")?>/images/legend-color-1.png"></td>
 						<td class="desc"><span name="legend_description">Black American</span></td>
 					</tr>
 					<tr class="legend_entry">
-						<td><!-- <span name="lengend_checkbox"></span> --><input type="checkbox" <?php echo (in_array('ha_mwbe',$mwbe_cats))?  'checked=""':'';?>
-									 value="ha_mwbe" name="mwbe_right_filter"></td>
+						<td><!-- <span name="lengend_checkbox"></span> --><input id="chk_ha_mwbe" type="checkbox" <?php echo (in_array('ha_mwbe',$mwbe_cats))?  'checked=""':'';?>
+									 value="ha_mwbe" name="mwbe_right_filter"><label for="chk_ha_mwbe"></label></td>
 						<td class="color"><img src="/<?php print drupal_get_path("module","checkbook_mwbe_agency_grading")?>/images/legend-color-2.png"></td>
 						<td class="desc"><span name="legend_description">Hispanic American</span></td>
 					</tr>
 					<tr class="legend_entry">
-						<td><!-- <span name="lengend_checkbox"></span> --><input type="checkbox" <?php echo (in_array('w_mwbe',$mwbe_cats))?  'checked=""':'';?> 
-									 value="w_mwbe" name="mwbe_right_filter"></td>
+						<td><!-- <span name="lengend_checkbox"></span> --><input id="chk_w_mwbe" type="checkbox" <?php echo (in_array('w_mwbe',$mwbe_cats))?  'checked=""':'';?>
+									 value="w_mwbe" name="mwbe_right_filter"><label for="chk_w_mwbe"></label></td>
 						<td class="color"><img src="/<?php print drupal_get_path("module","checkbook_mwbe_agency_grading")?>/images/legend-color-3.png"></td>
 						<td class="desc"><span name="legend_description">Women</span></td>
 					</tr>
 					<tr class="legend_entry">
-						<td><!-- <span name="lengend_checkbox"></span> --><input type="checkbox" <?php echo (in_array('n_mwbe',$mwbe_cats))?  'checked=""':'';?>
-									 value="n_mwbe" name="mwbe_right_filter"></td>
+						<td><!-- <span name="lengend_checkbox"></span> --><input id="chk_n_mwbe" type="checkbox" <?php echo (in_array('n_mwbe',$mwbe_cats))?  'checked=""':'';?>
+									 value="n_mwbe" name="mwbe_right_filter"><label for="chk_n_mwbe"></label></td>
 						<td class="color"><img src="/<?php print drupal_get_path("module","checkbook_mwbe_agency_grading")?>/images/legend-color-4.png"></td>
 						<td class="desc"><span name="legend_description">Non-M/WBE</span></td>
 					</tr>
