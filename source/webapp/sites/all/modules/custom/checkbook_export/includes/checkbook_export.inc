@@ -272,17 +272,6 @@ function _checkbook_export_transactions(){
     //load data
     widget_data($node);
 
-    // minority type name mapping
-    foreach($node->data as $key => $value){
-        $node_data[$key] = $value;
-        foreach($node_data[$key] as $field => $name){
-            if($field == 'minority_type_name'){
-                $node_data[$key][$field] = MappingUtil::getMinorityCategoryByName($name);
-            }
-        }
-    }
-    $node->data = $node_data;
-
     if($limit > $exportMemoryRecordLimit){
         try{
             $fileName = _checkbook_export_generateExportFile($node,$data);
