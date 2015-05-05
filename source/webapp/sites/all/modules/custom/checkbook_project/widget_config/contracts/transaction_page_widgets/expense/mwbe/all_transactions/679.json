@@ -407,7 +407,7 @@
     sOut += '<td class=\"text\"  style=\"width:170px\">'+ (row[22] == null ? '': row[22])+'</td>';
     sOut += '<td class=\"text\" style=\"width:170px\">'+ (row[23] == null ? '': row[23])+'</td>';
     sOut += '<td class=\"text\" style=\"width:170px\">'+ (row[24] == null ? '': row[24])+'</td>';
-    sOut += '<td style=\"width:10px\"></td>';
+    sOut += '<td style=\"width:30px\"></td>';
     sOut += '</tr>';
 
     }
