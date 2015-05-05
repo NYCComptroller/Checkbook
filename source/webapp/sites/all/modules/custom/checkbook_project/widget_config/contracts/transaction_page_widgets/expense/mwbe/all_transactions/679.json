@@ -183,11 +183,11 @@
         },
         "associated_prime_vendor_name":{
             "type": "expression2",
-            "expression":"(preg_match('/S/', $row[vendor_type])) ? _get_tooltip_markup($row['prime_vendor_name'], 34) : 'N/A'"
+            "expression":"($row['is_prime_or_sub'] == 'S') ? _get_tooltip_markup($row['prime_vendor_name'], 34) : 'N/A'"
         },
         "associated_prime_vendor_name_export":{
             "type": "expression2",
-            "expression":"(preg_match('/S/', $row[vendor_type])) ? $row['prime_vendor_name'] : 'N/A'"
+            "expression":"($row['is_prime_or_sub'] == 'S') ? $row['prime_vendor_name'] : 'N/A'"
         }
     },
     "table_columns": [
