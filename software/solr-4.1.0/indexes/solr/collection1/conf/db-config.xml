@@ -158,7 +158,7 @@
 				agency_name || '[' || agency_id || ']' agency_name_id,
 				check_eft_issued_nyc_year_id fiscal_year_id,
 				calendar_fiscal_year_id,
-				calendar_fiscal_year,
+			    calendar_fiscal_year,
 				ry.year_value   fiscal_year,
 				department_id,
 				department_code,
@@ -282,7 +282,6 @@
             <field column="date_ordering" name="date_ordering" />
             <field column="industry_type_id" name="industry_type_id" />
             <field column="industry_type_name" name="industry_type_name" />
-
         </entity>
         <entity dataSource="db2" name="spending_oge"
                 pk="id"
@@ -297,7 +296,7 @@
                 'oge' agency_type,
                 check_eft_issued_nyc_year_id fiscal_year_id,
                 calendar_fiscal_year_id,
-				calendar_fiscal_year,
+                calendar_fiscal_year,
                 ry.year_value   fiscal_year,
                 dlid.department_id,
                 dlid.department_code,
@@ -490,7 +489,6 @@
                 award_method_id,
                 agreement_type_name,
 		        agreement_type_id,
-                expenditure_object_names,
                 description,
                 COALESCE(effective_begin_date,'1900-01-01') effective_begin_date,
                 COALESCE(effective_end_date,'9999-01-01') effective_end_date,
@@ -510,8 +508,8 @@
                 lower(rac.award_category_name) || '[' ||  rac.award_category_code || ']' award_category_name_code,
                 dc.document_code,
                 lower(award_method_name) || '[' || award_method_code || ']' award_method_name_code,
-                expenditure_object_codes,
-                expenditure_object_names,
+                case when is_prime_or_sub in ('S') then NULL else expenditure_object_codes end as expenditure_object_codes,
+                case when is_prime_or_sub in ('S') then NULL else expenditure_object_names end as expenditure_object_names,
                 (case when(latest_flag = 'Y') then 'Y' else 'N' end) latest_flag,
                 'Registered' status,
                 case when minority_type_id in (4,5,10) then 'Asian American' when minority_type_id in (2) then 'Black American' when minority_type_id in (7) then 'Non-M/WBE' when minority_type_id in (9) then 'Women' else minority_type_name end as minority_type_name,
