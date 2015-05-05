@@ -1008,7 +1008,8 @@ h3.grid_year_title {
     position: relative;
     z-index: 5000;
 }
-span.grid_export, span.exportSmartSearch span.summary_export {
+span.grid_export,
+span.exportSmartSearch {
     background: url("../images/export.png") no-repeat scroll right 0 transparent;
     color: #209AD6;
     cursor: pointer;
