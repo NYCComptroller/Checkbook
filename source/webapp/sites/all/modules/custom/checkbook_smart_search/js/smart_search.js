@@ -16,7 +16,7 @@
                                 window.location = ui.item.url;
                                 $("#edit-search-box").addClass('loadingtext');
                                 $("#edit-search-box").addClass('loadinggif');
-                                $("#edit-submit").addClass('loadingtext');
+                                $("#edit-submit").attr('src', 'sites/all/themes/checkbook/images/search_disabled.png');
                                 $("#edit-search-box").attr("readonly", "readonly");
                                 // This is to fix the issue with chrome when trying to disable the search button
                                 setTimeout(function(){
