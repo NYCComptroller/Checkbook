@@ -16,7 +16,9 @@
                                 window.location = ui.item.url;
                                 $("#edit-search-box").addClass('loadingtext');
                                 $("#edit-search-box").addClass('loadinggif');
-                                $("#edit-submit").attr('src', 'sites/all/themes/checkbook/images/search_disabled.png');
+                                var protocol = location.protocol;
+                                var url = location.host;
+                                $("#edit-submit").attr('src', protocol+'//'+url+'/sites/all/themes/checkbook/images/search_disabled.png');
                                 $("#edit-search-box").attr("readonly", "readonly");
                                 // This is to fix the issue with chrome when trying to disable the search button
                                 setTimeout(function(){
@@ -49,7 +51,9 @@
 			});
 		}
         $("#edit-submit").click(function(e) {
-            $("#edit-submit").attr('src', 'sites/all/themes/checkbook/images/search_disabled.png');
+            var protocol = location.protocol;
+            var url = location.host;
+            $("#edit-submit").attr('src', protocol+'//'+url+'/sites/all/themes/checkbook/images/search_disabled.png');
             $("#edit-search-box").addClass('loadingtext');
             $("#edit-search-box").addClass('loadinggif');
             $("#edit-search-box").attr("readonly", "readonly");
