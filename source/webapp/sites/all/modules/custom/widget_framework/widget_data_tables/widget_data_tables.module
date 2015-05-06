@@ -362,28 +362,36 @@ function widget_data_tables_widget_prepare($node){
     if(isset($node->widgetConfig->adjustDataTableOptions)){
         eval($node->widgetConfig->adjustDataTableOptions);
     }
-    $count = 0 ;
+    //Remove any columns with visibility = false from sorting
+    $sort_columns = array();
+    foreach($node->widgetConfig->table_columns as $column) {
+        if(check_node_flag_visibilty($column->visibility_flag, $node)) {
+            array_push($sort_columns, $column);
+        }
+    }
+
+    $count = 0;
     if(isset($node->widgetConfig->orderBy))
       $node->widgetConfig->orderBy = array($node->widgetConfig->orderBy);
     else
       $node->widgetConfig->orderBy = array();
     while($count < $_REQUEST['iSortingCols']){
-	//if($_REQUEST['iSortCol_0'] != NULL){
 	$index =  $count ;
-		$sort_column = $node->widgetConfig->table_columns[$_REQUEST['iSortCol_' . $index ]]->column;
-		if(isset($node->widgetConfig->table_columns[$_REQUEST['iSortCol_' . $index ]]->sortSourceColumn)){
-			$sort_actual_column = $node->widgetConfig->table_columns[$_REQUEST['iSortCol_' . $index ]]->sortSourceColumn;
-		}
-		else{
-			foreach($node->widgetConfig->columns as $column)
-				if($sort_column ==  str_replace('.', '_',$column) )
-					$sort_actual_column = $column;
-		}
+
+        $sort_column = $sort_columns[$_REQUEST['iSortCol_' . $index ]]->column;
+        if(isset($sort_columns[$_REQUEST['iSortCol_' . $index ]]->sortSourceColumn)){
+            $sort_actual_column = $sort_columns[$_REQUEST['iSortCol_' . $index ]]->sortSourceColumn;
+        }
+        else{
+            foreach($node->widgetConfig->columns as $column)
+                if($sort_column ==  str_replace('.', '_',$column) )
+                    $sort_actual_column = $column;
+        }
+
 		if($_REQUEST['sSortDir_' . $index] == 'desc')
 			$node->widgetConfig->orderBy[]  = '-' . $sort_actual_column;
 		else 
-			$node->widgetConfig->orderBy[] =  $sort_actual_column ;		
-	//}
+			$node->widgetConfig->orderBy[] =  $sort_actual_column ;
 		$count += 1;
     }
 
