@@ -1149,11 +1149,6 @@ class SpendingUtil{
 
     static function getSpentToDateTitle($widgetTitle){
         $title = RequestUtil::getDashboardTitle();
-
-        if (strpos($title,'Sub Vendors') !== false && strpos($widgetTitle,'Sub Vendors') !== false) {
-            $widgetTitle = 'Spending';
-        }
-
         return ($title . " " . $widgetTitle . " Transactions");
     }
     

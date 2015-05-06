@@ -95,7 +95,7 @@ return $footer;
     "templateTitle":"Sub Vendor Spending Transactions",
     "preprocess_data":"
         $dashboard = _getRequestParamValue('dashboard');
-        $title = $dashboard == 'ms' ? 'M/WBE Sub Vendors Spending Transactions' : SpendingUtil::getSpentToDateTitle('Sub Vendors Spending');
+        $title = $dashboard == 'ms' ? 'M/WBE Sub Vendor Spending Transactions' : SpendingUtil::getSpentToDateTitle('Sub Vendor Spending Transactions');
         $node->widgetConfig->summaryView->templateTitle =$title;
 "
 },
