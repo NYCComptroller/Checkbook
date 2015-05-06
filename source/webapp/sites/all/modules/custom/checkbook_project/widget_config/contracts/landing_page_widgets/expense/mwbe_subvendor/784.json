@@ -100,7 +100,7 @@ return $footer;
     "template":"contract_summary_expense_expense",
     "entityColumnName":"subvendor_subvendor_legal_name",
     "templateTitle":"Sub Vendor Spending Transactions",
-    "preprocess_data":"$node->widgetConfig->summaryView->templateTitle = SpendingUtil::getSpentToDateTitle('Sub Vendor Spending Transactions');"
+    "preprocess_data":"$node->widgetConfig->summaryView->templateTitle = SpendingUtil::getSpentToDateTitle('Sub Vendor Spending');"
 },
 "widgetTitle":"Sub Vendors",
 "table_title":"",
