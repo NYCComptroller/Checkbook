@@ -481,7 +481,7 @@ namespace { //global
          */
         static public function getSubVendorSpentToDateLinkUrl($node,$row){
             $dashboard = _getRequestParamValue("dashboard");
-            $url = "/contract/spending/transactions/subvendor/" . $row["subvendor_subvendor"]
+            $url = "/contract/spending/transactions/csubvendor/" . $row["subvendor_subvendor"]
                 . _checkbook_append_url_params()
                 . _checkbook_project_get_url_param_string("status")
                 . _checkbook_project_get_url_param_string("agency","cagency")
