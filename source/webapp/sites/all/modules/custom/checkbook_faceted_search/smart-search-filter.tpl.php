@@ -85,6 +85,7 @@ foreach ($render_array as $title => $value) {
             if (is_array($v)) {
                 $checked = (in_array('checked', $v)) ? ' checked="checked" ' : '';
                 $active = ($checked) ? ' class="active"' : '';
+                $id .= (in_array('checked', $v)) ? '_checked' : '_unchecked';
                 echo '<div class="row">';
                 echo '<div class="checkbox">';
                 if ($v[0]) {
@@ -108,6 +109,7 @@ foreach ($render_array as $title => $value) {
                             if (is_array($sub_cat)) {
                                 $checked = (in_array('checked', $sub_cat)) ? ' checked="checked" ' : '';
                                 $active = ($checked) ? ' class="active"' : '';
+                                $id .= (in_array('checked', $v)) ? '_checked' : '_unchecked';
                                 echo '<div class="row">';
                                 echo '<div class="checkbox">';
                                 if ($sub_cat[0]) {
@@ -123,8 +125,8 @@ foreach ($render_array as $title => $value) {
                                 echo '<div class="number"><span' . $active . '>' . number_format($sub_cat[2]) . '</span></div>';
                                 echo '</div>';
                             }
-                            $sub_index++;
                         }
+                        $sub_index++;
                         echo '</div></div></div>';
                     }
                 }
@@ -297,7 +299,7 @@ foreach ($render_array as $title => $value) {
             if ($value['checked']) {
                 $checked_index = 0;
                 foreach ($value['checked'] as $row) {
-                    $id = $id_title.$checked_index;
+                    $id = $id_title.$checked_index.'_checked';
                     $yearID = _getYearIDFromValue($row[0]);
                     if($title == 'Fiscal Year'){
                         if($yearID <= _getFiscalYearID()){
@@ -323,7 +325,7 @@ foreach ($render_array as $title => $value) {
             if ($value['unchecked']) {
                 $unchecked_index = 0;
                 foreach ($value['unchecked'] as $row) {
-                    $id = $id_title.$unchecked_index;
+                    $id = $id_title.$unchecked_index.'_unchecked';
                     $yearID = _getYearIDFromValue($row[0]);
                     if($title == 'Fiscal Year'){
                         if($yearID <= _getFiscalYearID()){
