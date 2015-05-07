@@ -11,8 +11,9 @@
     "autocompleteField":"agency.agency.agency_name", 
     "maxSelect":1,
     "urlParamMap":{
-				"doctype":"document_code.document_code.document_code"
-			  }  ,
+        "doctype":"document_code.document_code.document_code",
+        "cagency":"agency.agency"
+    },
     "adjustParameters":"
         if(isset($parameters['disb_vendor_type'])){
             $parameters['disb_vendor_type'] = MappingUtil::getVendorTypeValue($parameters['disb_vendor_type']);
