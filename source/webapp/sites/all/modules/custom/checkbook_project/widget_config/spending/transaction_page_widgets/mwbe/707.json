@@ -179,7 +179,7 @@
         {
             "column":"is_sub_vendor",
             "sourceColumn":"disb_vendor_type",
-            "sql":"case when is_prime_or_sub = 'P' then 'No' else 'Yes' end as disb_vendor_type"
+            "sql":"case when is_prime_or_sub = 'P' then 'No' else 'Yes' end as disb_vendor"
         }
     ],
     "adjustParameters":"
