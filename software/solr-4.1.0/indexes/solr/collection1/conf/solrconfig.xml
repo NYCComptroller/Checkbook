@@ -103,7 +103,7 @@
        replication is in use, this should match the replication
        configuration.
     -->
-  <dataDir>${solr.data.dir:/opt/solr-4.1.0/indexes/solr/data}</dataDir>
+  <dataDir>${solr.data.dir:/home/solr/solr_data}</dataDir>
 
 
   <!-- The DirectoryFactory to use for indexes.
@@ -304,6 +304,7 @@
     -->
 
   <!-- The default high-performance update handler -->
+
   <updateHandler class="solr.DirectUpdateHandler2">
 
     <!-- Enables a transaction log, used for real-time get, durability, and
@@ -313,7 +314,7 @@
          "dir" - the target directory for transaction logs, defaults to the
                 solr data directory.  --> 
     <updateLog>
-      <str name="dir">${solr.ulog.dir:}</str>
+      <str name="dir">${solr.ulog.dir:/home/solr/solr_data}</str>
     </updateLog>
  
     <!-- AutoCommit
@@ -386,7 +387,7 @@
       -->
 
   </updateHandler>
-  
+ 
   <!-- IndexReaderFactory
 
        Use the following format to specify a custom IndexReaderFactory,
