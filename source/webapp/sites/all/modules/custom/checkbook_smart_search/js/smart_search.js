@@ -16,14 +16,15 @@
                                 window.location = ui.item.url;
                                 $("#edit-search-box").addClass('loadingtext');
                                 $("#edit-search-box").addClass('loadinggif');
+                                $("#edit-search-box").attr("readonly", "readonly");
                                 var protocol = location.protocol;
                                 var url = location.host;
                                 $("#edit-submit").attr('src', protocol+'//'+url+'/sites/all/themes/checkbook/images/search_disabled.png');
-                                $("#edit-search-box").attr("readonly", "readonly");
                                 // This is to fix the issue with chrome when trying to disable the search button
                                 setTimeout(function(){
                                     $("#edit-submit").attr("disabled", 'disabled');
-                                }, 1);
+                                    $("#edit-search-box").attr("disabled", "disabled");
+                                }, 10);
                                 return false;
                         }
             })
@@ -53,14 +54,15 @@
         $("#edit-submit").click(function(e) {
             var protocol = location.protocol;
             var url = location.host;
-            $("#edit-submit").attr('src', protocol+'//'+url+'/sites/all/themes/checkbook/images/search_disabled.png');
             $("#edit-search-box").addClass('loadingtext');
             $("#edit-search-box").addClass('loadinggif');
             $("#edit-search-box").attr("readonly", "readonly");
+            $("#edit-submit").attr('src', protocol+'//'+url+'/sites/all/themes/checkbook/images/search_disabled.png');
             // This is to fix the issue with chrome when trying to disable the search button
             setTimeout(function(){
                 $("#edit-submit").attr("disabled", 'disabled');
-            }, 1);
+                $("#edit-search-box").attr("disabled", "disabled");
+            }, 10);
         });
     });
     Drupal.behaviors.exportSmartSearchTransactions = {
