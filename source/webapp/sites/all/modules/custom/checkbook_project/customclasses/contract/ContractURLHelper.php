@@ -263,7 +263,7 @@ class ContractURLHelper{
              .  ($row['master_agreement_yn'] == 'Y' ? $vendor_url : '/svendor/' . $row['vendor_id'])
              .  ($row['master_agreement_yn'] == 'Y' ? '' : ('/scomline/'.$row['fms_commodity_line']))
              .  $year_url
-             . _checkbook_project_get_url_param_string('agency')
+//             . _checkbook_project_get_url_param_string('agency')
              . _checkbook_project_get_url_param_string('vendor')
              . _checkbook_append_url_params()
              .  "/newwindow' class='new_window'>" . custom_number_formatter_basic_format($row['spending_amount_disb']) . '</a>';
