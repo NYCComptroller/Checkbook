@@ -3040,7 +3040,7 @@ body.page-node-804 #section-header {
 
 /* Hide underlying checkbox */
 input[type=checkbox] {
-display:none;
+    display:none;
 }
 
 /* Not Checked */
@@ -3056,10 +3056,12 @@ input[type=checkbox] + label:before {
     border-radius: 4px;
 }
 /* Checked */
-input[type=checkbox]:checked + label:before {
-    content:"\2714";
+input[type=checkbox]:checked:enabled + label:before {
     color:white;
     background-color: #209AD6;
+    background-image: url("../images/check_white.png");
+    background-position: center center;
+    background-repeat: no-repeat;
     text-align:center;
     line-height:15px;
     text-shadow:0px 0px 3px #eee;
@@ -3067,8 +3069,9 @@ input[type=checkbox]:checked + label:before {
 }
 /* Checked & Disabled */
 input[type=checkbox]:checked:disabled + label:before {
-    content:"\2714";
-    color:#bbb;
+    background-image: url("../images/check_grey.png");
+    background-position: center center;
+    background-repeat: no-repeat;
     background-color: #eee;
     text-align:center;
     line-height:15px;
