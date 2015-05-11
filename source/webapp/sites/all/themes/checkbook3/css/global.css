@@ -3027,7 +3027,7 @@ body.page-node-804 #section-header {
 }
 
 .loadinggif {
-    background: url(/sites/all/themes/checkbook/images/loading.gif) no-repeat center;
+    background: url(/sites/all/themes/checkbook/images/loading_large.gif) no-repeat center;
 }
 .loadingtext {
     opacity:0.5;
