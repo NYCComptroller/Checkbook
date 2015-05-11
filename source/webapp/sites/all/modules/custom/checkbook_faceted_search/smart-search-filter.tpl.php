@@ -114,7 +114,7 @@ foreach ($render_array as $title => $value) {
                                 echo '<div class="checkbox">';
                                 if ($sub_cat[0]) {
                                     if($a == 'Status'){
-                                        echo '<input id="'.$id.'" name="' . $name . '" type="radio"' . $checked . 'value="' . $sub_cat[0] . '" onClick="javascript:applySearchFilters();">';
+                                        echo '<input id="'.$id.'" name="' . $name . '" type="radio"' . $checked . 'value="' . $sub_cat[0] . '" onClick="javascript:applySearchFilters();" class="radio-blue">';
                                     }
                                     else{
                                         echo '<input id="'.$id.'" name="' . $name . '" type="checkbox"' . $checked . 'value="' . $sub_cat[0] . '" onClick="javascript:applySearchFilters();">';
