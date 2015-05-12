@@ -9,7 +9,7 @@
             {
                   "labelAlias": "agency_name",
               "column": "agency_agency_agency_name",
-                  "sortColumn":"sort_order"
+                  "sortColumn":"agency_agency_agency_name"
              },
             {
                   "colLabel": "recognized",

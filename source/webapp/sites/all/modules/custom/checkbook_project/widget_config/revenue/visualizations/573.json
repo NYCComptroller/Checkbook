@@ -9,7 +9,7 @@
             {
                   "labelAlias": "revenue_category",
               "column": "category_category_revenue_category_name",
-                  "sortColumn":"sort_order"
+                  "sortColumn":"category_category_revenue_category_name"
              },
             {
                   "colLabel": "recognized",
