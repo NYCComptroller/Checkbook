@@ -8,7 +8,7 @@
     "table_columns": [
             {
                   "labelAlias": "expense_category",
-              "column": "object_class_name_object_class_name"
+              "column": "object_class_name_object_class_name",
                 "sortColumn": "object_class_name_object_class_name"
              },
             {
