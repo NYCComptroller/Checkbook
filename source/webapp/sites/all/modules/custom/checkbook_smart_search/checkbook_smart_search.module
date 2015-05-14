@@ -157,9 +157,9 @@ function checkbook_smart_search_form($form, $form_state){
         '#maxlength' => 100,
     );
     $form['submit'] = array(
-        '#type' => 'image_button',
-        '#value' => t(' '),
-        '#src' => 'sites/all/themes/checkbook/images/search_button.png',
+        '#type' => 'submit',
+        '#value' => t('Search'),
+        //'#src' => 'sites/all/themes/checkbook/images/search_button.png',
         '#submit' => array('_checkbook_smart_search_submit')
     );
     $form['#attached'] = array(
