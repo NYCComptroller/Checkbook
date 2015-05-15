@@ -196,6 +196,24 @@ function checkbook_datafeeds_tracking_status($form, &$form_state) {
         ),
     );
     if ($results) {
+
+        $date_expires = strtotime($results['file_generated_time'] . ' + 1 week');
+        $now = time();
+        $expired = $now > $date_expires;
+        if($expired) {
+            $output['status-fieldset']['available_date'] = array(
+                '#markup' => 'Your download link has expired.  Please create a new data feeds request.',
+                '#prefix' => '<p>',
+                '#suffix' => '</p>',
+            );
+            $output['cancel'] = array(
+                '#type' => 'submit',
+                '#value' => t('Cancel'),
+                '#submit' => array('checkbook_datafeeds_tracking_form_cancel'),
+            );
+            return $output;
+        }
+
         $usercriteria = $results['user_criteria'];
         $output['columns-fieldset'] = array(
             '#title' => t('Selected Columns'),
@@ -1032,7 +1050,7 @@ function checkbook_datafeeds_process_budget_values($form, $form_state) {
         'global' => array(
             'type_of_data' => 'Budget',
             'records_from' => 1,
-            'max_records' => 50000,
+            'max_records' => 200000,
         ),
     );
     $criteria['responseColumns'] = $values['column_select'];
@@ -2205,7 +2223,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
             //Set data source for query
             'type_of_data' => $data_source == 'checkbook_oge' ? 'Contracts_OGE' : 'Contracts',
             'records_from' => 1,
-            'max_records' => 50000,
+            'max_records' => 200000,
         ),
     );
 
@@ -3065,7 +3083,7 @@ function checkbook_datafeeds_process_payroll_values($form, &$form_state) {
         'global' => array(
             'type_of_data' => 'Payroll',
             'records_from' => 1,
-            'max_records' => 50000,
+            'max_records' => 200000,
         ),
         'responseColumns' => $values['column_select']
     );
@@ -3693,7 +3711,7 @@ function checkbook_datafeeds_process_revenue_values($form, &$form_state) {
         'global' => array(
             'type_of_data' => 'Revenue',
             'records_from' => 1,
-            'max_records' => 50000,
+            'max_records' => 200000,
         ),
         'responseColumns' => $values['column_select'],
     );
@@ -5010,7 +5028,7 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
             //Set data source for query
             'type_of_data' => $data_source == 'checkbook_oge' ? 'Spending_OGE' : 'Spending',
             'records_from' => 1,
-            'max_records' => 50000,
+            'max_records' => 200000,
         ),
         'responseColumns' => $values['column_select'],
     );
@@ -5960,7 +5978,7 @@ function checkbook_datafeeds_queue_final($form, &$form_state) {
     }
     else {
         $form['text'] = array(
-            '#markup' => '<strong>Thank You</strong><br /><br />Your request has been received.<br /><br />You can track the status of your request by entering your tracking number <strong>' . $token . '</strong>&nbsp;in the "Track Status of Data Feed" box on this page.<br /><br />Please not that due to high number of requests, there may be delay in notification.<br /><br />You will have 7 days to use this tracking number to return to your queries.<br /><br /><a href="/data-feeds">Back</a>',
+            '#markup' => '<strong>Thank You</strong><br /><br />Your request has been received.<br /><br />You can track the status of your request by entering your tracking number <strong>' . $token . '</strong>&nbsp;in the "Track Status of Data Feed" box on this page.<br /><br />Please not that due to high number of requests, there may be delay in notification.<br /><br />You will have 7 days to use this tracking number to return to your queries.',
         );
     }
     return $form;
@@ -6043,7 +6061,7 @@ function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $crit
             '#value' => t('Cancel'),
         );
     }
-    elseif ($recordcount > 0 && $recordcount < 50000) {
+    elseif ($recordcount > 0 && $recordcount < 200000) {
         if (isset($checkBookApi)) {
             if ($checkBookApi->validateRequest()) {
                 $form_state['step_information']['confirmation']['response'] = $checkBookApi->getData();
@@ -6201,7 +6219,6 @@ function checkbook_datafeeds_format_columns() {
     }
     return $selected_columns;
 }
-
 
 /**
  * Output download links and expiration date message.
