@@ -293,4 +293,28 @@ class QueueUtil {
     $rows_affected = $db_update_query->execute();
     return $rows_affected;
   }
+
+    /**
+     * @param $token
+     * @return DatabaseStatementInterface
+     */
+    static function incrementDownloadCount($token) {
+        $sql = "SELECT job.job_id,job.download_count
+                FROM custom_queue_request qr
+                JOIN custom_queue_job job on qr.job_id = job.job_id
+                WHERE qr.token = :token";
+        $job_details = db_query($sql, array(':token' => $token))->fetchAssoc();
+
+        if (isset($job_details['download_count']) && isset($job_details['job_id'])) {
+            $job_id = $job_details['job_id'];
+            $download_count = $job_details['download_count'] + 1;
+            $db_update_query = db_update("custom_queue_job")->fields(array(
+                'download_count' => $download_count,
+            ))
+                ->condition('job_id', $job_id);
+            $rows_affected = $db_update_query->execute();
+        }
+
+        return $rows_affected;
+    }
 }
