@@ -48,6 +48,12 @@ function checkbook_datafeeds_menu() {
         'page callback' => 'checkbook_datafeeds_tracking_results_page',
         'access callback' => TRUE,
     );
+    $items['data-feeds/download'] = array(
+        'title' => 'Checkbook Alerts',
+        'page callback' => 'checkbook_datafeeds_download_zip_ajax',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
     return $items;
 }
 
@@ -106,6 +112,14 @@ function checkbook_datafeeds_api_page() {
  */
 function checkbook_datafeeds_tracking_form() {
     $form = array();
+
+    // Include the JavaScript for our pseudo-trigger.
+    $form['#attached'] = array(
+        'js' => array(
+            'type' => 'file',
+            'data' => drupal_get_path('module', 'checkbook_datafeeds') . '/js/common.js',
+        )
+    );
     $form['text'] = array(
         '#markup' => '<p>To track status of data feed requests, please enter your tracking number:</p>'
     );
@@ -5952,7 +5966,7 @@ function checkbook_datafeeds_queue_final($form, &$form_state) {
     $status = $form_state['step_information']['queue']['stored_values']['details']['status'];
     if ($email) {
         $form['text'] = array(
-            '#markup' => '<strong>Thank You</strong><br /><br />Your request has been received.<br /><br />You will receive an email at ' . $email . ' with the link to download the data feed.<br />Please note that due to a possible high number of requests, there may be a delay in notification.<br /><br />You can track the status of your request by entering your tracking number: <strong>' . $token . '</strong>&nbsp;in the "Track Status of Data Feed" box on this page.<br /><br />You will have 7 days to use this tracking number to return to your queries.',
+            '#markup' => '<strong>Thank You</strong><br /><br />Your request has been received.<br /><br />You will receive an email at ' . $email . ' with the link to download the data feed.<br />Please note that due to a possible high number of requests, there may be a delay in notification.<br /><br />You can track the status of your request by entering your tracking number: <strong>' . $token . '</strong>&nbsp;in the "Track Status of Data Feed" box on this page.<br /><br />You will have 7 days to use this tracking number to return to your results.',
         );
         if ($status == '2') {
             $request = QueueUtil::getPendingEmailInfo($token);
@@ -5978,7 +5992,7 @@ function checkbook_datafeeds_queue_final($form, &$form_state) {
     }
     else {
         $form['text'] = array(
-            '#markup' => '<strong>Thank You</strong><br /><br />Your request has been received.<br /><br />You can track the status of your request by entering your tracking number <strong>' . $token . '</strong>&nbsp;in the "Track Status of Data Feed" box on this page.<br /><br />Please not that due to high number of requests, there may be delay in notification.<br /><br />You will have 7 days to use this tracking number to return to your queries.',
+            '#markup' => '<strong>Thank You</strong><br /><br />Your request has been received.<br /><br />You can track the status of your request by entering your tracking number <strong>' . $token . '</strong>&nbsp;in the "Track Status of Data Feed" box on this page.<br /><br />Please not that due to high number of requests, there may be delay in notification.<br /><br />You will have 7 days to use this tracking number to return to your results.',
         );
     }
     return $form;
@@ -6220,6 +6234,14 @@ function checkbook_datafeeds_format_columns() {
     return $selected_columns;
 }
 
+/*
+ * Function to hook into link to download the zip file for the data feeds from the server.
+ * Used to track number of users that have downloaded the file.
+ */
+function checkbook_datafeeds_download_zip_ajax($token) {
+    QueueUtil::incrementDownloadCount($token);
+}
+
 /**
  * Output download links and expiration date message.
  *
@@ -6238,14 +6260,20 @@ function checkbook_datafeeds_file_download_page($results) {
         '#type' => 'fieldset',
     );
     $filesize = filesize($results['file_path']);
+    $file_path = explode('/', $results['file_path']);
+    $file_name = $conf['check_book']['data_feeds']['site_url'] . '/' . $results['file_path'];
+//    $file_name = end($file_path);
     $output['status-fieldset']['uncompressed'] = array(
-        '#markup' => '<strong>Status:</strong><br>The file is ready for download: <a href="/' . $results['file_path'] . '">' . $conf['check_book']['data_feeds']['site_url'] . '/' . $results['file_path'] . '</a> (' . format_bytes($filesize) . ')',
+        '#markup' => '<strong>Status:</strong><br>The file is ready for download: <a href="/' . $results['file_path'] . '" class="link-download-datafeeds-zip">' . $file_name . '</a> (' . format_bytes($filesize) . ')',
         '#prefix' => '<p>',
         '#suffix' => '</p>',
     );
     $cfilesize = filesize($results['compressed_file_path']);
+    $cfile_path = explode('/', $results['compressed_file_path']);
+    $cfile_name = $conf['check_book']['data_feeds']['site_url'] . '/' . $results['compressed_file_path'];
+//    $cfile_name = end($cfile_path);
     $output['status-fieldset']['compressed'] = array(
-        '#markup' => 'Download the file in a compressed format (zip): <a href="/' . $results['compressed_file_path'] . '">' . $conf['check_book']['data_feeds']['site_url'] . '/' . $results['compressed_file_path'] . '</a> (' . format_bytes($cfilesize) . ')',
+        '#markup' => 'Download the file in a compressed format (zip): <a href="/' . $results['compressed_file_path'] . '" class="link-download-datafeeds-zip">' . $cfile_name . '</a> (' . format_bytes($cfilesize) . ')',
         '#prefix' => '<p>',
         '#suffix' => '</p>',
     );
@@ -6262,19 +6290,17 @@ function checkbook_datafeeds_file_download_page($results) {
  */
 function checkbook_datafeeds_mail($key, &$message, $params) {
     global $conf;
-    $variables = array('@site-name' => variable_get('site_name', 'Drupal'));
-    $variables['@download_url'] = $conf['check_book']['data_feeds']['site_url'] . "/" . $params['download_url'];
-    $variables['@download_url_compressed'] = $conf['check_book']['data_feeds']['site_url'] . "/" . $params['download_url_compressed'];
     $variables['@tracking_num'] = $params['tracking_num'];
     $variables['@expiration_date'] = $params['expiration_date'];
+    $variables['@download_link'] = $conf['check_book']['data_feeds']['site_url'] . "/" . "track-data-feed?code=" . $params['tracking_num'];
     switch ($key) {
         case "download_notification":
             $message['subject'] = "Your requested file is ready for download";
             $message['body'][] = t("
-Your data feed is ready to download at @download_url \n
+Your data feed is ready to download.  Please click the following link to download the results: \n
+@download_link \n
 The file is available to download until @expiration_date \n
-A compressed version of the file is available at @download_url_compressed \n
-You had provided your email address at @site-name for notfication when the data feed with the tracking number @tracking_num was ready to be downloaded.
+You had provided your email address at Checkbook NYC for notfication when the data feed with the tracking number @tracking_num was ready to be downloaded.
 		        ", $variables);
             break;
     }
