@@ -3026,13 +3026,55 @@ body.page-node-804 #section-header {
     margin-bottom: 0px;
 }
 
+.transparent {
+    /* Theoretically for IE 8 & 9 (more valid) */
+    /* ...but not required as filter works too */
+    /* should come BEFORE filter */
+    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+
+    /* This works in IE 8 & 9 too */
+    /* ... but also 5, 6, 7 */
+    filter: alpha(opacity=50);
+
+    /* Older than Firefox 0.9 */
+    -moz-opacity:0.5;
+
+    /* Safari 1.x (pre WebKit!) */
+    -khtml-opacity: 0.5;
+
+    /* Modern!
+    /* Firefox 0.9+, Safari 2?, Chrome any?
+    /* Opera 9+, IE 9+ */
+    opacity: 0.5;
+}
+
 .loadinggif {
     background: url(/sites/all/themes/checkbook/images/loading_large.gif) no-repeat center;
-    opacity:0.5;
-    filter: alpha(opacity=50); /* For IE8 and earlier */
+
+    /* Theoretically for IE 8 & 9 (more valid) */
+    /* ...but not required as filter works too */
+    /* should come BEFORE filter */
+    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+
+    /* This works in IE 8 & 9 too */
+    /* ... but also 5, 6, 7 */
+    filter: alpha(opacity=50);
+
+    /* Older than Firefox 0.9 */
+    -moz-opacity:0.5;
+
+    /* Safari 1.x (pre WebKit!) */
+    -khtml-opacity: 0.5;
+
+    /* Modern!
+    /* Firefox 0.9+, Safari 2?, Chrome any?
+    /* Opera 9+, IE 9+ */
+    opacity: 0.5;
 }
+
 .disable_button {
     color:#A4A9AD !important;
+    -khtml-opacity: 0.5;
 }
 
 /* CSS to style checkboxes */
@@ -3137,4 +3179,18 @@ input[type=radio]:checked:enabled.radio-blue + label:before {
     background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ffffff',GradientType=0);
     background-color:#f6f6f6;
+}
+#rotator{
+    float: left;
+    height: 200px;
+    margin-left: 450px;
+    margin-top: 55px;
+    position: absolute;
+    width: 200px;
+    z-index: 10;
+    display:none;
+}
+
+.disable_me{
+    pointer-events:none;
 }

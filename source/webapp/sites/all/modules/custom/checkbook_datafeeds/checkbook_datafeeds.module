@@ -20,7 +20,7 @@
 
 
 module_load_include('php', 'checkbook_datafeeds', 'config/util/DatafeedsConfigUtil');
-
+drupal_add_js(drupal_get_path('module', 'checkbook_datafeeds'). '/js/rotator.js');
 /**
  * Implements hook_menu().
  */
@@ -367,6 +367,9 @@ function checkbook_datafeeds_data_feeds_page() {
         '#markup' => '</div></div>',
     );
     $page['data-feed-wizard'] = drupal_get_form('checkbook_datafeeds_data_feed_wizard');
+    $page['rotator'] = array(
+        '#markup' => '<div id= "rotator"></div>',
+    );
     return $page;
 }
 

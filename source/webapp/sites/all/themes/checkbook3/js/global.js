@@ -2174,7 +2174,54 @@ Drupal.behaviors.disableClickTopNav = {
 
 // end of disabling code
 
+//Datafeeds form freeze while loading
+Drupal.behaviors.datafeedspagefreeze = {
+    attach:function (context, settings) {
+        function formfreeze(e){
+            jQuery("#block-system-main").addClass('transparent');
+            jQuery('.data-feeds-wizard a').addClass('disable_me');
+            jQuery('.data-feeds-wizard li').addClass('disable_me');
+            setTimeout(function(){
+                jQuery("#checkbook-datafeeds-data-feed-wizard :input").attr("disabled", "disabled");
+                jQuery("#checkbook-datafeeds-tracking-form :input").attr("disabled", "disabled");
+            }, 1);
+        }
 
-
-
+        function rotator(e){
+            var timer = 65;
+            jQuery("#rotator").css('display', 'block');
+            jQuery("#rotator").rotator({
+                starting: 0,
+                ending: 100,
+                percentage: true,
+                color: '#389be2',
+                lineWidth: 3,
+                timer: timer,
+                radius: 40,
+                fontStyle: 'Calibri',
+                fontSize: '20pt',
+                fontColor: 'black',
+                backgroundColor: 'lightgray',
+                callback: function () {
+                }
+            });
+        }
+        jQuery("#edit-type-next").click(formfreeze);
+        jQuery("#edit-type-next").click(rotator);
+        jQuery("#edit-prev").click(formfreeze);
+        jQuery("#edit-revenue-next").click(formfreeze);
+        jQuery("#edit-payroll-next").click(formfreeze);
+        jQuery("#edit-spending-next").click(formfreeze);
+        jQuery("#edit-contracts-next").click(formfreeze);
+        jQuery("#edit-budget-next").click(formfreeze);
+        jQuery("#edit-revenue-next").click(rotator);
+        jQuery("#edit-payroll-next").click(rotator);
+        jQuery("#edit-spending-next").click(rotator);
+        jQuery("#edit-contracts-next").click(rotator);
+        jQuery("#edit-budget-next").click(rotator);
+        jQuery("#edit-confirm").click(rotator);
+        jQuery("#edit-confirm").click(formfreeze);
+        jQuery("#edit-cancel").click(formfreeze);
+    }
+};
 
