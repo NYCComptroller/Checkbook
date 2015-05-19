@@ -6267,7 +6267,7 @@ function checkbook_datafeeds_file_download_page($results) {
     $file_name = $conf['check_book']['data_feeds']['site_url'] . '/' . $results['file_path'];
 //    $file_name = end($file_path);
     $output['status-fieldset']['uncompressed'] = array(
-        '#markup' => '<strong>Status:</strong><br>The file is ready for download: <a href="/' . $results['file_path'] . '" class="link-download-datafeeds-zip">' . $file_name . '</a> (' . format_bytes($filesize) . ')',
+        '#markup' => '<strong>Status:</strong><br>The file is ready for download: <a href="/' . $results['file_path'] . '" class="link-download-datafeeds-zip" oncontextmenu="return false;">' . $file_name . '</a> (' . format_bytes($filesize) . ')',
         '#prefix' => '<p>',
         '#suffix' => '</p>',
     );
@@ -6276,7 +6276,7 @@ function checkbook_datafeeds_file_download_page($results) {
     $cfile_name = $conf['check_book']['data_feeds']['site_url'] . '/' . $results['compressed_file_path'];
 //    $cfile_name = end($cfile_path);
     $output['status-fieldset']['compressed'] = array(
-        '#markup' => 'Download the file in a compressed format (zip): <a href="/' . $results['compressed_file_path'] . '" class="link-download-datafeeds-zip">' . $cfile_name . '</a> (' . format_bytes($cfilesize) . ')',
+        '#markup' => 'Download the file in a compressed format (zip): <a href="/' . $results['compressed_file_path'] . '" class="link-download-datafeeds-zip" oncontextmenu="return false;">' . $cfile_name . '</a> (' . format_bytes($cfilesize) . ')',
         '#prefix' => '<p>',
         '#suffix' => '</p>',
     );
