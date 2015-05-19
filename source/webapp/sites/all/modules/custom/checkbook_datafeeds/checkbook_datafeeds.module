@@ -20,7 +20,7 @@
 
 
 module_load_include('php', 'checkbook_datafeeds', 'config/util/DatafeedsConfigUtil');
-drupal_add_js(drupal_get_path('module', 'checkbook_datafeeds'). '/js/rotator.js');
+//drupal_add_js(drupal_get_path('module', 'checkbook_datafeeds'). '/js/rotator.js');
 /**
  * Implements hook_menu().
  */
@@ -141,7 +141,7 @@ function checkbook_datafeeds_tracking_form_submit($form, &$form_state) {
     $code = $form_state['values']['tracking_number'];
     $form_state['redirect'] = array(
         'track-data-feed',
-        array('query' => array('code' => $code))
+        array('query' => array('code' => $code,'tn' => '1'))
     );
 }
 
@@ -215,8 +215,9 @@ function checkbook_datafeeds_tracking_status($form, &$form_state) {
         $now = time();
         $expired = $now > $date_expires;
         if($expired) {
+            $msg = check_plain($_REQUEST['tn']) == 1 ? 'tracking number' : 'download link';
             $output['status-fieldset']['available_date'] = array(
-                '#markup' => 'Your download link has expired.  Please create a new data feeds request.',
+                '#markup' => 'Your '.$msg.' has expired.  Please create a new data feeds request.',
                 '#prefix' => '<p>',
                 '#suffix' => '</p>',
             );
