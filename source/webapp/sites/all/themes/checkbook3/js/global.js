@@ -2179,6 +2179,8 @@ Drupal.behaviors.datafeedspagefreeze = {
     attach:function (context, settings) {
         function formfreeze(e){
             jQuery("#block-system-main").addClass('transparent');
+            jQuery("#checkbook-datafeeds-data-feed-wizard").addClass('disable_me');
+            jQuery("#checkbook-datafeeds-tracking-form").addClass('disable_me');
             jQuery('.data-feeds-wizard a').addClass('disable_me');
             jQuery('.data-feeds-wizard li').addClass('disable_me');
             setTimeout(function(){
@@ -2222,6 +2224,26 @@ Drupal.behaviors.datafeedspagefreeze = {
         jQuery("#edit-confirm").click(rotator);
         jQuery("#edit-confirm").click(formfreeze);
         jQuery("#edit-cancel").click(formfreeze);
+    }
+};
+
+
+//Advanced search form freeze while loading
+Drupal.behaviors.advancedsearchfreeze = {
+    attach:function (context, settings) {
+        function formfreeze(e){
+            jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form").addClass('transparent');
+            jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form").addClass('disable_me');
+            setTimeout(function(){
+                jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form :input").attr("disabled", "disabled");
+            }, 1);
+        }
+
+        jQuery("#edit-spending-submit").click(formfreeze);
+        jQuery("#edit-revenue-submit").click(formfreeze);
+        jQuery("#edit-budget-submit").click(formfreeze);
+        jQuery("#edit-contracts-submit").click(formfreeze);
+        jQuery("#edit-payroll-submit").click(formfreeze);
     }
 };
 
