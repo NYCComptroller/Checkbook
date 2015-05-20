@@ -2212,12 +2212,12 @@ Drupal.behaviors.datafeedspagefreeze = {
         jQuery("#edit-revenue-next").click(formfreeze);
         jQuery("#edit-payroll-next").click(formfreeze);
         jQuery("#edit-spending-next").click(formfreeze);
-        jQuery("#edit-contracts-next").click(formfreeze);
+        jQuery("#edit-contract-next").click(formfreeze);
         jQuery("#edit-budget-next").click(formfreeze);
         jQuery("#edit-revenue-next").click(rotator);
         jQuery("#edit-payroll-next").click(rotator);
         jQuery("#edit-spending-next").click(rotator);
-        jQuery("#edit-contracts-next").click(rotator);
+        jQuery("#edit-contract-next").click(rotator);
         jQuery("#edit-budget-next").click(rotator);
         jQuery("#edit-confirm").click(rotator);
         jQuery("#edit-confirm").click(formfreeze);
