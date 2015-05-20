@@ -2211,7 +2211,7 @@ Drupal.behaviors.datafeedspagefreeze = {
         // Datafeeds form disable
         jQuery("#edit-type-next").click(formfreeze_datafeeds);
         jQuery("#edit-type-next").click(rotator);
-        jQuery("#edit-prev").click(formfreeze);
+        jQuery("#edit-prev").click(formfreeze_datafeeds);
         jQuery("#edit-revenue-next").click(formfreeze_datafeeds);
         jQuery("#edit-payroll-next").click(formfreeze_datafeeds);
         jQuery("#edit-spending-next").click(formfreeze_datafeeds);
