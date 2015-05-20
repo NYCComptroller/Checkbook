@@ -2177,7 +2177,7 @@ Drupal.behaviors.disableClickTopNav = {
 //Datafeeds form freeze while loading
 Drupal.behaviors.datafeedspagefreeze = {
     attach:function (context, settings) {
-        function formfreeze(e){
+        function formfreeze_datafeeds(e){
             jQuery("#block-system-main").addClass('transparent');
             jQuery("#checkbook-datafeeds-data-feed-wizard").addClass('disable_me');
             jQuery("#checkbook-datafeeds-tracking-form").addClass('disable_me');
@@ -2208,22 +2208,23 @@ Drupal.behaviors.datafeedspagefreeze = {
                 }
             });
         }
-        jQuery("#edit-type-next").click(formfreeze);
+        // Datafeeds form disable
+        jQuery("#edit-type-next").click(formfreeze_datafeeds);
         jQuery("#edit-type-next").click(rotator);
         jQuery("#edit-prev").click(formfreeze);
-        jQuery("#edit-revenue-next").click(formfreeze);
-        jQuery("#edit-payroll-next").click(formfreeze);
-        jQuery("#edit-spending-next").click(formfreeze);
-        jQuery("#edit-contract-next").click(formfreeze);
-        jQuery("#edit-budget-next").click(formfreeze);
+        jQuery("#edit-revenue-next").click(formfreeze_datafeeds);
+        jQuery("#edit-payroll-next").click(formfreeze_datafeeds);
+        jQuery("#edit-spending-next").click(formfreeze_datafeeds);
+        jQuery("#edit-contract-next").click(formfreeze_datafeeds);
+        jQuery("#edit-budget-next").click(formfreeze_datafeeds);
         jQuery("#edit-revenue-next").click(rotator);
         jQuery("#edit-payroll-next").click(rotator);
         jQuery("#edit-spending-next").click(rotator);
         jQuery("#edit-contract-next").click(rotator);
         jQuery("#edit-budget-next").click(rotator);
         jQuery("#edit-confirm").click(rotator);
-        jQuery("#edit-confirm").click(formfreeze);
-        jQuery("#edit-cancel").click(formfreeze);
+        jQuery("#edit-confirm").click(formfreeze_datafeeds);
+        jQuery("#edit-cancel").click(formfreeze_datafeeds);
     }
 };
 
@@ -2231,7 +2232,7 @@ Drupal.behaviors.datafeedspagefreeze = {
 //Advanced search form freeze while loading
 Drupal.behaviors.advancedsearchfreeze = {
     attach:function (context, settings) {
-        function formfreeze(e){
+        function formfreeze_advancedsearch(e){
             jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form").addClass('transparent');
             jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form").addClass('disable_me');
             setTimeout(function(){
@@ -2239,11 +2240,11 @@ Drupal.behaviors.advancedsearchfreeze = {
             }, 1);
         }
 
-        jQuery("#edit-spending-submit").click(formfreeze);
-        jQuery("#edit-revenue-submit").click(formfreeze);
-        jQuery("#edit-budget-submit").click(formfreeze);
-        jQuery("#edit-contracts-submit").click(formfreeze);
-        jQuery("#edit-payroll-submit").click(formfreeze);
+        jQuery("#edit-spending-submit").click(formfreeze_advancedsearch);
+        jQuery("#edit-revenue-submit").click(formfreeze_advancedsearch);
+        jQuery("#edit-budget-submit").click(formfreeze_advancedsearch);
+        jQuery("#edit-contracts-submit").click(formfreeze_advancedsearch);
+        jQuery("#edit-payroll-submit").click(formfreeze_advancedsearch);
     }
 };
 
