@@ -2308,11 +2308,37 @@ Drupal.behaviors.advancedsearchfreeze = {
             }, 1);
         }
 
+        function loading_rotator(e){
+            var timer = 85;
+            jQuery("#advanced-search-rotator").css('display', 'block');
+            jQuery("#advanced-search-rotator").rotator({
+                starting: 0,
+                ending: 100,
+                percentage: true,
+                color: '#389be2',
+                lineWidth: 3,
+                timer: timer,
+                radius: 40,
+                fontStyle: 'Calibri',
+                fontSize: '20pt',
+                fontColor: 'black',
+                backgroundColor: 'lightgray',
+                callback: function () {
+                }
+            });
+        }
+
         jQuery("#edit-spending-submit").click(formfreeze_advancedsearch);
         jQuery("#edit-revenue-submit").click(formfreeze_advancedsearch);
         jQuery("#edit-budget-submit").click(formfreeze_advancedsearch);
         jQuery("#edit-contracts-submit").click(formfreeze_advancedsearch);
         jQuery("#edit-payroll-submit").click(formfreeze_advancedsearch);
+
+        jQuery("#edit-spending-submit").click(loading_rotator);
+        jQuery("#edit-revenue-submit").click(loading_rotator);
+        jQuery("#edit-budget-submit").click(loading_rotator);
+        jQuery("#edit-contracts-submit").click(loading_rotator);
+        jQuery("#edit-payroll-submit").click(loading_rotator);
     }
 };
 

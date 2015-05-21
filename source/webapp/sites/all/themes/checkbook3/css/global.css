@@ -3191,6 +3191,15 @@ input[type=radio]:checked:enabled.radio-blue + label:before {
     display:none;
 }
 
+#advanced-search-rotator{
+    float: left;
+    height: 300px;
+    position: absolute;
+    width: 750px;
+    z-index: 100;
+    display:none;
+}
+
 .disable_me{
     pointer-events:none;
 }
