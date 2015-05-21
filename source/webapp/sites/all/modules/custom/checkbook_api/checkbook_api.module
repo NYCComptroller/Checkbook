@@ -54,6 +54,11 @@ function checkbook_api_menu() {
  */
 function checkbook_api() {
 
+    if( isset($_SERVER['REMOTE_ADDR']) ){
+        $client_ip = $_SERVER['REMOTE_ADDR'];
+        LogHelper::log_notice("Client IP" . $client_ip);
+    }
+
   $document = new DOMDocument();
   $document->preserveWhiteSpace = FALSE;
   $document->load('php://input');
