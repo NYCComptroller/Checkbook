@@ -3073,7 +3073,7 @@ body.page-node-804 #section-header {
 }
 
 .loading_bigger_gif {
-    background: url(/sites/all/themes/checkbook/images/animatedEllipse.gif) no-repeat center;
+    background: url(/sites/all/themes/checkbook/images/loading_bigger.gif) no-repeat center;
     background-size: 50px 50px;
     /* Theoretically for IE 8 & 9 (more valid) */
     /* ...but not required as filter works too */
