@@ -145,6 +145,77 @@ abstract class AbstractDataHandler {
     }
   }
 
+
+    /**
+     * @return string
+     * @throws Exception
+     */
+    function queueImmediateRequest() {
+        try {
+            // validateRequest:
+            if (!$this->validateRequest()) {
+                return $this->response;
+            }
+
+            if (!isset($this->requestDataSet)) {
+                // Prepare dataSet:
+                $this->setRequestDataSet();
+            }
+
+            $queue_request_token = NULL;
+
+            // Get queue request:
+            $queue_criteria = $this->getQueueCriteria($this->requestSearchCriteria->getCriteria());
+            $queue_search_results = QueueUtil::searchQueue(null, $queue_criteria);
+
+            if (isset($queue_search_results['token'])) {
+                // Same user, same request:
+                return $queue_search_results['token'];
+            }
+
+            if (isset($queue_search_results['job_id'])) {
+                // Different user, same request:
+                // Generate Token:
+                $token = $this->generateToken();
+                // Create queue request:
+                QueueUtil::createQueueRequest($token, null, $queue_search_results['job_id']);
+
+                return $token;
+            }
+
+            $sql_query = get_db_query(TRUE, $this->requestDataSet->name, $this->requestDataSet->columns,
+                $this->requestDataSet->parameters, $this->requestDataSet->sortColumn, $this->requestDataSet->startWith, $this->requestDataSet->limit, NULL);
+
+            if (isset($this->requestDataSet->adjustSql)) {
+                eval($this->requestDataSet->adjustSql);
+            }
+
+            $token = $this->generateToken();
+
+            $criteria = $this->requestSearchCriteria->getCriteria();
+            // Prepare new queue request:
+            $queue_request['token'] = $token;
+            $queue_request['email'] = $email;
+            $queue_request['name'] = strtolower($criteria['global']['type_of_data']);
+            $queue_request['request'] = $queue_criteria;
+            $queue_request['request_criteria'] = json_encode($criteria);
+            $queue_request['status'] = 3;
+            $queue_request['download_count'] = 1;
+            if ($this->requestSearchCriteria->getUserCriteria()) {
+                $queue_request['user_criteria'] = json_encode($this->requestSearchCriteria->getUserCriteria());
+            }
+            $queue_request['data_command'] = $sql_query;
+
+            QueueUtil::createNewQueueRequest($queue_request);
+
+            return $token;
+        }
+        catch (Exception $e) {
+            LogHelper::log_error('Error Processing Queue Request: ' . $e);
+            throw new Exception('Error Processing Queue Request.');
+        }
+    }
+
   /**
    * @param array $criteria
    * @return null|string

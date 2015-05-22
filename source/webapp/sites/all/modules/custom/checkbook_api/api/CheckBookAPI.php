@@ -116,6 +116,18 @@ class CheckBookAPI {
     return self::getRequestDetailsByToken($token);
   }
 
+    /**
+     * Function to Submit a request to queue for immediate download.
+     *
+     * @return mixed
+     *   Token for tracking purpose.
+     *
+     */
+    function queueImmediateRequest() {
+        $token = $this->request_handler->queueImmediateRequest();
+        return self::getRequestDetailsByToken($token);
+    }
+
   /**
    * Function to validate the request criteria and indicate if errors are present.
    *

@@ -108,15 +108,22 @@ class QueueUtil {
    * @return DatabaseStatementInterface|int|null
    */
   static function createNewQueueRequest($queue_request) {
+      $input_parameters = array(
+          'name' => $queue_request['name'],
+          'request' => $queue_request['request'],
+          'request_criteria' => $queue_request['request_criteria'],
+          'user_criteria' => $queue_request['user_criteria'],
+          'data_command' => $queue_request['data_command'],
+          'created' => time(),
+      );
+      if(isset($queue_request['status'])) {
+          $input_parameters['status'] = $queue_request['status'];
+      }
+      if(isset($queue_request['download_count'])) {
+          $input_parameters['download_count'] = $queue_request['download_count'];
+      }
     $job_query = db_insert('custom_queue_job')
-      ->fields(array(
-      'name' => $queue_request['name'],
-      'request' => $queue_request['request'],
-      'request_criteria' => $queue_request['request_criteria'],
-      'user_criteria' => $queue_request['user_criteria'],
-      'data_command' => $queue_request['data_command'],
-      'created' => time(),
-    ));
+      ->fields($input_parameters);
 
     $job_id = $job_query->execute();
 
