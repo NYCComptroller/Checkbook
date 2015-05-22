@@ -199,7 +199,7 @@ abstract class AbstractDataHandler {
             $queue_request['name'] = strtolower($criteria['global']['type_of_data']);
             $queue_request['request'] = $queue_criteria;
             $queue_request['request_criteria'] = json_encode($criteria);
-            $queue_request['status'] = 3;
+            $queue_request['status'] = 4; // N/A - no file to generate
             $queue_request['download_count'] = 1;
             if ($this->requestSearchCriteria->getUserCriteria()) {
                 $queue_request['user_criteria'] = json_encode($this->requestSearchCriteria->getUserCriteria());
