@@ -2275,24 +2275,41 @@ Drupal.behaviors.datafeedspagefreeze = {
                 }
             });
         }
+
+        function gif_rotator(e){
+            jQuery("#rotator").css('display', 'block');
+            jQuery("#rotator").addClass('loading_bigger_gif');
+        }
+
         // Datafeeds form disable
         jQuery("#edit-type-next").click(formfreeze_datafeeds);
-        jQuery("#edit-type-next").click(percent_rotator);
+//        jQuery("#edit-type-next").click(percent_rotator);
         jQuery("#edit-prev").click(formfreeze_datafeeds);
-        jQuery("#edit-prev").click(percent_rotator);
+//        jQuery("#edit-prev").click(percent_rotator);
         jQuery("#edit-revenue-next").click(formfreeze_datafeeds);
         jQuery("#edit-payroll-next").click(formfreeze_datafeeds);
         jQuery("#edit-spending-next").click(formfreeze_datafeeds);
         jQuery("#edit-contract-next").click(formfreeze_datafeeds);
         jQuery("#edit-budget-next").click(formfreeze_datafeeds);
-        jQuery("#edit-revenue-next").click(percent_rotator);
-        jQuery("#edit-payroll-next").click(percent_rotator);
-        jQuery("#edit-spending-next").click(percent_rotator);
-        jQuery("#edit-contract-next").click(percent_rotator);
-        jQuery("#edit-budget-next").click(percent_rotator);
-        jQuery("#edit-confirm").click(percent_rotator);
+//        jQuery("#edit-revenue-next").click(percent_rotator);
+//        jQuery("#edit-payroll-next").click(percent_rotator);
+//        jQuery("#edit-spending-next").click(percent_rotator);
+//        jQuery("#edit-contract-next").click(percent_rotator);
+//        jQuery("#edit-budget-next").click(percent_rotator);
+//        jQuery("#edit-confirm").click(percent_rotator);
         jQuery("#edit-confirm").click(formfreeze_datafeeds);
         jQuery("#edit-cancel").click(formfreeze_datafeeds);
+
+
+        //loading gif
+        jQuery("#edit-type-next").click(gif_rotator);
+        jQuery("#edit-prev").click(gif_rotator);
+        jQuery("#edit-revenue-next").click(gif_rotator);
+        jQuery("#edit-payroll-next").click(gif_rotator);
+        jQuery("#edit-spending-next").click(gif_rotator);
+        jQuery("#edit-contract-next").click(gif_rotator);
+        jQuery("#edit-budget-next").click(gif_rotator);
+        jQuery("#edit-confirm").click(gif_rotator);
     }
 };
 
@@ -2309,7 +2326,7 @@ Drupal.behaviors.advancedsearchfreeze = {
         }
 
         function loading_rotator(e){
-            var timer = 85;
+            var timer = 95;
             jQuery("#advanced-search-rotator").css('display', 'block');
             jQuery("#advanced-search-rotator").rotator({
                 starting: 0,

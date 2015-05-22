@@ -3072,6 +3072,30 @@ body.page-node-804 #section-header {
     opacity: 0.5;
 }
 
+.loading_bigger_gif {
+    background: url(/sites/all/themes/checkbook/images/animatedEllipse.gif) no-repeat center;
+    background-size: 50px 50px;
+    /* Theoretically for IE 8 & 9 (more valid) */
+    /* ...but not required as filter works too */
+    /* should come BEFORE filter */
+    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+
+    /* This works in IE 8 & 9 too */
+    /* ... but also 5, 6, 7 */
+    filter: alpha(opacity=50);
+
+    /* Older than Firefox 0.9 */
+    -moz-opacity:0.5;
+
+    /* Safari 1.x (pre WebKit!) */
+    -khtml-opacity: 0.5;
+
+    /* Modern!
+    /* Firefox 0.9+, Safari 2?, Chrome any?
+    /* Opera 9+, IE 9+ */
+    opacity: 0.5;
+}
+
 .disable_button {
     color:#A4A9AD !important;
     -khtml-opacity: 0.5;
@@ -3182,22 +3206,32 @@ input[type=radio]:checked:enabled.radio-blue + label:before {
 }
 #rotator{
     float: left;
-    height: 200px;
-    margin-left: 450px;
-    margin-top: 55px;
+    /*height: 300px;*/
+    /*width: 200px;*/
     position: absolute;
-    width: 200px;
     z-index: 10;
     display:none;
+    top: 50%;
+    left: 50%;
+    width:30em;
+    height:18em;
+    margin-top: -9em; /*set to a negative number 1/2 of your height*/
+    margin-left: -15em; /*set to a negative number 1/2 of your width*/
 }
 
 #advanced-search-rotator{
     float: left;
-    height: 300px;
-    position: absolute;
-    width: 750px;
+    /*height: 500px;*/
+    /*width: 775px;*/
+    position: fixed;
     z-index: 100;
     display:none;
+    top: 50%;
+    left: 50%;
+    width:30em;
+    height:18em;
+    margin-top: -9em; /*set to a negative number 1/2 of your height*/
+    margin-left: -15em; /*set to a negative number 1/2 of your width*/
 }
 
 .disable_me{
