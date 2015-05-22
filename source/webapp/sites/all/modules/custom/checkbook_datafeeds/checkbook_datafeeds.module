@@ -5884,6 +5884,36 @@ function _industry_options() {
  */
 function checkbook_datafeeds_confirmation_download_submit($form, &$form_state) {
     $data = $form_state['step_information']['confirmation']['response'];
+
+    //Store request in db
+    $criteria = $form_state['step_information']['confirmation']['stored_values']['criteria'];
+    unset($criteria['global']['max_records']);
+    $responsetype = $form_state['step_information']['type']['stored_values']['format'];
+    $searchCriteria = new QueueCriteria($criteria, $responsetype);
+    $user_criteria = $form_state['step_information']['confirmation']['stored_values']['user_criteria'];
+    $searchCriteria->setUserCriteria($user_criteria);
+    try {
+        $checkBookApi = new CheckBookAPI($searchCriteria);
+    }
+    catch (Exception $e) {
+        drupal_set_message('An error occurred processing your request. Please try again later.', 'error');
+        log_error($e->getMessage());
+    }
+    if (isset($checkBookApi)) {
+        if ($checkBookApi->validateRequest()) {
+            try {
+                //Make sure e-mail address is passed to the call.
+                $details = $checkBookApi->queueImmediateRequest();
+            }
+            catch (Exception $e) {
+                log_error($e->getMessage());
+            }
+        }
+        else {
+            log_error($checkBookApi->getErrorResponse());
+        }
+    }
+
     if ($form_state['step_information']['type']['stored_values']['format'] == 'xml') {
         drupal_add_http_header('Content-Type', 'text/xml; utf-8');
         drupal_add_http_header('Content-Disposition', 'attachment; filename="nyc-data-feed.xml"');
