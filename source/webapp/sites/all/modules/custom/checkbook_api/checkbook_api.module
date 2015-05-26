@@ -19,6 +19,12 @@
 */
 
 
+module_load_include('php', 'checkbook_api', 'api/CheckbookAPI');
+module_load_include('php', 'checkbook_api', 'api/CheckbookAPIRepository');
+module_load_include('php', 'checkbook_api', 'api/CheckbookAPIService');
+
+use checkbook_api\CheckbookAPIService as CheckbookAPIService;
+use checkbook_api\ResponseStatus as ResponseStatus;
 
 /**
  * Implements hook_menu().
@@ -54,50 +60,50 @@ function checkbook_api_menu() {
  */
 function checkbook_api() {
 
-    if( isset($_SERVER['REMOTE_ADDR']) ){
-        $client_ip = $_SERVER['REMOTE_ADDR'];
-        if(isset($client_ip)) {
-            $client_location = ip_info($client_ip, "Location");
-            $city = $client_location['city'];
-            $state = $client_location['state'];
-            $country = $client_location['country'];
-            $country_code = $client_location['country_code'];
-            $continent = $client_location['continent'];
-            $continent_code = $client_location['continent_code'];
-            LogHelper::log_notice("Client IP: " . $client_ip);
-            LogHelper::log_notice("City: ".$city.
-                ", State: ".$state.
-                ", Country: ".$country.
-                ", Country_Code: ".$country_code.
-                ", Continent: ".$continent.
-                ", Continent_Code: ".$continent_code);
+    $document = new DOMDocument();
+    $document->preserveWhiteSpace = FALSE;
+    $document->load('php://input');
+
+    $search_criteria = new XMLSearchCriteria($document);
+    $domain = $search_criteria->getTypeOfData();
+    $request_xml = $document->saveXML();
+    $client_ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null;
+    $client_location = checkbook_api_get_ip_info($client_ip, "Location");
+    $checkbook_api_service = new CheckbookAPIService();
+    $api = $checkbook_api_service->createCheckbookAPI($domain,$request_xml,$client_ip,$client_location);
+    $response_status = ResponseStatus::$SUCCEEDED;
+    $response_log = null;
+
+    try {
+        $checkbook_api = new CheckBookAPI($search_criteria);
+
+        drupal_add_http_header("Content-Type", "application/xml");
+
+        if (isset($checkbook_api)) {
+            if ($checkbook_api->validateRequest()) {
+                $data = $checkbook_api->getData();
+                $response_status = ResponseStatus::$SUCCEEDED;
+                $response_log = "Request validated and response succeeded";
+                $results = $data;
+            }
+            else {
+                $error = $checkbook_api->getErrorResponse();
+                $response_status = ResponseStatus::$INVALID;
+                $response_log = "Response failed due to invalid request with error: ".$error;
+                $results = $error;
+            }
         }
     }
-
-  $document = new DOMDocument();
-  $document->preserveWhiteSpace = FALSE;
-  $document->load('php://input');
-
-  $search_criteria = new XMLSearchCriteria($document);
-
-  try {
-    $checkbook_api = new CheckBookAPI($search_criteria);
-  }
-  catch (Exception $e) {
-    echo $e->getMessage();
-    return;
-  }
-  drupal_add_http_header("Content-Type", "application/xml");
-  if (isset($checkbook_api)) {
-    if ($checkbook_api->validateRequest()) {   
-      echo $checkbook_api->getData();
+    catch (Exception $e) {
+        $error = $e->getMessage();
+        $response_status = ResponseStatus::$FAILED;
+        $response_log = "Response failed with error: ".$error;
+        $results = $error;
     }
-    else {
-    	echo $checkbook_api->getErrorResponse();
-    }
-  }
+
+    $checkbook_api_service->logStatus($api->api_id,$response_status,$response_log);
+    echo $results;
 }
-
 /**
  * @param $code_list_name
  */
@@ -348,7 +354,15 @@ function checkbook_api_change_datasource($datasource,$param){
 	}
 }
 
-function ip_info($ip = NULL, $purpose = "location", $deep_detect = TRUE) {
+/**
+ * Using the IP address, returns location details
+ *
+ * @param null $ip
+ * @param string $purpose
+ * @param bool $deep_detect
+ * @return array|null|string
+ */
+function checkbook_api_get_ip_info($ip = NULL, $purpose = "location", $deep_detect = TRUE) {
     $output = NULL;
     if (filter_var($ip, FILTER_VALIDATE_IP) === FALSE) {
         $ip = $_SERVER["REMOTE_ADDR"];
