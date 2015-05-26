@@ -1082,5 +1082,4 @@ class RequestUtil{
 		$data = _checkbook_project_execute_sql($sql);
     	return $data[0]['count'];
     }
-    
 }
