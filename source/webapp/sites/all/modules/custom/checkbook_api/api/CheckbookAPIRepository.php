@@ -18,8 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace checkbook_api;
-
 
 class CheckbookAPIRepository {
 
@@ -57,10 +55,10 @@ class CheckbookAPIRepository {
     /**
      * Function to insert records into the checkbook_api table
      *
-     * @param CheckbookAPI $checkbookAPI
+     * @param CheckbookAPIEntity $checkbookAPI
      * @return mixed
      */
-    public function insertCheckbookAPI(CheckbookAPI $checkbookAPI) {
+    public function insertCheckbookAPI(CheckbookAPIEntity $checkbookAPI) {
         // Remove any null properties
         $fields = array_filter((array) $checkbookAPI);
         $api_id = db_insert('checkbook_api')->fields($fields)->execute();
@@ -70,10 +68,10 @@ class CheckbookAPIRepository {
     /**
      * Function to update records in the checkbook_api table
      *
-     * @param CheckbookAPI $checkbookAPI
+     * @param CheckbookAPIEntity $checkbookAPI
      * @return \DatabaseStatementInterface
      */
-    public function updateCheckbookAPI(CheckbookAPI $checkbookAPI) {
+    public function updateCheckbookAPI(CheckbookAPIEntity $checkbookAPI) {
         // Remove any null properties
         $fields = array_filter((array) $checkbookAPI);
 
@@ -87,11 +85,11 @@ class CheckbookAPIRepository {
 }
 
 /**
- * Class CheckbookAPI holds the structure of the CheckbookAPI entity
+ * Class CheckbookAPIEntity holds the structure of the CheckbookAPI entity
  *
  * @package checkbook_api
  */
-class CheckbookAPI {
+class CheckbookAPIEntity {
     public $api_id;
     public $domain;
     public $request_xml;

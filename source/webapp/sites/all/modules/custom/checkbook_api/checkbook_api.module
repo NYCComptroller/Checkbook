@@ -23,9 +23,6 @@ module_load_include('php', 'checkbook_api', 'api/CheckbookAPI');
 module_load_include('php', 'checkbook_api', 'api/CheckbookAPIRepository');
 module_load_include('php', 'checkbook_api', 'api/CheckbookAPIService');
 
-use checkbook_api\CheckbookAPIService as CheckbookAPIService;
-use checkbook_api\ResponseStatus as ResponseStatus;
-
 /**
  * Implements hook_menu().
  */

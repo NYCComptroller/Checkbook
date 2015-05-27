@@ -19,8 +19,6 @@
  */
 
 
-namespace checkbook_api;
-
 /**
  * Constants for the CheckbookAPI
  *
@@ -86,7 +84,7 @@ class CheckbookAPIService {
             'continent_code' => $continent_code,
             'created_date' => time(),
         );
-        $api = new CheckbookAPI($api_properties);
+        $api = new CheckbookAPIEntity($api_properties);
         return $this->apiRepository->insertCheckbookAPI($api);
     }
 
@@ -103,7 +101,7 @@ class CheckbookAPIService {
             'response_status' => $response_status,
             'response_log' => $response_log,
         );
-        $api = new CheckbookAPI($api_properties);
+        $api = new CheckbookAPIEntity($api_properties);
         $this->apiRepository->updateCheckbookAPI($api);
     }
 }
