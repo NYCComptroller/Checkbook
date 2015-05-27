@@ -6,6 +6,7 @@
  * Time: 11:41 AM
  */
 
+namespace checkbook_api;
 
 /**
  * Class CheckbookAPIEntity holds the structure of the CheckbookAPI entity

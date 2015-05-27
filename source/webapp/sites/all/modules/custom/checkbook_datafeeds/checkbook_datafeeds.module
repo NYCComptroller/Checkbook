@@ -20,7 +20,6 @@
 
 
 module_load_include('php', 'checkbook_datafeeds', 'config/util/DatafeedsConfigUtil');
-module_load_include('php', 'checkbook_api', 'api/CheckbookAPI');
 
 /**
  * Implements hook_menu().

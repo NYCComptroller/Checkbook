@@ -19,6 +19,8 @@
  */
 
 
+namespace checkbook_api;
+
 /**
  * Constants for the CheckbookAPI
  *
