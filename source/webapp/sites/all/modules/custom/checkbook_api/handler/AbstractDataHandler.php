@@ -95,24 +95,26 @@ abstract class AbstractDataHandler {
 
       $queue_request_token = NULL;
 
-      // Get queue request:
-      $queue_criteria = $this->getQueueCriteria($this->requestSearchCriteria->getCriteria());
-      $queue_search_results = QueueUtil::searchQueue($email, $queue_criteria);
+    // Get queue request:
+    $queue_criteria = $this->getQueueCriteria($this->requestSearchCriteria->getCriteria());
+    $queue_search_results = QueueUtil::searchQueue($email, $queue_criteria);
 
-      if (isset($queue_search_results['token'])) {
-        // Same user, same request:
+    // Same user, same request:
+    if (isset($queue_search_results['token'])) {
+        //Update the last_update_date of the existing job
+        QueueUtil::updateJobTimestamp($queue_search_results);
         return $queue_search_results['token'];
-      }
-
-      if (isset($queue_search_results['job_id'])) {
-        // Different user, same request:
+    }
+    // Different user, same request:
+    if (isset($queue_search_results['job_id'])) {
         // Generate Token:
         $token = $this->generateToken();
         // Create queue request:
         QueueUtil::createQueueRequest($token, $email, $queue_search_results['job_id']);
-
+        //Update the last_update_date of the existing job
+        QueueUtil::updateJobTimestamp($queue_search_results);
         return $token;
-      }
+    }
 
       $sql_query = get_db_query(TRUE, $this->requestDataSet->name, $this->requestDataSet->columns,
         $this->requestDataSet->parameters, $this->requestDataSet->sortColumn, $this->requestDataSet->startWith, $this->requestDataSet->limit, NULL);
@@ -200,13 +202,12 @@ abstract class AbstractDataHandler {
             $queue_request['request'] = $queue_criteria;
             $queue_request['request_criteria'] = json_encode($criteria);
             $queue_request['status'] = 4; // N/A - no file to generate
-            $queue_request['download_count'] = 1;
             if ($this->requestSearchCriteria->getUserCriteria()) {
                 $queue_request['user_criteria'] = json_encode($this->requestSearchCriteria->getUserCriteria());
             }
             $queue_request['data_command'] = $sql_query;
 
-            QueueUtil::createNewQueueRequest($queue_request);
+            QueueUtil::createImmediateNewQueueRequest($queue_request);
 
             return $token;
         }
