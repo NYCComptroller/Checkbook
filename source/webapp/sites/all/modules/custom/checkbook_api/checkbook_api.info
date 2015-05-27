@@ -21,6 +21,7 @@ core = 7.x
 package = NYC Checkbook
 dependencies[] = checkbook_project
 
+files[] = api/CheckbookAPIEntity.php
 files[] = api/CheckbookAPIRepository.php
 files[] = api/CheckbookAPIService.php
 files[] = api/CheckBookAPI.php
