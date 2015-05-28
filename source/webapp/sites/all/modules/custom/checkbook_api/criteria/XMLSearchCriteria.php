@@ -208,6 +208,6 @@ class XMLSearchCriteria extends AbstractAPISearchCriteria {
      * @return mixed
      */
     function getTypeOfData() {
-        return $this->getCriteria()['global']['type_of_data'];
+        return $this->criteria['global']['type_of_data'];
     }
 }
