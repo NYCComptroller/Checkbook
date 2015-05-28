@@ -169,21 +169,27 @@ abstract class AbstractDataHandler {
             // Get queue request:
             $queue_criteria = $this->getQueueCriteria($this->requestSearchCriteria->getCriteria());
             $queue_search_results = QueueUtil::searchQueue(null, $queue_criteria);
-
+            
+            // Same user, same request:
             if (isset($queue_search_results['token'])) {
-                // Same user, same request:
+                //Update the last_update_date of the existing job
+                QueueUtil::updateJobTimestamp($queue_search_results);
+                //Increment download count
+                QueueUtil::incrementDownloadCount($queue_search_results['token']);
                 return $queue_search_results['token'];
             }
-
+            // Different user, same request:
             if (isset($queue_search_results['job_id'])) {
-                // Different user, same request:
                 // Generate Token:
                 $token = $this->generateToken();
                 // Create queue request:
                 QueueUtil::createQueueRequest($token, null, $queue_search_results['job_id']);
-
+                //Update the last_update_date of the existing job
+                QueueUtil::updateJobTimestamp($queue_search_results);
                 return $token;
             }
+
+
 
             $sql_query = get_db_query(TRUE, $this->requestDataSet->name, $this->requestDataSet->columns,
                 $this->requestDataSet->parameters, $this->requestDataSet->sortColumn, $this->requestDataSet->startWith, $this->requestDataSet->limit, NULL);
