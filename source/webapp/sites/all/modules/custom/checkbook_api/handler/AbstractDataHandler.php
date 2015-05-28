@@ -77,6 +77,8 @@ abstract class AbstractDataHandler {
   }
 
   /**
+   * Logs the request in the custom_queue_job/custom_queue_request tables.
+   * If the request is the same for a given date, only add entry to custom_queue_request.
    * @param $email
    * @return string
    * @throws Exception
@@ -99,13 +101,13 @@ abstract class AbstractDataHandler {
     $queue_criteria = $this->getQueueCriteria($this->requestSearchCriteria->getCriteria());
     $queue_search_results = QueueUtil::searchQueue($email, $queue_criteria);
 
-    // Same user, same request:
-    if (isset($queue_search_results['token'])) {
-        //Update the last_update_date of the existing job
-        QueueUtil::updateJobTimestamp($queue_search_results);
-        return $queue_search_results['token'];
-    }
-    // Different user, same request:
+//    // Same user, same request:
+//    if (isset($queue_search_results['token'])) {
+//        //Update the last_update_date of the existing job
+//        QueueUtil::updateJobTimestamp($queue_search_results);
+//        return $queue_search_results['token'];
+//    }
+    // Different user, same request, add entry in custom_queue_request only
     if (isset($queue_search_results['job_id'])) {
         // Generate Token:
         $token = $this->generateToken();
