@@ -149,6 +149,9 @@ abstract class AbstractDataHandler {
 
 
     /**
+     * For records under 200,000, user will download the file immediately.
+     * An entry will be made in both the custom_queue_job & custom_queue_request.
+     *
      * @return string
      * @throws Exception
      */
@@ -168,28 +171,6 @@ abstract class AbstractDataHandler {
 
             // Get queue request:
             $queue_criteria = $this->getQueueCriteria($this->requestSearchCriteria->getCriteria());
-            $queue_search_results = QueueUtil::searchQueue(null, $queue_criteria);
-            
-            // Same user, same request:
-            if (isset($queue_search_results['token'])) {
-                //Update the last_update_date of the existing job
-                QueueUtil::updateJobTimestamp($queue_search_results);
-                //Increment download count
-                QueueUtil::incrementDownloadCount($queue_search_results['token']);
-                return $queue_search_results['token'];
-            }
-            // Different user, same request:
-            if (isset($queue_search_results['job_id'])) {
-                // Generate Token:
-                $token = $this->generateToken();
-                // Create queue request:
-                QueueUtil::createQueueRequest($token, null, $queue_search_results['job_id']);
-                //Update the last_update_date of the existing job
-                QueueUtil::updateJobTimestamp($queue_search_results);
-                return $token;
-            }
-
-
 
             $sql_query = get_db_query(TRUE, $this->requestDataSet->name, $this->requestDataSet->columns,
                 $this->requestDataSet->parameters, $this->requestDataSet->sortColumn, $this->requestDataSet->startWith, $this->requestDataSet->limit, NULL);
@@ -203,7 +184,6 @@ abstract class AbstractDataHandler {
             $criteria = $this->requestSearchCriteria->getCriteria();
             // Prepare new queue request:
             $queue_request['token'] = $token;
-            $queue_request['email'] = $email;
             $queue_request['name'] = strtolower($criteria['global']['type_of_data']);
             $queue_request['request'] = $queue_criteria;
             $queue_request['request_criteria'] = json_encode($criteria);
