@@ -388,7 +388,11 @@
     ],
     "aaSorting":[[8,"desc"]],
     "sScrollX": "100%",
-    "bScrollCollapse": true
+    "bScrollCollapse": true,
+    "fnInitComplete": "##function () { new FixedColumns( oTable, {
+    \"iLeftColumns\": 2,
+    \"iLeftWidth\": 210
+    } );}##"
     }
     ,"customJS":"jQuery('#dtl_expand').live( 'click',function () {
     var nTr = this.parentNode.parentNode.parentNode;
