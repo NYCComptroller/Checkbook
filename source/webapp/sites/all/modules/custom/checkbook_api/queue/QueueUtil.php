@@ -377,7 +377,8 @@ class QueueUtil {
             $db_update_query = db_update("custom_queue_request")->fields(array(
                 'download_count' => $download_count,
             ))
-                ->condition('job_id', $job_id);
+                ->condition('job_id', $job_id)
+                ->condition('token', $token);
             $rows_affected = $db_update_query->execute();
         }
 
