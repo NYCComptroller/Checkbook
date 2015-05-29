@@ -2174,73 +2174,6 @@ Drupal.behaviors.disableClickTopNav = {
 
 // end of disabling code
 
-// Rotator.js
-Drupal.behaviors.rotator = {
-    attach:function (context, settings) {
-        (function($){
-            $.fn.rotator = function(options){
-                var settings = $.extend({
-                    starting: 0,
-                    ending: 100,
-                    percentage: true,
-                    color: 'green',
-                    lineWidth: 7,
-                    timer: 10,
-                    radius: 40,
-                    fontStyle: 'Calibri',
-                    fontSize: '20pt',
-                    fontColor: 'darkblue',
-                    backgroundColor: 'lightgray',
-                    callback: function () {
-                    }
-                }, options);
-                this.empty().append("<canvas height ="+this.height() + " width="+this.width()+" id='my-canvas'/ ></canvas>");
-                var canvas = document.getElementById('my-canvas');
-                var x = canvas.width / 2;
-                var y = canvas.height / 2;
-                var radius = settings.radius;
-                var context = canvas.getContext("2d");
-                if(settings.backgroundColor){
-                    var ctx = canvas.getContext('2d');
-                    ctx.arc(x, y, radius, 0, 2*Math.PI, false);
-                    ctx.strokeStyle = settings.backgroundColor;
-                    ctx.lineWidth = settings.lineWidth;
-                    ctx.stroke()
-                }
-                var steps = settings.ending - settings.starting;
-                var step = settings.starting;
-                var z = setInterval(function(){
-                    var text;
-                    if(settings.percentage){text = step + "%"}else{text = step}
-                    var start_angle = (1.5 + (step/50))*Math.PI;
-                    var end_angle = (1.5 + (++step/50))*Math.PI;
-                    context.beginPath();
-                    context.arc(x, y, radius, start_angle, end_angle, false);
-                    context.lineWidth = settings.lineWidth;
-                    context.strokeStyle = settings.color;
-                    context.stroke();
-                    context.font = settings.fontSize + ' ' + settings.fontStyle;
-                    context.textAlign = 'center';
-                    context.textBaseline = 'middle';
-                    context.fillStyle = settings.fontColor;
-                    context.clearRect(x - parseInt(settings.fontSize)*1.5, y - parseInt(settings.fontSize)/2, parseInt(settings.fontSize)*3, parseInt(settings.fontSize));
-                    context.fillText(text, x , y );
-                    if(step >= steps){
-                        window.clearInterval(z);
-                        if(settings.percentage){text = step + "%"}else{text = step}
-                        context.clearRect(x - parseInt(settings.fontSize)*1.5, y - parseInt(settings.fontSize)/2, parseInt(settings.fontSize)*3, parseInt(settings.fontSize));
-                        context.fillText(text, x , y );
-                        if(typeof(settings.callback) == 'function'){
-                            settings.callback.call(this);
-                        }
-                    }
-                }, settings.timer)
-            }
-        }(jQuery));
-}
-};
-
-
 //Datafeeds form freeze while loading
 Drupal.behaviors.datafeedspagefreeze = {
     attach:function (context, settings) {
@@ -2256,26 +2189,6 @@ Drupal.behaviors.datafeedspagefreeze = {
             }, 1);
         }
 
-        function percent_rotator(e){
-            var timer = 65;
-            jQuery("#rotator").css('display', 'block');
-            jQuery("#rotator").rotator({
-                starting: 0,
-                ending: 100,
-                percentage: true,
-                color: '#389be2',
-                lineWidth: 3,
-                timer: timer,
-                radius: 40,
-                fontStyle: 'Calibri',
-                fontSize: '20pt',
-                fontColor: 'black',
-                backgroundColor: 'lightgray',
-                callback: function () {
-                }
-            });
-        }
-
         function gif_rotator(e){
             jQuery("#rotator").css('display', 'block');
             jQuery("#rotator").addClass('loading_bigger_gif');
@@ -2283,23 +2196,14 @@ Drupal.behaviors.datafeedspagefreeze = {
 
         // Datafeeds form disable
         jQuery("#edit-type-next").click(formfreeze_datafeeds);
-//        jQuery("#edit-type-next").click(percent_rotator);
         jQuery("#edit-prev").click(formfreeze_datafeeds);
-//        jQuery("#edit-prev").click(percent_rotator);
         jQuery("#edit-revenue-next").click(formfreeze_datafeeds);
         jQuery("#edit-payroll-next").click(formfreeze_datafeeds);
         jQuery("#edit-spending-next").click(formfreeze_datafeeds);
         jQuery("#edit-contract-next").click(formfreeze_datafeeds);
         jQuery("#edit-budget-next").click(formfreeze_datafeeds);
-//        jQuery("#edit-revenue-next").click(percent_rotator);
-//        jQuery("#edit-payroll-next").click(percent_rotator);
-//        jQuery("#edit-spending-next").click(percent_rotator);
-//        jQuery("#edit-contract-next").click(percent_rotator);
-//        jQuery("#edit-budget-next").click(percent_rotator);
-//        jQuery("#edit-confirm").click(percent_rotator);
         jQuery("#edit-confirm").click(formfreeze_datafeeds);
         jQuery("#edit-cancel").click(formfreeze_datafeeds);
-
 
         //loading gif
         jQuery("#edit-type-next").click(gif_rotator);
@@ -2325,26 +2229,12 @@ Drupal.behaviors.advancedsearchfreeze = {
             }, 1);
         }
 
-        function loading_rotator(e){
-            var timer = 95;
+        function gif_rotator(e){
             jQuery("#advanced-search-rotator").css('display', 'block');
-            jQuery("#advanced-search-rotator").rotator({
-                starting: 0,
-                ending: 100,
-                percentage: true,
-                color: '#389be2',
-                lineWidth: 3,
-                timer: timer,
-                radius: 40,
-                fontStyle: 'Calibri',
-                fontSize: '20pt',
-                fontColor: 'black',
-                backgroundColor: 'lightgray',
-                callback: function () {
-                }
-            });
+            jQuery("#advanced-search-rotator").addClass('loading_bigger_gif');
         }
 
+        // Disable form
         jQuery("#edit-spending-submit").click(formfreeze_advancedsearch);
         jQuery("#edit-spending-submit--2").click(formfreeze_advancedsearch);
         jQuery("#edit-revenue-submit").click(formfreeze_advancedsearch);
@@ -2353,13 +2243,13 @@ Drupal.behaviors.advancedsearchfreeze = {
         jQuery("#edit-contracts-submit--2").click(formfreeze_advancedsearch);
         jQuery("#edit-payroll-submit").click(formfreeze_advancedsearch);
 
-        jQuery("#edit-spending-submit").click(loading_rotator);
-        jQuery("#edit-spending-submit--2").click(loading_rotator);
-        jQuery("#edit-revenue-submit").click(loading_rotator);
-        jQuery("#edit-budget-submit").click(loading_rotator);
-        jQuery("#edit-contracts-submit").click(loading_rotator);
-        jQuery("#edit-contracts-submit--2").click(loading_rotator);
-        jQuery("#edit-payroll-submit").click(loading_rotator);
+        // Loading gif
+        jQuery("#edit-spending-submit").click(gif_rotator);
+        jQuery("#edit-spending-submit--2").click(gif_rotator);
+        jQuery("#edit-revenue-submit").click(gif_rotator);
+        jQuery("#edit-budget-submit").click(gif_rotator);
+        jQuery("#edit-contracts-submit").click(gif_rotator);
+        jQuery("#edit-contracts-submit--2").click(gif_rotator);
+        jQuery("#edit-payroll-submit").click(gif_rotator);
     }
 };
-

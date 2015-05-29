@@ -49,6 +49,12 @@
 
 			});
 		}
+        $("#edit-search-box").keypress(function(e) {
+            if(e.which == 13) {
+                $("#edit-search-box").autocomplete("off");
+                $("#edit-search-box").autocomplete("close");
+            }
+        });
         $("#edit-submit").click(function(e) {
             $("#edit-submit").addClass('disable_button');
             $("#edit-search-box").addClass('loadinggif');
