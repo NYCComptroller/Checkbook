@@ -1085,6 +1085,7 @@ function _checkbook_advanced_search_create_alert_results_ajax($form, &$form_stat
 
     /* Load Customize Results Form */
     $redirect_url = '/' . checkbook_advanced_search_form_submit($form, $form_state) . '/createalert';
+    $redirect_url = _checkbook_advanced_search_encode_url($redirect_url);
     $results_html = '<div class="create-alert-customize-results">';
     $results_html .= '<iframe visibility="hidden" src="'.$redirect_url.'" id="checkbook_advanced_search_result_iframe" frameBorder="0" style="overflow-x:hidden; overflow-y:scroll;height:600px;width:996px;"></iframe>';
     $results_html .= '</div>';
@@ -1092,6 +1093,23 @@ function _checkbook_advanced_search_create_alert_results_ajax($form, &$form_stat
 
     return array('#type' => 'ajax', '#commands' => $commands);
 
+}
+
+/**
+ * Replaces and encodes the special characters in the given string.
+ *
+ * @param string $string
+ *   String that needs escaping
+ *
+ * @return string
+ *   Escaped string
+ */
+function _checkbook_advanced_search_encode_url($string) {
+
+    $string = str_replace("%", "%25", $string);
+    $string = str_replace("#", "%23", $string);
+
+    return $string;
 }
 
 function _checkbook_advanced_search_create_alert_instructions($step)
