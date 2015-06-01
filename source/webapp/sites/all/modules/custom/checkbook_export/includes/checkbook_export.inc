@@ -122,7 +122,7 @@ function _checkbook_export_grid_transactions(){
             $rowData = NULL;
             foreach($columns as $column){
 
-                $columnValue = html_entity_decode($dataRec[$column->column]);
+                $columnValue = html_entity_decode($dataRec[$column->column], ENT_QUOTES);;
                 $columnValue = str_replace('"',chr(34).'"',$columnValue);
                 $rowData .= (($i == 0) ? ('"'.$columnValue.'"') : (',"'.$columnValue.'"'));
                 $i++;
