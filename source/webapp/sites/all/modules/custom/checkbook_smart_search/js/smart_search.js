@@ -13,6 +13,7 @@
                         },
                         select: function (event, ui) {
                                 $("#edit-submit").addClass('disable_button');
+                                $("#edit-search-box").addClass('transparent');
                                 $("#edit-search-box").addClass('loadinggif');
                                 $("#edit-search-box").attr("readonly", "readonly");
                                 // This is to fix the issue with chrome when trying to disable the search button
@@ -57,6 +58,7 @@
         });
         $("#edit-submit").click(function(e) {
             $("#edit-submit").addClass('disable_button');
+            $("#edit-search-box").addClass('transparent');
             $("#edit-search-box").addClass('loadinggif');
             // This is to fix the issue with chrome when trying to disable the search button
             setTimeout(function(){

@@ -3050,50 +3050,10 @@ body.page-node-804 #section-header {
 
 .loadinggif {
     background: url(/sites/all/themes/checkbook/images/loading_large.gif) no-repeat center;
-
-    /* Theoretically for IE 8 & 9 (more valid) */
-    /* ...but not required as filter works too */
-    /* should come BEFORE filter */
-    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-
-    /* This works in IE 8 & 9 too */
-    /* ... but also 5, 6, 7 */
-    filter: alpha(opacity=50);
-
-    /* Older than Firefox 0.9 */
-    -moz-opacity:0.5;
-
-    /* Safari 1.x (pre WebKit!) */
-    -khtml-opacity: 0.5;
-
-    /* Modern!
-    /* Firefox 0.9+, Safari 2?, Chrome any?
-    /* Opera 9+, IE 9+ */
-    opacity: 0.5;
 }
 
 .loading_bigger_gif {
     background: url(/sites/all/themes/checkbook/images/loading_bigger.gif) no-repeat center;
-    background-size: 50px 50px;
-    /* Theoretically for IE 8 & 9 (more valid) */
-    /* ...but not required as filter works too */
-    /* should come BEFORE filter */
-    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-
-    /* This works in IE 8 & 9 too */
-    /* ... but also 5, 6, 7 */
-    filter: alpha(opacity=50);
-
-    /* Older than Firefox 0.9 */
-    -moz-opacity:0.5;
-
-    /* Safari 1.x (pre WebKit!) */
-    -khtml-opacity: 0.5;
-
-    /* Modern!
-    /* Firefox 0.9+, Safari 2?, Chrome any?
-    /* Opera 9+, IE 9+ */
-    opacity: 0.5;
 }
 
 .disable_button {
@@ -3204,7 +3164,8 @@ input[type=radio]:checked:enabled.radio-blue + label:before {
     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ffffff',GradientType=0);
     background-color:#f6f6f6;
 }
-#rotator{
+#rotator,
+#advanced-search-rotator{
     float: left;
     /*height: 300px;*/
     /*width: 200px;*/
@@ -3219,20 +3180,6 @@ input[type=radio]:checked:enabled.radio-blue + label:before {
     margin-left: -15em; /*set to a negative number 1/2 of your width*/
 }
 
-#advanced-search-rotator{
-    float: left;
-    /*height: 500px;*/
-    /*width: 775px;*/
-    position: fixed;
-    z-index: 100;
-    display:none;
-    top: 50%;
-    left: 50%;
-    width:30em;
-    height:18em;
-    margin-top: -9em; /*set to a negative number 1/2 of your height*/
-    margin-left: -15em; /*set to a negative number 1/2 of your width*/
-}
 
 .disable_me{
     pointer-events:none;
