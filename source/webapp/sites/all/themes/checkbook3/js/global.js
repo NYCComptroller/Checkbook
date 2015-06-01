@@ -1343,7 +1343,7 @@ Drupal.behaviors.hoveOverMWBE = {
                         $('.create-alert-header').replaceWith(header);
 
                         /* Update wizard instructions */
-                        instructions = "<span class='create-alert-instructions'>Further narrow down the results using the 'Narrow down your search' functionality.<ul><li>Click 'Export' button to download the results into excel.<\/li><li>Click 'Back' to go back to Step1: Select Criteria<\/li><li>Click 'Next' button to Schedule Alert.<\/li><\/ul><\/br></span>";
+                        instructions = "<span class='create-alert-instructions'>Further narrow down the results using the 'Narrow down your search' functionality.<ul><li>Click 'Export' button to download the results into excel.<\/li><li>Click 'Back' to go back to Step1: Select Criteria.<\/li><li>Click 'Next' button to Schedule Alert.<\/li><\/ul><\/br></span>";
                         $('.create-alert-instructions').replaceWith(instructions);
 
                         /* Hide the accordion */
@@ -1371,7 +1371,7 @@ Drupal.behaviors.hoveOverMWBE = {
                         $('.create-alert-header').replaceWith(header);
 
                         /* Update wizard instructions */
-                        instructions = "<span class='create-alert-instructions'><ul><li>Checkbook alerts will notify you by email when new results matching your current search criteria are available. Use options below for alert settings.<\/li><li>Provide email address, in order to receive alerts. Emails will be sent based on the frequency selected and only after the minimum number of additional results entered has been reached since the last alert.<\/li><li>Click 'Back' to go back to Step2: Customize Results<\/li><li>Click 'Schedule Alert' to schedule the alert<\/li><li>The user shall receive email confirmation once the alert is scheduled.<\/li><\/ul></span>";
+                        instructions = "<span class='create-alert-instructions'><ul><li>Checkbook alerts will notify you by email when new results matching your current search criteria are available. Use options below for alert settings.<\/li><li>Provide email address, in order to receive alerts. Emails will be sent based on the frequency selected and only after the minimum number of additional results entered has been reached since the last alert.<\/li><li>Click 'Back' to go back to Step2: Customize Results.<\/li><li>Click 'Schedule Alert' to schedule the alert.<\/li><li>The user shall receive email confirmation once the alert is scheduled.<\/li><\/ul></span>";
                         $('.create-alert-instructions').replaceWith(instructions);
 
                         /* Hide close button */
@@ -1473,7 +1473,7 @@ Drupal.behaviors.hoveOverMWBE = {
                         $('.create-alert-header').replaceWith(header);
 
                         /* Update wizard instructions */
-                        instructions = "<span class='create-alert-instructions'>Further narrow down the results using the 'Narrow down your search' functionality.<ul><li>Click 'Export' button to download the results into excel.<\/li><li>Click 'Back' to go back to Step1: Select Criteria<\/li><li>Click 'Next' button to Schedule Alert.<\/li><\/ul><\/br></span>";
+                        instructions = "<span class='create-alert-instructions'>Further narrow down the results using the 'Narrow down your search' functionality.<ul><li>Click 'Export' button to download the results into excel.<\/li><li>Click 'Back' to go back to Step1: Select Criteria.<\/li><li>Click 'Next' button to Schedule Alert.<\/li><\/ul><\/br></span>";
                         $('.create-alert-instructions').replaceWith(instructions);
 
                         /* Hide the schedule alert page */
