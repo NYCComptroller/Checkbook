@@ -2222,6 +2222,8 @@ Drupal.behaviors.datafeedspagefreeze = {
 Drupal.behaviors.advancedsearchfreeze = {
     attach:function (context, settings) {
         function formfreeze_advancedsearch(e){
+            jQuery(".ui-dialog-titlebar").addClass('transparent');
+            jQuery(".ui-dialog-titlebar").addClass('disable_me');
             jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form").addClass('transparent');
             jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form").addClass('disable_me');
             setTimeout(function(){
