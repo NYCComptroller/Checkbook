@@ -3170,7 +3170,7 @@ input[type=radio]:checked:enabled.radio-blue + label:before {
     /*height: 300px;*/
     /*width: 200px;*/
     position: absolute;
-    z-index: 10;
+    z-index: 1000;
     display:none;
     top: 50%;
     left: 50%;

@@ -2178,7 +2178,8 @@ Drupal.behaviors.disableClickTopNav = {
 Drupal.behaviors.datafeedspagefreeze = {
     attach:function (context, settings) {
         function formfreeze_datafeeds(e){
-            jQuery("#block-system-main").addClass('transparent');
+            jQuery("#checkbook-datafeeds-data-feed-wizard").addClass('transparent');
+            jQuery(".data-feeds-sidebar").addClass('transparent');
             jQuery("#checkbook-datafeeds-data-feed-wizard").addClass('disable_me');
             jQuery("#checkbook-datafeeds-tracking-form").addClass('disable_me');
             jQuery('.data-feeds-wizard a').addClass('disable_me');
@@ -2224,7 +2225,7 @@ Drupal.behaviors.advancedsearchfreeze = {
         function formfreeze_advancedsearch(e){
             jQuery(".ui-dialog-titlebar").addClass('transparent');
             jQuery(".ui-dialog-titlebar").addClass('disable_me');
-            jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form").addClass('transparent');
+            jQuery(".advanced-search-accordion").addClass('transparent');
             jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form").addClass('disable_me');
             setTimeout(function(){
                 jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form :input").attr("disabled", "disabled");
