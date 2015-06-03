@@ -1201,7 +1201,7 @@ Drupal.behaviors.hoveOverMWBE = {
 
 
                 var createAlertsDiv = "<span class='create-alert-instructions'>Follow the three step process to schedule alert.<ul><li>Please select one of the following domains and also select the desired filters.<\/li><li>Click 'Next' button to view and customize the results.<\/li><li>Click 'Clear All' to clear out the filters applied.<\/li><\/ul><\/br></span>";
-                createAlertsDiv += "<span style='visibility: hidden;display: none;' class='create-alert-results-loading'><div class='ajax-progress ajax-progress-throbber'><div class='throbber'>&nbsp;</div></div><p>Please Wait...</p></span>";
+                createAlertsDiv += "<span style='visibility: hidden;display: none;' class='create-alert-results-loading'><div class='ajax-progress ajax-progress-throbber'><div class='throbber'>&nbsp;</div></div><div id='loading-icon'><img src='/sites/all/themes/checkbook/images/loading_large.gif'></div></span>";
                 createAlertsDiv += "<div class='create-alert-customize-results' style='display: none'><br/><br/><br/></div>";
                 createAlertsDiv += "<div class='create-alert-schedule-alert' style='display: none'>&nbsp;<br/><br/></div>";
                 createAlertsDiv = "<div class='create-alert-view'>"+createAlertsDiv+"</div>";
@@ -1251,18 +1251,43 @@ Drupal.behaviors.hoveOverMWBE = {
             $("#checkbook_advanced_search_result_iframe").load(function() {
                 $('.create-alert-submit').css('display','block');
             });
-            $(document).ajaxComplete(function() {
 
+            function create_alert_loading(e){
+                $("#advanced-search-rotator").css('display', 'block');
+                $("#advanced-search-rotator").addClass('loading_bigger_gif');
+            }
+
+            function create_alert_form_disable(e){
+                $(".ui-dialog-titlebar").addClass('transparent');
+                $(".ui-dialog-titlebar").addClass('disable_me');
+                $(".advanced-search-accordion").addClass('transparent');
+                $("#block-checkbook-advanced-search-checkbook-advanced-search-form").addClass('disable_me');
+                $('.create-alert-instructions').addClass('transparent');
+            }
+
+            function create_alert_form_enable(e){
+                $(".ui-dialog-titlebar").removeClass('transparent');
+                $(".ui-dialog-titlebar").removeClass('disable_me');
+                $(".advanced-search-accordion").removeClass('transparent');
+                $("#block-checkbook-advanced-search-checkbook-advanced-search-form").removeClass('disable_me');
+                $('.create-alert-instructions').removeClass('transparent');
+            }
+
+            $(document).ajaxComplete(function() {
+                $('#advanced-search-rotator').css('display', 'none');
+                create_alert_form_enable();
                 /* Do not enable next buttons for results page here */
                 var step = $('input:hidden[name="step"]').val();
                 if(step == 'select_criteria') {
                     $('#edit-next-submit').attr('disabled', true);
                     $('#edit-back-submit').attr('disabled', true);
+                    $('#advanced-search-rotator').css('display', 'none');
                 }
                 else if(step == 'schedule_alert') {
                     $('#edit-next-submit').attr('disabled', false);
                     $('#edit-back-submit').attr('disabled', false);
                     $('a.ui-dialog-titlebar-close').show();
+                    $('#advanced-search-rotator').css('display', 'none');
 
                     /* hide loading icon */
                     $('.create-alert-results-loading').css('visibility', 'hidden');
@@ -1278,26 +1303,36 @@ Drupal.behaviors.hoveOverMWBE = {
             $('input[name="budget_next"]').once('createAlertBudget').click(function (event) {
                 $('a.ui-dialog-titlebar-close').hide();
                 $(".ui-autocomplete-input").autocomplete("close");
+                create_alert_loading();
+                create_alert_form_disable();
                 event.preventDefault();
             });
             $('input[name="revenue_next"]').once('createAlertRevenue').click(function (event) {
                 $('a.ui-dialog-titlebar-close').hide();
                 $(".ui-autocomplete-input").autocomplete("close");
+                create_alert_loading();
+                create_alert_form_disable();
                 event.preventDefault();
             });
             $('input[name="spending_next"]').once('createAlertSpending').click(function (event) {
                 $('a.ui-dialog-titlebar-close').hide();
                 $(".ui-autocomplete-input").autocomplete("close");
+                create_alert_loading();
+                create_alert_form_disable();
                 event.preventDefault();
             });
             $('input[name="contracts_next"]').once('createAlertContracts').click(function (event) {
                 $('a.ui-dialog-titlebar-close').hide();
                 $(".ui-autocomplete-input").autocomplete("close");
+                create_alert_loading();
+                create_alert_form_disable();
                 event.preventDefault();
             });
             $('input[name="payroll_next"]').once('createAlertPayroll').click(function (event) {
                 $('a.ui-dialog-titlebar-close').hide();
                 $(".ui-autocomplete-input").autocomplete("close");
+                create_alert_loading();
+                create_alert_form_disable();
                 event.preventDefault();
             });
             $('#edit-next-submit').once('createAlertNextSubmit').click(function (event) {
@@ -1308,6 +1343,7 @@ Drupal.behaviors.hoveOverMWBE = {
             $('#edit-back-submit').once('createAlertBackSubmit').click(function (event) {
                 $('#edit-next-submit').attr('disabled', true);
                 $.fn.onScheduleAlertBackClick($('input:hidden[name="step"]').val());
+                create_alert_form_enable();
                 event.preventDefault();
             });
 
@@ -1390,6 +1426,7 @@ Drupal.behaviors.hoveOverMWBE = {
                         /* Show loading icon */
                         $('.create-alert-results-loading').css('visibility', 'visible');
                         $('.create-alert-results-loading').css('display', 'block');
+
 
                         /* Show the schedule alert page */
                         $('.create-alert-schedule-alert').css('display','block');
@@ -1586,6 +1623,9 @@ Drupal.behaviors.hoveOverMWBE = {
                 } else {
                     $('a.ui-dialog-titlebar-close').hide();
                     $('#edit-next-submit').attr('disabled', true);
+                    create_alert_loading();
+                    $(".create-alert-view").addClass('transparent');
+                    $(".create-alert-view").addClass('disable_me');
                     $(alertDiv).find('#errorMessages').html('');
 
                     var url = '/alert/transactions';
@@ -2256,3 +2296,5 @@ Drupal.behaviors.advancedsearchfreeze = {
         jQuery("#edit-payroll-submit").click(gif_rotator);
     }
 };
+
+

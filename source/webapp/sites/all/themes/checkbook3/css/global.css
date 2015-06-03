@@ -3167,8 +3167,6 @@ input[type=radio]:checked:enabled.radio-blue + label:before {
 #rotator,
 #advanced-search-rotator{
     float: left;
-    /*height: 300px;*/
-    /*width: 200px;*/
     position: absolute;
     z-index: 1000;
     display:none;
@@ -3194,4 +3192,15 @@ a.link-download-datafeeds-zip {
     -ms-user-select: none;      /* IE 10+ */
     -o-user-select: none;
     user-select: none;
+}
+
+span.create-alert-results-loading #loading-icon {
+    position: absolute;
+    z-index: 1000;
+    top: 20%;
+    left: 50%;
+    /*width:30em;*/
+    /*height:18em;*/
+    /*margin-top: -9em; *//*set to a negative number 1/2 of your height*/
+    /*margin-left: -5em; *//*set to a negative number 1/2 of your width*/
 }
