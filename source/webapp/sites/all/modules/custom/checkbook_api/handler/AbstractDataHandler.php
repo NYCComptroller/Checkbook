@@ -312,7 +312,7 @@ abstract class AbstractDataHandler {
    */
   private function getDataRecords() {
     DateDataTypeHandler::$MASK_CUSTOM = 'Y-m-d';
-
+    ini_set('max_execution_time',90);
     $records = get_db_results(TRUE, $this->requestDataSet->name, $this->requestDataSet->columns,
       $this->requestDataSet->parameters, $this->requestDataSet->sortColumn, $this->requestDataSet->startWith, $this->requestDataSet->limit, NULL);
 
