@@ -60,6 +60,7 @@
             $("#edit-submit").addClass('disable_button');
             $("#edit-search-box").addClass('transparent');
             $("#edit-search-box").addClass('loadinggif');
+            $("#edit-search-box").focus();
             // This is to fix the issue with chrome when trying to disable the search button
             setTimeout(function(){
                 $('input[type=submit]').attr("disabled", "disabled");
