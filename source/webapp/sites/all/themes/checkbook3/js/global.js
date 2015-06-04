@@ -1260,6 +1260,11 @@ Drupal.behaviors.hoveOverMWBE = {
             function create_alert_form_disable(e){
                 $(".ui-dialog-titlebar").addClass('transparent');
                 $(".ui-dialog-titlebar").addClass('disable_me');
+                $("#spending-advanced-search").addClass('transparent');
+                $("#revenue-advanced-search").addClass('transparent');
+                $("#budget-advanced-search").addClass('transparent');
+                $("#contracts-advanced-search").addClass('transparent');
+                $("#payroll-advanced-search").addClass('transparent');
                 $(".advanced-search-accordion").addClass('transparent');
                 $("#block-checkbook-advanced-search-checkbook-advanced-search-form").addClass('disable_me');
                 $('.create-alert-instructions').addClass('transparent');
@@ -1268,6 +1273,11 @@ Drupal.behaviors.hoveOverMWBE = {
             function create_alert_form_enable(e){
                 $(".ui-dialog-titlebar").removeClass('transparent');
                 $(".ui-dialog-titlebar").removeClass('disable_me');
+                $("#spending-advanced-search").removeClass('transparent');
+                $("#revenue-advanced-search").removeClass('transparent');
+                $("#budget-advanced-search").removeClass('transparent');
+                $("#contracts-advanced-search").removeClass('transparent');
+                $("#payroll-advanced-search").removeClass('transparent');
                 $(".advanced-search-accordion").removeClass('transparent');
                 $("#block-checkbook-advanced-search-checkbook-advanced-search-form").removeClass('disable_me');
                 $('.create-alert-instructions').removeClass('transparent');
@@ -2265,6 +2275,11 @@ Drupal.behaviors.advancedsearchfreeze = {
         function formfreeze_advancedsearch(e){
             jQuery(".ui-dialog-titlebar").addClass('transparent');
             jQuery(".ui-dialog-titlebar").addClass('disable_me');
+            $("#spending-advanced-search").addClass('transparent');
+            $("#revenue-advanced-search").addClass('transparent');
+            $("#budget-advanced-search").addClass('transparent');
+            $("#contracts-advanced-search").addClass('transparent');
+            $("#payroll-advanced-search").addClass('transparent');
             jQuery(".advanced-search-accordion").addClass('transparent');
             jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form").addClass('disable_me');
             setTimeout(function(){
