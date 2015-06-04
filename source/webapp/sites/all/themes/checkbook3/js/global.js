@@ -1201,7 +1201,7 @@ Drupal.behaviors.hoveOverMWBE = {
 
 
                 var createAlertsDiv = "<span class='create-alert-instructions'>Follow the three step process to schedule alert.<ul><li>Please select one of the following domains and also select the desired filters.<\/li><li>Click 'Next' button to view and customize the results.<\/li><li>Click 'Clear All' to clear out the filters applied.<\/li><\/ul><\/br></span>";
-                createAlertsDiv += "<span style='visibility: hidden;display: none;' class='create-alert-results-loading'><div class='ajax-progress ajax-progress-throbber'><div class='throbber'>&nbsp;</div></div><div id='loading-icon'><img src='/sites/all/themes/checkbook/images/loading_large.gif'></div></span>";
+                createAlertsDiv += "<span style='visibility: hidden;display: none;' class='create-alert-results-loading'><div id='loading-icon'><img src='/sites/all/themes/checkbook/images/loading_large.gif'></div></span>";
                 createAlertsDiv += "<div class='create-alert-customize-results' style='display: none'><br/><br/><br/></div>";
                 createAlertsDiv += "<div class='create-alert-schedule-alert' style='display: none'>&nbsp;<br/><br/></div>";
                 createAlertsDiv = "<div class='create-alert-view'>"+createAlertsDiv+"</div>";
