@@ -1110,6 +1110,7 @@ function _checkbook_advanced_search_encode_url($string) {
     $string = str_replace("#", "%23", $string);
     $string = str_replace("<", "%3C", $string);
     $string = str_replace(">", "%3E", $string);
+    $string = str_replace("?", "\%3F", $string);
 
     return $string;
 }
