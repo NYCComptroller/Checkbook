@@ -6274,6 +6274,7 @@ function checkbook_datafeeds_format_columns() {
  */
 function checkbook_datafeeds_download_zip_ajax($token) {
     QueueUtil::incrementDownloadCount($token);
+    return null;
 }
 
 /**
