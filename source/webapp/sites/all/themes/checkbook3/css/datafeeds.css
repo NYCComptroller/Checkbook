@@ -467,3 +467,24 @@ body.page-node-466 ol{
 body.page-node-466 ol li{
   margin-left: 20px;
 }
+
+
+/*Fix for large drop downs in IE8 to force them to stay fixed*/
+body.page-data-feeds #zone-content form.data-feeds-wizard .column select#edit-agency,
+body.page-data-feeds #zone-content form.data-feeds-wizard .column select#edit-dept,
+body.page-data-feeds #zone-content form.data-feeds-wizard .column select#edit-expense-category,
+body.page-data-feeds #zone-content form.data-feeds-wizard .column select#edit-expense-type,
+body.page-data-feeds #zone-content form.data-feeds-wizard .column select#edit-contract-type,
+body.page-data-feeds #zone-content form.data-feeds-wizard .column select#edit-award-method  {
+    position: relative !important;
+    width: 178px !important;
+}
+
+body.page-data-feeds #zone-content form.data-feeds-wizard .column select#edit-agency option,
+body.page-data-feeds #zone-content form.data-feeds-wizard .column select#edit-dept option,
+body.page-data-feeds #zone-content form.data-feeds-wizard .column select#edit-expense-category option,
+body.page-data-feeds #zone-content form.data-feeds-wizard .column select#edit-expense-type option,
+body.page-data-feeds #zone-content form.data-feeds-wizard .column select#edit-contract-type option,
+body.page-data-feeds #zone-content form.data-feeds-wizard .column select#edit-award-method option {
+    position: absolute !important;
+}

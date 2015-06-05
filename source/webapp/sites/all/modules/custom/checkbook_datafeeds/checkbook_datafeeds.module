@@ -564,6 +564,7 @@ function checkbook_datafeeds_budget($form, &$form_state) {
     $agency = isset($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Citywide (All Agencies)';
     $dept = !empty($form_state['values']['dept']) ? $form_state['values']['dept'] : '';
     $year = !empty($form_state['values']['fiscal_year']) ? $form_state['values']['fiscal_year'] : 'FY' . currentFiscalYear();
+    $agency_options = _agency_options();
 
     $form['description'] = array(
         '#markup' => '<h2 class="domain-title">Budget</h2>',
@@ -585,7 +586,8 @@ function checkbook_datafeeds_budget($form, &$form_state) {
     $form['filter']['agency'] = array(
         '#type' => 'select',
         '#title' => t('Agency:'),
-        '#options' => _agency_options(),
+        '#options' => $agency_options['options'],
+        '#option_attributes' => $agency_options['options_attributes'],
         '#attributes' => array('class' => array('watch')),
         '#prefix' => '<div class="datafield agency">',
         '#suffix' => '</div>',
@@ -1405,6 +1407,9 @@ function checkbook_datafeeds_contracts($form, &$form_state)
 function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_source)
 {
     $first_time_load = checkbook_datafeeds_is_first_load($form_state, $data_source);
+    $agency_options = _agency_options($data_source);
+    $contract_type_options = _contract_type_options();
+    $award_method_options = _award_method_options();
 
     switch ($data_source) {
         case 'checkbook_oge':
@@ -1435,7 +1440,8 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
             $form['filter']['contract_type'] = array(
                 '#type' => 'select',
                 '#title' => t('Contract Type:'),
-                '#options' => _contract_type_options(),
+                '#options' => $contract_type_options['options'],
+                '#option_attributes' => $contract_type_options['options_attributes'],
                 '#attributes' => array('class' => array('watch')),
                 '#prefix' => '<div class="datafield contracttype">',
                 '#suffix' => '</div>',
@@ -1505,7 +1511,8 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
             $form['filter']['agency'] = array(
                 '#type' => 'select',
                 '#title' => t('Other Government <br/>Entities:'),
-                '#options' => _agency_options($data_source),
+                '#options' => $agency_options['options'],
+                '#option_attributes' => $agency_options['options_attributes'],
                 '#attributes' => array('class' => array('watch')),
                 '#prefix' => '<div class="column column-right"><div class="datafield agency">',
                 '#suffix' => '</div>',
@@ -1560,7 +1567,8 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
             $form['filter']['award_method'] = array(
                 '#type' => 'select',
                 '#title' => t('Award Method:'),
-                '#options' => _award_method_options(),
+                '#options' => $award_method_options['options'],
+                '#option_attributes' => $award_method_options['options_attributes'],
                 '#attributes' => array('class' => array('watch')),
                 '#prefix' => '<div class="datafield awardmethod">',
                 '#suffix' => '</div>',
@@ -1674,7 +1682,8 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
             $form['filter']['contract_type'] = array(
                 '#type' => 'select',
                 '#title' => t('Contract Type:'),
-                '#options' => _contract_type_options(),
+                '#options' => $contract_type_options['options'],
+                '#option_attributes' => $contract_type_options['options_attributes'],
                 '#attributes' => array('class' => array('watch')),
                 '#prefix' => '<div class="datafield contracttype">',
                 '#suffix' => '</div>',
@@ -1805,7 +1814,8 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
             $form['filter']['agency'] = array(
                 '#type' => 'select',
                 '#title' => t('Agency:'),
-                '#options' => _agency_options($data_source),
+                '#options' => $agency_options['options'],
+                '#option_attributes' => $agency_options['options_attributes'],
                 '#attributes' => array('class' => array('watch')),
                 '#prefix' => '<div class="datafield agency">',
                 '#suffix' => '</div>',
@@ -1838,7 +1848,8 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
             $form['filter']['award_method'] = array(
                 '#type' => 'select',
                 '#title' => t('Award Method:'),
-                '#options' => _award_method_options(),
+                '#options' => $award_method_options['options'],
+                '#option_attributes' => $award_method_options['options_attributes'],
                 '#attributes' => array('class' => array('watch')),
                 '#prefix' => '<div class="datafield awardmethod">',
                 '#suffix' => '</div>',
@@ -2543,6 +2554,7 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
  */
 function checkbook_datafeeds_payroll($form, &$form_state) {
     $datatype = $form_state['step_information']['type']['stored_values']['format'];
+    $agency_options = _agency_options();
     $form['description'] = array(
         '#markup' => '<h2 class="domain-title">Payroll</h2>',
     );
@@ -2568,7 +2580,8 @@ function checkbook_datafeeds_payroll($form, &$form_state) {
     $form['filter']['agency'] = array(
         '#type' => 'select',
         '#title' => t('Agency:'),
-        '#options' => _agency_options(),
+        '#options' => $agency_options['options'],
+        '#option_attributes' => $agency_options['options_attributes'],
         '#attributes' => array('class' => array('watch')),
         '#default_value' => !empty($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Citywide (All Agencies)',
         '#prefix' => '<div class="datafield agency">',
@@ -3286,6 +3299,7 @@ function checkbook_datafeeds_revenue($form, &$form_state) {
     $datatype = $form_state['step_information']['type']['stored_values']['format'];
     $revenue_fys = array ('' => "All Fiscal Years");
     $revenue_fys = $revenue_fys + _checkbook_advanced_search_get_year('revenue','datafeeds');
+    $agency_options = _agency_options();
 
     $form['description'] = array(
         '#markup' => '<h2 class="domain-title">Revenue</h2>',
@@ -3313,7 +3327,8 @@ function checkbook_datafeeds_revenue($form, &$form_state) {
     $form['filter']['agency'] = array(
         '#type' => 'select',
         '#title' => t('Agency:'),
-        '#options' => _agency_options(),
+        '#options' => $agency_options['options'],
+        '#option_attributes' => $agency_options['options_attributes'],
         '#prefix' => '<div class="datafield agency">',
         '#suffix' => '</div>',
         '#attributes' => array('class' => array('watch')),
@@ -4030,13 +4045,18 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     $dept = checkbook_datafeeds_filter_get_default_value($form_state, 'dept', $first_time_load, '');
     $sc = checkbook_datafeeds_filter_get_default_value($form_state, 'expense_type', $first_time_load, '');
     $year = !$first_time_load ? (!empty($form_state['values']['year']) ? $form_state['values']['year'] : 'FY' . currentFiscalYear()) : 'FY' . currentFiscalYear();
+    $agency_options = _agency_options($data_source);
+    $dept_options = _dept_options($agency, $sc, $year, $data_source);
+    $expcat_options = _expcat_options($agency, $dept, $sc, $year, $data_source);
+    $expense_type_options =  _expense_type_options($data_source);
 
     switch ($data_source) {
         case 'checkbook_oge':
             $form['filter']['agency'] = array(
                 '#type' => 'select',
                 '#title' => t('Other Government<br/> Entities:'),
-                '#options' => _agency_options($data_source),
+                '#options' => $agency_options['options'],
+                '#option_attributes' => $agency_options['options_attributes'],
                 '#prefix' => '<div class="column column-left"><div class="datafield agency">',
                 '#suffix' => '</div>',
                 '#attributes' => array('class' => array('watch')),
@@ -4056,7 +4076,8 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
             $form['filter']['dept'] = array(
                 '#type' => 'select',
                 '#title' => t('Department:'),
-                '#options' => _dept_options($agency, $sc, $year, $data_source),
+                '#options' => $dept_options['options'],
+                '#option_attributes' => $dept_options['options_attributes'],
                 '#prefix' => '<div id="dynamic-fields"><div class="datafield department">',
                 '#suffix' => '</div>',
                 '#attributes' => array('class' => array('watch')),
@@ -4069,7 +4090,8 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
             $form['filter']['expense_category'] = array(
                 '#type' => 'select',
                 '#title' => t('Expense Category:'),
-                '#options' => _expcat_options($agency, $dept, $sc, $year, $data_source),
+                '#options' => $expcat_options['options'],
+                '#option_attributes' => $expcat_options['options_attributes'],
                 '#prefix' => '<div id="expense-category"><div class="datafield expensecategory">',
                 '#suffix' => '</div></div></div>',
                 '#attributes' => array('class' => array('watch')),
@@ -4082,7 +4104,8 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
             $form['filter']['expense_type'] = array(
                 '#type' => 'select',
                 '#title' => t('Spending Category:'),
-                '#options' => _expense_type_options($data_source),
+                '#options' => $expense_type_options['options'],
+                '#option_attributes' => $expense_type_options['options_attributes'],
                 '#prefix' => '<div class="datafield expensetype">',
                 '#suffix' => '</div>',
                 '#attributes' => array('class' => array('watch')),
@@ -4245,7 +4268,8 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
             $form['filter']['agency'] = array(
                 '#type' => 'select',
                 '#title' => t('Agency:'),
-                '#options' => _agency_options($data_source),
+                '#options' => $agency_options['options'],
+                '#option_attributes' => $agency_options['options_attributes'],
                 '#prefix' => '<div class="column column-left"><div class="datafield agency">',
                 '#suffix' => '</div>',
                 '#attributes' => array('class' => array('watch')),
@@ -4265,7 +4289,8 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
             $form['filter']['dept'] = array(
                 '#type' => 'select',
                 '#title' => t('Department:'),
-                '#options' => _dept_options($agency, $sc, $year),
+                '#options' => $dept_options['options'],
+                '#option_attributes' => $dept_options['options_attributes'],
                 '#prefix' => '<div id="dynamic-fields"><div class="datafield department">',
                 '#suffix' => '</div>',
                 '#attributes' => array('class' => array('watch')),
@@ -4278,7 +4303,8 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
             $form['filter']['expense_category'] = array(
                 '#type' => 'select',
                 '#title' => t('Expense Category:'),
-                '#options' => _expcat_options($agency, $dept, $sc, $year),
+                '#options' => $expcat_options['options'],
+                '#option_attributes' => $expcat_options['options_attributes'],
                 '#prefix' => '<div id="expense-category"><div class="datafield expensecategory">',
                 '#suffix' => '</div></div></div>',
                 '#attributes' => array('class' => array('watch')),
@@ -4291,7 +4317,8 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
             $form['filter']['expense_type'] = array(
                 '#type' => 'select',
                 '#title' => t('Spending Category:'),
-                '#options' => _expense_type_options(),
+                '#options' => $expense_type_options['options'],
+                '#option_attributes' => $expense_type_options['options_attributes'],
                 '#prefix' => '<div class="datafield expensetype">',
                 '#suffix' => '</div>',
                 '#attributes' => array('class' => array('watch')),
@@ -5383,7 +5410,6 @@ function currentCalendarYear() {
 function _agency_options($data_source = null) {
     try {
         $dataController = data_controller_get_instance();
-
         switch($data_source)
         {
             case 'checkbook_oge':
@@ -5391,29 +5417,51 @@ function _agency_options($data_source = null) {
                     'agency_code',
                     'agency_name',
                 ), array("is_display" => "Y","is_oge_agency" => "Y"), 'agency_name');
-                $results = array('Select One' => 'Select One');
-                foreach ($data as $row) {
-                    $results[$row['agency_name'] . ' [' . $row['agency_code'] . ']'] = $row['agency_name'] . ' [' . $row['agency_code'] . ']';
-                }
-                return $results;
                 break;
             default:
                 $data = $dataController->queryDataset("checkbook:agency", array(
                     'agency_code',
                     'agency_name',
                 ), array("is_display" => "Y"), 'agency_name');
-                $results = array('Citywide (All Agencies)' => 'Citywide (All Agencies)');
-                foreach ($data as $row) {
-                    $results[$row['agency_name'] . ' [' . $row['agency_code'] . ']'] = $row['agency_name'] . ' [' . $row['agency_code'] . ']';
-                }
-                return $results;
                 break;
         }
+        $results = _checkbook_datafeeds_agency_options($data,$data_source);
+        return $results;
     }
     catch (Exception $e) {
         log_error("Error getting data from controller: \n" . $e->getMessage());
         return;
     }
+}
+
+/**
+ * Get the agency options, for IE8, the text will be shortened to fit the width and a title attribute is there
+ * @param $data
+ * @param null $data_source
+ * @return mixed
+ */
+function _checkbook_datafeeds_agency_options($data,$data_source = null) {
+
+    //IE8 - handle drop down width issue
+    $menu_options = $data_source == 'checkbook_oge'
+        ? array('Select One' => 'Select One')
+        : array('Citywide (All Agencies)' => 'Citywide (All Agencies)');
+
+    $title = $data_source == 'checkbook_oge'
+        ? 'Select One'
+        : 'Citywide (All Agencies)';
+    $menu_options_attributes = array($title => array('title' => $title));
+
+    foreach ($data as $row) {
+        $option = $row['agency_name'] . ' [' . $row['agency_code'] . ']';
+        //Menu options
+        $menu_options[$option] = (strlen($option) > 20) ? substr($option, 0, 20) . '...' : $option;
+        //Menu option titles
+        $menu_options_attributes[$option] = array('title' => $option);
+    }
+    $results['options'] = $menu_options;
+    $results['options_attributes'] = $menu_options_attributes;
+    return $results;
 }
 
 /**
@@ -5510,15 +5558,7 @@ function _expense_type_options($data_source = 'checkbook') {
                     'spending_category_code',
                     'display_name',
                 ), null, 'display_order');
-                foreach ($data as $row) {
-                    if ($row['spending_category_code'] == 'ts') {
-                        $results[""] = $row['display_name'] . ' [' . $row['spending_category_code'] . ']';
-                    }
-                    else {
-                        $results[$row['display_name'] . ' [' . $row['spending_category_code'] . ']'] = $row['display_name'] . ' [' . $row['spending_category_code'] . ']';
-                    }
-                }
-                return array_unique($results);
+
                 break;
 
             default:
@@ -5526,22 +5566,45 @@ function _expense_type_options($data_source = 'checkbook') {
                     'spending_category_code',
                     'display_name',
                 ), NULL, 'display_order');
-                foreach ($data as $row) {
-                    if ($row['spending_category_code'] == 'ts') {
-                        $results[""] = $row['display_name'] . ' [' . $row['spending_category_code'] . ']';
-                    }
-                    else {
-                        $results[$row['display_name'] . ' [' . $row['spending_category_code'] . ']'] = $row['display_name'] . ' [' . $row['spending_category_code'] . ']';
-                    }
-                }
-                return array_unique($results);
                 break;
         }
+
+        $results = _checkbook_datafeeds_expense_type_options($data,$data_source);
+        return $results;
     }
     catch (Exception $e) {
         log_error("Error getting data from controller: \n" . $e->getMessage());
         return;
     }
+}
+
+/**
+ * Get the expense type options, for IE8, the text will be shortened to fit the width and a title attribute is there
+ * @param $data
+ * @param null $data_source
+ * @return mixed
+ */
+function _checkbook_datafeeds_expense_type_options($data,$data_source = null) {
+
+    //IE8 - handle drop down width issue
+    foreach ($data as $row) {
+        $option = $row['display_name'] . ' [' . $row['spending_category_code'] . ']';
+        if ($row['spending_category_code'] == 'ts') {
+            //Menu options
+            $menu_options[''] = (strlen($option) > 20) ? substr($option, 0, 20) . '...' : $option;
+            //Menu option titles
+            $menu_options_attributes[$option] = array('title' => $option);
+        }
+        else {
+            //Menu options
+            $menu_options[$option] = (strlen($option) > 20) ? substr($option, 0, 20) . '...' : $option;
+            //Menu option titles
+            $menu_options_attributes[$option] = array('title' => $option);
+        }
+    }
+    $results['options'] = $menu_options;
+    $results['options_attributes'] = $menu_options_attributes;
+    return $results;
 }
 
 /**
@@ -5572,16 +5635,38 @@ function _contract_type_options() {
             'agreement_type_code',
             'agreement_type_name'
         ), NULL, 'agreement_type_name');
-        $results = array('No Contract Type Selected' => 'Select Contract Type');
-        foreach ($data as $row) {
-            $results[$row['agreement_type_name'] . ' [' . $row['agreement_type_code'] . ']'] = $row['agreement_type_name'] . ' [' . $row['agreement_type_code'] . ']';
-        }
-        return array_unique($results);
+        $results = _checkbook_datafeeds_contract_type_options($data);
+        return $results;
     }
     catch (Exception $e) {
         log_error("Error getting data from controller: \n" . $e->getMessage());
         return;
     }
+}
+
+/**
+ * Get the Contract Type options, for IE8, the text will be shortened to fit the width and a title attribute is there
+ *
+ * @param $data
+ * @return mixed
+ */
+function _checkbook_datafeeds_contract_type_options($data) {
+
+    //IE8 - handle drop down width issue
+    $title = 'Select Contract Type';
+    $menu_options['No Contract Type Selected'] = $title;
+    $menu_options_attributes = array($title => array('title' => $title));
+
+    foreach ($data as $row) {
+        $option = $row['agreement_type_name'] . ' [' . $row['agreement_type_code'] . ']';
+        //Menu options
+        $menu_options[$option] = (strlen($option) > 18) ? substr($option, 0, 18) . '...' : $option;
+        //Menu option titles
+        $menu_options_attributes[$option] = array('title' => $option);
+    }
+    $results['options'] = $menu_options;
+    $results['options_attributes'] = $menu_options_attributes;
+    return $results;
 }
 
 /**
@@ -5597,17 +5682,40 @@ function _award_method_options() {
             'award_method_code',
             'award_method_name',
         ), NULL, 'award_method_name');
-        $results['No Award Method Selected'] = 'Select Award Method';
-        foreach ($data as $row) {
-            $results[$row['award_method_name'] . ' [' . $row['award_method_code'] . ']'] = $row['award_method_name'] . ' [' . $row['award_method_code'] . ']';
-        }
-        return array_unique($results);
+        $results = _checkbook_datafeeds_award_method_options($data);
+        return $results;
     }
     catch (Exception $e) {
         log_error("Error getting data from controller: \n" . $e->getMessage());
         return;
     }
 }
+
+/**
+ * Get the Award Method options, for IE8, the text will be shortened to fit the width and a title attribute is there
+ *
+ * @param $data
+ * @return mixed
+ */
+function _checkbook_datafeeds_award_method_options($data) {
+
+    //IE8 - handle drop down width issue
+    $title = 'Select Award Method';
+    $menu_options['No Award Method Selected'] = $title;
+    $menu_options_attributes = array($title => array('title' => $title));
+
+    foreach ($data as $row) {
+        $option = $row['award_method_name'] . ' [' . $row['award_method_code'] . ']';
+        //Menu options
+        $menu_options[$option] = (strlen($option) > 18) ? substr($option, 0, 18) . '...' : $option;
+        //Menu option titles
+        $menu_options_attributes[$option] = array('title' => $option);
+    }
+    $results['options'] = $menu_options;
+    $results['options_attributes'] = $menu_options_attributes;
+    return $results;
+}
+
 /**
  * Get Department from Data Controller and format into a FAPI select input #options array.
  *
@@ -5682,6 +5790,7 @@ function _budget_expcat_options($agency, $dept, $year) {
     return $output;
 }
 
+
 /**
  * Get Department from Data Controller and format into a FAPI select input #options array.
  *
@@ -5718,13 +5827,9 @@ function _dept_options($agency, $sc, $year, $data_source = null) {
                 $scstring = "AND ref_spending_category.spending_category_code = '" . $sc . "' ";
             }
             $query = "SELECT DISTINCT department_name || ' [' || department_code || ']' department_name FROM disbursement_line_item_details, ref_spending_category WHERE disbursement_line_item_details.spending_category_id = ref_spending_category.spending_category_id " . $agencystring . $yearstring . $scstring . "ORDER BY department_name ASC";
-            $results = _checkbook_project_execute_sql_by_data_source($query, $data_source);
-            $output[''] = "Select Department";
-            foreach ($results as $result) {
-                $output[$result['department_name']] = $result['department_name'];
-            }
-            return $output;
-            break;
+            $data = _checkbook_project_execute_sql($query,$data_source);
+            $results = _checkbook_datafeeds_dept_options($data,$data_source);
+           break;
         default:
             $agency = emptyToZero($agency);
             $sc = emptyToZero($sc);
@@ -5743,14 +5848,36 @@ function _dept_options($agency, $sc, $year, $data_source = null) {
                 $scstring = "AND ref_spending_category.spending_category_code = '" . $sc . "' ";
             }
             $query = "SELECT DISTINCT department_name || ' [' || department_code || ']' department_name FROM disbursement_line_item_details, ref_spending_category WHERE disbursement_line_item_details.spending_category_id = ref_spending_category.spending_category_id " . $agencystring . $yearstring . $scstring . "ORDER BY department_name ASC";
-            $results = _checkbook_project_execute_sql($query);
-            $output[''] = "Select Department";
-            foreach ($results as $result) {
-                $output[$result['department_name']] = $result['department_name'];
-            }
-            return $output;
+            $data = _checkbook_project_execute_sql($query);
+            $results = _checkbook_datafeeds_dept_options($data,$data_source);
             break;
     }
+    return $results;
+}
+
+/**
+ * Get the department options, for IE8, the text will be shortened to fit the width and a title attribute is there
+ * @param $data
+ * @param null $data_source
+ * @return mixed
+ */
+function _checkbook_datafeeds_dept_options($data,$data_source = null) {
+
+    //IE8 - handle drop down width issue
+    $title = 'Select Department';
+    $menu_options[''] = $title;
+    $menu_options_attributes = array($title => array('title' => $title));
+
+    foreach ($data as $row) {
+        $option = $row['department_name'];
+        //Menu options
+        $menu_options[$option] = (strlen($option) > 20) ? substr($option, 0, 20) . '...' : $option;
+        //Menu option titles
+        $menu_options_attributes[$option] = array('title' => $option);
+    }
+    $results['options'] = $menu_options;
+    $results['options_attributes'] = $menu_options_attributes;
+    return $results;
 }
 
 /**
@@ -5793,12 +5920,7 @@ function _expcat_options($agency, $dept, $sc, $year, $data_source = null) {
                 $deptstring = "AND disbursement_line_item_details.department_code = '" . $dept . "' ";
             }
             $query = "SELECT DISTINCT expenditure_object_name|| '[' || expenditure_object_code || ']' expenditure_object_code FROM disbursement_line_item_details, ref_spending_category WHERE disbursement_line_item_details.spending_category_id = ref_spending_category.spending_category_id " . $yearstring . $agencystring . $scstring . $deptstring . "ORDER BY expenditure_object_code ASC";
-            $results =  _checkbook_project_execute_sql_by_data_source($query, 'checkbook_oge');
-            $output[''] = 'Select Expense Category';
-            foreach ($results as $result) {
-                $output[$result['expenditure_object_code']] = $result['expenditure_object_code'];
-            }
-            return $output;
+            $data =  _checkbook_project_execute_sql_by_data_source($query, 'checkbook_oge');
             break;
 
         default:
@@ -5823,14 +5945,37 @@ function _expcat_options($agency, $dept, $sc, $year, $data_source = null) {
                 $deptstring = "AND disbursement_line_item_details.department_code = '" . $dept . "' ";
             }
             $query = "SELECT DISTINCT expenditure_object_name|| '[' || expenditure_object_code || ']' expenditure_object_code FROM disbursement_line_item_details, ref_spending_category WHERE disbursement_line_item_details.spending_category_id = ref_spending_category.spending_category_id " . $yearstring . $agencystring . $scstring . $deptstring . "ORDER BY expenditure_object_code ASC";
-            $results = _checkbook_project_execute_sql($query);
-            $output[''] = 'Select Expense Category';
-            foreach ($results as $result) {
-                $output[$result['expenditure_object_code']] = $result['expenditure_object_code'];
-            }
-            return $output;
+            $data = _checkbook_project_execute_sql($query);
             break;
     }
+    $results = _checkbook_datafeeds_expcat_options($data,$data_source);
+    return $results;
+}
+
+
+/**
+ * Get the expense category options, for IE8, the text will be shortened to fit the width and a title attribute is there
+ * @param $data
+ * @param null $data_source
+ * @return mixed
+ */
+function _checkbook_datafeeds_expcat_options($data,$data_source = null) {
+
+    //IE8 - handle drop down width issue
+    $title = 'Select Expense Category';
+    $menu_options[''] = $title;
+    $menu_options_attributes = array($title => array('title' => $title));
+
+    foreach ($data as $row) {
+        $option = $row['expenditure_object_code'];
+        //Menu options
+        $menu_options[$option] = (strlen($option) > 20) ? substr($option, 0, 20) . '...' : $option;
+        //Menu option titles
+        $menu_options_attributes[$option] = array('title' => $option);
+    }
+    $results['options'] = $menu_options;
+    $results['options_attributes'] = $menu_options_attributes;
+    return $results;
 }
 
 /**
