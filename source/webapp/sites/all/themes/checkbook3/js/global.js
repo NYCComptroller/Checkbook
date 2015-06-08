@@ -2224,6 +2224,7 @@ Drupal.behaviors.disableClickTopNav = {
 
 // end of disabling code
 
+
 //Datafeeds form freeze while loading
 Drupal.behaviors.datafeedspagefreeze = {
     attach:function (context, settings) {
@@ -2275,11 +2276,11 @@ Drupal.behaviors.advancedsearchfreeze = {
         function formfreeze_advancedsearch(e){
             jQuery(".ui-dialog-titlebar").addClass('transparent');
             jQuery(".ui-dialog-titlebar").addClass('disable_me');
-            $("#spending-advanced-search").addClass('transparent');
-            $("#revenue-advanced-search").addClass('transparent');
-            $("#budget-advanced-search").addClass('transparent');
-            $("#contracts-advanced-search").addClass('transparent');
-            $("#payroll-advanced-search").addClass('transparent');
+            jQuery("#spending-advanced-search").addClass('transparent');
+            jQuery("#revenue-advanced-search").addClass('transparent');
+            jQuery("#budget-advanced-search").addClass('transparent');
+            jQuery("#contracts-advanced-search").addClass('transparent');
+            jQuery("#payroll-advanced-search").addClass('transparent');
             jQuery(".advanced-search-accordion").addClass('transparent');
             jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form").addClass('disable_me');
             setTimeout(function(){
