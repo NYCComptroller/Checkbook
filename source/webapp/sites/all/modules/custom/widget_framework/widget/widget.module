@@ -567,18 +567,18 @@ function load_widget_data($node, $resultFormatter) {
 
         //if % (single or repeating) is passed as a parameter,
         //this field needs to be ignored in an ilike/like
-        foreach($parameters as $param_key => $param_value){
-            $operator_handler_class = get_class($param_value[0]);
-            if($operator_handler_class == "WildcardOperatorHandler") {
-                foreach($param_value[0] as $key => $value) {
-                   if($key == "wildcard" && preg_match("/^%*$/",$value)) {
-                       $data_controller_instance = data_controller_get_operator_factory_instance();
-                       $parameters[$param_key] = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME,'');
-                       continue;
-                   }
-                }
-            }
-        }
+//        foreach($parameters as $param_key => $param_value){
+//            $operator_handler_class = get_class($param_value[0]);
+//            if($operator_handler_class == "WildcardOperatorHandler") {
+//                foreach($param_value[0] as $key => $value) {
+//                   if($key == "wildcard" && preg_match("/^%*$/",$value)) {
+//                       $data_controller_instance = data_controller_get_operator_factory_instance();
+//                       $parameters[$param_key] = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME,'');
+//                       continue;
+//                   }
+//                }
+//            }
+//        }
 
         //Do not move this code before adjusting parameters.
         //Widget config may be updated.
