@@ -2274,23 +2274,24 @@ Drupal.behaviors.datafeedspagefreeze = {
 Drupal.behaviors.advancedsearchfreeze = {
     attach:function (context, settings) {
         function formfreeze_advancedsearch(e){
-            jQuery(".ui-dialog-titlebar").addClass('transparent');
-            jQuery(".ui-dialog-titlebar").addClass('disable_me');
-            jQuery("#spending-advanced-search").addClass('transparent');
-            jQuery("#revenue-advanced-search").addClass('transparent');
-            jQuery("#budget-advanced-search").addClass('transparent');
-            jQuery("#contracts-advanced-search").addClass('transparent');
-            jQuery("#payroll-advanced-search").addClass('transparent');
-            jQuery(".advanced-search-accordion").addClass('transparent');
-            jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form").addClass('disable_me');
-            setTimeout(function(){
-                jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form :input").attr("disabled", "disabled");
-            }, 1);
+                jQuery(".ui-dialog-titlebar").addClass('transparent');
+                jQuery(".ui-dialog-titlebar").addClass('disable_me');
+                jQuery("#spending-advanced-search").addClass('transparent');
+                jQuery("#revenue-advanced-search").addClass('transparent');
+                jQuery("#budget-advanced-search").addClass('transparent');
+                jQuery("#contracts-advanced-search").addClass('transparent');
+                jQuery("#payroll-advanced-search").addClass('transparent');
+                jQuery(".advanced-search-accordion").addClass('transparent');
+                jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form").addClass('disable_me');
+                setTimeout(function(){
+                    jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form :input").attr("disabled", "disabled");
+                }, 1);
         }
 
+
         function gif_rotator(e){
-            jQuery("#advanced-search-rotator").css('display', 'block');
-            jQuery("#advanced-search-rotator").addClass('loading_bigger_gif');
+                jQuery("#advanced-search-rotator").css('display', 'block');
+                jQuery("#advanced-search-rotator").addClass('loading_bigger_gif');
         }
 
         // Disable form
@@ -2310,6 +2311,42 @@ Drupal.behaviors.advancedsearchfreeze = {
         jQuery("#edit-contracts-submit").click(gif_rotator);
         jQuery("#edit-contracts-submit--2").click(gif_rotator);
         jQuery("#edit-payroll-submit").click(gif_rotator);
+
+
+        jQuery(function() {
+            jQuery('#checkbook-advanced-search-form').change(function(){
+
+                jQuery("#edit-spending-submit").attr("disabled", "true");
+                jQuery("#edit-spending-submit--2").attr("disabled", "true");
+                jQuery("#edit-revenue-submit").attr("disabled", "true");
+                jQuery("#edit-budget-submit").attr("disabled", "true");
+                jQuery("#edit-contracts-submit").attr("disabled", "true");
+                jQuery("#edit-contracts-submit--2").attr("disabled", "true");
+                jQuery("#edit-payroll-submit").attr("disabled", "true");
+
+                jQuery.ajax({
+                    data: jQuery(this).serialize(),
+                    url: jQuery(this).attr("action"),
+                    error: function() {
+
+                    },
+                    success: function(r) {
+                        setTimeout(function(){
+                            jQuery("#edit-spending-submit").removeAttr('disabled');
+                            jQuery("#edit-spending-submit--2").removeAttr('disabled');
+                            jQuery("#edit-revenue-submit").removeAttr('disabled');
+                            jQuery("#edit-budget-submit").removeAttr('disabled');
+                            jQuery("#edit-contracts-submit").removeAttr('disabled');
+                            jQuery("#edit-contracts-submit--2").removeAttr('disabled');
+                            jQuery("#edit-payroll-submit").removeAttr('disabled');
+                        },1);
+                    }
+                })
+                return false;
+            });
+        })
+
+
     }
 };
 
