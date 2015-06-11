@@ -1145,6 +1145,7 @@ Drupal.behaviors.hoveOverMWBE = {
         $('#edit-next-submit').attr('disabled', true);
         $('#edit-back-submit').attr('disabled', true);
         $('.create-alert-submit').css('display','none');
+        $('div.ui-dialog-titlebar').css('width', 'auto');
         switch(accordion_type) {
             case 'advanced_search':
                 $('.create-alert-view').css('display','none');
@@ -2312,42 +2313,39 @@ Drupal.behaviors.advancedsearchfreeze = {
         jQuery("#edit-contracts-submit--2").click(gif_rotator);
         jQuery("#edit-payroll-submit").click(gif_rotator);
 
-
-        jQuery(function() {
-            jQuery('#checkbook-advanced-search-form').change(function(){
-
-                jQuery("#edit-spending-submit").attr("disabled", "true");
-                jQuery("#edit-spending-submit--2").attr("disabled", "true");
-                jQuery("#edit-revenue-submit").attr("disabled", "true");
-                jQuery("#edit-budget-submit").attr("disabled", "true");
-                jQuery("#edit-contracts-submit").attr("disabled", "true");
-                jQuery("#edit-contracts-submit--2").attr("disabled", "true");
-                jQuery("#edit-payroll-submit").attr("disabled", "true");
-
-                jQuery.ajax({
-                    data: jQuery(this).serialize(),
-                    url: jQuery(this).attr("action"),
-                    error: function() {
-
-                    },
-                    success: function(r) {
-                        setTimeout(function(){
-                            jQuery("#edit-spending-submit").removeAttr('disabled');
-                            jQuery("#edit-spending-submit--2").removeAttr('disabled');
-                            jQuery("#edit-revenue-submit").removeAttr('disabled');
-                            jQuery("#edit-budget-submit").removeAttr('disabled');
-                            jQuery("#edit-contracts-submit").removeAttr('disabled');
-                            jQuery("#edit-contracts-submit--2").removeAttr('disabled');
-                            jQuery("#edit-payroll-submit").removeAttr('disabled');
-                        },1);
-                    }
-                })
-                return false;
-            });
-        })
-
-
+        jQuery(document).bind("ajaxSend", function(){
+            //Advanced search
+            jQuery("#edit-spending-submit").attr("disabled", "true");
+            jQuery("#edit-spending-submit--2").attr("disabled", "true");
+            jQuery("#edit-revenue-submit").attr("disabled", "true");
+            jQuery("#edit-budget-submit").attr("disabled", "true");
+            jQuery("#edit-contracts-submit").attr("disabled", "true");
+            jQuery("#edit-contracts-submit--2").attr("disabled", "true");
+            jQuery("#edit-payroll-submit").attr("disabled", "true");
+            //create alert
+            jQuery("#edit-spending-next").attr("disabled", "true");
+            jQuery("#edit-contracts-next").attr("disabled", "true");
+            jQuery("#edit-payroll-next").attr("disabled", "true");
+            jQuery("#edit-revenue-next").attr("disabled", "true");
+            jQuery("#edit-budget-next").attr("disabled", "true");
+        }).bind("ajaxComplete", function(){
+            //Advanced search
+            jQuery("#edit-spending-submit").removeAttr('disabled');
+            jQuery("#edit-spending-submit--2").removeAttr('disabled');
+            jQuery("#edit-revenue-submit").removeAttr('disabled');
+            jQuery("#edit-budget-submit").removeAttr('disabled');
+            jQuery("#edit-contracts-submit").removeAttr('disabled');
+            jQuery("#edit-contracts-submit--2").removeAttr('disabled');
+            jQuery("#edit-payroll-submit").removeAttr('disabled');
+            //Create alert
+            jQuery("#edit-spending-next").removeAttr('disabled');
+            jQuery("#edit-contracts-next").removeAttr('disabled');
+            jQuery("#edit-payroll-next").removeAttr('disabled');
+            jQuery("#edit-revenue-next").removeAttr('disabled');
+            jQuery("#edit-budget-next").removeAttr('disabled');
+        });
     }
+
 };
 
 
