@@ -64,15 +64,13 @@ function _get_spending_advanced_search_autocomplete_results($facet, $query, $yea
  *   Selected Spending Category Id
  * @param string $year
  *   Year value
- * @param $mwbe_category
- *   Selected M/WBE Category
  * @param $data_source
  *   Data source to get data (i.e checkbook, checkbook_oge)
  *
  * @return array
  *   Results from Query
  ***/
-function _get_spending_expense_cat_options($agency, $dept, $spending_cat, $year, $mwbe_category, $data_source = 'checkbook') {
+function _get_spending_expense_cat_options($agency, $dept, $spending_cat, $year, $data_source = 'checkbook') {
 
     if (strpos($year, '~')) {
         if ($year == 'fy~all') {
