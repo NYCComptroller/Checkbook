@@ -5827,7 +5827,7 @@ function _dept_options($agency, $sc, $year, $data_source = null) {
                 $scstring = "AND ref_spending_category.spending_category_code = '" . $sc . "' ";
             }
             $query = "SELECT DISTINCT department_name || ' [' || department_code || ']' department_name FROM disbursement_line_item_details, ref_spending_category WHERE disbursement_line_item_details.spending_category_id = ref_spending_category.spending_category_id " . $agencystring . $yearstring . $scstring . "ORDER BY department_name ASC";
-            $data = _checkbook_project_execute_sql($query,$data_source);
+            $data = _checkbook_project_execute_sql_by_data_source($query,$data_source);
             $results = _checkbook_datafeeds_dept_options($data,$data_source);
            break;
         default:
