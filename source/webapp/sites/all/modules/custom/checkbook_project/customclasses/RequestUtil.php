@@ -1082,4 +1082,63 @@ class RequestUtil{
 		$data = _checkbook_project_execute_sql($sql);
     	return $data[0]['count'];
     }
+
+    /*
+     * Function will derive whether this is an advanced search transaction page based on the query string
+     */
+    static function isAdvancedSearchPage() {
+        $bottomURL = $_REQUEST['expandBottomContURL'];
+        $domain = self::getDomain();
+        $currentPath = current_path();
+        $isAdvancedSearch = !$bottomURL || !isset($domain);
+
+        if($isAdvancedSearch) {
+            switch($domain) {
+                case 'budget':
+                    $isAdvancedSearch = preg_match('/^budget\/transactions/',$currentPath);
+                    break;
+                case 'revenue':
+                    $isAdvancedSearch = preg_match('/^revenue\/transactions/',$currentPath);
+                    break;
+                case 'spending':
+                    $isAdvancedSearch = !preg_match('/smnid/',$currentPath) &&
+                        (preg_match('/spending\/search\/transactions/',$currentPath));
+                    break;
+                case 'contract':
+                    $isAdvancedSearch = !preg_match('/smnid/',$currentPath) &&
+                        (preg_match('/contract\/all\/transactions/',$currentPath)
+                            || preg_match('/contract\/search\/transactions/',$currentPath));
+                    break;
+                case 'payroll':
+                    $isAdvancedSearch = preg_match('/^payroll\/search\/transactions/',$currentPath);
+                    break;
+            }
+        }
+
+        return $isAdvancedSearch;
+    }
+
+    static function getDomain() {
+        $currentPath = current_path();
+        if(preg_match('/^budget/',$currentPath)) {
+            return 'budget';
+        }
+        else if(preg_match('/^revenue/',$currentPath)) {
+            return 'revenue';
+        }
+        else if(preg_match('/^spending/',$currentPath)) {
+            return 'spending';
+        }
+        else if(preg_match('/^contract/',$currentPath)) {
+            return 'contract';
+        }
+        else if(preg_match('/^payroll/',$currentPath)) {
+            return 'payroll';
+        }
+        return null;
+    }
+
+    static function checkDomain($domain) {
+        return preg_match('/^'.$domain.'/',current_path());
+    }
 }
