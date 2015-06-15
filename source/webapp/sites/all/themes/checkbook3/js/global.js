@@ -1830,8 +1830,16 @@ Drupal.behaviors.hoveOverMWBE = {
     $('.bottomContainerReload').live("click",
         function (event) {
             event.preventDefault();
-            
-            var reloadURL =  window.location.pathname + "?expandBottomContURL=" +  this.getAttribute("href") ;
+
+            var hrefURL = this.getAttribute("href");
+            var hrefarr = hrefURL.split('/');
+            reloadURL =  window.location.pathname + "?expandBottomContURL=" +  hrefURL ;
+            for(var i=0; i< hrefarr.length; i++){
+                if(hrefarr[i] == 'category'){
+                    var category = hrefarr[i] + "/" + hrefarr[i+1];
+                    var reloadURL =  window.location.pathname +"/"+category+ "?expandBottomContURL=" +  hrefURL ;
+                }
+            }
             window.location = reloadURL;
 
 
