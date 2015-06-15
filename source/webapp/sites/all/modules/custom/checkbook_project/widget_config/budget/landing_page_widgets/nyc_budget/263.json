@@ -14,6 +14,11 @@
             "budget_adopted","budget_remaining","budget_committed","budget_current"],
 "limit":5,
 "widgetTitle":"Agencies Expense Budget Transactions",
+"summaryView":{
+    "template":"budget_expense_transactions_summary",
+    "templateTitle":"Agency Expense Budget Transactions",
+    "templateLabelEval":"return 'Agency: '. $node->data[0]['agency_name_agency_name'];"
+},
 "header":"
     $node->widgetConfig->getData=false;
     load_widget_data($node);
