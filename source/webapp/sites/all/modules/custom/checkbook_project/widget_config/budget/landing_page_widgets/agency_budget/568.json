@@ -14,6 +14,11 @@
             "pre_encumbered","encumbered","accrued_expense","cash_payments","post_adjustments"],
 "limit":5,
 "widgetTitle":"Departments by Committed Expense Budget Transactions",
+"summaryView":{
+    "template":"budget_expense_transactions_summary",
+    "templateTitle":"Department by Committed Expense Budget Transactions",
+    "templateLabelEval":"return 'Department: '. $node->data[0]['department_name_department_name'];"
+},
 "header":"
     $node->widgetConfig->getData=false;
     load_widget_data($node);
