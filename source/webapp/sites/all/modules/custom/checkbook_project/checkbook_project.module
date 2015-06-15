@@ -263,6 +263,10 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'php_widgets/budget/revenue_transaction_total_amount',
             'arguments' => array('node' => NULL)
         ),
+        'budget_expense_transactions_summary' => array(
+            'template' => 'php_widgets/budget/expense_transactions_summary',
+            'arguments' => array('node' => NULL)
+        ),
         //payroll Transactions List
         'payroll_nyc_payroll_summary' => array(
             'template' => 'php_widgets/payroll/nyc_payroll_summary',

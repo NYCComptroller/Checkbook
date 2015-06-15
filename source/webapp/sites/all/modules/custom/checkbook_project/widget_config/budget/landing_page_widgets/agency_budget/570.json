@@ -14,6 +14,11 @@
             "budget_adopted","budget_remaining","budget_committed","budget_current"],
 "limit":5,
 "widgetTitle":"Expense Budget Categories Expense Budget Transactions",
+"summaryView":{
+    "template":"budget_expense_transactions_summary",
+    "templateTitle":"Expense Budget Category Expense Budget Transactions",
+    "templateLabelEval":"return 'Expense Category: '. $node->data[0]['object_class_name_object_class_name'];"
+},
 "header":"
     $node->widgetConfig->getData=false;
     load_widget_data($node);
