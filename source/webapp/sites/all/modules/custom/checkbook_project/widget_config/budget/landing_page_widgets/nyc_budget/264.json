@@ -17,7 +17,7 @@
 "summaryView":{
     "template":"budget_expense_transactions_summary",
     "templateTitle":"Expense Category Expense Budget Transactions",
-    "templateLabelEval":"return 'Expense Category: '. $node->data[0]['object_class_name_object_class_name'];"
+    "templateLabelEval":"return '<b>Expense Category:</b> '. $node->data[0]['object_class_name_object_class_name'];"
 },
 "header":"
     $node->widgetConfig->getData=false;
