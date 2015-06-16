@@ -17,7 +17,8 @@
 "summaryView":{
     "template":"budget_expense_transactions_summary",
     "templateTitle":"Department Expense Budget Transactions",
-    "templateLabelEval":"return '<b>Department:</b> '. $node->data[0]['department_name_department_name'];"
+    "templateLabel":"Department",
+    "templateLabelEval":"return $node->data[0]['department_name_department_name'];"
 },
 "header":"
     $node->widgetConfig->getData=false;

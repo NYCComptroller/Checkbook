@@ -20,11 +20,12 @@
 ?>
 <?php
 $title = $node->widgetConfig->summaryView->templateTitle;
-$label = eval($node->widgetConfig->summaryView->templateLabelEval);
+$label = $node->widgetConfig->summaryView->templateLabel;
+$value = eval($node->widgetConfig->summaryView->templateLabelEval);
 
 $summaryContent =  <<<EOD
 <h2 class="contract-title">{$title}</h2>
-<div class="spending-tx-subtitle">{$label}</div>
+<div class="spending-tx-subtitle"><b>{$label}:</b> {$value}</div>
 EOD;
 
 print $summaryContent;

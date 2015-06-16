@@ -17,7 +17,8 @@
 "summaryView":{
     "template":"budget_expense_transactions_summary",
     "templateTitle":"Agency Expense Budget Transactions",
-    "templateLabelEval":"return '<b>Agency:</b> '. $node->data[0]['agency_name_agency_name'];"
+    "templateLabel":"Agency",
+    "templateLabelEval":"return $node->data[0]['agency_name_agency_name'];"
 },
 "header":"
     $node->widgetConfig->getData=false;
