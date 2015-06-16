@@ -17,7 +17,7 @@
 "summaryView":{
     "template":"budget_expense_transactions_summary",
     "templateTitle":"Department by Committed Expense Budget Transactions",
-    "templateLabelEval":"return 'Department: '. $node->data[0]['department_name_department_name'];"
+    "templateLabelEval":"return '<b>Department:</b> '. $node->data[0]['department_name_department_name'];"
 },
 "header":"
     $node->widgetConfig->getData=false;

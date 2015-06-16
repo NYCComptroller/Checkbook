@@ -85,7 +85,7 @@
   "summaryView":{
     "template":"budget_expense_transactions_summary",
     "templateTitle":"Expense Budget Details",
-    "templateLabelEval":"return 'FY'._getYearValueFromID(_getRequestParamValue('year'));"
+    "templateLabelEval":"return '<b>Year:</b> FY '._getYearValueFromID(_getRequestParamValue('year'));"
   },
   "chartConfig":{
     "chart":{
