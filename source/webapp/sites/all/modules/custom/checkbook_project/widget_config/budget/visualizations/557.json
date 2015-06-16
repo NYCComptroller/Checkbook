@@ -66,12 +66,13 @@
   $agency = ($node->widgetConfig->requestParams['agency_id.agency_id']) ? '/agency/' . $node->widgetConfig->requestParams['agency_id.agency_id'] : '';
   $dept = ($node->widgetConfig->requestParams['dept.dept']) ? '/dept/' . $node->widgetConfig->requestParams['dept.dept'] : '';
   $expcategory = ($node->widgetConfig->requestParams['object_class_id.object_class_id']) ? '/expcategory/' . $node->widgetConfig->requestParams['object_class_id.object_class_id'] : '';
+  $smnid = '/smnid/557';
   $allZero = TRUE;
   foreach ($node->data as $row){
     if (abs($row['budget_committed']) > 0){$allZero = FALSE;}
     if (abs($row['budget_remaining']) > 0){$allZero = FALSE;}
     $categories[] = $row['year_year'];
-    $url = $transactions_page . $agency . $expcategory . $dept . '/year/' . $row['year_id_year_id'];
+    $url = $transactions_page . $smnid . $agency . $expcategory . $dept . '/year/' . $row['year_id_year_id'];
     $committed_data[] = array('name' => $row['year_year'], 'y' => $row['budget_committed'], 'url' => $url);
     $remaining_data[] = array('name' => $row['year_year'], 'y' => $row['budget_remaining'], 'url' => $url);
   }
@@ -81,6 +82,11 @@
   $node->widgetConfig->chartConfig->series = array(array('name' => 'Committed', 'data' => $committed_data), array('name' => 'Remaining', 'data' => $remaining_data));
   return $node->data;
   ",
+  "summaryView":{
+    "template":"budget_expense_transactions_summary",
+    "templateTitle":"Expense Budget Details",
+    "templateLabelEval":"return 'FY'._getYearValueFromID(_getRequestParamValue('year'));"
+  },
   "chartConfig":{
     "chart":{
       "defaultSeriesType":"column"
