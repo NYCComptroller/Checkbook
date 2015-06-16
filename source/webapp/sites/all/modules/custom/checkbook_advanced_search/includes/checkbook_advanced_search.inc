@@ -402,8 +402,8 @@ function _checkbook_advanced_search_get_expensetype_and_id($data_source = 'check
     try {
         $dataController = data_controller_get_instance();
         $data = $dataController->queryDataset($data_source.':spending_category', array(
-            'spending_category_id', 'spending_category_name'
-        ), NULL, 'spending_category_id');
+        'spending_category_id', 'spending_category_name'
+        ), NULL, 'display_order');
         $results = array('' => "Total Spending");
         foreach ($data as $row) {
             if ($row['spending_category_id'] != 6)

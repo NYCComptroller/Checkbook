@@ -5557,6 +5557,7 @@ function _expense_type_options($data_source = 'checkbook') {
                 $data = $dataController->queryDataset('checkbook_oge:spending_category', array(
                     'spending_category_code',
                     'display_name',
+                    'spending_category_name',
                 ), null, 'display_order');
 
                 break;
@@ -5565,6 +5566,7 @@ function _expense_type_options($data_source = 'checkbook') {
                 $data = $dataController->queryDataset('checkbook:spending_category', array(
                     'spending_category_code',
                     'display_name',
+                    'spending_category_name',
                 ), NULL, 'display_order');
                 break;
         }
@@ -5590,14 +5592,16 @@ function _checkbook_datafeeds_expense_type_options($data,$data_source = null) {
     foreach ($data as $row) {
         $option = $row['display_name'] . ' [' . $row['spending_category_code'] . ']';
         if ($row['spending_category_code'] == 'ts') {
+            $display_option = 'Total Spending';
             //Menu options
-            $menu_options[''] = (strlen($option) > 20) ? substr($option, 0, 20) . '...' : $option;
+            $menu_options[''] =  $display_option;
             //Menu option titles
             $menu_options_attributes[$option] = array('title' => $option);
         }
         else {
+            $display_option = $row['spending_category_name'];
             //Menu options
-            $menu_options[$option] = (strlen($option) > 20) ? substr($option, 0, 20) . '...' : $option;
+            $menu_options[$option] = $display_option;
             //Menu option titles
             $menu_options_attributes[$option] = array('title' => $option);
         }
