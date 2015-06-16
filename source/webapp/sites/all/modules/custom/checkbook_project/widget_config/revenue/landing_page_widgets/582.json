@@ -13,7 +13,13 @@
 "columns": ["funding.funding.funding_class_name","funding.funding.funding_class_code",
             "adopted_budget","current_modified_budget","revenue_amount_sum","remaining_amount"],
 "limit":5,
-"widgetTitle":"Funding Class Revenue Details",
+"widgetTitle":"Revenue by Funding Classes Revenue Transactions",
+"summaryView":{
+    "template":"revenue_transactions_summary",
+    "templateTitle":"Revenue by Funding Class Revenue Transactions",
+    "templateLabel":"Funding Class",
+    "templateLabelEval":"return $node->data[0]['funding_funding_funding_class_name'];"
+},
 "header":"
     $node->widgetConfig->getData=false;
     load_widget_data($node);

@@ -50,11 +50,12 @@
   //$dept = ($node->widgetConfig->requestParams['dept.dept']) ? '/dept/' . $node->widgetConfig->requestParams['dept.dept'] : '';
   //$expcategory = ($node->widgetConfig->requestParams['object_class_id.object_class_id']) ? '/expcategory/' . $node->widgetConfig->requestParams['object_class_id.object_class_id'] : '';
   $allZero = TRUE;
+  $smnid = '/smnid/574';
   foreach ($node->data as $row){
     if (abs($row['revenue_amount_sum']) > 0){$allZero = FALSE;}
     if (abs($row['remaining_amount']) > 0){$allZero = FALSE;}
     $categories[] = $row['year_year'];
-    $url = $transactions_page . $agency . '/year/' . $row['year_year'];
+    $url = $transactions_page . $smnid . $agency . '/year/' . $row['year_year'];
     $recognized_data[] = array('name' => $row['year_year_year_value'], 'y' => $row['revenue_amount_sum'], 'url' => $url);
     $remaining_data[] = array('name' => $row['year_year_year_value'], 'y' => $row['remaining_amount'], 'url' => $url);
   }
@@ -65,6 +66,12 @@
                                              array('name' => 'Remaining', 'data' => $remaining_data));
   return $node->data;
   ",
+  "summaryView":{
+    "template":"revenue_transactions_summary",
+    "templateTitle":"Revenue Details",
+    "templateLabel":"Year",
+    "templateLabelEval":"return 'FY '._getYearValueFromID(_getRequestParamValue('year'));"
+  },
   "chartConfig":{
     "chart":{
       "defaultSeriesType":"column"

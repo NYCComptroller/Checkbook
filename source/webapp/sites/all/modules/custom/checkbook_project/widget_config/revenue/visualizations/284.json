@@ -39,8 +39,9 @@
   "transformationPHP":"
   $transactions_page = '/' . current_path()  . '?expandBottomContURL=/panel_html/revenue_transactions';  
   $year = _checkbook_project_get_url_param_string('year');
-  $agency = ($node->widgetConfig->requestParams['agency.agency']) ? '/agency/' . $node->widgetConfig->requestParams['agency.agency'] : '';  
-  $url =  $transactions_page . $year . $agency ;
+  $agency = ($node->widgetConfig->requestParams['agency.agency']) ? '/agency/' . $node->widgetConfig->requestParams['agency.agency'] : '';
+  $smnid = '/smnid/284';
+  $url =  $transactions_page . $smnid . $year . $agency ;
 
   foreach ($node->data as $key=>$row){
     $remain = $row['current_modified_budget'] - $row['revenue_amount_sum'];
@@ -54,6 +55,12 @@
   $node->widgetConfig->chartConfig->series = array(array('name' => 'Recognized', 'data' => $recognized), array('name' => 'Remaining', 'data' => $remaining));
   return $node->data;
   ",
+  "summaryView":{
+    "template":"revenue_transactions_summary",
+    "templateTitle":"Revenue Transactions",
+    "templateLabel":"Year",
+    "templateLabelEval":"return 'FY '._getYearValueFromID(_getRequestParamValue('year'));"
+  },
   "chartConfig":{
     "chart":{
       "defaultSeriesType":"column"
