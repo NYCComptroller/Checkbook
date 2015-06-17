@@ -104,11 +104,17 @@
             return $adjustedParameters;
     ",
     "adjustDataTableOptions":"
-        $dtsmnid = _getRequestParamValue('dtsmnid');
-        $smnid = _getRequestParamValue('smnid');
-        $nid = isset($dtsmnid) ? $dtsmnid : $smnid;
-        $is_committed_expense = ($nid == 558) || ($nid == 559) || ($nid == 568) || ($nid == 571);
 
+        $budgettype = _getRequestParamValue('budgettype');
+        if(isset($budgettype)) {
+            $is_committed_expense = ($budgettype == 'committed');
+        }
+        else {
+            $dtsmnid = _getRequestParamValue('dtsmnid');
+            $smnid = _getRequestParamValue('smnid');
+            $nid = isset($dtsmnid) ? $dtsmnid : $smnid;
+            $is_committed_expense = ($nid == 558) || ($nid == 559) || ($nid == 568) || ($nid == 571);
+        }
         if($is_committed_expense) {
             $node->widgetConfig->dataTableOptions->aaSorting[0][0] = 7;
         }

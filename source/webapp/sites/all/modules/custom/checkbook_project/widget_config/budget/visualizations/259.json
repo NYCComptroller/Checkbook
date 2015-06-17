@@ -51,14 +51,17 @@
   $dept = ($node->widgetConfig->requestParams['dept.dept']) ? '/dept/' . $node->widgetConfig->requestParams['dept.dept'] : '';
   $expcategory = ($node->widgetConfig->requestParams['object_class_id.object_class_id']) ? '/expcategory/' . $node->widgetConfig->requestParams['object_class_id.object_class_id'] : '';
   $smnid = '/smnid/259';
-  $url =  $transactions_page . $smnid . $year . $agency . $dept . $expcategory;
+  $budget_committed = '/budgettype/committed';
+  $budget_remaining = '/budgettype/remaining';
+  $url_committed =  $transactions_page . $smnid . $budget_committed . $year . $agency . $dept . $expcategory;
+  $url_remaining =  $transactions_page . $smnid . $budget_remaining . $year . $agency . $dept . $expcategory;
   $allZero = TRUE;
   foreach ($node->data as $row){
     if (abs($row['budget_committed']) > 0){$allZero = FALSE;}
     if (abs($row['budget_remaining']) > 0){$allZero = FALSE;}
     $categories[] = $row['year_year'];
-    $committed_data[] = array('y' => $row['budget_committed'], 'url' => $url);
-    $remaining_data[] = array('y' => $row['budget_remaining'], 'url' => $url);
+    $committed_data[] = array('y' => $row['budget_committed'], 'url' => $url_committed);
+    $remaining_data[] = array('y' => $row['budget_remaining'], 'url' => $url_remaining);
   }
   if($allZero){$node->totalDataCount = 0;}
   $node->widgetConfig->chartTitle = 'Expense Budget';
