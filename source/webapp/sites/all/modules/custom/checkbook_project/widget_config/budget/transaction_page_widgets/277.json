@@ -108,6 +108,7 @@
         $budgettype = _getRequestParamValue('budgettype');
         if(isset($budgettype)) {
             $is_committed_expense = ($budgettype == 'committed');
+            $is_remaining_expense = ($budgettype == 'remaining');
         }
         else {
             $dtsmnid = _getRequestParamValue('dtsmnid');
@@ -117,6 +118,9 @@
         }
         if($is_committed_expense) {
             $node->widgetConfig->dataTableOptions->aaSorting[0][0] = 7;
+        }
+        else if($is_remaining_expense) {
+            $node->widgetConfig->dataTableOptions->aaSorting[0][0] = 13;
         }
     ",
     "dataTableOptions":{
