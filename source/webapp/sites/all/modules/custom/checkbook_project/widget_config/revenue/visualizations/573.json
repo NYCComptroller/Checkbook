@@ -41,8 +41,9 @@
   "transformationPHP":"
   $transactions_page = '/' . current_path()  . '?expandBottomContURL=/panel_html/revenue_transactions';
   $year = ($node->widgetConfig->requestParams['year.year']) ? '/year/' . $node->widgetConfig->requestParams['year.year'] : '';
-  $agency = ($node->widgetConfig->requestParams['agency.agency']) ? '/agency/' . $node->widgetConfig->requestParams['agency.agency'] : '';      
-  $transactions_page =  $transactions_page . $year . $agency  ;
+  $agency = ($node->widgetConfig->requestParams['agency.agency']) ? '/agency/' . $node->widgetConfig->requestParams['agency.agency'] : '';
+  $smnid = '/smnid/573';
+  $transactions_page =  $transactions_page . $smnid . $year . $agency  ;
   foreach ($node->data as $key=>$row){
     $remain = $remain = $row['current_modified_budget'] - $row['revenue_amount_sum'];
     $node->data[$key]['remaining'] = $remain;
@@ -56,6 +57,12 @@
   $node->widgetConfig->chartConfig->series = array(array('name' => 'Recognized', 'data' => $recognized), array('name' => 'Remaining', 'data' => $remaining));
   return $node->data;
   ",
+  "summaryView":{
+    "template":"revenue_transactions_summary",
+    "templateTitle":"Revenue Details",
+    "templateLabel":"Revenue Category",
+    "templateLabelEval":"return _checkbook_project_get_name_for_argument('revenue_category_id',_getRequestParamValue('revcat'));"
+  },
   "chartConfig":{
     "chart":{
       "defaultSeriesType":"column"
