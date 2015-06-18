@@ -73,7 +73,8 @@
 		from {pending_contracts} a1     
     	join {ref_agency} ra on ra.agency_id =  a1.document_agency_id
    	 	join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
-   		' . $where_filter . '     
+   		' . $where_filter . '
+        and revised_maximum_amount != 0
    		group by a1.document_agency_name  ,a1.document_agency_id
     	order by 3 desc limit 10';
     }else{   
@@ -84,7 +85,8 @@
 		from {aggregateon_mwbe_contracts_cumulative_spending} a1     
     	join {ref_agency} ra on ra.agency_id =  a1.agency_id
    	 	join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
-   		' . $where_filter . '     
+   		' . $where_filter . '
+        and maximum_contract_amount != 0
    		group by ra.agency_name  ,a1.agency_id
     	order by 3 desc limit 10';
     }
