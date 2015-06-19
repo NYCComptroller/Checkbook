@@ -2107,7 +2107,7 @@ div.bottomContainer #contract-details h2.contract-title {
     text-align: center;
 }
 .dollar-amounts,
-.inside .transactions-container{float: right;}
+.inside .transactions-container{float: right; width:430px;}
 .contract-details{
     border: 1px dotted #CACACA;
     border-width: 1px 1px 0px 0px;
@@ -2294,6 +2294,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
     padding-left: 20px;
     padding-top: 20px;
 }
+
 .dollar-amounts > div,
 .inside .transactions-container .transactions-total-amount,
 .contract-information .dollar-difference,
@@ -2305,6 +2306,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
     text-align: center;
     width: 105px;
     margin-left: 32px;
+    margin-bottom: 10px;
 }
 .contract-vendor-details .dollar-amounts > div{
     margin-left: 0px;
