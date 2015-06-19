@@ -75,7 +75,7 @@
         {"labelAlias": "agency_name","column": "agency_name_link","sortSourceColumn": "agency_name"},
         {"labelAlias": "adopted","column": "formatted_adopted_amount","sortSourceColumn":"adopted_amount"},
         {"labelAlias": "modified","column": "formatted_modified_amount","sortSourceColumn":"current_modified_budget_amount"},
-        {"labelAlias": "remaining","column": "formatted_remaining_amount","sortSourceColumn":"posting_amount"},
+        {"labelAlias": "remaining","column": "formatted_remaining_amount","sortSourceColumn":"remaining_amount"},
         {"labelAlias": "recognized","column": "formatted_posting_amount","sortSourceColumn":"posting_amount"},
         {"label":"","column":"","export":false},
         {"labelAlias": "revenue_category","column": "revenue_category_name"},
