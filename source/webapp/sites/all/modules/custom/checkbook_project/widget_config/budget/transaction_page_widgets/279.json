@@ -11,6 +11,6 @@
             }
             return $adjustedParameters;
 ",
-"columns": ["budget_adopted","budget_current","budget_committed"],
+"columns": ["budget_adopted","budget_current","budget_committed", "budget_remaining"],
 "template":"budget_expense_transaction_total_amount"
 }
