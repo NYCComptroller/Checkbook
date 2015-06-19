@@ -22,5 +22,6 @@
     print '<div class="dollar-amounts">';
     print '<div class="total-spending-amount">' . custom_number_formatter_format($node->data[0]['revenue_amount_sum'],2,'$')."<div class='amount-title'>Total Revenue Recognized</div>".'</div>';    
     print '<div class="total-spending-amount">' . custom_number_formatter_format($node->data[0]['current_modified_budget'],2,'$')."<div class='amount-title'>Total Modified Budget</div>".'</div>';
-    print '<div class="total-spending-amount">' . custom_number_formatter_format($node->data[0]['adopted_budget'],2,'$')."<div class='amount-title'>Total Adopted Budget</div>" .'</div>' ;    
-    print '</div>';
+    print '<div class="total-spending-amount">' . custom_number_formatter_format($node->data[0]['adopted_budget'],2,'$')."<div class='amount-title'>Total Adopted Budget</div>" .'</div>' ;
+    print '<div class="total-spending-amount">' . custom_number_formatter_format($node->data[0]['remaining_amount'],2,'$')."<div class='amount-title'>Total Remaining Budget</div>" .'</div>' ;
+print '</div>';
