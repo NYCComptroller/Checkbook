@@ -24,9 +24,8 @@
         ]
   },
   "no_results_content":"No Results Found",
-  "defaultParameters":{
-    "year.year":"114"
-  },
+  "defaultParameters":{"year.year":"114","revenue_amount_sum":"0","current_modified_budget":"0"},
+  "defaultParamTypeConfig":{"revenue_amount_sum":"ne","current_modified_budget":"ne"},
   "cleanURLParameters":["year", "revcat", "fundsrc", "agency"],
   "urlParamMap":{
     "year":"year.year",
@@ -38,6 +37,13 @@
   "columns":["year.year", "category.category", "category.category.revenue_category_name", "revenue_amount_sum", "current_modified_budget"],
   "limit":10,
   "orderBy":"-revenue_amount_sum",
+  "adjustParameters":"
+    $adjustedParameters = $parameters;
+    if(function_exists('_checkbook_project_applyParameterFilters')){
+        $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+    }
+    return $adjustedParameters;
+  ",
   "transformationPHP":"
   $transactions_page = '/' . current_path()  . '?expandBottomContURL=/panel_html/revenue_transactions';
   $year = ($node->widgetConfig->requestParams['year.year']) ? '/year/' . $node->widgetConfig->requestParams['year.year'] : '';
