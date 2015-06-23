@@ -488,12 +488,14 @@ namespace { //global
                 . _checkbook_project_get_url_param_string("awdmethod")
                 .  _checkbook_project_get_url_param_string("cindustry")
                 .  _checkbook_project_get_url_param_string("csize");
-            if($dashboard == "ss" || $dashboard == "ms" || $dashboard == "sp"){
+            if($node->nid == 720){
+                $url .= '/doctype/CT1~CTA1'.ContractURLHelper::_checkbook_project_spending_get_year_url_param_string();
+            }
+            else if($dashboard == "ss" || $dashboard == "ms" || $dashboard == "sp"){
                 $url .= '/doctype/CT1~CTA1'.ContractURLHelper::_checkbook_project_spending_get_year_url_param_string();
             }else{
                 $url .= '/doctype/CT1~CTA1~MA1'.ContractURLHelper::_checkbook_project_spending_get_year_url_param_string();
             }
-            //    .  '/doctype/CT1~CTA1~MA1'.ContractURLHelper::_checkbook_project_spending_get_year_url_param_string()
                 $url .= '/smnid/' . $node->nid
                 . '/newwindow';
 
