@@ -5590,7 +5590,7 @@ function _checkbook_datafeeds_expense_type_options($data,$data_source = null) {
 
     //IE8 - handle drop down width issue
     foreach ($data as $row) {
-        $option = $row['display_name'] . ' [' . $row['spending_category_code'] . ']';
+        $option = $row['spending_category_name'] . ' [' . $row['spending_category_code'] . ']';
         if ($row['spending_category_code'] == 'ts') {
             $display_option = 'Total Spending';
             //Menu options
