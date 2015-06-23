@@ -100,7 +100,7 @@
 
         $is_master_agreement = in_array('MA1', $doctypes) || in_array('MMA1', $doctypes);
         $is_contract_modification = $smnid == 480 || $smnid == 366 || $smnid == 722;
-        $is_sub_vendors = $smnid == 721 || $smnid == 722 || $smnid == 720;
+        $is_sub_vendors = $smnid == 721 || $smnid == 722;
 
         $show_dollar_difference = $is_contract_modification;
         $show_percent_difference = $is_contract_modification;
@@ -112,7 +112,6 @@
 
         $node->is_master_agreement = $is_master_agreement;
         $node->is_contract_modification = $is_contract_modification;
-        $node->is_sub_vendors = $is_sub_vendors;
     ",
     "columns_datasource":{
         "fms_commodity_line@checkbook:oge_contract_contract":"checkbook_oge",
@@ -334,7 +333,7 @@
     if($node->is_contract_modification) {
         $adjustDataTableOptions->aaSorting[0][0] = 11;
     }
-    if(!$node->is_master_agreement || $node->is_sub_vendors) {
+    if(!$node->is_master_agreement) {
         $adjustDataTableOptions->fnInitComplete = '##function () { new FixedColumns( oTable, {
             \"iLeftColumns\": 2,
             \"iLeftWidth\": 210
