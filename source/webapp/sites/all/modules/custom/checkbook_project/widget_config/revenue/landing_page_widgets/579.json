@@ -13,7 +13,13 @@
 "columns": ["agency.agency.agency_name","agency.agency",
             "current_recognized","recognized_1","recognized_2","other_years","remaining_amount"],
 "limit":5,
-"widgetTitle":"Agency Revenue by Cross Year Collections Details",
+"widgetTitle":"Agencies by Cross Year Collections Transactions",
+"summaryView":{
+    "template":"revenue_transactions_summary",
+    "templateTitle":"Agency by Cross Year Collections Transactions",
+    "templateLabel":"Agency",
+    "templateLabelEval":"return $node->data[0]['agency_agency_agency_name'];"
+},
 "header":"
     $node->widgetConfig->getData=false;
     load_widget_data($node);
@@ -48,7 +54,7 @@
     "current_recognized_formatted":{
         "type":"expression2",
         "expression":"'<a class=\"bottomContainerReload\" href=\"/panel_html/agency_revenue_by_cross_year_collections_details/revenue/agency_details'
-                                       .'/dtsmnid/' . $node->nid
+                                       .'/smnid/' . $node->nid
                                        ._checkbook_project_get_year_url_param_string()
                                        ._checkbook_project_get_url_param_string(\"agency\")
                                        ._checkbook_project_get_url_param_string(\"fundsrccode\")
@@ -59,7 +65,7 @@
     "recognized_1_formatted":{
         "type":"expression2",
         "expression":"'<a class=\"bottomContainerReload\" href=\"/panel_html/agency_revenue_by_cross_year_collections_details/revenue/agency_details'
-                                               .'/dtsmnid/' . $node->nid
+                                               .'/smnid/' . $node->nid
                                                ._checkbook_project_get_year_url_param_string()
                                                ._checkbook_project_get_url_param_string(\"agency\")
                                                ._checkbook_project_get_url_param_string(\"fundsrccode\")
@@ -70,7 +76,7 @@
     "recognized_2_formatted":{
         "type":"expression2",
         "expression":"'<a class=\"bottomContainerReload\" href=\"/panel_html/agency_revenue_by_cross_year_collections_details/revenue/agency_details'
-                                               .'/dtsmnid/' . $node->nid
+                                               .'/smnid/' . $node->nid
                                                ._checkbook_project_get_year_url_param_string()
                                                ._checkbook_project_get_url_param_string(\"agency\")
                                                ._checkbook_project_get_url_param_string(\"fundsrccode\")
@@ -81,7 +87,7 @@
     "other_years_formatted":{
         "type":"expression2",
         "expression":"'<a class=\"bottomContainerReload\" href=\"/panel_html/agency_revenue_by_cross_year_collections_details/revenue/agency_details'
-                                                       .'/dtsmnid/' . $node->nid
+                                                       .'/smnid/' . $node->nid
                                                        ._checkbook_project_get_year_url_param_string()
                                                        ._checkbook_project_get_url_param_string(\"agency\")
                                                        ._checkbook_project_get_url_param_string(\"fundsrccode\")

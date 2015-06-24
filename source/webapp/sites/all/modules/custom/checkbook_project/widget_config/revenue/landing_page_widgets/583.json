@@ -13,12 +13,18 @@
 "columns": ["funding.funding.funding_class_name","funding.funding.funding_class_code",
             "current_recognized","recognized_1","recognized_2","other_years","remaining_amount"],
 "limit":5,
-"widgetTitle":"Funding Class Revenue by Cross Year Collections Details",
+"widgetTitle":"Revenue by Funding Classes by Cross Year Collections Transactions",
+"summaryView":{
+    "template":"revenue_transactions_summary",
+    "templateTitle":"Revenue by Funding Class by Cross Year Collections Transactions",
+    "templateLabel":"Funding Class",
+    "templateLabelEval":"return $node->data[0]['funding_funding_funding_class_name'];"
+},
 "header":"
     $node->widgetConfig->getData=false;
     load_widget_data($node);
     if($node->totalDataCount > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
-    $header='<div class=\"tableHeader\"><h2>Revenue by Funding Class by Cross Year Collections</h2><span class=\"contCount\"> Number of Funding Classes:  ' . number_format($node->totalDataCount) . '</span></div>';
+    $header='<div class=\"tableHeader\"><h2>Revenue by Funding Classes by Cross Year Collections</h2><span class=\"contCount\"> Number of Funding Classes:  ' . number_format($node->totalDataCount) . '</span></div>';
     return $header;
 ",
 "footer":"
