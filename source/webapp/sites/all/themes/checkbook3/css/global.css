@@ -3202,3 +3202,8 @@ span.create-alert-results-loading #loading-icon {
     top: 20%;
     left: 50%;
 }
+
+div#table_575_wrapper div.dataTables_scrollHeadInner table, table#table_575 {
+    width: 938px !important;
+}
+
