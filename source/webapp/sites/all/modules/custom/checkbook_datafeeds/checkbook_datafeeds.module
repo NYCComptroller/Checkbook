@@ -4972,7 +4972,9 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
         $user_criteria['Expense Category'] = $values['expense_category'];
     }
     if ($values['expense_type']) {
-        $form['filter']['expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> ' . $values['expense_type'] . '</div>');
+        preg_match("/.*?(\\[.*?\\])/is", $values['expense_type'], $matches);
+        $expense_type_name = str_replace($matches[1],"",$matches[0]);
+        $form['filter']['expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> ' . $expense_type_name . '</div>');
         $user_criteria['Expense Type'] = $values['expense_type'];
     }
     if ($values['mwbe_category']) {
