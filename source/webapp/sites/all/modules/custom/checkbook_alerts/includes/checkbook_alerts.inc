@@ -30,7 +30,6 @@ $sql=
 }
 
 function _checkbook_alerts_transactions(){
-
   //Give default or option to pass this
   if(!isset($_GET['alert_theme_file'])){
       $_GET['alert_theme_file']='checkbook_alerts_subscribe_theme';
@@ -58,13 +57,14 @@ function _checkbook_alerts_transactions(){
     $alertEndDate = strtotime(date("Y-m-d", mktime()) . " + 365 day");
   }
   $alertEndDate=date("Y-m-d H:i:s",$alertEndDate);
-
+    $user_url = $_GET['userURL'];
+    $user_url = str_replace(" ", "%20", $user_url);
     $alert=array(
         'recipient'=>$_GET['alert_email'],
         'label'=>$_GET['alert_label'],
         'recipient_type'=>'EMAIL',
         'ref_url'=>$_GET['refURL'],
-        'user_url'=>$_GET['userURL'],
+        'user_url'=>$user_url,
         'number_of_results'=>_checkbook_alerts_get_data_count(),
         'minimum_results'=>$_GET['alert_minimum_results'],
         'minimum_days'=>$_GET['alert_minimum_days'],
