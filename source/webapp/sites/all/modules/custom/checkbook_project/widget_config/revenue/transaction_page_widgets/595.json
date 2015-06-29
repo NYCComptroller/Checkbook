@@ -114,6 +114,20 @@
     },
     "bInfo": true,
     "sScrollX": "100%",
-    "bScrollCollapse": true
-}
+    "bScrollCollapse": true,
+    "fnInitComplete": "##function () { updateClass(); }##"
+},
+"customExternalJS":"function updateClass(){
+    var expandBottomContURL = getParameterByName('expandBottomContURL');
+
+    if(expandBottomContURL.indexOf('dtsmnid') > -1) {
+        document.getElementsByClassName('alerts')[0].className += ' dtsmnid';
+        document.getElementsByClassName('export')[0].className += ' dtsmnid';
+    }
+    else if(expandBottomContURL.indexOf('smnid') > -1) {
+        document.getElementsByClassName('alerts')[0].className += ' smnid';
+        document.getElementsByClassName('export')[0].className += ' smnid';
+    }
+}"
+
 }
