@@ -2486,6 +2486,9 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
     clear:both;
     width:100%;
 }
+.revenue-no-records {
+    width:100% !important;
+}
 .outerTable{
     border:1px solid #cacaca;
     margin-bottom:20px;
