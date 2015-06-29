@@ -2545,6 +2545,12 @@ span.alerts {
     text-transform: uppercase;
 }
 
+/* Special case to handle formatting of alerts/export links with no static content present */
+div#node-widget-595 span.export.dtsmnid, div#node-widget-596 span.export.dtsmnid {top:72px;}
+div#node-widget-595 span.alerts.dtsmnid, div#node-widget-596 span.alerts.dtsmnid {top:50px;}
+div#node-widget-595 span.export.smnid, div#node-widget-596 span.export.smnid {top:97px;}
+div#node-widget-595 span.alerts.smnid, div#node-widget-596 span.alerts.smnid {top:75px;}
+
 .newwindow .contract-details-heading a{
   color: #5C5C5C;
   cursor: default;
