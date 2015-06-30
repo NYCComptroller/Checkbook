@@ -21,8 +21,8 @@
 
 class NodeSummaryUtil
 {
-    static function getInitNodeSummaryContent(){
-        $nid = self::getNodeId();
+    static function getInitNodeSummaryContent($nid = null){
+        $nid = isset($nid) ? $nid : self::getNodeId();
 
         if(empty($nid)){
             return NULL;
