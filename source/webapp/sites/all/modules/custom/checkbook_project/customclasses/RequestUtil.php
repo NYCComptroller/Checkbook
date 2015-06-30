@@ -443,7 +443,7 @@ class RequestUtil{
                 $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
             }
             else if(isset($smnid)) {
-                $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
+                $title = NodeSummaryUtil::getInitNodeSummaryTemplateTitle($smnid);
             }
             else {
                 $title = _get_budget_breadcrumb_title_drilldown() . ' Expense Budget' ;
@@ -477,7 +477,7 @@ class RequestUtil{
                     $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
                 }
                 else if(isset($smnid)) {
-                    $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
+                    $title = NodeSummaryUtil::getInitNodeSummaryTemplateTitle($smnid);
                 }
                 else {
                     $title = _get_budget_breadcrumb_title_drilldown() . ' Revenue' ;
