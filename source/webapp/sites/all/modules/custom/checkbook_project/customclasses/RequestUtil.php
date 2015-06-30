@@ -457,10 +457,10 @@ class RequestUtil{
              elseif($last_id["bdgcode"] > 0){
                 $title = _checkbook_project_get_name_for_argument("budget_code_id",RequestUtil::getRequestKeyValueFromURL("bdgcode",$bottomURL)) ;
              }
-             $title = $title . ' Expense Budget Details';
+             $title = $title . ' Expense Budget Transactions';
            }
          }else if(!$bottomURL && preg_match('/^budget\/transactions/',current_path())){
-            $title = "Expense Budget Details";
+            $title = "Expense Budget Transactions";
          }
          else{
            $title = _get_budget_breadcrumb_title_drilldown() . ' Expense Budget' ;
@@ -496,10 +496,10 @@ class RequestUtil{
                 elseif(isset($last_id["fundsrccode"])){
                    $title = _checkbook_project_get_name_for_argument("funding_class_code",RequestUtil::getRequestKeyValueFromURL("fundsrccode",$bottomURL)) ;
                 }
-                $title = $title . ' Revenue Details';
+                $title = $title . ' Revenue Transactions';
               }
             }else if(!$bottomURL && preg_match('/^revenue\/transactions/',current_path())){
-               $title = "Revenue Details";
+               $title = "Revenue Transactions";
             }
             else{
               $title = _get_budget_breadcrumb_title_drilldown() . ' Revenue' ;
