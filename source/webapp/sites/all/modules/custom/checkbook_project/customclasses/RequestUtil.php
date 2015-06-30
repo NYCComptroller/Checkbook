@@ -408,7 +408,6 @@ class RequestUtil{
 
     /** Prepares Payroll bottom navigation filter */
     static  public function preparePayrollBottomNavFilter($page, $category){
-
         $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
         $url = $page;
         if(strlen($category) > 0){
@@ -428,45 +427,36 @@ class RequestUtil{
 
     /** Returns Budget page title and Breadcrumb */
     static function getBudgetBreadcrumbTitle(){
-         $bottomURL = $_REQUEST['expandBottomContURL'];
-         if((isset($bottomURL) && preg_match('/transactions/',$bottomURL))
-             || preg_match('/budget_transactions/',current_path())
-             || preg_match('/deppartment_budget_details/',$bottomURL)
-             || preg_match('/deppartment_budget_details/',current_path())
-             || preg_match('/expense_category_budget_details/',$bottomURL)
-             || preg_match('/expense_category_budget_details/',current_path())
-             || preg_match('/budget_agency_perecent_difference_transactions/',$bottomURL)
-             || preg_match('/budget_agency_perecent_difference_transactions/',current_path())
-         ){
-           $dtsmnid = (isset($bottomURL)) ? RequestUtil::getRequestKeyValueFromURL("dtsmnid",$bottomURL) : RequestUtil::getRequestKeyValueFromURL("dtsmnid",current_path());
-           if($dtsmnid > 0){
-             $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
-           }
-           else{
-             $bottomURL = ($bottomURL)? $bottomURL : current_path();
-             $last_id = _getLastRequestParamValue($bottomURL);
-             if($last_id["agency"] > 0){
-               $title = _checkbook_project_get_name_for_argument("agency_id",RequestUtil::getRequestKeyValueFromURL("agency",$bottomURL)) ;
-             }
-             elseif($last_id["expcategory"] > 0){
-               $title = _checkbook_project_get_name_for_argument("object_class_id",RequestUtil::getRequestKeyValueFromURL("expcategory",$bottomURL)) ;
-             }
-             elseif($last_id["dept"] > 0){
-               $title = _checkbook_project_get_name_for_argument("department_id",RequestUtil::getRequestKeyValueFromURL("dept",$bottomURL)) ;
-             }
-             elseif($last_id["bdgcode"] > 0){
-                $title = _checkbook_project_get_name_for_argument("budget_code_id",RequestUtil::getRequestKeyValueFromURL("bdgcode",$bottomURL)) ;
-             }
-             $title = $title . ' Expense Budget Transactions';
-           }
-         }else if(!$bottomURL && preg_match('/^budget\/transactions/',current_path())){
+        $bottomURL = $_REQUEST['expandBottomContURL'];
+        if((isset($bottomURL) && preg_match('/transactions/',$bottomURL))
+            || preg_match('/budget_transactions/',current_path())
+            || preg_match('/deppartment_budget_details/',$bottomURL)
+            || preg_match('/deppartment_budget_details/',current_path())
+            || preg_match('/expense_category_budget_details/',$bottomURL)
+            || preg_match('/expense_category_budget_details/',current_path())
+            || preg_match('/budget_agency_perecent_difference_transactions/',$bottomURL)
+            || preg_match('/budget_agency_perecent_difference_transactions/',current_path())
+        ){
+            $dtsmnid = (isset($bottomURL)) ? RequestUtil::getRequestKeyValueFromURL("dtsmnid",$bottomURL) : RequestUtil::getRequestKeyValueFromURL("dtsmnid",current_path());
+            $smnid = (isset($bottomURL)) ? RequestUtil::getRequestKeyValueFromURL("smnid",$bottomURL) : RequestUtil::getRequestKeyValueFromURL("smnid",current_path());
+            if(isset($dtsmnid)) {
+                $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
+            }
+            else if(isset($smnid)) {
+                $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
+            }
+            else {
+                $title = _get_budget_breadcrumb_title_drilldown() . ' Expense Budget' ;
+            }
+        }
+        else if(!$bottomURL && preg_match('/^budget\/transactions/',current_path())){
             $title = "Expense Budget Transactions";
-         }
-         else{
-           $title = _get_budget_breadcrumb_title_drilldown() . ' Expense Budget' ;
-         }
+        }
+        else{
+            $title = _get_budget_breadcrumb_title_drilldown() . ' Expense Budget' ;
+        }
 
-         return html_entity_decode($title);
+        return html_entity_decode($title);
     }
 
     /** Returns Revenue page title and Breadcrumb */
@@ -481,27 +471,22 @@ class RequestUtil{
                 || preg_match('/funding_class_revenue_by_cross_year_collections_details/',$bottomURL)
                 || preg_match('/revenue_transactions/',current_path())
             ){
-              $dtsmnid = (isset($bottomURL)) ? RequestUtil::getRequestKeyValueFromURL("dtsmnid",$bottomURL) : RequestUtil::getRequestKeyValueFromURL("dtsmnid",current_path());
-              if($dtsmnid > 0){
-                $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
-              }
-              else{
-                $bottomURL = ($bottomURL)? $bottomURL : current_path();
-                $last_id = _getLastRequestParamValue($bottomURL);
-                if($last_id["agency"] > 0){
-                  $title = _checkbook_project_get_name_for_argument("agency_id",RequestUtil::getRequestKeyValueFromURL("agency",$bottomURL)) ;
-                }elseif($last_id["revcat"] > 0){
-                   $title = _checkbook_project_get_name_for_argument("revenue_category_id",RequestUtil::getRequestKeyValueFromURL("revcat",$bottomURL)) ;
+                $dtsmnid = (isset($bottomURL)) ? RequestUtil::getRequestKeyValueFromURL("dtsmnid",$bottomURL) : RequestUtil::getRequestKeyValueFromURL("dtsmnid",current_path());
+                $smnid = (isset($bottomURL)) ? RequestUtil::getRequestKeyValueFromURL("smnid",$bottomURL) : RequestUtil::getRequestKeyValueFromURL("smnid",current_path());
+                if(isset($dtsmnid)) {
+                    $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
                 }
-                elseif(isset($last_id["fundsrccode"])){
-                   $title = _checkbook_project_get_name_for_argument("funding_class_code",RequestUtil::getRequestKeyValueFromURL("fundsrccode",$bottomURL)) ;
+                else if(isset($smnid)) {
+                    $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
                 }
-                $title = $title . ' Revenue Transactions';
-              }
-            }else if(!$bottomURL && preg_match('/^revenue\/transactions/',current_path())){
+                else {
+                    $title = _get_budget_breadcrumb_title_drilldown() . ' Revenue' ;
+                }
+            }
+            else if(!$bottomURL && preg_match('/^revenue\/transactions/',current_path())){
                $title = "Revenue Transactions";
             }
-            else{
+            else {
               $title = _get_budget_breadcrumb_title_drilldown() . ' Revenue' ;
             }
 
