@@ -68,10 +68,16 @@ function checkbook_advanced_search_form($form, $form_state)
     $fund_class = _checkbook_advanced_search_get_fund_class_and_id();
     $year_range = "'-" . (date("Y") - 1900) . ":+" . (2500 - date("Y")) . "'";
     //$revenue_fys = array(0 => "All Fiscal Years") + _checkbook_advanced_search_get_year('revenue');
+    $form['rotator'] = array(
+        '#type' => 'markup',
+        '#markup' => '<div id="advanced-search-rotator"> </div>',
+    );
     $form['opening_div'] = array(
         '#type' => 'markup',
         '#markup' => $create_alert_view.'<div class = "advanced-search-accordion">',
     );
+
+
 
     //<editor-fold desc="Budget">
 
@@ -515,6 +521,7 @@ function checkbook_advanced_search_form($form, $form_state)
 
     //</editor-fold>
 
+
     $form['closing_div'] = array(
         '#type' => 'markup',
         '#markup' => '</div></div>',
@@ -582,6 +589,7 @@ function checkbook_advanced_search_form($form, $form_state)
             ),
         ),
     );
+
 
     return $form;
 }

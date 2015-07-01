@@ -203,4 +203,10 @@ class XMLSearchCriteria extends AbstractAPISearchCriteria {
   function getMaxAllowedTransactionResults() {
     return 1000;
   }
+    /**
+     * @return mixed
+     */
+    function getTypeOfData() {
+        return $this->criteria['global']['type_of_data'];
+    }
 }
