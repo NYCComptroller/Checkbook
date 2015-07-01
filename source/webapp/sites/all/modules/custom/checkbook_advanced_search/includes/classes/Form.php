@@ -286,7 +286,8 @@ class Form
                 $form[$domain][$domain_field]['#prefix'] = t('<div class="'.$submit_class.'">');
                 $form[$domain][$domain_field]['#ajax'] = array(
                     'callback' => '_checkbook_advanced_search_create_alert_results_ajax',
-                    'event' => 'click'
+                    'event' => 'click',
+                    'progress' => array('type' => 'none')
                 );
                 //Submit Button
                 $domain_field = "{$this->domain_name}_submit";

@@ -77,6 +77,8 @@ abstract class AbstractDataHandler {
   }
 
   /**
+   * Logs the request in the custom_queue_job/custom_queue_request tables.
+   * If the request is the same for a given date, only add entry to custom_queue_request.
    * @param $email
    * @return string
    * @throws Exception
@@ -95,24 +97,26 @@ abstract class AbstractDataHandler {
 
       $queue_request_token = NULL;
 
-      // Get queue request:
-      $queue_criteria = $this->getQueueCriteria($this->requestSearchCriteria->getCriteria());
-      $queue_search_results = QueueUtil::searchQueue($email, $queue_criteria);
+    // Get queue request:
+    $queue_criteria = $this->getQueueCriteria($this->requestSearchCriteria->getCriteria());
+    $queue_search_results = QueueUtil::searchQueue($email, $queue_criteria);
 
-      if (isset($queue_search_results['token'])) {
-        // Same user, same request:
-        return $queue_search_results['token'];
-      }
-
-      if (isset($queue_search_results['job_id'])) {
-        // Different user, same request:
+//    // Same user, same request:
+//    if (isset($queue_search_results['token'])) {
+//        //Update the last_update_date of the existing job
+//        QueueUtil::updateJobTimestamp($queue_search_results);
+//        return $queue_search_results['token'];
+//    }
+    // Different user, same request, add entry in custom_queue_request only
+    if (isset($queue_search_results['job_id'])) {
         // Generate Token:
         $token = $this->generateToken();
         // Create queue request:
         QueueUtil::createQueueRequest($token, $email, $queue_search_results['job_id']);
-
+        //Update the last_update_date of the existing job
+        QueueUtil::updateJobTimestamp($queue_search_results);
         return $token;
-      }
+    }
 
       $sql_query = get_db_query(TRUE, $this->requestDataSet->name, $this->requestDataSet->columns,
         $this->requestDataSet->parameters, $this->requestDataSet->sortColumn, $this->requestDataSet->startWith, $this->requestDataSet->limit, NULL);
@@ -144,6 +148,62 @@ abstract class AbstractDataHandler {
       throw new Exception('Error Processing Queue Request.');
     }
   }
+
+
+    /**
+     * For records under 200,000, user will download the file immediately.
+     * An entry will be made in both the custom_queue_job & custom_queue_request.
+     *
+     * @return string
+     * @throws Exception
+     */
+    function queueImmediateRequest() {
+        try {
+            // validateRequest:
+            if (!$this->validateRequest()) {
+                return $this->response;
+            }
+
+            if (!isset($this->requestDataSet)) {
+                // Prepare dataSet:
+                $this->setRequestDataSet();
+            }
+
+            $queue_request_token = NULL;
+
+            // Get queue request:
+            $queue_criteria = $this->getQueueCriteria($this->requestSearchCriteria->getCriteria());
+
+            $sql_query = get_db_query(TRUE, $this->requestDataSet->name, $this->requestDataSet->columns,
+                $this->requestDataSet->parameters, $this->requestDataSet->sortColumn, $this->requestDataSet->startWith, $this->requestDataSet->limit, NULL);
+
+            if (isset($this->requestDataSet->adjustSql)) {
+                eval($this->requestDataSet->adjustSql);
+            }
+
+            $token = $this->generateToken();
+
+            $criteria = $this->requestSearchCriteria->getCriteria();
+            // Prepare new queue request:
+            $queue_request['token'] = $token;
+            $queue_request['name'] = strtolower($criteria['global']['type_of_data']);
+            $queue_request['request'] = $queue_criteria;
+            $queue_request['request_criteria'] = json_encode($criteria);
+            $queue_request['status'] = 4; // N/A - no file to generate
+            if ($this->requestSearchCriteria->getUserCriteria()) {
+                $queue_request['user_criteria'] = json_encode($this->requestSearchCriteria->getUserCriteria());
+            }
+            $queue_request['data_command'] = $sql_query;
+
+            QueueUtil::createImmediateNewQueueRequest($queue_request);
+
+            return $token;
+        }
+        catch (Exception $e) {
+            LogHelper::log_error('Error Processing Queue Request: ' . $e);
+            throw new Exception('Error Processing Queue Request.');
+        }
+    }
 
   /**
    * @param array $criteria
@@ -252,7 +312,7 @@ abstract class AbstractDataHandler {
    */
   private function getDataRecords() {
     DateDataTypeHandler::$MASK_CUSTOM = 'Y-m-d';
-
+    ini_set('max_execution_time',90);
     $records = get_db_results(TRUE, $this->requestDataSet->name, $this->requestDataSet->columns,
       $this->requestDataSet->parameters, $this->requestDataSet->sortColumn, $this->requestDataSet->startWith, $this->requestDataSet->limit, NULL);
 

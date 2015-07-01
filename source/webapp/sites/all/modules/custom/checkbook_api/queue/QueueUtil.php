@@ -102,26 +102,79 @@ class QueueUtil {
     return db_insert('custom_queue_request')->fields($fields)->execute();
   }
 
+
   /**
    * @static
    * @param $queue_request
    * @return DatabaseStatementInterface|int|null
    */
   static function createNewQueueRequest($queue_request) {
+      $input_parameters = array(
+          'name' => $queue_request['name'],
+          'request' => $queue_request['request'],
+          'request_criteria' => $queue_request['request_criteria'],
+          'user_criteria' => $queue_request['user_criteria'],
+          'data_command' => $queue_request['data_command'],
+          'created' => time(),
+          'last_update_date' => time(),
+      );
+      if(isset($queue_request['status'])) {
+          $input_parameters['status'] = $queue_request['status'];
+      }
     $job_query = db_insert('custom_queue_job')
-      ->fields(array(
-      'name' => $queue_request['name'],
-      'request' => $queue_request['request'],
-      'request_criteria' => $queue_request['request_criteria'],
-      'user_criteria' => $queue_request['user_criteria'],
-      'data_command' => $queue_request['data_command'],
-      'created' => time(),
-    ));
+      ->fields($input_parameters);
 
     $job_id = $job_query->execute();
 
     return self::createQueueRequest($queue_request['token'], $queue_request['email'], $job_id);
   }
+
+    /**
+     * @static
+     * @param $queue_request
+     * @return DatabaseStatementInterface|int|null
+     */
+    static function createImmediateNewQueueRequest($queue_request) {
+        $input_parameters = array(
+            'name' => $queue_request['name'],
+            'request' => $queue_request['request'],
+            'request_criteria' => $queue_request['request_criteria'],
+            'user_criteria' => $queue_request['user_criteria'],
+            'data_command' => $queue_request['data_command'],
+            'created' => time(),
+            'last_update_date' => time(),
+        );
+        if(isset($queue_request['status'])) {
+            $input_parameters['status'] = $queue_request['status'];
+        }
+        $job_query = db_insert('custom_queue_job')
+            ->fields($input_parameters);
+
+        $job_id = $job_query->execute();
+
+        return self::createImmediateQueueRequest($queue_request['token'], $queue_request['email'], $job_id);
+    }
+    /**
+     * @static
+     * @param $token
+     * @param $email
+     * @param $job_id
+     * @return DatabaseStatementInterface|int|null
+     */
+    static function createImmediateQueueRequest($token, $email, $job_id) {
+        $fields = array(
+            'token' => $token,
+            'job_id' => $job_id,
+            'created' => time(),
+            'download_count' => 1,
+        );
+
+        if (isset($email)) {
+            $fields['contact_email'] = $email;
+        }
+
+        return db_insert('custom_queue_request')->fields($fields)->execute();
+    }
 
   /**
    * @static
@@ -154,6 +207,20 @@ class QueueUtil {
 
     return $rows_affected;
   }
+
+    /**
+     * Function updates the last_update_date of the existing job
+     *
+     * @param $queue_search_results
+     */
+    static function updateJobTimestamp($queue_search_results) {
+        $log_id = date('mdYHis');
+        $job_log = "~~$log_id: Updated Job last_update_date " . date("m-d-Y, H:i:s");
+        $job_details = array(
+            'last_update_date' => time(),
+        );
+        self::updateJobDetails($queue_search_results['job_id'], $job_details, $job_log);
+    }
 
   static function updateJobDetails($job_id, $job_details, $job_log) {
 
@@ -293,4 +360,28 @@ class QueueUtil {
     $rows_affected = $db_update_query->execute();
     return $rows_affected;
   }
+
+    /**
+     * @param $token
+     * @return DatabaseStatementInterface
+     */
+    static function incrementDownloadCount($token) {
+        $sql = "SELECT job_id,download_count
+                FROM custom_queue_request
+                WHERE token = :token";
+        $job_details = db_query($sql, array(':token' => $token))->fetchAssoc();
+
+        if (isset($job_details['download_count']) && isset($job_details['job_id'])) {
+            $job_id = $job_details['job_id'];
+            $download_count = $job_details['download_count'] + 1;
+            $db_update_query = db_update("custom_queue_request")->fields(array(
+                'download_count' => $download_count,
+            ))
+                ->condition('job_id', $job_id)
+                ->condition('token', $token);
+            $rows_affected = $db_update_query->execute();
+        }
+
+        return $rows_affected;
+    }
 }

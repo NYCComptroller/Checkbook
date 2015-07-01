@@ -48,6 +48,12 @@ function checkbook_datafeeds_menu() {
         'page callback' => 'checkbook_datafeeds_tracking_results_page',
         'access callback' => TRUE,
     );
+    $items['data-feeds/download'] = array(
+        'title' => 'Checkbook Alerts',
+        'page callback' => 'checkbook_datafeeds_download_zip_ajax',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
     return $items;
 }
 
@@ -106,6 +112,14 @@ function checkbook_datafeeds_api_page() {
  */
 function checkbook_datafeeds_tracking_form() {
     $form = array();
+
+    // Include the JavaScript for our pseudo-trigger.
+    $form['#attached'] = array(
+        'js' => array(
+            'type' => 'file',
+            'data' => drupal_get_path('module', 'checkbook_datafeeds') . '/js/common.js',
+        )
+    );
     $form['text'] = array(
         '#markup' => '<p>To track status of data feed requests, please enter your tracking number:</p>'
     );
@@ -127,7 +141,7 @@ function checkbook_datafeeds_tracking_form_submit($form, &$form_state) {
     $code = $form_state['values']['tracking_number'];
     $form_state['redirect'] = array(
         'track-data-feed',
-        array('query' => array('code' => $code))
+        array('query' => array('code' => $code,'tn' => '1'))
     );
 }
 
@@ -196,6 +210,25 @@ function checkbook_datafeeds_tracking_status($form, &$form_state) {
         ),
     );
     if ($results) {
+
+        $date_expires = strtotime($results['file_generated_time'] . ' + 1 week');
+        $now = time();
+        $expired = $now > $date_expires;
+        if($expired) {
+            $msg = check_plain($_REQUEST['tn']) == 1 ? 'tracking number' : 'download link';
+            $output['status-fieldset']['available_date'] = array(
+                '#markup' => 'Your '.$msg.' has expired.  Please create a new data feeds request.',
+                '#prefix' => '<p>',
+                '#suffix' => '</p>',
+            );
+            $output['cancel'] = array(
+                '#type' => 'submit',
+                '#value' => t('Cancel'),
+                '#submit' => array('checkbook_datafeeds_tracking_form_cancel'),
+            );
+            return $output;
+        }
+
         $usercriteria = $results['user_criteria'];
         $output['columns-fieldset'] = array(
             '#title' => t('Selected Columns'),
@@ -335,6 +368,9 @@ function checkbook_datafeeds_data_feeds_page() {
         '#markup' => '</div></div>',
     );
     $page['data-feed-wizard'] = drupal_get_form('checkbook_datafeeds_data_feed_wizard');
+    $page['rotator'] = array(
+        '#markup' => '<div id= "rotator"></div>',
+    );
     return $page;
 }
 
@@ -528,6 +564,7 @@ function checkbook_datafeeds_budget($form, &$form_state) {
     $agency = isset($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Citywide (All Agencies)';
     $dept = !empty($form_state['values']['dept']) ? $form_state['values']['dept'] : '';
     $year = !empty($form_state['values']['fiscal_year']) ? $form_state['values']['fiscal_year'] : 'FY' . currentFiscalYear();
+    $agency_options = _agency_options();
 
     $form['description'] = array(
         '#markup' => '<h2 class="domain-title">Budget</h2>',
@@ -549,7 +586,8 @@ function checkbook_datafeeds_budget($form, &$form_state) {
     $form['filter']['agency'] = array(
         '#type' => 'select',
         '#title' => t('Agency:'),
-        '#options' => _agency_options(),
+        '#options' => $agency_options['options'],
+        '#option_attributes' => $agency_options['options_attributes'],
         '#attributes' => array('class' => array('watch')),
         '#prefix' => '<div class="datafield agency">',
         '#suffix' => '</div>',
@@ -1032,7 +1070,7 @@ function checkbook_datafeeds_process_budget_values($form, $form_state) {
         'global' => array(
             'type_of_data' => 'Budget',
             'records_from' => 1,
-            'max_records' => 50000,
+            'max_records' => 200000,
         ),
     );
     $criteria['responseColumns'] = $values['column_select'];
@@ -1369,6 +1407,9 @@ function checkbook_datafeeds_contracts($form, &$form_state)
 function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_source)
 {
     $first_time_load = checkbook_datafeeds_is_first_load($form_state, $data_source);
+    $agency_options = _agency_options($data_source);
+    $contract_type_options = _contract_type_options();
+    $award_method_options = _award_method_options();
 
     switch ($data_source) {
         case 'checkbook_oge':
@@ -1399,7 +1440,8 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
             $form['filter']['contract_type'] = array(
                 '#type' => 'select',
                 '#title' => t('Contract Type:'),
-                '#options' => _contract_type_options(),
+                '#options' => $contract_type_options['options'],
+                '#option_attributes' => $contract_type_options['options_attributes'],
                 '#attributes' => array('class' => array('watch')),
                 '#prefix' => '<div class="datafield contracttype">',
                 '#suffix' => '</div>',
@@ -1469,7 +1511,8 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
             $form['filter']['agency'] = array(
                 '#type' => 'select',
                 '#title' => t('Other Government <br/>Entities:'),
-                '#options' => _agency_options($data_source),
+                '#options' => $agency_options['options'],
+                '#option_attributes' => $agency_options['options_attributes'],
                 '#attributes' => array('class' => array('watch')),
                 '#prefix' => '<div class="column column-right"><div class="datafield agency">',
                 '#suffix' => '</div>',
@@ -1524,7 +1567,8 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
             $form['filter']['award_method'] = array(
                 '#type' => 'select',
                 '#title' => t('Award Method:'),
-                '#options' => _award_method_options(),
+                '#options' => $award_method_options['options'],
+                '#option_attributes' => $award_method_options['options_attributes'],
                 '#attributes' => array('class' => array('watch')),
                 '#prefix' => '<div class="datafield awardmethod">',
                 '#suffix' => '</div>',
@@ -1638,7 +1682,8 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
             $form['filter']['contract_type'] = array(
                 '#type' => 'select',
                 '#title' => t('Contract Type:'),
-                '#options' => _contract_type_options(),
+                '#options' => $contract_type_options['options'],
+                '#option_attributes' => $contract_type_options['options_attributes'],
                 '#attributes' => array('class' => array('watch')),
                 '#prefix' => '<div class="datafield contracttype">',
                 '#suffix' => '</div>',
@@ -1769,7 +1814,8 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
             $form['filter']['agency'] = array(
                 '#type' => 'select',
                 '#title' => t('Agency:'),
-                '#options' => _agency_options($data_source),
+                '#options' => $agency_options['options'],
+                '#option_attributes' => $agency_options['options_attributes'],
                 '#attributes' => array('class' => array('watch')),
                 '#prefix' => '<div class="datafield agency">',
                 '#suffix' => '</div>',
@@ -1802,7 +1848,8 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
             $form['filter']['award_method'] = array(
                 '#type' => 'select',
                 '#title' => t('Award Method:'),
-                '#options' => _award_method_options(),
+                '#options' => $award_method_options['options'],
+                '#option_attributes' => $award_method_options['options_attributes'],
                 '#attributes' => array('class' => array('watch')),
                 '#prefix' => '<div class="datafield awardmethod">',
                 '#suffix' => '</div>',
@@ -2205,7 +2252,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
             //Set data source for query
             'type_of_data' => $data_source == 'checkbook_oge' ? 'Contracts_OGE' : 'Contracts',
             'records_from' => 1,
-            'max_records' => 50000,
+            'max_records' => 200000,
         ),
     );
 
@@ -2507,6 +2554,7 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
  */
 function checkbook_datafeeds_payroll($form, &$form_state) {
     $datatype = $form_state['step_information']['type']['stored_values']['format'];
+    $agency_options = _agency_options();
     $form['description'] = array(
         '#markup' => '<h2 class="domain-title">Payroll</h2>',
     );
@@ -2532,7 +2580,8 @@ function checkbook_datafeeds_payroll($form, &$form_state) {
     $form['filter']['agency'] = array(
         '#type' => 'select',
         '#title' => t('Agency:'),
-        '#options' => _agency_options(),
+        '#options' => $agency_options['options'],
+        '#option_attributes' => $agency_options['options_attributes'],
         '#attributes' => array('class' => array('watch')),
         '#default_value' => !empty($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Citywide (All Agencies)',
         '#prefix' => '<div class="datafield agency">',
@@ -3065,7 +3114,7 @@ function checkbook_datafeeds_process_payroll_values($form, &$form_state) {
         'global' => array(
             'type_of_data' => 'Payroll',
             'records_from' => 1,
-            'max_records' => 50000,
+            'max_records' => 200000,
         ),
         'responseColumns' => $values['column_select']
     );
@@ -3250,6 +3299,7 @@ function checkbook_datafeeds_revenue($form, &$form_state) {
     $datatype = $form_state['step_information']['type']['stored_values']['format'];
     $revenue_fys = array ('' => "All Fiscal Years");
     $revenue_fys = $revenue_fys + _checkbook_advanced_search_get_year('revenue','datafeeds');
+    $agency_options = _agency_options();
 
     $form['description'] = array(
         '#markup' => '<h2 class="domain-title">Revenue</h2>',
@@ -3277,7 +3327,8 @@ function checkbook_datafeeds_revenue($form, &$form_state) {
     $form['filter']['agency'] = array(
         '#type' => 'select',
         '#title' => t('Agency:'),
-        '#options' => _agency_options(),
+        '#options' => $agency_options['options'],
+        '#option_attributes' => $agency_options['options_attributes'],
         '#prefix' => '<div class="datafield agency">',
         '#suffix' => '</div>',
         '#attributes' => array('class' => array('watch')),
@@ -3693,7 +3744,7 @@ function checkbook_datafeeds_process_revenue_values($form, &$form_state) {
         'global' => array(
             'type_of_data' => 'Revenue',
             'records_from' => 1,
-            'max_records' => 50000,
+            'max_records' => 200000,
         ),
         'responseColumns' => $values['column_select'],
     );
@@ -3994,13 +4045,18 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     $dept = checkbook_datafeeds_filter_get_default_value($form_state, 'dept', $first_time_load, '');
     $sc = checkbook_datafeeds_filter_get_default_value($form_state, 'expense_type', $first_time_load, '');
     $year = !$first_time_load ? (!empty($form_state['values']['year']) ? $form_state['values']['year'] : 'FY' . currentFiscalYear()) : 'FY' . currentFiscalYear();
+    $agency_options = _agency_options($data_source);
+    $dept_options = _dept_options($agency, $sc, $year, $data_source);
+    $expcat_options = _expcat_options($agency, $dept, $sc, $year, $data_source);
+    $expense_type_options =  _expense_type_options($data_source);
 
     switch ($data_source) {
         case 'checkbook_oge':
             $form['filter']['agency'] = array(
                 '#type' => 'select',
                 '#title' => t('Other Government<br/> Entities:'),
-                '#options' => _agency_options($data_source),
+                '#options' => $agency_options['options'],
+                '#option_attributes' => $agency_options['options_attributes'],
                 '#prefix' => '<div class="column column-left"><div class="datafield agency">',
                 '#suffix' => '</div>',
                 '#attributes' => array('class' => array('watch')),
@@ -4020,7 +4076,8 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
             $form['filter']['dept'] = array(
                 '#type' => 'select',
                 '#title' => t('Department:'),
-                '#options' => _dept_options($agency, $sc, $year, $data_source),
+                '#options' => $dept_options['options'],
+                '#option_attributes' => $dept_options['options_attributes'],
                 '#prefix' => '<div id="dynamic-fields"><div class="datafield department">',
                 '#suffix' => '</div>',
                 '#attributes' => array('class' => array('watch')),
@@ -4033,7 +4090,8 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
             $form['filter']['expense_category'] = array(
                 '#type' => 'select',
                 '#title' => t('Expense Category:'),
-                '#options' => _expcat_options($agency, $dept, $sc, $year, $data_source),
+                '#options' => $expcat_options['options'],
+                '#option_attributes' => $expcat_options['options_attributes'],
                 '#prefix' => '<div id="expense-category"><div class="datafield expensecategory">',
                 '#suffix' => '</div></div></div>',
                 '#attributes' => array('class' => array('watch')),
@@ -4046,7 +4104,8 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
             $form['filter']['expense_type'] = array(
                 '#type' => 'select',
                 '#title' => t('Spending Category:'),
-                '#options' => _expense_type_options($data_source),
+                '#options' => $expense_type_options['options'],
+                '#option_attributes' => $expense_type_options['options_attributes'],
                 '#prefix' => '<div class="datafield expensetype">',
                 '#suffix' => '</div>',
                 '#attributes' => array('class' => array('watch')),
@@ -4209,7 +4268,8 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
             $form['filter']['agency'] = array(
                 '#type' => 'select',
                 '#title' => t('Agency:'),
-                '#options' => _agency_options($data_source),
+                '#options' => $agency_options['options'],
+                '#option_attributes' => $agency_options['options_attributes'],
                 '#prefix' => '<div class="column column-left"><div class="datafield agency">',
                 '#suffix' => '</div>',
                 '#attributes' => array('class' => array('watch')),
@@ -4229,7 +4289,8 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
             $form['filter']['dept'] = array(
                 '#type' => 'select',
                 '#title' => t('Department:'),
-                '#options' => _dept_options($agency, $sc, $year),
+                '#options' => $dept_options['options'],
+                '#option_attributes' => $dept_options['options_attributes'],
                 '#prefix' => '<div id="dynamic-fields"><div class="datafield department">',
                 '#suffix' => '</div>',
                 '#attributes' => array('class' => array('watch')),
@@ -4242,7 +4303,8 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
             $form['filter']['expense_category'] = array(
                 '#type' => 'select',
                 '#title' => t('Expense Category:'),
-                '#options' => _expcat_options($agency, $dept, $sc, $year),
+                '#options' => $expcat_options['options'],
+                '#option_attributes' => $expcat_options['options_attributes'],
                 '#prefix' => '<div id="expense-category"><div class="datafield expensecategory">',
                 '#suffix' => '</div></div></div>',
                 '#attributes' => array('class' => array('watch')),
@@ -4255,7 +4317,8 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
             $form['filter']['expense_type'] = array(
                 '#type' => 'select',
                 '#title' => t('Spending Category:'),
-                '#options' => _expense_type_options(),
+                '#options' => $expense_type_options['options'],
+                '#option_attributes' => $expense_type_options['options_attributes'],
                 '#prefix' => '<div class="datafield expensetype">',
                 '#suffix' => '</div>',
                 '#attributes' => array('class' => array('watch')),
@@ -5010,7 +5073,7 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
             //Set data source for query
             'type_of_data' => $data_source == 'checkbook_oge' ? 'Spending_OGE' : 'Spending',
             'records_from' => 1,
-            'max_records' => 50000,
+            'max_records' => 200000,
         ),
         'responseColumns' => $values['column_select'],
     );
@@ -5347,7 +5410,6 @@ function currentCalendarYear() {
 function _agency_options($data_source = null) {
     try {
         $dataController = data_controller_get_instance();
-
         switch($data_source)
         {
             case 'checkbook_oge':
@@ -5355,29 +5417,51 @@ function _agency_options($data_source = null) {
                     'agency_code',
                     'agency_name',
                 ), array("is_display" => "Y","is_oge_agency" => "Y"), 'agency_name');
-                $results = array('Select One' => 'Select One');
-                foreach ($data as $row) {
-                    $results[$row['agency_name'] . ' [' . $row['agency_code'] . ']'] = $row['agency_name'] . ' [' . $row['agency_code'] . ']';
-                }
-                return $results;
                 break;
             default:
                 $data = $dataController->queryDataset("checkbook:agency", array(
                     'agency_code',
                     'agency_name',
                 ), array("is_display" => "Y"), 'agency_name');
-                $results = array('Citywide (All Agencies)' => 'Citywide (All Agencies)');
-                foreach ($data as $row) {
-                    $results[$row['agency_name'] . ' [' . $row['agency_code'] . ']'] = $row['agency_name'] . ' [' . $row['agency_code'] . ']';
-                }
-                return $results;
                 break;
         }
+        $results = _checkbook_datafeeds_agency_options($data,$data_source);
+        return $results;
     }
     catch (Exception $e) {
         log_error("Error getting data from controller: \n" . $e->getMessage());
         return;
     }
+}
+
+/**
+ * Get the agency options, for IE8, the text will be shortened to fit the width and a title attribute is there
+ * @param $data
+ * @param null $data_source
+ * @return mixed
+ */
+function _checkbook_datafeeds_agency_options($data,$data_source = null) {
+
+    //IE8 - handle drop down width issue
+    $menu_options = $data_source == 'checkbook_oge'
+        ? array('Select One' => 'Select One')
+        : array('Citywide (All Agencies)' => 'Citywide (All Agencies)');
+
+    $title = $data_source == 'checkbook_oge'
+        ? 'Select One'
+        : 'Citywide (All Agencies)';
+    $menu_options_attributes = array($title => array('title' => $title));
+
+    foreach ($data as $row) {
+        $option = $row['agency_name'] . ' [' . $row['agency_code'] . ']';
+        //Menu options
+        $menu_options[$option] = (strlen($option) > 20) ? substr($option, 0, 20) . '...' : $option;
+        //Menu option titles
+        $menu_options_attributes[$option] = array('title' => $option);
+    }
+    $results['options'] = $menu_options;
+    $results['options_attributes'] = $menu_options_attributes;
+    return $results;
 }
 
 /**
@@ -5474,15 +5558,7 @@ function _expense_type_options($data_source = 'checkbook') {
                     'spending_category_code',
                     'display_name',
                 ), null, 'display_order');
-                foreach ($data as $row) {
-                    if ($row['spending_category_code'] == 'ts') {
-                        $results[""] = $row['display_name'] . ' [' . $row['spending_category_code'] . ']';
-                    }
-                    else {
-                        $results[$row['display_name'] . ' [' . $row['spending_category_code'] . ']'] = $row['display_name'] . ' [' . $row['spending_category_code'] . ']';
-                    }
-                }
-                return array_unique($results);
+
                 break;
 
             default:
@@ -5490,22 +5566,45 @@ function _expense_type_options($data_source = 'checkbook') {
                     'spending_category_code',
                     'display_name',
                 ), NULL, 'display_order');
-                foreach ($data as $row) {
-                    if ($row['spending_category_code'] == 'ts') {
-                        $results[""] = $row['display_name'] . ' [' . $row['spending_category_code'] . ']';
-                    }
-                    else {
-                        $results[$row['display_name'] . ' [' . $row['spending_category_code'] . ']'] = $row['display_name'] . ' [' . $row['spending_category_code'] . ']';
-                    }
-                }
-                return array_unique($results);
                 break;
         }
+
+        $results = _checkbook_datafeeds_expense_type_options($data,$data_source);
+        return $results;
     }
     catch (Exception $e) {
         log_error("Error getting data from controller: \n" . $e->getMessage());
         return;
     }
+}
+
+/**
+ * Get the expense type options, for IE8, the text will be shortened to fit the width and a title attribute is there
+ * @param $data
+ * @param null $data_source
+ * @return mixed
+ */
+function _checkbook_datafeeds_expense_type_options($data,$data_source = null) {
+
+    //IE8 - handle drop down width issue
+    foreach ($data as $row) {
+        $option = $row['display_name'] . ' [' . $row['spending_category_code'] . ']';
+        if ($row['spending_category_code'] == 'ts') {
+            //Menu options
+            $menu_options[''] = (strlen($option) > 20) ? substr($option, 0, 20) . '...' : $option;
+            //Menu option titles
+            $menu_options_attributes[$option] = array('title' => $option);
+        }
+        else {
+            //Menu options
+            $menu_options[$option] = (strlen($option) > 20) ? substr($option, 0, 20) . '...' : $option;
+            //Menu option titles
+            $menu_options_attributes[$option] = array('title' => $option);
+        }
+    }
+    $results['options'] = $menu_options;
+    $results['options_attributes'] = $menu_options_attributes;
+    return $results;
 }
 
 /**
@@ -5536,16 +5635,38 @@ function _contract_type_options() {
             'agreement_type_code',
             'agreement_type_name'
         ), NULL, 'agreement_type_name');
-        $results = array('No Contract Type Selected' => 'Select Contract Type');
-        foreach ($data as $row) {
-            $results[$row['agreement_type_name'] . ' [' . $row['agreement_type_code'] . ']'] = $row['agreement_type_name'] . ' [' . $row['agreement_type_code'] . ']';
-        }
-        return array_unique($results);
+        $results = _checkbook_datafeeds_contract_type_options($data);
+        return $results;
     }
     catch (Exception $e) {
         log_error("Error getting data from controller: \n" . $e->getMessage());
         return;
     }
+}
+
+/**
+ * Get the Contract Type options, for IE8, the text will be shortened to fit the width and a title attribute is there
+ *
+ * @param $data
+ * @return mixed
+ */
+function _checkbook_datafeeds_contract_type_options($data) {
+
+    //IE8 - handle drop down width issue
+    $title = 'Select Contract Type';
+    $menu_options['No Contract Type Selected'] = $title;
+    $menu_options_attributes = array($title => array('title' => $title));
+
+    foreach ($data as $row) {
+        $option = $row['agreement_type_name'] . ' [' . $row['agreement_type_code'] . ']';
+        //Menu options
+        $menu_options[$option] = (strlen($option) > 18) ? substr($option, 0, 18) . '...' : $option;
+        //Menu option titles
+        $menu_options_attributes[$option] = array('title' => $option);
+    }
+    $results['options'] = $menu_options;
+    $results['options_attributes'] = $menu_options_attributes;
+    return $results;
 }
 
 /**
@@ -5561,17 +5682,40 @@ function _award_method_options() {
             'award_method_code',
             'award_method_name',
         ), NULL, 'award_method_name');
-        $results['No Award Method Selected'] = 'Select Award Method';
-        foreach ($data as $row) {
-            $results[$row['award_method_name'] . ' [' . $row['award_method_code'] . ']'] = $row['award_method_name'] . ' [' . $row['award_method_code'] . ']';
-        }
-        return array_unique($results);
+        $results = _checkbook_datafeeds_award_method_options($data);
+        return $results;
     }
     catch (Exception $e) {
         log_error("Error getting data from controller: \n" . $e->getMessage());
         return;
     }
 }
+
+/**
+ * Get the Award Method options, for IE8, the text will be shortened to fit the width and a title attribute is there
+ *
+ * @param $data
+ * @return mixed
+ */
+function _checkbook_datafeeds_award_method_options($data) {
+
+    //IE8 - handle drop down width issue
+    $title = 'Select Award Method';
+    $menu_options['No Award Method Selected'] = $title;
+    $menu_options_attributes = array($title => array('title' => $title));
+
+    foreach ($data as $row) {
+        $option = $row['award_method_name'] . ' [' . $row['award_method_code'] . ']';
+        //Menu options
+        $menu_options[$option] = (strlen($option) > 18) ? substr($option, 0, 18) . '...' : $option;
+        //Menu option titles
+        $menu_options_attributes[$option] = array('title' => $option);
+    }
+    $results['options'] = $menu_options;
+    $results['options_attributes'] = $menu_options_attributes;
+    return $results;
+}
+
 /**
  * Get Department from Data Controller and format into a FAPI select input #options array.
  *
@@ -5646,6 +5790,7 @@ function _budget_expcat_options($agency, $dept, $year) {
     return $output;
 }
 
+
 /**
  * Get Department from Data Controller and format into a FAPI select input #options array.
  *
@@ -5682,13 +5827,9 @@ function _dept_options($agency, $sc, $year, $data_source = null) {
                 $scstring = "AND ref_spending_category.spending_category_code = '" . $sc . "' ";
             }
             $query = "SELECT DISTINCT department_name || ' [' || department_code || ']' department_name FROM disbursement_line_item_details, ref_spending_category WHERE disbursement_line_item_details.spending_category_id = ref_spending_category.spending_category_id " . $agencystring . $yearstring . $scstring . "ORDER BY department_name ASC";
-            $results = _checkbook_project_execute_sql_by_data_source($query, $data_source);
-            $output[''] = "Select Department";
-            foreach ($results as $result) {
-                $output[$result['department_name']] = $result['department_name'];
-            }
-            return $output;
-            break;
+            $data = _checkbook_project_execute_sql_by_data_source($query,$data_source);
+            $results = _checkbook_datafeeds_dept_options($data,$data_source);
+           break;
         default:
             $agency = emptyToZero($agency);
             $sc = emptyToZero($sc);
@@ -5707,14 +5848,36 @@ function _dept_options($agency, $sc, $year, $data_source = null) {
                 $scstring = "AND ref_spending_category.spending_category_code = '" . $sc . "' ";
             }
             $query = "SELECT DISTINCT department_name || ' [' || department_code || ']' department_name FROM disbursement_line_item_details, ref_spending_category WHERE disbursement_line_item_details.spending_category_id = ref_spending_category.spending_category_id " . $agencystring . $yearstring . $scstring . "ORDER BY department_name ASC";
-            $results = _checkbook_project_execute_sql($query);
-            $output[''] = "Select Department";
-            foreach ($results as $result) {
-                $output[$result['department_name']] = $result['department_name'];
-            }
-            return $output;
+            $data = _checkbook_project_execute_sql($query);
+            $results = _checkbook_datafeeds_dept_options($data,$data_source);
             break;
     }
+    return $results;
+}
+
+/**
+ * Get the department options, for IE8, the text will be shortened to fit the width and a title attribute is there
+ * @param $data
+ * @param null $data_source
+ * @return mixed
+ */
+function _checkbook_datafeeds_dept_options($data,$data_source = null) {
+
+    //IE8 - handle drop down width issue
+    $title = 'Select Department';
+    $menu_options[''] = $title;
+    $menu_options_attributes = array($title => array('title' => $title));
+
+    foreach ($data as $row) {
+        $option = $row['department_name'];
+        //Menu options
+        $menu_options[$option] = (strlen($option) > 20) ? substr($option, 0, 20) . '...' : $option;
+        //Menu option titles
+        $menu_options_attributes[$option] = array('title' => $option);
+    }
+    $results['options'] = $menu_options;
+    $results['options_attributes'] = $menu_options_attributes;
+    return $results;
 }
 
 /**
@@ -5757,12 +5920,7 @@ function _expcat_options($agency, $dept, $sc, $year, $data_source = null) {
                 $deptstring = "AND disbursement_line_item_details.department_code = '" . $dept . "' ";
             }
             $query = "SELECT DISTINCT expenditure_object_name|| '[' || expenditure_object_code || ']' expenditure_object_code FROM disbursement_line_item_details, ref_spending_category WHERE disbursement_line_item_details.spending_category_id = ref_spending_category.spending_category_id " . $yearstring . $agencystring . $scstring . $deptstring . "ORDER BY expenditure_object_code ASC";
-            $results =  _checkbook_project_execute_sql_by_data_source($query, 'checkbook_oge');
-            $output[''] = 'Select Expense Category';
-            foreach ($results as $result) {
-                $output[$result['expenditure_object_code']] = $result['expenditure_object_code'];
-            }
-            return $output;
+            $data =  _checkbook_project_execute_sql_by_data_source($query, 'checkbook_oge');
             break;
 
         default:
@@ -5787,14 +5945,37 @@ function _expcat_options($agency, $dept, $sc, $year, $data_source = null) {
                 $deptstring = "AND disbursement_line_item_details.department_code = '" . $dept . "' ";
             }
             $query = "SELECT DISTINCT expenditure_object_name|| '[' || expenditure_object_code || ']' expenditure_object_code FROM disbursement_line_item_details, ref_spending_category WHERE disbursement_line_item_details.spending_category_id = ref_spending_category.spending_category_id " . $yearstring . $agencystring . $scstring . $deptstring . "ORDER BY expenditure_object_code ASC";
-            $results = _checkbook_project_execute_sql($query);
-            $output[''] = 'Select Expense Category';
-            foreach ($results as $result) {
-                $output[$result['expenditure_object_code']] = $result['expenditure_object_code'];
-            }
-            return $output;
+            $data = _checkbook_project_execute_sql($query);
             break;
     }
+    $results = _checkbook_datafeeds_expcat_options($data,$data_source);
+    return $results;
+}
+
+
+/**
+ * Get the expense category options, for IE8, the text will be shortened to fit the width and a title attribute is there
+ * @param $data
+ * @param null $data_source
+ * @return mixed
+ */
+function _checkbook_datafeeds_expcat_options($data,$data_source = null) {
+
+    //IE8 - handle drop down width issue
+    $title = 'Select Expense Category';
+    $menu_options[''] = $title;
+    $menu_options_attributes = array($title => array('title' => $title));
+
+    foreach ($data as $row) {
+        $option = $row['expenditure_object_code'];
+        //Menu options
+        $menu_options[$option] = (strlen($option) > 20) ? substr($option, 0, 20) . '...' : $option;
+        //Menu option titles
+        $menu_options_attributes[$option] = array('title' => $option);
+    }
+    $results['options'] = $menu_options;
+    $results['options_attributes'] = $menu_options_attributes;
+    return $results;
 }
 
 /**
@@ -5848,6 +6029,36 @@ function _industry_options() {
  */
 function checkbook_datafeeds_confirmation_download_submit($form, &$form_state) {
     $data = $form_state['step_information']['confirmation']['response'];
+
+    //Store request in db
+    $criteria = $form_state['step_information']['confirmation']['stored_values']['criteria'];
+    unset($criteria['global']['max_records']);
+    $responsetype = $form_state['step_information']['type']['stored_values']['format'];
+    $searchCriteria = new QueueCriteria($criteria, $responsetype);
+    $user_criteria = $form_state['step_information']['confirmation']['stored_values']['user_criteria'];
+    $searchCriteria->setUserCriteria($user_criteria);
+    try {
+        $checkBookApi = new CheckBookAPI($searchCriteria);
+    }
+    catch (Exception $e) {
+        drupal_set_message('An error occurred processing your request. Please try again later.', 'error');
+        log_error($e->getMessage());
+    }
+    if (isset($checkBookApi)) {
+        if ($checkBookApi->validateRequest()) {
+            try {
+                //Make sure e-mail address is passed to the call.
+                $details = $checkBookApi->queueImmediateRequest();
+            }
+            catch (Exception $e) {
+                log_error($e->getMessage());
+            }
+        }
+        else {
+            log_error($checkBookApi->getErrorResponse());
+        }
+    }
+
     if ($form_state['step_information']['type']['stored_values']['format'] == 'xml') {
         drupal_add_http_header('Content-Type', 'text/xml; utf-8');
         drupal_add_http_header('Content-Disposition', 'attachment; filename="nyc-data-feed.xml"');
@@ -5934,7 +6145,7 @@ function checkbook_datafeeds_queue_final($form, &$form_state) {
     $status = $form_state['step_information']['queue']['stored_values']['details']['status'];
     if ($email) {
         $form['text'] = array(
-            '#markup' => '<strong>Thank You</strong><br /><br />Your request has been received.<br /><br />You will receive an email at ' . $email . ' with the link to download the data feed.<br />Please note that due to a possible high number of requests, there may be a delay in notification.<br /><br />You can track the status of your request by entering your tracking number: <strong>' . $token . '</strong>&nbsp;in the "Track Status of Data Feed" box on this page.<br /><br />You will have 7 days to use this tracking number to return to your queries.',
+            '#markup' => '<strong>Thank You</strong><br /><br />Your request has been received.<br /><br />You will receive an email at ' . $email . ' with the link to download the data feed.<br />Please note that due to a possible high number of requests, there may be a delay in notification.<br /><br />You can track the status of your request by entering your tracking number: <strong>' . $token . '</strong>&nbsp;in the "Track Status of Data Feed" box on this page.<br /><br />You will have 7 days to use this tracking number to return to your results.',
         );
         if ($status == '2') {
             $request = QueueUtil::getPendingEmailInfo($token);
@@ -5960,7 +6171,7 @@ function checkbook_datafeeds_queue_final($form, &$form_state) {
     }
     else {
         $form['text'] = array(
-            '#markup' => '<strong>Thank You</strong><br /><br />Your request has been received.<br /><br />You can track the status of your request by entering your tracking number <strong>' . $token . '</strong>&nbsp;in the "Track Status of Data Feed" box on this page.<br /><br />Please not that due to high number of requests, there may be delay in notification.<br /><br />You will have 7 days to use this tracking number to return to your queries.<br /><br /><a href="/data-feeds">Back</a>',
+            '#markup' => '<strong>Thank You</strong><br /><br />Your request has been received.<br /><br />You can track the status of your request by entering your tracking number <strong>' . $token . '</strong>&nbsp;in the "Track Status of Data Feed" box on this page.<br /><br />Please not that due to high number of requests, there may be delay in notification.<br /><br />You will have 7 days to use this tracking number to return to your results.',
         );
     }
     return $form;
@@ -6043,7 +6254,7 @@ function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $crit
             '#value' => t('Cancel'),
         );
     }
-    elseif ($recordcount > 0 && $recordcount < 50000) {
+    elseif ($recordcount > 0 && $recordcount < 200000) {
         if (isset($checkBookApi)) {
             if ($checkBookApi->validateRequest()) {
                 $form_state['step_information']['confirmation']['response'] = $checkBookApi->getData();
@@ -6202,6 +6413,14 @@ function checkbook_datafeeds_format_columns() {
     return $selected_columns;
 }
 
+/*
+ * Function to hook into link to download the zip file for the data feeds from the server.
+ * Used to track number of users that have downloaded the file.
+ */
+function checkbook_datafeeds_download_zip_ajax($token) {
+    QueueUtil::incrementDownloadCount($token);
+    return null;
+}
 
 /**
  * Output download links and expiration date message.
@@ -6221,14 +6440,20 @@ function checkbook_datafeeds_file_download_page($results) {
         '#type' => 'fieldset',
     );
     $filesize = filesize($results['file_path']);
+    $file_path = explode('/', $results['file_path']);
+    $file_name = $conf['check_book']['data_feeds']['site_url'] . '/' . $results['file_path'];
+//    $file_name = end($file_path);
     $output['status-fieldset']['uncompressed'] = array(
-        '#markup' => '<strong>Status:</strong><br>The file is ready for download: <a href="/' . $results['file_path'] . '">' . $conf['check_book']['data_feeds']['site_url'] . '/' . $results['file_path'] . '</a> (' . format_bytes($filesize) . ')',
+        '#markup' => '<strong>Status:</strong><br>The file is ready for download: <a href="/' . $results['file_path'] . '" class="link-download-datafeeds-zip" oncontextmenu="return false;">' . $file_name . '</a> (' . format_bytes($filesize) . ')',
         '#prefix' => '<p>',
         '#suffix' => '</p>',
     );
     $cfilesize = filesize($results['compressed_file_path']);
+    $cfile_path = explode('/', $results['compressed_file_path']);
+    $cfile_name = $conf['check_book']['data_feeds']['site_url'] . '/' . $results['compressed_file_path'];
+//    $cfile_name = end($cfile_path);
     $output['status-fieldset']['compressed'] = array(
-        '#markup' => 'Download the file in a compressed format (zip): <a href="/' . $results['compressed_file_path'] . '">' . $conf['check_book']['data_feeds']['site_url'] . '/' . $results['compressed_file_path'] . '</a> (' . format_bytes($cfilesize) . ')',
+        '#markup' => 'Download the file in a compressed format (zip): <a href="/' . $results['compressed_file_path'] . '" class="link-download-datafeeds-zip" oncontextmenu="return false;">' . $cfile_name . '</a> (' . format_bytes($cfilesize) . ')',
         '#prefix' => '<p>',
         '#suffix' => '</p>',
     );
@@ -6245,19 +6470,17 @@ function checkbook_datafeeds_file_download_page($results) {
  */
 function checkbook_datafeeds_mail($key, &$message, $params) {
     global $conf;
-    $variables = array('@site-name' => variable_get('site_name', 'Drupal'));
-    $variables['@download_url'] = $conf['check_book']['data_feeds']['site_url'] . "/" . $params['download_url'];
-    $variables['@download_url_compressed'] = $conf['check_book']['data_feeds']['site_url'] . "/" . $params['download_url_compressed'];
     $variables['@tracking_num'] = $params['tracking_num'];
     $variables['@expiration_date'] = $params['expiration_date'];
+    $variables['@download_link'] = $conf['check_book']['data_feeds']['site_url'] . "/" . "track-data-feed?code=" . $params['tracking_num'];
     switch ($key) {
         case "download_notification":
             $message['subject'] = "Your requested file is ready for download";
             $message['body'][] = t("
-Your data feed is ready to download at @download_url \n
+Your data feed is ready to download.  Please click the following link to download the results: \n
+@download_link \n
 The file is available to download until @expiration_date \n
-A compressed version of the file is available at @download_url_compressed \n
-You had provided your email address at @site-name for notfication when the data feed with the tracking number @tracking_num was ready to be downloaded.
+You had provided your email address at Checkbook NYC for notfication when the data feed with the tracking number @tracking_num was ready to be downloaded.
 		        ", $variables);
             break;
     }

@@ -1145,6 +1145,7 @@ Drupal.behaviors.hoveOverMWBE = {
         $('#edit-next-submit').attr('disabled', true);
         $('#edit-back-submit').attr('disabled', true);
         $('.create-alert-submit').css('display','none');
+        $('div.ui-dialog-titlebar').css('width', 'auto');
         switch(accordion_type) {
             case 'advanced_search':
                 $('.create-alert-view').css('display','none');
@@ -1201,7 +1202,7 @@ Drupal.behaviors.hoveOverMWBE = {
 
 
                 var createAlertsDiv = "<span class='create-alert-instructions'>Follow the three step process to schedule alert.<ul><li>Please select one of the following domains and also select the desired filters.<\/li><li>Click 'Next' button to view and customize the results.<\/li><li>Click 'Clear All' to clear out the filters applied.<\/li><\/ul><\/br></span>";
-                createAlertsDiv += "<span style='visibility: hidden;display: none;' class='create-alert-results-loading'><div class='ajax-progress ajax-progress-throbber'><div class='throbber'>&nbsp;</div></div><p>Please Wait...</p></span>";
+                createAlertsDiv += "<span style='visibility: hidden;display: none;' class='create-alert-results-loading'><div id='loading-icon'><img src='/sites/all/themes/checkbook/images/loading_large.gif'></div></span>";
                 createAlertsDiv += "<div class='create-alert-customize-results' style='display: none'><br/><br/><br/></div>";
                 createAlertsDiv += "<div class='create-alert-schedule-alert' style='display: none'>&nbsp;<br/><br/></div>";
                 createAlertsDiv = "<div class='create-alert-view'>"+createAlertsDiv+"</div>";
@@ -1251,18 +1252,53 @@ Drupal.behaviors.hoveOverMWBE = {
             $("#checkbook_advanced_search_result_iframe").load(function() {
                 $('.create-alert-submit').css('display','block');
             });
-            $(document).ajaxComplete(function() {
 
+            function create_alert_loading(e){
+                $("#advanced-search-rotator").css('display', 'block');
+                $("#advanced-search-rotator").addClass('loading_bigger_gif');
+            }
+
+            function create_alert_form_disable(e){
+                $(".ui-dialog-titlebar").addClass('transparent');
+                $(".ui-dialog-titlebar").addClass('disable_me');
+                $("#spending-advanced-search").addClass('transparent');
+                $("#revenue-advanced-search").addClass('transparent');
+                $("#budget-advanced-search").addClass('transparent');
+                $("#contracts-advanced-search").addClass('transparent');
+                $("#payroll-advanced-search").addClass('transparent');
+                $(".advanced-search-accordion").addClass('transparent');
+                $("#block-checkbook-advanced-search-checkbook-advanced-search-form").addClass('disable_me');
+                $('.create-alert-instructions').addClass('transparent');
+            }
+
+            function create_alert_form_enable(e){
+                $(".ui-dialog-titlebar").removeClass('transparent');
+                $(".ui-dialog-titlebar").removeClass('disable_me');
+                $("#spending-advanced-search").removeClass('transparent');
+                $("#revenue-advanced-search").removeClass('transparent');
+                $("#budget-advanced-search").removeClass('transparent');
+                $("#contracts-advanced-search").removeClass('transparent');
+                $("#payroll-advanced-search").removeClass('transparent');
+                $(".advanced-search-accordion").removeClass('transparent');
+                $("#block-checkbook-advanced-search-checkbook-advanced-search-form").removeClass('disable_me');
+                $('.create-alert-instructions').removeClass('transparent');
+            }
+
+            $(document).ajaxComplete(function() {
+                $('#advanced-search-rotator').css('display', 'none');
+                create_alert_form_enable();
                 /* Do not enable next buttons for results page here */
                 var step = $('input:hidden[name="step"]').val();
                 if(step == 'select_criteria') {
                     $('#edit-next-submit').attr('disabled', true);
                     $('#edit-back-submit').attr('disabled', true);
+                    $('#advanced-search-rotator').css('display', 'none');
                 }
                 else if(step == 'schedule_alert') {
                     $('#edit-next-submit').attr('disabled', false);
                     $('#edit-back-submit').attr('disabled', false);
                     $('a.ui-dialog-titlebar-close').show();
+                    $('#advanced-search-rotator').css('display', 'none');
 
                     /* hide loading icon */
                     $('.create-alert-results-loading').css('visibility', 'hidden');
@@ -1278,26 +1314,36 @@ Drupal.behaviors.hoveOverMWBE = {
             $('input[name="budget_next"]').once('createAlertBudget').click(function (event) {
                 $('a.ui-dialog-titlebar-close').hide();
                 $(".ui-autocomplete-input").autocomplete("close");
+                create_alert_loading();
+                create_alert_form_disable();
                 event.preventDefault();
             });
             $('input[name="revenue_next"]').once('createAlertRevenue').click(function (event) {
                 $('a.ui-dialog-titlebar-close').hide();
                 $(".ui-autocomplete-input").autocomplete("close");
+                create_alert_loading();
+                create_alert_form_disable();
                 event.preventDefault();
             });
             $('input[name="spending_next"]').once('createAlertSpending').click(function (event) {
                 $('a.ui-dialog-titlebar-close').hide();
                 $(".ui-autocomplete-input").autocomplete("close");
+                create_alert_loading();
+                create_alert_form_disable();
                 event.preventDefault();
             });
             $('input[name="contracts_next"]').once('createAlertContracts').click(function (event) {
                 $('a.ui-dialog-titlebar-close').hide();
                 $(".ui-autocomplete-input").autocomplete("close");
+                create_alert_loading();
+                create_alert_form_disable();
                 event.preventDefault();
             });
             $('input[name="payroll_next"]').once('createAlertPayroll').click(function (event) {
                 $('a.ui-dialog-titlebar-close').hide();
                 $(".ui-autocomplete-input").autocomplete("close");
+                create_alert_loading();
+                create_alert_form_disable();
                 event.preventDefault();
             });
             $('#edit-next-submit').once('createAlertNextSubmit').click(function (event) {
@@ -1308,6 +1354,7 @@ Drupal.behaviors.hoveOverMWBE = {
             $('#edit-back-submit').once('createAlertBackSubmit').click(function (event) {
                 $('#edit-next-submit').attr('disabled', true);
                 $.fn.onScheduleAlertBackClick($('input:hidden[name="step"]').val());
+                create_alert_form_enable();
                 event.preventDefault();
             });
 
@@ -1343,7 +1390,7 @@ Drupal.behaviors.hoveOverMWBE = {
                         $('.create-alert-header').replaceWith(header);
 
                         /* Update wizard instructions */
-                        instructions = "<span class='create-alert-instructions'>Further narrow down the results using the 'Narrow down your search' functionality.<ul><li>Click 'Export' button to download the results into excel.<\/li><li>Click 'Back' to go back to Step1: Select Criteria<\/li><li>Click 'Next' button to Schedule Alert.<\/li><\/ul><\/br></span>";
+                        instructions = "<span class='create-alert-instructions'>Further narrow down the results using the 'Narrow down your search' functionality.<ul><li>Click 'Export' button to download the results into excel.<\/li><li>Click 'Back' to go back to Step1: Select Criteria.<\/li><li>Click 'Next' button to Schedule Alert.<\/li><\/ul><\/br></span>";
                         $('.create-alert-instructions').replaceWith(instructions);
 
                         /* Hide the accordion */
@@ -1371,7 +1418,7 @@ Drupal.behaviors.hoveOverMWBE = {
                         $('.create-alert-header').replaceWith(header);
 
                         /* Update wizard instructions */
-                        instructions = "<span class='create-alert-instructions'><ul><li>Checkbook alerts will notify you by email when new results matching your current search criteria are available. Use options below for alert settings.<\/li><li>Provide email address, in order to receive alerts. Emails will be sent based on the frequency selected and only after the minimum number of additional results entered has been reached since the last alert.<\/li><li>Click 'Back' to go back to Step2: Customize Results<\/li><li>Click 'Schedule Alert' to schedule the alert<\/li><li>The user shall receive email confirmation once the alert is scheduled.<\/li><\/ul></span>";
+                        instructions = "<span class='create-alert-instructions'><ul><li>Checkbook alerts will notify you by email when new results matching your current search criteria are available. Use options below for alert settings.<\/li><li>Provide email address, in order to receive alerts. Emails will be sent based on the frequency selected and only after the minimum number of additional results entered has been reached since the last alert.<\/li><li>Click 'Back' to go back to Step2: Customize Results.<\/li><li>Click 'Schedule Alert' to schedule the alert.<\/li><li>The user shall receive email confirmation once the alert is scheduled.<\/li><\/ul></span>";
                         $('.create-alert-instructions').replaceWith(instructions);
 
                         /* Hide close button */
@@ -1390,6 +1437,7 @@ Drupal.behaviors.hoveOverMWBE = {
                         /* Show loading icon */
                         $('.create-alert-results-loading').css('visibility', 'visible');
                         $('.create-alert-results-loading').css('display', 'block');
+
 
                         /* Show the schedule alert page */
                         $('.create-alert-schedule-alert').css('display','block');
@@ -1473,7 +1521,7 @@ Drupal.behaviors.hoveOverMWBE = {
                         $('.create-alert-header').replaceWith(header);
 
                         /* Update wizard instructions */
-                        instructions = "<span class='create-alert-instructions'>Further narrow down the results using the 'Narrow down your search' functionality.<ul><li>Click 'Export' button to download the results into excel.<\/li><li>Click 'Back' to go back to Step1: Select Criteria<\/li><li>Click 'Next' button to Schedule Alert.<\/li><\/ul><\/br></span>";
+                        instructions = "<span class='create-alert-instructions'>Further narrow down the results using the 'Narrow down your search' functionality.<ul><li>Click 'Export' button to download the results into excel.<\/li><li>Click 'Back' to go back to Step1: Select Criteria.<\/li><li>Click 'Next' button to Schedule Alert.<\/li><\/ul><\/br></span>";
                         $('.create-alert-instructions').replaceWith(instructions);
 
                         /* Hide the schedule alert page */
@@ -1586,6 +1634,9 @@ Drupal.behaviors.hoveOverMWBE = {
                 } else {
                     $('a.ui-dialog-titlebar-close').hide();
                     $('#edit-next-submit').attr('disabled', true);
+                    create_alert_loading();
+                    $(".create-alert-view").addClass('transparent');
+                    $(".create-alert-view").addClass('disable_me');
                     $(alertDiv).find('#errorMessages').html('');
 
                     var url = '/alert/transactions';
@@ -2175,6 +2226,126 @@ Drupal.behaviors.disableClickTopNav = {
 // end of disabling code
 
 
+//Datafeeds form freeze while loading
+Drupal.behaviors.datafeedspagefreeze = {
+    attach:function (context, settings) {
+        function formfreeze_datafeeds(e){
+            jQuery("#checkbook-datafeeds-data-feed-wizard").addClass('transparent');
+            jQuery(".data-feeds-sidebar").addClass('transparent');
+            jQuery("#checkbook-datafeeds-data-feed-wizard").addClass('disable_me');
+            jQuery("#checkbook-datafeeds-tracking-form").addClass('disable_me');
+            jQuery('.data-feeds-wizard a').addClass('disable_me');
+            jQuery('.data-feeds-wizard li').addClass('disable_me');
+            setTimeout(function(){
+                jQuery("#checkbook-datafeeds-data-feed-wizard :input").attr("disabled", "disabled");
+                jQuery("#checkbook-datafeeds-tracking-form :input").attr("disabled", "disabled");
+            }, 1);
+        }
 
+        function gif_rotator(e){
+            jQuery("#rotator").css('display', 'block');
+            jQuery("#rotator").addClass('loading_bigger_gif');
+        }
+
+        // Datafeeds form disable
+        jQuery("#edit-type-next").click(formfreeze_datafeeds);
+        jQuery("#edit-prev").click(formfreeze_datafeeds);
+        jQuery("#edit-revenue-next").click(formfreeze_datafeeds);
+        jQuery("#edit-payroll-next").click(formfreeze_datafeeds);
+        jQuery("#edit-spending-next").click(formfreeze_datafeeds);
+        jQuery("#edit-contract-next").click(formfreeze_datafeeds);
+        jQuery("#edit-budget-next").click(formfreeze_datafeeds);
+        jQuery("#edit-confirm").click(formfreeze_datafeeds);
+        jQuery("#edit-cancel").click(formfreeze_datafeeds);
+
+        //loading gif
+        jQuery("#edit-type-next").click(gif_rotator);
+        jQuery("#edit-prev").click(gif_rotator);
+        jQuery("#edit-revenue-next").click(gif_rotator);
+        jQuery("#edit-payroll-next").click(gif_rotator);
+        jQuery("#edit-spending-next").click(gif_rotator);
+        jQuery("#edit-contract-next").click(gif_rotator);
+        jQuery("#edit-budget-next").click(gif_rotator);
+        jQuery("#edit-confirm").click(gif_rotator);
+    }
+};
+
+
+//Advanced search form freeze while loading
+Drupal.behaviors.advancedsearchfreeze = {
+    attach:function (context, settings) {
+        function formfreeze_advancedsearch(e){
+                jQuery(".ui-dialog-titlebar").addClass('transparent');
+                jQuery(".ui-dialog-titlebar").addClass('disable_me');
+                jQuery("#spending-advanced-search").addClass('transparent');
+                jQuery("#revenue-advanced-search").addClass('transparent');
+                jQuery("#budget-advanced-search").addClass('transparent');
+                jQuery("#contracts-advanced-search").addClass('transparent');
+                jQuery("#payroll-advanced-search").addClass('transparent');
+                jQuery(".advanced-search-accordion").addClass('transparent');
+                jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form").addClass('disable_me');
+                setTimeout(function(){
+                    jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form :input").attr("disabled", "disabled");
+                }, 1);
+        }
+
+
+        function gif_rotator(e){
+                jQuery("#advanced-search-rotator").css('display', 'block');
+                jQuery("#advanced-search-rotator").addClass('loading_bigger_gif');
+        }
+
+        // Disable form
+        jQuery("#edit-spending-submit").click(formfreeze_advancedsearch);
+        jQuery("#edit-spending-submit--2").click(formfreeze_advancedsearch);
+        jQuery("#edit-revenue-submit").click(formfreeze_advancedsearch);
+        jQuery("#edit-budget-submit").click(formfreeze_advancedsearch);
+        jQuery("#edit-contracts-submit").click(formfreeze_advancedsearch);
+        jQuery("#edit-contracts-submit--2").click(formfreeze_advancedsearch);
+        jQuery("#edit-payroll-submit").click(formfreeze_advancedsearch);
+
+        // Loading gif
+        jQuery("#edit-spending-submit").click(gif_rotator);
+        jQuery("#edit-spending-submit--2").click(gif_rotator);
+        jQuery("#edit-revenue-submit").click(gif_rotator);
+        jQuery("#edit-budget-submit").click(gif_rotator);
+        jQuery("#edit-contracts-submit").click(gif_rotator);
+        jQuery("#edit-contracts-submit--2").click(gif_rotator);
+        jQuery("#edit-payroll-submit").click(gif_rotator);
+
+        jQuery(document).bind("ajaxSend", function(){
+            //Advanced search
+            jQuery("#edit-spending-submit").attr("disabled", "true");
+            jQuery("#edit-spending-submit--2").attr("disabled", "true");
+            jQuery("#edit-revenue-submit").attr("disabled", "true");
+            jQuery("#edit-budget-submit").attr("disabled", "true");
+            jQuery("#edit-contracts-submit").attr("disabled", "true");
+            jQuery("#edit-contracts-submit--2").attr("disabled", "true");
+            jQuery("#edit-payroll-submit").attr("disabled", "true");
+            //create alert
+            jQuery("#edit-spending-next").attr("disabled", "true");
+            jQuery("#edit-contracts-next").attr("disabled", "true");
+            jQuery("#edit-payroll-next").attr("disabled", "true");
+            jQuery("#edit-revenue-next").attr("disabled", "true");
+            jQuery("#edit-budget-next").attr("disabled", "true");
+        }).bind("ajaxComplete", function(){
+            //Advanced search
+            jQuery("#edit-spending-submit").removeAttr('disabled');
+            jQuery("#edit-spending-submit--2").removeAttr('disabled');
+            jQuery("#edit-revenue-submit").removeAttr('disabled');
+            jQuery("#edit-budget-submit").removeAttr('disabled');
+            jQuery("#edit-contracts-submit").removeAttr('disabled');
+            jQuery("#edit-contracts-submit--2").removeAttr('disabled');
+            jQuery("#edit-payroll-submit").removeAttr('disabled');
+            //Create alert
+            jQuery("#edit-spending-next").removeAttr('disabled');
+            jQuery("#edit-contracts-next").removeAttr('disabled');
+            jQuery("#edit-payroll-next").removeAttr('disabled');
+            jQuery("#edit-revenue-next").removeAttr('disabled');
+            jQuery("#edit-budget-next").removeAttr('disabled');
+        });
+    }
+
+};
 
 
