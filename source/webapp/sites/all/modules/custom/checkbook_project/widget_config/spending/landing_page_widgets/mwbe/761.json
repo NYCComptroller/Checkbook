@@ -53,11 +53,13 @@
             "expression": "_get_tooltip_markup($row['expenditure_object_expenditure_object_original_expenditure_object_name'],40)"
         }
 	},
+    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Expense Categories');",
     "summaryView":{
         "template":"spending_exp_category_summary",
-        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Expense Category');"
+        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Expense Category');",
+        "templateLabel":"Expense Category",
+        "templateLabelEval":"return $node->data[0]['expenditure_object_expenditure_object_original_expenditure_object_name'];"
     },
-    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Expense Categories');",
 	"table_title":"",
 	"table_columns": [
 		{"labelAlias":"expense_category","column":"formatted_expense_category","header": "false"},
