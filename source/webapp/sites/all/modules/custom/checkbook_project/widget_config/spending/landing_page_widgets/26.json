@@ -58,17 +58,13 @@ return $footer;
     "type":"expression2",
    "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/spending_transactions/spending/transactions' . _checkbook_project_get_year_url_param_string(false,false,true) . _checkbook_append_url_params() ._checkbook_project_get_url_param_string(\"agency\")  . '/smnid/' . $node->nid . _checkbook_project_get_url_param_string(\"category\") . '/fvendor/'. $row[vendor_vendor] . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
   }},
+"WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Prime Vendors');",
 "summaryView":{
-	"template":"spending_vendor_summary",
-         "templateTitleEval":"
-              $catName = RequestUtil::getSpendingCategoryName();
-              return ('Prime Vendor ' . $catName . ' Transactions');
-          "
+    "template":"spending_prime_vendor_summary",
+    "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Prime Vendor');",
+    "templateLabel":"Prime Vendor",
+    "templateLabelEval":"return $node->data[0]['vendor_vendor_legal_name'];"
 },
-"WidgetTitleEval":"
-   $catName = RequestUtil::getSpendingCategoryName();
-    return ('Prime Vendors ' . $catName . ' Transactions');
-",
 "table_title":"",
   "table_columns": [
  {

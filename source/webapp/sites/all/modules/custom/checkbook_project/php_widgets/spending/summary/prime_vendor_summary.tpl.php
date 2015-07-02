@@ -24,6 +24,8 @@ $records = $node->data;
 if(is_array($records)){
     $row = $records[0];
     $title = eval($node->widgetConfig->summaryView->templateTitleEval);
+    $label = $node->widgetConfig->summaryView->templateLabel;
+    $value = eval($node->widgetConfig->summaryView->templateLabelEval);
     $vendor_name = WidgetUtil::getLabel("prime_vendor_name");
     $ytdspending = WidgetUtil::getLabel("ytd_spending");
     $totcontamnt = WidgetUtil::getLabel("total_contract_amount");
@@ -42,7 +44,7 @@ $summaryContent =  <<<EOD
 <div class="contract-details-heading">
 	<div class="contract-id">
 		<h2 class="contract-title">{$title}</h2>
-		<div class="spending-tx-subtitle">{$vendor_name}: {$row['prime_vendor_prime_vendor_legal_name']}</div>
+		<div class="spending-tx-subtitle"><b>{$label}</b>: {$value}</div>
 	</div>
 	<div class="dollar-amounts">
         <div class="total-spending-contract-amount">
