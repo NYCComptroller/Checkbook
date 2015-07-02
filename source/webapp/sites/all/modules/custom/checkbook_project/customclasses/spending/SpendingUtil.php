@@ -1137,7 +1137,7 @@ class SpendingUtil{
     }
 
     static function getTransactionPageTitle($widgetTitle){
-        $catName = RequestUtil::getSpendingCategoryName();
+        $catName = self::getTransactionPageCategoryName();
         $title = RequestUtil::getDashboardTitle();
 
         if (strpos($title,'Sub Vendors') !== false && strpos($widgetTitle,'Sub Vendors') !== false) {
@@ -1145,6 +1145,26 @@ class SpendingUtil{
         }
 
         return ($title . " " . $widgetTitle . " " . $catName . " Transactions");
+    }
+
+    /** Returns Spending Category based on 'category' value from current path */
+    static function getTransactionPageCategoryName($defaultName = 'Total Spending'){
+        $categoryId = _getRequestParamValue('category');
+        $dtsmnid = _getRequestParamValue('dtsmnid');
+        $smnid = _getRequestParamValue('smnid');
+
+        $nid = isset($dtsmnid) ? $dtsmnid : $smnid;
+        $category_name = $defaultName;
+
+        if(isset($categoryId)){
+            $categoryDetails = SpendingUtil::getSpendingCategoryDetails($categoryId,'display_name');
+            $category_name = is_array($categoryDetails) ? $categoryDetails[0]['display_name'] : $defaultName;
+            if($categoryId == 2 && $nid != 501) {
+                $category_name = "Total Payroll Spending";
+            }
+        }
+
+        return $category_name;
     }
 
     static function getSpentToDateTitle($widgetTitle){

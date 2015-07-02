@@ -38,17 +38,14 @@ return $footer;
  "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/spending_transactions/spending/transactions' . _checkbook_project_get_year_url_param_string(false,false,true) . _checkbook_append_url_params() . _checkbook_project_get_url_param_string(\"vendor\",\"fvendor\")  . '/smnid/' . $node->nid . _checkbook_project_get_url_param_string(\"category\") . '/agency/'. $row[agency_agency] .  '/dept/' . $row[department_department]  .  '\">' . $row['formatted_check_amount_sum'] . '</a>'"
   }
 },
+
+"WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Departments');",
 "summaryView":{
-	"template":"spending_dept_summary",
-         "templateTitleEval":"
-              $catName = RequestUtil::getSpendingCategoryName();
-              return ('Department ' . $catName . ' Transactions');
-          "
+    "template":"spending_dept_summary",
+    "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Department');",
+    "templateLabel":"Department",
+    "templateLabelEval":"return $node->data[0]['department_department_department_name'];"
 },
-"WidgetTitleEval":"
-   $catName = RequestUtil::getSpendingCategoryName();
-    return ('Departments ' . $catName . ' Transactions');
-",
 "table_title":"",
   "table_columns": [
  {

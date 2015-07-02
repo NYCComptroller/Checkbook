@@ -71,10 +71,7 @@ return $footer;
 "expression": "custom_number_formatter_format($row['check_amount'],2,'$')"
 }
 },
-"WidgetTitleEval":"
-$catName = RequestUtil::getSpendingCategoryName();
-return ('Checks ' . $catName . ' Transactions');
-",
+"WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Checks');",
 "table_columns": [
 {
 "labelAlias": "agency_name",
