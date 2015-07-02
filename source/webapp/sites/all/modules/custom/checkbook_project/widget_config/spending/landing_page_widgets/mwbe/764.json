@@ -78,11 +78,13 @@
             "expression":"'<a class=\"new_window\" href=\"' . SpendingUtil::getContractNumberLinkUrl($node,$row) . '\">'  . $row[document_id_document_id] . '</a>'"
         }
     },
+    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Contracts');",
     "summaryView":{
         "template":"spending_contract_summary",
-        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Contract');"
+        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Contract');",
+        "templateLabel":"Contract Id",
+        "templateLabelEval":"return $node->data[0]['document_id_document_id'];"
     },
-    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Contracts');",
     "table_title":"",
     "table_columns": [
         {"labelAlias": "contract_id","column": "contract_number_link"},
