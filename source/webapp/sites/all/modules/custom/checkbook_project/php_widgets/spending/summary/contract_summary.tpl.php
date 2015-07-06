@@ -32,7 +32,7 @@ if(is_array($records)){
     $puprose = WidgetUtil::getLabel("contract_purpose");
     $vendor= WidgetUtil::getLabel("prime_vendor_name");
     $agency= WidgetUtil::getLabel("contract_agency");
-    
+    $purpose_value = strtoupper($row['contract_purpose_contract_purpose']);
 $summaryContent =  <<<EOD
 <div class="contract-details-heading">
 	<div class="contract-id">
@@ -53,7 +53,7 @@ $summaryContent =  <<<EOD
 <div class="contract-information contract-summary-block">
 	<ul>
 		<li class="contract-purpose">
-			<span class="gi-list-item">{$puprose}:</span> {$row['contract_purpose_contract_purpose']}
+			<span class="gi-list-item">{$puprose}:</span> {$purpose_value}
         </li>
 		<li class="agency">
 			<span class="gi-list-item">{$agency}:</span> {$row['agency_agency_agency_name']}
