@@ -79,11 +79,13 @@
             "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getPrimeVendorAmountLinkUrl($node,$row) . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
         }
     },
+    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Prime Vendors');",
     "summaryView":{
         "template":"spending_prime_vendor_summary",
-        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Prime Vendor');"
+        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Prime Vendor');",
+        "templateLabel":"Associated Prime Vendor Name",
+        "templateLabelEval":"return $node->data[0]['prime_vendor_prime_vendor_legal_name'];"
     },
-    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Prime Vendors');",
     "table_title":"",
     "table_columns": [
         {"labelAlias":"prime_vendor","column":"prime_vendor_name_link2","sortSourceColumn":"prime_vendor.prime_vendor.legal_name"},

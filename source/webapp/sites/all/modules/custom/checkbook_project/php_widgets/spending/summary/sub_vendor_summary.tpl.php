@@ -30,7 +30,7 @@ if(is_array($records)){
     $totcontamnt = WidgetUtil::getLabel("total_contract_amount");
     $ytdspending = WidgetUtil::getLabel("ytd_spending");
     $mwbe_category_label = WidgetUtil::getLabel("mwbe_category");
-    $mwbe_category = MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']);
+    $mwbe_category = strtoupper(MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']));
     $totcontamnt_value = $row['formatted_total_contract_amount_sum'];
 
     if(_getRequestParamValue('smnid') == 759 ){
@@ -61,7 +61,7 @@ $summaryContent =  <<<EOD
 <div class="contract-details-heading">
 	<div class="contract-id">
 		<h2 class="contract-title">{$title}</h2>
-		<div class="spending-tx-subtitle"><b>{$label}</b>: {$value} {$associated_prime_vendor} <br> <br><b>{$mwbe_category_label}</b>: {$mwbe_category}</div>
+		<div class="spending-tx-subtitle"><b>{$label}</b>: {$value}<br><b>{$mwbe_category_label}</b>: {$mwbe_category} {$associated_prime_vendor}</div>
 	</div>
 	<div class="dollar-amounts">
 	    <div class="total-spending-contract-amount">

@@ -92,11 +92,13 @@
             "expression": "'<a class=\"bottomContainerReload\" href=\"' . SpendingUtil::getSubContractAmountLinkUrl($node,$row) . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
         }
     },
+    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Sub Contracts');",
     "summaryView":{
         "template":"spending_sub_contract_summary",
-        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Contract');"
-    },
-    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Contracts');",
+        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Sub Contract');",
+        "templateLabel":"Associated Prime Vendor Name",
+        "templateLabelEval":"return $node->data[0]['prime_vendor_prime_vendor_legal_name'];"
+        },
     "table_title":"",
     "table_columns": [
         {"labelAlias":"contract_id","column":"contract_number_link","sortSourceColumn":"document_id.document_id"},
