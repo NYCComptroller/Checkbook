@@ -41,6 +41,9 @@ if(is_array($records)){
     if(_getRequestParamValue('smnid') == 747){
         $percent_spending_value = $row['percent_spending'];
         $percent_spending = WidgetUtil::getLabel("percent_spending");
+        $mwbe_category_label = WidgetUtil::getLabel("mwbe_category");
+        $mwbe_category = strtoupper(MappingUtil::getMinorityCategoryById($row['prime_minority_type_prime_minority_type']));
+        $mwbe_category = '<br><b>'.$mwbe_category_label .':</b> '.$mwbe_category ;
     }
 
     
