@@ -29,7 +29,7 @@ if(is_array($records)){
     $ytdspending = WidgetUtil::getLabel("ytd_spending");
     $totcontamnt = WidgetUtil::getLabel("total_contract_amount");
     $mwbe_category_label = WidgetUtil::getLabel("mwbe_category");
-    $mwbe_category = MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']);
+    $mwbe_category = strtoupper(MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']));
     $percent_spending = WidgetUtil::getLabel("percent_spending");
     $percent_spending_value = $row['percent_spending'];
     
