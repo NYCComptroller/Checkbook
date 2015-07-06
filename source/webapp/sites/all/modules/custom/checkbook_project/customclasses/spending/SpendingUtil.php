@@ -1139,15 +1139,14 @@ class SpendingUtil{
     static function getTransactionPageTitle($widgetTitle){
         $catName = self::getTransactionPageCategoryName();
         $dashboard_title = RequestUtil::getDashboardTitle();
+        $dashboard = _getRequestParamValue('dashboard');
 
-        if (strpos($dashboard_title,'Sub Vendors') !== false && strpos($widgetTitle,'Sub Vendors') !== false) {
-            $widgetTitle = '';
-        }
-        else if (strpos($dashboard_title,'Sub Vendors') !== false && strpos($widgetTitle,'Sub Vendor') !== false) {
-            $dashboard_title = '';
+        //Sub Vendors
+        if(($widgetTitle == "Sub Vendors" || $widgetTitle == "Sub Vendor") && $dashboard == "ss") {
+            $dashboard_title = "";
         }
 
-        return ($dashboard_title . " " . $widgetTitle . " " . $catName . " Transactions");
+        return $dashboard_title . " " . $widgetTitle . " " . $catName . " Transactions";;
     }
 
     /** Returns Spending Category based on 'category' value from current path */
