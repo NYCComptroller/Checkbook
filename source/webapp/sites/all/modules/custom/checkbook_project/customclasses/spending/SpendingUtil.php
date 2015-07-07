@@ -33,10 +33,7 @@ class SpendingUtil{
     }
 
     static  public function getSpendingTransactionsTitle(){
-      $agency_id = _getRequestParamValue("agency");
-      $title = "";                
-      //if(isset($agency_id)){
-        $title = '';// _checkbook_project_get_name_for_argument("agency_id",RequestUtil::getRequestKeyValueFromURL("agency",current_path()));
+        $title = '';
         if(preg_match('/category\/1/',current_path())){
           $title = $title . ' Contract' ;
         }
@@ -44,7 +41,7 @@ class SpendingUtil{
           $title = $title. ' Payroll' ;
         }
         elseif(preg_match('/category\/3/',current_path())){
-          $title = $title . ' Capital Contracts' ;
+          $title = $title . ' Capital' ;
         }
         elseif(preg_match('/category\/4/',current_path())){
           $title = $title. ' Others' ;
@@ -54,8 +51,7 @@ class SpendingUtil{
         }
         else{
           $title = $title . ' Total' ;
-        }        
-      //}
+        }
       $title = $title . " Spending Transactions";
       return $title ;
     }

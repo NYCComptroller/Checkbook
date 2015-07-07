@@ -591,6 +591,10 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'php_widgets/spending/summary/industry_summary',
             'arguments' => array('node' => NULL)
         ),
+        'spending_date_summary' => array(
+            'template' => 'php_widgets/spending/summary/date_summary',
+            'arguments' => array('node' => NULL)
+        ),
         //---------------End Spending Summary Templates---------------
 
         'no_records_found' => array(
