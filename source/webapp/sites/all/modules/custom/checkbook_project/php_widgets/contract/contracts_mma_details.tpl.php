@@ -26,7 +26,6 @@ if ( _getRequestParamValue("datasource") == "checkbook_oge") {
 }else{
 	$oge_class = "cb-ma-details";
 }
-
 if (_getRequestParamValue("doctype") == "RCT1") {
   $vendor_link = '/contracts_revenue_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
     . $node->data[0]['vendor_id_checkbook_vendor_history'] . '?expandBottomCont=true';

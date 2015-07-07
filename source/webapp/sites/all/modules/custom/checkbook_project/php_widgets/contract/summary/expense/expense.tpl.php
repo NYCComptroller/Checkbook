@@ -45,6 +45,20 @@ if(is_array($records)){
         $noContr = WidgetUtil::getLabel("no_of_contracts");
         $mwbe_category = WidgetUtil::getLabel("mwbe_category").': '.MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']);
     }
+    $dynamicLabel= WidgetUtil::getLabel("prime_vendor");
+
+    if(_getRequestParamValue('smnid') == 369){
+        $dynamicLabel= WidgetUtil::getLabel("award_method");
+    }
+    if(_getRequestParamValue('smnid') == 370){
+        $dynamicLabel= WidgetUtil::getLabel("contract_agency");
+    }
+    if(_getRequestParamValue('smnid') == 454){
+        $dynamicLabel= WidgetUtil::getLabel("industry_name");
+    }
+    if(_getRequestParamValue('smnid') == 453){
+        $dynamicLabel= WidgetUtil::getLabel("contract_size");
+    }
 
     $originalAmount = custom_number_formatter_format($row['original_amount_sum'],2,'$');
     $currentAmount = custom_number_formatter_format($row['current_amount_sum'],2,'$');
@@ -52,15 +66,11 @@ if(is_array($records)){
     $spnttodt = WidgetUtil::getLabel("spent_to_date");
     $oamnt = WidgetUtil::getLabel("original_amount");
     $camnt = WidgetUtil::getLabel("current_amount");
-    $vendor= WidgetUtil::getLabel("vendor_name");
     $totalContracts = number_format($row['total_contracts']);
 $summaryContent =  <<<EOD
 <div class="contract-details-heading">
 	<div class="contract-id">
 		<h2 class="contract-title">{$node->widgetConfig->summaryView->templateTitle}</h2>
-		<div class="contract-id">{$row[$node->widgetConfig->summaryView->entityColumnName]}<br>
-		    {$mwbe_category}
-		</div>
 	</div>
 	<div class="dollar-amounts">
 		<div class="spent-to-date">
@@ -73,13 +83,20 @@ $summaryContent =  <<<EOD
 		</div>
 		<div class="current-amount">
 		    {$currentAmount}
-            <div class="amount-title">{$camnt}</div>
-		</div>
-		<div class="no-of-contracts">
+        <div class="amount-title">{$camnt}</div>
+	    </div>
+	</div>
+</div>
+<div class="contract-information">
+	<div class="no-of-contracts">
 			{$totalContracts}
 			<div class="amount-title">{$noContr}</div>
-		</div>
 	</div>
+	<ul>
+	    <li class="contractid">
+	        <span class="gi-list-item">{$dynamicLabel}:</span> {$row[$node->widgetConfig->summaryView->entityColumnName]}<br>{$mwbe_category}
+		</li>
+	</ul>
 </div>
 EOD;
 
