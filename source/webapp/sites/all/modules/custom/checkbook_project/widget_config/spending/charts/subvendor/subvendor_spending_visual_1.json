@@ -26,6 +26,10 @@
             }
         ]
     },
+    "summaryView":{
+        "template":"spending_date_summary",
+        "templateTitleEval":"return SpendingUtil::getSpendingTransactionsTitle();"
+    },
     "no_results_content":"No Results Found",
     "defaultParameters":{"type_of_year":"B"},
     "cleanURLParameters":["year","yeartype","agency","vendor","category","mwbe","subvendor"],
@@ -101,6 +105,7 @@
         $node->widgetConfig->chartConfig->series[0]->name = $SeriesPreviousYearLabel;
         $node->widgetConfig->chartConfig->series[1]->name = $SeriesCurrentYearLabel;
 
+        $smnid = '/smnid/subvendor_spending_visual_1';
         $categories=array();
         $allZero = true;
         foreach ($node->data as $row){
@@ -113,8 +118,8 @@
             if(abs($row['current_check_amount_sum']) > 0)
                 $allZero = false;
 
-            $seriesPreviousData[] = (object)array('y' => $row['previous_check_amount_sum'],'url'=> $previousYearUrl);
-            $seriesCurrentData[] = (object)array('y' => $row['current_check_amount_sum'],'url'=> $currentYearUrl);
+            $seriesPreviousData[] = (object)array('y' => $row['previous_check_amount_sum'],'url'=> $previousYearUrl.$smnid);
+            $seriesCurrentData[] = (object)array('y' => $row['current_check_amount_sum'],'url'=> $currentYearUrl.$smnid);
 
         }
         if($allZero) $node->totalDataCount = 0;
