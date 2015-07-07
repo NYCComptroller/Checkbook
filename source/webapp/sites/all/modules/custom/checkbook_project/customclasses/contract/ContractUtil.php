@@ -548,6 +548,28 @@ namespace { //global
 
             return $url;
         }
+
+        static public function getSpentToDateParams(){
+            $url = $_GET['q'];
+            $parameters = '';
+            $contract_status = _getRequestParamValue('status');
+            $contract_type = 'expense';
+
+            if(preg_match('/revenue/',$url)){
+                $contract_type = 'revenue';
+            }
+            else if(preg_match('/pending_exp/',$url)){
+                $contract_type = 'expense';
+            }
+            else if(preg_match('/pending_rev/',$url)){
+                $contract_type = 'revenue';
+            }
+            if(isset($contract_status)) {
+                $parameters = '/contstatus/'.$contract_status;
+            }
+            $parameters .= '/contcat/'.$contract_type;
+            return $parameters;
+        }
     }
 }
 

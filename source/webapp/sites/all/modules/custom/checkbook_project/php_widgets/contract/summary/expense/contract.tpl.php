@@ -36,6 +36,7 @@ if(is_array($records)){
     if(_getRequestParamValue('smnid') == 781) {
         $vendor= WidgetUtil::getLabel("associated_prime_vendor");
     }
+    $agency_value = strtoupper($row['agency_agency_agency_name']);
     $summaryContent =  <<<EOD
 <div class="contract-details-heading">
 	<div class="contract-id">
@@ -65,7 +66,7 @@ if(is_array($records)){
 			<span class="gi-list-item">{$purpose}:</span> {$row['contract_purpose_contract_purpose']}
         </li>
 		<li class="agency">
-			<span class="gi-list-item">{$agency}:</span> {$row['agency_agency_agency_name']}
+			<span class="gi-list-item">{$agency}:</span> {$agency_value}
 		</li>
 		<li class="vendor">
 			<span class="gi-list-item">{$vendor}:</span> {$row['vendor_vendor_legal_name']}
