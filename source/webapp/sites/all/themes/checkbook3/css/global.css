@@ -2298,18 +2298,20 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 .dollar-amounts > div,
 .inside .transactions-container .transactions-total-amount,
 .contract-information .dollar-difference,
-.contract-information .percent-difference{
+.contract-information .percent-difference,
+.no-of-contracts{
     color: #5C5C5C;
     float: right;
     font-size: 18px;
     font-weight: bold;
     text-align: center;
-    width: 105px;
+    width: auto;
     margin-left: 32px;
     margin-bottom: 10px;
 }
 .contract-vendor-details .dollar-amounts > div{
     margin-left: 0px;
+    width: 105px;
 }
 .dollar-amounts > div:first-child,
 .inside .transactions-container .transactions-total-amount,
