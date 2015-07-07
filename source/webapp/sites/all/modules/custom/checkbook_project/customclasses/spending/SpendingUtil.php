@@ -1171,8 +1171,36 @@ class SpendingUtil{
     }
 
     static function getSpentToDateTitle($widgetTitle){
-        $title = RequestUtil::getDashboardTitle();
-        return ($title . " " . $widgetTitle . " Transactions");
+        $dashboard = RequestUtil::getDashboardTitle();
+        $contractTitle = self::getContractTitle();
+        return ($dashboard . " " . $widgetTitle . " " . $contractTitle . " Contracts Transactions");
+    }
+
+    static public function getContractTitle(){
+        $contract_status = _getRequestParamValue('contstatus');
+        $contract_type = _getRequestParamValue('contcat');
+        $title = 'by';
+
+        switch($contract_status) {
+            case 'A':
+                $title .= ' Active';
+                break;
+            case 'R':
+                $title .= ' Registered';
+                break;
+            default:
+                $title .= ' Pending';
+                break;
+        }
+        switch($contract_type) {
+            case 'expense':
+                $title .= ' Expense';
+                break;
+            case 'revenue':
+                $title .= ' Revenue';
+                break;
+        }
+        return $title;
     }
     
     function _show_mwbe_custom_legend(){

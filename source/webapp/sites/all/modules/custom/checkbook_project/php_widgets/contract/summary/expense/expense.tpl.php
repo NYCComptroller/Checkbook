@@ -67,6 +67,7 @@ if(is_array($records)){
     $oamnt = WidgetUtil::getLabel("original_amount");
     $camnt = WidgetUtil::getLabel("current_amount");
     $totalContracts = number_format($row['total_contracts']);
+    $dynamicValue = strtoupper($row[$node->widgetConfig->summaryView->entityColumnName]);
 $summaryContent =  <<<EOD
 <div class="contract-details-heading">
 	<div class="contract-id">
@@ -94,7 +95,7 @@ $summaryContent =  <<<EOD
 	</div>
 	<ul>
 	    <li class="contractid">
-	        <span class="gi-list-item">{$dynamicLabel}:</span> {$row[$node->widgetConfig->summaryView->entityColumnName]}<br>{$mwbe_category}
+	        <span class="gi-list-item">{$dynamicLabel}:</span> {$dynamicValue}<br>{$mwbe_category}
 		</li>
 	</ul>
 </div>
