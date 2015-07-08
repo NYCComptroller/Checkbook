@@ -26,24 +26,24 @@ if(is_array($records)){
 
     if(_getRequestParamValue('smnid') == 720) {
         $noContr = WidgetUtil::getLabel("num_sub_contracts");
-        $mwbe_category = WidgetUtil::getLabel("mwbe_category").': '.MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']);
+        $mwbe_category = '<strong>'.WidgetUtil::getLabel("mwbe_category").'</strong>: '.MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']);
     }
     if(_getRequestParamValue('smnid') == 725) {
         $noContr = WidgetUtil::getLabel("num_sub_contracts");
-        $mwbe_category = WidgetUtil::getLabel("mwbe_category").': '.MappingUtil::getMinorityCategoryById($row['prime_minority_type_prime_minority_type']);
+        $mwbe_category = '<strong>'.WidgetUtil::getLabel("mwbe_category").'</strong>: '.MappingUtil::getMinorityCategoryById($row['prime_minority_type_prime_minority_type']);
     }
     if(_getRequestParamValue('smnid') == 726 || _getRequestParamValue('smnid') == 727 || _getRequestParamValue('smnid') == 728 || _getRequestParamValue('smnid') == 729) {
         $noContr = WidgetUtil::getLabel("num_sub_contracts");
     }
     if(_getRequestParamValue('smnid') == 783) {
-        $mwbe_category = WidgetUtil::getLabel("mwbe_category").': '.MappingUtil::getMinorityCategoryById($row['current_prime_minority_type_id']);
+        $mwbe_category = '<strong>'.WidgetUtil::getLabel("mwbe_category").'</strong>: '.MappingUtil::getMinorityCategoryById($row['current_prime_minority_type_id']);
     }
     if(_getRequestParamValue('smnid') == 784) {
-        $mwbe_category = WidgetUtil::getLabel("mwbe_category").': '.MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']);
+        $mwbe_category = '<strong>'.WidgetUtil::getLabel("mwbe_category").'</strong>: '.MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']);
     }
     if(_getRequestParamValue('smnid') == 791) {
         $noContr = WidgetUtil::getLabel("no_of_contracts");
-        $mwbe_category = WidgetUtil::getLabel("mwbe_category").': '.MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']);
+        $mwbe_category = '<strong>'.WidgetUtil::getLabel("mwbe_category").'</strong>: '.MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']);
     }
     $dynamicLabel= WidgetUtil::getLabel("prime_vendor");
 
