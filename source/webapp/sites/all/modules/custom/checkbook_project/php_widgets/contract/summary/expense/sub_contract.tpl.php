@@ -43,7 +43,6 @@ if(is_array($records)){
 <div class="contract-details-heading">
 	<div class="contract-id">
 		<h2 class="contract-title">{$node->widgetConfig->summaryView->templateTitle}</h2>
-		<div class="contract-id">{$cont_id}: {$row['contract_number_contract_number']}</div>
 	</div>
 	<div class="dollar-amounts">
 		<div class="spent-to-date">
@@ -62,6 +61,9 @@ if(is_array($records)){
 </div>
 <div class="contract-information">
 	<ul>
+	    <li class="contractid">
+	        <span class="gi-list-item">{$cont_id}:</span> {$row['contract_number_contract_number']}
+	    </li>
 		<li class="contract-purpose">
 			<span class="gi-list-item">{$purpose}:</span> {$row['contract_purpose_contract_purpose']}
         </li>
