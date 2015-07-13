@@ -35,9 +35,12 @@ if(is_array($records)){
 
     if(_getRequestParamValue('smnid') == 721){
         $purpose = WidgetUtil::getLabel("sub_contract_purpose");
-        $associated_prime_vendor_value = $row['vendor_vendor_legal_name'];
+        $associated_prime_vendor_value = strtoupper($row['vendor_vendor_legal_name']);
         $associated_prime_vendor = WidgetUtil::getLabel("associated_prime_vendor");
     }
+    $agency_value = strtoupper($row['agency_agency_agency_name']);
+    $purpose_value = strtoupper($row['contract_purpose_contract_purpose']);
+    $vendor_value = strtoupper($row['subvendor_subvendor_legal_name']);
 
     $summaryContent =  <<<EOD
 <div class="contract-details-heading">
@@ -65,13 +68,13 @@ if(is_array($records)){
 	        <span class="gi-list-item">{$cont_id}:</span> {$row['contract_number_contract_number']}
 	    </li>
 		<li class="contract-purpose">
-			<span class="gi-list-item">{$purpose}:</span> {$row['contract_purpose_contract_purpose']}
+			<span class="gi-list-item">{$purpose}:</span> {$purpose_value}
         </li>
 		<li class="agency">
-			<span class="gi-list-item">{$agency}:</span> {$row['agency_agency_agency_name']}
+			<span class="gi-list-item">{$agency}:</span> {$agency_value}
 		</li>
 		<li class="vendor">
-			<span class="gi-list-item">{$vendor}:</span> {$row['subvendor_subvendor_legal_name']}
+			<span class="gi-list-item">{$vendor}:</span> {$vendor_value}
 		</li>
 		<li class="associated-prime-vendor">
 			<span class="gi-list-item">{$associated_prime_vendor}:</span> {$associated_prime_vendor_value}
