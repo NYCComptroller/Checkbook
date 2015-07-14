@@ -38,14 +38,18 @@ if(is_array($records)){
     $agency = WidgetUtil::getLabel("contract_agency");
     $vendor= WidgetUtil::getLabel("vendor_name");
     $vendor_value = $row['vendor_vendor_legal_name'];
+    $smnid = _getRequestParamValue('smnid');
 
-    if(_getRequestParamValue('smnid') == 722){
+    if($smnid == 722){
         $purpose = WidgetUtil::getLabel("sub_contract_purpose");
         $vendor = WidgetUtil::getLabel("sub_vendor_name");
         $vendor_value = $row['subvendor_subvendor_legal_name'];
     }
-    if(_getRequestParamValue('smnid') == 782) {
+    else if($smnid == 782) {
         $vendor= WidgetUtil::getLabel("associated_prime_vendor");
+    }
+    else if($smnid == 366 || $smnid == 480) {
+        $vendor= WidgetUtil::getLabel("prime_vendor");
     }
     $purpose_value = strtoupper($row['contract_purpose_contract_purpose']);
     $agency_value = strtoupper($row['agency_agency_agency_name']);

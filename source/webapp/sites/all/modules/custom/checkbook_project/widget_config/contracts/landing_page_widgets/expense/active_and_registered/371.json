@@ -104,6 +104,8 @@ return $footer;
 "summaryView":{
     "template":"contract_summary_expense_contract",
     "templateTitle":"Master Agreement Spending Transactions",
+    "entityColumnName":"vendor_vendor_legal_name",
+    "entityColumnLabel":"Prime Vendor",
     "preprocess_data":"$node->widgetConfig->summaryView->templateTitle = SpendingUtil::getSpentToDateTitle('Master Agreement Spending');"
 },
 "widgetTitle":"Master Agreements",
