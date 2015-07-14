@@ -47,18 +47,19 @@ if(is_array($records)){
     }
     $dynamicLabel= WidgetUtil::getLabel("prime_vendor");
 
-    if(_getRequestParamValue('smnid') == 369){
+    if(_getRequestParamValue('smnid') == 369 || _getRequestParamValue('smnid') == 785){
         $dynamicLabel= WidgetUtil::getLabel("award_method");
     }
-    if(_getRequestParamValue('smnid') == 370){
+    if(_getRequestParamValue('smnid') == 370 || _getRequestParamValue('smnid') == 786){
         $dynamicLabel= WidgetUtil::getLabel("contract_agency");
     }
-    if(_getRequestParamValue('smnid') == 454){
+    if(_getRequestParamValue('smnid') == 454 || _getRequestParamValue('smnid') == 787){
         $dynamicLabel= WidgetUtil::getLabel("industry_name");
     }
-    if(_getRequestParamValue('smnid') == 453){
+    if(_getRequestParamValue('smnid') == 453 || _getRequestParamValue('smnid') == 788){
         $dynamicLabel= WidgetUtil::getLabel("contract_size");
     }
+
 
     $originalAmount = custom_number_formatter_format($row['original_amount_sum'],2,'$');
     $currentAmount = custom_number_formatter_format($row['current_amount_sum'],2,'$');
