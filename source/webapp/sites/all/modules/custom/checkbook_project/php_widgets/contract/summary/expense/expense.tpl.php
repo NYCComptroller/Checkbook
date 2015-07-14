@@ -49,16 +49,16 @@ if(is_array($records)){
         $mwbe_category = '<strong>'.WidgetUtil::getLabel("mwbe_category").'</strong>: '.strtoupper(MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']));
     }
 
-    if($smnid == 369 || $smnid == 785) {
+    if($smnid == 369 || $smnid == 785 || $smnid == 726 ) {
         $dynamicLabel= WidgetUtil::getLabel("award_method");
     }
-    if($smnid == 370 || $smnid == 786){
+    if($smnid == 370 || $smnid == 786 || $smnid == 727 ){
         $dynamicLabel= WidgetUtil::getLabel("contract_agency");
     }
-    if($smnid == 454 || $smnid == 787){
+    if($smnid == 454 || $smnid == 787 || $smnid == 728 ){
         $dynamicLabel= WidgetUtil::getLabel("industry_name");
     }
-    if($smnid == 453 || $smnid == 788){
+    if($smnid == 453 || $smnid == 788 || $smnid == 729 ){
         $dynamicLabel= WidgetUtil::getLabel("contract_size");
     }
 
