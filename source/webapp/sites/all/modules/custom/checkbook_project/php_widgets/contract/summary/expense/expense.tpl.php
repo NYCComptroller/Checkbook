@@ -29,7 +29,7 @@ if(is_array($records)){
 
     if($smnid == 720) {
         $noContr = WidgetUtil::getLabel("num_sub_contracts");
-        $mwbe_category = '<strong>'.WidgetUtil::getLabel("mwbe_category").'</strong>: '.MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']);
+        $mwbe_category = '<strong>'.WidgetUtil::getLabel("mwbe_category").'</strong>: '.strtoupper(MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']));
     }
     else if($smnid == 725) {
         $noContr = WidgetUtil::getLabel("num_sub_contracts");
@@ -46,7 +46,7 @@ if(is_array($records)){
     }
     else if($smnid == 791) {
         $noContr = WidgetUtil::getLabel("no_of_contracts");
-        $mwbe_category = '<strong>'.WidgetUtil::getLabel("mwbe_category").'</strong>: '.MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']);
+        $mwbe_category = '<strong>'.WidgetUtil::getLabel("mwbe_category").'</strong>: '.strtoupper(MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']));
     }
 
     if($smnid == 369 || $smnid == 785) {
