@@ -23,40 +23,42 @@ $records = $node->data;
 if(is_array($records)){
     $row = $records[0];
     $noContr = WidgetUtil::getLabel("no_of_contracts");
+    $smnid = _getRequestParamValue('smnid');
+    $dynamicLabel = $node->widgetConfig->summaryView->entityColumnLabel;
+    $dynamicValue = strtoupper($row[$node->widgetConfig->summaryView->entityColumnName]);
 
-    if(_getRequestParamValue('smnid') == 720) {
+    if($smnid == 720) {
         $noContr = WidgetUtil::getLabel("num_sub_contracts");
         $mwbe_category = '<strong>'.WidgetUtil::getLabel("mwbe_category").'</strong>: '.MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']);
     }
-    if(_getRequestParamValue('smnid') == 725) {
+    else if($smnid == 725) {
         $noContr = WidgetUtil::getLabel("num_sub_contracts");
         $mwbe_category = '<strong>'.WidgetUtil::getLabel("mwbe_category").'</strong>: '.MappingUtil::getMinorityCategoryById($row['prime_minority_type_prime_minority_type']);
     }
-    if(_getRequestParamValue('smnid') == 726 || _getRequestParamValue('smnid') == 727 || _getRequestParamValue('smnid') == 728 || _getRequestParamValue('smnid') == 729) {
+    else if($smnid == 726 || $smnid == 727 || $smnid == 728 || $smnid == 729) {
         $noContr = WidgetUtil::getLabel("num_sub_contracts");
     }
-    if(_getRequestParamValue('smnid') == 783) {
+    else if($smnid == 783) {
         $mwbe_category = '<strong>'.WidgetUtil::getLabel("mwbe_category").'</strong>: '.MappingUtil::getMinorityCategoryById($row['current_prime_minority_type_id']);
     }
-    if(_getRequestParamValue('smnid') == 784) {
+    else if($smnid == 784) {
         $mwbe_category = '<strong>'.WidgetUtil::getLabel("mwbe_category").'</strong>: '.MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']);
     }
-    if(_getRequestParamValue('smnid') == 791) {
+    else if($smnid == 791) {
         $noContr = WidgetUtil::getLabel("no_of_contracts");
         $mwbe_category = '<strong>'.WidgetUtil::getLabel("mwbe_category").'</strong>: '.MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']);
     }
-    $dynamicLabel= WidgetUtil::getLabel("prime_vendor");
 
-    if(_getRequestParamValue('smnid') == 369 || _getRequestParamValue('smnid') == 785){
+    if($smnid == 369 || $smnid == 785) {
         $dynamicLabel= WidgetUtil::getLabel("award_method");
     }
-    if(_getRequestParamValue('smnid') == 370 || _getRequestParamValue('smnid') == 786){
+    if($smnid == 370 || $smnid == 786){
         $dynamicLabel= WidgetUtil::getLabel("contract_agency");
     }
-    if(_getRequestParamValue('smnid') == 454 || _getRequestParamValue('smnid') == 787){
+    if($smnid == 454 || $smnid == 787){
         $dynamicLabel= WidgetUtil::getLabel("industry_name");
     }
-    if(_getRequestParamValue('smnid') == 453 || _getRequestParamValue('smnid') == 788){
+    if($smnid == 453 || $smnid == 788){
         $dynamicLabel= WidgetUtil::getLabel("contract_size");
     }
 
@@ -68,7 +70,6 @@ if(is_array($records)){
     $oamnt = WidgetUtil::getLabel("original_amount");
     $camnt = WidgetUtil::getLabel("current_amount");
     $totalContracts = number_format($row['total_contracts']);
-    $dynamicValue = strtoupper($row[$node->widgetConfig->summaryView->entityColumnName]);
 $summaryContent =  <<<EOD
 <div class="contract-details-heading">
 	<div class="contract-id">
