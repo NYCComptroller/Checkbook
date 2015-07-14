@@ -496,8 +496,7 @@ namespace { //global
             }else{
                 $url .= '/doctype/CT1~CTA1~MA1'.ContractURLHelper::_checkbook_project_spending_get_year_url_param_string();
             }
-                $url .= '/smnid/' . $node->nid
-                . '/newwindow';
+                $url .= '/smnid/' . $node->nid . self::getSpentToDateParams() . '/newwindow';
 
             if($dashboard == "mp" && $node->nid == 720)
                 $url = str_replace("dashboard/mp","dashboard/ms",$url);

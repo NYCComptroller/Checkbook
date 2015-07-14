@@ -1173,6 +1173,11 @@ class SpendingUtil{
     static function getSpentToDateTitle($widgetTitle){
         $dashboard = RequestUtil::getDashboardTitle();
         $contractTitle = self::getContractTitle();
+
+        $dashboard_param = _getRequestParamValue('dashboard');
+        $smnid = _getRequestParamValue('smnid');
+        if($dashboard_param == "ms" && $smnid == 720)
+            $dashboard = "M/WBE";
         return ($dashboard . " " . $widgetTitle . " " . $contractTitle . " Contracts Transactions");
     }
 

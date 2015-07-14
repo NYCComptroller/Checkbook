@@ -89,6 +89,7 @@ return $footer;
 "summaryView":{
     "template":"contract_summary_expense_expense",
     "entityColumnName":"vendor_vendor_legal_name",
+    "entityColumnLabel":"Prime Vendor",
     "templateTitle":"Prime Vendor Spending Transactions",
     "preprocess_data":"$node->widgetConfig->summaryView->templateTitle = SpendingUtil::getSpentToDateTitle('Prime Vendor Spending');"
 },
