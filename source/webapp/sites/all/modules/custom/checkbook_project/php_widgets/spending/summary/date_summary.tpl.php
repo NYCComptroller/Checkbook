@@ -24,7 +24,7 @@
     $year = 'FY'._getYearValueFromID(_getRequestParamValue('year'));
     $monthDetails = CheckbookDateUtil::getMonthDetails(_getRequestParamValue('month'));
     if(isset($monthDetails)){
-        $month = $monthDetails[0]['month_name'];
+        $month = strtoupper($monthDetails[0]['month_name']);
     }
     $summaryContent =  <<<EOD
 <div class="contract-details-heading">
