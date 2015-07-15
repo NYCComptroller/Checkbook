@@ -20,6 +20,12 @@
 ?>
 <?php
 
+if(_getRequestParamValue("status")){
+    $status = '/status/'._getRequestParamValue("status");
+}else{
+    $status = '';
+}
+
 if ( _getRequestParamValue("datasource") == "checkbook_oge") {
 	$datasource ="/datasource/checkbook_oge";
 	$oge_class = "oge-ca-details";
@@ -27,21 +33,21 @@ if ( _getRequestParamValue("datasource") == "checkbook_oge") {
 	$oge_class = "cb-ca-details";
 }
 if (_getRequestParamValue("doctype") == "RCT1") {
-  $vendor_link = '/contracts_revenue_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
+  $vendor_link = '/contracts_revenue_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
     . $node->data[0]['vendor_id_checkbook_vendor_history'] . '?expandBottomCont=true';
-  $agency_link = '/contracts_revenue_landing/status/A/year/' . _getCurrentYearID() . $datasource. '/yeartype/B/agency/'
+  $agency_link = '/contracts_revenue_landing'.$status.'/year/' . _getCurrentYearID() . $datasource. '/yeartype/B/agency/'
     . $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
 }
 else {
     if(_is_mwbe_vendor(_getRequestParamValue("agid"))){
-        $vendor_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
+        $vendor_link = '/contracts_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
             . $node->data[0]['vendor_id_checkbook_vendor_history'] . '/dashboard/mp?expandBottomCont=true';
     }
     else{
-        $vendor_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
+        $vendor_link = '/contracts_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
             . $node->data[0]['vendor_id_checkbook_vendor_history'] . '?expandBottomCont=true';
     }
-  $agency_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . $datasource. '/yeartype/B/agency/'
+  $agency_link = '/contracts_landing'.$status.'/year/' . _getCurrentYearID() . $datasource. '/yeartype/B/agency/'
     . $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
 }
 $spending_link = "/spending/transactions/agid/" . _getRequestParamValue("agid") . $datasource.  "/newwindow";
