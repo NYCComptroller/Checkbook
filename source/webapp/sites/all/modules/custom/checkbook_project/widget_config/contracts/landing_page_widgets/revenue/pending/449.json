@@ -55,7 +55,7 @@ else
     $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
 return $footer;
 ",
-"widgetTitle":"Vendors",
+"widgetTitle":"Prime Vendors",
 "getTotalDataCount":true,
 "header":"
 $node->widgetConfig->getData=false;
