@@ -43,7 +43,7 @@ if(is_array($records)){
     if($smnid == 722){
         $purpose = WidgetUtil::getLabel("sub_contract_purpose");
         $vendor = WidgetUtil::getLabel("sub_vendor_name");
-        $vendor_value = $row['subvendor_subvendor_legal_name'];
+        $vendor_value = strtoupper($row['subvendor_subvendor_legal_name']);
     }
     else if($smnid == 782) {
         $vendor= WidgetUtil::getLabel("associated_prime_vendor");

@@ -1176,8 +1176,12 @@ class SpendingUtil{
 
         $dashboard_param = _getRequestParamValue('dashboard');
         $smnid = _getRequestParamValue('smnid');
-        if($dashboard_param == "ms" && $smnid == 720)
-            $dashboard = "M/WBE";
+        if($smnid == 720) {
+            if($dashboard_param == "ms")
+                $dashboard = "M/WBE";
+            else if($dashboard_param == "ss")
+                $dashboard = "";
+        }
         return ($dashboard . " " . $widgetTitle . " " . $contractTitle . " Contracts Transactions");
     }
 
