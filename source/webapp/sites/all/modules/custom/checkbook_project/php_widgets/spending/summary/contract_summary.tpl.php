@@ -38,7 +38,6 @@ $summaryContent =  <<<EOD
 <div class="contract-details-heading">
 	<div class="contract-id">
 		<h2 class="contract-title">{$title}</h2>
-		<div class="spending-tx-subtitle"><b>{$label}</b>: {$value}</div>
 	</div>
 	<div class="dollar-amounts">
         <div class="total-spending-contract-amount">
@@ -53,6 +52,9 @@ $summaryContent =  <<<EOD
 </div>
 <div class="contract-information contract-summary-block">
 	<ul>
+	    <li class="spendingtxsubtitle">
+	        <span class="gi-list-item">{$label}:</span> {$value}
+	    </li>
 		<li class="contract-purpose">
 			<span class="gi-list-item">{$puprose}:</span> {$purpose_value}
         </li>
