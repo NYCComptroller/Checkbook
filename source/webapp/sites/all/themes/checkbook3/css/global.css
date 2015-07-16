@@ -2108,6 +2108,12 @@ div.bottomContainer #contract-details h2.contract-title {
 }
 .dollar-amounts,
 .inside .transactions-container{float: right; width:430px;}
+
+.cb-ma-details > .dollar-amounts {
+    width: 500px;
+    float: right;
+}
+
 .contract-details{
     border: 1px dotted #CACACA;
     border-width: 1px 1px 0px 0px;
