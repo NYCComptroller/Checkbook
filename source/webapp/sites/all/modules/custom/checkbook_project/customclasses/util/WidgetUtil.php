@@ -25,7 +25,7 @@ class WidgetUtil
     static function getLabel($labelAlias){
         $dynamic_labelAlias = array("current_modified","previous_modified","previous_1_modified","previous_2_modified",
                                     "recognized_current","recognized_1","recognized_2","recognized_3");
-        $labelAliases_br = array("spent_to_date", "original_amount", "current_amount", "dollar_diff", "percent_diff", "no_of_contracts", "num_sub_contracts");
+        $labelAliases_br = array("spent_to_date", "original_amount", "current_amount", "dollar_diff", "percent_diff", "no_of_contracts", "num_sub_contracts", "ytd_spending", "total_contract_amount");
         if(in_array($labelAlias,$dynamic_labelAlias)){
             $year = _getYearValueFromID(_getRequestParamValue('year'));
             $dynamic_labels = array("current_modified" => "Modified<br/>".$year,
