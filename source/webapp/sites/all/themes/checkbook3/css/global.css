@@ -2457,7 +2457,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 .page-revenue .inside .panel-pane.pane-custom.pane-2,
 .page-budget .inside .panel-pane.pane-custom.pane-2,
 .expense_category_budget_details .panel-pane.pane-custom.pane-1{
-    width:50%;
+    width:420px;
 }
 .newwindow .inside .transactions-container,
 .newwindow .inside .contract-details-heading,
