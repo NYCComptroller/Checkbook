@@ -2150,6 +2150,7 @@ div.bottomContainer #contract-details h2.contract-title {
     position:relative;
 }
 .page-contracts-landing #assoc_contracts_list_wrapper .dollar-amounts div{
+    margin: 0;
     width: 105px;
 }
 .page-contracts-landing #assoc_contracts_list_wrapper .contract-title{
