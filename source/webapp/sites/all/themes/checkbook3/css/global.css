@@ -1036,6 +1036,8 @@ span.exportSmartSearch {
 }
 .contracts-oge-spending-bottom h3{
     clear: both;
+    padding-top: 5px;
+
 }
 .panel-panel.grid-12 .bottom-nav-container.panel-pane.pane-node,
 .panel-panel.grid-12 .bottom-nav-container.panel-pane.pane-custom,
@@ -1682,7 +1684,7 @@ input[type="url"], input[type="week"] {
     text-align: left;
 }
 table.dataTable.outerTable h3 {
-    margin:0;
+    margin:0 0 5px;
 }
 table.dataTable th.sorting span, table.dataTable th.sorting_asc span, table.dataTable th.sorting_desc span {
     padding-left:15px;
@@ -1787,7 +1789,7 @@ td.pad-left div{
     text-align:center;
 }
 .dataTable td div {
-    margin: 13px 0 13px 0px;
+    margin: 5px 0 5px 0px;
 }
 
 
@@ -2107,10 +2109,14 @@ div.bottomContainer #contract-details h2.contract-title {
     text-align: center;
 }
 .dollar-amounts,
-.inside .transactions-container{float: right; width:430px;}
+.inside .transactions-container{
+    float: right;
+    width:430px;
+}
 
+.oge-ma-details > .dollar-amounts,
 .cb-ma-details > .dollar-amounts {
-    width: 500px;
+    width: 550px;
     float: right;
 }
 
@@ -2302,7 +2308,17 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
     padding-top: 20px;
 }
 
-.dollar-amounts > div,
+.dollar-amounts > div{
+    color: #5C5C5C;
+    float: right;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    width: 105px;
+    margin-left: 32px;
+    margin-bottom: 10px;
+}
+
 .inside .transactions-container .transactions-total-amount,
 .contract-information .dollar-difference,
 .contract-information .percent-difference,
@@ -2316,6 +2332,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
     margin-left: 32px;
     margin-bottom: 10px;
 }
+
 .contract-vendor-details .dollar-amounts > div{
     margin-left: 0px;
     width: 105px;
