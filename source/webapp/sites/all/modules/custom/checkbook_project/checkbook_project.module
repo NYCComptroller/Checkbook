@@ -552,6 +552,10 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'php_widgets/contract/summary/expense/expense',
             'arguments' => array('node' => NULL)
         ),
+        'contract_date_summary' => array(
+            'template' => 'php_widgets/contract/summary/date_summary',
+            'arguments' => array('node' => NULL)
+        ),
         //---------------End Contract Summary Templates---------------
 
         //++++++++++++++++++Spending Summary Templates++++++++++++++++++
