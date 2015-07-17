@@ -111,14 +111,15 @@
 
     $categories=array();
     $allZero = true;
+    $contract_status_params = ContractUtil::getSpentToDateParams();
     foreach ($node->data as $row){
         $categories[]=html_entity_decode($row['month_month_month_name'],ENT_QUOTES);
 
         $docCodeParam = 'document_code.document_code.document_code';
         $docCodes = $node->widgetConfig->defaultParameters->$docCodeParam;
 
-        $currentYearUrl = CustomURLHelper::prepareUrl('contract/spending/transactions',  ContractURLHelper::$transactionPageParams, NULL, array('doctype' => $docCodes, 'month' => $row['current_month_month'],'newwindow'=>NULL));
-        $previousYearUrl = CustomURLHelper::prepareUrl('contract/spending/transactions',  ContractURLHelper::$transactionPageParams, NULL, array('doctype' => $docCodes, 'month' => $row['previous_month_month'],'newwindow'=>NULL),true);
+        $currentYearUrl = CustomURLHelper::prepareUrl('contract/spending/transactions'.$contract_status_params,  ContractURLHelper::$transactionPageParams, NULL, array('doctype' => $docCodes, 'month' => $row['current_month_month'],'smnid'=>365,'newwindow'=>NULL));
+        $previousYearUrl = CustomURLHelper::prepareUrl('contract/spending/transactions'.$contract_status_params,  ContractURLHelper::$transactionPageParams, NULL, array('doctype' => $docCodes, 'month' => $row['previous_month_month'],'smnid'=>365,'newwindow'=>NULL),true);
 
         if(abs($row['previous_spending_amount_sum']) > 0)
             $allZero = false;
@@ -145,6 +146,10 @@
     }
     return $node->data;
 ",
+"summaryView":{
+    "template":"contract_date_summary",
+    "templateTitleEval":"return SpendingUtil::getSpentToDateTitle('Spending');"
+},
 "chartConfig" : {
     "plotOptions": {
         "series": {
