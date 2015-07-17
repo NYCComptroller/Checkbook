@@ -35,7 +35,7 @@
 "cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe","subvendor"],
 "urlParamMap":{"mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"prime_vendor_id","subvendor":"vendor_id",
 	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
-"chartTitle":"M/WBE Spending by Active Expense Contracts",
+"chartTitle":"M/WBE Sub Spending by Active Expense Contracts",
 "widgetDataLoader":"
     
     $where_filters = array();
@@ -159,7 +159,7 @@
 	if(preg_match('/pending_rev/',$_GET['q'])){
 		$contract_type = 'Pending Revenue';
 	}
-	$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Spending by ' . $status . ' ' . $contract_type .  ' Contracts';
+	$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Sub Spending by ' . $status . ' ' . $contract_type .  ' Contracts';
 ",
 "summaryView":{
     "template":"contract_date_summary",
