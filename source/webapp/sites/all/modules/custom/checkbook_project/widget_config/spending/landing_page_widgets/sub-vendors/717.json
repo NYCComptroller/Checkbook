@@ -83,7 +83,7 @@
     "summaryView":{
         "template":"spending_prime_vendor_summary",
         "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Prime Vendor');",
-        "templateLabel":"Associated Prime Vendor Name",
+        "templateLabel":"Associated Prime Vendor",
         "templateLabelEval":"return $node->data[0]['prime_vendor_prime_vendor_legal_name'];"
     },
     "table_title":"",

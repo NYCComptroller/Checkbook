@@ -96,7 +96,7 @@
     "summaryView":{
         "template":"spending_sub_contract_summary",
         "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Sub Contract');",
-        "templateLabel":"Associated Prime Vendor Name",
+        "templateLabel":"Associated Prime Vendor",
         "templateLabelEval":"return $node->data[0]['prime_vendor_prime_vendor_legal_name'];"
         },
     "table_title":"",
