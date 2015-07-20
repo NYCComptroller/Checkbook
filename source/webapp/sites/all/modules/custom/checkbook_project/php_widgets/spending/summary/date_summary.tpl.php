@@ -22,11 +22,19 @@
     $title = eval($node->widgetConfig->summaryView->templateTitleEval);
     $month = '';
     $year = 'FY'._getYearValueFromID(_getRequestParamValue('year'));
-    $monthDetails = CheckbookDateUtil::getMonthDetails(_getRequestParamValue('month'));
     $amount = custom_number_formatter_format(_getRequestParamValue('amt'),2,'$');
     $catname = RequestUtil::getSpendingTransactionTitle();
-    if(isset($monthDetails)){
-        $month = strtoupper($monthDetails[0]['month_name']);
+
+    $records = $node->data;
+    if(is_array($records)){
+        $row = $records[0];
+        $month = strtoupper($row['month_month_month_name']);
+    }
+    if(!isset($month)) {
+        $monthDetails = CheckbookDateUtil::getMonthDetails(_getRequestParamValue('month'));
+        if(isset($monthDetails)){
+            $month = strtoupper($monthDetails[0]['month_name']);
+        }
     }
     $summaryContent =  <<<EOD
 <div class="contract-details-heading">
