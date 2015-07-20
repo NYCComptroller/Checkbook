@@ -229,7 +229,7 @@ class RequestUtil{
         if(isset($categoryId)){
             $categoryDetails = SpendingUtil::getSpendingCategoryDetails($categoryId,'display_name');
             if(is_array($categoryDetails)){
-                return "Total " . $categoryDetails[0]['display_name'];
+                return $categoryDetails[0]['display_name'];
             }
         }
 
