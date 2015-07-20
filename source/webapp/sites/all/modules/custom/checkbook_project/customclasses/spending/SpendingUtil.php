@@ -1195,7 +1195,7 @@ class SpendingUtil{
         else if($smnid == "subvendor_contracts_visual_1" && $dashboard_param == "sp") {
             $dashboard = "M/WBE Sub Vendors";
         }
-        //Visualization - Sub Vendors (M/WBE) Exception
+        //Visualization - M/WBE (Sub Vendors) Exception
         else if($smnid == "subven_mwbe_contracts_visual_2" && $dashboard_param == "ms") {
             $dashboard = "M/WBE Sub";
         }
