@@ -118,8 +118,8 @@
             if(abs($row['current_check_amount_sum']) > 0)
                 $allZero = false;
 
-            $seriesPreviousData[] = (object)array('y' => $row['previous_check_amount_sum'],'url'=> $previousYearUrl.$smnid);
-            $seriesCurrentData[] = (object)array('y' => $row['current_check_amount_sum'],'url'=> $currentYearUrl.$smnid);
+            $seriesPreviousData[] = (object)array('y' => $row['previous_check_amount_sum'],'url'=> $previousYearUrl.'/amt/'.$row['previous_check_amount_sum'].$smnid);
+            $seriesCurrentData[] = (object)array('y' => $row['current_check_amount_sum'],'url'=> $currentYearUrl.'/amt/'.$row['current_check_amount_sum'].$smnid);
 
         }
         if($allZero) $node->totalDataCount = 0;
