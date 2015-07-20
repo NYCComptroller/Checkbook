@@ -118,8 +118,8 @@
         $docCodeParam = 'document_code.document_code.document_code';
         $docCodes = $node->widgetConfig->defaultParameters->$docCodeParam;
 
-        $currentYearUrl = CustomURLHelper::prepareUrl('contract/spending/transactions'.$contract_status_params,  ContractURLHelper::$transactionPageParams, NULL, array('doctype' => $docCodes, 'month' => $row['current_month_month'],'smnid'=>365,'newwindow'=>NULL));
-        $previousYearUrl = CustomURLHelper::prepareUrl('contract/spending/transactions'.$contract_status_params,  ContractURLHelper::$transactionPageParams, NULL, array('doctype' => $docCodes, 'month' => $row['previous_month_month'],'smnid'=>365,'newwindow'=>NULL),true);
+        $currentYearUrl = CustomURLHelper::prepareUrl('contract/spending/transactions'.$contract_status_params,  ContractURLHelper::$transactionPageParams, NULL, array('doctype' => $docCodes, 'month' => $row['current_month_month'],'amt'=> $row['current_spending_amount_sum'],'smnid'=>365,'newwindow'=>NULL));
+        $previousYearUrl = CustomURLHelper::prepareUrl('contract/spending/transactions'.$contract_status_params,  ContractURLHelper::$transactionPageParams, NULL, array('doctype' => $docCodes, 'month' => $row['previous_month_month'],'amt'=> $row['previous_spending_amount_sum'],'smnid'=>365,'newwindow'=>NULL),true);
 
         if(abs($row['previous_spending_amount_sum']) > 0)
             $allZero = false;
