@@ -1151,6 +1151,10 @@ class SpendingUtil{
         if($smnid == "subvendor_spending_visual_1" && $dashboard == "sp") {
             $dashboard_title = "M/WBE Sub Vendors";
         }
+        //Visualization - Sub Vendors (M/WBE) Exception
+        if($smnid == "subvendor_spending_visual_1" && $dashboard == "sp") {
+            $dashboard_title = "M/WBE Sub Vendors";
+        }
 
         return $dashboard_title . " " . $widgetTitle . " " . $catName . " Transactions";
     }
@@ -1186,6 +1190,14 @@ class SpendingUtil{
                 $dashboard = "M/WBE";
             else if($dashboard_param == "ss")
                 $dashboard = "";
+        }
+        //Visualization - Sub Vendors (M/WBE) Exception
+        else if($smnid == "subvendor_contracts_visual_1" && $dashboard_param == "sp") {
+            $dashboard = "M/WBE Sub Vendors";
+        }
+        //Visualization - Sub Vendors (M/WBE) Exception
+        else if($smnid == "subven_mwbe_contracts_visual_2" && $dashboard_param == "ms") {
+            $dashboard = "M/WBE Sub";
         }
         return ($dashboard . " " . $widgetTitle . " " . $contractTitle . " Contracts Transactions");
     }
