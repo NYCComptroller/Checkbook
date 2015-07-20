@@ -23,6 +23,8 @@
     $month = '';
     $year = 'FY'._getYearValueFromID(_getRequestParamValue('year'));
     $monthDetails = CheckbookDateUtil::getMonthDetails(_getRequestParamValue('month'));
+    $amount = custom_number_formatter_format(_getRequestParamValue('amt'),2,'$');
+    $catname = RequestUtil::getSpendingTransactionTitle();
     if(isset($monthDetails)){
         $month = strtoupper($monthDetails[0]['month_name']);
     }
@@ -32,7 +34,11 @@
 		<h2 class="contract-title">{$title}</h2>
 		<div class="spending-tx-subtitle"><b>Year</b>: {$year}<br><b>Month</b>: {$month}</div>
 	</div>
+	<div class="dollar-amounts"><div class="total-spending-amount">{$amount}<div class="amount-title">{$catname} Amount</div></div></div>
 </div>
+
+
+
 EOD;
 
 print $summaryContent;
