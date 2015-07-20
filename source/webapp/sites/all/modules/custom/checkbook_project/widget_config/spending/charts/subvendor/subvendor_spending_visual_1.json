@@ -28,7 +28,7 @@
     },
     "summaryView":{
         "template":"spending_date_summary",
-        "templateTitleEval":"return SpendingUtil::getSpendingTransactionsTitle();"
+        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle();"
     },
     "no_results_content":"No Results Found",
     "defaultParameters":{"type_of_year":"B"},

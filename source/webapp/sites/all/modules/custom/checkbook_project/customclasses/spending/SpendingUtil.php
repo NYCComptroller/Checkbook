@@ -1137,6 +1137,7 @@ class SpendingUtil{
         $dashboard_title = RequestUtil::getDashboardTitle();
         $dashboard = _getRequestParamValue('dashboard');
         $category = _getRequestParamValue('category');
+        $smnid = _getRequestParamValue('smnid');
 
         //Sub Vendors Exception
         if(($widgetTitle == "Sub Vendors" || $widgetTitle == "Sub Vendor") && $dashboard == "ss") {
@@ -1145,6 +1146,10 @@ class SpendingUtil{
         //Contract Exception
         if(($widgetTitle == "Contracts" || $widgetTitle == "Contract") && $category == 1) {
             $catName = "Spending";
+        }
+        //Visualization - Sub Vendors (M/WBE) Exception
+        if($smnid == "subvendor_spending_visual_1" && $dashboard == "sp") {
+            $dashboard_title = "M/WBE Sub Vendors";
         }
 
         return $dashboard_title . " " . $widgetTitle . " " . $catName . " Transactions";
