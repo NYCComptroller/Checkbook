@@ -2359,7 +2359,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 }
 .contract-information li{margin-bottom:16px;}
 #spending-transactions .contract-information li{margin-bottom:0px;}
-#spending-transactions .contract-information {margin-top:20px;}
+#spending-transactions .contract-information {margin-top:0px;}
 .spending-tx-subtitle{margin-top:10px;}
 .contract-information li span{
     font-size: 13px;
