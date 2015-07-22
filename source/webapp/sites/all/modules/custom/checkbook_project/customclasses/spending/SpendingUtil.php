@@ -1196,6 +1196,10 @@ class SpendingUtil{
         else if($smnid == "subven_mwbe_contracts_visual_2" && $dashboard_param == "ms") {
             $dashboard = "M/WBE Sub";
         }
+        //Visualization - "Ethnicity" Spending by Active Expense Contracts Transactions Exception
+        else if($smnid == "mwbe_contracts_visual_2") {
+            $dashboard = MappingUtil::getCurrenEhtnicityName();
+        }
         return ($dashboard . " " . $widgetTitle . " " . $contractTitle . " Contracts Transactions");
     }
 
