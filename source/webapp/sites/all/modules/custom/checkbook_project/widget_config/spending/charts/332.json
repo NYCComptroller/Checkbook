@@ -110,12 +110,13 @@
     $urlParams = CustomURLHelper::get_url_param($pathParams, 'agency') . CustomURLHelper::get_url_param($pathParams, 'vendor') . CustomURLHelper::get_url_param($pathParams, 'category');
     $bottomNavUrl = '?expandBottomContURL=/panel_html/spending_transactions/spending/transactions';
     $current_path  = current_path();
+    $smnid = '/smnid/706';
 
     foreach ($node->data as $row){
 	    $categories[]=html_entity_decode($row['month_month_month_name'],ENT_QUOTES);
 
-        $currentYearUrl = $current_path . $bottomNavUrl .  '/yeartype/C/calyear/' .$yearId.   $urlParams . '/month/' .  $row['current_month_month'];
-        $previousYearUrl = $current_path . $bottomNavUrl .  '/yeartype/C/calyear/' . ($yearId-1) .   $urlParams . '/month/' .  $row['previous_month_month'];
+        $currentYearUrl = $current_path . $bottomNavUrl .  '/yeartype/C/calyear/' .$yearId.   $urlParams . '/month/' .  $row['current_month_month'] . $smnid;
+        $previousYearUrl = $current_path . $bottomNavUrl .  '/yeartype/C/calyear/' . ($yearId-1) .   $urlParams . '/month/' .  $row['previous_month_month'] . $smnid;
 
         if(abs($row['previous_check_amount_sum']) > 0)
             $allZero = false;
