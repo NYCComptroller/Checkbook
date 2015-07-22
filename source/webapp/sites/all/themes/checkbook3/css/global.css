@@ -2483,6 +2483,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 .expense_category_budget_details .panel-pane.pane-custom.pane-1{
     width:420px;
 }
+h1.no-spending-transactions {width: 500px}
 .newwindow .inside .transactions-container,
 .newwindow .inside .contract-details-heading,
 .contract_transactions .inside .contract-details-heading,
