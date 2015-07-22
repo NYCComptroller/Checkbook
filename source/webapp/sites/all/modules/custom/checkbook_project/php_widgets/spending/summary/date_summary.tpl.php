@@ -21,7 +21,13 @@
 <?php
     $title = eval($node->widgetConfig->summaryView->templateTitleEval);
     $month = '';
-    $year = 'FY'._getYearValueFromID(_getRequestParamValue('year'));
+    $yearType = _getRequestParamValue('yeartype');
+    $year = _getRequestParamValue('calyear');
+    $yearLabel = $yearType == 'C' ? 'CY' : 'FY';
+    $year = isset($year)
+        ? _getYearValueFromID(_getRequestParamValue('calyear'))
+        : _getYearValueFromID(_getRequestParamValue('year'));
+    $year = $yearLabel.$year;
     $amount = custom_number_formatter_format($node->totalAggregateColumns['check_amount_sum'],2,'$');
     $catname = RequestUtil::getSpendingTransactionTitle();
     $monthDetails = CheckbookDateUtil::getMonthDetails(_getRequestParamValue('month'));
