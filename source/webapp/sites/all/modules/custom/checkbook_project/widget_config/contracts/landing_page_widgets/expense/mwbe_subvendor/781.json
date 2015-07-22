@@ -122,8 +122,8 @@ return $footer;
     "template":"contract_summary_expense_contract",
     "entityColumnName":"vendor_vendor_legal_name",
     "entityColumnLabel":"Associated Prime Vendor",
-    "templateTitle":"Sub Contract Spending Transactions",
-    "preprocess_data":"$node->widgetConfig->summaryView->templateTitle = SpendingUtil::getSpentToDateTitle('Sub Contract Spending');"
+    "templateTitle":"Contract Spending Transactions",
+    "preprocess_data":"$node->widgetConfig->summaryView->templateTitle = SpendingUtil::getSpentToDateTitle('Contract Spending');"
 },
 "widgetTitle":"Contracts",
 "table_title":"",
