@@ -1171,9 +1171,6 @@ class SpendingUtil{
         if(isset($categoryId)){
             $categoryDetails = SpendingUtil::getSpendingCategoryDetails($categoryId,'display_name');
             $category_name = is_array($categoryDetails) ? $categoryDetails[0]['display_name'] : $defaultName;
-            if($categoryId == 2 && $nid != 501) {
-                $category_name = "Total Payroll Spending";
-            }
         }
 
         return $category_name;
