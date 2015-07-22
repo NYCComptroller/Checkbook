@@ -90,7 +90,7 @@ return $footer;
 "summaryView":{
     "template":"spending_contract_summary",
     "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Contract');",
-    "templateLabel":"Contract Id",
+    "templateLabel":"Contract ID",
     "templateLabelEval":"return $node->data[0]['document_id_document_id'];"
 },
 "table_title":"",
