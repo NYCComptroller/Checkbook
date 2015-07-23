@@ -25,14 +25,6 @@ $filter_years = _checkbook_max_data_year();
 //$q is the new url 
 $q = $_SERVER['REQUEST_URI'];
 
-/*For the charts with the months links, need to persist FY and month param*/
-$bottomURL = $_REQUEST['expandBottomContURL'];
-$persist_bottom_url_year_id = isset($bottomURL) && preg_match('/month/',$bottomURL);
-if($persist_bottom_url_year_id){
-    $bottom_url_year_id = RequestUtil::getRequestKeyValueFromURL("year",$bottomURL);
-    $bottom_url_year_type = RequestUtil::getRequestKeyValueFromURL("yeartype",$bottomURL);
-}
-
 if(preg_match("/trends/",$q)){
   $q = "/spending_landing/yeartype/B/year/" ;
   $trends = true;
@@ -193,20 +185,15 @@ if($display){
 	              $link = $link_parts[0] . '?expandBottomContURL='. preg_replace("/\/calyear\//","/year/" ,$link_parts[1]);
 	            }
         	}
-            //change bottom url back to original values
-            if($persist_bottom_url_year_id && preg_match("/expandBottomContURL/",$link)){
-                $link_parts = explode("?expandBottomContURL=",$link);
-                $mainURL = $link_parts[0];
-                $bottomURL = $link_parts[1];
-                $old_year_id = RequestUtil::getRequestKeyValueFromURL("year",$bottomURL);
-                if(preg_match('/year/',$bottomURL) && $bottom_url_year_type == "C") {
-                    $bottomURL = preg_replace('/\/year\/'.$old_year_id.'/','/calyear/'.$bottom_url_year_id,$bottomURL);
+            /*For the charts with the months links, need to persist the month param for the newly selected year*/
+            if(isset($bottomURL) && preg_match('/month/',$bottomURL)){
+                $old_month_id = RequestUtil::getRequestKeyValueFromURL("month",$bottomURL);
+                $year_id = $value['year_id'];
+                if(isset($old_month_id) && isset($year_id)) {
+                    $new_month_id = _translateMonthIdByYear($old_month_id,$year_id);
+                    $link = preg_replace('/\/month\/'.$old_month_id.'/','/month/'.$new_month_id,$link);
                 }
-                else if(preg_match('/year/',$bottomURL) && $bottom_url_year_type == "B") {
-                    $bottomURL = preg_replace('/\/year\/'.$old_year_id.'/','/year/'.$bottom_url_year_id,$bottomURL);
-                }
-                $bottomURL = preg_replace('/\/yeartype\/./','/yeartype/'.$bottom_url_year_type,$bottomURL);
-                $link = $mainURL . '?expandBottomContURL='.$bottomURL;
+
             }
             $fiscal_year_data_array[] = array('display_text' =>$display_text ,
                                          'link' => $link,
@@ -237,20 +224,14 @@ if($display){
 	            $link = str_replace("/dept/".$deptId,"/dept/".$dept_Ids[$value['year_id']],$link);
 	            $link = str_replace("/expcategory/".$expCatId,"/expcategory/".$expCatIds[$value['year_id']],$link);
         	}
-            //change bottom url back to original values
-            if($persist_bottom_url_year_id && preg_match("/expandBottomContURL/",$link)){
-                $link_parts = explode("?expandBottomContURL=",$link);
-                $mainURL = $link_parts[0];
-                $bottomURL = $link_parts[1];
-                $old_year_id = RequestUtil::getRequestKeyValueFromURL("calyear",$bottomURL);
-                if(preg_match('/calyear/',$bottomURL) && $bottom_url_year_type == "B") {
-                    $bottomURL = preg_replace('/\/calyear\/'.$old_year_id.'/','/year/'.$bottom_url_year_id,$bottomURL);
+            /*For the charts with the months links, need to persist the month param for the newly selected year*/
+            if(isset($bottomURL) && preg_match('/month/',$bottomURL)){
+                $old_month_id = RequestUtil::getRequestKeyValueFromURL("month",$bottomURL);
+                $year_id = $value['year_id'];
+                if(isset($old_month_id) && isset($year_id)) {
+                    $new_month_id = _translateMonthIdByYear($old_month_id,$year_id);
+                    $link = preg_replace('/\/month\/'.$old_month_id.'/','/month/'.$new_month_id,$link);
                 }
-                else if(preg_match('/calyear/',$bottomURL) && $bottom_url_year_type == "C") {
-                    $bottomURL = preg_replace('/\/calyear\/'.$old_year_id.'/','/calyear/'.$bottom_url_year_id,$bottomURL);
-                }
-                $bottomURL = preg_replace('/\/yeartype\/./','/yeartype/'.$bottom_url_year_type,$bottomURL);
-                $link = $mainURL . '?expandBottomContURL='.$bottomURL;
             }
             $calendar_year_data_array[] = array('display_text' => 'CY '.$value['year_value'].' (Jan 1, '.$value['year_value'].' - Dec 31, '.$value['year_value'].')',
                                                 'value' => $value['year_id'].'~C',
