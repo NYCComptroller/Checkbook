@@ -1196,6 +1196,10 @@ class SpendingUtil{
         else if($smnid == "subvendor_contracts_visual_1" && $dashboard_param == "ss") {
             $dashboard = "";
         }
+        //Visualization - Sub Vendors (M/WBE) Exception
+        else if($smnid == "subvendor_contracts_visual_1" && $dashboard_param == "sp") {
+            $dashboard = MappingUtil::getCurrenEhtnicityName();
+        }
         return ($dashboard . " " . $widgetTitle . " " . $contractTitle . " Contracts Transactions");
     }
 
