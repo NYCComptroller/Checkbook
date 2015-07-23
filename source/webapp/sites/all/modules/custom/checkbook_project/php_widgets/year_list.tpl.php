@@ -229,7 +229,7 @@ if($display){
                 $old_month_id = RequestUtil::getRequestKeyValueFromURL("month",$bottomURL);
                 $year_id = $value['year_id'];
                 if(isset($old_month_id) && isset($year_id)) {
-                    $new_month_id = _translateMonthIdByYear($old_month_id,$year_id);
+                    $new_month_id = _translateMonthIdByYear($old_month_id,$year_id,"C");
                     $link = preg_replace('/\/month\/'.$old_month_id.'/','/month/'.$new_month_id,$link);
                 }
             }
