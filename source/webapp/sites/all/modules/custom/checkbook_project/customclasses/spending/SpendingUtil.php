@@ -1184,17 +1184,17 @@ class SpendingUtil{
             else if($dashboard_param == "ss")
                 $dashboard = "";
         }
-        //Visualization - Sub Vendors (M/WBE) Exception
-        else if($smnid == "subvendor_contracts_visual_1" && $dashboard_param == "sp") {
-            $dashboard = "M/WBE Sub Vendors";
-        }
         //Visualization - M/WBE (Sub Vendors) Exception
         else if($smnid == "subven_mwbe_contracts_visual_2" && $dashboard_param == "ms") {
-            $dashboard = "M/WBE Sub";
+            $dashboard = MappingUtil::getCurrenEhtnicityName();
         }
         //Visualization - "Ethnicity" Spending by Active Expense Contracts Transactions Exception
         else if($smnid == "mwbe_contracts_visual_2") {
             $dashboard = MappingUtil::getCurrenEhtnicityName();
+        }
+        //Visualization - Sub Vendors (M/WBE) Exception
+        else if($smnid == "subvendor_contracts_visual_1" && $dashboard_param == "ss") {
+            $dashboard = "";
         }
         return ($dashboard . " " . $widgetTitle . " " . $contractTitle . " Contracts Transactions");
     }

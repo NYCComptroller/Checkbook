@@ -163,7 +163,7 @@
 ",
 "summaryView":{
     "template":"contract_date_summary",
-    "templateTitleEval":"return SpendingUtil::getSpentToDateTitle('Spending');"
+    "templateTitleEval":"return SpendingUtil::getSpentToDateTitle('Sub Spending');"
 },
 "chartConfig" : {
     "plotOptions": {
