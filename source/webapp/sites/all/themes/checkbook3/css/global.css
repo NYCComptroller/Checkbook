@@ -1789,9 +1789,12 @@ td.pad-left div{
     text-align:center;
 }
 .dataTable td div {
-    margin: 15px 0 15px 0px;
+    margin: 5px 0px 0px 0px;
 }
 
+.contracts-oge-spending-bottom {
+    margin: 30px 0 !important;
+}
 
 td.text div {
     float: left;
