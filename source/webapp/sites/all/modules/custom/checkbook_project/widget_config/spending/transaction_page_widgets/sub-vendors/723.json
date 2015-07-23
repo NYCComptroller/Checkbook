@@ -87,7 +87,7 @@
     ],
     "summaryView":{
         "template":"spending_date_summary",
-        "templateTitleEval":"return 'M/WBE Sub Vendors '.SpendingUtil::getTransactionPageCategoryName().' Transactions';"
+        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Sub Vendors');"
     },
     "derivedColumns": {
         "associated_prime_vendor_name":{

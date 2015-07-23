@@ -1144,16 +1144,12 @@ class SpendingUtil{
             $dashboard_title = "";
         }
         //Contract Exception
-        if(($widgetTitle == "Contracts" || $widgetTitle == "Contract") && $category == 1) {
+        else if(($widgetTitle == "Contracts" || $widgetTitle == "Contract") && $category == 1) {
             $catName = "Spending";
         }
-        //Visualization - Sub Vendors (M/WBE) Exception
-        if($smnid == "subvendor_spending_visual_1" && $dashboard == "sp") {
-            $dashboard_title = "M/WBE Sub Vendors";
-        }
-        //Visualization - Sub Vendors (M/WBE) Exception
-        if($smnid == "subvendor_spending_visual_1" && $dashboard == "sp") {
-            $dashboard_title = "M/WBE Sub Vendors";
+        //Visualization - Sub Vendors (M/WBE) "Ethnicity" Exception
+        else if($smnid == "723" && $dashboard == "sp") {
+            $dashboard_title = MappingUtil::getCurrenEhtnicityName();
         }
 
         return $dashboard_title . " " . $widgetTitle . " " . $catName . " Transactions";
