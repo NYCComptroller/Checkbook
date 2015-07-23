@@ -121,6 +121,32 @@ function _getFullYearString(){
 }
 
 /**
+ * returns NYC month id for a different year id
+ *
+ * @param $month_id
+ * @param $year_id
+ * @return mixed
+ */
+function _translateMonthIdByYear($month_id,$year_id){
+    $month_value = _getMonthValueFromId($month_id);
+    $monthIDs = _checkbook_project_querydataset('checkbook:month',array('month_id'), array('month_value'=>$month_value,'year_id'=>$year_id));
+    $month_id = $monthIDs[0]['month_id'];
+
+    return $month_id;
+}
+
+/**
+ * returns NYC month value for a given month id
+ * @param $month_id
+ * @return mixed
+ */
+function _getMonthValueFromId($month_id){
+    $monthValues = _checkbook_project_querydataset('checkbook:month',array('month_value'), array('month_id'=>$month_id));
+    $month_value = $monthValues[0]['month_value'];
+    return $month_value;
+}
+
+/**
  * return replacment patter for long text string with markup ...
  * @param string $text
  * @param integer $length
