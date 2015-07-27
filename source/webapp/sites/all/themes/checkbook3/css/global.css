@@ -2494,6 +2494,7 @@ h1.no-spending-transactions {width: 500px}
 }
 .budget_agency_perecent_difference_transactions .inside .panel-pane.pane-custom.pane-1,
 .expense_category_budget_details .inside .panel-pane.pane-custom.pane-1,
+.budget_transactions .inside .panel-pane.pane-custom.pane-1,
 .deppartment_budget_details .inside .panel-pane.pane-custom.pane-1,
 .agency_revenue_by_cross_year_collections_details .inside .panel-pane.pane-custom.pane-1,
 .revenue_category_revenue_by_cross_year_collections_details .inside .panel-pane.pane-custom.pane-1,
