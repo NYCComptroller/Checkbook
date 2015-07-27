@@ -26,11 +26,15 @@
   "dataset":"checkbook:aggregate_revenue",
   "columns":["year.year","year.year.year_value","revenue_amount_sum","remaining_amount"],
   "orderBy":"year.year.year_value",
-  "defaultParameters":{"year.year":114},
+  "defaultParameters":{"year.year":114,"revenue_amount_sum":"0","remaining_amount":"0"},
+  "defaultParamTypeConfig":{"revenue_amount_sum":"ne","remaining_amount":"ne"},
   "cleanURLParameters":["year","agency","revcat","fundsrccode"],
   "urlParamMap":{"year":"year.year","agency":"agency_id","revcat":"revenue_category_id","fundsrccode":"funding_class_code"},
   "adjustParameters":"
   $adjustedParameters = $parameters;
+  if(function_exists('_checkbook_project_applyParameterFilters')){
+    $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+  }
   if (count($adjustedParameters) > 0) {
     foreach ($adjustedParameters as $key => $value) {
       if ($key == 'year.year' && $value[0] <= 115 ){
@@ -47,16 +51,18 @@
   "transformationPHP":"
   $transactions_page = '/' .  current_path()  . '?expandBottomContURL=/panel_html/revenue_transactions';
   $agency = ($node->widgetConfig->requestParams['agency_id.agency_id']) ? '/agency/' . $node->widgetConfig->requestParams['agency_id.agency_id'] : '';
-  //$dept = ($node->widgetConfig->requestParams['dept.dept']) ? '/dept/' . $node->widgetConfig->requestParams['dept.dept'] : '';
-  //$expcategory = ($node->widgetConfig->requestParams['object_class_id.object_class_id']) ? '/expcategory/' . $node->widgetConfig->requestParams['object_class_id.object_class_id'] : '';
   $allZero = TRUE;
+  $smnid = '/smnid/574';
+  $revenue_recognized = '/revenuetype/recognized';
+  $revenue_remaining = '/revenuetype/remaining';
   foreach ($node->data as $row){
     if (abs($row['revenue_amount_sum']) > 0){$allZero = FALSE;}
     if (abs($row['remaining_amount']) > 0){$allZero = FALSE;}
     $categories[] = $row['year_year'];
-    $url = $transactions_page . $agency . '/year/' . $row['year_year'];
-    $recognized_data[] = array('name' => $row['year_year_year_value'], 'y' => $row['revenue_amount_sum'], 'url' => $url);
-    $remaining_data[] = array('name' => $row['year_year_year_value'], 'y' => $row['remaining_amount'], 'url' => $url);
+    $url_recognized =  $transactions_page . $smnid . $revenue_recognized . $agency . '/year/' . $row['year_year'];
+    $url_remaining =  $transactions_page . $smnid . $revenue_remaining . $agency . '/year/' . $row['year_year'];
+    $recognized_data[] = array('name' => $row['year_year_year_value'], 'y' => $row['revenue_amount_sum'], 'url' => $url_recognized);
+    $remaining_data[] = array('name' => $row['year_year_year_value'], 'y' => $row['remaining_amount'], 'url' => $url_remaining);
   }
   if($allZero){$node->totalDataCount = 0;}
   $node->widgetConfig->chartTitle = 'Fiscal Year Comparisons';
@@ -65,6 +71,12 @@
                                              array('name' => 'Remaining', 'data' => $remaining_data));
   return $node->data;
   ",
+  "summaryView":{
+    "template":"revenue_transactions_summary",
+    "templateTitle":"Revenue Details",
+    "templateLabel":"Year",
+    "templateLabelEval":"return 'FY '._getYearValueFromID(_getRequestParamValue('year'));"
+  },
   "chartConfig":{
     "chart":{
       "defaultSeriesType":"column"

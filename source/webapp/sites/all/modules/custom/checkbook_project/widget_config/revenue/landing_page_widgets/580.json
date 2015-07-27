@@ -13,7 +13,13 @@
 "columns": ["category.category.revenue_category_name","category.category",
             "adopted_budget","current_modified_budget","revenue_amount_sum","remaining_amount"],
 "limit":5,
-"widgetTitle":"Revenue Categories Revenue Details",
+"widgetTitle":"Revenue Categories Revenue Transactions",
+"summaryView":{
+    "template":"revenue_transactions_summary",
+    "templateTitle":"Revenue Category Revenue Transactions",
+    "templateLabel":"Revenue Category",
+    "templateLabelEval":"return $node->data[0]['category_category_revenue_category_name'];"
+},
 "header":"
     $node->widgetConfig->getData=false;
     load_widget_data($node);

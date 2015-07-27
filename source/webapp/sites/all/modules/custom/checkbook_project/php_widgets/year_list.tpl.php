@@ -53,7 +53,7 @@ if(preg_match("/contracts_pending_exp_landing/",$_GET['q']) || preg_match("/cont
 $chkdate =  _getRequestParamValue("chkdate");
 $display = true;
 // if page is spending transactions page coming from advanced search
-if(preg_match('/^spending\/transactions/',$_GET['q']) || preg_match('/yeartype/',$_GET['q'])){
+if(preg_match('/^spending\/search\/transactions/',$_GET['q']) || preg_match('/yeartype/',$_GET['q'])){
   // both dates are not given
  
   if(isset($chkdate) && $chkdate !=""){

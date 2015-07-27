@@ -402,8 +402,8 @@ function _checkbook_advanced_search_get_expensetype_and_id($data_source = 'check
     try {
         $dataController = data_controller_get_instance();
         $data = $dataController->queryDataset($data_source.':spending_category', array(
-            'spending_category_id', 'spending_category_name'
-        ), NULL, 'spending_category_id');
+        'spending_category_id', 'spending_category_name'
+        ), NULL, 'display_order');
         $results = array('' => "Total Spending");
         foreach ($data as $row) {
             if ($row['spending_category_id'] != 6)
@@ -1111,7 +1111,7 @@ function _checkbook_advanced_search_encode_url($string) {
     $string = str_replace("<", "%3C", $string);
     $string = str_replace(">", "%3E", $string);
     $string = str_replace("?", "\%3F", $string);
-    $string = str_replace(".", "\%2E", $string);
+//    $string = str_replace(".", "\%2E", $string);
 
     return $string;
 }

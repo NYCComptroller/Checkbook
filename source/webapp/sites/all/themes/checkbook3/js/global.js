@@ -1305,7 +1305,7 @@ Drupal.behaviors.hoveOverMWBE = {
                     $('.create-alert-results-loading').css('display', 'none');
                 }
                 else {
-                    $('#edit-back-submit').attr('disabled', false);
+                    $('#edit-back-submit').attr('disabled', true);
                 }
 
             });
@@ -1694,7 +1694,6 @@ Drupal.behaviors.hoveOverMWBE = {
                     if($('.create-alert-customize-results', window.parent.document).css('display') == 'none') {
                         return;
                     }
-
                     //No results
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).css('height', '100%');
                     $('#checkbook_advanced_search_result_iframe', window.parent.document).attr('scrolling', 'no');
@@ -1759,7 +1758,12 @@ Drupal.behaviors.hoveOverMWBE = {
 
                         /* Enable button for results page after ajax loads */
                         $('#edit-next-submit', window.parent.document).attr('disabled', false);
+                        $('#edit-back-submit', window.parent.document).attr('disabled', false);
                     });
+                }
+                //No results
+                if($('#no-records').css('display') == 'block'){
+                    $('#edit-back-submit', window.parent.document).attr('disabled', false);
                 }
             });
         }
@@ -1830,8 +1834,16 @@ Drupal.behaviors.hoveOverMWBE = {
     $('.bottomContainerReload').live("click",
         function (event) {
             event.preventDefault();
-            
-            var reloadURL =  window.location.pathname + "?expandBottomContURL=" +  this.getAttribute("href") ;
+
+            var hrefURL = this.getAttribute("href");
+            var hrefarr = hrefURL.split('/');
+            reloadURL =  window.location.pathname + "?expandBottomContURL=" +  hrefURL ;
+            for(var i=0; i< hrefarr.length; i++){
+                if(hrefarr[i] == 'category'){
+                    var category = hrefarr[i] + "/" + hrefarr[i+1];
+                    var reloadURL =  window.location.pathname +"/"+category+ "?expandBottomContURL=" +  hrefURL ;
+                }
+            }
             window.location = reloadURL;
 
 

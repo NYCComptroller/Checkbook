@@ -246,6 +246,10 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'php_widgets/revenue/transaction_total_amount',
             'arguments' => array('node' => NULL)
         ),
+        'revenue_transactions_summary' => array(
+            'template' => 'php_widgets/revenue/transactions_summary',
+            'arguments' => array('node' => NULL)
+        ),
         //Budget Transactions List
         'budget_expense_transactions_narrow_down_filters' => array(
             'template' => 'php_widgets/budget/expense_transactions_narrow_down_filters',
@@ -261,6 +265,10 @@ function checkbook_project_theme($existing, $type, $theme, $path){
         ),
         'budget_revenue_transaction_total_amount' => array(
             'template' => 'php_widgets/budget/revenue_transaction_total_amount',
+            'arguments' => array('node' => NULL)
+        ),
+        'budget_expense_transactions_summary' => array(
+            'template' => 'php_widgets/budget/expense_transactions_summary',
             'arguments' => array('node' => NULL)
         ),
         //payroll Transactions List

@@ -5,15 +5,21 @@
 "enableExpand":true,
 "getTotalDataCount":true,
 "no_results_content":"No Results Found",
-"cleanURLParameters":["year","expcategory","agency","dept"],
-"urlParamMap":{"year":"year_id.year_id","expcategory":"object_class_id","agency":"agency_id","dept":"department_id"},
+"cleanURLParameters":["year","expcategory","agency","dept","bdgcode"],
+"urlParamMap":{"year":"year_id.year_id","expcategory":"object_class_id","agency":"agency_id","dept":"department_id","bdgcode":"budget_code_id"},
 "defaultParameters":{"year_id.year_id":113},
 "noDataInitialLoad":true,
 "dataset": "checkbook:budget",
 "columns": ["year_id.year_id","budget_code_name.budget_code_name","budget_code.budget_code",
             "budget_adopted","budget_remaining","budget_committed","budget_current"],
 "limit":5,
-"widgetTitle":"Expense Budget Categories Expense Budget Details",
+"widgetTitle":"Expense Budget Categories Expense Budget Transactions",
+"summaryView":{
+    "template":"budget_expense_transactions_summary",
+    "templateTitle":"Expense Budget Category Expense Budget Transactions",
+    "templateLabel":"Expense Budget Category",
+    "templateLabelEval":"return $node->data[0]['budget_code_name_budget_code_name'];"
+},
 "header":"
     $node->widgetConfig->getData=false;
     load_widget_data($node);
