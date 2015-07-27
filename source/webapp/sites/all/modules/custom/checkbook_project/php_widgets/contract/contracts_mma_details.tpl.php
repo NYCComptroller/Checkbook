@@ -29,7 +29,7 @@ if ( _getRequestParamValue("datasource") == "checkbook_oge") {
 if(_getRequestParamValue("status")){
     $status = '/status/'._getRequestParamValue("status");
 }else{
-    $status = '';
+    $status = '/status/A';
 }
 
 
@@ -43,13 +43,16 @@ else {
     if(_is_mwbe_vendor(_getRequestParamValue("magid"))){
         $vendor_link = '/contracts_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
             . $node->data[0]['vendor_id_checkbook_vendor_history'] . '/dashboard/mp?expandBottomCont=true';
+        $agency_link = '/contracts_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/agency/'
+            . $node->data[0]['agency_id_checkbook_agency'] . '/dashboard/mp?expandBottomCont=true';
     }
     else{
         $vendor_link = '/contracts_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
             . $node->data[0]['vendor_id_checkbook_vendor_history'] . '?expandBottomCont=true';
+        $agency_link = '/contracts_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/agency/'
+            . $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
     }
-    $agency_link = '/contracts_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/agency/'
-        . $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
+
 }
 
 $spending_link = "/spending/transactions/magid/" . _getRequestParamValue("magid") . $datasource . "/newwindow";

@@ -23,7 +23,7 @@
 if(_getRequestParamValue("status")){
     $status = '/status/'._getRequestParamValue("status");
 }else{
-    $status = '';
+    $status = '/status/A';
 }
 
 if ( _getRequestParamValue("datasource") == "checkbook_oge") {
