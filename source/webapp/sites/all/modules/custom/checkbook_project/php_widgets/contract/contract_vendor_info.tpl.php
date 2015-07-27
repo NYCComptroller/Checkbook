@@ -78,7 +78,7 @@ $results2 = _checkbook_project_execute_sql_by_data_source($queryVendorCount,_get
 if(_getRequestParamValue("status")){
     $status = '/status/'._getRequestParamValue("status");
 }else{
-    $status = '';
+    $status = '/status/A';
 }
 //log_error($_SERVER);
 foreach($results2 as $row){
