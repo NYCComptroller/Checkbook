@@ -85,6 +85,7 @@
         "is_prime_or_sub",
         "original_agreement_id@checkbook:sub_vendor_agid"
     ],
+    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Sub Vendors');",
     "summaryView":{
         "template":"spending_date_summary",
         "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Sub Vendors');"
