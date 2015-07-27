@@ -96,14 +96,34 @@
 	    {"labelAlias":"remaining","column": "formatted_remaining_amount","sortSourceColumn":"remaining_budget"},
         {"label": "","column": ""}
 	  ],
-"adjustParameters":"
+    "adjustParameters":"
             $adjustedParameters = $parameters;
             if(function_exists('_checkbook_project_applyParameterFilters')){
                   $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
             }
             return $adjustedParameters;
-",
-"dataTableOptions":{
+    ",
+    "adjustDataTableOptions":"
+
+        $budgettype = _getRequestParamValue('budgettype');
+        if(isset($budgettype)) {
+            $is_committed_expense = ($budgettype == 'committed');
+            $is_remaining_expense = ($budgettype == 'remaining');
+        }
+        else {
+            $dtsmnid = _getRequestParamValue('dtsmnid');
+            $smnid = _getRequestParamValue('smnid');
+            $nid = isset($dtsmnid) ? $dtsmnid : $smnid;
+            $is_committed_expense = ($nid == 558) || ($nid == 559) || ($nid == 568) || ($nid == 571);
+        }
+        if($is_committed_expense) {
+            $node->widgetConfig->dataTableOptions->aaSorting[0][0] = 7;
+        }
+        else if($is_remaining_expense) {
+            $node->widgetConfig->dataTableOptions->aaSorting[0][0] = 13;
+        }
+    ",
+    "dataTableOptions":{
          "bRetrieve": true,
         "bServerSide": true,
         "bProcessing":true,

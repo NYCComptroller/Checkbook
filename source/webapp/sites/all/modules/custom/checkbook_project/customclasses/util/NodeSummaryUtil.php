@@ -21,8 +21,8 @@
 
 class NodeSummaryUtil
 {
-    static function getInitNodeSummaryContent(){
-        $nid = self::getNodeId();
+    static function getInitNodeSummaryContent($nid = null){
+        $nid = isset($nid) ? $nid : self::getNodeId();
 
         if(empty($nid)){
             return NULL;
@@ -87,6 +87,35 @@ class NodeSummaryUtil
                 $title = $node->widgetConfig->table_title;
             }
         }
+        return $title;
+    }
+
+    static function getInitNodeSummaryTemplateTitle($nid = null){
+        $nid = isset($nid) ? $nid : self::getNodeId();
+
+        if(empty($nid)){
+            return NULL;
+        }
+
+        $node = node_load($nid);
+        widget_config($node);
+        $node->widgetConfig->limit = 1;
+        $node->widgetConfig->getTotalDataCount = false;
+        if($node->widgetConfig->summaryView->disable_limit){
+            unset($node->widgetConfig->limit);
+        }
+
+        //prepare anything we'll need before loading
+        widget_prepare($node);
+        //invoke widget specific prepare
+        widget_invoke($node, 'widget_prepare');
+        widget_data($node);
+
+        if(isset($node->widgetConfig->summaryView->preprocess_data)){
+            eval($node->widgetConfig->summaryView->preprocess_data);
+        }
+
+        $title = $node->widgetConfig->summaryView->templateTitle;
         return $title;
     }
 

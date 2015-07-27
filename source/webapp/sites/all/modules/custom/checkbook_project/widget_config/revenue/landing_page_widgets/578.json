@@ -13,7 +13,13 @@
 "columns": ["agency.agency.agency_name","agency.agency",
             "adopted_budget","current_modified_budget","revenue_amount_sum","remaining_amount"],
 "limit":5,
-"widgetTitle":"Agencies Revenue Details",
+"widgetTitle":"Agencies Revenue Transactions",
+"summaryView":{
+    "template":"revenue_transactions_summary",
+    "templateTitle":"Agency Revenue Transactions",
+    "templateLabel":"Agency",
+    "templateLabelEval":"return $node->data[0]['agency_agency_agency_name'];"
+},
 "header":"
     $node->widgetConfig->getData=false;
     load_widget_data($node);

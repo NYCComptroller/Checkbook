@@ -76,7 +76,8 @@
     	join {ref_agency} ra on ra.agency_id =  a1.document_agency_id
     	join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
    		' . $where_filter . '       
-    	order by 1 desc limit 10';
+    	and revised_maximum_amount != 0
+        order by 1 desc limit 10';
     }else{
     	$sql = ' select
 			maximum_contract_amount,
@@ -89,7 +90,8 @@
     	join {vendor} v on v.vendor_id =  a1.vendor_id
     	join {ref_agency} ra on ra.agency_id =  a1.agency_id
     	join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
-   		' . $where_filter . '       
+   		' . $where_filter . '
+        and maximum_contract_amount != 0
     	order by 1 desc limit 10';
     
     }

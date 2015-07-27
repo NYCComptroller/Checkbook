@@ -64,7 +64,7 @@
     }
     return $adjustedParameters;
  ",
-"widgetTitle":"Agency Expense Budget Percent Difference Details",
+"widgetTitle":"Agencies by Percent Difference Expense Budget Transactions",
 "header":"
     $node->widgetConfig->getData=false;
     load_widget_data($node);

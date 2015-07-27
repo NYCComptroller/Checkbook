@@ -68,7 +68,8 @@
 		from {pending_contracts} a1     
 	    join {vendor} v on v.vendor_id =  a1.vendor_id
 	    join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
-   		' . $where_filter . '     
+   		' . $where_filter . '
+        and revised_maximum_amount != 0
    		group by v.legal_name  ,a1.vendor_id
     	order by 3 desc limit 10';
     }else{    
@@ -79,7 +80,8 @@
 		from {aggregateon_mwbe_contracts_cumulative_spending} a1     
 	    join {vendor} v on v.vendor_id =  a1.vendor_id
 	    join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
-   		' . $where_filter . '     
+   		' . $where_filter . '
+        and maximum_contract_amount != 0
    		group by v.legal_name  ,a1.vendor_id
     	order by 3 desc limit 10';
     }
