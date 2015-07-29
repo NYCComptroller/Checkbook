@@ -793,6 +793,7 @@ Drupal.behaviors.hoveOverMWBE = {
                         dialog = $('<div id="dialog" style="display:none"></div>');
                     }
 
+
                     var oSettings = $('#table_'+$(this).attr('exportid')).dataTable().fnSettings();
                     var iRecordsTotal = oSettings.fnRecordsTotal();
                     var iRecordsDisplay = oSettings.fnRecordsDisplay();
@@ -816,6 +817,7 @@ Drupal.behaviors.hoveOverMWBE = {
                                 title:'Download Transactions Data',
                                 dialogClass:"export",
                                 width:700,
+                                resizable:false,
                                 buttons:{
                                     "Download Data":function () {
                                         //current page
@@ -827,6 +829,7 @@ Drupal.behaviors.hoveOverMWBE = {
                                         if (dcfilter == null) {
                                             alertMsgs.push("One of 'Data Selection' option must be selected.");
                                         }
+
 
                                         if (dcfilter == 'all') {
                                             startRecord = 0;
@@ -864,10 +867,13 @@ Drupal.behaviors.hoveOverMWBE = {
                                             $('input[name=rangeto]').val(null);
                                         }
 
+
                                         var frmtfilter = $('input[name=frmt]:checked').val();
                                         if (frmtfilter == null) {
                                             alertMsgs.push('Format must be selected');
                                         }
+
+
 
                                         if (alertMsgs.length > 0) {
                                             $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul>' + '<li>' + alertMsgs.join('<li/>') + '</ul></div>');
@@ -903,6 +909,27 @@ Drupal.behaviors.hoveOverMWBE = {
                                             }
 
                                             $('<form action="' + url + '" method="get">' + inputs + '</form>').appendTo('body').submit().remove();
+
+                                            $('#dialog #export-message').addClass('disable_me');
+                                            $('.ui-dialog-titlebar').addClass('disable_me');
+                                            $('.ui-dialog-buttonset').addClass('disable_me');
+                                            $('#dialog #dialog').addClass('disable_me');
+                                            $('#loading_gif').show();
+                                            $('#loading_gif').addClass('loading_bigger_gif');
+
+                                            $.ajax({
+                                                url: dialogUrl,
+                                                success:function(){
+                                                    setTimeout(function(){
+                                                        $('#dialog #export-message').removeClass('disable_me');
+                                                        $('.ui-dialog-titlebar').removeClass('disable_me');
+                                                        $('.ui-dialog-buttonset').removeClass('disable_me');
+                                                        $('#dialog #dialog').removeClass('disable_me');
+                                                        $('#loading_gif').hide();
+                                                        $('#loading_gif').removeClass('loading_bigger_gif');
+                                                    }, 250);
+                                                }
+                                            });
                                         }
                                     },
                                     "Cancel":function () {

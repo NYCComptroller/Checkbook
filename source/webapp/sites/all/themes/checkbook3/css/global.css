@@ -2830,8 +2830,25 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
     font-style: italic;
 }
 
-.ui-dialog .ui-dialog-buttonpane{
-    border: 0px none;
+.ui-dialog .ui-dialog-buttonset > button{
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: rgba(0, 0, 0, 0) -moz-linear-gradient(center top , #fff 0%, #ddd 100%) repeat scroll 0 0;
+    border-color: #ddd #bbb #999;
+    border-image: none;
+    border-radius: 11px;
+    border-style: solid;
+    border-width: 1px;
+    color: #333;
+    cursor: pointer;
+    font: bold 12px/1.2 Arial,sans-serif;
+    outline: 0 none;
+    overflow: visible;
+    text-shadow: 0 1px 1px #fff;
+    width: auto;
+
 }
 .ui-dialog-titlebar #ui-dialog-title-dialog{line-height:19px;}
 
@@ -3207,7 +3224,8 @@ input[type=radio]:checked:enabled.radio-blue + label:before {
     background-color:#f6f6f6;
 }
 #rotator,
-#advanced-search-rotator{
+#advanced-search-rotator,
+#loading_gif{
     float: left;
     position: absolute;
     z-index: 1000;
@@ -3223,8 +3241,8 @@ input[type=radio]:checked:enabled.radio-blue + label:before {
 
 .disable_me{
     pointer-events:none;
-    opacity:0.5;
-    filter: alpha(opacity=40);
+    opacity:0.6;
+    filter: alpha(opacity=60);
 }
 
 /*********************************
