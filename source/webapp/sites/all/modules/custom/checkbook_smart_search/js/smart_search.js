@@ -109,6 +109,7 @@
                     if($.inArray('revenue',array_domains) > -1) array_checked_domains.push('revenue');
 
                     var dialog_html = '';
+                    dialog_html += '<div id="loading_gif" style="display:none"></div>';
                     dialog_html += '<div id="errorMessages"></div>';
                     dialog_html += '<p>Type of Data<span>*</span>:</p>';
                     dialog_html += '<table>';
@@ -133,6 +134,7 @@
                                 modal:true,
                                 title:'Download Search Results',
                                 dialogClass:"export",
+                                resizable:false,
                                 width:700,
                                 open:function(){
                                     $("#dialog").html(dialog_html);
@@ -143,6 +145,27 @@
                                         + "<input type='hidden' name='domain' value='" + $('input[name=domain]:checked').val() + "'/>";
                                     	var url = '/exportSmartSearch/download';
                                         $('<form action="' + url + '" method="get">' + inputs + '</form>').appendTo('body').submit().remove();
+
+                                        $('#dialog #export-message').addClass('disable_me');
+                                        $('.ui-dialog-titlebar').addClass('disable_me');
+                                        $('.ui-dialog-buttonpane').addClass('disable_me');
+                                        $('#dialog').addClass('disable_me');
+                                        $('#loading_gif').show();
+                                        $('#loading_gif').addClass('loading_bigger_gif');
+
+                                        $.ajax({
+                                            url: dialogUrl,
+                                            success:function(){
+                                                setTimeout(function(){
+                                                    $('#dialog #export-message').removeClass('disable_me');
+                                                    $('.ui-dialog-titlebar').removeClass('disable_me');
+                                                    $('.ui-dialog-buttonpane').removeClass('disable_me');
+                                                    $('#dialog').removeClass('disable_me');
+                                                    $('#loading_gif').hide();
+                                                    $('#loading_gif').removeClass('loading_bigger_gif');
+                                                }, 250);
+                                            }
+                                        });
                                     },
                                     "Cancel":function () {
                                         $(this).dialog('close');
