@@ -2830,6 +2830,10 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
     font-style: italic;
 }
 
+.ui-dialog .ui-dialog-buttonpane{
+    border: 0px none;
+ }
+
 .ui-dialog .ui-dialog-buttonset > button{
     -moz-border-bottom-colors: none;
     -moz-border-left-colors: none;
