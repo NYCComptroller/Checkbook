@@ -44,6 +44,6 @@ class SearchCriteria extends AbstractAPISearchCriteria {
    * @return int|mixed
    */
   function getMaxAllowedTransactionResults() {
-    return 50000;
+    return 200000;
   }
 }

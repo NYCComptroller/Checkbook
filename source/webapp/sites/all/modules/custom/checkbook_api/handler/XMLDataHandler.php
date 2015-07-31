@@ -119,4 +119,136 @@ class XMLDataHandler extends AbstractDataHandler
         $this->response .= '</response>';
         parent::closeResponse();
     }
+
+    /**
+     * Given the query, creates a command to connect to the db and generate the output file, returns the filename
+     * @param $query
+     * @return string
+     */
+    function getJobCommand($query) {
+        global $conf;
+
+        //map tags and build sql
+        $rootElement = $this->requestDataSet->displayConfiguration->xml->rootElement;
+        $rowParentElement = $this->requestDataSet->displayConfiguration->xml->rowParentElement;
+        $columnMappings = $this->requestDataSet->displayConfiguration->xml->elementsColumn;
+        $columnMappings =  (array)$columnMappings;
+        $columnMappings = array_flip($columnMappings);
+        $end = strpos($query, 'FROM');
+        $select_part = substr($query,0,$end);
+        $select_part = str_replace("SELECT", "", $select_part);
+        $sql_parts = explode(",", $select_part);
+
+        $new_select_part = "'<".$rowParentElement.">'";
+        $row = 0;
+        $last_row = sizeof($sql_parts);
+        foreach($sql_parts as $sql_part) {
+            $sql_part = trim($sql_part);
+            $column = $sql_part;
+            $alias = "";
+
+            //get only column
+            if (strpos($sql_part,".") !== false) {
+                $alias = substr($sql_part, 0, 3);
+                $column = substr($sql_part, 3);
+            }
+
+            //Handle derived columns
+            $tag = $columnMappings[$column];
+            $new_select_part .= "\n||'<".$tag.">' || ";
+            switch($column) {
+                case "prime_vendor_name":
+                    $new_select_part .=  "CASE WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " IS NULL THEN 'N/A' ELSE " . $alias . $column . " END";
+                    break;
+                case "minority_type_name":
+                    $new_select_part .=  "CASE \n";
+                    $new_select_part .= "WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " = 2 THEN 'Black American' \n";
+                    $new_select_part .= "WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " = 3 THEN 'Hispanic American' \n";
+                    $new_select_part .= "WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " = 7 THEN 'Non-M/WBE' \n";
+                    $new_select_part .= "WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " = 9 THEN 'Women' \n";
+                    $new_select_part .= "WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " = 11 THEN 'Individuals and Others' \n";
+                    $new_select_part .= "ELSE 'Asian American' END";
+                    break;
+                case "vendor_type":
+                    $new_select_part .= "CASE WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " ~* 's' THEN 'Yes' ELSE 'No' END";
+                    break;
+                default:
+                    $new_select_part .= "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')";
+                    break;
+            }
+            $new_select_part .= " || '</".$tag.">'";
+            $row += 1;
+        }
+        $new_select_part .= "||'</".$rowParentElement.">'";
+
+        $new_select_part = "SELECT ".ltrim($new_select_part,"\n||")."\n";
+        $query = substr_replace($query, $new_select_part, 0, $end);
+
+        $tmpDir = $conf['check_book']['tmpdir'];
+        $outputFileDir = $conf['check_book']['data_feeds']['output_file_dir'];
+        $command = $conf['check_book']['data_feeds']['command'];
+
+        $filename = 'tmp_' . date('mdY_His') . '.xml';
+        $fileOutputDir = variable_get('file_public_path', 'sites/default/files') . '/' . $outputFileDir;
+        $tmpDir =  (isset($tmpDir) && is_dir($tmpDir)) ? rtrim($tmpDir,'/') : '/tmp';
+        $tempOutputFile = $tmpDir .'/'. $filename;
+        $outputFile = DRUPAL_ROOT . '/' . $fileOutputDir .'/'. $filename;
+
+        //open/close tags
+        $open_tags = "'<?xml version=\"1.0\"?><response><status><result>success</result></status>";
+        $open_tags .= "<result_records><record_count>".$this->getRecordCount()."</record_count>";
+        $open_tags .= "<".$rootElement."><".$rowParentElement.">'";
+        $close_tags = "||'</".$rowParentElement."></".$rootElement.">";
+        $close_tags .= "</result_records></response>'";
+
+        $cmd = $command
+            . " -c \"\\\\COPY (" . $query . ") TO '"
+            . $tempOutputFile
+            . "' \" ";
+
+        log_error($cmd);
+        shell_exec($cmd);
+
+        //prepend open tags
+        $cmd = "sed -i '1i" . $open_tags . "' " . $tempOutputFile;
+        shell_exec($cmd);
+
+        //append close tags
+        $cmd = "sed -i '$ a\\" . $close_tags . "' " . $tempOutputFile;
+        shell_exec($cmd);
+
+        $move_cmd = "mv $tempOutputFile $outputFile";
+        shell_exec($move_cmd);
+
+        return $filename;
+    }
+
+    /**
+     * Generates the API file based on the format specified
+     * @param $fileName
+     * @return mixed
+     */
+    function outputFile($fileName){
+
+        // validateRequest:
+        if (!$this->validateRequest()) {
+            return $this->response;
+        }
+
+        $file = variable_get('file_public_path', 'sites/default/files') . '/datafeeds/dev/' . $fileName;
+
+        drupal_add_http_header("Content-Type", "text/xml; utf-8");
+        drupal_add_http_header("Content-Disposition", "attachment; filename=nyc-data-feed.xml");
+        drupal_add_http_header("Pragma", "cache");
+        drupal_add_http_header("Expires", "-1");
+
+        if(is_file($file)) {
+            $data = file_get_contents($file);
+            drupal_add_http_header("Content-Length",strlen($data));
+            echo $data;
+        }
+        else {
+            echo "Data is not generated. Please contact support team.";
+        }
+    }
 }
