@@ -1070,7 +1070,7 @@ function checkbook_datafeeds_process_budget_values($form, $form_state) {
         'global' => array(
             'type_of_data' => 'Budget',
             'records_from' => 1,
-            'max_records' => 50000,
+            'max_records' => 200000,
         ),
     );
     $criteria['responseColumns'] = $values['column_select'];
@@ -2252,7 +2252,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
             //Set data source for query
             'type_of_data' => $data_source == 'checkbook_oge' ? 'Contracts_OGE' : 'Contracts',
             'records_from' => 1,
-            'max_records' => 50000,
+            'max_records' => 200000,
         ),
     );
 
@@ -3114,7 +3114,7 @@ function checkbook_datafeeds_process_payroll_values($form, &$form_state) {
         'global' => array(
             'type_of_data' => 'Payroll',
             'records_from' => 1,
-            'max_records' => 50000,
+            'max_records' => 200000,
         ),
         'responseColumns' => $values['column_select']
     );
@@ -3744,7 +3744,7 @@ function checkbook_datafeeds_process_revenue_values($form, &$form_state) {
         'global' => array(
             'type_of_data' => 'Revenue',
             'records_from' => 1,
-            'max_records' => 50000,
+            'max_records' => 200000,
         ),
         'responseColumns' => $values['column_select'],
     );
@@ -5075,7 +5075,7 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
             //Set data source for query
             'type_of_data' => $data_source == 'checkbook_oge' ? 'Spending_OGE' : 'Spending',
             'records_from' => 1,
-            'max_records' => 50000,
+            'max_records' => 200000,
         ),
         'responseColumns' => $values['column_select'],
     );
@@ -6050,32 +6050,59 @@ function checkbook_datafeeds_confirmation_download_submit($form, &$form_state) {
         drupal_set_message('An error occurred processing your request. Please try again later.', 'error');
         log_error($e->getMessage());
     }
-    if (isset($checkBookApi)) {
-        if ($checkBookApi->validateRequest()) {
-            try {
-                //Make sure e-mail address is passed to the call.
-                $details = $checkBookApi->queueImmediateRequest();
-            }
-            catch (Exception $e) {
-                log_error($e->getMessage());
-            }
-        }
-        else {
-            log_error($checkBookApi->getErrorResponse());
-        }
-    }
 
-    if ($form_state['step_information']['type']['stored_values']['format'] == 'xml') {
-        drupal_add_http_header('Content-Type', 'text/xml; utf-8');
-        drupal_add_http_header('Content-Disposition', 'attachment; filename="nyc-data-feed.xml"');
-        echo $data;
-        module_invoke_all('exit');
-        exit;
+    $record_count = $checkBookApi->getRecordCount();
+    //records <= 100,000
+    if ($record_count <= 10000) {
+        if (isset($checkBookApi)) {
+            if ($checkBookApi->validateRequest()) {
+                try {
+                    //Make sure e-mail address is passed to the call.
+                    $details = $checkBookApi->queueImmediateRequest();
+                }
+                catch (Exception $e) {
+                    log_error($e->getMessage());
+                }
+            }
+            else {
+                log_error($checkBookApi->getErrorResponse());
+            }
+        }
+
+        if ($form_state['step_information']['type']['stored_values']['format'] == 'xml') {
+            drupal_add_http_header('Content-Type', 'text/xml; utf-8');
+            drupal_add_http_header('Content-Disposition', 'attachment; filename="nyc-data-feed.xml"');
+            echo $data;
+            module_invoke_all('exit');
+            exit;
+        }
+        elseif ($form_state['step_information']['type']['stored_values']['format'] == 'csv') {
+            drupal_add_http_header('Content-Type', 'text/csv; utf-8');
+            drupal_add_http_header('Content-Disposition', 'attachment; filename="nyc-data-feed.csv"');
+            echo $data;
+            module_invoke_all('exit');
+            exit;
+        }
     }
-    elseif ($form_state['step_information']['type']['stored_values']['format'] == 'csv') {
-        drupal_add_http_header('Content-Type', 'text/csv; utf-8');
-        drupal_add_http_header('Content-Disposition', 'attachment; filename="nyc-data-feed.csv"');
-        echo $data;
+    //100,000 >= records <= 200,000
+    else {
+        if (isset($checkBookApi)) {
+            if ($checkBookApi->validateRequest()) {
+                try {
+                    //Generate file from sql command
+                    $filename = $form_state['step_information']['confirmation']['filename'];
+                    if($filename) {
+                        $checkBookApi->outputFile($filename);
+                    }
+                }
+                catch (Exception $e) {
+                    log_error($e->getMessage());
+                }
+            }
+            else {
+                log_error($checkBookApi->getErrorResponse());
+            }
+        }
         module_invoke_all('exit');
         exit;
     }
@@ -6260,10 +6287,16 @@ function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $crit
             '#value' => t('Cancel'),
         );
     }
-    elseif ($recordcount > 0 && $recordcount < 50000) {
+    elseif ($recordcount > 0 && $recordcount < 200000) {
         if (isset($checkBookApi)) {
             if ($checkBookApi->validateRequest()) {
-                $form_state['step_information']['confirmation']['response'] = $checkBookApi->getData();
+                if ($recordcount <= 10000) {
+                    $form_state['step_information']['confirmation']['response'] = $checkBookApi->getData();
+                }
+                else {
+                    $filename = $checkBookApi->generateFile();
+                    $form_state['step_information']['confirmation']['filename'] = $filename;
+                }
             }
             else {
                 $form_state['step_information']['confirmation']['response'] = $checkBookApi->getErrorResponse();
