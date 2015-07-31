@@ -181,11 +181,11 @@ class XMLDataHandler extends AbstractDataHandler
         $query = substr_replace($query, $new_select_part, 0, $end);
 
         //open/close tags
-        $open_tags = "'<?xml version=\"1.0\"?><response><status><result>success</result></status>";
+        $open_tags = "<?xml version=\"1.0\"?><response><status><result>success</result></status>";
         $open_tags .= "<result_records><record_count>".$this->getRecordCount()."</record_count>";
         $open_tags .= "<".$rootElement."><".$rowParentElement.">'";
         $close_tags = "||'</".$rowParentElement."></".$rootElement.">";
-        $close_tags .= "</result_records></response>'";
+        $close_tags .= "</result_records></response>";
 
         try{
             $fileDir = _checkbook_project_prepare_data_feeds_file_output_dir();
