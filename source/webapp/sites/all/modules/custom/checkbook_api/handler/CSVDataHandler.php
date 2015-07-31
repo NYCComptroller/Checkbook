@@ -147,27 +147,43 @@ class CSVDataHandler extends AbstractDataHandler {
         $new_select_part = rtrim($new_select_part,",\n");
         $query = substr_replace($query, $new_select_part, 0, $end);
 
-        $tmpDir = $conf['check_book']['tmpdir'];
-        $outputFileDir = $conf['check_book']['data_feeds']['output_file_dir'];
-        $command = $conf['check_book']['data_feeds']['command'];
+        try{
+            $fileDir = _checkbook_project_prepare_data_feeds_file_output_dir();
+            $filename = _checkbook_project_generate_uuid(). '.csv';
+            $tmpDir =  (isset($conf['check_book']['tmpdir']) && is_dir($conf['check_book']['tmpdir'])) ? rtrim($conf['check_book']['tmpdir'],'/') : '/tmp';
+            $command = $conf['check_book']['data_feeds']['command'];
 
-        $filename = 'tmp_' . date('mdY_His') . '.csv';
-        $fileOutputDir = variable_get('file_public_path', 'sites/default/files') . '/' . $outputFileDir;
-        $tmpDir =  (isset($tmpDir) && is_dir($tmpDir)) ? rtrim($tmpDir,'/') : '/tmp';
-        $tempOutputFile = $tmpDir .'/'. $filename;
-        $outputFile = DRUPAL_ROOT . '/' . $fileOutputDir .'/'. $filename;
+            if(!is_writable($tmpDir)){
+                LogHelper::log_error("$tmpDir is not writable. Please make sure this is writable to generate export file.");
+                return $filename;
+            }
 
+            $tempOutputFile = $tmpDir .'/'. $filename;
+            $outputFile = DRUPAL_ROOT . '/' . $fileDir . '/' . $filename;
 
-        $cmd = $command
-            . " -c \"\\\\COPY (" . $query . ") TO '"
-            . $tempOutputFile
-            . "'  WITH DELIMITER ',' CSV HEADER \" ";
+            $cmd = $command
+                . " -c \"\\\\COPY (" . $query . ") TO '"
+                . $tempOutputFile
+                . "'  WITH DELIMITER ',' CSV HEADER \" ";
 
-        log_error($cmd);
-        shell_exec($cmd);
+            log_error($cmd);
+            shell_exec($cmd);
 
-        $move_cmd = "mv $tempOutputFile $outputFile";
-        shell_exec($move_cmd);
+            $move_cmd = "mv $tempOutputFile $outputFile";
+            shell_exec($move_cmd);
+
+        }
+        catch (Exception $e){
+            $value = TextLogMessageTrimmer::$LOGGED_TEXT_LENGTH__MAXIMUM;
+            TextLogMessageTrimmer::$LOGGED_TEXT_LENGTH__MAXIMUM = NULL;
+
+            LogHelper::log_error($e);
+            $msg = "Command used to generate the file: " . $command ;
+            $msg .= ("Error generating DB command: " . $e->getMessage());
+            LogHelper::log_error($msg);
+
+            TextLogMessageTrimmer::$LOGGED_TEXT_LENGTH__MAXIMUM = $value;
+        }
 
         return $filename;
     }
@@ -178,13 +194,16 @@ class CSVDataHandler extends AbstractDataHandler {
      * @return mixed
      */
     function outputFile($fileName){
+        global $conf;
 
         // validateRequest:
         if (!$this->validateRequest()) {
             return $this->response;
         }
 
-        $file = variable_get('file_public_path', 'sites/default/files') . '/datafeeds/dev/' . $fileName;
+        $fileDir = variable_get('file_public_path','sites/default/files') . '/' . $conf['check_book']['data_feeds']['output_file_dir'];
+        $fileDir .= '/' . $conf['check_book']['export_data_dir'];
+        $file = DRUPAL_ROOT . '/' . $fileDir . '/' . $fileName;
 
         drupal_add_http_header("Content-Type", "text/csv; utf-8");
         drupal_add_http_header("Content-Disposition", "attachment; filename=nyc-data-feed.csv");
