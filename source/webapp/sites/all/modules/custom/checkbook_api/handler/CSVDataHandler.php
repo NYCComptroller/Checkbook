@@ -166,7 +166,7 @@ class CSVDataHandler extends AbstractDataHandler {
                 . $tempOutputFile
                 . "'  WITH DELIMITER ',' CSV HEADER \" ";
 
-            log_error($cmd);
+//            log_error($cmd);
             shell_exec($cmd);
 
             $move_cmd = "mv $tempOutputFile $outputFile";
