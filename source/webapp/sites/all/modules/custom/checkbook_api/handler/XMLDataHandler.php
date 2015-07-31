@@ -184,7 +184,7 @@ class XMLDataHandler extends AbstractDataHandler
         $open_tags = "<?xml version=\"1.0\"?><response><status><result>success</result></status>";
         $open_tags .= "<result_records><record_count>".$this->getRecordCount()."</record_count>";
         $open_tags .= "<".$rootElement."><".$rowParentElement.">'";
-        $close_tags = "||'</".$rowParentElement."></".$rootElement.">";
+        $close_tags = "</".$rowParentElement."></".$rootElement.">";
         $close_tags .= "</result_records></response>";
 
         try{
@@ -216,8 +216,8 @@ class XMLDataHandler extends AbstractDataHandler
             shell_exec($cmd);
 
             //append close tags
-            //sed -i -e '$a\this is the bottom' file
-            $cmd = "sed -i -e '$\a\\" . $close_tags . "' " . $tempOutputFile;
+            //sed -i '$a this is the bottom' file
+            $cmd = "sed -i '$"."a" . $close_tags . "' " . $tempOutputFile;
             log_error($cmd);
             shell_exec($cmd);
 
