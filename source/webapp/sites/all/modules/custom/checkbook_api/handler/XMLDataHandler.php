@@ -140,8 +140,6 @@ class XMLDataHandler extends AbstractDataHandler
         $sql_parts = explode(",", $select_part);
 
         $new_select_part = "'<".$rowParentElement.">'";
-        $row = 0;
-        $last_row = sizeof($sql_parts);
         foreach($sql_parts as $sql_part) {
             $sql_part = trim($sql_part);
             $column = $sql_part;
@@ -177,22 +175,10 @@ class XMLDataHandler extends AbstractDataHandler
                     break;
             }
             $new_select_part .= " || '</".$tag.">'";
-            $row += 1;
         }
         $new_select_part .= "||'</".$rowParentElement.">'";
-
         $new_select_part = "SELECT ".ltrim($new_select_part,"\n||")."\n";
         $query = substr_replace($query, $new_select_part, 0, $end);
-
-        $tmpDir = $conf['check_book']['tmpdir'];
-        $outputFileDir = $conf['check_book']['data_feeds']['output_file_dir'];
-        $command = $conf['check_book']['data_feeds']['command'];
-
-        $filename = 'tmp_' . date('mdY_His') . '.xml';
-        $fileOutputDir = variable_get('file_public_path', 'sites/default/files') . '/' . $outputFileDir;
-        $tmpDir =  (isset($tmpDir) && is_dir($tmpDir)) ? rtrim($tmpDir,'/') : '/tmp';
-        $tempOutputFile = $tmpDir .'/'. $filename;
-        $outputFile = DRUPAL_ROOT . '/' . $fileOutputDir .'/'. $filename;
 
         //open/close tags
         $open_tags = "'<?xml version=\"1.0\"?><response><status><result>success</result></status>";
@@ -201,25 +187,55 @@ class XMLDataHandler extends AbstractDataHandler
         $close_tags = "||'</".$rowParentElement."></".$rootElement.">";
         $close_tags .= "</result_records></response>'";
 
-        $cmd = $command
-            . " -c \"\\\\COPY (" . $query . ") TO '"
-            . $tempOutputFile
-            . "' \" ";
+        try{
+            $fileDir = _checkbook_project_prepare_data_feeds_file_output_dir();
+            $filename = _checkbook_project_generate_uuid(). '.xml';
+            $tmpDir =  (isset($conf['check_book']['tmpdir']) && is_dir($conf['check_book']['tmpdir'])) ? rtrim($conf['check_book']['tmpdir'],'/') : '/tmp';
+            $command = $conf['check_book']['data_feeds']['command'];
 
-        log_error($cmd);
-        shell_exec($cmd);
+            if(!is_writable($tmpDir)){
+                LogHelper::log_error("$tmpDir is not writable. Please make sure this is writable to generate export file.");
+                return $filename;
+            }
 
-        //prepend open tags
-        $cmd = "sed -i '1i" . $open_tags . "' " . $tempOutputFile;
-        shell_exec($cmd);
+            $tempOutputFile = $tmpDir .'/'. $filename;
+            $outputFile = DRUPAL_ROOT . '/' . $fileDir . '/' . $filename;
 
-        //append close tags
-        $cmd = "sed -i '$ a\\" . $close_tags . "' " . $tempOutputFile;
-        shell_exec($cmd);
+            $cmd = $command
+                . " -c \"\\\\COPY (" . $query . ") TO '"
+                . $tempOutputFile
+                . "' \" ";
 
-        $move_cmd = "mv $tempOutputFile $outputFile";
-        shell_exec($move_cmd);
+            log_error($cmd);
+            shell_exec($cmd);
 
+            //prepend open tags
+            //sed -i '1i this is the top' file
+            $cmd = "sed -i '1i " . $open_tags . "' " . $tempOutputFile;
+            log_error($cmd);
+            shell_exec($cmd);
+
+            //append close tags
+            //sed -i -e '$a\this is the bottom' file
+            $cmd = "sed -i -e '$\a\\" . $close_tags . "' " . $tempOutputFile;
+            log_error($cmd);
+            shell_exec($cmd);
+
+            $move_cmd = "mv $tempOutputFile $outputFile";
+            shell_exec($move_cmd);
+
+        }
+        catch (Exception $e){
+            $value = TextLogMessageTrimmer::$LOGGED_TEXT_LENGTH__MAXIMUM;
+            TextLogMessageTrimmer::$LOGGED_TEXT_LENGTH__MAXIMUM = NULL;
+
+            LogHelper::log_error($e);
+            $msg = "Command used to generate the file: " . $command ;
+            $msg .= ("Error generating DB command: " . $e->getMessage());
+            LogHelper::log_error($msg);
+
+            TextLogMessageTrimmer::$LOGGED_TEXT_LENGTH__MAXIMUM = $value;
+        }
         return $filename;
     }
 
@@ -229,13 +245,16 @@ class XMLDataHandler extends AbstractDataHandler
      * @return mixed
      */
     function outputFile($fileName){
+        global $conf;
 
         // validateRequest:
         if (!$this->validateRequest()) {
             return $this->response;
         }
 
-        $file = variable_get('file_public_path', 'sites/default/files') . '/datafeeds/dev/' . $fileName;
+        $fileDir = variable_get('file_public_path','sites/default/files') . '/' . $conf['check_book']['data_feeds']['output_file_dir'];
+        $fileDir .= '/' . $conf['check_book']['export_data_dir'];
+        $file = DRUPAL_ROOT . '/' . $fileDir . '/' . $fileName;
 
         drupal_add_http_header("Content-Type", "text/xml; utf-8");
         drupal_add_http_header("Content-Disposition", "attachment; filename=nyc-data-feed.xml");

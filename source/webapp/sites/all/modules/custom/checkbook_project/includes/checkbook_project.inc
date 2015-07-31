@@ -1430,6 +1430,70 @@ function _pending_contracts_link_contract_details($contract_number, $original_ag
     }
 }
 
+/**
+ * Function to generate the path to save the file for data feeds
+ * @return string
+ */
+function _checkbook_project_prepare_data_feeds_file_output_dir(){
+    global $conf;
+
+    $dir = variable_get('file_public_path','sites/default/files') . '/' . $conf['check_book']['data_feeds']['output_file_dir'];
+    _checkbook_project_prepare_data_feeds_dir($dir);
+
+    $dir .= '/' . $conf['check_book']['export_data_dir'];
+    _checkbook_project_prepare_data_feeds_dir($dir);
+
+    try{
+        //delete files older than 2 hours
+        _checkbook_project_clean_files($dir);
+    }catch (Exception $e){
+        LogHelper::log_error($e);
+    }
+
+    return $dir;
+}
+
+/**
+ * Function to generate a unique id
+ * @return string
+ */
+function _checkbook_project_generate_uuid(){
+    $guid = 'export';
+    $uid = uniqid("", true);
+    $data = '';
+    $data .= $_SERVER['REQUEST_TIME'];
+    $data .= $_SERVER['HTTP_USER_AGENT'];
+    $data .= $_SERVER['LOCAL_ADDR'];
+    $data .= $_SERVER['LOCAL_PORT'];
+    $data .= $_SERVER['REMOTE_ADDR'];
+    $data .= $_SERVER['REMOTE_PORT'];
+    $hash = strtoupper(hash('ripemd128', $uid . $guid . md5($data)));
+    $guid =
+        substr($hash,  0,  8) .
+        '-' .
+        substr($hash,  8,  4) .
+        '-' .
+        substr($hash, 12,  4) .
+        '-' .
+        substr($hash, 16,  4) .
+        '-' .
+        substr($hash, 20, 12);
+
+    return strtolower($guid);
+}
+
+/**
+ * Function to generate the path to save the file for data feeds
+ * @param $dir
+ * @throws Exception
+ */
+function _checkbook_project_prepare_data_feeds_dir($dir){
+    if(!file_prepare_directory($dir,FILE_CREATE_DIRECTORY)){
+        LogHelper::log_error("Could not prepare file output directory $dir.Should check if this directory is writable.");
+        throw new Exception("Could not prepare file. Please contact Support team.");
+    }
+}
+
 function _checkbook_project_clean_files($uri) {
     file_scan_directory($uri, '/.*/', array('callback' => '_checkbook_project_delete_file_if_stale'));
 }
