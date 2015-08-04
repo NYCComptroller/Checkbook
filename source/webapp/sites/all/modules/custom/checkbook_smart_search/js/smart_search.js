@@ -3,6 +3,7 @@
  */
 (function ($) {
     $(document).ready(function () {
+
 		$( "#edit-search-box" ).autocomplete({
                         position: { my: "right top", at: "right bottom" },
                         minLength: 0,
@@ -141,10 +142,14 @@
                                 },
                                 buttons:{
                                     "Download Data":function () {
-                                    	var inputs = "<input type='hidden' name='search_term' value='" +  getParameterByName("search_term") + "'/>"
+                                        var inputs = "<input type='hidden' name='search_term' value='" +  getParameterByName("search_term") + "'/>"
                                         + "<input type='hidden' name='domain' value='" + $('input[name=domain]:checked').val() + "'/>";
                                     	var url = '/exportSmartSearch/download';
-                                        $('<form action="' + url + '" method="get">' + inputs + '</form>').appendTo('body').submit().remove();
+                                        $('<form id="downloadForm" action="' + url + '" method="get">' + inputs + '</form>')
+                                            .appendTo('body')
+                                            .submit()
+                                            .remove();
+
 
                                         $('#dialog #export-message').addClass('disable_me');
                                         $('.ui-dialog-titlebar').addClass('disable_me');
@@ -153,8 +158,10 @@
                                         $('#loading_gif').show();
                                         $('#loading_gif').addClass('loading_bigger_gif');
 
+
                                         $.ajax({
-                                            url: dialogUrl,
+                                            url: $('#downloadForm').attr('action'),
+                                            data: {search_term: getParameterByName("search_term"), domain: $('input[name=domain]:checked').val()},
                                             success:function(){
                                                 setTimeout(function(){
                                                     $('#dialog #export-message').removeClass('disable_me');
@@ -166,6 +173,7 @@
                                                 }, 250);
                                             }
                                         });
+
                                     },
                                     "Cancel":function () {
                                         $(this).dialog('close');
