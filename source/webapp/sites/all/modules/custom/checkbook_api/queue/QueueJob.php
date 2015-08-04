@@ -52,21 +52,29 @@ class QueueJob {
 
         $this->prepareFileOutputDir();
 
-        if($this->recordCount > $this->fileLimit) {
-            $commands = $this->getCommands();
-            $file_names = (array_keys($commands));
+        $request_criteria = $this->jobDetails['request_criteria'];
+        $response_format = $request_criteria['global']['response_format'];
 
-            foreach($commands as $filename=>$command) {
-                $this->processCommand($filename, $command);
-            }
-
-            $this->generateCompressedFile($file_names);
-            // TODO - Delete csv/xml parts
-        }
-        else {
-            $filename = $this->prepareFileName();
-            $command = $this->getJobCommand($filename);
-            $this->processCommand($filename, $command);
+        switch($response_format) {
+            case "csv":
+                if($this->recordCount > $this->fileLimit) {
+                    $commands = $this->getCSVCommands();
+                    $file_names = (array_keys($commands));
+                    $this->processCommands($commands);
+                    $this->generateCompressedFile($file_names);
+                    // TODO - Delete csv/xml parts
+                }
+                else {
+                    $filename = $this->prepareFileName();
+                    $commands[$filename][] = $this->getCSVJobCommand($filename);
+                    $this->processCommands($commands);
+                }
+                break;
+            case "xml":
+                $filename = $this->prepareFileName();
+                $commands = $this->getXMLJobCommands($filename);
+                $this->processCommands($commands);
+                break;
         }
   }
 
@@ -94,66 +102,10 @@ class QueueJob {
     }
 
     /**
-     * Function will process a single file by number of records
-     * @throws JobRecoveryException
-     */
-    private function processCommand($filename, $command) {
-
-        try {
-
-            LogHelper::log_debug("{$this->logId}: Executing job command.");
-            shell_exec($command);
-            LogHelper::log_debug("{$this->logId}: Completed executing job command.");
-
-            $generated_csv_file = $this->fileOutputDir . '/' . $filename . '.csv';
-
-            if (!is_file($generated_csv_file) || !is_writable($generated_csv_file)) {
-                $msg = "{$this->logId}: Generated CSV out put file '{$generated_csv_file}' either do not exist or not writable.";
-                LogHelper::log_error($msg);
-                throw new Exception($msg);
-            }
-            else {
-                LogHelper::log_debug("{$this->logId}: Generated CSV out put file '{$generated_csv_file}'.");
-            }
-
-            $request_criteria = $this->jobDetails['request_criteria'];
-            $response_format = $request_criteria['global']['response_format'];
-            LogHelper::log_debug("{$this->logId}: Response file format is " . $response_format);
-            $search_criteria = new SearchCriteria($request_criteria, $response_format);
-            $configuration = ConfigUtil::getConfiguration($request_criteria['global']['type_of_data'], $search_criteria->getConfigKey());
-
-            $configured_response_columns = get_object_vars($configuration->dataset->displayConfiguration->$response_format->elementsColumn);
-            $response_columns = is_array($request_criteria['responseColumns']) ? $request_criteria['responseColumns'] : array_keys($configured_response_columns);
-
-            if ($response_format == 'csv') {
-                $csv_headers = '"' . implode('","', $response_columns) . '"';
-                LogHelper::log_debug("{$this->logId}: csvHeaders '{$csv_headers}'.");
-
-                $cmd = "sed -i 1i'" . $csv_headers . "' " . DRUPAL_ROOT . '/' . $generated_csv_file;
-                LogHelper::log_debug("{$this->logId}: Adjusting CSV headers for file: " . $cmd);
-                shell_exec($cmd);
-                LogHelper::log_debug("{$this->logId}: Updated CSV headers for file.");
-            }
-            else {
-                if ($response_format == 'xml') {
-                    $xml_file_name = $filename . '.xml';
-                    LogHelper::log_debug("{$this->logId}: Started converting csv file : " . $generated_csv_file . ' to xml file.');
-                    $this->generateXMLData($generated_csv_file, $xml_file_name, $response_columns, $configuration);
-                    LogHelper::log_debug("{$this->logId}: Completed converting csv file : " . $generated_csv_file . ' to xml file.');
-                }
-            }
-        }
-        catch (Exception $e) {
-            LogHelper::log_error("{$this->logId}: Exception occured while processing job '{$this->jobDetails['job_id']}' Exception is: " . $e);
-            throw new JobRecoveryException("{$this->logId}: Exception occured while processing job '{$this->jobDetails['job_id']}' Exception is :" . $e->getMessage(), $e->getCode(), $e);
-        }
-    }
-
-    /**
      * Generates the unix commands to create multiple files from the data source directly.
      * @return array
      */
-    private function getCommands() {
+    private function getCSVCommands() {
 
         $num_files = ceil($this->recordCount/$this->fileLimit);
         $file_limit = $this->fileLimit;
@@ -163,8 +115,14 @@ class QueueJob {
             $limit = (($i+1)*$file_limit)-1;
             $offset = $i*$this->fileLimit;
             $filename = $this->prepareFileName().'_part_'.$i;
-            $command = $this->getJobCommand($filename, $limit,$offset);
-            $commands[$filename] = $command;
+
+            //sql command
+            $command = $this->getCSVJobCommand($filename, $limit, $offset);
+            $commands[$filename][] = $command;
+
+            //append header command
+            $command = $this->getCSVHeaderCommand($filename);
+            $commands[$filename][] = $command;
         }
         return $commands;
     }
@@ -175,9 +133,9 @@ class QueueJob {
      * @param $filename
      * @param string $limit
      * @param int $offset
-     * @return string
+     * @return array
      */
-    private function getJobCommand($filename, $limit = 'ALL',$offset = 0) {
+    private function getCSVJobCommand($filename, $limit = 'ALL',$offset = 0) {
         global $conf;
 
         $command = $this->jobDetails['data_command'];
@@ -194,106 +152,139 @@ class QueueJob {
         return $command;
     }
 
-  /**
-   * @param $csv_file_path
-   * @param $xml_file_name
-   * @param $response_columns
-   * @param $configuration
-   * @throws JobRecoveryException
-   */
-  private function generateXMLData($csv_file_path, $xml_file_name, $response_columns, $configuration) {
-    global $conf;
-      ini_set('max_execution_time',90);
+    /**
+     * Given the filename, will return an executable command ot add CSV header row.
+     * @param $filename
+     * @return string
+     */
+    private function getCSVHeaderCommand($filename) {
 
-    $csv_file_handle = @fopen($csv_file_path, 'r');
-    if (!$csv_file_handle) {
-      $msg = "{$this->logId}: Could not get read handle to file '{$csv_file_path}' while converting to xml.";
-      LogHelper::log_error($msg);
-      throw new JobRecoveryException($msg);
+        $request_criteria = $this->jobDetails['request_criteria'];
+        $response_format = $request_criteria['global']['response_format'];
+        $search_criteria = new SearchCriteria($request_criteria, $response_format);
+        $configuration = ConfigUtil::getConfiguration($request_criteria['global']['type_of_data'], $search_criteria->getConfigKey());
+        $configured_response_columns = get_object_vars($configuration->dataset->displayConfiguration->$response_format->elementsColumn);
+        $response_columns = is_array($request_criteria['responseColumns']) ? $request_criteria['responseColumns'] : array_keys($configured_response_columns);
+        $csv_headers = '"' . implode('","', $response_columns) . '"';
+        $command = "sed -i 1i'" . $csv_headers . "' " . DRUPAL_ROOT . '/' . $filename . '.csv';
+
+        return $command;
     }
 
-    if (ob_get_level() == 0) {
-      ob_start();
+    /**
+     * Given the filename, returns an array of commands to execute for xml file creation,
+     * This function modifies the sql to handle derived columns dynamically.
+     *
+     * @param $filename
+     * @return array
+     */
+    function getXMLJobCommands($filename) {
+        global $conf;
+
+        $query = $this->jobDetails['data_command'];
+        $request_criteria = $this->jobDetails['request_criteria'];
+        $response_format = $request_criteria['global']['response_format'];
+        $search_criteria = new SearchCriteria($request_criteria, $response_format);
+        $config = ConfigUtil::getConfiguration($request_criteria['global']['type_of_data'], $search_criteria->getConfigKey());
+
+        //map tags and build sql
+        $rootElement = $config->dataset->displayConfiguration->xml->rootElement;
+        $rowParentElement = $config->dataset->displayConfiguration->xml->rowParentElement;
+        $columnMappings =$config->dataset->displayConfiguration->xml->elementsColumn;
+        $columnMappings =  (array)$columnMappings;
+        $columnMappings = array_flip($columnMappings);
+        $end = strpos($query, 'FROM');
+        $select_part = substr($query,0,$end);
+        $select_part = str_replace("SELECT", "", $select_part);
+        $sql_parts = explode(",", $select_part);
+
+        $new_select_part = "'<".$rowParentElement.">'";
+        foreach($sql_parts as $sql_part) {
+            $sql_part = trim($sql_part);
+            $column = $sql_part;
+            $alias = "";
+
+            //get only column
+            if (strpos($sql_part,".") !== false) {
+                $alias = substr($sql_part, 0, 3);
+                $column = substr($sql_part, 3);
+            }
+
+            //Handle derived columns
+            $tag = $columnMappings[$column];
+            $new_select_part .= "\n||'<".$tag.">' || ";
+            switch($column) {
+                case "prime_vendor_name":
+                    $new_select_part .=  "CASE WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " IS NULL THEN 'N/A' ELSE " . $alias . $column . " END";
+                    break;
+                case "minority_type_name":
+                    $new_select_part .=  "CASE \n";
+                    $new_select_part .= "WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " = 2 THEN 'Black American' \n";
+                    $new_select_part .= "WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " = 3 THEN 'Hispanic American' \n";
+                    $new_select_part .= "WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " = 7 THEN 'Non-M/WBE' \n";
+                    $new_select_part .= "WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " = 9 THEN 'Women' \n";
+                    $new_select_part .= "WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " = 11 THEN 'Individuals and Others' \n";
+                    $new_select_part .= "ELSE 'Asian American' END";
+                    break;
+                case "vendor_type":
+                    $new_select_part .= "CASE WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " ~* 's' THEN 'Yes' ELSE 'No' END";
+                    break;
+                default:
+                    $new_select_part .= "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')";
+                    break;
+            }
+            $new_select_part .= " || '</".$tag.">'";
+        }
+        $new_select_part .= "||'</".$rowParentElement.">'";
+        $new_select_part = "SELECT ".ltrim($new_select_part,"\n||")."\n";
+        $query = substr_replace($query, $new_select_part, 0, $end);
+
+        //open/close tags
+        $open_tags = "<?xml version=\"1.0\"?><response><status><result>success</result></status>";
+        $open_tags .= "<result_records><record_count>".$this->getRecordCount()."</record_count>";
+        $open_tags .= "<".$rootElement.">";
+        $close_tags = "</".$rootElement."></result_records></response>";
+
+        $file = DRUPAL_ROOT . '/' . $this->fileOutputDir . '/' . $filename . '.xml';
+        $commands = array();
+
+        //sql command
+        $command = $conf['check_book']['data_feeds']['command']
+            . " -c \"\\\\COPY (" . $query . ") TO '"
+            . $file
+            . "' \" ";
+        $commands[$filename][] = $command;
+
+        //prepend open tags command
+        $command = "sed -i '1i " . $open_tags . "' " . $file;
+        $commands[$filename][] = $command;
+
+        //append close tags command
+        $command = "sed -i '$"."a" . $close_tags . "' " . $file;
+        $commands[$filename][] = $command;
+
+        return $commands;
     }
 
-    $xml_file = $this->fileOutputDir . '/' . $xml_file_name;
-    $xml_file_handle = @fopen($xml_file, 'w');
+    /**
+     * Executes the shell commands with error logging
+     * @param $commands
+     * @throws JobRecoveryException
+     */
+    function processCommands($commands) {
 
-    if (!$xml_file_handle) {
-      $msg = "{$this->logId}: Could not get write handle to file '{$xml_file}' while converting to xml.";
-      LogHelper::log_error($msg);
-      throw new JobRecoveryException($msg);
+        try {
+            foreach($commands as $filename=>$command) {
+                foreach($commands[$filename] as $com) {
+                    shell_exec($com);
+                }
+            }
+        }
+        catch (Exception $e) {
+            LogHelper::log_error("{$this->logId}: Exception occured while processing job '{$this->jobDetails['job_id']}' Exception is: " . $e);
+            throw new JobRecoveryException("{$this->logId}: Exception occured while processing job '{$this->jobDetails['job_id']}' Exception is :" . $e->getMessage(), $e->getCode(), $e);
+        }
     }
-
-    $root_element = $configuration->dataset->displayConfiguration->xml->rootElement;
-    $record_count = 0;
-    // TODO - check to avoid this.
-    while (($data1 = fgetcsv($csv_file_handle, 10000, ',')) !== FALSE) {
-      $record_count++;
-    }
-    fclose($csv_file_handle);
-    LogHelper::log_debug("{$this->logId}: Total Records in '{$csv_file_path}' file: {$record_count}.");
-
-    // Write headers:
-    fwrite($xml_file_handle, '<?xml version="1.0"?><response><status><result>success</result></status>');
-
-    // Start results:
-    fwrite($xml_file_handle, '<result_records><record_count>' . $record_count . '</record_count><' . $root_element . '>');
-
-    // Write records:
-    $data_records = array();
-    $record_buffer_count = 0;
-    $saved_buffered_records = FALSE;
-    $csv_file_handle = @fopen($csv_file_path, 'r');
-
-    $xml_configuration = $configuration->dataset->displayConfiguration->xml;
-    $xml_elements_configuration = $xml_configuration->elementsColumn;
-
-    while (($row_data = fgetcsv($csv_file_handle, 10000, ',')) !== FALSE) {
-      if ($saved_buffered_records) {
-        $saved_buffered_records = FALSE;
-      }
-
-      $record = array();
-      $i = 0;
-      foreach ($response_columns as $response_column) {
-        $record[$xml_elements_configuration->$response_column] = $row_data[$i];
-        $i++;
-      }
-
-      $data_records[] = $record;
-      $record_buffer_count++;
-
-      if ($record_buffer_count == 5000) {
-        LogHelper::log_debug("{$this->logId}: Writing 5000 records to file.");
-        $this->saveXMLData($xml_file_handle, $data_records, $response_columns, $xml_configuration);
-        $saved_buffered_records = TRUE;
-        $record_buffer_count = 0;
-        $data_records = array();
-
-        sleep(1);
-        ob_flush();
-      }
-    }
-
-    // Save any unsaved data:
-    if (!$saved_buffered_records) {
-      LogHelper::log_debug("{$this->logId}: Writing rest of last $record_buffer_count records to file.");
-      $this->saveXMLData($xml_file_handle, $data_records, $response_columns, $xml_configuration);
-    }
-
-    // Close document:
-    fwrite($xml_file_handle, '</' . $root_element . '></result_records></response>');
-
-    fclose($csv_file_handle);
-    fclose($xml_file_handle);
-
-    ob_end_flush();
-
-    /*if(!@chmod($xmlFile,0644)){
-      LogHelper::log_error("{$this->logId}: Could not update permissions to 0644 to file $xmlFile generated by db.");
-    }*/
-  }
 
     /**
      * @param $file_names
@@ -318,52 +309,25 @@ class QueueJob {
         }
     }
 
-  /**
-   * @param $xml_file_handle
-   * @param $data_records
-   * @param $response_columns
-   * @param $xml_configuration
-   */
-  private function saveXMLData($xml_file_handle, $data_records, $response_columns, $xml_configuration) {
-    // Save records:
-    $xml_formatter = new XMLFormatter($data_records, $response_columns, $xml_configuration);
-    $formatted_data = $xml_formatter->formatData();
-
-    fwrite($xml_file_handle, $formatted_data);
-  }
-
     /**
     * @return string
     */
     function getFilename() {
         static $app_file_name = NULL;
+        $request_criteria = $this->jobDetails['request_criteria'];
+        $response_format = $request_criteria['global']['response_format'];
         if (!isset($app_file_name)) {
-            if($this->recordCount > $this->fileLimit) {
+            if($response_format == "csv" && $this->recordCount > $this->fileLimit) {
                 $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.zip';
             }
             else {
-                $request_criteria = $this->jobDetails['request_criteria'];
-                $response_format = $request_criteria['global']['response_format'];
+
                 $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.' . $response_format;
             }
         }
 
         return $app_file_name;
     }
-
-  /**
-   * @return string
-   */
-  private function getCSVFilename() {
-    return $db_file_name = $this->prepareFileName() . '.csv';
-  }
-
-  /**
-   * @return string
-   */
-  private function getXMLFilename() {
-    return $db_file_name = $this->prepareFileName() . '.xml';
-  }
 
   /**
    *
