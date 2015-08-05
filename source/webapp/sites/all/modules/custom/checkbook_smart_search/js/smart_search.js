@@ -150,7 +150,6 @@
                                             .submit()
                                             .remove();
 
-
                                         $('#dialog #export-message').addClass('disable_me');
                                         $('.ui-dialog-titlebar').addClass('disable_me');
                                         $('.ui-dialog-buttonpane').addClass('disable_me');
@@ -158,22 +157,26 @@
                                         $('#loading_gif').show();
                                         $('#loading_gif').addClass('loading_bigger_gif');
 
-
                                         $.ajax({
                                             url: $('#downloadForm').attr('action'),
                                             data: {search_term: getParameterByName("search_term"), domain: $('input[name=domain]:checked').val()},
                                             success:function(){
-                                                setTimeout(function(){
                                                     $('#dialog #export-message').removeClass('disable_me');
                                                     $('.ui-dialog-titlebar').removeClass('disable_me');
                                                     $('.ui-dialog-buttonpane').removeClass('disable_me');
                                                     $('#dialog').removeClass('disable_me');
                                                     $('#loading_gif').hide();
                                                     $('#loading_gif').removeClass('loading_bigger_gif');
-                                                }, 250);
+                                            },
+                                            error:function(){
+                                                    $('#dialog #export-message').removeClass('disable_me');
+                                                    $('.ui-dialog-titlebar').removeClass('disable_me');
+                                                    $('.ui-dialog-buttonpane').removeClass('disable_me');
+                                                    $('#dialog').removeClass('disable_me');
+                                                    $('#loading_gif').hide();
+                                                    $('#loading_gif').removeClass('loading_bigger_gif');
                                             }
                                         });
-
                                     },
                                     "Cancel":function () {
                                         $(this).dialog('close');
