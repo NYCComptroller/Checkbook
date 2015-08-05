@@ -166,8 +166,8 @@ class QueueJob {
         $configured_response_columns = get_object_vars($configuration->dataset->displayConfiguration->$response_format->elementsColumn);
         $response_columns = is_array($request_criteria['responseColumns']) ? $request_criteria['responseColumns'] : array_keys($configured_response_columns);
         $csv_headers = '"' . implode('","', $response_columns) . '"';
-        $command = "sed -i 1i'" . $csv_headers . "' " . DRUPAL_ROOT . '/' . $filename . '.csv';
-
+        $command = "sed -i 1i'" . $csv_headers . "' " . DRUPAL_ROOT . '/' . $this->fileOutputDir . '/' . $filename . '.csv';
+        
         return $command;
     }
 
