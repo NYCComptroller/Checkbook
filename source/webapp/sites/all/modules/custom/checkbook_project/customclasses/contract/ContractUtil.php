@@ -401,7 +401,8 @@ namespace { //global
         }
 
        /* Returns minority type category URL for contracts transaction and advanced search results pages */
-        static public function get_mwbe_category_url($minority_type_category_id, $is_prime_or_sub = null){
+        static public function get_mwbe_category_url($minority_type_category_id, $is_prime_or_sub = null, $doctype = null){
+            $lower_doctype = strtolower($doctype);
 
             /* Begin update for NYCCHKBK-4676 */
             $minority_type_category_name = MappingUtil::getMinorityCategoryById($minority_type_category_id);
@@ -440,7 +441,21 @@ namespace { //global
                 $url = '/contracts_pending_exp_landing/yeartype/B/year/'._getFiscalYearID().'/dashboard/'. $dashboard .'/mwbe/'.$minority_type_category_string;
             }else if($category == 'revenue' && $status == 'P'){
                 $url = '/contracts_pending_rev_landing/yeartype/B/year/'._getFiscalYearID().'/dashboard/'. $dashboard .'/mwbe/'.$minority_type_category_string;
+            }else if($category == 'all' && $status != 'P'){
+                if(_get_contract_cat($lower_doctype) == 'revenue'){
+                    $url = '/contracts_revenue_landing/status/'.$status.'/yeartype/B/year/'._getFiscalYearID().'/dashboard/'. $dashboard .'/mwbe/'.$minority_type_category_string;
+                }
+                else{
+                    $url = '/contracts_landing/status/'.$status.'/yeartype/B/year/'._getFiscalYearID().'/dashboard/'. $dashboard .'/mwbe/'.$minority_type_category_string;
+                }
+            }else if($category == 'all' && $status == 'P'){
+                if(_get_contract_cat($lower_doctype) == 'revenue'){
+                    $url = '/contracts_pending_rev_landing/yeartype/B/year/'._getFiscalYearID().'/dashboard/'. $dashboard .'/mwbe/'.$minority_type_category_string;
+                }else{
+                    $url = '/contracts_pending_exp_landing/yeartype/B/year/'._getFiscalYearID().'/dashboard/'. $dashboard .'/mwbe/'.$minority_type_category_string;
+                }
             }
+            // pending_changes
 
             $url .= _checkbook_project_get_url_param_string("agency")
             . _checkbook_project_get_url_param_string("cindustry")

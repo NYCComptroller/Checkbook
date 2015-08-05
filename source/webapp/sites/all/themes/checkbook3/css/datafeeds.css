@@ -311,6 +311,8 @@ body.page-data-feeds .ms-container {
 body.page-data-feeds #edit-columns .form-item-column-select label,
 body.page-data-feeds #edit-columns .form-item-column-select-expense label,
 body.page-data-feeds #edit-columns .form-item-column-select-revenue label,
+body.page-data-feeds #edit-columns .form-item-column-select-all label,
+body.page-data-feeds #edit-columns .form-item-column-select-pending-all label,
 body.page-data-feeds #edit-columns .form-item-column-select-pending label {
     margin-left: 97px;
 }

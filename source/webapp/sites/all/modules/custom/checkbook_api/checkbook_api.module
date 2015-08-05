@@ -236,7 +236,19 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
     default:
       break;
   }
-  if ($category == 'revenue') {
+  if( $category == 'all') {
+      $parameters[checkbook_api_change_datasource($datasource,'document_code@checkbook:ref_document_code')] = array(
+          "MMA1",
+          "MA1",
+          "CT1",
+          "DO1",
+          "CTA1",
+          "MAR",
+          "CTR",
+          "RCT1",
+      );
+  }
+  else if ($category == 'revenue') {
     $parameters[checkbook_api_change_datasource($datasource,'document_code@checkbook:ref_document_code')] = 'RCT1';
   }
   else {

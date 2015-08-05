@@ -24,6 +24,9 @@ $contactCategoryLabel = 'Expense';
 if ($contactCategory == 'revenue') {
   $contactCategoryLabel = 'Revenue';
 }
+if ($contactCategory == 'all') {
+    $contactCategoryLabel = '';
+}
 
 $current_url = explode('/',$_SERVER['REQUEST_URI']);
 if($current_url[1] == 'contract' && ($current_url[2] == 'search' || $current_url[2] == 'all')&& $current_url[3] == 'transactions'){
