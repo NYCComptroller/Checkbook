@@ -157,7 +157,8 @@
         "attributes":{
             "options":{
                 "expense":"Expense",
-                "revenue":"Revenue"
+                "revenue":"Revenue",
+                "all":"All"
             }
         }
     },

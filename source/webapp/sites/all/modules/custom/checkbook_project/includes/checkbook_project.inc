@@ -1393,6 +1393,7 @@ function _checkbook_project_get_contract_url($contnum, $agreement_id){
 
 function _pending_contracts_link_contract_details($contract_number, $original_agreement_id, $doctype, $pending_contract_number = null, $version = null, $linktype= null){
     $lower_doctype = strtolower($doctype);
+
     if($original_agreement_id){
         if(($lower_doctype == 'ma1') || ($lower_doctype == 'mma1') || ($lower_doctype == 'rct1')){
             $url = '/panel_html/contract_transactions/magid/'.$original_agreement_id.'/doctype/'.$doctype;
@@ -1424,10 +1425,29 @@ function _pending_contracts_link_contract_details($contract_number, $original_ag
             $url = '/contracts_pending_rev_landing'  .  _checkbook_project_get_year_url_param_string() .$mwbe_parameter . '?expandBottomContURL='.$url;
             return '<a href = "'.$url.'">'.$pending_contract_number.'</a>';
         }
+        else if(in_array('all', _getLastRequestParamValue($_SERVER["HTTP_REFERER"], "contcat"))){
+            if(_get_contract_cat($lower_doctype) == 'revenue'){
+                $url = '/contracts_pending_rev_landing'  .  _checkbook_project_get_year_url_param_string() .$mwbe_parameter . '?expandBottomContURL='.$url;
+                return '<a href = "'.$url.'">'.$pending_contract_number.'</a>';
+            }else{
+                $url = '/contracts_pending_exp_landing'  .  _checkbook_project_get_year_url_param_string() . $mwbe_parameter . '?expandBottomContURL='.$url;
+                return '<a href = "'.$url.'">'.$pending_contract_number.'</a>';
+            }
+        }
         else{
             return '<a class="bottomContainerReload" href = "'.$url.'">'.$pending_contract_number.'</a>';
         }
     }
+}
+
+function _get_contract_cat($doctype){
+
+    if($doctype == 'rct1') {
+        return('revenue');
+    }else{
+        return('expense');
+    }
+
 }
 
 /**

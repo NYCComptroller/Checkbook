@@ -164,6 +164,61 @@
                                     "year":"year"
                                 }
                             }
+                        },
+                        "all":{
+                            "data_type":{
+                                "csv":{
+                                    "Agency":"Agency",
+                                    "APT PIN":"APT PIN",
+                                    "Associated Prime Vendor":"Associated Prime Vendor",
+                                    "Award Method":"Award Method",
+                                    "Contract Category":"Contract Category",
+                                    "Contract ID":"Contract ID",
+                                    "Contract Type":"Contract Type",
+                                    "Current Amount":"Current Amount",
+                                    "Document Code":"Document Code",
+                                    "End Date":"End Date",
+                                    "Industry":"Industry",
+                                    "M/WBE Category":"M/WBE Category",
+                                    "Original Amount":"Original Amount",
+                                    "Parent Contract ID":"Parent Contract ID",
+                                    "PIN":"PIN",
+                                    "Purpose":"Purpose",
+                                    "Registration Date":"Registration Date",
+                                    "Spent to date":"Spent to date",
+                                    "Start Date":"Start Date",
+                                    "Sub Contract Reference ID":"Sub Contract Reference ID",
+                                    "Sub Vendor":"Sub Vendor",
+                                    "Vendor":"Vendor",
+                                    "Version":"Version",
+                                    "Year":"Year"
+                                },
+                                "xml":{
+                                    "agency":"agency",
+                                    "apt_pin":"apt_pin",
+                                    "associated_prime_vendor":"associated_prime_vendor",
+                                    "award_method":"award_method",
+                                    "contract_category":"contract_category",
+                                    "contract_type":"contract_type",
+                                    "current_amount":"current_amount",
+                                    "document_code":"document_code",
+                                    "end_date":"end_date",
+                                    "mwbe_category":"mwbe_category",
+                                    "industry":"industry",
+                                    "original_amount":"original_amount",
+                                    "parent_contract_id":"parent_contract_id",
+                                    "pin":"pin",
+                                    "purpose":"purpose",
+                                    "registration_date":"registration_date",
+                                    "spent_to_date":"spent_to_date",
+                                    "start_date":"start_date",
+                                    "sub_contract_reference_id":"sub_contract_reference_id",
+                                    "sub_vendor":"sub_vendor",
+                                    "vendor":"vendor",
+                                    "version":"version",
+                                    "year":"year"
+                                }
+                            }
                         }
                     }
                 }
