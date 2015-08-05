@@ -182,6 +182,8 @@ class QueueJob {
         global $conf;
 
         $query = $this->jobDetails['data_command'];
+        //Handle this special case for now
+        $query = str_replace("expenditure_object_name,","expenditure_object_names,",$query);
         $request_criteria = $this->jobDetails['request_criteria'];
         $response_format = $request_criteria['global']['response_format'];
         $search_criteria = new SearchCriteria($request_criteria, $response_format);
@@ -190,9 +192,9 @@ class QueueJob {
         //map tags and build sql
         $rootElement = $config->dataset->displayConfiguration->xml->rootElement;
         $rowParentElement = $config->dataset->displayConfiguration->xml->rowParentElement;
-        $columnMappings =$config->dataset->displayConfiguration->xml->elementsColumn;
-        $columnMappings =  (array)$columnMappings;
-        $columnMappings = array_flip($columnMappings);
+        $elementsColumn = $config->dataset->displayConfiguration->xml->elementsColumn;
+        $elementsColumn =  (array)$elementsColumn;
+        $columnMappings = array_flip($elementsColumn);
         $end = strpos($query, 'FROM');
         $select_part = substr($query,0,$end);
         $select_part = str_replace("SELECT", "", $select_part);
@@ -201,38 +203,41 @@ class QueueJob {
         $new_select_part = "'<".$rowParentElement.">'";
         foreach($sql_parts as $sql_part) {
             $sql_part = trim($sql_part);
-            $column = $sql_part;
-            $alias = "";
+            $is_derived_column = strpos(strtoupper($sql_part), "CASE WHEN") !== FALSE;
 
-            //get only column
+            //get column and alias
+            $alias = "";
+            if($is_derived_column) {
+                $pos = strpos($sql_part, " AS");
+                $column = trim(str_replace("AS","",substr($sql_part,$pos)));
+            }
+            else {
+                $pos = strpos($sql_part, " AS");
+                $pos = $pos !== FALSE ? $pos : strlen($sql_part);
+                $column = substr($sql_part, 0, $pos);
+            }
+
             if (strpos($sql_part,".") !== false) {
-                $alias = substr($sql_part, 0, 3);
-                $column = substr($sql_part, 3);
+                $alias_pos = strpos($sql_part,".");
+                $alias = substr($sql_part, $alias_pos-2, 3);
+                $column = str_replace($alias,"",$column);
             }
 
             //Handle derived columns
-            $tag = $columnMappings[$column];
+            $tag = $columnMappings[$column] == "" ? $column : $columnMappings[$column];
+
+            //column open tag
             $new_select_part .= "\n||'<".$tag.">' || ";
-            switch($column) {
-                case "prime_vendor_name":
-                    $new_select_part .=  "CASE WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " IS NULL THEN 'N/A' ELSE " . $alias . $column . " END";
-                    break;
-                case "minority_type_name":
-                    $new_select_part .=  "CASE \n";
-                    $new_select_part .= "WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " = 2 THEN 'Black American' \n";
-                    $new_select_part .= "WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " = 3 THEN 'Hispanic American' \n";
-                    $new_select_part .= "WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " = 7 THEN 'Non-M/WBE' \n";
-                    $new_select_part .= "WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " = 9 THEN 'Women' \n";
-                    $new_select_part .= "WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " = 11 THEN 'Individuals and Others' \n";
-                    $new_select_part .= "ELSE 'Asian American' END";
-                    break;
-                case "vendor_type":
-                    $new_select_part .= "CASE WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " ~* 's' THEN 'Yes' ELSE 'No' END";
-                    break;
-                default:
-                    $new_select_part .= "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')";
-                    break;
+
+            if ($is_derived_column) {
+                $sql_part = substr_replace($sql_part, "", $pos);
+                $new_select_part .= str_replace($alias . $column,"COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')",$sql_part);
             }
+            else {
+                $new_select_part .= "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')";
+            }
+
+            //column close tag
             $new_select_part .= " || '</".$tag.">'";
         }
         $new_select_part .= "||'</".$rowParentElement.">'";
