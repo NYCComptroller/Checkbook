@@ -8,6 +8,7 @@
                             "data_type":{
                                 "csv":{
                                     "Agency":"Agency",
+                                    "APT PIN":"APT PIN",
                                     "Award Method":"Award Method",
                                     "Contract ID":"Contract ID",
                                     "Contract Type":"Contract Type",
@@ -28,6 +29,7 @@
                                 },
                                 "xml":{
                                     "agency":"agency",
+                                    "apt_pin":"apt_pin",
                                     "award_method":"award_method",
                                     "budget_name":"budget_name",
                                     "commodity_line":"commodity_line",
@@ -120,7 +122,6 @@
                                     "APT PIN":"APT PIN",
                                     "Associated Prime Vendor":"Associated Prime Vendor",
                                     "Award Method":"Award Method",
-                                    "Contract Category":"Contract Category",
                                     "Contract ID":"Contract ID",
                                     "Contract Type":"Contract Type",
                                     "Current Amount":"Current Amount",
@@ -172,7 +173,6 @@
                                     "APT PIN":"APT PIN",
                                     "Associated Prime Vendor":"Associated Prime Vendor",
                                     "Award Method":"Award Method",
-                                    "Contract Category":"Contract Category",
                                     "Contract ID":"Contract ID",
                                     "Contract Type":"Contract Type",
                                     "Current Amount":"Current Amount",
@@ -198,7 +198,6 @@
                                     "apt_pin":"apt_pin",
                                     "associated_prime_vendor":"associated_prime_vendor",
                                     "award_method":"award_method",
-                                    "contract_category":"contract_category",
                                     "contract_type":"contract_type",
                                     "current_amount":"current_amount",
                                     "document_code":"document_code",
