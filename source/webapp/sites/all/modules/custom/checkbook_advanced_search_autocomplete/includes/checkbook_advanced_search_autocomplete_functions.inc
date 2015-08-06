@@ -504,7 +504,12 @@ function _checkbook_advanced_search_autocomplete_payroll_employee_name($pay_freq
 function _get_contracts_advanced_search_autocomplete_results($facet, $query, $status = null, $category = null, $contract_type = null, $agency = null, $award_method = null, $year = null, $mwbe_category = null, $industry = null, $data_source = 'checkbook') {
 
     if($category){
-        $query .= '&fq=contract_category_name:'.$category;
+        if($category == 'all'){
+            $query .= '&fq=contract_category_name:expense~revenue';
+        }
+        else{
+            $query .= '&fq=contract_category_name:'.$category;
+        }
     }
     if ($agency) {
         $field = $data_source == 'checkbook_oge' ? 'oge_agency_id' : 'agency_id';
