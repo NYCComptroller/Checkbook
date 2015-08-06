@@ -842,6 +842,20 @@ a.chart-grid-view {
     right: 70px;
     z-index: 10;
 }
+/* grid link - no data */
+a.chart-grid-view.no-data {
+    color: #696969;
+    background: url("../images/gridview-gray.png") no-repeat scroll 0 0 transparent;
+    height: 19px;
+    padding: 3px 0px 2px 25px;
+    position: absolute;
+    top: 0;
+    right: 70px;
+    z-index: 10;
+    text-decoration: none;
+    cursor: default;
+}
+
 h3.grid_chart_title{text-transform: none;}
 h3.grid_year_title{text-transform: none;}
 
