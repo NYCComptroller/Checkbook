@@ -68,6 +68,7 @@
                     //handle oge attributes
                     div_checkbook_contracts_oge.ele('status').find('option[value=P]').remove();
                     div_checkbook_contracts_oge.ele('category').find('option[value=revenue]').remove();
+                    div_checkbook_contracts_oge.ele('category').find('option[value=all]').remove();
                     div_checkbook_contracts_oge.ele('apt_pin').attr('disabled','disabled');
                     div_checkbook_contracts_oge.ele('received_date_from').attr('disabled','disabled');
                     div_checkbook_contracts_oge.ele('received_date_to').attr('disabled','disabled');
