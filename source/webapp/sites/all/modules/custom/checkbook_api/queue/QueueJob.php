@@ -246,12 +246,19 @@ class QueueJob {
 
         //open/close tags
         $open_tags = "<?xml version=\"1.0\"?><response><status><result>success</result></status>";
-        $open_tags .= "<result_records><record_count>".$this->getRecordCount()."</record_count>";
-        $open_tags .= "<".$rootElement.">";
+        $open_tags .= "<result_records><record_count>".$this->getRecordCount()."</record_count><".$rootElement.">";
         $close_tags = "</".$rootElement."></result_records></response>";
 
         $file = DRUPAL_ROOT . '/' . $this->fileOutputDir . '/' . $filename . '.xml';
         $commands = array();
+
+        //replace '<' and '>' to allow escaping of db columns with these tags
+        $query = str_replace("<","|LT|",$query);
+        $query = str_replace(">","|GT|",$query);
+        $open_tags = str_replace("<","|LT|",$open_tags);
+        $open_tags = str_replace(">","|GT|",$open_tags);
+        $close_tags = str_replace("<","|LT|",$close_tags);
+        $close_tags = str_replace(">","|GT|",$close_tags);
 
         //sql command
         $command = $conf['check_book']['data_feeds']['command']
@@ -268,8 +275,27 @@ class QueueJob {
         $command = "sed -i '$"."a" . $close_tags . "' " . $file;
         $commands[$filename][] = $command;
 
+        //escape '&' for xml compatibility
+        $command = "sed -i 's/&/&amp;/g' " . $file;
+        $commands[$filename][] = $command;
+
+        //escape '<' for xml compatibility
+        $command = "sed -i 's/</\&lt;/g' " . $file;
+        $commands[$filename][] = $command;
+
+        //escape '>' for xml compatibility
+        $command = "sed -i 's/>/\&gt;/g' " . $file;
+        $commands[$filename][] = $command;
+
+        //put back the '<' tags
+        $command = "sed -i 's/|LT|/</g' " . $file;
+        $commands[$filename][] = $command;
+
+        //put back the '>' tags
+        $command = "sed -i 's/|GT|/>/g' " . $file;
+        $commands[$filename][] = $command;
+        
         return $commands;
-    }
 
     /**
      * Executes the shell commands with error logging
