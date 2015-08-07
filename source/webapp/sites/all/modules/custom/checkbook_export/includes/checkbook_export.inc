@@ -265,7 +265,14 @@ function _checkbook_export_transactions(){
         $columnsConfig[] = (isset($column->sortSourceColumn)) ? $column->sortSourceColumn : $column->column;
         $i++;
     }
-
+    //handle additional columns required to export derived columns
+    //Add these to the json as "export_columns"
+    $exportColumns = $node->widgetConfig->export_columns;
+    foreach($exportColumns as $column){
+        if (!in_array($columnsConfig, $columns)) {
+            array_push($columnsConfig, $column);
+        }
+    }
     if($isList){//Selecting only required columns.
         $node->widgetConfig->columns = $columnsConfig;
     }
