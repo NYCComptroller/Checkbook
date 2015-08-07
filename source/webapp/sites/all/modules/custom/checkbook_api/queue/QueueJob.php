@@ -294,8 +294,9 @@ class QueueJob {
         //put back the '>' tags
         $command = "sed -i 's/|GT|/>/g' " . $file;
         $commands[$filename][] = $command;
-        
+
         return $commands;
+    }
 
     /**
      * Executes the shell commands with error logging
