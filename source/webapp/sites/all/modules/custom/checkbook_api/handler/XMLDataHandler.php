@@ -186,6 +186,14 @@ class XMLDataHandler extends AbstractDataHandler
         $open_tags .= "<".$rootElement.">";
         $close_tags = "</".$rootElement."></result_records></response>";
 
+        //replace '<' and '>' to allow escaping of db columns with these tags
+        $query = str_replace("<","|LT|",$query);
+        $query = str_replace(">","|GT|",$query);
+        $open_tags = str_replace("<","|LT|",$open_tags);
+        $open_tags = str_replace(">","|GT|",$open_tags);
+        $close_tags = str_replace("<","|LT|",$close_tags);
+        $close_tags = str_replace(">","|GT|",$close_tags);
+
         try{
             $fileDir = _checkbook_project_prepare_data_feeds_file_output_dir();
             $filename = _checkbook_project_generate_uuid(). '.xml';
@@ -199,44 +207,82 @@ class XMLDataHandler extends AbstractDataHandler
 
             $tempOutputFile = $tmpDir .'/'. $filename;
             $outputFile = DRUPAL_ROOT . '/' . $fileDir . '/' . $filename;
+            $commands = array();
 
-            $cmd = $command
+            //sql command
+            $command = $command
                 . " -c \"\\\\COPY (" . $query . ") TO '"
                 . $tempOutputFile
                 . "' \" ";
+            $commands[] = $command;
 
-//            log_error($cmd);
-            shell_exec($cmd);
+            //prepend open tags command
+            $command = "sed -i '1i " . $open_tags . "' " . $tempOutputFile;
+            $commands[] = $command;
 
-            //prepend open tags
-            //sed -i '1i this is the top' file
-            $cmd = "sed -i '1i " . $open_tags . "' " . $tempOutputFile;
-            log_error($cmd);
-            shell_exec($cmd);
+            //append close tags command
+            $command = "sed -i '$"."a" . $close_tags . "' " . $tempOutputFile;
+            $commands[] = $command;
 
-            //append close tags
-            //sed -i '$a this is the bottom' file
-            $cmd = "sed -i '$"."a" . $close_tags . "' " . $tempOutputFile;
-            log_error($cmd);
-            shell_exec($cmd);
+            //escape '&' for xml compatibility
+            $command = "sed -i 's/&/&amp;/g' " . $tempOutputFile;
+            $commands[] = $command;
 
-            $move_cmd = "mv $tempOutputFile $outputFile";
-            shell_exec($move_cmd);
+            //escape '<' for xml compatibility
+            $command = "sed -i 's/</\&lt;/g' " . $tempOutputFile;
+            $commands[] = $command;
 
+            //escape '>' for xml compatibility
+            $command = "sed -i 's/>/\&gt;/g' " . $tempOutputFile;
+            $commands[] = $command;
+
+            //put back the '<' tags
+            $command = "sed -i 's/|LT|/</g' " . $tempOutputFile;
+            $commands[] = $command;
+
+            //put back the '>' tags
+            $command = "sed -i 's/|GT|/>/g' " . $tempOutputFile;
+            $commands[] = $command;
+
+            $command = "mv $tempOutputFile $outputFile";
+            $commands[] = $command;
+
+            $this->processCommands($commands);
+        }
+        catch (Exception $e){
+            $value = TextLogMessageTrimmer::$LOGGED_TEXT_LENGTH__MAXIMUM;
+            TextLogMessageTrimmer::$LOGGED_TEXT_LENGTH__MAXIMUM = NULL;
+            LogHelper::log_error($e);
+            TextLogMessageTrimmer::$LOGGED_TEXT_LENGTH__MAXIMUM = $value;
+        }
+        return $filename;
+    }
+
+    /**
+     * Executes the shell commands with error logging
+     * @param $commands
+     */
+    private function processCommands($commands) {
+        $current_command = "";
+        try {
+            foreach($commands as $command) {
+                $current_command = $command;
+                shell_exec($command);
+            }
         }
         catch (Exception $e){
             $value = TextLogMessageTrimmer::$LOGGED_TEXT_LENGTH__MAXIMUM;
             TextLogMessageTrimmer::$LOGGED_TEXT_LENGTH__MAXIMUM = NULL;
 
             LogHelper::log_error($e);
-            $msg = "Command used to generate the file: " . $command ;
+            $msg = "Command used to generate the file: " . $current_command ;
             $msg .= ("Error generating DB command: " . $e->getMessage());
             LogHelper::log_error($msg);
 
             TextLogMessageTrimmer::$LOGGED_TEXT_LENGTH__MAXIMUM = $value;
         }
-        return $filename;
     }
+
 
     /**
      * Generates the API file based on the format specified
