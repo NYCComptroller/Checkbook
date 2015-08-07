@@ -254,6 +254,7 @@ function _checkbook_export_transactions(){
 
         $label = (isset($column->labelAlias))? (WidgetUtil::getLabel($column->labelAlias)) :
             (isset($column->colLabel) ? $column->colLabel : $column->label);
+        $label = str_replace("<br/>"," ",$label);
 
         if($i == 0){
             $data .= $label;
