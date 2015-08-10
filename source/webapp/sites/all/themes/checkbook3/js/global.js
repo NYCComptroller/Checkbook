@@ -1833,7 +1833,6 @@ Drupal.behaviors.hoveOverMWBE = {
                                 $('.bottomContainer').html(data);
                                 $('.bottomContainerToggle').html("Hide Details &#171;");
                                 $('.bottomContainerToggle').toggle();
-                                $('.first-item').trigger('click');
                             }
                         });
                     } else {
