@@ -34,13 +34,12 @@
   $agency_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/agency/'
     . $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
 ?>
-<div class="contract-details-heading">
-  <div class="contract-id">
-    <h2 class='contract-title'>Contract ID: <span
+<div class="contract-details-heading" style="margin-bottom: 10px;">
+  <div class="contract-id" >
+    <h2 class='contract-title' style="margin-bottom: 10px;">Contract ID: <span
       class="contract-number"><?php echo $node->data[0]['contract_number'];?></span></h2>
     <?php if($node->data[0]['parent_contract_number']){ ?>
-        <h3>Parent Contract: 
-            <span><?php echo $node->data[0]['parent_contract_number'];?></span></h3>
+      <span class="master-contract-link">Parent Contract: <?php echo $node->data[0]['parent_contract_number'];?></span>
     <?php } ?>
   </div>
   <div class="dollar-amounts">
