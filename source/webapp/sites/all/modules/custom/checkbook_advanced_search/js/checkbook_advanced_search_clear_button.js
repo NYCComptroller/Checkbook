@@ -84,6 +84,7 @@ function clearInputFieldByDataSource(enclosingDiv,domain,dataSource){
     jQuery(enclosingDiv).find(':input').each(function() {
         switch(this.type){
             case 'select-one':
+                    jQuery("select#edit-checkbook-contracts-category").val("expense");
                     //jQuery('#edit-spending-fiscal-year').removeAttr("disabled");
             		var defaultoption = jQuery(this).attr('default_selected_value');
                     if(defaultoption == null)
