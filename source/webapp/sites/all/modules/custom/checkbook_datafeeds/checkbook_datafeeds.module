@@ -2542,7 +2542,10 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
     if (!$all && $form_state['values']['df_contract_status'] != 'pending' && $form_state['values']['category'] == 'all') {
         form_set_error('column_select_revenue', t('You must select at least one column.'));
     }
-    if (!$pending_all && $form_state['values']['df_contract_status'] == 'pending') {
+    if (!$pending && $form_state['values']['df_contract_status'] == 'pending') {
+        form_set_error('column_select_pending', t('You must select at least one column.'));
+    }
+    if (!$pending_all && $form_state['values']['df_contract_status'] == 'pending' && $form_state['values']['category'] == 'all') {
         form_set_error('column_select_pending', t('You must select at least one column.'));
     }
     if ($form_state['values']['df_contract_status'] != 'pending') {
