@@ -1806,9 +1806,9 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#type' => 'select',
                 '#title' => t('Category:'),
                 '#options' => array(
+                    'all' => 'All',
                     'expense' => 'Expense',
                     'revenue' => 'Revenue',
-                    'all' => 'All',
                 ),
                 '#attributes' => array('class' => array('watch')),
                 '#prefix' => '<div class="column column-right"><div class="datafield category">',
