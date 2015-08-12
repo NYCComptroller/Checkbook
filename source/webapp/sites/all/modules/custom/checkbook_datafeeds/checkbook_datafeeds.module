@@ -1370,7 +1370,7 @@ function checkbook_datafeeds_contracts($form, &$form_state)
         '#type' => 'select',
         '#title' => t('All<span class="form-required" title="This field is required.">*</span>'),
         '#multiple' => TRUE,
-        '#options' => _checkbook_datafeeds_contracts_column_options($data_source, 'pending', 'all', $data_type),
+        '#options' => _checkbook_datafeeds_contracts_column_options($data_source, 'pending', 'pending', $data_type),
         '#id' => 'edit-column-select-pending-all',
         '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
     );
@@ -2542,7 +2542,7 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
     if (!$all && $form_state['values']['df_contract_status'] != 'pending' && $form_state['values']['category'] == 'all') {
         form_set_error('column_select_revenue', t('You must select at least one column.'));
     }
-    if (!$pending && $form_state['values']['df_contract_status'] == 'pending') {
+    if (!$pending && $form_state['values']['df_contract_status'] == 'pending' && $form_state['values']['category'] != 'all') {
         form_set_error('column_select_pending', t('You must select at least one column.'));
     }
     if (!$pending_all && $form_state['values']['df_contract_status'] == 'pending' && $form_state['values']['category'] == 'all') {
