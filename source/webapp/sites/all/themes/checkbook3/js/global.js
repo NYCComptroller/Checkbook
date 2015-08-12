@@ -927,7 +927,7 @@ Drupal.behaviors.hoveOverMWBE = {
                                                         $('#dialog #dialog').removeClass('disable_me');
                                                         $('#loading_gif').hide();
                                                         $('#loading_gif').removeClass('loading_bigger_gif');
-                                                    }, 250);
+                                                    }, 2500);
                                                 }
                                             });
                                         }
