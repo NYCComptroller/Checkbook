@@ -1214,7 +1214,8 @@
                         "original_amount":"original_maximum_amount",
                         "original_modified":"original_or_modified_desc",
                         "industry":"industry_type_name@checkbook:industry_type",
-                        "mwbe_category":"minority_type_id"
+                        "mwbe_category":"minority_type_id",
+                        "version":"document_version"
                     },
                     "rowElements":[
                         "agency",
@@ -1243,7 +1244,7 @@
                 "csv":{
                     "elementsColumn":{
                         "Contract ID":"contract_number",
-                        "Parent Contract Id":"fms_parent_contract_number",
+                        "Parent Contract ID":"fms_parent_contract_number",
                         "Purpose":"description",
                         "Current Amount":"revised_maximum_amount",
                         "Prime Vendor":"vendor_legal_name",
@@ -1261,7 +1262,8 @@
                         "Original Amount":"original_maximum_amount",
                         "Original Modified":"original_or_modified_desc",
                         "Industry":"industry_type_name@checkbook:industry_type",
-                        "M/WBE Category":"minority_type_id"
+                        "M/WBE Category":"minority_type_id",
+                        "Version":"document_version"
                     }
                 }
             },
