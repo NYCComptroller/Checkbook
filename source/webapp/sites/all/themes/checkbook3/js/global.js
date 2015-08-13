@@ -917,19 +917,14 @@ Drupal.behaviors.hoveOverMWBE = {
                                             $('#loading_gif').show();
                                             $('#loading_gif').addClass('loading_bigger_gif');
 
-                                            $.ajax({
-                                                url: dialogUrl,
-                                                success:function(){
-                                                    setTimeout(function(){
-                                                        $('#dialog #export-message').removeClass('disable_me');
-                                                        $('.ui-dialog-titlebar').removeClass('disable_me');
-                                                        $('.ui-dialog-buttonset').removeClass('disable_me');
-                                                        $('#dialog #dialog').removeClass('disable_me');
-                                                        $('#loading_gif').hide();
-                                                        $('#loading_gif').removeClass('loading_bigger_gif');
-                                                    }, 250);
-                                                }
-                                            });
+                                            setTimeout(function(){
+                                                $('#dialog #export-message').removeClass('disable_me');
+                                                $('.ui-widget-header').removeClass('disable_me');
+                                                $('.ui-dialog-buttonset').removeClass('disable_me');
+                                                $('#dialog #dialog').removeClass('disable_me');
+                                                $('#loading_gif').hide();
+                                                $('#loading_gif').removeClass('loading_bigger_gif');
+                                            }, 3000);
                                         }
                                     },
                                     "Cancel":function () {

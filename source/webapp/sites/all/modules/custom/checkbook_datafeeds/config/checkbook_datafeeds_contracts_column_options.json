@@ -31,27 +31,22 @@
                                     "agency":"agency",
                                     "apt_pin":"apt_pin",
                                     "award_method":"award_method",
-                                    "budget_name":"budget_name",
-                                    "commodity_line":"commodity_line",
                                     "contract_id":"contract_id",
                                     "contract_type":"contract_type",
                                     "current_amount":"current_amount",
                                     "document_code":"document_code",
                                     "end_date":"end_date",
-                                    "entity_contract_number":"entity_contract_number",
-                                    "expense_category":"expense_category",
                                     "industry":"industry",
                                     "mwbe_category":"mwbe_category",
                                     "original_amount":"original_amount",
+                                    "original_modified":"original_modified",
                                     "parent_contract_id":"parent_contract_id",
                                     "pin":"pin",
                                     "vendor":"vendor",
                                     "purpose":"purpose",
-                                    "registration_date":"registration_date",
-                                    "spent_to_date":"spent_to_date",
+                                    "received_date":"received_date",
                                     "start_date":"start_date",
-                                    "version":"version",
-                                    "year":"year"
+                                    "version":"version"
                                 }
                             }
                         }
@@ -199,6 +194,7 @@
                                     "apt_pin":"apt_pin",
                                     "associated_prime_vendor":"associated_prime_vendor",
                                     "award_method":"award_method",
+                                    "contract_id":"contract_id",
                                     "contract_type":"contract_type",
                                     "current_amount":"current_amount",
                                     "document_code":"document_code",
