@@ -2291,7 +2291,16 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
                 $criteria['value']['calendar_year'] = ltrim($values['year'], 'CY ');
             }
         }
-    } elseif ($values['df_contract_status'] == 'pending' && $values['category'] == 'expense') {
+    }  elseif ($values['df_contract_status'] != 'pending' && $values['category'] == 'all') {
+        $criteria['responseColumns'] = $values['column_select'];
+        if ($values['year'] && $values['year'] != 'ALL') {
+            if (startsWith($values['year'], 'F')) {
+                $criteria['value']['fiscal_year'] = ltrim($values['year'], 'FY ');
+            } elseif (startsWith($values['year'], 'C')) {
+                $criteria['value']['calendar_year'] = ltrim($values['year'], 'CY ');
+            }
+        }
+    }elseif ($values['df_contract_status'] == 'pending' && $values['category'] == 'expense') {
         $criteria['responseColumns'] = $values['column_select'];
     }
     if ($values['currentamtfrom'] !== '' || $values['currentamtto'] !== '') {
