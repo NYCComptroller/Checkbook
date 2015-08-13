@@ -33,14 +33,25 @@
   }
   $agency_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/agency/'
     . $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
+
+if(isset($node->original_master_agreement_id)){
+    if(!preg_match("/newwindow/",current_path())){
+        $master_link_html = '<span class="master-contract-link">Parent Contract: <a class="bottomContainerReload" href=/panel_html/contract_transactions/contract_details/magid/' .  $node->original_master_agreement_id . '/doctype/' . $node->document_code. $datasource . ' class=\"bottomContainerReload\">' .  $node->contract_number . '</a></span>';
+    }
+    else
+    {
+        $master_link_html = '<span class="master-contract-link">Parent Contract: '.  $node->contract_number . '</span>';
+    }
+}
+
 ?>
 <div class="contract-details-heading" style="margin-bottom: 10px;">
   <div class="contract-id" >
     <h2 class='contract-title' style="margin-bottom: 10px;">Contract ID: <span
       class="contract-number"><?php echo $node->data[0]['contract_number'];?></span></h2>
-    <?php if($node->data[0]['parent_contract_number']){ ?>
-      <span class="master-contract-link">Parent Contract: <?php echo $node->data[0]['parent_contract_number'];?></span>
-    <?php } ?>
+    <?php if($node->data[0]['parent_contract_number']){
+        echo $master_link_html;
+    } ?>
   </div>
   <div class="dollar-amounts">
     <div class="original-amount">
