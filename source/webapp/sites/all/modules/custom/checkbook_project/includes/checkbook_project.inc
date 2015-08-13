@@ -1354,6 +1354,19 @@ function _get_master_agreement_details($magid){
 
 }
 
+/**
+ * Given the parent contract number, returns the details of the contract
+ * @param $parent_contract_number
+ * @return null
+ */
+function _get_master_agreement_details_by_parent_contract_number($parent_contract_number){
+    if(!isset($parent_contract_number)){
+        return NULL;
+    }
+    $results = get_db_results(true, 'checkbook:history_master_agreement', array("document_code@checkbook:ref_document_code","master_agreement_id","original_master_agreement_id"), array("contract_number"=>$parent_contract_number,"latest_flag"=>"Y"),  NULL,  0, 1);
+    return isset($results[0]) ? $results[0] : NULL;
+
+}
 
 /**
  * return helper function to get child agreement id details

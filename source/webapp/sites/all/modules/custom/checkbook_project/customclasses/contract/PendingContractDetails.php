@@ -51,8 +51,18 @@ class pendingContractDetails {
         LEFT JOIN (SELECT vendor_id, MAX(vendor_history_id) AS vendor_history_id
                 FROM {vendor_history} WHERE miscellaneous_vendor_flag::BIT = 0 ::BIT  GROUP BY 1) vh ON v.vendor_id = vh.vendor_id
         WHERE l1.contract_number = '" . $contract_num ."' AND document_version = ".$version_num;
+
     $results1 = _checkbook_project_execute_sql($query1);
     $node->data = $results1;
+
+      $parent_contract_number = $node->data[0]['parent_contract_number'];
+      if(!empty($parent_contract_number)){
+          $mag_details = _get_master_agreement_details_by_parent_contract_number($parent_contract_number);
+          $node->original_master_agreement_id = $mag_details['original_master_agreement_id'];
+          $node->contract_number = $mag_details['contract_number'];
+          $node->document_code = $mag_details['document_code@checkbook:ref_document_code'];
+          $node->contract_number = $parent_contract_number;
+      }
 
   }
 
