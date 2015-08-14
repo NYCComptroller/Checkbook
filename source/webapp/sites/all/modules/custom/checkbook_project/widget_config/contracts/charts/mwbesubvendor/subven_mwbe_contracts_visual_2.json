@@ -35,7 +35,7 @@
 "cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe","subvendor"],
 "urlParamMap":{"mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"prime_vendor_id","subvendor":"vendor_id",
 	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
-"chartTitle":"M/WBE Spending by Active Expense Contracts",
+"chartTitle":"M/WBE Sub Spending by Active Expense Contracts",
 "widgetDataLoader":"
     
     $where_filters = array();
@@ -73,6 +73,7 @@
 	$non_mwbe_data = array();
 	$year_id = _getRequestParamValue('year');
 	$year = _getYearValueFromID($year_id);
+    $contract_status_params = ContractUtil::getSpentToDateParams();
 	
 	$series_current_temp = array();
 	$series_prev_temp = array();
@@ -95,11 +96,11 @@
 		
         if($row['year_value'] == $year) {
             $series_current_temp[trim($row['month_name'])] = $item;
-            $link_url = CustomURLHelper::prepareUrl('contract/spending/transactions',  ContractURLHelper::$transactionPageParams, NULL, array('doctype' => $node->document_codes, 'month' => $row['month_id']));
+            $link_url = CustomURLHelper::prepareUrl('contract/spending/transactions'.$contract_status_params,  ContractURLHelper::$transactionPageParams, NULL, array('doctype' => $node->document_codes, 'month' => $row['month_id'],'amt'=>$row['spending_amount_sum'], 'smnid'=>'subven_mwbe_contracts_visual_2'));
         }
         else {
             $series_previous_temp[trim($row['month_name'])] = $item;
-            $link_url = CustomURLHelper::prepareUrl('contract/spending/transactions',  ContractURLHelper::$transactionPageParams, NULL, array('doctype' => $node->document_codes, 'month' => $row['month_id']),true);
+            $link_url = CustomURLHelper::prepareUrl('contract/spending/transactions'.$contract_status_params,  ContractURLHelper::$transactionPageParams, NULL, array('doctype' => $node->document_codes, 'month' => $row['month_id'],'amt'=>$row['spending_amount_sum'], 'smnid'=>'subven_mwbe_contracts_visual_2'),true);
         }
         $item->url =  $link_url . (_getRequestParamValue('subvendor') != null ? '/subvendor/' . _getRequestParamValue('subvendor') : '') . '/newwindow';
 	}
@@ -158,8 +159,12 @@
 	if(preg_match('/pending_rev/',$_GET['q'])){
 		$contract_type = 'Pending Revenue';
 	}
-	$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Spending by ' . $status . ' ' . $contract_type .  ' Contracts';
+	$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Sub Spending by ' . $status . ' ' . $contract_type .  ' Contracts';
 ",
+"summaryView":{
+    "template":"contract_date_summary",
+    "templateTitleEval":"return SpendingUtil::getSpentToDateTitle('Sub Spending');"
+},
 "chartConfig" : {
     "plotOptions": {
             "series": {

@@ -28,6 +28,7 @@ if(is_array($records)){
     $sub_contract_purpose = WidgetUtil::getLabel("sub_contract_purpose");
     $sub_vendor_name= WidgetUtil::getLabel("sub_vendor_name");
     $prime_vendor_name= WidgetUtil::getLabel("prime_vendor");
+    $sub_contract_purpose_value = strtoupper($row['sub_contract_purpose_sub_contract_purpose']);
     $smmnid = _getRequestParamValue('smnid');
     switch($smmnid) {
         case 718:
@@ -39,7 +40,6 @@ $summaryContent =  <<<EOD
 <div class="contract-details-heading">
 	<div class="contract-id">
 		<h2 class="contract-title">{$title}</h2>
-		<div class="spending-tx-subtitle">{$cid}: {$row['document_id_document_id']}</div>
 	</div>
 	<div class="dollar-amounts">
         <div class="ytd-spending-amount">
@@ -50,11 +50,14 @@ $summaryContent =  <<<EOD
 </div>
 <div class="contract-information">
 	<ul>
+	    <li class="spendingtxsubtitle">
+	        <span class="gi-list-item">{$cid}:</span> {$row['document_id_document_id']}
+	    </li>
 		<li class="contract-purpose">
-			<span class="gi-list-item">{$sub_contract_purpose}:</span> {$row['sub_contract_purpose_sub_contract_purpose']}
+			<span class="gi-list-item">{$sub_vendor_name}:</span> {$row['sub_vendor_sub_vendor_legal_name']}
         </li>
 		<li class="agency">
-			<span class="gi-list-item">{$sub_vendor_name}:</span> {$row['sub_vendor_sub_vendor_legal_name']}
+			<span class="gi-list-item">{$sub_contract_purpose}:</span> {$sub_contract_purpose_value}
 		</li>
 		<li class="vendor">
 			<span class="gi-list-item">{$prime_vendor_name}:</span> {$row['prime_vendor_prime_vendor_legal_name']}

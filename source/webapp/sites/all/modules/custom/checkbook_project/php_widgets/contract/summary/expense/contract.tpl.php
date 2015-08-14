@@ -32,15 +32,19 @@ if(is_array($records)){
     $camnt = WidgetUtil::getLabel("current_amount");
     $purpose = WidgetUtil::getLabel("contract_purpose");
     $agency = WidgetUtil::getLabel("contract_agency");
-    $vendor= WidgetUtil::getLabel("vendor_name");
-    if(_getRequestParamValue('smnid') == 781) {
-        $vendor= WidgetUtil::getLabel("associated_prime_vendor");
-    }
+    $smnid = _getRequestParamValue('smnid');
+
+    $dynamicLabel = $node->widgetConfig->summaryView->entityColumnLabel;
+    $dynamicValue = strtoupper($row[$node->widgetConfig->summaryView->entityColumnName]);
+
+    if(!isset($dynamicLabel))
+        $dynamicLabel = WidgetUtil::getLabel("vendor_name");
+    $agency_value = strtoupper($row['agency_agency_agency_name']);
+    $purpose_value = strtoupper($row['contract_purpose_contract_purpose']);
     $summaryContent =  <<<EOD
 <div class="contract-details-heading">
 	<div class="contract-id">
 		<h2 class="contract-title">{$node->widgetConfig->summaryView->templateTitle}</h2>
-		<div class="contract-id">{$cont_id}: {$row['contract_number_contract_number']}</div>
 	</div>
 	<div class="dollar-amounts">
 		<div class="spent-to-date">
@@ -59,14 +63,17 @@ if(is_array($records)){
 </div>
 <div class="contract-information">
 	<ul>
+	    <li class="contractid">
+	        <span class="gi-list-item">{$cont_id}:</span> {$row['contract_number_contract_number']}
+	    </li>
 		<li class="contract-purpose">
-			<span class="gi-list-item">{$purpose}:</span> {$row['contract_purpose_contract_purpose']}
+			<span class="gi-list-item">{$purpose}:</span> {$purpose_value}
         </li>
 		<li class="agency">
-			<span class="gi-list-item">{$agency}:</span> {$row['agency_agency_agency_name']}
+			<span class="gi-list-item">{$agency}:</span> {$agency_value}
 		</li>
 		<li class="vendor">
-			<span class="gi-list-item">{$vendor}:</span> {$row['vendor_vendor_legal_name']}
+			<span class="gi-list-item">{$dynamicLabel}:</span> {$dynamicValue}
 		</li>
 	</ul>
 </div>

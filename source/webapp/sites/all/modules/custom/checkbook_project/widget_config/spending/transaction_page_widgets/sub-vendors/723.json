@@ -56,6 +56,7 @@
     "html_class": "initiative-table transaction-table",
     "no_results_content":"No Results Found",
     "dataset": "checkbook:spending_transactions_all",
+    "totalAggregateColumns":["check_amount_sum"],
     "columns": [
         "disbursement_number",
         "agency_id",
@@ -84,6 +85,11 @@
         "is_prime_or_sub",
         "original_agreement_id@checkbook:sub_vendor_agid"
     ],
+    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Sub Vendors');",
+    "summaryView":{
+        "template":"spending_date_summary",
+        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Sub Vendors');"
+    },
     "derivedColumns": {
         "associated_prime_vendor_name":{
             "type": "expression2",

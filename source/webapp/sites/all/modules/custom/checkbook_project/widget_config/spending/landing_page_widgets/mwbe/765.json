@@ -64,11 +64,13 @@
         }
 
     },
-    "summaryView": {
-        "template":"spending_industry_summary",
-        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Spending by Industry');"
-    },
     "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Spending by Industries');",
+    "summaryView":{
+        "template":"spending_industry_summary",
+        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Spending by Industry');",
+        "templateLabel":"Industry",
+        "templateLabelEval":"return $node->data[0]['industry_industry_industry_type_name'];"
+    },
     "table_title":"",
     "table_columns": [
         {"labelAlias": "industry_name","column": "industry_name_link","sortSourceColumn":"industry_type_name"},

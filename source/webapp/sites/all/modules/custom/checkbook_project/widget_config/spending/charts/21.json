@@ -76,7 +76,6 @@
         "expression": "  ($row['previous_check_amount_sum']==null)?'0':$row['previous_check_amount_sum']"
     }
 },
-
 "datasets" : [
     {"name": "month","column":"month_month_month_name", "type":"string", "isArray":true},
     {"name": "previous","column":"previous_spending", "type":"string", "isArray":true},
@@ -102,7 +101,7 @@
 
     $node->widgetConfig->chartConfig->series[0]->name = $SeriesPreviousYearLabel;
     $node->widgetConfig->chartConfig->series[1]->name = $SeriesCurrentYearLabel;
-
+    $smnid = '/smnid/706';
     $categories=array();
     $allZero = true;
     foreach ($node->data as $row){
@@ -115,8 +114,8 @@
         if(abs($row['current_check_amount_sum']) > 0)
             $allZero = false;
 
-        $seriesPreviousData[] = (object)array('y' => $row['previous_check_amount_sum'],'url'=> $previousYearUrl);
-        $seriesCurrentData[] = (object)array('y' => $row['current_check_amount_sum'],'url'=> $currentYearUrl);
+        $seriesPreviousData[] = (object)array('y' => $row['previous_check_amount_sum'],'url'=> $previousYearUrl.$smnid);
+        $seriesCurrentData[] = (object)array('y' => $row['current_check_amount_sum'],'url'=> $currentYearUrl.$smnid);
 
     }
     if($allZero) $node->totalDataCount = 0;

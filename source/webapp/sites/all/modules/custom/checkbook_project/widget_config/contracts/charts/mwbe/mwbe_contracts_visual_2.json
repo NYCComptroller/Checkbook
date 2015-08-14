@@ -74,6 +74,7 @@
 	$non_mwbe_data = array();
 	$year_id = _getRequestParamValue('year');
 	$year = _getYearValueFromID($year_id);
+    $contract_status_params = ContractUtil::getSpentToDateParams();
 	
 	$series_current_temp = array();
 	$series_prev_temp = array();
@@ -98,14 +99,14 @@
 		
 	    if($row['year_value'] == $year){
 	    	 $series_current_temp[trim($row['month_name'])] = $item;
-	        $link_url = CustomURLHelper::prepareUrl('contract/spending/transactions',  ContractURLHelper::$transactionPageParams, NULL, 
-       			array('doctype' => $node->document_codes, 'month' => $row['month_id'],'newwindow'=>NULL));
+	        $link_url = CustomURLHelper::prepareUrl('contract/spending/transactions'.$contract_status_params,  ContractURLHelper::$transactionPageParams, NULL,
+       			array('doctype' => $node->document_codes, 'month' => $row['month_id'],'amt'=>$row['spending_amount_sum'], 'smnid'=>'mwbe_contracts_visual_2','newwindow'=>NULL));
 			$item->url =  $link_url;		
 	    	 
 	    }else{
 	    	$series_previous_temp[trim($row['month_name'])] = $item;
-	    	        $link_url = CustomURLHelper::prepareUrl('contract/spending/transactions',  ContractURLHelper::$transactionPageParams, NULL, 
-       			array('doctype' => $node->document_codes, 'month' => $row['month_id'],'newwindow'=>NULL),true);
+	    	        $link_url = CustomURLHelper::prepareUrl('contract/spending/transactions'.$contract_status_params,  ContractURLHelper::$transactionPageParams, NULL,
+       			array('doctype' => $node->document_codes, 'month' => $row['month_id'],'amt'=>$row['spending_amount_sum'],'smnid'=>'mwbe_contracts_visual_2','newwindow'=>NULL),true);
 			$item->url =  $link_url;			    	
 	    }
 	    
@@ -170,6 +171,10 @@
 	}
 	$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Spending by ' . $status . ' ' . $contract_type .  ' Contracts';
 ",
+"summaryView":{
+    "template":"contract_date_summary",
+    "templateTitleEval":"return SpendingUtil::getSpentToDateTitle('Spending');"
+},
 "chartConfig" : {
     "plotOptions": {
             "series": {

@@ -76,6 +76,7 @@ return $footer;
                                                                                                  .  _checkbook_project_get_contract_url($row[document_id_document_id], $row[agreement_id_agreement_id]) 
                                                                                                  . '/smnid/' . $node->nid
                                                                                                  . _checkbook_append_url_params()
+                                                                                                 . _checkbook_project_get_url_param_string('category')
                                                                                                  . _checkbook_project_get_url_param_string('vendor','fvendor')
                                                                                                  . _checkbook_project_get_year_url_param_string(false,false,true)
                                                                                                  . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
@@ -85,17 +86,13 @@ return $footer;
          "expression":"'<a class=\"new_window\" href=\"/contract_details'  . _checkbook_project_get_contract_url($row[document_id_document_id], $row[agreement_id_agreement_id]) . _checkbook_append_url_params()  .'/newwindow\">'  . $row[document_id_document_id] . '</a>'"
 	}
 },
+"WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Contracts');",
 "summaryView":{
-	"template":"spending_contract_summary",
-         "templateTitleEval":"
-              $catName = RequestUtil::getSpendingCategoryName();
-              return ('Contract ' . $catName . ' Transactions');
-          "
+    "template":"spending_contract_summary",
+    "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Contract');",
+    "templateLabel":"Contract ID",
+    "templateLabelEval":"return $node->data[0]['document_id_document_id'];"
 },
-"WidgetTitleEval":"
-   $catName = RequestUtil::getSpendingCategoryName();
-    return ('Contracts ' . $catName . ' Transactions');
-",
 "table_title":"",
   "table_columns": [
  {

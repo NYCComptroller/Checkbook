@@ -1070,7 +1070,7 @@ function checkbook_datafeeds_process_budget_values($form, $form_state) {
         'global' => array(
             'type_of_data' => 'Budget',
             'records_from' => 1,
-            'max_records' => 200000,
+            'max_records' => 50000,
         ),
     );
     $criteria['responseColumns'] = $values['column_select'];
@@ -2252,7 +2252,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
             //Set data source for query
             'type_of_data' => $data_source == 'checkbook_oge' ? 'Contracts_OGE' : 'Contracts',
             'records_from' => 1,
-            'max_records' => 200000,
+            'max_records' => 50000,
         ),
     );
 
@@ -3114,7 +3114,7 @@ function checkbook_datafeeds_process_payroll_values($form, &$form_state) {
         'global' => array(
             'type_of_data' => 'Payroll',
             'records_from' => 1,
-            'max_records' => 200000,
+            'max_records' => 50000,
         ),
         'responseColumns' => $values['column_select']
     );
@@ -3744,7 +3744,7 @@ function checkbook_datafeeds_process_revenue_values($form, &$form_state) {
         'global' => array(
             'type_of_data' => 'Revenue',
             'records_from' => 1,
-            'max_records' => 200000,
+            'max_records' => 50000,
         ),
         'responseColumns' => $values['column_select'],
     );
@@ -5075,7 +5075,7 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
             //Set data source for query
             'type_of_data' => $data_source == 'checkbook_oge' ? 'Spending_OGE' : 'Spending',
             'records_from' => 1,
-            'max_records' => 200000,
+            'max_records' => 50000,
         ),
         'responseColumns' => $values['column_select'],
     );
@@ -6260,7 +6260,7 @@ function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $crit
             '#value' => t('Cancel'),
         );
     }
-    elseif ($recordcount > 0 && $recordcount < 200000) {
+    elseif ($recordcount > 0 && $recordcount < 50000) {
         if (isset($checkBookApi)) {
             if ($checkBookApi->validateRequest()) {
                 $form_state['step_information']['confirmation']['response'] = $checkBookApi->getData();

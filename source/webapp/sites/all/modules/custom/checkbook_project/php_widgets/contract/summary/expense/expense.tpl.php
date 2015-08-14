@@ -23,28 +23,45 @@ $records = $node->data;
 if(is_array($records)){
     $row = $records[0];
     $noContr = WidgetUtil::getLabel("no_of_contracts");
+    $smnid = _getRequestParamValue('smnid');
+    $dynamicLabel = $node->widgetConfig->summaryView->entityColumnLabel;
+    $dynamicValue = strtoupper($row[$node->widgetConfig->summaryView->entityColumnName]);
 
-    if(_getRequestParamValue('smnid') == 720) {
+    if($smnid == 720) {
         $noContr = WidgetUtil::getLabel("num_sub_contracts");
-        $mwbe_category = WidgetUtil::getLabel("mwbe_category").': '.MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']);
+        $mwbe_category = '<strong>'.WidgetUtil::getLabel("mwbe_category").'</strong>: '.strtoupper(MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']));
     }
-    if(_getRequestParamValue('smnid') == 725) {
+    else if($smnid == 725) {
         $noContr = WidgetUtil::getLabel("num_sub_contracts");
-        $mwbe_category = WidgetUtil::getLabel("mwbe_category").': '.MappingUtil::getMinorityCategoryById($row['prime_minority_type_prime_minority_type']);
+        $mwbe_category = '<strong>'.WidgetUtil::getLabel("mwbe_category").'</strong>: '.strtoupper(MappingUtil::getMinorityCategoryById($row['prime_minority_type_prime_minority_type']));
     }
-    if(_getRequestParamValue('smnid') == 726 || _getRequestParamValue('smnid') == 727 || _getRequestParamValue('smnid') == 728 || _getRequestParamValue('smnid') == 729) {
+    else if($smnid == 726 || $smnid == 727 || $smnid == 728 || $smnid == 729) {
         $noContr = WidgetUtil::getLabel("num_sub_contracts");
     }
-    if(_getRequestParamValue('smnid') == 783) {
-        $mwbe_category = WidgetUtil::getLabel("mwbe_category").': '.MappingUtil::getMinorityCategoryById($row['current_prime_minority_type_id']);
+    else if($smnid == 783) {
+        $mwbe_category = '<strong>'.WidgetUtil::getLabel("mwbe_category").'</strong>: '.strtoupper(MappingUtil::getMinorityCategoryById($row['current_prime_minority_type_id']));
     }
-    if(_getRequestParamValue('smnid') == 784) {
-        $mwbe_category = WidgetUtil::getLabel("mwbe_category").': '.MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']);
+    else if($smnid == 784) {
+        $mwbe_category = '<strong>'.WidgetUtil::getLabel("mwbe_category").'</strong>: '.strtoupper(MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']));
     }
-    if(_getRequestParamValue('smnid') == 791) {
+    else if($smnid == 791) {
         $noContr = WidgetUtil::getLabel("no_of_contracts");
-        $mwbe_category = WidgetUtil::getLabel("mwbe_category").': '.MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']);
+        $mwbe_category = '<strong>'.WidgetUtil::getLabel("mwbe_category").'</strong>: '.strtoupper(MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']));
     }
+
+    if($smnid == 369 || $smnid == 785 || $smnid == 726 ) {
+        $dynamicLabel= WidgetUtil::getLabel("award_method");
+    }
+    if($smnid == 370 || $smnid == 786 || $smnid == 727 ){
+        $dynamicLabel= WidgetUtil::getLabel("contract_agency");
+    }
+    if($smnid == 454 || $smnid == 787 || $smnid == 728 ){
+        $dynamicLabel= WidgetUtil::getLabel("industry_name");
+    }
+    if($smnid == 453 || $smnid == 788 || $smnid == 729 ){
+        $dynamicLabel= WidgetUtil::getLabel("contract_size");
+    }
+
 
     $originalAmount = custom_number_formatter_format($row['original_amount_sum'],2,'$');
     $currentAmount = custom_number_formatter_format($row['current_amount_sum'],2,'$');
@@ -52,15 +69,11 @@ if(is_array($records)){
     $spnttodt = WidgetUtil::getLabel("spent_to_date");
     $oamnt = WidgetUtil::getLabel("original_amount");
     $camnt = WidgetUtil::getLabel("current_amount");
-    $vendor= WidgetUtil::getLabel("vendor_name");
     $totalContracts = number_format($row['total_contracts']);
 $summaryContent =  <<<EOD
 <div class="contract-details-heading">
 	<div class="contract-id">
 		<h2 class="contract-title">{$node->widgetConfig->summaryView->templateTitle}</h2>
-		<div class="contract-id">{$row[$node->widgetConfig->summaryView->entityColumnName]}<br>
-		    {$mwbe_category}
-		</div>
 	</div>
 	<div class="dollar-amounts">
 		<div class="spent-to-date">
@@ -73,13 +86,20 @@ $summaryContent =  <<<EOD
 		</div>
 		<div class="current-amount">
 		    {$currentAmount}
-            <div class="amount-title">{$camnt}</div>
-		</div>
-		<div class="no-of-contracts">
+        <div class="amount-title">{$camnt}</div>
+	    </div>
+	</div>
+</div>
+<div class="contract-information">
+	<div class="no-of-contracts">
 			{$totalContracts}
 			<div class="amount-title">{$noContr}</div>
-		</div>
 	</div>
+	<ul>
+	    <li class="contractid">
+	        <span class="gi-list-item">{$dynamicLabel}:</span> {$dynamicValue}<br>{$mwbe_category}
+		</li>
+	</ul>
 </div>
 EOD;
 

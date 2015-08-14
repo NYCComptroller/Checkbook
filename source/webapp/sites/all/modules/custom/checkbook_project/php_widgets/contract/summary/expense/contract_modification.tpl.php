@@ -38,21 +38,26 @@ if(is_array($records)){
     $agency = WidgetUtil::getLabel("contract_agency");
     $vendor= WidgetUtil::getLabel("vendor_name");
     $vendor_value = $row['vendor_vendor_legal_name'];
+    $smnid = _getRequestParamValue('smnid');
 
-    if(_getRequestParamValue('smnid') == 722){
+    if($smnid == 722){
         $purpose = WidgetUtil::getLabel("sub_contract_purpose");
         $vendor = WidgetUtil::getLabel("sub_vendor_name");
-        $vendor_value = $row['subvendor_subvendor_legal_name'];
+        $vendor_value = strtoupper($row['subvendor_subvendor_legal_name']);
     }
-    if(_getRequestParamValue('smnid') == 782) {
+    else if($smnid == 782) {
         $vendor= WidgetUtil::getLabel("associated_prime_vendor");
     }
+    else if($smnid == 366 || $smnid == 480) {
+        $vendor= WidgetUtil::getLabel("prime_vendor");
+    }
+    $purpose_value = strtoupper($row['contract_purpose_contract_purpose']);
+    $agency_value = strtoupper($row['agency_agency_agency_name']);
 
     $summaryContent =  <<<EOD
 <div class="contract-details-heading">
 	<div class="contract-id">
 		<h2 class="contract-title">{$node->widgetConfig->summaryView->templateTitle}</h2>
-		<div class="contract-id">{$cont_id}: {$row['contract_number_contract_number']}</div>
 	</div>
 	<div class="dollar-amounts">
 		<div class="spent-to-date">
@@ -77,13 +82,16 @@ if(is_array($records)){
 	<div class="percent-difference">
 		{$diffAmountPercent}
 	<div class="amount-title">{$pdiff}</div>
-	</div>
+</div>
 	<ul>
+	    <li class="contractid">
+	        <span class="gi-list-item">{$cont_id}:</span> {$row['contract_number_contract_number']}
+	    </li>
 		<li class="contract-purpose">
-			<span class="gi-list-item">{$purpose}:</span> {$row['contract_purpose_contract_purpose']}
+			<span class="gi-list-item">{$purpose}:</span> {$purpose_value}
         </li>
 		<li class="agency">
-			<span class="gi-list-item">{$agency}:</span> {$row['agency_agency_agency_name']}
+			<span class="gi-list-item">{$agency}:</span> {$agency_value}
 		</li>
 		<li class="vendor">
 			<span class="gi-list-item">{$vendor}:</span> {$vendor_value}

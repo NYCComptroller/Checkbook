@@ -131,11 +131,13 @@
         }
         return $adjustedParameters;
     ",
+    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Sub Vendors');",
     "summaryView":{
         "template":"spending_sub_vendor_summary",
-        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Sub Vendor');"
+        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Sub Vendor');",
+        "templateLabel":"Sub Vendor",
+        "templateLabelEval":"return $node->data[0]['sub_vendor_sub_vendor_legal_name'];"
     },
-    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Sub Vendors');",
     "table_columns": [
             {"labelAlias":"sub_vendor_name","column":"sub_vendor_name_link2","sortSourceColumn":"sub_vendor.sub_vendor"},
             {"labelAlias":"mwbe_category","column":"mwbe_category_name_link","sortSourceColumn":"minority_type.minority_type"},

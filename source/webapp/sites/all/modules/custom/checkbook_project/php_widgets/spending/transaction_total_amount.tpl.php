@@ -21,6 +21,5 @@
 <?php
 
     $categoryId = _getRequestParamValue('category');
-    $dashboard_title = RequestUtil::getDashboardTitle();
-    $catname = isset($dashboard_title) ? RequestUtil::getSpendingTransactionTitle('Total '.$dashboard_title.' Spending') : RequestUtil::getSpendingTransactionTitle();
+    $catname = RequestUtil::getSpendingTransactionTitle();
     print '<div class="dollar-amounts"><div class="total-spending-amount">$' . custom_number_formatter_format($node->data[0]['check_amount_sum'],2).'<div class="amount-title">'. ($catname.' Amount') .'</div></div></div>';
