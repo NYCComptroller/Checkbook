@@ -56,7 +56,6 @@ $queryVendorDetails = "SELECT
 
 $results1 = _checkbook_project_execute_sql($queryVendorDetails);
 $node->data = $results1;
-dsm($node->data);
 foreach($node->data as $key => $value){
     if($value['business_type_code'] == "MNRT" || $value['business_type_code'] == "WMNO"){
         $node->data[0]["mwbe_vendor"] = "Yes";

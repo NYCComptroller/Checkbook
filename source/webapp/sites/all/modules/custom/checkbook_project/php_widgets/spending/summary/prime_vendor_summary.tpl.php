@@ -24,17 +24,26 @@ $records = $node->data;
 if(is_array($records)){
     $row = $records[0];
     $title = eval($node->widgetConfig->summaryView->templateTitleEval);
+    $label = $node->widgetConfig->summaryView->templateLabel;
+    $value = strtoupper(eval($node->widgetConfig->summaryView->templateLabelEval));
     $vendor_name = WidgetUtil::getLabel("prime_vendor_name");
     $ytdspending = WidgetUtil::getLabel("ytd_spending");
     $totcontamnt = WidgetUtil::getLabel("total_contract_amount");
+    $mwbe_category = "";
 
     if(_getRequestParamValue('smnid') == 717){
         $no_of_subvendor_value = $row['sub_vendor_count'];
         $no_of_subvendor = WidgetUtil::getLabel("num_sub_vendors");
+        $mwbe_category_label = WidgetUtil::getLabel("mwbe_category");
+        $mwbe_category = strtoupper(MappingUtil::getMinorityCategoryById($row['prime_minority_type_prime_minority_type']));
+        $mwbe_category = '<br><b>'.$mwbe_category_label .':</b> '.$mwbe_category ;
     }
     if(_getRequestParamValue('smnid') == 747){
         $percent_spending_value = $row['percent_spending'];
         $percent_spending = WidgetUtil::getLabel("percent_spending");
+        $mwbe_category_label = WidgetUtil::getLabel("mwbe_category");
+        $mwbe_category = strtoupper(MappingUtil::getMinorityCategoryById($row['prime_minority_type_prime_minority_type']));
+        $mwbe_category = '<br><b>'.$mwbe_category_label .':</b> '.$mwbe_category ;
     }
 
     
@@ -42,7 +51,7 @@ $summaryContent =  <<<EOD
 <div class="contract-details-heading">
 	<div class="contract-id">
 		<h2 class="contract-title">{$title}</h2>
-		<div class="spending-tx-subtitle">{$vendor_name}: {$row['prime_vendor_prime_vendor_legal_name']}</div>
+		<div class="spending-tx-subtitle"><b>{$label}</b>: {$value} {$mwbe_category}</div>
 	</div>
 	<div class="dollar-amounts">
         <div class="total-spending-contract-amount">

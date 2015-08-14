@@ -1036,6 +1036,8 @@ span.exportSmartSearch {
 }
 .contracts-oge-spending-bottom h3{
     clear: both;
+    padding-top: 5px;
+
 }
 .panel-panel.grid-12 .bottom-nav-container.panel-pane.pane-node,
 .panel-panel.grid-12 .bottom-nav-container.panel-pane.pane-custom,
@@ -1682,7 +1684,7 @@ input[type="url"], input[type="week"] {
     text-align: left;
 }
 table.dataTable.outerTable h3 {
-    margin:0;
+    margin:0 0 5px;
 }
 table.dataTable th.sorting span, table.dataTable th.sorting_asc span, table.dataTable th.sorting_desc span {
     padding-left:15px;
@@ -1787,9 +1789,12 @@ td.pad-left div{
     text-align:center;
 }
 .dataTable td div {
-    margin: 13px 0 13px 0px;
+    margin: 13px 0px 13px 0px;
 }
 
+.contracts-oge-spending-bottom {
+    margin: 30px 0 !important;
+}
 
 td.text div {
     float: left;
@@ -2093,10 +2098,7 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
     width: 340px;
     padding-top: 20px;
 }
-/*NYCCHKBK-4746*/
-div.bottomContainer #contract-details h2.contract-title {
-    white-space: nowrap;
-}
+
 .contract-information .original-amount{
     margin-right: 0;
 }
@@ -2107,7 +2109,17 @@ div.bottomContainer #contract-details h2.contract-title {
     text-align: center;
 }
 .dollar-amounts,
-.inside .transactions-container{float: right; width:430px;}
+.inside .transactions-container{
+    float: right;
+    width:430px;
+}
+
+.oge-ma-details > .dollar-amounts,
+.cb-ma-details > .dollar-amounts {
+    width: 550px;
+    float: right;
+}
+
 .contract-details{
     border: 1px dotted #CACACA;
     border-width: 1px 1px 0px 0px;
@@ -2151,6 +2163,7 @@ div.bottomContainer #contract-details h2.contract-title {
 }
 .page-contracts-landing #assoc_contracts_list_wrapper .dollar-amounts div{
     margin: 0;
+    width: 105px;
 }
 .page-contracts-landing #assoc_contracts_list_wrapper .contract-title{
     margin: 10px 0 -30px 0;
@@ -2295,10 +2308,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
     padding-top: 20px;
 }
 
-.dollar-amounts > div,
-.inside .transactions-container .transactions-total-amount,
-.contract-information .dollar-difference,
-.contract-information .percent-difference{
+.dollar-amounts > div{
     color: #5C5C5C;
     float: right;
     font-size: 18px;
@@ -2306,10 +2316,26 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
     text-align: center;
     width: 105px;
     margin-left: 32px;
+    margin-bottom: 0px;
+}
+
+.inside .transactions-container .transactions-total-amount,
+.contract-information .dollar-difference,
+.contract-information .percent-difference,
+.no-of-contracts{
+    color: #5C5C5C;
+    float: right;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    width: auto;
+    margin-left: 32px;
     margin-bottom: 10px;
 }
+
 .contract-vendor-details .dollar-amounts > div{
     margin-left: 0px;
+    width: 105px;
 }
 .dollar-amounts > div:first-child,
 .inside .transactions-container .transactions-total-amount,
@@ -2333,7 +2359,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 }
 .contract-information li{margin-bottom:16px;}
 #spending-transactions .contract-information li{margin-bottom:0px;}
-#spending-transactions .contract-information {margin-top:20px;}
+#spending-transactions .contract-information {margin-top:0px;}
 .spending-tx-subtitle{margin-top:10px;}
 .contract-information li span{
     font-size: 13px;
@@ -2455,8 +2481,9 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 .page-revenue .inside .panel-pane.pane-custom.pane-2,
 .page-budget .inside .panel-pane.pane-custom.pane-2,
 .expense_category_budget_details .panel-pane.pane-custom.pane-1{
-    width:50%;
+    width:420px;
 }
+h1.no-spending-transactions {width: 500px}
 .newwindow .inside .transactions-container,
 .newwindow .inside .contract-details-heading,
 .contract_transactions .inside .contract-details-heading,
@@ -2521,7 +2548,10 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
     margin-right: 0px;
 }
 
-.inside .transactions-container .transactions-total-amount{width:220px;}
+.inside .transactions-container .transactions-total-amount{
+    width:auto;
+    font-family:inherit !important;
+}
 span.export, span.summary_export {
     background: url("../images/export.png") no-repeat scroll right 0 transparent;
     width: 70px;
@@ -3193,6 +3223,8 @@ input[type=radio]:checked:enabled.radio-blue + label:before {
 
 .disable_me{
     pointer-events:none;
+    opacity:0.5;
+    filter: alpha(opacity=40);
 }
 
 /*********************************

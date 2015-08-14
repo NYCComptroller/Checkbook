@@ -59,17 +59,13 @@ return $footer;
         "visibility_flag": "is_mwbe"
     }
 },
+"WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Agencies');",
 "summaryView":{
-	"template":"spending_agency_summary",
-         "templateTitleEval":"
-              $catName = RequestUtil::getSpendingCategoryName();
-              return ('Agency ' . $catName . ' Transactions');
-          "
+    "template":"spending_agency_summary",
+    "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Agency');",
+    "templateLabel":"Agency",
+    "templateLabelEval":"return $node->data[0]['agency_agency_agency_name'];"
 },
-"WidgetTitleEval":"
-   $catName = RequestUtil::getSpendingCategoryName();
-    return ('Agencies ' . $catName . ' Transactions');
-",
 "table_title":"",
   "table_columns": [
  {

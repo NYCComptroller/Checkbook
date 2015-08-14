@@ -85,11 +85,13 @@
             "expression": "custom_number_formatter_format($row['ytd_spending_sub_vendors'],2,'$')"
         }
     },
+    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Agencies');",
     "summaryView":{
         "template":"spending_agency_summary",
-        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Agency');"
+        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Agency');",
+        "templateLabel":"Agency",
+        "templateLabelEval":"return $node->data[0]['agency_agency_agency_name'];"
     },
-    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Agencies');",
     "table_title":"",
     "table_columns": [
         {"labelAlias":"agency_name","column":"agency_name_link"},

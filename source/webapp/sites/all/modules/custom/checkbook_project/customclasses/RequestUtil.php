@@ -229,7 +229,7 @@ class RequestUtil{
         if(isset($categoryId)){
             $categoryDetails = SpendingUtil::getSpendingCategoryDetails($categoryId,'display_name');
             if(is_array($categoryDetails)){
-                return "Total " . $categoryDetails[0]['display_name'];
+                return $categoryDetails[0]['display_name'];
             }
         }
 
@@ -239,11 +239,10 @@ class RequestUtil{
     /** Returns Spending Transaction page title based on 'category'/'featured dashboard' value from current path */
     static function getSpendingTransactionTitle($defaultName = 'Total Spending'){
         $categoryId = _getRequestParamValue('category');
-        $dashboard_title = RequestUtil::getDashboardTitle();        
         if(isset($categoryId)){
             $categoryDetails = SpendingUtil::getSpendingCategoryDetails($categoryId,'display_name');
             if(is_array($categoryDetails)){
-                return "Total " . $dashboard_title . $categoryDetails[0]['display_name'];
+                return "Total " . $categoryDetails[0]['display_name'];
             }
         }
 

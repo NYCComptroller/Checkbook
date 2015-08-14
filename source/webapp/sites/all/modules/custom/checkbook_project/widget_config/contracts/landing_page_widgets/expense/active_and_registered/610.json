@@ -36,7 +36,7 @@ if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:mwbe_contracts_coa_
     } ,
 "spent_amount_link": {
       "type": "expression2",
-      "expression": "'<a class=\"new_window\" href=\"/contract/spending/transactions/awdmethod/' .$row[award_method_award_method] . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string(\"status\") .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\") . _checkbook_project_get_url_param_string(\"agency\",\"cagency\")   ._checkbook_project_get_url_param_string(\"vendor\",\"cvendor\") .  '/doctype/CT1~CTA1~MA1'.  ContractURLHelper::_checkbook_project_spending_get_year_url_param_string() . '/smnid/' . $node->nid .  '/newwindow\">' . custom_number_formatter_format($row['spending_amount_sum'],2,'$'). '</a>'"
+      "expression": "'<a class=\"new_window\" href=\"/contract/spending/transactions/awdmethod/' .$row[award_method_award_method] . _checkbook_append_url_params() .  _checkbook_project_get_url_param_string(\"status\") .  _checkbook_project_get_url_param_string(\"cindustry\") .  _checkbook_project_get_url_param_string(\"csize\") . _checkbook_project_get_url_param_string(\"agency\",\"cagency\")   ._checkbook_project_get_url_param_string(\"vendor\",\"cvendor\") .  '/doctype/CT1~CTA1~MA1'.  ContractURLHelper::_checkbook_project_spending_get_year_url_param_string() . '/smnid/' . $node->nid . ContractUtil::getSpentToDateParams() .  '/newwindow\">' . custom_number_formatter_format($row['spending_amount_sum'],2,'$'). '</a>'"
     } ,
 "formatted_original_amount_sum": {
       "type": "expression2",
@@ -81,9 +81,11 @@ else
 return $footer;
 ",
 "summaryView":{
-	"template":"contract_summary_expense_expense",
-        "entityColumnName":"award_method_award_method_award_method_name",
-	"templateTitle":"Award Method Spending Transactions"
+"template":"contract_summary_expense_expense",
+    "entityColumnName":"award_method_award_method_award_method_name",
+    "entityColumnLabel":"Award Method",
+    "templateTitle":"Award Method Spending Transactions",
+    "preprocess_data":"$node->widgetConfig->summaryView->templateTitle = SpendingUtil::getSpentToDateTitle('Award Method Spending');"
 },
 "widgetTitle":"Award Methods",
 "table_title":"",

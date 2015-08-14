@@ -75,21 +75,26 @@ $node->data = $results1;
 //}
 $total_cont  = 0;
 $results2 = _checkbook_project_execute_sql_by_data_source($queryVendorCount,_get_current_datasource());
+if(_getRequestParamValue("status")){
+    $status = '/status/'._getRequestParamValue("status");
+}else{
+    $status = '/status/A';
+}
 //log_error($_SERVER);
 foreach($results2 as $row){
     $total_cont +=$row['total_contracts_sum']; 
 }
 if(_getRequestParamValue("doctype")=="RCT1"){
-  $vendor_link = '/contracts_revenue_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
+  $vendor_link = '/contracts_revenue_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
                  . $node->data[0]['vendor_id'] . '?expandBottomCont=true';
 }
 else{
    if($node->data[0]["mwbe_vendor"] == 'Yes'){
-       $vendor_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
+       $vendor_link = '/contracts_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
         .$node->data[0]['vendor_id'].'/dashboard/mp?expandBottomCont=true';
    }
     else{
-        $vendor_link = '/contracts_landing/status/A/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
+        $vendor_link = '/contracts_landing'.$status.'/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'
             .$node->data[0]['vendor_id'].'?expandBottomCont=true';
     }
 }
@@ -138,7 +143,7 @@ $contract_number = $node->data[0]['contract_number'];
     <!-- Total Number of Sub Vendors -->
     <li><span class="gi-list-item">M/WBE Vendor:</span> <?php echo $node->data[0]['mwbe_vendor'] ;?></li>
 <?php if(!preg_match('/newwindow/',$_GET['q']) && $node->data[0]["mwbe_vendor"] == 'Yes'){ ?>
-    <li><span class="gi-list-item">M/WBE Category:</span> <a href="/contracts_landing/status/A/yeartype/B/year/<?php echo _getFiscalYearID();?>/mwbe/<?php echo $minority_type_id; ?>/dashboard/mp"><?php echo $ethnicity ;?></a></li>
+    <li><span class="gi-list-item">M/WBE Category:</span> <a href="/contracts_landing<?php echo $status;?>/yeartype/B/year/<?php echo _getFiscalYearID();?>/mwbe/<?php echo $minority_type_id; ?>/dashboard/mp"><?php echo $ethnicity ;?></a></li>
 <?php } else { ?>
 <li><span class="gi-list-item">M/WBE Category: </span><?php echo  $ethnicity ;?></li>
      <?php }
@@ -168,7 +173,7 @@ if (_getRequestParamValue("datasource") != "checkbook_oge") {
     </h4>
     <div class="spent-to-date">
         <?php if(!preg_match('/newwindow/',$_GET['q'])){ ?>
-        <a class="new_window" href="/contract/spending/transactions/contnum/<?php echo $contract_number; ?>/status/A/dashboard/ss/yeartype/B/year/<?php echo _getCurrentYearID();?>/syear/<?php echo _getCurrentYearID();?>/smnid/721/newwindow"><?php echo custom_number_formatter_format($total_spent_todate, 2, "$");?></a>
+        <a class="new_window" href="/contract/spending/transactions/contnum/<?php echo $contract_number; ?><?php echo $status;?>/dashboard/ss/yeartype/B/year/<?php echo _getCurrentYearID();?>/syear/<?php echo _getCurrentYearID();?>/smnid/721/newwindow"><?php echo custom_number_formatter_format($total_spent_todate, 2, "$");?></a>
         <?php } else {
             echo custom_number_formatter_format($total_spent_todate, 2, "$");?>
         <?php } ?>

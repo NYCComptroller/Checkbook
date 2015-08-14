@@ -54,7 +54,7 @@
     },
     "contract_link": {
         "type": "expression2",
-        "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/contract_transactions/agid/' .$row[original_agreement_original_agreement] . _checkbook_append_url_params() .  '/doctype/'   . $row[document_code_document_code_document_code]    . '\">' . $row['contract_number_contract_number'] . '</a>'"
+        "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/contract_transactions/agid/' .$row[original_agreement_original_agreement].  _checkbook_project_get_url_param_string(\"status\") . _checkbook_append_url_params() .  '/doctype/'   . $row[document_code_document_code_document_code]    . '\">' . $row['contract_number_contract_number'] . '</a>'"
     },
     "current_prime_minority_type_id": {
         "type": "expression2",
@@ -66,7 +66,7 @@
     },
 "spent_amount_link": {
       "type": "expression2",
-      "expression": "'<a class=\"new_window\" href=\"/contract/spending/transactions'  . (_checkbook_check_isEDCPage() ? ('/agid/' .$row[original_agreement_original_agreement].'/svendor/' .$row[vendor_vendor]) :'/contnum/' .$row[contract_number_contract_number] ) .  _checkbook_project_get_url_param_string(\"status\")  .  ContractURLHelper::_checkbook_project_spending_get_year_url_param_string()  . '/smnid/' . $node->nid .  '/newwindow\">' . '$' . custom_number_formatter_format($row['spending_amount_sum'],2). '</a>'"
+      "expression": "'<a class=\"new_window\" href=\"/contract/spending/transactions'  . (_checkbook_check_isEDCPage() ? ('/agid/' .$row[original_agreement_original_agreement].'/cvendor/' .$row[vendor_vendor]) :'/contnum/' .$row[contract_number_contract_number] ) .  _checkbook_project_get_url_param_string(\"status\")  .  ContractURLHelper::_checkbook_project_spending_get_year_url_param_string() . ContractUtil::getSpentToDateParams()  . '/smnid/' . $node->nid .  '/newwindow\">' . '$' . custom_number_formatter_format($row['spending_amount_sum'],2). '</a>'"
     } ,
 "formatted_original_amount_sum": {
       "type": "expression2",
@@ -124,6 +124,8 @@ return $footer;
 ",
 "summaryView":{
 	"template":"contract_summary_expense_contract",
+    "entityColumnName":"vendor_vendor_legal_name",
+    "entityColumnLabel":"Prime Vendor",
 	"templateTitle":"Contract Spending Transactions",
     "preprocess_data":"$node->widgetConfig->summaryView->templateTitle = SpendingUtil::getSpentToDateTitle('Contract Spending');"
 },

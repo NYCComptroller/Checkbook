@@ -33,10 +33,7 @@ class SpendingUtil{
     }
 
     static  public function getSpendingTransactionsTitle(){
-      $agency_id = _getRequestParamValue("agency");
-      $title = "";                
-      //if(isset($agency_id)){
-        $title = '';// _checkbook_project_get_name_for_argument("agency_id",RequestUtil::getRequestKeyValueFromURL("agency",current_path()));
+        $title = '';
         if(preg_match('/category\/1/',current_path())){
           $title = $title . ' Contract' ;
         }
@@ -44,7 +41,7 @@ class SpendingUtil{
           $title = $title. ' Payroll' ;
         }
         elseif(preg_match('/category\/3/',current_path())){
-          $title = $title . ' Capital Contracts' ;
+          $title = $title . ' Capital' ;
         }
         elseif(preg_match('/category\/4/',current_path())){
           $title = $title. ' Others' ;
@@ -54,8 +51,7 @@ class SpendingUtil{
         }
         else{
           $title = $title . ' Total' ;
-        }        
-      //}
+        }
       $title = $title . " Spending Transactions";
       return $title ;
     }
@@ -1137,19 +1133,106 @@ class SpendingUtil{
     }
 
     static function getTransactionPageTitle($widgetTitle){
-        $catName = RequestUtil::getSpendingCategoryName();
-        $title = RequestUtil::getDashboardTitle();
+        $catName = self::getTransactionPageCategoryName();
+        $dashboard_title = RequestUtil::getDashboardTitle();
+        $dashboard = _getRequestParamValue('dashboard');
+        $category = _getRequestParamValue('category');
+        $smnid = _getRequestParamValue('smnid');
 
-        if (strpos($title,'Sub Vendors') !== false && strpos($widgetTitle,'Sub Vendors') !== false) {
-            $widgetTitle = '';
+        //Sub Vendors Exception
+        if(($widgetTitle == "Sub Vendors" || $widgetTitle == "Sub Vendor") && $dashboard == "ss") {
+            $dashboard_title = MappingUtil::getCurrenEhtnicityName();
+        }
+        //Contract Exception
+        else if(($widgetTitle == "Contracts" || $widgetTitle == "Contract") && $category == 1) {
+            $catName = "Spending";
+        }
+        //Visualization - Sub Vendors (M/WBE) "Ethnicity" Exception
+        else if($smnid == "723" && $dashboard == "sp") {
+            $dashboard_title = MappingUtil::getCurrenEhtnicityName();
+        }
+        //Visualization - Sub Vendors (M/WBE) "Ethnicity" Exception
+        else if($smnid == "723" && $dashboard == "ss") {
+            $dashboard_title = MappingUtil::getCurrenEhtnicityName();
         }
 
-        return ($title . " " . $widgetTitle . " " . $catName . " Transactions");
+
+        return $dashboard_title . " " . $widgetTitle . " " . $catName . " Transactions";
+    }
+
+    /** Returns Spending Category based on 'category' value from current path */
+    static function getTransactionPageCategoryName($defaultName = 'Total Spending'){
+        $categoryId = _getRequestParamValue('category');
+        $dtsmnid = _getRequestParamValue('dtsmnid');
+        $smnid = _getRequestParamValue('smnid');
+
+        $nid = isset($dtsmnid) ? $dtsmnid : $smnid;
+        $category_name = $defaultName;
+
+        if(isset($categoryId)){
+            $categoryDetails = SpendingUtil::getSpendingCategoryDetails($categoryId,'display_name');
+            $category_name = is_array($categoryDetails) ? $categoryDetails[0]['display_name'] : $defaultName;
+        }
+
+        return $category_name;
     }
 
     static function getSpentToDateTitle($widgetTitle){
-        $title = RequestUtil::getDashboardTitle();
-        return ($title . " " . $widgetTitle . " Transactions");
+        $dashboard = RequestUtil::getDashboardTitle();
+        $contractTitle = self::getContractTitle();
+
+        $dashboard_param = _getRequestParamValue('dashboard');
+        $smnid = _getRequestParamValue('smnid');
+        if($smnid == 720) {
+            if($dashboard_param == "ms")
+                $dashboard = "M/WBE";
+            else if($dashboard_param == "ss")
+                $dashboard = "";
+        }
+        //Visualization - M/WBE (Sub Vendors) Exception
+        else if($smnid == "subven_mwbe_contracts_visual_2" && $dashboard_param == "ms") {
+            $dashboard = MappingUtil::getCurrenEhtnicityName();
+        }
+        //Visualization - "Ethnicity" Spending by Active Expense Contracts Transactions Exception
+        else if($smnid == "mwbe_contracts_visual_2") {
+            $dashboard = MappingUtil::getCurrenEhtnicityName();
+        }
+        //Visualization - Sub Vendors (M/WBE) Exception
+        else if($smnid == "subvendor_contracts_visual_1" && $dashboard_param == "ss") {
+            $dashboard = MappingUtil::getCurrenEhtnicityName();
+        }
+        //Visualization - Sub Vendors (M/WBE) Exception
+        else if($smnid == "subvendor_contracts_visual_1" && $dashboard_param == "sp") {
+            $dashboard = MappingUtil::getCurrenEhtnicityName();
+        }
+        return ($dashboard . " " . $widgetTitle . " " . $contractTitle . " Contracts Transactions");
+    }
+
+    static public function getContractTitle(){
+        $contract_status = _getRequestParamValue('contstatus');
+        $contract_type = _getRequestParamValue('contcat');
+        $title = 'by';
+
+        switch($contract_status) {
+            case 'A':
+                $title .= ' Active';
+                break;
+            case 'R':
+                $title .= ' Registered';
+                break;
+            default:
+                $title .= ' Pending';
+                break;
+        }
+        switch($contract_type) {
+            case 'expense':
+                $title .= ' Expense';
+                break;
+            case 'revenue':
+                $title .= ' Revenue';
+                break;
+        }
+        return $title;
     }
     
     function _show_mwbe_custom_legend(){

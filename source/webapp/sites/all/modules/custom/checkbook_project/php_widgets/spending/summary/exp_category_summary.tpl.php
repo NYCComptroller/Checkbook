@@ -23,6 +23,8 @@ $records = $node->data;
 if(is_array($records)){
     $row = $records[0];
     $title = eval($node->widgetConfig->summaryView->templateTitleEval);
+    $label = $node->widgetConfig->summaryView->templateLabel;
+    $value = eval($node->widgetConfig->summaryView->templateLabelEval);
     $ytdspending = WidgetUtil::getLabel("ytd_spending");
     $expcat = WidgetUtil::getLabel("expense_category");
     $percent_spending = WidgetUtil::getLabel("percent_spending");
@@ -38,7 +40,7 @@ $summaryContent =  <<<EOD
 <div class="contract-details-heading">
 	<div class="contract-id">
 		<h2 class="contract-title">{$title}</h2>
-		<div class="spending-tx-subtitle">{$expcat}: {$row['expenditure_object_expenditure_object_original_expenditure_object_name']}</div>
+		<div class="spending-tx-subtitle"><b>{$label}</b>: {$value}</div>
 	</div>
 	<div class="dollar-amounts">
         <div class="ytd-spending-amount">

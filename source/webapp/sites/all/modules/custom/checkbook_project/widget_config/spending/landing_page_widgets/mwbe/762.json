@@ -78,11 +78,13 @@
             "expression": "SpendingUtil::getPercentYtdSpending($node, $row)"
         }
     },
+    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Prime Vendors');",
     "summaryView":{
         "template":"spending_vendor_summary",
-        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Prime Vendor');"
+        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Prime Vendor');",
+        "templateLabel":"Prime Vendor",
+        "templateLabelEval":"return $node->data[0]['vendor_vendor_legal_name'];"
     },
-    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Prime Vendors');",
     "table_title":"",
     "table_columns": [
         {"labelAlias": "prime_vendor","column": "vendor_name_link","sortSourceColumn":"vendor.vendor.legal_name"},

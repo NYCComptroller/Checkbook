@@ -54,11 +54,11 @@
     },
 "spent_amount_link": {
       "type": "expression2",
-      "expression": "'<a class=\"new_window\" href=\"/spending/transactions/magid/' .$row[original_agreement_original_agreement] .  ContractURLHelper:: _checkbook_project_spending_get_year_url_param_string() . _checkbook_append_url_params() . _checkbook_project_get_url_param_string('status','contstatus') . '/smnid/' . $node->nid. '/newwindow\">' . '$' . custom_number_formatter_format($row['spending_amount_sum'],2). '</a>'"
+      "expression": "'<a class=\"new_window\" href=\"/spending/transactions/magid/' .$row[original_agreement_original_agreement] .  ContractURLHelper:: _checkbook_project_spending_get_year_url_param_string() . _checkbook_append_url_params() . ContractUtil::getSpentToDateParams() . '/smnid/' . $node->nid. '/newwindow\">' . '$' . custom_number_formatter_format($row['spending_amount_sum'],2). '</a>'"
     } ,
 "contract_link": {
       "type": "expression2",
-      "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/contract_transactions/contract_details/magid/' .$row[original_agreement_original_agreement]  .  '/doctype/'   . $row[document_code_document_code_document_code]  . _checkbook_append_url_params()  . '\">' . $row['contract_number_contract_number'] . '</a>'"
+      "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/contract_transactions/contract_details/magid/' .$row[original_agreement_original_agreement]  .  _checkbook_project_get_url_param_string(\"status\") .  '/doctype/'   . $row[document_code_document_code_document_code]  . _checkbook_append_url_params()  . '\">' . $row['contract_number_contract_number'] . '</a>'"
     } ,
 "formatted_original_amount_sum": {
       "type": "expression2",
@@ -104,6 +104,8 @@ return $footer;
 "summaryView":{
     "template":"contract_summary_expense_contract",
     "templateTitle":"Master Agreement Spending Transactions",
+    "entityColumnName":"vendor_vendor_legal_name",
+    "entityColumnLabel":"Prime Vendor",
     "preprocess_data":"$node->widgetConfig->summaryView->templateTitle = SpendingUtil::getSpentToDateTitle('Master Agreement Spending');"
 },
 "widgetTitle":"Master Agreements",

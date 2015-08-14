@@ -24,7 +24,6 @@
 $filter_years = _checkbook_max_data_year();
 //$q is the new url 
 $q = $_SERVER['REQUEST_URI'];
-$q= preg_replace("/\/month\/[^\/]*/","", $q);
 
 if(preg_match("/trends/",$q)){
   $q = "/spending_landing/yeartype/B/year/" ;
@@ -186,7 +185,16 @@ if($display){
 	              $link = $link_parts[0] . '?expandBottomContURL='. preg_replace("/\/calyear\//","/year/" ,$link_parts[1]);
 	            }
         	}
+            /*For the charts with the months links, need to persist the month param for the newly selected year*/
+            if(isset($bottomURL) && preg_match('/month/',$bottomURL)){
+                $old_month_id = RequestUtil::getRequestKeyValueFromURL("month",$bottomURL);
+                $year_id = $value['year_id'];
+                if(isset($old_month_id) && isset($year_id)) {
+                    $new_month_id = _translateMonthIdByYear($old_month_id,$year_id);
+                    $link = preg_replace('/\/month\/'.$old_month_id.'/','/month/'.$new_month_id,$link);
+                }
 
+            }
             $fiscal_year_data_array[] = array('display_text' =>$display_text ,
                                          'link' => $link,
                                         'value' => $value['year_id'].'~B',
@@ -203,18 +211,28 @@ if($display){
 	        	}
 	            if($calYearSet || preg_match('/transactions/',$_GET['q'])){
 	              $link = preg_replace("/year\/" . $yearFromURL . "/","calyear/" .  $value['year_id'],$q);
-	            }else{
+	            }
+                else{
 	              $link = preg_replace("/year\/" . $yearFromURL . "/","year/" .  $value['year_id'],$q);
 	            }
 	            if(preg_match("/expandBottomContURL/",$link) && preg_match("/spending/",$link)){
 	              $link_parts = explode("?expandBottomContURL=",$link);
 	              $link = $link_parts[0] . '?expandBottomContURL='. preg_replace("/\/year\//","/calyear/" ,$link_parts[1]);
 	            }
-	            
-	            $link = preg_replace("/yeartype\/./","yeartype/C",$link);
+
+                $link = preg_replace("/yeartype\/./","yeartype/C",$link);
 	            $link = str_replace("/dept/".$deptId,"/dept/".$dept_Ids[$value['year_id']],$link);
 	            $link = str_replace("/expcategory/".$expCatId,"/expcategory/".$expCatIds[$value['year_id']],$link);
         	}
+            /*For the charts with the months links, need to persist the month param for the newly selected year*/
+            if(isset($bottomURL) && preg_match('/month/',$bottomURL)){
+                $old_month_id = RequestUtil::getRequestKeyValueFromURL("month",$bottomURL);
+                $year_id = $value['year_id'];
+                if(isset($old_month_id) && isset($year_id)) {
+                    $new_month_id = _translateMonthIdByYear($old_month_id,$year_id,"C");
+                    $link = preg_replace('/\/month\/'.$old_month_id.'/','/month/'.$new_month_id,$link);
+                }
+            }
             $calendar_year_data_array[] = array('display_text' => 'CY '.$value['year_value'].' (Jan 1, '.$value['year_value'].' - Dec 31, '.$value['year_value'].')',
                                                 'value' => $value['year_id'].'~C',
                                               'link' => $link,
