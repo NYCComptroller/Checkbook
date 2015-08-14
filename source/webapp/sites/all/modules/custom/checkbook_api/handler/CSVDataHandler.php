@@ -100,7 +100,15 @@ class CSVDataHandler extends AbstractDataHandler {
         //map csv headers
         $columnMappings = $this->requestDataSet->displayConfiguration->csv->elementsColumn;
         $columnMappings =  (array)$columnMappings;
+        //Handle referenced columns
+        foreach($columnMappings as $key=>$value) {
+            if (strpos($value,"@") !== false) {
+                $column_parts = explode("@", $value);
+                $columnMappings[$key] = $column_parts[0];
+            }
+        }
         $columnMappings = array_flip($columnMappings);
+
         $end = strpos($query, 'FROM');
         $select_part = substr($query,0,$end);
         $select_part = str_replace("SELECT", "", $select_part);
@@ -113,6 +121,11 @@ class CSVDataHandler extends AbstractDataHandler {
             $column = $sql_part;
             $alias = "";
 
+            //Remove "AS"
+            if (strpos($sql_part,"AS") !== false) {
+                $pos = strpos($column, " AS");
+                $sql_part = substr($sql_part,0,$pos);
+            }
             //get only column
             if (strpos($sql_part,".") !== false) {
                 $alias = substr($sql_part, 0, 3);
@@ -165,8 +178,6 @@ class CSVDataHandler extends AbstractDataHandler {
                 . " -c \"\\\\COPY (" . $query . ") TO '"
                 . $tempOutputFile
                 . "'  WITH DELIMITER ',' CSV HEADER \" ";
-
-//            log_error($cmd);
             shell_exec($cmd);
 
             $move_cmd = "mv $tempOutputFile $outputFile";
