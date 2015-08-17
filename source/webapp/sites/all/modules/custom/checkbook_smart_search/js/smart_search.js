@@ -203,8 +203,14 @@
                                         selectedRecords = domainCount[1];
                                     totalRecords += parseInt(domainCount[1]);
                                 });
-                                var message = "Maximum of 200,000 records available for download from "+addCommas(selectedRecords)+" available "+selectedDomain+" records. " +
-                                    "The report will be in Comma Delimited format. Only one domain can be selected at a time to download the data.";
+                                if(selectedRecords <= 200000){
+                                    var message = addCommas(selectedRecords) +" "+ selectedDomain +" records available for download. " +
+                                        "The report will be in Comma Delimited format. Only one domain can be selected at a time to download the data.";
+                                }
+                                else{
+                                    var message = "Maximum of 200,000 records available for download from "+addCommas(selectedRecords)+" available "+selectedDomain+" records. " +
+                                        "The report will be in Comma Delimited format. Only one domain can be selected at a time to download the data.";
+                                }
 
                                 $('#export-message').html(message);
                             }
