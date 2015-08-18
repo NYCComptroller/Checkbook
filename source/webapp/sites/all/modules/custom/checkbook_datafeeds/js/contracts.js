@@ -35,6 +35,9 @@
 
         $('#edit-column-select-expense option[value="Year"]').attr('disabled','disabled');
         $('#edit-column-select-expense option[value="year"]').attr('disabled','disabled');
+        $('#edit-column-select-all option[value="Year"]').attr('disabled','disabled');
+        $('#edit-column-select-all option[value="year"]').attr('disabled','disabled');
+
         $('#edit-column-select-expense').multiSelect('refresh');
         if(!$('#ms-edit-column-select-expense .ms-selection').next().is("a")){
             $('#ms-edit-column-select-expense .ms-selection').after('<a class="deselect">Remove All</a>');
@@ -48,6 +51,8 @@
         });
         $('#edit-column-select-revenue option[value="Year"]').attr('disabled','disabled');
         $('#edit-column-select-revenue option[value="year"]').attr('disabled','disabled');
+        $('#edit-column-select-all option[value="Year"]').attr('disabled','disabled');
+        $('#edit-column-select-all option[value="year"]').attr('disabled','disabled');
         $('#edit-column-select-revenue').multiSelect('refresh');
         if(!$('#ms-edit-column-select-revenue .ms-selection').next().is("a")){
             $('#ms-edit-column-select-revenue .ms-selection').after('<a class="deselect">Remove All</a>');
@@ -166,6 +171,7 @@
                 $('#edit-column-select-revenue option[value="Year"]',context).attr('disabled','disabled');
                 $('#edit-column-select-revenue option[value="year"]',context).attr('disabled','disabled');
                 $('#edit-column-select-all option[value="Year"]',context).attr('disabled','disabled');
+                $('#edit-column-select-all option[value="year"]',context).attr('disabled','disabled');
             }
             //Set up multiselects/option transfers
             //Active/Registered Expense
