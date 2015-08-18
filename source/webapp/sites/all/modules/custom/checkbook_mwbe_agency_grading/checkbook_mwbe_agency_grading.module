@@ -136,7 +136,6 @@ function _checkbook_mwbe_agency_grading_right($agencies_data){
 	$nyc_data['total_non_mwbe']	 = custom_number_formatter_format($nyc_data['total_non_mwbe'],1,'$')	;
 	$nyc_data['total_io']	 = custom_number_formatter_format($nyc_data['total_io'],1,'$')	;
 	$nyc_data['total']	 = custom_number_formatter_format($nyc_data['total'],1,'$')	;
-	
 	$html_right = theme('mwbe_agency_grading_right_side_bar',array('nyc_data'=>$nyc_data));
 	return $html_right;
 }
@@ -249,7 +248,6 @@ function _checkbook_mwbe_agency_grading_generate_sql($table){
 		SUM(
        CASE
              WHEN minority_type_id = 7 THEN total_spending_amount
-             WHEN minority_type_id = 11 THEN total_spending_amount
             ELSE 0
 	END) n_mwbe,';
 
