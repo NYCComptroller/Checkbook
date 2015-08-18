@@ -267,8 +267,10 @@ function _checkbook_mwbe_agency_grading_generate_sql($table){
             $sql .= ' WHEN minority_type_id = 9 THEN total_spending_amount';
         }
         if(in_array("n_mwbe", $mwbe_cats)){
-            $sql .= ' WHEN minority_type_id = 7 THEN total_spending_amount
-                      WHEN minority_type_id = 11 THEN total_spending_amount';
+            $sql .= ' WHEN minority_type_id = 7 THEN total_spending_amount';
+        }
+        if(in_array("io_mwbe", $mwbe_cats)){
+            $sql .= ' WHEN minority_type_id = 11 THEN total_spending_amount';
         }
     $sql .= ' ELSE 0
 	END) ytd_spending';
