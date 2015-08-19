@@ -13,16 +13,16 @@
                                 return false;
                         },
                         select: function (event, ui) {
+                            setTimeout(function(){
                                 $("#edit-submit").addClass('disable_button');
                                 $("#edit-search-box").addClass('transparent');
                                 $("#edit-search-box").addClass('loadinggif');
                                 $("#edit-search-box").attr("readonly", "readonly");
                                 // This is to fix the issue with chrome when trying to disable the search button
-                                setTimeout(function(){
-                                    $('input[type=submit]').attr("disabled", "disabled");
-                                    $("#edit-submit").css('cursor', 'default');
-                                    $("#edit-search-box").attr("disabled", "disabled");
-                                }, 10);
+                                $('input[type=submit]').attr("disabled", "disabled");
+                                $("#edit-submit").css('cursor', 'default');
+                                $("#edit-search-box").attr("disabled", "disabled");
+                                }, 1);
                                 $(event.target).val(ui.item.label);
                                 window.location = ui.item.url;
                                 return false;
@@ -58,12 +58,12 @@
             }
         });
         $("#edit-submit").click(function(e) {
-            $("#edit-submit").addClass('disable_button');
-            $("#edit-search-box").addClass('transparent');
-            $("#edit-search-box").addClass('loadinggif');
-            $("#edit-search-box").focus();
-            // This is to fix the issue with chrome when trying to disable the search button
             setTimeout(function(){
+                $("#edit-submit").addClass('disable_button');
+                $("#edit-search-box").addClass('transparent');
+                $("#edit-search-box").addClass('loadinggif');
+                $("#edit-search-box").focus();
+                // This is to fix the issue with chrome when trying to disable the search button
                 $('input[type=submit]').attr("disabled", "disabled");
                 $("#edit-submit").css('cursor', 'default');
                 $("#edit-search-box").attr("disabled", "disabled");
