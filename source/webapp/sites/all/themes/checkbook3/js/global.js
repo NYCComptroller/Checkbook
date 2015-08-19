@@ -1828,6 +1828,7 @@ Drupal.behaviors.hoveOverMWBE = {
                                 $('.bottomContainer').html(data);
                                 $('.bottomContainerToggle').html("Hide Details &#171;");
                                 $('.bottomContainerToggle').toggle();
+                                $('.first-item').trigger('click');
                             }
                         });
                     } else {
@@ -2308,24 +2309,34 @@ Drupal.behaviors.datafeedspagefreeze = {
 Drupal.behaviors.advancedsearchfreeze = {
     attach:function (context, settings) {
         function formfreeze_advancedsearch(e){
+            setTimeout(function(){
+                jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form").css('opacity', '0.5');
                 jQuery(".ui-dialog-titlebar").addClass('transparent');
+                jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form").css('opacity', '0.5');
                 jQuery(".ui-dialog-titlebar").addClass('disable_me');
                 jQuery("#spending-advanced-search").addClass('transparent');
+                jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form").css('opacity', '0.5');
                 jQuery("#revenue-advanced-search").addClass('transparent');
+                jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form").css('opacity', '0.5');
                 jQuery("#budget-advanced-search").addClass('transparent');
+                jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form").css('opacity', '0.5');
                 jQuery("#contracts-advanced-search").addClass('transparent');
+                jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form").css('opacity', '0.5');
                 jQuery("#payroll-advanced-search").addClass('transparent');
+                jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form").css('opacity', '0.5');
                 jQuery(".advanced-search-accordion").addClass('transparent');
                 jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form").addClass('disable_me');
-                setTimeout(function(){
-                    jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form :input").attr("disabled", "disabled");
-                }, 1);
+                jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form").css('opacity', '0.5');
+                jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form :input").attr("disabled", "disabled");
+            }, 1);
         }
 
 
         function gif_rotator(e){
+            setTimeout(function(){
                 jQuery("#advanced-search-rotator").css('display', 'block');
                 jQuery("#advanced-search-rotator").addClass('loading_bigger_gif');
+            }, 1);
         }
 
         // Disable form
@@ -2346,37 +2357,41 @@ Drupal.behaviors.advancedsearchfreeze = {
         jQuery("#edit-contracts-submit--2").click(gif_rotator);
         jQuery("#edit-payroll-submit").click(gif_rotator);
 
-        jQuery(document).bind("ajaxSend", function(){
-            //Advanced search
-            jQuery("#edit-spending-submit").attr("disabled", "true");
-            jQuery("#edit-spending-submit--2").attr("disabled", "true");
-            jQuery("#edit-revenue-submit").attr("disabled", "true");
-            jQuery("#edit-budget-submit").attr("disabled", "true");
-            jQuery("#edit-contracts-submit").attr("disabled", "true");
-            jQuery("#edit-contracts-submit--2").attr("disabled", "true");
-            jQuery("#edit-payroll-submit").attr("disabled", "true");
-            //create alert
-            jQuery("#edit-spending-next").attr("disabled", "true");
-            jQuery("#edit-contracts-next").attr("disabled", "true");
-            jQuery("#edit-payroll-next").attr("disabled", "true");
-            jQuery("#edit-revenue-next").attr("disabled", "true");
-            jQuery("#edit-budget-next").attr("disabled", "true");
-        }).bind("ajaxComplete", function(){
-            //Advanced search
-            jQuery("#edit-spending-submit").removeAttr('disabled');
-            jQuery("#edit-spending-submit--2").removeAttr('disabled');
-            jQuery("#edit-revenue-submit").removeAttr('disabled');
-            jQuery("#edit-budget-submit").removeAttr('disabled');
-            jQuery("#edit-contracts-submit").removeAttr('disabled');
-            jQuery("#edit-contracts-submit--2").removeAttr('disabled');
-            jQuery("#edit-payroll-submit").removeAttr('disabled');
-            //Create alert
-            jQuery("#edit-spending-next").removeAttr('disabled');
-            jQuery("#edit-contracts-next").removeAttr('disabled');
-            jQuery("#edit-payroll-next").removeAttr('disabled');
-            jQuery("#edit-revenue-next").removeAttr('disabled');
-            jQuery("#edit-budget-next").removeAttr('disabled');
-        });
+//        jQuery(document).bind("ajaxSend", function(){
+//            setTimeout(function(){
+//                //Advanced search
+//                jQuery("#edit-spending-submit").attr("disabled", "true");
+//                jQuery("#edit-spending-submit--2").attr("disabled", "true");
+//                jQuery("#edit-revenue-submit").attr("disabled", "true");
+//                jQuery("#edit-budget-submit").attr("disabled", "true");
+//                jQuery("#edit-contracts-submit").attr("disabled", "true");
+//                jQuery("#edit-contracts-submit--2").attr("disabled", "true");
+//                jQuery("#edit-payroll-submit").attr("disabled", "true");
+//                //create alert
+//                jQuery("#edit-spending-next").attr("disabled", "true");
+//                jQuery("#edit-contracts-next").attr("disabled", "true");
+//                jQuery("#edit-payroll-next").attr("disabled", "true");
+//                jQuery("#edit-revenue-next").attr("disabled", "true");
+//                jQuery("#edit-budget-next").attr("disabled", "true");
+//            }, 10);
+//        }).bind("ajaxComplete", function(){
+//            setTimeout(function(){
+//                //Advanced search
+//                jQuery("#edit-spending-submit").removeAttr('disabled');
+//                jQuery("#edit-spending-submit--2").removeAttr('disabled');
+//                jQuery("#edit-revenue-submit").removeAttr('disabled');
+//                jQuery("#edit-budget-submit").removeAttr('disabled');
+//                jQuery("#edit-contracts-submit").removeAttr('disabled');
+//                jQuery("#edit-contracts-submit--2").removeAttr('disabled');
+//                jQuery("#edit-payroll-submit").removeAttr('disabled');
+//                //Create alert
+//                jQuery("#edit-spending-next").removeAttr('disabled');
+//                jQuery("#edit-contracts-next").removeAttr('disabled');
+//                jQuery("#edit-payroll-next").removeAttr('disabled');
+//                jQuery("#edit-revenue-next").removeAttr('disabled');
+//                jQuery("#edit-budget-next").removeAttr('disabled');
+//            }, 10);
+//        });
     }
 
 };
