@@ -1,7 +1,7 @@
 {
     "widgetType":"phpparser",
     "parentNid":6,
-    "limit":1,
+    "limit":100,
     "startWith":0,
     "columns":["vendornm.vendornm", "txcount"],
     "orderBy":["-txcount", "vendornm.vendornm"],
@@ -13,7 +13,7 @@
     "autocompleteParamName":"vendornm_exact_auto",    
     "autocompleteID":"fvendorNm",
     "autocompleteField":"vendor_name", 
-    "maxSelect":1,
+    "maxSelect":5,
     "adjustParameters":"
     $page = $_REQUEST['page'];
 	checkbook_faceted_search_adjust_param($node);
