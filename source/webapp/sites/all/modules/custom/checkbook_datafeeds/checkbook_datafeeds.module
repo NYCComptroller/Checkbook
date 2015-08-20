@@ -6479,6 +6479,9 @@ function checkDateFormat($date) {
 function checkbook_datafeeds_format_columns() {
     //Used to maintain the order of the columns
     $hidden_selected_values = $_POST['hidden_multiple_value']; //get the values from the hidden field
+    if($_POST['year'] == 'ALL'){
+        $hidden_selected_values = str_replace("|year|", "", $_POST['hidden_multiple_value']);
+    }
     $array_selected_values = explode("|", $hidden_selected_values); //convert the values into array
     $filter_array = array_filter($array_selected_values); //remove empty index
 
