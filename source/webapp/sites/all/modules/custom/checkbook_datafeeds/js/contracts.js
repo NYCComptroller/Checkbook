@@ -32,11 +32,10 @@
         $('#edit-column-select-expense').multiSelect('deselect_all');
         $('#edit-column-select-revenue').multiSelect('deselect_all');
         $('#edit-column-select-pending').multiSelect('deselect_all');
+        $('#edit-column-select-all').multiSelect('deselect_all');
 
         $('#edit-column-select-expense option[value="Year"]').attr('disabled','disabled');
         $('#edit-column-select-expense option[value="year"]').attr('disabled','disabled');
-        $('#edit-column-select-all option[value="Year"]').attr('disabled','disabled');
-        $('#edit-column-select-all option[value="year"]').attr('disabled','disabled');
 
         $('#edit-column-select-expense').multiSelect('refresh');
         if(!$('#ms-edit-column-select-expense .ms-selection').next().is("a")){
@@ -51,8 +50,7 @@
         });
         $('#edit-column-select-revenue option[value="Year"]').attr('disabled','disabled');
         $('#edit-column-select-revenue option[value="year"]').attr('disabled','disabled');
-        $('#edit-column-select-all option[value="Year"]').attr('disabled','disabled');
-        $('#edit-column-select-all option[value="year"]').attr('disabled','disabled');
+
         $('#edit-column-select-revenue').multiSelect('refresh');
         if(!$('#ms-edit-column-select-revenue .ms-selection').next().is("a")){
             $('#ms-edit-column-select-revenue .ms-selection').after('<a class="deselect">Remove All</a>');
@@ -63,6 +61,21 @@
         });
         $('#ms-edit-column-select-revenue a.deselect').click(function () {
             $('#edit-column-select-revenue').multiSelect('deselect_all');
+        });
+
+        $('#edit-column-select-all option[value="Year"]').attr('disabled','disabled');
+        $('#edit-column-select-all option[value="year"]').attr('disabled','disabled');
+
+        $('#edit-column-select-expense').multiSelect('refresh');
+        if(!$('#ms-edit-column-select-all .ms-selection').next().is("a")){
+            $('#ms-edit-column-select-all .ms-selection').after('<a class="deselect">Remove All</a>');
+            $('#ms-edit-column-select-all .ms-selection').after('<a class="select">Add All</a>');
+        }
+        $('#ms-edit-column-select-all a.select').click(function () {
+            $('#edit-column-select-all').multiSelect('select_all');
+        });
+        $('#ms-edit-column-select-all a.deselect').click(function () {
+            $('#edit-column-select-all').multiSelect('deselect_all');
         });
     }
 
@@ -301,6 +314,19 @@
                    $('#ms-edit-column-select-revenue a.deselect', context).click(function () {
                        $('#edit-column-select-revenue', context).multiSelect('deselect_all');
                    });
+                   $('#edit-column-select-all option[value="Year"]',context).attr('disabled','disabled');
+                   $('#edit-column-select-all option[value="year"]',context).attr('disabled','disabled');
+                   $('#edit-column-select-all', context).multiSelect('refresh');
+                   if(!$('#ms-edit-column-select-all .ms-selection', context).next().is("a")){
+                       $('#ms-edit-column-select-all .ms-selection', context).after('<a class="deselect">Remove All</a>');
+                       $('#ms-edit-column-select-all .ms-selection', context).after('<a class="select">Add All</a>');
+                   }
+                   $('#ms-edit-column-select-all a.select', context).click(function () {
+                       $('#edit-column-select-all', context).multiSelect('select_all');
+                   });
+                   $('#ms-edit-column-select-all a.deselect', context).click(function () {
+                       $('#edit-column-select-all', context).multiSelect('deselect_all');
+                   });
                } else {
                    $('#edit-column-select-expense option[value="Year"]',context).attr('disabled','');
                    $('#edit-column-select-expense option[value="year"]',context).attr('disabled','');
@@ -327,6 +353,19 @@
                    });
                    $('#ms-edit-column-select-revenue a.deselect', context).click(function () {
                        $('#edit-column-select-revenue', context).multiSelect('deselect_all');
+                   });
+                   $('#edit-column-select-all option[value="Year"]',context).attr('disabled','');
+                   $('#edit-column-select-all option[value="year"]',context).attr('disabled','');
+                   $('#edit-column-select-all', context).multiSelect('refresh');
+                   if(!$('#ms-edit-column-select-all .ms-selection', context).next().is("a")){
+                       $('#ms-edit-column-select-all .ms-selection', context).after('<a class="deselect">Remove All</a>');
+                       $('#ms-edit-column-select-all .ms-selection', context).after('<a class="select">Add All</a>');
+                   }
+                   $('#ms-edit-column-select-all a.select', context).click(function () {
+                       $('#edit-column-select-all', context).multiSelect('select_all');
+                   });
+                   $('#ms-edit-column-select-all a.deselect', context).click(function () {
+                       $('#edit-column-select-all', context).multiSelect('deselect_all');
                    });
                }
             });
