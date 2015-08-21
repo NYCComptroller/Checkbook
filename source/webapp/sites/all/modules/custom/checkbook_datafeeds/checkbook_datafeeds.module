@@ -6480,8 +6480,12 @@ function checkbook_datafeeds_format_columns() {
     //Used to maintain the order of the columns
     $hidden_selected_values = $_POST['hidden_multiple_value']; //get the values from the hidden field
     if($_POST['year'] == 'ALL'){
-        $hidden_selected_values = str_replace("|year|", "", $_POST['hidden_multiple_value']);
-        $hidden_selected_values = str_replace("|Year|", "", $_POST['hidden_multiple_value']);
+        if(strpos($hidden_selected_values, "|year|")){
+            $hidden_selected_values = str_replace("|year|", "", $hidden_selected_values);
+        }
+        if(strpos($hidden_selected_values, "|Year|")){
+            $hidden_selected_values = str_replace("|Year|", "", $hidden_selected_values);
+        }
     }
     $array_selected_values = explode("|", $hidden_selected_values); //convert the values into array
     $filter_array = array_filter($array_selected_values); //remove empty index
