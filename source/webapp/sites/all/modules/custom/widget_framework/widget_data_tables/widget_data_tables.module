@@ -395,6 +395,18 @@ function widget_data_tables_widget_prepare($node){
 		$count += 1;
     }
 
+    /**
+     * uniqueSortColumn will allow the data to order properly by a secondary unique sort
+     */
+    if(isset($node->widgetConfig->orderBy) && !empty($node->widgetConfig->orderBy)) {
+        if(isset($node->widgetConfig->uniqueSortColumn)) {
+            if($_REQUEST['sSortDir_' . $index] == 'desc')
+                $node->widgetConfig->orderBy[]  = '-' . $node->widgetConfig->uniqueSortColumn;
+            else
+                $node->widgetConfig->orderBy[] =  $node->widgetConfig->uniqueSortColumn;
+        }
+    }
+
     foreach($node->widgetConfig->orderBy as $key=>$value){
         $value = _update_dataset_datasource($value);
         $node->widgetConfig->orderBy[$key] = $value;
