@@ -14,6 +14,7 @@
 "defaultParameters":{"year_id.year_id":113},
 "noDataInitialLoad":true,
 "dataset": "checkbook:budget_percent_difference",
+"uniqueSortColumn":"dept_dept",
 "columns": ["year_id.year_id","dept.dept.department_name","dept.dept","agency.agency","agency.agency.agency_name",
             "percent_difference1","percent_difference2","percent_difference3",
             "current_amount","previous_amount","previous_1_amount","previous_2_amount"],
