@@ -23,6 +23,7 @@
 "html_class": "initiative-table",
 "no_results_content":"No Results Found",
 "dataset": "checkbook:budget",
+"uniqueSortColumn":"budget_id",
 "columns": ["agency_id","budget_fiscal_year_id","agency_short_name","department_name","budget_code","budget_code_name","object_class_name","budget_fiscal_year","current_budget_amount","adopted_amount","pre_encumbered_amount","encumbered_amount","cash_expense_amount","post_closing_adjustment_amount","accrued_expense_amount","agency_name","total_expenditure_amount","remaining_budget"],
 "caption":"",
 "derivedColumns": {
