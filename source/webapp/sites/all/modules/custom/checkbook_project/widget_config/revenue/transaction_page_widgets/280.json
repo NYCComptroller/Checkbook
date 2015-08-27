@@ -20,7 +20,6 @@
     "html_class": "initiative-table",
     "no_results_content":"No Results Found",
     "dataset": "checkbook:fact_revenue",
-    "uniqueSortColumn":"revenue_id",
     "columns": [
         "closing_classification_name",
         "agency_short_name",
