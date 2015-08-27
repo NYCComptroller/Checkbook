@@ -619,10 +619,26 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
     }
     if (!empty($contracts_contract_category)) {
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_category, 'contcat');
-        if ($contracts_contract_status != 'P')
-            $redirect_url .= ($contracts_contract_category == 'revenue') ? '/doctype/RCT1' : '/doctype/MMA1~MA1~CTA1~CT1~DO1';
-        else
-            $redirect_url .= ($contracts_contract_category == 'revenue') ? '/doctype/RCT1' : '/doctype/MMA1~MA1~MAR~CTA1~CT1~CTR~DO1';
+        if ($contracts_contract_status != 'P'){
+            if($contracts_contract_category == 'revenue'){
+                $redirect_url .= '/doctype/RCT1';
+            }else if($contracts_contract_category == 'expense'){
+                $redirect_url .= '/doctype/MMA1~MA1~CTA1~CT1~DO1';
+            }
+            else {
+                $redirect_url .= '/doctype/MMA1~MA1~CTA1~CT1~DO1~RCT1';
+            }
+        }
+        else {
+            if($contracts_contract_category == 'revenue'){
+                $redirect_url .= '/doctype/RCT1';
+            }else if($contracts_contract_category == 'expense'){
+                $redirect_url .= '/doctype/MMA1~MA1~MAR~CTA1~CT1~CTR~DO1';
+            }
+            else {
+                $redirect_url .= '/doctype/MMA1~MA1~MAR~CTA1~CT1~CTR~DO1~RCT1';
+            }
+        }
     }
     if (!empty($contracts_contract_vendor_name)) {
         if ($contracts_contract_vendor_name_exact == $contracts_contract_vendor_name) {

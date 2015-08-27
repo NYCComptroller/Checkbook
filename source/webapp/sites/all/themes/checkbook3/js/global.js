@@ -793,6 +793,7 @@ Drupal.behaviors.hoveOverMWBE = {
                         dialog = $('<div id="dialog" style="display:none"></div>');
                     }
 
+
                     var oSettings = $('#table_'+$(this).attr('exportid')).dataTable().fnSettings();
                     var iRecordsTotal = oSettings.fnRecordsTotal();
                     var iRecordsDisplay = oSettings.fnRecordsDisplay();
@@ -816,6 +817,7 @@ Drupal.behaviors.hoveOverMWBE = {
                                 title:'Download Transactions Data',
                                 dialogClass:"export",
                                 width:700,
+                                resizable:false,
                                 buttons:{
                                     "Download Data":function () {
                                         //current page
@@ -827,6 +829,7 @@ Drupal.behaviors.hoveOverMWBE = {
                                         if (dcfilter == null) {
                                             alertMsgs.push("One of 'Data Selection' option must be selected.");
                                         }
+
 
                                         if (dcfilter == 'all') {
                                             startRecord = 0;
@@ -864,10 +867,13 @@ Drupal.behaviors.hoveOverMWBE = {
                                             $('input[name=rangeto]').val(null);
                                         }
 
+
                                         var frmtfilter = $('input[name=frmt]:checked').val();
                                         if (frmtfilter == null) {
                                             alertMsgs.push('Format must be selected');
                                         }
+
+
 
                                         if (alertMsgs.length > 0) {
                                             $('#errorMessages').html('Below errors must be corrected:<div class="error-message"><ul>' + '<li>' + alertMsgs.join('<li/>') + '</ul></div>');
@@ -903,6 +909,22 @@ Drupal.behaviors.hoveOverMWBE = {
                                             }
 
                                             $('<form action="' + url + '" method="get">' + inputs + '</form>').appendTo('body').submit().remove();
+
+                                            $('#dialog #export-message').addClass('disable_me');
+                                            $('.ui-dialog-titlebar').addClass('disable_me');
+                                            $('.ui-dialog-buttonset').addClass('disable_me');
+                                            $('#dialog #dialog').addClass('disable_me');
+                                            $('#loading_gif').show();
+                                            $('#loading_gif').addClass('loading_bigger_gif');
+
+                                            setTimeout(function(){
+                                                $('#dialog #export-message').removeClass('disable_me');
+                                                $('.ui-widget-header').removeClass('disable_me');
+                                                $('.ui-dialog-buttonset').removeClass('disable_me');
+                                                $('#dialog #dialog').removeClass('disable_me');
+                                                $('#loading_gif').hide();
+                                                $('#loading_gif').removeClass('loading_bigger_gif');
+                                            }, 3000);
                                         }
                                     },
                                     "Cancel":function () {
@@ -2242,21 +2264,23 @@ Drupal.behaviors.disableClickTopNav = {
 Drupal.behaviors.datafeedspagefreeze = {
     attach:function (context, settings) {
         function formfreeze_datafeeds(e){
-            jQuery("#checkbook-datafeeds-data-feed-wizard").addClass('transparent');
-            jQuery(".data-feeds-sidebar").addClass('transparent');
-            jQuery("#checkbook-datafeeds-data-feed-wizard").addClass('disable_me');
-            jQuery("#checkbook-datafeeds-tracking-form").addClass('disable_me');
-            jQuery('.data-feeds-wizard a').addClass('disable_me');
-            jQuery('.data-feeds-wizard li').addClass('disable_me');
             setTimeout(function(){
+                jQuery("#checkbook-datafeeds-data-feed-wizard").addClass('transparent');
+                jQuery(".data-feeds-sidebar").addClass('transparent');
+                jQuery("#checkbook-datafeeds-data-feed-wizard").addClass('disable_me');
+                jQuery("#checkbook-datafeeds-tracking-form").addClass('disable_me');
+                jQuery('.data-feeds-wizard a').addClass('disable_me');
+                jQuery('.data-feeds-wizard li').addClass('disable_me');
                 jQuery("#checkbook-datafeeds-data-feed-wizard :input").attr("disabled", "disabled");
                 jQuery("#checkbook-datafeeds-tracking-form :input").attr("disabled", "disabled");
             }, 1);
         }
 
         function gif_rotator(e){
+            setTimeout(function(){
             jQuery("#rotator").css('display', 'block');
             jQuery("#rotator").addClass('loading_bigger_gif');
+            }, 1);
         }
 
         // Datafeeds form disable
@@ -2287,6 +2311,7 @@ Drupal.behaviors.datafeedspagefreeze = {
 Drupal.behaviors.advancedsearchfreeze = {
     attach:function (context, settings) {
         function formfreeze_advancedsearch(e){
+            setTimeout(function(){
                 jQuery(".ui-dialog-titlebar").addClass('transparent');
                 jQuery(".ui-dialog-titlebar").addClass('disable_me');
                 jQuery("#spending-advanced-search").addClass('transparent');
@@ -2296,15 +2321,16 @@ Drupal.behaviors.advancedsearchfreeze = {
                 jQuery("#payroll-advanced-search").addClass('transparent');
                 jQuery(".advanced-search-accordion").addClass('transparent');
                 jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form").addClass('disable_me');
-                setTimeout(function(){
-                    jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form :input").attr("disabled", "disabled");
-                }, 1);
+                jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form :input").attr("disabled", "disabled");
+            }, 1);
         }
 
 
         function gif_rotator(e){
+            setTimeout(function(){
                 jQuery("#advanced-search-rotator").css('display', 'block');
                 jQuery("#advanced-search-rotator").addClass('loading_bigger_gif');
+            }, 1);
         }
 
         // Disable form
@@ -2326,35 +2352,39 @@ Drupal.behaviors.advancedsearchfreeze = {
         jQuery("#edit-payroll-submit").click(gif_rotator);
 
         jQuery(document).bind("ajaxSend", function(){
-            //Advanced search
-            jQuery("#edit-spending-submit").attr("disabled", "true");
-            jQuery("#edit-spending-submit--2").attr("disabled", "true");
-            jQuery("#edit-revenue-submit").attr("disabled", "true");
-            jQuery("#edit-budget-submit").attr("disabled", "true");
-            jQuery("#edit-contracts-submit").attr("disabled", "true");
-            jQuery("#edit-contracts-submit--2").attr("disabled", "true");
-            jQuery("#edit-payroll-submit").attr("disabled", "true");
-            //create alert
-            jQuery("#edit-spending-next").attr("disabled", "true");
-            jQuery("#edit-contracts-next").attr("disabled", "true");
-            jQuery("#edit-payroll-next").attr("disabled", "true");
-            jQuery("#edit-revenue-next").attr("disabled", "true");
-            jQuery("#edit-budget-next").attr("disabled", "true");
+            setTimeout(function(){
+                //Advanced search
+                jQuery("#edit-spending-submit").attr("disabled", "true");
+                jQuery("#edit-spending-submit--2").attr("disabled", "true");
+                jQuery("#edit-revenue-submit").attr("disabled", "true");
+                jQuery("#edit-budget-submit").attr("disabled", "true");
+                jQuery("#edit-contracts-submit").attr("disabled", "true");
+                jQuery("#edit-contracts-submit--2").attr("disabled", "true");
+                jQuery("#edit-payroll-submit").attr("disabled", "true");
+                //create alert
+                jQuery("#edit-spending-next").attr("disabled", "true");
+                jQuery("#edit-contracts-next").attr("disabled", "true");
+                jQuery("#edit-payroll-next").attr("disabled", "true");
+                jQuery("#edit-revenue-next").attr("disabled", "true");
+                jQuery("#edit-budget-next").attr("disabled", "true");
+            }, 1);
         }).bind("ajaxComplete", function(){
-            //Advanced search
-            jQuery("#edit-spending-submit").removeAttr('disabled');
-            jQuery("#edit-spending-submit--2").removeAttr('disabled');
-            jQuery("#edit-revenue-submit").removeAttr('disabled');
-            jQuery("#edit-budget-submit").removeAttr('disabled');
-            jQuery("#edit-contracts-submit").removeAttr('disabled');
-            jQuery("#edit-contracts-submit--2").removeAttr('disabled');
-            jQuery("#edit-payroll-submit").removeAttr('disabled');
-            //Create alert
-            jQuery("#edit-spending-next").removeAttr('disabled');
-            jQuery("#edit-contracts-next").removeAttr('disabled');
-            jQuery("#edit-payroll-next").removeAttr('disabled');
-            jQuery("#edit-revenue-next").removeAttr('disabled');
-            jQuery("#edit-budget-next").removeAttr('disabled');
+            setTimeout(function(){
+                //Advanced search
+                jQuery("#edit-spending-submit").removeAttr('disabled');
+                jQuery("#edit-spending-submit--2").removeAttr('disabled');
+                jQuery("#edit-revenue-submit").removeAttr('disabled');
+                jQuery("#edit-budget-submit").removeAttr('disabled');
+                jQuery("#edit-contracts-submit").removeAttr('disabled');
+                jQuery("#edit-contracts-submit--2").removeAttr('disabled');
+                jQuery("#edit-payroll-submit").removeAttr('disabled');
+                //Create alert
+                jQuery("#edit-spending-next").removeAttr('disabled');
+                jQuery("#edit-contracts-next").removeAttr('disabled');
+                jQuery("#edit-payroll-next").removeAttr('disabled');
+                jQuery("#edit-revenue-next").removeAttr('disabled');
+                jQuery("#edit-budget-next").removeAttr('disabled');
+            }, 1);
         });
     }
 

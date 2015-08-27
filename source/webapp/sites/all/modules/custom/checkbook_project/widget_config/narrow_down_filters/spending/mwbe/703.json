@@ -2,7 +2,7 @@
     "widgetType":"phpparser",
     "parentNid":706,
     "startWith":0,
-    "limit":1,
+    "limit":100,
     "maxSelect":5,
     "columns":["vendor.vendor", "vendornm.vendornm", "txcount"],
     "orderBy":"-txcount",

@@ -337,8 +337,15 @@
         cUrl = adjustUrlParameter(cUrl,'expcategory',oCategoryIds);
         cUrl = adjustUrlParameter(cUrl,'category',oSpendCategoryIds );
         cUrl = adjustUrlParameter(cUrl,'checkamtr',oCheckAmount);
-        cUrl = adjustUrlParameter(cUrl,'dept',oDeptIds);
-        cUrl = adjustUrlParameter(cUrl,'deptnm',oDeptNms);
+        //Dept should never be included without agency
+        if(agencyIds.length != 0) {
+            cUrl = adjustUrlParameter(cUrl,'dept',oDeptIds);
+            cUrl = adjustUrlParameter(cUrl,'deptnm',oDeptNms);
+        }
+        else {
+            cUrl = adjustUrlParameter(cUrl,'dept',null);
+            cUrl = adjustUrlParameter(cUrl,'deptnm',null);
+        }
         cUrl = adjustUrlParameter(cUrl,'expcategorynm',oSpendCategoryNms);
         cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
         cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);

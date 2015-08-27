@@ -184,4 +184,17 @@ class CheckBookAPI {
 
     return $job_details;
   }
+    /**
+     * Function to call to get data.
+     *
+     * @return array
+     *   Data
+     */
+    function generateFile() {
+        return $this->request_handler->generateFile();
+    }
+
+    function outputFile($fileName){
+        return $this->request_handler->outputFile($fileName);
+    }
 }

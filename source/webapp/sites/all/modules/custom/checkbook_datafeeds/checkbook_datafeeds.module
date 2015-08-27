@@ -1070,7 +1070,7 @@ function checkbook_datafeeds_process_budget_values($form, $form_state) {
         'global' => array(
             'type_of_data' => 'Budget',
             'records_from' => 1,
-            'max_records' => 50000,
+            'max_records' => 200000,
         ),
     );
     $criteria['responseColumns'] = $values['column_select'];
@@ -1350,12 +1350,28 @@ function checkbook_datafeeds_contracts($form, &$form_state)
         '#id' => 'edit-column-select-revenue',
         '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
     );
+    $form['columns']['column_select_all'] = array(
+        '#type' => 'select',
+        '#title' => t('All<span class="form-required" title="This field is required.">*</span>'),
+        '#multiple' => TRUE,
+        '#options' => _checkbook_datafeeds_contracts_column_options($data_source, 'default', 'all', $data_type),
+        '#id' => 'edit-column-select-all',
+        '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
+    );
     $form['columns']['column_select_pending'] = array(
         '#type' => 'select',
         '#title' => t('Pending<span class="form-required" title="This field is required.">*</span>'),
         '#multiple' => TRUE,
         '#options' => _checkbook_datafeeds_contracts_column_options($data_source, 'pending', 'pending', $data_type),
         '#id' => 'edit-column-select-pending',
+        '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
+    );
+    $form['columns']['column_select_pending_all'] = array(
+        '#type' => 'select',
+        '#title' => t('All<span class="form-required" title="This field is required.">*</span>'),
+        '#multiple' => TRUE,
+        '#options' => _checkbook_datafeeds_contracts_column_options($data_source, 'pending', 'pending', $data_type),
+        '#id' => 'edit-column-select-pending-all',
         '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
     );
     //Hidden Field for multi-select
@@ -1790,6 +1806,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#type' => 'select',
                 '#title' => t('Category:'),
                 '#options' => array(
+                    'all' => 'All',
                     'expense' => 'Expense',
                     'revenue' => 'Revenue',
                 ),
@@ -2252,7 +2269,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
             //Set data source for query
             'type_of_data' => $data_source == 'checkbook_oge' ? 'Contracts_OGE' : 'Contracts',
             'records_from' => 1,
-            'max_records' => 50000,
+            'max_records' => 200000,
         ),
     );
 
@@ -2274,7 +2291,16 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
                 $criteria['value']['calendar_year'] = ltrim($values['year'], 'CY ');
             }
         }
-    } elseif ($values['df_contract_status'] == 'pending' && $values['category'] == 'expense') {
+    }  elseif ($values['df_contract_status'] != 'pending' && $values['category'] == 'all') {
+        $criteria['responseColumns'] = $values['column_select'];
+        if ($values['year'] && $values['year'] != 'ALL') {
+            if (startsWith($values['year'], 'F')) {
+                $criteria['value']['fiscal_year'] = ltrim($values['year'], 'FY ');
+            } elseif (startsWith($values['year'], 'C')) {
+                $criteria['value']['calendar_year'] = ltrim($values['year'], 'CY ');
+            }
+        }
+    }elseif ($values['df_contract_status'] == 'pending' && $values['category'] == 'expense') {
         $criteria['responseColumns'] = $values['column_select'];
     }
     if ($values['currentamtfrom'] !== '' || $values['currentamtto'] !== '') {
@@ -2417,7 +2443,9 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
     $currentto = $form_state['values']['currentamtto'];
     $activeexpense = $form_state['values']['column_select_expense'];
     $activerevenue = $form_state['values']['column_select_revenue'];
+    $all = $form_state['values']['column_select_all'];
     $pending = $form_state['values']['column_select_pending'];
+    $pending_all = $form_state['values']['column_select_pending_all'];
     $vendor = $form_state['values']['vendor'];
     // Start Date:
     if ($startfrom && !checkDateFormat($startfrom)) {
@@ -2514,10 +2542,19 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
     if (!$activeexpense && $form_state['values']['df_contract_status'] != 'pending' && $form_state['values']['category'] == 'expense') {
         form_set_error('column_select_expense', t('You must select at least one column.'));
     }
+    if (!$all && $form_state['values']['df_contract_status'] != 'pending' && $form_state['values']['category'] == 'all') {
+        form_set_error('column_select_expense', t('You must select at least one column.'));
+    }
     if (!$activerevenue && $form_state['values']['df_contract_status'] != 'pending' && $form_state['values']['category'] == 'revenue') {
         form_set_error('column_select_revenue', t('You must select at least one column.'));
     }
-    if (!$pending && $form_state['values']['df_contract_status'] == 'pending') {
+    if (!$all && $form_state['values']['df_contract_status'] != 'pending' && $form_state['values']['category'] == 'all') {
+        form_set_error('column_select_revenue', t('You must select at least one column.'));
+    }
+    if (!$pending && $form_state['values']['df_contract_status'] == 'pending' && $form_state['values']['category'] != 'all') {
+        form_set_error('column_select_pending', t('You must select at least one column.'));
+    }
+    if (!$pending_all && $form_state['values']['df_contract_status'] == 'pending' && $form_state['values']['category'] == 'all') {
         form_set_error('column_select_pending', t('You must select at least one column.'));
     }
     if ($form_state['values']['df_contract_status'] != 'pending') {
@@ -3114,7 +3151,7 @@ function checkbook_datafeeds_process_payroll_values($form, &$form_state) {
         'global' => array(
             'type_of_data' => 'Payroll',
             'records_from' => 1,
-            'max_records' => 50000,
+            'max_records' => 200000,
         ),
         'responseColumns' => $values['column_select']
     );
@@ -3744,7 +3781,7 @@ function checkbook_datafeeds_process_revenue_values($form, &$form_state) {
         'global' => array(
             'type_of_data' => 'Revenue',
             'records_from' => 1,
-            'max_records' => 50000,
+            'max_records' => 200000,
         ),
         'responseColumns' => $values['column_select'],
     );
@@ -5075,7 +5112,7 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
             //Set data source for query
             'type_of_data' => $data_source == 'checkbook_oge' ? 'Spending_OGE' : 'Spending',
             'records_from' => 1,
-            'max_records' => 50000,
+            'max_records' => 200000,
         ),
         'responseColumns' => $values['column_select'],
     );
@@ -6050,32 +6087,59 @@ function checkbook_datafeeds_confirmation_download_submit($form, &$form_state) {
         drupal_set_message('An error occurred processing your request. Please try again later.', 'error');
         log_error($e->getMessage());
     }
-    if (isset($checkBookApi)) {
-        if ($checkBookApi->validateRequest()) {
-            try {
-                //Make sure e-mail address is passed to the call.
-                $details = $checkBookApi->queueImmediateRequest();
-            }
-            catch (Exception $e) {
-                log_error($e->getMessage());
-            }
-        }
-        else {
-            log_error($checkBookApi->getErrorResponse());
-        }
-    }
 
-    if ($form_state['step_information']['type']['stored_values']['format'] == 'xml') {
-        drupal_add_http_header('Content-Type', 'text/xml; utf-8');
-        drupal_add_http_header('Content-Disposition', 'attachment; filename="nyc-data-feed.xml"');
-        echo $data;
-        module_invoke_all('exit');
-        exit;
+    $record_count = $checkBookApi->getRecordCount();
+    //records <= 100,000
+    if ($record_count <= 100000) {
+        if (isset($checkBookApi)) {
+            if ($checkBookApi->validateRequest()) {
+                try {
+                    //Make sure e-mail address is passed to the call.
+                    $details = $checkBookApi->queueImmediateRequest();
+                }
+                catch (Exception $e) {
+                    log_error($e->getMessage());
+                }
+            }
+            else {
+                log_error($checkBookApi->getErrorResponse());
+            }
+        }
+
+        if ($form_state['step_information']['type']['stored_values']['format'] == 'xml') {
+            drupal_add_http_header('Content-Type', 'text/xml; utf-8');
+            drupal_add_http_header('Content-Disposition', 'attachment; filename="nyc-data-feed.xml"');
+            echo $data;
+            module_invoke_all('exit');
+            exit;
+        }
+        elseif ($form_state['step_information']['type']['stored_values']['format'] == 'csv') {
+            drupal_add_http_header('Content-Type', 'text/csv; utf-8');
+            drupal_add_http_header('Content-Disposition', 'attachment; filename="nyc-data-feed.csv"');
+            echo $data;
+            module_invoke_all('exit');
+            exit;
+        }
     }
-    elseif ($form_state['step_information']['type']['stored_values']['format'] == 'csv') {
-        drupal_add_http_header('Content-Type', 'text/csv; utf-8');
-        drupal_add_http_header('Content-Disposition', 'attachment; filename="nyc-data-feed.csv"');
-        echo $data;
+    //100,000 >= records <= 200,000
+    else {
+        if (isset($checkBookApi)) {
+            if ($checkBookApi->validateRequest()) {
+                try {
+                    //Generate file from sql command
+                    $filename = $form_state['step_information']['confirmation']['filename'];
+                    if($filename) {
+                        $checkBookApi->outputFile($filename);
+                    }
+                }
+                catch (Exception $e) {
+                    log_error($e->getMessage());
+                }
+            }
+            else {
+                log_error($checkBookApi->getErrorResponse());
+            }
+        }
         module_invoke_all('exit');
         exit;
     }
@@ -6260,10 +6324,16 @@ function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $crit
             '#value' => t('Cancel'),
         );
     }
-    elseif ($recordcount > 0 && $recordcount < 50000) {
+    elseif ($recordcount > 0 && $recordcount < 200000) {
         if (isset($checkBookApi)) {
             if ($checkBookApi->validateRequest()) {
-                $form_state['step_information']['confirmation']['response'] = $checkBookApi->getData();
+                if ($recordcount <= 100000) {
+                    $form_state['step_information']['confirmation']['response'] = $checkBookApi->getData();
+                }
+                else {
+                    $filename = $checkBookApi->generateFile();
+                    $form_state['step_information']['confirmation']['filename'] = $filename;
+                }
             }
             else {
                 $form_state['step_information']['confirmation']['response'] = $checkBookApi->getErrorResponse();
@@ -6409,6 +6479,10 @@ function checkDateFormat($date) {
 function checkbook_datafeeds_format_columns() {
     //Used to maintain the order of the columns
     $hidden_selected_values = $_POST['hidden_multiple_value']; //get the values from the hidden field
+    if($_POST['year'] == 'ALL'){
+        $hidden_selected_values = str_replace("|year|", "", $_POST['hidden_multiple_value']);
+        $hidden_selected_values = str_replace("|Year|", "", $_POST['hidden_multiple_value']);
+    }
     $array_selected_values = explode("|", $hidden_selected_values); //convert the values into array
     $filter_array = array_filter($array_selected_values); //remove empty index
 
@@ -6446,20 +6520,9 @@ function checkbook_datafeeds_file_download_page($results) {
         '#type' => 'fieldset',
     );
     $filesize = filesize($results['file_path']);
-    $file_path = explode('/', $results['file_path']);
     $file_name = $conf['check_book']['data_feeds']['site_url'] . '/' . $results['file_path'];
-//    $file_name = end($file_path);
     $output['status-fieldset']['uncompressed'] = array(
         '#markup' => '<strong>Status:</strong><br>The file is ready for download: <a href="/' . $results['file_path'] . '" class="link-download-datafeeds-zip" oncontextmenu="return false;">' . $file_name . '</a> (' . format_bytes($filesize) . ')',
-        '#prefix' => '<p>',
-        '#suffix' => '</p>',
-    );
-    $cfilesize = filesize($results['compressed_file_path']);
-    $cfile_path = explode('/', $results['compressed_file_path']);
-    $cfile_name = $conf['check_book']['data_feeds']['site_url'] . '/' . $results['compressed_file_path'];
-//    $cfile_name = end($cfile_path);
-    $output['status-fieldset']['compressed'] = array(
-        '#markup' => 'Download the file in a compressed format (zip): <a href="/' . $results['compressed_file_path'] . '" class="link-download-datafeeds-zip" oncontextmenu="return false;">' . $cfile_name . '</a> (' . format_bytes($cfilesize) . ')',
         '#prefix' => '<p>',
         '#suffix' => '</p>',
     );

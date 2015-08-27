@@ -175,7 +175,7 @@
         },
         "mwbe_category_name": {
             "type": "expression2",
-            "expression": "ContractUtil::get_mwbe_category_url($row['minority_type_id'], $row['is_prime_or_sub'])"
+            "expression": "ContractUtil::get_mwbe_category_url($row['minority_type_id'], $row['is_prime_or_sub'], $row['document_code@checkbook:ref_document_code'])"
         },
         "is_sub_vendor": {
             "type":"expression2",

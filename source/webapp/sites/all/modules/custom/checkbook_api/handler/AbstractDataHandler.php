@@ -101,12 +101,6 @@ abstract class AbstractDataHandler {
     $queue_criteria = $this->getQueueCriteria($this->requestSearchCriteria->getCriteria());
     $queue_search_results = QueueUtil::searchQueue($email, $queue_criteria);
 
-//    // Same user, same request:
-//    if (isset($queue_search_results['token'])) {
-//        //Update the last_update_date of the existing job
-//        QueueUtil::updateJobTimestamp($queue_search_results);
-//        return $queue_search_results['token'];
-//    }
     // Different user, same request, add entry in custom_queue_request only
     if (isset($queue_search_results['job_id'])) {
         // Generate Token:
@@ -339,6 +333,27 @@ abstract class AbstractDataHandler {
     return $configuration;
   }
 
+    /**
+     * Calls db query and generates the file
+     * @return string
+     */
+    function generateFile() {
+        $isList = TRUE;
+        $dataSetName = $this->requestDataSet->name;
+        $columns = $this->requestDataSet->columns;
+        $parameters = $this->requestDataSet->parameters;
+        $orderBy = $this->requestDataSet->sortColumn;
+        $startWith = $this->requestDataSet->startWith;
+        $limit = $this->requestDataSet->limit;
+        $resultFormatter = null;
+
+        $query = widget_get_db_query($isList, $dataSetName, $columns, $parameters, $orderBy, $startWith, $limit, $resultFormatter);
+
+        $filename = $this->getJobCommand($query);
+
+        return $filename;
+    }
+
   /**
    *
    */
@@ -371,4 +386,18 @@ abstract class AbstractDataHandler {
    * @return mixed
    */
   abstract function prepareResponseResults($data_response);
+
+    /**
+     * Generates the API file based on the format specified
+     * @param $fileName
+     * @return mixed
+     */
+    abstract function outputFile($fileName);
+
+    /**
+     * Given the query, creates a command to connect to the db and generate the output file, returns the filename
+     * @param $query
+     * @return string
+     */
+    abstract function getJobCommand($query);
 }
