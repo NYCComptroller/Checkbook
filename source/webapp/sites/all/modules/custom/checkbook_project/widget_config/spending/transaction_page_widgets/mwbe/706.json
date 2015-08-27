@@ -57,6 +57,7 @@
     "no_results_content":"No Results Found",
     "dataset": "checkbook:spending_transactions_all",
     "totalAggregateColumns":["check_amount_sum"],
+    "uniqueSortColumn":"disbursement_line_item_id",
     "columns": [
         "disbursement_number",
         "agency_id",
