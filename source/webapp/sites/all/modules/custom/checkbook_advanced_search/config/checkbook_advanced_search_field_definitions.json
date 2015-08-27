@@ -156,6 +156,7 @@
         "field_name":"category",
         "attributes":{
             "options":{
+                "all":"All",
                 "expense":"Expense",
                 "revenue":"Revenue"
             }

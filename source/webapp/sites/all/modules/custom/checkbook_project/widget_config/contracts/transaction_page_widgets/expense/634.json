@@ -108,6 +108,7 @@
         "master_contract_number",
         "master_agreement_id"
     ],
+    "export_columns":["has_children"],
     "preProcessConfiguration":"
         $doctype = $node->widgetConfig->requestParams['document_code@checkbook:ref_document_code'];
         $doctypes = isset($doctype) ? explode('~', $doctype) : array();

@@ -1209,7 +1209,12 @@ class SpendingUtil{
     }
 
     static public function getContractTitle(){
-        $contract_status = _getRequestParamValue('contstatus');
+        if(_getRequestParamValue('contstatus')){
+            $contract_status = _getRequestParamValue('contstatus');
+        }
+        if(_getRequestParamValue('status')){
+            $contract_status = _getRequestParamValue('status');
+        }
         $contract_type = _getRequestParamValue('contcat');
         $title = 'by';
 

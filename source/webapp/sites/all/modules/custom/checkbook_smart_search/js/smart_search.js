@@ -3,6 +3,7 @@
  */
 (function ($) {
     $(document).ready(function () {
+
 		$( "#edit-search-box" ).autocomplete({
                         position: { my: "right top", at: "right bottom" },
                         minLength: 0,
@@ -12,16 +13,16 @@
                                 return false;
                         },
                         select: function (event, ui) {
+                            setTimeout(function(){
                                 $("#edit-submit").addClass('disable_button');
                                 $("#edit-search-box").addClass('transparent');
                                 $("#edit-search-box").addClass('loadinggif');
                                 $("#edit-search-box").attr("readonly", "readonly");
                                 // This is to fix the issue with chrome when trying to disable the search button
-                                setTimeout(function(){
-                                    $('input[type=submit]').attr("disabled", "disabled");
-                                    $("#edit-submit").css('cursor', 'default');
-                                    $("#edit-search-box").attr("disabled", "disabled");
-                                }, 10);
+                                $('input[type=submit]').attr("disabled", "disabled");
+                                $("#edit-submit").css('cursor', 'default');
+                                $("#edit-search-box").attr("disabled", "disabled");
+                                }, 1);
                                 $(event.target).val(ui.item.label);
                                 window.location = ui.item.url;
                                 return false;
@@ -57,12 +58,12 @@
             }
         });
         $("#edit-submit").click(function(e) {
-            $("#edit-submit").addClass('disable_button');
-            $("#edit-search-box").addClass('transparent');
-            $("#edit-search-box").addClass('loadinggif');
-            $("#edit-search-box").focus();
-            // This is to fix the issue with chrome when trying to disable the search button
             setTimeout(function(){
+                $("#edit-submit").addClass('disable_button');
+                $("#edit-search-box").addClass('transparent');
+                $("#edit-search-box").addClass('loadinggif');
+                $("#edit-search-box").focus();
+                // This is to fix the issue with chrome when trying to disable the search button
                 $('input[type=submit]').attr("disabled", "disabled");
                 $("#edit-submit").css('cursor', 'default');
                 $("#edit-search-box").attr("disabled", "disabled");
@@ -109,6 +110,7 @@
                     if($.inArray('revenue',array_domains) > -1) array_checked_domains.push('revenue');
 
                     var dialog_html = '';
+                    dialog_html += '<div id="loading_gif" style="display:none"></div>';
                     dialog_html += '<div id="errorMessages"></div>';
                     dialog_html += '<p>Type of Data<span>*</span>:</p>';
                     dialog_html += '<table>';
@@ -133,16 +135,48 @@
                                 modal:true,
                                 title:'Download Search Results',
                                 dialogClass:"export",
+                                resizable:false,
                                 width:700,
                                 open:function(){
                                     $("#dialog").html(dialog_html);
                                 },
                                 buttons:{
                                     "Download Data":function () {
-                                    	var inputs = "<input type='hidden' name='search_term' value='" +  getParameterByName("search_term") + "'/>"
+                                        var inputs = "<input type='hidden' name='search_term' value='" +  getParameterByName("search_term") + "'/>"
                                         + "<input type='hidden' name='domain' value='" + $('input[name=domain]:checked').val() + "'/>";
                                     	var url = '/exportSmartSearch/download';
-                                        $('<form action="' + url + '" method="get">' + inputs + '</form>').appendTo('body').submit().remove();
+                                        $('<form id="downloadForm" action="' + url + '" method="get">' + inputs + '</form>')
+                                            .appendTo('body')
+                                            .submit()
+                                            .remove();
+
+                                        $('#dialog #export-message').addClass('disable_me');
+                                        $('.ui-dialog-titlebar').addClass('disable_me');
+                                        $('.ui-dialog-buttonpane').addClass('disable_me');
+                                        $('#dialog').addClass('disable_me');
+                                        $('#loading_gif').show();
+                                        $('#loading_gif').addClass('loading_bigger_gif');
+
+                                        $.ajax({
+                                            url: $('#downloadForm').attr('action'),
+                                            data: {search_term: getParameterByName("search_term"), domain: $('input[name=domain]:checked').val()},
+                                            success:function(){
+                                                    $('#dialog #export-message').removeClass('disable_me');
+                                                    $('.ui-dialog-titlebar').removeClass('disable_me');
+                                                    $('.ui-dialog-buttonpane').removeClass('disable_me');
+                                                    $('#dialog').removeClass('disable_me');
+                                                    $('#loading_gif').hide();
+                                                    $('#loading_gif').removeClass('loading_bigger_gif');
+                                            },
+                                            error:function(){
+                                                    $('#dialog #export-message').removeClass('disable_me');
+                                                    $('.ui-dialog-titlebar').removeClass('disable_me');
+                                                    $('.ui-dialog-buttonpane').removeClass('disable_me');
+                                                    $('#dialog').removeClass('disable_me');
+                                                    $('#loading_gif').hide();
+                                                    $('#loading_gif').removeClass('loading_bigger_gif');
+                                            }
+                                        });
                                     },
                                     "Cancel":function () {
                                         $(this).dialog('close');
@@ -169,8 +203,14 @@
                                         selectedRecords = domainCount[1];
                                     totalRecords += parseInt(domainCount[1]);
                                 });
-                                var message = "Maximum of 200,000 records available for download from "+addCommas(selectedRecords)+" available "+selectedDomain+" records. " +
-                                    "The report will be in Comma Delimited format. Only one domain can be selected at a time to download the data.";
+                                if(selectedRecords <= 200000){
+                                    var message = addCommas(selectedRecords) +" "+ selectedDomain +" records available for download. " +
+                                        "The report will be in Comma Delimited format. Only one domain can be selected at a time to download the data.";
+                                }
+                                else{
+                                    var message = "Maximum of 200,000 records available for download from "+addCommas(selectedRecords)+" available "+selectedDomain+" records. " +
+                                        "The report will be in Comma Delimited format. Only one domain can be selected at a time to download the data.";
+                                }
 
                                 $('#export-message').html(message);
                             }

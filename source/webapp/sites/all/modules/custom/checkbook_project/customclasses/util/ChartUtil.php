@@ -22,17 +22,19 @@
 class ChartUtil
 {
     static function generateGridViewLink($node){
+        if(empty($node->data)) {
+            return '<a class="chart-grid-view no-data" style="display:none" oncontextmenu="return false;">Grid View</a>';
+        }
         return '<a class="chart-grid-view gridpopup" style="display:none"
                 href="/gridview/popup/node/' . $node->nid . '?refURL='. check_plain(drupal_get_path_alias($_GET['q'])) .'">Grid View</a>';
     }
     
     static function generateWidgetGridViewLink($node){
+        if(empty($node->data)) {
+            return '<a class="chart-grid-view no-data" style="display:none" oncontextmenu="return false;">Grid View</a>';
+        }
     	return '<a class="chart-grid-view gridpopup" style="display:none"
                 href="/gridview/popup/widget/' . $node->nid . '?refURL='. check_plain(drupal_get_path_alias($_GET['q'])) .'">Grid View</a>';
     }
-
-    /*static function isGridView($node){
-        return ($node->widgetConfig->displayType == 'gridview');
-    }*/
 
 }

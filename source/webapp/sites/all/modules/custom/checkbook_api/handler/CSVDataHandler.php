@@ -88,4 +88,146 @@ class CSVDataHandler extends AbstractDataHandler {
 
     return new CSVFormatter($data_records, $requested_response_columns, $data_set_configured_columns);
   }
+
+    /**
+     * Given the query, creates a command to connect to the db and generate the output file, returns the filename
+     * @param $query
+     * @return string
+     */
+    function getJobCommand($query) {
+        global $conf;
+
+        //map csv headers
+        $columnMappings = $this->requestDataSet->displayConfiguration->csv->elementsColumn;
+        $columnMappings =  (array)$columnMappings;
+        //Handle referenced columns
+        foreach($columnMappings as $key=>$value) {
+            if (strpos($value,"@") !== false) {
+                $column_parts = explode("@", $value);
+                $columnMappings[$key] = $column_parts[0];
+            }
+        }
+        $columnMappings = array_flip($columnMappings);
+
+        $end = strpos($query, 'FROM');
+        $select_part = substr($query,0,$end);
+        $select_part = str_replace("SELECT", "", $select_part);
+
+        $sql_parts = explode(",", $select_part);
+        $new_select_part = "SELECT ";
+        foreach($sql_parts as $sql_part) {
+
+            $sql_part = trim($sql_part);
+            $column = $sql_part;
+            $alias = "";
+
+            //Remove "AS"
+            if (strpos($sql_part,"AS") !== false) {
+                $pos = strpos($column, " AS");
+                $sql_part = substr($sql_part,0,$pos);
+            }
+            //get only column
+            if (strpos($sql_part,".") !== false) {
+                $alias = substr($sql_part, 0, 3);
+                $column = substr($sql_part, 3);
+            }
+
+            //Handle derived columns
+            switch($column) {
+                case "prime_vendor_name":
+                    $new_column = "CASE WHEN " . $alias . $column . " IS NULL THEN 'N/A' ELSE " . $alias . $column . " END";
+                    $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' .  "\n";
+                    break;
+                case "minority_type_name":
+                    $new_column = "CASE \n";
+                    $new_column .= "WHEN " . $alias . $column . " = 2 THEN 'Black American' \n";
+                    $new_column .= "WHEN " . $alias . $column . " = 3 THEN 'Hispanic American' \n";
+                    $new_column .= "WHEN " . $alias . $column . " = 7 THEN 'Non-M/WBE' \n";
+                    $new_column .= "WHEN " . $alias . $column . " = 9 THEN 'Women' \n";
+                    $new_column .= "WHEN " . $alias . $column . " = 11 THEN 'Individuals and Others' \n";
+                    $new_column .= "ELSE 'Asian American' END";
+                    $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' .  "\n";
+                    break;
+                case "vendor_type":
+                    $new_column = "CASE WHEN " . $alias . $column . " ~* 's' THEN 'Yes' ELSE 'No' END";
+                    $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' .  "\n";
+                    break;
+                default:
+                    $new_select_part .= $alias . $column . ' AS \\"' . $columnMappings[$column] . '\\",' .  "\n";
+                    break;
+            }
+        }
+        $new_select_part = rtrim($new_select_part,",\n");
+        $query = substr_replace($query, $new_select_part, 0, $end);
+
+        try{
+            $fileDir = _checkbook_project_prepare_data_feeds_file_output_dir();
+            $filename = _checkbook_project_generate_uuid(). '.csv';
+            $tmpDir =  (isset($conf['check_book']['tmpdir']) && is_dir($conf['check_book']['tmpdir'])) ? rtrim($conf['check_book']['tmpdir'],'/') : '/tmp';
+            $command = $conf['check_book']['data_feeds']['command'];
+
+            if(!is_writable($tmpDir)){
+                LogHelper::log_error("$tmpDir is not writable. Please make sure this is writable to generate export file.");
+                return $filename;
+            }
+
+            $tempOutputFile = $tmpDir .'/'. $filename;
+            $outputFile = DRUPAL_ROOT . '/' . $fileDir . '/' . $filename;
+
+            $cmd = $command
+                . " -c \"\\\\COPY (" . $query . ") TO '"
+                . $tempOutputFile
+                . "'  WITH DELIMITER ',' CSV HEADER \" ";
+            shell_exec($cmd);
+
+            $move_cmd = "mv $tempOutputFile $outputFile";
+            shell_exec($move_cmd);
+
+        }
+        catch (Exception $e){
+            $value = TextLogMessageTrimmer::$LOGGED_TEXT_LENGTH__MAXIMUM;
+            TextLogMessageTrimmer::$LOGGED_TEXT_LENGTH__MAXIMUM = NULL;
+
+            LogHelper::log_error($e);
+            $msg = "Command used to generate the file: " . $command ;
+            $msg .= ("Error generating DB command: " . $e->getMessage());
+            LogHelper::log_error($msg);
+
+            TextLogMessageTrimmer::$LOGGED_TEXT_LENGTH__MAXIMUM = $value;
+        }
+
+        return $filename;
+    }
+
+    /**
+     * Generates the API file based on the format specified
+     * @param $fileName
+     * @return mixed
+     */
+    function outputFile($fileName){
+        global $conf;
+
+        // validateRequest:
+        if (!$this->validateRequest()) {
+            return $this->response;
+        }
+
+        $fileDir = variable_get('file_public_path','sites/default/files') . '/' . $conf['check_book']['data_feeds']['output_file_dir'];
+        $fileDir .= '/' . $conf['check_book']['export_data_dir'];
+        $file = DRUPAL_ROOT . '/' . $fileDir . '/' . $fileName;
+
+        drupal_add_http_header("Content-Type", "text/csv; utf-8");
+        drupal_add_http_header("Content-Disposition", "attachment; filename=nyc-data-feed.csv");
+        drupal_add_http_header("Pragma", "cache");
+        drupal_add_http_header("Expires", "-1");
+
+        if(is_file($file)) {
+            $data = file_get_contents($file);
+            drupal_add_http_header("Content-Length",strlen($data));
+            echo $data;
+        }
+        else {
+            echo "Data is not generated. Please contact support team.";
+        }
+    }
 }

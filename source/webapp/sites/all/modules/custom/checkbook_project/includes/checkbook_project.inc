@@ -1354,6 +1354,19 @@ function _get_master_agreement_details($magid){
 
 }
 
+/**
+ * Given the parent contract number, returns the details of the contract
+ * @param $parent_contract_number
+ * @return null
+ */
+function _get_master_agreement_details_by_parent_contract_number($parent_contract_number){
+    if(!isset($parent_contract_number)){
+        return NULL;
+    }
+    $results = get_db_results(true, 'checkbook:history_master_agreement', array("document_code@checkbook:ref_document_code","master_agreement_id","original_master_agreement_id"), array("contract_number"=>$parent_contract_number,"latest_flag"=>"Y"),  NULL,  0, 1);
+    return isset($results[0]) ? $results[0] : NULL;
+
+}
 
 /**
  * return helper function to get child agreement id details
@@ -1393,6 +1406,7 @@ function _checkbook_project_get_contract_url($contnum, $agreement_id){
 
 function _pending_contracts_link_contract_details($contract_number, $original_agreement_id, $doctype, $pending_contract_number = null, $version = null, $linktype= null){
     $lower_doctype = strtolower($doctype);
+
     if($original_agreement_id){
         if(($lower_doctype == 'ma1') || ($lower_doctype == 'mma1') || ($lower_doctype == 'rct1')){
             $url = '/panel_html/contract_transactions/magid/'.$original_agreement_id.'/doctype/'.$doctype;
@@ -1424,9 +1438,92 @@ function _pending_contracts_link_contract_details($contract_number, $original_ag
             $url = '/contracts_pending_rev_landing'  .  _checkbook_project_get_year_url_param_string() .$mwbe_parameter . '?expandBottomContURL='.$url;
             return '<a href = "'.$url.'">'.$pending_contract_number.'</a>';
         }
+        else if(in_array('all', _getLastRequestParamValue($_SERVER["HTTP_REFERER"], "contcat"))){
+            if(_get_contract_cat($lower_doctype) == 'revenue'){
+                $url = '/contracts_pending_rev_landing'  .  _checkbook_project_get_year_url_param_string() .$mwbe_parameter . '?expandBottomContURL='.$url;
+                return '<a href = "'.$url.'">'.$pending_contract_number.'</a>';
+            }else{
+                $url = '/contracts_pending_exp_landing'  .  _checkbook_project_get_year_url_param_string() . $mwbe_parameter . '?expandBottomContURL='.$url;
+                return '<a href = "'.$url.'">'.$pending_contract_number.'</a>';
+            }
+        }
         else{
             return '<a class="bottomContainerReload" href = "'.$url.'">'.$pending_contract_number.'</a>';
         }
+    }
+}
+
+function _get_contract_cat($doctype){
+
+    if($doctype == 'rct1') {
+        return('revenue');
+    }else{
+        return('expense');
+    }
+
+}
+
+/**
+ * Function to generate the path to save the file for data feeds
+ * @return string
+ */
+function _checkbook_project_prepare_data_feeds_file_output_dir(){
+    global $conf;
+
+    $dir = variable_get('file_public_path','sites/default/files') . '/' . $conf['check_book']['data_feeds']['output_file_dir'];
+    _checkbook_project_prepare_data_feeds_dir($dir);
+
+    $dir .= '/' . $conf['check_book']['export_data_dir'];
+    _checkbook_project_prepare_data_feeds_dir($dir);
+
+    try{
+        //delete files older than 2 hours
+        _checkbook_project_clean_files($dir);
+    }catch (Exception $e){
+        LogHelper::log_error($e);
+    }
+
+    return $dir;
+}
+
+/**
+ * Function to generate a unique id
+ * @return string
+ */
+function _checkbook_project_generate_uuid(){
+    $guid = 'export';
+    $uid = uniqid("", true);
+    $data = '';
+    $data .= $_SERVER['REQUEST_TIME'];
+    $data .= $_SERVER['HTTP_USER_AGENT'];
+    $data .= $_SERVER['LOCAL_ADDR'];
+    $data .= $_SERVER['LOCAL_PORT'];
+    $data .= $_SERVER['REMOTE_ADDR'];
+    $data .= $_SERVER['REMOTE_PORT'];
+    $hash = strtoupper(hash('ripemd128', $uid . $guid . md5($data)));
+    $guid =
+        substr($hash,  0,  8) .
+        '-' .
+        substr($hash,  8,  4) .
+        '-' .
+        substr($hash, 12,  4) .
+        '-' .
+        substr($hash, 16,  4) .
+        '-' .
+        substr($hash, 20, 12);
+
+    return strtolower($guid);
+}
+
+/**
+ * Function to generate the path to save the file for data feeds
+ * @param $dir
+ * @throws Exception
+ */
+function _checkbook_project_prepare_data_feeds_dir($dir){
+    if(!file_prepare_directory($dir,FILE_CREATE_DIRECTORY)){
+        LogHelper::log_error("Could not prepare file output directory $dir.Should check if this directory is writable.");
+        throw new Exception("Could not prepare file. Please contact Support team.");
     }
 }
 

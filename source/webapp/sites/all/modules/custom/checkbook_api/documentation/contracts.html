@@ -8,6 +8,8 @@
     <li><a href="#sample-response-contract_expense">Sample Response:  Contract Transactions Active Expense</a></li>
     <li><a href="#sample-request-contracts-pending_expense">Sample Request: Contract Transactions Pending Expense</a></li>
     <li><a href="#sample-response-pending_expense">Sample Response: Contract Transactions Pending Expense</a></li>
+    <li><a href="#sample-request-contracts-active_expense_oge">Sample Request: Contract Transactions Active Expense (OTHER GOVERNMENT ENTITIES)</a></li>
+    <li><a href="#sample-response-contracts-active_expense_oge">Sample Response: Contract Transactions Active Expense (OTHER GOVERNMENT ENTITIES)</a></li>
     <li><a href="#status-codes-messages">Status Codes and Messages</a></li>
 </ul>
 
@@ -104,11 +106,11 @@ Contract Parameters – All the parameters are optional, meaning that you can se
     <td>category</td>
     <td>Y</td>
     <td valign="top">value</td>
-    <td>Allows you to select two possible contract category types. Values must be one of the following: expense or revenue.</td>
+    <td>Allows you to select possible contract category types. Values must be one of the following: all, expense, revenue.</td>
     <td>Citywide Agencies and Other Government Entities</td>
-    <td>Expense<br/>Revenue</td>
+    <td>All<br />Expense<br/>Revenue</td>
     <td>Active<br />Registered<br />Pending</td>
-    <td>Allows you to select two possible contract category types. Values must be one of the following: expense or revenue.</td>
+    <td>Allows you to select possible contract category types. Values must be one of the following: all, expense, revenue.</td>
     <td>expense</td>
 </tr>
 <tr>
@@ -310,17 +312,219 @@ Contract Parameters – All the parameters are optional, meaning that you can se
     <li>For pending contracts, the data is displayed for all versions of the contract.</li>
     <li>If no year is provided in the search criteria, all years are considered and only the latest version of the contract will be displayed in the results. The response column year will not be applicable for all years. The user can categorize the year based on start and end date of the contract which will be populated in the results.</li>
 </ol>
-<div class="api-center">
+<div class="api-response-columns-center">
 <table>
 <tr>
     <td class="api-td-left">
-        <table class="api-table">
+        <table class="api-response-columns-table">
             <tr>
-                <th colspan="2"><br />(Citywide)Response Column Names_Active &amp; Registered<br />Category-Expense</th>
+                <th colspan="2">(Citywide)Response Column Names_Active &amp; Registered Category-Expense</th>
             </tr>
             <tr>
                 <td>contract_id</td>
-                <td>prime_vendor</td>
+                <td>vendor</td>
+            </tr>
+            <tr>
+                <td>purpose</td>
+                <td>agency</td>
+            </tr>
+            <tr>
+                <td>version</td>
+                <td>contract_type</td>
+            </tr>
+            <tr>
+                <td>parent_contract_id</td>
+                <td>award_method</td>
+            </tr>
+            <tr>
+                <td>original_amount</td>
+                <td>expense_category</td>
+            </tr>
+            <tr>
+                <td>current_amount</td>
+                <td width="51%">start_date</td>
+            </tr>
+            <tr>
+                <td>spent_to_date</td>
+                <td>end_date</td>
+            </tr>
+            <tr>
+                <td>registration_date</td>
+                <td>pin</td>
+            </tr>
+            <tr>
+                <td>apt_pin</td>
+                <td>industry</td>
+            </tr>
+            <tr>
+                <td>year</td>
+                <td>document_code</td>
+            </tr>
+            <tr>
+                <td>mwbe_category</td>
+                <td>associated_prime_vendor</td>
+            </tr>
+            <tr>
+                <td>sub_vendor</td>
+                <td>sub_contract_reference_id</td>
+            </tr>
+        </table>
+    </td>
+    <td class="api-td-center">
+        <table class="api-response-columns-table" border="1" cellspacing="0" cellpadding="0">
+            <tr>
+                <th colspan="2">(Citywide)Response Column Names_Active &amp; Registered Category-Revenue</th>
+            </tr>
+            <tr>
+                <td>contract_id</td>
+                <td>vendor</td>
+            </tr>
+            <tr>
+                <td>purpose</td>
+                <td>agency</td>
+            </tr>
+            <tr>
+                <td>parent_contract_id</td>
+                <td>contract_type</td>
+            </tr>
+            <tr>
+                <td>original_amount</td>
+                <td>award_method</td>
+            </tr>
+            <tr>
+                <td>current_amount</td>
+                <td>start_date</td>
+            </tr>
+            <tr>
+                <td>registration_date</td>
+                <td>end_date</td>
+            </tr>
+            <tr>
+                <td>apt_pin</td>
+                <td>pin</td>
+            </tr>
+            <tr>
+                <td>document_code</td>
+                <td>industry</td>
+            </tr>
+            <tr>
+                <td>version</td>
+                <td>year</td>
+            </tr>
+            <tr>
+                <td>mwbe_category</td>
+                <td>associated_prime_vendor</td>
+            </tr>
+            <tr>
+                <td>sub_vendor</td>
+                <td>sub_contract_reference_id</td>
+            </tr>
+        </table>
+    </td>
+    <td class="api-td-right">
+        <table class="api-response-columns-table">
+            <tr>
+                <th colspan="2"> (Citywide)Response Column Names_Pending  Category-Expense</th>
+            </tr>
+            <tr>
+                <td>contract_id</td>
+                <td>contract_type</td>
+            </tr>
+            <tr>
+                <td>purpose</td>
+                <td>original_modified</td>
+            </tr>
+            <tr>
+                <td>parent_contract_id</td>
+                <td>apt_pin</td>
+            </tr>
+            <tr>
+                <td>original_amount</td>
+                <td>award_method</td>
+            </tr>
+            <tr>
+                <td>current_amount</td>
+                <td>start_date</td>
+            </tr>
+            <tr>
+                <td>vendor</td>
+                <td width="51%">end_date</td>
+            </tr>
+            <tr>
+                <td>recieved_date</td>
+                <td>pin</td>
+            </tr>
+            <tr>
+                <td>agency</td>
+                <td>industry</td>
+            </tr>
+            <tr>
+                <td>document_code</td>
+                <td>version</td>
+            </tr>
+            <tr>
+                <td>mwbe_category</td>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+    </td>
+</tr>
+<tr>
+    <td class="api-td-left">
+        <table class="api-response-columns-table" border="1" cellspacing="0" cellpadding="0">
+            <tr>
+                <th colspan="2">(Citywide)Response Column Names_Pending Category-Revenue</th>
+            </tr>
+            <tr>
+                <td>contract_id</td>
+                <td>contract_type</td>
+            </tr>
+            <tr>
+                <td>purpose</td>
+                <td>original_modified</td>
+            </tr>
+            <tr>
+                <td>parent_contract_id</td>
+                <td>original_amount</td>
+            </tr>
+            <tr>
+                <td>award_method</td>
+                <td>current_amount</td>
+            </tr>
+            <tr>
+                <td>start_date</td>
+                <td>vendor</td>
+            </tr>
+            <tr>
+                <td>end_date</td>
+                <td>received_date</td>
+            </tr>
+            <tr>
+                <td>pin</td>
+                <td>agency</td>
+            </tr>
+            <tr>
+                <td>industry</td>
+                <td>document_code</td>
+            </tr>
+            <tr>
+                <td>version</td>
+                <td>apt_pin</td>
+            </tr>
+            <tr>
+                <td>mwbe_category</td>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+    </td>
+    <td  class="api-td-center">
+        <table class="api-response-columns-table">
+            <tr>
+                <th colspan="2"> (Citywide)Response Column Names_Active &amp; Registered Category-All</th>
+            </tr>
+            <tr>
+                <td>contract_id</td>
+                <td>vendor</td>
             </tr>
             <tr>
                 <td>purpose</td>
@@ -369,109 +573,9 @@ Contract Parameters – All the parameters are optional, meaning that you can se
         </table>
     </td>
     <td class="api-td-right">
-        <table class="api-table" border="1" cellspacing="0" cellpadding="0">
+        <table class="api-response-columns-table" border="1" cellspacing="0" cellpadding="0">
             <tr>
-                <th colspan="2">(Citywide)Response Column Names_Active &amp; Registered<br />Category-Revenue</th>
-            </tr>
-            <tr>
-                <td>contract_id</td>
-                <td>prime_vendor</td>
-            </tr>
-            <tr>
-                <td>purpose</td>
-                <td>agency</td>
-            </tr>
-            <tr>
-                <td>parent_contract_id</td>
-                <td>contract_type</td>
-            </tr>
-            <tr>
-                <td>original_amount</td>
-                <td>award_method</td>
-            </tr>
-            <tr>
-                <td>current_amount</td>
-                <td>start_date</td>
-            </tr>
-            <tr>
-                <td>registration_date</td>
-                <td>end_date</td>
-            </tr>
-            <tr>
-                <td>apt_pin</td>
-                <td>pin</td>
-            </tr>
-            <tr>
-                <td>document_code</td>
-                <td>industry</td>
-            </tr>
-            <tr>
-                <td>version</td>
-                <td>year</td>
-            </tr>
-            <tr>
-                <td>mwbe_category</td>
-                <td>associated_prime_vendor</td>
-            </tr>
-            <tr>
-                <td>sub_vendor</td>
-                <td>sub_contract_reference_id</td>
-            </tr>
-        </table>
-    </td>
-</tr>
-<tr>
-    <td class="api-td-left">
-        <table class="api-table">
-            <tr>
-                <th colspan="2"><br />(Citywide)Response Column Names_Pending <br />Category-Expense</th>
-            </tr>
-            <tr>
-                <td>contract_id</td>
-                <td>contract_type</td>
-            </tr>
-            <tr>
-                <td>purpose</td>
-                <td>original_modified</td>
-            </tr>
-            <tr>
-                <td>parent_contract_id</td>
-                <td>apt_pin</td>
-            </tr>
-            <tr>
-                <td>original_amount</td>
-                <td>award_method</td>
-            </tr>
-            <tr>
-                <td>current_amount</td>
-                <td>start_date</td>
-            </tr>
-            <tr>
-                <td>prime_vendor</td>
-                <td width="51%">end_date</td>
-            </tr>
-            <tr>
-                <td>recieved_date</td>
-                <td>pin</td>
-            </tr>
-            <tr>
-                <td>agency</td>
-                <td>industry</td>
-            </tr>
-            <tr>
-                <td>document_code</td>
-                <td>version</td>
-            </tr>
-            <tr>
-                <td>mwbe_category</td>
-                <td>&nbsp;</td>
-            </tr>
-        </table>
-    </td>
-    <td class="api-td-right">
-        <table class="api-table" border="1" cellspacing="0" cellpadding="0">
-            <tr>
-                <th colspan="2">(Citywide)Response Column Names_Pending<br/>Category-Revenue</th>
+                <th colspan="2">(Citywide)Response Column Names_Pending Category-All</th>
             </tr>
             <tr>
                 <td>contract_id</td>
@@ -491,7 +595,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
             </tr>
             <tr>
                 <td>start_date</td>
-                <td>prime_vendor</td>
+                <td>vendor</td>
             </tr>
             <tr>
                 <td>end_date</td>
@@ -511,17 +615,17 @@ Contract Parameters – All the parameters are optional, meaning that you can se
             </tr>
             <tr>
                 <td>mwbe_category</td>
-                <td>&nbsp;</td>
+                <td></td>
             </tr>
         </table>
     </td>
 </tr>
 </table>
 </div>
-<div class="api-center">
-    <table class="api-table">
+<div class="api-left">
+    <table class="api-response-columns-table">
         <tr>
-            <th colspan="2"><br />(Other Government Entities)Response Column Names_Active &amp; Registered<br />Category-Expense</th>
+            <th colspan="2"> (Other Government Entities)Response Column Names_Active &amp; Registered Category-Expense</th>
         </tr>
         <tr>
             <td>contract_id</td>
@@ -569,7 +673,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
 <a href="#top" class="float-right">Back to the top</a>
 <a name="predefined-xml-entities"></a>
 <h3>Predefined Entities in XML</h3>
-<p>The user has to encode the names using the predefined entities list embedded below, while searching using names (payee_name, budget_name, prime_vendor, and purpose). The table below lists the five XML predefined entities. The "Name" column mentions the entity's name. The "Character" column shows the character. To render the character, the format &name; is used; for example, &amp;amp; renders as &.</p>
+<p>The user has to encode the names using the predefined entities list embedded below, while searching using names (payee_name, budget_name, vendor, and purpose). The table below lists the five XML predefined entities. The "Name" column mentions the entity's name. The "Character" column shows the character. To render the character, the format &name; is used; for example, &amp;amp; renders as &.</p>
 <table class="api-table">
     <tbody>
     <tr>
@@ -635,7 +739,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
 <h3 class="title">Sample Request: Contract Transactions Active Expense(Citywide)</h3>
 <pre>
     &lt;request&gt;
-        &lt;type_of_data&gt;contracts&lt;/type_of_data&gt;
+        &lt;type_of_data&gt;Contracts&lt;/type_of_data&gt;
       &lt;records_from&gt;1&lt;/records_from&gt;
       &lt;max_records&gt;5&lt;/max_records&gt;
       &lt;search_criteria&gt;
@@ -711,7 +815,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
 
         &lt;response_columns&gt;
             &lt;column&gt;agency&lt;/column&gt;
-               &lt;column&gt;prime_vendor&lt;/column&gt;
+               &lt;column&gt;vendor&lt;/column&gt;
                &lt;column&gt;contract_id&lt;/column&gt;
                &lt;column&gt;version&lt;/column&gt;
         &lt;column&gt;purpose&lt;/column&gt;
@@ -828,7 +932,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
 &lt;/search_criteria&gt;
         &lt;response_columns&gt;
             &lt;column&gt;agency&lt;/column&gt;
-               &lt;column&gt;prime_vendor&lt;/column&gt;
+               &lt;column&gt;vendor&lt;/column&gt;
                &lt;column&gt;contract_id&lt;/column&gt;
                &lt;column&gt;version&lt;/column&gt;
         &lt;column&gt;purpose&lt;/column&gt;
@@ -859,7 +963,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
            &lt;transactions&gt;
     &lt;transaction&gt;
         &lt;agency&gt;DEPARTMENT OF CULTURAL AFFAIRS&lt;/agency&gt;
-        &lt;prime_vendor&gt;ASI Systems&lt;/prime_vendor&gt;
+        &lt;vendor&gt;ASI Systems&lt;/vendor&gt;
         &lt;year&gt;N/A&lt;/year &gt;
         &lt;contract_id&gt;CT185620050034130&lt;/contract_id&gt;
         &lt;parent_contract_id&gt;N/A &lt;/parent_contract_id &gt;
@@ -968,7 +1072,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
     &lt;/search_criteria&gt;
     &lt;response_columns&gt;
         &lt;column&gt;agency&lt;/column&gt;
-           &lt;column&gt;prime_vendor&lt;/column&gt;
+           &lt;column&gt;vendor&lt;/column&gt;
            &lt;column&gt;contract_id&lt;/column&gt;
            &lt;column&gt;purpose&lt;/column&gt;
            &lt;column&gt;parent_contract_id&lt;/column&gt;
@@ -1075,7 +1179,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
 &lt;/search_criteria&gt;
     &lt;response_columns&gt;
         &lt;column&gt;agency&lt;/column&gt;
-           &lt;column&gt;prime_vendor&lt;/column&gt;
+           &lt;column&gt;vendor&lt;/column&gt;
            &lt;column&gt;contract_id&lt;/column&gt;
            &lt;column&gt;purpose&lt;/column&gt;
            &lt;column&gt;parent_contract_id&lt;/column&gt;
@@ -1101,7 +1205,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
            &lt;transactions&gt;
     &lt;transaction&gt;
         &lt;agency&gt;DEPARTMENT OF CULTURAL AFFAIRS&lt;/agency&gt;
-        &lt;prime_vendor&gt;ASI Systems&lt;/prime_vendor&gt;
+        &lt;vendor&gt;ASI Systems&lt;/vendor&gt;
         &lt;contract_id&gt;CT185620050034130&lt;/contract_id&gt;
         &lt;parent_contract_id&gt;N/A &lt;/parent_contract_id &gt;
         &lt;purpose&gt;Public Utility&lt;/purpose&gt;
@@ -1125,6 +1229,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
 &lt;/response&gt;
 </pre>
 <a href="#top" class="float-right">Back to the top</a>
+<a name="sample-request-contracts-active_expense_oge" id="sample-request-contracts-active_expense_oge"></a>
 <h3 class="title">Sample Request: Contract Transactions Active Expense (Other Government Entities)</h3>
 <pre>
 &lt;request&gt;
@@ -1228,6 +1333,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
     &lt;/response_columns&gt;
 &lt;/request></pre>
 <a href="#top" class="float-right">Back to the top</a>
+<a name="sample-response-contracts-active_expense_oge" id="sample-response-contracts-active_expense_oge"></a>
 <h3 class="title">Sample Response: Contract Transactions Active Expense (Other Government Entities)</h3>
 <pre>&lt;response&gt;
     &lt;status &gt;

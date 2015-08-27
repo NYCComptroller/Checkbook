@@ -28,8 +28,7 @@
   </thead>
   <tbody>
   <?php
-  $count = 0;
-  $clickClass = "clickOnLoad";
+
   $count = 0;
   if(preg_match("/newwindow/",current_path())){
 	$new_window="/newwindow";
@@ -48,15 +47,16 @@
       $subcontract_details = _checkbook_project_execute_sql_by_data_source($q1);
 
     if ($count % 2 == 0) {
-      $class = "class=\"odd\"";
+      $class = "odd";
     }
     else {
-      $class = "class=\"even\"";
+      $class = "even";
     }
     $first = '';
     if($count == 0){
-        $first = "first-item";
+        $first = "first-item clickOnLoad";
     }
+
     if(preg_match("/newwindow/",current_path())){
 		$child_contract_link=$contract['contract_number'];
     	
@@ -71,7 +71,7 @@
     <td class="assoc_item">
       <div class="contract-title clearfix">
              <span agurl="/minipanels/contracts_cta_history/agid/<?php echo $contract['original_agreement_id'] . $new_window; ?>"
-                   class="toggler collapsed <?php echo $clickClass . " ". $first . " " . $class; ?>"
+                   class="toggler collapsed <?php echo $first . " " .  $class; ?>"
                    id="master_assoc_cta_expand"></span>
 
         <div class='contract-title-text'>Contract Spending for <?php echo $child_contract_link ?> </div>

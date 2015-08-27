@@ -49,7 +49,13 @@ function _get_contracts_datafeeds_autocomplete_results($facet, $query, $status =
         }
     }
     if ($category) {
-        $query .= '&fq=contract_category_name:' . ucfirst($category);
+        if($category == 'all'){
+            $query .= '&fq=contract_category_name:expense~revenue';
+        }
+        else{
+            $query .= '&fq=contract_category_name:' . ucfirst($category);
+        }
+
     }
     if ($contract_type) {
         $contract_id= _get_contracts_datafeeds_autocomplete_contract_type_options($contract_type);

@@ -21,7 +21,9 @@
 <?php
 if($totalRecords > 0){
 ?>
+    <div id="loading_gif" style="display: none"></div>
     <div id='dialog'>
+
         <div id='errorMessages'></div>
         <table>
             <tr>

@@ -311,6 +311,8 @@ body.page-data-feeds .ms-container {
 body.page-data-feeds #edit-columns .form-item-column-select label,
 body.page-data-feeds #edit-columns .form-item-column-select-expense label,
 body.page-data-feeds #edit-columns .form-item-column-select-revenue label,
+body.page-data-feeds #edit-columns .form-item-column-select-all label,
+body.page-data-feeds #edit-columns .form-item-column-select-pending-all label,
 body.page-data-feeds #edit-columns .form-item-column-select-pending label {
     margin-left: 97px;
 }
@@ -406,14 +408,20 @@ body.page-data-feeds #zone-content form.data-feeds-wizard .column .salarytype in
 .api-table {
     margin-bottom: 10px;
 }
+
+.api-response-columns-table {
+    margin-bottom: 10px;
+    width: 303px;
+}
 .agency-code-list-table {
     margin-top: 10px;
 }
-.api-table + p a.float-right, .api-center + .divider + p a.float-right, pre.prettyprint + p a.float-right, a.float-right {
+.api-table + p a.float-right, .api-response-columns-table + p a.float-right, .api-center + .divider + p a.float-right, .api-response-columns-center + .divider + p a.float-right, pre.prettyprint + p a.float-right, a.float-right {
     float: right;
 }
 
-.api-table th {
+.api-table th,
+.api-response-columns-table th{
     color: #FFFFFF;
     padding: 10px 5px;
     background: #48759d; /* Old browsers */
@@ -427,7 +435,8 @@ body.page-data-feeds #zone-content form.data-feeds-wizard .column .salarytype in
 
 }
 
-.api-table td {
+.api-table td,
+.api-response-columns-table td{
     border-bottom: 1px solid #CCCCCC;
     border-left: 1px solid #CCCCCC;
     border-right: 1px solid #CCCCCC;
@@ -439,7 +448,12 @@ body.page-data-feeds #zone-content form.data-feeds-wizard .column .salarytype in
     width: 565px;
 }
 
-.api-center table th, .api-center table td {
+.api-response-columns-center {
+    margin: 0 auto 10px auto;
+    width: auto;
+}
+
+.api-center table th, .api-center table td, .api-response-columns-center table th, .api-response-columns-center table td {
     padding: 10px 5px;
 }
 
