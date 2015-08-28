@@ -398,12 +398,21 @@ function widget_data_tables_widget_prepare($node){
     /**
      * uniqueSortColumn will allow the data to order properly by a secondary unique sort
      */
+    $sortDir = $_REQUEST['sSortDir_' . $index];
+    $uniqueSortColumn = $node->widgetConfig->uniqueSortColumn;
     if(isset($node->widgetConfig->orderBy) && !empty($node->widgetConfig->orderBy)) {
-        if(isset($node->widgetConfig->uniqueSortColumn)) {
-            if($_REQUEST['sSortDir_' . $index] == 'desc')
-                $node->widgetConfig->orderBy[]  = '-' . $node->widgetConfig->uniqueSortColumn;
-            else
-                $node->widgetConfig->orderBy[] =  $node->widgetConfig->uniqueSortColumn;
+        if(isset($uniqueSortColumn)) {
+            if(is_array($uniqueSortColumn)) {
+                foreach($uniqueSortColumn as $value) {
+                    if($sortDir == 'desc')
+                        $node->widgetConfig->orderBy[]  = '-' . $value;
+                    else
+                        $node->widgetConfig->orderBy[] =  $value;
+                }
+            }
+            else {
+                $node->widgetConfig->orderBy[] = $sortDir == 'desc' ? '-' . $uniqueSortColumn : $uniqueSortColumn;
+            }
         }
     }
 
