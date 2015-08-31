@@ -14,7 +14,7 @@
             "recognized":"posting_amount"
         },
         "dataset":{
-            "sortColumn":"-posting_amount",
+            "sortColumn":["-posting_amount","-revenue_id"],
             "name":"checkbook:fact_revenue",
             "displayConfiguration":{
                 "xml":{

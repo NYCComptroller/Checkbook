@@ -15,7 +15,7 @@
             "title":"civil_service_title"
         },
         "dataset":{
-            "sortColumn":"-gross_pay",
+            "sortColumn":["-gross_pay","-payroll_id"],
             "name":"checkbook:payroll",
             "columnTypes":{
                 "civil_service_title":"like"
@@ -155,7 +155,7 @@
             "title":"civil_service_title"
         },
         "dataset":{
-            "sortColumn":"-gross_pay",
+            "sortColumn":["-gross_pay","-payroll_id"],
             "name":"checkbook:payroll",
             "columnTypes":{
                 "civil_service_title":"like"
