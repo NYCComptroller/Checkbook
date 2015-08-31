@@ -34,6 +34,7 @@
 "html_class":"initiative-table",
 "no_results_content":"No Results Found",
 "dataset":"checkbook:contracts_subven_spending_transactions",
+"uniqueSortColumn":"disbursement_line_item_id",
 "columns": [
     "disb_disbursement_number",
     "disb_check_eft_issued_date",
