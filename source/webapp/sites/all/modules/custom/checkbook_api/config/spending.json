@@ -21,7 +21,7 @@
             "sub_vendor":"sub_vendor"
         },
         "dataset":{
-            "sortColumn":"-check_amount",
+            "sortColumn":["-check_amount", "-disbursement_line_item_id"],
             "name":"checkbook:spending_transactions_all",
             "columnTypes":{
                 "reference_document_number":"like",
