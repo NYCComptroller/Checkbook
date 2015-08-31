@@ -19,7 +19,7 @@
 */
  
 $title = 'New York City';
-
+$domain= 'Budget';
 $agency = _getRequestParamValue('agency');
 $expcategory = _getRequestParamValue('expcategory');
 
