@@ -5260,7 +5260,7 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
  *   Data Feeds wizard form_state array
  */
 function checkbook_datafeeds_spending_validate($form, &$form_state) {
-
+    
     $data_source = $form_state['input']['datafeeds-spending-domain-filter'];
     $agency = $form_state['values']['agency'];
     $agency_code = emptyToZero($agency);
@@ -5269,6 +5269,7 @@ function checkbook_datafeeds_spending_validate($form, &$form_state) {
     $datefrom = $form_state['values']['issuedfrom'];
     $dateto = $form_state['values']['issuedto'];
     $vendor = $form_state['values']['payee_name'];
+    $contract_id = $form_state['values']['contractno'];
     if ($checkfrom && !is_numeric($checkfrom)) {
         form_set_error('checkamtfrom', t('Check Amount must be a number.'));
     }
@@ -5286,6 +5287,10 @@ function checkbook_datafeeds_spending_validate($form, &$form_state) {
     }
     if ($datefrom && $dateto && strtotime($dateto) < strtotime($datefrom)) {
         form_set_error('issuedto', t('Invalid range for Issue Date.'));
+    }
+    //Contract ID
+    if($contract_id && preg_match("/(^MMA1|^MA1)/", strtoupper($contract_id))) {
+        form_set_error('contractno', t('Spending information for MMA1 and MA1 Contracts can be viewed using the Contract Data feeds feature.'));
     }
     //Vendor
     if ($vendor) {
