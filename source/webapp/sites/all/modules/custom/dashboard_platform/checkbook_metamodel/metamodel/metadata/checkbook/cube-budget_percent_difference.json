@@ -52,25 +52,25 @@
               ],
               "measures":{
                       "current_amount": {
-                          "function": "SUM(modified_budget_amount)"
+                          "function": "SUM(COALESCE(modified_budget_amount,0))"
                       },
                       "previous_amount": {
-                          "function": "SUM(modified_budget_amount_py)"
+                          "function": "SUM(COALESCE(modified_budget_amount_py,0))"
                       },
                       "previous_1_amount": {
-                          "function": "SUM(modified_budget_amount_py_1)"
+                          "function": "SUM(COALESCE(modified_budget_amount_py_1,0))"
                       },
                       "previous_2_amount": {
-                           "function": "SUM(modified_budget_amount_py_2)"
+                          "function": "SUM(COALESCE(modified_budget_amount_py_2,0))"
                       },
                       "percent_difference1": {
-                          "function": "CASE SUM(modified_budget_amount_py) WHEN 0 THEN 0 ELSE ((SUM(modified_budget_amount) - SUM(modified_budget_amount_py))/SUM(modified_budget_amount_py))*100 END"
+                          "function": "CASE SUM(COALESCE(modified_budget_amount_py,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py,0)))/SUM(COALESCE(modified_budget_amount_py,0)))*100 END"
                       },
                       "percent_difference2": {
-                          "function": "CASE SUM(modified_budget_amount_py_1) WHEN 0 THEN 0 ELSE ((SUM(modified_budget_amount) - SUM(modified_budget_amount_py_1))/SUM(modified_budget_amount_py_1))*100 END"
+                          "function": "CASE SUM(COALESCE(modified_budget_amount_py_1,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py_1,0)))/SUM(COALESCE(modified_budget_amount_py_1,0)))*100 END"
                       },
                       "percent_difference3": {
-                          "function": "CASE SUM(modified_budget_amount_py_2) WHEN 0 THEN 0 ELSE ((SUM(modified_budget_amount) - SUM(modified_budget_amount_py_2))/SUM(modified_budget_amount_py_2))*100 END"
+                          "function": "CASE SUM(COALESCE(modified_budget_amount_py_2,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py_2,0)))/SUM(COALESCE(modified_budget_amount_py_2,0)))*100 END"
                       }
               }
           }
