@@ -153,6 +153,10 @@
         "all_agreement_transactions__ref_award_category": [
             {"datasetName": "all_agreement_transactions", "columnNames": ["award_category_id"]},
             {"datasetName": "award_category", "columnNames": ["award_category_id"]}
+        ],
+        "all_agreement_transactions__not_null_agreement_values": [
+            {"datasetName": "all_agreement_transactions", "columnNames": ["agreement_id"]},
+            {"datasetName": "not_null_agreement_values", "columnNames": ["sub_query_agreement_id"]}
         ]
     }
 }
