@@ -1,0 +1,9 @@
+{
+"widgetType": "phpparser",
+"cleanURLParameters":["year","agency","revcat","fundsrccode"],
+"urlParamMap":{"year":"year_id.year_id","agency":"agency_id","revcat":"revenue_category_id","fundsrccode":"funding_class_code"},
+"defaultParameters":{"year_id.year_id":113},
+"dataset": "checkbook:revenue_cross_year_collections",
+"columns": ["current_recognized","recognized_1","recognized_2","other_years","remaining_amount"],
+"template":"revenue_transaction_cross_year_total_amount"
+}
