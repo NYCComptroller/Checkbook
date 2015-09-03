@@ -1,11 +1,10 @@
 {
     "widgetType":"phpparser",
-    "parentNid":280,
+    "parentNid":595,
     "startWith":0,
     "maxSelect":5,
-    "showAllRecords":true,
     "columns":["agency.agency", "agency.agency.agency_name", "txcount"],
-	"orderBy":"-txcount",    
+	"orderBy":"-txcount",
     "facetNoPager":true,
     "filterName":"Agency",
     "urlParameterName":"agency",
