@@ -696,7 +696,6 @@ function checkbook_project_block_configure($delta){
       );
       break;
   }
-    dsm($form);
   return $form;
 }
 
