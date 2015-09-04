@@ -44,7 +44,7 @@
  "derivedColumns":{
     "current_recognized_formatted":{
         "type":"expression2",
-        "expression":"'<a class=\"bottomContainerReload\" href=\"/panel_html/funding_class_revenue_by_cross_year_collections_details/revenue/fundsrc_details'
+        "expression":"'<a class=\"bottomContainerReload\" href=\"/panel_html/revenue_transactions/revenue/transactions'
                                        .'/smnid/' . $node->nid
                                        ._checkbook_project_get_year_url_param_string()
                                        ._checkbook_project_get_url_param_string(\"agency\")
@@ -55,7 +55,7 @@
     },
     "recognized_1_formatted":{
         "type":"expression2",
-        "expression":"'<a class=\"bottomContainerReload\" href=\"/panel_html/funding_class_revenue_by_cross_year_collections_details/revenue/fundsrc_details'
+        "expression":"'<a class=\"bottomContainerReload\" href=\"/panel_html/revenue_transactions/revenue/transactions'
                                        .'/smnid/' . $node->nid
                                        ._checkbook_project_get_year_url_param_string()
                                        ._checkbook_project_get_url_param_string(\"agency\")
@@ -66,7 +66,7 @@
     },
     "recognized_2_formatted":{
         "type":"expression2",
-        "expression":"'<a class=\"bottomContainerReload\" href=\"/panel_html/funding_class_revenue_by_cross_year_collections_details/revenue/fundsrc_details'
+        "expression":"'<a class=\"bottomContainerReload\" href=\"/panel_html/revenue_transactions/revenue/transactions'
                                        .'/smnid/' . $node->nid
                                        ._checkbook_project_get_year_url_param_string()
                                        ._checkbook_project_get_url_param_string(\"agency\")
@@ -77,14 +77,7 @@
     },
     "other_years_formatted":{
         "type":"expression2",
-        "expression":"'<a class=\"bottomContainerReload\" href=\"/panel_html/funding_class_revenue_by_cross_year_collections_details/revenue/fundsrc_details'
-                                               .'/smnid/' . $node->nid
-                                               ._checkbook_project_get_year_url_param_string()
-                                               ._checkbook_project_get_url_param_string(\"agency\")
-                                               ._checkbook_project_get_url_param_string(\"fundsrccode\")
-                                               ._checkbook_project_get_url_param_string(\"revcat\")
-                                               .'/fundsrccode/'.$row['funding_funding_funding_class_code']
-                                               .'\">'.custom_number_formatter_format($row['other_years'],2,'$').'</a>'"
+        "expression":"custom_number_formatter_format($row['other_years'],2,'$')"
     },
     "remaining_formatted":{
         "type":"expression2",
