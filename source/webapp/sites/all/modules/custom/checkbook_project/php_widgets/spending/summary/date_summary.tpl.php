@@ -28,7 +28,8 @@
         ? _getYearValueFromID(_getRequestParamValue('calyear'))
         : _getYearValueFromID(_getRequestParamValue('year'));
     $year = $yearLabel.$year;
-    $amount = custom_number_formatter_format($node->totalAggregateColumns['check_amount_sum'],2,'$');
+    $amount = _checkbook_project_pre_process_aggregation($node,'check_amount_sum');
+    $amount = custom_number_formatter_format($amount,2,'$');
     $catname = RequestUtil::getSpendingTransactionTitle();
     $monthDetails = CheckbookDateUtil::getMonthDetails(_getRequestParamValue('month'));
     if(isset($monthDetails)){

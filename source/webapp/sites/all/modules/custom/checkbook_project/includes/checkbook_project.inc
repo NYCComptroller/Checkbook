@@ -834,6 +834,32 @@ function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$par
 }
 
 /**
+ * For nodes that cannot have an aggregate value, this function will aggregate any column and return the value
+ * on the fly using the provided widget config.
+ * @param $node
+ * @param $aggregateColumn
+ * @return mixed
+ */
+function _checkbook_project_pre_process_aggregation($node,$aggregateColumn) {
+    $params = $node->nodeAdjustedParamaterConfig;
+    $ds = $node->widgetConfig->dataset;
+    $column = $aggregateColumn;
+    $orderBy = $node->widgetConfig->orderBy;
+    $startWith = isset($node->widgetConfig->startWith) ? $node->widgetConfig->startWith : 0;
+    $limit = $node->widgetConfig->limit;
+    $resultFormatter = new SpecialCharacterResultFormatter(NULL,new ArrayResultFormatter());
+    //Handle multiple cube joins
+    if (strpos($aggregateColumn,'@') !== false) {
+        $col_array = explode("@",$aggregateColumn);
+        $column = $col_array[0];
+        $ds = $col_array[1];
+    }
+    $dataQueryController = data_controller_get_instance();
+    $result = $dataQueryController->queryCube($ds,array($column), $params, $orderBy,$startWith, $limit,$resultFormatter);
+    return $result[0][$column];
+}
+
+/**
  * Function to update the JSON configuration at runtime for advance search spending results.
  * The vendor facet will use 'LIKE' search initially, once the facet is populated and clicked the first time,
  * the vendor name is exact and an 'IN' search can be used for speed and accuracy.
