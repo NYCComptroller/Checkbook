@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<request>
+    <type_of_data>Payroll</type_of_data>
+    <records_from>1</records_from>
+    <max_records>500</max_records>
+    <search_criteria>
+        <criteria>
+            <name>agency_code</name>
+            <type>value</type>
+            <value>040</value>
+        </criteria>
+        <criteria>
+            <name>fiscal_year</name>
+            <type>value</type>
+            <value>2015</value>
+        </criteria>
+    </search_criteria>
+    <response_columns>
+        <column>agency</column>
+        <column>title</column>
+        <column>pay_frequency</column>
+        <column>pay_date</column>
+        <column>annual_salary</column>
+        <column>hourly_rate</column>
+        <column>gross_pay</column>
+        <column>base_pay</column>
+        <column>other_payments</column>
+        <column>overtime_payments</column>
+        <column>gross_pay_ytd</column>
+        <column>fiscal_year</column>
+        <column>calendar_year</column>
+    </response_columns>
+</request>
