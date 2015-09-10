@@ -46,6 +46,7 @@ class XMLFormatter extends AbstractFormatter {
 
     $document = new DOMDocument();
     $document->preserveWhiteSpace = FALSE;
+    $document->formatOutput = TRUE;
 
     $root_element = NULL;
     if (isset($this->configuration->rootElement) && $this->includeRootElement) {
@@ -104,10 +105,12 @@ class XMLFormatter extends AbstractFormatter {
    * @param $document
    * @return mixed|null
    */
-  private function getDocumentString($document) {
-    // TODO - current 'LIBXML_NOXMLDECL' is not working.
-    $document_str = ($document != NULL && $document->hasChildNodes()) ? $document->saveXML(NULL, LIBXML_NOXMLDECL) : NULL;
+  private function getDocumentString(DOMDocument $document) {
+    $document->preserveWhiteSpace = false;
+    $document->formatOutput = true;
+    $document_str = ($document != NULL && $document->hasChildNodes()) ? $document->saveXML(NULL, LIBXML_NOBLANKS) : NULL;
 
+    // TODO - current 'LIBXML_NOXMLDECL' is not working.
     if (isset($document_str)) {
       $document_str = str_replace('<?xml version="1.0"?>', '', $document_str);
     }
