@@ -91,10 +91,12 @@ class XMLDataHandler extends AbstractDataHandler
         $this->response .= $responseResults;
     }
 
-    private function getDocumentString($document){
-        //TODO - current 'LIBXML_NOXMLDECL' is not working
-        $documentStr = ($document != NULL && $document->hasChildNodes()) ? $document->saveXML(NULL,LIBXML_NOXMLDECL) : NULL;
+    private function getDocumentString(DOMDocument $document){
+        $document->preserveWhiteSpace = false;
+        $document->formatOutput = true;
+        $documentStr = ($document != NULL && $document->hasChildNodes()) ? $document->saveXML(NULL, LIBXML_NOBLANKS) : NULL;
 
+        // TODO - current 'LIBXML_NOXMLDECL' is not working.
         if(isset($documentStr)){
             $documentStr = str_replace('<?xml version="1.0"?>','',$documentStr);
         }
@@ -117,7 +119,29 @@ class XMLDataHandler extends AbstractDataHandler
 
     function closeResponse(){
         $this->response .= '</response>';
+        $this->response = self::formatXmlString($this->response);
         parent::closeResponse();
+    }
+
+
+    /**
+     * Function will reformat the xml document to have correct indention.
+     *
+     * @param $strXml
+     * @return DOMDocument
+     */
+    private function formatXmlString($strXml) {
+
+        try {
+            $doc = new DOMDocument();
+            $doc->loadXML($strXml, LIBXML_NOBLANKS);
+            $doc->preserveWhiteSpace = false;
+            $doc->formatOutput = true;
+        }
+        catch (Exception $e) {
+            LogHelper::log_error('Error formatting xml: ' . $e);
+        }
+        return ($doc != NULL && $doc->hasChildNodes()) ? $doc->saveXML() : NULL;
     }
 
     /**
