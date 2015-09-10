@@ -182,7 +182,11 @@ if($display){
 	
 	            if(preg_match("/expandBottomContURL/",$link) && preg_match("/spending/",$link)){
 	              $link_parts = explode("?expandBottomContURL=",$link);
-	              $link = $link_parts[0] . '?expandBottomContURL='. preg_replace("/\/calyear\//","/year/" ,$link_parts[1]);
+                    $url = $link_parts[0];
+                    $bottom_url = preg_replace("/\/calyear\//","/year/" ,$link_parts[1]);
+                    $bottom_url_year_id = RequestUtil::getRequestKeyValueFromURL("year",$bottom_url);
+                    $bottom_url = preg_replace('/\/year\/'.$bottom_url_year_id.'/','/year/'.$value['year_id'],$bottom_url);
+                    $link = $url . '?expandBottomContURL='. $bottom_url;
 	            }
         	}
             /*For the charts with the months links, need to persist the month param for the newly selected year*/
@@ -215,10 +219,14 @@ if($display){
                 else{
 	              $link = preg_replace("/year\/" . $yearFromURL . "/","year/" .  $value['year_id'],$q);
 	            }
-	            if(preg_match("/expandBottomContURL/",$link) && preg_match("/spending/",$link)){
-	              $link_parts = explode("?expandBottomContURL=",$link);
-	              $link = $link_parts[0] . '?expandBottomContURL='. preg_replace("/\/year\//","/calyear/" ,$link_parts[1]);
-	            }
+                if(preg_match("/expandBottomContURL/",$link) && preg_match("/spending/",$link)){
+                    $link_parts = explode("?expandBottomContURL=",$link);
+                    $url = $link_parts[0];
+                    $bottom_url = preg_replace("/\/year\//","/calyear/" ,$link_parts[1]);
+                    $bottom_url_year_id = RequestUtil::getRequestKeyValueFromURL("calyear",$bottom_url);
+                    $bottom_url = preg_replace('/\/calyear\/'.$bottom_url_year_id.'/','/calyear/'.$value['year_id'],$bottom_url);
+                    $link = $url . '?expandBottomContURL='. $bottom_url;
+                }
 
                 $link = preg_replace("/yeartype\/./","yeartype/C",$link);
 	            $link = str_replace("/dept/".$deptId,"/dept/".$dept_Ids[$value['year_id']],$link);
