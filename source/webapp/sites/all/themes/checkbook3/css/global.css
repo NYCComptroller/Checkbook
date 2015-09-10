@@ -63,6 +63,9 @@ h2 {
     font-weight: bold;
     color: #3c5e7c;
 }
+h2.contract-title{
+    width:475px;
+}
 .tableHeader{
     float:left;
     clear:both;

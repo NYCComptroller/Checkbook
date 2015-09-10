@@ -47,9 +47,9 @@ if(!$suppress_widget_title) {
     $summaryTitle .= NodeSummaryUtil::getInitNodeSummaryTitle();
 }
 
-$summaryTitle = $summaryTitle != '' ? $summaryTitle.'<br/>' : '';
+$summaryTitle = $summaryTitle != '' ? $summaryTitle : '';
 
-print "<h2 class='contract-title' class='title'>{$summaryTitle}{$contactStatusLabel} {$contactCategoryLabel} Contracts Transactions</h2>";
+print "<h2 class='contract-title' class='title'>{$summaryTitle} {$contactStatusLabel} {$contactCategoryLabel} Contracts Transactions</h2>";
 
 global $checkbook_breadcrumb_title;
 $checkbook_breadcrumb_title =  "$summaryTitle $contactStatusLabel $contactCategoryLabel Contracts Transactions";  
