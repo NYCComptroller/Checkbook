@@ -93,7 +93,7 @@ h3 {
     color: #3C5E7C;
     font-size:20px;
     font-weight: bold;
-    margin-bottom: 12px;
+    margin: 13px 0 13px 0;
     text-transform: uppercase;
 }
 #contract_history h3, #spending_transactions h3 {
@@ -1806,7 +1806,7 @@ td.pad-left div{
     text-align:center;
 }
 .dataTable td div {
-    margin: 13px 0px 13px 0px;
+    margin: 5px 0px 0px 0px;
 }
 
 .contracts-oge-spending-bottom {
