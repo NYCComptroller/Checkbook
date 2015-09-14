@@ -62,7 +62,7 @@ class QueueJob {
                     $file_names = (array_keys($commands));
                     $this->processCommands($commands);
                     $this->generateCompressedFile($file_names);
-                    // TODO - Delete csv/xml parts
+                    $this->deleteOrphanFiles($file_names);
                 }
                 else {
                     $filename = $this->prepareFileName();
@@ -108,16 +108,14 @@ class QueueJob {
     private function getCSVCommands() {
 
         $num_files = ceil($this->recordCount/$this->fileLimit);
-        $file_limit = $this->fileLimit;
         $commands = array();
 
         for($i=0;$i<$num_files;$i++) {
-            $limit = (($i+1)*$file_limit)-1;
             $offset = $i*$this->fileLimit;
             $filename = $this->prepareFileName().'_part_'.$i;
 
             //sql command
-            $command = $this->getCSVJobCommand($filename, $limit, $offset);
+            $command = $this->getCSVJobCommand($filename, $this->fileLimit, $offset);
             $commands[$filename][] = $command;
 
             //append header command
@@ -341,6 +339,27 @@ class QueueJob {
         }
     }
 
+    /**
+     * Need to delete the orphan files once they have been zipped
+     *
+     * @param $file_names
+     * @throws JobRecoveryException
+     */
+    private function deleteOrphanFiles($file_names) {
+        $request_criteria = $this->jobDetails['request_criteria'];
+        $response_format = $request_criteria['global']['response_format'];
+
+        try {
+            foreach($file_names as $file_name) {
+                $file_path = DRUPAL_ROOT . '/' . $this->fileOutputDir . '/' . $file_name . '.' . $response_format;
+                file_unmanaged_delete($file_path);
+            }
+        }
+        catch (Exception $e) {
+            LogHelper::log_error("{$this->logId}: Exception occured while processing job '{$this->jobDetails['job_id']}' Exception is: " . $e);
+            throw new JobRecoveryException("{$this->logId}: Exception occured while processing job '{$this->jobDetails['job_id']}' Exception is :" . $e->getMessage(), $e->getCode(), $e);
+        }
+    }
     /**
     * @return string
     */
