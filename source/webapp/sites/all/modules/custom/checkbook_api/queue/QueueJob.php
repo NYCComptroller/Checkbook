@@ -293,9 +293,9 @@ class QueueJob {
         $command = "sed -i 's/|GT|/>/g' " . $file;
         $commands[$filename][] = $command;
 
-        //xmllint command to format the xml
-        $command = "xmllint -o ".$file." --format ".$file;
-        $commands[$filename][] = $command;
+//        //xmllint command to format the xml
+//        $command = "xmllint -o ".$file." --format ".$file;
+//        $commands[$filename][] = $command;
 
         return $commands;
     }
