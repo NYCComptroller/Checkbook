@@ -1906,6 +1906,9 @@ a.showHide, a.showHide.open, .assoc_item span.expanded , .assoc_item span.collap
     float:left;
     margin:0px 5px 0px 0px;
 }
+.assoc_item .contract-title.clearfix div{
+    margin:0px;
+}
 td.expander span.loader {
     background: url("../images/ajax-loader.gif") no-repeat scroll right center transparent;
 }
@@ -2000,7 +2003,7 @@ table#assoc_contracts_list .assoc_item{
     padding: 0px 21px 0px 13px;
 }
 #assoc_contracts_list .dollar-amounts{
-    margin-bottom:0;
+    margin-bottom:0px;
 }
 table#assoc_contracts_list .assoc_item .dataTable.outerTable{
     border:1px solid #cacaca;
@@ -2178,11 +2181,13 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
 .oge-assoc-contracts-list .contractLinkNote {
     position:relative;
 }
-.page-contracts-landing #assoc_contracts_list_wrapper .dollar-amounts div{
+.page-contracts-landing #assoc_contracts_list_wrapper .dollar-amounts div,
+.page-contract-details #assoc_contracts_list_wrapper .dollar-amounts div{
     margin: 0;
     width: 105px;
 }
-.page-contracts-landing #assoc_contracts_list_wrapper .contract-title{
+.page-contracts-landing #assoc_contracts_list_wrapper .contract-title,
+.page-contract-details #assoc_contracts_list_wrapper .contract-title{
     margin: 10px 0 -30px 0;
 }
 .contract-details-heading .contract-id .master-contract-link{
