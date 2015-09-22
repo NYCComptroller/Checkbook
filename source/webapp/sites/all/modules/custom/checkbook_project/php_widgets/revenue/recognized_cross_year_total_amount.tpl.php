@@ -20,8 +20,8 @@
 ?>
 <?php
     print '<div class="dollar-amounts">';
-    print '<div class="total-spending-amount">' . custom_number_formatter_format($node->data[0]['revenue_amount_sum'],2,'$')."<div class='amount-title'>Total Revenue<br />Recognized</div>".'</div>';
+    print '<div class="total-spending-amount">' . custom_number_formatter_format($node->data[1]['revenue_amount_sum'],2,'$')."<div class='amount-title'>Total Revenue<br />Recognized</div>".'</div>';
     print '<div class="total-spending-amount">' . custom_number_formatter_format($node->data[0]['total_current_modified_budget_amount'],2,'$')."<div class='amount-title'>Total Modified<br />Budget</div>".'</div>';
     print '<div class="total-spending-amount">' . custom_number_formatter_format($node->data[0]['total_adopted_amount'],2,'$')."<div class='amount-title'>Total Adopted<br />Budget</div>" .'</div>' ;
-    print '<div class="total-spending-amount">' . custom_number_formatter_format($node->data[0]['total_current_modified_budget_amount']-$node->data[0]['revenue_amount_sum'],2,'$')."<div class='amount-title'>Total Remaining<br />Budget</div>" .'</div>' ;
+    print '<div class="total-spending-amount">' . custom_number_formatter_format($node->data[0]['total_current_modified_budget_amount']-$node->data[1]['revenue_amount_sum'],2,'$')."<div class='amount-title'>Total Remaining<br />Budget</div>" .'</div>' ;
 print '</div>';
