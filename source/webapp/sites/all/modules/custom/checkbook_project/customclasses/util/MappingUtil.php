@@ -426,6 +426,17 @@ class MappingUtil {
     				$title = " <br/><span class=\"second-line\">M/WBE category: " . $current_ethnicity_from_filter . "</span>";
     			}else{
     				$ethnicity_id = ContractUtil::getLatestMwbeCategoryByVendor($vendor_id, null, null, null, $is_prime_or_sub);
+                    if(!$ethnicity_id){
+                        $query = "SELECT year_id, minority_type_id
+                      FROM contract_vendor_latest_mwbe_category
+                      WHERE  vendor_id = ".$vendor_id
+                            ." AND is_prime_or_sub = '" . $is_prime_or_sub . "'"
+                            ." ORDER BY year_id DESC "
+                            ." LIMIT 1 ";
+                        $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+                        if($results)
+                            $ethnicity_id = $results[0]['minority_type_id'];
+                    }
     				if($ethnicity_id > 0){
     					$title = " <br/><span class=\"second-line\">M/WBE Category: " . MappingUtil::getMinorityCategoryById($ethnicity_id) . "</span>";
     				}
