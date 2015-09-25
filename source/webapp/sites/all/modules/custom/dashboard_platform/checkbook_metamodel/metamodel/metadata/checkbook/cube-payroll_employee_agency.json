@@ -38,16 +38,6 @@
                     ]
                 },
                 {
-                    "name": "employee_title",
-                    "levels": [
-                        {
-                            "name": "employee_title",
-                            "datasetName": "employee_title",
-                            "sourceColumnName": "employee_id"
-                        }
-                    ]
-                },
-                {
                     "name": "annual_salary",
                     "levels": [
                                 {
