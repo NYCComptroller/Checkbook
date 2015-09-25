@@ -31,10 +31,21 @@ if($results){
     $total_hourly_employees = number_format($results['total_hourly_employees@checkbook:payroll_year_month']);
     $total_employees = number_format($results['total_employees@checkbook:payroll_year_month']);
     $year = $results['year_year'];
+    $month = $results['month_month'];
     $yearType = $results['year_type_year_type'];
+    $year_value = _getYearValueFromID($year);
+    $month_num = _getMonthValueFromId($month);
+    $dateObj   = DateTime::createFromFormat('!m', $month_num);
+    $month_value = $dateObj->format('F');
+
+    if(_getRequestParamValue('smnid') == 491){
+        $overtime_employees_label = WidgetUtil::getLabel('no_of_ot_employees');
+        $overtime_employees_value = number_format($results['total_overtime_employees']);
+    }
 
 $table = "
 <div id='payroll-tx-static-content'>
+<div class='payroll-year-month'><span class='label'>". WidgetUtil::getLabel('month') .": </span><span class='data'>{$month_value} </span>|<span class='label'>".WidgetUtil::getLabel('year') .":</span><span class='data'>FY {$year_value}</span></div>
     <table id='payroll-tx-static-content-table'>
         <tr>
             <td class='label'>". WidgetUtil::getLabel('annual_salary') .":</td><td class='data'>{$total_annual_salary}</td>
@@ -50,9 +61,10 @@ $table = "
         </tr>
         <tr>
             <td class='label'>". WidgetUtil::getLabel('other_pay') .":</td><td class='data'>{$total_other_payments}</td>
+            <td class='label'>". WidgetUtil::getLabel('overtime_pay') .":</td><td class='data'>{$total_overtime_pay}</td>
         </tr>
         <tr>
-            <td class='label'>". WidgetUtil::getLabel('overtime_pay') .":</td><td class='data'>{$total_overtime_pay}</td>
+            <td class='label'>{$overtime_employees_label}</td><td class='data'>{$overtime_employees_value}</td>
         </tr>
     </table>
 </div>
