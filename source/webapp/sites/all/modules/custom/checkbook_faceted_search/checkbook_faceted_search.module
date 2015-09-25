@@ -186,7 +186,7 @@ function _checkbook_faceted_search_update_data_range_filter($node){
     $params = explode('~',_getRequestParamValue($node->widgetConfig->urlParameterName));
     if(!is_array($data[0])){
       $data = array(0=>array());
-    }    
+    }
     $initial[0] = array(6, 'Greater than $100M', $data[0]['g100m_count']);
     $initial[1] = array(5, '$51M - $100M', $data[0]['g50m_le100m_count']);
     $initial[2] = array(4, '$26M - $50M', $data[0]['g25m_le50m_count']);
@@ -246,6 +246,56 @@ for ($i = 0; $i < 6; $i++){
   return $output;
 }
 
+function _checkbook_faceted_search_update_data_range3_filter($node){
+    $data = $node->data;
+    $output = array();
+    $output['filter_name'] = $node->widgetConfig->filterName;
+    $params = explode('~',_getRequestParamValue($node->widgetConfig->urlParameterName));
+    if(!is_array($data[0])){
+        $data = array(0=>array());
+    }
+    switch($node->widgetConfig->filterName) {
+        case "Overtime Payment":
+            $initial[0] = array(5, 'Greater than 250K', $data[0]['overtime_pay_g250k_count']);
+            $initial[1] = array(4, '101K-250K', $data[0]['overtime_pay_g101k_le250k_count']);
+            $initial[2] = array(3, '51K-100K', $data[0]['overtime_pay_g51k_le100k_count']);
+            $initial[3] = array(2, '21K-50K', $data[0]['overtime_pay_g21k_le50k_count']);
+            $initial[4] = array(1, 'Less than 20K', $data[0]['overtime_pay_less20k_count']);
+            break;
+        case "Annual Salary":
+            $initial[0] = array(5, 'Greater than 250K', $data[0]['annual_salary_g250k_count']);
+            $initial[1] = array(4, '101K-250K', $data[0]['annual_salary_g101k_le250k_count']);
+            $initial[2] = array(3, '51K-100K', $data[0]['annual_salary_g51k_le100k_count']);
+            $initial[3] = array(2, '21K-50K', $data[0]['annual_salary_g21k_le50k_count']);
+            $initial[4] = array(1, 'Less than 20K', $data[0]['annual_salary_less20k_count']);
+            break;
+        case "Gross Pay YTD":
+            $initial[0] = array(5, 'Greater than 250K', $data[0]['gross_pay_g250k_count']);
+            $initial[1] = array(4, '101K-250K', $data[0]['gross_pay_g101k_le250k_count']);
+            $initial[2] = array(3, '51K-100K', $data[0]['gross_pay_g51k_le100k_count']);
+            $initial[3] = array(2, '21K-50K', $data[0]['gross_pay_g21k_le50k_count']);
+            $initial[4] = array(1, 'Less than 20K', $data[0]['gross_pay_less20k_count']);
+            break;
+    }
+    for ($i = 0; $i < 5; $i++){
+        $checked = false;
+        foreach ($params as $param){
+            if ($param == $initial[$i][0]){
+                $checked = true;
+            }
+        }
+        if ($checked){
+            $output['checked'][] = $initial[$i];
+        } else {
+            if($initial[$i][2] > 0){
+                $output['unchecked'][] = $initial[$i];
+            }
+        }
+    }
+    $output['autocomplete_id'] = $node->widgetConfig->autocompleteID;
+    return $output;
+}
+
 function checkbook_faceted_search_adjust_param($node){
   if ($_REQUEST['page']){
     $page = $_REQUEST['page'];
@@ -262,47 +312,53 @@ function checkbook_faceted_search_adjust_param($node){
  *
  * @param $variables
  */
-
 function checkbook_faceted_search_preprocess_individual_filter(&$variables){
-  $node = $variables['node'];
-  $paramTypeConfig =(array)  $node->widgetConfig->paramTypeConfig;
-  if($node->widgetConfig->urlParameterType=="rangeid"){
-    $data = _checkbook_faceted_search_update_data_range_filter($node);
-  }elseif($node->widgetConfig->urlParameterType=="rangeid2"){
-    $data = _checkbook_faceted_search_update_data_range2_filter($node);
-  }else{
-    $data = _checkbook_faceted_search_update_data($node);
-  }
-  $variables['filter_name'] = $data['filter_name'];
-  $variables['checked'] = $data['checked'];
-  $variables['unchecked'] = $data['unchecked'];
-  $variables['autocomplete_id'] = $data['autocomplete_id'];
-  $variables['autocomplete_field_name'] = $data['autocomplete_field_name'];
-  $variables['autocomplete_param_name'] = $data['autocomplete_param_name'];
-  if(($node->nid == 518 || $node->nid == 540 || $node->nid == 566 || $node->nid == 709 || $node->nid == 702 || $node->nid == 768)&& !preg_match("/\/agency\//",$_GET['q'])){
-    $variables['hide_filter'] = ' style="display:none" ';
-  }else{
-    $variables['hide_filter'] = "";
-  }
-  
-  
+    $node = $variables['node'];
+    if($node->widgetConfig->urlParameterType=="rangeid"){
+        $data = _checkbook_faceted_search_update_data_range_filter($node);
+    }
+    elseif($node->widgetConfig->urlParameterType=="rangeid2"){
+        $data = _checkbook_faceted_search_update_data_range2_filter($node);
+    }
+    elseif($node->widgetConfig->urlParameterType=="rangeid3"){
+        $data = _checkbook_faceted_search_update_data_range3_filter($node);
+    }
+    else{
+        $data = _checkbook_faceted_search_update_data($node);
+    }
+    $variables['filter_name'] = $data['filter_name'];
+    $variables['checked'] = $data['checked'];
+    $variables['unchecked'] = $data['unchecked'];
+    $variables['autocomplete_id'] = $data['autocomplete_id'];
+    $variables['autocomplete_field_name'] = $data['autocomplete_field_name'];
+    $variables['autocomplete_param_name'] = $data['autocomplete_param_name'];
+    if(($node->nid == 518 || $node->nid == 540 || $node->nid == 566 || $node->nid == 709 || $node->nid == 702 || $node->nid == 768)&& !preg_match("/\/agency\//",$_GET['q'])){
+        $variables['hide_filter'] = ' style="display:none" ';
+    }else{
+        $variables['hide_filter'] = "";
+    }
+
 }
 
 function checkbook_faceted_search_preprocess_pagination(&$variables){
-  $node = $variables['node'];
-  $paramTypeConfig = (array)  $node->widgetConfig->paramTypeConfig;
-  if($node->widgetConfig->urlParameterType=="rangeid"){
-    $data = _checkbook_faceted_search_update_data_range_filter($node);
-  }elseif($node->widgetConfig->urlParameterType=="rangeid2"){
-    $data = _checkbook_faceted_search_update_data_range2_filter($node);
-  }else{
-    $data = _checkbook_faceted_search_update_data($node);
-  }
+    $node = $variables['node'];
+    if($node->widgetConfig->urlParameterType=="rangeid") {
+        $data = _checkbook_faceted_search_update_data_range_filter($node);
+    }
+    elseif($node->widgetConfig->urlParameterType=="rangeid2") {
+        $data = _checkbook_faceted_search_update_data_range2_filter($node);
+    }
+    elseif($node->widgetConfig->urlParameterType=="rangeid3") {
+        $data = _checkbook_faceted_search_update_data_range3_filter($node);
+    }
+    else {
+        $data = _checkbook_faceted_search_update_data($node);
+    }
   
-  $variables['filter_name'] = $data['filter_name'];
-  $variables['checked'] = $data['checked'];
-  $variables['unchecked'] = $data['unchecked'];
-  $variables['autocomplete_id'] = $data['autocomplete_id'];
+    $variables['filter_name'] = $data['filter_name'];
+    $variables['checked'] = $data['checked'];
+    $variables['unchecked'] = $data['unchecked'];
+    $variables['autocomplete_id'] = $data['autocomplete_id'];
 }
 
 /**
