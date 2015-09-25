@@ -1228,7 +1228,7 @@ function widget_merge_config($parent_config, $child_config){
   if(isset($autocompleteParamName)){
     $child_config->urlParamMap->$autocompleteParamName = $child_config->autocompleteField;
   }
-  if($child_config->urlParameterType == "rangeid" || $child_config->urlParameterType == "rangeid2"){
+  if($child_config->urlParameterType == "rangeid" || $child_config->urlParameterType == "rangeid2" || $child_config->urlParameterType == "rangeid3"){
     if(($key = array_search($urlParameterName, $child_config->cleanURLParameters)) !== false) {
       unset($child_config->cleanURLParameters[$key]);
     }

@@ -765,7 +765,6 @@ function _checkbook_project_adjust_date_spending_parameter_filters(&$node, &$par
     return $parameters;
 }
 
-
 /**
  * Transaction page from M/WBE Dashboard landing page
  * Top 10 agencies widget (759) - sub and prime data - reverted in NYCCHKBK-4798
@@ -884,6 +883,34 @@ function _checkbook_project_adjust_vendor_facet_json(&$node){
     }
 }
 
+/**
+ * Function to merge duplicate titles
+ * @param $node
+ * @return array
+ */
+function _checkbook_project_adjust_payroll_title_facet_data(&$node){
+
+    $filtered_data = array();
+    foreach($node->data as $row){
+        $title = $row['employee_employee_civil_service_title'];
+        $count = $row['txcount'];
+        if (array_key_exists($title, $filtered_data)) {
+            $filtered_data[$title] += $count;
+        }
+        else {
+            $filtered_data[$title] = $count;
+        }
+    }
+    $data = array();
+    foreach($filtered_data as $title => $count){
+        $new_row = array(
+            'employee_employee_civil_service_title' => $title,
+            'txcount' => $count);
+        array_push($data, $new_row);
+    }
+
+    return $data;
+}
 
 /**
  * Function to adjust custom parameters passed to data controller module
@@ -1096,6 +1123,37 @@ function _checkbook_project_applyParameterFilters($node, $parameters){
                         }
                       }
                       break;
+                    case "rangeid3":
+                    for($i=1; $i<6;$i++){
+                        switch($i){
+                            case 1:
+                                if(!in_array($i,$paramValues)){
+                                    $conditions[] = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, 20000);
+                                }
+                                break;
+                            case 2:
+                                if(!in_array($i,$paramValues)){
+                                    $conditions[] = $data_controller_instance->initiateHandler(NotInRangeOperatorHandler::$OPERATOR__NAME, array(20000, 50000));
+                                }
+                                break;
+                            case 3:
+                                if(!in_array($i,$paramValues)){
+                                    $conditions[] = $data_controller_instance->initiateHandler(NotInRangeOperatorHandler::$OPERATOR__NAME, array(50000.01,100000));
+                                }
+                                break;
+                            case 4:
+                                if(!in_array($i,$paramValues)){
+                                    $conditions[] = $data_controller_instance->initiateHandler(NotInRangeOperatorHandler::$OPERATOR__NAME, array(100000.01,250000));
+                                }
+                                break;
+                            case 5:
+                                if(!in_array($i,$paramValues)){
+                                    $conditions[] = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, 250000);
+                                }
+                                break;
+                        }
+                    }
+                    break;
                 default:
                     break;
             }
