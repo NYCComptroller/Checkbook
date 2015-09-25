@@ -62,11 +62,13 @@ if(is_array($node->data) && count($node->data) > 0){
         $yearType = $data['year_type_year_type'];
         $agencyUrl  = "<a href='/payroll/agency/{$data['agency_agency']}/yeartype/$yearType/year/$year'>{$data['agency_agency_agency_name']}</a>";
 
+        $title = ucfirst(strtolower($data['employee_employee_civil_service_title']));
+
         $table = "<div class='emp-agency-detail-record'><table id='emp-agency-detail-record-table'>";
 
         $table .= '<div id="payroll-emp-trans-name">
                         <span class="payroll-label">Title: </span>
-                        <span class="payroll-value">'.$data['employee_employee_civil_service_title'].'</span>
+                        <span class="payroll-value">'.$title.'</span>
                     </div>';
 
 

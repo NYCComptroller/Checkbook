@@ -28,10 +28,16 @@ if($results){
     $total_other_payments = custom_number_formatter_format($results['total_other_payments'],2,'$');
     $total_overtime_pay = custom_number_formatter_format($results['total_overtime_pay'],2,'$');
     $total_salaried_employees = number_format($results['total_salaried_employees']);
+    $total_employees = number_format($results['total_employees']);
+    $total_hourly_employees = number_format($results['total_hourly_employees']);
     $agencyId = $results['agency_agency'];
     $year = $results['year_year'];
     $yearType = $results['year_type_year_type'];
     $agencyUrl  = "<a href='/payroll/agency/$agencyId/yeartype/$yearType/year/$year'>{$results['agency_agency_agency_name']}</a>";
+    if(_getRequestParamValue('smnid') == 322){
+        $total_overtime_employees = number_format($results['total_overtime_employees']);
+        $total_overtime_employees_label = WidgetUtil::getLabel('no_of_ot_employees').':';
+    }
 
 $table = "
 <div id='payroll-tx-agency-name'>". WidgetUtil::getLabel('agency_name') .": {$agencyUrl}</div>
@@ -49,6 +55,13 @@ $table = "
         <tr>
             <td class='label'>". WidgetUtil::getLabel('overtime_pay_1_ytd') .":</td><td class='data'>{$total_overtime_pay}</td>
             <td class='label'>". WidgetUtil::getLabel('total_no_of_sal_employees') .":</td><td class='data'>{$total_salaried_employees}</td>
+        </tr>
+        <tr>
+        <td class='label'>". WidgetUtil::getLabel('total_no_of_non_sal_employees') .":</td><td class='data'>{$total_hourly_employees}</td>
+        <td class='label'>". WidgetUtil::getLabel('total_no_of_employees') .":</td><td class='data'>{$total_employees}</td>
+        </tr>
+        <tr>
+            <td class='label'>{$total_overtime_employees_label}</td><td class='data'>{$total_overtime_employees}</td>
         </tr>
     </table>
 </div>
