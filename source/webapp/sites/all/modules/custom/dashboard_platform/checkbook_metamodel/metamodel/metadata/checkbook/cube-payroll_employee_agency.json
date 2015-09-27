@@ -82,8 +82,34 @@
                             "sourceColumnName":"type_of_year"
                         }
                     ]
-                }
-                ,
+                },
+                {
+                    "name": "gross_pay",
+                    "levels": [
+                        {
+                            "name": "gross_pay",
+                            "sourceColumnName": "gross_pay"
+                        }
+                    ]
+                },
+                {
+                    "name": "annual_salary",
+                    "levels": [
+                        {
+                            "name": "annual_salary",
+                            "sourceColumnName": "annual_salary"
+                        }
+                    ]
+                },
+                {
+                    "name": "overtime_pay",
+                    "levels": [
+                        {
+                            "name": "overtime_pay",
+                            "sourceColumnName": "overtime_pay"
+                        }
+                    ]
+                },
                 {
                     "name": "pay_frequency",
                     "levels": [

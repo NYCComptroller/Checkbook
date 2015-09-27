@@ -9,9 +9,9 @@
         "yeartype":"type_of_year",
         "month":"month_id",
         "title":"employee.employee.civil_service_title",
-        "grosspayytd":"total_gross_pay",
-        "annualsalary":"total_salaried_amount",
-        "overtimepayment":"total_overtime_amount",
+        "grosspayytd":"gross_pay.gross_pay",
+        "annualsalary":"annual_salary.annual_salary",
+        "overtimepayment":"overtime_pay.overtime_pay",
         "payfrequency":"pay_frequency.pay_frequency"
     },
     "paramTypeConfig":{
