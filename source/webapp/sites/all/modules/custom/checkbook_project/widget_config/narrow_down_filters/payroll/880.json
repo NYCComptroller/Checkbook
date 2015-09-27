@@ -8,7 +8,7 @@
     "columns":["pay_frequency.pay_frequency","txcount"],
     "orderBy":"-txcount",
     "filterName":"Pay Frequency",
-    "urlParameterName":"payfrequency",
+    "urlParameterName":"payfq",
     "autocompleteParamName":"fpayFrequency_auto",
     "autocompleteID":"fpayFrequency",
     "autocompleteField":"pay_frequency.pay_frequency",

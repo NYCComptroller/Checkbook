@@ -3,14 +3,11 @@
     "widgetSubType": "dataTableList",
     "cleanURLParameters":["calyear","year","empnm","agencyh","payfq","paydate","baseamt","overamt","otheramt","grossamt","totalgrosspay","salamt","salamttype","agency","title","grosspayytd","annualsalary","overtimepayment","payfrequency"],
     "urlParamMap":{"calyear":"calendar_fiscal_year_id","year":"calendar_fiscal_year_id","empnm":"civil_service_title","agencyh":"agency_history_id","payfq":"pay_frequency","paydate":"pay_date","baseamt":"base_pay","overamt":"overtime_pay","otheramt":"other_payments","grossamt":"gross_pay","totalgrosspay":"gross_pay_cytd","salamt":"annual_salary","salamttype":"amount_basis_id","agency":"agency_id",
-        "title":"civil_service_title",
-        "grosspayytd":"gross_pay",
+        "grosspayytd":"gross_pay_cytd",
         "annualsalary":"annual_salary",
-        "overtimepayment":"overtime_pay",
-        "payfrequency":"pay_frequency"
+        "overtimepayment":"overtime_pay"
     },
     "paramTypeConfig":{"empnm":"like","paydate":"range","baseamt":"range","overamt":"range","otheramt":"range","grossamt":"range","totalgrosspay":"range","salamt":"range",
-        "title":"eqignorecase",
         "grosspayytd":"rangeid3",
         "annualsalary":"rangeid3",
         "overtimepayment":"rangeid3"
@@ -22,7 +19,7 @@
     ",
     "useList":true,
     "getTotalDataCount":true,
-    "limit":"10",
+    "limit":"35",
     "noDataInitialLoad":true,
     "html_class": "initiative-table",
     "no_results_content":"No Results Found",
@@ -158,12 +155,12 @@
         var cUrlArray = cUrl.split('/');
         var dtsmnidNameIndex = jQuery.inArray('dtsmnid', cUrlArray);
 
-        cUrl = adjustUrlParameter(cUrl,'title',oTitles);
+        cUrl = adjustUrlParameter(cUrl,'empnm',oTitles);
         cUrl = adjustUrlParameter(cUrl,'agency',oAgencyIds);
         cUrl = adjustUrlParameter(cUrl,'grosspayytd',oGrossPayYtd);
         cUrl = adjustUrlParameter(cUrl,'annualsalary',oAnnualSalary);
         cUrl = adjustUrlParameter(cUrl,'overtimepayment',oOvertimePayment);
-        cUrl = adjustUrlParameter(cUrl,'payfrequency',oPayFrequency);
+        cUrl = adjustUrlParameter(cUrl,'payfq',oPayFrequency);
 
         return cUrl;
     }"
