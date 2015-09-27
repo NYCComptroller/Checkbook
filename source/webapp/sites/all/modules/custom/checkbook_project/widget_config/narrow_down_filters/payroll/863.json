@@ -15,6 +15,10 @@
     "autocompleteID":"ftitle",
     "autocompleteField":"employee.employee.civil_service_title",
     "adjustParameters":"
+        $monthId = _getRequestParamValue('month');
+        if(isset($monthId)){
+            $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_month';
+        }
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
         }
