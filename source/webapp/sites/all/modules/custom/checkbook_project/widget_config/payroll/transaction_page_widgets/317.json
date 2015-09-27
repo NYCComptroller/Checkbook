@@ -139,7 +139,7 @@
             "bServerSide": true,
             "bProcessing":true,
             "bFilter": false,
-            "iDisplayLength":10,
+            "iDisplayLength":35,
             "bPaginate": true,
             "sPaginationType":"full_numbers",
             "bLengthChange": false,
