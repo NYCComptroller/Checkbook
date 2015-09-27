@@ -5,7 +5,7 @@
     "maxSelect":5,
     "autocomplete":false,
     "filterName":"Overtime Payment",
-    "urlParameterName":"overamt",
+    "urlParameterName":"overtimepayment",
     "urlParameterType":"rangeid3",
     "autocompleteID":"fovertimePayment",
     "columns":["overtime_pay_g250k_count", "overtime_pay_g101k_le250k_count", "overtime_pay_g51k_le100k_count", "overtime_pay_g21k_le50k_count", "overtime_pay_less20k_count"],
