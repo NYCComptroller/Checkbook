@@ -14,6 +14,10 @@
     "autocompleteID":"fagencyId",
     "autocompleteField":"agency_name",
     "adjustParameters":"
+        $monthId = _getRequestParamValue('month');
+        if(isset($monthId)){
+            $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_month';
+        }
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
         }
