@@ -35,8 +35,10 @@ if($results){
     $yearType = $results['year_type_year_type'];
     $year_value = _getYearValueFromID($year);
     $month_num = _getMonthValueFromId($month);
-    $dateObj   = DateTime::createFromFormat('!m', $month_num);
-    $month_value = $dateObj->format('F');
+    if(isset($month_num)) {
+        $dateObj   = DateTime::createFromFormat('!m', $month_num);
+        $month_value = $dateObj->format('F');
+    }
 
     if(_getRequestParamValue('smnid') == 491){
         $overtime_employees_label = WidgetUtil::getLabel('no_of_ot_employees');
