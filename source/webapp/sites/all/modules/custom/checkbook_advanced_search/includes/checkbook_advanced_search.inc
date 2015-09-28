@@ -525,14 +525,14 @@ function _checkbook_advanced_search_payroll_submit($form, &$form_state)
 
     $payroll_amount_range_array = array('from' => $payroll_amount_from, 'to' => $payroll_amount_to, 'type' => 'amount');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_amount_range_array, 'salamt', TRUE);
-    $redirect_url .= _checkbook_advanced_search_add_payroll_range_filter_param($payroll_amount_from,$payroll_amount_to,"annualsalary");
+//    $redirect_url .= _checkbook_advanced_search_add_payroll_range_filter_param($payroll_amount_from,$payroll_amount_to,"annualsalary");
 
     $payroll_base_salary_range_array = array('from' => $payroll_base_salary_from, 'to' => $payroll_base_salary_to, 'type' => 'amount');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_base_salary_range_array, 'baseamt', TRUE);
 
     $payroll_overtime_amount_range_array = array('from' => $payroll_overtime_amount_from, 'to' => $payroll_overtime_amount_to, 'type' => 'amount');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_overtime_amount_range_array, 'overamt', TRUE);
-    $redirect_url .= _checkbook_advanced_search_add_payroll_range_filter_param($payroll_overtime_amount_from,$payroll_overtime_amount_to,"overtimepayment");
+//    $redirect_url .= _checkbook_advanced_search_add_payroll_range_filter_param($payroll_overtime_amount_from,$payroll_overtime_amount_to,"overtimepayment");
 
     $payroll_other_payments_range_array = array('from' => $payroll_other_payments_from, 'to' => $payroll_other_payments_to, 'type' => 'amount');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_other_payments_range_array, 'otheramt', TRUE);
@@ -542,7 +542,7 @@ function _checkbook_advanced_search_payroll_submit($form, &$form_state)
 
     $payroll_total_gross_pay_range_array = array('from' => $payroll_total_gross_pay_from, 'to' => $payroll_total_gross_pay_to, 'type' => 'amount');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_total_gross_pay_range_array, 'totalgrosspay', TRUE);
-    $redirect_url .= _checkbook_advanced_search_add_payroll_range_filter_param($payroll_total_gross_pay_from,$payroll_total_gross_pay_to,"grosspayytd");
+//    $redirect_url .= _checkbook_advanced_search_add_payroll_range_filter_param($payroll_total_gross_pay_from,$payroll_total_gross_pay_to,"grosspayytd");
 
     if (!empty($payroll_year)) {
         $redirect_url .= _checkbook_advanced_search_year_arg($payroll_year);
