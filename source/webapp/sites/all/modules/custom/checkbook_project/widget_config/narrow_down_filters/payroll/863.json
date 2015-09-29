@@ -4,8 +4,9 @@
     "startWith":0,
     "maxSelect":5,
     "limit":100,
-    "columns":["employee.employee.civil_service_title", "txcount"],
-    "urlParamMap":{"title":"employee.employee.civil_service_title"},
+    "useList":true,
+    "columns": ["civil_service_title","txcount"],
+    "urlParamMap":{"title":"civil_service_title"},
 	"orderBy":"-txcount",
     "filterName":"Title",
     "getTotalDataCount":true,
@@ -13,18 +14,14 @@
     "urlParameterName":"title",
     "autocompleteParamName":"ftitle_auto",
     "autocompleteID":"ftitle",
-    "autocompleteField":"employee.employee.civil_service_title",
-    "adjustParameters":"
-        $monthId = _getRequestParamValue('month');
-        if(isset($monthId)){
-            $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_month';
-        }
-        if(function_exists('_checkbook_project_applyParameterFilters')){
-            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-        }
-        $adjustedParameters['employee.employee.civil_service_title'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
-        return $adjustedParameters;
+    "autocompleteField":"civil_service_title",
+    "widgetDataLoader":"
+        $sql = _checkbook_project_payroll_sql($node);
+        $node->data  = _checkbook_project_execute_sql($sql);
     ",
-    "transformationPHP":"return _checkbook_project_adjust_payroll_title_facet_data($node);",
+    "widgetDataFilterLoader":"
+        $sql = _checkbook_project_payroll_sql($node);
+        $node->checked_items  = _checkbook_project_execute_sql($sql);
+    ",
     "template":"individual_filter"
 }
