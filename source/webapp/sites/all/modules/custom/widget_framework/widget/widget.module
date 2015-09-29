@@ -769,24 +769,32 @@ function load_widget_data($node, $resultFormatter) {
                */
               if(isset($node->widgetConfig->totalDataColumnConfig)) {
 
-                  $distinctColumn = $node->widgetConfig->totalDataColumnConfig->distinctColumn;
-                  $distinctMappedColumn = $node->widgetConfig->totalDataColumnConfig->distinctColumnMap;
+                  $distinctColumnArray = array();
+                  $distinctMappedColumnsArray  = array();
+
+                  if(is_array($node->widgetConfig->totalDataColumnConfig)) {
+                      $totalDataColumnConfig = $node->widgetConfig->totalDataColumnConfig;
+                      foreach($totalDataColumnConfig as $columnConfig) {
+                          $distinctColumnArray[] = $columnConfig->distinctColumn;
+                          $distinctMappedColumnsArray[] = $columnConfig->distinctColumnMap;
+                      }
+                  }
+                  else {
+                      $distinctColumnArray[] = $node->widgetConfig->totalDataColumnConfig->distinctColumn;
+                      $distinctMappedColumnsArray[] = $node->widgetConfig->totalDataColumnConfig->distinctColumnMap;
+                  }
+
                   $distinctColumns = $columns;
                   foreach($distinctColumns as $key => $value) {
-                      if($value != $distinctColumn) {
+                      if(!in_array($value,$distinctColumnArray)) {
                           unset($distinctColumns[$key]);
                       }
                   }
 
                   $sql = widget_get_count_db_query($isList, $datasetName, $distinctColumns, $parameters, $orderBy, $startWith, $limit, $resultFormatter);
-                  if($isList) {
-                      $sql = substr_replace($sql,'DISTINCT '.$distinctMappedColumn,strpos($sql,$distinctMappedColumn),strlen($distinctMappedColumn));
-                  }
-                  else {
-                      $alias_pos = strpos($sql,$distinctMappedColumn)-3;
-                      $alias = substr($sql, $alias_pos, 3);
-                      $sql = substr_replace($sql,'DISTINCT '.$alias.$distinctMappedColumn,$alias_pos,strlen($alias.$distinctMappedColumn));
-                  }
+                  $replace_string = "(SELECT ";
+                  $sql = substr_replace($sql,$replace_string."DISTINCT ",strpos($sql,$replace_string),strlen($replace_string));
+
 //                  log_info('AFTER***: ' . $sql);
                   $results = _checkbook_project_execute_sql($sql);
                   $node->totalDataCount = $results[0]['record_count'];
