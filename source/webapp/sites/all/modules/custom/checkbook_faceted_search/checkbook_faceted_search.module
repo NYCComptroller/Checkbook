@@ -113,23 +113,30 @@ function _checkbook_faceted_search_update_data($node) {
     if ($params[0]) {
         foreach ($params as $param) {
             try {
-                $dataController = data_controller_get_instance();
-                $parameters = $node->nodeAdjustedParamaterConfig;
-                $urlParamMap = ( array ) $node->widgetConfig->urlParamMap;
-                if(isset($node->widgetConfig->urlParameterNameType)){
-                    $paramValues =  explode('~', $param);
-                    $patterns = array();
-                    foreach($paramValues as $value){
-                        $value = checkbook_faceted_search_replaceSlash($value);
-                        $patterns[] = "(^" . _checkbook_regex_replace_pattern($value) . "$)";
-                    }
-                    $parameters[$urlParamMap[$node->widgetConfig->urlParameterName]] = array(data_controller_get_operator_factory_instance()->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, implode($patterns,"|")));
-                }else{
-                    $param = checkbook_faceted_search_replaceSlash($param);
-                    $parameters[$urlParamMap[$node->widgetConfig->urlParameterName]] = array(data_controller_get_operator_factory_instance()->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, $param));
+                if(isset($node->widgetConfig->widgetDataFilterLoader)){
+                    $node->param = $param;
+                    eval($node->widgetConfig->widgetDataFilterLoader);
+                    $checked_items = $node->checked_items;
                 }
-                $resultFormatter = new SpecialCharacterResultFormatter(NULL,new ArrayResultFormatter());
-                $checked_items = $dataController->queryCube(_update_dataset_datasource($node->widgetConfig->dataset), $node->widgetConfig->columns, $parameters,null, null, null, $resultFormatter);
+                else {
+                    $dataController = data_controller_get_instance();
+                    $parameters = $node->nodeAdjustedParamaterConfig;
+                    $urlParamMap = ( array ) $node->widgetConfig->urlParamMap;
+                    if(isset($node->widgetConfig->urlParameterNameType)){
+                        $paramValues =  explode('~', $param);
+                        $patterns = array();
+                        foreach($paramValues as $value){
+                            $value = checkbook_faceted_search_replaceSlash($value);
+                            $patterns[] = "(^" . _checkbook_regex_replace_pattern($value) . "$)";
+                        }
+                        $parameters[$urlParamMap[$node->widgetConfig->urlParameterName]] = array(data_controller_get_operator_factory_instance()->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, implode($patterns,"|")));
+                    }else{
+                        $param = checkbook_faceted_search_replaceSlash($param);
+                        $parameters[$urlParamMap[$node->widgetConfig->urlParameterName]] = array(data_controller_get_operator_factory_instance()->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, $param));
+                    }
+                    $resultFormatter = new SpecialCharacterResultFormatter(NULL,new ArrayResultFormatter());
+                    $checked_items = $dataController->queryCube(_update_dataset_datasource($node->widgetConfig->dataset), $node->widgetConfig->columns, $parameters,null, null, null, $resultFormatter);
+                }
             } catch (Exception $e) {
                 log_error($e->getMessage());
             }

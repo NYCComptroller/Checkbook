@@ -884,32 +884,65 @@ function _checkbook_project_adjust_vendor_facet_json(&$node){
 }
 
 /**
- * Function to merge duplicate titles
+ * Function to build the sql for the custom payroll facet
  * @param $node
- * @return array
+ * @return string
  */
-function _checkbook_project_adjust_payroll_title_facet_data(&$node){
+function _checkbook_project_payroll_sql($node){
 
-    $filtered_data = array();
-    foreach($node->data as $row){
-        $title = $row['employee_employee_civil_service_title'];
-        $count = $row['txcount'];
-        if (array_key_exists($title, $filtered_data)) {
-            $filtered_data[$title] += $count;
-        }
-        else {
-            $filtered_data[$title] = $count;
+    $where_filters = array();
+    $filter_param_value = $node->param;
+
+    foreach($node->widgetConfig->requestParams as $param=>$value){
+        $alias = $param == 'civil_service_title' ? ' e.' : ' a.';
+        $param = $param == "pay_frequency.pay_frequency" ? "pay_frequency" : $param;
+        $param = $param == "gross_pay.gross_pay" ? "gross_pay" : $param;
+        $param = $param == "annual_salary.annual_salary" ? "annual_salary" : $param;
+        $param = $param == "overtime_pay.overtime_pay" ? "overtime_pay" : $param;
+
+        switch($param) {
+            case "civil_service_title";
+                if(isset($filter_param_value)) {
+                    $where_filters[] = _widget_build_sql_condition($alias . "civil_service_title", $filter_param_value);
+                }
+                break;
+            case "gross_pay":
+            case "annual_salary":
+            case "overtime_pay":
+                switch($value) {
+                    case 1:
+                        $where_filters[] = $param . ' < 20000 ';
+                        break;
+                    case 2:
+                        $where_filters[] = $param . ' BETWEEN 21000 AND 50000 ';
+                        break;
+                    case 3:
+                        $where_filters[] = $param . ' BETWEEN 51000 AND 100000 ';
+                        break;
+                    case 4:
+                        $where_filters[] = $param . ' BETWEEN 101000 AND 250000 ';
+                        break;
+                    case 5:
+                        $where_filters[] = $param . ' > 250000 ';
+                        break;
+                }
+                break;
+            default:
+                $where_filters[] = _widget_build_sql_condition($alias . $param, $value);
+                break;
         }
     }
-    $data = array();
-    foreach($filtered_data as $title => $count){
-        $new_row = array(
-            'employee_employee_civil_service_title' => $title,
-            'txcount' => $count);
-        array_push($data, $new_row);
+    if(count($where_filters) > 0){
+        $where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
     }
+    $sql = 'SELECT DISTINCT e.civil_service_title, count(*) as txcount
+        FROM aggregateon_payroll_employee_agency a
+        JOIN employee e on e.employee_id = a.employee_id
+        ' . $where_filter . '
+        GROUP BY civil_service_title
+        ORDER BY txcount DESC';
 
-    return $data;
+    return $sql;
 }
 
 /**
