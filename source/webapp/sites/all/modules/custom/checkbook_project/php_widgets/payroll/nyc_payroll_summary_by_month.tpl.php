@@ -39,15 +39,18 @@ if($results){
         $dateObj   = DateTime::createFromFormat('!m', $month_num);
         $month_value = $dateObj->format('F');
     }
-
+    $yeartype = 'FY';
+    if(_getRequestParamValue('yeartype') == 'C'){
+        $yeartype = 'CY';
+    }
     if(_getRequestParamValue('smnid') == 491){
-        $overtime_employees_label = WidgetUtil::getLabel('no_of_ot_employees');
+        $overtime_employees_label = WidgetUtil::getLabel('no_of_ot_employees').':';
         $overtime_employees_value = number_format($results['total_overtime_employees']);
     }
 
 $table = "
 <div id='payroll-tx-static-content'>
-<div class='payroll-year-month'><span class='label'>". WidgetUtil::getLabel('month') .": </span><span class='data'>{$month_value} </span>|<span class='label'>".WidgetUtil::getLabel('year') .":</span><span class='data'>FY {$year_value}</span></div>
+<div class='payroll-year-month'><span class='label'>". WidgetUtil::getLabel('month') .": </span><span class='data'>{$month_value} </span>|<span class='label'>".WidgetUtil::getLabel('year') .":</span><span class='data'>{$yeartype} {$year_value}</span></div>
     <table id='payroll-tx-static-content-table'>
         <tr>
             <td class='label'>". WidgetUtil::getLabel('annual_salary') .":</td><td class='data'>{$total_annual_salary}</td>

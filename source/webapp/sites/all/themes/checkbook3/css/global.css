@@ -3310,3 +3310,8 @@ div.payroll-year-month{
     margin-bottom: 20px;
     font-weight: 900;
 }
+
+#payroll-tx-static-content-table .label{
+    font-weight: 900;
+}
+
