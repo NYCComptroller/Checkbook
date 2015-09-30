@@ -1161,7 +1161,7 @@ function _checkbook_project_applyParameterFilters($node, $parameters){
                         switch($i){
                             case 1:
                                 if(!in_array($i,$paramValues)){
-                                    $conditions[] = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, 20000);
+                                    $conditions[] = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, 21000);
                                 }
                                 break;
                             case 2:
