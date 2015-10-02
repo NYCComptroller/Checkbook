@@ -362,6 +362,11 @@ function checkbook_api_adjustContractSql(&$sql_query) {
         $sql_query =  str_replace("l1.vendor_type", "CASE WHEN l1.is_prime_or_sub = 'P' THEN 'No' ELSE 'Yes' END AS vendor_type",$sql_query);
         $sql_query =  str_replace("l1.expenditure_object_names", "CASE WHEN l1.is_prime_or_sub = 'P' THEN l1.expenditure_object_names ELSE 'N/A' END AS expenditure_object_name",$sql_query);
     }
+    else if (strpos($sql_query,'l4.') !== false) {
+        $sql_query =  str_replace("l1.prime_vendor_name", "CASE WHEN l1.is_prime_or_sub = 'S' THEN l1.prime_vendor_name ELSE 'N/A' END AS prime_vendor_name",$sql_query);
+        $sql_query =  str_replace("l1.vendor_type", "CASE WHEN l1.is_prime_or_sub = 'P' THEN 'No' ELSE 'Yes' END AS vendor_type",$sql_query);
+        $sql_query =  str_replace("l1.expenditure_object_names", "CASE WHEN l1.is_prime_or_sub = 'P' THEN l1.expenditure_object_names ELSE 'N/A' END AS expenditure_object_name",$sql_query);
+    }
     else {
         $sql_query =  str_replace("prime_vendor_name", "CASE WHEN is_prime_or_sub = 'S' THEN prime_vendor_name ELSE 'N/A' END AS prime_vendor_name",$sql_query);
         $sql_query =  str_replace("vendor_type", "CASE WHEN is_prime_or_sub = 'P' THEN 'No' ELSE 'Yes' END AS vendor_type",$sql_query);
