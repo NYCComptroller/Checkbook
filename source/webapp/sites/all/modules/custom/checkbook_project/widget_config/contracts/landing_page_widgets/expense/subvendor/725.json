@@ -65,6 +65,11 @@ return $adjustedParameters;
 },
 "disableViewAll":true,
 "getTotalDataCount":true,
+"totalDataColumnConfig":
+{
+    "distinctColumn":"vendor.vendor",
+    "distinctColumnMap":"prime_vendor_id"
+},
 "header":"
     $node->widgetConfig->getData=false;
     load_widget_data($node);

@@ -26,6 +26,7 @@
     "limit":5,
     "enableExpand":true,
     "getTotalDataCount":true,
+    "totalDataColumnConfig":{"distinctColumn":"vendor.vendor","distinctColumnMap":"vendor_id"},
     "disableViewAll":true,
     "header":"
         $node->widgetConfig->getData=false;
