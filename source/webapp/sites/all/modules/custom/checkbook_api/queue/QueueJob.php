@@ -30,9 +30,13 @@ class QueueJob {
 
     private $fileOutputDir;
 
+    private $tmpFileOutputDir;
+
     private $recordCount;
 
     private $fileLimit;
+
+    private $responseFormat;
 
     function __construct($jobDetails) {
         $this->jobDetails = $jobDetails;
@@ -50,31 +54,40 @@ class QueueJob {
      */
     function processJob() {
 
-        $this->prepareFileOutputDir();
-
-        $request_criteria = $this->jobDetails['request_criteria'];
-        $response_format = $request_criteria['global']['response_format'];
-
-        switch($response_format) {
-            case "csv":
-                if($this->recordCount > $this->fileLimit) {
-                    $commands = $this->getCSVCommands();
-                    $file_names = (array_keys($commands));
-                    $this->processCommands($commands);
-                    $this->generateCompressedFile($file_names);
-                    // TODO - Delete csv/xml parts
-                }
-                else {
+        try {
+            $this->prepareQueueJob();
+            switch($this->responseFormat) {
+                case "csv":
+                    if($this->recordCount > $this->fileLimit) {
+                        $commands = $this->getCSVCommands();
+                        $file_names = (array_keys($commands));
+                        $compressed_filename  = $this->prepareFileName();
+                        $commands[$compressed_filename][] = $this->getCompressFilesCommand($file_names,$compressed_filename);
+                        $this->responseFormat = "zip";
+                        $commands[$compressed_filename][] = $this->getMoveCommand($compressed_filename);
+                        $this->processCommands($commands);
+                        $this->responseFormat = "csv";
+                        $this->deleteOrphanFiles($file_names);
+                    }
+                    else {
+                        $filename = $this->prepareFileName();
+                        $commands[$filename][] = $this->getCSVJobCommand($filename);
+                        $commands[$filename][] = $this->getCSVHeaderCommand($filename);
+                        $commands[$filename][] = $this->getMoveCommand($filename);
+                        $this->processCommands($commands);
+                    }
+                    break;
+                case "xml":
                     $filename = $this->prepareFileName();
-                    $commands[$filename][] = $this->getCSVJobCommand($filename);
+                    $commands = $this->getXMLJobCommands($filename);
+                    $commands[$filename][] = $this->getMoveCommand($filename);
                     $this->processCommands($commands);
-                }
-                break;
-            case "xml":
-                $filename = $this->prepareFileName();
-                $commands = $this->getXMLJobCommands($filename);
-                $this->processCommands($commands);
-                break;
+                    break;
+            }
+        }
+        catch (Exception $e) {
+            LogHelper::log_error("{$this->logId}: Exception occurred while processing job '{$this->jobDetails['job_id']}' Exception is: " . $e);
+            throw new JobRecoveryException("{$this->logId}: Exception occurred while processing job '{$this->jobDetails['job_id']}' Exception is :" . $e->getMessage(), $e->getCode(), $e);
         }
   }
 
@@ -108,16 +121,14 @@ class QueueJob {
     private function getCSVCommands() {
 
         $num_files = ceil($this->recordCount/$this->fileLimit);
-        $file_limit = $this->fileLimit;
         $commands = array();
 
         for($i=0;$i<$num_files;$i++) {
-            $limit = (($i+1)*$file_limit)-1;
             $offset = $i*$this->fileLimit;
             $filename = $this->prepareFileName().'_part_'.$i;
 
             //sql command
-            $command = $this->getCSVJobCommand($filename, $limit, $offset);
+            $command = $this->getCSVJobCommand($filename, $this->fileLimit, $offset);
             $commands[$filename][] = $command;
 
             //append header command
@@ -138,16 +149,14 @@ class QueueJob {
     private function getCSVJobCommand($filename, $limit = 'ALL',$offset = 0) {
         global $conf;
 
+        $file = $this->getFullPathToFile($filename,$this->tmpFileOutputDir);
+
         $command = $this->jobDetails['data_command'];
         $command .= " LIMIT " . $limit . " OFFSET " . $offset;
-
-        $file = DRUPAL_ROOT . '/' . $this->fileOutputDir . '/' . $filename . '.csv';
         $command = $conf['check_book']['data_feeds']['command']
             . " -c \"\\\\COPY (" . $command . ") TO '"
             . $file
             . "'  WITH DELIMITER ',' CSV QUOTE '\\\"' ESCAPE '\\\"' \" ";
-
-        LogHelper::log_debug("{$this->logId}: Command for job {$this->jobDetails['job_id']}:'" . $command . "'");
 
         return $command;
     }
@@ -158,16 +167,15 @@ class QueueJob {
      * @return string
      */
     private function getCSVHeaderCommand($filename) {
-
+        $response_format = $this->responseFormat;
         $request_criteria = $this->jobDetails['request_criteria'];
-        $response_format = $request_criteria['global']['response_format'];
         $search_criteria = new SearchCriteria($request_criteria, $response_format);
         $configuration = ConfigUtil::getConfiguration($request_criteria['global']['type_of_data'], $search_criteria->getConfigKey());
         $configured_response_columns = get_object_vars($configuration->dataset->displayConfiguration->$response_format->elementsColumn);
         $response_columns = is_array($request_criteria['responseColumns']) ? $request_criteria['responseColumns'] : array_keys($configured_response_columns);
         $csv_headers = '"' . implode('","', $response_columns) . '"';
-        $command = "sed -i 1i'" . $csv_headers . "' " . DRUPAL_ROOT . '/' . $this->fileOutputDir . '/' . $filename . '.csv';
-        
+        $file = $this->getFullPathToFile($filename,$this->tmpFileOutputDir);
+        $command = "sed -i 1i'" . $csv_headers . "' " . $file;
         return $command;
     }
 
@@ -178,15 +186,12 @@ class QueueJob {
      * @param $filename
      * @return array
      */
-    function getXMLJobCommands($filename) {
+    private function getXMLJobCommands($filename) {
         global $conf;
 
         $query = $this->jobDetails['data_command'];
-        //Handle this special case for now
-        $query = str_replace("expenditure_object_name,","expenditure_object_names,",$query);
         $request_criteria = $this->jobDetails['request_criteria'];
-        $response_format = $request_criteria['global']['response_format'];
-        $search_criteria = new SearchCriteria($request_criteria, $response_format);
+        $search_criteria = new SearchCriteria($request_criteria, $this->responseFormat);
         $config = ConfigUtil::getConfiguration($request_criteria['global']['type_of_data'], $search_criteria->getConfigKey());
 
         //map tags and build sql
@@ -195,6 +200,7 @@ class QueueJob {
         $elementsColumn = $config->dataset->displayConfiguration->xml->elementsColumn;
         $elementsColumn =  (array)$elementsColumn;
         $columnMappings = array_flip($elementsColumn);
+
         $end = strpos($query, 'FROM');
         $select_part = substr($query,0,$end);
         $select_part = str_replace("SELECT", "", $select_part);
@@ -231,10 +237,10 @@ class QueueJob {
 
             if ($is_derived_column) {
                 $sql_part = substr_replace($sql_part, "", $pos);
-                $new_select_part .= str_replace($alias . $column,"COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')",$sql_part);
+                $new_select_part .= str_replace($alias . $column,"REPLACE(REPLACE(REPLACE(COALESCE(CAST(" . $alias . $column . " AS VARCHAR),''),'&','&amp;'),'>','&gt;'),'<','&lt;')",$sql_part);
             }
             else {
-                $new_select_part .= "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')";
+                $new_select_part .= "REPLACE(REPLACE(REPLACE(COALESCE(CAST(" . $alias . $column . " AS VARCHAR),''),'&','&amp;'),'>','&gt;'),'<','&lt;')";
             }
 
             //column close tag
@@ -249,16 +255,8 @@ class QueueJob {
         $open_tags .= "<result_records><record_count>".$this->getRecordCount()."</record_count><".$rootElement.">";
         $close_tags = "</".$rootElement."></result_records></response>";
 
-        $file = DRUPAL_ROOT . '/' . $this->fileOutputDir . '/' . $filename . '.xml';
+        $file = $this->getFullPathToFile($filename,$this->tmpFileOutputDir);
         $commands = array();
-
-        //replace '<' and '>' to allow escaping of db columns with these tags
-        $query = str_replace("<","|LT|",$query);
-        $query = str_replace(">","|GT|",$query);
-        $open_tags = str_replace("<","|LT|",$open_tags);
-        $open_tags = str_replace(">","|GT|",$open_tags);
-        $close_tags = str_replace("<","|LT|",$close_tags);
-        $close_tags = str_replace(">","|GT|",$close_tags);
 
         //sql command
         $command = $conf['check_book']['data_feeds']['command']
@@ -275,27 +273,45 @@ class QueueJob {
         $command = "sed -i '$"."a" . $close_tags . "' " . $file;
         $commands[$filename][] = $command;
 
-        //escape '&' for xml compatibility
-        $command = "sed -i 's/&/&amp;/g' " . $file;
+        //xmllint command to format the xml
+        $formatted_filename = $this->tmpFileOutputDir .'/formatted_'. $filename;
+        $command = "xmllint --format $file --output $formatted_filename";
         $commands[$filename][] = $command;
 
-        //escape '<' for xml compatibility
-        $command = "sed -i 's/</\&lt;/g' " . $file;
-        $commands[$filename][] = $command;
-
-        //escape '>' for xml compatibility
-        $command = "sed -i 's/>/\&gt;/g' " . $file;
-        $commands[$filename][] = $command;
-
-        //put back the '<' tags
-        $command = "sed -i 's/|LT|/</g' " . $file;
-        $commands[$filename][] = $command;
-
-        //put back the '>' tags
-        $command = "sed -i 's/|GT|/>/g' " . $file;
+        //move the formatted file back
+        $command = "mv $formatted_filename $file";
         $commands[$filename][] = $command;
 
         return $commands;
+    }
+
+    /**
+     * Function to get the command that moves the file from tmp directory
+     * to the data feeds directory.
+     * @param $filename
+     * @return mixed
+     */
+    private function getMoveCommand($filename) {
+        $tmp_file = $this->getFullPathToFile($filename,$this->tmpFileOutputDir);
+        $file = $this->getFullPathToFile($filename,$this->fileOutputDir);
+        $command = "mv $tmp_file $file";
+        return $command;
+    }
+
+    /**
+     * Build the command to compress multiple files into a single zip
+     * @param $file_names
+     * @param $compressed_filename
+     * @return string
+     */
+    private function getCompressFilesCommand($file_names,$compressed_filename) {
+        $output_file = "";
+        foreach($file_names as $file_name) {
+            $output_file .= ' ' . $this->getFullPathToFile($file_name,$this->tmpFileOutputDir);
+        }
+        $compressed_file = $this->tmpFileOutputDir . '/' . $compressed_filename . '.zip';
+        $command = "zip -j $compressed_file $output_file";
+        return $command;
     }
 
     /**
@@ -303,41 +319,56 @@ class QueueJob {
      * @param $commands
      * @throws JobRecoveryException
      */
-    function processCommands($commands) {
+    private function processCommands($commands) {
 
         try {
             foreach($commands as $filename=>$command) {
                 foreach($commands[$filename] as $com) {
+                    LogHelper::log_debug("{$this->logId}: Executing command for job {$this->jobDetails['job_id']}:'" . $com . "'");
                     shell_exec($com);
                 }
             }
         }
         catch (Exception $e) {
-            LogHelper::log_error("{$this->logId}: Exception occured while processing job '{$this->jobDetails['job_id']}' Exception is: " . $e);
-            throw new JobRecoveryException("{$this->logId}: Exception occured while processing job '{$this->jobDetails['job_id']}' Exception is :" . $e->getMessage(), $e->getCode(), $e);
+            LogHelper::log_error("{$this->logId}: Exception occurred while processing job '{$this->jobDetails['job_id']}' Exception is: " . $e);
+            throw new JobRecoveryException("{$this->logId}: Exception occurred while processing job '{$this->jobDetails['job_id']}' Exception is :" . $e->getMessage(), $e->getCode(), $e);
         }
     }
 
     /**
+     * Need to delete the orphan files once they have been zipped
+     *
      * @param $file_names
+     * @throws JobRecoveryException
      */
-    private function generateCompressedFile($file_names) {
-        $request_criteria = $this->jobDetails['request_criteria'];
-        $response_format = $request_criteria['global']['response_format'];
-        $output_file = "";
-        foreach($file_names as $file_name) {
-            $output_file .= ' ' . DRUPAL_ROOT . '/' . $this->fileOutputDir . '/' . $file_name . '.' . $response_format;
+    private function deleteOrphanFiles($file_names) {
+        try {
+            foreach($file_names as $file_name) {
+                $file = $this->getFullPathToFile($file_name,$this->tmpFileOutputDir);
+                file_unmanaged_delete($file);
+                LogHelper::log_debug("{$this->logId}: Executing command for job {$this->jobDetails['job_id']}:'Deleting $file'");
+            }
         }
-        $compress_file = DRUPAL_ROOT . '/' . $this->fileOutputDir . '/' . $this->prepareFileName() . '.zip';
+        catch (Exception $e) {
+            LogHelper::log_error("{$this->logId}: Exception occurred while processing job '{$this->jobDetails['job_id']}' Exception is: " . $e);
+            throw new JobRecoveryException("{$this->logId}: Exception occurred while processing job '{$this->jobDetails['job_id']}' Exception is :" . $e->getMessage(), $e->getCode(), $e);
+        }
+    }
 
-        $cmd = "zip -j $compress_file $output_file ";
-        LogHelper::log_debug("{$this->logId}: Started compressing output file: " . $cmd);
-        shell_exec($cmd);
-        if (!is_file($compress_file)) {
-            LogHelper::log_error("{$this->logId}: Could not generate compress file $compress_file");
-        }
-        else {
-            LogHelper::log_debug("{$this->logId}: Completed compressing output file.");
+    /**
+     * Function to get full path to the output file
+     * @param $filename
+     * @param $directory
+     * @return null|string
+     */
+    private function getFullPathToFile($filename,$directory) {
+        switch($directory) {
+            case $this->fileOutputDir:
+                return DRUPAL_ROOT . '/' . $this->fileOutputDir . '/' . $filename . '.' . $this->responseFormat;
+            case $this->tmpFileOutputDir:
+                return $this->tmpFileOutputDir .'/'. $filename . '.' . $this->responseFormat;
+            default:
+                return null;
         }
     }
 
@@ -346,44 +377,68 @@ class QueueJob {
     */
     function getFilename() {
         static $app_file_name = NULL;
-        $request_criteria = $this->jobDetails['request_criteria'];
-        $response_format = $request_criteria['global']['response_format'];
         if (!isset($app_file_name)) {
-            if($response_format == "csv" && $this->recordCount > $this->fileLimit) {
+            if($this->responseFormat == "csv" && $this->recordCount > $this->fileLimit) {
                 $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.zip';
             }
             else {
-
-                $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.' . $response_format;
+                $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.' . $this->responseFormat;
             }
         }
 
         return $app_file_name;
     }
 
-  /**
-   *
-   */
-  private function prepareFileOutputDir() {
-    global $conf;
-
-    if (isset($this->fileOutputDir)) {
-      return;
+    /**
+     * Function to prepare the file directories and response format variables
+     */
+    private function prepareQueueJob() {
+        $request_criteria = $this->jobDetails['request_criteria'];
+        $this->responseFormat = $request_criteria['global']['response_format'];
+        $this->prepareTmpFileOutputDir();
+        $this->prepareFileOutputDir();
     }
 
-    $dir = variable_get('file_public_path', 'sites/default/files')
-      . '/' . $conf['check_book']['data_feeds']['output_file_dir'];
+    /**
+    *Prepares the data feeds directory for output
+    */
+    private function prepareFileOutputDir() {
+        global $conf;
+        if (isset($this->fileOutputDir)) {
+            return;
+        }
 
-    $this->prepareDirectory($dir);
+        $dir = variable_get('file_public_path', 'sites/default/files')
+        . '/' . $conf['check_book']['data_feeds']['output_file_dir'];
 
-    $paths = explode('/', $this->prepareFilePath());
-    foreach ($paths as $path) {
-      $dir .= '/' . $path;
-      $this->prepareDirectory($dir);
+        $this->prepareDirectory($dir);
+
+        $paths = explode('/', $this->prepareFilePath());
+        foreach ($paths as $path) {
+            $dir .= '/' . $path;
+            $this->prepareDirectory($dir);
+        }
+        $this->fileOutputDir = $dir;
     }
 
-    $this->fileOutputDir = $dir;
-  }
+    /**
+     * Prepares the tmp directory for output
+     */
+    private function prepareTmpFileOutputDir() {
+        global $conf;
+
+        if (isset($this->tmpFileOutputDir)) {
+            return;
+        }
+
+        $tmpDir =  (isset($conf['check_book']['tmpdir']) && is_dir($conf['check_book']['tmpdir'])) ? rtrim($conf['check_book']['tmpdir'],'/') : '/tmp';
+
+        if(!is_writable($tmpDir)){
+            throw new JobRecoveryException("{$this->logId}: Could not prepare file output directory {$tmpDir}.Should check if this directory is writable.");
+        }
+
+        $this->tmpFileOutputDir = $tmpDir;
+    }
 
   /**
    * @param $dir
