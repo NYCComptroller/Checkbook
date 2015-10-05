@@ -26,6 +26,7 @@
         "mwbe":"minority_type_id"
     },
     "getTotalDataCount":true,
+    "totalDataColumnConfig":{"distinctColumn":"sub_vendor.sub_vendor","distinctColumnMap":"vendor_id"},
     "limit":"5",
     "noDataInitialLoad":true,
     "html_class":"",

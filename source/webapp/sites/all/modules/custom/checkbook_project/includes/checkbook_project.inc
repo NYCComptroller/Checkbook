@@ -2080,3 +2080,22 @@ function _is_mwbe_vendor($ag_id){
         return false;
     }
 }
+
+
+function _getAnnualSalariedEmployeeCount($node){
+    $agency_id = _getRequestParamValue('agency');
+    $yeartype = _getRequestParamValue('yeartype');
+    $yearid = _getRequestParamValue('year');
+
+    $where_filter = " WHERE type_of_year = '" .$yeartype. "' AND type_of_employment = 'Salaried' AND fiscal_year_id = ". $yearid;
+    if($agency_id){
+        $where_filter .= " AND agency_id = ".$agency_id;
+    }
+
+    $sql = "SELECT COUNT(DISTINCT employee_number) AS record_count
+            FROM {aggregateon_payroll_employee_agency}
+            ".$where_filter;
+
+    $result = _checkbook_project_execute_sql_by_data_source($sql,_get_default_datasource());
+    $node->PayrollTotalDataCount = $result[0]['record_count'];
+}
