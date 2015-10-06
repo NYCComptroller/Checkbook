@@ -8,7 +8,7 @@
     "urlParameterName":"grosspayytd",
     "urlParameterType":"rangeid3",
     "autocompleteID":"fgrossPayYtd",
-    "columns":["gross_pay_ytd_g250k_count", "gross_pay_ytd_g101k_le250k_count", "gross_pay_ytd_g51k_le100k_count", "gross_pay_ytd_g21k_le50k_count", "gross_pay_ytd_less20k_count"],
+    "columns":["gross_pay_ytd_g250k_count", "gross_pay_ytd_g101k_le250k_count", "gross_pay_ytd_g51k_le100k_count", "gross_pay_ytd_ge20k_le50k_count", "gross_pay_ytd_less20k_count"],
     "orderBy":"",
     "adjustParameters":"
         if(function_exists('_checkbook_project_applyParameterFilters')){

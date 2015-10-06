@@ -111,8 +111,8 @@
                 "gross_pay_ytd_g51k_le100k_count": {
                     "function": "SUM(CASE WHEN COALESCE(gross_pay_ytd,0) > 50000 AND COALESCE(gross_pay_ytd,0) <= 100000 THEN 1 ELSE 0 END)"
                 },
-                "gross_pay_ytd_g21k_le50k_count": {
-                    "function": "SUM(CASE WHEN COALESCE(gross_pay_ytd,0) > 20000 AND COALESCE(gross_pay_ytd,0) <= 50000 THEN 1 ELSE 0 END)"
+                "gross_pay_ytd_ge20k_le50k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(gross_pay_ytd,0) >= 20000 AND COALESCE(gross_pay_ytd,0) <= 50000 THEN 1 ELSE 0 END)"
                 },
                 "gross_pay_ytd_less20k_count": {
                     "function": "SUM(CASE WHEN COALESCE(gross_pay_ytd,0) < 20000 THEN 1 ELSE 0 END)"
@@ -127,8 +127,8 @@
                 "gross_pay_cytd_g51k_le100k_count": {
                     "function": "SUM(CASE WHEN COALESCE(gross_pay_cytd,0) > 50000 AND COALESCE(gross_pay_cytd,0) <= 100000 THEN 1 ELSE 0 END)"
                 },
-                "gross_pay_cytd_g21k_le50k_count": {
-                    "function": "SUM(CASE WHEN COALESCE(gross_pay_cytd,0) > 20000 AND COALESCE(gross_pay_cytd,0) <= 50000 THEN 1 ELSE 0 END)"
+                "gross_pay_cytd_ge20k_le50k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(gross_pay_cytd,0) >= 20000 AND COALESCE(gross_pay_cytd,0) <= 50000 THEN 1 ELSE 0 END)"
                 },
                 "gross_pay_cytd_less20k_count": {
                     "function": "SUM(CASE WHEN COALESCE(gross_pay_cytd,0) < 20000 THEN 1 ELSE 0 END)"
@@ -143,8 +143,8 @@
                 "overtime_pay_g51k_le100k_count": {
                     "function": "SUM(CASE WHEN COALESCE(overtime_pay,0) > 50000 AND COALESCE(overtime_pay,0) <= 100000 THEN 1 ELSE 0 END)"
                 },
-                "overtime_pay_g21k_le50k_count": {
-                    "function": "SUM(CASE WHEN COALESCE(overtime_pay,0) > 20000 AND COALESCE(overtime_pay,0) <= 50000 THEN 1 ELSE 0 END)"
+                "overtime_pay_ge20k_le50k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(overtime_pay,0) >= 20000 AND COALESCE(overtime_pay,0) <= 50000 THEN 1 ELSE 0 END)"
                 },
                 "overtime_pay_less20k_count": {
                     "function": "SUM(CASE WHEN COALESCE(overtime_pay,0) < 20000 THEN 1 ELSE 0 END)"
@@ -158,8 +158,8 @@
                 "annual_salary_g51k_le100k_count": {
                     "function": "SUM(CASE WHEN COALESCE(annual_salary,0) > 50000 AND COALESCE(annual_salary,0) <= 100000 THEN 1 ELSE 0 END)"
                 },
-                "annual_salary_g21k_le50k_count": {
-                    "function": "SUM(CASE WHEN COALESCE(annual_salary,0) > 20000 AND COALESCE(annual_salary,0) <= 50000 THEN 1 ELSE 0 END)"
+                "annual_salary_ge20k_le50k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(annual_salary,0) >= 20000 AND COALESCE(annual_salary,0) <= 50000 THEN 1 ELSE 0 END)"
                 },
                 "annual_salary_less20k_count": {
                     "function": "SUM(CASE WHEN COALESCE(annual_salary,0) < 20000 THEN 1 ELSE 0 END)"
