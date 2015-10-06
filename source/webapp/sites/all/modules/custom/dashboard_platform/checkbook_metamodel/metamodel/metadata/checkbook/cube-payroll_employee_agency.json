@@ -118,6 +118,15 @@
                             "sourceColumnName": "pay_frequency"
                         }
                     ]
+                },
+                {
+                    "name": "civil_service_title",
+                    "levels": [
+                        {
+                            "name": "civil_service_title",
+                            "sourceColumnName": "civil_service_title"
+                        }
+                    ]
                 }
             ],
             "measures":{
