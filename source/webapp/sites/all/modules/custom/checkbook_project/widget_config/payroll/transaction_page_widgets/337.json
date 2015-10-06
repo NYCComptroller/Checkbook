@@ -22,13 +22,12 @@
     "getTotalDataCount":true,
     "limit":"35",
     "noDataInitialLoad":true,
-    "html_class": "initiative-table",
+    "html_class": "initiative-table transaction-table",
     "no_results_content":"No Results Found",
     "dataset": "checkbook:payroll",
     "uniqueSortColumn":"payroll_id",
     "columns": ["employee_number","civil_service_title","pay_frequency","pay_date","annual_salary","gross_pay","base_pay","other_payments","overtime_pay","gross_pay_ytd","fiscal_year_id","agency_id","employee_id","agency_name","amount_basis_id","salaried_amount","non_salaried_amount"],
     "additionalSelectColumns":["amount_basis_id"],
-    "caption":"",
     "derivedColumns": {
         "employee_name_formatted": {
             "type": "expression2",
@@ -116,7 +115,6 @@
 
                 return $adjustedParameters;
     ",
-    "skipCustomPadding":true,
     "dataTableOptions":{
             "bRetrieve": true,
             "bServerSide": true,
@@ -134,24 +132,24 @@
             "aaSorting":[[6,"desc"]],
             "sScrollX": "100%",
              "aoColumns": [
-                    {"sClass":"text", "sWidth":"200px","asSorting": [ "asc","desc" ]},
-                    {"sClass":"text", "sWidth":"200px","asSorting": [ "asc","desc" ]},
-                    {"sClass":"text", "sWidth":"75px","asSorting": [ "asc","desc" ]},
-                    {"sClass":"text", "sWidth":"75px","asSorting": [ "asc","desc" ]},
-                    {"sClass":"number pad-left","sWidth":"75px","asSorting": [ "desc","asc" ]},
-                    {"sClass":"number pad-left","sWidth":"75px","asSorting": [ "desc","asc" ]},
-                    {"sClass":"number pad-left","sWidth":"75px","asSorting": [ "desc","asc" ]},
-                    {"sClass":"number pad-left","sWidth":"75px","asSorting": [ "desc","asc" ]},
-                    {"sClass":"number pad-left","sWidth":"75px","asSorting": [ "desc","asc" ]},
-                    {"sClass":"number pad-left","sWidth":"75px","asSorting": [ "desc","asc" ]},
-                    {"sClass":"number pad-left endCol","sWidth":"100px","asSorting": [ "desc","asc" ]}
-
+                {"sClass":"text", "sWidth":"150px","asSorting": [ "asc","desc" ]},
+                {"sClass":"text pad-left", "sWidth":"150px","asSorting": [ "asc","desc" ]},
+                {"sClass":"text pad-left", "sWidth":"75px","asSorting": [ "asc","desc" ]},
+                {"sClass":"text pad-left", "sWidth":"75px","asSorting": [ "asc","desc" ]},
+                {"sClass":"number pad-left","sWidth":"75px","asSorting": [ "desc","asc" ]},
+                {"sClass":"number pad-left","sWidth":"75px","asSorting": [ "desc","asc" ]},
+                {"sClass":"number pad-left","sWidth":"75px","asSorting": [ "desc","asc" ]},
+                {"sClass":"number pad-left","sWidth":"75px","asSorting": [ "desc","asc" ]},
+                {"sClass":"number pad-left","sWidth":"75px","asSorting": [ "desc","asc" ]},
+                {"sClass":"number pad-left","sWidth":"75px","asSorting": [ "desc","asc" ]},
+                {"sClass":"number pad-left endCol","sWidth":"75px","asSorting": [ "desc","asc" ]}
             ],
             "sScrollX": "100%",
-            "bScrollCollapse": false,
+            "sScrollXInner":"1200px",
+            "bScrollCollapse": true,
             "fnInitComplete": "##function () { new FixedColumns( oTable, {
             \"iLeftColumns\": 1,
-            \"iLeftWidth\": 200
+            \"iLeftWidth\": 150
             } );}##"
     },
     "customExternalJS":"function prepareTableListFilterUrl(){
