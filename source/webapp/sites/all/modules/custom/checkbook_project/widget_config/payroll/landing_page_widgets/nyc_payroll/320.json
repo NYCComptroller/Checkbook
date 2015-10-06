@@ -18,7 +18,6 @@
 $node->widgetConfig->getData=false;
 load_widget_data($node);
 _getAnnualSalariedEmployeeCount($node);
-var_dump($node->PayrollTotalDataCount);
 if($node->PayrollTotalDataCount > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
 $header='<div class=\"tableHeader\"><h2>Top ' .  $count . 'Annual Salaries</h2><span class=\"contCount\"> Number of Salaried Employees:  ' . number_format($node->PayrollTotalDataCount) . '</span></div>';
 return $header;
