@@ -2665,7 +2665,7 @@ table.outerTable.ma-history{
     color: #3c5e7c;
     padding-bottom: 30px;
     text-align: center;
-    text-transform: uppercase;
+    text-transform: none;
     margin:10px 0px 20px 0px;
     width:100% !important;
 }
