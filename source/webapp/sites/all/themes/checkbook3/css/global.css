@@ -66,6 +66,9 @@ h2 {
 h2.contract-title{
     width:475px;
 }
+div.contracts-advanced-search h2.contract-title  {
+    width:100%;
+}
 .tableHeader{
     float:left;
     clear:both;
