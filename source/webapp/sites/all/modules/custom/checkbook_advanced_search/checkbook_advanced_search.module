@@ -380,6 +380,9 @@ function checkbook_advanced_search_form($form, $form_state)
         '#size' => 30,
         '#maxlength' => 100,
     );
+    $form['payroll']['payroll_employee_name_exact'] = array(
+        '#type' => 'hidden'
+    );
     $form['payroll']['payroll_agencies'] = array(
         '#type' => 'select',
         '#title' => t('Agency'),

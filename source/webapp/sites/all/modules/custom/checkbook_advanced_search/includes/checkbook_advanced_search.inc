@@ -483,8 +483,8 @@ function _checkbook_advanced_search_get_contract_type_and_id($data_source = 'che
  */
 function _checkbook_advanced_search_payroll_submit($form, &$form_state)
 {
-
     $payroll_employee_name = trim($form['payroll']['payroll_employee_name']['#value']);
+    $payroll_employee_name_exact = trim($form['payroll']['payroll_employee_name_exact']['#value']);
     $payroll_agency = trim($form['payroll']['payroll_agencies']['#value']);
     $payroll_department = trim($form['payroll']['payroll_department']['#value']);
     $payroll_pay_frequency = trim($form['payroll']['payroll_pay_frequency']['#value']);
@@ -508,7 +508,11 @@ function _checkbook_advanced_search_payroll_submit($form, &$form_state)
     $redirect_url = 'payroll/search/transactions';
 
     if (!empty($payroll_employee_name)) {
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_employee_name, 'empnm');
+        if ($payroll_employee_name_exact == $payroll_employee_name) {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_employee_name_exact, 'empnm_exact');
+        } else {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_employee_name, 'empnm');
+        }
     }
     if (!empty($payroll_agency)) {
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($payroll_agency, 'agency');
