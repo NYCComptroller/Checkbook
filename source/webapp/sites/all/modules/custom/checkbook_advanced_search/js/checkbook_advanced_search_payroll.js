@@ -7,8 +7,12 @@
         agency = ($('#edit-payroll-agencies').val()) ? $('#edit-payroll-agencies').val() : 0;
         year = ($('#edit-payroll-year').val()) ? $('#edit-payroll-year').val() : 0;
 
-        $('#edit-payroll-employee-name').autocomplete({source:'/advanced-search/autocomplete/payroll/employee-name/' + pay_frequency + '/' + agency + '/' + year});
-
+        $('#edit-payroll-employee-name').autocomplete({
+            source:'/advanced-search/autocomplete/payroll/employee-name/' + pay_frequency + '/' + agency + '/' + year,
+            select: function( event, ui ) {
+                $(this).parent().next().val(ui.item.label) ;
+            }
+        });
         $('#payroll-advanced-search').each(function(){
             $(this).focusout(function(){
                 employee_name = ($('#edit-payroll-employee-name')).val() ? $('#edit-payroll-employee-name').val() : 0;

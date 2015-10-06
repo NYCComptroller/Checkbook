@@ -2,13 +2,13 @@
     "stickyHeader":true,
     "widgetType": "data_tables",
     "widgetSubType": "dataTableList",
-    "cleanURLParameters":["year","empnm","agencyh","payfq","paydate","baseamt","overamt","otheramt","grossamt","totalgrosspay","salamt","salamttype","agency","title","grosspayytd","annualsalary","overtimepayment"],
-    "urlParamMap":{"year":"fiscal_year_id","empnm":"civil_service_title","agencyh":"agency_history_id","payfq":"pay_frequency","paydate":"pay_date","baseamt":"base_pay","overamt":"overtime_pay","otheramt":"other_payments","grossamt":"gross_pay","totalgrosspay":"gross_pay_ytd","salamt":"annual_salary","salamttype":"amount_basis_id","agency":"agency_id",
+    "cleanURLParameters":["year","empnm","empnm_exact","agencyh","payfq","paydate","baseamt","overamt","otheramt","grossamt","totalgrosspay","salamt","salamttype","agency","title","grosspayytd","annualsalary","overtimepayment"],
+    "urlParamMap":{"year":"fiscal_year_id","empnm":"civil_service_title","empnm_exact":"civil_service_title","agencyh":"agency_history_id","payfq":"pay_frequency","paydate":"pay_date","baseamt":"base_pay","overamt":"overtime_pay","otheramt":"other_payments","grossamt":"gross_pay","totalgrosspay":"gross_pay_ytd","salamt":"annual_salary","salamttype":"amount_basis_id","agency":"agency_id",
         "grosspayytd":"gross_pay_ytd",
         "annualsalary":"annual_salary",
         "overtimepayment":"overtime_pay"
     },
-    "paramTypeConfig":{"empnm":"like","paydate":"range","baseamt":"range","otheramt":"range","grossamt":"range","totalgrosspay":"range","salamt":"range",
+    "paramTypeConfig":{"empnm":"like","empnm_exact":"eqignorecase","paydate":"range","baseamt":"range","otheramt":"range","grossamt":"range","totalgrosspay":"range","salamt":"range",
         "grosspayytd":"rangeid3",
         "annualsalary":"rangeid3",
         "overtimepayment":"rangeid3"
@@ -116,15 +116,15 @@
 
                 return $adjustedParameters;
     ",
+    "skipCustomPadding":true,
     "dataTableOptions":{
-             "bRetrieve": true,
+            "bRetrieve": true,
             "bServerSide": true,
             "bProcessing":true,
             "bFilter": false,
-            "iDisplayLength":35,
             "bPaginate": true,
+            "iDisplayLength":35,
             "sPaginationType":"full_numbers",
-            "bLengthChange": false,
             "sDom":"<pr><t><ip>",
             "oLanguage": {
                     "sInfo": "Displaying transactions _START_ - _END_ of _TOTAL_",
@@ -134,10 +134,10 @@
             "aaSorting":[[6,"desc"]],
             "sScrollX": "100%",
              "aoColumns": [
-                    {"sClass":"text pad-left", "sWidth":"135px","asSorting": [ "asc","desc" ]},
-                    {"sClass":"text pad-left", "sWidth":"135px","asSorting": [ "asc","desc" ]},
-                    {"sClass":"text pad-left", "sWidth":"75px","asSorting": [ "asc","desc" ]},
-                    {"sClass":"text pad-left", "sWidth":"75px","asSorting": [ "asc","desc" ]},
+                    {"sClass":"text", "sWidth":"200px","asSorting": [ "asc","desc" ]},
+                    {"sClass":"text", "sWidth":"200px","asSorting": [ "asc","desc" ]},
+                    {"sClass":"text", "sWidth":"75px","asSorting": [ "asc","desc" ]},
+                    {"sClass":"text", "sWidth":"75px","asSorting": [ "asc","desc" ]},
                     {"sClass":"number pad-left","sWidth":"75px","asSorting": [ "desc","asc" ]},
                     {"sClass":"number pad-left","sWidth":"75px","asSorting": [ "desc","asc" ]},
                     {"sClass":"number pad-left","sWidth":"75px","asSorting": [ "desc","asc" ]},
@@ -151,7 +151,7 @@
             "bScrollCollapse": false,
             "fnInitComplete": "##function () { new FixedColumns( oTable, {
             \"iLeftColumns\": 1,
-            \"iLeftWidth\": 135
+            \"iLeftWidth\": 200
             } );}##"
     },
     "customExternalJS":"function prepareTableListFilterUrl(){
@@ -169,7 +169,7 @@
         var cUrlArray = cUrl.split('/');
         var dtsmnidNameIndex = jQuery.inArray('dtsmnid', cUrlArray);
 
-        cUrl = adjustUrlParameter(cUrl,'empnm',oTitles);
+        cUrl = adjustUrlParameter(cUrl,'empnm_exact',oTitles);
         cUrl = adjustUrlParameter(cUrl,'agency',oAgencyIds);
         cUrl = adjustUrlParameter(cUrl,'grosspayytd',oGrossPayYtd);
         cUrl = adjustUrlParameter(cUrl,'annualsalary',oAnnualSalary);
