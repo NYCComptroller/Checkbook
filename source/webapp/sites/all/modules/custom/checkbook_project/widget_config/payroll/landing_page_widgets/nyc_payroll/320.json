@@ -13,11 +13,12 @@
 "orderby":"max_annual_salary",
 "disableViewAll":true,
 "enableExpand":true,
-"getTotalDataCount":false,
+"getTotalDataCount":true,
 "header":"
 $node->widgetConfig->getData=false;
 load_widget_data($node);
 _getAnnualSalariedEmployeeCount($node);
+var_dump($node->PayrollTotalDataCount);
 if($node->PayrollTotalDataCount > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
 $header='<div class=\"tableHeader\"><h2>Top ' .  $count . 'Annual Salaries</h2><span class=\"contCount\"> Number of Salaried Employees:  ' . number_format($node->PayrollTotalDataCount) . '</span></div>';
 return $header;
@@ -29,11 +30,12 @@ $url .= '/smnid/' . $node->nid;
 $count = $node->count;
 $footer = '';
 
-if($node->PayrollTotalDataCount > 0)
+if($node->PayrollTotalDataCount > 0){
      $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
-else
+}
+else{
       $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
-
+}
 return $footer;
 ",
 "widgetTitle":"Annual Salaries Payroll Transactions",
