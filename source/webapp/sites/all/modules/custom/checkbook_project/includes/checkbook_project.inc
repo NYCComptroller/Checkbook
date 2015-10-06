@@ -2097,5 +2097,5 @@ function _getAnnualSalariedEmployeeCount($node){
             ".$where_filter;
 
     $result = _checkbook_project_execute_sql_by_data_source($sql,_get_default_datasource());
-    $node->PayrollTotalDataCount = $result[0]['record_count'];
+    $node->PayrollTotalDataCount = (int)$result[0]['record_count'];
 }
