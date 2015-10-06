@@ -250,6 +250,10 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'php_widgets/revenue/transaction_cross_year_total_amount',
             'arguments' => array('node' => NULL)
         ),
+        'revenue_recognized_cross_year_total_amount' => array(
+            'template' => 'php_widgets/revenue/recognized_cross_year_total_amount',
+            'arguments' => array('node' => NULL)
+        ),
         'revenue_transactions_summary' => array(
             'template' => 'php_widgets/revenue/transactions_summary',
             'arguments' => array('node' => NULL)
