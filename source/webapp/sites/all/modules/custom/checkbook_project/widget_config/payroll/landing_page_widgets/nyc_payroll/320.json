@@ -36,7 +36,7 @@ else
 
 return $footer;
 ",
-"widgetTitle":"Top Annual Salaries Payroll Transactions",
+"widgetTitle":"Annual Salaries Payroll Transactions",
 "table_title":"",
 "derivedColumns": {
     "agency_name_link": {
