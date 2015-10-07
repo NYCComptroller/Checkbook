@@ -23,7 +23,9 @@
  * Script to send notification emails
  */
 
-_drush_bootstrap_drupal_full();
+require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
+drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
+//_drush_bootstrap_drupal_full();
 
 	try{
         $completedJobRequests = QueueUtil::getPendingEmailsInfo();
