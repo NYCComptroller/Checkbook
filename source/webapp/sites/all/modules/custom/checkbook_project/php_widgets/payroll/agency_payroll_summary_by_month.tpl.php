@@ -47,7 +47,7 @@ if($results){
 
 $table = "
 
-<div id='payroll-tx-agency-name'>". WidgetUtil::getLabel('agency_name') .": {$agencyUrl}</div>
+
 <div class='payroll-year-month'><span class='label'>". WidgetUtil::getLabel('month') .": </span><span class='data'>{$month_value} </span>|<span class='label'>".WidgetUtil::getLabel('year') .":</span><span class='data'>{$yeartype} {$year_value}</span></div>
 
 <div id='payroll-tx-static-content'>
