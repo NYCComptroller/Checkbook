@@ -36,7 +36,7 @@ if($results){
     $agencyUrl  = "<a href='/payroll/agency/$agencyId/yeartype/$yearType/year/$year'>{$results['agency_agency_agency_name']}</a>";
     if(_getRequestParamValue('smnid') == 322){
         $total_overtime_employees = number_format($results['total_overtime_employees']);
-        $total_overtime_employees_label = WidgetUtil::getLabel('no_of_ot_employees').':';
+        $total_overtime_employees_label = WidgetUtil::getLabel('total_no_of_ot_employees').':';
     }
 
 $table = "
