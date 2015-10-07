@@ -33,9 +33,22 @@ if($results){
     $yearType = $results['year_type_year_type'];
     $agencyUrl  = "<a href='/payroll/agency/$agencyId/yeartype/$yearType/year/$year'>{$results['agency_agency_agency_name']}</a>";
 
+    $month = $results['month_month'];
+    $year_value = _getYearValueFromID($year);
+    $month_num = _getMonthValueFromId($month);
+    if(isset($month_num)) {
+        $dateObj   = DateTime::createFromFormat('!m', $month_num);
+        $month_value = $dateObj->format('F');
+    }
+    $yeartype = 'FY';
+    if(_getRequestParamValue('yeartype') == 'C'){
+        $yeartype = 'CY';
+    }
+
 $table = "
 
 <div id='payroll-tx-agency-name'>". WidgetUtil::getLabel('agency_name') .": {$agencyUrl}</div>
+<div class='payroll-year-month'><span class='label'>". WidgetUtil::getLabel('month') .": </span><span class='data'>{$month_value} </span>|<span class='label'>".WidgetUtil::getLabel('year') .":</span><span class='data'>{$yeartype} {$year_value}</span></div>
 
 <div id='payroll-tx-static-content'>
     <table id='payroll-tx-static-content-table'>
