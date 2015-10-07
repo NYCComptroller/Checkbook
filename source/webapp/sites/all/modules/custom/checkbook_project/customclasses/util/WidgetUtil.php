@@ -114,6 +114,7 @@ class WidgetUtil
         "overtime_pay_1_ytd" => "Overtime<br/>Payment YTD",
         "overtime_pay" => "Overtime<br/>Payment",
         "no_of_ot_employees" => "Number of<br/>Overtime Employees",
+        "total_no_of_ot_employees" => "Total Number of<br/>Overtime Employees",
         "no_of_sal_employees" => "Number of<br/>Salaried Employees",
         "total_no_of_sal_employees" => "Total Number of<br/>Salaried Employees",
         "no_of_non_sal_employees" => "Number of<br/>Non-Salaried Employees",
