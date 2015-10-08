@@ -22,7 +22,7 @@
 class ChartUtil
 {
     static function generateGridViewLink($node){
-        if(empty($node->data)) {
+        if(empty($node->data) || $node->totalDataCount == 0) {
             return '<a class="chart-grid-view no-data" style="display:none" oncontextmenu="return false;">Grid View</a>';
         }
         return '<a class="chart-grid-view gridpopup" style="display:none"
