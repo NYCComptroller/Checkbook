@@ -12,7 +12,7 @@
     "urlParameterName":"agency",
     "autocompleteParamName":"agency_auto",
     "autocompleteID":"fagencyId",
-    "autocompleteField":"agency_name",
+    "autocompleteField":"agency.agency.agency_name",
     "adjustParameters":"
         $monthId = _getRequestParamValue('month');
         if(isset($monthId)){
