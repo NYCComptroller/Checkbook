@@ -68,7 +68,7 @@ if(is_array($node->data) && count($node->data) > 0){
 
         $table .= '<div id="payroll-emp-trans-name">
                         <span class="payroll-label">Title: </span>
-                        <span class="payroll-value">'.$title.'</span>
+                        <span class="payroll-value fake-hyperlink" >'.$title.'</span>
                     </div>';
 
 
