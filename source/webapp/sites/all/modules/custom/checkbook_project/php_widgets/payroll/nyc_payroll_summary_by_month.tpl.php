@@ -44,7 +44,7 @@ if($results){
         $yeartype = 'CY';
     }
     if(_getRequestParamValue('smnid') == 491){
-        $overtime_employees_label = WidgetUtil::getLabel('no_of_ot_employees').':';
+        $total_overtime_employees_label = WidgetUtil::getLabel('total_no_of_ot_employees').':';
         $overtime_employees_value = number_format($results['total_overtime_employees']);
     }
 
@@ -66,10 +66,10 @@ $table = "
         </tr>
         <tr>
             <td><strong>". WidgetUtil::getLabel('other_pay') ."</strong>: {$total_other_payments}</td>
-            <td><strong>". WidgetUtil::getLabel('overtime_pay') ."</strong>: {$total_overtime_pay}</td>
+            <td class='label'>{$total_overtime_employees_label} </strong> {$overtime_employees_value}</td>
         </tr>
         <tr>
-            <td class='label'>{$overtime_employees_label} </strong> {$overtime_employees_value}</td>
+            <td><strong>". WidgetUtil::getLabel('overtime_pay') ."</strong>: {$total_overtime_pay}</td>
         </tr>
     </table>
 </div>
