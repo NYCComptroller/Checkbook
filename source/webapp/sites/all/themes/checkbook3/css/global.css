@@ -2675,6 +2675,7 @@ table.outerTable.ma-history{
     padding-bottom: 0;
     text-align: left;
     text-transform: none;
+    margin-bottom: 10px;
 }
 .page-payroll-search-transactions .panel-display.omega-grid.omega-12-onecol{margin:0px;}
 .page-payroll-search-transactions .dataTables_wrapper > div + div{border: 1px solid #CACACA;}
