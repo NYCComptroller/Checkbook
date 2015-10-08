@@ -152,7 +152,7 @@
         "bInfo": true,
         "aaSorting":[[5,"desc"]],
         "aoColumns": [
-            {"sClass":"text", "sWidth":"140px","asSorting": [ "asc","desc" ]},
+            {"sClass":"text", "sWidth":"150px","asSorting": [ "asc","desc" ]},
             {"sClass":"text pad-left","asSorting": [ "asc","desc" ]},
             {"sClass":"number","asSorting": [ "desc","asc" ]},
             {"sClass":"number pad-left endCol","asSorting": [ "desc","asc" ]},
@@ -164,11 +164,11 @@
         ],
         "sScrollX": "100%",
         "bScrollCollapse": true,
-        "sScrollXInner":"965px",
+        "sScrollXInner":"970px",
         "bScrollCollapse": true,
         "fnInitComplete": "##function () { new FixedColumns( oTable, {
         \"iLeftColumns\": 1,
-        \"iLeftWidth\": 140
+        \"iLeftWidth\": 150
         } );}##"
     },
     "customExternalJS":"function prepareTableListFilterUrl(){
