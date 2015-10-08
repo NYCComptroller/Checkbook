@@ -1150,6 +1150,7 @@ class SpendingUtil{
         //Visualization - Sub Vendors (M/WBE) "Ethnicity" Exception
         else if($smnid == "723" && $dashboard == "sp") {
             $dashboard_title = MappingUtil::getCurrenEhtnicityName();
+            return $widgetTitle . " " . $dashboard_title . " " . $catName . " Transactions";
         }
         //Visualization - Sub Vendors (M/WBE) "Ethnicity" Exception
         else if($smnid == "723" && $dashboard == "ss") {
