@@ -147,6 +147,7 @@
         $node->widgetConfig->chartConfig->series[0]->visible = false;
         unset($node->widgetConfig->gridConfig->table_columns[1]);
     }
+    $node->disableGridViewLink = $allZero;
     return $node->data;
 ",
 "chartConfig" : {
