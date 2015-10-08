@@ -62,7 +62,9 @@ if(is_array($node->data) && count($node->data) > 0){
         $yearType = $data['year_type_year_type'];
         $agencyUrl  = "<a href='/payroll/agency/{$data['agency_agency']}/yeartype/$yearType/year/$year'>{$data['agency_agency_agency_name']}</a>";
 
-        $title = ucfirst(strtolower($data['employee_employee_civil_service_title']));
+        $title = strtolower($data['employee_employee_civil_service_title']);
+        $title = str_replace('( ', '(', ucwords(str_replace('(', '( ', $title)));
+        //$title = mb_convert_case($title, MB_CASE_TITLE, "UTF-8"); //this works too
 
         $table = "<div class='emp-agency-detail-record'><table id='emp-agency-detail-record-table'>";
 
