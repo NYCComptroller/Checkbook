@@ -100,8 +100,8 @@
         $node->widgetConfig->chartConfig->series[1]->name = $SeriesCurrentYearLabel;
 
         foreach($node->data as $key=>$value){
-            if($value['current_gross_pay'] == 0)
-                $value['current_gross_pay'] = null;
+            if($value['current_total_gross_pay'] == 0)
+                $value['current_total_gross_pay'] = null;
             if($value['previous_total_gross_pay'] == 0)
                 $value['previous_total_gross_pay'] =null;
         }
@@ -124,14 +124,14 @@
                                                                                                                                         ('/panel_html/payroll_by_month_nyc_transactions/payroll/monthly/transactions' . _checkbook_project_get_year_url_param_string(false, true) . '/month/' . $row['previous_month_month'])
                                                                                                               );
 
-            if(abs($row['previous_gross_pay']) > 0)
+            if(abs($row['previous_total_gross_pay']) > 0)
                 $allZero = false;
 
-            if(abs($row['current_gross_pay']) > 0)
+            if(abs($row['current_total_gross_pay']) > 0)
                 $allZero = false;
 
-            $seriesPreviousData[] = (object)array( 'y' => $row['previous_gross_pay'], 'url'=> $previousYearUrl);
-            $seriesCurrentData[] = (object)array('y' => $row['current_gross_pay'],'url'=> $currentYearUrl);
+            $seriesPreviousData[] = (object)array( 'y' => $row['previous_total_gross_pay'], 'url'=> $previousYearUrl);
+            $seriesCurrentData[] = (object)array('y' => $row['current_total_gross_pay'],'url'=> $currentYearUrl);
         }
 
         if($allZero) $node->totalDataCount = 0;
@@ -141,7 +141,7 @@
         $node->widgetConfig->chartTitle = 'Gross Pay by Month';
         if($year == 2010){
             foreach($node->data as $row){
-                $row['previous_gross_pay'] = null;
+                $row['previous_total_gross_pay'] = null;
             }
             $node->widgetConfig->chartConfig->series[0]->showInLegend = false;
             $node->widgetConfig->chartConfig->series[0]->visible = false;
