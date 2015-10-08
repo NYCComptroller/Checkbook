@@ -50,7 +50,7 @@ if($results){
 
 $table = "
 <div id='payroll-tx-static-content'>
-<div class='payroll-year-month'><span class='label'>". WidgetUtil::getLabel('month') .": </span><span class='data'> {$month_value} </span> |<span class='label'>".WidgetUtil::getLabel('year') .":</span><span class='data'> {$yeartype} {$year_value}</span></div>
+<div class='payroll-year-month'><span class='label'>". WidgetUtil::getLabel('month') .": </span><span class='data'> {$month_value} </span> &nbsp;&nbsp;|&nbsp;&nbsp;<span class='label'>".WidgetUtil::getLabel('year') .":</span><span class='data'> {$yeartype} {$year_value}</span></div>
     <table id='payroll-tx-static-content-table'>
         <tr>
             <td width='50%'><strong>". WidgetUtil::getLabel('annual_salary') ."</strong>: {$total_annual_salary}</td>
@@ -66,10 +66,10 @@ $table = "
         </tr>
         <tr>
             <td><strong>". WidgetUtil::getLabel('other_pay') ."</strong>: {$total_other_payments}</td>
-            <td class='label'>{$total_overtime_employees_label} </strong> {$overtime_employees_value}</td>
+            <td><strong>". WidgetUtil::getLabel('overtime_pay') ."</strong>: {$total_overtime_pay}</td>
         </tr>
         <tr>
-            <td><strong>". WidgetUtil::getLabel('overtime_pay') ."</strong>: {$total_overtime_pay}</td>
+            <td><strong>{$total_overtime_employees_label} </strong> {$overtime_employees_value}</td>
         </tr>
     </table>
 </div>
