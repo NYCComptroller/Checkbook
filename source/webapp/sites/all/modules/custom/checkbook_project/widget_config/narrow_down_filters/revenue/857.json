@@ -1,17 +1,16 @@
 {
     "widgetType":"phpparser",
-    "parentNid":280,
+    "parentNid":595,
     "startWith":0,
     "maxSelect":5,
-    "showAllRecords":true,
     "columns":["agency.agency", "agency.agency.agency_name", "txcount"],
-	"orderBy":"-txcount",    
+	"orderBy":"-txcount",
     "facetNoPager":true,
     "filterName":"Agency",
     "urlParameterName":"agency",
     "autocompleteParamName":"agency_auto",    
     "autocompleteID":"fagencyId",
-    "autocompleteField":"agency_name",
+    "autocompleteField":"agency.agency.agency_name",
     "adjustParameters":"
     if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
     	$parameters = _checkbook_project_adjust_spending_parameter_filters($node, $parameters);

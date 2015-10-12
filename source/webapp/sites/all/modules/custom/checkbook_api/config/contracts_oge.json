@@ -25,7 +25,16 @@
             "budget_name":"budget_name"
         },
         "dataset":{
-            "sortColumn":"-registered_date",
+            "sortColumn":[
+                "-registered_date",
+                "-agreement_id",
+                "-fms_commodity_line",
+                "-fiscal_year",
+                "-type_of_year",
+                "-status_flag",
+                "-is_vendor_flag",
+                "-if_for_all_years"
+            ],
             "name":"checkbook_oge:agreement_snapshot_oge",
             "columnTypes":{
                 "contract_number":"like",
@@ -145,7 +154,16 @@
             "budget_name":"budget_name"
         },
         "dataset":{
-            "sortColumn":"-registered_date",
+            "sortColumn":[
+                "-registered_date",
+                "-agreement_id",
+                "-fms_commodity_line",
+                "-fiscal_year",
+                "-type_of_year",
+                "-status_flag",
+                "-is_vendor_flag",
+                "-if_for_all_years"
+            ],
             "name":"checkbook_oge:agreement_snapshot_oge",
             "columnTypes":{
                 "expenditure_object_codes":"trueLike",

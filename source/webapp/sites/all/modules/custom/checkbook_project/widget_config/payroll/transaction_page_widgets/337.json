@@ -17,6 +17,7 @@
 "html_class": "initiative-table",
 "no_results_content":"No Results Found",
 "dataset": "checkbook:payroll",
+"uniqueSortColumn":"payroll_id",
 "columns": ["employee_number","civil_service_title","pay_frequency","pay_date","annual_salary","gross_pay","base_pay","other_payments","overtime_pay","gross_pay_ytd","fiscal_year_id","agency_id","employee_id","agency_name","amount_basis_id","salaried_amount","non_salaried_amount"],
 "additionalSelectColumns":["amount_basis_id"],
 "caption":"",

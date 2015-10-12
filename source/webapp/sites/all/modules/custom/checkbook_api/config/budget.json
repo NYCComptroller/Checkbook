@@ -15,7 +15,7 @@
             "post_adjustment":"post_closing_adjustment_amount"
         },
         "dataset":{
-            "sortColumn":"-current_budget_amount",
+            "sortColumn":["-current_budget_amount","-budget_id"],
             "name":"checkbook:budget",
             "displayConfiguration":{
                 "xml":{
