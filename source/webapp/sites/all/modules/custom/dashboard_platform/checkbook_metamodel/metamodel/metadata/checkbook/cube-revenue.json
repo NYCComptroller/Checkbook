@@ -141,6 +141,9 @@
                 },
                 "modified_amount_sum": {
                     "function": "SUM(COALESCE(current_modified_budget_amount,0))"
+                },
+                "remaining_amount_sum":{
+                    "function":"SUM(COALESCE(current_modified_budget_amount,0)) - SUM(COALESCE(posting_amount,0))"
                 }
             }
         }

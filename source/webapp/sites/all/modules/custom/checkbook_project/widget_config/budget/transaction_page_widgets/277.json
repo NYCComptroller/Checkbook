@@ -23,6 +23,7 @@
 "html_class": "initiative-table",
 "no_results_content":"No Results Found",
 "dataset": "checkbook:budget",
+"uniqueSortColumn":"budget_id",
 "columns": ["agency_id","budget_fiscal_year_id","agency_short_name","department_name","budget_code","budget_code_name","object_class_name","budget_fiscal_year","current_budget_amount","adopted_amount","pre_encumbered_amount","encumbered_amount","cash_expense_amount","post_closing_adjustment_amount","accrued_expense_amount","agency_name","total_expenditure_amount","remaining_budget"],
 "caption":"",
 "derivedColumns": {
@@ -37,6 +38,10 @@
     "formatted_budget_code": {
         "type": "expression2",
         "expression": "_get_tooltip_markup($row[budget_code].'('.$row[budget_code_name].')',40)"
+    },
+    "export_budget_code": {
+        "type": "expression2",
+        "expression": "$row[budget_code].'('.$row[budget_code_name].')'"
     },
     "agency_name_link": {
       "type": "expression2",
@@ -86,7 +91,7 @@
 	    {"labelAlias":"modified","column": "formatted_current_budget_amount","sortSourceColumn":"current_budget_amount"},
         {"labelAlias":"fiscal_year","column": "budget_fiscal_year"},
         {"labelAlias":"expense_category","column":"formatted_expense_category","sortSourceColumn": "object_class_name"},
-        {"labelAlias":"budget_code_code","column": "formatted_budget_code","sortSourceColumn":"budget_code"},
+        {"labelAlias":"budget_code_code","column": "formatted_budget_code","sortSourceColumn":"budget_code","exportColumn":"export_budget_code"},
         {"labelAlias":"committed","column": "formatted_committed_amount","sortSourceColumn":"total_expenditure_amount"},
 	    {"labelAlias":"pre_encumbered","column": "formatted_pre_encumbered_amount","sortSourceColumn":"pre_encumbered_amount"},
 	    {"labelAlias":"encumbered","column": "formatted_encumbered_amount","sortSourceColumn":"encumbered_amount"},
@@ -96,6 +101,14 @@
 	    {"labelAlias":"remaining","column": "formatted_remaining_amount","sortSourceColumn":"remaining_budget"},
         {"label": "","column": ""}
 	  ],
+    "export_columns":["budget_code_name"],
+    "exportColumnSqlOverride":[
+        {
+            "column":"formatted_budget_code",
+            "sourceColumn":"budget_code",
+            "sql":"budget_code||'('||budget_code_name||')'"
+        }
+    ],
     "adjustParameters":"
             $adjustedParameters = $parameters;
             if(function_exists('_checkbook_project_applyParameterFilters')){

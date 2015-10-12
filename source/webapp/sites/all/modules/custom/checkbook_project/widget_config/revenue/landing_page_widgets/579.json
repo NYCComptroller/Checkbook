@@ -53,47 +53,43 @@
     },
     "current_recognized_formatted":{
         "type":"expression2",
-        "expression":"'<a class=\"bottomContainerReload\" href=\"/panel_html/agency_revenue_by_cross_year_collections_details/revenue/agency_details'
+        "expression":"'<a class=\"bottomContainerReload\" href=\"/panel_html/revenue_transactions/revenue/transactions'
                                        .'/smnid/' . $node->nid
                                        ._checkbook_project_get_year_url_param_string()
                                        ._checkbook_project_get_url_param_string(\"agency\")
                                        ._checkbook_project_get_url_param_string(\"fundsrccode\")
                                        ._checkbook_project_get_url_param_string(\"revcat\")
+                                       .'/fiscal_year/'.(_getRequestParamValue(\"year\"))
                                        .'/agency/'.$row['agency_agency']
                                        .'\">'.custom_number_formatter_format($row['current_recognized'],2,'$').'</a>'"
     },
     "recognized_1_formatted":{
         "type":"expression2",
-        "expression":"'<a class=\"bottomContainerReload\" href=\"/panel_html/agency_revenue_by_cross_year_collections_details/revenue/agency_details'
+        "expression":"'<a class=\"bottomContainerReload\" href=\"/panel_html/revenue_transactions/revenue/transactions'
                                                .'/smnid/' . $node->nid
                                                ._checkbook_project_get_year_url_param_string()
                                                ._checkbook_project_get_url_param_string(\"agency\")
                                                ._checkbook_project_get_url_param_string(\"fundsrccode\")
                                                ._checkbook_project_get_url_param_string(\"revcat\")
+                                               .'/fiscal_year/'.(_getRequestParamValue(\"year\")+1)
                                                .'/agency/'.$row['agency_agency']
                                                .'\">'.custom_number_formatter_format($row['recognized_1'],2,'$').'</a>'"
     },
     "recognized_2_formatted":{
         "type":"expression2",
-        "expression":"'<a class=\"bottomContainerReload\" href=\"/panel_html/agency_revenue_by_cross_year_collections_details/revenue/agency_details'
+        "expression":"'<a class=\"bottomContainerReload\" href=\"/panel_html/revenue_transactions/revenue/transactions'
                                                .'/smnid/' . $node->nid
                                                ._checkbook_project_get_year_url_param_string()
                                                ._checkbook_project_get_url_param_string(\"agency\")
                                                ._checkbook_project_get_url_param_string(\"fundsrccode\")
                                                ._checkbook_project_get_url_param_string(\"revcat\")
+                                               .'/fiscal_year/'.(_getRequestParamValue(\"year\")+2)
                                                .'/agency/'.$row['agency_agency']
                                                .'\">'.custom_number_formatter_format($row['recognized_2'],2,'$').'</a>'"
     },
     "other_years_formatted":{
         "type":"expression2",
-        "expression":"'<a class=\"bottomContainerReload\" href=\"/panel_html/agency_revenue_by_cross_year_collections_details/revenue/agency_details'
-                                                       .'/smnid/' . $node->nid
-                                                       ._checkbook_project_get_year_url_param_string()
-                                                       ._checkbook_project_get_url_param_string(\"agency\")
-                                                       ._checkbook_project_get_url_param_string(\"fundsrccode\")
-                                                       ._checkbook_project_get_url_param_string(\"revcat\")
-                                                       .'/agency/'.$row['agency_agency']
-                                                       .'\">'.custom_number_formatter_format($row['other_years'],2,'$').'</a>'"
+        "expression":"custom_number_formatter_format($row['other_years'],2,'$')"
     },
     "remaining_formatted":{
         "type":"expression2",

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<request>
+    <type_of_data>Spending</type_of_data>
+    <records_from>1</records_from>
+    <max_records>500</max_records>
+    <search_criteria>
+        <criteria>
+            <name>agency_code</name>
+            <type>value</type>
+            <value>098</value>
+        </criteria>
+    </search_criteria>
+    <response_columns>
+        <column>agency</column>
+        <column>associated_prime_vendor</column>
+        <column>calendar_year</column>
+        <column>capital_project</column>
+        <column>check_amount</column>
+        <column>contract_ID</column>
+        <column>contract_purpose</column>
+        <column>expense_category</column>
+        <column>department</column>
+        <column>document_id</column>
+        <column>fiscal_year</column>
+        <column>sub_vendor</column>
+        <column>mwbe_category</column>
+    </response_columns>
+</request>

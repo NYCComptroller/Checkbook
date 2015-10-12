@@ -19,6 +19,7 @@
 */
 
 $title = 'New York City';
+$domain = 'Revenue';
 
 $year = _getYearValueFromID(_getRequestParamValue('year'));
 $revcat = _getRequestParamValue('revcat');

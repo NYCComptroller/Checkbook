@@ -1519,10 +1519,43 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#title' => t('to'),
                 '#size' => 15,
                 '#maxlength' => 15,
-                '#suffix' => '</div></div></div>',
+                '#suffix' => '</div></div>',
                 '#id' => 'edit-currentamtto',
                 '#name' => 'currentamtto',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'currentamtto', $first_time_load, ''),
+            );
+            $form['filter']['recdatefrom'] = array(
+                '#type' => 'textfield',
+                '#size' => 15,
+                '#maxlength' => 15,
+                '#description' => 'E.g., ' . date('Y-m-d'),
+                '#attributes' => array('class' => array('datepicker')),
+                '#prefix' => '<div class="datafield receiveddate datarange"><label>Received Date:</label><div class="ranges">',
+                '#id' => 'edit-recdatefrom',
+                '#name' => 'recdatefrom',
+                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'recdatefrom', $first_time_load, ''),
+                '#states' => array(
+                    'enabled' => array(
+                        'select[name="df_contract_status"]' => array('value' => 'pending')
+                    )
+                )
+            );
+            $form['filter']['recdateto'] = array(
+                '#type' => 'textfield',
+                '#title' => t('to'),
+                '#size' => 15,
+                '#maxlength' => 15,
+                '#description' => 'E.g., ' . date('Y-m-d'),
+                '#attributes' => array('class' => array('datepicker')),
+                '#suffix' => '</div></div></div>',
+                '#id' => 'edit-recdateto',
+                '#name' => 'recdateto',
+                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'recdateto', $first_time_load, ''),
+                '#states' => array(
+                    'enabled' => array(
+                        'select[name="df_contract_status"]' => array('value' => 'pending')
+                    )
+                )
             );
             $form['filter']['agency'] = array(
                 '#type' => 'select',
@@ -5227,7 +5260,7 @@ function checkbook_datafeeds_process_spending_values($form, &$form_state, $data_
  *   Data Feeds wizard form_state array
  */
 function checkbook_datafeeds_spending_validate($form, &$form_state) {
-
+    
     $data_source = $form_state['input']['datafeeds-spending-domain-filter'];
     $agency = $form_state['values']['agency'];
     $agency_code = emptyToZero($agency);
@@ -5236,6 +5269,7 @@ function checkbook_datafeeds_spending_validate($form, &$form_state) {
     $datefrom = $form_state['values']['issuedfrom'];
     $dateto = $form_state['values']['issuedto'];
     $vendor = $form_state['values']['payee_name'];
+    $contract_id = $form_state['values']['contractno'];
     if ($checkfrom && !is_numeric($checkfrom)) {
         form_set_error('checkamtfrom', t('Check Amount must be a number.'));
     }
@@ -5253,6 +5287,10 @@ function checkbook_datafeeds_spending_validate($form, &$form_state) {
     }
     if ($datefrom && $dateto && strtotime($dateto) < strtotime($datefrom)) {
         form_set_error('issuedto', t('Invalid range for Issue Date.'));
+    }
+    //Contract ID
+    if($contract_id && preg_match("/(^MMA1|^MA1)/", strtoupper($contract_id))) {
+        form_set_error('contractno', t('Spending information for MMA1 and MA1 Contracts can be viewed using the Contract Data feeds feature.'));
     }
     //Vendor
     if ($vendor) {
@@ -6480,8 +6518,12 @@ function checkbook_datafeeds_format_columns() {
     //Used to maintain the order of the columns
     $hidden_selected_values = $_POST['hidden_multiple_value']; //get the values from the hidden field
     if($_POST['year'] == 'ALL'){
-        $hidden_selected_values = str_replace("|year|", "", $_POST['hidden_multiple_value']);
-        $hidden_selected_values = str_replace("|Year|", "", $_POST['hidden_multiple_value']);
+        if(strpos($hidden_selected_values, "|year|")){
+            $hidden_selected_values = str_replace("|year|", "", $hidden_selected_values);
+        }
+        if(strpos($hidden_selected_values, "|Year|")){
+            $hidden_selected_values = str_replace("|Year|", "", $hidden_selected_values);
+        }
     }
     $array_selected_values = explode("|", $hidden_selected_values); //convert the values into array
     $filter_array = array_filter($array_selected_values); //remove empty index

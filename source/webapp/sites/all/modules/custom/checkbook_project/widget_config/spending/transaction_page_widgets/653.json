@@ -32,6 +32,7 @@ return $header;
 "html_class": "initiative-table",
 "no_results_content":"No Results Found",
 "dataset": "checkbook:contracts_spending_transactions",
+"uniqueSortColumn":"disbursement_line_item_id",
 "columns": ["disb_agreement_commodity_line_number","oge_budget_name",
 "oge_contract_number","disb_disbursement_number","disb_vendor_name",
 "disb_check_eft_issued_date","disb_agency_name","disb_department_short_name","disb_check_amount",

@@ -1,0 +1,14 @@
+{
+    "datasets": {
+        "not_null_agreement_values": {
+            "datasourceName": "main",
+            "source":"SELECT COALESCE(original_contract_amount,0) as original_contract_amount,COALESCE(maximum_contract_amount,0) as maximum_contract_amount,agreement_id as sub_query_agreement_id FROM all_agreement_transactions WHERE latest_flag = 'Y'",
+            "columns":[
+                {
+                    "name": "sub_query_agreement_id",
+                    "key": true
+                }
+            ]
+        }
+    }
+}

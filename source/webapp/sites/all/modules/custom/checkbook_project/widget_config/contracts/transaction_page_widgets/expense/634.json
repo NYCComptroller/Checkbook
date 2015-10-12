@@ -75,7 +75,9 @@
     "html_class": "initiative-table",
     "no_results_content":"No Results Found",
     "dataset": "checkbook:agreement_snapshot_oge",
+    "uniqueSortColumn":["agreement_id","fiscal_year_id","fms_commodity_line"],
     "columns": [
+        "agreement_id",
         "fms_commodity_line",
         "budget_name",
         "oge_contract_number",

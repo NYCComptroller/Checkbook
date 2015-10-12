@@ -51,6 +51,9 @@
 
               ],
               "measures":{
+                      "txcount": {
+                          "function": "1"
+                      },
                       "current_recognized": {
                           "function": "SUM(posting_amount_cy)"
                       },

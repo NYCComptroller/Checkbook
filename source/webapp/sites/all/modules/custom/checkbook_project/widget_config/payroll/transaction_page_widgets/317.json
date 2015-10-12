@@ -16,6 +16,7 @@
 "html_class": "initiative-table",
 "no_results_content":"No Results Found",
 "dataset": "checkbook:payroll_employee_agency",
+"uniqueSortColumn":["employee_id", "pay_frequency_pay_frequency"],
 "columns": ["employee.employee","employee.employee.civil_service_title","employee.employee.employee_number","agency.agency.agency_short_name","pay_frequency.pay_frequency","total_salaried_amount","total_non_salaried_amount","total_gross_pay","total_base_salary","total_other_payments","total_overtime_amount","year.year","year_type.year_type","agency.agency.agency_name","employment_type.employment_type"],
 "caption":"",
 "derivedColumns": {
