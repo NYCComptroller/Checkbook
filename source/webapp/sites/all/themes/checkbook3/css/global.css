@@ -2686,13 +2686,13 @@ table.outerTable.ma-history{
 #emp-agency-detail-records, #emp-agency-detail-record-table, #payroll-tx-static-content-table {
     width: 720px;
     margin:auto;
-    color:#5C5C5C;
+    color:#5B5B5B;
     font-size: 13px;
 }
 #emp-agency-detail-records th, #emp-agency-detail-records td,
 #emp-agency-detail-record-table th, #emp-agency-detail-record-table td,
 #payroll-tx-static-content-table th, #payroll-tx-static-content-table td{
-    padding: 15px 5px;
+    padding: 10px 5px;
 }
 #nyc-payroll > div.top-chart{
     margin-top:0px;
