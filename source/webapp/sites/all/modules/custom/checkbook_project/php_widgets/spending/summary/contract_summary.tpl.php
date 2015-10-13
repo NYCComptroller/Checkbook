@@ -30,7 +30,7 @@ if(is_array($records)){
     $oamnt = WidgetUtil::getLabel("original_amount");
     $camnt = WidgetUtil::getLabel("current_amount");
     $puprose = WidgetUtil::getLabel("contract_purpose");
-    $vendor= WidgetUtil::getLabel("prime_vendor_name");
+    $vendor= WidgetUtil::getLabel("prime_vendor");
     $agency= WidgetUtil::getLabel("contract_agency");
     $purpose_value = strtoupper($row['contract_purpose_contract_purpose']);
     $agency_value = strtoupper($row['agency_agency_agency_name']);
