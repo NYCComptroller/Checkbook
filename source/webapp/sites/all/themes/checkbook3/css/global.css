@@ -2683,16 +2683,24 @@ table.outerTable.ma-history{
 .page-payroll-search-transactions .dataTables_wrapper > div + div > div,
 .page-payroll-search-transactions .dataTables_wrapper > div + div + div{border:none;}
 .page-payroll-search-transactions .dataTables_processing{top:-20px;}
-#emp-agency-detail-records, #emp-agency-detail-record-table, #payroll-tx-static-content-table {
-    width: 720px;
-    margin:auto;
-    color:#5B5B5B;
-    font-size: 13px;
-}
 #emp-agency-detail-records th, #emp-agency-detail-records td,
 #emp-agency-detail-record-table th, #emp-agency-detail-record-table td,
 #payroll-tx-static-content-table th, #payroll-tx-static-content-table td{
     padding: 10px 5px;
+    white-space: nowrap;
+}
+#emp-agency-detail-record-table {
+    width: 520px;
+    margin: auto auto 15px;
+    color:#5B5B5B;
+    font-size: 13px;
+}
+#payroll-tx-static-content-table {
+    width: 600px;
+    margin-left:220px;
+    margin-bottom:15px;
+    color:#5B5B5B;
+    font-size: 13px;
 }
 #nyc-payroll > div.top-chart{
     margin-top:0px;

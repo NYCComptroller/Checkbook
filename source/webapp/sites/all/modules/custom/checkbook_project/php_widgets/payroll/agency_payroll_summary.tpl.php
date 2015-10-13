@@ -45,8 +45,8 @@ $table = "
 <div id='payroll-tx-static-content'>
     <table id='payroll-tx-static-content-table'>
         <tr>
-            <td width='60%'> <strong>". WidgetUtil::getLabel('annual_salary') ."</strong>: {$total_annual_salary} </td>
-            <td width='40%'> <strong>". WidgetUtil::getLabel('gross_pay_ytd') ."</strong>: {$total_gross_pay}</td>
+            <td width='50%'> <strong>". WidgetUtil::getLabel('annual_salary') ."</strong>: {$total_annual_salary} </td>
+            <td width='50%'> <strong>". WidgetUtil::getLabel('gross_pay_ytd') ."</strong>: {$total_gross_pay}</td>
         </tr>
         <tr>
             <td><strong>". WidgetUtil::getLabel('base_pay_ytd') ."</strong>: {$total_base_pay}</td>
@@ -59,13 +59,14 @@ $table = "
         <tr>
         <td><strong>". WidgetUtil::getLabel('total_no_of_non_sal_employees') ."</strong>: {$total_hourly_employees}</td>
         <td><strong>". WidgetUtil::getLabel('total_no_of_employees') ."</strong>: {$total_employees}</td>
-        </tr>
-        <tr>
-            <td><strong>{$total_overtime_employees_label}</strong> {$total_overtime_employees}</td>
-        </tr>
-    </table>
-</div>
-";
+        </tr>";
+    if(isset($total_overtime_employees)){
+        $table .= "<tr>";
+        $table .= "<td><strong>{$total_overtime_employees_label} </strong> {$total_overtime_employees}</td>";
+        $table .= "</tr>";
+    }
+
+    $table .= "</table></div>";
 
     print $table;
 }
