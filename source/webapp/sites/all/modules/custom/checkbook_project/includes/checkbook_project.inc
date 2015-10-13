@@ -779,6 +779,7 @@ function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$par
 
     $dtsmnid = _getRequestParamValue('dtsmnid');
     $smnid = _getRequestParamValue('smnid');
+    $month = _getRequestParamValue('month');
     $nid = isset($dtsmnid) ? $dtsmnid : $smnid;
     $current_node_nid = $node->nid;
 
@@ -821,6 +822,9 @@ function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$par
                     //Static Amount for Citywide = Prime Only
                     if($current_node_nid == 775)
 					    $parameters['is_prime_or_sub'] = array('P');
+                    //Static Amount for Citywide from the month visualization = Prime Only
+                    else if($current_node_nid == 706 && isset($month))
+                        $parameters['is_prime_or_sub'] = array('P');
                     else
                         $parameters['is_prime_or_sub'] = array('P','S');
 				}else{
