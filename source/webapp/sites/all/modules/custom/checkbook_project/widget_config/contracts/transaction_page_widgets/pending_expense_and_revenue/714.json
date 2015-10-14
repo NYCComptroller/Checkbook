@@ -5,7 +5,7 @@
     "defaultParameters":{},
     "urlParamMap":{"vendortype":"vendor_type","mwbe":"minority_type_id","vendor":"vendor_id","curamtr":"revised_maximum_amount","doctype":"document_code@checkbook:ref_document_code","agency":"document_agency_id","vendorcode":"vendor_customer_code","vendornm":"vendor_legal_name","vendornm_exact":"vendor_legal_name","contdesc":"description","agrmnttypecode":"cont_type_code","contnum":"contract_number","aptpin":"board_award_number","pin":"tracking_number","curamt":"revised_maximum_amount","startdate":"revised_start_date","enddate":"revised_end_date","recdate":"cif_received_date","csize":"award_size_id","modamt":"dollar_difference","awdmethod":"award_method_id","cindustry":"industry_type_id"},
     "allowRequestParams":["smnid"],
-    "paramTypeConfig":{"curamtr":"rangeid","vendornm":"like","vendornm_exact":"eqignorecase","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","recdate":"range","modamt":"ne"},
+    "paramTypeConfig":{"curamtr":"rangeid","vendornm":"contains","vendornm_exact":"eqignorecase","contdesc":"contains","contnum":"like","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","recdate":"range","modamt":"ne"},
     "header":"
         $header = NULL;
         $header .= widget_data_tables_export_link($node);
