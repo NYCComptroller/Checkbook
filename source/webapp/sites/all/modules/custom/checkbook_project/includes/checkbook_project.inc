@@ -1041,6 +1041,10 @@ function _checkbook_project_applyParameterFilters($node, $parameters){
                         $localValue = (is_array($paramValues) && count($paramValues) > 1) ? implode('~',$paramValues) : $paramValues[0];
                         $conditions[] = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array($localValue,FALSE,TRUE));
                     break;
+                case "contains":
+                    $localValue = (is_array($paramValues) && count($paramValues) > 1) ? implode('~',$paramValues) : $paramValues[0];
+                    $conditions[] = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array($localValue,TRUE,TRUE));
+                    break;
                 case "nlike":
                       $localValue = (is_array($paramValues) && count($paramValues) > 1) ? implode('~',$paramValues) : $paramValues[0];
                       $conditions[] = $data_controller_instance->initiateHandler(NotWildcardOperatorHandler::$OPERATOR__NAME, array($localValue,FALSE,TRUE));
