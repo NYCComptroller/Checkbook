@@ -149,7 +149,7 @@ class DataSetHandler {
         ));
         break;
 
-      case "trueLike":
+      case "contains":
         $parameters[$column] = data_controller_get_operator_factory_instance()->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array(
           $value,
           TRUE,

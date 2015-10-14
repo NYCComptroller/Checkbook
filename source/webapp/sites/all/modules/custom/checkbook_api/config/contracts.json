@@ -15,6 +15,7 @@
             "end_date":"effective_end_date",
             "registration_date":"registered_date",
             "category":"document_code@checkbook:ref_document_code",
+            "purpose":"description",
             "pin":"tracking_number",
             "apt_pin":"brd_awd_no",
             "mwbe_category":"minority_type_id",
@@ -27,10 +28,11 @@
             "sortColumn":["-registered_date", "-agreement_id"],
             "name":"checkbook:all_agreement_transactions",
             "columnTypes":{
-                "expenditure_object_codes":"trueLike",
+                "expenditure_object_codes":"contains",
                 "contract_number":"like",
                 "minority_type_id":"in",
-                "industry_type_id":"in"
+                "industry_type_id":"in",
+                "description":"contains"
             },
             "displayConfiguration":{
                 "xml":{
@@ -151,6 +153,11 @@
                 "dataType":"list",
                 "allowedValues":["expense", "revenue", "all"]
             },
+            "purpose":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"100"
+            },
             "pin":{
                 "valueType":"value",
                 "dataType":"text"
@@ -185,6 +192,7 @@
             "end_date":"effective_end_date",
             "registration_date":"registered_date",
             "category":"document_code@checkbook:ref_document_code",
+            "purpose":"description",
             "pin":"tracking_number",
             "apt_pin":"brd_awd_no",
             "mwbe_category":"minority_type_id",
@@ -195,10 +203,11 @@
             "sortColumn":["-registered_date", "-agreement_id"],
             "name":"checkbook:all_agreement_transactions",
             "columnTypes":{
-                "expenditure_object_codes":"trueLike",
+                "expenditure_object_codes":"contains",
                 "contract_number":"like",
                 "minority_type_id":"in",
-                "industry_type_id":"in"
+                "industry_type_id":"in",
+                "description":"contains"
             },
             "displayConfiguration":{
                 "xml":{
@@ -358,6 +367,11 @@
                 "dataType":"list",
                 "allowedValues":["expense", "revenue", "all"]
             },
+            "purpose":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"100"
+            },
             "pin":{
                 "valueType":"value",
                 "dataType":"text"
@@ -392,6 +406,7 @@
             "end_date":"effective_end_date",
             "registration_date":"registered_date",
             "category":"document_code@checkbook:ref_document_code",
+            "purpose":"description",
             "pin":"tracking_number",
             "apt_pin":"brd_awd_no",
             "mwbe_category":"minority_type_id",
@@ -404,7 +419,8 @@
             "columnTypes":{
                 "contract_number":"like",
                 "minority_type_id":"in",
-                "industry_type_id":"in"
+                "industry_type_id":"in",
+                "description":"contains"
             },
             "displayConfiguration":{
                 "xml":{
@@ -560,6 +576,11 @@
                 "dataType":"list",
                 "allowedValues":["expense", "revenue"]
             },
+            "purpose":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"100"
+            },
             "pin":{
                 "valueType":"value",
                 "dataType":"text"
@@ -592,6 +613,7 @@
             "end_date":"effective_end_date",
             "registration_date":"registered_date",
             "category":"document_code@checkbook:ref_document_code",
+            "purpose":"description",
             "pin":"tracking_number",
             "apt_pin":"brd_awd_no",
             "mwbe_category":"minority_type_id",
@@ -604,7 +626,8 @@
             "columnTypes":{
                 "contract_number":"like",
                 "minority_type_id":"in",
-                "industry_type_id":"in"
+                "industry_type_id":"in",
+                "description":"contains"
             },
             "displayConfiguration":{
                 "xml":{
@@ -748,6 +771,11 @@
                 "dataType":"list",
                 "allowedValues":["expense", "revenue", "all"]
             },
+            "purpose":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"100"
+            },
             "pin":{
                 "valueType":"value",
                 "dataType":"text"
@@ -786,6 +814,7 @@
             "category":"document_code@checkbook:ref_document_code",
             "pin":"tracking_number",
             "apt_pin":"brd_awd_no",
+            "purpose":"description",
             "mwbe_category":"minority_type_id",
             "industry_type_id":"industry_type_id",
             "associated_prime_vendor":"associated_prime_vendor",
@@ -796,10 +825,11 @@
             "sortColumn":["-registered_date", "-agreement_id"],
             "name":"checkbook:all_agreement_transactions",
             "columnTypes":{
-                "expenditure_object_codes":"trueLike",
+                "expenditure_object_codes":"contains",
                 "contract_number":"like",
                 "minority_type_id":"in",
-                "industry_type_id":"in"
+                "industry_type_id":"in",
+                "description":"contains"
             },
             "displayConfiguration":{
                 "xml":{
@@ -920,6 +950,11 @@
                 "dataType":"list",
                 "allowedValues":["expense", "revenue", "all"]
             },
+            "purpose":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"100"
+            },
             "pin":{
                 "valueType":"value",
                 "dataType":"text"
@@ -954,6 +989,7 @@
             "end_date":"effective_end_date",
             "registration_date":"registered_date",
             "category":"document_code@checkbook:ref_document_code",
+            "purpose":"description",
             "pin":"tracking_number",
             "apt_pin":"brd_awd_no",
             "mwbe_category":"minority_type_id",
@@ -964,10 +1000,11 @@
             "sortColumn":["-registered_date", "-agreement_id"],
             "name":"checkbook:all_agreement_transactions",
             "columnTypes":{
-                "expenditure_object_codes":"trueLike",
+                "expenditure_object_codes":"contains",
                 "contract_number":"like",
                 "minority_type_id":"in",
-                "industry_type_id":"in"
+                "industry_type_id":"in",
+                "description":"contains"
             },
             "displayConfiguration":{
                 "xml":{
@@ -1135,6 +1172,11 @@
                 "valueType":"value",
                 "dataType":"text"
             },
+            "purpose":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"100"
+            },
             "mwbe_category":{
                 "valueType":"value",
                 "dataType":"text",
@@ -1161,6 +1203,7 @@
             "category":"document_code@checkbook:ref_document_code",
             "pin":"tracking_number",
             "apt_pin":"board_award_number",
+            "purpose":"description",
             "mwbe_category":"minority_type_id",
             "industry_type_id":"industry_type_id"
         },
@@ -1170,7 +1213,8 @@
             "columnTypes":{
                 "contract_number":"like",
                 "minority_type_id":"in",
-                "industry_type_id":"in"
+                "industry_type_id":"in",
+                "description":"contains"
             },
             "displayConfiguration":{
                 "xml":{
@@ -1305,6 +1349,11 @@
                 "valueType":"value",
                 "dataType":"list",
                 "allowedValues":["expense", "revenue", "all"]
+            },
+            "purpose":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"100"
             },
             "pin":{
                 "valueType":"value",
