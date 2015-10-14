@@ -112,7 +112,7 @@
                     var dialog_html = '';
                     dialog_html += '<div id="loading_gif" style="display:none"></div>';
                     dialog_html += '<div id="errorMessages"></div>';
-                    dialog_html += '<p>Type of Data<span>*</span>:</p>';
+                    dialog_html += '<p>Type of Data:</p>';
                     dialog_html += '<table>';
                     dialog_html += '<tr>';
                     dialog_html += '<td><input type="radio" name="domain" value="spending"' + getCheckboxAttributes('spending',array_checked_domains) + ' />&nbsp;Spending</td>';
@@ -183,7 +183,7 @@
                                     }
                                 }
                             });
-                            $('.ui-dialog-buttonpane').append('<div class="exportDialogMessage">*Required Field</div>');
+                            //$('.ui-dialog-buttonpane').append('<div class="exportDialogMessage">*Required Field</div>');
                             onChangeDomain('spending');
 
                             //On change of domain
