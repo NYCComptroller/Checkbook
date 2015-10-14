@@ -35,7 +35,7 @@ if($results){
 
     if(_getRequestParamValue('smnid') == 322){
         $total_overtime_employees = number_format($results['total_overtime_employees']);
-        $total_overtime_employees_label = WidgetUtil::getLabel('no_of_ot_employees').':';
+        $total_overtime_employees_label = WidgetUtil::getLabel('total_no_of_ot_employees').':';
     }
 
 $table = "
