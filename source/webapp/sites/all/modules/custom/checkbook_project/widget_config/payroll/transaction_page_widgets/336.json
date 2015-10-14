@@ -8,7 +8,7 @@
         "annualsalary":"annual_salary",
         "overtimepayment":"overtime_pay"
     },
-    "paramTypeConfig":{"empnm":"like","empnm_exact":"eqignorecase","paydate":"range","baseamt":"range","overamt":"range","otheramt":"range","grossamt":"range","totalgrosspay":"range","salamt":"range",
+    "paramTypeConfig":{"empnm":"contains","empnm_exact":"eqignorecase","paydate":"range","baseamt":"range","overamt":"range","otheramt":"range","grossamt":"range","totalgrosspay":"range","salamt":"range",
         "grosspayytd":"rangeid3",
         "annualsalary":"rangeid3",
         "overtimepayment":"rangeid3"
