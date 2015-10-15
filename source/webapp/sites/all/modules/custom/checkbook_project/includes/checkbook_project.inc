@@ -1043,7 +1043,9 @@ function _checkbook_project_applyParameterFilters($node, $parameters){
                     break;
                 case "contains":
                     $localValue = (is_array($paramValues) && count($paramValues) > 1) ? implode('~',$paramValues) : $paramValues[0];
-                    $conditions[] = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array($localValue,TRUE,TRUE));
+                    $localValue = _checkbook_regex_replace_pattern($localValue);
+                    $pattern= "(.* $localValue .*)|(.* $localValue$)|($$localValue .*)";//"(.* " . $localValue . ".*)|(^" . $localValue . ".*)";
+                    $conditions[] = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
                     break;
                 case "nlike":
                       $localValue = (is_array($paramValues) && count($paramValues) > 1) ? implode('~',$paramValues) : $paramValues[0];
@@ -1055,7 +1057,7 @@ function _checkbook_project_applyParameterFilters($node, $parameters){
                         foreach($parts as $part){
                           //$part = str_replace("(","\\(",$part);
                           $part = _checkbook_regex_replace_pattern($part);
-                          $pattern= "(.* " . $part . ".*)|(^" . $part . ".*)"; 
+                          $pattern= "(.* " . $part . ".*)|(^" . $part . ".*)";
                           $conditions[] = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
                         }
                         break;  
