@@ -199,8 +199,12 @@ class RequestUtil{
         $title = $customTitle;
       }
       else if(isset($bottomURL) && preg_match('/payroll_agency_by_month_transactions/',$bottomURL)){
-        $agency = _checkbook_project_get_name_for_argument("agency_id",RequestUtil::getRequestKeyValueFromURL("agency",$bottomURL));
-        $customTitle = $agency . " Payroll Transactions";
+          $smnid = RequestUtil::getRequestKeyValueFromURL("smnid",$bottomURL);
+          if($smnid == '491'){
+              $customTitle = "Overtime Payments by Month Transactions";
+          }else{
+              $customTitle = "Gross Pay by Month Transactions";
+          }
         $title = $customTitle;
       }
       elseif(preg_match('/^payroll\/search\/transactions/',current_path())){
