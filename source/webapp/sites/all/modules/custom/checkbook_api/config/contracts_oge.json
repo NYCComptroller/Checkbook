@@ -167,7 +167,7 @@
             ],
             "name":"checkbook_oge:agreement_snapshot_oge",
             "columnTypes":{
-                "expenditure_object_codes":"contains",
+                "expenditure_object_codes":"trueLike",
                 "contract_number":"like",
                 "legal_name@checkbook_oge:vendor":"like",
                 "commodity_line":"like",

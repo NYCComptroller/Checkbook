@@ -28,7 +28,7 @@
             "sortColumn":["-registered_date", "-agreement_id"],
             "name":"checkbook:all_agreement_transactions",
             "columnTypes":{
-                "expenditure_object_codes":"contains",
+                "expenditure_object_codes":"trueLike",
                 "contract_number":"like",
                 "minority_type_id":"in",
                 "industry_type_id":"in",
@@ -203,7 +203,7 @@
             "sortColumn":["-registered_date", "-agreement_id"],
             "name":"checkbook:all_agreement_transactions",
             "columnTypes":{
-                "expenditure_object_codes":"contains",
+                "expenditure_object_codes":"trueLike",
                 "contract_number":"like",
                 "minority_type_id":"in",
                 "industry_type_id":"in",
@@ -825,7 +825,7 @@
             "sortColumn":["-registered_date", "-agreement_id"],
             "name":"checkbook:all_agreement_transactions",
             "columnTypes":{
-                "expenditure_object_codes":"contains",
+                "expenditure_object_codes":"trueLike",
                 "contract_number":"like",
                 "minority_type_id":"in",
                 "industry_type_id":"in",
@@ -1000,7 +1000,7 @@
             "sortColumn":["-registered_date", "-agreement_id"],
             "name":"checkbook:all_agreement_transactions",
             "columnTypes":{
-                "expenditure_object_codes":"contains",
+                "expenditure_object_codes":"trueLike",
                 "contract_number":"like",
                 "minority_type_id":"in",
                 "industry_type_id":"in",
