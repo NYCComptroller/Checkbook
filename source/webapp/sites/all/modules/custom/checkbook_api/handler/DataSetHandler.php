@@ -149,12 +149,17 @@ class DataSetHandler {
         ));
         break;
 
-      case "contains":
+      case "trueLike":
         $parameters[$column] = data_controller_get_operator_factory_instance()->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array(
           $value,
           TRUE,
           TRUE,
         ));
+        break;
+      case "contains":
+          $value = _checkbook_regex_replace_pattern($value);
+          $pattern= "(.* $value .*)|(.* $value$)|($$value .*)";
+          $parameters[$column] = data_controller_get_operator_factory_instance()->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
         break;
 
       default:
