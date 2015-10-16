@@ -6,7 +6,7 @@
     "revsrcnm_exact":"revenue_source_name",
     "revclsnm_exact":"revenue_class_name",
     "clsname":"closing_classification_name","agency":"agency_id","agencyh":"agency_history_id","year":"budget_fiscal_year_id","fiscal_year":"fiscal_year_id","revcat":"revenue_category_id","fundsrc":"funding_class_id","fundsrcnm":"funding_class_name","fundsrccode":"funding_class_code","fundcls":"fund_class_id","fy":"fiscal_year_id","by":"budget_fiscal_year_id","revcls":"revenue_class_id","revclsnm":"revenue_class_name","revsrc":"revenue_source_id","revsrcnm":"revenue_source_name","amt":"posting_amount","amtr":"posting_amount"},
-    "paramTypeConfig":{"revsrcnm_exact":"eqignorecase","revclsnm_exact":"eqignorecase","amt":"range","amtr":"rangeid2","revclsnm":"contains","revsrcnm":"contains","fundsrcnm":"like"},
+    "paramTypeConfig":{"revsrcnm_exact":"eqignorecase","revclsnm_exact":"eqignorecase","amt":"range","amtr":"rangeid2","revclsnm":"like","revsrcnm":"like","fundsrcnm":"like"},
     "header":"
     $header = NULL;
     $header .= widget_data_tables_export_link($node);
