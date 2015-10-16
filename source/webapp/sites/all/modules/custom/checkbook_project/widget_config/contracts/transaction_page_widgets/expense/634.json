@@ -44,7 +44,7 @@
         "comline_exact":"eqignorecase",
         "budname_exact":"eqignorecase",
         "curamtr":"rangeid",
-        "vendornm":"contains",
+        "vendornm":"like",
         "vendornm_exact":"eqignorecase",
         "contdesc":"contains",
         "contnum":"like",
