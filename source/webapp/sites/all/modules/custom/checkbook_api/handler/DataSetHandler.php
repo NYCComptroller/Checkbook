@@ -158,7 +158,12 @@ class DataSetHandler {
         break;
       case "contains":
           $value = _checkbook_regex_replace_pattern($value);
-          $pattern= "(.* $value .*)|(.* $value$)|($value .*)";
+          if (strpos($value, ' ') !== FALSE) {
+              $pattern = "(.* $value .*)|(.* $value$)|($value .*)|($value.*)";
+          }
+          else {
+              $pattern = "(.* $value .*)|(.* $value)|($value .*)";
+          }
           $parameters[$column] = data_controller_get_operator_factory_instance()->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
         break;
 
