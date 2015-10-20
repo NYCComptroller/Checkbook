@@ -40,7 +40,7 @@ if($results){
     }
 
 $table = "
-<div id='payroll-tx-agency-name'>". WidgetUtil::getLabel('agency_name') .": {$agencyUrl}</div>
+<div id='payroll-tx-agency-name'><span class='payroll-label'>". WidgetUtil::getLabel('agency_name') ."</span>: {$agencyUrl}</div>
 
 <div id='payroll-tx-static-content'>
     <table id='payroll-tx-static-content-table'>
