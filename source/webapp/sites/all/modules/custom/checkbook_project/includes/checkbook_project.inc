@@ -1044,12 +1044,7 @@ function _checkbook_project_applyParameterFilters($node, $parameters){
                 case "contains":
                     $localValue = (is_array($paramValues) && count($paramValues) > 1) ? implode('~',$paramValues) : $paramValues[0];
                     $localValue = _checkbook_regex_replace_pattern($localValue);
-                    if (strpos($localValue, ' ') !== FALSE) {
-                        $pattern = "(.* $localValue .*)|(.* $localValue$)|($localValue .*)|($localValue.*)";
-                    }
-                    else {
-                        $pattern = "(.* $localValue .*)|(.* $localValue$)|($localValue .*)";
-                    }
+                    $pattern = "(.* $localValue .*)|(.* $localValue$)|(^$localValue .*)|(^$localValue.*)";
                     $conditions[] = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
                     break;
                 case "nlike":
