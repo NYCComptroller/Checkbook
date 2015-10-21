@@ -169,16 +169,16 @@ return $footer;
   ],
 "dataTableOptions":{
 "aoColumns": [
- { "bSortable": false, "sWidth":"150px","sClass":"text" },
- { "bSortable": false, "sWidth":"132px","sClass":"text"  },
-  { "bSortable": false, "sWidth":"118px","sClass":"text"  },
-  { "bSortable": false, "sWidth":"90px","sClass":"text" },
-  { "bSortable": true, "sWidth":"79px", "sClass":"number"  ,"asSorting": [ "desc" ,"asc" ]},
-  { "bSortable": true, "sWidth":"78px", "sClass":"number"  ,"asSorting": [ "desc" ,"asc" ]},
-  { "bSortable": true, "sWidth":"90px","sClass":"number" ,"asSorting": [ "desc","asc"  ]},
-  { "bSortable": true, "sWidth":"93px", "sClass":"number" ,"asSorting": [ "desc","asc"  ]},
-  { "bSortable": true, "sWidth":"93px", "sClass":"number" ,"asSorting": [ "desc","asc"  ]},
-  { "bSortable": false,"sWidth":"15px" }
+    { "bSortable": false,"sClass":"text" },
+    { "bSortable": false,"sClass":"text pad-left"  },
+    { "bSortable": false,"sClass":"text pad-left"  },
+    { "bSortable": false,"sClass":"text pad-left" },
+    { "bSortable": true,"sClass":"number","sWidth":"80px","asSorting": [ "desc" ,"asc" ]},
+    { "bSortable": true,"sClass":"number","sWidth":"80px","asSorting": [ "desc" ,"asc" ]},
+    { "bSortable": true,"sClass":"number","sWidth":"90px","asSorting": [ "desc","asc"  ]},
+    { "bSortable": true,"sClass":"number","sWidth":"90px","asSorting": [ "desc","asc"  ]},
+    { "bSortable": true,"sClass":"number","sWidth":"90px","asSorting": [ "desc","asc"  ]},
+    { "bSortable": false,"sWidth":"15px" }
     ] ,
 "bServerSide": true,
 "bFilter": false,
