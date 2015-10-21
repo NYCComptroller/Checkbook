@@ -110,10 +110,10 @@ return $footer;
   ],
 "dataTableOptions":{
 "aoColumns": [
-      { "bSortable": false ,"sWidth":"250px","sClass":"text"},
-      { "bSortable": false,"sWidth":"250px","sClass":"text" },
-      {"sClass":"number" ,"asSorting": [ "desc","asc" ]},
-      {"sClass":"number" ,"asSorting": [ "desc","asc" ]},
+      { "bSortable": false ,"sWidth":"280px","sClass":"text"},
+      { "bSortable": false,"sWidth":"280px","sClass":"pad-left" },
+      {"sClass":"number","sWidth":"130px","asSorting": [ "desc","asc" ]},
+      {"sClass":"number","sWidth":"150px","asSorting": [ "desc","asc" ]},
       {"bSortable": false,"sWidth":"15px" }
     ] ,
 "bServerSide": true,
