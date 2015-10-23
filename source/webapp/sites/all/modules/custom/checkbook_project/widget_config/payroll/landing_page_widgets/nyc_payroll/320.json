@@ -13,7 +13,7 @@
 "orderby":"max_annual_salary",
 "disableViewAll":true,
 "enableExpand":true,
-"getTotalDataCount":false,
+"getTotalDataCount":true,
 "header":"
 $node->widgetConfig->getData=false;
 load_widget_data($node);
@@ -29,14 +29,15 @@ $url .= '/smnid/' . $node->nid;
 $count = $node->count;
 $footer = '';
 
-if($node->PayrollTotalDataCount > 0)
+if($node->PayrollTotalDataCount > 0){
      $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
-else
+}
+else{
       $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
-
+}
 return $footer;
 ",
-"widgetTitle":"Top Annual Salaries Payroll Transactions",
+"widgetTitle":"Annual Salaries Payroll Transactions",
 "table_title":"",
 "derivedColumns": {
     "agency_name_link": {

@@ -57,6 +57,21 @@ if($node->widgetConfig->filterName == 'Amount') {
     }
 }
 
+//Payroll Range Filter
+$is_payroll_range_filter =
+    ($node->widgetConfig->filterName == 'Gross Pay YTD') ||
+    ($node->widgetConfig->filterName == 'Annual Salary') ||
+    ($node->widgetConfig->filterName == 'Overtime Payment');
+if($is_payroll_range_filter) {
+    $showAllRecords = isset($node->widgetConfig->showAllRecords) ? $node->widgetConfig->showAllRecords : false;
+    if(!$showAllRecords) {
+        $params = explode('~', _getRequestParamValue($node->widgetConfig->urlParameterName));
+        if($params[0]) {
+            $unchecked = null;
+        }
+    }
+}
+
 //Modified Expense Budget Filter
 if($node->widgetConfig->filterName == 'Modified Expense Budget') {
     $showAllRecords = isset($node->widgetConfig->showAllRecords) ? $node->widgetConfig->showAllRecords : false;

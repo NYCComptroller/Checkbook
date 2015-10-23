@@ -304,6 +304,10 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'php_widgets/payroll/dept_payroll_summary',
             'arguments' => array('node' => NULL)
         ),
+        'payroll_transactions_summary' => array(
+            'template' => 'php_widgets/payroll/payroll_transactions_summary',
+            'arguments' => array('node' => NULL)
+        ),
         //Agencies Landing Page - City Spending
         'agencies_landing_city_spending' => array(
            'template' => 'php_widgets/spending/agencies_landing_city_spending',

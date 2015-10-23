@@ -180,7 +180,7 @@ if($display){
 	            $link = str_replace("/dept/".$deptId,"/dept/".$dept_Ids[$value['year_id']],$link);
 	            $link = str_replace("/expcategory/".$expCatId,"/expcategory/".$expCatIds[$value['year_id']],$link);
 	
-	            if(preg_match("/expandBottomContURL/",$link) && preg_match("/spending/",$link)){
+	            if(preg_match("/expandBottomContURL/",$link) && (preg_match("/spending/",$link) || preg_match("/payroll/",$link))){
 	              $link_parts = explode("?expandBottomContURL=",$link);
                     $url = $link_parts[0];
                     $bottom_url = preg_replace("/\/calyear\//","/year/" ,$link_parts[1]);
@@ -219,7 +219,7 @@ if($display){
                 else{
 	              $link = preg_replace("/year\/" . $yearFromURL . "/","year/" .  $value['year_id'],$q);
 	            }
-                if(preg_match("/expandBottomContURL/",$link) && preg_match("/spending/",$link)){
+                if(preg_match("/expandBottomContURL/",$link) && (preg_match("/spending/",$link) || preg_match("/payroll/",$link))){
                     $link_parts = explode("?expandBottomContURL=",$link);
                     $url = $link_parts[0];
                     $bottom_url = preg_replace("/\/year\//","/calyear/" ,$link_parts[1]);

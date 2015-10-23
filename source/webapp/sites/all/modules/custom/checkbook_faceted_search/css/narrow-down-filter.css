@@ -2,11 +2,15 @@
 #contract-details .grid-3,
 #budget-transactions .grid-3,
 #revenue-transactions .grid-3,
+#payroll-transactions .grid-3,
 .page-node div.filter-content,
 .page-smart-search .smart-search-right{
     border: 1px solid #CACACA;
     padding-bottom: 10px;
     width: 218px;
+}
+#payroll-transactions .grid-3{
+    margin-top: 47px;
 }
 #spending-transactions .grid-3{
     margin-top: 47px;
