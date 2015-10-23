@@ -765,7 +765,6 @@ function _checkbook_project_adjust_date_spending_parameter_filters(&$node, &$par
     return $parameters;
 }
 
-
 /**
  * Transaction page from M/WBE Dashboard landing page
  * Top 10 agencies widget (759) - sub and prime data - reverted in NYCCHKBK-4798
@@ -884,6 +883,67 @@ function _checkbook_project_adjust_vendor_facet_json(&$node){
     }
 }
 
+/**
+ * Function to build the sql for the custom payroll facet
+ * @param $node
+ * @return string
+ */
+function _checkbook_project_payroll_sql($node){
+
+    $where_filters = array();
+    $filter_param_value = $node->param;
+
+    foreach($node->widgetConfig->requestParams as $param=>$value){
+        $alias = $param == 'civil_service_title' ? ' e.' : ' a.';
+        $param = $param == "pay_frequency.pay_frequency" ? "pay_frequency" : $param;
+        $param = $param == "gross_pay.gross_pay" ? "gross_pay" : $param;
+        $param = $param == "annual_salary.annual_salary" ? "annual_salary" : $param;
+        $param = $param == "overtime_pay.overtime_pay" ? "overtime_pay" : $param;
+
+        switch($param) {
+            case "civil_service_title";
+                if(isset($filter_param_value)) {
+                    $where_filters[] = _widget_build_sql_condition($alias . "civil_service_title", $filter_param_value);
+                }
+                break;
+            case "gross_pay":
+            case "annual_salary":
+            case "overtime_pay":
+                switch($value) {
+                    case 1:
+                        $where_filters[] = $param . ' < 20000 ';
+                        break;
+                    case 2:
+                        $where_filters[] = $param . ' BETWEEN 21000 AND 50000 ';
+                        break;
+                    case 3:
+                        $where_filters[] = $param . ' BETWEEN 51000 AND 100000 ';
+                        break;
+                    case 4:
+                        $where_filters[] = $param . ' BETWEEN 101000 AND 250000 ';
+                        break;
+                    case 5:
+                        $where_filters[] = $param . ' > 250000 ';
+                        break;
+                }
+                break;
+            default:
+                $where_filters[] = _widget_build_sql_condition($alias . $param, $value);
+                break;
+        }
+    }
+    if(count($where_filters) > 0){
+        $where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
+    }
+    $sql = 'SELECT DISTINCT e.civil_service_title, count(*) as txcount
+        FROM aggregateon_payroll_employee_agency a
+        JOIN employee e on e.employee_id = a.employee_id
+        ' . $where_filter . '
+        GROUP BY civil_service_title
+        ORDER BY txcount DESC';
+
+    return $sql;
+}
 
 /**
  * Function to adjust custom parameters passed to data controller module
@@ -1096,6 +1156,37 @@ function _checkbook_project_applyParameterFilters($node, $parameters){
                         }
                       }
                       break;
+                    case "rangeid3":
+                    for($i=1; $i<6;$i++){
+                        switch($i){
+                            case 1:
+                                if(!in_array($i,$paramValues)){
+                                    $conditions[] = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, 20000);
+                                }
+                                break;
+                            case 2:
+                                if(!in_array($i,$paramValues)){
+                                    $conditions[] = $data_controller_instance->initiateHandler(NotInRangeOperatorHandler::$OPERATOR__NAME, array(20000, 50000));
+                                }
+                                break;
+                            case 3:
+                                if(!in_array($i,$paramValues)){
+                                    $conditions[] = $data_controller_instance->initiateHandler(NotInRangeOperatorHandler::$OPERATOR__NAME, array(50000.01,100000));
+                                }
+                                break;
+                            case 4:
+                                if(!in_array($i,$paramValues)){
+                                    $conditions[] = $data_controller_instance->initiateHandler(NotInRangeOperatorHandler::$OPERATOR__NAME, array(100000.01,250000));
+                                }
+                                break;
+                            case 5:
+                                if(!in_array($i,$paramValues)){
+                                    $conditions[] = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, 250000);
+                                }
+                                break;
+                        }
+                    }
+                    break;
                 default:
                     break;
             }
@@ -2006,5 +2097,5 @@ function _getAnnualSalariedEmployeeCount($node){
             ".$where_filter;
 
     $result = _checkbook_project_execute_sql_by_data_source($sql,_get_default_datasource());
-    $node->PayrollTotalDataCount = $result[0]['record_count'];
+    $node->PayrollTotalDataCount = (int)$result[0]['record_count'];
 }

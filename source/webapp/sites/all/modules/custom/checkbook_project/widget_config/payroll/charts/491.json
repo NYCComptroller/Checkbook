@@ -129,8 +129,8 @@
         if(abs($row['current_total_overtime_pay']) > 0)
         $allZero = false;
 
-        $seriesPreviousData[] = (object)array( 'y' => $row['previous_total_overtime_pay'], 'url'=>  $previousYearUrl);
-        $seriesCurrentData[] = (object)array('y' => $row['current_total_overtime_pay'],'url'=> $currentYearUrl);
+        $seriesPreviousData[] = (object)array( 'y' => $row['previous_total_overtime_pay'], 'url'=>  $previousYearUrl.'/smnid/491');
+        $seriesCurrentData[] = (object)array('y' => $row['current_total_overtime_pay'],'url'=> $currentYearUrl.'/smnid/491');
 
     }
     if($allZero) $node->totalDataCount = 0;
@@ -146,6 +146,7 @@
         $node->widgetConfig->chartConfig->series[0]->visible = false;
         unset($node->widgetConfig->gridConfig->table_columns[1]);
     }
+    $node->disableGridViewLink = $allZero;
     return $node->data;
 ",
 "chartConfig" : {

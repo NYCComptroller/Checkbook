@@ -34,7 +34,13 @@ else
 
 return $footer;
 ",
-"widgetTitle":"Top Agencies by Payroll Transactions",
+"widgetTitle":"Agencies by Payroll Transactions",
+"summaryView":{
+    "template":"payroll_transactions_summary",
+    "templateTitle":"Agency by Payroll Transactions",
+    "templateLabel":"Agency",
+    "templateLabelEval":"return $node->data[0]['agency_agency_agency_name'];"
+},
 "table_title":"",
 "derivedColumns": {
     "agency_name_link": {
@@ -48,7 +54,7 @@ return $footer;
   "total_gross_pay_link":{
      "type":"expression2",
            "type":"expression2",
-       "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/payroll_agencytransactions/payroll/agencywide/transactions' ._checkbook_project_get_year_url_param_string() .'/agency/' .  $row[agency_agency] . '\">' . $row['total_gross_pay_formatted'] . '</a>'"
+       "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/payroll_agencytransactions/payroll/agencywide/transactions' ._checkbook_project_get_year_url_param_string() .'/agency/' .  $row[agency_agency] . '/smnid/323 \">' . $row['total_gross_pay_formatted'] . '</a>'"
    },
    "total_employees_formatted":{
      "type":"expression2",

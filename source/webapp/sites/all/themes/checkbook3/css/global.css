@@ -66,6 +66,9 @@ h2 {
 h2.contract-title{
     width:475px;
 }
+div.contracts-advanced-search h2.contract-title  {
+    width:100%;
+}
 .tableHeader{
     float:left;
     clear:both;
@@ -2658,12 +2661,11 @@ table.outerTable.ma-history{
 ***   PAYROLL DETAILS STYLES   ***
 *********************************/
 .page-payroll h2.contract-title {
-    background: url("../images/hr.png") no-repeat scroll left 50px transparent;
-    color: #2E2E2E;
+    color: #3c5e7c;
     padding-bottom: 30px;
     text-align: center;
-    text-transform: uppercase;
-    margin:10px 0px 20px 0px;
+    text-transform: none;
+    margin:10px 0px -15px 0px;
     width:100% !important;
 }
 .page-payroll-search-transactions h2.contract-title {
@@ -2673,6 +2675,7 @@ table.outerTable.ma-history{
     padding-bottom: 0;
     text-align: left;
     text-transform: none;
+    margin-bottom: 10px;
 }
 .page-payroll-search-transactions .panel-display.omega-grid.omega-12-onecol{margin:0px;}
 .page-payroll-search-transactions .dataTables_wrapper > div + div{border: 1px solid #CACACA;}
@@ -2681,9 +2684,10 @@ table.outerTable.ma-history{
 .page-payroll-search-transactions .dataTables_wrapper > div + div + div{border:none;}
 .page-payroll-search-transactions .dataTables_processing{top:-20px;}
 #emp-agency-detail-records, #emp-agency-detail-record-table, #payroll-tx-static-content-table {
-    width: 640px;
+    width: 720px;
     margin:auto;
-    color:#000;
+    color:#5C5C5C;
+    font-size: 13px;
 }
 #emp-agency-detail-records th, #emp-agency-detail-records td,
 #emp-agency-detail-record-table th, #emp-agency-detail-record-table td,
@@ -2703,11 +2707,12 @@ table.outerTable.ma-history{
 .payroll_agencytransactions .node-widget{position:relative;}
 
 #payroll-emp-trans-name, #payroll-tx-agency-name {
-    color: #444444;
     font-size: 15px;
-    font-weight: bold;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
     text-align: center;
+}
+#payroll-emp-trans-name .payroll-label, #payroll-tx-agency-name .payroll-label{
+    font-weight: bold;
 }
 body.page-payroll-employee-transactions .container-12 .block .omega-grid{
     margin: 0;
@@ -3299,4 +3304,23 @@ table#table_263 thead tr,
 table#table_578 thead tr,
 table#table_567 thead tr{
     height:40px;
+}
+div.payroll-year-month span.label,
+div.payroll-year-month span.data{
+    font-size: 15px;
+}
+div.payroll-year-month{
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+#payroll-tx-static-content-table .label,
+.emp-agency-detail-record .label {
+    font-weight: bold;
+}
+
+.fake-hyperlink {
+    color: #1F82C9;
+    font-weight: normal;
 }

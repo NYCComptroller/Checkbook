@@ -274,7 +274,7 @@ class QueueJob {
         $commands[$filename][] = $command;
 
         //xmllint command to format the xml
-        $formatted_filename = $this->tmpFileOutputDir .'/formatted_'. $filename;
+        $formatted_filename = $this->tmpFileOutputDir .'/formatted_'. $filename . '.xml';
         $command = "xmllint --format $file --output $formatted_filename";
         $commands[$filename][] = $command;
 

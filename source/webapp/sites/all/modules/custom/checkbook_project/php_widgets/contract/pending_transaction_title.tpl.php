@@ -35,6 +35,6 @@ if($current_url[1] == 'contract' && ($current_url[2] == 'search' || $current_url
     $summaryTitle = MappingUtil::getCurrenEhtnicityName()." ";
 }
 $summaryTitle .= NodeSummaryUtil::getInitNodeSummaryTitle();
-print "<h2 class='contract-title' class='title'>{$summaryTitle}<br/>Pending {$contactCategoryLabel} Contracts Transactions</h2>";
+print "<h2 class='contract-title' class='title'>{$summaryTitle} Pending {$contactCategoryLabel} Contracts Transactions</h2>";
 global $checkbook_breadcrumb_title;
 $checkbook_breadcrumb_title =  "$summaryTitle Pending $contactCategoryLabel Contracts Transactions";  

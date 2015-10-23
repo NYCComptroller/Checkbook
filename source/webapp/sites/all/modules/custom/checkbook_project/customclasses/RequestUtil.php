@@ -190,20 +190,20 @@ class RequestUtil{
         $smnid = RequestUtil::getRequestKeyValueFromURL("smnid",$bottomURL);
         $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid)  ;        
       }
-      else if(isset($bottomURL) && preg_match('/payroll_by_month_nyc_transactions/',$bottomURL)){        
+      else if(isset($bottomURL) && preg_match('/payroll_by_month_nyc_transactions/',$bottomURL)){
         $customTitle = "NYC Payroll Transactions";
         $monthDetails = CheckbookDateUtil::getMonthDetails(RequestUtil::getRequestKeyValueFromURL("month",$bottomURL));
         if(isset($monthDetails)){
-          $customTitle .=  (" in the Month of ". $monthDetails[0]['month_name']) ;
+          //$customTitle .=  (" in the Month of ". $monthDetails[0]['month_name']) ;
         }
         $title = $customTitle;
-      }            
+      }
       else if(isset($bottomURL) && preg_match('/payroll_agency_by_month_transactions/',$bottomURL)){
         $agency = _checkbook_project_get_name_for_argument("agency_id",RequestUtil::getRequestKeyValueFromURL("agency",$bottomURL));
         $customTitle = $agency . " Payroll Transactions";
         $monthDetails = CheckbookDateUtil::getMonthDetails(RequestUtil::getRequestKeyValueFromURL("month",$bottomURL));
         if(isset($monthDetails)){
-          $customTitle .=  (" in the Month of ". $monthDetails[0]['month_name']) ;
+          //$customTitle .=  (" in the Month of ". $monthDetails[0]['month_name']) ;
         }
         $title = $customTitle;
       }

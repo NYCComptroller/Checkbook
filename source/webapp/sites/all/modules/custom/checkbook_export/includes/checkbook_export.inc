@@ -273,6 +273,24 @@ function _checkbook_export_transactions(){
             array_push($columnsConfig, $column);
         }
     }
+    //uniqueSortColumns are also required in the export select
+    $uniqueSortColumn = $node->widgetConfig->uniqueSortColumn;
+    if(isset($node->widgetConfig->orderBy) && !empty($node->widgetConfig->orderBy)) {
+        if(isset($uniqueSortColumn)) {
+            if(is_array($uniqueSortColumn)) {
+                foreach($uniqueSortColumn as $value) {
+                    if (!in_array($columnsConfig, $value)) {
+                        array_push($columnsConfig, $value);
+                    }
+                }
+            }
+            else {
+                if (!in_array($columnsConfig, $uniqueSortColumn)) {
+                    array_push($columnsConfig, $uniqueSortColumn);
+                }
+            }
+        }
+    }
     if($isList){//Selecting only required columns.
         $node->widgetConfig->columns = $columnsConfig;
     }
