@@ -31,7 +31,8 @@ class DataSetHandler {
    * @param $configuration
    */
   function __construct($requestCriteria, $configuration) {
-    $this->requestCriteria = $requestCriteria;
+      if($requestCriteria instanceof AbstractAPISearchCriteria)
+          $this->requestCriteria = $requestCriteria;
     $this->configuration = $configuration;
   }
 
