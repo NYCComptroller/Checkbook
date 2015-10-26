@@ -28,7 +28,8 @@ class CSVDataHandler extends AbstractDataHandler {
    * @param $request_search_criteria
    */
   function __construct($request_search_criteria) {
-    $this->requestSearchCriteria = $request_search_criteria;
+      if($request_search_criteria instanceof AbstractAPISearchCriteria)
+          $this->requestSearchCriteria = $request_search_criteria;
   }
 
   /**
