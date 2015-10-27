@@ -26,8 +26,7 @@ class XMLDataHandler extends AbstractDataHandler
 {
 
     function __construct($requestSearchCriteria){
-        if($requestSearchCriteria instanceof AbstractAPISearchCriteria)
-            $this->requestSearchCriteria = $requestSearchCriteria;
+        $this->requestSearchCriteria = $requestSearchCriteria;
     }
 
     function addResponseMessages(){
