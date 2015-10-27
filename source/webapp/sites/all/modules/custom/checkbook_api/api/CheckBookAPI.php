@@ -39,10 +39,8 @@ class CheckBookAPI {
     // Increasing to handle memory limits when exporting.
     ini_set('memory_limit', '512M');
 
-      if($request_criteria instanceof AbstractAPISearchCriteria) {
-          $this->request_criteria = $request_criteria;
-          $this->setRequestHandler();
-      }
+    $this->request_criteria = $request_criteria;
+    $this->setRequestHandler();
   }
 
   /**
