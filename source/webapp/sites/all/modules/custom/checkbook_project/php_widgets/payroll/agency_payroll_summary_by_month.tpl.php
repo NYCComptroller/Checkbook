@@ -61,22 +61,27 @@ $table = "
     <table id='payroll-tx-static-content-table'>
         <tr>
             <td width='50%'><strong>". WidgetUtil::getLabel('annual_salary') ."</strong>: {$total_annual_salary}</td>
-            <td width='50%'><strong>". WidgetUtil::getLabel('gross_pay') ."</strong>: {$total_gross_pay}</td>
-        </tr>
-        <tr>
-            <td><strong>". WidgetUtil::getLabel('base_pay') ."</strong>: {$total_base_pay}</td>
-            <td><strong>". WidgetUtil::getLabel('other_pay') ."</strong>: {$total_other_payments}</td>
-        </tr>
-        <tr>
-            <td><strong>". WidgetUtil::getLabel('overtime_pay') ."</strong>: {$total_overtime_pay}</td>
             <td><strong>". WidgetUtil::getLabel('total_no_of_employees') ."</strong>: {$total_employees}</td>
         </tr>
         <tr>
+            <td width='50%'><strong>". WidgetUtil::getLabel('gross_pay') ."</strong>: {$total_gross_pay}</td>
             <td><strong>". WidgetUtil::getLabel('total_no_of_sal_employees') ."</strong>: {$total_salaried_employees}</td>
+        </tr>
+        <tr>
+            <td><strong>". WidgetUtil::getLabel('base_pay') ."</strong>: {$total_base_pay}</td>
             <td><strong>". WidgetUtil::getLabel('total_no_of_non_sal_employees') ."</strong>: {$total_hourly_employees}</td>
         </tr>
         <tr>
-            <td><strong>{$total_overtime_employees_label} </strong> {$overtime_employees_value}</td>
+            <td><strong>". WidgetUtil::getLabel('other_pay') ."</strong>: {$total_other_payments}</td>";
+        if(isset($overtime_employees_value)){
+            $table .= "<td><strong>{$total_overtime_employees_label} </strong> {$overtime_employees_value}</td>";
+        }else{
+            $table .= "<td></td>";
+        }
+        $table .= "</tr>
+        <tr>
+            <td><strong>". WidgetUtil::getLabel('overtime_pay') ."</strong>: {$total_overtime_pay}</td>
+            <td></td>
         </tr>
     </table>
 </div>
