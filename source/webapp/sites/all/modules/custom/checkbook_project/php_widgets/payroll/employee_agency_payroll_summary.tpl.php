@@ -55,7 +55,7 @@ if(is_array($node->data) && count($node->data) > 0){
 
     $employeeData .= "<div id='emp-agency-detail-records'>";
 
-    foreach($node->data as $data){
+  foreach($node->data as $data){
 
         $typeOfEmployment = $data['employment_type_employment_type'];
         $year = $data['year_year'];
@@ -64,8 +64,7 @@ if(is_array($node->data) && count($node->data) > 0){
         $agencyUrl  = "<a href='/payroll/agency/{$data['agency_agency']}/yeartype/$yearType/year/$year'>{$agency}</a>";
 
         $title = strtolower($data['employee_employee_civil_service_title']);
-        //$title = str_replace('( ', '(', ucwords(str_replace('(', '( ', $title)));
-        $title = mb_convert_case($title, MB_CASE_TITLE, "UTF-8"); //this works too
+        $title = mb_convert_case($title, MB_CASE_TITLE, "UTF-8");
 
         $table = "<div class='emp-agency-detail-record'><table id='emp-agency-detail-record-table'>";
 
@@ -77,18 +76,29 @@ if(is_array($node->data) && count($node->data) > 0){
 
         $table .= "<tr>
                         <td width='60%'><strong>". WidgetUtil::getLabel('agency_name') ."</strong>: {$agencyUrl}</td>
-                        <td width='40%'><strong>". WidgetUtil::getLabel('gross_pay_ytd') ."</strong>:$". number_format($data['total_gross_pay'],2)."</td>
-                   </tr>";
-        $table .= "<tr>
                         <td><strong>". WidgetUtil::getLabel('payroll_type') ."</strong>: ". strtoupper($data['employment_type_employment_type'])."</td>
-                        <td><strong>". WidgetUtil::getLabel('base_pay_ytd') ."</strong>: $". number_format($data['total_base_salary'],2)."</td>
+
                    </tr>";
         $table .= "<tr>
                         <td><strong>". ( ($typeOfEmployment == 'Salaried') ? WidgetUtil::getLabel('annual_salary') : WidgetUtil::getLabel('pay_rate'))  ."</strong>: $". number_format($data['max_annual_salary'],2) ."</td>
+                        <td></td>
+                   </tr>";
+        $table .= "<tr>
+                        <td><strong>". WidgetUtil::getLabel('gross_pay_ytd') ."</strong>:$". number_format($data['total_gross_pay'],2)."</td>
+                        <td></td>
+                   </tr>";
+        $table .= "<tr>
+                        <td><strong>". WidgetUtil::getLabel('base_pay_ytd') ."</strong>: $". number_format($data['total_base_salary'],2)."</td>
+                        <td></td>
+                   </tr>";
+
+        $table .= "<tr>
                         <td><strong>". WidgetUtil::getLabel('other_pay_1_ytd') ."</strong>: $". number_format($data['total_other_payments'],2)."</td>
+                        <td></td>
                    </tr>";
         $table .= "<tr>
                         <td ><strong>". WidgetUtil::getLabel('overtime_pay_1_ytd') ."</strong>: $".number_format($data['total_overtime_amount'],2)."</td>
+                        <td></td>
                     </tr>";
 
         $table .= "</table></div>";

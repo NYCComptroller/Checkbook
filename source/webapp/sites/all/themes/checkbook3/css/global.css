@@ -2689,9 +2689,30 @@ table.outerTable.ma-history{
     padding: 10px 5px;
     white-space: nowrap;
 }
+
+#emp-agency-detail-records {
+    width: 940px !important;
+}
+#prev-emp,
+#next-emp{
+    height:26px;
+    width:73px;
+    position: absolute;
+    bottom:70px;
+    z-index: 10;
+}
+#prev-emp{
+    left:0;
+    background: url(../images/payroll-arrow-up.png) no-repeat scroll;
+}
+#next-emp{
+    right:0;
+    background: url(../images/payroll-arrow-down.png) no-repeat scroll;
+}
+
 #emp-agency-detail-record-table {
     width: 520px;
-    margin: auto auto 15px;
+    margin: auto 200px 15px;
     color:#5B5B5B;
     font-size: 13px;
 }
