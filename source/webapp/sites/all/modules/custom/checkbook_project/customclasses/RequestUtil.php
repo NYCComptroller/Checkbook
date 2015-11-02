@@ -176,7 +176,7 @@ class RequestUtil{
       if(isset($bottomURL) && preg_match('/payroll_agencytransactions/',$bottomURL)){        
         $smnid = RequestUtil::getRequestKeyValueFromURL("smnid",$bottomURL);
         if($smnid > 0){
-          $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
+          $title = NodeSummaryUtil::getInitNodeSummaryTemplateTitle($smnid);
         }
         else{
           $title =  _checkbook_project_get_name_for_argument("agency_id",RequestUtil::getRequestKeyValueFromURL("agency",$bottomURL)) . ' Payroll Transactions' ;
