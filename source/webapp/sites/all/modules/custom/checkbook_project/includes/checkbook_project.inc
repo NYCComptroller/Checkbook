@@ -563,6 +563,9 @@ function _checkbook_project_get_name_for_argument($keyword,$id){
             $mwbe = _checkbook_project_querydataset('checkbook:minority_type',array('minority_type_id','minority_type_name'),array($keyword=>$id));
             return htmlentities(ucwords(strtolower($mwbe[0]['minority_type_name'])));
             break;
+        case "title":
+            return htmlentities(ucwords(RequestUtil::getRequestKeyValueFromURL("title",current_path())));
+            break;
 
 		default:
 			return $id;

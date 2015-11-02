@@ -2,7 +2,7 @@
 "widgetType": "data_tables",
 "widgetSubType": "dataTableList",
 "cleanURLParameters":["abc","xyz","agency","year"],
-"urlParamMap":{"abc":"employee_id","xyz":"employee_id","agency":"agency_id","year":"fiscal_year_id"},
+"urlParamMap":{"abc":"employee_id","xyz":"employee_id","agency":"agency_id","year":"fiscal_year_id","title":},
 "header":"
 	$header = NULL;
 	$header .= widget_data_tables_export_link($node);

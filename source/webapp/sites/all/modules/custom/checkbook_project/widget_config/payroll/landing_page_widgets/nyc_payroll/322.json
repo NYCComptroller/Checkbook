@@ -46,7 +46,7 @@ return $footer;
 "derivedColumns": {
    "agency_name_link": {
      "type": "expression2",
-     "expression": "'<a href=/payroll/agency/'. $row[agency_agency] . _checkbook_project_get_url_param_string(\"title\") . _checkbook_project_get_year_url_param_string() . '>'. $row[agency_agency_agency_name] .'</a>'"
+     "expression": "'<a href=/payroll' . _checkbook_project_get_url_param_string(\"title\") . _checkbook_project_get_year_url_param_string()  . '/agency/' . $row[agency_agency] . '>'. $row[agency_agency_agency_name] .'</a>'"
   },
   "total_gross_pay_formatted":{
      "type":"expression2",
