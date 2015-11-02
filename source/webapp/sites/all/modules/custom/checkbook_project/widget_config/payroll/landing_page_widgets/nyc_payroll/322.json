@@ -34,7 +34,7 @@ else
 
 return $footer;
 ",
-"widgetTitle":"Agency by Overtime Payroll Transactions",
+"widgetTitle":"Agencies by Overtime Payroll Transactions",
 "summaryView":{
     "template":"payroll_transactions_summary",
     "templateTitle":"Agency by Overtime Payroll Transactions",
