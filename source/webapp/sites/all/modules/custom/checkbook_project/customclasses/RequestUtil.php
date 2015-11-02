@@ -214,7 +214,7 @@ class RequestUtil{
         $title = _checkbook_project_get_name_for_argument("agency_id",RequestUtil::getRequestKeyValueFromURL("agency",current_path())) . ' Payroll' ;
       }
       elseif(preg_match('/^payroll/',current_path()) && preg_match('/title/',current_path())){
-          $title = ucwords(RequestUtil::getRequestKeyValueFromURL("title",current_path())) . ' Payroll' ;
+          $title = RequestUtil::getRequestKeyValueFromURL("title",current_path()) . ' Payroll' ;
       }
       elseif(preg_match('/^payroll/',current_path()) && !preg_match('/transactions/',current_path())){
         $title = 'New York City Payroll' ;
