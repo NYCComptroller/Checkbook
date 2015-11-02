@@ -139,8 +139,20 @@
                 "total_salaried_amount": {
                     "function": "SUM( CASE WHEN type_of_employment = 'Salaried' THEN COALESCE(annual_salary,0) else NULL END)"
                 },
+                "total_salaried_employees": {
+                    "function": "COUNT(DISTINCT (CASE WHEN type_of_employment = 'Salaried' THEN employee_number END))"
+                },
+                "total_employees":{
+                    "function": "SUM( CASE WHEN type_of_employment = 'Salaried' THEN COALESCE(annual_salary,0) else NULL END)"
+                },
                 "total_non_salaried_amount": {
                     "function": "SUM( CASE WHEN type_of_employment = 'Salaried' THEN NULL else COALESCE(annual_salary,0) END)"
+                },
+                "total_hourly_employees": {
+                    "function": "SUM( CASE WHEN type_of_employment = 'Salaried' THEN NULL else COALESCE(annual_salary,0) END)"
+                },
+                "total_overtime_employees": {
+                    "function": "COUNT(DISTINCT (CASE WHEN COALESCE(overtime_pay,0) > 0 THEN employee_number END))"
                 },
                 "min_total_annual_salary": {
                     "function": "MIN(annual_salary)"
@@ -158,6 +170,9 @@
                     "function": "SUM(other_payments)"
                 },
                 "total_overtime_amount": {
+                    "function": "SUM(overtime_pay)"
+                },
+                "total_overtime_pay": {
                     "function": "SUM(overtime_pay)"
                 },
                 "employee_count":{
