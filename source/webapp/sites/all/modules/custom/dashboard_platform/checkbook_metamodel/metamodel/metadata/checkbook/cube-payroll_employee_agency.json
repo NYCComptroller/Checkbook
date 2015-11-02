@@ -166,6 +166,9 @@
                 "total_base_salary": {
                     "function": "SUM(base_pay)"
                 },
+                "total_base_pay": {
+                    "function": "SUM(base_pay)"
+                },
                 "total_other_payments": {
                     "function": "SUM(other_payments)"
                 },
