@@ -95,10 +95,21 @@
                     ]
                 },
                 {
+                    "name": "dept",
+                    "levels": [
+                        {
+                            "name": "dept",
+                            "datasetName": "department",
+                            "sourceColumnName": "department_id"
+                        }
+                    ]
+                },
+                {
                     "name":"month",
                     "levels":[
                         {
                             "name":"month",
+                            "datasetName":"month",
                             "sourceColumnName":"month_id"
                         }
                     ]
@@ -158,6 +169,9 @@
                 },
                 "total_overtime_amount": {
                     "function": "SUM(overtime_pay)"
+                },
+                "total_overtime_pay": {
+                    "function": "sum(overtime_pay)"
                 },
                 "employee_count":{
                     "function":"COUNT(DISTINCT employee_id)"
