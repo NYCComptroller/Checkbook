@@ -25,7 +25,7 @@ return $header;
 "footer":"
 $url = '/panel_html/payroll_nyc_transactions/payroll/transactions';
 $url .= _checkbook_project_get_year_url_param_string();
-$url .= '/smnid/' . $node->nid;
+$url .= '/dtsmnid/' . $node->nid;
 $count = $node->count;
 $footer = '';
 
@@ -50,7 +50,7 @@ return $footer;
     },
  "employee_name_link": {
      "type": "expression2",
-       "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/payroll_employee_transactions/payroll/employee/transactions' ._checkbook_project_get_year_url_param_string() .'/xyz/' .  $row[employee_employee] . '\">' . $row['employee_name_formatted'] . '</a>'"
+       "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/payroll_nyc_transactions/payroll/transactions' ._checkbook_project_get_year_url_param_string() . '/smnid/' . $node->nid .'/title/' . urlencode($row['employee_employee_civil_service_title']) . '\">' . $row['employee_name_formatted'] . '</a>'"
   },
   "total_gross_pay_formatted":{
      "type":"expression2",

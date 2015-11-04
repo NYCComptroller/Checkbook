@@ -36,6 +36,11 @@
     "dataset": "checkbook:payroll_employee_agency",
     "uniqueSortColumn":["employee_id", "pay_frequency_pay_frequency"],
     "columns": ["employee.employee","employee.employee.civil_service_title","employee.employee.employee_number","agency.agency.agency_short_name","pay_frequency.pay_frequency","total_salaried_amount","total_non_salaried_amount","total_gross_pay","total_base_salary","total_other_payments","total_overtime_amount","year.year","year_type.year_type","agency.agency.agency_name","employment_type.employment_type"],
+    "preProcessConfiguration":"
+        $smnid = _getRequestParamValue('smnid');
+        $title = _getRequestParamValue('title');
+        $node->show_pay_frequency = !($smnid == 320 && isset($title));
+    ",
     "derivedColumns": {
            "employee_name_formatted": {
                   "type": "expression2",
@@ -90,16 +95,20 @@
             {"labelAlias": "agency_name","column":"agency_name_formatted","sortSourceColumn":"agency.agency.agency_name"},
             {"labelAlias": "annual_salary","column": "formatted_salary_amount","sortSourceColumn": "total_salaried_amount","exportColumn":"export_salary_amount"},
             {"labelAlias": "hourly_rate","column": "formatted_non_salary_amount","sortSourceColumn": "total_non_salaried_amount","exportColumn":"export_non_salary_amount"},
-            {"labelAlias": "pay_frequency","column": "pay_frequency_pay_frequency","sortSourceColumn":"pay_frequency.pay_frequency"},
+            {"labelAlias": "pay_frequency","column": "pay_frequency_pay_frequency","sortSourceColumn":"pay_frequency.pay_frequency","visibility_flag":"show_pay_frequency"},
             {"labelAlias": "gross_pay_ytd","column": "formatted_gross_pay_amount","sortSourceColumn": "total_gross_pay"},
             {"labelAlias": "base_pay","column": "formatted_base_salary_amount","sortSourceColumn": "total_base_salary"},
             {"labelAlias": "other_pays","column": "formatted_other_payments_amount","sortSourceColumn": "total_other_payments"},
             {"labelAlias": "overtime_pay","column": "formatted_overtime_pay_amount","sortSourceColumn": "total_overtime_amount"}
           ],
     "adjustDataTableOptions":"
-            $smnid = _getRequestParamValue('smnid');
-            if(isset($smnid)){
-                switch($smnid){
+
+            $nid = _getRequestParamValue('smnid');
+            if(!isset($nid)) {
+                $nid = !isset($nid) ? _getRequestParamValue('dtsmnid') : $nid;
+            }
+            if(isset($nid)){
+                switch($nid){
                     case 322:
                         $node->widgetConfig->dataTableOptions->aaSorting = array(array(8,'desc'));
                     break;
@@ -156,7 +165,7 @@
             {"sClass":"text pad-left","asSorting": [ "asc","desc" ]},
             {"sClass":"number","asSorting": [ "desc","asc" ]},
             {"sClass":"number pad-left endCol","asSorting": [ "desc","asc" ]},
-            {"sClass":"text pad-left","asSorting":  [ "asc","desc" ]},
+            {"sClass":"text pad-left","asSorting":  [ "asc","desc" ],"visibility_flag":"show_pay_frequency"},
             {"sClass":"number pad-left","asSorting": [ "desc","asc" ]},
             {"sClass":"number pad-left","asSorting": [ "desc","asc" ]},
             {"sClass":"number pad-left","asSorting": [ "desc","asc" ]},
