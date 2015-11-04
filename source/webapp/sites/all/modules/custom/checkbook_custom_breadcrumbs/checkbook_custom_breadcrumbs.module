@@ -244,7 +244,7 @@ function _get_revenue_breadcrumb_title_drilldown(){
  **/
 function _get_payroll_breadcrumb_title_drilldown(){
     $bottomURL = $_REQUEST['expandBottomContURL'];
-    if(!$bottomURL && preg_match('/^payroll\/transactions/',current_path())){
+    if(!$bottomURL && preg_match('/^payroll\/search\/transactions/',current_path())){
         $title = null;
     }else{
         $lastReqParam = _getLastRequestParamValue();
