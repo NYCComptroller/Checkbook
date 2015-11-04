@@ -22,8 +22,10 @@
 
 $results = $node->data[0];
 if($results){
-    $title = strtolower($results['civil_service_title_civil_service_title']);
+    $original_title = $results['civil_service_title_civil_service_title'];
+    $title = strtolower($original_title);
     $title = mb_convert_case($title, MB_CASE_TITLE, "UTF-8");
+    $titleUrl  = "<a href='/payroll'"._checkbook_project_get_year_url_param_string() ."/title/" . urlencode($results['civil_service_title_civil_service_title']) . ">".$title."</a>";
     $total_annual_salary = custom_number_formatter_format($results['total_annual_salary'],2,'$');
     $total_gross_pay = custom_number_formatter_format($results['total_gross_pay'],2,'$');
     $total_base_pay = custom_number_formatter_format($results['total_base_salary'],2,'$');
@@ -34,12 +36,14 @@ if($results){
     $year = $results['year_year'];
     $yearType = $results['year_type_year_type'];
     $agency = strtoupper($results['agency_agency_agency_name']);
+    $original_title = urlencode($original_title);
     $agencyUrl  = "<a href='/payroll/agency/$agencyId/yeartype/$yearType/year/$year'>{$agency}</a>";
+    $title_url =  "<a href='/payroll/yeartype/$yearType/year/$year/title/$original_title'>{$title}</a>";
 
     $table = "";
     $table .= "<div id='payroll-emp-trans-name'>
                         <span class='payroll-label'>Title: </span>
-                        <span class='payroll-value'>{$title}</span>
+                        <span class='payroll-value'>{$title_url}</span>
                     </div>";
 
     $table .= "
