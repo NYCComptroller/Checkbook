@@ -21,6 +21,7 @@
         "annualsalary":"rangeid3",
         "overtimepayment":"rangeid3"
     },
+    "allowRequestParams":["dtsmnid","smnid"],
     "defaultParameters":{"type_of_year":"B"},
     "header":"
         $header = NULL;
@@ -42,28 +43,40 @@
         $node->show_pay_frequency = !($smnid == 320 && isset($title));
     ",
     "derivedColumns": {
-           "employee_name_formatted": {
-                  "type": "expression2",
-                  "expression": "_get_tooltip_markup($row['employee_employee_civil_service_title'],30)"
-           },
-            "employee_name_link": {
+        "employee_name_formatted": {
               "type": "expression2",
-               "expression": "  '<a href=\"/payroll/yeartype/'. $row[year_type_year_type] . '/year/' . $row[year_year] . '?'
-                                . 'expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/xyz/' .$row[employee_employee]
-                                . '/year/'. $row[year_year] . '/yeartype/'. $row[year_type_year_type] . '\">'. $row[employee_name_formatted] . '</a>'
-                             "
+              "expression": "_get_tooltip_markup($row['employee_employee_civil_service_title'],30)"
+        },
+        "employee_name_link2": {
+          "type": "expression2",
+           "expression": "  '<a href=\"/payroll/yeartype/'. $row[year_type_year_type] . '/year/' . $row[year_year] . '?'
+                            . 'expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/xyz/' .$row[employee_employee]
+                            . '/year/'. $row[year_year] . '/yeartype/'. $row[year_type_year_type] . '\">'. $row[employee_name_formatted] . '</a>'
+                         "
+        },
+        "employee_name_link": {
+            "type": "expression2",
+            "expression": "  !(_getRequestParamValue('smnid') == 320 && _getRequestParamValue('title') != null) ? $row['employee_name_link2'] : $row['employee_name_formatted'] "
         },
         "formatted_salary_amount": {
               "type": "expression2",
               "expression": " $row['employment_type_employment_type'] == 'Salaried' ? custom_number_formatter_basic_format($row['total_salaried_amount'])  : '-'  "
         },
+        "salary_amount_link2": {
+            "type": "expression2",
+            "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/payroll_employee_transactions/payroll/employee/transactions'  ._checkbook_project_get_year_url_param_string() .'/abc/' .  $row[employee_employee] . '\">' . $row['formatted_salary_amount'] . '</a>'"
+        },
+        "salary_amount_link": {
+            "type": "expression2",
+            "expression": " (_getRequestParamValue('smnid') == 320 && _getRequestParamValue('title') != null) ? $row['salary_amount_link2'] : $row['formatted_salary_amount'] "
+        },
         "formatted_non_salary_amount": {
               "type": "expression2",
                   "expression": " $row['employment_type_employment_type'] == 'Salaried' ? '-&nbsp;&nbsp;' : custom_number_formatter_basic_format($row['total_non_salaried_amount']).'&nbsp;&nbsp;'"
         },
-            "export_salary_amount": {
-              "type": "expression2",
-              "expression": " $row['employment_type.employment_type'] == 'Salaried' ? $row['total_salaried_amount']  : NULL "
+        "export_salary_amount": {
+            "type": "expression2",
+            "expression": " $row['employment_type.employment_type'] == 'Salaried' ? $row['total_salaried_amount']  : NULL "
         },
         "export_non_salary_amount": {
               "type": "expression2",
@@ -93,7 +106,7 @@
     "table_columns": [
             {"labelAlias": "title","column": "employee_name_link","sortSourceColumn":"employee.employee.civil_service_title"},
             {"labelAlias": "agency_name","column":"agency_name_formatted","sortSourceColumn":"agency.agency.agency_name"},
-            {"labelAlias": "annual_salary","column": "formatted_salary_amount","sortSourceColumn": "total_salaried_amount","exportColumn":"export_salary_amount"},
+            {"labelAlias": "annual_salary","column": "salary_amount_link","sortSourceColumn": "total_salaried_amount","exportColumn":"export_salary_amount"},
             {"labelAlias": "hourly_rate","column": "formatted_non_salary_amount","sortSourceColumn": "total_non_salaried_amount","exportColumn":"export_non_salary_amount"},
             {"labelAlias": "pay_frequency","column": "pay_frequency_pay_frequency","sortSourceColumn":"pay_frequency.pay_frequency","visibility_flag":"show_pay_frequency"},
             {"labelAlias": "gross_pay_ytd","column": "formatted_gross_pay_amount","sortSourceColumn": "total_gross_pay"},
