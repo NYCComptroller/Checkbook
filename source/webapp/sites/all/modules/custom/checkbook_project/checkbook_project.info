@@ -33,6 +33,7 @@ files[] = customclasses/constants/Constants.php
 files[] = customclasses/contract/ContractUtil.php
 files[] = customclasses/masterAgreementDetails.php
 files[] = customclasses/childAgreementDetails.php
+files[] = customclasses/payrollDetails.php
 files[] = customclasses/RequestUtil.php
 files[] = customclasses/contract/ContractURLHelper.php
 files[] = customclasses/spending/SpendingUtil.php
