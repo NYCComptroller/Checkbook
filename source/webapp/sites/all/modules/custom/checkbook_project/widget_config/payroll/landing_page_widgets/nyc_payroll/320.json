@@ -37,7 +37,7 @@ else{
 }
 return $footer;
 ",
-"widgetTitle":"Annual Salaries Payroll Transactions",
+"widgetTitle":"Employees Payroll Transactions",
 "table_title":"",
 "derivedColumns": {
     "agency_name_link": {
