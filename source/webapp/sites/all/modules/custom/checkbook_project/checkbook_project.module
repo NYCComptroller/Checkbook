@@ -292,6 +292,10 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'php_widgets/payroll/employee_agency_payroll_summary',
             'arguments' => array('node' => NULL)
         ),
+        'payroll_title_agency_payroll_summary' => array(
+            'template' => 'php_widgets/payroll/title_agency_payroll_summary',
+            'arguments' => array('node' => NULL)
+        ),
         'payroll_agency_payroll_summary' => array(
             'template' => 'php_widgets/payroll/agency_payroll_summary',
             'arguments' => array('node' => NULL)
