@@ -1,7 +1,7 @@
 {
 "widgetType": "data_tables",
 "widgetSubType": "dataTableList",
-"cleanURLParameters":["abc","xyz","agency","year"],
+"cleanURLParameters":["abc","xyz","agency","year","title"],
 "urlParamMap":{"abc":"employee_id","xyz":"employee_id","agency":"agency_id","year":"fiscal_year_id","title":"civil_service_title"},
 "header":"
 	$header = NULL;
