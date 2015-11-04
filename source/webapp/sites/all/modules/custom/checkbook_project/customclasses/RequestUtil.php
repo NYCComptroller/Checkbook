@@ -215,6 +215,7 @@ class RequestUtil{
       }
       elseif(preg_match('/^payroll/',current_path()) && preg_match('/title/',current_path())){
           $title = RequestUtil::getRequestKeyValueFromURL("title",current_path()) . ' Payroll' ;
+          $title = mb_convert_case($title, MB_CASE_TITLE, "UTF-8");
       }
       elseif(preg_match('/^payroll/',current_path()) && !preg_match('/transactions/',current_path())){
         $title = 'New York City Payroll' ;
