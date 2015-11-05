@@ -133,6 +133,9 @@
                 "txcount": {
                     "function": "COUNT(*)"
                 },
+                "title_count": {
+                    "function": "COUNT(DISTINCT civil_service_title)"
+                },
                 "total_annual_salary": {
                     "function": "SUM(annual_salary)"
                 },
@@ -184,47 +187,92 @@
                 "gross_pay_g250k_count": {
                     "function": "SUM(CASE WHEN COALESCE(gross_pay,0) > 250000 THEN 1 ELSE 0 END)"
                 },
+                "gross_pay_g250k_count_title": {
+                    "function": "COUNT(DISTINCT (CASE WHEN COALESCE(gross_pay,0) > 250000 THEN civil_service_title END))"
+                },
                 "gross_pay_g101k_le250k_count": {
                     "function": "SUM(CASE WHEN COALESCE(gross_pay,0) > 100000 AND COALESCE(gross_pay,0) <= 250000 THEN 1 ELSE 0 END)"
+                },
+                "gross_pay_g101k_le250k_count_title": {
+                    "function": "COUNT(DISTINCT(CASE WHEN COALESCE(gross_pay,0) > 100000 AND COALESCE(gross_pay,0) <= 250000 THEN civil_service_title END))"
                 },
                 "gross_pay_g51k_le100k_count": {
                     "function": "SUM(CASE WHEN COALESCE(gross_pay,0) > 50000 AND COALESCE(gross_pay,0) <= 100000 THEN 1 ELSE 0 END)"
                 },
+                "gross_pay_g51k_le100k_count_title": {
+                    "function": "COUNT(DISTINCT(CASE WHEN COALESCE(gross_pay,0) > 50000 AND COALESCE(gross_pay,0) <= 100000 THEN civil_service_title END))"
+                },
                 "gross_pay_ge20k_le50k_count": {
                     "function": "SUM(CASE WHEN COALESCE(gross_pay,0) >= 20000 AND COALESCE(gross_pay,0) <= 50000 THEN 1 ELSE 0 END)"
+                },
+                "gross_pay_ge20k_le50k_count_title": {
+                    "function": "COUNT(DISTINCT(CASE WHEN COALESCE(gross_pay,0) >= 20000 AND COALESCE(gross_pay,0) <= 50000 THEN civil_service_title END))"
                 },
                 "gross_pay_less20k_count": {
                     "function": "SUM(CASE WHEN COALESCE(gross_pay,0) < 20000 THEN 1 ELSE 0 END)"
                 },
+                "gross_pay_less20k_count_title": {
+                    "function": "COUNT(DISTINCT(CASE WHEN COALESCE(gross_pay,0) < 20000 THEN civil_service_title END))"
+                },
                 "overtime_pay_g250k_count": {
                     "function": "SUM(CASE WHEN COALESCE(overtime_pay,0) > 250000 THEN 1 ELSE 0 END)"
+                },
+                "overtime_pay_g250k_count_title": {
+                    "function": "COUNT(DISTINCT(CASE WHEN COALESCE(overtime_pay,0) > 250000 THEN civil_service_title END))"
                 },
                 "overtime_pay_g101k_le250k_count": {
                     "function": "SUM(CASE WHEN COALESCE(overtime_pay,0) > 100000 AND COALESCE(overtime_pay,0) <= 250000 THEN 1 ELSE 0 END)"
                 },
+                "overtime_pay_g101k_le250k_count_title": {
+                    "function": "COUNT(DISTINCT(CASE WHEN COALESCE(overtime_pay,0) > 100000 AND COALESCE(overtime_pay,0) <= 250000 THEN civil_service_title END))"
+                },
                 "overtime_pay_g51k_le100k_count": {
                     "function": "SUM(CASE WHEN COALESCE(overtime_pay,0) > 50000 AND COALESCE(overtime_pay,0) <= 100000 THEN 1 ELSE 0 END)"
+                },
+                "overtime_pay_g51k_le100k_count_title": {
+                    "function": "COUNT(DISTINCT(CASE WHEN COALESCE(overtime_pay,0) > 50000 AND COALESCE(overtime_pay,0) <= 100000 THEN civil_service_title END))"
                 },
                 "overtime_pay_ge20k_le50k_count": {
                     "function": "SUM(CASE WHEN COALESCE(overtime_pay,0) >= 20000 AND COALESCE(overtime_pay,0) <= 50000 THEN 1 ELSE 0 END)"
                 },
+                "overtime_pay_ge20k_le50k_count_title": {
+                    "function": "COUNT(DISTINCT(CASE WHEN COALESCE(overtime_pay,0) >= 20000 AND COALESCE(overtime_pay,0) <= 50000 THEN civil_service_title END))"
+                },
                 "overtime_pay_less20k_count": {
                     "function": "SUM(CASE WHEN COALESCE(overtime_pay,0) < 20000 THEN 1 ELSE 0 END)"
+                },
+                "overtime_pay_less20k_count_title": {
+                    "function": "COUNT(DISTINCT(CASE WHEN COALESCE(overtime_pay,0) < 20000 THEN civil_service_title END))"
                 },
                 "annual_salary_g250k_count": {
                     "function": "SUM(CASE WHEN COALESCE(annual_salary,0) > 250000 THEN 1 ELSE 0 END)"
                 },
+                "annual_salary_g250k_count_title": {
+                    "function": "COUNT(DISTINCT(CASE WHEN COALESCE(annual_salary,0) > 250000 THEN civil_service_title END))"
+                },
                 "annual_salary_g101k_le250k_count": {
                     "function": "SUM(CASE WHEN COALESCE(annual_salary,0) > 100000 AND COALESCE(annual_salary,0) <= 250000 THEN 1 ELSE 0 END)"
+                },
+                "annual_salary_g101k_le250k_count_title": {
+                    "function": "COUNT(DISTINCT(CASE WHEN COALESCE(annual_salary,0) > 100000 AND COALESCE(annual_salary,0) <= 250000 THEN civil_service_title END))"
                 },
                 "annual_salary_g51k_le100k_count": {
                     "function": "SUM(CASE WHEN COALESCE(annual_salary,0) > 50000 AND COALESCE(annual_salary,0) <= 100000 THEN 1 ELSE 0 END)"
                 },
+                "annual_salary_g51k_le100k_count_title": {
+                    "function": "COUNT(DISTINCT(CASE WHEN COALESCE(annual_salary,0) > 50000 AND COALESCE(annual_salary,0) <= 100000 THEN civil_service_title END))"
+                },
                 "annual_salary_ge20k_le50k_count": {
                     "function": "SUM(CASE WHEN COALESCE(annual_salary,0) >= 20000 AND COALESCE(annual_salary,0) <= 50000 THEN 1 ELSE 0 END)"
                 },
+                "annual_salary_ge20k_le50k_count_title": {
+                    "function": "COUNT(DISTINCT(CASE WHEN COALESCE(annual_salary,0) >= 20000 AND COALESCE(annual_salary,0) <= 50000 THEN civil_service_title END))"
+                },
                 "annual_salary_less20k_count": {
                     "function": "SUM(CASE WHEN COALESCE(annual_salary,0) < 20000 THEN 1 ELSE 0 END)"
+                },
+                "annual_salary_less20k_count_title": {
+                    "function": "COUNT(DISTINCT(CASE WHEN COALESCE(annual_salary,0) < 20000 THEN civil_service_title END))"
                 }
             }
         }
