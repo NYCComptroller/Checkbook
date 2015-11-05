@@ -155,7 +155,6 @@
     },
     "customExternalJS":"function prepareTableListFilterUrl(){
         var oTitles = getNamedFilterCriteria('ftitle');
-
         var oGrossPayYtd = getNamedFilterCriteria('fgrossPayYtd');
         var oAnnualSalary = getNamedFilterCriteria('fannualSalary');
         var oOvertimePayment = getNamedFilterCriteria('fovertimePayment');
