@@ -2690,6 +2690,10 @@ table.outerTable.ma-history{
     white-space: nowrap;
 }
 
+#emp-agency-detail-records th:nth-child(1), #emp-agency-detail-records td:nth-child(1) {
+    white-space: normal;
+}
+
 #emp-agency-detail-records {
     width: 940px !important;
 }
