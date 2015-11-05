@@ -131,6 +131,9 @@
                             $node->widgetConfig->dataTableOptions->aaSorting = array(array(5,'desc'));
                         }
                     break;
+                    case 491:
+                        $node->widgetConfig->dataTableOptions->aaSorting = array(array(8,'desc'));
+                    break;
                     case 320:
                     case 325:
                         $node->widgetConfig->dataTableOptions->aaSorting = array(array(2,'desc'));
