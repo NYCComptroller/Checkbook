@@ -23,6 +23,7 @@ return $header;
 "footer":"
 $url = '/panel_html/payroll_nyc_transactions/payroll/transactions';
 $url .= _checkbook_project_get_year_url_param_string();
+$url .= '/type/ot';
 $url .= _checkbook_project_get_url_param_string(\"title\");
 $url .= '/smnid/' . $node->nid;
 $count = $node->count;
