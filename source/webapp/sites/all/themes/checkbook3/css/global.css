@@ -2703,7 +2703,7 @@ table.outerTable.ma-history{
     width:73px;
     position: absolute;
     bottom:70px;
-    z-index: 10;
+    z-index: 25;
 }
 #prev-emp{
     left:0;
