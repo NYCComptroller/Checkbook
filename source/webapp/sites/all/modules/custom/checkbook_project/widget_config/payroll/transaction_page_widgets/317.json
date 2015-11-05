@@ -40,7 +40,8 @@
     "preProcessConfiguration":"
         $smnid = _getRequestParamValue('smnid');
         $title = _getRequestParamValue('title');
-        $node->show_pay_frequency = !($smnid == 320 && isset($title));
+        $hide_pay_frequency = ($smnid == 320 || $smnid == 325) && isset($title);
+        $node->show_pay_frequency = !$hide_pay_frequency;
     ",
     "derivedColumns": {
         "employee_name_formatted": {
@@ -56,7 +57,7 @@
         },
         "employee_name_link": {
             "type": "expression2",
-            "expression": "  !(_getRequestParamValue('smnid') == 320 && _getRequestParamValue('title') != null) ? $row['employee_name_link2'] : $row['employee_name_formatted'] "
+            "expression": "  !((_getRequestParamValue('smnid') == 320 || _getRequestParamValue('smnid') == 325) && _getRequestParamValue('title') != null) ? $row['employee_name_link2'] : $row['employee_name_formatted'] "
         },
         "formatted_salary_amount": {
               "type": "expression2",
@@ -68,7 +69,7 @@
         },
         "salary_amount_link": {
             "type": "expression2",
-            "expression": " (_getRequestParamValue('smnid') == 320 && _getRequestParamValue('title') != null) ? $row['salary_amount_link2'] : $row['formatted_salary_amount'] "
+            "expression": " ((_getRequestParamValue('smnid') == 320 || _getRequestParamValue('smnid') == 325) && _getRequestParamValue('title') != null) ? $row['salary_amount_link2'] : $row['formatted_salary_amount'] "
         },
         "formatted_non_salary_amount": {
               "type": "expression2",
