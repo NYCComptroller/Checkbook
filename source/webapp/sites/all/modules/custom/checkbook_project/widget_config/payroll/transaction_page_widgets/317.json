@@ -37,39 +37,21 @@
     "dataset": "checkbook:payroll_employee_agency",
     "uniqueSortColumn":["employee_id", "pay_frequency_pay_frequency"],
     "columns": ["employee.employee","employee.employee.civil_service_title","employee.employee.employee_number","agency.agency.agency_short_name","pay_frequency.pay_frequency","total_salaried_amount","total_non_salaried_amount","total_gross_pay","total_base_salary","total_other_payments","total_overtime_amount","year.year","year_type.year_type","agency.agency.agency_name","employment_type.employment_type"],
-    "preProcessConfiguration":"
-        $smnid = _getRequestParamValue('smnid');
-        $title = _getRequestParamValue('title');
-        $hide_pay_frequency = ($smnid == 320 || $smnid == 325) && isset($title);
-        $node->show_pay_frequency = !$hide_pay_frequency;
-    ",
     "derivedColumns": {
         "employee_name_formatted": {
               "type": "expression2",
               "expression": "_get_tooltip_markup($row['employee_employee_civil_service_title'],30)"
         },
-        "employee_name_link2": {
+        "employee_name_link": {
           "type": "expression2",
            "expression": "  '<a href=\"/payroll/yeartype/'. $row[year_type_year_type] . '/year/' . $row[year_year] . '?'
                             . 'expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/xyz/' .$row[employee_employee]
                             . '/year/'. $row[year_year] . '/yeartype/'. $row[year_type_year_type] . '\">'. $row[employee_name_formatted] . '</a>'
                          "
         },
-        "employee_name_link": {
-            "type": "expression2",
-            "expression": "  !((_getRequestParamValue('smnid') == 320 || _getRequestParamValue('smnid') == 325) && _getRequestParamValue('title') != null) ? $row['employee_name_link2'] : $row['employee_name_formatted'] "
-        },
         "formatted_salary_amount": {
               "type": "expression2",
               "expression": " $row['employment_type_employment_type'] == 'Salaried' ? custom_number_formatter_basic_format($row['total_salaried_amount'])  : '-'  "
-        },
-        "salary_amount_link2": {
-            "type": "expression2",
-            "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/payroll_employee_transactions/payroll/employee/transactions'  ._checkbook_project_get_year_url_param_string() .'/abc/' .  $row[employee_employee] . '\">' . $row['formatted_salary_amount'] . '</a>'"
-        },
-        "salary_amount_link": {
-            "type": "expression2",
-            "expression": " ((_getRequestParamValue('smnid') == 320 || _getRequestParamValue('smnid') == 325) && _getRequestParamValue('title') != null) ? $row['salary_amount_link2'] : $row['formatted_salary_amount'] "
         },
         "formatted_non_salary_amount": {
               "type": "expression2",
@@ -107,9 +89,9 @@
     "table_columns": [
             {"labelAlias": "title","column": "employee_name_link","sortSourceColumn":"employee.employee.civil_service_title"},
             {"labelAlias": "agency_name","column":"agency_name_formatted","sortSourceColumn":"agency.agency.agency_name"},
-            {"labelAlias": "annual_salary","column": "salary_amount_link","sortSourceColumn": "total_salaried_amount","exportColumn":"export_salary_amount"},
+            {"labelAlias": "annual_salary","column": "formatted_salary_amount","sortSourceColumn": "total_salaried_amount","exportColumn":"export_salary_amount"},
             {"labelAlias": "hourly_rate","column": "formatted_non_salary_amount","sortSourceColumn": "total_non_salaried_amount","exportColumn":"export_non_salary_amount"},
-            {"labelAlias": "pay_frequency","column": "pay_frequency_pay_frequency","sortSourceColumn":"pay_frequency.pay_frequency","visibility_flag":"show_pay_frequency"},
+            {"labelAlias": "pay_frequency","column": "pay_frequency_pay_frequency","sortSourceColumn":"pay_frequency.pay_frequency"},
             {"labelAlias": "gross_pay_ytd","column": "formatted_gross_pay_amount","sortSourceColumn": "total_gross_pay"},
             {"labelAlias": "base_pay","column": "formatted_base_salary_amount","sortSourceColumn": "total_base_salary"},
             {"labelAlias": "other_pays","column": "formatted_other_payments_amount","sortSourceColumn": "total_other_payments"},
@@ -188,7 +170,7 @@
             {"sClass":"text pad-left","asSorting": [ "asc","desc" ]},
             {"sClass":"number","asSorting": [ "desc","asc" ]},
             {"sClass":"number pad-left endCol","asSorting": [ "desc","asc" ]},
-            {"sClass":"text pad-left","asSorting":  [ "asc","desc" ],"visibility_flag":"show_pay_frequency"},
+            {"sClass":"text pad-left","asSorting":  [ "asc","desc" ]},
             {"sClass":"number pad-left","asSorting": [ "desc","asc" ]},
             {"sClass":"number pad-left","asSorting": [ "desc","asc" ]},
             {"sClass":"number pad-left","asSorting": [ "desc","asc" ]},
