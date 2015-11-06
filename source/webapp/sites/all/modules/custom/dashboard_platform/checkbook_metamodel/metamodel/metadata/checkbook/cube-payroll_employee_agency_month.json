@@ -146,6 +146,15 @@
                 "txcount": {
                     "function": "COUNT(*)"
                 },
+                "title_count": {
+                    "function": "COUNT(DISTINCT civil_service_title)"
+                },
+                "agency_count": {
+                    "function": "COUNT(DISTINCT agency_id)"
+                },
+                "emp_count": {
+                    "function": "COUNT(DISTINCT employee_number)"
+                },
                 "total_annual_salary": {
                     "function": "SUM(annual_salary)"
                 },
