@@ -6,7 +6,7 @@
     "limit":100,
     "getTotalDataCount":true,
     "facetPager":true,
-    "columns":["agency.agency", "agency.agency.agency_name", "agency_count"],
+    "columns":["agency.agency", "agency.agency.agency_name", "emp_count"],
 	"orderBy":"agency.agency.agency_name",
     "filterName":"Citywide Agency",
     "urlParameterName":"agency",
