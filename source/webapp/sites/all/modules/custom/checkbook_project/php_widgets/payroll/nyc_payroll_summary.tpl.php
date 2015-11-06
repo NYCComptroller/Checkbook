@@ -54,7 +54,7 @@ $table = "
             <td><strong>". WidgetUtil::getLabel('total_no_of_non_sal_employees') ."</strong>: {$total_hourly_employees}</td>
         </tr>
         <tr>
-            <td><strong>". WidgetUtil::getLabel('other_pay_1_ytd') ."</strong>: {$total_other_payments}</td>";
+            <td><strong>". WidgetUtil::getLabel('other_pay_ytd') ."</strong>: {$total_other_payments}</td>";
     if(isset($total_overtime_employees)){
         $table .= "<td><strong>{$total_overtime_employees_label} </strong> {$total_overtime_employees}</td>";
     }else{
@@ -62,7 +62,7 @@ $table = "
     }
     $table .= "</tr>
         <tr>
-            <td><strong>". WidgetUtil::getLabel('overtime_pay_1_ytd') ."</strong>: {$total_overtime_pay}</td>
+            <td><strong>". WidgetUtil::getLabel('overtime_pay_ytd') ."</strong>: {$total_overtime_pay}</td>
             <td></td>
         </tr>";
 

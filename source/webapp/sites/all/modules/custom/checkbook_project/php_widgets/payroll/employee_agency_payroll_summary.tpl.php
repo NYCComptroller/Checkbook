@@ -96,11 +96,11 @@ if(is_array($node->data) && count($node->data) > 0){
                    </tr>";
 
         $table .= "<tr>
-                        <td><strong>". WidgetUtil::getLabel('other_pay_1_ytd') ."</strong>: $". number_format($data['total_other_payments'],2)."</td>
+                        <td><strong>". WidgetUtil::getLabel('other_pay_ytd') ."</strong>: $". number_format($data['total_other_payments'],2)."</td>
                         <td></td>
                    </tr>";
         $table .= "<tr>
-                        <td ><strong>". WidgetUtil::getLabel('overtime_pay_1_ytd') ."</strong>: $".number_format($data['total_overtime_amount'],2)."</td>
+                        <td ><strong>". WidgetUtil::getLabel('overtime_pay_ytd') ."</strong>: $".number_format($data['total_overtime_amount'],2)."</td>
                         <td></td>
                     </tr>";
 

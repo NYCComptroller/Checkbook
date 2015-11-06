@@ -67,11 +67,11 @@ $table = "
 
     $table .= "</tr>
         <tr>
-            <td><strong>". WidgetUtil::getLabel('other_pay_1_ytd') ."</strong>: {$total_other_payments}</td>
+            <td><strong>". WidgetUtil::getLabel('other_pay_ytd') ."</strong>: {$total_other_payments}</td>
             <td></td>
         </tr>
         <tr>
-            <td><strong>". WidgetUtil::getLabel('overtime_pay_1_ytd') ."</strong>: {$total_overtime_pay}</td>
+            <td><strong>". WidgetUtil::getLabel('overtime_pay_ytd') ."</strong>: {$total_overtime_pay}</td>
             <td></td>
         </tr>";
 
