@@ -4,7 +4,7 @@
     "startWith":0,
     "maxSelect":5,
     "limit":100,
-    "columns":["civil_service_title.civil_service_title", "title_count"],
+    "columns":["civil_service_title.civil_service_title", "emp_count"],
     "urlParamMap":{"title":"civil_service_title.civil_service_title"},
     "orderBy":"civil_service_title.civil_service_title",
     "filterName":"Title",
