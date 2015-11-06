@@ -37,7 +37,7 @@ else{
 }
 return $footer;
 ",
-"widgetTitle":"Titles by Number of employees Payroll Transactions",
+"widgetTitle":"Titles by Number of Employees Payroll Transactions",
 "table_title":"",
 "derivedColumns": {
    "employee_name_formatted": {
