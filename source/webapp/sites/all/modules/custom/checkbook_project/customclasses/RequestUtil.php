@@ -575,7 +575,22 @@ class RequestUtil{
                   $path .= "/title/" . _getRequestParamValue("title");
               }
               else {
-                  $path ="payroll/yeartype/B/year/".$year;
+                  $bottomURL = $_REQUEST['expandBottomContURL'];
+                  $bottomURL = ($bottomURL)? $bottomURL : current_path();
+                  $last_parameter = _getLastRequestParamValue($bottomURL);
+                  if($last_parameter['agency'] > 0){
+                      $path = "payroll/agency_landing/yeartype/B/year/".$year;
+                      $path .= _checkbook_project_get_url_param_string("title");
+                      $path .= "/agency/" . _getRequestParamValue("agency");
+                  }
+                  else if($last_parameter['title'] > 0){
+                      $path = "payroll/title_landing/yeartype/B/year/".$year;
+                      $path .= _checkbook_project_get_url_param_string("agency");
+                      $path .= "/title/" . _getRequestParamValue("title");
+                  }
+                  else { //NYC Level
+                      $path ="payroll/yeartype/B/year/".$year;
+                  }
               }
               break;
           case "budget":
