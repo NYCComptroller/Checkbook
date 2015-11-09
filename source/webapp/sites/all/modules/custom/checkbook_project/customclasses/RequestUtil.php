@@ -564,11 +564,19 @@ class RequestUtil{
               }
               break;
           case "payroll":
-                if(_getRequestParamValue("agency") > 0){
-                  $path ="payroll/". "agency/" . _getRequestParamValue("agency")  . "/yeartype/B/year/".$year ;
-                }else{
+              if(preg_match('/agency_landing/',current_path())) {
+                  $path = "payroll/agency_landing/yeartype/B/year/".$year;
+                  $path .= _checkbook_project_get_url_param_string("title");
+                  $path .= "/agency/" . _getRequestParamValue("agency");
+              }
+              else if(preg_match('/title_landing/',current_path())) {
+                  $path = "payroll/title_landing/yeartype/B/year/".$year;
+                  $path .= _checkbook_project_get_url_param_string("agency");
+                  $path .= "/title/" . _getRequestParamValue("title");
+              }
+              else {
                   $path ="payroll/yeartype/B/year/".$year;
-                }
+              }
               break;
           case "budget":
             if(_getRequestParamValue("agency") > 0){
