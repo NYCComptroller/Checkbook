@@ -124,6 +124,21 @@
                 "txcount": {
                     "function": "COUNT(*)"
                 },
+                "combined_max_annual_salary":{
+                    "function":"SUM(max_annual_salary)"
+                },
+                "combined_total_gross_pay":{
+                    "function":"SUM(total_gross_pay)"
+                },
+                "combined_total_base_salary":{
+                    "function":"SUM(total_base_salary)"
+                },
+                "combined_total_other_payments":{
+                    "function":"SUM(total_other_payments)"
+                },
+                "combined_total_overtime_amount":{
+                    "function":"SUM(total_overtime_amount)"
+                },
                 "gross_pay_g250k_count": {
                     "function": "SUM(CASE WHEN COALESCE(total_gross_pay,0) > 250000 THEN 1 ELSE 0 END)"
                 },
