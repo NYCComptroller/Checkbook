@@ -37,8 +37,8 @@ if($results){
     $yearType = $results['year_type_year_type'];
     $agency = strtoupper($results['agency_agency_agency_name']);
     $original_title = urlencode($original_title);
-    $agencyUrl  = "<a href='/payroll/agency/$agencyId/yeartype/$yearType/year/$year'>{$agency}</a>";
-    $title_url =  "<a href='/payroll/yeartype/$yearType/year/$year/title/$original_title'>{$title}</a>";
+    $agencyUrl  = "<a href='/payroll/agency_landing/yeartype/$yearType/year/$year/agency/$agencyId'>{$agency}</a>";
+    $title_url =  "<a href='/payroll/title_landing/yeartype/$yearType/year/$year/title/$original_title'>{$title}</a>";
 
     $table = "";
     $table .= "<div id='payroll-emp-trans-name'>
