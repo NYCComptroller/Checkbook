@@ -61,13 +61,13 @@ if(is_array($node->data) && count($node->data) > 0){
         $year = $data['year_year'];
         $yearType = $data['year_type_year_type'];
         $agency = strtoupper($data['agency_agency_agency_name']);
-        $agencyUrl  = "<a href='/payroll/agency/{$data['agency_agency']}/yeartype/$yearType/year/$year'>{$agency}</a>";
+        $agencyUrl  = "<a href='/payroll/agency_landing/yeartype/$yearType/year/$year/agency/{$data['agency_agency']}'>{$agency}</a>";
 
         $original_title = $data['employee_employee_civil_service_title'];
         $title = mb_convert_case(strtolower($original_title), MB_CASE_TITLE, "UTF-8");
         $original_title = urlencode($original_title);
 
-        $titleUrl = "<a href='/payroll/yeartype/$yearType/year/$year/title/$original_title'>{$title}</a>";
+        $titleUrl = "<a href='/payroll/title_landing/yeartype/$yearType/year/$year/title/$original_title'>{$title}</a>";
 
         $table = "<div class='emp-agency-detail-record'><table id='emp-agency-detail-record-table'>";
 

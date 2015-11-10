@@ -33,7 +33,7 @@ if($results){
     $agencyId = $results['agency_agency'];
     $year = $results['year_year'];
     $yearType = $results['year_type_year_type'];
-    $agencyUrl  = "<a href='/payroll/agency/$agencyId/yeartype/$yearType/year/$year'>{$results['agency_agency_agency_name']}</a>";
+    $agencyUrl  = "<a href='/payroll/agency_landing/yeartype/$yearType/year/$year/agency/$agencyId'>{$results['agency_agency_agency_name']}</a>";
 
     $month = $results['month_month'];
     $year_value = _getYearValueFromID($year);
