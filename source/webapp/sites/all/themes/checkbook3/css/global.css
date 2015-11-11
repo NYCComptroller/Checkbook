@@ -2653,7 +2653,10 @@ table.outerTable.ma-history{
 #node-widget-426 h3{
     margin-top: 12px;
 }
-#spending-transactions > div:first-child, #contract-details > div:first-child, #nyc-payroll > div:first-child {
+#spending-transactions > div:first-child,
+#contract-details > div:first-child,
+#nyc-payroll > div:first-child,
+#budget-transactions > div:first-child {
     margin: 18px 10px 5px;
 }
 
