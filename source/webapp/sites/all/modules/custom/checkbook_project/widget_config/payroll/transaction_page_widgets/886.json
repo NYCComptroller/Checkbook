@@ -78,7 +78,8 @@
             {"labelAlias": "combined_gross_pay_ytd","column": "total_gross_pay_formatted","sortSourceColumn": "total_gross_pay"},
             {"labelAlias": "combined_base_pay_ytd","column": "total_base_salary_formatted","sortSourceColumn": "total_base_salary"},
             {"labelAlias": "combined_other_pay_ytd","column": "total_other_payments_formatted","sortSourceColumn": "total_other_payments"},
-            {"labelAlias": "combined_overtime_pay_ytd","column": "total_overtime_amount_formatted","sortSourceColumn": "total_overtime_amount"}
+            {"labelAlias": "combined_overtime_pay_ytd","column": "total_overtime_amount_formatted","sortSourceColumn": "total_overtime_amount"},
+            {"label": "","column": ""}
           ],
     "adjustDataTableOptions":"
             $smnid = _getRequestParamValue('smnid');
@@ -118,14 +119,13 @@
                 }
                 return $adjustedParameters;
     ",
-"skipCustomPadding":true,
     "dataTableOptions":{
         "bRetrieve": true,
         "bServerSide": true,
         "bProcessing":true,
         "bFilter": false,
-        "iDisplayLength":35,
         "bPaginate": true,
+        "iDisplayLength":35,
         "sPaginationType":"full_numbers",
         "bLengthChange": false,
         "sDom":"<pr><t><ip>",
@@ -136,21 +136,20 @@
         "bInfo": true,
         "aaSorting":[[1,"desc"]],
         "aoColumns": [
-            {"sClass":"text", "sWidth":"200px","asSorting": [ "asc","desc" ]},
-            {"sClass":"text pad-left","asSorting": [ "asc","desc" ]},
-            {"sClass":"number","asSorting": [ "desc","asc" ]},
-            {"sClass":"number pad-left","asSorting": [ "desc","asc" ]},
-            {"sClass":"number pad-left","asSorting": [ "desc","asc" ]},
-            {"sClass":"number pad-left","asSorting": [ "desc","asc" ]},
-            {"sClass":"number pad-left endCol","asSorting": [ "desc","asc" ]}
+            {"sClass":"text","sWidth":"140px","asSorting": [ "asc","desc" ]},
+            {"sClass":"number","sWidth":"110px","asSorting": [ "asc","desc" ]},
+            {"sClass":"number","sWidth":"140px","asSorting": [ "desc","asc" ]},
+            {"sClass":"number","sWidth":"140px","asSorting": [ "desc","asc" ]},
+            {"sClass":"number","sWidth":"140px","asSorting": [ "desc","asc" ]},
+            {"sClass":"number","sWidth":"140px","asSorting": [ "desc","asc" ]},
+            {"sClass":"number","sWidth":"150px","asSorting": [ "desc","asc" ]},
+            { "bSortable": false,"sWidth":"15px" }
         ],
         "sScrollX": "100%",
-        "bScrollCollapse": true,
-        "sScrollXInner":"970px",
-        "bScrollCollapse": true,
+        "bScrollCollapse": false,
         "fnInitComplete": "##function () { new FixedColumns( oTable, {
         \"iLeftColumns\": 1,
-        \"iLeftWidth\": 200
+        \"iLeftWidth\": 140
         } );}##"
     },
     "customExternalJS":"function prepareTableListFilterUrl(){
