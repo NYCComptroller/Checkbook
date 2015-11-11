@@ -48,23 +48,23 @@
         },
         "total_gross_pay_formatted":{
         "type":"expression2",
-        "expression": "custom_number_formatter_format($row['total_gross_pay_total_gross_pay'],2,'$')"
+        "expression": "custom_number_formatter_basic_format($row['total_gross_pay_total_gross_pay'],2,'$')"
         },
         "total_base_salary_formatted":{
         "type":"expression2",
-        "expression": "custom_number_formatter_format($row['total_base_salary_total_base_salary'],2,'$')"
+        "expression": "custom_number_formatter_basic_format($row['total_base_salary_total_base_salary'],2,'$')"
         },
         "total_other_payments_formatted":{
         "type":"expression2",
-        "expression": "custom_number_formatter_format($row['total_other_payments_total_other_payments'],2,'$')"
+        "expression": "custom_number_formatter_basic_format($row['total_other_payments_total_other_payments'],2,'$')"
         },
         "total_overtime_amount_formatted":{
         "type":"expression2",
-        "expression": "custom_number_formatter_format($row['total_overtime_amount_total_overtime_amount'],2,'$')"
+        "expression": "custom_number_formatter_basic_format($row['total_overtime_amount_total_overtime_amount'],2,'$')"
         },
         "annual_salary_formatted":{
         "type":"expression2",
-        "expression": "custom_number_formatter_format($row['total_annual_salary_total_annual_salary'],2,'$')"
+        "expression": "custom_number_formatter_basic_format($row['total_annual_salary_total_annual_salary'],2,'$')"
         },
         "export_salary_amount": {
         "type": "expression2",
