@@ -115,6 +115,7 @@
         <field name="domain_ordering" type="string_custom" indexed="true" stored="true"/>
         <field name="date_ordering" type="string_custom" indexed="true" stored="true"/>
         <field name="industry_type_name" type="string_custom" indexed="true" stored="true"/>
+        <field name="industry_type_name_autocomplete" type="string_autocomplete" indexed="true" />
         <field name="industry_type_id" type="string_custom" indexed="true" stored="true"/>
 
         <!--
@@ -356,6 +357,9 @@
 
     <copyField source="oge_agency_name" dest="oge_agency_name_autocomplete" />
     <copyField source="agency_name" dest="text" />
+    <copyField source="agency_name" dest="agency_name_autocomplete" />
+    <copyField source="industry_type_name" dest="text" />
+    <copyField source="industry_type_name" dest="industry_type_name_autocomplete" />
     <copyField source="oge_agency_name" dest="text" />
     <copyField source="department_name" dest="text" />
     <copyField source="budget_code" dest="text" />
@@ -399,6 +403,8 @@
     <copyField source="spending_budget_name" dest="spending_budget_name_autocomplete" />
     <!--Field used for multi-valued auto complete for multiple works-->
     <copyField source="contract_budget_name" dest="contract_budget_name_autocomplete" />
+
+
 
     <types>
         <!-- field type definitions. The "name" attribute is
