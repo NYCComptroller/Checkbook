@@ -2656,7 +2656,8 @@ table.outerTable.ma-history{
 #spending-transactions > div:first-child,
 #contract-details > div:first-child,
 #nyc-payroll > div:first-child,
-#budget-transactions > div:first-child {
+#budget-transactions > div:first-child,
+#revenue-transactions > div:first-child {
     margin: 18px 10px 5px;
 }
 
