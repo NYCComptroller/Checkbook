@@ -43,7 +43,7 @@
         },
         "agency_name_link": {
             "type": "expression2",
-            "expression": "'<a href=/payroll/agency/'. $row[agency_id] . '/yeartype/B/year/' . $row[fiscal_year_id] . '>'. $row[agency_name_formatted] .'</a>'"
+            "expression": "'<a href=/payroll/agency_landing/agency/'. $row[agency_id] . '/yeartype/B/year/' . $row[fiscal_year_id] . '>'. $row[agency_name_formatted] .'</a>'"
         },
         "formatted_salary_amount": {
             "type": "expression2",
