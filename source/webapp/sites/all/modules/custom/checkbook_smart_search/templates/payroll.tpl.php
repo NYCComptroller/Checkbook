@@ -27,7 +27,7 @@ $emp_id = $payroll_results['employee_id'];
 $year_id = _getCurrentYearID();
 
 $linkable_fields = array("civil_service_title" => "/payroll/employee/transactions/xyz/" .$emp_id . "/agency/" . $agency_id,
-                         "agency_name" => "/payroll/agency/". $agency_id
+                         "agency_name" => "/payroll/agency_landing/agency/". $agency_id
                         );
 
 if($payroll_results['fiscal_year'] < 2010){
