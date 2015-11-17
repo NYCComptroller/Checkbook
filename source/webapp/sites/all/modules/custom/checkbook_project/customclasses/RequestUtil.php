@@ -175,9 +175,13 @@ class RequestUtil{
       $bottomURL = $_REQUEST['expandBottomContURL'];
       if(isset($bottomURL) && preg_match('/payroll_agencytransactions/',$bottomURL)){        
         $smnid = RequestUtil::getRequestKeyValueFromURL("smnid",$bottomURL);
-        if($smnid > 0){
-          $title = NodeSummaryUtil::getInitNodeSummaryTemplateTitle($smnid);
-        }
+        $dtsmnid = RequestUtil::getRequestKeyValueFromURL("dtsmnid",$bottomURL);
+          if($smnid > 0){
+              $title = NodeSummaryUtil::getInitNodeSummaryTemplateTitle($smnid);
+          }
+          if($dtsmnid > 0){
+              $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
+          }
         else{
           $title =  _checkbook_project_get_name_for_argument("agency_id",RequestUtil::getRequestKeyValueFromURL("agency",$bottomURL)) . ' Payroll Transactions' ;
         }       
@@ -185,9 +189,18 @@ class RequestUtil{
       else if(isset($bottomURL) && preg_match('/payroll_employee_transactions/',$bottomURL)){
         $title = "Employee Payroll Transactions";
       }
+      else if(isset($bottomURL) && preg_match('/payroll_title_transactions/',$bottomURL)){
+          $title = "Employees Payroll Transactions";
+      }
       else if(isset($bottomURL) && preg_match('/payroll_nyc_transactions/',$bottomURL)){
         $smnid = RequestUtil::getRequestKeyValueFromURL("smnid",$bottomURL);
-        $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid)  ;        
+        $dtsmnid = RequestUtil::getRequestKeyValueFromURL("dtsmnid",$bottomURL);
+        if($dtsmnid > 0){
+            $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
+        }
+        if($smnid > 0){
+            $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
+        }
       }
       else if(isset($bottomURL) && preg_match('/payroll_by_month_nyc_transactions/',$bottomURL)){
           $smnid = RequestUtil::getRequestKeyValueFromURL("smnid",$bottomURL);

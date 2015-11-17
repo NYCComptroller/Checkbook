@@ -37,7 +37,7 @@ else
 
 return $footer;
 ",
-"widgetTitle":"Employees Payroll Transactions",
+"widgetTitle":"Annual Salaries Payroll Transactions",
 "table_title":"",
 "derivedColumns": {
     "employee_name_formatted": {
