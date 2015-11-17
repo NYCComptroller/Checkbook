@@ -202,6 +202,12 @@ class RequestUtil{
             $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
         }
       }
+      else if(isset($bottomURL) && preg_match('/payroll_nyc_title_transactions/',$bottomURL)){
+          $smnid = RequestUtil::getRequestKeyValueFromURL("smnid",$bottomURL);
+          if($smnid > 0){
+              $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
+          }
+      }
       else if(isset($bottomURL) && preg_match('/payroll_by_month_nyc_transactions/',$bottomURL)){
           $smnid = RequestUtil::getRequestKeyValueFromURL("smnid",$bottomURL);
           if($smnid == '491'){
