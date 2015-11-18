@@ -242,26 +242,24 @@ function _get_revenue_breadcrumb_title_drilldown(){
 /**
  * Custom function to get title for Payroll landing pages
  **/
-function _get_payroll_breadcrumb_title_drilldown(){
+function _get_payroll_breadcrumb_title_drilldown()
+{
     $bottomURL = $_REQUEST['expandBottomContURL'];
-    if(!$bottomURL && preg_match('/^payroll\/search\/transactions/',current_path())){
+    if (!$bottomURL && preg_match('/^payroll\/search\/transactions/', current_path())) {
         $title = null;
     }else{
-        $lastReqParam = _getLastRequestParamValue();
-        $title = "New York City";
-
-        foreach($lastReqParam as $key => $value){
-            switch($key){
-                case 'agency':
-                    $title = _checkbook_project_get_name_for_argument("agency_id",$value);
-                    break;
-                case 'title':
-                    $title = _checkbook_project_get_name_for_argument("title",$value);
-                    break;
-                default:
-            }
+        if (preg_match('/agency_landing/', current_path())) {
+            $value = _getRequestParamValue('agency');
+            $title = _checkbook_project_get_name_for_argument("agency_id", $value);
+        } else if (preg_match('/title_landing/', current_path())) {
+            $value = _getRequestParamValue('title');
+            $title = _checkbook_project_get_name_for_argument("title", $value);
+        }
+        else {
+            $title = "New York City";
         }
     }
+
     return $title;
 
 }
