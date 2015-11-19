@@ -37,7 +37,7 @@
     },
     "allowRequestParams":["smnid"],
     "paramTypeConfig":{
-        "budname":"like",
+        "budname":"contains",
         "entcontnum":"like",
         "comline":"like",
         "entcontnum_exact":"eqignorecase",
@@ -46,7 +46,7 @@
         "curamtr":"rangeid",
         "vendornm":"like",
         "vendornm_exact":"eqignorecase",
-        "contdesc":"like",
+        "contdesc":"contains",
         "contnum":"like",
         "aptpin":"like",
         "pin":"like",

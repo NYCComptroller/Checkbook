@@ -42,9 +42,9 @@
     },
     "paramTypeConfig":{"vendornm_exact":"eqignorecase","expdoc_exact":"eqignorecase","captprj_exact":"eqignorecase",
         "contnum_exact":"eqignorecase","checkamtr":"rangeid","checkamt":"range","chkdate":"range",
-        "captprj":"like","vendornm":"like","contnum":"like","bdgcodenm":"like","expdoc":"like","syear":"le",
+        "captprj":"like","vendornm":"like","contnum":"like","bdgcodenm":"contains","expdoc":"like","syear":"le",
         "scalyear":"le","deptnm":"eqignorecase","expcategorynm":"eqignorecase",
-        "budname":"like","comline":"like","entcontnum":"like","scomline":"le",
+        "budname":"contains","comline":"like","entcontnum":"like","scomline":"le",
         "entcontnum_exact":"eqignorecase","comline_exact":"eqignorecase","budname_exact":"eqignorecase"
     },
     "allowRequestParams":["dtsmnid","smnid"],

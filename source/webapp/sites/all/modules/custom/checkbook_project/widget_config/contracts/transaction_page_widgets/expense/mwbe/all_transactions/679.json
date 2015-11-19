@@ -16,7 +16,7 @@
     },
     "allowRequestParams":["contstatus"],
     "paramTypeConfig":{
-        "vendornm":"like","vendornm_exact":"eqignorecase","contdesc":"like","contnum":"like","aptpin":"like",
+        "vendornm":"like","vendornm_exact":"eqignorecase","contdesc":"contains","contnum":"like","aptpin":"like",
         "pin":"like","curamt":"range","startdate":"range","enddate":"range","regdate":"range","curamtr":"rangeid"
     },
     "defaultParameters":{"latest_flag":"Y"},

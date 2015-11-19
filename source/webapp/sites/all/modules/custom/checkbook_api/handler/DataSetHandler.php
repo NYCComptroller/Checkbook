@@ -156,6 +156,10 @@ class DataSetHandler {
           TRUE,
         ));
         break;
+      case "contains":
+          $pattern = "(.* $value .*)|(.* $value$)|(^$value.*)|(.* $value.*)";
+          $parameters[$column] = data_controller_get_operator_factory_instance()->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
+        break;
 
       default:
         $parameters[$column] = $value;

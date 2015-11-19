@@ -173,14 +173,14 @@ return $footer;
   ],
 "dataTableOptions":{
 "aoColumns": [
-   { "bSortable": false,"sWidth":"150px", "sClass":"text" },
-  { "bSortable": false,"sWidth":"146px","sClass":"text" },
-  { "bSortable": false,"sWidth":"170px", "sClass":"text" },
-  { "bSortable": false ,"sWidth":"141px", "sClass":"text"},
-  { "bSortable": true,"sWidth":"80px", "sClass":"number" ,"asSorting": [ "desc" ,"asc" ]},
-  { "bSortable": true,"sWidth":"134px", "sClass":"number","asSorting": [ "desc" ,"asc" ]},
-  { "bSortable": true,"sWidth":"102px", "sClass":"number" ,"asSorting": [ "desc" ,"asc" ]},
-  { "bSortable": false,"sWidth":"15px" }
+    { "bSortable": false,"sWidth":"120px", "sClass":"text" },
+    { "bSortable": false,"sWidth":"170px","sClass":"text pad-left" },
+    { "bSortable": false,"sWidth":"170px", "sClass":"text pad-left" },
+    { "bSortable": false ,"sWidth":"170px", "sClass":"text pad-left"},
+    { "bSortable": true,"sWidth":"70px", "sClass":"number" ,"asSorting": [ "desc" ,"asc" ]},
+    { "bSortable": true,"sWidth":"90px", "sClass":"number","asSorting": [ "desc" ,"asc" ]},
+    { "bSortable": true,"sWidth":"80px", "sClass":"number" ,"asSorting": [ "desc" ,"asc" ]},
+    { "bSortable": false,"sWidth":"15px" }
     ] ,
 "bServerSide": true,
 "bFilter": false,

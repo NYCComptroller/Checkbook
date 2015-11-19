@@ -176,35 +176,35 @@ class RequestUtil{
       if(isset($bottomURL) && preg_match('/payroll_agencytransactions/',$bottomURL)){        
         $smnid = RequestUtil::getRequestKeyValueFromURL("smnid",$bottomURL);
         if($smnid > 0){
-          $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid) . " " . _checkbook_project_get_name_for_argument("agency_id",RequestUtil::getRequestKeyValueFromURL("agency",$bottomURL))  ;
+          $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
         }
         else{
           $title =  _checkbook_project_get_name_for_argument("agency_id",RequestUtil::getRequestKeyValueFromURL("agency",$bottomURL)) . ' Payroll Transactions' ;
         }       
       }
       else if(isset($bottomURL) && preg_match('/payroll_employee_transactions/',$bottomURL)){
-        $employeeTitle  = (_checkbook_project_get_name_for_argument("employee_id",RequestUtil::getRequestKeyValueFromURL("xyz",$bottomURL)))?_checkbook_project_get_name_for_argument("employee_id",RequestUtil::getRequestKeyValueFromURL("xyz",$bottomURL)):_checkbook_project_get_name_for_argument("employee_id",RequestUtil::getRequestKeyValueFromURL("abc",$bottomURL));
-        $title = "Employee Payroll Transactions ( Title: " . $employeeTitle . ' )' ;
+        $title = "Employee Payroll Transactions";
       }
       else if(isset($bottomURL) && preg_match('/payroll_nyc_transactions/',$bottomURL)){
         $smnid = RequestUtil::getRequestKeyValueFromURL("smnid",$bottomURL);
         $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid)  ;        
       }
       else if(isset($bottomURL) && preg_match('/payroll_by_month_nyc_transactions/',$bottomURL)){
-        $customTitle = "NYC Payroll Transactions";
-        $monthDetails = CheckbookDateUtil::getMonthDetails(RequestUtil::getRequestKeyValueFromURL("month",$bottomURL));
-        if(isset($monthDetails)){
-          //$customTitle .=  (" in the Month of ". $monthDetails[0]['month_name']) ;
+          $smnid = RequestUtil::getRequestKeyValueFromURL("smnid",$bottomURL);
+          if($smnid == '491'){
+            $customTitle = "Overtime Payments by Month Transactions";
+        }else{
+            $customTitle = "Gross Pay by Month Transactions";
         }
         $title = $customTitle;
       }
       else if(isset($bottomURL) && preg_match('/payroll_agency_by_month_transactions/',$bottomURL)){
-        $agency = _checkbook_project_get_name_for_argument("agency_id",RequestUtil::getRequestKeyValueFromURL("agency",$bottomURL));
-        $customTitle = $agency . " Payroll Transactions";
-        $monthDetails = CheckbookDateUtil::getMonthDetails(RequestUtil::getRequestKeyValueFromURL("month",$bottomURL));
-        if(isset($monthDetails)){
-          //$customTitle .=  (" in the Month of ". $monthDetails[0]['month_name']) ;
-        }
+          $smnid = RequestUtil::getRequestKeyValueFromURL("smnid",$bottomURL);
+          if($smnid == '491'){
+              $customTitle = "Overtime Payments by Month Transactions";
+          }else{
+              $customTitle = "Gross Pay by Month Transactions";
+          }
         $title = $customTitle;
       }
       elseif(preg_match('/^payroll\/search\/transactions/',current_path())){
