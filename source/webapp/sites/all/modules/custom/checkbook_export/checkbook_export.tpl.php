@@ -35,7 +35,7 @@ if($totalRecords > 0){
                 <td><input type='radio' name='frmt' checked="true" value='csv'/>&nbsp;Comma Delimited</td>
             </tr>
             <tr>
-                <td colspan="2"><input type='radio' name='dc' value='all'/>&nbsp;All Pages</td>
+                <td colspan="2"><input type='radio' name='dc' checked="true" value='all'/>&nbsp;All Pages</td>
             </tr>
             <tr>
                 <td colspan="2">

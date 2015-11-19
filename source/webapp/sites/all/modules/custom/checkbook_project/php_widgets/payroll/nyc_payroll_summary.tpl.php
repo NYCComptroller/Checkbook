@@ -35,7 +35,7 @@ if($results){
 
     if(_getRequestParamValue('smnid') == 322){
         $total_overtime_employees = number_format($results['total_overtime_employees']);
-        $total_overtime_employees_label = WidgetUtil::getLabel('no_of_ot_employees').':';
+        $total_overtime_employees_label = WidgetUtil::getLabel('total_no_of_ot_employees').':';
     }
 
 $table = "
@@ -56,13 +56,13 @@ $table = "
         <tr>
             <td><strong>". WidgetUtil::getLabel('other_pay_1_ytd') ."</strong>: {$total_other_payments}</td>
             <td><strong>". WidgetUtil::getLabel('overtime_pay_1_ytd') ."</strong>: {$total_overtime_pay}</td>
-        </tr>
-        <tr>
-            <td><strong>{$total_overtime_employees_label} </strong> {$total_overtime_employees}</td>
-        </tr>
-    </table>
-</div>
-";
+        </tr>";
+    if(isset($total_overtime_employees)){
+        $table .= "<tr>";
+        $table .= "<td><strong>{$total_overtime_employees_label} </strong> {$total_overtime_employees}</td>";
+        $table .= "</tr>";
+    }
+    $table .= "</table></div>";
 
     print $table;
 }

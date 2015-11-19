@@ -779,6 +779,7 @@ function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$par
 
     $dtsmnid = _getRequestParamValue('dtsmnid');
     $smnid = _getRequestParamValue('smnid');
+    $month = _getRequestParamValue('month');
     $nid = isset($dtsmnid) ? $dtsmnid : $smnid;
     $current_node_nid = $node->nid;
 
@@ -821,6 +822,9 @@ function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$par
                     //Static Amount for Citywide = Prime Only
                     if($current_node_nid == 775)
 					    $parameters['is_prime_or_sub'] = array('P');
+                    //Static Amount for Citywide from the month visualization = Prime Only
+                    else if($current_node_nid == 706 && isset($month))
+                        $parameters['is_prime_or_sub'] = array('P');
                     else
                         $parameters['is_prime_or_sub'] = array('P','S');
 				}else{
@@ -1037,6 +1041,12 @@ function _checkbook_project_applyParameterFilters($node, $parameters){
                         $localValue = (is_array($paramValues) && count($paramValues) > 1) ? implode('~',$paramValues) : $paramValues[0];
                         $conditions[] = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array($localValue,FALSE,TRUE));
                     break;
+                case "contains":
+                    $localValue = (is_array($paramValues) && count($paramValues) > 1) ? implode('~',$paramValues) : $paramValues[0];
+                    $localValue = _checkbook_regex_replace_pattern($localValue);
+                    $pattern = "(.* $localValue .*)|(.* $localValue$)|(^$localValue.*)|(.* $localValue.*)";
+                    $conditions[] = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
+                    break;
                 case "nlike":
                       $localValue = (is_array($paramValues) && count($paramValues) > 1) ? implode('~',$paramValues) : $paramValues[0];
                       $conditions[] = $data_controller_instance->initiateHandler(NotWildcardOperatorHandler::$OPERATOR__NAME, array($localValue,FALSE,TRUE));
@@ -1047,7 +1057,7 @@ function _checkbook_project_applyParameterFilters($node, $parameters){
                         foreach($parts as $part){
                           //$part = str_replace("(","\\(",$part);
                           $part = _checkbook_regex_replace_pattern($part);
-                          $pattern= "(.* " . $part . ".*)|(^" . $part . ".*)"; 
+                          $pattern= "(.* " . $part . ".*)|(^" . $part . ".*)";
                           $conditions[] = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
                         }
                         break;  
