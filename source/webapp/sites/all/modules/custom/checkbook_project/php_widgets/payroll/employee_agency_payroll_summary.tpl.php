@@ -27,21 +27,15 @@ if(is_array($node->data) && count($node->data) > 0){
 
     if(count($node->data) > 1){
         $js = "
-            jQuery(document).ready(function() {
-                if (jQuery('#emp-agency-detail-records').filter(':first').length > 0) {
-                    jQuery('#emp-agency-detail-records').filter(':first')
-                        .cycle({
-                            slideExpr:'.emp-agency-detail-record',
-                            prev: '#prev-emp',
-                            next: '#next-emp',
-                            fx: 'scrollVert',
-                            speed: 0,
-                            width:'640px',
-                            timeout: 0
-                        });
-                }
-            });
+            jQuery('.emp-record-salaried').show();
+            jQuery('.emp-record-non-salaried').hide();
+
+            function toggleEmployee() {
+                jQuery('.emp-record-salaried').toggle();
+                jQuery('.emp-record-non-salaried').toggle();
+            };
         ";
+
 
         if($_REQUEST['appendScripts']){
             print "<script type='text/javascript'>" . $js . "</script>";
@@ -49,15 +43,14 @@ if(is_array($node->data) && count($node->data) > 0){
         else{
             drupal_add_js($js,"inline");
         }
-
-        $employeeData .= "<div id='prev-emp' href='#'></div>";
     }
 
     $employeeData .= "<div id='emp-agency-detail-records'>";
 
-  foreach($node->data as $data){
+    foreach($node->data as $data){
 
         $typeOfEmployment = $data['employment_type_employment_type'];
+        $class = strtolower($typeOfEmployment);
         $year = $data['year_year'];
         $yearType = $data['year_type_year_type'];
         $agency = strtoupper($data['agency_agency_agency_name']);
@@ -69,9 +62,9 @@ if(is_array($node->data) && count($node->data) > 0){
 
         $titleUrl = "<a href='/payroll/title_landing/yeartype/$yearType/year/$year/title/$original_title'>{$title}</a>";
 
-        $table = "<div class='emp-agency-detail-record'><table id='emp-agency-detail-record-table'>";
+        $table = "<div class='emp-agency-detail-record'><table id='emp-agency-detail-record-table' class='emp-record-$class'>";
 
-        $table .= "<div id='payroll-emp-trans-name'>
+        $table .= "<div id='payroll-emp-trans-name' class='emp-record-$class'>
                         <span class='payroll-label'>Title: </span>
                         <span class='payroll-value'>{$titleUrl}</span>
                     </div>";
@@ -109,7 +102,15 @@ if(is_array($node->data) && count($node->data) > 0){
         $employeeData .= $table;
     }
     if (count($node->data) > 1) {
-        $employeeData .= "</div><div id='next-emp' href='#'></div></div>";
+        $employeeData .= "<div id='toggle-employee-salaried' class='emp-record-salaried'>
+                            <strong>Viewing Salaried Details</strong>&nbsp;|&nbsp;
+                            <a href='javascript:toggleEmployee();'>View Non-salaried Details</a>
+                          </div>";
+        $employeeData .= "<div id='toggle-employee-non-salaried' class='emp-record-non-salaried'>
+                            <a href='javascript:toggleEmployee();'>View Salaried Details</a>&nbsp;|&nbsp;
+                            <strong>Viewing Non-salaried Details</strong>
+                          </div>";
+        $employeeData .= "</div></div>";
     }
     else {
         $employeeData .= "</div></div>";
