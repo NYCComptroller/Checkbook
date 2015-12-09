@@ -28,17 +28,17 @@
     "columns": ["employee_number","civil_service_title","agency_name","pay_frequency","pay_date","annual_salary","gross_pay","base_pay","other_payments","overtime_pay","gross_pay_cytd","calendar_fiscal_year_id","agency_id","employee_id","amount_basis_id","salaried_amount","non_salaried_amount"],
     "additionalSelectColumns":["amount_basis_id"],
     "derivedColumns": {
-           "employee_name_formatted": {
-                  "type": "expression2",
-                  "expression": "_get_tooltip_markup($row['civil_service_title'],30)"
-           },
-           "agency_name_formatted": {
-                  "type": "expression2",
-                  "expression": "_get_tooltip_markup($row['agency_name'],30)"
-           },
-           "employee_name_link": {
+        "employee_name_formatted": {
             "type": "expression2",
-                    "expression": "'<a href=/payroll/yeartype/C/year/' . $row[calendar_fiscal_year_id] . '?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/xyz/'. $row[employee_id] . '/year/' . $row[calendar_fiscal_year_id] . '/yeartype/C' . '>'. $row[employee_name_formatted] .'</a>'"
+            "expression": "_get_tooltip_markup($row['civil_service_title'],30)"
+        },
+        "agency_name_formatted": {
+            "type": "expression2",
+            "expression": "_get_tooltip_markup($row['agency_name'],30)"
+        },
+        "employee_name_link": {
+            "type": "expression2",
+            "expression": "'<a href=/payroll/title_landing/yeartype/C/year/' . $row[calendar_fiscal_year_id] . '/title/' . urlencode($row['civil_service_title']) . '>'. $row[employee_name_formatted] .'</a>'"
         },
             "agency_name_link": {
             "type": "expression2",
