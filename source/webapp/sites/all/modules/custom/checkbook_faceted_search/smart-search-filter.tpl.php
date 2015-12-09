@@ -288,7 +288,7 @@ foreach ($render_array as $title => $value) {
         else{
             $autocomplete_id = "autocomplete_" . $value['name'];
             $disabled = ($value['checked'] && count($value['checked']) >= 5) ? "disabled" : '';
-            if($title != 'M/WBE Category' && $title != 'Vendor Type'){
+            if($title != 'M/WBE Category' && $title != 'Vendor Type' && $title != 'Payroll Type'){
                 if((!count($value['checked']) && !count($value['unchecked']))){
                     echo '<div class="disable_autocomplete"><input type="text" disabled="disabled"></div>';
                 }else{
@@ -361,6 +361,7 @@ foreach ($render_array as $title => $value) {
         jQuery('div.filter-content-fvendorName .options').mCustomScrollbar("destroy");
         jQuery('div.filter-content-fexpenseCategoryName .options').mCustomScrollbar("destroy");
         jQuery('div.filter-content-fmwbeCategory .options').mCustomScrollbar("destroy");
+        jQuery('div.filter-content-fpayrollTypeName .options').mCustomScrollbar("destroy");
         jQuery('div.filter-content-findustryTypeName .options').mCustomScrollbar("destroy");
         scroll_facet();
     });
@@ -381,6 +382,7 @@ foreach ($render_array as $title => $value) {
             jQuery('div.filter-content-fvendorName .options').mCustomScrollbar("destroy");
             jQuery('div.filter-content-fexpenseCategoryName .options').mCustomScrollbar("destroy");
             jQuery('div.filter-content-fmwbeCategory .options').mCustomScrollbar("destroy");
+            jQuery('div.filter-content-fpayrollTypeName .options').mCustomScrollbar("destroy");
             jQuery('div.filter-content-findustryTypeName .options').mCustomScrollbar("destroy");
             scroll_facet();
         }
@@ -395,6 +397,7 @@ foreach ($render_array as $title => $value) {
         };
         jQuery('div.filter-content-fagencyName .options').mCustomScrollbar(opts);
         jQuery('div.filter-content-fmwbeCategory .options').mCustomScrollbar(opts);
+        jQuery('div.filter-content-fpayrollTypeName .options').mCustomScrollbar(opts);
         jQuery('div.filter-content-fyear .options').mCustomScrollbar(opts);
         jQuery('div.filter-content-regfyear .options').mCustomScrollbar(opts);
         jQuery('div.filter-content-findustryTypeName .options').mCustomScrollbar(opts);

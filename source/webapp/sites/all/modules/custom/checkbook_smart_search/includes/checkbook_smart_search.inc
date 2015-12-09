@@ -50,6 +50,7 @@ function _checkbook_smart_search_get_results(){
     drupal_add_js(array('checkbook_smart_search' => array('expense_category_pages' => $expense_category_pages)), 'setting');
     $mwbe_category = _checkbook_smart_search_get_facet_results($search_terms, "minority_type_name");
     $industry_type_name = _checkbook_smart_search_get_facet_results($search_terms, "industry_type_name");
+    $payroll_type = _checkbook_smart_search_get_facet_results($search_terms, "payroll_type"); //payroll_type
 
     foreach($search_terms as $id => $keyvaluepair){
         $keys = explode("=", $keyvaluepair);
@@ -110,7 +111,8 @@ function _checkbook_smart_search_get_results(){
         "contract_category_name" => $contract_categories['facet_counts']['facet_fields'],
         "contract_status" => $contract_status['facet_counts']['facet_fields'],
         "mwbe_category" => $mwbe_category['facet_counts']['facet_fields'],
-        "industry_type_name" => $industry_type_name['facet_counts']['facet_fields']
+        "industry_type_name" => $industry_type_name['facet_counts']['facet_fields'],
+        "payroll_type" => $payroll_type['facet_counts']['facet_fields']
     );
 
     //Selected Facet Filters
@@ -142,6 +144,7 @@ function _checkbook_smart_search_get_results(){
     $selected_contract_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "contract_categories");
     $selected_mwbe_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "minority_type_name");
     $selected_industry_type_name = _checkbook_smart_search_get_selected_facet_results($search_terms, "industry_type_name");
+    $selected_payroll_type = _checkbook_smart_search_get_selected_facet_results($search_terms, "payroll_type"); //payroll_type
 
     $selected_facet_results = array("domain" => $selected_domains,
         "agency_name" => $selected_agencies,
@@ -155,7 +158,8 @@ function _checkbook_smart_search_get_results(){
         "contract_category_name" => $selected_contract_categories,
         "contract_status" => $selected_contract_status,
         "mwbe_category" => $selected_mwbe_categories,
-        "industry_type_name" => $selected_industry_type_name
+        "industry_type_name" => $selected_industry_type_name,
+        "payroll_type" => $selected_payroll_type
     );
     return theme('checkbook_smart_search_results', array('search_results'=> $search_results['search_results'],
         'active_contracts' => $search_results['active_contracts'],
@@ -283,7 +287,8 @@ function _checkbook_smart_search_get_results_query_search_term($search_terms){
         "contract_categories" => "contract_category_name",
         "contract_status" => "contract_status",
         "minority_type_name" => "minority_type_name",
-        "industry_type_name" => "industry_type_name"
+        "industry_type_name" => "industry_type_name",
+        "payroll_type" => "payroll_type"
     );
 
     $searchTerm = $search_terms[0];
@@ -346,7 +351,8 @@ function _checkbook_smart_search_get_selected_facet_results($search_terms, $face
         "contract_categories" => "contract_category_name",
         "contract_status" => "contract_status",
         "minority_type_name" => "minority_type_name",
-        "industry_type_name" => "industry_type_name"
+        "industry_type_name" => "industry_type_name",
+        "payroll_type" => "payroll_type"
     );
 
     $search_string = $search_terms[0];
@@ -423,7 +429,8 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
           "contract_categories" => "contract_category_name",
           "contract_status" => "contract_status",
           "minority_type_name" => "minority_type_name",
-          "industry_type_name" => "industry_type_name"
+          "industry_type_name" => "industry_type_name",
+          "payroll_type" => "payroll_type"
         );
 
         $search_string = $search_terms[0];
@@ -588,7 +595,8 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
                               "contract_categories" => "contract_category_name",
                               "contract_status" => "contract_status",
                               "minority_type_name" => "minority_type_name",
-                              "industry_type_name" => "industry_type_name"
+                              "industry_type_name" => "industry_type_name",
+                              "payroll_type" => "payroll_type"
     );
 
     $autocomplete_text = trim(htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES));//eco
@@ -1026,8 +1034,10 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
       "gross_pay" => "Gross Pay",
       "annual_salary" => "Annual Salary",
       "base_pay" => "Base Pay",
-      "overtime_pay" => "Overtime Payments",
+      "hourly_rate" => "Hourly Rate",
       "other_payments" => "Other Payments",
+      "overtime_pay" => "Overtime Payments",
+      "payroll_type" => "Payroll Type",
       "" => ""
       );
       break;
@@ -1125,8 +1135,10 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
 			"gross_pay" => "Gross Pay",
 			"annual_salary" => "Annual Salary",
 			"base_pay" => "Base Pay",
-			"overtime_pay" => "Overtime Payments",
+            "hourly_rate" => "Hourly Rate",
 			"other_payments" => "Other Payments",
+            "overtime_pay" => "Overtime Payments",
+            "payroll_type" => "Payroll Type",
 			"" => ""
 					);
 					break;
