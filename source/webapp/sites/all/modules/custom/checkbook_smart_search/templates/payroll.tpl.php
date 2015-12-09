@@ -24,10 +24,12 @@ $payroll_parameter_mapping = _checkbook_smart_search_domain_fields('payroll');
 $agency_id = $payroll_results['agency_id'];
 $dept_id = $payroll_results['department_id'];
 $emp_id = $payroll_results['employee_id'];
-$year_id = _getCurrentYearID();
+$fiscal_year_id = $payroll_results['fiscal_year_id'][0];
+$salaried = $payroll_results['amount_basis_id'];
+
 
 $linkable_fields = array("civil_service_title" => "/payroll/employee/transactions/xyz/" .$emp_id . "/agency/" . $agency_id,
-                         "agency_name" => "/payroll/agency_landing/agency/". $agency_id
+                         "agency_name" => "/payroll/agency_landing/agency/". $agency_id,
                         );
 
 if($payroll_results['fiscal_year'] < 2010){
@@ -35,14 +37,13 @@ if($payroll_results['fiscal_year'] < 2010){
 }
 
 $date_fields = array("pay_date");
-$amount_fields = array("annual_salary", "gross_pay", "base_pay", "other_payments", "overtime_pay");
+$amount_fields = array("gross_pay", "base_pay", "other_payments", "overtime_pay");
 
 $count = 1;
 $row = array();
 $rows = array();
 foreach ($payroll_parameter_mapping as $key => $title){
   $value = $payroll_results[$key];
-
 
   $temp = substr($value, strpos(strtoupper($value), strtoupper($SearchTerm)),strlen($SearchTerm));
   $value = str_ireplace($SearchTerm,'<em>'. $temp . '</em>', $value);
@@ -52,8 +53,36 @@ foreach ($payroll_parameter_mapping as $key => $title){
   }else if(in_array($key, $date_fields)){
     $value = date("F j, Y", strtotime($value));
   }else if(array_key_exists($key, $linkable_fields)){
-    $value = "<a href='" . $linkable_fields[$key] . "/year/" . $year_id . "/yeartype/B'>". _checkbook_smart_search_str_html_entities($value) ."</a>";
+    $value = "<a href='" . $linkable_fields[$key] . "/year/" . $fiscal_year_id . "/yeartype/B'>". _checkbook_smart_search_str_html_entities($value) ."</a>";
   }
+
+  if($title == 'Payroll Type'){
+      if($salaried == 1){
+          $value = 'SALARIED';
+      }
+      else{
+          $value = 'NON-SALARIED';
+      }
+  }
+
+  if($title == 'Annual Salary'){
+      if($salaried == 1){
+          $value = "<a  href='/payroll/employee/transactions/agency/" .$agency_id. "/abc/" .$emp_id. "/year/" . $fiscal_year_id . "/yeartype/B'>". custom_number_formatter_format($value, 2 , '$') ."</a>";
+      }
+      else{
+          $value = '';
+      }
+  }
+
+  if($title == 'Hourly Rate'){
+        if($salaried != 1){
+            $value = "<a  href='/payroll/employee/transactions/agency/" .$agency_id. "/abc/" .$emp_id. "/year/" . $fiscal_year_id . "/yeartype/B'>". custom_number_formatter_format($value, 2 , '$') ."</a>";
+        }
+        else{
+            $value = '';
+        }
+  }
+
   if ($count % 2 == 0){
     if($title)
         $row[] = '<div class="field-label">'.$title.':</div><div class="field-content">'.html_entity_decode($value).'</div>';

@@ -461,8 +461,8 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
   $registered_contracts = $variables['registered_contracts'];
   $selected_filters = $variables['selected_facet_results'];
   $output = NULL;
-  $ogeAgencies = $agencies = $vendors = $vendor_type = $expenseCategories = $revenueCategories = $fiscalYears = $regfiscalYears = $domains = $contractCategory = $contractStatus = $spendingCategory = $MWBECategory = $contractMWBECategory = $spendingMWBECategory = $industryType = array();
-  $reqOGEAgencies = $reqAgencies = $reqFiscalYears = $regreqFiscalYears = $reqDomains = $reqVendors = $reqVendorType = $reqExpenseCategories = $reqRevenueCategories = $reqSpendCategories = $reqMWBECategory = $reqIndustryType = array();
+  $ogeAgencies = $agencies = $vendors = $vendor_type = $expenseCategories = $revenueCategories = $fiscalYears = $regfiscalYears = $domains = $contractCategory = $contractStatus = $spendingCategory = $MWBECategory = $contractMWBECategory = $spendingMWBECategory = $industryType = $payrollType = array();
+  $reqOGEAgencies = $reqAgencies = $reqFiscalYears = $regreqFiscalYears = $reqDomains = $reqVendors = $reqVendorType = $reqExpenseCategories = $reqRevenueCategories = $reqSpendCategories = $reqMWBECategory = $reqIndustryType = $reqpayrollType =  array();
 
   //arrays for the selected facet values from the URL
   foreach($selected_filters as $key => $value){
@@ -505,6 +505,9 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
             break;
           case 'industry_type_name':
               $reqIndustryType[] = $value;
+              break;
+          case 'payroll_type':
+              $reqpayrollType[] = $value;
               break;
       }
   }
@@ -558,6 +561,9 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
         break;
       case 'industry_type_name':
         $industryType[] = $value['industry_type_name'];
+        break;
+      case 'payroll_type':
+        $payrollType[] = $value['payroll_type'];
         break;
     }
   }
@@ -805,6 +811,7 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
 
     }
 
+
     if (count($MWBECategory) > 0) {
         foreach ($MWBECategory[0] as $MWBECategoryName => $count) {
             if ($count > 0) {
@@ -825,8 +832,29 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables) {
             }
         }
     }
+    //Payroll Type
+    if (count($payrollType) > 0) {
+        foreach ($payrollType[0] as $payrollTypeName => $count) {
+            if ($count > 0) {
+                $checked = in_array($payrollTypeName, array_values_recursive($reqpayrollType[0]));
+                $payrollTypeValue = urlencode($payrollTypeName);
+                if ($checked) {
+                    $output['Payroll Type']['checked'][] = array($payrollTypeValue, $payrollTypeName, $count);
+                }
+                else {
+                    $output['Payroll Type']['unchecked'][] = array($payrollTypeValue, $payrollTypeName, $count);
+                }
+            }
+        }
+        $output['Payroll Type']['name'] = 'fpayrollTypeName';
+        foreach($reqpayrollType[0] as $key => $value){
+            if(!in_array($value['name'], array_values_recursive($output['Payroll Type']['checked']))){
+                $output['Payroll Type']['checked'][] = array(urlencode($value['name']), $value['name'], $value['count']);
+            }
+        }
+    }
 
-  $variables['render_array'] = $output;
+    $variables['render_array'] = $output;
   $variables['sub_cat_array'] = $subCat;
 }
 
