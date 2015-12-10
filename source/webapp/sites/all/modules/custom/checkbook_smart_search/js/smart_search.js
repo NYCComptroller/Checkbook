@@ -511,7 +511,7 @@
         if(industryTypes) {
             cUrl += "industry_type_name=" + encodeURIComponent(industryTypes) + '*|*';
         }
-        if(fpayrollTypeName) {
+        if(payrollType) {
             cUrl += "payroll_type=" + encodeURIComponent(payrollType) + '*|*';
         }
         if(domainNames){
