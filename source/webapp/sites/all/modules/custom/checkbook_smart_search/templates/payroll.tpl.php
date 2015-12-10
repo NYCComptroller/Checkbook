@@ -28,7 +28,7 @@ $fiscal_year_id = $payroll_results['fiscal_year_id'][0];
 $salaried = $payroll_results['amount_basis_id'];
 
 
-$linkable_fields = array("civil_service_title" => "/payroll/employee/transactions/xyz/" .$emp_id . "/agency/" . $agency_id,
+$linkable_fields = array("civil_service_title" => "/payroll/yeartype/B/year/" . $fiscal_year_id . "?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/xyz/" .$emp_id . "/agency/" . $agency_id,
                          "agency_name" => "/payroll/agency_landing/agency/". $agency_id,
                         );
 
@@ -67,7 +67,7 @@ foreach ($payroll_parameter_mapping as $key => $title){
 
   if($title == 'Annual Salary'){
       if($salaried == 1){
-          $value = "<a  href='/payroll/employee/transactions/agency/" .$agency_id. "/abc/" .$emp_id. "/year/" . $fiscal_year_id . "/yeartype/B'>". custom_number_formatter_format($value, 2 , '$') ."</a>";
+          $value = "<a  href='/payroll/yeartype/B/year/" . $fiscal_year_id . "?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/" .$agency_id. "/abc/" .$emp_id. "/salamttype/".$salaried."/year/" . $fiscal_year_id . "/yeartype/B'>". custom_number_formatter_format($value, 2 , '$') ."</a>";
       }
       else{
           $value = '';
@@ -76,7 +76,7 @@ foreach ($payroll_parameter_mapping as $key => $title){
 
   if($title == 'Hourly Rate'){
         if($salaried != 1){
-            $value = "<a  href='/payroll/employee/transactions/agency/" .$agency_id. "/abc/" .$emp_id. "/year/" . $fiscal_year_id . "/yeartype/B'>". custom_number_formatter_format($value, 2 , '$') ."</a>";
+            $value = "<a  href='/payroll/yeartype/B/year/" . $fiscal_year_id . "?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/" .$agency_id. "/abc/" .$emp_id. "/salamttype/".$salaried."/year/" . $fiscal_year_id . "/yeartype/B'>". custom_number_formatter_format($value, 2 , '$') ."</a>";
         }
         else{
             $value = '';
