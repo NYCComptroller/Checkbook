@@ -37,6 +37,7 @@ files[] = customclasses/payrollDetails.php
 files[] = customclasses/RequestUtil.php
 files[] = customclasses/contract/ContractURLHelper.php
 files[] = customclasses/spending/SpendingUtil.php
+files[] = customclasses/payroll/PayrollUtil.php
 files[] = customclasses/util/ChartUtil.php
 files[] = customclasses/util/NodeSummaryUtil.php
 files[] = customclasses/util/CustomURLHelper.php

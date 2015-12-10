@@ -1,7 +1,7 @@
 {
 "widgetType": "phpparser",
-"cleanURLParameters":["abc","xyz","agency","year","calyear","yeartype"],
-"urlParamMap":{"abc":"employee_id","xyz":"employee_id","agency":"agency_id","year":"fiscal_year_id","calyear":"fiscal_year_id","yeartype":"type_of_year"},
+"cleanURLParameters":["abc","xyz","agency","year","calyear","yeartype","salamttype"],
+"urlParamMap":{"abc":"employee_id","xyz":"employee_id","agency":"agency_id","year":"fiscal_year_id","calyear":"fiscal_year_id","yeartype":"type_of_year","salamttype":"type_of_employment"},
 "defaultParameters":{"type_of_year":"B"},
 "limit":"17",
 "dataset": "checkbook:payroll_employee_agency",
@@ -12,6 +12,11 @@
                 $empNoData = _checkbook_project_querydataset('checkbook:employee',array('employee_number'), array('employee_id'=>$empId));
                 $parameters['employee_number'] = $empNoData[0]['employee_number'];
                 unset($parameters['employee_id']);
+            }
+
+            $type_of_employment = PayrollUtil::getEmploymentTypeByAmountBasisId();
+            if(isset($type_of_employment)) {
+                $parameters['type_of_employment'][0] = $type_of_employment;
             }
 
             $adjustedParameters = $parameters;
