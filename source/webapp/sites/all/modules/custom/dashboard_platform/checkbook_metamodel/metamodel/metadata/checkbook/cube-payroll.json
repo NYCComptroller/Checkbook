@@ -77,11 +77,23 @@
                             "sourceColumnName": "pay_frequency"
                         }
                     ]
+                },
+                {
+                    "name": "amount_basis_id",
+                    "levels": [
+                        {
+                            "name": "amount_basis_id",
+                            "sourceColumnName": "amount_basis_id"
+                        }
+                    ]
                 }
             ],
             "measures":{
                 "txcount": {
                     "function": "COUNT(*)"
+                },
+                "payroll_type": {
+                    "function": "MAX(CASE WHEN amount_basis_id = 1 THEN 'Salaried' ELSE 'Non-Salaried' END)"
                 },
                 "g100m_count": {
                     "function": "SUM(CASE WHEN COALESCE(gross_pay,0) > 100000000 THEN 1 ELSE 0 END)"
@@ -101,7 +113,6 @@
                 "less1m_count": {
                     "function": "SUM(CASE WHEN COALESCE(gross_pay,0) < 1000000 THEN 1 ELSE 0 END)"
                 },
-
                 "gross_pay_ytd_g250k_count": {
                     "function": "SUM(CASE WHEN COALESCE(gross_pay_ytd,0) > 250000 THEN 1 ELSE 0 END)"
                 },

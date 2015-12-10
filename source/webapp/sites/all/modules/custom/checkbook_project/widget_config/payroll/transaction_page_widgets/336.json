@@ -164,6 +164,7 @@
         var oAnnualSalary = getNamedFilterCriteria('fannualSalary');
         var oOvertimePayment = getNamedFilterCriteria('fovertimePayment');
         var oPayFrequency = getNamedFilterCriteria('fpayFrequency');
+        var oSalAmtType = getNamedFilterCriteria('fsalamttype');
 
         var cUrl = oTable.fnSettings().sAjaxSource;
         var cUrlArray = cUrl.split('/');
@@ -175,6 +176,7 @@
         cUrl = adjustUrlParameter(cUrl,'annualsalary',oAnnualSalary);
         cUrl = adjustUrlParameter(cUrl,'overtimepayment',oOvertimePayment);
         cUrl = adjustUrlParameter(cUrl,'payfq',oPayFrequency);
+        cUrl = adjustUrlParameter(cUrl,'salamttype',oSalAmtType);
 
         return cUrl;
     }"
