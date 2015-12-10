@@ -56,14 +56,14 @@ foreach ($payroll_parameter_mapping as $key => $title){
     $value = "<a href='" . $linkable_fields[$key] . "/year/" . $fiscal_year_id . "/yeartype/B'>". _checkbook_smart_search_str_html_entities($value) ."</a>";
   }
 
-  if($title == 'Payroll Type'){
-      if($salaried == 1){
-          $value = 'SALARIED';
-      }
-      else{
-          $value = 'NON-SALARIED';
-      }
-  }
+//  if($title == 'Payroll Type'){
+//      if($salaried == 1){
+//          $value = 'SALARIED';
+//      }
+//      else{
+//          $value = 'NON-SALARIED';
+//      }
+//  }
 
   if($title == 'Annual Salary'){
       if($salaried == 1){
