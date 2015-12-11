@@ -14,9 +14,12 @@
                 unset($parameters['employee_id']);
             }
 
-            $type_of_employment = PayrollUtil::getEmploymentTypeByAmountBasisId();
-            if(isset($type_of_employment)) {
-                $parameters['type_of_employment'][0] = $type_of_employment;
+            $amount_basis_id = _getRequestParamValue('salamttype');
+            if(isset($amount_basis_id)) {
+                $type_of_employment = PayrollUtil::getEmploymentTypeByAmountBasisId($amount_basis_id);
+                    if(isset($type_of_employment)) {
+                    $parameters['type_of_employment'][0] = $type_of_employment;
+                }
             }
 
             $adjustedParameters = $parameters;
