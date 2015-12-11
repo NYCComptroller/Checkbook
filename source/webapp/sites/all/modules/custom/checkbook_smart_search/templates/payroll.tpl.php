@@ -26,9 +26,10 @@ $dept_id = $payroll_results['department_id'];
 $emp_id = $payroll_results['employee_id'];
 $fiscal_year_id = $payroll_results['fiscal_year_id'][0];
 $salaried = $payroll_results['amount_basis_id'];
+$title = urlencode($payroll_results['civil_service_title']);
 
 
-$linkable_fields = array("civil_service_title" => "/payroll/yeartype/B/year/" . $fiscal_year_id . "?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/xyz/" .$emp_id . "/agency/" . $agency_id,
+$linkable_fields = array("civil_service_title" => "/payroll/title_landing/title/" .$title,
                          "agency_name" => "/payroll/agency_landing/agency/". $agency_id,
                         );
 
