@@ -56,7 +56,7 @@ if(is_array($node->data) && count($node->data) > 0){
         $agency = strtoupper($data['agency_agency_agency_name']);
         $agencyUrl  = "<a href='/payroll/agency_landing/yeartype/$yearType/year/$year/agency/{$data['agency_agency']}'>{$agency}</a>";
 
-        $original_title = $data['employee_employee_civil_service_title'];
+        $original_title = $data['civil_service_title_civil_service_title'];
         $title = mb_convert_case(strtolower($original_title), MB_CASE_TITLE, "UTF-8");
         $original_title = urlencode($original_title);
 
