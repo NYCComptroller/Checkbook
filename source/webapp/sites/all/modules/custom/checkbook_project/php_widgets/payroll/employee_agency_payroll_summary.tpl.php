@@ -77,7 +77,7 @@ if(is_array($node->data) && count($node->data) > 0){
                    </tr>";
         $table .= "<tr>
                         <td><strong>". ( ($typeOfEmployment == 'Salaried') ? WidgetUtil::getLabel('annual_salary') : WidgetUtil::getLabel('pay_rate'))  ."</strong>: $". number_format($data['max_annual_salary'],2) ."</td>
-                        <td></td>
+                        <td><strong>". WidgetUtil::getLabel('pay_frequency') ."</strong>: ". strtoupper($data['pay_frequency_pay_frequency'])."</td>
                    </tr>";
         $table .= "<tr>
                         <td><strong>". WidgetUtil::getLabel('gross_pay_ytd') ."</strong>:$". number_format($data['total_gross_pay'],2)."</td>
