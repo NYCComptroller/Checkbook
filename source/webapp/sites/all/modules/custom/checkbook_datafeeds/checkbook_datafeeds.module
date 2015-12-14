@@ -2870,6 +2870,7 @@ function _checkbook_datafeeds_payroll_column_options($datatype) {
                     "Overtime Payments",
                     "Pay Date",
                     "Pay Frequency",
+                    "Payroll Type",
                     "Title",
                 )
             );
@@ -2889,6 +2890,7 @@ function _checkbook_datafeeds_payroll_column_options($datatype) {
                 "overtime_payments",
                 "pay_frequency",
                 "pay_date",
+                "payroll_type",
                 "annual_salary",
             ));
         }

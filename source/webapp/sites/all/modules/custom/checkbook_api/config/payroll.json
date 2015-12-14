@@ -29,6 +29,7 @@
                         "title":"civil_service_title",
                         "pay_frequency":"pay_frequency",
                         "pay_date":"pay_date",
+                        "payroll_type":"payroll_type",
                         "annual_salary":"salaried_amount",
                         "hourly_rate":"non_salaried_amount",
                         "gross_pay":"gross_pay",
@@ -39,7 +40,7 @@
                         "fiscal_year":"fiscal_year",
                         "calendar_year":"calendar_fiscal_year"
                     },
-                    "rowElements":["agency", "title", "pay_frequency", "pay_date", "annual_salary", "hourly_rate", "gross_pay", "base_pay", "other_payments", "overtime_payments", "gross_pay_ytd",
+                    "rowElements":["agency", "title", "pay_frequency", "pay_date", "payroll_type", "annual_salary", "hourly_rate", "gross_pay", "base_pay", "other_payments", "overtime_payments", "gross_pay_ytd",
                         "fiscal_year", "calendar_year"]
                 },
                 "csv":{
@@ -48,6 +49,7 @@
                         "Title":"civil_service_title",
                         "Pay Frequency":"pay_frequency",
                         "Pay Date":"pay_date",
+                        "Payroll Type":"amount_basis_id",
                         "Annual Salary":"salaried_amount",
                         "Hourly Rate":"non_salaried_amount",
                         "Gross Pay":"gross_pay",
@@ -59,7 +61,9 @@
                         "Calendar Year":"calendar_fiscal_year"
                     }
                 }
-            }
+            },
+            "adjustDataSetResults":"if(function_exists('checkbook_api_adjustPayrollDataSetResults')){checkbook_api_adjustPayrollDataSetResults($data_records);}",
+            "adjustSql":"if(function_exists('checkbook_api_adjustPayrollSql')){checkbook_api_adjustPayrollSql($sql_query);}"
         },
         "requestParameters":{
             "fiscal_year":{
@@ -169,6 +173,7 @@
                         "title":"civil_service_title",
                         "pay_frequency":"pay_frequency",
                         "pay_date":"pay_date",
+                        "payroll_type":"amount_basis_id",
                         "annual_salary":"salaried_amount",
                         "hourly_rate":"non_salaried_amount",
                         "gross_pay":"gross_pay",
@@ -179,7 +184,7 @@
                         "fiscal_year":"fiscal_year",
                         "calendar_year":"calendar_fiscal_year"
                     },
-                    "rowElements":["agency", "title", "pay_frequency", "pay_date", "annual_salary", "hourly_rate", "gross_pay", "base_pay", "other_payments", "overtime_payments", "gross_pay_ytd",
+                    "rowElements":["agency", "title", "pay_frequency", "pay_date", "amount_basis_id", "annual_salary", "hourly_rate", "gross_pay", "base_pay", "other_payments", "overtime_payments", "gross_pay_ytd",
                         "fiscal_year", "calendar_year"]
                 },
                 "csv":{
@@ -188,6 +193,7 @@
                         "Title":"civil_service_title",
                         "Pay Frequency":"pay_frequency",
                         "Pay Date":"pay_date",
+                        "Payroll Type":"amount_basis_id",
                         "Annual Salary":"salaried_amount",
                         "Hourly Rate":"non_salaried_amount",
                         "Gross Pay":"gross_pay",
@@ -199,7 +205,9 @@
                         "Calendar Year":"calendar_fiscal_year"
                     }
                 }
-            }
+            },
+            "adjustDataSetResults":"if(function_exists('checkbook_api_adjustPayrollDataSetResults')){checkbook_api_adjustPayrollDataSetResults($data_records);}",
+            "adjustSql":"if(function_exists('checkbook_api_adjustPayrollSql')){checkbook_api_adjustPayrollSql($sql_query);}"
         },
         "requestParameters":{
             "calendar_year":{
