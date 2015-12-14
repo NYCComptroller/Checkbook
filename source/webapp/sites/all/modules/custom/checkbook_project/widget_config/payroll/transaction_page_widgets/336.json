@@ -2,8 +2,8 @@
     "widgetType": "data_tables",
     "widgetSubType": "dataTableList",
     "stickyHeader":true,
-    "cleanURLParameters":["calyear","year","empnm","empnm_exact","agencyh","payfq","paydate","baseamt","overamt","otheramt","grossamt","totalgrosspay","salamt","salamttype","agency","title","grosspayytd","annualsalary","overtimepayment","payfrequency"],
-    "urlParamMap":{"calyear":"calendar_fiscal_year_id","year":"calendar_fiscal_year_id","empnm":"civil_service_title","empnm_exact":"civil_service_title","agencyh":"agency_history_id","payfq":"pay_frequency","paydate":"pay_date","baseamt":"base_pay","overamt":"overtime_pay","otheramt":"other_payments","grossamt":"gross_pay","totalgrosspay":"gross_pay_cytd","salamt":"annual_salary","salamttype":"amount_basis_id","agency":"agency_id",
+    "cleanURLParameters":["calyear","year","empnm","empnm_exact","agencyh","payfq","paydate","baseamt","overamt","otheramt","grossamt","totalgrosspay","salamt","salamttype","agency","title","grosspayytd","annualsalary","overtimepayment","payfrequency","payrolltype"],
+    "urlParamMap":{"calyear":"calendar_fiscal_year_id","year":"calendar_fiscal_year_id","empnm":"civil_service_title","empnm_exact":"civil_service_title","agencyh":"agency_history_id","payfq":"pay_frequency","paydate":"pay_date","baseamt":"base_pay","overamt":"overtime_pay","otheramt":"other_payments","grossamt":"gross_pay","totalgrosspay":"gross_pay_cytd","salamt":"annual_salary","salamttype":"amount_basis_id","payrolltype":"amount_basis_id","agency":"agency_id",
         "grosspayytd":"gross_pay_cytd",
         "annualsalary":"annual_salary",
         "overtimepayment":"overtime_pay"
@@ -180,7 +180,7 @@
         var oAnnualSalary = getNamedFilterCriteria('fannualSalary');
         var oOvertimePayment = getNamedFilterCriteria('fovertimePayment');
         var oPayFrequency = getNamedFilterCriteria('fpayFrequency');
-        var oSalAmtType = getNamedFilterCriteria('fsalamttype');
+        var oPayrollType = getNamedFilterCriteria('fpayrolltype');
 
         var cUrl = oTable.fnSettings().sAjaxSource;
         var cUrlArray = cUrl.split('/');
@@ -192,7 +192,7 @@
         cUrl = adjustUrlParameter(cUrl,'annualsalary',oAnnualSalary);
         cUrl = adjustUrlParameter(cUrl,'overtimepayment',oOvertimePayment);
         cUrl = adjustUrlParameter(cUrl,'payfq',oPayFrequency);
-        cUrl = adjustUrlParameter(cUrl,'salamttype',oSalAmtType);
+        cUrl = adjustUrlParameter(cUrl,'payrolltype',oPayrollType);
 
         return cUrl;
     }"

@@ -6,13 +6,16 @@
     "showAllRecords":true,
     "allowFacetDeselect":true,
     "columns":["amount_basis_id.amount_basis_id","payroll_type", "txcount"],
-    "urlParamMap":{"salamttype":"amount_basis_id.amount_basis_id"},
+    "urlParamMap":{
+        "salamttype":"amount_basis_id.amount_basis_id",
+        "payrolltype":"amount_basis_id.amount_basis_id"
+    },
 	"orderBy":"-txcount",
     "filterName":"Payroll Type",
     "getTotalDataCount":true,
     "autocomplete":false,
-    "urlParameterName":"salamttype",
-    "autocompleteID":"fsalamttype",
+    "urlParameterName":"payrolltype",
+    "autocompleteID":"fpayrolltype",
     "adjustParameters":"
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
