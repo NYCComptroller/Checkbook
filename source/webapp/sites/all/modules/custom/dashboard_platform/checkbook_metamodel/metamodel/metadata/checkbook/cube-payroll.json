@@ -24,6 +24,24 @@
                     ]
                 },
                 {
+                    "name": "agency_id",
+                    "levels": [
+                        {
+                            "name": "agency_id",
+                            "sourceColumnName": "agency_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "agency_name",
+                    "levels": [
+                        {
+                            "name": "agency_name",
+                            "sourceColumnName": "agency_name"
+                        }
+                    ]
+                },
+                {
                     "name": "dept",
                     "levels": [
                                 {
@@ -84,6 +102,69 @@
                         {
                             "name": "amount_basis_id",
                             "sourceColumnName": "amount_basis_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "employee_id",
+                    "levels": [
+                        {
+                            "name": "employee_id",
+                            "sourceColumnName": "employee_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "fiscal_year_id",
+                    "levels": [
+                        {
+                            "name": "fiscal_year_id",
+                            "sourceColumnName": "fiscal_year_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "other_payments",
+                    "levels": [
+                        {
+                            "name": "other_payments",
+                            "sourceColumnName": "other_payments"
+                        }
+                    ]
+                },
+                {
+                    "name": "gross_pay_ytd",
+                    "levels": [
+                        {
+                            "name": "gross_pay_ytd",
+                            "sourceColumnName": "gross_pay_ytd"
+                        }
+                    ]
+                },
+                {
+                    "name": "base_pay",
+                    "levels": [
+                        {
+                            "name": "base_pay",
+                            "sourceColumnName": "base_pay"
+                        }
+                    ]
+                },
+                {
+                    "name": "payroll_id",
+                    "levels": [
+                        {
+                            "name": "payroll_id",
+                            "sourceColumnName": "payroll_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "pay_date",
+                    "levels": [
+                        {
+                            "name": "pay_date",
+                            "sourceColumnName": "pay_date"
                         }
                     ]
                 }
