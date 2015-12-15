@@ -5,7 +5,7 @@
 "defaultParameters":{"type_of_year":"B"},
 "limit":"17",
 "dataset": "checkbook:payroll_employee_agency",
-"columns": ["agency.agency","agency.agency.agency_short_name","civil_service_title.civil_service_title","employment_type.employment_type","start_date.start_date","max_annual_salary","total_base_salary","total_overtime_amount","total_other_payments","total_gross_pay","year.year","year_type.year_type","agency.agency.agency_name"],
+"columns": ["agency.agency","agency.agency.agency_short_name","pay_frequency.pay_frequency","civil_service_title.civil_service_title","employment_type.employment_type","start_date.start_date","max_annual_salary","total_base_salary","total_overtime_amount","total_other_payments","total_gross_pay","year.year","year_type.year_type","agency.agency.agency_name"],
 "adjustParameters":"
             $empId = _getRequestParamValue('xyz');
             if(isset($empId)){
