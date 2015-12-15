@@ -128,5 +128,31 @@
             ],
     "sScrollX": "100%",
     "bScrollCollapse": false
-    }
+    },
+    "customExternalJS":"function prepareTableListFilterUrl(){
+            var oTitles = getNamedFilterCriteria('ftitle');
+            var oAgencyIds = getNamedFilterCriteria('fagencyId');
+            if(oAgencyIds.length==0 && eval(document.getElementById('fHideAgencyId'))){
+            oAgencyIds = document.getElementById('fHideAgencyId').value;
+        }
+        var oGrossPayYtd = getNamedFilterCriteria('fgrossPayYtd');
+        var oAnnualSalary = getNamedFilterCriteria('fannualSalary');
+        var oOvertimePayment = getNamedFilterCriteria('fovertimePayment');
+        var oPayFrequency = getNamedFilterCriteria('fpayFrequency');
+        var oPayrollType = getNamedFilterCriteria('fpayrolltype');
+
+        var cUrl = oTable.fnSettings().sAjaxSource;
+        var cUrlArray = cUrl.split('/');
+        var dtsmnidNameIndex = jQuery.inArray('dtsmnid', cUrlArray);
+
+        cUrl = adjustUrlParameter(cUrl,'title',oTitles);
+        cUrl = adjustUrlParameter(cUrl,'agency',oAgencyIds);
+        cUrl = adjustUrlParameter(cUrl,'grosspayytd',oGrossPayYtd);
+        cUrl = adjustUrlParameter(cUrl,'annualsalary',oAnnualSalary);
+        cUrl = adjustUrlParameter(cUrl,'overtimepayment',oOvertimePayment);
+        cUrl = adjustUrlParameter(cUrl,'payfrequency',oPayFrequency);
+        cUrl = adjustUrlParameter(cUrl,'payrolltype',oPayrollType);
+
+        return cUrl;
+    }"
 }
