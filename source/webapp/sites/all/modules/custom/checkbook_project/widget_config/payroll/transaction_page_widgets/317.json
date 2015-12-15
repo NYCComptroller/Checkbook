@@ -34,12 +34,12 @@
     "html_class": "initiative-table transaction-table",
     "no_results_content":"No Results Found",
     "dataset": "checkbook:payroll_employee_agency",
-    "uniqueSortColumn":["employee_id"],
-    "columns": ["employee.employee","employee.employee.civil_service_title","employee.employee.employee_number","agency.agency.agency_short_name","total_salaried_amount","total_non_salaried_amount","total_gross_pay","total_base_salary","total_other_payments","total_overtime_amount","year.year","year_type.year_type","agency.agency.agency_name","employment_type.employment_type"],
+    "uniqueSortColumn":["employee_employee"],
+    "columns": ["employee.employee","civil_service_title.civil_service_title","employee_number.employee_number","agency.agency.agency_short_name","total_salaried_amount","total_non_salaried_amount","total_gross_pay","total_base_salary","total_other_payments","total_overtime_amount","year.year","year_type.year_type","agency.agency.agency_name","employment_type.employment_type"],
     "derivedColumns": {
         "employee_name_formatted": {
               "type": "expression2",
-              "expression": "_get_tooltip_markup($row['employee_employee_civil_service_title'],30)"
+              "expression": "_get_tooltip_markup($row['civil_service_title_civil_service_title'],30)"
         },
         "employee_name_link": {
           "type": "expression2",
@@ -86,7 +86,7 @@
         }
     },
     "table_columns": [
-            {"labelAlias": "title","column": "employee_name_link","sortSourceColumn":"employee.employee.civil_service_title"},
+            {"labelAlias": "title","column": "employee_name_link","sortSourceColumn":"civil_service_title.civil_service_title"},
             {"labelAlias": "agency_name","column":"agency_name_formatted","sortSourceColumn":"agency.agency.agency_name"},
             {"labelAlias": "annual_salary","column": "formatted_salary_amount","sortSourceColumn": "total_salaried_amount","exportColumn":"export_salary_amount"},
             {"labelAlias": "hourly_rate","column": "formatted_non_salary_amount","sortSourceColumn": "total_non_salaried_amount","exportColumn":"export_non_salary_amount"},
