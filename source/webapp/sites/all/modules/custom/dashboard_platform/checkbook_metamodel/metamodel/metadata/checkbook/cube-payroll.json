@@ -124,6 +124,15 @@
                     ]
                 },
                 {
+                    "name": "calendar_fiscal_year_id",
+                    "levels": [
+                        {
+                            "name": "calendar_fiscal_year_id",
+                            "sourceColumnName": "calendar_fiscal_year_id"
+                        }
+                    ]
+                },
+                {
                     "name": "other_payments",
                     "levels": [
                         {
@@ -138,6 +147,15 @@
                         {
                             "name": "gross_pay_ytd",
                             "sourceColumnName": "gross_pay_ytd"
+                        }
+                    ]
+                },
+                {
+                    "name": "gross_pay_cytd",
+                    "levels": [
+                        {
+                            "name": "gross_pay_cytd",
+                            "sourceColumnName": "gross_pay_cytd"
                         }
                     ]
                 },
