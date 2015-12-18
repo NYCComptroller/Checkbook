@@ -2703,19 +2703,19 @@ table.outerTable.ma-history{
 }
 #prev-emp,
 #next-emp{
-    height:26px;
-    width:73px;
+    height:50px;
+    width:18px;
     position: absolute;
-    bottom:70px;
+    bottom:130px;
     z-index: 25;
 }
 #prev-emp{
-    left:0;
-    background: url(../images/payroll-arrow-up.png) no-repeat scroll;
+    left:100px;
+    background: url(../images/NYC-Arrow_left.png) no-repeat scroll;
 }
 #next-emp{
-    right:0;
-    background: url(../images/payroll-arrow-down.png) no-repeat scroll;
+    right:100px;
+    background: url(../images/NYC-Arrow_right.png) no-repeat scroll;
 }
 
 #emp-agency-detail-record-table {
