@@ -3,13 +3,14 @@
 "widgetSubType":"ajaxSimple",
 "html_class": "vendor-table",
 "no_results_content":"No Results Found",
-"defaultParameters":{"year.year":"22", "type_of_year":"B", "employment_type.employment_type" : "Salaried"},
+"defaultParameters":{"fiscal_year_id":"22", "type_of_year":"B", "type_of_employment" : "Salaried"},
 "cleanURLParameters":["year","yeartype","calyear","agency"],
-"urlParamMap":{"year":"year.year","calyear":"year.year","yeartype":"type_of_year", "agency":"agency_id"},
-"dataset": "checkbook:payroll_employee_agency",
+"urlParamMap":{"year":"fiscal_year_id","calyear":"fiscal_year_id","yeartype":"type_of_year", "agency":"agency_id"},
+"dataset": "checkbook:payroll_employee_agency_title",
 "noDataInitialLoad":true,
-"columns": ["employee_count","agency.agency", "civil_service_title.civil_service_title",  "total_annual_salary", "total_gross_pay", "total_base_salary", "total_other_payments", "total_overtime_amount", "year_type.year_type", "year.year", "employment_type.employment_type"],
+"columns": ["employee_count","agency_id", "civil_service_title",  "total_annual_salary", "total_gross_pay", "total_base_salary", "total_other_payments", "total_overtime_amount", "type_of_year", "fiscal_year_id", "type_of_employment"],
 "limit":5,
+    "useList":true,
 "orderby":"total_annual_salary",
 "disableViewAll":true,
 "enableExpand":true,
@@ -25,6 +26,7 @@ return $header;
 "footer":"
 $url = '/panel_html/payroll_nyc_title_transactions/payroll/payroll_title/transactions';
 $url .= _checkbook_project_get_year_url_param_string();
+$url .= _checkbook_project_get_url_param_string(\"agency\");
 $url .= '/smnid/' . $node->nid;
 $count = $node->count;
 $footer = '';
@@ -42,11 +44,11 @@ return $footer;
 "derivedColumns": {
    "employee_name_formatted": {
       "type": "expression2",
-      "expression": "_get_tooltip_markup($row['civil_service_title_civil_service_title'],36)"
+      "expression": "_get_tooltip_markup($row['civil_service_title'],36)"
     },
  "employee_name_link": {
      "type": "expression2",
-     "expression": "'<a href=/payroll/title_landing' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string(\"agency\") . '/title/' . urlencode($row['civil_service_title_civil_service_title']) . '>' . $row['employee_name_formatted'] . '</a>'"
+     "expression": "'<a href=/payroll/title_landing' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string(\"agency\") . '/title/' . urlencode($row['civil_service_title']) . '>' . $row['employee_name_formatted'] . '</a>'"
   },
  "total_no_of_employees_formatted": {
      "type": "expression2",
@@ -110,7 +112,7 @@ return $footer;
       "sortSourceColumn": "total_other_payments",
       "header": "false"
     },
-   {
+       {
       "labelAlias": "combined_overtime_pay_ytd",
       "column": "total_overtime_amount_formatted",
       "sortSourceColumn": "total_overtime_amount",

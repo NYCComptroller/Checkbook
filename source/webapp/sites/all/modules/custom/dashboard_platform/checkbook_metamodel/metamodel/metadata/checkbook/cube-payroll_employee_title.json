@@ -1,8 +1,8 @@
 {
     "datasets":{
-        "payroll_employee_agency_title":{
+        "payroll_employee_title":{
             "datasourceName":"main",
-            "source":"aggregateon_payroll_employee_agency_title_tmp", //aggregateon_payroll_employee_agency_title
+            "source":"aggregateon_payroll_employee_title",
             "columns": [
                 {
                     "name": "fiscal_year_id"},
@@ -12,8 +12,8 @@
         }
     },
     "cubes":{
-        "payroll_employee_agency_title":{
-            "sourceDatasetName":"payroll_employee_agency_title",
+        "payroll_employee_title":{
+            "sourceDatasetName":"payroll_employee_title",
             "dimensions":[
                 {
                     "name": "total_annual_salary",
@@ -103,15 +103,6 @@
                         {
                             "name": "civil_service_title",
                             "sourceColumnName": "civil_service_title"
-                        }
-                    ]
-                },
-                {
-                    "name": "agency_id",
-                    "levels": [
-                        {
-                            "name": "agency_id",
-                            "sourceColumnName": "agency_id"
                         }
                     ]
                 }
