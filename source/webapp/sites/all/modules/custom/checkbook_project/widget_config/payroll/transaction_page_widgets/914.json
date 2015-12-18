@@ -2,12 +2,13 @@
     "stickyHeader":true,
     "widgetType": "data_tables",
     "widgetSubType": "dataTableList",
-    "cleanURLParameters":["year","calyear","yeartype","month","title","grosspayytd","annualsalary","overtimepayment"],
+    "cleanURLParameters":["year","calyear","yeartype","month","title","grosspayytd","annualsalary","overtimepayment","agency"],
     "urlParamMap":{
         "year":"fiscal_year_id",
         "calyear":"fiscal_year_id",
         "yeartype":"type_of_year",
         "month":"month_id",
+        "agency":"agency_id.agency_id",
         "title":"civil_service_title.civil_service_title",
         "grosspayytd":"total_gross_pay.total_gross_pay",
         "annualsalary":"total_annual_salary.total_annual_salary",
@@ -31,8 +32,8 @@
     "noDataInitialLoad":true,
     "html_class": "initiative-table transaction-table",
     "no_results_content":"No Results Found",
-    "dataset": "checkbook:payroll_employee_title",
-    "columns": ["employee_count.employee_count", "civil_service_title.civil_service_title",  "total_annual_salary.total_annual_salary", "total_gross_pay.total_gross_pay", "total_base_salary.total_base_salary", "total_other_payments.total_other_payments", "total_overtime_amount.total_overtime_amount", "year_type.year_type", "year.year", "employment_type.employment_type"],
+    "dataset": "checkbook:payroll_employee_agency_title",
+    "columns": ["employee_count.employee_count", "agency_id.agency_id", "civil_service_title.civil_service_title",  "total_annual_salary.total_annual_salary", "total_gross_pay.total_gross_pay", "total_base_salary.total_base_salary", "total_other_payments.total_other_payments", "total_overtime_amount.total_overtime_amount", "year_type.year_type", "year.year", "employment_type.employment_type"],
     "derivedColumns": {
         "employee_name_formatted": {
                "type": "expression2",
