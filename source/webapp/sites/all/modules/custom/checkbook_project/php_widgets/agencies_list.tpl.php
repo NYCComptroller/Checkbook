@@ -73,7 +73,7 @@ foreach($agencies as $key => $agencies_chunck){
     $agency_list .= "<ul class='listCol".($key+1)."'>";
     foreach($agencies_chunck as $a => $agency){
         $agency_url ="";
-        $agency_url = ($current_url[1] == 'payroll')?'payroll/agency/'.$agency['agency_id'].'/yeartype/B/year/'.$current_fy_year
+        $agency_url = ($current_url[1] == 'payroll')?'payroll/agency_landing/agency/'.$agency['agency_id'].'/yeartype/B/year/'.$current_fy_year
             : $url.'/agency/'.$agency['agency_id'];
 
         $agency_list .= "<li id=agency-list-id-".$agency['agency_id'].">
