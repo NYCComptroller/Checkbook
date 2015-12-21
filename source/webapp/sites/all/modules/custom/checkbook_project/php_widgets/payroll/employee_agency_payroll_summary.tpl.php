@@ -19,6 +19,20 @@
 */
 ?>
 <?php
+// count salaried and non-salaried records
+$salaried_count = 0;
+$non_salaried_count = 0;
+foreach($node->data as $data_count){
+    $typeOfEmployment = $data_count['employment_type_employment_type'];
+    $class = strtolower($typeOfEmployment);
+    if($class == 'salaried'){
+        $salaried_count += 1;
+    }
+    else{
+        $non_salaried_count +=1;
+    }
+}
+
 if(is_array($node->data) && count($node->data) > 0){
 
     print  '<div class="payroll-emp-wrapper">';
@@ -26,43 +40,63 @@ if(is_array($node->data) && count($node->data) > 0){
     $employeeData = '';
 
     if(count($node->data) > 1){
+        if($salaried_count > 1){
+            $js = "
+
+                jQuery(document).ready(function() {
+                    if (jQuery('#emp-agency-detail-records').filter(':first').length > 0) {
+                        jQuery('#emp-agency-detail-records').filter(':first')
+                            .cycle({
+                                slideExpr:'.emp-agency-detail-record',
+                                prev: '#prev-emp-salaried',
+                                next: '#next-emp-salaried',
+                                fx: 'scrollVert',
+                                speed: 0,
+                                width:'640px',
+                                timeout: 0
+                            });
+                    }
+                });";
+         }
+
+        if($non_salaried_count > 1){
+            $js = "
+
+                jQuery(document).ready(function() {
+                    if (jQuery('#emp-agency-detail-records').filter(':first').length > 0) {
+                        jQuery('#emp-agency-detail-records').filter(':first')
+                            .cycle({
+                                slideExpr:'.emp-agency-detail-record',
+                                prev: '#prev-emp-non-salaried',
+                                next: '#next-emp-non-salaried',
+                                fx: 'scrollVert',
+                                speed: 0,
+                                width:'640px',
+                                timeout: 0
+                            });
+                    }
+                 });";
+        }
+
+
         $js = "
+                jQuery('.emp-record-salaried').show();
+                jQuery('.emp-record-non-salaried').hide();
 
-            jQuery(document).ready(function() {
-                if (jQuery('#emp-agency-detail-records').filter(':first').length > 0) {
-                    jQuery('#emp-agency-detail-records').filter(':first')
-                        .cycle({
-                            slideExpr:'.emp-agency-detail-record',
-                            prev: '#prev-emp',
-                            next: '#next-emp',
-                            fx: 'scrollVert',
-                            speed: 0,
-                            width:'640px',
-                            timeout: 0
-                        });
-                }
-            });
-
-            jQuery('.emp-record-salaried').show();
-            jQuery('.emp-record-non-salaried').hide();
-
-            function toggleEmployee() {
-                jQuery('.emp-record-salaried').toggle();
-                jQuery('.emp-record-non-salaried').toggle();
-            };
-        ";
+                function toggleEmployee() {
+                    jQuery('.emp-record-salaried').toggle();
+                    jQuery('.emp-record-non-salaried').toggle();
+                };
+            ";
 
 
-        if($_REQUEST['appendScripts']){
-            print "<script type='text/javascript'>" . $js . "</script>";
-        }
-        else{
-            drupal_add_js($js,"inline");
-        }
-
+            if($_REQUEST['appendScripts']){
+                print "<script type='text/javascript'>" . $js . "</script>";
+            }
+            else{
+                drupal_add_js($js,"inline");
+            }
     }
-
-    $employeeData .= "<div id='prev-emp' href='#'></div>";
 
     $employeeData .= "<div id='emp-agency-detail-records'>";
 
@@ -82,6 +116,13 @@ if(is_array($node->data) && count($node->data) > 0){
         $titleUrl = "<a href='/payroll/title_landing/yeartype/$yearType/year/$year/title/$original_title'>{$title}</a>";
 
         $table = "<div class='emp-agency-detail-record'><table id='emp-agency-detail-record-table' class='emp-record-$class'>";
+
+        if($class == 'salaried' && $salaried_count > 1){
+            $table .= "<div id='prev-emp-salaried' class='emp-record-salaried' href='#'></div>";
+        }
+        if($class == 'non-salaried' && $non_salaried_count > 1){
+            $table .= "<div id='prev-emp-non-salaried' class='emp-record-non-salaried' href='#'></div>";
+        }
 
         $table .= "<div id='payroll-emp-trans-name' class='emp-record-$class'>
                         <span class='payroll-label'>Title: </span>
@@ -118,10 +159,18 @@ if(is_array($node->data) && count($node->data) > 0){
 
         $table .= "</table></div>";
 
+        if($class == 'salaried' && $salaried_count > 1){
+            $table .= "<div id='next-emp-salaried' class='emp-record-salaried' href='#'></div>";
+        }
+        if($class == 'non-salaried' && $non_salaried_count > 1){
+            $table .= "<div id='next-emp-non-salaried' class='emp-record-non-salaried' href='#'></div>";
+        }
+
         $employeeData .= $table;
+
     }
-    if (count($node->data) > 1) {
-        $employeeData .= "</div><div id='next-emp' href='#'></div>";
+    if ($salaried_count && $non_salaried_count) {
+        $employeeData .= "</div>";
         $employeeData .= "<div id='toggle-employee-salaried' class='emp-record-salaried'>
                             <strong>Viewing Salaried Details</strong>&nbsp;|&nbsp;
                             <a href='javascript:toggleEmployee();'>View Non-salaried Details</a>
