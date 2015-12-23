@@ -538,7 +538,7 @@
                 left join ref_document_code dc on a.document_code_id = dc.document_code_id
                 left join ref_award_category rac on a.award_category_id = rac.award_category_id
 	    LEFT JOIN
-	    (SELECT agreement_id, GROUP_CONCAT(DISTINCT X.fiscal_year) AS fiscal_year, GROUP_CONCAT(DISTINCT Y.year_id) AS fiscal_year_id
+	    (SELECT agreement_id, STRING_AGG(DISTINCT X.fiscal_year::text, ',') AS fiscal_year, STRING_AGG(DISTINCT Y.year_id::text, ',') AS fiscal_year_id
 		FROM
 		(SELECT agreement_id, generate_series(effective_begin_year,effective_end_year,1) as fiscal_year
 			FROM all_agreement_transactions a
@@ -690,7 +690,7 @@
                 (
                      select distinct
                     'contracts:' || agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END) || 'oge' id,
-                    GROUP_CONCAT(distinct trim(oc.oge_contract_number)) As values
+                    STRING_AGG(distinct trim(oc.oge_contract_number::text), ',') As values
                     from agreement_snapshot a
                     LEFT JOIN oge_contract_vendor_level ogecon ON a.contract_number = ogecon.fms_contract_number AND a.vendor_id = ogecon.vendor_id
                     left join ref_document_code dc on a.document_code_id = dc.document_code_id
@@ -705,7 +705,7 @@
                 (
                     select
                     'contracts:' || agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END) || 'oge' id,
-                    GROUP_CONCAT(distinct trim(oc.budget_name)) As values
+                    STRING_AGG(distinct trim(oc.budget_name::text), ',') As values
                     from agreement_snapshot a
                     LEFT JOIN oge_contract_vendor_level ogecon ON a.contract_number = ogecon.fms_contract_number AND a.vendor_id = ogecon.vendor_id
                     left join ref_document_code dc on a.document_code_id = dc.document_code_id
@@ -720,7 +720,7 @@
                 (
                     select
                     'contracts:' || agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END) || 'oge' id,
-                    GROUP_CONCAT(distinct trim(oc.fms_commodity_line)) As values
+                    STRING_AGG(distinct trim(oc.fms_commodity_line::text), ',') As values
                     from agreement_snapshot a
                     LEFT JOIN oge_contract_vendor_level ogecon ON a.contract_number = ogecon.fms_contract_number AND a.vendor_id = ogecon.vendor_id
                     left join ref_document_code dc on a.document_code_id = dc.document_code_id
@@ -733,7 +733,7 @@
                 ) commodity_lines on commodity_lines.id = 'contracts:' || agreement_id || ':' || a.agency_id || ':' || (CASE WHEN master_agreement_yn = 'Y' THEN a.vendor_id ELSE ogecon.vendor_id END) || 'oge'
 
 		LEFT JOIN
-	    (SELECT agreement_id, vendor_id, GROUP_CONCAT(DISTINCT X.fiscal_year) AS fiscal_year, GROUP_CONCAT(DISTINCT Y.year_id) AS fiscal_year_id
+	    (SELECT agreement_id, vendor_id, STRING_AGG(DISTINCT X.fiscal_year::text, ',') AS fiscal_year, STRING_AGG(DISTINCT Y.year_id::text, ',') AS fiscal_year_id
 		FROM
 		(SELECT agreement_id, vendor_id, generate_series(effective_begin_year,effective_end_year,1) as fiscal_year
 			FROM agreement_snapshot a
