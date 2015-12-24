@@ -9,7 +9,7 @@
         "calyear":"fiscal_year_id",
         "yeartype":"type_of_year",
         "month":"month_id",
-        "title":"employee.employee.civil_service_title",
+        "title":"civil_service_title.civil_service_title",
         "grosspayytd":"gross_pay.gross_pay",
         "annualsalary":"annual_salary.annual_salary",
         "overtimepayment":"overtime_pay.overtime_pay"
