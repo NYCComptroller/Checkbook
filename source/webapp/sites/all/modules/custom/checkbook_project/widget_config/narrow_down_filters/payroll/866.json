@@ -8,7 +8,14 @@
     "urlParameterName":"annualsalary",
     "urlParameterType":"rangeid3",
     "autocompleteID":"fannualSalary",
+    "dataset": "checkbook:payroll_ranged_data",
     "columns":["annual_salary_g250k_count", "annual_salary_g101k_le250k_count", "annual_salary_g51k_le100k_count", "annual_salary_ge20k_le50k_count", "annual_salary_less20k_count"],
+   "urlParamMap":{
+        "title":"civil_service_title",
+        "grosspayytd":"gross_pay",
+        "annualsalary":"annual_salary",
+        "overtimepayment":"overtime_pay"
+    },
     "orderBy":"",    
     "adjustParameters":"
         $monthId = _getRequestParamValue('month');
