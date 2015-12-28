@@ -38,7 +38,7 @@
     }
     return $footer;
     ",
-    "widgetTitle":"Titles by Number of Employees Payroll Transactions",
+    "widgetTitle":"Payroll Summary by Number of Employees",
     "table_title":"",
     "derivedColumns": {
        "employee_name_formatted": {
