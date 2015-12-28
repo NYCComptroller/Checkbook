@@ -140,6 +140,15 @@
                             "sourceColumnName": "civil_service_title"
                         }
                     ]
+                },
+                {
+                    "name": "employee_number",
+                    "levels": [
+                        {
+                            "name": "employee_number",
+                            "sourceColumnName": "employee_number"
+                        }
+                    ]
                 }
             ],
             "measures":{
