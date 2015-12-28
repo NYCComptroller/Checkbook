@@ -124,6 +124,9 @@
                 "txcount": {
                     "function": "COUNT(*)"
                 },
+                "emp_count": {
+                    "function": "COUNT(DISTINCT employee_number)"
+                },
                 "combined_max_annual_salary":{
                     "function":"SUM(max_annual_salary)"
                 },
