@@ -41,7 +41,7 @@
         }
         return $footer;
     ",
-    "widgetTitle":"Annual Salaries Payroll Transactions",
+    "widgetTitle":"Payroll Summary by Agency Title",
     "table_title":"",
     "derivedColumns": {
             "agency_name_link": {

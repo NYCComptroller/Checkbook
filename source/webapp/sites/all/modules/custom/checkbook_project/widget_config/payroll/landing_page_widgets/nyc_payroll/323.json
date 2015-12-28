@@ -36,7 +36,7 @@ else
 
 return $footer;
 ",
-"widgetTitle":"Agencies by Payroll Transactions",
+"widgetTitle":"Payroll Summary by Agency Title",
 "summaryView":{
     "template":"payroll_transactions_summary",
     "templateTitle":"Agency by Payroll Transactions",
