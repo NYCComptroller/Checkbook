@@ -35,7 +35,7 @@
     "no_results_content":"No Results Found",
     "dataset": "checkbook:payroll_employee_agency",
     "uniqueSortColumn":["employee_employee"],
-    "columns": ["employee.employee","civil_service_title.civil_service_title","employee_number.employee_number","agency.agency.agency_short_name","total_salaried_amount","total_non_salaried_amount","total_gross_pay","total_base_salary","total_other_payments","total_overtime_amount","year.year","year_type.year_type","agency.agency.agency_name","employment_type.employment_type"],
+    "columns": ["pay_date.pay_date","employee.employee","civil_service_title.civil_service_title","employee_number.employee_number","agency.agency.agency_short_name","total_salaried_amount","total_non_salaried_amount","total_gross_pay","total_base_salary","total_other_payments","total_overtime_amount","year.year","year_type.year_type","agency.agency.agency_name","employment_type.employment_type"],
     "derivedColumns": {
         "employee_name_formatted": {
               "type": "expression2",

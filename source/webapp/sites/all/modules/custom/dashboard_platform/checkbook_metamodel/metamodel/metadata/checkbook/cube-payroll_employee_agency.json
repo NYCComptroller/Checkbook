@@ -136,6 +136,15 @@
                             "sourceColumnName": "employee_number"
                         }
                     ]
+                },
+                {
+                    "name": "pay_date",
+                    "levels": [
+                        {
+                            "name": "pay_date",
+                            "sourceColumnName": "pay_date"
+                        }
+                    ]
                 }
             ],
             "measures":{
