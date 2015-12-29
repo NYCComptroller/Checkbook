@@ -43,24 +43,28 @@
               "expression": "_get_tooltip_markup($row['civil_service_title_civil_service_title'],30)"
         },
         "formatted_salary_amount": {
-              "type": "expression2",
-              "expression": " $row['employment_type_employment_type'] == 'Salaried' ? custom_number_formatter_basic_format($row['max_annual_salary_max_annual_salary'])  : '-'  "
+            "type": "expression2",
+            "expression": " $row['employment_type_employment_type'] == 'Salaried' ? custom_number_formatter_basic_format($row['max_annual_salary_max_annual_salary'])  : '-'  "
+        },
+        "annual_salary_link": {
+            "type": "expression2",
+            "expression": "'<a href=/payroll' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string('agency') . '?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string('agency') . '/salamttype/1/abc/' . $row[employee_employee] . '>'. $row[formatted_salary_amount] .'</a>'"
         },
         "formatted_non_salary_amount": {
             "type": "expression2",
-            "expression": " $row['employment_type_employment_type'] == 'Salaried' ? '-&nbsp;&nbsp;' : custom_number_formatter_basic_format($row['total_non_salaried_amount']).'&nbsp;&nbsp;'"
+            "expression": " $row['employment_type_employment_type'] == 'Salaried' ? '-' : custom_number_formatter_basic_format($row['total_non_salaried_amount'])"
         },
-        "salary_amount_link": {
+        "non_salary_link": {
             "type": "expression2",
-            "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/payroll_employee_transactions/payroll/employee/transactions'  ._checkbook_project_get_year_url_param_string() .'/abc/' .  $row[employee_employee] . '\">' . $row['formatted_salary_amount'] . '</a>'"
+            "expression": "'<a href=/payroll' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string('agency') . '?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string('agency') . '/salamttype/2~3/abc/' . $row[employee_employee] . '>'. $row[formatted_non_salary_amount] .'</a>'"
         },
         "export_salary_amount": {
             "type": "expression2",
-            "expression": " $row['employment_type.employment_type'] == 'Salaried' ? $row['max_annual_salary_max_annual_salary']  : NULL "
+            "expression": " $row['employment_type_employment_type'] == 'Salaried' ? $row['max_annual_salary_max_annual_salary']  : NULL "
         },
         "export_non_salary_amount": {
             "type": "expression2",
-            "expression": " $row['employment_type.employment_type'] == 'Salaried' ? NULL : $row['total_non_salaried_amount']"
+            "expression": " $row['employment_type_employment_type'] == 'Salaried' ? NULL : $row['total_non_salaried_amount']"
         },
         "formatted_gross_pay_amount": {
               "type": "expression2",
@@ -90,8 +94,8 @@
     "table_columns": [
             {"labelAlias": "title","column": "employee_name_formatted","sortSourceColumn":"civil_service_title.civil_service_title"},
             {"labelAlias": "agency_name","column":"agency_name_formatted","sortSourceColumn":"agency.agency.agency_name"},
-            {"labelAlias": "annual_salary","column": "salary_amount_link","sortSourceColumn": "max_annual_salary.max_annual_salary","exportColumn":"export_salary_amount"},
-            {"labelAlias": "hourly_rate","column": "formatted_non_salary_amount","sortSourceColumn": "total_non_salaried_amount","exportColumn":"export_non_salary_amount"},
+            {"labelAlias": "annual_salary","column": "annual_salary_link","sortSourceColumn": "max_annual_salary.max_annual_salary","exportColumn":"export_salary_amount"},
+            {"labelAlias": "hourly_rate","column": "non_salary_link","sortSourceColumn": "total_non_salaried_amount","exportColumn":"export_non_salary_amount"},
             {"labelAlias": "gross_pay_ytd","column": "formatted_gross_pay_amount","sortSourceColumn": "total_gross_pay.total_gross_pay"},
             {"labelAlias": "base_pay_ytd","column": "formatted_base_salary_amount","sortSourceColumn": "total_base_salary.total_base_salary"},
             {"labelAlias": "other_pay_ytd","column": "formatted_other_payments_amount","sortSourceColumn": "total_other_payments.total_other_payments"},
