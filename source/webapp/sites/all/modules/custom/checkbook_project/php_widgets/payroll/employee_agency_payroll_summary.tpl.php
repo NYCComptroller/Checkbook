@@ -19,37 +19,60 @@
 */
 ?>
 <?php
-// count salaried and non-salaried records
-$salaried_count = 0;
-$non_salaried_count = 0;
-foreach($node->data as $data_count){
-    $typeOfEmployment = $data_count['employment_type_employment_type'];
-    $class = strtolower($typeOfEmployment);
-    if($class == 'salaried'){
-        $salaried_count += 1;
-    }
-    else{
-        $non_salaried_count +=1;
+//Default view based on salamttype in url
+$default_view = PayrollType::$SALARIED;
+$salamttype = _getRequestParamValue('salamttype');
+if(isset($salamttype)) {
+    $salamttype = explode('~',$salamttype);
+    if (!in_array(1, $salamttype)) {
+        $default_view = PayrollType::$NON_SALARIED;
     }
 }
 
-if(is_array($node->data) && count($node->data) > 0){
+$all_data = array();
+foreach($node->data as $data){
 
-    print  '<div class="payroll-emp-wrapper">';
+    $record = array();
+    $employment_type = $data['employment_type_employment_type'];
+    $year = $data['year_year'];
+    $year_type = $data['year_type_year_type'];
+    $original_title = $data['civil_service_title_civil_service_title'];
+    $title = mb_convert_case(strtolower($original_title), MB_CASE_TITLE, "UTF-8");
+    $agency_name = strtoupper($data['agency_agency_agency_name']);
 
-    $employeeData = '';
+    $record['title_url'] = "<a href='/payroll/title_landing/yeartype/$yearType/year/$year/title/$original_title'>{$title}</a>";
+    $record['agency_url'] = "<a href='/payroll/agency_landing/yeartype/$year_type/year/$year/agency/{$data['agency_agency']}'>{$agency_name}</a>";
+    $record['employment_type'] = $data['employment_type_employment_type'];
+    $record['max_annual_salary'] = $data['max_annual_salary'];
+    $record['pay_frequency'] = $data['pay_frequency_pay_frequency'];
+    $record['total_gross_pay'] = $data['total_gross_pay'];
+    $record['total_base_salary'] = $data['total_base_salary'];
+    $record['total_other_payments'] = $data['total_other_payments'];
+    $record['total_overtime_amount'] = $data['total_overtime_amount'];
 
-    if(count($node->data) > 1){
-        if($salaried_count > 1){
-            $js = "
+    $all_data[$employment_type][] = $record;
+}
+
+$salaried_count = count($all_data[PayrollType::$SALARIED]);
+$non_salaried_count = count($all_data[PayrollType::$NON_SALARIED]);
+
+$js = "";
+$employeeData = '<div class="payroll-emp-wrapper">';
+
+foreach($all_data as $employment_type => $employment_data) {
+
+    if(($employment_type == PayrollType::$SALARIED && $salaried_count > 1)
+    || ($employment_type == PayrollType::$NON_SALARIED && $non_salaried_count > 1)) {
+        $class = strtolower($employment_type);
+        $js .= "
 
                 jQuery(document).ready(function() {
-                    if (jQuery('#emp-agency-detail-records').filter(':first').length > 0) {
-                        jQuery('#emp-agency-detail-records').filter(':first')
+                    if (jQuery('#emp-agency-detail-records-$class').filter(':first').length > 0) {
+                        jQuery('#emp-agency-detail-records-$class').filter(':first')
                             .cycle({
                                 slideExpr:'.emp-agency-detail-record',
-                                prev: '#prev-emp-salaried',
-                                next: '#next-emp-salaried',
+                                prev: '#prev-emp-$class',
+                                next: '#next-emp-$class',
                                 fx: 'scrollVert',
                                 speed: 0,
                                 width:'640px',
@@ -57,120 +80,99 @@ if(is_array($node->data) && count($node->data) > 0){
                             });
                     }
                 });";
-         }
+    }
+}
 
-        if($non_salaried_count > 1){
-            $js = "
+if($default_view == PayrollType::$SALARIED) {
+    $js .= "
+        jQuery('.emp-record-salaried').show();
+        jQuery('.emp-record-non-salaried').hide();
+    ";
+}
+else {
+    $js .= "
+        jQuery('.emp-record-salaried').hide();
+        jQuery('.emp-record-non-salaried').show();
+    ";
+}
+$js .= "
+        function toggleEmployee() {
+            jQuery('.emp-record-salaried').toggle();
+            jQuery('.emp-record-non-salaried').toggle();
+        };
+    ";
 
-                jQuery(document).ready(function() {
-                    if (jQuery('#emp-agency-detail-records').filter(':first').length > 0) {
-                        jQuery('#emp-agency-detail-records').filter(':first')
-                            .cycle({
-                                slideExpr:'.emp-agency-detail-record',
-                                prev: '#prev-emp-non-salaried',
-                                next: '#next-emp-non-salaried',
-                                fx: 'scrollVert',
-                                speed: 0,
-                                width:'640px',
-                                timeout: 0
-                            });
-                    }
-                 });";
-        }
-
-
-        $js = "
-                jQuery('.emp-record-salaried').show();
-                jQuery('.emp-record-non-salaried').hide();
-
-                function toggleEmployee() {
-                    jQuery('.emp-record-salaried').toggle();
-                    jQuery('.emp-record-non-salaried').toggle();
-                };
-            ";
-
-
-            if($_REQUEST['appendScripts']){
-                print "<script type='text/javascript'>" . $js . "</script>";
-            }
-            else{
-                drupal_add_js($js,"inline");
-            }
+    if($_REQUEST['appendScripts']){
+        print "<script type='text/javascript'>" . $js . "</script>";
+    }
+    else{
+        drupal_add_js($js,"inline");
     }
 
-    $employeeData .= "<div id='emp-agency-detail-records'>";
+foreach($all_data as $employment_type => $employment_data) {
 
-    foreach($node->data as $data){
+    $class = strtolower($employment_type);
 
-        $typeOfEmployment = $data['employment_type_employment_type'];
-        $class = strtolower($typeOfEmployment);
-        $year = $data['year_year'];
-        $yearType = $data['year_type_year_type'];
-        $agency = strtoupper($data['agency_agency_agency_name']);
-        $agencyUrl  = "<a href='/payroll/agency_landing/yeartype/$yearType/year/$year/agency/{$data['agency_agency']}'>{$agency}</a>";
+    $employeeData .= "<div id='prev-emp-$class' class='emp-record-$class' href='#'></div>";
 
-        $original_title = $data['civil_service_title_civil_service_title'];
-        $title = mb_convert_case(strtolower($original_title), MB_CASE_TITLE, "UTF-8");
-        $original_title = urlencode($original_title);
+    $employeeData .= "<div id='emp-agency-detail-records-$class'>";
 
-        $titleUrl = "<a href='/payroll/title_landing/yeartype/$yearType/year/$year/title/$original_title'>{$title}</a>";
+    foreach($employment_data as $data) {
+
+        $title_url = $data['title_url'];
+        $agency_url = $data['agency_url'];
+        $max_annual_salary = $data['max_annual_salary'];
+        $pay_frequency = $data['pay_frequency'];
+        $total_gross_pay = $data['total_gross_pay'];
+        $total_base_salary = $data['total_base_salary'];
+        $total_other_payments = $data['total_other_payments'];
+        $total_overtime_amount = $data['total_overtime_amount'];
 
         $table = "<div class='emp-agency-detail-record'><table id='emp-agency-detail-record-table' class='emp-record-$class'>";
 
-        if($class == 'salaried' && $salaried_count > 1){
-            $table .= "<div id='prev-emp-salaried' class='emp-record-salaried' href='#'></div>";
-        }
-        if($class == 'non-salaried' && $non_salaried_count > 1){
-            $table .= "<div id='prev-emp-non-salaried' class='emp-record-non-salaried' href='#'></div>";
-        }
 
         $table .= "<div id='payroll-emp-trans-name' class='emp-record-$class'>
                         <span class='payroll-label'>Title: </span>
-                        <span class='payroll-value'>{$titleUrl}</span>
+                        <span class='payroll-value'>{$title_url}</span>
                     </div>";
 
 
         $table .= "<tr>
-                        <td width='60%'><strong>". WidgetUtil::getLabel('agency_name') ."</strong>: {$agencyUrl}</td>
-                        <td><strong>". WidgetUtil::getLabel('payroll_type') ."</strong>: ". strtoupper($data['employment_type_employment_type'])."</td>
+                        <td width='60%'><strong>". WidgetUtil::getLabel('agency_name') ."</strong>: {$agency_url}</td>
+                        <td><strong>". WidgetUtil::getLabel('payroll_type') ."</strong>: ". strtoupper($employment_type)."</td>
 
                    </tr>";
         $table .= "<tr>
-                        <td><strong>". ( ($typeOfEmployment == 'Salaried') ? WidgetUtil::getLabel('annual_salary') : WidgetUtil::getLabel('pay_rate'))  ."</strong>: $". number_format($data['max_annual_salary'],2) ."</td>
-                        <td><strong>". WidgetUtil::getLabel('pay_frequency') ."</strong>: ". strtoupper($data['pay_frequency_pay_frequency'])."</td>
+                        <td><strong>". ( ($employment_type == PayrollType::$SALARIED) ? WidgetUtil::getLabel('annual_salary') : WidgetUtil::getLabel('pay_rate'))  ."</strong>: $". number_format($max_annual_salary,2) ."</td>
+                        <td><strong>". WidgetUtil::getLabel('pay_frequency') ."</strong>: ". strtoupper($pay_frequency)."</td>
                    </tr>";
         $table .= "<tr>
-                        <td><strong>". WidgetUtil::getLabel('gross_pay_ytd') ."</strong>:$". number_format($data['total_gross_pay'],2)."</td>
+                        <td><strong>". WidgetUtil::getLabel('gross_pay_ytd') ."</strong>:$". number_format($total_gross_pay,2)."</td>
                         <td></td>
                    </tr>";
         $table .= "<tr>
-                        <td><strong>". WidgetUtil::getLabel('base_pay_ytd') ."</strong>: $". number_format($data['total_base_salary'],2)."</td>
+                        <td><strong>". WidgetUtil::getLabel('base_pay_ytd') ."</strong>: $". number_format($total_base_salary,2)."</td>
                         <td></td>
                    </tr>";
 
         $table .= "<tr>
-                        <td><strong>". WidgetUtil::getLabel('other_pay_ytd') ."</strong>: $". number_format($data['total_other_payments'],2)."</td>
+                        <td><strong>". WidgetUtil::getLabel('other_pay_ytd') ."</strong>: $". number_format($total_other_payments,2)."</td>
                         <td></td>
                    </tr>";
         $table .= "<tr>
-                        <td ><strong>". WidgetUtil::getLabel('overtime_pay_ytd') ."</strong>: $".number_format($data['total_overtime_amount'],2)."</td>
+                        <td ><strong>". WidgetUtil::getLabel('overtime_pay_ytd') ."</strong>: $".number_format($total_overtime_amount,2)."</td>
                         <td></td>
                     </tr>";
 
         $table .= "</table></div>";
 
-        if($class == 'salaried' && $salaried_count > 1){
-            $table .= "<div id='next-emp-salaried' class='emp-record-salaried' href='#'></div>";
-        }
-        if($class == 'non-salaried' && $non_salaried_count > 1){
-            $table .= "<div id='next-emp-non-salaried' class='emp-record-non-salaried' href='#'></div>";
-        }
-
         $employeeData .= $table;
-
     }
+
+    $employeeData .= '</div>';
+    $employeeData .= "<div id='next-emp-$class' class='emp-record-$class' href='#'></div>";
+
     if ($salaried_count && $non_salaried_count) {
-        $employeeData .= "</div>";
         $employeeData .= "<div id='toggle-employee-salaried' class='emp-record-salaried'>
                             <strong>Viewing Salaried Details</strong>&nbsp;|&nbsp;
                             <a href='javascript:toggleEmployee();'>View Non-salaried Details</a>
@@ -179,11 +181,9 @@ if(is_array($node->data) && count($node->data) > 0){
                             <a href='javascript:toggleEmployee();'>View Salaried Details</a>&nbsp;|&nbsp;
                             <strong>Viewing Non-salaried Details</strong>
                           </div>";
-        $employeeData .= "</div>";
     }
-    else {
-        $employeeData .= "</div></div>";
-    }
-
-    print $employeeData;
 }
+
+$employeeData .= '</div>';
+
+print $employeeData;

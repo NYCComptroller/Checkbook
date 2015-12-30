@@ -2688,17 +2688,26 @@ table.outerTable.ma-history{
 .page-payroll-search-transactions .dataTables_wrapper > div + div + div{border:none;}
 .page-payroll-search-transactions .dataTables_processing{top:-20px;}
 #emp-agency-detail-records th, #emp-agency-detail-records td,
+#emp-agency-detail-records-salaried th, #emp-agency-detail-records-salaried td,
+#emp-agency-detail-records-non-salaried th, #emp-agency-detail-records-non-salaried td,
 #emp-agency-detail-record-table th, #emp-agency-detail-record-table td,
+#emp-agency-detail-records-salaried-table th, #emp-agency-detail-records-salaried-table td,
+#emp-agency-detail-records-non-salaried-table th, #emp-agency-detail-records-non-salaried-table td,
 #payroll-tx-static-content-table th, #payroll-tx-static-content-table td{
     padding: 10px 5px;
     white-space: nowrap;
 }
 
-#emp-agency-detail-records th:nth-child(1), #emp-agency-detail-records td:nth-child(1) {
+#emp-agency-detail-records th:nth-child(1),
+#emp-agency-detail-records td:nth-child(1),
+#emp-agency-detail-records-salaried td:nth-child(1),
+#emp-agency-detail-records-non-salaried td:nth-child(1) {
     white-space: normal;
 }
 
-#emp-agency-detail-records {
+#emp-agency-detail-records,
+#emp-agency-detail-records-salaried,
+#emp-agency-detail-records-non-salaried {
     width: 940px !important;
 }
 #prev-emp-salaried,
