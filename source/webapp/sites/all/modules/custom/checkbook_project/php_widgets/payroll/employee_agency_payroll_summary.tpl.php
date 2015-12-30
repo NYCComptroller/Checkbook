@@ -19,15 +19,6 @@
 */
 ?>
 <?php
-//Default view based on salamttype in url
-$default_view = PayrollType::$SALARIED;
-$salamttype = _getRequestParamValue('salamttype');
-if(isset($salamttype)) {
-    $salamttype = explode('~',$salamttype);
-    if (!in_array(1, $salamttype)) {
-        $default_view = PayrollType::$NON_SALARIED;
-    }
-}
 
 $all_data = array();
 foreach($node->data as $data){
@@ -55,6 +46,17 @@ foreach($node->data as $data){
 
 $salaried_count = count($all_data[PayrollType::$SALARIED]);
 $non_salaried_count = count($all_data[PayrollType::$NON_SALARIED]);
+
+//Default view based on salamttype in url
+$default_view = $salaried_count > 0 ? PayrollType::$SALARIED : PayrollType::$NON_SALARIED;
+$salamttype = _getRequestParamValue('salamttype');
+if(isset($salamttype)) {
+    $salamttype = explode('~',$salamttype);
+    if (!in_array(1, $salamttype)) {
+        $default_view = PayrollType::$NON_SALARIED;
+    }
+}
+
 
 $js = "";
 $employeeData = '<div class="payroll-emp-wrapper">';
