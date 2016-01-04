@@ -183,7 +183,7 @@
             {"sClass":"number pad-left","asSorting": [ "desc","asc" ]},
             {"sClass":"number pad-left","asSorting": [ "desc","asc" ]},
             {"sClass":"number pad-left","asSorting": [ "desc","asc" ]},
-            {"sClass":"number endCol", "sWidth":"110px","asSorting": [ "asc","desc" ]}
+            {"sClass":"text pad-left endCol", "asSorting": [ "asc","desc" ]}
         ],
         "sScrollX": "100%",
         "bScrollCollapse": true,
