@@ -187,10 +187,10 @@ class RequestUtil{
         }       
       }
       else if(isset($bottomURL) && preg_match('/payroll_employee_transactions/',$bottomURL)){
-        $title = "Employee Payroll Transactions";
+        $title = "Individual Employee Payroll Transactions";
       }
       else if(isset($bottomURL) && preg_match('/payroll_title_transactions/',$bottomURL)){
-          $title = "Employees Payroll Transactions";
+          $title = "Payroll Summary by Employee Title";
       }
       else if(isset($bottomURL) && preg_match('/payroll_nyc_transactions/',$bottomURL)){
         $smnid = RequestUtil::getRequestKeyValueFromURL("smnid",$bottomURL);
