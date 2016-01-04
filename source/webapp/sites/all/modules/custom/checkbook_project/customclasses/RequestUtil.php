@@ -176,11 +176,11 @@ class RequestUtil{
       if(isset($bottomURL) && preg_match('/payroll_agencytransactions/',$bottomURL)){        
         $smnid = RequestUtil::getRequestKeyValueFromURL("smnid",$bottomURL);
         $dtsmnid = RequestUtil::getRequestKeyValueFromURL("dtsmnid",$bottomURL);
-          if($smnid > 0){
-              $title = NodeSummaryUtil::getInitNodeSummaryTemplateTitle($smnid);
-          }
           if($dtsmnid > 0){
               $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
+          }
+          if($smnid > 0){
+              $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
           }
         else{
           $title =  _checkbook_project_get_name_for_argument("agency_id",RequestUtil::getRequestKeyValueFromURL("agency",$bottomURL)) . ' Payroll Transactions' ;
