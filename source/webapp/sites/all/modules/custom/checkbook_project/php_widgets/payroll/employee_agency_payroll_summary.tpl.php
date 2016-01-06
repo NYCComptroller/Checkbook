@@ -114,8 +114,10 @@ $js .= "
 foreach($all_data as $employment_type => $employment_data) {
 
     $class = strtolower($employment_type);
+    if ($salaried_count > 1 || $non_salaried_count >1){
+        $employeeData .= "<div id='prev-emp-$class' class='emp-record-$class' href='#'></div>";
+    }
 
-    $employeeData .= "<div id='prev-emp-$class' class='emp-record-$class' href='#'></div>";
 
     $employeeData .= "<div id='emp-agency-detail-records-$class'>";
 
@@ -172,7 +174,9 @@ foreach($all_data as $employment_type => $employment_data) {
     }
 
     $employeeData .= '</div>';
-    $employeeData .= "<div id='next-emp-$class' class='emp-record-$class' href='#'></div>";
+    if ($salaried_count > 1 || $non_salaried_count >1){
+        $employeeData .= "<div id='next-emp-$class' class='emp-record-$class' href='#'></div>";
+    }
 
     if ($salaried_count && $non_salaried_count) {
         $employeeData .= "<div id='toggle-employee-salaried' class='emp-record-salaried'>
