@@ -310,6 +310,10 @@
                 {"datasetName": "payroll_employee_agency", "columnNames": ["fiscal_year_id", "type_of_year"]},
                 {"datasetName": "payroll_agency", "columnNames": ["fiscal_year_id", "type_of_year"]},
                 {"datasetName": "payroll_year", "columnNames": ["fiscal_year_id", "type_of_year"]}
+        ],
+        "payroll_employee_agency__payroll_agency_employment_type": [
+            {"datasetName": "payroll_employee_agency", "columnNames": ["agency_id", "fiscal_year_id", "type_of_year"]},
+            {"datasetName": "payroll_agency_employment_type", "columnNames": ["agency_id", "fiscal_year_id", "type_of_year"]}
         ]
     }
 }
