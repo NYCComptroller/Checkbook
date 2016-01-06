@@ -109,7 +109,7 @@ class PayrollUtil {
             if(count($where_filters) > 0){
                 $where_filter = ' WHERE ' . implode(' AND ', $where_filters);
             }
-            $sql = "SELECT COUNT(count_employment) AS record_count
+            $sql = "SELECT SUM(count_employment) AS record_count
             FROM {$data_set}".$where_filter;
 
             $result = _checkbook_project_execute_sql_by_data_source($sql,_get_default_datasource());
