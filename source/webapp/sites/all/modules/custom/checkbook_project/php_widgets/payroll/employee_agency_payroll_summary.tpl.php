@@ -114,11 +114,13 @@ $js .= "
 foreach($all_data as $employment_type => $employment_data) {
 
     $class = strtolower($employment_type);
-    if ($salaried_count > 1 || $non_salaried_count >1){
-        $employeeData .= "<div id='prev-emp-$class' class='emp-record-$class' href='#'></div>";
+
+    $employeeData .= "<div class='emp-record-$class'>"; //open
+
+    if (($employment_type == PayrollType::$SALARIED && $salaried_count > 1) ||
+        ($employment_type == PayrollType::$NON_SALARIED && $non_salaried_count >1)) {
+        $employeeData .= "<div id='prev-emp-$class'></div>";
     }
-
-
     $employeeData .= "<div id='emp-agency-detail-records-$class'>";
 
     foreach($employment_data as $data) {
@@ -132,10 +134,10 @@ foreach($all_data as $employment_type => $employment_data) {
         $total_other_payments = $data['total_other_payments'];
         $total_overtime_amount = $data['total_overtime_amount'];
 
-        $table = "<div class='emp-agency-detail-record'><table id='emp-agency-detail-record-table' class='emp-record-$class'>";
+        $table = "<div class='emp-agency-detail-record'><table id='emp-agency-detail-record-table'>";
 
 
-        $table .= "<div id='payroll-emp-trans-name' class='emp-record-$class'>
+        $table .= "<div id='payroll-emp-trans-name'>
                         <span class='payroll-label'>Title: </span>
                         <span class='payroll-value'>{$title_url}</span>
                     </div>";
@@ -174,20 +176,23 @@ foreach($all_data as $employment_type => $employment_data) {
     }
 
     $employeeData .= '</div>';
-    if ($salaried_count > 1 || $non_salaried_count >1){
-        $employeeData .= "<div id='next-emp-$class' class='emp-record-$class' href='#'></div>";
+    if (($employment_type == PayrollType::$SALARIED && $salaried_count > 1) ||
+        ($employment_type == PayrollType::$NON_SALARIED && $non_salaried_count >1)) {
+        $employeeData .= "<div id='next-emp-$class'></div>";
     }
+    $employeeData .= "</div>";
+}
 
-    if ($salaried_count && $non_salaried_count) {
-        $employeeData .= "<div id='toggle-employee-salaried' class='emp-record-salaried'>
+
+if ($salaried_count && $non_salaried_count) {
+    $employeeData .= "<div id='toggle-employee-salaried' class='emp-record-salaried'>
                             <strong>Viewing Salaried Details</strong>&nbsp;|&nbsp;
                             <a href='javascript:toggleEmployee();'>View Non-salaried Details</a>
                           </div>";
-        $employeeData .= "<div id='toggle-employee-non-salaried' class='emp-record-non-salaried'>
+    $employeeData .= "<div id='toggle-employee-non-salaried' class='emp-record-non-salaried'>
                             <a href='javascript:toggleEmployee();'>View Salaried Details</a>&nbsp;|&nbsp;
                             <strong>Viewing Non-salaried Details</strong>
                           </div>";
-    }
 }
 
 $employeeData .= '</div>';
