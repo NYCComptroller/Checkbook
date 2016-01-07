@@ -1,0 +1,44 @@
+{
+    "datasets": {
+        "payroll_employment_type": {
+            "datasourceName":"main",
+            "source":"aggregateon_payroll_employment_type_nyc",
+            "columns": [
+                {"name": "fiscal_year_id"},
+                {"name": "type_of_year"}
+            ]
+        }
+    },
+    "cubes":{
+        "payroll_employment_type":{
+            "sourceDatasetName":"payroll_employment_type",
+            "dimensions":[               {
+                "name":"fiscal_year_id",
+                    "levels":[
+                        {
+                            "name":"fiscal_year_id",
+                            "sourceColumnName":"fiscal_year_id"
+                        }
+                    ]
+                },
+                {
+                    "name":"type_of_year",
+                    "levels":[
+                        {
+                            "name":"type_of_year",
+                            "sourceColumnName":"type_of_year"
+                        }
+                    ]
+                }
+            ],
+            "measures":{
+                "total_salaried_employees": {
+                    "function": "SUM(CASE WHEN type_of_employment = 'Salaried' THEN 1 END)"
+                },
+                "total_non_salaried_employees":{
+                    "function": "SUM(CASE WHEN type_of_employment <> 'Salaried' THEN 1 END)"
+                }
+            }
+        }
+    }
+}
