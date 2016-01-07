@@ -14,7 +14,7 @@ addresses are not even in the Checkbook database.  Data is loaded via
 an extract-transform-load (ETL) process; a typical frequency for
 running the ETL import is a few times per week.
 
-The New York City Office of the Comptroller runs a production instance
+The [New York City Office of the Comptroller](http://comptroller.nyc.gov/) runs a production instance
 of Checkbook NYC at http://checkbooknyc.com/.
 
 Checkbook NYC is licensed under the GNU Affero General Public License,
