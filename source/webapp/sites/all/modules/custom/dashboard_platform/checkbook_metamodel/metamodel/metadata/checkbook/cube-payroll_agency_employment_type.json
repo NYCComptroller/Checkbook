@@ -42,10 +42,10 @@
             ],
             "measures":{
                 "total_salaried_employees": {
-                    "function": "SUM(CASE WHEN type_of_employment = 'Salaried' THEN 1 END)"
+                    "function": "SUM(CASE WHEN type_of_employment = 'Salaried' THEN 1 ELSE 0 END)"
                 },
                 "total_non_salaried_employees":{
-                    "function": "SUM(CASE WHEN type_of_employment <> 'Salaried' THEN 1 END)"
+                    "function": "SUM(CASE WHEN type_of_employment <> 'Salaried' THEN 1 ELSE 0 END)"
                 }
             }
         }
