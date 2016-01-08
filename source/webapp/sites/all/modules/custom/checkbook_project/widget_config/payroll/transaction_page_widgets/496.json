@@ -1,0 +1,24 @@
+{
+    "widgetType": "phpparser",
+    "cleanURLParameters":["year","calyear","yeartype","month","salamttype"],
+    "urlParamMap":{"year":"fiscal_year_id","calyear":"fiscal_year_id","yeartype":"type_of_year","month":"month_id","salamttype":"type_of_employment"},
+    "defaultParameters":{"type_of_year":"B"},
+    "limit":"2",
+    "dataset": "checkbook:payroll_employee_agency_month",
+    "columns": ["total_annual_salary","total_gross_pay","total_base_salary","employment_type.employment_type","total_other_payments","total_overtime_pay","total_overtime_employees@checkbook:payroll_agency_month","total_employees@checkbook:payroll_year_month","total_salaried_employees@checkbook:payroll_year_month","total_hourly_employees@checkbook:payroll_year_month","year.year","month.month","year_type.year_type"],
+    "adjustParameters":"
+    $amount_basis_id = _getRequestParamValue('salamttype');
+    if(isset($amount_basis_id)) {
+        $type_of_employment = PayrollUtil::getEmploymentTypeByAmountBasisId($amount_basis_id);
+        if(isset($type_of_employment)) {
+            $parameters['type_of_employment'][0] = $type_of_employment;
+        }
+    }
+    $adjustedParameters = $parameters;
+    if(function_exists('_checkbook_project_applyParameterFilters')){
+        $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+    }
+    return $adjustedParameters;
+    ",
+    "template":"payroll_nyc_payroll_summary_by_month"
+}
