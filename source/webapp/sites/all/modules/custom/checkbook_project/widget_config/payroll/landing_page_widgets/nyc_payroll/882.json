@@ -31,7 +31,7 @@ $url .= '/smnid/' . $node->nid;
 $count = $node->count;
 $footer = '';
 
-if($node->PayrollTotalDataCount > 0){
+if($node->totalDataCount > 0){
      $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
 }
 else{
