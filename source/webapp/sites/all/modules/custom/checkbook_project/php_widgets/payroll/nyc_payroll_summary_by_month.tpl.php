@@ -47,7 +47,7 @@ if(is_array($node->data) && count($node->data) > 0){
 
     $employeeData .= "<div id='emp-agency-detail-records'>";
 
-    foreach($node->data as $results){
+    foreach($node->data as $results) {
 
         $employment_type = $results['employment_type_employment_type'];
         $class = strtolower($employment_type);
@@ -69,19 +69,23 @@ if(is_array($node->data) && count($node->data) > 0){
             $month_value = $dateObj->format('F');
         }
         $yeartype = 'FY';
-        if(_getRequestParamValue('yeartype') == 'C'){
+        if(_getRequestParamValue('yeartype') == 'C') {
             $yeartype = 'CY';
         }
-        if(_getRequestParamValue('smnid') == 491){
+        if(_getRequestParamValue('smnid') == 491) {
             $total_overtime_employees_label = WidgetUtil::getLabel('total_no_of_ot_employees').':';
             $overtime_employees_value = number_format($results['total_overtime_employees']);
         }
         $table = "<div class='emp-agency-detail-record'><table id='emp-agency-detail-record-table' class='emp-record-$class'>
+
                 <div class='payroll-year-month emp-record-$class'>
                     <span class='label'>". WidgetUtil::getLabel('month') .": </span><span class='data'> {$month_value} </span>
                      &nbsp;&nbsp;|&nbsp;&nbsp;
                     <span class='label'>".WidgetUtil::getLabel('year') .":</span><span class='data'> {$yeartype} {$year_value}</span>
                 </div>
+                ";
+        if($class == 'salaried') {
+            $table .= "
                 <tr>
                     <td width='50%'><strong>". WidgetUtil::getLabel('annual_salary') ."</strong>: {$total_annual_salary}</td>
                     <td><strong>". WidgetUtil::getLabel('payroll_type') ."</strong>: ". strtoupper($employment_type)."</td>
@@ -94,41 +98,63 @@ if(is_array($node->data) && count($node->data) > 0){
                 </tr>
                 <tr>
                     <td><strong>". WidgetUtil::getLabel('base_pay') ."</strong>:{$total_base_pay}</td>
-                    <td><strong>". WidgetUtil::getLabel('total_no_of_sal_employees') ."</strong>: {$total_salaried_employees}</td>
+                    <td><strong>". WidgetUtil::getLabel('total_no_of_sal_employees') ."</strong>: {$total_salaried_employees}</td>";
+            $table .= "</tr>
+                <tr>
+                    <td><strong>". WidgetUtil::getLabel('other_pay') ."</strong>: {$total_other_payments}</td>";
+            if(isset($overtime_employees_value)){
+                $table .= "<td><strong>{$total_overtime_employees_label} </strong> {$overtime_employees_value}</td>";
+            }else{
+                $table .= "<td></td>";
+            }
+            $table .="</tr>
+                <tr>
+                    <td><strong>". WidgetUtil::getLabel('overtime_pay') ."</strong>: {$total_overtime_pay}</td>
+                    <td></td>
+                </tr>";
+        } else {
+            $table .= "
+                <tr>
+                    <td width='50%'><strong>". WidgetUtil::getLabel('gross_pay') ."</strong>: {$total_gross_pay}</td>
+                    <td><strong>". WidgetUtil::getLabel('payroll_type') ."</strong>: ". strtoupper($employment_type)."</td>
+
+                </tr>
+                <tr>
+                    <td><strong>". WidgetUtil::getLabel('base_pay') ."</strong>:{$total_base_pay}</td>
+                    <td width='50%'><strong>". WidgetUtil::getLabel('total_no_of_employees') ."</strong>: {$total_employees}</td>
 
                 </tr>
                 <tr>
                     <td><strong>". WidgetUtil::getLabel('other_pay') ."</strong>: {$total_other_payments}</td>
                     <td><strong>". WidgetUtil::getLabel('total_no_of_non_sal_employees') ."</strong>: {$total_hourly_employees}</td>";
-               $table .= "</tr>
+            $table .= "</tr>
                 <tr>
                     <td><strong>". WidgetUtil::getLabel('overtime_pay') ."</strong>: {$total_overtime_pay}</td>";
-                    if(isset($overtime_employees_value)){
-                        $table .= "<td><strong>{$total_overtime_employees_label} </strong> {$overtime_employees_value}</td>";
-                    }else{
-                        $table .= "<td></td>";
-                    }
+            if(isset($overtime_employees_value)){
+                $table .= "<td><strong>{$total_overtime_employees_label} </strong> {$overtime_employees_value}</td>";
+            }else{
+                $table .= "<td></td>";
+            }
 
-        $table .="</tr>";
-
+            $table .="</tr>";
+        }
         $table .= "</table></div>";
-
         $employeeData .= $table;
-        }
-        if (count($node->data) > 1) {
-            $employeeData .= "<div id='toggle-employee-salaried' class='emp-record-salaried'>
-                                <strong>Viewing Salaried Details</strong>&nbsp;|&nbsp;
-                                <a href='javascript:toggleEmployee();'>View Non-salaried Details</a>
-                              </div>";
-            $employeeData .= "<div id='toggle-employee-non-salaried' class='emp-record-non-salaried'>
-                                <a href='javascript:toggleEmployee();'>View Salaried Details</a>&nbsp;|&nbsp;
-                                <strong>Viewing Non-salaried Details</strong>
-                              </div>";
-            $employeeData .= "</div></div>";
-        }
-        else {
-            $employeeData .= "</div></div>";
-        }
+    }
+    if (count($node->data) > 1) {
+        $employeeData .= "<div id='toggle-employee-salaried' class='emp-record-salaried'>
+                            <strong>Viewing Salaried Details</strong>&nbsp;|&nbsp;
+                            <a href='javascript:toggleEmployee();'>View Non-salaried Details</a>
+                          </div>";
+        $employeeData .= "<div id='toggle-employee-non-salaried' class='emp-record-non-salaried'>
+                            <a href='javascript:toggleEmployee();'>View Salaried Details</a>&nbsp;|&nbsp;
+                            <strong>Viewing Non-salaried Details</strong>
+                          </div>";
+        $employeeData .= "</div></div>";
+    }
+    else {
+        $employeeData .= "</div></div>";
+    }
 
-        print $employeeData;
+    print $employeeData;
 }
