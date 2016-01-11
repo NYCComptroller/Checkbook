@@ -1141,7 +1141,7 @@ class SpendingUtil{
 
         //Sub Vendors Exception
         if(($widgetTitle == "Sub Vendors" || $widgetTitle == "Sub Vendor") && $dashboard == "ss") {
-            $dashboard_title = MappingUtil::getCurrenEhtnicityName();
+            $dashboard_title = MappingUtil::getCurrenEthnicityName();
         }
         //Contract Exception
         else if(($widgetTitle == "Contracts" || $widgetTitle == "Contract") && $category == 1) {
@@ -1149,12 +1149,12 @@ class SpendingUtil{
         }
         //Visualization - Sub Vendors (M/WBE) "Ethnicity" Exception
         else if($smnid == "723" && $dashboard == "sp") {
-            $dashboard_title = MappingUtil::getCurrenEhtnicityName();
+            $dashboard_title = MappingUtil::getCurrenEthnicityName();
             return $widgetTitle . " " . $dashboard_title . " " . $catName . " Transactions";
         }
         //Visualization - Sub Vendors (M/WBE) "Ethnicity" Exception
         else if($smnid == "723" && $dashboard == "ss") {
-            $dashboard_title = MappingUtil::getCurrenEhtnicityName();
+            $dashboard_title = MappingUtil::getCurrenEthnicityName();
         }
 
 
@@ -1192,19 +1192,19 @@ class SpendingUtil{
         }
         //Visualization - M/WBE (Sub Vendors) Exception
         else if($smnid == "subven_mwbe_contracts_visual_2" && $dashboard_param == "ms") {
-            $dashboard = MappingUtil::getCurrenEhtnicityName();
+            $dashboard = MappingUtil::getCurrenEthnicityName();
         }
         //Visualization - "Ethnicity" Spending by Active Expense Contracts Transactions Exception
         else if($smnid == "mwbe_contracts_visual_2") {
-            $dashboard = MappingUtil::getCurrenEhtnicityName();
+            $dashboard = MappingUtil::getCurrenEthnicityName();
         }
         //Visualization - Sub Vendors (M/WBE) Exception
         else if($smnid == "subvendor_contracts_visual_1" && $dashboard_param == "ss") {
-            $dashboard = MappingUtil::getCurrenEhtnicityName();
+            $dashboard = MappingUtil::getCurrenEthnicityName();
         }
         //Visualization - Sub Vendors (M/WBE) Exception
         else if($smnid == "subvendor_contracts_visual_1" && $dashboard_param == "sp") {
-            $dashboard = MappingUtil::getCurrenEhtnicityName();
+            $dashboard = MappingUtil::getCurrenEthnicityName();
         }
         return ($dashboard . " " . $widgetTitle . " " . $contractTitle . " Contracts Transactions");
     }

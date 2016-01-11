@@ -46,7 +46,7 @@
         }
         $node->widgetConfig->chartConfig->series[0]->data = $data;$node->widgetConfig->chartConfig->xAxis->categories = $categories;
         $node->widgetConfig->chartConfig->series[0]->name = 'Disbursement Amount';
-        $node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Top Ten Prime Vendors by Sub Vendors Disbursement Amount';
+        $node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName() . ' Top Ten Prime Vendors by Sub Vendors Disbursement Amount';
 
         return $node->data;
     ",

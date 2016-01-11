@@ -114,7 +114,7 @@ class MappingUtil {
      * @param null $minority_type_ids
      * @return int|string
      */
-    static function getCurrenEhtnicityName($minority_type_ids = null) {
+    static function getCurrenEthnicityName($minority_type_ids = null) {
     	$mwbe_url_params = isset($minority_type_ids) ? $minority_type_ids : explode('~',_getRequestParamValue('mwbe'));
     	
     	foreach(self::$minority_type_category_map_multi_chart as $key=>$values){
@@ -409,7 +409,7 @@ class MappingUtil {
     static function getSubVendorEthinictyTitle($vendor_id, $domain,$is_prime_or_sub = "S"){
     	switch($domain){
     		case "spending":
-    			$current_ethnicity_from_filter = MappingUtil::getCurrenEhtnicityName();
+    			$current_ethnicity_from_filter = MappingUtil::getCurrenEthnicityName();
     			if( $current_ethnicity_from_filter != null && $current_ethnicity_from_filter != "M/WBE" ){
     				$title = " <br/><span class=\"second-line\">M/WBE Category: " . $current_ethnicity_from_filter . "</span>";
     			}else{
@@ -421,7 +421,7 @@ class MappingUtil {
     			}
     			break;
     		case "contracts":
-    			$current_ethnicity_from_filter = MappingUtil::getCurrenEhtnicityName();
+    			$current_ethnicity_from_filter = MappingUtil::getCurrenEthnicityName();
     			if( $current_ethnicity_from_filter != null && $current_ethnicity_from_filter != "M/WBE" ){
     				$title = " <br/><span class=\"second-line\">M/WBE category: " . $current_ethnicity_from_filter . "</span>";
     			}else{

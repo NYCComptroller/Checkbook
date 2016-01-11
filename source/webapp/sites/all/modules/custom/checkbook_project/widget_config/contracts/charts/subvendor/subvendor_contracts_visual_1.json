@@ -148,7 +148,7 @@
 	if($last_param =='vendor'){
 		$node->widgetConfig->chartTitle = 'Prime Vendor Sub Vendors Spending by ' . ContractUtil::getCurrentContractStatusandType() . ' Contracts';
 	}else{
-		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Sub Vendors Spending by ' . ContractUtil::getCurrentContractStatusandType() . ' Contracts';
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName() . ' Sub Vendors Spending by ' . ContractUtil::getCurrentContractStatusandType() . ' Contracts';
 	}
 ",
 "summaryView":{

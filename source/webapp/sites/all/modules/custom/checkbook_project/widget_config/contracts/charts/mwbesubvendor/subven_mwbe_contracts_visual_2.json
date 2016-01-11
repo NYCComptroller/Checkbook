@@ -159,7 +159,7 @@
 	if(preg_match('/pending_rev/',$_GET['q'])){
 		$contract_type = 'Pending Revenue';
 	}
-	$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Sub Spending by ' . $status . ' ' . $contract_type .  ' Contracts';
+	$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName() . ' Sub Spending by ' . $status . ' ' . $contract_type .  ' Contracts';
 ",
 "summaryView":{
     "template":"contract_date_summary",

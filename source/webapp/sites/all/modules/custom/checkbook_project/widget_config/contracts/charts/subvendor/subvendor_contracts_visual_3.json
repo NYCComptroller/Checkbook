@@ -105,7 +105,7 @@
 	}elseif($last_param =='subvendor'){
 		$node->widgetConfig->chartTitle =  'Sub Vendor Top Ten '  .  ContractUtil::getCurrentContractStatusandType() .  ' Sub Vendors Contracts  by Current Amount';
 	}else{
-		$node->widgetConfig->chartTitle =  MappingUtil::getCurrenEhtnicityName() . ' Top Ten '  .  ContractUtil::getCurrentContractStatusandType() .  ' Sub Vendors Contracts  by Current Amount';
+		$node->widgetConfig->chartTitle =  MappingUtil::getCurrenEthnicityName() . ' Top Ten '  .  ContractUtil::getCurrentContractStatusandType() .  ' Sub Vendors Contracts  by Current Amount';
 	}
 ",
 "chartConfig" : {

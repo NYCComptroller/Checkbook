@@ -2206,7 +2206,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
                 $user_criteria['Vendor'] = $values['vendor'];
             }
             if ($values['mwbe_category']) {
-                $form['filter']['mwbe_category'] = array('#markup' => '<div><strong>M/WBE Category:</strong> ' . MappingUtil::getCurrenEhtnicityName(explode('~',$values['mwbe_category'])) . '</div>');
+                $form['filter']['mwbe_category'] = array('#markup' => '<div><strong>M/WBE Category:</strong> ' . MappingUtil::getCurrenEthnicityName(explode('~',$values['mwbe_category'])) . '</div>');
                 $user_criteria['M/WBE Category'] = $values['mwbe_category'];
             }
             if ($values['industry']) {
@@ -5048,7 +5048,7 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
         $user_criteria['Expense Type'] = $values['expense_type'];
     }
     if ($values['mwbe_category']) {
-        $form['filter']['mwbe_category'] = array('#markup' => '<div><strong>M/WBE Category:</strong> ' . MappingUtil::getCurrenEhtnicityName(explode('~',$values['mwbe_category'])) . '</div>');
+        $form['filter']['mwbe_category'] = array('#markup' => '<div><strong>M/WBE Category:</strong> ' . MappingUtil::getCurrenEthnicityName(explode('~',$values['mwbe_category'])) . '</div>');
         $user_criteria['M/WBE Category'] = $values['mwbe_category'];
     }
     if ($values['industry']) {
