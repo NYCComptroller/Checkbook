@@ -167,11 +167,11 @@
 	
 	$mwbe_filter = _getRequestParamValue('mwbe');
 	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){	
-		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName()  . ' Spending';
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName()  . ' Spending';
 		
-		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName()  . ' Top Ten Agencies Spending';
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName()  . ' Top Ten Agencies Spending';
 	}else{
-		$node->widgetConfig->chartTitle = 'Top Ten Agencies by ' . MappingUtil::getCurrenEhtnicityName() .' Spending';
+		$node->widgetConfig->chartTitle = 'Top Ten Agencies by ' . MappingUtil::getCurrenEthnicityName() .' Spending';
 		
 	}
 	

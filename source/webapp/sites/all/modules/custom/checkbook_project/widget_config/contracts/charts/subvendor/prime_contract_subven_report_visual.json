@@ -53,7 +53,7 @@
         }else{
             $node->data = null;
         }
-        $node->widgetConfig->chartTitle =  MappingUtil::getCurrenEhtnicityName() . ' Sub Vendor Reporting by Prime Contracts';
+        $node->widgetConfig->chartTitle =  MappingUtil::getCurrenEthnicityName() . ' Sub Vendor Reporting by Prime Contracts';
         $node->widgetConfig->chartSubTitle =  'Total Number of Contracts: '.number_format($total_contracts);
 ",
 "chartConfig": {
