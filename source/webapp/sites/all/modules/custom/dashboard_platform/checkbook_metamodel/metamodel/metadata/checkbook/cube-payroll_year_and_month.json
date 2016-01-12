@@ -55,6 +55,9 @@
                 },
                 "total_hourly_employees": {
                     "function": "SUM(total_hourly_employees)"
+                },
+                "total_overtime_employees": {
+                    "function": "SUM(total_overtime_employees)"
                 }
             }
         }
