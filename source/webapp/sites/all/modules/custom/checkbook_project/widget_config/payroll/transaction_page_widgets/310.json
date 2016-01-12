@@ -1,7 +1,7 @@
 {
     "widgetType": "data_tables",
     "widgetSubType": "dataTableList",
-    "cleanURLParameters":["abc","xyz","agency","year","title","salamttype","grosspayytd","annualsalary","overtimepayment","payfrequency","payrolltype"],
+    "cleanURLParameters":["abc","xyz","agency","year","title","grosspayytd","annualsalary","overtimepayment","payfrequency","payrolltype"],
     "urlParamMap":{
         "abc":"employee_id.employee_id",
         "xyz":"employee_id.employee_id",
