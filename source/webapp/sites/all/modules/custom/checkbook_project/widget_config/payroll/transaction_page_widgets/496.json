@@ -5,7 +5,7 @@
     "defaultParameters":{"type_of_year":"B"},
     "limit":"2",
     "dataset": "checkbook:payroll_employee_agency_month",
-    "columns": ["total_annual_salary","total_gross_pay","total_base_salary","employment_type.employment_type","total_other_payments","total_overtime_pay","total_overtime_employees@checkbook:payroll_agency_month","total_employees@checkbook:payroll_year_month","total_salaried_employees@checkbook:payroll_year_month","total_hourly_employees@checkbook:payroll_year_month","year.year","month.month","year_type.year_type"],
+    "columns": ["total_annual_salary","total_gross_pay","total_base_salary","employment_type.employment_type","total_other_payments","total_overtime_pay","total_overtime_employees@checkbook:payroll_year_month","total_employees@checkbook:payroll_year_month","total_salaried_employees@checkbook:payroll_year_month","total_hourly_employees@checkbook:payroll_year_month","year.year","month.month","year_type.year_type"],
     "adjustParameters":"
     $amount_basis_id = _getRequestParamValue('salamttype');
     if(isset($amount_basis_id)) {
