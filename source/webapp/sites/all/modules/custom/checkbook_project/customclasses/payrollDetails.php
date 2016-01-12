@@ -42,6 +42,13 @@ class payrollDetails {
             $agency_group_by = ',agency_id,agency_name';
         }
 
+        if(isset($title)) {
+            $title_select = ",civil_service_title";
+            $title_sub_select = ",emp.civil_service_title";
+            $title_sub_group_by = ',emp.civil_service_title';
+            $title_group_by = ',civil_service_title';
+        }
+
         $query = "
             SELECT
                 type_of_employment,
@@ -54,6 +61,7 @@ class payrollDetails {
                 SUM(total_overtime_pay) as total_overtime_pay,
                 CASE WHEN type_of_employment = 'Salaried' THEN SUM(total_salaried_employees) ELSE SUM(total_non_salaried_employees) END AS number_employees
                 {$agency_select}
+                {$title_select}
             FROM (
                     SELECT
                     emp.type_of_year,
@@ -68,6 +76,7 @@ class payrollDetails {
                     emp.employee_number,
                     emp_type.type_of_employment
                     {$agency_sub_select}
+                    {$title_sub_select}
                     FROM aggregateon_payroll_employee_agency emp
                     {$ref_agency_join}
                     JOIN
@@ -86,13 +95,15 @@ class payrollDetails {
                     {$agency_join}
                     {$where}
                     GROUP BY emp.fiscal_year_id, emp.type_of_year, emp.employee_number, emp_type.type_of_employment
+                    {$title_sub_group_by}
                     {$agency_sub_group_by}
                 ) employees
                 GROUP BY type_of_employment, type_of_year, fiscal_year_id
                 {$agency_group_by}
+                {$title_group_by}
     ";
 
-//        log_error('QUERY:' .$query);
+        //log_error('QUERY:' .$query);
         $results = _checkbook_project_execute_sql_by_data_source($query,"checkbook");
         $total_employees = 0;
         foreach($results as $result){
