@@ -138,6 +138,8 @@ foreach($all_data as $employment_type => $employment_data) {
                 ? WidgetUtil::getLabel('total_no_of_sal_employees')
                 : WidgetUtil::getLabel('total_no_of_non_sal_employees');
 
+        //Details link from the agency landing page - don't display agency name
+        $show_agency = !(_getRequestParamValue('dtsmnid') == 325);
 
         if(_getRequestParamValue('smnid') == 322){
             $total_overtime_employees_label = WidgetUtil::getLabel('total_no_of_ot_employees').':';
@@ -148,36 +150,63 @@ foreach($all_data as $employment_type => $employment_data) {
         $table = "<div class='emp-agency-detail-record'><table id='emp-agency-detail-record-table'>";
 
         if($employment_type == PayrollType::$SALARIED) {
-            $table .=
-                "<tr>
-                    <td width='60%'><strong>". WidgetUtil::getLabel('agency_name') ."</strong>: {$agency_url}</td>
-                    <td><strong>". WidgetUtil::getLabel('payroll_type') ."</strong>: ". strtoupper($employment_type)."</td>
-                </tr>
-                <tr>
-                    <td><strong>". WidgetUtil::getLabel('annual_salary') ."</strong>: {$total_annual_salary}</td>
-                    <td><strong>". WidgetUtil::getLabel('total_no_of_employees') ."</strong>: {$total_employees}</td>
-                </tr>
-                <tr>
-                    <td><strong>". WidgetUtil::getLabel('gross_pay_ytd') ."</strong>: {$total_gross_pay}</td>
-                    <td><strong>". $lbl_total_number_employees ."</strong>: {$number_employees}</td>
-                </tr>
-                <tr>
-                    <td><strong>". WidgetUtil::getLabel('base_pay_ytd') ."</strong>: {$total_base_pay}</td>
-                    <td>{$total_ot_emp_col}</td>
-                </tr>
-                <tr>
-                    <td><strong>". WidgetUtil::getLabel('other_pay_ytd') ."</strong>: {$total_other_payments}</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td><strong>". WidgetUtil::getLabel('overtime_pay_ytd') ."</strong>: {$total_overtime_pay}</td>
-                    <td></td>
-                </tr>";
+
+            if($show_agency) {
+                $table .=
+                    "<tr>
+                        <td width='60%'><strong>". WidgetUtil::getLabel('agency_name') ."</strong>: {$agency_url}</td>
+                        <td><strong>". WidgetUtil::getLabel('payroll_type') ."</strong>: ". strtoupper($employment_type)."</td>
+                    </tr>
+                    <tr>
+                        <td><strong>". WidgetUtil::getLabel('annual_salary') ."</strong>: {$total_annual_salary}</td>
+                        <td><strong>". WidgetUtil::getLabel('total_no_of_employees') ."</strong>: {$total_employees}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>". WidgetUtil::getLabel('gross_pay_ytd') ."</strong>: {$total_gross_pay}</td>
+                        <td><strong>". $lbl_total_number_employees ."</strong>: {$number_employees}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>". WidgetUtil::getLabel('base_pay_ytd') ."</strong>: {$total_base_pay}</td>
+                        <td>{$total_ot_emp_col}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>". WidgetUtil::getLabel('other_pay_ytd') ."</strong>: {$total_other_payments}</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><strong>". WidgetUtil::getLabel('overtime_pay_ytd') ."</strong>: {$total_overtime_pay}</td>
+                        <td></td>
+                    </tr>";
+            }
+            else {
+                $table .=
+                    "<tr>
+                        <td><strong>". WidgetUtil::getLabel('annual_salary') ."</strong>: {$total_annual_salary}</td>
+                        <td><strong>". WidgetUtil::getLabel('payroll_type') ."</strong>: ". strtoupper($employment_type)."</td>
+                    </tr>
+                    <tr>
+                        <td><strong>". WidgetUtil::getLabel('gross_pay_ytd') ."</strong>: {$total_gross_pay}</td>
+                        <td><strong>". WidgetUtil::getLabel('total_no_of_employees') ."</strong>: {$total_employees}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>". WidgetUtil::getLabel('base_pay_ytd') ."</strong>: {$total_base_pay}</td>
+                        <td><strong>". $lbl_total_number_employees ."</strong>: {$number_employees}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>". WidgetUtil::getLabel('other_pay_ytd') ."</strong>: {$total_other_payments}</td>
+                        <td>{$total_ot_emp_col}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>". WidgetUtil::getLabel('overtime_pay_ytd') ."</strong>: {$total_overtime_pay}</td>
+                        <td></td>
+                    </tr>";
+            }
         }
         else {
-            $table .=
-                "<tr>
-                    <td width='60%'><strong>". WidgetUtil::getLabel('agency_name') ."</strong>: {$agency_url}</td>
+            if($show_agency) {
+                $table .=
+                    "<tr>
+                        <td width='60%'><strong>". WidgetUtil::getLabel('agency_name') ."</strong>: {$agency_url}</td>
                     <td><strong>". WidgetUtil::getLabel('payroll_type') ."</strong>: ". strtoupper($employment_type)."</td>
                 </tr>
                 <tr>
@@ -196,7 +225,28 @@ foreach($all_data as $employment_type => $employment_data) {
                     <td><strong>". WidgetUtil::getLabel('overtime_pay_ytd') ."</strong>: {$total_overtime_pay}</td>
                     <td></td>
                 </tr>";
+            }
+            else {
+                $table .=
+                    "<tr>
+                    <td><strong>". WidgetUtil::getLabel('gross_pay_ytd') ."</strong>: {$total_gross_pay}</td>
+                    <td><strong>". WidgetUtil::getLabel('payroll_type') ."</strong>: ". strtoupper($employment_type)."</td>
+                </tr>
+                <tr>
+                    <td><strong>". WidgetUtil::getLabel('base_pay_ytd') ."</strong>: {$total_base_pay}</td>
+                    <td><strong>". WidgetUtil::getLabel('total_no_of_employees') ."</strong>: {$total_employees}</td>
+                </tr>
+                <tr>
+                    <td><strong>". WidgetUtil::getLabel('other_pay_ytd') ."</strong>: {$total_other_payments}</td>
+                    <td><strong>". $lbl_total_number_employees ."</strong>: {$number_employees}</td>
+                </tr>
+                <tr>
+                    <td><strong>". WidgetUtil::getLabel('overtime_pay_ytd') ."</strong>: {$total_overtime_pay}</td>
+                    <td>{$total_ot_emp_col}</td>
+                </tr>";
+            }
         }
+
         $table .= "</table></div>";
 
         $employeeData .= $table;
