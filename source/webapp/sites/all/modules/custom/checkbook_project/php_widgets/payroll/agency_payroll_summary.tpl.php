@@ -35,6 +35,7 @@ foreach($node->data as $data){
     $record['total_other_payments'] = $data['total_other_payments'];
     $record['total_overtime_pay'] = $data['total_overtime_pay'];
     $record['total_employees'] = $data['total_employees'];
+    $record['total_overtime_employees'] = $data['total_overtime_employees'];
     $record['number_employees'] = $data['number_employees'];
     $record['agency_name'] = $data['agency_name'];
     $record['agency_url'] = "<a href='/payroll/agency_landing/yeartype/$year_type/year/$year/agency/{$data['agency_id']}'>{$agency_name}</a>";
@@ -142,6 +143,7 @@ foreach($all_data as $employment_type => $employment_data) {
             $total_overtime_employees_label = WidgetUtil::getLabel('total_no_of_ot_employees').':';
             $total_overtime_employees = number_format($data['total_overtime_employees']);
         }
+        $total_ot_emp_col = isset($total_overtime_employees) ? "<strong>{$total_overtime_employees_label} </strong> {$total_overtime_employees}" : "";
 
         $table = "<div class='emp-agency-detail-record'><table id='emp-agency-detail-record-table'>";
 
@@ -160,7 +162,7 @@ foreach($all_data as $employment_type => $employment_data) {
             </tr>
             <tr>
                 <td><strong>". WidgetUtil::getLabel('base_pay_ytd') ."</strong>: {$total_base_pay}</td>
-                <td></td>
+                <td>{$total_ot_emp_col}</td>
             </tr>
             <tr>
                 <td><strong>". WidgetUtil::getLabel('other_pay_ytd') ."</strong>: {$total_other_payments}</td>

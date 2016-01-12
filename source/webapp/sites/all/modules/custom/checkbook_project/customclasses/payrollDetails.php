@@ -59,6 +59,7 @@ class payrollDetails {
                 SUM(total_base_pay) as total_base_pay,
                 SUM(total_other_payments) as total_other_payments,
                 SUM(total_overtime_pay) as total_overtime_pay,
+                SUM(total_overtime_employees) as total_overtime_employees,
                 CASE WHEN type_of_employment = 'Salaried' THEN SUM(total_salaried_employees) ELSE SUM(total_non_salaried_employees) END AS number_employees
                 {$agency_select}
                 {$title_select}
@@ -71,6 +72,7 @@ class payrollDetails {
                     SUM(emp.other_payments) AS total_other_payments,
                     SUM(emp.overtime_pay) AS total_overtime_pay,
                     MAX(emp.annual_salary) AS total_annual_salary,
+                    COUNT(DISTINCT (CASE WHEN COALESCE(overtime_pay,0) > 0 THEN employee_number END)) AS total_overtime_employees,
                     COUNT(DISTINCT (CASE WHEN emp_type.type_of_employment = 'Salaried' THEN emp_type.employee_number_1 END)) AS total_salaried_employees,
                     COUNT(DISTINCT (CASE WHEN emp_type.type_of_employment = 'Non-Salaried' THEN emp_type.employee_number_1 END)) AS total_non_salaried_employees,
                     emp.employee_number,
@@ -103,7 +105,7 @@ class payrollDetails {
                 {$title_group_by}
     ";
 
-        //log_error('QUERY:' .$query);
+//        log_error('QUERY:' .$query);
         $results = _checkbook_project_execute_sql_by_data_source($query,"checkbook");
         $total_employees = 0;
         foreach($results as $result){
