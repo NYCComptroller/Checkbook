@@ -20,21 +20,46 @@
 ?>
 <?php
 
-$results = $node->data[0];
-if($results){
-    $total_annual_salary = custom_number_formatter_format($results['total_annual_salary'],2,'$');
-    $total_gross_pay = custom_number_formatter_format($results['total_gross_pay'],2,'$');
-    $total_base_pay = custom_number_formatter_format($results['total_base_pay'],2,'$');
-    $total_other_payments = custom_number_formatter_format($results['total_other_payments'],2,'$');
-    $total_overtime_pay = custom_number_formatter_format($results['total_overtime_pay'],2,'$');
-    $total_salaried_employees = number_format($results['total_salaried_employees@checkbook:payroll_year']);
-    $total_hourly_employees = number_format($results['total_hourly_employees@checkbook:payroll_year']);
-    $total_employees = number_format($results['total_employees@checkbook:payroll_year']);
-    $year = $results['year_year'];
-    $yearType = $results['year_type_year_type'];
-    $total_overtime_employees = number_format($results['total_overtime_employees']);
-    $total_overtime_employees_label = WidgetUtil::getLabel('total_no_of_ot_employees').':';
-    $payroll_type = strtoupper('Salaried');
+$all_data = array();
+
+$total_annual_salary = 0;
+$total_gross_pay = 0;
+$total_base_pay = 0;
+$total_other_payments = 0;
+$total_overtime_pay = 0;
+$total_salaried_employees = 0;
+$total_hourly_employees = 0;
+$total_employees = 0;
+
+foreach($node->data as $data) {
+
+    $employment_type = $data['type_of_employment'];
+    $total_annual_salary += $data['total_annual_salary'];
+    $total_gross_pay += $data['total_gross_pay'];
+    $total_base_pay += $data['total_base_pay'];
+    $total_other_payments += $data['total_other_payments'];
+    $total_overtime_pay += $data['total_overtime_pay'];
+    $total_employees += $data['number_employees'];
+
+    if ($employment_type == PayrollType::$SALARIED) {
+        $total_salaried_employees += $data['number_employees'];
+    }
+    else {
+        $total_hourly_employees += $data['number_employees'];
+    }
+}
+
+$total_annual_salary = custom_number_formatter_format($total_annual_salary,2,'$');
+$total_gross_pay = custom_number_formatter_format($total_gross_pay,2,'$');
+$total_base_pay = custom_number_formatter_format($total_base_pay,2,'$');
+$total_other_payments = custom_number_formatter_format($total_other_payments,2,'$');
+$total_overtime_pay = custom_number_formatter_format($total_overtime_pay,2,'$');
+$total_salaried_employees = number_format($total_salaried_employees);
+$total_hourly_employees = number_format($total_hourly_employees);
+$total_employees =  number_format($total_employees);
+$total_overtime_employees = number_format($total_overtime_employees);
+$total_overtime_employees_label = WidgetUtil::getLabel('total_no_of_ot_employees').':';
+$payroll_type = strtoupper(PayrollType::$SALARIED);
 
 $table = "
 <div id='payroll-tx-static-content'>
@@ -66,4 +91,3 @@ $table = "
     $table .= "</table></div>";
 
     print $table;
-}
