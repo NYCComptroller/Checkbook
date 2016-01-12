@@ -1,10 +1,6 @@
 {
     "widgetType": "phpparser",
-    "cleanURLParameters":["agency","year","calyear","yeartype","title"],
-    "urlParamMap":{"agency":"agency_id","year":"fiscal_year_id","calyear":"fiscal_year_id","yeartype":"type_of_year","title":"civil_service_title.civil_service_title"},
-    "defaultParameters":{"type_of_year":"B"},
-    "limit":"17",
-    "dataset": "checkbook:payroll_employee_agency_employee",
-    "columns": ["txcount","year_type.year_type", "year.year","civil_service_title.civil_service_title","employment_type.employment_type","total_salaried_employees@checkbook:payroll_agency_employment_type","total_non_salaried_employees@checkbook:payroll_agency_employment_type","total_salaried_employees@checkbook:payroll_employment_type","total_non_salaried_employees@checkbook:payroll_employment_type","combined_total_gross_pay","combined_total_base_salary","combined_total_other_payments","combined_total_overtime_amount"],
-    "template":"payroll_employee_payroll_summary"
+    "template":"payroll_employee_payroll_summary",
+    "customDataHandlerClass":"payrollDetails",
+    "noDataInitialLoad":true
 }
