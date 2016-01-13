@@ -122,7 +122,7 @@
     "aoColumns":[
         {"bSortable":false,"sClass":"text","asSorting": [ "asc","desc" ]},
         {"bSortable":true,"sClass":"number","sWidth":"170px","asSorting": [ "desc","asc"  ]},
-        {"bSortable":true,"sClass":"number","asSorting": [ "desc","asc"  ]},
+        {"bSortable":true,"sClass":"number","sWidth":"180px","asSorting": [ "desc","asc"  ]},
         {"bSortable":true,"sClass":"number","sWidth":"130px","asSorting": [ "desc","asc"  ]},
         {"bSortable":true,"sClass":"number","sWidth":"160px","asSorting": [ "desc","asc"  ]},
         {"bSortable": false,"sWidth":"15px" }
