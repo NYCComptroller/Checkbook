@@ -108,7 +108,6 @@
           ],
     "adjustDataTableOptions":"
 
-            $type = _getRequestParamValue('type');
             $nid = _getRequestParamValue('smnid');
             if(!isset($nid)) {
                 $nid = !isset($nid) ? _getRequestParamValue('dtsmnid') : $nid;
@@ -116,15 +115,8 @@
             if(isset($nid)){
                 switch($nid){
                     case 322:
-                        if(isset($type) && $type == 'ot'){
-                            $node->widgetConfig->dataTableOptions->aaSorting = array(array(8,'desc'));
-                        }
-                        else {
-                            $node->widgetConfig->dataTableOptions->aaSorting = array(array(5,'desc'));
-                        }
-                    break;
                     case 491:
-                        $node->widgetConfig->dataTableOptions->aaSorting = array(array(8,'desc'));
+                        $node->widgetConfig->dataTableOptions->aaSorting = array(array(7,'desc'));
                     break;
                     case 320:
                     case 325:

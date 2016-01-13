@@ -23,7 +23,6 @@ return $header;
 "footer":"
 $url = '/panel_html/payroll_nyc_transactions/payroll/transactions';
 $url .= _checkbook_project_get_year_url_param_string();
-$url .= '/type/ot';
 $url .= _checkbook_project_get_url_param_string(\"agency\");
 $url .= _checkbook_project_get_url_param_string(\"title\");
 $url .= '/smnid/' . $node->nid;
@@ -64,7 +63,7 @@ return $footer;
    },
   "total_overtime_expense_link":{
      "type":"expression2",
-    "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/payroll_agencytransactions/payroll/agencywide/transactions' ._checkbook_project_get_year_url_param_string() . '/type/ot'.'/agency/' .  $row[agency_agency] . _checkbook_project_get_url_param_string(\"title\") . '/smnid/322\">' . $row['total_overtime_expense_formatted'] . '</a>'"
+    "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/payroll_agencytransactions/payroll/agencywide/transactions' ._checkbook_project_get_year_url_param_string() . '/agency/' .  $row[agency_agency] . _checkbook_project_get_url_param_string(\"title\") . '/smnid/322\">' . $row['total_overtime_expense_formatted'] . '</a>'"
    },
   "total_overtime_employees_formatted":{
      "type":"expression2",
