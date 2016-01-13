@@ -2724,11 +2724,13 @@ table.outerTable.ma-history{
 #prev-emp-non-salaried{
     left:100px;
     background: url(../images/NYC-Arrow_left.png) no-repeat scroll;
+    cursor: pointer;
 }
 #next-emp-salaried,
 #next-emp-non-salaried{
     right:100px;
     background: url(../images/NYC-Arrow_right.png) no-repeat scroll;
+    cursor: pointer;
 }
 
 #emp-agency-detail-record-table {
