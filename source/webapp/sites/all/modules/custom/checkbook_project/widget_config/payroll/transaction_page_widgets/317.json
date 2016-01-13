@@ -48,19 +48,19 @@
         },
         "formatted_salary_amount": {
             "type": "expression2",
-            "expression": " $row['employment_type_employment_type'] == 'Salaried' ? custom_number_formatter_basic_format($row['total_salaried_amount'])  : '-'  "
+            "expression": " isset($row['total_salaried_amount']) ? custom_number_formatter_basic_format($row['total_salaried_amount'])  : '-'  "
         },
         "annual_salary_link": {
             "type": "expression2",
-            "expression": "$row['total_salaried_amount'] > 0 ? '<a href=/payroll' . _checkbook_project_get_year_url_param_string() . '?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string('agency') . '/salamttype/1/abc/' . $row[employee_employee] . '>'. $row[formatted_salary_amount] .'</a>' : '-'"
+            "expression": "isset($row['total_salaried_amount']) ? '<a href=/payroll' . _checkbook_project_get_year_url_param_string() . '?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string('agency') . '/salamttype/1/abc/' . $row[employee_employee] . '>'. $row[formatted_salary_amount] .'</a>' : '-'"
         },
         "formatted_non_salary_amount": {
             "type": "expression2",
-            "expression": " $row['employment_type_employment_type'] == 'Salaried' ? '-' : custom_number_formatter_basic_format($row['total_non_salaried_amount'])"
+            "expression": " isset($row['total_non_salaried_amount']) ? custom_number_formatter_basic_format($row['total_non_salaried_amount']) : '-'"
         },
         "non_salary_link": {
             "type": "expression2",
-            "expression": " $row['total_non_salaried_amount'] > 0 ? '<a href=/payroll' . _checkbook_project_get_year_url_param_string() . '?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string('agency') . '/salamttype/2~3/abc/' . $row[employee_employee] . '>'. $row[formatted_non_salary_amount] .'</a>' : '-'"
+            "expression": " isset($row['total_non_salaried_amount']) ? '<a href=/payroll' . _checkbook_project_get_year_url_param_string() . '?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string('agency') . '/salamttype/2~3/abc/' . $row[employee_employee] . '>'. $row[formatted_non_salary_amount] .'</a>' : '-'"
         },
         "export_salary_amount": {
             "type": "expression2",
