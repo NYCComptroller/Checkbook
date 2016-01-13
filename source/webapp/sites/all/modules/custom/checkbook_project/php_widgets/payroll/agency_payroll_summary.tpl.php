@@ -27,7 +27,7 @@ foreach($node->data as $data){
     $year = $data['fiscal_year_id'];
     $year_type = $data['type_of_year'];
     $employment_type = $data['type_of_employment'];
-    $agency_name = strtoupper($data['agency_name']);
+    $agency_name = _shorten_word_with_tooltip(strtoupper($data['agency_name']),25);
 
     $record['total_annual_salary'] = $data['total_annual_salary'];
     $record['total_gross_pay'] = $data['total_gross_pay'];

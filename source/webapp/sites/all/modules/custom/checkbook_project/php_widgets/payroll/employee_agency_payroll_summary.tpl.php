@@ -29,7 +29,7 @@ foreach($node->data as $data){
     $year_type = $data['year_type_year_type'];
     $original_title = $data['civil_service_title_civil_service_title'];
     $title = mb_convert_case(strtolower($original_title), MB_CASE_TITLE, "UTF-8");
-    $agency_name = strtoupper($data['agency_agency_agency_name']);
+    $agency_name = _shorten_word_with_tooltip(strtoupper($data['agency_agency_agency_name']),25);
 
     $record['title_url'] = "<a href='/payroll/title_landing/yeartype/$yearType/year/$year/title/$original_title'>{$title}</a>";
     $record['agency_url'] = "<a href='/payroll/agency_landing/yeartype/$year_type/year/$year/agency/{$data['agency_agency']}'>{$agency_name}</a>";
