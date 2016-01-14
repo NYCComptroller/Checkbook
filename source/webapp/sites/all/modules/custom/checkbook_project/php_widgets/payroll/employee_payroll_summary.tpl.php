@@ -76,9 +76,9 @@ foreach($node->data as $data) {
     $employment_type = $data['type_of_employment'];
     $year = $data['fiscal_year_id'];
     $year_type = $data['type_of_year'];
-    $title = $data['civil_service_title'];
+   // $title = $data['civil_service_title'];
     $original_title = $data['civil_service_title'];
-    $title = strtolower($original_title);
+    $title = mb_convert_case(strtolower($original_title), MB_CASE_TITLE, "UTF-8");
     $class = strtolower($employment_type);
     $total_annual_salary = custom_number_formatter_format($data['total_annual_salary'],2,'$');
     $total_gross_pay = custom_number_formatter_format($data['total_gross_pay'],2,'$');
@@ -88,7 +88,7 @@ foreach($node->data as $data) {
     $number_employees = number_format($data['number_employees']);
     $total_employees =  number_format($node->total_employees);
 
-    $title_url = "<a href='/payroll/title_landing/yeartype/$year_type/year/$year/title/$original_title'>{$original_title}</a>";
+    $title_url = "<a href='/payroll/title_landing/yeartype/$year_type/year/$year/title/$original_title'>{$title}</a>";
 
     $lbl_total_number_employees =
         $employment_type == PayrollType::$SALARIED
