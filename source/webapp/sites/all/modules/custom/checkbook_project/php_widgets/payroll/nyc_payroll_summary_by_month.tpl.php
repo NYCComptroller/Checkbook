@@ -49,43 +49,39 @@ if(is_array($node->data) && count($node->data) > 0){
 
     foreach($node->data as $results) {
 
-        $employment_type = $results['employment_type_employment_type'];
+        $employment_type = $results['type_of_employment'];
         $class = strtolower($employment_type);
         $total_annual_salary = custom_number_formatter_format($results['total_annual_salary'],2,'$');
         $total_gross_pay = custom_number_formatter_format($results['total_gross_pay'],2,'$');
-        $total_base_pay = custom_number_formatter_format($results['total_base_salary'],2,'$');
+        $total_base_pay = custom_number_formatter_format($results['total_base_pay'],2,'$');
         $total_other_payments = custom_number_formatter_format($results['total_other_payments'],2,'$');
         $total_overtime_pay = custom_number_formatter_format($results['total_overtime_pay'],2,'$');
-        $total_salaried_employees = number_format($results['total_salaried_employees@checkbook:payroll_year_month']);
-        $total_hourly_employees = number_format($results['total_hourly_employees@checkbook:payroll_year_month']);
-        $total_employees = number_format($results['total_employees@checkbook:payroll_year_month']);
-        $year = $results['year_year'];
-        $month = $results['month_month'];
-        $yearType = $results['year_type_year_type'];
+        $number_employees = number_format($results['number_employees']);
+        $total_employees =  number_format($node->total_employees);
+
+        $year = $results['fiscal_year_id'];
+        $month_id = $results['month_id'];
+        $month_name = $results['month_name'];
+        $type_of_year = $results['type_of_year'];
         $year_value = _getYearValueFromID($year);
-        $month_num = _getMonthValueFromId($month);
-        if(isset($month_num)) {
-            $dateObj   = DateTime::createFromFormat('!m', $month_num);
-            $month_value = $dateObj->format('F');
-        }
-        $yeartype = 'FY';
-        if(_getRequestParamValue('yeartype') == 'C') {
-            $yeartype = 'CY';
+        $year_type = 'FY';
+        if($type_of_year == 'C') {
+            $year_type = 'CY';
         }
 
         if(_getRequestParamValue('smnid') == 491) {
             $total_overtime_employees_label = WidgetUtil::getLabel('total_no_of_ot_employees').':';
-            $overtime_employees_value = number_format($results['total_overtime_employees@checkbook:payroll_year_month']);
+            $overtime_employees_value = number_format($results['total_overtime_employees']);
         }
         $table = "<div class='emp-agency-detail-record'><table id='emp-agency-detail-record-table' class='emp-record-$class'>
 
                 <div class='payroll-year-month emp-record-$class'>
-                    <span class='label'>". WidgetUtil::getLabel('month') .": </span><span class='data'> {$month_value} </span>
+                    <span class='label'>". WidgetUtil::getLabel('month') .": </span><span class='data'> {$month_name} </span>
                      &nbsp;&nbsp;|&nbsp;&nbsp;
-                    <span class='label'>".WidgetUtil::getLabel('year') .":</span><span class='data'> {$yeartype} {$year_value}</span>
+                    <span class='label'>".WidgetUtil::getLabel('year') .":</span><span class='data'> {$year_type} {$year_value}</span>
                 </div>
                 ";
-        if($class == 'salaried') {
+        if($employment_type == PayrollType::$SALARIED) {
             $table .= "
                 <tr>
                     <td width='50%'><strong>". WidgetUtil::getLabel('annual_salary') ."</strong>: {$total_annual_salary}</td>
@@ -99,7 +95,7 @@ if(is_array($node->data) && count($node->data) > 0){
                 </tr>
                 <tr>
                     <td><strong>". WidgetUtil::getLabel('base_pay') ."</strong>:{$total_base_pay}</td>
-                    <td><strong>". WidgetUtil::getLabel('total_no_of_sal_employees') ."</strong>: {$total_salaried_employees}</td>";
+                    <td><strong>". WidgetUtil::getLabel('total_no_of_sal_employees') ."</strong>: {$number_employees}</td>";
             $table .= "</tr>
                 <tr>
                     <td><strong>". WidgetUtil::getLabel('other_pay') ."</strong>: {$total_other_payments}</td>";
@@ -127,7 +123,7 @@ if(is_array($node->data) && count($node->data) > 0){
                 </tr>
                 <tr>
                     <td><strong>". WidgetUtil::getLabel('other_pay') ."</strong>: {$total_other_payments}</td>
-                    <td><strong>". WidgetUtil::getLabel('total_no_of_non_sal_employees') ."</strong>: {$total_hourly_employees}</td>";
+                    <td><strong>". WidgetUtil::getLabel('total_no_of_non_sal_employees') ."</strong>: {$number_employees}</td>";
             $table .= "</tr>
                 <tr>
                     <td><strong>". WidgetUtil::getLabel('overtime_pay') ."</strong>: {$total_overtime_pay}</td>";
