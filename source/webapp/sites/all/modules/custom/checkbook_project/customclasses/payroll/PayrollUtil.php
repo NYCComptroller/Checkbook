@@ -97,4 +97,69 @@ class PayrollUtil {
 
         return isset($employee_count) ? $employee_count : 0;
     }
+
+    /**
+     * Gets the total number of salaried and non-salaried employees by passed parameters.
+     * @param $year
+     * @param $year_type
+     * @param null $title
+     * @return int|null
+     */
+    static function getAgencyEmployeeCountByType($year, $year_type, $title = null) {
+
+        $employee_totals = array();
+        $where = "WHERE emp.fiscal_year_id = '$year' AND emp.type_of_year = '$year_type'";
+        $where .= isset($title) ? " AND emp.civil_service_title = '$title'" : "";
+        $sub_query_where = "WHERE fiscal_year_id = '$year' AND type_of_year = '$year_type'";
+
+        $sql = "
+        SELECT
+        agency_id,
+        COUNT(DISTINCT (CASE WHEN COALESCE(emp_type.type_of_employment,'Non-Salaried') = 'Salaried' THEN emp_type.employee_number_1 END)) AS total_salaried_employees,
+        COUNT(DISTINCT (CASE WHEN COALESCE(emp_type.type_of_employment,'Non-Salaried') = 'Non-Salaried' THEN emp.employee_number END)) AS total_non_salaried_employees
+        FROM aggregateon_payroll_employee_agency emp
+        LEFT JOIN
+        (
+            SELECT DISTINCT
+            emp.type_of_employment AS type_of_employment,
+            emp.employee_number AS employee_number_1,
+            emp.fiscal_year_id AS fiscal_year_id_1,
+            emp.type_of_year AS type_of_year_1,
+            emp.agency_id AS agency_id_1
+            FROM aggregateon_payroll_employee_agency emp
+            JOIN
+            (
+                SELECT max(pay_date) as pay_date,
+                employee_number,fiscal_year_id,type_of_year,agency_id
+                FROM aggregateon_payroll_employee_agency
+                {$sub_query_where}
+                GROUP BY employee_number,fiscal_year_id,type_of_year,agency_id
+            ) latest_emp ON latest_emp.pay_date = emp.pay_date
+            AND latest_emp.employee_number = emp.employee_number
+            AND latest_emp.fiscal_year_id = emp.fiscal_year_id
+            AND latest_emp.type_of_year = emp.type_of_year
+            AND latest_emp.agency_id = emp.agency_id
+            AND type_of_employment = 'Salaried'
+        ) emp_type ON emp_type.employee_number_1 = emp.employee_number
+        AND emp_type.type_of_year_1 = emp.type_of_year
+        AND emp_type.fiscal_year_id_1 = emp.fiscal_year_id
+        AND emp_type.agency_id_1 = emp.agency_id
+        {$where}
+        GROUP BY agency_id";
+//        log_error('QUERY:' .$sql);
+        try {
+            $result = _checkbook_project_execute_sql_by_data_source($sql,_get_default_datasource());
+
+            foreach ($result as $row) {
+                $employee_totals[$row['agency_id']] = array(
+                    'total_salaried_employees'=>$row['total_salaried_employees'],
+                    'total_non_salaried_employees'=>$row['total_non_salaried_employees']);
+            }
+        }
+        catch (Exception $e) {
+            log_error("Error in function getEmployeeCount() \nError getting data from controller: \n" . $e->getMessage());
+        }
+
+        return $employee_totals;
+    }
 } 

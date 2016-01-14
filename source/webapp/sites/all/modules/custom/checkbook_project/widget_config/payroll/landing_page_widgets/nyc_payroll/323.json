@@ -8,7 +8,7 @@
      "urlParamMap":{"year":"year.year","calyear":"year.year","yeartype":"type_of_year","title":"civil_service_title.civil_service_title","agency":"agency.agency"},
     "dataset": "checkbook:payroll_employee_agency",
     "noDataInitialLoad":true,
-    "columns": ["agency.agency.agency_name", "agency.agency.agency_short_name", "agency.agency","total_overtime_pay", "total_gross_pay", "total_employees", "total_salaried_employees@checkbook:payroll_agency_employment_type", "total_non_salaried_employees@checkbook:payroll_agency_employment_type", "year_type.year_type", "year.year","total_other_payments"],
+    "columns": ["agency.agency.agency_name", "agency.agency.agency_short_name", "agency.agency","total_overtime_pay", "total_gross_pay", "total_employees", "total_salaried_employees", "total_non_salaried_employees", "year_type.year_type", "year.year","total_other_payments"],
     "limit":5,
     "disableViewAll":true,
     "enableExpand":true,
@@ -35,6 +35,15 @@
           $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
 
     return $footer;
+    ",
+    "transformationPHP":"
+        $employee_totals = PayrollUtil::getAgencyEmployeeCountByType(_getRequestParamValue('year'), _getRequestParamValue('yeartype'), _getRequestParamValue('title'));
+        foreach($node->data as &$row) {
+            $agency_id = $row['agency_agency'];
+            $row['total_salaried_employees'] = $employee_totals[$row['agency_agency']]['total_salaried_employees'];
+            $row['total_non_salaried_employees'] = $employee_totals[$row['agency_agency']]['total_non_salaried_employees'];
+        }
+        return $node->data;
     ",
     "widgetTitle":"Payroll Summary by Agency Title",
     "summaryView":{
@@ -63,11 +72,11 @@
        },
        "total_salaried_employees_formatted":{
          "type":"expression2",
-         "expression": "number_format($row['total_salaried_employees@checkbook:payroll_agency_employment_type'])"
+         "expression": "number_format($row['total_salaried_employees'])"
        },
        "total_hourly_employees_formatted":{
          "type":"expression2",
-         "expression": "number_format($row['total_non_salaried_employees@checkbook:payroll_agency_employment_type'])"
+         "expression": "number_format($row['total_non_salaried_employees'])"
        },
       "total_overtime_expense_formatted":{
          "type":"expression2",
