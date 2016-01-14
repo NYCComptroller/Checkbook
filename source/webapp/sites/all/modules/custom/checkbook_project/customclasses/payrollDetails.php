@@ -42,14 +42,14 @@ class payrollDetails {
         if(isset($month)) {
             $dataset = 'aggregateon_payroll_employee_agency_month';
             $where .= $where == "" ? "WHERE month.month_id = '$month'" : " AND month.month_id = '$month'";
-            $ref_agency_join = "JOIN ref_month month ON month.month_id = emp.month_id";
-            $agency_select = ",month_id, month_name";
-            $agency_sub_select = ",month.month_id, month.month_name";
-            $agency_id_sub_select = ",month_id AS month_id_1";
-            $agency_join = ' AND emp_type.month_id_1 = emp.month_id';
-            $agency_sub_query_group_by = ',month_id';
-            $agency_sub_group_by = ',month.month_id,month.month_name';
-            $agency_group_by = ',month_id,month_name';
+            $ref_month_join = "JOIN ref_month month ON month.month_id = emp.month_id";
+            $month_select = ",month_id, month_name";
+            $month_sub_select = ",month.month_id, month.month_name";
+            $month_id_sub_select = ",month_id AS month_id_1";
+            $month_join = ' AND emp_type.month_id_1 = emp.month_id';
+            $month_sub_query_group_by = ',month_id';
+            $month_sub_group_by = ',month.month_id,month.month_name';
+            $month_group_by = ',month_id,month_name';
             $sub_query_where .= $sub_query_where == "" ? "WHERE month_id = '$month'" : " AND month_id = '$month'";
         }
         if(isset($title)) {
@@ -73,6 +73,7 @@ class payrollDetails {
                 CASE WHEN type_of_employment = 'Salaried' THEN SUM(total_salaried_employees) ELSE SUM(total_non_salaried_employees) END AS number_employees
                 {$agency_select}
                 {$title_select}
+                {$month_select}
             FROM (
                     SELECT
                     emp.type_of_year,
@@ -89,8 +90,10 @@ class payrollDetails {
                     COALESCE(emp_type.type_of_employment,'Non-Salaried') AS type_of_employment
                     {$agency_sub_select}
                     {$title_sub_select}
+                    {$month_sub_select}
                     FROM {$dataset} emp
                     {$ref_agency_join}
+                    {$ref_month_join}
                     LEFT JOIN
                     (
                         SELECT DISTINCT
@@ -99,6 +102,7 @@ class payrollDetails {
                         emp.fiscal_year_id AS fiscal_year_id_1,
                         emp.type_of_year AS type_of_year_1
                         {$agency_id_sub_select}
+                        {$month_id_sub_select}
                         FROM {$dataset} emp
                         JOIN
                         (
@@ -108,6 +112,7 @@ class payrollDetails {
                             {$sub_query_where}
                             GROUP BY employee_number,fiscal_year_id,type_of_year
                             {$agency_sub_query_group_by}
+                            {$month_sub_query_group_by}
                         ) latest_emp ON latest_emp.pay_date = emp.pay_date
                         AND latest_emp.employee_number = emp.employee_number
                         AND latest_emp.fiscal_year_id = emp.fiscal_year_id
@@ -117,14 +122,17 @@ class payrollDetails {
                     AND emp_type.type_of_year_1 = emp.type_of_year
                     AND emp_type.fiscal_year_id_1 = emp.fiscal_year_id
                     {$agency_join}
+                    {$month_join}
                     {$where}
                     GROUP BY emp.fiscal_year_id, emp.type_of_year, emp.employee_number, emp_type.type_of_employment
                     {$title_sub_group_by}
                     {$agency_sub_group_by}
+                    {$month_sub_group_by}
                 ) employees
                 GROUP BY type_of_employment, type_of_year, fiscal_year_id
                 {$agency_group_by}
                 {$title_group_by}
+                {$month_group_by}
     ";
 
 //        log_error('QUERY:' .$query);
