@@ -14,6 +14,7 @@ class payrollDetails {
         $yeartype = _getRequestParamValue("yeartype");
         $title = _getRequestParamValue("title");
         $agency = _getRequestParamValue("agency");
+        $month = _getRequestParamValue("month");
 
         $where = $sub_query_where = $agency_select = "";
         if(isset($year)) {
@@ -28,8 +29,6 @@ class payrollDetails {
         }
         $dataset = 'aggregateon_payroll_employee_agency';
         if(isset($agency)) {
-            $dataset = 'aggregateon_payroll_employee_agency';
-
             $where .= $where == "" ? "WHERE agency.agency_id = '$agency'" : " AND agency.agency_id = '$agency'";
             $ref_agency_join = "JOIN ref_agency agency ON agency.agency_id = emp.agency_id";
             $agency_select = ",agency_id, agency_name";
@@ -40,7 +39,19 @@ class payrollDetails {
             $agency_sub_group_by = ',agency.agency_id,agency.agency_name';
             $agency_group_by = ',agency_id,agency_name';
         }
-
+        if(isset($month)) {
+            $dataset = 'aggregateon_payroll_employee_agency_month';
+            $where .= $where == "" ? "WHERE month.month_id = '$month'" : " AND month.month_id = '$month'";
+            $ref_agency_join = "JOIN ref_month month ON month.month_id = emp.month_id";
+            $agency_select = ",month_id, month_name";
+            $agency_sub_select = ",month.month_id, month.month_name";
+            $agency_id_sub_select = ",month_id AS month_id_1";
+            $agency_join = ' AND emp_type.month_id_1 = emp.month_id';
+            $agency_sub_query_group_by = ',month_id';
+            $agency_sub_group_by = ',month.month_id,month.month_name';
+            $agency_group_by = ',month_id,month_name';
+            $sub_query_where .= $sub_query_where == "" ? "WHERE month_id = '$month'" : " AND month_id = '$month'";
+        }
         if(isset($title)) {
             $title_select = ",civil_service_title";
             $title_sub_select = ",emp.civil_service_title";
@@ -78,7 +89,7 @@ class payrollDetails {
                     COALESCE(emp_type.type_of_employment,'Non-Salaried') AS type_of_employment
                     {$agency_sub_select}
                     {$title_sub_select}
-                    FROM aggregateon_payroll_employee_agency emp
+                    FROM {$dataset} emp
                     {$ref_agency_join}
                     LEFT JOIN
                     (
@@ -116,7 +127,7 @@ class payrollDetails {
                 {$title_group_by}
     ";
 
-        log_error('QUERY:' .$query);
+//        log_error('QUERY:' .$query);
         $results = _checkbook_project_execute_sql_by_data_source($query,"checkbook");
         $total_employees = 0;
         foreach($results as $result){
