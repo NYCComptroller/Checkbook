@@ -58,66 +58,43 @@ class PayrollUtil {
      * @param null $employee_numb
      * @return int|null
      */
-    static function getSalariedEmployeeCount($year, $year_type, $agency_id = null, $employee_number = null) {
-
-        $employee_count = self::getEmployeeCount(PayrollType::$SALARIED, $year, $year_type, $agency_id, $employee_number);
-        return isset($employee_count) ? $employee_count : 0;
-    }
-
-    /**
-     * Returns the count of non-salaried employees
-     * @param $year
-     * @param $year_type
-     * @param null $agency_id
-     * @param null $employee_number
-     * @return int|null
-     */
-    static function getNonSalariedEmployeeCount($year, $year_type, $agency_id = null, $employee_number = null) {
-
-        $employee_count = self::getEmployeeCount(PayrollType::$NON_SALARIED, $year, $year_type, $agency_id, $employee_number);
-        return isset($employee_count) ? $employee_count : 0;
-    }
-
-    /**
-     * Returns the count of employees based on type
-     * @param PayrollType $payrollType
-     * @param $year
-     * @param $year_type
-     * @param $agency_id
-     * @param $employee_number
-     * @return null
-     */
-    static function getEmployeeCount($payrollType, $year, $year_type, $agency_id, $employee_number) {
+    static function getSalariedEmployeeCount($year, $year_type, $agency_id = null) {
 
         $employee_count = null;
+        $agency = isset($agency_id);
+
+        $sub_query_where = "WHERE fiscal_year_id = '$year' AND type_of_year = '$year_type'";
+        $sub_query_group_by = "GROUP BY employee_number,fiscal_year_id,type_of_year";
+        $sub_query_group_by .= $agency ? ",agency_id" : "";
+        $where = $agency ? "WHERE agency_id = '$agency_id'" : "";
+
+        $sql = "
+                SELECT COUNT(DISTINCT emp.employee_number) AS record_count
+                FROM aggregateon_payroll_employee_agency emp
+                JOIN
+                (
+                    SELECT max(pay_date) as pay_date,
+                    employee_number,fiscal_year_id,type_of_year
+                    FROM aggregateon_payroll_employee_agency
+                    {$sub_query_where}
+                    {$sub_query_group_by}
+                ) latest_emp ON latest_emp.pay_date = emp.pay_date
+                AND latest_emp.employee_number = emp.employee_number
+                AND latest_emp.fiscal_year_id = emp.fiscal_year_id
+                AND latest_emp.type_of_year = emp.type_of_year
+                AND type_of_employment = 'Salaried'
+                {$where}";
+        log_error('QUERY:' .$sql);
 
         try {
-            $data_set = isset($agency_id) ? 'aggregateon_payroll_employment_type' : 'aggregateon_payroll_employment_type_nyc';
-            $parameters = array(
-                'fiscal_year_id' => $year,
-                'type_of_year' => $year_type,
-                'type_of_employment' => $payrollType
-            );
-            if(isset($agency_id)) $parameters['agency_id'] = $agency_id;
-            if(isset($employee_number)) $parameters['employee_number'] = $employee_number;
-
-            $where_filter = '';
-            $where_filters = array();
-            foreach($parameters as $param => $value) {
-                $where_filters[] = _widget_build_sql_condition($param, $value);
-            }
-            if(count($where_filters) > 0){
-                $where_filter = ' WHERE ' . implode(' AND ', $where_filters);
-            }
-            $sql = "SELECT COUNT(*) AS record_count
-            FROM {$data_set}".$where_filter;
-
             $result = _checkbook_project_execute_sql_by_data_source($sql,_get_default_datasource());
             $employee_count= (int)$result[0]['record_count'];
         }
         catch (Exception $e) {
             log_error("Error in function getEmployeeCount() \nError getting data from controller: \n" . $e->getMessage());
         }
-        return $employee_count;
+
+
+        return isset($employee_count) ? $employee_count : 0;
     }
 } 
