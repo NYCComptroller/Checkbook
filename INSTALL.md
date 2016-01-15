@@ -149,27 +149,24 @@ Steps to install:
         $ sudo yum install java-1.6.0-openjdk.x86_64
         $ sudo yum install zip.x86_64
 
-        # For drush (the Drupal Shell), we have to install it via the
-        # Pear PHP package management system, because drush apparently
-        # isn't natively packaged in CentOS 6.4 yet.  So:
+    The Drupal Shell (drush) is generally not provided as
+    a package in official distro repositories, so we can
+    install it using Composer:
+    * https://getcomposer.org/doc/00-intro.md#globally
+    * http://docs.drush.org/en/master/install-alternative/
 
-        $ sudo yum -y install php-pear
-        $ sudo pear upgrade
-        $ sudo pear channel-discover pear.drush.org
-        $ sudo pear install drush/drush
-
-        # For PostgreSQL, we want version 9.x, but base CentOS 6.4
-        # only packages PostgreSQL 8.x.  So first download the RPM
-        # file from the PostgreSQL Yum/RPM Building Project at
-        # http://yum.postgresql.org/repopackages.php (look for the
-        # "CentOS 6 - x86_64" link, which as of this writing points to
-        # http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-centos93-9.3-1.noarch.rpm).
+    For PostgreSQL, we want version 9.x, but base CentOS 6.4
+    only packages PostgreSQL 8.x.  So first download the RPM
+    file from the PostgreSQL Yum/RPM Building Project at
+    http://yum.postgresql.org/repopackages.php (look for the
+    "CentOS 6 - x86_64" link, which as of this writing points to
+    http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-centos93-9.3-1.noarch.rpm).
 
         $ sudo rpm -ivh http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-centos93-9.3-1.noarch.rpm
 
-        # That installed the repos RPM -- in other words, it made the
-        # yum/rpm system aware of the PostgreSQL package repository
-        # from which you can now install the actual packages.  Do so:
+    That installed the repos RPM -- in other words, it made the
+    yum/rpm system aware of the PostgreSQL package repository
+    from which you can now install the actual packages.  Do so:
 
         $ sudo yum install postgresql93-server
         $ sudo yum install postgresql93-contrib
@@ -205,6 +202,8 @@ Steps to install:
 
         $ sudo su www-data
         $ cp -a source/webapp/* /var/www/html
+        $ cp -a source/webapp/.idea /var/www/html
+        $ cp source/webapp/.htaccess /var/www/html
         $ ls /var/www/html/
         authorize.php index.php          INSTALL.txt     profiles/  themes/
         CHANGELOG.txt INSTALL.mysql.txt  LICENSE.txt     README.txt update.php
