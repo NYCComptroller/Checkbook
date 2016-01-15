@@ -35,7 +35,6 @@ class payrollDetails {
             $agency_sub_select = ",agency.agency_id, agency.agency_name";
             $agency_id_sub_select = ",agency_id AS agency_id_1";
             $agency_join = ' AND emp_type.agency_id_1 = emp.agency_id';
-            $agency_sub_query_group_by = ',agency_id';
             $agency_sub_group_by = ',agency.agency_id,agency.agency_name';
             $agency_group_by = ',agency_id,agency_name';
         }
@@ -111,7 +110,6 @@ class payrollDetails {
                             FROM {$dataset}
                             {$sub_query_where}
                             GROUP BY employee_number,fiscal_year_id,type_of_year
-                            {$agency_sub_query_group_by}
                             {$month_sub_query_group_by}
                         ) latest_emp ON latest_emp.pay_date = emp.pay_date
                         AND latest_emp.employee_number = emp.employee_number

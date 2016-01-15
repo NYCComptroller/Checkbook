@@ -65,7 +65,6 @@ class PayrollUtil {
 
         $sub_query_where = "WHERE fiscal_year_id = '$year' AND type_of_year = '$year_type'";
         $sub_query_group_by = "GROUP BY employee_number,fiscal_year_id,type_of_year";
-        $sub_query_group_by .= $agency ? ",agency_id" : "";
         $where = $agency ? "WHERE agency_id = '$agency_id'" : "";
 
         $sql = "
@@ -84,7 +83,7 @@ class PayrollUtil {
                 AND latest_emp.type_of_year = emp.type_of_year
                 AND type_of_employment = 'Salaried'
                 {$where}";
-        log_error('QUERY:' .$sql);
+//        log_error('QUERY:' .$sql);
 
         try {
             $result = _checkbook_project_execute_sql_by_data_source($sql,_get_default_datasource());
@@ -130,15 +129,14 @@ class PayrollUtil {
             JOIN
             (
                 SELECT max(pay_date) as pay_date,
-                employee_number,fiscal_year_id,type_of_year,agency_id
+                employee_number,fiscal_year_id,type_of_year
                 FROM aggregateon_payroll_employee_agency
                 {$sub_query_where}
-                GROUP BY employee_number,fiscal_year_id,type_of_year,agency_id
+                GROUP BY employee_number,fiscal_year_id,type_of_year
             ) latest_emp ON latest_emp.pay_date = emp.pay_date
             AND latest_emp.employee_number = emp.employee_number
             AND latest_emp.fiscal_year_id = emp.fiscal_year_id
             AND latest_emp.type_of_year = emp.type_of_year
-            AND latest_emp.agency_id = emp.agency_id
             AND type_of_employment = 'Salaried'
         ) emp_type ON emp_type.employee_number_1 = emp.employee_number
         AND emp_type.type_of_year_1 = emp.type_of_year
