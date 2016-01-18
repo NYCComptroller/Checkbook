@@ -20,53 +20,258 @@
 ?>
 <?php
 
-$results = $node->data[0];
-if($results){
-    $total_annual_salary = custom_number_formatter_format($results['total_annual_salary'],2,'$');
-    $total_gross_pay = custom_number_formatter_format($results['total_gross_pay'],2,'$');
-    $total_base_pay = custom_number_formatter_format($results['total_base_pay'],2,'$');
-    $total_other_payments = custom_number_formatter_format($results['total_other_payments'],2,'$');
-    $total_overtime_pay = custom_number_formatter_format($results['total_overtime_pay'],2,'$');
-    $total_salaried_employees = number_format($results['total_salaried_employees']);
-    $total_employees = number_format($results['total_employees']);
-    $total_hourly_employees = number_format($results['total_hourly_employees']);
-    $agencyId = $results['agency_agency'];
-    $year = $results['year_year'];
-    $yearType = $results['year_type_year_type'];
-    $agencyUrl  = "<a href='/payroll/agency/$agencyId/yeartype/$yearType/year/$year'>{$results['agency_agency_agency_name']}</a>";
-    if(_getRequestParamValue('smnid') == 322){
-        $total_overtime_employees = number_format($results['total_overtime_employees']);
-        $total_overtime_employees_label = WidgetUtil::getLabel('total_no_of_ot_employees').':';
-    }
+$all_data = array();
+foreach($node->data as $data){
 
-$table = "
-<div id='payroll-tx-agency-name'><span class='payroll-label'>". WidgetUtil::getLabel('agency_name') ."</span>: {$agencyUrl}</div>
+    $record = array();
+    $year = $data['fiscal_year_id'];
+    $year_type = $data['type_of_year'];
+    $employment_type = $data['type_of_employment'];
+    $agency_name = _shorten_word_with_tooltip(strtoupper($data['agency_name']),25);
 
-<div id='payroll-tx-static-content'>
-    <table id='payroll-tx-static-content-table'>
-        <tr>
-            <td width='50%'> <strong>". WidgetUtil::getLabel('annual_salary') ."</strong>: {$total_annual_salary} </td>
-            <td width='50%'> <strong>". WidgetUtil::getLabel('gross_pay_ytd') ."</strong>: {$total_gross_pay}</td>
-        </tr>
-        <tr>
-            <td><strong>". WidgetUtil::getLabel('base_pay_ytd') ."</strong>: {$total_base_pay}</td>
-            <td><strong>". WidgetUtil::getLabel('other_pay_1_ytd') ."</strong>: {$total_other_payments}</td>
-        </tr>
-        <tr>
-            <td><strong>". WidgetUtil::getLabel('overtime_pay_1_ytd') ."</strong>: {$total_overtime_pay}</td>
-            <td><strong>". WidgetUtil::getLabel('total_no_of_sal_employees') ."</strong>: {$total_salaried_employees}</td>
-        </tr>
-        <tr>
-        <td><strong>". WidgetUtil::getLabel('total_no_of_non_sal_employees') ."</strong>: {$total_hourly_employees}</td>
-        <td><strong>". WidgetUtil::getLabel('total_no_of_employees') ."</strong>: {$total_employees}</td>
-        </tr>";
-    if(isset($total_overtime_employees)){
-        $table .= "<tr>";
-        $table .= "<td><strong>{$total_overtime_employees_label} </strong> {$total_overtime_employees}</td>";
-        $table .= "</tr>";
-    }
+    $record['total_annual_salary'] = $data['total_annual_salary'];
+    $record['total_gross_pay'] = $data['total_gross_pay'];
+    $record['total_base_pay'] = $data['total_base_pay'];
+    $record['total_other_payments'] = $data['total_other_payments'];
+    $record['total_overtime_pay'] = $data['total_overtime_pay'];
+    $record['total_employees'] = $data['total_employees'];
+    $record['total_overtime_employees'] = $data['total_overtime_employees'];
+    $record['number_employees'] = $data['number_employees'];
+    $record['agency_name'] = $data['agency_name'];
+    $record['agency_url'] = "<a href='/payroll/agency_landing/yeartype/$year_type/year/$year/agency/{$data['agency_id']}'>{$agency_name}</a>";
 
-    $table .= "</table></div>";
-
-    print $table;
+    $all_data[$employment_type][] = $record;
 }
+
+$salaried_count = count($all_data[PayrollType::$SALARIED]);
+$non_salaried_count = count($all_data[PayrollType::$NON_SALARIED]);
+
+//Default view based on salamttype in url
+$default_view = $salaried_count > 0 ? PayrollType::$SALARIED : PayrollType::$NON_SALARIED;
+$salamttype = _getRequestParamValue('salamttype');
+if(isset($salamttype)) {
+    $salamttype = explode('~',$salamttype);
+    if (!in_array(1, $salamttype)) {
+        $default_view = PayrollType::$NON_SALARIED;
+    }
+}
+
+
+$js = "";
+$employeeData = '<div class="payroll-emp-wrapper">';
+
+foreach($all_data as $employment_type => $employment_data) {
+
+    if(($employment_type == PayrollType::$SALARIED && $salaried_count > 1)
+    || ($employment_type == PayrollType::$NON_SALARIED && $non_salaried_count > 1)) {
+        $class = strtolower($employment_type);
+        $js .= "
+
+                jQuery(document).ready(function() {
+                    if (jQuery('#emp-agency-detail-records-$class').filter(':first').length > 0) {
+                        jQuery('#emp-agency-detail-records-$class').filter(':first')
+                            .cycle({
+                                slideExpr:'.emp-agency-detail-record',
+                                prev: '#prev-emp-$class',
+                                next: '#next-emp-$class',
+                                fx: 'scrollVert',
+                                speed: 0,
+                                width:'640px',
+                                timeout: 0
+                            });
+                    }
+                });";
+    }
+}
+
+if($default_view == PayrollType::$SALARIED) {
+    $js .= "
+        jQuery('.emp-record-salaried').show();
+        jQuery('.emp-record-non-salaried').hide();
+    ";
+}
+else {
+    $js .= "
+        jQuery('.emp-record-salaried').hide();
+        jQuery('.emp-record-non-salaried').show();
+    ";
+}
+$js .= "
+        function toggleEmployee() {
+            jQuery('.emp-record-salaried').toggle();
+            jQuery('.emp-record-non-salaried').toggle();
+        };
+    ";
+
+    if($_REQUEST['appendScripts']){
+        print "<script type='text/javascript'>" . $js . "</script>";
+    }
+    else{
+        drupal_add_js($js,"inline");
+    }
+
+foreach($all_data as $employment_type => $employment_data) {
+
+    $class = strtolower($employment_type);
+
+    $employeeData .= "<div class='emp-record-$class'>";
+
+    if (($employment_type == PayrollType::$SALARIED && $salaried_count > 1) ||
+        ($employment_type == PayrollType::$NON_SALARIED && $non_salaried_count >1)) {
+        $employeeData .= "<div id='prev-emp-$class'></div>";
+    }
+    $employeeData .= "<div id='emp-agency-detail-records-$class'>";
+
+    foreach($employment_data as $data) {
+
+        $total_annual_salary = custom_number_formatter_format($data['total_annual_salary'],2,'$');
+        $total_gross_pay = custom_number_formatter_format($data['total_gross_pay'],2,'$');
+        $total_base_pay = custom_number_formatter_format($data['total_base_pay'],2,'$');
+        $total_other_payments = custom_number_formatter_format($data['total_other_payments'],2,'$');
+        $total_overtime_pay = custom_number_formatter_format($data['total_overtime_pay'],2,'$');
+        $number_employees = number_format($data['number_employees']);
+        $total_employees =  number_format($node->total_employees);
+        $agency_name =  $data['agency_name'];
+        $agency_url =  $data['agency_url'];
+        $lbl_total_number_employees =
+            $employment_type == PayrollType::$SALARIED
+                ? WidgetUtil::getLabel('total_no_of_sal_employees')
+                : WidgetUtil::getLabel('total_no_of_non_sal_employees');
+
+        //Details link from the agency landing page - don't display agency name
+        $show_agency = !(_getRequestParamValue('dtsmnid') == 325);
+
+        if(_getRequestParamValue('smnid') == 322){
+            $total_overtime_employees_label = WidgetUtil::getLabel('total_no_of_ot_employees').':';
+            $total_overtime_employees = number_format($data['total_overtime_employees']);
+        }
+        $total_ot_emp_col = isset($total_overtime_employees) ? "<strong>{$total_overtime_employees_label} </strong> {$total_overtime_employees}" : "";
+
+        $table = "<div class='emp-agency-detail-record'><table id='emp-agency-detail-record-table'>";
+
+        if($employment_type == PayrollType::$SALARIED) {
+
+            if($show_agency) {
+                $table .=
+                    "<tr>
+                        <td width='60%'><strong>". WidgetUtil::getLabel('agency_name') ."</strong>: {$agency_url}</td>
+                        <td width='40%'><strong>". WidgetUtil::getLabel('payroll_type') ."</strong>: ". strtoupper($employment_type)."</td>
+                    </tr>
+                    <tr>
+                        <td><strong>". WidgetUtil::getLabel('annual_salary') ."</strong>: {$total_annual_salary}</td>
+                        <td><strong>". WidgetUtil::getLabel('total_no_of_employees') ."</strong>: {$total_employees}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>". WidgetUtil::getLabel('gross_pay_ytd') ."</strong>: {$total_gross_pay}</td>
+                        <td><strong>". $lbl_total_number_employees ."</strong>: {$number_employees}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>". WidgetUtil::getLabel('base_pay_ytd') ."</strong>: {$total_base_pay}</td>
+                        <td>{$total_ot_emp_col}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>". WidgetUtil::getLabel('other_pay_ytd') ."</strong>: {$total_other_payments}</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><strong>". WidgetUtil::getLabel('overtime_pay_ytd') ."</strong>: {$total_overtime_pay}</td>
+                        <td></td>
+                    </tr>";
+            }
+            else {
+                $table .=
+                    "<tr>
+                        <td width='60%'><strong>". WidgetUtil::getLabel('annual_salary') ."</strong>: {$total_annual_salary}</td>
+                        <td width='40%'><strong>". WidgetUtil::getLabel('payroll_type') ."</strong>: ". strtoupper($employment_type)."</td>
+                    </tr>
+                    <tr>
+                        <td><strong>". WidgetUtil::getLabel('gross_pay_ytd') ."</strong>: {$total_gross_pay}</td>
+                        <td><strong>". WidgetUtil::getLabel('total_no_of_employees') ."</strong>: {$total_employees}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>". WidgetUtil::getLabel('base_pay_ytd') ."</strong>: {$total_base_pay}</td>
+                        <td><strong>". $lbl_total_number_employees ."</strong>: {$number_employees}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>". WidgetUtil::getLabel('other_pay_ytd') ."</strong>: {$total_other_payments}</td>
+                        <td>{$total_ot_emp_col}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>". WidgetUtil::getLabel('overtime_pay_ytd') ."</strong>: {$total_overtime_pay}</td>
+                        <td></td>
+                    </tr>";
+            }
+        }
+        else {
+            if($show_agency) {
+                $table .=
+                    "<tr>
+                        <td width='60%'><strong>". WidgetUtil::getLabel('agency_name') ."</strong>: {$agency_url}</td>
+                        <td width='40%'><strong>". WidgetUtil::getLabel('payroll_type') ."</strong>: ". strtoupper($employment_type)."</td>
+                    </tr>
+                    <tr>
+                        <td><strong>". WidgetUtil::getLabel('gross_pay_ytd') ."</strong>: {$total_gross_pay}</td>
+                        <td><strong>". WidgetUtil::getLabel('total_no_of_employees') ."</strong>: {$total_employees}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>". WidgetUtil::getLabel('base_pay_ytd') ."</strong>: {$total_base_pay}</td>
+                        <td><strong>". $lbl_total_number_employees ."</strong>: {$number_employees}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>". WidgetUtil::getLabel('other_pay_ytd') ."</strong>: {$total_other_payments}</td>
+                        <td>{$total_ot_emp_col}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>". WidgetUtil::getLabel('overtime_pay_ytd') ."</strong>: {$total_overtime_pay}</td>
+                        <td></td>
+                    </tr>";
+            }
+            else {
+                $table .=
+                    "<tr>
+                        <td width='60%'><strong>". WidgetUtil::getLabel('gross_pay_ytd') ."</strong>: {$total_gross_pay}</td>
+                        <td width='40%'><strong>". WidgetUtil::getLabel('payroll_type') ."</strong>: ". strtoupper($employment_type)."</td>
+                    </tr>
+                    <tr>
+                        <td><strong>". WidgetUtil::getLabel('base_pay_ytd') ."</strong>: {$total_base_pay}</td>
+                        <td><strong>". WidgetUtil::getLabel('total_no_of_employees') ."</strong>: {$total_employees}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>". WidgetUtil::getLabel('other_pay_ytd') ."</strong>: {$total_other_payments}</td>
+                        <td><strong>". $lbl_total_number_employees ."</strong>: {$number_employees}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>". WidgetUtil::getLabel('overtime_pay_ytd') ."</strong>: {$total_overtime_pay}</td>
+                        <td>{$total_ot_emp_col}</td>
+                    </tr>";
+            }
+        }
+
+        $table .= "</table></div>";
+
+        $employeeData .= $table;
+    }
+
+    $employeeData .= '</div>';
+    if (($employment_type == PayrollType::$SALARIED && $salaried_count > 1) ||
+        ($employment_type == PayrollType::$NON_SALARIED && $non_salaried_count >1)) {
+        $employeeData .= "<div id='next-emp-$class'></div>";
+    }
+    $employeeData .= "</div>";
+}
+
+
+if ($salaried_count && $non_salaried_count) {
+    $employeeData .= "<div id='toggle-employee-salaried' class='emp-record-salaried'>
+                            <strong>Viewing Salaried Details</strong>&nbsp;|&nbsp;
+                            <a href='javascript:toggleEmployee();'>View Non-salaried Details</a>
+                          </div>";
+    $employeeData .= "<div id='toggle-employee-non-salaried' class='emp-record-non-salaried'>
+                            <a href='javascript:toggleEmployee();'>View Salaried Details</a>&nbsp;|&nbsp;
+                            <strong>Viewing Non-salaried Details</strong>
+                          </div>";
+}
+
+$employeeData .= '</div>';
+
+print $employeeData;

@@ -2870,6 +2870,7 @@ function _checkbook_datafeeds_payroll_column_options($datatype) {
                     "Overtime Payments",
                     "Pay Date",
                     "Pay Frequency",
+                    "Payroll Type",
                     "Title",
                 )
             );
@@ -2878,18 +2879,19 @@ function _checkbook_datafeeds_payroll_column_options($datatype) {
         if ($datatype == 'xml') {
             $options =  drupal_map_assoc(array(
                 "agency",
+                "annual_salary",
                 "base_pay",
                 "calendar_year",
-                "title",
                 "fiscal_year",
                 "gross_pay",
                 "gross_pay_ytd",
                 "hourly_rate",
                 "other_payments",
                 "overtime_payments",
-                "pay_frequency",
                 "pay_date",
-                "annual_salary",
+                "pay_frequency",
+                "payroll_type",
+                "title",
             ));
         }
     }

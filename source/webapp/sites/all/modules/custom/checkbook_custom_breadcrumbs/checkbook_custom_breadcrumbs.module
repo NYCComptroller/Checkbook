@@ -34,10 +34,15 @@ function checkbook_custom_breadcrumbs_page_alter(&$page) {
   }
   elseif( preg_match('/^spending_landing/',current_path())){
     _set_spending_breadcrumb_title_drilldown();
-  }elseif( preg_match('/^budget/',current_path())){
+  }
+  elseif( preg_match('/^budget/',current_path())){
       _set_budget_breadcrumb_title_drilldown();
-  }elseif( preg_match('/^revenue/',current_path())){
+  }
+  elseif( preg_match('/^revenue/',current_path())){
         _set_revenue_breadcrumb_title_drilldown();
+  }
+  elseif( preg_match('/^payroll/',current_path())){
+      _set_payroll_breadcrumb_title_drilldown();
   }
   elseif( preg_match('/^alert/',current_path())){
       _set_alert_breadcrumb_title_drilldown();
@@ -80,6 +85,13 @@ function _set_budget_breadcrumb_title_drilldown(){
 **/
 function _set_revenue_breadcrumb_title_drilldown(){
   drupal_set_title(_get_revenue_breadcrumb_title_drilldown(),PASS_THROUGH);
+}
+
+/**
+ * Custom function to set title for Payroll landing pages
+ **/
+function _set_payroll_breadcrumb_title_drilldown(){
+    drupal_set_title(_get_payroll_breadcrumb_title_drilldown(),PASS_THROUGH);
 }
 
 /**
@@ -223,6 +235,32 @@ function _get_revenue_breadcrumb_title_drilldown(){
       }
     }
   return $title;
+
+}
+
+
+/**
+ * Custom function to get title for Payroll landing pages
+ **/
+function _get_payroll_breadcrumb_title_drilldown()
+{
+    $bottomURL = $_REQUEST['expandBottomContURL'];
+    if (!$bottomURL && preg_match('/^payroll\/search\/transactions/', current_path())) {
+        $title = null;
+    }else{
+        if (preg_match('/agency_landing/', current_path())) {
+            $value = _getRequestParamValue('agency');
+            $title = _checkbook_project_get_name_for_argument("agency_id", $value);
+        } else if (preg_match('/title_landing/', current_path())) {
+            $value = _getRequestParamValue('title');
+            $title = _checkbook_project_get_name_for_argument("title", $value);
+        }
+        else {
+            $title = "New York City";
+        }
+    }
+
+    return $title;
 
 }
 
@@ -449,7 +487,8 @@ function _checkbook_custom_breadcrumnb_add_breadcrumb_title(){
   
    else if(preg_match('/^contract/',current_path())){
      $checkbook_breadcrumb_title = requestUtil::getContractBreadcrumbTitle();
-   }elseif(preg_match('/^payroll/',current_path())){
+   }
+   elseif(preg_match('/^payroll/',current_path())){
      $checkbook_breadcrumb_title = requestUtil::getPayrollBreadcrumbTitle();
    }elseif(preg_match('/^spending/',current_path())){
      $checkbook_breadcrumb_title = requestUtil::getSpendingBreadcrumbTitle();

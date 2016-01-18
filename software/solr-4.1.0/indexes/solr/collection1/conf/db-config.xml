@@ -403,6 +403,7 @@
 			'payroll:' || payroll_id id,
 			'payroll' domain1,
 			payroll_id,
+			amount_basis_id,
 			agency_id,
 			agency_code,
 			agency_name ,		
@@ -416,7 +417,8 @@
 			calendar_fiscal_year_id,
 			calendar_fiscal_year ,
 			employee_id,
-			employee_name ,
+			employee_name,
+			employee_number,
 			civil_service_title,
 			pay_date,
 			pay_date_id,
@@ -425,11 +427,13 @@
 			gross_pay,
 			base_pay,
 			annual_salary,
+			annual_salary hourly_rate,
 			overtime_pay,
 			7 domain_ordering,
             pay_date date_ordering,
-			other_payments			
-			from payroll			 
+			other_payments,
+		    case when amount_basis_id in (1) then 'SALARIED' else 'NON-SALARIED' end as payroll_type
+			from payroll
 			 where 			 
 			'${dataimporter.request.clean}' != 'false' OR job_id >= ${dataimporter.request.jobID}
 		">
@@ -461,6 +465,10 @@
             <field column="other_payments" name="other_payments" />
             <field column="domain_ordering" name="domain_ordering" />
             <field column="date_ordering" name="date_ordering" />
+            <field column="hourly_rate" name="hourly_rate" />
+            <field column="employee_number" name="employee_number" />
+            <field column="payroll_type" name="payroll_type" />
+
         </entity>
         <entity dataSource="db1" name="contracts" transformer="RegexTransformer"
                 pk="id"

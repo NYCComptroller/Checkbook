@@ -33,13 +33,13 @@
 "limit":5,
 "enableExpand":true,
 "derivedColumns": {
-"agency_name_formatted": {
-      "type": "expression2",
-      "expression": "_get_tooltip_markup($row['agency_agency_agency_name'],25)"
+    "agency_name_formatted": {
+        "type": "expression2",
+        "expression": "_get_tooltip_markup($row['agency_agency_agency_name'],30)"
     },
-     "vendor_name_formatted": {
-      "type": "expression2",
-      "expression": "_get_tooltip_markup($row['vendor_vendor_legal_name'],24)"
+    "vendor_name_formatted": {
+        "type": "expression2",
+        "expression": "_get_tooltip_markup($row['vendor_vendor_legal_name'],30)"
     },
     "agency_name_link": {
         "type": "expression2",
@@ -53,35 +53,34 @@
         "type": "expression2",
         "expression": "'<a href=\"/contracts_landing' .  ContractUtil::get_contracts_vendor_link_by_mwbe_category($row) .  '?expandBottomCont=true\">' .$row[vendor_name_formatted]. '</a>'"
     },
-"contract_link": {
-      "type": "expression2",
-      "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/contract_transactions/contract_details/magid/' .$row[original_agreement_original_agreement] . _checkbook_append_url_params()  .  '/doctype/'   . $row[document_code_document_code_document_code]    . '\">' . $row['contract_number_contract_number'] . '</a>'"
+    "contract_link": {
+        "type": "expression2",
+        "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/contract_transactions/contract_details/magid/' .$row[original_agreement_original_agreement] . _checkbook_append_url_params()  .  '/doctype/'   . $row[document_code_document_code_document_code]    . '\">' . $row['contract_number_contract_number'] . '</a>'"
     } ,
-"spent_amount_link": {
-      "type": "expression2",
-      "expression": "'<a class=\"new_window\" href=\"/spending/transactions/magid/' .$row[original_agreement_original_agreement] . _checkbook_append_url_params() .   ContractURLHelper::_checkbook_project_spending_get_year_url_param_string() . ContractUtil::getSpentToDateParams() . '/smnid/' . $node->nid .  '/newwindow\">' . '$' . custom_number_formatter_format($row['spending_amount_sum'],2). '</a>'"
+    "spent_amount_link": {
+        "type": "expression2",
+        "expression": "'<a class=\"new_window\" href=\"/spending/transactions/magid/' .$row[original_agreement_original_agreement] . _checkbook_append_url_params() .   ContractURLHelper::_checkbook_project_spending_get_year_url_param_string() . ContractUtil::getSpentToDateParams() . '/smnid/' . $node->nid .  '/newwindow\">' . '$' . custom_number_formatter_format($row['spending_amount_sum'],2). '</a>'"
     } ,
-"formatted_total_current_amount_sum": {
-      "type": "expression2",
-      "expression": " '$' . custom_number_formatter_format($row['current_amount_sum'],2)"
+    "formatted_total_current_amount_sum": {
+        "type": "expression2",
+        "expression": " '$' . custom_number_formatter_format($row['current_amount_sum'],2)"
     },
-"formatted_original_amount_sum": {
-    "type": "expression2",
-    "expression": " '$' . custom_number_formatter_format($row['original_amount_sum'],2)"
-},
-"formatted_dollar_diff": {
-      "type": "expression2",
-      "expression": " custom_number_formatter_format($row['dollar_difference'],2,'$')"
+    "formatted_original_amount_sum": {
+        "type": "expression2",
+        "expression": " '$' . custom_number_formatter_format($row['original_amount_sum'],2)"
     },
-"formatted_percent_diff": {
-      "type": "expression2",
-      "expression": "round($row['percent_difference'],2) . '%'"
+    "formatted_dollar_diff": {
+        "type": "expression2",
+        "expression": " custom_number_formatter_format($row['dollar_difference'],2,'$')"
     },
-"purpose_formatted": {
-      "type": "expression2",
-      "expression": "_get_tooltip_markup($row['contract_purpose_contract_purpose'],22)"
+    "formatted_percent_diff": {
+        "type": "expression2",
+        "expression": "round($row['percent_difference'],2) . '%'"
+    },
+    "purpose_formatted": {
+        "type": "expression2",
+        "expression": "_get_tooltip_markup($row['contract_purpose_contract_purpose'],23)"
     }
-
 },
 "disableViewAll":true,
 "header":"
@@ -170,16 +169,16 @@ return $footer;
   ],
 "dataTableOptions":{
 "aoColumns": [
- { "bSortable": false, "sWidth":"150px","sClass":"text" },
- { "bSortable": false, "sWidth":"132px","sClass":"text"  },
-  { "bSortable": false, "sWidth":"118px","sClass":"text"  },
-  { "bSortable": false, "sWidth":"90px","sClass":"text" },
-  { "bSortable": true, "sWidth":"79px", "sClass":"number" ,"asSorting": [ "desc" ,"asc" ] },
-  { "bSortable": true, "sWidth":"78px", "sClass":"number" ,"asSorting": [ "desc","asc"  ] },
-  { "bSortable": true, "sWidth":"90px","sClass":"number" ,"asSorting": [ "desc","asc"  ]},
-  { "bSortable": true, "sWidth":"93px", "sClass":"number" ,"asSorting": [ "desc","asc"  ]},
-  { "bSortable": true, "sWidth":"93px", "sClass":"number" ,"asSorting": [ "desc" ,"asc" ]},
-  { "bSortable": false, "sWidth":"15px" }
+    { "bSortable": false, "sWidth":"150px","sClass":"text" },
+    { "bSortable": false, "sWidth":"127px","sClass":"text"  },
+    { "bSortable": false, "sWidth":"129px","sClass":"text"  },
+    { "bSortable": false, "sWidth":"129px","sClass":"text" },
+    { "bSortable": true, "sWidth":"78px", "sClass":"number" ,"asSorting": [ "desc" ,"asc" ] },
+    { "bSortable": true, "sWidth":"78px", "sClass":"number" ,"asSorting": [ "desc","asc"  ] },
+    { "bSortable": true, "sWidth":"78px","sClass":"number" ,"asSorting": [ "desc","asc"  ]},
+    { "bSortable": true, "sWidth":"78px", "sClass":"number" ,"asSorting": [ "desc","asc"  ]},
+    { "bSortable": true, "sWidth":"78px", "sClass":"number" ,"asSorting": [ "desc" ,"asc" ]},
+    { "bSortable": false, "sWidth":"15px" }
     ] ,
 "bServerSide": true,
 "bFilter": false,
