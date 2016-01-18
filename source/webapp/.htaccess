@@ -77,6 +77,7 @@ DirectoryIndex index.php index.html index.htm
   # directories from your webroot or otherwise protect them from being
   # downloaded.
   RewriteRule "(^|/)\." - [F]
+  RewriteCond %{REQUEST_URI} !=/robots.txt
   RewriteRule "\.(engine|inc|old|bak|info|install|cgi|txt|asp|jsp|pl|aspx|make|module|profile|test|po|sh|.*sql|theme|tpl(\.php)?|xtmpl)$|^(\..*|Entries.*|Repository|Root|Tag|Template)$" - [F]
   RewriteRule "/test\.(cgi|txt|asp|jsp|pl|aspx|html)$" - [F]
   RewriteRule "cgi-bin$" - [F]  
