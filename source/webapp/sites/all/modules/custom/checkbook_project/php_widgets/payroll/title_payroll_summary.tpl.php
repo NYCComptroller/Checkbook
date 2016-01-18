@@ -35,7 +35,6 @@ foreach($node->data as $data){
     $record['total_overtime_pay'] = $data['total_overtime_pay'];
     $record['total_employees'] = $data['total_employees'];
     $record['number_employees'] = $data['number_employees'];
-    $record['total_overtime_employees'] = $data['total_overtime_employees'];
 
     $all_data[$employment_type][] = $record;
 }
@@ -131,7 +130,7 @@ foreach($all_data as $employment_type => $employment_data) {
 
         if(_getRequestParamValue('smnid') == 322){
             $total_overtime_employees_label = WidgetUtil::getLabel('total_no_of_ot_employees').':';
-            $total_overtime_employees = number_format($data['total_overtime_employees']);
+            $total_overtime_employees = number_format($node->total_overtime_employees);
         }
 
         $table = "<div class='emp-agency-detail-record'><table id='emp-agency-detail-record-table'>";
