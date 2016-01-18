@@ -284,12 +284,28 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'php_widgets/payroll/nyc_payroll_summary',
             'arguments' => array('node' => NULL)
         ),
+        'payroll_nyc_title_payroll_summary' => array(
+            'template' => 'php_widgets/payroll/nyc_title_payroll_summary',
+            'arguments' => array('node' => NULL)
+        ),
+        'payroll_employee_payroll_summary' => array(
+            'template' => 'php_widgets/payroll/employee_payroll_summary',
+            'arguments' => array('node' => NULL)
+        ),
+        'payroll_title_payroll_summary' => array(
+            'template' => 'php_widgets/payroll/title_payroll_summary',
+            'arguments' => array('node' => NULL)
+        ),
         'payroll_nyc_payroll_summary_by_month' => array(
             'template' => 'php_widgets/payroll/nyc_payroll_summary_by_month',
             'arguments' => array('node' => NULL)
         ),
         'payroll_employee_agency_payroll_summary' => array(
             'template' => 'php_widgets/payroll/employee_agency_payroll_summary',
+            'arguments' => array('node' => NULL)
+        ),
+        'payroll_title_agency_payroll_summary' => array(
+            'template' => 'php_widgets/payroll/title_agency_payroll_summary',
             'arguments' => array('node' => NULL)
         ),
         'payroll_agency_payroll_summary' => array(

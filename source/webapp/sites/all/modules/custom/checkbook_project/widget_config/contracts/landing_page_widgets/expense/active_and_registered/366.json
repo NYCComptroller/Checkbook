@@ -33,13 +33,13 @@
 "limit":5,
 "enableExpand":true,
 "derivedColumns": {
-"agency_name_formatted": {
+    "agency_name_formatted": {
       "type": "expression2",
-      "expression": "_get_tooltip_markup($row['agency_agency_agency_name'],25)"
+      "expression": "_get_tooltip_markup($row['agency_agency_agency_name'],30)"
     },
      "vendor_name_formatted": {
       "type": "expression2",
-      "expression": "_get_tooltip_markup($row['vendor_vendor_legal_name'],24)"
+      "expression": "_get_tooltip_markup($row['vendor_vendor_legal_name'],30)"
     },
     "agency_name_link": {
       "type": "expression2",
@@ -53,35 +53,34 @@
         "type": "expression2",
         "expression": "'<a href=\"/contracts_landing' .  ContractUtil::get_contracts_vendor_link_by_mwbe_category($row) .  '?expandBottomCont=true\">' .$row[vendor_name_formatted]. '</a>'"
     },
-"contract_link": {
-      "type": "expression2",
-      "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/contract_transactions/contract_details/agid/' .$row[original_agreement_original_agreement]  .  '/doctype/'   . $row[document_code_document_code_document_code]  . _checkbook_append_url_params()  . '\">' . $row['contract_number_contract_number'] . '</a>'"
+    "contract_link": {
+        "type": "expression2",
+        "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/contract_transactions/contract_details/agid/' .$row[original_agreement_original_agreement]  .  '/doctype/'   . $row[document_code_document_code_document_code]  . _checkbook_append_url_params()  . '\">' . $row['contract_number_contract_number'] . '</a>'"
     } ,
-"spent_amount_link": {
-      "type": "expression2",
-      "expression": "'<a class=\"new_window\" href=\"/contract/spending/transactions' . (_checkbook_check_isEDCPage() ? ('/agid/' .$row[original_agreement_original_agreement].'/svendor/' .$row[vendor_vendor]) :'/contnum/' .$row[contract_number_contract_number] ) .   _checkbook_project_get_url_param_string(\"status\") .  ContractURLHelper::_checkbook_project_spending_get_year_url_param_string()  . _checkbook_append_url_params() . ContractUtil::getSpentToDateParams() . '/smnid/' . $node->nid .  '/newwindow\">' . '$' . custom_number_formatter_format($row['spending_amount_sum'],2). '</a>'"
+    "spent_amount_link": {
+        "type": "expression2",
+        "expression": "'<a class=\"new_window\" href=\"/contract/spending/transactions' . (_checkbook_check_isEDCPage() ? ('/agid/' .$row[original_agreement_original_agreement].'/svendor/' .$row[vendor_vendor]) :'/contnum/' .$row[contract_number_contract_number] ) .   _checkbook_project_get_url_param_string(\"status\") .  ContractURLHelper::_checkbook_project_spending_get_year_url_param_string()  . _checkbook_append_url_params() . ContractUtil::getSpentToDateParams() . '/smnid/' . $node->nid .  '/newwindow\">' . '$' . custom_number_formatter_format($row['spending_amount_sum'],2). '</a>'"
     } ,
-"formatted_original_amount_sum": {
-      "type": "expression2",
-      "expression": " '$' . custom_number_formatter_format($row['original_amount_sum'],2)"
+    "formatted_original_amount_sum": {
+        "type": "expression2",
+        "expression": " '$' . custom_number_formatter_format($row['original_amount_sum'],2)"
     },
-"formatted_total_current_amount_sum": {
-      "type": "expression2",
-      "expression": " '$' . custom_number_formatter_format($row['current_amount_sum'],2)"
+    "formatted_total_current_amount_sum": {
+        "type": "expression2",
+        "expression": " '$' . custom_number_formatter_format($row['current_amount_sum'],2)"
     },
-"formatted_dollar_diff": {
-      "type": "expression2",
-      "expression": " custom_number_formatter_format($row['dollar_difference'],2,'$')"
+    "formatted_dollar_diff": {
+        "type": "expression2",
+        "expression": " custom_number_formatter_format($row['dollar_difference'],2,'$')"
     },
-"formatted_percent_diff": {
-      "type": "expression2",
-      "expression": "round($row['percent_difference'],2) . '%'"
+    "formatted_percent_diff": {
+        "type": "expression2",
+        "expression": "round($row['percent_difference'],2) . '%'"
     },
-"purpose_formatted": {
-      "type": "expression2",
-      "expression": "_get_tooltip_markup($row['contract_purpose_contract_purpose'],26)"
+    "purpose_formatted": {
+        "type": "expression2",
+        "expression": "_get_tooltip_markup($row['contract_purpose_contract_purpose'],23)"
     }
-
 },
 "disableViewAll":true,
 "header":"
@@ -169,16 +168,16 @@ return $footer;
   ],
 "dataTableOptions":{
 "aoColumns": [
-    { "bSortable": false,"sClass":"text" },
-    { "bSortable": false,"sClass":"text pad-left"  },
-    { "bSortable": false,"sClass":"text pad-left"  },
-    { "bSortable": false,"sClass":"text pad-left" },
-    { "bSortable": true,"sClass":"number","sWidth":"80px","asSorting": [ "desc" ,"asc" ]},
-    { "bSortable": true,"sClass":"number","sWidth":"80px","asSorting": [ "desc" ,"asc" ]},
-    { "bSortable": true,"sClass":"number","sWidth":"90px","asSorting": [ "desc","asc"  ]},
-    { "bSortable": true,"sClass":"number","sWidth":"90px","asSorting": [ "desc","asc"  ]},
-    { "bSortable": true,"sClass":"number","sWidth":"90px","asSorting": [ "desc","asc"  ]},
-    { "bSortable": false,"sWidth":"15px" }
+    { "bSortable": false, "sWidth":"150px","sClass":"text" },
+    { "bSortable": false, "sWidth":"127px","sClass":"text"  },
+    { "bSortable": false, "sWidth":"129px","sClass":"text"  },
+    { "bSortable": false, "sWidth":"129px","sClass":"text" },
+    { "bSortable": true, "sWidth":"78px", "sClass":"number" ,"asSorting": [ "desc" ,"asc" ] },
+    { "bSortable": true, "sWidth":"78px", "sClass":"number" ,"asSorting": [ "desc","asc"  ] },
+    { "bSortable": true, "sWidth":"78px","sClass":"number" ,"asSorting": [ "desc","asc"  ]},
+    { "bSortable": true, "sWidth":"78px", "sClass":"number" ,"asSorting": [ "desc","asc"  ]},
+    { "bSortable": true, "sWidth":"78px", "sClass":"number" ,"asSorting": [ "desc" ,"asc" ]},
+    { "bSortable": false, "sWidth":"15px" }
     ] ,
 "bServerSide": true,
 "bFilter": false,

@@ -179,6 +179,23 @@ function _get_shortened_text($text , $length = 20){
 	return $text;
     //return substr($text,0,$length);
 }
+
+/**
+ * If the length of the text passed exceeds the specified length,
+ * replaces the remaining characters with "..." and add a tooltip
+ *
+ * @param $text
+ * @param int $length
+ */
+function _shorten_word_with_tooltip($text, $length = 20) {
+
+    if(strlen($text) > $length) {
+        return "<span title='" . htmlentities($text,ENT_QUOTES) . "'>". substr(htmlentities($text), 0, $length -3 ) . "...</span>";
+    }
+    return $text;
+}
+
+
 /**
  * return replacment patter for title ...
  * @param string $text
@@ -188,7 +205,7 @@ function _get_tooltip_markup($text, $length = 20, $no_of_lines = 2){
 /*  if(trim(strip_tags($text)) == "" or $text == null   )
     return "<div class='blanktext'>-</div>";
  */ 
-  return _break_text_custom(html_entity_decode($text,ENT_QUOTES), $length, $no_of_lines );
+  return _break_text_custom(html_entity_decode($text,ENT_QUOTES), $length, $no_of_lines);
   //return "<span title='" . $text . "'>". str_replace(" ","&nbsp;", $text ) . "</span>";
   
 }
@@ -206,7 +223,7 @@ function _break_text_custom($text, $length = 20, $no_of_lines = 2){
 
   $index= 0 ;
   
-  if(strlen($text_array[0]) >= 2 * $remaining_original ){  	 
+  if(strlen($text_array[0]) >= 2 * $remaining_original ){
     return "<span title='" . htmlentities($text,ENT_QUOTES) . "'>". substr(htmlentities($text), 0, $length -3 ) . "...</span>";
   }
   else{
@@ -562,6 +579,9 @@ function _checkbook_project_get_name_for_argument($keyword,$id){
             $keyword = "minority_type_id";
             $mwbe = _checkbook_project_querydataset('checkbook:minority_type',array('minority_type_id','minority_type_name'),array($keyword=>$id));
             return htmlentities(ucwords(strtolower($mwbe[0]['minority_type_name'])));
+            break;
+        case "title":
+            return htmlentities(ucwords(RequestUtil::getRequestKeyValueFromURL("title",current_path())));
             break;
 
 		default:

@@ -206,6 +206,9 @@ class XMLDataHandler extends AbstractDataHandler
                 case "vendor_type":
                     $new_select_part .= "CASE WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " ~* 's' THEN 'Yes' ELSE 'No' END";
                     break;
+                case "amount_basis_id":
+                    $new_select_part .=  "CASE WHEN amount_basis_id = 1 THEN 'SALARIED' ELSE 'NON-SALARIED' END";
+                    break;
                 default:
                     $new_select_part .= "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')";
                     break;
