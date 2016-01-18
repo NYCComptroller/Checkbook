@@ -68,7 +68,7 @@ class payrollDetails {
                 SUM(total_base_pay) as total_base_pay,
                 SUM(total_other_payments) as total_other_payments,
                 SUM(total_overtime_pay) as total_overtime_pay,
-                SUM(total_overtime_employees) as total_overtime_employees,
+                SUM(total_overtime_employees) as number_overtime_employees,
                 CASE WHEN type_of_employment = 'Salaried' THEN SUM(total_salaried_employees) ELSE SUM(total_non_salaried_employees) END AS number_employees
                 {$agency_select}
                 {$title_select}
@@ -136,11 +136,14 @@ class payrollDetails {
 //        log_error('QUERY:' .$query);
         $results = _checkbook_project_execute_sql_by_data_source($query,"checkbook");
         $total_employees = 0;
+        $total_overtime_employees = 0;
         foreach($results as $result){
             $total_employees += $result['number_employees'];
+            $total_overtime_employees += $result['number_overtime_employees'];
         }
         $node->data = $results;
         $node->total_employees = $total_employees;
+        $node->total_overtime_employees = $total_overtime_employees;
     }
 
 }
