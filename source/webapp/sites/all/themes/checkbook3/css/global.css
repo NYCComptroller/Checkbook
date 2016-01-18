@@ -2702,7 +2702,7 @@ table.outerTable.ma-history{
 #emp-agency-detail-records td:nth-child(1),
 #emp-agency-detail-records-salaried td:nth-child(1),
 #emp-agency-detail-records-non-salaried td:nth-child(1) {
-    white-space: normal;
+    white-space: nowrap;
 }
 
 #emp-agency-detail-records,
@@ -2735,7 +2735,7 @@ table.outerTable.ma-history{
 
 #emp-agency-detail-record-table {
     width: 520px;
-    margin: auto 200px 15px;
+    margin: auto 200px 15px 225px;
     color:#5B5B5B;
     font-size: 13px;
 }
