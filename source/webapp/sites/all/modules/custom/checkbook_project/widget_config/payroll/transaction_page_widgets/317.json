@@ -93,6 +93,10 @@
         "payroll_type_formatted": {
             "type": "expression2",
             "expression": "_get_tooltip_markup($row['employment_type_employment_type'],15)"
+        },
+        "employee_number": {
+            "type": "expression2",
+            "expression": "$row['employee_number_employee_number']"
         }
     },
     "table_columns": [
@@ -104,7 +108,8 @@
             {"labelAlias": "base_pay","column": "formatted_base_salary_amount","sortSourceColumn": "total_base_salary"},
             {"labelAlias": "other_pays","column": "formatted_other_payments_amount","sortSourceColumn": "total_other_payments"},
             {"labelAlias": "overtime_pay","column": "formatted_overtime_pay_amount","sortSourceColumn": "total_overtime_amount"},
-            {"labelAlias": "payroll_type","column": "payroll_type_formatted","sortSourceColumn": "employment_type.employment_type"}
+            {"labelAlias": "payroll_type","column": "payroll_type_formatted","sortSourceColumn": "employment_type.employment_type"},
+            {"labelAlias": "employee_number","column": "employee_number"}
           ],
     "adjustDataTableOptions":"
 
@@ -175,6 +180,7 @@
             {"sClass":"number pad-left","asSorting": [ "desc","asc" ]},
             {"sClass":"number pad-left","asSorting": [ "desc","asc" ]},
             {"sClass":"number pad-left","asSorting": [ "desc","asc" ]},
+            {"sClass":"text pad-left", "asSorting": [ "asc","desc" ]},
             {"sClass":"text pad-left endCol", "asSorting": [ "asc","desc" ]}
         ],
         "sScrollX": "100%",
