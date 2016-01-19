@@ -68,7 +68,7 @@ class payrollDetails {
                 SUM(total_base_pay) as total_base_pay,
                 SUM(total_other_payments) as total_other_payments,
                 SUM(total_overtime_pay) as total_overtime_pay,
-                SUM(total_overtime_employees) as total_overtime_employees,
+                COUNT(DISTINCT (CASE WHEN total_overtime_employees <> 0 THEN employee_number END)) AS total_overtime_employees,
                 CASE WHEN type_of_employment = 'Salaried' THEN SUM(total_salaried_employees) ELSE SUM(total_non_salaried_employees) END AS number_employees
                 {$agency_select}
                 {$title_select}
@@ -82,11 +82,11 @@ class payrollDetails {
                     SUM(emp.other_payments) AS total_other_payments,
                     SUM(emp.overtime_pay) AS total_overtime_pay,
                     MAX(emp.annual_salary) AS total_annual_salary,
-                    COUNT(DISTINCT (CASE WHEN COALESCE(overtime_pay,0) > 0 THEN employee_number END)) AS total_overtime_employees,
+                    SUM(emp.overtime_pay) AS total_overtime_employees,
                     COUNT(DISTINCT (CASE WHEN COALESCE(emp_type.type_of_employment,'Non-Salaried') = 'Salaried' THEN emp_type.employee_number_1 END)) AS total_salaried_employees,
                     COUNT(DISTINCT (CASE WHEN COALESCE(emp_type.type_of_employment,'Non-Salaried') = 'Non-Salaried' THEN emp.employee_number END)) AS total_non_salaried_employees,
                     emp.employee_number,
-                    COALESCE(emp_type.type_of_employment,'Non-Salaried') AS type_of_employment
+                    emp.type_of_employment
                     {$agency_sub_select}
                     {$title_sub_select}
                     {$month_sub_select}
@@ -122,7 +122,7 @@ class payrollDetails {
                     {$agency_join}
                     {$month_join}
                     {$where}
-                    GROUP BY emp.fiscal_year_id, emp.type_of_year, emp.employee_number, emp_type.type_of_employment
+                    GROUP BY emp.fiscal_year_id, emp.type_of_year, emp.employee_number, emp.type_of_employment
                     {$title_sub_group_by}
                     {$agency_sub_group_by}
                     {$month_sub_group_by}
