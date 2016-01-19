@@ -1038,7 +1038,7 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
       "other_payments" => "Other Payments",
       "overtime_pay" => "Overtime Payments",
       "payroll_type" => "Payroll Type",
-      "" => ""
+      "employee_number" => "Employee Number"
       );
       break;
     case "budget":
@@ -1125,7 +1125,7 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
                         "prime_vendor_name" => "Associated Prime Vendor",
 				);		
 
-			break;
+		break;
 		case "payroll":
 			$parameter_mapping = array(
 			"civil_service_title" => "Title",
@@ -1139,9 +1139,9 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
 			"other_payments" => "Other Payments",
             "overtime_pay" => "Overtime Payments",
             "payroll_type" => "Payroll Type",
-			"" => ""
-					);
-					break;
+            "employee_number" => "Employee Number"
+		    );
+		break;
 		case "budget":
 			$parameter_mapping = array("agency_name" => "Agency",
 			"department_name" => "Department Name",
