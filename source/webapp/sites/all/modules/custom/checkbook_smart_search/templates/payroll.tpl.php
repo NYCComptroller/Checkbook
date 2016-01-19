@@ -68,7 +68,7 @@ foreach ($payroll_parameter_mapping as $key => $title){
 
   if($title == 'Annual Salary'){
       if($salaried == 1){
-          $value = "<a  href='/payroll/yeartype/B/year/" . $fiscal_year_id . "?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/" .$agency_id. "/abc/" .$emp_id. "/salamttype/".$salaried."/year/" . $fiscal_year_id . "/yeartype/B'>". custom_number_formatter_format($value, 2 , '$') ."</a>";
+          $value = "<a  href='/payroll/yeartype/B/year/" . $fiscal_year_id . "?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/abc/" .$emp_id. "/salamttype/".$salaried."/year/" . $fiscal_year_id . "/yeartype/B'>". custom_number_formatter_format($value, 2 , '$') ."</a>";
       }
       else{
           $value = '';
@@ -77,7 +77,7 @@ foreach ($payroll_parameter_mapping as $key => $title){
 
   if($title == 'Hourly Rate'){
         if($salaried != 1){
-            $value = "<a  href='/payroll/yeartype/B/year/" . $fiscal_year_id . "?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/" .$agency_id. "/abc/" .$emp_id. "/salamttype/".$salaried."/year/" . $fiscal_year_id . "/yeartype/B'>". custom_number_formatter_format($value, 2 , '$') ."</a>";
+            $value = "<a  href='/payroll/yeartype/B/year/" . $fiscal_year_id . "?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/abc/" .$emp_id. "/salamttype/".$salaried."/year/" . $fiscal_year_id . "/yeartype/B'>". custom_number_formatter_format($value, 2 , '$') ."</a>";
         }
         else{
             $value = '';
