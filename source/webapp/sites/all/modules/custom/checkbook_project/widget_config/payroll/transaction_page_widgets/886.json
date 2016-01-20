@@ -2,12 +2,13 @@
     "stickyHeader":true,
     "widgetType": "data_tables",
     "widgetSubType": "dataTableList",
-    "cleanURLParameters":["year","calyear","yeartype","month","title","grosspayytd","annualsalary","overtimepayment"],
+    "cleanURLParameters":["year","calyear","yeartype","month","title","grosspayytd","annualsalary","overtimepayment","agency"],
     "urlParamMap":{
         "year":"fiscal_year_id",
         "calyear":"fiscal_year_id",
         "yeartype":"type_of_year",
         "month":"month_id",
+        "agency": "agency_id",
         "title":"civil_service_title.civil_service_title",
         "grosspayytd":"total_gross_pay.total_gross_pay",
         "annualsalary":"total_annual_salary.total_annual_salary",
@@ -111,6 +112,11 @@
                $monthId = _getRequestParamValue('month');
                 if( isset($monthId)){
                    $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_month';
+                }
+
+                $agencyId = _getRequestParamValue('agency');
+                if( isset($agencyId)){
+                $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_title';
                 }
 
                 $adjustedParameters = $parameters;
