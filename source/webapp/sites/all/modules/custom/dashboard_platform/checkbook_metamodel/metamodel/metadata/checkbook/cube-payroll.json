@@ -115,6 +115,15 @@
                     ]
                 },
                 {
+                    "name": "employee_number",
+                    "levels": [
+                        {
+                            "name": "employee_number",
+                            "sourceColumnName": "employee_number"
+                        }
+                    ]
+                },
+                {
                     "name": "fiscal_year_id",
                     "levels": [
                         {

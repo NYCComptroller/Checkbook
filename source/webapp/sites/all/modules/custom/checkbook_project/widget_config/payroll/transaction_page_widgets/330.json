@@ -33,7 +33,7 @@
     "html_class": "initiative-table",
     "no_results_content":"No Results Found",
     "dataset": "checkbook:payroll",
-    "columns": ["payroll_id.payroll_id","agency_name.agency_name","civil_service_title.civil_service_title","annual_salary.annual_salary","amount_basis_id.amount_basis_id","payroll_type","pay_frequency.pay_frequency","pay_date.pay_date","gross_pay.gross_pay","base_pay.base_pay","other_payments.other_payments","overtime_pay.overtime_pay","gross_pay_cytd.gross_pay_cytd","calendar_fiscal_year_id.calendar_fiscal_year_id","agency_id.agency_id"],
+    "columns": ["employee_number.employee_number","payroll_id.payroll_id","agency_name.agency_name","civil_service_title.civil_service_title","annual_salary.annual_salary","amount_basis_id.amount_basis_id","payroll_type","pay_frequency.pay_frequency","pay_date.pay_date","gross_pay.gross_pay","base_pay.base_pay","other_payments.other_payments","overtime_pay.overtime_pay","gross_pay_cytd.gross_pay_cytd","calendar_fiscal_year_id.calendar_fiscal_year_id","agency_id.agency_id"],
     "caption":"",
     "derivedColumns": {
         "formatted_annual_salary": {
@@ -83,6 +83,10 @@
         "pay_date_formatted": {
         "type": "expression2",
         "expression": "_get_tooltip_markup($row['pay_date_pay_date'],15)"
+        },
+        "employee_number": {
+         "type": "expression2",
+         "expression": "$row['employee_number_employee_number']"
         }
     },
     "table_columns": [
@@ -97,7 +101,8 @@
             {"labelAlias": "other_pays","column": "formatted_other_payments_amount","sortSourceColumn": "other_payments.other_payments"},
             {"labelAlias": "overtime_pay","column": "formatted_overtime_pay_amount","sortSourceColumn": "overtime_pay.overtime_pay"},
             {"labelAlias": "gross_pay_ytd","column": "formatted_gross_pay_ytd_amount","sortSourceColumn": "gross_pay_cytd.gross_pay_cytd"},
-            {"labelAlias": "payroll_type","column": "payroll_type_formatted","sortSourceColumn": "payroll_type"}
+            {"labelAlias": "payroll_type","column": "payroll_type_formatted","sortSourceColumn": "payroll_type"},
+            {"labelAlias": "employee_number","column": "employee_number"}
           ],
     "adjustParameters":"
                 $adjustedParameters = $parameters;
@@ -134,6 +139,7 @@
                 {"sClass":"number","sWidth":"110px","asSorting": [ "desc","asc" ]},
                 {"sClass":"number","sWidth":"110px","asSorting": [ "desc","asc" ]},
                 {"sClass":"number","sWidth":"120px","asSorting": [ "desc","asc" ]},
+                {"sClass":"text","sWidth":"120px","asSorting": [ "desc","asc" ]},
                 {"sClass":"number endCol", "sWidth":"110px","asSorting": [ "asc","desc" ]}
             ],
         "sScrollX": "100%",
