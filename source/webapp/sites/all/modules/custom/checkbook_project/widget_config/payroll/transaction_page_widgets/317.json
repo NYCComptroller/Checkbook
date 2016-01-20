@@ -109,7 +109,7 @@
             {"labelAlias": "other_pays","column": "formatted_other_payments_amount","sortSourceColumn": "total_other_payments"},
             {"labelAlias": "overtime_pay","column": "formatted_overtime_pay_amount","sortSourceColumn": "total_overtime_amount"},
             {"labelAlias": "payroll_type","column": "payroll_type_formatted","sortSourceColumn": "employment_type.employment_type"},
-            {"labelAlias": "employee_number","column": "employee_number"}
+            {"labelAlias": "employee_number","column": "employee_number","sortSourceColumn":"employee_number.employee_number"}
           ],
     "adjustDataTableOptions":"
 
@@ -185,7 +185,7 @@
         ],
         "sScrollX": "100%",
         "bScrollCollapse": true,
-        "sScrollXInner":"970px",
+        "sScrollXInner":"1500px",
         "bScrollCollapse": true,
         "fnInitComplete": "##function () { new FixedColumns( oTable, {
         \"iLeftColumns\": 1,
