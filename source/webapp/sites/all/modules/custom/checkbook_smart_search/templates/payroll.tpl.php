@@ -29,8 +29,8 @@ $salaried = $payroll_results['amount_basis_id'];
 $title = urlencode($payroll_results['civil_service_title']);
 
 
-$linkable_fields = array("civil_service_title" => "/payroll/title_landing/title/" .$title,
-                         "agency_name" => "/payroll/agency_landing/agency/". $agency_id,
+$linkable_fields = array("civil_service_title" => "/payroll/title_landing/yeartype/B/year/". $fiscal_year_id ."/title/" .$title,
+                         "agency_name" => "/payroll/agency_landing/yeartype/B/year/". $fiscal_year_id ."/agency/". $agency_id,
                         );
 
 if($payroll_results['fiscal_year'] < 2010){
@@ -54,17 +54,8 @@ foreach ($payroll_parameter_mapping as $key => $title){
   }else if(in_array($key, $date_fields)){
     $value = date("F j, Y", strtotime($value));
   }else if(array_key_exists($key, $linkable_fields)){
-    $value = "<a href='" . $linkable_fields[$key] . "/year/" . $fiscal_year_id . "/yeartype/B'>". _checkbook_smart_search_str_html_entities($value) ."</a>";
+    $value = "<a href='" .$linkable_fields[$key]."'>". _checkbook_smart_search_str_html_entities($value) ."</a>";
   }
-
-//  if($title == 'Payroll Type'){
-//      if($salaried == 1){
-//          $value = 'SALARIED';
-//      }
-//      else{
-//          $value = 'NON-SALARIED';
-//      }
-//  }
 
   if($title == 'Annual Salary'){
       if($salaried == 1){
