@@ -182,7 +182,7 @@
                     "function": "SUM( CASE WHEN type_of_employment = 'Salaried' THEN NULL else COALESCE(annual_salary,0) END)"
                 },
                 "total_overtime_employees": {
-                    "function": "COUNT(DISTINCT (CASE WHEN COALESCE(overtime_pay,0) > 0 THEN employee_number END))"
+                    "function": "COUNT(DISTINCT (CASE WHEN COALESCE(positive_overtime_pay,0) > 0 THEN employee_number END))"
                 },
                 "min_total_annual_salary": {
                     "function": "MIN(annual_salary)"

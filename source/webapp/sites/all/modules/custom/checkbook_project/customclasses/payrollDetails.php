@@ -82,7 +82,7 @@ class payrollDetails {
                     SUM(emp.other_payments) AS total_other_payments,
                     SUM(emp.overtime_pay) AS total_overtime_pay,
                     MAX(emp.annual_salary) AS total_annual_salary,
-                    SUM(emp.overtime_pay) AS total_overtime_employees,
+                    SUM(emp.positive_overtime_pay) AS total_overtime_employees,
                     COUNT(DISTINCT (CASE WHEN COALESCE(emp_type.type_of_employment,'Non-Salaried') = 'Salaried' THEN emp_type.employee_number_1 END)) AS total_salaried_employees,
                     COUNT(DISTINCT (CASE WHEN COALESCE(emp_type.type_of_employment,'Non-Salaried') = 'Non-Salaried' THEN emp.employee_number END)) AS total_non_salaried_employees,
                     emp.employee_number,
