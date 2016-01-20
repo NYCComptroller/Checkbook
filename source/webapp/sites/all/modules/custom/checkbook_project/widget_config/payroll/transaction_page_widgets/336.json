@@ -111,7 +111,7 @@
         {"labelAlias": "overtime_pay","column": "formatted_overtime_pay_amount","sortSourceColumn": "overtime_pay"},
         {"labelAlias": "gross_pay_ytd","column": "formatted_gross_pay_cytd_amount","sortSourceColumn": "gross_pay_cytd"},
         {"labelAlias": "payroll_type","column": "formatted_payroll_type","sortSourceColumn": "amount_basis_id","exportColumn":"formatted_payroll_type"},
-        {"labelAlias": "employee_number","column": "employee_number","exportColumn":"employee_number"}
+        {"labelAlias": "employee_number","column": "employee_number"}
     ],
     "exportColumnSqlOverride":[
         {
