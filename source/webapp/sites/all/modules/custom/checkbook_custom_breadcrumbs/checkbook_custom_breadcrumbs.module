@@ -254,12 +254,8 @@ function _get_payroll_breadcrumb_title_drilldown()
         } else if (preg_match('/title_landing/', current_path())) {
             $value = _getRequestParamValue('title');
             $title = _checkbook_project_get_name_for_argument("title", $value);
-        } else if(isset($bottomURL) && preg_match('/agency/', $bottomURL)){
-            $pathParams = explode('/', $bottomURL);
-            if(preg_match("/agency/",$bottomURL)){
-                $index = array_search('agency',$pathParams);
-                $agencyID =  filter_xss($pathParams[($index+1)]);
-            }
+        } else if(isset($bottomURL) && preg_match('/agency/', $bottomURL)) {
+            $agencyID = _getRequestParamValueBottomURL('agency');
             $title = _checkbook_project_get_name_for_argument("agency_id", $agencyID);
         }
         else {

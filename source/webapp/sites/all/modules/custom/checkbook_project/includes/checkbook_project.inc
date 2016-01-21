@@ -318,6 +318,35 @@ function _getRequestParamValue($paramName,$fromRequestPath = 'TRUE'){
 }
 
 /**
+ * returns request parameter value from bottomURL
+ * @param string $paramName
+ * @param boolean $fromRequestPath
+ * @return request parameter value
+ */
+function _getRequestParamValueBottomURL($paramName,$fromRequestPath = 'TRUE'){
+    if(empty($paramName)){
+        return NULL;
+    }
+    $value = NULL;
+    if($fromRequestPath){
+        $bottomURL = $_REQUEST['expandBottomContURL'];
+        $pathParams = explode('/', $bottomURL);
+        $index = array_search($paramName,$pathParams);
+        if($index !== FALSE){
+            $value =  filter_xss($pathParams[($index+1)]);
+        }
+        if(trim($value) == ""){
+            return NULL;
+        }
+        if(isset($value) || $fromRequestPath){
+            return htmlspecialchars_decode($value,ENT_QUOTES);
+        }
+    }else{
+        return filter_xss(htmlspecialchars_decode($_GET[$paramName],ENT_QUOTES));
+    }
+}
+
+/**
  * Page callback for grid view popupdatatable..
  * @param unknown_type $node
  */
