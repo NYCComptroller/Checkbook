@@ -36,7 +36,7 @@
     "no_results_content":"No Results Found",
     "dataset": "checkbook:payroll_employee_agency_employee",
     "uniqueSortColumn":["employee_employee"],
-    "columns": ["employee.employee","civil_service_title.civil_service_title","agency.agency.agency_short_name","max_annual_salary.max_annual_salary","total_gross_pay.total_gross_pay","total_base_salary.total_base_salary","total_other_payments.total_other_payments","total_overtime_amount.total_overtime_amount","year.year","year_type.year_type","agency.agency.agency_name","employment_type.employment_type"],
+    "columns": ["employee.employee","civil_service_title.civil_service_title","agency.agency.agency_short_name","annual_salary_max","combined_total_gross_pay","combined_total_base_salary","combined_total_other_payments","combined_total_overtime_amount","year.year","year_type.year_type","agency.agency.agency_name","employment_type.employment_type"],
     "derivedColumns": {
         "employee_name_formatted": {
               "type": "expression2",
@@ -44,7 +44,7 @@
         },
         "formatted_salary_amount": {
             "type": "expression2",
-            "expression": " $row['employment_type_employment_type'] == 'Salaried' ? custom_number_formatter_basic_format($row['max_annual_salary_max_annual_salary'])  : '-'  "
+            "expression": " $row['employment_type_employment_type'] == 'Salaried' ? custom_number_formatter_basic_format($row['annual_salary_max'])  : '-'  "
         },
         "annual_salary_link": {
             "type": "expression2",
@@ -60,7 +60,7 @@
         },
         "export_salary_amount": {
             "type": "expression2",
-            "expression": " $row['employment_type_employment_type'] == 'Salaried' ? $row['max_annual_salary_max_annual_salary']  : NULL "
+            "expression": " $row['employment_type_employment_type'] == 'Salaried' ? $row['annual_salary_max']  : NULL "
         },
         "export_non_salary_amount": {
             "type": "expression2",
@@ -68,19 +68,19 @@
         },
         "formatted_gross_pay_amount": {
               "type": "expression2",
-              "expression": "custom_number_formatter_basic_format($row['total_gross_pay_total_gross_pay'])"
+              "expression": "custom_number_formatter_basic_format($row['combined_total_gross_pay'])"
         },
         "formatted_base_salary_amount": {
               "type": "expression2",
-              "expression": "custom_number_formatter_basic_format($row['total_base_salary_total_base_salary'])"
+              "expression": "custom_number_formatter_basic_format($row['combined_total_base_salary'])"
         },
         "formatted_other_payments_amount": {
               "type": "expression2",
-              "expression": "custom_number_formatter_basic_format($row['total_other_payments_total_other_payments'])"
+              "expression": "custom_number_formatter_basic_format($row['combined_total_other_payments'])"
         },
         "formatted_overtime_pay_amount": {
               "type": "expression2",
-              "expression": "custom_number_formatter_basic_format($row['total_overtime_amount_total_overtime_amount'])"
+              "expression": "custom_number_formatter_basic_format($row['combined_total_overtime_amount'])"
         },
         "agency_name_formatted": {
               "type": "expression2",
@@ -94,12 +94,12 @@
     "table_columns": [
             {"labelAlias": "title","column": "employee_name_formatted","sortSourceColumn":"civil_service_title.civil_service_title"},
             {"labelAlias": "agency_name","column":"agency_name_formatted","sortSourceColumn":"agency.agency.agency_name"},
-            {"labelAlias": "annual_salary","column": "annual_salary_link","sortSourceColumn": "max_annual_salary.max_annual_salary","exportColumn":"export_salary_amount"},
+            {"labelAlias": "annual_salary","column": "annual_salary_link","sortSourceColumn": "annual_salary_max","exportColumn":"export_salary_amount"},
             {"labelAlias": "hourly_rate","column": "non_salary_link","sortSourceColumn": "total_non_salaried_amount","exportColumn":"export_non_salary_amount"},
-            {"labelAlias": "gross_pay_ytd","column": "formatted_gross_pay_amount","sortSourceColumn": "total_gross_pay.total_gross_pay"},
-            {"labelAlias": "base_pay_ytd","column": "formatted_base_salary_amount","sortSourceColumn": "total_base_salary.total_base_salary"},
-            {"labelAlias": "other_pay_ytd","column": "formatted_other_payments_amount","sortSourceColumn": "total_other_payments.total_other_payments"},
-            {"labelAlias": "overtime_pay_ytd","column": "formatted_overtime_pay_amount","sortSourceColumn": "total_overtime_amount.total_overtime_amount"},
+            {"labelAlias": "gross_pay_ytd","column": "formatted_gross_pay_amount","sortSourceColumn": "combined_total_gross_pay"},
+            {"labelAlias": "base_pay_ytd","column": "formatted_base_salary_amount","sortSourceColumn": "combined_total_base_salary"},
+            {"labelAlias": "other_pay_ytd","column": "formatted_other_payments_amount","sortSourceColumn": "combined_total_other_payments"},
+            {"labelAlias": "overtime_pay_ytd","column": "formatted_overtime_pay_amount","sortSourceColumn": "combined_total_overtime_amount"},
             {"labelAlias": "payroll_type","column": "payroll_type_formatted","sortSourceColumn": "employment_type_employment_type"}
           ],
     "adjustParameters":"

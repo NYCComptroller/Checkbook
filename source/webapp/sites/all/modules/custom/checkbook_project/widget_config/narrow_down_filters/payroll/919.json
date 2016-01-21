@@ -5,11 +5,11 @@
     "maxSelect":5,
     "showAllRecords":true,
     "allowFacetDeselect":true,
-    "columns":["employment_type.employment_type","txcount"],
+    "columns":["employment_type.employment_type","title_count"],
     "urlParamMap":{
         "emptype":"employment_type.employment_type"
     },
-    "orderBy":"-txcount",
+    "orderBy":"-title_count",
     "filterName":"Payroll Type",
     "getTotalDataCount":true,
     "autocomplete":false,
