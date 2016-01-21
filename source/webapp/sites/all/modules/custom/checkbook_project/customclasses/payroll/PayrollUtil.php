@@ -55,17 +55,17 @@ class PayrollUtil {
      * @param $year
      * @param $year_type
      * @param null $agency_id
-     * @param null $employee_numb
+     * @param null $title
      * @return int|null
      */
-    static function getSalariedEmployeeCount($year, $year_type, $agency_id = null) {
+    static function getSalariedEmployeeCount($year, $year_type, $agency_id = null, $title = null) {
 
         $employee_count = null;
-        $agency = isset($agency_id);
-
         $sub_query_where = "WHERE fiscal_year_id = '$year' AND type_of_year = '$year_type'";
         $sub_query_group_by = "GROUP BY employee_number,fiscal_year_id,type_of_year";
-        $where = $agency ? "WHERE agency_id = '$agency_id'" : "";
+        $where = "WHERE emp.fiscal_year_id = '$year' AND emp.type_of_year = '$year_type'";
+        $where .= isset($agency_id) ? " AND agency_id = $agency_id" : "";
+        $where .= isset($title) ? " AND civil_service_title = '$title'" : "";
 
         $sql = "
                 SELECT COUNT(DISTINCT emp.employee_number) AS record_count
@@ -83,7 +83,7 @@ class PayrollUtil {
                 AND latest_emp.type_of_year = emp.type_of_year
                 AND type_of_employment = 'Salaried'
                 {$where}";
-//        log_error('QUERY:' .$sql);
+        //log_error('QUERY:' .$sql);
 
         try {
             $result = _checkbook_project_execute_sql_by_data_source($sql,_get_default_datasource());
@@ -110,6 +110,8 @@ class PayrollUtil {
         $where = "WHERE emp.fiscal_year_id = '$year' AND emp.type_of_year = '$year_type'";
         $where .= isset($title) ? " AND emp.civil_service_title = '$title'" : "";
         $sub_query_where = "WHERE fiscal_year_id = '$year' AND type_of_year = '$year_type'";
+        $latest_emp_title = isset($title) ? ", civil_service_title" : "";
+        $latest_emp_join = isset($title) ? " AND latest_emp.civil_service_title = emp.civil_service_title" : "";
 
         $sql = "
         SELECT
@@ -145,16 +147,18 @@ class PayrollUtil {
         LEFT JOIN
         (
             SELECT max(pay_date) as pay_date,
-            employee_number,fiscal_year_id,type_of_year
+            employee_number,fiscal_year_id,type_of_year{$latest_emp_title}
             FROM aggregateon_payroll_employee_agency
             {$sub_query_where}
-            GROUP BY employee_number,fiscal_year_id,type_of_year
+            GROUP BY employee_number,fiscal_year_id,type_of_year{$latest_emp_title}
          ) latest_emp ON latest_emp.pay_date = emp.pay_date
          AND latest_emp.employee_number = emp.employee_number
          AND latest_emp.fiscal_year_id = emp.fiscal_year_id
          AND latest_emp.type_of_year = emp.type_of_year
-        {$where}
-        GROUP BY agency_id";
+         {$latest_emp_join}
+         {$where}
+         GROUP BY agency_id";
+
 //        log_error('QUERY:' .$sql);
         try {
             $result = _checkbook_project_execute_sql_by_data_source($sql,_get_default_datasource());
