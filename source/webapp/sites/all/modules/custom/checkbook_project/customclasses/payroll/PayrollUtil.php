@@ -115,7 +115,7 @@ class PayrollUtil {
         SELECT
         agency_id,
         COUNT(DISTINCT (CASE WHEN COALESCE(emp_type.type_of_employment,'Non-Salaried') = 'Salaried' THEN emp_type.employee_number_1 END)) AS total_salaried_employees,
-        COUNT(DISTINCT (CASE WHEN COALESCE(emp_type.type_of_employment,'Non-Salaried') = 'Non-Salaried' THEN emp.employee_number END)) AS total_non_salaried_employees
+        COUNT(DISTINCT (CASE WHEN COALESCE(emp_type.type_of_employment,'Non-Salaried') = 'Non-Salaried' AND emp.pay_date = latest_emp.pay_date THEN emp.employee_number END)) AS total_non_salaried_employees
         FROM aggregateon_payroll_employee_agency emp
         LEFT JOIN
         (
@@ -142,6 +142,17 @@ class PayrollUtil {
         AND emp_type.type_of_year_1 = emp.type_of_year
         AND emp_type.fiscal_year_id_1 = emp.fiscal_year_id
         AND emp_type.agency_id_1 = emp.agency_id
+        LEFT JOIN
+        (
+            SELECT max(pay_date) as pay_date,
+            employee_number,fiscal_year_id,type_of_year
+            FROM aggregateon_payroll_employee_agency
+            {$sub_query_where}
+            GROUP BY employee_number,fiscal_year_id,type_of_year
+         ) latest_emp ON latest_emp.pay_date = emp.pay_date
+         AND latest_emp.employee_number = emp.employee_number
+         AND latest_emp.fiscal_year_id = emp.fiscal_year_id
+         AND latest_emp.type_of_year = emp.type_of_year
         {$where}
         GROUP BY agency_id";
 //        log_error('QUERY:' .$sql);
