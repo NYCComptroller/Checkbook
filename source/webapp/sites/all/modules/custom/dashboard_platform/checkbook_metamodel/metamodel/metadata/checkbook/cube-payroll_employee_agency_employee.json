@@ -124,8 +124,14 @@
                 "txcount": {
                     "function": "COUNT(*)"
                 },
+                "title_count": {
+                    "function": "COUNT(DISTINCT civil_service_title)"
+                },
                 "emp_count": {
                     "function": "COUNT(DISTINCT employee_number)"
+                },
+                "annual_salary_max":{
+                    "function":"MAX(max_annual_salary)"
                 },
                 "combined_max_annual_salary":{
                     "function":"SUM(max_annual_salary)"
