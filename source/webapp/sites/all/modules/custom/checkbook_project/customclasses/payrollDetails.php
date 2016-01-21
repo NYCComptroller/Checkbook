@@ -18,12 +18,13 @@ class payrollDetails {
 
         $where = $sub_query_where = $agency_select = "";
         if(isset($year)) {
-            $where .= $where == "" ? "WHERE fiscal_year_id = $year" : " AND fiscal_year_id = $year";
+            $where .= $where == "" ? "WHERE emp.fiscal_year_id = $year" : " AND emp.fiscal_year_id = $year";
+            $sub_query_where .= $sub_query_where == "" ? "WHERE fiscal_year_id = $year" : " AND fiscal_year_id = $year";
         }
         if(isset($yeartype)) {
-            $where .= $where == "" ? "WHERE type_of_year = '$yeartype'" : " AND type_of_year = '$yeartype'";
+            $where .= $where == "" ? "WHERE emp.type_of_year = '$yeartype'" : " AND emp.type_of_year = '$yeartype'";
+            $sub_query_where .= $sub_query_where == "" ? "WHERE type_of_year = '$yeartype" : " AND type_of_year = '$yeartype'";
         }
-        $sub_query_where = $where;
         if(isset($title)) {
             $where .= $where == "" ? "WHERE civil_service_title = '$title'" : " AND civil_service_title = '$title'";
         }
@@ -37,6 +38,24 @@ class payrollDetails {
             $agency_join = ' AND emp_type.agency_id_1 = emp.agency_id';
             $agency_sub_group_by = ',agency.agency_id,agency.agency_name';
             $agency_group_by = ',agency_id,agency_name';
+
+            $latest_emp_condition = " AND emp.pay_date = latest_emp.pay_date";
+            $latest_emp_title = isset($title) ? ", civil_service_title" : "";
+            $latest_emp_join = isset($title) ? " AND latest_emp.civil_service_title = emp.civil_service_title" : "";
+
+            $latest_emp_sub_query ="
+            LEFT JOIN
+            (
+                SELECT max(pay_date) as pay_date,
+                employee_number,fiscal_year_id,type_of_year{$latest_emp_title}
+                FROM aggregateon_payroll_employee_agency
+                WHERE fiscal_year_id = {$year} AND type_of_year = '{$yeartype}'
+                GROUP BY employee_number,fiscal_year_id,type_of_year{$latest_emp_title}
+            ) latest_emp ON latest_emp.pay_date = emp.pay_date
+            AND latest_emp.employee_number = emp.employee_number
+            AND latest_emp.fiscal_year_id = emp.fiscal_year_id
+            AND latest_emp.type_of_year = emp.type_of_year
+            {$latest_emp_join}";
         }
         if(isset($month)) {
             $dataset = 'aggregateon_payroll_employee_agency_month';
@@ -84,7 +103,7 @@ class payrollDetails {
                     MAX(emp.annual_salary) AS total_annual_salary,
                     SUM(emp.positive_overtime_pay) AS total_overtime_employees,
                     COUNT(DISTINCT (CASE WHEN COALESCE(emp_type.type_of_employment,'Non-Salaried') = 'Salaried' THEN emp_type.employee_number_1 END)) AS total_salaried_employees,
-                    COUNT(DISTINCT (CASE WHEN COALESCE(emp_type.type_of_employment,'Non-Salaried') = 'Non-Salaried' THEN emp.employee_number END)) AS total_non_salaried_employees,
+                    COUNT(DISTINCT (CASE WHEN COALESCE(emp_type.type_of_employment,'Non-Salaried') = 'Non-Salaried' {$latest_emp_condition} THEN emp.employee_number END)) AS total_non_salaried_employees,
                     emp.employee_number,
                     emp.type_of_employment
                     {$agency_sub_select}
@@ -121,6 +140,7 @@ class payrollDetails {
                     AND emp_type.fiscal_year_id_1 = emp.fiscal_year_id
                     {$agency_join}
                     {$month_join}
+                    {$latest_emp_sub_query}
                     {$where}
                     GROUP BY emp.fiscal_year_id, emp.type_of_year, emp.employee_number, emp.type_of_employment
                     {$title_sub_group_by}
@@ -133,7 +153,7 @@ class payrollDetails {
                 {$month_group_by}
     ";
 
-//        log_error('QUERY:' .$query);
+        log_error('QUERY:' .$query);
         $results = _checkbook_project_execute_sql_by_data_source($query,"checkbook");
         $total_employees = 0;
         foreach($results as $result){
