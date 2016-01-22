@@ -69,6 +69,9 @@ class payrollDetails {
             $month_sub_group_by = ',month.month_id,month.month_name';
             $month_group_by = ',month_id,month_name';
             $sub_query_where .= $sub_query_where == "" ? "WHERE month_id = '$month'" : " AND month_id = '$month'";
+        }else{
+            $overtime_pay = "SUM(emp.positive_overtime_pay) AS total_overtime_employees,";
+            $total_overtime_employees = "COUNT(DISTINCT (CASE WHEN total_overtime_employees <> 0 THEN employee_number END)) AS total_overtime_employees,";
         }
         if(isset($title)) {
             $title_select = ",civil_service_title";
@@ -87,7 +90,7 @@ class payrollDetails {
                 SUM(total_base_pay) as total_base_pay,
                 SUM(total_other_payments) as total_other_payments,
                 SUM(total_overtime_pay) as total_overtime_pay,
-                COUNT(DISTINCT (CASE WHEN total_overtime_employees <> 0 THEN employee_number END)) AS total_overtime_employees,
+                {$total_overtime_employees}
                 CASE WHEN type_of_employment = 'Salaried' THEN SUM(total_salaried_employees) ELSE SUM(total_non_salaried_employees) END AS number_employees
                 {$agency_select}
                 {$title_select}
@@ -101,7 +104,7 @@ class payrollDetails {
                     SUM(emp.other_payments) AS total_other_payments,
                     SUM(emp.overtime_pay) AS total_overtime_pay,
                     SUM(emp.annual_salary) AS total_annual_salary,
-                    SUM(emp.positive_overtime_pay) AS total_overtime_employees,
+                   {$overtime_pay}
                     COUNT(DISTINCT (CASE WHEN COALESCE(emp_type.type_of_employment,'Non-Salaried') = 'Salaried' THEN emp_type.employee_number_1 END)) AS total_salaried_employees,
                     COUNT(DISTINCT (CASE WHEN COALESCE(emp_type.type_of_employment,'Non-Salaried') = 'Non-Salaried' {$latest_emp_condition} THEN emp.employee_number END)) AS total_non_salaried_employees,
                     emp.employee_number,
@@ -153,7 +156,7 @@ class payrollDetails {
                 {$month_group_by}
     ";
 
-        log_error('QUERY:' .$query);
+        //log_error('QUERY:' .$query);
         $results = _checkbook_project_execute_sql_by_data_source($query,"checkbook");
         $total_employees = 0;
         foreach($results as $result){
