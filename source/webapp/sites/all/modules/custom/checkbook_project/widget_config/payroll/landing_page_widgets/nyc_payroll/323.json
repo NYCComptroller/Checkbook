@@ -102,13 +102,13 @@
             "labelAlias":"no_of_sal_employees",
             "column":"total_salaried_employees_formatted",
             "header":"false",
-            "sortSourceColumn":"total_salaried_employees_checkbook_payroll_agency_employment_type"
+            "sortSourceColumn":"total_salaried_employees"
         },
         {
             "labelAlias":"no_of_non_sal_employees",
             "column":"total_hourly_employees_formatted",
             "header":"false",
-            "sortSourceColumn":"total_non_salaried_employees_checkbook_payroll_agency_employment_type"
+            "sortSourceColumn":"total_non_salaried_employees"
             },
         {
             "labelAlias":"gross_pay_ytd",
