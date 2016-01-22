@@ -23,7 +23,7 @@ class payrollDetails {
         }
         if(isset($yeartype)) {
             $where .= $where == "" ? "WHERE emp.type_of_year = '$yeartype'" : " AND emp.type_of_year = '$yeartype'";
-            $sub_query_where .= $sub_query_where == "" ? "WHERE type_of_year = '$yeartype" : " AND type_of_year = '$yeartype'";
+            $sub_query_where .= $sub_query_where == "" ? "WHERE type_of_year = '$yeartype'" : " AND type_of_year = '$yeartype'";
         }
         if(isset($title)) {
             $where .= $where == "" ? "WHERE civil_service_title = '$title'" : " AND civil_service_title = '$title'";
@@ -156,7 +156,7 @@ class payrollDetails {
                 {$month_group_by}
     ";
 
-        //log_error('QUERY:' .$query);
+        log_error('QUERY:' .$query);
         $results = _checkbook_project_execute_sql_by_data_source($query,"checkbook");
         $total_employees = 0;
         foreach($results as $result){
