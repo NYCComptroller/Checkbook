@@ -14,6 +14,20 @@
     "autocompleteID":"fagencyId",
     "autocompleteField":"agency.agency.agency_name",
     "adjustParameters":"
+    $nid = _getRequestParamValue('smnid');
+        if(!isset($nid)) {
+            $nid = !isset($nid) ? _getRequestParamValue('dtsmnid') : $nid;
+        }
+        if(isset($nid)){
+            switch($nid){
+                case 325:
+                case 323:
+                    $node->widgetConfig->dataset = 'checkbook:payroll_latest_employee_agency';
+                break;
+                default:
+                break;
+            }
+        }
         $monthId = _getRequestParamValue('month');
         if(isset($monthId)){
             $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_month';
