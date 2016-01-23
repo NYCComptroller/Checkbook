@@ -203,6 +203,21 @@
                 "payroll_type": {
                     "function": "MAX(CASE WHEN amount_basis_id = 1 THEN 'Salaried' ELSE 'Non-Salaried' END)"
                 },
+                "max_annual_salary":{
+                    "function": "MAX(annual_salary)"
+                },
+                "total_gross_pay": {
+                    "function": "SUM(gross_pay)"
+                },
+                "total_base_salary": {
+                    "function": "SUM(base_pay)"
+                },
+                "total_other_payments": {
+                    "function": "SUM(other_payments)"
+                },
+                "total_overtime_amount": {
+                    "function": "SUM(overtime_pay)"
+                },
                 "g100m_count": {
                     "function": "SUM(CASE WHEN COALESCE(gross_pay,0) > 100000000 THEN 1 ELSE 0 END)"
                 },
