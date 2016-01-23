@@ -83,7 +83,7 @@ class PayrollUtil {
                 AND latest_emp.type_of_year = emp.type_of_year
                 AND type_of_employment = 'Salaried'
                 {$where}";
-        //log_error('QUERY:' .$sql);
+//        log_error('getSalariedEmployeeCount:' .$sql);
 
         try {
             $result = _checkbook_project_execute_sql_by_data_source($sql,_get_default_datasource());
@@ -92,7 +92,6 @@ class PayrollUtil {
         catch (Exception $e) {
             log_error("Error in function getEmployeeCount() \nError getting data from controller: \n" . $e->getMessage());
         }
-
 
         return isset($employee_count) ? $employee_count : 0;
     }
@@ -110,6 +109,8 @@ class PayrollUtil {
         $where = "WHERE emp.fiscal_year_id = '$year' AND emp.type_of_year = '$year_type'";
         $where .= isset($title) ? " AND emp.civil_service_title = '$title'" : "";
         $sub_query_where = "WHERE fiscal_year_id = '$year' AND type_of_year = '$year_type'";
+        $sub_query_select = isset($title) ? ", emp.civil_service_title AS civil_service_title_1" : "";
+        $sub_query_join = isset($title) ? "AND emp_type.civil_service_title_1 = emp.civil_service_title" : "";
         $latest_emp_title = isset($title) ? ", civil_service_title" : "";
         $latest_emp_join = isset($title) ? " AND latest_emp.civil_service_title = emp.civil_service_title" : "";
 
@@ -127,6 +128,7 @@ class PayrollUtil {
             emp.fiscal_year_id AS fiscal_year_id_1,
             emp.type_of_year AS type_of_year_1,
             emp.agency_id AS agency_id_1
+            {$sub_query_select}
             FROM aggregateon_payroll_employee_agency emp
             JOIN
             (
@@ -144,6 +146,7 @@ class PayrollUtil {
         AND emp_type.type_of_year_1 = emp.type_of_year
         AND emp_type.fiscal_year_id_1 = emp.fiscal_year_id
         AND emp_type.agency_id_1 = emp.agency_id
+        {$sub_query_join}
         LEFT JOIN
         (
             SELECT max(pay_date) as pay_date,
@@ -159,7 +162,7 @@ class PayrollUtil {
          {$where}
          GROUP BY agency_id";
 
-//        log_error('QUERY:' .$sql);
+//        log_error('getAgencyEmployeeCountByType:' .$sql);
         try {
             $result = _checkbook_project_execute_sql_by_data_source($sql,_get_default_datasource());
 
