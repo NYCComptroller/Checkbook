@@ -173,6 +173,9 @@
                 "emp_count": {
                     "function": "COUNT(DISTINCT employee_number)"
                 },
+                "max_annual_salary":{
+                    "function": "MAX(annual_salary)"
+                },
                 "total_annual_salary": {
                     "function": "SUM(annual_salary)"
                 },
