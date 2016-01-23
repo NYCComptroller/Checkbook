@@ -135,37 +135,24 @@
             }
     ",
     "adjustParameters":"
-                $nid = _getRequestParamValue('smnid');
-                if(!isset($nid)) {
-                    $nid = !isset($nid) ? _getRequestParamValue('dtsmnid') : $nid;
-                }
-                if(isset($nid)){
-                    switch($nid){
-                        case 325:
-                        case 323:
-                            $node->widgetConfig->dataset = 'checkbook:payroll_latest_employee_agency';
-                        break;
-                        default:
-                        break;
-                    }
-                }
-                $sortingCol = $_REQUEST['iSortCol_0'];
-                if($sortingCol == 2){//annual sal
-                    array_unshift($config->orderBy, '-employment_type.employment_type');
-                }else if($sortingCol == 3){//hourly rate
-                    array_unshift($config->orderBy, 'employment_type.employment_type');
-                }
+        $sortingCol = $_REQUEST['iSortCol_0'];
+        if($sortingCol == 2){//annual sal
+            array_unshift($config->orderBy, '-employment_type.employment_type');
+        }
+        else if($sortingCol == 3){//hourly rate
+            array_unshift($config->orderBy, 'employment_type.employment_type');
+        }
 
-               $monthId = _getRequestParamValue('month');
-                if( isset($monthId)){
-                   $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_month';
-                }
+        $monthId = _getRequestParamValue('month');
+        if( isset($monthId)){
+            $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_month';
+        }
 
-                $adjustedParameters = $parameters;
-                if(function_exists('_checkbook_project_applyParameterFilters')){
-                      $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-                }
-                return $adjustedParameters;
+        $adjustedParameters = $parameters;
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        }
+        return $adjustedParameters;
     ",
 "skipCustomPadding":true,
     "dataTableOptions":{
