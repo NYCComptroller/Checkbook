@@ -2722,19 +2722,22 @@ table.outerTable.ma-history{
 }
 #prev-emp-salaried,
 #prev-emp-non-salaried{
-    left:100px;
+    left:175px;
     background: url(../images/NYC-Arrow_left.png) no-repeat scroll;
     cursor: pointer;
+    top:120px;
 }
 #next-emp-salaried,
 #next-emp-non-salaried{
-    right:100px;
+    right:125px;
     background: url(../images/NYC-Arrow_right.png) no-repeat scroll;
     cursor: pointer;
+    top:120px;
+
 }
 
 #emp-agency-detail-record-table {
-    width: 520px;
+    width: 540px;
     margin: auto 200px 15px 225px;
     color:#5B5B5B;
     font-size: 13px;
