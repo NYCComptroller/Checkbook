@@ -2722,14 +2722,14 @@ table.outerTable.ma-history{
 }
 #prev-emp-salaried,
 #prev-emp-non-salaried{
-    left:175px;
+    left:125px;
     background: url(../images/NYC-Arrow_left.png) no-repeat scroll;
     cursor: pointer;
     top:120px;
 }
 #next-emp-salaried,
 #next-emp-non-salaried{
-    right:125px;
+    right:100px;
     background: url(../images/NYC-Arrow_right.png) no-repeat scroll;
     cursor: pointer;
     top:120px;
@@ -2737,7 +2737,7 @@ table.outerTable.ma-history{
 }
 
 #emp-agency-detail-record-table {
-    width: 540px;
+    width: 600px;
     margin: auto 200px 15px 225px;
     color:#5B5B5B;
     font-size: 13px;
@@ -3382,6 +3382,9 @@ div.payroll-year-month{
     font-weight: bold;
 }
 
+.emp-agency-detail-record {
+    left: -50px !important;
+}
 .fake-hyperlink {
     color: #1F82C9;
     font-weight: normal;
