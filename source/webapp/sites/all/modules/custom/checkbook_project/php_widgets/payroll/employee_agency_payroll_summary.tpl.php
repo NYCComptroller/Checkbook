@@ -146,7 +146,7 @@ foreach($all_data as $employment_type => $employment_data) {
 
 
         $table .= "<tr>
-                        <td width='60%'><strong>". WidgetUtil::getLabel('agency_name') ."</strong>: {$agency_url}</td>
+                        <td width='65%'><strong>". WidgetUtil::getLabel('agency_name') ."</strong>: {$agency_url}</td>
                         <td><strong>". WidgetUtil::getLabel('payroll_type') ."</strong>: ". strtoupper($employment_type)."</td>
 
                    </tr>";

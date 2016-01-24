@@ -137,8 +137,8 @@
             "aaSorting":[[3,"desc"]],
              "aoColumns": [
                     {"sClass":"text", "sWidth":"175px","asSorting": [ "asc","desc" ]},
-                    {"sClass":"text", "sWidth":"190px","asSorting": [ "asc","desc" ]},
-                    {"sClass":"text", "sWidth":"110px","asSorting": [ "asc","desc" ]},
+                    {"sClass":"text pad-left", "sWidth":"190px","asSorting": [ "asc","desc" ]},
+                    {"sClass":"text pad-left", "sWidth":"110px","asSorting": [ "asc","desc" ]},
                     {"sClass":"number", "sWidth":"110px","asSorting": [ "asc","desc" ]},
                     {"sClass":"number","sWidth":"110px","asSorting": [ "desc","asc" ]},
                     {"sClass":"number","sWidth":"110px","asSorting": [ "desc","asc" ]},
