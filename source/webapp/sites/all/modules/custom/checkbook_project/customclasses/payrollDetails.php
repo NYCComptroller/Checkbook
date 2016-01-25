@@ -70,7 +70,6 @@ class payrollDetails {
             $month_sub_group_by = ',month.month_id,month.month_name';
             $month_group_by = ',month_id,month_name';
             $sub_query_where .= $sub_query_where == "" ? "WHERE month_id = '$month'" : " AND month_id = '$month'";
-        }else{
             $overtime_pay = "SUM(emp.positive_overtime_pay) AS total_overtime_employees,";
             $total_overtime_employees = "COUNT(DISTINCT (CASE WHEN total_overtime_employees <> 0 THEN employee_number END)) AS total_overtime_employees,";
         }
