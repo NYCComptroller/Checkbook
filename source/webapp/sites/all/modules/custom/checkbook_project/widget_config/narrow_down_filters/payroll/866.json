@@ -6,6 +6,7 @@
     "autocomplete":false,
     "filterName":"Annual Salary",
     "urlParameterName":"annualsalary",
+    "defaultParameters":{"type_of_employment":"Salaried"},
     "urlParameterType":"rangeid3",
     "autocompleteID":"fannualSalary",
     "dataset": "checkbook:payroll_ranged_data",
