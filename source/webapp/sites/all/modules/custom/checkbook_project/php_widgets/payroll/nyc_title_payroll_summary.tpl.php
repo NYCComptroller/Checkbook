@@ -41,12 +41,8 @@ foreach($node->data as $data) {
     $total_overtime_pay += $data['total_overtime_pay'];
     $total_employees += $data['number_employees'];
 
-    if ($employment_type == PayrollType::$SALARIED) {
-        $total_salaried_employees += $data['number_employees'];
-    }
-    else {
-        $total_hourly_employees += $data['number_employees'];
-    }
+    $total_salaried_employees += $node->salaried_employees;
+    $total_hourly_employees += $node->non_salaried_employees;
 }
 
 $total_annual_salary = custom_number_formatter_format($total_annual_salary,2,'$');

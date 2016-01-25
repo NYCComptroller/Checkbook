@@ -15,6 +15,7 @@ class payrollDetails {
         $title = _getRequestParamValue("title");
         $agency = _getRequestParamValue("agency");
         $month = _getRequestParamValue("month");
+        $smnid = _getRequestParamValue("smnid");
 
         $where = $sub_query_where = $agency_select = "";
         if(isset($year)) {
@@ -79,6 +80,7 @@ class payrollDetails {
             $title_sub_group_by = ',emp.civil_service_title';
             $title_group_by = ',civil_service_title';
         }
+        $show_salaried = $smnid == 881 || $smnid == 882;
 
         $query = "
             SELECT
@@ -159,11 +161,32 @@ class payrollDetails {
 //        log_error('QUERY:' .$query);
         $results = _checkbook_project_execute_sql_by_data_source($query,"checkbook");
         $total_employees = 0;
+        $salaried_employees = 0;
+        $non_salaried_employees = 0;
         foreach($results as $result){
             $total_employees += $result['number_employees'];
+            if($result['type_of_employment'] == PayrollType::$NON_SALARIED) {
+                $non_salaried_employees += $result['number_employees'];
+            }
+            else if($result['type_of_employment'] == PayrollType::$SALARIED) {
+                $salaried_employees += $result['number_employees'];
+            }
         }
-        $node->data = $results;
+        if($show_salaried) {
+            foreach($results as $result){
+                if($result['type_of_employment'] == PayrollType::$SALARIED) {
+                    $salaried_results[0] = $result;
+                    $node->data = $salaried_results;
+                }
+            }
+        }
+        else {
+            $node->data = $results;
+        }
         $node->total_employees = $total_employees;
+        $node->non_salaried_employees = $non_salaried_employees;
+        $node->salaried_employees = $salaried_employees;
+
     }
 
 }
