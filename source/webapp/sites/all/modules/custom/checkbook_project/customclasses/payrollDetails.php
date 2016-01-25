@@ -20,17 +20,26 @@ class payrollDetails {
         $where = $sub_query_where = $agency_select = "";
         if(isset($year)) {
             $where .= $where == "" ? "WHERE emp.fiscal_year_id = $year" : " AND emp.fiscal_year_id = $year";
-            $where .= " AND latest_emp.fiscal_year_id = $year AND emp_type.fiscal_year_id_1 = $year";
+            $where .= " AND emp_type.fiscal_year_id_1 = $year";
+            if(isset($agency)) {
+                $where .= " AND latest_emp.fiscal_year_id = $year";
+            }
             $sub_query_where .= $sub_query_where == "" ? "WHERE fiscal_year_id = $year" : " AND fiscal_year_id = $year";
         }
         if(isset($yeartype)) {
             $where .= $where == "" ? "WHERE emp.type_of_year = '$yeartype'" : " AND emp.type_of_year = '$yeartype'";
-            $where .= " AND latest_emp.type_of_year = '$yeartype' AND emp_type.type_of_year_1 = '$yeartype'";
+            $where .= " AND emp_type.type_of_year_1 = '$yeartype'";
+            if(isset($agency)) {
+                $where .= " AND latest_emp.type_of_year = '$yeartype'";
+            }
             $sub_query_where .= $sub_query_where == "" ? "WHERE type_of_year = '$yeartype'" : " AND type_of_year = '$yeartype'";
         }
         if(isset($title)) {
             $where .= $where == "" ? "WHERE emp.civil_service_title = '$title'" : " AND emp.civil_service_title = '$title'";
-            $where .= " AND latest_emp.civil_service_title = '$title' AND emp_type.civil_service_title_1 = '$title'";
+            $where .= " AND emp_type.civil_service_title_1 = '$title'";
+            if(isset($agency)) {
+                $where .= " AND latest_emp.civil_service_title = '$title'";
+            }
         }
         $dataset = 'aggregateon_payroll_employee_agency';
         if(isset($agency)) {
@@ -162,7 +171,7 @@ class payrollDetails {
                 {$month_group_by}
     ";
 
-//        log_error('QUERY:' .$query);
+        log_error('QUERY:' .$query);
         $results = _checkbook_project_execute_sql_by_data_source($query,"checkbook");
         $total_employees = 0;
         $salaried_employees = 0;
