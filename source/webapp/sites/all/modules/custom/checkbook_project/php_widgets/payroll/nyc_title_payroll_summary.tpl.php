@@ -39,8 +39,8 @@ foreach($node->data as $data) {
     $total_base_pay += $data['total_base_pay'];
     $total_other_payments += $data['total_other_payments'];
     $total_overtime_pay += $data['total_overtime_pay'];
-    $total_employees += $data['number_employees'];
 
+    $total_employees +=$node->total_employees;
     $total_salaried_employees += $node->salaried_employees;
     $total_hourly_employees += $node->non_salaried_employees;
 }
