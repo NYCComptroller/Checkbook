@@ -107,11 +107,9 @@ class PayrollUtil {
 
         $employee_totals = array();
         $where = "WHERE emp.fiscal_year_id = '$year' AND emp.type_of_year = '$year_type'";
-        $where .= " AND emp_type.fiscal_year_id_1 = '$year' AND emp_type.type_of_year_1 = '$year_type'";
         $where .= " AND latest_emp.fiscal_year_id = '$year' AND latest_emp.type_of_year = '$year_type'";
         if(isset($title)) {
             $where .= " AND emp.civil_service_title = '$title'";
-            $where .= " AND emp_type.civil_service_title_1 = '$title'";
             $where .= " AND latest_emp.civil_service_title = '$title'";
         }
         $sub_query_where = "WHERE fiscal_year_id = '$year' AND type_of_year = '$year_type'";
