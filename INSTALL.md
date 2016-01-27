@@ -202,7 +202,6 @@ Steps to install:
 
         $ sudo su www-data
         $ cp -a source/webapp/* /var/www/html
-        $ cp -a source/webapp/.idea /var/www/html
         $ cp source/webapp/.htaccess /var/www/html
         $ ls /var/www/html/
         authorize.php index.php          INSTALL.txt     profiles/  themes/
