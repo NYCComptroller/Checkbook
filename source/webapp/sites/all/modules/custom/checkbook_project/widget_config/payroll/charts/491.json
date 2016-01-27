@@ -108,7 +108,7 @@
 
     $categories=array();
     $allZero = true;
-    $isAgencyPage = (strpos(current_path(),'payroll/agency/') === 0);
+    $isAgencyPage = (strpos(current_path(),'payroll/agency_landing/') === 0);
     $pathParams = explode('/',drupal_get_path_alias(current_path()));
 
     foreach ($node->data as $row){
