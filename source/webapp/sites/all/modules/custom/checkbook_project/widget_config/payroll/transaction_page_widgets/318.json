@@ -24,13 +24,20 @@
     ],
     "adjustParameters":"
 
-        unset($parameters['amount_basis_id.amount_basis_id']);
-        $year_id =  _getRequestParamValue('year');
+        if(_getRequestParamValue('calyear')){
+            $year_id = _getRequestParamValue('calyear');
+        }
+        if(_getRequestParamValue('year')){
+            $year_id = _getRequestParamValue('year');
+        }
+
         $yeartype = _getRequestParamValue('yeartype');
         if($yeartype == 'C'){
             unset($parameters['fiscal_year_id.fiscal_year_id']);
             $parameters['calendar_fiscal_year_id'][0] = $year_id;
         }
+        unset($parameters['amount_basis_id.amount_basis_id']);
+
         $adjustedParameters = $parameters;
         if(function_exists('_checkbook_project_applyParameterFilters')){
               $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
