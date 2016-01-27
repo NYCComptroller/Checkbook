@@ -31,7 +31,7 @@ class payrollDetails {
         }
         $dataset = 'aggregateon_payroll_employee_agency';
         if(isset($agency)) {
-            $where .= $where == "" ? "WHERE agency.agency_id = '$agency'" : " AND agency.agency_id = '$agency'";
+            $where .= $where == "" ? "WHERE emp.agency_id = '$agency'" : " AND emp.agency_id = '$agency'";
             $ref_agency_join = "JOIN ref_agency agency ON agency.agency_id = emp.agency_id";
             $agency_select = ",agency_id, agency_name";
             $agency_sub_select = ",agency.agency_id, agency.agency_name";
@@ -90,7 +90,8 @@ class payrollDetails {
                 SUM(total_other_payments) as total_other_payments,
                 SUM(total_overtime_pay) as total_overtime_pay,
                 COUNT(DISTINCT (CASE WHEN total_overtime_employees <> 0 THEN employee_number END)) AS total_overtime_employees,
-                CASE WHEN type_of_employment = 'Salaried' THEN SUM(total_salaried_employees) ELSE SUM(total_non_salaried_employees) END AS number_employees
+                CASE WHEN type_of_employment = 'Salaried' THEN SUM(total_salaried_employees) ELSE SUM(total_non_salaried_employees) END AS number_employees,
+                COUNT(DISTINCT employee_number) as total_number_employees
                 {$agency_select}
                 {$title_select}
                 {$month_select}
@@ -137,6 +138,7 @@ class payrollDetails {
                         AND latest_emp.fiscal_year_id = emp.fiscal_year_id
                         AND latest_emp.type_of_year = emp.type_of_year
                         AND type_of_employment = 'Salaried'
+                        {$where}
                     ) emp_type ON emp_type.employee_number_1 = emp.employee_number
                     AND emp_type.type_of_year_1 = emp.type_of_year
                     AND emp_type.fiscal_year_id_1 = emp.fiscal_year_id
@@ -161,7 +163,7 @@ class payrollDetails {
         $salaried_employees = 0;
         $non_salaried_employees = 0;
         foreach($results as $result){
-            $total_employees += $result['number_employees'];
+            $total_employees = $result['total_number_employees'];
             if($result['type_of_employment'] == PayrollType::$NON_SALARIED) {
                 $non_salaried_employees += $result['number_employees'];
             }
