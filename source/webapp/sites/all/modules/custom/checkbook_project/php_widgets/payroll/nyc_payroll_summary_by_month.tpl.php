@@ -20,6 +20,7 @@
 ?>
 <?php
 
+$title_landing_page = PayrollUtil::isTitleLandingPage();
 if(is_array($node->data) && count($node->data) > 0){
 
     print  '<div class="payroll-emp-wrapper">';
@@ -59,6 +60,13 @@ if(is_array($node->data) && count($node->data) > 0){
         $number_employees = number_format($results['number_employees']);
         $total_employees =  number_format($node->total_employees);
 
+        //Amount labels
+        $lbl_annual_salary = $title_landing_page ? WidgetUtil::getLabel('combined_annual_salary') : WidgetUtil::getLabel('annual_salary');
+        $lbl_gross_pay = $title_landing_page ? WidgetUtil::getLabel('combined_gross_pay') : WidgetUtil::getLabel('gross_pay');
+        $lbl_base_pay = $title_landing_page ? WidgetUtil::getLabel('combined_base_pay') : WidgetUtil::getLabel('base_pay');
+        $lbl_other_pay = $title_landing_page ? WidgetUtil::getLabel('combined_other_pay') : WidgetUtil::getLabel('other_pay');
+        $lbl_overtime_pay = $title_landing_page ? WidgetUtil::getLabel('combined_overtime_pay') : WidgetUtil::getLabel('overtime_pay');
+
         $year = $results['fiscal_year_id'];
         $month_id = $results['month_id'];
         $month_name = $results['month_name'];
@@ -84,21 +92,21 @@ if(is_array($node->data) && count($node->data) > 0){
         if($employment_type == PayrollType::$SALARIED) {
             $table .= "
                 <tr>
-                    <td width='50%'><strong>". WidgetUtil::getLabel('annual_salary') ."</strong>: {$total_annual_salary}</td>
+                    <td width='50%'><strong>". $lbl_annual_salary ."</strong>: {$total_annual_salary}</td>
                     <td><strong>". WidgetUtil::getLabel('payroll_type') ."</strong>: ". strtoupper($employment_type)."</td>
 
                 </tr>
                 <tr>
-                    <td><strong>". WidgetUtil::getLabel('gross_pay') ."</strong>: {$total_gross_pay}</td>
+                    <td><strong>". $lbl_gross_pay ."</strong>: {$total_gross_pay}</td>
                     <td width='50%'><strong>". WidgetUtil::getLabel('total_no_of_employees') ."</strong>: {$total_employees}</td>
 
                 </tr>
                 <tr>
-                    <td><strong>". WidgetUtil::getLabel('base_pay') ."</strong>:{$total_base_pay}</td>
+                    <td><strong>". $lbl_base_pay ."</strong>:{$total_base_pay}</td>
                     <td><strong>". WidgetUtil::getLabel('total_no_of_sal_employees') ."</strong>: {$number_employees}</td>";
             $table .= "</tr>
                 <tr>
-                    <td><strong>". WidgetUtil::getLabel('other_pay') ."</strong>: {$total_other_payments}</td>";
+                    <td><strong>". $lbl_other_pay ."</strong>: {$total_other_payments}</td>";
             if(isset($overtime_employees_value)){
                 $table .= "<td><strong>{$total_overtime_employees_label} </strong> {$overtime_employees_value}</td>";
             }else{
@@ -106,27 +114,27 @@ if(is_array($node->data) && count($node->data) > 0){
             }
             $table .="</tr>
                 <tr>
-                    <td><strong>". WidgetUtil::getLabel('overtime_pay') ."</strong>: {$total_overtime_pay}</td>
+                    <td><strong>". $lbl_overtime_pay ."</strong>: {$total_overtime_pay}</td>
                     <td></td>
                 </tr>";
         } else {
             $table .= "
                 <tr>
-                    <td width='50%'><strong>". WidgetUtil::getLabel('gross_pay') ."</strong>: {$total_gross_pay}</td>
+                    <td width='50%'><strong>". $lbl_gross_pay ."</strong>: {$total_gross_pay}</td>
                     <td><strong>". WidgetUtil::getLabel('payroll_type') ."</strong>: ". strtoupper($employment_type)."</td>
 
                 </tr>
                 <tr>
-                    <td><strong>". WidgetUtil::getLabel('base_pay') ."</strong>:{$total_base_pay}</td>
+                    <td><strong>". $lbl_base_pay ."</strong>:{$total_base_pay}</td>
                     <td width='50%'><strong>". WidgetUtil::getLabel('total_no_of_employees') ."</strong>: {$total_employees}</td>
 
                 </tr>
                 <tr>
-                    <td><strong>". WidgetUtil::getLabel('other_pay') ."</strong>: {$total_other_payments}</td>
+                    <td><strong>". $lbl_other_pay ."</strong>: {$total_other_payments}</td>
                     <td><strong>". WidgetUtil::getLabel('total_no_of_non_sal_employees') ."</strong>: {$number_employees}</td>";
             $table .= "</tr>
                 <tr>
-                    <td><strong>". WidgetUtil::getLabel('overtime_pay') ."</strong>: {$total_overtime_pay}</td>";
+                    <td><strong>". $lbl_overtime_pay ."</strong>: {$total_overtime_pay}</td>";
             if(isset($overtime_employees_value)){
                 $table .= "<td><strong>{$total_overtime_employees_label} </strong> {$overtime_employees_value}</td>";
             }else{

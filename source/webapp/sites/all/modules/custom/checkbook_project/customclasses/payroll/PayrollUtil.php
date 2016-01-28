@@ -51,6 +51,17 @@ class PayrollUtil {
     }
 
     /**
+     * Checks the current URL to determine if this is the title landing page.
+     * @return bool
+     */
+    static function isTitleLandingPage(){
+        $http_ref = $_SERVER['HTTP_REFERER'];
+        $current_url = $_GET['q'];
+        $title_landing_page = preg_match('/title_landing/',$current_url) || preg_match('/title_landing/',$http_ref);
+        return $title_landing_page;
+    }
+
+    /**
      * Returns the count of salaried employees
      * @param $year
      * @param $year_type
