@@ -60,7 +60,7 @@ class payrollDetails {
         }
         if(isset($month)) {
             $dataset = 'aggregateon_payroll_employee_agency_month';
-            $where .= $where == "" ? "WHERE month.month_id = '$month'" : " AND month.month_id = '$month'";
+            $where .= $where == "" ? "WHERE emp.month_id = '$month'" : " AND emp.month_id = '$month'";
             $ref_month_join = "JOIN ref_month month ON month.month_id = emp.month_id";
             $month_select = ",month_id, month_name";
             $month_sub_select = ",month.month_id, month.month_name";
