@@ -29,7 +29,7 @@ $salaried = $payroll_results['amount_basis_id'];
 $title = urlencode($payroll_results['civil_service_title']);
 
 
-$linkable_fields = array("civil_service_title" => "/payroll/title_landing/yeartype/B/year/". $fiscal_year_id ."/title/" .$title,
+$linkable_fields = array(
                          "agency_name" => "/payroll/agency_landing/yeartype/B/year/". $fiscal_year_id ."/agency/". $agency_id,
                         );
 

@@ -60,7 +60,7 @@
         },
         "non_salary_link": {
             "type": "expression2",
-            "expression": " isset($row['total_non_salaried_amount']) ? '<a class =\"bottomContainerReload\" href=/panel_html/payroll_employee_transactions/payroll/employee/transactions' . _checkbook_project_get_year_url_param_string()  . _checkbook_project_get_url_param_string('agency') . _checkbook_project_get_url_param_string('title') . '/salamttype/2~3/abc/' . $row[employee_employee] . '>'. $row[formatted_non_salary_amount] .'</a>' : '-'"
+            "expression": " isset($row['total_non_salaried_amount']) ? '<a class =\"bottomContainerReload\"href=/payroll' . _checkbook_project_get_year_url_param_string() . '?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions' . _checkbook_project_get_year_url_param_string()  . _checkbook_project_get_url_param_string('agency') . _checkbook_project_get_url_param_string('title') . '/salamttype/2~3/abc/' . $row[employee_employee] . '>'. $row[formatted_non_salary_amount] .'</a>' : '-'"
         },
         "export_salary_amount": {
             "type": "expression2",
@@ -100,7 +100,7 @@
         }
     },
     "table_columns": [
-            {"labelAlias": "title","column": "employee_name_link","sortSourceColumn":"civil_service_title.civil_service_title"},
+            {"labelAlias": "title","column": "employee_name_formatted","sortSourceColumn":"civil_service_title.civil_service_title"},
             {"labelAlias": "agency_name","column":"agency_name_formatted","sortSourceColumn":"agency.agency.agency_name"},
             {"labelAlias": "annual_salary","column": "annual_salary_link","sortSourceColumn": "total_salaried_amount"},
             {"labelAlias": "hourly_rate","column": "non_salary_link","sortSourceColumn": "total_non_salaried_amount"},

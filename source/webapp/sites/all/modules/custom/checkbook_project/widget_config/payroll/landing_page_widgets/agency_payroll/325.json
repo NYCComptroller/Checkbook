@@ -81,7 +81,7 @@
     "table_columns": [
         {
             "labelAlias": "title",
-            "column": "employee_name_link",
+            "column": "employee_name_formatted",
             "sortSourceColumn": "civil_service_title.civil_service_title",
             "header": "false"
         },
