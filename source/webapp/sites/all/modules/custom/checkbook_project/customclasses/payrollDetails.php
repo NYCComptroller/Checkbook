@@ -163,7 +163,7 @@ class payrollDetails {
         $salaried_employees = 0;
         $non_salaried_employees = 0;
         foreach($results as $result){
-            $total_employees = $result['total_number_employees'];
+            $total_employees += $result['number_employees'];
             if($result['type_of_employment'] == PayrollType::$NON_SALARIED) {
                 $non_salaried_employees += $result['number_employees'];
             }
