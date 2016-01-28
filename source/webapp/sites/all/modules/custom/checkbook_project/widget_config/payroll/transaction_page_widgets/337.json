@@ -39,7 +39,7 @@
         },
         "employee_name_link": {
             "type": "expression2",
-            "expression": "'<a href=/payroll/title_landing/yeartype/B/year/' . $row[fiscal_year_id] . '/title/' . urlencode($row['civil_service_title']) . '>'. $row[employee_name_formatted] .'</a>'"
+            "expression": "$row[employee_name_formatted]"
         },
         "agency_name_link": {
             "type": "expression2",
