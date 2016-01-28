@@ -1437,10 +1437,10 @@ function _checkbook_project_get_url_param_string($key,$key_alias =  null){
 
   if($keyIndex){
     if($key_alias == null){
-        return "/$key/" . $pathParams[($keyIndex+1)];
+        return "/$key/" . urlencode($pathParams[($keyIndex+1)]);
     }
     else{
-        return "/$key_alias/" . $pathParams[($keyIndex+1)];
+        return "/$key_alias/" . urlencode($pathParams[($keyIndex+1)]);
     }
   }
   return '';
