@@ -229,7 +229,7 @@ class RequestUtil{
       elseif(preg_match('/^payroll\/search\/transactions/',current_path())){
         $title = "Payroll Transactions";
       }
-      elseif(preg_match('/^payroll/',current_path()) && preg_match('/agency/',current_path())){        
+      elseif(preg_match('/^payroll/',current_path()) && preg_match('/agency/',current_path()) && !preg_match('/title/',current_path())){
         $title = _checkbook_project_get_name_for_argument("agency_id",RequestUtil::getRequestKeyValueFromURL("agency",current_path())) . ' Payroll' ;
       }
       elseif(preg_match('/^payroll/',current_path()) && preg_match('/title/',current_path())){
