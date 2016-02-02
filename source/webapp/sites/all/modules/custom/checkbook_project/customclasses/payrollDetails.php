@@ -17,7 +17,8 @@ class payrollDetails {
         $month = _getRequestParamValue("month");
         $smnid = _getRequestParamValue("smnid");
 
-        $where = $sub_query_where = $agency_select = "";
+        $dataset = 'aggregateon_payroll_employee_agency';
+        $where = $sub_query_where = "";
         if(isset($year)) {
             $where .= $where == "" ? "WHERE emp.fiscal_year_id = $year" : " AND emp.fiscal_year_id = $year";
             $sub_query_where .= $sub_query_where == "" ? "WHERE fiscal_year_id = $year" : " AND fiscal_year_id = $year";
@@ -26,58 +27,41 @@ class payrollDetails {
             $where .= $where == "" ? "WHERE emp.type_of_year = '$yeartype'" : " AND emp.type_of_year = '$yeartype'";
             $sub_query_where .= $sub_query_where == "" ? "WHERE type_of_year = '$yeartype'" : " AND type_of_year = '$yeartype'";
         }
-        if(isset($title)) {
-            $where .= $where == "" ? "WHERE emp.civil_service_title = '$title'" : " AND emp.civil_service_title = '$title'";
-        }
-        $dataset = 'aggregateon_payroll_employee_agency';
         if(isset($agency)) {
             $where .= $where == "" ? "WHERE emp.agency_id = '$agency'" : " AND emp.agency_id = '$agency'";
-            $ref_agency_join = "JOIN ref_agency agency ON agency.agency_id = emp.agency_id";
-            $agency_select = ",agency_id, agency_name";
-            $agency_sub_select = ",agency.agency_id, agency.agency_name";
-            $agency_id_sub_select = ",agency_id AS agency_id_1";
-            $agency_join = ' AND emp_type.agency_id_1 = emp.agency_id';
-            $agency_sub_group_by = ',agency.agency_id,agency.agency_name';
-            $agency_group_by = ',agency_id,agency_name';
-
-            $latest_emp_condition = " AND emp.pay_date = latest_emp.pay_date";
-            $latest_emp_title = isset($title) ? ", civil_service_title" : "";
-            $latest_emp_join = isset($title) ? " AND latest_emp.civil_service_title = emp.civil_service_title" : "";
-
-            $latest_emp_sub_query ="
-            LEFT JOIN
-            (
-                SELECT max(pay_date) as pay_date,
-                employee_number,fiscal_year_id,type_of_year{$latest_emp_title}
-                FROM aggregateon_payroll_employee_agency
-                WHERE fiscal_year_id = {$year} AND type_of_year = '{$yeartype}'
-                GROUP BY employee_number,fiscal_year_id,type_of_year{$latest_emp_title}
-            ) latest_emp ON latest_emp.pay_date = emp.pay_date
-            AND latest_emp.employee_number = emp.employee_number
-            AND latest_emp.fiscal_year_id = emp.fiscal_year_id
-            AND latest_emp.type_of_year = emp.type_of_year
-            {$latest_emp_join}";
         }
         if(isset($month)) {
             $dataset = 'aggregateon_payroll_employee_agency_month';
             $where .= $where == "" ? "WHERE emp.month_id = '$month'" : " AND emp.month_id = '$month'";
             $ref_month_join = "JOIN ref_month month ON month.month_id = emp.month_id";
             $month_select = ",month_id, month_name";
+            $month_id_select = ",month_id";
             $month_sub_select = ",month.month_id, month.month_name";
-            $month_id_sub_select = ",month_id AS month_id_1";
-            $month_join = ' AND emp_type.month_id_1 = emp.month_id';
+            $month_id_sub_select = ",emp.month_id AS month_id_1";
+            $month_join = ' AND latest_emp.month_id = emp.month_id';
             $month_sub_query_group_by = ',month_id';
             $month_sub_group_by = ',month.month_id,month.month_name';
             $month_group_by = ',month_id,month_name';
             $sub_query_where .= $sub_query_where == "" ? "WHERE month_id = '$month'" : " AND month_id = '$month'";
         }
         if(isset($title)) {
+            $where .= $where == "" ? "WHERE emp.civil_service_title = '$title'" : " AND emp.civil_service_title = '$title'";
             $title_select = ",civil_service_title";
             $title_sub_select = ",emp.civil_service_title";
             $title_sub_group_by = ',emp.civil_service_title';
             $title_group_by = ',civil_service_title';
         }
         $show_salaried = $smnid == 881 || $smnid == 882;
+
+        if(isset($agency)) {
+            $agency_select = ",agency_id,agency_name";
+            $agency_sub_select = ",agency.agency_id,agency.agency_name";
+            $agency_join = "JOIN ref_agency agency ON agency.agency_id = emp.agency_id";
+            $agency_join_on = "AND emp_type.agency_id_1 = emp.agency_id";
+            $agency_id_sub_select = ",agency_id AS agency_id_1";
+            $agency_group_by = ", agency_id, agency_name";
+            $agency_sub_group_by = ", agency.agency_id, agency.agency_name";
+        }
 
         $query = "
             SELECT
@@ -106,14 +90,14 @@ class payrollDetails {
                     SUM(emp.annual_salary) AS total_annual_salary,
                     SUM(emp.positive_overtime_pay) AS total_overtime_employees,
                     COUNT(DISTINCT (CASE WHEN COALESCE(emp_type.type_of_employment,'Non-Salaried') = 'Salaried' THEN emp_type.employee_number_1 END)) AS total_salaried_employees,
-                    COUNT(DISTINCT (CASE WHEN COALESCE(emp_type.type_of_employment,'Non-Salaried') = 'Non-Salaried' {$latest_emp_condition} THEN emp.employee_number END)) AS total_non_salaried_employees,
+                    COUNT(DISTINCT (CASE WHEN COALESCE(emp_type.type_of_employment,'Non-Salaried') = 'Non-Salaried' AND emp.pay_date = latest_emp.pay_date THEN emp.employee_number END)) AS total_non_salaried_employees,
                     emp.employee_number,
                     emp.type_of_employment
                     {$agency_sub_select}
                     {$title_sub_select}
                     {$month_sub_select}
                     FROM {$dataset} emp
-                    {$ref_agency_join}
+                    {$agency_join}
                     {$ref_month_join}
                     LEFT JOIN
                     (
@@ -129,6 +113,7 @@ class payrollDetails {
                         (
                             SELECT max(pay_date) as pay_date,
                             employee_number,fiscal_year_id,type_of_year
+                            {$month_id_select}
                             FROM {$dataset}
                             {$sub_query_where}
                             GROUP BY employee_number,fiscal_year_id,type_of_year
@@ -138,17 +123,30 @@ class payrollDetails {
                         AND latest_emp.fiscal_year_id = emp.fiscal_year_id
                         AND latest_emp.type_of_year = emp.type_of_year
                         AND type_of_employment = 'Salaried'
+                        {$month_join}
                         {$where}
                     ) emp_type ON emp_type.employee_number_1 = emp.employee_number
                     AND emp_type.type_of_year_1 = emp.type_of_year
                     AND emp_type.fiscal_year_id_1 = emp.fiscal_year_id
-                    {$agency_join}
+                    {$agency_join_on}
+                    LEFT JOIN
+                    (
+                        SELECT max(pay_date) as pay_date,
+                        employee_number,fiscal_year_id,type_of_year
+                            {$month_id_select}
+                        FROM {$dataset}
+                        WHERE fiscal_year_id = {$year} AND type_of_year = '{$yeartype}'
+                        GROUP BY employee_number,fiscal_year_id,type_of_year
+                        {$month_sub_query_group_by}
+                    ) latest_emp ON latest_emp.pay_date = emp.pay_date
+                    AND latest_emp.employee_number = emp.employee_number
+                    AND latest_emp.fiscal_year_id = emp.fiscal_year_id
+                    AND latest_emp.type_of_year = emp.type_of_year
                     {$month_join}
-                    {$latest_emp_sub_query}
                     {$where}
                     GROUP BY emp.fiscal_year_id, emp.type_of_year, emp.employee_number, emp.type_of_employment
-                    {$title_sub_group_by}
                     {$agency_sub_group_by}
+                    {$title_sub_group_by}
                     {$month_sub_group_by}
                 ) employees
                 GROUP BY type_of_employment, type_of_year, fiscal_year_id
