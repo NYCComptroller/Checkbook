@@ -3127,6 +3127,9 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state) {
         $form['filter']['annual_salary'] = array('#markup' => '<div><strong>Amount:</strong><br />Greater Than: $' . $values['salaryfrom'] . '</div>');
         $user_criteria['Amount Greater Than'] = $values['salaryfrom'];
     }
+    $form['filter']['filetype'] = array(
+        '#markup' => '<div><strong>File Type:</strong> ' . $form_state['step_information']['type']['stored_values']['format'] . '</div>',
+    );
     $criteria = checkbook_datafeeds_process_payroll_values($form, $form_state);
     $form_state['step_information']['confirmation']['stored_values']['criteria'] = $criteria;
     $form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $user_criteria;
