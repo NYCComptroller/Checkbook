@@ -882,11 +882,15 @@ function _checkbook_smart_search_export_data(){
   $search_terms[0] = ($search_terms[0] == "") ? "*:*" : ucwords(strtolower(_checkbook_smart_search_escapeSolrValue($search_terms[0])));
   
   $index = 0;
+  $isoge = 0;
   foreach($search_terms as $search_term){
     $terms = explode("=", $search_term);
     if($terms[0] == "domains"){
       $domains = explode("~", $terms[1] );
       $search_terms[$index] = "domains=" . $_REQUEST['domain'];
+    }
+    if($terms[0] == "oge_agency_names"){
+        $isoge = 1;
     }
     $index += 1;
   }
@@ -894,7 +898,8 @@ function _checkbook_smart_search_export_data(){
   $remaining = $conf['check_book']['datatables']['iTotalDisplayRecords'] ;
   $page_size = 10000;
   $page_num = 0;
-  $fields = _checkbook_smart_search_domain_export_fields($_REQUEST['domain'], 0);
+
+  $fields = _checkbook_smart_search_domain_export_fields($_REQUEST['domain'], $isoge);
   $fl = implode(",",array_keys($fields));
   echo implode(",",array_values($fields)) . "\n";
   $statusflag = false;
@@ -1023,7 +1028,6 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
                 "prime_vendor_name" => "Associated Prime Vendor",
                 "" => "");
         }
-
       break;
     case "payroll":
       $parameter_mapping = array(
