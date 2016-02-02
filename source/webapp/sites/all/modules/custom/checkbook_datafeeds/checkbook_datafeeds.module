@@ -2166,11 +2166,12 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         );
         $user_criteria['Purpose'] = $values['purpose'];
     }
+    $agency = $data_source == 'checkbook_oge' ? ($values['agency'] == 'Select One' ? 'All' : $values['agency']) : $values['agency'];
     switch ($data_source) {
         case 'checkbook_oge':
             if ($values['agency']) {
                 $form['filter']['agency'] = array(
-                    '#markup' => '<div><strong>Other Government Entities:</strong> ' . $values['agency'] . '</div>',
+                    '#markup' => '<div><strong>Other Government Entities:</strong> ' . $agency . '</div>',
                 );
                 $user_criteria['Other Government Entities'] = $values['agency'];
             }
@@ -2195,7 +2196,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
             }
             if ($values['agency']) {
                 $form['filter']['agency'] = array(
-                    '#markup' => '<div><strong>Agency:</strong> ' . $values['agency'] . '</div>',
+                    '#markup' => '<div><strong>Agency:</strong> ' . $agency . '</div>',
                 );
                 $user_criteria['Agency'] = $values['agency'];
             }
@@ -4971,8 +4972,9 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
     $agency_label = $data_source == 'checkbook_oge' ? "Other Government Entities" : "Agency";
 
     if ($values['agency']) {
+        $agency = $data_source == 'checkbook_oge' ? ($values['agency'] == 'Select One' ? 'All' : $values['agency']) : $values['agency'];
         $form['filter']['fund_class'] = array(
-            '#markup' => '<div><strong>'.$agency_label.':</strong> ' . $values['agency'] . '</div>',
+            '#markup' => '<div><strong>'.$agency_label.':</strong> ' . $agency . '</div>',
         );
         $user_criteria['Agency'] = $values['agency'];
     }
