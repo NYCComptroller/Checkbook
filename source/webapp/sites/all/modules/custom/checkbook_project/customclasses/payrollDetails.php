@@ -68,7 +68,7 @@ class payrollDetails {
                 type_of_employment,
                 type_of_year,
                 fiscal_year_id,
-                SUM(total_annual_salary) as total_annual_salary,
+                SUM(max_annual_salary) as total_annual_salary,
                 SUM(total_gross_pay) as total_gross_pay,
                 SUM(total_base_pay) as total_base_pay,
                 SUM(total_other_payments) as total_other_payments,
@@ -87,7 +87,7 @@ class payrollDetails {
                     SUM(emp.base_pay) AS total_base_pay,
                     SUM(emp.other_payments) AS total_other_payments,
                     SUM(emp.overtime_pay) AS total_overtime_pay,
-                    SUM(emp.annual_salary) AS total_annual_salary,
+                    MAX(emp_type.max_annual_salary) AS max_annual_salary,
                     SUM(emp.positive_overtime_pay) AS total_overtime_employees,
                     COUNT(DISTINCT (CASE WHEN COALESCE(emp_type.type_of_employment,'Non-Salaried') = 'Salaried' THEN emp_type.employee_number_1 END)) AS total_salaried_employees,
                     COUNT(DISTINCT (CASE WHEN COALESCE(emp_type.type_of_employment,'Non-Salaried') = 'Non-Salaried' AND emp.pay_date = latest_emp.pay_date THEN emp.employee_number END)) AS total_non_salaried_employees,
@@ -105,13 +105,15 @@ class payrollDetails {
                         emp.type_of_employment AS type_of_employment,
                         emp.employee_number AS employee_number_1,
                         emp.fiscal_year_id AS fiscal_year_id_1,
-                        emp.type_of_year AS type_of_year_1
+                        emp.type_of_year AS type_of_year_1,
+	                    latest_emp.max_annual_salary AS max_annual_salary
                         {$agency_id_sub_select}
                         {$month_id_sub_select}
                         FROM {$dataset} emp
                         JOIN
                         (
-                            SELECT max(pay_date) as pay_date,
+                            SELECT MAX(pay_date) as pay_date,
+                            MAX(annual_salary) as max_annual_salary,
                             employee_number,fiscal_year_id,type_of_year
                             {$month_id_select}
                             FROM {$dataset}
@@ -131,7 +133,7 @@ class payrollDetails {
                     {$agency_join_on}
                     LEFT JOIN
                     (
-                        SELECT max(pay_date) as pay_date,
+                        SELECT MAX(pay_date) as pay_date,
                         employee_number,fiscal_year_id,type_of_year
                             {$month_id_select}
                         FROM {$dataset}
