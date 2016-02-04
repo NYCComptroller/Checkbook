@@ -8,7 +8,7 @@
 "urlParamMap":{"year":"fiscal_year_id","calyear":"fiscal_year_id","yeartype":"type_of_year", "agency":"agency_id"},
 "dataset": "checkbook:payroll_employee_agency_title",
 "noDataInitialLoad":true,
-"columns": ["employee_count","agency_id", "civil_service_title",  "total_annual_salary", "total_gross_pay", "total_base_salary", "total_other_payments", "total_overtime_amount", "type_of_year", "fiscal_year_id", "type_of_employment"],
+"columns": ["employee_count","agency_id", "civil_service_title", "civil_service_title_code",  "total_annual_salary", "total_gross_pay", "total_base_salary", "total_other_payments", "total_overtime_amount", "type_of_year", "fiscal_year_id", "type_of_employment"],
 "limit":5,
     "useList":true,
 "orderby":"total_annual_salary",
@@ -48,7 +48,7 @@ return $footer;
     },
  "employee_name_link": {
      "type": "expression2",
-     "expression": "'<a href=/payroll/title_landing' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string(\"agency\") . '/title/' . urlencode($row['civil_service_title']) . '>' . $row['employee_name_formatted'] . '</a>'"
+     "expression": "'<a href=/payroll/title_landing' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string(\"agency\") . '/title/' . urlencode($row['civil_service_title_code']) . '>' . $row['employee_name_formatted'] . '</a>'"
   },
  "total_no_of_employees_formatted": {
      "type": "expression2",

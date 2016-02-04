@@ -118,6 +118,15 @@
                             "sourceColumnName": "civil_service_title"
                         }
                     ]
+                },
+                {
+                    "name": "civil_service_title_code",
+                    "levels": [
+                        {
+                            "name": "civil_service_title_code",
+                            "sourceColumnName": "civil_service_title_code"
+                        }
+                    ]
                 }
             ],
             "measures":{

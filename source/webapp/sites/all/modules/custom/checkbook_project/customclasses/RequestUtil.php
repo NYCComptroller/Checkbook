@@ -233,7 +233,8 @@ class RequestUtil{
         $title = _checkbook_project_get_name_for_argument("agency_id",RequestUtil::getRequestKeyValueFromURL("agency",current_path())) . ' Payroll' ;
       }
       elseif(preg_match('/^payroll/',current_path()) && preg_match('/title_landing/',current_path())){
-          $title = RequestUtil::getRequestKeyValueFromURL("title",current_path()) . ' Payroll' ;
+          $title_code =  RequestUtil::getRequestKeyValueFromURL("title",current_path());
+          $title = PayrollUtil::getTitleByCode($title_code) . ' Payroll' ;
           $title = mb_convert_case($title, MB_CASE_TITLE, "UTF-8");
       }
       elseif(preg_match('/^payroll/',current_path()) && !preg_match('/transactions/',current_path())){

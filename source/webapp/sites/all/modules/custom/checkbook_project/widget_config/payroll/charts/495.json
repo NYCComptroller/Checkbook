@@ -44,7 +44,7 @@
             return $adjustedParameters;
 ",
 "cleanURLParameters":["year","agency","yeartype","title"],
-"urlParamMap":{"year":"fiscal_year_id","agency":"agency_id","yeartype":"year_type.year_type","title":"civil_service_title"},
+"urlParamMap":{"year":"fiscal_year_id","agency":"agency_id","yeartype":"year_type.year_type","title":"civil_service_title_code"},
 "transformationPHP": "
     $data = array();$categories=array();
     $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
