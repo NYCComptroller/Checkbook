@@ -7,6 +7,7 @@
     "filterName":"Annual Salary",
     "urlParameterName":"annualsalary",
     "urlParameterType":"rangeid3",
+    "showAllRecords":true,
     "autocompleteID":"fannualSalary",
     "defaultParameters":{"employment_type.employment_type" : "Salaried"},
     "columns":["annual_salary_g250k_count_title", "annual_salary_g101k_le250k_count_title", "annual_salary_g51k_le100k_count_title", "annual_salary_ge20k_le50k_count_title", "annual_salary_less20k_count_title"],
