@@ -69,7 +69,7 @@ class PayrollUtil {
     static function getTitleByCode($civil_service_title_code) {
         $title = "";
         $sql = "SELECT civil_service_title
-                FROM ref_civil_service_title
+                FROM lookup_civil_service_title
                 WHERE civil_service_title_code = {$civil_service_title_code}";
 
         try {
