@@ -92,7 +92,7 @@
         },
         "payroll_type_formatted": {
             "type": "expression2",
-            "expression": "_get_tooltip_markup($row['employment_type_employment_type'],15)"
+            "expression": "_get_tooltip_markup($row['employment_type_employment_type'],20)"
         },
         "employee_number": {
             "type": "expression2",
