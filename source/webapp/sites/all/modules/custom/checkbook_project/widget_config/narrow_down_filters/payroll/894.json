@@ -8,6 +8,7 @@
     "urlParameterName":"annualsalary",
     "defaultParameters":{"type_of_employment":"Salaried"},
     "urlParameterType":"rangeid3",
+    "showAllRecords":true,
     "autocompleteID":"fannualSalary",
     "columns":["annual_salary_g250k_count", "annual_salary_g101k_le250k_count", "annual_salary_g51k_le100k_count", "annual_salary_ge20k_le50k_count", "annual_salary_less20k_count"],
     "orderBy":"",    

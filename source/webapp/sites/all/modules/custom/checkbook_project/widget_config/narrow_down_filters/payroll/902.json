@@ -7,6 +7,7 @@
     "filterName":"Gross Pay YTD",
     "urlParameterName":"grosspayytd",
     "urlParameterType":"rangeid3",
+    "showAllRecords":true,
     "autocompleteID":"fgrossPayYtd",
     "columns":["gross_pay_ytd_g250k_count", "gross_pay_ytd_g101k_le250k_count", "gross_pay_ytd_g51k_le100k_count", "gross_pay_ytd_ge20k_le50k_count", "gross_pay_ytd_less20k_count"],
     "orderBy":"",
