@@ -9,7 +9,7 @@
         "yeartype":"type_of_year",
         "month":"month_id",
         "agency": "agency_id",
-        "title":"civil_service_title.civil_service_title",
+        "title":"civil_service_title_code.civil_service_title_code",
         "grosspayytd":"total_gross_pay.total_gross_pay",
         "annualsalary":"total_annual_salary.total_annual_salary",
         "overtimepayment":"total_overtime_amount.total_overtime_amount"
@@ -33,7 +33,7 @@
     "html_class": "initiative-table transaction-table",
     "no_results_content":"No Results Found",
     "dataset": "checkbook:payroll_employee_title",
-    "columns": ["employee_count.employee_count", "civil_service_title.civil_service_title",  "total_annual_salary.total_annual_salary", "total_gross_pay.total_gross_pay", "total_base_salary.total_base_salary", "total_other_payments.total_other_payments", "total_overtime_amount.total_overtime_amount", "year_type.year_type", "year.year", "employment_type.employment_type"],
+    "columns": ["employee_count.employee_count", "civil_service_title.civil_service_title", "civil_service_title_code.civil_service_title_code", "total_annual_salary.total_annual_salary", "total_gross_pay.total_gross_pay", "total_base_salary.total_base_salary", "total_other_payments.total_other_payments", "total_overtime_amount.total_overtime_amount", "year_type.year_type", "year.year", "employment_type.employment_type"],
     "derivedColumns": {
         "employee_name_formatted": {
                "type": "expression2",
@@ -41,7 +41,7 @@
         },
         "employee_name_link": {
           "type": "expression2",
-           "expression": "  '<a href=\"/payroll/title_landing/yeartype/'. $row[year_type_year_type] . '/year/' . $row[year_year] . '/title/' . urlencode($row['civil_service_title_civil_service_title']) . '\">'. $row['employee_name_formatted'] . '</a>'"
+           "expression": "  '<a href=\"/payroll/title_landing/yeartype/'. $row[year_type_year_type] . '/year/' . $row[year_year] . '/title/' . $row['civil_service_title_code_civil_service_title_code'] . '\">'. $row['employee_name_formatted'] . '</a>'"
         },
         "total_no_of_employees_formatted": {
         "type": "expression2",

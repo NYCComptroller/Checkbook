@@ -62,6 +62,27 @@ class PayrollUtil {
     }
 
     /**
+     * Given the title code, returns the string title.
+     * @param $civil_service_title_code
+     * @return string
+     */
+    static function getTitleByCode($civil_service_title_code) {
+        $title = "";
+        $sql = "SELECT civil_service_title
+                FROM ref_civil_service_title
+                WHERE civil_service_title_code = {$civil_service_title_code}";
+
+        try {
+            $result = _checkbook_project_execute_sql_by_data_source($sql,_get_default_datasource());
+            $title = $result[0]['civil_service_title'];
+        }
+        catch (Exception $e) {
+            log_error("Error in function getTitleByCode() \nError getting data from controller: \n" . $e->getMessage());
+        }
+        return $title;
+    }
+
+    /**
      * Returns the count of salaried employees
      * @param $year
      * @param $year_type
@@ -76,7 +97,7 @@ class PayrollUtil {
         $sub_query_group_by = "GROUP BY employee_number,fiscal_year_id,type_of_year";
         $where = "WHERE emp.fiscal_year_id = '$year' AND emp.type_of_year = '$year_type'";
         $where .= isset($agency_id) ? " AND agency_id = $agency_id" : "";
-        $where .= isset($title) ? " AND civil_service_title = '$title'" : "";
+        $where .= isset($title) ? " AND civil_service_title_code = '$title'" : "";
 
         $sql = "
                 SELECT COUNT(DISTINCT emp.employee_number) AS record_count
@@ -126,7 +147,7 @@ class PayrollUtil {
             $sub_query_where .= $sub_query_where == "" ? "WHERE type_of_year = '$year_type'" : " AND type_of_year = '$year_type'";
         }
         if(isset($title)) {
-            $where .= $where == "" ? "WHERE emp.civil_service_title = '$title'" : " AND emp.civil_service_title = '$title'";
+            $where .= $where == "" ? "WHERE emp.civil_service_title_code = '$title'" : " AND emp.civil_service_title_code = '$title'";
         }
         if(isset($agency)) {
             $where .= $where == "" ? "WHERE emp.agency_id = '$agency'" : " AND emp.agency_id = '$agency'";

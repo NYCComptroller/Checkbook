@@ -5,10 +5,10 @@
     "no_results_content":"No Results Found",
     "defaultParameters":{"year.year":"22", "type_of_year":"B","type_of_employment" : "Salaried"},
     "cleanURLParameters":["year","yeartype","agency","calyear","title"],
-    "urlParamMap":{"year":"year.year","calyear":"year.year","yeartype":"type_of_year", "agency":"agency_id","title":"civil_service_title"},
+    "urlParamMap":{"year":"year.year","calyear":"year.year","yeartype":"type_of_year", "agency":"agency_id","title":"civil_service_title_code.civil_service_title_code"},
     "dataset": "checkbook:payroll_latest_employee_agency",
     "noDataInitialLoad":true,
-    "columns": ["employee.employee","agency.agency","civil_service_title.civil_service_title","employee_number.employee_number", "max_annual_salary", "total_gross_pay", "total_base_salary", "total_other_payments", "total_overtime_amount", "year_type.year_type", "year.year"],
+    "columns": ["employee.employee","agency.agency","civil_service_title.civil_service_title","civil_service_title_code.civil_service_title_code","employee_number.employee_number", "max_annual_salary", "total_gross_pay", "total_base_salary", "total_other_payments", "total_overtime_amount", "year_type.year_type", "year.year"],
     "limit":5,
     "disableViewAll":true,
     "enableExpand":true,
@@ -51,7 +51,7 @@
         },
         "employee_name_link": {
             "type": "expression2",
-            "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/payroll_title_transactions/payroll/annual_salary_title/transactions' ._checkbook_project_get_year_url_param_string() . '/smnid/' . $node->nid .'/title/' . urlencode($row['civil_service_title_civil_service_title']) .'/agency/' . $row[agency_agency] . '\">' . $row['employee_name_formatted'] . '</a>'"
+            "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/payroll_title_transactions/payroll/annual_salary_title/transactions' ._checkbook_project_get_year_url_param_string() . '/smnid/' . $node->nid .'/title/' . $row['civil_service_title_code_civil_service_title_code'] .'/agency/' . $row[agency_agency] . '\">' . $row['employee_name_formatted'] . '</a>'"
         },
         "total_gross_pay_formatted":{
             "type":"expression2",

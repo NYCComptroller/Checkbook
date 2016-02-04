@@ -610,7 +610,8 @@ function _checkbook_project_get_name_for_argument($keyword,$id){
             return htmlentities(ucwords(strtolower($mwbe[0]['minority_type_name'])));
             break;
         case "title":
-            return htmlentities(ucwords(RequestUtil::getRequestKeyValueFromURL("title",current_path())));
+            $title_code = RequestUtil::getRequestKeyValueFromURL("title",current_path());
+            return htmlentities(ucwords(PayrollUtil::getTitleByCode($title_code)));
             break;
 
 		default:

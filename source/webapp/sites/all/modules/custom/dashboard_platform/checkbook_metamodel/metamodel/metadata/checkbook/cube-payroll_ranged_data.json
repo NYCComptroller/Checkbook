@@ -2,13 +2,14 @@
     "datasets":{
         "payroll_ranged_data":{
             "datasourceName":"main",
-            "source":"SELECT SUM(annual_salary) as annual_salary,SUM(gross_pay) as gross_pay,SUM(overtime_pay) as overtime_pay,agency_id,fiscal_year_id,type_of_year,civil_service_title, type_of_employment FROM aggregateon_payroll_employee_agency GROUP BY agency_id, employee_id, type_of_employment, fiscal_year_id, type_of_year, civil_service_title, employee_number",
+            "source":"SELECT SUM(annual_salary) as annual_salary,SUM(gross_pay) as gross_pay,SUM(overtime_pay) as overtime_pay,agency_id,fiscal_year_id,type_of_year,civil_service_title,civil_service_title_code,type_of_employment FROM aggregateon_payroll_employee_agency GROUP BY agency_id, employee_id, type_of_employment, fiscal_year_id, type_of_year, civil_service_title, civil_service_title_code, employee_number",
             "columns": [
                 {"name": "agency_id"},
                 {"name": "fiscal_year_id"},
                 {"name": "type_of_year"},
                 {"name": "gross_pay"},
                 {"name": "civil_service_title"},
+                {"name": "civil_service_title_code"},
                 {"name": "type_of_employment"}
             ]
         }
