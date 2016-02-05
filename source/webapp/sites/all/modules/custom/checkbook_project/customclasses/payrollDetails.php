@@ -192,7 +192,7 @@ class payrollDetails {
      * @param null $title
      * @return int
      */
-    public function getMaxAnnualSalary($year, $year_type, $month = NULL, $agency = NULL, $title = NULL)
+    public function getMaxAnnualSalary($year, $year_type, $month = NULL, $agency = NULL, $title = NULL, $employee_id = NULL)
     {
         $dataset = 'aggregateon_payroll_employee_agency';
         $select = $where = $group_by = $join = "";
@@ -214,6 +214,9 @@ class payrollDetails {
             $where .= " AND emp.agency_id = $agency";
             $group_by .= ", emp.agency_id";
             $join .= " AND latest_emp.agency_id = emp.agency_id";
+        }
+        if(isset($employee_id)) {
+            $where .= " AND emp.employee_id = $employee_id";
         }
         $query = "
             SELECT SUM(annual_salary) AS max_annual_salary FROM
