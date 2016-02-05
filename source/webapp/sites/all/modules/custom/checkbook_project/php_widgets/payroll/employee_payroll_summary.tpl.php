@@ -80,7 +80,7 @@ foreach($node->data as $data) {
     $original_title = $data['civil_service_title'];
     $title = mb_convert_case(strtolower($original_title), MB_CASE_TITLE, "UTF-8");
     $class = strtolower($employment_type);
-    $total_annual_salary = custom_number_formatter_format($data['total_annual_salary'],2,'$');
+    $total_annual_salary = custom_number_formatter_format($node->total_annual_salary,2,'$');
     $total_gross_pay = custom_number_formatter_format($data['total_gross_pay'],2,'$');
     $total_base_pay = custom_number_formatter_format($data['total_base_pay'],2,'$');
     $total_other_payments = custom_number_formatter_format($data['total_other_payments'],2,'$');

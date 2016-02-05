@@ -28,7 +28,7 @@ foreach($node->data as $data){
     $year_type = $data['year_type_year_type'];
     $employment_type = $data['type_of_employment'];
 
-    $record['total_annual_salary'] = $data['total_annual_salary'];
+    $record['total_annual_salary'] = $node->total_annual_salary;
     $record['total_gross_pay'] = $data['total_gross_pay'];
     $record['total_base_pay'] = $data['total_base_pay'];
     $record['total_other_payments'] = $data['total_other_payments'];

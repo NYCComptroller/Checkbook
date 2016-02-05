@@ -29,7 +29,7 @@ foreach($node->data as $data){
     $employment_type = $data['type_of_employment'];
     $agency_name = _shorten_word_with_tooltip(strtoupper($data['agency_name']),25);
 
-    $record['total_annual_salary'] = $data['total_annual_salary'];
+    $record['total_annual_salary'] = $node->total_annual_salary;
     $record['total_gross_pay'] = $data['total_gross_pay'];
     $record['total_base_pay'] = $data['total_base_pay'];
     $record['total_other_payments'] = $data['total_other_payments'];
