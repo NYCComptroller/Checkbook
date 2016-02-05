@@ -38,12 +38,11 @@
                         "other_payments":"other_payments",
                         "overtime_payments":"overtime_pay",
                         "gross_pay_ytd":"gross_pay_ytd",
-                        "employee_number":"employee_number",
                         "fiscal_year":"fiscal_year",
                         "calendar_year":"calendar_fiscal_year"
                     },
                     "rowElements":["agency", "title", "pay_frequency", "pay_date", "payroll_type", "annual_salary", "hourly_rate", "gross_pay", "base_pay", "other_payments", "overtime_payments", "gross_pay_ytd",
-                        "fiscal_year", "employee_number", "calendar_year"]
+                        "fiscal_year", "calendar_year"]
                 },
                 "csv":{
                     "elementsColumn":{
@@ -59,7 +58,6 @@
                         "Other Payments":"other_payments",
                         "Overtime Payments":"overtime_pay",
                         "Gross Pay YTD":"gross_pay_ytd",
-                        "Employee Number":"employee_number",
                         "Fiscal year":"fiscal_year",
                         "Calendar Year":"calendar_fiscal_year"
                     }
@@ -191,12 +189,11 @@
                         "other_payments":"other_payments",
                         "overtime_payments":"overtime_pay",
                         "gross_pay_ytd":"gross_pay_cytd",
-                        "employee_number":"employee_number",
                         "fiscal_year":"fiscal_year",
                         "calendar_year":"calendar_fiscal_year"
                     },
                     "rowElements":["agency", "title", "pay_frequency", "pay_date", "payroll_type", "annual_salary", "hourly_rate", "gross_pay", "base_pay", "other_payments", "overtime_payments", "gross_pay_ytd",
-                        "fiscal_year", "employee_number", "calendar_year"]
+                        "fiscal_year", "calendar_year"]
                 },
                 "csv":{
                     "elementsColumn":{
@@ -212,7 +209,6 @@
                         "Other Payments":"other_payments",
                         "Overtime Payments":"overtime_pay",
                         "Gross Pay YTD":"gross_pay_ytd",
-                        "Employee Number":"employee_number",
                         "Fiscal year":"fiscal_year",
                         "Calendar Year":"calendar_fiscal_year"
                     }
