@@ -2646,7 +2646,7 @@ function checkbook_datafeeds_payroll($form, &$form_state) {
         '#attributes' => array('class' => array('watch')),
         '#default_value' => !empty($form_state['values']['title']) ? $form_state['values']['title'] : '',
         '#prefix' => '<div class="column column-left"><div class="datafield title">',
-        '#suffix' => '</div>',
+        '#suffix' => '<input name="title_exact" value="'.$_POST['title_exact'].'" type="hidden"></div>',
     );
     $form['filter']['agency'] = array(
         '#type' => 'select',
@@ -2990,6 +2990,13 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state) {
         '#type' => 'fieldset',
         '#title' => t('Filter'),
     );
+    //Add title_exact to hidden to persist back
+    $form['title_exact'] = array(
+        '#title' =>  'title_exact',
+        '#value' => $_POST['title_exact'],
+        '#type' => 'hidden'
+    );
+
     if (startsWith($values['year'], 'F')) {
         $form['filter']['year'] = array(
             '#markup' => '<div><strong>Fiscal Year:</strong> ' . $values['year'] . '</div>',
@@ -3151,26 +3158,6 @@ function checkbook_datafeeds_payroll_confirmation_previous_submit($form, &$form_
     $form_state['step_information'][$current_step]['stored_values'] = $form_state['values'];
     $current_step = 'payroll';
     $form_state['values'] = $form_state['step_information'][$current_step]['stored_values'];
-//    if ($form_state['step_information']['type']['stored_values']['format'] == 'csv') {
-//        if ($form_state['values']['column_select']['Fiscal year'] == 'Fiscal year') {
-//            unset($form_state['values']['column_select']['Fiscal year']);
-//            $form_state['values']['column_select']['Year'] = 'Year';
-//        }
-//        elseif ($form_state['values']['column_select']['Calendar Year'] == 'Calendar Year') {
-//            unset($form_state['values']['column_select']['Calendar Year']);
-//            $form_state['values']['column_select']['Year'] = 'Year';
-//        }
-//    }
-//    elseif ($form_state['step_information']['type']['stored_values']['format'] == 'xml') {
-//        if ($form_state['values']['column_select']['fiscal_year'] == 'fiscal_year') {
-//            unset($form_state['values']['column_select']['fiscal_year']);
-//            $form_state['values']['column_select']['year'] = 'year';
-//        }
-//        elseif ($form_state['values']['column_select']['calendar_year'] == 'calendar_year') {
-//            unset($form_state['values']['column_select']['calendar_year']);
-//            $form_state['values']['column_select']['year'] = 'year';
-//        }
-//    }
     $form_state['rebuild'] = TRUE;
 }
 
@@ -3207,7 +3194,12 @@ function checkbook_datafeeds_process_payroll_values($form, &$form_state) {
         $criteria['value']['agency_code'] = trim($amatches[1], '[ ]');
     }
     if ($values['title']) {
-        $criteria['value']['title'] = $values['title'];
+        $title_exact = $_POST['title_exact'];
+        $title = $values['title'];
+        if($title_exact && $title_exact == $title)
+            $criteria['value']['title_exact'] = $title_exact;
+        else
+            $criteria['value']['title'] = $title;
     }
     if ($values['payfrequency'] != '') {
         $criteria['value']['pay_frequency'] = $values['payfrequency'];

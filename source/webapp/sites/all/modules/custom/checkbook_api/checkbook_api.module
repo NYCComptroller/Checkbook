@@ -295,6 +295,20 @@ function checkbook_api_adjustContractDataSetResults(&$data_records) {
 }
 
 /**
+ * Function to adjust the parameters before for the api sql call for payroll
+ *
+ * @param $data_set
+ * @param $parameters
+ * @param $criteria
+ */
+function checkbook_api_adjustPayrollParameterFilters(&$data_set, &$parameters, $criteria) {
+    if(isset($parameters['civil_service_title_exact'])) {
+        $parameters['civil_service_title'] = data_controller_get_operator_factory_instance()->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array($parameters['civil_service_title_exact'],FALSE,FALSE,));
+        unset($parameters['civil_service_title_exact']);
+    }
+}
+
+/**
  * Used to adjust columns in the data set after sql call.  This is to handle derived columns
  * @param $data_records
  */

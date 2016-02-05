@@ -12,7 +12,8 @@
             "other_payments":"other_payments",
             "overtime_payments":"overtime_pay",
             "gross_pay_ytd":"gross_pay_ytd",
-            "title":"civil_service_title"
+            "title":"civil_service_title",
+            "title_exact":"civil_service_title_exact"
         },
         "dataset":{
             "sortColumn":["-gross_pay","-payroll_id"],
@@ -64,6 +65,7 @@
                     }
                 }
             },
+            "adjustParameters":"if(function_exists('checkbook_api_adjustPayrollParameterFilters')){checkbook_api_adjustPayrollParameterFilters($data_set,$parameters,$criteria);}",
             "adjustDataSetResults":"if(function_exists('checkbook_api_adjustPayrollDataSetResults')){checkbook_api_adjustPayrollDataSetResults($data_records);}",
             "adjustSql":"if(function_exists('checkbook_api_adjustPayrollSql')){checkbook_api_adjustPayrollSql($sql_query);}"
         },
@@ -142,6 +144,11 @@
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"100"
+            },
+            "title_exact":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"100"
             }
         }
     },
@@ -158,7 +165,8 @@
             "other_payments":"other_payments",
             "overtime_payments":"overtime_pay",
             "gross_pay_ytd":"gross_pay_cytd",
-            "title":"civil_service_title"
+            "title":"civil_service_title",
+            "title_exact":"civil_service_title_exact"
         },
         "dataset":{
             "sortColumn":["-gross_pay","-payroll_id"],
@@ -210,6 +218,7 @@
                     }
                 }
             },
+            "adjustParameters":"if(function_exists('checkbook_api_adjustPayrollParameterFilters')){checkbook_api_adjustPayrollParameterFilters($data_set,$parameters,$criteria);}",
             "adjustDataSetResults":"if(function_exists('checkbook_api_adjustPayrollDataSetResults')){checkbook_api_adjustPayrollDataSetResults($data_records);}",
             "adjustSql":"if(function_exists('checkbook_api_adjustPayrollSql')){checkbook_api_adjustPayrollSql($sql_query);}"
         },
@@ -284,6 +293,11 @@
                 "maxLength":"18"
             },
             "title":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"100"
+            },
+            "title_exact":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"100"
