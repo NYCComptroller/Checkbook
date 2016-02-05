@@ -1041,8 +1041,7 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
       "hourly_rate" => "Hourly Rate",
       "other_payments" => "Other Payments",
       "overtime_pay" => "Overtime Payments",
-      "payroll_type" => "Payroll Type",
-      "employee_number" => "Employee Number"
+      "payroll_type" => "Payroll Type"
       );
       break;
     case "budget":
@@ -1179,8 +1178,7 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
             "hourly_rate" => "Hourly Rate",
 			"other_payments" => "Other Payments",
             "overtime_pay" => "Overtime Payments",
-            "payroll_type" => "Payroll Type",
-            "employee_number" => "Employee Number"
+            "payroll_type" => "Payroll Type"
 		    );
 		break;
 		case "budget":
