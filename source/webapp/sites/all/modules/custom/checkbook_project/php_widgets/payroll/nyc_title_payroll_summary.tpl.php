@@ -34,7 +34,7 @@ $total_employees = 0;
 foreach($node->data as $data) {
 
     $employment_type = $data['type_of_employment'];
-    $total_annual_salary += $data['total_annual_salary'];
+    $total_annual_salary += $node->total_annual_salary;
     $total_gross_pay += $data['total_gross_pay'];
     $total_base_pay += $data['total_base_pay'];
     $total_other_payments += $data['total_other_payments'];

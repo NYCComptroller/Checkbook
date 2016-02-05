@@ -52,7 +52,7 @@ if(is_array($node->data) && count($node->data) > 0){
 
         $employment_type = $results['type_of_employment'];
         $class = strtolower($employment_type);
-        $total_annual_salary = custom_number_formatter_format($results['total_annual_salary'],2,'$');
+        $total_annual_salary = custom_number_formatter_format($node->total_annual_salary,2,'$');
         $total_gross_pay = custom_number_formatter_format($results['total_gross_pay'],2,'$');
         $total_base_pay = custom_number_formatter_format($results['total_base_pay'],2,'$');
         $total_other_payments = custom_number_formatter_format($results['total_other_payments'],2,'$');
