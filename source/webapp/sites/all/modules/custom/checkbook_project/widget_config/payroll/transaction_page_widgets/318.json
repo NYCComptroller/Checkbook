@@ -50,7 +50,9 @@
         $max_annual_salary = payrollDetails::getMaxAnnualSalary($year, $year_type, $month, $agency, $title, $employee_id);
 
         foreach($node->data as &$row) {
-            $row['max_annual_salary'] = $max_annual_salary;
+            if($row['amount_basis_id_amount_basis_id'] == 1) {
+                $row['max_annual_salary'] = $max_annual_salary;
+            }
         }
         return $node->data;
     ",
