@@ -47,12 +47,13 @@
         $title = _getRequestParamValue('title');
         $employee_id = _getRequestParamValue('abc') ? _getRequestParamValue('abc') : _getRequestParamValue('xyz');
 
-        $max_annual_salary = payrollDetails::getMaxAnnualSalary($year, $year_type, $month, $agency, $title, $employee_id);
+        $max_annual_salary = payrollDetails::getMaxAnnualSalaryByPayFrequency($year, $year_type, $month, $agency, $title, $employee_id);
+        $max_hourly_rate = payrollDetails::getMaxHourlyRateByPayFrequency($year, $year_type, $month, $agency, $title, $employee_id);
 
         foreach($node->data as &$row) {
-            if($row['amount_basis_id_amount_basis_id'] == 1) {
-                $row['max_annual_salary'] = $max_annual_salary;
-            }
+            $pay_frequency = $row['pay_frequency_pay_frequency'];
+            $amount_basis_id = $row['amount_basis_id_amount_basis_id'];
+            $row['max_annual_salary'] = $amount_basis_id == 1 ? $max_annual_salary[$pay_frequency] : $max_hourly_rate[$pay_frequency];
         }
         return $node->data;
     ",
