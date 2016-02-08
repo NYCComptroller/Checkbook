@@ -133,7 +133,7 @@
                     "sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
             },
             "bInfo": true,
-            "aaSorting":[[3,"desc"]],
+            "aaSorting":[[10,"desc"]],
              "aoColumns": [
                     {"sClass":"text", "sWidth":"175px","asSorting": [ "asc","desc" ]},
                     {"sClass":"text pad-left", "sWidth":"190px","asSorting": [ "asc","desc" ]},
