@@ -10,12 +10,16 @@ class payrollDetails {
 
     public function getData(&$node){
 
-        $year = _getRequestParamValue("year");
         $year_type = _getRequestParamValue("yeartype");
+        $year = _getRequestParamValue("year");
         $title = _getRequestParamValue("title");
         $agency = _getRequestParamValue("agency");
         $month = _getRequestParamValue("month");
         $smnid = _getRequestParamValue("smnid");
+
+        if($year_type == 'C' && !isset($year)) {
+            $year = _getRequestParamValue("calyear");
+        }
 
         $dataset = 'aggregateon_payroll_employee_agency';
         $where = $sub_query_where = "";
@@ -151,7 +155,7 @@ class payrollDetails {
                 {$month_group_by}
     ";
 
-        log_error('QUERY:' .$query);
+//        log_error('QUERY:' .$query);
         $results = _checkbook_project_execute_sql_by_data_source($query,"checkbook");
         $total_employees = 0;
         $salaried_employees = 0;
@@ -240,7 +244,7 @@ class payrollDetails {
              ) max_annual_salary
         ";
 
-        log_error('QUERY: getMaxAnnualSalary:' .$query);
+//        log_error('QUERY: getMaxAnnualSalary:' .$query);
         $results = _checkbook_project_execute_sql_by_data_source($query,"checkbook");
         $max_annual_salary = 0;
         foreach($results as $result){
