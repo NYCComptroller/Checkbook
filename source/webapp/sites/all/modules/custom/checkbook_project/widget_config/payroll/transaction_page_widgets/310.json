@@ -75,7 +75,7 @@
         },
         "payroll_type_formatted": {
             "type": "expression2",
-            "expression": "_get_tooltip_markup($row['payroll_type'],15)"
+            "expression": "_get_tooltip_markup($row['payroll_type'],25)"
         },
         "pay_frequency_formatted": {
             "type": "expression2",
@@ -146,7 +146,7 @@
                     {"sClass":"number","sWidth":"110px","asSorting": [ "desc","asc" ]},
                     {"sClass":"number","sWidth":"110px","asSorting": [ "desc","asc" ]},
                     {"sClass":"number","sWidth":"120px","asSorting": [ "desc","asc" ]},
-                    {"sClass":"text pad-left endcol","sWidth":"110px","asSorting": [ "asc","desc" ]}
+                    {"sClass":"text pad-left endcol","sWidth":"120px","asSorting": [ "asc","desc" ]}
             ],
     "sScrollX": "100%",
     "bScrollCollapse": false
