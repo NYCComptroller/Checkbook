@@ -6,7 +6,7 @@
     "autocomplete":false,
     "filterName":"Annual Salary",
     "urlParameterName":"annualsalary",
-    "deaultParameters":{"amount_basis_id":1},
+    "defaultParameters":{"amount_basis_id":1},
     "urlParameterType":"rangeid3",
     "showAllRecords":true,
     "autocompleteID":"fannualSalary",
