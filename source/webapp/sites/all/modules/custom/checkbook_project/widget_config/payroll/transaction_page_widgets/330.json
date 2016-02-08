@@ -101,8 +101,7 @@
             {"labelAlias": "other_pays","column": "formatted_other_payments_amount","sortSourceColumn": "other_payments.other_payments"},
             {"labelAlias": "overtime_pay","column": "formatted_overtime_pay_amount","sortSourceColumn": "overtime_pay.overtime_pay"},
             {"labelAlias": "gross_pay_ytd","column": "formatted_gross_pay_ytd_amount","sortSourceColumn": "gross_pay_cytd.gross_pay_cytd"},
-            {"labelAlias": "payroll_type","column": "payroll_type_formatted","sortSourceColumn": "payroll_type"},
-            {"labelAlias": "employee_number","column": "employee_number","sortSourceColumn":"employee_number.employee_number"}
+            {"labelAlias": "payroll_type","column": "payroll_type_formatted","sortSourceColumn": "payroll_type"}
           ],
     "adjustParameters":"
                 $adjustedParameters = $parameters;
@@ -139,7 +138,6 @@
                 {"sClass":"number","sWidth":"110px","asSorting": [ "desc","asc" ]},
                 {"sClass":"number","sWidth":"110px","asSorting": [ "desc","asc" ]},
                 {"sClass":"number","sWidth":"120px","asSorting": [ "desc","asc" ]},
-                {"sClass":"text pad-left","sWidth":"120px","asSorting": [ "desc","asc" ]},
                 {"sClass":"text pad-left endCol", "sWidth":"110px","asSorting": [ "asc","desc" ]}
             ],
         "sScrollX": "100%",
