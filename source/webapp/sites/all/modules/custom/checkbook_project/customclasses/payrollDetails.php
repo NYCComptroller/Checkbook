@@ -292,7 +292,7 @@ class payrollDetails {
             (
                 SELECT MAX(emp.pay_date) as pay_date,emp.employee_number, {$year_param}, emp.amount_basis_id, emp.pay_frequency{$select}
                 FROM payroll emp
-                WHERE {$year_param} = {$year} AND emp.amount_basis_id <> 1{$where}
+                WHERE {$year_param} = {$year} AND emp.amount_basis_id = 1{$where}
                 GROUP BY emp.employee_number, {$year_param}, emp.amount_basis_id, emp.pay_frequency{$group_by}
             ) latest_emp ON latest_emp.pay_date = emp.pay_date
             AND latest_emp.employee_number = emp.employee_number
@@ -300,7 +300,7 @@ class payrollDetails {
             AND latest_emp.pay_frequency = emp.pay_frequency
             {$year_join}
             {$join}
-            WHERE {$year_param} = {$year} AND emp.amount_basis_id <> 1{$where}
+            WHERE {$year_param} = {$year} AND emp.amount_basis_id = 1{$where}
             GROUP BY emp.employee_number, {$year_param}, emp.amount_basis_id, emp.pay_frequency{$group_by}
         ";
 
