@@ -1,7 +1,7 @@
 {
     "widgetType": "data_tables",
     "widgetSubType": "dataTableList",
-    "cleanURLParameters":["abc","xyz","agency","calyear","year","salamttype","title","grosspayytd","annualsalary","overtimepayment","payfrequency","payrolltype"],
+    "cleanURLParameters":["abc","xyz","agency","calyear","year","title","grosspayytd","annualsalary","overtimepayment","payfrequency","payrolltype"],
     "urlParamMap":{
         "xyz":"employee_id.employee_id",
         "abc":"employee_id.employee_id",
@@ -9,7 +9,6 @@
         "calyear":"calendar_fiscal_year_id.calendar_fiscal_year_id",
         "year":"calendar_fiscal_year_id.calendar_fiscal_year_id",
         "title":"civil_service_title.civil_service_title",
-        "salamttype":"amount_basis_id.amount_basis_id",
         "grosspayytd":"gross_pay_cytd.gross_pay_cytd",
         "annualsalary":"annual_salary.annual_salary",
         "overtimepayment":"overtime_pay.overtime_pay",
@@ -104,11 +103,11 @@
             {"labelAlias": "payroll_type","column": "payroll_type_formatted","sortSourceColumn": "payroll_type"}
           ],
     "adjustParameters":"
-                $adjustedParameters = $parameters;
-                if(function_exists('_checkbook_project_applyParameterFilters')){
-                      $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-                }
-                return $adjustedParameters;
+        $adjustedParameters = $parameters;
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+              $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        }
+        return $adjustedParameters;
     ",
     "dataTableOptions":{
              "bRetrieve": true,
