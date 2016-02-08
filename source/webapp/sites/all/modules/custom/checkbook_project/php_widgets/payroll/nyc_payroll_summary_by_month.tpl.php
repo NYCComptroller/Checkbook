@@ -92,7 +92,7 @@ if(is_array($node->data) && count($node->data) > 0){
         if($employment_type == PayrollType::$SALARIED) {
             $table .= "
                 <tr>
-                    <td width='50%'><strong>". $lbl_annual_salary ."</strong>: {$total_annual_salary}</td>
+                    <td width='40%'><strong>". $lbl_annual_salary ."</strong>: {$total_annual_salary}</td>
                     <td><strong>". WidgetUtil::getLabel('payroll_type') ."</strong>: ". strtoupper($employment_type)."</td>
 
                 </tr>
