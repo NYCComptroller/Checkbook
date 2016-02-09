@@ -120,6 +120,7 @@
                 switch($nid){
                     case 322:
                     case 491:
+                    case 492:
                         $node->widgetConfig->dataTableOptions->aaSorting = array(array(7,'desc'));
                     break;
                     case 320:
