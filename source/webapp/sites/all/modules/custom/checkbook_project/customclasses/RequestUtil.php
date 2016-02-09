@@ -210,7 +210,7 @@ class RequestUtil{
       }
       else if(isset($bottomURL) && preg_match('/payroll_by_month_nyc_transactions/',$bottomURL)){
           $smnid = RequestUtil::getRequestKeyValueFromURL("smnid",$bottomURL);
-          if($smnid == '491'){
+          if($smnid == '491' || $smnid == '492'){
             $customTitle = "Overtime Payments by Month Transactions";
         }else{
             $customTitle = "Gross Pay by Month Transactions";

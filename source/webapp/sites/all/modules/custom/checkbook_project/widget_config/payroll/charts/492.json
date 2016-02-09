@@ -128,8 +128,8 @@
         if(abs($row['current_total_overtime_pay']) > 0)
            $allZero = false;
 
-        $seriesPreviousData[] = (object)array( 'y' => $row['previous_total_overtime_pay'], 'url'=> $previousYearUrl );
-        $seriesCurrentData[] = (object)array('y' => $row['current_total_overtime_pay'],'url'=> $currentYearUrl);
+        $seriesPreviousData[] = (object)array( 'y' => $row['previous_total_overtime_pay'], 'url'=> $previousYearUrl.'/smnid/492');
+        $seriesCurrentData[] = (object)array('y' => $row['current_total_overtime_pay'],'url'=> $currentYearUrl.'/smnid/492');
 
     }
 
