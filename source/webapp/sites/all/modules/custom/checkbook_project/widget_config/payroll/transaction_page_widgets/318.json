@@ -1,6 +1,6 @@
 {
     "widgetType": "phpparser",
-    "cleanURLParameters":["abc","xyz","agency","year","calyear","title","salamttype"],
+    "cleanURLParameters":["abc","xyz","agency","year","calyear","title","salamttype","yeartype"],
     "urlParamMap":{
         "abc":"employee_id.employee_id",
         "xyz":"employee_id.employee_id",
@@ -8,7 +8,8 @@
         "title":"civil_service_title.civil_service_title",
         "year":"fiscal_year_id.fiscal_year_id",
         "calyear":"calendar_fiscal_year_id.calendar_fiscal_year_id",
-        "salamttype":"amount_basis_id.amount_basis_id"
+        "salamttype":"amount_basis_id.amount_basis_id",
+        "yeartype":"year_type"
     },
     "limit":"17",
     "dataset": "checkbook:payroll",
@@ -25,13 +26,25 @@
         "total_gross_pay"
     ],
     "adjustParameters":"
+        $yearType = _getRequestParamValue('yeartype');
         if(_getRequestParamValue('calyear')){
             $year_id = _getRequestParamValue('calyear');
         }
         if(_getRequestParamValue('year')){
             $year_id = _getRequestParamValue('year');
         }
+        if(isset($yearType)) {
+            if($yearType == 'B') {
+                $parameters['fiscal_year_id.fiscal_year_id'] = $year_id;
+                unset($parameters['calendar_fiscal_year_id.calendar_fiscal_year_id']);
+            }
+            else if($yearType == 'C') {
+                $parameters['calendar_fiscal_year_id.calendar_fiscal_year_id'] = $year_id;
+                unset($parameters['fiscal_year_id.fiscal_year_id']);
+            }
+        }
         unset($parameters['amount_basis_id.amount_basis_id']);
+        unset($parameters['year_type']);
 
         $adjustedParameters = $parameters;
         if(function_exists('_checkbook_project_applyParameterFilters')){
@@ -41,7 +54,7 @@
     ",
     "transformationPHP":"
         $year = _getRequestParamValue('calyear') ? _getRequestParamValue('calyear') : _getRequestParamValue('year');
-        $year_type = _getRequestParamValue('calyear') ? 'C' : 'B';
+        $year_type = _getRequestParamValue('yeartype');
         $month = _getRequestParamValue('month');
         $agency = _getRequestParamValue('agency');
         $title = _getRequestParamValue('title');
