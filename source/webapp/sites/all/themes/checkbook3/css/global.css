@@ -2743,6 +2743,10 @@ table.outerTable.ma-history{
     font-size: 13px;
 }
 
+.center-align {
+    margin-left:180px !important;
+}
+
 #toggle-employee-salaried,
 #toggle-employee-non-salaried {
     text-align: center;
