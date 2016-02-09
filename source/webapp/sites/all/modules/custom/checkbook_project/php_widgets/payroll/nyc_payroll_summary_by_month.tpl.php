@@ -20,7 +20,6 @@
 ?>
 <?php
 
-$title_landing_page = PayrollUtil::isTitleLandingPage();
 if(is_array($node->data) && count($node->data) > 0){
 
     print  '<div class="payroll-emp-wrapper">';
@@ -61,11 +60,11 @@ if(is_array($node->data) && count($node->data) > 0){
         $total_employees =  number_format($node->total_employees);
 
         //Amount labels
-        $lbl_annual_salary = $title_landing_page ? WidgetUtil::getLabel('combined_annual_salary') : WidgetUtil::getLabel('annual_salary');
-        $lbl_gross_pay = $title_landing_page ? WidgetUtil::getLabel('combined_gross_pay') : WidgetUtil::getLabel('gross_pay');
-        $lbl_base_pay = $title_landing_page ? WidgetUtil::getLabel('combined_base_pay') : WidgetUtil::getLabel('base_pay');
-        $lbl_other_pay = $title_landing_page ? WidgetUtil::getLabel('combined_other_pay') : WidgetUtil::getLabel('other_pay');
-        $lbl_overtime_pay = $title_landing_page ? WidgetUtil::getLabel('combined_overtime_pay') : WidgetUtil::getLabel('overtime_pay');
+        $lbl_annual_salary = WidgetUtil::getLabel('combined_annual_salary');
+        $lbl_gross_pay = WidgetUtil::getLabel('combined_gross_pay');
+        $lbl_base_pay = WidgetUtil::getLabel('combined_base_pay');
+        $lbl_other_pay = WidgetUtil::getLabel('combined_other_pay');
+        $lbl_overtime_pay = WidgetUtil::getLabel('combined_overtime_pay');
 
         $year = $results['fiscal_year_id'];
         $month_id = $results['month_id'];

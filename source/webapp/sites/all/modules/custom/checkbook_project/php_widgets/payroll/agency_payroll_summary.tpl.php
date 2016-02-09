@@ -110,8 +110,6 @@ $js .= "
         drupal_add_js($js,"inline");
     }
 
-$title_landing_page = PayrollUtil::isTitleLandingPage();
-
 foreach($all_data as $employment_type => $employment_data) {
 
     $class = strtolower($employment_type);
@@ -141,11 +139,11 @@ foreach($all_data as $employment_type => $employment_data) {
                 : WidgetUtil::getLabel('total_no_of_non_sal_employees');
 
         //Amount labels
-        $lbl_annual_salary = $title_landing_page ? WidgetUtil::getLabel('combined_annual_salary') : WidgetUtil::getLabel('annual_salary');
-        $lbl_gross_pay_ytd = $title_landing_page ? WidgetUtil::getLabel('combined_gross_pay_ytd') : WidgetUtil::getLabel('gross_pay_ytd');
-        $lbl_base_pay_ytd = $title_landing_page ? WidgetUtil::getLabel('combined_base_pay_ytd') : WidgetUtil::getLabel('base_pay_ytd');
-        $lbl_other_pay_ytd = $title_landing_page ? WidgetUtil::getLabel('combined_other_pay_ytd') : WidgetUtil::getLabel('other_pay_ytd');
-        $lbl_overtime_pay_ytd = $title_landing_page ? WidgetUtil::getLabel('combined_overtime_pay_ytd') : WidgetUtil::getLabel('overtime_pay_ytd');
+        $lbl_annual_salary = WidgetUtil::getLabel('combined_annual_salary');
+        $lbl_gross_pay_ytd = WidgetUtil::getLabel('combined_gross_pay_ytd');
+        $lbl_base_pay_ytd = WidgetUtil::getLabel('combined_base_pay_ytd');
+        $lbl_other_pay_ytd = WidgetUtil::getLabel('combined_other_pay_ytd');
+        $lbl_overtime_pay_ytd = WidgetUtil::getLabel('combined_overtime_pay_ytd');
 
         //Details link from the agency landing page - don't display agency name
         $show_agency = !(_getRequestParamValue('dtsmnid') == 325);

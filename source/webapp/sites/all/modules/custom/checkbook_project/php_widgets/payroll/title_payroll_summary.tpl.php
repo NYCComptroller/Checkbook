@@ -139,19 +139,19 @@ foreach($all_data as $employment_type => $employment_data) {
         if($employment_type == PayrollType::$SALARIED) {
             $table .=
                 "<tr>
-                    <td width='60%'><strong>". WidgetUtil::getLabel('annual_salary') ."</strong>: {$total_annual_salary}</td>
+                    <td width='60%'><strong>". WidgetUtil::getLabel('combined_annual_salary') ."</strong>: {$total_annual_salary}</td>
                     <td><strong>". WidgetUtil::getLabel('payroll_type') ."</strong>: ". strtoupper($employment_type)."</td>
                 </tr>
                 <tr>
-                    <td><strong>". WidgetUtil::getLabel('gross_pay_ytd') ."</strong>: {$total_gross_pay}</td>
+                    <td><strong>". WidgetUtil::getLabel('combined_gross_pay_ytd') ."</strong>: {$total_gross_pay}</td>
                     <td><strong>". WidgetUtil::getLabel('total_no_of_employees') ."</strong>: {$total_employees}</td>
                 </tr>
                 <tr>
-                    <td><strong>". WidgetUtil::getLabel('base_pay_ytd') ."</strong>: {$total_base_pay}</td>
+                    <td><strong>". WidgetUtil::getLabel('combined_base_pay_ytd') ."</strong>: {$total_base_pay}</td>
                     <td><strong>". WidgetUtil::getLabel('total_no_of_sal_employees') ."</strong>: {$number_employees}</td>
                 </tr>
                 <tr>
-                    <td><strong>". WidgetUtil::getLabel('other_pay_ytd') ."</strong>: {$total_other_payments}</td>";
+                    <td><strong>". WidgetUtil::getLabel('combined_other_pay_ytd') ."</strong>: {$total_other_payments}</td>";
             if(isset($total_overtime_employees)){
                 $table .= "<td><strong>{$total_overtime_employees_label} </strong> {$total_overtime_employees}</td></tr>";
             }
@@ -167,19 +167,19 @@ foreach($all_data as $employment_type => $employment_data) {
         else {
             $table .=
                 "<tr>
-                    <td width='60%'><strong>". WidgetUtil::getLabel('gross_pay_ytd') ."</strong>: {$total_gross_pay}</td>
+                    <td width='60%'><strong>". WidgetUtil::getLabel('combined_gross_pay_ytd') ."</strong>: {$total_gross_pay}</td>
                     <td><strong>". WidgetUtil::getLabel('payroll_type') ."</strong>: ". strtoupper($employment_type)."</td>
                 </tr>
                 <tr>
-                    <td><strong>". WidgetUtil::getLabel('base_pay_ytd') ."</strong>: {$total_base_pay}</td>
+                    <td><strong>". WidgetUtil::getLabel('combined_base_pay_ytd') ."</strong>: {$total_base_pay}</td>
                     <td><strong>". WidgetUtil::getLabel('total_no_of_employees') ."</strong>: {$total_employees}</td>
                 </tr>
                 <tr>
-                    <td><strong>". WidgetUtil::getLabel('other_pay_ytd') ."</strong>: {$total_other_payments}</td>
+                    <td><strong>". WidgetUtil::getLabel('combined_other_pay_ytd') ."</strong>: {$total_other_payments}</td>
                     <td><strong>". WidgetUtil::getLabel('total_no_of_non_sal_employees') ."</strong>: {$number_employees}</td>
                 </tr>
                 <tr>
-                    <td><strong>". WidgetUtil::getLabel('overtime_pay_ytd') ."</strong>: {$total_overtime_pay}</td>";
+                    <td><strong>". WidgetUtil::getLabel('combined_overtime_pay_ytd') ."</strong>: {$total_overtime_pay}</td>";
             if(isset($total_overtime_employees)){
                 $table .= "<td><strong>{$total_overtime_employees_label} </strong> {$total_overtime_employees}</td></tr>";
             }
