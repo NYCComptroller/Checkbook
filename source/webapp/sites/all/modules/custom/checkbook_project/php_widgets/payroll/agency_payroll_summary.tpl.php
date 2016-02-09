@@ -161,8 +161,8 @@ foreach($all_data as $employment_type => $employment_data) {
             if($show_agency) {
                 $table .=
                     "<tr>
-                        <td width='60%'><strong>". WidgetUtil::getLabel('agency_name') ."</strong>: {$agency_url}</td>
-                        <td width='40%'><strong>". WidgetUtil::getLabel('payroll_type') ."</strong>: ". strtoupper($employment_type)."</td>
+                        <td width='55%'><strong>". WidgetUtil::getLabel('agency_name') ."</strong>: {$agency_url}</td>
+                        <td><strong>". WidgetUtil::getLabel('payroll_type') ."</strong>: ". strtoupper($employment_type)."</td>
                     </tr>
                     <tr>
                         <td><strong>". $lbl_annual_salary ."</strong>: {$total_annual_salary}</td>
