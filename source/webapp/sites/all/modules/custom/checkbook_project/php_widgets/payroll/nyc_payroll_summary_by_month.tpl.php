@@ -76,7 +76,7 @@ if(is_array($node->data) && count($node->data) > 0){
             $year_type = 'CY';
         }
 
-        if(_getRequestParamValue('smnid') == 491) {
+        if(_getRequestParamValue('smnid') == 491 || _getRequestParamValue('smnid') == 492) {
             $total_overtime_employees_label = WidgetUtil::getLabel('total_no_of_ot_employees').':';
             $overtime_employees_value = number_format($results['total_overtime_employees']);
         }
