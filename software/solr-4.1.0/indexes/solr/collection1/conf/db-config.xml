@@ -145,78 +145,79 @@
             <field column="display_fiscal_year" name="display_fiscal_year" />
         </entity>
         <entity dataSource="db1" name="spending"
-                pk="id"
-                deletedPkQuery="select 'spending:' || agency_id || ':' || disbursement_line_item_id id from disbursement_line_item_deleted where job_id >= ${dataimporter.request.jobID}
-                                UNION
-                                select 'spending:' || agency_id || ':' || disbursement_line_item_id id from subcontract_spending_deleted where job_id >= ${dataimporter.request.jobID}"
-                query="select
-				'spending:' || agency_id || ':' || disbursement_line_item_id id,
-				'spending' domain1,
-				agency_id,
-				agency_code,
-				agency_name,
-				agency_name || '[' || agency_id || ']' agency_name_id,
-				check_eft_issued_nyc_year_id fiscal_year_id,
-				calendar_fiscal_year_id,
-			    calendar_fiscal_year,
-				ry.year_value   fiscal_year,
-				department_id,
-				department_code,
-				department_name ,
-				lower(department_name) || '[' || department_code || ']' department_name_code,
-				disbursement_line_item_id,
-				vendor_id,
-				vendor_name ,
-				vendor_name || '[' || vendor_id || ']' vendor_name_id,				
-				vendor_customer_code,
-				lower(vendor_name) || '[ ' || vendor_customer_code || ' ]' vendor_name_code,
-				expenditure_object_id,
-				expenditure_object_code,
-				expenditure_object_name,
-				expenditure_object_name || '[' || expenditure_object_id || ']' expenditure_object_name_id,
-				lower(expenditure_object_name) || '[' || expenditure_object_code || ']' expenditure_object_name_code,
-				check_eft_issued_date,
-				check_amount,
-				reporting_code,
-				fund_class_id,
-				fund_class_name ,
-				fund_class_code,
-				lower(fund_class_name) || '[' || fund_class_code || ']' fund_class_name_code,						
-				budget_code_id,
-				budget_code ,
-				budget_name  budget_code_name,
-				lower(budget_name) || '[' || budget_code || ']' budget_code_name_code,
-				disbursement_number document_id,
-				reference_document_number contract_number,
-				agreement_id,
-				master_agreement_id,
-				rsc.spending_category_id,
-				lower(rsc.spending_category_name) || '[' || rsc.spending_category_code || ']' spending_category_name_code,
-				rsc.spending_category_name,
-				case when adt.minority_type_id in (4,5,10) then 'Asian American' when adt.minority_type_id in (2) then 'Black American' when adt.minority_type_id in (7) then 'Non-M/WBE' when adt.minority_type_id in (9) then 'Women' else adt.minority_type_name end as minority_type_name,
-				case when adt.minority_type_id in (4,5,10) then 'Asian American' when adt.minority_type_id in (2) then 'Black American' when adt.minority_type_id in (7) then 'Non-M/WBE' when adt.minority_type_id in (9) then 'Women' else adt.minority_type_name end as minority_type_name_spending,
-				adt.minority_type_id,
-				case when adt.minority_type_id in (4,5,10) then 10 else adt.minority_type_id end as minority_type_id_spending,
-                adt.payment_id, 
-                adt.prime_vendor_id, 
-                case when adt.is_prime_or_sub in ('S') then 'Yes' when adt.is_prime_or_sub in ('P') then 'No' else is_prime_or_sub end as is_prime_or_sub,
-                adt.sub_contract_id,
-                adt.vendor_type,
-                adt.is_minority_vendor,
-                'N/A' commodity_line,
-                'N/A' budget_name,
-                'N/A' entity_contract_number,
-                1 domain_ordering,
-                check_eft_issued_date date_ordering,
-                adt.contract_original_agreement_id,
-                case when adt.is_prime_or_sub in ('P') then 'N/A' else adt.prime_vendor_name end as prime_vendor_name,
-                industry_type_id,
-                industry_type_name
-			 from all_disbursement_transactions  adt left join ref_year ry on adt.check_eft_issued_nyc_year_id = ry.year_id
-			 left join ref_spending_category rsc on rsc.spending_category_id = adt.spending_category_id
-			 where 
-			'${dataimporter.request.clean}' != 'false'
-      			OR adt.job_id >= ${dataimporter.request.jobID}
+            pk="id"
+            deletedPkQuery="select 'spending:' || agency_id || ':' || disbursement_line_item_id id from disbursement_line_item_deleted where job_id >= ${dataimporter.request.jobID}
+                            UNION
+                            select 'spending:' || agency_id || ':' || disbursement_line_item_id id from subcontract_spending_deleted where job_id >= ${dataimporter.request.jobID}"
+            query="select
+            'spending:' || agency_id || ':' || disbursement_line_item_id id,
+            'spending' domain1,
+            agency_id,
+            agency_code,
+            agency_name,
+            agency_name || '[' || agency_id || ']' agency_name_id,
+            check_eft_issued_nyc_year_id fiscal_year_id,
+            calendar_fiscal_year_id,
+            calendar_fiscal_year,
+            ry.year_value   fiscal_year,
+            department_id,
+            department_code,
+            department_name ,
+            lower(department_name) || '[' || department_code || ']' department_name_code,
+            disbursement_line_item_id,
+            vendor_id,
+            vendor_name ,
+            vendor_name || '[' || vendor_id || ']' vendor_name_id,
+            vendor_customer_code,
+            lower(vendor_name) || '[ ' || vendor_customer_code || ' ]' vendor_name_code,
+            expenditure_object_id,
+            expenditure_object_code,
+            expenditure_object_name,
+            expenditure_object_name || '[' || expenditure_object_id || ']' expenditure_object_name_id,
+            lower(expenditure_object_name) || '[' || expenditure_object_code || ']' expenditure_object_name_code,
+            check_eft_issued_date,
+            check_eft_issued_date::varchar check_eft_issued_date_export,
+            check_amount,
+            reporting_code,
+            fund_class_id,
+            fund_class_name ,
+            fund_class_code,
+            lower(fund_class_name) || '[' || fund_class_code || ']' fund_class_name_code,
+            budget_code_id,
+            budget_code ,
+            budget_name  budget_code_name,
+            lower(budget_name) || '[' || budget_code || ']' budget_code_name_code,
+            disbursement_number document_id,
+            reference_document_number contract_number,
+            agreement_id,
+            master_agreement_id,
+            rsc.spending_category_id,
+            lower(rsc.spending_category_name) || '[' || rsc.spending_category_code || ']' spending_category_name_code,
+            rsc.spending_category_name,
+            case when adt.minority_type_id in (4,5,10) then 'Asian American' when adt.minority_type_id in (2) then 'Black American' when adt.minority_type_id in (7) then 'Non-M/WBE' when adt.minority_type_id in (9) then 'Women' else adt.minority_type_name end as minority_type_name,
+            case when adt.minority_type_id in (4,5,10) then 'Asian American' when adt.minority_type_id in (2) then 'Black American' when adt.minority_type_id in (7) then 'Non-M/WBE' when adt.minority_type_id in (9) then 'Women' else adt.minority_type_name end as minority_type_name_spending,
+            adt.minority_type_id,
+            case when adt.minority_type_id in (4,5,10) then 10 else adt.minority_type_id end as minority_type_id_spending,
+            adt.payment_id,
+            adt.prime_vendor_id,
+            case when adt.is_prime_or_sub in ('S') then 'Yes' when adt.is_prime_or_sub in ('P') then 'No' else is_prime_or_sub end as is_prime_or_sub,
+            adt.sub_contract_id,
+            adt.vendor_type,
+            adt.is_minority_vendor,
+            'N/A' commodity_line,
+            'N/A' budget_name,
+            'N/A' entity_contract_number,
+            1 domain_ordering,
+            check_eft_issued_date::varchar date_ordering,
+            adt.contract_original_agreement_id,
+            case when adt.is_prime_or_sub in ('P') then 'N/A' else adt.prime_vendor_name end as prime_vendor_name,
+            industry_type_id,
+            industry_type_name
+             from all_disbursement_transactions  adt left join ref_year ry on adt.check_eft_issued_nyc_year_id = ry.year_id
+             left join ref_spending_category rsc on rsc.spending_category_id = adt.spending_category_id
+             where
+            '${dataimporter.request.clean}' != 'false'
+                OR adt.job_id >= ${dataimporter.request.jobID}
 			">
             <field column="id" name="id" />
             <field column="domain1" name="domain" />
@@ -245,7 +246,7 @@
             <field column="expenditure_object_name" name="expenditure_object_name" />
             <field column="expenditure_object_name_id" name="expenditure_object_name_id" />
             <field column="check_eft_issued_date" name="check_eft_issued_date" />
-            <field column="check_eft_issued_date" name="check_eft_issued_date_export" />
+            <field column="check_eft_issued_date_export" name="check_eft_issued_date_export" />
             <field column="check_amount" name="check_amount" />
             <field column="reporting_code" name="reporting_code" />
             <field column="fund_class_id" name="fund_class_id" />
@@ -335,7 +336,7 @@
                 oc.oge_contract_number as entity_contract_number,
                 oc.fms_commodity_line  as commodity_line,
                 2 domain_ordering,
-                check_eft_issued_date date_ordering,
+                check_eft_issued_date::varchar date_ordering,
                 oc.budget_name as budget_name
                 from disbursement_line_item_details  dlid left join ref_year ry on dlid.check_eft_issued_nyc_year_id = ry.year_id
                 left join ref_spending_category rsc on rsc.spending_category_id = dlid.spending_category_id
@@ -396,79 +397,6 @@
             <field column="budget_name" name="spending_budget_name" />
             <field column="domain_ordering" name="domain_ordering" />
             <field column="date_ordering" name="date_ordering" />
-        </entity>
-        <entity dataSource="db1" name="payroll"
-                query="
-		select 
-			'payroll:' || payroll_id id,
-			'payroll' domain1,
-			payroll_id,
-			amount_basis_id,
-			agency_id,
-			agency_code,
-			agency_name ,		
-			agency_name || '[' || agency_id || ']' agency_name_id,			
-			department_id,
-			department_code,
-			department_name ,
-			lower(department_name) || '[' || department_code || ']' department_name_code,
-			fiscal_year_id,
-			fiscal_year ,
-			calendar_fiscal_year_id,
-			calendar_fiscal_year ,
-			employee_id,
-			employee_name,
-			employee_number,
-			civil_service_title,
-			pay_date,
-			pay_date_id,
-			pay_frequency,
-			annual_salary,
-			gross_pay,
-			base_pay,
-			annual_salary,
-			annual_salary hourly_rate,
-			overtime_pay,
-			7 domain_ordering,
-            pay_date date_ordering,
-			other_payments,
-		    case when amount_basis_id in (1) then 'SALARIED' else 'NON-SALARIED' end as payroll_type
-			from payroll
-			 where 			 
-			'${dataimporter.request.clean}' != 'false' OR job_id >= ${dataimporter.request.jobID}
-		">
-            <field column="id" name="id" />
-            <field column="domain1" name="domain" />
-            <field column="agency_id" name="agency_id" />
-            <field column="agency_code" name="agency_code" />
-            <field column="agency_name" name="agency_name" />
-            <field column="agency_name_id" name="agency_name_id" />
-            <field column="fiscal_year_id" name="fiscal_year_id" />
-            <field column="fiscal_year" name="fiscal_year" />
-            <field column="calendar_fiscal_year_id" name="calendar_fiscal_year_id" />
-            <field column="calendar_fiscal_year" name="calendar_fiscal_year" />
-            <field column="id" name="payroll_id" />
-            <field column="department_id" name="department_id" />
-            <field column="department_name" name="department_name" />
-            <field column="department_name_code" name="department_name_code" />
-            <field column="employee_id" name="employee_id" />
-            <field column="employee_name" name="employee_name" />
-            <field column="civil_service_title" name="civil_service_title" />
-            <field column="pay_date" name="pay_date" />
-            <field column="pay_date_id" name="pay_date_id" />
-            <field column="pay_frequency" name="pay_frequency" />
-            <field column="annual_salary" name="annual_salary" />
-            <field column="gross_pay" name="gross_pay" />
-            <field column="base_pay" name="base_pay" />
-            <field column="overtime_pay" name="overtime_pay" />
-            <field column="annual_salary" name="annual_salary" />
-            <field column="other_payments" name="other_payments" />
-            <field column="domain_ordering" name="domain_ordering" />
-            <field column="date_ordering" name="date_ordering" />
-            <field column="hourly_rate" name="hourly_rate" />
-            <field column="employee_number" name="employee_number" />
-            <field column="payroll_type" name="payroll_type" />
-
         </entity>
         <entity dataSource="db1" name="contracts" transformer="RegexTransformer"
                 pk="id"
@@ -533,7 +461,7 @@
                 'N/A' budget_name,
                 'N/A' entity_contract_number,
                 3 domain_ordering,
-                registered_date date_ordering,
+                registered_date::varchar date_ordering,
                 effective_end_year,
                 effective_end_year_id,
                 effective_begin_year,
@@ -671,7 +599,7 @@
                 effective_end_year_id,
                 effective_begin_year,
                 effective_begin_year_id,
-                registered_date date_ordering,
+                registered_date::varchar date_ordering,
                 (CASE WHEN master_agreement_yn = 'Y' THEN a.original_contract_amount ELSE ogecon.original_amount END) original_amount,
                 (CASE WHEN master_agreement_yn = 'Y' THEN a.maximum_contract_amount ELSE ogecon.current_amount END )current_amount,
                 REPLACE(active_fiscal_year.fiscal_year, ', ', ',') As fiscal_year,
@@ -849,7 +777,7 @@
                 cif_fiscal_year fiscal_year,
                 cif_fiscal_year_id fiscal_year_id,
                 fms_contract_number,
-                cif_received_date date_ordering,
+                cif_received_date::varchar date_ordering,
                 8 domain_ordering,
                 document_version,
                 case when minority_type_id in (4,5,10) then 'Asian American' when minority_type_id in (2) then 'Black American' when minority_type_id in (7) then 'Non-M/WBE' when minority_type_id in (9) then 'Women' else minority_type_name end as minority_type_name_contract,
@@ -911,5 +839,80 @@
             <field column="industry_type_id" name="industry_type_id" />
             <field column="industry_type_name" name="industry_type_name" />
         </entity>
+
+	<entity dataSource="db1" name="payroll"
+		query="
+		select
+		'payroll:' || payroll_id id,
+		'payroll' domain1,
+	payroll_id,
+        amount_basis_id,
+	agency_id,
+	agency_code,
+	agency_name ,
+	agency_name || '[' || agency_id || ']' agency_name_id,
+	department_id,
+	department_code,
+	department_name ,
+	lower(department_name) || '[' || department_code || ']' department_name_code,
+	fiscal_year_id,
+	fiscal_year ,
+	calendar_fiscal_year_id,
+	calendar_fiscal_year ,
+	employee_id,
+	employee_name ,
+	civil_service_title,
+	pay_date,
+	pay_date_id,
+	pay_frequency,
+	annual_salary,
+	gross_pay,
+	base_pay,
+	annual_salary,
+	overtime_pay,
+	7 domain_ordering,
+	pay_date::varchar date_ordering,
+	other_payments,
+        employee_number,
+        annual_salary hourly_rate,
+        case when amount_basis_id in (1) then 'SALARIED' else 'NON-SALARIED' end as payroll_type
+	from payroll
+	where
+	'${dataimporter.request.clean}' != 'false' OR job_id >= ${dataimporter.request.jobID}
+	">
+
+<field column="id" name="id" />
+<field column="domain1" name="domain" />
+<field column="agency_id" name="agency_id" />
+<field column="agency_code" name="agency_code" />
+<field column="agency_name" name="agency_name" />
+<field column="agency_name_id" name="agency_name_id" />
+<field column="fiscal_year_id" name="fiscal_year_id" />
+<field column="fiscal_year" name="fiscal_year" />
+<field column="calendar_fiscal_year_id" name="calendar_fiscal_year_id" />
+<field column="calendar_fiscal_year" name="calendar_fiscal_year" />
+<field column="id" name="payroll_id" />
+<field column="department_id" name="department_id" />
+<field column="department_name" name="department_name" />
+<field column="department_name_code" name="department_name_code" />
+<field column="employee_id" name="employee_id" />
+<field column="employee_name" name="employee_name" />
+<field column="civil_service_title" name="civil_service_title" />
+<field column="pay_date" name="pay_date" />
+<field column="pay_date_id" name="pay_date_id" />
+<field column="pay_frequency" name="pay_frequency" />
+<field column="annual_salary" name="annual_salary" />
+<field column="gross_pay" name="gross_pay" />
+<field column="base_pay" name="base_pay" />
+<field column="overtime_pay" name="overtime_pay" />
+<field column="annual_salary" name="annual_salary" />
+<field column="other_payments" name="other_payments" />
+<field column="domain_ordering" name="domain_ordering" />
+<field column="date_ordering" name="date_ordering" />
+<field column="amount_basis_id" name="amount_basis_id" />
+<field column="employee_number" name="employee_number" />
+<field column="hourly_rate" name="hourly_rate" />
+<field column="payroll_type" name="payroll_type" /> 	
+</entity>
     </document>
 </dataConfig>
