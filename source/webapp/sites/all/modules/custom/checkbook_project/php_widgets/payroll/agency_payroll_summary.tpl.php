@@ -154,7 +154,7 @@ foreach($all_data as $employment_type => $employment_data) {
         }
         $total_ot_emp_col = isset($total_overtime_employees) ? "<strong>{$total_overtime_employees_label} </strong> {$total_overtime_employees}" : "";
 
-        $table = "<div class='emp-agency-detail-record'><table id='emp-agency-detail-record-table'>";
+        $table = "<div class='emp-agency-detail-record'><table id='emp-agency-detail-record-table' class='center-align'>";
 
         if($employment_type == PayrollType::$SALARIED) {
 
