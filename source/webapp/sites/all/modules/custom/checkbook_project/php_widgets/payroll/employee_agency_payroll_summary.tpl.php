@@ -143,7 +143,7 @@ foreach($all_data as $employment_type => $employment_data) {
         $total_other_payments = $data['total_other_payments'];
         $total_overtime_amount = $data['total_overtime_amount'];
 
-        $table = "<div class='emp-agency-detail-record'><table id='emp-agency-detail-record-table'>";
+        $table = "<div class='emp-agency-detail-record'><table id='emp-agency-detail-record-table' class='center-align'>";
 
 
         $table .= "<div id='payroll-emp-trans-name'>
