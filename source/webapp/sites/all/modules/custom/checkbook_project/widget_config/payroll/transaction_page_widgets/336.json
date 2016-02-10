@@ -43,7 +43,7 @@
         },
         "agency_name_link": {
             "type": "expression2",
-            "expression": "'<a href=/payroll/agency/'. $row[agency_id] . '/yeartype/C/year/' . $row[calendar_fiscal_year_id] . '>'. $row[agency_name_formatted] .'</a>'"
+            "expression": "'<a href=/payroll/agency_landing/agency/'. $row[agency_id] . '/yeartype/C/year/' . $row[calendar_fiscal_year_id] . '>'. $row[agency_name_formatted] .'</a>'"
         },
         "formatted_salary_amount": {
             "type": "expression2",
@@ -99,7 +99,7 @@
         }
     },
     "table_columns": [
-        {"labelAlias": "title","column": "employee_name_link","sortSourceColumn": "civil_service_title"},
+        {"labelAlias": "title","column": "employee_name_formatted","sortSourceColumn": "civil_service_title"},
         {"labelAlias": "agency_name","column": "agency_name_link","sortSourceColumn": "agency_name"},
         {"labelAlias": "pay_date","column": "pay_date"},
         {"labelAlias": "annual_salary","column": "annual_salary_link","sortSourceColumn": "salaried_amount","exportColumn":"export_salary_amount"},
