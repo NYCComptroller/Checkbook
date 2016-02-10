@@ -3385,10 +3385,6 @@ div.payroll-year-month{
 .emp-agency-detail-record .label {
     font-weight: bold;
 }
-
-.emp-agency-detail-record {
-    left: -50px !important;
-}
 .fake-hyperlink {
     color: #1F82C9;
     font-weight: normal;
