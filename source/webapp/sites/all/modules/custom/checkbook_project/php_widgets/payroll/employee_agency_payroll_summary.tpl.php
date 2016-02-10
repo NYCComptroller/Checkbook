@@ -27,7 +27,12 @@ foreach($node->data as $data){
 
     $amount_basis_id = $data['amount_basis_id_amount_basis_id'];
     $employment_type = $amount_basis_id == 1 ? PayrollType::$SALARIED : PayrollType::$NON_SALARIED;
-    $year = _getRequestParamValue('year');
+    if(_getRequestParamValue('year') > 0){
+        $year = _getRequestParamValue('year');
+    }
+    if(_getRequestParamValue('calyear') > 0){
+        $year = _getRequestParamValue('calyear');
+    }
     $year_type = _getRequestParamValue('yeartype');
     $original_title = $data['civil_service_title_civil_service_title'];
     $title = mb_convert_case(strtolower($original_title), MB_CASE_TITLE, "UTF-8");
