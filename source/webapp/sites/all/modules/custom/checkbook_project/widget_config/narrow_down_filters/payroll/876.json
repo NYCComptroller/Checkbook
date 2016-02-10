@@ -6,6 +6,7 @@
     "limit":100,
     "getTotalDataCount":true,
     "facetPager":true,
+    "allowFacetDeselect":true,
     "columns":["agency.agency", "agency.agency.agency_name", "txcount"],
 	"orderBy":"-txcount",    
     "filterName":"Citywide Agency",

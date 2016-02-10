@@ -9,6 +9,7 @@
     "orderBy":"-txcount",
     "filterName":"Pay Frequency",
     "urlParameterName":"payfq",
+    "allowFacetDeselect":true,
     "autocompleteParamName":"fpayFrequency_auto",
     "autocompleteID":"fpayFrequency",
     "autocompleteField":"pay_frequency.pay_frequency",
