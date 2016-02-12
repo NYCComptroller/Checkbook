@@ -50,6 +50,7 @@ function _checkbook_smart_search_get_results(){
     drupal_add_js(array('checkbook_smart_search' => array('expense_category_pages' => $expense_category_pages)), 'setting');
     $mwbe_category = _checkbook_smart_search_get_facet_results($search_terms, "minority_type_name");
     $industry_type_name = _checkbook_smart_search_get_facet_results($search_terms, "industry_type_name");
+    $payroll_type = _checkbook_smart_search_get_facet_results($search_terms, "payroll_type"); //payroll_type
 
     foreach($search_terms as $id => $keyvaluepair){
         $keys = explode("=", $keyvaluepair);
@@ -110,7 +111,8 @@ function _checkbook_smart_search_get_results(){
         "contract_category_name" => $contract_categories['facet_counts']['facet_fields'],
         "contract_status" => $contract_status['facet_counts']['facet_fields'],
         "mwbe_category" => $mwbe_category['facet_counts']['facet_fields'],
-        "industry_type_name" => $industry_type_name['facet_counts']['facet_fields']
+        "industry_type_name" => $industry_type_name['facet_counts']['facet_fields'],
+        "payroll_type" => $payroll_type['facet_counts']['facet_fields']
     );
 
     //Selected Facet Filters
@@ -142,6 +144,7 @@ function _checkbook_smart_search_get_results(){
     $selected_contract_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "contract_categories");
     $selected_mwbe_categories = _checkbook_smart_search_get_selected_facet_results($search_terms, "minority_type_name");
     $selected_industry_type_name = _checkbook_smart_search_get_selected_facet_results($search_terms, "industry_type_name");
+    $selected_payroll_type = _checkbook_smart_search_get_selected_facet_results($search_terms, "payroll_type"); //payroll_type
 
     $selected_facet_results = array("domain" => $selected_domains,
         "agency_name" => $selected_agencies,
@@ -155,7 +158,8 @@ function _checkbook_smart_search_get_results(){
         "contract_category_name" => $selected_contract_categories,
         "contract_status" => $selected_contract_status,
         "mwbe_category" => $selected_mwbe_categories,
-        "industry_type_name" => $selected_industry_type_name
+        "industry_type_name" => $selected_industry_type_name,
+        "payroll_type" => $selected_payroll_type
     );
     return theme('checkbook_smart_search_results', array('search_results'=> $search_results['search_results'],
         'active_contracts' => $search_results['active_contracts'],
@@ -283,7 +287,8 @@ function _checkbook_smart_search_get_results_query_search_term($search_terms){
         "contract_categories" => "contract_category_name",
         "contract_status" => "contract_status",
         "minority_type_name" => "minority_type_name",
-        "industry_type_name" => "industry_type_name"
+        "industry_type_name" => "industry_type_name",
+        "payroll_type" => "payroll_type"
     );
 
     $searchTerm = $search_terms[0];
@@ -346,7 +351,8 @@ function _checkbook_smart_search_get_selected_facet_results($search_terms, $face
         "contract_categories" => "contract_category_name",
         "contract_status" => "contract_status",
         "minority_type_name" => "minority_type_name",
-        "industry_type_name" => "industry_type_name"
+        "industry_type_name" => "industry_type_name",
+        "payroll_type" => "payroll_type"
     );
 
     $search_string = $search_terms[0];
@@ -423,7 +429,8 @@ function _checkbook_smart_search_get_facet_results($search_terms, $facet_name, $
           "contract_categories" => "contract_category_name",
           "contract_status" => "contract_status",
           "minority_type_name" => "minority_type_name",
-          "industry_type_name" => "industry_type_name"
+          "industry_type_name" => "industry_type_name",
+          "payroll_type" => "payroll_type"
         );
 
         $search_string = $search_terms[0];
@@ -588,7 +595,8 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
                               "contract_categories" => "contract_category_name",
                               "contract_status" => "contract_status",
                               "minority_type_name" => "minority_type_name",
-                              "industry_type_name" => "industry_type_name"
+                              "industry_type_name" => "industry_type_name",
+                              "payroll_type" => "payroll_type"
     );
 
     $autocomplete_text = trim(htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES));//eco
@@ -670,7 +678,7 @@ function _checkbook_smart_search_get_searchstring_autocomplete($facet_name,$face
  *  @return the matching words
 **/
 function _checkbook_smart_search_agency_autocomplete(){
-    $agencies = _checkbook_smart_search_get_searchstring_autocomplete("agency_names","agency_name");
+    $agencies = _checkbook_smart_search_get_searchstring_autocomplete("agency_names","agency_name_autocomplete");
     return $agencies;
 }
 
@@ -730,7 +738,7 @@ function _checkbook_smart_search_regfiscalyear_autocomplete(){
  *  @return the matching words
  **/
 function _checkbook_smart_search_industrytype_autocomplete(){
-    $industry_type = _checkbook_smart_search_get_searchstring_autocomplete("industry_type_name","industry_type_name");
+    $industry_type = _checkbook_smart_search_get_searchstring_autocomplete("industry_type_name","industry_type_name_autocomplete");
     return $industry_type;
 }
 
@@ -874,11 +882,15 @@ function _checkbook_smart_search_export_data(){
   $search_terms[0] = ($search_terms[0] == "") ? "*:*" : ucwords(strtolower(_checkbook_smart_search_escapeSolrValue($search_terms[0])));
   
   $index = 0;
+  $isoge = 0;
   foreach($search_terms as $search_term){
     $terms = explode("=", $search_term);
     if($terms[0] == "domains"){
       $domains = explode("~", $terms[1] );
       $search_terms[$index] = "domains=" . $_REQUEST['domain'];
+    }
+    if($terms[0] == "oge_agency_names"){
+        $isoge = 1;
     }
     $index += 1;
   }
@@ -886,7 +898,8 @@ function _checkbook_smart_search_export_data(){
   $remaining = $conf['check_book']['datatables']['iTotalDisplayRecords'] ;
   $page_size = 10000;
   $page_num = 0;
-  $fields = _checkbook_smart_search_domain_export_fields($_REQUEST['domain'], 0);
+
+  $fields = _checkbook_smart_search_domain_export_fields($_REQUEST['domain'], $isoge);
   $fl = implode(",",array_keys($fields));
   echo implode(",",array_values($fields)) . "\n";
   $statusflag = false;
@@ -1015,7 +1028,6 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
                 "prime_vendor_name" => "Associated Prime Vendor",
                 "" => "");
         }
-
       break;
     case "payroll":
       $parameter_mapping = array(
@@ -1026,8 +1038,10 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
       "gross_pay" => "Gross Pay",
       "annual_salary" => "Annual Salary",
       "base_pay" => "Base Pay",
-      "overtime_pay" => "Overtime Payments",
+      "hourly_rate" => "Hourly Rate",
       "other_payments" => "Other Payments",
+      "overtime_pay" => "Overtime Payments",
+      "payroll_type" => "Payroll Type",
       "" => ""
       );
       break;
@@ -1067,55 +1081,92 @@ function _checkbook_smart_search_domain_fields($domain, $IsOge){
 function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
 	switch ($domain){
 		case "spending":
-				$parameter_mapping = array(
-						"spending_category_name" => "Spending Category",
-						"agency_name_export" => "Agency",
-						"department_name" => "Department",
-						"vendor_name" => "Payee Name",
-						"expenditure_object_name" => "Expense Category",
-                        "industry_type_name" => "Industry",
-						"contract_number" => "Contract ID",
-						"spending_commodity_line" => "Commodity Line",
-						"check_amount" => "Check Amount",
-						"check_eft_issued_date_export" => "Issue Date",
-						"spending_entity_contract_number" => "Entity Contract#",
-						"spending_budget_name" => "Budget Name",
-                        "minority_type_name" => "M/WBE Category",
-                        "is_prime_or_sub" => "Sub Vendor",
-                        "prime_vendor_name" => "Associated Prime Vendor",
-						"" => "",);
+            if($IsOge)
+            {
+                $parameter_mapping = array(
+                    "spending_category_name" => "Spending Category",
+                    "agency_name_export" => "Agency",
+                    "department_name" => "Department",
+                    "vendor_name" => "Payee Name",
+                    "expenditure_object_name" => "Expense Category",
+                    "contract_number" => "Contract ID",
+                    "spending_commodity_line" => "Commodity Line",
+                    "check_amount" => "Check Amount",
+                    "check_eft_issued_date_export" => "Issue Date",
+                    "spending_entity_contract_number" => "Entity Contract#",
+                    "spending_budget_name" => "Budget Name",
+                    "" => "",);
+            }
+            else{
+                $parameter_mapping = array(
+                    "spending_category_name" => "Spending Category",
+                    "agency_name_export" => "Agency",
+                    "department_name" => "Department",
+                    "vendor_name" => "Payee Name",
+                    "expenditure_object_name" => "Expense Category",
+                    "industry_type_name" => "Industry",
+                    "contract_number" => "Contract ID",
+                    "check_amount" => "Check Amount",
+                    "check_eft_issued_date_export" => "Issue Date",
+                    "minority_type_name" => "M/WBE Category",
+                    "is_prime_or_sub" => "Sub Vendor",
+                    "prime_vendor_name" => "Associated Prime Vendor",
+                    "" => "",);
+                }
 			break;
 		case "contracts":
-				$parameter_mapping = array(
-						"contract_status"=>"Status",
-						"contract_category_name"=>"Category",
-						"vendor_name"=>"Vendor",
-						"agency_name_export"=>"Agency",
-						"contract_number"=>"Contract ID",
-						"contract_commodity_line" => "Commodity Line",
-						"version_number"=>"Version Number",
-						"contract_purpose"=>"Purpose",
-						"parent_contract_number"=>"Parent Contract ID",
-						"award_method_name"=>"Award Method",
-						"contract_type"=>"Contract type",
-						"current_amount"=>"Current Amount",						
-						"original_amount"=>"Original Amount",
-						"start_date_orig"=>"Start date",
-						"end_date_orig"=>"End Date",
-						"pin"=>"PIN",
-						"apt_pin"=>"APT PIN",
-						"registration_date"=>"Registration date",
-						"expense_category_name"=>"Expense Category",
-                        "industry_type_name" => "Industry",
-						"received_date"=>"Received date",
-						"contract_entity_contract_number" => "Entity Contract#",
-						"contract_budget_name" => "Budget Name",
-                        "minority_type_name" => "M/WBE Category",
-                        "is_prime_or_sub" => "Sub Vendor",
-                        "prime_vendor_name" => "Associated Prime Vendor",
-				);		
-
-			break;
+            if($IsOge)
+            {
+                $parameter_mapping = array(
+                    "contract_status"=>"Status",
+                    "contract_category_name"=>"Category",
+                    "vendor_name"=>"Prime Vendor",
+                    "agency_name_export"=>"Agency",
+                    "contract_number"=>"Contract ID",
+                    "contract_commodity_line" => "Commodity Line",
+                    "contract_purpose"=>"Purpose",
+                    "parent_contract_number"=>"Parent Contract ID",
+                    "award_method_name"=>"Award Method",
+                    "contract_type"=>"Contract type",
+                    "current_amount"=>"Current Amount",
+                    "original_amount"=>"Original Amount",
+                    "start_date_orig"=>"Start date",
+                    "end_date_orig"=>"End Date",
+                    "pin"=>"PIN",
+                    "apt_pin"=>"APT PIN",
+                    "expense_category_name"=>"Expense Category",
+                    "contract_entity_contract_number" => "Entity Contract#",
+                    "contract_budget_name" => "Budget Name",
+                );
+            }
+            else {
+                $parameter_mapping = array(
+                    "contract_status"=>"Status",
+                    "contract_category_name"=>"Category",
+                    "vendor_name"=>"Vendor",
+                    "agency_name_export"=>"Agency",
+                    "contract_number"=>"Contract ID",
+                    "version_number"=>"Version Number",
+                    "contract_purpose"=>"Purpose",
+                    "parent_contract_number"=>"Parent Contract ID",
+                    "award_method_name"=>"Award Method",
+                    "contract_type"=>"Contract type",
+                    "current_amount"=>"Current Amount",
+                    "original_amount"=>"Original Amount",
+                    "start_date_orig"=>"Start date",
+                    "end_date_orig"=>"End Date",
+                    "pin"=>"PIN",
+                    "apt_pin"=>"APT PIN",
+                    "registration_date"=>"Registration date",
+                    "expense_category_name"=>"Expense Category",
+                    "industry_type_name" => "Industry",
+                    "received_date"=>"Received date",
+                    "minority_type_name" => "M/WBE Category",
+                    "is_prime_or_sub" => "Sub Vendor",
+                    "prime_vendor_name" => "Associated Prime Vendor",
+                );
+            }
+		break;
 		case "payroll":
 			$parameter_mapping = array(
 			"civil_service_title" => "Title",
@@ -1125,11 +1176,12 @@ function _checkbook_smart_search_domain_export_fields($domain, $IsOge){
 			"gross_pay" => "Gross Pay",
 			"annual_salary" => "Annual Salary",
 			"base_pay" => "Base Pay",
-			"overtime_pay" => "Overtime Payments",
+            "hourly_rate" => "Hourly Rate",
 			"other_payments" => "Other Payments",
-			"" => ""
-					);
-					break;
+            "overtime_pay" => "Overtime Payments",
+            "payroll_type" => "Payroll Type",
+		    );
+		break;
 		case "budget":
 			$parameter_mapping = array("agency_name" => "Agency",
 			"department_name" => "Department Name",

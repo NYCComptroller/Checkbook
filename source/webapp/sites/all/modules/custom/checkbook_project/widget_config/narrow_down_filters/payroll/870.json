@@ -5,6 +5,7 @@
     "maxSelect":5,
     "limit":100,
     "getTotalDataCount":true,
+    "allowFacetDeselect":true,
     "facetPager":true,
     "columns":["agency.agency", "agency.agency.agency_name", "txcount"],
 	"orderBy":"-txcount",    

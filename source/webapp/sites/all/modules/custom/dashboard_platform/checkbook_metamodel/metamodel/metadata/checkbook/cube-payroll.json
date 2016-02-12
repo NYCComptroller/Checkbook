@@ -24,6 +24,24 @@
                     ]
                 },
                 {
+                    "name": "agency_id",
+                    "levels": [
+                        {
+                            "name": "agency_id",
+                            "sourceColumnName": "agency_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "agency_name",
+                    "levels": [
+                        {
+                            "name": "agency_name",
+                            "sourceColumnName": "agency_name"
+                        }
+                    ]
+                },
+                {
                     "name": "dept",
                     "levels": [
                                 {
@@ -77,11 +95,134 @@
                             "sourceColumnName": "pay_frequency"
                         }
                     ]
+                },
+                {
+                    "name": "amount_basis_id",
+                    "levels": [
+                        {
+                            "name": "amount_basis_id",
+                            "sourceColumnName": "amount_basis_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "employee_id",
+                    "levels": [
+                        {
+                            "name": "employee_id",
+                            "sourceColumnName": "employee_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "employee_number",
+                    "levels": [
+                        {
+                            "name": "employee_number",
+                            "sourceColumnName": "employee_number"
+                        }
+                    ]
+                },
+                {
+                    "name": "fiscal_year_id",
+                    "levels": [
+                        {
+                            "name": "fiscal_year_id",
+                            "sourceColumnName": "fiscal_year_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "calendar_fiscal_year_id",
+                    "levels": [
+                        {
+                            "name": "calendar_fiscal_year_id",
+                            "sourceColumnName": "calendar_fiscal_year_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "other_payments",
+                    "levels": [
+                        {
+                            "name": "other_payments",
+                            "sourceColumnName": "other_payments"
+                        }
+                    ]
+                },
+                {
+                    "name": "gross_pay_ytd",
+                    "levels": [
+                        {
+                            "name": "gross_pay_ytd",
+                            "sourceColumnName": "gross_pay_ytd"
+                        }
+                    ]
+                },
+                {
+                    "name": "gross_pay_cytd",
+                    "levels": [
+                        {
+                            "name": "gross_pay_cytd",
+                            "sourceColumnName": "gross_pay_cytd"
+                        }
+                    ]
+                },
+                {
+                    "name": "base_pay",
+                    "levels": [
+                        {
+                            "name": "base_pay",
+                            "sourceColumnName": "base_pay"
+                        }
+                    ]
+                },
+                {
+                    "name": "payroll_id",
+                    "levels": [
+                        {
+                            "name": "payroll_id",
+                            "sourceColumnName": "payroll_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "pay_date",
+                    "levels": [
+                        {
+                            "name": "pay_date",
+                            "sourceColumnName": "pay_date"
+                        }
+                    ]
                 }
             ],
             "measures":{
                 "txcount": {
                     "function": "COUNT(*)"
+                },
+                "payroll_type": {
+                    "function": "MAX(CASE WHEN amount_basis_id = 1 THEN 'Salaried' ELSE 'Non-Salaried' END)"
+                },
+                "annual_salary_pay":{
+                    "function": "CASE WHEN amount_basis_id = 1 THEN annual_salary ELSE NULL END"
+                },
+                "hourly_rate_pay":{
+                    "function": "CASE WHEN amount_basis_id = 1 THEN NULL ELSE annual_salary END"
+                },
+                "max_annual_salary":{
+                    "function": "MAX(annual_salary)"
+                },
+                "total_gross_pay": {
+                    "function": "SUM(gross_pay)"
+                },
+                "total_base_salary": {
+                    "function": "SUM(base_pay)"
+                },
+                "total_other_payments": {
+                    "function": "SUM(other_payments)"
+                },
+                "total_overtime_amount": {
+                    "function": "SUM(overtime_pay)"
                 },
                 "g100m_count": {
                     "function": "SUM(CASE WHEN COALESCE(gross_pay,0) > 100000000 THEN 1 ELSE 0 END)"
@@ -101,7 +242,6 @@
                 "less1m_count": {
                     "function": "SUM(CASE WHEN COALESCE(gross_pay,0) < 1000000 THEN 1 ELSE 0 END)"
                 },
-
                 "gross_pay_ytd_g250k_count": {
                     "function": "SUM(CASE WHEN COALESCE(gross_pay_ytd,0) > 250000 THEN 1 ELSE 0 END)"
                 },

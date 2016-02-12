@@ -1,0 +1,6 @@
+{
+    "widgetType": "phpparser",
+    "template":"payroll_nyc_payroll_summary_by_month",
+    "customDataHandlerClass":"payrollDetails",
+    "noDataInitialLoad":true
+}

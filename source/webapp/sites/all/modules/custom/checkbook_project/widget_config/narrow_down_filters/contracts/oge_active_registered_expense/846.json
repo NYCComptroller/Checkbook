@@ -16,6 +16,7 @@
     "filterName":"Amount",
     "urlParameterName":"curamtr",
     "urlParameterType":"rangeid",
+    "showAllRecords":true,
     "autocompleteID":"fCurAmount",
     "adjustParameters":"
     if(function_exists('_checkbook_project_adjustContractParameterFilters')){

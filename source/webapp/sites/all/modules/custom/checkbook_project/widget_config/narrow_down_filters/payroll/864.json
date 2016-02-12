@@ -7,7 +7,7 @@
     "getTotalDataCount":true,
     "facetPager":true,
     "columns":["agency.agency", "agency.agency.agency_name", "txcount"],
-	"orderBy":"-txcount",    
+	"orderBy":"-txcount",
     "filterName":"Citywide Agency",
     "urlParameterName":"agency",
     "autocompleteParamName":"agency_auto",

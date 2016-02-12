@@ -115,6 +115,7 @@
         <field name="domain_ordering" type="string_custom" indexed="true" stored="true"/>
         <field name="date_ordering" type="string_custom" indexed="true" stored="true"/>
         <field name="industry_type_name" type="string_custom" indexed="true" stored="true"/>
+        <field name="industry_type_name_autocomplete" type="string_autocomplete" indexed="true" />
         <field name="industry_type_id" type="string_custom" indexed="true" stored="true"/>
 
         <!--
@@ -234,11 +235,15 @@
         <field name="pay_date_id" type="string_custom" indexed="true" stored="true" />
         <field name="pay_frequency" type="string_custom" indexed="true" stored="true" />
         <field name="annual_salary" type="double" indexed="true" stored="true"/>
+        <field name="hourly_rate" type="double" indexed="true" stored="true"/>
         <field name="total_gross_pay" type="double" indexed="true" stored="true"/>
         <field name="base_pay" type="double" indexed="true" stored="true"/>
         <field name="overtime_pay" type="double" indexed="true" stored="true"/>
         <field name="other_payments" type="double" indexed="true" stored="true"/>
         <field name="gross_pay" type="double" indexed="true" stored="true"/>
+        <field name="employee_number" type="string_custom" indexed="true" stored="true"/>
+        <field name="amount_basis_id" type="string_custom" indexed="true" stored="true"/>
+        <field name="payroll_type" type="string_custom" indexed="true" stored="true"/>
 
         <!--
            Checkbook 2.0
@@ -356,6 +361,9 @@
 
     <copyField source="oge_agency_name" dest="oge_agency_name_autocomplete" />
     <copyField source="agency_name" dest="text" />
+    <copyField source="agency_name" dest="agency_name_autocomplete" />
+    <copyField source="industry_type_name" dest="text" />
+    <copyField source="industry_type_name" dest="industry_type_name_autocomplete" />
     <copyField source="oge_agency_name" dest="text" />
     <copyField source="department_name" dest="text" />
     <copyField source="budget_code" dest="text" />
@@ -399,6 +407,8 @@
     <copyField source="spending_budget_name" dest="spending_budget_name_autocomplete" />
     <!--Field used for multi-valued auto complete for multiple works-->
     <copyField source="contract_budget_name" dest="contract_budget_name_autocomplete" />
+
+
 
     <types>
         <!-- field type definitions. The "name" attribute is

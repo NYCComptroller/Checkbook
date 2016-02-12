@@ -72,6 +72,32 @@ if($is_payroll_range_filter) {
     }
 }
 
+//Payroll Type Filter
+$count = 0;
+if($node->widgetConfig->filterName == 'Payroll Type') {
+
+    switch($node->nid) {
+        case 898:
+        case 899:
+        //Advanced Search Payroll Type Facets
+        foreach($checked as $key => $value) {
+            if($value[0] == 2 || $value[0] == 3) {
+                $count = $count + $value[2];
+                $id = "2~3";
+                unset($checked[$key]);
+            }
+            else {
+                array_push($checked,array($value[0],PayrollType::$SALARIED,$value[2]));
+                unset($checked[$key]);
+            }
+        }
+        if($count > 0) {
+            array_push($checked,array($id,PayrollType::$NON_SALARIED,$count));
+        }
+        break;
+    }
+}
+
 //Modified Expense Budget Filter
 if($node->widgetConfig->filterName == 'Modified Expense Budget') {
     $showAllRecords = isset($node->widgetConfig->showAllRecords) ? $node->widgetConfig->showAllRecords : false;

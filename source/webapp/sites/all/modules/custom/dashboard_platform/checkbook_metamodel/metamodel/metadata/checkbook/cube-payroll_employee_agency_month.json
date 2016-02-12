@@ -95,10 +95,21 @@
                     ]
                 },
                 {
+                    "name": "dept",
+                    "levels": [
+                        {
+                            "name": "dept",
+                            "datasetName": "department",
+                            "sourceColumnName": "department_id"
+                        }
+                    ]
+                },
+                {
                     "name":"month",
                     "levels":[
                         {
                             "name":"month",
+                            "datasetName":"month",
                             "sourceColumnName":"month_id"
                         }
                     ]
@@ -129,11 +140,50 @@
                             "sourceColumnName": "civil_service_title"
                         }
                     ]
+                },
+                {
+                    "name": "civil_service_title_code",
+                    "levels": [
+                        {
+                            "name": "civil_service_title_code",
+                            "sourceColumnName": "civil_service_title_code"
+                        }
+                    ]
+                },
+                {
+                    "name": "employee_number",
+                    "levels": [
+                        {
+                            "name": "employee_number",
+                            "sourceColumnName": "employee_number"
+                        }
+                    ]
+                },
+                {
+                    "name": "pay_date",
+                    "levels": [
+                        {
+                            "name": "pay_date",
+                            "sourceColumnName": "pay_date"
+                        }
+                    ]
                 }
             ],
             "measures":{
                 "txcount": {
                     "function": "COUNT(*)"
+                },
+                "title_count": {
+                    "function": "COUNT(DISTINCT civil_service_title)"
+                },
+                "agency_count": {
+                    "function": "COUNT(DISTINCT agency_id)"
+                },
+                "emp_count": {
+                    "function": "COUNT(DISTINCT employee_number)"
+                },
+                "max_annual_salary":{
+                    "function": "MAX(annual_salary)"
                 },
                 "total_annual_salary": {
                     "function": "SUM(annual_salary)"
@@ -158,6 +208,9 @@
                 },
                 "total_overtime_amount": {
                     "function": "SUM(overtime_pay)"
+                },
+                "total_overtime_pay": {
+                    "function": "sum(overtime_pay)"
                 },
                 "employee_count":{
                     "function":"COUNT(DISTINCT employee_id)"

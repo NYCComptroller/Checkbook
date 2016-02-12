@@ -2653,7 +2653,11 @@ table.outerTable.ma-history{
 #node-widget-426 h3{
     margin-top: 12px;
 }
-#spending-transactions > div:first-child, #contract-details > div:first-child, #nyc-payroll > div:first-child {
+#spending-transactions > div:first-child,
+#contract-details > div:first-child,
+#nyc-payroll > div:first-child,
+#budget-transactions > div:first-child,
+#revenue-transactions > div:first-child {
     margin: 18px 10px 5px;
 }
 
@@ -2684,17 +2688,71 @@ table.outerTable.ma-history{
 .page-payroll-search-transactions .dataTables_wrapper > div + div + div{border:none;}
 .page-payroll-search-transactions .dataTables_processing{top:-20px;}
 #emp-agency-detail-records th, #emp-agency-detail-records td,
+#emp-agency-detail-records-salaried th, #emp-agency-detail-records-salaried td,
+#emp-agency-detail-records-non-salaried th, #emp-agency-detail-records-non-salaried td,
 #emp-agency-detail-record-table th, #emp-agency-detail-record-table td,
+#emp-agency-detail-records-salaried-table th, #emp-agency-detail-records-salaried-table td,
+#emp-agency-detail-records-non-salaried-table th, #emp-agency-detail-records-non-salaried-table td,
 #payroll-tx-static-content-table th, #payroll-tx-static-content-table td{
     padding: 10px 5px;
     white-space: nowrap;
 }
+
+#emp-agency-detail-records th:nth-child(1),
+#emp-agency-detail-records td:nth-child(1),
+#emp-agency-detail-records-salaried td:nth-child(1),
+#emp-agency-detail-records-non-salaried td:nth-child(1) {
+    white-space: nowrap;
+}
+
+#emp-agency-detail-records,
+#emp-agency-detail-records-salaried,
+#emp-agency-detail-records-non-salaried {
+    width: 940px !important;
+}
+#prev-emp-salaried,
+#next-emp-salaried,
+#prev-emp-non-salaried,
+#next-emp-non-salaried{
+    height:50px;
+    width:18px;
+    position: absolute;
+    bottom:130px;
+    z-index: 25;
+}
+#prev-emp-salaried,
+#prev-emp-non-salaried{
+    left:145px;
+    background: url(../images/NYC-Arrow_left.png) no-repeat scroll;
+    cursor: pointer;
+    top:120px;
+}
+#next-emp-salaried,
+#next-emp-non-salaried{
+    right:125px;
+    background: url(../images/NYC-Arrow_right.png) no-repeat scroll;
+    cursor: pointer;
+    top:120px;
+
+}
+
 #emp-agency-detail-record-table {
-    width: 520px;
-    margin: auto auto 15px;
+    width: 650px;
+    margin: auto 175px 15px 245px;
     color:#5B5B5B;
     font-size: 13px;
 }
+
+.center-align {
+    margin-left:190px !important;
+}
+
+#toggle-employee-salaried,
+#toggle-employee-non-salaried {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
 #payroll-tx-static-content-table {
     width: 600px;
     margin-left:220px;
@@ -3327,7 +3385,6 @@ div.payroll-year-month{
 .emp-agency-detail-record .label {
     font-weight: bold;
 }
-
 .fake-hyperlink {
     color: #1F82C9;
     font-weight: normal;
