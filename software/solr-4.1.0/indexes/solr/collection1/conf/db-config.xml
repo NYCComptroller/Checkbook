@@ -873,9 +873,8 @@
 	7 domain_ordering,
 	pay_date::varchar date_ordering,
 	other_payments,
-        employee_number,
-        annual_salary hourly_rate,
-        case when amount_basis_id in (1) then 'SALARIED' else 'NON-SALARIED' end as payroll_type
+    annual_salary hourly_rate,
+    case when amount_basis_id in (1) then 'SALARIED' else 'NON-SALARIED' end as payroll_type
 	from payroll
 	where
 	'${dataimporter.request.clean}' != 'false' OR job_id >= ${dataimporter.request.jobID}
@@ -910,7 +909,6 @@
 <field column="domain_ordering" name="domain_ordering" />
 <field column="date_ordering" name="date_ordering" />
 <field column="amount_basis_id" name="amount_basis_id" />
-<field column="employee_number" name="employee_number" />
 <field column="hourly_rate" name="hourly_rate" />
 <field column="payroll_type" name="payroll_type" /> 	
 </entity>
