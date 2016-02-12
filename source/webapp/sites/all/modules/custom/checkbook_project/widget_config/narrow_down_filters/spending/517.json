@@ -5,6 +5,7 @@
     "filterName":"Amount",
     "urlParameterName":"checkamtr",
     "urlParameterType":"rangeid",
+    "showAllRecords":true,
     "autocompleteID":"fCheckAmount",     
     "startWith":0,    
     "urlParamMap":{"doctype":"document_code.document_code.document_code"}  ,

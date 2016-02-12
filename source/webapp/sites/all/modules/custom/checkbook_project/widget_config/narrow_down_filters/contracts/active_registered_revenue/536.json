@@ -11,6 +11,7 @@
     "filterName":"Amount",
     "urlParameterName":"curamtr",
     "urlParameterType":"rangeid",
+    "showAllRecords":true,
     "autocompleteID":"fCurAmount",     
     "urlParamMap":{
     				"doctype":"document_code.document_code.document_code",

@@ -23,9 +23,18 @@ $refURL =$_GET['refURL'];
 
 $title = "New York City";
 
-$agencyId = _getRequestParamValue('agency');
-if(isset($agencyId)){
-    $title = _checkbook_project_get_name_for_argument("agency_id",$agencyId);
+$lastReqParam = _getLastRequestParamValue();
+
+foreach($lastReqParam as $key => $value){
+    switch($key){
+        case 'agency':
+            $title = _checkbook_project_get_name_for_argument("agency_id",$value);
+            break;
+        case 'title':
+            $title = _checkbook_project_get_name_for_argument("title",$value);
+            break;
+        default:
+    }
 }
 
 $domain = 'Payroll';

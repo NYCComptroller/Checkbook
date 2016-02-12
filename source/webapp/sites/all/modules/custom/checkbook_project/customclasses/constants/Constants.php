@@ -16,4 +16,7 @@ class VendorType {
     public static $SUB_VENDOR = 'S';
 }
 
-
+class PayrollType {
+    public static $SALARIED = 'Salaried';
+    public static $NON_SALARIED = 'Non-Salaried';
+}

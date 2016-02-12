@@ -462,6 +462,8 @@
         var spendingCategories = getSearchFilterCriteria('fspendingCatName');
         var mwbeCategory = getSearchFilterCriteria('fmwbeCategory');
         var industryTypes = getSearchFilterCriteria('findustryTypeName');
+        var payrollType = getSearchFilterCriteria('fpayrollTypeName');
+
 
         var searchTerm = '';
         var cUrl = null;
@@ -508,6 +510,9 @@
         }
         if(industryTypes) {
             cUrl += "industry_type_name=" + encodeURIComponent(industryTypes) + '*|*';
+        }
+        if(payrollType) {
+            cUrl += "payroll_type=" + encodeURIComponent(payrollType) + '*|*';
         }
         if(domainNames){
             if(contractCategories){

@@ -10,6 +10,7 @@
     "filterName":"Amount",
     "urlParameterName":"curamtr",
     "urlParameterType":"rangeid",
+    "showAllRecords":true,
     "autocompleteID":"fCurAmount",
     "startWith":0,
     "maxSelect":5,
