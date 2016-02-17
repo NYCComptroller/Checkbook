@@ -23,7 +23,8 @@
  * Script to send notification emails
  */
 
-_drush_bootstrap_drupal_full();
+require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
+drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
 
 $recipients = db_query("SELECT DISTINCT recipient FROM checkbook_alerts WHERE un_subscribed_date IS NULL");
 
@@ -34,7 +35,8 @@ foreach($recipients as $recipient){
     "WHERE UPPER(recipient)=UPPER(:recipient) AND ".
       "active = 'Y' AND ".
       "date_end>CURRENT_TIMESTAMP AND ".
-      "DATE_ADD( date_last_new_results, INTERVAL minimum_days DAY) <= CURRENT_TIMESTAMP",
+      "DATE_ADD( date_last_new_results, INTERVAL minimum_days DAY) <= CURRENT_TIMESTAMP AND ".
+      "un_subscribed_date IS NULL",
         array(":recipient"=>$recipient->recipient));
 
   $alertsToEmail=array();
