@@ -71,6 +71,8 @@ foreach($all_data as $employment_type => $employment_data) {
 
     $data = PayrollUtil::getDataByPayFrequency("BI-WEEKLY",$employment_data);
     if(isset($data)) $ordered_data[] = $data;
+    $data = PayrollUtil::getDataByPayFrequency("SEMI-MONTHLY",$employment_data);
+    if(isset($data)) $ordered_data[] = $data;
     $data = PayrollUtil::getDataByPayFrequency("WEEKLY",$employment_data);
     if(isset($data)) $ordered_data[] = $data;
     $data = PayrollUtil::getDataByPayFrequency("DAILY",$employment_data);
@@ -78,8 +80,6 @@ foreach($all_data as $employment_type => $employment_data) {
     $data = PayrollUtil::getDataByPayFrequency("HOURLY",$employment_data);
     if(isset($data)) $ordered_data[] = $data;
     $data = PayrollUtil::getDataByPayFrequency("SUPPLEMENTAL",$employment_data);
-    if(isset($data)) $ordered_data[] = $data;
-    $data = PayrollUtil::getDataByPayFrequency("SEMI-MONTHLY",$employment_data);
     if(isset($data)) $ordered_data[] = $data;
 
     $all_data[$employment_type] = $ordered_data;
