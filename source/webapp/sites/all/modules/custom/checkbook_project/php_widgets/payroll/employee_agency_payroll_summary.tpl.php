@@ -52,23 +52,10 @@ foreach($node->data as $data){
     $all_data[$employment_type][] = $record;
 }
 
-$salaried_count = count($all_data[PayrollType::$SALARIED]);
-$non_salaried_count = count($all_data[PayrollType::$NON_SALARIED]);
-
-//Default view based on salamttype in url
-$default_view = $salaried_count > 0 ? PayrollType::$SALARIED : PayrollType::$NON_SALARIED;
-$salamttype = _getRequestParamValue('salamttype');
-if(isset($salamttype)) {
-    $salamttype = explode('~',$salamttype);
-    if (!in_array(1, $salamttype)) {
-        $default_view = PayrollType::$NON_SALARIED;
-    }
-}
-
 //Order data by pay frequency
-$ordered_data = array();
 foreach($all_data as $employment_type => $employment_data) {
 
+    $ordered_data = array();
     $data = PayrollUtil::getDataByPayFrequency("BI-WEEKLY",$employment_data);
     if(isset($data)) $ordered_data[] = $data;
     $data = PayrollUtil::getDataByPayFrequency("SEMI-MONTHLY",$employment_data);
@@ -83,6 +70,19 @@ foreach($all_data as $employment_type => $employment_data) {
     if(isset($data)) $ordered_data[] = $data;
 
     $all_data[$employment_type] = $ordered_data;
+}
+
+$salaried_count = count($all_data[PayrollType::$SALARIED]);
+$non_salaried_count = count($all_data[PayrollType::$NON_SALARIED]);
+
+//Default view based on salamttype in url
+$default_view = $salaried_count > 0 ? PayrollType::$SALARIED : PayrollType::$NON_SALARIED;
+$salamttype = _getRequestParamValue('salamttype');
+if(isset($salamttype)) {
+    $salamttype = explode('~',$salamttype);
+    if (!in_array(1, $salamttype)) {
+        $default_view = PayrollType::$NON_SALARIED;
+    }
 }
 
 $js = "";
