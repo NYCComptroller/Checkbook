@@ -221,4 +221,13 @@ class PayrollUtil {
         }
         return $employee_totals;
     }
+
+    static function getDataByPayFrequency($pay_frequency, $array) {
+        foreach($array as $data) {
+            if($data['pay_frequency'] == $pay_frequency) {
+                return $data;
+            }
+        }
+        return null;
+    }
 } 
