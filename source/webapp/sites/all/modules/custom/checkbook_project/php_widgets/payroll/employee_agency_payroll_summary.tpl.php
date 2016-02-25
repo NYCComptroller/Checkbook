@@ -52,6 +52,26 @@ foreach($node->data as $data){
     $all_data[$employment_type][] = $record;
 }
 
+//Order data by pay frequency
+foreach($all_data as $employment_type => $employment_data) {
+
+    $ordered_data = array();
+    $data = PayrollUtil::getDataByPayFrequency("BI-WEEKLY",$employment_data);
+    if(isset($data)) $ordered_data[] = $data;
+    $data = PayrollUtil::getDataByPayFrequency("SEMI-MONTHLY",$employment_data);
+    if(isset($data)) $ordered_data[] = $data;
+    $data = PayrollUtil::getDataByPayFrequency("WEEKLY",$employment_data);
+    if(isset($data)) $ordered_data[] = $data;
+    $data = PayrollUtil::getDataByPayFrequency("DAILY",$employment_data);
+    if(isset($data)) $ordered_data[] = $data;
+    $data = PayrollUtil::getDataByPayFrequency("HOURLY",$employment_data);
+    if(isset($data)) $ordered_data[] = $data;
+    $data = PayrollUtil::getDataByPayFrequency("SUPPLEMENTAL",$employment_data);
+    if(isset($data)) $ordered_data[] = $data;
+
+    $all_data[$employment_type] = $ordered_data;
+}
+
 $salaried_count = count($all_data[PayrollType::$SALARIED]);
 $non_salaried_count = count($all_data[PayrollType::$NON_SALARIED]);
 
@@ -64,7 +84,6 @@ if(isset($salamttype)) {
         $default_view = PayrollType::$NON_SALARIED;
     }
 }
-
 
 $js = "";
 $employeeData = '<div class="payroll-emp-wrapper">';
