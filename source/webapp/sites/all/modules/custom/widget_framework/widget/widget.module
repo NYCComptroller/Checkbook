@@ -796,7 +796,7 @@ function load_widget_data($node, $resultFormatter) {
                   $sql = substr_replace($sql,$replace_string."DISTINCT ",strpos($sql,$replace_string),strlen($replace_string));
 
 //                  log_info('AFTER***: ' . $sql);
-                  $results = _checkbook_project_execute_sql($sql);
+                  $results = _checkbook_project_execute_sql_by_data_source($sql,_get_current_datasource());
                   $node->totalDataCount = $results[0]['record_count'];
               }
               else {$node->totalDataCount = $isList
