@@ -241,7 +241,7 @@ function checkbook_datafeeds_tracking_status($form, &$form_state) {
             '#suffix' => '</div>',
         );
         $output['search-criteria-fieldset'] = array(
-            '#title' => t('Filter'),
+            '#title' => t('Search Criteria'),
             '#type' => 'fieldset',
         );
         $output['search-criteria-fieldset']['search-criteria'] = array(
@@ -907,7 +907,7 @@ function checkbook_datafeeds_budget_confirmation($form, &$form_state) {
     }
     $form['filter'] = array(
         '#type' => 'fieldset',
-        '#title' => t('Filter'),
+        '#title' => t('Search Criteria'),
     );
     if ($values['fiscal_year']) {
         $form['filter']['fiscal_year'] = array('#markup' => '<div><strong>Year:</strong> ' . $values['fiscal_year'] . '</div>');
@@ -2094,7 +2094,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
     }
     $form['filter'] = array(
         '#type' => 'fieldset',
-        '#title' => t('Filter'),
+        '#title' => t('Search Criteria'),
     );
     if ($values['df_contract_status']) {
         $form['filter']['df_contract_status'] = array('#markup' => '<div><strong>Contract Status:</strong> ' . $values['df_contract_status'] . '</div>');
@@ -2986,7 +2986,7 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state) {
     }
     $form['filter'] = array(
         '#type' => 'fieldset',
-        '#title' => t('Filter'),
+        '#title' => t('Search Criteria'),
     );
     //Add title_exact to hidden to persist back
     $form['title_exact'] = array(
@@ -3657,7 +3657,7 @@ function checkbook_datafeeds_revenue_confirmation($form, &$form_state) {
     }
     $form['filter'] = array(
         '#type' => 'fieldset',
-        '#title' => t('Filter'),
+        '#title' => t('Search Criteria'),
     );
     if ($values['fund_class']) {
         $form['filter']['fund_class'] = array(
@@ -4954,7 +4954,7 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
 
     $form['filter'] = array(
         '#type' => 'fieldset',
-        '#title' => t('Filter'),
+        '#title' => t('Search Criteria'),
     );
 
     //<editor-fold desc="Spending Confirmation Fields">
