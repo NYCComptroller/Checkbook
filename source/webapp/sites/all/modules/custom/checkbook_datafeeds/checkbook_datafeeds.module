@@ -3698,6 +3698,11 @@ function checkbook_datafeeds_revenue_confirmation($form, &$form_state) {
         );
         $user_criteria['Fiscal Year'] = $values['fiscal_year'];
     }
+    else {
+        $form['filter']['fiscal_year'] = array(
+            '#markup' => '<div><strong>Fiscal Year:</strong> All Fiscal Years</div>',
+        );
+    }
     if ($values['revenue_category']) {
         $form['filter']['revenue_category'] = array(
             '#markup' => '<div><strong>Revenue Category:</strong> ' . $values['revenue_category'] . '</div>',
@@ -3725,60 +3730,60 @@ function checkbook_datafeeds_revenue_confirmation($form, &$form_state) {
 
     if ($values['modifiedfrom'] && $values['modifiedto']) {
         $form['filter']['modified'] = array(
-            '#markup' => '<div><strong>Modified:</strong><br />Greater Than: $' . $values['modifiedfrom'] . ' Less Than: $' . $values['modifiedto'] . '</div>',
+            '#markup' => '<div><strong>Modified:</strong> Greater Than: $' . $values['modifiedfrom'] . ' Less Than: $' . $values['modifiedto'] . '</div>',
         );
         $user_criteria['Modified Greater Than'] = $values['modifiedfrom'];
         $user_criteria['Modified Less Than'] = $values['modifiedto'];
     }
     elseif ($values['modifiedfrom'] && !$values['modifiedto']) {
         $form['filter']['modified'] = array(
-            '#markup' => '<div><strong>Modified:</strong><br />Greater Than: $' . $values['modifiedfrom'] . '</div>',
+            '#markup' => '<div><strong>Modified:</strong> Greater Than: $' . $values['modifiedfrom'] . '</div>',
         );
         $user_criteria['Modified Greater Than'] = $values['modifiedfrom'];
     }
     elseif (!$values['modifiedfrom'] && $values['modifiedto']) {
         $form['filter']['modified'] = array(
-            '#markup' => '<div><strong>Modified:</strong><br />Less Than: $' . $values['modifiedto'] . '</div>',
+            '#markup' => '<div><strong>Modified:</strong> Less Than: $' . $values['modifiedto'] . '</div>',
         );
         $user_criteria['Modified Less Than'] = $values['modifiedto'];
     }
 
     if ($values['adoptedfrom'] && $values['adoptedto']) {
         $form['filter']['adopted'] = array(
-            '#markup' => '<div><strong>Adopted:</strong><br />Greater Than: $' . $values['adoptedfrom'] . ' Less Than: $' . $values['adoptedto'] . '</div>',
+            '#markup' => '<div><strong>Adopted:</strong> Greater Than: $' . $values['adoptedfrom'] . ' Less Than: $' . $values['adoptedto'] . '</div>',
         );
         $user_criteria['Adopted Greater Than'] = $values['adoptedfrom'];
         $user_criteria['Adopted Less Than'] = $values['adoptedto'];
     }
     elseif ($values['adoptedfrom'] && !$values['adoptedto']) {
         $form['filter']['adopted'] = array(
-            '#markup' => '<div><strong>Adopted:</strong><br />Greater Than: $' . $values['adoptedfrom'] . '</div>',
+            '#markup' => '<div><strong>Adopted:</strong> Greater Than: $' . $values['adoptedfrom'] . '</div>',
         );
         $user_criteria['Adopted Greater Than'] = $values['adoptedfrom'];
     }
     elseif (!$values['adoptedfrom'] && $values['adoptedto']) {
         $form['filter']['adopted'] = array(
-            '#markup' => '<div><strong>Adopted:</strong><br />Less Than: $' . $values['adoptedto'] . '</div>',
+            '#markup' => '<div><strong>Adopted:</strong> Less Than: $' . $values['adoptedto'] . '</div>',
         );
         $user_criteria['Adopted Less Than'] = $values['adoptedto'];
     }
 
     if ($values['recognizedfrom'] && $values['recognizedto']) {
         $form['filter']['recognized'] = array(
-            '#markup' => '<div><strong>Recognized:</strong><br />Greater Than: $' . $values['recognizedfrom'] . ' Less Than: $' . $values['recognizedto'] . '</div>',
+            '#markup' => '<div><strong>Recognized:</strong> Greater Than: $' . $values['recognizedfrom'] . ' Less Than: $' . $values['recognizedto'] . '</div>',
         );
         $user_criteria['Recognized Greater Than'] = $values['recognizedfrom'];
         $user_criteria['Recognized Less Than'] = $values['recognizedto'];
     }
     elseif ($values['recognizedfrom'] && !$values['recognizedto']) {
         $form['filter']['recognized'] = array(
-            '#markup' => '<div><strong>Recognized:</strong><br />Greater Than: $' . $values['recognizedfrom'] . '</div>',
+            '#markup' => '<div><strong>Recognized:</strong> Greater Than: $' . $values['recognizedfrom'] . '</div>',
         );
         $user_criteria['Recognized Greater Than'] = $values['recognizedfrom'];
     }
     elseif (!$values['recognizedfrom'] && $values['recognizedto']) {
         $form['filter']['recognized'] = array(
-            '#markup' => '<div><strong>Recognized:</strong><br />Less Than: $' . $values['recognizedto'] . '</div>',
+            '#markup' => '<div><strong>Recognized:</strong> Less Than: $' . $values['recognizedto'] . '</div>',
         );
         $user_criteria['Recognized Less Than'] = $values['recognizedto'];
     }
