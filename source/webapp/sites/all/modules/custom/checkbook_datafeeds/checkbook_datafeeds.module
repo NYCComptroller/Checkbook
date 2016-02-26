@@ -909,6 +909,12 @@ function checkbook_datafeeds_budget_confirmation($form, &$form_state) {
         '#type' => 'fieldset',
         '#title' => t('Search Criteria'),
     );
+    $form['filter']['data_type'] = array(
+        '#markup' => '<div><strong>Type of Data:</strong> Budget</div>',
+    );
+    $form['filter']['file_type'] = array(
+        '#markup' => '<div><strong>Type of File:</strong> ' . $form_state['step_information']['type']['stored_values']['format'] . '</div>',
+    );
     if ($values['fiscal_year']) {
         $form['filter']['fiscal_year'] = array('#markup' => '<div><strong>Year:</strong> ' . $values['fiscal_year'] . '</div>');
         $user_criteria['Year'] = $values['fiscal_year'];
@@ -1020,9 +1026,6 @@ function checkbook_datafeeds_budget_confirmation($form, &$form_state) {
         $form['filter']['accrued_expense'] = array('#markup' => '<div><strong>Accrued Expense:</strong><br />Greater Than: $' . $values['accruedexpensefrom'] . '</div>');
         $user_criteria['Accrued Expense Greater Than'] = $values['accruedexpensefrom'];
     }
-    $form['filter']['filetype'] = array(
-        '#markup' => '<div><strong>File Type:</strong> ' . $form_state['step_information']['type']['stored_values']['format'] . '</div>',
-    );
     $form['#attributes'] = array(
         'class' => array(
             'confirmation-page',
@@ -2096,6 +2099,12 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         '#type' => 'fieldset',
         '#title' => t('Search Criteria'),
     );
+    $form['filter']['data_type'] = array(
+        '#markup' => '<div><strong>Type of Data:</strong> Contracts</div>',
+    );
+    $form['filter']['file_type'] = array(
+        '#markup' => '<div><strong>Type of File:</strong> ' . $form_state['step_information']['type']['stored_values']['format'] . '</div>',
+    );
     if ($values['df_contract_status']) {
         $form['filter']['df_contract_status'] = array('#markup' => '<div><strong>Contract Status:</strong> ' . $values['df_contract_status'] . '</div>');
         $user_criteria['Contract Status'] = $values['df_contract_status'];
@@ -2256,9 +2265,6 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
             '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
         );
     }
-    $form['filter']['filetype'] = array(
-        '#markup' => '<div><strong>File Type:</strong> ' . $form_state['step_information']['type']['stored_values']['format'] . '</div>',
-    );
     $criteria = checkbook_datafeeds_process_contracts_values($form, $form_state, $data_source);
     $criteria['required_columns'] = checkbook_datafeeds_contracts_add_required_columns($response_type, $data_source,$values['df_contract_status'],$values['category'],$values['year']);
     $form_state['step_information']['confirmation']['stored_values']['criteria'] = $criteria;
@@ -2988,6 +2994,12 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state) {
         '#type' => 'fieldset',
         '#title' => t('Search Criteria'),
     );
+    $form['filter']['data_type'] = array(
+        '#markup' => '<div><strong>Type of Data:</strong> Payroll</div>',
+    );
+    $form['filter']['file_type'] = array(
+        '#markup' => '<div><strong>Type of File:</strong> ' . $form_state['step_information']['type']['stored_values']['format'] . '</div>',
+    );
     //Add title_exact to hidden to persist back
     $form['title_exact'] = array(
         '#title' =>  'title_exact',
@@ -3133,9 +3145,6 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state) {
         $form['filter']['annual_salary'] = array('#markup' => '<div><strong>Amount:</strong><br />Greater Than: $' . $values['salaryfrom'] . '</div>');
         $user_criteria['Amount Greater Than'] = $values['salaryfrom'];
     }
-    $form['filter']['filetype'] = array(
-        '#markup' => '<div><strong>File Type:</strong> ' . $form_state['step_information']['type']['stored_values']['format'] . '</div>',
-    );
     $criteria = checkbook_datafeeds_process_payroll_values($form, $form_state);
     $form_state['step_information']['confirmation']['stored_values']['criteria'] = $criteria;
     $form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $user_criteria;
@@ -3659,6 +3668,12 @@ function checkbook_datafeeds_revenue_confirmation($form, &$form_state) {
         '#type' => 'fieldset',
         '#title' => t('Search Criteria'),
     );
+    $form['filter']['data_type'] = array(
+        '#markup' => '<div><strong>Type of Data:</strong> Revenue</div>',
+    );
+    $form['filter']['file_type'] = array(
+        '#markup' => '<div><strong>Type of File:</strong> ' . $form_state['step_information']['type']['stored_values']['format'] . '</div>',
+    );
     if ($values['fund_class']) {
         $form['filter']['fund_class'] = array(
             '#markup' => '<div><strong>Fund Class:</strong> ' . $values['fund_class'] . '</div>',
@@ -3767,10 +3782,6 @@ function checkbook_datafeeds_revenue_confirmation($form, &$form_state) {
         );
         $user_criteria['Recognized Less Than'] = $values['recognizedto'];
     }
-
-    $form['filter']['type'] = array(
-        '#markup' => '<div><strong>File Type:</strong> ' . $form_state['step_information']['type']['stored_values']['format'] . '</div>',
-    );
     $criteria = checkbook_datafeeds_process_revenue_values($form, $form_state);
     $form_state['step_information']['confirmation']['stored_values']['criteria'] = $criteria;
     $form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $user_criteria;
@@ -4959,6 +4970,13 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
 
     //<editor-fold desc="Spending Confirmation Fields">
 
+    $form['filter']['data_type'] = array(
+        '#markup' => '<div><strong>Type of Data:</strong> Spending</div>',
+    );
+    $form['filter']['file_type'] = array(
+        '#markup' => '<div><strong>Type of File:</strong> ' . $form_state['step_information']['type']['stored_values']['format'] . '</div>',
+    );
+
     $agency_label = $data_source == 'checkbook_oge' ? "Other Government Entities" : "Agency";
 
     if ($values['agency']) {
@@ -5096,9 +5114,6 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
 
     //</editor-fold>
 
-    $form['filter']['filetype'] = array(
-        '#markup' => '<div><strong>File Type:</strong> ' . $form_state['step_information']['type']['stored_values']['format'] . '</div>',
-    );
     $criteria = checkbook_datafeeds_process_spending_values($form, $form_state, $data_source);
     $criteria['required_columns'] = checkbook_datafeeds_spending_add_required_columns($response_type, $data_source);
     $form_state['step_information']['confirmation']['stored_values']['criteria'] = $criteria;
