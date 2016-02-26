@@ -936,77 +936,77 @@ function checkbook_datafeeds_budget_confirmation($form, &$form_state) {
         $user_criteria['Budget Code'] = $values['budget_code'];
     }
     if ($values['adoptedfrom'] && $values['adoptedto']) {
-        $form['filter']['adopted_budget'] = array('#markup' => '<div><strong>Adopted Budget:</strong><br />Greater Than: $' . $values['adoptedfrom'] . ' Less Than: $' . $values['adoptedto'] . '</div>');
+        $form['filter']['adopted_budget'] = array('#markup' => '<div><strong>Adopted Budget:</strong> Greater Than: $' . $values['adoptedfrom'] . ' Less Than: $' . $values['adoptedto'] . '</div>');
         $user_criteria['Adopted Budget Greater Than'] = $values['adoptedfrom'];
         $user_criteria['Adopted Budget Less Than'] = $values['adoptedto'];
     }
     elseif (!$values['adoptedfrom'] && $values['adoptedto']) {
-        $form['filter']['adopted_budget'] = array('#markup' => '<div><strong>Adopted Budget:</strong><br />Less Than: $' . $values['adoptedto'] . '</div>');
+        $form['filter']['adopted_budget'] = array('#markup' => '<div><strong>Adopted Budget:</strong> Less Than: $' . $values['adoptedto'] . '</div>');
         $user_criteria['Adopted Budget Less Than'] = $values['adoptedto'];
     }
     elseif ($values['adoptedfrom'] && !$values['adoptedto']) {
-        $form['filter']['adopted_budget'] = array('#markup' => '<div><strong>Adopted Budget:</strong><br />Greater Than: $' . $values['adoptedfrom'] . '</div>');
+        $form['filter']['adopted_budget'] = array('#markup' => '<div><strong>Adopted Budget:</strong> Greater Than: $' . $values['adoptedfrom'] . '</div>');
         $user_criteria['Adopted Budget Greater Than'] = $values['adoptedfrom'];
     }
     if ($values['currentfrom'] && $values['currentto']) {
-        $form['filter']['current_budget'] = array('#markup' => '<div><strong>Modified Budget:</strong><br />Greater Than: $' . $values['currentfrom'] . ' Less Than: $' . $values['currentto'] . '</div>');
+        $form['filter']['current_budget'] = array('#markup' => '<div><strong>Modified Budget:</strong> Greater Than: $' . $values['currentfrom'] . ' Less Than: $' . $values['currentto'] . '</div>');
         $user_criteria['Modified Budget Greater Than'] = $values['currentfrom'];
         $user_criteria['Modified Budget Less Than'] = $values['currentto'];
     }
     elseif (!$values['currentfrom'] && $values['currentto']) {
-        $form['filter']['current_budget'] = array('#markup' => '<div><strong>Modified Budget:</strong><br />Less Than: $' . $values['currentto'] . '</div>');
+        $form['filter']['current_budget'] = array('#markup' => '<div><strong>Modified Budget:</strong> Less Than: $' . $values['currentto'] . '</div>');
         $user_criteria['Modified Budget Less Than'] = $values['currentto'];
     }
     elseif ($values['currentfrom'] && !$values['currentto']) {
-        $form['filter']['current_budget'] = array('#markup' => '<div><strong>Modified Budget:</strong><br />Greater Than: $' . $values['currentfrom'] . '</div>');
+        $form['filter']['current_budget'] = array('#markup' => '<div><strong>Modified Budget:</strong> Greater Than: $' . $values['currentfrom'] . '</div>');
         $user_criteria['Modified Budget Greater Than'] = $values['currentfrom'];
     }
     if ($values['preencumberedfrom'] && $values['preencumberedto']) {
-        $form['filter']['preencumbered'] = array('#markup' => '<div><strong>Pre-encumbered:</strong><br />Greater Than: $' . $values['preencumberedfrom'] . ' Less Than: $' . $values['preencumberedto'] . '</div>');
+        $form['filter']['preencumbered'] = array('#markup' => '<div><strong>Pre-encumbered:</strong> Greater Than: $' . $values['preencumberedfrom'] . ' Less Than: $' . $values['preencumberedto'] . '</div>');
         $user_criteria['Pre-encumbered Greater Than'] = $values['preencumberedfrom'];
         $user_criteria['Pre-encumbered Less Than'] = $values['preencumberedto'];
     }
     elseif (!$values['preencumberedfrom'] && $values['preencumberedto']) {
-        $form['filter']['preencumbered'] = array('#markup' => '<div><strong>Pre-encumbered:</strong><br />Less Than: $' . $values['preencumberedto'] . '</div>');
+        $form['filter']['preencumbered'] = array('#markup' => '<div><strong>Pre-encumbered:</strong> Less Than: $' . $values['preencumberedto'] . '</div>');
         $user_criteria['Pre-encumbered Less Than'] = $values['preencumberedto'];
     }
     elseif ($values['preencumberedfrom'] && !$values['preencumberedto']) {
-        $form['filter']['preencumbered'] = array('#markup' => '<div><strong>Pre-encumbered:</strong><br />Greater Than: $' . $values['preencumberedfrom'] . '</div>');
+        $form['filter']['preencumbered'] = array('#markup' => '<div><strong>Pre-encumbered:</strong> Greater Than: $' . $values['preencumberedfrom'] . '</div>');
         $user_criteria['Pre-encumbered Greater Than'] = $values['preencumberedfrom'];
     }
     if ($values['encumberedfrom'] && $values['encumberedto']) {
-        $form['filter']['encumbered'] = array('#markup' => '<div><strong>Encumbered:</strong><br />Greater Than: $' . $values['encumberedfrom'] . ' Less Than: $' . $values['encumberedto'] . '</div>');
+        $form['filter']['encumbered'] = array('#markup' => '<div><strong>Encumbered:</strong> Greater Than: $' . $values['encumberedfrom'] . ' Less Than: $' . $values['encumberedto'] . '</div>');
         $user_criteria['Encumbered Greater Than'] = $values['encumberedfrom'];
         $user_criteria['Encumbered Less Than'] = $values['encumberedto'];
     }
     elseif (!$values['encumberedfrom'] && $values['encumberedto']) {
-        $form['filter']['encumbered'] = array('#markup' => '<div><strong>Encumbered:</strong><br />Less Than: $' . $values['encumberedto'] . '</div>');
+        $form['filter']['encumbered'] = array('#markup' => '<div><strong>Encumbered:</strong> Less Than: $' . $values['encumberedto'] . '</div>');
         $user_criteria['Encumbered Less Than'] = $values['encumberedto'];
     }
     elseif ($values['encumberedfrom'] && !$values['encumberedto']) {
-        $form['filter']['encumbered'] = array('#markup' => '<div><strong>Encumbered:</strong><br />Greater Than: $' . $values['encumberedfrom'] . '</div>');
+        $form['filter']['encumbered'] = array('#markup' => '<div><strong>Encumbered:</strong> Greater Than: $' . $values['encumberedfrom'] . '</div>');
         $user_criteria['Encumbered Greater Than'] = $values['encumberedfrom'];
     }
     if ($values['cashfrom'] && $values['cashto']) {
-        $form['filter']['cash_amount'] = array('#markup' => '<div><strong>Cash Expense:</strong><br />Greater Than: $' . $values['cashfrom'] . ' Less Than: $' . $values['cashto'] . '</div>');
+        $form['filter']['cash_amount'] = array('#markup' => '<div><strong>Cash Expense:</strong> Greater Than: $' . $values['cashfrom'] . ' Less Than: $' . $values['cashto'] . '</div>');
         $user_criteria['Cash Expense Greater Than'] = $values['cashfrom'];
         $user_criteria['Cash Expense Less Than'] = $values['cashto'];
     }
     elseif (!$values['cashfrom'] && $values['cashto']) {
-        $form['filter']['cash_amount'] = array('#markup' => '<div><strong>Cash Expense:</strong><br />Less Than: $' . $values['cashto'] . '</div>');
+        $form['filter']['cash_amount'] = array('#markup' => '<div><strong>Cash Expense:</strong> Less Than: $' . $values['cashto'] . '</div>');
         $user_criteria['Cash Expense Less Than'] = $values['cashto'];
     }
     elseif ($values['cashfrom'] && !$values['cashto']) {
-        $form['filter']['cash_amount'] = array('#markup' => '<div><strong>Cash Expense:</strong><br />Greater Than: $' . $values['cashfrom'] . '</div>');
+        $form['filter']['cash_amount'] = array('#markup' => '<div><strong>Cash Expense:</strong> Greater Than: $' . $values['cashfrom'] . '</div>');
         $user_criteria['Cash Expense Greater Than'] = $values['cashfrom'];
     }
     if ($values['postadjustmentsfrom'] && $values['postadjustmentsto']) {
-        $form['filter']['post_adjustments'] = array('#markup' => '<div><strong>Post Adjustments:</strong><br />Greater Than: $' . $values['postadjustmentsfrom'] . ' Less Than: $' . $values['postadjustmentsto'] . '</div>');
+        $form['filter']['post_adjustments'] = array('#markup' => '<div><strong>Post Adjustments:</strong> Greater Than: $' . $values['postadjustmentsfrom'] . ' Less Than: $' . $values['postadjustmentsto'] . '</div>');
         $user_criteria['Post Adjustments Greater Than'] = $values['postadjustmentsfrom'];
         $user_criteria['Post Adjustments Less Than'] = $values['postadjustmentsto'];
     }
     elseif (!$values['postadjustmentsfrom'] && $values['postadjustmentsto']) {
-        $form['filter']['post_adjustments'] = array('#markup' => '<div><strong>Post Adjustments:</strong><br />Less Than: $' . $values['postadjustmentsto'] . '</div>');
+        $form['filter']['post_adjustments'] = array('#markup' => '<div><strong>Post Adjustments:</strong> Less Than: $' . $values['postadjustmentsto'] . '</div>');
         $user_criteria['Post Adjustments Less Than'] = $values['postadjustmentsto'];
     }
     elseif ($values['postadjustmentsfrom'] && !$values['postadjustmentsto']) {
@@ -1014,16 +1014,16 @@ function checkbook_datafeeds_budget_confirmation($form, &$form_state) {
         $user_criteria['Post Adjustments Greater Than'] = $values['postadjustmentsfrom'];
     }
     if ($values['accruedexpensefrom'] && $values['accruedexpenseto']) {
-        $form['filter']['accrued_expense'] = array('#markup' => '<div><strong>Accrued Expense:</strong><br />Greater Than: $' . $values['accruedexpensefrom'] . ' Less Than: $' . $values['accruedexpenseto'] . '</div>');
+        $form['filter']['accrued_expense'] = array('#markup' => '<div><strong>Accrued Expense:</strong> Greater Than: $' . $values['accruedexpensefrom'] . ' Less Than: $' . $values['accruedexpenseto'] . '</div>');
         $user_criteria['Accrued Expense Greater Than'] = $values['accruedexpensefrom'];
         $user_criteria['Accrued Expense Less Than'] = $values['accruedexpenseto'];
     }
     elseif (!$values['accruedexpensefrom'] && $values['accruedexpenseto']) {
-        $form['filter']['accrued_expense'] = array('#markup' => '<div><strong>Accrued Expense:</strong><br />Less Than: $' . $values['accruedexpenseto'] . '</div>');
+        $form['filter']['accrued_expense'] = array('#markup' => '<div><strong>Accrued Expense:</strong> Less Than: $' . $values['accruedexpenseto'] . '</div>');
         $user_criteria['Accrued Expense Less Than'] = $values['accruedexpenseto'];
     }
     elseif ($values['accruedexpensefrom'] && !$values['accruedexpenseto']) {
-        $form['filter']['accrued_expense'] = array('#markup' => '<div><strong>Accrued Expense:</strong><br />Greater Than: $' . $values['accruedexpensefrom'] . '</div>');
+        $form['filter']['accrued_expense'] = array('#markup' => '<div><strong>Accrued Expense:</strong> Greater Than: $' . $values['accruedexpensefrom'] . '</div>');
         $user_criteria['Accrued Expense Greater Than'] = $values['accruedexpensefrom'];
     }
     $form['#attributes'] = array(
