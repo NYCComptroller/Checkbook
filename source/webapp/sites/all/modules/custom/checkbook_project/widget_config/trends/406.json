@@ -15,6 +15,7 @@
         "bPaginate": false,
         "bLengthChange": false,
         "bInfo": false,
+        "sScrollY": "380px",
         "fnPreDrawCallback":"##function( oSettings ) {
             jQuery('.trendsShowOnLoad').show();
             return true;
