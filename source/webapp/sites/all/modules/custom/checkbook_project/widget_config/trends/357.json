@@ -67,7 +67,9 @@
         { "sWidth": "30px"},
         {"sWidth":"55px"},
         { "sWidth": "30px"},
-        {"sWidth":"55px"},        
+        {"sWidth":"55px"},
+        { "sWidth": "30px"},
+        {"sWidth":"55px"},
         { "sWidth": "25px"}
         ]
        },
