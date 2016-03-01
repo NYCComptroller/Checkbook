@@ -89,32 +89,58 @@ class CheckBookAPI {
     return $this->request_handler->getRecordCount();
   }
 
-  /**
-   * Function to Submit a request to queue for proccessing.
-   *
-   * @param string $email
-   *   Optional email id.
-   *
-   * @return mixed
-   *   Token for tracking purpose.
-   *
-   * @throws Exception
-   *   Throws Exception if invalid email is provided.
-   */
-  function queueRequest($email) {
-    if (empty($email)) {
-      $email = NULL;
+    /**
+    * Function to Submit a request to queue for proccessing.
+    *
+    * @param string $email
+    *   Optional email id.
+    *
+    * @return mixed
+    *   Token for tracking purpose.
+    *
+    * @throws Exception
+    *   Throws Exception if invalid email is provided.
+    */
+    function queueRequest($email) {
+        //Validate email
+        $email = empty($email) ? null : $email;
+        if (isset($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $msg = "Invalid email address {$email} is provided for queue request.";
+            LogHelper::log_error($msg);
+            throw new Exception($msg);
+        }
+
+        //Insert record into queue
+        $token = $this->request_handler->queueRequest($email);
+        $job_details = self::getRequestDetailsByToken($token);
+
+        //Send confirmation email
+        if(isset($email)) {
+            $tracking_number = null;
+            $params = array(
+                "email" => $email,
+                "tracking_number" => $token,
+                "user_criteria" => $job_details['user_criteria']
+            );
+            self::sendConfirmationEmail($email,$params);
+        }
+        return $job_details;
     }
 
-    if (isset($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $msg = "Invalid email address {$email} is provided for queue request.";
-      LogHelper::log_error($msg);
-      throw new Exception($msg);
+    /**
+     * Function to send the confirmation email for the data feed
+     * @param $email
+     * @param $params
+     * @throws Exception
+     */
+    function sendConfirmationEmail($email,$params) {
+        $response = drupal_mail('checkbook_datafeeds', "confirmation_notification", $email, null, $params);
+        if(!$response['result']) {
+            $msg = "Error sending email in class CheckBookAPI, function sendConfirmationEmail()";
+            LogHelper::log_error($msg);
+            throw new Exception($msg);
+        }
     }
-
-    $token = $this->request_handler->queueRequest($email);
-    return self::getRequestDetailsByToken($token);
-  }
 
     /**
      * Function to Submit a request to queue for immediate download.
