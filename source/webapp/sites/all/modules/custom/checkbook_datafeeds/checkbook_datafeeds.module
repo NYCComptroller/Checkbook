@@ -3143,36 +3143,36 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state) {
         $formatted_search_criteria['Base Pay'] = 'Greater Than: $' . $values['basepayfrom'];
     }
     if ($values['overtimefrom'] && $values['overtimeto']) {
-        $form['filter']['overtime_pay'] = array('#markup' => '<div><strong>Overtime Pay:</strong> Greater Than: $' . $values['overtimefrom'] . ' Less Than: $' . $values['overtimeto'] . '</div>');
+        $form['filter']['overtime_pay'] = array('#markup' => '<div><strong>Overtime Payments:</strong> Greater Than: $' . $values['overtimefrom'] . ' Less Than: $' . $values['overtimeto'] . '</div>');
         $user_criteria['Overtime Pay Greater Than'] = $values['overtimefrom'];
         $user_criteria['Overtime Pay Less Than'] = $values['overtimeto'];
-        $formatted_search_criteria['Overtime Pay'] = 'Greater Than: $' . $values['overtimefrom'] . ' Less Than: $' . $values['overtimeto'];
+        $formatted_search_criteria['Overtime Payments'] = 'Greater Than: $' . $values['overtimefrom'] . ' Less Than: $' . $values['overtimeto'];
     }
     elseif (!$values['overtimefrom'] && $values['overtimeto']) {
-        $form['filter']['overtime_pay'] = array('#markup' => '<div><strong>Overtime Pay:</strong> Less Than: $' . $values['overtimeto'] . '</div>');
+        $form['filter']['overtime_pay'] = array('#markup' => '<div><strong>Overtime Payments:</strong> Less Than: $' . $values['overtimeto'] . '</div>');
         $user_criteria['Overtime Pay Less Than'] = $values['overtimeto'];
-        $formatted_search_criteria['Overtime Pay'] = 'Less Than: $' . $values['overtimeto'];
+        $formatted_search_criteria['Overtime Payments'] = 'Less Than: $' . $values['overtimeto'];
     }
     elseif ($values['overtimefrom'] && !$values['overtimeto']) {
-        $form['filter']['overtime_pay'] = array('#markup' => '<div><strong>Overtime Pay:</strong> Greater Than: $' . $values['overtimefrom'] . '</div>');
+        $form['filter']['overtime_pay'] = array('#markup' => '<div><strong>Overtime Payments:</strong> Greater Than: $' . $values['overtimefrom'] . '</div>');
         $user_criteria['Overtime Pay Greater Than'] = $values['overtimefrom'];
-        $formatted_search_criteria['Overtime Pay'] = 'Greater Than: $' . $values['overtimefrom'];
+        $formatted_search_criteria['Overtime Payments'] = 'Greater Than: $' . $values['overtimefrom'];
     }
     if ($values['otherfrom'] && $values['otherto']) {
-        $form['filter']['other_pay'] = array('#markup' => '<div><strong>Other Pay:</strong> Greater Than: $' . $values['otherfrom'] . ' Less Than: $' . $values['otherto'] . '</div>');
+        $form['filter']['other_pay'] = array('#markup' => '<div><strong>Other Payments:</strong> Greater Than: $' . $values['otherfrom'] . ' Less Than: $' . $values['otherto'] . '</div>');
         $user_criteria['Other Pay Greater Than'] = $values['otherfrom'];
         $user_criteria['Other Pay Less Than'] = $values['otherto'];
-        $formatted_search_criteria['Other Pay'] = 'Greater Than: $' . $values['otherfrom'] . ' Less Than: $' . $values['otherto'];
+        $formatted_search_criteria['Other Payments'] = 'Greater Than: $' . $values['otherfrom'] . ' Less Than: $' . $values['otherto'];
     }
     elseif (!$values['otherfrom'] && $values['otherto']) {
-        $form['filter']['other_pay'] = array('#markup' => '<div><strong>Other Pay:</strong> Less Than: $' . $values['otherto'] . '</div>');
+        $form['filter']['other_pay'] = array('#markup' => '<div><strong>Other Payments:</strong> Less Than: $' . $values['otherto'] . '</div>');
         $user_criteria['Other Pay Less Than'] = $values['otherto'];
-        $formatted_search_criteria['Other Pay'] = 'Less Than: $' . $values['otherto'];
+        $formatted_search_criteria['Other Payments'] = 'Less Than: $' . $values['otherto'];
     }
     elseif ($values['otherfrom'] && !$values['otherto']) {
-        $form['filter']['other_pay'] = array('#markup' => '<div><strong>Other Pay:</strong> Greater Than: $' . $values['otherfrom'] . '</div>');
+        $form['filter']['other_pay'] = array('#markup' => '<div><strong>Other Payments:</strong> Greater Than: $' . $values['otherfrom'] . '</div>');
         $user_criteria['Other Pay Greater Than'] = $values['otherfrom'];
-        $formatted_search_criteria['Other Pay'] = 'Greater Than: $' . $values['otherfrom'];
+        $formatted_search_criteria['Other Payments'] = 'Greater Than: $' . $values['otherfrom'];
     }
     if ($values['grossfrom'] && $values['grossto']) {
         $form['filter']['gross_pay'] = array('#markup' => '<div><strong>Gross Pay:</strong> Greater Than: $' . $values['grossfrom'] . ' Less Than: $' . $values['grossto'] . '</div>');
