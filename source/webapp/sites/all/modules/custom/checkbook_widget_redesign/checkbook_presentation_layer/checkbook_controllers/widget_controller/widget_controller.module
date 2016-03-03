@@ -36,8 +36,8 @@ require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/ob
 require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/object/converter/handler/AbstractJson2PHP.php');
 require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/object/converter/handler/Json2PHP.php');
 
-
-
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/spending/CheckData.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/spending/SpendingService.php');
 
 /***************************************/
 /* Implementation of Widget Node Type  */
@@ -145,6 +145,15 @@ function _widget_controller_node_view($key){
 	$node = _widget_controller_node_load_file($key);
 	$node = widget_controller_node_view($node);
 	echo $node->content['body']['#markup'];
+
+//    try {
+//        $service = new SpendingService();
+//        $checks = $service->GetCitywideChecks();
+//        var_dump($checks);
+//    }
+//    catch(Exception $e) {
+//        LogHelper::log_error('Error Testing Service: ' . $e);
+//    }
 }
 
 function _widget_controller_node_load_file($key){
