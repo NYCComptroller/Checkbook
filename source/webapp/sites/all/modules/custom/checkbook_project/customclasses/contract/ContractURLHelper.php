@@ -270,6 +270,33 @@ class ContractURLHelper{
         return $url;
     }
 
+    function _prepare_oge_spent_to_date_url($row, $node){
+        $oge_agency_name = $row['agency_name_checkbook_oge_agency'];
+        $oge_vendor_name = $row['legal_name_checkbook_oge_vendor'];
+
+        $vendor_url = $year_url = '';
+        if(strtolower($oge_agency_name) != strtolower($oge_vendor_name)){
+            $vendor_url = '/svendor/' . $row['vendor_id'];
+        }
+        if((!(_getRequestParamValue('year') || _getRequestParamValue('calyear')))){
+            $year_url = '/yeartype/B/year/' . _getFiscalYearID() . '/syear/'. _getFiscalYearID();
+        }
+        else{
+            $year_url = $row['type_of_year'] == 'B' ? ('/year/'. $row['fiscal_year_id'].'/syear/'. $row['fiscal_year_id']) : ('/calyear/'.$row['fiscal_year_id']. '/scalyear/'.$row['fiscal_year_id']);
+        }
+
+        $url = "<a href='/spending/transactions"
+            .  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id']
+            .  ($row['master_agreement_yn'] == 'Y' ? $vendor_url : '/svendor/' . $row['vendor_id'])
+            .  ($row['master_agreement_yn'] == 'Y' ? '' : ('/scomline/'.$row['fms_commodity_line']))
+            .  $year_url
+            . _checkbook_project_get_url_param_string('vendor')
+            . _checkbook_append_url_params()
+            .  "/newwindow' class='new_window'>" . custom_number_formatter_basic_format($row['spending_amount_disb']) . '</a>';
+
+        return $url;
+    }
+
     static function prepareExpandLink($row, $node ) {
     	$flag = ( preg_match("/^mwbe/", $_GET['q']) ) ? "has_mwbe_children" :"has_children";
 		$show_expander = ($row[$flag] == 'Y') ? true : false;
