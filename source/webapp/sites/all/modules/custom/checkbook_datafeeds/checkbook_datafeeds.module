@@ -2104,6 +2104,9 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
     $data_source = !isset($form_state['input']['datafeeds-contracts-domain-filter']) ? 'checkbook' : $form_state['input']['datafeeds-contracts-domain-filter'];
     //Set type/source of data by data_source
     $user_criteria['Type of Data'] = $data_source == 'checkbook_oge' ? 'Contracts_OGE' : 'Contracts';
+    $form['download_feeds'] = array(
+        '#markup' => '<h2 id="edit-description">Download Data</h2>',
+    );
     $form['columns'] = array(
         '#type' => 'fieldset',
         '#title' => t('Selected Columns'),
@@ -3175,6 +3178,9 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state) {
     $user_criteria = array();
     $user_criteria['Type of Data'] = 'Payroll';
     $user_criteria['Type of File'] = $responsetype;
+    $form['download_feeds'] = array(
+        '#markup' => '<h2 id="edit-description">Download Data</h2>',
+    );
     $form['columns'] = array(
         '#type' => 'fieldset',
         '#title' => t('Selected Columns'),
