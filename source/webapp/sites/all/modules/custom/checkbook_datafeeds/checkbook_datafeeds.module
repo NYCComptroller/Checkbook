@@ -918,11 +918,6 @@ function checkbook_datafeeds_budget_confirmation($form, &$form_state) {
         '#markup' => '<div><strong>Type of File:</strong> ' . $form_state['step_information']['type']['stored_values']['format'] . '</div>',
     );
     $formatted_search_criteria['Type of File'] = $form_state['step_information']['type']['stored_values']['format'];
-    if ($values['fiscal_year']) {
-        $form['filter']['fiscal_year'] = array('#markup' => '<div><strong>Year:</strong> ' . $values['fiscal_year'] . '</div>');
-        $user_criteria['Year'] = $values['fiscal_year'];
-        $formatted_search_criteria['Year'] = $values['fiscal_year'];
-    }
     if ($values['agency']) {
         $form['filter']['agency'] = array('#markup' => '<div><strong>Agency:</strong> ' . $values['agency'] . '</div>');
         $user_criteria['Agency'] = $values['agency'];
@@ -943,21 +938,10 @@ function checkbook_datafeeds_budget_confirmation($form, &$form_state) {
         $user_criteria['Budget Code'] = $values['budget_code'];
         $formatted_search_criteria['Budget Code'] = $values['budget_code'];
     }
-    if ($values['adoptedfrom'] && $values['adoptedto']) {
-        $form['filter']['adopted_budget'] = array('#markup' => '<div><strong>Adopted Budget:</strong> Greater Than: $' . $values['adoptedfrom'] . ' Less Than: $' . $values['adoptedto'] . '</div>');
-        $user_criteria['Adopted Budget Greater Than'] = $values['adoptedfrom'];
-        $user_criteria['Adopted Budget Less Than'] = $values['adoptedto'];
-        $formatted_search_criteria['Adopted Budget'] = 'Greater Than: $' . $values['adoptedfrom'] . ' Less Than: $' . $values['adoptedto'];
-    }
-    elseif (!$values['adoptedfrom'] && $values['adoptedto']) {
-        $form['filter']['adopted_budget'] = array('#markup' => '<div><strong>Adopted Budget:</strong> Less Than: $' . $values['adoptedto'] . '</div>');
-        $user_criteria['Adopted Budget Less Than'] = $values['adoptedto'];
-        $formatted_search_criteria['Adopted Budget'] = 'Less Than: $' . $values['adoptedto'];
-    }
-    elseif ($values['adoptedfrom'] && !$values['adoptedto']) {
-        $form['filter']['adopted_budget'] = array('#markup' => '<div><strong>Adopted Budget:</strong> Greater Than: $' . $values['adoptedfrom'] . '</div>');
-        $user_criteria['Adopted Budget Greater Than'] = $values['adoptedfrom'];
-        $formatted_search_criteria['Adopted Budget'] = 'Greater Than: $' . $values['adoptedfrom'];
+    if ($values['fiscal_year']) {
+        $form['filter']['fiscal_year'] = array('#markup' => '<div><strong>Year:</strong> ' . $values['fiscal_year'] . '</div>');
+        $user_criteria['Year'] = $values['fiscal_year'];
+        $formatted_search_criteria['Year'] = $values['fiscal_year'];
     }
     if ($values['currentfrom'] && $values['currentto']) {
         $form['filter']['current_budget'] = array('#markup' => '<div><strong>Modified Budget:</strong> Greater Than: $' . $values['currentfrom'] . ' Less Than: $' . $values['currentto'] . '</div>');
@@ -974,6 +958,22 @@ function checkbook_datafeeds_budget_confirmation($form, &$form_state) {
         $form['filter']['current_budget'] = array('#markup' => '<div><strong>Modified Budget:</strong> Greater Than: $' . $values['currentfrom'] . '</div>');
         $user_criteria['Modified Budget Greater Than'] = $values['currentfrom'];
         $formatted_search_criteria['Modified Budget'] = 'Greater Than: $' . $values['currentfrom'];
+    }
+    if ($values['adoptedfrom'] && $values['adoptedto']) {
+        $form['filter']['adopted_budget'] = array('#markup' => '<div><strong>Adopted Budget:</strong> Greater Than: $' . $values['adoptedfrom'] . ' Less Than: $' . $values['adoptedto'] . '</div>');
+        $user_criteria['Adopted Budget Greater Than'] = $values['adoptedfrom'];
+        $user_criteria['Adopted Budget Less Than'] = $values['adoptedto'];
+        $formatted_search_criteria['Adopted Budget'] = 'Greater Than: $' . $values['adoptedfrom'] . ' Less Than: $' . $values['adoptedto'];
+    }
+    elseif (!$values['adoptedfrom'] && $values['adoptedto']) {
+        $form['filter']['adopted_budget'] = array('#markup' => '<div><strong>Adopted Budget:</strong> Less Than: $' . $values['adoptedto'] . '</div>');
+        $user_criteria['Adopted Budget Less Than'] = $values['adoptedto'];
+        $formatted_search_criteria['Adopted Budget'] = 'Less Than: $' . $values['adoptedto'];
+    }
+    elseif ($values['adoptedfrom'] && !$values['adoptedto']) {
+        $form['filter']['adopted_budget'] = array('#markup' => '<div><strong>Adopted Budget:</strong> Greater Than: $' . $values['adoptedfrom'] . '</div>');
+        $user_criteria['Adopted Budget Greater Than'] = $values['adoptedfrom'];
+        $formatted_search_criteria['Adopted Budget'] = 'Greater Than: $' . $values['adoptedfrom'];
     }
     if ($values['preencumberedfrom'] && $values['preencumberedto']) {
         $form['filter']['preencumbered'] = array('#markup' => '<div><strong>Pre-encumbered:</strong> Greater Than: $' . $values['preencumberedfrom'] . ' Less Than: $' . $values['preencumberedto'] . '</div>');
@@ -1007,6 +1007,22 @@ function checkbook_datafeeds_budget_confirmation($form, &$form_state) {
         $user_criteria['Encumbered Greater Than'] = $values['encumberedfrom'];
         $formatted_search_criteria['Encumbered'] = 'Greater Than: $' . $values['encumberedfrom'];
     }
+    if ($values['accruedexpensefrom'] && $values['accruedexpenseto']) {
+        $form['filter']['accrued_expense'] = array('#markup' => '<div><strong>Accrued Expense:</strong> Greater Than: $' . $values['accruedexpensefrom'] . ' Less Than: $' . $values['accruedexpenseto'] . '</div>');
+        $user_criteria['Accrued Expense Greater Than'] = $values['accruedexpensefrom'];
+        $user_criteria['Accrued Expense Less Than'] = $values['accruedexpenseto'];
+        $formatted_search_criteria['Accrued Expense'] = 'Greater Than: $' . $values['accruedexpensefrom'] . ' Less Than: $' . $values['accruedexpenseto'];
+    }
+    elseif (!$values['accruedexpensefrom'] && $values['accruedexpenseto']) {
+        $form['filter']['accrued_expense'] = array('#markup' => '<div><strong>Accrued Expense:</strong> Less Than: $' . $values['accruedexpenseto'] . '</div>');
+        $user_criteria['Accrued Expense Less Than'] = $values['accruedexpenseto'];
+        $formatted_search_criteria['Accrued Expense'] = 'Less Than: $' . $values['accruedexpenseto'];
+    }
+    elseif ($values['accruedexpensefrom'] && !$values['accruedexpenseto']) {
+        $form['filter']['accrued_expense'] = array('#markup' => '<div><strong>Accrued Expense:</strong> Greater Than: $' . $values['accruedexpensefrom'] . '</div>');
+        $user_criteria['Accrued Expense Greater Than'] = $values['accruedexpensefrom'];
+        $formatted_search_criteria['Accrued Expense'] = 'Greater Than: $' . $values['accruedexpensefrom'];
+    }
     if ($values['cashfrom'] && $values['cashto']) {
         $form['filter']['cash_amount'] = array('#markup' => '<div><strong>Cash Expense:</strong> Greater Than: $' . $values['cashfrom'] . ' Less Than: $' . $values['cashto'] . '</div>');
         $user_criteria['Cash Expense Greater Than'] = $values['cashfrom'];
@@ -1038,22 +1054,6 @@ function checkbook_datafeeds_budget_confirmation($form, &$form_state) {
         $form['filter']['post_adjustments'] = array('#markup' => '<div><strong>Post Adjustments:</strong> Greater Than: $' . $values['postadjustmentsfrom'] . '</div>');
         $user_criteria['Post Adjustments Greater Than'] = $values['postadjustmentsfrom'];
         $formatted_search_criteria['Post Adjustments'] = 'Greater Than: $' . $values['postadjustmentsfrom'];
-    }
-    if ($values['accruedexpensefrom'] && $values['accruedexpenseto']) {
-        $form['filter']['accrued_expense'] = array('#markup' => '<div><strong>Accrued Expense:</strong> Greater Than: $' . $values['accruedexpensefrom'] . ' Less Than: $' . $values['accruedexpenseto'] . '</div>');
-        $user_criteria['Accrued Expense Greater Than'] = $values['accruedexpensefrom'];
-        $user_criteria['Accrued Expense Less Than'] = $values['accruedexpenseto'];
-        $formatted_search_criteria['Accrued Expense'] = 'Greater Than: $' . $values['accruedexpensefrom'] . ' Less Than: $' . $values['accruedexpenseto'];
-    }
-    elseif (!$values['accruedexpensefrom'] && $values['accruedexpenseto']) {
-        $form['filter']['accrued_expense'] = array('#markup' => '<div><strong>Accrued Expense:</strong> Less Than: $' . $values['accruedexpenseto'] . '</div>');
-        $user_criteria['Accrued Expense Less Than'] = $values['accruedexpenseto'];
-        $formatted_search_criteria['Accrued Expense'] = 'Less Than: $' . $values['accruedexpenseto'];
-    }
-    elseif ($values['accruedexpensefrom'] && !$values['accruedexpenseto']) {
-        $form['filter']['accrued_expense'] = array('#markup' => '<div><strong>Accrued Expense:</strong> Greater Than: $' . $values['accruedexpensefrom'] . '</div>');
-        $user_criteria['Accrued Expense Greater Than'] = $values['accruedexpensefrom'];
-        $formatted_search_criteria['Accrued Expense'] = 'Greater Than: $' . $values['accruedexpensefrom'];
     }
     $form['#attributes'] = array(
         'class' => array(
@@ -2139,102 +2139,14 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         '#markup' => '<div><strong>Type of File:</strong> ' . $form_state['step_information']['type']['stored_values']['format'] . '</div>',
     );
     $formatted_search_criteria['Type of File'] = $form_state['step_information']['type']['stored_values']['format'];
-    if ($values['df_contract_status']) {
-        $form['filter']['df_contract_status'] = array('#markup' => '<div><strong>Contract Status:</strong> ' . $values['df_contract_status'] . '</div>');
-        $user_criteria['Contract Status'] = $values['df_contract_status'];
-        $formatted_search_criteria['Contract Status'] = $values['df_contract_status'];
-    }
-    if ($values['contract_type']) {
-        if ($values['contract_type'] != 'No Contract Type Selected') {
-            $form['filter']['contract_type'] = array('#markup' => '<div><strong>Contract Type:</strong> ' . $values['contract_type'] . '</div>');
-            $user_criteria['Contract Type'] = $values['contract_type'];
-            $formatted_search_criteria['Contract Type'] = $values['contract_type'];
-        }
-    }
-    if ($values['contractno']) {
-        $form['filter']['contractno'] = array(
-            '#markup' => '<div><strong>Contract ID:</strong> ' . $values['contractno'] . '</div>',
-        );
-        $user_criteria['Contract ID'] = $values['contractno'];
-        $formatted_search_criteria[''] = null;
-    }
-    if ($values['entity_contract_number']) {
-        $form['filter']['entity_contract_number'] = array(
-            '#markup' => '<div><strong>Entity Contract #:</strong> ' . $values['entity_contract_number'] . '</div>',
-        );
-        $user_criteria['Entity Contract #'] = $values['entity_contract_number'];
-        $formatted_search_criteria['Entity Contract #'] = $values['entity_contract_number'];
-    }
-    if ($values['commodity_line']) {
-        $form['filter']['commodity_line'] = array(
-            '#markup' => '<div><strong>Commodity Line:</strong> ' . $values['commodity_line'] . '</div>',
-        );
-        $user_criteria['Commodity Line'] = $values['commodity_line'];
-        $formatted_search_criteria['Commodity Line'] = $values['commodity_line'];
-    }
-    if ($values['budget_name']) {
-        $form['filter']['budget_name'] = array(
-            '#markup' => '<div><strong>Budget Name:</strong> ' . $values['budget_name'] . '</div>',
-        );
-        $user_criteria['Budget Name'] = $values['budget_name'];
-        $formatted_search_criteria['Budget Name'] = $values['budget_name'];
-    }
-    if ($values['pin']) {
-        $form['filter']['pin'] = array(
-            '#markup' => '<div><strong>PIN:</strong> ' . $values['pin'] . '</div>',
-        );
-        $user_criteria['PIN'] = $values['pin'];
-        $formatted_search_criteria['PIN'] = $values['pin'];
-    }
-    if ($values['currentamtfrom'] && $values['currentamtto']) {
-        $form['filter']['current_amount'] = array('#markup' => '<div><strong>Current Amount:</strong> Greater Than: $' . $values['currentamtfrom'] . ' Less Than: $' . $values['currentamtto'] . '</div>');
-        $user_criteria['Current Amount Greater Than'] = $values['currentamtfrom'];
-        $user_criteria['Current Amount Less Than'] = $values['currentamtto'];
-        $formatted_search_criteria['Current Amount'] = 'Greater Than: $' . $values['currentamtfrom'] . ' Less Than: $' . $values['currentamtto'];
-    } elseif (!$values['currentamtfrom'] && $values['currentamtto']) {
-        $form['filter']['current_amount'] = array('#markup' => '<div><strong>Current Amount:</strong> Less Than: $' . $values['currentamtto'] . '</div>');
-        $user_criteria['Current Amount Less Than'] = $values['currentamtto'];
-        $formatted_search_criteria['Current Amount'] = 'Less Than: $' . $values['currentamtto'];
-    } elseif ($values['currentamtfrom'] && !$values['currentamtto']) {
-        $form['filter']['current_amount'] = array('#markup' => '<div><strong>Current Amount:</strong> Greater Than: $' . $values['currentamtfrom'] . '</div>');
-        $user_criteria['Current Amount Greater Than'] = $values['currentamtfrom'];
-        $formatted_search_criteria['Current Amount'] = 'Greater Than: $' . $values['currentamtfrom'];
-    }
-    if ($values['enddatefrom'] && $values['enddateto']) {
-        $form['filter']['end_date'] = array('#markup' => '<div><strong>End Date:</strong> Greater Than: ' . $values['enddatefrom'] . ' Less Than: ' . $values['enddateto'] . '</div>');
-        $user_criteria['End Date Greater Than'] = $values['enddatefrom'];
-        $user_criteria['End Date Less Than'] = $values['enddateto'];
-        $formatted_search_criteria['End Date'] = 'Greater Than: ' . $values['enddatefrom'] . ' Less Than: ' . $values['enddateto'];
-    } elseif (!$values['enddatefrom'] && $values['enddateto']) {
-        $form['filter']['end_date'] = array('#markup' => '<div><strong>End Date:</strong> Less Than: ' . $values['enddateto'] . '</div>');
-        $user_criteria['End Date Less Than'] = $values['enddateto'];
-        $formatted_search_criteria['End Date'] = 'Less Than: ' . $values['enddateto'];
-    } elseif ($values['enddatefrom'] && !$values['enddateto']) {
-        $form['filter']['end_date'] = array('#markup' => '<div><strong>End Date:</strong> Greater Than: ' . $values['enddatefrom'] . '</div>');
-        $user_criteria['End Date Greater Than'] = $values['enddatefrom'];
-        $formatted_search_criteria['End Date'] = 'Greater Than: ' . $values['enddatefrom'];
-    }
-    if ($values['category']) {
-        $form['filter']['category'] = array('#markup' => '<div><strong>Category:</strong> ' . $values['category'] . '</div>');
-        $user_criteria['Category'] = $values['category'];
-        $formatted_search_criteria['Category'] = $values['category'];
-    }
-    if ($values['purpose']) {
-        $form['filter']['purpose'] = array(
-            '#markup' => '<div><strong>Purpose:</strong> ' . $values['purpose'] . '</div>',
-        );
-        $user_criteria['Purpose'] = $values['purpose'];
-        $formatted_search_criteria['Purpose'] = $values['purpose'];
-    }
+
     $agency = $data_source == 'checkbook_oge' ? ($values['agency'] == 'Select One' ? 'All' : $values['agency']) : $values['agency'];
     switch ($data_source) {
         case 'checkbook_oge':
-            if ($values['agency']) {
-                $form['filter']['agency'] = array(
-                    '#markup' => '<div><strong>Other Government Entities:</strong> ' . $agency . '</div>',
-                );
-                $user_criteria['Other Government Entities'] = $values['agency'];
-                $formatted_search_criteria['Other Government Entities'] = $values['agency'];
+            if ($values['df_contract_status']) {
+                $form['filter']['df_contract_status'] = array('#markup' => '<div><strong>Contract Status:</strong> ' . $values['df_contract_status'] . '</div>');
+                $user_criteria['Contract Status'] = $values['df_contract_status'];
+                $formatted_search_criteria['Contract Status'] = $values['df_contract_status'];
             }
             if ($values['vendor']) {
                 $form['filter']['vendor'] = array(
@@ -2243,8 +2155,219 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
                 $user_criteria['Prime Vendor'] = $values['vendor'];
                 $formatted_search_criteria['Prime Vendor'] = $values['vendor'];
             }
+            if ($values['contract_type']) {
+                if ($values['contract_type'] != 'No Contract Type Selected') {
+                    $form['filter']['contract_type'] = array('#markup' => '<div><strong>Contract Type:</strong> ' . $values['contract_type'] . '</div>');
+                    $user_criteria['Contract Type'] = $values['contract_type'];
+                    $formatted_search_criteria['Contract Type'] = $values['contract_type'];
+                }
+            }
+            if ($values['contractno']) {
+                $form['filter']['contractno'] = array(
+                    '#markup' => '<div><strong>Contract ID:</strong> ' . $values['contractno'] . '</div>',
+                );
+                $user_criteria['Contract ID'] = $values['contractno'];
+                $formatted_search_criteria[''] = null;
+            }
+            if ($values['commodity_line']) {
+                $form['filter']['commodity_line'] = array(
+                    '#markup' => '<div><strong>Commodity Line:</strong> ' . $values['commodity_line'] . '</div>',
+                );
+                $user_criteria['Commodity Line'] = $values['commodity_line'];
+                $formatted_search_criteria['Commodity Line'] = $values['commodity_line'];
+            }
+            if ($values['entity_contract_number']) {
+                $form['filter']['entity_contract_number'] = array(
+                    '#markup' => '<div><strong>Entity Contract #:</strong> ' . $values['entity_contract_number'] . '</div>',
+                );
+                $user_criteria['Entity Contract #'] = $values['entity_contract_number'];
+                $formatted_search_criteria['Entity Contract #'] = $values['entity_contract_number'];
+            }
+            if ($values['budget_name']) {
+                $form['filter']['budget_name'] = array(
+                    '#markup' => '<div><strong>Budget Name:</strong> ' . $values['budget_name'] . '</div>',
+                );
+                $user_criteria['Budget Name'] = $values['budget_name'];
+                $formatted_search_criteria['Budget Name'] = $values['budget_name'];
+            }
+            if ($values['currentamtfrom'] && $values['currentamtto']) {
+                $form['filter']['current_amount'] = array('#markup' => '<div><strong>Current Amount:</strong> Greater Than: $' . $values['currentamtfrom'] . ' Less Than: $' . $values['currentamtto'] . '</div>');
+                $user_criteria['Current Amount Greater Than'] = $values['currentamtfrom'];
+                $user_criteria['Current Amount Less Than'] = $values['currentamtto'];
+                $formatted_search_criteria['Current Amount'] = 'Greater Than: $' . $values['currentamtfrom'] . ' Less Than: $' . $values['currentamtto'];
+            } elseif (!$values['currentamtfrom'] && $values['currentamtto']) {
+                $form['filter']['current_amount'] = array('#markup' => '<div><strong>Current Amount:</strong> Less Than: $' . $values['currentamtto'] . '</div>');
+                $user_criteria['Current Amount Less Than'] = $values['currentamtto'];
+                $formatted_search_criteria['Current Amount'] = 'Less Than: $' . $values['currentamtto'];
+            } elseif ($values['currentamtfrom'] && !$values['currentamtto']) {
+                $form['filter']['current_amount'] = array('#markup' => '<div><strong>Current Amount:</strong> Greater Than: $' . $values['currentamtfrom'] . '</div>');
+                $user_criteria['Current Amount Greater Than'] = $values['currentamtfrom'];
+                $formatted_search_criteria['Current Amount'] = 'Greater Than: $' . $values['currentamtfrom'];
+            }
+            if ($values['recdatefrom'] && $values['recdateto']) {
+                $form['filter']['received_date'] = array('#markup' => '<div><strong>Received Date:</strong> Greater Than: ' . $values['recdatefrom'] . ' Less Than: ' . $values['recdateto'] . '</div>');
+                $user_criteria['Received Date Greater Than'] = $values['recdatefrom'];
+                $user_criteria['Received Date Less Than'] = $values['recdateto'];
+                $formatted_search_criteria['Received Date'] = 'Greater Than: ' . $values['recdatefrom'] . ' Less Than: ' . $values['recdateto'];
+            } elseif (!$values['recdatefrom'] && $values['recdateto']) {
+                $form['filter']['received_date'] = array('#markup' => '<div><strong>Received Date:</strong> Less Than: ' . $values['recdateto'] . '</div>');
+                $user_criteria['Received Date Less Than'] = $values['recdateto'];
+                $formatted_search_criteria['Received Date'] = 'Less Than: ' . $values['recdateto'];
+            } elseif ($values['recdatefrom'] && !$values['recdateto']) {
+                $form['filter']['received_date'] = array('#markup' => '<div><strong>Received Date:</strong> Greater Than: ' . $values['recdatefrom'] . '</div>');
+                $user_criteria['Received Date Greater Than'] = $values['recdatefrom'];
+                $formatted_search_criteria['Received Date'] = 'Greater Than: ' . $values['recdatefrom'];
+            }
+            if ($values['agency']) {
+                $form['filter']['agency'] = array(
+                    '#markup' => '<div><strong>Other Government Entities:</strong> ' . $agency . '</div>',
+                );
+                $user_criteria['Other Government Entities'] = $values['agency'];
+                $formatted_search_criteria['Other Government Entities'] = $values['agency'];
+            }
+            if ($values['category']) {
+                $form['filter']['category'] = array('#markup' => '<div><strong>Category:</strong> ' . $values['category'] . '</div>');
+                $user_criteria['Category'] = $values['category'];
+                $formatted_search_criteria['Category'] = $values['category'];
+            }
+            if ($values['purpose']) {
+                $form['filter']['purpose'] = array(
+                    '#markup' => '<div><strong>Purpose:</strong> ' . $values['purpose'] . '</div>',
+                );
+                $user_criteria['Purpose'] = $values['purpose'];
+                $formatted_search_criteria['Purpose'] = $values['purpose'];
+            }
+            if ($values['pin']) {
+                $form['filter']['pin'] = array(
+                    '#markup' => '<div><strong>PIN:</strong> ' . $values['pin'] . '</div>',
+                );
+                $user_criteria['PIN'] = $values['pin'];
+                $formatted_search_criteria['PIN'] = $values['pin'];
+            }
+            if ($values['apt_pin']) {
+                $form['filter']['apt_pin'] = array(
+                    '#markup' => '<div><strong>APT PIN:</strong> ' . $values['apt_pin'] . '</div>',
+                );
+                $user_criteria['APT PIN'] = $values['apt_pin'];
+                $formatted_search_criteria['APT PIN'] = $values['apt_pin'];
+            }
+            if ($values['award_method']) {
+                if ($values['award_method'] != 'No Award Method Selected') {
+                    $form['filter']['award_method'] = array('#markup' => '<div><strong>Award Method:</strong> ' . $values['award_method'] . '</div>');
+                    $user_criteria['Award Method'] = $values['award_method'];
+                    $formatted_search_criteria['Award Method'] = $values['award_method'];
+                }
+            }
+            if ($values['startdatefrom'] && $values['startdateto']) {
+                $form['filter']['start_date'] = array('#markup' => '<div><strong>Start Date:</strong> Greater Than: ' . $values['startdatefrom'] . ' Less Than: ' . $values['startdateto'] . '</div>');
+                $user_criteria['Start Date Greater Than'] = $values['startdatefrom'];
+                $user_criteria['Start Date Less Than'] = $values['startdateto'];
+                $formatted_search_criteria['Start Date'] = 'Greater Than: ' . $values['startdatefrom'] . ' Less Than: ' . $values['startdateto'];
+            } elseif (!$values['startdatefrom'] && $values['startdateto']) {
+                $form['filter']['start_date'] = array('#markup' => '<div><strong>Start Date:</strong> Less Than: ' . $values['startdateto'] . '</div>');
+                $user_criteria['Start Date Less Than'] = $values['startdateto'];
+                $formatted_search_criteria['Start Date'] = 'Less Than: ' . $values['startdateto'];
+            } elseif ($values['startdatefrom'] && !$values['startdateto']) {
+                $form['filter']['start_date'] = array('#markup' => '<div><strong>Start Date:</strong> Greater Than: ' . $values['startdatefrom'] . '</div>');
+                $user_criteria['Start Date Greater Than'] = $values['startdatefrom'];
+                $formatted_search_criteria['Start Date'] = 'Greater Than: ' . $values['startdatefrom'];
+            }
+            if ($values['enddatefrom'] && $values['enddateto']) {
+                $form['filter']['end_date'] = array('#markup' => '<div><strong>End Date:</strong> Greater Than: ' . $values['enddatefrom'] . ' Less Than: ' . $values['enddateto'] . '</div>');
+                $user_criteria['End Date Greater Than'] = $values['enddatefrom'];
+                $user_criteria['End Date Less Than'] = $values['enddateto'];
+                $formatted_search_criteria['End Date'] = 'Greater Than: ' . $values['enddatefrom'] . ' Less Than: ' . $values['enddateto'];
+            } elseif (!$values['enddatefrom'] && $values['enddateto']) {
+                $form['filter']['end_date'] = array('#markup' => '<div><strong>End Date:</strong> Less Than: ' . $values['enddateto'] . '</div>');
+                $user_criteria['End Date Less Than'] = $values['enddateto'];
+                $formatted_search_criteria['End Date'] = 'Less Than: ' . $values['enddateto'];
+            } elseif ($values['enddatefrom'] && !$values['enddateto']) {
+                $form['filter']['end_date'] = array('#markup' => '<div><strong>End Date:</strong> Greater Than: ' . $values['enddatefrom'] . '</div>');
+                $user_criteria['End Date Greater Than'] = $values['enddatefrom'];
+                $formatted_search_criteria['End Date'] = 'Greater Than: ' . $values['enddatefrom'];
+            }
+            if ($values['year']) {
+                if($values['year'] == 'ALL') {
+                    $form['filter']['year'] = array(
+                        '#markup' => '<div><strong>Year:</strong> All Years</div>',
+                    );
+                    $formatted_search_criteria['Year'] = 'All Years';
+                }
+                else {
+                    $form['filter']['year'] = array(
+                        '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
+                    );
+                    $formatted_search_criteria['Year'] = $values['year'];
+                }
+            }
             break;
         default:
+            if ($values['df_contract_status']) {
+                $form['filter']['df_contract_status'] = array('#markup' => '<div><strong>Contract Status:</strong> ' . $values['df_contract_status'] . '</div>');
+                $user_criteria['Contract Status'] = $values['df_contract_status'];
+                $formatted_search_criteria['Contract Status'] = $values['df_contract_status'];
+            }
+            if ($values['vendor']) {
+                $form['filter']['vendor'] = array(
+                    '#markup' => '<div><strong>Vendor:</strong> ' . $values['vendor'] . '</div>',
+                );
+                $user_criteria['Vendor'] = $values['vendor'];
+                $formatted_search_criteria['Vendor'] = $values['vendor'];
+            }
+            if ($values['mwbe_category']) {
+                $form['filter']['mwbe_category'] = array('#markup' => '<div><strong>M/WBE Category:</strong> ' . MappingUtil::getCurrenEhtnicityName(explode('~',$values['mwbe_category'])) . '</div>');
+                $user_criteria['M/WBE Category'] = $values['mwbe_category'];
+                $formatted_search_criteria['M/WBE Category'] = MappingUtil::getCurrenEhtnicityName(explode('~',$values['mwbe_category']));
+            }
+            if ($values['contract_type']) {
+                if ($values['contract_type'] != 'No Contract Type Selected') {
+                    $form['filter']['contract_type'] = array('#markup' => '<div><strong>Contract Type:</strong> ' . $values['contract_type'] . '</div>');
+                    $user_criteria['Contract Type'] = $values['contract_type'];
+                    $formatted_search_criteria['Contract Type'] = $values['contract_type'];
+                }
+            }
+            if ($values['contractno']) {
+                $form['filter']['contractno'] = array(
+                    '#markup' => '<div><strong>Contract ID:</strong> ' . $values['contractno'] . '</div>',
+                );
+                $user_criteria['Contract ID'] = $values['contractno'];
+                $formatted_search_criteria[''] = null;
+            }
+            if ($values['pin']) {
+                $form['filter']['pin'] = array(
+                    '#markup' => '<div><strong>PIN:</strong> ' . $values['pin'] . '</div>',
+                );
+                $user_criteria['PIN'] = $values['pin'];
+                $formatted_search_criteria['PIN'] = $values['pin'];
+            }
+            if ($values['currentamtfrom'] && $values['currentamtto']) {
+                $form['filter']['current_amount'] = array('#markup' => '<div><strong>Current Amount:</strong> Greater Than: $' . $values['currentamtfrom'] . ' Less Than: $' . $values['currentamtto'] . '</div>');
+                $user_criteria['Current Amount Greater Than'] = $values['currentamtfrom'];
+                $user_criteria['Current Amount Less Than'] = $values['currentamtto'];
+                $formatted_search_criteria['Current Amount'] = 'Greater Than: $' . $values['currentamtfrom'] . ' Less Than: $' . $values['currentamtto'];
+            } elseif (!$values['currentamtfrom'] && $values['currentamtto']) {
+                $form['filter']['current_amount'] = array('#markup' => '<div><strong>Current Amount:</strong> Less Than: $' . $values['currentamtto'] . '</div>');
+                $user_criteria['Current Amount Less Than'] = $values['currentamtto'];
+                $formatted_search_criteria['Current Amount'] = 'Less Than: $' . $values['currentamtto'];
+            } elseif ($values['currentamtfrom'] && !$values['currentamtto']) {
+                $form['filter']['current_amount'] = array('#markup' => '<div><strong>Current Amount:</strong> Greater Than: $' . $values['currentamtfrom'] . '</div>');
+                $user_criteria['Current Amount Greater Than'] = $values['currentamtfrom'];
+                $formatted_search_criteria['Current Amount'] = 'Greater Than: $' . $values['currentamtfrom'];
+            }
+            if ($values['enddatefrom'] && $values['enddateto']) {
+                $form['filter']['end_date'] = array('#markup' => '<div><strong>End Date:</strong> Greater Than: ' . $values['enddatefrom'] . ' Less Than: ' . $values['enddateto'] . '</div>');
+                $user_criteria['End Date Greater Than'] = $values['enddatefrom'];
+                $user_criteria['End Date Less Than'] = $values['enddateto'];
+                $formatted_search_criteria['End Date'] = 'Greater Than: ' . $values['enddatefrom'] . ' Less Than: ' . $values['enddateto'];
+            } elseif (!$values['enddatefrom'] && $values['enddateto']) {
+                $form['filter']['end_date'] = array('#markup' => '<div><strong>End Date:</strong> Less Than: ' . $values['enddateto'] . '</div>');
+                $user_criteria['End Date Less Than'] = $values['enddateto'];
+                $formatted_search_criteria['End Date'] = 'Less Than: ' . $values['enddateto'];
+            } elseif ($values['enddatefrom'] && !$values['enddateto']) {
+                $form['filter']['end_date'] = array('#markup' => '<div><strong>End Date:</strong> Greater Than: ' . $values['enddatefrom'] . '</div>');
+                $user_criteria['End Date Greater Than'] = $values['enddatefrom'];
+                $formatted_search_criteria['End Date'] = 'Greater Than: ' . $values['enddatefrom'];
+            }
             if ($values['regdatefrom'] && $values['regdateto']) {
                 $form['filter']['regdate'] = array('#markup' => '<div><strong>Registered Date:</strong> Greater Than: ' . $values['regdatefrom'] . ' Less Than: ' . $values['regdateto'] . '</div>');
                 $user_criteria['Registered Date Greater Than'] = $values['regdatefrom'];
@@ -2259,24 +2382,24 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
                 $user_criteria['Registered Date Greater Than'] = $values['regdatefrom'];
                 $formatted_search_criteria['Registered Date'] = 'Greater Than: $' . $values['regdatefrom'];
             }
+            if ($values['category']) {
+                $form['filter']['category'] = array('#markup' => '<div><strong>Category:</strong> ' . $values['category'] . '</div>');
+                $user_criteria['Category'] = $values['category'];
+                $formatted_search_criteria['Category'] = $values['category'];
+            }
+            if ($values['purpose']) {
+                $form['filter']['purpose'] = array(
+                    '#markup' => '<div><strong>Purpose:</strong> ' . $values['purpose'] . '</div>',
+                );
+                $user_criteria['Purpose'] = $values['purpose'];
+                $formatted_search_criteria['Purpose'] = $values['purpose'];
+            }
             if ($values['agency']) {
                 $form['filter']['agency'] = array(
                     '#markup' => '<div><strong>Agency:</strong> ' . $agency . '</div>',
                 );
                 $user_criteria['Agency'] = $values['agency'];
                 $formatted_search_criteria['Agency'] = $values['agency'];
-            }
-            if ($values['vendor']) {
-                $form['filter']['vendor'] = array(
-                    '#markup' => '<div><strong>Vendor:</strong> ' . $values['vendor'] . '</div>',
-                );
-                $user_criteria['Vendor'] = $values['vendor'];
-                $formatted_search_criteria['Vendor'] = $values['vendor'];
-            }
-            if ($values['mwbe_category']) {
-                $form['filter']['mwbe_category'] = array('#markup' => '<div><strong>M/WBE Category:</strong> ' . MappingUtil::getCurrenEhtnicityName(explode('~',$values['mwbe_category'])) . '</div>');
-                $user_criteria['M/WBE Category'] = $values['mwbe_category'];
-                $formatted_search_criteria['M/WBE Category'] = MappingUtil::getCurrenEhtnicityName(explode('~',$values['mwbe_category']));
             }
             if ($values['industry']) {
                 preg_match("/.*?(\\[.*?\\])/is", $values['industry'], $matches);
@@ -2286,63 +2409,63 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
                 $user_criteria['Industry'] = $industry_type_id;
                 $formatted_search_criteria['Industry'] = $industry_type_name;
             }
+            if ($values['apt_pin']) {
+                $form['filter']['apt_pin'] = array(
+                    '#markup' => '<div><strong>APT PIN:</strong> ' . $values['apt_pin'] . '</div>',
+                );
+                $user_criteria['APT PIN'] = $values['apt_pin'];
+                $formatted_search_criteria['APT PIN'] = $values['apt_pin'];
+            }
+            if ($values['award_method']) {
+                if ($values['award_method'] != 'No Award Method Selected') {
+                    $form['filter']['award_method'] = array('#markup' => '<div><strong>Award Method:</strong> ' . $values['award_method'] . '</div>');
+                    $user_criteria['Award Method'] = $values['award_method'];
+                    $formatted_search_criteria['Award Method'] = $values['award_method'];
+                }
+            }
+            if ($values['startdatefrom'] && $values['startdateto']) {
+                $form['filter']['start_date'] = array('#markup' => '<div><strong>Start Date:</strong> Greater Than: ' . $values['startdatefrom'] . ' Less Than: ' . $values['startdateto'] . '</div>');
+                $user_criteria['Start Date Greater Than'] = $values['startdatefrom'];
+                $user_criteria['Start Date Less Than'] = $values['startdateto'];
+                $formatted_search_criteria['Start Date'] = 'Greater Than: ' . $values['startdatefrom'] . ' Less Than: ' . $values['startdateto'];
+            } elseif (!$values['startdatefrom'] && $values['startdateto']) {
+                $form['filter']['start_date'] = array('#markup' => '<div><strong>Start Date:</strong> Less Than: ' . $values['startdateto'] . '</div>');
+                $user_criteria['Start Date Less Than'] = $values['startdateto'];
+                $formatted_search_criteria['Start Date'] = 'Less Than: ' . $values['startdateto'];
+            } elseif ($values['startdatefrom'] && !$values['startdateto']) {
+                $form['filter']['start_date'] = array('#markup' => '<div><strong>Start Date:</strong> Greater Than: ' . $values['startdatefrom'] . '</div>');
+                $user_criteria['Start Date Greater Than'] = $values['startdatefrom'];
+                $formatted_search_criteria['Start Date'] = 'Greater Than: ' . $values['startdatefrom'];
+            }
+            if ($values['recdatefrom'] && $values['recdateto']) {
+                $form['filter']['received_date'] = array('#markup' => '<div><strong>Received Date:</strong> Greater Than: ' . $values['recdatefrom'] . ' Less Than: ' . $values['recdateto'] . '</div>');
+                $user_criteria['Received Date Greater Than'] = $values['recdatefrom'];
+                $user_criteria['Received Date Less Than'] = $values['recdateto'];
+                $formatted_search_criteria['Received Date'] = 'Greater Than: ' . $values['recdatefrom'] . ' Less Than: ' . $values['recdateto'];
+            } elseif (!$values['recdatefrom'] && $values['recdateto']) {
+                $form['filter']['received_date'] = array('#markup' => '<div><strong>Received Date:</strong> Less Than: ' . $values['recdateto'] . '</div>');
+                $user_criteria['Received Date Less Than'] = $values['recdateto'];
+                $formatted_search_criteria['Received Date'] = 'Less Than: ' . $values['recdateto'];
+            } elseif ($values['recdatefrom'] && !$values['recdateto']) {
+                $form['filter']['received_date'] = array('#markup' => '<div><strong>Received Date:</strong> Greater Than: ' . $values['recdatefrom'] . '</div>');
+                $user_criteria['Received Date Greater Than'] = $values['recdatefrom'];
+                $formatted_search_criteria['Received Date'] = 'Greater Than: ' . $values['recdatefrom'];
+            }
+            if ($values['year']) {
+                if($values['year'] == 'ALL') {
+                    $form['filter']['year'] = array(
+                        '#markup' => '<div><strong>Year:</strong> All Years</div>',
+                    );
+                    $formatted_search_criteria['Year'] = 'All Years';
+                }
+                else {
+                    $form['filter']['year'] = array(
+                        '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
+                    );
+                    $formatted_search_criteria['Year'] = $values['year'];
+                }
+            }
             break;
-    }
-    if ($values['apt_pin']) {
-        $form['filter']['apt_pin'] = array(
-            '#markup' => '<div><strong>APT PIN:</strong> ' . $values['apt_pin'] . '</div>',
-        );
-        $user_criteria['APT PIN'] = $values['apt_pin'];
-        $formatted_search_criteria['APT PIN'] = $values['apt_pin'];
-    }
-    if ($values['award_method']) {
-        if ($values['award_method'] != 'No Award Method Selected') {
-            $form['filter']['award_method'] = array('#markup' => '<div><strong>Award Method:</strong> ' . $values['award_method'] . '</div>');
-            $user_criteria['Award Method'] = $values['award_method'];
-            $formatted_search_criteria['Award Method'] = $values['award_method'];
-        }
-    }
-    if ($values['startdatefrom'] && $values['startdateto']) {
-        $form['filter']['start_date'] = array('#markup' => '<div><strong>Start Date:</strong> Greater Than: ' . $values['startdatefrom'] . ' Less Than: ' . $values['startdateto'] . '</div>');
-        $user_criteria['Start Date Greater Than'] = $values['startdatefrom'];
-        $user_criteria['Start Date Less Than'] = $values['startdateto'];
-        $formatted_search_criteria['Start Date'] = 'Greater Than: ' . $values['startdatefrom'] . ' Less Than: ' . $values['startdateto'];
-    } elseif (!$values['startdatefrom'] && $values['startdateto']) {
-        $form['filter']['start_date'] = array('#markup' => '<div><strong>Start Date:</strong> Less Than: ' . $values['startdateto'] . '</div>');
-        $user_criteria['Start Date Less Than'] = $values['startdateto'];
-        $formatted_search_criteria['Start Date'] = 'Less Than: ' . $values['startdateto'];
-    } elseif ($values['startdatefrom'] && !$values['startdateto']) {
-        $form['filter']['start_date'] = array('#markup' => '<div><strong>Start Date:</strong> Greater Than: ' . $values['startdatefrom'] . '</div>');
-        $user_criteria['Start Date Greater Than'] = $values['startdatefrom'];
-        $formatted_search_criteria['Start Date'] = 'Greater Than: ' . $values['startdatefrom'];
-    }
-    if ($values['recdatefrom'] && $values['recdateto']) {
-        $form['filter']['received_date'] = array('#markup' => '<div><strong>Received Date:</strong> Greater Than: ' . $values['recdatefrom'] . ' Less Than: ' . $values['recdateto'] . '</div>');
-        $user_criteria['Received Date Greater Than'] = $values['recdatefrom'];
-        $user_criteria['Received Date Less Than'] = $values['recdateto'];
-        $formatted_search_criteria['Received Date'] = 'Greater Than: ' . $values['recdatefrom'] . ' Less Than: ' . $values['recdateto'];
-    } elseif (!$values['recdatefrom'] && $values['recdateto']) {
-        $form['filter']['received_date'] = array('#markup' => '<div><strong>Received Date:</strong> Less Than: ' . $values['recdateto'] . '</div>');
-        $user_criteria['Received Date Less Than'] = $values['recdateto'];
-        $formatted_search_criteria['Received Date'] = 'Less Than: ' . $values['recdateto'];
-    } elseif ($values['recdatefrom'] && !$values['recdateto']) {
-        $form['filter']['received_date'] = array('#markup' => '<div><strong>Received Date:</strong> Greater Than: ' . $values['recdatefrom'] . '</div>');
-        $user_criteria['Received Date Greater Than'] = $values['recdatefrom'];
-        $formatted_search_criteria['Received Date'] = 'Greater Than: ' . $values['recdatefrom'];
-    }
-    if ($values['year']) {
-        if($values['year'] == 'ALL') {
-            $form['filter']['year'] = array(
-                '#markup' => '<div><strong>Year:</strong> All Years</div>',
-            );
-            $formatted_search_criteria['Year'] = 'All Years';
-        }
-        else {
-            $form['filter']['year'] = array(
-                '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
-            );
-            $formatted_search_criteria['Year'] = $values['year'];
-        }
     }
 
     $user_criteria['Formatted'] = $formatted_search_criteria;
@@ -3091,27 +3214,6 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state) {
         '#value' => $_POST['title_exact'],
         '#type' => 'hidden'
     );
-    if (startsWith($values['year'], 'F')) {
-        $form['filter']['year'] = array(
-            '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
-        );
-        $user_criteria['Fiscal Year'] = $values['year'];
-        $formatted_search_criteria['Year'] = $values['year'];
-    }
-    elseif (startsWith($values['year'], 'C')) {
-        $form['filter']['year'] = array(
-            '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
-        );
-        $user_criteria['Calendar Year'] = $values['year'];
-        $formatted_search_criteria['Year'] = $values['year'];
-    }
-    if ($values['agency']) {
-        $form['filter']['agency'] = array(
-            '#markup' => '<div><strong>Agency:</strong> ' . $values['agency'] . '</div>',
-        );
-        $user_criteria['Agency'] = $values['agency'];
-        $formatted_search_criteria['Agency'] = $values['agency'];
-    }
     if ($values['title']) {
         $form['filter']['title'] = array(
             '#markup' => '<div><strong>Title:</strong> ' . $values['title'] . '</div>',
@@ -3119,44 +3221,12 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state) {
         $user_criteria['Title'] = $values['title'];
         $formatted_search_criteria['Title'] = $values['title'];
     }
-    if ($values['payfrequency']) {
-        $form['filter']['payfrequency'] = array(
-            '#markup' => '<div><strong>Pay Frequency:</strong> ' . $values['payfrequency'] . '</div>',
+    if ($values['agency']) {
+        $form['filter']['agency'] = array(
+            '#markup' => '<div><strong>Agency:</strong> ' . $values['agency'] . '</div>',
         );
-        $user_criteria['Pay Frequency'] = $values['payfrequency'];
-        $formatted_search_criteria['Pay Frequency'] = $values['payfrequency'];
-    }
-    if ($values['basepayfrom'] && $values['basepayto']) {
-        $form['filter']['base_pay'] = array('#markup' => '<div><strong>Base Pay:</strong> Greater Than: $' . $values['basepayfrom'] . ' Less Than: $' . $values['basepayto'] . '</div>');
-        $user_criteria['Base Pay Greater Than'] = $values['basepayfrom'];
-        $user_criteria['Base Pay Less Than'] = $values['basepayto'];
-        $formatted_search_criteria['Base Pay'] = 'Greater Than: $' . $values['basepayfrom'] . ' Less Than: $' . $values['basepayto'];
-    }
-    elseif (!$values['basepayfrom'] && $values['basepayto']) {
-        $form['filter']['base_pay'] = array('#markup' => '<div><strong>Base Pay:</strong> Less Than: $' . $values['basepayto'] . '</div>');
-        $user_criteria['Base Pay Less Than'] = $values['basepayto'];
-        $formatted_search_criteria['Base Pay'] = 'Less Than: $' . $values['basepayto'];
-    }
-    elseif ($values['basepayfrom'] && !$values['basepayto']) {
-        $form['filter']['base_pay'] = array('#markup' => '<div><strong>Base Pay:</strong> Greater Than: $' . $values['basepayfrom'] . '</div>');
-        $user_criteria['Base Pay Greater Than'] = $values['basepayfrom'];
-        $formatted_search_criteria['Base Pay'] = 'Greater Than: $' . $values['basepayfrom'];
-    }
-    if ($values['overtimefrom'] && $values['overtimeto']) {
-        $form['filter']['overtime_pay'] = array('#markup' => '<div><strong>Overtime Payments:</strong> Greater Than: $' . $values['overtimefrom'] . ' Less Than: $' . $values['overtimeto'] . '</div>');
-        $user_criteria['Overtime Pay Greater Than'] = $values['overtimefrom'];
-        $user_criteria['Overtime Pay Less Than'] = $values['overtimeto'];
-        $formatted_search_criteria['Overtime Payments'] = 'Greater Than: $' . $values['overtimefrom'] . ' Less Than: $' . $values['overtimeto'];
-    }
-    elseif (!$values['overtimefrom'] && $values['overtimeto']) {
-        $form['filter']['overtime_pay'] = array('#markup' => '<div><strong>Overtime Payments:</strong> Less Than: $' . $values['overtimeto'] . '</div>');
-        $user_criteria['Overtime Pay Less Than'] = $values['overtimeto'];
-        $formatted_search_criteria['Overtime Payments'] = 'Less Than: $' . $values['overtimeto'];
-    }
-    elseif ($values['overtimefrom'] && !$values['overtimeto']) {
-        $form['filter']['overtime_pay'] = array('#markup' => '<div><strong>Overtime Payments:</strong> Greater Than: $' . $values['overtimefrom'] . '</div>');
-        $user_criteria['Overtime Pay Greater Than'] = $values['overtimefrom'];
-        $formatted_search_criteria['Overtime Payments'] = 'Greater Than: $' . $values['overtimefrom'];
+        $user_criteria['Agency'] = $values['agency'];
+        $formatted_search_criteria['Agency'] = $values['agency'];
     }
     if ($values['otherfrom'] && $values['otherto']) {
         $form['filter']['other_pay'] = array('#markup' => '<div><strong>Other Payments:</strong> Greater Than: $' . $values['otherfrom'] . ' Less Than: $' . $values['otherto'] . '</div>');
@@ -3189,38 +3259,6 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state) {
         $form['filter']['gross_pay'] = array('#markup' => '<div><strong>Gross Pay:</strong> Greater Than: $' . $values['grossfrom'] . '</div>');
         $user_criteria['Gross Pay Greater Than'] = $values['grossfrom'];
         $formatted_search_criteria['Gross Pay'] = 'Greater Than: $' . $values['grossfrom'];
-    }
-    if ($values['payratefrom'] && $values['payrateto']) {
-        $form['filter']['pay_rate'] = array('#markup' => '<div><strong>Pay Rate:</strong> Greater Than: $' . $values['payratefrom'] . ' Less Than: $' . $values['payrateto'] . '</div>');
-        $user_criteria['Pay Rate Greater Than'] = $values['payratefrom'];
-        $user_criteria['Pay Rate Less Than'] = $values['payrateto'];
-        $formatted_search_criteria['Pay Rate'] = 'Greater Than: $' . $values['payratefrom'] . ' Less Than: $' . $values['payrateto'];
-    }
-    elseif (!$values['payratefrom'] && $values['payrateto']) {
-        $form['filter']['pay_rate'] = array('#markup' => '<div><strong>Pay Rate:</strong> Less Than: $' . $values['payrateto'] . '</div>');
-        $user_criteria['Pay Rate Less Than'] = $values['payrateto'];
-        $formatted_search_criteria['Pay Rate'] = 'Less Than: $' . $values['payrateto'];
-    }
-    elseif ($values['payratefrom'] && !$values['payrateto']) {
-        $form['filter']['pay_rate'] = array('#markup' => '<div><strong>Pay Rate:</strong> Greater Than: $' . $values['payratefrom'] . '</div>');
-        $user_criteria['Pay Rate Greater Than'] = $values['payratefrom'];
-        $formatted_search_criteria['Pay Rate'] = 'Greater Than: $' . $values['payratefrom'];
-    }
-    if ($values['paydatefrom'] && $values['paydateto']) {
-        $form['filter']['pay_date'] = array('#markup' => '<div><strong>Pay Date:</strong> After: ' . $values['paydatefrom'] . ' Before: ' . $values['paydateto'] . '</div>');
-        $user_criteria['Pay Date After'] = $values['paydatefrom'];
-        $user_criteria['Pay Date Before'] = $values['paydateto'];
-        $formatted_search_criteria['Pay Date'] = 'After: ' . $values['paydatefrom'] . ' Before: ' . $values['paydateto'];
-    }
-    elseif (!$values['paydatefrom'] && $values['paydateto']) {
-        $form['filter']['pay_date'] = array('#markup' => '<div><strong>Pay Date:</strong> Before: ' . $values['paydateto'] . '</div>');
-        $user_criteria['Pay Date Before'] = $values['paydateto'];
-        $formatted_search_criteria['Pay Date'] = 'Before: ' . $values['paydateto'];
-    }
-    elseif ($values['paydatefrom'] && !$values['payrateto']) {
-        $form['filter']['pay_date'] = array('#markup' => '<div><strong>Pay Date:</strong> After: ' . $values['paydatefrom'] . '</div>');
-        $user_criteria['Pay Date After'] = $values['paydatefrom'];
-        $formatted_search_criteria['Pay Date'] = 'Pay Date:</strong> After: ' . $values['paydatefrom'];
     }
     if ($values['totalgrossfrom'] && $values['totalgrossto']) {
         $form['filter']['total_gross'] = array('#markup' => '<div><strong>Gross Pay YTD:</strong> Greater Than: $' . $values['totalgrossfrom'] . ' Less Than: $' . $values['totalgrossto'] . '</div>');
@@ -3259,6 +3297,92 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state) {
         $user_criteria['Amount Greater Than'] = $values['salaryfrom'];
         $formatted_search_criteria['Amount'] = 'Greater Than: $' . $values['salaryfrom'];
     }
+    if ($values['basepayfrom'] && $values['basepayto']) {
+        $form['filter']['base_pay'] = array('#markup' => '<div><strong>Base Pay:</strong> Greater Than: $' . $values['basepayfrom'] . ' Less Than: $' . $values['basepayto'] . '</div>');
+        $user_criteria['Base Pay Greater Than'] = $values['basepayfrom'];
+        $user_criteria['Base Pay Less Than'] = $values['basepayto'];
+        $formatted_search_criteria['Base Pay'] = 'Greater Than: $' . $values['basepayfrom'] . ' Less Than: $' . $values['basepayto'];
+    }
+    elseif (!$values['basepayfrom'] && $values['basepayto']) {
+        $form['filter']['base_pay'] = array('#markup' => '<div><strong>Base Pay:</strong> Less Than: $' . $values['basepayto'] . '</div>');
+        $user_criteria['Base Pay Less Than'] = $values['basepayto'];
+        $formatted_search_criteria['Base Pay'] = 'Less Than: $' . $values['basepayto'];
+    }
+    elseif ($values['basepayfrom'] && !$values['basepayto']) {
+        $form['filter']['base_pay'] = array('#markup' => '<div><strong>Base Pay:</strong> Greater Than: $' . $values['basepayfrom'] . '</div>');
+        $user_criteria['Base Pay Greater Than'] = $values['basepayfrom'];
+        $formatted_search_criteria['Base Pay'] = 'Greater Than: $' . $values['basepayfrom'];
+    }
+    if ($values['overtimefrom'] && $values['overtimeto']) {
+        $form['filter']['overtime_pay'] = array('#markup' => '<div><strong>Overtime Payments:</strong> Greater Than: $' . $values['overtimefrom'] . ' Less Than: $' . $values['overtimeto'] . '</div>');
+        $user_criteria['Overtime Pay Greater Than'] = $values['overtimefrom'];
+        $user_criteria['Overtime Pay Less Than'] = $values['overtimeto'];
+        $formatted_search_criteria['Overtime Payments'] = 'Greater Than: $' . $values['overtimefrom'] . ' Less Than: $' . $values['overtimeto'];
+    }
+    elseif (!$values['overtimefrom'] && $values['overtimeto']) {
+        $form['filter']['overtime_pay'] = array('#markup' => '<div><strong>Overtime Payments:</strong> Less Than: $' . $values['overtimeto'] . '</div>');
+        $user_criteria['Overtime Pay Less Than'] = $values['overtimeto'];
+        $formatted_search_criteria['Overtime Payments'] = 'Less Than: $' . $values['overtimeto'];
+    }
+    elseif ($values['overtimefrom'] && !$values['overtimeto']) {
+        $form['filter']['overtime_pay'] = array('#markup' => '<div><strong>Overtime Payments:</strong> Greater Than: $' . $values['overtimefrom'] . '</div>');
+        $user_criteria['Overtime Pay Greater Than'] = $values['overtimefrom'];
+        $formatted_search_criteria['Overtime Payments'] = 'Greater Than: $' . $values['overtimefrom'];
+    }
+    if ($values['payfrequency']) {
+        $form['filter']['payfrequency'] = array(
+            '#markup' => '<div><strong>Pay Frequency:</strong> ' . $values['payfrequency'] . '</div>',
+        );
+        $user_criteria['Pay Frequency'] = $values['payfrequency'];
+        $formatted_search_criteria['Pay Frequency'] = $values['payfrequency'];
+    }
+    if (startsWith($values['year'], 'F')) {
+        $form['filter']['year'] = array(
+            '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
+        );
+        $user_criteria['Fiscal Year'] = $values['year'];
+        $formatted_search_criteria['Year'] = $values['year'];
+    }
+    elseif (startsWith($values['year'], 'C')) {
+        $form['filter']['year'] = array(
+            '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
+        );
+        $user_criteria['Calendar Year'] = $values['year'];
+        $formatted_search_criteria['Year'] = $values['year'];
+    }
+    if ($values['paydatefrom'] && $values['paydateto']) {
+        $form['filter']['pay_date'] = array('#markup' => '<div><strong>Pay Date:</strong> After: ' . $values['paydatefrom'] . ' Before: ' . $values['paydateto'] . '</div>');
+        $user_criteria['Pay Date After'] = $values['paydatefrom'];
+        $user_criteria['Pay Date Before'] = $values['paydateto'];
+        $formatted_search_criteria['Pay Date'] = 'After: ' . $values['paydatefrom'] . ' Before: ' . $values['paydateto'];
+    }
+    elseif (!$values['paydatefrom'] && $values['paydateto']) {
+        $form['filter']['pay_date'] = array('#markup' => '<div><strong>Pay Date:</strong> Before: ' . $values['paydateto'] . '</div>');
+        $user_criteria['Pay Date Before'] = $values['paydateto'];
+        $formatted_search_criteria['Pay Date'] = 'Before: ' . $values['paydateto'];
+    }
+    elseif ($values['paydatefrom'] && !$values['payrateto']) {
+        $form['filter']['pay_date'] = array('#markup' => '<div><strong>Pay Date:</strong> After: ' . $values['paydatefrom'] . '</div>');
+        $user_criteria['Pay Date After'] = $values['paydatefrom'];
+        $formatted_search_criteria['Pay Date'] = 'Pay Date:</strong> After: ' . $values['paydatefrom'];
+    }
+    if ($values['payratefrom'] && $values['payrateto']) {
+        $form['filter']['pay_rate'] = array('#markup' => '<div><strong>Pay Rate:</strong> Greater Than: $' . $values['payratefrom'] . ' Less Than: $' . $values['payrateto'] . '</div>');
+        $user_criteria['Pay Rate Greater Than'] = $values['payratefrom'];
+        $user_criteria['Pay Rate Less Than'] = $values['payrateto'];
+        $formatted_search_criteria['Pay Rate'] = 'Greater Than: $' . $values['payratefrom'] . ' Less Than: $' . $values['payrateto'];
+    }
+    elseif (!$values['payratefrom'] && $values['payrateto']) {
+        $form['filter']['pay_rate'] = array('#markup' => '<div><strong>Pay Rate:</strong> Less Than: $' . $values['payrateto'] . '</div>');
+        $user_criteria['Pay Rate Less Than'] = $values['payrateto'];
+        $formatted_search_criteria['Pay Rate'] = 'Less Than: $' . $values['payrateto'];
+    }
+    elseif ($values['payratefrom'] && !$values['payrateto']) {
+        $form['filter']['pay_rate'] = array('#markup' => '<div><strong>Pay Rate:</strong> Greater Than: $' . $values['payratefrom'] . '</div>');
+        $user_criteria['Pay Rate Greater Than'] = $values['payratefrom'];
+        $formatted_search_criteria['Pay Rate'] = 'Greater Than: $' . $values['payratefrom'];
+    }
+
     $user_criteria['Formatted'] = $formatted_search_criteria;
     $criteria = checkbook_datafeeds_process_payroll_values($form, $form_state);
     $form_state['step_information']['confirmation']['stored_values']['criteria'] = $criteria;
@@ -3793,12 +3917,12 @@ function checkbook_datafeeds_revenue_confirmation($form, &$form_state) {
         '#markup' => '<div><strong>Type of File:</strong> ' . $form_state['step_information']['type']['stored_values']['format'] . '</div>',
     );
     $formatted_search_criteria['Type of File'] = $form_state['step_information']['type']['stored_values']['format'];
-    if ($values['fund_class']) {
-        $form['filter']['fund_class'] = array(
-            '#markup' => '<div><strong>Fund Class:</strong> ' . $values['fund_class'] . '</div>',
+    if ($values['budget_fiscal_year']) {
+        $form['filter']['budget_fiscal_year'] = array(
+            '#markup' => '<div><strong>Budget Fiscal Year:</strong> ' . $values['budget_fiscal_year'] . '</div>',
         );
-        $user_criteria['Fund Class'] = $values['fund_class'];
-        $formatted_search_criteria['Fund Class'] = $values['fund_class'];
+        $user_criteria['Budget Fiscal Year'] = $values['budget_fiscal_year'];
+        $formatted_search_criteria['Budget Fiscal Year'] = $values['budget_fiscal_year'];
     }
     if ($values['agency']) {
         $form['filter']['agency'] = array(
@@ -3807,26 +3931,6 @@ function checkbook_datafeeds_revenue_confirmation($form, &$form_state) {
         $user_criteria['Agency'] = $values['agency'];
         $formatted_search_criteria['Agency'] = $values['agency'];
     }
-    if ($values['budget_fiscal_year']) {
-        $form['filter']['budget_fiscal_year'] = array(
-            '#markup' => '<div><strong>Budget Fiscal Year:</strong> ' . $values['budget_fiscal_year'] . '</div>',
-        );
-        $user_criteria['Budget Fiscal Year'] = $values['budget_fiscal_year'];
-        $formatted_search_criteria['Budget Fiscal Year'] = $values['budget_fiscal_year'];
-    }
-    if ($values['fiscal_year'] && $values['fiscal_year'] != '') {
-        $form['filter']['fiscal_year'] = array(
-            '#markup' => '<div><strong>Fiscal Year:</strong> ' . $values['fiscal_year'] . '</div>',
-        );
-        $user_criteria['Fiscal Year'] = $values['fiscal_year'];
-        $formatted_search_criteria['Fiscal Year'] = $values['fiscal_year'];
-    }
-    else {
-        $form['filter']['fiscal_year'] = array(
-            '#markup' => '<div><strong>Fiscal Year:</strong> All Fiscal Years</div>',
-        );
-        $formatted_search_criteria['Fiscal Year'] = 'All Fiscal Years';
-    }
     if ($values['revenue_category']) {
         $form['filter']['revenue_category'] = array(
             '#markup' => '<div><strong>Revenue Category:</strong> ' . $values['revenue_category'] . '</div>',
@@ -3834,48 +3938,12 @@ function checkbook_datafeeds_revenue_confirmation($form, &$form_state) {
         $user_criteria['Revenue Category'] = $values['revenue_category'];
         $formatted_search_criteria['Revenue Category'] = $values['revenue_category'];
     }
-    if ($values['revenue_class']) {
-        $form['filter']['revenue_class'] = array(
-            '#markup' => '<div><strong>Revenue Class:</strong> ' . $values['revenue_class'] . '</div>',
-        );
-        $user_criteria['Revenue Class'] = $values['revenue_class'];
-        $formatted_search_criteria['Revenue Class'] = $values['revenue_class'];
-    }
     if ($values['revenue_source']) {
         $form['filter']['revenue_source'] = array(
             '#markup' => '<div><strong>Revenue Source:</strong> ' . $values['revenue_source'] . '</div>',
         );
         $user_criteria['Revenue Source'] = $values['revenue_source'];
         $formatted_search_criteria['Revenue Source'] = $values['revenue_source'];
-    }
-    if ($values['funding_class']) {
-        $form['filter']['funding_class'] = array(
-            '#markup' => '<div><strong>Funding Class:</strong> ' . $values['funding_class'] . '</div>',
-        );
-        $user_criteria['Funding Class'] = $values['funding_class'];
-        $formatted_search_criteria['Funding Class'] = $values['funding_class'];
-    }
-    if ($values['modifiedfrom'] && $values['modifiedto']) {
-        $form['filter']['modified'] = array(
-            '#markup' => '<div><strong>Modified:</strong> Greater Than: $' . $values['modifiedfrom'] . ' Less Than: $' . $values['modifiedto'] . '</div>',
-        );
-        $user_criteria['Modified Greater Than'] = $values['modifiedfrom'];
-        $user_criteria['Modified Less Than'] = $values['modifiedto'];
-        $formatted_search_criteria['Modified'] = 'Greater Than: $' . $values['modifiedfrom'] . ' Less Than: $' . $values['modifiedto'];
-    }
-    elseif ($values['modifiedfrom'] && !$values['modifiedto']) {
-        $form['filter']['modified'] = array(
-            '#markup' => '<div><strong>Modified:</strong> Greater Than: $' . $values['modifiedfrom'] . '</div>',
-        );
-        $user_criteria['Modified Greater Than'] = $values['modifiedfrom'];
-        $formatted_search_criteria['Modified'] = 'Greater Than: $' . $values['modifiedfrom'];
-    }
-    elseif (!$values['modifiedfrom'] && $values['modifiedto']) {
-        $form['filter']['modified'] = array(
-            '#markup' => '<div><strong>Modified:</strong> Less Than: $' . $values['modifiedto'] . '</div>',
-        );
-        $user_criteria['Modified Less Than'] = $values['modifiedto'];
-        $formatted_search_criteria['Modified'] = 'Less Than: $' . $values['modifiedto'];
     }
     if ($values['adoptedfrom'] && $values['adoptedto']) {
         $form['filter']['adopted'] = array(
@@ -3920,6 +3988,62 @@ function checkbook_datafeeds_revenue_confirmation($form, &$form_state) {
         );
         $user_criteria['Recognized Less Than'] = $values['recognizedto'];
         $formatted_search_criteria['Recognized'] = 'Less Than: $' . $values['recognizedto'];
+    }
+    if ($values['fiscal_year'] && $values['fiscal_year'] != '') {
+        $form['filter']['fiscal_year'] = array(
+            '#markup' => '<div><strong>Fiscal Year:</strong> ' . $values['fiscal_year'] . '</div>',
+        );
+        $user_criteria['Fiscal Year'] = $values['fiscal_year'];
+        $formatted_search_criteria['Fiscal Year'] = $values['fiscal_year'];
+    }
+    else {
+        $form['filter']['fiscal_year'] = array(
+            '#markup' => '<div><strong>Fiscal Year:</strong> All Fiscal Years</div>',
+        );
+        $formatted_search_criteria['Fiscal Year'] = 'All Fiscal Years';
+    }
+    if ($values['funding_class']) {
+        $form['filter']['funding_class'] = array(
+            '#markup' => '<div><strong>Funding Class:</strong> ' . $values['funding_class'] . '</div>',
+        );
+        $user_criteria['Funding Class'] = $values['funding_class'];
+        $formatted_search_criteria['Funding Class'] = $values['funding_class'];
+    }
+    if ($values['revenue_class']) {
+        $form['filter']['revenue_class'] = array(
+            '#markup' => '<div><strong>Revenue Class:</strong> ' . $values['revenue_class'] . '</div>',
+        );
+        $user_criteria['Revenue Class'] = $values['revenue_class'];
+        $formatted_search_criteria['Revenue Class'] = $values['revenue_class'];
+    }
+    if ($values['fund_class']) {
+        $form['filter']['fund_class'] = array(
+            '#markup' => '<div><strong>Fund Class:</strong> ' . $values['fund_class'] . '</div>',
+        );
+        $user_criteria['Fund Class'] = $values['fund_class'];
+        $formatted_search_criteria['Fund Class'] = $values['fund_class'];
+    }
+    if ($values['modifiedfrom'] && $values['modifiedto']) {
+        $form['filter']['modified'] = array(
+            '#markup' => '<div><strong>Modified:</strong> Greater Than: $' . $values['modifiedfrom'] . ' Less Than: $' . $values['modifiedto'] . '</div>',
+        );
+        $user_criteria['Modified Greater Than'] = $values['modifiedfrom'];
+        $user_criteria['Modified Less Than'] = $values['modifiedto'];
+        $formatted_search_criteria['Modified'] = 'Greater Than: $' . $values['modifiedfrom'] . ' Less Than: $' . $values['modifiedto'];
+    }
+    elseif ($values['modifiedfrom'] && !$values['modifiedto']) {
+        $form['filter']['modified'] = array(
+            '#markup' => '<div><strong>Modified:</strong> Greater Than: $' . $values['modifiedfrom'] . '</div>',
+        );
+        $user_criteria['Modified Greater Than'] = $values['modifiedfrom'];
+        $formatted_search_criteria['Modified'] = 'Greater Than: $' . $values['modifiedfrom'];
+    }
+    elseif (!$values['modifiedfrom'] && $values['modifiedto']) {
+        $form['filter']['modified'] = array(
+            '#markup' => '<div><strong>Modified:</strong> Less Than: $' . $values['modifiedto'] . '</div>',
+        );
+        $user_criteria['Modified Less Than'] = $values['modifiedto'];
+        $formatted_search_criteria['Modified'] = 'Less Than: $' . $values['modifiedto'];
     }
     $user_criteria['Formatted'] = $formatted_search_criteria;
     $criteria = checkbook_datafeeds_process_revenue_values($form, $form_state);
@@ -5131,92 +5255,10 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
         $user_criteria['Agency'] = $values['agency'];
         $formatted_search_criteria[$agency_label] = $agency;
     }
-    if ($values['budget_name']) {
-        $form['filter']['budget_name'] = array(
-            '#markup' => '<div><strong>Budget Name:</strong> ' . $values['budget_name'] . '</div>',
-        );
-        $user_criteria['Budget Name'] = $values['budget_name'];
-        $formatted_search_criteria['Budget Name'] = $values['budget_name'];
-    }
-    if (startsWith($values['year'], 'F')) {
-        $form['filter']['year'] = array(
-            '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
-        );
-        $user_criteria['Fiscal Year'] = $values['year'];
-        $formatted_search_criteria['Year'] = $values['year'];
-    }
-    elseif (startsWith($values['year'], 'C')) {
-        $form['filter']['year'] = array(
-            '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
-        );
-        $user_criteria['Calendar Year'] = $values['year'];
-        $formatted_search_criteria['Year'] = $values['year'];
-    }
-    else {
-        $form['filter']['year'] = array(
-            '#markup' => '<div><strong>Year:</strong> All Years</div>',
-        );
-        $formatted_search_criteria['Year'] = $values['year'];
-    }
-    if ($values['capital_project']) {
-        $form['filter']['capital_project'] = array(
-            '#markup' => '<div><strong>Capital Project:</strong> ' . $values['capital_project'] . '</div>',
-        );
-        $user_criteria['Capital Project'] = $values['capital_project'];
-        $formatted_search_criteria['Capital Project'] = $values['capital_project'];
-    }
-    if ($values['checkamtfrom'] && $values['checkamtto']) {
-        $form['filter']['chkamount'] = array(
-            '#markup' => '<div><strong>Check Amount:</strong> Greater Than: $' . $values['checkamtfrom'] . ' Less Than: $' . $values['checkamtto'] . '</div>',
-        );
-        $user_criteria['Check Amount Greater Than'] = $values['checkamtfrom'];
-        $user_criteria['Check Amount Less Than'] = $values['checkamtto'];
-        $formatted_search_criteria['Check Amount'] = 'Greater Than: $' . $values['checkamtfrom'] . ' Less Than: $' . $values['checkamtto'];
-    } elseif (!$values['checkamtfrom'] && $values['checkamtto']) {
-        $form['filter']['chkamount'] = array(
-            '#markup' => '<div><strong>Check Amount:</strong> Less Than: $' . $values['checkamtto'] . '</div>',
-        );
-        $user_criteria['Check Amount Less Than'] = $values['checkamtto'];
-        $formatted_search_criteria['Check Amount'] = 'Less Than: $' . $values['checkamtto'];
-    } elseif ($values['checkamtfrom'] && !$values['checkamtfrom']) {
-        $form['filter']['chkamount'] = array(
-            '#markup' => '<div><strong>Check Amount:</strong> Greater Than: $' . $values['checkamtfrom'] . '</div>',
-        );
-        $user_criteria['Check Amount Greater Than'] = $values['checkamtto'];
-        $formatted_search_criteria['Check Amount'] = 'Greater Than: $' . $values['checkamtfrom'];
-    }
-    if ($values['commodity_line']) {
-        $form['filter']['commodity_line'] = array(
-            '#markup' => '<div><strong>Commodity Line:</strong> ' . $values['commodity_line'] . '</div>',
-        );
-        $user_criteria['Commodity Line'] = $values['commodity_line'];
-        $formatted_search_criteria['Commodity Line'] = $values['commodity_line'];
-    }
-    if ($values['contractno']) {
-        $form['filter']['contractno'] = array(
-            '#markup' => '<div><strong>Contract ID:</strong> ' . $values['contractno'] . '</div>',
-        );
-        $user_criteria['Contract ID'] = $values['contractno'];
-        $formatted_search_criteria['Contract ID'] = $values['contractno'];
-    }
     if ($values['dept']) {
         $form['filter']['department'] = array('#markup' => '<div><strong>Department:</strong> ' . $values['dept'] . '</div>');
         $user_criteria['Department'] = $values['dept'];
         $formatted_search_criteria['Department'] = $values['dept'];
-    }
-    if ($values['document_id']) {
-        $form['filter']['document_id'] = array(
-            '#markup' => '<div><strong>Document ID:</strong> ' . $values['document_id'] . '</div>',
-        );
-        $user_criteria['Document ID'] = $values['document_id'];
-        $formatted_search_criteria['Document ID'] = $values['document_id'];
-    }
-    if ($values['entity_contract_number']) {
-        $form['filter']['entity_contract_number'] = array(
-            '#markup' => '<div><strong>Entity Contract #:</strong> ' . $values['entity_contract_number'] . '</div>',
-        );
-        $user_criteria['Entity Contract #'] = $values['entity_contract_number'];
-        $formatted_search_criteria['Entity Contract #'] = $values['entity_contract_number'];
     }
     if ($values['expense_category']) {
         $form['filter']['expense_category'] = array('#markup' => '<div><strong>Expense Category:</strong> ' . $values['expense_category'] . '</div>');
@@ -5247,32 +5289,96 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
         $user_criteria['Industry'] = $industry_type_id;
         $formatted_search_criteria['Industry'] = $industry_type_name;
     }
-    if ($values['issuedfrom'] && $values['issuedto']) {
-        $form['filter']['issued_date'] = array(
-            '#markup' => '<div><strong>Issue Date:</strong> After: ' . $values['issuedfrom'] . ' Before: ' . $values['issuedto'] . '</div>'
-        );
-        $user_criteria['Issued Date After'] = $values['issuedfrom'];
-        $user_criteria['Issued Date Before'] = $values['issuedto'];
-        $formatted_search_criteria['Issue Date'] = 'After: ' . $values['issuedfrom'] . ' Before: ' . $values['issuedto'];
-    } elseif (!$values['issuedfrom'] && $values['issuedto']) {
-        $form['filter']['issued_date'] = array(
-            '#markup' => '<div><strong>Issue Date:</strong> Before: ' . $values['issuedto'] . '</div>',
-        );
-        $user_criteria['Issued Date Before'] = $values['issuedto'];
-        $formatted_search_criteria['Issue Date'] = 'Before: ' . $values['issuedto'];
-    } elseif ($values['issuedfrom'] && !$values['issuedto']) {
-        $form['filter']['issued_date'] = array(
-            '#markup' => '<div><strong>Issue Date:</strong> After: ' . $values['issuedfrom'] . '</div>',
-        );
-        $user_criteria['Issued Date After'] = $values['issuedfrom'];
-        $formatted_search_criteria['Issue Date'] = 'After: ' . $values['issuedfrom'];
-    }
     if ($values['payee_name']) {
         $form['filter']['payee_name'] = array(
             '#markup' => '<div><strong>Payee Name:</strong> ' . $values['payee_name'] . '</div>',
         );
         $user_criteria['Payee Name'] = $values['payee_name'];
         $formatted_search_criteria['Payee Name'] = $values['payee_name'];
+    }
+    if ($values['checkamtfrom'] && $values['checkamtto']) {
+        $form['filter']['chkamount'] = array(
+            '#markup' => '<div><strong>Check Amount:</strong> Greater Than: $' . $values['checkamtfrom'] . ' Less Than: $' . $values['checkamtto'] . '</div>',
+        );
+        $user_criteria['Check Amount Greater Than'] = $values['checkamtfrom'];
+        $user_criteria['Check Amount Less Than'] = $values['checkamtto'];
+        $formatted_search_criteria['Check Amount'] = 'Greater Than: $' . $values['checkamtfrom'] . ' Less Than: $' . $values['checkamtto'];
+    }
+    elseif (!$values['checkamtfrom'] && $values['checkamtto']) {
+        $form['filter']['chkamount'] = array(
+            '#markup' => '<div><strong>Check Amount:</strong> Less Than: $' . $values['checkamtto'] . '</div>',
+        );
+        $user_criteria['Check Amount Less Than'] = $values['checkamtto'];
+        $formatted_search_criteria['Check Amount'] = 'Less Than: $' . $values['checkamtto'];
+    }
+    elseif ($values['checkamtfrom'] && !$values['checkamtfrom']) {
+        $form['filter']['chkamount'] = array(
+            '#markup' => '<div><strong>Check Amount:</strong> Greater Than: $' . $values['checkamtfrom'] . '</div>',
+        );
+        $user_criteria['Check Amount Greater Than'] = $values['checkamtto'];
+        $formatted_search_criteria['Check Amount'] = 'Greater Than: $' . $values['checkamtfrom'];
+    }
+    if ($values['contractno']) {
+        $form['filter']['contractno'] = array(
+            '#markup' => '<div><strong>Contract ID:</strong> ' . $values['contractno'] . '</div>',
+        );
+        $user_criteria['Contract ID'] = $values['contractno'];
+        $formatted_search_criteria['Contract ID'] = $values['contractno'];
+    }
+    if ($values['document_id']) {
+        $form['filter']['document_id'] = array(
+            '#markup' => '<div><strong>Document ID:</strong> ' . $values['document_id'] . '</div>',
+        );
+        $user_criteria['Document ID'] = $values['document_id'];
+        $formatted_search_criteria['Document ID'] = $values['document_id'];
+    }
+    if ($values['commodity_line']) {
+        $form['filter']['commodity_line'] = array(
+            '#markup' => '<div><strong>Commodity Line:</strong> ' . $values['commodity_line'] . '</div>',
+        );
+        $user_criteria['Commodity Line'] = $values['commodity_line'];
+        $formatted_search_criteria['Commodity Line'] = $values['commodity_line'];
+    }
+    if ($values['entity_contract_number']) {
+        $form['filter']['entity_contract_number'] = array(
+            '#markup' => '<div><strong>Entity Contract #:</strong> ' . $values['entity_contract_number'] . '</div>',
+        );
+        $user_criteria['Entity Contract #'] = $values['entity_contract_number'];
+        $formatted_search_criteria['Entity Contract #'] = $values['entity_contract_number'];
+    }
+    if ($values['capital_project']) {
+        $form['filter']['capital_project'] = array(
+            '#markup' => '<div><strong>Capital Project:</strong> ' . $values['capital_project'] . '</div>',
+        );
+        $user_criteria['Capital Project'] = $values['capital_project'];
+        $formatted_search_criteria['Capital Project'] = $values['capital_project'];
+    }
+    if ($values['budget_name']) {
+        $form['filter']['budget_name'] = array(
+            '#markup' => '<div><strong>Budget Name:</strong> ' . $values['budget_name'] . '</div>',
+        );
+        $user_criteria['Budget Name'] = $values['budget_name'];
+        $formatted_search_criteria['Budget Name'] = $values['budget_name'];
+    }
+    if (startsWith($values['year'], 'F')) {
+        $form['filter']['year'] = array(
+            '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
+        );
+        $user_criteria['Fiscal Year'] = $values['year'];
+        $formatted_search_criteria['Year'] = $values['year'];
+    }
+    elseif (startsWith($values['year'], 'C')) {
+        $form['filter']['year'] = array(
+            '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
+        );
+        $user_criteria['Calendar Year'] = $values['year'];
+        $formatted_search_criteria['Year'] = $values['year'];
+    }
+    else {
+        $form['filter']['year'] = array(
+            '#markup' => '<div><strong>Year:</strong> All Years</div>',
+        );
+        $formatted_search_criteria['Year'] = $values['year'];
     }
     if (startsWith($values['year'], 'F')) {
         $form['filter']['year'] = array(
@@ -5292,6 +5398,26 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
         else {
             $formatted_search_criteria['Year'] = 'All Years';
         }
+    }
+    if ($values['issuedfrom'] && $values['issuedto']) {
+        $form['filter']['issued_date'] = array(
+            '#markup' => '<div><strong>Issue Date:</strong> After: ' . $values['issuedfrom'] . ' Before: ' . $values['issuedto'] . '</div>'
+        );
+        $user_criteria['Issued Date After'] = $values['issuedfrom'];
+        $user_criteria['Issued Date Before'] = $values['issuedto'];
+        $formatted_search_criteria['Issue Date'] = 'After: ' . $values['issuedfrom'] . ' Before: ' . $values['issuedto'];
+    } elseif (!$values['issuedfrom'] && $values['issuedto']) {
+        $form['filter']['issued_date'] = array(
+            '#markup' => '<div><strong>Issue Date:</strong> Before: ' . $values['issuedto'] . '</div>',
+        );
+        $user_criteria['Issued Date Before'] = $values['issuedto'];
+        $formatted_search_criteria['Issue Date'] = 'Before: ' . $values['issuedto'];
+    } elseif ($values['issuedfrom'] && !$values['issuedto']) {
+        $form['filter']['issued_date'] = array(
+            '#markup' => '<div><strong>Issue Date:</strong> After: ' . $values['issuedfrom'] . '</div>',
+        );
+        $user_criteria['Issued Date After'] = $values['issuedfrom'];
+        $formatted_search_criteria['Issue Date'] = 'After: ' . $values['issuedfrom'];
     }
 
     //</editor-fold>
