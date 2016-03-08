@@ -566,19 +566,24 @@ function checkbook_datafeeds_budget($form, &$form_state) {
     $year = !empty($form_state['values']['fiscal_year']) ? $form_state['values']['fiscal_year'] : 'FY' . currentFiscalYear();
     $agency_options = _agency_options();
 
-    $form['description'] = array(
-        '#markup' => '<h2 class="domain-title">Budget</h2>',
-    );
+    //<editor-fold desc="Heading">
+
     $form['loaded'] = array(
         '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date('budget') . '</div>',
     );
     $form['requiredmessage'] = array(
-        '#markup' => 'Fields marked with an asterisk (<span class="form-required">*</span>) are required.',
+        '#markup' => '<p class="required-message">Fields marked with an asterisk (<span class="form-required">*</span>) are required.</p><br/>',
     );
+    $form['description'] = array(
+        '#markup' => '<h2 class="domain-title">Budget</h2>'
+    );
+
+    //</editor-fold>
+
     $form['filter'] = array(
         '#type' => 'fieldset',
         '#title' => t('3. Filter the Data:'),
-        '#collapsible' => TRUE,
+        '#attributes' => array('class' => array('budget-fieldset')),
     );
     $form['filter']['leftbegin'] = array(
         '#markup' => '<div class="column column-left">',
@@ -760,7 +765,6 @@ function checkbook_datafeeds_budget($form, &$form_state) {
     $form['columns'] = array(
         '#type' => 'fieldset',
         '#title' => t('4. Select Columns:'),
-        '#collapsible' => TRUE,
     );
     $form['columns']['column_select_expense'] = array(
         '#type' => 'select',
@@ -2839,15 +2843,21 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
 function checkbook_datafeeds_payroll($form, &$form_state) {
     $datatype = $form_state['step_information']['type']['stored_values']['format'];
     $agency_options = _agency_options();
-    $form['description'] = array(
-        '#markup' => '<h2 class="domain-title">Payroll</h2>',
-    );
+
+    //<editor-fold desc="Heading">
+
     $form['loaded'] = array(
         '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date('payroll') . '</div>',
     );
     $form['requiredmessage'] = array(
-        '#markup' => '<p class="required-message">Fields marked with an asterisk (<span class="form-required">*</span>) are required.</p>',
+        '#markup' => '<p class="required-message">Fields marked with an asterisk (<span class="form-required">*</span>) are required.</p><br/>',
     );
+    $form['description'] = array(
+        '#markup' => '<h2 class="domain-title">Payroll</h2>'
+    );
+
+    //</editor-fold>
+
     $form['filter'] = array(
         '#type' => 'fieldset',
         '#title' => t('3. Filter the Data:'),
@@ -3623,19 +3633,24 @@ function checkbook_datafeeds_revenue($form, &$form_state) {
     $revenue_fys = $revenue_fys + _checkbook_advanced_search_get_year('revenue','datafeeds');
     $agency_options = _agency_options();
 
-    $form['description'] = array(
-        '#markup' => '<h2 class="domain-title">Revenue</h2>',
-    );
+    //<editor-fold desc="Heading">
+
     $form['loaded'] = array(
         '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date('revenue') . '</div>',
     );
     $form['requiredmessage'] = array(
-        '#markup' => '<p class="required-message">Fields marked with an asterisk (<span class="form-required">*</span>) are required.</p>',
+        '#markup' => '<p class="required-message">Fields marked with an asterisk (<span class="form-required">*</span>) are required.</p><br/>',
     );
+    $form['description'] = array(
+        '#markup' => '<h2 class="domain-title">Revenue</h2>'
+    );
+
+    //</editor-fold>
+
     $form['filter'] = array(
         '#type' => 'fieldset',
         '#title' => t('3. Filter the Data:'),
-        '#collapsible' => TRUE,
+        '#attributes' => array('class' => array('revenue-fieldset')),
     );
     $form['filter']['budget_fiscal_year'] = array(
         '#type' => 'select',
@@ -3757,7 +3772,6 @@ function checkbook_datafeeds_revenue($form, &$form_state) {
     $form['columns'] = array(
         '#type' => 'fieldset',
         '#title' => t('4. Select Columns:'),
-        '#collapsible' => TRUE,
     );
     $form['columns']['column_select'] = array(
         '#type' => 'select',
