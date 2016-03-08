@@ -111,7 +111,7 @@ rsort($years);
                 }
 
                 
-			    echo "<tr><td>" . $conditionCategory . "</td>";
+			    echo "<tr><td class='text'>" . $conditionCategory . "</td>";
 			    foreach ($years as $year){
                     echo "<td><div>&nbsp;</div></td>";
 			        echo "<td class='" . $amount_class . "' >" . $dollar_sign . "<div>" . (($row[$year]['amount'] > 0) ? number_format($row[$year]['amount']) : '&nbsp;') . "</div></td>";
