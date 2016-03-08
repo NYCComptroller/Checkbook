@@ -122,23 +122,34 @@ class CheckBookAPI {
                 "tracking_number" => $token,
                 "user_criteria" => $job_details['user_criteria']
             );
-            self::sendConfirmationEmail($email,$params);
+            self::sendConfirmationEmail($token,$email,$params);
         }
         return $job_details;
     }
 
     /**
-     * Function to send the confirmation email for the data feed
+     * Function to send the confirmation email for the data feed,
+     * logs date in DB if success
+     * @param $token
      * @param $email
      * @param $params
      * @throws Exception
      */
-    function sendConfirmationEmail($email,$params) {
+    function sendConfirmationEmail($token,$email,$params) {
         $response = drupal_mail('checkbook_datafeeds', "confirmation_notification", $email, null, $params);
         if(!$response['result']) {
             $msg = "Error sending email in class CheckBookAPI, function sendConfirmationEmail()";
             LogHelper::log_error($msg);
             throw new Exception($msg);
+        }
+        else {
+            //Update custom_queue_request, set confirmation_mail_sent_date
+            $rows_affected = QueueUtil::updateConfirmationMailSentDate($token);
+            if($rows_affected != 1) {
+                $msg = "Error sending email in class CheckBookAPI, function sendConfirmationEmail()";
+                LogHelper::log_error($msg);
+                throw new Exception($msg);
+            }
         }
     }
 
