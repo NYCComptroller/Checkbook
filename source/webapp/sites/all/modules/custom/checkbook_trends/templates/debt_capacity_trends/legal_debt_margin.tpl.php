@@ -124,7 +124,7 @@ rsort($years);
             		break;
             }
             
-            echo "<tr><td >" . $conditionCategory . "</td>";
+            echo "<tr><td class='text'>" . $conditionCategory . "</td>";
 
             foreach ($years as $year){
                 if($count == count($table_rows)){
