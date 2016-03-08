@@ -895,7 +895,7 @@ function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$par
  */
 function _checkbook_project_pre_process_aggregation($node,$aggregateColumn) {
     $params = $node->nodeAdjustedParamaterConfig;
-    $ds = $node->widgetConfig->dataset;
+    $ds = _update_dataset_datasource($node->widgetConfig->dataset,$node->widgetConfig->keepOriginalDatasource);
     $column = $aggregateColumn;
     $orderBy = $node->widgetConfig->orderBy;
     $startWith = isset($node->widgetConfig->startWith) ? $node->widgetConfig->startWith : 0;
