@@ -101,7 +101,8 @@
 
     $node->widgetConfig->chartConfig->series[0]->name = $SeriesPreviousYearLabel;
     $node->widgetConfig->chartConfig->series[1]->name = $SeriesCurrentYearLabel;
-    $smnid = '/smnid/706';
+    $data_source = _getRequestParamValue('datasource');
+    $smnid = (isset($data_source) && $data_source == 'checkbook_oge') ? '/smnid/652' : '/smnid/706';
     $categories=array();
     $allZero = true;
     foreach ($node->data as $row){

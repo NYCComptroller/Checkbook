@@ -48,6 +48,10 @@
         "entcontnum_exact":"eqignorecase","comline_exact":"eqignorecase","budname_exact":"eqignorecase"
     },
     "allowRequestParams":["dtsmnid","smnid"],
+    "summaryView":{
+        "template":"spending_date_summary",
+        "templateTitleEval":"return SpendingUtil::getTransactionPageTitle();"
+    },
     "header":"
     $header = NULL;
 $header .= widget_data_tables_export_link($node);
