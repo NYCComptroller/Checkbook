@@ -46,7 +46,7 @@ rsort($years);
   <tbody>
   <tr>
     <td width="240"><div>&nbsp;</div></td>
-    <td class="bb"><div>1997-2014<br>(average annual employment in thousands)</div></td>
+    <td class="bb"><div>1997-2015<br>(average annual employment in thousands)</div></td>
   </tr>
   </tbody>
 </table>
@@ -65,7 +65,7 @@ rsort($years);
             <?php
             foreach ($years as $year){
                 echo "<th></th>";
-                if($year == 2014)
+                if($year == 2015)
                     echo "<th class='number'><div>" . $year . "<sup>(b)</sup></div></th>";
                 else
                     echo "<th class='number'><div>" . $year . "</div></th>";
@@ -98,7 +98,7 @@ rsort($years);
             		break;
             	case "Percentage Increase (Decrease) from Prior Year":
             		$conditionCategory = "<div class='" . $cat_class ."'>Percentage Increase (Decrease)<br><span style='padding-left:10px;'>from Prior Year</span></div>";
-                    $row[2014]['amount'] = $row[2014]['amount'] . '(b)';
+                    $row[2015]['amount'] = $row[2015]['amount'] . '(b)';
             		break;
             	default:
             		$conditionCategory = "<div class='" . $cat_class . "' >" . str_replace('(a)','<sup>(a)</sup>',$row['category'])  . "</div>";

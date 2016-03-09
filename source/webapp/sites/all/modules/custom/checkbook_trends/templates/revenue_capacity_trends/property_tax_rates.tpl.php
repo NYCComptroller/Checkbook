@@ -61,7 +61,7 @@ echo eval($node->widgetConfig->header);
 </table>
 <div class="footnote">
     <p>SOURCE: Resolutions of the City Council.</p>
-    <p>Property tax rate based on every $100 of assessed valuations.</p>
+    <p>Note: Property tax rate based on every $100 of assessed valuations.</p>
 
 </div>
 <?php 
