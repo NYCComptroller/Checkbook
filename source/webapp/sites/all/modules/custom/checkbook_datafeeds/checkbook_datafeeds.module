@@ -246,7 +246,7 @@ function checkbook_datafeeds_tracking_status($form, &$form_state) {
         );
         $output['search-criteria-fieldset']['search-criteria'] = array(
             '#theme' => 'user_criteria',
-            '#usercriteria' => $results['user_criteria'],
+            '#usercriteria' => $results['user_criteria']['Formatted'],
             '#prefix' => '<div class="search-criteria">',
             '#suffix' => '</div>',
         );
