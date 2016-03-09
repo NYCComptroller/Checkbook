@@ -2151,9 +2151,9 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
     switch ($data_source) {
         case 'checkbook_oge':
             if ($values['df_contract_status']) {
-                $form['filter']['df_contract_status'] = array('#markup' => '<div><strong>Contract Status:</strong> ' . $values['df_contract_status'] . '</div>');
+                $form['filter']['df_contract_status'] = array('#markup' => '<div><strong>Status:</strong> ' . $values['df_contract_status'] . '</div>');
                 $user_criteria['Contract Status'] = $values['df_contract_status'];
-                $formatted_search_criteria['Contract Status'] = $values['df_contract_status'];
+                $formatted_search_criteria['Status'] = $values['df_contract_status'];
             }
             if ($values['vendor']) {
                 $form['filter']['vendor'] = array(
@@ -2310,9 +2310,9 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
             break;
         default:
             if ($values['df_contract_status']) {
-                $form['filter']['df_contract_status'] = array('#markup' => '<div><strong>Contract Status:</strong> ' . $values['df_contract_status'] . '</div>');
+                $form['filter']['df_contract_status'] = array('#markup' => '<div><strong>Status:</strong> ' . $values['df_contract_status'] . '</div>');
                 $user_criteria['Contract Status'] = $values['df_contract_status'];
-                $formatted_search_criteria['Contract Status'] = $values['df_contract_status'];
+                $formatted_search_criteria['Status'] = $values['df_contract_status'];
             }
             if ($values['vendor']) {
                 $form['filter']['vendor'] = array(
@@ -2376,18 +2376,18 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
                 $formatted_search_criteria['End Date'] = 'Greater Than Equal to: ' . $values['enddatefrom'];
             }
             if ($values['regdatefrom'] && $values['regdateto']) {
-                $form['filter']['regdate'] = array('#markup' => '<div><strong>Registered Date:</strong> Greater Than Equal to: ' . $values['regdatefrom'] . ' Less Than Equal to: ' . $values['regdateto'] . '</div>');
+                $form['filter']['regdate'] = array('#markup' => '<div><strong>Registration Date:</strong> Greater Than Equal to: ' . $values['regdatefrom'] . ' Less Than Equal to: ' . $values['regdateto'] . '</div>');
                 $user_criteria['Registered Date Greater Than'] = $values['regdatefrom'];
                 $user_criteria['Registered Date Less Than'] = $values['regdateto'];
-                $formatted_search_criteria['Registered Date'] = 'Greater Than Equal to: ' . $values['regdatefrom'] . ' Less Than Equal to: ' . $values['regdateto'];
+                $formatted_search_criteria['Registration Date'] = 'Greater Than Equal to: ' . $values['regdatefrom'] . ' Less Than Equal to: ' . $values['regdateto'];
             } elseif (!$values['regdatefrom'] && $values['regdateto']) {
-                $form['filter']['regdate'] = array('#markup' => '<div><strong>Registered Date:</strong> Less Than Equal to: ' . $values['regdateto'] . '</div>');
+                $form['filter']['regdate'] = array('#markup' => '<div><strong>Registration Date:</strong> Less Than Equal to: ' . $values['regdateto'] . '</div>');
                 $user_criteria['Registered Date Less Than'] = $values['regdateto'];
-                $formatted_search_criteria['Registered Date'] = 'Less Than Equal to: ' . $values['regdateto'];
+                $formatted_search_criteria['Registration Date'] = 'Less Than Equal to: ' . $values['regdateto'];
             } elseif ($values['regdatefrom'] && !$values['regdateto']) {
-                $form['filter']['regdate'] = array('#markup' => '<div><strong>Registered Date:</strong> Greater Than Equal to: $' . $values['regdatefrom'] . '</div>');
+                $form['filter']['regdate'] = array('#markup' => '<div><strong>Registration Date:</strong> Greater Than Equal to: $' . $values['regdatefrom'] . '</div>');
                 $user_criteria['Registered Date Greater Than'] = $values['regdatefrom'];
-                $formatted_search_criteria['Registered Date'] = 'Greater Than Equal to: $' . $values['regdatefrom'];
+                $formatted_search_criteria['Registration Date'] = 'Greater Than Equal to: $' . $values['regdatefrom'];
             }
             if ($values['category']) {
                 $form['filter']['category'] = array('#markup' => '<div><strong>Category:</strong> ' . $values['category'] . '</div>');
