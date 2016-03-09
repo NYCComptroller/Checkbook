@@ -835,9 +835,9 @@ function _checkbook_datafeeds_budget_column_options($datatype) {
     else {
         if ($datatype = 'xml') {
             $out = drupal_map_assoc(array(
-                "agency",
                 "accrued_expense",
                 "adopted",
+                "agency",
                 "budget_code",
                 "budget_name",
                 "cash_expense",
