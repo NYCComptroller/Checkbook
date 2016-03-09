@@ -6964,7 +6964,7 @@ function checkbook_datafeeds_download_notification($key, &$message, $params) {
     $user_criteria = $params['user_criteria'];
     $search_criteria = "";
     foreach($user_criteria['Formatted'] as $key => $value) {
-        $search_criteria .= "{$key}: {$value}\n";
+        $search_criteria .= "{$key}: {$value} \n";
     }
     $variables['@tracking_num'] = $params['tracking_num'];
     $variables['@expiration_date'] = $params['expiration_date'];
@@ -6992,16 +6992,16 @@ function checkbook_datafeeds_confirmation_notification($key, &$message, $params)
     $user_criteria = $params['user_criteria'];
     $search_criteria = "";
     foreach($user_criteria['Formatted'] as $key => $value) {
-        $search_criteria .= "{$key}: {$value}\n";
+        $search_criteria .= "{$key}: {$value} \n";
     }
     $tracking_number = $params['tracking_number'];
     $email = $params['email'];
-    $body = "Thank You\n\nYour request has been received.\n\n";
-    $body .= "Here is the tracking number: {$tracking_number} for the request. You can track the status of your request by entering your tracking number in the \"Track Status of Data Feed\" box on Data feeds page.\n\n";
-    $body .= "You will have 7 days to use this tracking number to return to your results.\n\n";
-    $body .= "You will receive another email at {$email} with the link to download the requested data feed.\n\n";
-    $body .= "Please note that due to a possible high number of requests, there may be a delay in notification.\n\n";
-    $body .= "Below is the search criteria of the request for your reference:\n{$search_criteria}";
+    $body = "Thank You \n\nYour request has been received. \n\n";
+    $body .= "Here is the tracking number: {$tracking_number} for the request. You can track the status of your request by entering your tracking number in the \"Track Status of Data Feed\" box on Data feeds page. \n\n";
+    $body .= "You will have 7 days to use this tracking number to return to your results. \n\n";
+    $body .= "You will receive another email at {$email} with the link to download the requested data feed. \n\n";
+    $body .= "Please note that due to a possible high number of requests, there may be a delay in notification. \n\n";
+    $body .= "Below is the search criteria of the request for your reference: \n{$search_criteria} \n";
 
     $message['subject'] = "Your data feeds request is submitted";
     $message['body'][] = $body;
