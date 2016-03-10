@@ -254,7 +254,7 @@
             var agency = emptyToZero($('#edit-agency', context).val());
             var award_method = emptyToZero($('#edit-award-method', context).val());
             var year = ($('#edit-year', context).attr('disabled')) ? 0 : $('#edit-year', context).val();
-            var mwbecat = emptyToZero($('#edit-mwbe-category',context).val());
+            var mwbecat = ($('#edit-mwbe-category').val()) ? $('#edit-mwbe-category').val() : 0;
             var industry = emptyToZero($('#edit-industry',context).val());
             var data_source = $('input:radio[name=datafeeds-contracts-domain-filter]:checked').val();
 
@@ -273,7 +273,8 @@
                     var agency = emptyToZero($('#edit-agency', context).val());
                     var award_method = emptyToZero($('#edit-award-method', context).val());
                     var year = ($('#edit-year', context).attr('disabled')) ? 0 : $('#edit-year', context).val();
-                    var mwbecat = emptyToZero($('#edit-mwbe-category',context).val());
+                    var mwbecat = ($('#edit-mwbe-category').val()) ? $('#edit-mwbe-category').val() : 0;
+                    mwbecat = mwbecat == null ? 0 : mwbecat;
                     var industry = emptyToZero($('#edit-industry',context).val());
                     var data_source = $('input:radio[name=datafeeds-contracts-domain-filter]:checked').val();
 
