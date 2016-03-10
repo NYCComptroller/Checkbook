@@ -103,12 +103,13 @@
     $node->widgetConfig->chartConfig->series[1]->name = $SeriesCurrentYearLabel;
     $data_source = _getRequestParamValue('datasource');
     $smnid = (isset($data_source) && $data_source == 'checkbook_oge') ? '/smnid/652' : '/smnid/706';
+    $urlParams = CustomURLHelper::get_url_param($pathParams, 'datasource');
     $categories=array();
     $allZero = true;
     foreach ($node->data as $row){
         $categories[]=html_entity_decode($row['month_month_month_name'],ENT_QUOTES);
-        $currentYearUrl = current_path() . CustomURLHelper::prepareUrl('?expandBottomContURL=/panel_html/spending_transactions/spending/transactions', SpendingUtil::$landingPageParams, NULL, array('month' => $row['current_month_month']), false, false);
-        $previousYearUrl = current_path() . CustomURLHelper::prepareUrl('?expandBottomContURL=/panel_html/spending_transactions/spending/transactions', SpendingUtil::$landingPageParams, NULL, array('month' => $row['previous_month_month']), true, false);
+        $currentYearUrl = current_path() . CustomURLHelper::prepareUrl('?expandBottomContURL=/panel_html/spending_transactions/spending/transactions'.$urlParams, SpendingUtil::$landingPageParams, NULL, array('month' => $row['current_month_month']), false, false);
+        $previousYearUrl = current_path() . CustomURLHelper::prepareUrl('?expandBottomContURL=/panel_html/spending_transactions/spending/transactions'.$urlParams, SpendingUtil::$landingPageParams, NULL, array('month' => $row['previous_month_month']), true, false);
 
         if(abs($row['previous_check_amount_sum']) > 0)
             $allZero = false;
