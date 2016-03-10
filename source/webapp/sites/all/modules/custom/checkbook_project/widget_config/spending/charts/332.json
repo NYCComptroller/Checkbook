@@ -107,10 +107,11 @@
     $categories=array();
     $allZero = true;
     $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
-    $urlParams = CustomURLHelper::get_url_param($pathParams, 'agency') . CustomURLHelper::get_url_param($pathParams, 'vendor') . CustomURLHelper::get_url_param($pathParams, 'category');
+    $urlParams = CustomURLHelper::get_url_param($pathParams, 'datasource') . CustomURLHelper::get_url_param($pathParams, 'agency') . CustomURLHelper::get_url_param($pathParams, 'vendor') . CustomURLHelper::get_url_param($pathParams, 'category');
     $bottomNavUrl = '?expandBottomContURL=/panel_html/spending_transactions/spending/transactions';
     $current_path  = current_path();
-    $smnid = '/smnid/706';
+    $data_source = _getRequestParamValue('datasource');
+    $smnid = (isset($data_source) && $data_source == 'checkbook_oge') ? '/smnid/652' : '/smnid/706';
 
     foreach ($node->data as $row){
 	    $categories[]=html_entity_decode($row['month_month_month_name'],ENT_QUOTES);
