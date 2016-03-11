@@ -18,9 +18,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once('repositories/checks/Check.php');
-require_once('repositories/checks/CheckFactory.php');
-require_once('repositories/checks/CheckRepository.php');
+require_once('checks/ICheck.php');
+require_once('checks/Check.php');
+require_once('checks/AbstractCheckFactory.php');
+require_once('checks/CheckFactory.php');
+require_once('checks/CheckRepository.php');
 
 function checkbook_domain_init() {
 
