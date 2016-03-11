@@ -22,6 +22,8 @@ description = "Functionality to serve as a domain layer for checkbook"
 package = REI Checkbook Business Layer
 core = 7.x
 
-files[] = repositories/checks/Check.php
-files[] = repositories/checks/CheckFactory.php
-files[] = repositories/checks/CheckRepository.php
+files[] = checks/ICheck.php
+files[] = checks/Check.php
+files[] = checks/AbstractCheckFactory.php
+files[] = checks/CheckFactory.php
+files[] = checks/CheckRepository.php

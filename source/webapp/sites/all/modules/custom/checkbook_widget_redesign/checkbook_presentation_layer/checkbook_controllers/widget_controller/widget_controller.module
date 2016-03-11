@@ -148,7 +148,7 @@ function _widget_controller_node_view($key){
 
 //    try {
 //        $service = new SpendingService();
-//        $checks = $service->GetCitywideChecks();
+//        $checks = $service->GetCitywideChecksData();
 //        var_dump($checks);
 //    }
 //    catch(Exception $e) {
