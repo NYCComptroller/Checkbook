@@ -27,3 +27,5 @@ files[] = checks/Check.php
 files[] = checks/AbstractCheckFactory.php
 files[] = checks/CheckFactory.php
 files[] = checks/CheckRepository.php
+
+files[] = checks/sql/checks.xml
