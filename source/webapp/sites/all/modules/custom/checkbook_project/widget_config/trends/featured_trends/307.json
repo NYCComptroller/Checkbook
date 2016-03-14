@@ -109,7 +109,7 @@ jQuery('#capital-projects-filter .chartdateto').val(Highcharts.dateFormat('%Y',a
         },
 "plotOptions": {
             "column": {
-                "minPointLength": 100,
+                "minPointLength": 10,
                 "dataLabels": {
                     "enabled": true,
                     "rotation": -90,

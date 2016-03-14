@@ -105,7 +105,7 @@ jQuery('#debt-filter .chartdateto').val(Highcharts.dateFormat('%Y',axis.max));
         },
 "plotOptions": {
             "column": {
-                "minPointLength": 100,
+                "minPointLength": 10,
                 "dataLabels": {
                     "enabled": true,
                     "rotation": -90,

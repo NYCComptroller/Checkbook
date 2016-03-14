@@ -120,7 +120,7 @@ jQuery('#property-tax-filter .chartdateto').val(Highcharts.dateFormat('%Y',axis.
         },
 "plotOptions": {
             "column": {
-                "minPointLength": 100,
+                "minPointLength": 10,
                 "dataLabels": {
                     "enabled": true,
                     "rotation": -90,
