@@ -157,7 +157,7 @@
             },
     "plotOptions": {
                 "column": {
-                    "minPointLength": 100,
+                    "minPointLength": 10,
                     "dataLabels": {
                         "enabled": true,
                         "rotation": -90,
