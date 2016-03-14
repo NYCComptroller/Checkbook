@@ -100,10 +100,10 @@ rsort($years);
                 		$conditionCategory = "<div class='" . $cat_class . "'>Write offs, Adjustments and <br><span style='padding-left:10px;'>Dispositions<sup>(b)</sup><span></div>";
                 		break;
                 	case "Less:":
-                		$conditionCategory = "<div class='" . $cat_class ."'><span style='padding-left:10px;'>Less:</span></div>";
+                		$conditionCategory = "<div class='" . $cat_class ."'><span style='padding-left:0px;'>Less:</span></div>";
                 		break;
                 	case "Summonses Uncollected - June 30th":
-                		$conditionCategory = "<div class='" .$cat_class . "'>Summonses Uncollected -<br><span style='padding-left:10px;'> June 30th<span></div>";
+                		$conditionCategory = "<div class='" .$cat_class . "'>Summonses Uncollected -<br><span style='padding-left:0px;'> June 30th<span></div>";
                 		break;
                 	default:
                 		$conditionCategory = "<div class='" . $cat_class . "' >" . $row['category'] . "</div>";

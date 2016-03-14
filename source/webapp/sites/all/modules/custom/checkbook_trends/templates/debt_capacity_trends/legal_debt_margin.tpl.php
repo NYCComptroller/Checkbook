@@ -102,22 +102,22 @@ rsort($years);
             $conditionCategory = $row['category'];
             switch($conditionCategory){
             	case "Debt limit (10% of assessed value)":
-            		$conditionCategory = "<div class='" . $cat_class . "'>Debt limit (10% of<br><span style='padding-left:10px;'>assessed value)<span></div>";
+            		$conditionCategory = "<div class='" . $cat_class . "'>Debt limit (10% of<br><span style='padding-left:0px;'>assessed value)<span></div>";
             		break;
             	case "Service fund and appropriations for redemption of non-excluded debt":
-            		$conditionCategory = "<div class='" . $cat_class ."'>Service fund and<br><span style='padding-left:10px;'>appropriations for</span><br><span style='padding-left:10px;'>redemption of</span><br><span style='padding-left:10px;'>non-excluded debt</span></div>";
+            		$conditionCategory = "<div class='" . $cat_class ."'>Service fund and<br><span style='padding-left:0px;'>appropriations for</span><br><span style='padding-left:0px;'>redemption of</span><br><span style='padding-left:0px;'>non-excluded debt</span></div>";
             		break;
             	case "Anticipated TSASC debt incurring<br>power":
-            		$conditionCategory = "<div class='" .$cat_class . "'>Anticipated TSASC debt<br><span style='padding-left:10px;'>incurring power<span></div>";
+            		$conditionCategory = "<div class='" .$cat_class . "'>Anticipated TSASC debt<br><span style='padding-left:0px;'>incurring power<span></div>";
             		break;
             	case "Contract, land acquisition and other liabilities":
-            		$conditionCategory = "<div class='" .$cat_class . "'>Contract, land acquisition<br><span style='padding-left:10px;'>and other liabilities</span></div>";
+            		$conditionCategory = "<div class='" .$cat_class . "'>Contract, land acquisition<br><span style='padding-left:0px;'>and other liabilities</span></div>";
             		break;
             	case "Total net debt applicable to limit":
             		$conditionCategory = "<div class='" .$cat_class . "'>Total net debt applicable<br>to limit</div>";
             		break;
             	case "Total net debt applicable to the limit<br>as a percentage of debt limit":
-            		$conditionCategory = "<div class='" .$cat_class . "'>Total net debt applicable to<br><span style='padding-left:10px;'>the limit as a percentage</span><br><span style='padding-left:10px;'>of debt limit<span></div>";
+            		$conditionCategory = "<div class='" .$cat_class . "'>Total net debt applicable to<br><span style='padding-left:0px;'>the limit as a percentage</span><br><span style='padding-left:0px;'>of debt limit<span></div>";
             		break;
             	default:
             		$conditionCategory = "<div class='" . $cat_class . "' >" . $row['category'] . "</div>";
