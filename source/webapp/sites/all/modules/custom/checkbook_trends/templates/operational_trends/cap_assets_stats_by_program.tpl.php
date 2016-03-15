@@ -104,7 +104,7 @@ rsort($years);
                 		$conditionCategory = "<div class='" .$cat_class . "'>Parks, Recreation, and<br>Cultural Activities:</div>";
                 		break;
                 	case "Vehicle Maintenance/Storage Facilities":
-                		$conditionCategory = "<div class='" .$cat_class . "'>Vehicle Maintenance/Storage<br><span style='padding-left:10px;'>Facilities<span></div>";
+                		$conditionCategory = "<div class='" .$cat_class . "'>Vehicle Maintenance/Storage<br><span style='padding-left:0px;'>Facilities<span></div>";
                 		break;
                 	default:
                 		$conditionCategory = "<div class='" . $cat_class . "' >" . $row['category'] . "</div>";
