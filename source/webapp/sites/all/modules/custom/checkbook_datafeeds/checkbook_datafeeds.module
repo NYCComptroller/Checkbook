@@ -797,7 +797,7 @@ function checkbook_datafeeds_budget($form, &$form_state) {
         '#submit' => array('previous_submit'),
         '#limit_validation_errors' => array(),
     );
-    $form['budget_next'] = array(
+    $form['feeds_budget_next'] = array(
         '#type' => 'submit',
         '#value' => t('Submit'),
         '#submit' => array('checkbook_datafeeds_budget_next_submit'),
@@ -1422,7 +1422,7 @@ function checkbook_datafeeds_contracts($form, &$form_state)
 
     //<editor-fold desc="Submit Buttons">
 
-    $form['contract_next'] = array(
+    $form['feeds_contract_next'] = array(
         '#type' => 'submit',
         '#value' => t('Submit'),
         '#submit' => array('checkbook_datafeeds_contracts_next_submit'),
@@ -3036,7 +3036,7 @@ function checkbook_datafeeds_payroll($form, &$form_state) {
         '#value' => isset($form_state['values']['column_select']) ? '|'.implode('||',$form_state['values']['column_select']).'|' : '',
         '#type' => 'hidden',
     );
-    $form['payroll_next'] = array(
+    $form['feeds_payroll_next'] = array(
         '#type' => 'submit',
         '#value' => t('Submit'),
         '#submit' => array('checkbook_datafeeds_payroll_next_submit'),
@@ -3804,7 +3804,7 @@ function checkbook_datafeeds_revenue($form, &$form_state) {
         '#submit' => array('previous_submit'),
         '#limit_validation_errors' => array(),
     );
-    $form['revenue_next'] = array(
+    $form['feeds_revenue_next'] = array(
         '#type' => 'submit',
         '#value' => t('Submit'),
         '#submit' => array('checkbook_datafeeds_revenue_next_submit'),
@@ -4313,7 +4313,7 @@ function checkbook_datafeeds_spending($form, &$form_state)
 
     //<editor-fold desc="Submit Buttons">
 
-    $form['spending_next'] = array(
+    $form['feeds_spending_next'] = array(
         '#type' => 'submit',
         '#value' => t('Submit'),
         '#submit' => array('checkbook_datafeeds_spending_next_submit'),
