@@ -119,6 +119,9 @@ rsort($years);
             	case "Total net debt applicable to the limit<br>as a percentage of debt limit":
             		$conditionCategory = "<div class='" .$cat_class . "'>Total net debt applicable to<br><span style='padding-left:0px;'>the limit as a percentage</span><br><span style='padding-left:0px;'>of debt limit<span></div>";
             		break;
+                case "Anticipated TFA financing<sup>(3)</sup>":
+                    $conditionCategory = "<div class='" .$cat_class . "'>Anticipated TFA financing</div>";
+                    break;
             	default:
             		$conditionCategory = "<div class='" . $cat_class . "' >" . $row['category'] . "</div>";
             		break;
@@ -161,7 +164,6 @@ rsort($years);
     <p>Notes:</p>
     <p>(1) Includes adjustments for Business Improvement Districts, Original Issue Discount, Capital Appreciation Bonds Discounts and cash on hand for defeasance.</p>
     <p>(2) TFA Debt Outstanding above 13.5 billion.</p>
-    <p>(3) Excludes TFA Building Aid Revenue bond financing.</p>
     <p>The Constitution of the State of New York limits the general debt-incurring power of The City of New York to ten percent of the five-year average of full valuations of taxable real estate.</p>
     <p>Obligations for water supply and certain obligations for rapid transit and sewage are excluded pursuant to the State Constitution and in accordance with provisions of the State Local Finance
 Law. Resources of the General Debt Service Fund applicable to non-excluded debt and debt service appropriations for the redemption of such debt are deducted from the non-excluded funded

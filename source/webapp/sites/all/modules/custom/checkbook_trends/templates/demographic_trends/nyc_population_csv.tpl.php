@@ -20,7 +20,7 @@
 ?>
 <?php
 
-    $header .= ",,,2000-2014*,,,"."\n";
+    $header .= ",,,2002-2014*,,,"."\n";
     $header .= 'Year';
     $header .=  ",United States" ;
     $header .=  ",Percentage Change from Prior Period," ;
@@ -43,8 +43,6 @@
    	}
 
    echo "\n\n"."*Amounts as of May 30 2014\n\n";
-   echo "\n\n"."Source:U.S Department of Commerce,Bureau of Economic Analysis.\n\n";
-
 
 ?>
 
