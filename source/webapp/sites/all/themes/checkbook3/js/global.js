@@ -2408,6 +2408,7 @@ Drupal.behaviors.advancedsearchfreeze = {
                 jQuery("#edit-contract-next").removeAttr('disabled');
                 jQuery("#edit-contract-next--2").removeAttr('disabled');
                 jQuery("#edit-budget-next").removeAttr('disabled');
+                jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form :input").removeAttr("disabled");
             }, 1);
         });
     }
