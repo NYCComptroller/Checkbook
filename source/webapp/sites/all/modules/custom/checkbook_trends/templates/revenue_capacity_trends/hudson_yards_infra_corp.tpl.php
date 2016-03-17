@@ -41,7 +41,7 @@ echo eval($node->widgetConfig->header);
         <th rowspan="2" class="number"><div class="trendCen" >TEP<br>Revenue<sup>(2)</sup></div></th>
         <th rowspan="2" class="number"><div class="trendCen" >ISP<br>Revenue<sup>(3)</sup></div></th>
         <th rowspan="2" class="number"><div class="trendCen" >PILOMRT<sup>(4)</sup></div></th>
-        <!-- th rowspan="2" class="number"><div class="trendCen" >PILOT<sup>(5)</sup></div></th -->
+        <th rowspan="2" class="number"><div class="trendCen" >PILOT<sup>(5)</sup></div></th>
         <th rowspan="2" class="number"><div class="trendCen" >Other<sup>(6)</sup></div></th>
         <th rowspan="2" class="number"><div class="trendCen" >Investment<br>Earnings</div></th>
         <th rowspan="2" class="number"><div class="trendCen" >Total<br>Revenue</div></th>
@@ -72,6 +72,7 @@ echo eval($node->widgetConfig->header);
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['tep_revenue_2']>0)?number_format($row['tep_revenue_2']):'-') . "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['isp_revenue_3']>0)?number_format($row['isp_revenue_3']):'-') . "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['pilomrt_payment']>0)?number_format($row['pilomrt_payment']):'-') . "</td>";
+            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['pilot']>0)?number_format($row['pilot']):'-') . "</td>";            //PILOT DATA
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['other_4']>0)?number_format($row['other_4']):'-') . "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['investment_earnings']>0)?number_format($row['investment_earnings']):'-') . "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['total_revenue']>0)?number_format($row['total_revenue']):'-') . "</td>";
