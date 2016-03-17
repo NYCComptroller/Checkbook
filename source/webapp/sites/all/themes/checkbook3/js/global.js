@@ -1161,6 +1161,7 @@ Drupal.behaviors.hoveOverMWBE = {
     }
 
     function initializeAccordionAttributes(accordion_type) {
+        $('#advanced-search-rotator').css('display', 'none');
         $('.create-alert-customize-results').css('display','none');
         $('.create-alert-schedule-alert').css('display','none');
         $('.create-alert-confirmation').css('display','none');
@@ -1307,14 +1308,11 @@ Drupal.behaviors.hoveOverMWBE = {
             }
 
             $(document).ajaxComplete(function() {
-                $('#advanced-search-rotator').css('display', 'none');
-                create_alert_form_enable();
                 /* Do not enable next buttons for results page here */
                 var step = $('input:hidden[name="step"]').val();
                 if(step == 'select_criteria') {
                     $('#edit-next-submit').attr('disabled', true);
                     $('#edit-back-submit').attr('disabled', true);
-                    $('#advanced-search-rotator').css('display', 'none');
                 }
                 else if(step == 'schedule_alert') {
                     $('#edit-next-submit').attr('disabled', false);
@@ -1391,6 +1389,10 @@ Drupal.behaviors.hoveOverMWBE = {
                 switch(step) {
                     case 'select_criteria':
                         next_step = 'customize_results';
+
+                        /* Hide the rotator */
+                        $('#advanced-search-rotator').css('display', 'none');
+                        create_alert_form_enable();
 
                         /* Hide the iFrame */
                         $('#checkbook_advanced_search_result_iframe').css('visibility','hidden');
