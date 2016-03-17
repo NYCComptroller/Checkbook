@@ -1162,6 +1162,7 @@ Drupal.behaviors.hoveOverMWBE = {
 
     function initializeAccordionAttributes(accordion_type) {
         $('#advanced-search-rotator').css('display', 'none');
+        $("#block-checkbook-advanced-search-checkbook-advanced-search-form :input").removeAttr("disabled");
         $('.create-alert-customize-results').css('display','none');
         $('.create-alert-schedule-alert').css('display','none');
         $('.create-alert-confirmation').css('display','none');
@@ -1503,6 +1504,9 @@ Drupal.behaviors.hoveOverMWBE = {
                 switch(step) {
                     case 'customize_results':
                         previous_step = 'select_criteria';
+
+                        //enable form
+                        $("#block-checkbook-advanced-search-checkbook-advanced-search-form :input").removeAttr("disabled");
 
                         /* Update width of dialog dimension */
                         $('div.ui-dialog-titlebar').css('width', 'auto');
@@ -2410,7 +2414,6 @@ Drupal.behaviors.advancedsearchfreeze = {
                 jQuery("#edit-contract-next").removeAttr('disabled');
                 jQuery("#edit-contract-next--2").removeAttr('disabled');
                 jQuery("#edit-budget-next").removeAttr('disabled');
-                jQuery("#block-checkbook-advanced-search-checkbook-advanced-search-form :input").removeAttr("disabled");
             }, 1);
         });
     }
