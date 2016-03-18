@@ -25,7 +25,8 @@
     $header .=  ",DIB Revenue(1)";
     $header .=  ",TEP Revenue(2)";
     $header .=  ",ISP Revenue(3)";
-    $header .=  ",PILOMRT(4)";    
+    $header .=  ",PILOMRT(4)";
+    $header .=  ",PILOT(5)";
     $header .=  ",Other(5)";
     $header .=  ",Investment Earnings";
     $header .=  ",Total Revenue";
@@ -49,6 +50,7 @@
         $rowString .= ',' .(($row['tep_revenue_2']>0)?('"'.number_format($row['tep_revenue_2']).'"'):'-');
         $rowString .= ',' .(($row['isp_revenue_3']>0)?('"'.number_format($row['isp_revenue_3']).'"'):'-');
         $rowString .= ',' .(($row['pilomrt_payment']>0)?('"'.number_format($row['pilomrt_payment']).'"'):'-');
+        $rowString .= ',' .(($row['pilot']>0)?('"'.number_format($row['pilot']).'"'):'-');
         $rowString .= ',' .(($row['other_4']>0)?('"'.number_format($row['other_4']).'"'):'-');
         $rowString .= ',' .(($row['investment_earnings']>0)?('"'.number_format($row['investment_earnings']).'"'):'-');
         $rowString .= ',' .(($row['total_revenue']>0)?('"'.number_format($row['total_revenue']).'"'):'-');
