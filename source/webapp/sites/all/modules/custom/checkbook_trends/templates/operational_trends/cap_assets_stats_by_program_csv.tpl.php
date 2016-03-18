@@ -38,7 +38,11 @@
 	echo $header . "\n";
 
     foreach( $table_rows as $row){
-        $rowString = '"'.$row['category'].'"' ;
+        $category = $row['category'];
+        if(strpos($category, "—")){
+            $category = str_replace("—","--",$category);
+        }
+        $rowString = '"'.$category.'"' ;
         if(strpos($row['category'], ':')){
         	$hyphen = "";
         }else{
