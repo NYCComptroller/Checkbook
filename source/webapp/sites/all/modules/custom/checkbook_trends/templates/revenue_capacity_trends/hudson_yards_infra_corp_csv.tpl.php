@@ -27,7 +27,7 @@
     $header .=  ",ISP Revenue(3)";
     $header .=  ",PILOMRT(4)";
     $header .=  ",PILOT(5)";
-    $header .=  ",Other(5)";
+    $header .=  ",Other(6)";
     $header .=  ",Investment Earnings";
     $header .=  ",Total Revenue";
     $header .=  ",Debt Service - Interest";
@@ -35,7 +35,7 @@
     $header .=  ",Debt Service - Total";
     $header .=  ",Operating Expenses";
     $header .=  ",Total to be Covered";
-    $header .=  ",Coverage on Total Revenue(6)";
+    $header .=  ",Coverage on Total Revenue(7)(8)";
 
 	echo $header . "\n";
 	echo "(AMOUNTS IN THOUSANDS)" . "\n";
@@ -58,9 +58,9 @@
         $rowString .= ',' .(($row['principal']>0)?('"'.number_format($row['principal']).'"'):'-');
         $rowString .= ',' .(($row['total']>0)?('"'.number_format($row['total']).'"'):'-');
         //$rowString .= ',' .(($row['operating_expenses']>0)?('"'.number_format($row['operating_expenses']).'"'):'-');
-        $rowString .= ',' .(($row['operating_expenses']>0)?('"'.number_format($row['operating_expenses']).'"'):'-') . ((  $row['fiscal_year'] == '2012')? '(8)':'');
+        $rowString .= ',' .(($row['operating_expenses']>0)?('"'.number_format($row['operating_expenses']).'"'):'-') . ((  $row['fiscal_year'] == '2012')? '(9)':'');
         $rowString .= ',' .(($row['total_to_be_covered']>0)?('"'.number_format($row['total_to_be_covered']).'"'):'-');
-        $rowString .= ',' . $row['coverage_on_total_revenue_5'].(($row['fiscal_year'] == '2009' || $row['fiscal_year'] == '2010' || $row['fiscal_year'] == '2011'|| $row['fiscal_year'] == '2012')?'(7)':'');
+        $rowString .= ',' . $row['coverage_on_total_revenue_5'];
 
         echo $rowString . "\n";
         $count++;
