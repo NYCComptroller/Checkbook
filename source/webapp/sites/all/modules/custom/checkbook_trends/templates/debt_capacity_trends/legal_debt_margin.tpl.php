@@ -163,15 +163,14 @@ rsort($years);
     <div class="footnote">
     <p>Notes:</p>
     <p>(1) Includes adjustments for Business Improvement Districts, Original Issue Discount, Capital Appreciation Bonds Discounts and cash on hand for defeasance.</p>
-    <p>(2) TFA Debt Outstanding above 13.5 billion.</p>
+    <p>(2) TFA Debt Outstanding above 13.5 billion (Excludes TFA Building Aid Revenue bonds).</p>
     <p>The Constitution of the State of New York limits the general debt-incurring power of The City of New York to ten percent of the five-year average of full valuations of taxable real estate.</p>
     <p>Obligations for water supply and certain obligations for rapid transit and sewage are excluded pursuant to the State Constitution and in accordance with provisions of the State Local Finance
 Law. Resources of the General Debt Service Fund applicable to non-excluded debt and debt service appropriations for the redemption of such debt are deducted from the non-excluded funded
 debt to arrive at the funded debt within the debt limit.</p>
         
 <p>To provide for the City's capital program, State legislation was enacted which created the Transitional Finance Authority (TFA) and TSASC Inc. (TSASC). The new authorization as of July
-2009 provides that TFA debt above $13.5 billion is subject to the general debt limit of the City. Without the TFA and TSASC, new contractual commitments for the City’s general obligation
-financed capital program could not continue to be made. The debt-incurring power of TFA and TSASC has permitted the City to continue to enter into new contractual commitments.</p>
+2009 provides that TFA debt above $13.5 billion is subject to the general debt limit of the City.</p>
     </div>
 <?php
 	widget_data_tables_add_js($node);
