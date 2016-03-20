@@ -149,11 +149,11 @@
 	
 	$mwbe_filter = _getRequestParamValue('mwbe');
 	if($mwbe_filter =='4~5' || $mwbe_filter =='4' || $mwbe_filter =='5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){
-		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName()  . ' Sub Spending';
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName()  . ' Sub Spending';
 		
-		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName()  . ' Top Ten Agencies Sub Spending';
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName()  . ' Top Ten Agencies Sub Spending';
 	}else{
-		$node->widgetConfig->chartTitle = 'Top Ten Agencies by ' . MappingUtil::getCurrenEhtnicityName() .' Sub Spending';
+		$node->widgetConfig->chartTitle = 'Top Ten Agencies by ' . MappingUtil::getCurrenEthnicityName() .' Sub Spending';
 		
 	}
 
@@ -161,8 +161,8 @@
 	foreach($node->data_merged as $row){
         $tooltip_label =
         'Agency: ' . $row['agency_name'].  '<br/>' .
-        MappingUtil::getCurrenEhtnicityName() . ' Share: ' . custom_number_formatter_format($row[$amount_column]/($row['total_mwbe'] + $row['total_non_mwbe'] ) *100 ,1,null, '%').  '<br/>' .
-        MappingUtil::getCurrenEhtnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>' .
+        MappingUtil::getCurrenEthnicityName() . ' Share: ' . custom_number_formatter_format($row[$amount_column]/($row['total_mwbe'] + $row['total_non_mwbe'] ) *100 ,1,null, '%').  '<br/>' .
+        MappingUtil::getCurrenEthnicityName() . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>' .
         'Non-M/WBE: ' . custom_number_formatter_format( $row['total_non_mwbe']  ,2,'$').  '<br/>';
 
         $node->widgetConfig->gridConfig->data[] = array($row['agency_name'],

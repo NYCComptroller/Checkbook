@@ -73,7 +73,7 @@
 	
 	$series_new = array();
 	$mwbe_filter = _getRequestParamValue('mwbe');
-    $node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Top Ten Contracts by Sub Vendors Disbursement Amount';
+    $node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName() . ' Top Ten Contracts by Sub Vendors Disbursement Amount';
 	
 	$index = 0;
 	foreach($node->data as $row){

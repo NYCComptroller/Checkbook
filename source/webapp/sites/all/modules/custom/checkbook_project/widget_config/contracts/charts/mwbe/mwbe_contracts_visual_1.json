@@ -172,7 +172,7 @@
 	$contract_type = 'Expense';
  	$where_filter .= ' and rd.document_code in (' . ContractUtil::getCurrentPageDocumentIds() . ') ';
 
-	$node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() .' ' . $status . ' ' . $contract_type .  ' Contracts Share';
+	$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName() .' ' . $status . ' ' . $contract_type .  ' Contracts Share';
 																		 
 ",
 "chartConfig" : {
