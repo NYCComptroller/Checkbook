@@ -89,7 +89,7 @@ rsort($years);
                 $row['category'] = (isset($row['category'])?$row['category']:'&nbsp;');
                 
                 if($row['category'] == "Percentage Increase (Decrease) from Prior Year"){
-                	$row['category']  = "Percentage Increase (Decrease)<br><span style='padding-left:10px;'>from Prior Year</span>";
+                	$row['category']  = "Percentage Increase (Decrease)<br><span style='padding-left:0px;'>from Prior Year</span>";
                 }
                 
 			    echo "<tr>
