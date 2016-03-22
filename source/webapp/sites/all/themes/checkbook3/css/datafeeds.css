@@ -148,8 +148,8 @@ body.page-data-feeds #zone-content fieldset#edit-columns {
 
 body.page-data-feeds #zone-content div#dynamic-columns-wrapper + input,
 body.page-data-feeds #zone-content fieldset#edit-columns + input,
-body.page-data-feeds #zone-content #edit-budget-next,
-body.page-data-feeds #zone-content #edit-revenue-next {
+body.page-data-feeds #zone-content #edit-feeds-budget-next,
+body.page-data-feeds #zone-content #edit-feeds-revenue-next {
     float: right;
 }
 
