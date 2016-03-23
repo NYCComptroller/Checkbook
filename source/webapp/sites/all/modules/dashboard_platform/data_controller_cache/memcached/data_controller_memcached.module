@@ -6,6 +6,12 @@
 * 	(see the file LICENSE for details)
 */
 
+function data_controller_memcached_dc_metamodel_environment_loader() {
+    $items[] = array(
+        'classname' => 'MemcachedEnvironmentMetaModelGenerator');
+
+    return $items;
+}
 
 function data_controller_memcached_dc_cache() {
     $items[MemcachedHandler::$CACHE__TYPE] = array(
