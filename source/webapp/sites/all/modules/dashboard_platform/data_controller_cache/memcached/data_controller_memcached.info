@@ -12,3 +12,4 @@ core = 7.x
 dependencies[] = data_controller
 
 files[] = cache/handler/MemcachedHandler.php
+files[] = environment/loader/handler/MemcachedEnvironmentMetaModelGenerator.php
