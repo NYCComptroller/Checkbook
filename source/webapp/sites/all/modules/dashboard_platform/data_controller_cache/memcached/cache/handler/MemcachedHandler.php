@@ -14,7 +14,7 @@ class MemcachedHandler extends AbstractSharedCacheHandler {
     protected $accessible = FALSE;
 
     protected function initialize($prefix, DataSourceMetaData $datasource) {
-        $this->accessible = function_exists('dmemcache_get') && function_exists('dmemcache_get');
+        $this->accessible = function_exists('dmemcache_get') && function_exists('dmemcache_get_multi') && function_exists('dmemcache_set');
 
         return TRUE;
     }
