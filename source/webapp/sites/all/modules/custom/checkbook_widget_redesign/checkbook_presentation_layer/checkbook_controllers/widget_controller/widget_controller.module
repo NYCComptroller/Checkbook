@@ -38,6 +38,7 @@ require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/ob
 
 //require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/spending/CheckData.php');
 //require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/spending/SpendingService.php');
+require_once(realpath(drupal_get_path('module', 'checkbook_views')) .'/classes/LandingPageWidgetView.php');
 
 /***************************************/
 /* Implementation of Widget Node Type  */
@@ -155,6 +156,40 @@ function _widget_controller_node_view($key){
 //        LogHelper::log_error('Error Testing Service: ' . $e);
 //    }
 }
+function _widget_controller_node_view2($key){
+
+    $output = new stdClass();
+    $widgetView = new LandingPageWidgetView($key);
+
+    try {
+        $widgetView->prepare();
+        $widgetView->getData();
+    }
+    catch(Exception $e) {
+        $errorMsg = 'There was an error processing your request. Please try again in a few minutes.';
+        $output->content['body'] = array(
+            '#value' => $errorMsg,
+            '#weight' => 0,
+        );
+    }
+
+    if ($widgetView->config->dataOnly) {
+        $output->content['body'] = array(
+            '#value' => $widgetView->data,
+            '#weight' => 0,
+        );
+    }
+    else {
+        $val = $widgetView->viewDisplay();
+        $output->content['body'] = array(
+            '#markup' => $val,
+            '#weight' => 0,
+        );
+    }
+
+    echo $output->content['body']['#markup'];
+}
+
 
 function _widget_controller_node_load_file($key){
 	$node =  new stdClass();
@@ -286,7 +321,6 @@ function widget_controller_node_view($node, $nodata = true) {
 	}
 	return $node;
 }
-
 
 function _widget_controller_ajax_wrapper($node){
   $urlPath = drupal_get_path_alias($_GET['q']);
