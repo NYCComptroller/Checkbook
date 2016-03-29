@@ -21,6 +21,9 @@
 <?php
 require_once(realpath(drupal_get_path('module', 'data_controller')) . '/common/object/converter/handler/PHP2Json.php');?>
 
+<?php
+//if (!($node instanceof NodeViewModel)) return;
+//?>
 
 <?php if (isset($node->widgetConfig->table_title)) { ?>
 <?php if ($node->widgetConfig->table_title) {
