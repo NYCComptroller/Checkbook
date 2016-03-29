@@ -18,6 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
 /*************************************************************************************/
 /* Widget Hooks                                                                      */
 /*************************************************************************************/
@@ -497,7 +498,7 @@ function landing_page_widget_view_widget_controller_view(&$node) {
 		  $node->widgetConfig->dataTableOptions->sAjaxSource =  _escape_special_characters(html_entity_decode($sAjaxSource,ENT_QUOTES));
 
             return theme($node->widgetConfig->template, array('node'=> $node));
-		  break;
+		  break;		
 		case "ajaxSimple" :
             $sAjaxSource = '/checkbook_views/data_tables/ajax_data/node/' .$node->nid  ;
             if(is_array($node->widgetConfig->requestParams))  {
@@ -512,7 +513,7 @@ function landing_page_widget_view_widget_controller_view(&$node) {
             $sAjaxSource = $sAjaxSource._checkbook_append_url_params();
 			$node->widgetConfig->dataTableOptions->sAjaxSource =  _escape_special_characters(html_entity_decode($sAjaxSource,ENT_QUOTES));
 
-			$node->widgetConfig->dataTableOptions->fnServerData= "##function ( sSource, aoData, fnCallback ) {
+			$node->widgetConfig->dataTableOptions->fnServerData= "##function ( sSource, aoData, fnCallback ) {			
 			aoData.push( {
 			  'name': 'data_type', 'value': 'json' } );
 			  jQuery.ajax( {
@@ -522,7 +523,7 @@ function landing_page_widget_view_widget_controller_view(&$node) {
 			    'data': aoData,
 			    'success': fnCallback
 			  } );
-			}##";
+			}##";			
 
 				return theme('landing_page_widget_view_by_rows_theme', array('node'=> $node));
 
