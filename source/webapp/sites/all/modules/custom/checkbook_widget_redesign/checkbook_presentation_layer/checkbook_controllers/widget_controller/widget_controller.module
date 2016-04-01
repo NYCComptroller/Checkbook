@@ -36,8 +36,6 @@ require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/ob
 require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/object/converter/handler/AbstractJson2PHP.php');
 require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/object/converter/handler/Json2PHP.php');
 
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/spending/CheckData.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/spending/SpendingService.php');
 
 /***************************************/
 /* Implementation of Widget Node Type  */
@@ -147,8 +145,12 @@ function _widget_controller_node_view($key){
 	echo $node->content['body']['#markup'];
 
 //    try {
+//        $parameters = array("fiscal_year_id" => 117);
+//        $limit = 5;
+//        $order_by = "check_amount DESC";
+//
 //        $service = new SpendingService();
-//        $checks = $service->GetCitywideChecksData();
+//        $checks = $service->GetCitywideChecksData($parameters, $limit, $order_by);
 //        var_dump($checks);
 //    }
 //    catch(Exception $e) {

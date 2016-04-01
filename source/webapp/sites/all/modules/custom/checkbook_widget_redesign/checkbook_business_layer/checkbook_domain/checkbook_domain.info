@@ -19,8 +19,10 @@
 ;
 name = "Checkbook Domain"
 description = "Functionality to serve as a domain layer for checkbook"
-package = REI Checkbook Business Layer
+package = REI Checkbook Widget Redesign
 core = 7.x
+
+dependencies[] = checkbook_infrastructure_layer
 
 files[] = checks/ICheck.php
 files[] = checks/Check.php
