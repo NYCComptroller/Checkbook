@@ -18,7 +18,8 @@
 name = "Widget Controller"
 description = "Module to provide controller support for widget views"
 core = 7.x
-package = REI Dashboard Platform (Visualization)
+package = REI Checkbook Widget Redesign
 dependencies[] = data_controller
 dependencies[] = ajaxnode
 ;dependencies[] = checkbook_services
+dependencies[] = checkbook_infrastructure_layer

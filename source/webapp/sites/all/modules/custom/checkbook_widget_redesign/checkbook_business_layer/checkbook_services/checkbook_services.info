@@ -19,7 +19,7 @@
 ;
 name = "Checkbook Services"
 description = "Functionality to serve as a service layer for checkbook"
-package = REI Checkbook Business Layer
+package = REI Checkbook Widget Redesign
 core = 7.x
 
 files[] = spending/CheckData.php

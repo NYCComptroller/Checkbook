@@ -18,5 +18,5 @@
 name="Landing Page Widget View"
 description="Widget view to display the landing page widgets"
 core = 7.x
-package = REI Dashboard Platform (Visualization)
+package = REI Checkbook Widget Redesign
 dependencies[]=data_controller
