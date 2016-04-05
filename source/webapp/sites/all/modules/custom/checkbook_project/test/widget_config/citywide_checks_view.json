@@ -6,7 +6,6 @@
                "check_eft_issued_nyc_year_id":"check_eft_issued_nyc_year_id","calendar_fiscal_year_id":"calendar_fiscal_year_id"},
 "useList":true,
 "getTotalDataCount":true,
-"limit":"5",
 "noDataInitialLoad":true,
 "html_class": "",
 "no_results_content":"No Results Found",
