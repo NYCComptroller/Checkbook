@@ -1,0 +1,11 @@
+{
+    "widgetType": "data_tables",
+    "widgetSubType": "ajaxSimple",
+    "getTotalDataCount":true,
+    "limit":"5",
+    "noDataInitialLoad":true,
+    "html_class": "",
+    "no_results_content":"No Results Found",
+    "enableExpand":true,
+    "disableViewAll":true
+}

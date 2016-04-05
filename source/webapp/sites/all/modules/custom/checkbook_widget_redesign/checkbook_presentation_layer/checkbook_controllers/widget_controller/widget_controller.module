@@ -140,7 +140,17 @@ function _widget_controller_node_view_page($key){
  * Custom hook for new widget controller
  */
 function _widget_controller_node_view($key){
+    $default_node = _widget_controller_node_load_file('default_settings');
 	$node = _widget_controller_node_load_file($key);
+    //merge the default settings
+    $default_json = $default_node->widget_json;
+    $json = $node->widget_json;
+    $converter = new Json2PHPObject();
+    $node->widgetConfig1 =  $converter->convert($json);
+    $default_node->widgetConfig = $converter->convert($default_json);
+    $node->widgetConfig = drupal_array_merge_deep($default_node->widgetConfig, $node->widgetConfig1);
+    $node->widget_json = json_encode($node->widgetConfig);
+
 	$node = widget_controller_node_view($node);
 	echo $node->content['body']['#markup'];
 
