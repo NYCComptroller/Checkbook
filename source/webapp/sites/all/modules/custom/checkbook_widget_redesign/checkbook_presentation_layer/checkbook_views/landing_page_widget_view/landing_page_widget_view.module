@@ -336,16 +336,20 @@ function _landing_page_widget_view_list_ajaxdata($node){
  * @return updated node data
  */
 function landing_page_widget_view_get_data($node){
-	widget_config($node);
+    //merge default config settings into node config settings
+    $node = widget_merge_default_settings($node);
+
+    //make sure configuration is loaded
+    widget_controller_config($node);
 
     //prepare anything we'll need before loading
-    widget_prepare($node);
+    widget_controller_prepare($node);
 
     //invoke widget specific prepare
-    widget_invoke($node, 'widget_prepare');
+    widget_controller_invoke($node, 'widget_prepare');
 
     //load data
-    widget_data($node);
+    widget_controller_data($node);
     return $node;
 }
 
