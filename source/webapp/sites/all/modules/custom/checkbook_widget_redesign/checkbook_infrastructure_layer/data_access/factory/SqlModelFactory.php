@@ -82,29 +82,51 @@ class SqlModelFactory {
         $sql = $select.$where.$orderBy.$limit;
         return $sql;
     }
-
     /**
      * @param SqlExpressionModel[] $expressions
      * @param $parameters
-     * @return null|string
+     * @param null $logicOperator
+     * @return string
      */
-    static private function processExpressions(array $expressions, $parameters) {
+    static private function processExpressions(array $expressions, $parameters, $logicOperator = NULL) {
 
         $where = "";
         foreach($expressions as $expression) {
-            if($expression->operatorType == SqlOperatorType::COMPARISON) {
-                $paramName = $expression->paramName;
-                $dbField = $expression->dbField;
-                $paramValue = $expression->paramValue != "" ? $expression->paramValue : $parameters[$paramName];
-                if(isset($paramValue)) {
-                    $where .= $where != "" ? " AND " : "";
-                    $where .= self::buildWhereParameter($dbField,$paramValue,$expression->operator);
-                }
-            }
-            else {
-                $where = "(";
-                $where .= self::processExpressions($expression->expressions,$parameters);
-                $where .= ")";
+            switch($expression->operatorType) {
+
+                case SqlOperatorType::COMPARISON:
+                    $paramName = $expression->paramName;
+                    $dbField = $expression->dbField;
+                    $paramValue = $expression->paramValue != "" ? $expression->paramValue : $parameters[$paramName];
+                    if(isset($paramValue)) {
+                        $where .= $where != "" ? " {$logicOperator} " : "";
+                        $where .= self::buildWhereParameter($dbField,$paramValue,$expression->operator);
+                    }
+                    break;
+
+                case SqlOperatorType::CONDITION:
+                    $paramValue = $parameters[$expression->paramName];
+                    $compareValue = $expression->compareValue;
+                    $condition = $expression->condition;
+
+                    $success = false;
+                    switch($condition) {
+                        case SqlOperator::EQUAL:
+                            $success  = $paramValue == $compareValue;
+                            break;
+                    }
+                    if($success) {
+                        $where .= $where != "" ? " {$logicOperator} " : "";
+                        $where .= self::processExpressions($expression->expressions,$parameters) ;
+                    }
+                    break;
+
+                default:
+                    $where = "(";
+                    $where .= self::processExpressions($expression->expressions, $parameters, $expression->operator);
+                    $where .= ")";
+                    break;
+
             }
         }
         return $where;

@@ -21,7 +21,8 @@ class DBCheck {
     public $check_amount;
 }
 
-class Check implements ICheck
+
+abstract class AbstractCheck implements ICheck
 {
     public $id;
     public $agency;
@@ -30,36 +31,51 @@ class Check implements ICheck
     public $check_amount;
     public $issued_date;
 
-    function populateFromObject($obj) {
+    function populate($obj) {
         $this->id = null;
         $this->agency = $obj->agency_name;
         $this->prime_vendor = $obj->vendor_name;
         $this->expense_category = $obj->expenditure_object_name;
         $this->check_amount = $obj->check_amount;
         $this->issued_date = $obj->check_eft_issued_date;
+        $this->populateAdditional($obj);
+    }
+
+    public function asArray() {
+        return get_object_vars($this);
+    }
+
+    abstract function populateAdditional($obj);
+}
+
+class Check extends AbstractCheck
+{
+    function populateAdditional($obj)
+    {
+        // TODO: Implement populateAdditional() method.
     }
 }
 
-class OgeCheck implements ICheck
+class OgeCheck extends AbstractCheck
 {
-    function populateFromObject($obj)
+    function populateAdditional($obj)
     {
-        // TODO: Implement populateFromObject() method.
+        // TODO: Implement populateAdditional() method.
     }
 }
 
-class MwbeCheck implements ICheck
+class MwbeCheck extends AbstractCheck
 {
-    function populateFromObject($obj)
+    function populateAdditional($obj)
     {
-        // TODO: Implement populateFromObject() method.
+        // TODO: Implement populateAdditional() method.
     }
 }
 
-class SubVendorCheck implements ICheck
+class SubVendorCheck extends AbstractCheck
 {
-    function populateFromObject($obj)
+    function populateAdditional($obj)
     {
-        // TODO: Implement populateFromObject() method.
+        // TODO: Implement populateAdditional() method.
     }
 }

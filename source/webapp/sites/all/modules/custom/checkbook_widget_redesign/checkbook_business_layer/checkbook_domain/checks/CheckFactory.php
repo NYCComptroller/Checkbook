@@ -15,8 +15,8 @@ class CheckFactory extends AbstractCheckFactory
         $entities = array();
         while ($obj = $data->fetchObject('DBCheck')) {
             $this->createdCheck = new $check();
-            $this->createdCheck->populateFromObject($obj);
-            $entities[] = $this->createdCheck;
+            $this->createdCheck->populate($obj);
+            $entities[] = $this->createdCheck->asArray();
         }
 
         return $entities;

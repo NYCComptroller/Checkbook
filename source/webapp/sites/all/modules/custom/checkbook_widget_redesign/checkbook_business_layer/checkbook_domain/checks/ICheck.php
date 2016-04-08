@@ -10,5 +10,6 @@
 
 interface ICheck
 {
-    function populateFromObject($obj);
+    function populate($obj);
+    function populateAdditional($obj);
 }
