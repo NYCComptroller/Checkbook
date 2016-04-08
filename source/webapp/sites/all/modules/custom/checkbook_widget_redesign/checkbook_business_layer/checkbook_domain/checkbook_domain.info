@@ -30,4 +30,10 @@ files[] = checks/AbstractCheckFactory.php
 files[] = checks/CheckFactory.php
 files[] = checks/CheckRepository.php
 
-files[] = checks/sql/checks.xml
+files[] = widget/AbstractWidgetRepository.php
+files[] = widget/IWidgetRepository.php
+files[] = widget/WidgetRepository.php
+files[] = widget/AbstractEntityFactory.php
+files[] = widget/EntityFactory.php
+
+files[] = config/sql/checks.xml

@@ -9,50 +9,50 @@
 class SqlModelFactory {
 
     /**
-     * @param $statement
      * @param $parameters
      * @param $limit
      * @param $orderBy
-     * @param $type
+     * @param $sqlConfigName
+     * @param $statementName
      * @return mixed
      */
-    static function getSqlStatement($statement, $parameters, $limit, $orderBy, $type) {
-        $sqlStatementModel = self::getSqlStatementModel($statement, $parameters, $limit, $orderBy, $type);
+    static function getSqlStatement($parameters, $limit, $orderBy, $sqlConfigName, $statementName) {
+        $sqlStatementModel = self::getSqlStatementModel($parameters, $limit, $orderBy, $sqlConfigName, $statementName);
         return $sqlStatementModel->query;
     }
 
     /**
-     * @param $statement
      * @param $parameters
      * @param $limit
      * @param $orderBy
-     * @param $type
+     * @param $sqlConfigName
+     * @param $statementName
      * @return SqlStatementModel
      */
-    static function getSqlStatementModel($statement, $parameters, $limit, $orderBy, $type) {
-        $sqlModel = self::getSqlModel($type);
-        $sqlStatementModel = $sqlModel->getStatement($statement);
+    static function getSqlStatementModel($parameters, $limit, $orderBy, $sqlConfigName, $statementName) {
+        $sqlModel = self::getSqlModel($sqlConfigName);
+        $sqlStatementModel = $sqlModel->getStatement($statementName);
         $query = self::prepareSqlStatement($sqlStatementModel, $parameters, $limit, $orderBy);
         $sqlStatementModel->query = $query;
         return $sqlStatementModel;
     }
 
     /**
-     * @param $type
+     * @param $sqlConfigName
      * @return SqlModel
      */
-    static private function getSqlModel($type) {
-        $xml = self::loadSqlConfigFile($type);
+    static private function getSqlModel($sqlConfigName) {
+        $xml = self::loadSqlConfigFile($sqlConfigName);
         $sqlModel = SqlModel::loadFromXml($xml);
         return $sqlModel;
     }
 
     /**
-     * @param $type
+     * @param $sqlConfigName
      * @return SimpleXMLElement
      */
-    static private function loadSqlConfigFile($type) {
-        $file = realpath(drupal_get_path('module', 'checkbook_domain')).'/'.$type.'/config/sql/'.$type.'.xml';
+    static private function loadSqlConfigFile($sqlConfigName) {
+        $file = realpath(drupal_get_path('module', 'checkbook_domain')).'/config/sql/'.$sqlConfigName.'.xml';
         $xml = simplexml_load_file($file);
         return $xml;
     }

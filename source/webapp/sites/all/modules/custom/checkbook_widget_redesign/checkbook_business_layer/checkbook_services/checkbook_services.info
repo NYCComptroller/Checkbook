@@ -24,4 +24,9 @@ core = 7.x
 
 files[] = spending/CheckData.php
 files[] = spending/SpendingService.php
+files[] = spending/ChecksWidgetService.php
+
+files[] = widget/AbstractWidgetService.php
+files[] = widget/IWidgetService.php
+files[] = widget/WidgetService.php
 dependencies[] = checkbook_domain

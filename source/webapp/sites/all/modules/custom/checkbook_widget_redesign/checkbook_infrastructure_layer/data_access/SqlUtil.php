@@ -8,11 +8,11 @@
 
 class SqlUtil {
 
-    public static function buildExecuteSqlQuery($statement, $parameters, $limit, $order_by, $type) {
+    public static function buildExecuteSqlQuery($parameters, $limit, $order_by, $sqlConfigName, $statementName) {
 
         try {
 
-            $model = SqlModelFactory::getSqlStatementModel($statement, $parameters, $limit, $order_by, $type);
+            $model = SqlModelFactory::getSqlStatementModel($parameters, $limit, $order_by, $sqlConfigName, $statementName);
 //            log_info("SQL:\n\n".$model->query."\n\n");
             $results = self::executeSqlQuery($model);
         }
@@ -23,10 +23,10 @@ class SqlUtil {
         return $results;
     }
 
-    public static function getSqlQuery($statement, $parameters, $limit, $order_by, $type) {
+    public static function getSqlQuery($parameters, $limit, $order_by, $sqlConfigName, $statementName) {
 
         try {
-            $model = self::getSqlStatementModel($statement, $parameters, $limit, $order_by, $type);
+            $model = self::getSqlStatementModel($parameters, $limit, $order_by, $sqlConfigName, $statementName);
             $query = $model->query;
         }
         catch (Exception $e) {
@@ -36,10 +36,10 @@ class SqlUtil {
         return $query;
     }
 
-    public static function getSqlStatementModel($statement, $parameters, $limit, $order_by, $type) {
+    public static function getSqlStatementModel($parameters, $limit, $order_by, $sqlConfigName, $statementName) {
 
         try {
-            $model = SqlModelFactory::getSqlStatementModel($statement, $parameters, $limit, $order_by, $type);
+            $model = SqlModelFactory::getSqlStatementModel($parameters, $limit, $order_by, $sqlConfigName, $statementName);
         }
         catch (Exception $e) {
             log_error("Error in SqlUtil::getSqlQuery(): \n" . $e->getMessage());
