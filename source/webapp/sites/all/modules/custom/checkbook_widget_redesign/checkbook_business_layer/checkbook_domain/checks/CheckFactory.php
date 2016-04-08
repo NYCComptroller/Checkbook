@@ -22,30 +22,3 @@ class CheckFactory extends AbstractCheckFactory
         return $entities;
     }
 }
-
-//class OgeChecksFactory extends AbstractChecksFactory
-//{
-//    public function create(IChecks $checks, $data)
-//    {
-//        $this->$createdChecks = new $checks();
-//        return($this->$createdChecks->getData());
-//    }
-//}
-//
-//class MwbeChecksFactory extends AbstractChecksFactory
-//{
-//    public function create(IChecks $checks, $data)
-//    {
-//        $this->$createdChecks = new $checks();
-//        return($this->$createdChecks->getData());
-//    }
-//}
-//
-//class SubVendorChecksFactory extends AbstractChecksFactory
-//{
-//    public function create(IChecks $checks, $data)
-//    {
-//        $this->$createdChecks = new $checks();
-//        return($this->$createdChecks->getData());
-//    }
-//}
