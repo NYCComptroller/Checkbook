@@ -8,12 +8,12 @@
 
 class SqlUtil {
 
-
     public static function buildExecuteSqlQuery($statement, $parameters, $limit, $order_by, $type) {
 
         try {
 
             $model = SqlModelFactory::getSqlStatementModel($statement, $parameters, $limit, $order_by, $type);
+//            log_info("SQL:\n\n".$model->query."\n\n");
             $results = self::executeSqlQuery($model);
         }
         catch (Exception $e) {
@@ -58,16 +58,6 @@ class SqlUtil {
             throw $e;
         }
         return $results;
-    }
-
-    public static function prepareSqlQuery($sql, $parameters, $limit, $order_by) {
-        $where = self::buildWhereClause($parameters);
-        $where = isset($where) ? "\nWHERE {$where}" : "";
-        $order_by = isset($order_by) ? "\nORDER BY {$order_by}" : "";
-        $limit = isset($limit) ? "\nLIMIT {$limit}" : "";
-        $query = "{$sql}{$where}{$order_by}{$limit}";
-
-        return $query;
     }
 
     public static function executeSqlFetchAssoc($query, $data_source = 'checkbook', $db_name = "main")

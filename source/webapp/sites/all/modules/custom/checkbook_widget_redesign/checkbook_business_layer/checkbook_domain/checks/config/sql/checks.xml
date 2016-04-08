@@ -1,7 +1,7 @@
 <statements>
     <statement name="GetCityWideChecks" datasource="checkbook">
-        <param name="fiscal_year_id" required ="true"/>
-        <param name="calendar_year_id" />
+        <param name="year" required ="true"/>
+        <param name="yeartype" required ="true"/>
         <sql>
             <select>
                 SELECT
@@ -18,8 +18,13 @@
             </select>
             <where>
                 <exp op="AND">
-                    <exp op="=" dbField="check_eft_issued_nyc_year_id" paramName="fiscal_year_id" />
-                    <exp op="=" dbField="check_eft_issued_nyc_year_id" paramName="calendar_year_id" />
+                    <exp op="=" dbField="check_eft_issued_nyc_year_id" paramName="year" />
+                    <exp op="IF" condition="=" paramName="yeartype" compareValue="B">
+                        <exp op="=" dbField="check_eft_issued_nyc_year_id" paramName="year" />
+                    </exp>
+                    <exp op="IF" condition="=" paramName="yeartype" compareValue="C">
+                        <exp op="=" dbField="calendar_fiscal_year_id" paramName="year" />
+                    </exp>
                 </exp>
             </where>
         </sql>
@@ -48,7 +53,7 @@
                     <exp op="IS NOT" dbField="check_eft_issued_nyc_year_id">0</exp>
                     <exp op="OR">
                         <exp op="=" dbField="blah" paramName="fiscal_year_id" />
-                        <exp op="IS NOT;" dbField="check_eft_issued_nyc_year_id">0</exp>
+                        <exp op="IS NOT" dbField="check_eft_issued_nyc_year_id">0</exp>
                         <exp op="=" dbField="blah2" paramName="calendar_year_id" />
                     </exp>
                 </exp>

@@ -20,6 +20,7 @@ abstract class SqlOperator {
     const IS_NOT = 'IS NOT';
     const _AND_ = 'AND';
     const _OR_ = 'OR';
+    const _IF_ = 'IF';
 
     /**
      * @param $string
@@ -29,14 +30,41 @@ abstract class SqlOperator {
         switch($string) {
             case self::_AND_:
             case self::_OR_:
+            case self::_IF_:
                 return false;
         }
         return true;
+    }
+
+    /**
+     * @param $string
+     * @return bool
+     */
+    static public function isLogicOperator($string) {
+        switch($string) {
+            case self::_AND_:
+            case self::_OR_:
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param $string
+     * @return bool
+     */
+    static public function isConditionOperator($string) {
+        switch($string) {
+            case self::_IF_:
+                return true;
+        }
+        return false;
     }
 }
 
 abstract class SqlOperatorType {
 
-    const COMPARISON = '=';
-    const LOGIC = '<>';
+    const COMPARISON = 'comparison';
+    const LOGIC = 'logic';
+    const CONDITION = 'condition';
 }

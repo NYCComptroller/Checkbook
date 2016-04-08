@@ -14,6 +14,8 @@ class SqlExpressionModel extends AbstractSqlModel {
     public $dbField;
     public $paramValue;
     public $operatorType;
+    public $compareValue;
+    public $condition;
     protected static $childElements = array(
         array('xpath'=>'exp','class'=>'SqlExpressionModel')
     );
@@ -24,16 +26,20 @@ class SqlExpressionModel extends AbstractSqlModel {
      * @param $paramName
      * @param $dbField
      * @param $paramValue
+     * @param $compareValue
+     * @param $condition
      */
-    public function __construct(array $expressions, $operator, $paramName, $dbField, $paramValue) {
+    public function __construct(array $expressions, $operator, $paramName, $dbField, $paramValue, $compareValue, $condition) {
         $this->dbField = $dbField;
         $this->expressions = $expressions;
         $this->operator = $operator;
         $this->paramName = $paramName;
         $this->paramValue = $paramValue;
-        $this->operatorType = SqlOperator::isComparisonOperator($operator)
-            ? SqlOperatorType::COMPARISON
-            : SqlOperatorType::LOGIC;
+        $this->compareValue = $compareValue;
+        $this->condition = $condition;
+        $this->operatorType =
+            SqlOperator::isComparisonOperator($operator) ? SqlOperatorType::COMPARISON
+            : (SqlOperator::isLogicOperator($operator) ? SqlOperatorType::LOGIC : SqlOperatorType::CONDITION);
     }
 
     /**
@@ -46,9 +52,11 @@ class SqlExpressionModel extends AbstractSqlModel {
         $paramName = (string)$xml->attributes()->paramName;
         $dbField = (string)$xml->attributes()->dbField;
         $paramValue = trim((string)$xml);
+        $compareValue = (string)$xml->attributes()->compareValue;
+        $condition = (string)$xml->attributes()->condition;
         $childModels = self::loadChildXElements($xml);
 
-        return new self($childModels[0], $operator, $paramName, $dbField, $paramValue);
+        return new self($childModels[0], $operator, $paramName, $dbField, $paramValue, $compareValue, $condition);
     }
 
 }
