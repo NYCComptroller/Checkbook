@@ -7,5 +7,6 @@
     "html_class": "",
     "no_results_content":"No Results Found",
     "enableExpand":true,
-    "disableViewAll":true
+    "disableViewAll":true,
+    "useList":false
 }
