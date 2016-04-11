@@ -18,17 +18,27 @@ abstract class AbstractWidgetService implements IWidgetService {
     public function getWidgetData($parameters, $limit, $order_by) {
         // 1. Call Repository
         $data = $this->repository->getWidgetData($parameters, $limit, $order_by);
-        // 2. Calculate Derived Columns
-        $data = $this->implDerivedColumns($data);
         return $data;
 
     }
 
-    public function getWidgetDataCount($parameters, $limit, $order_by) {
+    public function getWidgetDataCount($parameters) {
         // 1. Call Repository
-        $count = $this->repository->getWidgetDataCount($parameters, $limit, $order_by);
+        $count = $this->repository->getWidgetDataCount($parameters);
         return $count;
     }
 
-    abstract public function implDerivedColumns($data);
+    public function implementDerivedColumns($data) {
+        foreach($data as $row_key => $row_value) {
+            foreach($row_value as $col_key => $col_value) {
+                $value = $this->implDerivedColumns($col_key,$row_value);
+                if(isset($value)) {
+                    $data[$row_key][$col_key] = $value;
+                }
+            }
+        }
+        return $data;
+    }
+
+    abstract public function implDerivedColumns($column_name,$row);
 }

@@ -10,5 +10,5 @@
 interface IWidgetRepository {
 
     public function getWidgetData($parameters, $limit, $order_by);
-    public function getWidgetDataCount($parameters, $limit, $order_by);
+    public function getWidgetDataCount($parameters);
 }

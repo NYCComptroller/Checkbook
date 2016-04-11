@@ -8,5 +8,6 @@
     "no_results_content":"No Results Found",
     "enableExpand":true,
     "disableViewAll":true,
-    "useList":false
+    "useList":false,
+    "validUrlParameters":["year","yeartype"]
 }

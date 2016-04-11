@@ -8,5 +8,6 @@
 
 interface IWidgetService {
     public function getWidgetData($parameters, $limit, $order_by);
-    public function getWidgetDataCount($parameters, $limit, $order_by);
+    public function getWidgetDataCount($parameters);
+    public function implementDerivedColumns($data);
 } 
