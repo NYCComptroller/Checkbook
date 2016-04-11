@@ -1,19 +1,11 @@
 {
-"widgetType": "data_tables",
-"widgetSubType": "ajaxSimple",
 "cleanURLParameters":["agency","vendor","category","year","yeartype","check_eft_issued_nyc_year_id","calendar_fiscal_year_id","fvendor"],
 "urlParamMap":{"agency":"agency_id","fvendor":"vendor_id","vendor":"vendor_id","category":"spending_category_id","year":"year_id","yeartype":"year_type",
                "check_eft_issued_nyc_year_id":"check_eft_issued_nyc_year_id","calendar_fiscal_year_id":"calendar_fiscal_year_id"},
 "useList":true,
-"getTotalDataCount":true,
-"noDataInitialLoad":true,
-"html_class": "",
-"no_results_content":"No Results Found",
 "dataset": "checkbook:fact_disbursement_line_item",
 "columns": ["check_eft_issued_date","vendor_name","agency_name","check_amount","expenditure_object_name",
             "agency_id","vendor_id","expenditure_object_id","department_name"],
-"enableExpand":true,
-"disableViewAll":true,
 "adjustParameters":"
 
     $yearType = $parameters['year_type'][0];
