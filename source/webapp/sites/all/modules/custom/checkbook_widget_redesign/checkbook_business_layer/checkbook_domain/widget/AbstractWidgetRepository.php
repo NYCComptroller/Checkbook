@@ -26,13 +26,12 @@ abstract class AbstractWidgetRepository implements IWidgetRepository {
         return $entities;
     }
 
-    public function getWidgetDataCount($parameters, $limit, $order_by) {
+    public function getWidgetDataCount($parameters) {
         // 1. Get Data
-        $data = $this->getData($parameters, $limit, $order_by);
+        $data = $this->getData($parameters, null, null);
         // 2. Call Factory
-        $factory = new EntityFactory();
-        $entities = $factory->create($data);
-        return count($entities);
+        $results = $data->fetchAll();
+        return $results[0]->record_count;
     }
 
     private function getData($parameters, $limit, $order_by)
