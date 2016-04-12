@@ -34,8 +34,10 @@ require_once(realpath(drupal_get_path('module', 'data_controller')) . '/common/o
 ?>
 
 
-<?php if (isset($node->widgetConfig->header)) {
-  echo eval($node->widgetConfig->header);
+<?php if (isset($node->widgetConfig->headerTitle)) {
+    load_widget_controller_data_count($node);
+    $count = $node->totalDataCount > 4 ? '<span class="hideOnExpand">5 </span>' : $node->totalDataCount;
+    echo '<div class="tableHeader"><h2>Top '.$count.' '.$node->widgetConfig->headerTitle.'</h2><span class="contCount"> Number of '.$node->widgetConfig->headerTitle.':  '.number_format($node->totalDataCount).'</span></div>';
 }
 ?>
 <table id="table_<?php echo widget_unique_identifier($node) ?>" class="<?php echo $node->widgetConfig->html_class ?>">
@@ -117,8 +119,15 @@ else {
         echo '<span class="plus-or">or</span>';
     }
   }
-  if (isset($node->widgetConfig->footer)) {
-    echo eval($node->widgetConfig->footer);
+  if (isset($node->widgetConfig->footerUrl)) {
+      $url = $node->widgetConfig->footerUrl;
+      $url = eval("return $url;");
+      if($node->totalDataCount > 0) {
+          echo '<a class="show-details bottomContainerReload" href="'.$url.'">Details >></a>';
+      }
+      else {
+          echo '<a class="show-details bottomContainerReload" href="'.$url.'" style="display:none;">Details >></a>';
+      }
   }
   ?>
 </div>
