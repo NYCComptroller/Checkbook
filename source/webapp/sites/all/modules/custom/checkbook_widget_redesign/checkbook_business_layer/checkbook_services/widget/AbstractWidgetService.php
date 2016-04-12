@@ -19,7 +19,6 @@ abstract class AbstractWidgetService implements IWidgetService {
         // 1. Call Repository
         $data = $this->repository->getWidgetData($parameters, $limit, $order_by);
         return $data;
-
     }
 
     public function getWidgetDataCount($parameters) {

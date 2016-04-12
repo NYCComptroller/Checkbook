@@ -466,7 +466,36 @@ function widget_controller_data(&$node) {
 	//Load widget data
     load_widget_controller_data($node);
 
+    //Format widget data
+    $node->data = widget_controller_format_widget_data($node);
+
+
     //Derived Columns
+}
+
+/**
+ * Function will go through all columns in the table_columns config and apply all formatting to the data
+ *
+ * @param $node
+ * @return mixed
+ */
+function widget_controller_format_widget_data($node){
+    $formatColumns = array_filter($node->widgetConfig->table_columns,
+        function($value) {
+            return isset($value->format);
+        });
+    if(count($formatColumns) > 0) {
+        foreach($node->data as $key=>$val) {
+            foreach($formatColumns as $formatColumn) {
+                switch($formatColumn->format) {
+                    case "dollar":
+                        $node->data[$key][$formatColumn->column] = custom_number_formatter_format($node->data[$key][$formatColumn->column],2,'$');
+                        break;
+                }
+            }
+        }
+    }
+    return $node->data;
 }
 
 /**

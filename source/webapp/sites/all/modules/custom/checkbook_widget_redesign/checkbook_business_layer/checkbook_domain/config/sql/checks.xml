@@ -5,11 +5,11 @@
         <sql>
             <select>
                 SELECT
-                check_eft_issued_date,
+                check_eft_issued_date as issue_date,
                 vendor_name,
                 agency_name,
                 check_amount,
-                expenditure_object_name,
+                expenditure_object_name as expense_category,
                 agency_id,
                 vendor_id,
                 expenditure_object_id,
