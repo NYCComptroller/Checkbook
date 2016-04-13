@@ -95,4 +95,51 @@
             </where>
         </sql>
     </statement>
+    <statement name="GetOGEChecks" datasource="checkbook">
+        <param name="fiscal_year_id" required ="true"/>
+        <param name="calendar_year_id" />
+        <sql>
+            <select>
+                SELECT check_eft_issued_date as issue_date,
+                vendor_name as prime_vendor_name,
+                agency_name,
+                check_amount,
+                expenditure_object_name as expense_category,
+                agency_id,
+                vendor_id,
+                expenditure_object_id,
+                department_name
+                FROM disbursement_line_item_details
+            </select>
+            <where>
+                <exp op="AND">
+                    <exp op="IF" condition="=" paramName="yeartype" compareValue="B">
+                        <exp op="=" dbField="check_eft_issued_nyc_year_id" paramName="year" />
+                    </exp>
+                    <exp op="IF" condition="=" paramName="yeartype" compareValue="C">
+                        <exp op="=" dbField="calendar_fiscal_year_id" paramName="year" />
+                    </exp>
+                </exp>
+            </where>
+        </sql>
+    </statement>
+    <statement name="GetCountOGEChecks" datasource="checkbook">
+        <param name="year" required ="true"/>
+        <param name="yeartype" required ="true"/>
+        <sql>
+            <select>
+                SELECT DISTINCT count(check_eft_issued_date) as record_count FROM disbursement_line_item_details
+            </select>
+            <where>
+                <exp op="AND">
+                    <exp op="IF" condition="=" paramName="yeartype" compareValue="B">
+                        <exp op="=" dbField="check_eft_issued_nyc_year_id" paramName="year" />
+                    </exp>
+                    <exp op="IF" condition="=" paramName="yeartype" compareValue="C">
+                        <exp op="=" dbField="calendar_fiscal_year_id" paramName="year" />
+                    </exp>
+                </exp>
+            </where>
+        </sql>
+    </statement>
 </statements>
