@@ -11,7 +11,8 @@
     "table_columns": [
             {
                 "labelAlias":"issue_date",
-                "column":"issue_date"
+                "column":"issue_date",
+                "format":"date"
             },
             {
                 "labelAlias":"agency_name",

@@ -491,6 +491,9 @@ function widget_controller_format_widget_data($node){
                     case "dollar":
                         $node->data[$key][$formatColumn->column] = custom_number_formatter_format($node->data[$key][$formatColumn->column],2,'$');
                         break;
+                    case "date":
+                        $node->data[$key][$formatColumn->column] = custom_date_format($node->data[$key][$formatColumn->column]);
+                        break;
                 }
             }
         }

@@ -9,7 +9,7 @@
     "headerTitle":"Checks",
     "footerUrl":"SpendingUtil::getSpendingFooterUrl($node)",
     "table_columns": [
-        {"labelAlias": "issue_date","column": "issue_date"},
+        {"labelAlias": "issue_date","column": "issue_date","format":"date"},
         {"labelAlias": "agency_name","column":"agency_name"},
         {"labelAlias": "prime_vendor","column": "prime_vendor_name"},
         {"label": "","column": ""},
