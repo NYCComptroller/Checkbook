@@ -10,29 +10,11 @@
     "footerUrl":"'/panel_html/spending_transactions/spending/transactions'. _checkbook_project_get_url_param_string(\"vendor\",\"fvendor\") ._checkbook_project_get_url_param_string(\"agency\")  . '/dtsmnid/' . $node->nid ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string(false,false,true). _checkbook_append_url_params()",
 
     "table_columns": [
-        {
-        "labelAlias": "agency_name",
-        "column": "agency_name_link",
-        "sortSourceColumn":"agency_name"
-        },
-        {
-        "labelAlias": "prime_vendor",
-        "column": "vendor_name_link2",
-        "sortSourceColumn":"vendor_name"
-        },
-        {
-        "labelAlias": "expense_category",
-        "column":"expenditure_object_name"
-        },
-        {
-        "labelAlias": "check_amount",
-        "column": "formatted_check_amount",
-        "sortSourceColumn":"check_amount"
-        },
-        {
-        "label": "",
-        "column": ""
-        }
+        {"labelAlias": "agency_name","column": "agency_name"},
+        {"labelAlias": "prime_vendor","column": "prime_vendor_name"},
+        {"labelAlias": "expense_category","column":"expense_category"},
+        {"labelAlias": "check_amount","column": "check_amount","format":"dollar"},
+        {"label": "","column": ""}
     ],
     "dataTableOptions":{
         "aoColumns": [
