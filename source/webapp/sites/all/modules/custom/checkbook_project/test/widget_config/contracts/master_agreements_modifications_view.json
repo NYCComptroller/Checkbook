@@ -6,7 +6,7 @@
         "statementName":"GetMasterAgreementModifications",
         "countStatementName":"GetCountMasterAgreementModifications"
     },
-    "defaultParameters":{"yeartype":"B","document_code":"MMA1~MA1","status_flag":"A"},
+    "defaultParameters":{"document_code":"'MMA1'~'MA1'"},
     "headerTitle":"Master Agreement Modifications",
     "footerUrl":"'/panel_html/spending_transactions/spending/transactions'. _checkbook_project_get_url_param_string('vendor','fvendor') ._checkbook_project_get_url_param_string('agency')  . '/dtsmnid/' . $node->nid ._checkbook_project_get_url_param_string('category') . _checkbook_project_get_year_url_param_string(false,false,true). _checkbook_append_url_params()",
     "table_columns":[
@@ -14,25 +14,25 @@
         {"labelAlias":"contract_purpose","column":"contract_purpose"},
         {"labelAlias":"contract_agency","column":"agency_name"},
         {"labelAlias":"prime_vendor","column":"vendor_name"},
-        {"labelAlias":"current_amount","column":"current_amount","format":"dollar"},
-        {"labelAlias":"original_amount","column":"original_amount","format":"dollar"},
-        {"labelAlias":"spent_to_date","column":"spent_to_date","format":"date"},
+        {"labelAlias":"current_amount","column":"current_amount_sum","format":"dollar"},
+        {"labelAlias":"original_amount","column":"original_amount_sum","format":"dollar"},
+        {"labelAlias":"spent_to_date","column":"spending_amount_sum","format":"dollar"},
         {"labelAlias":"dollar_diff","column":"dollar_difference","format":"dollar"},
-        {"labelAlias":"percent_diff", "column":"percent_difference","format":"dollar"},
-        {"label":"", "column":""}
+        {"labelAlias":"percent_diff","column":"percent_difference","format":"dollar"},
+        {"label":"","column":""}
     ],
     "dataTableOptions":{
         "aoColumns":[
-            {"bSortable":false, "sWidth":"150px","sClass":"text"},
-            {"bSortable":false, "sWidth":"127px","sClass":"text"},
-            {"bSortable":false, "sWidth":"129px","sClass":"text"},
-            {"bSortable":false, "sWidth":"129px","sClass":"text"},
-            {"bSortable":true, "sWidth":"78px", "sClass":"number" ,"asSorting":["desc","asc"]},
-            {"bSortable":true, "sWidth":"78px", "sClass":"number" ,"asSorting":[ "desc","asc"]},
-            {"bSortable":true, "sWidth":"78px","sClass":"number" ,"asSorting":["desc","asc"]},
-            {"bSortable":true, "sWidth":"78px", "sClass":"number" ,"asSorting":["desc","asc"]},
-            {"bSortable":true, "sWidth":"78px", "sClass":"number" ,"asSorting":["desc","asc"]},
-            {"bSortable":false, "sWidth":"15px" }
+            {"bSortable":false,"sWidth":"150px","sClass":"text"},
+            {"bSortable":false,"sWidth":"127px","sClass":"text"},
+            {"bSortable":false,"sWidth":"129px","sClass":"text"},
+            {"bSortable":false,"sWidth":"129px","sClass":"text"},
+            {"bSortable":true,"sWidth":"78px","sClass":"number","asSorting":["desc","asc"]},
+            {"bSortable":true,"sWidth":"78px","sClass":"number","asSorting":[ "desc","asc"]},
+            {"bSortable":true,"sWidth":"78px","sClass":"number","asSorting":["desc","asc"]},
+            {"bSortable":true,"sWidth":"78px","sClass":"number","asSorting":["desc","asc"]},
+            {"bSortable":true,"sWidth":"78px","sClass":"number","asSorting":["desc","asc"]},
+            {"bSortable":false,"sWidth":"15px" }
         ],
         "bServerSide":true,
         "bFilter":false,
@@ -41,7 +41,7 @@
         "bLengthChange":false,
         "bInfo":false,
         "bAutoWidth":false,
-        "aaSorting":[[ 7, "desc" ]],
+        "aaSorting":[[ 7,"desc" ]],
         "fnServerParams":"##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
         "oLanguage":{"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
     }
