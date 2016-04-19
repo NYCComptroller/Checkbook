@@ -36,8 +36,9 @@ require_once(realpath(drupal_get_path('module', 'data_controller')) . '/common/o
 
 <?php if (isset($node->widgetConfig->headerTitle)) {
     load_widget_controller_data_count($node);
+    $headerSubTitle = isset($node->widgetConfig->headerSubTitle) ? $node->widgetConfig->headerSubTitle : $node->widgetConfig->headerTitle;
     $count = $node->totalDataCount > 4 ? '<span class="hideOnExpand">5 </span>' : $node->totalDataCount;
-    echo '<div class="tableHeader"><h2>Top '.$count.' '.$node->widgetConfig->headerTitle.'</h2><span class="contCount"> Number of '.$node->widgetConfig->headerTitle.':  '.number_format($node->totalDataCount).'</span></div>';
+    echo '<div class="tableHeader"><h2>Top '.$count.' '.$node->widgetConfig->headerTitle.'</h2><span class="contCount"> Number of '.$headerSubTitle.':  '.number_format($node->totalDataCount).'</span></div>';
 }
 ?>
 <table id="table_<?php echo widget_unique_identifier($node) ?>" class="<?php echo $node->widgetConfig->html_class ?>">

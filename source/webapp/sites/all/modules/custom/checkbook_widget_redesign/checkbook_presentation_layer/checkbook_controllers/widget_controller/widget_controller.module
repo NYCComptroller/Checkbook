@@ -159,19 +159,6 @@ function _widget_controller_node_view($key){
 
 	$node = widget_controller_node_view($node);
 	echo $node->content['body']['#markup'];
-
-//    try {
-//        $parameters = array("fiscal_year_id" => 117);
-//        $limit = 5;
-//        $order_by = "check_amount DESC";
-//
-//        $service = new SpendingService();
-//        $checks = $service->GetCitywideChecksData($parameters, $limit, $order_by);
-//        var_dump($checks);
-//    }
-//    catch(Exception $e) {
-//        LogHelper::log_error('Error Testing Service: ' . $e);
-//    }
 }
 
 function _widget_controller_node_load_file($key){
@@ -512,6 +499,8 @@ function _prepare_input_parameters($node) {
 
     if (isset($node->widgetConfig->defaultParameters)) {
         foreach ($node->widgetConfig->defaultParameters as $key => $value) {
+            $values_array = explode('~',$value);
+            $value = count($values_array) > 1 ? "(".implode(",", $values_array).")" : $value;
             $parameters[$key] = htmlspecialchars_decode(_replace_special_characters_decode($value));
         }
     }

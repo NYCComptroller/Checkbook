@@ -148,6 +148,7 @@ class SqlModelFactory {
                     $paramName = $expression->paramName;
                     $dbField = $expression->dbField;
                     $paramValue = $expression->paramValue != "" ? $expression->paramValue : $parameters[$paramName];
+                    $paramType = "";
                     if(isset($paramValue)) {
                         foreach($paramsModel as $paramModel) {
                             if($paramModel->name == $paramName) {

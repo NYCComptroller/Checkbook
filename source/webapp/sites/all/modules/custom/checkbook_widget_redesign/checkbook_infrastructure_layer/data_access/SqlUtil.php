@@ -13,7 +13,7 @@ class SqlUtil {
         try {
 
             $model = SqlModelFactory::getSqlStatementModel($parameters, $limit, $order_by, $sqlConfigName, $statementName);
-            log_info("SQL Trace:\n\n".$model->query."\n\n");
+            log_info("SQL Statement Name: ".$statementName."\nSQL Trace:\n".$model->query."\n");
             $results = self::executeSqlQuery($model);
         }
         catch (Exception $e) {
