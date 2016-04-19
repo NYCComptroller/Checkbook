@@ -15,7 +15,7 @@ class SqlModel extends AbstractSqlModel {
     );
 
     /**
-     * @param SqlStatementModel[] $statements
+     * @param ISqlModel[] $statements
      */
     function __construct(array $statements) {
         $this->statements = $statements;
