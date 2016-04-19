@@ -9,11 +9,13 @@
 class SqlParamModel extends AbstractSqlModel {
 
     public $name;
+    public $type;
     public $required;
     protected static $childElements = null;
 
-    function __construct($name, $required) {
+    function __construct($name, $type, $required) {
         $this->name = $name;
+        $this->type = $type;
         $this->required = $required;
     }
 
@@ -23,7 +25,8 @@ class SqlParamModel extends AbstractSqlModel {
      */
     public static function loadFromXml(SimpleXMLElement $xml)  {
         $name = (string)$xml->attributes()->name;
-        $required = (string)$xml->attributes()->datasource;
-        return new self($name, $required);
+        $type = (string)$xml->attributes()->type;
+        $required = (string)$xml->attributes()->required;
+        return new self($name, $type, $required);
     }
 }

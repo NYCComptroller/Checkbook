@@ -408,7 +408,7 @@ function load_widget_controller_data($node) {
         if(!isset($node->widgetConfig->getData) || (isset($node->widgetConfig->getData) && $node->widgetConfig->getData)){
 
             $results = null;
-            $order_by = "check_amount DESC";
+            $order_by = "";//"check_amount DESC";
             $limit = $node->widgetConfig->limit;
             $sqlConfig = $node->widgetConfig->sqlConfig;
             $serviceName = $sqlConfig->serviceName;
@@ -510,6 +510,11 @@ function widget_controller_format_widget_data($node){
 function _prepare_input_parameters($node) {
     $parameters = array();
 
+    if (isset($node->widgetConfig->defaultParameters)) {
+        foreach ($node->widgetConfig->defaultParameters as $key => $value) {
+            $parameters[$key] = htmlspecialchars_decode(_replace_special_characters_decode($value));
+        }
+    }
     if (isset($node->widgetConfig->validUrlParameters)) {
         $urlParams = $node->widgetConfig->validUrlParameters;
         $urlPath = drupal_get_path_alias($_GET['q']);
@@ -518,7 +523,7 @@ function _prepare_input_parameters($node) {
             $key = $pathParams[$i];
             $value = $pathParams[$i+1];
             if(in_array($key,$urlParams)) {
-                $parameters[$key] = htmlspecialchars_decode(_replace_special_characters_decode($value));;
+                $parameters[$key] = htmlspecialchars_decode(_replace_special_characters_decode($value));
             }
         }
     }

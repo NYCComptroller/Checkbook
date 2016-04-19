@@ -11,11 +11,12 @@ class SqlStatementModel extends AbstractSqlModel {
 
     public $name;
     public $datasource;
-    public $query;
-
-    public $params = array();
-    public $select;
+    public $sql;
+    public $parameters = array();
     public $whereParams = array();
+    public $groupBy;
+    public $having;
+    public $query;
 
     protected static $childElements = array(
         array('xpath'=>'param','class'=>'SqlParamModel'),
@@ -25,16 +26,20 @@ class SqlStatementModel extends AbstractSqlModel {
     /**
      * @param $name
      * @param $datasource
-     * @param $select
-     * @param SqlParamModel[] $params
-     * @param SqlWhereParamModel[] $whereParams
+     * @param $sql
+     * @param ISqlModel[] $parameters
+     * @param ISqlModel[] $whereParams
+     * @param $groupBy
+     * @param $having
      */
-    function __construct($name, $datasource, $select, array $params, array $whereParams) {
+    function __construct($name, $datasource, $sql, $parameters, $whereParams, $groupBy, $having) {
         $this->name = $name;
         $this->datasource = $datasource;
-        $this->select = $select;
-        $this->parameters = $params;
+        $this->sql = $sql;
+        $this->parameters = $parameters;
         $this->whereParams = $whereParams;
+        $this->groupBy = $groupBy;
+        $this->having = $having;
     }
 
     /**
@@ -45,23 +50,11 @@ class SqlStatementModel extends AbstractSqlModel {
 
         $name = (string)$xml->attributes()->name;
         $datasource = (string)$xml->attributes()->datasource;
-        $select = trim((string)$xml->sql->select);
+        $sql = strip_tags(trim($xml->sql->asXml()),'<where><exp><groupBy><having>');
+        $groupBy = trim((string)$xml->sql->groupBy);
+        $having = trim((string)$xml->sql->having);
         $childModels = self::loadChildXElements($xml);
 
-        return new self($name,$datasource,$select,$childModels[0],$childModels[1]);
-    }
-
-    /**
-     * @param SqlParamModel $param
-     */
-    public function addParameter(SqlParamModel $param) {
-        $this->params[] = $param;
-    }
-
-    /**
-     * @return SqlParamModel[]
-     */
-    public function getParameters() {
-        return $this->params;
+        return new self($name,$datasource,$sql,$childModels[0],$childModels[1],$groupBy,$having);
     }
 }
