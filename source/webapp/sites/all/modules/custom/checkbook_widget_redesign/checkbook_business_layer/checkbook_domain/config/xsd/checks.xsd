@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
-    <!-- XML Schema Generated from XML Document on Wed Apr 06 2016 17:55:53 GMT-0400 (EDT) -->
+    <!-- XML Schema Generated from XML Document on Tue Apr 19 2016 13:05:16 GMT-0400 (EDT) -->
     <!-- with XmlGrid.net Free Online Service http://xmlgrid.net -->
     <xs:element name="statements">
         <xs:complexType>
@@ -12,23 +12,22 @@
                                 <xs:complexType>
                                     <xs:attribute name="name" type="xs:string"></xs:attribute>
                                     <xs:attribute name="required" type="xs:string"></xs:attribute>
+                                    <xs:attribute name="type" type="xs:string"></xs:attribute>
                                 </xs:complexType>
                             </xs:element>
-                            <xs:element name="sql">
+                            <xs:element name="sql" type="xs:string">
                                 <xs:complexType>
                                     <xs:sequence>
-                                        <xs:element name="select" type="xs:string"></xs:element>
-                                        <xs:element name="where">
+                                        <xs:element name="where" maxOccurs="unbounded">
                                             <xs:complexType>
                                                 <xs:sequence>
                                                     <xs:element name="exp">
                                                         <xs:complexType>
                                                             <xs:sequence>
-                                                                <xs:element name="exp" maxOccurs="unbounded">
+                                                                <xs:element name="exp" maxOccurs="unbounded" type="xs:string">
                                                                     <xs:complexType>
                                                                         <xs:attribute name="op" type="xs:string"></xs:attribute>
                                                                         <xs:attribute name="dbField" type="xs:string"></xs:attribute>
-                                                                        <xs:attribute name="paramName" type="xs:string"></xs:attribute>
                                                                     </xs:complexType>
                                                                 </xs:element>
                                                             </xs:sequence>
