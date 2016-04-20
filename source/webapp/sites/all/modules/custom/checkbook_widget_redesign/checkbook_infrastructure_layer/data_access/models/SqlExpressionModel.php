@@ -16,11 +16,13 @@ class SqlExpressionModel extends AbstractSqlModel {
     public $operatorType;
     public $compareValue;
     public $condition;
+    public $xmlString;
     protected static $childElements = array(
         array('xpath'=>'exp','class'=>'SqlExpressionModel')
     );
 
     /**
+     * @param $xmlString
      * @param SqlExpressionModel[] $expressions
      * @param $operator
      * @param $paramName
@@ -29,7 +31,8 @@ class SqlExpressionModel extends AbstractSqlModel {
      * @param $compareValue
      * @param $condition
      */
-    public function __construct(array $expressions, $operator, $paramName, $dbField, $paramValue, $compareValue, $condition) {
+    public function __construct($xmlString ,array $expressions, $operator, $paramName, $dbField, $paramValue, $compareValue, $condition) {
+        $this->xmlString = $xmlString;
         $this->dbField = $dbField;
         $this->expressions = $expressions;
         $this->operator = $operator;
@@ -48,6 +51,7 @@ class SqlExpressionModel extends AbstractSqlModel {
      */
     public static function loadFromXml(SimpleXMLElement $xml)  {
 
+        $xmlString = $xml->asXML();
         $operator = (string)$xml->attributes()->op;
         $paramName = (string)$xml->attributes()->paramName;
         $dbField = (string)$xml->attributes()->dbField;
@@ -56,7 +60,7 @@ class SqlExpressionModel extends AbstractSqlModel {
         $condition = (string)$xml->attributes()->condition;
         $childModels = self::loadChildXElements($xml);
 
-        return new self($childModels[0], $operator, $paramName, $dbField, $paramValue, $compareValue, $condition);
+        return new self($xmlString, $childModels[0], $operator, $paramName, $dbField, $paramValue, $compareValue, $condition);
     }
 
 }

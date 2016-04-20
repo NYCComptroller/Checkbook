@@ -30,7 +30,7 @@ abstract class AbstractWidgetService implements IWidgetService {
     public function implementDerivedColumns($data) {
         foreach($data as $row_key => $row_value) {
             foreach($row_value as $col_key => $col_value) {
-                $value = $this->implDerivedColumns($col_key,$row_value);
+                $value = $this->implDerivedColumn($col_key,$row_value);
                 if(isset($value)) {
                     $data[$row_key][$col_key] = $value;
                 }
@@ -39,5 +39,5 @@ abstract class AbstractWidgetService implements IWidgetService {
         return $data;
     }
 
-    abstract public function implDerivedColumns($column_name,$row);
+    abstract public function implDerivedColumn($column_name,$row);
 }

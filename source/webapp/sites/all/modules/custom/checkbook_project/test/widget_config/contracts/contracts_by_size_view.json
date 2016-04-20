@@ -1,21 +1,21 @@
 {
     "sqlConfig":
     {
-        "serviceName":"WidgetService",
+        "serviceName":"ContractsWidgetService",
         "sqlConfigName":"contracts/contracts",
         "statementName":"GetContractsBySize",
         "countStatementName":"GetCountContractsBySize"
     },
-    "defaultParameters":{"document_code":"'MA1'~'CTA1'~'CT1'"},
+    "defaultParameters":{"doctype":"'MA1'~'CTA1'~'CT1'"},
     "headerTitle":"Contracts By Size",
     "headerSubTitle":"Contracts",
     "footerUrl":"'/panel_html/spending_transactions/spending/transactions'. _checkbook_project_get_url_param_string('vendor','fvendor') ._checkbook_project_get_url_param_string('agency')  . '/dtsmnid/' . $node->nid ._checkbook_project_get_url_param_string('category') . _checkbook_project_get_year_url_param_string(false,false,true). _checkbook_append_url_params()",
     "table_columns": [
-        {"labelAlias":"contract_size","column":"award_size_name"},
+        {"labelAlias":"contract_size","column":"award_size_name","derivedColumn":"award_size_name_link"},
         {"labelAlias":"no_of_contracts","column":"total_contracts"},
         {"labelAlias":"current_amount","column":"current_amount_sum","format":"dollar"},
         {"labelAlias":"original_amount","column":"original_amount_sum","format":"dollar"},
-        {"labelAlias":"spent_to_date","column":"spending_amount_sum","format":"dollar"},
+        {"labelAlias":"spent_to_date","column":"spending_amount_sum","format":"dollar","derivedColumn":"spent_to_date_link"},
         {"label":"","column": ""}
     ],
     "dataTableOptions":{

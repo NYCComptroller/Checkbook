@@ -36,4 +36,5 @@ files[] = widget/WidgetRepository.php
 files[] = widget/AbstractEntityFactory.php
 files[] = widget/EntityFactory.php
 
-files[] = config/sql/checks.xml
+files[] = config/sql/contracts/contracts.xml
+files[] = config/sql/spending/spending.xml

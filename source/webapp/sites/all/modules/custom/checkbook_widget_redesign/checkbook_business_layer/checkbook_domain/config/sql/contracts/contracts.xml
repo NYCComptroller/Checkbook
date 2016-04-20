@@ -1,41 +1,63 @@
 <statements>
-    <!--GetMasterAgreements,GetCountMasterAgreements-->
-    <statement name="GetMasterAgreements" datasource="checkbook">
+
+    <!--GetContracts,GetCountContracts-->
+    <statement name="GetContracts" datasource="checkbook">
         <param name="year" required ="true" type="int"/>
         <param name="yeartype" required ="true" type="string" />
         <param name="status" type="string"/>
-        <param name="document_code" />
+        <param name="doctype" />
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
+        <param name="contract_mod" type="bool" />
         <sql>
             SELECT
-            type_of_year,
-            agency.agency_id,
-            agency.agency_short_name as agency_name,
-            vendor.vendor_id,
-            vendor.legal_name as vendor_name,
-            contract_purpose,
-            contract_number,
-            original_agreement_id,
-            document_code_id,
-            minority_type_id,
-            original_amount_sum,
-            current_amount_sum,
-            spending_amount_sum
-            FROM
+            a.type_of_year,
+            c.agency_id,
+            c.agency_name as agency_name,
+            d.vendor_id,
+            d.legal_name as vendor_name,
+            a.description AS contract_purpose,
+            a.contract_number,
+            a.original_agreement_id,
+            a.document_code_id,
+            a.minority_type_id,
+            SUM(COALESCE(a.original_contract_amount,0)) AS original_amount_sum,
+            SUM(COALESCE(a.maximum_contract_amount,0)) AS current_amount_sum,
+            SUM(COALESCE(a.spending_amount,0)) AS spending_amount_sum,
+            SUM(COALESCE(dollar_difference,0)) AS dollar_difference,
+            AVG(percent_difference) AS percent_difference
+            FROM aggregateon_mwbe_contracts_cumulative_spending a
+            JOIN ref_document_code b ON a.document_code_id = b.document_code_id
+            JOIN ref_agency c on c.agency_id = a.agency_id
+            JOIN vendor d on d.vendor_id = a.vendor_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="a.status_flag" paramName="status" />
+                    <exp op="IN" dbField="b.document_code" paramName="doctype" />
+                    <exp op="=" dbField="a.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.agency_id" paramName="agency" />
+                </exp>
+            </where>
+            GROUP BY a.type_of_year, a.description,a.contract_number, a.original_agreement_id, a.document_code_id, a.minority_type_id,c.agency_id,c.agency_name,d.vendor_id,d.legal_name
+            <exp op="IF" condition="=" paramName="contract_mod" compareValue="true">
+                HAVING SUM(COALESCE(dollar_difference,0)) != 0
+            </exp>
+        </sql>
+    </statement>
+    <statement name="GetCountContracts" datasource="checkbook">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="status" type="string"/>
+        <param name="doctype" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="contract_mod" type="bool" />
+        <sql>
+            SELECT COUNT(*) as record_count FROM
             (
-                SELECT
-                a.type_of_year AS type_of_year,
-                a.agency_id AS agency_id,
-                a.vendor_id AS vendor_id,
-                a.description AS contract_purpose,
-                a.contract_number AS contract_number,
-                a.original_agreement_id AS original_agreement_id,
-                a.document_code_id AS document_code_id,
-                a.minority_type_id AS minority_type_id,
-                SUM(COALESCE(a.original_contract_amount,0)) AS original_amount_sum,
-                SUM(COALESCE(a.maximum_contract_amount,0)) AS current_amount_sum,
-                SUM(COALESCE(a.spending_amount,0)) AS spending_amount_sum
+                SELECT a.contract_number
                 FROM aggregateon_mwbe_contracts_cumulative_spending a
                 JOIN ref_document_code b ON a.document_code_id = b.document_code_id
                 <where>
@@ -43,305 +65,15 @@
                         <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
                         <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
                         <exp op="=" dbField="a.status_flag" paramName="status" />
-                        <exp op="IN" dbField="b.document_code" paramName="document_code" />
-                        <exp op="&lt;&gt;" dbField="a.dollar_difference">0</exp>
-                    </exp>
-                </where>
-                GROUP BY a.agency_id, a.type_of_year, a.vendor_id, a.description,a.contract_number, a.original_agreement_id, a.document_code_id, a.minority_type_id
-            ) AS sub_query
-            JOIN ref_agency agency on agency.agency_id = sub_query.agency_id
-            JOIN vendor vendor on vendor.vendor_id = sub_query.vendor_id
-            <where>
-                <exp op="AND">
-                    <exp op="=" dbField="vendor.vendor_id" paramName="vendor" />
-                    <exp op="=" dbField="agency.agency_id" paramName="agency" />
-                </exp>
-            </where>
-        </sql>
-    </statement>
-    <statement name="GetCountMasterAgreements" datasource="checkbook">
-        <param name="year" required ="true" type="int"/>
-        <param name="yeartype" required ="true" type="string" />
-        <param name="status" type="string"/>
-        <param name="document_code" />
-        <param name="agency" type="int" />
-        <param name="vendor" type="int" />
-        <sql>
-            SELECT count(a.document_code_id) as record_count
-            FROM aggregateon_mwbe_contracts_cumulative_spending a
-            JOIN ref_document_code b ON a.document_code_id = b.document_code_id
-            <where>
-                <exp op="AND">
-                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
-                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
-                    <exp op="=" dbField="a.status_flag" paramName="status" />
-                    <exp op="IN" dbField="b.document_code" paramName="document_code" />
-                    <exp op="=" dbField="a.vendor_id" paramName="vendor" />
-                    <exp op="=" dbField="a.agency_id" paramName="agency" />
-                </exp>
-            </where>
-            HAVING SUM(COALESCE(dollar_difference,0)) != 0
-        </sql>
-    </statement>
-    <!--GetMasterAgreementModifications,GetCountMasterAgreementModifications-->
-    <statement name="GetMasterAgreementModifications" datasource="checkbook">
-        <param name="year" required ="true" type="int"/>
-        <param name="yeartype" required ="true" type="string" />
-        <param name="status" type="string"/>
-        <param name="document_code" />
-        <param name="agency" type="int" />
-        <param name="vendor" type="int" />
-        <sql>
-            SELECT
-            j.agency_id,
-            j.vendor_id,
-            j.contract_purpose,
-            j.contract_number,
-            agency.agency_name AS agency_name,
-            vendor.legal_name AS vendor_name,
-            j.original_amount_sum,
-            j.current_amount_sum,
-            j.type_of_year,
-            j.dollar_difference,
-            j.percent_difference,
-            j.spending_amount_sum,
-            j.original_agreement_original_agreement,
-            j3.document_code AS document_code_document_code_document_code,
-            j.minority_type
-            FROM
-            (
-                SELECT s0.type_of_year AS type_of_year,
-                s0.agency_id AS agency_id,
-                s0.vendor_id AS vendor_id,
-                s0.description AS contract_purpose,
-                s0.contract_number AS contract_number,
-                s0.original_agreement_id AS original_agreement_original_agreement,
-                s0.document_code_id AS document_code_id,
-                s0.minority_type_id AS minority_type,
-                SUM(COALESCE(original_contract_amount,0)) AS original_amount_sum,
-                SUM(COALESCE(maximum_contract_amount,0)) AS current_amount_sum,
-                SUM(COALESCE(spending_amount,0)) AS spending_amount_sum,
-                SUM(COALESCE(dollar_difference,0)) AS dollar_difference,
-                AVG(percent_difference) AS percent_difference
-                FROM aggregateon_mwbe_contracts_cumulative_spending s0
-                LEFT OUTER JOIN ref_document_code b ON b.document_code_id = s0.document_code_id
-                <where>
-                    <exp op="AND">
-                        <exp op="=" dbField="s0.fiscal_year_id" paramName="year" />
-                        <exp op="=" dbField="s0.type_of_year" paramName="yeartype" />
-                        <exp op="=" dbField="s0.status_flag" paramName="status" />
-                        <exp op="IN" dbField="b.document_code" paramName="document_code" />
-                    </exp>
-                </where>
-                GROUP BY s0.agency_id, s0.type_of_year, s0.vendor_id, s0.description, s0.contract_number, s0.original_agreement_id, s0.document_code_id, s0.minority_type_id
-                HAVING SUM(COALESCE(dollar_difference,0)) != 0
-            ) j
-            LEFT OUTER JOIN ref_agency agency ON agency.agency_id = j.agency_id
-            LEFT OUTER JOIN vendor vendor ON vendor.vendor_id = j.vendor_id
-            LEFT OUTER JOIN ref_document_code j3 ON j3.document_code_id = j.document_code_id
-            <where>
-                <exp op="AND">
-                    <exp op="=" dbField="vendor.vendor_id" paramName="vendor" />
-                    <exp op="=" dbField="agency.agency_id" paramName="agency" />
-                </exp>
-            </where>
-        </sql>
-    </statement>
-    <statement name="GetCountMasterAgreementModifications" datasource="checkbook">
-        <param name="year" required ="true" type="int"/>
-        <param name="yeartype" required ="true" type="string" />
-        <param name="status" type="string"/>
-        <param name="document_code" />
-        <param name="agency" type="int" />
-        <param name="vendor" type="int" />
-        <sql>
-            SELECT count(a.document_code_id) as record_count
-            FROM aggregateon_mwbe_contracts_cumulative_spending a
-            JOIN ref_document_code b ON a.document_code_id = b.document_code_id
-            <where>
-                <exp op="AND">
-                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
-                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
-                    <exp op="=" dbField="a.status_flag" paramName="status" />
-                    <exp op="IN" dbField="b.document_code" paramName="document_code" />
-                    <exp op="&lt;&gt;" dbField="a.dollar_difference">0</exp>
-                    <exp op="=" dbField="a.vendor_id" paramName="vendor" />
-                    <exp op="=" dbField="a.agency_id" paramName="agency" />
-                </exp>
-            </where>
-            HAVING SUM(COALESCE(dollar_difference,0)) != 0
-        </sql>
-    </statement>
-    <!--GetTopContracts,GetCountTopContracts-->
-    <statement name="GetTopContracts" datasource="checkbook">
-        <param name="year" required ="true" type="int"/>
-        <param name="yeartype" required ="true" type="string" />
-        <param name="status" type="string"/>
-        <param name="document_code" />
-        <param name="agency" type="int" />
-        <param name="vendor" type="int" />
-        <sql>
-            SELECT
-            j.agency_id,
-            j.vendor_id,
-            j.contract_purpose,
-            j.contract_number,
-            agency.agency_name,
-            vendor.legal_name AS vendor_name,
-            j.original_amount_sum,
-            j.current_amount_sum,
-            j.type_of_year,
-            j.spending_amount_sum,
-            j.original_agreement_id,
-            j3.document_code AS document_code,
-            j.minority_type
-            FROM
-            (
-                SELECT s0.type_of_year AS type_of_year,
-                s0.agency_id AS agency_id,
-                s0.vendor_id AS vendor_id,
-                s0.description AS contract_purpose,
-                s0.contract_number AS contract_number,
-                s0.original_agreement_id AS original_agreement_id,
-                s0.document_code_id AS document_code_id,
-                s0.minority_type_id AS minority_type,
-                SUM(COALESCE(original_contract_amount,0)) AS original_amount_sum,
-                SUM(COALESCE(maximum_contract_amount,0)) AS current_amount_sum,
-                SUM(COALESCE(spending_amount,0)) AS spending_amount_sum
-                FROM aggregateon_mwbe_contracts_cumulative_spending s0
-                LEFT OUTER JOIN ref_document_code b ON b.document_code_id = s0.document_code_id
-                <where>
-                    <exp op="AND">
-                        <exp op="=" dbField="s0.fiscal_year_id" paramName="year" />
-                        <exp op="=" dbField="s0.type_of_year" paramName="yeartype" />
-                        <exp op="=" dbField="s0.status_flag" paramName="status" />
-                        <exp op="IN" dbField="b.document_code" paramName="document_code" />
-                    </exp>
-                </where>
-                GROUP BY s0.agency_id, s0.type_of_year, s0.vendor_id, s0.description, s0.contract_number, s0.original_agreement_id, s0.document_code_id, s0.minority_type_id
-            ) j
-            LEFT OUTER JOIN ref_agency agency ON agency.agency_id = j.agency_id
-            LEFT OUTER JOIN vendor vendor ON vendor.vendor_id = j.vendor_id
-            LEFT OUTER JOIN ref_document_code j3 ON j3.document_code_id = j.document_code_id
-            <where>
-                <exp op="AND">
-                    <exp op="=" dbField="vendor.vendor_id" paramName="vendor" />
-                    <exp op="=" dbField="agency.agency_id" paramName="agency" />
-                </exp>
-            </where>
-        </sql>
-    </statement>
-    <statement name="GetCountTopContracts" datasource="checkbook">
-        <param name="year" required ="true" type="int"/>
-        <param name="yeartype" required ="true" type="string" />
-        <param name="status" type="string"/>
-        <param name="document_code" />
-        <param name="agency" type="int" />
-        <param name="vendor" type="int" />
-        <sql>
-            SELECT count(a.document_code_id) as record_count
-            FROM aggregateon_mwbe_contracts_cumulative_spending a
-            JOIN ref_document_code b ON a.document_code_id = b.document_code_id
-            <where>
-                <exp op="AND">
-                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
-                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
-                    <exp op="=" dbField="a.status_flag" paramName="status" />
-                    <exp op="IN" dbField="b.document_code" paramName="document_code" />
-                    <exp op="=" dbField="a.vendor_id" paramName="vendor" />
-                    <exp op="=" dbField="a.agency_id" paramName="agency" />
-                </exp>
-            </where>
-        </sql>
-    </statement>
-    <!--GetContractAmountModifications,GetCountContractAmountModifications-->
-    <statement name="GetContractAmountModifications" datasource="checkbook">
-        <param name="year" required ="true" type="int"/>
-        <param name="yeartype" required ="true" type="string" />
-        <param name="document_code" />
-        <param name="status" type="string"/>
-        <param name="agency" type="int" />
-        <param name="vendor" type="int" />
-        <sql>
-            SELECT j.agency_id,
-            j.vendor_id,
-            j.contract_purpose,
-            j.contract_number,
-            agency.agency_name AS agency_name,
-            vendor.legal_name AS vendor_name,
-            j.original_amount_sum,
-            j.current_amount_sum,
-            j.yeartype_yeartype,
-            j.dollar_difference,
-            j.percent_difference,
-            j.spending_amount_sum,
-            j.original_agreement_id,
-            j3.document_code AS document_code,
-            j.minority_type_id
-            FROM
-            (
-                SELECT s0.type_of_year AS yeartype_yeartype,
-                s0.agency_id AS agency_id,
-                s0.vendor_id AS vendor_id,
-                s0.description AS contract_purpose,
-                s0.contract_number AS contract_number,
-                s0.original_agreement_id AS original_agreement_id,
-                s0.document_code_id AS document_code_id,
-                s0.minority_type_id AS minority_type_id,
-                SUM(COALESCE(original_contract_amount,0)) AS original_amount_sum,
-                SUM(COALESCE(maximum_contract_amount,0)) AS current_amount_sum,
-                SUM(COALESCE(spending_amount,0)) AS spending_amount_sum,
-                SUM(COALESCE(dollar_difference,0)) AS dollar_difference,
-                AVG(percent_difference) AS percent_difference
-                FROM aggregateon_mwbe_contracts_cumulative_spending s0
-                LEFT OUTER JOIN ref_document_code b ON b.document_code_id = s0.document_code_id
-                <where>
-                    <exp op="AND">
-                        <exp op="=" dbField="s0.fiscal_year_id" paramName="year" />
-                        <exp op="=" dbField="s0.type_of_year" paramName="yeartype" />
-                        <exp op="=" dbField="s0.status_flag" paramName="status" />
-                        <exp op="IN" dbField="b.document_code" paramName="document_code" />
-                    </exp>
-                </where>
-                GROUP BY s0.agency_id, s0.type_of_year, s0.vendor_id, s0.description, s0.contract_number, s0.original_agreement_id, s0.document_code_id, s0.minority_type_id
-                HAVING SUM(COALESCE(dollar_difference,0)) != 0
-            ) j
-            LEFT OUTER JOIN ref_agency agency ON agency.agency_id = j.agency_id
-            LEFT OUTER JOIN vendor vendor ON vendor.vendor_id = j.vendor_id
-            LEFT OUTER JOIN ref_document_code j3 ON j3.document_code_id = j.document_code_id
-            <where>
-                <exp op="AND">
-                    <exp op="=" dbField="vendor.vendor_id" paramName="vendor" />
-                    <exp op="=" dbField="agency.agency_id" paramName="agency" />
-                </exp>
-            </where>
-        </sql>
-    </statement>
-    <statement name="GetCountContractAmountModifications" datasource="checkbook">
-        <param name="year" required ="true" type="int"/>
-        <param name="yeartype" required ="true" type="string" />
-        <param name="status" type="string"/>
-        <param name="document_code" />
-        <param name="agency" type="int" />
-        <param name="vendor" type="int" />
-        <sql>
-            SELECT count(*) as record_count FROM
-            (
-                SELECT a.contract_number as record_count
-                FROM aggregateon_mwbe_contracts_cumulative_spending a
-                LEFT OUTER JOIN ref_document_code b ON b.document_code_id = a.document_code_id
-                <where>
-                    <exp op="AND">
-                        <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
-                        <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
-                        <exp op="=" dbField="a.status_flag" paramName="status" />
-                        <exp op="IN" dbField="b.document_code" paramName="document_code" />
+                        <exp op="IN" dbField="b.document_code" paramName="doctype" />
                         <exp op="=" dbField="a.vendor_id" paramName="vendor" />
                         <exp op="=" dbField="a.agency_id" paramName="agency" />
                     </exp>
                 </where>
                 GROUP BY a.contract_number
-                HAVING SUM(COALESCE(dollar_difference,0)) != 0
+                <exp op="IF" condition="=" paramName="contract_mod" compareValue="true">
+                    HAVING SUM(COALESCE(dollar_difference,0)) != 0
+                </exp>
             ) sub_query
         </sql>
     </statement>
@@ -349,54 +81,41 @@
     <statement name="GetPrimeVendors" datasource="checkbook">
         <param name="year" required ="true" type="int"/>
         <param name="yeartype" required ="true" type="string" />
-        <param name="document_code" />
+        <param name="doctype" />
         <param name="status" type="string"/>
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
         <sql>
             SELECT
-            j.vendor_id,
-            j.total_contracts,
-            vendor.legal_name AS vendor_name,
-            j.original_amount_sum,
-            j.current_amount_sum,
-            j.type_of_year,
-            j.spending_amount_sum
-            FROM
-            (
-                SELECT s0.type_of_year AS type_of_year,
-                s0.vendor_id AS vendor_id,
-                SUM(COALESCE(original_contract_amount,0)) AS original_amount_sum,
-                SUM(COALESCE(maximum_contract_amount,0)) AS current_amount_sum,
-                SUM(COALESCE(spending_amount,0)) AS spending_amount_sum,
-                COUNT(contract_number) AS total_contracts
-                FROM aggregateon_contracts_cumulative_spending s0
-                LEFT OUTER JOIN ref_document_code b ON b.document_code_id = s0.document_code_id
-                <where>
-                    <exp op="AND">
-                        <exp op="=" dbField="s0.fiscal_year_id" paramName="year" />
-                        <exp op="=" dbField="s0.type_of_year" paramName="yeartype" />
-                        <exp op="=" dbField="s0.status_flag" paramName="status" />
-                        <exp op="IN" dbField="b.document_code" paramName="document_code" />
-                        <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
-                        <exp op="=" dbField="s0.agency_id" paramName="agency" />
-                    </exp>
-                </where>
-                GROUP BY s0.type_of_year, s0.vendor_id
-            ) j
-            LEFT OUTER JOIN vendor vendor ON vendor.vendor_id = j.vendor_id
+            a.type_of_year,
+            d.vendor_id,
+            d.legal_name as vendor_name,
+            SUM(COALESCE(a.original_contract_amount,0)) AS original_amount_sum,
+            SUM(COALESCE(a.maximum_contract_amount,0)) AS current_amount_sum,
+            SUM(COALESCE(a.spending_amount,0)) AS spending_amount_sum,
+            COUNT(contract_number) AS total_contracts
+            FROM aggregateon_mwbe_contracts_cumulative_spending a
+            JOIN ref_document_code b ON a.document_code_id = b.document_code_id
+            JOIN ref_agency c on c.agency_id = a.agency_id
+            JOIN vendor d on d.vendor_id = a.vendor_id
             <where>
                 <exp op="AND">
-                    <exp op="=" dbField="vendor.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="a.status_flag" paramName="status" />
+                    <exp op="IN" dbField="b.document_code" paramName="doctype" />
+                    <exp op="=" dbField="c.agency_id" paramName="agency" />
+                    <exp op="=" dbField="d.vendor_id" paramName="vendor" />
                 </exp>
             </where>
+            GROUP BY a.type_of_year,d.vendor_id,d.legal_name
         </sql>
     </statement>
     <statement name="GetCountPrimeVendors" datasource="checkbook">
         <param name="year" required ="true" type="int"/>
         <param name="yeartype" required ="true" type="string" />
         <param name="status" type="string"/>
-        <param name="document_code" />
+        <param name="doctype" />
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
         <sql>
@@ -408,7 +127,7 @@
                     <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
                     <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
                     <exp op="=" dbField="a.status_flag" paramName="status" />
-                    <exp op="IN" dbField="b.document_code" paramName="document_code" />
+                    <exp op="IN" dbField="b.document_code" paramName="doctype" />
                     <exp op="=" dbField="a.vendor_id" paramName="vendor" />
                     <exp op="=" dbField="a.agency_id" paramName="agency" />
                 </exp>
@@ -419,49 +138,42 @@
     <statement name="GetAwardMethods" datasource="checkbook">
         <param name="year" required ="true" type="int"/>
         <param name="yeartype" required ="true" type="string" />
-        <param name="document_code" />
+        <param name="doctype" />
         <param name="status" type="string"/>
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
         <sql>
             SELECT
-            j.total_contracts,
-            j.award_method_id,
-            j1.award_method_name,
-            j.original_amount_sum,
-            j.current_amount_sum,
-            j.type_of_year,
-            j.spending_amount_sum
-            FROM
-            (
-                SELECT s0.type_of_year AS type_of_year,
-                s0.award_method_id AS award_method_id,
-                SUM(COALESCE(original_contract_amount,0)) AS original_amount_sum,
-                SUM(COALESCE(maximum_contract_amount,0)) AS current_amount_sum,
-                SUM(COALESCE(spending_amount,0)) AS spending_amount_sum,
-                COUNT(contract_number) AS total_contracts
-                FROM aggregateon_contracts_cumulative_spending s0
-                LEFT OUTER JOIN ref_document_code b ON b.document_code_id = s0.document_code_id
-                <where>
-                    <exp op="AND">
-                        <exp op="=" dbField="s0.fiscal_year_id" paramName="year" />
-                        <exp op="=" dbField="s0.type_of_year" paramName="yeartype" />
-                        <exp op="=" dbField="s0.status_flag" paramName="status" />
-                        <exp op="IN" dbField="b.document_code" paramName="document_code" />
-                        <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
-                        <exp op="=" dbField="s0.agency_id" paramName="agency" />
-                    </exp>
-                </where>
-                GROUP BY s0.type_of_year, s0.award_method_id
-            ) j
-            LEFT OUTER JOIN ref_award_method j1 ON j1.award_method_id = j.award_method_id
+            a.type_of_year,
+            e.award_method_id,
+            e.award_method_name,
+            SUM(COALESCE(a.original_contract_amount,0)) AS original_amount_sum,
+            SUM(COALESCE(a.maximum_contract_amount,0)) AS current_amount_sum,
+            SUM(COALESCE(a.spending_amount,0)) AS spending_amount_sum,
+            COUNT(contract_number) AS total_contracts
+            FROM aggregateon_mwbe_contracts_cumulative_spending a
+            JOIN ref_document_code b ON a.document_code_id = b.document_code_id
+            JOIN ref_agency c on c.agency_id = a.agency_id
+            JOIN vendor d on d.vendor_id = a.vendor_id
+            JOIN ref_award_method e ON e.award_method_id = a.award_method_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="a.status_flag" paramName="status" />
+                    <exp op="IN" dbField="b.document_code" paramName="doctype" />
+                    <exp op="=" dbField="c.agency_id" paramName="agency" />
+                    <exp op="=" dbField="d.vendor_id" paramName="vendor" />
+                </exp>
+            </where>
+            GROUP BY a.type_of_year,e.award_method_id,e.award_method_name
         </sql>
     </statement>
     <statement name="GetCountAwardMethods" datasource="checkbook">
         <param name="year" required ="true" type="int"/>
         <param name="yeartype" required ="true" type="string" />
         <param name="status" type="string"/>
-        <param name="document_code" />
+        <param name="doctype" />
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
         <sql>
@@ -473,7 +185,7 @@
                     <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
                     <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
                     <exp op="=" dbField="a.status_flag" paramName="status" />
-                    <exp op="IN" dbField="b.document_code" paramName="document_code" />
+                    <exp op="IN" dbField="b.document_code" paramName="doctype" />
                     <exp op="=" dbField="a.vendor_id" paramName="vendor" />
                     <exp op="=" dbField="a.agency_id" paramName="agency" />
                 </exp>
@@ -484,53 +196,42 @@
     <statement name="GetAgencies" datasource="checkbook">
         <param name="year" required ="true" type="int"/>
         <param name="yeartype" required ="true" type="string" />
-        <param name="document_code" />
+        <param name="doctype" />
         <param name="status" type="string"/>
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
         <sql>
-            SELECT j.total_contracts,
-            j.agency_id,
-            agency.agency_name,
-            j.original_amount_sum,
-            j.current_amount_sum,
-            j.type_of_year,
-            j.spending_amount_sum
-            FROM
-            (
-                SELECT s0.type_of_year,
-                s0.agency_id ,
-                SUM(COALESCE(original_contract_amount,0)) AS original_amount_sum,
-                SUM(COALESCE(maximum_contract_amount,0)) AS current_amount_sum,
-                SUM(COALESCE(spending_amount,0)) AS spending_amount_sum,
-                COUNT(contract_number) AS total_contracts
-                FROM aggregateon_contracts_cumulative_spending s0
-                LEFT OUTER JOIN ref_document_code b ON b.document_code_id = s0.document_code_id
-                <where>
-                    <exp op="AND">
-                        <exp op="=" dbField="s0.fiscal_year_id" paramName="year" />
-                        <exp op="=" dbField="s0.type_of_year" paramName="yeartype" />
-                        <exp op="=" dbField="s0.status_flag" paramName="status" />
-                        <exp op="IN" dbField="b.document_code" paramName="document_code" />
-                        <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
-                        <exp op="=" dbField="s0.agency_id" paramName="agency" />
-                    </exp>
-                </where>
-                GROUP BY s0.agency_id, s0.type_of_year
-            ) j
-            LEFT OUTER JOIN ref_agency agency ON agency.agency_id = j.agency_id
+            SELECT
+            a.type_of_year,
+            e.agency_id,
+            e.agency_name,
+            SUM(COALESCE(a.original_contract_amount,0)) AS original_amount_sum,
+            SUM(COALESCE(a.maximum_contract_amount,0)) AS current_amount_sum,
+            SUM(COALESCE(a.spending_amount,0)) AS spending_amount_sum,
+            COUNT(contract_number) AS total_contracts
+            FROM aggregateon_mwbe_contracts_cumulative_spending a
+            JOIN ref_document_code b ON a.document_code_id = b.document_code_id
+            JOIN ref_agency c on c.agency_id = a.agency_id
+            JOIN vendor d on d.vendor_id = a.vendor_id
+            JOIN ref_agency e ON e.agency_id = a.agency_id
             <where>
                 <exp op="AND">
-                    <exp op="=" dbField="agency.agency_id" paramName="agency" />
+                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="a.status_flag" paramName="status" />
+                    <exp op="IN" dbField="b.document_code" paramName="doctype" />
+                    <exp op="=" dbField="c.agency_id" paramName="agency" />
+                    <exp op="=" dbField="d.vendor_id" paramName="vendor" />
                 </exp>
             </where>
+            GROUP BY a.type_of_year,e.agency_id,e.agency_name
         </sql>
     </statement>
     <statement name="GetCountAgencies" datasource="checkbook">
         <param name="year" required ="true" type="int"/>
         <param name="yeartype" required ="true" type="string" />
         <param name="status" type="string"/>
-        <param name="document_code" />
+        <param name="doctype" />
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
         <sql>
@@ -542,7 +243,7 @@
                     <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
                     <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
                     <exp op="=" dbField="a.status_flag" paramName="status" />
-                    <exp op="IN" dbField="b.document_code" paramName="document_code" />
+                    <exp op="IN" dbField="b.document_code" paramName="doctype" />
                     <exp op="=" dbField="a.vendor_id" paramName="vendor" />
                     <exp op="=" dbField="a.agency_id" paramName="agency" />
                 </exp>
@@ -553,55 +254,44 @@
     <statement name="GetContractsByIndustries" datasource="checkbook">
         <param name="year" required ="true" type="int"/>
         <param name="yeartype" required ="true" type="string" />
-        <param name="document_code" />
+        <param name="doctype" />
         <param name="status" type="string"/>
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
         <param name="cindustry" type="int" />
         <sql>
-            SELECT j.total_contracts,
-            j.industry_type_id,
-            j1.industry_type_name,
-            j.original_amount_sum,
-            j.current_amount_sum,
-            j.type_of_year,
-            j.spending_amount_sum
-            FROM
-            (
-                SELECT s0.type_of_year,
-                s0.industry_type_id,
-                SUM(COALESCE(original_contract_amount,0)) AS original_amount_sum,
-                SUM(COALESCE(maximum_contract_amount,0)) AS current_amount_sum,
-                SUM(COALESCE(spending_amount,0)) AS spending_amount_sum,
-                COUNT(contract_number) AS total_contracts
-                FROM aggregateon_contracts_cumulative_spending s0
-                LEFT OUTER JOIN ref_document_code b ON b.document_code_id = s0.document_code_id
-                <where>
-                    <exp op="AND">
-                        <exp op="=" dbField="s0.fiscal_year_id" paramName="year" />
-                        <exp op="=" dbField="s0.type_of_year" paramName="yeartype" />
-                        <exp op="=" dbField="s0.status_flag" paramName="status" />
-                        <exp op="IN" dbField="b.document_code" paramName="document_code" />
-                        <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
-                        <exp op="=" dbField="s0.agency_id" paramName="agency" />
-                        <exp op="=" dbField="s0.industry_type_id" paramName="cindustry" />
-                    </exp>
-                </where>
-                GROUP BY s0.type_of_year, s0.industry_type_id
-            ) j
-            LEFT OUTER JOIN ref_industry_type j1 ON j1.industry_type_id = j.industry_type_id
+            SELECT
+            a.type_of_year,
+            e.industry_type_id,
+            e.industry_type_name,
+            SUM(COALESCE(a.original_contract_amount,0)) AS original_amount_sum,
+            SUM(COALESCE(a.maximum_contract_amount,0)) AS current_amount_sum,
+            SUM(COALESCE(a.spending_amount,0)) AS spending_amount_sum,
+            COUNT(contract_number) AS total_contracts
+            FROM aggregateon_mwbe_contracts_cumulative_spending a
+            JOIN ref_document_code b ON a.document_code_id = b.document_code_id
+            JOIN ref_agency c on c.agency_id = a.agency_id
+            JOIN vendor d on d.vendor_id = a.vendor_id
+            JOIN ref_industry_type e ON e.industry_type_id = a.industry_type_id
             <where>
                 <exp op="AND">
-                    <exp op="=" dbField="j1.industry_type_id" paramName="cindustry" />
+                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="a.status_flag" paramName="status" />
+                    <exp op="IN" dbField="b.document_code" paramName="doctype" />
+                    <exp op="=" dbField="c.agency_id" paramName="agency" />
+                    <exp op="=" dbField="d.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="e.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
+            GROUP BY a.type_of_year,e.industry_type_id,e.industry_type_name
         </sql>
     </statement>
     <statement name="GetCountContractsByIndustries" datasource="checkbook">
         <param name="year" required ="true" type="int"/>
         <param name="yeartype" required ="true" type="string" />
         <param name="status" type="string"/>
-        <param name="document_code" />
+        <param name="doctype" />
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
         <param name="cindustry" type="int" />
@@ -614,7 +304,7 @@
                     <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
                     <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
                     <exp op="=" dbField="a.status_flag" paramName="status" />
-                    <exp op="IN" dbField="b.document_code" paramName="document_code" />
+                    <exp op="IN" dbField="b.document_code" paramName="doctype" />
                     <exp op="=" dbField="a.vendor_id" paramName="vendor" />
                     <exp op="=" dbField="a.agency_id" paramName="agency" />
                     <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
@@ -626,54 +316,44 @@
     <statement name="GetContractsBySize" datasource="checkbook">
         <param name="year" required ="true" type="int"/>
         <param name="yeartype" required ="true" type="string" />
-        <param name="document_code" />
+        <param name="doctype" />
         <param name="status" type="string"/>
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
         <param name="csize" type="int" />
         <sql>
-            SELECT j.total_contracts,
-            j.award_size_id,
-            j1.award_size_name,
-            j.original_amount_sum,
-            j.current_amount_sum,
-            j.type_of_year,
-            j.spending_amount_sum
-            FROM (
-                SELECT s0.type_of_year,
-                s0.award_size_id,
-                SUM(COALESCE(original_contract_amount,0)) AS original_amount_sum,
-                SUM(COALESCE(maximum_contract_amount,0)) AS current_amount_sum,
-                SUM(COALESCE(spending_amount,0)) AS spending_amount_sum,
-                COUNT(contract_number) AS total_contracts
-                FROM aggregateon_contracts_cumulative_spending s0
-                LEFT OUTER JOIN ref_document_code b ON b.document_code_id = s0.document_code_id
-                <where>
-                    <exp op="AND">
-                        <exp op="=" dbField="s0.fiscal_year_id" paramName="year" />
-                        <exp op="=" dbField="s0.type_of_year" paramName="yeartype" />
-                        <exp op="=" dbField="s0.status_flag" paramName="status" />
-                        <exp op="IN" dbField="b.document_code" paramName="document_code" />
-                        <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
-                        <exp op="=" dbField="s0.agency_id" paramName="agency" />
-                        <exp op="=" dbField="s0.award_size_id" paramName="csize" />
-                    </exp>
-                </where>
-                GROUP BY s0.type_of_year, s0.award_size_id
-            ) j
-            LEFT OUTER JOIN ref_award_size j1 ON j1.award_size_id = j.award_size_id
+            SELECT
+            a.type_of_year,
+            e.award_size_id,
+            e.award_size_name,
+            SUM(COALESCE(a.original_contract_amount,0)) AS original_amount_sum,
+            SUM(COALESCE(a.maximum_contract_amount,0)) AS current_amount_sum,
+            SUM(COALESCE(a.spending_amount,0)) AS spending_amount_sum,
+            COUNT(contract_number) AS total_contracts
+            FROM aggregateon_mwbe_contracts_cumulative_spending a
+            JOIN ref_document_code b ON a.document_code_id = b.document_code_id
+            JOIN ref_agency c on c.agency_id = a.agency_id
+            JOIN vendor d on d.vendor_id = a.vendor_id
+            JOIN ref_award_size e ON e.award_size_id = a.award_size_id
             <where>
                 <exp op="AND">
-                    <exp op="=" dbField="j1.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="a.status_flag" paramName="status" />
+                    <exp op="IN" dbField="b.document_code" paramName="doctype" />
+                    <exp op="=" dbField="c.agency_id" paramName="agency" />
+                    <exp op="=" dbField="d.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="e.award_size_id" paramName="csize" />
                 </exp>
             </where>
+            GROUP BY a.type_of_year,e.award_size_id,e.award_size_name
         </sql>
     </statement>
     <statement name="GetCountContractsBySize" datasource="checkbook">
         <param name="year" required ="true" type="int"/>
         <param name="yeartype" required ="true" type="string" />
         <param name="status" type="string"/>
-        <param name="document_code" />
+        <param name="doctype" />
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
         <param name="csize" type="int" />
@@ -686,7 +366,7 @@
                     <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
                     <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
                     <exp op="=" dbField="a.status_flag" paramName="status" />
-                    <exp op="IN" dbField="b.document_code" paramName="document_code" />
+                    <exp op="IN" dbField="b.document_code" paramName="doctype" />
                     <exp op="=" dbField="a.vendor_id" paramName="vendor" />
                     <exp op="=" dbField="a.agency_id" paramName="agency" />
                     <exp op="=" dbField="a.award_size_id" paramName="csize" />

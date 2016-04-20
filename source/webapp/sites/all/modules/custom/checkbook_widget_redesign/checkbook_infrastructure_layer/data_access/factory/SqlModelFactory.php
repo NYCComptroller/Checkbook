@@ -21,34 +21,6 @@ class SqlModelFactory {
         return $sqlStatementModel->query;
     }
 
-    static private function prepareStatement(SqlStatementModel $statementModel, $parameters, $limit, $orderBy) {
-        $where = "";
-        $select = $statementModel->select;
-        $whereParams = $statementModel->whereParams;
-        $groupBy = $statementModel->groupBy;
-        $having = $statementModel->having;
-        $paramsModel = $statementModel->parameters;
-        foreach($whereParams as $whereParam) {
-            $where .= $where != "" ? " AND " : "\nWHERE ";
-            $where .= self::processExpressions($whereParam->expressions,$parameters,$paramsModel);
-        }
-        if(isset($groupBy) && $groupBy != "") {
-            $groupBy = "\nGROUP BY {$groupBy}";
-        }
-        if(isset($orderBy) && $orderBy != "") {
-            $orderBy = "\nORDER BY {$orderBy}";
-        }
-        if(isset($having) && $having != "") {
-            $having = "\nHAVING {$having}";
-        }
-        if(isset($limit) && $limit != "") {
-            $limit = "\nLIMIT {$limit}";
-        }
-
-        $sql = $select.$where.$groupBy.$having.$orderBy.$limit;
-        return $sql;
-    }
-
     /**
      * @param $parameters
      * @param $limit
@@ -61,6 +33,42 @@ class SqlModelFactory {
         $sqlModel = self::getSqlModel($sqlConfigName);
         $sqlStatementModel = $sqlModel->getStatement($statementName);
         $query = $sqlStatementModel->sql;
+
+        //expressions
+        $expressions = $sqlStatementModel->expressions;
+        $paramsModel = $sqlStatementModel->parameters;
+        foreach($expressions as $expression) {
+            $exp = "";
+            if($expression->operatorType == SqlOperatorType::CONDITION)
+            {
+                $paramValue = $parameters[$expression->paramName];
+                $compareValue = $expression->compareValue;
+                $condition = $expression->condition;
+                $paramType = "";
+                foreach($paramsModel as $paramModel) {
+                    if($paramModel->name == $expression->paramName) {
+                        $paramType = $paramModel->type;
+                        break;
+                    }
+                }
+
+                $success = false;
+                if($paramType == "bool") {
+                    $paramValue = (bool)$paramValue;
+                    $compareValue = (bool)$compareValue;
+                }
+                switch($condition) {
+                    case SqlOperator::EQUAL:
+                        $success  = $paramValue == $compareValue;
+                        break;
+                }
+                if($success) {
+                    $exp = strip_tags($expression->xmlString);
+                }
+            }
+            $replacement = $expression->xmlString;
+            $query = str_replace($replacement, $exp, $query);
+        }
 
         //where
         $whereParams = $sqlStatementModel->whereParams;

@@ -1,8 +1,8 @@
 {
     "sqlConfig":
     {
-        "serviceName":"ChecksWidgetService",
-        "sqlConfigName":"checks",
+        "serviceName":"SpendingWidgetService",
+        "sqlConfigName":"spending/spending",
         "statementName":"GetOGEChecks",
         "countStatementName":"GetCountOGEChecks"
     },

@@ -389,36 +389,44 @@ function _widget_controller_type_set_defaults($info) {
 function widget_controller_prepare(&$node) {
 }
 
-function load_widget_controller_data($node) {
+function widget_controller_load_data_service($node) {
 
+    $service = null;
     if(isset($node->widgetConfig->sqlConfig)) {
         if(!isset($node->widgetConfig->getData) || (isset($node->widgetConfig->getData) && $node->widgetConfig->getData)){
 
-            $results = null;
-            $order_by = "";//"check_amount DESC";
-            $limit = $node->widgetConfig->limit;
             $sqlConfig = $node->widgetConfig->sqlConfig;
             $serviceName = $sqlConfig->serviceName;
             $sqlConfigName = $sqlConfig->sqlConfigName;
             $statementName = $sqlConfig->statementName;
-            $parameters = _prepare_input_parameters($node);
 
-            try {
-
-                //TODO: Use service factory
-                $service = new $serviceName($sqlConfigName, $statementName);
-                $results = $service->getWidgetData($parameters, $limit, $order_by);
-                $results = $service->implementDerivedColumns($results);
-            }
-            catch(Exception $e) {
-                log_error("Error getting data from the controller: \n" . $e->getMessage()/*, $e*/);
-                $node->error = $e;
-                return;
-            }
-
-            $node->data = $results;
-            $node->nodeAdjustedParamaterConfig = $parameters;
+            //TODO: Use service factory
+            $service = new $serviceName($sqlConfigName, $statementName);
         }
+    }
+    return $service;
+}
+
+function load_widget_controller_data($node, $service) {
+
+    if(isset($service)) {
+        $results = null;
+        $order_by = "";//"check_amount DESC";
+        $limit = $node->widgetConfig->limit;
+        $sqlConfig = $node->widgetConfig->sqlConfig;
+        $parameters = _prepare_input_parameters($node);
+
+        try {
+            $results = $service->getWidgetData($parameters, $limit, $order_by);
+        }
+        catch(Exception $e) {
+            log_error("Error getting data from the controller: \n" . $e->getMessage()/*, $e*/);
+            $node->error = $e;
+            return;
+        }
+
+        $node->data = $results;
+        $node->nodeAdjustedParamaterConfig = $parameters;
     }
 }
 
@@ -450,14 +458,14 @@ function load_widget_controller_data_count($node) {
 
 function widget_controller_data(&$node) {
 
+    //Prepare service
+    $service = widget_controller_load_data_service($node);
+
 	//Load widget data
-    load_widget_controller_data($node);
+    load_widget_controller_data($node, $service);
 
     //Format widget data
-    $node->data = widget_controller_format_widget_data($node);
-
-
-    //Derived Columns
+    $node->data = widget_controller_format_widget_data($node, $service);
 }
 
 /**
@@ -466,25 +474,45 @@ function widget_controller_data(&$node) {
  * @param $node
  * @return mixed
  */
-function widget_controller_format_widget_data($node){
+function widget_controller_format_widget_data($node, $service){
     $formatColumns = array_filter($node->widgetConfig->table_columns,
         function($value) {
             return isset($value->format);
         });
-    if(count($formatColumns) > 0) {
+    $tooltipColumns = array_filter($node->widgetConfig->table_columns,
+        function($value) {
+            return isset($value->tooltip);
+        });
+    $derivedColumns = array_filter($node->widgetConfig->table_columns,
+        function($value) {
+            return isset($value->derivedColumn);
+        });
+
+    if(count($formatColumns) > 0 || count($tooltipColumns) > 0 || count($derivedColumns) > 0) {
         foreach($node->data as $key=>$val) {
-            foreach($formatColumns as $formatColumn) {
-                switch($formatColumn->format) {
+            //formatting
+            foreach($formatColumns as $column) {
+                switch($column->format) {
                     case "dollar":
-                        $node->data[$key][$formatColumn->column] = custom_number_formatter_format($node->data[$key][$formatColumn->column],2,'$');
+                        $node->data[$key][$column->column] = custom_number_formatter_format($node->data[$key][$column->column],2,'$');
                         break;
                     case "date":
-                        $node->data[$key][$formatColumn->column] = custom_date_format($node->data[$key][$formatColumn->column]);
+                        $node->data[$key][$column->column] = custom_date_format($node->data[$key][$column->column]);
                         break;
                 }
             }
+            //tooltip
+            foreach($tooltipColumns as $column) {
+                $node->data[$key][$column->column] = _get_tooltip_markup($node->data[$key][$column->column], $column->tooltip);
+            }
+            //derived
+            foreach($derivedColumns as $column) {
+                $node->data[$key][$column->column] = $service->implDerivedColumn($column->derivedColumn,$node->data[$key]);
+            }
         }
     }
+
+    //$results = $service->implementDerivedColumns($results);
     return $node->data;
 }
 
