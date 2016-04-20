@@ -23,8 +23,8 @@ package = REI Checkbook Widget Redesign
 core = 7.x
 
 files[] = spending/CheckData.php
-files[] = spending/SpendingService.php
-files[] = spending/ChecksWidgetService.php
+files[] = spending/SpendingWidgetService.php
+files[] = contracts/ContractsWidgetService.php
 
 files[] = widget/AbstractWidgetService.php
 files[] = widget/IWidgetService.php

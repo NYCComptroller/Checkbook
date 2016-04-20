@@ -24,9 +24,6 @@ require_once(realpath(drupal_get_path('module', 'checkbook_domain')) .'/checks/C
 require_once(realpath(drupal_get_path('module', 'checkbook_domain')) .'/checks/AbstractCheckFactory.php');
 require_once(realpath(drupal_get_path('module', 'checkbook_domain')) .'/checks/CheckRepository.php');
 
-require_once('spending/CheckData.php');
-require_once('spending/SpendingService.php');
-
 function checkbook_service_init() {
 
 }

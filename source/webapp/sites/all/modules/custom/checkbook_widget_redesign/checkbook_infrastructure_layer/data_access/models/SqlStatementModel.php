@@ -14,13 +14,15 @@ class SqlStatementModel extends AbstractSqlModel {
     public $sql;
     public $parameters = array();
     public $whereParams = array();
+    public $expressions = array();
     public $groupBy;
     public $having;
     public $query;
 
     protected static $childElements = array(
         array('xpath'=>'param','class'=>'SqlParamModel'),
-        array('xpath'=>'sql/where','class'=>'SqlWhereParamModel')
+        array('xpath'=>'sql/where','class'=>'SqlWhereParamModel'),
+        array('xpath'=>'sql/exp','class'=>'SqlExpressionModel')
     );
 
     /**
@@ -29,15 +31,17 @@ class SqlStatementModel extends AbstractSqlModel {
      * @param $sql
      * @param ISqlModel[] $parameters
      * @param ISqlModel[] $whereParams
+     * @param ISqlModel[] $expressions
      * @param $groupBy
      * @param $having
      */
-    function __construct($name, $datasource, $sql, $parameters, $whereParams, $groupBy, $having) {
+    function __construct($name, $datasource, $sql, $parameters, $whereParams, $expressions, $groupBy, $having) {
         $this->name = $name;
         $this->datasource = $datasource;
         $this->sql = $sql;
         $this->parameters = $parameters;
         $this->whereParams = $whereParams;
+        $this->expressions = $expressions;
         $this->groupBy = $groupBy;
         $this->having = $having;
     }
@@ -55,6 +59,6 @@ class SqlStatementModel extends AbstractSqlModel {
         $having = trim((string)$xml->sql->having);
         $childModels = self::loadChildXElements($xml);
 
-        return new self($name,$datasource,$sql,$childModels[0],$childModels[1],$groupBy,$having);
+        return new self($name,$datasource,$sql,$childModels[0],$childModels[1],$childModels[2],$groupBy,$having);
     }
 }
