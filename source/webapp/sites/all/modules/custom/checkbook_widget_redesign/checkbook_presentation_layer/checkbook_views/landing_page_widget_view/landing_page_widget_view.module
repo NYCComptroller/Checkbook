@@ -54,31 +54,31 @@ function landing_page_widget_view_widget_controller_data(&$node) {
  * @return multitype:string boolean multitype:number  
  */
 function landing_page_widget_view_menu(){
-    $items['checkbook_views/data_tables/ajax_data/node/%widget/%'] = array(
+    $items['checkbook_views/data_tables/ajax_data/node/%widget_controller/%'] = array(
         'page callback' => '_landing_page_widget_view_ajaxdata',
         'page arguments' => array(4),
         'access callback' => true,
 	    'type'=>MENU_CALLBACK
   	);
-    $items['checkbook_views/data_tables/ajax_data/node/%widget'] = array(
+    $items['checkbook_views/data_tables/ajax_data/node/%widget_controller'] = array(
         'page callback' => '_landing_page_widget_view_ajaxdata',
         'page arguments' => array(4),
         'access callback' => true,
 	    'type'=>MENU_CALLBACK
   	);
-    $items['checkbook_views/data_tables_list/ajax_data/node/%widget/%'] = array(
+    $items['checkbook_views/data_tables_list/ajax_data/node/%widget_controller/%'] = array(
         'page callback' => '_landing_page_widget_view_list_ajaxdata',
         'page arguments' => array(4),
         'access callback' => true,
         'type'=>MENU_CALLBACK
     );
-    $items['checkbook_views/data_tables_list/ajax_data/node/%widget'] = array(
+    $items['checkbook_views/data_tables_list/ajax_data/node/%widget_controller'] = array(
         'page callback' => '_landing_page_widget_view_list_ajaxdata',
         'page arguments' => array(4),
         'access callback' => true,
         'type'=>MENU_CALLBACK
     );
-    $items['checkbook_views/data_tables_list_wt/ajax_data/node/%widget'] = array(
+    $items['checkbook_views/data_tables_list_wt/ajax_data/node/%widget_controller'] = array(
         'page callback' => '_landing_page_widget_view_list_wt_ajaxdata',
         'page arguments' => array(4),
         'access callback' => true,

@@ -42,7 +42,7 @@ require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/ob
 /***************************************/
 
 function widget_controller_menu(){
-  $items['widget_controller_ajax_data/node/%widget/%'] = array(
+  $items['widget_controller_ajax_data/node/%widget_controller/%'] = array(
       'page callback' => 'widget_controller_ajax_get_node',
       'page arguments' => array(2),
       'access callback' => true,
@@ -50,7 +50,7 @@ function widget_controller_menu(){
   );
   
   
-  $items['widget/%'] = array(
+  $items['widget_controller/%'] = array(
   		'page callback' => '_widget_controller_node_view_page',
   		'page arguments' => array(1),
   		'access callback' => true,
@@ -63,9 +63,6 @@ function widget_controller_menu(){
 
 
 function widget_controller_load($key){
-	if( $id > 0 ){
-		$node = node_load($key);
-	}
 	if($node == null){
 		$node = _widget_controller_node_load_file($key);
 	}
@@ -116,24 +113,25 @@ function widget_controller_perm() {
 }
 
 function _widget_controller_node_load($key, $type='node'){
-	
-	if(preg_match("/^admin/",$_GET['q'])){
-		return "";
-	}
-		
-	switch ($type) {
-		case 'node':
-			return node_load($key);;
-		case 'file':
-			return _widget_controller_node_load_file($key);
-			
-	}	
+    return _widget_controller_node_load_file($key);
+}
+
+
+/*
+ * Custom hook for new widget controller
+ */
+function _widget_controller_node_view($key){
+    $node = _widget_controller_node_load_file($key);
+    $node = widget_merge_default_settings($node);
+	$node = widget_controller_node_view($node);
+	echo $node->content['body']['#markup'];
 }
 
 function _widget_controller_node_view_page($key){
-	$node = _widget_controller_node_load_file($key);
-	$node = widget_controller_node_view($node);
-	return $node->content['body']['#markup'];
+    $node = _widget_controller_node_load_file($key);
+    $node = widget_merge_default_settings($node);
+    $node = widget_controller_node_view($node);
+    return $node->content['body']['#markup'];
 }
 
 function widget_merge_default_settings(&$node){
@@ -149,21 +147,9 @@ function widget_merge_default_settings(&$node){
     return $node;
 }
 
-/*
- * Custom hook for new widget controller
- */
-function _widget_controller_node_view($key){
-
-    $node = _widget_controller_node_load_file($key);
-    $node = widget_merge_default_settings($node);
-
-	$node = widget_controller_node_view($node);
-	echo $node->content['body']['#markup'];
-}
-
 function _widget_controller_node_load_file($key){
 	$node =  new stdClass();
-	$node->type = "widget";
+	$node->type = "widget_controller";
 	$files = file_scan_directory( drupal_get_path('module','checkbook_project') , '/^'.$key.'\.json$/');
       if(count($files) > 0){
         $file_names = array_keys($files); 
@@ -174,29 +160,6 @@ function _widget_controller_node_load_file($key){
     	$node->nid = $key;
     }  
     return $node;  
-}
-
-
-
-
-function widget_controller_node_load($nodes,$types){
-	if(preg_match("/^admin/",$_GET['q'])){
-		return "";
-	}
-	
-  foreach($nodes as $nid => $node ){
-    if( $node->type == "widget"){
-      $files = file_scan_directory( drupal_get_path('module','checkbook_project') , '/^'.$nid.'\.json$/');
-      if(count($files) > 0){
-        $file_names = array_keys($files); 
-        $json = file_get_contents($file_names[0]);
-        $node->widget_json =  $json;
-      }else{
-        $node->widget_json = $node->body['und'][0]['value'] ;
-      }
-    }
-  }
-  
 }
 
 function widget_controller_form(&$node) {
@@ -227,7 +190,7 @@ function widget_controller_form(&$node) {
 }
 
 function widget_controller_node_validate(&$node) {
-	if($node->type != 'widget')
+	if($node->type != 'widget_controller')
 		return ;
 
 	widget_controller_config($node);
@@ -235,7 +198,7 @@ function widget_controller_node_validate(&$node) {
 
 function widget_controller_node_view($node, $nodata = true) {
 
-	if($node->type != 'widget')
+	if($node->type != 'widget_controller')
 		return ;
 
 	//make sure configuration is loaded
