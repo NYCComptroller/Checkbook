@@ -15,9 +15,9 @@ abstract class AbstractWidgetService implements IWidgetService {
         $this->repository = new WidgetRepository($sqlConfigName, $statementName);
     }
 
-    public function getWidgetData($parameters, $limit, $order_by) {
+    public function getWidgetData($parameters, $limit, $orderBy) {
         // 1. Call Repository
-        $data = $this->repository->getWidgetData($parameters, $limit, $order_by);
+        $data = $this->repository->getWidgetData($parameters, $limit, $orderBy);
         return $data;
     }
 

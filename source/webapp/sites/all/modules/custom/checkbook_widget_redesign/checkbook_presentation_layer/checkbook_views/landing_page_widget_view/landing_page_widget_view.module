@@ -88,9 +88,6 @@ function landing_page_widget_view_menu(){
   	return $items;
 }
 
-
-
-
 /**
  * supports ajax data callback for data table widget type..simpleAjax
  * @param $node
@@ -105,8 +102,6 @@ function _landing_page_widget_view_ajaxdata($node){
     drupal_add_http_header('Content-Type','application/json; utf-8');
 	echo _landing_page_widget_view_ajaxdata_json($node);
 }
-
-
 
 function __landing_page_widget_add_padding_data($node){
   if($node->widgetConfig->skipCustomPadding) return;
@@ -194,9 +189,6 @@ function _landing_page_widget_view_ajaxdata_json($node){
     return json_encode($response);
 }
 
-
-
-
 /**
  * supports ajax data callback for data table widget type..dataTableWidgets...
  * @param $node
@@ -206,7 +198,6 @@ function _landing_page_widget_view_list_wt_ajaxdata($node){
 	$node = landing_page_widget_view_get_data($node);
     echo _landing_page_widget_view_list_wt_prepare_json($node);
 }
-
 
 /**
  * construct the json from data returned from data controller.This function is used for dataTableWidgets data table widget .
@@ -320,8 +311,6 @@ function _landing_page_widget_view_list_ajaxdata($node){
     echo json_encode($response);
 }
 
-
-
 /**
  * gets the data from the data controller based 
  * @param  $node
@@ -350,9 +339,6 @@ Modified the data controller query to add the right order by clause...
 */
 function landing_page_widget_view_widget_prepare($node){
 
-    if(isset($node->widgetConfig->adjustDataTableOptions)){
-        eval($node->widgetConfig->adjustDataTableOptions);
-    }
     $sort_columns = array();
     foreach($node->widgetConfig->table_columns as $column) {
         array_push($sort_columns, $column);
@@ -363,23 +349,15 @@ function landing_page_widget_view_widget_prepare($node){
       $node->widgetConfig->orderBy = array($node->widgetConfig->orderBy);
     else
       $node->widgetConfig->orderBy = array();
+
     while($count < $_REQUEST['iSortingCols']){
-	$index =  $count ;
+	    $index =  $count ;
 
         $sort_column = $sort_columns[$_REQUEST['iSortCol_' . $index ]]->column;
-        if(isset($sort_columns[$_REQUEST['iSortCol_' . $index ]]->sortSourceColumn)){
-            $sort_actual_column = $sort_columns[$_REQUEST['iSortCol_' . $index ]]->sortSourceColumn;
-        }
-        else{
-            foreach($node->widgetConfig->columns as $column)
-                if($sort_column ==  str_replace('.', '_',$column) )
-                    $sort_actual_column = $column;
-        }
-
 		if($_REQUEST['sSortDir_' . $index] == 'desc')
-			$node->widgetConfig->orderBy[]  = '-' . $sort_actual_column;
+			$node->widgetConfig->orderBy[]  = '-' . $sort_column;
 		else 
-			$node->widgetConfig->orderBy[] =  $sort_actual_column ;
+			$node->widgetConfig->orderBy[] =  $sort_column ;
 		$count += 1;
     }
 
@@ -404,19 +382,13 @@ function landing_page_widget_view_widget_prepare($node){
         }
     }
 
-    foreach($node->widgetConfig->orderBy as $key=>$value){
-        $value = _update_dataset_datasource($value);
-        $node->widgetConfig->orderBy[$key] = $value;
-    }
-
     $iDisplayStart = $_REQUEST['iDisplayStart'];
     if(is_numeric($iDisplayStart)){
-    	//$node->widgetConfig->startWith = ((int)$iDisplayStart > 4990)? 4990:(int)$iDisplayStart ;
         $node->widgetConfig->startWith = (int)$iDisplayStart;
     }
 
-    $iDisplayLength = (is_numeric($_REQUEST['iDisplayLength']) && ((int)$_REQUEST['iDisplayLength']) > 0) ? (int)$_REQUEST['iDisplayLength'] :
-        (isset($node->widgetConfig->limit) ? $node->widgetConfig->limit : NULL);
+    $iDisplayLength = (is_numeric($_REQUEST['iDisplayLength']) && ((int)$_REQUEST['iDisplayLength']) > 0) ?
+        (int)$_REQUEST['iDisplayLength'] : (isset($node->widgetConfig->limit) ? $node->widgetConfig->limit : NULL);
     if(isset($iDisplayLength)){
         $node->widgetConfig->limit = $iDisplayLength;
     }
