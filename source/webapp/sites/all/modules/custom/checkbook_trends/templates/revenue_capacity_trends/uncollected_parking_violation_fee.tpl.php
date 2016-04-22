@@ -89,9 +89,9 @@ rsort($years);
                   $row['category'] = 'Write offs, Adjustments<br>and Dispositions (b)';
                 if($row['category'] == 'Allowance for Uncollectible Amounts (c)')
                   $row['category'] = 'Allowance for<br>Uncollectible Amounts (c)';
-                $row['category'] = str_replace('(a)','<sup>(a)</sup>', $row['category']);
-                $row['category'] = str_replace('(b)','<sup>(b)</sup>', $row['category']);
-                $row['category'] = str_replace('(c)','<sup>(c)</sup>', $row['category']);
+                $row['category'] = str_replace('(a)','<sup style="text-transform: lowercase;">(a)</sup>', $row['category']);
+                $row['category'] = str_replace('(b)','<sup style="text-transform: lowercase;">(b)</sup>', $row['category']);
+                $row['category'] = str_replace('(c)','<sup style="text-transform: lowercase;">(c)</sup>', $row['category']);
 
 
                 $conditionCategory = ($row['category']?$row['category']:'&nbsp;');
@@ -100,18 +100,18 @@ rsort($years);
                 		$conditionCategory = "<div class='" . $cat_class . "'>Write offs, Adjustments and <br><span style='padding-left:10px;'>Dispositions<sup>(b)</sup><span></div>";
                 		break;
                 	case "Less:":
-                		$conditionCategory = "<div class='" . $cat_class ."'><span style='padding-left:10px;'>Less:</span></div>";
+                		$conditionCategory = "<div class='" . $cat_class ."'><span style='padding-left:0px;'>Less:</span></div>";
                 		break;
                 	case "Summonses Uncollected - June 30th":
-                		$conditionCategory = "<div class='" .$cat_class . "'>Summonses Uncollected -<br><span style='padding-left:10px;'> June 30th<span></div>";
+                		$conditionCategory = "<div class='" .$cat_class . "'>Summonses Uncollected -<br><span style='padding-left:0px;'> June 30th<span></div>";
                 		break;
                 	default:
                 		$conditionCategory = "<div class='" . $cat_class . "' >" . $row['category'] . "</div>";
                 		break;
                 }
+
                 
-                
-			    echo "<tr><td>" . $conditionCategory . "</td>";
+			    echo "<tr><td class='text'>" . $conditionCategory . "</td>";
 			    foreach ($years as $year){
                     echo "<td><div>&nbsp;</div></td>";
 			        echo "<td class='" . $amount_class . "' >" . $dollar_sign . "<div>" . (($row[$year]['amount'] > 0) ? number_format($row[$year]['amount']) : '&nbsp;') . "</div></td>";
@@ -125,9 +125,9 @@ rsort($years);
     </tbody>
 </table>
 <div class="footnote">
-     <p>(A) The summonses issued by various City agencies for parking violations are adjudicated and collected by the Parking Violations Bureau (PVB) of the City’s Department of Finance.</p>
-     <p>(B) Proposed “write-offs” are in accordance with a write-off policy implemented by PVB for summonses determined to be legally uncollectible/unprocessable or for which all prescribed collection efforts are unsuccessful.</p>
-     <p>(C) The Allowance for Uncollectible Amounts is calculated as follows: summonses which are over three years old are fully (100%) reserved and 35% of summonses less than three years old are reserved.</p>
+     <p>(a) The summonses issued by various City agencies for parking violations are adjudicated and collected by the Parking Violations Bureau (PVB) of the City’s Department of Finance.</p>
+     <p>(b) Proposed “write-offs” are in accordance with a write-off policy implemented by PVB for summonses determined to be legally uncollectible/unprocessable or for which all prescribed collection efforts are unsuccessful.</p>
+     <p>(c) The Allowance for Uncollectible Amounts is calculated as follows: summonses which are over three years old are fully (100%) reserved and 35% of summonses less than three years old are reserved.</p>
      <p>Note: Data does not include interest reflected on the books of PVB.</p>
      <p>Source: The City of New York, Department of Finance, Parking Violations Bureau.</p>
 </div>

@@ -25,8 +25,9 @@
     $header .=  ",DIB Revenue(1)";
     $header .=  ",TEP Revenue(2)";
     $header .=  ",ISP Revenue(3)";
-    $header .=  ",PILOMRT(4)";    
-    $header .=  ",Other(5)";
+    $header .=  ",PILOMRT(4)";
+    $header .=  ",PILOT(5)";
+    $header .=  ",Other(6)";
     $header .=  ",Investment Earnings";
     $header .=  ",Total Revenue";
     $header .=  ",Debt Service - Interest";
@@ -34,7 +35,7 @@
     $header .=  ",Debt Service - Total";
     $header .=  ",Operating Expenses";
     $header .=  ",Total to be Covered";
-    $header .=  ",Coverage on Total Revenue(6)";
+    $header .=  ",Coverage on Total Revenue(7)(8)";
 
 	echo $header . "\n";
 	echo "(AMOUNTS IN THOUSANDS)" . "\n";
@@ -49,6 +50,7 @@
         $rowString .= ',' .(($row['tep_revenue_2']>0)?('"'.number_format($row['tep_revenue_2']).'"'):'-');
         $rowString .= ',' .(($row['isp_revenue_3']>0)?('"'.number_format($row['isp_revenue_3']).'"'):'-');
         $rowString .= ',' .(($row['pilomrt_payment']>0)?('"'.number_format($row['pilomrt_payment']).'"'):'-');
+        $rowString .= ',' .(($row['pilot']>0)?('"'.number_format($row['pilot']).'"'):'-');
         $rowString .= ',' .(($row['other_4']>0)?('"'.number_format($row['other_4']).'"'):'-');
         $rowString .= ',' .(($row['investment_earnings']>0)?('"'.number_format($row['investment_earnings']).'"'):'-');
         $rowString .= ',' .(($row['total_revenue']>0)?('"'.number_format($row['total_revenue']).'"'):'-');
@@ -56,9 +58,9 @@
         $rowString .= ',' .(($row['principal']>0)?('"'.number_format($row['principal']).'"'):'-');
         $rowString .= ',' .(($row['total']>0)?('"'.number_format($row['total']).'"'):'-');
         //$rowString .= ',' .(($row['operating_expenses']>0)?('"'.number_format($row['operating_expenses']).'"'):'-');
-        $rowString .= ',' .(($row['operating_expenses']>0)?('"'.number_format($row['operating_expenses']).'"'):'-') . ((  $row['fiscal_year'] == '2012')? '(8)':'');
+        $rowString .= ',' .(($row['operating_expenses']>0)?('"'.number_format($row['operating_expenses']).'"'):'-') . ((  $row['fiscal_year'] == '2012')? '(9)':'');
         $rowString .= ',' .(($row['total_to_be_covered']>0)?('"'.number_format($row['total_to_be_covered']).'"'):'-');
-        $rowString .= ',' . $row['coverage_on_total_revenue_5'].(($row['fiscal_year'] == '2009' || $row['fiscal_year'] == '2010' || $row['fiscal_year'] == '2011'|| $row['fiscal_year'] == '2012')?'(7)':'');
+        $rowString .= ',' . $row['coverage_on_total_revenue_5'];
 
         echo $rowString . "\n";
         $count++;
@@ -69,9 +71,10 @@
         ."\n".'"'."(2) Property Tax Equivalency Payments (TEP)".'"'
         ."\n".'"'."(3) Interest Support Payments (ISP)".'"'
         ."\n".'"'."(4) Payments in Lieu of the Mortgage Recording Tax (PILOMRT)".'"'
-        ."\n".'"'."(5) Grant from City".'"'
-        ."\n".'"'."(6) ISPs are to be made by the City under the terms of Support and Development Agreement, which obligates the City to pay HYIC, subject to annual appropriation, an ISP amount equal to the difference between the amount of funds available to HYIC to pay interest on its current outstanding bonds and the amount of interest due on such bonds.".'"'
-        ."\n".'"'."(7) Debt service payments are funded from excess prior years' revenues and from current year revenues.".'"'
-        ."\n".'"'."(8) In December 2011, HYIC was obligated to make an arbitrage rebate payment to United States Treasury for $8.8M ".'"'        
+        ."\n".'"'."(5) Payments in Lieu of Real Estate Taxes (PILOT)".'"'
+        ."\n".'"'."(6) Grant from City".'"'
+        ."\n".'"'."(7) ISPs are to be made by the City under the terms of Support and Development Agreement, which obligates the City to pay HYIC, subject to annual appropriation, an ISP amount equal to the difference between the amount of funds available to HYIC to pay interest on its current outstanding bonds and the amount of interest due on such bonds.".'"'
+        ."\n".'"'."(8) Debt service payments are funded from excess prior years' revenues and from current year revenues.".'"'
+        ."\n".'"'."(9) In December 2011, HYIC was obligated to make an arbitrage rebate payment to United States Treasury for $8.8M ".'"'
         ."\n\n".'"'."Source: Hudson Yards Infrastructure Corporation".'"';
 ?>

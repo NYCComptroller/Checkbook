@@ -19,7 +19,7 @@
 */
 ?>
 <?php
-switch($node->widgetConfig->gridConfig>domain){
+switch($node->widgetConfig->gridConfig->domain){
  
 	case "spending":
 		include_once('spending_title.php');

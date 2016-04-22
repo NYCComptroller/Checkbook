@@ -36,7 +36,7 @@ echo eval($node->widgetConfig->header);
     <thead>
     <tr>
     	<th rowspan="3" class="number"><div class="trendCen">Year</div></th>
-    	<th class="centrig bb" colspan="5"><div>1994-2013</div></th>
+    	<th class="centrig bb" colspan="5"><div>1994-2014</div></th>
     </tr>
     <tr>
 
@@ -47,7 +47,7 @@ echo eval($node->widgetConfig->header);
 	<tr>
 		
         <th class="number" ><div class="trendCen">New York City<br>Employed</div></th>
-        <th class="number" ><div class="trendCen">New York City<br>Unemployed<sup>(a)</sup></div></th>
+        <th class="number" ><div class="trendCen">New York City<br>Unemployed<sup style="text-transform: lowercase;">(a)</sup></div></th>
         <th class="number" ><div class="trendCen">New York<br>City</div></th>
         <th class="number" ><div class="trendCen">United<br>States</div></th>
     </tr>    
@@ -76,7 +76,7 @@ echo eval($node->widgetConfig->header);
   <table>
     <tbody>
     <tr>
-      <td>(A)</td>
+      <td>(a)</td>
       <td>Unemployed persons are all civilians who had no employment during the survey week, were available for work, except for temporary illness, and had made efforts to find employment some time during the prior four weeks.
         This includes persons who were waiting to be recalled to a job from which they were laid off or were waiting to report to a new job within 30 days.</td>
     </tr>

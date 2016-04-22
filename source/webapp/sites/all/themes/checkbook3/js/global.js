@@ -1161,6 +1161,8 @@ Drupal.behaviors.hoveOverMWBE = {
     }
 
     function initializeAccordionAttributes(accordion_type) {
+        $('#advanced-search-rotator').css('display', 'none');
+        $("#block-checkbook-advanced-search-checkbook-advanced-search-form :input").removeAttr("disabled");
         $('.create-alert-customize-results').css('display','none');
         $('.create-alert-schedule-alert').css('display','none');
         $('.create-alert-confirmation').css('display','none');
@@ -1307,14 +1309,11 @@ Drupal.behaviors.hoveOverMWBE = {
             }
 
             $(document).ajaxComplete(function() {
-                $('#advanced-search-rotator').css('display', 'none');
-                create_alert_form_enable();
                 /* Do not enable next buttons for results page here */
                 var step = $('input:hidden[name="step"]').val();
                 if(step == 'select_criteria') {
                     $('#edit-next-submit').attr('disabled', true);
                     $('#edit-back-submit').attr('disabled', true);
-                    $('#advanced-search-rotator').css('display', 'none');
                 }
                 else if(step == 'schedule_alert') {
                     $('#edit-next-submit').attr('disabled', false);
@@ -1391,6 +1390,10 @@ Drupal.behaviors.hoveOverMWBE = {
                 switch(step) {
                     case 'select_criteria':
                         next_step = 'customize_results';
+
+                        /* Hide the rotator */
+                        $('#advanced-search-rotator').css('display', 'none');
+                        create_alert_form_enable();
 
                         /* Hide the iFrame */
                         $('#checkbook_advanced_search_result_iframe').css('visibility','hidden');
@@ -1501,6 +1504,9 @@ Drupal.behaviors.hoveOverMWBE = {
                 switch(step) {
                     case 'customize_results':
                         previous_step = 'select_criteria';
+
+                        //enable form
+                        $("#block-checkbook-advanced-search-checkbook-advanced-search-form :input").removeAttr("disabled");
 
                         /* Update width of dialog dimension */
                         $('div.ui-dialog-titlebar').css('width', 'auto');
@@ -2286,22 +2292,22 @@ Drupal.behaviors.datafeedspagefreeze = {
         // Datafeeds form disable
         jQuery("#edit-type-next").click(formfreeze_datafeeds);
         jQuery("#edit-prev").click(formfreeze_datafeeds);
-        jQuery("#edit-revenue-next").click(formfreeze_datafeeds);
-        jQuery("#edit-payroll-next").click(formfreeze_datafeeds);
-        jQuery("#edit-spending-next").click(formfreeze_datafeeds);
-        jQuery("#edit-contract-next").click(formfreeze_datafeeds);
-        jQuery("#edit-budget-next").click(formfreeze_datafeeds);
+        jQuery("#edit-feeds-revenue-next").click(formfreeze_datafeeds);
+        jQuery("#edit-feeds-payroll-next").click(formfreeze_datafeeds);
+        jQuery("#edit-feeds-spending-next").click(formfreeze_datafeeds);
+        jQuery("#edit-feeds-contract-next").click(formfreeze_datafeeds);
+        jQuery("#edit-feeds-budget-next").click(formfreeze_datafeeds);
         jQuery("#edit-confirm").click(formfreeze_datafeeds);
         jQuery("#edit-cancel").click(formfreeze_datafeeds);
 
         //loading gif
         jQuery("#edit-type-next").click(gif_rotator);
         jQuery("#edit-prev").click(gif_rotator);
-        jQuery("#edit-revenue-next").click(gif_rotator);
-        jQuery("#edit-payroll-next").click(gif_rotator);
-        jQuery("#edit-spending-next").click(gif_rotator);
-        jQuery("#edit-contract-next").click(gif_rotator);
-        jQuery("#edit-budget-next").click(gif_rotator);
+        jQuery("#edit-feeds-revenue-next").click(gif_rotator);
+        jQuery("#edit-feeds-payroll-next").click(gif_rotator);
+        jQuery("#edit-feeds-spending-next").click(gif_rotator);
+        jQuery("#edit-feeds-contract-next").click(gif_rotator);
+        jQuery("#edit-feeds-budget-next").click(gif_rotator);
         jQuery("#edit-confirm").click(gif_rotator);
     }
 };
@@ -2341,6 +2347,15 @@ Drupal.behaviors.advancedsearchfreeze = {
         jQuery("#edit-contracts-submit").click(formfreeze_advancedsearch);
         jQuery("#edit-contracts-submit--2").click(formfreeze_advancedsearch);
         jQuery("#edit-payroll-submit").click(formfreeze_advancedsearch);
+        //create alerts
+        jQuery("#edit-revenue-next").click(formfreeze_advancedsearch);
+        jQuery("#edit-payroll-next").click(formfreeze_advancedsearch);
+        jQuery("#edit-spending-next").click(formfreeze_advancedsearch);
+        jQuery("#edit-spending-next--2").click(formfreeze_advancedsearch);
+        jQuery("#edit-spending-next--3").click(formfreeze_advancedsearch);
+        jQuery("#edit-contract-next").click(formfreeze_advancedsearch);
+        jQuery("#edit-contract-next--2").click(formfreeze_advancedsearch);
+        jQuery("#edit-budget-next").click(formfreeze_advancedsearch);
 
         // Loading gif
         jQuery("#edit-spending-submit").click(gif_rotator);
@@ -2350,6 +2365,15 @@ Drupal.behaviors.advancedsearchfreeze = {
         jQuery("#edit-contracts-submit").click(gif_rotator);
         jQuery("#edit-contracts-submit--2").click(gif_rotator);
         jQuery("#edit-payroll-submit").click(gif_rotator);
+        //create alerts
+        jQuery("#edit-revenue-next").click(gif_rotator);
+        jQuery("#edit-payroll-next").click(gif_rotator);
+        jQuery("#edit-spending-next").click(gif_rotator);
+        jQuery("#edit-spending-next--2").click(gif_rotator);
+        jQuery("#edit-spending-next--3").click(gif_rotator);
+        jQuery("#edit-contract-next").click(gif_rotator);
+        jQuery("#edit-contract-next--2").click(gif_rotator);
+        jQuery("#edit-budget-next").click(gif_rotator);
 
         jQuery(document).bind("ajaxSend", function(){
             setTimeout(function(){
@@ -2362,10 +2386,13 @@ Drupal.behaviors.advancedsearchfreeze = {
                 jQuery("#edit-contracts-submit--2").attr("disabled", "true");
                 jQuery("#edit-payroll-submit").attr("disabled", "true");
                 //create alert
-                jQuery("#edit-spending-next").attr("disabled", "true");
-                jQuery("#edit-contracts-next").attr("disabled", "true");
-                jQuery("#edit-payroll-next").attr("disabled", "true");
                 jQuery("#edit-revenue-next").attr("disabled", "true");
+                jQuery("#edit-payroll-next").attr("disabled", "true");
+                jQuery("#edit-spending-next").attr("disabled", "true");
+                jQuery("#edit-spending-next--2").attr("disabled", "true");
+                jQuery("#edit-spending-next--3").attr("disabled", "true");
+                jQuery("#edit-contract-next").attr("disabled", "true");
+                jQuery("#edit-contract-next--2").attr("disabled", "true");
                 jQuery("#edit-budget-next").attr("disabled", "true");
             }, 1);
         }).bind("ajaxComplete", function(){
@@ -2379,10 +2406,13 @@ Drupal.behaviors.advancedsearchfreeze = {
                 jQuery("#edit-contracts-submit--2").removeAttr('disabled');
                 jQuery("#edit-payroll-submit").removeAttr('disabled');
                 //Create alert
-                jQuery("#edit-spending-next").removeAttr('disabled');
-                jQuery("#edit-contracts-next").removeAttr('disabled');
-                jQuery("#edit-payroll-next").removeAttr('disabled');
                 jQuery("#edit-revenue-next").removeAttr('disabled');
+                jQuery("#edit-payroll-next").removeAttr('disabled');
+                jQuery("#edit-spending-next").removeAttr('disabled');
+                jQuery("#edit-spending-next--2").removeAttr('disabled');
+                jQuery("#edit-spending-next--3").removeAttr('disabled');
+                jQuery("#edit-contract-next").removeAttr('disabled');
+                jQuery("#edit-contract-next--2").removeAttr('disabled');
                 jQuery("#edit-budget-next").removeAttr('disabled');
             }, 1);
         });

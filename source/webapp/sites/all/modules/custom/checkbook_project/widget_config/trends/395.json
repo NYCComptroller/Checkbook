@@ -16,6 +16,7 @@
         "bInfo": false,
          "bSort":false,
         "sScrollX": "100%",
+        "sScrollY": "400px",
         "sScrollXInner": "1000px",
         "bScrollCollapse": false,
         "bAutoWidth": false,
