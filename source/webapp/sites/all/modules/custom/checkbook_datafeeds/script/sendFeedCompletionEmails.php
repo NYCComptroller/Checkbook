@@ -43,11 +43,14 @@ drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
                 .'/'.$conf['check_book']['data_feeds']['output_file_dir'];
 
         	$file = $dir . '/' . $request['filename'];
+            $token = $request['token'];
+            $job_details = QueueUtil::getRequestDetailsByToken($token);
  			$params= array("download_url"=>$file
 	 		  ,"download_url_compressed"=>$file.'.zip'
 			  ,"expiration_date"=>date('d-M-Y',$request['end_time'] + 3600 * 24 * 7 ) 
 			  ,"contact_email"=>$request['contact_email']
-			  ,"tracking_num"=>$request['token']
+              ,"tracking_num"=>$token
+              ,"user_criteria" => $job_details['user_criteria']
 			  );		  
 			LogHelper::log_debug( $params ); 
   			$response = drupal_mail('checkbook_datafeeds', "download_notification", $request['contact_email'], null, $params);

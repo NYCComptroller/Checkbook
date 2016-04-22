@@ -41,6 +41,6 @@
   
 
    echo "\n"."\n"."SOURCE: Resolutions of the City Council.";
-echo "\n"."\n"."Property tax rate based on every $100 of assessed valuations.";
+echo "\n"."\n"."Note: Property tax rate based on every $100 of assessed valuations.";
 ?>
 

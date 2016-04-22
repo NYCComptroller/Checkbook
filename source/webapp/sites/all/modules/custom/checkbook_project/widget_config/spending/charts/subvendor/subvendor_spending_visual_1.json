@@ -5,6 +5,10 @@
         $header .= ChartUtil::generateWidgetGridViewLink($node);
         return $header;
     ",
+    "preProcessConfiguration":"
+        $yeartype = _getRequestParamValue('yeartype');
+        $node->widgetConfig->model->series[0]->orderBy = $yeartype == 'B' ? 'display_order' : 'month_value';
+    ",
     "gridConfig":{
         "template":"highchart_spending_fy_grid_view",
         "html_class":"chart-grid-view-table three-columns",
@@ -46,7 +50,6 @@
             {
                 "dataset": "checkbook:month",
                 "useList":true,
-                "orderBy":"display_order",
                 "allowedParams":["year"],
                 "columns": ["month_value","month_name"],
                 "columnPrefix": "month_month_"

@@ -35,12 +35,12 @@ echo eval($node->widgetConfig->header);
     ?>
     <thead>
     <tr class="first-row">
-        <th colspan="3" class="centrig bb"><div>2002-2014<br>(annual averages in thousands)</div></th>
+        <th colspan="3" class="centrig bb"><div>2002-2015<br>(Average Annual Recipients)</div></th>
     </tr>
 	<tr class="second-row">
         <th class="number" ><div class="trendCen">Year</div></th>
-        <th class="number" ><div class="trendCen">Public<br>Assistance</div></th>
-        <th class="number" ><div class="trendCen">SSI<sup>(a)</sup></div></th>
+        <th class="number" ><div class="trendCen">Public<br>Assistance<br>(in thousands)</div></th>
+        <th class="number" ><div class="trendCen">SSI<sup style="text-transform: lowercase;">(a)</sup></div></th>
     </tr>
     </thead>
 
@@ -57,7 +57,7 @@ echo eval($node->widgetConfig->header);
 
     </tbody>
 </table>
-    <div class="footnote"><p>(A) The SSI data is for December of each year.</p>
+    <div class="footnote"><p>(a) The SSI data is for December of each year.</p>
           <p>NA: Not Available.</p>
           <p>Sources: The City of New York, Human Resources Administration and the U.S. Social Security Administration.</p>
     </div>

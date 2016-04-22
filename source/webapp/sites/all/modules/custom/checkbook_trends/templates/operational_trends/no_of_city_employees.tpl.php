@@ -85,11 +85,11 @@ rsort($years);
     			if( $row['amount_display_type'] != "" )
     			$amount_class = "amount-" . $row['amount_display_type'];
     			$amount_class .= ' number';
-                $row['category'] = str_replace('(a)','<sup>(a)</sup>', $row['category']);
+                $row['category'] = str_replace('(a)','<sup style="text-transform: lowercase;">(a)</sup>', $row['category']);
                 $row['category'] = (isset($row['category'])?$row['category']:'&nbsp;');
                 
                 if($row['category'] == "Percentage Increase (Decrease) from Prior Year"){
-                	$row['category']  = "Percentage Increase (Decrease)<br><span style='padding-left:10px;'>from Prior Year</span>";
+                	$row['category']  = "Percentage Increase (Decrease)<br><span style='padding-left:0px;'>from Prior Year</span>";
                 }
                 
 			    echo "<tr>
@@ -114,7 +114,7 @@ rsort($years);
     </tbody>
 </table>
 <div class="footnote">
-    <p>(A) Effective July 2003, certain employees of the education area were reclassified from part-time to full-time status.</p>
+    <p>(a) Effective July 2003, certain employees of the education area were reclassified from part-time to full-time status.</p>
     <p>Sources: Financial Management System (FMS), Mayor’s Office of Management and Budget, and Mayor’s Office of Operations.</p>
 </div>
 <?php

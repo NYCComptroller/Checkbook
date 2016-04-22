@@ -21,7 +21,13 @@
 <?php
     $title = eval($node->widgetConfig->summaryView->templateTitleEval);
     $month = '';
-    $year = 'FY'._getYearValueFromID(_getRequestParamValue('year'));
+    $yearType = _getRequestParamValue('yeartype');
+    $year = _getRequestParamValue('calyear');
+    $yearLabel = $yearType == 'C' ? 'CY' : 'FY';
+    $year = isset($year)
+        ? _getYearValueFromID(_getRequestParamValue('calyear'))
+        : _getYearValueFromID(_getRequestParamValue('year'));
+    $year = $yearLabel.$year;
     $monthDetails = CheckbookDateUtil::getMonthDetails(_getRequestParamValue('month'));
     $amount = custom_number_formatter_format(_getRequestParamValue('amt'),2);
 

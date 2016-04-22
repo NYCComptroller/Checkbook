@@ -82,7 +82,7 @@
         <field name="domain" type="string_custom" indexed="true" stored="true" required="true" />
         <field name="agency_id" type="string_custom" indexed="true" stored="true" />
         <field name="agency_name_autocomplete" type="string_autocomplete" indexed="true"/>
-        <field name="agency_name" type="string_custom" indexed="true" stored="true"/>
+        <field name="agency_name" type="string_custom" indexed="true" stored="true" />
         <field name="agency_name_export" type="string_custom" indexed="true" stored="true"/>
         <field name="oge_contracting_agency_name" type="string_custom" indexed="true" stored="true"/>
         <field name="agency_name_id" type="string_custom" indexed="true" stored="true"/>
@@ -93,7 +93,7 @@
         <field name="oge_agency_name_autocomplete" type="string_autocomplete" indexed="true"/>
         <field name="agency_type" type="string_custom" indexed="true" stored="true" />
         <field name="fiscal_year_id" type="string_custom" indexed="true" stored="true" multiValued="true"/>
-        <field name="fiscal_year" type="string_custom" indexed="true" stored="true" multiValued="true"/>
+        <field name="fiscal_year" type="string_custom" indexed="true" stored="true" multiValued="true" />
         <field name="registered_fiscal_year_id" type="string_custom" indexed="true" stored="true"/>
         <field name="registered_fiscal_year" type="string_custom" indexed="true" stored="true"/>
         <field name="calendar_fiscal_year_id" type="string_custom" indexed="true" stored="true"/>
@@ -103,19 +103,19 @@
         <field name="department_name" type="string_custom" indexed="true" stored="true"/>
         <field name="department_name_code" type="string_custom" indexed="true" stored="true"/>
         <field name="department_name_text" type="text_general" indexed="true" stored="true"/>
-        <field name="minority_type_name" type="string_custom" indexed="true" stored="true"/>
+        <field name="minority_type_name" type="string_custom" indexed="true" stored="true" />
         <field name="minority_type_id" type="string_custom" indexed="true" stored="true"/>
         <field name="is_prime_or_sub" type="string_custom" indexed="true" stored="true"/>
         <field name="sub_contract_id" type="string_custom" indexed="true" stored="true"/>
         <field name="prime_vendor_id" type="string_custom" indexed="true" stored="true"/>
         <field name="is_minority_vendor" type="string_custom" indexed="true" stored="true"/>
-        <field name="vendor_type" type="string_custom" indexed="true" stored="true"/>
+        <field name="vendor_type" type="string_custom" indexed="true" stored="true" />
         <field name="prime_vendor_name" type="string_custom" indexed="true" stored="true"/>
         <field name="contract_original_agreement_id" type="string_custom" indexed="true" stored="true"/>
         <field name="domain_ordering" type="string_custom" indexed="true" stored="true"/>
         <field name="date_ordering" type="string_custom" indexed="true" stored="true"/>
-        <field name="industry_type_name" type="string_custom" indexed="true" stored="true"/>
-        <field name="industry_type_name_autocomplete" type="string_autocomplete" indexed="true" />
+        <field name="industry_type_name" type="string_custom" indexed="true" stored="true" />
+        <field name="industry_type_name_autocomplete" type="string_autocomplete" indexed="true"/>
         <field name="industry_type_id" type="string_custom" indexed="true" stored="true"/>
 
         <!--
@@ -193,7 +193,7 @@
         <field name="spending_transaction_id" type="string_custom" indexed="true" stored="true" />
         <field name="expenditure_object_id" type="string_custom" indexed="true" stored="true" />
         <field name="expenditure_object_code" type="string_custom" indexed="true" stored="true" />
-        <field name="expenditure_object_name" type="string_custom" indexed="true" stored="true" multiValued="true"/>
+        <field name="expenditure_object_name" type="string_custom" indexed="true" stored="true" multiValued="true" />
         <field name="expenditure_object_name_autocomplete" type="string_autocomplete" indexed="true" multiValued="true"/>
         <field name="expenditure_object_name_id" type="string_custom" indexed="true" stored="true" />
         <field name="expenditure_object_name_code" type="string" indexed="true" stored="true" />
@@ -208,7 +208,7 @@
         <field name="reporting_code_autocomplete" type="string_autocomplete" indexed="true"/>
         <field name="expense_id" type="string_custom" indexed="true" stored="true"/>
         <field name="spending_category_id" type="string_custom" indexed="true" stored="true"/>
-        <field name="spending_category_name" type="string_custom" indexed="true" stored="true"/>
+        <field name="spending_category_name" type="string_custom" indexed="true" stored="true" />
         <field name="spending_category_name_code" type="string_custom" indexed="true" stored="true"/>
         <field name="spending_entity_contract_number" type="string_custom" indexed="true" stored="true"/>
         <field name="spending_commodity_line" type="string_custom" indexed="true" stored="true"/>
@@ -235,17 +235,15 @@
         <field name="pay_date_id" type="string_custom" indexed="true" stored="true" />
         <field name="pay_frequency" type="string_custom" indexed="true" stored="true" />
         <field name="annual_salary" type="double" indexed="true" stored="true"/>
-        <field name="hourly_rate" type="double" indexed="true" stored="true"/>
         <field name="total_gross_pay" type="double" indexed="true" stored="true"/>
         <field name="base_pay" type="double" indexed="true" stored="true"/>
         <field name="overtime_pay" type="double" indexed="true" stored="true"/>
         <field name="other_payments" type="double" indexed="true" stored="true"/>
         <field name="gross_pay" type="double" indexed="true" stored="true"/>
-        <field name="employee_number" type="string_custom" indexed="true" stored="true"/>
         <field name="amount_basis_id" type="string_custom" indexed="true" stored="true"/>
+        <field name="hourly_rate" type="double" indexed="true" stored="true"/> 
         <field name="payroll_type" type="string_custom" indexed="true" stored="true"/>
-
-        <!--
+       <!--
            Checkbook 2.0
            Contract Specific elements.
        -->
@@ -270,7 +268,7 @@
         <field name="award_method_code" type="string_custom" indexed="true" stored="true"/>
         <field name="award_method_name" type="string_custom" indexed="true" stored="true"/>
         <field name="award_method_name_text" type="text_general" indexed="true" stored="true"/>
-        <field name="contract_category_name" type="string_custom" indexed="true" stored="true"/>
+        <field name="contract_category_name" type="string_custom" indexed="true" stored="true" />
         <field name="contract_category_name_text" type="text_general" indexed="true" stored="true"/>
         <field name="expense_category_name" type="string_custom" indexed="true" stored="true"/>
         <field name="expense_category_name_text" type="text_general" indexed="true" stored="true"/>
@@ -291,7 +289,7 @@
         <field name="exp_registration_date" type="string_custom" indexed="true" stored="true" />        
         <field name="current_amount" type="double" indexed="true" stored="true"/>
         <field name="original_amount" type="double" indexed="true" stored="true"/>
-        <field name="contract_status" type="string_custom" indexed="true" stored="true"/>
+        <field name="contract_status" type="string_custom" indexed="true" stored="true" />
         <field name="contract_type_id" type="int" indexed="true" stored="true"/>
 
         <field name="latest_flag" type="string_custom" indexed="true" stored="true"/>
@@ -407,8 +405,6 @@
     <copyField source="spending_budget_name" dest="spending_budget_name_autocomplete" />
     <!--Field used for multi-valued auto complete for multiple works-->
     <copyField source="contract_budget_name" dest="contract_budget_name_autocomplete" />
-
-
 
     <types>
         <!-- field type definitions. The "name" attribute is

@@ -19,9 +19,9 @@
 */
 ?>
 <?php
-	echo "\n".'2002-2014 (annual averages in thousands)'."\n"."\n";
+	echo "\n".'2002-2015 (Average Annual Recipients)'."\n"."\n";
     $header = 'Year';
-    $header .=  ",Public Assistance" ;
+    $header .=  ",Public Assistance (in thousands)" ;
     $header .=  ",SSI(a)" ;
 
 	echo $header . "\n";

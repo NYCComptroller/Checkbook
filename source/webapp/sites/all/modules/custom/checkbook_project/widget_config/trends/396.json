@@ -16,6 +16,8 @@
         "bLengthChange": false,        
         "bInfo": false,
         "bSort":false,
+        "sScrollY": "380px",
+        "bScrollCollapse": true,
         "fnDrawCallback": "##function () {
             trendsCenPad(this);
         }##" 

@@ -384,4 +384,16 @@ class QueueUtil {
 
         return $rows_affected;
     }
+
+    /**
+     * Function will update the confirmation_mail_sent_date in the
+     * custom_queue_request table with current timestamp
+     */
+    static function updateConfirmationMailSentDate($token) {
+        $db_update_query = db_update("custom_queue_request")
+            ->fields(array('confirmation_mail_sent_date' => time()))
+            ->condition('token', $token);
+        $rows_affected = $db_update_query->execute();
+        return $rows_affected;
+    }
 }
