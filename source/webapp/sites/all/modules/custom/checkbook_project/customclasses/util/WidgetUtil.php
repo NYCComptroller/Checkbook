@@ -215,6 +215,7 @@ class WidgetUtil
         "sub_contract_purpose" => "Sub Contract<br/>Purpose",
         "associated_prime_vendor" => "Associated Prime<br/>Vendor",
         "employee_number" => "Employee Number",
+        "contract_includes_sub" => "Contract Includes<br/>SubVendor",
     );
 
     //For number cols, need to find out if they are uniform number of digits for formatting

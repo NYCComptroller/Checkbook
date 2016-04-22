@@ -15,6 +15,7 @@
         {"labelAlias":"contract_purpose","column":"contract_purpose","tooltip":23},
         {"labelAlias":"contract_agency","column":"agency_name","tooltip":30,"derivedColumn":"agency_name_link"},
         {"labelAlias":"prime_vendor","column":"vendor_name","tooltip":30,"derivedColumn":"vendor_name_link"},
+        {"labelAlias":"contract_includes_sub","column":"contract_subvendor_status"},
         {"labelAlias":"current_amount","column":"current_amount_sum","format":"dollar"},
         {"labelAlias":"original_amount","column":"original_amount_sum","format":"dollar"},
         {"labelAlias":"spent_to_date","column":"spending_amount_sum","format":"dollar","derivedColumn":"spent_to_date_link"},
@@ -24,11 +25,12 @@
         "aoColumns":[
             {"bSortable":false,"sWidth":"150px","sClass":"text"},
             {"bSortable":false,"sWidth":"127px","sClass":"text"},
-            {"bSortable":false,"sWidth":"129px", "sClass":"text"},
-            {"bSortable":false ,"sWidth":"129px","sClass":"text"},
-            {"bSortable":true,"sWidth":"130px","sClass":"number","asSorting":["desc","asc"]},
-            {"bSortable":true,"sWidth":"130px" ,"sClass":"number","asSorting":["desc" ,"asc"]},
-            {"bSortable":true,"sWidth":"130px","sClass":"number","asSorting":["desc","asc"]},
+            {"bSortable":false,"sWidth":"127px", "sClass":"text"},
+            {"bSortable":false ,"sWidth":"127px","sClass":"text"},
+            {"bSortable":false ,"sWidth":"127px","sClass":"text"},
+            {"bSortable":true,"sWidth":"89px","sClass":"number","asSorting":["desc","asc"]},
+            {"bSortable":true,"sWidth":"89px" ,"sClass":"number","asSorting":["desc" ,"asc"]},
+            {"bSortable":true,"sWidth":"89px","sClass":"number","asSorting":["desc","asc"]},
             {"bSortable":false,"sWidth":"15px"}
         ],
         "bServerSide":true,
@@ -38,7 +40,7 @@
         "bLengthChange":false,
         "bInfo":false,
         "bAutoWidth":false,
-        "aaSorting":[[ 4, "desc" ]],
+        "aaSorting":[[ 5, "desc" ]],
         "fnServerParams":"##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
     "oLanguage":{"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
    }
