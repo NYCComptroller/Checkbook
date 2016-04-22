@@ -21,9 +21,9 @@
 <?php
 require_once(realpath(drupal_get_path('module', 'data_controller')) . '/common/object/converter/handler/PHP2Json.php');?>
 
-<?php
-//if (!($node instanceof NodeViewModel)) return;
-//?>
+<div about="/node/contracts_view" typeof="sioc:Item foaf:Document" class="node node-widget node-teaser node-published node-not-promoted node-not-sticky self-posted author-admin odd clearfix" id="node-widget-<?php echo widget_unique_identifier($node) ?>">
+<div class="content clearfix">
+
 
 <?php if (isset($node->widgetConfig->table_title)) { ?>
 <?php if ($node->widgetConfig->table_title) {
@@ -131,6 +131,12 @@ else {
       }
   }
   ?>
+</div>
+
+</div>
+    <div class="clearfix">
+        <div class="links node-links clearfix"></div>
+    </div>
 </div>
 
 
