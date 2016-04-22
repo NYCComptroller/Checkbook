@@ -21,12 +21,21 @@
             a.original_agreement_id,
             a.document_code_id,
             a.minority_type_id,
+            CASE
+                WHEN sd.scntrc_status = 2 THEN 'Yes'
+                WHEN sd.scntrc_status = 3 THEN 'No'
+                WHEN sd.scntrc_status is NULL THEN 'No action taken by Prime Vendor'
+            END AS contract_subvendor_status,
             SUM(COALESCE(a.original_contract_amount,0)) AS original_amount_sum,
             SUM(COALESCE(a.maximum_contract_amount,0)) AS current_amount_sum,
             SUM(COALESCE(a.spending_amount,0)) AS spending_amount_sum,
             SUM(COALESCE(dollar_difference,0)) AS dollar_difference,
             AVG(percent_difference) AS percent_difference
             FROM aggregateon_mwbe_contracts_cumulative_spending a
+            LEFT JOIN
+            (
+                SELECT contract_number, scntrc_status FROM subcontract_status
+            ) sd ON a.contract_number = sd.contract_number
             JOIN ref_document_code b ON a.document_code_id = b.document_code_id
             JOIN ref_agency c on c.agency_id = a.agency_id
             JOIN vendor d on d.vendor_id = a.vendor_id
@@ -40,7 +49,7 @@
                     <exp op="=" dbField="a.agency_id" paramName="agency" />
                 </exp>
             </where>
-            GROUP BY a.type_of_year, a.description,a.contract_number, a.original_agreement_id, a.document_code_id, a.minority_type_id,c.agency_id,c.agency_name,d.vendor_id,d.legal_name
+            GROUP BY a.type_of_year, a.description,a.contract_number, a.original_agreement_id, a.document_code_id, a.minority_type_id,c.agency_id,c.agency_name,d.vendor_id,d.legal_name,sd.scntrc_status
             <exp op="IF" condition="=" paramName="contract_mod" compareValue="true">
                 HAVING SUM(COALESCE(dollar_difference,0)) != 0
             </exp>
