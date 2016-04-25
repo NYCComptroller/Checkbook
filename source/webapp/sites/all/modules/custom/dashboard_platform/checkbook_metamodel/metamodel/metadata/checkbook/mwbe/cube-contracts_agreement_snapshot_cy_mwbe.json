@@ -153,6 +153,10 @@
         "all_agreement_transactions_cy__ref_award_category": [
             {"datasetName": "all_agreement_transactions_cy", "columnNames": ["award_category_id"]},
             {"datasetName": "award_category", "columnNames": ["award_category_id"]}
+        ],
+        "all_agreement_transactions_cy__subcontract_status": [
+            {"datasetName": "all_agreement_transactions_cy", "columnNames": ["contract_number"]},
+            {"datasetName": "subcontract_status", "columnNames": ["contract_number"]}
         ]
     }
 }
