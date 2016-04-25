@@ -26,7 +26,7 @@
             CASE
                 WHEN sd.scntrc_status = 2 THEN 'Yes'
                 WHEN sd.scntrc_status = 3 THEN 'No'
-                WHEN sd.scntrc_status is NULL THEN 'No action taken by Prime Vendor'
+                ELSE 'No action taken by Prime Vendor'
             END AS contract_subvendor_status,
             SUM(COALESCE(a.original_contract_amount,0)) AS original_amount_sum,
             SUM(COALESCE(a.maximum_contract_amount,0)) AS current_amount_sum,
