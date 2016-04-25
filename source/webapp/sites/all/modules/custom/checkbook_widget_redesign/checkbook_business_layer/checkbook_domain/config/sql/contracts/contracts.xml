@@ -8,6 +8,7 @@
         <param name="doctype" />
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
+        <param name="mwbe" />
         <param name="contract_mod" type="bool" />
         <sql>
             SELECT
@@ -20,6 +21,7 @@
             a.contract_number,
             a.original_agreement_id,
             a.document_code_id,
+            b.document_code,
             a.minority_type_id,
             CASE
                 WHEN sd.scntrc_status = 2 THEN 'Yes'
@@ -47,9 +49,10 @@
                     <exp op="IN" dbField="b.document_code" paramName="doctype" />
                     <exp op="=" dbField="a.vendor_id" paramName="vendor" />
                     <exp op="=" dbField="a.agency_id" paramName="agency" />
+                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                 </exp>
             </where>
-            GROUP BY a.type_of_year, a.description,a.contract_number, a.original_agreement_id, a.document_code_id, a.minority_type_id,c.agency_id,c.agency_name,d.vendor_id,d.legal_name,sd.scntrc_status
+            GROUP BY a.type_of_year, a.description,a.contract_number, a.original_agreement_id, a.document_code_id,b.document_code, a.minority_type_id,c.agency_id,c.agency_name,d.vendor_id,d.legal_name,sd.scntrc_status
             <exp op="IF" condition="=" paramName="contract_mod" compareValue="true">
                 HAVING SUM(COALESCE(dollar_difference,0)) != 0
             </exp>
@@ -62,6 +65,7 @@
         <param name="doctype" />
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
+        <param name="mwbe" />
         <param name="contract_mod" type="bool" />
         <sql>
             SELECT COUNT(*) as record_count FROM
@@ -77,6 +81,7 @@
                         <exp op="IN" dbField="b.document_code" paramName="doctype" />
                         <exp op="=" dbField="a.vendor_id" paramName="vendor" />
                         <exp op="=" dbField="a.agency_id" paramName="agency" />
+                        <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                     </exp>
                 </where>
                 GROUP BY a.contract_number

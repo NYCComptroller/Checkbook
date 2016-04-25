@@ -24,6 +24,7 @@ core = 7.x
 
 files[] = spending/CheckData.php
 files[] = spending/SpendingWidgetService.php
+files[] = contracts/ContractsUrlService.php
 files[] = contracts/ContractsWidgetService.php
 
 files[] = widget/AbstractWidgetService.php
