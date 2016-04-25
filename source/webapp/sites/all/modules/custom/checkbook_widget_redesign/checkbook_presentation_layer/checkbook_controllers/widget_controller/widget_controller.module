@@ -469,8 +469,9 @@ function widget_controller_format_widget_data($node, $service){
                 $node->data[$key][$column->column] = _get_tooltip_markup($node->data[$key][$column->column], $column->tooltip);
             }
             //derived
+            $original_row = $node->data[$key];
             foreach($derivedColumns as $column) {
-                $node->data[$key][$column->column] = $service->implDerivedColumn($column->derivedColumn,$node->data[$key]);
+                $node->data[$key][$column->column] = $service->implDerivedColumn($column->derivedColumn,$original_row);
             }
         }
     }
@@ -525,6 +526,8 @@ function _prepare_input_parameters($node) {
             $key = $pathParams[$i];
             $value = $pathParams[$i+1];
             if(in_array($key,$urlParams)) {
+                $values_array = explode('~',$value);
+                $value = count($values_array) > 1 ? "(".implode(",", $values_array).")" : $value;
                 $parameters[$key] = htmlspecialchars_decode(_replace_special_characters_decode($value));
             }
         }
