@@ -134,17 +134,25 @@ function _widget_controller_node_view_page($key){
     return $node->content['body']['#markup'];
 }
 
-function widget_merge_default_settings(&$node){
-    $default_node = _widget_controller_node_load_file('default_settings');
-    //merge the default settings
-    $default_json = $default_node->widget_json;
-    $json = $node->widget_json;
-    $converter = new Json2PHPObject();
-    $widgetConfig =  $converter->convert($json);
-    $defaultwidgetConfig = $converter->convert($default_json);
-    $widgetConfig = drupal_array_merge_deep($defaultwidgetConfig, $widgetConfig);
-    $node->widget_json = json_encode($widgetConfig);
+function widget_merge_default_settings($node){
+    $widgetConfig = widget_merge_default_settings_recursively($node,'default_settings');
+    $node->widget_json = $widgetConfig->widget_json;
     return $node;
+}
+
+function widget_merge_default_settings_recursively($widgetConfig,$defaultConfigKey){
+
+    if(isset($defaultConfigKey)) {
+        $defaultWidgetConfig = _widget_controller_node_load_file($defaultConfigKey);
+        $converter = new Json2PHPObject();
+        $widgetJson =  $converter->convert($widgetConfig->widget_json);
+        $defaultWidgetJson = $converter->convert($defaultWidgetConfig->widget_json);
+        $mergedWidgetJson = drupal_array_merge_deep($defaultWidgetJson, $widgetJson);
+        $widgetConfig->widget_json = json_encode($mergedWidgetJson);
+        $defaultConfigKey = $mergedWidgetJson['defaultConfigKey'] == $defaultConfigKey ? null : $mergedWidgetJson['defaultConfigKey'];
+        return widget_merge_default_settings_recursively($widgetConfig,$defaultConfigKey);
+    }
+    return $widgetConfig;
 }
 
 function _widget_controller_node_load_file($key){
