@@ -157,6 +157,10 @@
         "all_agreement_transactions__not_null_agreement_values": [
             {"datasetName": "all_agreement_transactions", "columnNames": ["agreement_id"]},
             {"datasetName": "not_null_agreement_values", "columnNames": ["sub_query_agreement_id"]}
+        ],
+        "all_agreement_transactions__subcontract_status": [
+            {"datasetName": "all_agreement_transactions", "columnNames": ["contract_number"]},
+            {"datasetName": "subcontract_status", "columnNames": ["contract_number"]}
         ]
     }
 }
