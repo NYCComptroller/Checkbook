@@ -21,13 +21,14 @@
         {"labelAlias":"spent_to_date","column":"spending_amount_sum","format":"dollar","derivedColumn":"spent_to_date_link"},
         {"label":"","column":""}
     ],
+    "skipCustomPadding":true,
     "dataTableOptions":{
         "aoColumns":[
             {"bSortable":false,"sWidth":"150px","sClass":"text"},
             {"bSortable":false,"sWidth":"127px","sClass":"text"},
             {"bSortable":false,"sWidth":"127px", "sClass":"text"},
             {"bSortable":false ,"sWidth":"127px","sClass":"text"},
-            {"bSortable":false ,"sWidth":"127px","sClass":"text"},
+            {"bSortable":false ,"sWidth":"127px","sClass":"number-center margin-left-10"},
             {"bSortable":true,"sWidth":"89px","sClass":"number","asSorting":["desc","asc"]},
             {"bSortable":true,"sWidth":"89px" ,"sClass":"number","asSorting":["desc" ,"asc"]},
             {"bSortable":true,"sWidth":"89px","sClass":"number","asSorting":["desc","asc"]},

@@ -1869,6 +1869,13 @@ td.endCol div,
 .outerTable td.endCol div{
     margin-right: 15px;
 }
+/*td.margin-left-36 div{margin-left:36px;}*/
+/*.dataTable td.childcontracts .jspPane table td.margin-left-36 div {*/
+    /*margin: 13px 0px 13px 4036;*/
+/*}*/
+
+td.margin-left-10 div{margin-left:10px;}
+
 
 .dataTables_scrollBody{position:relative;}
 /* expandable nested child table styles */
