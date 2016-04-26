@@ -1874,7 +1874,7 @@ td.endCol div,
     /*margin: 13px 0px 13px 4036;*/
 /*}*/
 
-td.margin-left-10 div{margin-left:10px;}
+td.pad div{margin-left:5px;margin-right:5px;}
 
 
 .dataTables_scrollBody{position:relative;}

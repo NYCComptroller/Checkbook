@@ -28,7 +28,7 @@
             {"bSortable":false,"sWidth":"127px","sClass":"text"},
             {"bSortable":false,"sWidth":"127px", "sClass":"text"},
             {"bSortable":false ,"sWidth":"127px","sClass":"text"},
-            {"bSortable":false ,"sWidth":"127px","sClass":"number-center margin-left-10"},
+            {"bSortable":false ,"sWidth":"127px","sClass":"number-center pad"},
             {"bSortable":true,"sWidth":"89px","sClass":"number","asSorting":["desc","asc"]},
             {"bSortable":true,"sWidth":"89px" ,"sClass":"number","asSorting":["desc" ,"asc"]},
             {"bSortable":true,"sWidth":"89px","sClass":"number","asSorting":["desc","asc"]},
