@@ -4,7 +4,7 @@
     "stickyHeader":true,
     "cleanURLParameters":[
         "subvendor","vendortype","mwbe","doctype","contstatus","year","calyear","yeartype","agency","vendor","curamtr","vendornm","vendornm_exact","contdesc","agrmnttype",
-        "agencyh","contnum","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","modamt","fvendor"
+        "agencyh","contnum","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","modamt","fvendor","subcontstatus"
     ],
     "urlParamMap":{
         "vendortype":"vendor_type",
@@ -34,7 +34,8 @@
         "regdate":"registered_date",
         "cindustry":"industry_type_id",
         "csize":"award_size_id",
-        "modamt":"dollar_difference"
+        "modamt":"dollar_difference",
+        "subcontractstatus":"scntrc_status_tmp"
     },
     "allowRequestParams":["smnid"],
     "paramTypeConfig":{"vendornm_exact":"eqignorecase","curamtr":"rangeid","vendornm":"like","contdesc":"contains","contnum":"like","aptpin":"like","pin":"like","curamt":"range",
@@ -95,7 +96,7 @@
         "dollar_difference",
         "percent_difference",
         "original_agreement_id@checkbook:all_contracts_coa_aggregates",
-        "scntrc_status@checkbook:subcontract_status"
+        "scntrc_status_tmp"
     ],
     "preProcessConfiguration":"
         $doctype = $node->widgetConfig->requestParams['document_code@checkbook:ref_document_code'];
@@ -244,14 +245,14 @@
         },
         "subvendor_status":{
             "type": "expression2",
-            "expression": "($row['scntrc_status@checkbook:subcontract_status'] == 2) ? 'Yes' : (($row['scntrc_status@checkbook:subcontract_status'] == 3) ? 'No' : 'No action taken by Prime Vendor')"
+            "expression": "($row['scntrc_status_tmp'] == 2) ? 'Yes' : (($row['scntrc_status_tmp'] == 3) ? 'No' : 'No action taken by Prime Vendor')"
         }
     },
     "skipCustomPadding":true,
     "table_columns": [
         {"label": "<div></div>","colLabel": "","column": "child_contrats_link","export":false},
         {"labelAlias": "contract_id","column": "contract_link","sortSourceColumn":"contract_number"},
-        {"labelAlias":"contract_includes_sub","column":"subvendor_status","sortSourceColumn":"subcontract_status@checkbook:scntrc_status"},
+        {"labelAlias":"contract_includes_sub","column":"subvendor_status","sortSourceColumn":"scntrc_status_tmp"},
         {"labelAlias": "sub_contract_reference_id","column": "sub_contract_id"},
         {"label":"","column":"","export":false},
         {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description"},
@@ -345,7 +346,7 @@
     if(!$node->is_master_agreement) {
         $adjustDataTableOptions->fnInitComplete = '##function () { new FixedColumns( oTable, {
             \"iLeftColumns\": 2,
-            \"iLeftWidth\": 210
+            \"iLeftWidth\": 180
         } );}##';
     }
     ",
@@ -365,8 +366,8 @@
     "bInfo": true,
     "aoColumns": [
         {"sClass":"expander","bSortable": false,"sWidth":"30px"},
-        {"sClass":"text", "sWidth":"180px","asSorting": [ "asc","desc" ]},
-        {"sClass":"text", "sWidth":"155px","asSorting": [ "asc","desc" ]},
+        {"sClass":"text", "sWidth":"150px","asSorting": [ "asc","desc" ]},
+        {"sClass":"sub-cont-status", "sWidth":"155px","asSorting": [ "asc","desc" ]},
         {"sClass":"number-center", "sWidth":"120px","asSorting": [ "asc","desc" ]},
         {"bSortable":false,"sWidth":"50px"},
         {"sClass":"text", "sWidth":"210px","asSorting": [ "asc","desc" ]},
@@ -428,6 +429,8 @@
     var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
     var oVendorType = getNamedFilterCriteria('fvendorType');
     var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
+    var oContractNumber = getNamedFilterCriteria('fContractNumber');
+    var oSubContStatus = getNamedFilterCriteria('fSubContStatus');
 
     var  cUrl = oTable.fnSettings().sAjaxSource;
     cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
@@ -438,6 +441,8 @@
     cUrl = adjustUrlParameter(cUrl,'cindustry',oIndustryType);
     cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
     cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
+    cUrl = adjustUrlParameter(cUrl,'contnum',oContractNumber);
+    cUrl = adjustUrlParameter(cUrl,'subcontstatus',oSubContStatus);
     return cUrl;
     }
 
@@ -477,8 +482,8 @@
 
 
     sOut += '<tr>';
-    sOut += '<td class=\"text\" style=\"width:180px\">'+ (row[1] == null ? '': row[1])+'</td>';
-    sOut += '<td class=\"text\"  style=\"width:155px\">'+ (row[2] == null ? '': row[2])+'</td>';
+    sOut += '<td class=\"text\" style=\"width:150px\">'+ (row[1] == null ? '': row[1])+'</td>';
+    sOut += '<td class=\"sub-cont-status\"  style=\"width:155px\">'+ (row[2] == null ? '': row[2])+'</td>';
     sOut += '<td class=\"number-center\" style=\"width:120px\">'+ (row[3] == null ? '': row[3])+'</td>';
     sOut += '<td style=\"width:50px\"></td>';
     sOut += '<td class=\"text\"  style=\"width:210px\">'+ (row[4] == null ? '': row[4])+'</td>';
