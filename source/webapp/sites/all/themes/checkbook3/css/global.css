@@ -1869,13 +1869,20 @@ td.endCol div,
 .outerTable td.endCol div{
     margin-right: 15px;
 }
-/*td.margin-left-36 div{margin-left:36px;}*/
-/*.dataTable td.childcontracts .jspPane table td.margin-left-36 div {*/
-    /*margin: 13px 0px 13px 4036;*/
-/*}*/
-
 td.pad div{margin-left:5px;margin-right:5px;}
 
+/*class sub-cont-status*/
+td.sub-cont-status {
+    text-align: center;
+}
+.dataTable th.sub-cont-status div {
+    display:block;
+    text-align:center;
+}
+td.sub-cont-status div {
+    margin-left:25px !important;
+    margin-right:15px !important;
+}
 
 .dataTables_scrollBody{position:relative;}
 /* expandable nested child table styles */
