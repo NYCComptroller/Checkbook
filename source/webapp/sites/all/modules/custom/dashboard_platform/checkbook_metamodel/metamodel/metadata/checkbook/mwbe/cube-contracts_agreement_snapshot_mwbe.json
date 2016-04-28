@@ -124,6 +124,15 @@
                             "sourceColumnName": "scntrc_status_tmp"
                         }
                     ]
+                },
+                {
+                    "name": "scntrc_status_name",
+                    "levels": [
+                        {
+                            "name": "scntrc_status_name",
+                            "sourceColumnName": "scntrc_status_name_tmp"
+                        }
+                    ]
                 }
 
             ],

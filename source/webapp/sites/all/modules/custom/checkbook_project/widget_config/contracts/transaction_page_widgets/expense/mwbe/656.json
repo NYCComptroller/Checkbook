@@ -35,7 +35,7 @@
         "cindustry":"industry_type_id",
         "csize":"award_size_id",
         "modamt":"dollar_difference",
-        "subcontractstatus":"scntrc_status_tmp"
+        "subcontstatus":"scntrc_status_name_tmp"
     },
     "allowRequestParams":["smnid"],
     "paramTypeConfig":{"vendornm_exact":"eqignorecase","curamtr":"rangeid","vendornm":"like","contdesc":"contains","contnum":"like","aptpin":"like","pin":"like","curamt":"range",
@@ -96,7 +96,7 @@
         "dollar_difference",
         "percent_difference",
         "original_agreement_id@checkbook:all_contracts_coa_aggregates",
-        "scntrc_status_tmp"
+        "scntrc_status_name_tmp"
     ],
     "preProcessConfiguration":"
         $doctype = $node->widgetConfig->requestParams['document_code@checkbook:ref_document_code'];
@@ -242,17 +242,13 @@
         "associated_prime_vendor_name_export":{
             "type": "expression2",
             "expression": "($row['is_prime_or_sub'] == 'P') ? 'N/A' :  $row['prime_vendor_name']"
-        },
-        "subvendor_status":{
-            "type": "expression2",
-            "expression": "($row['scntrc_status_tmp'] == 2) ? 'Yes' : (($row['scntrc_status_tmp'] == 3) ? 'No' : 'No action taken by Prime Vendor')"
         }
     },
     "skipCustomPadding":true,
     "table_columns": [
         {"label": "<div></div>","colLabel": "","column": "child_contrats_link","export":false},
         {"labelAlias": "contract_id","column": "contract_link","sortSourceColumn":"contract_number"},
-        {"labelAlias":"contract_includes_sub","column":"subvendor_status","sortSourceColumn":"scntrc_status_tmp"},
+        {"labelAlias":"contract_includes_sub","column":"scntrc_status_name_tmp"},
         {"labelAlias": "sub_contract_reference_id","column": "sub_contract_id"},
         {"label":"","column":"","export":false},
         {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description"},
