@@ -4,7 +4,7 @@
     "stickyHeader":true,
     "cleanURLParameters":[
         "subvendor","vendortype","mwbe","doctype","contstatus","year","calyear","yeartype","agency","vendor","curamtr","vendornm","vendornm_exact","contdesc","agrmnttype",
-        "agencyh","contnum","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","modamt","fvendor","subcontstatus"
+        "agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","modamt","fvendor","subcontstatus"
     ],
     "urlParamMap":{
         "vendortype":"vendor_type",
@@ -25,6 +25,7 @@
         "agrmnttype":"agreement_type_id",
         "agencyh":"agency_history_id",
         "contnum":"contract_number",
+        "contnum_exact":"contract_number",
         "aptpin":"brd_awd_no",
         "pin":"tracking_number",
         "awdmethod":"award_method_id",
@@ -38,7 +39,7 @@
         "subcontstatus":"scntrc_status_name_tmp"
     },
     "allowRequestParams":["smnid"],
-    "paramTypeConfig":{"vendornm_exact":"eqignorecase","curamtr":"rangeid","vendornm":"like","contdesc":"contains","contnum":"like","aptpin":"like","pin":"like","curamt":"range",
+    "paramTypeConfig":{"vendornm_exact":"eqignorecase","curamtr":"rangeid","vendornm":"like","contdesc":"contains","contnum":"like","contnum_exact":"eqignorecase","aptpin":"like","pin":"like","curamt":"range",
         "startdate":"range","enddate":"range","regdate":"range","modamt":"ne"},
     "defaultParameters":{"status_flag@checkbook:all_contracts_coa_aggregates":"A"},
     "header":"
@@ -437,7 +438,7 @@
     cUrl = adjustUrlParameter(cUrl,'cindustry',oIndustryType);
     cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
     cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
-    cUrl = adjustUrlParameter(cUrl,'contnum',oContractNumber);
+    cUrl = adjustUrlParameter(cUrl,'contnum_exact',oContractNumber);
     cUrl = adjustUrlParameter(cUrl,'subcontstatus',oSubContStatus);
     return cUrl;
     }
