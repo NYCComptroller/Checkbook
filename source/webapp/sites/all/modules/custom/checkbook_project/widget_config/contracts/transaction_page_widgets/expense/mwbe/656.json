@@ -36,7 +36,7 @@
         "cindustry":"industry_type_id",
         "csize":"award_size_id",
         "modamt":"dollar_difference",
-        "subcontstatus":"scntrc_status_name_tmp"
+        "subcontstatus":"scntrc_status_name"
     },
     "allowRequestParams":["smnid"],
     "paramTypeConfig":{"vendornm_exact":"eqignorecase","curamtr":"rangeid","vendornm":"like","contdesc":"contains","contnum":"like","contnum_exact":"eqignorecase","aptpin":"like","pin":"like","curamt":"range",
@@ -97,7 +97,7 @@
         "dollar_difference",
         "percent_difference",
         "original_agreement_id@checkbook:all_contracts_coa_aggregates",
-        "scntrc_status_name_tmp"
+        "scntrc_status_name"
     ],
     "preProcessConfiguration":"
         $doctype = $node->widgetConfig->requestParams['document_code@checkbook:ref_document_code'];
@@ -249,7 +249,7 @@
     "table_columns": [
         {"label": "<div></div>","colLabel": "","column": "child_contrats_link","export":false},
         {"labelAlias": "contract_id","column": "contract_link","sortSourceColumn":"contract_number"},
-        {"labelAlias":"contract_includes_sub","column":"scntrc_status_name_tmp"},
+        {"labelAlias":"contract_includes_sub","column":"scntrc_status_name"},
         {"labelAlias": "sub_contract_reference_id","column": "sub_contract_id"},
         {"label":"","column":"","export":false},
         {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description"},
