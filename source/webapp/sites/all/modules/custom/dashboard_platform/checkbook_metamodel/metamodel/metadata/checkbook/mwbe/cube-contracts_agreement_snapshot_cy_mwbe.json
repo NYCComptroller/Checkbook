@@ -122,7 +122,7 @@
                     "levels": [
                         {
                             "name": "scntrc_status",
-                            "sourceColumnName": "scntrc_status_tmp"
+                            "sourceColumnName": "scntrc_status"
                         }
                     ]
                 },
@@ -131,7 +131,7 @@
                     "levels": [
                         {
                             "name": "scntrc_status_name",
-                            "sourceColumnName": "scntrc_status_name_tmp"
+                            "sourceColumnName": "scntrc_status_name"
                         }
                     ]
                 }
