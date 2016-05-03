@@ -216,6 +216,10 @@ class WidgetUtil
         "associated_prime_vendor" => "Associated Prime<br/>Vendor",
         "employee_number" => "Employee Number",
         "contract_includes_sub" => "Contract Includes<br/>SubVendor",
+        "no_response_status" => "No Response<br/>by Prime",
+        "reported_sub_count" => "Reported Contracts<br/>with SubVendors",
+        "reported_no_sub_count" => "Reported Contracts<br/>without SubVendors",
+        "reported_no_details_count" => "No Subvendor Details<br/>for Reported Contracts",
     );
 
     //For number cols, need to find out if they are uniform number of digits for formatting
