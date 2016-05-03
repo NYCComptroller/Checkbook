@@ -470,4 +470,50 @@
             </where>
         </sql>
     </statement>
+
+    <!--GetPrimeContractSubVenReporting,GetCountPrimeContractSubVenReporting-->
+    <statement name="GetPrimeContractSubVenReporting" datasource="checkbook">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="status" type="string"/>
+        <param name="doctype" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="mwbe" />
+        <param name="contract_mod" type="bool" />
+        <sql>
+            SELECT
+            'agency_id' AS agency_id,
+            'agency_name' AS agency_name,
+            'number_contracts' AS number_contracts,
+            'spending_amount_sum' AS spending_amount_sum,
+            'no_response_status' AS no_response_status,
+            'reported_sub_count' AS reported_sub_count,
+            'reported_no_sub_count' AS reported_no_sub_count,
+            'reported_no_details_count' AS reported_no_details_count
+        </sql>
+    </statement>
+    <statement name="GetCountPrimeContractSubVenReporting" datasource="checkbook">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="status" type="string"/>
+        <param name="doctype" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="mwbe" />
+        <param name="contract_mod" type="bool" />
+        <sql>
+            SELECT COUNT(*) as record_count FROM
+            (
+                SELECT 'agency_id' AS agency_id,
+                'agency_name' AS agency_name,
+                'number_contracts' AS number_contracts,
+                'spending_amount_sum' AS spending_amount_sum,
+                'no_response_status' AS no_response_status,
+                'reported_sub_count' AS reported_sub_count,
+                'reported_no_sub_count' AS reported_no_sub_count,
+                'reported_no_details_count' AS reported_no_details_count
+            ) sub_query
+        </sql>
+    </statement>
 </statements>
