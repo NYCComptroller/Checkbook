@@ -21,7 +21,7 @@
 <?php
 require_once(realpath(drupal_get_path('module', 'data_controller')) . '/common/object/converter/handler/PHP2Json.php');?>
 
-<div about="/node/contracts_view" typeof="sioc:Item foaf:Document" class="node node-widget node-teaser node-published node-not-promoted node-not-sticky self-posted author-admin odd clearfix" id="node-widget-<?php echo widget_unique_identifier($node) ?>">
+<div about="/node/<?php echo widget_unique_identifier($node) ?>" typeof="sioc:Item foaf:Document" class="node node-widget node-teaser node-published node-not-promoted node-not-sticky self-posted author-admin odd clearfix" id="node-widget-<?php echo widget_unique_identifier($node) ?>">
 <div class="content clearfix">
 
 
