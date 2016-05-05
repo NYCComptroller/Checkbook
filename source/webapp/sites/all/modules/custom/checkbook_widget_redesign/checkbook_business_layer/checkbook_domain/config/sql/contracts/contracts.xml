@@ -25,7 +25,7 @@
             WHEN l1.scntrc_status = 1 THEN 'No Action Taken by Prime'
             WHEN l1.scntrc_status = 2 THEN 'Yes'
             WHEN l1.scntrc_status = 3 THEN 'No'
-            WHEN l1.scntrc_status IS NULL THEN 'N/A'
+            ELSE 'N/A'
             END AS contract_subvendor_status,
             l1.original_contract_amount AS current_amount_sum,
             l1.maximum_contract_amount AS original_amount_sum,
