@@ -72,6 +72,20 @@ if($is_payroll_range_filter) {
     }
 }
 
+//Contract Includes Subvendor
+if($node->widgetConfig->filterName == 'Contract Includes Subvendor') {
+    foreach($unchecked as $key => $value) {
+        if($value[1] == null) {
+            $unchecked[$key][1] = "N/A";
+        }
+    }
+    foreach($checked as $key => $value) {
+        if($value[1] == null) {
+            $checked[$key][1] = "N/A";
+        }
+    }
+}
+
 //Payroll Type Filter
 $count = 0;
 if($node->widgetConfig->filterName == 'Payroll Type') {
