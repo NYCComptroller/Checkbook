@@ -95,7 +95,7 @@
             ) sub_query
         </sql>
     </statement>
-    <!--GetOgeContracts,GetCountOgeContracts-->
+    <!--GetOgeContracts,GetCoutOgeContracts-->
     <statement name="GetOgeContracts" datasource="checkbook_oge">
         <param name="year" required ="true" type="int"/>
         <param name="yeartype" required ="true" type="string" />
@@ -122,11 +122,7 @@
             SUM(COALESCE(a.spending_amount,0)) AS spending_amount_sum,
             SUM(COALESCE(dollar_difference,0)) AS dollar_difference,
             AVG(percent_difference) AS percent_difference
-            FROM aggregateon_mwbe_contracts_cumulative_spending a
-            LEFT JOIN
-            (
-            SELECT contract_number, scntrc_status FROM subcontract_status
-            ) sd ON a.contract_number = sd.contract_number
+            FROM aggregateon_contracts_cumulative_spending a
             JOIN ref_document_code b ON a.document_code_id = b.document_code_id
             JOIN ref_agency c on c.agency_id = a.agency_id
             JOIN vendor d on d.vendor_id = a.vendor_id
@@ -141,9 +137,6 @@
                 </exp>
             </where>
             GROUP BY a.type_of_year, a.description,a.contract_number, a.original_agreement_id, a.document_code_id,b.document_code,c.agency_id,c.agency_name,d.vendor_id,d.legal_name
-            <exp op="IF" condition="=" paramName="contract_mod" compareValue="true">
-                HAVING SUM(COALESCE(dollar_difference,0)) != 0
-            </exp>
         </sql>
     </statement>
     <statement name="GetCountOgeContracts" datasource="checkbook_oge">
@@ -153,12 +146,11 @@
         <param name="doctype" />
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
-        <param name="contract_mod" type="bool" />
         <sql>
             SELECT COUNT(*) as record_count FROM
             (
             SELECT a.contract_number
-            FROM aggregateon_mwbe_contracts_cumulative_spending a
+            FROM aggregateon_contracts_cumulative_spending a
             JOIN ref_document_code b ON a.document_code_id = b.document_code_id
             <where>
                 <exp op="AND">
@@ -171,9 +163,6 @@
                 </exp>
             </where>
             GROUP BY a.contract_number
-            <exp op="IF" condition="=" paramName="contract_mod" compareValue="true">
-                HAVING SUM(COALESCE(dollar_difference,0)) != 0
-            </exp>
             ) sub_query
         </sql>
     </statement>
