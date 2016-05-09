@@ -110,7 +110,15 @@ function _checkbook_faceted_search_update_data($node) {
     $output = array();
     $output['filter_name'] = $node->widgetConfig->filterName;
     $params = explode('~', _getRequestParamValue($node->widgetConfig->urlParameterName));
-    if ($params[0]) {
+
+    //The value in this facet can be 0
+    if($node->widgetConfig->filterName == 'Contract Includes Subvendor') {
+        $filter = $params[0] != "";
+    }
+    else {
+        $filter = $params[0];
+    }
+    if ($filter) {
         foreach ($params as $param) {
             try {
                 if(isset($node->widgetConfig->widgetDataFilterLoader)){
