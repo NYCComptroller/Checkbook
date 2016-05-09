@@ -5,7 +5,7 @@
     "defaultParameters":{
         "all_cum_spend.all_cum_spend.status_flag":"A"
     },
-    "limit":10,
+    "limit":100,
     "startWith":0,
     "maxSelect":5,
     "showAllRecords":true,
