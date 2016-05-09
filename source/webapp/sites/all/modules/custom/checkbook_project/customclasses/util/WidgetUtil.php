@@ -215,7 +215,7 @@ class WidgetUtil
         "sub_contract_purpose" => "Sub Contract<br/>Purpose",
         "associated_prime_vendor" => "Associated Prime<br/>Vendor",
         "employee_number" => "Employee Number",
-        "contract_includes_sub" => "Contract Includes<br/>SubVendor",
+        "contract_includes_sub" => "Contract Includes<br/>Sub Vendors",
         "no_response_status" => "No Response<br/>by Prime",
         "reported_sub_count" => "Reported Contracts<br/>with SubVendors",
         "reported_no_sub_count" => "Reported Contracts<br/>without SubVendors",
