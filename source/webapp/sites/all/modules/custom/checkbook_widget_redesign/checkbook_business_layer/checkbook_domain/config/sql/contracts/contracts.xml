@@ -27,8 +27,8 @@
             WHEN l1.scntrc_status = 3 THEN 'No'
             ELSE 'N/A'
             END AS contract_subvendor_status,
-            l1.original_contract_amount AS current_amount_sum,
-            l1.maximum_contract_amount AS original_amount_sum,
+            l1.original_contract_amount AS original_amount_sum,
+            l1.maximum_contract_amount AS current_amount_sum,
             l2.spending_amount AS spending_amount_sum
             <exp op="IF" condition="=" paramName="yeartype" compareValue="B">
             FROM all_agreement_transactions l1

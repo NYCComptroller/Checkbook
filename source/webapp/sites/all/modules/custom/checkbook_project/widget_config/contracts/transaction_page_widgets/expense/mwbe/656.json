@@ -36,7 +36,7 @@
         "cindustry":"industry_type_id",
         "csize":"award_size_id",
         "modamt":"dollar_difference",
-        "subcontstatus":"scntrc_status_name"
+        "subcontstatus":"scntrc_status"
     },
     "allowRequestParams":["smnid"],
     "paramTypeConfig":{"vendornm_exact":"eqignorecase","curamtr":"rangeid","vendornm":"like","contdesc":"contains","contnum":"like","contnum_exact":"eqignorecase","aptpin":"like","pin":"like","curamt":"range",
@@ -97,6 +97,7 @@
         "dollar_difference",
         "percent_difference",
         "original_agreement_id@checkbook:all_contracts_coa_aggregates",
+        "scntrc_status",
         "scntrc_status_name"
     ],
     "preProcessConfiguration":"
@@ -243,13 +244,17 @@
         "associated_prime_vendor_name_export":{
             "type": "expression2",
             "expression": "($row['is_prime_or_sub'] == 'P') ? 'N/A' :  $row['prime_vendor_name']"
+        },
+        "subvendor_status":{
+            "type": "expression2",
+            "expression": "($row['scntrc_status'] == 0) ? 'N/A' : $row['scntrc_status_name']"
         }
     },
     "skipCustomPadding":true,
     "table_columns": [
         {"label": "<div></div>","colLabel": "","column": "child_contrats_link","export":false},
         {"labelAlias": "contract_id","column": "contract_link","sortSourceColumn":"contract_number"},
-        {"labelAlias":"contract_includes_sub","column":"scntrc_status_name"},
+        {"labelAlias":"contract_includes_sub","column":"subvendor_status","sortSourceColumn":"scntrc_status","exportColumn":"subvendor_status"},
         {"labelAlias": "sub_contract_reference_id","column": "sub_contract_id"},
         {"label":"","column":"","export":false},
         {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description"},
@@ -308,6 +313,11 @@
             "column":"expense_cat",
             "sourceColumn":"expenditure_object_names",
             "sql":"case when l1.is_prime_or_sub = 'S' then '' else expenditure_object_names end"
+        },
+        {
+            "column":"subvendor_status",
+            "sourceColumn":"scntrc_status",
+            "sql":"case when scntrc_status = 0 then 'N/A' else scntrc_status_name end"
         }
     ],
     "adjustParameters":"
