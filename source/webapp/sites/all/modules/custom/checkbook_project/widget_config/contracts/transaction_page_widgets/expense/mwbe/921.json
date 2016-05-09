@@ -23,7 +23,7 @@
     "orderBy":"-txcount",
     "getTotalDataCount":true,
     "facetPager":true,
-    "filterName":"Contract Includes Subvendor",
+    "filterName":"Contract Includes Sub Vendors",
     "urlParameterName":"subcontstatus",
     "autocompleteID":"fSubContStatus",
     "adjustParameters":"
