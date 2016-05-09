@@ -22,7 +22,7 @@
             l1.document_code_id,
             l3.document_code,
             CASE
-            WHEN l1.scntrc_status = 1 THEN 'No Action Taken by Prime'
+            WHEN l1.scntrc_status = 1 THEN 'No Data Entered'
             WHEN l1.scntrc_status = 2 THEN 'Yes'
             WHEN l1.scntrc_status = 3 THEN 'No'
             ELSE 'N/A'
