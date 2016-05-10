@@ -23,13 +23,13 @@
     "skipCustomPadding":true,
     "dataTableOptions":{
         "aoColumns":[
-            {"bSortable":false,"sWidth":"144px","sClass":"text"},
-            {"bSortable":false,"sWidth":"121px","sClass":"text"},
-            {"bSortable":false,"sWidth":"117px", "sClass":"text"},
-            {"bSortable":false,"sWidth":"178px","sClass":"text"},
-            {"bSortable":false,"sWidth":"126px","sClass":"number-center pad"},
-            {"bSortable":true,"sWidth":"83px","sClass":"number","asSorting":["desc","asc"]},
-            {"bSortable":true,"sWidth":"77px","sClass":"number","asSorting":["desc","asc"]},
+            {"bSortable":false,"sWidth":"116px","sClass":"text"},
+            {"bSortable":false,"sWidth":"116px","sClass":"number-center"},
+            {"bSortable":false,"sWidth":"116px", "sClass":"text"},
+            {"bSortable":false,"sWidth":"116px","sClass":"number-center"},
+            {"bSortable":false,"sWidth":"155px","sClass":"number-center"},
+            {"bSortable":true,"sWidth":"155px","sClass":"number-center","asSorting":["desc","asc"]},
+            {"bSortable":true,"sWidth":"155px","sClass":"number-center","asSorting":["desc","asc"]},
             {"bSortable":false,"sWidth":"10px"}
         ],
         "bServerSide":true,

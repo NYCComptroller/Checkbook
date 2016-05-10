@@ -46,9 +46,10 @@
     <statement name="GetMwbeChecks" datasource="checkbook">
         <param name="fiscal_year_id" required ="true"/>
         <param name="calendar_year_id" />
+        <param name="mwbe" />
         <sql>
             SELECT check_eft_issued_date as issue_date,
-            vendor_name as prime_vendor_name,
+            vendor_name as vendor_name,
             agency_name,
             check_amount,
             expenditure_object_name as expense_category,
@@ -66,6 +67,7 @@
                     <exp op="IF" condition="=" paramName="yeartype" compareValue="C">
                         <exp op="=" dbField="calendar_fiscal_year_id" paramName="year" />
                     </exp>
+                    <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
                 </exp>
             </where>
         </sql>
@@ -73,6 +75,7 @@
     <statement name="GetCountMwbeChecks" datasource="checkbook">
         <param name="year" required ="true"/>
         <param name="yeartype" required ="true"/>
+        <param name="mwbe" />
         <sql>
             SELECT DISTINCT count(check_eft_issued_date) as record_count FROM disbursement_line_item_details
             <where>
@@ -83,16 +86,18 @@
                     <exp op="IF" condition="=" paramName="yeartype" compareValue="C">
                         <exp op="=" dbField="calendar_fiscal_year_id" paramName="year" />
                     </exp>
+                    <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
                 </exp>
             </where>
         </sql>
     </statement>
-    <statement name="GetOGEChecks" datasource="checkbook">
+    <statement name="GetOGEChecks" datasource="checkbook_oge">
         <param name="fiscal_year_id" required ="true"/>
         <param name="calendar_year_id" />
+        <param name="agency" />
         <sql>
             SELECT check_eft_issued_date as issue_date,
-            vendor_name as prime_vendor_name,
+            vendor_name as vendor_name,
             agency_name,
             check_amount,
             expenditure_object_name as expense_category,
@@ -109,13 +114,15 @@
                     <exp op="IF" condition="=" paramName="yeartype" compareValue="C">
                         <exp op="=" dbField="calendar_fiscal_year_id" paramName="year" />
                     </exp>
+                    <exp op="=" dbField="agency_id" paramName="agency" />
                 </exp>
             </where>
         </sql>
     </statement>
-    <statement name="GetCountOGEChecks" datasource="checkbook">
+    <statement name="GetCountOGEChecks" datasource="checkbook_oge">
         <param name="year" required ="true"/>
         <param name="yeartype" required ="true"/>
+        <param name="agency" />
         <sql>
             SELECT DISTINCT count(check_eft_issued_date) as record_count FROM disbursement_line_item_details
             <where>
@@ -126,6 +133,7 @@
                     <exp op="IF" condition="=" paramName="yeartype" compareValue="C">
                         <exp op="=" dbField="calendar_fiscal_year_id" paramName="year" />
                     </exp>
+                    <exp op="=" dbField="agency_id" paramName="agency" />
                 </exp>
             </where>
         </sql>
@@ -133,15 +141,16 @@
     <statement name="GetSVmwbeChecks" datasource="checkbook">
         <param name="fiscal_year_id" required ="true"/>
         <param name="calendar_year_id" />
+        <param name="mwbe" />
         <sql>
             SELECT l1.check_eft_issued_date as check_issue_date,
             l1.agency_id,
             l1.agency_name,
             l1.vendor_id,
             l1.vendor_name,
-            l2.legal_name AS legal_name_checkbook_sub_vendor,
+            l2.legal_name AS sub_vendor_name,
             l1.prime_vendor_id,
-            l3.legal_name AS legal_name_checkbook_prime_vendor,
+            l3.legal_name AS vendor_name,
             l1.check_amount,
             l1.minority_type_id
             FROM subcontract_spending_details l1
@@ -155,6 +164,7 @@
                     <exp op="IF" condition="=" paramName="yeartype" compareValue="C">
                         <exp op="=" dbField="calendar_fiscal_year_id" paramName="year" />
                     </exp>
+                    <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
                 </exp>
             </where>
         </sql>
@@ -181,6 +191,7 @@
     <statement name="GetSVChecks" datasource="checkbook">
         <param name="fiscal_year_id" required ="true"/>
         <param name="calendar_year_id" />
+        <param name="mwbe" />
         <sql>
             SELECT l1.check_eft_issued_date as issue_date,
             l1.agency_id,
@@ -203,6 +214,7 @@
                     <exp op="IF" condition="=" paramName="yeartype" compareValue="C">
                         <exp op="=" dbField="calendar_fiscal_year_id" paramName="year" />
                     </exp>
+                    <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
                 </exp>
             </where>
         </sql>
