@@ -25,22 +25,28 @@ require_once(realpath(drupal_get_path('module', 'data_controller')) . '/common/o
 <div class="content clearfix">
 
 
-<?php if (isset($node->widgetConfig->table_title)) { ?>
-<?php if ($node->widgetConfig->table_title) {
-    print '<div class="tableHeader"><h2>' . $node->widgetConfig->table_title . '</h2></div>';
-  } ?>
-<?php
-}
-?>
+<?php 
+/* Evaluating Widget titles and sub titles */
 
-
-<?php if (isset($node->widgetConfig->headerTitle)) {
-    load_widget_controller_data_count($node);
-    $headerSubTitle = isset($node->widgetConfig->headerSubTitle) ? $node->widgetConfig->headerSubTitle : $node->widgetConfig->headerTitle;
-    $count = $node->totalDataCount > 4 ? '<span class="hideOnExpand">5 </span>' : $node->totalDataCount;
-    echo '<div class="tableHeader"><h2>Top '.$count.' '.$node->widgetConfig->headerTitle.'</h2><span class="contCount"> Number of '.$headerSubTitle.':  '.number_format($node->totalDataCount).'</span></div>';
-}
+    if (isset($node->widgetConfig->table_title)) {
+        $widget_title = $node->widgetConfig->table_title;
+        if(isset($node->widgetConfig->headerSubTitle)){
+            load_widget_controller_data_count($node);
+            $headerSubTitle = ' Number of '.$node->widgetConfig->headerSubTitle.':  '.number_format($node->totalDataCount);
+        } 
+    }else if(isset($node->widgetConfig->headerTitle)){
+        load_widget_controller_data_count($node);
+        $headerSubTitle = isset($node->widgetConfig->headerSubTitle) ? $node->widgetConfig->headerSubTitle : $node->widgetConfig->headerTitle;
+        $count = $node->totalDataCount > 4 ? '<span class="hideOnExpand">5 </span>' : $node->totalDataCount;
+        $widget_title = 'Top '.$count.' '.$node->widgetConfig->headerTitle;
+        $headerSubTitle = ' Number of '.$headerSubTitle.':  '.number_format($node->totalDataCount);
+    }
+    
+    if(isset($widget_title)){
+        print '<div class="tableHeader"><h2>' . $widget_title . '</h2>'.(isset($headerSubTitle)?('<span class="contCount">'.$headerSubTitle.'</span>'):'').'</div>';
+    }
 ?>
+    
 <table id="table_<?php echo widget_unique_identifier($node) ?>" class="<?php echo $node->widgetConfig->html_class ?>">
   <?php
   if (isset($node->widgetConfig->caption_column)) {
@@ -110,26 +116,26 @@ else {
 ?>
 <div class="tableFooter">
   <?php
-  if ($node->widgetConfig->enableExpand == TRUE) {
-    if($node->totalDataCount > 5){
-        if($node->nid == 22 || $node->nid == 23 || $node->nid == 29){
-            echo '<a href="#" class="simultExpandCollapseWidget"><img src="/' . drupal_get_path('theme',$GLOBALS['theme']) . '/images/open.png"></a>';
-        }else{
-            echo '<a href="#" class="expandCollapseWidget"><img src="/' . drupal_get_path('theme',$GLOBALS['theme']) . '/images/open.png"></a>';
+    if ($node->widgetConfig->enableExpand == TRUE) {
+        if($node->totalDataCount > 5){
+            if($node->nid == 22 || $node->nid == 23 || $node->nid == 29){
+                echo '<a href="#" class="simultExpandCollapseWidget"><img src="/' . drupal_get_path('theme',$GLOBALS['theme']) . '/images/open.png"></a>';
+            }else{
+                echo '<a href="#" class="expandCollapseWidget"><img src="/' . drupal_get_path('theme',$GLOBALS['theme']) . '/images/open.png"></a>';
+            }
         }
-        echo '<span class="plus-or">or</span>';
     }
-  }
-  if (isset($node->widgetConfig->footerUrl)) {
-      $url = $node->widgetConfig->footerUrl;
-      $url = eval("return $url;");
-      if($node->totalDataCount > 0) {
-          echo '<a class="show-details bottomContainerReload" href="'.$url.'">Details >></a>';
-      }
-      else {
-          echo '<a class="show-details bottomContainerReload" href="'.$url.'" style="display:none;">Details >></a>';
-      }
-  }
+    if (isset($node->widgetConfig->footerUrl)) {
+        echo '<span class="plus-or">or</span>';
+        $url = $node->widgetConfig->footerUrl;
+        $url = eval("return $url;");
+        if($node->totalDataCount > 0) {
+            echo '<a class="show-details bottomContainerReload" href="'.$url.'">Details >></a>';
+        }
+        else {
+            echo '<a class="show-details bottomContainerReload" href="'.$url.'" style="display:none;">Details >></a>';
+        }
+    }
   ?>
 </div>
 
