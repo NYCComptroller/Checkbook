@@ -1807,6 +1807,8 @@ td.pad-left div{
 .dataTable th.number-center div {
     display:block;
     text-align:center;
+    float:right;
+    padding-right: 10px;
 }
 .dataTable td div {
     margin: 13px 0px 13px 0px;
