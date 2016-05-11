@@ -299,7 +299,7 @@
     "bInfo": true,
     "aoColumns": [  {"sClass":"expander","bSortable": false,"sWidth":"30px"},
     {"sClass":"text", "sWidth":"180px","asSorting": [ "asc","desc" ]},
-    {"sClass":"sub-cont-status", "sWidth":"155px","asSorting": [ "asc","desc" ]},
+    {"sClass":"sub-cont-status", "sWidth":"161px","asSorting": [ "asc","desc" ]},
     {"sClass":"number-center", "sWidth":"120px","asSorting": [ "asc","desc" ]},
     {"bSortable":false,"sWidth":"50px"},
     {"sClass":"text", "sWidth":"210px","asSorting": [ "asc","desc" ]},
@@ -403,7 +403,7 @@
 
     sOut += '<tr>';
     sOut += '<td class=\"text\" style=\"width:180px\">'+ (row[1] == null ? '': row[1])+'</td>';
-    sOut += '<td class=\"sub-cont-status\"  style=\"width:155px\">'+ (row[2] == null ? '': row[2])+'</td>';
+    sOut += '<td class=\"sub-cont-status\"  style=\"width:161px\">'+ (row[2] == null ? '': row[2])+'</td>';
     sOut += '<td class=\"number-center\" style=\"width:120px\">'+ (row[3] == null ? '': row[3])+'</td>';
     sOut += '<td style=\"width:50px\"></td>';
     sOut += '<td class=\"text\"  style=\"width:210px\">'+ (row[4] == null ? '': row[4])+'</td>';
