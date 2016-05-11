@@ -3,35 +3,32 @@
     {
         "serviceName":"ContractsWidgetService",
         "sqlConfigName":"contracts/contracts",
-        "statementName":"GetContracts",
-        "countStatementName":"GetCountContracts"
+        "statementName":"GetSubvendorContractsbyPrime",
+        "countStatementName":"GetCountOfSubvendorContractsbyPrime"
     },
-    "defaultParameters":{"doctype":"'CTA1'~'CT1'"},
-    "headerTitle":"Contracts",
-    "headerSubTitle":"Stand Alone Contracts",
-    "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/368/doctype/CTA1~CT1'",
+    "defaultParameters":{"doctype":"'CTA1'~'CT1'~'CT2'"},
+    "table_title":"Summary of Sub Vendor Contracts by Prime",
+    "headerSubTitle":"Reported Contracts with Sub Vendors",
     "table_columns":[
-        {"labelAlias":"contract_id","column":"contract_number","derivedColumn":"contract_id_link"},
-        {"labelAlias":"contract_purpose","column":"contract_purpose","tooltip":23},
         {"labelAlias":"contract_agency","column":"agency_name","tooltip":30,"derivedColumn":"agency_name_link"},
-        {"labelAlias":"prime_vendor","column":"vendor_name","tooltip":30,"derivedColumn":"vendor_name_link"},
-        {"labelAlias":"contract_includes_sub","column":"contract_subvendor_status"},
-        {"labelAlias":"current_amount","column":"current_amount_sum","format":"dollar"},
-        {"labelAlias":"original_amount","column":"original_amount_sum","format":"dollar"},
-        {"labelAlias":"spent_to_date","column":"spending_amount_sum","format":"dollar","derivedColumn":"spent_to_date_link"},
+        {"label":"Contracts Reported<br/>with Sub Vendors","column":"reported_contracts_with_subvendors"},
+        {"label":"Number of Sub Vendor<br/>Contracts Submitted","column":"no_of_subvendors_submitted"},
+        {"label":"Acco<br/>Reviewing","column":"acco_reviewing"},
+        {"label":"Acco<br/>Approved","column":"acco_approved"},
+        {"label":"Acco<br/>Rejected","column":"acco_rejected"},
+        {"label":"Acco<br/>Cancelled","column":"acco_cancelled"},
         {"label":"","column":""}
     ],
     "skipCustomPadding":true,
     "dataTableOptions":{
         "aoColumns":[
-            {"bSortable":false,"sWidth":"144px","sClass":"text"},
-            {"bSortable":false,"sWidth":"121px","sClass":"text"},
-            {"bSortable":false,"sWidth":"117px", "sClass":"text"},
-            {"bSortable":false ,"sWidth":"178px","sClass":"text"},
-            {"bSortable":false ,"sWidth":"126px","sClass":"number-center pad"},
-            {"bSortable":true,"sWidth":"83px","sClass":"number","asSorting":["desc","asc"]},
-            {"bSortable":true,"sWidth":"84px" ,"sClass":"number","asSorting":["desc" ,"asc"]},
-            {"bSortable":true,"sWidth":"77px","sClass":"number","asSorting":["desc","asc"]},
+            {"bSortable":false,"sWidth":"220px","sClass":"text"},
+            {"bSortable":false,"sWidth":"200px","sClass":"number-center pad","asSorting":["desc","asc"]},
+            {"bSortable":false,"sWidth":"200px", "sClass":"number-center pad","asSorting":["desc","asc"]},
+            {"bSortable":false ,"sWidth":"100px","sClass":"number-center pad","asSorting":["desc","asc"]},
+            {"bSortable":false ,"sWidth":"100px","sClass":"number-center pad","asSorting":["desc","asc"]},
+            {"bSortable":true,"sWidth":"100px","sClass":"number-center pad","asSorting":["desc","asc"]},
+            {"bSortable":true,"sWidth":"100px" ,"sClass":"number-center pad","asSorting":["desc" ,"asc"]},
             {"bSortable":false,"sWidth":"10px"}
         ],
         "bServerSide":true,
@@ -41,7 +38,7 @@
         "bLengthChange":false,
         "bInfo":false,
         "bAutoWidth":false,
-        "aaSorting":[[ 5, "desc" ]],
+        "aaSorting":[[ 1, "desc" ]],
         "fnServerParams":"##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
     "oLanguage":{"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
    }
