@@ -552,7 +552,7 @@
             LEFT JOIN (SELECT contract_number, aprv_sta FROM subcontract_details WHERE latest_flag='Y') sd ON a.contract_number=sd.contract_number
             LEFT JOIN ref_document_code c ON a.document_code_id=c.document_code_id
             LEFT JOIN ref_agency ra ON a.agency_id=ra.agency_id
-            WHERE a.latest_flag='Y'
+             WHERE a.latest_flag='Y'
             AND c.document_code IN ('CT1','CTA1','CT2') 
             AND (2016 BETWEEN effective_begin_year AND effective_end_year) 
             AND (2016 BETWEEN starting_year AND ending_year)
