@@ -4,16 +4,15 @@
         "serviceName":"ContractsWidgetService",
         "sqlConfigName":"contracts/contracts",
         "statementName":"GetPrimeContractSubVenReporting",
-        "countStatementName":"GetCountPrimeContractSubVenReporting"
+        "countStatementName":"GetCountContracts"
     },
-    "defaultParameters":{"doctype":"'CTA1'~'CT1'"},
+    "defaultParameters":{"doctype":"'CTA1'~'CT1'~'CT2'"},
     "headerTitle":"Summery of Prime Contract Subvendor Reporting",
     "headerSubTitle":"Stand Alone Contracts",
-    "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/368/doctype/CTA1~CT1'",
     "table_columns":[
-        {"labelAlias":"contract_agency","column":"agency_name","tooltip":30,"derivedColumn":"agency_name_link"},
+        {"labelAlias":"contract_agency","column":"agency_name","tooltip":32,"derivedColumn":"agency_name_link"},
         {"labelAlias":"no_of_contracts","column":"number_contracts"},
-        {"labelAlias":"spent_to_date","column":"spending_amount_sum","format":"dollar","derivedColumn":"spent_to_date_link"},
+        {"labelAlias":"spent_to_date","column":"spending_amount_sum","format":"dollar"},
         {"labelAlias":"no_response_status","column":"no_response_status"},
         {"labelAlias":"reported_sub_count","column":"reported_sub_count"},
         {"labelAlias":"reported_no_sub_count","column":"reported_no_sub_count"},
@@ -23,13 +22,13 @@
     "skipCustomPadding":true,
     "dataTableOptions":{
         "aoColumns":[
-            {"bSortable":false,"sWidth":"116px","sClass":"text"},
-            {"bSortable":false,"sWidth":"116px","sClass":"number-center"},
-            {"bSortable":false,"sWidth":"116px", "sClass":"text"},
-            {"bSortable":false,"sWidth":"116px","sClass":"number-center"},
-            {"bSortable":false,"sWidth":"155px","sClass":"number-center"},
-            {"bSortable":true,"sWidth":"155px","sClass":"number-center","asSorting":["desc","asc"]},
-            {"bSortable":true,"sWidth":"155px","sClass":"number-center","asSorting":["desc","asc"]},
+            {"bSortable":false,"sWidth":"130px","sClass":"text"},
+            {"bSortable":true,"sClass":"number-center","asSorting":["desc","asc"]},
+            {"bSortable":true,"sClass":"number","asSorting":["desc","asc"]},
+            {"bSortable":true,"sClass":"number-center","asSorting":["desc","asc"]},
+            {"bSortable":true,"sClass":"number-center","asSorting":["desc","asc"]},
+            {"bSortable":true,"sClass":"number-center","asSorting":["desc","asc"]},
+            {"bSortable":true,"sClass":"number-center","asSorting":["desc","asc"]},
             {"bSortable":false,"sWidth":"10px"}
         ],
         "bServerSide":true,
@@ -39,7 +38,7 @@
         "bLengthChange":false,
         "bInfo":false,
         "bAutoWidth":false,
-        "aaSorting":[[ 1, "desc" ]],
+        "aaSorting":[[1,"desc"]],
         "fnServerParams":"##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
     "oLanguage":{"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
    }
