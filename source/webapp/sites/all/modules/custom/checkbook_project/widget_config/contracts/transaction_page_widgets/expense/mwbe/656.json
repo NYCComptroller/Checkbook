@@ -463,6 +463,7 @@
     var mastercode = jQuery(oElement).attr('mastercode');
     var mwbe = jQuery(oElement).attr('mwbe');
     var dashboard = jQuery(oElement).attr('dashboard');
+    var subcontstatus = jQuery(oElement).attr('subcontstatus');
 
     magid = (magid == null || magid.length == 0) ?  '0' : magid;
 
@@ -470,6 +471,7 @@
     sUrl = sUrl + ( (contstatus == null || contstatus.length == 0) ?  '' : '/contstatus/'+contstatus);
     sUrl = sUrl + ( (mwbe == null || mwbe.length == 0) ?  '' : '/mwbe/'+mwbe);
     sUrl = sUrl + ( (dashboard == null || dashboard.length == 0) ?  '' : '/dashboard/'+dashboard);
+    sUrl = sUrl + ( (subcontstatus == null || subcontstatus.length == 0) ?  '' : '/subcontstatus/'+subcontstatus);
 
     var smnid = jQuery(oElement).attr('smnid');
 
