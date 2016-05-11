@@ -506,4 +506,56 @@
             GROUP BY l1.agency_id, l1.agency_name
         </sql>
     </statement>
+    <statement name="GetSubvendorContractsbyPrime" datasource="checkbook">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="status" type="string"/>
+        <param name="doctype" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="mwbe" />
+        <param name="contract_mod" type="bool" />
+        <sql>
+            SELECT
+            ra.agency_name AS agency_name,
+            ra.agency_id,
+            SUM(CASE WHEN scntrc_status=2 THEN 1 ELSE 0 END) AS reported_contracts_with_subvendors,
+            COUNT(sd.aprv_sta) AS no_of_subvendors_submitted,
+            SUM(CASE WHEN aprv_sta=3 THEN 1 ELSE 0 END) AS acco_reviewing,
+            SUM(CASE WHEN aprv_sta=4 THEN 1 ELSE 0 END) AS acco_approved,
+            SUM(CASE WHEN aprv_sta=2 THEN 1 ELSE 0 END) AS acco_rejected,
+            SUM(CASE WHEN aprv_sta=5 THEN 1 ELSE 0 END) AS acco_cancelled
+            FROM agreement_snapshot a
+            LEFT JOIN (SELECT contract_number, aprv_sta FROM subcontract_details WHERE latest_flag='Y') sd ON a.contract_number=sd.contract_number
+            LEFT JOIN ref_document_code c ON a.document_code_id=c.document_code_id
+            LEFT JOIN ref_agency ra ON a.agency_id=ra.agency_id
+            WHERE a.latest_flag='Y'
+            AND c.document_code IN ('CT1','CTA1','CT2') 
+            AND (2016 BETWEEN effective_begin_year AND effective_end_year) 
+            AND (2016 BETWEEN starting_year AND ending_year)
+            GROUP BY 1,2
+        </sql>
+    </statement>
+    <statement name="GetCountOfSubvendorContractsbyPrime" datasource="checkbook">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="status" type="string"/>
+        <param name="doctype" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="mwbe" />
+        <param name="contract_mod" type="bool" />
+        <sql>
+            SELECT
+            SUM(CASE WHEN scntrc_status=2 THEN 1 ELSE 0 END) AS record_count
+            FROM agreement_snapshot a
+            LEFT JOIN (SELECT contract_number, aprv_sta FROM subcontract_details WHERE latest_flag='Y') sd ON a.contract_number=sd.contract_number
+            LEFT JOIN ref_document_code c ON a.document_code_id=c.document_code_id
+            LEFT JOIN ref_agency ra ON a.agency_id=ra.agency_id
+            WHERE a.latest_flag='Y'
+            AND c.document_code IN ('CT1','CTA1','CT2') 
+            AND (2016 BETWEEN effective_begin_year AND effective_end_year) 
+            AND (2016 BETWEEN starting_year AND ending_year)
+        </sql>
+    </statement>
 </statements>
