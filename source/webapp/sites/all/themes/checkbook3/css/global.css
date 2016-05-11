@@ -1880,6 +1880,8 @@ td.sub-cont-status {
 .dataTable th.sub-cont-status div {
     display:block;
     text-align:center;
+    float:right;
+    padding-right: 10px;
 }
 td.sub-cont-status div {
     margin-left:25px !important;
