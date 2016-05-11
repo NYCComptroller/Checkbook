@@ -473,44 +473,37 @@
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
         <param name="mwbe" />
-        <param name="contract_mod" type="bool" />
         <sql>
             SELECT
-            ra.agency_id AS agency_id,
-            ra.agency_name AS agency_name,
-            COUNT(DISTINCT a.contract_number) as number_contracts,
-            SUM(rfed_amount) AS spending_amount_sum,
-            SUM(CASE WHEN a.scntrc_status = 1 THEN 1 ELSE 0 END) AS no_response_status,
-            SUM(CASE WHEN a.scntrc_status = 2 THEN 1 ELSE 0 END) AS reported_sub_count,
-            SUM(CASE WHEN a.scntrc_status = 3 THEN 1 ELSE 0 END) AS reported_no_sub_count,
-            SUM(CASE WHEN a.scntrc_status = 2 AND sd.contract_number IS NULL THEN 1 ELSE 0 END) AS reported_no_details_count
-            FROM agreement_snapshot a
-            left join ref_agency ra ON a.agency_id = ra.agency_id
-            left join (select distinct contract_number FROM subcontract_details WHERE latest_flag='Y') sd ON a.contract_number = sd.contract_number
-            WHERE
-            a.latest_flag='Y'
-            AND a.document_code_id in (1,2)
-            AND (117 BETWEEN a.effective_begin_year_id AND a.effective_end_year_id) AND (117 BETWEEN a.starting_year_id AND a.ending_year_id)
-            GROUP BY ra.agency_id, ra.agency_name
-        </sql>
-    </statement>
-    <statement name="GetCountPrimeContractSubVenReporting" datasource="checkbook">
-        <param name="year" required ="true" type="int"/>
-        <param name="yeartype" required ="true" type="string" />
-        <param name="status" type="string"/>
-        <param name="doctype" />
-        <param name="agency" type="int" />
-        <param name="vendor" type="int" />
-        <param name="mwbe" />
-        <param name="contract_mod" type="bool" />
-        <sql>
-            SELECT COUNT(*) as record_count FROM
-            (
-                SELECT DISTINCT agency_id AS agency_id FROM agreement_snapshot a
-                WHERE a.latest_flag='Y'
-                AND a.document_code_id in (1,2)
-                AND (117 BETWEEN a.effective_begin_year_id AND a.effective_end_year_id) AND (117 BETWEEN a.starting_year_id AND a.ending_year_id)
-            ) sub_query
+            l1.agency_id,
+            l1.agency_name,
+            COUNT(DISTINCT l1.contract_number) as number_contracts,
+            SUM(l1.rfed_amount) AS spending_amount_sum,
+            SUM(CASE WHEN l1.scntrc_status = 1 THEN 1 ELSE 0 END) AS no_response_status,
+            SUM(CASE WHEN l1.scntrc_status = 2 THEN 1 ELSE 0 END) AS reported_sub_count,
+            SUM(CASE WHEN l1.scntrc_status = 3 THEN 1 ELSE 0 END) AS reported_no_sub_count,
+            SUM(CASE WHEN l1.scntrc_status = 2 AND l1.contract_number IS NULL THEN 1 ELSE 0 END) AS reported_no_details_count
+            <exp op="IF" condition="=" paramName="yeartype" compareValue="B">
+            FROM all_agreement_transactions l1
+            </exp>
+            <exp op="IF" condition="=" paramName="yeartype" compareValue="C">
+            FROM all_agreement_transactions_cy l1
+            </exp>
+            JOIN ref_document_code l2 ON l2.document_code_id = l1.document_code_id
+            <where>
+                <exp op="AND">
+                    <exp op="IN" dbField="l2.document_code" paramName="doctype" />
+                    <exp op="&lt;=" dbField="l1.starting_year_id" paramName="year" />
+                    <exp op="&gt;=" dbField="l1.ending_year_id" paramName="year" />
+                    <exp op="&lt;=" dbField="l1.effective_begin_year_id" paramName="year" />
+                    <exp op="&gt;=" dbField="l1.effective_end_year_id" paramName="year" />
+                    <exp op="=" dbField="l1.is_prime_or_sub">'P'</exp>
+                    <exp op="IN" dbField="l1.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="l1.agency_id" paramName="agency" />
+                    <exp op="=" dbField="l1.vendor_id" paramName="vendor" />
+                </exp>
+            </where>
+            GROUP BY l1.agency_id, l1.agency_name
         </sql>
     </statement>
 </statements>
