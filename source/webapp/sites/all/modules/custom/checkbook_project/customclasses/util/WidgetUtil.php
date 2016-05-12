@@ -220,6 +220,12 @@ class WidgetUtil
         "reported_sub_count" => "Contracts With<br/>Sub Vendors Reported",
         "reported_no_sub_count" => "Contracts Without<br/>Sub Vendors Reported",
         "reported_no_details_count" => "Sub Vendors Reported<br/>Without Details",
+        "contracts_reported_with_subvendors" => "Contracts Reported<br/>with Sub Vendors",
+        "no_of_subvendor_contracts_submitted" => "Number of Sub Vendor<br/>Contracts Submitted",
+        "acco_reviewing" => "Acco<br/>Reviewing",
+        "acco_approved" => "Acco<br/>Approved",
+        "acco_rejected" => "Acco<br/>Rejected",
+        "acco_cancelled" => "Acco<br/>Cancelled",
     );
 
     //For number cols, need to find out if they are uniform number of digits for formatting
