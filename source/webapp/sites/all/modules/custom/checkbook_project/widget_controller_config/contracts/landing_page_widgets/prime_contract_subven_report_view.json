@@ -7,29 +7,27 @@
         "countStatementName":"GetCountContracts"
     },
     "defaultParameters":{"doctype":"'CTA1'~'CT1'~'CT2'"},
-    "headerTitle":"Summery of Prime Contract Subvendor Reporting",
+    "table_title":"Summery of Prime Contract Sub Vendor Reporting",
     "headerSubTitle":"Stand Alone Contracts",
     "table_columns":[
         {"labelAlias":"contract_agency","column":"agency_name","tooltip":32,"derivedColumn":"agency_name_link"},
         {"labelAlias":"no_of_contracts","column":"number_contracts"},
         {"labelAlias":"spent_to_date","column":"spending_amount_sum","format":"dollar"},
         {"labelAlias":"no_response_status","column":"no_response_status"},
-        {"labelAlias":"reported_sub_count","column":"reported_sub_count"},
         {"labelAlias":"reported_no_sub_count","column":"reported_no_sub_count"},
-        {"labelAlias":"reported_no_details_count","column":"reported_no_details_count"},
-        {"label":"","column":""}
+        {"labelAlias":"reported_sub_count","column":"reported_sub_count"},
+        {"labelAlias":"reported_no_details_count","column":"reported_no_details_count"}
     ],
     "skipCustomPadding":true,
     "dataTableOptions":{
         "aoColumns":[
-            {"bSortable":false,"sWidth":"130px","sClass":"text"},
-            {"bSortable":true,"sClass":"number-center","asSorting":["desc","asc"]},
-            {"bSortable":true,"sClass":"number","asSorting":["desc","asc"]},
-            {"bSortable":true,"sClass":"number-center","asSorting":["desc","asc"]},
-            {"bSortable":true,"sClass":"number-center","asSorting":["desc","asc"]},
-            {"bSortable":true,"sClass":"number-center","asSorting":["desc","asc"]},
-            {"bSortable":true,"sClass":"number-center","asSorting":["desc","asc"]},
-            {"bSortable":false,"sWidth":"10px"}
+            {"bSortable":false,"sWidth":"128px","sClass":"text"},
+            {"bSortable":true,"sWidth":"98px","sClass":"number-center","asSorting":["desc","asc"]},
+            {"bSortable":true,"sWidth":"75px","sClass":"number","asSorting":["desc","asc"]},
+            {"bSortable":true,"sWidth":"116px","sClass":"number-center","asSorting":["desc","asc"]},
+            {"bSortable":true,"sWidth":"170px","sClass":"number-center","asSorting":["desc","asc"]},
+            {"bSortable":true,"sWidth":"170px","sClass":"number-center","asSorting":["desc","asc"]},
+            {"bSortable":true,"sWidth":"170px","sClass":"number-center","asSorting":["desc","asc"]}
         ],
         "bServerSide":true,
         "bFilter":false,
