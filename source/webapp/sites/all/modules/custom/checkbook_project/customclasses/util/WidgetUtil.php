@@ -220,7 +220,7 @@ class WidgetUtil
         "reported_sub_count" => "Contracts With<br/>Sub Vendors Reported",
         "reported_no_sub_count" => "Contracts Without<br/>Sub Vendors Reported",
         "reported_no_details_count" => "Sub Vendors Reported<br/>Without Details",
-        "contracts_reported_with_subvendors" => "Contracts Reported<br/>with Sub Vendors",
+        "contracts_reported_with_subvendors" => "Contracts with<br/>Sub Vendors Reported",
         "no_of_subvendor_contracts_submitted" => "Number of Sub Vendor<br/>Contracts Submitted",
         "acco_reviewing" => "Acco<br/>Reviewing",
         "acco_approved" => "Acco<br/>Approved",
