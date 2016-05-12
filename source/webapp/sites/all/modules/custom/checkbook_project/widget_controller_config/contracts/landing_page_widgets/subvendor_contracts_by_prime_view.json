@@ -10,7 +10,7 @@
     "table_title":"Summary of Sub Vendor Contracts by Prime",
     "headerSubTitle":"Reported Contracts with Sub Vendors",
     "table_columns":[
-        {"labelAlias":"contract_agency","column":"agency_name","tooltip":30,"derivedColumn":"agency_name_link"},
+        {"labelAlias":"contract_agency","column":"agency_name","tooltip":30,"derivedColumn":"agency_landing_link"},
         {"labelAlias":"contracts_reported_with_subvendors","column":"reported_contracts_with_subvendors"},
         {"labelAlias":"no_of_subvendor_contracts_submitted","column":"no_of_subvendors_submitted"},
         {"labelAlias":"acco_reviewing","column":"acco_reviewing"},

@@ -57,9 +57,9 @@ class ContractsUrlService {
         return "/contracts_landing" . $url . "?expandBottomCont=true";
     }
 
-    static function agencyUrl($original_agreement_id, $agency_id) {
+    static function agencyUrl($agency_id, $original_agreement_id = null) {
         $url = "/contracts_landing"
-            ."/magid/".$original_agreement_id
+            .(isset($original_agreement_id) ? ("/magid/".$original_agreement_id):'')
             . _checkbook_append_url_params()
             ._checkbook_project_get_url_param_string('vendor')
             ._checkbook_project_get_url_param_string('cindustry')
