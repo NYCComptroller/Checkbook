@@ -20,7 +20,13 @@ class ContractsWidgetService extends AbstractWidgetService {
 
             case "agency_name_link":
                 $column = $row['agency_name'];
-                $url = ContractsUrlService::agencyUrl($row['original_agreement_id'],$row['agency_id']);
+                $url = ContractsUrlService::agencyUrl($row['agency_id'], $row['original_agreement_id']);
+                $value = "<a href='{$url}'>{$column}</a>";
+                break;
+            
+            case "agency_landing_link":
+                $column = $row['agency_name'];
+                $url = ContractsUrlService::agencyUrl($row['agency_id']);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
 
