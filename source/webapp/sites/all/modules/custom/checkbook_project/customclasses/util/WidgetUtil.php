@@ -217,9 +217,9 @@ class WidgetUtil
         "employee_number" => "Employee Number",
         "contract_includes_sub" => "Contract Includes<br/>Sub Vendors",
         "no_response_status" => "No Response<br/>by Prime",
-        "reported_sub_count" => "Reported Contracts<br/>with SubVendors",
-        "reported_no_sub_count" => "Reported Contracts<br/>without SubVendors",
-        "reported_no_details_count" => "No Subvendor Details<br/>for Reported Contracts",
+        "reported_sub_count" => "Contracts With<br/>Sub Vendors Reported",
+        "reported_no_sub_count" => "Contracts Without<br/>Sub Vendors Reported",
+        "reported_no_details_count" => "Sub Vendors Reported<br/>Without Details",
     );
 
     //For number cols, need to find out if they are uniform number of digits for formatting
