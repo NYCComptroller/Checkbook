@@ -11,13 +11,13 @@
     "headerSubTitle":"Reported Contracts with Sub Vendors",
     "table_columns":[
         {"labelAlias":"contract_agency","column":"agency_name","tooltip":30,"derivedColumn":"agency_name_link"},
-        {"label":"Contracts Reported<br/>with Sub Vendors","column":"reported_contracts_with_subvendors"},
-        {"label":"Number of Sub Vendor<br/>Contracts Submitted","column":"no_of_subvendors_submitted"},
-        {"label":"Acco<br/>Reviewing","column":"acco_reviewing"},
-        {"label":"Acco<br/>Approved","column":"acco_approved"},
-        {"label":"Acco<br/>Rejected","column":"acco_rejected"},
-        {"label":"Acco<br/>Cancelled","column":"acco_cancelled"},
-        {"label":"","column":""}
+        {"labelAlias":"contracts_reported_with_subvendors","column":"reported_contracts_with_subvendors"},
+        {"labelAlias":"no_of_subvendor_contracts_submitted","column":"no_of_subvendors_submitted"},
+        {"labelAlias":"acco_reviewing","column":"acco_reviewing"},
+        {"labelAlias":"acco_approved","column":"acco_approved"},
+        {"labelAlias":"acco_rejected","column":"acco_rejected"},
+        {"labelAlias":"acco_cancelled","column":"acco_cancelled"},
+        {"labelAlias":"","column":""}
     ],
     "skipCustomPadding":true,
     "dataTableOptions":{
