@@ -13,47 +13,39 @@
             SELECT
             l1.contract_number,
             l1.description as contract_purpose,
-            l1.agency_id,
-            l1.agency_name,
-            l1.vendor_id,
-            l1.vendor_name as vendor_name,
+            l3.agency_id,
+            l3.agency_name,
+            l4.vendor_id,
+            l4.legal_name as vendor_name,
             l1.minority_type_id,
             l1.original_agreement_id,
             l1.document_code_id,
-            l3.document_code,
+            l2.document_code,
             CASE
             WHEN l1.scntrc_status = 1 THEN 'No Data Entered'
             WHEN l1.scntrc_status = 2 THEN 'Yes'
             WHEN l1.scntrc_status = 3 THEN 'No'
             ELSE 'N/A'
             END AS contract_subvendor_status,
-            l1.original_contract_amount AS original_amount_sum,
-            l1.maximum_contract_amount AS current_amount_sum,
-            l2.spending_amount AS spending_amount_sum
-            <exp op="IF" condition="=" paramName="yeartype" compareValue="B">
-            FROM all_agreement_transactions l1
-            </exp>
-            <exp op="IF" condition="=" paramName="yeartype" compareValue="C">
-            FROM all_agreement_transactions_cy l1
-            </exp>
-            LEFT OUTER JOIN aggregateon_all_contracts_cumulative_spending l2 ON l2.original_agreement_id = l1.original_agreement_id
-            LEFT OUTER JOIN ref_document_code l3 ON l3.document_code_id = l1.document_code_id
+            SUM(COALESCE(l1.original_contract_amount,0)) AS original_amount_sum,
+            SUM(COALESCE(l1.maximum_contract_amount,0)) AS current_amount_sum,
+            SUM(COALESCE(l1.spending_amount,0)) AS spending_amount_sum
+            FROM aggregateon_mwbe_contracts_cumulative_spending l1
+            JOIN ref_document_code l2 ON l2.document_code_id = l1.document_code_id
+            JOIN ref_agency l3 on l3.agency_id = l1.agency_id
+            JOIN vendor l4 on l4.vendor_id = l1.vendor_id
             <where>
                 <exp op="AND">
-                    <exp op="=" dbField="l2.status_flag" paramName="status" />
-                    <exp op="=" dbField="l2.type_of_year" paramName="yeartype" />
-                    <exp op="=" dbField="l2.fiscal_year_id" paramName="year" />
-                    <exp op="IN" dbField="l3.document_code" paramName="doctype" />
+                    <exp op="=" dbField="l1.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="l1.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="l1.status_flag" paramName="status" />
+                    <exp op="IN" dbField="l2.document_code" paramName="doctype" />
                     <exp op="=" dbField="l1.vendor_id" paramName="vendor" />
                     <exp op="=" dbField="l1.agency_id" paramName="agency" />
                     <exp op="IN" dbField="l1.minority_type_id" paramName="mwbe" />
-                    <exp op="=" dbField="l1.is_prime_or_sub">'P'</exp>
-                    <exp op="&lt;=" dbField="l1.starting_year_id" paramName="year" />
-                    <exp op="&gt;=" dbField="l1.ending_year_id" paramName="year" />
-                    <exp op="&lt;=" dbField="l1.effective_begin_year_id" paramName="year" />
-                    <exp op="&gt;=" dbField="l1.effective_end_year_id" paramName="year" />
                 </exp>
             </where>
+            GROUP BY l1.type_of_year, l1.description,l1.contract_number, l1.original_agreement_id, l1.document_code_id,l2.document_code, l1.minority_type_id,l3.agency_id,l3.agency_name,l4.vendor_id,l4.legal_name,l1.scntrc_status
         </sql>
     </statement>
     <statement name="GetCountContracts" datasource="checkbook">
@@ -67,31 +59,20 @@
         <sql>
             SELECT COUNT(*) as record_count FROM
             (
-                SELECT l1.contract_number
-                <exp op="IF" condition="=" paramName="yeartype" compareValue="B">
-                FROM all_agreement_transactions l1
+            SELECT l1.contract_number
+            FROM aggregateon_mwbe_contracts_cumulative_spending l1
+            JOIN ref_document_code l2 ON l2.document_code_id = l1.document_code_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="l1.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="l1.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="l1.status_flag" paramName="status" />
+                    <exp op="IN" dbField="l2.document_code" paramName="doctype" />
+                    <exp op="=" dbField="l1.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="l1.agency_id" paramName="agency" />
+                    <exp op="IN" dbField="l1.minority_type_id" paramName="mwbe" />
                 </exp>
-                <exp op="IF" condition="=" paramName="yeartype" compareValue="C">
-                FROM all_agreement_transactions_cy l1
-                </exp>
-                LEFT OUTER JOIN aggregateon_all_contracts_cumulative_spending l2 ON l2.original_agreement_id = l1.original_agreement_id
-                LEFT OUTER JOIN ref_document_code l3 ON l3.document_code_id = l1.document_code_id
-                <where>
-                    <exp op="AND">
-                        <exp op="=" dbField="l2.status_flag" paramName="status" />
-                        <exp op="=" dbField="l2.type_of_year" paramName="yeartype" />
-                        <exp op="=" dbField="l2.fiscal_year_id" paramName="year" />
-                        <exp op="IN" dbField="l3.document_code" paramName="doctype" />
-                        <exp op="=" dbField="l1.vendor_id" paramName="vendor" />
-                        <exp op="=" dbField="l1.agency_id" paramName="agency" />
-                        <exp op="IN" dbField="l1.minority_type_id" paramName="mwbe" />
-                        <exp op="=" dbField="l1.is_prime_or_sub">'P'</exp>
-                        <exp op="&lt;=" dbField="l1.starting_year_id" paramName="year" />
-                        <exp op="&gt;=" dbField="l1.ending_year_id" paramName="year" />
-                        <exp op="&lt;=" dbField="l1.effective_begin_year_id" paramName="year" />
-                        <exp op="&gt;=" dbField="l1.effective_end_year_id" paramName="year" />
-                    </exp>
-                </where>
+            </where>
             ) sub_query
         </sql>
     </statement>
