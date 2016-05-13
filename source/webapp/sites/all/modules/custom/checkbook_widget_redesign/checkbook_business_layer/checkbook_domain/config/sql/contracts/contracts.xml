@@ -1,5 +1,4 @@
 <statements>
-
     <!--GetContracts,GetCountContracts-->
     <statement name="GetContracts" datasource="checkbook">
         <param name="year" required ="true" type="int"/>
