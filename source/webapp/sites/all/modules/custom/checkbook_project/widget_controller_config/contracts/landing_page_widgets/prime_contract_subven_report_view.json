@@ -7,7 +7,7 @@
         "countStatementName":"GetCountContracts"
     },
     "defaultParameters":{"doctype":"'CTA1'~'CT1'~'CT2'"},
-    "table_title":"Summery of Prime Contract Sub Vendor Reporting",
+    "table_title":"Summary of Prime Contract Sub Vendor Reporting",
     "headerSubTitle":"Stand Alone Contracts",
     "table_columns":[
         {"labelAlias":"contract_agency","column":"agency_name","tooltip":32,"derivedColumn":"agency_name_link"},
