@@ -519,7 +519,7 @@
             SELECT
             ra.agency_name AS agency_name,
             ra.agency_id,
-            SUM(CASE WHEN scntrc_status=2 THEN 1 ELSE 0 END) AS reported_contracts_with_subvendors,
+            COUNT(DISTINCT a.contract_number ) AS reported_contracts_with_subvendors,
             COUNT(sd.aprv_sta) AS no_of_subvendors_submitted,
             SUM(CASE WHEN aprv_sta=3 THEN 1 ELSE 0 END) AS acco_reviewing,
             SUM(CASE WHEN aprv_sta=4 THEN 1 ELSE 0 END) AS acco_approved,
@@ -536,6 +536,7 @@
                     <exp op="&lt;=" dbField="a.effective_begin_year_id" paramName="year" />
                     <exp op="&gt;=" dbField="a.effective_end_year_id" paramName="year" />
                     <exp op="=" dbField="a.latest_flag">'Y'</exp>
+                    <exp op="=" dbField="a.scntrc_status">2</exp>
                     <exp op="=" dbField="a.agency_id" paramName="agency" />
                     <exp op="=" dbField="a.vendor_id" paramName="vendor" />
                 </exp>
@@ -554,7 +555,7 @@
         <param name="contract_mod" type="bool" />
         <sql>
             SELECT
-            SUM(CASE WHEN scntrc_status=2 THEN 1 ELSE 0 END) AS record_count
+            COUNT(DISTINCT a.contract_number ) AS record_count
             FROM agreement_snapshot a
             LEFT JOIN (SELECT contract_number, aprv_sta FROM subcontract_details WHERE latest_flag='Y') sd ON a.contract_number=sd.contract_number
             LEFT JOIN ref_document_code c ON a.document_code_id=c.document_code_id
@@ -566,6 +567,7 @@
                     <exp op="&lt;=" dbField="a.effective_begin_year_id" paramName="year" />
                     <exp op="&gt;=" dbField="a.effective_end_year_id" paramName="year" />
                     <exp op="=" dbField="a.latest_flag">'Y'</exp>
+                    <exp op="=" dbField="a.scntrc_status">2</exp>
                     <exp op="=" dbField="a.agency_id" paramName="agency" />
                     <exp op="=" dbField="a.vendor_id" paramName="vendor" />
                 </exp>
