@@ -11,12 +11,12 @@
     "headerSubTitle":"Reported Prime Contracts with Sub Vendors",
     "table_columns":[
         {"labelAlias":"contract_agency","column":"agency_name","tooltip":30,"derivedColumn":"agency_landing_link"},
-        {"labelAlias":"contracts_reported_with_subvendors","column":"reported_contracts_with_subvendors"},
-        {"labelAlias":"no_of_subvendor_contracts_submitted","column":"no_of_subvendors_submitted"},
-        {"labelAlias":"acco_reviewing","column":"acco_reviewing"},
-        {"labelAlias":"acco_approved","column":"acco_approved"},
-        {"labelAlias":"acco_rejected","column":"acco_rejected"},
-        {"labelAlias":"acco_cancelled","column":"acco_cancelled"},
+        {"labelAlias":"contracts_reported_with_subvendors","column":"reported_contracts_with_subvendors","format":"number"},
+        {"labelAlias":"no_of_subvendor_contracts_submitted","column":"no_of_subvendors_submitted","format":"number"},
+        {"labelAlias":"acco_reviewing","column":"acco_reviewing","format":"number"},
+        {"labelAlias":"acco_approved","column":"acco_approved","format":"number"},
+        {"labelAlias":"acco_rejected","column":"acco_rejected","format":"number"},
+        {"labelAlias":"acco_cancelled","column":"acco_cancelled","format":"number"},
         {"labelAlias":"","column":""}
     ],
     "skipCustomPadding":true,

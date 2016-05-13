@@ -470,6 +470,9 @@ function widget_controller_format_widget_data($node, $service){
                     case "date":
                         $node->data[$key][$column->column] = custom_date_format($node->data[$key][$column->column]);
                         break;
+                    case "number":
+                        $node->data[$key][$column->column] = number_format($node->data[$key][$column->column]);
+                        break;
                 }
             }
             //tooltip
