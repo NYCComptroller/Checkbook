@@ -18,6 +18,7 @@ class SqlStatementModel extends AbstractSqlModel {
     public $groupBy;
     public $having;
     public $query;
+    public $countQuery;
 
     protected static $childElements = array(
         array('xpath'=>'param','class'=>'SqlParamModel'),

@@ -360,7 +360,67 @@ function _widget_controller_type_set_defaults($info) {
 function widget_controller_prepare(&$node) {
 }
 
-function widget_controller_load_data_service($node) {
+/**
+ * Function will get the count used in the header text of the widget as well
+ * as the total row count for the footer rendering.  By if no separate sql
+ * specified for the header, the default total row count is used
+ * @param $node
+ */
+function load_widget_controller_data_count($node) {
+
+    //Prepare service
+    $service = _widget_controller_load_data_service($node);
+
+    //Prepare sql parameters
+    $parameters = _prepare_input_parameters($node);
+
+    //Load widget total row count
+    try {
+        $node->totalDataCount = _load_widget_controller_row_count($service, $parameters);
+    }
+    catch(Exception $e) {
+        log_error("Error getting total row count: \n" . $e->getMessage()/*, $e*/);
+        $node->error = $e;
+        return;
+    }
+
+    //Load widget header count
+    try {
+        $node->headerCount = _load_widget_controller_header_count($service, $parameters);
+        if(!isset($node->headerCount))
+            $node->headerCount = $node->totalDataCount;
+    }
+    catch(Exception $e) {
+        log_error("Error getting header count: \n" . $e->getMessage()/*, $e*/);
+        $node->error = $e;
+        return;
+    }
+}
+
+/**
+ * Function to load the widget data
+ * @param $node
+ */
+function widget_controller_data(&$node) {
+
+    //Prepare service
+    $service = _widget_controller_load_data_service($node);
+
+    //Load widget data
+    _load_widget_controller_data($node, $service);
+
+    //Format widget data
+    $node->data = _widget_controller_format_widget_data($node, $service);
+}
+
+
+/**
+ * Returns the service used to fetch widget data
+ *
+ * @param $node
+ * @return null
+ */
+function _widget_controller_load_data_service($node) {
 
     $service = null;
     if(isset($node->widgetConfig->sqlConfig)) {
@@ -368,75 +428,55 @@ function widget_controller_load_data_service($node) {
 
             $sqlConfig = $node->widgetConfig->sqlConfig;
             $serviceName = $sqlConfig->serviceName;
-            $sqlConfigName = $sqlConfig->sqlConfigName;
-            $statementName = $sqlConfig->statementName;
-
             //TODO: Use service factory
-            $service = new $serviceName($sqlConfigName, $statementName);
+            $service = new $serviceName($sqlConfig);
         }
     }
     return $service;
 }
 
-function load_widget_controller_data($node, $service) {
+/**
+ * Function loads the widget data
+ * @param $node
+ * @param $service
+ */
+function _load_widget_controller_data($node, $service) {
 
-    if(isset($service)) {
-        $results = null;
-        $orderBy = _prepare_order_by($node);
-        $limit = $node->widgetConfig->limit;
-        $sqlConfig = $node->widgetConfig->sqlConfig;
-        $parameters = _prepare_input_parameters($node);
+    $results = null;
+    $orderBy = _prepare_order_by($node);
+    $limit = $node->widgetConfig->limit;
+    $parameters = _prepare_input_parameters($node);
 
-        try {
-            $results = $service->getWidgetData($parameters, $limit, $orderBy);
-        }
-        catch(Exception $e) {
-            log_error("Error getting data from the controller: \n" . $e->getMessage()/*, $e*/);
-            $node->error = $e;
-            return;
-        }
-
-        $node->data = $results;
-        $node->nodeAdjustedParamaterConfig = $parameters;
+    try {
+        $results = $service->getWidgetData($parameters, $limit, $orderBy);
     }
+    catch(Exception $e) {
+        log_error("Error getting data from the controller: \n" . $e->getMessage()/*, $e*/);
+        $node->error = $e;
+        return;
+    }
+    $node->data = $results;
+    $node->nodeAdjustedParamaterConfig = $parameters;
 }
 
-function load_widget_controller_data_count($node) {
-    if(isset($node->widgetConfig->sqlConfig)) {
-        if ($node->widgetConfig->getTotalDataCount) {
-            $results = null;
-            $sqlConfig = $node->widgetConfig->sqlConfig;
-            $serviceName = $sqlConfig->serviceName;
-            $sqlConfigName = $sqlConfig->sqlConfigName;
-            $countStatementName = $sqlConfig->countStatementName;
-            $parameters = _prepare_input_parameters($node);
-
-            try {
-
-                //TODO: Use service factory
-                $service = new $serviceName($sqlConfigName, $countStatementName);
-                $results = $service->getWidgetDataCount($parameters);
-            }
-            catch(Exception $e) {
-                log_error("Error getting data from the controller: \n" . $e->getMessage()/*, $e*/);
-                $node->error = $e;
-                return;
-            }
-            $node->totalDataCount = $results;
-        }
-    }
+/**
+ * Function set the the count for the widget header text
+ * @param $service
+ * @param $parameters
+ */
+function _load_widget_controller_header_count($service, $parameters) {
+    $results = $service->getWidgetHeaderCount($parameters);
+    return $results;
 }
 
-function widget_controller_data(&$node) {
-
-    //Prepare service
-    $service = widget_controller_load_data_service($node);
-
-	//Load widget data
-    load_widget_controller_data($node, $service);
-
-    //Format widget data
-    $node->data = widget_controller_format_widget_data($node, $service);
+/**
+ * Function gets actual widget data row count
+ * @param $service
+ * @param $parameters
+ */
+function _load_widget_controller_row_count($service, $parameters) {
+    $results = $service->getWidgetDataCount($parameters);
+    return $results;
 }
 
 /**
@@ -445,7 +485,7 @@ function widget_controller_data(&$node) {
  * @param $service
  * @return mixed
  */
-function widget_controller_format_widget_data($node, $service){
+function _widget_controller_format_widget_data($node, $service){
     $formatColumns = array_filter($node->widgetConfig->table_columns,
         function($value) {
             return isset($value->format);

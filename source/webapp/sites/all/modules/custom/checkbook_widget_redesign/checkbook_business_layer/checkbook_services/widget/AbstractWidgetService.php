@@ -6,13 +6,20 @@
  * Time: 3:06 PM
  */
 
+class SqlConfig {
+    public $sqlConfigName;
+    public $statementName;
+    public $countStatementName;
+}
+
 abstract class AbstractWidgetService implements IWidgetService {
 
     private $repository;
+    private $sqlConfig;
 
-    function __construct($sqlConfigName, $statementName) {
-
-        $this->repository = new WidgetRepository($sqlConfigName, $statementName);
+    function __construct($sqlConfig) {
+        $this->sqlConfig = $sqlConfig;
+        $this->repository = new WidgetRepository($sqlConfig);
     }
 
     public function getWidgetData($parameters, $limit, $orderBy) {
@@ -23,7 +30,13 @@ abstract class AbstractWidgetService implements IWidgetService {
 
     public function getWidgetDataCount($parameters) {
         // 1. Call Repository
-        $count = $this->repository->getWidgetDataCount($parameters);
+        $data = $this->repository->getTotalRowCount($parameters);
+        return $data;
+    }
+
+    public function getWidgetHeaderCount($parameters) {
+        // 1. Call Repository
+        $count = $this->repository->getHeaderCount($parameters);
         return $count;
     }
 
