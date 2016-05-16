@@ -508,23 +508,23 @@
             SUM(CASE WHEN aprv_sta=4 THEN 1 ELSE 0 END) AS acco_approved,
             SUM(CASE WHEN aprv_sta=2 THEN 1 ELSE 0 END) AS acco_rejected,
             SUM(CASE WHEN aprv_sta=5 THEN 1 ELSE 0 END) AS acco_cancelled
-            FROM agreement_snapshot a
+            FROM aggregateon_mwbe_contracts_cumulative_spending a
             LEFT JOIN (SELECT contract_number, aprv_sta FROM subcontract_details WHERE latest_flag='Y') sd ON a.contract_number=sd.contract_number
             LEFT JOIN ref_document_code c ON a.document_code_id=c.document_code_id
             LEFT JOIN ref_agency ra ON a.agency_id=ra.agency_id
             <where>
                 <exp op="AND">
-                    <exp op="&lt;=" dbField="a.starting_year_id" paramName="year" />
-                    <exp op="&gt;=" dbField="a.ending_year_id" paramName="year" />
-                    <exp op="&lt;=" dbField="a.effective_begin_year_id" paramName="year" />
-                    <exp op="&gt;=" dbField="a.effective_end_year_id" paramName="year" />
-                    <exp op="=" dbField="a.latest_flag">'Y'</exp>
-                    <exp op="=" dbField="a.scntrc_status">2</exp>
-                    <exp op="=" dbField="a.agency_id" paramName="agency" />
+                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="a.status_flag" paramName="status" />
+                    <exp op="IN" dbField="c.document_code" paramName="doctype" />
                     <exp op="=" dbField="a.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.agency_id" paramName="agency" />
+                    <exp op="=" dbField="a.scntrc_status">2</exp>
+                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                 </exp>
             </where>
-            GROUP BY 1,2
+            GROUP BY ra.agency_name, ra.agency_id
         </sql>
     </statement>
     <statement name="GetCountOfSubvendorContractsbyPrime" datasource="checkbook">
@@ -539,20 +539,20 @@
         <sql>
             SELECT
             COUNT(DISTINCT a.contract_number ) AS record_count
-            FROM agreement_snapshot a
+            FROM aggregateon_mwbe_contracts_cumulative_spending a
             LEFT JOIN (SELECT contract_number, aprv_sta FROM subcontract_details WHERE latest_flag='Y') sd ON a.contract_number=sd.contract_number
             LEFT JOIN ref_document_code c ON a.document_code_id=c.document_code_id
             LEFT JOIN ref_agency ra ON a.agency_id=ra.agency_id
             <where>
                 <exp op="AND">
-                    <exp op="&lt;=" dbField="a.starting_year_id" paramName="year" />
-                    <exp op="&gt;=" dbField="a.ending_year_id" paramName="year" />
-                    <exp op="&lt;=" dbField="a.effective_begin_year_id" paramName="year" />
-                    <exp op="&gt;=" dbField="a.effective_end_year_id" paramName="year" />
-                    <exp op="=" dbField="a.latest_flag">'Y'</exp>
-                    <exp op="=" dbField="a.scntrc_status">2</exp>
-                    <exp op="=" dbField="a.agency_id" paramName="agency" />
+                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="a.status_flag" paramName="status" />
+                    <exp op="IN" dbField="c.document_code" paramName="doctype" />
                     <exp op="=" dbField="a.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.agency_id" paramName="agency" />
+                    <exp op="=" dbField="a.scntrc_status">2</exp>
+                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                 </exp>
             </where>
         </sql>
