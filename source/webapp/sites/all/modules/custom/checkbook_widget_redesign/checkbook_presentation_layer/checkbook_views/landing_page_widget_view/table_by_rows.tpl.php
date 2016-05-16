@@ -32,14 +32,14 @@ require_once(realpath(drupal_get_path('module', 'data_controller')) . '/common/o
         $widget_title = $node->widgetConfig->table_title;
         if(isset($node->widgetConfig->headerSubTitle)){
             load_widget_controller_data_count($node);
-            $headerSubTitle = ' Number of '.$node->widgetConfig->headerSubTitle.':  '.number_format($node->totalDataCount);
+            $headerSubTitle = ' Number of '.$node->widgetConfig->headerSubTitle.':  '.number_format($node->headerCount);
         } 
     }else if(isset($node->widgetConfig->headerTitle)){
         load_widget_controller_data_count($node);
         $headerSubTitle = isset($node->widgetConfig->headerSubTitle) ? $node->widgetConfig->headerSubTitle : $node->widgetConfig->headerTitle;
-        $count = $node->totalDataCount > 4 ? '<span class="hideOnExpand">5 </span>' : $node->totalDataCount;
+        $count = $node->headerCount > 4 ? '<span class="hideOnExpand">5 </span>' : $node->headerCount;
         $widget_title = 'Top '.$count.' '.$node->widgetConfig->headerTitle;
-        $headerSubTitle = ' Number of '.$headerSubTitle.':  '.number_format($node->totalDataCount);
+        $headerSubTitle = ' Number of '.$headerSubTitle.':  '.number_format($node->headerCount);
     }
     
     if(isset($widget_title)){

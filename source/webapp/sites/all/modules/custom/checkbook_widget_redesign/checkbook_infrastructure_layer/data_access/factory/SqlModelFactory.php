@@ -99,6 +99,9 @@ class SqlModelFactory {
         }
         $sql = $query.$orderBy.$limit;
         $sqlStatementModel->query = $sql;
+
+        //count query
+        $sqlStatementModel->countQuery = "SELECT COUNT(*) as record_count FROM ( {$query} ) sub_query";
         return $sqlStatementModel;
     }
 

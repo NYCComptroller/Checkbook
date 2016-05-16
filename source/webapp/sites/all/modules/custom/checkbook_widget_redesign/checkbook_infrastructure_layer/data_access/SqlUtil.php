@@ -52,9 +52,23 @@ class SqlUtil {
 
         try {
             $results = self::executeSqlFetchAssoc($model->query, $model->datasource);
+            log_info("SQL Statement Name: ".$model->name."\nSQL Trace:\n".$model->query."\n");
         }
         catch (Exception $e) {
             log_error("Error in SqlUtil::executeSqlQuery(): \n" . $e->getMessage());
+            throw $e;
+        }
+        return $results;
+    }
+
+    public static function executeCountSqlQuery(sqlStatementModel $model) {
+
+        try {
+            $results = self::executeSqlFetchAssoc($model->countQuery, $model->datasource);
+            log_info("SQL Statement Name: ".$model->name."\nSQL Trace:\n".$model->countQuery."\n");
+        }
+        catch (Exception $e) {
+            log_error("Error in SqlUtil::executeCountSqlQuery(): \n" . $e->getMessage());
             throw $e;
         }
         return $results;
