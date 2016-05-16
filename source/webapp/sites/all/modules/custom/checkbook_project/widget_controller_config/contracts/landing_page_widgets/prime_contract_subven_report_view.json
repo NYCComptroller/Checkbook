@@ -11,23 +11,26 @@
     "headerSubTitle":"Stand Alone Contracts",
     "table_columns":[
         {"labelAlias":"contract_agency","column":"agency_name","tooltip":32,"derivedColumn":"agency_name_link"},
-        {"labelAlias":"no_of_contracts","column":"number_contracts"},
+        {"labelAlias":"no_of_contracts","column":"number_contracts","format":"number"},
+        {"label":"","column":""},
         {"labelAlias":"spent_to_date","column":"spending_amount_sum","format":"dollar"},
-        {"labelAlias":"no_response_status","column":"no_response_status"},
-        {"labelAlias":"reported_no_sub_count","column":"reported_no_sub_count"},
-        {"labelAlias":"reported_sub_count","column":"reported_sub_count"},
-        {"labelAlias":"reported_no_details_count","column":"reported_no_details_count"}
+        {"labelAlias":"no_response_status","column":"no_response_status","format":"number"},
+        {"labelAlias":"reported_no_sub_count","column":"reported_no_sub_count","format":"number"},
+        {"labelAlias":"reported_sub_count","column":"reported_sub_count","format":"number"},
+        {"labelAlias":"reported_no_details_count","column":"reported_no_details_count","format":"number"},
+        {"label":"","column":""}
     ],
-    "skipCustomPadding":true,
     "dataTableOptions":{
         "aoColumns":[
             {"bSortable":false,"sWidth":"128px","sClass":"text"},
-            {"bSortable":true,"sWidth":"98px","sClass":"number-center","asSorting":["desc","asc"]},
+            {"bSortable":true,"sWidth":"98px","sClass":"number","asSorting":["desc","asc"]},
+            {"bSortable":false,"sWidth":"10px"},
             {"bSortable":true,"sWidth":"75px","sClass":"number","asSorting":["desc","asc"]},
-            {"bSortable":true,"sWidth":"116px","sClass":"number-center","asSorting":["desc","asc"]},
-            {"bSortable":true,"sWidth":"170px","sClass":"number-center","asSorting":["desc","asc"]},
-            {"bSortable":true,"sWidth":"170px","sClass":"number-center","asSorting":["desc","asc"]},
-            {"bSortable":true,"sWidth":"170px","sClass":"number-center","asSorting":["desc","asc"]}
+            {"bSortable":true,"sWidth":"116px","sClass":"number","asSorting":["desc","asc"]},
+            {"bSortable":true,"sWidth":"170px","sClass":"number","asSorting":["desc","asc"]},
+            {"bSortable":true,"sWidth":"170px","sClass":"number","asSorting":["desc","asc"]},
+            {"bSortable":true,"sWidth":"170px","sClass":"number","asSorting":["desc","asc"]},
+            {"bSortable":false,"sWidth":"5px"}
         ],
         "bServerSide":true,
         "bFilter":false,
