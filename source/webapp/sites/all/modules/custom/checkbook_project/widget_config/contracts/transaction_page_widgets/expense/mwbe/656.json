@@ -246,14 +246,14 @@
         },
         "subvendor_status":{
             "type": "expression2",
-            "expression": "($row['scntrc_status'] == 0) ? 'N/A' : $row['scntrc_status_name']"
+            "expression": "($row['scntrc_status_name'] == 'N/A' || $row['scntrc_status_name'] == NULL) ? 'N/A' : $row['scntrc_status_name']"
         }
     },
     "skipCustomPadding":true,
     "table_columns": [
         {"label": "<div></div>","colLabel": "","column": "child_contrats_link","export":false},
         {"labelAlias": "contract_id","column": "contract_link","sortSourceColumn":"contract_number"},
-        {"labelAlias":"contract_includes_sub","column":"subvendor_status","sortSourceColumn":"scntrc_status_name","exportColumn":"scntrc_status_name"},
+        {"labelAlias":"contract_includes_sub","column":"subvendor_status","sortSourceColumn":"scntrc_status_name","exportColumn":"subvendor_status"},
         {"labelAlias": "sub_contract_reference_id","column": "sub_contract_id"},
         {"label":"","column":"","export":false},
         {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description"},
