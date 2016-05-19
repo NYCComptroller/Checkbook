@@ -226,6 +226,8 @@ class WidgetUtil
         "acco_approved" => "Acco<br/>Approved",
         "acco_rejected" => "Acco<br/>Rejected",
         "acco_cancelled" => "Acco<br/>Cancelled",
+        "subvendor_mwbe_category" => "Sub Vendor's M/WBE<br/>Category",
+        "subvendor_status_pip" => "Sub Vendor<br/>Status in PIP",
     );
 
     //For number cols, need to find out if they are uniform number of digits for formatting
