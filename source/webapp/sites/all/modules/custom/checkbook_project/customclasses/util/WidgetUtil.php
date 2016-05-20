@@ -225,7 +225,7 @@ class WidgetUtil
         "acco_reviewing" => "Acco<br/>Reviewing",
         "acco_approved" => "Acco<br/>Approved",
         "acco_rejected" => "Acco<br/>Rejected",
-        "acco_cancelled" => "Acco<br/>Cancelled",
+        "acco_cancelled" => "Acco<br/>Canceled",
         "subvendor_mwbe_category" => "Sub Vendor's M/WBE<br/>Category",
         "subvendor_status_pip" => "Sub Vendor<br/>Status in PIP",
     );
