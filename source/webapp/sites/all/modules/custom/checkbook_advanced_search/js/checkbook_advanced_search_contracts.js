@@ -21,7 +21,9 @@
                 'received_date_to':'input:text[name="'+data_source+'_contracts_received_date_to[date]"]',
                 'entity_contract_number':'input:text[name='+data_source+'_contracts_entity_contract_number]',
                 'commodity_line':'input:text[name='+data_source+'_contracts_commodity_line]',
-                'budget_name':'input:text[name='+data_source+'_contracts_budget_name]'
+                'budget_name':'input:text[name='+data_source+'_contracts_budget_name]',
+                'includes_sub_vendors':'select[name="'+data_source+'_contracts_includes_sub_vendors"]',
+                'sub_vendor_status':'select[name="'+data_source+'_contracts_sub_vendor_status"]'
             };
 
             this.data_source = data_source;
@@ -57,6 +59,7 @@
             /* Initialize the disabled fields */
             onStatusChange(div_checkbook_contracts);
             onStatusChange(div_checkbook_contracts_oge);
+            onCategoryChange(div_checkbook_contracts);
 
             /* Initialize view by data source */
             switch (dataSource) {
@@ -171,6 +174,30 @@
                 div.ele('received_date_from').val("");
                 div.ele('received_date_to').val("");
 
+            }
+            updateSubVendorFields(div);
+        }
+
+        //On change of "Category"
+        div_checkbook_contracts.ele('category').change(function () {
+            onCategoryChange(div_checkbook_contracts);
+        });
+        function onCategoryChange(div) {
+            updateSubVendorFields(div);
+        }
+
+        function updateSubVendorFields(div) {
+            var contract_status = div.ele('status').val();
+            var contract_category = div.ele('category').val();
+
+            if (contract_status == 'P' || contract_category == 'revenue') {
+                div.ele('includes_sub_vendors').attr("disabled", "disabled");
+                div.ele('includes_sub_vendors').val('0');
+                div.ele('sub_vendor_status').attr("disabled", "disabled");
+                div.ele('sub_vendor_status').val('0');
+            } else {
+                div.ele('includes_sub_vendors').removeAttr("disabled");
+                div.ele('sub_vendor_status').removeAttr("disabled");
             }
         }
     })
