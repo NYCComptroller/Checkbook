@@ -222,7 +222,7 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
         echo '<div class="row">';
         echo '<div class="checkbox"><input class="styled" id="'.$id.'" name="' . $autocomplete_id . '" type="checkbox" ' . $disableFacet . 'checked="checked" value="' . urlencode(html_entity_decode($row[0],ENT_QUOTES)) . '" onClick="return applyTableListFilters();"><label for="'.$id.'"></label></div>';
         if($node->widgetConfig->filterName == 'Contract ID') {
-            echo '<div class="name">' . $row[1],15 . '</div>';
+            echo '<div class="name">' . $row[1] . '</div>';
         }
         else {
             echo '<div class="name">' . _break_text_custom2($row[1],15) . '</div>';
@@ -244,7 +244,7 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
         echo '<div class="row">';
         echo '<div class="checkbox"><input class="styled" id="'.$id.'" name="' . $autocomplete_id . '" type="checkbox" '  .  $disabled .  'value="' . urlencode(html_entity_decode($row[0],ENT_QUOTES)) . '" onClick="return applyTableListFilters();"><label for="'.$id.'"></label></div>';
         if($node->widgetConfig->filterName == 'Contract ID') {
-            echo '<div class="name">' . $row[1],15 . '</div>';
+            echo '<div class="name">' . $row[1] . '</div>';
         }
         else {
             echo '<div class="name">' . _break_text_custom2($row[1],15) . '</div>';
