@@ -288,15 +288,7 @@
         "field_name":"sub_vendor_status",
         "attributes":{
             "title":"Sub Vendor Status<br/>in PIP",
-            "options":{
-                "Select Status":"Select Status",
-                "7":"No Subcontracts Information Submitted",
-                "6":"No Subcontracts Payments Submitted",
-                "4":"ACCO Approved Sub Vendor",
-                "3":"ACCO Reviewing Sub Vendor",
-                "2":"ACCO Rejected Sub Vendor",
-                "5":"ACCO Cancelled Sub Vendor"
-            }
+            "options":"$sub_vendor_status_attributes"
         }
     }
 }
