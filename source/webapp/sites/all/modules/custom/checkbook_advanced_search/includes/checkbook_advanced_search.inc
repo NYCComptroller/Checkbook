@@ -217,6 +217,26 @@ function _checkbook_advanced_search_get_expensename_and_id()
     }
 }
 
+/**
+ * Gets the subcontract_approval_status and id using the data controller
+ * @return array
+ */
+function _checkbook_advanced_search_get_subcontract_approval_status_and_id()
+{
+    try {
+        $dataController = data_controller_get_instance();
+        $values = $dataController->queryDataset('checkbook:subcontract_approval_status', array('aprv_sta_id', 'aprv_sta_value'), NULL, 'sort_order', 0, 10, NULL);
+        $statuses = array('Select Status');
+        foreach ($values as $value) {
+            $statuses[$value['aprv_sta_id']] = $value['aprv_sta_value'];
+        }
+        return $statuses;
+    } catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
+        return;
+    }
+}
+
 /*
  * this functiocheckbook_advanced_searchn is used to generate the URL based on what the users have selected on advanced search form
  * @param $value
