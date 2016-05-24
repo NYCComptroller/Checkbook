@@ -226,7 +226,7 @@ function _checkbook_advanced_search_get_subcontract_approval_status_and_id()
     try {
         $dataController = data_controller_get_instance();
         $values = $dataController->queryDataset('checkbook:subcontract_approval_status', array('aprv_sta_id', 'aprv_sta_value'), NULL, 'sort_order', 0, 10, NULL);
-        $statuses = array(-1=>'Select Status');
+        $statuses = array('Select Status'=>'Select Status');
         foreach ($values as $value) {
             $statuses[$value['aprv_sta_id']] = $value['aprv_sta_value'];
         }
@@ -645,14 +645,10 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
     $contracts_mwbe_category = $contracts_mwbe_category == "Select Category" ? 0 : $contracts_mwbe_category;
     $contracts_industry_type_id = trim($form[$filter_dimension][$data_source . '_contracts_industry']['#value']);
     $contracts_industry_type_id = $contracts_industry_type_id == "Select Industry" ? 0 : $contracts_industry_type_id;
-
-//    //_contracts_includes_sub_vendors - subcontstatus
-//    $contracts_industry_type_id = trim($form[$filter_dimension][$data_source . '_contracts_industry']['#value']);
-//    $contracts_industry_type_id = $contracts_industry_type_id == "Select Status" ? 0 : $contracts_industry_type_id;
-//
-//    //_contracts_sub_vendor_status - subvendorstatus
-//    $contracts_industry_type_id = trim($form[$filter_dimension][$data_source . '_contracts_industry']['#value']);
-//    $contracts_industry_type_id = $contracts_industry_type_id == "Select Status" ? 0 : $contracts_industry_type_id;
+    $contracts_includes_sub_vendors = trim($form[$filter_dimension][$data_source . '_contracts_includes_sub_vendors']['#value']);
+    $contracts_includes_sub_vendors = $contracts_includes_sub_vendors == "Select Status" ? NULL : $contracts_includes_sub_vendors;
+    $contracts_sub_vendor_status = trim($form[$filter_dimension][$data_source . '_contracts_sub_vendor_status']['#value']);
+    $contracts_sub_vendor_status = $contracts_sub_vendor_status == "Select Status" ? NULL : $contracts_sub_vendor_status;
 
     if ($contracts_year == 'fy~all') {
         $redirect_url = 'contract/all/transactions';
@@ -674,6 +670,14 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
     }
     if (!empty($contracts_contract_status)) {
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_status, 'contstatus');
+    }
+    if($contracts_contract_status != "P" && $contracts_contract_category != 'revenue') {
+        if ($contracts_sub_vendor_status != NULL) {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_includes_sub_vendors, 'subcontstatus');
+        }
+        if ($contracts_sub_vendor_status != NULL) {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_sub_vendor_status, 'subvendorstatus');
+        }
     }
     if (!empty($contracts_contract_category)) {
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_category, 'contcat');
