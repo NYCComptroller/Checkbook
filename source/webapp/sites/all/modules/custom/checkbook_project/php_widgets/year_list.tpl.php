@@ -204,7 +204,7 @@ if($display){
                                         'value' => $value['year_id'].'~B',
                                         'selected' => $selected_fiscal_year);
         }
-        if($value['year_value'] <= $filter_years['cal_year_value'] ){  
+        if($value['year_value'] <= $filter_years['cal_year_value'] && preg_match("/payroll/",$q)){  
         	if($trends || $search){
         		$link = $q .$value['year_id'] ;
         		$link = "/spending_landing/yeartype/C/year/" .  $value['year_id'];
