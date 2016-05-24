@@ -194,7 +194,7 @@
                 div.ele('includes_sub_vendors').attr("disabled", "disabled");
                 div.ele('includes_sub_vendors').val('0');
                 div.ele('sub_vendor_status').attr("disabled", "disabled");
-                div.ele('sub_vendor_status').val('0');
+                div.ele('sub_vendor_status').val('-1');
             } else {
                 div.ele('includes_sub_vendors').removeAttr("disabled");
                 div.ele('sub_vendor_status').removeAttr("disabled");
