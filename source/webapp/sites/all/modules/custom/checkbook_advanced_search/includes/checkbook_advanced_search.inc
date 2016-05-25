@@ -672,7 +672,7 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_status, 'contstatus');
     }
     if($contracts_contract_status != "P" && $contracts_contract_category != 'revenue') {
-        if ($contracts_sub_vendor_status != NULL) {
+        if ($contracts_includes_sub_vendors != NULL) {
             $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_includes_sub_vendors, 'subcontstatus');
         }
         if ($contracts_sub_vendor_status != NULL) {
