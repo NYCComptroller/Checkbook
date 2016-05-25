@@ -112,7 +112,7 @@ function _checkbook_faceted_search_update_data($node) {
     $params = explode('~', _getRequestParamValue($node->widgetConfig->urlParameterName));
 
     //The value in this facet can be 0
-    if($node->widgetConfig->filterName == 'Contract Includes Sub Vendors') {
+    if($node->widgetConfig->allowZeroValue == true) {
         $filter = $params[0] != "";
     }
     else {

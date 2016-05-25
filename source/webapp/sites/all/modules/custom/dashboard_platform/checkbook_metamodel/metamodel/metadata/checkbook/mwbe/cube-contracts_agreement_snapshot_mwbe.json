@@ -133,6 +133,24 @@
                             "sourceColumnName": "scntrc_status_name"
                         }
                     ]
+                },
+                {
+                    "name": "aprv_sta",
+                    "levels": [
+                        {
+                            "name": "aprv_sta",
+                            "sourceColumnName": "aprv_sta"
+                        }
+                    ]
+                },
+                {
+                    "name": "aprv_sta_name",
+                    "levels": [
+                        {
+                            "name": "aprv_sta_name",
+                            "sourceColumnName": "aprv_sta_name"
+                        }
+                    ]
                 }
 
             ],
