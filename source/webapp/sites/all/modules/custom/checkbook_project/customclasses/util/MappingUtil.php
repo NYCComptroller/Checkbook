@@ -178,7 +178,7 @@ class MappingUtil {
     	}
 
         $year = _getRequestParamValue('year');
-        $yearType = _getRequestParamValue('yeartype');
+        $yearType = 'B';
   		$filters_html .=  "
   			 " . $mwbe_total_link_html . "
 			<li class='no-click'><a href='/" . RequestUtil::getLandingPageUrl($domain,$year,$yearType) . "/mwbe/" . MappingUtil::$total_mwbe_cats ."/dashboard/mp'>M/WBE Home</a></li>
@@ -227,7 +227,7 @@ class MappingUtil {
 
         //Sub vendors home link
         $year = _getRequestParamValue('year');
-        $yearType = _getRequestParamValue('yeartype');
+        $yearType = 'B';
         $sub_vendors_home_link = RequestUtil::getLandingPageUrl($domain,$year,$yearType);
         $home_link_html = "<li class='no-click'><a href='/" . $sub_vendors_home_link . "/dashboard/ss'>Sub Vendors Home</a></li>";
 
