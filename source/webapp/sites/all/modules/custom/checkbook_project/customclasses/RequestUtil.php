@@ -584,13 +584,15 @@ class RequestUtil{
               }
               break;
           case "payroll":
+               $yeartype = _getRequestParamValue("yeartype");
+                    
               if(preg_match('/agency_landing/',current_path())) {
-                  $path = "payroll/agency_landing/yeartype/B/year/".$year;
+                  $path = "payroll/agency_landing/yeartype/". $yeartype ."/year/".$year;
                   $path .= _checkbook_project_get_url_param_string("title");
                   $path .= "/agency/" . _getRequestParamValue("agency");
               }
               else if(preg_match('/title_landing/',current_path())) {
-                  $path = "payroll/title_landing/yeartype/B/year/".$year;
+                  $path = "payroll/title_landing/yeartype/". $yeartype ."/year/".$year;
                   $path .= _checkbook_project_get_url_param_string("agency");
                   $path .= "/title/" . _getRequestParamValue("title");
               }
@@ -599,17 +601,17 @@ class RequestUtil{
                   $bottomURL = ($bottomURL)? $bottomURL : current_path();
                   $last_parameter = _getLastRequestParamValue($bottomURL);
                   if($last_parameter['agency'] > 0){
-                      $path = "payroll/agency_landing/yeartype/B/year/".$year;
+                      $path = "payroll/agency_landing/yeartype/".$yeartype."/year/".$year;
                       $path .= _checkbook_project_get_url_param_string("title");
                       $path .= "/agency/" . _getRequestParamValue("agency");
                   }
                   else if($last_parameter['title'] > 0){
-                      $path = "payroll/title_landing/yeartype/B/year/".$year;
+                      $path = "payroll/title_landing/yeartype/".$yeartype."/year/".$year;
                       $path .= _checkbook_project_get_url_param_string("agency");
                       $path .= "/title/" . _getRequestParamValue("title");
                   }
                   else { //NYC Level
-                      $path ="payroll/yeartype/B/year/".$year;
+                      $path ="payroll/yeartype/".$yeartype."/year/".$year;
                   }
               }
               break;
