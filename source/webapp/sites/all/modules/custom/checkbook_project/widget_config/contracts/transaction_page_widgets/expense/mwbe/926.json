@@ -16,6 +16,7 @@
         "year":"all_cum_spend.all_cum_spend.fiscal_year_id",
         "yeartype":"all_cum_spend.all_cum_spend.type_of_year",
         "mwbe":"all_cum_spend.all_cum_spend.minority_type_id",
+        "vendornm":"vendor_name.vendor_name",
         "subcontstatus":"scntrc_status.scntrc_status"
 
     },

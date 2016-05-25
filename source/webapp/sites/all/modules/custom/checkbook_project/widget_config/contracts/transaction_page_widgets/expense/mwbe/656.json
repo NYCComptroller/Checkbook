@@ -4,7 +4,7 @@
     "stickyHeader":true,
     "cleanURLParameters":[
         "subvendor","vendortype","mwbe","doctype","contstatus","year","calyear","yeartype","agency","vendor","curamtr","vendornm","vendornm_exact","contdesc","agrmnttype",
-        "agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","modamt","fvendor","subcontstatus"
+        "agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","modamt","fvendor","subcontstatus","subvendorstatus"
     ],
     "urlParamMap":{
         "vendortype":"vendor_type",
@@ -36,7 +36,8 @@
         "cindustry":"industry_type_id",
         "csize":"award_size_id",
         "modamt":"dollar_difference",
-        "subcontstatus":"scntrc_status"
+        "subcontstatus":"scntrc_status",
+        "subvendorstatus":"aprv_sta"
     },
     "allowRequestParams":["smnid"],
     "paramTypeConfig":{"vendornm_exact":"eqignorecase","curamtr":"rangeid","vendornm":"like","contdesc":"contains","contnum":"like","contnum_exact":"eqignorecase","aptpin":"like","pin":"like","curamt":"range",
@@ -98,7 +99,9 @@
         "percent_difference",
         "original_agreement_id@checkbook:all_contracts_coa_aggregates",
         "scntrc_status",
-        "scntrc_status_name"
+        "scntrc_status_name",
+        "aprv_sta",
+        "aprv_sta_name"
     ],
     "preProcessConfiguration":"
         $doctype = $node->widgetConfig->requestParams['document_code@checkbook:ref_document_code'];
@@ -112,6 +115,10 @@
         $show_dollar_difference = $is_contract_modification;
         $show_percent_difference = $is_contract_modification;
         $show_expense_category = !$is_sub_vendors;
+
+        $show_sub_vendor_status = !isset($smnid);
+
+        $node->show_sub_vendor_status = $show_sub_vendor_status;
 
         $node->show_expense_category = $show_expense_category;
         $node->show_dollar_difference = $show_dollar_difference;
@@ -248,6 +255,10 @@
         "subvendor_status":{
             "type": "expression2",
             "expression": "($row['scntrc_status_name'] == 'N/A' || $row['scntrc_status_name'] == NULL) ? 'N/A' : $row['scntrc_status_name']"
+        },
+        "subvendor_status_pip":{
+            "type": "expression2",
+            "expression": "($row['aprv_sta_name'] == 'N/A' || $row['aprv_sta_name'] == NULL) ? 'N/A' : $row['aprv_sta_name']"
         }
     },
     "skipCustomPadding":true,
@@ -270,6 +281,8 @@
         {"labelAlias": "vendor_name","column": "vendor_name_link","sortSourceColumn":"vendor_name"},
         {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"is_prime_or_sub","exportColumn":"is_sub_vendor"},
         {"label":"","column":"","export":false},
+        {"labelAlias":"subvendor_status_pip","column":"subvendor_status_pip","sortSourceColumn":"aprv_sta_name","exportColumn":"subvendor_status_pip","visibility_flag":"show_sub_vendor_status"},
+        {"label":"","column":"","export":false,"visibility_flag":"show_sub_vendor_status"},
         {"labelAlias":"associated_prime_vendor","column":"associated_prime_vendor_name","sortSourceColumn":"prime_vendor_name","exportColumn":"associated_prime_vendor_name_export"},
         {"labelAlias": "contract_agency","column": "agency_name_link","sortSourceColumn":"agency_name"},
         {"labelAlias": "contract_type","column": "contract_type_formatted","sortSourceColumn":"agreement_type_name"},
@@ -385,6 +398,8 @@
         {"sClass":"text","sWidth":"180px","asSorting": [ "desc","asc" ]},
         {"sClass":"number-center","sWidth":"100px","asSorting": [ "asc","desc" ]},
         {"bSortable":false,"sWidth":"50px"},
+        {"sClass":"text","sWidth":"140px","asSorting": [ "asc","desc" ],"visibility_flag":"show_sub_vendor_status"},
+        {"bSortable":false,"sWidth":"20px","visibility_flag":"show_sub_vendor_status"},
         {"sClass":"text","sWidth":"240px","asSorting": [ "asc","desc" ]},
         {"sClass":"text","sWidth":"230px","asSorting": [ "asc","desc" ]},
         {"sClass":"text","sWidth":"230px","asSorting": [ "asc","desc" ]},
@@ -433,6 +448,7 @@
     var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
     var oContractNumber = getNamedFilterCriteria('fContractNumber');
     var oSubContStatus = getNamedFilterCriteria('fSubContStatus');
+    var oSubVendorStatus = getNamedFilterCriteria('fSubVendorStatus');
 
     var  cUrl = oTable.fnSettings().sAjaxSource;
     cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
@@ -445,6 +461,8 @@
     cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
     cUrl = adjustUrlParameter(cUrl,'contnum_exact',oContractNumber);
     cUrl = adjustUrlParameter(cUrl,'subcontstatus',oSubContStatus);
+    cUrl = adjustUrlParameter(cUrl,'subvendorstatus',oSubVendorStatus);
+
     return cUrl;
     }
 
@@ -459,6 +477,7 @@
     var mwbe = jQuery(oElement).attr('mwbe');
     var dashboard = jQuery(oElement).attr('dashboard');
     var subcontstatus = jQuery(oElement).attr('subcontstatus');
+    var subvendorstatus = jQuery(oElement).attr('subvendorstatus');
 
     magid = (magid == null || magid.length == 0) ?  '0' : magid;
 
@@ -467,6 +486,7 @@
     sUrl = sUrl + ( (mwbe == null || mwbe.length == 0) ?  '' : '/mwbe/'+mwbe);
     sUrl = sUrl + ( (dashboard == null || dashboard.length == 0) ?  '' : '/dashboard/'+dashboard);
     sUrl = sUrl + ( (subcontstatus == null || subcontstatus.length == 0) ?  '' : '/subcontstatus/'+subcontstatus);
+    sUrl = sUrl + ( (subvendorstatus == null || subvendorstatus.length == 0) ?  '' : '/subvendorstatus/'+subvendorstatus);
 
     var smnid = jQuery(oElement).attr('smnid');
 
@@ -483,7 +503,7 @@
     var row = data[i];
 
     var is_contract_modification = smnid == 480 || smnid == 366;
-
+    var show_sub_vendor_status = smnid == '' || smnid == null;
 
     sOut += '<tr>';
     sOut += '<td class=\"text\" style=\"width:150px\">'+ (row[1] == null ? '': row[1])+'</td>';
@@ -506,19 +526,23 @@
     sOut += '<td class=\"text\"  style=\"width:180px\">'+ (row[12] == null ? '': row[12])+'</td>';
     sOut += '<td class=\"number-center\"  style=\"width:100px\">'+ (row[13] == null ? '': row[13])+'</td>';
     sOut += '<td style=\"width:50px\"></td>';
-    sOut += '<td class=\"text\"  style=\"width:240px\">'+ (row[14] == null ? '': row[14])+'</td>';
-    sOut += '<td class=\"text\"  style=\"width:230px\">'+ (row[15] == null ? '': row[15])+'</td>';
+    if(show_sub_vendor_status) {
+        sOut += '<td class=\"text\"  style=\"width:140px\">'+ (row[14] == null ? '': row[14])+'</td>';
+        sOut += '<td style=\"width:20px\"></td>';
+    }
+    sOut += '<td class=\"text\"  style=\"width:240px\">'+ (row[15] == null ? '': row[15])+'</td>';
     sOut += '<td class=\"text\"  style=\"width:230px\">'+ (row[16] == null ? '': row[16])+'</td>';
     sOut += '<td class=\"text\"  style=\"width:230px\">'+ (row[17] == null ? '': row[17])+'</td>';
-    sOut += '<td class=\"text\"  style=\"width:220px\">'+ (row[18] == null ? '': row[18])+'</td>';
+    sOut += '<td class=\"text\"  style=\"width:230px\">'+ (row[18] == null ? '': row[18])+'</td>';
     sOut += '<td class=\"text\"  style=\"width:220px\">'+ (row[19] == null ? '': row[19])+'</td>';
-    sOut += '<td class=\"text\"  style=\"width:125px\">'+ (row[20] == null ? '': row[20])+'</td>';
+    sOut += '<td class=\"text\"  style=\"width:220px\">'+ (row[20] == null ? '': row[20])+'</td>';
     sOut += '<td class=\"text\"  style=\"width:125px\">'+ (row[21] == null ? '': row[21])+'</td>';
-    sOut += '<td class=\"text\"  style=\"width:110px\">'+ (row[22] == null ? '': row[22])+'</td>';
+    sOut += '<td class=\"text\"  style=\"width:125px\">'+ (row[22] == null ? '': row[22])+'</td>';
+    sOut += '<td class=\"text\"  style=\"width:110px\">'+ (row[23] == null ? '': row[23])+'</td>';
     sOut += '<td style=\"width:30px\"></td>';
-    sOut += '<td class=\"text\" style=\"width:150px;\">'+ (row[23] == null ? '': row[23])+'</td>';
     sOut += '<td class=\"text\" style=\"width:150px;\">'+ (row[24] == null ? '': row[24])+'</td>';
     sOut += '<td class=\"text\" style=\"width:150px;\">'+ (row[25] == null ? '': row[25])+'</td>';
+    sOut += '<td class=\"text\" style=\"width:150px;\">'+ (row[26] == null ? '': row[26])+'</td>';
     sOut += '<td style=\"width:10px\"></td>';
     sOut += '</tr>';
     }

@@ -4,7 +4,7 @@
     "cleanURLParameters":[
         "mwbe_vendor","mwbe","doctype","agency","curamtr","enddate","regdate","cindustry","csize",
         "contdesc","agrmnttype","agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","curamt","startdate",
-        "vendortype","vendor","vendornm","vendornm_exact","fvendor","subcontstatus"
+        "vendortype","vendor","vendornm","vendornm_exact","fvendor","subcontstatus","subvendorstatus"
     ],
     "urlParamMap":{
         "mwbe":"minority_type_id","doctype":"document_code@checkbook:ref_document_code","agency":"agency_id",
@@ -13,7 +13,7 @@
         "curamt":"maximum_contract_amount","startdate":"effective_begin_date","enddate":"effective_end_date",
         "regdate":"registered_date","cindustry":"industry_type_id","csize":"award_size_id",
         "vendortype":"vendor_type","vendornm":"vendor_name","vendor":"vendor_id","vendornm_exact":"vendor_name","fvendor":"vendor_name",
-        "subcontstatus":"scntrc_status"
+        "subcontstatus":"scntrc_status","subvendorstatus":"aprv_sta"
     },
     "allowRequestParams":["contstatus"],
     "paramTypeConfig":{
@@ -69,7 +69,9 @@
         "document_code@checkbook:ref_document_code",
         "industry_type_name",
         "scntrc_status",
-        "scntrc_status_name"
+        "scntrc_status_name",
+        "aprv_sta",
+        "aprv_sta_name"
     ],
     "caption":"",
     "derivedColumns": {
@@ -199,6 +201,10 @@
         "subvendor_status":{
             "type": "expression2",
             "expression": "($row['scntrc_status_name'] == 'N/A' || $row['scntrc_status_name'] == NULL) ? 'N/A' : $row['scntrc_status_name']"
+        },
+        "subvendor_status_pip":{
+            "type": "expression2",
+            "expression": "($row['aprv_sta_name'] == 'N/A' || $row['aprv_sta_name'] == NULL) ? 'N/A' : $row['aprv_sta_name']"
         }
     },
     "skipCustomPadding":true,
@@ -218,6 +224,8 @@
     {"label":"","column":"","export":false},
     {"labelAlias": "vendor_name","column": "vendor_name_link","sortSourceColumn":"vendor_name"},
     {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"is_prime_or_sub","exportColumn":"is_sub_vendor"},
+    {"label":"","column":"","export":false},
+    {"labelAlias":"subvendor_status_pip","column":"subvendor_status_pip","sortSourceColumn":"aprv_sta_name","exportColumn":"subvendor_status_pip"},
     {"label":"","column":"","export":false},
     {"labelAlias":"associated_prime_vendor","column":"associated_prime_vendor_name","sortSourceColumn":"prime_vendor_name","exportColumn":"associated_prime_vendor_name_export"},
     {"labelAlias": "contract_agency","column": "agency_name_link","sortSourceColumn":"agency_name"},
@@ -309,6 +317,8 @@
     {"sClass":"text","sWidth":"170px","asSorting": [ "asc","desc" ]},
     {"sClass":"number-center","sWidth":"100px","asSorting": [ "asc","desc" ]},
     {"bSortable":false,"sWidth":"50px"},
+    {"sClass":"text","sWidth":"140px","asSorting": [ "asc","desc" ]},
+    {"bSortable":false,"sWidth":"20px"},
     {"sClass":"text","sWidth":"240px","asSorting": [ "asc","desc" ]},
     {"sClass":"text","sWidth":"200px","asSorting": [ "asc","desc" ]},
     {"sClass":"text","sWidth":"200px","asSorting": [ "asc","desc" ]},
@@ -357,6 +367,7 @@
     var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
     var oContractNumber = getNamedFilterCriteria('fContractNumber');
     var oSubContStatus = getNamedFilterCriteria('fSubContStatus');
+    var oSubVendorStatus = getNamedFilterCriteria('fSubVendorStatus');
 
     var  cUrl = oTable.fnSettings().sAjaxSource;
     cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
@@ -368,6 +379,7 @@
     cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
     cUrl = adjustUrlParameter(cUrl,'contnum_exact',oContractNumber);
     cUrl = adjustUrlParameter(cUrl,'subcontstatus',oSubContStatus);
+    cUrl = adjustUrlParameter(cUrl,'subvendorstatus',oSubVendorStatus);
 
     return cUrl;
     }
@@ -380,6 +392,7 @@
     var mwbe = jQuery(oElement).attr('mwbe');
     var dashboard = jQuery(oElement).attr('dashboard');
     var subcontstatus = jQuery(oElement).attr('subcontstatus');
+    var subvendorstatus = jQuery(oElement).attr('subvendorstatus');
 
     magid = (magid == null || magid.length == 0) ?  '0' : magid;
 
@@ -388,6 +401,7 @@
     sUrl = sUrl + ( (mwbe == null || mwbe.length == 0) ?  '' : '/mwbe/'+mwbe);
     sUrl = sUrl + ( (dashboard == null || dashboard.length == 0) ?  '' : '/dashboard/'+dashboard);
     sUrl = sUrl + ( (subcontstatus == null || subcontstatus.length == 0) ?  '' : '/subcontstatus/'+subcontstatus);
+    sUrl = sUrl + ( (subvendorstatus == null || subvendorstatus.length == 0) ?  '' : '/subvendorstatus/'+subvendorstatus);
 
     jQuery.ajax({
     url: sUrl,
@@ -417,20 +431,22 @@
     sOut += '<td class=\"text\"  style=\"width:170px\">'+ (row[12] == null ? '': row[12])+'</td>';
     sOut += '<td class=\"number-center\"  style=\"width:100px\">'+ (row[13] == null ? '': row[13])+'</td>';
     sOut += '<td style=\"width:50px\"></td>';
-    sOut += '<td class=\"text\"  style=\"width:240px\">'+ (row[14] == null ? '': row[14])+'</td>';
-    sOut += '<td class=\"text\"  style=\"width:200px\">'+ (row[15] == null ? '': row[15])+'</td>';
+    sOut += '<td class=\"text\"  style=\"width:140px\">'+ (row[14] == null ? '': row[14])+'</td>';
+    sOut += '<td style=\"width:20px\"></td>';
+    sOut += '<td class=\"text\"  style=\"width:240px\">'+ (row[15] == null ? '': row[15])+'</td>';
     sOut += '<td class=\"text\"  style=\"width:200px\">'+ (row[16] == null ? '': row[16])+'</td>';
     sOut += '<td class=\"text\"  style=\"width:200px\">'+ (row[17] == null ? '': row[17])+'</td>';
     sOut += '<td class=\"text\"  style=\"width:200px\">'+ (row[18] == null ? '': row[18])+'</td>';
     sOut += '<td class=\"text\"  style=\"width:200px\">'+ (row[19] == null ? '': row[19])+'</td>';
-    sOut += '<td class=\"text\"  style=\"width:125px\">'+ (row[20] == null ? '': row[20])+'</td>';
+    sOut += '<td class=\"text\"  style=\"width:200px\">'+ (row[20] == null ? '': row[20])+'</td>';
     sOut += '<td class=\"text\"  style=\"width:125px\">'+ (row[21] == null ? '': row[21])+'</td>';
-    sOut += '<td class=\"text\"  style=\"width:115px\">'+ (row[22] == null ? '': row[22])+'</td>';
+    sOut += '<td class=\"text\"  style=\"width:125px\">'+ (row[22] == null ? '': row[22])+'</td>';
+    sOut += '<td class=\"text\"  style=\"width:115px\">'+ (row[23] == null ? '': row[23])+'</td>';
     sOut += '<td style=\"width:30px\"></td>';
-    sOut += '<td class=\"text\"  style=\"width:170px\">'+ (row[23] == null ? '': row[23])+'</td>';
-    sOut += '<td class=\"text\" style=\"width:170px\">'+ (row[24] == null ? '': row[24])+'</td>';
+    sOut += '<td class=\"text\"  style=\"width:170px\">'+ (row[24] == null ? '': row[24])+'</td>';
     sOut += '<td class=\"text\" style=\"width:170px\">'+ (row[25] == null ? '': row[25])+'</td>';
-    sOut += '<td style=\"width:30px\"></td>';
+    sOut += '<td class=\"text\" style=\"width:170px\">'+ (row[26] == null ? '': row[26])+'</td>';
+    sOut += '<td style=\"width:10px\"></td>';
     sOut += '</tr>';
 
     }

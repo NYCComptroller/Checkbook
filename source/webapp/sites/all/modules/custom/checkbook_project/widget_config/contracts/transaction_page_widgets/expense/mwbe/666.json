@@ -7,7 +7,7 @@
     "getTotalDataCount":false,
     "dataset": "checkbook:all_agreement_transactions",
     "orderBy":"-maximum_contract_amount",
-    "columns": ["prime_vendor_name","sub_contract_id","is_prime_or_sub","minority_type_id","minority_type_name","ending_year_id","document_code@checkbook:ref_document_code","has_children","contract_original_agreement_id","contract_number","master_agreement_id","master_contract_number","description","document_version","original_contract_amount","maximum_contract_amount","rfed_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","industry_type_name","dollar_difference","percent_difference","scntrc_status","scntrc_status_name"],
+    "columns": ["prime_vendor_name","sub_contract_id","is_prime_or_sub","minority_type_id","minority_type_name","ending_year_id","document_code@checkbook:ref_document_code","has_children","contract_original_agreement_id","contract_number","master_agreement_id","master_contract_number","description","document_version","original_contract_amount","maximum_contract_amount","rfed_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","industry_type_name","dollar_difference","percent_difference","scntrc_status_name","aprv_sta_name"],
     "caption":"",
     "adjustParameters":"
 if(isset($parameters['vendor_type'])){
@@ -50,7 +50,7 @@ return $parameters;
 {
 "dataset": "checkbook:all_agreement_transactions",
 "useList":true,
-"columns": ["is_prime_or_sub","minority_type_id","minority_type_name","ending_year_id","document_code@checkbook:ref_document_code","has_children","contract_original_agreement_id","contract_number","master_agreement_id","master_contract_number","description","document_version","original_contract_amount","maximum_contract_amount","rfed_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","industry_type_name","dollar_difference","percent_difference","scntrc_status","scntrc_status_name"],
+"columns": ["is_prime_or_sub","minority_type_id","minority_type_name","ending_year_id","document_code@checkbook:ref_document_code","has_children","contract_original_agreement_id","contract_number","master_agreement_id","master_contract_number","description","document_version","original_contract_amount","maximum_contract_amount","rfed_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","industry_type_name","dollar_difference","percent_difference","scntrc_status_name","aprv_sta_name"],
 "orderBy":"-maximum_contract_amount",
 "seriesDefaultParameters":{"master_agreement_id":-1},//default master_agreement_id to avoid load
 "adjustSerieParameters":"
@@ -78,7 +78,7 @@ return $serieParameters;
 {
 "dataset": "checkbook:all_agreement_transactions",
 "useList":true,
-"columns": ["ending_year_id","document_code@checkbook:ref_document_code","has_children","contract_original_agreement_id","contract_number","master_agreement_id","master_contract_number","description","document_version","original_contract_amount","maximum_contract_amount","rfed_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","industry_type_name","dollar_difference","percent_difference","scntrc_status","scntrc_status_name"],
+"columns": ["ending_year_id","document_code@checkbook:ref_document_code","has_children","contract_original_agreement_id","contract_number","master_agreement_id","master_contract_number","description","document_version","original_contract_amount","maximum_contract_amount","rfed_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","expenditure_object_names","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","industry_type_name","dollar_difference","percent_difference","scntrc_status_name","aprv_sta_name"],
 "orderBy":"-maximum_contract_amount",
 "seriesDefaultParameters":{"master_agreement_id":-1},//default master_agreement_id to avoid load
 "adjustSerieParameters":"
@@ -244,14 +244,18 @@ return $node->data;
 },
 "subvendor_status":{
 "type": "expression2",
-"expression": "($row['scntrc_status'] == 0) ? 'N/A' : $row['scntrc_status_name']"
+"expression": "($row['scntrc_status_name'] == 'N/A' || $row['scntrc_status_name'] == NULL) ? 'N/A' : $row['scntrc_status_name']"
+},
+"subvendor_status_pip":{
+"type": "expression2",
+"expression": "($row['aprv_sta_name'] == 'N/A' || $row['aprv_sta_name'] == NULL) ? 'N/A' : $row['aprv_sta_name']"
 }
 },
 "skipCustomPadding":true,
 "table_columns": [
 {"label": "&nbsp;","column": "child_contrats_link"},
 {"label": "Contract ID","column": "contract_link","sortSourceColumn":"contract_number"},
-{"labelAlias":"contract_includes_sub","column":"subvendor_status","sortSourceColumn":"scntrc_status"},
+{"labelAlias":"contract_includes_sub","column":"subvendor_status","sortSourceColumn":"scntrc_status_name"},
 {"label": "sub_contract_reference_id","column": "sub_contract_id"},
 {"label": "<span>Purpose</span>","column": "purpose_formatted","sortSourceColumn":"description"},
 {"label": "Version","column": "document_version","type":"number"},
@@ -263,6 +267,7 @@ return $node->data;
 {"label": "Percent Difference","column": "formatted_percent_diff","sortSourceColumn":"percent_difference","type":"number"},
 {"label": "Vendor","column": "vendor_name_link","sortSourceColumn":"vendor_name"},
 {"label": "sub_vendor_name","column": "associated_sub_vendor"},
+{"labelAlias":"subvendor_status_pip","column":"subvendor_status_pip","sortSourceColumn":"aprv_sta_name"},
 {"labelAlias": "associated_prime_vendor","column": "formatted_associated_vendor","sortSourceColumn":"prime_vendor_name"},
 {"label": "Agency","column": "agency_name_link","sortSourceColumn":"agency_name"},
 {"label": "Contract<br/>Type","column":"contract_type_formatted","sortSourceColumn": "agreement_type_name"},

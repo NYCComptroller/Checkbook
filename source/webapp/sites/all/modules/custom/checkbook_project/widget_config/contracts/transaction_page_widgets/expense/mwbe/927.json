@@ -16,17 +16,19 @@
         "year":"all_cum_spend.all_cum_spend.fiscal_year_id",
         "yeartype":"all_cum_spend.all_cum_spend.type_of_year",
         "mwbe":"all_cum_spend.all_cum_spend.minority_type_id",
-        "subcontstatus":"scntrc_status.scntrc_status"
+        "vendornm":"vendor_name.vendor_name",
+        "subcontstatus":"scntrc_status.scntrc_status",
+        "subvendorstatus":"aprv_sta.aprv_sta"
 
     },
-    "columns":["scntrc_status.scntrc_status","scntrc_status_name.scntrc_status_name", "txcount"],
+    "columns":["aprv_sta.aprv_sta","aprv_sta_name.aprv_sta_name", "txcount"],
     "orderBy":"-txcount",
     "getTotalDataCount":true,
     "facetPager":true,
-    "filterName":"Contract Includes Sub Vendors",
+    "filterName":"Sub Vendor Status in PIP",
     "allowZeroValue":true,
-    "urlParameterName":"subcontstatus",
-    "autocompleteID":"fSubContStatus",
+    "urlParameterName":"subvendorstatus",
+    "autocompleteID":"fSubVendorStatus",
     "adjustParameters":"
         if(isset($parameters['vendor_type'])){
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
