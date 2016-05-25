@@ -330,7 +330,7 @@ class RequestUtil{
      */
     static function getLatestMinorityTypeByVendorType($domain,$vendor_id,$vendor_type){
         $year_id = _getRequestParamValue('year');
-        $type_of_year = _getRequestParamValue('yeartype');
+        $type_of_year = 'B';
 
         if(empty($year_id)) $year_id = _getRequestParamValue('calyear');
         if(empty($type_of_year)) $type_of_year = 'B';
@@ -695,13 +695,13 @@ class RequestUtil{
     	}
     	switch($domain){
     		case "contracts":
-    			$path ="contracts_landing/status/A/yeartype/" . $yearType ."/year/".$year;
+    			$path ="contracts_landing/status/A/yeartype/B/year/".$year;
     			break;
     		case "spending":
-    			$path ="spending_landing/yeartype/" . $yearType ."/year/".$year;
+    			$path ="spending_landing/yeartype/B/year/".$year;
     			break;
     		case "payroll":
-    			$path ="payroll/yeartype/B/year/".$year;
+    			$path ="payroll/yeartype/".$yearType."/year/".$year;
     			break;
     		case "budget":
     			$path ="budget/yeartype/B/year/".$year;
@@ -1032,13 +1032,13 @@ class RequestUtil{
     		case "spending":
     			$table = "aggregateon_subven_spending_coa_entities";
     			$urlParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"prime_vendor_id");
-    			$sub_vendors_total_link = RequestUtil::getLandingPageUrl("spending",_getRequestParamValue("year"),_getRequestParamValue("yeartype")) ;
+    			$sub_vendors_total_link = RequestUtil::getLandingPageUrl("spending",_getRequestParamValue("year"), 'B') ;
     			break;
     		case "contracts":
     			$table = "aggregateon_subven_contracts_cumulative_spending";
     			$urlParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","vendor"=>"prime_vendor_id");
     			$default_params = array("status_flag"=>"A");
-    			$sub_vendors_total_link = RequestUtil::getLandingPageUrl("contracts", _getRequestParamValue("year"),_getRequestParamValue("yeartype")) ;
+    			$sub_vendors_total_link = RequestUtil::getLandingPageUrl("contracts", _getRequestParamValue("year"),'B') ;
     			break;
     	}    	
 		if(self::get_top_nav_records_count($urlParamMap, $default_params,$table) > 0){			
@@ -1062,16 +1062,16 @@ class RequestUtil{
     		case "spending":    	
     			$table = "aggregateon_mwbe_spending_coa_entities";
     			$table_subven = "aggregateon_subven_spending_coa_entities";
-    			$urlParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"vendor_id");
-    			$urlParamMapSubven = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"prime_vendor_id");
-    			$default_params = array("minority_type_id"=>"2~3~4~5~9");
+    			$urlParamMap = array("year"=>"year_id","agency"=>"agency_id","vendor"=>"vendor_id");
+    			$urlParamMapSubven = array("year"=>"year_id","agency"=>"agency_id","vendor"=>"prime_vendor_id");
+    			$default_params = array("minority_type_id"=>"2~3~4~5~9", 'type_of_year'=>'B');
     			break;
     		case "contracts":
     			$table = "aggregateon_mwbe_contracts_cumulative_spending";
     			$table_subven = "aggregateon_subven_contracts_cumulative_spending";
-    			$urlParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","vendor"=>"vendor_id");
-    			$urlParamMapSubven = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","vendor"=>"prime_vendor_id");
-    			$default_params = array("status_flag"=>"A","minority_type_id"=>"2~3~4~5~9");
+    			$urlParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","vendor"=>"vendor_id");
+    			$urlParamMapSubven = array("year"=>"fiscal_year_id","agency"=>"agency_id","vendor"=>"prime_vendor_id");
+    			$default_params = array("status_flag"=>"A","minority_type_id"=>"2~3~4~5~9", 'type_of_year'=>'B');
     			break;
     	}    	
     	if(self::get_top_nav_records_count($urlParamMap, $default_params,$table) > 0){
