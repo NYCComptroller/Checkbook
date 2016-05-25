@@ -554,6 +554,9 @@ namespace { //global
             if(is_array($override_params)){
                 foreach($override_params as $key => $value){
                     if(isset($value)){
+                        if($key == 'yeartype' && $value == 'C'){
+                            $value = 'B';
+                        }
                         $url .= "/$key";
                         $url .= "/$value";
                     }

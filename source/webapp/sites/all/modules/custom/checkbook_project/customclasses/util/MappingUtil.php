@@ -259,7 +259,11 @@ class MappingUtil {
     			
     			foreach(self::$spendingMWBEParamMap as $param=>$value){
     				if(_getRequestParamValue($param) != null){
-    					$where_filters[] = _widget_build_sql_condition(' a1.' . $value, _getRequestParamValue($param));
+                                        $paramValue = _getRequestParamValue($param);
+                                        if($param == 'yeartype' && $paramValue == 'C'){
+                                            $paramValue = 'B';
+                                        }
+    					$where_filters[] = _widget_build_sql_condition(' a1.' . $value, $paramValue);
     				}
     			}
     			
@@ -285,7 +289,11 @@ class MappingUtil {
 	    		$where_filters = array();
 	    		foreach(self::$contractsMWBEParamMap as $param=>$value){
 	    			if(_getRequestParamValue($param) != null){
-    					$where_filters[] = _widget_build_sql_condition(' a1.' . $value, _getRequestParamValue($param));
+    					$paramValue = _getRequestParamValue($param);
+                                        if($param == 'yeartype' && $paramValue == 'C'){
+                                            $paramValue = 'B';
+                                        }
+    					$where_filters[] = _widget_build_sql_condition(' a1.' . $value, $paramValue);
     				}
 	    		}
 	    		
@@ -325,7 +333,11 @@ class MappingUtil {
     			 
     			foreach($urlParamMap as $param=>$value){
     				if(_getRequestParamValue($param) != null){
-    					$where_filters[] = _widget_build_sql_condition(' a1.' . $value, _getRequestParamValue($param));
+                                        $paramValue = _getRequestParamValue($param);
+                                        if($param == 'yeartype' && $paramValue == 'C'){
+                                            $paramValue = 'B';
+                                        }
+    					$where_filters[] = _widget_build_sql_condition(' a1.' . $value, $paramValue);
     				}
     			}
     			 
@@ -353,7 +365,11 @@ class MappingUtil {
     			$where_filters = array();
     			foreach($urlParamMap as $param=>$value){
     				if(_getRequestParamValue($param) != null){
-    					$where_filters[] = _widget_build_sql_condition(' a1.' . $value, _getRequestParamValue($param));
+    					$paramValue = _getRequestParamValue($param);
+                                        if($param == 'yeartype' && $paramValue == 'C'){
+                                            $paramValue = 'B';
+                                        }
+    					$where_filters[] = _widget_build_sql_condition(' a1.' . $value, $paramValue);
     				}
     			}
     	   
