@@ -646,9 +646,11 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
     $contracts_industry_type_id = trim($form[$filter_dimension][$data_source . '_contracts_industry']['#value']);
     $contracts_industry_type_id = $contracts_industry_type_id == "Select Industry" ? 0 : $contracts_industry_type_id;
     $contracts_includes_sub_vendors = trim($form[$filter_dimension][$data_source . '_contracts_includes_sub_vendors']['#value']);
-    $contracts_includes_sub_vendors = $contracts_includes_sub_vendors == "Select Status" ? NULL : $contracts_includes_sub_vendors;
+    $contracts_includes_sub_vendors = $contracts_includes_sub_vendors == "Select Status" ||  $contracts_includes_sub_vendors == ""
+        ? NULL : $contracts_includes_sub_vendors;
     $contracts_sub_vendor_status = trim($form[$filter_dimension][$data_source . '_contracts_sub_vendor_status']['#value']);
-    $contracts_sub_vendor_status = $contracts_sub_vendor_status == "Select Status" ? NULL : $contracts_sub_vendor_status;
+    $contracts_sub_vendor_status = $contracts_sub_vendor_status == "Select Status" ||  $contracts_sub_vendor_status == ""
+        ? NULL : $contracts_sub_vendor_status;
 
     if ($contracts_year == 'fy~all') {
         $redirect_url = 'contract/all/transactions';
