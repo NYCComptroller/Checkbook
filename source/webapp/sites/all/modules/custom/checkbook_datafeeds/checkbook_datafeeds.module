@@ -5708,7 +5708,7 @@ function _year_options($yeartype = NULL) {
                         $fiscal_year,
                     ))
                 ), 'year_value', 0);
-                $cydata = $dataController->queryDataset("checkbook:year", array(
+               /* $cydata = $dataController->queryDataset("checkbook:year", array(
                     'year_value',
                     'year_id',
                 ), array(
@@ -5716,16 +5716,16 @@ function _year_options($yeartype = NULL) {
                         2010,
                         $calendar_year,
                     ))
-                ), 'year_value', 0);
+                ), 'year_value', 0);*/
                 $fyarray = array();
-                $cyarray = array();
+                //$cyarray = array();
                 foreach ($fydata as $row) {
                     $fyarray['FY' . $row['year_value']] = 'FY ' . $row['year_value'];
                 }
-                foreach ($cydata as $row) {
+                /*foreach ($cydata as $row) {
                     $cyarray['CY' . $row['year_value']] = 'CY ' . $row['year_value'];
-                }
-                $results = array_merge(array('ALL' => 'All Years'), $fyarray, $cyarray);
+                }*/
+                $results = array_merge(array('ALL' => 'All Years'), $fyarray);
                 return $results;
             }
             catch (Exception $e) {
