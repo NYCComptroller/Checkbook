@@ -37,7 +37,7 @@ require_once(realpath(drupal_get_path('module', 'data_controller')) . '/common/o
     }else if(isset($node->widgetConfig->headerTitle)){
         load_widget_controller_data_count($node);
         $headerSubTitle = isset($node->widgetConfig->headerSubTitle) ? $node->widgetConfig->headerSubTitle : $node->widgetConfig->headerTitle;
-        $count = $node->headerCount > 4 ? '<span class="hideOnExpand">5 </span>' : $node->headerCount;
+        $count = $node->headerCount > 4 ? '<span class="hideOnExpand">5 </span>' : '';
         $widget_title = 'Top '.$count.' '.$node->widgetConfig->headerTitle;
         $headerSubTitle = ' Number of '.$headerSubTitle.':  '.number_format($node->headerCount);
     }
@@ -126,7 +126,9 @@ else {
         }
     }
     if (isset($node->widgetConfig->footerUrl)) {
-        echo '<span class="plus-or">or</span>';
+        if($node->totalDataCount > 5){
+            echo '<span class="plus-or">or</span>';
+        }
         $url = $node->widgetConfig->footerUrl;
         $url = eval("return $url;");
         if($node->totalDataCount > 0) {
