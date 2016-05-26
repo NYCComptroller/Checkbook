@@ -77,7 +77,7 @@ function _checkbook_advanced_search_get_year($domain = null, $form = null, $data
         arsort($fiscal_year_array);
         arsort($calendar_year_array);
 
-        if ($domain != 'revenue' && $domain != 'budget') {
+        if ($domain == 'payroll') {
             $fiscal_year_array = array_merge($fiscal_year_array, $calendar_year_array);
         }
         if ($domain == 'contracts' || $domain == 'spending') {
