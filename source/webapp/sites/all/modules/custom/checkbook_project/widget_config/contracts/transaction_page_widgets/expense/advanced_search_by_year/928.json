@@ -28,6 +28,7 @@
     "facetPager":true,
     "filterName":"Sub Vendor Status in PIP",
     "allowZeroValue":true,
+    "allowFacetDeselect":true,
     "urlParameterName":"subvendorstatus",
     "autocompleteID":"fSubVendorStatus",
     "adjustParameters":"
