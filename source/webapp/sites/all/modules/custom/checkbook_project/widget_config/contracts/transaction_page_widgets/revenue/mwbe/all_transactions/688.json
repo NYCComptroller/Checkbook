@@ -1,7 +1,7 @@
 {
     "widgetType": "data_tables",
     "widgetSubType": "dataTableList",
-    "cleanURLParameters":["vendornm_exact","vendortype","mwbe","doctype","agency","vendor","curamtr","vendornm","contdesc","agrmnttype","agencyh","contnum","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize"],
+    "cleanURLParameters":["vendornm_exact","vendortype","mwbe","doctype","agency","vendor","curamtr","vendornm","contdesc","agrmnttype","agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize"],
     "urlParamMap":{
         "vendortype":"vendor_type",
         "vendornm":"vendor_name",
@@ -15,6 +15,7 @@
         "agrmnttype":"agreement_type_id",
         "agencyh":"agency_history_id",
         "contnum":"contract_number",
+        "contnum_exact":"contract_number",
         "aptpin":"brd_awd_no",
         "pin":"tracking_number",
         "awdmethod":"award_method_id",
@@ -26,7 +27,7 @@
         "csize":"award_size_id"
     },
     "allowRequestParams":["contstatus"],
-    "paramTypeConfig":{"curamtr":"rangeid","vendornm":"like","vendornm_exact":"eqignorecase","contdesc":"contains","contnum":"like","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","regdate":"range"},
+    "paramTypeConfig":{"curamtr":"rangeid","vendornm":"like","vendornm_exact":"eqignorecase","contdesc":"contains","contnum":"like","contnum_exact":"eqignorecase","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","regdate":"range"},
     "defaultParameters":{"latest_flag":"Y"},
     "header":"
     $header = NULL;
@@ -205,6 +206,7 @@ var oAwdMethod = getNamedFilterCriteria('fAwdMethodId');
 var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
 var oVendorType = getNamedFilterCriteria('fvendorType');
 var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
+var oContractNumber = getNamedFilterCriteria('fContractNumber');
 
 var  cUrl = oTable.fnSettings().sAjaxSource;
 cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
@@ -214,6 +216,7 @@ cUrl = adjustUrlParameter(cUrl,'awdmethod',oAwdMethod);
 cUrl = adjustUrlParameter(cUrl,'cindustry',oIndustryType);
 cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
 cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
+cUrl = adjustUrlParameter(cUrl,'contnum_exact',oContractNumber);
 
 
 return cUrl;
