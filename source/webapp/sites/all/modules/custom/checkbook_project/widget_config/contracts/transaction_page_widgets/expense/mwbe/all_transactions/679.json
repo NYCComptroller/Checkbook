@@ -205,6 +205,10 @@
         "subvendor_status_pip":{
             "type": "expression2",
             "expression": "($row['aprv_sta_name'] == 'N/A' || $row['aprv_sta_name'] == NULL) ? 'N/A' : $row['aprv_sta_name']"
+        },
+        "sub_contract_reference_id":{
+            "type": "expression2",
+            "expression": "($row['sub_contract_id'] == '' || $row['sub_contract_id'] == NULL) ? 'N/A' : $row['sub_contract_id']"
         }
     },
     "skipCustomPadding":true,
@@ -212,7 +216,7 @@
     {"label": "<div></div>","colLabel": "","column": "child_contrats_link","export":false},
     {"labelAlias": "contract_id","column": "contract_link","sortSourceColumn":"contract_number"},
     {"labelAlias":"contract_includes_sub","column":"subvendor_status","sortSourceColumn":"scntrc_status_name","exportColumn":"subvendor_status"},
-    {"labelAlias": "sub_contract_reference_id","column": "sub_contract_id"},
+    {"labelAlias":"sub_contract_reference_id","column":"sub_contract_reference_id","sortSourceColumn":"sub_contract_id","exportColumn":"sub_contract_reference_id"},
     {"label":"","column":"","export":false},
     {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description"},
     {"labelAlias": "version","column": "document_version"},
@@ -270,6 +274,11 @@
             "column":"expense_cat",
             "sourceColumn":"expenditure_object_names",
             "sql":"case when l1.is_prime_or_sub = 'S' then '' else expenditure_object_names end"
+        },
+        {
+            "column":"sub_contract_reference_id",
+            "sourceColumn":"sub_contract_id",
+            "sql":"case when sub_contract_id IS NULL then 'N/A' else sub_contract_id end"
         }
     ],
     "adjustParameters":"
