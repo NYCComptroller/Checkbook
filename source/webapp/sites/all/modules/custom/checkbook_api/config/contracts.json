@@ -2,7 +2,6 @@
     "contracts_active_expense":{
         "searchCriteriaMap":{
             "fiscal_year":"fiscal_year@checkbook:all_contracts_coa_aggregates",
-            "calendar_year":"fiscal_year@checkbook:all_contracts_coa_aggregates",
             "agency_code":"agency_code",
             "vendor_code":"vendor_code",
             "current_amount":"maximum_contract_amount",
@@ -132,7 +131,6 @@
         },
         "requestParameters":{
             "fiscal_year":{"valueType":"value","dataType":"year","maxLength":"4"},
-            "calendar_year":{"valueType":"value","dataType":"year","maxLength":"4"},
             "agency_code":{"valueType":"value","dataType":"text","maxLength":"4"},
             "vendor_code":{"valueType":"value","dataType":"text","maxLength":"20"},
             "current_amount":{"valueType":"range","dataType":"amount","maxLength":"18"},
@@ -395,7 +393,6 @@
     "contracts_active_revenue":{
         "searchCriteriaMap":{
             "fiscal_year":"fiscal_year@checkbook:all_contracts_coa_aggregates",
-            "calendar_year":"fiscal_year@checkbook:all_contracts_coa_aggregates",
             "agency_code":"agency_code",
             "vendor_code":"vendor_code",
             "current_amount":"maximum_contract_amount",
@@ -513,11 +510,6 @@
         },
         "requestParameters":{
             "fiscal_year":{
-                "valueType":"value",
-                "dataType":"year",
-                "maxLength":"4"
-            },
-            "calendar_year":{
                 "valueType":"value",
                 "dataType":"year",
                 "maxLength":"4"
@@ -799,7 +791,6 @@
     "contracts_active_all":{
         "searchCriteriaMap":{
             "fiscal_year":"fiscal_year@checkbook:all_contracts_coa_aggregates",
-            "calendar_year":"fiscal_year@checkbook:all_contracts_coa_aggregates",
             "agency_code":"agency_code",
             "vendor_code":"vendor_code",
             "current_amount":"maximum_contract_amount",
@@ -929,7 +920,6 @@
         },
         "requestParameters":{
             "fiscal_year":{"valueType":"value","dataType":"year","maxLength":"4"},
-            "calendar_year":{"valueType":"value","dataType":"year","maxLength":"4"},
             "agency_code":{"valueType":"value","dataType":"text","maxLength":"4"},
             "vendor_code":{"valueType":"value","dataType":"text","maxLength":"20"},
             "current_amount":{"valueType":"range","dataType":"amount","maxLength":"18"},
@@ -1396,7 +1386,7 @@
                 "validatorType":"filterName",
                 "validatorTypeConfig":{
                     "required":false,
-                    "filterNames":["fiscal_year", "calendar_year"]
+                    "filterNames":["fiscal_year"]
                 }
             }
         }
