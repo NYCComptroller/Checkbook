@@ -249,6 +249,10 @@ return $node->data;
 "subvendor_status_pip":{
 "type": "expression2",
 "expression": "($row['aprv_sta_name'] == 'N/A' || $row['aprv_sta_name'] == NULL) ? 'N/A' : $row['aprv_sta_name']"
+},
+"sub_contract_reference_id":{
+"type": "expression2",
+"expression": "($row['sub_contract_id'] == '' || $row['sub_contract_id'] == NULL) ? 'N/A' : $row['sub_contract_id']"
 }
 },
 "skipCustomPadding":true,
@@ -256,7 +260,7 @@ return $node->data;
 {"label": "&nbsp;","column": "child_contrats_link"},
 {"label": "Contract ID","column": "contract_link","sortSourceColumn":"contract_number"},
 {"labelAlias":"contract_includes_sub","column":"subvendor_status","sortSourceColumn":"scntrc_status_name"},
-{"label": "sub_contract_reference_id","column": "sub_contract_id"},
+{"labelAlias":"sub_contract_reference_id","column":"sub_contract_reference_id","sortSourceColumn":"sub_contract_id"},
 {"label": "<span>Purpose</span>","column": "purpose_formatted","sortSourceColumn":"description"},
 {"label": "Version","column": "document_version","type":"number"},
 {"label": "FMS Document/ Parent Contract ID","column":"parent_contract_link"},
