@@ -28,6 +28,7 @@
     "facetPager":true,
     "filterName":"Contract Includes Sub Vendors",
     "allowZeroValue":true,
+    "allowFacetDeselect":true,
     "urlParameterName":"subcontstatus",
     "autocompleteID":"fSubContStatus",
     "adjustParameters":"
