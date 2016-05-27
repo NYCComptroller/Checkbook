@@ -288,7 +288,8 @@
         "field_name":"sub_vendor_status",
         "attributes":{
             "title":"Sub Vendor Status<br/>in PIP",
-            "options":"$sub_vendor_status_attributes"
+            "options":"$sub_vendor_status",
+            "option_attributes":"$sub_vendor_status_attributes"
         }
     }
 }
