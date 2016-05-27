@@ -12,7 +12,7 @@
     "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/368/doctype/CTA1~CT1'",
     "table_columns":[
         {"labelAlias":"contract_id","column":"contract_number","derivedColumn":"contract_id_link"},
-        {"labelAlias":"contract_purpose","column":"contract_purpose","tooltip":23},
+        {"labelAlias":"contract_purpose","column":"contract_purpose","tooltip":20},
         {"labelAlias":"contract_agency","column":"agency_name","tooltip":30,"derivedColumn":"agency_name_link"},
         {"labelAlias":"prime_vendor","column":"vendor_name","tooltip":30,"derivedColumn":"vendor_name_link"},
         {"labelAlias":"contract_includes_sub","column":"contract_subvendor_status"},
@@ -24,15 +24,15 @@
     "skipCustomPadding":true,
     "dataTableOptions":{
         "aoColumns":[
-            {"bSortable":false,"sWidth":"143px","sClass":"text"},
-            {"bSortable":false,"sWidth":"120px","sClass":"text"},
-            {"bSortable":false,"sWidth":"116px", "sClass":"text"},
-            {"bSortable":false ,"sWidth":"176px","sClass":"text"},
-            {"bSortable":false ,"sWidth":"137px","sClass":"number-center pad"},
-            {"bSortable":true,"sWidth":"81px","sClass":"number","asSorting":["desc","asc"]},
-            {"bSortable":true,"sWidth":"82px" ,"sClass":"number","asSorting":["desc" ,"asc"]},
+            {"bSortable":false,"sClass":"text"},
+            {"bSortable":false,"sWidth":"130px","sClass":"text"},
+            {"bSortable":false,"sWidth":"150px","sClass":"text"},
+            {"bSortable":false,"sWidth":"150px","sClass":"text"},
+            {"bSortable":false,"sWidth":"136px","sClass":"number-center"},
+            {"bSortable":true,"sWidth":"74px","sClass":"number","asSorting":["desc","asc"]},
+            {"bSortable":true,"sWidth":"74px","sClass":"number","asSorting":["desc" ,"asc"]},
             {"bSortable":true,"sWidth":"75px","sClass":"number","asSorting":["desc","asc"]},
-            {"bSortable":false,"sWidth":"10px"}
+            {"bSortable":false,"sWidth":"5px"}
         ],
         "bServerSide":true,
         "bFilter":false,
@@ -43,6 +43,6 @@
         "bAutoWidth":false,
         "aaSorting":[[ 5, "desc" ]],
         "fnServerParams":"##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
-    "oLanguage":{"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
+         "oLanguage":{"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
    }
 }
