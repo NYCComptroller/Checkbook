@@ -221,14 +221,26 @@ function _checkbook_advanced_search_get_expensename_and_id()
  * Gets the subcontract_approval_status and id using the data controller
  * @return array
  */
-function _checkbook_advanced_search_get_subcontract_approval_status_and_id()
+function _checkbook_advanced_search_get_subcontract_approval_status_and_id($attributes = NULL)
 {
     try {
         $dataController = data_controller_get_instance();
         $values = $dataController->queryDataset('checkbook:subcontract_approval_status', array('aprv_sta_id', 'aprv_sta_value'), NULL, 'sort_order', 0, 10, NULL);
-        $statuses = array('Select Status'=>'Select Status');
+        
+        if($attributes){
+            $statuses = array('Select Status' => array('title' => 'Select Status'));
+        }else{
+            $statuses = array('Select Status'=>'Select Status');
+        }
         foreach ($values as $value) {
-            $statuses[$value['aprv_sta_id']] = $value['aprv_sta_value'];
+            if($attributes){
+                $statuses[$value['aprv_sta_id']] = array('title' => $value['aprv_sta_value']);
+            }else{
+                if(strlen($value['aprv_sta_value']) > 20)
+                    $statuses[$value['aprv_sta_id']] = substr($value['aprv_sta_value'], 0, 20) . '...';
+                else
+                    $statuses[$value['aprv_sta_id']] = $value['aprv_sta_value'];
+            }
         }
         return $statuses;
     } catch (Exception $e) {
