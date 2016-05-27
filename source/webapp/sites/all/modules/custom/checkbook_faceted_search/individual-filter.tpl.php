@@ -94,13 +94,13 @@ if($node->widgetConfig->filterName == 'Contract Includes Sub Vendors') {
 if($node->widgetConfig->filterName == 'Sub Vendor Status in PIP') {
     foreach($unchecked as $key => $value) {
         if($value[1] == null) {
-            $unchecked[$key][0] = 6;
+            $unchecked[$key][0] = 0;
             $unchecked[$key][1] = "N/A";
         }
     }
     foreach($checked as $key => $value) {
         if($value[1] == null) {
-            $checked[$key][0] = 6;
+            $checked[$key][0] = 0;
             $checked[$key][1] = "N/A";
         }
     }
