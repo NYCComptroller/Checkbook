@@ -5708,23 +5708,11 @@ function _year_options($yeartype = NULL) {
                         $fiscal_year,
                     ))
                 ), 'year_value', 0);
-               /* $cydata = $dataController->queryDataset("checkbook:year", array(
-                    'year_value',
-                    'year_id',
-                ), array(
-                    'year_value' => data_controller_get_operator_factory_instance()->initiateHandler(RangeOperatorHandler::$OPERATOR__NAME, array(
-                        2010,
-                        $calendar_year,
-                    ))
-                ), 'year_value', 0);*/
+                $fydata = array_reverse($fydata, true);
                 $fyarray = array();
-                //$cyarray = array();
                 foreach ($fydata as $row) {
                     $fyarray['FY' . $row['year_value']] = 'FY ' . $row['year_value'];
                 }
-                /*foreach ($cydata as $row) {
-                    $cyarray['CY' . $row['year_value']] = 'CY ' . $row['year_value'];
-                }*/
                 $results = array_merge(array('ALL' => 'All Years'), $fyarray);
                 return $results;
             }
@@ -5735,7 +5723,7 @@ function _year_options($yeartype = NULL) {
             break;
 
         case 'budget-fiscal-years':
-            $query = 'SELECT DISTINCT budget_fiscal_year, budget_fiscal_year_id FROM budget WHERE budget_fiscal_year > 2010 ORDER BY budget_fiscal_year_id';
+            $query = 'SELECT DISTINCT budget_fiscal_year, budget_fiscal_year_id FROM budget WHERE budget_fiscal_year > 2010 ORDER BY budget_fiscal_year_id DESC';
             $fy_data = _checkbook_project_execute_sql($query);
             $years = array();
             foreach ($fy_data as $year) {
@@ -5759,6 +5747,7 @@ function _year_options($yeartype = NULL) {
                         $fiscal_year,
                     ))
                 ), 'year_value', 0);
+                $fydata = array_reverse($fydata, true);
                 $cydata = $dataController->queryDataset("checkbook:year", array(
                     'year_value',
                     'year_id',
@@ -5768,6 +5757,7 @@ function _year_options($yeartype = NULL) {
                         $calendar_year,
                     ))
                 ), 'year_value', 0);
+                $cydata = array_reverse($cydata, true);
                 $fyarray = array();
                 $cyarray = array();
                 foreach ($fydata as $row) {
