@@ -469,7 +469,11 @@
                 contract_original_agreement_id,
                 vendor_type,
                 industry_type_id,
-                industry_type_name
+                industry_type_name,
+                aprv_sta,
+                aprv_sta_name,
+                scntrc_status,
+                scntrc_status_name
                 from all_agreement_transactions a
                 left join ref_document_code dc on a.document_code_id = dc.document_code_id
                 left join ref_award_category rac on a.award_category_id = rac.award_category_id
@@ -557,6 +561,10 @@
             <field column="contract_original_agreement_id" name="contract_original_agreement_id"/>
             <field column="industry_type_id" name="industry_type_id" />
             <field column="industry_type_name" name="industry_type_name" />
+            <field column="aprv_sta" name="aprv_sta" />
+            <field column="aprv_sta_name" name="aprv_sta_name" />
+            <field column="scntrc_status" name="scntrc_status" />
+            <field column="scntrc_status_name" name="scntrc_status_name" />
         </entity>
         <entity dataSource="db2" name="contracts_oge" transformer="RegexTransformer"
                 pk="id"
