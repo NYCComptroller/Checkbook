@@ -65,12 +65,6 @@ if($contract_amount == 0){
   $contracts_link = l('<span class="nav-title">Contracts</span><br>'.custom_number_formatter_format($contract_amount, 1,'$'),RequestUtil::getTopNavURL("contracts"),$options);
 }
 
-if(preg_match('/yeartype\/C/',$_GET['q'])){
-  $budget_link = l('<span class="nav-title">Budget</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') ,'',$options_disabled);
-  $revenue_link =  l('<span class="nav-title">Revenue</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
-}
-
-
 $current_dashboard = _getRequestParamValue("dashboard");
 
 // Disable featured dashboatrd for other government entities. 
