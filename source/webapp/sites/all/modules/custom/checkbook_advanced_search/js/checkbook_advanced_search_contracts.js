@@ -96,20 +96,22 @@
             var agency = div.ele('agency').val() ? div.ele('agency').val() : 0;
             var award_method = div.ele('award_method').val() ? div.ele('award_method').val() : 0;
             var year = div.ele('year').val() ? div.ele('year').val() : 0;
+            var includes_sub_vendors = div.ele('includes_sub_vendors').val() ? div.ele('includes_sub_vendors').val() : 0;
+            var sub_vendor_status = div.ele('sub_vendor_status').val() ? div.ele('sub_vendor_status').val() : 0;
             var data_source = $('input:radio[name=contracts_advanced_search_domain_filter]:checked').val();
 
             div.ele('vendor_name').autocomplete({
-                source:'/advanced-search/autocomplete/contracts/vendor-name/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + data_source,
+                source:'/advanced-search/autocomplete/contracts/vendor-name/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors+ '/' + sub_vendor_status + '/' + data_source,
                 select: function( event, ui ) {
                     $(this).parent().next().val(ui.item.label) ;
                 }
             });
-            div.ele('contract_id').autocomplete({source:'/advanced-search/autocomplete/contracts/contract-num/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + data_source});
-            div.ele('apt_pin').autocomplete({source:'/advanced-search/autocomplete/contracts/apt-pin/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + data_source});
-            div.ele('pin').autocomplete({source:'/advanced-search/autocomplete/contracts/pin/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + data_source});
-            div.ele('entity_contract_number').autocomplete({source:'/advanced-search/autocomplete/contracts/entity_contract_number/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + data_source});
-            div.ele('commodity_line').autocomplete({source:'/advanced-search/autocomplete/contracts/commodity_line/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + data_source});
-            div.ele('budget_name').autocomplete({source:'/advanced-search/autocomplete/contracts/budget_name/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + data_source});
+            div.ele('contract_id').autocomplete({source:'/advanced-search/autocomplete/contracts/contract-num/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors+ '/' + sub_vendor_status + '/' + data_source});
+            div.ele('apt_pin').autocomplete({source:'/advanced-search/autocomplete/contracts/apt-pin/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors+ '/' + sub_vendor_status + '/' + data_source});
+            div.ele('pin').autocomplete({source:'/advanced-search/autocomplete/contracts/pin/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors+ '/' + sub_vendor_status + '/' + data_source});
+            div.ele('entity_contract_number').autocomplete({source:'/advanced-search/autocomplete/contracts/entity_contract_number/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors+ '/' + sub_vendor_status + '/' + data_source});
+            div.ele('commodity_line').autocomplete({source:'/advanced-search/autocomplete/contracts/commodity_line/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors+ '/' + sub_vendor_status + '/' + data_source});
+            div.ele('budget_name').autocomplete({source:'/advanced-search/autocomplete/contracts/budget_name/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors+ '/' + sub_vendor_status + '/' + data_source});
         }
 
         function initializeContractsView(div) {
