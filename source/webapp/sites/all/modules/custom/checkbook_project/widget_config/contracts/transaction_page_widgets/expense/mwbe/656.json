@@ -258,7 +258,7 @@
         },
         "subvendor_status_pip":{
             "type": "expression2",
-            "expression": "($row['aprv_sta_name'] == 'N/A' || $row['aprv_sta_name'] == NULL) ? 'N/A' : $row['aprv_sta_name']"
+            "expression": "($row['aprv_sta_name'] == 'N/A' || $row['aprv_sta_name'] == NULL) ? 'N/A' : _get_tooltip_markup($row['aprv_sta_name'],36)"
         },
         "subvendor_status_pip_export":{
             "type": "expression2",
