@@ -258,6 +258,10 @@
         },
         "subvendor_status_pip":{
             "type": "expression2",
+            "expression": "($row['aprv_sta_name'] == 'N/A' || $row['aprv_sta_name'] == NULL) ? 'N/A' : _get_tooltip_markup($row['aprv_sta_name'],36)"
+        },
+        "subvendor_status_pip_export":{
+            "type": "expression2",
             "expression": "($row['aprv_sta_name'] == 'N/A' || $row['aprv_sta_name'] == NULL) ? 'N/A' : $row['aprv_sta_name']"
         },
         "sub_contract_reference_id":{
@@ -285,7 +289,7 @@
         {"labelAlias": "vendor_name","column": "vendor_name_link","sortSourceColumn":"vendor_name"},
         {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"is_prime_or_sub","exportColumn":"is_sub_vendor"},
         {"label":"","column":"","export":false},
-        {"labelAlias":"subvendor_status_pip","column":"subvendor_status_pip","sortSourceColumn":"aprv_sta_name","exportColumn":"subvendor_status_pip","visibility_flag":"show_sub_vendor_status"},
+        {"labelAlias":"subvendor_status_pip","column":"subvendor_status_pip","sortSourceColumn":"aprv_sta_name","exportColumn":"subvendor_status_pip_export","visibility_flag":"show_sub_vendor_status"},
         {"label":"","column":"","export":false,"visibility_flag":"show_sub_vendor_status"},
         {"labelAlias":"associated_prime_vendor","column":"associated_prime_vendor_name","sortSourceColumn":"prime_vendor_name","exportColumn":"associated_prime_vendor_name_export"},
         {"labelAlias": "contract_agency","column": "agency_name_link","sortSourceColumn":"agency_name"},
