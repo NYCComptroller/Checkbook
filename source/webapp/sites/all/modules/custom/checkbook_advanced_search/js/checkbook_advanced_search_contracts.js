@@ -106,7 +106,12 @@
                     $(this).parent().next().val(ui.item.label) ;
                 }
             });
-            div.ele('contract_id').autocomplete({source:'/advanced-search/autocomplete/contracts/contract-num/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors+ '/' + sub_vendor_status + '/' + data_source});
+            div.ele('contract_id').autocomplete({
+                source:'/advanced-search/autocomplete/contracts/contract-num/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors+ '/' + sub_vendor_status + '/' + data_source,
+                select: function( event, ui ) {
+                    $(this).parent().next().val(ui.item.label) ;
+                }
+            });
             div.ele('apt_pin').autocomplete({source:'/advanced-search/autocomplete/contracts/apt-pin/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors+ '/' + sub_vendor_status + '/' + data_source});
             div.ele('pin').autocomplete({source:'/advanced-search/autocomplete/contracts/pin/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors+ '/' + sub_vendor_status + '/' + data_source});
             div.ele('entity_contract_number').autocomplete({source:'/advanced-search/autocomplete/contracts/entity_contract_number/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbe_category + '/' + industry + '/' + includes_sub_vendors+ '/' + sub_vendor_status + '/' + data_source});

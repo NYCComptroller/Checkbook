@@ -633,6 +633,7 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
     $contracts_contract_type = trim($form[$filter_dimension][$data_source . '_contracts_type']['#value']);
     $contracts_contract_agency = trim($form[$filter_dimension][$data_source . '_contracts_agency']['#value']);
     $contracts_contract_contract_num = trim($form[$filter_dimension][$data_source . '_contracts_contract_num']['#value']);
+    $contracts_contract_contract_num_exact = trim($form[$filter_dimension][$data_source . '_contracts_contract_num_exact']['#value']);
     $contracts_contract_apt_pin = trim($form[$filter_dimension][$data_source . '_contracts_apt_pin']['#value']);
     $contracts_contract_pin = trim($form[$filter_dimension][$data_source . '_contracts_pin']['#value']);
     $contracts_contract_award_method = trim($form[$filter_dimension][$data_source . '_contracts_award_method']['#value']);
@@ -730,7 +731,12 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_agency, 'agency');
     }
     if (!empty($contracts_contract_contract_num)) {
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_contract_num, 'contnum');
+        if ($contracts_contract_contract_num_exact == $contracts_contract_contract_num) {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url(strtoupper($contracts_contract_contract_num_exact), 'contnum_exact');
+        }
+        else {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_contract_num, 'contnum');
+        }
     }
     if (!empty($contracts_contract_apt_pin)) {
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_apt_pin, 'aptpin');
