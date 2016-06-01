@@ -276,7 +276,7 @@
         "attributes":{
             "title":"Contracts Includes<br/>Sub Vendors",
             "options":{
-                "Select Status":"Select Status",
+                "0":"Select Status",
                 "2":"Yes",
                 "3":"No",
                 "1":"No Data Entered"
