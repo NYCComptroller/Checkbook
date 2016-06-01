@@ -610,8 +610,8 @@ class RequestUtil{
                       $path .= _checkbook_project_get_url_param_string("agency");
                       $path .= "/title/" . _getRequestParamValue("title");
                   }
-                  else { //NYC Level
-                      $path ="payroll/yeartype/".$yeartype."/year/".$year;
+                  else { //NYC Level9
+                      $path ="payroll/yeartype/".(isset($yeartype)?$yeartype:'B')."/year/".$year;
                   }
               }
               break;
