@@ -567,30 +567,48 @@
         <param name="mwbe" />
         <param name="contract_mod" type="bool" />
         <sql>
-            SELECT DISTINCT
+            SELECT
+                a.original_agreement_id,
+                a.agency_id,
+                a.vendor_id,
+                a.is_prime_or_sub,
+                a.minority_type_id,
+                rd.document_code,
                 a.contract_number,
                 a.description,
-                ra.agency_name,
-                CASE WHEN v.legal_name IS NULL THEN 'N/A' ELSE v.legal_name END AS prime_vendor,
-                CASE WHEN sv.legal_name IS NULL THEN 'N/A' ELSE sv.legal_name END AS sub_vendor,
-                sa.aprv_sta_value,
-                sa.sort_order
-            FROM aggregateon_mwbe_contracts_cumulative_spending a
-                LEFT JOIN ref_agency ra ON a.agency_id=ra.agency_id
-                LEFT JOIN vendor v ON v.vendor_id = a.vendor_id
-                LEFT JOIN (SELECT contract_number,vendor_history_id, aprv_sta,sub_contract_id FROM subcontract_details WHERE latest_flag='Y') sd ON a.contract_number=sd.contract_number
-                LEFT JOIN subcontract_approval_status sa ON sd.aprv_sta = sa.aprv_sta_id
-                LEFT JOIN subvendor_history svh ON sd.vendor_history_id = svh.vendor_history_id
-                LEFT JOIN subvendor sv ON svh.vendor_id= sv.vendor_id
-                LEFT JOIN subvendor_min_bus_type smbt ON smbt.vendor_id=sv.vendor_id
-                LEFT JOIN (SELECT DISTINCT contract_number, sub_contract_id FROM subcontract_spending) allyearpayments ON sd.contract_number = allyearpayments.contract_number AND sd.sub_contract_id=allyearpayments.sub_contract_id
-                LEFT JOIN (SELECT DISTINCT contract_number, sub_contract_id FROM subcontract_spending WHERE check_eft_issued_nyc_year_id=117) cypayments ON sd.contract_number = cypayments.contract_number and sd.sub_contract_id=cypayments.sub_contract_id
+                a.agency_name,
+                CASE WHEN a.vendor_name IS NULL THEN 'N/A' ELSE a.vendor_name END AS vendor_name,
+                CASE WHEN svh.legal_name IS NULL THEN 'NOT PROVIDED' ELSE svh.legal_name END AS sub_vendor,  
+                CASE 
+                    WHEN sd.aprv_sta=4  
+                         THEN (CASE WHEN payments.check_amount != 0 THEN 'ACCO Approved Subvendor' ELSE  'No Subcontract Payments Submitted by Prime' END )        
+                    WHEN sd.aprv_sta is NULL THEN 'No Subcontract Information Submitted by Prime'
+                    ELSE ss.aprv_sta_value
+                END AS aprv_status_value
+            FROM all_agreement_transactions a
+                LEFT JOIN aggregateon_all_contracts_cumulative_spending ac ON a.original_agreement_id = ac.original_agreement_id AND a.contract_number = ac.contract_number
                 LEFT JOIN 
-                    (SELECT a.contract_number, a.sub_contract_id, max(a.is_final_payment) AS is_final_payment FROM subcontract_spending a 
-                    LEFT JOIN (SELECT contract_number, sub_contract_id, max(check_eft_issued_date_id) AS max_check_date FROM subcontract_spending GROUP BY 1,2) b 
-                     ON a.contract_number = b.contract_number AND a.sub_contract_id=b.sub_contract_id AND a.check_eft_issued_date_id = b.max_check_date GROUP BY 1,2) otheryearpayments 
-                ON sd.contract_number = otheryearpayments.contract_number and sd.sub_contract_id=otheryearpayments.sub_contract_id
-            WHERE a.fiscal_year_id = 117
+                        (SELECT contract_number,vendor_history_id, aprv_sta,sub_contract_id FROM subcontract_details WHERE latest_flag='Y') sd 
+                    ON a.contract_number=sd.contract_number
+                LEFT JOIN subvendor_history svh ON sd.vendor_history_id = svh.vendor_history_id
+                LEFT JOIN subvendor_min_bus_type smbt ON smbt.vendor_history_id=svh.vendor_history_id
+                LEFT JOIN 
+                        (SELECT contract_number, sub_contract_id ,sum(check_eft_amount) AS check_amount FROM subcontract_spending GROUP BY 1,2 ) payments 
+                    ON sd.contract_number = payments.contract_number AND sd.sub_contract_id= payments.sub_contract_id
+                LEFT JOIN subcontract_approval_status ss ON ss.aprv_sta_id = sd.aprv_sta
+                LEFT JOIN ref_document_code rd ON rd.document_code_id = a.document_code_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="ac.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="ac.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="ac.status_flag" paramName="status" />
+                    <exp op="IN" dbField="rd.document_code" paramName="doctype" />
+                    <exp op="=" dbField="a.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.agency_id" paramName="agency" />
+                    <exp op="=" dbField="a.scntrc_status">2</exp>
+                    <exp op="=" dbField="a.latest_flag">'Y'</exp>
+                </exp>
+            </where>
         </sql>
     </statement>
 </statements>
