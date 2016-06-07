@@ -1814,29 +1814,9 @@ Drupal.behaviors.hoveOverMWBE = {
             $('.bottomContainerToggle', context).toggle(
                 function (event) {
                     event.preventDefault();
-                    if ($('.bottomContainer').html().length <= 10) {
-                        var callBackURL = '';
-                        var expandBottomContURL = getParameterByName("expandBottomContURL");
-                        if (expandBottomContURL){
-                        	callBackURL = expandBottomContURL + "?appendScripts=true";
-                        } else{
-                        	callBackURL = this.href + window.location.pathname + "?appendScripts=true";
-                        }
-
-
+                    if ($('.bottomContainer').html().length) {
                         $('.bottomContainer').toggle();
-                        $('.bottomContainer').html("<img style='float:right' src='/sites/all/themes/checkbook/images/loading_large.gif' title='Loading Data...'/>");
-                        $.cookie("showDetails","enable", { path: '/' });
-                        $('.bottomContainerToggle').toggle();
-                        $.ajax({
-                            url:callBackURL,
-                            success:function (data) {
-                                $('.bottomContainer').html(data);
-                                $('.bottomContainerToggle').html("Hide Details &#171;");
-                                $('.bottomContainerToggle').toggle();
-                                $('.first-item').trigger('click');
-                            }
-                        });
+                        $('.bottomContainerToggle').html("Show Details &#187;");
                     } else {
                         $('.bottomContainer').toggle();
                         $('.bottomContainerToggle').html("Hide Details &#171;");
@@ -1845,16 +1825,9 @@ Drupal.behaviors.hoveOverMWBE = {
                 function (event) {
                     event.preventDefault();
                     $('.bottomContainer').toggle();
-                    $('.bottomContainerToggle').html("Show Details &#187;");
-                    $.cookie("showDetails","disable", { path: '/' });
+                    $('.bottomContainerToggle').html("Hide Details &#171;");
                 }
-
             );
-            if (getParameterByName("expandBottomCont") ||getParameterByName("expandBottomContURL") || $.cookie("showDetails") == "enable" ) {
-            	$.cookie("showDetails","enable", { path: '/' });
-                $('.bottomContainerToggle', context).click();
-            }
-
         }
     };
 
