@@ -400,7 +400,6 @@
     function fnLoadChildRecords (nTr, oElement)
     {
     var magid = jQuery(oElement).attr('magid');
-    var contstatus = jQuery(oElement).attr('contstatus');
     var mastercode = jQuery(oElement).attr('mastercode');
     var mwbe = jQuery(oElement).attr('mwbe');
     var dashboard = jQuery(oElement).attr('dashboard');
@@ -409,8 +408,7 @@
 
     magid = (magid == null || magid.length == 0) ?  '0' : magid;
 
-    var sUrl = '/dashboard_platform/data_tables/ajax_data/node/'+ (mastercode == 'MA1' ? '666' : '665') +'/magid/'+magid+'/contstatus/A';
-    sUrl = sUrl + ( (contstatus == null || contstatus.length == 0) ?  '' : '/contstatus/'+contstatus);
+    var sUrl = '/dashboard_platform/data_tables/ajax_data/node/'+ (mastercode == 'MA1' ? '666' : '665') +'/magid/'+magid;
     sUrl = sUrl + ( (mwbe == null || mwbe.length == 0) ?  '' : '/mwbe/'+mwbe);
     sUrl = sUrl + ( (dashboard == null || dashboard.length == 0) ?  '' : '/dashboard/'+dashboard);
     sUrl = sUrl + ( (subcontstatus == null || subcontstatus.length == 0) ?  '' : '/subcontstatus/'+subcontstatus);

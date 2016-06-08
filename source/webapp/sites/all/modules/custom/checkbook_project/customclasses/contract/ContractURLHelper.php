@@ -300,14 +300,20 @@ class ContractURLHelper{
     static function prepareExpandLink($row, $node ) {
     	$flag = ( preg_match("/^mwbe/", $_GET['q']) ) ? "has_mwbe_children" :"has_children";
 		$show_expander = ($row[$flag] == 'Y') ? true : false;
+
+        $year = $row['fiscal_year_id@checkbook:all_contracts_coa_aggregates'];
+        $year_type = $row['type_of_year@checkbook:all_contracts_coa_aggregates'];
+
+        $year = !$year ? _getCurrentYearID() : $year;
+        $year_type = !$year_type ? 'B' : $year_type;
+
         $link = ($show_expander) ? '<span id=dtl_expand class="toggler collapsed"  magid="' . ((isset($row['contract_original_agreement_id']))?$row['contract_original_agreement_id'] : $row['original_agreement_id']) . '" '
             . ( _getRequestParamValue('dashboard') != '' ?  ('dashboard="' . _getRequestParamValue('dashboard') . '" ' ) : '')
             . ( _getRequestParamValue('mwbe') != '' ?  ('mwbe="' . _getRequestParamValue('mwbe') . '" ' ) : '')
             . ( _getRequestParamValue('smnid') != '' ?  ('smnid="' . _getRequestParamValue('smnid') . '" ' ) : '')
-            . ( _getRequestParamValue('year') != '' ?  ('year="' . _getRequestParamValue('year') . '" ' ) : '')
-            . ( _getRequestParamValue('calyear') != '' ?  ('calyear="' . _getRequestParamValue('calyear') . '" ' ) : '')
-            . ( _getRequestParamValue('yeartype') != '' ?  ('yeartype="' . _getRequestParamValue('yeartype') . '" ' ) : '')
             . ( _getRequestParamValue('contstatus') != '' ?  ('contstatus="' . _getRequestParamValue('contstatus') . '" ' ) : '')
+            . 'year="' . $year . '" '
+            . 'yeartype="' . $year_type . '" '
             . ('mastercode="' . $row['document_code@checkbook:ref_document_code'] . '"' )
             . '></span>' : '';
 
