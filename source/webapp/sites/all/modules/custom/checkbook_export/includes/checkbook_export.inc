@@ -431,6 +431,9 @@ function _checkbook_export_generateExportFile($node,$headers){
                 $node->data = $sql;
             }
         }
+        if (!empty($node->widgetConfig->export_columns)) {
+            $node->data = checkbook_export_remove_non_export_columns($node);
+        }
 
         $command = $conf['check_book']['data_feeds']['command']
                 . " -c \"\\\\COPY (" . str_replace('\\\\','\\\\\\',$node->data) . ") TO '"
@@ -460,6 +463,49 @@ function _checkbook_export_generateExportFile($node,$headers){
     }
 
     return $filename;
+}
+
+/**
+ * For columns included in config to properly build the sql
+ * using the data controller for export,
+ * these additional columns should not show on the export,
+ * instead we need to strip them manually
+ *
+ * These are configured in $node->widgetConfig->export_columns
+ *
+ * @param $node
+ * @return mixed
+ */
+function checkbook_export_remove_non_export_columns($node) {
+
+    $columns = $node->widgetConfig->export_columns;
+    $query = $node->data;
+
+    $end = strpos($query, 'FROM');
+    $select = substr($query,0,$end);
+    $select = str_replace("SELECT", "", $select);
+    $parts = explode(",", $select);
+
+    $new_select = "";
+    $newline = "\n       ";
+    foreach($parts as $part) {
+        $part = trim($part);
+        $column = $part;
+        if (strpos($column,"AS") !== false) {
+            $pos = strpos($column, " AS");
+            $column = substr($column,0,$pos);
+        }
+        if (strpos($column,".") !== false) {
+            $pos = strpos($column, ".");
+            $column = substr($column, $pos+1, strlen($column));
+        }
+        if (!in_array($column, $columns)) {
+            $new_select .= $new_select == "" ? "SELECT ".$part : ",".$newline.$part;
+        }
+    }
+    $new_select .= $newline;
+    $query = substr_replace($query, $new_select, 0, $end);
+    return $query;
 }
 
 /** Function to generate the path to save export file */
