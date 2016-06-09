@@ -1,8 +1,8 @@
 jQuery(document).ready(function ($) {
-
-    jQuery('.bottomContainerToggle').click();
-    jQuery('.bottomContainer').show();
-
+    if (!getParameterByName("expandBottomCont") && !getParameterByName("expandBottomContURL")) {
+        jQuery('.bottomContainerToggle').click();
+        jQuery('.bottomContainer').show();
+    }
     if (parseInt($.browser.version, 10) == 7) {
         $("#page").addClass("ie");
     } else {
