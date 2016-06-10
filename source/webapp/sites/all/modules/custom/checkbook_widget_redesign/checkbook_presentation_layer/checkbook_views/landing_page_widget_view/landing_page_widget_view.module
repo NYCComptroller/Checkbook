@@ -344,21 +344,23 @@ function landing_page_widget_view_widget_prepare($node){
         array_push($sort_columns, $column);
     }
 
-    $count = 0;
-    if(isset($node->widgetConfig->orderBy))
-      $node->widgetConfig->orderBy = array($node->widgetConfig->orderBy);
-    else
-      $node->widgetConfig->orderBy = array();
+    if(isset($node->widgetConfig->dataTableOptions->aaSorting)) {
+        $count = 0;
+        if(isset($node->widgetConfig->orderBy))
+            $node->widgetConfig->orderBy = array($node->widgetConfig->orderBy);
+        else
+            $node->widgetConfig->orderBy = array();
 
-    while($count < $_REQUEST['iSortingCols']){
-	    $index =  $count ;
+        while($count < $_REQUEST['iSortingCols']){
+            $index =  $count ;
 
-        $sort_column = $sort_columns[$_REQUEST['iSortCol_' . $index ]]->column;
-		if($_REQUEST['sSortDir_' . $index] == 'desc')
-			$node->widgetConfig->orderBy[]  = '-' . $sort_column;
-		else 
-			$node->widgetConfig->orderBy[] =  $sort_column ;
-		$count += 1;
+            $sort_column = $sort_columns[$_REQUEST['iSortCol_' . $index ]]->column;
+            if($_REQUEST['sSortDir_' . $index] == 'desc')
+                $node->widgetConfig->orderBy[]  = '-' . $sort_column;
+            else
+                $node->widgetConfig->orderBy[] =  $sort_column ;
+            $count += 1;
+        }
     }
 
     /**
