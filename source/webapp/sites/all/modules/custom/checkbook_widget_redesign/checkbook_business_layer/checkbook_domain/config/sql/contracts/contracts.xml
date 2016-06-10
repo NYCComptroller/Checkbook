@@ -568,47 +568,50 @@
         <param name="contract_mod" type="bool" />
         <sql>
             SELECT
-                a.original_agreement_id,
-                a.agency_id,
-                a.vendor_id,
-                a.is_prime_or_sub,
-                a.minority_type_id,
-                rd.document_code,
-                a.contract_number,
-                a.description,
-                a.agency_name,
-                CASE WHEN a.vendor_name IS NULL THEN 'N/A' ELSE a.vendor_name END AS vendor_name,
-                CASE WHEN svh.legal_name IS NULL THEN 'NOT PROVIDED' ELSE svh.legal_name END AS sub_vendor,  
-                CASE 
-                    WHEN sd.aprv_sta=4  
-                         THEN (CASE WHEN payments.check_amount != 0 THEN 'ACCO Approved Subvendor' ELSE  'No Subcontract Payments Submitted by Prime' END )        
-                    WHEN sd.aprv_sta is NULL THEN 'No Subcontract Information Submitted by Prime'
-                    ELSE ss.aprv_sta_value
-                END AS aprv_status_value
+            a.original_agreement_id,
+            a.agency_id,
+            a.vendor_id,
+            a.is_prime_or_sub,
+            a.minority_type_id,
+            rd.document_code,
+            a.contract_number,
+            a.description,
+            a.agency_name,
+            CASE WHEN a.vendor_name IS NULL THEN 'N/A' ELSE a.vendor_name END AS vendor_name,
+            CASE WHEN b.vendor_name IS NULL THEN 'NOT PROVIDED' ELSE b.vendor_name END AS sub_vendor,
+            b.aprv_sta_name as aprv_status_value
             FROM all_agreement_transactions a
-                LEFT JOIN aggregateon_all_contracts_cumulative_spending ac ON a.original_agreement_id = ac.original_agreement_id AND a.contract_number = ac.contract_number
-                LEFT JOIN 
-                        (SELECT contract_number,vendor_history_id, aprv_sta,sub_contract_id FROM subcontract_details WHERE latest_flag='Y') sd 
-                    ON a.contract_number=sd.contract_number
-                LEFT JOIN subvendor_history svh ON sd.vendor_history_id = svh.vendor_history_id
-                LEFT JOIN subvendor_min_bus_type smbt ON smbt.vendor_history_id=svh.vendor_history_id
-                LEFT JOIN 
-                        (SELECT contract_number, sub_contract_id ,sum(check_eft_amount) AS check_amount FROM subcontract_spending GROUP BY 1,2 ) payments 
-                    ON sd.contract_number = payments.contract_number AND sd.sub_contract_id= payments.sub_contract_id
-                LEFT JOIN subcontract_approval_status ss ON ss.aprv_sta_id = sd.aprv_sta
-                LEFT JOIN ref_document_code rd ON rd.document_code_id = a.document_code_id
+            LEFT JOIN
+            (
+                SELECT a.original_agreement_id, a.contract_number, a.vendor_name,a.aprv_sta as aprv_sta_id,a.aprv_sta_name
+                FROM all_agreement_transactions a
+                <where>
+                    <exp op="AND">
+                        <exp op="=" dbField="a.vendor_id" paramName="vendor" />
+                        <exp op="=" dbField="a.agency_id" paramName="agency" />
+                        <exp op="=" dbField="a.is_prime_or_sub">'S'</exp>
+                        <exp op="=" dbField="a.latest_flag">'Y'</exp>
+                        <exp op="=" dbField="a.scntrc_status">0</exp>
+                    </exp>
+                </where>
+            ) b on b.contract_number = a.contract_number
+            LEFT JOIN subcontract_approval_status c ON c.aprv_sta_id = b.aprv_sta_id
+            JOIN ref_document_code rd ON rd.document_code_id = a.document_code_id
             <where>
                 <exp op="AND">
-                    <exp op="=" dbField="ac.fiscal_year_id" paramName="year" />
-                    <exp op="=" dbField="ac.type_of_year" paramName="yeartype" />
-                    <exp op="=" dbField="ac.status_flag" paramName="status" />
-                    <exp op="IN" dbField="rd.document_code" paramName="doctype" />
                     <exp op="=" dbField="a.vendor_id" paramName="vendor" />
                     <exp op="=" dbField="a.agency_id" paramName="agency" />
-                    <exp op="=" dbField="a.scntrc_status">2</exp>
+                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="a.is_prime_or_sub">'P'</exp>
+                    <exp op="&lt;=" dbField="a.starting_year_id" paramName="year" />
+                    <exp op="&gt;=" dbField="a.ending_year_id" paramName="year" />
+                    <exp op="&lt;=" dbField="a.effective_begin_year_id" paramName="year" />
+                    <exp op="&gt;=" dbField="a.effective_end_year_id" paramName="year" />
                     <exp op="=" dbField="a.latest_flag">'Y'</exp>
+                    <exp op="=" dbField="a.scntrc_status">2</exp>
                 </exp>
             </where>
+            ORDER BY c.sort_order
         </sql>
     </statement>
 </statements>
