@@ -2171,7 +2171,8 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
     padding-top: 20px;
     vertical-align: top;
 }
-.dollar-amounts > h4{
+.dollar-amounts > h4,
+.dollar-amounts > ul{
     margin-left: 20px;
 }
 .oge-ca-details .contract-details{
