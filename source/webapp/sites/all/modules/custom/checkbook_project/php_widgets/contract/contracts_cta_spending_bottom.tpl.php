@@ -134,6 +134,7 @@ foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
     $current_amount = $vendor_summary['current_amount'];
 
     $open = $index_spending == 0 ? '' : 'open';
+    //$viewAll = (count($sub_contract_reference[$vendor]) > 1) ? "<a class='subContractViewAll'> View All»</a>" : '';
     //Main table columns
     $tbl_spending['body']['rows'][$index_spending]['columns'] = array(
         array('value' => "<a class='showHide " . $open . " expandTwo' ></a>" . $vendor, 'type' => 'text'),
