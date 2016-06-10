@@ -73,6 +73,7 @@ $tbl_spending['header']['title'] = "<h3>SPENDING BY SUB VENDOR</h3>";
 $tbl_spending['header']['columns'] = array(
     array('value' => WidgetUtil::generateLabelMappingNoDiv("sub_vendor_name"), 'type' => 'text'),
     array('value' => WidgetUtil::generateLabelMappingNoDiv("mwbe_category"), 'type' => 'text'),
+    array('value' => WidgetUtil::generateLabelMappingNoDiv("subvendor_status_pip"), 'type' => 'text'),
     array('value' => WidgetUtil::generateLabelMappingNoDiv("current_amount"), 'type' => 'number'),
     array('value' => WidgetUtil::generateLabelMappingNoDiv("original_amount"), 'type' => 'number'),
     array('value' => WidgetUtil::generateLabelMappingNoDiv("spent_to_date"), 'type' => 'number')
@@ -93,6 +94,19 @@ $total_current_amount = $res->data[0]['total_current_amt'];
 $total_original_amount = $res->data[0]['total_original_amt'];
 $total_spent_todate = $res->data[0]['total_spent_todate'];
 
+$querySubVendorStatusInPIP = "SELECT 
+        CASE WHEN sd.aprv_sta=4  
+            THEN (CASE WHEN payments.check_amount > 0 THEN 'ACCO Approved Subvendor' ELSE  'No Subcontract Payments Submitted by Prime' END )        
+            ELSE ss.aprv_sta_value END AS sub_vendor_status_pip
+    FROM subcontract_details sd
+        LEFT JOIN (SELECT contract_number, sub_contract_id ,sum(check_eft_amount) AS check_amount FROM subcontract_spending GROUP BY 1,2 ) payments 
+        ON sd.contract_number = payments.contract_number AND sd.sub_contract_id= payments.sub_contract_id 
+        LEFT JOIN subcontract_approval_status ss ON ss.aprv_sta_id = sd.aprv_sta
+    WHERE sd.latest_flag = 'Y'AND sd.contract_number = '".$contract_number."' LIMIT 1";
+
+$results5 = _checkbook_project_execute_sql_by_data_source($querySubVendorStatusInPIP,_get_current_datasource());
+$result->data = $results5;
+$subVendorStatusInPIP = $result->data[0]['sub_vendor_status_pip'];
 ?>
 <div class="dollar-amounts">
     <div class="spent-to-date"><?php echo custom_number_formatter_format($total_spent_todate, 2, "$");?>
@@ -124,6 +138,7 @@ foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
     $tbl_spending['body']['rows'][$index_spending]['columns'] = array(
         array('value' => "<a class='showHide " . $open . " expandTwo' ></a>" . $vendor, 'type' => 'text'),
         array('value' => MappingUtil::getMinorityCategoryById($vendor_summary['minority_type_id']), 'type' => 'text'),
+        array('value' => $subVendorStatusInPIP, 'type' => 'text'),
         array('value' => custom_number_formatter_format($current_amount, 2, '$'), 'type' => 'number'),
         array('value' => custom_number_formatter_format($original_amount, 2, '$'), 'type' => 'number'),
         array('value' => custom_number_formatter_format($vendor_summary['check_amount'], 2, '$'), 'type' => 'number')
