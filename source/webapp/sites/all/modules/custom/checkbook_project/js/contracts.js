@@ -40,7 +40,7 @@
                 
                 jQuery('a.subContractViewAll').live("click", function(event){
                     jQuery(this).parent().parent().siblings().find('a').click();
-                    if($(this).text() == ' View All>>'){
+                    if($(this).text() == 'View All>>'){
                         $(this).text('Hide All<<');
                     }else{
                         $(this).text('View All>>');
