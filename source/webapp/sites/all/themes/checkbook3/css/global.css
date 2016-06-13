@@ -2409,6 +2409,10 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
     font-size: 13px;
     font-weight: bold;
 }
+.dollar-amounts .left{
+    font-size: 13px;
+    padding-bottom: 5px;
+}
 .contract-information ul.left {
     display: block;
     float:left;
