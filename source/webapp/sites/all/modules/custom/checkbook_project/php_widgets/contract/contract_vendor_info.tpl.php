@@ -175,7 +175,7 @@ if (_getRequestParamValue("datasource") != "checkbook_oge") {
     $total_subvendor_count = $res->data[0]['sub_vendor_count'];
     
     $querySubVendorStatus = "SELECT CASE
-                                WHEN scntrc_status = 1 THEN 'No Data Entered'
+                                WHEN scntrc_status = 1 THEN 'NO DATA ENTERED'
                                 WHEN scntrc_status = 2 THEN 'YES'
                                 WHEN scntrc_status = 3 THEN 'NO'
                                 ELSE 'N/A'
@@ -195,9 +195,11 @@ if (_getRequestParamValue("datasource") != "checkbook_oge") {
     <h4>
         Sub Vendor Information
     </h4>
-    <?php  
+    <?php
+    if(_getRequestParamValue("doctype")=="CTA1" || _getRequestParamValue("doctype")=="CT1"){
         echo '<ul class="left"><li><span class="gi-list-item">Contract Includes Sub Vendor: </span>'.$subVendorStatus.'</li>';
         echo  '<li><span class="gi-list-item">Total Number of Sub Vendors: </span>'.$total_subvendor_count .'</li></ul>';
+    }
      ?>
     <div class="spent-to-date">
         <?php if(!preg_match('/newwindow/',$_GET['q'])){ ?>

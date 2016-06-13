@@ -134,12 +134,16 @@ foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
     $current_amount = $vendor_summary['current_amount'];
 
     $open = $index_spending == 0 ? '' : 'open';
-    //$viewAll = (count($sub_contract_reference[$vendor]) > 1) ? "<a class='subContractViewAll'> View All»</a>" : '';
+    if(count($sub_contract_reference[$vendor]) > 1 && $index_spending == 0){
+        $viewAll = "<a class='subContractViewAll'>Hide All<<</a>";
+    }else{
+        $viewAll = (count($sub_contract_reference[$vendor]) > 1) ? "<a class='subContractViewAll'>View All>></a>" : '';
+    }
     //Main table columns
     $tbl_spending['body']['rows'][$index_spending]['columns'] = array(
         array('value' => "<a class='showHide " . $open . " expandTwo' ></a>" . $vendor, 'type' => 'text'),
         array('value' => MappingUtil::getMinorityCategoryById($vendor_summary['minority_type_id']), 'type' => 'text'),
-        array('value' => $subVendorStatusInPIP, 'type' => 'text'),
+        array('value' => $subVendorStatusInPIP . $viewAll, 'type' => 'text'),
         array('value' => custom_number_formatter_format($current_amount, 2, '$'), 'type' => 'number'),
         array('value' => custom_number_formatter_format($original_amount, 2, '$'), 'type' => 'number'),
         array('value' => custom_number_formatter_format($vendor_summary['check_amount'], 2, '$'), 'type' => 'number')
