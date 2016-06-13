@@ -173,6 +173,18 @@ if (_getRequestParamValue("datasource") != "checkbook_oge") {
     $results3 = _checkbook_project_execute_sql_by_data_source($querySubVendorCount,_get_current_datasource());
     $res->data = $results3;
     $total_subvendor_count = $res->data[0]['sub_vendor_count'];
+    
+    $querySubVendorStatus = "SELECT CASE
+                                WHEN scntrc_status = 2 THEN 'YES'
+                                ELSE 'NO'
+                            END AS contract_subvendor_status
+                            FROM aggregateon_mwbe_contracts_cumulative_spending
+                            WHERE contract_number = '". $contract_number . "' LIMIT 1";
+    
+    $results6 = _checkbook_project_execute_sql_by_data_source($querySubVendorStatus,_get_current_datasource());
+    $res->data = $results6;
+    $subVendorStatus = $res->data[0]['contract_subvendor_status'];
+    
 
 }
 ?>
@@ -182,12 +194,8 @@ if (_getRequestParamValue("datasource") != "checkbook_oge") {
         Sub Vendor Information
     </h4>
     <?php  
-        if($total_subvendor_count > 0){ 
-            echo '<ul class="left"><li><span class="gi-list-item">Contract includes Sub Vendor: </span>YES</li>';
-            echo  '<li><span class="gi-list-item">Total Number of Sub Vendors: </span>'.$total_subvendor_count .'</li></ul>';
-        }else{
-            echo '<ul class="left"><li><span class="gi-list-item">Contract includes Sub Vendor: </span>NO</li></ul>';
-        } 
+        echo '<ul class="left"><li><span class="gi-list-item">Contract Includes Sub Vendor: </span>'.$subVendorStatus.'</li>';
+        echo  '<li><span class="gi-list-item">Total Number of Sub Vendors: </span>'.$total_subvendor_count .'</li></ul>';
      ?>
     <div class="spent-to-date">
         <?php if(!preg_match('/newwindow/',$_GET['q'])){ ?>
