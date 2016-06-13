@@ -3412,3 +3412,7 @@ div.payroll-year-month{
     color: #1F82C9;
     font-weight: normal;
 }
+a.subContractViewAll{
+    font-size:10px;
+    padding-left:5px;
+}

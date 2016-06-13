@@ -36,8 +36,17 @@
 			if(jQuery(this).hasClass("expandTwo")){
 				//jQuery(this).parent().parent().parent().next().next().toggle();
 			}
-		});		
-
+		});
+                
+                jQuery('a.subContractViewAll').live("click", function(event){
+                    jQuery(this).parent().parent().siblings().find('a').click();
+                    if($(this).text() == ' View All>>'){
+                        $(this).text('Hide All<<');
+                    }else{
+                        $(this).text('View All>>');
+                    }
+                });
+                       
 	    $('#master_assoc_cta_expand').live( 'click', function () {
 	        var nTr = this.parentNode.parentNode;
 	        if ( jQuery(this).attr('class').match('loader') ){
