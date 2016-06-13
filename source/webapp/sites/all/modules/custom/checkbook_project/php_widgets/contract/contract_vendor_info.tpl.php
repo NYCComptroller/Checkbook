@@ -175,8 +175,10 @@ if (_getRequestParamValue("datasource") != "checkbook_oge") {
     $total_subvendor_count = $res->data[0]['sub_vendor_count'];
     
     $querySubVendorStatus = "SELECT CASE
+                                WHEN scntrc_status = 1 THEN 'No Data Entered'
                                 WHEN scntrc_status = 2 THEN 'YES'
-                                ELSE 'NO'
+                                WHEN scntrc_status = 3 THEN 'NO'
+                                ELSE 'N/A'
                             END AS contract_subvendor_status
                             FROM aggregateon_mwbe_contracts_cumulative_spending
                             WHERE contract_number = '". $contract_number . "' AND fiscal_year_id = "._getCurrentYearID()." LIMIT 1";
