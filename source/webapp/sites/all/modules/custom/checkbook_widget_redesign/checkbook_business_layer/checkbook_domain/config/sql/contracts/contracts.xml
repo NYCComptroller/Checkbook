@@ -579,11 +579,11 @@
             a.agency_name,
             CASE WHEN a.vendor_name IS NULL THEN 'N/A' ELSE a.vendor_name END AS vendor_name,
             CASE WHEN b.vendor_name IS NULL THEN 'NOT PROVIDED' ELSE b.vendor_name END AS sub_vendor,
-            b.aprv_sta_name as aprv_status_value
+            c.aprv_sta_value as aprv_status_value
             FROM all_agreement_transactions a
             LEFT JOIN
             (
-                SELECT a.original_agreement_id, a.contract_number, a.vendor_name,a.aprv_sta as aprv_sta_id,a.aprv_sta_name
+                SELECT a.original_agreement_id, a.contract_number, a.vendor_name,a.aprv_sta as aprv_sta_id
                 FROM all_agreement_transactions a
                 <where>
                     <exp op="AND">
@@ -595,7 +595,7 @@
                     </exp>
                 </where>
             ) b on b.contract_number = a.contract_number
-            LEFT JOIN subcontract_approval_status c ON c.aprv_sta_id = b.aprv_sta_id
+            LEFT JOIN subcontract_approval_status c ON c.aprv_sta_id = COALESCE(b.aprv_sta_id,6)
             JOIN ref_document_code rd ON rd.document_code_id = a.document_code_id
             <where>
                 <exp op="AND">
