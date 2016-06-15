@@ -587,7 +587,6 @@
                 FROM all_agreement_transactions a
                 <where>
                     <exp op="AND">
-                        <exp op="=" dbField="a.vendor_id" paramName="vendor" />
                         <exp op="=" dbField="a.agency_id" paramName="agency" />
                         <exp op="=" dbField="a.is_prime_or_sub">'S'</exp>
                         <exp op="=" dbField="a.latest_flag">'Y'</exp>
@@ -599,7 +598,7 @@
             JOIN ref_document_code rd ON rd.document_code_id = a.document_code_id
             <where>
                 <exp op="AND">
-                    <exp op="=" dbField="a.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
                     <exp op="=" dbField="a.agency_id" paramName="agency" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="a.is_prime_or_sub">'P'</exp>
