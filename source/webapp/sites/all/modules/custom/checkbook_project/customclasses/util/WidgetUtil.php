@@ -202,6 +202,7 @@ class WidgetUtil
     	"prime_vendor_address"=>"Prime Vendor<br/>Address",
         "percent_spending"=>"%<br/>Spending",
         "sub_vendor_name"=>"Sub<br/>Vendor",
+        "sub_vendor_nowrap"=>"Sub Vendor",
         "is_sub_vendor"=>"Sub<br/>Vendor",
         "industry_name"=>"Industry",
         "sub_contract_reference_id"=>"Sub Contract<br/>Reference ID",
