@@ -610,7 +610,7 @@
                     <exp op="=" dbField="a.scntrc_status">2</exp>
                 </exp>
             </where>
-            ORDER BY c.sort_order
+            ORDER BY c.sort_order,a.original_agreement_id
         </sql>
     </statement>
 </statements>
