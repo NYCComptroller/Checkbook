@@ -47,6 +47,7 @@ foreach ($node->results_contract_history as $contract_row) {
         if (!isset($vendor_contract_summary[$contract_row['legal_name']]['minority_type_id'])) {
             $vendor_contract_summary[$contract_row['legal_name']]['minority_type_id'] = $contract_row['minority_type_id'];
         }
+        $vendor_contract_summary[$contract_row['legal_name']]['sub_vendor_id'] =  $contract_row['vendor_id'];
     }
 
 }
@@ -104,20 +105,6 @@ $res->data = $results4;
 $total_current_amount = $res->data[0]['total_current_amt'];
 $total_original_amount = $res->data[0]['total_original_amt'];
 $total_spent_todate = $res->data[0]['total_spent_todate'];
-
-$querySubVendorStatusInPIP = "SELECT 
-        CASE WHEN sd.aprv_sta=4  
-            THEN (CASE WHEN payments.check_amount > 0 THEN 'ACCO Approved Subvendor' ELSE  'No Subcontract Payments Submitted by Prime' END )        
-            ELSE ss.aprv_sta_value END AS sub_vendor_status_pip
-    FROM subcontract_details sd
-        LEFT JOIN (SELECT contract_number, sub_contract_id ,sum(check_eft_amount) AS check_amount FROM subcontract_spending GROUP BY 1,2 ) payments 
-        ON sd.contract_number = payments.contract_number AND sd.sub_contract_id= payments.sub_contract_id 
-        LEFT JOIN subcontract_approval_status ss ON ss.aprv_sta_id = sd.aprv_sta
-    WHERE sd.latest_flag = 'Y'AND sd.contract_number = '".$contract_number."' LIMIT 1";
-
-$results5 = _checkbook_project_execute_sql_by_data_source($querySubVendorStatusInPIP,_get_current_datasource());
-$result->data = $results5;
-$subVendorStatusInPIP = $result->data[0]['sub_vendor_status_pip'];
 ?>
 <div class="dollar-amounts">
     <div class="spent-to-date"><?php echo custom_number_formatter_format($total_spent_todate, 2, "$");?>
@@ -138,20 +125,36 @@ $subVendorStatusInPIP = $result->data[0]['sub_vendor_status_pip'];
 </div>
 <?php
 $index_spending = 0;
-
 foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
-
+    
     $original_amount = $vendor_summary['original_amount'];
     $current_amount = $vendor_summary['current_amount'];
 
     $open = $index_spending == 0 ? '' : 'open';
-    if(count($sub_contract_reference[$vendor]) > 1 && $index_spending == 0){
-        $viewAll = "<a class='subContractViewAll'>Hide All<<</a>";
-    }else{
-        $viewAll = (count($sub_contract_reference[$vendor]) > 1) ? "<a class='subContractViewAll'>View All>></a>" : '';
-    }
+    
     //Main table columns
+    
     if(_getRequestParamValue("doctype")=="CT1" || _getRequestParamValue("doctype")=="CTA1"){
+        
+        $querySubVendorStatusInPIP = "SELECT
+                                        c.aprv_sta_id, c.aprv_sta_value AS sub_vendor_status_pip
+                                    FROM sub_agreement_snapshot a
+                                    LEFT JOIN subcontract_approval_status c ON c.aprv_sta_id = COALESCE(a.aprv_sta,6)
+                                    WHERE a.latest_flag = 'Y'
+                                    AND a.contract_number = '". $contract_number 
+                                    ."' AND a.vendor_id = ". $vendor_summary['sub_vendor_id']
+                                    . " ORDER BY c.sort_order ASC LIMIT 1";
+
+        $results5 = _checkbook_project_execute_sql_by_data_source($querySubVendorStatusInPIP,_get_current_datasource());
+        $result->data = $results5;
+        $subVendorStatusInPIP = $result->data[0]['sub_vendor_status_pip'];
+
+        if(count($sub_contract_reference[$vendor]) > 1 && $index_spending == 0){
+            $viewAll = "<a class='subContractViewAll'>Hide All<<</a>";
+        }else{
+            $viewAll = (count($sub_contract_reference[$vendor]) > 1) ? "<a class='subContractViewAll'>View All>></a>" : '';
+        }
+        
         $tbl_spending['body']['rows'][$index_spending]['columns'] = array(
             array('value' => "<a class='showHide " . $open . " expandTwo' ></a>" . $vendor, 'type' => 'text'),
             array('value' => MappingUtil::getMinorityCategoryById($vendor_summary['minority_type_id']), 'type' => 'text'),
