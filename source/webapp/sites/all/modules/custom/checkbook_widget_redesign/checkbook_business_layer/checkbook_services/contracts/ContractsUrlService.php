@@ -31,7 +31,7 @@ class ContractsUrlService {
         return $url;
     }
 
-    static function vendorUrl($vendor_id,$minority_type_id,$is_prime_or_sub) {
+    static function vendorUrl($vendor_id,$agency_id,$year_id,$year_type,$minority_type_id,$is_prime_or_sub) {
 
         $url = _checkbook_project_get_url_param_string("agency")
             . _checkbook_project_get_url_param_string("contstatus","status")
@@ -40,7 +40,7 @@ class ContractsUrlService {
             . _checkbook_project_get_url_param_string("awdmethod")
             . _checkbook_project_get_year_url_param_string();
 
-        $latest_minority_id = ContractUtil::getLatestMwbeCategoryByVendor($vendor_id, $is_prime_or_sub);
+        $latest_minority_id = ContractUtil::getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type, $is_prime_or_sub);
         $latest_minority_id = isset($latest_minority_id) ? $latest_minority_id : $minority_type_id;
         $is_mwbe_certified = MappingUtil::isMWBECertified(array($latest_minority_id));
         $dashboard= _getRequestParamValue("dashboard");
@@ -74,6 +74,20 @@ class ContractsUrlService {
 
     static function contractsFooterUrl() {
         $url = '/panel_html/contract_details/contract/transactions/contcat/expense'
+            . _checkbook_project_get_url_param_string('status','contstatus')
+            . _checkbook_append_url_params()
+            . _checkbook_project_get_url_param_string('agency')
+            . _checkbook_project_get_url_param_string('vendor')
+            . _checkbook_project_get_url_param_string("vendor","fvendor")
+            . _checkbook_project_get_url_param_string('awdmethod')
+            . _checkbook_project_get_url_param_string('csize')
+            . _checkbook_project_get_url_param_string('cindustry')
+            . _checkbook_project_get_year_url_param_string();
+        return $url;
+    }
+
+    static function subContractsFooterUrl() {
+        $url = '/panel_html/sub_contracts_transactions/subcontract/transactions/contcat/expense'
             . _checkbook_project_get_url_param_string('status','contstatus')
             . _checkbook_append_url_params()
             . _checkbook_project_get_url_param_string('agency')
