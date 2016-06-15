@@ -587,7 +587,7 @@
                 FROM all_agreement_transactions a
                 <where>
                     <exp op="AND">
-                        <exp op="=" dbField="a.agency_id" paramName="agency" />
+                        <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
                         <exp op="=" dbField="a.is_prime_or_sub">'S'</exp>
                         <exp op="=" dbField="a.latest_flag">'Y'</exp>
                         <exp op="=" dbField="a.scntrc_status">0</exp>
