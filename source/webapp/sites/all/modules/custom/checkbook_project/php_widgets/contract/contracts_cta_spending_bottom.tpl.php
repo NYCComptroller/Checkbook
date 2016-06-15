@@ -70,14 +70,25 @@ foreach ($node->results_spending as $spending_row) {
 
 //Main table header
 $tbl_spending['header']['title'] = "<h3>SPENDING BY SUB VENDOR</h3>";
-$tbl_spending['header']['columns'] = array(
-    array('value' => WidgetUtil::generateLabelMappingNoDiv("sub_vendor_name"), 'type' => 'text'),
-    array('value' => WidgetUtil::generateLabelMappingNoDiv("mwbe_category"), 'type' => 'text'),
-    array('value' => WidgetUtil::generateLabelMappingNoDiv("subvendor_status_pip"), 'type' => 'text'),
-    array('value' => WidgetUtil::generateLabelMappingNoDiv("current_amount"), 'type' => 'number'),
-    array('value' => WidgetUtil::generateLabelMappingNoDiv("original_amount"), 'type' => 'number'),
-    array('value' => WidgetUtil::generateLabelMappingNoDiv("spent_to_date"), 'type' => 'number')
-);
+dsm(_getRequestParamValue("doctype")=="CT1");
+if(_getRequestParamValue("doctype")=="CT1" || _getRequestParamValue("doctype")=="CTA1"){
+    $tbl_spending['header']['columns'] = array(
+        array('value' => WidgetUtil::generateLabelMappingNoDiv("sub_vendor_name"), 'type' => 'text'),
+        array('value' => WidgetUtil::generateLabelMappingNoDiv("mwbe_category"), 'type' => 'text'),
+        array('value' => WidgetUtil::generateLabelMappingNoDiv("subvendor_status_pip"), 'type' => 'text'),
+        array('value' => WidgetUtil::generateLabelMappingNoDiv("current_amount"), 'type' => 'number'),
+        array('value' => WidgetUtil::generateLabelMappingNoDiv("original_amount"), 'type' => 'number'),
+        array('value' => WidgetUtil::generateLabelMappingNoDiv("spent_to_date"), 'type' => 'number')
+    );
+}else{
+   $tbl_spending['header']['columns'] = array(
+        array('value' => WidgetUtil::generateLabelMappingNoDiv("sub_vendor_name"), 'type' => 'text'),
+        array('value' => WidgetUtil::generateLabelMappingNoDiv("mwbe_category"), 'type' => 'text'),
+        array('value' => WidgetUtil::generateLabelMappingNoDiv("current_amount"), 'type' => 'number'),
+        array('value' => WidgetUtil::generateLabelMappingNoDiv("original_amount"), 'type' => 'number'),
+        array('value' => WidgetUtil::generateLabelMappingNoDiv("spent_to_date"), 'type' => 'number')
+    ); 
+}
 
 $contract_number = $node->results_contract_history[0]['contract_number'];
 
@@ -140,14 +151,24 @@ foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
         $viewAll = (count($sub_contract_reference[$vendor]) > 1) ? "<a class='subContractViewAll'>View All>></a>" : '';
     }
     //Main table columns
-    $tbl_spending['body']['rows'][$index_spending]['columns'] = array(
-        array('value' => "<a class='showHide " . $open . " expandTwo' ></a>" . $vendor, 'type' => 'text'),
-        array('value' => MappingUtil::getMinorityCategoryById($vendor_summary['minority_type_id']), 'type' => 'text'),
-        array('value' => $subVendorStatusInPIP . $viewAll, 'type' => 'text'),
-        array('value' => custom_number_formatter_format($current_amount, 2, '$'), 'type' => 'number'),
-        array('value' => custom_number_formatter_format($original_amount, 2, '$'), 'type' => 'number'),
-        array('value' => custom_number_formatter_format($vendor_summary['check_amount'], 2, '$'), 'type' => 'number')
-    );
+    if(_getRequestParamValue("doctype")=="CT1" || _getRequestParamValue("doctype")=="CTA1"){
+        $tbl_spending['body']['rows'][$index_spending]['columns'] = array(
+            array('value' => "<a class='showHide " . $open . " expandTwo' ></a>" . $vendor, 'type' => 'text'),
+            array('value' => MappingUtil::getMinorityCategoryById($vendor_summary['minority_type_id']), 'type' => 'text'),
+            array('value' => $subVendorStatusInPIP . $viewAll, 'type' => 'text'),
+            array('value' => custom_number_formatter_format($current_amount, 2, '$'), 'type' => 'number'),
+            array('value' => custom_number_formatter_format($original_amount, 2, '$'), 'type' => 'number'),
+            array('value' => custom_number_formatter_format($vendor_summary['check_amount'], 2, '$'), 'type' => 'number')
+        );
+    }else{
+        $tbl_spending['body']['rows'][$index_spending]['columns'] = array(
+            array('value' => "<a class='showHide " . $open . " expandTwo' ></a>" . $vendor, 'type' => 'text'),
+            array('value' => MappingUtil::getMinorityCategoryById($vendor_summary['minority_type_id']), 'type' => 'text'),
+            array('value' => custom_number_formatter_format($current_amount, 2, '$'), 'type' => 'number'),
+            array('value' => custom_number_formatter_format($original_amount, 2, '$'), 'type' => 'number'),
+            array('value' => custom_number_formatter_format($vendor_summary['check_amount'], 2, '$'), 'type' => 'number')
+        );
+    }
 
     /* SUB CONTRACT REFERENCE ID*/
     $index_sub_contract_reference = 0;
