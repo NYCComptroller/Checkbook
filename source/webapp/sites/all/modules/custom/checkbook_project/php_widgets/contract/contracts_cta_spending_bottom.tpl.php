@@ -70,7 +70,7 @@ foreach ($node->results_spending as $spending_row) {
 
 //Main table header
 $tbl_spending['header']['title'] = "<h3>SPENDING BY SUB VENDOR</h3>";
-dsm(_getRequestParamValue("doctype")=="CT1");
+
 if(_getRequestParamValue("doctype")=="CT1" || _getRequestParamValue("doctype")=="CTA1"){
     $tbl_spending['header']['columns'] = array(
         array('value' => WidgetUtil::generateLabelMappingNoDiv("sub_vendor_name"), 'type' => 'text'),
