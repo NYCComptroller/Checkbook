@@ -31,20 +31,19 @@
 	}
 	    
 		$("a.showHide").live("click", function(event){
-			$(this).toggleClass('open');
-			jQuery(this).parent().parent().parent().next().toggle();
-			if(jQuery(this).hasClass("expandTwo")){
-				//jQuery(this).parent().parent().parent().next().next().toggle();
-			}
+                    $(this).toggleClass('open');
+                    jQuery(this).parent().parent().parent().next().toggle();
+                    if(jQuery('a.showHide').parent().parent().siblings().find('a').length){
+                        if(jQuery(this).hasClass("open")){
+                           jQuery('a.showHide').parent().parent().siblings().find('a').text('View All>>');
+                        }else{
+                           jQuery('a.showHide').parent().parent().siblings().find('a').text('Hide All<<');
+                        }
+                    }
 		});
                 
                 jQuery('a.subContractViewAll').live("click", function(event){
                     jQuery(this).parent().parent().siblings().find('a').click();
-                    if($(this).text() == 'View All>>'){
-                        $(this).text('Hide All<<');
-                    }else{
-                        $(this).text('View All>>');
-                    }
                 });
                        
 	    $('#master_assoc_cta_expand').live( 'click', function () {
