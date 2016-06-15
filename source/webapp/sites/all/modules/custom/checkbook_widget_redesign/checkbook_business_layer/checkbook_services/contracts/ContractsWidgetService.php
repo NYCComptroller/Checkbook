@@ -32,7 +32,9 @@ class ContractsWidgetService extends AbstractWidgetService {
 
             case "vendor_name_link":
                 $column = $row['vendor_name'];
-                $url = ContractsUrlService::vendorUrl($row['vendor_id'], $row['minority_type_id'], $row['is_prime_or_sub']);
+                $year_id = _getRequestParamValue("year");
+                $year_type = _getRequestParamValue("yeartype");
+                $url = ContractsUrlService::vendorUrl($row['vendor_id'], $row['agency_id'], $year_id, $year_type, $row['minority_type_id'], $row['is_prime_or_sub']);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
 
