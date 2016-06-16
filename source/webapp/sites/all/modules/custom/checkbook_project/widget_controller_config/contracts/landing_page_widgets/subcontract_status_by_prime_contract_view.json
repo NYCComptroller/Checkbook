@@ -3,7 +3,8 @@
     {
         "serviceName":"ContractsWidgetService",
         "sqlConfigName":"contracts/contracts",
-        "statementName":"GetSubvendorStatusByPrimeContractID"
+        "statementName":"GetSubvendorStatusByPrimeContractID",
+        "countStatementName":"GetCountSubvendorStatusByPrimeContractID"
     },
     "defaultParameters":{"doctype":"'CTA1'~'CT1'~'CT2'"},
     "table_title":"Summary of Sub Contract Status by Prime Contract ID",
