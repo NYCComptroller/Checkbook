@@ -3416,3 +3416,6 @@ a.subContractViewAll{
     font-size:10px;
     padding-left:5px;
 }
+span.subContractStatus {
+    padding-left: 67px;
+}
