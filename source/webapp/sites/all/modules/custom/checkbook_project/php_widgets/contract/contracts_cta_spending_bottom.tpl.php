@@ -178,10 +178,25 @@ foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
     $tbl_subcontract_reference = array();
 
     foreach($sub_contract_reference[$vendor] as $reference_id => $value){
+        $querySubContractStatusInPIP = "SELECT
+                                        c.aprv_sta_id, c.aprv_sta_value AS sub_contract_status_pip
+                                    FROM sub_agreement_snapshot a
+                                    LEFT JOIN subcontract_approval_status c ON c.aprv_sta_id = COALESCE(a.aprv_sta,6)
+                                    WHERE a.latest_flag = 'Y'
+                                    AND a.contract_number = '". $contract_number 
+                                    ."' AND a.vendor_id = ". $vendor_summary['sub_vendor_id']
+                                    ."  AND a.sub_contract_id ='".$reference_id
+                                    . "' ORDER BY c.sort_order ASC LIMIT 1";
+
+        $results6 = _checkbook_project_execute_sql_by_data_source($querySubContractStatusInPIP,_get_current_datasource());
+        $result->data = $results6;
+        $subContractStatusInPIP = $result->data[0]['sub_contract_status_pip'];
+
         $ref_id = $reference_id;
         $open = $index_sub_contract_reference == 0 ? '' : 'open';
         $tbl_subcontract_reference['body']['rows'][$index_sub_contract_reference]['columns'] = array(
-            array('value' => "<a class='showHide " . $open . " expandTwo' ></a>SUB CONTRACT REFERENCE ID: " . $ref_id, 'type' => 'text'),
+            array('value' => "<a class='showHide " . $open . " expandTwo' ></a>SUB CONTRACT REFERENCE ID: " . $ref_id . "<span class='subContractStatus'>".$subContractStatusInPIP."</span>"
+                , 'type' => 'text'),
         );
 
 
