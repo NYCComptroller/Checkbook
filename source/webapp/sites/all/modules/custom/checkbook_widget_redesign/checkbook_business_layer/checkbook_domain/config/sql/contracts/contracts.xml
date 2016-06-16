@@ -608,6 +608,7 @@
                     <exp op="&gt;=" dbField="a.effective_end_year_id" paramName="year" />
                     <exp op="=" dbField="a.latest_flag">'Y'</exp>
                     <exp op="=" dbField="a.scntrc_status">2</exp>
+                    <exp op="IN" dbField="rd.document_code" paramName="doctype" />
                 </exp>
             </where>
             ORDER BY c.sort_order,a.original_agreement_id
@@ -652,6 +653,7 @@
                     <exp op="&gt;=" dbField="a.effective_end_year_id" paramName="year" />
                     <exp op="=" dbField="a.latest_flag">'Y'</exp>
                     <exp op="=" dbField="a.scntrc_status">2</exp>
+                    <exp op="IN" dbField="rd.document_code" paramName="doctype" />
                 </exp>
             </where>
         </sql>
