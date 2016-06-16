@@ -197,7 +197,7 @@ if (_getRequestParamValue("datasource") != "checkbook_oge") {
     </h4>
     <?php
     if(_getRequestParamValue("doctype")=="CTA1" || _getRequestParamValue("doctype")=="CT1"){
-        echo '<ul class="left"><li><span class="gi-list-item">Contract Includes Sub Vendor: </span>'.$subVendorStatus.'</li>';
+        echo '<ul class="left"><li><span class="gi-list-item">Contract Includes Sub Vendors: </span>'.$subVendorStatus.'</li>';
         echo  '<li><span class="gi-list-item">Total Number of Sub Vendors: </span>'.$total_subvendor_count .'</li></ul>';
     }
      ?>
