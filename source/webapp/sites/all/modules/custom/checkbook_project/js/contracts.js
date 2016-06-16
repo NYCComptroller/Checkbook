@@ -33,11 +33,11 @@
 		$("a.showHide").live("click", function(event){
                     $(this).toggleClass('open');
                     jQuery(this).parent().parent().parent().next().toggle();
-                    if(jQuery('a.showHide').parent().parent().siblings().find('a').length){
+                    if(jQuery(this).parent().parent().siblings().find('a').length){
                         if(jQuery(this).hasClass("open")){
-                           jQuery('a.showHide').parent().parent().siblings().find('a').text('View All>>');
+                           jQuery(this).parent().parent().siblings().find('a').text('View All>>');
                         }else{
-                           jQuery('a.showHide').parent().parent().siblings().find('a').text('Hide All<<');
+                           jQuery(this).parent().parent().siblings().find('a').text('Hide All<<');
                         }
                     }
 		});
