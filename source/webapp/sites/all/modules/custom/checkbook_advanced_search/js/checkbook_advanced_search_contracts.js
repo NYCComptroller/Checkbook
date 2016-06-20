@@ -207,6 +207,66 @@
                 div.ele('sub_vendor_status').removeAttr("disabled");
             }
         }
+
+        //On change of "Contract Includes Sub Vendors" status - NYCCHKBK-6187
+        div_checkbook_contracts.ele('includes_sub_vendors').change(function() {
+            onIncludeSubvendorChange(div_checkbook_contracts);
+        });
+        function onIncludeSubvendorChange(div) {
+            updateSubvendorStatusField(div);
+        }
+
+        function updateSubvendorStatusField(div) {
+            var includes_sub_vendors = div.ele('includes_sub_vendors').val();
+
+            if(includes_sub_vendors == 3 || includes_sub_vendors == 1) {
+                div.ele('sub_vendor_status').attr("disabled", "disabled");
+                div.ele('sub_vendor_status').val('');
+            } else{
+                div.ele('sub_vendor_status').removeAttr("disabled");
+            }
+        }
+
+        //On change of "Sub Vendor Status in PIP" status -  NYCCHKBK-6187
+        div_checkbook_contracts.ele('sub_vendor_status').change(function() {
+            onSubvendorStatusChange(div_checkbook_contracts);
+        });
+
+        function onSubvendorStatusChange(div) {
+            updateIncludeSubvendorsField(div);
+        }
+
+        function updateIncludeSubvendorsField(div) {
+            var sub_vendor_status = div.ele('sub_vendor_status').val();
+            var includes_sub_vendors = div.ele('includes_sub_vendors').val();
+
+            if(sub_vendor_status == 6 || sub_vendor_status == 1 || sub_vendor_status == 4 || sub_vendor_status == 3 || sub_vendor_status == 2 || sub_vendor_status == 5 ) {
+                if(includes_sub_vendors == 2){
+                    div.ele('includes_sub_vendors').html('<option value="0">Select Status</option>' +
+                        '<option value="2" selected>Yes</option>');
+                } else {
+                    div.ele('includes_sub_vendors').html('<option value="0" selected>Select Status</option>' +
+                        '<option value="2">Yes</option>');
+                }
+            } else {
+                    if(includes_sub_vendors == 2){
+                        div.ele('includes_sub_vendors').html('<option value="0">Select Status</option>' +
+                            '<option value="2" selected>Yes</option>' +
+                            '<option value="3">No</option>' +
+                            '<option value="1">No Data Entered</option>');
+                    } else {
+                        div.ele('includes_sub_vendors').html('<option value="0" selected>Select Status</option>' +
+                            '<option value="2">Yes</option>' +
+                            '<option value="3">No</option>' +
+                            '<option value="1">No Data Entered</option>');
+                    }
+            }
+            jQuery("#edit-contracts-clear").click(function() {
+                div.ele('includes_sub_vendors').html('<option value="0" selected>Select Status</option>' +
+                    '<option value="2">Yes</option>' +
+                    '<option value="3">No</option>' +
+                    '<option value="1">No Data Entered</option>');
+            });
+        }
     })
 }(jQuery));
-
