@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: atorkelson
- * Date: 4/8/16
- * Time: 3:06 PM
- */
 
 class SqlConfig {
     public $sqlConfigName;
@@ -14,41 +8,58 @@ class SqlConfig {
 
 abstract class AbstractWidgetService implements IWidgetService {
 
+    private $sqlConfigPath;
+    private $statementName;
+    private $countStatementName;
     private $repository;
-    private $sqlConfig;
 
     function __construct($sqlConfig) {
-        $this->sqlConfig = $sqlConfig;
-        $this->repository = new WidgetRepository($sqlConfig);
+        $this->repository = new SqlEntityRepository($sqlConfig);
+        $this->sqlConfigPath = $sqlConfig->sqlConfigName;
+        $this->statementName = $sqlConfig->statementName;
+        $this->countStatementName = $sqlConfig->countStatementName;
     }
 
-    public function getWidgetData($parameters, $limit, $orderBy) {
-        // 1. Call Repository
-        $data = $this->repository->getWidgetData($parameters, $limit, $orderBy);
+    /**
+     * Returns the data after executing the Sql
+     * @param $parameters
+     * @param $limit
+     * @param $orderBy
+     * @param null $statementName
+     * @param null $sqlConfigPath
+     * @return mixed
+     */
+    public function getWidgetData($parameters, $limit, $orderBy, $statementName = null, $sqlConfigPath = null) {
+        $sqlConfigPath = $sqlConfigPath ?: $this->sqlConfigPath;
+        $statementName = $statementName ?: $this->statementName;
+        $data = $this->repository->getData($parameters, $limit, $orderBy, $statementName, $sqlConfigPath);
         return $data;
     }
 
-    public function getWidgetDataCount($parameters) {
-        // 1. Call Repository
-        $data = $this->repository->getTotalRowCount($parameters);
+    /**
+     * Returns the count of data after executing the Sql
+     * @param $parameters
+     * @param null $statementName
+     * @param null $sqlConfigPath
+     * @return mixed
+     */
+    public function getWidgetDataCount($parameters, $statementName = null, $sqlConfigPath = null) {
+        $sqlConfigPath = $sqlConfigPath ?: $this->sqlConfigPath;
+        $statementName = $statementName ?: $this->statementName;
+        $data = $this->repository->getDataCount($parameters, $statementName, $sqlConfigPath);
         return $data;
     }
 
+    /**
+     * Returns count for widget header using $countStatementName statement or default row count
+     * @param $parameters
+     * @return mixed|null
+     */
     public function getWidgetHeaderCount($parameters) {
-        // 1. Call Repository
-        $count = $this->repository->getHeaderCount($parameters);
-        return $count;
-    }
-
-    public function implementDerivedColumns($data) {
-        foreach($data as $row_key => $row_value) {
-            foreach($row_value as $col_key => $col_value) {
-                $value = $this->implDerivedColumn($col_key,$row_value);
-                if(isset($value)) {
-                    $data[$row_key][$col_key] = $value;
-                }
-            }
+        if(!isset($this->countStatementName)) {
+            return null;
         }
+        $data = $this->repository->getDataCount($parameters, $this->countStatementName, $this->sqlConfigPath);
         return $data;
     }
 
