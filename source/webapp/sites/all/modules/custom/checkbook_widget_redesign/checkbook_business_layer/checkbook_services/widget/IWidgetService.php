@@ -7,8 +7,8 @@
  */
 
 interface IWidgetService {
-    public function getWidgetData($parameters, $limit, $order_by);
-    public function getWidgetDataCount($parameters);
+    public function getWidgetData($parameters, $limit, $orderBy, $sqlConfigPath = null, $statementName = null);
+    public function getWidgetDataCount($parameters, $sqlConfigPath = null, $statementName = null);
     public function getWidgetHeaderCount($parameters);
-    public function implementDerivedColumns($data);
+    public function implDerivedColumn($column_name,$row);
 } 
