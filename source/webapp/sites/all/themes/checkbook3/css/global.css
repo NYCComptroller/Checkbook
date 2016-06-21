@@ -1160,6 +1160,90 @@ span.dollars{
 #nyc-spending .nyc_totals_links td{
     width:16.66%;
 }
+
+/*subvendors */
+.nyc_subvendors_totals_links table{
+    width:100%;
+}
+.nyc_subvendors_totals_links table tbody{
+    border:none;
+}
+.nyc_subvendors_totals_links td{
+    border: 1px solid #c5c5c5;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    text-align: center;
+    margin:0;
+    padding: 0;
+    background-color: #f4f4f4;
+    text-transform: none;
+    font-style: italic;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 1.5em;
+    vertical-align: baseline;
+    width:33%;
+}
+.nyc_subvendors_totals_links{
+    color:#596c7d;
+    cursor:default;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+}
+.nyc_subvendors_totals_links a,
+.nyc_subvendors_totals_links a:link,
+.nyc_subvendors_totals_links a:visited,
+.nyc_subvendors_totals_links a:hover {
+    color: #596c7d;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    display: block;
+    padding: 2px 10px;
+}
+.nyc_subvendors_totals_links .count a,
+.nyc_subvendors_totals_links .dollars a,
+.nyc_subvendors_totals_links .count a:link,
+.nyc_subvendors_totals_links .dollars a:link,
+.nyc_subvendors_totals_links .count a:visited,
+.nyc_subvendors_totals_links .dollars a:visited,
+.nyc_subvendors_totals_links .count a:hover,
+.nyc_subvendors_totals_links .dollars a:hover {
+    color: #596c7d;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: normal;
+}
+.nyc_subvendors_totals_links td.active a{
+    color:#ffffff;
+    text-shadow: 1px 2px #1A88CF;
+    display: block;
+    padding: 2px 10px;
+}
+.nyc_subvendors_totals_links td.active{
+    background: url("../images/active-tile2.png") repeat-x 0 0 #25a9dc;
+    border: 1px solid #0071bc;
+}
+.nyc_subvendors_totals_links td.active div.indicator{
+    background:url("../images/blue-carrot.png") no-repeat center 0;
+    height: 10px;
+    margin-bottom: -10px;
+    top: 0;
+}
+#node-widget-737 .nyc_subvendors_totals_links a,
+#node-widget-737 .nyc_subvendors_totals_links a:link,
+#node-widget-737 .nyc_subvendors_totals_links a:visited,
+#node-widget-737 .nyc_subvendors_totals_links a:hover{
+    padding: 7px 0px;
+}
+#node-widget-737 .nyc_subvendors_totals_links td{
+    width:33%;
+}
+/* subvendors end */
+
 a.bottomContainerToggle {
     margin-top: 15px;
     float: right;
