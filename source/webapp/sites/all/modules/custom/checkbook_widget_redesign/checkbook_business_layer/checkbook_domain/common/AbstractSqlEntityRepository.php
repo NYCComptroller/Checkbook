@@ -47,8 +47,9 @@ abstract class AbstractSqlEntityRepository implements ISqlEntityRepository {
     private function _getData($parameters, $limit, $order_by, $statementName, $sqlConfigPath)
     {
         try {
+            $sqlUtil = new SqlUtil();
             $this->sqlModel = SqlModelFactory::getSqlStatementModel($parameters, $limit, $order_by, $sqlConfigPath, $statementName);
-            $results = SqlUtil::executeSqlQuery($this->sqlModel);
+            $results = $sqlUtil->executeSqlQuery($this->sqlModel);
         }
         catch (Exception $e) {
             log_error("Error in function SqlRepository::getData() \nError getting data from controller: \n" . $e->getMessage());
@@ -68,9 +69,9 @@ abstract class AbstractSqlEntityRepository implements ISqlEntityRepository {
     private function _getDataCount($parameters, $statementName, $sqlConfigPath)
     {
         try {
-            $test = new SqlUtil();
+            $sqlUtil = new SqlUtil();
             $this->sqlModel = SqlModelFactory::getSqlStatementModel($parameters, null, null, $sqlConfigPath, $statementName);
-            $results = SqlUtil::executeCountSqlQuery($this->sqlModel);
+            $results = $sqlUtil->executeCountSqlQuery($this->sqlModel);
         }
         catch (Exception $e) {
             log_error("Error in function SqlRepository::_getDataCount() \nError getting data from controller: \n" . $e->getMessage());

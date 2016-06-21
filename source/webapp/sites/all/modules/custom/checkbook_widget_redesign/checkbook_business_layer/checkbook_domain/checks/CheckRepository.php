@@ -30,7 +30,8 @@ class CheckRepository {
         try {
             $type = "checks";
             $statement = "GetCityWideChecks";
-            $results = SqlUtil::buildExecuteSqlQuery($statement, $parameters, $limit, $order_by, $type);
+            $sqlUtil = new SqlUtil();
+            $results = $sqlUtil->buildExecuteSqlQuery($statement, $parameters, $limit, $order_by, $type);
         }
         catch (Exception $e) {
             log_error("Error in function GetCitywideChecksData() \nError getting data from controller: \n" . $e->getMessage());
@@ -44,7 +45,8 @@ class CheckRepository {
         try {
             $type = "checks";
             $statement = "GetMwbeChecks";
-            $results = SqlUtil::buildExecuteSqlQuery($statement, $parameters, $limit, $order_by, $type);
+            $sqlUtil = new SqlUtil();
+            $results = $sqlUtil->buildExecuteSqlQuery($statement, $parameters, $limit, $order_by, $type);
         }
         catch (Exception $e) {
             log_error("Error in function GetMwbeChecksData() \nError getting data from controller: \n" . $e->getMessage());
