@@ -36,5 +36,9 @@ files[] = widget/WidgetRepository.php
 files[] = widget/AbstractEntityFactory.php
 files[] = widget/EntityFactory.php
 
+files[] = common/AbstractSqlEntityRepository.php
+files[] = common/ISqlEntityRepository.php
+files[] = common/SqlEntityRepository.php
+
 files[] = config/sql/contracts/contracts.xml
 files[] = config/sql/spending/spending.xml
