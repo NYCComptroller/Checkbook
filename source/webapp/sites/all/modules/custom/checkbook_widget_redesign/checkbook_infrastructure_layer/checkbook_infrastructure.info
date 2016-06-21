@@ -23,10 +23,9 @@ package = REI Checkbook Widget Redesign
 core = 7.x
 
 
+files[] = data_access/utilities/SqlUtil.php
 files[] = data_access/constants/SqlOperator.php
-
 files[] = data_access/factories/SqlModelFactory.php
-
 files[] = data_access/models/ISqlModel.php
 files[] = data_access/models/AbstractSqlModel.php
 files[] = data_access/models/SqlModel.php
@@ -35,4 +34,3 @@ files[] = data_access/models/SqlParamModel.php
 files[] = data_access/models/SqlWhereParamModel.php
 files[] = data_access/models/SqlExpressionModel.php
 
-files[] = data_access/utilities/SqlUtil.php
