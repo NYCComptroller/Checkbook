@@ -56,6 +56,8 @@
         <param name="vendor" type="int" />
         <param name="mwbe" />
         <sql>
+            SELECT COUNT(*) as record_count FROM
+            (
             SELECT l1.contract_number
             FROM aggregateon_mwbe_contracts_cumulative_spending l1
             JOIN ref_document_code l2 ON l2.document_code_id = l1.document_code_id
@@ -70,6 +72,7 @@
                     <exp op="IN" dbField="l1.minority_type_id" paramName="mwbe" />
                 </exp>
             </where>
+            ) sub_query
         </sql>
     </statement>
     <!--GetOgeContracts,GetCoutOgeContracts-->
@@ -124,6 +127,8 @@
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
         <sql>
+            SELECT COUNT(*) as record_count FROM
+            (
             SELECT a.contract_number
             FROM aggregateon_contracts_cumulative_spending a
             JOIN ref_document_code b ON a.document_code_id = b.document_code_id
@@ -138,6 +143,7 @@
                 </exp>
             </where>
             GROUP BY a.contract_number
+            ) sub_query
         </sql>
     </statement>
     <!--GetPrimeVendors,GetCountPrimeVendors-->
@@ -531,7 +537,8 @@
         <param name="mwbe" />
         <param name="contract_mod" type="bool" />
         <sql>
-            SELECT DISTINCT a.contract_number
+            SELECT
+            COUNT(DISTINCT a.contract_number ) AS record_count
             FROM aggregateon_mwbe_contracts_cumulative_spending a
             LEFT JOIN (SELECT contract_number, aprv_sta FROM subcontract_details WHERE latest_flag='Y') sd ON a.contract_number=sd.contract_number
             LEFT JOIN ref_document_code c ON a.document_code_id=c.document_code_id
@@ -617,7 +624,7 @@
         <param name="mwbe" />
         <param name="contract_mod" type="bool" />
         <sql>
-            SELECT DISTINCT a.contract_number
+            SELECT COUNT(DISTINCT a.contract_number ) AS record_count
             FROM all_agreement_transactions a
             LEFT JOIN
             (

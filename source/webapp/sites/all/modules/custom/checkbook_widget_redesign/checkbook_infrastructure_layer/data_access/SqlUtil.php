@@ -8,7 +8,7 @@
 
 class SqlUtil {
 
-    public function buildExecuteSqlQuery($parameters, $limit, $order_by, $sqlConfigName, $statementName) {
+    public static function buildExecuteSqlQuery($parameters, $limit, $order_by, $sqlConfigName, $statementName) {
 
         try {
 
@@ -23,7 +23,7 @@ class SqlUtil {
         return $results;
     }
 
-    public function getSqlQuery($parameters, $limit, $order_by, $sqlConfigName, $statementName) {
+    public static function getSqlQuery($parameters, $limit, $order_by, $sqlConfigName, $statementName) {
 
         try {
             $model = self::getSqlStatementModel($parameters, $limit, $order_by, $sqlConfigName, $statementName);
@@ -36,7 +36,7 @@ class SqlUtil {
         return $query;
     }
 
-    public function getSqlStatementModel($parameters, $limit, $order_by, $sqlConfigName, $statementName) {
+    public static function getSqlStatementModel($parameters, $limit, $order_by, $sqlConfigName, $statementName) {
 
         try {
             $model = SqlModelFactory::getSqlStatementModel($parameters, $limit, $order_by, $sqlConfigName, $statementName);
@@ -61,7 +61,7 @@ class SqlUtil {
         return $results;
     }
 
-    public function executeCountSqlQuery(sqlStatementModel $model) {
+    public static function executeCountSqlQuery(sqlStatementModel $model) {
 
         try {
             $results = self::executeSqlFetchAssoc($model->countQuery, $model->datasource);
@@ -74,7 +74,7 @@ class SqlUtil {
         return $results;
     }
 
-    public function executeSqlFetchAssoc($query, $data_source = 'checkbook', $db_name = "main")
+    public static function executeSqlFetchAssoc($query, $data_source = 'checkbook', $db_name = "main")
     {
         $results = null;
 
