@@ -7,7 +7,9 @@
  */
 
 class WidgetService extends AbstractWidgetService {
+
     public function implDerivedColumn($column_name,$row) {
 
     }
+
 }
