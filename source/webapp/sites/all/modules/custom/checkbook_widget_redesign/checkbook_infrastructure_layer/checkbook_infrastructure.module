@@ -18,6 +18,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-function checkbook_infrastructure_layer_init() {
+
+module_load_include('php', 'checkbook_infrastructure', 'data_access/utilities/SqlUtil');
+
+function checkbook_infrastructure_init() {
 
 }
