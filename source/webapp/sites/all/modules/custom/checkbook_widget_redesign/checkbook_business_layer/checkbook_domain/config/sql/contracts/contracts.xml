@@ -564,6 +564,7 @@
         <param name="doctype" />
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
+        <param name="subvendor" type="int" />
         <param name="mwbe" />
         <param name="contract_mod" type="bool" />
         <sql>
@@ -571,6 +572,7 @@
             a.original_agreement_id,
             a.agency_id,
             a.vendor_id,
+            b.sub_vendor_id,
             a.is_prime_or_sub,
             a.minority_type_id,
             rd.document_code,
@@ -583,7 +585,7 @@
             FROM all_agreement_transactions a
             LEFT JOIN
             (
-                SELECT a.original_agreement_id, a.contract_number, a.vendor_name,a.aprv_sta as aprv_sta_id
+                SELECT a.original_agreement_id, a.contract_number, a.vendor_name, a.vendor_id as sub_vendor_id,a.aprv_sta as aprv_sta_id
                 FROM all_agreement_transactions a
                 <where>
                     <exp op="AND">
@@ -599,6 +601,7 @@
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="b.sub_vendor_id" paramName="subvendor" />
                     <exp op="=" dbField="a.agency_id" paramName="agency" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="a.is_prime_or_sub">'P'</exp>
@@ -621,6 +624,7 @@
         <param name="doctype" />
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
+        <param name="subvendor" type="int" />
         <param name="mwbe" />
         <param name="contract_mod" type="bool" />
         <sql>
@@ -628,7 +632,7 @@
             FROM all_agreement_transactions a
             LEFT JOIN
             (
-            SELECT a.original_agreement_id, a.contract_number, a.vendor_name,a.aprv_sta as aprv_sta_id
+            SELECT a.original_agreement_id, a.contract_number, a.vendor_name, a.vendor_id as sub_vendor_id,a.aprv_sta as aprv_sta_id
             FROM all_agreement_transactions a
             <where>
                 <exp op="AND">
@@ -644,6 +648,7 @@
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="b.sub_vendor_id" paramName="subvendor" />
                     <exp op="=" dbField="a.agency_id" paramName="agency" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="a.is_prime_or_sub">'P'</exp>
