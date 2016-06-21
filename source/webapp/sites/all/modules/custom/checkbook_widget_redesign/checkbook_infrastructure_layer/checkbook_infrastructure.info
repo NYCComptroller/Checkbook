@@ -17,7 +17,7 @@
 ; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ;  Copyright 2009-2011 United States Government.
 ;
-name = "Checkbook Infrastructure Layer"
+name = "Checkbook Infrastructure"
 description = "Functionality to serve as a common infrastructure layer for checkbook"
 package = REI Checkbook Widget Redesign
 core = 7.x
