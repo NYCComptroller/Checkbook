@@ -22,7 +22,7 @@ description = "Functionality to serve as a domain layer for checkbook"
 package = REI Checkbook Widget Redesign
 core = 7.x
 
-dependencies[] = checkbook_infrastructure_layer
+dependencies[] = checkbook_infrastructure
 
 files[] = common/AbstractSqlEntityRepository.php
 files[] = common/ISqlEntityRepository.php
