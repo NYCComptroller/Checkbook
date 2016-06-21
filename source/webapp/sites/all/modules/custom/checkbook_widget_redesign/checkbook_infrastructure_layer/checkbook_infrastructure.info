@@ -35,8 +35,4 @@ files[] = data_access/models/SqlParamModel.php
 files[] = data_access/models/SqlWhereParamModel.php
 files[] = data_access/models/SqlExpressionModel.php
 
-files[] = data_access/repositories/AbstractWidgetRepository.php
-files[] = data_access/repositories/ISqlRepository.php
-files[] = data_access/repositories/SqlRepository.php
-
 files[] = data_access/utilities/SqlUtil.php
