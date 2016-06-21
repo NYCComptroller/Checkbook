@@ -18,7 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-module_load_include('php', 'checkbook_infrastructure', 'data_access/utilities/SqlUtil');
+//module_load_include('php', 'checkbook_infrastructure', 'data_access/utilities/SqlUtil');
 //module_load_include('php', 'checkbook_infrastructure', 'data_access/constants/SqlOperator');
 //module_load_include('php', 'checkbook_infrastructure', 'data_access/factories/SqlModelFactory');
 //module_load_include('php', 'checkbook_infrastructure', 'data_access/models/ISqlModel');
