@@ -68,6 +68,7 @@ abstract class AbstractSqlEntityRepository implements ISqlEntityRepository {
     private function _getDataCount($parameters, $statementName, $sqlConfigPath)
     {
         try {
+            $test = new SqlUtil();
             $this->sqlModel = SqlModelFactory::getSqlStatementModel($parameters, null, null, $sqlConfigPath, $statementName);
             $results = SqlUtil::executeCountSqlQuery($this->sqlModel);
         }
