@@ -18,8 +18,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
+module_load_include('php', 'checkbook_infrastructure', 'data_access/constants/SqlOperator');
+module_load_include('php', 'checkbook_infrastructure', 'data_access/factories/SqlModelFactory');
+module_load_include('php', 'checkbook_infrastructure', 'data_access/models/ISqlModel');
+module_load_include('php', 'checkbook_infrastructure', 'data_access/models/AbstractSqlModel');
+module_load_include('php', 'checkbook_infrastructure', 'data_access/models/ISqlModel');
+module_load_include('php', 'checkbook_infrastructure', 'data_access/models/SqlModel');
+module_load_include('php', 'checkbook_infrastructure', 'data_access/models/SqlStatementModel');
+module_load_include('php', 'checkbook_infrastructure', 'data_access/models/SqlParamModel');
+module_load_include('php', 'checkbook_infrastructure', 'data_access/models/SqlWhereParamModel');
+module_load_include('php', 'checkbook_infrastructure', 'data_access/models/SqlExpressionModel');
+module_load_include('php', 'checkbook_infrastructure', 'data_access/repositories/AbstractWidgetRepository');
+module_load_include('php', 'checkbook_infrastructure', 'data_access/repositories/ISqlRepository');
+module_load_include('php', 'checkbook_infrastructure', 'data_access/repositories/SqlRepository');
 module_load_include('php', 'checkbook_infrastructure', 'data_access/utilities/SqlUtil');
+
 
 function checkbook_infrastructure_init() {
 
