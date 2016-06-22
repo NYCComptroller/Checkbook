@@ -18,9 +18,9 @@ abstract class AbstractDataService implements IDataService {
      * @param null $sqlConfigPath
      * @return mixed
      */
-    public function getData($parameters, $limit, $orderBy, $statementName, $sqlConfigPath = null) {
-        $sqlConfigPath = $sqlConfigPath || $this->sqlConfigPath;
-        $data = $this->repository->getData($parameters, $limit, $orderBy, $sqlConfigPath, $statementName);
+    public function getData($parameters, $limit = null, $orderBy = null, $statementName = null, $sqlConfigPath = null) {
+        $sqlConfigPath = $sqlConfigPath ?: $this->sqlConfigPath;
+        $data = $this->repository->getData($parameters, $limit, $orderBy, $statementName, $sqlConfigPath);
         return $data;
     }
 } 
