@@ -9,5 +9,5 @@
     "enableExpand":true,
     "disableViewAll":true,
     "useList":false,
-    "validUrlParameters":["year","yeartype","status","agency","vendor","doctype","mwbe","dashboard"]
+    "validUrlParameters":["year","yeartype","status","agency","vendor","subvendor","doctype","mwbe","dashboard"]
 }

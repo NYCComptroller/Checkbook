@@ -191,6 +191,30 @@ class ContractURLHelper{
 
     }
 
+    public function prepareSubvendorContractsSliderFilter($page){
+
+        $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
+        $url = $page;
+        $url .= _checkbook_append_url_params();
+        if( preg_match("/^contracts_pending/", drupal_get_path_alias($_GET['q'])) ){
+            $allowedFilters =  array("agency","vendor","awrdmthd","csize","cindustry","agid","dashboard","subvendor","mwbe");
+            $url .= "/yeartype/B/year/"._getCurrentYearID();
+        }
+        else{
+            $allowedFilters =  array("year","calyear","agency","yeartype","awdmethod","vendor","csize","cindustry","agid","dashboard","subvendor","mwbe");
+        }
+        for($i=1;$i < count($pathParams);$i++){
+
+            if(in_array($pathParams[$i] ,$allowedFilters)){
+                $newPathParams = explode('/', $url);
+                $url .= (!in_array($pathParams[$i] ,$newPathParams)) ? '/'.$pathParams[$i].'/'.$pathParams[($i+1)] : '';
+            }
+            $i++;
+        }
+        return $url;
+
+    }
+
     public function preparePendingContractsSliderFilter($page){
 
         $pathParams = explode('/',drupal_get_path_alias($_GET['q']));

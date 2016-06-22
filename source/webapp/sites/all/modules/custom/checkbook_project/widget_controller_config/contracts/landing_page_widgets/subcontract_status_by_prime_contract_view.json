@@ -7,6 +7,7 @@
         "countStatementName":"GetCountSubvendorStatusByPrimeContractID"
     },
     "defaultParameters":{"doctype":"'CTA1'~'CT1'~'CT2'"},
+    "footerUrl":"ContractsUrlService::subContractsFooterUrl().'/doctype/CTA1~CT1'",
     "table_title":"Summary of Sub Contract Status by Prime Contract ID",
     "headerSubTitle":"Reported Prime Contracts with Sub Vendors",
     "table_columns":[

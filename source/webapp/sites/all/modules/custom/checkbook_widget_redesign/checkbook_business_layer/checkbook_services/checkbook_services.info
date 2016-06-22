@@ -22,18 +22,16 @@ description = "Functionality to serve as a service layer for checkbook"
 package = REI Checkbook Widget Redesign
 core = 7.x
 
-dependencies[] = checkbook_infrastructure_layer
-dependencies[] = checkbook_domain
-
 files[] = common/AbstractDataService.php
 files[] = common/IDataService.php
 
+files[] = spending/CheckData.php
+files[] = spending/SpendingWidgetService.php
 files[] = contracts/ContractsDataService.php
 files[] = contracts/ContractsUrlService.php
 files[] = contracts/ContractsWidgetService.php
 
-files[] = spending/SpendingWidgetService.php
-
 files[] = widget/AbstractWidgetService.php
 files[] = widget/IWidgetService.php
 files[] = widget/WidgetService.php
+dependencies[] = checkbook_domain
