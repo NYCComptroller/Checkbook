@@ -145,10 +145,24 @@ class RequestUtil{
         }    
       }
       elseif(preg_match('/^contracts_landing/',current_path()) && preg_match('/status\/A/',current_path())){
-        $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Active Expense Contracts' ;
+          if(preg_match('/dashboard\/ss/', current_path()) ||  preg_match('/dashboard\/ms/', current_path()) ||  preg_match('/dashboard\/sp/', current_path())){
+              $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . ' Total Active Sub Vendor Contracts' ;
+          } else {
+              $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Active Expense Contracts' ;
+          }
+
       }
       elseif(preg_match('/^contracts_landing/',current_path()) && preg_match('/status\/R/',current_path())){
-        $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() .' Registered Expense Contracts' ;
+          if(preg_match('/dashboard\/ss/', current_path()) ||  preg_match('/dashboard\/ms/', current_path()) ||  preg_match('/dashboard\/sp/', current_path())){
+              $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' .' New Sub Vendor Contracts by Fiscal Year' ;
+          } else {
+              $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() .' Registered Expense Contracts' ;
+          }
+      }
+      elseif(preg_match('/^contracts_landing/',current_path()) && !preg_match('/status\/',current_path())){
+          if(preg_match('/dashboard\/ss/', current_path()) ||  preg_match('/dashboard\/ms/', current_path()) ||  preg_match('/dashboard\/sp/', current_path())){
+              $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . ' Status of Sub Vendor Contracts by Prime Vendor' ;
+          }
       }
       elseif(preg_match('/^contracts_revenue_landing/',current_path()) && preg_match('/status\/A/',current_path())){
         $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Active Revenue Contracts' ;
@@ -166,7 +180,6 @@ class RequestUtil{
         GLOBAL $checkbook_breadcrumb_title;
         $title = $checkbook_breadcrumb_title;
       }
-      
       return html_entity_decode($title);
     }
 
