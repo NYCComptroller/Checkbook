@@ -82,7 +82,7 @@
         <div class="positioning">
           <a href="/<?php echo $subvendor_link; ?>?expandBottomCont=true"><br>Status of Sub Vendor<br>Contracts by Prime Vendor<br><br></a>
         </div>
-        <div class="subvendor-indicator"></div>
+        <div class="indicator" style="top:2px"></div>
       </td>
     </tr>
     </tbody>
