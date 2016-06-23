@@ -3502,11 +3502,9 @@ a.subContractViewAll{
 span.subContractStatus {
     padding-left: 67px;
 }
-.pieCount {
-    padding-top: 15px;
+p.pieCount {
+    padding-top: 8px;
     text-align: center;
-}
-.pieCount > span {
     font-size: 13px;
     font-weight: bold;
 }
