@@ -80,9 +80,9 @@
       ?>
       <td<?php echo $class; ?>>
         <div class="positioning">
-          <a href="/<?php echo $subvendor_link; ?>?expandBottomCont=true"><br>Status of Sub Vendor<br>Contracts by Prime Vendor<br></a>
+          <a href="/<?php echo $subvendor_link; ?>?expandBottomCont=true"><br>Status of Sub Vendor<br>Contracts by Prime Vendor<br><br></a>
         </div>
-        <div class="indicator" style="top:22px;"></div>
+        <div class="subvendor-indicator"></div>
       </td>
     </tr>
     </tbody>
