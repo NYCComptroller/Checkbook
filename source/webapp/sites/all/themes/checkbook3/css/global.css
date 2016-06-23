@@ -829,6 +829,15 @@ td.active div.indicator {
     z-index: 10;
 }
 
+td.active div.subvendor-indicator {
+    background: url("../images/carrot.png") no-repeat scroll center 0 transparent;
+    height: 17px;
+    margin-bottom: -17px;
+    position: relative;
+    top: 1px;
+    z-index: 10;
+}
+
 /********************
 *** CHART STYLING ***
 ********************/
@@ -1232,6 +1241,12 @@ span.dollars{
     height: 10px;
     margin-bottom: -10px;
     top: 0;
+}
+.nyc_subvendors_totals_links td.active div.subvendor-indicator{
+    background:url("../images/blue-carrot.png") no-repeat center 0;
+    height: 10px;
+    margin-bottom: -10px;
+    top: 2px;
 }
 #node-widget-737 .nyc_subvendors_totals_links a,
 #node-widget-737 .nyc_subvendors_totals_links a:link,
