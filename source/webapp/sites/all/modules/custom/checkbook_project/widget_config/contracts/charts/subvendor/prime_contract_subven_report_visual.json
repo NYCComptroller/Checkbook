@@ -2,9 +2,10 @@
 "widgetType": "highcharts",
 "header":"
     $header = '<h2 class=\"chart-title\" style=\"display:none;\">' . $node->widgetConfig->chartTitle . '</h2>
-    <div class=\"pieCount\"><span>'. $node->widgetConfig->chartSubTitle .'</span><div>';
+    <p class=\"pieCount\">'. $node->widgetConfig->chartSubTitle .'</p>';
     return $header;
 ",
+"defaultParameters":{"type_of_year":"B", "status_flag":"A"},
 "no_results_content":"No Results Found",
 "cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe","year","subvendor"],
 "urlParamMap":{"subvendor":"vendor_id","year":"fiscal_year_id","mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"prime_vendor_id",
@@ -61,8 +62,7 @@
         },
         "colors": ["#78b5e9", "#f79d60", "#8dea84"],
         "tooltip": {
-            "function":"tooltipformatter",
-            "width" : 300
+            "function":"tooltipformatter"
         },
         "title": {
             "text": ""
@@ -88,6 +88,11 @@
 }
 <function>
 tooltipformatter^^'formatter' :
-function() {return this.point.name + ': <b>'+ (this.point.y).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +'</b>';
+function() {
+    var statusName = new Array();
+    statusName['Contracts With No Response by Prime'] = 'Contracts With<br/>No Response<br/>by Prime';
+    statusName['Reported Contracts With Sub Vendors'] = 'Reported Contracts With<br/>Sub Vendors';
+    statusName['Reported Contracts Without Sub Vendors'] = 'Reported Contracts Without<br/>Sub Vendors';
+    return statusName[this.point.name] + ': <b>'+ (this.point.y).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +'</b>';
 }
 </function>
