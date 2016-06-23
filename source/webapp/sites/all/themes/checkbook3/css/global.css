@@ -3508,3 +3508,7 @@ p.pieCount {
     font-size: 13px;
     font-weight: bold;
 }
+.pieChartSlide .highcharts-container{
+    height: 313px !important;
+    margin: 0 auto 0 !important;
+}
