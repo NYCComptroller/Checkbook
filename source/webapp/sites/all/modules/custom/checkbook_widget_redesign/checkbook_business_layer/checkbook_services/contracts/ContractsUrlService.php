@@ -45,6 +45,11 @@ class ContractsUrlService {
         $is_mwbe_certified = MappingUtil::isMWBECertified(array($latest_minority_id));
         $dashboard= _getRequestParamValue("dashboard");
 
+
+        if(!_getRequestParamValue('status')){
+            $url .= "/status/A";
+        }
+
         if($is_mwbe_certified && $dashboard == 'mp') {
             $url .= "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
         }
