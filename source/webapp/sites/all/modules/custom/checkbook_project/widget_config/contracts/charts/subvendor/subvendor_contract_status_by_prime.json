@@ -1,3 +1,4 @@
+
 {
 "widgetType": "highcharts",
 "html_class":"pieChartSlide",
@@ -24,35 +25,34 @@
 
     $where_filter .= ' and rd.document_code in (\\'CT1\\',\\'CTA1\\') ';
     
-    $sql = ' SELECT
-		COUNT(DISTINCT a1.contract_number) total_contracts,
-                SUM(CASE WHEN a1.scntrc_status = 1 THEN 1 ELSE 0 END) no_response_status,
-                SUM(CASE WHEN a1.scntrc_status = 2 THEN 1 ELSE 0 END) reported_sub_count,
-                SUM(CASE WHEN a1.scntrc_status = 3 THEN 1 ELSE 0 END) reported_no_sub_count
-                FROM {aggregateon_mwbe_contracts_cumulative_spending} a1 
-                JOIN {ref_document_code} rd ON a1.document_code_id = rd.document_code_id '
-                . $where_filter;
+    $sql = 'SELECT
+                COUNT(a.contract_number) AS count,
+                c.aprv_sta_value AS status
+            FROM agreement_snapshot a
+                LEFT JOIN (SELECT contract_number, aprv_sta,sub_contract_id 
+                                FROM subcontract_details WHERE latest_flag=\\'Y\\') sd ON a.contract_number=sd.contract_number
+                LEFT JOIN subcontract_approval_status c ON c.aprv_sta_id = COALESCE(sd.aprv_sta,6)
+            WHERE a.latest_flag=\\'Y\\' AND a.scntrc_status =2 AND a.document_code_id in (1,2) AND
+                   (117 BETWEEN a.effective_begin_year_id AND a.effective_end_year_id) and (117 BETWEEN a.starting_year_id AND a.ending_year_id)
+                   AND sd.aprv_sta IN(2, 3, 4, 5, 6)
+            GROUP By c.aprv_sta_value, c.sort_order ORDER BY c.sort_order';
+            
     $node->data  = _checkbook_project_execute_sql($sql);
     
 ",
 "widgetUpdateJSONConfig":"
-	
 	$series_data = array();
-        foreach($node->data as $row){
-            $total_contracts = $row['total_contracts'];
-            $series_data[] = array('status' => 'Contracts With No Response by Prime', 'count' => $row['no_response_status']);
-            $series_data[] = array('status' => 'Reported Contracts With Sub Vendors', 'count' => $row['reported_sub_count']);
-            $series_data[] = array('status' => 'Reported Contracts Without Sub Vendors', 'count' => $row['reported_no_sub_count']);
-        }
-	$index = 0;
-	foreach($series_data as $row){	 								 						
-            $series_new[$index]->y = (int)$row['count'];
-            $series_new[$index]->name = $row['status'];
+        $index = 0;
+        $total_contracts = 0;
+	foreach($node->data as $row){	 								 						
+            $series_data[$index]->y = (int)$row['count'];
+            $total_contracts += (int)$row['count'];
+            $series_data[$index]->name = str_replace('Vendor', 'Vendors', $row['status']);
             $index += 1;
 	}
-	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
-	$node->widgetConfig->chartTitle =  'Sub Vendor Reporting by Prime Contracts';
-        $node->widgetConfig->chartSubTitle =  'Total Number of Contracts: '.number_format($total_contracts);
+	$node->widgetConfig->chartConfig->series[0]->data = $series_data;
+	$node->widgetConfig->chartTitle =  'Sub Vendor Contracts Status by Prime Contracts';
+        $node->widgetConfig->chartSubTitle =  'Total Number of Sub Vendor Contracts Submitted: '.number_format($total_contracts);
 ",
 "chartConfig": {
         "chart": {
@@ -61,7 +61,7 @@
             "plotBorderWidth": null,
             "plotShadow": false
         },
-        "colors": ["#78b5e9", "#f79d60", "#8dea84"],
+        "colors": ["#78b5e9", "#f79d60", "#8dea84","434448"],
         "tooltip": {
             "function":"tooltipformatter"
         },
@@ -92,10 +92,6 @@
 <function>
 tooltipformatter^^'formatter' :
 function() {
-    var statusName = new Array();
-    statusName['Contracts With No Response by Prime'] = 'Contracts With<br/>No Response<br/>by Prime';
-    statusName['Reported Contracts With Sub Vendors'] = 'Reported Contracts With<br/>Sub Vendors';
-    statusName['Reported Contracts Without Sub Vendors'] = 'Reported Contracts Without<br/>Sub Vendors';
-    return statusName[this.point.name] + ': <b>'+ (this.point.y).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +'</b>';
+    return (this.point.name).replace(' Sub Vendors','<br/>Sub Vendors') + ': <b>'+ (this.point.y).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +'</b>';
 }
 </function>
