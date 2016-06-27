@@ -785,4 +785,55 @@
             </where>
         </sql>
     </statement>
+    <statement name="GetSubvendorStatusByPrimeCounts" datasource="checkbook">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="status" type="string"/>
+        <param name="doctype" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="subvendor" type="int" />
+        <param name="mwbe" />
+        <param name="contract_mod" type="bool" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
+        <sql>
+            SELECT
+                COUNT(a.contract_number) AS count,
+                c.aprv_sta_value AS status
+            FROM agreement_snapshot a
+                LEFT JOIN (SELECT contract_number, aprv_sta,sub_contract_id 
+                                FROM subcontract_details
+                                <where>
+                                    <exp op="AND">
+                                        <exp op="=" dbField="latest_flag">'Y'</exp>
+                                        <exp op="=" dbField="vendor_history_id" paramName="subvendor" />
+                                    </exp>
+                                </where>) sd ON a.contract_number=sd.contract_number
+                LEFT JOIN subcontract_approval_status c ON c.aprv_sta_id = COALESCE(sd.aprv_sta,6)
+                JOIN ref_document_code rd ON rd.document_code_id = a.document_code_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="b.sub_vendor_id" paramName="subvendor" />
+                    <exp op="=" dbField="a.agency_id" paramName="agency" />
+                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
+                    <exp op="&lt;=" dbField="a.starting_year_id" paramName="year" />
+                    <exp op="&gt;=" dbField="a.ending_year_id" paramName="year" />
+                    <exp op="&lt;=" dbField="a.effective_begin_year_id" paramName="year" />
+                    <exp op="&gt;=" dbField="a.effective_end_year_id" paramName="year" />
+                    <exp op="=" dbField="a.latest_flag">'Y'</exp>
+                    <exp op="=" dbField="a.scntrc_status">2</exp>
+                    <exp op="IN" dbField="sd.aprv_sta">(2, 3, 4, 5, 6)</exp>
+                    <exp op="IN" dbField="rd.document_code" paramName="doctype" />
+                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
+                </exp>
+            </where>
+            GROUP BY c.aprv_sta_value, c.sort_order
+            ORDER BY c.sort_order
+        </sql>
+    </statement>
 </statements>
