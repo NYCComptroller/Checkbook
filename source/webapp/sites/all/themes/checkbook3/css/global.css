@@ -3512,3 +3512,10 @@ p.pieCount {
     height: 313px !important;
     margin: 0 auto 0 !important;
 }
+
+#node-chart-subvendor_contract_status_by_prime .highcharts-container,
+#node-chart-prime_contract_subven_report_visual .highcharts-container,
+#node-chart-prime_contract_subven_report_visual .highcharts-container > svg,
+#node-chart-subvendor_contract_status_by_prime .highcharts-container > svg{
+    width: 850px !important;
+}
