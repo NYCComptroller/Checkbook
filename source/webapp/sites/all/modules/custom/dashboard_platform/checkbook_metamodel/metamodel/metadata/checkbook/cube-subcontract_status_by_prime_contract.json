@@ -1,0 +1,161 @@
+{
+    "datasets": {
+        "subcontract_status_by_prime_contract": {
+            "datasourceName": "main",
+            "source": "subcontract_status_by_prime_contract"
+        },
+
+        "mixed_vendor_data":{
+            "datasourceName":"main",
+            "source":"SELECT prime_vendor_name as vendor_name, count(prime_vendor_id) as vendor_id, mixed_vendor_name,original_agreement_id,contract_number,agency_id,aprv_sta_id,starting_year_id,ending_year_id,effective_begin_year_id,effective_end_year_id
+            FROM subcontract_status_by_prime_contract WHERE prime_vendor_name IS NOT NULL
+            GROUP BY prime_vendor_name, mixed_vendor_name, original_agreement_id, contract_number, agency_id,aprv_sta_id,starting_year_id,ending_year_id,effective_begin_year_id,effective_end_year_id
+            UNION
+            SELECT sub_vendor_name as vendor_name, count(sub_vendor_id) as vendor_id, mixed_vendor_name,original_agreement_id,contract_number,agency_id, aprv_sta_id,starting_year_id,ending_year_id,effective_begin_year_id,effective_end_year_id
+            FROM subcontract_status_by_prime_contract WHERE sub_vendor_name IS NOT NULL
+            GROUP BY sub_vendor_name, mixed_vendor_name, original_agreement_id, contract_number, agency_id,aprv_sta_id,starting_year_id,ending_year_id,effective_begin_year_id,effective_end_year_id
+            "
+        }
+    },
+    "cubes":   {
+        "subcontract_status_by_prime_contract": {
+            "sourceDatasetName": "subcontract_status_by_prime_contract",
+            "dimensions": [
+                {
+                    "name": "agency",
+                    "levels": [
+                        {
+                            "name": "agency",
+                            "datasetName": "agency",
+                            "sourceColumnName": "agency_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "contract_number",
+                    "levels": [
+                        {
+                            "name": "contract_number",
+                            "sourceColumnName": "contract_number"
+                        }
+                    ]
+                },
+                {
+                    "name": "aprv_sta",
+                    "levels": [
+                        {
+                            "name": "aprv_sta",
+                            "sourceColumnName": "aprv_sta_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "aprv_sta_value",
+                    "levels": [
+                        {
+                            "name": "aprv_sta_value",
+                            "sourceColumnName": "aprv_sta_value"
+                        }
+                    ]
+                },
+                {
+                    "name": "prime_vendor",
+                    "levels": [
+                        {
+                            "name": "prime_vendor",
+                            "sourceColumnName": "prime_vendor_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "prime_vendor_name",
+                    "levels": [
+                        {
+                            "name": "prime_vendor_name",
+                            "sourceColumnName": "prime_vendor_name"
+                        }
+                    ]
+                },
+                {
+                    "name": "sub_vendor",
+                    "levels": [
+                        {
+                            "name": "sub_vendor",
+                            "sourceColumnName": "sub_vendor_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "sub_vendor_name",
+                    "levels": [
+                        {
+                            "name": "sub_vendor_name",
+                            "sourceColumnName": "sub_vendor_name"
+                        }
+                    ]
+                },
+                {
+                    "name": "prime_minority_type",
+                    "levels": [
+                        {
+                            "name": "prime_minority_type",
+                            "sourceColumnName": "prime_minority_type_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "prime_minority_type_name",
+                    "levels": [
+                        {
+                            "name": "prime_minority_type_name",
+                            "sourceColumnName": "prime_minority_type_name"
+                        }
+                    ]
+                },
+                {
+                    "name": "sub_minority_type",
+                    "levels": [
+                        {
+                            "name": "sub_minority_type",
+                            "sourceColumnName": "sub_minority_type_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "sub_minority_type_name",
+                    "levels": [
+                        {
+                            "name": "sub_minority_type_name",
+                            "sourceColumnName": "sub_minority_type_name"
+                        }
+                    ]
+                }
+            ],
+            "measures": {
+                "txcount": {
+                    "function": "COUNT(*)"
+                }
+            }
+        },
+
+        "mixed_vendor_data":{
+            "sourceDatasetName":"mixed_vendor_data",
+            "dimensions":[
+                {
+                    "name": "vendor_name",
+                    "levels": [
+                        {
+                            "name": "vendor_name",
+                            "sourceColumnName": "vendor_name"
+                        }
+                    ]
+                }
+            ],
+            "measures": {
+                "txcount": {
+                    "function": "COUNT(*)"
+                }
+            }
+        }
+    }
+}
