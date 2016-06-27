@@ -705,4 +705,84 @@
             </where>
         </sql>
     </statement>
+    <statement name="GetSubvendorContractsbyPrimeSubvendor" datasource="checkbook">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="status" type="string"/>
+        <param name="doctype" />
+        <param name="subvendor" type="int" />
+        <param name="mwbe" />
+        <param name="contract_mod" type="bool" />
+        <sql>
+            SELECT
+            CASE WHEN b.legal_name IS NULL THEN 'N/A' ELSE b.legal_name END AS vendor_name,
+            b.vendor_id,
+            COUNT(DISTINCT a.contract_number ) AS reported_contracts_with_subvendors,
+            COUNT(sd.aprv_sta) AS no_of_subvendors_submitted,
+            SUM(CASE WHEN aprv_sta=3 THEN 1 ELSE 0 END) AS acco_reviewing,
+            SUM(CASE WHEN aprv_sta=4 THEN 1 ELSE 0 END) AS acco_approved,
+            SUM(CASE WHEN aprv_sta=2 THEN 1 ELSE 0 END) AS acco_rejected,
+            SUM(CASE WHEN aprv_sta=5 THEN 1 ELSE 0 END) AS acco_cancelled
+            FROM aggregateon_mwbe_contracts_cumulative_spending a
+            JOIN
+            (
+            SELECT contract_number, aprv_sta, prime_vendor_id FROM sub_agreement_snapshot
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="vendor_id" paramName="subvendor" />
+                    <exp op="=" dbField="latest_flag">'Y'</exp>
+                </exp>
+            </where>
+            ) sd ON a.contract_number = sd.contract_number AND a.vendor_id = sd.prime_vendor_id
+            LEFT JOIN ref_document_code c ON a.document_code_id=c.document_code_id
+            LEFT JOIN vendor b ON sd.prime_vendor_id = b.vendor_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="a.status_flag">'A'</exp>
+                    <exp op="IN" dbField="c.document_code" paramName="doctype" />
+                    <exp op="=" dbField="a.scntrc_status">2</exp>
+                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
+                </exp>
+            </where>
+            GROUP BY b.legal_name, b.vendor_id
+        </sql>
+    </statement>
+
+    <statement name="GetCountOfSubvendorContractsbyPrimeSubvendor" datasource="checkbook">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="status" type="string"/>
+        <param name="doctype" />
+        <param name="subvendor" type="int" />
+        <param name="mwbe" />
+        <param name="contract_mod" type="bool" />
+        <sql>
+            SELECT
+            COUNT(DISTINCT a.contract_number ) AS record_count
+            FROM aggregateon_mwbe_contracts_cumulative_spending a
+            JOIN
+            (
+            SELECT contract_number, aprv_sta, prime_vendor_id FROM sub_agreement_snapshot
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="vendor_id" paramName="subvendor" />
+                    <exp op="=" dbField="latest_flag">'Y'</exp>
+                </exp>
+            </where>
+            ) sd ON a.contract_number = sd.contract_number AND a.vendor_id = sd.prime_vendor_id
+            LEFT JOIN ref_document_code c ON a.document_code_id=c.document_code_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="a.status_flag">'A'</exp>
+                    <exp op="IN" dbField="c.document_code" paramName="doctype" />
+                    <exp op="=" dbField="a.scntrc_status">2</exp>
+                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
+                </exp>
+            </where>
+        </sql>
+    </statement>
 </statements>
