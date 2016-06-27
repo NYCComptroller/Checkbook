@@ -8,6 +8,9 @@
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
         <param name="mwbe" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
         <sql>
             SELECT
             l1.contract_number,
@@ -42,6 +45,9 @@
                     <exp op="=" dbField="l1.vendor_id" paramName="vendor" />
                     <exp op="=" dbField="l1.agency_id" paramName="agency" />
                     <exp op="IN" dbField="l1.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="l1.awdmethod" paramName="award_method_id" />
+                    <exp op="=" dbField="l1.csize" paramName="award_size_id" />
+                    <exp op="=" dbField="l1.cindustry" paramName="industry_type_id" />
                 </exp>
             </where>
             GROUP BY l1.type_of_year, l1.description,l1.contract_number, l1.original_agreement_id, l1.document_code_id,l2.document_code, l1.minority_type_id,l3.agency_id,l3.agency_name,l4.vendor_id,l4.legal_name,l1.scntrc_status
@@ -55,6 +61,9 @@
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
         <param name="mwbe" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
         <sql>
             SELECT COUNT(*) as record_count FROM
             (
@@ -70,6 +79,9 @@
                     <exp op="=" dbField="l1.vendor_id" paramName="vendor" />
                     <exp op="=" dbField="l1.agency_id" paramName="agency" />
                     <exp op="IN" dbField="l1.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="l1.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="l1.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="l1.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
             ) sub_query
@@ -452,6 +464,9 @@
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
         <param name="mwbe" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
         <sql>
             SELECT
             l3.agency_id,
@@ -483,6 +498,9 @@
                     <exp op="IN" dbField="l2.document_code" paramName="doctype" />
                     <exp op="=" dbField="l1.vendor_id" paramName="vendor" />
                     <exp op="=" dbField="l1.agency_id" paramName="agency" />
+                    <exp op="=" dbField="l1.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="l1.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="l1.industry_type_id" paramName="cindustry" />
                     <exp op="IN" dbField="l1.minority_type_id" paramName="mwbe" />
                 </exp>
             </where>
@@ -498,6 +516,9 @@
         <param name="vendor" type="int" />
         <param name="mwbe" />
         <param name="contract_mod" type="bool" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
         <sql>
             SELECT
             ra.agency_name AS agency_name,
@@ -522,6 +543,9 @@
                     <exp op="=" dbField="a.agency_id" paramName="agency" />
                     <exp op="=" dbField="a.scntrc_status">2</exp>
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="l1.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="l1.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="l1.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
             GROUP BY ra.agency_name, ra.agency_id
@@ -536,6 +560,9 @@
         <param name="vendor" type="int" />
         <param name="mwbe" />
         <param name="contract_mod" type="bool" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
         <sql>
             SELECT
             COUNT(DISTINCT a.contract_number ) AS record_count
@@ -553,6 +580,9 @@
                     <exp op="=" dbField="a.agency_id" paramName="agency" />
                     <exp op="=" dbField="a.scntrc_status">2</exp>
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
         </sql>
@@ -567,6 +597,9 @@
         <param name="subvendor" type="int" />
         <param name="mwbe" />
         <param name="contract_mod" type="bool" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
         <sql>
             SELECT
             a.original_agreement_id,
@@ -612,6 +645,9 @@
                     <exp op="=" dbField="a.latest_flag">'Y'</exp>
                     <exp op="=" dbField="a.scntrc_status">2</exp>
                     <exp op="IN" dbField="rd.document_code" paramName="doctype" />
+                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
             ORDER BY c.sort_order,a.original_agreement_id
@@ -627,6 +663,9 @@
         <param name="subvendor" type="int" />
         <param name="mwbe" />
         <param name="contract_mod" type="bool" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
         <sql>
             SELECT COUNT(DISTINCT a.contract_number ) AS record_count
             FROM all_agreement_transactions a
@@ -659,6 +698,9 @@
                     <exp op="=" dbField="a.latest_flag">'Y'</exp>
                     <exp op="=" dbField="a.scntrc_status">2</exp>
                     <exp op="IN" dbField="rd.document_code" paramName="doctype" />
+                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
         </sql>
