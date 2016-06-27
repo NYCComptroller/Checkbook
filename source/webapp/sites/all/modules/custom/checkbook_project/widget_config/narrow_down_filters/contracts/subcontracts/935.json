@@ -1,0 +1,20 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":932,
+    "autocomplete":false,
+    "no_results_content":"No Results Found",
+    "limit":10,
+    "startWith":0,
+    "maxSelect":5,
+    "columns":["vendor_type.vendor_type", "txcount"],
+    "orderBy":"-txcount",
+    "getTotalDataCount":true,
+    "facetPager":true,
+    "filterName":"Vendor Type",
+    "urlParameterName":"vendortype",
+    "autocompleteID":"fvendorType",
+    "showAllRecords":true,
+    "allowFacetDeselect":true,
+    "adjustParameters":"return ContractUtil::adjustContractParameterFilters($node, $parameters);",
+    "template":"individual_filter"
+}

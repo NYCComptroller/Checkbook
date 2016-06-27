@@ -1,0 +1,143 @@
+{
+    "widgetType":"data_tables",
+    "widgetSubType":"dataTableList",
+    "cleanURLParameters":["year","agency","vendornm","contnum","subvendorstatus"],
+    "urlParamMap":{
+        "year":"year",
+        "agency":"agency_id",
+        "vendornm":"mixed_vendor_name",
+        "subvendor":"sub_vendor_id",
+        "mwbe":"minority_type_id",
+        "subvendorstatus":"aprv_sta_id",
+        "contnum":"contract_number"
+    },
+    "header":"
+        $header = NULL;
+        $header .= widget_data_tables_export_link($node);
+        return $header;
+    ",
+    "useList":true,
+    "getTotalDataCount":true,
+    "limit":"35",
+    "noDataInitialLoad":true,
+    "html_class": "initiative-table",
+    "no_results_content":"No Results Found",
+    "dataset": "checkbook:subcontract_status_by_prime_contract",
+    "columns": [
+        "original_agreement_id",
+        "contract_number",
+        "description",
+        "agency_id",
+        "agency_name",
+        "mixed_vendor_name",
+        "prime_vendor_id",
+        "prime_vendor_name",
+        "prime_minority_type_id",
+        "prime_minority_type_name",
+        "sub_vendor_id",
+        "sub_vendor_name",
+        "sub_minority_type_id",
+        "sub_minority_type_name",
+        "aprv_sta_id",
+        "aprv_sta_value",
+        "starting_year_id",
+        "ending_year_id",
+        "effective_begin_year_id",
+        "effective_end_year_id",
+        "sort_order"
+    ],
+    "adjustParameters":"return ContractUtil::adjustContractParameterFilters($node, $parameters);",
+    "derivedColumns": {
+        "contract_link": {
+            "type": "expression2",
+            "expression": "ContractURLHelper::prepareExpenseContractLink($row, $node, false, $row['original_agreement_id'])"
+        },
+        "agency_formatted": {
+            "type": "expression2",
+            "expression": "_get_tooltip_markup($row['agency_name'],26)"
+        },
+        "agency_name_link": {
+            "type": "expression2",
+            "expression": " '<a href=\"/contracts_landing'
+            . _checkbook_append_url_params()
+            . _checkbook_project_get_url_param_string(\"year\")
+            . _checkbook_project_get_url_param_string(\"yeartype\")
+            .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
+            . '/agency/' . $row['agency_id']
+            .  '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "
+        },
+        "prime_vendor_name_formatted": {
+            "type": "expression2",
+            "expression": "_get_tooltip_markup($row['prime_vendor_name'],30)"
+        },
+        "prime_vendor_name_link": {
+            "type": "expression2",
+            "expression": " '<a href=\"/contracts_landing'
+            . ContractUtil::get_contracts_vendor_link_by_mwbe_category($row)
+            . '?expandBottomCont=true\">'. $row['prime_vendor_name_formatted'] . '</a>'  "
+        }
+    },
+    "table_columns": [
+        {"labelAlias":"contract_id","column":"contract_link","sortSourceColumn":"contract_number"},
+        {"labelAlias":"contract_agency","column":"agency_name_link","sortSourceColumn":"agency_name"},
+        {"labelAlias":"prime_vendor","column":"prime_vendor_name_link","sortSourceColumn":"prime_vendor_name"},
+        {"labelAlias":"prime_mwbe_category","column":"prime_minority_type_name","sortSourceColumn":"prime_minority_type_name"},
+        {"labelAlias":"sub_vendor_name","column":"sub_vendor_name","sortSourceColumn":"sub_vendor_name"},
+        {"labelAlias":"sub_mwbe_category","column":"sub_minority_type_name","sortSourceColumn":"sub_minority_type_name"},
+        {"labelAlias":"subvendor_status_pip","column":"aprv_sta_value","sortSourceColumn":"sort_order"}
+    ],
+    "adjustDataTableOptions":"",
+    "dataTableOptions":{
+        "bRetrieve": true,
+        "bServerSide": true,
+        "bProcessing":true,
+        "bFilter": false,
+        "bPaginate": true,
+        "iDisplayLength":35,
+        "sPaginationType":"full_numbers",
+        "bLengthChange": false,
+        "sDom":"<pr><t><ip>",
+        "oLanguage": {
+        "sInfo": "Displaying transactions _START_ - _END_ of _TOTAL_",
+        "sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+    },
+    "bInfo": true,
+    "aoColumns":[
+        {"sClass":"text", "sWidth":"150px","asSorting": [ "asc","desc" ]},
+        {"sClass":"text","sWidth":"230px","asSorting": [ "asc","desc" ]},
+        {"sClass":"text", "sWidth":"230px","asSorting": [ "asc","desc" ]},
+        {"sClass":"text", "sWidth":"150px","asSorting": [ "asc","desc" ]},
+        {"sClass":"text", "sWidth":"230px","asSorting": [ "asc","desc" ]},
+        {"sClass":"text", "sWidth":"150px","asSorting": [ "asc","desc" ]},
+        {"sClass":"text pad-left", "sWidth":"150px","asSorting": [ "asc","desc" ]}
+    ],
+    "aaSorting":[[1,"desc"]],
+    "sScrollX": "100%",
+    "bScrollCollapse": false,
+    "fnInitComplete": "##function () { new FixedColumns( oTable, {
+    \"iLeftColumns\": 1,
+    \"iLeftWidth\": 150
+    } );}##"
+    },
+    "customExternalJS":"function prepareTableListFilterUrl(){
+        var agencyIds = getNamedFilterCriteria('fagencyId');
+        var oVendorIds = getNamedFilterCriteria('fvendorId');
+        var oVendorNms = getNamedFilterCriteria('fvendorNm');
+        var oContNum = getNamedFilterCriteria('fContractNumber');
+        var oSubVendorStatus = getNamedFilterCriteria('fSubVendorStatus');
+        var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
+
+        var cUrl = oTable.fnSettings().sAjaxSource;
+
+        var cUrlArray = cUrl.split('/');
+
+        cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
+        cUrl = adjustUrlParameter(cUrl,'vendornm',oVendorNms);
+        cUrl = adjustUrlParameter(cUrl,'contnum',oContNum);
+        cUrl = adjustUrlParameter(cUrl,'subvendorstatus',oSubVendorStatus);
+        cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
+
+//alert(cUrl);
+        return cUrl;
+    }"
+}

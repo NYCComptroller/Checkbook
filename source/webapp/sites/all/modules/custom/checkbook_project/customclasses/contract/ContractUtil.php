@@ -587,6 +587,41 @@ namespace { //global
             $parameters .= '/contcat/'.$contract_type;
             return $parameters;
         }
+
+        static public function adjustContractParameterFilters(&$node, &$parameters) {
+
+            $reqYear = _getRequestParamValue('year');
+            $data_controller_instance = data_controller_get_operator_factory_instance();
+            $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
+            $leCondition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
+            $parameters['starting_year_id']= $leCondition;
+            $parameters['ending_year_id']= $geCondition;
+            $parameters['effective_begin_year_id']= $leCondition;
+            $parameters['effective_end_year_id']= $geCondition;
+
+            $vendor_names = explode('~', _getRequestParamValue('vendornm'));
+            if(isset($vendor_names[0]) && $vendor_names[0] != "") {
+                $pattern = null;
+                foreach($vendor_names as $vendor_name) {
+
+                    $localValue = ":".$vendor_name.":";
+                    $localValue = _checkbook_regex_replace_pattern($localValue);
+                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
+
+                }
+                $pattern = '('.$pattern.')';
+                $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
+
+                if(isset($condition)) {
+                    $parameters['mixed_vendor_name']= $condition;
+                }
+            }
+
+            unset($parameters['year']);
+            unset($parameters['vendor_name']);
+
+            return $parameters;
+        }
     }
 }
 
