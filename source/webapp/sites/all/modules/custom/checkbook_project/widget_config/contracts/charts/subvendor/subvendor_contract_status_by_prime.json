@@ -7,38 +7,18 @@
     <p class=\"pieCount\">'. $node->widgetConfig->chartSubTitle .'</p>';
     return $header;
 ",
-"defaultParameters":{"type_of_year":"B", "status_flag":"A"},
 "no_results_content":"No Results Found",
 "cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe","year","subvendor"],
 "urlParamMap":{"subvendor":"vendor_id","year":"fiscal_year_id","mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"prime_vendor_id",
 	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
 "widgetDataLoader":"
-    
-    $where_filters = array();
+   $parameters = array();
     foreach($node->widgetConfig->requestParams as $param=>$value){
-        $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
+        $parameters[$param] = htmlspecialchars_decode(_replace_special_characters_decode($value));
     }
-    
-    if(count($where_filters) > 0){
-        $where_filter = ' where ' . implode(' and ' , $where_filters);
-    }
-
-    $where_filter .= ' and rd.document_code in (\\'CT1\\',\\'CTA1\\') ';
-    
-    $sql = 'SELECT
-                COUNT(a.contract_number) AS count,
-                c.aprv_sta_value AS status
-            FROM agreement_snapshot a
-                LEFT JOIN (SELECT contract_number, aprv_sta,sub_contract_id 
-                                FROM subcontract_details WHERE latest_flag=\\'Y\\') sd ON a.contract_number=sd.contract_number
-                LEFT JOIN subcontract_approval_status c ON c.aprv_sta_id = COALESCE(sd.aprv_sta,6)
-            WHERE a.latest_flag=\\'Y\\' AND a.scntrc_status =2 AND a.document_code_id in (1,2) AND
-                   (117 BETWEEN a.effective_begin_year_id AND a.effective_end_year_id) and (117 BETWEEN a.starting_year_id AND a.ending_year_id)
-                   AND sd.aprv_sta IN(2, 3, 4, 5, 6)
-            GROUP By c.aprv_sta_value, c.sort_order ORDER BY c.sort_order';
-            
-    $node->data  = _checkbook_project_execute_sql($sql);
-    
+    $service = new ContractsDataService();
+    $data = $service->GetSubvendorStatusByPrimeCounts($parameters); 
+    $node->data  = $data;    
 ",
 "widgetUpdateJSONConfig":"
 	$series_data = array();
