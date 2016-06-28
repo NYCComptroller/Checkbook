@@ -3519,3 +3519,7 @@ p.pieCount {
 #node-chart-subvendor_contract_status_by_prime .highcharts-container > svg{
     width: 850px !important;
 }
+
+.pieSlider{
+    padding-left: 213px !important;
+}
