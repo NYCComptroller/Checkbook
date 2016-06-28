@@ -20,15 +20,21 @@
 ",
 "widgetUpdateJSONConfig":"
 	$series_data = array();
-        $index = 0;
+        foreach($node->data as $row){
+            $series_data[] = array('status' => 'Acco Approved Sub Vendors', 'count' => $row['acco_approved']);
+            $series_data[] = array('status' => 'Acco Reviewing Sub Vendors', 'count' => $row['acco_reviewing']);
+            $series_data[] = array('status' => 'Acco Rejected Sub Vendors', 'count' => $row['acco_rejected']);
+            $series_data[] = array('status' => 'Acco Canceled Sub Vendors', 'count' => $row['acco_cancelled']);
+        }
+	$index = 0;
         $total_contracts = 0;
-	foreach($node->data as $row){	 								 						
-            $series_data[$index]->y = (int)$row['count'];
-            $total_contracts += (int)$row['count'];
-            $series_data[$index]->name = str_replace('Vendor', 'Vendors', $row['status']);
+	foreach($series_data as $row){	 								 						
+            $series_new[$index]->y = (int)$row['count'];
+            $series_new[$index]->name = $row['status'];
             $index += 1;
+            $total_contracts += (int)$row['count'];
 	}
-	$node->widgetConfig->chartConfig->series[0]->data = $series_data;
+	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
 	$node->widgetConfig->chartTitle =  'Sub Vendor Contracts Status by Prime Contracts';
         $node->widgetConfig->chartSubTitle =  'Total Number of Sub Vendor Contracts Submitted: '.number_format($total_contracts);
 ",
