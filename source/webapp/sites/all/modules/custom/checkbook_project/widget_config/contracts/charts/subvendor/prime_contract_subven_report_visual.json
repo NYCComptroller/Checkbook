@@ -12,7 +12,7 @@
     $parameters = array();
     foreach($node->widgetConfig->requestParams as $param=>$value){
         $parameters[$param] = htmlspecialchars_decode(_replace_special_characters_decode($value));
-    }dsm($parameters);
+    }
     $service = new ContractsDataService();
     $data = $service->GetSubvendorContractsbyPrimeCounts($parameters); 
     $node->data  = $data;  
