@@ -838,6 +838,7 @@
             </where>
         </sql>
     </statement>
+    <!---Sub Vendor Contracts Status by Prime Contracts Pie Chart-->
     <statement name="GetSubvendorStatusByPrimeCounts" datasource="checkbook">
         <param name="year" required ="true" type="int"/>
         <param name="yeartype" required ="true" type="string" />
@@ -852,42 +853,29 @@
         <param name="csize" />
         <param name="cindustry" />
         <sql>
-            SELECT
-                COUNT(a.contract_number) AS count,
-                c.aprv_sta_value AS status
-            FROM agreement_snapshot a
-                LEFT JOIN (SELECT contract_number, aprv_sta,sub_contract_id 
-                                FROM subcontract_details
-                                <where>
-                                    <exp op="AND">
-                                        <exp op="=" dbField="latest_flag">'Y'</exp>
-                                        <exp op="=" dbField="vendor_history_id" paramName="subvendor" />
-                                    </exp>
-                                </where>) sd ON a.contract_number=sd.contract_number
-                LEFT JOIN subcontract_approval_status c ON c.aprv_sta_id = COALESCE(sd.aprv_sta,6)
-                JOIN ref_document_code rd ON rd.document_code_id = a.document_code_id
+        SELECT
+            SUM(CASE WHEN aprv_sta=4 THEN 1 ELSE 0 END) AS acco_approved,
+            SUM(CASE WHEN aprv_sta=3 THEN 1 ELSE 0 END) AS acco_reviewing,
+            SUM(CASE WHEN aprv_sta=2 THEN 1 ELSE 0 END) AS acco_rejected,
+            SUM(CASE WHEN aprv_sta=5 THEN 1 ELSE 0 END) AS acco_cancelled
+        FROM aggregateon_mwbe_contracts_cumulative_spending a
+        LEFT JOIN (SELECT contract_number, aprv_sta FROM subcontract_details WHERE latest_flag='Y') sd ON a.contract_number=sd.contract_number
             <where>
                 <exp op="AND">
-                    <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
-                    <exp op="=" dbField="a.agency_id" paramName="agency" />
-                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
-                    <exp op="&lt;=" dbField="a.starting_year_id" paramName="year" />
-                    <exp op="&gt;=" dbField="a.ending_year_id" paramName="year" />
-                    <exp op="&lt;=" dbField="a.effective_begin_year_id" paramName="year" />
-                    <exp op="&gt;=" dbField="a.effective_end_year_id" paramName="year" />
-                    <exp op="=" dbField="a.latest_flag">'Y'</exp>
+                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="a.type_of_year">'B'</exp>
+                    <exp op="=" dbField="a.status_flag">'A'</exp>
+                    <exp op="IN" dbField="a.document_code_id" paramName="doctype">(1,2,3)</exp>
                     <exp op="=" dbField="a.scntrc_status">2</exp>
-                    <exp op="IN" dbField="sd.aprv_sta">(2, 3, 4, 5, 6)</exp>
-                    <exp op="IN" dbField="a.document_code_id">(1,2,3)</exp>
+                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
                     <exp op="=" dbField="a.award_size_id" paramName="csize" />
                     <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
-            GROUP BY c.aprv_sta_value, c.sort_order
-            ORDER BY c.sort_order
         </sql>
     </statement>
+    <!---Sub Vendor Reporting by Prime Contracts Pie Chart-->
     <statement name="GetSubvendorContractsbyPrimeCounts" datasource="checkbook">
         <param name="year" required ="true" type="int"/>
         <param name="yeartype" required ="true" type="string" />
@@ -921,7 +909,7 @@
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="l1.fiscal_year_id" paramName="year" />
-                    <exp op="=" dbField="l1.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="l1.type_of_year">'B'</exp>
                     <exp op="=" dbField="l1.status_flag">'A'</exp>
                     <exp op="IN" dbField="l1.document_code_id" paramName="doctype">(1,2,3)</exp>
                     <exp op="=" dbField="l1.vendor_id" paramName="vendor" />
