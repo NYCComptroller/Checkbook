@@ -39,7 +39,7 @@
             "plotBorderWidth": null,
             "plotShadow": false
         },
-        "colors": ["#78b5e9", "#f79d60", "#8dea84","434448"],
+        "colors": ["#78b5e9", "#f79d60", "#8dea84","#434448"],
         "tooltip": {
             "function":"tooltipformatter"
         },
