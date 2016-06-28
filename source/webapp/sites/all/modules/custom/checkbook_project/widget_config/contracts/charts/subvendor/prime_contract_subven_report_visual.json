@@ -6,6 +6,7 @@
     <p class=\"pieCount\">'. $node->widgetConfig->chartSubTitle .'</p>';
     return $header;
 ",
+"defaultParameters":{"status_flag":"A","type_of_year":"B"},
 "cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe","year","subvendor"],
 "no_results_content":"No Results Found",
 "widgetDataLoader":"
