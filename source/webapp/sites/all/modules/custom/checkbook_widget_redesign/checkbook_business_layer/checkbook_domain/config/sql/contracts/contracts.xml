@@ -543,9 +543,9 @@
                     <exp op="=" dbField="a.agency_id" paramName="agency" />
                     <exp op="=" dbField="a.scntrc_status">2</exp>
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
-                    <exp op="=" dbField="l1.award_method_id" paramName="awdmethod" />
-                    <exp op="=" dbField="l1.award_size_id" paramName="csize" />
-                    <exp op="=" dbField="l1.industry_type_id" paramName="cindustry" />
+                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
             GROUP BY ra.agency_name, ra.agency_id
@@ -713,6 +713,9 @@
         <param name="subvendor" type="int" />
         <param name="mwbe" />
         <param name="contract_mod" type="bool" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
         <sql>
             SELECT
             CASE WHEN b.legal_name IS NULL THEN 'N/A' ELSE b.legal_name END AS vendor_name,
@@ -744,6 +747,9 @@
                     <exp op="IN" dbField="c.document_code" paramName="doctype" />
                     <exp op="=" dbField="a.scntrc_status">2</exp>
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
             GROUP BY b.legal_name, b.vendor_id
