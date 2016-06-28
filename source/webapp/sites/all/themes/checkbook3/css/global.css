@@ -1232,6 +1232,14 @@ span.dollars{
     margin-bottom: -10px;
     top: 0;
 }
+.subvendor_third_bottom_nav{ top: 2px !important; }
+
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    /* IE10+ CSS styles go here */
+    .subvendor_third_bottom_nav{ top: 1px !important; }
+}
+
 #node-widget-737 .nyc_subvendors_totals_links a,
 #node-widget-737 .nyc_subvendors_totals_links a:link,
 #node-widget-737 .nyc_subvendors_totals_links a:visited,
