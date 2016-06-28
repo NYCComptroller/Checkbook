@@ -65,6 +65,7 @@
             "layout": "vertical",
             "align": "right",
             "verticalAlign": "middle",
+            "y":-25,
             "useHTML": true,
             "itemMarginTop": 3,
             "itemMarginBottom": 3
