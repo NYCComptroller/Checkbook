@@ -869,7 +869,7 @@
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
-                    <exp op="=" dbField="b.sub_vendor_id" paramName="subvendor" />
+                    <exp op="=" dbField="a.sub_vendor_id" paramName="subvendor" />
                     <exp op="=" dbField="a.agency_id" paramName="agency" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                     <exp op="&lt;=" dbField="a.starting_year_id" paramName="year" />
