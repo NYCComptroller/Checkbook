@@ -3,18 +3,28 @@
     "parentNid":932,
     "autocomplete":false,
     "no_results_content":"No Results Found",
-    "limit":10,
     "startWith":0,
     "maxSelect":5,
-    "columns":["vendor_type.vendor_type", "txcount"],
+    "urlParamMap":{
+        "vendortype":"vendor_type_id.vendor_type_id"
+    },
+    "dataset":"checkbook:mixed_vendor_type_data",
+    "columns":["vendor_type_id.vendor_type_id", "vendor_type.vendor_type", "txcount"],
     "orderBy":"-txcount",
     "getTotalDataCount":true,
     "facetPager":true,
-    "filterName":"Vendor Type",
+    "filterName":"Vendor Types",
     "urlParameterName":"vendortype",
     "autocompleteID":"fvendorType",
     "showAllRecords":true,
     "allowFacetDeselect":true,
-    "adjustParameters":"return ContractUtil::adjustContractParameterFilters($node, $parameters);",
+    "adjustParameters":"
+        $parameters = ContractUtil::adjustContractParameterFilters($node, $parameters);
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
+            $parameters['vendor_type.vendor_type'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+        }
+        return $parameters;
+    ",
     "template":"individual_filter"
 }
