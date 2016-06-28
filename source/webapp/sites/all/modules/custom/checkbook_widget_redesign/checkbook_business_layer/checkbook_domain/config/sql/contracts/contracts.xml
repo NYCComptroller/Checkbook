@@ -479,7 +479,7 @@
             SUM(CASE WHEN l1.scntrc_status = 3 THEN 1 ELSE 0 END) AS reported_no_sub_count,
             SUM(CASE WHEN l1.scntrc_status = 2 AND sd.contract_number IS NULL THEN 1 ELSE 0 END) AS reported_no_details_count
             FROM aggregateon_mwbe_contracts_cumulative_spending l1
-            JOIN
+            LEFT JOIN
             (
             SELECT contract_number, aprv_sta, prime_vendor_id FROM sub_agreement_snapshot
             <where>
@@ -525,7 +525,7 @@
             SELECT
             COUNT(DISTINCT l1.contract_number ) AS record_count
             FROM aggregateon_mwbe_contracts_cumulative_spending l1
-            JOIN
+            LEFT JOIN
             (
             SELECT contract_number, aprv_sta, prime_vendor_id FROM sub_agreement_snapshot
             <where>
