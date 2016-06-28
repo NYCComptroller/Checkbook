@@ -552,7 +552,6 @@
                     <exp op="IN" dbField="l1.minority_type_id" paramName="mwbe" />
                 </exp>
             </where>
-            GROUP BY l3.agency_id, l3.agency_name
         </sql>
     </statement>
     <statement name="GetSubvendorContractsbyPrime" datasource="checkbook">
