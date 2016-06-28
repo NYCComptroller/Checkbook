@@ -6,33 +6,16 @@
     <p class=\"pieCount\">'. $node->widgetConfig->chartSubTitle .'</p>';
     return $header;
 ",
-"defaultParameters":{"type_of_year":"B", "status_flag":"A"},
-"no_results_content":"No Results Found",
 "cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe","year","subvendor"],
-"urlParamMap":{"subvendor":"vendor_id","year":"fiscal_year_id","mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id",
-	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
+"no_results_content":"No Results Found",
 "widgetDataLoader":"
-    
-    $where_filters = array();
+    $parameters = array();
     foreach($node->widgetConfig->requestParams as $param=>$value){
-        $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
-    }
-    
-    if(count($where_filters) > 0){
-        $where_filter = ' where ' . implode(' and ' , $where_filters);
-    }
-
-    $where_filter .= ' and rd.document_code in (\\'CT1\\',\\'CTA1\\') ';
-    
-    $sql = ' SELECT
-		COUNT(DISTINCT a1.contract_number) total_contracts,
-                SUM(CASE WHEN a1.scntrc_status = 1 THEN 1 ELSE 0 END) no_response_status,
-                SUM(CASE WHEN a1.scntrc_status = 2 THEN 1 ELSE 0 END) reported_sub_count,
-                SUM(CASE WHEN a1.scntrc_status = 3 THEN 1 ELSE 0 END) reported_no_sub_count
-                FROM {aggregateon_mwbe_contracts_cumulative_spending} a1 
-                JOIN {ref_document_code} rd ON a1.document_code_id = rd.document_code_id '
-                . $where_filter;
-    $node->data  = _checkbook_project_execute_sql($sql);
+        $parameters[$param] = htmlspecialchars_decode(_replace_special_characters_decode($value));
+    }dsm($parameters);
+    $service = new ContractsDataService();
+    $data = $service->GetSubvendorContractsbyPrimeCounts($parameters); 
+    $node->data  = $data;  
     
 ",
 "widgetUpdateJSONConfig":"

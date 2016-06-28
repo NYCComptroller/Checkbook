@@ -26,4 +26,7 @@ class ContractsDataService extends AbstractDataService {
     public function GetSubvendorStatusByPrimeCounts($parameters, $limit = null, $orderBy = null) {
         return $this->getData($parameters, $limit, $orderBy, "GetSubvendorStatusByPrimeCounts");
     }
+    public function GetSubvendorContractsbyPrimeCounts($parameters, $limit = null, $orderBy = null) {
+        return $this->getData($parameters, $limit, $orderBy, "GetSubvendorContractsbyPrimeCounts");
+    }
 } 
