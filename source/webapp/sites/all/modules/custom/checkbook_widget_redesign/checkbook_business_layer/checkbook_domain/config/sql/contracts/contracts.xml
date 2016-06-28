@@ -836,4 +836,41 @@
             ORDER BY c.sort_order
         </sql>
     </statement>
+    <statement name="GetSubvendorContractsbyPrimeCounts" datasource="checkbook">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="status" type="string"/>
+        <param name="doctype" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="mwbe" />
+        <param name="contract_mod" type="bool" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
+        <sql>
+            SELECT
+		COUNT(DISTINCT a.contract_number) total_contracts,
+                SUM(CASE WHEN a.scntrc_status = 1 THEN 1 ELSE 0 END) no_response_status,
+                SUM(CASE WHEN a.scntrc_status = 2 THEN 1 ELSE 0 END) reported_sub_count,
+                SUM(CASE WHEN a.scntrc_status = 3 THEN 1 ELSE 0 END) reported_no_sub_count
+            FROM aggregateon_mwbe_contracts_cumulative_spending a 
+            LEFT JOIN ref_document_code c ON a.document_code_id=c.document_code_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="a.type_of_year">'B'</exp>
+                    <exp op="=" dbField="a.status_flag">'A'</exp>
+                    <exp op="IN" dbField="c.document_code" paramName="doctype" />
+                    <exp op="=" dbField="a.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.agency_id" paramName="agency" />
+                    <exp op="=" dbField="a.scntrc_status">2</exp>
+                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
+                </exp>
+            </where>
+        </sql>
+    </statement>
 </statements>
