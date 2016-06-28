@@ -1,4 +1,8 @@
 jQuery(document).ready(function ($) {
+    //Altering CSS for slider pager for pie charts on contracts page
+    if(jQuery(".slider-pager a").length == 2){
+        jQuery("div.slider-pager").addClass('pieSlider');
+    }
     if (!getParameterByName("expandBottomCont") && !getParameterByName("expandBottomContURL")) {
         jQuery('.bottomContainerToggle').click();
         jQuery('.bottomContainer').show();
