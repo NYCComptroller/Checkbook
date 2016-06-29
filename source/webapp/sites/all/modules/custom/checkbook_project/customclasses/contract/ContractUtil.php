@@ -600,14 +600,14 @@ namespace { //global
             $parameters['effective_begin_year_id']= $leCondition;
             $parameters['effective_end_year_id']= $geCondition;
 
-            //Vendor facet -- AND mixed_vendor_name_id ~* '(.*:354:*.)'
+            //Vendor Facet -- mixed_vendor_name_id ~* '(^155$)|(.*,155$)|(^155,.*)'
             $vendor_name_ids = explode('~', _getRequestParamValue('vendornm'));
             $has_vendors = isset($vendor_name_ids[0]) && $vendor_name_ids[0] != "";
             if($has_vendors) {
                 $pattern = null;
                 foreach($vendor_name_ids as $vendor_name_id) {
                     $localValue = _checkbook_regex_replace_pattern($vendor_name_id);
-                    $localValue = ".*:{$localValue}:*.";
+                    $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
                     $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
                 }
                 $pattern = '('.$pattern.')';
@@ -616,13 +616,28 @@ namespace { //global
                     $parameters['mixed_vendor_name_id'] = $condition;
                 }
             }
-            //Vendor Type facet
+
+            //Vendor Type Facet
             $vendor_type_ids = explode('~', _getRequestParamValue('vendortype'));
             $has_vendor_types = isset($vendor_type_ids[0]) && $vendor_type_ids[0] != "";
-
             if($has_vendor_types) {
-                $pattern = null;
-                $parameters = self::getVendorTypePattern($parameters, $vendor_type_ids, $has_vendors ? $vendor_name_ids : null);
+
+                $condition = null;
+
+                if($has_vendors) {
+                    $pattern = null;
+                    foreach($vendor_name_ids as $vendor_name_id) {
+                        $local_pattern = self::getVendorTypeRegEx($vendor_type_ids, $vendor_name_id);
+                        $pattern .= isset($pattern) ? '|'.$local_pattern : $local_pattern;
+                    }
+                }
+                else {
+                    $pattern = self::getVendorTypeRegEx($vendor_type_ids);
+                }
+                $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
+                if(isset($condition)) {
+                    $parameters['mixed_vendor_name_id_by_type'] = $condition;
+                }
             }
 
             unset($parameters['year']);
@@ -631,48 +646,53 @@ namespace { //global
             return $parameters;
         }
 
-        static public function getVendorTypePattern($parameters, $vendor_type_ids, $vendor_name_ids = null) {
+        static public function getVendorTypeRegEx($vendor_type_ids, $vendor_name_id = null) {
 
-            $pattern = null;
             $P = in_array('P', $vendor_type_ids);
             $S = in_array('S', $vendor_type_ids);
             $M = in_array('M', $vendor_type_ids);;
-            $conditions = null;
+            $vendor_name_id = isset($vendor_name_id) ? $vendor_name_id : ".*";
+            $pattern = null;
 
-            $data_controller_instance = data_controller_get_operator_factory_instance();
-
-            if(isset($vendor_name_ids)) {
-                foreach($vendor_name_ids as $vendor_name_id) {
-
-                    if($P) {
-                        $localValue = ".*{$vendor_name_id}*.";
-                        $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
-                        $vendorTypeCondition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
-                        $parameters['prime_vendor_name_id']= $vendorTypeCondition;
-                    }
-                    if($S) {
-                        $localValue = ".*{$vendor_name_id}*.";
-                        $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
-                        $vendorTypeCondition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
-                        $parameters['sub_vendor_name_id']= $vendorTypeCondition;
-                    }
-                }
+            if($P && $M) {
+                $localValue = "PM:{$vendor_name_id}";
+                $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
+                $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
             }
-            else {
-                if($P) {
-                    $localValue = "(.*.)";
-                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
-                    $vendorTypeCondition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
-                    $parameters['prime_vendor_name_id']= $vendorTypeCondition;
-                }
-                if($S) {
-                    $localValue = "(.*.)";
-                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
-                    $vendorTypeCondition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
-                    $parameters['sub_vendor_name_id']= $vendorTypeCondition;
-                }
+            if($P && !$M) {
+                $localValue = "PM:{$vendor_name_id}";
+                $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
+                $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
+
+                $localValue = "P:{$vendor_name_id}";
+                $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
+                $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
             }
-            return $parameters;
+            if($S && $M) {
+                $localValue = "SM:{$vendor_name_id}";
+                $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
+                $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
+            }
+            if($S && !$M) {
+                $localValue = "S:{$vendor_name_id}";
+                $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
+                $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
+
+                $localValue = "SM:{$vendor_name_id}";
+                $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
+                $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
+            }
+            if($M && !$P && !$S) {
+                $localValue = "PM:{$vendor_name_id}";
+                $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
+                $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
+
+                $localValue = "SM:{$vendor_name_id}";
+                $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
+                $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
+            }
+
+            return $pattern;
         }
     }
 }
