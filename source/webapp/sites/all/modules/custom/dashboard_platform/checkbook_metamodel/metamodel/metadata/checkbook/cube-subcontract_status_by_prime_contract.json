@@ -7,13 +7,20 @@
 
         "mixed_vendor_data":{
             "datasourceName":"main",
-            "source":"SELECT prime_vendor_name as vendor_name, count(prime_vendor_id) as vendor_id, mixed_vendor_name,original_agreement_id,contract_number,agency_id,aprv_sta_id,starting_year_id,ending_year_id,effective_begin_year_id,effective_end_year_id
-            FROM subcontract_status_by_prime_contract WHERE prime_vendor_name IS NOT NULL
-            GROUP BY prime_vendor_name, mixed_vendor_name, original_agreement_id, contract_number, agency_id,aprv_sta_id,starting_year_id,ending_year_id,effective_begin_year_id,effective_end_year_id
-            UNION
-            SELECT sub_vendor_name as vendor_name, count(sub_vendor_id) as vendor_id, mixed_vendor_name,original_agreement_id,contract_number,agency_id, aprv_sta_id,starting_year_id,ending_year_id,effective_begin_year_id,effective_end_year_id
-            FROM subcontract_status_by_prime_contract WHERE sub_vendor_name IS NOT NULL
-            GROUP BY sub_vendor_name, mixed_vendor_name, original_agreement_id, contract_number, agency_id,aprv_sta_id,starting_year_id,ending_year_id,effective_begin_year_id,effective_end_year_id
+            "source":"SELECT CASE WHEN mixed_vendor_name_id ~* '(.*P:*.)|(.*PM:*.)' THEN prime_vendor_name_id END as vendor_name_id, prime_vendor_name_id, sub_vendor_name_id, prime_vendor_name as vendor_name, mixed_vendor_name_id, mixed_vendor_name, contract_number, agency_id, prime_minority_type_id, sub_minority_type_id, aprv_sta_id, starting_year_id, ending_year_id, effective_begin_year_id, effective_end_year_id FROM subcontract_status_by_prime_contract
+            UNION ALL
+            SELECT CASE WHEN mixed_vendor_name_id ~* '(.*S:*.)|(.*SM:*.)' THEN sub_vendor_name_id END as vendor_name_id, prime_vendor_name_id, sub_vendor_name_id, sub_vendor_name as vendor_name, mixed_vendor_name_id, mixed_vendor_name, contract_number, agency_id, prime_minority_type_id, sub_minority_type_id, aprv_sta_id, starting_year_id, ending_year_id, effective_begin_year_id, effective_end_year_id FROM subcontract_status_by_prime_contract
+            "
+        },
+        "mixed_vendor_type_data":{
+            "datasourceName":"main",
+            "source":"SELECT CASE WHEN mixed_vendor_name_id ~* '(.*P:*.)|(.*PM:*.)' THEN 'PRIME VENDOR' END as vendor_type,'P' as vendor_type_id, prime_vendor_name_id, sub_vendor_name_id, 'P:'||prime_vendor_name_id||':' as mixed_vendor_name_id, mixed_vendor_name, contract_number, agency_id, prime_minority_type_id, sub_minority_type_id, aprv_sta_id, starting_year_id, ending_year_id, effective_begin_year_id, effective_end_year_id FROM subcontract_status_by_prime_contract
+                      UNION ALL
+                      SELECT CASE WHEN mixed_vendor_name_id ~* '(.*S:*.)|(.*SM:*.)' THEN 'SUB VENDOR' END as vendor_type,'S' as vendor_type_id, prime_vendor_name_id, sub_vendor_name_id, 'S:'||sub_vendor_name_id||':' as mixed_vendor_name_id, mixed_vendor_name, contract_number, agency_id, prime_minority_type_id, sub_minority_type_id, aprv_sta_id, starting_year_id, ending_year_id, effective_begin_year_id, effective_end_year_id FROM subcontract_status_by_prime_contract
+                      UNION ALL
+                      SELECT CASE WHEN mixed_vendor_name_id ~* '(.*PM:*.)' THEN 'M/WBE VENDOR' END as vendor_type,'M' as vendor_type_id, prime_vendor_name_id, sub_vendor_name_id, 'PM:'||prime_vendor_name_id||':' as mixed_vendor_name_id, mixed_vendor_name, contract_number, agency_id, prime_minority_type_id, sub_minority_type_id, aprv_sta_id, starting_year_id, ending_year_id, effective_begin_year_id, effective_end_year_id FROM subcontract_status_by_prime_contract
+                      UNION ALL
+                      SELECT CASE WHEN mixed_vendor_name_id ~* '(.*SM:*.)' THEN 'M/WBE VENDOR' END as vendor_type,'M' as vendor_type_id, prime_vendor_name_id, sub_vendor_name_id, 'SM:'||sub_vendor_name_id||':' as mixed_vendor_name_id, mixed_vendor_name, contract_number, agency_id, prime_minority_type_id, sub_minority_type_id, aprv_sta_id, starting_year_id, ending_year_id, effective_begin_year_id, effective_end_year_id FROM subcontract_status_by_prime_contract
             "
         }
     },
@@ -147,6 +154,45 @@
                         {
                             "name": "vendor_name",
                             "sourceColumnName": "vendor_name"
+                        }
+                    ]
+                },
+                {
+
+                    "name": "vendor_name_id",
+                    "levels": [
+                        {
+                            "name": "vendor_name_id",
+                            "sourceColumnName": "vendor_name_id"
+                        }
+                    ]
+                }
+            ],
+            "measures": {
+                "txcount": {
+                    "function": "COUNT(*)"
+                }
+            }
+        },
+
+        "mixed_vendor_type_data":{
+            "sourceDatasetName":"mixed_vendor_type_data",
+            "dimensions":[
+                {
+                    "name": "vendor_type",
+                    "levels": [
+                        {
+                            "name": "vendor_type",
+                            "sourceColumnName": "vendor_type"
+                        }
+                    ]
+                },
+                {
+                    "name": "vendor_type_id",
+                    "levels": [
+                        {
+                            "name": "vendor_type_id",
+                            "sourceColumnName": "vendor_type_id"
                         }
                     ]
                 }
