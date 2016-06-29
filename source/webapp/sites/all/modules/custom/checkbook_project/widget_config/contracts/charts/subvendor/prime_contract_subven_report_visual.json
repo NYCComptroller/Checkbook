@@ -66,6 +66,7 @@
             "align": "right",
             "verticalAlign": "middle",
             "y":-25,
+            "x":75,
             "useHTML": true,
             "itemMarginTop": 3,
             "itemMarginBottom": 3
@@ -77,7 +78,7 @@
 tooltipformatter^^'formatter' :
 function() {
     var statusName = new Array();
-    statusName['Contracts With No Response by Prime'] = 'Contracts With<br/>No Response<br/>by Prime';
+    statusName['Contracts With No Response by Prime'] = 'Contracts With No Response<br/>by Prime';
     statusName['Reported Contracts With Sub Vendors'] = 'Reported Contracts With<br/>Sub Vendors';
     statusName['Reported Contracts Without Sub Vendors'] = 'Reported Contracts Without<br/>Sub Vendors';
     return statusName[this.point.name] + ': <b>'+ (this.point.y).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +'</b>';
