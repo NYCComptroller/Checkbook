@@ -867,6 +867,8 @@
                     <exp op="=" dbField="a.status_flag">'A'</exp>
                     <exp op="IN" dbField="a.document_code_id" paramName="doctype">(1,2,3)</exp>
                     <exp op="=" dbField="a.scntrc_status">2</exp>
+                    <exp op="=" dbField="a.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.agency_id" paramName="agency" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
                     <exp op="=" dbField="a.award_size_id" paramName="csize" />
