@@ -21,10 +21,10 @@
 "widgetUpdateJSONConfig":"
 	$series_data = array();
         foreach($node->data as $row){
-            $series_data[] = array('status' => 'Acco Approved Sub Vendors', 'count' => $row['acco_approved']);
-            $series_data[] = array('status' => 'Acco Reviewing Sub Vendors', 'count' => $row['acco_reviewing']);
-            $series_data[] = array('status' => 'Acco Rejected Sub Vendors', 'count' => $row['acco_rejected']);
-            $series_data[] = array('status' => 'Acco Canceled Sub Vendors', 'count' => $row['acco_cancelled']);
+            $series_data[] = array('status' => 'ACCO Approved Sub Vendor', 'count' => $row['acco_approved']);
+            $series_data[] = array('status' => 'ACCO Reviewing Sub Vendor', 'count' => $row['acco_reviewing']);
+            $series_data[] = array('status' => 'ACCO Rejected Sub Vendor', 'count' => $row['acco_rejected']);
+            $series_data[] = array('status' => 'ACCO Canceled Sub Vendor', 'count' => $row['acco_cancelled']);
         }
 	$index = 0;
         $total_contracts = 0;
@@ -78,6 +78,6 @@
 <function>
 tooltipformatter^^'formatter' :
 function() {
-    return (this.point.name).replace(' Sub Vendors','<br/>Sub Vendors') + ': <b>'+ (this.point.y).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +'</b>';
+    return (this.point.name).replace(' Sub Vendor','<br/>Sub Vendor') + ': <b>'+ (this.point.y).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +'</b>';
 }
 </function>
