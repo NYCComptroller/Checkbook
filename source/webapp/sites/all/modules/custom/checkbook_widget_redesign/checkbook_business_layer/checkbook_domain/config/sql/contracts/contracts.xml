@@ -895,16 +895,6 @@
                 SUM(CASE WHEN l1.scntrc_status = 2 THEN 1 ELSE 0 END) AS reported_sub_count,
                 SUM(CASE WHEN l1.scntrc_status = 3 THEN 1 ELSE 0 END) AS reported_no_sub_count
             FROM aggregateon_mwbe_contracts_cumulative_spending l1
-            JOIN
-            (
-                SELECT contract_number, prime_vendor_id FROM sub_agreement_snapshot
-                <where>
-                    <exp op="AND">
-                        <exp op="=" dbField="vendor_id" paramName="subvendor" />
-                        <exp op="=" dbField="latest_flag">'Y'</exp>
-                    </exp>
-                </where>
-            ) sd ON l1.contract_number = sd.contract_number AND l1.vendor_id = sd.prime_vendor_id
             JOIN ref_document_code l2 ON l2.document_code_id = l1.document_code_id
             <where>
                 <exp op="AND">
