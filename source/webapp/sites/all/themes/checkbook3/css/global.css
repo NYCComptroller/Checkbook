@@ -1183,6 +1183,7 @@ span.dollars{
     line-height: 1.5em;
     vertical-align: baseline;
     width:33%;
+    height:86px;
 }
 .nyc_subvendors_totals_links{
     color:#596c7d;
@@ -1232,8 +1233,6 @@ span.dollars{
     margin-bottom: -10px;
     top: 0;
 }
-.subvendor_third_bottom_nav{ top: 2px !important; }
-
 
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
     /* IE10+ CSS styles go here */
@@ -1246,8 +1245,8 @@ span.dollars{
 #node-widget-737 .nyc_subvendors_totals_links a:hover{
     padding: 7px 0px;
 }
-#node-widget-737 .nyc_subvendors_totals_links td{
-    width:33%;
+#node-widget-737 div.nyc_subvendors_totals_links table tbody tr td.active div.positioning a{
+    height:86px !important;
 }
 /* subvendors end */
 
