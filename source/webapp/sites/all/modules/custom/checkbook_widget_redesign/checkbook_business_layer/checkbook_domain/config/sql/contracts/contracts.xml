@@ -1032,7 +1032,7 @@
         <param name="cindustry" />
         <sql>
             SELECT
-                COUNT(l1.contract_number) as total_contracts,
+                COUNT(DISTINCT l1.contract_number) as total_contracts,
                 SUM(CASE WHEN l1.scntrc_status = 1 THEN 1 ELSE 0 END) AS no_response_status,
                 SUM(CASE WHEN l1.scntrc_status = 2 THEN 1 ELSE 0 END) AS reported_sub_count,
                 SUM(CASE WHEN l1.scntrc_status = 3 THEN 1 ELSE 0 END) AS reported_no_sub_count
@@ -1068,7 +1068,7 @@
         <param name="cindustry" />
         <sql>
             SELECT
-                COUNT(l1.contract_number) as total_contracts,
+                COUNT(DISTINCT l1.contract_number) as total_contracts,
                 SUM(CASE WHEN l1.scntrc_status = 1 THEN 1 ELSE 0 END) AS no_response_status,
                 SUM(CASE WHEN l1.scntrc_status = 2 THEN 1 ELSE 0 END) AS reported_sub_count,
                 SUM(CASE WHEN l1.scntrc_status = 3 THEN 1 ELSE 0 END) AS reported_no_sub_count
