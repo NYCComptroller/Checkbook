@@ -11,7 +11,11 @@
 "widgetDataLoader":"
     $parameters = array();
     foreach($node->widgetConfig->requestParams as $param=>$value){
-        $parameters[$param] = htmlspecialchars_decode(_replace_special_characters_decode($value));
+        $values_array = explode('~',$value);
+        if(count($values_array) > 1){
+            $parameters[$param] =  '(' . implode(',', $values_array) . ')';
+        }else
+            $parameters[$param] = htmlspecialchars_decode(_replace_special_characters_decode($value));
     }
     $service = new ContractsDataService();
     $data = $service->GetSubvendorContractsbyPrimeCounts($parameters); 
@@ -23,17 +27,23 @@
 	$series_data = array();
         foreach($node->data as $row){
             $total_contracts = $row['total_contracts'];
-            $series_data[] = array('status' => 'Contracts With No Response by Prime', 'count' => $row['no_response_status']);
-            $series_data[] = array('status' => 'Reported Contracts With Sub Vendors', 'count' => $row['reported_sub_count']);
-            $series_data[] = array('status' => 'Reported Contracts Without Sub Vendors', 'count' => $row['reported_no_sub_count']);
+            if($row['no_response_status'] > 0|| $row['reported_sub_count'] > 0 || $row['reported_no_sub_count'] > 0){
+                $series_data[] = array('status' => 'Contracts With No Response by Prime', 'count' => $row['no_response_status']);
+                $series_data[] = array('status' => 'Reported Contracts With Sub Vendors', 'count' => $row['reported_sub_count']);
+                $series_data[] = array('status' => 'Reported Contracts Without Sub Vendors', 'count' => $row['reported_no_sub_count']);
+            }
         }
 	$index = 0;
-	foreach($series_data as $row){	 								 						
-            $series_new[$index]->y = (int)$row['count'];
-            $series_new[$index]->name = $row['status'];
-            $index += 1;
-	}
-	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
+        if(count($series_data) > 0){
+            foreach($series_data as $row){	 								 						
+                $series_new[$index]->y = (int)$row['count'];
+                $series_new[$index]->name = $row['status'];
+                $index += 1;
+            }
+            $node->widgetConfig->chartConfig->series[0]->data = $series_new;
+        }else{
+            $node->data = null;
+        }
 	$node->widgetConfig->chartTitle =  'Sub Vendor Reporting by Prime Contracts';
         $node->widgetConfig->chartSubTitle =  'Total Number of Contracts: '.number_format($total_contracts);
 ",
