@@ -102,13 +102,13 @@ foreach ($spending_parameter_mapping as $key=>$title){
       if($spending_results['is_prime_or_sub'] == 'Yes'){
           $value = "<a class=\"new_window\" href=\"/contract_details"
               . (($IsOge)?'/datasource/checkbook_oge' :'')
-              . _checkbook_project_get_contract_url($value, $spending_results['contract_original_agreement_id']) . '/newwindow">'
+              . _checkbook_project_get_contract_url($spending_results['contract_number'], $spending_results['contract_original_agreement_id']) . '/newwindow">'
               . $value . "</a>";
       }
       else{
           $value = "<a class=\"new_window\" href=\"/contract_details"
               . (($IsOge)?'/datasource/checkbook_oge' :'')
-              . _checkbook_project_get_contract_url($value, $spending_results['agreement_id']) . '/newwindow">'
+              . _checkbook_project_get_contract_url($spending_results['contract_number'], $spending_results['agreement_id']) . '/newwindow">'
               . $value . "</a>";
       }
   }
