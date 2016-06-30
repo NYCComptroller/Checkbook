@@ -481,11 +481,11 @@
             FROM aggregateon_mwbe_contracts_cumulative_spending l1
             LEFT JOIN
             (
-            SELECT contract_number, aprv_sta, prime_vendor_id FROM sub_agreement_snapshot
+            SELECT distinct contract_number FROM sub_agreement_snapshot
             <where>
                     <exp op="=" dbField="latest_flag">'Y'</exp>
             </where>
-            ) sd ON l1.contract_number = sd.contract_number AND l1.vendor_id = sd.prime_vendor_id
+            ) sd ON l1.contract_number = sd.contract_number
             JOIN ref_document_code l2 ON l2.document_code_id = l1.document_code_id
             JOIN ref_agency l3 on l3.agency_id = l1.agency_id
             JOIN vendor l4 on l4.vendor_id = l1.vendor_id
@@ -524,11 +524,11 @@
             FROM aggregateon_mwbe_contracts_cumulative_spending l1
             LEFT JOIN
             (
-            SELECT contract_number, aprv_sta, prime_vendor_id FROM sub_agreement_snapshot
+            SELECT distinct contract_number FROM sub_agreement_snapshot
             <where>
                     <exp op="=" dbField="latest_flag">'Y'</exp>
             </where>
-            ) sd ON l1.contract_number = sd.contract_number AND l1.vendor_id = sd.prime_vendor_id
+            ) sd ON l1.contract_number = sd.contract_number
             JOIN ref_document_code l2 ON l2.document_code_id = l1.document_code_id
             JOIN ref_agency l3 on l3.agency_id = l1.agency_id
             JOIN vendor l4 on l4.vendor_id = l1.vendor_id
@@ -573,7 +573,7 @@
             FROM aggregateon_mwbe_contracts_cumulative_spending l1
             JOIN
             (
-            SELECT contract_number, aprv_sta, prime_vendor_id FROM sub_agreement_snapshot
+            SELECT distinct contract_number, prime_vendor_id FROM sub_agreement_snapshot
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="vendor_id" paramName="subvendor" />
@@ -619,7 +619,7 @@
             FROM aggregateon_mwbe_contracts_cumulative_spending l1
             JOIN
             (
-            SELECT contract_number, aprv_sta, prime_vendor_id FROM sub_agreement_snapshot
+            SELECT distinct contract_number, prime_vendor_id FROM sub_agreement_snapshot
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="vendor_id" paramName="subvendor" />
