@@ -181,7 +181,8 @@ if (_getRequestParamValue("datasource") != "checkbook_oge") {
                                 ELSE 'N/A'
                             END AS contract_subvendor_status
                             FROM aggregateon_mwbe_contracts_cumulative_spending
-                            WHERE contract_number = '". $contract_number . "' AND fiscal_year_id = "._getCurrentYearID()." LIMIT 1";
+                            WHERE contract_number = '". $contract_number . "' AND fiscal_year_id = "
+            . "(SELECT max(fiscal_year_id) FROM aggregateon_mwbe_contracts_cumulative_spending WHERE contract_number = '". $contract_number . "') LIMIT 1";
     
     $results6 = _checkbook_project_execute_sql_by_data_source($querySubVendorStatus,_get_current_datasource());
     $res->data = $results6;
