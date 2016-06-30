@@ -6,7 +6,7 @@
         "year":"year",
         "agency":"agency_id",
         "vendornm":"mixed_vendor_name_id",
-        "vendortype":"mixed_vendor_name_id",
+        "vendortype":"mixed_vendor_name_id_by_type",
         "subvendor":"sub_vendor_id",
         "mwbe":"minority_type_id",
         "subvendorstatus":"aprv_sta_id",
