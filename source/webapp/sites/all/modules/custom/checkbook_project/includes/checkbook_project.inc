@@ -1565,7 +1565,8 @@ function _get_child_agreement_details($agid){
 function _get_contract_type($contnum){
     $contnum_3 = substr($contnum, 0, 3); //get first 3 characters from contract number
     $contnum_4 = substr($contnum, 0, 4); //get first 4 characters from contract number
-    if(strtolower($contnum_4) == 'mma1'){
+    $fourLetterContractTypes = array('mma1', 'cta1', 'rct1', 'pcc1', 'cta2', 'mac1');
+    if(in_array(strtolower($contnum_4), $fourLetterContractTypes)){
         return $contnum_4;
     }else{
         return $contnum_3;
