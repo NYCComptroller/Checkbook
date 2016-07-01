@@ -1075,7 +1075,7 @@
             FROM aggregateon_mwbe_contracts_cumulative_spending l1
             JOIN
             (
-            SELECT contract_number, aprv_sta, prime_vendor_id FROM sub_agreement_snapshot
+            SELECT DISTINCT contract_number, prime_vendor_id FROM sub_agreement_snapshot
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="vendor_id" paramName="subvendor" />
