@@ -634,9 +634,11 @@ namespace { //global
                 else {
                     $pattern = self::getVendorTypeRegEx($vendor_type_ids);
                 }
-                $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
-                if(isset($condition)) {
-                    $parameters['mixed_vendor_name_id_by_type'] = $condition;
+                if($pattern != null) {
+                    $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
+                    if(isset($condition)) {
+                        $parameters['mixed_vendor_name_id_by_type'] = $condition;
+                    }
                 }
             }
 
