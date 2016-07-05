@@ -84,7 +84,7 @@
             "type": "expression2",
             "expression": "_get_tooltip_markup($row['sub_vendor_name'],30)"
         },
-        "subvendor_name_link": {
+        "subvendor_name": {
             "type": "expression2",
             "expression": "$row['sub_vendor_name'] == NULL ? 'NOT PROVIDED' : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row[sub_vendor_id],_getRequestParamValue('year'),_getRequestParamValue('yeartype')) .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>'"
         },
@@ -111,10 +111,22 @@
         {"labelAlias":"contract_agency","column":"agency_name_link","sortSourceColumn":"agency_name"},
         {"labelAlias":"prime_vendor","column":"prime_vendor_name_link","sortSourceColumn":"prime_vendor_name"},
         {"labelAlias":"prime_mwbe_category","column":"prime_minority_type_name","sortSourceColumn":"prime_minority_type_name"},
-        {"labelAlias":"sub_vendor_name","column":"subvendor_name_link","sortSourceColumn":"sub_vendor_name","exportColumn":"subvendor_name_export"},
+        {"labelAlias":"sub_vendor_name","column":"subvendor_name","sortSourceColumn":"sub_vendor_name","exportColumn":"subvendor_name"},
         {"labelAlias":"sub_mwbe_category","column":"sub_mwbe_category_name","sortSourceColumn":"sub_minority_type_name","exportColumn":"sub_mwbe_category_name"},
         {"labelAlias":"subvendor_status_pip","column":"subvendor_status_pip","sortSourceColumn":"aprv_sta_value","exportColumn":"subvendor_status_pip_export"},
         {"label":"","column":"","export":false}
+    ],
+    "exportColumnSqlOverride":[
+        {
+            "column":"subvendor_name",
+            "sourceColumn":"sub_vendor_name",
+            "sql":"CASE WHEN sub_vendor_name IS NULL THEN 'NOT PROVIDED' ELSE sub_vendor_name END AS sub_vendor_name"
+        },
+        {
+            "column":"sub_mwbe_category_name",
+            "sourceColumn":"sub_minority_type_name",
+            "sql":"CASE WHEN sub_minority_type_name IS NULL THEN 'NOT PROVIDED' ELSE sub_minority_type_name END AS sub_minority_type_name"
+        }
     ],
     "adjustDataTableOptions":"",
     "dataTableOptions":{
