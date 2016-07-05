@@ -92,6 +92,10 @@
             "type": "expression2",
             "expression": "$row['sub_vendor_name'] == NULL ? 'NOT PROVIDED' : $row['sub_vendor_name']"
         },
+        "sub_mwbe_category_name": {
+            "type": "expression2",
+            "expression": "$row['sub_minority_type_name'] == NULL ? 'NOT PROVIDED' : $row['sub_minority_type_name']"
+        },
         "subvendor_status_pip":{
             "type": "expression2",
             "expression": "($row['aprv_sta_value'] == 'N/A' || $row['aprv_sta_value'] == NULL) ? 'N/A' : _get_tooltip_markup($row['aprv_sta_value'],36)"
@@ -108,7 +112,7 @@
         {"labelAlias":"prime_vendor","column":"prime_vendor_name_link","sortSourceColumn":"prime_vendor_name"},
         {"labelAlias":"prime_mwbe_category","column":"prime_minority_type_name","sortSourceColumn":"prime_minority_type_name"},
         {"labelAlias":"sub_vendor_name","column":"subvendor_name_link","sortSourceColumn":"sub_vendor_name","exportColumn":"subvendor_name_export"},
-        {"labelAlias":"sub_mwbe_category","column":"sub_minority_type_name","sortSourceColumn":"sub_minority_type_name"},
+        {"labelAlias":"sub_mwbe_category","column":"sub_mwbe_category_name","sortSourceColumn":"sub_minority_type_name","exportColumn":"sub_mwbe_category_name"},
         {"labelAlias":"subvendor_status_pip","column":"subvendor_status_pip","sortSourceColumn":"aprv_sta_value","exportColumn":"subvendor_status_pip_export"},
         {"label":"","column":"","export":false}
     ],
