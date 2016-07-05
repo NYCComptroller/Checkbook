@@ -13,7 +13,7 @@
     "orderBy":"-txcount",
     "getTotalDataCount":true,
     "facetPager":true,
-    "filterName":"M/WBE Categorys",
+    "filterName":"M/WBE Category",
     "allowZeroValue":true,
     "allowFacetDeselect":true,
     "urlParameterName":"mwbe",
