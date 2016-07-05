@@ -90,11 +90,11 @@
         },
         "subvendor_name_export": {
             "type": "expression2",
-            "expression": "$row['sub_vendor_name'] == NULL ? 'NOT PROVIDED' : $row['sub_vendor_name']"
+            "expression": "($row['sub_vendor_name'] == '' || $row['sub_vendor_name'] == NULL) ? 'NOT PROVIDED' : $row['sub_vendor_name']"
         },
         "sub_mwbe_category_name": {
             "type": "expression2",
-            "expression": "$row['sub_minority_type_name'] == NULL ? 'NOT PROVIDED' : $row['sub_minority_type_name']"
+            "expression": "($row['sub_minority_type_name'] == '' || $row['sub_minority_type_name'] == NULL) ? 'NOT PROVIDED' : $row['sub_minority_type_name']"
         },
         "subvendor_status_pip":{
             "type": "expression2",
