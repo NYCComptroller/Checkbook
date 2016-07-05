@@ -156,8 +156,8 @@ if($node->widgetConfig->filterName == 'Revenue Recognized') {
 
 //Checking 'Asian-American' filter in MWBE Category Facet
 $count =0;
-//M/WBE Category facet for parentNid == 938 is a different implementation and should be ignored
-if($node->widgetConfig->filterName == 'M/WBE Category' && $node->widgetConfig->parentNid != 938){
+//M/WBE Category facet for parentNid == 932 is a different implementation and should be ignored
+if($node->widgetConfig->filterName == 'M/WBE Category' && $node->widgetConfig->parentNid != 932){
     $dashboard = _getRequestParamValue('dashboard');
     foreach($unchecked as $key => $value){
         if(isset($dashboard) && $dashboard != 'ss'){
@@ -181,8 +181,8 @@ if($node->widgetConfig->filterName == 'M/WBE Category' && $node->widgetConfig->p
 }
 
 //Data alteration for Vendor Type Facet
-//Vendor Type facet for parentNid == 938 is a different implementation and should be ignored
-if($node->widgetConfig->filterName == 'Vendor Type' && $node->widgetConfig->parentNid != 938){
+//Vendor Type facet for parentNid == 932 is a different implementation and should be ignored
+if($node->widgetConfig->filterName == 'Vendor Type' && $node->widgetConfig->parentNid != 932){
     $vendor_types = _getRequestParamValue('vendortype');
     $vendor_type_data = MappingUtil::getVendorTypes($checked, $vendor_types);
     $vendor_type_data = MappingUtil::getVendorTypes($unchecked, $vendor_types);
