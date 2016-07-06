@@ -27,6 +27,10 @@
         }
         return $parameters;
         unset($parameters['minority_type_id']);
+        if(isset($parameters['mixed_vendor_code'])) {
+            $parameters['vendor_code'] = $parameters['mixed_vendor_code'];
+        }
+        unset($parameters['mixed_vendor_code']);
     ",
     "template":"individual_filter"
 }

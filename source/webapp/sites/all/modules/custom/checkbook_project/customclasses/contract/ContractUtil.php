@@ -600,7 +600,7 @@ namespace { //global
             $parameters['effective_begin_year_id']= $leCondition;
             $parameters['effective_end_year_id']= $geCondition;
 
-            //Vendor Facet -- mixed_vendor_name_id ~* '(^155$)|(.*,155$)|(^155,.*)'
+            //Vendor Facet -- mixed_vendor_code ~* '(^155$)|(.*,155$)|(^155,.*)'
             $vendor_name_ids = explode('~', _getRequestParamValue('vendornm'));
             $has_vendors = isset($vendor_name_ids[0]) && $vendor_name_ids[0] != "";
             if($has_vendors) {
@@ -613,7 +613,7 @@ namespace { //global
                 $pattern = '('.$pattern.')';
                 $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
                 if(isset($condition)) {
-                    $parameters['mixed_vendor_name_id'] = $condition;
+                    $parameters['mixed_vendor_code'] = $condition;
                 }
             }
 
@@ -637,7 +637,7 @@ namespace { //global
                 if($pattern != null) {
                     $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
                     if(isset($condition)) {
-                        $parameters['mixed_vendor_name_id_by_type'] = $condition;
+                        $parameters['mixed_vendor_code_by_type'] = $condition;
                     }
                 }
             }

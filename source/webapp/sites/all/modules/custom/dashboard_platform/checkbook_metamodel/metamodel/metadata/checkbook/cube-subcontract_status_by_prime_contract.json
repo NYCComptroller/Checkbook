@@ -7,27 +7,27 @@
 
         "mixed_vendor_data":{
             "datasourceName":"main",
-            "source":"SELECT CASE WHEN mixed_vendor_name_id_by_type ~* '(.*P:*.)|(.*PM:*.)' THEN prime_vendor_name_id END as vendor_name_id, prime_vendor_name_id, sub_vendor_name_id, prime_vendor_name as vendor_name, mixed_vendor_name_id, mixed_vendor_name_id_by_type, contract_number, agency_id, prime_minority_type_id, sub_minority_type_id, aprv_sta_id, starting_year_id, ending_year_id, effective_begin_year_id, effective_end_year_id FROM subcontract_status_by_prime_contract
-            UNION ALL
-            SELECT CASE WHEN mixed_vendor_name_id_by_type ~* '(.*S:*.)|(.*SM:*.)' THEN sub_vendor_name_id END as vendor_name_id, prime_vendor_name_id, sub_vendor_name_id, sub_vendor_name as vendor_name, mixed_vendor_name_id, mixed_vendor_name_id_by_type, contract_number, agency_id, prime_minority_type_id, sub_minority_type_id, aprv_sta_id, starting_year_id, ending_year_id, effective_begin_year_id, effective_end_year_id FROM subcontract_status_by_prime_contract
+            "source":"SELECT CASE WHEN mixed_vendor_code_by_type ~* '(.*P:*.)|(.*PM:*.)' THEN prime_vendor_code END as vendor_code, prime_vendor_name as vendor_name, * FROM subcontract_status_by_prime_contract
+                      UNION ALL
+                      SELECT CASE WHEN mixed_vendor_code_by_type ~* '(.*S:*.)|(.*SM:*.)' THEN sub_vendor_code END as vendor_code, sub_vendor_name as vendor_name, * FROM subcontract_status_by_prime_contract
             "
         },
         "mixed_vendor_type_data":{
             "datasourceName":"main",
-            "source":"SELECT CASE WHEN mixed_vendor_name_id_by_type ~* '(.*P:*.)|(.*PM:*.)' THEN 'PRIME VENDOR' END as vendor_type,'P' as vendor_type_id, prime_vendor_name_id, sub_vendor_name_id, prime_vendor_name_id as mixed_vendor_name_id, mixed_vendor_name_id_by_type, contract_number, agency_id, prime_minority_type_id, sub_minority_type_id, aprv_sta_id, starting_year_id, ending_year_id, effective_begin_year_id, effective_end_year_id FROM subcontract_status_by_prime_contract
+            "source":"SELECT CASE WHEN mixed_vendor_code_by_type ~* '(.*P:*.)|(.*PM:*.)' THEN 'PRIME VENDOR' END as vendor_type, 'P' as vendor_type_id, prime_vendor_code as vendor_code, * FROM subcontract_status_by_prime_contract
                       UNION ALL
-                      SELECT CASE WHEN mixed_vendor_name_id_by_type ~* '(.*S:*.)|(.*SM:*.)' THEN 'SUB VENDOR' END as vendor_type,'S' as vendor_type_id, prime_vendor_name_id, sub_vendor_name_id, sub_vendor_name_id as mixed_vendor_name_id, mixed_vendor_name_id_by_type, contract_number, agency_id, prime_minority_type_id, sub_minority_type_id, aprv_sta_id, starting_year_id, ending_year_id, effective_begin_year_id, effective_end_year_id FROM subcontract_status_by_prime_contract
+                      SELECT CASE WHEN mixed_vendor_code_by_type ~* '(.*S:*.)|(.*SM:*.)' THEN 'SUB VENDOR' END as vendor_type, 'S' as vendor_type_id, sub_vendor_code as vendor_code, * FROM subcontract_status_by_prime_contract
                       UNION ALL
-                      SELECT CASE WHEN mixed_vendor_name_id_by_type ~* '(.*PM:*.)' THEN 'M/WBE VENDOR' END as vendor_type,'M' as vendor_type_id, prime_vendor_name_id, sub_vendor_name_id, prime_vendor_name_id as mixed_vendor_name_id, mixed_vendor_name_id_by_type, contract_number, agency_id, prime_minority_type_id, sub_minority_type_id, aprv_sta_id, starting_year_id, ending_year_id, effective_begin_year_id, effective_end_year_id FROM subcontract_status_by_prime_contract
+                      SELECT CASE WHEN mixed_vendor_code_by_type ~* '(.*PM:*.)' THEN 'M/WBE VENDOR' END as vendor_type, 'M' as vendor_type_id, prime_vendor_code as vendor_code, * FROM subcontract_status_by_prime_contract
                       UNION ALL
-                      SELECT CASE WHEN mixed_vendor_name_id_by_type ~* '(.*SM:*.)' THEN 'M/WBE VENDOR' END as vendor_type,'M' as vendor_type_id, prime_vendor_name_id, sub_vendor_name_id, sub_vendor_name_id as mixed_vendor_name_id, mixed_vendor_name_id_by_type, contract_number, agency_id, prime_minority_type_id, sub_minority_type_id, aprv_sta_id, starting_year_id, ending_year_id, effective_begin_year_id, effective_end_year_id FROM subcontract_status_by_prime_contract
+                      SELECT CASE WHEN mixed_vendor_code_by_type ~* '(.*SM:*.)' THEN 'M/WBE VENDOR' END as vendor_type, 'M' as vendor_type_id, sub_vendor_code as vendor_code, * FROM subcontract_status_by_prime_contract
             "
         },
         "mixed_minority_type_data":{
             "datasourceName":"main",
-            "source":"SELECT CASE WHEN prime_minority_type_id IN (4,5) THEN '4~5' ELSE CAST(prime_minority_type_id as text) END AS minority_type_id, prime_minority_type_name as minority_type_name,prime_vendor_name_id, sub_vendor_name_id, prime_vendor_name_id as mixed_vendor_name_id, mixed_vendor_name_id_by_type, contract_number, agency_id, prime_minority_type_id, sub_minority_type_id, aprv_sta_id, starting_year_id, ending_year_id, effective_begin_year_id, effective_end_year_id FROM subcontract_status_by_prime_contract
+            "source":"SELECT CASE WHEN prime_minority_type_id IN (4,5) THEN '4~5' ELSE CAST(prime_minority_type_id as text) END AS minority_type_id, prime_minority_type_name as minority_type_name, prime_vendor_code as vendor_code, * FROM subcontract_status_by_prime_contract
                       UNION ALL
-                      SELECT CASE WHEN sub_minority_type_id IN (4,5) THEN '4~5' ELSE CAST(sub_minority_type_id as text) END AS minority_type_id, sub_minority_type_name as minority_type_name,prime_vendor_name_id, sub_vendor_name_id, prime_vendor_name_id as mixed_vendor_name_id, mixed_vendor_name_id_by_type, contract_number, agency_id, prime_minority_type_id, sub_minority_type_id, aprv_sta_id, starting_year_id, ending_year_id, effective_begin_year_id, effective_end_year_id FROM subcontract_status_by_prime_contract
+                      SELECT CASE WHEN sub_minority_type_id IN (4,5) THEN '4~5' ELSE CAST(sub_minority_type_id as text) END AS minority_type_id, sub_minority_type_name as minority_type_name, sub_vendor_code as vendor_code, * FROM subcontract_status_by_prime_contract
             "
         }
     },
@@ -166,11 +166,11 @@
                 },
                 {
 
-                    "name": "vendor_name_id",
+                    "name": "vendor_code",
                     "levels": [
                         {
-                            "name": "vendor_name_id",
-                            "sourceColumnName": "vendor_name_id"
+                            "name": "vendor_code",
+                            "sourceColumnName": "vendor_code"
                         }
                     ]
                 }
