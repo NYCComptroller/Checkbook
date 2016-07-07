@@ -111,10 +111,12 @@
         {"labelAlias":"contract_agency","column":"agency_name_link","sortSourceColumn":"agency_name"},
         {"labelAlias":"prime_vendor","column":"prime_vendor_name_link","sortSourceColumn":"prime_vendor_name"},
         {"labelAlias":"prime_mwbe_category","column":"prime_minority_type_name","sortSourceColumn":"prime_minority_type_name"},
+        {"label":"","column":"","export":false},
         {"labelAlias":"sub_vendor_name","column":"subvendor_name","sortSourceColumn":"sub_vendor_name","exportColumn":"subvendor_name"},
         {"labelAlias":"sub_mwbe_category","column":"sub_mwbe_category_name","sortSourceColumn":"sub_minority_type_name","exportColumn":"sub_mwbe_category_name"},
+        {"label":"","column":"","export":false},
         {"labelAlias":"subvendor_status_pip","column":"subvendor_status_pip","sortSourceColumn":"aprv_sta_value","exportColumn":"subvendor_status_pip_export"},
-        {"label":"","column":"","export":false}
+        {"labelAlias":"","column":"","sortSourceColumn":"sort_order","export":false}
     ],
     "exportColumnSqlOverride":[
         {
@@ -150,12 +152,14 @@
         {"sClass":"text","sWidth":"230px","asSorting":["asc","desc"]},
         {"sClass":"text","sWidth":"230px","asSorting":["asc","desc"]},
         {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
+        {"bSortable":false,"sWidth":"50px"},
         {"sClass":"text","sWidth":"230px","asSorting":["asc","desc"]},
         {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
+        {"bSortable":false,"sWidth":"30px"},
         {"sClass":"text pad-left","sWidth":"150px","asSorting":["asc","desc"]},
-        {"bSortable":false,"sWidth":"10px"}
+        {"sWidth":"5px"}
     ],
-    "aaSorting":[[0,"desc"]],
+    "aaSorting":[[10,"asc"]],
     "sScrollX": "100%",
     "bScrollCollapse": false,
     "fnInitComplete": "##function () { new FixedColumns( oTable, {
