@@ -601,12 +601,12 @@ namespace { //global
             $parameters['effective_end_year_id']= $geCondition;
 
             //Vendor Facet -- mixed_vendor_code ~* '(^155$)|(.*,155$)|(^155,.*)'
-            $vendor_name_ids = explode('~', _getRequestParamValue('vendornm'));
-            $has_vendors = isset($vendor_name_ids[0]) && $vendor_name_ids[0] != "";
+            $vendor_codes = explode('~', _getRequestParamValue('vendornm'));
+            $has_vendors = isset($vendor_codes[0]) && $vendor_codes[0] != "";
             if($has_vendors) {
                 $pattern = null;
-                foreach($vendor_name_ids as $vendor_name_id) {
-                    $localValue = _checkbook_regex_replace_pattern($vendor_name_id);
+                foreach($vendor_codes as $vendor_code) {
+                    $localValue = _checkbook_regex_replace_pattern($vendor_code);
                     $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
                     $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
                 }
@@ -618,21 +618,21 @@ namespace { //global
             }
 
             //Vendor Type Facet
-            $vendor_type_ids = explode('~', _getRequestParamValue('vendortype'));
-            $has_vendor_types = isset($vendor_type_ids[0]) && $vendor_type_ids[0] != "";
+            $vendor_types = explode('~', _getRequestParamValue('vendortype'));
+            $has_vendor_types = isset($vendor_types[0]) && $vendor_types[0] != "";
             if($has_vendor_types) {
 
                 $condition = null;
 
                 if($has_vendors) {
                     $pattern = null;
-                    foreach($vendor_name_ids as $vendor_name_id) {
-                        $local_pattern = self::getVendorTypeRegEx($vendor_type_ids, $vendor_name_id);
+                    foreach($vendor_codes as $vendor_code) {
+                        $local_pattern = self::getVendorTypeRegEx($vendor_types, $vendor_code);
                         $pattern .= isset($pattern) ? '|'.$local_pattern : $local_pattern;
                     }
                 }
                 else {
-                    $pattern = self::getVendorTypeRegEx($vendor_type_ids);
+                    $pattern = self::getVendorTypeRegEx($vendor_types);
                 }
                 if($pattern != null) {
                     $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
@@ -642,54 +642,138 @@ namespace { //global
                 }
             }
 
+            //M/WBE Category Facet
+            $mwbe_categories = explode('~', _getRequestParamValue('mwbe'));
+            $has_mwbe_categories = isset($mwbe_categories[0]) && $mwbe_categories[0] != "";
+            if($has_mwbe_categories) {
+
+                $condition = null;
+
+                if($has_vendor_types) {
+                    $pattern = null;
+                    foreach($mwbe_categories as $mwbe_category) {
+                        $local_pattern = self::getMWBECategoryRegEx($mwbe_category, $vendor_types);
+                        $pattern .= isset($pattern) ? '|'.$local_pattern : $local_pattern;
+                    }
+                }
+                else {
+                    $pattern = null;
+                    foreach($mwbe_categories as $mwbe_category) {
+                        $local_pattern = self::getMWBECategoryRegEx($mwbe_category);
+                        $pattern .= isset($pattern) ? '|'.$local_pattern : $local_pattern;
+                    }
+                }
+                if($pattern != null) {
+                    $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
+                    if(isset($condition)) {
+                        $parameters['mixed_minority_type_id'] = $condition;
+                    }
+                }
+            }
+
             unset($parameters['year']);
             unset($parameters['vendor_name']);
+            unset($parameters['minority_type_id']);
 
             return $parameters;
         }
 
-        static public function getVendorTypeRegEx($vendor_type_ids, $vendor_name_id = null) {
+        static public function getMWBECategoryRegEx($mwbe_category, $vendor_types = null) {
 
-            $P = in_array('P', $vendor_type_ids);
-            $S = in_array('S', $vendor_type_ids);
-            $M = in_array('M', $vendor_type_ids);;
-            $vendor_name_id = isset($vendor_name_id) ? $vendor_name_id : ".*";
+            if(isset($vendor_types)) {
+                $P = in_array('P', $vendor_types);
+                $S = in_array('S', $vendor_types);
+                $M = in_array('M', $vendor_types);;
+                $pattern = null;
+
+                if($P && $M) {
+                    $localValue = "PM:{$mwbe_category}";
+                    $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
+                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
+                }
+                if($P && !$M) {
+                    $localValue = "PM:{$mwbe_category}";
+                    $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
+                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
+
+                    $localValue = "P:{$mwbe_category}";
+                    $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
+                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
+                }
+                if($S && $M) {
+                    $localValue = "SM:{$mwbe_category}";
+                    $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
+                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
+                }
+                if($S && !$M) {
+                    $localValue = "S:{$mwbe_category}";
+                    $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
+                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
+
+                    $localValue = "SM:{$mwbe_category}";
+                    $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
+                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
+                }
+                if($M && !$P && !$S) {
+                    $localValue = "PM:{$mwbe_category}";
+                    $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
+                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
+
+                    $localValue = "SM:{$mwbe_category}";
+                    $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
+                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
+                }
+            }
+            else {
+                $localValue = ":{$mwbe_category}";
+                $pattern = "(.*{$localValue}$)|(.*,.*{$localValue}$)|(.*{$localValue},.*)";
+            }
+
+            return $pattern;
+        }
+
+        static public function getVendorTypeRegEx($vendor_types, $vendor_code = null) {
+
+            $P = in_array('P', $vendor_types);
+            $S = in_array('S', $vendor_types);
+            $M = in_array('M', $vendor_types);;
+            $vendor_code = isset($vendor_code) ? $vendor_code : ".*";
             $pattern = null;
 
             if($P && $M) {
-                $localValue = "PM:{$vendor_name_id}";
+                $localValue = "PM:{$vendor_code}";
                 $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
                 $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
             }
             if($P && !$M) {
-                $localValue = "PM:{$vendor_name_id}";
+                $localValue = "PM:{$vendor_code}";
                 $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
                 $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
 
-                $localValue = "P:{$vendor_name_id}";
+                $localValue = "P:{$vendor_code}";
                 $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
                 $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
             }
             if($S && $M) {
-                $localValue = "SM:{$vendor_name_id}";
+                $localValue = "SM:{$vendor_code}";
                 $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
                 $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
             }
             if($S && !$M) {
-                $localValue = "S:{$vendor_name_id}";
+                $localValue = "S:{$vendor_code}";
                 $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
                 $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
 
-                $localValue = "SM:{$vendor_name_id}";
+                $localValue = "SM:{$vendor_code}";
                 $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
                 $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
             }
             if($M && !$P && !$S) {
-                $localValue = "PM:{$vendor_name_id}";
+                $localValue = "PM:{$vendor_code}";
                 $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
                 $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
 
-                $localValue = "SM:{$vendor_name_id}";
+                $localValue = "SM:{$vendor_code}";
                 $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
                 $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
             }

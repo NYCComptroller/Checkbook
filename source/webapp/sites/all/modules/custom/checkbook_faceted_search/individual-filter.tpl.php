@@ -156,28 +156,48 @@ if($node->widgetConfig->filterName == 'Revenue Recognized') {
 
 //Checking 'Asian-American' filter in MWBE Category Facet
 $count =0;
-//M/WBE Category facet for parentNid == 932 is a different implementation and should be ignored
-if($node->widgetConfig->filterName == 'M/WBE Category' && $node->widgetConfig->parentNid != 932){
-    $dashboard = _getRequestParamValue('dashboard');
-    foreach($unchecked as $key => $value){
-        if(isset($dashboard) && $dashboard != 'ss'){
-            if($value[0] == 7 || $value[0] == 11){
-                unset($unchecked[$key]);
+if($node->widgetConfig->filterName == 'M/WBE Category'){
+    //M/WBE Category facet for parentNid == 932 is a different implementation
+    if($node->widgetConfig->parentNid == 932) {
+        $mwbe_categories = explode('~', _getRequestParamValue('mwbe'));
+        foreach($mwbe_categories as $mwbe_category) {
+            if($mwbe_category == "4" || $mwbe_category == "5") {
+                foreach($unchecked as $key => $value){
+                    if($value[0] == "4~5"){
+                        if(isset($checked) && is_array($checked)) {
+                            array_push($checked,array($value[0],$value[1],$value[2]));
+                        }
+                        else {
+                            $checked[] = array($value[0],$value[1],$value[2]);
+                        }
+                        unset($unchecked[$key]);
+                    }
+                }
             }
         }
     }
-
-    foreach($checked as $key=>$value){
-        if($value[0] == 4 || $value[0] == 5){
-            $count = $count + $value[2];
-            $id = "4~5";
-            unset($checked[$key]);
-        }else{
-            array_push($checked,array($value[0],MappingUtil::getMinorityCategoryById($value[0]),$value[2]));
-            unset($checked[$key]);
+    else {
+        $dashboard = _getRequestParamValue('dashboard');
+        foreach($unchecked as $key => $value){
+            if(isset($dashboard) && $dashboard != 'ss'){
+                if($value[0] == 7 || $value[0] == 11){
+                    unset($unchecked[$key]);
+                }
+            }
         }
+
+        foreach($checked as $key=>$value){
+            if($value[0] == 4 || $value[0] == 5){
+                $count = $count + $value[2];
+                $id = "4~5";
+                unset($checked[$key]);
+            }else{
+                array_push($checked,array($value[0],MappingUtil::getMinorityCategoryById($value[0]),$value[2]));
+                unset($checked[$key]);
+            }
+        }
+        if($count > 0 )array_push($checked,array($id,'Asian American',$count));
     }
-    if($count > 0 )array_push($checked,array($id,'Asian American',$count));
 }
 
 //Data alteration for Vendor Type Facet
