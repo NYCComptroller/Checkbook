@@ -37,7 +37,7 @@ class ContractURLHelper{
             $row['original_agreement_id'] = $row['master_agreement_id'];
             $row['contract_number'] = $row['master_contract_number'];
         }else if($parent && strlen($row['master_contract_number']) == 0){
-            return "";
+            return "N/A";
         }else{
             $docType = $row['document_code@checkbook:ref_document_code'];
             $agrParamName = in_array($docType, array('MMA1','MA1')) ? 'magid' : 'agid';
