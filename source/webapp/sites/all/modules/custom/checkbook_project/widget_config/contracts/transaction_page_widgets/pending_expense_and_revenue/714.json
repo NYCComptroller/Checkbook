@@ -45,8 +45,7 @@
         "dollar_difference",
         "percent_difference",
         "original_maximum_amount",
-        "is_prime_or_sub",
-        "not_applicable_column@checkbook:prime_not_applicable"
+        "is_prime_or_sub"
     ],
     "caption":"",
     "derivedColumns": {
@@ -117,12 +116,9 @@
     },
     "table_columns": [
         {"labelAlias": "contract_id","column":"contract_link","sortSourceColumn":"contract_number"},
-        {"labelAlias": "sub_contract_reference_id","column":"not_applicable_column@checkbook:prime_not_applicable"},
         {"labelAlias": "contract_purpose","column":"purpose_formatted","sortSourceColumn":"description"},
         {"labelAlias": "recv_date","column":"cif_received_date"},
         {"labelAlias": "vendor_name","column":"vendor_formatted","sortSourceColumn":"vendor_legal_name"},
-        {"labelAlias": "sub_vendor_name","column":"formatted_is_sub_vendor","sortSourceColumn": "is_prime_or_sub","exportColumn":"formatted_is_sub_vendor"},
-        {"labelAlias": "associated_prime_vendor","column":"not_applicable_column@checkbook:prime_not_applicable"},
         {"labelAlias": "current_amount","column":"formatted__maximum_amount","sortSourceColumn":"revised_maximum_amount","headerClass":"centrig"},
         {"labelAlias": "original_amount","column":"formatted__original_maximum_amount","sortSourceColumn":"original_maximum_amount","headerClass":"centrig"},
         {"labelAlias": "start_date","column":"revised_start_date"},
@@ -192,12 +188,9 @@
     },
     "aoColumns": [
         {"sClass":"text","sWidth": "160px","asSorting": [ "asc","desc" ]},
-        {"sClass":"number", "sWidth":"130px","asSorting": [ "asc","desc" ]},
         {"sClass":"text pad-left","sWidth": "180px","asSorting": [ "asc","desc" ]},
         {"sClass":"text pad-left","sWidth": "115px","asSorting": [ "asc","desc" ]},
         {"sClass":"text","sWidth": "200px","asSorting": [ "desc","asc" ]},
-        {"sClass":"number pad-left","sWidth":"50px","asSorting": [ "asc","desc" ]},
-        {"sClass":"number pad-left","sWidth":"150px","asSorting": [ "asc","desc" ]},
         {"sClass":"number","sWidth": "120px","asSorting": [ "desc","asc" ]},
         {"sClass":"number","sWidth": "120px","asSorting": [ "desc","asc" ]},
         {"sClass":"text  number-left pad-left","sWidth": "100px","asSorting": [ "asc","desc" ]},
@@ -216,7 +209,7 @@
         {"sClass":"text pad-left","sWidth": "100px","asSorting": [ "asc","desc" ]}
     ],
     "bInfo": true,
-    "aaSorting": [[7,"desc"]],
+    "aaSorting": [[4,"desc"]],
     "sScrollX": "100%",
     "bScrollCollapse": true,
     "fnInitComplete": "##function () { new FixedColumns( oTable, {
