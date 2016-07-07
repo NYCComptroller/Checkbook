@@ -2,11 +2,12 @@
     "widgetType":"data_tables",
     "widgetSubType":"dataTableList",
     "cleanURLParameters":["year","agency","vendornm","vendortype","contnum","subvendorstatus","mwbe"],
+    "allowRequestParams":["smnid","dashboard"],
     "urlParamMap":{
         "year":"year",
         "agency":"agency_id",
-        "vendornm":"mixed_vendor_name_id",
-        "vendortype":"mixed_vendor_name_id_by_type",
+        "vendornm":"mixed_vendor_code",
+        "vendortype":"mixed_vendor_code_by_type",
         "subvendor":"sub_vendor_id",
         "mwbe":"minority_type_id",
         "subvendorstatus":"aprv_sta_id",
@@ -77,7 +78,7 @@
         "prime_vendor_name_link": {
             "type": "expression2",
             "expression": " '<a href=\"/contracts_landing'
-            . ContractUtil::get_contracts_vendor_link_by_mwbe_category($row)
+            . ContractUtil::get_contracts_vendor_link($row['prime_vendor_id'],_getRequestParamValue('year'),_getRequestParamValue('yeartype'), _getRequestParamValue('agency'))
             . '?expandBottomCont=true\">'. $row['prime_vendor_name_formatted'] . '</a>'  "
         },
         "subvendor_name_formatted": {
@@ -111,10 +112,12 @@
         {"labelAlias":"contract_agency","column":"agency_name_link","sortSourceColumn":"agency_name"},
         {"labelAlias":"prime_vendor","column":"prime_vendor_name_link","sortSourceColumn":"prime_vendor_name"},
         {"labelAlias":"prime_mwbe_category","column":"prime_minority_type_name","sortSourceColumn":"prime_minority_type_name"},
+        {"label":"","column":"","export":false},
         {"labelAlias":"sub_vendor_name","column":"subvendor_name","sortSourceColumn":"sub_vendor_name","exportColumn":"subvendor_name"},
         {"labelAlias":"sub_mwbe_category","column":"sub_mwbe_category_name","sortSourceColumn":"sub_minority_type_name","exportColumn":"sub_mwbe_category_name"},
+        {"label":"","column":"","export":false},
         {"labelAlias":"subvendor_status_pip","column":"subvendor_status_pip","sortSourceColumn":"aprv_sta_value","exportColumn":"subvendor_status_pip_export"},
-        {"label":"","column":"","export":false}
+        {"labelAlias":"","column":"","sortSourceColumn":"sort_order","export":false}
     ],
     "exportColumnSqlOverride":[
         {
@@ -150,12 +153,14 @@
         {"sClass":"text","sWidth":"230px","asSorting":["asc","desc"]},
         {"sClass":"text","sWidth":"230px","asSorting":["asc","desc"]},
         {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
+        {"bSortable":false,"sWidth":"50px"},
         {"sClass":"text","sWidth":"230px","asSorting":["asc","desc"]},
         {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
+        {"bSortable":false,"sWidth":"30px"},
         {"sClass":"text pad-left","sWidth":"150px","asSorting":["asc","desc"]},
-        {"bSortable":false,"sWidth":"10px"}
+        {"sWidth":"5px"}
     ],
-    "aaSorting":[[0,"desc"]],
+    "aaSorting":[[10,"asc"]],
     "sScrollX": "100%",
     "bScrollCollapse": false,
     "fnInitComplete": "##function () { new FixedColumns( oTable, {
