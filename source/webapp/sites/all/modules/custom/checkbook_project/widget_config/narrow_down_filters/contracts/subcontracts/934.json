@@ -8,10 +8,10 @@
     "facetPager":true,
     "filterName":"Vendor",
     "urlParamMap":{
-        "vendornm":"vendor_name_id.vendor_name_id"
+        "vendornm":"vendor_code.vendor_code"
     },
     "dataset":"checkbook:mixed_vendor_data",
-    "columns":["vendor_name_id.vendor_name_id", "vendor_name.vendor_name", "txcount"],
+    "columns":["vendor_code.vendor_code", "vendor_name.vendor_name", "txcount"],
     "orderBy":"-txcount",
     "autocompleteParamName":"vendor_auto",
     "autocompleteField":"vendor_name.vendor_name",
@@ -25,9 +25,9 @@
         $parameters = ContractUtil::adjustContractParameterFilters($node, $parameters);
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
-            $parameters['vendor_name_id.vendor_name_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+            $parameters['vendor_code.vendor_code'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
         }
-        unset($parameters['mixed_vendor_name_id']);
+        unset($parameters['mixed_vendor_code']);
 
         return $parameters;
     "
