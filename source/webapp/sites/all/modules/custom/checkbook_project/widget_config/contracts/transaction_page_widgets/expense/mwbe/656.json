@@ -123,7 +123,10 @@
         $node->show_expense_category = $show_expense_category;
         $node->show_dollar_difference = $show_dollar_difference;
         $node->show_percent_difference = $show_percent_difference;
-        $node->show_column = false;
+        
+        $dash_board = _getRequestParamValue('dashboard');
+        $node->show_column = $dash_board == 'ss' || $dash_board == 'sp';
+        $node->show_subvendor = false;
 
         $node->is_master_agreement = $is_master_agreement;
         $node->is_contract_modification = $is_contract_modification;
@@ -288,7 +291,7 @@
         {"labelAlias": "percent_diff","column": "formatted_percent_diff","sortSourceColumn":"percent_difference","visibility_flag":"show_percent_difference"},
         {"label":"","column":"","export":false},
         {"labelAlias": "vendor_name","column": "vendor_name_link","sortSourceColumn":"vendor_name"},
-        {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"is_prime_or_sub","exportColumn":"is_sub_vendor","visibility_flag":"show_column"},
+        {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"is_prime_or_sub","exportColumn":"is_sub_vendor","visibility_flag":"show_subvendor"},
         {"label":"","column":"","export":false},
         {"labelAlias":"subvendor_status_pip","column":"subvendor_status_pip","sortSourceColumn":"aprv_sta_name","exportColumn":"subvendor_status_pip_export","visibility_flag":"show_sub_vendor_status"},
         {"label":"","column":"","export":false,"visibility_flag":"show_sub_vendor_status"},
@@ -410,7 +413,7 @@
         {"sClass":"number","sWidth":"140px","asSorting": [ "desc","asc" ],"visibility_flag":"show_percent_difference"},
         {"bSortable":false,"sWidth":"60px"},
         {"sClass":"text","sWidth":"180px","asSorting": [ "desc","asc" ]},
-        {"sClass":"number-center","sWidth":"100px","asSorting": [ "asc","desc" ],"visibility_flag":"show_column"},
+        {"sClass":"number-center","sWidth":"100px","asSorting": [ "asc","desc" ],"visibility_flag":"show_subvendor"},
         {"bSortable":false,"sWidth":"50px"},
         {"sClass":"text","sWidth":"140px","asSorting": [ "asc","desc" ],"visibility_flag":"show_sub_vendor_status"},
         {"bSortable":false,"sWidth":"20px","visibility_flag":"show_sub_vendor_status"},
