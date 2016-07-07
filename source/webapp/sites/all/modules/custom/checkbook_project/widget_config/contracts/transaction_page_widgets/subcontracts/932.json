@@ -2,6 +2,7 @@
     "widgetType":"data_tables",
     "widgetSubType":"dataTableList",
     "cleanURLParameters":["year","agency","vendornm","vendortype","contnum","subvendorstatus","mwbe"],
+    "allowRequestParams":["smnid"],
     "urlParamMap":{
         "year":"year",
         "agency":"agency_id",
