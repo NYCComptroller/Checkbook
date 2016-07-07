@@ -102,7 +102,6 @@ return $header;
 },
 "table_columns": [
 {"labelAlias": "contract_id","column": "contract_link","sortSourceColumn":"contract_number"},
-{"labelAlias": "sub_contract_reference_id","column": "sub_contract_id"},
 {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description"},
 {"labelAlias": "version","column": "document_version","headerClass":"centrig"},
 {"labelAlias": "current_amount","column": "formatted_current_amount","sortSourceColumn":"maximum_contract_amount","headerClass":"centrig"},
@@ -110,8 +109,6 @@ return $header;
 {"labelAlias": "dollar_diff","column": "formatted_dollar_diff","sortSourceColumn":"dollar_difference","headerClass":"centrig"},
 {"labelAlias": "percent_diff","column": "formatted_percent_diff","sortSourceColumn":"percent_difference","headerClass":"centrig"},
 {"labelAlias": "vendor_name","column": "vendor_name_link","sortSourceColumn":"vendor_name"},
-{"labelAlias": "sub_vendor_name","column":"formatted_is_sub_vendor","sortSourceColumn": "is_prime_or_sub","exportColumn":"formatted_is_sub_vendor"},
-{"labelAlias": "associated_prime_vendor","column": "formatted_associated_vendor","sortSourceColumn":"prime_vendor_name","exportColumn":"formatted_associated_vendor"},
 {"labelAlias": "contract_agency","column": "agency_name_link","sortSourceColumn":"agency_name"},
 {"labelAlias": "contract_type","column": "contract_type_formatted","sortSourceColumn":"agreement_type_name"},
 {"labelAlias": "award_method","column": "award_method_formatted","sortSourceColumn":"award_method_name"},
@@ -177,7 +174,6 @@ $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoCol
 
 "aoColumns":[
 {"sClass":"text","sWidth":"195px","asSorting": [ "asc","desc" ]},
-{"sClass":"text","sWidth":"195px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"165px","asSorting": [ "asc","desc" ]},
 {"sClass":"number pad-left","sWidth":"75px","asSorting": [ "desc","asc" ]},
 {"sClass":"number pad-left","sWidth":"120px","asSorting": [ "desc","asc" ]},
@@ -185,8 +181,6 @@ $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoCol
 {"sClass":"text pad-left","sWidth":"120px","asSorting": [ "desc","asc" ]},
 {"sClass":"number pad-left","sWidth":"120px","asSorting": [ "desc","asc" ]},
 {"sClass":"text number-left pad-left","sWidth":"150px","asSorting": [ "asc","desc" ]},
-{"sClass":"number pad-left","sWidth":"110px","asSorting": [ "asc","desc" ]},
-{"sClass":"text number-left pad-left","sWidth":"200px","asSorting": [ "asc","desc" ]},
 {"sClass":"text pad-left","sWidth":"135px","asSorting": [ "asc","desc" ]},
 {"sClass":"text pad-left","sWidth":"135px","asSorting": [ "asc","desc" ]},
 {"sClass":"text pad-left","sWidth":"135px","asSorting": [ "asc","desc" ]},
@@ -199,7 +193,7 @@ $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoCol
 {"sClass":"text pad-left","sWidth":"180px","asSorting": [ "asc","desc" ]}
 ],
 
-"aaSorting":[[4,"desc"]],
+"aaSorting":[[3,"desc"]],
 "sScrollX": "100%",
 "bScrollCollapse": true,
 "fnInitComplete": "##function () { new FixedColumns( oTable, {
