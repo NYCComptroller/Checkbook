@@ -219,13 +219,7 @@ namespace { //global
             $latest_minority_id = isset($latest_minority_id) ? $latest_minority_id : $minority_type_id;
             $is_mwbe_certified = MappingUtil::isMWBECertified(array($latest_minority_id));
 
-            $contract_status = _checkbook_project_get_url_param_string("contstatus","status");
-            //For the 3rd menu option on contracts sub vendor, contract status should be set to active for links
-            if($smnid == "subcontract_status_by_prime_contract_view" && $contract_status == "") {
-                $contract_status = "/status/A";
-            }
-
-            $url = _checkbook_project_get_url_param_string("agency") . $contract_status . _checkbook_project_get_year_url_param_string();
+            $url = _checkbook_project_get_url_param_string("agency") . _checkbook_project_get_url_param_string("contstatus","status") . _checkbook_project_get_year_url_param_string();
 
             if($is_mwbe_certified && _getRequestParamValue('dashboard') == 'mp') {
                 $url .= _checkbook_project_get_url_param_string("cindustry")
@@ -244,8 +238,12 @@ namespace { //global
 
         static public function get_contracts_vendor_link($vendor_id, $year_id = null, $year_type = null,$agency_id = null, $is_prime_or_sub = 'P'){
 
+            //For the 3rd menu option on contracts sub vendor, contract status should be set to active for links
+            $contract_status = _checkbook_project_get_url_param_string("contstatus","status");
+            $contract_status = $contract_status == "" ? "/status/A" : $contract_status;
+
             $latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, $is_prime_or_sub);
-            $url = _checkbook_project_get_url_param_string("agency") .  _checkbook_project_get_url_param_string("contstatus","status") . _checkbook_project_get_year_url_param_string();
+            $url = _checkbook_project_get_url_param_string("agency") . $contract_status . _checkbook_project_get_year_url_param_string();
 
             if(in_array($latest_minority_id, array(2,3,4,5,9)) && _getRequestParamValue('dashboard') == 'mp'){
                 $url .= _checkbook_project_get_url_param_string("cindustry"). _checkbook_project_get_url_param_string("csize")
