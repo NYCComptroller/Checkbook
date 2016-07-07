@@ -59,7 +59,7 @@
         },
         "parent_contract_link": {
             "type": "expression2",
-            "expression": "empty($row['fms_parent_contract_number']) ? '' : $row['fms_parent_contract_number']"
+            "expression": "empty($row['fms_parent_contract_number']) ? 'N/A' : $row['fms_parent_contract_number']"
         },
         "formatted__original_or_modified": {
             "type": "expression2",
