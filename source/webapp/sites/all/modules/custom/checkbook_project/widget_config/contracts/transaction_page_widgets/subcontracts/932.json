@@ -78,7 +78,7 @@
         "prime_vendor_name_link": {
             "type": "expression2",
             "expression": " '<a href=\"/contracts_landing'
-            . ContractUtil::get_contracts_vendor_link_by_mwbe_category($row)
+            . ContractUtil::get_contracts_vendor_link($row['prime_vendor_id'],_getRequestParamValue('year'),_getRequestParamValue('yeartype'), _getRequestParamValue('agency'))
             . '?expandBottomCont=true\">'. $row['prime_vendor_name_formatted'] . '</a>'  "
         },
         "subvendor_name_formatted": {
