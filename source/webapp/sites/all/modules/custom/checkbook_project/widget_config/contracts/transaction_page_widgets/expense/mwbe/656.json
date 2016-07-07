@@ -125,7 +125,7 @@
         $node->show_percent_difference = $show_percent_difference;
         
         $dash_board = _getRequestParamValue('dashboard');
-        $node->show_column = $dash_board == 'ss' || $dash_board == 'sp';
+        $node->show_column = $dash_board == 'ss' || $dash_board == 'sp' || $dash_board == 'ms';
         $node->show_subvendor = false;
 
         $node->is_master_agreement = $is_master_agreement;
