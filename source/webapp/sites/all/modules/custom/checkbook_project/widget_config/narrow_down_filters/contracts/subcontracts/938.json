@@ -25,10 +25,10 @@
             $parameters['minority_type_id.minority_type_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
         }
         unset($parameters['minority_type_id']);
-        if(isset($parameters['mixed_vendor_code'])) {
-            $parameters['vendor_code'] = $parameters['mixed_vendor_code'];
+        if(isset($parameters['prime_sub_vendor_code'])) {
+            $parameters['vendor_code'] = $parameters['prime_sub_vendor_code'];
         }
-        unset($parameters['mixed_vendor_code']);
+        unset($parameters['prime_sub_vendor_code']);
         return $parameters;
     ",
     "template":"individual_filter"
