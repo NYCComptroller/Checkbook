@@ -18,6 +18,7 @@
         $header .= widget_data_tables_export_link($node);
         return $header;
     ",
+    "stickyHeader":true,
     "useList":true,
     "getTotalDataCount":true,
     "limit":"35",
