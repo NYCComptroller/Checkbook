@@ -258,7 +258,7 @@
         },
         "subvendor_status":{
             "type": "expression2",
-            "expression": "($row['scntrc_status_name'] == 'N/A' || $row['scntrc_status_name'] == NULL) ? 'N/A' : $row['scntrc_status_name']"
+            "expression": "$row['scntrc_status_name']"
         },
         "subvendor_status_pip":{
             "type": "expression2",

@@ -27,7 +27,7 @@
             WHEN l1.scntrc_status = 1 THEN 'No Data Entered'
             WHEN l1.scntrc_status = 2 THEN 'Yes'
             WHEN l1.scntrc_status = 3 THEN 'No'
-            ELSE 'N/A'
+            ELSE 'Prior Year Exclusions'
             END AS contract_subvendor_status,
             SUM(COALESCE(l1.original_contract_amount,0)) AS original_amount_sum,
             SUM(COALESCE(l1.maximum_contract_amount,0)) AS current_amount_sum,
