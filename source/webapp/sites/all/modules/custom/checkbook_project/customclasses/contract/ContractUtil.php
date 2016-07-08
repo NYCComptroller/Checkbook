@@ -604,7 +604,7 @@ namespace { //global
             $parameters['effective_begin_year_id']= $leCondition;
             $parameters['effective_end_year_id']= $geCondition;
 
-            //Vendor Facet -- mixed_vendor_code ~* '(^155$)|(.*,155$)|(^155,.*)'
+            //Vendor Facet -- prime_sub_vendor_code ~* '(^155$)|(.*,155$)|(^155,.*)'
             $vendor_codes = explode('~', _getRequestParamValue('vendornm'));
             $has_vendors = isset($vendor_codes[0]) && $vendor_codes[0] != "";
             if($has_vendors) {
@@ -617,7 +617,7 @@ namespace { //global
                 $pattern = '('.$pattern.')';
                 $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
                 if(isset($condition)) {
-                    $parameters['mixed_vendor_code'] = $condition;
+                    $parameters['prime_sub_vendor_code'] = $condition;
                 }
             }
 
@@ -641,7 +641,7 @@ namespace { //global
                 if($pattern != null) {
                     $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
                     if(isset($condition)) {
-                        $parameters['mixed_vendor_code_by_type'] = $condition;
+                        $parameters['prime_sub_vendor_code_by_type'] = $condition;
                     }
                 }
             }
@@ -670,7 +670,7 @@ namespace { //global
                 if($pattern != null) {
                     $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
                     if(isset($condition)) {
-                        $parameters['mixed_minority_type_id'] = $condition;
+                        $parameters['prime_sub_minority_type_id'] = $condition;
                     }
                 }
             }
