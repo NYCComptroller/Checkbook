@@ -48,6 +48,7 @@
         "effective_end_year_id",
         "sort_order"
     ],
+    "uniqueSortColumn":"original_agreement_id",
     "adjustParameters":"return ContractUtil::adjustContractParameterFilters($node, $parameters);",
     "derivedColumns": {
         "contract_link": {
