@@ -178,7 +178,7 @@ if (_getRequestParamValue("datasource") != "checkbook_oge") {
                                 WHEN scntrc_status = 1 THEN 'NO DATA ENTERED'
                                 WHEN scntrc_status = 2 THEN 'YES'
                                 WHEN scntrc_status = 3 THEN 'NO'
-                                ELSE 'N/A'
+                                ELSE 'Prior Year Exclusions'
                             END AS contract_subvendor_status
                             FROM aggregateon_mwbe_contracts_cumulative_spending
                             WHERE contract_number = '". $contract_number . "' AND fiscal_year_id = "
