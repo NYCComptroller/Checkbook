@@ -39,7 +39,7 @@ class ContractURLHelper{
         }else if($parent && strlen($row['master_contract_number']) == 0){
             return "N/A";
         }else{
-            $docType = $row['document_code@checkbook:ref_document_code'];
+            $docType = isset($row['document_code@checkbook:ref_document_code']) ? $row['document_code@checkbook:ref_document_code'] : _get_contract_type($row['contract_number']);
             $agrParamName = in_array($docType, array('MMA1','MA1')) ? 'magid' : 'agid';
         }
 
