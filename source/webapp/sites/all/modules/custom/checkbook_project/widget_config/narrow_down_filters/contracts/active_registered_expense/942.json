@@ -1,0 +1,34 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":939,
+    "no_results_content":"No Results Found",
+    "startWith":0,
+    "maxSelect":5,
+    "getTotalDataCount":true,
+    "facetPager":true,
+    "filterName":"Vendor",
+    "urlParamMap":{
+        "vendornm":"vendor_code.vendor_code"
+    },
+    "dataset":"checkbook:contract_transaction_vendor_facet_data",
+    "columns":["vendor_code.vendor_code", "vendor_name.vendor_name", "txcount"],
+    "orderBy":"-txcount",
+    "autocompleteParamName":"vendor_auto",
+    "autocompleteField":"vendor_name.vendor_name",
+    "urlParameterName":"vendornm",
+    "urlParameterNameType":"eqtext",
+    "autocompleteID":"fvendorNm",
+    "showAllRecords":true,
+    "allowFacetDeselect":true,
+    "template":"individual_filter",
+    "adjustParameters":"
+        $parameters = ContractUtil::adjustActiveContractParameterFilters($node, $parameters);
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
+            $parameters['vendor_code.vendor_code'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+        }
+        unset($parameters['prime_sub_vendor_code']);
+
+        return $parameters;
+    "
+}

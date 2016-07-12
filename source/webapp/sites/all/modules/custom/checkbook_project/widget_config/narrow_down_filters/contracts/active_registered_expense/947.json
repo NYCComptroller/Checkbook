@@ -1,0 +1,34 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":656,
+    "autocomplete":false,
+    "no_results_content":"No Results Found",
+    "limit":10,
+    "startWith":0,
+    "maxSelect":5,
+    "urlParamMap":{
+        "doctype":"document_code.document_code.document_code",
+        "contstatus":"all_cum_spend.all_cum_spend.status_flag",
+        "calyear":"all_cum_spend.all_cum_spend.fiscal_year_id",
+        "year":"all_cum_spend.all_cum_spend.fiscal_year_id",
+        "yeartype":"all_cum_spend.all_cum_spend.type_of_year",
+        "mwbe":"all_cum_spend.all_cum_spend.minority_type_id",
+        "vendornm":"vendor_name.vendor_name",
+        "subcontstatus":"scntrc_status.scntrc_status"
+
+    },
+    "columns":["scntrc_status.scntrc_status","scntrc_status_name.scntrc_status_name", "txcount"],
+    "orderBy":"-txcount",
+    "getTotalDataCount":true,
+    "facetPager":true,
+    "filterName":"Contract Includes Sub Vendors",
+    "allowZeroValue":true,
+    "allowFacetDeselect":true,
+    "urlParameterName":"subcontstatus",
+    "autocompleteID":"fSubContStatus",
+    "adjustParameters":"
+        $parameters = ContractUtil::adjustActiveContractParameterFilters($node, $parameters);
+        return $parameters;
+    ",
+    "template":"individual_filter"
+}
