@@ -236,13 +236,13 @@ namespace { //global
             return $url;
         }
 
-        static public function get_contracts_vendor_link($vendor_id, $year_id = null, $year_type = null,$agency_id = null, $is_prime_or_sub = 'P'){
+        static public function get_contracts_vendor_link($vendor_id, $year_id = null, $year_type = null,$agency_id = null, $mwbe_cat = null, $is_prime_or_sub = 'P'){
 
             //For the 3rd menu option on contracts sub vendor, contract status should be set to active for links
             $contract_status = _checkbook_project_get_url_param_string("contstatus","status");
             $contract_status = $contract_status == "" ? "/status/A" : $contract_status;
 
-            $latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, $is_prime_or_sub);
+            $latest_minority_id = isset($mwbe_cat) ? $mwbe_cat : self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, $is_prime_or_sub);
             $url = _checkbook_project_get_url_param_string("agency") . $contract_status . _checkbook_project_get_year_url_param_string();
 
             if(in_array($latest_minority_id, array(2,3,4,5,9)) && _getRequestParamValue('dashboard') == 'mp'){
@@ -270,11 +270,12 @@ namespace { //global
 
             //if M/WBE certified, go to M/WBE (Sub Vendor) else if NOT M/WBE certified, go to Sub Vendor dashboard
             $new_dashboard = $is_mwbe_certified ? "ms" : "ss";
-
+            $status = strlen(_checkbook_project_get_url_param_string("contstatus","status"))== 0 ? "/status/A" : "";
+            
             if($current_dashboard != $new_dashboard ){
-                    return $url. "/dashboard/" . $new_dashboard . ($is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "" ) . "/subvendor/".$vendor_id;
+                    return $url . $status . "/dashboard/" . $new_dashboard . ($is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "" ) . "/subvendor/".$vendor_id;
             }else{
-                    $url .= _checkbook_project_get_url_param_string("cindustry"). _checkbook_project_get_url_param_string("csize")
+                    $url .= $status._checkbook_project_get_url_param_string("cindustry"). _checkbook_project_get_url_param_string("csize")
                     . _checkbook_project_get_url_param_string("awdmethod") ."/dashboard/" . $new_dashboard .
                     ($is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "" ) . "/subvendor/".$vendor_id;
                     return $url;
