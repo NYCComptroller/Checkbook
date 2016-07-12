@@ -806,6 +806,82 @@ namespace { //global
                     $parameters['effective_end_year_id']= $geCondition;
                 }
             }
+
+            $data_controller_instance = data_controller_get_operator_factory_instance();
+            //Vendor Facet -- prime_sub_vendor_code ~* '(^155$)|(.*,155$)|(^155,.*)'
+            $vendor_codes = explode('~', _getRequestParamValue('vendornm'));
+            $has_vendors = isset($vendor_codes[0]) && $vendor_codes[0] != "";
+            if($has_vendors) {
+                $pattern = null;
+                foreach($vendor_codes as $vendor_code) {
+                    $localValue = _checkbook_regex_replace_pattern($vendor_code);
+                    $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
+                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
+                }
+                $pattern = '('.$pattern.')';
+                $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
+                if(isset($condition)) {
+                    $parameters['prime_sub_vendor_code'] = $condition;
+                }
+            }
+
+            //Vendor Type Facet
+            $vendor_types = explode('~', _getRequestParamValue('vendortype'));
+            $has_vendor_types = isset($vendor_types[0]) && $vendor_types[0] != "";
+            if($has_vendor_types) {
+
+                $condition = null;
+
+                if($has_vendors) {
+                    $pattern = null;
+                    foreach($vendor_codes as $vendor_code) {
+                        $local_pattern = self::getVendorTypeRegEx($vendor_types, $vendor_code);
+                        $pattern .= isset($pattern) ? '|'.$local_pattern : $local_pattern;
+                    }
+                }
+                else {
+                    $pattern = self::getVendorTypeRegEx($vendor_types);
+                }
+                if($pattern != null) {
+                    $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
+                    if(isset($condition)) {
+                        $parameters['prime_sub_vendor_code_by_type'] = $condition;
+                    }
+                }
+            }
+
+            //M/WBE Category Facet
+            $mwbe_categories = explode('~', _getRequestParamValue('mwbe'));
+            $has_mwbe_categories = isset($mwbe_categories[0]) && $mwbe_categories[0] != "";
+            if($has_mwbe_categories) {
+
+                $condition = null;
+
+                if($has_vendor_types) {
+                    $pattern = null;
+                    foreach($mwbe_categories as $mwbe_category) {
+                        $local_pattern = self::getMWBECategoryRegEx($mwbe_category, $vendor_types);
+                        $pattern .= isset($pattern) ? '|'.$local_pattern : $local_pattern;
+                    }
+                }
+                else {
+                    $pattern = null;
+                    foreach($mwbe_categories as $mwbe_category) {
+                        $local_pattern = self::getMWBECategoryRegEx($mwbe_category);
+                        $pattern .= isset($pattern) ? '|'.$local_pattern : $local_pattern;
+                    }
+                }
+                if($pattern != null) {
+                    $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
+                    if(isset($condition)) {
+                        $parameters['prime_sub_minority_type_id'] = $condition;
+                    }
+                }
+            }
+
+            unset($parameters['year']);
+            unset($parameters['vendor_name']);
+            unset($parameters['minority_type_id']);
             unset($parameters['status_flag']);
 
             return $parameters;

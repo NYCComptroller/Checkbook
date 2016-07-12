@@ -7,17 +7,12 @@
         "agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","modamt","fvendor","subcontstatus","subvendorstatus"
     ],
     "urlParamMap":{
-        "contnum":"contract_number",
-        "contnum_exact":"contract_number",
         "agrmnttype":"agreement_type_id",
-        "vendortype":"vendor_type",
         "mwbe":"minority_type_id",
         "agency":"agency_id",
         "fvendor":"vendor_id",
         "vendor":"prime_vendor_id",
         "curamtr":"maximum_contract_amount",
-        "vendornm":"vendor_name",
-        "vendornm_exact":"vendor_name",
         "subvendor":"vendor_id",
         "contdesc":"description",
         "agencyh":"agency_history_id",
@@ -32,11 +27,17 @@
         "csize":"award_size_id",
         "modamt":"dollar_difference",
         "subcontstatus":"scntrc_status",
-        "subvendorstatus":"aprv_sta",
         "contstatus":"status_flag",
-        "doctype":"document_code"
+        "doctype":"document_code",
+        "vendornm":"prime_sub_vendor_code",
+        "vendornm_exact":"vendor_name",
+        "vendortype":"prime_sub_vendor_code_by_type",
+        "subvendorstatus":"aprv_sta_id",
+        "contnum":"contract_number",
+        "contnum_exact":"contract_number",
+        "year":"year"
     },
-    "allowRequestParams":["smnid"],
+    "allowRequestParams":["smnid","doctype"],
     "paramTypeConfig":{"vendornm_exact":"eqignorecase","curamtr":"rangeid","vendornm":"like","contdesc":"contains","contnum":"like","contnum_exact":"eqignorecase","aptpin":"like","pin":"like","curamt":"range",
         "startdate":"range","enddate":"range","regdate":"range","modamt":"ne"},
     "header":"
@@ -385,6 +386,10 @@
             var oSubVendorStatus = getNamedFilterCriteria('fSubVendorStatus');
             var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
             var oVendorType = getNamedFilterCriteria('fvendorType');
+            var oCurAmount = getNamedFilterCriteria('fCurAmount');
+            var oAwdMethod = getNamedFilterCriteria('fAwdMethodId');
+            var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
+            var oSubContStatus = getNamedFilterCriteria('fSubContStatus');
 
             var cUrl = oTable.fnSettings().sAjaxSource;
 
@@ -396,6 +401,10 @@
             cUrl = adjustUrlParameter(cUrl,'subvendorstatus',oSubVendorStatus);
             cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
             cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
+            cUrl = adjustUrlParameter(cUrl,'curamtr',oCurAmount);
+            cUrl = adjustUrlParameter(cUrl,'awdmethod',oAwdMethod);
+            cUrl = adjustUrlParameter(cUrl,'cindustry',oIndustryType);
+            cUrl = adjustUrlParameter(cUrl,'subcontstatus',oSubContStatus);
 
             return cUrl;
         }
