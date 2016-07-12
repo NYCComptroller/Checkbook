@@ -333,7 +333,7 @@
         "bInfo":true,
         "aoColumns": [
             {"sClass":"expander","bSortable":false,"sWidth":"30px"},
-            {"sClass":"text","sWidth":"180px","asSorting":["asc","desc"]},
+            {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"180px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"180px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"180px","asSorting":["asc","desc"]},
@@ -468,6 +468,7 @@
                             sOut += '<td class=\"text\"  style=\"width:180px\">'+ (row[22] == null ? '': row[22])+'</td>';
                             sOut += '<td class=\"text\"  style=\"width:180px\">'+ (row[23] == null ? '': row[23])+'</td>';
                             sOut += '<td class=\"text\" style=\"width:180px;\">'+ (row[24] == null ? '': row[24])+'</td>';
+                            sOut += '<td style=\"width:10px\"></td>';
                             sOut += '</tr>';
                         }
                         sOut += '</table></div>';
