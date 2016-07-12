@@ -80,7 +80,7 @@
         "prime_vendor_name_link": {
             "type": "expression2",
             "expression": " '<a href=\"/contracts_landing'
-            . ContractUtil::get_contracts_vendor_link($row['prime_vendor_id'],_getRequestParamValue('year'),_getRequestParamValue('yeartype'), _getRequestParamValue('agency'))
+            . ContractUtil::get_contracts_vendor_link($row['prime_vendor_id'],_getRequestParamValue('year'),_getRequestParamValue('yeartype'), _getRequestParamValue('agency'), $row['prime_minority_type_id'])
             . '?expandBottomCont=true\">'. $row['prime_vendor_name_formatted'] . '</a>'  "
         },
         "subvendor_name_formatted": {
