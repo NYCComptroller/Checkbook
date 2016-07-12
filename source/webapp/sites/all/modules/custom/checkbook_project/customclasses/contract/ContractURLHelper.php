@@ -343,4 +343,57 @@ class ContractURLHelper{
 
         return $link;
     }
+
+    /*Start Expense Contracts Transaction Page*/
+
+    static function expenseContractsExpandLink($row, $node ) {
+        $flag = ( preg_match("/^mwbe/", $_GET['q']) ) ? "has_mwbe_children" :"has_children";
+        $show_expander = ($row[$flag] == 'Y') ? true : false;
+
+        $link = ($show_expander) ? '<span id=dtl_expand class="toggler collapsed"  magid="' . ((isset($row['contract_original_agreement_id']))?$row['contract_original_agreement_id'] : $row['original_agreement_id']) . '" '
+            . ( _getRequestParamValue('dashboard') != '' ?  ('dashboard="' . _getRequestParamValue('dashboard') . '" ' ) : '')
+            . ( _getRequestParamValue('mwbe') != '' ?  ('mwbe="' . _getRequestParamValue('mwbe') . '" ' ) : '')
+            . ( _getRequestParamValue('smnid') != '' ?  ('smnid="' . _getRequestParamValue('smnid') . '" ' ) : '')
+            . ( _getRequestParamValue('contstatus') != '' ?  ('contstatus="' . _getRequestParamValue('contstatus') . '" ' ) : '')
+            . _checkbook_project_get_year_url_param_string()
+            . ('mastercode="' . $row['document_code'] . '"' )
+            . '></span>' : '';
+
+        return $link;
+    }
+
+    static function expenseContractsLink($row, $node, $parent = false, $original_agreement_id = null) {
+
+        $link = NULL;
+        if(isset($row['contract_original_agreement_id'])) $row['original_agreement_id'] = $row['contract_original_agreement_id'];
+        $row['original_agreement_id'] = ($original_agreement_id)? $original_agreement_id : $row['original_agreement_id'];
+
+        if($parent && strlen($row['master_contract_number']) > 0){
+            $agrParamName = 'magid';
+            $docTypeStr = substr($row['master_contract_number'],0,3);
+            $docType = ($docTypeStr == 'MA1') ? 'MA1' : 'MMA1';
+            $row['original_agreement_id'] = $row['master_agreement_id'];
+            $row['contract_number'] = $row['master_contract_number'];
+        }else if($parent && strlen($row['master_contract_number']) == 0){
+            return "N/A";
+        }else{
+            $docType = $row['document_code'];
+            $agrParamName = in_array($docType, array('MMA1','MA1')) ? 'magid' : 'agid';
+        }
+
+        if( RequestUtil::isExpandBottomContainer() ){
+            $link = '<a href=/panel_html/contract_transactions/contract_details/' .$agrParamName . '/' . $row['original_agreement_id'] .  '/doctype/' . $docType .  _checkbook_append_url_params() . ' class=bottomContainerReload>'. $row['contract_number'] . '</a>';
+        } else {
+            $link = '<a href=/contracts_landing'
+                . _checkbook_project_get_url_param_string('contstatus','status')
+                . _checkbook_append_url_params()
+                . _checkbook_project_get_year_url_param_string()
+                . ((_checkbook_check_isEDCPage()) ? '/agency/' . $row['agency_id'] :'')
+                . '?expandBottomContURL=/panel_html/contract_transactions/contract_details/' .$agrParamName . '/' . $row['original_agreement_id'] .  '/doctype/' . $docType . _checkbook_append_url_params()
+                .  ' >'. $row['contract_number'] . '</a>';
+        }
+
+
+        return $link;
+    }
 }

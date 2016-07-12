@@ -1,0 +1,35 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":939,
+    "autocomplete":false,
+    "no_results_content":"No Results Found",
+    "startWith":0,
+    "maxSelect":5,
+    "urlParamMap":{
+        "mwbe":"minority_type_id.minority_type_id"
+    },
+    "dataset":"checkbook:contract_transaction_minority_type_facet_data",
+    "columns":["minority_type_id.minority_type_id","minority_type_name.minority_type_name", "txcount"],
+    "orderBy":"-txcount",
+    "getTotalDataCount":true,
+    "facetPager":true,
+    "filterName":"M/WBE Category",
+    "allowZeroValue":true,
+    "allowFacetDeselect":true,
+    "urlParameterName":"mwbe",
+    "autocompleteID":"fminorityTypeId",
+    "adjustParameters":"
+        $parameters = ContractUtil::adjustContractParameterFilters($node, $parameters);
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
+            $parameters['minority_type_id.minority_type_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+        }
+        unset($parameters['minority_type_id']);
+        if(isset($parameters['prime_sub_vendor_code'])) {
+            $parameters['vendor_code'] = $parameters['prime_sub_vendor_code'];
+        }
+        unset($parameters['prime_sub_vendor_code']);
+        return $parameters;
+    ",
+    "template":"individual_filter"
+}

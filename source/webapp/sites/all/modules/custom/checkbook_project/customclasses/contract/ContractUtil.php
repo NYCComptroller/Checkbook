@@ -785,6 +785,31 @@ namespace { //global
 
             return $pattern;
         }
+
+        static public function adjustActiveContractParameterFilters(&$node, &$parameters) {
+
+            //Handle status and year parameter
+            $contractStatus = _getRequestParamValue('contstatus');
+            $reqYear = _getRequestParamValue('year');
+
+            if(isset($reqYear)){
+                $data_controller_instance = data_controller_get_operator_factory_instance();
+                $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
+                $leCondition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
+                $parameters['starting_year_id']= $leCondition;
+                $parameters['ending_year_id']= $geCondition;
+                if($contractStatus=='R'){
+                    $parameters['registered_year_id']= array($reqYear);
+                }
+                else if($contractStatus=='A'){
+                    $parameters['effective_begin_year_id']= $leCondition;
+                    $parameters['effective_end_year_id']= $geCondition;
+                }
+            }
+            unset($parameters['status_flag']);
+
+            return $parameters;
+        }
     }
 }
 
