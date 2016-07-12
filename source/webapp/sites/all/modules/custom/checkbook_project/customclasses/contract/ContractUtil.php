@@ -260,27 +260,27 @@ namespace { //global
 
         
         
-        static public function get_contracts_vendor_link_sub($vendor_id, $year_id = null, $year_type = null,$agency_id = null){
-        
-        	$latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, "S");
-        	$url = _checkbook_project_get_url_param_string("agency") .  _checkbook_project_get_url_param_string("contstatus","status") . _checkbook_project_get_year_url_param_string();
-        
-        	$current_dashboard = _getRequestParamValue("dashboard");
-        	$is_mwbe_certified = isset($latest_minority_id);
-        	 
-        	//if M/WBE certified, go to M/WBE (Sub Vendor) else if NOT M/WBE certified, go to Sub Vendor dashboard
-        	$new_dashboard = $is_mwbe_certified ? "ms" : "ss";
-        	 
-        	if($current_dashboard != $new_dashboard ){
-        		return $url. "/dashboard/" . $new_dashboard . ($is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "" ) . "/subvendor/".$vendor_id;
-        	}else{
-        		$url .= _checkbook_project_get_url_param_string("cindustry"). _checkbook_project_get_url_param_string("csize")
-        		. _checkbook_project_get_url_param_string("awdmethod") ."/dashboard/" . $new_dashboard .
-        		($is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "" ) . "/subvendor/".$vendor_id;
-        		return $url;
-        	}
-        
-        	return '';
+        static public function get_contracts_vendor_link_sub($vendor_id, $year_id = null, $year_type = null,$agency_id = null, $mwbe_cat = null){
+
+            $latest_minority_id = isset($mwbe_cat) ? $mwbe_cat : self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, "S");
+            $url = _checkbook_project_get_url_param_string("agency") .  _checkbook_project_get_url_param_string("contstatus","status") . _checkbook_project_get_year_url_param_string();
+
+            $current_dashboard = _getRequestParamValue("dashboard");
+            $is_mwbe_certified = in_array($latest_minority_id, array(2, 3, 4, 5, 9));
+
+            //if M/WBE certified, go to M/WBE (Sub Vendor) else if NOT M/WBE certified, go to Sub Vendor dashboard
+            $new_dashboard = $is_mwbe_certified ? "ms" : "ss";
+
+            if($current_dashboard != $new_dashboard ){
+                    return $url. "/dashboard/" . $new_dashboard . ($is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "" ) . "/subvendor/".$vendor_id;
+            }else{
+                    $url .= _checkbook_project_get_url_param_string("cindustry"). _checkbook_project_get_url_param_string("csize")
+                    . _checkbook_project_get_url_param_string("awdmethod") ."/dashboard/" . $new_dashboard .
+                    ($is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "" ) . "/subvendor/".$vendor_id;
+                    return $url;
+            }
+
+            return '';
         }
         
         
