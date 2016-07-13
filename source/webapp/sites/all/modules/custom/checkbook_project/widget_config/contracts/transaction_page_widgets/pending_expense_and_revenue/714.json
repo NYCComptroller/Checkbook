@@ -117,15 +117,16 @@
     "table_columns": [
         {"labelAlias": "contract_id","column":"contract_link","sortSourceColumn":"contract_number"},
         {"labelAlias": "contract_purpose","column":"purpose_formatted","sortSourceColumn":"description"},
+        {"labelAlias": "version","column":"document_version","headerClass":"centrig fifty"},
         {"labelAlias": "recv_date","column":"cif_received_date"},
-        {"labelAlias": "vendor_name","column":"vendor_formatted","sortSourceColumn":"vendor_legal_name"},
+        {"labelAlias": "prime_vendor","column":"vendor_formatted","sortSourceColumn":"vendor_legal_name"},
+        {"labelAlias": "prime_mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name_formatted"},
         {"labelAlias": "current_amount","column":"formatted__maximum_amount","sortSourceColumn":"revised_maximum_amount","headerClass":"centrig"},
         {"labelAlias": "original_amount","column":"formatted__original_maximum_amount","sortSourceColumn":"original_maximum_amount","headerClass":"centrig"},
         {"labelAlias": "start_date","column":"revised_start_date"},
         {"labelAlias": "end_date","column":"revised_end_date"},
         {"labelAlias": "dollar_diff","column":"formatted_dollar_diff","sortSourceColumn":"dollar_difference","headerClass":"centrig"},
         {"labelAlias": "percent_diff","column":"formatted_percent_diff","sortSourceColumn":"percent_difference","headerClass":"centrig"},
-        {"labelAlias": "version","column":"document_version","headerClass":"centrig fifty"},
         {"labelAlias": "fms_doc_id","column":"parent_contract_link","sortSourceColumn":"fms_parent_contract_number"},
         {"labelAlias": "contract_agency","column":"agency_formatted","sortSourceColumn":"document_agency_name"},
         {"labelAlias": "contract_type","column":"contract_type_formatted","sortSourceColumn":"contract_type_name"},
@@ -133,8 +134,7 @@
         {"labelAlias": "award_method","column":"award_method_formatted","sortSourceColumn":"award_method_name"},
         {"labelAlias": "contract_industry","column":"industry_name_formatted","sortSourceColumn":"industry_type_name@checkbook:industry_type"},
         {"labelAlias": "pin","column":"tracking_number"},
-        {"labelAlias": "apt_pin","column":"board_award_number"},
-        {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name_formatted"}
+        {"labelAlias": "apt_pin","column":"board_award_number"}
     ],
     "adjustParameters":"
         if(isset($parameters['vendor_type'])){
@@ -189,13 +189,14 @@
     "aoColumns": [
         {"sClass":"text","sWidth": "160px","asSorting": [ "asc","desc" ]},
         {"sClass":"text pad-left","sWidth": "180px","asSorting": [ "asc","desc" ]},
+        {"sClass":"text number-left","sWidth": "90px","asSorting": [ "asc","desc" ]},
         {"sClass":"text pad-left","sWidth": "115px","asSorting": [ "asc","desc" ]},
         {"sClass":"text","sWidth": "200px","asSorting": [ "desc","asc" ]},
+        {"sClass":"text pad-left","sWidth": "150px","asSorting": [ "asc","desc" ]},
         {"sClass":"number","sWidth": "120px","asSorting": [ "desc","asc" ]},
         {"sClass":"number","sWidth": "120px","asSorting": [ "desc","asc" ]},
         {"sClass":"text  number-left pad-left","sWidth": "100px","asSorting": [ "asc","desc" ]},
         {"sClass":"text number-left","sWidth": "90px","asSorting": [ "desc","asc" ]},
-        {"sClass":"text number-left","sWidth": "90px","asSorting": [ "asc","desc" ]},
         {"sClass":"number","sWidth":"75px","asSorting": [ "desc","asc" ]},
         {"sClass":"number","sWidth": "75px","asSorting": [ "asc","desc" ]},
         {"sClass":"text pad-left","sWidth": "155px","asSorting": [ "asc","desc" ]},
@@ -205,11 +206,10 @@
         {"sClass":"text","sWidth": "155px","asSorting": [ "asc","desc" ]},
         {"sClass":"text pad-left","sWidth": "155px","asSorting": [ "asc","desc" ]},
         {"sClass":"text pad-left","sWidth": "100px","asSorting": [ "asc","desc" ]},
-        {"sClass":"text pad-left","sWidth": "100px","asSorting": [ "asc","desc" ]},
         {"sClass":"text pad-left","sWidth": "100px","asSorting": [ "asc","desc" ]}
     ],
     "bInfo": true,
-    "aaSorting": [[4,"desc"]],
+    "aaSorting": [[6,"desc"]],
     "sScrollX": "100%",
     "bScrollCollapse": true,
     "fnInitComplete": "##function () { new FixedColumns( oTable, {
