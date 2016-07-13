@@ -46,7 +46,13 @@
            $node->data = null;
         }
 	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
-	$node->widgetConfig->chartTitle =  'Sub Vendor Contracts Status by Prime Contracts';
+    $dashboard= _getRequestParamValue('dashboard');
+    if($dashboard == 'sp' || $dashboard == 'ms'){
+        $node->widgetConfig->chartTitle = MappingUtil::getCurrenEhtnicityName() . ' Sub Vendor Contracts Status by Prime Contracts';
+    }else{
+        $node->widgetConfig->chartTitle =  'Sub Vendor Contracts Status by Prime Contracts';
+    }
+
         $node->widgetConfig->chartSubTitle =  'Total Number of Sub Vendor Contracts Submitted: '.number_format($total_contracts);
 ",
 "chartConfig": {
