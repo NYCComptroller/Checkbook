@@ -94,7 +94,7 @@
         if(_getRequestParamValue('status') == 'A'){
             $node->widgetConfig->chartTitle =   MappingUtil::getCurrenEhtnicityName() . ' Top Ten Prime Vendors by Total Active Sub Vendor Contracts' ;
         }else{
-            $node->widgetConfig->chartTitle =   MappingUtil::getCurrenEhtnicityName() . ' Top Ten Prime Vendors a.	by New Sub Vendor Contracts by Fiscal Year' ;
+            $node->widgetConfig->chartTitle =   MappingUtil::getCurrenEhtnicityName() . ' Top Ten Prime Vendors by New Sub Vendor Contracts by Fiscal Year' ;
         }
 	}
 	
