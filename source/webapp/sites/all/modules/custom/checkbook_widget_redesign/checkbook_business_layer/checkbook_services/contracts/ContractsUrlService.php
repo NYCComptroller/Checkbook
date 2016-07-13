@@ -92,6 +92,9 @@ class ContractsUrlService {
     }
 
     static function subContractsFooterUrl() {
+        $subvendor = _getRequestParamValue('subvendor');
+        $subvendor_code = self::getSubVendorCustomerCode($subvendor);
+        $subvendorURLString = isset($subvendor_code) ? '/vendornm/'.$subvendor_code : '';
         $url = '/panel_html/sub_contracts_transactions/subcontract/transactions/contcat/expense'
             . _checkbook_project_get_url_param_string('status','contstatus')
             . _checkbook_append_url_params()
@@ -101,7 +104,25 @@ class ContractsUrlService {
             . _checkbook_project_get_url_param_string('awdmethod')
             . _checkbook_project_get_url_param_string('csize')
             . _checkbook_project_get_url_param_string('cindustry')
+            . $subvendorURLString
             . _checkbook_project_get_year_url_param_string();
         return $url;
+    }
+    
+    static function getSubVendorCustomerCode($subVendorId){
+        $result = NULL;
+        $query = "SELECT v.vendor_customer_code 
+                FROM subvendor v
+                JOIN (SELECT vendor_id, MAX(vendor_history_id) AS vendor_history_id FROM subvendor_history GROUP BY 1) vh 
+                  ON v.vendor_id = vh.vendor_id
+                WHERE v.vendor_id = ".$subVendorId;
+
+        $subVendorCustomerCode = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+        if($subVendorCustomerCode) {
+            return $subVendorCustomerCode[0]['vendor_customer_code'];
+        }
+        else {
+            return null;
+        }
     }
 } 
