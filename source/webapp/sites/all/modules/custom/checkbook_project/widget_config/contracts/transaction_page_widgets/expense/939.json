@@ -384,7 +384,7 @@
             var oVendorIds = getNamedFilterCriteria('fvendorId');
             var oVendorNms = getNamedFilterCriteria('fvendorNm');
             var oVendorCodes = getNamedFilterCriteria('fvendorCode');
-            var oContNum = getNamedFilterCriteria('fContractNumber');
+            var oContractNumber = getNamedFilterCriteria('fContractNumber');
             var oSubVendorStatus = getNamedFilterCriteria('fSubVendorStatus');
             var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
             var oVendorType = getNamedFilterCriteria('fvendorType');
@@ -400,7 +400,7 @@
             cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
             cUrl = adjustUrlParameter(cUrl,'vendorcode',oVendorCodes);
             cUrl = adjustUrlParameter(cUrl,'vendornm',oVendorNms);
-            cUrl = adjustUrlParameter(cUrl,'contnum',oContNum);
+            cUrl = adjustUrlParameter(cUrl,'contnum_exact',oContractNumber);
             cUrl = adjustUrlParameter(cUrl,'subvendorstatus',oSubVendorStatus);
             cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
             cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
