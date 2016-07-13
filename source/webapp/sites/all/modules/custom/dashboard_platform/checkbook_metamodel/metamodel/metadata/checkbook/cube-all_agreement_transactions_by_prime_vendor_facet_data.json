@@ -9,14 +9,14 @@
         },
         "contract_transaction_vendor_type_facet_data":{
             "datasourceName":"main",
-            "source":"SELECT CASE WHEN prime_sub_vendor_code_by_type ~* '(.*P:*.)|(.*PM:*.)' THEN 'PRIME VENDOR' END as vendor_type, 'P' as vendor_type_id, prime_vendor_code as vendor_code, * FROM all_agreement_transactions_by_prime_vendor
+            "source":"SELECT 'PRIME VENDOR' vendor_type, 'P' as vendor_type_id, prime_vendor_code as vendor_code, * FROM all_agreement_transactions_by_prime_vendor WHERE prime_sub_vendor_code_by_type ~* '(^P:.*$)|(.*,P:.*$)|(^P:.*,.*)|(^PM:.*$)|(.*,PM:.*$)|(^PM:.*,.*)'
                       UNION ALL
-                      SELECT CASE WHEN prime_sub_vendor_code_by_type ~* '(.*S:*.)|(.*SM:*.)' THEN 'SUB VENDOR' END as vendor_type, 'S' as vendor_type_id, sub_vendor_code as vendor_code, * FROM all_agreement_transactions_by_prime_vendor
+                      SELECT 'SUB VENDOR' as vendor_type, 'S' as vendor_type_id, sub_vendor_code as vendor_code, * FROM all_agreement_transactions_by_prime_vendor WHERE prime_sub_vendor_code_by_type ~* '(^S:.*$)|(.*,S:.*$)|(^S:.*,.*)|(^SM:.*$)|(.*,SM:.*$)|(^SM:.*,.*)'
                       UNION ALL
-                      SELECT CASE WHEN prime_sub_vendor_code_by_type ~* '(.*PM:*.)' THEN 'M/WBE VENDOR' END as vendor_type, 'M' as vendor_type_id, prime_vendor_code as vendor_code, * FROM all_agreement_transactions_by_prime_vendor
+                      SELECT 'M/WBE VENDOR' vendor_type, 'M' as vendor_type_id, prime_vendor_code as vendor_code, * FROM all_agreement_transactions_by_prime_vendor WHERE prime_sub_vendor_code_by_type ~* '(^PM:.*$)|(.*,PM:.*$)|(^PM:.*,.*)'
                       UNION ALL
-                      SELECT CASE WHEN prime_sub_vendor_code_by_type ~* '(.*SM:*.)' THEN 'M/WBE VENDOR' END as vendor_type, 'M' as vendor_type_id, sub_vendor_code as vendor_code, * FROM all_agreement_transactions_by_prime_vendor
-            "
+                      SELECT 'M/WBE VENDOR' as vendor_type, 'M' as vendor_type_id, sub_vendor_code as vendor_code, * FROM all_agreement_transactions_by_prime_vendor WHERE prime_sub_vendor_code_by_type ~* '(^SM:.*$)|(.*,SM:.*$)|(^SM:.*,.*)'
+                      "
         },
         "contract_transaction_minority_type_facet_data":{
             "datasourceName":"main",
