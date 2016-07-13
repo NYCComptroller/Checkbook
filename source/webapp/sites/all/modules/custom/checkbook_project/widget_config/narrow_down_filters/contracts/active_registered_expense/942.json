@@ -9,7 +9,7 @@
     "limit":100,
     "filterName":"Vendor",
     "urlParamMap":{
-        "vendornm":"vendor_code.vendor_code"
+        "vendorcode":"vendor_code.vendor_code"
     },
     "dataset":"checkbook:contract_transaction_vendor_facet_data",
     "columns":["vendor_code.vendor_code", "vendor_name.vendor_name", "txcount"],
