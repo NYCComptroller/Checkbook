@@ -12,8 +12,8 @@
     "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Contract ID",
-    "urlParameterName":"contnum",
-    "autocompleteParamName":"contnum_auto",
+    "urlParameterName":"contnum_exact",
+    "autocompleteParamName":"contnum_exact_auto",
     "autocompleteID":"fContractNumber",
     "autocompleteField":"contract_number",
     "adjustParameters":"
