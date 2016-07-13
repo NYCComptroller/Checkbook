@@ -763,7 +763,6 @@
                     <exp op="AND">
                         <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
                         <exp op="=" dbField="a.is_prime_or_sub">'S'</exp>
-                        <exp op="=" dbField="a.latest_flag">'Y'</exp>
                     </exp>
                 </where>
             ) b on b.contract_number = a.contract_number
@@ -780,7 +779,6 @@
                     <exp op="&gt;=" dbField="a.ending_year_id" paramName="year" />
                     <exp op="&lt;=" dbField="a.effective_begin_year_id" paramName="year" />
                     <exp op="&gt;=" dbField="a.effective_end_year_id" paramName="year" />
-                    <exp op="=" dbField="a.latest_flag">'Y'</exp>
                     <exp op="=" dbField="a.scntrc_status">2</exp>
                     <exp op="IN" dbField="rd.document_code" paramName="doctype" />
                     <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
@@ -815,7 +813,6 @@
                 <exp op="AND">
                     <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
                     <exp op="=" dbField="a.is_prime_or_sub">'S'</exp>
-                    <exp op="=" dbField="a.latest_flag">'Y'</exp>
                 </exp>
             </where>
             ) b on b.contract_number = a.contract_number
@@ -832,7 +829,6 @@
                     <exp op="&gt;=" dbField="a.ending_year_id" paramName="year" />
                     <exp op="&lt;=" dbField="a.effective_begin_year_id" paramName="year" />
                     <exp op="&gt;=" dbField="a.effective_end_year_id" paramName="year" />
-                    <exp op="=" dbField="a.latest_flag">'Y'</exp>
                     <exp op="=" dbField="a.scntrc_status">2</exp>
                     <exp op="IN" dbField="rd.document_code" paramName="doctype" />
                     <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
