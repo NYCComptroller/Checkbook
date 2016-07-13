@@ -3,7 +3,7 @@
     "widgetSubType":"dataTableList",
     "stickyHeader":true,
     "cleanURLParameters":[
-        "subvendor","vendortype","mwbe","doctype","contstatus","year","calyear","agency","vendor","curamtr","vendornm","vendornm_exact","contdesc","agrmnttype",
+        "subvendor","vendortype","mwbe","doctype","contstatus","year","calyear","agency","vendor","curamtr","vendorcode","vendornm","vendornm_exact","contdesc","agrmnttype",
         "agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","modamt","fvendor","subcontstatus","subvendorstatus"
     ],
     "urlParamMap":{
@@ -11,6 +11,7 @@
         "mwbe":"minority_type_id",
         "agency":"agency_id",
         "fvendor":"vendor_id",
+        "vendorcode":"vendor_name",
         "vendor":"prime_vendor_id",
         "curamtr":"maximum_contract_amount",
         "subvendor":"vendor_id",
@@ -382,6 +383,7 @@
             var agencyIds = getNamedFilterCriteria('fagencyId');
             var oVendorIds = getNamedFilterCriteria('fvendorId');
             var oVendorNms = getNamedFilterCriteria('fvendorNm');
+            var oVendorCodes = getNamedFilterCriteria('fvendorCode');
             var oContNum = getNamedFilterCriteria('fContractNumber');
             var oSubVendorStatus = getNamedFilterCriteria('fSubVendorStatus');
             var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
@@ -396,6 +398,7 @@
             var cUrlArray = cUrl.split('/');
 
             cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
+            cUrl = adjustUrlParameter(cUrl,'vendorcode',oVendorCodes);
             cUrl = adjustUrlParameter(cUrl,'vendornm',oVendorNms);
             cUrl = adjustUrlParameter(cUrl,'contnum',oContNum);
             cUrl = adjustUrlParameter(cUrl,'subvendorstatus',oSubVendorStatus);
