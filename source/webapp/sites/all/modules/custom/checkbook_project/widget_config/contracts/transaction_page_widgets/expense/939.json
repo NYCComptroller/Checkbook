@@ -11,8 +11,11 @@
         "mwbe":"minority_type_id",
         "agency":"agency_id",
         "fvendor":"vendor_id",
-        "vendorcode":"vendor_name",
-        "vendor":"prime_vendor_id",
+        "vendor":"vendor_id",
+        "vendorcode":"vendor_code",
+        "vendornm_exact":"vendor_name",
+        "vendornm":"vendor_name",
+        "vendortype":"vendor_type",
         "curamtr":"maximum_contract_amount",
         "subvendor":"vendor_id",
         "contdesc":"description",
@@ -30,9 +33,6 @@
         "subcontstatus":"scntrc_status",
         "contstatus":"status_flag",
         "doctype":"document_code",
-        "vendornm":"prime_sub_vendor_code",
-        "vendornm_exact":"vendor_name",
-        "vendortype":"prime_sub_vendor_code_by_type",
         "subvendorstatus":"aprv_sta",
         "contnum":"contract_number",
         "contnum_exact":"contract_number",
@@ -399,7 +399,7 @@
 
             cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
             cUrl = adjustUrlParameter(cUrl,'vendorcode',oVendorCodes);
-            cUrl = adjustUrlParameter(cUrl,'vendornm',oVendorNms);
+            cUrl = adjustUrlParameter(cUrl,'vendornm_exact',oVendorNms);
             cUrl = adjustUrlParameter(cUrl,'contnum_exact',oContractNumber);
             cUrl = adjustUrlParameter(cUrl,'subvendorstatus',oSubVendorStatus);
             cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
