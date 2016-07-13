@@ -809,7 +809,7 @@ namespace { //global
 
             $data_controller_instance = data_controller_get_operator_factory_instance();
             //Vendor Facet -- prime_sub_vendor_code ~* '(^155$)|(.*,155$)|(^155,.*)'
-            $vendor_codes = explode('~', _getRequestParamValue('vendornm'));
+            $vendor_codes = explode('~', _getRequestParamValue('vendorcode'));
             $has_vendors = isset($vendor_codes[0]) && $vendor_codes[0] != "";
             if($has_vendors) {
                 $pattern = null;
