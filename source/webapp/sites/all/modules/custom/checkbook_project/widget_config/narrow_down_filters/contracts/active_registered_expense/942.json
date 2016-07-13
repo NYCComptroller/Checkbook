@@ -6,6 +6,7 @@
     "maxSelect":5,
     "getTotalDataCount":true,
     "facetPager":true,
+    "limit":100,
     "filterName":"Vendor",
     "urlParamMap":{
         "vendornm":"vendor_code.vendor_code"
