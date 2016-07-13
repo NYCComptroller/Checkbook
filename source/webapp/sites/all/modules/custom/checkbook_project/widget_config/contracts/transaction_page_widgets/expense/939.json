@@ -33,7 +33,7 @@
         "vendornm":"prime_sub_vendor_code",
         "vendornm_exact":"vendor_name",
         "vendortype":"prime_sub_vendor_code_by_type",
-        "subvendorstatus":"aprv_sta_id",
+        "subvendorstatus":"aprv_sta",
         "contnum":"contract_number",
         "contnum_exact":"contract_number",
         "year":"year"
