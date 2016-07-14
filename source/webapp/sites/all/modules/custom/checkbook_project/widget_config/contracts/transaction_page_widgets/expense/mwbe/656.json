@@ -258,7 +258,7 @@
         },
         "subvendor_status":{
             "type": "expression2",
-            "expression": "$row['scntrc_status_name']"
+            "expression": "($row['document_code_checkbook_ref_document_code'] == 'CT1' || $row['document_code_checkbook_ref_document_code'] == 'CTA1' || $row['document_code_checkbook_ref_document_code'] == 'CT2') ? $row['scntrc_status_name'] : 'N/A'"
         },
         "subvendor_status_pip":{
             "type": "expression2",
