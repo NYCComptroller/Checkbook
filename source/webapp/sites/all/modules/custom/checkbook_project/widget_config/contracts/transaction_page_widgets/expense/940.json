@@ -206,7 +206,7 @@
         {"labelAlias": "fms_doc_id","column":"parent_contract_link", "exportColumn":"parent_contract_export", "sortSourceColumn":"master_contract_number"},
         {"labelAlias":"current_amount","column":"formatted_current_amount","sortSourceColumn":"maximum_contract_amount"},
         {"labelAlias":"original_amount","column":"formatted_original_amount","sortSourceColumn":"original_contract_amount"},
-        {"labelAlias":"spent_to_date","column":"formatted_spent_to_date","sortSourceColumn":"spending_amount"},
+        {"labelAlias":"spent_to_date","column":"formatted_spent_to_date","sortSourceColumn":"rfed_amount"},
         //10
         {"labelAlias":"prime_vendor","column":"prime_vendor_name_link","sortSourceColumn":"prime_vendor_name"},
         {"labelAlias":"prime_mwbe_category","column":"prime_minority_type_name","sortSourceColumn":"prime_minority_type_name"},
