@@ -119,7 +119,7 @@
         },
         "parent_contract_export":{
             "type":"expression2",
-            "expression":"(($row['master_agreement_yn'] == 'Y') ? 'N/A' : $row['master_contract_number'])"
+            "expression":"(!($row['master_contract_number']) ? 'N/A' : $row['master_contract_number'])"
         },
         "formatted_original_amount": {
             "type":"expression2",
@@ -138,6 +138,10 @@
             .    '/year/'. _getFiscalYearID() .'/syear/'. _getFiscalYearID()
             .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['rfed_amount']) . '</a>'
             "
+        },
+        "spent_to_date_export": {
+            "type":"expression2",
+            "expression":"custom_number_formatter_basic_format($row['rfed_amount'])"
         },
         "agency_formatted": {
             "type":"expression2",
@@ -225,11 +229,11 @@
         },
         "subvendor_status_pip":{
             "type": "expression2",
-            "expression": "($row['aprv_sta_value'] == 'N/A' || $row['aprv_sta_value'] == NULL) ? 'N/A' : _get_tooltip_markup($row['aprv_sta_value'],36)"
+            "expression": "($row['aprv_sta_name'] == 'N/A' || $row['aprv_sta_name'] == NULL) ? 'N/A' : _get_tooltip_markup($row['aprv_sta_name'],36)"
         },
         "subvendor_status_pip_export":{
             "type": "expression2",
-            "expression": "($row['aprv_sta_value'] == 'N/A' || $row['aprv_sta_value'] == NULL) ? 'N/A' : $row['aprv_sta_value']"
+            "expression": "($row['aprv_sta_name'] == 'N/A' || $row['aprv_sta_name'] == NULL) ? 'N/A' : $row['aprv_sta_name']"
         }
     },
     "skipCustomPadding":true,
@@ -243,10 +247,10 @@
         {"labelAlias": "version","column": "document_version"},
         {"label":"","column":"","export":false},
         {"labelAlias": "fms_doc_id","column":"parent_contract_link", "exportColumn":"parent_contract_export", "sortSourceColumn":"master_contract_number"},
-        {"labelAlias": "current_amount","column": "formatted_current_amount","sortSourceColumn":"maximum_contract_amount"},
+        {"labelAlias": "current_amount","column": "formatted_current_amount","sortSourceColumn":"maximum_contract_amount","exportColumn":"formatted_current_amount"},
         //10
-        {"labelAlias": "original_amount","column": "formatted_original_amount","sortSourceColumn":"original_contract_amount"},
-        {"labelAlias": "spent_to_date","column": "formatted_spent_to_date","sortSourceColumn":"rfed_amount"},
+        {"labelAlias": "original_amount","column": "formatted_original_amount","sortSourceColumn":"original_contract_amount","exportColumn":"formatted_original_amount"},
+        {"labelAlias": "spent_to_date","column": "formatted_spent_to_date","sortSourceColumn":"rfed_amount","exportColumn":"spent_to_date_export"},
         {"label":"","column":"","export":false},
         {"labelAlias": "prime_vendor","column": "prime_vendor_name_link","sortSourceColumn":"prime_vendor_name","exportColumn":"prime_vendor_name"},
         {"labelAlias":"prime_mwbe_category","column":"prime_minority_type_name","sortSourceColumn":"prime_minority_type_name"},
@@ -256,7 +260,7 @@
         {"labelAlias":"sub_mwbe_category","column":"sub_mwbe_category_name","sortSourceColumn":"sub_minority_type_name"},
         {"label":"","column":"","export":false},
         //20
-        {"labelAlias":"subvendor_status_pip","column":"subvendor_status_pip","sortSourceColumn":"aprv_sta_value","exportColumn":"subvendor_status_pip_export"},
+        {"labelAlias":"subvendor_status_pip","column":"subvendor_status_pip","sortSourceColumn":"aprv_sta_name","exportColumn":"subvendor_status_pip_export"},
         {"label":"","column":"","export":false},
         {"labelAlias": "contract_agency","column": "agency_name_link","sortSourceColumn":"agency_name","exportColumn":"agency_name"},
         {"labelAlias": "contract_type","column": "contract_type_formatted","sortSourceColumn":"agreement_type_name","exportColumn":"agreement_type_name"},
