@@ -25,9 +25,9 @@
         },
         "mixed_minority_type_data":{
             "datasourceName":"main",
-            "source":"SELECT CASE WHEN prime_minority_type_id IN (4,5) THEN '4~5' ELSE CAST(prime_minority_type_id as text) END AS minority_type_id, prime_minority_type_name as minority_type_name, prime_vendor_code as vendor_code, * FROM subcontract_status_by_prime_contract_id
+            "source":"SELECT prime_minority_type_id AS minority_type_id, prime_minority_type_name as minority_type_name, prime_vendor_code as vendor_code, * FROM subcontract_status_by_prime_contract_id
                       UNION ALL
-                      SELECT CASE WHEN sub_minority_type_id IN (4,5) THEN '4~5' ELSE CAST(sub_minority_type_id as text) END AS minority_type_id, sub_minority_type_name as minority_type_name, sub_vendor_code as vendor_code, * FROM subcontract_status_by_prime_contract_id
+                      SELECT sub_minority_type_id AS minority_type_id, sub_minority_type_name as minority_type_name, sub_vendor_code as vendor_code, * FROM subcontract_status_by_prime_contract_id
             "
         }
     },
