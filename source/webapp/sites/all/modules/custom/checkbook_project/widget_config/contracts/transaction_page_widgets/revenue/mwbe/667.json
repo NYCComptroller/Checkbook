@@ -108,7 +108,8 @@ return $header;
 {"labelAlias": "original_amount","column": "formatted_original_amount","sortSourceColumn":"original_contract_amount","headerClass":"centrig"},
 {"labelAlias": "dollar_diff","column": "formatted_dollar_diff","sortSourceColumn":"dollar_difference","headerClass":"centrig"},
 {"labelAlias": "percent_diff","column": "formatted_percent_diff","sortSourceColumn":"percent_difference","headerClass":"centrig"},
-{"labelAlias": "vendor_name","column": "vendor_name_link","sortSourceColumn":"vendor_name"},
+{"labelAlias": "prime_vendor","column": "vendor_name_link","sortSourceColumn":"vendor_name"},
+{"labelAlias": "prime_mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name_formatted"},
 {"labelAlias": "contract_agency","column": "agency_name_link","sortSourceColumn":"agency_name"},
 {"labelAlias": "contract_type","column": "contract_type_formatted","sortSourceColumn":"agreement_type_name"},
 {"labelAlias": "award_method","column": "award_method_formatted","sortSourceColumn":"award_method_name"},
@@ -117,8 +118,7 @@ return $header;
 {"labelAlias": "end_date","column": "effective_end_date"},
 {"labelAlias": "reg_date","column": "registered_date"},
 {"labelAlias": "pin","column": "tracking_number"},
-{"labelAlias": "apt_pin","column": "brd_awd_no"},
-{"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name_formatted"}
+{"labelAlias": "apt_pin","column": "brd_awd_no"}
 ],
 "adjustParameters":"
 if(isset($parameters['vendor_type'])){
@@ -181,6 +181,7 @@ $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoCol
 {"sClass":"text pad-left","sWidth":"120px","asSorting": [ "desc","asc" ]},
 {"sClass":"number pad-left","sWidth":"120px","asSorting": [ "desc","asc" ]},
 {"sClass":"text number-left pad-left","sWidth":"150px","asSorting": [ "asc","desc" ]},
+{"sClass":"text pad-left","sWidth":"180px","asSorting": [ "asc","desc" ]},
 {"sClass":"text pad-left","sWidth":"135px","asSorting": [ "asc","desc" ]},
 {"sClass":"text pad-left","sWidth":"135px","asSorting": [ "asc","desc" ]},
 {"sClass":"text pad-left","sWidth":"135px","asSorting": [ "asc","desc" ]},
@@ -189,7 +190,6 @@ $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoCol
 {"sClass":"text pad-left","sWidth":"115px","asSorting": [ "asc","desc" ]},
 {"sClass":"text pad-left","sWidth":"115px","asSorting": [ "asc","desc" ]},
 {"sClass":"text pad-left","sWidth":"230px","asSorting": [ "asc","desc" ]},
-{"sClass":"text pad-left","sWidth":"180px","asSorting": [ "asc","desc" ]},
 {"sClass":"text pad-left","sWidth":"180px","asSorting": [ "asc","desc" ]}
 ],
 
