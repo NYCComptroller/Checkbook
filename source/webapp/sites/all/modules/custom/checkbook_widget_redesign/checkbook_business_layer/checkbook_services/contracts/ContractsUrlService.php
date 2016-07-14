@@ -93,8 +93,15 @@ class ContractsUrlService {
 
     static function subContractsFooterUrl() {
         $subvendor = _getRequestParamValue('subvendor');
-        $subvendor_code = self::getSubVendorCustomerCode($subvendor);
+        $vendor = _getRequestParamValue('vendor');
+        if($subvendor) {
+            $subvendor_code = self::getSubVendorCustomerCode($subvendor);
+        }
+        if($vendor) {
+            $vendor_code = self::getVendorCustomerCode($vendor);
+        }
         $subvendorURLString = isset($subvendor_code) ? '/vendornm/'.$subvendor_code : '';
+        $vendorURLString = isset($vendor_code) ? '/vendornm/'.$vendor_code : '';
         $url = '/panel_html/sub_contracts_transactions/subcontract/transactions/contcat/expense'
             . _checkbook_project_get_url_param_string('status','contstatus')
             . _checkbook_append_url_params()
@@ -104,7 +111,7 @@ class ContractsUrlService {
             . _checkbook_project_get_url_param_string('awdmethod')
             . _checkbook_project_get_url_param_string('csize')
             . _checkbook_project_get_url_param_string('cindustry')
-            . $subvendorURLString
+            . $subvendorURLString . $vendorURLString
             . _checkbook_project_get_year_url_param_string();
         return $url;
     }
@@ -125,4 +132,14 @@ class ContractsUrlService {
             return null;
         }
     }
-} 
+
+    static function getVendorCustomerCode($vendorId){
+        $vendor = _checkbook_project_querydataset("checkbook:vendor","vendor_customer_code",array("vendor_id"=>$vendorId));
+        if($vendor[0]) {
+            return $vendor[0]['vendor_customer_code'];
+        }
+        else {
+            return null;
+        }
+    }
+}
