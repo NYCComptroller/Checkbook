@@ -8,7 +8,7 @@
     },
     "defaultParameters":{"doctype":"'CTA1'~'CT1'~'CT2'","status_flag":"A"},
     "footerUrl":"ContractsUrlService::subContractsFooterUrl().'/doctype/CTA1~CT1'",
-    "table_title":"Summary of Sub Contract Status by Prime Contract ID",
+    "table_title":"Sub Contract Status by Prime Contract ID",
     "headerSubTitle":"Reported Prime Contracts with Sub Vendors",
     "table_columns":[
         {"labelAlias":"contract_id","column":"contract_number","derivedColumn":"contract_id_link"},
