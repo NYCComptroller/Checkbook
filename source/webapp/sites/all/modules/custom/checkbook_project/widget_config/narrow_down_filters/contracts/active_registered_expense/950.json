@@ -31,5 +31,6 @@
         unset($parameters['prime_sub_vendor_code']);
         return $parameters;
     ",
+    "transformationPHP":"return ContractUtil::mergeMWBWCategoryFacetValues($node);",
     "template":"individual_filter"
 }

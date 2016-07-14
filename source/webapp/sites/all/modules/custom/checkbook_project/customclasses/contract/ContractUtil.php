@@ -978,6 +978,35 @@ namespace { //global
 
             return $pattern;
         }
+
+        static public function mergeMWBWCategoryFacetValues($node) {
+            $data = array();
+            $count = 0;
+            $ids = '';
+            foreach($node->data as $row){
+                if(MappingUtil::getMinorityCategoryById($row['minority_type_id_minority_type_id']) != 'Asian American'){
+                    $new_row = array('minority_type_id_minority_type_id' => $row['minority_type_id_minority_type_id'],
+                        'minority_type_name_minority_type_name' => MappingUtil::getMinorityCategoryById($row['minority_type_id_minority_type_id']),
+                        'txcount' => $row['txcount']
+                    );
+                    array_push($data, $new_row);
+                }
+                else if(MappingUtil::getMinorityCategoryById($row['minority_type_id_minority_type_id']) == 'Asian American'){
+                    $count = $count+$row['txcount'];
+                    $ids .= $row['minority_type_id_minority_type_id'].'~';
+                }
+            }
+            $ids = isset($ids)?trim($ids,'~'):'';
+            if($count > 0){
+                array_push($data, array('minority_type_id_minority_type_id' => $ids,
+                    'minority_type_name_minority_type_name' => 'Asian American',
+                    'txcount' => $count
+                ));
+            }
+            //Sort again by number
+            sort_records($data, new PropertyBasedComparator_DefaultSortingConfiguration('txcount',FALSE));
+            return  $data;
+        }
     }
 }
 
