@@ -54,7 +54,6 @@
     "no_results_content":"No Results Found",
     "dataset":"checkbook:all_agreement_transactions_by_prime_vendor",
     "uniqueSortColumn":"agreement_id",
-    "export_columns":["agreement_id"],
     "columns": [
         "agreement_id",
         "contract_number",
@@ -240,7 +239,7 @@
         {"labelAlias":"contract_includes_sub","column":"contract_includes_sub","sortSourceColumn":"scntrc_status_name","exportColumn":"contract_includes_sub"},
         {"labelAlias":"sub_contract_reference_id","column":"sub_contract_reference_id","sortSourceColumn":"sub_contract_id","exportColumn":"sub_contract_reference_id"},
         {"label":"","column":"","export":false},
-        {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description"},
+        {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description","exportColumn":"description"},
         {"labelAlias": "version","column": "document_version"},
         {"label":"","column":"","export":false},
         {"labelAlias": "fms_doc_id","column":"parent_contract_link", "exportColumn":"parent_contract_export", "sortSourceColumn":"master_contract_number"},
@@ -249,22 +248,22 @@
         {"labelAlias": "original_amount","column": "formatted_original_amount","sortSourceColumn":"original_contract_amount"},
         {"labelAlias": "spent_to_date","column": "formatted_spent_to_date","sortSourceColumn":"rfed_amount"},
         {"label":"","column":"","export":false},
-        {"labelAlias": "prime_vendor","column": "prime_vendor_name_link","sortSourceColumn":"prime_vendor_name"},
+        {"labelAlias": "prime_vendor","column": "prime_vendor_name_link","sortSourceColumn":"prime_vendor_name","exportColumn":"prime_vendor_name"},
         {"labelAlias":"prime_mwbe_category","column":"prime_minority_type_name","sortSourceColumn":"prime_minority_type_name"},
         {"label":"","column":"","export":false},
-        {"labelAlias":"sub_vendor_name","column":"subvendor_name","sortSourceColumn":"sub_vendor_name","exportColumn":"subvendor_name"},
+        {"labelAlias":"sub_vendor_name","column":"subvendor_name","sortSourceColumn":"sub_vendor_name","exportColumn":"sub_vendor_name"},
         {"label":"","column":"","export":false},
-        {"labelAlias":"sub_mwbe_category","column":"sub_mwbe_category_name","sortSourceColumn":"sub_minority_type_name","exportColumn":"sub_mwbe_category_name"},
+        {"labelAlias":"sub_mwbe_category","column":"sub_mwbe_category_name","sortSourceColumn":"sub_minority_type_name"},
         {"label":"","column":"","export":false},
         //20
         {"labelAlias":"subvendor_status_pip","column":"subvendor_status_pip","sortSourceColumn":"aprv_sta_value","exportColumn":"subvendor_status_pip_export"},
         {"label":"","column":"","export":false},
-        {"labelAlias": "contract_agency","column": "agency_name_link","sortSourceColumn":"agency_name"},
-        {"labelAlias": "contract_type","column": "contract_type_formatted","sortSourceColumn":"agreement_type_name"},
-        {"labelAlias": "award_method","column": "award_method_formatted","sortSourceColumn":"award_method_name"},
+        {"labelAlias": "contract_agency","column": "agency_name_link","sortSourceColumn":"agency_name","exportColumn":"agency_name"},
+        {"labelAlias": "contract_type","column": "contract_type_formatted","sortSourceColumn":"agreement_type_name","exportColumn":"agreement_type_name"},
+        {"labelAlias": "award_method","column": "award_method_formatted","sortSourceColumn":"award_method_name","exportColumn":"award_method_name"},
         {"labelAlias": "expense_category","column": "expense_cat","sortSourceColumn":"expenditure_object_names","exportColumn":"expense_cat_export"},
         {"label":"","column":"","export":false},
-        {"labelAlias": "contract_industry","column": "industry_name_formatted","sortSourceColumn":"industry_type_name"},
+        {"labelAlias": "contract_industry","column": "industry_name_formatted","sortSourceColumn":"industry_type_name","exportColumn":"industry_type_name"},
         {"labelAlias": "start_date","column": "effective_begin_date"},
         {"labelAlias": "end_date","column": "effective_end_date"},
         //30
@@ -272,42 +271,6 @@
         {"label":"","column":"","export":false},
         {"labelAlias": "pin","column": "tracking_number"},
         {"labelAlias": "apt_pin","column": "brd_awd_no"}
-    ],
-    "exportColumnSqlOverride":[
-        {
-            "column":"mwbe_category_name",
-            "sourceColumn":"minority_type_id",
-            "sql":"
-            case
-            when minority_type_id = 2 then 'Black American'
-            when minority_type_id = 3 then 'Hispanic American'
-            when minority_type_id = 7 then 'Non-M/WBE'
-            when minority_type_id = 9 then 'Women'
-            when minority_type_id = 11 then 'Individuals and Others'
-            else 'Asian American'
-            end as minority_type_name
-            "
-        },
-        {
-            "column":"is_sub_vendor",
-            "sourceColumn":"is_prime_or_sub",
-            "sql":"case when is_prime_or_sub = 'P' then 'No' else 'Yes' end as vendor_type"
-        },
-        {
-            "column":"associated_prime_vendor_name",
-            "sourceColumn":"prime_vendor_name",
-            "sql":"case when l1.is_prime_or_sub = 'P' then 'N/A' else prime_vendor_name end"
-        },
-        {
-            "column":"expense_cat",
-            "sourceColumn":"expenditure_object_names",
-            "sql":"case when l1.is_prime_or_sub = 'S' then '' else expenditure_object_names end"
-        },
-        {
-            "column":"sub_contract_reference_id",
-            "sourceColumn":"sub_contract_id",
-            "sql":"case when sub_contract_id IS NULL then 'N/A' else sub_contract_id end"
-        }
     ],
     "adjustParameters":"return ContractUtil::adjustActiveContractParameterFilters($node, $parameters);",
     "adjustDataTableOptions":"
