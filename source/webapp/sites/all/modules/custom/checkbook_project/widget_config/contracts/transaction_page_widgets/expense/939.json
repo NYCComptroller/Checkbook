@@ -95,7 +95,8 @@
         "tracking_number",
         "brd_awd_no",
         "document_code",
-        "original_agreement_id"
+        "original_agreement_id",
+        "rfed_amount"
     ],
     "preProcessConfiguration":"
         $doctype = _getRequestParamValue('doctype');
@@ -136,7 +137,7 @@
             .  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id']
             .  _checkbook_project_get_url_param_string(\"dashboard\") . _checkbook_project_get_url_param_string(\"mwbe\")
             .    '/year/'. _getFiscalYearID() .'/syear/'. _getFiscalYearID()
-            .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['spending_amount']) . '</a>'
+            .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['rfed_amount']) . '</a>'
             "
         },
         "agency_formatted": {
@@ -246,7 +247,7 @@
         {"labelAlias": "current_amount","column": "formatted_current_amount","sortSourceColumn":"maximum_contract_amount"},
         //10
         {"labelAlias": "original_amount","column": "formatted_original_amount","sortSourceColumn":"original_contract_amount"},
-        {"labelAlias": "spent_to_date","column": "formatted_spent_to_date","sortSourceColumn":"spending_amount"},
+        {"labelAlias": "spent_to_date","column": "formatted_spent_to_date","sortSourceColumn":"rfed_amount"},
         {"label":"","column":"","export":false},
         {"labelAlias": "prime_vendor","column": "prime_vendor_name_link","sortSourceColumn":"prime_vendor_name"},
         {"labelAlias":"prime_mwbe_category","column":"prime_minority_type_name","sortSourceColumn":"prime_minority_type_name"},
