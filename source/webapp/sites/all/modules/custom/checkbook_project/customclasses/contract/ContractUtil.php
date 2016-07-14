@@ -682,17 +682,9 @@ namespace { //global
                 }
             }
 
-            switch($node->nid) {
-                case 935:
-                unset($parameters['prime_sub_minority_type_id']);
-                    break;
-                default:
-                    unset($parameters['minority_type_id']);
-                    break;
-            }
-
             unset($parameters['year']);
             unset($parameters['vendor_name']);
+            unset($parameters['minority_type_id']);
 
             return $parameters;
         }
