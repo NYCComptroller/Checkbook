@@ -7,9 +7,9 @@
 
         "mixed_vendor_data":{
             "datasourceName":"main",
-            "source":"SELECT prime_vendor_code as vendor_code, prime_vendor_name as vendor_name, * FROM subcontract_status_by_prime_contract_id WHERE prime_sub_vendor_code_by_type ~* '(^P:.*$)|(.*,P:.*$)|(^P:.*,.*)|(^PM:.*$)|(.*,PM:.*$)|(^PM:.*,.*)'
+            "source":"SELECT prime_vendor_code as vendor_code, prime_vendor_name as vendor_name, prime_minority_type_id as minority_type_id, * FROM subcontract_status_by_prime_contract_id WHERE prime_sub_vendor_code_by_type ~* '(^P:.*$)|(.*,P:.*$)|(^P:.*,.*)|(^PM:.*$)|(.*,PM:.*$)|(^PM:.*,.*)'
                       UNION ALL
-                      SELECT sub_vendor_code as vendor_code, sub_vendor_name as vendor_name, * FROM subcontract_status_by_prime_contract_id WHERE prime_sub_vendor_code_by_type ~* '(^S:.*$)|(.*,S:.*$)|(^S:.*,.*)|(^SM:.*$)|(.*,SM:.*$)|(^SM:.*,.*)'
+                      SELECT sub_vendor_code as vendor_code, sub_vendor_name as vendor_name, sub_minority_type_id as minority_type_id, * FROM subcontract_status_by_prime_contract_id WHERE prime_sub_vendor_code_by_type ~* '(^S:.*$)|(.*,S:.*$)|(^S:.*,.*)|(^SM:.*$)|(.*,SM:.*$)|(^SM:.*,.*)'
                       "
         },
         "mixed_vendor_type_data":{
