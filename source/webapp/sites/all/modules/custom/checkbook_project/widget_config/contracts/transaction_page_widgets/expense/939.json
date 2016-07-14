@@ -78,6 +78,7 @@
         "prime_vendor_name",
         "prime_minority_type_id",
         "prime_minority_type_name",
+        "sub_vendor_id",
         "sub_vendor_name",
         "sub_minority_type_id",
         "sub_minority_type_name",
@@ -134,23 +135,9 @@
             '<a href=\"/spending/transactions'
             .  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id']
             .  _checkbook_project_get_url_param_string(\"dashboard\") . _checkbook_project_get_url_param_string(\"mwbe\")
-            .  ( $row['type_of_year'] == 'B' ? ('/year/'. $row['fiscal_year_id'].'/syear/'. $row['fiscal_year_id']) : ('/calyear/'.$row['fiscal_year_id']. '/scalyear/'.$row['fiscal_year_id']) )
+            .    '/year/'. $row['fiscal_year_id'].'/syear/'. $row['fiscal_year_id']
             .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['spending_amount']) . '</a>'
             "
-        },
-        "current_prime_minority_type_id": {
-            "type":"expression2",
-            "expression":"$row['minority_type_id']"
-        },
-        "vendor_formatted": {
-            "type":"expression2",
-            "expression":"_get_tooltip_markup($row['vendor_name'],30)"
-        },
-        "vendor_name_link": {
-            "type":"expression2",
-            "expression":" '<a href=\"/contracts_landing'
-            . ContractUtil::get_contracts_vendor_link_by_mwbe_category($row)
-            . '?expandBottomCont=true\">'. $row['vendor_formatted'] . '</a>'  "
         },
         "agency_formatted": {
             "type":"expression2",
@@ -222,7 +209,7 @@
         },
         "subvendor_name": {
             "type": "expression2",
-            "expression": "$row['sub_vendor_name'] == NULL ? 'NOT PROVIDED' : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row[sub_vendor_id],_getRequestParamValue('year'),_getRequestParamValue('yeartype')) .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>'"
+            "expression": "$row['sub_vendor_name'] == NULL ? 'NOT PROVIDED' : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row[sub_vendor_id],_getRequestParamValue('year'),_getRequestParamValue('yeartype'), null, $row[sub_minority_type_id]) .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>'"
         },
         "subvendor_name_export": {
             "type": "expression2",
