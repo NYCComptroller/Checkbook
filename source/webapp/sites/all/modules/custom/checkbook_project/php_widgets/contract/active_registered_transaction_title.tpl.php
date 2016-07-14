@@ -25,11 +25,21 @@ $contactStatus = _getRequestParamValue('contstatus');
 $bottomNavigation = "";
 if ($contactStatus == 'A') {
     $contactStatusLabel = 'Active';
-    $bottomNavigation = "Total Active Sub Vendor Contracts";
 }
 if ($contactStatus == 'R') {
   $contactStatusLabel = 'Registered';
-    $bottomNavigation = "New Sub Vendor Contracts by Fiscal Year";
+}
+if($dashboard == 'ss'){
+    if($contactStatus == 'A')
+        $bottomNavigation = "Total Active Sub Vendor Contracts";
+    else
+        $bottomNavigation = "New Sub Vendor Contracts by Fiscal Year";
+}
+if($dashboard == 'ms' || $dashboard == 'sp'){
+    if($contactStatus == 'A')
+     $bottomNavigation = "Total Active M/WBE Sub Vendor Contracts";
+    else
+     $bottomNavigation = "New M/WBE Sub Vendor Contracts by Fiscal Year";
 }
 $contactCategory = _getRequestParamValue('contcat');
 $contactCategoryLabel = 'Expense';
@@ -55,7 +65,7 @@ if(!$suppress_widget_title) {
 $summaryTitle = $summaryTitle != '' ? $summaryTitle : '';
 global $checkbook_breadcrumb_title;
 
-if($dashboard == 'ss'){
+if($dashboard == 'ss' || $dashboard == 'sp'){
     switch($smnid){
         case '721':
             print "<h2 class='contract-title' class='title'>{$bottomNavigation} Transactions</h2>";
@@ -90,8 +100,47 @@ if($dashboard == 'ss'){
             $checkbook_breadcrumb_title =  "Contracts by Size by $bottomNavigation Transactions";
             break;
     }
+}elseif($dashboard == 'ms'){
+    switch($smnid){
+        case '781':
+            print "<h2 class='contract-title' class='title'>{$bottomNavigation} Transactions</h2>";
+            $checkbook_breadcrumb_title =  "$bottomNavigation Transactions";
+            break;
+        case '782':
+            print "<h2 class='contract-title' class='title'>Amount Modifications by {$bottomNavigation} Transactions</h2>";
+            $checkbook_breadcrumb_title =  "Amount Modifications by $bottomNavigation Transactions";
+            break;
+        case '783':
+            print "<h2 class='contract-title' class='title'>Prime Vendors with {$bottomNavigation} Transactions</h2>";
+            $checkbook_breadcrumb_title =  "Prime Vendors with $bottomNavigation Transactions";
+            break;
+        case '784':
+            print "<h2 class='contract-title' class='title'>{$bottomNavigation} Transactions</h2>";
+            $checkbook_breadcrumb_title =  "$bottomNavigation Transactions";
+            break;
+        case '785':
+            print "<h2 class='contract-title' class='title'>Award Methods by {$bottomNavigation} Transactions</h2>";
+            $checkbook_breadcrumb_title =  "Award Methods by $bottomNavigation Transactions";
+            break;
+        case '786':
+            print "<h2 class='contract-title' class='title'>Agencies by {$bottomNavigation} Transactions</h2>";
+            $checkbook_breadcrumb_title =  "Agencies by $bottomNavigation Transactions";
+            break;
+        case '787':
+            print "<h2 class='contract-title' class='title'>Contracts by Industries by {$bottomNavigation} Transactions</h2>";
+            $checkbook_breadcrumb_title =  "$bottomNavigation Transactions";
+            break;
+        case '788':
+            print "<h2 class='contract-title' class='title'>Contracts by Size by {$bottomNavigation} Transactions</h2>";
+            $checkbook_breadcrumb_title =  "Contracts by Size by $bottomNavigation Transactions";
+            break;
+    }
 }else{
     print "<h2 class='contract-title' class='title'>{$summaryTitle} {$contactStatusLabel} {$contactCategoryLabel} Contracts Transactions</h2>";
     $checkbook_breadcrumb_title =  "$summaryTitle $contactStatusLabel $contactCategoryLabel Contracts Transactions";
 }
+
+
+
+
 
