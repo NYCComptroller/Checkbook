@@ -135,7 +135,7 @@
             '<a href=\"/spending/transactions'
             .  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id']
             .  _checkbook_project_get_url_param_string(\"dashboard\") . _checkbook_project_get_url_param_string(\"mwbe\")
-            .    '/year/'. $row['fiscal_year_id'].'/syear/'. $row['fiscal_year_id']
+            .    '/year/'. _getFiscalYearID() .'/syear/'. _getFiscalYearID()
             .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['spending_amount']) . '</a>'
             "
         },
@@ -147,8 +147,8 @@
             "type":"expression2",
             "expression":" '<a href=\"/contracts_landing'
             ._checkbook_append_url_params()
-            .  (isset($row['fiscal_year_id']) ? '/year/'.$row['fiscal_year_id'] : '')
-            .  (isset($row['type_of_year']) ? '/yeartype/'.$row['type_of_year'] : '')
+            .  '/year/'._getFiscalYearID()
+            .  '/yeartype/B'
             .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
             . '/agency/' . $row['agency_id']
             .  '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "
