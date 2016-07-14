@@ -15,7 +15,6 @@
     "facetPager":true,
     "filterName":"M/WBE Category",
     "allowZeroValue":true,
-    "allowFacetDeselect":true,
     "urlParameterName":"mwbe",
     "autocompleteID":"fminorityTypeId",
     "adjustParameters":"
@@ -32,5 +31,6 @@
         unset($parameters['minority_type_id']);
         return $parameters;
     ",
+    "transformationPHP":"return ContractUtil::mergeMWBWCategoryFacetValues($node);",
     "template":"individual_filter"
 }
