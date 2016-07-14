@@ -10,7 +10,7 @@
     "limit":200,
     "orderBy":"-maximum_contract_amount",
     "columns": [
-        "agreement_id",
+       "agreement_id",
         "contract_number",
         "contract_original_agreement_id",
         "original_contract_amount",
@@ -28,9 +28,11 @@
         "description",
         "scntrc_status",
         "scntrc_status_name",
+        "prime_vendor_id",
         "prime_vendor_name",
         "prime_minority_type_id",
         "prime_minority_type_name",
+        "sub_vendor_id",
         "sub_vendor_name",
         "sub_minority_type_id",
         "sub_minority_type_name",
@@ -47,7 +49,8 @@
         "tracking_number",
         "brd_awd_no",
         "document_code",
-        "original_agreement_id"
+        "original_agreement_id",
+        "rfed_amount"
     ],
     "caption":"",
     "adjustParameters":"
@@ -61,17 +64,21 @@
         return ContractUtil::adjustActiveContractParameterFilters($node, $parameters);
     ",
     "derivedColumns": {
+        "child_contrats_link":{
+            "type":"expression2",
+            "expression":"ContractURLHelper::expenseContractsExpandLink($row, $node)"
+        },
         "contract_link": {
             "type":"expression2",
             "expression":"ContractURLHelper::expenseContractsLink($row, $node, false, $row['contract_original_agreement_id'])"
         },
         "parent_contract_link": {
-        "type":"expression2",
-        "expression":"(($row['master_agreement_yn'] == 'Y') ? 'N/A' : ContractURLHelper::prepareExpenseContractLink($row, $node, false, $row['contract_original_agreement_id']))"
+            "type":"expression2",
+            "expression":"(($row['master_agreement_yn'] == 'Y') ? 'N/A' : ContractURLHelper::prepareExpenseContractLink($row, $node, true, $row['contract_original_agreement_id']))"
         },
         "parent_contract_export":{
             "type":"expression2",
-            "expression":"(($row['master_agreement_yn'] == 'Y') ? 'N/A' : $row['master_contract_number'])"
+            "expression":"(!($row['master_contract_number']) ? 'N/A' : $row['master_contract_number'])"
         },
         "formatted_original_amount": {
             "type":"expression2",
@@ -82,28 +89,18 @@
             "expression":"custom_number_formatter_basic_format($row['maximum_contract_amount'])"
         },
         "formatted_spent_to_date": {
-        "type":"expression2",
-        "expression":"
+            "type":"expression2",
+            "expression":"
             '<a href=\"/spending/transactions'
             .  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id']
             .  _checkbook_project_get_url_param_string(\"dashboard\") . _checkbook_project_get_url_param_string(\"mwbe\")
-            .  ( $row['type_of_year'] == 'B' ? ('/year/'. $row['fiscal_year_id'].'/syear/'. $row['fiscal_year_id']) : ('/calyear/'.$row['fiscal_year_id']. '/scalyear/'.$row['fiscal_year_id']) )
-            .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['spending_amount']) . '</a>'
-        "
+            .    '/year/'. _getFiscalYearID() .'/syear/'. _getFiscalYearID()
+            .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['rfed_amount']) . '</a>'
+            "
         },
-        "current_prime_minority_type_id": {
-        "type":"expression2",
-        "expression":"$row['minority_type_id']"
-        },
-        "vendor_formatted": {
+        "spent_to_date_export": {
             "type":"expression2",
-            "expression":"_get_tooltip_markup($row['vendor_name'],30)"
-        },
-        "vendor_name_link": {
-            "type":"expression2",
-            "expression":" '<a href=\"/contracts_landing'
-            . ContractUtil::get_contracts_vendor_link_by_mwbe_category($row)
-            . '?expandBottomCont=true\">'. $row['vendor_formatted'] . '</a>'  "
+            "expression":"custom_number_formatter_basic_format($row['rfed_amount'])"
         },
         "agency_formatted": {
             "type":"expression2",
@@ -113,8 +110,8 @@
             "type":"expression2",
             "expression":" '<a href=\"/contracts_landing'
             ._checkbook_append_url_params()
-            .  (isset($row['fiscal_year_id']) ? '/year/'.$row['fiscal_year_id'] : '')
-            .  (isset($row['type_of_year']) ? '/yeartype/'.$row['type_of_year'] : '')
+            .  '/year/'._getFiscalYearID()
+            .  '/yeartype/B'
             .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
             . '/agency/' . $row['agency_id']
             .  '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "
@@ -161,12 +158,12 @@
         },
         "prime_vendor_name_formatted": {
             "type": "expression2",
-            "expression": "_get_tooltip_markup($row['prime_vendor_name'],30)"
+            "expression": "_get_tooltip_markup($row['prime_vendor_name'],24)"
         },
         "prime_vendor_name_link": {
             "type": "expression2",
             "expression": " '<a href=\"/contracts_landing'
-            . ContractUtil::get_contracts_vendor_link($row['prime_vendor_id'],_getRequestParamValue('year'),_getRequestParamValue('yeartype'), _getRequestParamValue('agency'))
+            . ContractUtil::get_contracts_vendor_link_by_mwbe_category($row)
             . '?expandBottomCont=true\">'. $row['prime_vendor_name_formatted'] . '</a>'  "
         },
         "subvendor_name_formatted": {
@@ -175,7 +172,7 @@
         },
         "subvendor_name": {
             "type": "expression2",
-            "expression": "$row['sub_vendor_name'] == NULL ? 'NOT PROVIDED' : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row[sub_vendor_id],_getRequestParamValue('year'),_getRequestParamValue('yeartype')) .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>'"
+            "expression": "$row['sub_vendor_name'] == NULL ? 'NOT PROVIDED' : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row[sub_vendor_id],_getRequestParamValue('year'),_getRequestParamValue('yeartype'), null, $row[sub_minority_type_id]) .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>'"
         },
         "subvendor_name_export": {
             "type": "expression2",
@@ -191,11 +188,11 @@
         },
         "subvendor_status_pip":{
             "type": "expression2",
-            "expression": "($row['aprv_sta_value'] == 'N/A' || $row['aprv_sta_value'] == NULL) ? 'N/A' : _get_tooltip_markup($row['aprv_sta_value'],36)"
+            "expression": "($row['aprv_sta_name'] == 'N/A' || $row['aprv_sta_name'] == NULL) ? 'N/A' : _get_tooltip_markup($row['aprv_sta_name'],36)"
         },
         "subvendor_status_pip_export":{
             "type": "expression2",
-            "expression": "($row['aprv_sta_value'] == 'N/A' || $row['aprv_sta_value'] == NULL) ? 'N/A' : $row['aprv_sta_value']"
+            "expression": "($row['aprv_sta_name'] == 'N/A' || $row['aprv_sta_name'] == NULL) ? 'N/A' : $row['aprv_sta_name']"
         }
     },
     "skipCustomPadding":true,
@@ -206,7 +203,7 @@
         {"labelAlias":"sub_contract_reference_id","column":"sub_contract_reference_id","sortSourceColumn":"sub_contract_id","exportColumn":"sub_contract_reference_id"},
         {"labelAlias":"contract_purpose","column":"purpose_formatted","sortSourceColumn":"description"},
         {"labelAlias":"version","column":"document_version"},
-        {"labelAlias":"fms_doc_id","column":"parent_contract_link", "exportColumn":"parent_contract_export", "sortSourceColumn":"master_contract_number"},
+        {"labelAlias": "fms_doc_id","column":"parent_contract_link", "exportColumn":"parent_contract_export", "sortSourceColumn":"master_contract_number"},
         {"labelAlias":"current_amount","column":"formatted_current_amount","sortSourceColumn":"maximum_contract_amount"},
         {"labelAlias":"original_amount","column":"formatted_original_amount","sortSourceColumn":"original_contract_amount"},
         {"labelAlias":"spent_to_date","column":"formatted_spent_to_date","sortSourceColumn":"spending_amount"},
@@ -216,7 +213,7 @@
         {"labelAlias":"sub_vendor_name","column":"subvendor_name","sortSourceColumn":"sub_vendor_name","exportColumn":"subvendor_name"},
         {"labelAlias":"sub_mwbe_category","column":"sub_mwbe_category_name","sortSourceColumn":"sub_minority_type_name","exportColumn":"sub_mwbe_category_name"},
 
-        {"labelAlias":"subvendor_status_pip","column":"subvendor_status_pip","sortSourceColumn":"aprv_sta_value","exportColumn":"subvendor_status_pip_export"},
+        {"labelAlias":"subvendor_status_pip","column":"subvendor_status_pip","sortSourceColumn":"aprv_sta_name","exportColumn":"subvendor_status_pip_export"},
         {"labelAlias":"contract_agency","column":"agency_name_link","sortSourceColumn":"agency_name"},
         {"labelAlias":"contract_type","column":"contract_type_formatted","sortSourceColumn":"agreement_type_name"},
         {"labelAlias":"award_method","column":"award_method_formatted","sortSourceColumn":"award_method_name"},
