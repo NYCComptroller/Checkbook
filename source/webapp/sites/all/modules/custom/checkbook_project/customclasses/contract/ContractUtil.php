@@ -796,38 +796,6 @@ namespace { //global
                     $parameters['prime_sub_vendor_code'] = $condition;
                 }
             }
-            //Vendor Facet for Exact Search
-            $vendor_exact_names = explode('~', _getRequestParamValue('vendornm_exact'));
-            $has_vendor_exact_names = isset($vendor_exact_names[0]) && $vendor_exact_names[0] != "";
-            if($has_vendor_exact_names) {
-                $pattern = null;
-                foreach($vendor_exact_names as $vendor_exact_name) {
-                    $localValue = _checkbook_regex_replace_pattern($vendor_exact_name);
-                    $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
-                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
-                }
-                $pattern = '('.$pattern.')';
-                $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
-                if(isset($condition)) {
-                    $parameters['prime_sub_vendor_name'] = $condition;
-                }
-            }
-            //Vendor Facet for Like Search
-            $vendor_names = explode('~', _getRequestParamValue('vendornm'));
-            $has_vendor_names = isset($vendor_names[0]) && $vendor_names[0] != "";
-            if($has_vendor_names) {
-                $pattern = null;
-                foreach($vendor_names as $vendor_name) {
-                    $localValue = _checkbook_regex_replace_pattern($vendor_name);
-                    $localValue = "(.* $localValue .*)|(.* $localValue$)|(^$localValue.*)|(.* $localValue.*)";
-                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
-                }
-                $pattern = '('.$pattern.')';
-                $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
-                if(isset($condition)) {
-                    $parameters['prime_sub_vendor_name'] = $condition;
-                }
-            }
 
             //Vendor Type Facet
             $vendor_types = explode('~', _getRequestParamValue('vendortype'));
@@ -846,32 +814,6 @@ namespace { //global
                         $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
                         if(isset($condition)) {
                             $parameters['prime_sub_vendor_code_by_type'] = $condition;
-                        }
-                    }
-                }
-                else if($has_vendor_exact_names) {
-                    $pattern = null;
-                    foreach($vendor_exact_names as $vendor_exact_name) {
-                        $local_pattern = self::getVendorTypeRegExpPattern($vendor_types, $vendor_exact_name);
-                        $pattern .= isset($pattern) ? '|'.$local_pattern : $local_pattern;
-                    }
-                    if($pattern != null) {
-                        $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
-                        if(isset($condition)) {
-                            $parameters['prime_sub_vendor_name_by_type'] = $condition;
-                        }
-                    }
-                }
-                else if($has_vendor_names) {
-                    $pattern = null;
-                    foreach($vendor_names as $vendor_name) {
-                        $local_pattern = self::getVendorTypeRegExpPattern($vendor_types, $vendor_name,'like');
-                        $pattern .= isset($pattern) ? '|'.$local_pattern : $local_pattern;
-                    }
-                    if($pattern != null) {
-                        $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
-                        if(isset($condition)) {
-                            $parameters['prime_sub_vendor_name_by_type'] = $condition;
                         }
                     }
                 }
@@ -923,6 +865,47 @@ namespace { //global
             return $parameters;
         }
 
+        static public function adjustVendorNameAdvancedSearchParams(&$parameters) {
+
+            $data_controller_instance = data_controller_get_operator_factory_instance();
+
+            //Vendor Facet for Exact Search
+            $vendor_exact_names = explode('~', _getRequestParamValue('vendornm_exact'));
+            $has_vendor_exact_names = isset($vendor_exact_names[0]) && $vendor_exact_names[0] != "";
+            $vendor_types = explode('~', _getRequestParamValue('vendortype'));
+            $has_vendor_types = isset($vendor_types[0]) && $vendor_types[0] != "";
+            if($has_vendor_exact_names) {
+                $pattern = null;
+                foreach($vendor_exact_names as $vendor_exact_name) {
+                    $local_pattern = self::getVendorTypeRegExpPattern($has_vendor_types ? $vendor_types : null, $vendor_exact_name);
+                    $pattern .= isset($pattern) ? '|'.$local_pattern : $local_pattern;
+                }
+                if($pattern != null) {
+                    $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
+                    if(isset($condition)) {
+                        $parameters['prime_sub_vendor_name_by_type'] = $condition;
+                    }
+                }
+            }
+            //Vendor Facet for Like Search
+            $vendor_names = explode('~', _getRequestParamValue('vendornm'));
+            $has_vendor_names = isset($vendor_names[0]) && $vendor_names[0] != "";
+            if($has_vendor_names) {
+                $pattern = null;
+                foreach($vendor_names as $vendor_name) {
+                    $local_pattern = self::getVendorTypeRegExpPattern($has_vendor_types ? $vendor_types : null, $vendor_name,'like');
+                    $pattern .= isset($pattern) ? '|'.$local_pattern : $local_pattern;
+                }
+                if($pattern != null) {
+                    $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
+                    if(isset($condition)) {
+                        $parameters['prime_sub_vendor_name_by_type'] = $condition;
+                    }
+                }
+            }
+            return $parameters;
+        }
+
         /**
          * Function to handle parameters for the facets used in the facet implementation of mapping a single
          * facet to multiple columns for the Active Contracts transactions.
@@ -967,6 +950,7 @@ namespace { //global
 
             unset($parameters['year']);
             unset($parameters['status_flag']);
+            unset($parameters['vendor_name']);
             unset($parameters['prime_sub_vendor_code']);
             unset($parameters['prime_sub_minority_type_id']);
             unset($parameters['prime_sub_vendor_code_by_type']);
@@ -981,6 +965,7 @@ namespace { //global
          * @param $parameters
          */
         static public function adjustActiveContractCommonParams(&$node, &$parameters) {
+
             //Handle status and year parameter
             $contractStatus = _getRequestParamValue('contstatus');
             $reqYear = _getRequestParamValue('year');
@@ -1002,6 +987,9 @@ namespace { //global
             else {
                 $parameters['latest_flag'] = 'Y';
             }
+            //Handle Advanced Search Parameters
+            $parameters = self::adjustVendorNameAdvancedSearchParams($parameters);
+
             unset($parameters['year']);
             unset($parameters['status_flag']);
             return $parameters;
@@ -1009,40 +997,46 @@ namespace { //global
 
         static public function getVendorTypeRegExpPattern($vendor_types, $vendor_identifier = null, $searchType = 'exact') {
 
-            $P = in_array('P', $vendor_types);
-            $S = in_array('S', $vendor_types);
-            $M = in_array('M', $vendor_types);;
-            $vendor_identifier = isset($vendor_identifier) ? $vendor_identifier : ".*";
-            $reg_exp_values = array();
-            $pattern = null;
+            if(isset($vendor_types)) {
+                $P = in_array('P', $vendor_types);
+                $S = in_array('S', $vendor_types);
+                $M = in_array('M', $vendor_types);;
+                $vendor_identifier = isset($vendor_identifier) ? $vendor_identifier : ".*";
+                $reg_exp_values = array();
+                $pattern = null;
 
-            if($P && $M) {
-                $localValue = "PM:{$vendor_identifier}";
-                $reg_exp_values[] = $localValue;
-            }
-            if($P && !$M) {
-                $localValue = "PM:{$vendor_identifier}";
-                $reg_exp_values[] = $localValue;
+                if($P && $M) {
+                    $localValue = "PM:{$vendor_identifier}";
+                    $reg_exp_values[] = $localValue;
+                }
+                if($P && !$M) {
+                    $localValue = "PM:{$vendor_identifier}";
+                    $reg_exp_values[] = $localValue;
 
-                $localValue = "P:{$vendor_identifier}";
-                $reg_exp_values[] = $localValue;
-            }
-            if($S && $M) {
-                $localValue = "SM:{$vendor_identifier}";
-                $reg_exp_values[] = $localValue;
-            }
-            if($S && !$M) {
-                $localValue = "S:{$vendor_identifier}";
-                $reg_exp_values[] = $localValue;
+                    $localValue = "P:{$vendor_identifier}";
+                    $reg_exp_values[] = $localValue;
+                }
+                if($S && $M) {
+                    $localValue = "SM:{$vendor_identifier}";
+                    $reg_exp_values[] = $localValue;
+                }
+                if($S && !$M) {
+                    $localValue = "S:{$vendor_identifier}";
+                    $reg_exp_values[] = $localValue;
 
-                $localValue = "SM:{$vendor_identifier}";
-                $reg_exp_values[] = $localValue;
-            }
-            if($M && !$P && !$S) {
-                $localValue = "PM:{$vendor_identifier}";
-                $reg_exp_values[] = $localValue;
+                    $localValue = "SM:{$vendor_identifier}";
+                    $reg_exp_values[] = $localValue;
+                }
+                if($M && !$P && !$S) {
+                    $localValue = "PM:{$vendor_identifier}";
+                    $reg_exp_values[] = $localValue;
 
-                $localValue = "SM:{$vendor_identifier}";
+                    $localValue = "SM:{$vendor_identifier}";
+                    $reg_exp_values[] = $localValue;
+                }
+            }
+            else {
+                $localValue = "(P|PM|S|SM):{$vendor_identifier}";
                 $reg_exp_values[] = $localValue;
             }
             foreach($reg_exp_values as $reg_exp_value) {
@@ -1055,6 +1049,8 @@ namespace { //global
                     $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
                 }
             }
+
+
             return $pattern;
         }
 

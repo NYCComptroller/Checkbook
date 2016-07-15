@@ -13,8 +13,8 @@
         "fvendor":"vendor_id",
         "vendor":"vendor_id",
         "vendorcode":"prime_sub_vendor_code",
-        "vendornm_exact":"prime_sub_vendor_name",
-        "vendornm":"prime_sub_vendor_name",
+        "vendornm_exact":"vendor_name",
+        "vendornm":"vendor_name",
         "vendortype":"prime_sub_vendor_code_by_type",
         "curamtr":"maximum_contract_amount",
         "subvendor":"vendor_id",
@@ -278,7 +278,7 @@
     ],
     "adjustParameters":"
         $parameters = ContractUtil::adjustActiveContractParameterFilters($node, $parameters);
-            if(function_exists('_checkbook_project_applyParameterFilters')){
+        if(function_exists('_checkbook_project_applyParameterFilters')){
             $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
         }
         return $parameters;
