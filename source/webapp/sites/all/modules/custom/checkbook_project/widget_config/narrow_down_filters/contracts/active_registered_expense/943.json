@@ -33,7 +33,6 @@
         if(isset($parameters['prime_sub_vendor_code'])) {
             $parameters['vendor_code'] = $parameters['prime_sub_vendor_code'];
         }
-        unset($parameters['prime_sub_vendor_code_by_type']);
         unset($parameters['prime_sub_vendor_code']);
         unset($parameters['prime_sub_minority_type_id']);
 
