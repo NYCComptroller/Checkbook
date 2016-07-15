@@ -124,12 +124,54 @@ class RequestUtil{
         if($smnid == 720 && $dashboard != 'mp'){
             $title = '';
         }
+          $bottomNavigation = '';
+          if(preg_match('/status\/A/',current_path())){
+              $bottomNavigation = "Total Active Sub Vendor Contracts";
+          }elseif(preg_match('/status\/R/',current_path())){
+              $bottomNavigation = "New Sub Vendor Contracts by Fiscal Year";
+          }
+          if($smnid == 722 || $smnid == 782){
+              $title = "Amount Modifications";
+          }
+          if($smnid == 721 || $smnid == 720 || $smnid == 781 || $smnid == 784){
+              $title = "";
+          }
+          if($smnid == 722 || $smnid == 726 || $smnid == 727 || $smnid == 728 || $smnid == 729 || $smnid == 782 || $smnid == 785 || $smnid == 786 || $smnid == 787 || $smnid == 788 ){
+              $title = $title . " by ";
+          }
+          if($smnid == 725 || $smnid == 783){
+              $title = $title . " with ";
+          }
 
         if(preg_match('/^contracts_landing/',current_path()) && preg_match('/status\/A/',current_path())){
-          $title = RequestUtil::getDashboardTitle() .' '. $title . ' ' .' Active Expense Contracts Transactions' ;
+            if(preg_match('/dashboard\/ss/', current_path()) || preg_match('/dashboard\/ms/', current_path()) ||  preg_match('/dashboard\/sp/', current_path())){
+                if(preg_match('/dashboard\/ms/', current_path()) ||  preg_match('/dashboard\/sp/', current_path())){
+                    $bottomNavigation = "Total Active M/WBE Sub Vendor Contracts";
+                }
+                $title = $title . " " . $bottomNavigation . " Transactions";
+
+            } else{
+                $title = RequestUtil::getDashboardTitle() .' '. $title . ' ' .' Active Expense Contracts Transactions' ;
+            }
         }
         elseif(preg_match('/^contracts_landing/',current_path()) && preg_match('/status\/R/',current_path())){
-          $title = RequestUtil::getDashboardTitle()  .' '. $title . ' ' .' Registered Expense Contracts Transactions' ;
+            if(preg_match('/dashboard\/ss/', current_path()) || preg_match('/dashboard\/ms/', current_path()) ||  preg_match('/dashboard\/sp/', current_path())){
+                if(preg_match('/dashboard\/ms/', current_path()) ||  preg_match('/dashboard\/sp/', current_path())){
+                    $bottomNavigation = "New M/WBE Sub Vendor Contracts by Fiscal Year";
+                }
+                $title = $title . " " . $bottomNavigation . " Transactions";
+
+            } else{
+                $title = RequestUtil::getDashboardTitle()  .' '. $title . ' ' .' Registered Expense Contracts Transactions' ;
+            }
+
+        }elseif(preg_match('/^contracts_landing/',current_path()) && !preg_match('/status\/',current_path())){
+            if(preg_match('/dashboard\/ss/', current_path()) ){
+                $title = 'Subcontract Status by Prime Contract ID' ;
+            }
+            if( preg_match('/dashboard\/ms/', current_path()) ||  preg_match('/dashboard\/sp/', current_path())){
+                $title = 'M/WBE Subcontract Status by Prime Contract ID' ;
+            }
         }
         elseif(preg_match('/^contracts_revenue_landing/',current_path()) && preg_match('/status\/A/',current_path())){
           $title = RequestUtil::getDashboardTitle() .' '. $title . ' ' .' Active Revenue Contracts Transactions' ;
