@@ -1223,7 +1223,7 @@ class SpendingUtil{
             else
                 $bottomNavigation = "New M/WBE Sub Vendor Contracts by Fiscal Year";
         }
-        if($smnid == 721 || $smnid == 720){
+        if($smnid == 721 || $smnid == 720 || $smnid == 781 || $smnid == 784){
             $widgetTitle = 'Spending';
         }
 
