@@ -152,7 +152,7 @@
         },
         "parent_contract_export":{
             "type": "expression2",
-            "expression": "(($row['master_agreement_yn'] == 'Y') ? 'N/A' : $row['master_contract_number'])"
+            "expression":"(!($row['master_contract_number']) ? 'N/A' : $row['master_contract_number'])"
         },
         "formatted_original_amount": {
             "type": "expression2",
