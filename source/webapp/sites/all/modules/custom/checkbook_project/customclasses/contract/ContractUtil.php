@@ -846,16 +846,6 @@ namespace { //global
                 }
             }
 
-//            switch($node->nid) {
-//                case 934:
-//                case 935:
-//                unset($parameters['prime_sub_minority_type_id']);
-//                    break;
-//                default:
-//                    unset($parameters['minority_type_id']);
-//                    break;
-//            }
-
             unset($parameters['year']);
             unset($parameters['status_flag']);
             unset($parameters['minority_type_id']);
