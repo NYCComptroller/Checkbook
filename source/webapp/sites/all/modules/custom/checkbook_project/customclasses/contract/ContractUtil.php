@@ -611,8 +611,8 @@ namespace { //global
             $parameters['effective_begin_year_id']= $leCondition;
             $parameters['effective_end_year_id']= $geCondition;
 
-            //Vendor Facet -- prime_sub_vendor_code ~* '(^155$)|(.*,155$)|(^155,.*)'
-            $vendor_codes = explode('~', _getRequestParamValue('vendornm'));
+            //Vendor Facet
+            $vendor_codes = explode('~', _getRequestParamValue('vendorcode'));
             $has_vendors = isset($vendor_codes[0]) && $vendor_codes[0] != "";
             if($has_vendors) {
                 $pattern = null;
@@ -651,6 +651,13 @@ namespace { //global
                         $parameters['prime_sub_vendor_code_by_type'] = $condition;
                     }
                 }
+
+                //For derived facets
+                $vendor_types_derived = self::getVendorTypeFromVendorTypeId($vendor_types);
+                $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, $vendor_types_derived);
+                if(isset($condition)) {
+                    $parameters['vendor_type'] = $condition;
+                }
             }
 
             //M/WBE Category Facet
@@ -684,7 +691,61 @@ namespace { //global
 
             unset($parameters['year']);
             unset($parameters['vendor_name']);
+            unset($parameters['vendor_type']);
             unset($parameters['minority_type_id']);
+
+            return $parameters;
+        }
+
+        static public function adjustContractDerivedParameterFilters(&$node, &$parameters) {
+
+            //Handle year parameter
+            $reqYear = _getRequestParamValue('year');
+            $data_controller_instance = data_controller_get_operator_factory_instance();
+            $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
+            $leCondition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
+            $parameters['starting_year_id']= $leCondition;
+            $parameters['ending_year_id']= $geCondition;
+            $parameters['effective_begin_year_id']= $leCondition;
+            $parameters['effective_end_year_id']= $geCondition;
+
+            //Vendor Facet
+            $vendor_codes = explode('~', _getRequestParamValue('vendorcode'));
+            $has_vendors = isset($vendor_codes[0]) && $vendor_codes[0] != "";
+            if($has_vendors) {
+                $pattern = null;
+                foreach($vendor_codes as $vendor_code) {
+                    $localValue = _checkbook_regex_replace_pattern($vendor_code);
+                    $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
+                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
+                }
+                $pattern = '('.$pattern.')';
+                $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
+                if(isset($condition)) {
+                    $parameters['vendor_code'] = $condition;
+                }
+            }
+
+            //Vendor Type Facet
+            $vendor_types = explode('~', _getRequestParamValue('vendortype'));
+            $has_vendor_types = isset($vendor_types[0]) && $vendor_types[0] != "";
+            if($has_vendor_types) {
+
+                $condition = null;
+                $vendor_types_derived = self::getVendorTypeFromVendorTypeId($vendor_types);
+                $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, $vendor_types_derived);
+                if(isset($condition)) {
+                    $parameters['vendor_type'] = $condition;
+                }
+            }
+
+            unset($parameters['year']);
+            unset($parameters['status_flag']);
+            unset($parameters['vendor_name']);
+            unset($parameters['prime_sub_vendor_code']);
+            unset($parameters['prime_sub_minority_type_id']);
+            unset($parameters['prime_sub_vendor_code_by_type']);
+
 
             return $parameters;
         }
@@ -959,6 +1020,36 @@ namespace { //global
             }
 
             return $pattern;
+        }
+
+        static public function getVendorTypeFromVendorTypeId($vendor_types) {
+
+            $P = in_array('P', $vendor_types);
+            $S = in_array('S', $vendor_types);
+            $M = in_array('M', $vendor_types);
+
+            $vendor_types_derived = array();
+
+            if($P && $M) {
+                $vendor_types_derived[] = "PM";
+            }
+            if($P && !$M) {
+                $vendor_types_derived[] = "P";
+                $vendor_types_derived[] = "PM";
+
+            }
+            if($S && $M) {
+                $vendor_types_derived[] = "SM";
+            }
+            if($S && !$M) {
+                $vendor_types_derived[] = "S";
+                $vendor_types_derived[] = "SM";
+            }
+            if($M && !$P && !$S) {
+                $vendor_types_derived[] = "PM";
+                $vendor_types_derived[] = "SM";
+            }
+            return $vendor_types_derived;
         }
 
         static public function mergeMWBWCategoryFacetValues($node) {
