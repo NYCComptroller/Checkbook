@@ -1,12 +1,12 @@
 {
     "widgetType":"data_tables",
     "widgetSubType":"dataTableList",
-    "cleanURLParameters":["year","agency","vendornm","vendortype","contnum","subvendorstatus","mwbe"],
+    "cleanURLParameters":["year","agency","vendorcode","vendortype","contnum","subvendorstatus","mwbe"],
     "allowRequestParams":["smnid","dashboard"],
     "urlParamMap":{
         "year":"year",
         "agency":"agency_id",
-        "vendornm":"prime_sub_vendor_code",
+        "vendorcode":"prime_sub_vendor_code",
         "vendortype":"prime_sub_vendor_code_by_type",
         "subvendor":"sub_vendor_id",
         "mwbe":"minority_type_id",
@@ -173,7 +173,7 @@
     "customExternalJS":"function prepareTableListFilterUrl(){
         var agencyIds = getNamedFilterCriteria('fagencyId');
         var oVendorIds = getNamedFilterCriteria('fvendorId');
-        var oVendorNms = getNamedFilterCriteria('fvendorNm');
+        var oVendorCode = getNamedFilterCriteria('fvendorCode');
         var oContNum = getNamedFilterCriteria('fContractNumber');
         var oSubVendorStatus = getNamedFilterCriteria('fSubVendorStatus');
         var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
@@ -184,7 +184,7 @@
         var cUrlArray = cUrl.split('/');
 
         cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
-        cUrl = adjustUrlParameter(cUrl,'vendornm',oVendorNms);
+        cUrl = adjustUrlParameter(cUrl,'vendorcode',oVendorCode);
         cUrl = adjustUrlParameter(cUrl,'contnum',oContNum);
         cUrl = adjustUrlParameter(cUrl,'subvendorstatus',oSubVendorStatus);
         cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);

@@ -18,24 +18,11 @@
     "urlParameterName":"mwbe",
     "autocompleteID":"fminorityTypeId",
     "adjustParameters":"
-
-        if(isset($parameters['minority_type_id'])) {
-            $minority_type_id = $parameters['minority_type_id'];
-        }
-        $parameters = ContractUtil::adjustContractParameterFilters($node, $parameters);
+        $parameters = ContractUtil::adjustContractDerivedParameterFilters($node, $parameters);
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
             $parameters['minority_type_id.minority_type_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
         }
-
-        if(isset($minority_type_id)) {
-            $parameters['minority_type_id'] = $minority_type_id;
-        }
-        if(isset($parameters['prime_sub_vendor_code'])) {
-            $parameters['vendor_code'] = $parameters['prime_sub_vendor_code'];
-        }
-        unset($parameters['prime_sub_vendor_code']);
-        unset($parameters['prime_sub_minority_type_id']);
         return $parameters;
     ",
     "transformationPHP":"return ContractUtil::mergeMWBWCategoryFacetValues($node);",
