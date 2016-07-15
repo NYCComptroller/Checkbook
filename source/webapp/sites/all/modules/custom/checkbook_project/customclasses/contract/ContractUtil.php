@@ -599,17 +599,16 @@ namespace { //global
             return $parameters;
         }
 
+        /**
+         * Function to handle parameters for the derived facet implementation mapping a single facet to multiple columns
+         * for the "Summary of Sub Contract Status by Prime Contract ID Transactions"
+         * @param $node
+         * @param $parameters
+         */
         static public function adjustContractParameterFilters(&$node, &$parameters) {
 
-            //Handle year parameter
-            $reqYear = _getRequestParamValue('year');
+            $parameters = self::adjustContractTransactionsCommonParams($node, $parameters);
             $data_controller_instance = data_controller_get_operator_factory_instance();
-            $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
-            $leCondition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
-            $parameters['starting_year_id']= $leCondition;
-            $parameters['ending_year_id']= $geCondition;
-            $parameters['effective_begin_year_id']= $leCondition;
-            $parameters['effective_end_year_id']= $geCondition;
 
             //Vendor Facet
             $vendor_codes = explode('~', _getRequestParamValue('vendorcode'));
@@ -688,8 +687,6 @@ namespace { //global
                     }
                 }
             }
-
-            unset($parameters['year']);
             unset($parameters['vendor_name']);
             unset($parameters['vendor_type']);
             unset($parameters['minority_type_id']);
@@ -697,17 +694,17 @@ namespace { //global
             return $parameters;
         }
 
-        static public function adjustContractDerivedParameterFilters(&$node, &$parameters) {
+        /**
+         * Function to handle parameters for the facets used in the facet implementation of mapping a single
+         * facet to multiple columns for "Summary of Sub Contract Status by Prime Contract ID Transactions" page
+         * @param $node
+         * @param $parameters
+         */
+        static public function adjustContractDerivedFacetParameterFilters(&$node, &$parameters) {
 
-            //Handle year parameter
-            $reqYear = _getRequestParamValue('year');
+            //Handle Common parameters
+            $parameters = self::adjustContractTransactionsCommonParams($node, $parameters);
             $data_controller_instance = data_controller_get_operator_factory_instance();
-            $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
-            $leCondition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
-            $parameters['starting_year_id']= $leCondition;
-            $parameters['ending_year_id']= $geCondition;
-            $parameters['effective_begin_year_id']= $leCondition;
-            $parameters['effective_end_year_id']= $geCondition;
 
             //Vendor Facet
             $vendor_codes = explode('~', _getRequestParamValue('vendorcode'));
@@ -750,28 +747,39 @@ namespace { //global
             return $parameters;
         }
 
+        /**
+         * Function to handle common facet/transaction page parameters for the page
+         * "Summary of Sub Contract Status by Prime Contract ID Transactions"
+         * @param $node
+         * @param $parameters
+         */
+        static public function adjustContractTransactionsCommonParams(&$node, &$parameters) {
+            //Handle year parameter
+            $reqYear = _getRequestParamValue('year');
+            $data_controller_instance = data_controller_get_operator_factory_instance();
+            $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
+            $leCondition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
+            $parameters['starting_year_id']= $leCondition;
+            $parameters['ending_year_id']= $geCondition;
+            $parameters['effective_begin_year_id']= $leCondition;
+            $parameters['effective_end_year_id']= $geCondition;
+
+            unset($parameters['year']);
+            return $parameters;
+        }
+
+        /**
+         * Function to handle parameters for the derived facet implementation mapping a single facet to multiple columns
+         * for the Active Contracts transactions.
+         * @param $node
+         * @param $parameters
+         */
         static public function adjustActiveContractParameterFilters(&$node, &$parameters) {
 
-            //Handle status and year parameter
-            $contractStatus = _getRequestParamValue('contstatus');
-            $reqYear = _getRequestParamValue('year');
-
-            if(isset($reqYear)){
-                $data_controller_instance = data_controller_get_operator_factory_instance();
-                $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
-                $leCondition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
-                $parameters['starting_year_id']= $leCondition;
-                $parameters['ending_year_id']= $geCondition;
-                if($contractStatus=='R'){
-                    $parameters['registered_year_id']= array($reqYear);
-                }
-                else if($contractStatus=='A'){
-                    $parameters['effective_begin_year_id']= $leCondition;
-                    $parameters['effective_end_year_id']= $geCondition;
-                }
-            }
-
+            //Handle Common parameters
+            $parameters = self::adjustActiveContractCommonParams($node, $parameters);
             $data_controller_instance = data_controller_get_operator_factory_instance();
+
             //Vendor Facet using Vendor Code
             $vendor_codes = explode('~', _getRequestParamValue('vendorcode'));
             $has_vendors = isset($vendor_codes[0]) && $vendor_codes[0] != "";
@@ -907,13 +915,92 @@ namespace { //global
                 }
             }
 
-            unset($parameters['year']);
-            unset($parameters['status_flag']);
             unset($parameters['minority_type_id']);
             unset($parameters['vendor_code']);
             unset($parameters['vendor_name']);
             unset($parameters['vendor_type']);
 
+            return $parameters;
+        }
+
+        /**
+         * Function to handle parameters for the facets used in the facet implementation of mapping a single
+         * facet to multiple columns for the Active Contracts transactions.
+         * @param $node
+         * @param $parameters
+         */
+        static public function adjustActiveContractDerivedFacetParameterFilters(&$node, &$parameters) {
+
+            //Handle Common parameters
+            $parameters = self::adjustActiveContractCommonParams($node, $parameters);
+            $data_controller_instance = data_controller_get_operator_factory_instance();
+
+            //Vendor Facet
+            $vendor_codes = explode('~', _getRequestParamValue('vendorcode'));
+            $has_vendors = isset($vendor_codes[0]) && $vendor_codes[0] != "";
+            if($has_vendors) {
+                $pattern = null;
+                foreach($vendor_codes as $vendor_code) {
+                    $localValue = _checkbook_regex_replace_pattern($vendor_code);
+                    $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
+                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
+                }
+                $pattern = '('.$pattern.')';
+                $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
+                if(isset($condition)) {
+                    $parameters['vendor_code'] = $condition;
+                }
+            }
+
+            //Vendor Type Facet
+            $vendor_types = explode('~', _getRequestParamValue('vendortype'));
+            $has_vendor_types = isset($vendor_types[0]) && $vendor_types[0] != "";
+            if($has_vendor_types) {
+
+                $condition = null;
+                $vendor_types_derived = self::getVendorTypeFromVendorTypeId($vendor_types);
+                $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, $vendor_types_derived);
+                if(isset($condition)) {
+                    $parameters['vendor_type'] = $condition;
+                }
+            }
+
+            unset($parameters['year']);
+            unset($parameters['status_flag']);
+            unset($parameters['prime_sub_vendor_code']);
+            unset($parameters['prime_sub_minority_type_id']);
+            unset($parameters['prime_sub_vendor_code_by_type']);
+
+
+            return $parameters;
+        }
+
+        /**
+         * Function to handle common facet/transaction page parameters for the Active Contracts transactions.
+         * @param $node
+         * @param $parameters
+         */
+        static public function adjustActiveContractCommonParams(&$node, &$parameters) {
+            //Handle status and year parameter
+            $contractStatus = _getRequestParamValue('contstatus');
+            $reqYear = _getRequestParamValue('year');
+
+            if(isset($reqYear)){
+                $data_controller_instance = data_controller_get_operator_factory_instance();
+                $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
+                $leCondition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
+                $parameters['starting_year_id']= $leCondition;
+                $parameters['ending_year_id']= $geCondition;
+                if($contractStatus=='R'){
+                    $parameters['registered_year_id']= array($reqYear);
+                }
+                else if($contractStatus=='A'){
+                    $parameters['effective_begin_year_id']= $leCondition;
+                    $parameters['effective_end_year_id']= $geCondition;
+                }
+            }
+            unset($parameters['year']);
+            unset($parameters['status_flag']);
             return $parameters;
         }
 

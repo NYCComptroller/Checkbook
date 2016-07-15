@@ -60,7 +60,7 @@
             "sourceDatasetName":"contract_transaction_vendor_type_facet_data",
             "dimensions":[
                 {
-                    "name":"vendor_type",
+                    "name":"vendor_type_name",
                     "levels": [
                         {
                             "name":"vendor_type_name",
