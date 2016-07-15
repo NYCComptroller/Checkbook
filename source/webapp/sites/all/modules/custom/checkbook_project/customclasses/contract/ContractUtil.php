@@ -999,7 +999,9 @@ namespace { //global
                     $parameters['effective_end_year_id']= $geCondition;
                 }
             }
-            $parameters['latest_flag'] = 'Y';
+            else {
+                $parameters['latest_flag'] = 'Y';
+            }
             unset($parameters['year']);
             unset($parameters['status_flag']);
             return $parameters;
