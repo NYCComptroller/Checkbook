@@ -4,7 +4,7 @@
     "stickyHeader":true,
     "cleanURLParameters":[
         "subvendor","vendortype","mwbe","doctype","contstatus","year","calyear","agency","vendor","curamtr","vendorcode","vendornm","vendornm_exact","contdesc","agrmnttype",
-        "agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","modamt","fvendor","subcontstatus","subvendorstatus"
+        "agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","modamt","subcontstatus","subvendorstatus"
     ],
     "urlParamMap":{
         "agrmnttype":"agreement_type_id",
