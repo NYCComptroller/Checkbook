@@ -9,7 +9,7 @@
         "vendortype":"vendor_type_id.vendor_type_id"
     },
     "dataset":"checkbook:contract_transaction_vendor_type_facet_data",
-    "columns":["vendor_type_id.vendor_type_id", "vendor_type.vendor_type", "txcount"],
+    "columns":["vendor_type_id.vendor_type_id", "vendor_type_name.vendor_type_name", "txcount"],
     "orderBy":"-txcount",
     "getTotalDataCount":true,
     "facetPager":true,
@@ -19,23 +19,11 @@
     "showAllRecords":true,
     "allowFacetDeselect":true,
     "adjustParameters":"
-        if(isset($parameters['minority_type_id'])) {
-            $minority_type_id = $parameters['minority_type_id'];
-        }
-        $parameters = ContractUtil::adjustActiveContractParameterFilters($node, $parameters);
+        $parameters = ContractUtil::adjustActiveContractDerivedFacetParameterFilters($node, $parameters);
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
-            $parameters['vendor_type.vendor_type'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+            $parameters['vendor_type_name.vendor_type_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
         }
-        if(isset($minority_type_id)) {
-            $parameters['minority_type_id'] = $minority_type_id;
-        }
-        if(isset($parameters['prime_sub_vendor_code'])) {
-            $parameters['vendor_code'] = $parameters['prime_sub_vendor_code'];
-        }
-        unset($parameters['prime_sub_vendor_code']);
-        unset($parameters['prime_sub_minority_type_id']);
-
         return $parameters;
     ",
     "template":"individual_filter"

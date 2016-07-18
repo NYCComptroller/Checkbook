@@ -1187,6 +1187,7 @@ class SpendingUtil{
 
         $dashboard_param = _getRequestParamValue('dashboard');
         $smnid = _getRequestParamValue('smnid');
+        $status = _getRequestParamValue('contstatus');
         if($smnid == 720) {
             if($dashboard_param == "ms")
                 $dashboard = "M/WBE";
@@ -1209,6 +1210,33 @@ class SpendingUtil{
         else if($smnid == "subvendor_contracts_visual_1" && $dashboard_param == "sp") {
             $dashboard = MappingUtil::getCurrenEhtnicityName();
         }
+        $bottomNavigation = '';
+        if($status == 'A')
+            $bottomNavigation = "Total Active Sub Vendor Contracts";
+        else
+            $bottomNavigation = "New Sub Vendor Contracts by Fiscal Year";
+
+        if($smnid == 721 || $smnid == 720 || $smnid == 781 || $smnid == 784){
+            $widgetTitle = 'Spending';
+        }
+        if($smnid =='subvendor_contracts_visual_1' && $dashboard_param == 'sp'){
+            return(MappingUtil::getCurrenEhtnicityName() . " Sub Vendors Spending by <br />" .$bottomNavigation);
+        }
+        if($smnid =='subven_mwbe_contracts_visual_2' && $dashboard_param == 'ms'){
+
+            return(MappingUtil::getCurrenEhtnicityName() . " Sub Spending by <br />" .$bottomNavigation);
+        }
+
+        if($dashboard_param == 'ss' || $dashboard_param == 'ms' || $dashboard_param == 'sp') {
+            if($dashboard_param == 'ms' || $dashboard_param == 'sp'){
+                if($status == 'A')
+                    $bottomNavigation = "Total Active M/WBE Sub Vendor Contracts";
+                else
+                    $bottomNavigation = "New M/WBE Sub Vendor Contracts by Fiscal Year";
+            }
+           return($widgetTitle . " by  " . $bottomNavigation . " " . "Transactions");
+        }
+
         return ($dashboard . " " . $widgetTitle . " " . $contractTitle . " Contracts Transactions");
     }
 

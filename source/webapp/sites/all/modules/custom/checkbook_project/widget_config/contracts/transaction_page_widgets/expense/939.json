@@ -13,8 +13,8 @@
         "fvendor":"vendor_id",
         "vendor":"vendor_id",
         "vendorcode":"prime_sub_vendor_code",
-        "vendornm_exact":"prime_sub_vendor_name",
-        "vendornm":"prime_sub_vendor_name",
+        "vendornm_exact":"vendor_name",
+        "vendornm":"vendor_name",
         "vendortype":"prime_sub_vendor_code_by_type",
         "curamtr":"maximum_contract_amount",
         "subvendor":"vendor_id",
@@ -225,7 +225,7 @@
         },
         "contract_includes_sub":{
             "type": "expression2",
-            "expression": "($row['scntrc_status_name'] == 'N/A' || $row['scntrc_status_name'] == NULL) ? 'N/A' : $row['scntrc_status_name']"
+            "expression": "($row['document_code'] == 'CT1' || $row['document_code'] == 'CTA1' || $row['document_code'] == 'CT2') ? $row['scntrc_status_name'] : 'N/A'"
         },
         "subvendor_status_pip":{
             "type": "expression2",
@@ -276,7 +276,13 @@
         {"labelAlias": "pin","column": "tracking_number"},
         {"labelAlias": "apt_pin","column": "brd_awd_no"}
     ],
-    "adjustParameters":"return ContractUtil::adjustActiveContractParameterFilters($node, $parameters);",
+    "adjustParameters":"
+        $parameters = ContractUtil::adjustActiveContractParameterFilters($node, $parameters);
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        }
+        return $parameters;
+    ",
     "adjustDataTableOptions":"
         $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
         if(!$node->is_master_agreement) {

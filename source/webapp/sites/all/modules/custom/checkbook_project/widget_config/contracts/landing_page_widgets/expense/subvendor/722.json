@@ -116,7 +116,7 @@
 "summaryView":{
     "template":"contract_summary_expense_contract_modification",
     "templateTitle":"Sub Contract Amount Modification Spending Transactions",
-    "preprocess_data":"$node->widgetConfig->summaryView->templateTitle = SpendingUtil::getSpentToDateTitle('Sub Contract Amount Modification Spending');"
+    "preprocess_data":"$node->widgetConfig->summaryView->templateTitle = SpendingUtil::getSpentToDateTitle('Amount Modification Spending');"
 },
 "widgetTitle":"Sub Contract Amount Modifications",
 "table_title":"",
