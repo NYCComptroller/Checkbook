@@ -5,7 +5,7 @@
             "source":"SELECT prime_vendor_code as vendor_code, prime_vendor_name as vendor_name, 'PRIME' as vendor_type_name,
                         CASE WHEN prime_minority_type_id IN (2,3,4,5,9) THEN 'PM' ELSE 'P' END as vendor_type,
                         prime_minority_type_id as minority_type_id, prime_minority_type_name as minority_type_name, *
-                        FROM subcontract_status_by_prime_contract_id
+                        FROM all_agreement_transactions_by_prime_vendor
                         WHERE prime_sub_vendor_code_by_type ~* '(^P:.*$)|(.*,P:.*$)|(^P:.*,.*)|(^PM:.*$)|(.*,PM:.*$)|(^PM:.*,.*)'
 
                         UNION ALL
@@ -13,7 +13,7 @@
                         SELECT sub_vendor_code as vendor_code, sub_vendor_name as vendor_name, 'SUB' as vendor_type_name,
                         CASE WHEN sub_minority_type_id IN (2,3,4,5,9) THEN 'SM' ELSE 'S' END as vendor_type,
                         sub_minority_type_id as minority_type_id, sub_minority_type_name as minority_type_name, *
-                        FROM subcontract_status_by_prime_contract_id
+                        FROM all_agreement_transactions_by_prime_vendor
                         WHERE prime_sub_vendor_code_by_type ~* '(^S:.*$)|(.*,S:.*$)|(^S:.*,.*)|(^SM:.*$)|(.*,SM:.*$)|(^SM:.*,.*)'
             "
         }
