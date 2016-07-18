@@ -66,6 +66,9 @@ h2 {
 h2.contract-title{
     width:475px;
 }
+#node-widget-429 h2.contract-title {
+    width: 550px;
+}
 div.contracts-advanced-search h2.contract-title  {
     width:100%;
 }
