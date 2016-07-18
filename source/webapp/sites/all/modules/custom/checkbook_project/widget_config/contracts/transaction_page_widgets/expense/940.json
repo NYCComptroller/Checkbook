@@ -224,6 +224,8 @@
         {"labelAlias":"end_date","column":"effective_end_date"},
         {"labelAlias":"reg_date","column":"registered_date"},
         {"labelAlias":"pin","column":"tracking_number"},
-        {"labelAlias":"apt_pin","column":"brd_awd_no"}
+        {"labelAlias":"apt_pin","column":"brd_awd_no"},
+        {"labelAlias": "dollar_diff","column": "formatted_dollar_diff"},
+        {"labelAlias": "percent_diff","column": "formatted_percent_diff"}
     ]
 }
