@@ -87,7 +87,7 @@ return $footer;
     "template":"contract_summary_expense_expense",
     "entityColumnName":"industry_industry_industry_type_name",
     "templateTitle":"Contract by Industry Spending Transactions",
-    "preprocess_data":"$node->widgetConfig->summaryView->templateTitle = SpendingUtil::getSpentToDateTitle('Contract by Industry Spending');"
+    "preprocess_data":"$node->widgetConfig->summaryView->templateTitle = SpendingUtil::getSpentToDateTitle('Contracts by Industry Spending');"
 },
 "widgetTitle":"Contracts by Industries",
 "table_title":"",

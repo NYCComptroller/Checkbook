@@ -8,37 +8,24 @@
     "facetPager":true,
     "filterName":"Vendor",
     "urlParamMap":{
-        "vendornm":"vendor_code.vendor_code"
+        "vendorcode":"vendor_code.vendor_code"
     },
     "dataset":"checkbook:mixed_vendor_data",
     "columns":["vendor_code.vendor_code", "vendor_name.vendor_name", "txcount"],
     "orderBy":"-txcount",
     "autocompleteParamName":"vendor_auto",
     "autocompleteField":"vendor_name.vendor_name",
-    "urlParameterName":"vendornm",
+    "urlParameterName":"vendorcode",
     "urlParameterNameType":"eqtext",
-    "autocompleteID":"fvendorNm",
+    "autocompleteID":"fvendorCode",
     "showAllRecords":true,
     "template":"individual_filter",
     "adjustParameters":"
-
-        if(isset($parameters['minority_type_id'])) {
-            $minority_type_id = $parameters['minority_type_id'];
-        }
-        $parameters = ContractUtil::adjustContractParameterFilters($node, $parameters);
+        $parameters = ContractUtil::adjustContractDerivedFacetParameterFilters($node, $parameters);
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
-            $parameters['vendor_code.vendor_code'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+            $parameters['vendor_name.vendor_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
         }
-        if(isset($minority_type_id)) {
-            $parameters['minority_type_id'] = $minority_type_id;
-        }
-        if(isset($parameters['prime_sub_vendor_code'])) {
-            $parameters['vendor_code'] = $parameters['prime_sub_vendor_code'];
-        }
-        unset($parameters['prime_sub_vendor_code']);
-        unset($parameters['prime_sub_minority_type_id']);
-
         return $parameters;
     "
 }
