@@ -103,6 +103,7 @@
         $is_master_agreement = in_array('MA1', $doctypes) || in_array('MMA1', $doctypes);
         $node->is_master_agreement = $is_master_agreement;
         
+        $smnid = $doctype = _getRequestParamValue('smnid');
         $node->show_difference = ($smnid == 480 || $smnid == 366 || $smnid == 722);
         
     ",
