@@ -8,7 +8,9 @@
     "facetPager":true,
     "filterName":"Vendor",
     "urlParamMap":{
-        "vendorcode":"vendor_code.vendor_code"
+        "vendorcode":"vendor_code.vendor_code",
+        "vendortype":"vendor_type_id.vendor_type_id",
+        "mwbe":"minority_type_id.minority_type_id"
     },
     "dataset":"checkbook:mixed_vendor_data",
     "columns":["vendor_code.vendor_code", "vendor_name.vendor_name", "txcount"],
@@ -21,7 +23,7 @@
     "showAllRecords":true,
     "template":"individual_filter",
     "adjustParameters":"
-        $parameters = ContractUtil::adjustContractDerivedFacetParameterFilters($node, $parameters);
+        $parameters = ContractUtil::adjustContractTransactionsCommonParams($node, $parameters);
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
             $parameters['vendor_name.vendor_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);

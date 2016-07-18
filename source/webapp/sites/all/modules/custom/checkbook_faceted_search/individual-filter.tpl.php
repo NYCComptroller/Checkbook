@@ -181,12 +181,48 @@ if($node->widgetConfig->filterName == 'M/WBE Category'){
 
 //Data alteration for Vendor Type Facet
 //Vendor Type facet for parentNid == 932/939 is a different implementation and should be ignored
-if($node->widgetConfig->filterName == 'Vendor Type' && $node->widgetConfig->parentNid != 932 && $node->widgetConfig->parentNid != 939){
-    $vendor_types = _getRequestParamValue('vendortype');
-    $vendor_type_data = MappingUtil::getVendorTypes($checked, $vendor_types);
-    $vendor_type_data = MappingUtil::getVendorTypes($unchecked, $vendor_types);
-    $checked = $vendor_type_data['checked'];
-    $unchecked = $vendor_type_data['unchecked'];
+if($node->widgetConfig->filterName == 'Vendor Type'){
+    if($node->widgetConfig->parentNid == 932 || $node->widgetConfig->parentNid == 939) {
+
+        $vendor_types = _getRequestParamValue('vendortype');
+
+        $total_prime = $total_sub = $total_mwbe = 0;
+        if (strpos($vendor_types,'P~PM') !== false) {
+            foreach($checked as $key => $value) {
+                if($value[0] == 'P' || $value[0] == 'PM') {
+                    $total_prime = $total_prime + $value[2];
+                }
+            }
+        }
+        if (strpos($vendor_types,'S~SM') !== false) {
+            foreach($checked as $key => $value) {
+                if($value[0] == 'S' || $value[0] == 'SM') {
+                    $total_sub = $total_sub + $value[2];
+                }
+            }
+        }
+        if (strpos($vendor_types,'PM~SM') !== false) {
+            foreach($checked as $key => $value) {
+                if($value[0] == 'PM' || $value[0] == 'SM') {
+                    $total_mwbe = $total_mwbe + $value[2];
+                }
+            }
+        }
+
+        foreach($checked as $key => $value) {
+            unset($checked[$key]);
+        }
+        if($total_prime > 0)array_push($checked,array('P~PM','PRIME VENDOR',$total_prime));
+        if($total_sub > 0)array_push($checked,array('S~SM','SUB VENDOR',$total_sub));
+        if($total_mwbe > 0)array_push($checked,array('PM~SM','M/WBE VENDOR',$total_mwbe));
+    }
+    else {
+        $vendor_types = _getRequestParamValue('vendortype');
+        $vendor_type_data = MappingUtil::getVendorTypes($checked, $vendor_types);
+        $vendor_type_data = MappingUtil::getVendorTypes($unchecked, $vendor_types);
+        $checked = $vendor_type_data['checked'];
+        $unchecked = $vendor_type_data['unchecked'];
+    }
 }
 
 if(count($checked) == 0){

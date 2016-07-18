@@ -6,10 +6,14 @@
     "startWith":0,
     "maxSelect":5,
     "urlParamMap":{
-        "vendortype":"vendor_type_id.vendor_type_id"
+        "vendorcode":"vendor_code.vendor_code",
+        "vendornm_exact":"vendor_name.vendor_name",
+        "vendornm":"vendor_name.vendor_name",
+        "vendortype":"vendor_type.vendor_type",
+        "mwbe":"minority_type_id.minority_type_id"
     },
-    "dataset":"checkbook:contract_transaction_vendor_type_facet_data",
-    "columns":["vendor_type_id.vendor_type_id", "vendor_type_name.vendor_type_name", "txcount"],
+    "dataset":"checkbook:contract_transaction_vendor_facet_data",
+    "columns":["vendor_type.vendor_type", "vendor_type_name.vendor_type_name", "txcount"],
     "orderBy":"-txcount",
     "getTotalDataCount":true,
     "facetPager":true,
@@ -18,8 +22,9 @@
     "autocompleteID":"fvendorType",
     "showAllRecords":true,
     "allowFacetDeselect":true,
+    "transformationPHP":"return ContractUtil::adjustVendorTypeFacet($node);",
     "adjustParameters":"
-        $parameters = ContractUtil::adjustActiveContractDerivedFacetParameterFilters($node, $parameters);
+        $parameters = ContractUtil::adjustActiveContractCommonParams($node, $parameters);
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
             $parameters['vendor_type_name.vendor_type_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
