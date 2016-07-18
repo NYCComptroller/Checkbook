@@ -217,30 +217,31 @@
         },
         "subvendor_name": {
             "type": "expression2",
-            "expression": "$row['sub_vendor_name'] == NULL ? 'NOT PROVIDED' : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row[sub_vendor_id],_getRequestParamValue('year'),_getRequestParamValue('yeartype'), null, $row[sub_minority_type_id]) .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>'"
+            "expression": "($row['document_code'] == 'CT1' || $row['document_code'] == 'CTA1' || $row['document_code'] == 'CT2') ? (($row['sub_vendor_name'] == NULL || $row['sub_vendor_name'] == '') ? 'NOT PROVIDED' : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row[sub_vendor_id],_getRequestParamValue('year'),_getRequestParamValue('yeartype'), null, $row[sub_minority_type_id]) .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>') : 'N/A'"
         },
         "subvendor_name_export": {
             "type": "expression2",
-            "expression": "($row['sub_vendor_name'] == '' || $row['sub_vendor_name'] == NULL) ? 'NOT PROVIDED' : $row['sub_vendor_name']"
+            "expression": "($row['document_code'] == 'CT1' || $row['document_code'] == 'CTA1' || $row['document_code'] == 'CT2') ? (($row['sub_vendor_name'] == NULL || $row['sub_vendor_name'] == '') ? 'NOT PROVIDED' : $row['sub_vendor_name']) : 'N/A'"
         },
         "sub_mwbe_category_name": {
             "type": "expression2",
-            "expression": "($row['sub_minority_type_name'] == '' || $row['sub_minority_type_name'] == NULL) ? 'NOT PROVIDED' : $row['sub_minority_type_name']"
+            "expression": "($row['document_code'] == 'CT1' || $row['document_code'] == 'CTA1' || $row['document_code'] == 'CT2') ? (($row['sub_minority_type_name'] == NULL || $row['sub_minority_type_name'] == '') ? 'NOT PROVIDED' : $row['sub_minority_type_name'] ) : 'N/A'"
         },
         "sub_mwbe_category_name_export": {
             "type": "expression2",
-            "expression": "($row['sub_minority_type_name'] == '' || $row['sub_minority_type_name'] == NULL) ? 'NOT PROVIDED' : $row['sub_minority_type_name']"
-        },        "contract_includes_sub":{
+            "expression": "($row['document_code'] == 'CT1' || $row['document_code'] == 'CTA1' || $row['document_code'] == 'CT2') ? (($row['sub_minority_type_name'] == '' || $row['sub_minority_type_name'] == NULL) ? 'NOT PROVIDED' : $row['sub_minority_type_name']) : 'N/A'"
+        },
+        "contract_includes_sub":{
             "type": "expression2",
             "expression": "($row['document_code'] == 'CT1' || $row['document_code'] == 'CTA1' || $row['document_code'] == 'CT2') ? $row['scntrc_status_name'] : 'N/A'"
         },
         "subvendor_status_pip":{
             "type": "expression2",
-            "expression": "($row['aprv_sta_name'] == 'N/A' || $row['aprv_sta_name'] == NULL) ? 'N/A' : _get_tooltip_markup($row['aprv_sta_name'],36)"
+            "expression": "($row['document_code'] == 'CT1' || $row['document_code'] == 'CTA1' || $row['document_code'] == 'CT2') ? _get_tooltip_markup($row['aprv_sta_name'],36) : 'N/A'"
         },
         "subvendor_status_pip_export":{
             "type": "expression2",
-            "expression": "($row['aprv_sta_name'] == 'N/A' || $row['aprv_sta_name'] == NULL) ? 'N/A' : $row['aprv_sta_name']"
+            "expression": "($row['document_code'] == 'CT1' || $row['document_code'] == 'CTA1' || $row['document_code'] == 'CT2') ? $row['aprv_sta_name'] : 'N/A'"
         }
     },
     "skipCustomPadding":true,
