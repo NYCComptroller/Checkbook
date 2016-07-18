@@ -223,7 +223,10 @@
             "type": "expression2",
             "expression": "($row['sub_minority_type_name'] == '' || $row['sub_minority_type_name'] == NULL) ? 'NOT PROVIDED' : $row['sub_minority_type_name']"
         },
-        "contract_includes_sub":{
+        "sub_mwbe_category_name_export": {
+            "type": "expression2",
+            "expression": "($row['sub_minority_type_name'] == '' || $row['sub_minority_type_name'] == NULL) ? 'NOT PROVIDED' : $row['sub_minority_type_name']"
+        },        "contract_includes_sub":{
             "type": "expression2",
             "expression": "($row['document_code'] == 'CT1' || $row['document_code'] == 'CTA1' || $row['document_code'] == 'CT2') ? $row['scntrc_status_name'] : 'N/A'"
         },
@@ -255,9 +258,9 @@
         {"labelAlias": "prime_vendor","column": "prime_vendor_name_link","sortSourceColumn":"prime_vendor_name","exportColumn":"prime_vendor_name"},
         {"labelAlias":"prime_mwbe_category","column":"prime_minority_type_name","sortSourceColumn":"prime_minority_type_name"},
         {"label":"","column":"","export":false},
-        {"labelAlias":"sub_vendor_name","column":"subvendor_name","sortSourceColumn":"sub_vendor_name","exportColumn":"sub_vendor_name"},
+        {"labelAlias":"sub_vendor_name","column":"subvendor_name","sortSourceColumn":"sub_vendor_name","exportColumn":"subvendor_name_export"},
         {"label":"","column":"","export":false},
-        {"labelAlias":"sub_mwbe_category","column":"sub_mwbe_category_name","sortSourceColumn":"sub_minority_type_name"},
+        {"labelAlias":"sub_mwbe_category","column":"sub_mwbe_category_name","sortSourceColumn":"sub_minority_type_name","exportColumn":"sub_mwbe_category_name_export"},
         {"label":"","column":"","export":false},
         //20
         {"labelAlias":"subvendor_status_pip","column":"subvendor_status_pip","sortSourceColumn":"aprv_sta_name","exportColumn":"subvendor_status_pip_export"},
