@@ -6,9 +6,11 @@
     "startWith":0,
     "maxSelect":5,
     "urlParamMap":{
+        "vendorcode":"vendor_code.vendor_code",
+        "vendortype":"vendor_type.vendor_type",
         "mwbe":"minority_type_id.minority_type_id"
     },
-    "dataset":"checkbook:mixed_minority_type_data",
+    "dataset":"checkbook:mixed_vendor_data",
     "columns":["minority_type_id.minority_type_id","minority_type_name.minority_type_name", "txcount"],
     "orderBy":"-txcount",
     "getTotalDataCount":true,
@@ -18,7 +20,7 @@
     "urlParameterName":"mwbe",
     "autocompleteID":"fminorityTypeId",
     "adjustParameters":"
-        $parameters = ContractUtil::adjustContractDerivedFacetParameterFilters($node, $parameters);
+        $parameters = ContractUtil::adjustContractTransactionsCommonParams($node, $parameters);
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
             $parameters['minority_type_id.minority_type_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
