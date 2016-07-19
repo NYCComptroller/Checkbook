@@ -199,8 +199,7 @@
         },
         "sub_contract_reference_id":{
             "type":"expression2",
-            "expression":"$row['document_code'] == 'CT1' || $row['document_code'] == 'CTA1' || $row['document_code'] == 'CT2') ? (($row['sub_contract_id'] == NULL || $row['sub_contract_id'] == '') && $row['scntrc_status'] == 2 ? 'NOT PROVIDED' : $row['sub_contract_id']) : 'N/A'"
-        },
+            "expression":"($row['document_code'] == 'CT1' || $row['document_code'] == 'CTA1' || $row['document_code'] == 'CT2') ? ((($row['sub_contract_id'] == NULL || $row['sub_contract_id'] == '') && $row['scntrc_status'] == 2) ? 'NOT PROVIDED' : $row['sub_contract_id']) : 'N/A'"        },
         "prime_vendor_name_formatted": {
             "type": "expression2",
             "expression": "_get_tooltip_markup($row['prime_vendor_name'],24)"
@@ -302,10 +301,10 @@
         {
             "column":"parent_contract_link",
             "sourceColumn":"master_contract_number",
-            "sql":"CASE master_contract_number IS NULL THEN 'N/A' ELSE master_contract_number END"
+            "sql":"CASE WHEN master_contract_number IS NULL THEN 'N/A' ELSE master_contract_number END"
         },
         {
-            "column":"sub_vendor_name",
+            "column":"subvendor_name",
             "sourceColumn":"sub_vendor_name",
             "sql":"CASE WHEN (document_code IN ('CT1', 'CTA1', 'CT2') AND (sub_vendor_name IS NULL OR sub_vendor_name= ''))
                     THEN 'Not Provided' 
