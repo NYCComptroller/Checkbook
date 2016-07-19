@@ -312,7 +312,7 @@
     ],
     "adjustDataTableOptions":"
         $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
-        if($node->showdifference) {
+        if($node->show_difference) {
             $adjustDataTableOptions->aaSorting[0][0] = 12;
         }
         if(!$node->is_master_agreement) {
