@@ -25,7 +25,7 @@
             $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
             $parameters['minority_type_id.minority_type_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
         }
-        $parameters = ContractUtil::filterPrimeMWBE($parameters);
+        $parameters = ContractUtil::filterPrimeMWBESubContractTransactions($parameters);
         return $parameters;
     ",
     "transformationPHP":"return ContractUtil::mergeMWBWCategoryFacetValues($node);",
