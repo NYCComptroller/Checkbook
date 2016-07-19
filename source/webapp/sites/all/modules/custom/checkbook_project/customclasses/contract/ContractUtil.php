@@ -1080,6 +1080,7 @@ namespace { //global
             $subvendor = _getRequestParamValue('subvendor');
             $vendor = _getRequestParamValue('vendor');
             $dashboard = _getRequestParamValue('dashboard');
+            $status = _getRequestParamValue('status');
                     
             if($subvendor) {
                 $subvendor_code = self::getSubVendorCustomerCode($subvendor);
@@ -1089,7 +1090,7 @@ namespace { //global
             }
             $subvendorURLString = isset($subvendor_code) ? '/vendorcode/'.$subvendor_code : '';
             $vendorURLString = isset($vendor_code) ? '/vendorcode/'.$vendor_code : '';
-            $detailsPageURL  = ($dashboard == 'ss' || $dashboard == 'sp' || $dashboard == 'ms')? 'sub_contracts_transactions' : 'contract_details';
+            $detailsPageURL  = (($dashboard == 'ss' || $dashboard == 'sp' || $dashboard == 'ms') && !isset($status))? 'sub_contracts_transactions' : 'contract_details';
             
             $url = '/panel_html/'. $detailsPageURL .'/contract/transactions/contcat/expense'
                 . _checkbook_project_get_url_param_string('status','contstatus')
