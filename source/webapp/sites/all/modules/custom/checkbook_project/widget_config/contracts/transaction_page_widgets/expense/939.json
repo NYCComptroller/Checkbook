@@ -248,7 +248,7 @@
     "table_columns": [
         {"label": "<div></div>","colLabel": "","column": "child_contrats_link","export":false},
         {"labelAlias": "contract_id","column": "contract_link","sortSourceColumn":"contract_number"},
-        {"labelAlias":"contract_includes_sub","column":"contract_includes_sub","sortSourceColumn":"scntrc_status_name","exportColumn":"contract_includes_sub"},
+        {"labelAlias":"contract_includes_sub","column":"contract_includes_sub","sortSourceColumn":"scntrc_status_name","exportColumn":"scntrc_status_name"},
         {"labelAlias":"sub_contract_reference_id","column":"sub_contract_reference_id","sortSourceColumn":"sub_contract_id","exportColumn":"sub_contract_reference_id"},
         {"label":"","column":"","export":false},
         {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description","exportColumn":"description"},
@@ -293,6 +293,23 @@
         }
         return $parameters;
     ",
+    "exportColumnSqlOverride":[
+        {
+            "column":"sub_contract_reference_id",
+            "sourceColumn":"sub_contract_id",
+            "sql":"case when sub_contract_id IN (NULL, '') then 'N/A' else sub_contract_id end"
+        },
+        {
+            "column":"parent_contract_link",
+            "sourceColumn":"master_contract_number",
+            "sql":"case when master_agreement_yn IN ('y', 'Y', '', NULL) then 'N/A' else master_contract_number end"
+        },
+        {
+            "column":"subvendor_name",
+            "sourceColumn":"master_contract_number",
+            "sql":"case when sub_vendor_name IS NULL then 'Not Provided' else sub_vendor_name end"
+        }
+    ],
     "adjustDataTableOptions":"
         $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
         if($node->showdifference) {
