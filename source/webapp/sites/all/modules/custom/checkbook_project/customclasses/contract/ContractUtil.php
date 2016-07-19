@@ -1100,6 +1100,7 @@ namespace { //global
                 . _checkbook_project_get_url_param_string('awdmethod')
                 . _checkbook_project_get_url_param_string('csize')
                 . _checkbook_project_get_url_param_string('cindustry')
+                . _checkbook_project_get_url_param_string('dashboard')
                 . ((!_checkbook_check_isEDCPage())? $subvendorURLString . $vendorURLString : _checkbook_project_get_url_param_string('vendor'))
                 . _checkbook_project_get_year_url_param_string();
             return $url;
