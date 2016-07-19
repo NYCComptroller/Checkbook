@@ -7,11 +7,11 @@
     "maxSelect":5,
     "urlParamMap":{
         "vendorcode":"vendor_code.vendor_code",
-        "vendortype":"vendor_type.vendor_type",
+        "vendortype":"vendor_type_id.vendor_type_id",
         "mwbe":"minority_type_id.minority_type_id"
     },
-    "dataset":"checkbook:mixed_vendor_data",
-    "columns":["vendor_type.vendor_type", "vendor_type_name.vendor_type_name", "txcount"],
+    "dataset":"checkbook:mixed_vendor_type_data",
+    "columns":["vendor_type_id.vendor_type_id", "vendor_type_name.vendor_type_name", "txcount"],
     "orderBy":"-txcount",
     "getTotalDataCount":true,
     "facetPager":true,

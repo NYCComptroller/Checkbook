@@ -893,6 +893,8 @@ namespace { //global
 
             $pattern = null;
             if(isset($vendor_types)) {
+
+                $vendor_types = self::getVendorTypeFromVendorTypeId($vendor_types);
                 $reg_exp_values = array();
                 $vendor_identifier = isset($vendor_identifier) ? $vendor_identifier : ".*";
                 foreach($vendor_types as $vendor_type) {
@@ -924,53 +926,12 @@ namespace { //global
             $pattern = null;
             if(isset($vendor_types)) {
 
-
+                $vendor_types = self::getVendorTypeFromVendorTypeId($vendor_types);
                 foreach($vendor_types as $vendor_type) {
                     $localValue = "{$vendor_type}:{$mwbe_category}";
                     $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
                     $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
                 }
-//                $P = in_array('P', $vendor_types);
-//                $S = in_array('S', $vendor_types);
-//                $M = in_array('M', $vendor_types);
-//
-//                if($P && $M) {
-//                    $localValue = "PM:{$mwbe_category}";
-//                    $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
-//                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
-//                }
-//                if($P && !$M) {
-//                    $localValue = "PM:{$mwbe_category}";
-//                    $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
-//                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
-//
-//                    $localValue = "P:{$mwbe_category}";
-//                    $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
-//                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
-//                }
-//                if($S && $M) {
-//                    $localValue = "SM:{$mwbe_category}";
-//                    $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
-//                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
-//                }
-//                if($S && !$M) {
-//                    $localValue = "S:{$mwbe_category}";
-//                    $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
-//                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
-//
-//                    $localValue = "SM:{$mwbe_category}";
-//                    $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
-//                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
-//                }
-//                if($M && !$P && !$S) {
-//                    $localValue = "PM:{$mwbe_category}";
-//                    $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
-//                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
-//
-//                    $localValue = "SM:{$mwbe_category}";
-//                    $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
-//                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
-//                }
             }
             else {
                 $localValue = ":{$mwbe_category}";
@@ -1042,8 +1003,9 @@ namespace { //global
         static public function adjustVendorTypeFacet($node) {
             $data = array();
             $total_prime = $total_sub = $total_mwbe = 0;
+
             foreach($node->data as $row){
-                $vendor_type = $row['vendor_type_vendor_type'];
+                $vendor_type = $row['vendor_type_id_vendor_type_id'];
                 switch($vendor_type) {
                     case "P":
                         $total_prime += $row['txcount'];
@@ -1051,37 +1013,31 @@ namespace { //global
                     case "S":
                         $total_sub += $row['txcount'];
                         break;
-                    case "PM":
-                        $total_prime += $row['txcount'];
-                        $total_mwbe += $row['txcount'];
-                        break;
-                    case "SM":
-                        $total_sub += $row['txcount'];
+                    case "M":
                         $total_mwbe += $row['txcount'];
                         break;
                 }
             }
-
             if($total_prime > 0) {
                 array_push($data,
-                    array('vendor_type_vendor_type' => 'P~PM','vendor_type_name_vendor_type_name' => 'PRIME VENDOR','txcount' => $total_prime
+                    array('vendor_type_id_vendor_type_id' => 'P~PM','vendor_type_name_vendor_type_name' => 'PRIME VENDOR','txcount' => $total_prime
                     ));
 
             }
             if($total_sub > 0) {
                 array_push($data,
-                    array('vendor_type_vendor_type' => 'S~SM','vendor_type_name_vendor_type_name' => 'SUB VENDOR','txcount' => $total_sub
+                    array('vendor_type_id_vendor_type_id' => 'S~SM','vendor_type_name_vendor_type_name' => 'SUB VENDOR','txcount' => $total_sub
                     ));
             }
             if($total_mwbe > 0) {
                 array_push($data,
-                    array('vendor_type_vendor_type' => 'PM~SM','vendor_type_name_vendor_type_name' => 'M/WBE VENDOR','txcount' => $total_mwbe
+                    array('vendor_type_id_vendor_type_id' => 'PM~SM','vendor_type_name_vendor_type_name' => 'M/WBE VENDOR','txcount' => $total_mwbe
                     ));
             }
             sort_records($data, new PropertyBasedComparator_DefaultSortingConfiguration('txcount',FALSE));
             return  $data;
         }
-        
+
         static public function expenseContractsFooterUrl() {
             $subvendor = _getRequestParamValue('subvendor');
             $vendor = _getRequestParamValue('vendor');
@@ -1107,9 +1063,9 @@ namespace { //global
         }
         static function getSubVendorCustomerCode($subVendorId){
             $result = NULL;
-            $query = "SELECT v.vendor_customer_code 
+            $query = "SELECT v.vendor_customer_code
                     FROM subvendor v
-                    JOIN (SELECT vendor_id, MAX(vendor_history_id) AS vendor_history_id FROM subvendor_history GROUP BY 1) vh 
+                    JOIN (SELECT vendor_id, MAX(vendor_history_id) AS vendor_history_id FROM subvendor_history GROUP BY 1) vh
                       ON v.vendor_id = vh.vendor_id
                     WHERE v.vendor_id = ".$subVendorId;
 
@@ -1132,8 +1088,6 @@ namespace { //global
             }
         }
     }
-
-    
 }
 
 namespace checkbook_project_custom_classes_contract {
