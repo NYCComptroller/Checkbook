@@ -888,7 +888,7 @@ namespace { //global
             unset($parameters['status_flag']);
             return $parameters;
         }
-//Alicia
+
         static public function getVendorTypeRegExpPattern($vendor_types, $vendor_identifier = null, $searchType = 'exact') {
 
             $pattern = null;
@@ -899,39 +899,6 @@ namespace { //global
                     $localValue = "{$vendor_type}:{$vendor_identifier}";
                     $reg_exp_values[] = $localValue;
                 }
-//                $P = in_array('P', $vendor_types);
-//                $S = in_array('S', $vendor_types);
-//                $M = in_array('M', $vendor_types);
-//
-//                if($P && $M) {
-//                    $localValue = "PM:{$vendor_identifier}";
-//                    $reg_exp_values[] = $localValue;
-//                }
-//                if($P && !$M) {
-//                    $localValue = "PM:{$vendor_identifier}";
-//                    $reg_exp_values[] = $localValue;
-//
-//                    $localValue = "P:{$vendor_identifier}";
-//                    $reg_exp_values[] = $localValue;
-//                }
-//                if($S && $M) {
-//                    $localValue = "SM:{$vendor_identifier}";
-//                    $reg_exp_values[] = $localValue;
-//                }
-//                if($S && !$M) {
-//                    $localValue = "S:{$vendor_identifier}";
-//                    $reg_exp_values[] = $localValue;
-//
-//                    $localValue = "SM:{$vendor_identifier}";
-//                    $reg_exp_values[] = $localValue;
-//                }
-//                if($M && !$P && !$S) {
-//                    $localValue = "PM:{$vendor_identifier}";
-//                    $reg_exp_values[] = $localValue;
-//
-//                    $localValue = "SM:{$vendor_identifier}";
-//                    $reg_exp_values[] = $localValue;
-//                }
             }
             else {
                 $localValue = "(P|PM|S|SM):{$vendor_identifier}";
@@ -943,7 +910,7 @@ namespace { //global
                     $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
                 }
                 elseif($searchType == 'like') {
-                    $localValue = "(.* $reg_exp_value .*)|(.* $reg_exp_value$)|(^$reg_exp_value.*)|(.* $reg_exp_value.*)";
+                    $localValue = "(.*$reg_exp_value .*)|(.*$reg_exp_value$)|(^$reg_exp_value.*)|(.*$reg_exp_value.*)";
                     $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
                 }
             }
