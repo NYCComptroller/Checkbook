@@ -297,17 +297,30 @@
         {
             "column":"sub_contract_reference_id",
             "sourceColumn":"sub_contract_id",
-            "sql":"case when sub_contract_id IN (NULL, '') then 'N/A' else sub_contract_id end"
+            "sql":"CASE WHEN sub_contract_id IS NULL THEN 'N/A' ELSE sub_contract_id END"
         },
         {
             "column":"parent_contract_link",
             "sourceColumn":"master_contract_number",
-            "sql":"case when master_agreement_yn IN ('y', 'Y', '', NULL) then 'N/A' else master_contract_number end"
+            "sql":"CASE master_contract_number IS NULL THEN 'N/A' ELSE master_contract_number END"
         },
         {
             "column":"subvendor_name",
             "sourceColumn":"master_contract_number",
-            "sql":"case when sub_vendor_name IS NULL then 'Not Provided' else sub_vendor_name end"
+            "sql":"CASE WHEN (document_code IN ('CT1', 'CTA1', 'CT2') AND (sub_vendor_name IS NULL OR sub_vendor_name= ''))
+                    THEN 'Not Provided' 
+                   WHEN (document_code NOT IN ('CT1', 'CTA1', 'CT2') AND (sub_vendor_name IS NULL OR sub_vendor_name= ''))
+                    THEN 'N/A'
+                   ELSE sub_vendor_name END"
+        },
+        {
+            "column":"sub_minority_type_name",
+            "sourceColumn":"sub_minority_type_name",
+            "sql":"CASE WHEN (document_code IN ('CT1', 'CTA1', 'CT2') AND (sub_minority_type_name IS NULL OR sub_minority_type_name= ''))
+                        THEN 'Not Provided' 
+                        WHEN (document_code NOT IN ('CT1', 'CTA1', 'CT2') AND (sub_minority_type_name IS NULL OR sub_minority_type_name= ''))
+                        THEN 'N/A'
+                        ELSE sub_minority_type_name END"
         }
     ],
     "adjustDataTableOptions":"
