@@ -78,15 +78,26 @@ class ContractsUrlService {
     }
 
     static function contractsFooterUrl() {
+        $subvendor = _getRequestParamValue('subvendor');
+        $vendor = _getRequestParamValue('vendor');
+        if($subvendor) {
+            $subvendor_code = self::getSubVendorCustomerCode($subvendor);
+        }
+        if($vendor) {
+            $vendor_code = self::getVendorCustomerCode($vendor);
+        }
+        $subvendorURLString = isset($subvendor_code) ? '/vendorcode/'.$subvendor_code : '';
+        $vendorURLString = isset($vendor_code) ? '/vendorcode/'.$vendor_code : '';
+        
         $url = '/panel_html/contract_details/contract/transactions/contcat/expense'
             . _checkbook_project_get_url_param_string('status','contstatus')
             . _checkbook_append_url_params()
             . _checkbook_project_get_url_param_string('agency')
-            . _checkbook_project_get_url_param_string('vendor')
             . _checkbook_project_get_url_param_string("vendor","fvendor")
             . _checkbook_project_get_url_param_string('awdmethod')
             . _checkbook_project_get_url_param_string('csize')
             . _checkbook_project_get_url_param_string('cindustry')
+            . $subvendorURLString . $vendorURLString
             . _checkbook_project_get_year_url_param_string();
         return $url;
     }
