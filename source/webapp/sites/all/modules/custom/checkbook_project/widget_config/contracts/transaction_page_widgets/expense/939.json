@@ -305,8 +305,8 @@
             "sql":"CASE master_contract_number IS NULL THEN 'N/A' ELSE master_contract_number END"
         },
         {
-            "column":"subvendor_name",
-            "sourceColumn":"master_contract_number",
+            "column":"sub_vendor_name",
+            "sourceColumn":"sub_vendor_name",
             "sql":"CASE WHEN (document_code IN ('CT1', 'CTA1', 'CT2') AND (sub_vendor_name IS NULL OR sub_vendor_name= ''))
                     THEN 'Not Provided' 
                    WHEN (document_code NOT IN ('CT1', 'CTA1', 'CT2') AND (sub_vendor_name IS NULL OR sub_vendor_name= ''))
@@ -314,7 +314,7 @@
                    ELSE sub_vendor_name END"
         },
         {
-            "column":"sub_minority_type_name",
+            "column":"sub_mwbe_category",
             "sourceColumn":"sub_minority_type_name",
             "sql":"CASE WHEN (document_code IN ('CT1', 'CTA1', 'CT2') AND (sub_minority_type_name IS NULL OR sub_minority_type_name= ''))
                         THEN 'Not Provided' 
