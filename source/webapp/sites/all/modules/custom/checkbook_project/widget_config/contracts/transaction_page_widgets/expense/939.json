@@ -217,7 +217,7 @@
         },
         "subvendor_name": {
             "type": "expression2",
-            "expression":"($row['document_code'] == 'CT1' || $row['document_code'] == 'CTA1' || $row['document_code'] == 'CT2')  ? ((($row['sub_vendor_name'] == NULL || $row['sub_vendor_name'] == '')  ? 'NOT PROVIDED' : $row['sub_vendor_name']) : 'N/A'"
+            "expression": "($row['document_code'] == 'CT1' || $row['document_code'] == 'CTA1' || $row['document_code'] == 'CT2') ? (($row['sub_vendor_name'] == NULL || $row['sub_vendor_name'] == '') ? 'NOT PROVIDED' : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row[sub_vendor_id],_getRequestParamValue('year'),_getRequestParamValue('yeartype'), null, $row[sub_minority_type_id]) .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>') : 'N/A'"
         },
         "subvendor_name_export": {
             "type": "expression2",
