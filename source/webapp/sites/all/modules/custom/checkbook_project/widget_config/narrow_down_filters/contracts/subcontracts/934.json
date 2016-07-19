@@ -9,7 +9,7 @@
     "filterName":"Vendor",
     "urlParamMap":{
         "vendorcode":"vendor_code.vendor_code",
-        "vendortype":"vendor_type_id.vendor_type_id",
+        "vendortype":"vendor_type.vendor_type",
         "mwbe":"minority_type_id.minority_type_id"
     },
     "dataset":"checkbook:mixed_vendor_data",
