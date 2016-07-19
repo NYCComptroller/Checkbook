@@ -248,7 +248,7 @@
     "table_columns": [
         {"label": "<div></div>","colLabel": "","column": "child_contrats_link","export":false},
         {"labelAlias": "contract_id","column": "contract_link","sortSourceColumn":"contract_number"},
-        {"labelAlias":"contract_includes_sub","column":"contract_includes_sub","sortSourceColumn":"scntrc_status_name","exportColumn":"scntrc_status_name"},
+        {"labelAlias":"contract_includes_sub","column":"contract_includes_sub","sortSourceColumn":"scntrc_status_name","exportColumn":"contract_includes_sub"},
         {"labelAlias":"sub_contract_reference_id","column":"sub_contract_reference_id","sortSourceColumn":"sub_contract_id","exportColumn":"sub_contract_reference_id"},
         {"label":"","column":"","export":false},
         {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description","exportColumn":"description"},
@@ -295,9 +295,21 @@
     ",
     "exportColumnSqlOverride":[
         {
+            "column":"contract_includes_sub",
+            "sourceColumn":"scntrc_status_name",
+            "sql":"CASE WHEN document_code IN ('CT1', 'CTA1', 'CT2') 
+                    THEN scntrc_status_name
+                   ELSE 'N/A' END"
+        },
+        {
             "column":"sub_contract_reference_id",
             "sourceColumn":"sub_contract_id",
-            "sql":"CASE WHEN sub_contract_id IS NULL THEN 'N/A' ELSE sub_contract_id END"
+            "sql":" CASE WHEN document_code IN ('CT1', 'CTA1', 'CT2')
+                    THEN (CASE WHEN ((sub_contract_id IS NULL OR sub_contract_id = '') AND scntrc_status = 2) THEN 'NOT PROVIDED' 
+                               WHEN (sub_contract_id IS NULL OR sub_contract_id = '') THEN 'N/A'
+                               ELSE sub_contract_id
+                           END)
+                    ELSE 'N/A' END"
         },
         {
             "column":"parent_contract_link",
@@ -307,20 +319,34 @@
         {
             "column":"subvendor_name",
             "sourceColumn":"sub_vendor_name",
-            "sql":"CASE WHEN (document_code IN ('CT1', 'CTA1', 'CT2') AND (sub_vendor_name IS NULL OR sub_vendor_name= ''))
-                    THEN 'Not Provided' 
-                   WHEN (document_code NOT IN ('CT1', 'CTA1', 'CT2') AND (sub_vendor_name IS NULL OR sub_vendor_name= ''))
-                    THEN 'N/A'
-                   ELSE sub_vendor_name END"
+            "sql":"CASE WHEN document_code IN ('CT1', 'CTA1', 'CT2')
+			THEN (CASE WHEN ((sub_vendor_name IS NULL OR sub_vendor_name = '') AND scntrc_status = 2) 
+				THEN 'NOT PROVIDED' 
+			     WHEN (sub_vendor_name IS NULL OR sub_vendor_name = '') 
+			        THEN 'N/A'
+                            ELSE sub_vendor_name
+			END)
+                   ELSE 'N/A' END"
         },
         {
             "column":"sub_mwbe_category",
             "sourceColumn":"sub_minority_type_name",
-            "sql":"CASE WHEN (document_code IN ('CT1', 'CTA1', 'CT2') AND (sub_minority_type_name IS NULL OR sub_minority_type_name= ''))
-                        THEN 'Not Provided' 
-                        WHEN (document_code NOT IN ('CT1', 'CTA1', 'CT2') AND (sub_minority_type_name IS NULL OR sub_minority_type_name= ''))
-                        THEN 'N/A'
-                        ELSE sub_minority_type_name END"
+            "sql":"CASE WHEN document_code IN ('CT1', 'CTA1', 'CT2')
+			THEN (CASE WHEN ((sub_minority_type_name IS NULL OR sub_minority_type_name = '') AND scntrc_status = 2) 
+				THEN 'NOT PROVIDED' 
+			     WHEN (sub_minority_type_name IS NULL OR sub_minority_type_name = '') 
+			        THEN 'N/A'
+                            ELSE sub_minority_type_name
+			END)
+                 ELSE 'N/A' END"
+        },
+        {
+            "column":"subvendor_status_pip",
+            "sourceColumn":"aprv_sta_name",
+            "sql":"CASE WHEN document_code IN ('CT1', 'CTA1', 'CT2') 
+			THEN aprv_sta_name
+                    ELSE 'N/A'
+                    END"
         }
     ],
     "adjustDataTableOptions":"
