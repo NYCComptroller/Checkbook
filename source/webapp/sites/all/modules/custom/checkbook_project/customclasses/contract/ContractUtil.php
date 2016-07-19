@@ -735,21 +735,46 @@ namespace { //global
             return $parameters;
         }
 
-        static public function filterPrimeMWBE (&$parameters) {
+        static public function filterPrimeMWBESubContractTransactions (&$parameters) {
             //Filter only prime M/WBE for M/WBE dashboard
             $dashboard = _getRequestParamValue('dashboard');
             $mwbe = _getRequestParamValue('mwbe');
             if(($dashboard == 'ms' || $dashboard == 'sp') && isset($mwbe)) {
                 if(isset($mwbe)) {
-
                     if(isset($parameters['vendor_type.vendor_type'])) {
                         $parameters['vendor_type.vendor_type'][] = 'PM';
                     }
                     else {
-                        $parameters['vendor_type.vendor_type'] = 'PM';;
+                        $parameters['vendor_type.vendor_type'] = 'PM';
                     }
                 }
             }
+            return $parameters;
+        }
+
+        static public function filterPrimeSubMWBEContractTransactions (&$parameters) {
+            //Filter only prime M/WBE for M/WBE dashboard
+            $dashboard = _getRequestParamValue('dashboard');
+            $mwbe = _getRequestParamValue('mwbe');
+            $smnid = _getRequestParamValue('smnid');
+            $vendor_type = null;
+            //Sub Data
+            if(($dashboard == 'ss' || $dashboard == 'sp' || $dashboard == 'ms') || ($smnid == 720)) {
+                $vendor_type = isset($mwbe) ? "SM" : array('S','SM');
+            }
+            //Prime Data
+            else if($dashboard == 'mp' || ($dashboard == null && $smnid != null)) {
+                $vendor_type = isset($mwbe) ? "PM" : array('P','PM');
+            }
+            if(isset($vendor_type)) {
+                if(isset($parameters['vendor_type.vendor_type'])) {
+                    $parameters['vendor_type.vendor_type'][] = $vendor_type;
+                }
+                else {
+                    $parameters['vendor_type.vendor_type'][] = $vendor_type;
+                }
+            }
+
             return $parameters;
         }
 
@@ -839,6 +864,30 @@ namespace { //global
                     if(isset($condition)) {
                         $parameters['prime_sub_minority_type_id'] = $condition;
                     }
+                }
+            }
+
+            //Filter only prime M/WBE for M/WBE dashboard
+            $dashboard = _getRequestParamValue('dashboard');
+            $mwbe = _getRequestParamValue('mwbe');
+            $smnid = _getRequestParamValue('smnid');
+            $localValue = null;
+            //Sub Data
+            if(($dashboard == 'ss' || $dashboard == 'sp' || $dashboard == 'ms') || ($smnid == 720)) {
+                $localValue = isset($mwbe) ? "SM:.*" : "(S|SM):.*";
+            }
+            //Prime Data
+            else if($dashboard == 'mp' || ($dashboard == null && $smnid != null)) {
+                $localValue = isset($mwbe) ? "PM:.*" : "(P|PM):.*";
+            }
+            if(isset($localValue)) {
+                $pattern = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
+                $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
+                if(isset($parameters['prime_sub_vendor_code_by_type'])) {
+                    $parameters['prime_sub_vendor_code_by_type'][] = $condition;
+                }
+                else {
+                    $parameters['prime_sub_vendor_code_by_type'] = $condition;
                 }
             }
 
@@ -1081,7 +1130,7 @@ namespace { //global
             $vendor = _getRequestParamValue('vendor');
             $dashboard = _getRequestParamValue('dashboard');
             $status = _getRequestParamValue('status');
-                    
+
             if($subvendor) {
                 $subvendor_code = self::getSubVendorCustomerCode($subvendor);
             }
@@ -1091,7 +1140,7 @@ namespace { //global
             $subvendorURLString = isset($subvendor_code) ? '/vendorcode/'.$subvendor_code : '';
             $vendorURLString = isset($vendor_code) ? '/vendorcode/'.$vendor_code : '';
             $detailsPageURL  = (($dashboard == 'ss' || $dashboard == 'sp' || $dashboard == 'ms') && !isset($status))? 'sub_contracts_transactions' : 'contract_details';
-            
+
             $url = '/panel_html/'. $detailsPageURL .'/contract/transactions/contcat/expense'
                 . _checkbook_project_get_url_param_string('status','contstatus')
                 . _checkbook_append_url_params()
