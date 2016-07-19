@@ -687,6 +687,26 @@ namespace { //global
                     }
                 }
             }
+
+            //Filter only prime M/WBE for M/WBE dashboard
+            $dashboard = _getRequestParamValue('dashboard');
+            $mwbe = _getRequestParamValue('mwbe');
+            if($dashboard == 'ms' || $dashboard == 'sp') {
+                if(isset($mwbe)) {
+
+                    $localValue = "PM:.*";
+                    $pattern = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
+                    $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
+                    if(isset($parameters['prime_sub_vendor_code_by_type'])) {
+                        $parameters['prime_sub_vendor_code_by_type'][] = $condition;
+                    }
+                    else {
+                        $parameters['prime_sub_vendor_code_by_type'] = $condition;
+                    }
+
+                }
+            }
+
             unset($parameters['vendor_name']);
             unset($parameters['vendor_type']);
             unset($parameters['minority_type_id']);
@@ -712,6 +732,24 @@ namespace { //global
             $parameters['effective_end_year_id']= $geCondition;
 
             unset($parameters['year']);
+            return $parameters;
+        }
+
+        static public function filterPrimeMWBE (&$parameters) {
+            //Filter only prime M/WBE for M/WBE dashboard
+            $dashboard = _getRequestParamValue('dashboard');
+            $mwbe = _getRequestParamValue('mwbe');
+            if(($dashboard == 'ms' || $dashboard == 'sp') && isset($mwbe)) {
+                if(isset($mwbe)) {
+
+                    if(isset($parameters['vendor_type.vendor_type'])) {
+                        $parameters['vendor_type.vendor_type'][] = 'PM';
+                    }
+                    else {
+                        $parameters['vendor_type.vendor_type'] = 'PM';;
+                    }
+                }
+            }
             return $parameters;
         }
 

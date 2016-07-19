@@ -26,6 +26,7 @@
             $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
             $parameters['vendor_type_name.vendor_type_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
         }
+        $parameters = ContractUtil::filterPrimeMWBE($parameters);
         return $parameters;
     ",
     "template":"individual_filter"
