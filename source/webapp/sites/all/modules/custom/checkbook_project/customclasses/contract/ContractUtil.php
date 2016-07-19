@@ -1087,7 +1087,8 @@ namespace { //global
             }
             $subvendorURLString = isset($subvendor_code) ? '/vendorcode/'.$subvendor_code : '';
             $vendorURLString = isset($vendor_code) ? '/vendorcode/'.$vendor_code : '';
-            $url = '/panel_html/sub_contracts_transactions/subcontract/transactions/contcat/expense'
+            
+            $url = '/panel_html/contract_details/contract/transactions/contcat/expense'
                 . _checkbook_project_get_url_param_string('status','contstatus')
                 . _checkbook_append_url_params()
                 . _checkbook_project_get_url_param_string('agency')
