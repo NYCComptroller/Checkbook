@@ -600,6 +600,16 @@ namespace { //global
         }
 
         /**
+         * Checks the current dashboard and rules for sub vendor data
+         * @return mixed
+         */
+        static public function showSubVendorData() {
+            $dashboard = _getRequestParamValue('dashboard');
+            $smnid = _getRequestParamValue('smnid');
+            return ($dashboard == 'ss' || $dashboard == 'sp' || $dashboard == 'ms') || ($smnid == 720);
+        }
+
+        /**
          * Function to handle parameters for the derived facet implementation mapping a single facet to multiple columns
          * for the "Summary of Sub Contract Status by Prime Contract ID Transactions"
          * @param $node
@@ -752,32 +762,6 @@ namespace { //global
             return $parameters;
         }
 
-        static public function filterPrimeSubMWBEContractTransactions (&$parameters) {
-            //Filter only prime M/WBE for M/WBE dashboard
-            $dashboard = _getRequestParamValue('dashboard');
-            $mwbe = _getRequestParamValue('mwbe');
-            $smnid = _getRequestParamValue('smnid');
-            $vendor_type = null;
-            //Sub Data
-            if(($dashboard == 'ss' || $dashboard == 'sp' || $dashboard == 'ms') || ($smnid == 720)) {
-                $vendor_type = isset($mwbe) ? "SM" : array('S','SM');
-            }
-            //Prime Data
-            else if($dashboard == 'mp' || ($dashboard == null && $smnid != null)) {
-                $vendor_type = isset($mwbe) ? "PM" : array('P','PM');
-            }
-            if(isset($vendor_type)) {
-                if(isset($parameters['vendor_type.vendor_type'])) {
-                    $parameters['vendor_type.vendor_type'][] = $vendor_type;
-                }
-                else {
-                    $parameters['vendor_type.vendor_type'][] = $vendor_type;
-                }
-            }
-
-            return $parameters;
-        }
-
         /**
          * Function to handle parameters for the derived facet implementation mapping a single facet to multiple columns
          * for the Active Contracts transactions.
@@ -864,30 +848,6 @@ namespace { //global
                     if(isset($condition)) {
                         $parameters['prime_sub_minority_type_id'] = $condition;
                     }
-                }
-            }
-
-            //Filter only prime M/WBE for M/WBE dashboard
-            $dashboard = _getRequestParamValue('dashboard');
-            $mwbe = _getRequestParamValue('mwbe');
-            $smnid = _getRequestParamValue('smnid');
-            $localValue = null;
-            //Sub Data
-            if(($dashboard == 'ss' || $dashboard == 'sp' || $dashboard == 'ms') || ($smnid == 720)) {
-                $localValue = isset($mwbe) ? "SM:.*" : "(S|SM):.*";
-            }
-            //Prime Data
-            else if($dashboard == 'mp' || ($dashboard == null && $smnid != null)) {
-                $localValue = isset($mwbe) ? "PM:.*" : "(P|PM):.*";
-            }
-            if(isset($localValue)) {
-                $pattern = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
-                $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
-                if(isset($parameters['prime_sub_vendor_code_by_type'])) {
-                    $parameters['prime_sub_vendor_code_by_type'][] = $condition;
-                }
-                else {
-                    $parameters['prime_sub_vendor_code_by_type'] = $condition;
                 }
             }
 
