@@ -199,7 +199,7 @@
         },
         "sub_contract_reference_id":{
             "type":"expression2",
-            "expression":"(in_array($row['document_code'], array('CT1', 'CTA1', 'CT2')))  ? ((($row['sub_contract_id'] == NULL || $row['sub_contract_id'] == '') && $row['scntrc_status'] == 2) ) ? 'NOT PROVIDED' : (($row['sub_contract_id'] == NULL || $row['sub_contract_id'] == '') ? 'N/A' : $row['sub_contract_id']) : 'N/A'"
+            "expression":"(in_array($row['document_code'], array('CT1', 'CTA1', 'CT2')))  ? (in_array($row['sub_contract_id'], array(NULL,'')) && $row['scntrc_status'] == 2) ? 'NOT PROVIDED' : (in_array($row['sub_contract_id'], array(NULL, '')) ? 'N/A' : $row['sub_contract_id']) : 'N/A'"
         },
         "prime_vendor_name_formatted": {
             "type": "expression2",
