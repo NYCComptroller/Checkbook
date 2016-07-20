@@ -307,7 +307,7 @@
             "sourceColumn":"scntrc_status_name",
             "sql":"CASE WHEN document_code IN ('CT1', 'CTA1', 'CT2') 
                     THEN scntrc_status_name
-                   ELSE 'N/A' END"
+                   ELSE 'N/A' END AS scntrc_status_name"
         },
         {
             "column":"sub_contract_reference_id",
@@ -317,12 +317,12 @@
                                WHEN (sub_contract_id IS NULL OR sub_contract_id = '') THEN 'N/A'
                                ELSE sub_contract_id
                            END)
-                    ELSE 'N/A' END"
+                    ELSE 'N/A' END AS sub_contract_id"
         },
         {
             "column":"parent_contract_link",
             "sourceColumn":"master_contract_number",
-            "sql":"CASE WHEN master_contract_number IS NULL THEN 'N/A' ELSE master_contract_number END"
+            "sql":"CASE WHEN master_contract_number IS NULL THEN 'N/A' ELSE master_contract_number END AS master_contract_number"
         },
         {
             "column":"subvendor_name",
@@ -334,7 +334,7 @@
 			        THEN 'N/A'
                             ELSE sub_vendor_name
 			END)
-                   ELSE 'N/A' END"
+                   ELSE 'N/A' END AS sub_vendor_name"
         },
         {
             "column":"sub_mwbe_category",
@@ -346,7 +346,7 @@
 			        THEN 'N/A'
                             ELSE sub_minority_type_name
 			END)
-                 ELSE 'N/A' END"
+                 ELSE 'N/A' END AS sub_minority_type_name"
         },
         {
             "column":"subvendor_status_pip",
@@ -354,7 +354,7 @@
             "sql":"CASE WHEN document_code IN ('CT1', 'CTA1', 'CT2') 
 			THEN aprv_sta_name
                     ELSE 'N/A'
-                    END"
+                    END AS aprv_sta_name"
         }
     ],
     "adjustDataTableOptions":"
