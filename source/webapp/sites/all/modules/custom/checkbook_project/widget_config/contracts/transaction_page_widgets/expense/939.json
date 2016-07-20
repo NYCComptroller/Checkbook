@@ -201,6 +201,10 @@
             "type":"expression2",
             "expression":"(in_array($row['document_code'], array('CT1', 'CTA1', 'CT2')))  ? (in_array($row['sub_contract_id'], array(NULL,'')) && $row['scntrc_status'] == 2) ? 'NOT PROVIDED' : (in_array($row['sub_contract_id'], array(NULL, '')) ? 'N/A' : $row['sub_contract_id']) : 'N/A'"
         },
+        "sub_contract_reference_id_export":{
+            "type":"expression2",
+            "expression":"isset($row['sub_contract_id']) ? $row['sub_contract_id'] : 'N/A'"
+        },
         "prime_vendor_name_formatted": {
             "type": "expression2",
             "expression": "_get_tooltip_markup($row['prime_vendor_name'],24)"
@@ -221,7 +225,7 @@
         },
         "subvendor_name_export": {
             "type": "expression2",
-            "expression": "(in_array($row['document_code'], array('CT1', 'CTA1', 'CT2'))) ? ((in_array($row['sub_vendor_name'], array(NULL, ''))) ? 'NOT PROVIDED' : $row['sub_vendor_name']) : 'N/A'"
+            "expression": "isset($row['sub_vendor_name']) ?  $row['sub_vendor_name'] : 'N/A'"
         },
         "sub_mwbe_category_name": {
             "type": "expression2",
@@ -229,11 +233,15 @@
         },
         "sub_mwbe_category_name_export": {
             "type": "expression2",
-            "expression": "(in_array($row['document_code'], array('CT1', 'CTA1', 'CT2'))) ? ((in_array($row['sub_minority_type_name'], array(NULL, ''))) ? 'NOT PROVIDED' : $row['sub_minority_type_name']) : 'N/A'"
+            "expression": "isset($row['sub_minority_type_name']) ?  $row['sub_minority_type_name']: 'N/A'"
         },
         "contract_includes_sub":{
             "type": "expression2",
             "expression": "(in_array($row['document_code'], array('CT1', 'CTA1', 'CT2'))) ? $row['scntrc_status_name'] : 'N/A'"
+        },
+        "contract_includes_sub_export":{
+            "type": "expression2",
+            "expression": "isset($row['scntrc_status_name']) ? $row['scntrc_status_name'] : 'N/A'"
         },
         "subvendor_status_pip":{
             "type": "expression2",
@@ -241,15 +249,15 @@
         },
         "subvendor_status_pip_export":{
             "type": "expression2",
-            "expression": "(in_array($row['document_code'], array('CT1', 'CTA1', 'CT2'))) ? $row['aprv_sta_name'] : 'N/A'"
+            "expression": "isset($row['aprv_sta_name'])? $row['aprv_sta_name'] : 'N/A'"
         }
     },
     "skipCustomPadding":true,
     "table_columns": [
         {"label": "<div></div>","colLabel": "","column": "child_contrats_link","export":false},
         {"labelAlias": "contract_id","column": "contract_link","sortSourceColumn":"contract_number"},
-        {"labelAlias":"contract_includes_sub","column":"contract_includes_sub","sortSourceColumn":"scntrc_status_name","exportColumn":"contract_includes_sub"},
-        {"labelAlias":"sub_contract_reference_id","column":"sub_contract_reference_id","sortSourceColumn":"sub_contract_id","exportColumn":"sub_contract_reference_id"},
+        {"labelAlias":"contract_includes_sub","column":"contract_includes_sub","sortSourceColumn":"scntrc_status_name", "exportColumn":"contract_includes_sub_export"},
+        {"labelAlias":"sub_contract_reference_id","column":"sub_contract_reference_id","sortSourceColumn":"sub_contract_id","exportColumn":"sub_contract_reference_id_export"},
         {"label":"","column":"","export":false},
         {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description","exportColumn":"description"},
         {"labelAlias": "version","column": "document_version"},
