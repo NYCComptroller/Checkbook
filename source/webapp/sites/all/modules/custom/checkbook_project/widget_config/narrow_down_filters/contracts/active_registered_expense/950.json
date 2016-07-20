@@ -12,7 +12,7 @@
         "vendortype":"vendor_type.vendor_type",
         "mwbe":"minority_type_id.minority_type_id"
     },
-    "dataset":"checkbook:contract_transaction_vendor_facet_data",
+    "dataset":"checkbook:contract_transactions_by_prime_vendor_facet_data",
     "columns":["minority_type_id.minority_type_id","minority_type_name.minority_type_name", "txcount"],
     "orderBy":"-txcount",
     "getTotalDataCount":true,
