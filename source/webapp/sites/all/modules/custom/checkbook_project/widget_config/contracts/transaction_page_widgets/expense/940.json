@@ -154,7 +154,7 @@
         },
         "sub_contract_reference_id":{
             "type":"expression2",
-            "expression":"($row['sub_contract_id'] == '' || $row['sub_contract_id'] == NULL) ? 'N/A' : $row['sub_contract_id']"
+            "expression":"(in_array($row['document_code'], array('CT1', 'CTA1', 'CT2')))  ? (in_array($row['sub_contract_id'], array(NULL,'')) && $row['scntrc_status'] == 2) ? 'NOT PROVIDED' : (in_array($row['sub_contract_id'], array(NULL, '')) ? 'N/A' : $row['sub_contract_id']) : 'N/A'"
         },
         "prime_vendor_name_formatted": {
             "type": "expression2",
@@ -172,27 +172,31 @@
         },
         "subvendor_name": {
             "type": "expression2",
-            "expression": "$row['sub_vendor_name'] == NULL ? 'NOT PROVIDED' : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row[sub_vendor_id],_getRequestParamValue('year'),_getRequestParamValue('yeartype'), null, $row[sub_minority_type_id]) .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>'"
+            "expression": "(in_array($row['document_code'], array('CT1', 'CTA1', 'CT2'))) ? ((in_array($row['sub_vendor_name'], array(NULL, ''))) ? 'NOT PROVIDED' : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row[sub_vendor_id],_getRequestParamValue('year'),_getRequestParamValue('yeartype'), null, $row[sub_minority_type_id]) .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>') : 'N/A'"
         },
         "subvendor_name_export": {
             "type": "expression2",
-            "expression": "($row['sub_vendor_name'] == '' || $row['sub_vendor_name'] == NULL) ? 'NOT PROVIDED' : $row['sub_vendor_name']"
+            "expression": "(in_array($row['document_code'], array('CT1', 'CTA1', 'CT2'))) ? ((in_array($row['sub_vendor_name'], array(NULL, ''))) ? 'NOT PROVIDED' : $row['sub_vendor_name']) : 'N/A'"
         },
         "sub_mwbe_category_name": {
             "type": "expression2",
-            "expression": "($row['sub_minority_type_name'] == '' || $row['sub_minority_type_name'] == NULL) ? 'NOT PROVIDED' : $row['sub_minority_type_name']"
+            "expression": "(in_array($row['document_code'], array('CT1', 'CTA1', 'CT2'))) ? ((in_array($row['sub_minority_type_name'], array(NULL, ''))) ? 'NOT PROVIDED' : $row['sub_minority_type_name'] ) : 'N/A'"
+        },
+        "sub_mwbe_category_name_export": {
+            "type": "expression2",
+            "expression": "(in_array($row['document_code'], array('CT1', 'CTA1', 'CT2'))) ? ((in_array($row['sub_minority_type_name'], array(NULL, ''))) ? 'NOT PROVIDED' : $row['sub_minority_type_name']) : 'N/A'"
         },
         "contract_includes_sub":{
             "type": "expression2",
-            "expression": "($row['document_code'] == 'CT1' || $row['document_code'] == 'CTA1' || $row['document_code'] == 'CT2') ? $row['scntrc_status_name'] : 'N/A'"
+            "expression": "(in_array($row['document_code'], array('CT1', 'CTA1', 'CT2'))) ? $row['scntrc_status_name'] : 'N/A'"
         },
         "subvendor_status_pip":{
             "type": "expression2",
-            "expression": "($row['aprv_sta_name'] == 'N/A' || $row['aprv_sta_name'] == NULL) ? 'N/A' : _get_tooltip_markup($row['aprv_sta_name'],36)"
+            "expression": "(in_array($row['document_code'], array('CT1', 'CTA1', 'CT2'))) ? _get_tooltip_markup($row['aprv_sta_name'],36) : 'N/A'"
         },
         "subvendor_status_pip_export":{
             "type": "expression2",
-            "expression": "($row['aprv_sta_name'] == 'N/A' || $row['aprv_sta_name'] == NULL) ? 'N/A' : $row['aprv_sta_name']"
+            "expression": "(in_array($row['document_code'], array('CT1', 'CTA1', 'CT2'))) ? $row['aprv_sta_name'] : 'N/A'"
         }
     },
     "skipCustomPadding":true,

@@ -494,7 +494,10 @@
                         var data = results['aaData'];
                         var dataLen = results['aaData'].length;
                         var sOut = '<div class=\"sub-table-wrapper\"><table>';
+                        
+                        var smnid = jQuery(oElement).attr('smnid');
                         var is_contract_modification = (smnid == 480 || smnid == 366);
+                        
                         for(i=0;i<dataLen;i++){
                             var row = data[i];
 
