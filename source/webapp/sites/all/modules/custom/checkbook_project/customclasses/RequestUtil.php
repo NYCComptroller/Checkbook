@@ -167,10 +167,10 @@ class RequestUtil{
 
         }elseif(preg_match('/^contracts_landing/',current_path()) && !preg_match('/status\/',current_path())){
             if(preg_match('/dashboard\/ss/', current_path()) ){
-                $title = 'Subcontract Status by Prime Contract ID' ;
+                $title = 'Sub Contract Status by Prime Contract ID' ;
             }
             if( preg_match('/dashboard\/ms/', current_path()) ||  preg_match('/dashboard\/sp/', current_path())){
-                $title = 'M/WBE Subcontract Status by Prime Contract ID' ;
+                $title = 'M/WBE Sub Contract Status by Prime Contract ID' ;
             }
         }
         elseif(preg_match('/^contracts_revenue_landing/',current_path()) && preg_match('/status\/A/',current_path())){
