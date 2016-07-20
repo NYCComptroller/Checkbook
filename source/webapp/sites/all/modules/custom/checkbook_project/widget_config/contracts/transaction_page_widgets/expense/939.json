@@ -221,7 +221,7 @@
         },
         "subvendor_name": {
             "type": "expression2",
-            "expression": "(in_array($row['document_code'], array('CT1', 'CTA1', 'CT2')))  ? (in_array($row['sub_vendor_name'], array(NULL,'')) && $row['scntrc_status'] == 2) ? 'NOT PROVIDED' : (in_array($row['sub_vendor_name'], array(NULL, '')) ? 'N/A' : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row[sub_vendor_id],_getRequestParamValue('year'),_getRequestParamValue('yeartype'), null, $row[sub_minority_type_id]) .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>') : 'N/A'"
+            "expression": "(in_array($row['document_code'], array('CT1', 'CTA1', 'CT2'))) ? ((in_array($row['sub_vendor_name'], array(NULL, '')) && $row['scntrc_status'] == 2) ? 'NOT PROVIDED' : (in_array($row['sub_vendor_name'], array(NULL, '')) ? 'N/A' : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row[sub_vendor_id],_getRequestParamValue('year'),_getRequestParamValue('yeartype'), null, $row[sub_minority_type_id]) .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>')) : 'N/A'"
         },
         "subvendor_name_export": {
             "type": "expression2",
@@ -229,7 +229,7 @@
         },
         "sub_mwbe_category_name": {
             "type": "expression2",
-            "expression": "(in_array($row['document_code'], array('CT1', 'CTA1', 'CT2')))  ? (in_array($row['sub_minority_type_name'], array(NULL,'')) && $row['scntrc_status'] == 2) ? 'NOT PROVIDED' : (in_array($row['sub_minority_type_name'], array(NULL, '')) ? 'N/A' : '$row['sub_minority_type_name']) : 'N/A'"
+            "expression": "(in_array($row['document_code'], array('CT1', 'CTA1', 'CT2'))) ? ((in_array($row['sub_minority_type_name'], array(NULL, '')) && $row['scntrc_status'] == 2) ? 'NOT PROVIDED' : (in_array($row['sub_minority_type_name'], array(NULL, '')) ? 'N/A' : $row['sub_minority_type_name'])) : 'N/A'"
         },
         "sub_mwbe_category_name_export": {
             "type": "expression2",
