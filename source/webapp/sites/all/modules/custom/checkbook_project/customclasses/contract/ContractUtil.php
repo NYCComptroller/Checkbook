@@ -609,6 +609,22 @@ namespace { //global
             return ($dashboard == 'ss' || $dashboard == 'sp' || $dashboard == 'ms') || ($smnid == 720);
         }
 
+        static public function updateActiveContractsDataSet(&$node) {
+
+            if(self::showSubVendorData()) {
+                $filterName = $node->widgetConfig->filterName;
+                if($filterName == "Vendor" || $filterName == "M/WBE Category") {
+                    $node->widgetConfig->dataset = "checkbook:contract_transactions_by_sub_vendor_facet_data";
+                }
+                else if($filterName == "Vendor Type") {
+                    $node->widgetConfig->dataset = "checkbook:contract_transactions_by_sub_vendor_type_facet_data";
+                }
+                else {
+                    $node->widgetConfig->dataset = "checkbook:contract_transactions_by_sub";
+                }
+            }
+        }
+
         /**
          * Function to handle parameters for the derived facet implementation mapping a single facet to multiple columns
          * for the "Summary of Sub Contract Status by Prime Contract ID Transactions"

@@ -15,7 +15,7 @@
         "mwbe":"minority_type_id.minority_type_id"
     },
     "filterName":"Vendor",
-    "dataset":"checkbook:contract_transaction_vendor_facet_data",
+    "dataset":"checkbook:contract_transactions_by_prime_vendor_facet_data",
     "columns":["vendor_name.vendor_name", "txcount"],
     "orderBy":"-txcount",
     "autocompleteParamName":"vendor_auto",
