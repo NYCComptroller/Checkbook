@@ -1788,6 +1788,22 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#name' => 'contractno',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'contractno', $first_time_load, ''),
             );
+            $form['filter']['scntrc_status'] = array(
+                '#type' => 'select',
+                '#title' => t('Contract Includes <br />Sub Vendors:'),
+                '#options' => array(
+                    0 => 'Select Status',
+                    2 => 'Yes',
+                    3 => 'No',
+                    1 => 'No Data Entered',
+                ),
+                '#attributes' => array('class' => array('watch')),
+                '#prefix' => '<div class="datafield scntrc_status">',
+                '#suffix' => '</div>',
+                '#id' => 'edit-scntrc_status',
+                '#name' => 'scntrc_status',
+                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'scntrc_status', $first_time_load, 0),
+            );
             $form['filter']['pin'] = array(
                 '#type' => 'textfield',
                 '#title' => t('PIN:'),
@@ -1887,6 +1903,25 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#id' => 'edit-category',
                 '#name' => 'category',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'category', $first_time_load, 'expense'),
+            );
+            $form['filter']['aprv_sta'] = array(
+                '#type' => 'select',
+                '#title' => t('Sub Vendor Status <br />in PIP:'),
+                '#options' => array(
+                    0 => 'Select Status',
+                    6 => 'No Subcontract Information Submitted',
+                    1 => 'No Subcontract Payments Submitted',
+                    4 => 'ACCO Approved Sub Vendor',
+                    3 => 'ACCO Reviewing Sub Vendor',
+                    2 => 'ACCO Rejected Sub Vendor',
+                    5 => 'ACCO Canceled Sub Vendor',
+                ),
+                '#attributes' => array('class' => array('watch')),
+                '#prefix' => '<div class="datafield aprv_sta">',
+                '#suffix' => '</div>',
+                '#id' => 'edit-aprv_sta',
+                '#name' => 'aprv_sta',
+                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'aprv_sta', $first_time_load, 0),
             );
             $form['filter']['purpose'] = array(
 
@@ -2340,6 +2375,13 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
                 $user_criteria['Contract ID'] = $values['contractno'];
                 $formatted_search_criteria[''] = null;
             }
+            if ($values['scntrc_status']) {
+                if ($values['scntrc_status'] != 'Select Status') {
+                    $form['filter']['scntrc_status'] = array('#markup' => '<div><strong>Contract Includes Sub Vendors:</strong> ' . $values['scntrc_status'] . '</div>');
+                    $user_criteria['Contract Includes Sub Vendors'] = $values['scntrc_status'];
+                    $formatted_search_criteria['Contract Includes Sub Vendors'] = $values['scntrc_status'];
+                }
+            }
             if ($values['pin']) {
                 $form['filter']['pin'] = array(
                     '#markup' => '<div><strong>PIN:</strong> ' . $values['pin'] . '</div>',
@@ -2393,6 +2435,13 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
                 $form['filter']['category'] = array('#markup' => '<div><strong>Category:</strong> ' . $values['category'] . '</div>');
                 $user_criteria['Category'] = $values['category'];
                 $formatted_search_criteria['Category'] = $values['category'];
+            }
+            if ($values['aprv_sta']) {
+                if ($values['aprv_sta'] != 'Select Status') {
+                    $form['filter']['aprv_sta'] = array('#markup' => '<div><strong>Sub Vendor Status in PIP:</strong> ' . $values['aprv_sta'] . '</div>');
+                    $user_criteria['Sub Vendor Status in PIP'] = $values['aprv_sta'];
+                    $formatted_search_criteria['Sub Vendor Status in PIP'] = $values['aprv_sta'];
+                }
             }
             if ($values['purpose']) {
                 $form['filter']['purpose'] = array(
