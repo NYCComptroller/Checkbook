@@ -2,111 +2,14 @@
     "datasets": {
         "contract_transactions_by_sub": {
             "datasourceName":"main",
-            "source":"
-                SELECT prime_sub_vendor_code,prime_sub_vendor_code_by_type,prime_sub_minority_type_id,prime_sub_vendor_name_by_type,
-                agreement_id,
-                contract_number,
-                contract_original_agreement_id,
-                sub_original_contract_amount as original_contract_amount,
-                agreement_type_name,
-                sub_contract_id,
-                master_agreement_yn,
-                master_contract_number,
-                master_agreement_id,
-                has_children,
-                has_mwbe_children,
-                sub_document_version as document_version,
-                sub_maximum_contract_amount as maximum_contract_amount,
-                sub_dollar_difference as dollar_difference,
-                sub_percent_difference as percent_difference,
-                sub_purpose as description,
-                scntrc_status,
-                scntrc_status_name,
-                prime_vendor_id,
-                prime_vendor_name,
-                prime_minority_type_id,
-                prime_minority_type_name,
-                sub_vendor_id,
-                sub_vendor_name,
-                sub_minority_type_id,
-                sub_minority_type_name,
-                aprv_sta,
-                aprv_sta_name,
-                agency_id,
-                agency_name,
-                award_method_name,award_method_id
-                industry_type_name,industry_type_id,
-                expenditure_object_names,
-                sub_effective_begin_date as effective_begin_date,
-                sub_effective_end_date as effective_end_date,
-                registered_date,
-                tracking_number,
-                brd_awd_no,
-                document_code,
-                original_agreement_id,
-                sub_spent_to_date as rfed_amount,
-                sub_starting_year_id as starting_year_id,
-                sub_ending_year_id as ending_year_id,
-                sub_effective_begin_year_id as effective_begin_year_id,
-                sub_effective_end_year_id as effective_end_year_id
-                FROM all_agreement_transactions_by_prime_vendor
-                "
+            "source":"all_agreement_transactions_by_sub_vendor"
         },
         "contract_transactions_by_sub_vendor_facet_data":{
             "datasourceName":"main",
-            "source":"
-                SELECT vendor_code,vendor_name,vendor_type_name,vendor_type,minority_type_id,minority_type_name,
-                agreement_id,
-                contract_number,
-                contract_original_agreement_id,
-                sub_original_contract_amount as original_contract_amount,
-                agreement_type_name,
-                sub_contract_id,
-                master_agreement_yn,
-                master_contract_number,
-                master_agreement_id,
-                has_children,
-                has_mwbe_children,
-                sub_document_version as document_version,
-                sub_maximum_contract_amount as maximum_contract_amount,
-                sub_dollar_difference as dollar_difference,
-                sub_percent_difference as percent_difference,
-                sub_purpose as description,
-                scntrc_status,
-                scntrc_status_name,
-                prime_vendor_id,
-                prime_vendor_name,
-                prime_minority_type_id,
-                prime_minority_type_name,
-                sub_vendor_id,
-                sub_vendor_name,
-                sub_minority_type_id,
-                sub_minority_type_name,
-                aprv_sta,
-                aprv_sta_name,
-                agency_id,
-                agency_name,
-                award_method_name,award_method_id,
-                industry_type_name,industry_type_id,
-                expenditure_object_names,
-                sub_effective_begin_date as effective_begin_date,
-                sub_effective_end_date as effective_end_date,
-                registered_date,
-                tracking_number,
-                brd_awd_no,
-                document_code,
-                original_agreement_id,
-                sub_spent_to_date as rfed_amount,
-                sub_starting_year_id as starting_year_id,
-                sub_ending_year_id as ending_year_id,
-                sub_effective_begin_year_id as effective_begin_year_id,
-                sub_effective_end_year_id as effective_end_year_id
-                FROM
-                (
-                    SELECT prime_vendor_code as vendor_code, prime_vendor_name as vendor_name, 'PRIME' as vendor_type_name,
+            "source":"SELECT prime_vendor_code as vendor_code, prime_vendor_name as vendor_name, 'PRIME' as vendor_type_name,
                     CASE WHEN prime_minority_type_id IN (2,3,4,5,9) THEN 'PM' ELSE 'P' END as vendor_type,
                     prime_minority_type_id as minority_type_id, prime_minority_type_name as minority_type_name, *
-                    FROM all_agreement_transactions_by_prime_vendor
+                    FROM all_agreement_transactions_by_sub_vendor
                     WHERE prime_sub_vendor_code_by_type ~* '(^P:.*$)|(.*,P:.*$)|(^P:.*,.*)|(^PM:.*$)|(.*,PM:.*$)|(^PM:.*,.*)'
 
                     UNION ALL
@@ -114,74 +17,24 @@
                     SELECT sub_vendor_code as vendor_code, sub_vendor_name as vendor_name, 'SUB' as vendor_type_name,
                     CASE WHEN sub_minority_type_id IN (2,3,4,5,9) THEN 'SM' ELSE 'S' END as vendor_type,
                     sub_minority_type_id as minority_type_id, sub_minority_type_name as minority_type_name, *
-                    FROM all_agreement_transactions_by_prime_vendor
+                    FROM all_agreement_transactions_by_sub_vendor
                     WHERE prime_sub_vendor_code_by_type ~* '(^S:.*$)|(.*,S:.*$)|(^S:.*,.*)|(^SM:.*$)|(.*,SM:.*$)|(^SM:.*,.*)'
-                ) query
-                "
+                    "
         },
         "contract_transactions_by_sub_vendor_type_facet_data":{
             "datasourceName":"main",
-            "source":"
-                SELECT vendor_type_name,vendor_type_id,vendor_code,vendor_name,minority_type_id,vendor_type
-                agreement_id,
-                contract_number,
-                contract_original_agreement_id,
-                sub_original_contract_amount as original_contract_amount,
-                agreement_type_name,
-                sub_contract_id,
-                master_agreement_yn,
-                master_contract_number,
-                master_agreement_id,
-                has_children,
-                has_mwbe_children,
-                sub_document_version as document_version,
-                sub_maximum_contract_amount as maximum_contract_amount,
-                sub_dollar_difference as dollar_difference,
-                sub_percent_difference as percent_difference,
-                sub_purpose as description,
-                scntrc_status,
-                scntrc_status_name,
-                prime_vendor_id,
-                prime_vendor_name,
-                prime_minority_type_id,
-                prime_minority_type_name,
-                sub_vendor_id,
-                sub_vendor_name,
-                sub_minority_type_id,
-                sub_minority_type_name,
-                aprv_sta,
-                aprv_sta_name,
-                agency_id,
-                agency_name,
-                award_method_name,award_method_id,
-                industry_type_name,industry_type_id,
-                expenditure_object_names,
-                sub_effective_begin_date as effective_begin_date,
-                sub_effective_end_date as effective_end_date,
-                registered_date,
-                tracking_number,
-                brd_awd_no,
-                document_code,
-                original_agreement_id,
-                sub_spent_to_date as rfed_amount,
-                sub_starting_year_id as starting_year_id,
-                sub_ending_year_id as ending_year_id,
-                sub_effective_begin_year_id as effective_begin_year_id,
-                sub_effective_end_year_id as effective_end_year_id
-                FROM (
-                    SELECT 'PRIME VENDOR' vendor_type_name, 'P' as vendor_type_id, prime_vendor_code as vendor_code, prime_vendor_name as vendor_name, prime_minority_type_id as minority_type_id, CASE WHEN prime_minority_type_id IN (2,3,4,5,9) THEN 'PM' ELSE 'P' END as vendor_type, * FROM all_agreement_transactions_by_prime_vendor
+            "source":"SELECT 'PRIME VENDOR' vendor_type_name, 'P' as vendor_type_id, prime_vendor_code as vendor_code, prime_vendor_name as vendor_name, prime_minority_type_id as minority_type_id, CASE WHEN prime_minority_type_id IN (2,3,4,5,9) THEN 'PM' ELSE 'P' END as vendor_type, * FROM all_agreement_transactions_by_sub_vendor
                     WHERE prime_sub_vendor_code_by_type ~* '(^P:.*$)|(.*,P:.*$)|(^P:.*,.*)|(^PM:.*$)|(.*,PM:.*$)|(^PM:.*,.*)'
                     UNION ALL
-                    SELECT 'SUB VENDOR' as vendor_type_name, 'S' as vendor_type_id, sub_vendor_code as vendor_code, sub_vendor_name as vendor_name, sub_minority_type_id as minority_type_id, CASE WHEN sub_minority_type_id IN (2,3,4,5,9) THEN 'SM' ELSE 'S' END as vendor_type, * FROM all_agreement_transactions_by_prime_vendor
+                    SELECT 'SUB VENDOR' as vendor_type_name, 'S' as vendor_type_id, sub_vendor_code as vendor_code, sub_vendor_name as vendor_name, sub_minority_type_id as minority_type_id, CASE WHEN sub_minority_type_id IN (2,3,4,5,9) THEN 'SM' ELSE 'S' END as vendor_type, * FROM all_agreement_transactions_by_sub_vendor
                     WHERE prime_sub_vendor_code_by_type ~* '(^S:.*$)|(.*,S:.*$)|(^S:.*,.*)|(^SM:.*$)|(.*,SM:.*$)|(^SM:.*,.*)'
                     UNION ALL
-                    SELECT 'M/WBE VENDOR' vendor_type_name, 'M' as vendor_type_id, prime_vendor_code as vendor_code, prime_vendor_name as vendor_name, prime_minority_type_id as minority_type_id, CASE WHEN prime_minority_type_id IN (2,3,4,5,9) THEN 'PM' ELSE 'P' END as vendor_type, * FROM all_agreement_transactions_by_prime_vendor
+                    SELECT 'M/WBE VENDOR' vendor_type_name, 'M' as vendor_type_id, prime_vendor_code as vendor_code, prime_vendor_name as vendor_name, prime_minority_type_id as minority_type_id, CASE WHEN prime_minority_type_id IN (2,3,4,5,9) THEN 'PM' ELSE 'P' END as vendor_type, * FROM all_agreement_transactions_by_sub_vendor
                     WHERE prime_sub_vendor_code_by_type ~* '(^PM:.*$)|(.*,PM:.*$)|(^PM:.*,.*)'
                     UNION ALL
-                    SELECT 'M/WBE VENDOR' as vendor_type_name, 'M' as vendor_type_id, sub_vendor_code as vendor_code, sub_vendor_name as vendor_name, sub_minority_type_id as minority_type_id, CASE WHEN sub_minority_type_id IN (2,3,4,5,9) THEN 'SM' ELSE 'S' END as vendor_type, * FROM all_agreement_transactions_by_prime_vendor
+                    SELECT 'M/WBE VENDOR' as vendor_type_name, 'M' as vendor_type_id, sub_vendor_code as vendor_code, sub_vendor_name as vendor_name, sub_minority_type_id as minority_type_id, CASE WHEN sub_minority_type_id IN (2,3,4,5,9) THEN 'SM' ELSE 'S' END as vendor_type, * FROM all_agreement_transactions_by_sub_vendor
                     WHERE prime_sub_vendor_code_by_type ~* '(^SM:.*$)|(.*,SM:.*$)|(^SM:.*,.*)'
-                ) query
-                "
+                    "
         }
     },
     "cubes":{
