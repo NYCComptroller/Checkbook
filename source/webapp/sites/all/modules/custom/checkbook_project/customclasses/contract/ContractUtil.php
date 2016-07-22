@@ -639,51 +639,10 @@ namespace { //global
             //Vendor Facet
             $vendor_codes = explode('~', _getRequestParamValue('vendorcode'));
             $has_vendors = isset($vendor_codes[0]) && $vendor_codes[0] != "";
-//            if($has_vendors) {
-//                $pattern = null;
-//                foreach($vendor_codes as $vendor_code) {
-//                    $localValue = _checkbook_regex_replace_pattern($vendor_code);
-//                    $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
-//                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
-//                }
-//                $pattern = '('.$pattern.')';
-//                $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
-//                if(isset($condition)) {
-//                    $parameters['prime_sub_vendor_code'] = $condition;
-//                }
-//            }
 
             //Vendor Type Facet
             $vendor_types = self::getVendorTypeFromVendorTypeId(explode('~', _getRequestParamValue('vendortype')));
             $has_vendor_types = isset($vendor_types[0]) && $vendor_types[0] != "";
-//            if($has_vendor_types) {
-//
-//                $condition = null;
-//
-//                if($has_vendors) {
-//                    $pattern = null;
-//                    foreach($vendor_codes as $vendor_code) {
-//                        $local_pattern = self::getVendorTypeRegExpPattern($vendor_types, $vendor_code);
-//                        $pattern .= isset($pattern) ? '|'.$local_pattern : $local_pattern;
-//                    }
-//                }
-//                else {
-//                    $pattern = self::getVendorTypeRegExpPattern($vendor_types);
-//                }
-//                if($pattern != null) {
-//                    $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
-//                    if(isset($condition)) {
-//                        $parameters['prime_sub_vendor_code_by_type'] = $condition;
-//                    }
-//                }
-//
-//                //For derived facets
-//                $vendor_types_derived = self::getVendorTypeFromVendorTypeId($vendor_types);
-//                $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, $vendor_types_derived);
-//                if(isset($condition)) {
-//                    $parameters['vendor_type'] = $condition;
-//                }
-//            }
 
             //M/WBE Category Facet
             $mwbe_categories = explode('~', _getRequestParamValue('mwbe'));
@@ -700,7 +659,6 @@ namespace { //global
                 $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
                 $parameters['prime_sub_vendor_minority_type_by_name_code'] = $condition;
             }
-
 
             //Filter only prime M/WBE for M/WBE dashboard
             $dashboard = _getRequestParamValue('dashboard');
@@ -789,7 +747,6 @@ namespace { //global
 
             //Handle Common parameters
             $parameters = self::adjustActiveContractCommonParams($node, $parameters);
-            $data_controller_instance = data_controller_get_operator_factory_instance();
 
             //Vendor Type Facet
             $vendor_types = self::getVendorTypeFromVendorTypeId(explode('~', _getRequestParamValue('vendortype')));
@@ -938,51 +895,18 @@ namespace { //global
         static public function getVendorTypeRegExpPattern($vendor_types, $vendor_identifier = null, $searchType = 'exact') {
 
             $pattern = null;
-            if(isset($vendor_types)) {
 
-                $vendor_types = self::getVendorTypeFromVendorTypeId($vendor_types);
-                $reg_exp_values = array();
-                $vendor_identifier = isset($vendor_identifier) ? $vendor_identifier : ".*";
-                foreach($vendor_types as $vendor_type) {
-                    $localValue = "{$vendor_type}:{$vendor_identifier}";
-                    $reg_exp_values[] = $localValue;
-                }
+            $vendor_types = isset($vendor_types) ? implode('|',$vendor_types) : '.*';
+            $vendor_identifier = isset($vendor_identifier) ? $vendor_identifier : ".*";
+            $reg_exp_value = "({$vendor_types}):{$vendor_identifier}";
+
+            if($searchType == 'exact') {
+                $pattern = "(^{$reg_exp_value}$)|(.*,{$reg_exp_value}$)|(^{$reg_exp_value},.*)";
             }
-            else {
-                $localValue = "(P|PM|S|SM):{$vendor_identifier}";
-                $reg_exp_values[] = $localValue;
-            }
-            foreach($reg_exp_values as $reg_exp_value) {
-                if($searchType == 'exact') {
-                    $localValue = "(^{$reg_exp_value}$)|(.*,{$reg_exp_value}$)|(^{$reg_exp_value},.*)";
-                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
-                }
-                elseif($searchType == 'like') {
-                    $localValue = "(.*$reg_exp_value .*)|(.*$reg_exp_value$)|(^$reg_exp_value.*)|(.*$reg_exp_value.*)";
-                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
-                }
+            elseif($searchType == 'like') {
+                $pattern = "(.*$reg_exp_value .*)|(.*$reg_exp_value$)|(^$reg_exp_value.*)|(.*$reg_exp_value.*)";
             }
 
-
-            return $pattern;
-        }
-
-        static public function getMWBECategoryRegExpPattern($mwbe_category, $vendor_types = null) {
-
-            $pattern = null;
-            if(isset($vendor_types)) {
-
-                $vendor_types = self::getVendorTypeFromVendorTypeId($vendor_types);
-                foreach($vendor_types as $vendor_type) {
-                    $localValue = "{$vendor_type}:{$mwbe_category}";
-                    $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
-                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
-                }
-            }
-            else {
-                $localValue = ":{$mwbe_category}";
-                $pattern = "(.*{$localValue}$)|(.*,.*{$localValue}$)|(.*{$localValue},.*)";
-            }
 
             return $pattern;
         }
