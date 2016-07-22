@@ -18,6 +18,7 @@
     "facetPager":true,
     "filterName":"M/WBE Category",
     "allowZeroValue":true,
+    "allowFacetDeselect":true,
     "urlParameterName":"mwbe",
     "autocompleteID":"fminorityTypeId",
     "adjustParameters":"
