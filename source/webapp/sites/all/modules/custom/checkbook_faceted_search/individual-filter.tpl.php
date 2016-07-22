@@ -183,26 +183,6 @@ if($node->widgetConfig->filterName == 'M/WBE Category'){
 //Vendor Type facet for parentNid == 932/939 is a different implementation and should be ignored
 if($node->widgetConfig->filterName == 'Vendor Type'){
     if($node->widgetConfig->parentNid == 932 || $node->widgetConfig->parentNid == 939) {
-        foreach($checked as $key=>$value){
-            if($value[0] == 'P'){
-                $count = $count + $value[2];
-                $id = "P~PM";
-                unset($checked[$key]);
-                if($count > 0 )array_push($checked,array($id,'PRIME VENDOR',$count));
-            }
-            else if($value[0] == 'S'){
-                $count = $count + $value[2];
-                $id = "S~SM";
-                unset($checked[$key]);
-                if($count > 0 )array_push($checked,array($id,'SUB VENDOR',$count));
-            }
-            else if($value[0] == 'M'){
-                $count = $count + $value[2];
-                $id = "PM~SM";
-                unset($checked[$key]);
-                if($count > 0 )array_push($checked,array($id,'M/WBE VENDOR',$count));
-            }
-        }
     }
     else {
         $vendor_types = _getRequestParamValue('vendortype');

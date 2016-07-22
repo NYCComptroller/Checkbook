@@ -6,10 +6,10 @@
     "urlParamMap":{
         "year":"year",
         "agency":"agency_id",
-        "vendorcode":"prime_sub_vendor_code",
-        "vendortype":"prime_sub_vendor_code_by_type",
+        "vendorcode":"prime_sub_vendor_minority_type_by_name_code",
+        "vendortype":"prime_sub_vendor_minority_type_by_name_code",
         "subvendor":"sub_vendor_id",
-        "mwbe":"minority_type_id",
+        "mwbe":"prime_sub_vendor_minority_type_by_name_code",
         "subvendorstatus":"aprv_sta_id",
         "contnum":"contract_number"
     },
