@@ -777,12 +777,11 @@ namespace { //global
             }
             return $parameters;
         }
-
         /**
          * Function to handle parameters for the derived facet implementation mapping a single facet to multiple columns
-         * for the Active Contracts transactions.
          * @param $node
          * @param $parameters
+         * @return string
          */
         static public function adjustActiveContractParameterFilters(&$node, &$parameters) {
 
@@ -790,91 +789,58 @@ namespace { //global
             $parameters = self::adjustActiveContractCommonParams($node, $parameters);
             $data_controller_instance = data_controller_get_operator_factory_instance();
 
-            //Vendor Facet using Vendor Code
-            $vendor_codes = explode('~', _getRequestParamValue('vendorcode'));
-            $has_vendors = isset($vendor_codes[0]) && $vendor_codes[0] != "";
-            if($has_vendors) {
-                $pattern = null;
-                foreach($vendor_codes as $vendor_code) {
-                    $localValue = _checkbook_regex_replace_pattern($vendor_code);
-                    $localValue = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
-                    $pattern .= isset($pattern) ? '|'.$localValue : $localValue;
-                }
-                $pattern = '('.$pattern.')';
-                $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
-                if(isset($condition)) {
-                    $parameters['prime_sub_vendor_code'] = $condition;
-                }
-            }
-
             //Vendor Type Facet
             $vendor_types = explode('~', _getRequestParamValue('vendortype'));
             $has_vendor_types = isset($vendor_types[0]) && $vendor_types[0] != "";
-            if($has_vendor_types) {
-
-                $condition = null;
-
-                if($has_vendors) {
-                    $pattern = null;
-                    foreach($vendor_codes as $vendor_code) {
-                        $local_pattern = self::getVendorTypeRegExpPattern($vendor_types, $vendor_code);
-                        $pattern .= isset($pattern) ? '|'.$local_pattern : $local_pattern;
-                    }
-                    if($pattern != null) {
-                        $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
-                        if(isset($condition)) {
-                            $parameters['prime_sub_vendor_code_by_type'] = $condition;
-                        }
-                    }
-                }
-                else {
-                    $pattern = self::getVendorTypeRegExpPattern($vendor_types);
-                    if($pattern != null) {
-                        $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
-                        if(isset($condition)) {
-                            $parameters['prime_sub_vendor_code_by_type'] = $condition;
-                        }
-                    }
-                }
-            }
 
             //M/WBE Category Facet
             $mwbe_categories = explode('~', _getRequestParamValue('mwbe'));
             $has_mwbe_categories = isset($mwbe_categories[0]) && $mwbe_categories[0] != "";
-            if($has_mwbe_categories) {
 
-                $condition = null;
+            //Vendor Facet using Vendor Code
+            $vendor_codes = explode('~', _getRequestParamValue('vendorcode'));
+            $has_vendors = isset($vendor_codes[0]) && $vendor_codes[0] != "";
 
-                if($has_vendor_types) {
-                    $pattern = null;
-                    foreach($mwbe_categories as $mwbe_category) {
-                        $local_pattern = self::getMWBECategoryRegExpPattern($mwbe_category, $vendor_types);
-                        $pattern .= isset($pattern) ? '|'.$local_pattern : $local_pattern;
-                    }
-                }
-                else {
-                    $pattern = null;
-                    foreach($mwbe_categories as $mwbe_category) {
-                        $local_pattern = self::getMWBECategoryRegExpPattern($mwbe_category);
-                        $pattern .= isset($pattern) ? '|'.$local_pattern : $local_pattern;
-                    }
-                }
-                if($pattern != null) {
-                    $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
-                    if(isset($condition)) {
-                        $parameters['prime_sub_minority_type_id'] = $condition;
-                    }
-                }
+            //Get regular expression for vendor code, vendor type and mwbe category facets
+            $pattern = self::getPrimeSubVendorRegex(
+                $has_vendor_types ? $vendor_types : null,
+                $has_mwbe_categories ? $mwbe_categories : null,
+                $has_vendors ? $vendor_codes : null);
+
+            if($pattern != null) {
+                $data_controller_instance = data_controller_get_operator_factory_instance();
+                $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
+                $parameters['prime_sub_vendor_minority_type_by_name_code'] = $condition;
             }
-
-            unset($parameters['minority_type_id']);
-            unset($parameters['vendor_code']);
-            unset($parameters['vendor_name']);
-            unset($parameters['vendor_type']);
 
             return $parameters;
         }
 
+        /**
+         * Handles the regular expression parameters for vendor code, vendor type and mwbe category facets mapping to multiple columns
+         * @param null $vendor_types
+         * @param null $mwbe_categories
+         * @param null $vendor_codes
+         * @return string
+         */
+        static public function getPrimeSubVendorRegex($vendor_types = null,$mwbe_categories = null,$vendor_codes = null) {
+            $vendor_types = isset($vendor_types) ? implode('|',$vendor_types) : '.*';
+            $mwbe_categories = isset($mwbe_categories) ? implode('|',$mwbe_categories) : '.*';
+            $vendor_codes = isset($vendor_codes) ? implode('|',$vendor_codes) : '.*';
+            $vendor_names = '.*';
+
+            $reg_exp_value = "({$vendor_types}):({$mwbe_categories}):({$vendor_codes}):({$vendor_names})";
+            $pattern = "(^{$reg_exp_value}$)|(.*,{$reg_exp_value}$)|(^{$reg_exp_value},.*)";
+
+            return $pattern;
+        }
+
+        /**
+         * For Advanced Search, contracts can be search by vendor name as a like or exact search,
+         * This function applies an additional parameter
+         * @param $parameters
+         * @return mixed
+         */
         static public function adjustVendorNameAdvancedSearchParams(&$parameters) {
 
             $data_controller_instance = data_controller_get_operator_factory_instance();
@@ -913,6 +879,7 @@ namespace { //global
                     }
                 }
             }
+            unset($parameters['vendor_name']);
             return $parameters;
         }
 
