@@ -180,9 +180,8 @@ if (_getRequestParamValue("datasource") != "checkbook_oge") {
                                 WHEN scntrc_status = 3 THEN 'NO'
                                 ELSE 'Prior Year Exclusions'
                             END AS contract_subvendor_status
-                            FROM aggregateon_mwbe_contracts_cumulative_spending
-                            WHERE contract_number = '". $contract_number . "' AND fiscal_year_id = "
-            . "(SELECT max(fiscal_year_id) FROM aggregateon_mwbe_contracts_cumulative_spending WHERE contract_number = '". $contract_number . "') LIMIT 1";
+                            FROM all_agreement_transactions
+                            WHERE contract_number = '". $contract_number . "' AND latest_flag = 'Y' LIMIT 1";
     
     $results6 = _checkbook_project_execute_sql_by_data_source($querySubVendorStatus,_get_current_datasource());
     $res->data = $results6;
