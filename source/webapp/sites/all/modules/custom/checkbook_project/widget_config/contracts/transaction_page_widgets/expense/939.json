@@ -167,6 +167,10 @@
             "type":"expression2",
             "expression":"isset($row['expenditure_object_names']) ? _get_tooltip_markup($row['expenditure_object_names'],36): 'N/A'"
         },
+        "expense_cat_export": {
+            "type":"expression2",
+            "expression":"isset($row['expenditure_object_names']) ? $row['expenditure_object_names'] : 'N/A'"
+        },
         "award_method_formatted": {
             "type":"expression2",
             "expression":"_get_tooltip_markup($row['award_method_name'],36)"
@@ -265,7 +269,7 @@
         {"labelAlias": "contract_agency","column": "agency_name_link","sortSourceColumn":"agency_name","exportColumn":"agency_name"},
         {"labelAlias": "contract_type","column": "contract_type_formatted","sortSourceColumn":"agreement_type_name","exportColumn":"agreement_type_name"},
         {"labelAlias": "award_method","column": "award_method_formatted","sortSourceColumn":"award_method_name","exportColumn":"award_method_name"},
-        {"labelAlias": "expense_category","column": "expense_cat","sortSourceColumn":"expenditure_object_names","exportColumn":"expense_cat"},
+        {"labelAlias": "expense_category","column": "expense_cat","sortSourceColumn":"expenditure_object_names","exportColumn":"expense_cat_export"},
         {"label":"","column":"","export":false},
         {"labelAlias": "contract_industry","column": "industry_name_formatted","sortSourceColumn":"industry_type_name","exportColumn":"industry_type_name"},
         //30
