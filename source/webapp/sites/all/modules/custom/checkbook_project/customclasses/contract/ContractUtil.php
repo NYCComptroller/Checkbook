@@ -954,7 +954,6 @@ namespace { //global
                 . _checkbook_project_get_url_param_string('status','contstatus')
                 . _checkbook_append_url_params()
                 . _checkbook_project_get_url_param_string('agency')
-                . _checkbook_project_get_url_param_string("vendor","fvendor")
                 . _checkbook_project_get_url_param_string('awdmethod')
                 . _checkbook_project_get_url_param_string('csize')
                 . _checkbook_project_get_url_param_string('cindustry')
