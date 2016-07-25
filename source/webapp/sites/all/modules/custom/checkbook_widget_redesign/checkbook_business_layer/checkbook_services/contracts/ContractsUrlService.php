@@ -86,9 +86,9 @@ class ContractsUrlService {
         if($vendor) {
             $vendor_code = self::getVendorCustomerCode($vendor);
         }
-        $subvendorURLString = isset($subvendor_code) ? '/vendorcode/'.$subvendor_code : '';
-        $vendorURLString = isset($vendor_code) ? '/vendorcode/'.$vendor_code : '';
-        
+        $subvendorURLString = (isset($subvendor) ? '/subvendor/'. $subvendor : '') .(isset($subvendor_code) ? '/vendorcode/'.$subvendor_code : '');
+        $vendorURLString = (isset($vendor) ? '/vendor/'. $vendor : '') . (isset($vendor_code) ? '/vendorcode/'.$vendor_code : '');
+            
         $url = '/panel_html/contract_details/contract/transactions/contcat/expense'
             . _checkbook_project_get_url_param_string('status','contstatus')
             . _checkbook_append_url_params()
