@@ -3,8 +3,7 @@
     {
         "serviceName":"ContractsWidgetService",
         "sqlConfigName":"contracts/contracts",
-        "statementName":"GetContracts",
-        "countStatementName":"GetCountContracts"
+        "statementName":"GetContracts"
     },
     "defaultParameters":{"doctype":"'CTA1'~'CT1'"},
     "headerTitle":"Contracts",

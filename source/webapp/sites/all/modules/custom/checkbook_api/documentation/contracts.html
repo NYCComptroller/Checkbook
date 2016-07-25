@@ -286,9 +286,31 @@ Contract Parameters – All the parameters are optional, meaning that you can se
     <td>Citywide Agencies</td>
     <td valign="top">Expense<br />Revenue </td>
     <td valign="top">Active<br />Registered<br />Pending</td>
-<td>User shall be able to extract data for specific industry types, by specifying the industry type codes in the request XML.
+    <td>User shall be able to extract data for specific industry types, by specifying the industry type codes in the request XML.
         By default, it shall display results for all industries. See here for <a href="/ref_code_list/industry">industry codes list</a>.</td>
     <td>1</td>
+</tr>
+<tr>
+    <td>contract_includes_subvendors</td>
+    <td>N</td>
+    <td>value</td>
+    <td>String- Maximum 2 characters</td>
+    <td>Citywide Agencies</td>
+    <td valign="top">Expense</td>
+    <td valign="top">Active<br />Registered</td>
+    <td>Identifies the subcontract status for prime contract. See here for <a href="#" class="status-codes">status codes</a> list.</td>
+    <td>2</td>
+</tr>
+<tr>
+    <td>SUBVENDOR_STATUS_IN_PIP</td>
+    <td>N</td>
+    <td>value</td>
+    <td>String- Maximum 2 characters</td>
+    <td>Citywide Agencies</td>
+    <td valign="top">Expense</td>
+    <td valign="top">Active<br />Registered</td>
+    <td>Identifies the sub vendor status in pip for prime contract. See here for <a href="#" class="status-codes">status codes</a> list.</td>
+    <td>2</td>
 </tr>
 </tbody>
 </table>
@@ -311,51 +333,55 @@ Contract Parameters – All the parameters are optional, meaning that you can se
             </tr>
             <tr>
                 <td>contract_id</td>
-                <td>vendor</td>
+                <td>contract_includes_<br/>subvendors</td>
             </tr>
             <tr>
+                <td>sub_contract_<br/>reference_id</td>
                 <td>purpose</td>
-                <td>agency</td>
             </tr>
             <tr>
                 <td>version</td>
-                <td>contract_type</td>
-            </tr>
-            <tr>
                 <td>parent_contract_id</td>
-                <td>award_method</td>
-            </tr>
-            <tr>
-                <td>original_amount</td>
-                <td>expense_category</td>
             </tr>
             <tr>
                 <td>current_amount</td>
-                <td width="51%">start_date</td>
+                <td>original_amount</td>
             </tr>
             <tr>
                 <td>spent_to_date</td>
-                <td>end_date</td>
+                <td>prime_vendor</td>
             </tr>
             <tr>
-                <td>registration_date</td>
-                <td>pin</td>
+                <td>prime_vendor_<br/>mwbe_category</td>
+                <td width="51%">sub_vendor</td>
             </tr>
             <tr>
-                <td>apt_pin</td>
+                <td>sub_vendor_<br/>mwbe_category</td>
+                <td>subvendor_status_<br/>in_pip</td>
+            </tr>
+            <tr>
+                <td>agency</td>
+                <td>contract_type</td>
+            </tr>
+            <tr>
+                <td>award_method</td>
+                <td>expense_category</td>
+            </tr>
+            <tr>
                 <td>industry</td>
+                <td>start_date</td>
             </tr>
             <tr>
+                <td>end_date</td>
+                <td>registration_date</td>
+            </tr>
+            <tr>
+                <td>pin</td>
+                <td>apt_pin</td>
+            </tr>
+            <tr>
+                <td>document_Code</td>
                 <td>year</td>
-                <td>document_code</td>
-            </tr>
-            <tr>
-                <td>mwbe_category</td>
-                <td>associated_prime_vendor</td>
-            </tr>
-            <tr>
-                <td>sub_vendor</td>
-                <td>sub_contract_reference_id</td>
             </tr>
         </table>
     </td>
@@ -366,47 +392,39 @@ Contract Parameters – All the parameters are optional, meaning that you can se
             </tr>
             <tr>
                 <td>contract_id</td>
-                <td>vendor</td>
+                <td>purpose</td>
             </tr>
             <tr>
-                <td>purpose</td>
+                <td>version</td>
                 <td>agency</td>
             </tr>
             <tr>
-                <td>parent_contract_id</td>
-                <td>contract_type</td>
-            </tr>
-            <tr>
-                <td>original_amount</td>
+                <td>apt_pin</td>
                 <td>award_method</td>
             </tr>
             <tr>
                 <td>current_amount</td>
+                <td>original_amount</td>
+            </tr>
+            <tr>
+                <td>pin</td>
+                <td>prime_vendor</td>
+            </tr>
+            <tr>
+                <td>prime_vendor_<br/>mwbe_category</td>
+                <td>contract_type</td>
+            </tr>
+            <tr>
+                <td>industry</td>
                 <td>start_date</td>
             </tr>
             <tr>
-                <td>registration_date</td>
                 <td>end_date</td>
-            </tr>
-            <tr>
-                <td>apt_pin</td>
-                <td>pin</td>
+                <td>registration_date</td>
             </tr>
             <tr>
                 <td>document_code</td>
-                <td>industry</td>
-            </tr>
-            <tr>
-                <td>version</td>
                 <td>year</td>
-            </tr>
-            <tr>
-                <td>mwbe_category</td>
-                <td>associated_prime_vendor</td>
-            </tr>
-            <tr>
-                <td>sub_vendor</td>
-                <td>sub_contract_reference_id</td>
             </tr>
         </table>
     </td>
@@ -417,42 +435,42 @@ Contract Parameters – All the parameters are optional, meaning that you can se
             </tr>
             <tr>
                 <td>contract_id</td>
-                <td>contract_type</td>
-            </tr>
-            <tr>
                 <td>purpose</td>
-                <td>original_modified</td>
             </tr>
             <tr>
-                <td>parent_contract_id</td>
+                <td>version</td>
+                <td>agency</td>
+            </tr>
+            <tr>
                 <td>apt_pin</td>
-            </tr>
-            <tr>
-                <td>original_amount</td>
                 <td>award_method</td>
             </tr>
             <tr>
                 <td>current_amount</td>
+                <td>original_amount</td>
+            </tr>
+            <tr>
+                <td>pin</td>
+                <td>prime_vendor</td>
+            </tr>
+            <tr>
+                <td>prime_vendor_<br/>mwbe_category</td>
+                <td width="51%">contract_type</td>
+            </tr>
+            <tr>
+                <td>industry</td>
                 <td>start_date</td>
             </tr>
             <tr>
-                <td>vendor</td>
-                <td width="51%">end_date</td>
-            </tr>
-            <tr>
-                <td>recieved_date</td>
-                <td>pin</td>
-            </tr>
-            <tr>
-                <td>agency</td>
-                <td>industry</td>
+                <td>end_date</td>
+                <td>received_date</td>
             </tr>
             <tr>
                 <td>document_code</td>
-                <td>version</td>
+                <td>original_modified</td>
             </tr>
             <tr>
-                <td>mwbe_category</td>
+                <td>parent_contract_id</td>
                 <td>&nbsp;</td>
             </tr>
         </table>
@@ -466,42 +484,42 @@ Contract Parameters – All the parameters are optional, meaning that you can se
             </tr>
             <tr>
                 <td>contract_id</td>
-                <td>contract_type</td>
-            </tr>
-            <tr>
                 <td>purpose</td>
-                <td>original_modified</td>
             </tr>
             <tr>
-                <td>parent_contract_id</td>
+                <td>version</td>
+                <td>agency</td>
+            </tr>
+            <tr>
+                <td>apt_pin</td>
+                <td>award_method</td>
+            </tr>
+            <tr>
+                <td>current_amount</td>
                 <td>original_amount</td>
             </tr>
             <tr>
-                <td>award_method</td>
-                <td>current_amount</td>
+                <td>pin</td>
+                <td>prime_vendor</td>
             </tr>
             <tr>
+                <td>prime_vendor_<br/>mwbe_category</td>
+                <td width="51%">contract_type</td>
+            </tr>
+            <tr>
+                <td>industry</td>
                 <td>start_date</td>
-                <td>vendor</td>
             </tr>
             <tr>
                 <td>end_date</td>
                 <td>received_date</td>
             </tr>
             <tr>
-                <td>pin</td>
-                <td>agency</td>
-            </tr>
-            <tr>
-                <td>industry</td>
                 <td>document_code</td>
+                <td>original_modified</td>
             </tr>
             <tr>
-                <td>version</td>
-                <td>apt_pin</td>
-            </tr>
-            <tr>
-                <td>mwbe_category</td>
+                <td>parent_contract_id</td>
                 <td>&nbsp;</td>
             </tr>
         </table>
@@ -513,51 +531,55 @@ Contract Parameters – All the parameters are optional, meaning that you can se
             </tr>
             <tr>
                 <td>contract_id</td>
-                <td>vendor</td>
+                <td>contract_includes_<br/>subvendors</td>
             </tr>
             <tr>
+                <td>sub_contract_<br/>reference_id</td>
                 <td>purpose</td>
-                <td>agency</td>
             </tr>
             <tr>
                 <td>version</td>
-                <td>contract_type</td>
-            </tr>
-            <tr>
                 <td>parent_contract_id</td>
-                <td>award_method</td>
-            </tr>
-            <tr>
-                <td>original_amount</td>
-                <td>expense_category</td>
             </tr>
             <tr>
                 <td>current_amount</td>
-                <td width="51%">start_date</td>
+                <td>original_amount</td>
             </tr>
             <tr>
                 <td>spent_to_date</td>
-                <td>end_date</td>
+                <td>prime_vendor</td>
             </tr>
             <tr>
-                <td>registration_date</td>
-                <td>pin</td>
+                <td>prime_vendor_<br/>mwbe_category</td>
+                <td width="51%">sub_vendor</td>
             </tr>
             <tr>
-                <td>apt_pin</td>
+                <td>sub_vendor_<br/>mwbe_category</td>
+                <td>subvendor_staus_<br/>in_pin</td>
+            </tr>
+            <tr>
+                <td>agency</td>
+                <td>contract_type</td>
+            </tr>
+            <tr>
+                <td>award_method</td>
+                <td>expense_category</td>
+            </tr>
+            <tr>
                 <td>industry</td>
+                <td>start_Date</td>
             </tr>
             <tr>
-                <td>year</td>
+                <td>end_date</td>
+                <td>registration_date</td>
+            </tr>
+            <tr>
+                <td>pin</td>
+                <td>apt_pin</td>
+            </tr>
+            <tr>
                 <td>document_code</td>
-            </tr>
-            <tr>
-                <td>mwbe_category</td>
-                <td>associated_prime_vendor</td>
-            </tr>
-            <tr>
-                <td>sub_vendor</td>
-                <td>sub_contract_reference_id</td>
+                <td>year</td>
             </tr>
         </table>
     </td>
@@ -568,43 +590,43 @@ Contract Parameters – All the parameters are optional, meaning that you can se
             </tr>
             <tr>
                 <td>contract_id</td>
-                <td>contract_type</td>
-            </tr>
-            <tr>
                 <td>purpose</td>
-                <td>original_modified</td>
             </tr>
             <tr>
-                <td>parent_contract_id</td>
+                <td>version</td>
+                <td>agency</td>
+            </tr>
+            <tr>
+                <td>apt_pin</td>
+                <td>award_method</td>
+            </tr>
+            <tr>
+                <td>current_amount</td>
                 <td>original_amount</td>
             </tr>
             <tr>
-                <td>award_method</td>
-                <td>current_amount</td>
+                <td>pin</td>
+                <td>prime_vendor</td>
             </tr>
             <tr>
+                <td>prime_vendor_<br/>mwbe_category</td>
+                <td width="51%">contract_type</td>
+            </tr>
+            <tr>
+                <td>industry</td>
                 <td>start_date</td>
-                <td>vendor</td>
             </tr>
             <tr>
                 <td>end_date</td>
                 <td>received_date</td>
             </tr>
             <tr>
-                <td>pin</td>
-                <td>agency</td>
-            </tr>
-            <tr>
-                <td>industry</td>
                 <td>document_code</td>
+                <td>original_modified</td>
             </tr>
             <tr>
-                <td>version</td>
-                <td>apt_pin</td>
-            </tr>
-            <tr>
-                <td>mwbe_category</td>
-                <td></td>
+                <td>parent_contract_id</td>
+                <td>&nbsp;</td>
             </tr>
         </table>
     </td>
