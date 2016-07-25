@@ -946,8 +946,8 @@ namespace { //global
             if($vendor) {
                 $vendor_code = self::getVendorCustomerCode($vendor);
             }
-            $subvendorURLString = isset($subvendor_code) ? '/vendorcode/'.$subvendor_code : '';
-            $vendorURLString = isset($vendor_code) ? '/vendorcode/'.$vendor_code : '';
+            $subvendorURLString = (isset($subvendor) ? '/subvendor/'. $subvendor : '') .(isset($subvendor_code) ? '/vendorcode/'.$subvendor_code : '');
+            $vendorURLString = (isset($vendor) ? '/vendor/'. $vendor : '') . (isset($vendor_code) ? '/vendorcode/'.$vendor_code : '');
             $detailsPageURL  = (($dashboard == 'ss' || $dashboard == 'sp' || $dashboard == 'ms') && !isset($status))? 'sub_contracts_transactions' : 'contract_details';
 
             $url = '/panel_html/'. $detailsPageURL .'/contract/transactions/contcat/expense'

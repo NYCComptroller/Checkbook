@@ -3,7 +3,7 @@
     "widgetSubType":"dataTableList",
     "stickyHeader":true,
     "cleanURLParameters":[
-        "subvendor","vendortype","mwbe","doctype","contstatus","year","calyear","agency","vendor","curamtr","vendorcode","vendornm","vendornm_exact","contdesc","agrmnttype",
+        "vendortype","mwbe","doctype","contstatus","year","calyear","agency","curamtr","vendorcode","vendornm","vendornm_exact","contdesc","agrmnttype",
         "agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","modamt","subcontstatus","subvendorstatus"
     ],
     "urlParamMap":{
@@ -11,13 +11,11 @@
         "mwbe":"prime_sub_vendor_minority_type_by_name_code",
         "agency":"agency_id",
         "fvendor":"vendor_id",
-        "vendor":"vendor_id",
         "vendorcode":"prime_sub_vendor_minority_type_by_name_code",
         "vendornm_exact":"vendor_name",
         "vendornm":"vendor_name",
         "vendortype":"prime_sub_vendor_minority_type_by_name_code",
         "curamtr":"maximum_contract_amount",
-        "subvendor":"vendor_id",
         "contdesc":"description",
         "agencyh":"agency_history_id",
         "aptpin":"brd_awd_no",
