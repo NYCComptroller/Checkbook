@@ -27,7 +27,6 @@
             $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
             $parameters['vendor_name.vendor_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
         }
-        $parameters = ContractUtil::filterPrimeMWBESubContractTransactions($parameters);
         return $parameters;
     "
 }
