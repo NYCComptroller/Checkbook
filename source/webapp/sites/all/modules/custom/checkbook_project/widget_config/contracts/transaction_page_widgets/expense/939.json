@@ -165,17 +165,9 @@
             "type":"expression2",
             "expression":"_get_tooltip_markup($row['description'],36)"
         },
-        "expense_cat_formatted": {
-            "type":"expression2",
-            "expression":"_get_tooltip_markup($row['expenditure_object_names'],36)"
-        },
         "expense_cat": {
             "type":"expression2",
-            "expression":"($row['is_prime_or_sub'] == 'S') ? '' : $row['expense_cat_formatted']"
-        },
-        "expense_cat_export": {
-            "type":"expression2",
-            "expression":"($row['is_prime_or_sub'] == 'S') ? '' : $row['expenditure_object_names']"
+            "expression":"isset($row['expenditure_object_names']) ? _get_tooltip_markup($row['expenditure_object_names'],36): 'N/A'"
         },
         "award_method_formatted": {
             "type":"expression2",
@@ -199,10 +191,6 @@
         },
         "sub_contract_reference_id":{
             "type":"expression2",
-            "expression":"(in_array($row['document_code'], array('CT1', 'CTA1', 'CT2')))  ? (in_array($row['sub_contract_id'], array(NULL,'')) && $row['scntrc_status'] == 2) ? 'NOT PROVIDED' : (in_array($row['sub_contract_id'], array(NULL, '')) ? 'N/A' : $row['sub_contract_id']) : 'N/A'"
-        },
-        "sub_contract_reference_id_export":{
-            "type":"expression2",
             "expression":"isset($row['sub_contract_id']) ? $row['sub_contract_id'] : 'N/A'"
         },
         "prime_vendor_name_formatted": {
@@ -221,7 +209,7 @@
         },
         "subvendor_name": {
             "type": "expression2",
-            "expression": "(in_array($row['document_code'], array('CT1', 'CTA1', 'CT2'))) ? ((in_array($row['sub_vendor_name'], array(NULL, '')) && $row['scntrc_status'] == 2) ? 'NOT PROVIDED' : (in_array($row['sub_vendor_name'], array(NULL, '')) ? 'N/A' : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row[sub_vendor_id],_getRequestParamValue('year'),_getRequestParamValue('yeartype'), null, $row[sub_minority_type_id]) .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>')) : 'N/A'"
+            "expression": "(in_array(strtoupper($row['sub_vendor_name']), array('NOT PROVIDED', 'N/A', '', NULL))) ? (isset($row['sub_vendor_name']) ? $row['sub_vendor_name']: 'N/A' ) : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row[sub_vendor_id],_getRequestParamValue('year'),_getRequestParamValue('yeartype'), null, $row[sub_minority_type_id]) .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>'"
         },
         "subvendor_name_export": {
             "type": "expression2",
@@ -229,7 +217,7 @@
         },
         "sub_mwbe_category_name": {
             "type": "expression2",
-            "expression": "(in_array($row['document_code'], array('CT1', 'CTA1', 'CT2'))) ? ((in_array($row['sub_minority_type_name'], array(NULL, '')) && $row['scntrc_status'] == 2) ? 'NOT PROVIDED' : (in_array($row['sub_minority_type_name'], array(NULL, '')) ? 'N/A' : $row['sub_minority_type_name'])) : 'N/A'"
+            "expression": "(in_array(strtoupper($row['sub_minority_type_name']), array('NOT PROVIDED', 'N/A', '', NULL))) ? (isset($row['sub_minority_type_name']) ? $row['sub_minority_type_name']: 'N/A' ) : $row[sub_minority_type_name]"
         },
         "sub_mwbe_category_name_export": {
             "type": "expression2",
@@ -241,7 +229,7 @@
         },
         "subvendor_status_pip":{
             "type": "expression2",
-            "expression": "(in_array($row['document_code'], array('CT1', 'CTA1', 'CT2'))) ? (in_array($row['scntrc_status'], array(0,1,3)) ? 'N/A' : _get_tooltip_markup($row['aprv_sta_name'],36)) : 'N/A'"
+            "expression": "isset($row['aprv_sta_name'])? _get_tooltip_markup($row['aprv_sta_name'],36) : 'N/A'"
         },
         "subvendor_status_pip_export":{
             "type": "expression2",
@@ -253,12 +241,12 @@
         {"label": "<div></div>","colLabel": "","column": "child_contrats_link","export":false},
         {"labelAlias": "contract_id","column": "contract_link","sortSourceColumn":"contract_number"},
         {"labelAlias":"contract_includes_sub","column":"contract_includes_sub","sortSourceColumn":"scntrc_status_name", "exportColumn":"contract_includes_sub"},
-        {"labelAlias":"sub_contract_reference_id","column":"sub_contract_reference_id","sortSourceColumn":"sub_contract_id"},
+        {"labelAlias":"sub_contract_reference_id","column":"sub_contract_reference_id","sortSourceColumn":"sub_contract_id", "exportColumn":"sub_contract_reference_id"},
         {"label":"","column":"","export":false},
         {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description","exportColumn":"description"},
         {"labelAlias": "version","column": "document_version"},
         {"label":"","column":"","export":false},
-        {"labelAlias": "fms_doc_id","column":"parent_contract_link", "sortSourceColumn":"master_contract_number"},
+        {"labelAlias": "fms_doc_id","column":"parent_contract_link", "sortSourceColumn":"master_contract_number","exportColumn":"parent_contract_export"},
         {"labelAlias": "current_amount","column": "formatted_current_amount","sortSourceColumn":"maximum_contract_amount","exportColumn":"maximum_contract_amount"},
         //10
         {"labelAlias": "original_amount","column": "formatted_original_amount","sortSourceColumn":"original_contract_amount","exportColumn":"original_contract_amount"},
@@ -269,17 +257,17 @@
         {"labelAlias": "prime_vendor","column": "prime_vendor_name_link","sortSourceColumn":"prime_vendor_name","exportColumn":"prime_vendor_name"},
         {"labelAlias":"prime_mwbe_category","column":"prime_minority_type_name","sortSourceColumn":"prime_minority_type_name"},
         {"label":"","column":"","export":false},
-        {"labelAlias":"sub_vendor_name","column":"subvendor_name","sortSourceColumn":"sub_vendor_name"},
+        {"labelAlias":"sub_vendor_name","column":"subvendor_name","sortSourceColumn":"sub_vendor_name","exportColumn":"subvendor_name_export"},
         {"label":"","column":"","export":false},
         //20
-        {"labelAlias":"sub_mwbe_category","column":"sub_mwbe_category_name","sortSourceColumn":"sub_minority_type_name"},
+        {"labelAlias":"sub_mwbe_category","column":"sub_mwbe_category_name","sortSourceColumn":"sub_minority_type_name","exportColumn":"sub_mwbe_category_name_export"},
         {"label":"","column":"","export":false},
-        {"labelAlias":"subvendor_status_pip","column":"subvendor_status_pip","sortSourceColumn":"aprv_sta_name"},
+        {"labelAlias":"subvendor_status_pip","column":"subvendor_status_pip","sortSourceColumn":"aprv_sta_name", "exportColumn": "subvendor_status_pip_export"},
         {"label":"","column":"","export":false},
         {"labelAlias": "contract_agency","column": "agency_name_link","sortSourceColumn":"agency_name","exportColumn":"agency_name"},
         {"labelAlias": "contract_type","column": "contract_type_formatted","sortSourceColumn":"agreement_type_name","exportColumn":"agreement_type_name"},
         {"labelAlias": "award_method","column": "award_method_formatted","sortSourceColumn":"award_method_name","exportColumn":"award_method_name"},
-        {"labelAlias": "expense_category","column": "expense_cat","sortSourceColumn":"expenditure_object_names","exportColumn":"expense_cat_export"},
+        {"labelAlias": "expense_category","column": "expense_cat","sortSourceColumn":"expenditure_object_names","exportColumn":"expense_cat"},
         {"label":"","column":"","export":false},
         {"labelAlias": "contract_industry","column": "industry_name_formatted","sortSourceColumn":"industry_type_name","exportColumn":"industry_type_name"},
         //30
@@ -297,55 +285,6 @@
         }
         return $parameters;
     ",
-    "exportColumnSqlOverride":[
-        {
-            "column":"sub_contract_reference_id",
-            "sourceColumn":"sub_contract_id",
-            "sql":" CASE WHEN document_code IN ('CT1', 'CTA1', 'CT2')
-                    THEN (CASE WHEN ((sub_contract_id IS NULL OR sub_contract_id = '') AND scntrc_status = 2) THEN 'NOT PROVIDED' 
-                               WHEN (sub_contract_id IS NULL OR sub_contract_id = '') THEN 'N/A'
-                               ELSE sub_contract_id
-                           END)
-                    ELSE 'N/A' END AS sub_contract_id"
-        },
-        {
-            "column":"parent_contract_link",
-            "sourceColumn":"master_contract_number",
-            "sql":"CASE WHEN master_contract_number IS NULL THEN 'N/A' ELSE master_contract_number END AS master_contract_number"
-        },
-        {
-            "column":"subvendor_name",
-            "sourceColumn":"sub_vendor_name",
-            "sql":"CASE WHEN document_code IN ('CT1', 'CTA1', 'CT2')
-			THEN (CASE WHEN ((sub_vendor_name IS NULL OR sub_vendor_name = '') AND scntrc_status = 2) 
-				THEN 'NOT PROVIDED' 
-			     WHEN (sub_vendor_name IS NULL OR sub_vendor_name = '') 
-			        THEN 'N/A'
-                            ELSE sub_vendor_name
-			END)
-                   ELSE 'N/A' END AS sub_vendor_name"
-        },
-        {
-            "column":"sub_mwbe_category",
-            "sourceColumn":"sub_minority_type_name",
-            "sql":"CASE WHEN document_code IN ('CT1', 'CTA1', 'CT2')
-			THEN (CASE WHEN ((sub_minority_type_name IS NULL OR sub_minority_type_name = '') AND scntrc_status = 2) 
-				THEN 'NOT PROVIDED' 
-			     WHEN (sub_minority_type_name IS NULL OR sub_minority_type_name = '') 
-			        THEN 'N/A'
-                            ELSE sub_minority_type_name
-			END)
-                 ELSE 'N/A' END AS sub_minority_type_name"
-        },
-        {
-            "column":"subvendor_status_pip",
-            "sourceColumn":"aprv_sta_name",
-            "sql":"CASE WHEN document_code IN ('CT1', 'CTA1', 'CT2') 
-			THEN aprv_sta_name
-                    ELSE 'N/A'
-                    END AS aprv_sta_name"
-        }
-    ],
     "adjustDataTableOptions":"
         $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
         if($node->show_difference) {
