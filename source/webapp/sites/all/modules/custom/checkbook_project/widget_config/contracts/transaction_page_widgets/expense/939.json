@@ -252,7 +252,7 @@
     "table_columns": [
         {"label": "<div></div>","colLabel": "","column": "child_contrats_link","export":false},
         {"labelAlias": "contract_id","column": "contract_link","sortSourceColumn":"contract_number"},
-        {"labelAlias":"contract_includes_sub","column":"contract_includes_sub","sortSourceColumn":"scntrc_status_name"},
+        {"labelAlias":"contract_includes_sub","column":"contract_includes_sub","sortSourceColumn":"scntrc_status_name", "exportColumn":"contract_includes_sub"},
         {"labelAlias":"sub_contract_reference_id","column":"sub_contract_reference_id","sortSourceColumn":"sub_contract_id"},
         {"label":"","column":"","export":false},
         {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description","exportColumn":"description"},
@@ -298,7 +298,6 @@
         return $parameters;
     ",
     "exportColumnSqlOverride":[
-        
         {
             "column":"sub_contract_reference_id",
             "sourceColumn":"sub_contract_id",
