@@ -660,25 +660,6 @@ namespace { //global
                 $parameters['prime_sub_vendor_minority_type_by_name_code'] = $condition;
             }
 
-            //Filter only prime M/WBE for M/WBE dashboard
-            $dashboard = _getRequestParamValue('dashboard');
-            $mwbe = _getRequestParamValue('mwbe');
-            if($dashboard == 'ms' || $dashboard == 'sp') {
-                if(isset($mwbe)) {
-
-                    $localValue = "PM:.*";
-                    $pattern = "(^{$localValue}$)|(.*,{$localValue}$)|(^{$localValue},.*)";
-                    $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
-                    if(isset($parameters['prime_sub_vendor_code_by_type'])) {
-                        $parameters['prime_sub_vendor_code_by_type'][] = $condition;
-                    }
-                    else {
-                        $parameters['prime_sub_vendor_code_by_type'] = $condition;
-                    }
-
-                }
-            }
-
             unset($parameters['vendor_name']);
             unset($parameters['vendor_type']);
             unset($parameters['minority_type_id']);
@@ -720,23 +701,6 @@ namespace { //global
             return $parameters;
         }
 
-        static public function filterPrimeMWBESubContractTransactions (&$parameters) {
-            //Filter only prime M/WBE for M/WBE dashboard
-            $dashboard = _getRequestParamValue('dashboard');
-            $mwbe = _getRequestParamValue('mwbe');
-            if(($dashboard == 'ms' || $dashboard == 'sp') && isset($mwbe)) {
-                if(isset($mwbe)) {
-                    if(isset($parameters['vendor_type.vendor_type'])) {
-                        $parameters['vendor_type.vendor_type'][] = 'PM';
-                    }
-                    else {
-                        $parameters['vendor_type.vendor_type'] = 'PM';
-                    }
-                }
-            }
-
-            return $parameters;
-        }
         /**
          * Function to handle parameters for the derived facet implementation mapping a single facet to multiple columns
          * @param $node
