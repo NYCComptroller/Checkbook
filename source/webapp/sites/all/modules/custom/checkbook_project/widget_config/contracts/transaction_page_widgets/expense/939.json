@@ -123,7 +123,7 @@
         },
         "parent_contract_export":{
             "type":"expression2",
-            "expression":"(!($row['master_contract_number']) ? 'N/A' : $row['master_contract_number'])"
+            "expression":"isset($row['master_contract_number']) ? $row['master_contract_number'] : 'N/A'"
         },
         "formatted_original_amount": {
             "type":"expression2",
