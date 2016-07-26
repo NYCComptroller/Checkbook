@@ -80,6 +80,7 @@ class ContractsUrlService {
     static function contractsFooterUrl() {
         $subvendor = _getRequestParamValue('subvendor');
         $vendor = _getRequestParamValue('vendor');
+        $mwbe = _getRequestParamValue('mwbe');
         if($subvendor) {
             $subvendor_code = self::getSubVendorCustomerCode($subvendor);
         }
@@ -88,7 +89,12 @@ class ContractsUrlService {
         }
         $subvendorURLString = (isset($subvendor) ? '/subvendor/'. $subvendor : '') .(isset($subvendor_code) ? '/vendorcode/'.$subvendor_code : '');
         $vendorURLString = (isset($vendor) ? '/vendor/'. $vendor : '') . (isset($vendor_code) ? '/vendorcode/'.$vendor_code : '');
-            
+        $mwbe_param = "";
+        //pmwbe & smwbe
+        if(isset($mwbe)) {
+            $mwbe_param = ContractUtil::showSubVendorData() ? '/smwbe/'.$mwbe : '/pmwbe/'.$mwbe;
+        }
+
         $url = '/panel_html/contract_details/contract/transactions/contcat/expense'
             . _checkbook_project_get_url_param_string('status','contstatus')
             . _checkbook_append_url_params()
@@ -97,7 +103,8 @@ class ContractsUrlService {
             . _checkbook_project_get_url_param_string('csize')
             . _checkbook_project_get_url_param_string('cindustry')
             . $subvendorURLString . $vendorURLString
-            . _checkbook_project_get_year_url_param_string();
+            . _checkbook_project_get_year_url_param_string()
+            . $mwbe_param;
         return $url;
     }
 

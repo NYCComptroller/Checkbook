@@ -941,6 +941,7 @@ namespace { //global
             $vendor = _getRequestParamValue('vendor');
             $dashboard = _getRequestParamValue('dashboard');
             $status = _getRequestParamValue('status');
+            $mwbe = _getRequestParamValue('mwbe');
 
             if($subvendor) {
                 $subvendor_code = self::getSubVendorCustomerCode($subvendor);
@@ -952,6 +953,12 @@ namespace { //global
             $vendorURLString = (isset($vendor) ? '/vendor/'. $vendor : '') . (isset($vendor_code) ? '/vendorcode/'.$vendor_code : '');
             $detailsPageURL  = (($dashboard == 'ss' || $dashboard == 'sp' || $dashboard == 'ms') && !isset($status))? 'sub_contracts_transactions' : 'contract_details';
 
+            $mwbe_param = "";
+            //pmwbe & smwbe
+            if(isset($status) && isset($mwbe)) {
+                $mwbe_param = self::showSubVendorData() ? '/smwbe/'.$mwbe : '/pmwbe/'.$mwbe;
+            }
+
             $url = '/panel_html/'. $detailsPageURL .'/contract/transactions/contcat/expense'
                 . _checkbook_project_get_url_param_string('status','contstatus')
                 . _checkbook_append_url_params()
@@ -961,7 +968,8 @@ namespace { //global
                 . _checkbook_project_get_url_param_string('cindustry')
                 . _checkbook_project_get_url_param_string('dashboard')
                 . ((!_checkbook_check_isEDCPage())? $subvendorURLString . $vendorURLString : _checkbook_project_get_url_param_string('vendor'))
-                . _checkbook_project_get_year_url_param_string();
+                . _checkbook_project_get_year_url_param_string()
+                . $mwbe_param;
             return $url;
         }
         static function getSubVendorCustomerCode($subVendorId){
