@@ -225,8 +225,10 @@ namespace { //global
             $latest_minority_id = isset($latest_minority_id) ? $latest_minority_id : $minority_type_id;
             $is_mwbe_certified = MappingUtil::isMWBECertified(array($latest_minority_id));
 
-            $url = _checkbook_project_get_url_param_string("agency") . _checkbook_project_get_url_param_string("contstatus","status") . _checkbook_project_get_year_url_param_string();
-
+            $status = _checkbook_project_get_url_param_string("contstatus","status");
+            $status = isset($status) && $status != "" ? $status : "/status/A";
+            $url = _checkbook_project_get_url_param_string("agency") . $status . _checkbook_project_get_year_url_param_string();
+            
             if($is_mwbe_certified && _getRequestParamValue('dashboard') == 'mp') {
                 $url .= _checkbook_project_get_url_param_string("cindustry")
                     . _checkbook_project_get_url_param_string("csize")
