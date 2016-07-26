@@ -1803,6 +1803,15 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#id' => 'edit-scntrc_status',
                 '#name' => 'scntrc_status',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'scntrc_status', $first_time_load, 0),
+                '#states' => array(
+                    'disabled' => array(
+                        array(
+                            array('select[name="df_contract_status"]' => array('value' => 'pending')),
+                            'or',
+                            array('select[name="category"]' => array('value' => 'revenue')),
+                        ),
+                    ),
+                )
             );
             $form['filter']['pin'] = array(
                 '#type' => 'textfield',
@@ -1922,6 +1931,19 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#id' => 'edit-aprv_sta',
                 '#name' => 'aprv_sta',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'aprv_sta', $first_time_load, 0),
+                '#states' => array(
+                    'disabled' => array(
+                        array(
+                            array('select[name="df_contract_status"]' => array('value' => 'pending')),
+                            'or',
+                            array('select[name="category"]' => array('value' => 'revenue')),
+                            'or',
+                            array('select[name="scntrc_status"]' => array('value' => '1')),
+                            'or',
+                            array('select[name="scntrc_status"]' => array('value' => '3')),
+                        ),
+                    ),
+                )
             );
             $form['filter']['purpose'] = array(
 
