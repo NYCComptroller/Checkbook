@@ -907,27 +907,27 @@ namespace { //global
             return $vendor_types_derived;
         }
 
-        static public function mergeMWBWCategoryFacetValues($node) {
+        static public function mergeMWBWCategoryFacetValues($node, $id_column = "minority_type_id_minority_type_id", $name_column = "minority_type_name_minority_type_name") {
             $data = array();
             $count = 0;
             $ids = '';
             foreach($node->data as $row){
-                if(MappingUtil::getMinorityCategoryById($row['minority_type_id_minority_type_id']) != 'Asian American'){
-                    $new_row = array('minority_type_id_minority_type_id' => $row['minority_type_id_minority_type_id'],
-                        'minority_type_name_minority_type_name' => MappingUtil::getMinorityCategoryById($row['minority_type_id_minority_type_id']),
+                if(MappingUtil::getMinorityCategoryById($row[$id_column]) != 'Asian American'){
+                    $new_row = array($id_column => $row[$id_column],
+                        $name_column => MappingUtil::getMinorityCategoryById($row[$id_column]),
                         'txcount' => $row['txcount']
                     );
                     array_push($data, $new_row);
                 }
-                else if(MappingUtil::getMinorityCategoryById($row['minority_type_id_minority_type_id']) == 'Asian American'){
+                else if(MappingUtil::getMinorityCategoryById($row[$id_column]) == 'Asian American'){
                     $count = $count+$row['txcount'];
-                    $ids .= $row['minority_type_id_minority_type_id'].'~';
+                    $ids .= $row[$id_column].'~';
                 }
             }
             $ids = isset($ids)?trim($ids,'~'):'';
             if($count > 0){
-                array_push($data, array('minority_type_id_minority_type_id' => $ids,
-                    'minority_type_name_minority_type_name' => 'Asian American',
+                array_push($data, array($id_column => $ids,
+                    $name_column => 'Asian American',
                     'txcount' => $count
                 ));
             }
