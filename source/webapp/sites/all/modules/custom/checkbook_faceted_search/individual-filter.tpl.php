@@ -156,7 +156,7 @@ if($node->widgetConfig->filterName == 'Revenue Recognized') {
 
 //Checking 'Asian-American' filter in MWBE Category Facet
 $count =0;
-if($node->widgetConfig->filterName == 'M/WBE Category'){
+if($node->widgetConfig->filterName == 'M/WBE Category' || $node->widgetConfig->filterName == 'Prime M/WBE Category' || $node->widgetConfig->filterName == 'Sub M/WBE Category'){
     $dashboard = _getRequestParamValue('dashboard');
     foreach($unchecked as $key => $value){
         if(isset($dashboard) && $dashboard != 'ss'){

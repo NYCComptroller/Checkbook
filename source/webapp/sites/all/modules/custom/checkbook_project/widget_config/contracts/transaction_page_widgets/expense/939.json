@@ -3,12 +3,14 @@
     "widgetSubType":"dataTableList",
     "stickyHeader":true,
     "cleanURLParameters":[
-        "vendortype","mwbe","doctype","contstatus","year","calyear","agency","curamtr","vendorcode","vendornm","vendornm_exact","contdesc","agrmnttype",
+        "vendortype","mwbe","pmwbe","smwbe","doctype","contstatus","year","calyear","agency","curamtr","vendorcode","vendornm","vendornm_exact","contdesc","agrmnttype",
         "agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","modamt","subcontstatus","subvendorstatus"
     ],
     "urlParamMap":{
         "agrmnttype":"agreement_type_id",
         "mwbe":"prime_sub_vendor_minority_type_by_name_code",
+        "pmwbe":"prime_minority_type_id",
+        "smwbe":"sub_minority_type_id",
         "agency":"agency_id",
         "fvendor":"vendor_id",
         "vendorcode":"prime_sub_vendor_minority_type_by_name_code",
@@ -384,6 +386,8 @@
             var oContractNumber = getNamedFilterCriteria('fContractNumber');
             var oSubVendorStatus = getNamedFilterCriteria('fSubVendorStatus');
             var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
+            var oPrimeMinorityTypeId = getNamedFilterCriteria('fPrimeMinorityTypeId');
+            var oSubMinorityTypeId = getNamedFilterCriteria('fSubMinorityTypeId');
             var oVendorType = getNamedFilterCriteria('fvendorType');
             var oCurAmount = getNamedFilterCriteria('fCurAmount');
             var oAwdMethod = getNamedFilterCriteria('fAwdMethodId');
@@ -400,6 +404,8 @@
             cUrl = adjustUrlParameter(cUrl,'contnum_exact',oContractNumber);
             cUrl = adjustUrlParameter(cUrl,'subvendorstatus',oSubVendorStatus);
             cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
+            cUrl = adjustUrlParameter(cUrl,'pmwbe',oPrimeMinorityTypeId);
+            cUrl = adjustUrlParameter(cUrl,'smwbe',oSubMinorityTypeId);
             cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
             cUrl = adjustUrlParameter(cUrl,'curamtr',oCurAmount);
             cUrl = adjustUrlParameter(cUrl,'awdmethod',oAwdMethod);
@@ -416,6 +422,8 @@
             var yeartype = jQuery(oElement).attr('yeartype');
             var mastercode = jQuery(oElement).attr('mastercode');
             var mwbe = jQuery(oElement).attr('mwbe');
+            var pmwbe = jQuery(oElement).attr('pmwbe');
+            var smwbe = jQuery(oElement).attr('smwbe');
             var dashboard = jQuery(oElement).attr('dashboard');
             var subcontstatus = jQuery(oElement).attr('subcontstatus');
             var subvendorstatus = jQuery(oElement).attr('subvendorstatus');
@@ -426,6 +434,8 @@
             var sUrl = '/dashboard_platform/data_tables/ajax_data/node/940/magid/'+magid;
             sUrl = sUrl + ( (contstatus == null || contstatus.length == 0) ?  '' : '/contstatus/'+contstatus);
             sUrl = sUrl + ( (mwbe == null || mwbe.length == 0) ?  '' : '/mwbe/'+mwbe);
+            sUrl = sUrl + ( (pmwbe == null || pmwbe.length == 0) ?  '' : '/pmwbe/'+pmwbe);
+            sUrl = sUrl + ( (smwbe == null || smwbe.length == 0) ?  '' : '/smwbe/'+smwbe);
             sUrl = sUrl + ( (dashboard == null || dashboard.length == 0) ?  '' : '/dashboard/'+dashboard);
             sUrl = sUrl + ( (subcontstatus == null || subcontstatus.length == 0) ?  '' : '/subcontstatus/'+subcontstatus);
             sUrl = sUrl + ( (subvendorstatus == null || subvendorstatus.length == 0) ?  '' : '/subvendorstatus/'+subvendorstatus);

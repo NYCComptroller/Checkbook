@@ -6,24 +6,24 @@
     "limit":10,
     "startWith":0,
     "maxSelect":5,
-    "columns":["prime_minority_type_id.prime_minority_type_id", "prime_minority_type_name.prime_minority_type_name", "txcount"],
+    "columns":["sub_minority_type_id.sub_minority_type_id", "sub_minority_type_name.sub_minority_type_name", "txcount"],
     "orderBy":"-txcount",
     "getTotalDataCount":true,
     "facetPager":true,
-    "filterName":"Prime M/WBE Category",
-    "urlParameterName":"pmwbe",
+    "filterName":"Sub M/WBE Category",
+    "urlParameterName":"smwbe",
     "autocompleteParamName":"mwbe_auto",
-    "autocompleteID":"fPrimeMinorityTypeId",
-    "autocompleteField":"prime_minority_type_name",
+    "autocompleteID":"fSubMinorityTypeId",
+    "autocompleteField":"sub_minority_type_name",
     "adjustParameters":"
         $parameters = ContractUtil::adjustActiveContractParameterFilters($node, $parameters);
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-            $adjustedParameters['prime_minority_type_id.prime_minority_type_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+            $adjustedParameters['sub_minority_type_id.sub_minority_type_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
             return $adjustedParameters;
         }
         return $parameters;
     ",
-    "transformationPHP":"return ContractUtil::mergeMWBWCategoryFacetValues($node,'prime_minority_type_id_prime_minority_type_id','prime_minority_type_name_prime_minority_type_name');",
+    "transformationPHP":"return ContractUtil::mergeMWBWCategoryFacetValues($node,'sub_minority_type_id_sub_minority_type_id','sub_minority_type_name_sub_minority_type_name');",
     "template":"individual_filter"
 }

@@ -1,7 +1,7 @@
 {
     "widgetType":"data_tables",
     "widgetSubType":"dataTableList",
-    "cleanURLParameters":["year","agency","vendorcode","vendortype","contnum","subvendorstatus","mwbe"],
+    "cleanURLParameters":["year","agency","vendorcode","vendortype","contnum","subvendorstatus","mwbe","pmwbe","smwbe"],
     "allowRequestParams":["smnid","dashboard"],
     "urlParamMap":{
         "year":"year",
@@ -11,7 +11,9 @@
         "subvendor":"sub_vendor_id",
         "mwbe":"prime_sub_vendor_minority_type_by_name_code",
         "subvendorstatus":"aprv_sta_id",
-        "contnum":"contract_number"
+        "contnum":"contract_number",
+        "pmwbe":"prime_minority_type_id",
+        "smwbe":"sub_minority_type_id"
     },
     "header":"
         $header = NULL;
@@ -183,6 +185,8 @@
         var oContNum = getNamedFilterCriteria('fContractNumber');
         var oSubVendorStatus = getNamedFilterCriteria('fSubVendorStatus');
         var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
+        var oPrimeMinorityTypeId = getNamedFilterCriteria('fPrimeMinorityTypeId');
+        var oSubMinorityTypeId = getNamedFilterCriteria('fSubMinorityTypeId');
         var oVendorType = getNamedFilterCriteria('fvendorType');
 
         var cUrl = oTable.fnSettings().sAjaxSource;
@@ -194,6 +198,8 @@
         cUrl = adjustUrlParameter(cUrl,'contnum',oContNum);
         cUrl = adjustUrlParameter(cUrl,'subvendorstatus',oSubVendorStatus);
         cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
+        cUrl = adjustUrlParameter(cUrl,'pmwbe',oPrimeMinorityTypeId);
+        cUrl = adjustUrlParameter(cUrl,'smwbe',oSubMinorityTypeId);
         cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
 
         return cUrl;

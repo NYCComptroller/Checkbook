@@ -115,10 +115,10 @@
                     ]
                 },
                 {
-                    "name": "prime_minority_type",
+                    "name": "prime_minority_type_id",
                     "levels": [
                         {
-                            "name": "prime_minority_type",
+                            "name": "prime_minority_type_id",
                             "sourceColumnName": "prime_minority_type_id"
                         }
                     ]
@@ -133,10 +133,10 @@
                     ]
                 },
                 {
-                    "name": "sub_minority_type",
+                    "name": "sub_minority_type_id",
                     "levels": [
                         {
-                            "name": "sub_minority_type",
+                            "name": "sub_minority_type_id",
                             "sourceColumnName": "sub_minority_type_id"
                         }
                     ]
@@ -218,7 +218,7 @@
             ],
             "measures": {
                 "txcount": {
-                    "function": "COUNT(*)"
+                    "function": "COUNT(DISTINCT (CASE WHEN vendor_type IN ('P','PM') THEN vendor_name||contract_number ELSE vendor_name||contract_number||sub_contract_id END )) "
                 }
             }
         },
@@ -273,7 +273,7 @@
             ],
             "measures": {
                 "txcount": {
-                    "function": "COUNT(*)"
+                    "function": "CASE WHEN vendor_type_id IN ('P','M') THEN (COUNT(DISTINCT vendor_type_id||contract_number)) ELSE COUNT(*) END"
                 }
             }
         }
