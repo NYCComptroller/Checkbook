@@ -311,7 +311,7 @@
             ],
             "measures": {
                 "txcount": {
-                    "function": "CASE WHEN vendor_type_id IN ('P') THEN (COUNT(DISTINCT vendor_code||contract_number)) ELSE COUNT(*) END"
+                    "function":"CASE WHEN vendor_type_id IN ('P','PM') THEN (COUNT(DISTINCT vendor_code||contract_number)) WHEN vendor_type_id IN ('SM') THEN (COUNT(DISTINCT vendor_code||contract_number||sub_contract_id)) ELSE COUNT(*) END"
                 }
             }
         }
