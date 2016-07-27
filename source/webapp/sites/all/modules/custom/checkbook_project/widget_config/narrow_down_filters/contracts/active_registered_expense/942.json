@@ -11,8 +11,7 @@
     "urlParamMap":{
         "vendorcode":"vendor_code.vendor_code",
         "vendornm_exact":"vendor_name.vendor_name",
-        "vendornm":"vendor_name.vendor_name",
-        "mwbe":"minority_type_id.minority_type_id"
+        "vendornm":"vendor_name.vendor_name"
     },
     "dataset":"checkbook:contract_transactions_by_prime_vendor_facet_data",
     "columns":["vendor_code.vendor_code", "vendor_name.vendor_name", "txcount"],

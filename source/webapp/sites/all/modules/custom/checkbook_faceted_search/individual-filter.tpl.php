@@ -183,6 +183,11 @@ if($node->widgetConfig->filterName == 'M/WBE Category' || $node->widgetConfig->f
 //Vendor Type facet for parentNid == 932/939 is a different implementation and should be ignored
 if($node->widgetConfig->filterName == 'Vendor Type'){
     if($node->widgetConfig->parentNid == 932 || $node->widgetConfig->parentNid == 939) {
+        $vendor_types = _getRequestParamValue('vendortype');
+        $vendor_type_data = MappingUtil::getMixedVendorTypes($checked, $vendor_types);
+        $vendor_type_data = MappingUtil::getMixedVendorTypes($unchecked, $vendor_types);
+        $checked = $vendor_type_data['checked'];
+        $unchecked = $vendor_type_data['unchecked'];
     }
     else {
         $vendor_types = _getRequestParamValue('vendortype');
