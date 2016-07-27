@@ -648,7 +648,11 @@ namespace { //global
 
             //M/WBE Category Facet
             $mwbe_categories = explode('~', _getRequestParamValue('mwbe'));
-            $has_mwbe_categories = isset($mwbe_categories[0]) && $mwbe_categories[0] != "";
+            $prime_mwbe_categories = _getRequestParamValue('pmwbe');
+            $sub_mwbe_categories = _getRequestParamValue('smwbe');
+            $has_mwbe_categories = isset($mwbe_categories[0]) && $mwbe_categories[0] != ""
+                && !isset($prime_mwbe_categories)
+                && !isset($sub_mwbe_categories);
 
             //Get regular expression for vendor code, vendor type and mwbe category facets
             $pattern = self::getPrimeSubVendorRegex(
@@ -720,7 +724,11 @@ namespace { //global
 
             //M/WBE Category Facet
             $mwbe_categories = explode('~', _getRequestParamValue('mwbe'));
-            $has_mwbe_categories = isset($mwbe_categories[0]) && $mwbe_categories[0] != "";
+            $prime_mwbe_categories = _getRequestParamValue('pmwbe');
+            $sub_mwbe_categories = _getRequestParamValue('smwbe');
+            $has_mwbe_categories = isset($mwbe_categories[0]) && $mwbe_categories[0] != ""
+                && !isset($prime_mwbe_categories)
+                && !isset($sub_mwbe_categories);
 
             //Vendor Facet using Vendor Code
             $vendor_codes = explode('~', _getRequestParamValue('vendorcode'));
