@@ -10,6 +10,37 @@
             $('input:radio[name="datafeeds-contracts-domain-filter"][value="checkbook"]').attr('checked', 'checked').button("refresh");
             $('input:hidden[name="data_source"]').val("checkbook");
         }
+
+        //On change of "Sub Vendor Status in PIP" status
+        $('#edit-aprv_sta').change(function() {
+            var sub_vendor_status = $('#edit-aprv_sta').val();
+            var includes_sub_vendors = $('#edit-scntrc_status').val();
+            var valid_status = [6,1,4,3,2,5];
+
+            if($.inArray(sub_vendor_status, valid_status)) {
+                if(includes_sub_vendors == 2){
+                    $('#edit-scntrc_status').html('<option value="0">Select Status</option>' +
+                        '<option value="2" selected>Yes</option>');
+                } else {
+                    $('#edit-scntrc_status').html('<option value="0" selected>Select Status</option>' +
+                        '<option value="2">Yes</option>');
+                }
+            }
+
+            if(sub_vendor_status == 0) {
+                if(includes_sub_vendors == 2){
+                    $('#edit-scntrc_status').html('<option value="0">Select Status</option>' +
+                        '<option value="2" selected>Yes</option>' +
+                        '<option value="3">No</option>' +
+                        '<option value="1">No Data Entered</option>');
+                } else {
+                    $('#edit-scntrc_status').html('<option value="0" selected>Select Status</option>' +
+                        '<option value="2">Yes</option>' +
+                        '<option value="3">No</option>' +
+                        '<option value="1">No Data Entered</option>');
+                }
+            }
+        });
     });
 
     $.fn.onDataSourceChange = function(){
@@ -395,4 +426,5 @@
         }
         return output;
     }
+
 }(jQuery));
