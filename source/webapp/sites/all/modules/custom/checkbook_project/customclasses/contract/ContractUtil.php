@@ -745,6 +745,9 @@ namespace { //global
                     $parameters['prime_sub_vendor_minority_type_by_name_code'] = $condition;
                 }
             }
+            else {
+                unset($parameters['prime_sub_vendor_minority_type_by_name_code']);
+            }
 
             return $parameters;
         }
@@ -858,15 +861,7 @@ namespace { //global
 
             //For Advanced Search page, we use mwbe, for Details we use smwbe,pmwbe and need to unset this param map for mwbe -> prime_sub_vendor_minority_type_by_name_code
             if($node->widgetConfig->filterName == "Vendor Type") {
-                $mwbe_categories = _getRequestParamValue('mwbe');
-                $prime_mwbe_categories = _getRequestParamValue('pmwbe');
-                $sub_mwbe_categories = _getRequestParamValue('smwbe');
-
-                if(isset($mwbe_categories)) {
-                    if(isset($prime_mwbe_categories) || isset($sub_mwbe_categories)) {
-                        unset($parameters['prime_sub_vendor_minority_type_by_name_code']);
-                    }
-                }
+                unset($parameters['prime_sub_vendor_minority_type_by_name_code']);
             }
 
             //Handle Advanced Search Parameters
