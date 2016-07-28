@@ -1464,6 +1464,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
     $agency_options = _agency_options($data_source);
     $contract_type_options = _contract_type_options();
     $award_method_options = _award_method_options();
+    $sub_vendor_status_in_pip_options = _sub_vendor_status_in_pip();
 
     switch ($data_source) {
         case 'checkbook_oge':
@@ -1916,15 +1917,8 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
             $form['filter']['aprv_sta'] = array(
                 '#type' => 'select',
                 '#title' => t('Sub Vendor Status <br />in PIP:'),
-                '#options' => array(
-                    0 => 'Select Status',
-                    6 => 'No Subcontract Information Submitted',
-                    1 => 'No Subcontract Payments Submitted',
-                    4 => 'ACCO Approved Sub Vendor',
-                    3 => 'ACCO Reviewing Sub Vendor',
-                    2 => 'ACCO Rejected Sub Vendor',
-                    5 => 'ACCO Canceled Sub Vendor',
-                ),
+                '#options' => $sub_vendor_status_in_pip_options['options'],
+                '#option_attributes' => $sub_vendor_status_in_pip_options['options_attributes'],
                 '#attributes' => array('class' => array('watch')),
                 '#prefix' => '<div class="datafield aprv_sta">',
                 '#suffix' => '</div>',
@@ -5943,6 +5937,41 @@ function _checkbook_datafeeds_agency_options($data,$data_source = null) {
     $results['options'] = $menu_options;
     $results['options_attributes'] = $menu_options_attributes;
     return $results;
+}
+
+
+/**
+ * Get Sub Vendor Status in PIP from Data Controller and format into a FAPI select input #options array.
+ *
+ * @return array
+ *   Sub Vendor Status In PIP ids and nammes
+ */
+function _sub_vendor_status_in_pip() {
+    $statuses[0] = 'Select Status';
+    try {
+        $dataController = data_controller_get_instance();
+        $data = $dataController->queryDataset('checkbook:subcontract_approval_status', 
+                                                array('aprv_sta_id', 'aprv_sta_value'), 
+                                                NULL, 'sort_order', 0, 10, NULL);
+
+        $menu_options = array('0' => 'Select Status');
+        $title = 'Select Status';
+        $menu_options_attributes = array($title => array('title' => $title));
+
+        foreach ($data as $row) {
+            $option = $row['aprv_sta_value'];
+            //Menu options
+            $menu_options[$row['aprv_sta_id']] = (strlen($option) > 20) ? substr($option, 0, 20) . '...' : $option;
+            //Menu option titles
+            $menu_options_attributes[$row['aprv_sta_id']] = array('title' => $option);
+        }
+        $results['options'] = $menu_options;
+        $results['options_attributes'] = $menu_options_attributes;
+        return $results;
+    }catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
+        return;
+    }
 }
 
 /**
