@@ -636,7 +636,6 @@ namespace { //global
         static public function adjustContractParameterFilters(&$node, &$parameters) {
 
             $parameters = self::adjustContractTransactionsCommonParams($node, $parameters);
-            $data_controller_instance = data_controller_get_operator_factory_instance();
 
             //Vendor Facet
             $vendor_codes = explode('~', _getRequestParamValue('vendorcode'));
@@ -651,15 +650,17 @@ namespace { //global
             $mwbe_categories = null;
 
             //Get regular expression for vendor code, vendor type and mwbe category facets
-            $pattern = self::getPrimeSubVendorRegex(
-                $has_vendor_types ? $vendor_types : null,
-                $has_mwbe_categories ? $mwbe_categories : null,
-                $has_vendors ? $vendor_codes : null);
+            if($has_vendor_types || $has_mwbe_categories || $has_vendors) {
+                $pattern = self::getPrimeSubVendorRegex(
+                    $has_vendor_types ? $vendor_types : null,
+                    $has_mwbe_categories ? $mwbe_categories : null,
+                    $has_vendors ? $vendor_codes : null);
 
-            if($pattern != null) {
-                $data_controller_instance = data_controller_get_operator_factory_instance();
-                $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
-                $parameters['prime_sub_vendor_minority_type_by_name_code'] = $condition;
+                if($pattern != null) {
+                    $data_controller_instance = data_controller_get_operator_factory_instance();
+                    $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
+                    $parameters['prime_sub_vendor_minority_type_by_name_code'] = $condition;
+                }
             }
 
             unset($parameters['vendor_name']);
@@ -691,8 +692,6 @@ namespace { //global
                 $has_vendor_types = isset($vendor_types[0]) && $vendor_types[0] != "";
                 if($has_vendor_types) {
                     $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, $vendor_types);
-                }
-                if(isset($condition)) {
                     $parameters['vendor_type'] = $condition;
                 }
                 unset($parameters['prime_sub_vendor_minority_type_by_name_code']);
@@ -734,15 +733,17 @@ namespace { //global
             $has_vendors = isset($vendor_codes[0]) && $vendor_codes[0] != "";
 
             //Get regular expression for vendor code, vendor type and mwbe category facets
-            $pattern = self::getPrimeSubVendorRegex(
-                $has_vendor_types ? $vendor_types : null,
-                $has_mwbe_categories ? $mwbe_categories : null,
-                $has_vendors ? $vendor_codes : null);
+            if($has_vendor_types || $has_mwbe_categories || $has_vendors) {
+                $pattern = self::getPrimeSubVendorRegex(
+                    $has_vendor_types ? $vendor_types : null,
+                    $has_mwbe_categories ? $mwbe_categories : null,
+                    $has_vendors ? $vendor_codes : null);
 
-            if($pattern != null) {
-                $data_controller_instance = data_controller_get_operator_factory_instance();
-                $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
-                $parameters['prime_sub_vendor_minority_type_by_name_code'] = $condition;
+                if($pattern != null) {
+                    $data_controller_instance = data_controller_get_operator_factory_instance();
+                    $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
+                    $parameters['prime_sub_vendor_minority_type_by_name_code'] = $condition;
+                }
             }
 
             return $parameters;
@@ -785,14 +786,12 @@ namespace { //global
             if($has_vendor_exact_names) {
                 $pattern = null;
                 foreach($vendor_exact_names as $vendor_exact_name) {
-                    $local_pattern = self::getVendorTypeRegExpPattern($has_vendor_types ? $vendor_types : null, $vendor_exact_name);
+                    $local_pattern = self::getVendorNameTypeRegExpPattern($has_vendor_types ? $vendor_types : null, $vendor_exact_name);
                     $pattern .= isset($pattern) ? '|'.$local_pattern : $local_pattern;
                 }
                 if($pattern != null) {
                     $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
-                    if(isset($condition)) {
-                        $parameters['prime_sub_vendor_name_by_type'] = $condition;
-                    }
+                    $parameters['prime_sub_vendor_name_by_type'] = $condition;
                 }
             }
             //Vendor Facet for Like Search
@@ -801,7 +800,7 @@ namespace { //global
             if($has_vendor_names) {
                 $pattern = null;
                 foreach($vendor_names as $vendor_name) {
-                    $local_pattern = self::getVendorTypeRegExpPattern($has_vendor_types ? $vendor_types : null, $vendor_name,'like');
+                    $local_pattern = self::getVendorNameTypeRegExpPattern($has_vendor_types ? $vendor_types : null, $vendor_name,'like');
                     $pattern .= isset($pattern) ? '|'.$local_pattern : $local_pattern;
                 }
                 if($pattern != null) {
@@ -850,9 +849,9 @@ namespace { //global
                 $has_vendor_types = isset($vendor_types[0]) && $vendor_types[0] != "";
                 if($has_vendor_types) {
                     $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, $vendor_types);
-                }
-                if(isset($condition)) {
-                    $parameters['vendor_type'] = $condition;
+                    if(isset($condition)) {
+                        $parameters['vendor_type'] = $condition;
+                    }
                 }
                 unset($parameters['prime_sub_vendor_minority_type_by_name_code']);
             }
@@ -878,7 +877,7 @@ namespace { //global
             return $parameters;
         }
 
-        static public function getVendorTypeRegExpPattern($vendor_types, $vendor_identifier = null, $searchType = 'exact') {
+        static public function getVendorNameTypeRegExpPattern($vendor_types, $vendor_identifier = null, $searchType = 'exact') {
 
             $pattern = null;
 
