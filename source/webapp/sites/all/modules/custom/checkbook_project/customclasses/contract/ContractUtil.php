@@ -647,12 +647,13 @@ namespace { //global
             $has_vendor_types = isset($vendor_types[0]) && $vendor_types[0] != "";
 
             //M/WBE Category Facet
+            $has_mwbe_categories = false;
             $mwbe_categories = null;
 
             //Get regular expression for vendor code, vendor type and mwbe category facets
             $pattern = self::getPrimeSubVendorRegex(
                 $has_vendor_types ? $vendor_types : null,
-                $mwbe_categories,
+                $has_mwbe_categories ? $mwbe_categories : null,
                 $has_vendors ? $vendor_codes : null);
 
             if($pattern != null) {
@@ -717,12 +718,16 @@ namespace { //global
             $has_vendor_types = isset($vendor_types[0]) && $vendor_types[0] != "";
 
             //M/WBE Category Facet
-            $mwbe_categories = explode('~', _getRequestParamValue('mwbe'));
+            $mwbe_categories = _getRequestParamValue('mwbe');
             $prime_mwbe_categories = _getRequestParamValue('pmwbe');
             $sub_mwbe_categories = _getRequestParamValue('smwbe');
-            $has_mwbe_categories = isset($mwbe_categories[0]) && $mwbe_categories[0] != ""
-                && !isset($prime_mwbe_categories)
-                && !isset($sub_mwbe_categories);
+            $has_mwbe_categories = false;
+            if(!isset($prime_mwbe_categories) && !isset($sub_mwbe_categories)) {
+                if(isset($mwbe_categories)) {
+                    $has_mwbe_categories = true;
+                    $mwbe_categories = explode('~', $mwbe_categories);
+                }
+            }
 
             //Vendor Facet using Vendor Code
             $vendor_codes = explode('~', _getRequestParamValue('vendorcode'));
@@ -880,33 +885,7 @@ namespace { //global
         }
 
         static public function getVendorTypeFromVendorTypeId($vendor_types) {
-
-            $P = in_array('P', $vendor_types);
-            $S = in_array('S', $vendor_types);
-            $M = in_array('M', $vendor_types);
-
-            $vendor_types_derived = array();
-
-            if($P && $M) {
-                $vendor_types_derived[] = "PM";
-            }
-            if($P && !$M) {
-                $vendor_types_derived[] = "P";
-                $vendor_types_derived[] = "PM";
-
-            }
-            if($S && $M) {
-                $vendor_types_derived[] = "SM";
-            }
-            if($S && !$M) {
-                $vendor_types_derived[] = "S";
-                $vendor_types_derived[] = "SM";
-            }
-            if($M && !$P && !$S) {
-                $vendor_types_derived[] = "PM";
-                $vendor_types_derived[] = "SM";
-            }
-            return $vendor_types_derived;
+            return $vendor_types;
         }
 
         static public function mergeMWBWCategoryFacetValues($node, $id_column = "minority_type_id_minority_type_id", $name_column = "minority_type_name_minority_type_name") {

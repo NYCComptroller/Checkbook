@@ -422,38 +422,13 @@ class MappingUtil {
         return array('unchecked'=>$unchecked, "checked"=>$checked);
     }
 
-    static function getMixedVendorTypes($nodeData, $param){
-        $unchecked = array();
-        $checked = array();
-        $params = explode('~', $param);
-        $vendor_counts = array();
-        foreach($nodeData as $row){
-            if(in_array($row[0],array('P'))){
-                $vendor_counts['P'] = $vendor_counts['P']+ $row[2];
-            }
-            if(in_array($row[0],array('S'))){
-                $vendor_counts['S'] = $vendor_counts['S']+ $row[2];
-            }
-            if(in_array($row[0],array('PM','SM'))){
-                $vendor_counts['M'] = $vendor_counts['M']+ $row[2];
-            }
-        }
-        foreach($vendor_counts as $key=>$value){
-            if(in_array($key, $params))
-                array_push($checked, array($key, self::getMixedVendorTypeNames($key),$value));
-            else
-                array_push($unchecked, array($key, self::getMixedVendorTypeNames($key),$value));
-        }
-        return array('unchecked'=>$unchecked, "checked"=>$checked);
-    }
-
     static function getMixedVendorTypeNames($vendor_type_name_id){
         switch($vendor_type_name_id) {
-            case 'P':
+            case 'P~PM':
                 return "PRIME VENDOR";
-            case 'S':
+            case 'S~SM':
                 return "SUB VENDOR";
-            case 'M':
+            case 'PM~SM':
                 return "M/WBE VENDOR";
         }
     }
