@@ -8,8 +8,7 @@
     "facetPager":true,
     "filterName":"Vendor",
     "urlParamMap":{
-        "vendorcode":"vendor_code.vendor_code",
-        "mwbe":"minority_type_id.minority_type_id"
+        "vendorcode":"vendor_code.vendor_code"
     },
     "dataset":"checkbook:mixed_vendor_data",
     "columns":["vendor_code.vendor_code", "vendor_name.vendor_name", "txcount"],

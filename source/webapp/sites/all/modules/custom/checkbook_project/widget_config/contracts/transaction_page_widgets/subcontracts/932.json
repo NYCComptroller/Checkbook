@@ -1,7 +1,7 @@
 {
     "widgetType":"data_tables",
     "widgetSubType":"dataTableList",
-    "cleanURLParameters":["year","agency","vendorcode","vendortype","contnum","subvendorstatus","mwbe","pmwbe","smwbe"],
+    "cleanURLParameters":["year","agency","vendorcode","vendortype","contnum","subvendorstatus","pmwbe","smwbe"],
     "allowRequestParams":["smnid","dashboard"],
     "urlParamMap":{
         "year":"year",
@@ -9,7 +9,6 @@
         "vendorcode":"prime_sub_vendor_minority_type_by_name_code",
         "vendortype":"prime_sub_vendor_minority_type_by_name_code",
         "subvendor":"sub_vendor_id",
-        "mwbe":"prime_sub_vendor_minority_type_by_name_code",
         "subvendorstatus":"aprv_sta_id",
         "contnum":"contract_number",
         "pmwbe":"prime_minority_type_id",
@@ -48,6 +47,7 @@
         "ending_year_id",
         "effective_begin_year_id",
         "effective_end_year_id",
+        "sub_contract_id",
         "sort_order"
     ],
     "uniqueSortColumn":"original_agreement_id",
@@ -114,10 +114,15 @@
         "subvendor_status_pip_export":{
             "type": "expression2",
             "expression": "($row['aprv_sta_value'] == 'N/A' || $row['aprv_sta_value'] == NULL) ? 'N/A' : $row['aprv_sta_value']"
+        },
+        "sub_contract_reference_id":{
+            "type":"expression2",
+            "expression":"isset($row['sub_contract_id']) ? $row['sub_contract_id'] : 'N/A'"
         }
     },
     "table_columns": [
         {"labelAlias":"contract_id","column":"contract_link","sortSourceColumn":"contract_number"},
+        {"labelAlias":"sub_contract_reference_id","column":"sub_contract_reference_id","sortSourceColumn":"sub_contract_id", "exportColumn":"sub_contract_reference_id"},
         {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description"},
         {"labelAlias":"contract_agency","column":"agency_name_link","sortSourceColumn":"agency_name"},
         {"labelAlias":"prime_vendor","column":"prime_vendor_name_link","sortSourceColumn":"prime_vendor_name"},
@@ -141,6 +146,7 @@
             "sql":"CASE WHEN sub_minority_type_name IS NULL THEN 'NOT PROVIDED' ELSE sub_minority_type_name END AS sub_minority_type_name"
         }
     ],
+    "skipCustomPadding":true,
     "adjustDataTableOptions":"",
     "dataTableOptions":{
         "bRetrieve": true,
@@ -159,7 +165,8 @@
     "bInfo": true,
     "aoColumns":[
         {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
-        {"sClass":"text","sWidth":"230px","asSorting":["asc","desc"]},
+        {"sClass":"number-center","sWidth":"127px","asSorting":["asc","desc"]},
+        {"sClass":"text pad-left","sWidth":"230px","asSorting":["asc","desc"]},
         {"sClass":"text","sWidth":"230px","asSorting":["asc","desc"]},
         {"sClass":"text","sWidth":"230px","asSorting":["asc","desc"]},
         {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
@@ -170,7 +177,7 @@
         {"sClass":"text pad-left","sWidth":"150px","asSorting":["asc","desc"]},
         {"sWidth":"5px"}
     ],
-    "aaSorting":[[10,"asc"]],
+    "aaSorting":[[11,"asc"]],
     "sScrollX": "100%",
     "bScrollCollapse": false,
     "fnInitComplete": "##function () { new FixedColumns( oTable, {
@@ -184,7 +191,6 @@
         var oVendorCode = getNamedFilterCriteria('fvendorCode');
         var oContNum = getNamedFilterCriteria('fContractNumber');
         var oSubVendorStatus = getNamedFilterCriteria('fSubVendorStatus');
-        var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
         var oPrimeMinorityTypeId = getNamedFilterCriteria('fPrimeMinorityTypeId');
         var oSubMinorityTypeId = getNamedFilterCriteria('fSubMinorityTypeId');
         var oVendorType = getNamedFilterCriteria('fvendorType');
@@ -197,7 +203,6 @@
         cUrl = adjustUrlParameter(cUrl,'vendorcode',oVendorCode);
         cUrl = adjustUrlParameter(cUrl,'contnum',oContNum);
         cUrl = adjustUrlParameter(cUrl,'subvendorstatus',oSubVendorStatus);
-        cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
         cUrl = adjustUrlParameter(cUrl,'pmwbe',oPrimeMinorityTypeId);
         cUrl = adjustUrlParameter(cUrl,'smwbe',oSubMinorityTypeId);
         cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
