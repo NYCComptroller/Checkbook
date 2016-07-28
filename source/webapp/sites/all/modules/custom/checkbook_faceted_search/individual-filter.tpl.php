@@ -183,6 +183,45 @@ if($node->widgetConfig->filterName == 'M/WBE Category' || $node->widgetConfig->f
 //Vendor Type facet for parentNid == 932/939 is a different implementation and should be ignored
 if($node->widgetConfig->filterName == 'Vendor Type'){
     if($node->widgetConfig->parentNid == 932 || $node->widgetConfig->parentNid == 939) {
+        $vendor_counts = array();
+        foreach($checked as $row){
+            if(in_array($row[0],array('P'))){
+                $vendor_counts['P~PM'] = $vendor_counts['P~PM']+ $row[2];
+            }
+            if(in_array($row[0],array('S'))){
+                $vendor_counts['S~SM'] = $vendor_counts['S~SM']+ $row[2];
+            }
+            if(in_array($row[0],array('PM'))){
+                $vendor_counts['PM~SM'] = $vendor_counts['PM~SM']+ $row[2];
+            }
+            if(in_array($row[0],array('SM'))){
+                $vendor_counts['PM~SM'] = $vendor_counts['PM~SM']+ $row[2];
+            }
+        }
+        foreach($unchecked as $row){
+            if(in_array($row[0],array('P'))){
+                $vendor_counts['P~PM'] = $vendor_counts['P~PM']+ $row[2];
+            }
+            if(in_array($row[0],array('S'))){
+                $vendor_counts['S~SM'] = $vendor_counts['S~SM']+ $row[2];
+            }
+            if(in_array($row[0],array('PM'))){
+                $vendor_counts['PM~SM'] = $vendor_counts['PM~SM']+ $row[2];
+            }
+            if(in_array($row[0],array('SM'))){
+                $vendor_counts['PM~SM'] = $vendor_counts['PM~SM']+ $row[2];
+            }
+        }
+        $checked = $unchecked = array();
+        $selected_vendor_types =  _getRequestParamValue('vendortype');
+        foreach($vendor_counts as $key=>$value){
+            if (strpos($selected_vendor_types, $key) !== false) {
+                array_push($checked, array($key, MappingUtil::getMixedVendorTypeNames($key),$value));
+            }
+            else {
+                array_push($unchecked, array($key, MappingUtil::getMixedVendorTypeNames($key),$value));
+            }
+        }
     }
     else {
         $vendor_types = _getRequestParamValue('vendortype');

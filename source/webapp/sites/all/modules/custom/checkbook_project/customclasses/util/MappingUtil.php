@@ -422,6 +422,17 @@ class MappingUtil {
         return array('unchecked'=>$unchecked, "checked"=>$checked);
     }
 
+    static function getMixedVendorTypeNames($vendor_type_name_id){
+        switch($vendor_type_name_id) {
+            case 'P~PM':
+                return "PRIME VENDOR";
+            case 'S~SM':
+                return "SUB VENDOR";
+            case 'PM~SM':
+                return "M/WBE VENDOR";
+        }
+    }
+
     static function getSubVendorEthinictyTitle($vendor_id, $domain,$is_prime_or_sub = "S"){
     	switch($domain){
     		case "spending":
