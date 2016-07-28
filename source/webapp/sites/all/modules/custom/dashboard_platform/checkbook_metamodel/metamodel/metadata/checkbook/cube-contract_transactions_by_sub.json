@@ -166,6 +166,12 @@
                 "txcount": {
                     "function":"COUNT(*)"
                 },
+                "count_prime_mwbe": {
+                    "function":"COUNT(DISTINCT prime_vendor_name||contract_number)"
+                },
+                "count_sub_mwbe": {
+                    "function":"COUNT(DISTINCT sub_vendor_name||contract_number||sub_contract_id)"
+                },
                 "g100m_count": {
                     "function": "SUM(CASE WHEN COALESCE($COLUMN{maximum_contract_amount},0) > 100000000 THEN 1 ELSE 0 END)"
                 },

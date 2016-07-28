@@ -901,7 +901,7 @@ namespace { //global
             return $vendor_types;
         }
 
-        static public function mergeMWBWCategoryFacetValues($node, $id_column = "minority_type_id_minority_type_id", $name_column = "minority_type_name_minority_type_name") {
+        static public function mergeMWBWCategoryFacetValues($node, $id_column = "minority_type_id_minority_type_id", $name_column = "minority_type_name_minority_type_name", $count_column = 'txcount') {
             $data = array();
             $count = 0;
             $ids = '';
@@ -909,12 +909,12 @@ namespace { //global
                 if(MappingUtil::getMinorityCategoryById($row[$id_column]) != 'Asian American'){
                     $new_row = array($id_column => $row[$id_column],
                         $name_column => MappingUtil::getMinorityCategoryById($row[$id_column]),
-                        'txcount' => $row['txcount']
+                        $count_column => $row[$count_column]
                     );
                     array_push($data, $new_row);
                 }
                 else if(MappingUtil::getMinorityCategoryById($row[$id_column]) == 'Asian American'){
-                    $count = $count+$row['txcount'];
+                    $count = $count+$row[$count_column];
                     $ids .= $row[$id_column].'~';
                 }
             }
@@ -922,11 +922,11 @@ namespace { //global
             if($count > 0){
                 array_push($data, array($id_column => $ids,
                     $name_column => 'Asian American',
-                    'txcount' => $count
+                    $count_column => $count
                 ));
             }
             //Sort again by number
-            sort_records($data, new PropertyBasedComparator_DefaultSortingConfiguration('txcount',FALSE));
+            sort_records($data, new PropertyBasedComparator_DefaultSortingConfiguration($count_column,FALSE));
             return  $data;
         }
 
