@@ -6,8 +6,8 @@
     "limit":10,
     "startWith":0,
     "maxSelect":5,
-    "columns":["sub_minority_type_id.sub_minority_type_id", "sub_minority_type_name.sub_minority_type_name", "txcount"],
-    "orderBy":"-txcount",
+    "columns":["sub_minority_type_id.sub_minority_type_id", "sub_minority_type_name.sub_minority_type_name", "count_sub_mwbe"],
+    "orderBy":"-count_sub_mwbe",
     "getTotalDataCount":true,
     "facetPager":true,
     "filterName":"Sub M/WBE Category",
@@ -24,6 +24,6 @@
         }
         return $parameters;
     ",
-    "transformationPHP":"return ContractUtil::mergeMWBWCategoryFacetValues($node,'sub_minority_type_id_sub_minority_type_id','sub_minority_type_name_sub_minority_type_name');",
+    "transformationPHP":"return ContractUtil::mergeMWBWCategoryFacetValues($node,'sub_minority_type_id_sub_minority_type_id','sub_minority_type_name_sub_minority_type_name','count_sub_mwbe');",
     "template":"individual_filter"
 }
