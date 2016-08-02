@@ -237,7 +237,16 @@ function _checkbook_export_transactions(){
     $isList = $node->widgetConfig->useList;
     $data = NULL;
     $i = 0;
-    $exportColumns = $node->widgetConfig->table_columns;
+    
+    //Get Export column Configuration
+    $exportConfigNid = isset($node->widgetConfig->exportConfigNid)? $node->widgetConfig->exportConfigNid: null;
+    if(isset($exportConfigNid)){
+        $exportConfigNode = _checkbook_export_get_node_config($exportConfigNid);
+        $exportColumns = $exportConfigNode->widgetConfig->table_columns;
+    }else{
+        $exportColumns = $node->widgetConfig->table_columns;
+    }
+
     $columns = array();
     foreach($exportColumns as $column){
         if(!isset($column->datasource) || (isset($column->datasource) && ($column->datasource == _getRequestParamValue('datasource')))){
@@ -588,12 +597,12 @@ function _checkbook_export_get_data_count(){
  *
  * @return bool|mixed Prepared widget node.
  */
-function _checkbook_export_get_node_config(){
+function _checkbook_export_get_node_config($nodeId=NULL){
     global $conf;
 
     $_GET['q'] = urldecode(check_plain($_GET['refURL']));
 
-    $nodeId = _getRequestParamValue('node');
+    $nodeId = isset($nodeId) ? $nodeId :_getRequestParamValue('node');
 
     $node = node_load($nodeId);
     //widget_set_uid($node,"export");
