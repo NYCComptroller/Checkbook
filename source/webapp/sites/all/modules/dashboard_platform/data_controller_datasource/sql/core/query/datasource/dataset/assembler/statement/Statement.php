@@ -28,14 +28,16 @@ class AssembledSections extends AbstractObject {
     public $where = NULL;
     public $groupBy = NULL;
     public $having = NULL;
+    public $logicalOrColumns = NULL;
 
-    public function __construct($select, $from, $where, $groupBy, $having) {
+    public function __construct($select, $from, $where, $groupBy, $having, $logicalOrColumns = null) {
         parent::__construct();
         $this->select = $select;
         $this->from = $from;
         $this->where = $where;
         $this->groupBy = $groupBy;
         $this->having = $having;
+        $this->logicalOrColumns = $logicalOrColumns;
     }
 }
 
@@ -55,12 +57,14 @@ class Statement extends AbstractObject {
     public $conditions = NULL;
     public $groupByColumns = NULL;
     public $havingConditions = NULL;
+    public $logicalOrColumns = NULL;
 
     public function merge(Statement $statement) {
         ArrayHelper::mergeArrays($this->tables, $statement->tables);
         ArrayHelper::mergeArrays($this->conditions, $statement->conditions);
         ArrayHelper::mergeArrays($this->groupByColumns, $statement->groupByColumns);
         ArrayHelper::mergeArrays($this->havingConditions, $statement->havingConditions);
+        ArrayHelper::mergeArrays($this->logicalOrColumns, $statement->logicalOrColumns);
     }
 
     public function addTableAliasPrefix($prefix) {
@@ -97,6 +101,11 @@ class Statement extends AbstractObject {
         if (isset($this->havingConditions)) {
             foreach ($this->havingConditions as $condition) {
                 $condition->event_updateTableAlias($oldTableAlias, $newTableAlias);
+            }
+        }
+        if (isset($this->logicalOrColumns)) {
+            foreach ($this->logicalOrColumns as $logicalOrColumns) {
+                $logicalOrColumns->event_updateTableAlias($oldTableAlias, $newTableAlias);
             }
         }
     }
@@ -390,33 +399,63 @@ class Statement extends AbstractObject {
         }
 
         $where = NULL;
+        $whereOrPart = NULL;
+        $whereAndPart = NULL;
         if (isset($this->conditions)) {
-            foreach ($this->conditions as $condition) {
-                if (isset($where)) {
-                    $where .= "\n   AND ";
+            if (!isset($this->logicalOrColumns)) {
+                foreach ($this->conditions as $condition) {
+                    $where .= isset($where) ? "\n   AND " : "";
+                    $where = self::assembleWhere($condition,$useTableNameAsAlias, $where);
                 }
+            }
+            //Update the where clause to handle OR condition
+            else {
+                if(isset($this->logicalOrColumns)) {
+                    foreach ($this->logicalOrColumns as $logicalOrColumnsArray) {
 
-                if (isset($condition->subjectTableAlias)) {
-                    $subjectTable = $this->getTable($condition->subjectTableAlias);
-                }
-                else {
-                    // We do not have table alias
-                    // Solution: find a column in a table and use the table alias and the column name to generate the condition
-                    if (isset($columnNameUsage)) {
-                        $sourceTables = $columnNameUsage[$condition->subjectColumnName];
-                        $subjectTable = (count($sourceTables) === 1) ? $sourceTables[0] : NULL;
-                    }
-                    else {
-                        $subjectTable = $this->findColumnTable($condition->subjectColumnName);
-                    }
-                    if (!isset($subjectTable)) {
-                        throw new IllegalStateException(t(
-                        	"Condition for column '@columnName' cannot be prepared",
-                            array('@columnName' => $condition->subjectColumnName)));
-                    }
-                }
+                        $arrayAndConditions = array();
+                        $arrayOrConditions = array();
+                        if(isset($logicalOrColumnsArray)) {
+                            //Look for $logicalOrColumn in $this->conditions (arrayAndConditions) and move it to arrayOrConditions
+                            foreach($this->conditions as $condition) {
+                                $key = array_search($condition->subjectColumnName, $logicalOrColumnsArray);
+                                if (false !== $key) {
+                                    $arrayOrConditions[] = $condition;
+                                }
+                                else {
+                                    $arrayAndConditions[] = $condition;
+                                }
+                            }
 
-                $where .= $condition->assemble($this, $subjectTable, $useTableNameAsAlias);
+                            //If arrayOrConditions has multiple columns, we can use the OR statement, else AND is used
+                            if(count($arrayOrConditions) == 1) {
+                                $arrayAndConditions[] = $arrayOrConditions[0];
+                            }
+                            //Build where using AND for arrayAndConditions and OR for arrayOrConditions
+                            if(isset($arrayAndConditions)) {
+                                foreach($arrayAndConditions as $condition) {
+                                    $whereAndPart .= isset($whereAndPart) ? "\n   AND " : "";
+                                    $whereAndPart = self::assembleWhere($condition,$useTableNameAsAlias, $whereAndPart);
+                                }
+                                $whereAndPart = $whereAndPart == "" ? null : $whereAndPart;
+                            }
+                            if(isset($arrayOrConditions)) {
+                                foreach($arrayOrConditions as $index => $condition) {
+                                    $whereOrPart .= isset($whereOrPart) ? " OR " : "(";
+                                    $whereOrPart = self::assembleWhere($condition,$useTableNameAsAlias, $whereOrPart);
+                                    $whereOrPart .= ($index == count($arrayOrConditions) - 1) ? ")" : "";
+                                }
+                                $whereOrPart = $whereOrPart == "" ? null : $whereOrPart;
+                            }
+                            if (isset($whereAndPart)) {
+                                $where = $whereAndPart;
+                            }
+                            if (isset($whereOrPart)) {
+                                $where = isset($where) ? "{$where} \n   AND {$whereOrPart}" : $whereOrPart;
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -443,6 +482,33 @@ class Statement extends AbstractObject {
         $isSubqueryRequired = !$isColumnAccessible;
 
         return array($isSubqueryRequired, new AssembledSections($select, $from, $where, $groupBy, $having));
+    }
+
+
+    private function assembleWhere($condition, $useTableNameAsAlias, $where) {
+
+        if (isset($condition->subjectTableAlias)) {
+            $subjectTable = $this->getTable($condition->subjectTableAlias);
+        }
+        else {
+            // We do not have table alias
+            // Solution: find a column in a table and use the table alias and the column name to generate the condition
+            if (isset($columnNameUsage)) {
+                $sourceTables = $columnNameUsage[$condition->subjectColumnName];
+                $subjectTable = (count($sourceTables) === 1) ? $sourceTables[0] : NULL;
+            }
+            else {
+                $subjectTable = $this->findColumnTable($condition->subjectColumnName);
+            }
+            if (!isset($subjectTable)) {
+                throw new IllegalStateException(t(
+                    "Condition for column '@columnName' cannot be prepared",
+                    array('@columnName' => $condition->subjectColumnName)));
+            }
+        }
+
+        $where .= $condition->assemble($this, $subjectTable, $useTableNameAsAlias);
+        return $where;
     }
 
     public static function assemble($isSubqueryRequired, array $columnNames = NULL, AssembledSections $assembledSections = NULL, $indent = 0, $indentBlockStart = TRUE) {

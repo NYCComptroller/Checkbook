@@ -28,6 +28,7 @@ abstract class AbstractQueryRequest extends AbstractRequest {
     public $sortingConfigurations = NULL;
     public $limit = NULL;
     public $startWith = 0;
+    public $logicalOrColumns = NULL;
 
     public function __construct($sourceName) {
         parent::__construct();
@@ -38,6 +39,7 @@ abstract class AbstractQueryRequest extends AbstractRequest {
         parent::__clone();
         $this->queries = ArrayHelper::cloneArray($this->queries);
         $this->sortingConfigurations = ArrayHelper::cloneArray($this->sortingConfigurations);
+        $this->logicalOrColumns = ArrayHelper::cloneArray($this->logicalOrColumns);
     }
 
     public function isSortingColumnPresent($columnName) {
@@ -92,5 +94,11 @@ abstract class AbstractQueryRequest extends AbstractRequest {
 
         $this->limit = $limit;
         $this->startWith = $startWith;
+    }
+
+    public function addLogicalOrColumns($logicalOrColumns) {
+        if (isset($logicalOrColumns)) {
+            $this->logicalOrColumns = $logicalOrColumns;
+        }
     }
 }
