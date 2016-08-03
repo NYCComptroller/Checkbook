@@ -188,6 +188,11 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
         // preparing dataset source
         $baseStatement = $this->prepareDatasetSourceStatement($callcontext, $dataset, $usedColumnNames);
 
+        //persist this value forward if set in the request
+        if(isset($request->logicalOrColumns)) {
+            $baseStatement->logicalOrColumns = $request->logicalOrColumns;
+        }
+
         if (isset($request->queries)) {
             $statements = NULL;
             foreach ($request->queries as $query) {
@@ -291,8 +296,12 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
 
     protected function prepareCubeQueryStatement(DataControllerCallContext $callcontext, CubeQueryRequest $request) {
         $generator = new CubeStatementGenerator();
-
-        return $generator->generateStatement($this, $callcontext, $request);
+        $statement = $generator->generateStatement($this, $callcontext, $request);
+        //persist this value forward if set in the request
+        if(isset($request->logicalOrColumns)) {
+            $statement->logicalOrColumns = $request->logicalOrColumns;
+        }
+        return $statement;
     }
 
     /*
