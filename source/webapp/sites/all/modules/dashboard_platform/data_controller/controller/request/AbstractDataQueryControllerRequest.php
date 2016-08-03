@@ -27,12 +27,21 @@ abstract class AbstractDataQueryControllerRequest extends AbstractObject {
     public $orderBy = NULL;
     public $startWith = 0;
     public $limit = NULL;
+    public $logicalOrColumns = NULL;
     /**
      * @var ResultFormatter
      */
     public $resultFormatter = NULL;
 
     public function initializeFrom($datasetName, $columns = NULL, $parameters = NULL, $orderBy = NULL, $startWith = 0, $limit = NULL, ResultFormatter $resultFormatter = NULL) {
+        if(isset($parameters)) {
+            foreach($parameters as $name => $value) {
+                if($name == "logicalOrColumns") {
+                    $this->logicalOrColumns = $value;
+                    unset($parameters[$name]);
+                }
+            }
+        }
         $this->datasetName = $datasetName;
         $this->columns = $columns;
         $this->parameters = $parameters;
