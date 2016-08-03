@@ -288,10 +288,10 @@ function _checkbook_export_transactions(){
     
     //load data
     widget_data($node);
-
-    if($limit > $exportMemoryRecordLimit){
+  
+    if(($limit > $exportMemoryRecordLimit) || isset($exportConfigNid)){
         try{
-            $fileName = _checkbook_export_generateExportFile($node,$data);
+            $fileName = _checkbook_export_generateExportFile($node,$data, $exportConfigNode);
             _checkbook_export_download_file($fileName);
         }catch (Exception $e){
             LogHelper::log_error("Error generating export file:" . $e->getMessage());
@@ -361,7 +361,7 @@ function _checkbook_export_download_file($fileName){
 }
 
 /** Function to handle generate export file */
-function _checkbook_export_generateExportFile($node,$headers){
+function _checkbook_export_generateExportFile($node,$headers, $exportConfigNode = NULL){
     global $conf;
 
     try{
@@ -377,7 +377,7 @@ function _checkbook_export_generateExportFile($node,$headers){
         $tempOutputFile = $tmpDir .'/'. $filename;
         $outputFile = DRUPAL_ROOT . '/' . $fileDir . '/' . $filename;
         
-        $columns = $node->widgetConfig->table_columns;
+        $columns = isset($exportConfigNode) ? $exportConfigNode->widgetConfig->table_columns : $node->widgetConfig->table_columns;
         $columnsConfig = array();
         foreach($columns as $column){
           $columnsConfig[] = (isset($column->sortSourceColumn)) ? str_replace('.','_',$column->sortSourceColumn) : str_replace('.','_',$column->column);
