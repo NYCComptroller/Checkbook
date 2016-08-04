@@ -8,13 +8,11 @@
     "facetPager":true,
     "limit":100,
     "urlParamMap":{
-        "vendorcode":"vendor_code.vendor_code",
         "vendornm_exact":"vendor_name.vendor_name",
-        "vendornm":"vendor_name.vendor_name",
-        "mwbe":"minority_type_id.minority_type_id"
+        "vendornm":"vendor_name.vendor_name"
     },
     "filterName":"Vendor",
-    "dataset":"checkbook:contract_transactions_by_prime_vendor_facet_data",
+    "dataset":"checkbook:all_agreement_transactions_by_prime_sub_vendor_name",
     "columns":["vendor_name.vendor_name", "txcount"],
     "orderBy":"-txcount",
     "autocompleteParamName":"vendor_auto",

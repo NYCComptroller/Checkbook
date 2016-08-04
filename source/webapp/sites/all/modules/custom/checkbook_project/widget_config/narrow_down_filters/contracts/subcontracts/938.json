@@ -14,7 +14,7 @@
     "urlParameterName":"pmwbe",
     "autocompleteID":"fPrimeMinorityTypeId",
     "adjustParameters":"
-        $parameters = ContractUtil::adjustContractParameterFilters($node, $parameters);
+        $parameters = ContractUtil::adjustSubContractTransactionsCommonParams($node, $parameters);
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
             $parameters['prime_minority_type_id.prime_minority_type_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);

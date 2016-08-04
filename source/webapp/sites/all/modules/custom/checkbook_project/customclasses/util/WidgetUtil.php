@@ -85,6 +85,7 @@ class WidgetUtil
         "original_amount" => "Original<br/>Amount",
         "current_amount" => "Current<br/>Amount",
         "spent_to_date" => "Spent To<br/>Date",
+        "paid_to_date" => "Paid To<br/>Date",
         "dollar_diff" => "Dollar<br/>Difference",
         "percent_diff" => "Percent<br/>Difference",
         "no_of_contracts" => "Number of<br/>Contracts",
