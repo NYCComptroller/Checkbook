@@ -409,11 +409,13 @@ function _checkbook_export_generateExportFile($node,$headers, $exportConfigNode 
          * Columns that are derived do not get selected, this allows us to override the
          * select value of the column sql directly.
          * */
-        if(isset($node->widgetConfig->exportColumnSqlOverride)) {
+        
+        $sqlOverride = isset($exportConfigNode) ? $exportConfigNode->widgetConfig->exportColumnSqlOverride : $node->widgetConfig->exportColumnSqlOverride;
+        if(isset($sqlOverride)) {
             $override_sql = null;
             $sql = $node->data;
             $table_columns = $node->widgetConfig->table_columns;
-            $export_columns = $node->widgetConfig->exportColumnSqlOverride;
+            $export_columns = $sqlOverride;
             $isList = $node->widgetConfig->useList;
 
             foreach($export_columns as $export_column){
