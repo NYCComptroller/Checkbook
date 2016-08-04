@@ -46,6 +46,7 @@
         $header .= widget_data_tables_export_link($node);
         return $header;
     ",
+    "exportConfigNid":962,
     "useList":true,
     "getTotalDataCount":true,
     "limit":"35",
@@ -298,13 +299,6 @@
             $adjustDataTableOptions->fnInitComplete = '##function () { new FixedColumns( oTable, {\"iLeftColumns\": 2,\"iLeftWidth\": 180} );}##';
         }
     ",
-    "exportColumnSqlOverride":[
-        {
-            "column":"parent_contract_link",
-            "sourceColumn":"master_contract_number",
-            "sql":"CASE WHEN master_contract_number IS NULL THEN 'N/A' ELSE master_contract_number END AS master_contract_number"
-        }
-    ],
     "dataTableOptions":{
         "bRetrieve":true,
         "bServerSide":true,
