@@ -451,7 +451,7 @@ function _checkbook_export_generateExportFile($node,$headers, $exportConfigNode 
         $command = $conf['check_book']['data_feeds']['command']
                 . " -c \"\\\\COPY (" . str_replace('\\\\','\\\\\\',$node->data) . ") TO '"
                 . $tempOutputFile
-                . "'  WITH DELIMITER ',' CSV FORCE '\\\"' ESCAPE '\\\"' \" ";
+                . "'  WITH DELIMITER ',' CSV QUOTE '\\\"' ESCAPE '\\\"' \" ";
         
         log_error($command);
         
