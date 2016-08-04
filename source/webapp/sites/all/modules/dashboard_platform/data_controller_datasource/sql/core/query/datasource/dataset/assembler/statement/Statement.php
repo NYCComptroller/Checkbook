@@ -411,49 +411,71 @@ class Statement extends AbstractObject {
             //Update the where clause to handle OR condition
             else {
                 if(isset($this->logicalOrColumns)) {
-                    foreach ($this->logicalOrColumns as $logicalOrColumnsArray) {
 
-                        $arrayAndConditions = array();
+                    $arrayAllOrConditions = array();
+
+                    foreach ($this->logicalOrColumns as $logicalAllOrColumnsArray) {
+
                         $arrayOrConditions = array();
-                        if(isset($logicalOrColumnsArray)) {
-                            //Look for $logicalOrColumn in $this->conditions (arrayAndConditions) and move it to arrayOrConditions
-                            foreach($this->conditions as $condition) {
-                                $key = array_search($condition->subjectColumnName, $logicalOrColumnsArray);
-                                if (false !== $key) {
-                                    $arrayOrConditions[] = $condition;
-                                }
-                                else {
-                                    $arrayAndConditions[] = $condition;
+                        foreach($this->conditions as $condition) {
+                            $isOrCondition = false;
+                            foreach ($logicalAllOrColumnsArray as $logicalOrColumn) {
+                                if ($condition->subjectColumnName == $logicalOrColumn) {
+                                    $isOrCondition = true;
+                                    break;
                                 }
                             }
-
-                            //If arrayOrConditions has multiple columns, we can use the OR statement, else AND is used
-                            if(count($arrayOrConditions) == 1) {
-                                $arrayAndConditions[] = $arrayOrConditions[0];
-                            }
-                            //Build where using AND for arrayAndConditions and OR for arrayOrConditions
-                            if(isset($arrayAndConditions)) {
-                                foreach($arrayAndConditions as $condition) {
-                                    $whereAndPart .= isset($whereAndPart) ? "\n   AND " : "";
-                                    $whereAndPart = self::assembleWhere($condition,$useTableNameAsAlias, $whereAndPart);
-                                }
-                                $whereAndPart = $whereAndPart == "" ? null : $whereAndPart;
-                            }
-                            if(isset($arrayOrConditions)) {
-                                foreach($arrayOrConditions as $index => $condition) {
-                                    $whereOrPart .= isset($whereOrPart) ? " OR " : "(";
-                                    $whereOrPart = self::assembleWhere($condition,$useTableNameAsAlias, $whereOrPart);
-                                    $whereOrPart .= ($index == count($arrayOrConditions) - 1) ? ")" : "";
-                                }
-                                $whereOrPart = $whereOrPart == "" ? null : $whereOrPart;
-                            }
-                            if (isset($whereAndPart)) {
-                                $where = $whereAndPart;
-                            }
-                            if (isset($whereOrPart)) {
-                                $where = isset($where) ? "{$where} \n   AND {$whereOrPart}" : $whereOrPart;
+                            if ($isOrCondition) {
+                                $arrayOrConditions[] = $condition;
+                                $arrayExcludeColumns[] = $condition->subjectColumnName;
                             }
                         }
+                        //If arrayOrConditions has multiple columns, use the OR, else AND
+                        if(count($arrayOrConditions) > 1) {
+                            $arrayAllOrConditions[] = $arrayOrConditions;
+                        }
+                    }
+
+                    //Build the array for the AND columns, removing the OR columns
+                    $arrayAndConditions = array();
+                    if(isset($arrayExcludeColumns)) {
+                        foreach($this->conditions as $condition) {
+                            if (array_search($condition->subjectColumnName, $arrayExcludeColumns) === false) {
+                                $arrayAndConditions[] = $condition;
+                            }
+                        }
+                    }
+                    else {
+                        $arrayAndConditions = $this->conditions;
+                    }
+
+                    //Build where using OR for arrayOrConditions
+                    $whereOrPart = null;
+                    if(count($arrayAllOrConditions) > 0) {
+                        foreach($arrayAllOrConditions as $arrayOrConditions)   {
+                            $whereOrSubPart = null;
+                            $whereOrPart .= isset($whereOrPart) ? " AND " : "";
+                            foreach($arrayOrConditions as $index => $condition) {
+                                $whereOrSubPart .= isset($whereOrSubPart) ? " OR " : "(";
+                                $whereOrSubPart = self::assembleWhere($condition,$useTableNameAsAlias, $whereOrSubPart);
+                                $whereOrSubPart .= ($index == count($arrayOrConditions) - 1) ? ")" : "";
+                            }
+                            $whereOrPart .= $whereOrSubPart;
+                        }
+                    }
+                    //Build where using AND for arrayAndConditions
+                    if(isset($arrayAndConditions)) {
+                        foreach($arrayAndConditions as $condition) {
+                            $whereAndPart .= isset($whereAndPart) ? "\n   AND " : "";
+                            $whereAndPart = self::assembleWhere($condition,$useTableNameAsAlias, $whereAndPart);
+                        }
+                        $whereAndPart = $whereAndPart == "" ? null : $whereAndPart;
+                    }
+                    if (isset($whereAndPart)) {
+                        $where = $whereAndPart;
+                    }
+                    if (isset($whereOrPart)) {
+                        $where = isset($where) ? "{$where} \n   AND {$whereOrPart}" : $whereOrPart;
                     }
                 }
             }
