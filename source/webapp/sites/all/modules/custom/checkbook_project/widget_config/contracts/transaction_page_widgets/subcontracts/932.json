@@ -6,8 +6,8 @@
     "urlParamMap":{
         "year":"year",
         "agency":"agency_id",
-        "vendorcode":"prime_sub_vendor_minority_type_by_name_code",
-        "vendortype":"prime_sub_vendor_minority_type_by_name_code",
+        "vendorcode":"vendor_code",
+        "vendortype":"vendor_type",
         "subvendor":"sub_vendor_id",
         "subvendorstatus":"aprv_sta_id",
         "contnum":"contract_number",
@@ -50,9 +50,13 @@
         "sub_contract_id",
         "sort_order"
     ],
+    "logicalOrColumns":[
+        ["prime_vendor_code","sub_vendor_code"],
+        ["prime_vendor_type","sub_vendor_type"]
+    ],
     "uniqueSortColumn":"original_agreement_id",
     "adjustParameters":"
-        $parameters = ContractUtil::adjustContractParameterFilters($node, $parameters);
+        $parameters = ContractUtil::adjustSubContractTransactionsCommonParams($node, $parameters);
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
         }

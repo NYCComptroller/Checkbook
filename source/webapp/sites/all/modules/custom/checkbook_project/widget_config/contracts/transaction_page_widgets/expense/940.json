@@ -61,7 +61,7 @@
         $node->year = $year;
         $node->year_type = $year_type;
 
-        return ContractUtil::adjustActiveContractParameterFilters($node, $parameters);
+        return ContractUtil::adjustActiveContractCommonParams($node, $parameters);
     ",
     "derivedColumns": {
         "child_contrats_link":{

@@ -611,142 +611,46 @@ namespace { //global
             return ($dashboard == 'ss' || $dashboard == 'sp' || $dashboard == 'ms') || ($smnid == 720);
         }
 
-        static public function updateActiveContractsDataSet(&$node) {
-
-            if(self::showSubVendorData()) {
-                $filterName = $node->widgetConfig->filterName;
-                if($filterName == "Vendor" || $filterName == "M/WBE Category") {
-                    $node->widgetConfig->dataset = "checkbook:contract_transactions_by_sub_vendor_facet_data";
-                }
-                else if($filterName == "Vendor Type") {
-                    $node->widgetConfig->dataset = "checkbook:contract_transactions_by_sub_vendor_type_facet_data";
-                }
-                else {
-                    $node->widgetConfig->dataset = "checkbook:contract_transactions_by_sub";
-                }
-            }
-        }
-
-        /**
-         * Function to handle parameters for the derived facet implementation mapping a single facet to multiple columns
-         * for the "Summary of Sub Contract Status by Prime Contract ID Transactions"
-         * @param $node
-         * @param $parameters
-         */
-        static public function adjustContractParameterFilters(&$node, &$parameters) {
-
-            $parameters = self::adjustContractTransactionsCommonParams($node, $parameters);
-
-            //Vendor Facet
-            $vendor_codes = explode('~', _getRequestParamValue('vendorcode'));
-            $has_vendors = isset($vendor_codes[0]) && $vendor_codes[0] != "";
-
-            //Vendor Type Facet
-            $vendor_types = self::getVendorTypeFromVendorTypeId(explode('~', _getRequestParamValue('vendortype')));
-            $has_vendor_types = isset($vendor_types[0]) && $vendor_types[0] != "";
-
-            //M/WBE Category Facet
-            $has_mwbe_categories = false;
-            $mwbe_categories = null;
-
-            //Get regular expression for vendor code, vendor type and mwbe category facets
-            if($has_vendor_types || $has_mwbe_categories || $has_vendors) {
-                $pattern = self::getPrimeSubVendorRegex(
-                    $has_vendor_types ? $vendor_types : null,
-                    $has_mwbe_categories ? $mwbe_categories : null,
-                    $has_vendors ? $vendor_codes : null);
-
-                if($pattern != null) {
-                    $data_controller_instance = data_controller_get_operator_factory_instance();
-                    $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
-                    $parameters['prime_sub_vendor_minority_type_by_name_code'] = $condition;
-                }
-            }
-
-            unset($parameters['vendor_name']);
-            unset($parameters['vendor_type']);
-
-            return $parameters;
-        }
-
         /**
          * Function to handle common facet/transaction page parameters for the page
          * "Summary of Sub Contract Status by Prime Contract ID Transactions"
          * @param $node
          * @param $parameters
          */
-        static public function adjustContractTransactionsCommonParams(&$node, &$parameters) {
-            //Handle year parameter
-            $reqYear = _getRequestParamValue('year');
+        static public function adjustSubContractTransactionsCommonParams(&$node, &$parameters) {
+
             $data_controller_instance = data_controller_get_operator_factory_instance();
-            $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
-            $leCondition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
-            $parameters['starting_year_id']= $leCondition;
-            $parameters['ending_year_id']= $geCondition;
-            $parameters['effective_begin_year_id']= $leCondition;
-            $parameters['effective_end_year_id']= $geCondition;
 
-            //Handle Vendor Type for derived facets
-            if($node->widgetConfig->filterName == "M/WBE Category" || $node->widgetConfig->filterName == "Vendor") {
-                $vendor_types = self::getVendorTypeFromVendorTypeId(explode('~', _getRequestParamValue('vendortype')));
-                $has_vendor_types = isset($vendor_types[0]) && $vendor_types[0] != "";
-                if($has_vendor_types) {
-                    $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, $vendor_types);
-                    $parameters['vendor_type'] = $condition;
-                }
-                unset($parameters['prime_sub_vendor_minority_type_by_name_code']);
+            //Handle year parameter mapping
+            $reqYear = _getRequestParamValue('year');
+            if(isset($reqYear)) {
+                $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
+                $leCondition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
+                $parameters['starting_year_id']= $leCondition;
+                $parameters['ending_year_id']= $geCondition;
+                $parameters['effective_begin_year_id']= $leCondition;
+                $parameters['effective_end_year_id']= $geCondition;
+                unset($parameters['year']);
             }
 
-            unset($parameters['year']);
-            return $parameters;
-        }
-
-        /**
-         * Function to handle parameters for the derived facet implementation mapping a single facet to multiple columns
-         * @param $node
-         * @param $parameters
-         * @return string
-         */
-        static public function adjustActiveContractParameterFilters(&$node, &$parameters) {
-
-            //Handle Common parameters
-            $parameters = self::adjustActiveContractCommonParams($node, $parameters);
-
-            //Vendor Type Facet
-            $vendor_types = self::getVendorTypeFromVendorTypeId(explode('~', _getRequestParamValue('vendortype')));
-            $has_vendor_types = isset($vendor_types[0]) && $vendor_types[0] != "";
-
-            //M/WBE Category Facet
-            $mwbe_categories = _getRequestParamValue('mwbe');
-            $prime_mwbe_categories = _getRequestParamValue('pmwbe');
-            $sub_mwbe_categories = _getRequestParamValue('smwbe');
-            $has_mwbe_categories = false;
-            if(!isset($prime_mwbe_categories) && !isset($sub_mwbe_categories)) {
-                if(isset($mwbe_categories)) {
-                    $has_mwbe_categories = true;
-                    $mwbe_categories = explode('~', $mwbe_categories);
-                }
+            //Handle vendor_code mapping to prime_vendor_code and sub_vendor_code
+            $vendor_code = _getRequestParamValue('vendorcode');
+            if(isset($vendor_code)) {
+                $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, explode('~', $vendor_code));
+                $parameters['prime_vendor_code'] = $condition;
+                $parameters['sub_vendor_code'] = $condition;
+                unset($parameters['vendor_code']);
             }
 
-            //Vendor Facet using Vendor Code
-            $vendor_codes = explode('~', _getRequestParamValue('vendorcode'));
-            $has_vendors = isset($vendor_codes[0]) && $vendor_codes[0] != "";
-
-            //Get regular expression for vendor code, vendor type and mwbe category facets
-            if($has_vendor_types || $has_mwbe_categories || $has_vendors) {
-                $pattern = self::getPrimeSubVendorRegex(
-                    $has_vendor_types ? $vendor_types : null,
-                    $has_mwbe_categories ? $mwbe_categories : null,
-                    $has_vendors ? $vendor_codes : null);
-
-                if($pattern != null) {
-                    $data_controller_instance = data_controller_get_operator_factory_instance();
-                    $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
-                    $parameters['prime_sub_vendor_minority_type_by_name_code'] = $condition;
+            //Handle vendor_type mapping to prime_vendor_type and sub_vendor_type
+            $vendor_type = _getRequestParamValue('vendortype');
+            if($node->widgetConfig->filterName != "Vendor Type") {
+                if($vendor_type) {
+                    $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, explode('~', $vendor_type));
+                    $parameters['prime_vendor_type'] = $condition;
+                    $parameters['sub_vendor_type'] = $condition;
+                    unset($parameters['vendor_type']);
                 }
-            }
-            else {
-                unset($parameters['prime_sub_vendor_minority_type_by_name_code']);
             }
 
             return $parameters;
@@ -846,29 +750,35 @@ namespace { //global
                 $parameters['latest_flag'] = 'Y';
             }
 
-            //Handle Vendor Type for derived facets
-            if($node->widgetConfig->filterName == "M/WBE Category" || $node->widgetConfig->filterName == "Vendor") {
-                $vendor_types = self::getVendorTypeFromVendorTypeId(explode('~', _getRequestParamValue('vendortype')));
-                $has_vendor_types = isset($vendor_types[0]) && $vendor_types[0] != "";
-                if($has_vendor_types) {
-                    $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, $vendor_types);
-                    if(isset($condition)) {
-                        $parameters['vendor_type'] = $condition;
-                    }
+            //Handle vendor_code mapping to prime_vendor_code and sub_vendor_code
+            if(isset($parameters['vendor_code'])) {
+                $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($parameters['vendor_code']));
+                $parameters['prime_vendor_code'] = $condition;
+                $parameters['sub_vendor_code'] = $condition;
+                unset($parameters['vendor_code']);
+            }
+
+            //Handle vendor_type mapping to prime_vendor_type and sub_vendor_type
+            if($node->widgetConfig->filterName != "Vendor Type") {
+                if(isset($parameters['vendor_type'])) {
+                    $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($parameters['vendor_type']));
+                    $parameters['prime_vendor_type'] = $condition;
+                    $parameters['sub_vendor_type'] = $condition;
+                    unset($parameters['vendor_type']);
                 }
-                unset($parameters['prime_sub_vendor_minority_type_by_name_code']);
             }
 
-            //For Advanced Search page, we use mwbe, for Details we use smwbe,pmwbe and need to unset this param map for mwbe -> prime_sub_vendor_minority_type_by_name_code
-            if($node->widgetConfig->filterName == "Vendor Type") {
-                unset($parameters['prime_sub_vendor_minority_type_by_name_code']);
-            }
-
-            //Handle Advanced Search Parameters
-            $parameters = self::adjustVendorNameAdvancedSearchParams($parameters);
-
+//            //For Advanced Search page, we use mwbe, for Details we use smwbe,pmwbe and need to unset this param map for mwbe -> prime_sub_vendor_minority_type_by_name_code
+//            if($node->widgetConfig->filterName == "Vendor Type") {
+//                unset($parameters['prime_sub_vendor_minority_type_by_name_code']);
+//            }
+//
+//            //Handle Advanced Search Parameters
+//            $parameters = self::adjustVendorNameAdvancedSearchParams($parameters);
+//
             unset($parameters['year']);
             unset($parameters['status_flag']);
+
             return $parameters;
         }
 

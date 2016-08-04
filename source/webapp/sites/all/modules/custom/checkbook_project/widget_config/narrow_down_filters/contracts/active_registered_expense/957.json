@@ -16,7 +16,7 @@
     "autocompleteID":"fSubMinorityTypeId",
     "autocompleteField":"sub_minority_type_name",
     "adjustParameters":"
-        $parameters = ContractUtil::adjustActiveContractParameterFilters($node, $parameters);
+        $parameters = ContractUtil::adjustActiveContractCommonParams($node, $parameters);
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
             $adjustedParameters['sub_minority_type_id.sub_minority_type_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);

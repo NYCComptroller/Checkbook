@@ -17,7 +17,7 @@
     "autocompleteField":"industry_type_name",
     "allowFacetDeselect":true,
     "adjustParameters":"
-        $parameters = ContractUtil::adjustActiveContractParameterFilters($node, $parameters);
+        $parameters = ContractUtil::adjustActiveContractCommonParams($node, $parameters);
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
             $adjustedParameters['industry_type_id.industry_type_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);

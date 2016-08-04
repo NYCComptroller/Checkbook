@@ -6,7 +6,6 @@
     "startWith":0,
     "maxSelect":5,
     "urlParamMap":{
-        "vendorcode":"vendor_code.vendor_code",
         "vendortype":"vendor_type_id.vendor_type_id"
     },
     "dataset":"checkbook:mixed_vendor_type_data",
@@ -19,7 +18,7 @@
     "autocompleteID":"fvendorType",
     "showAllRecords":true,
     "adjustParameters":"
-        $parameters = ContractUtil::adjustContractTransactionsCommonParams($node, $parameters);
+        $parameters = ContractUtil::adjustSubContractTransactionsCommonParams($node, $parameters);
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
             $parameters['vendor_type_name.vendor_type_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
