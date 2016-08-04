@@ -226,9 +226,7 @@ function _checkbook_export_transactions(){
     $node = _checkbook_export_get_node_config();
     $limit = $node->widgetConfig->limit;
 
-    if($limit > $exportMemoryRecordLimit){
-        $node->widgetConfig->generateDBQuery = true;
-    }
+    
 
     //TODO - see if we have to check count again
     $node->widgetConfig->getTotalDataCount = false;
@@ -245,6 +243,10 @@ function _checkbook_export_transactions(){
         $exportColumns = $exportConfigNode->widgetConfig->table_columns;
     }else{
         $exportColumns = $node->widgetConfig->table_columns;
+    }
+    
+    if($limit > $exportMemoryRecordLimit || isset($exportConfigNid)){
+        $node->widgetConfig->generateDBQuery = true;
     }
 
     $columns = array();
