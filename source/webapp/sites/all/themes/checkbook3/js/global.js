@@ -1841,20 +1841,23 @@ Drupal.behaviors.hoveOverMWBE = {
                             url:callBackURL,
                             success:function (data) {
                                 $('.bottomContainer').html(data);
-                                $('.bottomContainerToggle').html("Hide Details &#171;");
+                               // $('.bottomContainerToggle').html("Hide Details &#171;");
+                                $('.bottomContainerToggle').html("");
                                 $('.bottomContainerToggle').toggle();
                                 $('.first-item').trigger('click');
                             }
                         });
                     } else {
                         $('.bottomContainer').toggle();
-                        $('.bottomContainerToggle').html("Hide Details &#171;");
+                       // $('.bottomContainerToggle').html("Hide Details &#171;");
+                        $('.bottomContainerToggle').html("");
                     }
                 },
                 function (event) {
                     event.preventDefault();
                     $('.bottomContainer').toggle();
-                    $('.bottomContainerToggle').html("Show Details &#187;");
+                  //  $('.bottomContainerToggle').html("Show Details &#187;");
+                    $('.bottomContainerToggle').html("");
                 }
 
             );
