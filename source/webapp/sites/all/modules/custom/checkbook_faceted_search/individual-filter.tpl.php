@@ -164,6 +164,10 @@ if($node->widgetConfig->filterName == 'M/WBE Category' || $node->widgetConfig->f
                 unset($unchecked[$key]);
             }
         }
+        //Remove N/A from facet
+        if($value[1] == null) {
+            unset($unchecked[$key]);
+        }
     }
 
     foreach($checked as $key=>$value){
@@ -173,6 +177,10 @@ if($node->widgetConfig->filterName == 'M/WBE Category' || $node->widgetConfig->f
             unset($checked[$key]);
         }else{
             array_push($checked,array($value[0],MappingUtil::getMinorityCategoryById($value[0]),$value[2]));
+            unset($checked[$key]);
+        }
+        //Remove N/A from facet
+        if($value[1] == null) {
             unset($checked[$key]);
         }
     }
