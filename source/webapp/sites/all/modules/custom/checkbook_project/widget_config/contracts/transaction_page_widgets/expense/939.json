@@ -4,7 +4,7 @@
     "stickyHeader":true,
     "cleanURLParameters":[
         "vendortype","pmwbe","smwbe","doctype","contstatus","year","calyear","agency","curamtr","vendorcode","vendornm","vendornm_exact","contdesc","agrmnttype",
-        "agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","modamt","subcontstatus","subvendorstatus"
+        "agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","pmodamt","smodamt","subcontstatus","subvendorstatus"
     ],
     "urlParamMap":{
         "agrmnttype":"agreement_type_id",
@@ -28,7 +28,8 @@
         "regdate":"registered_date",
         "cindustry":"industry_type_id",
         "csize":"award_size_id",
-        "modamt":"dollar_difference",
+        "pmodamt":"prime_dollar_difference",
+        "smodamt":"sub_dollar_difference",
         "subcontstatus":"scntrc_status",
         "contstatus":"status_flag",
         "doctype":"document_code",
@@ -37,9 +38,9 @@
         "contnum_exact":"contract_number",
         "year":"year"
     },
-    "allowRequestParams":["smnid","doctype","mwbe"],
+    "allowRequestParams":["smnid","doctype","mwbe","modamt"],
     "paramTypeConfig":{"vendornm_exact":"eqignorecase","curamtr":"rangeid","vendornm":"like","contdesc":"contains","contnum":"like","contnum_exact":"eqignorecase","aptpin":"like","pin":"like","curamt":"range",
-        "startdate":"range","enddate":"range","regdate":"range","modamt":"ne"},
+        "startdate":"range","enddate":"range","regdate":"range","pmodamt":"ne","smodamt":"ne"},
     "header":"
         $header = NULL;
         $header .= widget_data_tables_export_link($node);
