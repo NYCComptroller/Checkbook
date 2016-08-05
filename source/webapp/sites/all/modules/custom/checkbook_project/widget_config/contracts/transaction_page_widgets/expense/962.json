@@ -36,7 +36,7 @@
         {"labelAlias":"percent_diff","column":"sub_percent_difference","visibility_flag":"show_difference"},
         {"labelAlias":"start_date","column":"sub_effective_begin_date"},
         {"labelAlias":"end_date","column":"sub_effective_end_date"},
-        {"labelAlias":"sub_contract_reference_id","column":"sub_contract_id"}
+        {"labelAlias":"sub_contract_reference_id","column":"sub_contract_id_export"}
         //END SUB
     ],
     "preProcessConfiguration":"
@@ -52,7 +52,7 @@
         {
             "column":"sub_contract_reference_id",
             "sourceColumn":"sub_contract_id",
-            "sql":"CASE WHEN sub_contract_id != 'N/A' THEN '\"'||sub_contract_id||'\"' ELSE sub_contract_id END AS sub_contract_id"
+            "sql":"CASE WHEN sub_contract_id != 'N/A' THEN '\"'||sub_contract_id||'\"' ELSE sub_contract_id END AS sub_contract_id_export"
         }
     ]
 }
