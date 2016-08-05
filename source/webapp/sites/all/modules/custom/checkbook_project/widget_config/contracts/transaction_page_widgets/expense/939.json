@@ -233,10 +233,10 @@
             "expression":"_get_tooltip_markup($row['prime_vendor_name'],24)"
         },
         "prime_vendor_name_link": {
-            "type":"expression2",
-            "expression":" '<a href=\"/contracts_landing'
-            . ContractUtil::get_contracts_vendor_link_by_mwbe_category($row)
-            . '?expandBottomCont=true\">'. $row['prime_vendor_name_formatted'] . '</a>'  "
+            "type": "expression2",
+            "expression": " '<a href=\"/contracts_landing'
+            . ContractUtil::get_contract_vendor_minority_category($row['prime_vendor_id'], null, null, null, 'P')
+            .  '?expandBottomCont=true\">'. $row['prime_vendor_name_formatted'] . '</a>'  "
         },
         "subvendor_name_formatted": {
             "type":"expression2",
@@ -311,7 +311,7 @@
     "adjustDataTableOptions":"
         $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
         if($node->show_difference) {
-            $adjustDataTableOptions->aaSorting[0][0] = 12;
+            $adjustDataTableOptions->aaSorting[0][0] = 10;
         }
         if(!$node->is_master_agreement) {
             $adjustDataTableOptions->fnInitComplete = '##function () { new FixedColumns( oTable, {\"iLeftColumns\": 2,\"iLeftWidth\": 180} );}##';
@@ -337,7 +337,7 @@
             {"sClass":"sub-cont-status","sWidth":"161px","asSorting":["asc","desc"]},
             //START PRIME
             {"sClass":"text", "sWidth":"120px","asSorting":["asc","desc"]},
-            {"sClass":"text", "sWidth":"210px","asSorting":["asc","desc"]},
+            {"sClass":"text", "sWidth":"120px","asSorting":["asc","desc"]},
             {"sClass":"text", "sWidth":"75px","asSorting":["desc","asc"]},
             {"sClass":"number","sWidth":"100px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"140px","asSorting":["desc","asc"]},
@@ -372,7 +372,7 @@
             {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]}
             //END SUB
         ],
-        "aaSorting":[[1,"desc"]],
+        "aaSorting":[[8,"desc"]],
         "sScrollX":"100%",
         "bScrollCollapse": true
     },
