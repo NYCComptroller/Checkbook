@@ -4,7 +4,7 @@
     "stickyHeader":true,
     "cleanURLParameters":[
         "vendortype","pmwbe","smwbe","doctype","contstatus","year","calyear","agency","curamtr","vendorcode","vendornm","vendornm_exact","contdesc","agrmnttype",
-        "agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","modamt","subcontstatus","subvendorstatus"
+        "agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","pmodamt","smodamt","subcontstatus","subvendorstatus"
     ],
     "urlParamMap":{
         "agrmnttype":"agreement_type_id",
@@ -28,7 +28,8 @@
         "regdate":"registered_date",
         "cindustry":"industry_type_id",
         "csize":"award_size_id",
-        "modamt":"dollar_difference",
+        "pmodamt":"prime_dollar_difference",
+        "smodamt":"sub_dollar_difference",
         "subcontstatus":"scntrc_status",
         "contstatus":"status_flag",
         "doctype":"document_code",
@@ -37,9 +38,9 @@
         "contnum_exact":"contract_number",
         "year":"year"
     },
-    "allowRequestParams":["smnid","doctype","mwbe"],
+    "allowRequestParams":["smnid","doctype","mwbe","modamt"],
     "paramTypeConfig":{"vendornm_exact":"eqignorecase","curamtr":"rangeid","vendornm":"like","contdesc":"contains","contnum":"like","contnum_exact":"eqignorecase","aptpin":"like","pin":"like","curamt":"range",
-        "startdate":"range","enddate":"range","regdate":"range","modamt":"ne"},
+        "startdate":"range","enddate":"range","regdate":"range","pmodamt":"ne","smodamt":"ne"},
     "header":"
         $header = NULL;
         $header .= widget_data_tables_export_link($node);
@@ -233,10 +234,10 @@
             "expression":"_get_tooltip_markup($row['prime_vendor_name'],24)"
         },
         "prime_vendor_name_link": {
-            "type":"expression2",
-            "expression":" '<a href=\"/contracts_landing'
-            . ContractUtil::get_contracts_vendor_link_by_mwbe_category($row)
-            . '?expandBottomCont=true\">'. $row['prime_vendor_name_formatted'] . '</a>'  "
+            "type": "expression2",
+            "expression": " '<a href=\"/contracts_landing'
+            . ContractUtil::get_contract_vendor_minority_category($row['prime_vendor_id'], null, null, null, 'P')
+            .  '?expandBottomCont=true\">'. $row['prime_vendor_name_formatted'] . '</a>'  "
         },
         "subvendor_name_formatted": {
             "type":"expression2",
@@ -311,7 +312,7 @@
     "adjustDataTableOptions":"
         $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
         if($node->show_difference) {
-            $adjustDataTableOptions->aaSorting[0][0] = 12;
+            $adjustDataTableOptions->aaSorting[0][0] = 10;
         }
         if(!$node->is_master_agreement) {
             $adjustDataTableOptions->fnInitComplete = '##function () { new FixedColumns( oTable, {\"iLeftColumns\": 2,\"iLeftWidth\": 180} );}##';
@@ -337,7 +338,7 @@
             {"sClass":"sub-cont-status","sWidth":"161px","asSorting":["asc","desc"]},
             //START PRIME
             {"sClass":"text", "sWidth":"120px","asSorting":["asc","desc"]},
-            {"sClass":"text", "sWidth":"210px","asSorting":["asc","desc"]},
+            {"sClass":"text", "sWidth":"120px","asSorting":["asc","desc"]},
             {"sClass":"text", "sWidth":"75px","asSorting":["desc","asc"]},
             {"sClass":"number","sWidth":"100px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"140px","asSorting":["desc","asc"]},
@@ -372,7 +373,7 @@
             {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]}
             //END SUB
         ],
-        "aaSorting":[[1,"desc"]],
+        "aaSorting":[[8,"desc"]],
         "sScrollX":"100%",
         "bScrollCollapse": true
     },

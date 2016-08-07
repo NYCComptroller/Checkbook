@@ -95,7 +95,7 @@
     $url = ContractUtil::expenseContractsFooterUrl();
     $url .= '/smnid/' .  $node->nid;
     $url .= '/doctype/CTA1~CT1';
-    $url .= '/modamt/0';
+    $url .= '/modamt/0/smodamt/0';
     $footer = '';
     if($node->totalDataCount > 0)
     $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
