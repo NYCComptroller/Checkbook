@@ -36,7 +36,7 @@
         {"labelAlias":"percent_diff","column":"sub_percent_difference","visibility_flag":"show_difference"},
         {"labelAlias":"start_date","column":"sub_effective_begin_date"},
         {"labelAlias":"end_date","column":"sub_effective_end_date"},
-        {"labelAlias":"sub_contract_reference_id","column":"sub_contract_id_export"}
+        {"labelAlias":"sub_contract_reference_id","column":"sub_contract_id"}
         //END SUB
     ],
     "preProcessConfiguration":"
