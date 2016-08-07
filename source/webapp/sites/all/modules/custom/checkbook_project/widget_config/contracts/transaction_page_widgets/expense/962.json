@@ -1,7 +1,7 @@
 {
    "table_columns": [
-        {"labelAlias":"contract_id","column":"contract_number"},
-        {"labelAlias":"contract_includes_sub","column":"scntrc_status_name"},
+        {"label":"Prime Contract ID","column":"contract_number"},
+        {"label":"contract_includes_sub","column":"scntrc_status_name"},
         //START PRIME
         {"labelAlias":"prime_vendor","column":"prime_vendor_name"},
         {"labelAlias":"prime_mwbe_category","column":"prime_minority_type_name"},
@@ -48,11 +48,6 @@
             "column":"parent_contract_link",
             "sourceColumn":"master_contract_number",
             "sql":"CASE WHEN master_contract_number IS NULL THEN 'N/A' ELSE master_contract_number END AS master_contract_number"
-        },
-        {
-            "column":"sub_contract_reference_id",
-            "sourceColumn":"sub_contract_id_export",
-            "sql":"CASE WHEN sub_contract_id != 'N/A' THEN '\"'||sub_contract_id||'\"' ELSE sub_contract_id END AS sub_contract_id_export"
         }
     ]
 }
