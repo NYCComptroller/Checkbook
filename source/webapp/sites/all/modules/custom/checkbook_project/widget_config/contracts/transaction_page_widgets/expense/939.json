@@ -340,19 +340,19 @@
             {"sClass":"text", "sWidth":"150px","asSorting":["asc","desc"]},
             {"sClass":"sub-cont-status","sWidth":"161px","asSorting":["asc","desc"]},
             //START PRIME
-            {"sClass":"text", "sWidth":"120px","asSorting":["asc","desc"]},
-            {"sClass":"text", "sWidth":"120px","asSorting":["asc","desc"]},
-            {"sClass":"text", "sWidth":"120px","asSorting":["desc","asc"]},
+            {"sClass":"text", "sWidth":"230px","asSorting":["asc","desc"]},
+            {"sClass":"text", "sWidth":"200px","asSorting":["asc","desc"]},
+            {"sClass":"text", "sWidth":"200px","asSorting":["desc","asc"]},
             {"sClass":"number","sWidth":"100px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"100px","asSorting":["desc","asc"]},
             {"sClass":"number","sWidth":"100px","asSorting":["desc","asc"]},
             {"sClass":"number","sWidth":"100px","asSorting":["desc","asc"],"visibility_flag":"show_difference"},
             {"sClass":"number","sWidth":"100px","asSorting":["desc","asc"],"visibility_flag":"show_difference"},
             {"sClass":"number","sWidth":"100px","asSorting":["desc","asc"]},
-            {"sClass":"text","sWidth":"180px","asSorting":["desc","asc"]},
-            {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
+            {"sClass":"number","sWidth":"100px","asSorting":["desc","asc"]},
+            {"sClass":"number","sWidth":"100px","asSorting":["asc","desc"]},
             //END PRIME
-            {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]},
+            {"sClass":"text","sWidth":"200px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"130px","asSorting":["asc","desc"]},
             {"sClass":"number-center","sWidth":"140px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"230px","asSorting":["asc","desc"]},
@@ -362,9 +362,9 @@
             {"sClass":"text","sWidth":"220px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"125px","asSorting":["asc","desc"]},
             //START SUB
-            {"sClass":"text","sWidth":"125px","asSorting":["asc","desc"]},
-            {"sClass":"text","sWidth":"110px","asSorting":["asc","desc"]},
-            {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
+            {"sClass":"text","sWidth":"230px","asSorting":["asc","desc"]},
+            {"sClass":"text","sWidth":"200px","asSorting":["asc","desc"]},
+            {"sClass":"text","sWidth":"200px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"150px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"150px","asSorting":["asc","desc"]},
@@ -476,9 +476,9 @@
                             sOut += '<td class=\"text\" style=\"width:150px\">'+ (row[1] == null ? '': row[1])+'</td>';
                             sOut += '<td class=\"sub-cont-status\"  style=\"width:161px\">'+ (row[2] == null ? '': row[2])+'</td>';
                             //START PRIME
-                            sOut += '<td class=\"text\" style=\"width:120px\">'+ (row[3] == null ? '': row[3])+'</td>';
-                            sOut += '<td class=\"text\" style=\"width:120px\">'+ (row[4] == null ? '': row[4])+'</td>';
-                            sOut += '<td class=\"text\" style=\"width:120px\">'+ (row[5] == null ? '': row[5])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:230px\">'+ (row[3] == null ? '': row[3])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:200px\">'+ (row[4] == null ? '': row[4])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:200px\">'+ (row[5] == null ? '': row[5])+'</td>';
                             sOut += '<td class=\"number\" style=\"width:100px\">'+ (row[6] == null ? '': row[6])+'</td>';
                             sOut += '<td class=\"number\" style=\"width:100px\">'+ (row[7] == null ? '': row[7])+'</td>';
                             sOut += '<td class=\"number\" style=\"width:100px\">'+ (row[8] == null ? '': row[8])+'</td>';
@@ -491,7 +491,7 @@
                             sOut += '<td class=\"number\" style=\"width:100px\">'+ (row[13] == null ? '': row[13])+'</td>';
                             //END PRIME
 
-                            sOut += '<td class=\"text\" style=\"width:100px\">'+ (row[14] == null ? '': row[14])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:200px\">'+ (row[14] == null ? '': row[14])+'</td>';
                             sOut += '<td class=\"text\" style=\"width:130px\">'+ (row[15] == null ? '': row[15])+'</td>';
                             sOut += '<td class=\"number-center\" style=\"width:140px\">'+ (row[16] == null ? '': row[16])+'</td>';
                             sOut += '<td class=\"text\" style=\"width:230px\">'+ (row[17] == null ? '': row[17])+'</td>';
@@ -502,9 +502,9 @@
                             sOut += '<td class=\"text\" style=\"width:125px\">'+ (row[22] == null ? '': row[22])+'</td>';
 
                             //START SUB
-                            sOut += '<td class=\"text\" style=\"width:125px\">'+ (row[23] == null ? '': row[23])+'</td>';
-                            sOut += '<td class=\"text\" style=\"width:110px\">'+ (row[24] == null ? '': row[24])+'</td>';
-                            sOut += '<td class=\"text\" style=\"width:150px\">'+ (row[25] == null ? '': row[25])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:230px\">'+ (row[23] == null ? '': row[23])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:200px\">'+ (row[24] == null ? '': row[24])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:200px\">'+ (row[25] == null ? '': row[25])+'</td>';
                             sOut += '<td class=\"text\" style=\"width:150px\">'+ (row[26] == null ? '': row[26])+'</td>';
                             sOut += '<td class=\"number\" style=\"width:150px\">'+ (row[27] == null ? '': row[27])+'</td>';
                             sOut += '<td class=\"number\" style=\"width:150px\">'+ (row[28] == null ? '': row[28])+'</td>';
