@@ -3,7 +3,7 @@
     "widgetSubType":"dataTableList",
     "stickyHeader":true,
     "cleanURLParameters":[
-        "vendortype","pmwbe","smwbe","doctype","contstatus","year","calyear","agency","curamtr","vendorcode","vendornm","vendornm_exact","contdesc","agrmnttype",
+        "vendortype","pmwbe","smwbe","doctype","contstatus","year","calyear","agency","curamtr","vendorcode","vendornm","vendornm_exact","pcontdesc","scontdesc","agrmnttype",
         "agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","pmodamt","smodamt","subcontstatus","subvendorstatus"
     ],
     "urlParamMap":{
@@ -17,7 +17,8 @@
         "vendornm":"vendor_name",
         "vendortype":"vendor_type",
         "curamtr":"maximum_contract_amount",
-        "contdesc":"description",
+        "pcontdesc":"prime_purpose",
+        "scontdesc":"sub_purpose",
         "agencyh":"agency_history_id",
         "aptpin":"brd_awd_no",
         "pin":"tracking_number",
@@ -39,7 +40,7 @@
         "year":"year"
     },
     "allowRequestParams":["smnid","doctype","mwbe","modamt"],
-    "paramTypeConfig":{"vendornm_exact":"eqignorecase","curamtr":"rangeid","vendornm":"like","contdesc":"contains","contnum":"like","contnum_exact":"eqignorecase","aptpin":"like","pin":"like","curamt":"range",
+    "paramTypeConfig":{"vendornm_exact":"eqignorecase","curamtr":"rangeid","vendornm":"like","pcontdesc":"contains","scontdesc":"contains","contnum":"like","contnum_exact":"eqignorecase","aptpin":"like","pin":"like","curamt":"range",
         "startdate":"range","enddate":"range","regdate":"range","pmodamt":"ne","smodamt":"ne"},
     "header":"
         $header = NULL;
@@ -112,7 +113,8 @@
     "logicalOrColumns":[
         ["prime_vendor_code","sub_vendor_code"],
         ["prime_vendor_name","sub_vendor_name"],
-        ["prime_vendor_type","sub_vendor_type"]
+        ["prime_vendor_type","sub_vendor_type"],
+        ["prime_purpose","sub_purpose"]
     ],
     "preProcessConfiguration":"
         $doctype = _getRequestParamValue('doctype');
