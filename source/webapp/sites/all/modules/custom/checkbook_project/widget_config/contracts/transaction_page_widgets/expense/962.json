@@ -48,12 +48,27 @@
         {
             "column":"master_contract_number",
             "sourceColumn":"master_contract_number",
-            "sql":"CASE WHEN master_contract_number IS NULL THEN 'N/A' ELSE master_contract_number END AS master_contract_number"
+            "sql":"CASE WHEN master_contract_number IN (NULL, 'N/A') THEN '-' ELSE master_contract_number END AS master_contract_number"
+        },
+        {
+            "column":"sub_vendor_name",
+            "sourceColumn":"sub_vendor_name",
+            "sql":"CASE WHEN sub_vendor_name IN (NULL, 'N/A') THEN '-' ELSE sub_vendor_name END AS sub_vendor_name"
+        },
+        {
+            "column":"sub_purpose",
+            "sourceColumn":"sub_purpose",
+            "sql":"CASE WHEN sub_purpose IN (NULL, 'N/A') THEN '-' ELSE sub_purpose END AS sub_purpose"
+        },
+        {
+            "column":"aprv_sta_name",
+            "sourceColumn":"aprv_sta_name",
+            "sql":"CASE WHEN aprv_sta_name IN (NULL, 'N/A') THEN '-' ELSE aprv_sta_name END AS aprv_sta_name"
         },
         {
             "column":"sub_contract_id",
             "sourceColumn":"sub_contract_id",
-            "sql":"CAST(sub_contract_id AS text) AS sub_contract_id"
+            "sql":"CASE WHEN sub_contract_id IN (NULL, 'N/A') THEN '-' ELSE sub_contract_id END AS sub_contract_id"
         }
     ]
 }
