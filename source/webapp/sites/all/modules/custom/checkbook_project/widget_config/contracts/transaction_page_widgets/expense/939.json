@@ -111,6 +111,7 @@
     ],
     "logicalOrColumns":[
         ["prime_vendor_code","sub_vendor_code"],
+        ["prime_vendor_name","sub_vendor_name"],
         ["prime_vendor_type","sub_vendor_type"]
     ],
     "preProcessConfiguration":"
