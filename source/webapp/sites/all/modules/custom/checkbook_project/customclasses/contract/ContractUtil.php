@@ -676,52 +676,6 @@ namespace { //global
         }
 
         /**
-         * For Advanced Search, contracts can be search by vendor name as a like or exact search,
-         * This function applies an additional parameter
-         * @param $parameters
-         * @return mixed
-         */
-        static public function adjustVendorNameAdvancedSearchParams(&$parameters) {
-
-            $data_controller_instance = data_controller_get_operator_factory_instance();
-
-            //Vendor Facet for Exact Search
-            $vendor_exact_names = explode('~', _getRequestParamValue('vendornm_exact'));
-            $has_vendor_exact_names = isset($vendor_exact_names[0]) && $vendor_exact_names[0] != "";
-            $vendor_types = self::getVendorTypeFromVendorTypeId(explode('~', _getRequestParamValue('vendortype')));
-            $has_vendor_types = isset($vendor_types[0]) && $vendor_types[0] != "";
-            if($has_vendor_exact_names) {
-                $pattern = null;
-                foreach($vendor_exact_names as $vendor_exact_name) {
-                    $local_pattern = self::getVendorNameTypeRegExpPattern($has_vendor_types ? $vendor_types : null, $vendor_exact_name);
-                    $pattern .= isset($pattern) ? '|'.$local_pattern : $local_pattern;
-                }
-                if($pattern != null) {
-                    $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
-                    $parameters['prime_sub_vendor_name_by_type'] = $condition;
-                }
-            }
-            //Vendor Facet for Like Search
-            $vendor_names = explode('~', _getRequestParamValue('vendornm'));
-            $has_vendor_names = isset($vendor_names[0]) && $vendor_names[0] != "";
-            if($has_vendor_names) {
-                $pattern = null;
-                foreach($vendor_names as $vendor_name) {
-                    $local_pattern = self::getVendorNameTypeRegExpPattern($has_vendor_types ? $vendor_types : null, $vendor_name,'like');
-                    $pattern .= isset($pattern) ? '|'.$local_pattern : $local_pattern;
-                }
-                if($pattern != null) {
-                    $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
-                    if(isset($condition)) {
-                        $parameters['prime_sub_vendor_name_by_type'] = $condition;
-                    }
-                }
-            }
-            unset($parameters['vendor_name']);
-            return $parameters;
-        }
-
-        /**
          * Function to handle common facet/transaction page parameters for the Active Contracts transactions.
          * @param $node
          * @param $parameters
@@ -758,6 +712,24 @@ namespace { //global
                 unset($parameters['vendor_code']);
             }
 
+            //Handle vendor_name mapping to prime_vendor_name and sub_vendor_name
+            if(isset($parameters['vendor_name'])) {
+                $vendornm_exact = _getRequestParamValue('vendornm_exact');
+                $vendornm = _getRequestParamValue('vendornm');
+                if(isset($vendornm_exact)) {
+                    $pattern = "(^" . _checkbook_regex_replace_pattern($vendornm_exact) . "$)";
+                    $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
+                    $parameters['prime_vendor_name'] = $condition;
+                    $parameters['sub_vendor_name'] = $condition;
+                }
+                else if(isset($vendornm)) {
+                    $condition = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array($vendornm,FALSE,TRUE));
+                    $parameters['prime_vendor_name'] = $condition;
+                    $parameters['sub_vendor_name'] = $condition;
+                }
+                unset($parameters['vendor_name']);
+            }
+
             //Handle vendor_type mapping to prime_vendor_type and sub_vendor_type
             if($node->widgetConfig->filterName != "Vendor Type") {
                 if(isset($parameters['vendor_type'])) {
@@ -767,15 +739,6 @@ namespace { //global
                     unset($parameters['vendor_type']);
                 }
             }
-
-//            //For Advanced Search page, we use mwbe, for Details we use smwbe,pmwbe and need to unset this param map for mwbe -> prime_sub_vendor_minority_type_by_name_code
-//            if($node->widgetConfig->filterName == "Vendor Type") {
-//                unset($parameters['prime_sub_vendor_minority_type_by_name_code']);
-//            }
-//
-//            //Handle Advanced Search Parameters
-//            $parameters = self::adjustVendorNameAdvancedSearchParams($parameters);
-//
             unset($parameters['year']);
             unset($parameters['status_flag']);
 
