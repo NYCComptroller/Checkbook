@@ -727,7 +727,8 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
         }
     }
     if (!empty($contracts_contract_purpose)) {
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_purpose, 'contdesc');
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_purpose, 'pcontdesc');
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_purpose, 'scontdesc');
     }
     if (!empty($contracts_contract_agency)) {
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_agency, 'agency');
