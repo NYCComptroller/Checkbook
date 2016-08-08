@@ -414,7 +414,7 @@ function _checkbook_export_generateExportFile($node,$headers, $exportConfigNode 
         if(isset($sqlOverride)) {
             $override_sql = null;
             $sql = $node->data;
-            $table_columns = $node->widgetConfig->table_columns;
+            $table_columns = isset($exportConfigNode) ? $exportConfigNode->widgetConfig->table_columns : $node->widgetConfig->table_columns;
             $export_columns = $sqlOverride;
             $isList = $node->widgetConfig->useList;
 

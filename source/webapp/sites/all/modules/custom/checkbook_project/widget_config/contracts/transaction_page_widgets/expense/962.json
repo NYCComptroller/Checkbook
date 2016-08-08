@@ -46,9 +46,14 @@
     ",
     "exportColumnSqlOverride":[
         {
-            "column":"parent_contract_link",
+            "column":"master_contract_number",
             "sourceColumn":"master_contract_number",
             "sql":"CASE WHEN master_contract_number IS NULL THEN 'N/A' ELSE master_contract_number END AS master_contract_number"
+        },
+        {
+            "column":"sub_contract_id",
+            "sourceColumn":"sub_contract_id",
+            "sql":"CAST(sub_contract_id AS text) AS sub_contract_id"
         }
     ]
 }
