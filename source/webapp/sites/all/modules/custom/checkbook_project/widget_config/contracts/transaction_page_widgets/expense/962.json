@@ -73,7 +73,7 @@
         {
             "column":"sub_contract_id",
             "sourceColumn":"sub_contract_id",
-            "sql":"CASE WHEN sub_contract_id IN (NULL, 'N/A') THEN '-' ELSE sub_contract_id END AS sub_contract_id"
+            "sql":"CASE WHEN sub_contract_id IN (NULL, 'N/A') THEN '-' ELSE CAST(sub_contract_id AS TEXT) END AS sub_contract_id"
         },
         {
             "column":"sub_effective_begin_date",
