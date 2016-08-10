@@ -16,7 +16,6 @@
     "autocompleteID":"fPrimeMinorityTypeId",
     "autocompleteField":"prime_minority_type_name",
     "allowZeroValue":true,
-    "allowFacetDeselect":true,
     "adjustParameters":"
         $parameters = ContractUtil::adjustActiveContractCommonParams($node, $parameters);
         if(function_exists('_checkbook_project_applyParameterFilters')){
