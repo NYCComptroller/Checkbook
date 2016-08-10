@@ -267,9 +267,9 @@
     "headerConfig":"
         $i = ($node->show_difference) ? 2 : 0;
         if(!$node->is_master_agreement){
-            $headerConfig = array('&nbsp;'=>2,'Prime Vendor Contract Information' => 25+$i, 'Sub Vendor Contract Information' => 14+$i);
+            $headerConfig = array('&nbsp;'=>2,'Prime Vendor Contract Information' => 23+$i, 'Sub Vendor Contract Information' => 12+$i);
         }else{
-            $headerConfig = array('Prime Vendor Contract Information' => 27+$i, 'Sub Vendor Contract Information' => 14+$i);
+            $headerConfig = array('Prime Vendor Contract Information' => 25+$i, 'Sub Vendor Contract Information' => 12+$i);
         }
         return $headerConfig;
     ",
