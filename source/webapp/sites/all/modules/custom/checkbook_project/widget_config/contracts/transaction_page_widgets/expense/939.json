@@ -3,7 +3,7 @@
     "widgetSubType":"dataTableList",
     "stickyHeader":true,
     "cleanURLParameters":[
-        "vendortype","pmwbe","smwbe","doctype","contstatus","year","calyear","agency","curamtr","vendorcode","vendornm","vendornm_exact","pcontdesc","scontdesc","agrmnttype",
+        "vendortype","pmwbe","smwbe","doctype","contstatus","year","calyear","agency","curamtr","pcuramtid","scuramtid","vendorcode","vendornm","vendornm_exact","pcontdesc","scontdesc","agrmnttype",
         "agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","pmodamt","smodamt","subcontstatus","subvendorstatus"
     ],
     "urlParamMap":{
@@ -16,6 +16,8 @@
         "vendornm_exact":"vendor_name",
         "vendornm":"vendor_name",
         "vendortype":"vendor_type",
+        "pcuramtid":"prime_amount_id",
+        "scuramtid":"sub_amount_id",
         "curamtr":"maximum_contract_amount",
         "pcontdesc":"prime_purpose",
         "scontdesc":"sub_purpose",
@@ -114,7 +116,9 @@
         ["prime_vendor_code","sub_vendor_code"],
         ["prime_vendor_name","sub_vendor_name"],
         ["prime_vendor_type","sub_vendor_type"],
-        ["prime_purpose","sub_purpose"]
+        ["prime_purpose","sub_purpose"],
+        ["prime_minority_type_id","sub_minority_type_id"],
+        ["prime_amount_id","sub_amount_id"]
     ],
     "preProcessConfiguration":"
         $doctype = _getRequestParamValue('doctype');
@@ -424,6 +428,8 @@
             var oSubMinorityTypeId = getNamedFilterCriteria('fSubMinorityTypeId');
             var oVendorType = getNamedFilterCriteria('fvendorType');
             var oCurAmount = getNamedFilterCriteria('fCurAmount');
+            var oPCurAmount = getNamedFilterCriteria('fPCurAmount');
+            var oSCurAmount = getNamedFilterCriteria('fSCurAmount');
             var oAwdMethod = getNamedFilterCriteria('fAwdMethodId');
             var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
             var oSubContStatus = getNamedFilterCriteria('fSubContStatus');
@@ -442,6 +448,8 @@
             cUrl = adjustUrlParameter(cUrl,'smwbe',oSubMinorityTypeId);
             cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
             cUrl = adjustUrlParameter(cUrl,'curamtr',oCurAmount);
+            cUrl = adjustUrlParameter(cUrl,'pcuramtid',oPCurAmount);
+            cUrl = adjustUrlParameter(cUrl,'scuramtid',oSCurAmount);
             cUrl = adjustUrlParameter(cUrl,'awdmethod',oAwdMethod);
             cUrl = adjustUrlParameter(cUrl,'cindustry',oIndustryType);
             cUrl = adjustUrlParameter(cUrl,'subcontstatus',oSubContStatus);
