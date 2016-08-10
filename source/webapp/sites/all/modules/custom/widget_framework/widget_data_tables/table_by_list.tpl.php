@@ -20,6 +20,9 @@
 ?>
 <?php
 echo eval($node->widgetConfig->header);
+if(isset($node->widgetConfig->headerConfig)){
+    $headerConfig = eval($node->widgetConfig->headerConfig);
+}
 ?>
 <table id="table_<?php echo widget_unique_identifier($node) ?>" class="<?php echo $node->widgetConfig->html_class ?>">
   <?php
@@ -34,23 +37,32 @@ echo eval($node->widgetConfig->header);
   ?>
   <thead>
   <?php
-  echo "<tr>";
-  foreach ($node->widgetConfig->table_columns as $row) {
-    if(check_node_flag_visibilty($row->visibility_flag, $node)){
-      if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == _getRequestParamValue('datasource')))){
-          $label = (isset($row->labelAlias))? (WidgetUtil::generateLabelMapping($row->labelAlias)) : $row->label;
-          $fn = $row->adjustLabelFunction;
-          if(isset($fn) && function_exists($fn)){
-              $label = $fn($label);
-          }else if(isset($row->evalLabel) && $row->evalLabel){
-              $label = eval("return $row->label;");
-          }
-          $headerClass = ($row->headerClass)? ' class="'.$row->headerClass.'"':'';
-          echo "<th$headerClass>" . $label . "</th>";
+  
+    foreach ($node->widgetConfig->table_columns as $row) {
+      if(check_node_flag_visibilty($row->visibility_flag, $node)){
+        if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == _getRequestParamValue('datasource')))){
+            $label = (isset($row->labelAlias))? (WidgetUtil::generateLabelMapping($row->labelAlias)) : $row->label;
+            $fn = $row->adjustLabelFunction;
+            if(isset($fn) && function_exists($fn)){
+                $label = $fn($label);
+            }else if(isset($row->evalLabel) && $row->evalLabel){
+                $label = eval("return $row->label;");
+            }
+            $headerClass = ($row->headerClass)? ' class="'.$row->headerClass.'"':'';
+            $th .= "<th$headerClass>" . $label . "</th>";
+        }
       }
     }
-  }
-  echo "</tr>\n";
+
+    if(isset($headerConfig)){
+        foreach($headerConfig as $header=>$colSpan){
+            $th1 .= "<th class='doubleHeader' colspan='$colSpan'>" . $header . "</th>";
+        }
+        echo "<tr>".$th1."</tr>\n";
+    }
+
+    echo "<tr>".$th."</tr>\n";
+  
   ?>
   </thead>
 

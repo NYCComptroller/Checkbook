@@ -3533,3 +3533,8 @@ p.pieCount {
 .pieSlider{
     padding-left: 190px !important;
 }
+
+.doubleHeader{
+    text-align: center;
+    height: 40px;
+}
