@@ -739,6 +739,7 @@ namespace { //global
                     unset($parameters['vendor_type']);
                 }
             }
+
             unset($parameters['year']);
             unset($parameters['status_flag']);
 
