@@ -434,6 +434,14 @@ class Statement extends AbstractObject {
                         if(count($arrayOrConditions) > 1) {
                             $arrayAllOrConditions[] = $arrayOrConditions;
                         }
+                        //Remove from exclude list if AND is used
+                        elseif(count($arrayOrConditions) == 1) {
+                            foreach($arrayExcludeColumns as $key => $value) {
+                                if($value == $arrayOrConditions[0]->subjectColumnName) {
+                                    unset($arrayExcludeColumns[$key]);
+                                }
+                            }
+                        }
                     }
 
                     //Build the array for the AND columns, removing the OR columns
