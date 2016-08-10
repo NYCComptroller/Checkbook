@@ -18,7 +18,7 @@
         //END PRIME
         {"label":"Prime Contracting Agency","column":"agency_name"},
         {"label":"Contract Version","column":"prime_document_version"},
-        {"label":"FMS Document/Parent Contract ID","column":"master_contract_number"},
+        {"label":"FMS Document/Parent Contract ID","column":"master_contract_number_export"},
         {"label":"Prime Contract Type","column":"agreement_type_name"},
         {"label":"Prime Contract Award Method","column":"award_method_name"},
         {"label":"Prime Contract Expense Category","column":"expenditure_object_names"},
@@ -26,64 +26,22 @@
         {"label":"Prime Contract PIN","column":"tracking_number"},
         {"label":"Prime Contract APT PIN","column":"brd_awd_no"},
         //START SUB
-        {"label":"Sub Vendor","column":"sub_vendor_name"},
-        {"label":"Sub Vendor M/WBE Category","column":"sub_minority_type_name"},
-        {"label":"Sub Contract Purpose","column":"sub_purpose"},
+        {"label":"Sub Vendor","column":"sub_vendor_name_export"},
+        {"label":"Sub Vendor M/WBE Category","column":"sub_minority_type_name_export"},
+        {"label":"Sub Contract Purpose","column":"sub_purpose_export"},
         {"label":"Sub Vendor Status in PIP","column":"aprv_sta_name"},
         {"label":"Sub Contract Current Amount","column":"sub_maximum_contract_amount"},
         {"label":"Sub Contract Original Amount","column":"sub_original_contract_amount"},
         {"label":"Sub Vendor Paid to Date","column":"sub_rfed_amount"},
         {"label":"Sub Contract Dollar Difference","column":"sub_dollar_difference","visibility_flag":"show_difference"},
         {"label":"Sub Contract Percent Difference","column":"sub_percent_difference","visibility_flag":"show_difference"},
-        {"label":"Sub Contract Start Date","column":"sub_effective_begin_date"},
-        {"label":"Sub Contract End Date","column":"sub_effective_end_date"},
-        {"label":"Sub Contract Reference ID","column":"sub_contract_id"}
+        {"label":"Sub Contract Start Date","column":"sub_effective_begin_date_export"},
+        {"label":"Sub Contract End Date","column":"sub_effective_end_date_export"},
+        {"label":"Sub Contract Reference ID","column":"sub_contract_id_export"}
         //END SUB
     ],
     "preProcessConfiguration":"
         $smnid = $doctype = _getRequestParamValue('smnid');
         $node->show_difference = ($smnid == 480 || $smnid == 366 || $smnid == 722);
-    ",
-    "exportColumnSqlOverride":[
-        {
-            "column":"master_contract_number",
-            "sourceColumn":"master_contract_number",
-            "sql":"CASE WHEN master_contract_number IS NULL THEN '-' ELSE master_contract_number END AS master_contract_number"
-        },
-        {
-            "column":"sub_vendor_name",
-            "sourceColumn":"sub_vendor_name",
-            "sql":"CASE WHEN sub_vendor_name IN (NULL, 'N/A') THEN '-' ELSE sub_vendor_name END AS sub_vendor_name"
-        },
-        {
-            "column":"sub_minority_type_name",
-            "sourceColumn":"sub_minority_type_name",
-            "sql":"CASE WHEN sub_minority_type_name IN (NULL, 'N/A') THEN '-' ELSE sub_minority_type_name END AS sub_minority_type_name"
-        },
-        {
-            "column":"sub_purpose",
-            "sourceColumn":"sub_purpose",
-            "sql":"CASE WHEN sub_purpose IN (NULL, 'N/A') THEN '-' ELSE sub_purpose END AS sub_purpose"
-        },
-        {
-            "column":"aprv_sta_name",
-            "sourceColumn":"aprv_sta_name",
-            "sql":"CASE WHEN aprv_sta_name IN (NULL, 'N/A') THEN '-' ELSE aprv_sta_name END AS aprv_sta_name"
-        },
-        {
-            "column":"sub_contract_id",
-            "sourceColumn":"sub_contract_id",
-            "sql":"CASE WHEN sub_contract_id IN (NULL, 'N/A') THEN '-' ELSE CAST(sub_contract_id AS TEXT) END AS sub_contract_id"
-        },
-        {
-            "column":"sub_effective_begin_date",
-            "sourceColumn":"sub_effective_begin_date",
-            "sql":"CASE WHEN sub_effective_begin_date IS NULL THEN CAST('-' AS TEXT) ELSE  CAST(sub_effective_begin_date AS TEXT) END AS sub_effective_begin_date"
-        },
-        {
-            "column":"sub_effective_end_date",
-            "sourceColumn":"sub_effective_end_date",
-            "sql":"CASE WHEN sub_effective_end_date IS NULL THEN CAST('-' AS TEXT) ELSE  CAST(sub_effective_end_date AS TEXT) END AS sub_effective_end_date"
-        }
-    ]
+    "
 }
