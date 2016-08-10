@@ -4,7 +4,7 @@
     "stickyHeader":true,
     "cleanURLParameters":[
         "vendortype","pmwbe","smwbe","doctype","contstatus","year","calyear","agency","curamtr","pcuramtid","scuramtid","vendorcode","vendornm","vendornm_exact","pcontdesc","scontdesc","agrmnttype",
-        "agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","pmodamt","smodamt","subcontstatus","subvendorstatus"
+        "agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","startdate","enddate","regdate","cindustry","csize","pmodamt","smodamt","subcontstatus","subvendorstatus"
     ],
     "urlParamMap":{
         "agrmnttype":"agreement_type_id",
@@ -25,7 +25,6 @@
         "aptpin":"brd_awd_no",
         "pin":"tracking_number",
         "awdmethod":"award_method_id",
-        "curamt":"maximum_contract_amount",
         "startdate":"effective_begin_date",
         "enddate":"effective_end_date",
         "regdate":"registered_date",
@@ -42,7 +41,7 @@
         "year":"year"
     },
     "allowRequestParams":["smnid","doctype","mwbe","modamt"],
-    "paramTypeConfig":{"vendornm_exact":"eqignorecase","curamtr":"rangeid","vendornm":"like","pcontdesc":"contains","scontdesc":"contains","contnum":"like","contnum_exact":"eqignorecase","aptpin":"like","pin":"like","curamt":"range",
+    "paramTypeConfig":{"vendornm_exact":"eqignorecase","curamtr":"rangeid","vendornm":"like","pcontdesc":"contains","scontdesc":"contains","contnum":"like","contnum_exact":"eqignorecase","aptpin":"like","pin":"like",
         "startdate":"range","enddate":"range","regdate":"range","pmodamt":"ne","smodamt":"ne"},
     "header":"
         $header = NULL;

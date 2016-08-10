@@ -8,16 +8,16 @@
     "showAllRecords":true,
     "allowFacetDeselect":true,
     "autocomplete":false,
-    "filterName":"Prime Amount",
-    "urlParameterName":"pcuramtid",
-    "autocompleteID":"fPCurAmount",
-    "columns":["prime_amount_id.prime_amount_id", "prime_amount_name.prime_amount_name", "txcount"],
+    "filterName":"Sub Amount",
+    "urlParameterName":"scuramtid",
+    "autocompleteID":"fSCurAmount",
+    "columns":["sub_amount_id.sub_amount_id", "sub_amount_name.sub_amount_name", "txcount"],
     "orderBy":"-txcount",
     "adjustParameters":"
         $parameters = ContractUtil::adjustActiveContractCommonParams($node, $parameters);
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
-            $parameters['prime_amount_name.prime_amount_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+            $parameters['sub_amount_name.sub_amount_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
         }
         return $parameters;
     ",

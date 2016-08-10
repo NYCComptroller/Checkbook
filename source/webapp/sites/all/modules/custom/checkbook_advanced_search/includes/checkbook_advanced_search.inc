@@ -249,6 +249,65 @@ function _checkbook_advanced_search_get_subcontract_approval_status_and_id($attr
     }
 }
 
+/**
+ * Generates the Url param mappings for current amount id by prime and sub
+ * @param $value
+ * @param string $url_param
+ * @return string
+ */
+function _checkbook_advanced_search_add_current_amount_id($value)
+{
+    $value = _checkbook_advanced_search_replaceSlash($value);
+    $redirect_url = '';
+    $from_length = strlen($value['from']);
+    $to_length = strlen($value['to']);
+
+    $from_value = $from_length > 0 ? $value['from'] : null;
+    $to_value = $to_length > 0 ? $value['to'] : null;
+
+//    1. 'Greater than $100M' ==> X > 100000000
+//    2. '$51M - $100M' ==>  X > 50000000 AND X <= 100000000
+//    3. '$26M - $50M' ==> X > 25000000 AND X <= 50000000
+//    4. '$11M - $25M' ==> X > 10000000 AND X <= 25000000
+//    5. '$1M - $10M' ==> x >= 1000000 AND X <= 10000000
+//    6. 'Less than $1M' ==> X < 1000000
+
+    $amount_ids = array();
+    if(isset($from_value) && isset($to_value)) {
+
+        // 1. 'Greater than $100M' ==> X > 100000000
+        if($from_value > 100000000 && $to_value > 100000000) {
+            $amount_ids[] = 1;
+        }
+        // 2. '$51M - $100M' ==> X > 50000000 AND X <= 100000000
+        if(($from_value > 100000000 && $from_value <= 100000000) || ($to_value > 100000000 && $to_value <= 100000000)) {
+            $amount_ids[] = 2;
+        }
+        // 3. '$26M - $50M' ==> X > 25000000 AND X <= 50000000
+        if(($from_value > 25000000 && $from_value <= 50000000) || ($to_value > 25000000 && $to_value <= 50000000)) {
+            $amount_ids[] = 3;
+        }
+        // 4. '$11M - $25M' ==> X > 10000000 AND X <= 25000000
+        if(($from_value > 10000000 && $from_value <= 25000000) || ($to_value > 10000000 && $to_value <= 25000000)) {
+            $amount_ids[] = 4;
+        }
+        // 5. '$1M - $10M' ==> x >= 1000000 AND X <= 10000000
+        if(($from_value >= 1000000 && $from_value <= 10000000) || ($to_value >= 1000000 && $to_value <= 10000000)) {
+            $amount_ids[] = 5;
+        }
+        // 6. 'Less than $1M' ==> X < 1000000
+        if($from_value < 1000000 && $to_value < 1000000) {
+            $amount_ids[] = 6;
+        }
+    }
+
+    if(count($amount_ids) > 0) {
+        $amount_param = implode("~",$amount_ids);
+        $redirect_url = '/' . "pcuramtid" . "/" . $amount_param . '/' . "scuramtid" . "/" . $amount_param;
+    }
+    return $redirect_url;
+}
+
 /*
  * this functiocheckbook_advanced_searchn is used to generate the URL based on what the users have selected on advanced search form
  * @param $value
@@ -795,6 +854,7 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
 
     $contracts_contract_current_contract_amount_range_array = array('from' => $contracts_contract_current_contract_amount_from, 'to' => $contracts_contract_current_contract_amount_to, 'type' => 'amount');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_current_contract_amount_range_array, 'curamt', TRUE);
+    $redirect_url .= _checkbook_advanced_search_add_current_amount_id($contracts_contract_current_contract_amount_range_array);
 
     $contracts_contract_start_date_range_array = array('from' => $contracts_contract_start_date_from, 'to' => $contracts_contract_start_date_to, 'type' => 'date');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_start_date_range_array, 'startdate', TRUE);

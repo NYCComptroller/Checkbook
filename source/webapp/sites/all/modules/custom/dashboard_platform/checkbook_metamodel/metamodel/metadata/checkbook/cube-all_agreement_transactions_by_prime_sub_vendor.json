@@ -152,6 +152,38 @@
                         "name":"sub_minority_type_name",
                         "sourceColumnName":"sub_minority_type_name"
                     }]
+                },
+                {
+                    "name":"prime_amount_name",
+                    "levels": [
+                        {
+                            "name":"prime_amount_name",
+                            "sourceColumnName":"prime_amount_name"
+                        }]
+                },
+                {
+                    "name":"prime_amount_id",
+                    "levels": [
+                        {
+                            "name":"prime_amount_id",
+                            "sourceColumnName":"prime_amount_id"
+                        }]
+                },
+                {
+                    "name":"sub_amount_name",
+                    "levels": [
+                        {
+                            "name":"sub_amount_name",
+                            "sourceColumnName":"sub_amount_name"
+                        }]
+                },
+                {
+                    "name":"sub_amount_id",
+                    "levels": [
+                        {
+                            "name":"sub_amount_id",
+                            "sourceColumnName":"sub_amount_id"
+                        }]
                 }
             ],
             "measures": {
