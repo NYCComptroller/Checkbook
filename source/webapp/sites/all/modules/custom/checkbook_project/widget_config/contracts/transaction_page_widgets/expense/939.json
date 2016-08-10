@@ -264,7 +264,15 @@
         }
     },
     "skipCustomPadding":true,
-    "headerConfig":"$headerConfig = array('Prime vendor' => 27, 'Sub Vendor' => 14);return $headerConfig;",
+    "headerConfig":"
+        $i = ($node->show_difference) ? 2 : 0;
+        if(!$node->is_master_agreement){
+            $headerConfig = array('&nbsp;'=>2,'Prime Vendor Contract Information' => 25+$i, 'Sub Vendor Contract Information' => 14+$i);
+        }else{
+            $headerConfig = array('Prime Vendor Contract Information' => 27+$i, 'Sub Vendor Contract Information' => 14+$i);
+        }
+        return $headerConfig;
+    ",
     "table_columns": [
         {"label":"<div></div>","colLabel":"","column":"child_contrats_link"},
         {"labelAlias":"contract_id","column":"contract_link","sortSourceColumn":"contract_number"},
