@@ -178,6 +178,14 @@
             .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['sub_rfed_amount']) . '</a>') :custom_number_formatter_basic_format($row['sub_rfed_amount'])
             "
         },
+        "formatted_sub_effective_begin_date": {
+            "type":"expression2",
+            "expression":"(strtolower($row['vendor_record_type']) == 'sub vendor')? $row['sub_effective_begin_date'] : 'N/A'"
+        },
+        "formatted_sub_effective_end_date": {
+            "type":"expression2",
+            "expression":"(strtolower($row['vendor_record_type']) == 'sub vendor')? $row['sub_effective_end_date'] : 'N/A'"
+        },
         "agency_formatted": {
             "type":"expression2",
             "expression":"_get_tooltip_markup($row['agency_name'],26)"
@@ -314,8 +322,8 @@
         {"labelAlias":"dollar_diff","column":"formatted_sub_dollar_diff","sortSourceColumn":"sub_dollar_difference","visibility_flag":"show_difference"},
         {"labelAlias":"percent_diff","column":"formatted_sub_percent_diff","sortSourceColumn":"sub_percent_difference","visibility_flag":"show_difference"},
         {"label":"","column":""},
-        {"labelAlias":"start_date","column":"sub_effective_begin_date"},
-        {"labelAlias":"end_date","column":"sub_effective_end_date"},
+        {"labelAlias":"start_date","column":"formatted_sub_effective_begin_date","sortSourceColumn":"sub_effective_begin_date"},
+        {"labelAlias":"end_date","column":"formatted_sub_effective_begin_date","sortSourceColumn":"sub_effective_end_date"},
         {"labelAlias":"sub_contract_reference_id","column":"sub_contract_reference_id","sortSourceColumn":"sub_contract_id"},
         {"label":"","column":""}
         //END SUB
@@ -499,7 +507,7 @@
                             var row = data[i];
 
                             sOut += '<tr>';
-                            sOut += '<td style=\"width:3px\"></td>';
+                            sOut += '<td></td>';
                             sOut += '<td class=\"text\" style=\"width:120px\">'+ (row[1] == null ? '': row[1])+'</td>';
                             sOut += '<td class=\"sub-cont-status\"  style=\"width:180px\">'+ (row[2] == null ? '': row[2])+'</td>';
                             sOut += '<td style=\"width:30px\"></td>';
