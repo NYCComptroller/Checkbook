@@ -264,6 +264,7 @@
         }
     },
     "skipCustomPadding":true,
+    "headerConfig":"$headerConfig = array('Prime vendor' => 27, 'Sub Vendor' => 14);return $headerConfig;",
     "table_columns": [
         {"label":"<div></div>","colLabel":"","column":"child_contrats_link"},
         {"labelAlias":"contract_id","column":"contract_link","sortSourceColumn":"contract_number"},
@@ -392,17 +393,18 @@
         "sScrollX":"100%",
         "bScrollCollapse": true
     },
-    "customJS":"jQuery('#dtl_expand').live( 'click',function () {
-        var nTr = this.parentNode.parentNode.parentNode;
-        if ( jQuery(this).attr('class').match('loader') ){return;}
-        if ( jQuery(this).attr('class').match('expanded') ){
-            jQuery(this).removeClass('expanded').addClass('collapsed');
-            oTable.fnClose( nTr );
-        }
-        else{
-            jQuery(this).removeClass('collapsed').addClass('loader');
-            fnLoadChildRecords(nTr, jQuery(this));
-        }} );
+    "customJS":"
+        jQuery('#dtl_expand').live( 'click',function () {
+            var nTr = this.parentNode.parentNode.parentNode;
+            if ( jQuery(this).attr('class').match('loader') ){return;}
+            if ( jQuery(this).attr('class').match('expanded') ){
+                jQuery(this).removeClass('expanded').addClass('collapsed');
+                oTable.fnClose( nTr );
+            }
+            else{
+                jQuery(this).removeClass('collapsed').addClass('loader');
+                fnLoadChildRecords(nTr, jQuery(this));
+            }} );
     ",
     "customExternalJS":"
 
