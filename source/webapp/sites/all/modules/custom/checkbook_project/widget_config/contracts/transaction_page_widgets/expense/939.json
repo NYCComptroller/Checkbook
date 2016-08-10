@@ -198,7 +198,7 @@
         },
         "sub_purpose_formatted": {
             "type":"expression2",
-            "expression":"_get_tooltip_markup($row['sub_purpose'],36)"
+            "expression":"(strtolower($row['vendor_record_type']) == 'sub vendor')? _get_tooltip_markup($row['sub_purpose'],36) : 'N/A'"
         },
         "expense_cat": {
             "type":"expression2",
