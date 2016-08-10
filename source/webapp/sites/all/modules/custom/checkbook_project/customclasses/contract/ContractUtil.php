@@ -740,6 +740,10 @@ namespace { //global
                 }
             }
 
+            if(self::showSubVendorData()){
+                $parameters['vendor_record_type'] = 'Sub Vendor';
+            }
+
             unset($parameters['year']);
             unset($parameters['status_flag']);
 
