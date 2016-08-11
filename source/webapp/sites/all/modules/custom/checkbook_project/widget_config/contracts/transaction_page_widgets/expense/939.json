@@ -323,7 +323,7 @@
         {"labelAlias":"percent_diff","column":"formatted_sub_percent_diff","sortSourceColumn":"sub_percent_difference","visibility_flag":"show_difference"},
         {"label":"","column":""},
         {"labelAlias":"start_date","column":"formatted_sub_effective_begin_date","sortSourceColumn":"sub_effective_begin_date"},
-        {"labelAlias":"end_date","column":"formatted_sub_effective_begin_date","sortSourceColumn":"sub_effective_end_date"},
+        {"labelAlias":"end_date","column":"formatted_sub_effective_end_date","sortSourceColumn":"sub_effective_end_date"},
         {"labelAlias":"sub_contract_reference_id","column":"sub_contract_reference_id","sortSourceColumn":"sub_contract_id"},
         {"label":"","column":""}
         //END SUB
