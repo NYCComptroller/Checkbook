@@ -171,9 +171,63 @@ if(isset($logicalOrFacet) && $logicalOrFacet) {
 }
 
 
+//Checking 'Asian-American' filter in Prime/Sub MWBE Category Facet
+if($node->widgetConfig->filterName == 'Prime M/WBE Category' || $node->widgetConfig->filterName == 'Sub M/WBE Category'){
+    $asian_american_count = 0;
+    foreach($unchecked as $key => $value){
+        $id = $value[0];
+        $name = $value[1];
+        $count = $value[2];
+        if($id == 4 || $id == 5){
+            $asian_american_count = $asian_american_count + $count;
+            unset($unchecked[$key]);
+        }
+        else if(!isset($name)) {
+            unset($unchecked[$key]);
+        }
+    }
+    if($asian_american_count > 0) {
+        array_push($unchecked,array("4~5","Asian American",$asian_american_count));
+        usort($unchecked,
+            function($a, $b)
+            {
+                if ($a[2] == $b[2]) {
+                    return 0;
+                }
+                return ($a[2] > $b[2]) ? -1 : 1;
+            }
+        );
+    }
+    $asian_american_count = 0;
+    foreach($checked as $key => $value){
+        $id = $value[0];
+        $name = $value[1];
+        $count = $value[2];
+        if($id == 4 || $id == 5){
+            $asian_american_count = $asian_american_count + $count;
+            unset($checked[$key]);
+        }
+        else if(!isset($name)) {
+            unset($checked[$key]);
+        }
+    }
+    if($asian_american_count > 0) {
+        array_push($checked,array("4~5","Asian American",$asian_american_count));
+        usort($checked,
+            function($a, $b)
+            {
+                if ($a[2] == $b[2]) {
+                    return 0;
+                }
+                return ($a[2] > $b[2]) ? -1 : 1;
+            }
+        );
+    }
+}
+
 //Checking 'Asian-American' filter in MWBE Category Facet
 $count =0;
-if($node->widgetConfig->filterName == 'M/WBE Category' || $node->widgetConfig->filterName == 'Prime M/WBE Category' || $node->widgetConfig->filterName == 'Sub M/WBE Category'){
+if($node->widgetConfig->filterName == 'M/WBE Category'){
     $dashboard = _getRequestParamValue('dashboard');
     foreach($unchecked as $key => $value){
         if(isset($dashboard) && $dashboard != 'ss'){
