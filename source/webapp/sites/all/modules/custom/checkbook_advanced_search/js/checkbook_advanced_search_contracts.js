@@ -203,9 +203,9 @@
 
             if (contract_status == 'P' || contract_category == 'revenue') {
                 div.ele('includes_sub_vendors').attr("disabled", "disabled");
-                div.ele('includes_sub_vendors').val('');
+                //div.ele('includes_sub_vendors').val('');
                 div.ele('sub_vendor_status').attr("disabled", "disabled");
-                div.ele('sub_vendor_status').val('');
+                //div.ele('sub_vendor_status').val('');
             } else {
                 div.ele('includes_sub_vendors').removeAttr("disabled");
                 div.ele('sub_vendor_status').removeAttr("disabled");
@@ -225,7 +225,7 @@
 
             if(includes_sub_vendors == 3 || includes_sub_vendors == 1) {
                 div.ele('sub_vendor_status').attr("disabled", "disabled");
-                div.ele('sub_vendor_status').val('');
+               // div.ele('sub_vendor_status').val('');
             } else{
                 div.ele('sub_vendor_status').removeAttr("disabled");
             }
