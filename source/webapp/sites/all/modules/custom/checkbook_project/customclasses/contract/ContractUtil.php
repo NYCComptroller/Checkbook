@@ -740,8 +740,11 @@ namespace { //global
                 }
             }
 
-            if(self::showSubVendorData()){
-                $parameters['vendor_record_type'] = 'Sub Vendor';
+            //Vendor Name facet should query both prime/sub always
+            if($node->widgetConfig->filterName != "Vendor") {
+                if(self::showSubVendorData()){
+                    $parameters['vendor_record_type'] = 'Sub Vendor';
+                }
             }
 
             unset($parameters['year']);
