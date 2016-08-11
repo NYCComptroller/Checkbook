@@ -170,19 +170,19 @@
         },
         "formatted_prime_dollar_diff": {
             "type":"expression2",
-            "expression":"custom_number_formatter_basic_format($row['prime_dollar_difference'])"
+            "expression":"(strtolower($row['vendor_record_type']) == 'prime vendor')?custom_number_formatter_basic_format($row['prime_dollar_difference']):'N/A'"
         },
         "formatted_prime_percent_diff": {
             "type":"expression2",
-            "expression":"round($row['prime_percent_difference'],2) . '%'"
+            "expression":"(strtolower($row['vendor_record_type']) == 'prime vendor')?round($row['prime_percent_difference'],2) . '%':'N/A'"
         },
         "formatted_sub_dollar_diff": {
             "type":"expression2",
-            "expression":"custom_number_formatter_basic_format($row['sub_dollar_difference'])"
+            "expression":"(strtolower($row['vendor_record_type']) == 'sub vendor')?custom_number_formatter_basic_format($row['sub_dollar_difference']):'N/A'"
         },
         "formatted_sub_percent_diff": {
             "type":"expression2",
-            "expression":"round($row['sub_percent_difference'],2) . '%'"
+            "expression":"(strtolower($row['vendor_record_type']) == 'sub vendor')?round($row['sub_percent_difference'],2) . '%':'N/A'"
         },
         "sub_contract_reference_id":{
             "type":"expression2",
