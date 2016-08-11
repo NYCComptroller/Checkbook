@@ -273,7 +273,7 @@
         },
         "subvendor_status_pip":{
             "type":"expression2",
-            "expression": "isset($row['aprv_sta_name']) ? (in_array($row['scntrc_status'], array(0,1,3)) ? 'N/A' : _get_tooltip_markup($row['aprv_sta_name'],36)) : 'N/A'"
+            "expression": " in_array($row['scntrc_status'], array(0,1,3))  ? (isset($row['aprv_sta_name']) ? _get_tooltip_markup($row['aprv_sta_name'],36) : 'N/A') : _get_tooltip_markup($row['aprv_sta_name'],36)"
         }
     },
     "skipCustomPadding":true,
