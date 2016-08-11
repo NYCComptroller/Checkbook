@@ -154,6 +154,23 @@ if($node->widgetConfig->filterName == 'Revenue Recognized') {
     }
 }
 
+$logicalOrFacet = $node->widgetConfig->logicalOrFacet;
+if(isset($logicalOrFacet) && $logicalOrFacet) {
+    foreach($unchecked as $key => $value){
+        //Remove N/A from facet
+        if($value[1] == null) {
+            unset($unchecked[$key]);
+        }
+    }
+    foreach($checked as $key=>$value){
+        //Remove N/A from facet
+        if($value[1] == null) {
+            unset($checked[$key]);
+        }
+    }
+}
+
+
 //Checking 'Asian-American' filter in MWBE Category Facet
 $count =0;
 if($node->widgetConfig->filterName == 'M/WBE Category' || $node->widgetConfig->filterName == 'Prime M/WBE Category' || $node->widgetConfig->filterName == 'Sub M/WBE Category'){
