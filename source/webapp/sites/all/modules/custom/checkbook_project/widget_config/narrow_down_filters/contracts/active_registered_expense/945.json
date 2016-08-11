@@ -8,7 +8,7 @@
     "showAllRecords":true,
     "allowFacetDeselect":true,
     "autocomplete":false,
-    "filterName":"Prime Amount",
+    "filterName":"Prime Current Amount",
     "urlParameterName":"pcuramtid",
     "logicalOrFacet":true,
     "autocompleteID":"fPCurAmount",
