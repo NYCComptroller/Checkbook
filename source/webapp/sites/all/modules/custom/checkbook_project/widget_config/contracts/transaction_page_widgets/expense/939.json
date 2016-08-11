@@ -127,6 +127,7 @@
         $node->is_master_agreement = $is_master_agreement;
         $smnid = $doctype = _getRequestParamValue('smnid');
         $node->show_difference = ($smnid == 480 || $smnid == 366 || $smnid == 722);
+        $node->dashboard = _getRequestParamValue('dashboard');
     ",
     "caption":"",
     "derivedColumns": {
@@ -340,6 +341,11 @@
         if($node->show_difference) {
             $adjustDataTableOptions->aaSorting[0][0] = 10;
         }
+        if($node->show_difference && in_array($node->show_difference, array('ss','ms'))) {
+            $adjustDataTableOptions->aaSorting[0][0] = 34;
+        }else if(in_array($node->show_difference, array('ss','ms'))){
+            $adjustDataTableOptions->aaSorting[0][0] = 31;
+        }
         if(!$node->is_master_agreement) {
             $adjustDataTableOptions->fnInitComplete = '##function () { new FixedColumns( oTable, {\"iLeftColumns\": 2,\"iLeftWidth\": 180} );}##';
         }
@@ -507,7 +513,7 @@
                             var row = data[i];
 
                             sOut += '<tr>';
-                            sOut += '<td></td>';
+                            
                             sOut += '<td class=\"text\" style=\"width:120px\">'+ (row[1] == null ? '': row[1])+'</td>';
                             sOut += '<td class=\"sub-cont-status\"  style=\"width:180px\">'+ (row[2] == null ? '': row[2])+'</td>';
                             sOut += '<td style=\"width:30px\"></td>';
