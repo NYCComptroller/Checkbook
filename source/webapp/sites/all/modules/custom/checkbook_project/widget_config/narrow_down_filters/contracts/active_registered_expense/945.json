@@ -10,6 +10,7 @@
     "autocomplete":false,
     "filterName":"Prime Amount",
     "urlParameterName":"pcuramtid",
+    "logicalOrFacet":true,
     "autocompleteID":"fPCurAmount",
     "columns":["prime_amount_id.prime_amount_id", "prime_amount_name.prime_amount_name", "txcount"],
     "orderBy":"-txcount",

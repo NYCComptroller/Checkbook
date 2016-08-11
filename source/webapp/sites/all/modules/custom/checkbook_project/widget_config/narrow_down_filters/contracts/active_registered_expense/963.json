@@ -13,6 +13,7 @@
     "allowZeroValue":true,
     "allowFacetDeselect":true,
     "urlParameterName":"smwbe",
+    "logicalOrFacet":true,
     "autocompleteParamName":"mwbe_auto",
     "autocompleteID":"fSubMinorityTypeId",
     "autocompleteField":"sub_minority_type_name",
