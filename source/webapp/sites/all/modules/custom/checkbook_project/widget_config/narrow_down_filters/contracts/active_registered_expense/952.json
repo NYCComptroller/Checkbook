@@ -25,6 +25,5 @@
         }
         return $parameters;
     ",
-    "transformationPHP":"return ContractUtil::mergeMWBWCategoryFacetValues($node,'prime_minority_type_id_prime_minority_type_id','prime_minority_type_name_prime_minority_type_name','count_prime_mwbe');",
     "template":"individual_filter"
 }
