@@ -341,9 +341,9 @@
         if($node->show_difference) {
             $adjustDataTableOptions->aaSorting[0][0] = 10;
         }
-        if($node->show_difference && in_array($node->show_difference, array('ss','ms'))) {
+        if($node->show_difference && in_array($node->dashboard, array('ss','ms'))) {
             $adjustDataTableOptions->aaSorting[0][0] = 34;
-        }else if(in_array($node->show_difference, array('ss','ms'))){
+        }else if(in_array($node->dashboard, array('ss','ms'))){
             $adjustDataTableOptions->aaSorting[0][0] = 31;
         }
         if(!$node->is_master_agreement) {
