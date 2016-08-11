@@ -341,10 +341,9 @@
         if($node->show_difference) {
             $adjustDataTableOptions->aaSorting[0][0] = 10;
         }
-        if($node->show_difference && in_array($node->dashboard, array('ss','ms'))) {
-            $adjustDataTableOptions->aaSorting[0][0] = 34;
-        }else if(in_array($node->dashboard, array('ss','ms'))){
-            $adjustDataTableOptions->aaSorting[0][0] = 31;
+        
+        if(array_search($node->dashboard, array('ss','ms'), true)){
+            $adjustDataTableOptions->aaSorting[0][0] = ($node->show_difference)? 34:29;
         }
         if(!$node->is_master_agreement) {
             $adjustDataTableOptions->fnInitComplete = '##function () { new FixedColumns( oTable, {\"iLeftColumns\": 2,\"iLeftWidth\": 180} );}##';
