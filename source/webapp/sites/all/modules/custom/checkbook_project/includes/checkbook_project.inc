@@ -1037,6 +1037,7 @@ function _checkbook_project_applyParameterFilters($node, $parameters){
 
     $originalRequestParams = $node->widgetConfig->originalRequestParams;
     $logicalOrFacet = $node->widgetConfig->logicalOrFacet;
+    $unionOrFacet = $node->widgetConfig->unionOrFacet;
 
     //adjust request parameter configurations
     $configurationTypes = array();
@@ -1047,7 +1048,7 @@ function _checkbook_project_applyParameterFilters($node, $parameters){
 
             foreach($intersectKeys as $intersectKey => $value){
                 if(isset($paramTypeConfig[$intersectKey]) && $urlParamMap[$intersectKey] == $param){
-                    if(!isset($logicalOrFacet) || !$logicalOrFacet)
+                    if((!isset($logicalOrFacet) || !$logicalOrFacet) && (!isset($unionOrFacet) || !$unionOrFacet))
                         $configurationTypes[$param][$paramTypeConfig[$intersectKey]] = explode("~",$originalRequestParams[$intersectKey]);
                 }
             }

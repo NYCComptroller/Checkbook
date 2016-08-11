@@ -612,6 +612,30 @@ namespace { //global
         }
 
         /**
+         * Checks the current dashboard and rules for Prime M/WBE data
+         * @return mixed
+         */
+        static public function showPrimeMwbeData() {
+            $dashboard = _getRequestParamValue('dashboard');
+            $mwbe = _getRequestParamValue('mwbe');
+            $pmwbe = _getRequestParamValue('pmwbe');
+
+            return (!isset($dashboard) && (isset($mwbe) && isset($pmwbe))) || !self::showSubVendorData();
+        }
+
+        /**
+         * Checks the current dashboard and rules for Sub M/WBE data
+         * @return mixed
+         */
+        static public function showSubMwbeData() {
+            $dashboard = _getRequestParamValue('dashboard');
+            $mwbe = _getRequestParamValue('mwbe');
+            $smwbe = _getRequestParamValue('smwbe');
+
+            return (!isset($dashboard) && (isset($mwbe) && isset($smwbe))) || self::showSubVendorData();
+        }
+
+        /**
          * Function to handle common facet/transaction page parameters for the page
          * "Summary of Sub Contract Status by Prime Contract ID Transactions"
          * @param $node
@@ -744,6 +768,18 @@ namespace { //global
             if($node->widgetConfig->filterName != "Vendor") {
                 if(self::showSubVendorData()){
                     $parameters['vendor_record_type'] = 'Sub Vendor';
+                }
+            }
+
+            //Handle minority_type_id mapping to prime_minority_type_id and sub_minority_type_id
+            $mwbe_category = _getRequestParamValue('psmwbe');
+            if($node->widgetConfig->filterName != "M/WBE Category") {
+                if($mwbe_category) {
+                    $node->widgetConfig->logicalOrColumns[] = array("prime_minority_type_id","sub_minority_type_id");
+                    $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, explode('~', $mwbe_category));
+                    $parameters['prime_minority_type_id'] = $condition;
+                    $parameters['sub_minority_type_id'] = $condition;
+                    unset($parameters['minority_type_id']);
                 }
             }
 

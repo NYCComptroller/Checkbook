@@ -172,8 +172,15 @@ if(isset($logicalOrFacet) && $logicalOrFacet) {
 
 
 //Checking 'Asian-American' filter in Prime/Sub MWBE Category Facet
-if($node->widgetConfig->filterName == 'Prime M/WBE Category' || $node->widgetConfig->filterName == 'Sub M/WBE Category'){
+$is_prime_filter = $node->widgetConfig->filterName == 'Prime M/WBE Category';
+$is_sub_filter = $node->widgetConfig->filterName == 'Sub M/WBE Category';
+$is_prime_sub_filter = $node->widgetConfig->filterName == 'M/WBE Category';
+if($is_prime_filter || $is_sub_filter || ($is_prime_sub_filter && $node->widgetConfig->parentNid == 939)){
+
     $asian_american_count = 0;
+    $show_only_prime_certified = $is_prime_filter && ContractUtil::showPrimeMwbeData();
+    $show_only_sub_certified = $is_sub_filter && ContractUtil::showSubMwbeData();
+
     foreach($unchecked as $key => $value){
         $id = $value[0];
         $name = $value[1];
@@ -181,6 +188,11 @@ if($node->widgetConfig->filterName == 'Prime M/WBE Category' || $node->widgetCon
         if($id == 4 || $id == 5){
             $asian_american_count = $asian_american_count + $count;
             unset($unchecked[$key]);
+        }
+        else if($id == 7 || $id == 11){
+            if($show_only_prime_certified || $show_only_sub_certified) {
+                unset($unchecked[$key]);
+            }
         }
         else if(!isset($name)) {
             unset($unchecked[$key]);
@@ -207,6 +219,11 @@ if($node->widgetConfig->filterName == 'Prime M/WBE Category' || $node->widgetCon
             $asian_american_count = $asian_american_count + $count;
             unset($checked[$key]);
         }
+        else if($id == 7 || $id == 11){
+            if($show_only_prime_certified || $show_only_sub_certified) {
+                unset($checked[$key]);
+            }
+        }
         else if(!isset($name)) {
             unset($checked[$key]);
         }
@@ -227,7 +244,7 @@ if($node->widgetConfig->filterName == 'Prime M/WBE Category' || $node->widgetCon
 
 //Checking 'Asian-American' filter in MWBE Category Facet
 $count =0;
-if($node->widgetConfig->filterName == 'M/WBE Category'){
+if($node->widgetConfig->filterName == 'M/WBE Category' && $node->widgetConfig->parentNid != 939){
     $dashboard = _getRequestParamValue('dashboard');
     foreach($unchecked as $key => $value){
         if(isset($dashboard) && $dashboard != 'ss'){
