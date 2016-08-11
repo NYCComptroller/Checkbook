@@ -296,16 +296,18 @@ function _checkbook_faceted_search_update_data_logical_or_filter($node){
         $name = $row[$name];
         $count = $row[$count];
 
-        $ids = explode('~',$id);
-        if(is_array($ids) && isset($ids[0])) {
-            foreach($ids as $id_split) {
-                if (in_array($id_split, $params)) {
-                    //checked
-                    $output['checked'][] = array($id_split,$name,$count);
-                }
-                else {
-                    //unchecked
-                    $output['unchecked'][] = array($id_split,$name,$count);
+        if($count > 0) {
+            $ids = explode('~',$id);
+            if(is_array($ids) && isset($ids[0])) {
+                foreach($ids as $id_split) {
+                    if (in_array($id_split, $params)) {
+                        //checked
+                        $output['checked'][] = array($id_split,$name,$count);
+                    }
+                    else {
+                        //unchecked
+                        $output['unchecked'][] = array($id_split,$name,$count);
+                    }
                 }
             }
         }
