@@ -747,6 +747,17 @@ namespace { //global
                 }
             }
 
+            if(_getRequestParamValue('smnid') == 368 || _getRequestParamValue('smnid') == 371 || _getRequestParamValue('smnid') == 480 || _getRequestParamValue('smnid') == 366 || _getRequestParamValue('smnid') == 367 || _getRequestParamValue('smnid') == 369 || _getRequestParamValue('smnid') == 370 || _getRequestParamValue('smnid') == 454 || _getRequestParamValue('smnid') == 453){
+                unset($parameters['starting_year_id']);
+                unset($parameters['ending_year_id']);
+                unset($parameters['effective_begin_year_id']);
+                unset($parameters['effective_end_year_id']);
+                $parameters['prime_starting_year_id'] = $leCondition;
+                $parameters['prime_ending_year_id'] = $geCondition;
+                $parameters['prime_effective_begin_year_id'] = $leCondition;
+                $parameters['prime_effective_end_year_id'] = $geCondition;
+            }
+
             unset($parameters['year']);
             unset($parameters['status_flag']);
 
