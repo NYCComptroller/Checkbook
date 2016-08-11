@@ -271,6 +271,50 @@ function _checkbook_faceted_search_update_data_range_filter($node){
     return $output;
 }
 
+function _checkbook_faceted_search_update_data_logical_or_filter($node){
+    $data = $node->data;
+    $output = array();
+    $output['filter_name'] = $node->widgetConfig->filterName;
+    $params = explode('~',_getRequestParamValue($node->widgetConfig->urlParameterName));
+    if(!is_array($data[0])){
+        $data = array(0=>array());
+    }
+    $name = $id = $count = null;
+    foreach($data as $row) {
+        if(count($row) == 2) {
+            $id = str_replace('.','_',$node->widgetConfig->columns[0]);
+            $name = str_replace('.','_',$node->widgetConfig->columns[0]);
+            $count = str_replace('.','_',$node->widgetConfig->columns[1]);
+        }
+        else {
+            $id = str_replace('.','_',$node->widgetConfig->columns[0]);
+            $name = str_replace('.','_',$node->widgetConfig->columns[1]);
+            $count = str_replace('.','_',$node->widgetConfig->columns[2]);
+        }
+
+        $id = $row[$id];
+        $name = $row[$name];
+        $count = $row[$count];
+
+        $ids = explode('~',$id);
+        if(is_array($ids) && isset($ids[0])) {
+            foreach($ids as $id_split) {
+                if (in_array($id_split, $params)) {
+                    //checked
+                    $output['checked'][] = array($id_split,$name,$count);
+                }
+                else {
+                    //unchecked
+                    $output['unchecked'][] = array($id_split,$name,$count);
+                }
+            }
+        }
+    }
+
+    $output['autocomplete_id'] = $node->widgetConfig->autocompleteID;
+    return $output;
+}
+
 function _checkbook_faceted_search_update_data_range2_filter($node){
   $data = $node->data;
   $output = array();
@@ -435,6 +479,7 @@ function checkbook_faceted_search_adjust_param($node){
  */
 function checkbook_faceted_search_preprocess_individual_filter(&$variables){
     $node = $variables['node'];
+    $logicalOrFacet = $node->widgetConfig->logicalOrFacet;
     if($node->widgetConfig->urlParameterType=="rangeid"){
         $data = _checkbook_faceted_search_update_data_range_filter($node);
     }
@@ -443,6 +488,9 @@ function checkbook_faceted_search_preprocess_individual_filter(&$variables){
     }
     elseif($node->widgetConfig->urlParameterType=="rangeid3"){
         $data = _checkbook_faceted_search_update_data_range3_filter($node);
+    }
+    elseif(isset($logicalOrFacet) && $logicalOrFacet) {
+        $data = _checkbook_faceted_search_update_data_logical_or_filter($node);
     }
     else{
         $data = _checkbook_faceted_search_update_data($node);
@@ -463,6 +511,7 @@ function checkbook_faceted_search_preprocess_individual_filter(&$variables){
 
 function checkbook_faceted_search_preprocess_pagination(&$variables){
     $node = $variables['node'];
+    $logicalOrFacet = $node->widgetConfig->logicalOrFacet;
     if($node->widgetConfig->urlParameterType=="rangeid") {
         $data = _checkbook_faceted_search_update_data_range_filter($node);
     }
@@ -471,6 +520,9 @@ function checkbook_faceted_search_preprocess_pagination(&$variables){
     }
     elseif($node->widgetConfig->urlParameterType=="rangeid3") {
         $data = _checkbook_faceted_search_update_data_range3_filter($node);
+    }
+    elseif(isset($logicalOrFacet) && $logicalOrFacet) {
+        $data = _checkbook_faceted_search_update_data_logical_or_filter($node);
     }
     else {
         $data = _checkbook_faceted_search_update_data($node);
