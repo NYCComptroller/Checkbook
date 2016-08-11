@@ -8,7 +8,7 @@
     "showAllRecords":true,
     "allowFacetDeselect":true,
     "autocomplete":false,
-    "filterName":"Sub Amount",
+    "filterName":"Sub Current Amount",
     "urlParameterName":"scuramtid",
     "logicalOrFacet":true,
     "autocompleteID":"fSCurAmount",
