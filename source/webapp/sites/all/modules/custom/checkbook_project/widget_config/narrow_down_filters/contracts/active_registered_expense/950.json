@@ -12,7 +12,6 @@
     "facetPager":true,
     "filterName":"Prime M/WBE Category",
     "urlParameterName":"pmwbe",
-    "logicalOrFacet":true,
     "autocompleteParamName":"mwbe_auto",
     "autocompleteID":"fPrimeMinorityTypeId",
     "autocompleteField":"prime_minority_type_name",
