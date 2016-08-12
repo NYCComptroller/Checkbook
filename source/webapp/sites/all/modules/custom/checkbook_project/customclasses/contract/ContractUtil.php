@@ -620,7 +620,7 @@ namespace { //global
             $mwbe = _getRequestParamValue('mwbe');
             $pmwbe = _getRequestParamValue('pmwbe');
 
-            return (!isset($dashboard) && (isset($mwbe) && isset($pmwbe))) || !self::showSubVendorData();
+            return (!isset($dashboard) && (isset($mwbe) && isset($pmwbe))) && !self::showSubVendorData();
         }
 
         /**
@@ -632,7 +632,7 @@ namespace { //global
             $mwbe = _getRequestParamValue('mwbe');
             $smwbe = _getRequestParamValue('smwbe');
 
-            return (!isset($dashboard) && (isset($mwbe) && isset($smwbe))) || self::showSubVendorData();
+            return (!isset($dashboard) && (isset($mwbe) && isset($smwbe))) && self::showSubVendorData();
         }
 
         /**
