@@ -792,15 +792,12 @@ namespace { //global
             }
 
             //Handle minority_type_id mapping to prime_minority_type_id and sub_minority_type_id
-            $mwbe_category = _getRequestParamValue('psmwbe');
-            if($node->widgetConfig->filterName != "M/WBE Category") {
-                if($mwbe_category) {
-                    $node->widgetConfig->logicalOrColumns[] = array("prime_minority_type_id","sub_minority_type_id");
-                    $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, explode('~', $mwbe_category));
-                    $parameters['prime_minority_type_id'] = $condition;
-                    $parameters['sub_minority_type_id'] = $condition;
-                    unset($parameters['minority_type_id']);
-                }
+            if(isset($parameters['minority_type_id'])) {
+                $node->widgetConfig->logicalOrColumns[] = array("prime_minority_type_id","sub_minority_type_id");
+                $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($parameters['minority_type_id']));
+                $parameters['prime_minority_type_id'] = $condition;
+                $parameters['sub_minority_type_id'] = $condition;
+                unset($parameters['minority_type_id']);
             }
 
             unset($parameters['year']);

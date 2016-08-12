@@ -3,11 +3,12 @@
     "widgetSubType":"dataTableList",
     "stickyHeader":true,
     "cleanURLParameters":[
-        "vendortype","pmwbe","smwbe","doctype","contstatus","year","calyear","agency","curamtr","pcuramtid","scuramtid","vendorcode","vendornm","vendornm_exact","pcontdesc","scontdesc","agrmnttype",
+        "vendortype","pmwbe","smwbe","psmwbe","doctype","contstatus","year","calyear","agency","curamtr","pcuramtid","scuramtid","vendorcode","vendornm","vendornm_exact","pcontdesc","scontdesc","agrmnttype",
         "agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","startdate","enddate","regdate","cindustry","csize","pmodamt","smodamt","subcontstatus","subvendorstatus"
     ],
     "urlParamMap":{
         "agrmnttype":"agreement_type_id",
+        "psmwbe":"minority_type_id",
         "pmwbe":"prime_minority_type_id",
         "smwbe":"sub_minority_type_id",
         "agency":"agency_id",
