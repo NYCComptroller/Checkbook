@@ -341,7 +341,7 @@
             $adjustDataTableOptions->aaSorting[0][0] = 10;
         }
         
-        if(in_array($node->dashboard, array('ss','ms'))){
+        if(in_array($node->dashboard, array('ss','ms','sp'))){
             $adjustDataTableOptions->aaSorting[0][0] = ($node->show_difference)? 34:29;
         }
         if(!$node->is_master_agreement) {
