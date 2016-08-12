@@ -15,16 +15,16 @@
         "all_agreement_transactions_by_prime_sub_vendor_type":{
             "datasourceName":"main",
             "source":"
-                SELECT 'PRIME VENDOR' as vendor_type_name, 'P' as vendor_type_id, prime_vendor_type as vendor_type, * FROM all_agreement_transactions_by_prime_sub_vendor
+                SELECT 'PRIME VENDOR' as vendor_type_name, 'P' as vendor_type_id, prime_vendor_type as vendor_type, prime_minority_type_id as minority_type_id, * FROM all_agreement_transactions_by_prime_sub_vendor
                 WHERE prime_vendor_type IN ('P','PM')
                 UNION ALL
-                SELECT 'SUB VENDOR' as vendor_type_name, 'S' as vendor_type_id, sub_vendor_type as vendor_type, * FROM all_agreement_transactions_by_prime_sub_vendor
+                SELECT 'SUB VENDOR' as vendor_type_name, 'S' as vendor_type_id, sub_vendor_type as vendor_type, sub_minority_type_id as minority_type_id, * FROM all_agreement_transactions_by_prime_sub_vendor
                 WHERE sub_vendor_type IN ('S','SM')
                 UNION ALL
-                SELECT 'M/WBE VENDOR' as vendor_type_name, 'PM' as vendor_type_id, prime_vendor_type as vendor_type, * FROM all_agreement_transactions_by_prime_sub_vendor
+                SELECT 'M/WBE VENDOR' as vendor_type_name, 'PM' as vendor_type_id, prime_vendor_type as vendor_type, prime_minority_type_id as minority_type_id, * FROM all_agreement_transactions_by_prime_sub_vendor
                 WHERE prime_vendor_type = 'PM'
                 UNION ALL
-                SELECT 'M/WBE VENDOR' as vendor_type_name, 'SM' as vendor_type_id, sub_vendor_type as vendor_type, * FROM all_agreement_transactions_by_prime_sub_vendor
+                SELECT 'M/WBE VENDOR' as vendor_type_name, 'SM' as vendor_type_id, sub_vendor_type as vendor_type, sub_minority_type_id as minority_type_id, * FROM all_agreement_transactions_by_prime_sub_vendor
                 WHERE sub_vendor_type = 'SM'
             "
         }
@@ -335,6 +335,15 @@
                             "sourceColumnName":"vendor_type"
                         }
                     ]
+                },
+                {
+                "name":"minority_type_id",
+                    "levels": [
+                        {
+                            "name":"minority_type_id",
+                            "sourceColumnName":"minority_type_id"
+                        }
+                    ]
                 }
             ],
             "measures": {
@@ -442,6 +451,15 @@
                         {
                             "name": "vendor_type_name",
                             "sourceColumnName": "vendor_type_name"
+                        }
+                    ]
+                },
+                {
+                    "name": "minority_type_id",
+                    "levels": [
+                        {
+                            "name": "minority_type_id",
+                            "sourceColumnName": "minority_type_id"
                         }
                     ]
                 }
