@@ -710,6 +710,8 @@ namespace { //global
             $contractStatus = _getRequestParamValue('contstatus');
             $reqYear = _getRequestParamValue('year');
             $data_controller_instance = data_controller_get_operator_factory_instance();
+            $dashboard = _getRequestParamValue('dashboard');
+            $smnid = _getRequestParamValue('smnid');
             
             if(isset($reqYear)){
                 $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
@@ -718,9 +720,12 @@ namespace { //global
                 if(self::showSubVendorData()){
                     $parameters['sub_starting_year_id']= $leCondition;
                     $parameters['sub_ending_year_id']= $geCondition;
-                }else{
+                }else if(!isset($dashboard) && !isset($smnid)){
                     $parameters['starting_year_id']= $leCondition;
                     $parameters['ending_year_id']= $geCondition;
+                }else{
+                    $parameters['prime_starting_year_id']= $leCondition;
+                    $parameters['prime_ending_year_id']= $geCondition;
                 }
                 
                 if($contractStatus=='R'){
@@ -730,9 +735,12 @@ namespace { //global
                     if(self::showSubVendorData()){
                         $parameters['sub_effective_begin_year_id']= $leCondition;
                         $parameters['sub_effective_end_year_id']= $geCondition;
-                    }else{
+                    }else if(!isset($dashboard) && !isset($smnid)){
                         $parameters['effective_begin_year_id']= $leCondition;
                         $parameters['effective_end_year_id']= $geCondition;
+                    }else{
+                        $parameters['prime_effective_begin_year_id']= $leCondition;
+                        $parameters['prime_effective_end_year_id']= $geCondition;
                     }
                 }
             }
