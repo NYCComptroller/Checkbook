@@ -10,7 +10,6 @@
     "autocomplete":false,
     "filterName":"Sub Current Amount",
     "urlParameterName":"scuramtid",
-    "logicalOrFacet":true,
     "autocompleteID":"fSCurAmount",
     "columns":["sub_amount_id.sub_amount_id", "sub_amount_name.sub_amount_name", "txcount"],
     "orderBy":"-txcount",
