@@ -104,11 +104,11 @@
         },
         "formatted_sub_original_contract_amount": {
             "type":"expression2",
-            "expression":"custom_number_formatter_basic_format($row['sub_original_contract_amount'])"
+            "expression":"(strtolower($row['vendor_record_type']) == 'prime vendor')?'N/A':custom_number_formatter_basic_format($row['sub_original_contract_amount'])"
         },
         "formatted_sub_current_amount": {
             "type":"expression2",
-            "expression":"custom_number_formatter_basic_format($row['sub_maximum_contract_amount'])"
+            "expression":"(strtolower($row['vendor_record_type']) == 'prime vendor')?'N/A':custom_number_formatter_basic_format($row['sub_maximum_contract_amount'])"
         },
         "formatted_spent_to_date": {
             "type":"expression2",
@@ -127,7 +127,7 @@
                 .  ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id']
                 .  _checkbook_project_get_url_param_string(\"dashboard\") . _checkbook_project_get_url_param_string(\"mwbe\")
                 .    '/year/'. _getFiscalYearID() .'/syear/'. _getFiscalYearID()
-                .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['sub_rfed_amount']) . '</a>') :custom_number_formatter_basic_format($row['sub_rfed_amount'])
+                .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['sub_rfed_amount']) . '</a>') :'N/A'
             "
         },
         "agency_formatted": {
