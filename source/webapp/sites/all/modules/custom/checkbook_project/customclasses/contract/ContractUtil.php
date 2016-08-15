@@ -800,6 +800,14 @@ namespace { //global
                 unset($parameters['minority_type_id']);
             }
 
+            //Handle amount_id mapping to prime_amount_id and sub_amount_id
+            if(isset($parameters['amount_id'])) {
+                $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($parameters['amount_id']));
+                $parameters['prime_amount_id'] = $condition;
+                $parameters['sub_amount_id'] = $condition;
+                unset($parameters['amount_id']);
+            }
+
             unset($parameters['year']);
             unset($parameters['status_flag']);
 
