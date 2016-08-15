@@ -9,15 +9,16 @@
     "allowFacetDeselect":true,
     "autocomplete":false,
     "filterName":"Sub Current Amount",
-    "urlParameterName":"scuramtid",
+    "rangeColumnNameVariant":"sub_",
+    "urlParameterName":"scuramtr",
+    "urlParameterType":"rangeid",
     "autocompleteID":"fSCurAmount",
-    "columns":["sub_amount_id.sub_amount_id", "sub_amount_name.sub_amount_name", "txcount"],
-    "orderBy":"-txcount",
+    "columns":["g100m_sub_count", "g50m_le100m_sub_count", "g25m_le50m_sub_count", "g10m_le25m_sub_count", "ge1m_le10m_sub_count", "less1m_sub_count"],
+    "orderBy":"",
     "adjustParameters":"
         $parameters = ContractUtil::adjustActiveContractCommonParams($node, $parameters);
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
-            $parameters['sub_amount_name.sub_amount_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
         }
         return $parameters;
     ",
