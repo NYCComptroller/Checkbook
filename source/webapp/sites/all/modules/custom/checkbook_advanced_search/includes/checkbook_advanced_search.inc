@@ -303,7 +303,7 @@ function _checkbook_advanced_search_add_current_amount_id($value)
 
     if(count($amount_ids) > 0) {
         $amount_param = implode("~",$amount_ids);
-        $redirect_url = '/' . "pcuramtid" . "/" . $amount_param . '/' . "scuramtid" . "/" . $amount_param;
+        $redirect_url = '/' . "curamtid" . "/" . $amount_param;
     }
     return $redirect_url;
 }
