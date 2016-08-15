@@ -17,6 +17,7 @@
                 "orderBy":"-count_prime_mwbe",
                 "adjustSerieParameters":"
                     $parameters = ContractUtil::adjustActiveContractCommonParams($node, $parameters);
+                    unset($parameters['sub_minority_type_id']);
                     if(function_exists('_checkbook_project_applyParameterFilters')){
                         $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
                         $parameters['prime_minority_type_id.prime_minority_type_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
@@ -31,6 +32,7 @@
                 "orderBy":"-count_sub_mwbe",
                 "adjustSerieParameters":"
                     $parameters = ContractUtil::adjustActiveContractCommonParams($node, $parameters);
+                    unset($parameters['prime_minority_type_id']);
                     if(function_exists('_checkbook_project_applyParameterFilters')){
                         $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
                         $parameters['sub_minority_type_id.sub_minority_type_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
