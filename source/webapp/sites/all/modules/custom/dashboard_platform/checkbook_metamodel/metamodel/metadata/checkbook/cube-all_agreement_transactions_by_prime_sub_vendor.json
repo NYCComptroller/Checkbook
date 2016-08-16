@@ -50,6 +50,14 @@
                         }]
                 },
                 {
+                    "name":"agency_code",
+                    "levels": [
+                        {
+                            "name":"agency_code",
+                            "sourceColumnName":"agency_code"
+                        }]
+                },
+                {
                     "name":"aprv_sta",
                     "levels": [
                         {
