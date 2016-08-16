@@ -352,6 +352,15 @@
                             "sourceColumnName":"minority_type_id"
                         }
                     ]
+                },
+                {
+                    "name":"minority_type_name",
+                        "levels": [
+                            {
+                                "name":"minority_type_name",
+                                "sourceColumnName":"minority_type_name"
+                            }
+                    ]
                 }
             ],
             "measures": {
