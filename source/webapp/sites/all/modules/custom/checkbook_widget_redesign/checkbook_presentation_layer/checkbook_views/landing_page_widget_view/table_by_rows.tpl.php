@@ -43,7 +43,7 @@ require_once(realpath(drupal_get_path('module', 'data_controller')) . '/common/o
     }
     
     if(isset($widget_title)){
-        print '<div class="tableHeader"><h2>' . $widget_title . '</h2>'.(isset($headerSubTitle)?('<span class="contCount">'.$headerSubTitle.'</span>'):'').'</div>';
+        print '<div class="tableHeader"><h2>' . $widget_title .(isset($headerSubTitle)?('<span class="contentCount">'.$headerSubTitle.'</span>'):''). '</h2></div>';
     }
 ?>
     
