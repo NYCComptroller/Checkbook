@@ -1340,17 +1340,13 @@ Drupal.behaviors.hoveOverMWBE = {
                     $('#edit-back-submit').attr('disabled', true);
                 }
                 
-            jQuery('.tableHeader').each(function( i ) {
-               if(jQuery(this).find('.contCount').length > 0){
-                    jQuery(this).find('h2').append("<span class='contentCount'>"+jQuery('span.contCount').html()+'</span>');
-                    jQuery(this).find('.contCount').remove();
-                }
-            });
-                if(jQuery('.tableHeader').find('.contCount').length > 0){
-                    jQuery('.tableHeader h2').append("<span class='contentCount'>"+jQuery('span.contCount').html()+'</span>');
-                    jQuery("div.tableHeader").find('.contCount').remove();
-                }
-
+                jQuery('.tableHeader').each(function( i ) {
+                   if(jQuery(this).find('.contCount').length > 0){
+                        jQuery(this).find('h2').append("<span class='contentCount'>"+jQuery('span.contCount').html()+'</span>');
+                        jQuery(this).find('.contCount').remove();
+                    }
+                });
+                
             });
 
             /*------------------------------------------------------------------------------------------------------------*/
