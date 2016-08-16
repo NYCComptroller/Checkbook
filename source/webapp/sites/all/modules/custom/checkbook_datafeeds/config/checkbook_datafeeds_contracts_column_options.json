@@ -87,7 +87,6 @@
                                     "Sub Vendor M/WBE Category":"Sub Vendor M/WBE Category",
                                     "Sub Vendor Paid To Date":"Sub Vendor Paid To Date",
                                     "Sub Vendor Status in PIP":"Sub Vendor Status in PIP",
-                                    "Vendor Record Type":"Vendor Record Type",
                                     "Version":"Version",
                                     "Year":"Year"
                                 },
@@ -122,7 +121,6 @@
                                     "sub_vendor_mwbe_category":"sub_minority_type_name_export",
                                     "sub_vendor_paid_to_date":"sub_rfed_amount",
                                     "sub_vendor_status_in_pip":"aprv_sta_name_export",
-                                    "vendor_record_type":"vendor_record_type",
                                     "version":"prime_document_version",
                                     "year":"year"
                                 }
