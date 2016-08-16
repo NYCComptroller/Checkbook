@@ -726,6 +726,7 @@ namespace { //global
                 }else{
                     $parameters['prime_starting_year_id']= $leCondition;
                     $parameters['prime_ending_year_id']= $geCondition;
+                    $parameters['sub_latest_flag'] = 'Y';
                 }
                 
                 if($contractStatus=='R'){
@@ -741,6 +742,7 @@ namespace { //global
                     }else{
                         $parameters['prime_effective_begin_year_id']= $leCondition;
                         $parameters['prime_effective_end_year_id']= $geCondition;
+                        $parameters['sub_latest_flag'] = 'Y';
                     }
                 }
             }
