@@ -324,361 +324,285 @@ Contract Parameters – All the parameters are optional, meaning that you can se
     <li>If no year is provided in the search criteria, all years are considered and only the latest version of the contract will be displayed in the results. The response column year will not be applicable for all years. The user can categorize the year based on start and end date of the contract which will be populated in the results.</li>
 </ol>
 <div class="api-response-columns-center">
-<table>
+    <table>
 <tr>
-    <td class="api-td-left">
+    <td style="width: 5%"></td>
+    <td  class="api-td-left" style="width: 45%">
+        <table class="api-response-columns-table">
+            <tr>
+                <th colspan="2">(Citywide)Response Column Names_Active &amp; Registered Category-All</th>
+            </tr>
+            <tr>
+                <td>prime_contract_id</td>
+                <td>prime_contract_expense_category</td>
+            </tr>
+            <tr>
+                <td>contract_includes_subvendors</td>
+                <td>prime_contract_industry</td>
+            </tr>
+            <tr>
+                <td>prime_vendor</td>
+                <td>prime_contract_pin</td>
+            </tr>
+            <tr>
+                <td>prime_vendor_mwbe_category</td>
+                <td>prime_contract_apt_pin</td>
+            </tr>
+            <tr>
+                <td>prime_contract_purpose</td>
+                <td>sub_vendor</td>
+            </tr>
+            <tr>
+                <td>prime_contract_current_amount</td>
+                <td>sub_vendor_mwbe_category</td>
+            </tr>
+            <tr>
+                <td>prime_contract_original_amount</td>
+                <td>sub_contract_purpose</td>
+            </tr>
+            <tr>
+                <td>prime_contract_start_date</td>
+                <td>sub_contract_current_amount</td>
+            </tr>
+            <tr>
+                <td>prime_contract_end_date</td>
+                <td>sub_contract_original_amount</td>
+            </tr>
+            <tr>
+                <td>sub_contract_registration_date</td>
+                <td>start_vendor_paid_to_date</td>
+            </tr>
+            <tr>
+                <td>prime_contracting_agency</td>
+                <td>sub_contract_start_date</td>
+            </tr>
+            <tr>
+                <td>version</td>
+                <td>sub_contract_end_date</td>
+            </tr>
+            <tr>
+                <td>parent_contract_id</td>
+                <td>document_code</td>
+            </tr>
+             <tr>
+                <td>prime_contract_type</td>
+                <td>sub_contract_reference_id</td>
+            </tr>
+            <tr>
+                <td>prime_contract_award_method</td>
+                <td>year</td>
+            </tr>
+        </table>
+    </td>
+    <td style="width: 5%">&nbsp;</td>
+    <td class="api-td-right" style="width:45">
         <table class="api-response-columns-table">
             <tr>
                 <th colspan="2">(Citywide)Response Column Names_Active &amp; Registered Category-Expense</th>
             </tr>
             <tr>
-                <td>contract_id</td>
-                <td>contract_includes_<br/>subvendors</td>
+                <td>prime_contract_id</td>
+                <td>prime_contract_expense_category</td>
             </tr>
             <tr>
-                <td>sub_contract_<br/>reference_id</td>
-                <td>purpose</td>
+                <td>contract_includes_subvendors</td>
+                <td>prime_contract_industry</td>
+            </tr>
+            <tr>
+                <td>prime_vendor</td>
+                <td>prime_contract_pin</td>
+            </tr>
+            <tr>
+                <td>prime_vendor_mwbe_category</td>
+                <td>prime_contract_apt_pin</td>
+            </tr>
+            <tr>
+                <td>prime_contract_purpose</td>
+                <td>sub_vendor</td>
+            </tr>
+            <tr>
+                <td>prime_contract_current_amount</td>
+                <td>sub_vendor_mwbe_category</td>
+            </tr>
+            <tr>
+                <td>prime_contract_original_amount</td>
+                <td>sub_contract_purpose</td>
+            </tr>
+            <tr>
+                <td>prime_contract_start_date</td>
+                <td>sub_contract_current_amount</td>
+            </tr>
+            <tr>
+                <td>prime_contract_end_date</td>
+                <td>sub_contract_original_amount</td>
+            </tr>
+            <tr>
+                <td>sub_contract_registration_date</td>
+                <td>start_vendor_paid_to_date</td>
+            </tr>
+            <tr>
+                <td>prime_contracting_agency</td>
+                <td>sub_contract_start_date</td>
             </tr>
             <tr>
                 <td>version</td>
+                <td>sub_contract_end_date</td>
+            </tr>
+            <tr>
                 <td>parent_contract_id</td>
+                <td>document_code</td>
+            </tr>
+             <tr>
+                <td>prime_contract_type</td>
+                <td>sub_contract_reference_id</td>
             </tr>
             <tr>
-                <td>current_amount</td>
-                <td>original_amount</td>
-            </tr>
-            <tr>
-                <td>spent_to_date</td>
-                <td>prime_vendor</td>
-            </tr>
-            <tr>
-                <td>prime_vendor_<br/>mwbe_category</td>
-                <td width="51%">sub_vendor</td>
-            </tr>
-            <tr>
-                <td>sub_vendor_<br/>mwbe_category</td>
-                <td>subvendor_status_<br/>in_pip</td>
-            </tr>
-            <tr>
-                <td>agency</td>
-                <td>contract_type</td>
-            </tr>
-            <tr>
-                <td>award_method</td>
-                <td>expense_category</td>
-            </tr>
-            <tr>
-                <td>industry</td>
-                <td>start_date</td>
-            </tr>
-            <tr>
-                <td>end_date</td>
-                <td>registration_date</td>
-            </tr>
-            <tr>
-                <td>pin</td>
-                <td>apt_pin</td>
-            </tr>
-            <tr>
-                <td>document_Code</td>
+                <td>prime_contract_award_method</td>
                 <td>year</td>
-            </tr>
-        </table>
-    </td>
-    <td class="api-td-center">
-        <table class="api-response-columns-table" border="1" cellspacing="0" cellpadding="0">
-            <tr>
-                <th colspan="2">(Citywide)Response Column Names_Active &amp; Registered Category-Revenue</th>
-            </tr>
-            <tr>
-                <td>contract_id</td>
-                <td>purpose</td>
-            </tr>
-            <tr>
-                <td>version</td>
-                <td>agency</td>
-            </tr>
-            <tr>
-                <td>apt_pin</td>
-                <td>award_method</td>
-            </tr>
-            <tr>
-                <td>current_amount</td>
-                <td>original_amount</td>
-            </tr>
-            <tr>
-                <td>pin</td>
-                <td>prime_vendor</td>
-            </tr>
-            <tr>
-                <td>prime_vendor_<br/>mwbe_category</td>
-                <td>contract_type</td>
-            </tr>
-            <tr>
-                <td>industry</td>
-                <td>start_date</td>
-            </tr>
-            <tr>
-                <td>end_date</td>
-                <td>registration_date</td>
-            </tr>
-            <tr>
-                <td>document_code</td>
-                <td>year</td>
-            </tr>
-        </table>
-    </td>
-    <td class="api-td-right">
-        <table class="api-response-columns-table">
-            <tr>
-                <th colspan="2"> (Citywide)Response Column Names_Pending  Category-Expense</th>
-            </tr>
-            <tr>
-                <td>contract_id</td>
-                <td>purpose</td>
-            </tr>
-            <tr>
-                <td>version</td>
-                <td>agency</td>
-            </tr>
-            <tr>
-                <td>apt_pin</td>
-                <td>award_method</td>
-            </tr>
-            <tr>
-                <td>current_amount</td>
-                <td>original_amount</td>
-            </tr>
-            <tr>
-                <td>pin</td>
-                <td>prime_vendor</td>
-            </tr>
-            <tr>
-                <td>prime_vendor_<br/>mwbe_category</td>
-                <td width="51%">contract_type</td>
-            </tr>
-            <tr>
-                <td>industry</td>
-                <td>start_date</td>
-            </tr>
-            <tr>
-                <td>end_date</td>
-                <td>received_date</td>
-            </tr>
-            <tr>
-                <td>document_code</td>
-                <td>original_modified</td>
-            </tr>
-            <tr>
-                <td>parent_contract_id</td>
-                <td>&nbsp;</td>
-            </tr>
-        </table>
-    </td>
-</tr>
-<tr>
-    <td class="api-td-left">
-        <table class="api-response-columns-table" border="1" cellspacing="0" cellpadding="0">
-            <tr>
-                <th colspan="2">(Citywide)Response Column Names_Pending Category-Revenue</th>
-            </tr>
-            <tr>
-                <td>contract_id</td>
-                <td>purpose</td>
-            </tr>
-            <tr>
-                <td>version</td>
-                <td>agency</td>
-            </tr>
-            <tr>
-                <td>apt_pin</td>
-                <td>award_method</td>
-            </tr>
-            <tr>
-                <td>current_amount</td>
-                <td>original_amount</td>
-            </tr>
-            <tr>
-                <td>pin</td>
-                <td>prime_vendor</td>
-            </tr>
-            <tr>
-                <td>prime_vendor_<br/>mwbe_category</td>
-                <td width="51%">contract_type</td>
-            </tr>
-            <tr>
-                <td>industry</td>
-                <td>start_date</td>
-            </tr>
-            <tr>
-                <td>end_date</td>
-                <td>received_date</td>
-            </tr>
-            <tr>
-                <td>document_code</td>
-                <td>original_modified</td>
-            </tr>
-            <tr>
-                <td>parent_contract_id</td>
-                <td>&nbsp;</td>
-            </tr>
-        </table>
-    </td>
-<td  class="api-td-center">
-    <table class="api-response-columns-table">
-            <tr>
-                <th colspan="2"> (Citywide)Response Column Names_Active &amp; Registered Category-All</th>
-            </tr>
-            <tr>
-                <td>contract_id</td>
-                <td>contract_includes_<br/>subvendors</td>
-            </tr>
-            <tr>
-                <td>sub_contract_<br/>reference_id</td>
-                <td>purpose</td>
-            </tr>
-            <tr>
-                <td>version</td>
-                <td>parent_contract_id</td>
-            </tr>
-            <tr>
-                <td>current_amount</td>
-                <td>original_amount</td>
-            </tr>
-            <tr>
-                <td>spent_to_date</td>
-                <td>prime_vendor</td>
-            </tr>
-            <tr>
-                <td>prime_vendor_<br/>mwbe_category</td>
-                <td width="51%">sub_vendor</td>
-            </tr>
-            <tr>
-                <td>sub_vendor_<br/>mwbe_category</td>
-                <td>subvendor_staus_<br/>in_pin</td>
-            </tr>
-            <tr>
-                <td>agency</td>
-                <td>contract_type</td>
-            </tr>
-            <tr>
-                <td>award_method</td>
-                <td>expense_category</td>
-            </tr>
-            <tr>
-                <td>industry</td>
-                <td>start_Date</td>
-            </tr>
-            <tr>
-                <td>end_date</td>
-                <td>registration_date</td>
-            </tr>
-            <tr>
-                <td>pin</td>
-                <td>apt_pin</td>
-            </tr>
-            <tr>
-                <td>document_code</td>
-                <td>year</td>
-            </tr>
-        </table>
-    </td>
-    <td class="api-td-right">
-        <table class="api-response-columns-table" border="1" cellspacing="0" cellpadding="0">
-            <tr>
-                <th colspan="2">(Citywide)Response Column Names_Pending Category-All</th>
-            </tr>
-            <tr>
-                <td>contract_id</td>
-                <td>purpose</td>
-            </tr>
-            <tr>
-                <td>version</td>
-                <td>agency</td>
-            </tr>
-            <tr>
-                <td>apt_pin</td>
-                <td>award_method</td>
-            </tr>
-            <tr>
-                <td>current_amount</td>
-                <td>original_amount</td>
-            </tr>
-            <tr>
-                <td>pin</td>
-                <td>prime_vendor</td>
-            </tr>
-            <tr>
-                <td>prime_vendor_<br/>mwbe_category</td>
-                <td width="51%">contract_type</td>
-            </tr>
-            <tr>
-                <td>industry</td>
-                <td>start_date</td>
-            </tr>
-            <tr>
-                <td>end_date</td>
-                <td>received_date</td>
-            </tr>
-            <tr>
-                <td>document_code</td>
-                <td>original_modified</td>
-            </tr>
-            <tr>
-                <td>parent_contract_id</td>
-                <td>&nbsp;</td>
             </tr>
         </table>
     </td>
 </tr>
 </table>
-</div>
-<div class="api-left">
-    <table class="api-response-columns-table">
+    <table>
+    <td class="api-td-left">
+        <table class="api-response-columns-table">
         <tr>
-            <th colspan="2"> (Other Government Entities)Response Column Names_Active &amp; Registered Category-Expense</th>
+            <th colspan="2">(Citywide)Response Column Names_Active &amp; Registered Category-Revenue</th>
         </tr>
         <tr>
             <td>contract_id</td>
-            <td>prime_vendor</td>
-        </tr>
-        <tr>
             <td>purpose</td>
-            <td>other_government_entities</td>
         </tr>
         <tr>
             <td>version</td>
-            <td>contract_type</td>
+            <td>agency</td>
         </tr>
         <tr>
-            <td>parent_contract_id</td>
+            <td>apt_pin</td>
             <td>award_method</td>
         </tr>
         <tr>
-            <td>original_amount</td>
-            <td>expense_category</td>
-        </tr>
-        <tr>
             <td>current_amount</td>
-            <td width="51%">start_date</td>
+            <td>original_amount</td>
         </tr>
         <tr>
-            <td>spent_to_date</td>
+            <td>pin</td>
+            <td>prime_vendor</td>
+        </tr>
+        <tr>
+            <td>prime_vendor_<br/>mwbe_category</td>
+            <td>contract_type</td>
+        </tr>
+        <tr>
+            <td>industry</td>
+            <td>start_date</td>
+        </tr>
+        <tr>
             <td>end_date</td>
+            <td>registration_date</td>
         </tr>
         <tr>
             <td>document_code</td>
-            <td>industry</td>
-        </tr>
-        <tr>
             <td>year</td>
-            <td>budget_name</td>
-        </tr>
-        <tr>
-            <td>entity_contract_number</td>
-            <td>commodity_line</td>
         </tr>
     </table>
+    </td>
+    <td class="api-td-center">
+        <table class="api-response-columns-table">
+        <tr>
+            <th colspan="2"> (Citywide)Response Column Names_Pending  Category-Expense, Revenue and All</th>
+        </tr>
+        <tr>
+            <td>contract_id</td>
+            <td>purpose</td>
+        </tr>
+        <tr>
+            <td>version</td>
+            <td>agency</td>
+        </tr>
+        <tr>
+            <td>apt_pin</td>
+            <td>award_method</td>
+        </tr>
+        <tr>
+            <td>current_amount</td>
+            <td>original_amount</td>
+        </tr>
+        <tr>
+            <td>pin</td>
+            <td>prime_vendor</td>
+        </tr>
+        <tr>
+            <td>prime_vendor_<br/>mwbe_category</td>
+            <td>contract_type</td>
+        </tr>
+        <tr>
+            <td>industry</td>
+            <td>start_date</td>
+        </tr>
+        <tr>
+            <td>end_date</td>
+            <td>received_date</td>
+        </tr>
+        <tr>
+            <td>document_code</td>
+            <td>original_modified</td>
+        </tr>
+        <tr>
+            <td>parent_contract_id</td>
+            <td>&nbsp;</td>
+        </tr>
+    </table>
+    </td>
+    <td class="api-td-right">
+        <table class="api-response-columns-table">
+    <tr>
+        <th colspan="2"> (Other Government Entities)Response Column Names_Active &amp; Registered Category-Expense</th>
+    </tr>
+    <tr>
+        <td>contract_id</td>
+        <td>prime_vendor</td>
+    </tr>
+    <tr>
+        <td>purpose</td>
+        <td>other_government_entities</td>
+    </tr>
+    <tr>
+        <td>version</td>
+        <td>contract_type</td>
+    </tr>
+    <tr>
+        <td>parent_contract_id</td>
+        <td>award_method</td>
+    </tr>
+    <tr>
+        <td>original_amount</td>
+        <td>expense_category</td>
+    </tr>
+    <tr>
+        <td>current_amount</td>
+        <td>start_date</td>
+    </tr>
+    <tr>
+        <td>spent_to_date</td>
+        <td>end_date</td>
+    </tr>
+    <tr>
+        <td>document_code</td>
+        <td>industry</td>
+    </tr>
+    <tr>
+        <td>year</td>
+        <td>budget_name</td>
+    </tr>
+    <tr>
+        <td>entity_contract_number</td>
+        <td>commodity_line</td>
+    </tr>
+</table>
+    </td>
+</table>
 </div>
 <div class="divider" style="clear: both;"></div>
 <a href="#top" class="float-right">Back to the top</a>
