@@ -52,7 +52,8 @@
     ],
     "logicalOrColumns":[
         ["prime_vendor_code","sub_vendor_code"],
-        ["prime_vendor_type","sub_vendor_type"]
+        ["prime_vendor_type","sub_vendor_type"],
+        ["prime_minority_type_id"],["sub_minority_type_id"]
     ],
     "uniqueSortColumn":"original_agreement_id",
     "adjustParameters":"
