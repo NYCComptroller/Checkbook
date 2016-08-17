@@ -18,7 +18,7 @@
             "apt_pin":"brd_awd_no",
             "mwbe_category":"prime_minority_type_id",
             "industry_type_id":"industry_type_id",
-            "associated_prime_vendor":"associated_prime_vendor",
+            "associated_prime_vendor":"prime_vendor_name",
             "sub_contract_reference_id":"sub_contract_id",
             "sub_vendor":"sub_vendor_name"
         },
@@ -865,7 +865,7 @@
             "purpose":"prime_purpose",
             "mwbe_category":"prime_minority_type_id",
             "industry_type_id":"industry_type_id",
-            "associated_prime_vendor":"associated_prime_vendor",
+            "associated_prime_vendor":"prime_vendor_name",
             "sub_contract_reference_id":"sub_contract_id",
             "sub_vendor":"sub_vendor_name"
         },
@@ -1063,7 +1063,7 @@
             "apt_pin":"brd_awd_no",
             "mwbe_category":"prime_minority_type_id",
             "industry_type_id":"industry_type_id",
-            "associated_prime_vendor":"associated_prime_vendor"
+            "associated_prime_vendor":"prime_vendor_name"
         },
         "dataset":{
             "sortColumn":["-registered_date", "-agreement_id"],
