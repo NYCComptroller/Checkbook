@@ -50,6 +50,14 @@
                         }]
                 },
                 {
+                    "name":"agency_code",
+                    "levels": [
+                        {
+                            "name":"agency_code",
+                            "sourceColumnName":"agency_code"
+                        }]
+                },
+                {
                     "name":"aprv_sta",
                     "levels": [
                         {
@@ -343,6 +351,15 @@
                             "name":"minority_type_id",
                             "sourceColumnName":"minority_type_id"
                         }
+                    ]
+                },
+                {
+                    "name":"minority_type_name",
+                        "levels": [
+                            {
+                                "name":"minority_type_name",
+                                "sourceColumnName":"minority_type_name"
+                            }
                     ]
                 }
             ],
