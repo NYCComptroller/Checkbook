@@ -658,45 +658,33 @@ namespace { //global
             }
 
             //Handle vendor_code mapping to prime_vendor_code and sub_vendor_code
-            $vendor_code = _getRequestParamValue('vendorcode');
-            if(isset($vendor_code)) {
-                $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, explode('~', $vendor_code));
+            if(isset($parameters['vendor_code'])) {
+                $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($parameters['vendor_code']));
                 $parameters['prime_vendor_code'] = $condition;
                 $parameters['sub_vendor_code'] = $condition;
                 unset($parameters['vendor_code']);
             }
 
             //Handle vendor_type mapping to prime_vendor_type and sub_vendor_type
-            $vendor_type = _getRequestParamValue('vendortype');
             if($node->widgetConfig->filterName != "Vendor Type") {
-                if($vendor_type) {
-                    $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, explode('~', $vendor_type));
+                if(isset($parameters['vendor_type'])) {
+                    $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($parameters['vendor_type']));
                     $parameters['prime_vendor_type'] = $condition;
                     $parameters['sub_vendor_type'] = $condition;
                     unset($parameters['vendor_type']);
                 }
             }
 
+            //Handle minority_type_id mapping to prime_minority_type_id and sub_minority_type_id
+            if(isset($parameters['minority_type_id'])) {
+                $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($parameters['minority_type_id']));
+                $parameters['prime_minority_type_id'] = $condition;
+                $parameters['sub_minority_type_id'] = $condition;
+                unset($parameters['minority_type_id']);
+            }
+
+
             return $parameters;
-        }
-
-        /**
-         * Handles the regular expression parameters for vendor code, vendor type and mwbe category facets mapping to multiple columns
-         * @param null $vendor_types
-         * @param null $mwbe_categories
-         * @param null $vendor_codes
-         * @return string
-         */
-        static public function getPrimeSubVendorRegex($vendor_types = null,$mwbe_categories = null,$vendor_codes = null) {
-            $vendor_types = isset($vendor_types) ? implode('|',$vendor_types) : '.*';
-            $mwbe_categories = isset($mwbe_categories) ? implode('|',$mwbe_categories) : '.*';
-            $vendor_codes = isset($vendor_codes) ? implode('|',$vendor_codes) : '.*';
-            $vendor_names = '.*';
-
-            $reg_exp_value = "({$vendor_types}):({$mwbe_categories}):({$vendor_codes}):({$vendor_names})";
-            $pattern = "(^{$reg_exp_value}$)|(.*,{$reg_exp_value}$)|(^{$reg_exp_value},.*)";
-
-            return $pattern;
         }
 
         /**
@@ -814,29 +802,6 @@ namespace { //global
             unset($parameters['status_flag']);
 
             return $parameters;
-        }
-
-        static public function getVendorNameTypeRegExpPattern($vendor_types, $vendor_identifier = null, $searchType = 'exact') {
-
-            $pattern = null;
-
-            $vendor_types = isset($vendor_types) ? implode('|',$vendor_types) : '.*';
-            $vendor_identifier = isset($vendor_identifier) ? $vendor_identifier : ".*";
-            $reg_exp_value = "({$vendor_types}):{$vendor_identifier}";
-
-            if($searchType == 'exact') {
-                $pattern = "(^{$reg_exp_value}$)|(.*,{$reg_exp_value}$)|(^{$reg_exp_value},.*)";
-            }
-            elseif($searchType == 'like') {
-                $pattern = "(.*$reg_exp_value .*)|(.*$reg_exp_value$)|(^$reg_exp_value.*)|(.*$reg_exp_value.*)";
-            }
-
-
-            return $pattern;
-        }
-
-        static public function getVendorTypeFromVendorTypeId($vendor_types) {
-            return $vendor_types;
         }
 
         static public function expenseContractsFooterUrl() {
