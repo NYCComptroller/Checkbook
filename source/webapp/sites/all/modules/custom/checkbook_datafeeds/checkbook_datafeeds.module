@@ -5227,7 +5227,7 @@ function checkbook_datafeeds_contracts_filter_selected_columns($selected_columns
     $domain_filter = $domain;
     $domain_filter .= $status == 'pending' ? '_pending' : '_active';
     $domain_filter .= $status == 'pending' ? '' :  '_'.$expense_category;
-    if ($year == 'All Years') $domain_filter .= "_all_years";
+    if ($year == 'All Years' || $year == 'ALL') $domain_filter .= "_all_years";
 
     //Get columns which should be included for the current data source
     $columns_included = $domain_config->$domain_filter->dataset->displayConfiguration->$response_type->elementsColumn;
