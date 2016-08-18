@@ -751,12 +751,16 @@ namespace { //global
                 $vendornm_exact = _getRequestParamValue('vendornm_exact');
                 $vendornm = _getRequestParamValue('vendornm');
                 if(isset($vendornm_exact)) {
+                    $vendornm_exact = explode('~',$vendornm_exact);
+                    $vendornm_exact = implode('|',$vendornm_exact);
                     $pattern = "(^" . _checkbook_regex_replace_pattern($vendornm_exact) . "$)";
                     $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
                     $parameters['prime_vendor_name'] = $condition;
                     $parameters['sub_vendor_name'] = $condition;
                 }
                 else if(isset($vendornm)) {
+                    $vendornm = explode('~',$vendornm);
+                    $vendornm = implode('|',$vendornm);
                     $condition = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array($vendornm,FALSE,TRUE));
                     $parameters['prime_vendor_name'] = $condition;
                     $parameters['sub_vendor_name'] = $condition;

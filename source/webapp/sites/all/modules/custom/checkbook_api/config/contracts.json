@@ -105,7 +105,8 @@
                         "sub_vendor_paid_to_date",
                         "sub_vendor_status_in_pip",
                         "vendor_record_type",
-                        "version"
+                        "version",
+                        "year"
                     ],
                     "required_non_display_columns":["vendor_type"]
                 },
