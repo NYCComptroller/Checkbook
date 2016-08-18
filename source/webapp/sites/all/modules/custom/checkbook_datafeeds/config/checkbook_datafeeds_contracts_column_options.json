@@ -87,8 +87,7 @@
                                     "Sub Vendor M/WBE Category":"Sub Vendor M/WBE Category",
                                     "Sub Vendor Paid To Date":"Sub Vendor Paid To Date",
                                     "Sub Vendor Status in PIP":"Sub Vendor Status in PIP",
-                                    "Version":"Version",
-                                    "Year":"Year"
+                                    "Version":"Version"
                                 },
                                 "xml":{
                                     "contract_includes_sub_vendors":"scntrc_status_name",
@@ -121,8 +120,7 @@
                                     "sub_vendor_mwbe_category":"sub_minority_type_name_export",
                                     "sub_vendor_paid_to_date":"sub_rfed_amount",
                                     "sub_vendor_status_in_pip":"aprv_sta_name_export",
-                                    "version":"prime_document_version",
-                                    "year":"year"
+                                    "version":"prime_document_version"
                                 }
                             }
                         },
@@ -210,8 +208,7 @@
                                     "Sub Vendor M/WBE Category":"Sub Vendor M/WBE Category",
                                     "Sub Vendor Paid To Date":"Sub Vendor Paid To Date",
                                     "Sub Vendor Status in PIP":"Sub Vendor Status in PIP",
-                                    "Version":"Version",
-                                    "Year":"Year"
+                                    "Version":"Version"
                                 },
                                 "xml":{
                                     "contract_includes_sub_vendors":"scntrc_status_name",
@@ -244,8 +241,7 @@
                                     "sub_vendor_mwbe_category":"sub_minority_type_name_export",
                                     "sub_vendor_paid_to_date":"sub_rfed_amount",
                                     "sub_vendor_status_in_pip":"aprv_sta_name_export",
-                                    "version":"prime_document_version",
-                                    "year":"year"
+                                    "version":"prime_document_version"
                                 }
                             }
                         }
