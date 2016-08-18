@@ -108,7 +108,7 @@
                         "version",
                         "year"
                     ],
-                    "required_non_display_columns":["vendor_type"]
+                    "required_non_display_columns":["vendor_record_type"]
                 },
                 "csv":{
                     "elementsColumn":{
@@ -493,7 +493,7 @@
                         "parent_contract_id":"master_contract_number",
                         "original_amount":"original_contract_amount",
                         "current_amount":"maximum_contract_amount",
-                        "vendor":"vendor_name",
+                        "prime_vendor":"vendor_name",
                         "agency":"agency_name",
                         "contract_type":"agreement_type_name",
                         "award_method":"award_method_name",
@@ -506,12 +506,12 @@
                         "subcontract_reference_id":"sub_contract_id",
                         "subvendor":"vendor_type",
                         "associated_prime_vendor":"prime_vendor_name",
-                        "mwbe_category":"minority_type_name",
+                        "prime_mwbe_category":"minority_type_name",
                         "industry":"industry_type_name"
                     },
                     "rowElements":[
                         "agency",
-                        "vendor",
+                        "prime_vendor",
                         "contract_id",
                         "version",
                         "year",
@@ -529,7 +529,7 @@
                         "sub_contract_id",
                         "vendor_type",
                         "associated_prime_vendor",
-                        "mwbe_category",
+                        "prime_mwbe_category",
                         "industry",
                         "subvendor",
                         "subcontract_reference_id"
@@ -545,7 +545,7 @@
                         "Parent Contract ID":"master_contract_number",
                         "Original Amount":"original_contract_amount",
                         "Current Amount":"maximum_contract_amount",
-                        "Vendor":"vendor_name",
+                        "Prime Vendor":"vendor_name",
                         "Agency":"agency_name",
                         "Contract Type":"agreement_type_name",
                         "Award Method":"award_method_name",
@@ -557,11 +557,10 @@
                         "Contract Category":"award_category_name@checkbook:award_category",
                         "Document Code":"document_code@checkbook:ref_document_code",
                         "Industry":"industry_type_name",
-                        "M/WBE Category":"minority_type_id",
-                        "Sub Contract Reference ID":"sub_contract_id",
+                        "Prime M/WBE Category":"minority_type_id",
                         "Sub Vendor":"vendor_type",
                         "Associated Prime Vendor":"prime_vendor_name",
-                        "M/WBE Category":"minority_type_name"
+                        "Prime M/WBE Category":"minority_type_name"
                     },
                     "required_non_display_columns":["vendor_type"]
                 }
@@ -694,7 +693,7 @@
                         "parent_contract_id":"master_contract_number",
                         "original_amount":"original_contract_amount",
                         "current_amount":"maximum_contract_amount",
-                        "vendor":"vendor_name",
+                        "prime_vendor":"vendor_name",
                         "agency":"agency_name",
                         "contract_type":"agreement_type_name",
                         "award_method":"award_method_name",
@@ -704,15 +703,14 @@
                         "pin":"tracking_number",
                         "apt_pin":"brd_awd_no",
                         "document_code":"document_code@checkbook:ref_document_code",
-                        "subcontract_reference_id":"sub_contract_id",
                         "subvendor":"vendor_type",
                         "associated_prime_vendor":"prime_vendor_name",
-                        "mwbe_category":"minority_type_name",
+                        "prime_mwbe_category":"minority_type_name",
                         "industry":"industry_type_name"
                     },
                     "rowElements":[
                         "agency",
-                        "vendor",
+                        "prime_vendor",
                         "contract_id",
                         "version",
                         "parent_contract_id",
@@ -727,13 +725,11 @@
                         "start_date",
                         "end_date",
                         "document_code",
-                        "sub_contract_id",
                         "vendor_type",
                         "associated_prime_vendor",
                         "industry",
-                        "mwbe_category",
-                        "subvendor",
-                        "subcontract_reference_id"
+                        "prime_mwbe_category",
+                        "subvendor"
                     ],
                     "required_non_display_columns":["vendor_type"]
                 },
@@ -745,7 +741,7 @@
                         "Parent Contract ID":"master_contract_number",
                         "Original Amount":"original_contract_amount",
                         "Current Amount":"maximum_contract_amount",
-                        "Vendor":"vendor_name",
+                        "Prime Vendor":"vendor_name",
                         "Agency":"agency_name",
                         "Contract Type":"agreement_type_name",
                         "Award Method":"award_method_name",
@@ -757,11 +753,11 @@
                         "Contract Category":"award_category_name@checkbook:award_category",
                         "Document Code":"document_code@checkbook:ref_document_code",
                         "Industry":"industry_type_name",
-                        "M/WBE Category":"minority_type_id",
+                        "Prime M/WBE Category":"minority_type_id",
                         "Sub Contract Reference ID":"sub_contract_id",
                         "Sub Vendor":"vendor_type",
                         "Associated Prime Vendor":"prime_vendor_name",
-                        "M/WBE Category":"minority_type_name"
+                        "Prime M/WBE Category":"minority_type_name"
                     },
                     "required_non_display_columns":["vendor_type"]
                 }
@@ -1325,7 +1321,7 @@
                         "contract_id":"contract_number",
                         "purpose":"description",
                         "current_amount":"revised_maximum_amount",
-                        "vendor":"vendor_legal_name",
+                        "prime_vendor":"vendor_legal_name",
                         "agency":"document_agency_name",
                         "contract_type":"contract_type_name",
                         "award_method":"award_method_name",
@@ -1336,16 +1332,15 @@
                         "parent_contract_id":"fms_parent_contract_number",
                         "received_date":"cif_received_date",
                         "document_code":"document_code@checkbook:ref_document_code",
-                        "version":"document_version",
                         "original_amount":"original_maximum_amount",
                         "original_modified":"original_or_modified_desc",
                         "industry":"industry_type_name@checkbook:industry_type",
-                        "mwbe_category":"minority_type_id",
+                        "prime_mwbe_category":"minority_type_id",
                         "version":"document_version"
                     },
                     "rowElements":[
                         "agency",
-                        "vendor",
+                        "prime_vendor",
                         "contract_id",
                         "purpose",
                         "parent_contract_id",
@@ -1363,7 +1358,7 @@
                         "purpose",
                         "original_modified",
                         "industry",
-                        "mwbe_category"
+                        "prime_mwbe_category"
                     ]
                 },
                 "csv":{
@@ -1372,7 +1367,7 @@
                         "Parent Contract ID":"fms_parent_contract_number",
                         "Purpose":"description",
                         "Current Amount":"revised_maximum_amount",
-                        "Vendor":"vendor_legal_name",
+                        "Prime Vendor":"vendor_legal_name",
                         "Received Date":"cif_received_date",
                         "Agency":"document_agency_name",
                         "Contract Type":"contract_type_name",
@@ -1382,11 +1377,10 @@
                         "PIN":"tracking_number",
                         "APT PIN":"board_award_number",
                         "Document Code":"document_code@checkbook:ref_document_code",
-                        "Version":"document_version",
                         "Original Amount":"original_maximum_amount",
                         "Original Modified":"original_or_modified_desc",
                         "Industry":"industry_type_name@checkbook:industry_type",
-                        "M/WBE Category":"minority_type_id",
+                        "Prime M/WBE Category":"minority_type_id",
                         "Version":"document_version"
                     }
                 }
