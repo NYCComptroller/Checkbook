@@ -233,7 +233,7 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
                 break;
         }
         if( $category == 'all') {
-            $parameters[checkbook_api_change_datasource($datasource,'document_code')] = array(
+            $parameters[checkbook_api_change_datasource($datasource,'document_code@checkbook:ref_document_code')] = array(
                 "MMA1",
                 "MA1",
                 "CT1",
@@ -249,7 +249,7 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
         }
         else {
             if ($category == 'expense') {
-                $parameters[checkbook_api_change_datasource($datasource,'document_code')] = array(
+                $parameters[checkbook_api_change_datasource($datasource,'document_code@checkbook:ref_document_code')] = array(
                     "MMA1",
                     "MA1",
                     "CT1",
