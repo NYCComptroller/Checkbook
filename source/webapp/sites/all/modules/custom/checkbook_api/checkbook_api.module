@@ -280,7 +280,7 @@ function checkbook_api_adjust_expense_contracts_params(&$parameters, $criteria, 
     $req_year = $req_years[0]['year_id'];
 
     if(isset($req_year)){
-        //$parameters['type_of_year@checkbook:contracts_coa_aggregates_datafeeds'] = 'B';
+        $parameters['type_of_year@checkbook:contracts_coa_aggregates_datafeeds'] = 'B';
         $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($req_year));
         $leCondition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, array($req_year));
         $parameters['starting_year_id']= $leCondition;
@@ -288,12 +288,12 @@ function checkbook_api_adjust_expense_contracts_params(&$parameters, $criteria, 
 
         switch($contract_status) {
             case "active":
-                //$parameters['status_flag@checkbook:contracts_coa_aggregates_datafeeds'] = 'A';
+                $parameters['status_flag@checkbook:contracts_coa_aggregates_datafeeds'] = 'A';
                 $parameters['effective_begin_year_id']= $leCondition;
                 $parameters['effective_end_year_id']= $geCondition;
                 break;
             case "registered":
-                //$parameters['status_flag@checkbook:contracts_coa_aggregates_datafeeds'] = 'R';
+                $parameters['status_flag@checkbook:contracts_coa_aggregates_datafeeds'] = 'R';
                 $parameters['registered_year_id']= array($req_year);
                 break;
         }

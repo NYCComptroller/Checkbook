@@ -1,6 +1,7 @@
 {
     "contracts_active_expense":{
         "searchCriteriaMap":{
+            "fiscal_year":"fiscal_year@checkbook:contracts_coa_aggregates_datafeeds",
             "agency_code":"agency_code",
             "spent_to_date":"prime_rfed_amount",
             "award_method":"award_method_code",
@@ -26,7 +27,7 @@
         },
         "dataset":{
             "sortColumn":["-registered_date", "-agreement_id"],
-            "name":"checkbook:all_agreement_transactions_by_prime_sub_vendor",
+            "name":"checkbook:all_agreement_transactions_by_prime_sub_vendor_datafeeds",
             "columnTypes":{
                 "expenditure_object_codes":"trueLike",
                 "contract_number":"like",
@@ -71,7 +72,7 @@
                         "sub_vendor_status_in_pip":"aprv_sta_name_export",
                         "vendor_record_type":"vendor_record_type",
                         "version":"prime_document_version",
-                        "Year":"year"
+                        "Year":"fiscal_year@checkbook:contracts_coa_aggregates_datafeeds"
                     },
                     "rowElements":[
                         "contract_includes_sub_vendors",
@@ -144,7 +145,7 @@
                         "Sub Vendor Status in PIP":"aprv_sta_name_export",
                         "Vendor Record Type":"vendor_record_type",
                         "Version":"prime_document_version",
-                        "Year":"year"
+                        "Year":"fiscal_year@checkbook:contracts_coa_aggregates_datafeeds"
                     },
                     "required_non_display_columns":["vendor_record_type"]
                 }
@@ -269,8 +270,7 @@
                         "sub_vendor_paid_to_date":"sub_rfed_amount",
                         "sub_vendor_status_in_pip":"aprv_sta_name_export",
                         "vendor_record_type":"vendor_record_type",
-                        "version":"prime_document_version",
-                        "Year":"year"
+                        "version":"prime_document_version"
                     },
                     "rowElements":[
                         "contract_includes_sub_vendors",
@@ -341,8 +341,7 @@
                         "Sub Vendor Paid To Date":"sub_rfed_amount",
                         "Sub Vendor Status in PIP":"aprv_sta_name_export",
                         "Vendor Record Type":"vendor_record_type",
-                        "Version":"prime_document_version",
-                        "Year":"year"
+                        "Version":"prime_document_version"
                     },
                     "required_non_display_columns":["vendor_record_type"]
                 }
@@ -819,6 +818,7 @@
     },
     "contracts_active_all":{
         "searchCriteriaMap":{
+            "fiscal_year":"fiscal_year@checkbook:contracts_coa_aggregates_datafeeds",
             "agency_code":"agency_code",
             "spent_to_date":"prime_rfed_amount",
             "award_method":"award_method_code",
@@ -843,7 +843,7 @@
         },
         "dataset":{
             "sortColumn":["-registered_date", "-agreement_id"],
-            "name":"checkbook:all_agreement_transactions_by_prime_sub_vendor",
+            "name":"checkbook:all_agreement_transactions_by_prime_sub_vendor_datafeeds",
             "columnTypes":{
                 "expenditure_object_codes":"trueLike",
                 "contract_number":"like",
@@ -888,7 +888,7 @@
                         "sub_vendor_status_in_pip":"aprv_sta_name_export",
                         "vendor_record_type":"vendor_record_type",
                         "version":"prime_document_version",
-                        "Year":"year"
+                        "Year":"fiscal_year@checkbook:contracts_coa_aggregates_datafeeds"
                     },
                     "rowElements":[
                         "contract_includes_sub_vendors",
@@ -922,7 +922,8 @@
                         "sub_vendor_paid_to_date",
                         "sub_vendor_status_in_pip",
                         "vendor_record_type",
-                        "version"
+                        "version",
+                        "year"
                     ],
                     "required_non_display_columns":["vendor_record_type"]
                 },
@@ -960,7 +961,7 @@
                         "Sub Vendor Status in PIP":"aprv_sta_name_export",
                         "Vendor Record Type":"vendor_record_type",
                         "Version":"prime_document_version",
-                        "Year":"year"
+                        "Year":"fiscal_year@checkbook:contracts_coa_aggregates_datafeeds"
                     },
                     "required_non_display_columns":["vendor_record_type"]
                 }
@@ -1084,8 +1085,7 @@
                         "sub_vendor_paid_to_date":"sub_rfed_amount",
                         "sub_vendor_status_in_pip":"aprv_sta_name_export",
                         "vendor_record_type":"vendor_record_type",
-                        "version":"prime_document_version",
-                        "Year":"year"
+                        "version":"prime_document_version"
                     },
                     "rowElements":[
                         "contract_includes_sub_vendors",
@@ -1156,8 +1156,7 @@
                         "Sub Vendor Paid To Date":"sub_rfed_amount",
                         "Sub Vendor Status in PIP":"aprv_sta_name_export",
                         "Vendor Record Type":"vendor_record_type",
-                        "Version":"prime_document_version",
-                        "Year":"year"
+                        "Version":"prime_document_version"
                     },
                     "required_non_display_columns":["vendor_record_type"]
                 }
