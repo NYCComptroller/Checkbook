@@ -490,7 +490,6 @@
                         "purpose":"description",
                         "version":"document_version",
                         "year":"fiscal_year@checkbook:all_contracts_coa_aggregates",
-                        "parent_contract_id":"master_contract_number",
                         "original_amount":"original_contract_amount",
                         "current_amount":"maximum_contract_amount",
                         "prime_vendor":"vendor_name",
@@ -503,9 +502,6 @@
                         "pin":"tracking_number",
                         "apt_pin":"brd_awd_no",
                         "document_code":"document_code@checkbook:ref_document_code",
-                        "subcontract_reference_id":"sub_contract_id",
-                        "subvendor":"vendor_type",
-                        "associated_prime_vendor":"prime_vendor_name",
                         "prime_mwbe_category":"minority_type_name",
                         "industry":"industry_type_name"
                     },
@@ -515,7 +511,6 @@
                         "contract_id",
                         "version",
                         "year",
-                        "parent_contract_id",
                         "purpose",
                         "original_amount",
                         "current_amount",
@@ -524,17 +519,12 @@
                         "pin",
                         "contract_type",
                         "award_method",
-                        "start_date", "end_date",
+                        "start_date",
+                        "end_date",
                         "document_code",
-                        "sub_contract_id",
-                        "vendor_type",
-                        "associated_prime_vendor",
                         "prime_mwbe_category",
-                        "industry",
-                        "subvendor",
-                        "subcontract_reference_id"
-                    ],
-                    "required_non_display_columns":["vendor_type"]
+                        "industry"
+                    ]
                 },
                 "csv":{
                     "elementsColumn":{
@@ -542,7 +532,6 @@
                         "Purpose":"description",
                         "Version":"document_version",
                         "Year":"fiscal_year@checkbook:all_contracts_coa_aggregates",
-                        "Parent Contract ID":"master_contract_number",
                         "Original Amount":"original_contract_amount",
                         "Current Amount":"maximum_contract_amount",
                         "Prime Vendor":"vendor_name",
@@ -557,12 +546,8 @@
                         "Contract Category":"award_category_name@checkbook:award_category",
                         "Document Code":"document_code@checkbook:ref_document_code",
                         "Industry":"industry_type_name",
-                        "Prime M/WBE Category":"minority_type_id",
-                        "Sub Vendor":"vendor_type",
-                        "Associated Prime Vendor":"prime_vendor_name",
                         "Prime M/WBE Category":"minority_type_name"
-                    },
-                    "required_non_display_columns":["vendor_type"]
+                    }
                 }
             },
             "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($data_set,$parameters,$criteria);}",
@@ -690,7 +675,6 @@
                         "contract_id":"contract_number",
                         "purpose":"description",
                         "version":"document_version",
-                        "parent_contract_id":"master_contract_number",
                         "original_amount":"original_contract_amount",
                         "current_amount":"maximum_contract_amount",
                         "prime_vendor":"vendor_name",
@@ -703,8 +687,6 @@
                         "pin":"tracking_number",
                         "apt_pin":"brd_awd_no",
                         "document_code":"document_code@checkbook:ref_document_code",
-                        "subvendor":"vendor_type",
-                        "associated_prime_vendor":"prime_vendor_name",
                         "prime_mwbe_category":"minority_type_name",
                         "industry":"industry_type_name"
                     },
@@ -713,7 +695,6 @@
                         "prime_vendor",
                         "contract_id",
                         "version",
-                        "parent_contract_id",
                         "purpose",
                         "original_amount",
                         "current_amount",
@@ -725,20 +706,15 @@
                         "start_date",
                         "end_date",
                         "document_code",
-                        "vendor_type",
-                        "associated_prime_vendor",
                         "industry",
-                        "prime_mwbe_category",
-                        "subvendor"
-                    ],
-                    "required_non_display_columns":["vendor_type"]
+                        "prime_mwbe_category"
+                    ]
                 },
                 "csv":{
                     "elementsColumn":{
                         "Contract ID":"contract_number",
                         "Purpose":"description",
                         "Version":"document_version",
-                        "Parent Contract ID":"master_contract_number",
                         "Original Amount":"original_contract_amount",
                         "Current Amount":"maximum_contract_amount",
                         "Prime Vendor":"vendor_name",
@@ -753,13 +729,8 @@
                         "Contract Category":"award_category_name@checkbook:award_category",
                         "Document Code":"document_code@checkbook:ref_document_code",
                         "Industry":"industry_type_name",
-                        "Prime M/WBE Category":"minority_type_id",
-                        "Sub Contract Reference ID":"sub_contract_id",
-                        "Sub Vendor":"vendor_type",
-                        "Associated Prime Vendor":"prime_vendor_name",
                         "Prime M/WBE Category":"minority_type_name"
-                    },
-                    "required_non_display_columns":["vendor_type"]
+                    }
                 }
             },
             "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($data_set,$parameters,$criteria);}",
