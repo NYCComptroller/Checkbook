@@ -2632,6 +2632,12 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
     if ($values['contractno']) {
         $criteria['value']['contract_id'] = $values['contractno'];
     }
+    if ($values['scntrc_status'] != 'Select Status' && $values['scntrc_status'] != 0) {
+        $criteria['value']['scntrc_status'] = $values['scntrc_status'];
+    }
+    if ($values['aprv_sta'] != 'Select Status' && $values['aprv_sta'] != 0 ) {
+        $criteria['value']['aprv_sta'] = $values['aprv_sta'];
+    }
     if ($values['contract_type'] != 'No Contract Type Selected') {
         preg_match($pattern, $values['contract_type'], $ctypematches);
         $criteria['value']['contract_type'] = trim($ctypematches[1], '[ ]');
@@ -2763,6 +2769,7 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
     $pending = $form_state['values']['column_select_pending'];
     $pending_all = $form_state['values']['column_select_pending_all'];
     $vendor = $form_state['values']['vendor'];
+
     // Start Date:
     if ($startfrom && !checkDateFormat($startfrom)) {
         form_set_error('startdatefrom', t('Start Date must be a valid date (YYYY-MM-DD).'));
