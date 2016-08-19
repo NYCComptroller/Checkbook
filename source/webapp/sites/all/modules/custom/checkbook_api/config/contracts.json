@@ -110,8 +110,7 @@
                         "vendor_record_type",
                         "version",
                         "year"
-                    ],
-                    "required_non_display_columns":["vendor_record_type"]
+                    ]
                 },
                 "csv":{
                     "elementsColumn":{
@@ -148,8 +147,7 @@
                         "Vendor Record Type":"vendor_record_type",
                         "Version":"prime_document_version",
                         "Year":"fiscal_year@checkbook:contracts_coa_aggregates_datafeeds"
-                    },
-                    "required_non_display_columns":["vendor_record_type"]
+                    }
                 }
             },
             "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($data_set,$parameters,$criteria);}",
@@ -317,8 +315,7 @@
                         "sub_vendor_status_in_pip",
                         "vendor_record_type",
                         "version"
-                    ],
-                    "required_non_display_columns":["vendor_type"]
+                    ]
                 },
                 "csv":{
                     "elementsColumn":{
@@ -354,8 +351,7 @@
                         "Sub Vendor Status in PIP":"aprv_sta_name_export",
                         "Vendor Record Type":"vendor_record_type",
                         "Version":"prime_document_version"
-                    },
-                    "required_non_display_columns":["vendor_record_type"]
+                    }
                 }
             },
             "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($data_set,$parameters,$criteria);}",
@@ -936,8 +932,7 @@
                         "vendor_record_type",
                         "version",
                         "year"
-                    ],
-                    "required_non_display_columns":["vendor_record_type"]
+                    ]
                 },
                 "csv":{
                     "elementsColumn":{
@@ -974,8 +969,7 @@
                         "Vendor Record Type":"vendor_record_type",
                         "Version":"prime_document_version",
                         "Year":"fiscal_year@checkbook:contracts_coa_aggregates_datafeeds"
-                    },
-                    "required_non_display_columns":["vendor_record_type"]
+                    }
                 }
             },
             "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($data_set,$parameters,$criteria);}",
@@ -1142,8 +1136,7 @@
                         "sub_vendor_status_in_pip",
                         "vendor_record_type",
                         "version"
-                    ],
-                    "required_non_display_columns":["vendor_record_type"]
+                    ]
                 },
                 "csv":{
                     "elementsColumn":{
@@ -1179,8 +1172,7 @@
                         "Sub Vendor Status in PIP":"aprv_sta_name_export",
                         "Vendor Record Type":"vendor_record_type",
                         "Version":"prime_document_version"
-                    },
-                    "required_non_display_columns":["vendor_record_type"]
+                    }
                 }
             },
             "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($data_set,$parameters,$criteria);}",
