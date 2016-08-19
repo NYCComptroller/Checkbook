@@ -18,6 +18,8 @@
             "associated_prime_vendor":"prime_vendor_name",
             "sub_contract_reference_id":"sub_contract_id",
             "sub_vendor":"sub_vendor_name",
+            "scntrc_status":"scntrc_status",
+            "aprv_sta":"aprv_sta",
             //logical OR columns
             "vendor_code":"vendor_code",
             "purpose":"purpose",
@@ -198,6 +200,16 @@
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
+            },
+            "aprv_sta":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxlength":"2"
+            },
+            "scntrc_status":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxlength":"2"
             }
         }
     },
@@ -1014,6 +1026,16 @@
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
+            },
+            "aprv_sta":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxlength":"2"
+            },
+            "scntrc_status":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxlength":"2"
             }
         }
     },
@@ -1253,6 +1275,16 @@
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
+            },
+            "aprv_sta":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxlength":"2"
+            },
+            "scntrc_status":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxlength":"2"
             }
         }
     },

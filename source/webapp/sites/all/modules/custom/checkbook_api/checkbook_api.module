@@ -363,6 +363,8 @@ function checkbook_api_adjust_expense_contracts_params(&$parameters, $criteria, 
         unset($parameters['amount_id']);
     }
 
+    //if(isset($parameters['scntrc_status_name']))
+
     if(count($logicalOrColumns) > 0) {
         $parameters['logicalOrColumns'] = $logicalOrColumns;
     }
