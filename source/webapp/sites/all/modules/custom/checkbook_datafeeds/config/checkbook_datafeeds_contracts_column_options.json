@@ -129,7 +129,6 @@
                                 "csv":{
                                     "Agency":"Agency",
                                     "APT PIN":"APT PIN",
-                                    "Associated Prime Vendor":"Associated Prime Vendor",
                                     "Award Method":"Award Method",
                                     "Contract ID":"Contract ID",
                                     "Contract Type":"Contract Type",
@@ -139,12 +138,10 @@
                                     "Industry":"Industry",
                                     "Prime M/WBE Category":"Prime M/WBE Category",
                                     "Original Amount":"Original Amount",
-                                    "Parent Contract ID":"Parent Contract ID",
                                     "PIN":"PIN",
                                     "Purpose":"Purpose",
                                     "Registration Date":"Registration Date",
                                     "Start Date":"Start Date",
-                                    "Sub Vendor":"Sub Vendor",
                                     "Prime Vendor":"Prime Vendor",
                                     "Version":"Version",
                                     "Year":"Year"
@@ -152,7 +149,6 @@
                                 "xml":{
                                     "agency":"agency",
                                     "apt_pin":"apt_pin",
-                                    "associated_prime_vendor":"associated_prime_vendor",
                                     "award_method":"award_method",
                                     "contract_type":"contract_type",
                                     "current_amount":"current_amount",
@@ -161,12 +157,11 @@
                                     "prime_mwbe_category":"prime_mwbe_category",
                                     "industry":"industry",
                                     "original_amount":"original_amount",
-                                    "parent_contract_id":"parent_contract_id",
+                                    "contract_id":"contract_id",
                                     "pin":"pin",
                                     "purpose":"purpose",
                                     "registration_date":"registration_date",
                                     "start_date":"start_date",
-                                    "sub_vendor":"sub_vendor",
                                     "prime_vendor":"prime_vendor_name",
                                     "version":"version",
                                     "year":"year"
