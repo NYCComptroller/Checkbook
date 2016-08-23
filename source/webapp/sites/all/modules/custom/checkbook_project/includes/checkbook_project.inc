@@ -2163,3 +2163,18 @@ function _getAnnualSalariedEmployeeCount($node){
     $result = _checkbook_project_execute_sql_by_data_source($sql,_get_default_datasource());
     $node->PayrollTotalDataCount = (int)$result[0]['record_count'];
 }
+
+
+function isAdvancedSearchResultsPage(){
+    $current_url = $_SERVER['HTTP_REFERER'];
+    if(preg_match("/contract\/search\/transactions/",$current_url)) {
+        return true;
+    }
+    else {
+        $current_url = $_SERVER['REQUEST_URI'];
+        if(preg_match("/contract\/search\/transactions/",$current_url)) {
+            return true;
+        }
+    }
+    return false;
+}
