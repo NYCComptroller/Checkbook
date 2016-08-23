@@ -393,6 +393,9 @@ function checkbook_api_adjustContractDataSetResults(&$data_records) {
                 $data_records[$key]['prime_vendor_name'] = 'N/A';
             }
         }
+        if($data_record['scntrc_status_name'] == null){
+            $data_records[$key]['scntrc_status_name'] =  'N/A';
+        }
     }
 }
 
