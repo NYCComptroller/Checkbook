@@ -74,7 +74,7 @@
                         "sub_vendor_status_in_pip":"aprv_sta_name_export",
                         "vendor_record_type":"vendor_record_type",
                         "version":"prime_document_version",
-                        "Year":"fiscal_year@checkbook:contracts_coa_aggregates_datafeeds"
+                        "year":"fiscal_year@checkbook:contracts_coa_aggregates_datafeeds"
                     },
                     "rowElements":[
                         "contract_includes_sub_vendors",
@@ -896,7 +896,7 @@
                         "sub_vendor_status_in_pip":"aprv_sta_name_export",
                         "vendor_record_type":"vendor_record_type",
                         "version":"prime_document_version",
-                        "Year":"fiscal_year@checkbook:contracts_coa_aggregates_datafeeds"
+                        "year":"fiscal_year@checkbook:contracts_coa_aggregates_datafeeds"
                     },
                     "rowElements":[
                         "contract_includes_sub_vendors",
