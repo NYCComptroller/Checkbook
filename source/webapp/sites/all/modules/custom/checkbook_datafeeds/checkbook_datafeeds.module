@@ -1916,7 +1916,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
             );
             $form['filter']['aprv_sta'] = array(
                 '#type' => 'select',
-                '#title' => t('Sub Vendor Status <br />in PIP:'),
+                '#title' => t('Sub Vendor Status <br />in PIP&nbsp;:'),
                 '#options' => $sub_vendor_status_in_pip_options['options'],
                 '#option_attributes' => $sub_vendor_status_in_pip_options['options_attributes'],
                 '#attributes' => array('class' => array('watch')),
@@ -2454,7 +2454,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
             }
             if ($values['aprv_sta']) {
                 if ($values['aprv_sta'] != 'Select Status') {
-                    $form['filter']['aprv_sta'] = array('#markup' => '<div><strong>Sub Vendor Status in PIP:</strong> ' . $values['aprv_sta'] . '</div>');
+                    $form['filter']['aprv_sta'] = array('#markup' => '<div><strong>Sub Vendor Status in PIP&nbsp:</strong> ' . $values['aprv_sta'] . '</div>');
                     $user_criteria['Sub Vendor Status in PIP'] = $values['aprv_sta'];
                     $formatted_search_criteria['Sub Vendor Status in PIP'] = $values['aprv_sta'];
                 }
