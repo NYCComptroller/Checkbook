@@ -788,18 +788,19 @@ namespace { //global
 
             //Handle minority_type_id mapping to prime_minority_type_id and sub_minority_type_id
             if(isset($parameters['minority_type_id'])) {
-                $node->widgetConfig->logicalOrColumns[] = array("prime_minority_type_id","sub_minority_type_id");
                 $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($parameters['minority_type_id']));
                 if(!isset($dashboard) && !isset($smnid)){
-                    if(count($vendor_types) == 2 && ($vendor_types == array('S', 'SM'))){
+                    /*if(count($vendor_types) == 2 && ($vendor_types == array('S', 'SM'))){
                         $parameters['sub_minority_type_id'] = $condition;
                     }else if(count($vendor_types) == 2 && ($vendor_types == array('P', 'PM'))){
                         $parameters['prime_minority_type_id'] = $condition;
-                    }else{
-                        $parameters['prime_minority_type_id'] = $condition;
+                    }else{*/
+                        $node->widgetConfig->logicalOrColumns[] = array("prime_mwbe_adv_search_id","sub_minority_type_id");
+                        $parameters['prime_mwbe_adv_search_id'] = $condition;
                         $parameters['sub_minority_type_id'] = $condition;
-                    }
+                   //}
                 }else{
+                    $node->widgetConfig->logicalOrColumns[] = array("prime_minority_type_id","sub_minority_type_id");
                     $parameters['prime_minority_type_id'] = $condition;
                     $parameters['sub_minority_type_id'] = $condition;
                 }
