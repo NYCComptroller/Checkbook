@@ -280,18 +280,22 @@ if($node->widgetConfig->filterName == 'M/WBE Category' && $node->widgetConfig->p
 if($node->widgetConfig->filterName == 'Vendor Type'){
     if($node->widgetConfig->parentNid == 932 || $node->widgetConfig->parentNid == 939) {
         $vendor_counts = array();
+        // To fix the issue with PM counts are getting added twice to PM~SM
         foreach($checked as $row){
-            if(in_array($row[0],array('P'))){
-                $vendor_counts['P~PM'] = $vendor_counts['P~PM']+ $row[2];
+            $checked_vendor_types[$row[0]] = $row[2];
+        }
+        foreach($checked_vendor_types as $key=>$value){
+            if(in_array($key,array('P'))){
+                $vendor_counts['P~PM'] = $vendor_counts['P~PM']+ $value;
             }
-            if(in_array($row[0],array('S'))){
-                $vendor_counts['S~SM'] = $vendor_counts['S~SM']+ $row[2];
+            if(in_array($key,array('S'))){
+                $vendor_counts['S~SM'] = $vendor_counts['S~SM']+ $value;
             }
-            if(in_array($row[0],array('PM'))){
-                $vendor_counts['PM~SM'] = $vendor_counts['PM~SM']+ $row[2];
+            if(in_array($key,array('PM'))){
+                $vendor_counts['PM~SM'] = $vendor_counts['PM~SM']+ $value;
             }
-            if(in_array($row[0],array('SM'))){
-                $vendor_counts['PM~SM'] = $vendor_counts['PM~SM']+ $row[2];
+            if(in_array($key,array('SM'))){
+                $vendor_counts['PM~SM'] = $vendor_counts['PM~SM']+ $value;
             }
         }
         foreach($unchecked as $row){
