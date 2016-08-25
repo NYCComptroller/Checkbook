@@ -204,22 +204,22 @@
             "aprv_sta":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxlength":"2"
+                "maxLength":"2"
             },
             "scntrc_status":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxlength":"2"
+                "maxLength":"2"
             },
             "sub_vendor_status_in_pip_id":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxlength":"2"
+                "maxLength":"2"
             },
             "contract_includes_sub_vendors_id":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxlength":"2"
+                "maxLength":"2"
             }
         }
     },
@@ -464,22 +464,22 @@
             "aprv_sta":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxlength":"2"
+                "maxLength":"2"
             },
             "scntrc_status":{
               "valueType":"value",
               "dataType":"text",
-              "maxlength":"2"
+              "maxLength":"2"
             },
             "sub_vendor_status_in_pip_id":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxlength":"2"
+                "maxLength":"2"
             },
             "contract_includes_sub_vendors_id":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxlength":"2"
+                "maxLength":"2"
             }
         }
     },
@@ -1062,22 +1062,22 @@
             "aprv_sta":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxlength":"2"
+                "maxLength":"2"
             },
             "scntrc_status":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxlength":"2"
+                "maxLength":"2"
             },
             "sub_vendor_status_in_pip_id":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxlength":"2"
+                "maxLength":"2"
             },
             "contract_includes_sub_vendors_id":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxlength":"2"
+                "maxLength":"2"
             }
         }
     },
@@ -1323,22 +1323,22 @@
             "aprv_sta":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxlength":"2"
+                "maxLength":"2"
             },
             "scntrc_status":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxlength":"2"
+                "maxLength":"2"
             },
             "sub_vendor_status_in_pip_id":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxlength":"2"
+                "maxLength":"2"
             },
             "contract_includes_sub_vendors_id":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxlength":"2"
+                "maxLength":"2"
             }
         }
     },
