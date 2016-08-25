@@ -2393,9 +2393,10 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
             }
             if ($values['scntrc_status']) {
                 if ($values['scntrc_status'] != 'Select Status') {
-                    $form['filter']['scntrc_status'] = array('#markup' => '<div><strong>Contract Includes Sub Vendors:</strong> ' . $values['scntrc_status'] . '</div>');
+                    $scntrc_status_name = MappingUtil::getscntrc_status_name($values['scntrc_status']);
+                    $form['filter']['scntrc_status'] = array('#markup' => '<div><strong>Contract Includes Sub Vendors:</strong> ' . $scntrc_status_name . '</div>');
                     $user_criteria['Contract Includes Sub Vendors'] = $values['scntrc_status'];
-                    $formatted_search_criteria['Contract Includes Sub Vendors'] = $values['scntrc_status'];
+                    $formatted_search_criteria['Contract Includes Sub Vendors'] = $scntrc_status_name;
                 }
             }
             if ($values['pin']) {
@@ -2454,9 +2455,10 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
             }
             if ($values['aprv_sta']) {
                 if ($values['aprv_sta'] != 'Select Status') {
-                    $form['filter']['aprv_sta'] = array('#markup' => '<div><strong>Sub Vendor Status in PIP&nbsp:</strong> ' . $values['aprv_sta'] . '</div>');
+                    $aprv_sta_name = MappingUtil::getaprv_sta_name($values['aprv_sta']);
+                    $form['filter']['aprv_sta'] = array('#markup' => '<div><strong>Sub Vendor Status in PIP&nbsp:</strong> ' . $aprv_sta_name . '</div>');
                     $user_criteria['Sub Vendor Status in PIP'] = $values['aprv_sta'];
-                    $formatted_search_criteria['Sub Vendor Status in PIP'] = $values['aprv_sta'];
+                    $formatted_search_criteria['Sub Vendor Status in PIP'] = $aprv_sta_name;
                 }
             }
             if ($values['purpose']) {
