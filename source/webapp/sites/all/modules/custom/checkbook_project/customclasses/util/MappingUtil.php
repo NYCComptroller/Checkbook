@@ -507,4 +507,35 @@ class MappingUtil {
     }
 
 
+    static function getscntrc_status_name($scntrc_status) {
+        switch($scntrc_status){
+            case 1: return('No Data Entered');
+                break;
+            case 2: return('Yes');
+                break;
+            case 3: return('No');
+                break;
+        }
+
+    }
+
+    static function getaprv_sta_name($aprv_sta) {
+        switch($aprv_sta){
+            case 1: return('No Subcontract Payments Submitted');
+                break;
+            case 2: return('ACCO Rejected Sub Vendor');
+                break;
+            case 3: return('ACCO Reviewing Sub Vendor');
+                break;
+            case 4: return('ACCO Approved Sub Vendor');
+                break;
+            case 5: return('ACCO Canceled Sub Vendor');
+                break;
+            case 6: return('No Subcontract Information Submitted');
+                break;
+
+        }
+    }
+
+
 } 
