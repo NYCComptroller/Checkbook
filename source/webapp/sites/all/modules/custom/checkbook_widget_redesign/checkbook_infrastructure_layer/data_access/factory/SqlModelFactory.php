@@ -231,6 +231,7 @@ class SqlModelFactory {
                 $where = "{$name} $operator {$value}";
                 break;
             case SqlOperator::IN:
+                $value = (substr($value, 0, 1) != "(" && substr($value, -1, 1) != ")") ? "(".$value.")" : $value;
                 $where = "{$name} $operator {$value}";
                 break;
             case SqlOperator::NOT_IN:
