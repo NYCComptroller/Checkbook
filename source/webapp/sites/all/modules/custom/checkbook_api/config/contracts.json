@@ -855,6 +855,17 @@
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
+            },
+            ,
+            "contract_includes_sub_vendors_id":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"2"
+            },
+            "sub_vendor_status_in_pip_id":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"2"
             }
         }
     },
