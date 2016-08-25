@@ -348,10 +348,10 @@ function checkbook_api_adjust_expense_contracts_params(&$parameters, $criteria, 
     }
     //M/WBE Category
     if(isset($parameters['minority_type_id'])) {
-        $logicalOrColumns[] = array("prime_minority_type_id","sub_minority_type_id");
+        $logicalOrColumns[] = array("prime_mwbe_adv_search_id","sub_minority_type_id");
         $minority_type_id = explode('~',$parameters['minority_type_id']);
         $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($minority_type_id));
-        $parameters['prime_minority_type_id'] = $condition;
+        $parameters['prime_mwbe_adv_search_id'] = $condition;
         $parameters['sub_minority_type_id'] = $condition;
         unset($parameters['minority_type_id']);
     }
