@@ -660,7 +660,7 @@ namespace { //global
             //Handle vendor_code mapping to prime_vendor_code and sub_vendor_code
             if(isset($parameters['vendor_code'])) {
                 $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($parameters['vendor_code']));
-                $parameters['prime_vendor_code'] = $condition;
+                $parameters['associated_prime_vendor_code'] = $condition;
                 $parameters['sub_vendor_code'] = $condition;
                 unset($parameters['vendor_code']);
             }
@@ -742,7 +742,7 @@ namespace { //global
             //Handle vendor_code mapping to prime_vendor_code and sub_vendor_code
             if(isset($parameters['vendor_code'])) {
                 $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($parameters['vendor_code']));
-                $parameters['prime_vendor_code'] = $condition;
+                $parameters['associated_prime_vendor_code'] = $condition;
                 $parameters['sub_vendor_code'] = $condition;
                 unset($parameters['vendor_code']);
             }
@@ -756,14 +756,14 @@ namespace { //global
                     $vendornm_exact = implode('|',$vendornm_exact);
                     $pattern = "(^" . _checkbook_regex_replace_pattern($vendornm_exact) . "$)";
                     $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
-                    $parameters['prime_vendor_name'] = $condition;
+                    $parameters['associated_prime_vendor_name'] = $condition;
                     $parameters['sub_vendor_name'] = $condition;
                 }
                 else if(isset($vendornm)) {
                     $vendornm = explode('~',$vendornm);
                     $vendornm = implode('|',$vendornm);
                     $condition = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array($vendornm,FALSE,TRUE));
-                    $parameters['prime_vendor_name'] = $condition;
+                    $parameters['associated_prime_vendor_name'] = $condition;
                     $parameters['sub_vendor_name'] = $condition;
                 }
                 unset($parameters['vendor_name']);
