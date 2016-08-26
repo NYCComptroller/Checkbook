@@ -335,7 +335,7 @@ function checkbook_api_adjust_expense_contracts_params(&$parameters, $criteria, 
     //Vendor
     if(isset($parameters['vendor_code'])) {
         $logicalOrColumns[] = array("associated_prime_vendor_code","sub_vendor_code");
-        $parameters['associated_prime_vendorcode'] = $parameters['vendor_code'];
+        $parameters['associated_prime_vendor_code'] = $parameters['vendor_code'];
         $parameters['sub_vendor_code'] = $parameters['vendor_code'];
         unset($parameters['vendor_code']);
     }
