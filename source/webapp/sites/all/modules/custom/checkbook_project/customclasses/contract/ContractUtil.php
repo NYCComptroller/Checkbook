@@ -669,7 +669,6 @@ namespace { //global
                 }
                 $parameters['sub_vendor_code'] = $condition;
                 unset($parameters['vendor_code']);
-                unset($parameters['vendor_code.vendor_code']);
             }
 
             //Handle vendor_type mapping to prime_vendor_type and sub_vendor_type
@@ -764,7 +763,6 @@ namespace { //global
                 }
                 $parameters['sub_vendor_code'] = $condition;
                 unset($parameters['vendor_code']);
-                unset($parameters['vendor_code.vendor_code']);
             }
 
             //Handle vendor_name mapping to prime_vendor_name and sub_vendor_name
