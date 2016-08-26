@@ -658,8 +658,9 @@ namespace { //global
             }
 
             //Handle vendor_code mapping to prime_vendor_code and sub_vendor_code
-            if(isset($parameters['vendor_code'])) {
-                $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($parameters['vendor_code']));
+            if(isset($parameters['vendor_code']) || isset($parameters['vendor_code.vendor_code'])) {
+                $vendor_Code = isset($parameters['vendor_code.vendor_code']) ? $parameters['vendor_code.vendor_code'] : $parameters['vendor_code'];
+                $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($vendor_Code));
                 if(self::showSubVendorData()){
                     $parameters['prime_vendor_code'] = $condition;
                 }else{
@@ -668,6 +669,7 @@ namespace { //global
                 }
                 $parameters['sub_vendor_code'] = $condition;
                 unset($parameters['vendor_code']);
+                unset($parameters['vendor_code.vendor_code']);
             }
 
             //Handle vendor_type mapping to prime_vendor_type and sub_vendor_type
@@ -751,8 +753,9 @@ namespace { //global
             }
 
             //Handle vendor_code mapping to prime_vendor_code and sub_vendor_code
-            if(isset($parameters['vendor_code'])) {
-                $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($parameters['vendor_code']));
+            if(isset($parameters['vendor_code']) || isset($parameters['vendor_code.vendor_code'])) {
+                $vendor_Code = isset($parameters['vendor_code.vendor_code']) ? $parameters['vendor_code.vendor_code'] : $parameters['vendor_code'];
+                $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($vendor_Code));
                 if(self::showSubVendorData()){
                     $parameters['prime_vendor_code'] = $condition;
                 }else{
@@ -761,6 +764,7 @@ namespace { //global
                 }
                 $parameters['sub_vendor_code'] = $condition;
                 unset($parameters['vendor_code']);
+                unset($parameters['vendor_code.vendor_code']);
             }
 
             //Handle vendor_name mapping to prime_vendor_name and sub_vendor_name
