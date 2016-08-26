@@ -114,8 +114,6 @@
         "sub_rfed_amount"
     ],
     "logicalOrColumns":[
-        ["associated_prime_vendor_code","sub_vendor_code"],
-        ["associated_prime_vendor_name","sub_vendor_name"],
         ["prime_vendor_code","sub_vendor_code"],
         ["vendor_name","sub_vendor_name"],
         ["prime_vendor_type","sub_vendor_type"],
