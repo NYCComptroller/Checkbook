@@ -21,6 +21,7 @@
     "autocompleteID":"fvendorCode",
     "showAllRecords":true,
     "allowFacetDeselect":true,
+    "functionality":"search",
     "template":"individual_filter",
     "adjustParameters":"
         $parameters = ContractUtil::adjustActiveContractCommonParams($node, $parameters);
