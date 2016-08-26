@@ -3,7 +3,7 @@
     "widgetSubType":"dataTableList",
     "stickyHeader":true,
     "cleanURLParameters":[
-        "vendortype","pmwbe","smwbe","psmwbe","doctype","contstatus","year","calyear","agency","curamtid","pcuramtr","scuramtr","vendorcode","vendornm","vendornm_exact","pcontdesc","scontdesc","agrmnttype",
+        "vendortype","pmwbe","smwbe","psmwbe","doctype","contstatus","year","calyear","agency","curamtid","pcuramtr","scuramtr","vendorcode","psvendorcode","vendornm","vendornm_exact","pcontdesc","scontdesc","agrmnttype",
         "agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","startdate","enddate","regdate","cindustry","csize","pmodamt","smodamt","subcontstatus","subvendorstatus"
     ],
     "urlParamMap":{
@@ -14,6 +14,7 @@
         "agency":"agency_id",
         "fvendor":"vendor_id",
         "vendorcode":"vendor_code",
+        "psvendorcode":"vendor_code",
         "vendornm_exact":"vendor_name",
         "vendornm":"vendor_name",
         "vendortype":"vendor_type",
@@ -41,7 +42,7 @@
         "contnum_exact":"contract_number",
         "year":"year"
     },
-    "allowRequestParams":["smnid","doctype","mwbe","modamt","psmwbe"],
+    "allowRequestParams":["smnid","doctype","mwbe","modamt","psmwbe","psvendorcode"],
     "paramTypeConfig":{"vendornm_exact":"eqignorecase","vendornm":"like","pcontdesc":"contains","scontdesc":"contains","contnum":"like","contnum_exact":"eqignorecase","aptpin":"like","pin":"like",
         "startdate":"range","enddate":"range","regdate":"range","pcuramtr":"rangeid","scuramtr":"rangeid","pmodamt":"ne","smodamt":"ne"},
     "header":"
@@ -434,6 +435,7 @@
             var oVendorIds = getNamedFilterCriteria('fvendorId');
             var oVendorNms = getNamedFilterCriteria('fvendorNm');
             var oVendorCodes = getNamedFilterCriteria('fvendorCode');
+            var oPSVendorCodes = getNamedFilterCriteria('fpsvendorCode');
             var oContractNumber = getNamedFilterCriteria('fContractNumber');
             var oSubVendorStatus = getNamedFilterCriteria('fSubVendorStatus');
             var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
@@ -453,6 +455,7 @@
 
             cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
             cUrl = adjustUrlParameter(cUrl,'vendorcode',oVendorCodes);
+            cUrl = adjustUrlParameter(cUrl,'psvendorcode',oPSVendorCodes);
             cUrl = adjustUrlParameter(cUrl,'vendornm_exact',oVendorNms);
             cUrl = adjustUrlParameter(cUrl,'contnum_exact',oContractNumber);
             cUrl = adjustUrlParameter(cUrl,'subvendorstatus',oSubVendorStatus);
