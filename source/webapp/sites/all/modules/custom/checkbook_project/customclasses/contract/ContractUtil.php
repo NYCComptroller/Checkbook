@@ -660,7 +660,10 @@ namespace { //global
             //Handle vendor_code mapping to prime_vendor_code and sub_vendor_code
             if(isset($parameters['vendor_code'])) {
                 $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($parameters['vendor_code']));
-                $parameters['associated_prime_vendor_code'] = $condition;
+                if(self::showSubVendorData())
+                    $parameters['prime_vendor_code'] = $condition;
+                else
+                    $parameters['associated_prime_vendor_code'] = $condition;
                 $parameters['sub_vendor_code'] = $condition;
                 unset($parameters['vendor_code']);
             }
@@ -742,7 +745,10 @@ namespace { //global
             //Handle vendor_code mapping to prime_vendor_code and sub_vendor_code
             if(isset($parameters['vendor_code'])) {
                 $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($parameters['vendor_code']));
-                $parameters['associated_prime_vendor_code'] = $condition;
+                if(self::showSubVendorData())
+                    $parameters['prime_vendor_code'] = $condition;
+                else
+                    $parameters['associated_prime_vendor_code'] = $condition;
                 $parameters['sub_vendor_code'] = $condition;
                 unset($parameters['vendor_code']);
             }
