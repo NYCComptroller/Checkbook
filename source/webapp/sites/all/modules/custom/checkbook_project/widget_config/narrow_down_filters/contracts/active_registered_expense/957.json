@@ -20,7 +20,6 @@
         $parameters = ContractUtil::adjustActiveContractCommonParams($node, $parameters);
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-            $adjustedParameters['vendor_record_type'] = 'Sub Vendor';
             return $adjustedParameters;
         }
         return $parameters;
