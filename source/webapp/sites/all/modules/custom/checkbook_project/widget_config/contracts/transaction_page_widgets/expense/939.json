@@ -115,7 +115,7 @@
     ],
     "logicalOrColumns":[
         ["prime_vendor_code","sub_vendor_code"],
-        ["vendor_name","sub_vendor_name"],
+        ["prime_vendor_name","sub_vendor_name"],
         ["prime_vendor_type","sub_vendor_type"],
         ["prime_purpose","sub_purpose"],
         ["prime_amount_id","sub_amount_id"]
