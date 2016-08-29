@@ -664,8 +664,8 @@ namespace { //global
                 if(self::showSubVendorData()){
                     $parameters['prime_vendor_code'] = $condition;
                 }else{
-                    $node->widgetConfig->logicalOrColumns[] = array("associated_prime_vendor_code","sub_vendor_code");
-                    $parameters['associated_prime_vendor_code'] = $condition;
+                    $node->widgetConfig->logicalOrColumns[] = array("prime_vendor_code","sub_vendor_code");
+                    $parameters['prime_vendor_code'] = $condition;
                 }
                 $parameters['sub_vendor_code'] = $condition;
                 unset($parameters['vendor_code']);
@@ -758,8 +758,8 @@ namespace { //global
                 if(self::showSubVendorData()){
                     $parameters['prime_vendor_code'] = $condition;
                 }else{
-                    $node->widgetConfig->logicalOrColumns[] = array("associated_prime_vendor_code","sub_vendor_code");
-                    $parameters['associated_prime_vendor_code'] = $condition;
+                    $node->widgetConfig->logicalOrColumns[] = array("prime_vendor_code","sub_vendor_code");
+                    $parameters['prime_vendor_code'] = $condition;
                 }
                 $parameters['sub_vendor_code'] = $condition;
                 unset($parameters['vendor_code']);
@@ -773,17 +773,17 @@ namespace { //global
                     $vendornm_exact = explode('~',$vendornm_exact);
                     $vendornm_exact = implode('|',$vendornm_exact);
                     $pattern = "(^" . _checkbook_regex_replace_pattern($vendornm_exact) . "$)";
-                    $node->widgetConfig->logicalOrColumns[] = array("associated_prime_vendor_name","sub_vendor_name");
+                    $node->widgetConfig->logicalOrColumns[] = array("prime_vendor_name","sub_vendor_name");
                     $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
-                    $parameters['associated_prime_vendor_name'] = $condition;
+                    $parameters['prime_vendor_name'] = $condition;
                     $parameters['sub_vendor_name'] = $condition;
                 }
                 else if(isset($vendornm)) {
                     $vendornm = explode('~',$vendornm);
                     $vendornm = implode('|',$vendornm);
                     $condition = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array($vendornm,FALSE,TRUE));
-                    $node->widgetConfig->logicalOrColumns[] = array("associated_prime_vendor_name","sub_vendor_name");
-                    $parameters['associated_prime_vendor_name'] = $condition;
+                    $node->widgetConfig->logicalOrColumns[] = array("prime_vendor_name","sub_vendor_name");
+                    $parameters['prime_vendor_name'] = $condition;
                     $parameters['sub_vendor_name'] = $condition;
                 }
                 unset($parameters['vendor_name']);
