@@ -11,6 +11,7 @@
         "vendornm_exact":"vendor_name.vendor_name",
         "vendornm":"vendor_name.vendor_name"
     },
+    "dataset":"vendor_all_agreement_transactions_by_prime_sub_vendor",
     "filterName":"Vendor",
     "dataset":"checkbook:all_agreement_transactions_by_prime_sub_vendor_name",
     "columns":["vendor_name.vendor_name", "txcount"],
@@ -22,6 +23,7 @@
     "autocompleteID":"fvendorNm",
     "showAllRecords":true,
     "allowFacetDeselect":true,
+    "functionality":"search",
     "template":"individual_filter",
     "adjustParameters":"
         $parameters = ContractUtil::adjustActiveContractCommonParams($node, $parameters);
