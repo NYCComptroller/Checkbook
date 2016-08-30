@@ -341,13 +341,6 @@
     ",
     "adjustDataTableOptions":"
         $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
-        if($node->show_difference) {
-            $adjustDataTableOptions->aaSorting[0][0] = 10;
-        }
-        
-        if(in_array($node->dashboard, array('ss','ms','sp'))){
-            $adjustDataTableOptions->aaSorting[0][0] = ($node->show_difference)? 34:29;
-        }
         if(!$node->is_master_agreement) {
             $adjustDataTableOptions->fnInitComplete = '##function () { new FixedColumns( oTable, {\"iLeftColumns\": 2,\"iLeftWidth\": 180} );}##';
         }
@@ -413,7 +406,7 @@
             {"bSortable":false,"sWidth":"5px"}
             //END SUB
         ],
-        "aaSorting":[[7,"desc"]],
+        "aaSorting":[[1,"desc"]],
         "sScrollX":"100%",
         "bScrollCollapse": true
     },
