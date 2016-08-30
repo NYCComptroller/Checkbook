@@ -9,7 +9,7 @@
     "limit":100,
     "filterName":"Vendor",
     "urlParamMap":{
-        "psvendorcode":"vendor_code.vendor_code",
+        "vendorcode":"vendor_code.vendor_code",
         "psmwbe":"minority_type_id.minority_type_id"
     },
     "dataset":"checkbook:all_agreement_transactions_by_prime_sub_vendor_name",
@@ -17,9 +17,9 @@
     "orderBy":"-txcount",
     "autocompleteParamName":"vendor_auto",
     "autocompleteField":"vendor_name.vendor_name",
-    "urlParameterName":"psvendorcode",
+    "urlParameterName":"vendorcode",
     "urlParameterNameType":"eqtext",
-    "autocompleteID":"fpsvendorCode",
+    "autocompleteID":"fvendorCode",
     "showAllRecords":true,
     "allowFacetDeselect":true,
     "template":"individual_filter",
