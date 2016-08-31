@@ -182,7 +182,7 @@
         {"sClass":"text pad-left","sWidth":"150px","asSorting":["asc","desc"]},
         {"sWidth":"5px"}
     ],
-    "aaSorting":[[0,"asc"]],
+    "aaSorting":[[0,"desc"]],
     "sScrollX": "100%",
     "bScrollCollapse": false,
     "fnInitComplete": "##function () { new FixedColumns( oTable, {
