@@ -1789,7 +1789,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#name' => 'contractno',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'contractno', $first_time_load, ''),
             );
-            $form['filter']['scntrc_status'] = array(
+            $form['filter']['contract_includes_sub_vendors_id'] = array(
                 '#type' => 'select',
                 '#title' => t('Contract Includes <br />Sub Vendors:'),
                 '#options' => array(
@@ -1801,9 +1801,9 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#attributes' => array('class' => array('watch')),
                 '#prefix' => '<div class="datafield scntrc_status">',
                 '#suffix' => '</div>',
-                '#id' => 'edit-scntrc_status',
-                '#name' => 'scntrc_status',
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'scntrc_status', $first_time_load, 0),
+                '#id' => 'edit-contract_includes_sub_vendors_id',
+                '#name' => 'contract_includes_sub_vendors_id',
+                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'contract_includes_sub_vendors_id', $first_time_load, 0),
                 '#states' => array(
                     'disabled' => array(
                         array(
@@ -1914,17 +1914,17 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                 '#name' => 'category',
                 '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'category', $first_time_load, 'expense'),
             );
-            $form['filter']['aprv_sta'] = array(
+            $form['filter']['sub_vendor_status_in_pip_id'] = array(
                 '#type' => 'select',
                 '#title' => t('Sub Vendor Status <br />in PIP&nbsp;:'),
                 '#options' => $sub_vendor_status_in_pip_options['options'],
                 '#option_attributes' => $sub_vendor_status_in_pip_options['options_attributes'],
                 '#attributes' => array('class' => array('watch')),
-                '#prefix' => '<div class="datafield aprv_sta">',
+                '#prefix' => '<div class="datafield sub_vendor_status_in_pip_id">',
                 '#suffix' => '</div>',
-                '#id' => 'edit-aprv_sta',
-                '#name' => 'aprv_sta',
-                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'aprv_sta', $first_time_load, 0),
+                '#id' => 'edit-sub_vendor_status_in_pip_id',
+                '#name' => 'sub_vendor_status_in_pip_id',
+                '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'sub_vendor_status_in_pip_id', $first_time_load, 0),
                 '#states' => array(
                     'disabled' => array(
                         array(
@@ -1932,9 +1932,9 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
                             'or',
                             array('select[name="category"]' => array('value' => 'revenue')),
                             'or',
-                            array('select[name="scntrc_status"]' => array('value' => '1')),
+                            array('select[name="contract_includes_sub_vendors_id"]' => array('value' => '1')),
                             'or',
-                            array('select[name="scntrc_status"]' => array('value' => '3')),
+                            array('select[name="contract_includes_sub_vendors_id"]' => array('value' => '3')),
                         ),
                     ),
                 )
@@ -2391,11 +2391,11 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
                 $user_criteria['Contract ID'] = $values['contractno'];
                 $formatted_search_criteria[''] = null;
             }
-            if ($values['scntrc_status']) {
-                if ($values['scntrc_status'] != 'Select Status') {
-                    $scntrc_status_name = MappingUtil::getscntrc_status_name($values['scntrc_status']);
-                    $form['filter']['scntrc_status'] = array('#markup' => '<div><strong>Contract Includes Sub Vendors:</strong> ' . $scntrc_status_name . '</div>');
-                    $user_criteria['Contract Includes Sub Vendors'] = $values['scntrc_status'];
+            if ($values['contract_includes_sub_vendors_id']) {
+                if ($values['contract_includes_sub_vendors_id'] != 'Select Status') {
+                    $scntrc_status_name = MappingUtil::getscntrc_status_name($values['contract_includes_sub_vendors_id']);
+                    $form['filter']['contract_includes_sub_vendors_id'] = array('#markup' => '<div><strong>Contract Includes Sub Vendors:</strong> ' . $scntrc_status_name . '</div>');
+                    $user_criteria['Contract Includes Sub Vendors'] = $values['contract_includes_sub_vendors_id'];
                     $formatted_search_criteria['Contract Includes Sub Vendors'] = $scntrc_status_name;
                 }
             }
@@ -2453,11 +2453,11 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
                 $user_criteria['Category'] = $values['category'];
                 $formatted_search_criteria['Category'] = $values['category'];
             }
-            if ($values['aprv_sta']) {
-                if ($values['aprv_sta'] != 'Select Status') {
-                    $aprv_sta_name = MappingUtil::getaprv_sta_name($values['aprv_sta']);
-                    $form['filter']['aprv_sta'] = array('#markup' => '<div><strong>Sub Vendor Status in PIP&nbsp:</strong> ' . $aprv_sta_name . '</div>');
-                    $user_criteria['Sub Vendor Status in PIP'] = $values['aprv_sta'];
+            if ($values['sub_vendor_status_in_pip_id']) {
+                if ($values['sub_vendor_status_in_pip_id'] != 'Select Status') {
+                    $aprv_sta_name = MappingUtil::getaprv_sta_name($values['sub_vendor_status_in_pip_id']);
+                    $form['filter']['sub_vendor_status_in_pip_id'] = array('#markup' => '<div><strong>Sub Vendor Status in PIP&nbsp:</strong> ' . $aprv_sta_name . '</div>');
+                    $user_criteria['Sub Vendor Status in PIP'] = $values['sub_vendor_status_in_pip_id'];
                     $formatted_search_criteria['Sub Vendor Status in PIP'] = $aprv_sta_name;
                 }
             }
@@ -2634,11 +2634,11 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
     if ($values['contractno']) {
         $criteria['value']['contract_id'] = $values['contractno'];
     }
-    if ($values['scntrc_status'] != 'Select Status' && $values['scntrc_status'] != 0) {
-        $criteria['value']['scntrc_status'] = $values['scntrc_status'];
+    if ($values['contract_includes_sub_vendors_id'] != 'Select Status' && $values['contract_includes_sub_vendors_id'] != 0) {
+        $criteria['value']['contract_includes_sub_vendors_id'] = $values['contract_includes_sub_vendors_id'];
     }
-    if ($values['aprv_sta'] != 'Select Status' && $values['aprv_sta'] != 0 ) {
-        $criteria['value']['aprv_sta'] = $values['aprv_sta'];
+    if ($values['sub_vendor_status_in_pip_id'] != 'Select Status' && $values['sub_vendor_status_in_pip_id'] != 0 ) {
+        $criteria['value']['sub_vendor_status_in_pip_id'] = $values['sub_vendor_status_in_pip_id'];
     }
     if ($values['contract_type'] != 'No Contract Type Selected') {
         preg_match($pattern, $values['contract_type'], $ctypematches);

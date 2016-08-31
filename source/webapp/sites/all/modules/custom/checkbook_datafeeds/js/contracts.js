@@ -12,29 +12,29 @@
         }
 
         //On change of "Sub Vendor Status in PIP" status
-        $('#edit-aprv_sta').change(function() {
-            var sub_vendor_status = $('#edit-aprv_sta').val();
-            var includes_sub_vendors = $('#edit-scntrc_status').val();
+        $('#edit-sub_vendor_status_in_pip_id').change(function() {
+            var sub_vendor_status = $('#edit-sub_vendor_status_in_pip_id').val();
+            var includes_sub_vendors = $('#edit-contract_includes_sub_vendors_id').val();
             var valid_status = [6,1,4,3,2,5];
 
             if($.inArray(sub_vendor_status, valid_status)) {
                 if(includes_sub_vendors == 2){
-                    $('#edit-scntrc_status').html('<option value="0">Select Status</option>' +
+                    $('#edit-contract_includes_sub_vendors_id').html('<option value="0">Select Status</option>' +
                         '<option value="2" selected>Yes</option>');
                 } else {
-                    $('#edit-scntrc_status').html('<option value="0" selected>Select Status</option>' +
+                    $('#edit-contract_includes_sub_vendors_id').html('<option value="0" selected>Select Status</option>' +
                         '<option value="2">Yes</option>');
                 }
             }
 
             if(sub_vendor_status == 0) {
                 if(includes_sub_vendors == 2){
-                    $('#edit-scntrc_status').html('<option value="0">Select Status</option>' +
+                    $('#edit-contract_includes_sub_vendors_id').html('<option value="0">Select Status</option>' +
                         '<option value="2" selected>Yes</option>' +
                         '<option value="3">No</option>' +
                         '<option value="1">No Data Entered</option>');
                 } else {
-                    $('#edit-scntrc_status').html('<option value="0" selected>Select Status</option>' +
+                    $('#edit-contract_includes_sub_vendors_id').html('<option value="0" selected>Select Status</option>' +
                         '<option value="2">Yes</option>' +
                         '<option value="3">No</option>' +
                         '<option value="1">No Data Entered</option>');
@@ -288,8 +288,8 @@
             var mwbecat = ($('#edit-mwbe-category').val()) ? $('#edit-mwbe-category').val() : 0;
             var industry = emptyToZero($('#edit-industry',context).val());
             var data_source = $('input:radio[name=datafeeds-contracts-domain-filter]:checked').val();
-            var includes_sub_vendors = $('select[name="scntrc_status"]').val();
-            var sub_vendor_status = $('select[name="aprv_sta"]').val();
+            var includes_sub_vendors = $('select[name="contract_includes_sub_vendors_id"]').val();
+            var sub_vendor_status = $('select[name="sub_vendor_status_in_pip_id"]').val();
 
             $('#edit-vendor', context).autocomplete({source:'/autocomplete/contracts/vendor/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/'+ sub_vendor_status + '/' + data_source});
             $('#edit-contractno', context).autocomplete({source:'/autocomplete/contracts/contract_number/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/'+ sub_vendor_status + '/' + data_source});
@@ -310,8 +310,8 @@
                     mwbecat = mwbecat == null ? 0 : mwbecat;
                     var industry = emptyToZero($('#edit-industry',context).val());
                     var data_source = $('input:radio[name=datafeeds-contracts-domain-filter]:checked').val();
-                    var includes_sub_vendors = $('select[name="scntrc_status"]').val();
-                    var sub_vendor_status = $('select[name="aprv_sta"]').val();
+                    var includes_sub_vendors = $('select[name="contract_includes_sub_vendors_id"]').val();
+                    var sub_vendor_status = $('select[name="sub_vendor_status_in_pip_id"]').val();
 
                     $('#edit-vendor', context).autocomplete('option', 'source', '/autocomplete/contracts/vendor/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/'+ sub_vendor_status + '/' + data_source);
                     $('#edit-contractno', context).autocomplete('option', 'source', '/autocomplete/contracts/contract_number/'+ status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/'+ sub_vendor_status + '/' + data_source);

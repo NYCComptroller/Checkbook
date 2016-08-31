@@ -18,8 +18,6 @@
             "associated_prime_vendor":"prime_vendor_name",
             "sub_contract_reference_id":"sub_contract_id",
             "sub_vendor":"sub_vendor_name",
-            "scntrc_status":"scntrc_status",
-            "aprv_sta":"aprv_sta",
             "sub_vendor_status_in_pip_id" :"aprv_sta",
             "contract_includes_sub_vendors_id":"scntrc_status",
             //logical OR columns
@@ -227,8 +225,6 @@
             "pin":"tracking_number",
             "apt_pin":"brd_awd_no",
             "industry_type_id":"industry_type_id",
-            "aprv_sta":"aprv_sta",
-            "scntrc_status":"scntrc_status",
             "sub_vendor_status_in_pip_id" :"aprv_sta",
             "contract_includes_sub_vendors_id":"scntrc_status",
             //logical OR columns
@@ -448,16 +444,6 @@
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
-            },
-            "aprv_sta":{
-                "valueType":"value",
-                "dataType":"text",
-                "maxLength":"2"
-            },
-            "scntrc_status":{
-              "valueType":"value",
-              "dataType":"text",
-              "maxLength":"2"
             },
             "sub_vendor_status_in_pip_id":{
                 "valueType":"value",
@@ -865,8 +851,6 @@
             "associated_prime_vendor":"prime_vendor_name",
             "sub_contract_reference_id":"sub_contract_id",
             "sub_vendor":"sub_vendor_name",
-            "scntrc_status":"scntrc_status",
-            "aprv_sta":"aprv_sta",
             "sub_vendor_status_in_pip_id" :"aprv_sta",
             "contract_includes_sub_vendors_id":"scntrc_status",
             //logical OR columns
@@ -1046,16 +1030,6 @@
                 "dataType":"text",
                 "maxLength":"2"
             },
-            "aprv_sta":{
-                "valueType":"value",
-                "dataType":"text",
-                "maxLength":"2"
-            },
-            "scntrc_status":{
-                "valueType":"value",
-                "dataType":"text",
-                "maxLength":"2"
-            },
             "sub_vendor_status_in_pip_id":{
                 "valueType":"value",
                 "dataType":"text",
@@ -1084,8 +1058,6 @@
             "apt_pin":"brd_awd_no",
             "industry_type_id":"industry_type_id",
             "associated_prime_vendor":"prime_vendor_name",
-            "scntrc_status":"scntrc_status",
-            "aprv_sta":"aprv_sta",
             "sub_vendor_status_in_pip_id" :"aprv_sta",
             "contract_includes_sub_vendors_id":"scntrc_status",
             //logical OR columns
@@ -1302,16 +1274,6 @@
                 "maxLength":"9"
             },
             "industry_type_id":{
-                "valueType":"value",
-                "dataType":"text",
-                "maxLength":"2"
-            },
-            "aprv_sta":{
-                "valueType":"value",
-                "dataType":"text",
-                "maxLength":"2"
-            },
-            "scntrc_status":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
