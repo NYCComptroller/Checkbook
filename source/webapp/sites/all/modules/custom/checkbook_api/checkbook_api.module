@@ -357,9 +357,9 @@ function checkbook_api_adjust_expense_contracts_params(&$parameters, $criteria, 
     }
     //Current Amount
     if(isset($parameters['amount_id'])) {
-        $logicalOrColumns[] = array("prime_amount_id","sub_amount_id");
-        $parameters['prime_amount_id'] = $parameters['amount_id'];
-        $parameters['sub_amount_id'] = $parameters['amount_id'];
+        $logicalOrColumns[] = array("prime_maximum_contract_amount","sub_maximum_contract_amount");
+        $parameters['prime_maximum_contract_amount'] = $parameters['amount_id'];
+        $parameters['sub_maximum_contract_amount'] = $parameters['amount_id'];
         unset($parameters['amount_id']);
     }
 
