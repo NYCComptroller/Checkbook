@@ -380,7 +380,7 @@
             {"bSortable":false,"sWidth":"10px"},
             //END PRIME
             {"sClass":"text","sWidth":"200px","asSorting":["asc","desc"]},
-            {"sClass":"number-center","sWidth":"110px","asSorting":["asc","desc"]},
+            {"sClass":"number-center","sWidth":"150px","asSorting":["asc","desc"]},
             {"sClass":"number-center","sWidth":"160px","asSorting":["asc","desc"]},
             {"bSortable":false,"sWidth":"30px"},
             {"sClass":"text","sWidth":"200px","asSorting":["asc","desc"]},
@@ -532,7 +532,7 @@
                             //END PRIME
 
                             sOut += '<td class=\"text\" style=\"width:200px\">'+ (row[14] == null ? '': row[14])+'</td>';
-                            sOut += '<td class=\"number-center\" style=\"width:110px\">'+ (row[15] == null ? '': row[15])+'</td>';
+                            sOut += '<td class=\"number-center\" style=\"width:150px\">'+ (row[15] == null ? '': row[15])+'</td>';
                             sOut += '<td class=\"number-center\" style=\"width:160px\">'+ (row[16] == null ? '': row[16])+'</td>';
                             sOut += '<td style=\"width:30px\"></td>';
                             sOut += '<td class=\"text\" style=\"width:200px\">'+ (row[17] == null ? '': row[17])+'</td>';
