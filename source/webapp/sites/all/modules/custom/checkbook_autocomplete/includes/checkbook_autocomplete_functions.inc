@@ -215,9 +215,10 @@ function _checkbook_autocomplete_contracts_contract_number($status, $category, $
 function _checkbook_autocomplete_contracts_apt_pin($status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, $includes_sub_vendors, $sub_vendor_status, $data_source = 'checkbook') {
     $search_term = _get_autocomplete_search_term();
     if (!empty($search_term)) {
-        $query = 'select/?q=apt_pin:' . $search_term . '&facet=true&facet.field=apt_pin&fq=domain:contracts&wt=php&facet.limit=10';
+        $apt_pin = $data_source == 'checkbook_oge' ? 'apt_pin' : 'prime_apt_pin';
+        $query = 'select/?q='.$apt_pin.':' . $search_term . '&facet=true&facet.field='.$apt_pin.'&fq=domain:contracts&wt=php&facet.limit=10';
         $query .= $data_source == 'checkbook_oge' ? '&fq=agency_type:oge' : '&fq=-agency_type:oge';
-        $matches = _get_contracts_datafeeds_autocomplete_results('apt_pin', $query, $status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, $includes_sub_vendors, $sub_vendor_status, $data_source);
+        $matches = _get_contracts_datafeeds_autocomplete_results($apt_pin, $query, $status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, $includes_sub_vendors, $sub_vendor_status, $data_source);
         drupal_json_output($matches);
     }
 }
@@ -251,9 +252,10 @@ function _checkbook_autocomplete_contracts_apt_pin($status, $category, $contract
 function _checkbook_autocomplete_contracts_pin($status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, $includes_sub_vendors, $sub_vendor_status, $data_source = 'checkbook') {
     $search_term = _get_autocomplete_search_term();
     if (!empty($search_term)) {
-        $query = 'select/?q=pin:' . $search_term . '&facet=true&facet.field=pin&fq=domain:contracts&wt=php&facet.limit=10';
+        $pin = $data_source == 'checkbook_oge' ? 'pin' : 'prime_pin';
+        $query = 'select/?q='.$pin.':' . $search_term . '&facet=true&facet.field='.$pin.'&fq=domain:contracts&wt=php&facet.limit=10';
         $query .= $data_source == 'checkbook_oge' ? '&fq=agency_type:oge' : '&fq=-agency_type:oge';
-        $matches = _get_contracts_datafeeds_autocomplete_results('pin', $query, $status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, $includes_sub_vendors, $sub_vendor_status, $data_source);
+        $matches = _get_contracts_datafeeds_autocomplete_results($pin, $query, $status, $category, $contract_type, $agency, $award_method, $year, $mwbe_category, $industry, $includes_sub_vendors, $sub_vendor_status, $data_source);
         drupal_json_output($matches);
     }
 }
