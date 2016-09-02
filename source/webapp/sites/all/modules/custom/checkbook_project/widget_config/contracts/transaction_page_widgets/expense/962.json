@@ -17,7 +17,7 @@
         {"label":"Prime Contract Registration Date","column":"registered_date"},
         //END PRIME
         {"label":"Prime Contracting Agency","column":"agency_name"},
-        {"label":"Prime Contract Version","column":"prime_document_version"},
+        {"label":"Contract Version","column":"prime_document_version"},
         {"label":"FMS Document/Parent Contract ID","column":"master_contract_number_export"},
         {"label":"Prime Contract Type","column":"agreement_type_name"},
         {"label":"Prime Contract Award Method","column":"award_method_name"},
