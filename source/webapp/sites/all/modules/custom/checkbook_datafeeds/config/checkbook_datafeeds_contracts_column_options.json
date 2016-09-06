@@ -88,7 +88,7 @@
                                     "Sub Vendor Paid To Date":"Sub Vendor Paid To Date",
                                     "Sub Vendor Status in PIP":"Sub Vendor Status in PIP",
                                     "Vendor Record Type":"Vendor Record Type",
-                                    "Version":"Version",
+                                    "Prime Contract Version":"Prime Contract Version",
                                     "Year":"Year"
                                 },
                                 "xml":{
@@ -123,7 +123,7 @@
                                     "sub_vendor_paid_to_date":"sub_vendor_paid_to_date",
                                     "sub_vendor_status_in_pip":"sub_vendor_status_in_pip",
                                     "vendor_record_type":"vendor_record_type",
-                                    "version":"version",
+                                    "prime_contract_version":"prime_contract_version",
                                     "year":"year"
                                 }
                             }
@@ -206,7 +206,7 @@
                                     "Sub Vendor Paid To Date":"Sub Vendor Paid To Date",
                                     "Sub Vendor Status in PIP":"Sub Vendor Status in PIP",
                                     "Vendor Record Type":"Vendor Record Type",
-                                    "Version":"Version",
+                                    "Prime Contract Version":"Prime Contract Version",
                                     "Year":"Year"
                                 },
                                 "xml":{
@@ -241,7 +241,7 @@
                                     "sub_vendor_paid_to_date":"sub_vendor_paid_to_date",
                                     "sub_vendor_status_in_pip":"sub_vendor_status_in_pip",
                                     "vendor_record_type":"vendor_record_type",
-                                    "version":"version",
+                                    "prime_contract_version":"prime_contract_version",
                                     "year":"year"
                                 }
                             }

@@ -73,7 +73,7 @@
                         "sub_vendor_paid_to_date":"sub_rfed_amount",
                         "sub_vendor_status_in_pip":"aprv_sta_name_export",
                         "vendor_record_type":"vendor_record_type",
-                        "version":"version",
+                        "prime_contract_version":"version",
                         "year":"fiscal_year@checkbook:contracts_coa_aggregates_datafeeds"
                     },
                     "rowElements":[
@@ -108,7 +108,7 @@
                         "sub_vendor_paid_to_date",
                         "sub_vendor_status_in_pip",
                         "vendor_record_type",
-                        "version",
+                        "prime_contract_version",
                         "year"
                     ]
                 },
@@ -145,7 +145,7 @@
                         "Sub Vendor Paid To Date":"sub_rfed_amount",
                         "Sub Vendor Status in PIP":"aprv_sta_name_export",
                         "Vendor Record Type":"vendor_record_type",
-                        "Version":"version",
+                        "Prime Contract Version":"version",
                         "Year":"fiscal_year@checkbook:contracts_coa_aggregates_datafeeds"
                     }
                 }
@@ -279,7 +279,7 @@
                         "sub_vendor_paid_to_date":"sub_rfed_amount",
                         "sub_vendor_status_in_pip":"aprv_sta_name_export",
                         "vendor_record_type":"vendor_record_type",
-                        "version":"version"
+                        "prime_contract_version":"version"
                     },
                     "rowElements":[
                         "contract_includes_sub_vendors",
@@ -313,7 +313,7 @@
                         "sub_vendor_paid_to_date",
                         "sub_vendor_status_in_pip",
                         "vendor_record_type",
-                        "version"
+                        "prime_contract_version"
                     ]
                 },
                 "csv":{
@@ -349,7 +349,7 @@
                         "Sub Vendor Paid To Date":"sub_rfed_amount",
                         "Sub Vendor Status in PIP":"aprv_sta_name_export",
                         "Vendor Record Type":"vendor_record_type",
-                        "Version":"version"
+                        "Prime Contract Version":"version"
                     }
                 }
             },
