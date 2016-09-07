@@ -890,6 +890,7 @@
                         "prime_contract_registration_date":"registered_date",
                         "prime_contract_start_date":"prime_effective_begin_date",
                         "prime_contract_type":"agreement_type_name",
+                        "prime_contract_version":"version",
                         "prime_contracting_agency":"agency_name",
                         "prime_vendor":"prime_vendor_name",
                         "prime_vendor_mwbe_category":"prime_minority_type_name",
@@ -905,7 +906,6 @@
                         "sub_vendor_paid_to_date":"sub_rfed_amount",
                         "sub_vendor_status_in_pip":"aprv_sta_name_export",
                         "vendor_record_type":"vendor_record_type",
-                        "version":"version",
                         "year":"fiscal_year@checkbook:contracts_coa_aggregates_datafeeds"
                     },
                     "rowElements":[
@@ -925,6 +925,7 @@
                         "prime_contract_registration_date",
                         "prime_contract_start_date",
                         "prime_contract_type",
+                        "prime_contract_version",
                         "prime_contracting_agency",
                         "prime_vendor",
                         "prime_vendor_mwbe_category",
@@ -940,7 +941,6 @@
                         "sub_vendor_paid_to_date",
                         "sub_vendor_status_in_pip",
                         "vendor_record_type",
-                        "version",
                         "year"
                     ]
                 },
