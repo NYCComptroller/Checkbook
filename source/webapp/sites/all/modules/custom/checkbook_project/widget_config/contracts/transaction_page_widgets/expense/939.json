@@ -306,7 +306,7 @@
         {"label":"","column":""},
         //END PRIME
         {"labelAlias":"contract_agency","column":"agency_name_link","sortSourceColumn":"agency_name"},
-        {"labelAlias":"prime_contract_version","column":"prime_document_version"},
+        {"labelAlias":"version","column":"prime_document_version"},
         {"labelAlias":"fms_doc_id","column":"parent_contract_link", "sortSourceColumn":"master_contract_number"},
         {"label":"","column":""},
         {"labelAlias":"contract_type","column":"contract_type_formatted","sortSourceColumn":"agreement_type_name"},
