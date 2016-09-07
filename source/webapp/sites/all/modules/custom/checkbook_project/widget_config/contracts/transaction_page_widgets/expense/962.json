@@ -23,8 +23,8 @@
         {"label":"Prime Contract Award Method","column":"award_method_name"},
         {"label":"Prime Contract Expense Category","column":"expenditure_object_names"},
         {"label":"Prime Contract Industry","column":"industry_type_name"},
-        {"label":"Prime Contract PIN","column":"tracking_number"},
-        {"label":"Prime Contract APT PIN","column":"brd_awd_no"},
+        {"label":"Prime Contract PIN","column":"prime_pin"},
+        {"label":"Prime Contract APT PIN","column":"prime_apt_pin"},
         //START SUB
         {"label":"Sub Vendor","column":"sub_vendor_name_export"},
         {"label":"Sub Vendor M/WBE Category","column":"sub_minority_type_name_export"},
