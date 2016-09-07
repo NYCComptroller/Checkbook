@@ -73,6 +73,7 @@
                                     "Prime Contract Registration Date":"Prime Contract Registration Date",
                                     "Prime Contract Start Date":"Prime Contract Start Date",
                                     "Prime Contract Type":"Prime Contract Type",
+                                    "Prime Contract Version":"Prime Contract Version",
                                     "Prime Contracting Agency":"Prime Contracting Agency",
                                     "Prime Vendor":"Prime Vendor",
                                     "Prime Vendor M/WBE Category":"Prime Vendor M/WBE Category",
@@ -88,7 +89,6 @@
                                     "Sub Vendor Paid To Date":"Sub Vendor Paid To Date",
                                     "Sub Vendor Status in PIP":"Sub Vendor Status in PIP",
                                     "Vendor Record Type":"Vendor Record Type",
-                                    "Prime Contract Version":"Prime Contract Version",
                                     "Year":"Year"
                                 },
                                 "xml":{
@@ -108,6 +108,7 @@
                                     "prime_contract_registration_date":"prime_contract_registration_date",
                                     "prime_contract_start_date":"prime_contract_start_date",
                                     "prime_contract_type":"prime_contract_type",
+                                    "prime_contract_version":"prime_contract_version",
                                     "prime_contracting_agency":"prime_contracting_agency",
                                     "prime_vendor":"prime_vendor",
                                     "prime_vendor_mwbe_category":"prime_vendor_mwbe_category",
@@ -123,7 +124,6 @@
                                     "sub_vendor_paid_to_date":"sub_vendor_paid_to_date",
                                     "sub_vendor_status_in_pip":"sub_vendor_status_in_pip",
                                     "vendor_record_type":"vendor_record_type",
-                                    "prime_contract_version":"prime_contract_version",
                                     "year":"year"
                                 }
                             }
@@ -191,6 +191,7 @@
                                     "Prime Contract Registration Date":"Prime Contract Registration Date",
                                     "Prime Contract Start Date":"Prime Contract Start Date",
                                     "Prime Contract Type":"Prime Contract Type",
+                                    "Prime Contract Version":"Prime Contract Version",
                                     "Prime Contracting Agency":"Prime Contracting Agency",
                                     "Prime Vendor":"Prime Vendor",
                                     "Prime Vendor M/WBE Category":"Prime Vendor M/WBE Category",
@@ -206,7 +207,6 @@
                                     "Sub Vendor Paid To Date":"Sub Vendor Paid To Date",
                                     "Sub Vendor Status in PIP":"Sub Vendor Status in PIP",
                                     "Vendor Record Type":"Vendor Record Type",
-                                    "Prime Contract Version":"Prime Contract Version",
                                     "Year":"Year"
                                 },
                                 "xml":{
@@ -226,6 +226,7 @@
                                     "prime_contract_registration_date":"prime_contract_registration_date",
                                     "prime_contract_start_date":"prime_contract_start_date",
                                     "prime_contract_type":"prime_contract_type",
+                                    "prime_contract_version":"prime_contract_version",
                                     "prime_contracting_agency":"prime_contracting_agency",
                                     "prime_vendor":"prime_vendor",
                                     "prime_vendor_mwbe_category":"prime_vendor_mwbe_category",
@@ -241,7 +242,6 @@
                                     "sub_vendor_paid_to_date":"sub_vendor_paid_to_date",
                                     "sub_vendor_status_in_pip":"sub_vendor_status_in_pip",
                                     "vendor_record_type":"vendor_record_type",
-                                    "prime_contract_version":"prime_contract_version",
                                     "year":"year"
                                 }
                             }
