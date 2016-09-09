@@ -15,7 +15,6 @@
     "autocompleteParamName":"scindustry_auto",
     "autocompleteID":"fSubIndustryTypeId",
     "autocompleteField":"sub_industry_type_name",
-    "allowFacetDeselect":true,
     "adjustParameters":"
         $parameters = ContractUtil::adjustActiveContractCommonParams($node, $parameters);
         if(function_exists('_checkbook_project_applyParameterFilters')){
