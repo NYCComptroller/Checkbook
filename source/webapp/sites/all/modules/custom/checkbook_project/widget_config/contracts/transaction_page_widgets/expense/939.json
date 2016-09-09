@@ -233,7 +233,7 @@
         },
         "sub_industry_name_formatted": {
             "type":"expression2",
-            "expression":"_get_tooltip_markup($row['sub_industry_type_name'],36)"
+            "expression":"(strtolower($row['vendor_record_type']) == 'sub vendor')? _get_tooltip_markup($row['sub_industry_type_name'],36) : 'N/A'"
         },
         "formatted_prime_dollar_diff": {
             "type":"expression2",
