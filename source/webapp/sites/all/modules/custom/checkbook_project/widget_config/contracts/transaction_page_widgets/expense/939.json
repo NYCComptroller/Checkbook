@@ -4,7 +4,7 @@
     "stickyHeader":true,
     "cleanURLParameters":[
         "vendortype","pmwbe","smwbe","psmwbe","doctype","contstatus","year","calyear","agency","curamtid","pcuramtr","scuramtr","vendor","vendorcode","vendornm","vendornm_exact","pcontdesc","scontdesc","agrmnttype",
-        "agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","startdate","enddate","regdate","cindustry","csize","pmodamt","smodamt","subcontstatus","subvendorstatus"
+        "agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","startdate","enddate","regdate","cindustry","pcindustry","scindustry","csize","pmodamt","smodamt","subcontstatus","subvendorstatus"
     ],
     "urlParamMap":{
         "agrmnttype":"agreement_type_id",
@@ -32,6 +32,8 @@
         "enddate":"prime_effective_end_date",
         "regdate":"registered_date",
         "cindustry":"industry_type_id",
+        "pcindustry":"prime_industry_type_id",
+        "scindustry":"sub_industry_type_id",
         "csize":"award_size_id",
         "pmodamt":"prime_dollar_difference",
         "smodamt":"sub_dollar_difference",
@@ -79,7 +81,8 @@
         "agency_id",
         "agency_name",
         "award_method_name",
-        "industry_type_name",
+        "prime_industry_type_name",
+        "sub_industry_type_name",
         "expenditure_object_names",
         "registered_date",
         "prime_pin",
@@ -224,9 +227,13 @@
             "type":"expression2",
             "expression":"_get_tooltip_markup($row['agreement_type_name'],36)"
         },
-        "industry_name_formatted": {
+        "prime_industry_name_formatted": {
             "type":"expression2",
-            "expression":"_get_tooltip_markup($row['industry_type_name'],36)"
+            "expression":"_get_tooltip_markup($row['prime_industry_type_name'],36)"
+        },
+        "sub_industry_name_formatted": {
+            "type":"expression2",
+            "expression":"_get_tooltip_markup($row['sub_industry_type_name'],36)"
         },
         "formatted_prime_dollar_diff": {
             "type":"expression2",
@@ -312,7 +319,7 @@
         {"labelAlias":"contract_type","column":"contract_type_formatted","sortSourceColumn":"agreement_type_name"},
         {"labelAlias":"award_method","column":"award_method_formatted","sortSourceColumn":"award_method_name"},
         {"labelAlias":"expense_category","column":"expense_cat","sortSourceColumn":"expenditure_object_names"},
-        {"labelAlias":"contract_industry","column":"industry_name_formatted","sortSourceColumn":"industry_type_name"},
+        {"labelAlias":"contract_industry","column":"prime_industry_name_formatted","sortSourceColumn":"prime_industry_type_name"},
         {"labelAlias":"pin","column":"prime_pin"},
         {"labelAlias":"apt_pin","column":"prime_apt_pin"},
         //START SUB
@@ -320,6 +327,7 @@
         {"labelAlias":"sub_mwbe_category","column":"sub_mwbe_category_name","sortSourceColumn":"sub_minority_type_name"},
         {"labelAlias":"contract_purpose","column":"sub_purpose_formatted","sortSourceColumn":"sub_purpose"},
         {"labelAlias":"subvendor_status_pip","column":"subvendor_status_pip","sortSourceColumn":"aprv_sta_name"},
+        {"labelAlias":"contract_industry","column":"sub_industry_name_formatted","sortSourceColumn":"sub_industry_type_name"},
         {"labelAlias":"current_amount","column":"formatted_sub_current_amount","sortSourceColumn":"sub_maximum_contract_amount"},
         {"labelAlias":"original_amount","column":"formatted_sub_original_contract_amount","sortSourceColumn":"sub_original_contract_amount"},
         {"labelAlias":"paid_to_date","column":"formatted_paid_to_date","sortSourceColumn":"sub_rfed_amount"},
@@ -394,6 +402,7 @@
             {"sClass":"text","sWidth":"200px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"250px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
+            {"sClass":"text","sWidth":"220px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"120px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"120px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"120px","asSorting":["asc","desc"]},
@@ -441,6 +450,8 @@
             var oSCurAmount = getNamedFilterCriteria('fSCurAmount');
             var oAwdMethod = getNamedFilterCriteria('fAwdMethodId');
             var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
+            var oPrimeIndustryType = getNamedFilterCriteria('fPrimeIndustryTypeId');
+            var oSubIndustryType = getNamedFilterCriteria('fSubIndustryTypeId');
             var oSubContStatus = getNamedFilterCriteria('fSubContStatus');
 
             var cUrl = oTable.fnSettings().sAjaxSource;
@@ -461,6 +472,8 @@
             cUrl = adjustUrlParameter(cUrl,'scuramtr',oSCurAmount);
             cUrl = adjustUrlParameter(cUrl,'awdmethod',oAwdMethod);
             cUrl = adjustUrlParameter(cUrl,'cindustry',oIndustryType);
+            cUrl = adjustUrlParameter(cUrl,'pcindustry',oPrimeIndustryType);
+            cUrl = adjustUrlParameter(cUrl,'scindustry',oSubIndustryType);
             cUrl = adjustUrlParameter(cUrl,'subcontstatus',oSubContStatus);
 
             return cUrl;
@@ -547,17 +560,18 @@
                             sOut += '<td class=\"text\" style=\"width:200px\">'+ (row[24] == null ? '': row[24])+'</td>';
                             sOut += '<td class=\"text\" style=\"width:250px\">'+ (row[25] == null ? '': row[25])+'</td>';
                             sOut += '<td class=\"text\" style=\"width:150px\">'+ (row[26] == null ? '': row[26])+'</td>';
-                            sOut += '<td class=\"number\" style=\"width:120px\">'+ (row[27] == null ? '': row[27])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:220px\">'+ (row[27] == null ? '': row[27])+'</td>';
                             sOut += '<td class=\"number\" style=\"width:120px\">'+ (row[28] == null ? '': row[28])+'</td>';
                             sOut += '<td class=\"number\" style=\"width:120px\">'+ (row[29] == null ? '': row[29])+'</td>';
+                            sOut += '<td class=\"number\" style=\"width:120px\">'+ (row[30] == null ? '': row[30])+'</td>';
                             if(is_contract_modification) {
-                                sOut += '<td class=\"number\" style=\"width:120px\">'+ (row[30] == null ? '': row[30])+'</td>';
                                 sOut += '<td class=\"number\" style=\"width:120px\">'+ (row[31] == null ? '': row[31])+'</td>';
+                                sOut += '<td class=\"number\" style=\"width:120px\">'+ (row[32] == null ? '': row[32])+'</td>';
                             }
                             sOut += '<td style=\"width:30px\"></td>';
-                            sOut += '<td class=\"text\" style=\"width:110px\">'+ (row[32] == null ? '': row[32])+'</td>';
                             sOut += '<td class=\"text\" style=\"width:110px\">'+ (row[33] == null ? '': row[33])+'</td>';
-                            sOut += '<td class=\"number-center\" style=\"width:120px\">'+ (row[34] == null ? '': row[34])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:110px\">'+ (row[34] == null ? '': row[34])+'</td>';
+                            sOut += '<td class=\"number-center\" style=\"width:120px\">'+ (row[35] == null ? '': row[35])+'</td>';
                             sOut += '<td style=\"width:5px\"></td>';
                             //END SUB
                             sOut += '</tr>';

@@ -124,6 +124,38 @@
                         }]
                 },
                 {
+                    "name":"prime_industry_type_id",
+                    "levels": [
+                    {
+                        "name":"prime_industry_type_id",
+                        "sourceColumnName":"prime_industry_type_id"
+                    }]
+                },
+                {
+                    "name":"prime_industry_type_name",
+                    "levels": [
+                    {
+                        "name":"prime_industry_type_name",
+                        "sourceColumnName":"prime_industry_type_name"
+                    }]
+                },
+                {
+                    "name":"sub_industry_type_id",
+                    "levels": [
+                    {
+                        "name":"sub_industry_type_id",
+                        "sourceColumnName":"sub_industry_type_id"
+                    }]
+                },
+                {
+                    "name":"sub_industry_type_name",
+                    "levels": [
+                    {
+                        "name":"sub_industry_type_name",
+                        "sourceColumnName":"sub_industry_type_name"
+                    }]
+                },
+                {
                     "name":"award_method_id",
                     "levels": [
                         {
