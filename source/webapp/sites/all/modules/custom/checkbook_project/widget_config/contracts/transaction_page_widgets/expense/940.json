@@ -28,7 +28,8 @@
         "agency_id",
         "agency_name",
         "award_method_name",
-        "industry_type_name",
+        "prime_industry_type_name",
+        "sub_industry_type_name",
         "expenditure_object_names",
         "registered_date",
         "tracking_number",
@@ -164,9 +165,13 @@
             "type":"expression2",
             "expression":"_get_tooltip_markup($row['agreement_type_name'],36)"
         },
-        "industry_name_formatted": {
+        "prime_industry_name_formatted": {
             "type":"expression2",
-            "expression":"_get_tooltip_markup($row['industry_type_name'],36)"
+            "expression":"_get_tooltip_markup($row['prime_industry_type_name'],36)"
+        },
+        "sub_industry_name_formatted": {
+            "type":"expression2",
+            "expression":"_get_tooltip_markup($row['sub_industry_type_name'],36)"
         },
         "formatted_prime_dollar_diff": {
             "type":"expression2",
@@ -252,7 +257,7 @@
         {"labelAlias":"contract_type","column":"contract_type_formatted"},
         {"labelAlias":"award_method","column":"award_method_formatted"},
         {"labelAlias":"expense_category","column":"expense_cat"},
-        {"labelAlias":"contract_industry","column":"industry_name_formatted"},
+        {"labelAlias":"prime_contract_industry","column":"prime_industry_name_formatted"},
         {"labelAlias":"pin","column":"tracking_number"},
         {"labelAlias":"apt_pin","column":"brd_awd_no"},
         //START SUB
@@ -260,6 +265,7 @@
         {"labelAlias":"sub_mwbe_category","column":"sub_mwbe_category_name"},
         {"labelAlias":"contract_purpose","column":"sub_purpose_formatted"},
         {"labelAlias":"subvendor_status_pip","column":"subvendor_status_pip"},
+        {"labelAlias":"sub_contract_industry","column":"sub_industry_name_formatted"},
         {"labelAlias":"current_amount","column":"formatted_sub_current_amount"},
         {"labelAlias":"original_amount","column":"formatted_sub_original_contract_amount"},
         {"labelAlias":"paid_to_date","column":"formatted_paid_to_date"},
