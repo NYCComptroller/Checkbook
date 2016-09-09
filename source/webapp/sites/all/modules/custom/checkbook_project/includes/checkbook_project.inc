@@ -2178,3 +2178,13 @@ function isAdvancedSearchResultsPage(){
     }
     return false;
 }
+
+//Returns new features from Drupal database
+function _checkbook_get_new_features(){
+    $query = new EntityFieldQuery();
+    $result = $query->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle', 'new_feature')
+      ->execute();
+    $new_features = node_load_multiple(array_keys($result['node']));
+    echo theme('new_features',array('new_features'=>$new_features));
+}
