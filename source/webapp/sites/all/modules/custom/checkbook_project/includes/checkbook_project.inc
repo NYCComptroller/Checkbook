@@ -2186,5 +2186,6 @@ function _checkbook_get_new_features(){
       ->entityCondition('bundle', 'new_feature')
       ->execute();
     $new_features = node_load_multiple(array_keys($result['node']));
-    echo theme('new_features',array('new_features'=>$new_features));
+    $html = theme('new_features',array('new_features'=>$new_features));
+    return $html;
 }
