@@ -1,4 +1,5 @@
 jQuery(document).ready(function ($) {
+    jQuery('#nice-menu-1').append("<a class='btn-new-features' href='/new-features/newwindow' target='_blank'>New Features</a>");
     //Altering CSS for slider pager for pie charts on contracts page
     if(jQuery(".slider-pager a").length == 2){
         jQuery("div.slider-pager").addClass('pieSlider');

@@ -3538,3 +3538,11 @@ p.pieCount {
     height: 40px;
     padding-left: 10px;
 }
+
+/* New Features button styles */
+
+a.btn-new-features{
+    font-weight: bold;
+    padding-right: 20px;
+    text-align: right;
+}
