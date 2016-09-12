@@ -369,7 +369,7 @@
         "bInfo":true,
         "aoColumns": [
             {"sClass":"expander","sWidth":"30px","bSortable":false},
-            {"sClass":"text", "sWidth":"120px","asSorting":["asc","desc"]},
+            {"sClass":"text", "sWidth":"130px","asSorting":["asc","desc"]},
             {"sClass":"sub-cont-status","sWidth":"180px","asSorting":["asc","desc"]},
             {"bSortable":false,"sWidth":"30px"},
             //START PRIME
@@ -382,9 +382,9 @@
             {"sClass":"number","sWidth":"140px","asSorting":["desc","asc"],"visibility_flag":"show_difference"},
             {"sClass":"number","sWidth":"140px","asSorting":["desc","asc"],"visibility_flag":"show_difference"},
             {"bSortable":false,"sWidth":"30px"},
-            {"sClass":"text","sWidth":"100px","asSorting":["desc","asc"]},
-            {"sClass":"text","sWidth":"100px","asSorting":["desc","asc"]},
-            {"sClass":"number-center","sWidth":"100px","asSorting":["desc","asc"]},
+            {"sClass":"number","sWidth":"100px","asSorting":["desc","asc"]},
+            {"sClass":"number","sWidth":"100px","asSorting":["desc","asc"]},
+            {"sClass":"number","sWidth":"100px","asSorting":["desc","asc"]},
             {"bSortable":false,"sWidth":"10px"},
             //END PRIME
             {"sClass":"text","sWidth":"200px","asSorting":["asc","desc"]},
@@ -409,8 +409,8 @@
             {"sClass":"number","sWidth":"120px","asSorting":["desc","asc"],"visibility_flag":"show_difference"},
             {"sClass":"number","sWidth":"120px","asSorting":["desc","asc"],"visibility_flag":"show_difference"},
             {"bSortable":false,"sWidth":"30px"},
-            {"sClass":"text","sWidth":"110px","asSorting":["asc","desc"]},
-            {"sClass":"text","sWidth":"110px","asSorting":["asc","desc"]},
+            {"sClass":"number","sWidth":"110px","asSorting":["asc","desc"]},
+            {"sClass":"number","sWidth":"110px","asSorting":["asc","desc"]},
             {"sClass":"number-center","sWidth":"120px","asSorting":["asc","desc"]},
             {"bSortable":false,"sWidth":"5px"}
             //END SUB
@@ -430,7 +430,9 @@
             else{
                 jQuery(this).removeClass('collapsed').addClass('loader');
                 fnLoadChildRecords(nTr, jQuery(this));
-            }} );
+            }
+
+        } );
     ",
     "customExternalJS":"
 
@@ -523,7 +525,7 @@
 
                             sOut += '<tr>';
                             
-                            sOut += '<td class=\"text\" style=\"width:120px\">'+ (row[1] == null ? '': row[1])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:130px\">'+ (row[1] == null ? '': row[1])+'</td>';
                             sOut += '<td class=\"sub-cont-status\"  style=\"width:180px\">'+ (row[2] == null ? '': row[2])+'</td>';
                             sOut += '<td style=\"width:30px\"></td>';
                             //START PRIME
@@ -538,9 +540,9 @@
                                 sOut += '<td class=\"number\" style=\"width:140px\">'+ (row[10] == null ? '': row[10])+'</td>';
                             }
                             sOut += '<td style=\"width:30px\"></td>';
-                            sOut += '<td class=\"text\" style=\"width:100px\">'+ (row[11] == null ? '': row[11])+'</td>';
-                            sOut += '<td class=\"text\" style=\"width:100px\">'+ (row[12] == null ? '': row[12])+'</td>';
-                            sOut += '<td class=\"number-center\" style=\"width:100px\">'+ (row[13] == null ? '': row[13])+'</td>';
+                            sOut += '<td class=\"number\" style=\"width:100px\">'+ (row[11] == null ? '': row[11])+'</td>';
+                            sOut += '<td class=\"number\" style=\"width:100px\">'+ (row[12] == null ? '': row[12])+'</td>';
+                            sOut += '<td class=\"number\" style=\"width:100px\">'+ (row[13] == null ? '': row[13])+'</td>';
                             sOut += '<td style=\"width:10px\"></td>';
                             //END PRIME
 
@@ -569,8 +571,8 @@
                                 sOut += '<td class=\"number\" style=\"width:120px\">'+ (row[32] == null ? '': row[32])+'</td>';
                             }
                             sOut += '<td style=\"width:30px\"></td>';
-                            sOut += '<td class=\"text\" style=\"width:110px\">'+ (row[33] == null ? '': row[33])+'</td>';
-                            sOut += '<td class=\"text\" style=\"width:110px\">'+ (row[34] == null ? '': row[34])+'</td>';
+                            sOut += '<td class=\"number\" style=\"width:110px\">'+ (row[33] == null ? '': row[33])+'</td>';
+                            sOut += '<td class=\"number\" style=\"width:110px\">'+ (row[34] == null ? '': row[34])+'</td>';
                             sOut += '<td class=\"number-center\" style=\"width:120px\">'+ (row[35] == null ? '': row[35])+'</td>';
                             sOut += '<td style=\"width:5px\"></td>';
                             //END SUB
@@ -590,6 +592,10 @@
                             verticalArrowPositions: 'split'
                         });
                     }
+                    //Fix the width for the children with no scroll
+                    jQuery('#table_939_wrapper').find('td.childcontracts div.sub-table-wrapper').each(function() {
+                    jQuery(this).find('.jspPane').width(jQuery(this).find('.jspContainer').width() - 30);
+                    });
                 }
             });
 
