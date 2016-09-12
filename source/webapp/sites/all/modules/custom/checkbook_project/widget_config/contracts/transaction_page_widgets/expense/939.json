@@ -61,7 +61,7 @@
     "html_class":"initiative-table",
     "no_results_content":"No Results Found",
     "dataset":"checkbook:all_agreement_transactions_by_prime_sub_vendor",
-    "uniqueSortColumn":"agreement_id",
+    "uniqueSortColumn":["-vendor_record_type", "agreement_id"],
     "columns": [
         "vendor_record_type",
         "agreement_id",
