@@ -369,7 +369,7 @@
         "bInfo":true,
         "aoColumns": [
             {"sClass":"expander","sWidth":"30px","bSortable":false},
-            {"sClass":"text", "sWidth":"120px","asSorting":["asc","desc"]},
+            {"sClass":"text", "sWidth":"130px","asSorting":["asc","desc"]},
             {"sClass":"sub-cont-status","sWidth":"180px","asSorting":["asc","desc"]},
             {"bSortable":false,"sWidth":"30px"},
             //START PRIME
@@ -430,7 +430,9 @@
             else{
                 jQuery(this).removeClass('collapsed').addClass('loader');
                 fnLoadChildRecords(nTr, jQuery(this));
-            }} );
+            }
+
+        } );
     ",
     "customExternalJS":"
 
@@ -523,7 +525,7 @@
 
                             sOut += '<tr>';
                             
-                            sOut += '<td class=\"text\" style=\"width:120px\">'+ (row[1] == null ? '': row[1])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:130px\">'+ (row[1] == null ? '': row[1])+'</td>';
                             sOut += '<td class=\"sub-cont-status\"  style=\"width:180px\">'+ (row[2] == null ? '': row[2])+'</td>';
                             sOut += '<td style=\"width:30px\"></td>';
                             //START PRIME
@@ -590,6 +592,10 @@
                             verticalArrowPositions: 'split'
                         });
                     }
+                    //Fix the width for the children with no scroll
+                    jQuery('#table_939_wrapper').find('td.childcontracts div.sub-table-wrapper').each(function() {
+                    jQuery(this).find('.jspPane').width(jQuery(this).find('.jspContainer').width() - 30);
+                    });
                 }
             });
 
