@@ -289,7 +289,7 @@
     "skipCustomPadding":true,
     "headerConfig":"
         $i = ($node->show_difference) ? 2 : 0;
-        $headerConfig = array('&nbsp;'=>2,'Prime Vendor Contract Information' => 23+$i, 'Sub Vendor Contract Information' => 12+$i);
+        $headerConfig = array('&nbsp;'=>2,'Prime Vendor Contract Information' => 23+$i, 'Sub Vendor Contract Information' => 13+$i);
         return $headerConfig;
     ",
     "table_columns": [
