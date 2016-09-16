@@ -3572,3 +3572,10 @@ div.new-features-description{
 .new-features{
     
 }
+
+.page-new-features-newwindow h1 {
+    font-size: 20px;
+    margin-bottom: 5px;
+    margin-top: 8px;
+    text-transform: uppercase;
+}
