@@ -3539,10 +3539,36 @@ p.pieCount {
     padding-left: 10px;
 }
 
-/* New Features button styles */
+/* Styles for New Features */
 
 a.btn-new-features{
     font-weight: bold;
-    padding-right: 20px;
+    margin-right: 30px;
     text-align: right;
+}
+
+.btn-new-features img {
+    margin-left: 3px;
+    vertical-align: bottom;
+}
+
+div.new-features-title{
+    margin: 15px 5px 10px; 
+    font-weight: bold;
+    font-size: 14px;
+}
+
+div.new-features-description{
+    font-size: 14px;
+    margin-left: 5px;
+}
+
+.page-new-features-newwindow .logo,
+.page-new-features-newwindow .logo-img{
+    pointer-events: none;
+    cursor: default;
+}
+
+.new-features{
+    
 }
