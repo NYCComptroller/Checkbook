@@ -1,5 +1,5 @@
 jQuery(document).ready(function ($) {
-    jQuery('#nice-menu-1').append("<a class='btn-new-features gridpopup' href='/new-features/newwindow'>New Features</a>");
+    jQuery('#nice-menu-1').append("<div class='new-features'><a class='btn-new-features gridpopup' href='/new-features/newwindow'>New Features<img src='/sites/all/themes/checkbook3/images/exclamationmark.png'></a></div>");
     //Altering CSS for slider pager for pie charts on contracts page
     if(jQuery(".slider-pager a").length == 2){
         jQuery("div.slider-pager").addClass('pieSlider');
