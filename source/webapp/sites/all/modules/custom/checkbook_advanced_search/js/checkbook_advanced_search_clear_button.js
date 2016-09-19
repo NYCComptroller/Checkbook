@@ -119,5 +119,49 @@ function clearInputFieldByDataSource(enclosingDiv,domain,dataSource){
     })
 }
 
-
+//Disable Advanced Search Form Fields based on the selection criteria
+function disableInputFields(){
+    //disable Budget fields
+    if(jQuery('#edit-budget-agencies').val() == 0){
+        jQuery('#edit-budget-department').attr("disabled", "disabled");
+        jQuery('#edit-budget-expense-category').attr("disabled", "disabled");
+    }
+    if(jQuery('#edit-budget-department').val() == 0){
+        jQuery('#edit-budget-expense-category').attr("disabled", "disabled");
+    }
+    
+    /****************disable Spending fields*****************/
+    //Agency, Department and Expense Category
+    var data_source = jQuery('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
+    if (jQuery('select[name='+data_source+'_spending_agency]').val() == 0) {
+        jQuery('select[name='+data_source+'_spending_department]').attr("disabled", "disabled");
+        jQuery('select[name='+data_source+'_spending_expense_category]').attr("disabled", "disabled");
+    }
+    if(jQuery('select[name='+data_source+'_spending_department]').val() == 0){
+       jQuery('select[name='+data_source+'_spending_expense_category]').attr("disabled", "disabled");
+    }
+    
+    //Spending Category, Contract ID and Payee Name
+    if (jQuery('select[name='+data_source+'_spending_expense_type]').val() == 2) {
+        jQuery('input:text[name='+data_source+'_spending_contract_num]').attr("disabled", "disabled");
+        jQuery('input:text[name='+data_source+'_spending_contract_num]').val("");
+        jQuery('input:text[name='+data_source+'_spending_payee_name]').attr("disabled", "disabled");
+        jQuery('input:text[name='+data_source+'_spending_payee_name]').val("");
+    }
+    else if (jQuery('select[name='+data_source+'_spending_expense_type]').val() == 4) {
+        jQuery('input:text[name='+data_source+'_spending_contract_num]').attr("disabled", "disabled");
+        jQuery('input:text[name='+data_source+'_spending_contract_num]').val("");
+    }
+    
+    //Date Filter
+    var value = jQuery('input:radio[name='+data_source+'_spending_date_filter]:checked').val();
+    if (value == 0) {
+        jQuery('select[name="'+data_source+'_spending_fiscal_year"]').attr('disabled', '');
+        jQuery('input:text[name="'+data_source+'_spending_issue_date_from[date]"]').attr('disabled', 'disabled');
+        jQuery('input:text[name="'+data_source+'_spending_issue_date_to[date]"]').attr('disabled', 'disabled');
+    } else if (value == 1) {
+        jQuery('select[name="'+data_source+'_spending_fiscal_year"]').attr('disabled', 'disabled');
+    }
+    
+}
 

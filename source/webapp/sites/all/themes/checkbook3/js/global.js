@@ -1562,9 +1562,10 @@ Drupal.behaviors.hoveOverMWBE = {
                         $('#edit-next-submit').css('display','none');
                         $('#edit-back-submit').css('display','none');
 
-                        /* Show the accordion */
+                        /* Show the accordion and disable the input fields based on the selection criteria */
                         $('.advanced-search-accordion').css('display','block');
-
+                        disableInputFields();
+                        
                         break;
 
                     case 'schedule_alert':
