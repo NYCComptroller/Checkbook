@@ -135,7 +135,11 @@ h4 {
     margin:5px 10px 0px 0px;
 }
 #social-media{
-
+    float: right;
+    margin: 12px 0 -35px;
+    padding-right: 20px;
+    position: relative;
+    z-index: 15;
     height:22px;
     font-size: 11px;
     background: #ffffff; /* Old browsers */
@@ -146,7 +150,6 @@ h4 {
     background: -ms-linear-gradient(top,  #ffffff 0%,#e1e1e1 100%); /* IE10+ */
     background: linear-gradient(to bottom,  #ffffff 0%,#e1e1e1 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e1e1e1',GradientType=0 ); /* IE6-9 */
-
 }
 .addthis_toolbox{
     float:right;
