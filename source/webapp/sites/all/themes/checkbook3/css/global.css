@@ -219,6 +219,11 @@ h4 {
     color: #fff;
 }
 
+/**Styles for 'New Features' in the main menu **/
+#nice-menu-1 li.new-features a{
+    color:#389be2;
+}
+
 /********************************
 ***   REGION FILTERS STYLES   ***
 ********************************/
@@ -3541,17 +3546,6 @@ p.pieCount {
 
 /* Styles for New Features */
 
-a.btn-new-features{
-    font-weight: bold;
-    margin-right: 30px;
-    text-align: right;
-}
-
-.btn-new-features img {
-    margin-left: 3px;
-    vertical-align: bottom;
-}
-
 div.new-features-title{
     margin: 15px 5px 10px; 
     font-weight: bold;
@@ -3567,10 +3561,6 @@ div.new-features-description{
 .page-new-features-newwindow .logo-img{
     pointer-events: none;
     cursor: default;
-}
-
-.new-features{
-    
 }
 
 .page-new-features-newwindow h1 {
