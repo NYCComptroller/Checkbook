@@ -2184,6 +2184,7 @@ function _checkbook_get_new_features(){
     $query = new EntityFieldQuery();
     $result = $query->entityCondition('entity_type', 'node')
       ->entityCondition('bundle', 'new_feature')
+      ->fieldCondition('field_display', 'value', 1)
       ->fieldOrderBy('field_release_date', 'value', 'DESC')
       ->execute();
     $new_features = node_load_multiple(array_keys($result['node']));
