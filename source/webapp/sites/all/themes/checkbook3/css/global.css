@@ -137,8 +137,24 @@ h4 {
     float:right;
     margin:5px 10px 0px 0px;
 }
-#social-media{
 
+#social-media-icons {
+    float: right;
+    margin: -27px 0 0;
+    padding-right: 10px;
+    position: relative;
+    z-index: 99;
+    background: #ffffff; /* Old browsers */
+    background: -moz-linear-gradient(top,  #ffffff 0%, #e1e1e1 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#e1e1e1)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #ffffff 0%,#e1e1e1 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #ffffff 0%,#e1e1e1 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #ffffff 0%,#e1e1e1 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #ffffff 0%,#e1e1e1 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e1e1e1',GradientType=0 ); /* IE6-9 */
+}
+
+#social-media {
     height:22px;
     font-size: 11px;
     background: #ffffff; /* Old browsers */
@@ -149,7 +165,6 @@ h4 {
     background: -ms-linear-gradient(top,  #ffffff 0%,#e1e1e1 100%); /* IE10+ */
     background: linear-gradient(to bottom,  #ffffff 0%,#e1e1e1 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e1e1e1',GradientType=0 ); /* IE6-9 */
-
 }
 .addthis_toolbox{
     float:right;
@@ -2949,7 +2964,7 @@ body.page-payroll-employee-transactions #table_310{
 }
 #section-footer h2{display:none;}
 #zone-footer{width:96%; padding:73px 2% 0px 2%;}
-body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
+body.context-resources #zone-footer{padding:73px 2% 0px 2%;}
 #section-footer .block-menu {
     display: block;
     float:left;
