@@ -3573,3 +3573,7 @@ div.new-features-description{
     margin-top: 8px;
     text-transform: uppercase;
 }
+
+.page-new-features #body-inner{
+    height:500pxS;
+}
