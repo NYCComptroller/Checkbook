@@ -137,7 +137,6 @@ h4 {
     float:right;
     margin:5px 10px 0px 0px;
 }
-
 #social-media-icons {
     float: right;
     margin: -27px 0 0;
@@ -232,6 +231,15 @@ h4 {
 #nice-menu-1 > li li span:hover{
     background: #2d4c68;
     color: #fff;
+}
+
+/**Styles for 'New Features' in the main menu **/
+#nice-menu-1 li.new-features a{
+    color:#389be2;
+}
+#nice-menu-1 li.new-features a:hover,
+#nice-menu-1 li.new-features a.active{
+    color:#5fafe7;
 }
 
 /********************************
@@ -2964,7 +2972,7 @@ body.page-payroll-employee-transactions #table_310{
 }
 #section-footer h2{display:none;}
 #zone-footer{width:96%; padding:73px 2% 0px 2%;}
-body.context-resources #zone-footer{padding:73px 2% 0px 2%;}
+body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
 #section-footer .block-menu {
     display: block;
     float:left;
@@ -3552,4 +3560,34 @@ p.pieCount {
     text-align: left;
     height: 40px;
     padding-left: 10px;
+}
+
+/* Styles for New Features */
+
+div.new-features-title{
+    margin: 15px 5px 10px; 
+    font-weight: bold;
+    font-size: 14px;
+}
+
+div.new-features-description{
+    font-size: 14px;
+    margin-left: 5px;
+}
+
+.page-new-features-newwindow .logo,
+.page-new-features-newwindow .logo-img{
+    pointer-events: none;
+    cursor: default;
+}
+
+.page-new-features-newwindow h1 {
+    font-size: 20px;
+    margin-bottom: 5px;
+    margin-top: 8px;
+    text-transform: uppercase;
+}
+
+.page-new-features #body-inner{
+    height:500px;
 }
