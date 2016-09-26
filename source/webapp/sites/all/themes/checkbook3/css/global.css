@@ -239,7 +239,7 @@ h4 {
 }
 #nice-menu-1 li.new-features a:hover,
 #nice-menu-1 li.new-features a.active{
-    color:#5fafe7;
+    color: #2A639A;
 }
 
 /********************************
@@ -3579,13 +3579,6 @@ div.new-features-description{
 .page-new-features-newwindow .logo-img{
     pointer-events: none;
     cursor: default;
-}
-
-.page-new-features-newwindow h1 {
-    font-size: 20px;
-    margin-bottom: 5px;
-    margin-top: 8px;
-    text-transform: uppercase;
 }
 
 .page-new-features #body-inner{
