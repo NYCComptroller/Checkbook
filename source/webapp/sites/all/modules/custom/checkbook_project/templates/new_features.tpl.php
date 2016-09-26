@@ -11,7 +11,7 @@ if(count($new_features) > 0){
     print '<br/><br/>';
     //Begin of Pagination at the top
     
-    $per_page = 2;
+    $per_page = 5;
     // Initialise the pager
     $current_page = pager_default_initialize($total_count, $per_page);
     // Show the pager
