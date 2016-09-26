@@ -2182,7 +2182,7 @@ function isAdvancedSearchResultsPage(){
 //Returns new features from Drupal database
 function _checkbook_get_new_features(){
     $query = new EntityFieldQuery();
-    $per_page = 2;
+    $per_page = 5;
     $start_index = ($_REQUEST['page'])? $_REQUEST['page']*$per_page:0;
     
     //Results per page query
