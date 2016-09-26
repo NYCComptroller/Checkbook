@@ -2182,12 +2182,26 @@ function isAdvancedSearchResultsPage(){
 //Returns new features from Drupal database
 function _checkbook_get_new_features(){
     $query = new EntityFieldQuery();
+    $per_page = 2;
+    $start_index = ($_REQUEST['page'])? $_REQUEST['page']*$per_page:0;
+    
+    //Results per page query
     $result = $query->entityCondition('entity_type', 'node')
-      ->entityCondition('bundle', 'new_feature')
-      ->fieldCondition('field_display', 'value', 1)
-      ->fieldOrderBy('field_release_date', 'value', 'DESC')
-      ->execute();
+                ->entityCondition('bundle', 'new_feature')
+                ->fieldCondition('field_display', 'value', 1)
+                ->fieldOrderBy('field_release_date', 'value', 'DESC')
+                ->range($start_index, $per_page)
+                ->execute();
     $new_features = node_load_multiple(array_keys($result['node']));
-    $html = theme('new_features',array('new_features'=>$new_features));
+    
+    //Total count query
+    $countQuery = new EntityFieldQuery();
+    $count = $countQuery->entityCondition('entity_type', 'node')
+                ->entityCondition('bundle', 'new_feature')
+                ->fieldCondition('field_display', 'value', 1)
+                ->count()
+                ->execute();
+    
+    $html = theme('new_features',array('new_features'=>$new_features, 'total_count' => $count));
     return $html;
 }
