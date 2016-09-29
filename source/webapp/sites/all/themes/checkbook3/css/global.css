@@ -3564,8 +3564,8 @@ p.pieCount {
 
 /* Styles for New Features */
 
-.page-new-features-newwindow .logo,
-.page-new-features-newwindow .logo-img{
+.page-node-975 .logo,
+.page-node-975 .logo-img{
     pointer-events: none;
     cursor: default;
 }
@@ -3603,4 +3603,12 @@ h3.new-features {
     padding-top: 10px;
     color: black;
     font-size: 15px;
+}
+
+.page-node-975 #breadcrumb{
+    display: none;
+}
+
+.page-node-975 #page-title{
+    margin-top:20px;
 }
