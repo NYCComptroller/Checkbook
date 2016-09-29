@@ -147,11 +147,11 @@ function checkbook_project_menu(){
         'type'=>MENU_CALLBACK
     );
     
-    $items['new-features'] = array(
+    /*$items['new-features'] = array(
         'page callback' => '_checkbook_get_new_features',
         'access callback' => true,
         'type'=>MENU_CALLBACK
-    );
+    );*/
    
 
     return $items;
