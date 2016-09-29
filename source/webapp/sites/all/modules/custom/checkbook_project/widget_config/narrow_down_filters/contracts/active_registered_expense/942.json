@@ -21,7 +21,7 @@
     "urlParameterNameType":"eqtext",
     "autocompleteID":"fvendorCode",
     "showAllRecords":true,
-    "allowFacetDeselect":false,
+    "allowFacetDeselect":true,
     "template":"individual_filter",
     "adjustParameters":"
         $parameters = ContractUtil::adjustActiveContractCommonParams($node, $parameters);
