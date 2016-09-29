@@ -192,7 +192,9 @@ function _checkbook_faceted_search_update_data($node) {
                     ,$checked_items[0][str_replace('.','_',$node->widgetConfig->columns[2])]);
                 }
             }
-            if($checked_items[0]['count_prime_mwbe'] || $checked_items[0]['count_sub_mwbe']){
+            $custom_count = $checked_items[0]['count_prime_mwbe'] || $checked_items[0]['count_sub_mwbe'];
+            $custom_count = $custom_count || $checked_items[0]['count_prime_records'] || $checked_items[0]['count_sub_records'];
+            if($custom_count){
                 if(count($checked_items[0]) == 2){
                     $output['checked'][] = array($checked_items[0][str_replace('.','_',$node->widgetConfig->columns[0])]
                     ,$checked_items[0][str_replace('.','_',$node->widgetConfig->columns[0])]
