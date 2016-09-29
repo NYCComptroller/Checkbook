@@ -3581,12 +3581,16 @@ div.new-features-description{
     margin-right: 30px;
     color: black;
 }
+.new-features-description > p{
+    line-height: 1.5;
+    
+}
 .new-features-description > ul{
     margin: 20px;
     
 }
 .new-features-description > ul li{
-    padding-bottom: 5px;
+    padding-bottom: 7px;
 }
 .new-features-description > img{
     width: 700px;
