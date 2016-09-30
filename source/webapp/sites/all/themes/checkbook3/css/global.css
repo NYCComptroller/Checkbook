@@ -3610,5 +3610,14 @@ h3.new-features {
 }
 
 .page-node-975 #page-title{
-    margin-top:20px;
+    margin-top:10px;
+    margin-left: 10px;
+}
+
+.page-node-975 date-of-release.h3 {
+    border-bottom: 1px solid;
+    font-size: 20px;
+    margin-left: 10px;
+    padding-top: 20px;
+    text-transform: capitalize;
 }
