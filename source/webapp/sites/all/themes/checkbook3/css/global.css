@@ -3625,6 +3625,7 @@ h3.new-features {
 
 a.new-features-morelink{
     float: right;
-    margin-right: 30px;
-    font-size: 16px;
+    margin-right: 40px;
+    margin-top: 15px;
+    font-size: 14px;
 }
