@@ -178,7 +178,7 @@ class MappingUtil {
     	}
 
         $year = _getRequestParamValue('year');
-        $yearType = _getRequestParamValue('yeartype');
+        $yearType = 'B';
   		$filters_html .=  "
   			 " . $mwbe_total_link_html . "
 			<li class='no-click'><a href='/" . RequestUtil::getLandingPageUrl($domain,$year,$yearType) . "/mwbe/" . MappingUtil::$total_mwbe_cats ."/dashboard/mp'>M/WBE Home</a></li>
@@ -227,7 +227,7 @@ class MappingUtil {
 
         //Sub vendors home link
         $year = _getRequestParamValue('year');
-        $yearType = _getRequestParamValue('yeartype');
+        $yearType = 'B';
         $sub_vendors_home_link = RequestUtil::getLandingPageUrl($domain,$year,$yearType);
         $home_link_html = "<li class='no-click'><a href='/" . $sub_vendors_home_link . "/dashboard/ss'>Sub Vendors Home</a></li>";
 
@@ -259,7 +259,11 @@ class MappingUtil {
     			
     			foreach(self::$spendingMWBEParamMap as $param=>$value){
     				if(_getRequestParamValue($param) != null){
-    					$where_filters[] = _widget_build_sql_condition(' a1.' . $value, _getRequestParamValue($param));
+                                        $paramValue = _getRequestParamValue($param);
+                                        if($param == 'yeartype' && $paramValue == 'C'){
+                                            $paramValue = 'B';
+                                        }
+    					$where_filters[] = _widget_build_sql_condition(' a1.' . $value, $paramValue);
     				}
     			}
     			
@@ -285,7 +289,11 @@ class MappingUtil {
 	    		$where_filters = array();
 	    		foreach(self::$contractsMWBEParamMap as $param=>$value){
 	    			if(_getRequestParamValue($param) != null){
-    					$where_filters[] = _widget_build_sql_condition(' a1.' . $value, _getRequestParamValue($param));
+    					$paramValue = _getRequestParamValue($param);
+                                        if($param == 'yeartype' && $paramValue == 'C'){
+                                            $paramValue = 'B';
+                                        }
+    					$where_filters[] = _widget_build_sql_condition(' a1.' . $value, $paramValue);
     				}
 	    		}
 	    		
@@ -325,7 +333,11 @@ class MappingUtil {
     			 
     			foreach($urlParamMap as $param=>$value){
     				if(_getRequestParamValue($param) != null){
-    					$where_filters[] = _widget_build_sql_condition(' a1.' . $value, _getRequestParamValue($param));
+                                        $paramValue = _getRequestParamValue($param);
+                                        if($param == 'yeartype' && $paramValue == 'C'){
+                                            $paramValue = 'B';
+                                        }
+    					$where_filters[] = _widget_build_sql_condition(' a1.' . $value, $paramValue);
     				}
     			}
     			 
@@ -353,7 +365,11 @@ class MappingUtil {
     			$where_filters = array();
     			foreach($urlParamMap as $param=>$value){
     				if(_getRequestParamValue($param) != null){
-    					$where_filters[] = _widget_build_sql_condition(' a1.' . $value, _getRequestParamValue($param));
+    					$paramValue = _getRequestParamValue($param);
+                                        if($param == 'yeartype' && $paramValue == 'C'){
+                                            $paramValue = 'B';
+                                        }
+    					$where_filters[] = _widget_build_sql_condition(' a1.' . $value, $paramValue);
     				}
     			}
     	   
@@ -404,6 +420,17 @@ class MappingUtil {
                 array_push($unchecked, array($key, self::getVendorTypeName($key),$value));
         }
         return array('unchecked'=>$unchecked, "checked"=>$checked);
+    }
+
+    static function getMixedVendorTypeNames($vendor_type_name_id){
+        switch($vendor_type_name_id) {
+            case 'P~PM':
+                return "PRIME VENDOR";
+            case 'S~SM':
+                return "SUB VENDOR";
+            case 'PM~SM':
+                return "M/WBE VENDOR";
+        }
     }
 
     static function getSubVendorEthinictyTitle($vendor_id, $domain,$is_prime_or_sub = "S"){
@@ -477,6 +504,37 @@ class MappingUtil {
 
         }
         return $title;
+    }
+
+
+    static function getscntrc_status_name($scntrc_status) {
+        switch($scntrc_status){
+            case 1: return('No Data Entered');
+                break;
+            case 2: return('Yes');
+                break;
+            case 3: return('No');
+                break;
+        }
+
+    }
+
+    static function getaprv_sta_name($aprv_sta) {
+        switch($aprv_sta){
+            case 1: return('No Subcontract Payments Submitted');
+                break;
+            case 2: return('ACCO Rejected Sub Vendor');
+                break;
+            case 3: return('ACCO Reviewing Sub Vendor');
+                break;
+            case 4: return('ACCO Approved Sub Vendor');
+                break;
+            case 5: return('ACCO Canceled Sub Vendor');
+                break;
+            case 6: return('No Subcontract Information Submitted');
+                break;
+
+        }
     }
 
 

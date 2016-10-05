@@ -3,7 +3,6 @@
         "searchCriteriaMap":{
             "fiscal_year":"fiscal_year",
             "purpose":"description",
-            "calendar_year":"fiscal_year",
             "other_government_entities_code":"agency_code@checkbook_oge:oge_agency",
             "vendor_name":"legal_name@checkbook_oge:vendor",
             "current_amount":"maximum_contract_amount",
@@ -107,7 +106,6 @@
         },
         "requestParameters":{
             "fiscal_year":{"valueType":"value","dataType":"year","maxLength":"4"},
-            "calendar_year":{"valueType":"value","dataType":"year","maxLength":"4"},
             "other_government_entities_code":{"valueType":"value","dataType":"text","maxLength":"4"},
             "purpose":{"valueType":"value","dataType":"text","maxLength":"100"},
             "prime_vendor":{"valueType":"value","dataType":"text","maxLength":"100"},
@@ -283,7 +281,7 @@
                 "validatorType":"filterName",
                 "validatorTypeConfig":{
                     "required":false,
-                    "filterNames":["fiscal_year", "calendar_year"]
+                    "filterNames":["fiscal_year"]
                 }
             }
         }

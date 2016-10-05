@@ -21,6 +21,7 @@ core = 7.x
 
 dependencies[] = data_controller
 dependencies[] = custom_number_formatter
+dependencies[] = checkbook_services
 
 scripts[] = js/agencies-vendors.js
 scripts[] = js/year_select_redirection.js

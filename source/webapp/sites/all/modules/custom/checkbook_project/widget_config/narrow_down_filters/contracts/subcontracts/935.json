@@ -1,0 +1,29 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":932,
+    "autocomplete":false,
+    "no_results_content":"No Results Found",
+    "startWith":0,
+    "maxSelect":5,
+    "urlParamMap":{
+        "vendortype":"vendor_type_id.vendor_type_id"
+    },
+    "dataset":"checkbook:mixed_vendor_type_data",
+    "columns":["vendor_type_id.vendor_type_id", "vendor_type_name.vendor_type_name", "txcount"],
+    "orderBy":"-txcount",
+    "getTotalDataCount":true,
+    "facetPager":true,
+    "filterName":"Vendor Type",
+    "urlParameterName":"vendortype",
+    "autocompleteID":"fvendorType",
+    "showAllRecords":true,
+    "adjustParameters":"
+        $parameters = ContractUtil::adjustSubContractTransactionsCommonParams($node, $parameters);
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
+            $parameters['vendor_type_name.vendor_type_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+        }
+        return $parameters;
+    ",
+    "template":"individual_filter"
+}

@@ -92,22 +92,13 @@ $total_oge_contracts = count($oge_contracts);
 $node->widgetConfig->getData=false;
 load_widget_data($node);
 }
-$total_count = (_checkbook_check_isEDCPage()) ? number_format($total_oge_contracts) : number_format($node->totalDataCount);
+$total_count = _checkbook_check_isEDCPage() ? $total_oge_contracts : $node->totalDataCount;
 if($total_count > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
-$header='<div class=\"tableHeader\"><h2>Top ' . $count. 'Contracts</h2><span class=\"contCount\"> Number of Stand Alone Contracts: ' . $total_count . '</span></div>';
+$header='<div class=\"tableHeader\"><h2>Top ' . $count. 'Contracts</h2><span class=\"contCount\"> Number of Stand Alone Contracts: ' . number_format($total_count) . '</span></div>';
 return $header;
 ",
 "footer":"
-$url = '/panel_html/contract_details/contract/transactions/contcat/expense'. _checkbook_project_get_url_param_string('status','contstatus');
-$url .= _checkbook_append_url_params();
-$url .= _checkbook_project_get_url_param_string('agency');
-$url .= _checkbook_project_get_url_param_string('vendor');
-$url .= _checkbook_project_get_vendor_facet_url_param_string($node);
-$url .= _checkbook_project_get_url_param_string('awdmethod');
-$url .= _checkbook_project_get_url_param_string('csize');
-$url .= _checkbook_project_get_url_param_string('cindustry');
-$url .= _checkbook_project_get_url_param_string('subvendor');
-$url .= _checkbook_project_get_year_url_param_string();
+$url = ContractUtil::expenseContractsFooterUrl();
 $url .= '/smnid/' .  $node->nid;
 $url .= '/doctype/CTA1~CT1';
 $footer = '';

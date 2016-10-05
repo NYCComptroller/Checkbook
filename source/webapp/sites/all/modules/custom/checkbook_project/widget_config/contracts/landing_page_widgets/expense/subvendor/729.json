@@ -48,17 +48,7 @@ return $adjustedParameters;
 },
 "disableViewAll":true,
 "footer":"
-$url = '/panel_html/contract_details/contract/transactions/contcat/expense' . _checkbook_project_get_url_param_string('status','contstatus');
-$url .= _checkbook_project_get_url_param_string('agency');
-$url .= _checkbook_project_get_url_param_string('vendor');
-$url .= _checkbook_project_get_vendor_facet_url_param_string($node);
-$url .= _checkbook_project_get_url_param_string('awdmethod');
-$url .= _checkbook_project_get_url_param_string('csize');
-$url .= _checkbook_project_get_url_param_string('cindustry');
-$url .= _checkbook_project_get_url_param_string('subvendor');
-$url .= _checkbook_project_get_url_param_string('dashboard');
-$url .= _checkbook_project_get_year_url_param_string();
-$url .= _checkbook_append_url_params();
+$url = ContractUtil::expenseContractsFooterUrl();
 $url .= '/smnid/' .  $node->nid;
 if(_getRequestParamValue('dashboard') == 'ss' || _getRequestParamValue('dashboard') == 'ms' || _getRequestParamValue('dashboard') == 'sp'){
 $url .= '/doctype/CTA1~CT1';
@@ -90,7 +80,7 @@ return $header;
     "entityColumnName":"award_size_award_size_award_size_name",
     "entityColumnLabel":"Contract Size",
     "templateTitle":"Contract by Size Spending Transactions",
-    "preprocess_data":"$node->widgetConfig->summaryView->templateTitle = SpendingUtil::getSpentToDateTitle('Contract by Size Spending');"
+    "preprocess_data":"$node->widgetConfig->summaryView->templateTitle = SpendingUtil::getSpentToDateTitle('Contracts by Size Spending');"
 },
 "widgetTitle":"Contracts by Size",
 "table_title":"",

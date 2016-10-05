@@ -1,0 +1,96 @@
+{
+"widgetType": "highcharts",
+"html_class":"pieChartSlide",
+"header":"
+    $header = '<h2 class=\"chart-title\" style=\"display:none;\">' . $node->widgetConfig->chartTitle . '</h2>
+    <p class=\"pieCount\">'. $node->widgetConfig->chartSubTitle .'</p>';
+    return $header;
+",
+"cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe","year","subvendor"],
+"no_results_content":"No Results Found",
+"widgetDataLoader":"
+    $parameters = array();
+    foreach($node->widgetConfig->requestParams as $param=>$value){
+        $values_array = explode('~',$value);
+        if(count($values_array) > 1){
+            $parameters[$param] =  '(' . implode(',', $values_array) . ')';
+        }else
+            $parameters[$param] = htmlspecialchars_decode(_replace_special_characters_decode($value));
+    }
+    $service = new ContractsDataService();
+    $data = $service->GetSubvendorContractsbyPrimeCounts($parameters); 
+    $node->data  = $data;  
+    
+",
+"widgetUpdateJSONConfig":"
+	
+	$series_data = array();
+        foreach($node->data as $row){
+            $total_contracts = $row['total_contracts'];
+            if($row['no_response_status'] > 0|| $row['reported_sub_count'] > 0 || $row['reported_no_sub_count'] > 0){
+                $series_data[] = array('status' => 'Contracts With No Response by Prime', 'count' => $row['no_response_status']);
+                $series_data[] = array('status' => 'Reported Contracts With Sub Vendors', 'count' => $row['reported_sub_count']);
+                $series_data[] = array('status' => 'Reported Contracts Without Sub Vendors', 'count' => $row['reported_no_sub_count']);
+            }
+        }
+	$index = 0;
+        if(count($series_data) > 0){
+            foreach($series_data as $row){	 								 						
+                $series_new[$index]->y = (int)$row['count'];
+                $series_new[$index]->name = $row['status'];
+                $index += 1;
+            }
+            $node->widgetConfig->chartConfig->series[0]->data = $series_new;
+        }else{
+            $node->data = null;
+        }
+	    $node->widgetConfig->chartTitle =  MappingUtil::getCurrenEhtnicityName() . ' Sub Vendor Reporting by Prime Contracts';
+        $node->widgetConfig->chartSubTitle =  'Total Number of Contracts: '.number_format($total_contracts);
+",
+"chartConfig": {
+        "chart": {
+            "defaultSeriesType": "pie",
+            "plotBackgroundColor": null,
+            "plotBorderWidth": null,
+            "plotShadow": false
+        },
+        "colors": ["#78b5e9", "#f79d60", "#8dea84"],
+        "tooltip": {
+            "function":"tooltipformatter"
+        },
+        "title": {
+            "text": ""
+        },
+        "plotOptions": {
+            "pie": {
+                        "allowPointSelect": true,
+                        "cursor": "pointer",
+                        "dataLabels": {
+                            "enabled": false
+                        },
+                        "showInLegend": true
+                    }
+        },
+        "legend":{
+            "layout": "vertical",
+            "align": "right",
+            "verticalAlign": "middle",
+            "y":-25,
+            "x":75,
+            "useHTML": true,
+            "itemMarginTop": 3,
+            "itemMarginBottom": 3
+        }
+           
+    }
+}
+<function>
+tooltipformatter^^'formatter' :
+function() {
+    var statusName = new Array();
+    statusName['Contracts With No Response by Prime'] = 'Contracts With No Response<br/>by Prime';
+    statusName['Reported Contracts With Sub Vendors'] = 'Reported Contracts With<br/>Sub Vendors';
+    statusName['Reported Contracts Without Sub Vendors'] = 'Reported Contracts Without<br/>Sub Vendors';
+    return statusName[this.point.name] + ': <b>'+ (this.point.y).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +'</b>';
+}
+</function>

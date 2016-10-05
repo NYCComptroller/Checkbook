@@ -4,7 +4,7 @@
     "stickyHeader":true,
     "cleanURLParameters":[
         "subvendor","vendortype","mwbe","doctype","contstatus","year","calyear","yeartype","agency","vendor","curamtr","vendornm","vendornm_exact","contdesc","agrmnttype",
-        "agencyh","contnum","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","modamt","fvendor"
+        "agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","modamt","fvendor","subcontstatus","subvendorstatus"
     ],
     "urlParamMap":{
         "vendortype":"vendor_type",
@@ -25,6 +25,7 @@
         "agrmnttype":"agreement_type_id",
         "agencyh":"agency_history_id",
         "contnum":"contract_number",
+        "contnum_exact":"contract_number",
         "aptpin":"brd_awd_no",
         "pin":"tracking_number",
         "awdmethod":"award_method_id",
@@ -34,10 +35,12 @@
         "regdate":"registered_date",
         "cindustry":"industry_type_id",
         "csize":"award_size_id",
-        "modamt":"dollar_difference"
+        "modamt":"dollar_difference",
+        "subcontstatus":"scntrc_status",
+        "subvendorstatus":"aprv_sta"
     },
     "allowRequestParams":["smnid"],
-    "paramTypeConfig":{"vendornm_exact":"eqignorecase","curamtr":"rangeid","vendornm":"like","contdesc":"contains","contnum":"like","aptpin":"like","pin":"like","curamt":"range",
+    "paramTypeConfig":{"vendornm_exact":"eqignorecase","curamtr":"rangeid","vendornm":"like","contdesc":"contains","contnum":"like","contnum_exact":"eqignorecase","aptpin":"like","pin":"like","curamt":"range",
         "startdate":"range","enddate":"range","regdate":"range","modamt":"ne"},
     "defaultParameters":{"status_flag@checkbook:all_contracts_coa_aggregates":"A"},
     "header":"
@@ -94,7 +97,11 @@
         "industry_type_name",
         "dollar_difference",
         "percent_difference",
-        "original_agreement_id@checkbook:all_contracts_coa_aggregates"
+        "original_agreement_id@checkbook:all_contracts_coa_aggregates",
+        "scntrc_status",
+        "scntrc_status_name",
+        "aprv_sta",
+        "aprv_sta_name"
     ],
     "preProcessConfiguration":"
         $doctype = $node->widgetConfig->requestParams['document_code@checkbook:ref_document_code'];
@@ -109,9 +116,17 @@
         $show_percent_difference = $is_contract_modification;
         $show_expense_category = !$is_sub_vendors;
 
+        $show_sub_vendor_status = !isset($smnid);
+
+        $node->show_sub_vendor_status = $show_sub_vendor_status;
+
         $node->show_expense_category = $show_expense_category;
         $node->show_dollar_difference = $show_dollar_difference;
         $node->show_percent_difference = $show_percent_difference;
+        
+        $dash_board = _getRequestParamValue('dashboard');
+        $node->show_column = $dash_board == 'ss' || $dash_board == 'sp' || $dash_board == 'ms';
+        $node->show_subvendor = false;
 
         $node->is_master_agreement = $is_master_agreement;
         $node->is_contract_modification = $is_contract_modification;
@@ -137,7 +152,7 @@
         },
         "parent_contract_export":{
             "type": "expression2",
-            "expression": "(($row['master_agreement_yn'] == 'Y') ? 'N/A' : $row['master_contract_number'])"
+            "expression":"(!($row['master_contract_number']) ? 'N/A' : $row['master_contract_number'])"
         },
         "formatted_original_amount": {
             "type": "expression2",
@@ -240,13 +255,30 @@
         "associated_prime_vendor_name_export":{
             "type": "expression2",
             "expression": "($row['is_prime_or_sub'] == 'P') ? 'N/A' :  $row['prime_vendor_name']"
+        },
+        "subvendor_status":{
+            "type": "expression2",
+            "expression": "($row['document_code_checkbook_ref_document_code'] == 'CT1' || $row['document_code_checkbook_ref_document_code'] == 'CTA1' || $row['document_code_checkbook_ref_document_code'] == 'CT2') ? $row['scntrc_status_name'] : 'N/A'"
+        },
+        "subvendor_status_pip":{
+            "type": "expression2",
+            "expression": "($row['aprv_sta_name'] == 'N/A' || $row['aprv_sta_name'] == NULL) ? 'N/A' : _get_tooltip_markup($row['aprv_sta_name'],36)"
+        },
+        "subvendor_status_pip_export":{
+            "type": "expression2",
+            "expression": "($row['aprv_sta_name'] == 'N/A' || $row['aprv_sta_name'] == NULL) ? 'N/A' : $row['aprv_sta_name']"
+        },
+        "sub_contract_reference_id":{
+            "type": "expression2",
+            "expression": "($row['sub_contract_id'] == '' || $row['sub_contract_id'] == NULL) ? 'N/A' : $row['sub_contract_id']"
         }
     },
     "skipCustomPadding":true,
     "table_columns": [
         {"label": "<div></div>","colLabel": "","column": "child_contrats_link","export":false},
         {"labelAlias": "contract_id","column": "contract_link","sortSourceColumn":"contract_number"},
-        {"labelAlias": "sub_contract_reference_id","column": "sub_contract_id"},
+        {"labelAlias":"contract_includes_sub","column":"subvendor_status","sortSourceColumn":"scntrc_status_name","exportColumn":"subvendor_status"},
+        {"labelAlias":"sub_contract_reference_id","column":"sub_contract_reference_id","sortSourceColumn":"sub_contract_id","exportColumn":"sub_contract_reference_id","visibility_flag":"show_column"},
         {"label":"","column":"","export":false},
         {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description"},
         {"labelAlias": "version","column": "document_version"},
@@ -259,9 +291,11 @@
         {"labelAlias": "percent_diff","column": "formatted_percent_diff","sortSourceColumn":"percent_difference","visibility_flag":"show_percent_difference"},
         {"label":"","column":"","export":false},
         {"labelAlias": "vendor_name","column": "vendor_name_link","sortSourceColumn":"vendor_name"},
-        {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"is_prime_or_sub","exportColumn":"is_sub_vendor"},
+        {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"is_prime_or_sub","exportColumn":"is_sub_vendor","visibility_flag":"show_subvendor"},
         {"label":"","column":"","export":false},
-        {"labelAlias":"associated_prime_vendor","column":"associated_prime_vendor_name","sortSourceColumn":"prime_vendor_name","exportColumn":"associated_prime_vendor_name_export"},
+        {"labelAlias":"subvendor_status_pip","column":"subvendor_status_pip","sortSourceColumn":"aprv_sta_name","exportColumn":"subvendor_status_pip_export","visibility_flag":"show_sub_vendor_status"},
+        {"label":"","column":"","export":false,"visibility_flag":"show_sub_vendor_status"},
+        {"labelAlias":"associated_prime_vendor","column":"associated_prime_vendor_name","sortSourceColumn":"prime_vendor_name","exportColumn":"associated_prime_vendor_name_export","visibility_flag":"show_column"},
         {"labelAlias": "contract_agency","column": "agency_name_link","sortSourceColumn":"agency_name"},
         {"labelAlias": "contract_type","column": "contract_type_formatted","sortSourceColumn":"agreement_type_name"},
         {"labelAlias": "award_method","column": "award_method_formatted","sortSourceColumn":"award_method_name"},
@@ -304,6 +338,11 @@
             "column":"expense_cat",
             "sourceColumn":"expenditure_object_names",
             "sql":"case when l1.is_prime_or_sub = 'S' then '' else expenditure_object_names end"
+        },
+        {
+            "column":"sub_contract_reference_id",
+            "sourceColumn":"sub_contract_id",
+            "sql":"case when sub_contract_id IS NULL then 'N/A' else sub_contract_id end"
         }
     ],
     "adjustParameters":"
@@ -334,12 +373,12 @@
     $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
 
     if($node->is_contract_modification) {
-        $adjustDataTableOptions->aaSorting[0][0] = 11;
+        $adjustDataTableOptions->aaSorting[0][0] = 12;
     }
     if(!$node->is_master_agreement) {
         $adjustDataTableOptions->fnInitComplete = '##function () { new FixedColumns( oTable, {
             \"iLeftColumns\": 2,
-            \"iLeftWidth\": 210
+            \"iLeftWidth\": 180
         } );}##';
     }
     ",
@@ -359,8 +398,9 @@
     "bInfo": true,
     "aoColumns": [
         {"sClass":"expander","bSortable": false,"sWidth":"30px"},
-        {"sClass":"text", "sWidth":"180px","asSorting": [ "asc","desc" ]},
-        {"sClass":"number-center", "sWidth":"120px","asSorting": [ "asc","desc" ]},
+        {"sClass":"text", "sWidth":"150px","asSorting": [ "asc","desc" ]},
+        {"sClass":"sub-cont-status", "sWidth":"161px","asSorting": [ "asc","desc" ]},
+        {"sClass":"number-center", "sWidth":"120px","asSorting": [ "asc","desc" ],"visibility_flag":"show_column"},
         {"bSortable":false,"sWidth":"50px"},
         {"sClass":"text", "sWidth":"210px","asSorting": [ "asc","desc" ]},
         {"sClass":"vers-num", "sWidth":"75px","asSorting": [ "desc","asc" ]},
@@ -373,9 +413,11 @@
         {"sClass":"number","sWidth":"140px","asSorting": [ "desc","asc" ],"visibility_flag":"show_percent_difference"},
         {"bSortable":false,"sWidth":"60px"},
         {"sClass":"text","sWidth":"180px","asSorting": [ "desc","asc" ]},
-        {"sClass":"number-center","sWidth":"100px","asSorting": [ "asc","desc" ]},
+        {"sClass":"number-center","sWidth":"100px","asSorting": [ "asc","desc" ],"visibility_flag":"show_subvendor"},
         {"bSortable":false,"sWidth":"50px"},
-        {"sClass":"text","sWidth":"240px","asSorting": [ "asc","desc" ]},
+        {"sClass":"text","sWidth":"140px","asSorting": [ "asc","desc" ],"visibility_flag":"show_sub_vendor_status"},
+        {"bSortable":false,"sWidth":"20px","visibility_flag":"show_sub_vendor_status"},
+        {"sClass":"text","sWidth":"240px","asSorting": [ "asc","desc" ],"visibility_flag":"show_column"},
         {"sClass":"text","sWidth":"230px","asSorting": [ "asc","desc" ]},
         {"sClass":"text","sWidth":"230px","asSorting": [ "asc","desc" ]},
         {"sClass":"text","sWidth":"230px","asSorting": [ "asc","desc" ]},
@@ -389,7 +431,7 @@
         {"sClass":"text","sWidth":"150px","asSorting": [ "asc","desc" ]},
         {"sClass":"text","sWidth":"150px","asSorting": [ "asc","desc" ]}
     ],
-    "aaSorting":[[8,"desc"]],
+    "aaSorting":[[9,"desc"]],
     "sScrollX": "100%",
     "bScrollCollapse": true
     }
@@ -421,6 +463,9 @@
     var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
     var oVendorType = getNamedFilterCriteria('fvendorType');
     var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
+    var oContractNumber = getNamedFilterCriteria('fContractNumber');
+    var oSubContStatus = getNamedFilterCriteria('fSubContStatus');
+    var oSubVendorStatus = getNamedFilterCriteria('fSubVendorStatus');
 
     var  cUrl = oTable.fnSettings().sAjaxSource;
     cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
@@ -431,6 +476,10 @@
     cUrl = adjustUrlParameter(cUrl,'cindustry',oIndustryType);
     cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
     cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
+    cUrl = adjustUrlParameter(cUrl,'contnum_exact',oContractNumber);
+    cUrl = adjustUrlParameter(cUrl,'subcontstatus',oSubContStatus);
+    cUrl = adjustUrlParameter(cUrl,'subvendorstatus',oSubVendorStatus);
+
     return cUrl;
     }
 
@@ -440,17 +489,22 @@
     var year = jQuery(oElement).attr('year');
     var calyear = jQuery(oElement).attr('calyear');
     var yeartype = jQuery(oElement).attr('yeartype');
-    var contstatus = jQuery(oElement).attr('contstatus');
     var mastercode = jQuery(oElement).attr('mastercode');
     var mwbe = jQuery(oElement).attr('mwbe');
     var dashboard = jQuery(oElement).attr('dashboard');
+    var subcontstatus = jQuery(oElement).attr('subcontstatus');
+    var subvendorstatus = jQuery(oElement).attr('subvendorstatus');
 
     magid = (magid == null || magid.length == 0) ?  '0' : magid;
 
     var sUrl = '/dashboard_platform/data_tables/ajax_data/node/'+ (mastercode == 'MA1' ? '666' : '665') +'/magid/'+magid+'/contstatus/A';
-    sUrl = sUrl + ( (contstatus == null || contstatus.length == 0) ?  '' : '/contstatus/'+contstatus);
     sUrl = sUrl + ( (mwbe == null || mwbe.length == 0) ?  '' : '/mwbe/'+mwbe);
     sUrl = sUrl + ( (dashboard == null || dashboard.length == 0) ?  '' : '/dashboard/'+dashboard);
+    sUrl = sUrl + ( (subcontstatus == null || subcontstatus.length == 0) ?  '' : '/subcontstatus/'+subcontstatus);
+    sUrl = sUrl + ( (subvendorstatus == null || subvendorstatus.length == 0) ?  '' : '/subvendorstatus/'+subvendorstatus);
+    sUrl = sUrl + ( (year == null || year.length == 0) ?  '' : '/year/'+year);
+    sUrl = sUrl + ( (calyear == null || calyear.length == 0) ?  '' : '/calyear/'+calyear);
+    sUrl = sUrl + ( (yeartype == null || yeartype.length == 0) ?  '' : '/yeartype/'+yeartype);
 
     var smnid = jQuery(oElement).attr('smnid');
 
@@ -467,40 +521,43 @@
     var row = data[i];
 
     var is_contract_modification = smnid == 480 || smnid == 366;
-
+    var show_sub_vendor_status = smnid == '' || smnid == null;
 
     sOut += '<tr>';
-    sOut += '<td class=\"text\" style=\"width:180px\">'+ (row[1] == null ? '': row[1])+'</td>';
-    sOut += '<td class=\"number-center\" style=\"width:120px\">'+ (row[2] == null ? '': row[2])+'</td>';
+    sOut += '<td class=\"text\" style=\"width:150px\">'+ (row[1] == null ? '': row[1])+'</td>';
+    sOut += '<td class=\"sub-cont-status\"  style=\"width:161px\">'+ (row[2] == null ? '': row[2])+'</td>';
     sOut += '<td style=\"width:50px\"></td>';
-    sOut += '<td class=\"text\"  style=\"width:210px\">'+ (row[3] == null ? '': row[3])+'</td>';
-    sOut += '<td class=\"vers-num\"  style=\"width:75px\">'+ (row[4] == null ? '': row[4])+'</td>';
+    sOut += '<td class=\"text\"  style=\"width:210px\">'+ (row[4] == null ? '': row[4])+'</td>';
+
+    sOut += '<td class=\"vers-num\"  style=\"width:75px\">'+ (row[5] == null ? '': row[5])+'</td>';
     sOut += '<td style=\"width:50px\"></td>';
-    sOut += '<td class=\"text\"  style=\"width:155px\">'+ (row[5] == null ? '': row[5])+'</td>';
-    sOut += '<td class=\"number\"  style=\"width:140px\">'+ (row[6] == null ? '': row[6])+'</td>';
+    sOut += '<td class=\"text\"  style=\"width:155px\">'+ (row[6] == null ? '': row[6])+'</td>';
     sOut += '<td class=\"number\"  style=\"width:140px\">'+ (row[7] == null ? '': row[7])+'</td>';
     sOut += '<td class=\"number\"  style=\"width:140px\">'+ (row[8] == null ? '': row[8])+'</td>';
+    sOut += '<td class=\"number\"  style=\"width:140px\">'+ (row[9] == null ? '': row[9])+'</td>';
     if(is_contract_modification) {
-        sOut += '<td class=\"number\"  style=\"width:140px\">'+ (row[9] == null ? '': row[9])+'</td>';
         sOut += '<td class=\"number\"  style=\"width:140px\">'+ (row[10] == null ? '': row[10])+'</td>';
+        sOut += '<td class=\"number\"  style=\"width:140px\">'+ (row[11] == null ? '': row[11])+'</td>';
     }
     sOut += '<td style=\"width:60px\"></td>';
-    sOut += '<td class=\"text\"  style=\"width:180px\">'+ (row[11] == null ? '': row[11])+'</td>';
-    sOut += '<td class=\"number-center\"  style=\"width:100px\">'+ (row[12] == null ? '': row[12])+'</td>';
+    sOut += '<td class=\"text\"  style=\"width:180px\">'+ (row[12] == null ? '': row[12])+'</td>';
     sOut += '<td style=\"width:50px\"></td>';
-    sOut += '<td class=\"text\"  style=\"width:240px\">'+ (row[13] == null ? '': row[13])+'</td>';
-    sOut += '<td class=\"text\"  style=\"width:230px\">'+ (row[14] == null ? '': row[14])+'</td>';
-    sOut += '<td class=\"text\"  style=\"width:230px\">'+ (row[15] == null ? '': row[15])+'</td>';
+    if(show_sub_vendor_status) {
+        sOut += '<td class=\"text\"  style=\"width:140px\">'+ (row[14] == null ? '': row[14])+'</td>';
+        sOut += '<td style=\"width:20px\"></td>';
+    }
     sOut += '<td class=\"text\"  style=\"width:230px\">'+ (row[16] == null ? '': row[16])+'</td>';
-    sOut += '<td class=\"text\"  style=\"width:220px\">'+ (row[17] == null ? '': row[17])+'</td>';
-    sOut += '<td class=\"text\"  style=\"width:220px\">'+ (row[18] == null ? '': row[18])+'</td>';
-    sOut += '<td class=\"text\"  style=\"width:125px\">'+ (row[19] == null ? '': row[19])+'</td>';
-    sOut += '<td class=\"text\"  style=\"width:125px\">'+ (row[20] == null ? '': row[20])+'</td>';
-    sOut += '<td class=\"text\"  style=\"width:110px\">'+ (row[21] == null ? '': row[21])+'</td>';
+    sOut += '<td class=\"text\"  style=\"width:230px\">'+ (row[17] == null ? '': row[17])+'</td>';
+    sOut += '<td class=\"text\"  style=\"width:230px\">'+ (row[18] == null ? '': row[18])+'</td>';
+    sOut += '<td class=\"text\"  style=\"width:220px\">'+ (row[19] == null ? '': row[19])+'</td>';
+    sOut += '<td class=\"text\"  style=\"width:220px\">'+ (row[20] == null ? '': row[20])+'</td>';
+    sOut += '<td class=\"text\"  style=\"width:125px\">'+ (row[21] == null ? '': row[21])+'</td>';
+    sOut += '<td class=\"text\"  style=\"width:125px\">'+ (row[22] == null ? '': row[22])+'</td>';
+    sOut += '<td class=\"text\"  style=\"width:110px\">'+ (row[23] == null ? '': row[23])+'</td>';
     sOut += '<td style=\"width:30px\"></td>';
-    sOut += '<td class=\"text\" style=\"width:150px;\">'+ (row[22] == null ? '': row[22])+'</td>';
-    sOut += '<td class=\"text\" style=\"width:150px;\">'+ (row[23] == null ? '': row[23])+'</td>';
     sOut += '<td class=\"text\" style=\"width:150px;\">'+ (row[24] == null ? '': row[24])+'</td>';
+    sOut += '<td class=\"text\" style=\"width:150px;\">'+ (row[25] == null ? '': row[25])+'</td>';
+    sOut += '<td class=\"text\" style=\"width:150px;\">'+ (row[26] == null ? '': row[26])+'</td>';
     sOut += '<td style=\"width:10px\"></td>';
     sOut += '</tr>';
     }

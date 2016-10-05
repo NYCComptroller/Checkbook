@@ -1,0 +1,11 @@
+{
+    "defaultConfigKey":"citywide_checks_view",
+    "sqlConfig":
+    {
+        "serviceName":"SpendingWidgetService",
+        "sqlConfigName":"spending/spending",
+        "statementName":"GetMwbeChecks",
+        "countStatementName":"GetCountMwbeChecks"
+    },
+    "headerTitle":"MWBE Checks"
+}

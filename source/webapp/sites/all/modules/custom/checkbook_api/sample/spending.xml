@@ -60,7 +60,6 @@
     <response_columns>
         <column>agency</column>
         <column>fiscal_year</column>
-        <column>calendar_year</column>
         <column>document_id</column>
         <column>payee_name</column>
         <column>department</column>

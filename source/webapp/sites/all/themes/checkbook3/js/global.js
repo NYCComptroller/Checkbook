@@ -1,4 +1,15 @@
 jQuery(document).ready(function ($) {
+    //Altering CSS for slider pager for pie charts on contracts page
+    if(jQuery(".slider-pager a").length == 2){
+        jQuery("div.slider-pager").addClass('pieSlider');
+    }else{
+        jQuery("div.slider-pager").removeClass('pieSlider');
+    }
+        
+    if (!getParameterByName("expandBottomCont") && !getParameterByName("expandBottomContURL")) {
+        jQuery('.bottomContainerToggle').click();
+        jQuery('.bottomContainer').show();
+    }
     if (parseInt($.browser.version, 10) == 7) {
         $("#page").addClass("ie");
     } else {
@@ -628,7 +639,7 @@ Drupal.behaviors.hoveOverMWBE = {
         attach: function(context,settings){
             if ($('body').hasClass('gridview') || $('body').hasClass('newwindow')){
                 $('body').delegate('a', 'click', function () {
-                    if($(this).hasClass('showHide') || $(this).hasClass('logo') || $(this).attr('rel') == 'home' || $(this).hasClass('enable-link'))
+                    if($(this).hasClass('subContractViewAll') || $(this).hasClass('showHide') || $(this).hasClass('logo') || $(this).attr('rel') == 'home' || $(this).hasClass('enable-link'))
                         return true;
                     else
                         return false;
@@ -1328,7 +1339,14 @@ Drupal.behaviors.hoveOverMWBE = {
                 else {
                     $('#edit-back-submit').attr('disabled', true);
                 }
-
+                
+                jQuery('.tableHeader').each(function( i ) {
+                   if(jQuery(this).find('.contCount').length > 0){
+                        jQuery(this).find('h2').append("<span class='contentCount'>"+jQuery('span.contCount').html()+'</span>');
+                        jQuery(this).find('.contCount').remove();
+                    }
+                });
+                
             });
 
             /*------------------------------------------------------------------------------------------------------------*/
@@ -1818,46 +1836,44 @@ Drupal.behaviors.hoveOverMWBE = {
                         var callBackURL = '';
                         var expandBottomContURL = getParameterByName("expandBottomContURL");
                         if (expandBottomContURL){
-                        	callBackURL = expandBottomContURL + "?appendScripts=true";
+                            callBackURL = expandBottomContURL + "?appendScripts=true";
                         } else{
-                        	callBackURL = this.href + window.location.pathname + "?appendScripts=true";
+                            callBackURL = this.href + window.location.pathname + "?appendScripts=true";
                         }
-
 
                         $('.bottomContainer').toggle();
                         $('.bottomContainer').html("<img style='float:right' src='/sites/all/themes/checkbook/images/loading_large.gif' title='Loading Data...'/>");
-                        $.cookie("showDetails","enable", { path: '/' });
                         $('.bottomContainerToggle').toggle();
                         $.ajax({
                             url:callBackURL,
                             success:function (data) {
                                 $('.bottomContainer').html(data);
-                                $('.bottomContainerToggle').html("Hide Details &#171;");
+                               // $('.bottomContainerToggle').html("Hide Details &#171;");
+                                $('.bottomContainerToggle').html("");
                                 $('.bottomContainerToggle').toggle();
                                 $('.first-item').trigger('click');
                             }
                         });
                     } else {
                         $('.bottomContainer').toggle();
-                        $('.bottomContainerToggle').html("Hide Details &#171;");
+                       // $('.bottomContainerToggle').html("Hide Details &#171;");
+                        $('.bottomContainerToggle').html("");
                     }
                 },
                 function (event) {
                     event.preventDefault();
                     $('.bottomContainer').toggle();
-                    $('.bottomContainerToggle').html("Show Details &#187;");
-                    $.cookie("showDetails","disable", { path: '/' });
+                  //  $('.bottomContainerToggle').html("Show Details &#187;");
+                    $('.bottomContainerToggle').html("");
                 }
 
             );
-            if (getParameterByName("expandBottomCont") ||getParameterByName("expandBottomContURL") || $.cookie("showDetails") == "enable" ) {
-            	$.cookie("showDetails","enable", { path: '/' });
+            if (getParameterByName("expandBottomCont") ||getParameterByName("expandBottomContURL")) {
                 $('.bottomContainerToggle', context).click();
             }
 
         }
     };
-
 
     $('.bottomContainerReload').live("click",
         function (event) {
