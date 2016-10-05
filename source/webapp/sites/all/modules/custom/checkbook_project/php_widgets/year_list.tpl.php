@@ -148,6 +148,9 @@ if($display){
     $current_fy_id = _getFiscalYearID();
     
     $isSelected = false;
+    if((_getYearValueFromID($year_id_value) == '2010') && ($year_type_value == 'B' || !$year_type_value)){
+            $year_id_value = _getYearIDFromValue('2011');
+    }
     foreach($node->data as $key => $value){
     
         if($value['year_id'] == $year_id_value && ($year_type_value == 'B' || !$year_type_value)){
@@ -162,7 +165,7 @@ if($display){
             $selected_cal_year = '';
             $isSelected =  true;
         }
-    
+        
         if($value['year_value'] <= $filter_years['year_value'] && $value['year_value'] != '2010'){
         	$display_text = 'FY '.$value['year_value'].' (Jul 1, '.($value['year_value']-1).' - Jun 30, '.$value['year_value'].')';        	 
         	if($trends || $search){
@@ -204,7 +207,7 @@ if($display){
                                         'value' => $value['year_id'].'~B',
                                         'selected' => $selected_fiscal_year);
         }
-        if($value['year_value'] <= $filter_years['cal_year_value'] ){  
+        if($value['year_value'] <= $filter_years['cal_year_value'] && preg_match("/payroll/",$q)){  
         	if($trends || $search){
         		$link = $q .$value['year_id'] ;
         		$link = "/spending_landing/yeartype/C/year/" .  $value['year_id'];

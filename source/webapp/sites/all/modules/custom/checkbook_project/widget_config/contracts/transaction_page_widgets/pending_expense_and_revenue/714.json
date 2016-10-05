@@ -1,11 +1,11 @@
 {
     "widgetType": "data_tables",
     "widgetSubType": "dataTableList",
-    "cleanURLParameters":["mwbe","vendortype","vendor","curamtr","doctype","agency","vendorcode","vendornm","vendornm_exact","contdesc","agrmnttypecode","contnum","aptpin","pin","curamt","startdate","enddate","recdate","csize","modamt","awdmethod","cindustry"],
+    "cleanURLParameters":["mwbe","vendortype","vendor","curamtr","doctype","agency","vendorcode","vendornm","vendornm_exact","contdesc","agrmnttypecode","contnum","contnum_exact","aptpin","pin","curamt","startdate","enddate","recdate","csize","modamt","awdmethod","cindustry"],
     "defaultParameters":{},
-    "urlParamMap":{"vendortype":"vendor_type","mwbe":"minority_type_id","vendor":"vendor_id","curamtr":"revised_maximum_amount","doctype":"document_code@checkbook:ref_document_code","agency":"document_agency_id","vendorcode":"vendor_customer_code","vendornm":"vendor_legal_name","vendornm_exact":"vendor_legal_name","contdesc":"description","agrmnttypecode":"cont_type_code","contnum":"contract_number","aptpin":"board_award_number","pin":"tracking_number","curamt":"revised_maximum_amount","startdate":"revised_start_date","enddate":"revised_end_date","recdate":"cif_received_date","csize":"award_size_id","modamt":"dollar_difference","awdmethod":"award_method_id","cindustry":"industry_type_id"},
+    "urlParamMap":{"vendortype":"vendor_type","mwbe":"minority_type_id","vendor":"vendor_id","curamtr":"revised_maximum_amount","doctype":"document_code@checkbook:ref_document_code","agency":"document_agency_id","vendorcode":"vendor_customer_code","vendornm":"vendor_legal_name","vendornm_exact":"vendor_legal_name","contdesc":"description","agrmnttypecode":"cont_type_code","contnum":"contract_number","contnum_exact":"contract_number","aptpin":"board_award_number","pin":"tracking_number","curamt":"revised_maximum_amount","startdate":"revised_start_date","enddate":"revised_end_date","recdate":"cif_received_date","csize":"award_size_id","modamt":"dollar_difference","awdmethod":"award_method_id","cindustry":"industry_type_id"},
     "allowRequestParams":["smnid"],
-    "paramTypeConfig":{"curamtr":"rangeid","vendornm":"like","vendornm_exact":"eqignorecase","contdesc":"contains","contnum":"like","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","recdate":"range","modamt":"ne"},
+    "paramTypeConfig":{"curamtr":"rangeid","vendornm":"like","vendornm_exact":"eqignorecase","contdesc":"contains","contnum":"like","contnum_exact":"eqignorecase","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","recdate":"range","modamt":"ne"},
     "header":"
         $header = NULL;
         $header .= widget_data_tables_export_link($node);
@@ -45,8 +45,7 @@
         "dollar_difference",
         "percent_difference",
         "original_maximum_amount",
-        "is_prime_or_sub",
-        "not_applicable_column@checkbook:prime_not_applicable"
+        "is_prime_or_sub"
     ],
     "caption":"",
     "derivedColumns": {
@@ -60,7 +59,7 @@
         },
         "parent_contract_link": {
             "type": "expression2",
-            "expression": "empty($row['fms_parent_contract_number']) ? '' : $row['fms_parent_contract_number']"
+            "expression": "empty($row['fms_parent_contract_number']) ? 'N/A' : $row['fms_parent_contract_number']"
         },
         "formatted__original_or_modified": {
             "type": "expression2",
@@ -117,19 +116,17 @@
     },
     "table_columns": [
         {"labelAlias": "contract_id","column":"contract_link","sortSourceColumn":"contract_number"},
-        {"labelAlias": "sub_contract_reference_id","column":"not_applicable_column@checkbook:prime_not_applicable"},
         {"labelAlias": "contract_purpose","column":"purpose_formatted","sortSourceColumn":"description"},
+        {"labelAlias": "version","column":"document_version","headerClass":"centrig fifty"},
         {"labelAlias": "recv_date","column":"cif_received_date"},
-        {"labelAlias": "vendor_name","column":"vendor_formatted","sortSourceColumn":"vendor_legal_name"},
-        {"labelAlias": "sub_vendor_name","column":"formatted_is_sub_vendor","sortSourceColumn": "is_prime_or_sub","exportColumn":"formatted_is_sub_vendor"},
-        {"labelAlias": "associated_prime_vendor","column":"not_applicable_column@checkbook:prime_not_applicable"},
+        {"labelAlias": "prime_vendor","column":"vendor_formatted","sortSourceColumn":"vendor_legal_name"},
+        {"labelAlias": "prime_mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name_formatted"},
         {"labelAlias": "current_amount","column":"formatted__maximum_amount","sortSourceColumn":"revised_maximum_amount","headerClass":"centrig"},
         {"labelAlias": "original_amount","column":"formatted__original_maximum_amount","sortSourceColumn":"original_maximum_amount","headerClass":"centrig"},
         {"labelAlias": "start_date","column":"revised_start_date"},
         {"labelAlias": "end_date","column":"revised_end_date"},
         {"labelAlias": "dollar_diff","column":"formatted_dollar_diff","sortSourceColumn":"dollar_difference","headerClass":"centrig"},
         {"labelAlias": "percent_diff","column":"formatted_percent_diff","sortSourceColumn":"percent_difference","headerClass":"centrig"},
-        {"labelAlias": "version","column":"document_version","headerClass":"centrig fifty"},
         {"labelAlias": "fms_doc_id","column":"parent_contract_link","sortSourceColumn":"fms_parent_contract_number"},
         {"labelAlias": "contract_agency","column":"agency_formatted","sortSourceColumn":"document_agency_name"},
         {"labelAlias": "contract_type","column":"contract_type_formatted","sortSourceColumn":"contract_type_name"},
@@ -137,8 +134,7 @@
         {"labelAlias": "award_method","column":"award_method_formatted","sortSourceColumn":"award_method_name"},
         {"labelAlias": "contract_industry","column":"industry_name_formatted","sortSourceColumn":"industry_type_name@checkbook:industry_type"},
         {"labelAlias": "pin","column":"tracking_number"},
-        {"labelAlias": "apt_pin","column":"board_award_number"},
-        {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name_formatted"}
+        {"labelAlias": "apt_pin","column":"board_award_number"}
     ],
     "adjustParameters":"
         if(isset($parameters['vendor_type'])){
@@ -192,17 +188,15 @@
     },
     "aoColumns": [
         {"sClass":"text","sWidth": "160px","asSorting": [ "asc","desc" ]},
-        {"sClass":"number", "sWidth":"130px","asSorting": [ "asc","desc" ]},
         {"sClass":"text pad-left","sWidth": "180px","asSorting": [ "asc","desc" ]},
+        {"sClass":"text number-left","sWidth": "90px","asSorting": [ "asc","desc" ]},
         {"sClass":"text pad-left","sWidth": "115px","asSorting": [ "asc","desc" ]},
         {"sClass":"text","sWidth": "200px","asSorting": [ "desc","asc" ]},
-        {"sClass":"number pad-left","sWidth":"50px","asSorting": [ "asc","desc" ]},
-        {"sClass":"number pad-left","sWidth":"150px","asSorting": [ "asc","desc" ]},
+        {"sClass":"text pad-left","sWidth": "150px","asSorting": [ "asc","desc" ]},
         {"sClass":"number","sWidth": "120px","asSorting": [ "desc","asc" ]},
         {"sClass":"number","sWidth": "120px","asSorting": [ "desc","asc" ]},
         {"sClass":"text  number-left pad-left","sWidth": "100px","asSorting": [ "asc","desc" ]},
         {"sClass":"text number-left","sWidth": "90px","asSorting": [ "desc","asc" ]},
-        {"sClass":"text number-left","sWidth": "90px","asSorting": [ "asc","desc" ]},
         {"sClass":"number","sWidth":"75px","asSorting": [ "desc","asc" ]},
         {"sClass":"number","sWidth": "75px","asSorting": [ "asc","desc" ]},
         {"sClass":"text pad-left","sWidth": "155px","asSorting": [ "asc","desc" ]},
@@ -212,11 +206,10 @@
         {"sClass":"text","sWidth": "155px","asSorting": [ "asc","desc" ]},
         {"sClass":"text pad-left","sWidth": "155px","asSorting": [ "asc","desc" ]},
         {"sClass":"text pad-left","sWidth": "100px","asSorting": [ "asc","desc" ]},
-        {"sClass":"text pad-left","sWidth": "100px","asSorting": [ "asc","desc" ]},
         {"sClass":"text pad-left","sWidth": "100px","asSorting": [ "asc","desc" ]}
     ],
     "bInfo": true,
-    "aaSorting": [[7,"desc"]],
+    "aaSorting": [[6,"desc"]],
     "sScrollX": "100%",
     "bScrollCollapse": true,
     "fnInitComplete": "##function () { new FixedColumns( oTable, {
@@ -237,6 +230,7 @@
     var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
     var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
     var oVendorType = getNamedFilterCriteria('fvendorType');
+    var oContractNumber = getNamedFilterCriteria('fContractNumber');
 
     var  cUrl = oTable.fnSettings().sAjaxSource;
     cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
@@ -247,6 +241,7 @@
     cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
     cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
     cUrl = adjustUrlParameter(cUrl,'vendornm_exact',oVendorNms);
+    cUrl = adjustUrlParameter(cUrl,'contnum_exact',oContractNumber);
 
     return cUrl;
     }

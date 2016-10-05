@@ -107,6 +107,33 @@
                             "sourceColumnName": "vendor_name"
                         }
                     ]
+                },
+                {
+                    "name": "contract_number",
+                    "levels": [
+                        {
+                            "name": "contract_number",
+                            "sourceColumnName": "contract_number"
+                        }
+                    ]
+                },
+                {
+                    "name": "scntrc_status",
+                    "levels": [
+                        {
+                            "name": "scntrc_status",
+                            "sourceColumnName": "scntrc_status"
+                        }
+                    ]
+                },
+                {
+                    "name": "scntrc_status_name",
+                    "levels": [
+                        {
+                            "name": "scntrc_status_name",
+                            "sourceColumnName": "scntrc_status_name"
+                        }
+                    ]
                 }
             ],
             "measures": {
@@ -153,6 +180,10 @@
         "all_agreement_transactions_cy__ref_award_category": [
             {"datasetName": "all_agreement_transactions_cy", "columnNames": ["award_category_id"]},
             {"datasetName": "award_category", "columnNames": ["award_category_id"]}
+        ],
+        "all_agreement_transactions_cy__subcontract_status": [
+            {"datasetName": "all_agreement_transactions_cy", "columnNames": ["contract_number"]},
+            {"datasetName": "subcontract_status", "columnNames": ["contract_number"]}
         ]
     }
 }

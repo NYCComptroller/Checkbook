@@ -1,0 +1,39 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":679,
+    "autocomplete":false,
+    "no_results_content":"No Results Found",
+    "allowRequestParams":["contstatus"],
+    "defaultParameters":{
+        "latest_flag":"Y"
+    },
+    "limit":10,
+    "startWith":0,
+    "maxSelect":5,
+    "urlParamMap":{"doctype":"document_code.document_code.document_code"},
+    "columns":["scntrc_status.scntrc_status","scntrc_status_name.scntrc_status_name", "txcount"],
+    "orderBy":"-txcount",
+    "getTotalDataCount":true,
+    "facetPager":true,
+    "filterName":"Contract Includes Sub Vendors",
+    "allowZeroValue":true,
+    "allowFacetDeselect":true,
+    "urlParameterName":"subcontstatus",
+    "autocompleteID":"fSubContStatus",
+    "adjustParameters":"
+if(isset($parameters['vendor_type'])){
+$parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
+}
+checkbook_faceted_search_adjust_param($node);
+if(function_exists('_checkbook_project_adjustContractParameterFilters')){
+_checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered_all');
+}
+
+if(function_exists('_checkbook_project_applyParameterFilters')){
+$adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+return $adjustedParameters;
+}
+return $parameters;
+    ",
+    "template":"individual_filter"
+}

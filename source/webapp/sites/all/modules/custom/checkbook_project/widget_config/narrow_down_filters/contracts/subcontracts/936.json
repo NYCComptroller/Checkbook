@@ -1,0 +1,29 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":932,
+    "no_results_content":"No Results Found",
+    "limit":100,
+    "startWith":0,
+    "maxSelect":5,
+    "showAllRecords":true,
+    "allowFacetDeselect":true,
+    "columns":["contract_number.contract_number","txcount"],
+    "orderBy":"-txcount",
+    "getTotalDataCount":true,
+    "facetPager":true,
+    "filterName":"Contract ID",
+    "urlParameterName":"contnum",
+    "autocompleteParamName":"contnum_auto",
+    "autocompleteID":"fContractNumber",
+    "autocompleteField":"contract_number",
+    "adjustParameters":"
+        $parameters = ContractUtil::adjustSubContractTransactionsCommonParams($node, $parameters);
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+            $adjustedParameters['contract_number.contract_number'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+            return $adjustedParameters;
+        }
+        return $parameters;
+    ",
+    "template":"individual_filter"
+}

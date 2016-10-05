@@ -1,0 +1,10 @@
+{
+    "defaultConfigKey":"contracts_view",
+    "sqlConfig":
+    {
+        "serviceName":"ContractsWidgetService",
+        "sqlConfigName":"contracts/contracts",
+        "statementName":"GetOgeContracts",
+        "countStatementName":"GetCountOgeContracts"
+    }
+}

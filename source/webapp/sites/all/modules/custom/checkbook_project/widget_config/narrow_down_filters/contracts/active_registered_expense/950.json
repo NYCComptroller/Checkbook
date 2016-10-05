@@ -1,0 +1,29 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":939,
+    "autocomplete":false,
+    "no_results_content":"No Results Found",
+    "limit":10,
+    "startWith":0,
+    "maxSelect":5,
+    "columns":["prime_minority_type_id.prime_minority_type_id", "prime_minority_type_name.prime_minority_type_name", "count_prime_mwbe"],
+    "orderBy":"-count_prime_mwbe",
+    "getTotalDataCount":true,
+    "facetPager":true,
+    "filterName":"Prime M/WBE Category",
+    "urlParameterName":"pmwbe",
+    "autocompleteParamName":"mwbe_auto",
+    "autocompleteID":"fPrimeMinorityTypeId",
+    "autocompleteField":"prime_minority_type_name",
+    "allowZeroValue":true,
+    "adjustParameters":"
+        $parameters = ContractUtil::adjustActiveContractCommonParams($node, $parameters);
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+            //$adjustedParameters['vendor_record_type'] = 'Prime Vendor';
+            return $adjustedParameters;
+        }
+        return $parameters;
+    ",
+    "template":"individual_filter"
+}

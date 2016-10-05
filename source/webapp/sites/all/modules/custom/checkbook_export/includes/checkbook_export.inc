@@ -226,9 +226,7 @@ function _checkbook_export_transactions(){
     $node = _checkbook_export_get_node_config();
     $limit = $node->widgetConfig->limit;
 
-    if($limit > $exportMemoryRecordLimit){
-        $node->widgetConfig->generateDBQuery = true;
-    }
+    
 
     //TODO - see if we have to check count again
     $node->widgetConfig->getTotalDataCount = false;
@@ -237,7 +235,20 @@ function _checkbook_export_transactions(){
     $isList = $node->widgetConfig->useList;
     $data = NULL;
     $i = 0;
-    $exportColumns = $node->widgetConfig->table_columns;
+    
+    //Get Export column Configuration
+    $exportConfigNid = isset($node->widgetConfig->exportConfigNid)? $node->widgetConfig->exportConfigNid: null;
+    if(isset($exportConfigNid)){
+        $exportConfigNode = _checkbook_export_get_node_config($exportConfigNid);
+        $exportColumns = $exportConfigNode->widgetConfig->table_columns;
+    }else{
+        $exportColumns = $node->widgetConfig->table_columns;
+    }
+    
+    if($limit > $exportMemoryRecordLimit || isset($exportConfigNid)){
+        $node->widgetConfig->generateDBQuery = true;
+    }
+
     $columns = array();
     foreach($exportColumns as $column){
         if(!isset($column->datasource) || (isset($column->datasource) && ($column->datasource == _getRequestParamValue('datasource')))){
@@ -279,10 +290,10 @@ function _checkbook_export_transactions(){
     
     //load data
     widget_data($node);
-
-    if($limit > $exportMemoryRecordLimit){
+  
+    if(($limit > $exportMemoryRecordLimit) || isset($exportConfigNid)){
         try{
-            $fileName = _checkbook_export_generateExportFile($node,$data);
+            $fileName = _checkbook_export_generateExportFile($node,$data, $exportConfigNode);
             _checkbook_export_download_file($fileName);
         }catch (Exception $e){
             LogHelper::log_error("Error generating export file:" . $e->getMessage());
@@ -352,7 +363,7 @@ function _checkbook_export_download_file($fileName){
 }
 
 /** Function to handle generate export file */
-function _checkbook_export_generateExportFile($node,$headers){
+function _checkbook_export_generateExportFile($node,$headers, $exportConfigNode = NULL){
     global $conf;
 
     try{
@@ -368,7 +379,7 @@ function _checkbook_export_generateExportFile($node,$headers){
         $tempOutputFile = $tmpDir .'/'. $filename;
         $outputFile = DRUPAL_ROOT . '/' . $fileDir . '/' . $filename;
         
-        $columns = $node->widgetConfig->table_columns;
+        $columns = isset($exportConfigNode) ? $exportConfigNode->widgetConfig->table_columns : $node->widgetConfig->table_columns;
         $columnsConfig = array();
         foreach($columns as $column){
           $columnsConfig[] = (isset($column->sortSourceColumn)) ? str_replace('.','_',$column->sortSourceColumn) : str_replace('.','_',$column->column);
@@ -398,11 +409,13 @@ function _checkbook_export_generateExportFile($node,$headers){
          * Columns that are derived do not get selected, this allows us to override the
          * select value of the column sql directly.
          * */
-        if(isset($node->widgetConfig->exportColumnSqlOverride)) {
+        
+        $sqlOverride = isset($exportConfigNode) ? $exportConfigNode->widgetConfig->exportColumnSqlOverride : $node->widgetConfig->exportColumnSqlOverride;
+        if(isset($sqlOverride)) {
             $override_sql = null;
             $sql = $node->data;
-            $table_columns = $node->widgetConfig->table_columns;
-            $export_columns = $node->widgetConfig->exportColumnSqlOverride;
+            $table_columns = isset($exportConfigNode) ? $exportConfigNode->widgetConfig->table_columns : $node->widgetConfig->table_columns;
+            $export_columns = $sqlOverride;
             $isList = $node->widgetConfig->useList;
 
             foreach($export_columns as $export_column){
@@ -412,15 +425,15 @@ function _checkbook_export_generateExportFile($node,$headers){
                     if($table_column->column == $column){
                         $override_sql = $export_column->sql;
                         $pos = strpos($sql,$source_column);
-                        if($isList) {
-                            //Handle alias
-                            $pos -= 3;
-                            $alias_source_column = substr($sql, $pos, strlen($source_column)+3);
-                            $replace = array($source_column=>$alias_source_column);
-                            $override_sql = str_replace(array_keys($replace), array_values($replace), $override_sql);
-                            $source_column = $alias_source_column;
-                        }
                         if ($pos !== false) {
+                            if($isList) {
+                                //Handle alias
+                                $pos -= 3;
+                                $alias_source_column = substr($sql, $pos, strlen($source_column)+3);
+                                $replace = array($source_column=>$alias_source_column);
+                                $override_sql = str_replace(array_keys($replace), array_values($replace), $override_sql);
+                                $source_column = $alias_source_column;
+                            }
                             $override_sql = substr_replace($sql,$override_sql,$pos,strlen($source_column));
                             $sql = $override_sql;
                         }
@@ -430,6 +443,9 @@ function _checkbook_export_generateExportFile($node,$headers){
             if($override_sql != null) {
                 $node->data = $sql;
             }
+        }
+        if (!empty($node->widgetConfig->export_columns)) {
+            $node->data = checkbook_export_remove_non_export_columns($node);
         }
 
         $command = $conf['check_book']['data_feeds']['command']
@@ -460,6 +476,49 @@ function _checkbook_export_generateExportFile($node,$headers){
     }
 
     return $filename;
+}
+
+/**
+ * For columns included in config to properly build the sql
+ * using the data controller for export,
+ * these additional columns should not show on the export,
+ * instead we need to strip them manually
+ *
+ * These are configured in $node->widgetConfig->export_columns
+ *
+ * @param $node
+ * @return mixed
+ */
+function checkbook_export_remove_non_export_columns($node) {
+
+    $columns = $node->widgetConfig->export_columns;
+    $query = $node->data;
+
+    $end = strpos($query, 'FROM');
+    $select = substr($query,0,$end);
+    $select = str_replace("SELECT", "", $select);
+    $parts = explode(",", $select);
+
+    $new_select = "";
+    $newline = "\n       ";
+    foreach($parts as $part) {
+        $part = trim($part);
+        $column = $part;
+        if (strpos($column,"AS") !== false) {
+            $pos = strpos($column, " AS");
+            $column = substr($column,0,$pos);
+        }
+        if (strpos($column,".") !== false) {
+            $pos = strpos($column, ".");
+            $column = substr($column, $pos+1, strlen($column));
+        }
+        if (!in_array($column, $columns)) {
+            $new_select .= $new_select == "" ? "SELECT ".$part : ",".$newline.$part;
+        }
+    }
+    $new_select .= $newline;
+    $query = substr_replace($query, $new_select, 0, $end);
+    return $query;
 }
 
 /** Function to generate the path to save export file */
@@ -542,12 +601,12 @@ function _checkbook_export_get_data_count(){
  *
  * @return bool|mixed Prepared widget node.
  */
-function _checkbook_export_get_node_config(){
+function _checkbook_export_get_node_config($nodeId=NULL){
     global $conf;
 
     $_GET['q'] = urldecode(check_plain($_GET['refURL']));
 
-    $nodeId = _getRequestParamValue('node');
+    $nodeId = isset($nodeId) ? $nodeId :_getRequestParamValue('node');
 
     $node = node_load($nodeId);
     //widget_set_uid($node,"export");

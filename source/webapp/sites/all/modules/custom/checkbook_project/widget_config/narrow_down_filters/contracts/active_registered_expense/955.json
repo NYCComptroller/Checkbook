@@ -1,0 +1,29 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":939,
+    "no_results_content":"No Results Found",
+    "limit":10,
+    "startWith":0,
+    "maxSelect":5,
+    "showAllRecords":true,
+    "columns":["industry_type_id.industry_type_id", "industry_type_name.industry_type_name", "txcount"],
+    "orderBy":"-txcount",
+    "getTotalDataCount":true,
+    "facetPager":true,
+    "filterName":"Industry",
+    "urlParameterName":"cindustry",
+    "autocompleteParamName":"cindustry_auto",
+    "autocompleteID":"fIndustryTypeId",
+    "autocompleteField":"industry_type_name",
+    "allowFacetDeselect":true,
+    "adjustParameters":"
+        $parameters = ContractUtil::adjustActiveContractCommonParams($node, $parameters);
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+            $adjustedParameters['industry_type_id.industry_type_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+            return $adjustedParameters;
+        }
+        return $parameters;
+    ",
+    "template":"individual_filter"
+}

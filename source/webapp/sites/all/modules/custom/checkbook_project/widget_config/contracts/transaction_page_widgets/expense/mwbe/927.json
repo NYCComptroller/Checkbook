@@ -1,0 +1,58 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":656,
+    "autocomplete":false,
+    "no_results_content":"No Results Found",
+    "defaultParameters":{
+        "all_cum_spend.all_cum_spend.status_flag":"A"
+    },
+    "limit":10,
+    "startWith":0,
+    "maxSelect":5,
+    "urlParamMap":{
+        "doctype":"document_code.document_code.document_code",
+        "contstatus":"all_cum_spend.all_cum_spend.status_flag",
+        "calyear":"all_cum_spend.all_cum_spend.fiscal_year_id",
+        "year":"all_cum_spend.all_cum_spend.fiscal_year_id",
+        "yeartype":"all_cum_spend.all_cum_spend.type_of_year",
+        "mwbe":"all_cum_spend.all_cum_spend.minority_type_id",
+        "vendornm":"vendor_name.vendor_name",
+        "subcontstatus":"scntrc_status.scntrc_status",
+        "subvendorstatus":"aprv_sta.aprv_sta"
+
+    },
+    "columns":["aprv_sta.aprv_sta","aprv_sta_name.aprv_sta_name", "txcount"],
+    "orderBy":"-txcount",
+    "getTotalDataCount":true,
+    "facetPager":true,
+    "filterName":"Sub Vendor Status in PIP",
+    "allowZeroValue":true,
+    "allowFacetDeselect":true,
+    "urlParameterName":"subvendorstatus",
+    "autocompleteID":"fSubVendorStatus",
+    "adjustParameters":"
+        if(isset($parameters['vendor_type'])){
+            $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
+        }
+
+        $dashboard = _getRequestParamValue('dashboard');
+        $smnid = _getRequestParamValue('smnid');
+
+        if($dashboard == 'ss' || $dashboard == 'sp' || $dashboard == 'ms') $parameters['is_prime_or_sub'] = 'S';
+        else if($dashboard == 'mp' || ($dashboard == null && $smnid != null)) $parameters['is_prime_or_sub'] = 'P';
+        else if($dashboard == null && $smnid == null) $parameters['is_prime_or_sub'] = array('P','S');
+
+        if($smnid == 720) $parameters['is_prime_or_sub'] = 'S';
+
+        checkbook_faceted_search_adjust_param($node);
+        if(function_exists('_checkbook_project_adjustContractParameterFilters')){
+        _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
+        }
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+        $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        return $adjustedParameters;
+        }
+        return $parameters;
+    ",
+    "template":"individual_filter"
+}

@@ -1,0 +1,10 @@
+{
+    "defaultConfigKey":"prime_contract_subven_report_view",
+    "sqlConfig":
+    {
+        "serviceName":"ContractsWidgetService",
+        "sqlConfigName":"contracts/contracts",
+        "statementName":"GetPrimeContractSubVenReportingSubvendor",
+        "countStatementName":"GetCountPrimeContractSubVenReportingSubvendor"
+    }
+}

@@ -77,7 +77,7 @@ function _checkbook_advanced_search_get_year($domain = null, $form = null, $data
         arsort($fiscal_year_array);
         arsort($calendar_year_array);
 
-        if ($domain != 'revenue' && $domain != 'budget') {
+        if ($domain == 'payroll') {
             $fiscal_year_array = array_merge($fiscal_year_array, $calendar_year_array);
         }
         if ($domain == 'contracts' || $domain == 'spending') {
@@ -215,6 +215,97 @@ function _checkbook_advanced_search_get_expensename_and_id()
         log_error("Error getting data from controller: \n" . $e->getMessage());
         return;
     }
+}
+
+/**
+ * Gets the subcontract_approval_status and id using the data controller
+ * @return array
+ */
+function _checkbook_advanced_search_get_subcontract_approval_status_and_id($attributes = NULL)
+{
+    try {
+        $dataController = data_controller_get_instance();
+        $values = $dataController->queryDataset('checkbook:subcontract_approval_status', array('aprv_sta_id', 'aprv_sta_value'), NULL, 'sort_order', 0, 10, NULL);
+        
+        if($attributes){
+            $statuses = array('title' => 'Select Status');
+        }else{
+            $statuses = array('Select Status');
+        }
+        foreach ($values as $value) {
+            if($attributes){
+                $statuses[$value['aprv_sta_id']] = array('title' => $value['aprv_sta_value']);
+            }else{
+                if(strlen($value['aprv_sta_value']) > 20)
+                    $statuses[$value['aprv_sta_id']] = substr($value['aprv_sta_value'], 0, 20) . '...';
+                else
+                    $statuses[$value['aprv_sta_id']] = $value['aprv_sta_value'];
+            }
+        }
+        return $statuses;
+    } catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
+        return;
+    }
+}
+
+/**
+ * Generates the Url param mappings for current amount id by prime and sub
+ * @param $value
+ * @param string $url_param
+ * @return string
+ */
+function _checkbook_advanced_search_add_current_amount_id($value)
+{
+    $value = _checkbook_advanced_search_replaceSlash($value);
+    $redirect_url = '';
+    $from_length = strlen($value['from']);
+    $to_length = strlen($value['to']);
+
+    $from_value = $from_length > 0 ? $value['from'] : null;
+    $to_value = $to_length > 0 ? $value['to'] : null;
+
+//    1. 'Greater than $100M' ==> X > 100000000
+//    2. '$51M - $100M' ==>  X > 50000000 AND X <= 100000000
+//    3. '$26M - $50M' ==> X > 25000000 AND X <= 50000000
+//    4. '$11M - $25M' ==> X > 10000000 AND X <= 25000000
+//    5. '$1M - $10M' ==> x >= 1000000 AND X <= 10000000
+//    6. 'Less than $1M' ==> X < 1000000
+
+    $amount_ids = array();
+    if(isset($from_value) && isset($to_value)) {
+
+        // 1. 'Greater than $100M' ==> X > 100000000
+        if($from_value > 100000000 && $to_value > 100000000) {
+            $amount_ids[] = 1;
+        }
+        // 2. '$51M - $100M' ==> X > 50000000 AND X <= 100000000
+        if(($from_value > 100000000 && $from_value <= 100000000) || ($to_value > 100000000 && $to_value <= 100000000)) {
+            $amount_ids[] = 2;
+        }
+        // 3. '$26M - $50M' ==> X > 25000000 AND X <= 50000000
+        if(($from_value > 25000000 && $from_value <= 50000000) || ($to_value > 25000000 && $to_value <= 50000000)) {
+            $amount_ids[] = 3;
+        }
+        // 4. '$11M - $25M' ==> X > 10000000 AND X <= 25000000
+        if(($from_value > 10000000 && $from_value <= 25000000) || ($to_value > 10000000 && $to_value <= 25000000)) {
+            $amount_ids[] = 4;
+        }
+        // 5. '$1M - $10M' ==> x >= 1000000 AND X <= 10000000
+        if(($from_value >= 1000000 && $from_value <= 10000000) || ($to_value >= 1000000 && $to_value <= 10000000)) {
+            $amount_ids[] = 5;
+        }
+        // 6. 'Less than $1M' ==> X < 1000000
+        if($from_value < 1000000 && $to_value < 1000000) {
+            $amount_ids[] = 6;
+        }
+    }
+
+    if(count($amount_ids) > 0) {
+        $amount_param = implode("~",$amount_ids);
+        $redirect_url = '/' . "curamtid" . "/" . $amount_param;
+    }
+    return $redirect_url;
 }
 
 /*
@@ -601,6 +692,7 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
     $contracts_contract_type = trim($form[$filter_dimension][$data_source . '_contracts_type']['#value']);
     $contracts_contract_agency = trim($form[$filter_dimension][$data_source . '_contracts_agency']['#value']);
     $contracts_contract_contract_num = trim($form[$filter_dimension][$data_source . '_contracts_contract_num']['#value']);
+    $contracts_contract_contract_num_exact = trim($form[$filter_dimension][$data_source . '_contracts_contract_num_exact']['#value']);
     $contracts_contract_apt_pin = trim($form[$filter_dimension][$data_source . '_contracts_apt_pin']['#value']);
     $contracts_contract_pin = trim($form[$filter_dimension][$data_source . '_contracts_pin']['#value']);
     $contracts_contract_award_method = trim($form[$filter_dimension][$data_source . '_contracts_award_method']['#value']);
@@ -625,6 +717,12 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
     $contracts_mwbe_category = $contracts_mwbe_category == "Select Category" ? 0 : $contracts_mwbe_category;
     $contracts_industry_type_id = trim($form[$filter_dimension][$data_source . '_contracts_industry']['#value']);
     $contracts_industry_type_id = $contracts_industry_type_id == "Select Industry" ? 0 : $contracts_industry_type_id;
+    $contracts_includes_sub_vendors = trim($form[$filter_dimension][$data_source . '_contracts_includes_sub_vendors']['#value']);
+    $contracts_includes_sub_vendors = $contracts_includes_sub_vendors == "Select Status" ||  $contracts_includes_sub_vendors == ""
+        ? 0 : $contracts_includes_sub_vendors;
+    $contracts_sub_vendor_status = trim($form[$filter_dimension][$data_source . '_contracts_sub_vendor_status']['#value']);
+    $contracts_sub_vendor_status = $contracts_sub_vendor_status == "Select Status" ||  $contracts_sub_vendor_status == ""
+        ? 0 : $contracts_sub_vendor_status;
 
     if ($contracts_year == 'fy~all') {
         $redirect_url = 'contract/all/transactions';
@@ -640,12 +738,21 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
 
     if (!empty($contracts_mwbe_category)) {
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_mwbe_category, 'mwbe');
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_mwbe_category, 'psmwbe');
     }
     if (!empty($contracts_industry_type_id)) {
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_industry_type_id, 'cindustry');
     }
     if (!empty($contracts_contract_status)) {
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_status, 'contstatus');
+    }
+    if($contracts_contract_status != "P" && $contracts_contract_category != 'revenue') {
+        if (!empty($contracts_includes_sub_vendors)) {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_includes_sub_vendors, 'subcontstatus');
+        }
+        if (!empty($contracts_sub_vendor_status)) {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_sub_vendor_status, 'subvendorstatus');
+        }
     }
     if (!empty($contracts_contract_category)) {
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_category, 'contcat');
@@ -678,13 +785,19 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
         }
     }
     if (!empty($contracts_contract_purpose)) {
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_purpose, 'contdesc');
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_purpose, 'pcontdesc');
+        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_purpose, 'scontdesc');
     }
     if (!empty($contracts_contract_agency)) {
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_agency, 'agency');
     }
     if (!empty($contracts_contract_contract_num)) {
-        $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_contract_num, 'contnum');
+        if ($contracts_contract_contract_num_exact == $contracts_contract_contract_num) {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url(strtoupper($contracts_contract_contract_num_exact), 'contnum_exact');
+        }
+        else {
+            $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_contract_num, 'contnum');
+        }
     }
     if (!empty($contracts_contract_apt_pin)) {
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_apt_pin, 'aptpin');
@@ -740,6 +853,7 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
 
     $contracts_contract_current_contract_amount_range_array = array('from' => $contracts_contract_current_contract_amount_from, 'to' => $contracts_contract_current_contract_amount_to, 'type' => 'amount');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_current_contract_amount_range_array, 'curamt', TRUE);
+    $redirect_url .= _checkbook_advanced_search_add_current_amount_id($contracts_contract_current_contract_amount_range_array);
 
     $contracts_contract_start_date_range_array = array('from' => $contracts_contract_start_date_from, 'to' => $contracts_contract_start_date_to, 'type' => 'date');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($contracts_contract_start_date_range_array, 'startdate', TRUE);
@@ -1128,6 +1242,12 @@ function _checkbook_advanced_search_create_alert_results_ajax($form, &$form_stat
 
     /* Schedule Alert */
     $commands[] = ajax_command_invoke(NULL, 'onScheduleAlertNextClick', array('select_criteria'));
+
+    //clear the page cache for create alerts ajax complete command to finish properly with memcache enabled
+    $cache_tables = array_merge(module_invoke_all('flush_caches'), array('cache_page'));
+    foreach ($cache_tables as $table) {
+        cache_clear_all('*', $table, TRUE);
+    }
 
     /* Load Customize Results Form */
     $redirect_url = '/' . checkbook_advanced_search_form_submit($form, $form_state) . '/createalert';

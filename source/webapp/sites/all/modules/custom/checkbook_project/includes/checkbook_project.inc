@@ -1036,6 +1036,8 @@ function _checkbook_project_applyParameterFilters($node, $parameters){
     $urlParamMap = isset($node->widgetConfig->urlParamMap) ? get_object_vars($node->widgetConfig->urlParamMap) : array();
 
     $originalRequestParams = $node->widgetConfig->originalRequestParams;
+    $logicalOrFacet = $node->widgetConfig->logicalOrFacet;
+    $unionOrFacet = $node->widgetConfig->unionOrFacet;
 
     //adjust request parameter configurations
     $configurationTypes = array();
@@ -1046,7 +1048,8 @@ function _checkbook_project_applyParameterFilters($node, $parameters){
 
             foreach($intersectKeys as $intersectKey => $value){
                 if(isset($paramTypeConfig[$intersectKey]) && $urlParamMap[$intersectKey] == $param){
-                    $configurationTypes[$param][$paramTypeConfig[$intersectKey]] = explode("~",$originalRequestParams[$intersectKey]);
+                    if((!isset($logicalOrFacet) || !$logicalOrFacet) && (!isset($unionOrFacet) || !$unionOrFacet))
+                        $configurationTypes[$param][$paramTypeConfig[$intersectKey]] = explode("~",$originalRequestParams[$intersectKey]);
                 }
             }
         }
@@ -1565,7 +1568,8 @@ function _get_child_agreement_details($agid){
 function _get_contract_type($contnum){
     $contnum_3 = substr($contnum, 0, 3); //get first 3 characters from contract number
     $contnum_4 = substr($contnum, 0, 4); //get first 4 characters from contract number
-    if(strtolower($contnum_4) == 'mma1'){
+    $fourLetterContractTypes = array('mma1', 'cta1', 'rct1', 'pcc1', 'cta2', 'mac1');
+    if(in_array(strtolower($contnum_4), $fourLetterContractTypes)){
         return $contnum_4;
     }else{
         return $contnum_3;
@@ -2158,4 +2162,19 @@ function _getAnnualSalariedEmployeeCount($node){
 
     $result = _checkbook_project_execute_sql_by_data_source($sql,_get_default_datasource());
     $node->PayrollTotalDataCount = (int)$result[0]['record_count'];
+}
+
+
+function isAdvancedSearchResultsPage(){
+    $current_url = $_SERVER['HTTP_REFERER'];
+    if(preg_match("/contract\/search\/transactions/",$current_url)) {
+        return true;
+    }
+    else {
+        $current_url = $_SERVER['REQUEST_URI'];
+        if(preg_match("/contract\/search\/transactions/",$current_url)) {
+            return true;
+        }
+    }
+    return false;
 }

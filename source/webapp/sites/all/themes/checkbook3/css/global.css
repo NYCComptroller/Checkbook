@@ -66,6 +66,9 @@ h2 {
 h2.contract-title{
     width:475px;
 }
+#node-widget-429 h2.contract-title {
+    width: 550px;
+}
 div.contracts-advanced-search h2.contract-title  {
     width:100%;
 }
@@ -843,7 +846,6 @@ td.active div.indicator {
     top: 1px;
     z-index: 10;
 }
-
 /********************
 *** CHART STYLING ***
 ********************/
@@ -1175,6 +1177,97 @@ span.dollars{
 #nyc-spending .nyc_totals_links td{
     width:16.66%;
 }
+
+/*subvendors */
+.nyc_subvendors_totals_links table{
+    width:100%;
+}
+.nyc_subvendors_totals_links table tbody{
+    border:none;
+}
+.nyc_subvendors_totals_links td{
+    border: 1px solid #c5c5c5;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    text-align: center;
+    margin:0;
+    padding: 0;
+    background-color: #f4f4f4;
+    text-transform: none;
+    font-style: italic;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 1.5em;
+    vertical-align: baseline;
+    width:33%;
+    height:86px;
+}
+.nyc_subvendors_totals_links{
+    color:#596c7d;
+    cursor:default;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+}
+.nyc_subvendors_totals_links a,
+.nyc_subvendors_totals_links a:link,
+.nyc_subvendors_totals_links a:visited,
+.nyc_subvendors_totals_links a:hover {
+    color: #596c7d;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    display: block;
+    padding: 2px 10px;
+}
+.nyc_subvendors_totals_links .count a,
+.nyc_subvendors_totals_links .dollars a,
+.nyc_subvendors_totals_links .count a:link,
+.nyc_subvendors_totals_links .dollars a:link,
+.nyc_subvendors_totals_links .count a:visited,
+.nyc_subvendors_totals_links .dollars a:visited,
+.nyc_subvendors_totals_links .count a:hover,
+.nyc_subvendors_totals_links .dollars a:hover {
+    color: #596c7d;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: normal;
+}
+.nyc_subvendors_totals_links td.active a{
+    color:#ffffff;
+    text-shadow: 1px 2px #1A88CF;
+    display: block;
+    padding: 2px 10px;
+}
+.nyc_subvendors_totals_links td.active{
+    background: url("../images/active-tile2.png") repeat-x 0 0 #25a9dc;
+    border: 1px solid #0071bc;
+}
+.nyc_subvendors_totals_links td.active div.indicator{
+    background:url("../images/blue-carrot.png") no-repeat center 0;
+    height: 10px;
+    margin-bottom: -10px;
+    top: 0;
+}
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    /* IE10+ CSS styles go here */
+    .subvendor_third_bottom_nav{ top: 1px !important; }
+}
+
+#node-widget-737 .nyc_subvendors_totals_links a,
+#node-widget-737 .nyc_subvendors_totals_links a:link,
+#node-widget-737 .nyc_subvendors_totals_links a:visited,
+#node-widget-737 .nyc_subvendors_totals_links a:hover{
+    padding: 7px 0px;
+}
+#node-widget-737 div.nyc_subvendors_totals_links table tbody tr td.active div.positioning a{
+    height:86px !important;
+}
+/* subvendors end */
+
 a.bottomContainerToggle {
     margin-top: 15px;
     float: right;
@@ -1662,15 +1755,14 @@ input[type="url"], input[type="week"] {
     margin:0px;
 }
 .tableHeader{margin-top:20px;}
-.tableHeader h2{float:left;}
-.tableHeader .contCount{
-    float:left;
+.tableHeader .contentCount{
     color: #5c5c5c;
     font-size:13px;
     font-style: italic;
     font-weight: bold;
     padding-top:6px;
     margin-left:15px;
+    font-family: 'Roboto';
 }
 .dataTables_processing {
     height: 24px;
@@ -1822,6 +1914,8 @@ td.pad-left div{
 .dataTable th.number-center div {
     display:block;
     text-align:center;
+    float:right;
+    padding-right: 10px;
 }
 .dataTable td div {
     margin: 13px 0px 13px 0px;
@@ -1883,6 +1977,22 @@ td.endCol div,
 .outerTable th.endCol div,
 .outerTable td.endCol div{
     margin-right: 15px;
+}
+td.pad div{margin-left:5px;margin-right:5px;}
+
+/*class sub-cont-status*/
+td.sub-cont-status {
+    text-align: center;
+}
+.dataTable th.sub-cont-status div {
+    display:block;
+    text-align:center;
+    float:right;
+    padding-right: 10px;
+}
+td.sub-cont-status div {
+    margin-left:25px !important;
+    margin-right:15px !important;
 }
 
 .dataTables_scrollBody{position:relative;}
@@ -2168,7 +2278,8 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
     padding-top: 20px;
     vertical-align: top;
 }
-.dollar-amounts > h4{
+.dollar-amounts > h4,
+.dollar-amounts > ul{
     margin-left: 20px;
 }
 .oge-ca-details .contract-details{
@@ -2404,6 +2515,10 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 .contract-information li span{
     font-size: 13px;
     font-weight: bold;
+}
+.dollar-amounts .left{
+    font-size: 13px;
+    padding-bottom: 5px;
 }
 .contract-information ul.left {
     display: block;
@@ -3403,4 +3518,38 @@ div.payroll-year-month{
 .fake-hyperlink {
     color: #1F82C9;
     font-weight: normal;
+}
+a.subContractViewAll{
+    font-size:10px;
+    padding-left:5px;
+}
+span.subContractStatus {
+    padding-left: 67px;
+}
+p.pieCount {
+    padding-top: 8px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: bold;
+}
+.pieChartSlide .highcharts-container{
+    height: 313px !important;
+    margin: 0 auto 0 !important;
+}
+
+#node-chart-subvendor_contract_status_by_prime .highcharts-container,
+#node-chart-prime_contract_subven_report_visual .highcharts-container,
+#node-chart-prime_contract_subven_report_visual .highcharts-container > svg,
+#node-chart-subvendor_contract_status_by_prime .highcharts-container > svg{
+    width: 870px !important;
+}
+
+.pieSlider{
+    padding-left: 190px !important;
+}
+
+.doubleHeader{
+    text-align: left;
+    height: 40px;
+    padding-left: 10px;
 }
