@@ -543,10 +543,10 @@ function _prepare_order_by($node) {
         foreach ($node->widgetConfig->orderBy as $value) {
             if(substr($value, 0, 1 ) == "-") {
                 $value = ltrim($value, "-");
-                $orderBy = $orderBy == "" ? "{$value} DESC" : ",{$value} DESC";
+                $orderBy .= $orderBy == "" ? "{$value} DESC" : ",{$value} DESC";
             }
             else {
-                $orderBy = $orderBy == "" ? $value : ",{$value}";
+                $orderBy .= $orderBy == "" ? $value : ",{$value}";
             }
         }
     }
