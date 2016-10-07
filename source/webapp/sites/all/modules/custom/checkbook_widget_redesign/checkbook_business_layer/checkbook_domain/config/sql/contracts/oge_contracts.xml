@@ -1,6 +1,6 @@
 <statements>
     <!--GetOGEDepartments-->
-    <statement name="GetOgeEDepartments" datasource="checkbook_oge">
+    <statement name="GetOgeContractsByDepartments" datasource="checkbook_oge">
         <param name="year" required ="true" type="int"/>
         <param name="yeartype" required ="true" type="string" />
         <param name="status" type="string"/>
@@ -18,7 +18,12 @@
             dept.department_name AS department_name,
             SUM(COALESCE(a.spending_amount_disb,0)) AS spending_amount_sum,
             sum(a.total_contracts) AS total_contracts
-            FROM aggregateon_contracts_department_no_vendor a
+            <exp op="IF" condition="=" paramName="vendor" compareValue="">
+                FROM aggregateon_contracts_department_no_vendor a
+            </exp>
+            <exp op="IF" condition="&lt;&gt;" paramName="vendor" compareValue="">
+                FROM aggregateon_contracts_department a
+            </exp>
             JOIN ref_document_code b ON b.document_code_id = a.document_code_id
             JOIN ref_agency agency ON agency.agency_id = a.agency_id
             JOIN ref_department dept ON dept.department_id = a.department_id
@@ -31,6 +36,9 @@
                     <exp op="=" dbField="a.agency_id" paramName="agency" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="a.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
             GROUP BY agency.agency_id, agency.agency_name, dept.department_id, dept.department_name
