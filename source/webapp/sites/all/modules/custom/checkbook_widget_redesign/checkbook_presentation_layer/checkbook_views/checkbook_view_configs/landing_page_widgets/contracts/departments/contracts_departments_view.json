@@ -5,6 +5,7 @@
         "sqlConfigName":"contracts/contracts",
         "statementName":"GetDepartments"
     },
+    "uniqueSortColumn":"department_id",
     "defaultParameters":{"doctype":"'CTA1'~'CT1'"},
     "headerTitle":"Departments",
     "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/415/doctype/CTA1~CT1'",
