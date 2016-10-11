@@ -2,16 +2,16 @@
     "sqlConfig":
     {
         "serviceName":"ContractsWidgetService",
-        "sqlConfigName":"contracts/contracts",
-        "statementName":"GetContractsByIndustries",
-        "countStatementName":"GetCountContractsByIndustries"
+        "sqlConfigName":"contracts/sub_contracts",
+        "statementName":"GetSubContractsByIndustries",
+        "countStatementName":"GetCountSubContractsByIndustries"
     },
     "headerTitle":"Contracts by Industries",
     "headerSubTitle":"Number of Contracts",
     "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/415/doctype/CTA1~CT1'",
     "table_columns":[
         {"labelAlias":"contract_industry","column":"industry_type_name","derivedColumn":"industry_name_link"},
-        {"labelAlias":"no_of_contracts","column":"total_contracts","format":"number"},
+        {"labelAlias":"num_sub_contracts","column":"total_contracts","format":"number"},
         {"labelAlias":"current_amount","column":"current_amount_sum","format":"dollar"},
         {"labelAlias":"original_amount","column":"original_amount_sum","format":"dollar"},
         {"labelAlias":"spent_to_date","column":"spending_amount_sum","format":"dollar","derivedColumn":"spent_to_date_link"},

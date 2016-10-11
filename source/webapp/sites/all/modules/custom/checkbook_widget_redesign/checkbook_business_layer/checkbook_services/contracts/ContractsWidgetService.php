@@ -44,12 +44,40 @@ class ContractsWidgetService extends AbstractWidgetService {
                 $url = ContractsUrlService::spentToDateUrl($row['original_agreement_id'],$row['vendor_id'],$row['contract_number']);
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
+
+            case "industry_name_link":
+                $column = $row['industry_type_name'];
+                $url = ContractsUrlService::industryUrl($row['industry_type_id']);
+                $value = "<a href='{$url}'>{$column}</a>";
+                break;
         }
 
         if(isset($value)) {
             return $value;
         }
         return $value;
+    }
+
+    public function adjustParameters($parameters, $urlPath) {
+
+        //contract category or doc type is derived from the page path
+        $doc_type = $parameters['doctype'];
+        if(!isset($doc_type)) {
+            if(preg_match('/revenue/',$urlPath)){
+                $doc_type =  "('RCT1')";
+            }
+            else if(preg_match('/pending_exp/',$urlPath)){
+                $doc_type = "('MMA1', 'MA1', 'MAR', 'CT1', 'CTA1', 'CTR')";
+            }
+            else if(preg_match('/pending_rev/',$urlPath)){
+                $doc_type = "('RCT1')";
+            }
+            else {
+                $doc_type = "('MA1', 'CTA1', 'CT1')";
+            }
+            $parameters['doctype'] = $doc_type;
+        }
+        return $parameters;
     }
 
 }

@@ -64,4 +64,68 @@
             </where>
         </sql>
     </statement>
+    <!--GetSubContractsByIndustries,GetCountSubContractsByIndustries-->
+    <statement name="GetSubContractsByIndustries" datasource="checkbook">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="doctype" />
+        <param name="status" type="string"/>
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="cindustry" type="int" />
+        <sql>
+            SELECT
+            e.industry_type_id,
+            e.industry_type_name,
+            SUM(COALESCE(original_contract_amount,0)) AS original_amount_sum,
+            SUM(COALESCE(maximum_contract_amount,0)) AS current_amount_sum,
+            SUM(COALESCE(spending_amount,0)) AS spending_amount_sum,
+            COUNT(contract_number) AS total_contracts
+            FROM aggregateon_subven_contracts_cumulative_spending a
+            JOIN ref_document_code b ON a.document_code_id = b.document_code_id
+            JOIN ref_agency c on c.agency_id = a.agency_id
+            LEFT JOIN vendor d on d.vendor_id = a.vendor_id
+            JOIN ref_industry_type e ON e.industry_type_id = a.industry_type_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="a.status_flag" paramName="status" />
+                    <exp op="IN" dbField="b.document_code" paramName="doctype" />
+                    <exp op="=" dbField="c.agency_id" paramName="agency" />
+                    <exp op="=" dbField="d.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="e.industry_type_id" paramName="cindustry" />
+                </exp>
+            </where>
+            GROUP BY e.industry_type_id,e.industry_type_name
+        </sql>
+    </statement>
+    <statement name="GetCountSubContractsByIndustries" datasource="checkbook">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="doctype" />
+        <param name="status" type="string"/>
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="cindustry" type="int" />
+        <sql>
+            SELECT COUNT(contract_number) AS record_count
+            FROM aggregateon_subven_contracts_cumulative_spending a
+            JOIN ref_document_code b ON a.document_code_id = b.document_code_id
+            JOIN ref_agency c on c.agency_id = a.agency_id
+            LEFT JOIN vendor d on d.vendor_id = a.vendor_id
+            JOIN ref_industry_type e ON e.industry_type_id = a.industry_type_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="a.status_flag" paramName="status" />
+                    <exp op="IN" dbField="b.document_code" paramName="doctype" />
+                    <exp op="=" dbField="c.agency_id" paramName="agency" />
+                    <exp op="=" dbField="d.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="e.industry_type_id" paramName="cindustry" />
+                </exp>
+            </where>
+        </sql>
+    </statement>
 </statements>
