@@ -374,6 +374,10 @@ function load_widget_controller_data_count($node) {
     //Prepare sql parameters
     $parameters = _prepare_input_parameters($node);
 
+    //Adjust sql parameters
+    $urlPath = drupal_get_path_alias($_GET['q']);
+    $parameters = $service->adjustParameters($parameters, $urlPath);
+
     //Load widget total row count
     try {
         $node->totalDataCount = _load_widget_controller_row_count($service, $parameters);
@@ -446,6 +450,10 @@ function _load_widget_controller_data($node, $service) {
     $orderBy = _prepare_order_by($node);
     $limit = $node->widgetConfig->limit;
     $parameters = _prepare_input_parameters($node);
+
+    //Adjust sql parameters
+    $urlPath = drupal_get_path_alias($_GET['q']);
+    $parameters = $service->adjustParameters($parameters, $urlPath);
 
     try {
         $results = $service->getWidgetData($parameters, $limit, $orderBy);

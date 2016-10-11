@@ -11,4 +11,5 @@ interface IWidgetService {
     public function getWidgetDataCount($parameters);
     public function getWidgetHeaderCount($parameters);
     public function implementDerivedColumns($data);
+    public function adjustParameters($parameters, $urlPath);
 } 
