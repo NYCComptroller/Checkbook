@@ -5,7 +5,7 @@
         "sqlConfigName":"contracts/sub_contracts",
         "statementName":"GetSubContractsByAwardMethods"
     },
-    "defaultParameters":{"type_of_year":"B","document_code.document_code.document_code":"MA1~CTA1~CT1","status_flag":"A","minority_type_id":"2~3~4~5~9"},
+    "defaultParameters":{"type_of_year":"B","doctype":"MA1~CTA1~CT1","status_flag":"A","minority_type_id":"2~3~4~5~9"},
     "headerTitle":"Contracts by Award Methods",
     "headerSubTitle":"Number of Contracts",
     "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/726/doctype/MA1~CTA1~CT1'",
