@@ -8,7 +8,7 @@
     "defaultParameters":{"doctype":"MA1~MMA1~MAR"},
     "headerTitle":"Contracts by Master Agreements",
     "headerSubTitle":"Number of Contracts",
-    "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/403/doctype/MMA1~MA1'",
+    "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/403/doctype/MA1~MMA1~MAR'",
     "table_columns": [
         {"labelAlias": "contract_id","column": "pending_contract_number"},
         {"labelAlias": "contract_purpose","column": "pending_contract_purpose"},
