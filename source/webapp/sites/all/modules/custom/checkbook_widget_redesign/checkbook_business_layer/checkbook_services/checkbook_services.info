@@ -30,6 +30,7 @@ files[] = spending/SpendingWidgetService.php
 files[] = contracts/ContractsDataService.php
 files[] = contracts/ContractsUrlService.php
 files[] = contracts/ContractsWidgetService.php
+files[] = contracts/ContractsWidgetVisibilityService.php
 
 files[] = widget/AbstractWidgetService.php
 files[] = widget/IWidgetService.php
