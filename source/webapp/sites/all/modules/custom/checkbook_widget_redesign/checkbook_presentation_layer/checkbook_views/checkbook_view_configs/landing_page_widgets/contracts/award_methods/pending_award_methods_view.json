@@ -1,0 +1,8 @@
+{
+    "defaultConfigKey": "revenue_award_methods_view",
+    "sqlConfig": {
+        "serviceName": "ContractsWidgetService",
+        "sqlConfigName": "contracts/pending_contracts",
+        "statementName": "GetPendingContractsByAwardMethods"
+    }
+}
