@@ -1210,18 +1210,19 @@
         <param name="vendor" type="int" />
         <sql>
             SELECT
-            s0.agency_id,
-            s0.vendor_id,
-            s0.description,
+            a.agency_id,
+            a.vendor_id,
+            a.description AS contract_purpose,
+            a.contract_number AS contract_number,
             c.agency_short_name,
-            d.legal_name,
+            d.legal_name AS legal_name,
             SUM(COALESCE(original_contract_amount,0)) AS original_amount_sum,
             SUM(COALESCE(maximum_contract_amount,0)) AS current_amount_sum,
             SUM(COALESCE(spending_amount,0)) AS spending_amount_sum,
             a.type_of_year,
             a.original_agreement_id,
             e.document_code,
-            j1.agency_name AS agency_agency_agency_name,
+            j1.agency_name AS contract_agency,
             s0.minority_type_id AS minority_type_minority_type
             FROM aggregateon_mwbe_contracts_cumulative_spending a
             JOIN ref_document_code b ON b.document_code_id = a.document_code_id

@@ -58,7 +58,7 @@
             </where>
         </sql>
     </statement>
-    <!---->
+    <!--GetPendingMasterAgreements,GetCountPendingMasterAgreements-->
     <statement name="GetPendingMasterAgreements  " datasource="checkbook">
         <param name="year" required ="true" type="int"/>
         <param name="yeartype" required ="true" type="string" />
@@ -69,8 +69,8 @@
         <sql>
             SELECT
             a.cif_received_date AS received_date,
-            a.vendor_id AS vendor,
-            a.vendor_legal_name,
+            a.vendor_id,
+            a.vendor_legal_name AS legal_name,
             a.description AS pending_contract_purpose,
             a.contract_number AS pending_contract_number,
             a.fms_contract_number AS contract_number,
