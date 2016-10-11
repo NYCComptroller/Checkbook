@@ -12,4 +12,8 @@ class WidgetService extends AbstractWidgetService {
 
     }
 
+    public function adjustParameters($parameters, $urlPath) {
+
+    }
+
 }
