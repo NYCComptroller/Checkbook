@@ -1,0 +1,58 @@
+#! /usr/local/bin/bzt
+---
+execution:
+  artifacts-dir: /var/jenkins/taurus/nyccheckboook/artifacts/latest
+  concurrency: 3
+  ramp-up: 15s
+  hold-for: 30s
+  scenario: simple
+
+scenarios:
+  simple:
+    think-time: 0.50
+    requests:
+    - http://blazedemo.com/
+    - http://blazedemo.com/vacation.html
+   
+modules:
+  blazemeter:
+    test: SBIR.gov Smoke Test
+  console:
+    disable: true
+  consolidator:
+    generalize-labels: false  # replace digits and UUID sequences 
+                              # with N and U to decrease label count
+    ignore-labels: # sample labels from this list, don't know
+      - ignore     # will be ignored by results reader
+      
+    buffer-multiplier: 0.5  # choose middle value from following percentiles list (95.0)
+    buffer-scale-choice: 2  # make buffer two times bigger than need to receive 95% samples      
+    min-buffer-len: 2s      # minimal length of buffer (default: 2s)
+    max-buffer-len: 2h      # maximal length of buffer (default: infinity)
+        
+    percentiles:  # percentile levels to track, 
+                  # 0 also means min, 100 also means max 
+    - 0.0
+    - 50.0
+    - 90.0
+    - 95.0
+    - 99.0
+    - 99.9
+    - 100.0
+
+reporting:
+  - module: final_stats
+    summary: true  # overall samples count and percent of failures
+    percentiles: true  # display average times and percentiles
+    failed-labels: true  # provides list of sample labels with failures
+    test-duration: true  # provides test duration
+    dump-csv: latest-load-test.csv 
+  - module: blazemeter
+    test: NYC Checkbook Smoke Test
+  - module: console
+  - module: passfail
+    criterias:
+    - avg-rt>250ms for 30s, continue as failed
+    - failures>5% for 5s, continue as failed
+    - failures>50% for 10s, stop as failed
+    - rc5??>0 for 10s, continue as failed

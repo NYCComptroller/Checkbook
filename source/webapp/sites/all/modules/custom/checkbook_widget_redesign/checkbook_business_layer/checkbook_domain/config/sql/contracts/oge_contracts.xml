@@ -1,6 +1,6 @@
 <statements>
     <!--GetOGEDepartments-->
-    <statement name="GetOgeEDepartments" datasource="checkbook_oge">
+    <statement name="GetOgeContractsByDepartments" datasource="checkbook_oge">
         <param name="year" required ="true" type="int"/>
         <param name="yeartype" required ="true" type="string" />
         <param name="status" type="string"/>
@@ -18,7 +18,12 @@
             dept.department_name AS department_name,
             SUM(COALESCE(a.spending_amount_disb,0)) AS spending_amount_sum,
             sum(a.total_contracts) AS total_contracts
-            FROM aggregateon_contracts_department_no_vendor a
+            <exp op="IF" condition="=" paramName="vendor" compareValue="">
+                FROM aggregateon_contracts_department_no_vendor a
+            </exp>
+            <exp op="IF" condition="&lt;&gt;" paramName="vendor" compareValue="">
+                FROM aggregateon_contracts_department a
+            </exp>
             JOIN ref_document_code b ON b.document_code_id = a.document_code_id
             JOIN ref_agency agency ON agency.agency_id = a.agency_id
             JOIN ref_department dept ON dept.department_id = a.department_id
@@ -31,9 +36,70 @@
                     <exp op="=" dbField="a.agency_id" paramName="agency" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="a.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
             GROUP BY agency.agency_id, agency.agency_name, dept.department_id, dept.department_name
+        </sql>
+    </statement>
+    <!--GetOgeContractsByAwardMethods,GetCountOgeContractsByAwardMethods-->
+    <statement name="GetOgeContractsByAwardMethods" datasource="checkbook_oge">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="status" type="string"/>
+        <param name="doctype" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <sql>
+            SELECT
+            a.type_of_year,
+            a.award_method_id,
+            b.award_method_name,
+            SUM(COALESCE(original_contract_amount,0)) AS original_amount_sum,
+            SUM(COALESCE(maximum_contract_amount,0)) AS current_amount_sum,
+            SUM(COALESCE(spending_amount_disb,0)) AS spending_amount_sum,
+            COUNT(contract_number) AS total_contracts
+            FROM aggregateon_contracts_cumulative_spending a
+            JOIN ref_document_code b ON b.document_code_id = a.document_code_id
+            JOIN ref_award_method c ON c.award_method_id = a.award_method_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="a.status_flag" paramName="status" />
+                    <exp op="IN" dbField="b.document_code" paramName="doctype" />
+                    <exp op="=" dbField="a.agency_id" paramName="agency" />
+                    <exp op="=" dbField="a.vendor_id" paramName="vendor" />
+                </exp>
+            </where>
+            GROUP BY agency.agency_id, agency.agency_name, dept.department_id, dept.department_name
+        </sql>
+    </statement>
+    <statement name="GetCountOgeContractsByAwardMethods" datasource="checkbook_oge">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="status" type="string"/>
+        <param name="doctype" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <sql>
+            SELECT
+            COUNT(DISTINCT a.award_method_id) as record_count
+            FROM aggregateon_contracts_cumulative_spending a
+            JOIN ref_document_code b ON b.document_code_id = a.document_code_id
+            JOIN ref_award_method c ON c.award_method_id = a.award_method_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="a.status_flag" paramName="status" />
+                    <exp op="IN" dbField="b.document_code" paramName="doctype" />
+                    <exp op="=" dbField="a.agency_id" paramName="agency" />
+                    <exp op="=" dbField="a.vendor_id" paramName="vendor" />
+                </exp>
+            </where>
         </sql>
     </statement>
 </statements>
