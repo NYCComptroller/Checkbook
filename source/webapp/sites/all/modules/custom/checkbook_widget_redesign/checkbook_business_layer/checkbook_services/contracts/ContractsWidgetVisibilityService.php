@@ -14,19 +14,18 @@ class ContractsWidgetVisibilityService {
      */
     static function getWidgetVisibility($widget) {
         $dashboard = self::getRequestParamValue('dashboard');
-        $datasouce = self::getRequestParamValue('datasouce');
-        $category = self::contractCategory();
+        $category = self::getContractCategory();
 
         switch($widget){
             case 'departments':
                 if($category === 'expense'){
-                    if($datasouce === 'checkbook_oge'){
+                    if(self::isEDCPage()){
                         if(self::getRequestParamValue('vendor'))
                            $view = 'contracts_departments_view';
                         else
                            $view = 'oge_contracts_departments_view'; 
                     }else{
-                       if((!$dashboard || $dashboard == 'mp') && self::getRequestParamValue('agency')){
+                       if(($dashboard == NULL || $dashboard == 'mp') && self::getRequestParamValue('agency')){
                            $view = 'contracts_departments_view';
                        }
                     }
@@ -67,12 +66,12 @@ class ContractsWidgetVisibilityService {
         }
     }
     
-    function contractCategory(){
+    function getContractCategory(){
         $urlPath = drupal_get_path_alias($_GET['q']);
         $pathParams = explode('/', $urlPath);
         $category = NULL;
         
-        switch($pathParams[0]){
+        switch($pathParams[2]){
             case 'contracts_landing':
                 $category = 'expense';
                 break;
@@ -90,4 +89,12 @@ class ContractsWidgetVisibilityService {
         return $category;
     }
     
+    function isEDCPage(){
+        $database = _getRequestParamValue('datasource');
+        if(isset($database)){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
