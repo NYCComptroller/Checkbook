@@ -6,8 +6,8 @@
         "statementName":"GetContractsByIndustries",
         "countStatementName":"GetCountContractsByIndustries"
     },
-    "headerTitle":"Contracts by Industries",
-    "headerSubTitle":"Number of Contracts",
+    "table_title":"Contracts by Industries",
+    "headerSubTitle":"Contracts",
     "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/415/doctype/CTA1~CT1'",
     "table_columns":[
         {"labelAlias":"contract_industry","column":"industry_type_name","derivedColumn":"industry_name_link"},
