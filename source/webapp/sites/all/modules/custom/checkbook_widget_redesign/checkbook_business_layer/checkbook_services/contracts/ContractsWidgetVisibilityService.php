@@ -19,18 +19,16 @@ class ContractsWidgetVisibilityService {
 
         switch($widget){
             case 'departments':
-                if(self::getRequestParamValue('agency')){
-                    if($category['category'] === 'expense'){
-                        if($datasouce === 'checkbook_oge'){
-                            if(self::getRequestParamValue('vendor'))
-                                $view = 'contracts_departments_view';
-                            else
-                               $view = 'oge_contracts_departments_view'; 
-                        }else{
-                           if(!$dashboard || $dashboard == 'mp'){
-                                $view = 'contracts_departments_view';
-                           }
-                        }
+                if($category === 'expense'){
+                    if($datasouce === 'checkbook_oge'){
+                        if(self::getRequestParamValue('vendor'))
+                           $view = 'contracts_departments_view';
+                        else
+                           $view = 'oge_contracts_departments_view'; 
+                    }else{
+                       if((!$dashboard || $dashboard == 'mp') && self::getRequestParamValue('agency')){
+                           $view = 'contracts_departments_view';
+                       }
                     }
                 }
                 break;
