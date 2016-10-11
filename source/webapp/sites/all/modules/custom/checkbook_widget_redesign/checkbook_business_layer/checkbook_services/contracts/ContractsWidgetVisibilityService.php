@@ -20,7 +20,7 @@ class ContractsWidgetVisibilityService {
         switch($widget){
             case 'departments':
                 if(self::getRequestParamValue('agency')){
-                    if($category['category'] === 'expense' && $category['status'] != 'pending'){
+                    if($category['category'] === 'expense'){
                         if($datasouce === 'checkbook_oge'){
                             if(self::getRequestParamValue('vendor'))
                                 $view = 'contracts_departments_view';
@@ -72,33 +72,20 @@ class ContractsWidgetVisibilityService {
     function contractCategory(){
         $urlPath = drupal_get_path_alias($_GET['q']);
         $pathParams = explode('/', $urlPath);
-        $status = getRequestParamValue('status');
-        $category = array();
+        $category = NULL;
         
         switch($pathParams[0]){
             case 'contracts_landing':
-                $category['category'] = 'expense';
-                if($status == 'A'){
-                    $category['status'] = 'active';
-                }else{
-                    $category['status'] = 'registered';
-                }
+                $category = 'expense';
                 break;
             case 'cpntracts_revenue_landing':
-               $category['category'] = 'revenue';
-                if($status == 'A'){
-                    $category['status'] = 'active';
-                }else{
-                    $category['status'] = 'registered';
-                }
+               $category = 'revenue';
                break; 
             case 'cpntracts_pending_exp_landing':
-                $category['category'] = 'expense';
-                $category['status'] = 'pending';
+                $category = 'pending expense';
                break;  
             case 'cpntracts_pending_rev_landing':
-               $category['category'] = 'revenue';
-                $category['status'] = 'pending';
+                $category = 'pending revenue';
                break; 
         }
         
