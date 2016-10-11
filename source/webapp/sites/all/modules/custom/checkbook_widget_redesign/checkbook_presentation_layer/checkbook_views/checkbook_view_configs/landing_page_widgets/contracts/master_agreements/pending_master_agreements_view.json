@@ -1,0 +1,46 @@
+{
+    "sqlConfig":
+    {
+        "serviceName":"ContractsWidgetService",
+        "sqlConfigName":"contracts/pending_contracts",
+        "statementName":"GetPendingMasterAgreements"
+    },
+    "defaultParameters":{"doctype":"MA1~MMA1~MAR"},
+    "headerTitle":"Contracts by Master Agreements",
+    "headerSubTitle":"Number of Contracts",
+    "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/403/doctype/MMA1~MA1'",
+    "table_columns": [
+        {"labelAlias": "contract_id","column": "pending_contract_number"},
+        {"labelAlias": "contract_purpose","column": "pending_contract_purpose"},
+        {"labelAlias": "contract_agency","column": "document_agency_name"},
+        {"labelAlias": "prime_vendor","column": "legal_name"},
+        {"labelAlias": "recv_date","column": "received_date"},
+        {"labelAlias": "current_amount","column": "current_amount_sum"},
+        {"labelAlias": "original_amount","column": "original_amount_sum"},
+        {"label": "","column": ""}
+    ],
+    "dataTableOptions":{
+        "aoColumns": [
+            { "bSortable": false,"sClass":"text","sWidth":"150px" },
+            { "bSortable": false,"sClass":"text","sWidth":"215px" },
+            { "bSortable": false,"sClass":"text", "sWidth":"167px" },
+            { "bSortable": false,"sClass":"text" ,"sWidth":"162px"},
+            { "bSortable": true,"sClass":"text recdate", "sWidth":"75px" },
+            { "bSortable": true,"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"73px"},
+            { "bSortable": true,"sClass":"number" ,"asSorting": [ "desc","asc" ], "sWidth":"73px"},
+            { "bSortable": false,"sWidth":"15px" }
+        ],
+        "bServerSide": true,
+        "bFilter": false,
+        "bPaginate": false,
+        "bProcessing":true,
+        "bLengthChange": false,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "aaSorting": [[ 5, "desc" ]],
+        "fnServerParams": "##function ( aoData ) {reloadExpandCollapseWidget(this,aoData);}##",
+        "oLanguage":{
+            "sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+        }
+    }
+}
