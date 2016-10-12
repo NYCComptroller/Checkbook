@@ -3,8 +3,8 @@
     "sqlConfig":
     {
         "serviceName":"ContractsWidgetService",
-        "sqlConfigName":"contracts/contracts",
-        "statementName":"GetContractsByIndustries",
-        "countStatementName":"GetCountContractsByIndustries"
+        "sqlConfigName":"contracts/sub_contracts",
+        "statementName":"GetSubContractsByIndustries",
+        "countStatementName":"GetCountSubContractsByIndustries"
     }
 }
