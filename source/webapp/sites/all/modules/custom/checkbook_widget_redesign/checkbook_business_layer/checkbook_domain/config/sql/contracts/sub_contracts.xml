@@ -72,7 +72,10 @@
         <param name="status" type="string"/>
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
-        <param name="cindustry" type="int" />
+        <param name="mwbe" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
         <sql>
             SELECT
             e.industry_type_id,
@@ -94,7 +97,10 @@
                     <exp op="IN" dbField="b.document_code" paramName="doctype" />
                     <exp op="=" dbField="c.agency_id" paramName="agency" />
                     <exp op="=" dbField="d.vendor_id" paramName="vendor" />
-                    <exp op="=" dbField="e.industry_type_id" paramName="cindustry" />
+                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
             GROUP BY e.industry_type_id,e.industry_type_name
@@ -107,7 +113,10 @@
         <param name="status" type="string"/>
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
-        <param name="cindustry" type="int" />
+        <param name="mwbe" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
         <sql>
             SELECT COUNT(contract_number) AS record_count
             FROM aggregateon_subven_contracts_cumulative_spending a
@@ -123,7 +132,10 @@
                     <exp op="IN" dbField="b.document_code" paramName="doctype" />
                     <exp op="=" dbField="c.agency_id" paramName="agency" />
                     <exp op="=" dbField="d.vendor_id" paramName="vendor" />
-                    <exp op="=" dbField="e.industry_type_id" paramName="cindustry" />
+                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
         </sql>
