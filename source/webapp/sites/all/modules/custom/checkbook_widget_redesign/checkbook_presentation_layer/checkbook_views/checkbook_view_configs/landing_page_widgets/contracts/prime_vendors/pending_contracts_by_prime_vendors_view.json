@@ -1,0 +1,8 @@
+{
+    "defaultConfigKey": "revenue_contracts_by_prime_vendors_view",
+    "sqlConfig": {
+        "serviceName": "ContractsWidgetService",
+        "sqlConfigName": "contracts/pending_contracts",
+        "statementName": "GetPendingContractsByPrimeVendors"
+    }
+}
