@@ -96,6 +96,10 @@ class ContractsWidgetVisibilityService {
         }
     }
     
+    /**
+     * returns the contract category based on the page URL
+     * @return Contracts Category
+     */
     function getContractCategory(){
         $urlPath = drupal_get_path_alias($_GET['q']);
         $pathParams = explode('/', $urlPath);
@@ -119,6 +123,10 @@ class ContractsWidgetVisibilityService {
         return $category;
     }
     
+    /**
+     * Checks the page Checkbook or Checkbook OGE (EDC)
+     * @return True if the page is EDC
+     */
     function isEDCPage(){
         $database = _getRequestParamValue('datasource');
         if(isset($database)){
