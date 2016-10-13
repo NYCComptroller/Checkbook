@@ -15,7 +15,8 @@ class ContractsWidgetVisibilityService {
     static function getWidgetVisibility($widget) {
         $dashboard = self::getRequestParamValue('dashboard');
         $category = self::getContractCategory();
-
+        $view = NULL;
+        
         switch($widget){
             case 'departments':
                 if($category === 'expense'){
