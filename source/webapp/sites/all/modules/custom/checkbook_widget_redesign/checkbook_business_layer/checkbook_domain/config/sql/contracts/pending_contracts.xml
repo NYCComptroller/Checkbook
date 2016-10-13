@@ -211,8 +211,6 @@
             JOIN ref_document_code rfd ON rfd.document_code_id = s0.document_code_id
             <where>
                 <exp op="AND">
-                    <exp op="=" dbField="s0.fiscal_year_id" paramName="year" />
-                    <exp op="=" dbField="s0.type_of_year" paramName="yeartype" />
                     <exp op="IN" dbField="rfd.document_code" paramName="doctype" />
                     <exp op="=" dbField="s0.document_agency_id" paramName="agency" />
                     <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
