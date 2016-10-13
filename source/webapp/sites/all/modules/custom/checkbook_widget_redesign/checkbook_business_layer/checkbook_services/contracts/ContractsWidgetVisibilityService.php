@@ -61,6 +61,35 @@ class ContractsWidgetVisibilityService {
                     }
                 }
                 break;
+            case 'award_methods':
+                if(!self::getRequestParamValue('awdmethod')){
+                    switch($category) {
+                        case "expense":
+                            switch($dashboard) {
+                                case "ss":
+                                case "sp":
+                                    $view = 'subvendor_award_methods_view';
+                                    break;
+                                case "ms":
+                                    $view = 'expense_award_methods_view';
+                                    break;
+                                default:
+                                    $view = self::isEDCPage() ? 'oge_award_methods_view' : 'expense_award_methods_view';
+                                    break;
+                            }
+                            break;
+
+                        case "revenue":
+                            $view = 'revenue_award_methods_view';
+                            break;
+
+                        case "pending expense":
+                        case "pending revenue":
+                            $view = 'pending_award_methods_view';
+                            break;
+                    }
+                }
+                break;
             default : 
                 //handle the exception when there is no match
                 $view = NULL; 
@@ -109,13 +138,13 @@ class ContractsWidgetVisibilityService {
             case 'contracts_landing':
                 $category = 'expense';
                 break;
-            case 'cpntracts_revenue_landing':
+            case 'contracts_revenue_landing':
                $category = 'revenue';
                break; 
-            case 'cpntracts_pending_exp_landing':
+            case 'contracts_pending_exp_landing':
                 $category = 'pending expense';
                break;  
-            case 'cpntracts_pending_rev_landing':
+            case 'contracts_pending_rev_landing':
                 $category = 'pending revenue';
                break; 
         }
