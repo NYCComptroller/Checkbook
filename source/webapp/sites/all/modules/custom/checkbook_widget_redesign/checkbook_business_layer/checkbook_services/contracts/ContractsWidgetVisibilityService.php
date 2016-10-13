@@ -124,7 +124,7 @@ class ContractsWidgetVisibilityService {
     }
     
     /**
-     * Checks the page Checkbook or Checkbook OGE (EDC)
+     * Checks if the page is Checkbook or Checkbook OGE (EDC)
      * @return True if the page is EDC
      */
     function isEDCPage(){
