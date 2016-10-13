@@ -63,7 +63,7 @@ class ContractsWidgetVisibilityService {
                 break;
             default : 
                 //handle the exception when there is no match
-                $view = ''; 
+                $view = NULL; 
         }
         return $view;
     }
