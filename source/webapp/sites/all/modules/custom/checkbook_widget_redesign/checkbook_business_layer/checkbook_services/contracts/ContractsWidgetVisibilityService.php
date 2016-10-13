@@ -63,6 +63,7 @@ class ContractsWidgetVisibilityService {
                 break;
             case 'award_methods':
                 if(!self::getRequestParamValue('awdmethod')){
+                    dsm(1);
                     switch($category) {
                         case "expense":
                             switch($dashboard) {
