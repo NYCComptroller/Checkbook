@@ -23,9 +23,6 @@
             JOIN vendor d on d.vendor_id = a.vendor_id
             <where>
                 <exp op="AND">
-                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
-                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
-                    <exp op="=" dbField="a.status_flag" paramName="status" />
                     <exp op="IN" dbField="b.document_code" paramName="doctype" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="c.agency_id" paramName="agency" />
@@ -56,9 +53,6 @@
             JOIN vendor d on d.vendor_id = a.vendor_id
             <where>
                 <exp op="AND">
-                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
-                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
-                    <exp op="=" dbField="a.status_flag" paramName="status" />
                     <exp op="IN" dbField="b.document_code" paramName="doctype" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="d.vendor_id" paramName="vendor" />
@@ -103,9 +97,6 @@
             JOIN vendor d on d.vendor_id = a.vendor_id
             <where>
                 <exp op="AND">
-                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
-                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
-                    <exp op="=" dbField="a.status_flag" paramName="status" />
                     <exp op="IN" dbField="b.document_code" paramName="doctype" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="c.agency_id" paramName="agency" />
@@ -136,9 +127,6 @@
             JOIN vendor d on d.vendor_id = a.vendor_id
             <where>
                 <exp op="AND">
-                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
-                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
-                    <exp op="=" dbField="a.status_flag" paramName="status" />
                     <exp op="IN" dbField="b.document_code" paramName="doctype" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="d.vendor_id" paramName="vendor" />
