@@ -3,7 +3,7 @@
     {
         "serviceName":"ContractsWidgetService",
         "sqlConfigName":"contracts/contracts",
-        "statementName":"GetContractsByPrimeVendors"
+        "statementName":"GetMWBEContractsByPrimeVendors"
     },
     "defaultParameters":{"type_of_year":"B","doctype":"'MA1'~'CTA1'~'CT1'","status_flag":"A"},
     "table_title":"Prime Vendors",
