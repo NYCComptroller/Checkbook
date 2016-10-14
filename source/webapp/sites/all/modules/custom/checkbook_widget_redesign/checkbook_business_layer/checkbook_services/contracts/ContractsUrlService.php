@@ -42,7 +42,11 @@ class ContractsUrlService {
         return $url;
     }
     
-    
+    /**
+     * Gets the Minoritype Name link for the given minority type id
+     * @param $minorityTypeId
+     * @return NULL or string
+     */
     static function minorityTypeUrl($minorityTypeId){
         $mwbeCertified = array(2,3,4,5,9);
         $url = NULL;
