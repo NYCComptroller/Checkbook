@@ -7,14 +7,14 @@
     },
     "defaultParameters":{"type_of_year":"B","status_flag":"A"},
     "headerTitle":"Contracts by Award Methods",
-    "headerSubTitle":"Number of Contracts",
+    "headerSubTitle":"Award Methods",
     "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/369/doctype/MA1~CTA1~CT1'",
     "table_columns":[
-            {"labelAlias": "award_method","column": "award_method_name"},
-            {"labelAlias": "no_of_contracts","column": "total_contracts"},
-            {"labelAlias": "current_amount","column": "current_amount_sum"},
-            {"labelAlias": "original_amount","column": "original_amount_sum"},
-            {"labelAlias": "spent_to_date","column": "spending_amount_sum"},
+            {"labelAlias": "award_method","column": "award_method_name","derivedColumn":"award_method_name_link"},
+            {"labelAlias": "no_of_contracts","column": "total_contracts","format":"number"},
+            {"labelAlias": "current_amount","column": "current_amount_sum","format":"dollar"},
+            {"labelAlias": "original_amount","column": "original_amount_sum","format":"dollar"},
+            {"labelAlias": "spent_to_date","column": "spending_amount_sum","format":"dollar","derivedColumn":"award_method_spent_to_date_link"},
             {"label":"","column":""}
         ],
     "dataTableOptions":{

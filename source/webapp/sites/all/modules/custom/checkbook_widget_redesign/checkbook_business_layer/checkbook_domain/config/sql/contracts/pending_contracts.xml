@@ -14,7 +14,7 @@
             SELECT
             a.award_method_id,
             a.award_method_name,
-            SUM(COALESCE(a.original_contract_amount,0)) AS original_amount_sum,
+            SUM(COALESCE(original_maximum_amount,0)) AS original_amount_sum,
             SUM(COALESCE(revised_maximum_amount,0)) AS current_amount_sum,
             COUNT(contract_number) AS total_contracts
             FROM pending_contracts a
@@ -32,7 +32,7 @@
                     <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
-            GROUP BY a.type_of_year,e.award_method_id,e.award_method_name
+            GROUP BY a.award_method_name, a.award_method_id
         </sql>
     </statement>
     <statement name="GetCountPendingContractsByAwardMethods" datasource="checkbook">
@@ -46,7 +46,7 @@
         <param name="csize" />
         <param name="cindustry" />
         <sql>
-            SELECT COUNT(DISTINCT a.award_method_id) as record_count
+            SELECT COUNT(*) as record_count
             FROM pending_contracts a
             JOIN ref_document_code b ON a.document_code_id = b.document_code_id
             JOIN ref_agency c on c.agency_id = a.awarding_agency_id
