@@ -375,7 +375,7 @@ function load_widget_controller_data_count($node) {
     $parameters = _prepare_input_parameters($node);
 
     //Adjust sql parameters
-    $urlPath = drupal_get_path_alias($_GET['q']);
+    $urlPath = $_SERVER['HTTP_REFERER'];
     $parameters = $service->adjustParameters($parameters, $urlPath);
 
     //Load widget total row count
@@ -452,7 +452,7 @@ function _load_widget_controller_data($node, $service) {
     $parameters = _prepare_input_parameters($node);
 
     //Adjust sql parameters
-    $urlPath = drupal_get_path_alias($_GET['q']);
+    $urlPath = $_SERVER['HTTP_REFERER'];
     $parameters = $service->adjustParameters($parameters, $urlPath);
 
     try {
