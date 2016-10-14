@@ -41,6 +41,29 @@ class ContractsUrlService {
             . "/newwindow";
         return $url;
     }
+    
+    
+    static function minorityTypeUrl($minorityTypeId){
+        $mwbeCertified = array(2,3,4,5,9);
+        $url = NULL;
+        if(in_array($minorityTypeId, $mwbeCertified)){
+            $currentUrl = explode('/',$_SERVER['HTTP_REFERER']);
+            $minorityTypeId = ($minorityTypeId == 4 || $minorityTypeId == 5) ? '4~5': $minorityTypeId;
+            $dashboard = "mp";
+            $url =  '/'. $currentUrl[3]
+                    ._checkbook_project_get_url_param_string("year","syear")
+                    . _checkbook_project_get_url_param_string("agency")
+                    . _checkbook_project_get_url_param_string("cindustry")
+                    . _checkbook_project_get_url_param_string("csize")
+                    . _checkbook_project_get_url_param_string("awdmethod")
+                    . _checkbook_project_get_url_param_string("contstatus","status")
+                    . _checkbook_project_get_url_param_string("vendor")
+                    . _checkbook_project_get_url_param_string("subvendor")
+                    . '/dashboard/mp'
+                    . '/mwbe/'. $minorityTypeId .  '?expandBottomCont=true';
+        }
+        return $url;
+    }
 
     // TODO: move to a separate re-usable class (ie ContractUrlParameters) to parse the Url and return parameters
     static private  function _getContractCategoryParameter() {
