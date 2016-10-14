@@ -17,7 +17,7 @@
         {"labelAlias":"contract_includes_sub","column":"contract_subvendor_status"},
         {"labelAlias":"current_amount","column":"current_amount_sum","format":"dollar"},
         {"labelAlias":"original_amount","column":"original_amount_sum","format":"dollar"},
-        {"labelAlias":"spent_to_date","column":"spending_amount_sum","format":"dollar","derivedColumn":"spent_to_date_link"},
+        {"labelAlias":"spent_to_date","column":"spending_amount_sum","format":"dollar","derivedColumn":"contracts_spent_to_date_link"},
         {"label":"","column":""}
     ],
     "skipCustomPadding":true,
