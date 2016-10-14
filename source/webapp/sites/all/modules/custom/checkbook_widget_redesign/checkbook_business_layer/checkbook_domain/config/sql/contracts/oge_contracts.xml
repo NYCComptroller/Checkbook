@@ -269,7 +269,7 @@
         <param name="cindustry" />
         <sql>
             SELECT s0.vendor_id,
-                v.legal_name,
+                v.legal_name AS vendor_name,
                 type_of_year,
                 SUM(COALESCE(original_contract_amount,0)) AS original_amount_sum,
                 SUM(COALESCE(maximum_contract_amount,0)) AS current_amount_sum,

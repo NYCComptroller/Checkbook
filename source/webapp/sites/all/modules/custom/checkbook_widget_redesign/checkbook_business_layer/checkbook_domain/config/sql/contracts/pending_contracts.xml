@@ -211,7 +211,12 @@
             JOIN ref_document_code rfd ON rfd.document_code_id = s0.document_code_id
             <where>
                 <exp op="AND">
-                    <exp op="IN" dbField="rfd.document_code" paramName="doctype" />
+                    <exp op="IF" condition="=" paramType="bool" paramName="contracts_pending_rev_landing" compareValue="True">
+                        <exp op="IN" dbField="rfd.document_code">'RCT1'</exp>
+                    </exp>
+                    <exp op="IF" condition="=" paramType="bool" paramName="contracts_pending_exp_landing" compareValue="True">
+                        <exp op="IN" dbField="rfd.document_code">'MMA1'~'MA1'~'MAR'~'CT1'~'CTA1'~'CTR'</exp>
+                    </exp>
                     <exp op="=" dbField="s0.document_agency_id" paramName="agency" />
                     <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
