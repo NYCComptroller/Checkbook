@@ -1,12 +1,15 @@
 <statements>
     <!--GetPendingContractsByAwardMethods,GetCountPendingContractsByAwardMethods-->
-    <statement name="GetPendingContractsByAwardMethods " datasource="checkbook">
+    <statement name="GetPendingContractsByAwardMethods" datasource="checkbook">
         <param name="year" required ="true" type="int"/>
         <param name="yeartype" required ="true" type="string" />
         <param name="doctype" />
         <param name="mwbe" />
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
         <sql>
             SELECT
             a.award_method_id,
@@ -20,13 +23,13 @@
             JOIN vendor d on d.vendor_id = a.vendor_id
             <where>
                 <exp op="AND">
-                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
-                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
-                    <exp op="=" dbField="a.status_flag" paramName="status" />
                     <exp op="IN" dbField="b.document_code" paramName="doctype" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="c.agency_id" paramName="agency" />
                     <exp op="=" dbField="d.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
             GROUP BY a.type_of_year,e.award_method_id,e.award_method_name
@@ -39,6 +42,9 @@
         <param name="doctype" />
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
         <sql>
             SELECT COUNT(DISTINCT a.award_method_id) as record_count
             FROM pending_contracts a
@@ -47,25 +53,28 @@
             JOIN vendor d on d.vendor_id = a.vendor_id
             <where>
                 <exp op="AND">
-                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
-                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
-                    <exp op="=" dbField="a.status_flag" paramName="status" />
                     <exp op="IN" dbField="b.document_code" paramName="doctype" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="d.vendor_id" paramName="vendor" />
                     <exp op="=" dbField="c.agency_id" paramName="agency" />
+                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
         </sql>
     </statement>
     <!--GetPendingMasterAgreements,GetCountPendingMasterAgreements-->
-    <statement name="GetPendingMasterAgreements  " datasource="checkbook">
+    <statement name="GetPendingMasterAgreements" datasource="checkbook">
         <param name="year" required ="true" type="int"/>
         <param name="yeartype" required ="true" type="string" />
         <param name="doctype" />
         <param name="mwbe" />
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
         <sql>
             SELECT
             a.cif_received_date AS received_date,
@@ -88,25 +97,28 @@
             JOIN vendor d on d.vendor_id = a.vendor_id
             <where>
                 <exp op="AND">
-                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
-                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
-                    <exp op="=" dbField="a.status_flag" paramName="status" />
                     <exp op="IN" dbField="b.document_code" paramName="doctype" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="c.agency_id" paramName="agency" />
                     <exp op="=" dbField="d.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
             GROUP BY a.cif_received_date, a.vendor_id, a.vendor_legal_name, a.description, a.contract_number, a.fms_contract_number, a.document_code_id, a.original_agreement_id, a.document_agency_name, a.document_agency_id, a.document_version, b.document_code
         </sql>
     </statement>
-    <statement name="GetCountPendingMasterAgreements " datasource="checkbook">
+    <statement name="GetCountPendingMasterAgreements" datasource="checkbook">
         <param name="year" required ="true" type="int"/>
         <param name="yeartype" required ="true" type="string" />
         <param name="status" type="string"/>
         <param name="doctype" />
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
         <sql>
             SELECT COUNT(*) as record_count
             FROM pending_contracts a
@@ -115,13 +127,13 @@
             JOIN vendor d on d.vendor_id = a.vendor_id
             <where>
                 <exp op="AND">
-                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
-                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
-                    <exp op="=" dbField="a.status_flag" paramName="status" />
                     <exp op="IN" dbField="b.document_code" paramName="doctype" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="d.vendor_id" paramName="vendor" />
                     <exp op="=" dbField="c.agency_id" paramName="agency" />
+                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
         </sql>

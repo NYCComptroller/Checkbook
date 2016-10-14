@@ -5,7 +5,7 @@
         "sqlConfigName":"contracts/contracts",
         "statementName":"GetContractsByAwardMethods"
     },
-    "defaultParameters":{"type_of_year":"B","doctype":"MA1~CTA1~CT1","status_flag":"A"},
+    "defaultParameters":{"type_of_year":"B","status_flag":"A"},
     "headerTitle":"Contracts by Award Methods",
     "headerSubTitle":"Number of Contracts",
     "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/369/doctype/MA1~CTA1~CT1'",
