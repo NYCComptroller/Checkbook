@@ -5,15 +5,15 @@
         "sqlConfigName":"contracts/contracts",
         "statementName":"GetContractsByAwardMethods"
     },
-    "defaultParameters":{"type_of_year":"B","doctype":"RCT1","status_flag":"A"},
+    "defaultParameters":{"type_of_year":"B","status_flag":"A"},
     "headerTitle":"Contracts by Award Methods",
-    "headerSubTitle":"Number of Contracts",
+    "headerSubTitle":"Award Methods",
     "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/432/doctype/RCT1'",
     "table_columns":[
             {"labelAlias": "award_method","column": "award_method_name"},
-            {"labelAlias": "no_of_contracts","column": "total_contracts"},
-            {"labelAlias": "current_amount","column": "current_amount_sum"},
-            {"labelAlias": "original_amount","column": "original_amount_sum"},
+            {"labelAlias": "no_of_contracts","column": "total_contracts","format":"number"},
+            {"labelAlias": "current_amount","column": "current_amount_sum","format":"dollar"},
+            {"labelAlias": "original_amount","column": "original_amount_sum","format":"dollar"},
             {"label":"","column":""}
         ],
     "dataTableOptions":{
