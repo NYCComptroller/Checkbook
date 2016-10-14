@@ -168,6 +168,21 @@ class ContractsUrlService {
         return $url;
     }
 
+    static function contractSizeUrl($award_size_id) {
+        $currentUrl = self::_getCurrentPage();
+        $url = $currentUrl
+            . _checkbook_append_url_params()
+            ._checkbook_project_get_url_param_string('vendor')
+            ._checkbook_project_get_url_param_string('agency')
+            ._checkbook_project_get_url_param_string('csize')
+            ._checkbook_project_get_url_param_string('awdmethod')
+            ._checkbook_project_get_url_param_string('status')
+            ._checkbook_project_get_year_url_param_string()
+            ."/csize/".$award_size_id
+            ."?expandBottomCont=true";
+        return $url;
+    }
+
     static function contractsFooterUrl() {
         $subvendor = _getRequestParamValue('subvendor');
         $vendor = _getRequestParamValue('vendor');

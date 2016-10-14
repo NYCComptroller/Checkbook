@@ -2,16 +2,16 @@
     "sqlConfig":
     {
         "serviceName":"ContractsWidgetService",
-        "sqlConfigName":"contracts/contracts",
-        "statementName":"GetContractsBySize",
-        "countStatementName":"GetCountContractsBySize"
+        "sqlConfigName":"contracts/sub_contracts",
+        "statementName":"GetSubContractsBySize",
+        "countStatementName":"GetCountSubContractsBySize"
     },
     "table_title":"Contracts by Size",
     "headerSubTitle":"Contracts",
     "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/415/doctype/CTA1~CT1'",
     "table_columns":[
         {"labelAlias":"contract_size","column":"award_size_name","derivedColumn":"contract_size_name_link"},
-        {"labelAlias":"no_of_contracts","column":"total_contracts","format":"number"},
+        {"labelAlias":"num_sub_contracts","column":"total_contracts","format":"number"},
         {"labelAlias":"current_amount","column":"current_amount_sum","format":"dollar"},
         {"labelAlias":"original_amount","column":"original_amount_sum","format":"dollar"},
         {"labelAlias":"spent_to_date","column":"spending_amount_sum","format":"dollar","derivedColumn":"contact_size_spent_to_date_link"},
