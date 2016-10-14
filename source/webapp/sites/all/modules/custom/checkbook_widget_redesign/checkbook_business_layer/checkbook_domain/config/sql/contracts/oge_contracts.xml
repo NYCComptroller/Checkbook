@@ -121,12 +121,12 @@
             c.legal_name AS legal_name,
             a.original_agreement_id,
             d.document_code,
-            b.agency_name,
+            b.agency_name as contract_agency,
             a.document_code_id AS document_code_document_code,
             MIN(COALESCE(original_contract_amount,0)) AS original_amount_sum,
             MIN(COALESCE(maximum_contract_amount,0)) AS current_amount_sum,
             SUM(COALESCE(spending_amount_disb,0)) AS spending_amount_sum
-            FROM aggregateon_contracts_cumulative_spending s0
+            FROM aggregateon_contracts_cumulative_spending a
             JOIN ref_agency b ON b.agency_id = a.display_agency_id
             JOIN vendor c ON c.vendor_id = a.display_vendor_id
             JOIN ref_document_code d ON d.document_code_id = a.document_code_id
@@ -136,7 +136,7 @@
                     <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
                     <exp op="=" dbField="a.status_flag" paramName="status" />
                     <exp op="IN" dbField="d.document_code" paramName="doctype" />
-                    <exp op="=" dbField="b.agency_id" paramName="agency" />
+                    <exp op="=" dbField="a.agency_id" paramName="agency" />
                     <exp op="=" dbField="c.vendor_id" paramName="vendor" />
                 </exp>
             </where>
