@@ -61,31 +61,29 @@ class ContractsWidgetVisibilityService {
                     }
                 }
                 break;
-            case 'industries':
-                if(!self::getRequestParamValue('cindustry')){
+            case 'award_methods':
+                if(!self::getRequestParamValue('awdmethod')){
                     switch($category) {
                         case "expense":
                             switch($dashboard) {
                                 case "ss":
                                 case "sp":
-                                    $view = 'sub_contracts_by_industries_view';
-                                    break;
                                 case "ms":
-                                    $view = 'mwbe_sub_contracts_by_industries_view';
+                                    $view = 'subvendor_award_methods_view';
                                     break;
                                 default:
-                                    $view = self::isEDCPage() ? 'oge_contracts_by_industries_view' : 'contracts_by_industries_view';
+                                    $view = self::isEDCPage() ? 'oge_award_methods_view' : 'expense_award_methods_view';
                                     break;
                             }
                             break;
 
                         case "revenue":
-                            $view = 'revenue_contracts_by_industries_view';
+                            $view = 'revenue_award_methods_view';
                             break;
 
                         case "pending expense":
                         case "pending revenue":
-                            $view = 'pending_contracts_by_industries_view';
+                            $view = 'pending_award_methods_view';
                             break;
                     }
                 }
