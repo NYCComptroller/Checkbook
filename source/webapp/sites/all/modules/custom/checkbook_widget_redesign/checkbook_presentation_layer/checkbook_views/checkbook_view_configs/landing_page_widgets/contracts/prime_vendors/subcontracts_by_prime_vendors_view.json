@@ -1,1 +1,8 @@
-
+{
+    "defaultConfigKey": "mwbe_expense_contracts_by_prime_vendors_view",
+    "sqlConfig": {
+        "serviceName": "ContractsWidgetService",
+        "sqlConfigName": "contracts/sub_contracts",
+        "statementName": "GetSubContractsByPrimeVendors"
+    }
+}

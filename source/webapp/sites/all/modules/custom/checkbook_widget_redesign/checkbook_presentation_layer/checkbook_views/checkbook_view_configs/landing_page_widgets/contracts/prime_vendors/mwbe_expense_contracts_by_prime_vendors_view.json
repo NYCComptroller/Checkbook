@@ -5,7 +5,7 @@
         "sqlConfigName":"contracts/contracts",
         "statementName":"GetMWBEContractsByPrimeVendors"
     },
-    "defaultParameters":{"type_of_year":"B","doctype":"'MA1'~'CTA1'~'CT1'","status_flag":"A"},
+    "defaultParameters":{"type_of_year":"B","status_flag":"A"},
     "table_title":"Prime Vendors",
     "headerSubTitle":"Prime Vendors",
     "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/367/doctype/CTA1~CT1'",

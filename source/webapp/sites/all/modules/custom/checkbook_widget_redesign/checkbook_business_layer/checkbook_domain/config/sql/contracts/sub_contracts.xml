@@ -141,7 +141,7 @@
         </sql>
     </statement>
     <!--  GetSubContractsByPrimeVendors  -->
-    <statement name="GetPendingContractsByPrimeVendors" datasource="checkbook">
+    <statement name="GetSubContractsByPrimeVendors" datasource="checkbook">
         <param name="year" required ="true" type="int"/>
         <param name="yeartype" required ="true" type="string" />
         <param name="status" type="string"/>
@@ -154,9 +154,9 @@
         <param name="cindustry" />
         <sql>
            SELECT prime_vendor_id,
-                v.legal_name,
+                v.legal_name AS vendor_name,
                 type_of_year,
-                prime_minority_type_id,
+                prime_minority_type_id AS minority_type_id,
                 SUM(COALESCE(original_contract_amount,0)) AS original_amount_sum,
                 SUM(COALESCE(maximum_contract_amount,0)) AS current_amount_sum,
                 SUM(COALESCE(spending_amount,0)) AS spending_amount_sum,
