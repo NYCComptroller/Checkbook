@@ -5,18 +5,18 @@
         "sqlConfigName":"contracts/pending_contracts",
         "statementName":"GetPendingMasterAgreements"
     },
-    "defaultParameters":{"doctype":"MA1~MMA1~MAR"},
+    "defaultParameters":{"doctype":"'MA1','MMA1','MAR'"},
     "headerTitle":"Contracts by Master Agreements",
-    "headerSubTitle":"Number of Contracts",
+    "headerSubTitle":"Master Agreement Contracts",
     "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/403/doctype/MA1~MMA1~MAR'",
     "table_columns": [
         {"labelAlias": "contract_id","column": "pending_contract_number"},
-        {"labelAlias": "contract_purpose","column": "pending_contract_purpose"},
-        {"labelAlias": "contract_agency","column": "document_agency_name"},
-        {"labelAlias": "prime_vendor","column": "legal_name"},
-        {"labelAlias": "recv_date","column": "received_date"},
-        {"labelAlias": "current_amount","column": "current_amount_sum"},
-        {"labelAlias": "original_amount","column": "original_amount_sum"},
+        {"labelAlias": "contract_purpose","column": "pending_contract_purpose","tooltip":32},
+        {"labelAlias": "contract_agency","column": "document_agency_name","tooltip":18},
+        {"labelAlias": "prime_vendor","column": "legal_name","tooltip":30},
+        {"labelAlias": "recv_date","column": "received_date","format":"date"},
+        {"labelAlias": "current_amount","column": "current_amount_sum","format":"dollar"},
+        {"labelAlias": "original_amount","column": "original_amount_sum","format":"dollar"},
         {"label": "","column": ""}
     ],
     "dataTableOptions":{

@@ -1243,8 +1243,8 @@
             a.type_of_year,
             a.original_agreement_id,
             e.document_code,
-            j1.agency_name AS contract_agency,
-            s0.minority_type_id AS minority_type_minority_type
+            c.agency_name AS contract_agency,
+            a.minority_type_id AS minority_type_minority_type
             FROM aggregateon_mwbe_contracts_cumulative_spending a
             JOIN ref_document_code b ON b.document_code_id = a.document_code_id
             JOIN ref_agency c ON c.agency_id = a.agency_id
@@ -1261,7 +1261,7 @@
                     <exp op="=" dbField="d.vendor_id" paramName="vendor" />
                 </exp>
             </where>
-            GROUP BY a.agency_id, a.vendor_id, a.description, c.agency_short_name,d.legal_name,a.type_of_year,a.original_agreement_id,e.document_code,c.agency_name,a.minority_type_id
+            GROUP BY a.agency_id, a.vendor_id, a.description, c.agency_short_name, d.legal_name, a.type_of_year, a.original_agreement_id, e.document_code, c.agency_name, a.minority_type_id, a.contract_number
         </sql>
     </statement>
     <statement name="GetCountMasterAgreements" datasource="checkbook">

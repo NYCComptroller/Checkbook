@@ -3,6 +3,6 @@
     "sqlConfig": {
         "serviceName": "ContractsWidgetService",
         "sqlConfigName": "contracts/oge_contracts",
-        "statementName": " GetOgeMasterAgreements "
+        "statementName": "GetOgeMasterAgreements"
     }
 }
