@@ -1324,7 +1324,7 @@
         </sql>
     </statement>
     <!--GetMWBEPrimeVendors-->
-    <statement name="GetContractsByPrimeVendors" datasource="checkbook">
+    <statement name="GetMWBEContractsByPrimeVendors" datasource="checkbook">
         <param name="year" required ="true" type="int"/>
         <param name="yeartype" required ="true" type="string" />
         <param name="status" type="string"/>
@@ -1339,6 +1339,7 @@
             SELECT s0.vendor_id,
                 v.legal_name AS vendor_name,
                 type_of_year,
+                s0.minority_type_id,
                 SUM(COALESCE(original_contract_amount,0)) AS original_amount_sum,
                 SUM(COALESCE(maximum_contract_amount,0)) AS current_amount_sum,
                 SUM(COALESCE(spending_amount,0)) AS spending_amount_sum,
@@ -1360,8 +1361,7 @@
                     <exp op="=" dbField="s0.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
-            GROUP BY s0.type_of_year, s0.vendor_id, legal_name
+            GROUP BY s0.type_of_year, s0.vendor_id, legal_name, s0.minority_type_id
         </sql>
     </statement>
-    
 </statements>
