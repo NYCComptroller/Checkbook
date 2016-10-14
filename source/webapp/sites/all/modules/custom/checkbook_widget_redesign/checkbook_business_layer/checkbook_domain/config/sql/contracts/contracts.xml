@@ -386,7 +386,7 @@
         <param name="cindustry" />
         <sql>
             SELECT count(a.document_code_id) as record_count
-            FROM aggregateon_contracts_cumulative_spending a
+            FROM aggregateon_mwbe_contracts_cumulative_spending a
             LEFT OUTER JOIN ref_document_code b ON b.document_code_id = a.document_code_id
             <where>
                 <exp op="AND">
@@ -458,7 +458,7 @@
         <param name="cindustry" />
         <sql>
             SELECT count(a.document_code_id) as record_count
-            FROM aggregateon_contracts_cumulative_spending a
+            FROM aggregateon_mwbe_contracts_cumulative_spending a
             LEFT OUTER JOIN ref_document_code b ON b.document_code_id = a.document_code_id
             <where>
                 <exp op="AND">
