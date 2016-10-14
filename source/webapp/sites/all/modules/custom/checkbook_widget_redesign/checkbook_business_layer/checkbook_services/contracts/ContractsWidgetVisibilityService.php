@@ -68,10 +68,8 @@ class ContractsWidgetVisibilityService {
                             switch($dashboard) {
                                 case "ss":
                                 case "sp":
-                                    $view = 'subvendor_award_methods_view';
-                                    break;
                                 case "ms":
-                                    $view = 'expense_award_methods_view';
+                                    $view = 'subvendor_award_methods_view';
                                     break;
                                 default:
                                     $view = self::isEDCPage() ? 'oge_award_methods_view' : 'expense_award_methods_view';

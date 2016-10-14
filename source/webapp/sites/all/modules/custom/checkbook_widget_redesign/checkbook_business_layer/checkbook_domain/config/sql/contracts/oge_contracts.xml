@@ -56,7 +56,7 @@
             SELECT
             a.type_of_year,
             a.award_method_id,
-            b.award_method_name,
+            c.award_method_name,
             SUM(COALESCE(original_contract_amount,0)) AS original_amount_sum,
             SUM(COALESCE(maximum_contract_amount,0)) AS current_amount_sum,
             SUM(COALESCE(spending_amount_disb,0)) AS spending_amount_sum,
@@ -74,7 +74,7 @@
                     <exp op="=" dbField="a.vendor_id" paramName="vendor" />
                 </exp>
             </where>
-            GROUP BY agency.agency_id, agency.agency_name, dept.department_id, dept.department_name
+            GROUP BY a.type_of_year,a.award_method_id,c.award_method_name
         </sql>
     </statement>
     <statement name="GetCountOgeContractsByAwardMethods" datasource="checkbook_oge">
