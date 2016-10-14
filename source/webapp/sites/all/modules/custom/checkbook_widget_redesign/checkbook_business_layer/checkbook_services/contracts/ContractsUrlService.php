@@ -16,19 +16,45 @@ class ContractsUrlService {
         return $url;
     }
 
-    static function spentToDateUrl($original_agreement_id,$vendor_id,$contract_number) {
+    /**
+     * Gets the spent to date link Url for the contract spending
+     * @param $spend_type_parameter
+     * @return string
+     */
+    static function spentToDateUrl($spend_type_parameter) {
 
-        $year_type = _getRequestParamValue("yeartype");
-        $year = _getRequestParamValue("year");
         $url = "/contract/spending/transactions"
-            . (_checkbook_check_isEDCPage() ? ("/agid/".$original_agreement_id."/cvendor/".$vendor_id) :"/contnum/" .$contract_number )
-            . _checkbook_project_get_url_param_string("status")
+            . $spend_type_parameter
             . _checkbook_append_url_params()
+            . _checkbook_project_get_url_param_string("status")
+            . _checkbook_project_get_url_param_string("status","contstatus")
+            . _checkbook_project_get_url_param_string("agency","cagency")
+            . _checkbook_project_get_url_param_string("vendor","cvendor")
+            . _checkbook_project_get_url_param_string("awdmethod")
+            . _checkbook_project_get_url_param_string("cindustry")
+            . _checkbook_project_get_url_param_string("csize")
             . _checkbook_project_get_year_url_param_string()
-            . ($year_type == "B" ? "/syear/".$year : "/scalyear/".$year)
-            . ContractUtil::getSpentToDateParams()
-            . "/smnid/368/newwindow";
+            . _checkbook_project_get_url_param_string("year","syear")
+            . "/doctype/CT1~CTA1~MA1"
+            . "/contcat/".self::_getContractCategoryParameter()
+            . "/smnid/728" //todo get mapping
+            . "/newwindow";
         return $url;
+    }
+
+    // TODO: move to a separate re-usable class (ie ContractUrlParameters) to parse the Url and return parameters
+    static private  function _getContractCategoryParameter() {
+        $url = $_GET['q'];
+        if(preg_match('/revenue/',$url)){
+            return 'revenue';
+        }
+        else if(preg_match('/pending_exp/',$url)){
+            return 'expense';
+        }
+        else if(preg_match('/pending_rev/',$url)){
+            return 'revenue';
+        }
+        return 'expense';
     }
 
     static function vendorUrl($vendor_id,$agency_id,$year_id,$year_type,$minority_type_id,$is_prime_or_sub) {

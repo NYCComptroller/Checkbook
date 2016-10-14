@@ -38,17 +38,58 @@ class ContractsWidgetService extends AbstractWidgetService {
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
 
-            case "spent_to_date_link":
-                $column = $row['spending_amount_sum'];
-                $class = "new_window";
-                $url = ContractsUrlService::spentToDateUrl($row['original_agreement_id'],$row['vendor_id'],$row['contract_number']);
-                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
-                break;
-
             case "industry_name_link":
                 $column = $row['industry_type_name'];
                 $url = ContractsUrlService::industryUrl($row['industry_type_id']);
                 $value = "<a href='{$url}'>{$column}</a>";
+                break;
+
+            // Spent to Date Links
+            case "contracts_spent_to_date_link":
+                $column = $row['spending_amount_sum'];
+                $class = "new_window";
+
+                $spend_type_parameter = _checkbook_check_isEDCPage()
+                    ? "/agid/".$row['original_agreement_id']
+                    : "/contnum/".$row['contract_number'];
+                $url = ContractsUrlService::spentToDateUrl($spend_type_parameter);
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
+
+            case "prime_vendor_spent_to_date_link":
+                $column = $row['spending_amount_sum'];
+                $class = "new_window";
+
+                $spend_type_parameter = "/cvendor/".$row['vendor_id'];
+                $url = ContractsUrlService::spentToDateUrl($spend_type_parameter);
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
+
+            case "award_method_spent_to_date_link":
+                $column = $row['spending_amount_sum'];
+                $class = "new_window";
+
+                $spend_type_parameter = "/awdmethod/".$row['award_method_id'];
+                $url = ContractsUrlService::spentToDateUrl($spend_type_parameter);
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
+
+            case "industry_spent_to_date_link":
+                $column = $row['spending_amount_sum'];
+                $class = "new_window";
+
+                $spend_type_parameter = "/cindustry/".$row['industry_type_id'];
+                $url = ContractsUrlService::spentToDateUrl($spend_type_parameter);
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
+
+            case "contact_size_spent_to_date_link":
+                $column = $row['spending_amount_sum'];
+                $class = "new_window";
+
+                $spend_type_parameter = "/csize/".$row['award_size_id'];
+                $url = ContractsUrlService::spentToDateUrl($spend_type_parameter);
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
         }
 

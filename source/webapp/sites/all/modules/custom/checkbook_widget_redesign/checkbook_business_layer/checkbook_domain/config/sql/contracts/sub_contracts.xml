@@ -72,6 +72,7 @@
         <param name="status" type="string"/>
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
+        <param name="subvendor" />
         <param name="mwbe" />
         <param name="awdmethod" />
         <param name="csize" />
@@ -87,7 +88,6 @@
             FROM aggregateon_subven_contracts_cumulative_spending a
             JOIN ref_document_code b ON a.document_code_id = b.document_code_id
             JOIN ref_agency c on c.agency_id = a.agency_id
-            LEFT JOIN vendor d on d.vendor_id = a.vendor_id
             JOIN ref_industry_type e ON e.industry_type_id = a.industry_type_id
             <where>
                 <exp op="AND">
@@ -96,7 +96,8 @@
                     <exp op="=" dbField="a.status_flag" paramName="status" />
                     <exp op="IN" dbField="b.document_code" paramName="doctype" />
                     <exp op="=" dbField="c.agency_id" paramName="agency" />
-                    <exp op="=" dbField="d.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.vendor_id" paramName="subvendor" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
                     <exp op="=" dbField="a.award_size_id" paramName="csize" />
@@ -113,6 +114,7 @@
         <param name="status" type="string"/>
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
+        <param name="subvendor" />
         <param name="mwbe" />
         <param name="awdmethod" />
         <param name="csize" />
@@ -122,7 +124,6 @@
             FROM aggregateon_subven_contracts_cumulative_spending a
             JOIN ref_document_code b ON a.document_code_id = b.document_code_id
             JOIN ref_agency c on c.agency_id = a.agency_id
-            LEFT JOIN vendor d on d.vendor_id = a.vendor_id
             JOIN ref_industry_type e ON e.industry_type_id = a.industry_type_id
             <where>
                 <exp op="AND">
@@ -131,7 +132,8 @@
                     <exp op="=" dbField="a.status_flag" paramName="status" />
                     <exp op="IN" dbField="b.document_code" paramName="doctype" />
                     <exp op="=" dbField="c.agency_id" paramName="agency" />
-                    <exp op="=" dbField="d.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.vendor_id" paramName="subvendor" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
                     <exp op="=" dbField="a.award_size_id" paramName="csize" />
