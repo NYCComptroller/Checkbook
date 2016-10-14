@@ -61,6 +61,36 @@ class ContractsWidgetVisibilityService {
                     }
                 }
                 break;
+
+            case 'size':
+                if(!self::getRequestParamValue('csize')){
+                    switch($category) {
+                        case "expense":
+                            switch($dashboard) {
+                                case "ss":
+                                case "sp":
+                                    $view = 'sub_contracts_by_size_view';
+                                    break;
+                                case "ms":
+                                    $view = 'mwbe_sub_contracts_by_size_view';
+                                    break;
+                                default:
+                                    $view = self::isEDCPage() ? 'oge_contracts_by_size_view' : 'contracts_by_size_view';
+                                    break;
+                            }
+                            break;
+
+                        case "revenue":
+                            $view = 'revenue_contracts_by_size_view';
+                            break;
+
+                        case "pending expense":
+                        case "pending revenue":
+                            $view = 'pending_contracts_by_size_view';
+                            break;
+                    }
+                }
+                break;
             case 'award_methods':
                 if(!self::getRequestParamValue('awdmethod')){
                     switch($category) {

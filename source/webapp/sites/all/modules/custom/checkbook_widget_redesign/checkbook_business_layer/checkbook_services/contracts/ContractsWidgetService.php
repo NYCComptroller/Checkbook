@@ -49,6 +49,12 @@ class ContractsWidgetService extends AbstractWidgetService {
                 $url = ContractsUrlService::industryUrl($row['industry_type_id']);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
+
+            case "contract_size_name_link":
+                $column = $row['award_size_name'];
+                $url = ContractsUrlService::contractSizeUrl($row['award_size_id']);
+                $value = "<a href='{$url}'>{$column}</a>";
+                break;
             
             case "minority_type_name_link":
                 $minority_type_category_map = array(

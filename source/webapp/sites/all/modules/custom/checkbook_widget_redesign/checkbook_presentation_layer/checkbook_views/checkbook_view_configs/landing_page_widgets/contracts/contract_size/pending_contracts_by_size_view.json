@@ -1,0 +1,10 @@
+{
+    "defaultConfigKey":"revenue_contracts_by_size_view",
+    "sqlConfig":
+    {
+        "serviceName":"ContractsWidgetService",
+        "sqlConfigName":"contracts/pending_contracts",
+        "statementName":"GetPendingContractsBySize",
+        "countStatementName":"GetCountPendingContractsBySize"
+    }
+}
