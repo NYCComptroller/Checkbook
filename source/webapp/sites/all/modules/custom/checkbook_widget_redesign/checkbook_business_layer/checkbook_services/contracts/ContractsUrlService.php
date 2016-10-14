@@ -103,6 +103,20 @@ class ContractsUrlService {
         return $url;
     }
 
+    static function awardmethodUrl($award_method_id) {
+        $url = "/contracts_landing"
+            . _checkbook_append_url_params()
+            ._checkbook_project_get_url_param_string('vendor')
+            ._checkbook_project_get_url_param_string('cindustry')
+            ._checkbook_project_get_url_param_string('csize')
+            ._checkbook_project_get_url_param_string('agency')
+            ._checkbook_project_get_url_param_string('status')
+            ._checkbook_project_get_year_url_param_string()
+            ."/awdmethod/".$award_method_id
+            ."?expandBottomCont=true";
+        return $url;
+    }
+
     static function industryUrl($industry_type_id) {
         $url = "/contracts_landing"
             . _checkbook_append_url_params()
