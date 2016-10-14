@@ -255,6 +255,91 @@
             </where>
         </sql>
     </statement>
+    <!--GetOgeContractsBySize,GetCountOgeContractsBySize-->
+    <statement name="GetOgeContractsBySize" datasource="checkbook_oge">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="doctype" />
+        <param name="status" type="string"/>
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
+        <sql>
+            SELECT
+            e.award_size_id,
+            e.award_size_name,
+            SUM(COALESCE(a.original_contract_amount,0)) AS original_amount_sum,
+            SUM(COALESCE(a.maximum_contract_amount,0)) AS current_amount_sum,
+            SUM(COALESCE(a.spending_amount,0)) AS spending_amount_sum,
+            COUNT(contract_number) AS total_contracts
+            <exp op="IF" condition="=" paramName="vendor" compareValue="">
+                FROM aggregateon_contracts_cumulative_spending_no_vendor a
+            </exp>
+            <exp op="IF" condition="&lt;&gt;" paramName="vendor" compareValue="">
+                FROM aggregateon_contracts_cumulative_spending a
+            </exp>
+            JOIN ref_document_code b ON a.document_code_id = b.document_code_id
+            JOIN ref_award_size e ON e.award_size_id = a.award_size_id
+            <exp op="IF" condition="&lt;&gt;" paramName="vendor" compareValue="">
+                JOIN vendor d on d.vendor_id = a.vendor_id
+            </exp>
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="a.status_flag" paramName="status" />
+                    <exp op="IN" dbField="b.document_code" paramName="doctype" />
+                    <exp op="=" dbField="c.agency_id" paramName="agency" />
+                    <exp op="=" dbField="d.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
+                </exp>
+            </where>
+            GROUP BY e.award_size_id,e.award_size_name
+        </sql>
+    </statement>
+    <statement name="GetCountOgeContractsBySize" datasource="checkbook_oge">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="status" type="string"/>
+        <param name="doctype" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
+        <sql>
+            SELECT COUNT(contract_number) AS record_count
+            <exp op="IF" condition="=" paramName="vendor" compareValue="">
+                FROM aggregateon_contracts_cumulative_spending_no_vendor a
+            </exp>
+            <exp op="IF" condition="&lt;&gt;" paramName="vendor" compareValue="">
+                FROM aggregateon_contracts_cumulative_spending a
+            </exp>
+            JOIN ref_document_code b ON a.document_code_id = b.document_code_id
+            JOIN ref_agency c on c.agency_id = a.agency_id
+            JOIN ref_award_size e ON e.award_size_id = a.award_size_id
+            <exp op="IF" condition="&lt;&gt;" paramName="vendor" compareValue="">
+                JOIN vendor d on d.vendor_id = a.vendor_id
+            </exp>
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="a.status_flag" paramName="status" />
+                    <exp op="IN" dbField="b.document_code" paramName="doctype" />
+                    <exp op="=" dbField="a.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.agency_id" paramName="agency" />
+                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
+                </exp>
+            </where>
+        </sql>
+    </statement>
     <!---Get OGE PrimeVendors-->
     <statement name="GetOgeContractsByPrimeVendors" datasource="checkbook_oge">
         <param name="year" required ="true" type="int"/>

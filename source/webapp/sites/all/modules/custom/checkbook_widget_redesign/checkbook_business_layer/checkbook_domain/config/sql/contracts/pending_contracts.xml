@@ -201,6 +201,69 @@
             </where>
         </sql>
     </statement>
+    <!--GetPendingContractsBySize,GetCountPendingContractsBySize-->
+    <statement name="GetPendingContractsBySize" datasource="checkbook">
+        <param name="doctype" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="mwbe" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
+        <sql>
+            SELECT
+            e.award_size_id,
+            e.award_size_name,
+            SUM(COALESCE(a.original_maximum_amount,0)) AS original_amount_sum,
+            SUM(COALESCE(a.revised_maximum_amount,0)) AS current_amount_sum,
+            COUNT(contract_number) AS total_contracts
+            FROM pending_contracts a
+            JOIN ref_document_code b ON a.document_code_id = b.document_code_id
+            JOIN ref_agency c on c.agency_id = a.document_agency_id
+            LEFT JOIN vendor d on d.vendor_id = a.vendor_id
+            JOIN ref_award_size e ON e.award_size_id = a.award_size_id
+            <where>
+                <exp op="AND">
+                    <exp op="IN" dbField="b.document_code" paramName="doctype" />
+                    <exp op="=" dbField="c.agency_id" paramName="agency" />
+                    <exp op="=" dbField="d.vendor_id" paramName="vendor" />
+                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
+                </exp>
+            </where>
+            GROUP BY e.award_size_id,e.award_size_name
+        </sql>
+    </statement>
+    <statement name="GetCountPendingContractsBySize" datasource="checkbook">
+        <param name="doctype" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="mwbe" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
+        <sql>
+            SELECT COUNT(contract_number) AS record_count
+            FROM pending_contracts a
+            JOIN ref_document_code b ON a.document_code_id = b.document_code_id
+            JOIN ref_agency c on c.agency_id = a.document_agency_id
+            LEFT JOIN vendor d on d.vendor_id = a.vendor_id
+            JOIN ref_award_size e ON e.award_size_id = a.award_size_id
+            <where>
+                <exp op="AND">
+                    <exp op="IN" dbField="b.document_code" paramName="doctype" />
+                    <exp op="=" dbField="a.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.agency_id" paramName="agency" />
+                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
+                </exp>
+            </where>
+        </sql>
+    </statement>
     <!-- GetPendingContractsByPrimeVendors -->
     <statement name="GetPendingContractsByPrimeVendors" datasource="checkbook">
         <param name="year" required ="true" type="int"/>
