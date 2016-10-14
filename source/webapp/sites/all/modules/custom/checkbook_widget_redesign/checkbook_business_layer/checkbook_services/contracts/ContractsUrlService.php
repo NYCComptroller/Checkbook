@@ -42,6 +42,12 @@ class ContractsUrlService {
         return $url;
     }
     
+    //TODO: move to a separate re-usable class (ie ContractUrlParameters) to parse the Url and return parameters
+    static private  function _getCurrentPage() {
+        $currentUrl = explode('/',$_SERVER['HTTP_REFERER']);
+        return $currentUrl[3];
+    }
+    
     /**
      * Gets the Minoritype Name link for the given minority type id
      * @param $minorityTypeId
@@ -51,10 +57,10 @@ class ContractsUrlService {
         $mwbeCertified = array(2,3,4,5,9);
         $url = NULL;
         if(in_array($minorityTypeId, $mwbeCertified)){
-            $currentUrl = explode('/',$_SERVER['HTTP_REFERER']);
+            $currentUrl = self::_getCurrentPage();
             $minorityTypeId = ($minorityTypeId == 4 || $minorityTypeId == 5) ? '4~5': $minorityTypeId;
             $dashboard = "mp";
-            $url =  '/'. $currentUrl[3]
+            $url =  '/'. $currentUrl
                     ._checkbook_project_get_url_param_string("year","syear")
                     . _checkbook_project_get_url_param_string("agency")
                     . _checkbook_project_get_url_param_string("cindustry")
@@ -112,11 +118,13 @@ class ContractsUrlService {
         else {
             $url .= _checkbook_project_get_url_param_string("datasource")."/vendor/".$vendor_id;
         }
-        return "/contracts_landing" . $url . "?expandBottomCont=true";
+        $currentUrl = self::_getCurrentPage();
+        return $currentUrl . $url . "?expandBottomCont=true";
     }
 
     static function agencyUrl($agency_id, $original_agreement_id = null) {
-        $url = "/contracts_landing"
+        $currentUrl = self::_getCurrentPage();
+        $url = $currentUrl
             .(isset($original_agreement_id) ? ("/magid/".$original_agreement_id):'')
             . _checkbook_append_url_params()
             ._checkbook_project_get_url_param_string('vendor')
@@ -131,7 +139,8 @@ class ContractsUrlService {
     }
 
     static function awardmethodUrl($award_method_id) {
-        $url = "/contracts_landing"
+        $currentUrl = self::_getCurrentPage();
+        $url = $currentUrl
             . _checkbook_append_url_params()
             ._checkbook_project_get_url_param_string('vendor')
             ._checkbook_project_get_url_param_string('cindustry')
@@ -145,7 +154,8 @@ class ContractsUrlService {
     }
 
     static function industryUrl($industry_type_id) {
-        $url = "/contracts_landing"
+        $currentUrl = self::_getCurrentPage();
+        $url = $currentUrl
             . _checkbook_append_url_params()
             ._checkbook_project_get_url_param_string('vendor')
             ._checkbook_project_get_url_param_string('agency')
