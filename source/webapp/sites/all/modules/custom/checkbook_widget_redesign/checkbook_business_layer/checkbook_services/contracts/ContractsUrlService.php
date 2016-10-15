@@ -45,7 +45,7 @@ class ContractsUrlService {
     //TODO: move to a separate re-usable class (ie ContractUrlParameters) to parse the Url and return parameters
     static private  function _getCurrentPage() {
         $currentUrl = explode('/',$_SERVER['HTTP_REFERER']);
-        return $currentUrl[3];
+        return '/'.$currentUrl[3];
     }
     
     /**
