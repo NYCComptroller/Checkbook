@@ -243,6 +243,7 @@
                  JOIN vendor v ON v.vendor_id = s0.prime_vendor_id
             <where>
                 <exp op="AND">
+                    <exp op="=" dbField="s0.status_flag" paramName="status" />
                     <exp op="=" dbField="s0.fiscal_year_id" paramName="year" />
                     <exp op="=" dbField="s0.type_of_year" paramName="yeartype" />
                     <exp op="IN" dbField="rfd.document_code" paramName="doctype" />
