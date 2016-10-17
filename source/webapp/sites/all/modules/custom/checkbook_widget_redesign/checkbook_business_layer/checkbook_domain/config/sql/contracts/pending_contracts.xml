@@ -296,6 +296,34 @@
             GROUP BY s0.vendor_id, s0.vendor_legal_name
         </sql>
     </statement>
+    <statement name="GetCountPendingContractsByPrimeVendors" datasource="checkbook">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="status" type="string"/>
+        <param name="doctype" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="mwbe" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
+        <sql>
+           SELECT COUNT( DISTINCT s0.vendor_id) 
+            FROM pending_contracts s0
+            JOIN ref_document_code rfd ON rfd.document_code_id = s0.document_code_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="s0.document_agency_id" paramName="agency" />
+                    <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
+                    <exp op="IN" dbField="rfd.document_code" paramName="doctype" />
+                    <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="s0.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="s0.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="s0.industry_type_id" paramName="cindustry" />
+                </exp>
+            </where>
+        </sql>
+    </statement>
     <!-- GetMWBEPendingContractsByPrimeVendors -->
     <statement name="GetMWBEPendingContractsByPrimeVendors" datasource="checkbook">
         <param name="year" required ="true" type="int"/>
@@ -329,6 +357,34 @@
                 </exp>
             </where>
             GROUP BY s0.vendor_id, s0.vendor_legal_name, s0.minority_type_id
+        </sql>
+    </statement>
+    <statement name="GetCountMWBEPendingContractsByPrimeVendors" datasource="checkbook">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="status" type="string"/>
+        <param name="doctype" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="mwbe" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
+        <sql>
+           SELECT COUNT(DISTINCT s0.vendor_id)
+            FROM pending_contracts s0
+            JOIN ref_document_code rfd ON rfd.document_code_id = s0.document_code_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="s0.document_agency_id" paramName="agency" />
+                    <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
+                    <exp op="IN" dbField="rfd.document_code" paramName="doctype" />
+                    <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="s0.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="s0.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="s0.industry_type_id" paramName="cindustry" />
+                </exp>
+            </where>
         </sql>
     </statement>
 </statements>
