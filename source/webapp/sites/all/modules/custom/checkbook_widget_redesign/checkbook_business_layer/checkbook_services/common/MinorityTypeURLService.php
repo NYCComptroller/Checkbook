@@ -28,7 +28,7 @@ class MinorityTypeURLService {
     
     static $mwbe_prefix = "M/WBE" ;
     
-    static function isMWBECertified($mwbe_cat){ 	
+    static public function isMWBECertified($mwbe_cat){ 	
         if(in_array($mwbe_cat, self::$minority_type_category_map_multi_chart['M/WBE'])){
             return true;
     	}else{
@@ -37,22 +37,22 @@ class MinorityTypeURLService {
     } 
 
     /** Returns the M/WBE category name based on the minority_type_id mapping */
-    static function getMinorityCategoryById($minority_type_id) {
+    static public function getMinorityCategoryById($minority_type_id) {
         return self::$minority_type_category_map[$minority_type_id];
     }
 
     /** Returns the M/WBE category name based on the minority_type_id mapping */
-    static function getMinorityCategoryByName($minority_type_name) {
+    static public function getMinorityCategoryByName($minority_type_name) {
         return self::$minority_type_category_map_by_name[$minority_type_name];
     }
 
     /** Returns the M/WBE category name and it's minority_type_id mapping as an array */
-    static function getMinorityCategoryMappings() {
+    static public function getMinorityCategoryMappings() {
         return self::$minority_type_category_map_multi;
     }
     
     //Returns the Latest Minority Type for the given Vendor_id
-    static function _getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id = null, $year_type = null, $is_prime_or_sub = "P"){
+    static public function _getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id = null, $year_type = null, $is_prime_or_sub = "P"){
         STATIC $contract_vendor_latest_mwbe_category;
         if($agency_id == null){
             $agency_id =  _getRequestParamValue('agency');
