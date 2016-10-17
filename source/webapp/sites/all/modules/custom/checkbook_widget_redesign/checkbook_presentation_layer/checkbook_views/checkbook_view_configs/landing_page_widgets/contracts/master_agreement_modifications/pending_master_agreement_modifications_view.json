@@ -1,0 +1,8 @@
+{
+    "defaultConfigKey": "master_agreement_modifications_view",
+    "sqlConfig": {
+        "serviceName": "ContractsWidgetService",
+        "sqlConfigName": "contracts/pending_contracts",
+        "statementName": "GetPendingMasterAgreementsModifications"
+    }
+}

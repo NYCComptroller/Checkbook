@@ -1316,8 +1316,8 @@
             </where>
         </sql>
     </statement>
-    <!--GetMasterAgreementsModifications, GetCountMasterAgreementsModifications-->
-    <statement name="GetMasterAgreementsModifications" datasource="checkbook">
+    <!--GetMasterAgreementModifications, GetCountMasterAgreementModifications-->
+    <statement name="GetMasterAgreementModifications" datasource="checkbook">
         <param name="year" required ="true" type="int"/>
         <param name="yeartype" required ="true" type="string" />
         <param name="doctype" />
@@ -1368,7 +1368,7 @@
             GROUP BY a.agency_id, a.vendor_id, a.description, c.agency_short_name, d.legal_name, a.type_of_year, a.original_agreement_id, b.document_code, c.agency_name, a.minority_type_id, a.contract_number
         </sql>
     </statement>
-    <statement name="GetCountMasterAgreementsModfifications" datasource="checkbook">
+    <statement name="GetCountMasterAgreementModfifications" datasource="checkbook">
         <param name="year" required ="true" type="int"/>
         <param name="yeartype" required ="true" type="string" />
         <param name="status" type="string"/>
