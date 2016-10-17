@@ -4,6 +4,7 @@
     "sqlConfig": {
         "serviceName": "ContractsWidgetService",
         "sqlConfigName": "contracts/oge_contracts",
-        "statementName": "GetOgeContractsByPrimeVendors"
+        "statementName": "GetOgeContractsByPrimeVendors",
+        "countStatementName":"GetCountOgeContractsByPrimeVendors"
     }
 }
