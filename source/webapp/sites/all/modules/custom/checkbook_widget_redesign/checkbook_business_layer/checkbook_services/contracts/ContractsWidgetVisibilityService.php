@@ -138,6 +138,26 @@ class ContractsWidgetVisibilityService {
                     }
                 }
                 break;
+            case 'master_agreement_modifications':
+                if(RequestUtilities::isEDCPage()){
+                    $view = 'oge_master_agreement_modifications_view';
+                }else{
+                    switch($category) {
+                        case 'expense':
+                            $view = 'master_agreement_modifications_view';
+                            break;
+                        case "pending expense":
+                            $view = 'pending_master_agreement_modifications_view';
+                            break;
+                        case "revenue":
+                            $view = '';
+                            break;
+                        case "pending revenue":
+                            $view = '';
+                            break;
+                    }
+                }
+                break;
             case 'vendors':
                 if(!RequestUtilities::getRequestParamValue('vendor')){
                     switch($category) {
