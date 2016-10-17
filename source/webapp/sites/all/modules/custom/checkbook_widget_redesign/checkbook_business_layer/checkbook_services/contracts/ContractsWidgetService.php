@@ -93,6 +93,15 @@ class ContractsWidgetService extends AbstractWidgetService {
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
 
+            case "master_agreement_spent_to_date_link":
+                $column = $row['spending_amount_sum'];
+                $class = "new_window";
+
+                $spend_type_parameter = "/magid/".$row['original_agreement_id'];
+                $url = ContractsUrlService::masterAgreementSpentToDateUrl($spend_type_parameter);
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
+
             case "industry_spent_to_date_link":
                 $column = $row['spending_amount_sum'];
                 $class = "new_window";

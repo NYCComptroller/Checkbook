@@ -16,7 +16,7 @@
         {"labelAlias": "prime_vendor","column": "legal_name","tooltip":32},
         {"labelAlias": "current_amount","column": "current_amount_sum","format":"dollar"},
         {"labelAlias": "original_amount","column": "original_amount_sum","format":"dollar"},
-        {"labelAlias": "spent_to_date","column": "spending_amount_sum","format":"dollar"},
+        {"labelAlias": "spent_to_date","column": "spending_amount_sum","format":"dollar","derivedColumn":"master_agreement_spent_to_date_link"},
         {"label": "","column": ""}
     ],
     "dataTableOptions":{
