@@ -25,6 +25,13 @@ class ContractsWidgetService extends AbstractWidgetService {
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
 
+            case "pending_master_contract_id_link":
+                $column = $row['contract_number'];
+                $class = "bottomContainerReload";
+                $url = ContractsUrlService::pendingMasterContractIdUrl($row['original_agreement_id'],$row['document_code'],$row['fms_contract_number'],$row['contract_number'],$row['document_version']);
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
+
             case "agency_name_link":
                 $column = $row['agency_name'];
                 $url = ContractsUrlService::agencyUrl($row['agency_id'], $row['original_agreement_id']);
