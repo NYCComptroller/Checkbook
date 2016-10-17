@@ -57,17 +57,8 @@ class ContractsWidgetService extends AbstractWidgetService {
                 break;
             
             case "minority_type_name_link":
-                $minority_type_category_map = array(
-                                                2 => 'Black American',
-                                                3 => 'Hispanic American',
-                                                4 => 'Asian American',
-                                                5 => 'Asian American',
-                                                7 => 'Non-M/WBE',
-                                                9 => 'Women',
-                                                11 => 'Individuals and Others',
-                                            );
                 $minority_type_id = $row['minority_type_id'];
-                $column = $minority_type_category_map[$minority_type_id];
+                $column = MinorityTypeURLService::$minority_type_category_map[$minority_type_id];
                 $url = ContractsUrlService::minorityTypeUrl($minority_type_id);
                 $value = (isset($url))?"<a href='{$url}'>{$column}</a>" : $column;
                 break;
