@@ -148,6 +148,7 @@ class ContractsWidgetVisibilityService {
                                     $view = 'subcontracts_by_prime_vendors_view';
                                     break;
                                 case "ms":
+                                case "mp":
                                     $view = 'mwbe_expense_contracts_by_prime_vendors_view';
                                     break;
                                 default:

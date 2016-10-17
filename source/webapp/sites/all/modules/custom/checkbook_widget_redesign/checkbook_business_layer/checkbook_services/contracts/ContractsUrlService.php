@@ -54,14 +54,13 @@ class ContractsUrlService {
      * @return NULL or string
      */
     static function minorityTypeUrl($minorityTypeId){
-        $mwbeCertified = array(2,3,4,5,9);
         $url = NULL;
-        if(in_array($minorityTypeId, $mwbeCertified)){
+        if(MinorityTypeURLService::isMWBECertified($minorityTypeId)){
             $currentUrl = self::_getCurrentPage();
             $minorityTypeId = ($minorityTypeId == 4 || $minorityTypeId == 5) ? '4~5': $minorityTypeId;
             $dashboard = "mp";
             $url =  '/'. $currentUrl
-                    ._checkbook_project_get_url_param_string("year","syear")
+                    . _checkbook_project_get_url_param_string("syear","year")
                     . _checkbook_project_get_url_param_string("agency")
                     . _checkbook_project_get_url_param_string("cindustry")
                     . _checkbook_project_get_url_param_string("csize")
@@ -99,9 +98,9 @@ class ContractsUrlService {
             . _checkbook_project_get_url_param_string("awdmethod")
             . _checkbook_project_get_year_url_param_string();
 
-        $latest_minority_id = ContractUtil::getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type, $is_prime_or_sub);
+        $latest_minority_id = MinorityTypeURLService::_getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type, $is_prime_or_sub);
         $latest_minority_id = isset($latest_minority_id) ? $latest_minority_id : $minority_type_id;
-        $is_mwbe_certified = MappingUtil::isMWBECertified(array($latest_minority_id));
+        $is_mwbe_certified = MinorityTypeURLService::isMWBECertified(array($latest_minority_id));
         $dashboard= _getRequestParamValue("dashboard");
 
 
