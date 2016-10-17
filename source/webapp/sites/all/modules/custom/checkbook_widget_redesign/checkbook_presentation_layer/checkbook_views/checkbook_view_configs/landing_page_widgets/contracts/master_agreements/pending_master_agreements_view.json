@@ -10,10 +10,10 @@
     "headerSubTitle":"Master Agreement Contracts",
     "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/403/doctype/MA1~MMA1~MAR'",
     "table_columns": [
-        {"labelAlias": "contract_id","column": "pending_contract_number"},
+        {"labelAlias": "contract_id","column": "contract_number","derivedColumn":"pending_master_contract_id_link"},
         {"labelAlias": "contract_purpose","column": "pending_contract_purpose","tooltip":32},
-        {"labelAlias": "contract_agency","column": "document_agency_name","tooltip":18},
-        {"labelAlias": "prime_vendor","column": "legal_name","tooltip":30},
+        {"labelAlias": "contract_agency","column": "agency_name","tooltip":18,"derivedColumn":"agency_landing_link"},
+        {"labelAlias": "prime_vendor","column": "vendor_name","tooltip":30,"derivedColumn":"vendor_name_link"},
         {"labelAlias": "recv_date","column": "received_date","format":"date"},
         {"labelAlias": "current_amount","column": "current_amount_sum","format":"dollar"},
         {"labelAlias": "original_amount","column": "original_amount_sum","format":"dollar"},

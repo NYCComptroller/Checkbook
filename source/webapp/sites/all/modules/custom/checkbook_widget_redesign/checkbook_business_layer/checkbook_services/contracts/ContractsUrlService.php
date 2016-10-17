@@ -24,6 +24,30 @@ class ContractsUrlService {
         return $url;
     }
 
+    static function pendingMasterContractIdUrl($original_agreement_id,$doctype,$fms_contract_number,$pending_contract_number = null,$version = null, $linktype= null){
+        $lower_doctype = strtolower($doctype);
+
+        if($original_agreement_id){
+            if(($lower_doctype == 'ma1') || ($lower_doctype == 'mma1') || ($lower_doctype == 'rct1')){
+                $url = '/panel_html/contract_transactions/magid/'.$original_agreement_id
+                    . _checkbook_project_get_url_param_string("status")
+                    . _checkbook_append_url_params()
+                    . "/doctype/".$doctype;
+            }else{
+                $url = '/panel_html/contract_transactions/agid/'.$original_agreement_id
+                    . _checkbook_project_get_url_param_string("status")
+                    . _checkbook_append_url_params()
+                    . "/doctype/".$doctype;
+            }
+            }else{
+                $url = '/minipanels/pending_contract_transactions/contract/'.$fms_contract_number
+                    . _checkbook_project_get_url_param_string("status")
+                    . _checkbook_append_url_params()
+                    .'/version/'.$version;
+            }
+        return $url;
+    }
+
     /**
      * Gets the spent to date link Url for the contract spending
      * @param $spend_type_parameter
@@ -130,9 +154,11 @@ class ContractsUrlService {
         $is_mwbe_certified = MinorityTypeURLService::isMWBECertified(array($latest_minority_id));
         $dashboard= _getRequestParamValue("dashboard");
 
-
-        if(!_getRequestParamValue('status')){
-            $url .= "/status/A";
+        $urlPath = drupal_get_path_alias($_GET['q']);
+        if(!preg_match('/pending/',$urlPath)){
+            if(!_getRequestParamValue('status')){
+                $url .= "/status/A";
+            }
         }
 
         if($is_mwbe_certified && $dashboard == 'mp') {
