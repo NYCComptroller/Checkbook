@@ -18,6 +18,13 @@ class ContractsWidgetService extends AbstractWidgetService {
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
 
+            case "master_contract_id_link":
+                $column = $row['contract_number'];
+                $class = "bottomContainerReload";
+                $url = ContractsUrlService::masterContractIdUrl($row['original_agreement_id'],$row['document_code']);
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
+
             case "agency_name_link":
                 $column = $row['agency_name'];
                 $url = ContractsUrlService::agencyUrl($row['agency_id'], $row['original_agreement_id']);
@@ -90,6 +97,15 @@ class ContractsWidgetService extends AbstractWidgetService {
 
                 $spend_type_parameter = "/awdmethod/".$row['award_method_id'];
                 $url = ContractsUrlService::spentToDateUrl($spend_type_parameter);
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
+
+            case "master_agreement_spent_to_date_link":
+                $column = $row['spending_amount_sum'];
+                $class = "new_window";
+
+                $spend_type_parameter = "/magid/".$row['original_agreement_id'];
+                $url = ContractsUrlService::masterAgreementSpentToDateUrl($spend_type_parameter);
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
 
