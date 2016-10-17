@@ -45,6 +45,20 @@ class ContractsWidgetService extends AbstractWidgetService {
                 break;
             
             case "agency_landing_link":
+                $column = $row['agency_name'];
+                $url = ContractsUrlService::agencyUrl($row['agency_id']);
+                $value = "<a href='{$url}'>{$column}</a>";
+                break;
+
+            case "vendor_name_link":
+                $column = $row['vendor_name'];
+                $year_id = _getRequestParamValue("year");
+                $year_type = _getRequestParamValue("yeartype");
+                $url = ContractsUrlService::vendorUrl($row['vendor_id'], $row['agency_id'], $year_id, $year_type, $row['minority_type_id'], $row['is_prime_or_sub']);
+                $value = "<a href='{$url}'>{$column}</a>";
+                break;
+
+            case "master_agreements_agency_landing_link":
                 $datasource = _getRequestParamValue('datasource');
                 $column = $row['agency_name'];
                 if($datasource == 'checkbook_oge'){
@@ -54,7 +68,7 @@ class ContractsWidgetService extends AbstractWidgetService {
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
 
-            case "vendor_name_link":
+            case "master_agreements_vendor_name_link":
                 $datasource = _getRequestParamValue('datasource');
                 $column = $row['vendor_name'];
                 if($datasource == 'checkbook_oge'){
