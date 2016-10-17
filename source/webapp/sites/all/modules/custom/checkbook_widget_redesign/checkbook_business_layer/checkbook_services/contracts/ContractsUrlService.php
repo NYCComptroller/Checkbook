@@ -16,6 +16,14 @@ class ContractsUrlService {
         return $url;
     }
 
+    static function masterContractIdUrl($original_agreement_id,$document_code) {
+        $url = "/panel_html/contract_transactions/contract_details/magid/".$original_agreement_id
+            . _checkbook_project_get_url_param_string("status")
+            . _checkbook_append_url_params()
+            . "/doctype/".$document_code;
+        return $url;
+    }
+
     /**
      * Gets the spent to date link Url for the contract spending
      * @param $spend_type_parameter
