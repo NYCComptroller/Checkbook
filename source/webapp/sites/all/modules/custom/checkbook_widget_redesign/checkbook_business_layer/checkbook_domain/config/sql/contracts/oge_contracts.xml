@@ -239,7 +239,7 @@
                     <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
-            GROUP BY a.display_agency_id, a.type_of_year, a.display_vendor_id, a.description, a.contract_number, a.original_agreement_id, a.document_code_id, b.agency_short_name, c.legal_name, d.document_code, b.agency_name
+            GROUP BY a.agency_id, a.type_of_year, a.vendor_id, a.description, a.contract_number, a.original_agreement_id, a.document_code_id, b.agency_short_name, c.legal_name, d.document_code, b.agency_name
         </sql>
     </statement>
     <statement name="GetCountOgeMasterAgreementsModifications" datasource="checkbook_oge">
