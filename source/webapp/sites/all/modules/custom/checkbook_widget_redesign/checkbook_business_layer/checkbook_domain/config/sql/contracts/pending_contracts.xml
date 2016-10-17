@@ -178,7 +178,7 @@
                     <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
-            GROUP BY a.cif_received_date, a.vendor_id, a.vendor_legal_name, a.description, a.contract_number, a.fms_contract_number, a.document_code_id, a.original_agreement_id, a.document_agency_name, a.document_agency_id, a.document_version, b.document_code
+            GROUP BY a.dollar_difference,a.vendor_id,a.vendor_legal_name,a.description,a.contract_number,a.fms_contract_number,a.percent_difference,a.document_code_id,a.original_agreement_id,a.document_agency_name,a.document_agency_id,a.document_version,b.document_code
         </sql>
     </statement>
     <statement name="GetCountPendingMasterAgreementsModifications" datasource="checkbook">
