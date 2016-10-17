@@ -3,6 +3,7 @@
     "sqlConfig": {
         "serviceName": "ContractsWidgetService",
         "sqlConfigName": "contracts/pending_contracts",
-        "statementName": "GetPendingContractsByPrimeVendors"
+        "statementName": "GetPendingContractsByPrimeVendors",
+        "countStatementName": "GetCountPendingContractsByPrimeVendors"
     }
 }
