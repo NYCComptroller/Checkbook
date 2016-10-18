@@ -231,7 +231,7 @@
                     <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
                     <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
                     <exp op="=" dbField="a.status_flag" paramName="status" />
-                    <exp op="IN" dbField="d.document_code" paramName="doctype" />
+                    <exp op="IN" dbField="d.document_code" paramName="doctype">('abc')</exp>
                     <exp op="=" dbField="a.agency_id" paramName="agency" />
                     <exp op="=" dbField="c.vendor_id" paramName="vendor" />
                     <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
@@ -264,7 +264,7 @@
                     <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
                     <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
                     <exp op="=" dbField="a.status_flag" paramName="status" />
-                    <exp op="IN" dbField="d.document_code" paramName="doctype" />
+                    <exp op="IN" dbField="d.document_code" paramName="doctype">('abc')</exp>
                     <exp op="=" dbField="b.agency_id" paramName="agency" />
                     <exp op="=" dbField="c.vendor_id" paramName="vendor" />
                     <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
