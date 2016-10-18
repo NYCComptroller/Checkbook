@@ -230,7 +230,7 @@
         <param name="csize" />
         <param name="cindustry" />
         <sql>
-           SELECT DISTINCT prime_vendor_id,
+           SELECT DISTINCT prime_vendor_id AS vendor_id,
                 v.legal_name AS vendor_name,
                 type_of_year,
                 prime_minority_type_id AS minority_type_id,
