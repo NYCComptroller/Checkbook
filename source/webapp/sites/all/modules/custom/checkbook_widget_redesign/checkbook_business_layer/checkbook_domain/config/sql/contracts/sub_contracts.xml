@@ -230,7 +230,7 @@
         <param name="csize" />
         <param name="cindustry" />
         <sql>
-           SELECT prime_vendor_id,
+           SELECT DISTINCT prime_vendor_id,
                 v.legal_name AS vendor_name,
                 type_of_year,
                 prime_minority_type_id AS minority_type_id,
@@ -270,7 +270,7 @@
         <param name="csize" />
         <param name="cindustry" />
         <sql>
-           SELECT COUNT(DISTINCT s0.prime_vendor_id)   
+           SELECT COUNT(DISTINCT s0.prime_vendor_id) AS record_count  
                 FROM aggregateon_subven_contracts_cumulative_spending s0
                 JOIN ref_document_code rfd ON rfd.document_code_id = s0.document_code_id
             <where>

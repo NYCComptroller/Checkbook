@@ -458,7 +458,7 @@
         <param name="csize" />
         <param name="cindustry" />
         <sql>
-            SELECT s0.vendor_id,
+            SELECT DISTINCT s0.vendor_id,
                 v.legal_name AS vendor_name,
                 type_of_year,
                 SUM(COALESCE(original_contract_amount,0)) AS original_amount_sum,
@@ -497,7 +497,7 @@
         <param name="csize" />
         <param name="cindustry" />
         <sql>
-            SELECT COUNT( DISTINCT s0.vendor_id)   
+            SELECT COUNT( DISTINCT s0.vendor_id) AS record_count 
             FROM aggregateon_contracts_cumulative_spending s0
                 JOIN ref_document_code rfd ON rfd.document_code_id = s0.document_code_id
             <where>
