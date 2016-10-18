@@ -61,7 +61,6 @@ class ContractsWidgetVisibilityService {
                     }
                 }
                 break;
-
             case 'size':
                 if(!RequestUtilities::getRequestParamValue('csize')){
                     switch($category) {
@@ -219,6 +218,33 @@ class ContractsWidgetVisibilityService {
                                     break;
                             }
                         break;
+                    }
+                }
+                break;
+            case 'agencies':
+                if(!RequestUtilities::getRequestParamValue('agency')){
+                    switch($category) {
+                        case "expense":
+                            switch($dashboard) {
+                                case "ss":
+                                case "sp":
+                                    $view = 'subcontracts_by_agencies_view';
+                                    break;
+                                case "ms":
+                                    $view = 'mwbe_subcontracts_by_agencies_view';
+                                    break;
+                                default:
+                                    $view = 'expense_contracts_by_agencies_view';
+                                    break;
+                            }
+                            break;
+                        case "revenue":
+                            $view = 'revenue_contracts_by_agencies_view';        
+                            break;
+                        case "pending expense":
+                        case "pending revenue":
+                            $view = 'pending_contracts_by_agencies_view';
+                            break;      
                     }
                 }
                 break;
