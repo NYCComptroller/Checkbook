@@ -474,8 +474,8 @@
         <param name="csize" />
         <param name="cindustry" />
         <sql>
-            SELECT DISTINCT s0.document_agency_name,
-                s0.document_agency_id,
+            SELECT DISTINCT s0.document_agency_name AS agency_name,
+                s0.document_agency_id AS agency_id,
                 SUM(COALESCE(original_maximum_amount,0)) AS original_amount_sum,
                 SUM(COALESCE(revised_maximum_amount,0)) AS current_amount_sum,
                 COUNT(contract_number) AS total_contracts
@@ -492,7 +492,7 @@
                     <exp op="=" dbField="s0.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
-            GROUP BY s0.agency_id, s0.type_of_year, a.agency_short_name, a.agency_name 
+            GROUP BY s0.document_agency_id, s0.document_agency_name 
         </sql>
     </statement>
     <statement name="GetCountPendingContractsByAgencies" datasource="checkbook">
