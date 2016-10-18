@@ -1,9 +1,42 @@
 {
-    "defaultConfigKey": "mwbe_expense_contracts_by_prime_vendors_view",
     "sqlConfig": {
         "serviceName": "ContractsWidgetService",
         "sqlConfigName": "contracts/sub_contracts",
         "statementName": "GetSubContractsByPrimeVendors",
         "countStatementName": "GetCountSubContractsByPrimeVendors"
-    }
+    },
+    "defaultParameters":{"type_of_year":"B","status_flag":"A"},
+    "table_title":"Prime Vendors",
+    "headerSubTitle":"Prime Vendors",
+    "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/367/doctype/CTA1~CT1'",
+    "table_columns":[
+        {"labelAlias":"prime_vendor","column":"vendor_name","derivedColumn":"vendor_name_link_by_mwbe"},
+        {"labelAlias":"mwbe_category","column":"minority_type_id","derivedColumn":"minority_type_name"},
+        {"labelAlias":"no_of_contracts","column":"total_contracts","format":"number"},
+        {"labelAlias":"current_amount","column":"current_amount_sum","format":"dollar"},
+        {"labelAlias":"original_amount","column":"original_amount_sum","format":"dollar"},
+        {"labelAlias":"spent_to_date","column":"spending_amount_sum","format":"dollar","derivedColumn":"prime_vendor_spent_to_date_link"},
+        {"label":"","column":""}
+    ],
+    "dataTableOptions":{
+        "aoColumns":[
+            { "bSortable": false, "sWidth":"200px", "sClass":"text" },
+            { "bSortable": false, "sWidth":"120px", "sClass":"text pad-left" },
+            {"sClass":"number","sWidth":"100px","asSorting": [ "desc","asc"  ] },
+            {"sClass":"number","sWidth":"120px" ,"asSorting": [ "desc","asc"  ] },
+            {"sClass":"number","sWidth":"120px" ,"asSorting": [ "desc","asc"  ] },
+            {"sClass":"number","sWidth":"120px" ,"asSorting": [ "desc" ,"asc" ]},
+            { "bSortable": false,"sWidth":"15px" }
+        ],
+        "bServerSide":true,
+        "bFilter":false,
+        "bPaginate":false,
+        "bProcessing":true,
+        "bLengthChange":false,
+        "bInfo":false,
+        "bAutoWidth":false,
+        "aaSorting":[[3,"desc"]],
+        "fnServerParams":"##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
+        "oLanguage":{"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
+   }
 }

@@ -57,6 +57,12 @@ class ContractsWidgetService extends AbstractWidgetService {
                 $url = ContractsUrlService::vendorUrl($row['vendor_id'], $row['agency_id'], $year_id, $year_type, $row['minority_type_id'], $row['is_prime_or_sub']);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
+            
+            case "vendor_name_link_by_mwbe":
+                $column = $row['vendor_name'];
+                $url = ContractsUrlService::getContractsVendorLinkByMWBECategory($row);
+                $value = "<a href='{$url}'>{$column}</a>";
+                break;
 
             case "master_agreements_agency_landing_link":
                 $datasource = _getRequestParamValue('datasource');
@@ -97,6 +103,11 @@ class ContractsWidgetService extends AbstractWidgetService {
                 $column = MinorityTypeURLService::$minority_type_category_map[$minority_type_id];
                 $url = ContractsUrlService::minorityTypeUrl($minority_type_id);
                 $value = (isset($url))?"<a href='{$url}'>{$column}</a>" : $column;
+                break;
+            
+            case "minority_type_name":
+                $minority_type_id = isset($row['prime_minority_type_id']) ? $row['prime_minority_type_id'] : $row ['minority_type_id'] ;
+                $value = MinorityTypeURLService::$minority_type_category_map[$minority_type_id];
                 break;
 
             // Spent to Date Links

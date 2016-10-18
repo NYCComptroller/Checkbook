@@ -52,7 +52,7 @@ class MinorityTypeURLService {
     }
     
     //Returns the Latest Minority Type for the given Vendor_id
-    static public function _getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id = null, $year_type = null, $is_prime_or_sub = "P"){
+    static public function getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id = null, $year_type = null, $is_prime_or_sub = "P"){
         STATIC $contract_vendor_latest_mwbe_category;
         if($agency_id == null){
             $agency_id =  _getRequestParamValue('agency');
