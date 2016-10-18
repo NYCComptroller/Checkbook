@@ -225,6 +225,7 @@
         <param name="doctype" />
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
+        <param name="subvendor" type="int" />
         <param name="mwbe" />
         <param name="awdmethod" />
         <param name="csize" />
@@ -249,7 +250,8 @@
                     <exp op="IN" dbField="rfd.document_code" paramName="doctype" />
                     <exp op="=" dbField="s0.document_agency_id" paramName="agency" />
                     <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
-                    <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="s0.prime_vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="s0.vendor_id" paramName="subvendor" />
                     <exp op="=" dbField="s0.award_method_id" paramName="awdmethod" />
                     <exp op="=" dbField="s0.award_size_id" paramName="csize" />
                     <exp op="=" dbField="s0.industry_type_id" paramName="cindustry" />
@@ -265,6 +267,7 @@
         <param name="doctype" />
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
+        <param name="subvendor" type="int" />
         <param name="mwbe" />
         <param name="awdmethod" />
         <param name="csize" />
@@ -281,7 +284,84 @@
                     <exp op="IN" dbField="rfd.document_code" paramName="doctype" />
                     <exp op="=" dbField="s0.document_agency_id" paramName="agency" />
                     <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
-                    <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="s0.prime_vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="s0.vendor_id" paramName="subvendor" />
+                    <exp op="=" dbField="s0.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="s0.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="s0.industry_type_id" paramName="cindustry" />
+                </exp>
+            </where>
+        </sql>
+    </statement>
+    <!---GetSubContractsByAgencies-->
+    <statement name="GetSubContractsByAgencies" datasource="checkbook">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="status" type="string"/>
+        <param name="doctype" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="subvendor" type="int" />
+        <param name="mwbe" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
+        <sql>
+            SELECT DISTINCT s0.agency_id,
+                s0.type_of_year,
+                a.agency_short_name,
+                a.agency_name,
+                SUM(COALESCE(original_contract_amount,0)) AS original_amount_sum,
+                SUM(COALESCE(maximum_contract_amount,0)) AS current_amount_sum,
+                SUM(COALESCE(spending_amount,0)) AS spending_amount_sum,
+                COUNT(contract_number) AS total_contracts
+            FROM aggregateon_subven_contracts_cumulative_spending s0
+            JOIN ref_document_code rfd ON rfd.document_code_id = s0.document_code_id
+            JOIN ref_agency a ON a.agency_id = s0.agency_id 
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="s0.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="s0.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="s0.status_flag" paramName="status" />
+                    <exp op="IN" dbField="rfd.document_code" paramName="doctype" />
+                    <exp op="=" dbField="s0.agency_id" paramName="agency" />
+                    <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="s0.prime_vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="s0.vendor_id" paramName="subvendor" />
+                    <exp op="=" dbField="s0.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="s0.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="s0.industry_type_id" paramName="cindustry" />
+                </exp>
+            </where>
+            GROUP BY s0.agency_id, s0.type_of_year, a.agency_short_name, a.agency_name 
+        </sql>
+    </statement>
+    <statement name="GetCountSubContractsByAgencies" datasource="checkbook">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="status" type="string"/>
+        <param name="doctype" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="subvendor" type="int" />
+        <param name="mwbe" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
+        <sql>
+            SELECTCOUNT (DISTINCT s0.agency_id) AS record_count
+            FROM aggregateon_subven_contracts_cumulative_spending s0
+            JOIN ref_document_code rfd ON rfd.document_code_id = s0.document_code_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="s0.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="s0.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="s0.status_flag" paramName="status" />
+                    <exp op="IN" dbField="rfd.document_code" paramName="doctype" />
+                    <exp op="=" dbField="s0.agency_id" paramName="agency" />
+                    <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="s0.prime_vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="s0.vendor_id" paramName="subvendor" />
                     <exp op="=" dbField="s0.award_method_id" paramName="awdmethod" />
                     <exp op="=" dbField="s0.award_size_id" paramName="csize" />
                     <exp op="=" dbField="s0.industry_type_id" paramName="cindustry" />
