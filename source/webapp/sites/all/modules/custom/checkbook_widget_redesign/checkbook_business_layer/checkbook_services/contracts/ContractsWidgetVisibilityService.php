@@ -165,8 +165,10 @@ class ContractsWidgetVisibilityService {
                             switch($dashboard) {
                                 case "ss":
                                 case "sp":
-                                case "ms":
                                     $view = 'subcontracts_by_prime_vendors_view';
+                                    break;
+                                case "ms":
+                                    $view = 'mwbe_subcontracts_by_prime_vendors_view';
                                     break;
                                 case "mp":
                                     $view = 'mwbe_expense_contracts_by_prime_vendors_view';
