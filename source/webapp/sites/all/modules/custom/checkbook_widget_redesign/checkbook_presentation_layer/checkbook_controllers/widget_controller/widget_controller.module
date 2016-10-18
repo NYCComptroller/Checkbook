@@ -521,6 +521,9 @@ function _widget_controller_format_widget_data($node, $service){
                     case "number":
                         $node->data[$key][$column->column] = number_format($node->data[$key][$column->column]);
                         break;
+                    case "percent":
+                        $node->data[$key][$column->column] = round($node->data[$key][$column->column],2) . '%';
+                        break;
                 }
             }
             //tooltip
