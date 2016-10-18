@@ -11,7 +11,7 @@
     "headerSubTitle":"Prime Vendors",
     "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/367/doctype/CTA1~CT1'",
     "table_columns":[
-        {"labelAlias":"prime_vendor","column":"vendor_name","derivedColumn":"vendor_name_link"},
+        {"labelAlias":"prime_vendor","column":"vendor_name","derivedColumn":"vendor_name_link","tooltip":60},
         {"labelAlias":"mwbe_category","column":"minority_type_id","derivedColumn":"minority_type_name_link"},
         {"labelAlias":"no_of_contracts","column":"total_contracts","format":"number"},
         {"labelAlias":"current_amount","column":"current_amount_sum","format":"dollar"},
