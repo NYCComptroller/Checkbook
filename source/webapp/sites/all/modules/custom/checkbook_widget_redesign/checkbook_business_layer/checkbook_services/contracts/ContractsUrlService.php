@@ -350,7 +350,7 @@ class ContractsUrlService {
 
         $latest_minority_id = MinorityTypeURLService::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, $is_prime_or_sub);
         $latest_minority_id = isset($latest_minority_id) ? $latest_minority_id : $minority_type_id;
-        $is_mwbe_certified = MinorityTypeURLService::isMWBECertified(array($latest_minority_id));
+        $is_mwbe_certified = MinorityTypeURLService::isMWBECertified($latest_minority_id);
 
         $status = _checkbook_project_get_url_param_string("contstatus","status");
         $status = isset($status) && $status != "" ? $status : "/status/A";
