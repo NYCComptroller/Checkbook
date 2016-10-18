@@ -375,7 +375,7 @@ function load_widget_controller_data_count($node) {
     $parameters = _prepare_input_parameters($node);
 
     //Adjust sql parameters
-    $urlPath = $_SERVER['HTTP_REFERER'];
+    $urlPath = $_GET['q'];
     $parameters = $service->adjustParameters($parameters, $urlPath);
 
     //Load widget total row count
