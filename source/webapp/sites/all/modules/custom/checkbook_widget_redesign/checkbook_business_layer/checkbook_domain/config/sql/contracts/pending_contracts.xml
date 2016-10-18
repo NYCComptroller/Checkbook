@@ -349,7 +349,7 @@
         <param name="csize" />
         <param name="cindustry" />
         <sql>
-           SELECT s0.vendor_id,
+           SELECT DISTINCT s0.vendor_id,
                 s0.vendor_legal_name AS vendor_name,
                 SUM(COALESCE(original_maximum_amount,0)) AS original_amount_sum,
                 SUM(COALESCE(revised_maximum_amount,0)) AS current_amount_sum,
@@ -382,7 +382,7 @@
         <param name="csize" />
         <param name="cindustry" />
         <sql>
-           SELECT COUNT( DISTINCT s0.vendor_id) 
+           SELECT COUNT( DISTINCT s0.vendor_id) AS record_count
             FROM pending_contracts s0
             JOIN ref_document_code rfd ON rfd.document_code_id = s0.document_code_id
             <where>
@@ -411,7 +411,7 @@
         <param name="csize" />
         <param name="cindustry" />
         <sql>
-           SELECT s0.vendor_id,
+           SELECT DISTINCT s0.vendor_id,
                 s0.vendor_legal_name AS vendor_name,
                 s0.minority_type_id,
                 SUM(COALESCE(original_maximum_amount,0)) AS original_amount_sum,
@@ -445,7 +445,7 @@
         <param name="csize" />
         <param name="cindustry" />
         <sql>
-           SELECT COUNT(DISTINCT s0.vendor_id)
+           SELECT COUNT(DISTINCT s0.vendor_id) AS record_count
             FROM pending_contracts s0
             JOIN ref_document_code rfd ON rfd.document_code_id = s0.document_code_id
             <where>
