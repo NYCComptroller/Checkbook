@@ -6,7 +6,7 @@
         "countStatementName": "GetCountSubContractsByPrimeVendors"
     },
     "defaultParameters":{"type_of_year":"B","status_flag":"A"},
-    "table_title":"Prime Vendors",
+    "headerTitle":"Prime Vendors",
     "headerSubTitle":"Prime Vendors",
     "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/367/doctype/CTA1~CT1'",
     "table_columns":[
