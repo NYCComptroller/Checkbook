@@ -762,6 +762,7 @@ namespace { //global
                 if(isset($vendornm_exact)) {
                     $vendornm_exact = explode('~',$vendornm_exact);
                     $vendornm_exact = implode('|',$vendornm_exact);
+                    $vendornm_exact = self::_replaceSlashCharacter($vendornm_exact);
                     $pattern = "(^" . _checkbook_regex_replace_pattern($vendornm_exact) . "$)";
                     $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
                     $parameters['prime_vendor_name'] = $condition;
@@ -820,6 +821,10 @@ namespace { //global
             unset($parameters['status_flag']);
 
             return $parameters;
+        }
+
+        private static function _replaceSlashCharacter($string) {
+            return str_replace('__', '/', $string);
         }
 
         static public function expenseContractsFooterUrl() {
