@@ -349,7 +349,7 @@
         <param name="csize" />
         <param name="cindustry" />
         <sql>
-            SELECTCOUNT (DISTINCT s0.agency_id) AS record_count
+            SELECT COUNT(DISTINCT s0.agency_id) AS record_count
             FROM aggregateon_subven_contracts_cumulative_spending s0
             JOIN ref_document_code rfd ON rfd.document_code_id = s0.document_code_id
             <where>
