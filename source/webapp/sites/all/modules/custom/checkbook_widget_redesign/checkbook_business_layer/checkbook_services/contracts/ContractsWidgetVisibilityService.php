@@ -124,7 +124,16 @@ class ContractsWidgetVisibilityService {
                 }else{
                     switch($category) {
                         case 'expense':
-                            $view = 'master_agreements_view';
+                            switch($dashboard) {
+                                case "ss":
+                                case "sp":
+                                case "ms":
+                                    $view = '';
+                                    break;
+                                default :
+                                    $view = 'master_agreements_view';
+                                    break;
+                            }
                             break;
                         case "pending expense":
                             $view = 'pending_master_agreements_view';
@@ -144,7 +153,16 @@ class ContractsWidgetVisibilityService {
                 }else{
                     switch($category) {
                         case 'expense':
-                            $view = 'master_agreement_modifications_view';
+                            switch($dashboard) {
+                                case "ss":
+                                case "sp":
+                                case "ms":
+                                    $view = '';
+                                    break;
+                                default :
+                                    $view = 'master_agreement_modifications_view';
+                                    break;
+                            }
                             break;
                         case "pending expense":
                             $view = 'pending_master_agreement_modifications_view';
