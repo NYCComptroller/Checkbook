@@ -13,25 +13,27 @@
         <param name="cindustry" />
         <sql>
             SELECT
-            l1.contract_number,
-            l1.description as contract_purpose,
-            l3.agency_id,
-            l3.agency_name,
-            l4.vendor_id,
-            l4.legal_name as vendor_name,
-            l1.minority_type_id,
-            l1.original_agreement_id,
-            l1.document_code_id,
-            l2.document_code,
-            CASE
-            WHEN l1.scntrc_status = 1 THEN 'No Data Entered'
-            WHEN l1.scntrc_status = 2 THEN 'Yes'
-            WHEN l1.scntrc_status = 3 THEN 'No'
-            ELSE 'Prior Year Exclusions'
-            END AS contract_subvendor_status,
-            SUM(COALESCE(l1.original_contract_amount,0)) AS original_amount_sum,
-            SUM(COALESCE(l1.maximum_contract_amount,0)) AS current_amount_sum,
-            SUM(COALESCE(l1.spending_amount,0)) AS spending_amount_sum
+                l1.contract_number,
+                l1.description as contract_purpose,
+                l3.agency_id,
+                l3.agency_name,
+                l4.vendor_id,
+                l4.legal_name as vendor_name,
+                l1.minority_type_id,
+                l1.original_agreement_id,
+                l1.document_code_id,
+                l2.document_code,
+                CASE
+                    WHEN l1.scntrc_status = 1 THEN 'No Data Entered'
+                    WHEN l1.scntrc_status = 2 THEN 'Yes'
+                    WHEN l1.scntrc_status = 3 THEN 'No'
+                    ELSE 'Prior Year Exclusions'
+                END AS contract_subvendor_status,
+                SUM(COALESCE(l1.original_contract_amount,0)) AS original_amount_sum,
+                SUM(COALESCE(l1.maximum_contract_amount,0)) AS current_amount_sum,
+                SUM(COALESCE(l1.spending_amount,0)) AS spending_amount_sum,
+                SUM(COALESCE(dollar_difference,0)) AS dollar_difference,
+                AVG(percent_difference) AS percent_difference
             FROM aggregateon_mwbe_contracts_cumulative_spending l1
             JOIN ref_document_code l2 ON l2.document_code_id = l1.document_code_id
             JOIN ref_agency l3 on l3.agency_id = l1.agency_id
@@ -51,6 +53,9 @@
                 </exp>
             </where>
             GROUP BY l1.type_of_year, l1.description,l1.contract_number, l1.original_agreement_id, l1.document_code_id,l2.document_code, l1.minority_type_id,l3.agency_id,l3.agency_name,l4.vendor_id,l4.legal_name,l1.scntrc_status
+            <exp op="IF" condition="=" paramName="contractmod" compareValue="true">
+                HAVING SUM(COALESCE(dollar_difference,0)) != 0 
+            </exp>
         </sql>
     </statement>
     <statement name="GetCountContracts" datasource="checkbook">
