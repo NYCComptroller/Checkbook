@@ -1,4 +1,80 @@
 <statements>
+    <!--GetPendingContracts-->
+    <statement name="GetPendingContracts" datasource="checkbook">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="doctype" />
+        <param name="mwbe" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
+        <sql>
+            SELECT DISTINCT s0.cif_received_date as received_date,
+                s0.vendor_id as vendor_id,
+                s0.vendor_legal_name as vendor_name,
+                s0.description as contract_purpose,
+                s0.contract_number as pending_contract_number,
+                s0.fms_contract_number as contract_number,
+                s0.document_code_id as document_code,
+                s0.original_agreement_id as original_agreement_id,
+                s0.document_agency_name as agency_name,
+                s0.document_agency_id as agency_id,
+                s0.document_version as document_version,
+                SUM(COALESCE(original_maximum_amount,0)) AS original_amount_sum,
+                SUM(COALESCE(revised_maximum_amount,0)) AS current_amount_sum,
+                SUM(COALESCE(dollar_difference,0)) AS dollar_difference,
+                AVG(percent_difference) AS percent_difference
+            FROM pending_contracts s0
+            JOIN ref_document_code s1 ON s1.document_code_id = s0.document_code_id 
+            <where>
+                <exp op="AND">
+                    <exp op="IN" dbField="s1.document_code" paramName="doctype" />
+                    <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="s0.document_agency_id" paramName="agency" />
+                    <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="s0.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="s0.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="s0.industry_type_id" paramName="cindustry" />
+                </exp>
+            </where>
+            <exp op="IF" condition="=" paramName="contractmod" compareValue="true">
+                AND dollar_difference != 0 
+            </exp>
+            GROUP BY s0.cif_received_date, s0.vendor_id, s0.vendor_legal_name, s0.description,
+                    s0.contract_number, s0.fms_contract_number, s0.document_code_id,s0.original_agreement_id,
+                    s0.document_agency_name, s0.document_agency_id, s0.document_version
+        </sql>
+    </statement>
+    <!--GetCountPendingContracts-->
+    <statement name="GetCountPendingContracts" datasource="checkbook">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="doctype" />
+        <param name="mwbe" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
+        <sql>
+            SELECT count(DISTINCT s0.contract_number) AS record_count
+            FROM pending_contracts s0
+            JOIN ref_document_code s1 ON s1.document_code_id = s0.document_code_id 
+            <where>
+                <exp op="AND">
+                    <exp op="IN" dbField="s1.document_code" paramName="doctype" />
+                    <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="s0.document_agency_id" paramName="agency" />
+                    <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="s0.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="s0.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="s0.industry_type_id" paramName="cindustry" />
+                </exp>
+            </where>
+        </sql>
+    </statement>
     <!--GetPendingContractsByAwardMethods,GetCountPendingContractsByAwardMethods-->
     <statement name="GetPendingContractsByAwardMethods" datasource="checkbook">
         <param name="year" required ="true" type="int"/>

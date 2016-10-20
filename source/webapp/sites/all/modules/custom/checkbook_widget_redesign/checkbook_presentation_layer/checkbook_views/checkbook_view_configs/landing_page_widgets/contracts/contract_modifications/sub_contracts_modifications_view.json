@@ -2,18 +2,18 @@
     "sqlConfig":
     {
         "serviceName":"ContractsWidgetService",
-        "sqlConfigName":"contracts/contracts",
-        "statementName":"GetContracts"
+        "sqlConfigName":"contracts/sub_contracts",
+        "statementName":"GetSubContracts"
     },
     "defaultParameters":{"contractmod":"true","doctype":"'CT1'~'CTA1'~'CTR'"},
-    "headerTitle":"Contract Amount Modifications",
-    "headerSubTitle":"Contract Modifications",
+    "headerTitle":"Sub Contract Amount Modifications",
+    "headerSubTitle":"Sub Contract Modifications",
     "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/368/doctype/CTA1~CT1'",
     "table_columns":[
         {"labelAlias":"contract_id","column":"contract_number","derivedColumn":"contract_id_link"},
-        {"labelAlias":"contract_purpose","column":"contract_purpose","tooltip":20},
+        {"labelAlias":"sub_contract_purpose","column":"contract_purpose","tooltip":20},
         {"labelAlias":"contract_agency","column":"agency_name","tooltip":30,"derivedColumn":"agency_name_link"},
-        {"labelAlias":"prime_vendor","column":"vendor_name","tooltip":30,"derivedColumn":"vendor_name_link"},
+        {"labelAlias":"sub_vendor_name","column":"vendor_name","tooltip":30,"derivedColumn":"vendor_name_link"},
         {"labelAlias":"current_amount","column":"current_amount_sum","format":"dollar"},
         {"labelAlias":"original_amount","column":"original_amount_sum","format":"dollar"},
         {"labelAlias":"spent_to_date","column":"spending_amount_sum","format":"dollar","derivedColumn":"contracts_spent_to_date_link"},
@@ -25,15 +25,15 @@
     "dataTableOptions":{
         "aoColumns":[
             { "bSortable": false, "sWidth":"150px","sClass":"text" },
-            { "bSortable": false, "sWidth":"127px","sClass":"text"  },
-            { "bSortable": false, "sWidth":"129px","sClass":"text"  },
-            { "bSortable": false, "sWidth":"129px","sClass":"text" },
-            { "bSortable": true, "sWidth":"78px", "sClass":"number" ,"asSorting": [ "desc" ,"asc" ] },
-            { "bSortable": true, "sWidth":"78px", "sClass":"number" ,"asSorting": [ "desc","asc"  ] },
-            { "bSortable": true, "sWidth":"78px","sClass":"number" ,"asSorting": [ "desc","asc"  ]},
-            { "bSortable": true, "sWidth":"78px", "sClass":"number" ,"asSorting": [ "desc","asc"  ]},
-            { "bSortable": true, "sWidth":"78px", "sClass":"number" ,"asSorting": [ "desc" ,"asc" ]},
-            { "bSortable": false, "sWidth":"15px" }
+            { "bSortable": false, "sWidth":"132px","sClass":"text"  },
+            { "bSortable": false, "sWidth":"118px","sClass":"text"  },
+            { "bSortable": false, "sWidth":"93px","sClass":"text" },
+            { "bSortable": true, "sWidth":"79px", "sClass":"number"  ,"asSorting": [ "desc" ,"asc" ]},
+            { "bSortable": true, "sWidth":"78px", "sClass":"number"  ,"asSorting": [ "desc" ,"asc" ]},
+            { "bSortable": true, "sWidth":"90px","sClass":"number" ,"asSorting": [ "desc","asc"  ]},
+            { "bSortable": true, "sWidth":"93px", "sClass":"number" ,"asSorting": [ "desc","asc"  ]},
+            { "bSortable": true, "sWidth":"93px", "sClass":"number" ,"asSorting": [ "desc","asc"  ]},
+            { "bSortable": false,"sWidth":"15px" }
         ],
         "bServerSide":true,
         "bFilter":false,

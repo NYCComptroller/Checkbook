@@ -1,0 +1,10 @@
+{
+    "defaultConfigKey": "revenue_contracts_modifications_view",
+    "defaultParameters":{"contractmod":"true","doctype":"'CT1'~'CTA1'~'CTR'"},
+    "sqlConfig": {
+        "serviceName": "ContractsWidgetService",
+        "sqlConfigName": "contracts/pending_contracts",
+        "statementName": "GetPendingContracts"
+    }
+}
+
