@@ -6,7 +6,7 @@
         "statementName":"GetContractsByAwardMethods"
     },
     "defaultParameters":{"type_of_year":"B","status_flag":"A"},
-    "headerTitle":"Contracts by Award Methods",
+    "headerTitle":"Award Methods",
     "headerSubTitle":"Award Methods",
     "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/432/doctype/RCT1'",
     "table_columns":[

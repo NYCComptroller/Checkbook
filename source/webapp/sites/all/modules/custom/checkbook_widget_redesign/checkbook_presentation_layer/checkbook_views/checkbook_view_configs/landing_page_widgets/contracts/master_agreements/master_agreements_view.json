@@ -6,8 +6,8 @@
         "statementName":"GetMasterAgreements"
     },
     "defaultParameters":{"type_of_year":"B","doctype":"'MMA1','MA1'","status_flag":"A"},
-    "headerTitle":"Contracts by Master Agreements",
-    "headerSubTitle":"Master Agreement Contracts",
+    "headerTitle":"Master Agreements",
+    "headerSubTitle":"Master Agreement",
     "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/371/doctype/MMA1~MA1'",
     "table_columns": [
         {"labelAlias": "contract_id","column": "contract_number","derivedColumn":"master_contract_id_link"},
