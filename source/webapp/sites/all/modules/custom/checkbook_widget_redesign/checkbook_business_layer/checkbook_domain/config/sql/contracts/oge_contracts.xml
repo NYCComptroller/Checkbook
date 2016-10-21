@@ -138,7 +138,12 @@
             SUM(COALESCE(maximum_contract_amount,0)) AS current_amount_sum,
             SUM(COALESCE(spending_amount_disb,0)) AS spending_amount_sum,
             COUNT(contract_number) AS total_contracts
-            FROM aggregateon_contracts_cumulative_spending a
+            <exp op="IF" condition="=" paramName="vendor" compareValue="">
+                FROM aggregateon_contracts_cumulative_spending_no_vendor a
+            </exp>
+            <exp op="IF" condition="&lt;&gt;" paramName="vendor" compareValue="">
+                FROM aggregateon_contracts_cumulative_spending a
+            </exp>
             JOIN ref_document_code b ON b.document_code_id = a.document_code_id
             JOIN ref_award_method c ON c.award_method_id = a.award_method_id
             <where>
@@ -170,7 +175,12 @@
         <sql>
             SELECT
             COUNT(DISTINCT a.award_method_id) as record_count
-            FROM aggregateon_contracts_cumulative_spending a
+            <exp op="IF" condition="=" paramName="vendor" compareValue="">
+                FROM aggregateon_contracts_cumulative_spending_no_vendor a
+            </exp>
+            <exp op="IF" condition="&lt;&gt;" paramName="vendor" compareValue="">
+                FROM aggregateon_contracts_cumulative_spending a
+            </exp>
             JOIN ref_document_code b ON b.document_code_id = a.document_code_id
             JOIN ref_award_method c ON c.award_method_id = a.award_method_id
             <where>
