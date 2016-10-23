@@ -13,7 +13,7 @@
         {"labelAlias":"contract_id","column":"contract_number","derivedColumn":"contract_id_link"},
         {"labelAlias":"sub_contract_purpose","column":"contract_purpose","tooltip":26},
         {"labelAlias":"contract_agency","column":"agency_name","tooltip":25,"derivedColumn":"agency_landing_link"},
-        {"labelAlias":"sub_vendor_name","column":"sub_vendor_name","tooltip":25,"derivedColumn":"vendor_name_link_by_mwbe"},
+        {"labelAlias":"sub_vendor_name","column":"sub_vendor_name","tooltip":25,"derivedColumn":"sub_vendor_name_link"},
         {"labelAlias":"current_amount","column":"current_amount_sum","format":"dollar"},
         {"labelAlias":"original_amount","column":"original_amount_sum","format":"dollar"},
         {"labelAlias":"spent_to_date","column":"spending_amount_sum","format":"dollar","derivedColumn":"contracts_spent_to_date_link"},

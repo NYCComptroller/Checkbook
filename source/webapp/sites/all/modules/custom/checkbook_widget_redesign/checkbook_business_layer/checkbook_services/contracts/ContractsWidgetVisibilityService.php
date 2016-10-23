@@ -38,7 +38,7 @@ class ContractsWidgetVisibilityService {
                             switch($dashboard) {
                                 case "ss":
                                 case "sp":
-                                    $view = 'sub_contracts_modifications_view';
+                                    $view = 'subcontracts_modifications_view';
                                     break;
                                 case "ms":
                                     $view = 'mwbe_sub_contracts_modifications_view';

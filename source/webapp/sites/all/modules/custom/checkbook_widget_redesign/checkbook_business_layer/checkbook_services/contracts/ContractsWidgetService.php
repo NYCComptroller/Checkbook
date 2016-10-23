@@ -63,6 +63,11 @@ class ContractsWidgetService extends AbstractWidgetService {
                 $url = ContractsVendorUrlService::getContractsVendorLinkByMWBECategory($row);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
+            case "sub_vendor_name_link":
+                $column = $row['sub_vendor_name'];
+                $url = ContractsVendorUrlService::getSubContractsVendorLink($row['sub_vendor_id']);
+                $value = "<a href='{$url}'>{$column}</a>";
+                break;
 
             case "master_agreements_agency_landing_link":
                 $datasource = _getRequestParamValue('datasource');
