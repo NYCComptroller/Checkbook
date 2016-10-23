@@ -6,7 +6,17 @@
  * Time: 6:16 PM
  */
 class ContractsVendorUrlService {
-    
+    /**
+    * Returns Prime Vendor Landing page URL for the given vendor id in the given year and year type for
+     Active/Registered Contracts Landing Pages
+    * @param $vendor_id
+    * @param $agency_id
+    * @param $year_id
+    * @param $year_type
+    * @param $minority_type_id
+    * @param $is_prime_or_sub
+    * @return string
+    */
     static function vendorUrl($vendor_id,$agency_id,$year_id,$year_type,$minority_type_id,$is_prime_or_sub) {
 
         $url = RequestUtilities::_getUrlParamString("agency")
