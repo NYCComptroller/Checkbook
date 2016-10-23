@@ -200,10 +200,10 @@ class ContractsUrlService {
         $vendor = RequestUtilities::getRequestParamValue('vendor');
         $mwbe = RequestUtilities::getRequestParamValue('mwbe');
         if($subvendor) {
-            $subvendor_code = self::getSubVendorCustomerCode($subvendor);
+            $subvendor_code = ContractsVendorUrlService::getSubVendorCustomerCode($subvendor);
         }
         if($vendor) {
-            $vendor_code = self::getVendorCustomerCode($vendor);
+            $vendor_code = ContractsVendorUrlService::getVendorCustomerCode($vendor);
         }
         $subvendorURLString = (isset($subvendor) ? '/subvendor/'. $subvendor : '') .(isset($subvendor_code) ? '/vendorcode/'.$subvendor_code : '');
         $vendorURLString = (isset($vendor) ? '/vendor/'. $vendor : '') . (isset($vendor_code) ? '/vendorcode/'.$vendor_code : '');
@@ -231,10 +231,10 @@ class ContractsUrlService {
         $vendor = RequestUtilities::getRequestParamValue('vendor');
         $mwbe = RequestUtilities::getRequestParamValue('mwbe');
         if($subvendor) {
-            $subvendor_code = self::getSubVendorCustomerCode($subvendor);
+            $subvendor_code = ContractsVendorUrlService::getSubVendorCustomerCode($subvendor);
         }
         if($vendor) {
-            $vendor_code = self::getVendorCustomerCode($vendor);
+            $vendor_code = ContractsVendorUrlService::getVendorCustomerCode($vendor);
         }
         $mwbe_param = isset($mwbe) ? '/pmwbe/'.$mwbe : '';
         $subvendorURLString = isset($subvendor_code) ? '/vendorcode/'.$subvendor_code : '';
