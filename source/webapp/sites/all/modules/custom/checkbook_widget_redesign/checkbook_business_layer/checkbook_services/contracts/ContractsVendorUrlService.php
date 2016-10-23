@@ -9,11 +9,11 @@ class ContractsVendorUrlService {
     
     static function vendorUrl($vendor_id,$agency_id,$year_id,$year_type,$minority_type_id,$is_prime_or_sub) {
 
-        $url = _checkbook_project_get_url_param_string("agency")
-            . _checkbook_project_get_url_param_string("contstatus","status")
-            . _checkbook_project_get_url_param_string("cindustry")
-            . _checkbook_project_get_url_param_string("csize")
-            . _checkbook_project_get_url_param_string("awdmethod")
+        $url = RequestUtilities::_getUrlParamString("agency")
+            . RequestUtilities::_getUrlParamString("contstatus","status")
+            . RequestUtilities::_getUrlParamString("cindustry")
+            . RequestUtilities::_getUrlParamString("csize")
+            . RequestUtilities::_getUrlParamString("awdmethod")
             . _checkbook_project_get_year_url_param_string();
 
         $latest_minority_id = MinorityTypeURLService::getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type, $is_prime_or_sub);
@@ -35,7 +35,7 @@ class ContractsVendorUrlService {
             $url .= "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
         }
         else {
-            $url .= _checkbook_project_get_url_param_string("datasource")."/vendor/".$vendor_id;
+            $url .= RequestUtilities::_getUrlParamString("datasource")."/vendor/".$vendor_id;
         }
         $currentUrl = RequestUtilities::_getCurrentPage();
         return $currentUrl . $url . "?expandBottomCont=true";
@@ -72,21 +72,21 @@ class ContractsVendorUrlService {
         $latest_minority_id = isset($latest_minority_id) ? $latest_minority_id : $minority_type_id;
         $is_mwbe_certified = MinorityTypeURLService::isMWBECertified($latest_minority_id);
 
-        $status = _checkbook_project_get_url_param_string("contstatus","status");
+        $status = RequestUtilities::_getUrlParamString("contstatus","status");
         $status = isset($status) && $status != "" ? $status : "/status/A";
-        $url = _checkbook_project_get_url_param_string("agency") . $status . _checkbook_project_get_year_url_param_string();
+        $url = RequestUtilities::_getUrlParamString("agency") . $status . _checkbook_project_get_year_url_param_string();
 
         if($is_mwbe_certified && RequestUtilities::getRequestParamValue('dashboard') == 'mp') {
-            $url .= _checkbook_project_get_url_param_string("cindustry")
-                . _checkbook_project_get_url_param_string("csize")
-                . _checkbook_project_get_url_param_string("awdmethod")
+            $url .= RequestUtilities::_getUrlParamString("cindustry")
+                . RequestUtilities::_getUrlParamString("csize")
+                . RequestUtilities::_getUrlParamString("awdmethod")
                 . "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
         }
         else if($is_mwbe_certified && RequestUtilities::getRequestParamValue('dashboard') != 'mp') {
             $url .= "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
         }
         else {
-            $url .= _checkbook_project_get_url_param_string("datasource")."/vendor/".$vendor_id;
+            $url .= RequestUtilities::_getUrlParamString("datasource")."/vendor/".$vendor_id;
         }
         return $url;
     }
@@ -104,20 +104,20 @@ class ContractsVendorUrlService {
     static public function getSubContractsVendorLink($vendor_id, $year_id = null, $year_type = null,$agency_id = null, $mwbe_cat = null){
         $currentUrl = RequestUtilities::_getCurrentPage();
         $latest_minority_id = isset($mwbe_cat) ? $mwbe_cat : MinorityTypeURLService::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, "S");
-        $url = _checkbook_project_get_url_param_string("agency") .  _checkbook_project_get_url_param_string("contstatus","status") . _checkbook_project_get_year_url_param_string();
+        $url = RequestUtilities::_getUrlParamString("agency") .  RequestUtilities::_getUrlParamString("contstatus","status") . _checkbook_project_get_year_url_param_string();
 
         $current_dashboard = RequestUtilities::getRequestParamValue("dashboard");
         $is_mwbe_certified = in_array($latest_minority_id, array(2, 3, 4, 5, 9));
 
         //if M/WBE certified, go to M/WBE (Sub Vendor) else if NOT M/WBE certified, go to Sub Vendor dashboard
         $new_dashboard = $is_mwbe_certified ? "ms" : "ss";
-        $status = strlen(_checkbook_project_get_url_param_string("contstatus","status"))== 0 ? "/status/A" : "";
+        $status = strlen(RequestUtilities::_getUrlParamString("contstatus","status"))== 0 ? "/status/A" : "";
 
         if($current_dashboard != $new_dashboard ){
                 return $currentUrl.$url . $status . "/dashboard/" . $new_dashboard . ($is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "" ) . "/subvendor/".$vendor_id;
         }else{
-                $url .= $status._checkbook_project_get_url_param_string("cindustry"). _checkbook_project_get_url_param_string("csize")
-                . _checkbook_project_get_url_param_string("awdmethod") ."/dashboard/" . $new_dashboard .
+                $url .= $status.RequestUtilities::_getUrlParamString("cindustry"). RequestUtilities::_getUrlParamString("csize")
+                . RequestUtilities::_getUrlParamString("awdmethod") ."/dashboard/" . $new_dashboard .
                 ($is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "" ) . "/subvendor/".$vendor_id;
                 return $currentUrl.$url;
         }
