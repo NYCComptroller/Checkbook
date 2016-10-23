@@ -48,4 +48,10 @@ class RequestUtilities {
           return filter_xss(htmlspecialchars_decode($_GET[$paramName],ENT_QUOTES));
         }
     }
+    
+    //Returns the path of the current page
+    static public function _getCurrentPage() {
+        $currentUrl = explode('/',$_SERVER['HTTP_REFERER']);
+        return '/'.$currentUrl[3];
+    }
 }
