@@ -54,4 +54,70 @@ class RequestUtilities {
         $currentUrl = explode('/',$_SERVER['HTTP_REFERER']);
         return '/'.$currentUrl[3];
     }
+    
+    /**
+    * returns key value pair string is present in URL
+    * @return string
+    */
+    function _getUrlParamString($key,$key_alias =  null){
+        $urlPath = drupal_get_path_alias($_GET['q']);
+        $pathParams = explode('/', $urlPath);
+        $keyIndex = NULL;
+        foreach($pathParams as $index => $value){
+          if($key == $value){
+              $keyIndex = $index;
+          }else if($key_alias != null && $key_alias == $value && $value != null){
+              $keyIndex = $index;
+          }
+        }
+
+        if($keyIndex){
+          if($key_alias == null){
+              return "/$key/" . urlencode($pathParams[($keyIndex+1)]);
+          }
+          else{
+              return "/$key_alias/" . urlencode($pathParams[($keyIndex+1)]);
+          }
+        }
+        return '';
+    }
+     
+    /**
+    * Adds mwbe, subvendor and datasource parameters to url.  Precedence ,$source > $overidden_params > requestparam 
+    * @return string
+    */  
+    function _appendMWBESubVendorDatasourceUrlParams($source = null,$overidden_params = array(),$top_nav = false){
+        $datasource = (isset($overidden_params['datasource'])) ? $overidden_params['datasource'] :_getRequestParamValue('datasource');
+        $mwbe = (isset($overidden_params['mwbe'])) ? $overidden_params['mwbe'] : _getRequestParamValue('mwbe');
+        $dashboard = (isset($overidden_params['dashboard'])) ? $overidden_params['dashboard'] : _getRequestParamValue('dashboard');
+
+        $url = "";
+        if(isset($datasource)) {
+            $url = "/datasource/checkbook_oge";
+        }
+        else {
+            $current_url = explode('/',$_SERVER['HTTP_REFERER']);
+            if(($current_url[3] == 'contract' && ($current_url[4] == 'search' || $current_url[4] == 'all') && $current_url[5] == 'transactions')){
+                $advanced_search = true;
+            }
+            if(!$advanced_search){
+                if($source) {
+                    $source = explode("/",$source);
+                    if(!in_array("mwbe",$source)){
+                        $url = isset($mwbe) ? "/mwbe/".$mwbe : "";
+                    }               
+                    if(!in_array("dashboard",$source)){
+                            $url = isset($dashboard) ? "/dashboard/".$dashboard : "";
+                    }
+                }
+                else {
+                    if(!$top_nav ||  ( isset($mwbe) && _getRequestParamValue('vendor') > 0 && _getRequestParamValue('dashboard') != "ms" )){
+                            $url = isset($mwbe) ? "/mwbe/".$mwbe : "";
+                            $url .= isset($dashboard) ? "/dashboard/".$dashboard : "";
+                    }
+                }
+            }
+        }
+        return $url;
+    }
 }

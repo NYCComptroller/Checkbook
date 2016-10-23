@@ -10,16 +10,16 @@ class ContractsUrlService {
 
     static function contractIdUrl($original_agreement_id,$document_code) {
         $url = "/panel_html/contract_transactions/agid/".$original_agreement_id
-            . _checkbook_project_get_url_param_string("status")
-            . _checkbook_append_url_params()
+            . RequestUtilities::_getUrlParamString("status")
+            . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
             . "/doctype/".$document_code;
         return $url;
     }
 
     static function masterContractIdUrl($original_agreement_id,$document_code) {
         $url = "/panel_html/contract_transactions/contract_details/magid/".$original_agreement_id
-            . _checkbook_project_get_url_param_string("status")
-            . _checkbook_append_url_params()
+            . RequestUtilities::_getUrlParamString("status")
+            . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
             . "/doctype/".$document_code;
         return $url;
     }
@@ -30,19 +30,19 @@ class ContractsUrlService {
         if($original_agreement_id){
             if(($lower_doctype == 'ma1') || ($lower_doctype == 'mma1') || ($lower_doctype == 'rct1')){
                 $url = '/panel_html/contract_transactions/magid/'.$original_agreement_id
-                    . _checkbook_project_get_url_param_string("status")
-                    . _checkbook_append_url_params()
+                    . RequestUtilities::_getUrlParamString("status")
+                    . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
                     . "/doctype/".$doctype;
             }else{
                 $url = '/panel_html/contract_transactions/agid/'.$original_agreement_id
-                    . _checkbook_project_get_url_param_string("status")
-                    . _checkbook_append_url_params()
+                    . RequestUtilities::_getUrlParamString("status")
+                    . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
                     . "/doctype/".$doctype;
             }
             }else{
                 $url = '/minipanels/pending_contract_transactions/contract/'.$fms_contract_number
-                    . _checkbook_project_get_url_param_string("status")
-                    . _checkbook_append_url_params()
+                    . RequestUtilities::_getUrlParamString("status")
+                    . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
                     .'/version/'.$version;
             }
         return $url;
@@ -57,16 +57,16 @@ class ContractsUrlService {
 
         $url = "/contract/spending/transactions"
             . $spend_type_parameter
-            . _checkbook_append_url_params()
-            . _checkbook_project_get_url_param_string("status")
-            . _checkbook_project_get_url_param_string("status","contstatus")
-            . _checkbook_project_get_url_param_string("agency","cagency")
-            . _checkbook_project_get_url_param_string("vendor","cvendor")
-            . _checkbook_project_get_url_param_string("awdmethod")
-            . _checkbook_project_get_url_param_string("cindustry")
-            . _checkbook_project_get_url_param_string("csize")
+            . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
+            . RequestUtilities::_getUrlParamString("status")
+            . RequestUtilities::_getUrlParamString("status","contstatus")
+            . RequestUtilities::_getUrlParamString("agency","cagency")
+            . RequestUtilities::_getUrlParamString("vendor","cvendor")
+            . RequestUtilities::_getUrlParamString("awdmethod")
+            . RequestUtilities::_getUrlParamString("cindustry")
+            . RequestUtilities::_getUrlParamString("csize")
             . _checkbook_project_get_year_url_param_string()
-            . _checkbook_project_get_url_param_string("year","syear")
+            . RequestUtilities::_getUrlParamString("year","syear")
             . "/doctype/CT1~CTA1~MA1"
             . "/contcat/".self::_getContractCategoryParameter()
             . "/smnid/728" //todo get mapping
@@ -78,15 +78,15 @@ class ContractsUrlService {
 
         $url = "/spending/transactions"
             . $spend_type_parameter
-            . _checkbook_append_url_params()
-            . _checkbook_project_get_url_param_string("status","contstatus")
-            . _checkbook_project_get_url_param_string("agency","cagency")
-            . _checkbook_project_get_url_param_string("vendor","cvendor")
-            . _checkbook_project_get_url_param_string("awdmethod")
-            . _checkbook_project_get_url_param_string("cindustry")
-            . _checkbook_project_get_url_param_string("csize")
+            . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
+            . RequestUtilities::_getUrlParamString("status","contstatus")
+            . RequestUtilities::_getUrlParamString("agency","cagency")
+            . RequestUtilities::_getUrlParamString("vendor","cvendor")
+            . RequestUtilities::_getUrlParamString("awdmethod")
+            . RequestUtilities::_getUrlParamString("cindustry")
+            . RequestUtilities::_getUrlParamString("csize")
             . _checkbook_project_get_year_url_param_string()
-            . _checkbook_project_get_url_param_string("year","syear")
+            . RequestUtilities::_getUrlParamString("year","syear")
             . "/contcat/".self::_getContractCategoryParameter()
             . "/smnid/371" //todo get mapping
             . "/newwindow";
@@ -105,14 +105,14 @@ class ContractsUrlService {
             $minorityTypeId = ($minorityTypeId == 4 || $minorityTypeId == 5) ? '4~5': $minorityTypeId;
             $dashboard = "mp";
             $url =  '/'. $currentUrl
-                    . _checkbook_project_get_url_param_string("syear","year")
-                    . _checkbook_project_get_url_param_string("agency")
-                    . _checkbook_project_get_url_param_string("cindustry")
-                    . _checkbook_project_get_url_param_string("csize")
-                    . _checkbook_project_get_url_param_string("awdmethod")
-                    . _checkbook_project_get_url_param_string("contstatus","status")
-                    . _checkbook_project_get_url_param_string("vendor")
-                    . _checkbook_project_get_url_param_string("subvendor")
+                    . RequestUtilities::_getUrlParamString("syear","year")
+                    . RequestUtilities::_getUrlParamString("agency")
+                    . RequestUtilities::_getUrlParamString("cindustry")
+                    . RequestUtilities::_getUrlParamString("csize")
+                    . RequestUtilities::_getUrlParamString("awdmethod")
+                    . RequestUtilities::_getUrlParamString("contstatus","status")
+                    . RequestUtilities::_getUrlParamString("vendor")
+                    . RequestUtilities::_getUrlParamString("subvendor")
                     . '/dashboard/mp'
                     . '/mwbe/'. $minorityTypeId .  '?expandBottomCont=true';
         }
@@ -138,12 +138,12 @@ class ContractsUrlService {
         $currentUrl = RequestUtilities::_getCurrentPage();
         $url = $currentUrl
             .(isset($original_agreement_id) ? ("/magid/".$original_agreement_id):'')
-            . _checkbook_append_url_params()
-            ._checkbook_project_get_url_param_string('vendor')
-            ._checkbook_project_get_url_param_string('cindustry')
-            ._checkbook_project_get_url_param_string('csize')
-            ._checkbook_project_get_url_param_string('awdmethod')
-            ._checkbook_project_get_url_param_string('status')
+            . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
+            .RequestUtilities::_getUrlParamString('vendor')
+            .RequestUtilities::_getUrlParamString('cindustry')
+            .RequestUtilities::_getUrlParamString('csize')
+            .RequestUtilities::_getUrlParamString('awdmethod')
+            .RequestUtilities::_getUrlParamString('status')
             ._checkbook_project_get_year_url_param_string()
             ."/agency/".$agency_id
             ."?expandBottomCont=true";
@@ -153,12 +153,12 @@ class ContractsUrlService {
     static function awardmethodUrl($award_method_id) {
         $currentUrl = RequestUtilities::_getCurrentPage();
         $url = $currentUrl
-            . _checkbook_append_url_params()
-            ._checkbook_project_get_url_param_string('vendor')
-            ._checkbook_project_get_url_param_string('cindustry')
-            ._checkbook_project_get_url_param_string('csize')
-            ._checkbook_project_get_url_param_string('agency')
-            ._checkbook_project_get_url_param_string('status')
+            . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
+            .RequestUtilities::_getUrlParamString('vendor')
+            .RequestUtilities::_getUrlParamString('cindustry')
+            .RequestUtilities::_getUrlParamString('csize')
+            .RequestUtilities::_getUrlParamString('agency')
+            .RequestUtilities::_getUrlParamString('status')
             ._checkbook_project_get_year_url_param_string()
             ."/awdmethod/".$award_method_id
             ."?expandBottomCont=true";
@@ -168,12 +168,12 @@ class ContractsUrlService {
     static function industryUrl($industry_type_id) {
         $currentUrl = RequestUtilities::_getCurrentPage();
         $url = $currentUrl
-            . _checkbook_append_url_params()
-            ._checkbook_project_get_url_param_string('vendor')
-            ._checkbook_project_get_url_param_string('agency')
-            ._checkbook_project_get_url_param_string('csize')
-            ._checkbook_project_get_url_param_string('awdmethod')
-            ._checkbook_project_get_url_param_string('status')
+            . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
+            .RequestUtilities::_getUrlParamString('vendor')
+            .RequestUtilities::_getUrlParamString('agency')
+            .RequestUtilities::_getUrlParamString('csize')
+            .RequestUtilities::_getUrlParamString('awdmethod')
+            .RequestUtilities::_getUrlParamString('status')
             ._checkbook_project_get_year_url_param_string()
             ."/cindustry/".$industry_type_id
             ."?expandBottomCont=true";
@@ -183,12 +183,12 @@ class ContractsUrlService {
     static function contractSizeUrl($award_size_id) {
         $currentUrl = RequestUtilities::_getCurrentPage();
         $url = $currentUrl
-            . _checkbook_append_url_params()
-            ._checkbook_project_get_url_param_string('vendor')
-            ._checkbook_project_get_url_param_string('agency')
-            ._checkbook_project_get_url_param_string('csize')
-            ._checkbook_project_get_url_param_string('awdmethod')
-            ._checkbook_project_get_url_param_string('status')
+            . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
+            .RequestUtilities::_getUrlParamString('vendor')
+            .RequestUtilities::_getUrlParamString('agency')
+            .RequestUtilities::_getUrlParamString('csize')
+            .RequestUtilities::_getUrlParamString('awdmethod')
+            .RequestUtilities::_getUrlParamString('status')
             ._checkbook_project_get_year_url_param_string()
             ."/csize/".$award_size_id
             ."?expandBottomCont=true";
@@ -214,12 +214,12 @@ class ContractsUrlService {
         }
 
         $url = '/panel_html/contract_details/contract/transactions/contcat/expense'
-            . _checkbook_project_get_url_param_string('status','contstatus')
-            . _checkbook_append_url_params()
-            . _checkbook_project_get_url_param_string('agency')
-            . _checkbook_project_get_url_param_string('awdmethod')
-            . _checkbook_project_get_url_param_string('csize')
-            . _checkbook_project_get_url_param_string('cindustry')
+            . RequestUtilities::_getUrlParamString('status','contstatus')
+            . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
+            . RequestUtilities::_getUrlParamString('agency')
+            . RequestUtilities::_getUrlParamString('awdmethod')
+            . RequestUtilities::_getUrlParamString('csize')
+            . RequestUtilities::_getUrlParamString('cindustry')
             . $mwbe_param
             . $subvendorURLString . $vendorURLString
             . _checkbook_project_get_year_url_param_string();
@@ -240,14 +240,14 @@ class ContractsUrlService {
         $subvendorURLString = isset($subvendor_code) ? '/vendorcode/'.$subvendor_code : '';
         $vendorURLString = isset($vendor_code) ? '/vendorcode/'.$vendor_code : '';
         $url = '/panel_html/sub_contracts_transactions/subcontract/transactions/contcat/expense'
-            . _checkbook_project_get_url_param_string('status','contstatus')
-            . _checkbook_append_url_params()
-            . _checkbook_project_get_url_param_string('agency')
-            . _checkbook_project_get_url_param_string('vendor')
-            . _checkbook_project_get_url_param_string("vendor","fvendor")
-            . _checkbook_project_get_url_param_string('awdmethod')
-            . _checkbook_project_get_url_param_string('csize')
-            . _checkbook_project_get_url_param_string('cindustry')
+            . RequestUtilities::_getUrlParamString('status','contstatus')
+            . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
+            . RequestUtilities::_getUrlParamString('agency')
+            . RequestUtilities::_getUrlParamString('vendor')
+            . RequestUtilities::_getUrlParamString("vendor","fvendor")
+            . RequestUtilities::_getUrlParamString('awdmethod')
+            . RequestUtilities::_getUrlParamString('csize')
+            . RequestUtilities::_getUrlParamString('cindustry')
             . $mwbe_param
             . $subvendorURLString . $vendorURLString
             . _checkbook_project_get_year_url_param_string();
