@@ -54,13 +54,13 @@ class ContractsWidgetService extends AbstractWidgetService {
                 $column = $row['vendor_name'];
                 $year_id = _getRequestParamValue("year");
                 $year_type = _getRequestParamValue("yeartype");
-                $url = ContractsUrlService::vendorUrl($row['vendor_id'], $row['agency_id'], $year_id, $year_type, $row['minority_type_id'], $row['is_prime_or_sub']);
+                $url = ContractsVendorUrlService::vendorUrl($row['vendor_id'], $row['agency_id'], $year_id, $year_type, $row['minority_type_id'], $row['is_prime_or_sub']);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
             
             case "vendor_name_link_by_mwbe":
                 $column = $row['vendor_name'];
-                $url = ContractsUrlService::getContractsVendorLinkByMWBECategory($row);
+                $url = ContractsVendorUrlService::getContractsVendorLinkByMWBECategory($row);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
 
@@ -82,7 +82,7 @@ class ContractsWidgetService extends AbstractWidgetService {
                 }
                 $year_id = _getRequestParamValue("year");
                 $year_type = _getRequestParamValue("yeartype");
-                $url = ContractsUrlService::vendorUrl($row['vendor_id'], $row['agency_id'], $year_id, $year_type, $row['minority_type_id'], $row['is_prime_or_sub']);
+                $url = ContractsVendorUrlService::vendorUrl($row['vendor_id'], $row['agency_id'], $year_id, $year_type, $row['minority_type_id'], $row['is_prime_or_sub']);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
 

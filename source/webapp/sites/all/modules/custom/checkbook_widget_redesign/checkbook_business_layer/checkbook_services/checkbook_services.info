@@ -32,6 +32,7 @@ files[] = contracts/ContractsUrlService.php
 files[] = contracts/ContractsWidgetService.php
 files[] = contracts/ContractsWidgetVisibilityService.php
 files[] = contracts/ContractsParameters.php
+files[] = contracts/ContractsVendorUrlService.php
 files[] = common/MinorityTypeURLService.php
 
 files[] = widget/AbstractWidgetService.php
