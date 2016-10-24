@@ -35,5 +35,9 @@ files[] = data_access/models/SqlParamModel.php
 files[] = data_access/models/SqlWhereParamModel.php
 files[] = data_access/models/SqlExpressionModel.php
 files[] = data_access/models/AbstractSqlModel.php
+
 files[] = utilities/RequestUtilities.php
 files[] = utilities/FormattingUtilities.php
+
+files[] = constants/CommonConstants.php
+files[] = constants/ContractConstants.php
