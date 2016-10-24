@@ -1,4 +1,7 @@
 jQuery(document).ready(function ($) {
+    //New Features Menu
+    jQuery('#nice-menu-1 li.menu-path-node-975 a').addClass('btn-new-features gridpopup');
+    
     //Altering CSS for slider pager for pie charts on contracts page
     if(jQuery(".slider-pager a").length == 2){
         jQuery("div.slider-pager").addClass('pieSlider');
