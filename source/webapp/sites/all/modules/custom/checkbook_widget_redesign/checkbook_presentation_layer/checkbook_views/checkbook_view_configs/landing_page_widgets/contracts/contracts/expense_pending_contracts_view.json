@@ -10,7 +10,7 @@
     "headerSubTitle":"Stand Alone Contracts",
     "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/368/doctype/CTA1~CT1'",
     "table_columns":[
-        {"labelAlias":"contract_id","column":"contract_number","derivedColumn":"contract_id_link"},
+        {"labelAlias":"contract_id","column":"contract_number","derivedColumn":"pending_contract_id_link"},
         {"labelAlias":"contract_purpose","column":"contract_purpose","tooltip":35},
         {"labelAlias":"contract_agency","column":"agency_name","tooltip":25,"derivedColumn":"agency_name_link"},
         {"labelAlias":"prime_vendor","column":"vendor_name","tooltip":25,"derivedColumn":"vendor_name_link"},
