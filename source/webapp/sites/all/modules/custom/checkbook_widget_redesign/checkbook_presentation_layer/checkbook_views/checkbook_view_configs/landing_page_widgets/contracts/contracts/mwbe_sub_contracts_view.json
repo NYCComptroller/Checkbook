@@ -1,0 +1,10 @@
+{
+    "defaultConfigKey":"oge_contracts_view",
+    "sqlConfig":
+    {
+        "serviceName":"ContractsWidgetService",
+        "sqlConfigName":"contracts/sub_contracts",
+        "statementName":"GetSubContracts"
+    },
+    "defaultParameters":{"doctype":"'CTA1'~'CT1'"}
+}
