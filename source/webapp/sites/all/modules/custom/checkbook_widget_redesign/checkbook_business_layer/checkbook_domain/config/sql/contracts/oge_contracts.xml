@@ -20,7 +20,6 @@
                 a.original_agreement_id,
                 a.document_code_id,
                 b.document_code,
-                'TBD' contract_subvendor_status,
                 SUM(COALESCE(a.original_contract_amount,0)) AS original_amount_sum,
                 SUM(COALESCE(a.maximum_contract_amount,0)) AS current_amount_sum,
                 SUM(COALESCE(a.spending_amount,0)) AS spending_amount_sum,
