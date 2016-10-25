@@ -47,6 +47,25 @@ class ContractsUrlService {
             }
         return $url;
     }
+    
+    function pendingContractIdLink($original_agreement_id,$doctype,$fms_contract_number,$pending_contract_number = null,$version = null, $linktype= null){
+        $lower_doctype = strtolower($doctype);
+        if($original_agreement_id){
+            if(($lower_doctype == 'ma1') || ($lower_doctype == 'mma1') || ($lower_doctype == 'rct1')){
+                $url = '/panel_html/contract_transactions/magid/'.$original_agreement_id.'/doctype/'.$doctype;
+            }else{
+                $url = '/panel_html/contract_transactions/agid/'.$original_agreement_id.'/doctype/'.$doctype;
+            }
+        }else{
+            $url = '/minipanels/pending_contract_transactions/contract/'.$pending_contract_number.'/version/'.$version;
+        }
+
+        //Don't persist M/WBE parameter if there is no dashboard (this could be an advanced search parameter)
+        $mwbe_parameter = _getRequestParamValue('dashboard') != null ? RequestUtilities::_getUrlParamString("mwbe") : '';
+        $url .= $mwbe_parameter;
+
+        return $url;
+    }
 
     /**
      * Gets the spent to date link Url for the contract spending
