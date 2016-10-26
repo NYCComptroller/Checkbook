@@ -5,6 +5,7 @@
         "sqlConfigName":"contracts/pending_contracts",
         "statementName":"GetPendingMasterAgreements"
     },
+    "serviceName":"ContractsWidgetService",
     "defaultParameters":{"doctype":"'MA1','MMA1','MAR'"},
     "headerTitle":"Master Agreements",
     "headerSubTitle":"Master Agreement",

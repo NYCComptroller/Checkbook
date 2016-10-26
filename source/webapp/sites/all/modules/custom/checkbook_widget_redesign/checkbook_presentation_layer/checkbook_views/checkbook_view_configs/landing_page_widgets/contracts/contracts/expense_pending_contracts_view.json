@@ -5,6 +5,7 @@
         "sqlConfigName":"contracts/pending_contracts",
         "statementName":"GetPendingContracts"
     },
+    "serviceName":"ContractsWidgetService",
     "defaultParameters":{"doctype":"'CTA1'~'CT1'~'CTR'"},
     "headerTitle":"Contracts",
     "headerSubTitle":"Stand Alone Contracts",

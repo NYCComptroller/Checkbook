@@ -5,6 +5,7 @@
         "sqlConfigName":"contracts/contracts",
         "statementName":"GetMasterAgreementModifications"
     },
+    "serviceName":"ContractsWidgetService",
     "defaultParameters":{"type_of_year":"B","doctype":"'MMA1','MA1'","status_flag":"A","dollar_difference":"0"},
     "headerTitle":"Master Agreement Modifications",
     "headerSubTitle":"Master Agreement Modifications",

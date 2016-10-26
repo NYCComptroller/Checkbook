@@ -5,6 +5,7 @@
         "sqlConfigName":"contracts/contracts",
         "statementName":"GetContracts"
     },
+    "serviceName":"ContractsWidgetService",
     "defaultParameters":{"doctype":"'CTA1'~'CT1'"},
     "headerTitle":"Contracts",
     "headerSubTitle":"Stand Alone Contracts",

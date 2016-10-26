@@ -6,6 +6,7 @@
         "statementName":"GetMWBEContractsByPrimeVendors",
         "countStatementName":"GetCountMWBEContractsByPrimeVendors"
     },
+    "serviceName":"ContractsWidgetService",
     "defaultParameters":{"type_of_year":"B","status_flag":"A"},
     "headerTitle":"Prime Vendors",
     "headerSubTitle":"Prime Vendors",

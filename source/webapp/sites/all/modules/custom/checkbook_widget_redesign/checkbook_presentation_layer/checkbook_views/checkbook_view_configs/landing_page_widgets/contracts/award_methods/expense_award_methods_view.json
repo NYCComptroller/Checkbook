@@ -5,6 +5,7 @@
         "sqlConfigName":"contracts/contracts",
         "statementName":"GetContractsByAwardMethods"
     },
+    "serviceName":"ContractsWidgetService",
     "defaultParameters":{"type_of_year":"B","status_flag":"A"},
     "headerTitle":"Award Methods",
     "headerSubTitle":"Award Methods",

@@ -8,6 +8,7 @@
         "countStatementName":"GetCountSubContractsByAgencies"
 
     },
+    "serviceName":"ContractsWidgetService",
     "defaultParameters":{"type_of_year":"B","status_flag":"A"},
     "headerTitle":"Agencies",
     "headerSubTitle":"Agencies",
