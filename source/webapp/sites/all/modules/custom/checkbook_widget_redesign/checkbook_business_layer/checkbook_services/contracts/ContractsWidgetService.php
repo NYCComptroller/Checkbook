@@ -10,12 +10,14 @@ class ContractsWidgetService extends AbstractWidgetService {
 
     public function implDerivedColumn($column_name,$row) {
         $value = null;
+        $legacy_node_id = null;//$this->getLegacyNodeId();
         switch($column_name) {
             case "contract_id_link":
                 $column = $row['contract_number'];
                 $class = "bottomContainerReload";
                 $url = ContractsUrlService::contractIdUrl($row['original_agreement_id'],$row['document_code']);
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+
                 break;
 
             case "master_contract_id_link":
@@ -38,7 +40,7 @@ class ContractsWidgetService extends AbstractWidgetService {
                 $url = ContractsUrlService::pendingContractIdLink($row['original_agreement_id'],$row['document_code'],$row['fms_contract_number'],$row['contract_number'],$row['document_version']);
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
-            
+
             case "agency_name_link":
                 $column = $row['agency_name'];
                 $url = ContractsUrlService::agencyUrl($row['agency_id'], $row['original_agreement_id']);
@@ -70,6 +72,7 @@ class ContractsWidgetService extends AbstractWidgetService {
                 $url = ContractsVendorUrlService::getContractsVendorLinkByMWBECategory($row);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
+
             case "sub_vendor_name_link":
                 $column = $row['sub_vendor_name'];
                 $url = ContractsVendorUrlService::getSubContractsVendorLink($row['sub_vendor_id']);
@@ -122,6 +125,12 @@ class ContractsWidgetService extends AbstractWidgetService {
                 $value = MinorityTypeURLService::$minority_type_category_map[$minority_type_id];
                 break;
 
+            case "sub_minority_type_name_link":
+                $column = $row['sub_minority_type_name'];
+                $url = MinorityTypeURLService::getSubMinorityTypeUrl($row['sub_minority_type_id']);
+                $value = (isset($url))?"<a href='{$url}'>{$column}</a>" : $column;
+                break;
+
             // Spent to Date Links
             case "contracts_spent_to_date_link":
                 $column = $row['spending_amount_sum'];
@@ -130,7 +139,7 @@ class ContractsWidgetService extends AbstractWidgetService {
                 $spend_type_parameter = _checkbook_check_isEDCPage()
                     ? "/agid/".$row['original_agreement_id']
                     : "/contnum/".$row['contract_number'];
-                $url = ContractsUrlService::spentToDateUrl($spend_type_parameter);
+                $url = ContractsUrlService::spentToDateUrl($spend_type_parameter,$legacy_node_id);
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
 
@@ -139,7 +148,16 @@ class ContractsWidgetService extends AbstractWidgetService {
                 $class = "new_window";
 
                 $spend_type_parameter = "/cvendor/".$row['vendor_id'];
-                $url = ContractsUrlService::spentToDateUrl($spend_type_parameter);
+                $url = ContractsUrlService::spentToDateUrl($spend_type_parameter,$legacy_node_id);
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
+
+            case "sub_vendor_spent_to_date_link":
+                $column = $row['spending_amount_sum'];
+                $class = "new_window";
+
+                $spend_type_parameter = "/csubvendor/".$row['sub_vendor_id'];
+                $url = ContractsUrlService::spentToDateUrl($spend_type_parameter,$legacy_node_id);
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
 
@@ -148,7 +166,7 @@ class ContractsWidgetService extends AbstractWidgetService {
                 $class = "new_window";
 
                 $spend_type_parameter = "/awdmethod/".$row['award_method_id'];
-                $url = ContractsUrlService::spentToDateUrl($spend_type_parameter);
+                $url = ContractsUrlService::spentToDateUrl($spend_type_parameter,$legacy_node_id);
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
 
@@ -157,7 +175,7 @@ class ContractsWidgetService extends AbstractWidgetService {
                 $class = "new_window";
 
                 $spend_type_parameter = "/magid/".$row['original_agreement_id'];
-                $url = ContractsUrlService::masterAgreementSpentToDateUrl($spend_type_parameter);
+                $url = ContractsUrlService::masterAgreementSpentToDateUrl($spend_type_parameter,$legacy_node_id);
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
 
@@ -166,7 +184,7 @@ class ContractsWidgetService extends AbstractWidgetService {
                 $class = "new_window";
 
                 $spend_type_parameter = "/cindustry/".$row['industry_type_id'];
-                $url = ContractsUrlService::spentToDateUrl($spend_type_parameter);
+                $url = ContractsUrlService::spentToDateUrl($spend_type_parameter,$legacy_node_id);
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
 
@@ -175,7 +193,7 @@ class ContractsWidgetService extends AbstractWidgetService {
                 $class = "new_window";
 
                 $spend_type_parameter = "/csize/".$row['award_size_id'];
-                $url = ContractsUrlService::spentToDateUrl($spend_type_parameter);
+                $url = ContractsUrlService::spentToDateUrl($spend_type_parameter,$legacy_node_id);
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
         }
@@ -207,5 +225,9 @@ class ContractsWidgetService extends AbstractWidgetService {
         }
         return $parameters;
     }
+
+//    public function getWidgetFooterUrl() {
+//        return ContractsUrlService::getFooterUrl($this->getLegacyNodeId());
+//    }
 
 }

@@ -19,16 +19,19 @@ class ContractsWidgetVisibilityService {
         
         switch($widget){
             case 'departments':
-                if($category === 'expense'){
-                    if(RequestUtilities::isEDCPage()){
-                        if(RequestUtilities::getRequestParamValue('vendor'))
-                           $view = 'contracts_departments_view';
-                        else
-                           $view = 'oge_contracts_departments_view'; 
-                    }else{
-                       if(($dashboard == NULL || $dashboard == 'mp') && RequestUtilities::getRequestParamValue('agency')){
-                           $view = 'contracts_departments_view';
-                       }
+            case 'departments_vendor':
+                if(RequestUtilities::getRequestParamValue('agency')) {
+                    if($category === 'expense'){
+                        if(RequestUtilities::isEDCPage()){
+                            if(RequestUtilities::getRequestParamValue('vendor'))
+                                $view = 'contracts_departments_view';
+                            else
+                                $view = 'oge_contracts_departments_view';
+                        }else{
+                            if(($dashboard == NULL || $dashboard == 'mp') && RequestUtilities::getRequestParamValue('agency')){
+                                $view = 'contracts_departments_view';
+                            }
+                        }
                     }
                 }
                 break;
@@ -154,7 +157,6 @@ class ContractsWidgetVisibilityService {
                                 case "ss":
                                 case "sp":
                                 case "ms":
-                                    $view = '';
                                     break;
                                 default :
                                     $view = 'master_agreements_view';
@@ -165,10 +167,7 @@ class ContractsWidgetVisibilityService {
                             $view = 'pending_master_agreements_view';
                             break;
                         case "revenue":
-                            $view = '';
-                            break;
                         case "pending revenue":
-                            $view = '';
                             break;
                     }
                 }
@@ -183,7 +182,6 @@ class ContractsWidgetVisibilityService {
                                 case "ss":
                                 case "sp":
                                 case "ms":
-                                    $view = '';
                                     break;
                                 default :
                                     $view = 'master_agreement_modifications_view';
@@ -194,10 +192,7 @@ class ContractsWidgetVisibilityService {
                             $view = 'pending_master_agreement_modifications_view';
                             break;
                         case "revenue":
-                            $view = '';
-                            break;
                         case "pending revenue":
-                            $view = '';
                             break;
                     }
                 }
@@ -248,6 +243,20 @@ class ContractsWidgetVisibilityService {
                     }
                 }
                 break;
+            case 'sub_vendors':
+                if(!RequestUtilities::getRequestParamValue('subvendor')){
+                    switch($dashboard) {
+                        case "ss":
+                        case "sp":
+                        case "ms":
+                            $view = 'contracts_subvendor_view';
+                        break;
+                        default:
+                            $view = null;
+                        break;
+                    }
+                }
+                break;
             case 'agencies':
                 if(!RequestUtilities::getRequestParamValue('agency')){
                     switch($category) {
@@ -275,11 +284,11 @@ class ContractsWidgetVisibilityService {
                     }
                 }
                 break;
-            default : 
-                //handle the exception when there is no match
+            default:
                 $view = NULL;
                 break;
         }
-        return $view;
+
+        return $view == '' ? null : $view;
     } 
 }
