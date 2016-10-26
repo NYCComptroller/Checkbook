@@ -21,5 +21,6 @@ core = 7.x
 package = REI Checkbook Widget Redesign
 dependencies[] = data_controller
 dependencies[] = ajaxnode
-;dependencies[] = checkbook_services
 dependencies[] = checkbook_infrastructure_layer
+dependencies[] = checkbook_services
+files[] = WidgetController.php

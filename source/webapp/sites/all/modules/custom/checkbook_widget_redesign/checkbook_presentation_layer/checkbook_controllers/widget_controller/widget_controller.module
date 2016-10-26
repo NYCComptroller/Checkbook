@@ -36,6 +36,14 @@ require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/ob
 require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/object/converter/handler/AbstractJson2PHP.php');
 require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/object/converter/handler/Json2PHP.php');
 
+//require_once(realpath(drupal_get_path('module', 'checkbook_infrastructure_layer')) .'/constants/CommonConstants.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_infrastructure_layer')) .'/constants/ContractConstants.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_infrastructure_layer')) .'/utilities/RequestUtilities.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/contracts/ContractsWidgetVisibilityService.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/contracts/ContractsUrlService.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/contracts/ContractsVendorUrlService.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/common/VendorService.php');
+//require_once('WidgetController.php');
 
 /***************************************/
 /* Implementation of Widget Node Type  */
@@ -116,15 +124,18 @@ function _widget_controller_node_load($key, $type='node'){
     return _widget_controller_node_load_file($key);
 }
 
-
 /*
  * Custom hook for new widget controller
  */
 function _widget_controller_node_view($key){
-    $node = _widget_controller_node_load_file($key);
+    $viewName = WidgetController::getInstance()->getWidgetViewConfigName($key);
+    if(!isset($viewName)) return;
+    $legacy_node_id = WidgetController::getInstance()->getWidgetLegacyNodeId($key);
+    $node = _widget_controller_node_load_file($viewName);
     $node = widget_merge_default_settings($node);
-	$node = widget_controller_node_view($node);
-	echo $node->content['body']['#markup'];
+    $node->legacy_node_id = $legacy_node_id;
+    $node = widget_controller_node_view($node);
+    echo $node->content['body']['#markup'];
 }
 
 function _widget_controller_node_view_page($key){
@@ -427,14 +438,12 @@ function widget_controller_data(&$node) {
 function _widget_controller_load_data_service($node) {
 
     $service = null;
-    if(isset($node->widgetConfig->sqlConfig)) {
-        if(!isset($node->widgetConfig->getData) || (isset($node->widgetConfig->getData) && $node->widgetConfig->getData)){
-
-            $sqlConfig = $node->widgetConfig->sqlConfig;
-            $serviceName = $sqlConfig->serviceName;
-            //TODO: Use service factory
-            $service = new $serviceName($sqlConfig);
-        }
+    if(isset($node->widgetConfig)) {
+        //TODO: Use service factory
+        $serviceName = $node->widgetConfig->serviceName;
+        //todo: update existing widget configs
+        $serviceName = !isset($serviceName) ? "ContractsWidgetService" : $serviceName;
+        $service = new $serviceName($node->widgetConfig);
     }
     return $service;
 }
@@ -485,6 +494,18 @@ function _load_widget_controller_header_count($service, $parameters) {
 function _load_widget_controller_row_count($service, $parameters) {
     $results = $service->getWidgetDataCount($parameters);
     return $results;
+}
+
+
+/**
+ * Loads the footer Url
+ * @param $service
+ * @param $parameters
+ */
+function _widget_controller_footer_url($node) {
+    $service = _widget_controller_load_data_service($node);
+    $url = $service->getWidgetFooterUrl();
+    return $url;
 }
 
 /**
@@ -635,6 +656,7 @@ function widget_controller_config($node) {
 	if (isset($savedUid)) {
 		$node->widgetConfig->uid = $savedUid;
 	}
+    $node->widgetConfig->legacy_node_id = $node->legacy_node_id;
 	return $node->widgetConfig;
 }
 

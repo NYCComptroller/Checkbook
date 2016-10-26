@@ -10,14 +10,13 @@ class ContractsWidgetService extends AbstractWidgetService {
 
     public function implDerivedColumn($column_name,$row) {
         $value = null;
-        $legacy_node_id = null;//$this->getLegacyNodeId();
+        $legacy_node_id = $this->getLegacyNodeId();
         switch($column_name) {
             case "contract_id_link":
                 $column = $row['contract_number'];
                 $class = "bottomContainerReload";
                 $url = ContractsUrlService::contractIdUrl($row['original_agreement_id'],$row['document_code']);
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
-
                 break;
 
             case "master_contract_id_link":
@@ -226,8 +225,8 @@ class ContractsWidgetService extends AbstractWidgetService {
         return $parameters;
     }
 
-//    public function getWidgetFooterUrl() {
-//        return ContractsUrlService::getFooterUrl($this->getLegacyNodeId());
-//    }
+    public function getWidgetFooterUrl() {
+        return ContractsUrlService::getFooterUrl($this->getLegacyNodeId());
+    }
 
 }
