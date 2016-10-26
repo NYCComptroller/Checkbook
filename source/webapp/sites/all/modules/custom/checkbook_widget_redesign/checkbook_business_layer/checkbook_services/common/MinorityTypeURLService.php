@@ -100,4 +100,43 @@ class MinorityTypeURLService {
         
         return $latest_minority_type_id;
     }
+
+
+
+    /**
+     * Get the minority type link url for a sub vendor.
+     *
+     * Rules:
+     *
+     * 1. Sub M/WBE category is only a link from Sub Dashboards
+     * 2. Must be certified to be linkable
+     * 3. If current dashboard is "Sub Vendors", redirect to "Sub Vendors (M/WBE)" dashboard
+     *
+     * @param $minority_type_id
+     * @return string
+     */
+    static public function getSubMinorityTypeUrl($minority_type_id){
+
+        $showLink = Dashboard::isSubDashboard() && MinorityTypeURLService::isMWBECertified($minority_type_id);
+        $url = $showLink ?  ContractsUrlService::minorityTypeUrl($minority_type_id) : null;
+        if(!isset($url)) return $url;
+
+        $dashboard = DashboardParameter::getCurrent();
+        $dashboard = $dashboard == DashboardParameter::SUB_VENDORS ? DashboardParameter::SUB_VENDORS_MWBE : $dashboard;
+
+        $currentUrl = RequestUtilities::_getCurrentPage();
+        $url = $currentUrl
+            . _checkbook_project_get_year_url_param_string()
+            . RequestUtilities::_getUrlParamString("agency")
+            . RequestUtilities::_getUrlParamString("cindustry")
+            . RequestUtilities::_getUrlParamString("csize")
+            . RequestUtilities::_getUrlParamString("awdmethod")
+            . RequestUtilities::_getUrlParamString("contstatus","status")
+            . RequestUtilities::_getUrlParamString("vendor")
+            . RequestUtilities::_getUrlParamString("subvendor")
+            . '/dashboard/' . $dashboard
+            . '/mwbe/'. $minority_type_id;
+
+        return $url;
+    }
 }

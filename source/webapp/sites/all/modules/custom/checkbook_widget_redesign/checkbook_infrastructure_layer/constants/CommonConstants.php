@@ -88,9 +88,14 @@ abstract class Dashboard {
         return $dashboard == self::MWBE || $dashboard == self::SUB_VENDORS_MWBE || $dashboard == self::MWBE_SUB_VENDORS;
     }
 
-    static public function isSubvendor() {
+    static public function isSubDashboard() {
         $dashboard = self::getCurrent();
         return $dashboard == self::SUB_VENDORS || $dashboard == self::SUB_VENDORS_MWBE || $dashboard == self::MWBE_SUB_VENDORS;
+    }
+
+    static public function isPrimeDashboard() {
+        $dashboard = self::getCurrent();
+        return $dashboard == self::MWBE || $dashboard == self::CITYWIDE || $dashboard == self::OGE;
     }
 }
 

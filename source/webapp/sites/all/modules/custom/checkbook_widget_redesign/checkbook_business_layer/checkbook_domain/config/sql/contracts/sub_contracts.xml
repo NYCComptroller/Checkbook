@@ -457,4 +457,81 @@
             </where>
         </sql>
     </statement>
+    <!---GetContractsBySubVendors-->
+    <statement name="GetSubContractsBySubVendors" datasource="checkbook">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="status" type="string"/>
+        <param name="doctype" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="subvendor" type="int" />
+        <param name="mwbe" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
+        <sql>
+            SELECT c.vendor_id as sub_vendor_id,
+            c.legal_name as sub_vendor_name,
+            e.minority_type_id as sub_minority_type_id,
+            e.minority_type_name as sub_minority_type_name,
+            SUM(COALESCE(original_contract_amount,0)) AS original_amount_sum,
+            SUM(COALESCE(maximum_contract_amount,0)) AS current_amount_sum,
+            SUM(COALESCE(spending_amount,0)) AS spending_amount_sum,
+            COUNT(contract_number) AS total_contracts
+            FROM aggregateon_subven_contracts_cumulative_spending a
+            JOIN ref_document_code b ON b.document_code_id = a.document_code_id
+            JOIN subvendor c ON c.vendor_id = a.vendor_id
+            JOIN ref_minority_type e ON e.minority_type_id = a.minority_type_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="a.status_flag" paramName="status" />
+                    <exp op="IN" dbField="b.document_code" paramName="doctype" />
+                    <exp op="=" dbField="a.agency_id" paramName="agency" />
+                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.vendor_id" paramName="subvendor" />
+                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
+                </exp>
+            </where>
+            GROUP BY c.vendor_id, c.legal_name, e.minority_type_id, e.minority_type_name
+        </sql>
+    </statement>
+    <statement name="GetCountSubContractsBySubVendors" datasource="checkbook">
+        <param name="year" required ="true" type="int"/>
+        <param name="yeartype" required ="true" type="string" />
+        <param name="status" type="string"/>
+        <param name="doctype" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="subvendor" type="int" />
+        <param name="mwbe" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
+        <sql>
+            SELECT COUNT(DISTINCT vendor_id) as record_count
+            FROM aggregateon_subven_contracts_cumulative_spending a
+            JOIN ref_document_code b ON b.document_code_id = a.document_code_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="a.status_flag" paramName="status" />
+                    <exp op="IN" dbField="b.document_code" paramName="doctype" />
+                    <exp op="=" dbField="a.agency_id" paramName="agency" />
+                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.vendor_id" paramName="subvendor" />
+                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
+                </exp>
+            </where>
+        </sql>
+    </statement>
 </statements>

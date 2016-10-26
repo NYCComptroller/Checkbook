@@ -292,9 +292,14 @@
                     "visibility_parameters":["-awdmethod"]
                 },
                 "departments":{
-                    "widget_config":"contracts_departments_view",
+                    "widget_config":"oge_contracts_departments_view",
+                    "legacy_node_id":631,
+                    "visibility_parameters":["agency","-vendor"]
+                },
+                "departments_vendor":{
+                    "widget_config":"oge_contracts_departments_view",
                     "legacy_node_id":415,
-                    "visibility_parameters":["agency"]
+                    "visibility_parameters":["agency","vendor"]
                 },
                 "industries":{
                     "widget_config":"contracts_by_industries_view",
@@ -337,9 +342,14 @@
                     "visibility_parameters":["-awdmethod"]
                 },
                 "departments":{
-                    "widget_config":"contracts_departments_view",
+                    "widget_config":"oge_contracts_departments_view",
+                    "legacy_node_id":631,
+                    "visibility_parameters":["agency","-vendor"]
+                },
+                "departments_vendor":{
+                    "widget_config":"oge_contracts_departments_view",
                     "legacy_node_id":415,
-                    "visibility_parameters":["agency"]
+                    "visibility_parameters":["agency","vendor"]
                 },
                 "industries":{
                     "widget_config":"contracts_by_industries_view",

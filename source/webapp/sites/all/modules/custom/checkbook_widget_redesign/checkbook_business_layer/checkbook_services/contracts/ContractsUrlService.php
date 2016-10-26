@@ -47,7 +47,7 @@ class ContractsUrlService {
             }
         return $url;
     }
-    
+
     function pendingContractIdLink($original_agreement_id,$doctype,$fms_contract_number,$pending_contract_number = null,$version = null, $linktype= null){
         $lower_doctype = strtolower($doctype);
         if($original_agreement_id){
@@ -70,9 +70,10 @@ class ContractsUrlService {
     /**
      * Gets the spent to date link Url for the contract spending
      * @param $spend_type_parameter
+     * @param null $legacy_node_id
      * @return string
      */
-    static function spentToDateUrl($spend_type_parameter) {
+    static function spentToDateUrl($spend_type_parameter, $legacy_node_id = null) {
 
         $url = "/contract/spending/transactions"
             . $spend_type_parameter
@@ -87,13 +88,12 @@ class ContractsUrlService {
             . _checkbook_project_get_year_url_param_string()
             . RequestUtilities::_getUrlParamString("year","syear")
             . "/doctype/CT1~CTA1~MA1"
-            . "/contcat/".self::_getContractCategoryParameter()
-            . "/smnid/728" //todo get mapping
-            . "/newwindow";
+            . "/contcat/".ContractCategory::getCurrent()
+            . (isset($legacy_node_id) ? "/smnid/".$legacy_node_id."/newwindow" : "/newwindow");
         return $url;
     }
 
-    static function masterAgreementSpentToDateUrl($spend_type_parameter) {
+    static function masterAgreementSpentToDateUrl($spend_type_parameter, $legacy_node_id = null) {
 
         $url = "/spending/transactions"
             . $spend_type_parameter
@@ -106,12 +106,11 @@ class ContractsUrlService {
             . RequestUtilities::_getUrlParamString("csize")
             . _checkbook_project_get_year_url_param_string()
             . RequestUtilities::_getUrlParamString("year","syear")
-            . "/contcat/".self::_getContractCategoryParameter()
-            . "/smnid/371" //todo get mapping
-            . "/newwindow";
+            . "/contcat/".ContractCategory::getCurrent()
+            . (isset($legacy_node_id) ? "/smnid/".$legacy_node_id."/newwindow" : "/newwindow");
         return $url;
     }
-    
+
     /**
      * Gets the Minoritype Name link for the given minority type id
      * @param $minorityTypeId
@@ -123,34 +122,20 @@ class ContractsUrlService {
             $currentUrl = RequestUtilities::_getCurrentPage();
             $minorityTypeId = ($minorityTypeId == 4 || $minorityTypeId == 5) ? '4~5': $minorityTypeId;
             $dashboard = "mp";
-            $url =  '/'. $currentUrl
-                    . RequestUtilities::_getUrlParamString("syear","year")
-                    . RequestUtilities::_getUrlParamString("agency")
-                    . RequestUtilities::_getUrlParamString("cindustry")
-                    . RequestUtilities::_getUrlParamString("csize")
-                    . RequestUtilities::_getUrlParamString("awdmethod")
-                    . RequestUtilities::_getUrlParamString("contstatus","status")
-                    . RequestUtilities::_getUrlParamString("vendor")
-                    . RequestUtilities::_getUrlParamString("subvendor")
-                    . '/dashboard/mp'
-                    . '/mwbe/'. $minorityTypeId .  '?expandBottomCont=true';
+            $url = $currentUrl
+                . RequestUtilities::_getUrlParamString("syear","year")
+                . _checkbook_project_get_year_url_param_string()
+                . RequestUtilities::_getUrlParamString("agency")
+                . RequestUtilities::_getUrlParamString("cindustry")
+                . RequestUtilities::_getUrlParamString("csize")
+                . RequestUtilities::_getUrlParamString("awdmethod")
+                . RequestUtilities::_getUrlParamString("contstatus","status")
+                . RequestUtilities::_getUrlParamString("vendor")
+                . RequestUtilities::_getUrlParamString("subvendor")
+                . '/dashboard/mp'
+                . '/mwbe/'. $minorityTypeId;
         }
         return $url;
-    }
-
-    // TODO: move to a separate re-usable class (ie ContractUrlParameters) to parse the Url and return parameters
-    static private  function _getContractCategoryParameter() {
-        $url = $_GET['q'];
-        if(preg_match('/revenue/',$url)){
-            return 'revenue';
-        }
-        else if(preg_match('/pending_exp/',$url)){
-            return 'expense';
-        }
-        else if(preg_match('/pending_rev/',$url)){
-            return 'revenue';
-        }
-        return 'expense';
     }
 
     static function agencyUrl($agency_id, $original_agreement_id = null) {
@@ -172,7 +157,7 @@ class ContractsUrlService {
     static function awardmethodUrl($award_method_id) {
         $currentUrl = RequestUtilities::_getCurrentPage();
         $url = $currentUrl
-            . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
+            .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
             .RequestUtilities::_getUrlParamString('vendor')
             .RequestUtilities::_getUrlParamString('cindustry')
             .RequestUtilities::_getUrlParamString('csize')
@@ -271,5 +256,44 @@ class ContractsUrlService {
             . $subvendorURLString . $vendorURLString
             . _checkbook_project_get_year_url_param_string();
         return $url;
-    }   
+    }
+    
+    /**
+     * @param $legacy_node_id
+     * @return string
+     */
+    static function getFooterUrl($legacy_node_id = null) {
+
+        $subvendor = RequestUtilities::getRequestParamValue('subvendor');
+        $vendor = RequestUtilities::getRequestParamValue('vendor');
+        $mwbe = RequestUtilities::getRequestParamValue('mwbe');
+        $category = ContractCategory::getCurrent();
+
+        $subvendor_code = $subvendor ? VendorService::getSubVendorCode($subvendor) : null;
+        $vendor_code = $vendor ? VendorService::getVendorCode($vendor) : null;
+
+        $subvendor_param = isset($subvendor_code) ? '/vendorcode/'.$subvendor_code : '';
+        $vendor_param = isset($vendor_code) ? '/vendorcode/'.$vendor_code : '';
+        $mwbe_param = isset($mwbe) ? (Dashboard::isSubDashboard() ? '/smwbe/'.$mwbe : '/pmwbe/'.$mwbe) : '';
+        $category_param = '/contcat/'.(isset($category) ? $category : ContractCategory::EXPENSE);
+        $smnid_param = isset($legacy_node_id) ? '/smnid/'.$legacy_node_id : '';
+
+        $path = Dashboard::isSubDashboard()
+            ? '/panel_html/sub_contracts_transactions/subcontract/transactions'
+            : '/panel_html/contract_details/contract/transactions';
+
+        $url = $path . $category_param
+            . _checkbook_project_get_url_param_string('status','contstatus')
+            . _checkbook_append_url_params()
+            . _checkbook_project_get_url_param_string('agency')
+            . _checkbook_project_get_url_param_string('vendor')
+            . _checkbook_project_get_url_param_string("vendor","fvendor")
+            . _checkbook_project_get_url_param_string('awdmethod')
+            . _checkbook_project_get_url_param_string('csize')
+            . _checkbook_project_get_url_param_string('cindustry')
+            . $mwbe_param . $subvendor_param . $vendor_param
+            . _checkbook_project_get_year_url_param_string()
+            . $smnid_param;
+        return $url;
+    }
 }

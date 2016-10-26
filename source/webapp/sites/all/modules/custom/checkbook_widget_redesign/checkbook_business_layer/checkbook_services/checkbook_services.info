@@ -24,6 +24,7 @@ core = 7.x
 
 files[] = common/AbstractDataService.php
 files[] = common/IDataService.php
+files[] = common/VendorService.php
 
 files[] = spending/CheckData.php
 files[] = spending/SpendingWidgetService.php
