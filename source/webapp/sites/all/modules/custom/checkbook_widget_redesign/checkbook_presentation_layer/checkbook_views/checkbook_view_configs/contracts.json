@@ -131,12 +131,12 @@
                     "visibility_parameters":["-agency"]
                 },
                 "industries":{
-                    "widget_config":"contracts_by_industries_view",
+                    "widget_config":"revenue_contracts_by_industries_view",
                     "legacy_node_id":462,
                     "visibility_parameters":["-cindustry"]
                 },
                 "size":{
-                    "widget_config":"contracts_by_size_view",
+                    "widget_config":"revenue_contracts_by_size_view",
                     "legacy_node_id":463,
                     "visibility_parameters":["-csize"]
                 }
@@ -168,12 +168,12 @@
                     "visibility_parameters":["-agency"]
                 },
                 "industries":{
-                    "widget_config":"contracts_by_industries_view",
+                    "widget_config":"revenue_contracts_by_industries_view",
                     "legacy_node_id":462,
                     "visibility_parameters":["-cindustry"]
                 },
                 "size":{
-                    "widget_config":"contracts_by_size_view",
+                    "widget_config":"revenue_contracts_by_size_view",
                     "legacy_node_id":463,
                     "visibility_parameters":["-csize"]
                 }
@@ -213,12 +213,12 @@
                     "visibility_parameters":["-agency"]
                 },
                 "industries":{
-                    "widget_config":"contracts_by_industries_view",
+                    "widget_config":"pending_contracts_by_industries_view",
                     "legacy_node_id":478,
                     "visibility_parameters":["-cindustry"]
                 },
                 "size":{
-                    "widget_config":"contracts_by_size_view",
+                    "widget_config":"pending_contracts_by_size_view",
                     "legacy_node_id":469,
                     "visibility_parameters":["-csize"]
                 }
@@ -250,12 +250,12 @@
                     "visibility_parameters":["-agency"]
                 },
                 "industries":{
-                    "widget_config":"contracts_by_industries_view",
+                    "widget_config":"pending_contracts_by_industries_view",
                     "legacy_node_id":479,
                     "visibility_parameters":["-cindustry"]
                 },
                 "size":{
-                    "widget_config":"contracts_by_size_view",
+                    "widget_config":"pending_contracts_by_size_view",
                     "legacy_node_id":470,
                     "visibility_parameters":["-csize"]
                 }
@@ -302,12 +302,12 @@
                     "visibility_parameters":["agency","vendor"]
                 },
                 "industries":{
-                    "widget_config":"contracts_by_industries_view",
+                    "widget_config":"oge_contracts_by_industries_view",
                     "legacy_node_id":611,
                     "parameter_requirements":["-cindustry"]
                 },
                 "size":{
-                    "widget_config":"contracts_by_size_view",
+                    "widget_config":"oge_contracts_by_size_view",
                     "legacy_node_id":612,
                     "visibility_parameters":["-csize"]
                 }
@@ -352,12 +352,12 @@
                     "visibility_parameters":["agency","vendor"]
                 },
                 "industries":{
-                    "widget_config":"contracts_by_industries_view",
+                    "widget_config":"oge_contracts_by_industries_view",
                     "legacy_node_id":611,
                     "visibility_parameters":["-cindustry"]
                 },
                 "size":{
-                    "widget_config":"contracts_by_size_view",
+                    "widget_config":"oge_contracts_by_size_view",
                     "legacy_node_id":612,
                     "visibility_parameters":["-csize"]
                 }
@@ -491,12 +491,12 @@
                     "visibility_parameters":["-agency"]
                 },
                 "industries":{
-                    "widget_config":"contracts_by_industries_view",
+                    "widget_config":"revenue_contracts_by_industries_view",
                     "legacy_node_id":462,
                     "visibility_parameters":["-cindustry"]
                 },
                 "size":{
-                    "widget_config":"contracts_by_size_view",
+                    "widget_config":"revenue_contracts_by_size_view",
                     "legacy_node_id":463,
                     "visibility_parameters":["-csize"]
                 }
@@ -528,12 +528,12 @@
                     "visibility_parameters":["-agency"]
                 },
                 "industries":{
-                    "widget_config":"contracts_by_industries_view",
+                    "widget_config":"revenue_contracts_by_industries_view",
                     "legacy_node_id":462,
                     "visibility_parameters":["-cindustry"]
                 },
                 "size":{
-                    "widget_config":"contracts_by_size_view",
+                    "widget_config":"revenue_contracts_by_size_view",
                     "legacy_node_id":463,
                     "visibility_parameters":["-csize"]
                 }
@@ -573,12 +573,12 @@
                     "visibility_parameters":["-agency"]
                 },
                 "industries":{
-                    "widget_config":"contracts_by_industries_view",
+                    "widget_config":"pending_contracts_by_industries_view",
                     "legacy_node_id":478,
                     "visibility_parameters":["-cindustry"]
                 },
                 "size":{
-                    "widget_config":"contracts_by_size_view",
+                    "widget_config":"pending_contracts_by_size_view",
                     "legacy_node_id":469,
                     "visibility_parameters":["-csize"]
                 }
@@ -610,12 +610,12 @@
                     "visibility_parameters":["-agency"]
                 },
                 "industries":{
-                    "widget_config":"contracts_by_industries_view",
+                    "widget_config":"pending_contracts_by_industries_view",
                     "legacy_node_id":479,
                     "visibility_parameters":["-cindustry"]
                 },
                 "size":{
-                    "widget_config":"contracts_by_size_view",
+                    "widget_config":"pending_contracts_by_size_view",
                     "legacy_node_id":470,
                     "visibility_parameters":["-csize"]
                 }
@@ -654,12 +654,12 @@
                     "visibility_parameters":["-agency"]
                 },
                 "industries":{
-                    "widget_config":"contracts_by_industries_view",
+                    "widget_config":"sub_contracts_by_industries_view",
                     "legacy_node_id":728,
                     "visibility_parameters":["-cindustry"]
                 },
                 "size":{
-                    "widget_config":"contracts_by_size_view",
+                    "widget_config":"sub_contracts_by_size_view",
                     "legacy_node_id":729,
                     "visibility_parameters":["-csize"]
                 }
@@ -696,12 +696,12 @@
                     "visibility_parameters":["-agency"]
                 },
                 "industries":{
-                    "widget_config":"contracts_by_industries_view",
+                    "widget_config":"sub_contracts_by_industries_view",
                     "legacy_node_id":728,
                     "visibility_parameters":["-cindustry"]
                 },
                 "size":{
-                    "widget_config":"contracts_by_size_view",
+                    "widget_config":"sub_contracts_by_size_view",
                     "legacy_node_id":729,
                     "visibility_parameters":["-csize"]
                 }
@@ -740,12 +740,12 @@
                     "visibility_parameters":["-agency"]
                 },
                 "industries":{
-                    "widget_config":"contracts_by_industries_view",
+                    "widget_config":"mwbe_sub_contracts_by_industries_view",
                     "legacy_node_id":787,
                     "visibility_parameters":["-cindustry"]
                 },
                 "size":{
-                    "widget_config":"contracts_by_size_view",
+                    "widget_config":"mwbe_sub_contracts_by_size_view",
                     "legacy_node_id":788,
                     "visibility_parameters":["-csize"]
                 }
@@ -782,12 +782,12 @@
                     "visibility_parameters":["-agency"]
                 },
                 "industries":{
-                    "widget_config":"contracts_by_industries_view",
+                    "widget_config":"mwbe_sub_contracts_by_industries_view",
                     "legacy_node_id":787,
                     "visibility_parameters":["-cindustry"]
                 },
                 "size":{
-                    "widget_config":"contracts_by_size_view",
+                    "widget_config":"mwbe_sub_contracts_by_size_view",
                     "legacy_node_id":788,
                     "visibility_parameters":["-csize"]
                 }
@@ -826,12 +826,12 @@
                     "visibility_parameters":["-agency"]
                 },
                 "industries":{
-                    "widget_config":"contracts_by_industries_view",
+                    "widget_config":"sub_contracts_by_industries_view",
                     "legacy_node_id":728,
                     "visibility_parameters":["-cindustry"]
                 },
                 "size":{
-                    "widget_config":"contracts_by_size_view",
+                    "widget_config":"sub_contracts_by_size_view",
                     "legacy_node_id":729,
                     "visibility_parameters":["-csize"]
                 }
@@ -868,12 +868,12 @@
                     "visibility_parameters":["-agency"]
                 },
                 "industries":{
-                    "widget_config":"contracts_by_industries_view",
+                    "widget_config":"sub_contracts_by_industries_view",
                     "legacy_node_id":728,
                     "visibility_parameters":["-cindustry"]
                 },
                 "size":{
-                    "widget_config":"contracts_by_size_view",
+                    "widget_config":"sub_contracts_by_size_view",
                     "legacy_node_id":729,
                     "visibility_parameters":["-csize"]
                 }
