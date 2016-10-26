@@ -190,7 +190,7 @@
                     "legacy_node_id":481
                 },
                 "contracts":{
-                    "widget_config":"pending_contracts_view",
+                    "widget_config":"expense_pending_contracts_view",
                     "legacy_node_id":361
                 },
                 "contracts_modifications":{
@@ -227,7 +227,7 @@
         "pending_revenue":{
             "landing_page_widgets":{
                 "contracts":{
-                    "widget_config":"pending_contracts_view",
+                    "widget_config":"revenue_pending_contracts_view",
                     "legacy_node_id":446
                 },
                 "contracts_modifications":{
@@ -550,7 +550,7 @@
                     "legacy_node_id":481
                 },
                 "contracts":{
-                    "widget_config":"pending_contracts_view",
+                    "widget_config":"expense_pending_contracts_view",
                     "legacy_node_id":361
                 },
                 "contracts_modifications":{
