@@ -62,6 +62,33 @@ class ContractsWidgetVisibilityService {
                             break;
                 }
                 break;
+            case 'contracts':
+                switch($category) {
+                        case "expense":
+                            switch($dashboard) {
+                                case "ss":
+                                case "sp":
+                                    $view = 'sub_contracts_view';
+                                    break;
+                                case "ms":
+                                    $view = 'mwbe_sub_contracts_view';
+                                    break;
+                                default:
+                                    $view = RequestUtilities::isEDCPage() ? 'oge_contracts_view' : 'contracts_view';
+                                    break;
+                            }
+                            break;
+                        case "revenue":
+                            $view = 'revenue_contracts_view';
+                            break;
+                        case "pending expense":
+                            $view = 'expense_pending_contracts_view';
+                            break;
+                        case "pending revenue":
+                            $view = 'revenue_pending_contracts_view';
+                            break;
+                }
+                break;
             case 'industries':
                 if(!RequestUtilities::getRequestParamValue('cindustry')){
                     switch($category) {
