@@ -640,7 +640,7 @@ Drupal.behaviors.hoveOverMWBE = {
 
     Drupal.behaviors.disableClicks = {
         attach: function(context,settings){
-            if ($('body').hasClass('gridview') || ($('body').hasClass('newwindow') && !($('body').hasClass('page-new-features')))){
+            if ($('body').hasClass('gridview') || $('body').hasClass('newwindow')){
                 $('body').delegate('a', 'click', function () {
                     if($(this).hasClass('subContractViewAll') || $(this).hasClass('showHide') || $(this).hasClass('logo') || $(this).attr('rel') == 'home' || $(this).hasClass('enable-link'))
                         return true;
