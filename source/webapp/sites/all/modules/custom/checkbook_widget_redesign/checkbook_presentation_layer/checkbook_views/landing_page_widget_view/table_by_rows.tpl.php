@@ -125,12 +125,13 @@ else {
             }
         }
     }
+
+  $node->widgetConfig->footerUrl = _widget_controller_footer_url($node);
     if (isset($node->widgetConfig->footerUrl)) {
         if($node->totalDataCount > 5){
             echo '<span class="plus-or">or</span>';
         }
         $url = $node->widgetConfig->footerUrl;
-        $url = eval("return $url;");
         if($node->totalDataCount > 0) {
             echo '<a class="show-details bottomContainerReload" href="'.$url.'">Details >></a>';
         }

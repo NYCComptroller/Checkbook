@@ -14,12 +14,26 @@ class SqlConfig {
 
 abstract class AbstractWidgetService implements IWidgetService {
 
+    private $widgetConfig;
     private $repository;
-    private $sqlConfig;
+    private $legacy_node_id;
 
-    function __construct($sqlConfig) {
-        $this->sqlConfig = $sqlConfig;
-        $this->repository = new WidgetRepository($sqlConfig);
+    function __construct($widgetConfig) {
+        $this->widgetConfig = $widgetConfig;
+        $this->initialize();
+    }
+
+    private function initialize() {
+        if(isset($this->widgetConfig->sqlConfig)) {
+            $this->repository = new WidgetRepository($this->widgetConfig->sqlConfig);
+        }
+        if(isset($this->widgetConfig->legacy_node_id)) {
+            $this->legacy_node_id = $this->widgetConfig->legacy_node_id;
+        }
+    }
+
+    public function getLegacyNodeId() {
+        return $this->legacy_node_id ?: RequestUtilities::getRequestParamValue("legacy_node_id");
     }
 
     public function getWidgetData($parameters, $limit, $orderBy) {
