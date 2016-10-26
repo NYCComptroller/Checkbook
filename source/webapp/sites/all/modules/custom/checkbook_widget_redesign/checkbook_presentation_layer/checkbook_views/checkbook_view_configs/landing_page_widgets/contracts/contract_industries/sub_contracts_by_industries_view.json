@@ -6,6 +6,7 @@
         "statementName":"GetSubContractsByIndustries",
         "countStatementName":"GetCountSubContractsByIndustries"
     },
+    "serviceName":"ContractsWidgetService",
     "table_title":"Contracts by Industries",
     "headerSubTitle":"Contracts",
     "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/415/doctype/CTA1~CT1'",

@@ -5,6 +5,7 @@
         "sqlConfigName":"contracts/sub_contracts",
         "statementName":"GetSubContracts"
     },
+    "serviceName":"ContractsWidgetService",
     "defaultParameters":{"contractmod":"true","doctype":"'CT1'~'CTA1'~'CTR'"},
     "headerTitle":"Sub Contract Amount Modifications",
     "headerSubTitle":"Sub Contract Modifications",
