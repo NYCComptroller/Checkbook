@@ -58,7 +58,7 @@
         "registered_expense":{
             "landing_page_widgets":{
                 "master_agreements":{
-                    "widget_config":" master_agreements_view",
+                    "widget_config":"master_agreements_view",
                     "legacy_node_id":371
                 },
                 "master_agreement_modifications":{
