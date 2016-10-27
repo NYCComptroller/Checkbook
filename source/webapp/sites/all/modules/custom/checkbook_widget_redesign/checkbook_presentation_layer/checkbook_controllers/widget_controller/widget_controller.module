@@ -496,15 +496,15 @@ function _load_widget_controller_row_count($service, $parameters) {
     return $results;
 }
 
-
 /**
  * Loads the footer Url
- * @param $service
- * @param $parameters
+ * @param $node
+ * @return mixed
  */
 function _widget_controller_footer_url($node) {
+    $parameters = _prepare_input_parameters($node);
     $service = _widget_controller_load_data_service($node);
-    $url = $service->getWidgetFooterUrl();
+    $url = $service->getWidgetFooterUrl($parameters);
     return $url;
 }
 
