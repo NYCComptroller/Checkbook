@@ -225,8 +225,8 @@ class ContractsWidgetService extends AbstractWidgetService {
         return $parameters;
     }
 
-    public function getWidgetFooterUrl() {
-        return ContractsUrlService::getFooterUrl($this->getLegacyNodeId());
+    public function getWidgetFooterUrl($parameters) {
+        return ContractsUrlService::getFooterUrl($parameters,$this->getLegacyNodeId());
     }
 
 }

@@ -257,12 +257,13 @@ class ContractsUrlService {
             . _checkbook_project_get_year_url_param_string();
         return $url;
     }
-    
+
     /**
-     * @param $legacy_node_id
+     * @param $parameters
+     * @param null $legacy_node_id
      * @return string
      */
-    static function getFooterUrl($legacy_node_id = null) {
+    static function getFooterUrl($parameters,$legacy_node_id = null) {
 
         $subvendor = RequestUtilities::getRequestParamValue('subvendor');
         $vendor = RequestUtilities::getRequestParamValue('vendor');
@@ -293,7 +294,14 @@ class ContractsUrlService {
             . _checkbook_project_get_url_param_string('cindustry')
             . $mwbe_param . $subvendor_param . $vendor_param
             . _checkbook_project_get_year_url_param_string()
+            . self::getDocumentCodeUrlString($parameters)
             . $smnid_param;
         return $url;
+    }
+
+    static function getDocumentCodeUrlString($parameters) {
+        $doc_types = explode(",",$parameters['doctype']);
+        $doc_types_url =  implode("~",str_replace("'", "", $doc_types));
+        return isset($doc_types_url) ? '/doctype/'. $doc_types_url : '';
     }
 }
