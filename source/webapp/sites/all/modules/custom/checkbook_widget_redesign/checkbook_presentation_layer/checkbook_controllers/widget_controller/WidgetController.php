@@ -75,7 +75,8 @@ class WidgetController {
             case Domain::$CONTRACTS:
                 $status = ContractStatus::getCurrent();
                 $category = ContractCategory::getCurrent();
-                $dimension = "{$status}_{$category}";
+                $nostatusExpenseContracts = noStatusExpenseContracts::getCurrent();
+                $dimension = isset($nostatusExpenseContracts)? "{$category}": "{$status}_{$category}";
                 break;
         }
         $config_str = file_get_contents(realpath(drupal_get_path('module', 'checkbook_view_configs')) . "/{$domain}.json");

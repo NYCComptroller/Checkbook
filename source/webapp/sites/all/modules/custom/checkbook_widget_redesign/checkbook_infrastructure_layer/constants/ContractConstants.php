@@ -67,3 +67,21 @@ abstract class ContractType {
     }
 }
 
+abstract class noStatusExpenseContracts {
+
+    const EXPENSE = "expense";
+
+    static public function getCurrent() {
+        $urlPath = $_GET['q'];
+        $ajaxPath = $_SERVER['HTTP_REFERER'];
+        $category = NULL;
+
+        if((preg_match('/contracts_landing/',$urlPath) || preg_match('/contracts_landing/',$ajaxPath)) &&
+            !(preg_match('/status/',$urlPath) || preg_match('/status/',$ajaxPath))) {
+            $category = self::EXPENSE;
+        }
+
+        return $category;
+    }
+}
+
