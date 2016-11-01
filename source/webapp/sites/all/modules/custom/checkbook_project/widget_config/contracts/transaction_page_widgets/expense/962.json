@@ -30,7 +30,7 @@
         {"label":"Sub Vendor M/WBE Category","column":"sub_minority_type_name_export"},
         {"label":"Sub Contract Purpose","column":"sub_purpose_export"},
         {"label":"Sub Vendor Status in PIP","column":"aprv_sta_name_export"},
-        {"label":"Sub Contract Industry","column":"sub_industry_type_name"},
+        {"label":"Sub Contract Industry","column":"sub_industry_type_name_export"},
         {"label":"Sub Contract Current Amount","column":"sub_maximum_contract_amount"},
         {"label":"Sub Contract Original Amount","column":"sub_original_contract_amount"},
         {"label":"Sub Vendor Paid to Date","column":"sub_rfed_amount"},
