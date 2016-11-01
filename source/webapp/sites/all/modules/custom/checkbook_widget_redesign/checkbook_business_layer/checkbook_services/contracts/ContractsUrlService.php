@@ -309,10 +309,14 @@ class ContractsUrlService {
     }
 
     /**
+     * @param $blnIsMasterAgreement
      * @return string
      */
-    static function getAmtModificationUrlString() {
-        $url = "/modamt/0".(ContractUtil::showSubVendorData() ? '/smodamt/0' : '/pmodamt/0');
+    static function getAmtModificationUrlString($blnIsMasterAgreement = false) {
+        if($blnIsMasterAgreement)
+            $url = "/modamt/0".(ContractUtil::showSubVendorData() ? '/smodamt/0' : '/pmodamt/0');
+        else
+            $url = "/modamt/0";
         return $url;
     }
 }
