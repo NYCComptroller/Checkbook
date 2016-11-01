@@ -9,6 +9,7 @@
     "defaultParameters":{"doctype":"'CTA1'~'CT1'~'CT2'","status_flag":"A"},
     "table_title":"Summary of Sub Vendor Contracts by Prime Contracts",
     "headerSubTitle":"Reported Prime Contracts with Sub Vendors",
+    "footerUrl":"",
     "table_columns":[
         {"labelAlias":"contract_agency","column":"agency_name","tooltip":40,"derivedColumn":"agency_landing_link"},
         {"labelAlias":"contracts_reported_with_subvendors","column":"reported_contracts_with_subvendors","format":"number"},

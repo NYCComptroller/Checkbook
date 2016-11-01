@@ -11,7 +11,6 @@
     "defaultParameters":{"type_of_year":"B","status_flag":"A"},
     "headerTitle":"Agencies",
     "headerSubTitle":"Agencies",
-    "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/367/doctype/CTA1~CT1'",
     "table_columns":[
         {"labelAlias":"contract_agency","column":"agency_name","derivedColumn":"agency_name_link","tooltip":60},
         {"labelAlias":"no_of_contracts","column":"total_contracts","format":"number"},
