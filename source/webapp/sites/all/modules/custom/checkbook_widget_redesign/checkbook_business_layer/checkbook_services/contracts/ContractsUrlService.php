@@ -279,7 +279,7 @@ class ContractsUrlService {
         $category_param = '/contcat/'.(isset($category) ? $category : ContractCategory::EXPENSE);
         $smnid_param = isset($legacy_node_id) ? '/smnid/'.$legacy_node_id : '';
         $contract_status = _checkbook_project_get_url_param_string('status','contstatus');
-        $contract_status = isset($contract_status) ? $contract_status : "/contstatus/P";
+        $contract_status = isset($contract_status) && $contract_status != '' ? $contract_status : "/contstatus/P";
 
         $path = Dashboard::isSubDashboard()
             ? '/panel_html/sub_contracts_transactions/subcontract/transactions'
