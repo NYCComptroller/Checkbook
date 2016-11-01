@@ -1,4 +1,5 @@
 {
+    "defaultParameters":{"doctype":"'abc'"},
     "defaultConfigKey": "contracts_modifications_view",
     "sqlConfig": {
         "serviceName": "ContractsWidgetService",
