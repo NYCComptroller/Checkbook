@@ -3,7 +3,8 @@
     {
         "serviceName":"ContractsWidgetService",
         "sqlConfigName":"contracts/oge_contracts",
-        "statementName":"GetOgeContracts"
+        "statementName":"GetOgeContracts",
+        "countStatementName":"GetCountOgeContracts"
     },
     "serviceName":"ContractsWidgetService",
     "defaultParameters":{"doctype":"'CTA1'~'CT1'"},
