@@ -278,13 +278,15 @@ class ContractsUrlService {
         $mwbe_param = isset($mwbe) ? (Dashboard::isSubDashboard() ? '/smwbe/'.$mwbe : '/pmwbe/'.$mwbe) : '';
         $category_param = '/contcat/'.(isset($category) ? $category : ContractCategory::EXPENSE);
         $smnid_param = isset($legacy_node_id) ? '/smnid/'.$legacy_node_id : '';
+        $contract_status = _checkbook_project_get_url_param_string('status','contstatus');
+        $contract_status = isset($contract_status) ? $contract_status : "/contstatus/P";
 
         $path = Dashboard::isSubDashboard()
             ? '/panel_html/sub_contracts_transactions/subcontract/transactions'
             : '/panel_html/contract_details/contract/transactions';
 
         $url = $path . $category_param
-            . _checkbook_project_get_url_param_string('status','contstatus')
+            . $contract_status
             . _checkbook_append_url_params()
             . _checkbook_project_get_url_param_string('agency')
             . _checkbook_project_get_url_param_string('vendor')
@@ -304,5 +306,13 @@ class ContractsUrlService {
         $doc_types_url =  implode("~",str_replace("'", "", $doc_types));
         $doc_types_url =  str_replace("(", "", str_replace(")", "", $doc_types_url));
         return isset($doc_types_url) ? '/doctype/'. $doc_types_url : '';
+    }
+
+    /**
+     * @return string
+     */
+    static function getAmtModificationUrlString() {
+        $url = "/modamt/0".(ContractUtil::showSubVendorData() ? '/smodamt/0' : '/pmodamt/0');
+        return $url;
     }
 }

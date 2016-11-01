@@ -9,7 +9,6 @@
     "uniqueSortColumn":"department_id",
     "defaultParameters":{"doctype":"'CTA1'~'CT1'"},
     "headerTitle":"Departments",
-    "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/415/doctype/CTA1~CT1'",
     "table_columns":[
         {"labelAlias":"dept_name","column":"department_name","tooltip":60},
         {"labelAlias":"agency_name","column":"agency_name","derivedColumn":"agency_name_link","tooltip":60},

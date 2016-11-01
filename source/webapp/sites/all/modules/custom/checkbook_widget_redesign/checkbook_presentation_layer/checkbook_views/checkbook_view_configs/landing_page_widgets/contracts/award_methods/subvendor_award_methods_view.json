@@ -9,7 +9,6 @@
     "defaultParameters":{"type_of_year":"B","status_flag":"A","minority_type_id":"2~3~4~5~9"},
     "headerTitle":"Award Methods",
     "headerSubTitle":"Award Methods",
-    "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/726/doctype/MA1~CTA1~CT1'",
     "table_columns":[
         {"labelAlias": "award_method","column": "award_method_name","derivedColumn":"award_method_name_link"},
         {"labelAlias": "num_sub_contracts","column": "total_contracts","format":"number"},

@@ -126,7 +126,14 @@ else {
         }
     }
 
-  $node->widgetConfig->footerUrl = _widget_controller_footer_url($node);
+  if(isset($node->widgetConfig->footerUrl) && $node->widgetConfig->footerUrl != "") {
+      $footerUrl = $node->widgetConfig->footerUrl;
+      $node->widgetConfig->footerUrl = eval("return $footerUrl;");
+  }
+  else {
+      $node->widgetConfig->footerUrl = _widget_controller_footer_url($node);
+  }
+
     if (isset($node->widgetConfig->footerUrl)) {
         if($node->totalDataCount > 5){
             echo '<span class="plus-or">or</span>';

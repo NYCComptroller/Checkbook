@@ -9,7 +9,7 @@
     "defaultParameters":{"type_of_year":"B","doctype":"'MMA1','MA1'","status_flag":"A","dollar_difference":"0"},
     "headerTitle":"Master Agreement Modifications",
     "headerSubTitle":"Master Agreement Modifications",
-    "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/480/doctype/MMA1~MA1'",
+    "footerUrl":"_widget_controller_footer_url($node).ContractsUrlService::getAmtModificationUrlString()",
     "table_columns": [
         {"labelAlias": "contract_id","column": "contract_number","derivedColumn":"master_contract_id_link"},
         {"labelAlias": "contract_purpose","column": "contract_purpose","tooltip":22},

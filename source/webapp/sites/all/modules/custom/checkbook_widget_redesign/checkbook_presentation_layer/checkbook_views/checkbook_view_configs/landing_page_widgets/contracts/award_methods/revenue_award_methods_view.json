@@ -9,7 +9,6 @@
     "defaultParameters":{"type_of_year":"B","status_flag":"A"},
     "headerTitle":"Award Methods",
     "headerSubTitle":"Award Methods",
-    "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/432/doctype/RCT1'",
     "table_columns":[
             {"labelAlias": "award_method","column": "award_method_name","derivedColumn":"award_method_name_link"},
             {"labelAlias": "no_of_contracts","column": "total_contracts","format":"number"},

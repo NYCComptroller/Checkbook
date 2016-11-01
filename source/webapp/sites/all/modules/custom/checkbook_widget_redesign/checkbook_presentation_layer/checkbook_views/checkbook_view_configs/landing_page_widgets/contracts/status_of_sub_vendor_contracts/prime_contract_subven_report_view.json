@@ -9,6 +9,7 @@
     "defaultParameters":{"doctype":"'CTA1'~'CT1'~'CT2'","status_flag":"A"},
     "table_title":"Summary of Prime Contract Sub Vendor Reporting",
     "headerSubTitle":"Contracts",
+    "footerUrl":"",
     "table_columns":[
         {"labelAlias":"contract_agency","column":"agency_name","tooltip":32,"derivedColumn":"agency_name_link"},
         {"labelAlias":"no_of_contracts","column":"number_contracts","format":"number"},

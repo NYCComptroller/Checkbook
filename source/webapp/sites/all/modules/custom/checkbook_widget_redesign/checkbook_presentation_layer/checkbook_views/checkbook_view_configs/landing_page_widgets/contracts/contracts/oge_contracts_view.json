@@ -10,7 +10,6 @@
     "defaultParameters":{"doctype":"'CTA1'~'CT1'"},
     "headerTitle":"Contracts",
     "headerSubTitle":"Stand Alone Contracts",
-    "footerUrl":"ContractsUrlService::contractsFooterUrl().'/smnid/368/doctype/CTA1~CT1'",
     "table_columns":[
         {"labelAlias":"contract_id","column":"contract_number","derivedColumn":"contract_id_link"},
         {"labelAlias":"contract_purpose","column":"contract_purpose","tooltip":20},
