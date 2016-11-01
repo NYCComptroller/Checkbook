@@ -302,6 +302,7 @@ class ContractsUrlService {
     static function getDocumentCodeUrlString($parameters) {
         $doc_types = explode(",",$parameters['doctype']);
         $doc_types_url =  implode("~",str_replace("'", "", $doc_types));
+        $doc_types_url =  str_replace("(", "", str_replace(")", "", $doc_types_url));
         return isset($doc_types_url) ? '/doctype/'. $doc_types_url : '';
     }
 }
