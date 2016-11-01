@@ -6,7 +6,7 @@
         "statementName":"GetSubContracts"
     },
     "serviceName":"ContractsWidgetService",
-    "defaultParameters":{"contractmod":"true","doctype":"'CT1'~'CTA1'~'CTR'"},
+    "defaultParameters":{"contractmod":"true","doctype":"'CT1'~'CTA1'"},
     "headerTitle":"Sub Contract Amount Modifications",
     "headerSubTitle":"Sub Contract Modifications",
     "footerUrl":"_widget_controller_footer_url($node).ContractsUrlService::getAmtModificationUrlString()",
