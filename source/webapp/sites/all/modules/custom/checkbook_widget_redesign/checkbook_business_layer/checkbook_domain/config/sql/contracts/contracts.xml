@@ -47,9 +47,9 @@
                     <exp op="=" dbField="l1.vendor_id" paramName="vendor" />
                     <exp op="=" dbField="l1.agency_id" paramName="agency" />
                     <exp op="IN" dbField="l1.minority_type_id" paramName="mwbe" />
-                    <exp op="=" dbField="l1.awdmethod" paramName="award_method_id" />
-                    <exp op="=" dbField="l1.csize" paramName="award_size_id" />
-                    <exp op="=" dbField="l1.cindustry" paramName="industry_type_id" />
+                    <exp op="=" dbField="l1.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="l1.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="l1.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
             GROUP BY l1.type_of_year, l1.description,l1.contract_number, l1.original_agreement_id, l1.document_code_id,l2.document_code, l1.minority_type_id,l3.agency_id,l3.agency_name,l4.vendor_id,l4.legal_name,l1.scntrc_status
