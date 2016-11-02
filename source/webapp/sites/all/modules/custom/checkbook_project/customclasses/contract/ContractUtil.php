@@ -762,6 +762,7 @@ namespace { //global
                 if(isset($vendornm_exact)) {
                     $vendornm_exact = explode('~',$vendornm_exact);
                     $vendornm_exact = implode('|',$vendornm_exact);
+                    $vendornm_exact = self::_replaceSlashCharacter($vendornm_exact);
                     $pattern = "(^" . _checkbook_regex_replace_pattern($vendornm_exact) . "$)";
                     $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
                     $parameters['prime_vendor_name'] = $condition;
@@ -822,12 +823,17 @@ namespace { //global
             return $parameters;
         }
 
+        private static function _replaceSlashCharacter($string) {
+            return str_replace('__', '/', $string);
+        }
+
         static public function expenseContractsFooterUrl() {
             $subvendor = _getRequestParamValue('subvendor');
             $vendor = _getRequestParamValue('vendor');
             $dashboard = _getRequestParamValue('dashboard');
             $status = _getRequestParamValue('status');
             $mwbe = _getRequestParamValue('mwbe');
+            $industry = _getRequestParamValue('cindustry');
 
             if($subvendor) {
                 $subvendor_code = self::getSubVendorCustomerCode($subvendor);
@@ -844,6 +850,9 @@ namespace { //global
             if(isset($status) && isset($mwbe)) {
                 $mwbe_param = self::showSubVendorData() ? '/smwbe/'.$mwbe : '/pmwbe/'.$mwbe;
             }
+            if(isset($industry)) {
+                $industry_param = self::showSubVendorData() ? '/scindustry/'.$industry : '/pcindustry/'.$industry;
+            }
 
             $url = '/panel_html/'. $detailsPageURL .'/contract/transactions/contcat/expense'
                 . _checkbook_project_get_url_param_string('status','contstatus')
@@ -851,7 +860,7 @@ namespace { //global
                 . _checkbook_project_get_url_param_string('agency')
                 . _checkbook_project_get_url_param_string('awdmethod')
                 . _checkbook_project_get_url_param_string('csize')
-                . _checkbook_project_get_url_param_string('cindustry')
+                . $industry_param
                 . _checkbook_project_get_url_param_string('dashboard')
                 . $mwbe_param
                 . ((!_checkbook_check_isEDCPage())? $subvendorURLString . $vendorURLString : _checkbook_project_get_url_param_string('vendor'))

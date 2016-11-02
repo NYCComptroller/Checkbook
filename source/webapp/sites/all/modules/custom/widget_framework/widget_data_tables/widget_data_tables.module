@@ -404,14 +404,14 @@ function widget_data_tables_widget_prepare($node){
         if(isset($uniqueSortColumn)) {
             if(is_array($uniqueSortColumn)) {
                 foreach($uniqueSortColumn as $value) {
-                    if($sortDir == 'desc')
+                    if($sortDir == 'desc' && strpos($value, '-') !== 0)
                         $node->widgetConfig->orderBy[]  = '-' . $value;
                     else
-                        $node->widgetConfig->orderBy[] =  $value;
+                        $node->widgetConfig->orderBy[] =  (strpos($value, '-') === 0)? ltrim($value, '-') : $value;
                 }
             }
             else {
-                $node->widgetConfig->orderBy[] = $sortDir == 'desc' ? '-' . $uniqueSortColumn : $uniqueSortColumn;
+                $node->widgetConfig->orderBy[] = ($sortDir == 'desc' && strpos($uniqueSortColumn, '-') !== 0) ? '-' . $uniqueSortColumn : ltrim($uniqueSortColumn, '-');
             }
         }
     }

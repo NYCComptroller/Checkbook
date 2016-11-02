@@ -291,7 +291,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
     <td>1</td>
 </tr>
 <tr>
-    <td>contract_includes_sub_vendors_id</td>
+    <td>contract_includes_sub_vendors</td>
     <td>N</td>
     <td>value</td>
     <td>String- Maximum 2 characters</td>
@@ -302,7 +302,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
     <td>2</td>
 </tr>
 <tr>
-    <td>sub_vendor_status_in_pip_id</td>
+    <td>sub_vendor_status_in_pip</td>
     <td>N</td>
     <td>value</td>
     <td>String- Maximum 2 characters</td>
@@ -334,35 +334,35 @@ Contract Parameters – All the parameters are optional, meaning that you can se
             </tr>
             <tr>
                 <td>prime_contract_id</td>
-                <td>prime_contract_expense_category</td>
-            </tr>
-            <tr>
-                <td>contract_includes_sub_vendors</td>
                 <td>prime_contract_industry</td>
             </tr>
             <tr>
-                <td>prime_vendor</td>
+                <td>contract_includes_sub_vendors</td>
                 <td>prime_contract_pin</td>
             </tr>
             <tr>
-                <td>prime_vendor_mwbe_category</td>
+                <td>prime_vendor</td>
                 <td>prime_contract_apt_pin</td>
             </tr>
             <tr>
-                <td>prime_contract_purpose</td>
+                <td>prime_vendor_mwbe_category</td>
                 <td>sub_vendor</td>
             </tr>
             <tr>
-                <td>prime_contract_current_amount</td>
+                <td>prime_contract_purpose</td>
                 <td>sub_vendor_mwbe_category</td>
             </tr>
             <tr>
-                <td>prime_contract_original_amount</td>
+                <td>prime_contract_current_amount</td>
                 <td>sub_contract_purpose</td>
             </tr>
             <tr>
-                <td>prime_vendor_spent_to_date</td>
+                <td>prime_contract_original_amount</td>
                 <td>sub_vendor_status_in_pip</td>
+            </tr>
+            <tr>
+                <td>prime_vendor_spent_to_date</td>
+                <td>sub_contract_industry</td>
             </tr>
             <tr>
                 <td>prime_contract_start_date</td>
@@ -381,20 +381,24 @@ Contract Parameters – All the parameters are optional, meaning that you can se
                 <td>sub_contract_start_date</td>
             </tr>
             <tr>
-                <td>version</td>
+                <td>prime_contract_version</td>
                 <td>sub_contract_end_date</td>
             </tr>
             <tr>
                 <td>parent_contract_id</td>
                 <td>document_code</td>
             </tr>
-             <tr>
+            <tr>
                 <td>prime_contract_type</td>
                 <td>sub_contract_reference_id</td>
             </tr>
             <tr>
                 <td>prime_contract_award_method</td>
                 <td>year</td>
+            </tr>
+            <tr>
+                <td>prime_contract_expense_category</td>
+                <td></td>
             </tr>
         </table>
     </td>
@@ -406,35 +410,35 @@ Contract Parameters – All the parameters are optional, meaning that you can se
             </tr>
             <tr>
                 <td>prime_contract_id</td>
-                <td>prime_contract_expense_category</td>
-            </tr>
-            <tr>
-                <td>contract_includes_sub_vendors</td>
                 <td>prime_contract_industry</td>
             </tr>
             <tr>
-                <td>prime_vendor</td>
+                <td>contract_includes_sub_vendors</td>
                 <td>prime_contract_pin</td>
             </tr>
             <tr>
-                <td>prime_vendor_mwbe_category</td>
+                <td>prime_vendor</td>
                 <td>prime_contract_apt_pin</td>
             </tr>
             <tr>
-                <td>prime_contract_purpose</td>
+                <td>prime_vendor_mwbe_category</td>
                 <td>sub_vendor</td>
             </tr>
             <tr>
-                <td>prime_contract_current_amount</td>
+                <td>prime_contract_purpose</td>
                 <td>sub_vendor_mwbe_category</td>
             </tr>
             <tr>
-                <td>prime_contract_original_amount</td>
+                <td>prime_contract_current_amount</td>
                 <td>sub_contract_purpose</td>
             </tr>
             <tr>
-                <td>prime_vendor_spent_to_date</td>
+                <td>prime_contract_original_amount</td>
                 <td>sub_vendor_status_in_pip</td>
+            </tr>
+            <tr>
+                <td>prime_vendor_spent_to_date</td>
+                <td>sub_contract_industry</td>
             </tr>
             <tr>
                 <td>prime_contract_start_date</td>
@@ -453,20 +457,24 @@ Contract Parameters – All the parameters are optional, meaning that you can se
                 <td>sub_contract_start_date</td>
             </tr>
             <tr>
-                <td>version</td>
+                <td>prime_contract_version</td>
                 <td>sub_contract_end_date</td>
             </tr>
             <tr>
                 <td>parent_contract_id</td>
                 <td>document_code</td>
             </tr>
-             <tr>
+            <tr>
                 <td>prime_contract_type</td>
                 <td>sub_contract_reference_id</td>
             </tr>
             <tr>
                 <td>prime_contract_award_method</td>
                 <td>year</td>
+            </tr>
+            <tr>
+                <td>prime_contract_expense_category</td>
+                <td></td>
             </tr>
         </table>
     </td>
@@ -738,12 +746,12 @@ Contract Parameters – All the parameters are optional, meaning that you can se
         &lt;/criteria&gt;
 
         &lt;criteria&gt;
-            &lt;name&gt;contract_includes_sub_vendors_id&lt;/name&gt;
+            &lt;name&gt;contract_includes_sub_vendors&lt;/name&gt;
             &lt;type&gt;value&lt;/type&gt;
             &lt;value&gt;2&lt;/value&gt;
         &lt;/criteria&gt;
         &lt;criteria&gt;
-            &lt;name&gt;sub_vendor_status_in_pip_id&lt;/name&gt;
+            &lt;name&gt;sub_vendor_status_in_pip&lt;/name&gt;
             &lt;type&gt;value&lt;/type&gt;
             &lt;value&gt;4&lt;/value&gt;
         &lt;/criteria&gt;         
@@ -761,7 +769,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
         &lt;column&gt;prime_contract_end_date&lt;/column&gt;
         &lt;column&gt;prime_contract_registration_date&lt;/column&gt;       
         &lt;column&gt;prime_contracting_agency&lt;/column&gt;                
-        &lt;column&gt;version&lt;/column&gt;
+        &lt;column&gt;prime_contract_version&lt;/column&gt;
         &lt;column&gt;parent_contract_id&lt;/column&gt;
         &lt;column&gt;prime_contract_type&lt;/column&gt;
         &lt;column&gt;prime_contract_award_method&lt;/column&gt;
@@ -873,12 +881,12 @@ Contract Parameters – All the parameters are optional, meaning that you can se
                     &lt;value&gt;9&lt;/value&gt;
                 &lt;/criteria&gt;
                 &lt;criteria&gt;
-                    &lt;name&gt;contract_includes_sub_vendors_id&lt;/name&gt;
+                    &lt;name&gt;contract_includes_sub_vendors&lt;/name&gt;
                     &lt;type&gt;value&lt;/type&gt;
                     &lt;value&gt;2&lt;/value&gt;
                 &lt;/criteria&gt;
                 &lt;criteria&gt;
-                    &lt;name&gt;sub_vendor_status_in_pip_id&lt;/name&gt;
+                    &lt;name&gt;sub_vendor_status_in_pip&lt;/name&gt;
                     &lt;type&gt;value&lt;/type&gt;
                     &lt;value&gt;4&lt;/value&gt;
                 &lt;/criteria&gt;
@@ -896,7 +904,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
                 &lt;column&gt;prime_contract_end_date&lt;/column&gt;
                 &lt;column&gt;prime_contract_registration_date&lt;/column&gt;
                 &lt;column&gt;prime_contracting_agency&lt;/column&gt;
-                &lt;column&gt;version&lt;/column&gt;
+                &lt;column&gt;prime_contract_version&lt;/column&gt;
                 &lt;column&gt;parent_contract_id&lt;/column&gt;
                 &lt;column&gt;prime_contract_type&lt;/column&gt;
                 &lt;column&gt;prime_contract_award_method&lt;/column&gt;
@@ -953,7 +961,7 @@ Contract Parameters – All the parameters are optional, meaning that you can se
                 &lt;sub_vendor_mwbe_category&gt;Women&lt;/sub_vendor_mwbe_category&gt;
                 &lt;sub_vendor_paid_to_date&gt;5000&lt;/sub_vendor_paid_to_date&gt;
                 &lt;sub_vendor_status_in_pip&gt;ACCO Approved Sub Vendor&lt;/sub_vendor_status_in_pip&gt;
-                &lt;version&gt;1&lt;/version&gt;
+                &lt;prime_contract_version&gt;1&lt;/prime_contract_version&gt;
                 &lt;year&gt;2016&lt;/year&gt;
             &lt;/transaction&gt;
         &lt;/contract_transactions&gt;

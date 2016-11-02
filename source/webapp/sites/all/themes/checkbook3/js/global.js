@@ -1,7 +1,7 @@
 jQuery(document).ready(function ($) {
     //New Features Menu
     jQuery('#nice-menu-1 li.menu-path-node-975 a').addClass('btn-new-features gridpopup');
-    
+
     //Altering CSS for slider pager for pie charts on contracts page
     if(jQuery(".slider-pager a").length == 2){
         jQuery("div.slider-pager").addClass('pieSlider');
@@ -640,7 +640,7 @@ Drupal.behaviors.hoveOverMWBE = {
 
     Drupal.behaviors.disableClicks = {
         attach: function(context,settings){
-            if ($('body').hasClass('gridview') || $('body').hasClass('newwindow')){
+            if ($('body').hasClass('gridview') || ($('body').hasClass('newwindow') && !($('body').hasClass('page-new-features')))){
                 $('body').delegate('a', 'click', function () {
                     if($(this).hasClass('subContractViewAll') || $(this).hasClass('showHide') || $(this).hasClass('logo') || $(this).attr('rel') == 'home' || $(this).hasClass('enable-link'))
                         return true;
@@ -1117,6 +1117,12 @@ Drupal.behaviors.hoveOverMWBE = {
 
                 /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
                 disableAccordionSections(data_source);
+                
+                clearInputFields("#payroll-advanced-search",'payroll');
+                clearInputFieldByDataSource("#contracts-advanced-search",'contracts',data_source);
+                clearInputFieldByDataSource("#spending-advanced-search",'spending',data_source);
+                clearInputFields("#budget-advanced-search",'budget');
+                clearInputFields("#revenue-advanced-search",'revenue');
 
                 return false;
             });
@@ -1284,6 +1290,12 @@ Drupal.behaviors.hoveOverMWBE = {
 
                 /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
                 disableAccordionSections(data_source);
+                
+                clearInputFields("#payroll-advanced-search",'payroll');
+                clearInputFieldByDataSource("#contracts-advanced-search",'contracts',data_source);
+                clearInputFieldByDataSource("#spending-advanced-search",'spending',data_source);
+                clearInputFields("#budget-advanced-search",'budget');
+                clearInputFields("#revenue-advanced-search",'revenue');
 
                 return false;
             });
@@ -1552,9 +1564,10 @@ Drupal.behaviors.hoveOverMWBE = {
                         $('#edit-next-submit').css('display','none');
                         $('#edit-back-submit').css('display','none');
 
-                        /* Show the accordion */
+                        /* Show the accordion and disable the input fields based on the selection criteria */
                         $('.advanced-search-accordion').css('display','block');
-
+                        disableInputFields();
+                        
                         break;
 
                     case 'schedule_alert':

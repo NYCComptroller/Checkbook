@@ -12,8 +12,8 @@
             "end_date":"prime_effective_end_date",
             "registration_date":"registered_date",
             "category":"document_code",
-            "pin":"tracking_number",
-            "apt_pin":"brd_awd_no",
+            "pin":"prime_pin",
+            "apt_pin":"prime_apt_pin",
             "industry_type_id":"industry_type_id",
             "associated_prime_vendor":"prime_vendor_name",
             "sub_contract_reference_id":"sub_contract_id",
@@ -45,7 +45,7 @@
                         "contract_includes_sub_vendors":"scntrc_status_name",
                         "document_code":"document_code",
                         "parent_contract_id":"master_contract_number_export",
-                        "prime_contract_apt_pin":"brd_awd_no",
+                        "prime_contract_apt_pin":"prime_apt_pin",
                         "prime_contract_award_method":"award_method_name",
                         "prime_contract_current_amount":"prime_maximum_contract_amount",
                         "prime_contract_end_date":"prime_effective_end_date",
@@ -53,11 +53,12 @@
                         "prime_contract_id":"contract_number",
                         "prime_contract_industry":"prime_industry_type_name",
                         "prime_contract_original_amount":"prime_original_contract_amount",
-                        "prime_contract_pin":"tracking_number",
+                        "prime_contract_pin":"prime_pin",
                         "prime_contract_purpose":"prime_purpose",
                         "prime_contract_registration_date":"registered_date",
                         "prime_contract_start_date":"prime_effective_begin_date",
                         "prime_contract_type":"agreement_type_name",
+                        "prime_contract_version":"version",
                         "prime_contracting_agency":"agency_name",
                         "prime_vendor":"prime_vendor_name",
                         "prime_vendor_mwbe_category":"prime_minority_type_name",
@@ -74,7 +75,6 @@
                         "sub_vendor_paid_to_date":"sub_rfed_amount",
                         "sub_vendor_status_in_pip":"aprv_sta_name_export",
                         "vendor_record_type":"vendor_record_type",
-                        "version":"version",
                         "year":"fiscal_year@checkbook:contracts_coa_aggregates_datafeeds"
                     },
                     "rowElements":[
@@ -94,6 +94,7 @@
                         "prime_contract_registration_date",
                         "prime_contract_start_date",
                         "prime_contract_type",
+                        "prime_contract_version",
                         "prime_contracting_agency",
                         "prime_vendor",
                         "prime_vendor_mwbe_category",
@@ -110,7 +111,6 @@
                         "sub_vendor_paid_to_date",
                         "sub_vendor_status_in_pip",
                         "vendor_record_type",
-                        "version",
                         "year"
                     ]
                 },
@@ -119,7 +119,7 @@
                         "Contract Includes Sub Vendors":"scntrc_status_name",
                         "Document Code":"document_code",
                         "Parent Contract ID":"master_contract_number_export",
-                        "Prime Contract APT PIN":"brd_awd_no",
+                        "Prime Contract APT PIN":"prime_apt_pin",
                         "Prime Contract Award Method":"award_method_name",
                         "Prime Contract Current Amount":"prime_maximum_contract_amount",
                         "Prime Contract End Date":"prime_effective_end_date",
@@ -127,11 +127,12 @@
                         "Prime Contract ID":"contract_number",
                         "Prime Contract Industry":"prime_industry_type_name",
                         "Prime Contract Original Amount":"prime_original_contract_amount",
-                        "Prime Contract PIN":"tracking_number",
+                        "Prime Contract PIN":"prime_pin",
                         "Prime Contract Purpose":"prime_purpose",
                         "Prime Contract Registration Date":"registered_date",
                         "Prime Contract Start Date":"prime_effective_begin_date",
                         "Prime Contract Type":"agreement_type_name",
+                        "Prime Contract Version":"version",
                         "Prime Contracting Agency":"agency_name",
                         "Prime Vendor":"prime_vendor_name",
                         "Prime Vendor M/WBE Category":"prime_minority_type_name",
@@ -148,7 +149,6 @@
                         "Sub Vendor Paid To Date":"sub_rfed_amount",
                         "Sub Vendor Status in PIP":"aprv_sta_name_export",
                         "Vendor Record Type":"vendor_record_type",
-                        "Version":"version",
                         "Year":"fiscal_year@checkbook:contracts_coa_aggregates_datafeeds"
                     }
                 }
@@ -225,8 +225,8 @@
             "end_date":"prime_effective_end_date",
             "registration_date":"registered_date",
             "category":"document_code",
-            "pin":"tracking_number",
-            "apt_pin":"brd_awd_no",
+            "pin":"prime_pin",
+            "apt_pin":"prime_apt_pin",
             "industry_type_id":"industry_type_id",
             "sub_vendor_status_in_pip_id" :"aprv_sta",
             "contract_includes_sub_vendors_id":"scntrc_status",
@@ -254,7 +254,7 @@
                         "contract_includes_sub_vendors":"scntrc_status_name",
                         "document_code":"document_code",
                         "parent_contract_id":"master_contract_number_export",
-                        "prime_contract_apt_pin":"brd_awd_no",
+                        "prime_contract_apt_pin":"prime_apt_pin",
                         "prime_contract_award_method":"award_method_name",
                         "prime_contract_current_amount":"prime_maximum_contract_amount",
                         "prime_contract_end_date":"prime_effective_end_date",
@@ -262,11 +262,12 @@
                         "prime_contract_id":"contract_number",
                         "prime_contract_industry":"prime_industry_type_name",
                         "prime_contract_original_amount":"prime_original_contract_amount",
-                        "prime_contract_pin":"tracking_number",
+                        "prime_contract_pin":"prime_pin",
                         "prime_contract_purpose":"prime_purpose",
                         "prime_contract_registration_date":"registered_date",
                         "prime_contract_start_date":"prime_effective_begin_date",
                         "prime_contract_type":"agreement_type_name",
+                        "prime_contract_version":"version",
                         "prime_contracting_agency":"agency_name",
                         "prime_vendor":"prime_vendor_name",
                         "prime_vendor_mwbe_category":"prime_minority_type_name",
@@ -282,8 +283,7 @@
                         "sub_vendor_mwbe_category":"sub_minority_type_name_export",
                         "sub_vendor_paid_to_date":"sub_rfed_amount",
                         "sub_vendor_status_in_pip":"aprv_sta_name_export",
-                        "vendor_record_type":"vendor_record_type",
-                        "version":"version"
+                        "vendor_record_type":"vendor_record_type"
                     },
                     "rowElements":[
                         "contract_includes_sub_vendors",
@@ -302,6 +302,7 @@
                         "prime_contract_registration_date",
                         "prime_contract_start_date",
                         "prime_contract_type",
+                        "prime_contract_version",
                         "prime_contracting_agency",
                         "prime_vendor",
                         "prime_vendor_mwbe_category",
@@ -317,8 +318,7 @@
                         "sub_vendor_mwbe_category",
                         "sub_vendor_paid_to_date",
                         "sub_vendor_status_in_pip",
-                        "vendor_record_type",
-                        "version"
+                        "vendor_record_type"  
                     ]
                 },
                 "csv":{
@@ -326,7 +326,7 @@
                         "Contract Includes Sub Vendors":"scntrc_status_name",
                         "Document Code":"document_code",
                         "Parent Contract ID":"master_contract_number_export",
-                        "Prime Contract APT PIN":"brd_awd_no",
+                        "Prime Contract APT PIN":"prime_apt_pin",
                         "Prime Contract Award Method":"award_method_name",
                         "Prime Contract Current Amount":"prime_maximum_contract_amount",
                         "Prime Contract End Date":"prime_effective_end_date",
@@ -334,11 +334,12 @@
                         "Prime Contract ID":"contract_number",
                         "Prime Contract Industry":"prime_industry_type_name",
                         "Prime Contract Original Amount":"prime_original_contract_amount",
-                        "Prime Contract PIN":"tracking_number",
+                        "Prime Contract PIN":"prime_pin",
                         "Prime Contract Purpose":"prime_purpose",
                         "Prime Contract Registration Date":"registered_date",
                         "Prime Contract Start Date":"prime_effective_begin_date",
                         "Prime Contract Type":"agreement_type_name",
+                        "Prime Contract Version":"version",
                         "Prime Contracting Agency":"agency_name",
                         "Prime Vendor":"prime_vendor_name",
                         "Prime Vendor M/WBE Category":"prime_minority_type_name",
@@ -354,8 +355,7 @@
                         "Sub Vendor M/WBE Category":"sub_minority_type_name_export",
                         "Sub Vendor Paid To Date":"sub_rfed_amount",
                         "Sub Vendor Status in PIP":"aprv_sta_name_export",
-                        "Vendor Record Type":"vendor_record_type",
-                        "Version":"version"
+                        "Vendor Record Type":"vendor_record_type"
                     }
                 }
             },
@@ -851,8 +851,8 @@
             "end_date":"prime_effective_end_date",
             "registration_date":"registered_date",
             "category":"document_code",
-            "pin":"tracking_number",
-            "apt_pin":"brd_awd_no",
+            "pin":"prime_pin",
+            "apt_pin":"prime_apt_pin",
             "industry_type_id":"industry_type_id",
             "associated_prime_vendor":"prime_vendor_name",
             "sub_contract_reference_id":"sub_contract_id",
@@ -883,7 +883,7 @@
                         "contract_includes_sub_vendors":"scntrc_status_name",
                         "document_code":"document_code",
                         "parent_contract_id":"master_contract_number_export",
-                        "prime_contract_apt_pin":"brd_awd_no",
+                        "prime_contract_apt_pin":"prime_apt_pin",
                         "prime_contract_award_method":"award_method_name",
                         "prime_contract_current_amount":"prime_maximum_contract_amount",
                         "prime_contract_end_date":"prime_effective_end_date",
@@ -891,11 +891,12 @@
                         "prime_contract_id":"contract_number",
                         "prime_contract_industry":"prime_industry_type_name",
                         "prime_contract_original_amount":"prime_original_contract_amount",
-                        "prime_contract_pin":"tracking_number",
+                        "prime_contract_pin":"prime_pin",
                         "prime_contract_purpose":"prime_purpose",
                         "prime_contract_registration_date":"registered_date",
                         "prime_contract_start_date":"prime_effective_begin_date",
                         "prime_contract_type":"agreement_type_name",
+                        "prime_contract_version":"version",
                         "prime_contracting_agency":"agency_name",
                         "prime_vendor":"prime_vendor_name",
                         "prime_vendor_mwbe_category":"prime_minority_type_name",
@@ -912,7 +913,6 @@
                         "sub_vendor_paid_to_date":"sub_rfed_amount",
                         "sub_vendor_status_in_pip":"aprv_sta_name_export",
                         "vendor_record_type":"vendor_record_type",
-                        "version":"version",
                         "year":"fiscal_year@checkbook:contracts_coa_aggregates_datafeeds"
                     },
                     "rowElements":[
@@ -932,6 +932,7 @@
                         "prime_contract_registration_date",
                         "prime_contract_start_date",
                         "prime_contract_type",
+                        "prime_contract_version",
                         "prime_contracting_agency",
                         "prime_vendor",
                         "prime_vendor_mwbe_category",
@@ -948,7 +949,6 @@
                         "sub_vendor_paid_to_date",
                         "sub_vendor_status_in_pip",
                         "vendor_record_type",
-                        "version",
                         "year"
                     ]
                 },
@@ -957,7 +957,7 @@
                         "Contract Includes Sub Vendors":"scntrc_status_name",
                         "Document Code":"document_code",
                         "Parent Contract ID":"master_contract_number_export",
-                        "Prime Contract APT PIN":"brd_awd_no",
+                        "Prime Contract APT PIN":"prime_apt_pin",
                         "Prime Contract Award Method":"award_method_name",
                         "Prime Contract Current Amount":"prime_maximum_contract_amount",
                         "Prime Contract End Date":"prime_effective_end_date",
@@ -965,7 +965,7 @@
                         "Prime Contract ID":"contract_number",
                         "Prime Contract Industry":"prime_industry_type_name",
                         "Prime Contract Original Amount":"prime_original_contract_amount",
-                        "Prime Contract PIN":"tracking_number",
+                        "Prime Contract PIN":"prime_pin",
                         "Prime Contract Purpose":"prime_purpose",
                         "Prime Contract Registration Date":"registered_date",
                         "Prime Contract Start Date":"prime_effective_begin_date",
@@ -1063,8 +1063,8 @@
             "end_date":"prime_effective_end_date",
             "registration_date":"registered_date",
             "category":"document_code",
-            "pin":"tracking_number",
-            "apt_pin":"brd_awd_no",
+            "pin":"prime_pin",
+            "apt_pin":"prime_apt_pin",
             "industry_type_id":"industry_type_id",
             "associated_prime_vendor":"prime_vendor_name",
             "sub_vendor_status_in_pip_id" :"aprv_sta",
@@ -1093,7 +1093,7 @@
                         "contract_includes_sub_vendors":"scntrc_status_name",
                         "document_code":"document_code",
                         "parent_contract_id":"master_contract_number_export",
-                        "prime_contract_apt_pin":"brd_awd_no",
+                        "prime_contract_apt_pin":"prime_apt_pin",
                         "prime_contract_award_method":"award_method_name",
                         "prime_contract_current_amount":"prime_maximum_contract_amount",
                         "prime_contract_end_date":"prime_effective_end_date",
@@ -1101,11 +1101,12 @@
                         "prime_contract_id":"contract_number",
                         "prime_contract_industry":"prime_industry_type_name",
                         "prime_contract_original_amount":"prime_original_contract_amount",
-                        "prime_contract_pin":"tracking_number",
+                        "prime_contract_pin":"prime_pin",
                         "prime_contract_purpose":"prime_purpose",
                         "prime_contract_registration_date":"registered_date",
                         "prime_contract_start_date":"prime_effective_begin_date",
                         "prime_contract_type":"agreement_type_name",
+                        "prime_contract_version":"version",
                         "prime_contracting_agency":"agency_name",
                         "prime_vendor":"prime_vendor_name",
                         "prime_vendor_mwbe_category":"prime_minority_type_name",
@@ -1121,8 +1122,7 @@
                         "sub_vendor_mwbe_category":"sub_minority_type_name_export",
                         "sub_vendor_paid_to_date":"sub_rfed_amount",
                         "sub_vendor_status_in_pip":"aprv_sta_name_export",
-                        "vendor_record_type":"vendor_record_type",
-                        "version":"version"
+                        "vendor_record_type":"vendor_record_type"
                     },
                     "rowElements":[
                         "contract_includes_sub_vendors",
@@ -1141,6 +1141,7 @@
                         "prime_contract_registration_date",
                         "prime_contract_start_date",
                         "prime_contract_type",
+                        "prime_contract_version",
                         "prime_contracting_agency",
                         "prime_vendor",
                         "prime_vendor_mwbe_category",
@@ -1156,8 +1157,7 @@
                         "sub_vendor_mwbe_category",
                         "sub_vendor_paid_to_date",
                         "sub_vendor_status_in_pip",
-                        "vendor_record_type",
-                        "version"
+                        "vendor_record_type"
                     ]
                 },
                 "csv":{
@@ -1165,19 +1165,20 @@
                         "Contract Includes Sub Vendors":"scntrc_status_name",
                         "Document Code":"document_code",
                         "Parent Contract ID":"master_contract_number_export",
-                        "Prime Contract APT PIN":"brd_awd_no",
+                        "Prime Contract APT PIN":"prime_apt_pin",
                         "Prime Contract Award Method":"award_method_name",
                         "Prime Contract Current Amount":"prime_maximum_contract_amount",
                         "Prime Contract End Date":"prime_effective_end_date",
                         "Prime Contract Expense Category":"expenditure_object_names",
                         "Prime Contract ID":"contract_number",
-                        "Prime Contract Industry":"industry_type_name",
+                        "Prime Contract Industry":"prime_industry_type_name",
                         "Prime Contract Original Amount":"prime_original_contract_amount",
-                        "Prime Contract PIN":"tracking_number",
+                        "Prime Contract PIN":"prime_pin",
                         "Prime Contract Purpose":"prime_purpose",
                         "Prime Contract Registration Date":"registered_date",
                         "Prime Contract Start Date":"prime_effective_begin_date",
                         "Prime Contract Type":"agreement_type_name",
+                        "Prime Contract Version":"version",
                         "Prime Contracting Agency":"agency_name",
                         "Prime Vendor":"prime_vendor_name",
                         "Prime Vendor M/WBE Category":"prime_minority_type_name",
@@ -1193,8 +1194,7 @@
                         "Sub Vendor M/WBE Category":"sub_minority_type_name_export",
                         "Sub Vendor Paid To Date":"sub_rfed_amount",
                         "Sub Vendor Status in PIP":"aprv_sta_name_export",
-                        "Vendor Record Type":"vendor_record_type",
-                        "Version":"version"
+                        "Vendor Record Type":"vendor_record_type"
                     }
                 }
             },
@@ -1257,7 +1257,6 @@
                 "dataType":"date",
                 "format":"YYYY-MM-DD"
             },
-
             "status":{
                 "valueType":"value",
                 "dataType":"text"
