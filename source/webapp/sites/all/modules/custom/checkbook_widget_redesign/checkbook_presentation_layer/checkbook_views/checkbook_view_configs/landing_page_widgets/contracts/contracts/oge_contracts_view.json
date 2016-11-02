@@ -7,6 +7,7 @@
         "countStatementName":"GetCountOgeContracts"
     },
     "serviceName":"ContractsWidgetService",
+    "uniqueSortColumn":"original_agreement_id",
     "defaultParameters":{"doctype":"'CTA1'~'CT1'"},
     "headerTitle":"Contracts",
     "headerSubTitle":"Stand Alone Contracts",

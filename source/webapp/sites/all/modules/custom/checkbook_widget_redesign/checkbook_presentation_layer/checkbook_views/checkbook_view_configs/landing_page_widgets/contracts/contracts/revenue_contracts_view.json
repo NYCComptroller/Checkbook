@@ -6,6 +6,7 @@
         "statementName":"GetContracts"
     },
     "serviceName":"ContractsWidgetService",
+    "uniqueSortColumn":"original_agreement_id",
     "defaultParameters":{"doctype":"'RCT1'"},
     "headerTitle":"Contracts",
     "headerSubTitle":"Stand Alone Contracts",
