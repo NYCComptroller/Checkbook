@@ -23,11 +23,6 @@
                     "legacy_node_id":367,
                     "visibility_parameters":["-vendor"]
                 },
-                "sub_vendors":{
-                    "widget_config":"contracts_departments_view",
-                    "legacy_node_id":415,
-                    "visibility_parameters":["agency"]
-                },
                 "award_methods":{
                     "widget_config":"expense_award_methods_view",
                     "legacy_node_id":369,
