@@ -258,7 +258,7 @@
                     <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
                     <exp op="=" dbField="a.status_flag" paramName="status" />
                     <exp op="IN" dbField="b.document_code" paramName="doctype" />
-                    <exp op="=" dbField="c.agency_id" paramName="agency" />
+                    <exp op="=" dbField="a.agency_id" paramName="agency" />
                     <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
                     <exp op="=" dbField="a.vendor_id" paramName="subvendor" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
@@ -294,7 +294,7 @@
                     <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
                     <exp op="=" dbField="a.status_flag" paramName="status" />
                     <exp op="IN" dbField="b.document_code" paramName="doctype" />
-                    <exp op="=" dbField="c.agency_id" paramName="agency" />
+                    <exp op="=" dbField="a.agency_id" paramName="agency" />
                     <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
                     <exp op="=" dbField="a.vendor_id" paramName="subvendor" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
