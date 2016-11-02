@@ -6,6 +6,7 @@
         "statementName":"GetPendingContracts"
     },
     "serviceName":"ContractsWidgetService",
+    "uniqueSortColumn":"original_agreement_id",
     "defaultParameters":{"doctype":"'CTA1'~'CT1'~'CTR'"},
     "headerTitle":"Contracts",
     "headerSubTitle":"Stand Alone Contracts",
