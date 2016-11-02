@@ -7,6 +7,9 @@
         <param name="doctype" />
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
         <param name="contract_mod" type="bool" />
         <sql>
             SELECT
@@ -37,6 +40,9 @@
                     <exp op="IN" dbField="b.document_code" paramName="doctype" />
                     <exp op="=" dbField="a.vendor_id" paramName="vendor" />
                     <exp op="=" dbField="a.agency_id" paramName="agency" />
+                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
             GROUP BY a.type_of_year, a.description,a.contract_number, a.original_agreement_id, a.document_code_id,b.document_code,c.agency_id,c.agency_name,d.vendor_id,d.legal_name
@@ -52,6 +58,9 @@
         <param name="doctype" />
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
+        <param name="awdmethod" />
+        <param name="csize" />
+        <param name="cindustry" />
         <sql>
             SELECT COUNT(*) as record_count FROM
             (
@@ -66,6 +75,9 @@
                     <exp op="IN" dbField="b.document_code" paramName="doctype" />
                     <exp op="=" dbField="a.vendor_id" paramName="vendor" />
                     <exp op="=" dbField="a.agency_id" paramName="agency" />
+                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
             GROUP BY a.contract_number
