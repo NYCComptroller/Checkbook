@@ -137,7 +137,6 @@ h4 {
     float:right;
     margin:5px 10px 0px 0px;
 }
-
 #social-media-icons {
     float: right;
     margin: -27px 0 0;
@@ -242,7 +241,6 @@ h4 {
 #nice-menu-1 li.menu-path-node-975 a.active{
     color: #2A639A;
 }
-
 
 /********************************
 ***   REGION FILTERS STYLES   ***
@@ -2974,7 +2972,7 @@ body.page-payroll-employee-transactions #table_310{
 }
 #section-footer h2{display:none;}
 #zone-footer{width:96%; padding:73px 2% 0px 2%;}
-body.context-resources #zone-footer{padding:73px 2% 0px 2%;}
+body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
 #section-footer .block-menu {
     display: block;
     float:left;
@@ -3563,6 +3561,7 @@ p.pieCount {
     height: 40px;
     padding-left: 10px;
 }
+
 /* Styles for New Features */
 
 .page-node-975 .logo,

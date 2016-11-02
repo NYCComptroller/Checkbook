@@ -94,6 +94,8 @@ class WidgetUtil
         "agency_name" => "Agency",
         "contract_size" => "Contract<br/>Size",
         "contract_industry" => "Industry",
+        "prime_contract_industry" => "Prime Contract Industry",
+        "sub_contract_industry" => "Sub Contract Industry",
         "title" => "Title",
         "month" => "Month",
         "amount" => "Amount",

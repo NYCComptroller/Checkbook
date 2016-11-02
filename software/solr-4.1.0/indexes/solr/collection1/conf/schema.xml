@@ -278,6 +278,8 @@
         <field name="contract_type_text" type="text_general" indexed="true" stored="true"/>
         <field name="pin" type="string_custom" indexed="true" stored="true"/>
         <field name="apt_pin" type="string_custom" indexed="true" stored="true"/>
+        <field name="prime_pin" type="string_custom" indexed="true" stored="true"/>
+        <field name="prime_apt_pin" type="string_custom" indexed="true" stored="true"/>
         <field name="version_number" type="string_custom" indexed="true" stored="true"/>
         <field name="document_version" type="string_custom" indexed="true" stored="true"/>
         <field name="start_date" type="date" indexed="true" stored="true" />

@@ -170,6 +170,19 @@ if(isset($logicalOrFacet) && $logicalOrFacet) {
     }
 }
 
+//Remove N/A from Prime/Sub Industry facets
+if($node->widgetConfig->filterName == 'Prime Industry' || $node->widgetConfig->filterName == 'Sub Industry'){
+    foreach($unchecked as $key => $value){
+        if($value[1] == null) {
+            unset($unchecked[$key]);
+        }
+    }
+    foreach($checked as $key=>$value){
+        if($value[1] == null) {
+            unset($checked[$key]);
+        }
+    }
+}
 
 //Checking 'Asian-American' filter in Prime/Sub MWBE Category Facet
 $is_prime_filter = $node->widgetConfig->filterName == 'Prime M/WBE Category';
