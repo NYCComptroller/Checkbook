@@ -7,7 +7,6 @@
         "countStatementName":"GetCountSubContractsBySubVendors"
     },
     "serviceName":"ContractsWidgetService",
-    "footerUrl":"",
     "defaultParameters":{"doctype":"'CTA1'~'CT1'"},
     "headerTitle":"Sub Vendors",
     "table_columns":[
