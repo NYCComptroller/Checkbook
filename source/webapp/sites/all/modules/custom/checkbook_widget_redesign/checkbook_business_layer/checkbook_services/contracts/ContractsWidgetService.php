@@ -212,13 +212,13 @@ class ContractsWidgetService extends AbstractWidgetService {
                 $doc_type =  "('RCT1')";
             }
             else if(preg_match('/pending_exp/',$urlPath)){
-                $doc_type = "('MMA1', 'MA1', 'MAR', 'CT1', 'CTA1', 'CTR')";
+                $doc_type = "('MMA1','MA1','MAR','CT1','CTA1','CTR')";
             }
             else if(preg_match('/pending_rev/',$urlPath)){
                 $doc_type = "('RCT1')";
             }
             else {
-                $doc_type = "('MA1', 'CTA1', 'CT1')";
+                $doc_type = "('MA1','CTA1','CT1')";
             }
             $parameters['doctype'] = $doc_type;
         }
