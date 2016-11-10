@@ -299,7 +299,7 @@
                 "industries":{
                     "widget_config":"oge_contracts_by_industries_view",
                     "legacy_node_id":611,
-                    "parameter_requirements":["-cindustry"]
+                    "visibility_parameters":["-cindustry"]
                 },
                 "size":{
                     "widget_config":"oge_contracts_by_size_view",
