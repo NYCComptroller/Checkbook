@@ -383,6 +383,11 @@
                     "legacy_node_id":791,
                     "visibility_parameters":["-vendor"]
                 },
+                "sub_vendors":{
+                    "widget_config":"contracts_subvendor_view",
+                    "legacy_node_id":720,
+                    "visibility_parameters":["-subvendor"]
+                },
                 "award_methods":{
                     "widget_config":"expense_award_methods_view",
                     "legacy_node_id":369,
@@ -432,6 +437,11 @@
                     "widget_config":"mwbe_expense_contracts_by_prime_vendors_view",
                     "legacy_node_id":791,
                     "visibility_parameters":["-vendor"]
+                },
+                "sub_vendors":{
+                    "widget_config":"contracts_subvendor_view",
+                    "legacy_node_id":720,
+                    "visibility_parameters":["-subvendor"]
                 },
                 "award_methods":{
                     "widget_config":"expense_award_methods_view",
