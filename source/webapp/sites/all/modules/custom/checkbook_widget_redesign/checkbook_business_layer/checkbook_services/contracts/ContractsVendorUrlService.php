@@ -50,56 +50,6 @@ class ContractsVendorUrlService {
         $currentUrl = RequestUtilities::_getCurrentPage();
         return $currentUrl . $url . "?expandBottomCont=true";
     }
-
-    /**
-    * Returns M/WBE category for the given vendor id in the given year and year type for
-    * Active/Registered Contracts Landing Pages
-    * @param $row
-    * @return string
-    */
-    static public function getContractsVendorLinkByMWBECategory($row){
-        $currentUrl = RequestUtilities::_getCurrentPage();
-        $vendor_id = $row["vendor_id"] != null ? $row["vendor_id"] : $row["vendor_id"];
-        if($vendor_id == null)
-            $vendor_id = $row["prime_vendor_id"];
-
-        $year_id = RequestUtilities::getRequestParamValue("year");
-        $year_type = $row["type_of_year,"];
-        $is_prime_or_sub = $row["is_prime_or_sub"] != null ? $row["is_prime_or_sub"] : "P";
-        $agency_id = null;
-
-        if($row["current_prime_minority_type_id"])
-            $minority_type_id = $row["current_prime_minority_type_id"];
-        if($row["minority_type_id"])
-            $minority_type_id = $row["minority_type_id"];
-        if($row["prime_minority_type_id"])
-            $minority_type_id = $row["prime_minority_type_id"];
-
-        $smnid = RequestUtilities::getRequestParamValue("smnid");
-        if($smnid == 720 || $smnid == 784) return self::getSubContractsVendorLink($vendor_id, $year_id, $year_type,$agency_id);
-
-        $latest_minority_id = MinorityTypeURLService::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, $is_prime_or_sub);
-        $latest_minority_id = isset($latest_minority_id) ? $latest_minority_id : $minority_type_id;
-        $is_mwbe_certified = MinorityTypeURLService::isMWBECertified($latest_minority_id);
-
-        $status = RequestUtilities::_getUrlParamString("contstatus","status");
-        $status = isset($status) && $status != "" ? $status : "/status/A";
-        $url = RequestUtilities::_getUrlParamString("agency") . $status . _checkbook_project_get_year_url_param_string();
-
-        if($is_mwbe_certified && RequestUtilities::getRequestParamValue('dashboard') == 'mp') {
-            $url .= RequestUtilities::_getUrlParamString("cindustry")
-                . RequestUtilities::_getUrlParamString("csize")
-                . RequestUtilities::_getUrlParamString("awdmethod")
-                . "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
-        }
-        else if($is_mwbe_certified && RequestUtilities::getRequestParamValue('dashboard') != 'mp') {
-            $url .= "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
-        }
-        else {
-            $url .= RequestUtilities::_getUrlParamString("datasource")."/vendor/".$vendor_id;
-        }
-        return $url;
-    }
     
     /**
     * Returns Sub Vendor Landing page URL for the given sub vendor id in the given year and year type for
