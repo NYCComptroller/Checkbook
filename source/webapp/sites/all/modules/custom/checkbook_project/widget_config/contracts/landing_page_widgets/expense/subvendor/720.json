@@ -74,7 +74,7 @@ $header='<div class=\"tableHeader\"><h2>Top ' . $count . 'Sub Vendors</h2><span 
 return $header;
 ",
 "footer":"
-$url = ContractUtil::expenseContractsFooterUrl();
+$url = ContractUtil::expenseContractsFooterUrl(true);
 $url .= '/smnid/' .  $node->nid;
 $url .= '/doctype/CTA1~CT1';
 $footer = '';
