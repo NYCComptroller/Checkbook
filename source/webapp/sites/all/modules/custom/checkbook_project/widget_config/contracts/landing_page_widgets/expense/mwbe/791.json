@@ -74,7 +74,7 @@ $header='<div class=\"tableHeader\"><h2>Top ' . $count . 'Prime Vendors</h2><spa
 return $header;
 ",
 "footer":"
-$url = ContractsUrlService::contractsFooterUrl();
+$url = ContractUtil::expenseContractsFooterUrl();
 $url .= '/smnid/' .  $node->nid;
 $url .= '/doctype/MA1~CTA1~CT1';
 $footer = '';
