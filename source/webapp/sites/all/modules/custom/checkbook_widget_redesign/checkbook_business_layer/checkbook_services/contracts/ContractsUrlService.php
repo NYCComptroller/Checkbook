@@ -199,65 +199,6 @@ class ContractsUrlService {
         return $url;
     }
 
-    static function contractsFooterUrl() {
-        $subvendor = RequestUtilities::getRequestParamValue('subvendor');
-        $vendor = RequestUtilities::getRequestParamValue('vendor');
-        $mwbe = RequestUtilities::getRequestParamValue('mwbe');
-        if($subvendor) {
-            $subvendor_code = ContractsVendorUrlService::getSubVendorCustomerCode($subvendor);
-        }
-        if($vendor) {
-            $vendor_code = ContractsVendorUrlService::getVendorCustomerCode($vendor);
-        }
-        $subvendorURLString = (isset($subvendor) ? '/subvendor/'. $subvendor : '') .(isset($subvendor_code) ? '/vendorcode/'.$subvendor_code : '');
-        $vendorURLString = (isset($vendor) ? '/vendor/'. $vendor : '') . (isset($vendor_code) ? '/vendorcode/'.$vendor_code : '');
-        $mwbe_param = "";
-        //pmwbe & smwbe
-        if(isset($mwbe)) {
-            $mwbe_param = ContractUtil::showSubVendorData() ? '/smwbe/'.$mwbe : '/pmwbe/'.$mwbe;
-        }
-
-        $url = '/panel_html/contract_details/contract/transactions/contcat/expense'
-            . RequestUtilities::_getUrlParamString('status','contstatus')
-            . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
-            . RequestUtilities::_getUrlParamString('agency')
-            . RequestUtilities::_getUrlParamString('awdmethod')
-            . RequestUtilities::_getUrlParamString('csize')
-            . RequestUtilities::_getUrlParamString('cindustry')
-            . $mwbe_param
-            . $subvendorURLString . $vendorURLString
-            . _checkbook_project_get_year_url_param_string();
-        return $url;
-    }
-
-    static function subContractsFooterUrl() {
-        $subvendor = RequestUtilities::getRequestParamValue('subvendor');
-        $vendor = RequestUtilities::getRequestParamValue('vendor');
-        $mwbe = RequestUtilities::getRequestParamValue('mwbe');
-        if($subvendor) {
-            $subvendor_code = ContractsVendorUrlService::getSubVendorCustomerCode($subvendor);
-        }
-        if($vendor) {
-            $vendor_code = ContractsVendorUrlService::getVendorCustomerCode($vendor);
-        }
-        $mwbe_param = isset($mwbe) ? '/pmwbe/'.$mwbe : '';
-        $subvendorURLString = isset($subvendor_code) ? '/vendorcode/'.$subvendor_code : '';
-        $vendorURLString = isset($vendor_code) ? '/vendorcode/'.$vendor_code : '';
-        $url = '/panel_html/sub_contracts_transactions/subcontract/transactions/contcat/expense'
-            . RequestUtilities::_getUrlParamString('status','contstatus')
-            . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
-            . RequestUtilities::_getUrlParamString('agency')
-            . RequestUtilities::_getUrlParamString('vendor')
-            . RequestUtilities::_getUrlParamString("vendor","fvendor")
-            . RequestUtilities::_getUrlParamString('awdmethod')
-            . RequestUtilities::_getUrlParamString('csize')
-            . RequestUtilities::_getUrlParamString('cindustry')
-            . $mwbe_param
-            . $subvendorURLString . $vendorURLString
-            . _checkbook_project_get_year_url_param_string();
-        return $url;
-    }
-
     /**
      * @param $parameters
      * @param null $legacy_node_id
@@ -276,8 +217,8 @@ class ContractsUrlService {
 
         $subvendor_param = isset($subvendor_code) ? '/vendorcode/'.$subvendor_code : '';
         $vendor_param = isset($vendor_code) ? '/vendorcode/'.$vendor_code : '';
-        $mwbe_param = isset($mwbe) ? (Dashboard::isSubDashboard() ? '/smwbe/'.$mwbe : '/pmwbe/'.$mwbe) : '';
-        $industry_param = isset($industry) ? (Dashboard::isSubDashboard() ? '/scindustry/'.$industry : '/pcindustry/'.$industry) : '';
+        $mwbe_param = isset($mwbe) ? (Dashboard::isSubDashboard() ||  $legacy_node_id == 720 ? '/smwbe/'.$mwbe : '/pmwbe/'.$mwbe) : '';
+        $industry_param = isset($industry) ? (Dashboard::isSubDashboard() ||  $legacy_node_id == 720 ? '/scindustry/'.$industry : '/pcindustry/'.$industry) : '';
         $category_param = '/contcat/'.(isset($category) ? $category : ContractCategory::EXPENSE);
         $smnid_param = isset($legacy_node_id) ? '/smnid/'.$legacy_node_id : '';
         $contract_status = _checkbook_project_get_url_param_string('status','contstatus');
