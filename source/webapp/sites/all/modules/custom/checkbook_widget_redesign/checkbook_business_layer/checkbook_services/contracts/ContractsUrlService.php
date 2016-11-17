@@ -218,7 +218,12 @@ class ContractsUrlService {
         $subvendor_param = isset($subvendor_code) ? '/vendorcode/'.$subvendor_code : '';
         $vendor_param = isset($vendor_code) ? '/vendorcode/'.$vendor_code : '';
         $mwbe_param = isset($mwbe) ? (Dashboard::isSubDashboard() ||  $legacy_node_id == 720 ? '/smwbe/'.$mwbe : '/pmwbe/'.$mwbe) : '';
-        $industry_param = isset($industry) ? (Dashboard::isSubDashboard() ||  $legacy_node_id == 720 ? '/scindustry/'.$industry : '/pcindustry/'.$industry) : '';
+        if(Datasource::isOGE()) {
+            $industry_param = isset($industry) ? '/cindustry/'.$industry : '';
+        }
+        else {
+            $industry_param = isset($industry) ? (Dashboard::isSubDashboard() ||  $legacy_node_id == 720 ? '/scindustry/'.$industry : '/pcindustry/'.$industry) : '';
+        }
         $category_param = '/contcat/'.(isset($category) ? $category : ContractCategory::EXPENSE);
         $smnid_param = isset($legacy_node_id) ? '/smnid/'.$legacy_node_id : '';
         $contract_status = _checkbook_project_get_url_param_string('status','contstatus');
