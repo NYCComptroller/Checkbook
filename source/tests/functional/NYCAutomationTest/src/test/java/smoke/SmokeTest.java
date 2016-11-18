@@ -392,7 +392,7 @@ public class SmokeTest extends NYCBaseTest {
     @Test
     public void canGoToContractingOpportunities() {
         MWBEResourcesPages.GoTo(MWBEResourcesPages.MWBEResourcesPageOptions.contractingOpportunities);
-        assertTrue(PrimaryMenuNavigation.isAtResource("Contracting Opportunities"));
+        assertTrue(PrimaryMenuNavigation.isAtResource("Contracting Opportunities - MOCS"));
     }
 
     @Test
