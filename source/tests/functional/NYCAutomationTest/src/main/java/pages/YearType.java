@@ -1,8 +1,8 @@
 package pages;
 
-public class YearType {
+class YearType {
 
-	public static String getCurrentYear(String year) {
+	static String getCurrentYear(String year) {
 		switch (year) {
 		case "FY2017":
 			return "FY 2017 (Jul 1, 2016 - Jun 30, 2017)";

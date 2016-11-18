@@ -1,14 +1,13 @@
 package navigation;
 
-import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-
 import utility.Driver;
 
-public class PrimaryTabSelector {
-	public static void Select(String primaryTabClass) {
+import java.util.List;
+
+class PrimaryTabSelector {
+	static void Select(String primaryTabClass) {
 		WebElement TabContainer = Driver.Instance.findElement(By.cssSelector(".top-navigation-left > table > tbody > tr"));
 		List<WebElement> tabs = TabContainer.findElements(By.tagName("td"));
 		for (WebElement tab : tabs) {
