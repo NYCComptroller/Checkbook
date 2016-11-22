@@ -79,6 +79,15 @@ public class SmokeTest extends NYCBaseTest {
 
         assertEquals("Number of Agencies in Payroll Spending did not match", numberOfAgencies, PayrollSpendingNumOfAgenciesFY2016);
     }
+    
+    @Test
+    public void VerifySpendingTop5ChecksTitle(){
+       String totalSpendingTitle = "Checks Total Spending Transactions";
+	   TotalSpendingPage.GoTo();
+	   SpendingPage.ShowWidgetDetails();
+	   TotalSpendingPage.GoToTop5ChecksDetailsPage();
+	   assertEquals("Paroll Spending Title did not match", totalSpendingTitle, TotalSpendingPage.GetTitle());
+    }
 
     @Test
     public void goToPayrollSpending() {
