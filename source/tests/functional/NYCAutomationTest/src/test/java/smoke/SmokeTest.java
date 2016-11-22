@@ -16,6 +16,7 @@ import utility.Driver;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -26,31 +27,53 @@ public class SmokeTest extends NYCBaseTest {
     @Before // Return home after every test if necessary
     public void GoHome() throws SQLException, IOException, ClassNotFoundException {
        // if (!SpendingPage.isAt()) 
-    	Driver.Instance.get("http://checkbooknyc.com/spending_landing/yeartype/B/year/118");
+    	HomePage.GoTo(NYCBaseTest.prop.getProperty("BaseUrl"));
     }
 
-    private void GoFY2016() {
-        HomePage.GoTo(NYCBaseTest.prop.getProperty("BaseUrl"));
+    private void GoToFY2016() {
         HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
     }
 
     @Test
     public void VerifySpendingAmount() throws SQLException {
-        GoFY2016();
         String TotalSpendingAmtFY2016 = NYCDatabaseUtil.getSpendingAmount(2016, 'B');
 
+        GoToFY2016();
         SpendingPage.GoTo();
         String spendingAmt = SpendingPage.GetSpendingAmount();
 
         assertEquals("Spending Amount did not match", spendingAmt, TotalSpendingAmtFY2016);
 
     }
+    
+    @Test
+    public void VerifySpendingDomainVisualizationsTitles(){
+	    String[] sliderTitles= {"Total Spending", 
+	    						"Top Ten Agencies by Disbursement Amount", 
+	    						"Top Ten Contracts by Disbursement Amount", 
+	    						"Top Ten Prime Vendors by Disbursement Amount"};  
+    	SpendingPage.GoTo();
+    	assertTrue(Arrays.equals(sliderTitles, SpendingPage.VisualizationTitles().toArray()));
+    }
+    
+    @Test
+    public void VerifySpendingWidgetTitles(){
+	    String[] widgetTitles = {"Top 5 Checks",
+	    						"Top 5 Agencies",
+	    						"Top 5 Expense Categories",
+	    						"Top 5 Prime Vendors",
+	    						"Top 5 Contracts",
+	    						"Top 5 Agencies"};  
+    	SpendingPage.GoTo();
+    	SpendingPage.ShowWidgetDetails();
+    	assertTrue(Arrays.equals(widgetTitles, SpendingPage.WidgetTitles().toArray()));
+    }
 
     @Test
     public void VerifyNumOfAgenciesPayrollSpending() {
-        GoFY2016();
         String PayrollSpendingNumOfAgenciesFY2016 = "130";
 
+        GoToFY2016();
         PayrollSpendingPage.GoTo();
         String numberOfAgencies = PayrollSpendingPage.GetTotalNumOfAgencies();
 
@@ -59,7 +82,6 @@ public class SmokeTest extends NYCBaseTest {
 
     @Test
     public void goToPayrollSpending() {
-
         PayrollSpendingPage.GoTo();
         assertTrue(PayrollSpendingPage.isAt());
     }
