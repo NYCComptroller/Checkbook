@@ -4,6 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import pages.help.Helper;
 import utility.Driver;
 
 public class SearchPage {
@@ -18,15 +20,13 @@ public class SearchPage {
         return h3title.equals("TRANSACTION #1: SPENDING");
     }
 
-    public static int stringToInt(String num) {
-        return Integer.parseInt(num.replace(",", ""));
-    }
+   
 
     public static int getTotalSearchEntries() {
         String[] entries = Driver.Instance.findElement(By.xpath("//*[@id=\"smart-search-transactions\"]"))
                 .getText().split(" ");
 
-        return stringToInt(entries[5]);
+        return Helper.stringToInt(entries[5]);
     }
 
     public static void openTypeOfData() {
@@ -37,11 +37,11 @@ public class SearchPage {
     public static int[] typeOfDataTotals() {
 
         int[] totalsInt = {
-                stringToInt(Driver.Instance.findElement(By.xpath("//*[@id=\"block-system-main\"]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[3]/span")).getText()),
-                stringToInt(Driver.Instance.findElement(By.xpath("//*[@id=\"block-system-main\"]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[2]/div[3]/span")).getText()),
-                stringToInt(Driver.Instance.findElement(By.xpath("//*[@id=\"block-system-main\"]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[3]/div[3]/span")).getText()),
-                stringToInt(Driver.Instance.findElement(By.xpath("//*[@id=\"block-system-main\"]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[4]/div[3]/span")).getText()),
-                stringToInt(Driver.Instance.findElement(By.xpath("//*[@id=\"block-system-main\"]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[5]/div[3]/span")).getText())
+        		Helper.stringToInt(Driver.Instance.findElement(By.xpath("//*[@id=\"block-system-main\"]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[1]/div[3]/span")).getText()),
+        		Helper.stringToInt(Driver.Instance.findElement(By.xpath("//*[@id=\"block-system-main\"]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[2]/div[3]/span")).getText()),
+        		Helper.stringToInt(Driver.Instance.findElement(By.xpath("//*[@id=\"block-system-main\"]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[3]/div[3]/span")).getText()),
+        		Helper.stringToInt(Driver.Instance.findElement(By.xpath("//*[@id=\"block-system-main\"]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[4]/div[3]/span")).getText()),
+        		Helper.stringToInt(Driver.Instance.findElement(By.xpath("//*[@id=\"block-system-main\"]/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div[5]/div[3]/span")).getText())
         };
 
         return totalsInt;
@@ -75,10 +75,11 @@ public class SearchPage {
             Driver.Instance.findElement(By.id("edit-contracts-submit")).click();
 
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"table_656_info\"]")));
-            String [] totalTransactionsString = Driver.Instance.findElement(By.xpath("//*[@id=\"table_656_info\"]")).getText().split(" ");
-            String fifth = totalTransactionsString[5];
-//            System.out.println(fifth);
-            return stringToInt(fifth);
+            String totalTransactionsString = Driver.Instance.findElement(By.xpath("//*[@id=\"table_656_info\"]")).getText();
+            int totalTransactions = Helper.GetTotalEntries(totalTransactionsString, 5);		
+            		
+            
+            return totalTransactions;
         }
     }
 }

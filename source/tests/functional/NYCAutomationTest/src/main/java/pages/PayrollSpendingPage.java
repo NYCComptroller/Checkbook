@@ -8,11 +8,6 @@ import utility.Driver;
 public class PayrollSpendingPage {
 
     public static void GoTo() {
-        /*try {
-            Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}*/
         TopNavigation.Spending.PayrollSpending.Select();
         //Driver.Instance.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
 

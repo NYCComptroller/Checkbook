@@ -11,8 +11,7 @@ import org.openqa.selenium.WebElement;
 import utility.Driver;
 
 public class SpendingPage {
-
-    public static void GoTo() {
+	public static void GoTo() {
         TopNavigation.Spending.Select();
     }
 

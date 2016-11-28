@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import pages.*;
 import pages.help.HelpPages;
+import pages.help.Helper;
 import pages.resources.CheckbookResourcesPage;
 import pages.resources.MWBEResourcesPages;
 import pages.tools.MWBE_AgencySummaryPage;
@@ -86,7 +87,28 @@ public class SmokeTest extends NYCBaseTest {
 	   TotalSpendingPage.GoTo();
 	   SpendingPage.ShowWidgetDetails();
 	   TotalSpendingPage.GoToTop5ChecksDetailsPage();
-	   assertEquals("Paroll Spending Title did not match", totalSpendingTitle, TotalSpendingPage.GetTitle());
+	   assertEquals("Paroll Spending Title did not match", totalSpendingTitle, TotalSpendingPage.GetChecksDetailsPageTitle());
+    }
+    
+    @Test
+    public void VerifyTotalSpendingTop5ChecksTotalSpendingAmount(){
+       Number spendingAmount = 26.79;
+	    
+ 	   TotalSpendingPage.GoTo();
+	   SpendingPage.ShowWidgetDetails();
+	   TotalSpendingPage.GoToTop5ChecksDetailsPage();
+	   assertEquals("Total Spending Top 5 Checks Total Spending Amount did not match.", TotalSpendingPage.GetTotalSpendingAmount(), spendingAmount);
+	   
+    }
+    
+    @Test
+    public void VerifyTotalSpendingTop5ChecksTransactionCount(){
+       
+	   TotalSpendingPage.GoTo();
+	   SpendingPage.ShowWidgetDetails();
+	   TotalSpendingPage.GoToTop5ChecksDetailsPage();
+	   assertTrue(TotalSpendingPage.GetChecksTransactionCount() > 800000);
+	   
     }
 
     @Test
@@ -479,7 +501,7 @@ public class SmokeTest extends NYCBaseTest {
     @Test
     public void verifyChangesInNetAssets2015() {
         AllTrendsPage.GoTo(AllTrendsPage.allTrendsOptions.changesInNetAssets);
-        assertTrue(SearchPage.stringToInt(AllTrendsPage.changesInNetAssets2015()) >= 5479762);
+        assertTrue(Helper.stringToInt(AllTrendsPage.changesInNetAssets2015()) >= 5479762);
     }
 
     @Test

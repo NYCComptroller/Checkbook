@@ -20,21 +20,14 @@ public class NYCDatabaseUtil {
     // TODO: t.le: move to NYCBaseTest?
     // Establishes connection
     static void connectToDatabase() throws SQLException, ClassNotFoundException {
-
-        // TODO: t.le: verify the DB type, DB name
-        String URL = "jdbc:postgresql://192.168.3.24:5432/checkbook";
+        String URL = NYCBaseTest.prop.getProperty("DBConnectionURL");
         Properties props = new Properties();
-        props.setProperty("user", "webuser1");
-        props.setProperty("password", "webuser1");
+        props.setProperty("user", NYCBaseTest.prop.getProperty("DBUser"));
+        props.setProperty("password", NYCBaseTest.prop.getProperty("DBPass"));
         props.setProperty("ssl", "false");
-
         Class.forName("org.postgresql.Driver");
-
         con = DriverManager.getConnection(URL, props);
-
-//        assertEquals(Boolean.TRUE, con.isValid(10));
     }
-
 
     // Closes connection
     static void closeDatabase() throws SQLException {
@@ -136,7 +129,6 @@ public class NYCDatabaseUtil {
             default:
                 moneyChar = "";
                 break;
-
         }
 
         formattedNum = num.setScale(1, BigDecimal.ROUND_HALF_UP).toString();
