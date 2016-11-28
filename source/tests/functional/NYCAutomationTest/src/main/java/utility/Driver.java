@@ -36,12 +36,12 @@ public class Driver {
                 break;
 
             case "IE":
-                //System.setProperty("webdriver.ie.driver", Driver.DriverPath + "IEDriverServer.exe");
+                System.setProperty("webdriver.ie.driver", Driver.DriverPath + "IEDriverServer.exe");
                 Instance = new InternetExplorerDriver();
                 break;
 
             case "CHROME":
-                //System.setProperty("webdriver.chrome.driver", Driver.DriverPath + "chromedriver.exe");
+                System.setProperty("webdriver.chrome.driver", Driver.DriverPath + "chromedriver");
                 Instance = new ChromeDriver();
                 break;
 
