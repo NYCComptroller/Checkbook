@@ -3,6 +3,11 @@ package pages.help;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import utility.Driver;
+
 public class Helper {
 
 	public static int GetTotalEntries(String textString, int index) {	
@@ -21,6 +26,16 @@ public class Helper {
 			 return Double.parseDouble(matcher.group(1));	   
 			}
 		 else return 0;
+	 }
+	 
+	 public static boolean isPresent(By by) {
+	    return Driver.Instance.findElements(by).size() > 0;
+	 }
+	 
+	 public static String getCurrentSelectedYear(){
+		 WebElement yearSelected = Driver.Instance.findElement(By.cssSelector("#year_list_chzn > .chzn-single > span"));
+		 String[] year = (yearSelected.getText()).split(" ");
+		 return year[0]+year[1];
 	 }
 
 }
