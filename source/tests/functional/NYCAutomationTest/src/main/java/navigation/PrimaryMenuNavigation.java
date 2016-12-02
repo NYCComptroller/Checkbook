@@ -11,7 +11,7 @@ import utility.Driver;
 public class PrimaryMenuNavigation {
 
     // Primary Menu Options
-    public static final By home = By.linkText("Home");
+    public static final By home = By.cssSelector(".menu-230");
     public static final By tools = By.xpath("//*[@id=\"nice-menu-1\"]//span[contains(text(),'Tools')]");
     public static final By dataFeeds = By.linkText("Data Feeds");
     public static final By resources = By.linkText("Resources");

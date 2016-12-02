@@ -1,4 +1,4 @@
-package pages;
+package pages.spending;
 
 import navigation.TopNavigation;
 
@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.omg.CORBA.TIMEOUT;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import utility.Driver;
+import utility.Helper;
 
 public class SpendingPage {
 	public static void GoTo() {
@@ -16,13 +18,16 @@ public class SpendingPage {
     }
 
     public static String GetSpendingAmount() {
-        WebElement spendingAmt = Driver.Instance.findElement(By.xpath("//*[@id=\"node-widget-482\"]/div[1]/div/table/tbody/tr/td[1]/div[1]/a/span"));
-        return spendingAmt.getText();
+        WebElement spendingAmt = Driver.Instance.findElement(By.cssSelector(".top-navigation-left .spending > .expense-container > a"));
+        return spendingAmt.getText().substring((spendingAmt.getText().indexOf("$")));
     }
 
     public static boolean isAt() {
-        WebElement h2title = Driver.Instance.findElement(By.xpath("//*[@id=\"node-widget-21\"]/div[1]/h2"));
-        return h2title.getText().equals("Total Spending");
+    	WebElement topTitleCont = Driver.Instance.findElement(By.cssSelector(".top-navigation-left > table > tbody > tr .spending"));
+    	Boolean spendingSelected = (topTitleCont.getAttribute("class")).contains("active");	
+        //WebElement h2title = Driver.Instance.findElement(By.xpath("//*[@id=\"node-widget-21\"]/div[1]/h2"));
+        //Boolean totalSpendingSelected = h2title.getText().equals("Total Spending");    
+        return spendingSelected;
     }
 
 	public static ArrayList<String> VisualizationTitles() {
@@ -60,6 +65,7 @@ public class SpendingPage {
 		if(detailsLinkContainer.getText().contains("Show Details")){
 			detailsLinkContainer.click();
 		}
+		Driver.Instance.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
 	}
 
 }

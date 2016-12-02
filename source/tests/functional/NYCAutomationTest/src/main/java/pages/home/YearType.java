@@ -1,4 +1,4 @@
-package pages;
+package pages.home;
 
 class YearType {
 

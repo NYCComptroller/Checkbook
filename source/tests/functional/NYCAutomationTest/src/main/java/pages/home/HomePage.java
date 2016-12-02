@@ -1,7 +1,8 @@
-package pages;
+package pages.home;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+
 import utility.Driver;
 
 import java.util.List;
@@ -30,7 +31,6 @@ public class HomePage {
             }
             selectedYear.click();
         }
-
     }
 
     public static void createAlert() {
@@ -38,7 +38,15 @@ public class HomePage {
                 By.xpath("//*[@id=\"block-block-7\"]/div/div/span[contains(text(),'Create Alert')]"))
                 .click();
     }
-
-
-
+    
+    public static boolean IsAlertCreated(){
+    	return Driver.Instance.findElements(By.xpath(
+                "//*[@id=\"ui-dialog-title-block-checkbook-advanced-search-checkbook-advanced-search-form\"" +
+                "]/span/span[1][contains(text(),'1. Select Criteria')]")).size() > 0;
+    }
+    
+    public static boolean IsAtCheckbookNYC(){
+    	return Driver.Instance.getCurrentUrl().contains("checkbooknyc");
+    }
+    
 }

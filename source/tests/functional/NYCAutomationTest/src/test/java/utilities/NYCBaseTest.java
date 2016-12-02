@@ -1,12 +1,5 @@
 package utilities;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import pages.HomePage;
-import utility.Driver;
-import utility.InterfaceExcel;
-import utility.InterfaceTextFile;
-
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -16,9 +9,18 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+
+import pages.home.HomePage;
+import utility.Driver;
+import utility.Helper;
+import utility.InterfaceExcel;
+import utility.InterfaceTextFile;
+
 public class NYCBaseTest {
     // class fields
-    protected static Properties prop;
+    public static Properties prop;
 
     @BeforeClass
     public static void Init() throws IOException, SQLException, ClassNotFoundException {
@@ -62,10 +64,8 @@ public class NYCBaseTest {
         InterfaceExcel.setExcelReporting(boolDoExcelReporting);
         InterfaceExcel.CreateExcelFile(ExcelFileName + addDate);
 
-
-        HomePage.GoTo(NYCBaseTest.prop.getProperty("BaseUrl"));
-        // T.Le commented this out so that we only go to this year when necessary
-//        HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
+        System.out.println("init");
+        HomePage.GoTo(NYCBaseTest.prop.getProperty("BaseUrl")); 
     }
 
 

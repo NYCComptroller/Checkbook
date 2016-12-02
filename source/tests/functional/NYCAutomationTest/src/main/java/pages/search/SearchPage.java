@@ -1,26 +1,28 @@
-package pages;
+package pages.search;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import pages.help.Helper;
 import utility.Driver;
+import utility.Helper;
 
 public class SearchPage {
-    public static void smartSearch() {
+    public static void GoToSmartSearch() {
         Driver.Instance.findElement(By.xpath("//*[@id=\"edit-submit\"]")).click();
     }
 
-    public static boolean isAt() {
+    /*public static boolean isAt() {
         String h3title = Driver.Instance.findElement(By.xpath("" +
                 "//*[@id=\"block-system-main\"]/div/div/div[2]/ol/li[1]/h3[contains(text(), 'Transaction #1: spending')]"))
                 .getText();
         return h3title.equals("TRANSACTION #1: SPENDING");
-    }
+    }*/
 
-   
+    public static boolean isAt() {
+    	return Driver.Instance.getCurrentUrl().contains("smart_search");
+    }
 
     public static int getTotalSearchEntries() {
         String[] entries = Driver.Instance.findElement(By.xpath("//*[@id=\"smart-search-transactions\"]"))
@@ -30,7 +32,7 @@ public class SearchPage {
     }
 
     public static void openTypeOfData() {
-        if (!Driver.Instance.getCurrentUrl().contains("smart_search")) smartSearch();
+        if (!Driver.Instance.getCurrentUrl().contains("smart_search")) GoToSmartSearch();
         Driver.Instance.findElement(By.cssSelector("div.filter-title > span")).click();
     }
 
