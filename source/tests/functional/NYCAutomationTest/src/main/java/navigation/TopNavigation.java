@@ -12,11 +12,17 @@ public class TopNavigation {
 			public static void Select() {
 				SecondaryTabSelector.Select("Total Spending");	
 			}
+			public static boolean isAt() {
+				return SecondaryTabSelector.isAt("Total Spending");	
+			}
 		}
 		
 		public static class PayrollSpending{
 			public static void Select() {
 				SecondaryTabSelector.Select("Payroll Spending");	
+			}
+			public static boolean isAt() {
+				return SecondaryTabSelector.isAt("Payroll Spending");	
 			}
 		}
 		

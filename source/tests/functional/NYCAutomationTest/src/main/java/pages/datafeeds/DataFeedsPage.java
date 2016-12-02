@@ -1,18 +1,21 @@
-package pages;
+package pages.datafeeds;
 
 import navigation.PrimaryMenuNavigation;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import utility.Driver;
 
-public class DataFeedsPage {
+public class DataFeedsPage{
     public static void GoTo() {
         PrimaryMenuNavigation.DataFeeds();
     }
 
     public static boolean isAt() {
-        WebElement h2title = Driver.Instance.findElement(By.id("page-title"));
-        return h2title.getText().equals("Data Feeds");
+    	if((Driver.Instance.findElements(By.id("page-title"))).size() > 0){
+    		 WebElement h2title = Driver.Instance.findElement(By.id("page-title"));
+    		 return h2title.getText().equals("Data Feeds");
+    	}else
+    		return false;
     }
 
     public static void submitDataFeedsForm() {

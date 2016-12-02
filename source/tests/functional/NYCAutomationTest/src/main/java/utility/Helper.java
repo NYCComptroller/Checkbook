@@ -1,12 +1,10 @@
-package pages.help;
+package utility;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-
-import utility.Driver;
 
 public class Helper {
 

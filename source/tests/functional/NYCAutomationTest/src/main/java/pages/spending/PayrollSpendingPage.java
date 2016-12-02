@@ -1,4 +1,4 @@
-package pages;
+package pages.spending;
 
 import navigation.TopNavigation;
 import org.openqa.selenium.By;
@@ -9,8 +9,10 @@ public class PayrollSpendingPage {
 
     public static void GoTo() {
         TopNavigation.Spending.PayrollSpending.Select();
-        //Driver.Instance.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
-
+    }
+    
+    public static boolean isAt() {
+        return TopNavigation.Spending.PayrollSpending.isAt();
     }
 
     public static String GetTotalNumOfAgencies() {
@@ -20,10 +22,4 @@ public class PayrollSpendingPage {
         return numAgency;
     }
 
-
-    public static boolean isAt() {
-        WebElement h2title = Driver.Instance.findElement(By.xpath("//*[@id=\"node-widget-21\"]/div[1]/h2"));
-
-        return h2title.getText().equals("Payroll Spending");
-    }
 }
