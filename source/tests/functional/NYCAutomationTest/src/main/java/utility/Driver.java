@@ -65,7 +65,7 @@ public class Driver {
     private static void GetDriverPath() {
         String mainProjectpath;
         mainProjectpath = System.getProperty("user.dir");
-        String frameworkProjectPath = mainProjectpath + "/src/main/java/support/";
+        String frameworkProjectPath = mainProjectpath + "/src/main/resources/support/";
 
         Driver.DriverPath = frameworkProjectPath;
     }
