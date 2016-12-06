@@ -13,8 +13,18 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
+			<plugin>
+            	<groupId>org.apache.maven.plugins</groupId>
+            	<artifactId>maven-surefire-plugin</artifactId>
+            	<configuration>
+                	<includes>
+                    	<include>**/SmokeTest.java</include>
+                	</includes>
+            	</configuration>
+        	</plugin>
 		</plugins>
 	</build>
+	
 	<properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
@@ -57,6 +67,5 @@
 		  <artifactId>postgresql</artifactId>
 		  <version>9.4.1212.jre7</version>
 	  </dependency>
-
   </dependencies>
 </project>
