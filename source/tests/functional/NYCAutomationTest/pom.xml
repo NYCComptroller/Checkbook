@@ -18,7 +18,7 @@
             	<artifactId>maven-surefire-plugin</artifactId>
             	<configuration>
                 	<includes>
-                    	<include>**/SmokeTest.java</include>
+                    	<include>**/suites/SmokeTest.java</include>
                 	</includes>
             	</configuration>
         	</plugin>
