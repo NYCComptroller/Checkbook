@@ -22,6 +22,7 @@ abstract class UrlParameter {
     const CONTRACT_SIZE = "csize";
     const CONTRACT_INDUSTRY = "cindustry";
     const CONTRACT_STATUS = "status";
+    const SPENDING_CATEGORY = "category";
 }
 
 abstract class CheckbookDomain {
@@ -36,6 +37,9 @@ abstract class CheckbookDomain {
             preg_match('/contracts_revenue_landing/',$path) ||
             preg_match('/contracts_pending/',$path)){
             $domain = self::CONTRACTS;
+        }
+        if(preg_match('/spending_landing/',$path)){
+            $domain = self::SPENDING;
         }
         return $domain;
     }
