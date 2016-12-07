@@ -13,7 +13,7 @@ class SpendingWidgetService extends AbstractWidgetService {
         switch($column_name) {
             case "agency_name_link":
                 $column = $row['agency_name'];
-                $url = "";
+                $url = SpendingUrlService::agencyUrl($row['agency_id']);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
             case "vendor_name_link":
@@ -35,6 +35,14 @@ class SpendingWidgetService extends AbstractWidgetService {
             return $value;
         }
         return $value;
+    }
+    
+    public function getWidgetFooterUrl($parameters) {
+        
+    }
+    
+    public function adjustParameters($parameters, $urlPath) {
+
     }
 
 }

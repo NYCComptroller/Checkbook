@@ -7,5 +7,13 @@
  */
 
 class SpendingUrlService {
-
+    static function agencyUrl($agency_id){
+        $url = '/spending_landing'
+               .RequestUtilities::_getUrlParamString('vendor')
+               .RequestUtilities::_getUrlParamString('category')
+               .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
+               ._checkbook_project_get_year_url_param_string()
+               . '/agency/'. $agency_id;
+        return $url;
+    }          
 } 
