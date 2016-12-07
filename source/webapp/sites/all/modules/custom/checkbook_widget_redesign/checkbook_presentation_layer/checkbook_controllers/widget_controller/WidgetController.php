@@ -37,6 +37,9 @@ class WidgetController {
 //                $view = ContractsWidgetVisibilityService::getWidgetVisibility($widget);
                 $view = $this->_getContractWidgetView($widget);
                 break;
+            case Domain::$SPENDING;
+                $view = $this->_getSpendingWidgetView($widget);
+                break;
         }
         return $view;
     }
@@ -78,6 +81,9 @@ class WidgetController {
                 $nostatusExpenseContracts = noStatusExpenseContracts::getCurrent();
                 $dimension = isset($nostatusExpenseContracts)? "{$category}": "{$status}_{$category}";
                 break;
+            case Domain::$SPENDING:
+                $dimension = SpendingDimension::getCurrent();
+                break;
         }
         $config_str = file_get_contents(realpath(drupal_get_path('module', 'checkbook_view_configs')) . "/{$domain}.json");
         $converter = new Json2PHPObject();
@@ -118,6 +124,46 @@ class WidgetController {
                         //Don't show widget if this parameter is not in the URL
                         elseif(!RequestUtilities::getRequestParamValue($value)) {
                                 return null;
+                        }
+                    }
+                }
+            }
+            return $widget_config;
+        }
+        return null;
+    }
+
+    /**
+     * Function will read the domain specific widget configuration to determine
+     * whether or not to show the widget and return the name of the widget view config file to use
+     *
+     * @param $widget
+     * @return null
+     */
+    private function _getSpendingWidgetView($widget) {
+
+        $view = null;
+
+        $config = $this->_getCurrentWidgetViewConfig($widget);
+        $widget_config = $config->widget_config;
+        $show = true;
+
+        if(isset($widget_config)) {
+            $visibility_parameters = $config->visibility_parameters;
+            if(isset($visibility_parameters)) {
+
+                foreach($visibility_parameters as $value) {
+                    if(isset($value)) {
+
+                        //Don't show widget if this parameter is in the URL
+                        if(substr($value, 0, 1 ) == "-") {
+                            $value = ltrim($value, "-");
+                            if(RequestUtilities::getRequestParamValue($value))
+                                return null;
+                        }
+                        //Don't show widget if this parameter is not in the URL
+                        elseif(!RequestUtilities::getRequestParamValue($value)) {
+                            return null;
                         }
                     }
                 }
