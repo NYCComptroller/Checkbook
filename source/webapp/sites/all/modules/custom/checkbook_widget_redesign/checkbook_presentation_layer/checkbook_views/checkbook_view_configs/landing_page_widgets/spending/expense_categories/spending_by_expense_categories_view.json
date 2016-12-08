@@ -1,1 +1,34 @@
-
+{
+    "sqlConfig":
+    {
+        "serviceName":"SpendingWidgetService",
+        "sqlConfigName":"spending/spending",
+        "statementName":"GetSpendingByExpenseCategories"
+    },
+    "serviceName":"SpendingWidgetService",
+    "defaultParameters":{"type_of_year":"B"},
+    "headerTitle":"Agencies",
+    "headerSubTitle":"Agencies",
+    "table_columns":[
+        {"labelAlias":"expense_category","column":"expenditure_object_name"},
+        {"labelAlias":"ytd_spending","column":"check_amount_sum","derivedColumn":"expense_cat_ytd_spending_link","format":"dollar"},
+        {"label":"","column":""}
+    ],
+    "dataTableOptions":{
+        "aoColumns":[
+            {"sClass":"text","sWidth":"143px","bSortable":false},
+            {"sClass":"number","sWidth":"15px","asSorting":["desc","asc"]},
+            {"sWidth":"15px","bSortable":false}
+        ],
+        "bServerSide":true,
+        "bFilter":false,
+        "bPaginate":false,
+        "bProcessing":true,
+        "bLengthChange":false,
+        "bInfo":false,
+        "bAutoWidth":false,
+        "aaSorting":[[1,"desc"]],
+        "fnServerParams":"##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
+        "oLanguage":{"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
+   }
+}

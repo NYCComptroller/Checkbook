@@ -84,7 +84,7 @@
         SELECT s0.type_of_year,
             s0.year_id,
             s0.expenditure_object_id,
-            j1.original_expenditure_object_name,
+            j1.original_expenditure_object_name AS expenditure_object_name,
             SUM(total_spending_amount) AS check_amount_sum
         FROM aggregateon_spending_coa_entities s0
         JOIN ref_expenditure_object j1 ON j1.expenditure_object_id = s0.expenditure_object_id
