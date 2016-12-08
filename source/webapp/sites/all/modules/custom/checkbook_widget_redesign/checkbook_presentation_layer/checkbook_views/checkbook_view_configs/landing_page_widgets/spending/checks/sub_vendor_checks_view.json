@@ -2,12 +2,12 @@
     "sqlConfig":
     {
         "serviceName":"SpendingWidgetService",
-        "sqlConfigName":"spending/spending",
-        "statementName":"GetSVChecks",
-        "countStatementName":"GetCountSVChecks"
+        "sqlConfigName":"spending/sub_contract_spending",
+        "statementName":"GetSubVendorsChecks"
     },
+    "serviceName":"SpendingWidgetService",
     "headerTitle":"Checks",
-    "footerUrl":"SpendingUtil::getSpendingFooterUrl($node)",
+    "headerSubTitle":"Checks",
     "table_columns": [
             {"labelAlias":"issue_date","column":"issue_date","format":"date"},
             {"labelAlias":"agency_name","column":"agency_name"},

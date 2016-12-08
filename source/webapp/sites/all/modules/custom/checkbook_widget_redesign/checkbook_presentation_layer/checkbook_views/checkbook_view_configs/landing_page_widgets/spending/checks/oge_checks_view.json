@@ -2,13 +2,11 @@
     "sqlConfig":
     {
         "serviceName":"SpendingWidgetService",
-        "sqlConfigName":"spending/spending",
-        "statementName":"GetOGEChecks",
-        "countStatementName":"GetCountOGEChecks"
+        "sqlConfigName":"spending/oge_spending",
+        "statementName":"GetOGEChecksAgency"
     },
     "headerTitle":"Checks",
-    "footerUrl":"'/panel_html/spending_transactions/spending/transactions'. _checkbook_project_get_url_param_string(\"vendor\",\"fvendor\") ._checkbook_project_get_url_param_string(\"agency\")  . '/dtsmnid/' . $node->nid ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string(false,false,true). _checkbook_append_url_params()",
-
+    "headerSubTitle":"Checks",
     "table_columns": [
         {"labelAlias":"agency_name","column":"agency_name","derivedColumn":"agency_name_link"},
         {"labelAlias":"prime_vendor","column":"vendor_name","derivedColumn":"vendor_name_link"},
