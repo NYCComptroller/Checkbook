@@ -25,14 +25,18 @@ class SpendingUrlService {
       /**
      * @param $param - Widget Name to be used in the URL
      * @param $value - value of @param to be used in the URL
+     * @param null $legacy_node_id
      * @return string
      */
-    static function ytdSpendindUrl($param, $value){
+    static function ytdSpendindUrl($param, $value, $legacy_node_id = null){
+        $smnid_param = isset($legacy_node_id) ? '/smnid/'.$legacy_node_id : '';
         $url = '/panel_html/spending_transactions/spending/transactions'
                .RequestUtilities::_getUrlParamString('vendor')
+               .RequestUtilities::_getUrlParamString('agency')
                .RequestUtilities::_getUrlParamString('category')
                .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
                ._checkbook_project_get_year_url_param_string()
+               .$smnid_param
                . '/'.$param.'/'. $value;
         return $url;
     }
@@ -50,7 +54,8 @@ class SpendingUrlService {
                 .RequestUtilities::_getUrlParamString('agency')
                 .RequestUtilities::_getUrlParamString('category')
                 .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
-               ._checkbook_project_get_year_url_param_string();
+                ._checkbook_project_get_year_url_param_string()
+                .$dtsmnid_param;
         
         return $url;
     }
