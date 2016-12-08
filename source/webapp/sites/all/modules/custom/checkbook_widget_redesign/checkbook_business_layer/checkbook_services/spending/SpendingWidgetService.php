@@ -9,12 +9,19 @@
 class SpendingWidgetService extends AbstractWidgetService {
 
     public function implDerivedColumn($column_name,$row) {
+        
         $value = null;
         switch($column_name) {
             case "agency_name_link":
                 $column = $row['agency_name'];
                 $url = SpendingUrlService::agencyUrl($row['agency_id']);
                 $value = "<a href='{$url}'>{$column}</a>";
+                break;
+            case "agency_ytd_spending_link":
+                $column = $row['check_amount_sum'];
+                $class = "bottomContainerReload";
+                $url = SpendingUrlService::ytdSpendindUrl('agency',$row['agency_id']);
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
             case "vendor_name_link":
                 $datasource = _getRequestParamValue("datasource");
@@ -38,7 +45,7 @@ class SpendingWidgetService extends AbstractWidgetService {
     }
     
     public function getWidgetFooterUrl($parameters) {
-        return $parameters;
+        return SpendingUrlService::getFooterUrl($parameters,$this->getLegacyNodeId());
     }
     
     public function adjustParameters($parameters, $urlPath) {
