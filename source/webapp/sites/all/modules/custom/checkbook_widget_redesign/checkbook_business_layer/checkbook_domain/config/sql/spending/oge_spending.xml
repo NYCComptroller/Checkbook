@@ -1,1 +1,52 @@
-
+<statements>
+    <statement name="GetOGEChecksAgency" datasource="checkbook_oge">
+        <param name="year" required ="true"/>
+        <param name="category" type="int"/>
+        <param name="agency" type="int"/>
+        <sql>
+            SELECT
+            check_eft_issued_date,
+            vendor_name,
+            agency_name,
+            check_amount,
+            expenditure_object_name,
+            agency_id,
+            vendor_id,
+            expenditure_object_id,
+            department_name
+            FROM disbursement_line_item_details
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="check_eft_issued_nyc_year_id" paramName="year" />
+                    <exp op="IN" dbField="agency_id" paramName="agency"/>
+                    <exp op="=" dbField="spending_category_id" paramName="category"/>
+                </exp>
+            </where>
+        </sql>
+    </statement>
+    <statement name="GetOGEChecksVendors" datasource="checkbook_oge">
+        <param name="year" required ="true"/>
+        <param name="category" type="int"/>
+        <param name="vendor" type="int"/>
+        <sql>
+            SELECT
+            check_eft_issued_date,
+            vendor_name,
+            agency_name,
+            check_amount,
+            expenditure_object_name,
+            agency_id,
+            vendor_id,
+            expenditure_object_id,
+            department_name
+            FROM disbursement_line_item_details
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="check_eft_issued_nyc_year_id" paramName="year" />
+                    <exp op="IN" dbField="vendor_id" paramName="vendor"/>
+                    <exp op="=" dbField="spending_category_id" paramName="category"/>
+                </exp>
+            </where>
+        </sql>
+    </statement>
+</statements>
