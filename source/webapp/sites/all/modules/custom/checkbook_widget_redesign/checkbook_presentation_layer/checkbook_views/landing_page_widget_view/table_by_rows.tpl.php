@@ -118,7 +118,7 @@ else {
   <?php
     if ($node->widgetConfig->enableExpand == TRUE) {
         if($node->totalDataCount > 5){
-            if($node->nid == 22 || $node->nid == 23 || $node->nid == 29){
+            if($node->nid == 'spending_by_agencies_view' || $node->nid == 'spending_by_expense_categories_view' || $node->nid == 29){
                 echo '<a href="#" class="simultExpandCollapseWidget"><img src="/' . drupal_get_path('theme',$GLOBALS['theme']) . '/images/open.png"></a>';
             }else{
                 echo '<a href="#" class="expandCollapseWidget"><img src="/' . drupal_get_path('theme',$GLOBALS['theme']) . '/images/open.png"></a>';
