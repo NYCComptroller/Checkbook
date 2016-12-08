@@ -2029,105 +2029,54 @@ $('.expandCollapseWidget').live("click",
 
 $('.simultExpandCollapseWidget').live("click",
        function (event) {
-           var toggled = $(this).data('toggled');
-           var oTableExpenseCategories =  null;
-           var oTableAgencies =  null;
-           var oTable29 =  null;
-           var oElementExpenseCategories =  null;
-           var oElementAgencies =  null;
-           var oElement29 =  null;
+        var toggled = $(this).data('toggled');
+        var nodes = ['node-widget-spending_by_expense_categories_view','node-widget-spending_by_agencies_view',
+                     'node-widget-spending_by_departments_view', 'node-widget-oge_spending_by_expense_categories_view', 
+                     'node-widget-oge_spending_by_departments_view', 'node-widget-mwbe_spending_by_agencies_view',
+                     'node-widget-mwe_spending_expense_categories_view','node-widget-mwbe_spending_by_departments_view'];
+        jQuery.each(nodes, function (index, value) {
+            var oTable = null;
+            var oElement = null;
+            var nodeId = '#'+ value +' a.simultExpandCollapseWidget';
 
-           if($('#node-widget-spending_by_expense_categories_view a.simultExpandCollapseWidget').parent().prev().find('.dataTable') != null){
-                oTableExpenseCategories = $('#node-widget-spending_by_expense_categories_view a.simultExpandCollapseWidget').parent().prev().find('.dataTable').dataTable() ;
-                oElementExpenseCategories = $('#node-widget-spending_by_expense_categories_view a.simultExpandCollapseWidget');
-                oElementExpenseCategories.data('toggled', !toggled);
-           }
-           if($('#node-widget-spending_by_agencies_view a.simultExpandCollapseWidget').parent().prev().find('.dataTable') != null){
-                oTableAgencies = $('#node-widget-spending_by_agencies_view a.simultExpandCollapseWidget').parent().prev().find('.dataTable').dataTable();
-                oElementAgencies = $('#node-widget-spending_by_agencies_view a.simultExpandCollapseWidget');
-                oElementAgencies.data('toggled', !toggled);
-           }
-           if($('#node-widget-29 a.simultExpandCollapseWidget').parent().prev().find('.dataTable') != null){
-                oTable29 = $('#node-widget-29 a.simultExpandCollapseWidget').parent().prev().find('.dataTable').dataTable();
-                oElement29 = $('#node-widget-29 a.simultExpandCollapseWidget');
-                oElement29.data('toggled', !toggled);
-           }
+            if(jQuery(nodeId).parent().prev().find('.dataTable') != null){
+                oTable = jQuery(nodeId).parent().prev().find('.dataTable').dataTable() ;
+                oElement = jQuery(nodeId);
+                oElement.data('toggled', !toggled);
+            
+                event.preventDefault();
+                var text ="";
 
-           event.preventDefault();
-           var text ="";
+                if (!toggled) {
+                   if(oTable.size() > 0){
+                        oTable.fnSettings().oInit.expandto150 = true;
+                        oTable.fnSettings().oInit.expandto5 = false;
+                   }
 
-           if (!toggled) {
-               if(oTableExpenseCategories.size() > 0){
-                    oTableExpenseCategories.fnSettings().oInit.expandto150 = true;
-                    oTableExpenseCategories.fnSettings().oInit.expandto5 = false;
-               }
-               if(oTableAgencies.size() > 0){
-                    oTableAgencies.fnSettings().oInit.expandto150 = true;
-                    oTableAgencies.fnSettings().oInit.expandto5 = false;
-               }
-               if(oTable29.size() > 0){
-                    oTable29.fnSettings().oInit.expandto150 = true;
-                    oTable29.fnSettings().oInit.expandto5 = false;
-               }
+                   text = "<img src='/sites/all/themes/checkbook/images/close.png'>";
+                   if(oElement != null){
+                        oElement.parent().parent().find('.hideOnExpand').hide();
+                   }
+                }else{
+                   if(oTable.size() > 0){
+                        oTable.fnSettings().oInit.expandto5 = true;
+                        oTable.fnSettings().oInit.expandto150 = false;
+                        var placeExpenseCategories = $('#'+oTable.fnSettings().sInstance + '_wrapper').parent().parent().attr('id');
+                        document.getElementById(placeExpenseCategories).scrollIntoView();
+                   }
 
-                text = "<img src='/sites/all/themes/checkbook/images/close.png'>";
-               if(oElementExpenseCategories != null){
-                    oElementExpenseCategories.parent().parent().find('.hideOnExpand').hide();
-               }
-               if(oElementAgencies != null){
-                    oElementAgencies.parent().parent().find('.hideOnExpand').hide();
-               }
-
-               if(oElement29 != null){
-                    oElement29.parent().parent().find('.hideOnExpand').hide();
-               }
-
-           }else{
-               if(oTableExpenseCategories.size() > 0){
-                    oTableExpenseCategories.fnSettings().oInit.expandto5 = true;
-                    oTableExpenseCategories.fnSettings().oInit.expandto150 = false;
-                    var placeExpenseCategories = $('#'+oTableExpenseCategories.fnSettings().sInstance + '_wrapper').parent().parent().attr('id');
-                    document.getElementById(placeExpenseCategories).scrollIntoView();
-               }
-               if(oTableAgencies.size() > 0){
-                    oTableAgencies.fnSettings().oInit.expandto5 = true;
-                    oTableAgencies.fnSettings().oInit.expandto150 = false;
-                    var placeAgencies = $('#'+oTableAgencies.fnSettings().sInstance + '_wrapper').parent().parent().attr('id');
-                    document.getElementById(placeAgencies).scrollIntoView();
-               }
-               if(oTable29.size() > 0){
-                    oTable29.fnSettings().oInit.expandto5 = true;
-                    oTable29.fnSettings().oInit.expandto150 = false;
-                    var place29 = $('#'+oTable29.fnSettings().sInstance + '_wrapper').parent().parent().attr('id');
-                    document.getElementById(place29).scrollIntoView();
-               }
-
-                text = "<img src='/sites/all/themes/checkbook/images/open.png'>";
-                if(oElementExpenseCategories != null){
-                    oElementExpenseCategories.parent().parent().find('.hideOnExpand').show();
+                   text = "<img src='/sites/all/themes/checkbook/images/open.png'>";
+                    if(oElement != null){
+                        oElement.parent().parent().find('.hideOnExpand').show();
+                    }
                 }
 
-                if(oElementAgencies != null){
-                    oElementAgencies.parent().parent().find('.hideOnExpand').show();
+                if(oTable.size() > 0){
+                    oTable.fnDraw();
+                    oElement.html(text);
                 }
-
-                if(oElement29 != null){
-                    oElement29.parent().parent().find('.hideOnExpand').show();
-                }
-
-           }
-            if(oTableExpenseCategories.size() > 0){
-                oTableExpenseCategories.fnDraw();
-                oElementExpenseCategories.html(text);
             }
-            if(oTableAgencies.size() > 0){
-                oTableAgencies.fnDraw();
-                oElementAgencies.html(text);
-            }
-            if(oTable29.size() > 0){
-                oTable29.fnDraw();
-                oElement29.html(text);
-            }
+        });
        }
    );
 
