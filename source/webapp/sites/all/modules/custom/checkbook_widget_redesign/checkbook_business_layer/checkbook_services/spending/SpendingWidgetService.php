@@ -38,11 +38,11 @@ class SpendingWidgetService extends AbstractWidgetService {
     }
     
     public function getWidgetFooterUrl($parameters) {
-        
+        return $parameters;
     }
     
     public function adjustParameters($parameters, $urlPath) {
-
+        return $parameters;
     }
 
 }
