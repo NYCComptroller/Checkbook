@@ -2030,22 +2030,22 @@ $('.expandCollapseWidget').live("click",
 $('.simultExpandCollapseWidget').live("click",
        function (event) {
            var toggled = $(this).data('toggled');
-           var oTable22 =  null;
-           var oTable23 =  null;
+           var oTableExpenseCategories =  null;
+           var oTableAgencies =  null;
            var oTable29 =  null;
-           var oElement22 =  null;
-           var oElement23 =  null;
+           var oElementExpenseCategories =  null;
+           var oElementAgencies =  null;
            var oElement29 =  null;
 
-           if($('#node-widget-22 a.simultExpandCollapseWidget').parent().prev().find('.dataTable') != null){
-                oTable22 = $('#node-widget-22 a.simultExpandCollapseWidget').parent().prev().find('.dataTable').dataTable() ;
-                oElement22 = $('#node-widget-22 a.simultExpandCollapseWidget');
-                oElement22.data('toggled', !toggled);
+           if($('#node-widget-spending_by_expense_categories_view a.simultExpandCollapseWidget').parent().prev().find('.dataTable') != null){
+                oTableExpenseCategories = $('#node-widget-spending_by_expense_categories_view a.simultExpandCollapseWidget').parent().prev().find('.dataTable').dataTable() ;
+                oElementExpenseCategories = $('#node-widget-spending_by_expense_categories_view a.simultExpandCollapseWidget');
+                oElementExpenseCategories.data('toggled', !toggled);
            }
-           if($('#node-widget-23 a.simultExpandCollapseWidget').parent().prev().find('.dataTable') != null){
-                oTable23 = $('#node-widget-23 a.simultExpandCollapseWidget').parent().prev().find('.dataTable').dataTable();
-                oElement23 = $('#node-widget-23 a.simultExpandCollapseWidget');
-                oElement23.data('toggled', !toggled);
+           if($('#node-widget-spending_by_agencies_view a.simultExpandCollapseWidget').parent().prev().find('.dataTable') != null){
+                oTableAgencies = $('#node-widget-spending_by_agencies_view a.simultExpandCollapseWidget').parent().prev().find('.dataTable').dataTable();
+                oElementAgencies = $('#node-widget-spending_by_agencies_view a.simultExpandCollapseWidget');
+                oElementAgencies.data('toggled', !toggled);
            }
            if($('#node-widget-29 a.simultExpandCollapseWidget').parent().prev().find('.dataTable') != null){
                 oTable29 = $('#node-widget-29 a.simultExpandCollapseWidget').parent().prev().find('.dataTable').dataTable();
@@ -2057,13 +2057,13 @@ $('.simultExpandCollapseWidget').live("click",
            var text ="";
 
            if (!toggled) {
-               if(oTable22.size() > 0){
-                    oTable22.fnSettings().oInit.expandto150 = true;
-                    oTable22.fnSettings().oInit.expandto5 = false;
+               if(oTableExpenseCategories.size() > 0){
+                    oTableExpenseCategories.fnSettings().oInit.expandto150 = true;
+                    oTableExpenseCategories.fnSettings().oInit.expandto5 = false;
                }
-               if(oTable23.size() > 0){
-                    oTable23.fnSettings().oInit.expandto150 = true;
-                    oTable23.fnSettings().oInit.expandto5 = false;
+               if(oTableAgencies.size() > 0){
+                    oTableAgencies.fnSettings().oInit.expandto150 = true;
+                    oTableAgencies.fnSettings().oInit.expandto5 = false;
                }
                if(oTable29.size() > 0){
                     oTable29.fnSettings().oInit.expandto150 = true;
@@ -2071,11 +2071,11 @@ $('.simultExpandCollapseWidget').live("click",
                }
 
                 text = "<img src='/sites/all/themes/checkbook/images/close.png'>";
-               if(oElement22 != null){
-                    oElement22.parent().parent().find('.hideOnExpand').hide();
+               if(oElementExpenseCategories != null){
+                    oElementExpenseCategories.parent().parent().find('.hideOnExpand').hide();
                }
-               if(oElement23 != null){
-                    oElement23.parent().parent().find('.hideOnExpand').hide();
+               if(oElementAgencies != null){
+                    oElementAgencies.parent().parent().find('.hideOnExpand').hide();
                }
 
                if(oElement29 != null){
@@ -2083,17 +2083,17 @@ $('.simultExpandCollapseWidget').live("click",
                }
 
            }else{
-               if(oTable22.size() > 0){
-                    oTable22.fnSettings().oInit.expandto5 = true;
-                    oTable22.fnSettings().oInit.expandto150 = false;
-                    var place22 = $('#'+oTable22.fnSettings().sInstance + '_wrapper').parent().parent().attr('id');
-                    document.getElementById(place22).scrollIntoView();
+               if(oTableExpenseCategories.size() > 0){
+                    oTableExpenseCategories.fnSettings().oInit.expandto5 = true;
+                    oTableExpenseCategories.fnSettings().oInit.expandto150 = false;
+                    var placeExpenseCategories = $('#'+oTableExpenseCategories.fnSettings().sInstance + '_wrapper').parent().parent().attr('id');
+                    document.getElementById(placeExpenseCategories).scrollIntoView();
                }
-               if(oTable23.size() > 0){
-                    oTable23.fnSettings().oInit.expandto5 = true;
-                    oTable23.fnSettings().oInit.expandto150 = false;
-                    var place23 = $('#'+oTable23.fnSettings().sInstance + '_wrapper').parent().parent().attr('id');
-                    document.getElementById(place23).scrollIntoView();
+               if(oTableAgencies.size() > 0){
+                    oTableAgencies.fnSettings().oInit.expandto5 = true;
+                    oTableAgencies.fnSettings().oInit.expandto150 = false;
+                    var placeAgencies = $('#'+oTableAgencies.fnSettings().sInstance + '_wrapper').parent().parent().attr('id');
+                    document.getElementById(placeAgencies).scrollIntoView();
                }
                if(oTable29.size() > 0){
                     oTable29.fnSettings().oInit.expandto5 = true;
@@ -2103,12 +2103,12 @@ $('.simultExpandCollapseWidget').live("click",
                }
 
                 text = "<img src='/sites/all/themes/checkbook/images/open.png'>";
-                if(oElement22 != null){
-                    oElement22.parent().parent().find('.hideOnExpand').show();
+                if(oElementExpenseCategories != null){
+                    oElementExpenseCategories.parent().parent().find('.hideOnExpand').show();
                 }
 
-                if(oElement23 != null){
-                    oElement23.parent().parent().find('.hideOnExpand').show();
+                if(oElementAgencies != null){
+                    oElementAgencies.parent().parent().find('.hideOnExpand').show();
                 }
 
                 if(oElement29 != null){
@@ -2116,13 +2116,13 @@ $('.simultExpandCollapseWidget').live("click",
                 }
 
            }
-            if(oTable22.size() > 0){
-                oTable22.fnDraw();
-                oElement22.html(text);
+            if(oTableExpenseCategories.size() > 0){
+                oTableExpenseCategories.fnDraw();
+                oElementExpenseCategories.html(text);
             }
-            if(oTable23.size() > 0){
-                oTable23.fnDraw();
-                oElement23.html(text);
+            if(oTableAgencies.size() > 0){
+                oTableAgencies.fnDraw();
+                oElementAgencies.html(text);
             }
             if(oTable29.size() > 0){
                 oTable29.fnDraw();
