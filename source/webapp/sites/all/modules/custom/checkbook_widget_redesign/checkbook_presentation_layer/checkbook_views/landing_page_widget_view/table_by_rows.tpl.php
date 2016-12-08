@@ -118,7 +118,10 @@ else {
   <?php
     if ($node->widgetConfig->enableExpand == TRUE) {
         if($node->totalDataCount > 5){
-            if($node->nid == 'spending_by_agencies_view' || $node->nid == 'spending_by_expense_categories_view' || $node->nid == 29){
+            if($node->nid == 'spending_by_agencies_view' || $node->nid == 'spending_by_expense_categories_view' || $node->nid == 'spending_by_departments_view' 
+               || $node->nid == 'oge_spending_by_expense_categories_view' || $node->nid == 'oge_spending_by_departments_view'
+               || $node->nid == 'mwbe_spending_by_agencies_view' || $node->nid == 'mwe_spending_expense_categories_view'
+               || $node->nid == 'mwbe_spending_by_departments_view'){
                 echo '<a href="#" class="simultExpandCollapseWidget"><img src="/' . drupal_get_path('theme',$GLOBALS['theme']) . '/images/open.png"></a>';
             }else{
                 echo '<a href="#" class="expandCollapseWidget"><img src="/' . drupal_get_path('theme',$GLOBALS['theme']) . '/images/open.png"></a>';
