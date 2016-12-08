@@ -2028,7 +2028,7 @@ $('.expandCollapseWidget').live("click",
    );
 
 $('.simultExpandCollapseWidget').live("click",
-       function (event) {
+    function (event) {
         var toggled = $(this).data('toggled');
         var nodes = ['node-widget-spending_by_expense_categories_view','node-widget-spending_by_agencies_view',
                      'node-widget-spending_by_departments_view', 'node-widget-oge_spending_by_expense_categories_view', 
@@ -2048,24 +2048,24 @@ $('.simultExpandCollapseWidget').live("click",
                 var text ="";
 
                 if (!toggled) {
-                   if(oTable.size() > 0){
+                    if(oTable.size() > 0){
                         oTable.fnSettings().oInit.expandto150 = true;
                         oTable.fnSettings().oInit.expandto5 = false;
-                   }
+                    }
 
-                   text = "<img src='/sites/all/themes/checkbook/images/close.png'>";
-                   if(oElement != null){
+                    text = "<img src='/sites/all/themes/checkbook/images/close.png'>";
+                    if(oElement != null){
                         oElement.parent().parent().find('.hideOnExpand').hide();
-                   }
+                    }
                 }else{
-                   if(oTable.size() > 0){
+                    if(oTable.size() > 0){
                         oTable.fnSettings().oInit.expandto5 = true;
                         oTable.fnSettings().oInit.expandto150 = false;
                         var placeExpenseCategories = $('#'+oTable.fnSettings().sInstance + '_wrapper').parent().parent().attr('id');
                         document.getElementById(placeExpenseCategories).scrollIntoView();
-                   }
+                    }
 
-                   text = "<img src='/sites/all/themes/checkbook/images/open.png'>";
+                    text = "<img src='/sites/all/themes/checkbook/images/open.png'>";
                     if(oElement != null){
                         oElement.parent().parent().find('.hideOnExpand').show();
                     }
@@ -2077,8 +2077,8 @@ $('.simultExpandCollapseWidget').live("click",
                 }
             }
         });
-       }
-   );
+    }
+ );
 
     //Instructional Videos
     var instructionalVideos = '.instructional-video-toggle, .instructional-video-filter-highlight';
