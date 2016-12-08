@@ -2,12 +2,12 @@
     "sqlConfig":
     {
         "serviceName":"SpendingWidgetService",
-        "sqlConfigName":"spending/spending",
-        "statementName":"GetSVmwbeChecks",
-        "countStatementName":"GetCountSVmwbeChecks"
+        "sqlConfigName":"spending/sub_contract_spending",
+        "statementName":"GetSubVendorsChecks"
     },
+    "serviceName":"SpendingWidgetService",
     "headerTitle":"Checks",
-    "footerUrl":"SpendingUtil::getSpendingFooterUrl($node)",
+    "headerSubTitle":"Checks",
     "table_columns": [
         {"labelAlias": "issue_date","column": "issue_date", "format":"date"},
         {"labelAlias": "agency_name","column": "agency_name"},
@@ -31,9 +31,7 @@
         "bInfo": false,
         "bAutoWidth": false,
         "aaSorting": [[ 3, "desc" ]],
-        "fnServerParams": "##function ( aoData ) {
-                   reloadExpandCollapseWidget(this,aoData);
-        }##",
+        "fnServerParams": "##function ( aoData ){reloadExpandCollapseWidget(this,aoData);}##",
     "oLanguage":{ "sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
    }
 }
