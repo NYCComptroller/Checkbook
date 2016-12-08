@@ -74,22 +74,23 @@ class WidgetController {
 
         $dimension = "";
 
+        $config_str = file_get_contents(realpath(drupal_get_path('module', 'checkbook_view_configs')) . "/{$domain}.json");
+        $converter = new Json2PHPObject();
+        $configuration = $converter->convert($config_str);
+
         switch($domain) {
             case Domain::$CONTRACTS:
                 $status = ContractStatus::getCurrent();
                 $category = ContractCategory::getCurrent();
                 $nostatusExpenseContracts = noStatusExpenseContracts::getCurrent();
                 $dimension = isset($nostatusExpenseContracts)? "{$category}": "{$status}_{$category}";
+                $config = $configuration->$dashboard->$dimension->landing_page_widgets->$widget;
                 break;
             case Domain::$SPENDING:
-                $dimension = SpendingDimension::getCurrent();
+                //$dimension = SpendingDimension::getCurrent();
+                $config = $configuration->$dashboard->landing_page_widgets->$widget;
                 break;
         }
-        $config_str = file_get_contents(realpath(drupal_get_path('module', 'checkbook_view_configs')) . "/{$domain}.json");
-        $converter = new Json2PHPObject();
-        $configuration = $converter->convert($config_str);
-        $config = $configuration->$dashboard->$dimension->landing_page_widgets->$widget;
-
         return $config;
     }
 
