@@ -7,8 +7,8 @@
     },
     "serviceName":"SpendingWidgetService",
     "defaultParameters":{"type_of_year":"B"},
-    "headerTitle":"Agencies",
-    "headerSubTitle":"Agencies",
+    "headerTitle":"Expense Categories",
+    "headerSubTitle":"Expense Categories",
     "table_columns":[
         {"labelAlias":"expense_category","column":"expenditure_object_name"},
         {"labelAlias":"ytd_spending","column":"check_amount_sum","derivedColumn":"expense_cat_ytd_spending_link","format":"dollar"},
