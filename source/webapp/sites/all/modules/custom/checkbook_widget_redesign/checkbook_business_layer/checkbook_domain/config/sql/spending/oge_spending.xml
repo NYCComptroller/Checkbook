@@ -24,7 +24,7 @@
             </where>
         </sql>
     </statement>
-    <statement name="GetOGEChecksVendors" datasource="checkbook_oge">
+    <statement name="GetOGEChecksVendors" datasource="checkbook">
         <param name="year" required ="true"/>
         <param name="category" type="int"/>
         <param name="vendor" type="int"/>
