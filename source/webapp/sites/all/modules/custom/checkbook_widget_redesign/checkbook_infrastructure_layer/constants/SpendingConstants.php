@@ -19,19 +19,19 @@ abstract class SpendingDimension {
         $category = NULL;
         $category = RequestUtilities::getRequestParamValue(UrlParameter::SPENDING_CATEGORY);
         switch($category){
-            case 1:
+            case '1':
                 $dimension = self::CONTRACT;
                 break;
-            case 2:
+            case '2':
                 $dimension = self::PAYROLL;
                 break;
-            case 3:
+            case '3':
                 $dimension = self::CAPITAL;
                 break;
-            case 4:
+            case '4':
                 $dimension = self::OTHER;
                 break;
-            case 5:
+            case '5':
                 $dimension = self::TRUSTAGENCY;
                 break;
             default:
