@@ -1,43 +1,49 @@
 {
     "citywide":{
-        "total_spending":{
-            "landing_page_widgets":{
-                "checks":{
-                    "widget_config":"citywide_checks_view",
-                    "legacy_node_id":502
-                }
+        "landing_page_widgets":{
+            "checks":{
+                "widget_config":"checks_view",
+                "legacy_node_id":502
             }
-        },
-        "capital_spending":{
-            "landing_page_widgets":{
-                "checks":{
-                    "widget_config":"citywide_checks_view",
-                    "legacy_node_id":502
-                }
+        }
+    },
+    "mwbe":{
+        "landing_page_widgets":{
+            "checks":{
+                "widget_config":"checks_view",
+                "legacy_node_id":758
             }
-        },
-        "contract_spending":{
-            "landing_page_widgets":{
-                "checks":{
-                    "widget_config":"citywide_checks_view",
-                    "legacy_node_id":502
-                }
+        }
+    },
+    "sub_vendors":{
+        "landing_page_widgets":{
+            "checks":{
+                "widget_config":"sub_vendors_checks_view",
+                "legacy_node_id":715
             }
-        },
-        "trust_and_agency_spending":{
-            "landing_page_widgets":{
-                "checks":{
-                    "widget_config":"citywide_checks_view",
-                    "legacy_node_id":502
-                }
+        }
+    },
+    "sub_vendors_mwbe":{
+        "landing_page_widgets":{
+            "checks":{
+                "widget_config":"sub_vendors_checks_view",
+                "legacy_node_id":715
             }
-        },
-        "other_spending":{
-            "landing_page_widgets":{
-                "checks":{
-                    "widget_config":"citywide_checks_view",
-                    "legacy_node_id":502
-                }
+        }
+    },
+    "mwbe_sub_vendors":{
+        "landing_page_widgets":{
+            "checks":{
+                "widget_config":"mwbe_sub_vendors_checks_view",
+                "legacy_node_id":745
+            }
+        }
+    },
+    "oge":{
+        "landing_page_widgets":{
+            "checks":{
+                "widget_config":"oge_checks_view",
+                "legacy_node_id":651
             }
         }
     }
