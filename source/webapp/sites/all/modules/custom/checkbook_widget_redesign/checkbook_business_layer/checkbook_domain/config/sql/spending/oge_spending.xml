@@ -1,5 +1,5 @@
 <statements>
-    <statement name="GetOGEChecksAgency" datasource="checkbook_oge">
+    <statement name="GetOGESpendingByChecksAgency" datasource="checkbook_oge">
         <param name="year" required ="true"/>
         <param name="category" type="int"/>
         <param name="agency" type="int"/>
@@ -24,7 +24,7 @@
             </where>
         </sql>
     </statement>
-    <statement name="GetOGEChecksVendors" datasource="checkbook">
+    <statement name="GetOGESpendingByChecksVendors" datasource="checkbook">
         <param name="year" required ="true"/>
         <param name="category" type="int"/>
         <param name="vendor" type="int"/>
