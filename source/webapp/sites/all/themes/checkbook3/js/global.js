@@ -2061,8 +2061,8 @@ $('.simultExpandCollapseWidget').live("click",
                     if(oTable.size() > 0){
                         oTable.fnSettings().oInit.expandto5 = true;
                         oTable.fnSettings().oInit.expandto150 = false;
-                        var placeExpenseCategories = $('#'+oTable.fnSettings().sInstance + '_wrapper').parent().parent().attr('id');
-                        document.getElementById(placeExpenseCategories).scrollIntoView();
+                        var placeTable = $('#'+oTable.fnSettings().sInstance + '_wrapper').parent().parent().attr('id');
+                        document.getElementById(placeTable).scrollIntoView();
                     }
 
                     text = "<img src='/sites/all/themes/checkbook/images/open.png'>";
