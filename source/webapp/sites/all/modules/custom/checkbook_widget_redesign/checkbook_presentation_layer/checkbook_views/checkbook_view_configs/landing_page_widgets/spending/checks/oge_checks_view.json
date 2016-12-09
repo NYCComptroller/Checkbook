@@ -3,7 +3,7 @@
     {
         "serviceName":"SpendingWidgetService",
         "sqlConfigName":"spending/oge_spending",
-        "statementName":"GetOGEChecksAgency"
+        "statementName":"GetOGESpendingByChecksAgency"
     },
     "headerTitle":"Checks",
     "headerSubTitle":"Checks",

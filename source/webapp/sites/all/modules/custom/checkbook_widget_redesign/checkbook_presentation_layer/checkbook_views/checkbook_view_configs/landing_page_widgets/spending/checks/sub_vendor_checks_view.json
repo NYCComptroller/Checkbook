@@ -3,7 +3,7 @@
     {
         "serviceName":"SpendingWidgetService",
         "sqlConfigName":"spending/sub_contract_spending",
-        "statementName":"GetSubVendorsChecks"
+        "statementName":"GetSpendingSubVendorsByChecks"
     },
     "serviceName":"SpendingWidgetService",
     "headerTitle":"Checks",
