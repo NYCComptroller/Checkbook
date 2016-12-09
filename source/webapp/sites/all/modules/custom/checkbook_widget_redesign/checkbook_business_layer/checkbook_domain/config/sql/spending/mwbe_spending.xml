@@ -50,4 +50,34 @@
             GROUP BY s0.agency_id, s0.year_id, s0.type_of_year, a.agency_name
         </sql>
     </statement>
+    <!--GetMWBESpendingByPrimeVendors-->
+    <statement name="GetMWBESpendingByPrimeVendors" datasource="checkbook">
+        <param name="year" required ="true"/>
+        <param name="category" type="int"/>
+        <param name="yeartype" required="true" type="string"/>
+        <param name="mwbe" />
+        <sql>
+            SELECT
+            a.minority_type_id AS minority_type,
+            a.type_of_year AS yeartype,
+            a.year_id AS year,
+            a.vendor_id AS vendor,
+            SUM(COALESCE(total_spending_amount,0)) AS check_amount_sum,
+            MAX(COALESCE(total_contract_amount,0)) AS total_contract_amount_sum,
+            b.legal_name AS vendor_legal_name
+            FROM aggregateon_mwbe_spending_vendor a
+            JOIN vendor b ON b.vendor_id = a.vendor_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="a.year_id" paramName="year" />
+                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
+                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe"/>
+                    <exp op="IF" condition="IS_NOT" paramName="category" compareValue="NULL">
+                        <exp op="=" dbField="a.spending_category_id" paramName="category" />
+                    </exp>
+                </exp>
+            </where>
+            GROUP BY a.vendor_id, a.year_id, a.type_of_year, a.minority_type_id, b.legal_name
+        </sql>
+    </statement>
 </statements>
