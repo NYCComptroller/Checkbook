@@ -3,7 +3,7 @@
     {
         "serviceName":"SpendingWidgetService",
         "sqlConfigName":"spending/spending",
-        "statementName":"GetChecks"
+        "statementName":"GetSpendingByChecks"
     },
     "serviceName":"SpendingWidgetService",
     "headerTitle":"Checks",

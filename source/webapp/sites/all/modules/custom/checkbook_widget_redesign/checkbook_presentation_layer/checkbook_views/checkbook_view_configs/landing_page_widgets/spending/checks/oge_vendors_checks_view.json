@@ -4,6 +4,6 @@
     {
         "serviceName":"SpendingWidgetService",
         "sqlConfigName":"spending/oge_spending",
-        "statementName":"GetOGEChecksVendors"
+        "statementName":"GetOGESpendingByChecksVendors"
     }
 }
