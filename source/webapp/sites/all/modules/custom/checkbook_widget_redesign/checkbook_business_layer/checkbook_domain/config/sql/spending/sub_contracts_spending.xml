@@ -1,6 +1,6 @@
 
 <statements>
-    <statement name="GetSubVendorsChecks" datasource="checkbook">
+    <statement name="GetSpendingSubVendorsByChecks" datasource="checkbook">
         <param name="year" required ="true"/>
         <param name="category" type="int"/>
         <param name="mwbe" />
