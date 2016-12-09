@@ -18,7 +18,7 @@
     "sub_vendors":{
         "landing_page_widgets":{
             "checks":{
-                "widget_config":"sub_vendors_checks_view",
+                "widget_config":"sub_vendor_checks_view",
                 "legacy_node_id":715
             }
         }
@@ -26,7 +26,7 @@
     "sub_vendors_mwbe":{
         "landing_page_widgets":{
             "checks":{
-                "widget_config":"sub_vendors_checks_view",
+                "widget_config":"sub_vendor_checks_view",
                 "legacy_node_id":715
             }
         }
