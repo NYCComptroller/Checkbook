@@ -42,12 +42,13 @@
     </statement>
     <!--GetSpendingByAgencies-->
     <statement name="GetSpendingByAgencies" datasource="checkbook">
-        <param name="year" required ="true"/>
-        <param name="yeartype" required ="true"/>
+        <param name="year" required ="true" type="int" />
+        <param name="yeartype" required ="true" type="string"/>
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
         <param name="fvendor" type="int" />
         <param name="category" type="int" />
+        <param name="industry" type="int" />
         <param name="mwbe"/>
         <sql>
             SELECT s0.type_of_year,
@@ -65,6 +66,58 @@
                     <exp op="=" dbField="s0.vendor_id" paramName="fvendor" />
                     <exp op="=" dbField="s0.agency_id" paramName="agency" />
                     <exp op="=" dbField="s0.spending_category_id" paramName="category" />
+                    <exp op="=" dbField="s0.industry_type_id" paramName="industry" />
+                    <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
+                </exp>
+            </where>
+            GROUP BY s0.agency_id, s0.year_id, s0.type_of_year, a.agency_name
+        </sql>
+    </statement>
+    <!--GetMWBESpendingByAgencies-->
+    <statement name="GetMWBESpendingByAgencies" datasource="checkbook">
+        <param name="year" required ="true" type="int" />
+        <param name="yeartype" required ="true" type="string"/>
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="fvendor" type="int" />
+        <param name="category" type="int" />
+        <param name="industry" type="int" />
+        <param name="mwbe"/>
+        <sql>
+            SELECT s0.type_of_year,
+                   s0.year_id AS year_year,
+                   s0.agency_id,
+                   a.agency_name,
+                   SUM(total_spending_amount) AS check_amount_sum,
+                   SUM(total_spending_amount)/MAX(total.check_amount)*100 as percent_spending
+            FROM aggregateon_mwbe_spending_coa_entities s0
+            JOIN ref_agency a ON a.agency_id = s0.agency_id
+            JOIN
+            (
+                SELECT SUM(total_spending_amount) AS check_amount
+                FROM aggregateon_mwbe_spending_coa_entities
+                    <where>
+                        <exp op="AND">
+                            <exp op="=" dbField="year_id" paramName="year" />
+                            <exp op="=" dbField="type_of_year" paramName="yeartype" />
+                            <exp op="=" dbField="vendor_id" paramName="vendor" />
+                            <exp op="=" dbField="vendor_id" paramName="fvendor" />
+                            <exp op="=" dbField="agency_id" paramName="agency" />
+                            <exp op="=" dbField="spending_category_id" paramName="category" />
+                            <exp op="=" dbField="industry_type_id" paramName="industry" />
+                            <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
+                        </exp>
+                    </where>
+                ) total on 1 = 1
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="s0.year_id" paramName="year" />
+                    <exp op="=" dbField="s0.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="s0.vendor_id" paramName="fvendor" />
+                    <exp op="=" dbField="s0.agency_id" paramName="agency" />
+                    <exp op="=" dbField="s0.spending_category_id" paramName="category" />
+                    <exp op="=" dbField="s0.industry_type_id" paramName="industry" />
                     <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
                 </exp>
             </where>
@@ -73,12 +126,13 @@
     </statement>
     <!--GetSpendingByExpenseCategories-->
     <statement name="GetSpendingByExpenseCategories" datasource="checkbook">
-        <param name="year" required ="true"/>
-        <param name="yeartype" required ="true"/>
+         <param name="year" required ="true" type="int" />
+        <param name="yeartype" required ="true" type="string"/>
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
         <param name="fvendor" type="int" />
         <param name="category" type="int" />
+        <param name="industry" type="int" />
         <param name="mwbe"/>
         <sql>
         SELECT s0.type_of_year,
@@ -96,6 +150,7 @@
                 <exp op="=" dbField="s0.vendor_id" paramName="fvendor" />
                 <exp op="=" dbField="s0.agency_id" paramName="agency" />
                 <exp op="=" dbField="s0.spending_category_id" paramName="category" />
+                <exp op="=" dbField="s0.industry_type_id" paramName="industry" />
                 <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
             </exp>
         </where>
