@@ -2,7 +2,7 @@
     "sqlConfig":
     {
         "serviceName":"SpendingWidgetService",
-        "sqlConfigName":"spending/spending",
+        "sqlConfigName":"spending/mwbe_spending",
         "statementName":"GetMWBESpendingByAgencies"
     },
     "serviceName":"SpendingWidgetService",
