@@ -4,6 +4,7 @@
         <param name="year" required ="true"/>
         <param name="category" type="int"/>
         <param name="mwbe" />
+        <param name="vendor" />
         <sql>
             SELECT
             check_eft_issued_date as issue_date,
@@ -22,6 +23,7 @@
                     <exp op="=" dbField="check_eft_issued_nyc_year_id" paramName="year" />
                     <exp op="IN" dbField="minority_type_id" paramName="mwbe"/>
                     <exp op="=" dbField="spending_category_id" paramName="category"/>
+                    <exp op="=" dbField="vendor_id" paramName="vendor" />
                 </exp>
             </where>
         </sql>
