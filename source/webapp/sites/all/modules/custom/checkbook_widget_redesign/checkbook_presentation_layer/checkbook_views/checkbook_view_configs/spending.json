@@ -36,8 +36,7 @@
             },
             "expense_categories":{
                "widget_config":"mwe_spending_expense_categories_view",
-               "legacy_node_id": 761,
-               "visibility_parameters":["-agency"]
+               "legacy_node_id": 761
             },
             "departments":{
                "widget_config":"spending_by_departments_view",
