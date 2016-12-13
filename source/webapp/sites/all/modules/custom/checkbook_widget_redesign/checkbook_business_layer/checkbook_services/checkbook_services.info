@@ -28,6 +28,9 @@ files[] = common/VendorService.php
 
 files[] = spending/CheckData.php
 files[] = spending/SpendingWidgetService.php
+files[] = spending/SpendingDataService.php
+files[] = spending/SpendingParameters.php
+files[] = spending/SpendingUrlService.php
 files[] = contracts/ContractsDataService.php
 files[] = contracts/ContractsUrlService.php
 files[] = contracts/ContractsWidgetService.php
