@@ -89,11 +89,11 @@
             a.type_of_year AS yeartype_yeartype,
             a.year_id AS year_year,
             a.prime_vendor_id AS prime_vendor_prime_vendor,
-            a.prime_minority_type_id AS prime_minority_type_prime_minority_type,
+            a.prime_minority_type_id AS prime_minority_type,
             SUM(COALESCE(total_spending_amount,0)) AS check_amount_sum,
             SUM(COALESCE(total_contract_amount,0)) AS total_contract_amount_sum,
             COUNT(DISTINCT a.vendor_id) AS sub_vendor_count,
-            b.legal_name AS prime_vendor_prime_vendor_legal_name
+            b.legal_name AS prime_vendor_legal_name
             FROM aggregateon_subven_spending_vendor a
             JOIN vendor b ON b.vendor_id = a.prime_vendor_id
             <where>

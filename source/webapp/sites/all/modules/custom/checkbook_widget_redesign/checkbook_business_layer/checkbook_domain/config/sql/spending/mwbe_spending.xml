@@ -118,6 +118,23 @@
             b.legal_name AS vendor_legal_name
             FROM aggregateon_mwbe_spending_vendor a
             JOIN vendor b ON b.vendor_id = a.vendor_id
+            JOIN
+            (
+            SELECT SUM(total_spending_amount) AS check_amount
+            FROM aggregateon_mwbe_spending_coa_entities
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="year_id" paramName="year" />
+                    <exp op="=" dbField="type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="vendor_id" paramName="fvendor" />
+                    <exp op="=" dbField="agency_id" paramName="agency" />
+                    <exp op="=" dbField="spending_category_id" paramName="category" />
+                    <exp op="=" dbField="industry_type_id" paramName="industry" />
+                    <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
+                </exp>
+            </where>
+            ) total on 1 = 1
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="a.year_id" paramName="year" />
@@ -129,6 +146,49 @@
                 </exp>
             </where>
             GROUP BY a.vendor_id, a.year_id, a.type_of_year, a.minority_type_id, b.legal_name
+        </sql>
+    </statement>
+    <!-- GetMWBESubVendorsSpendingByPrimeVendors-->
+    <statement name="GetMWBESubVendorsSpendingByPrimeVendors" datasource="checkbook">
+        <param name="year" required ="true"/>
+        <param name="category" type="int"/>
+        <param name="yeartype" required="true" type="string"/>
+        <param name="mwbe" />
+        <sql>
+            SELECT
+            a.type_of_year AS yeartype_yeartype,
+            a.year_id AS year_year,
+            a.agency_id AS agency_agency,
+            a.prime_vendor_id AS prime_vendor_prime_vendor,
+            b.legal_name AS prime_vendor_prime_vendor_legal_name,
+            a.prime_minority_type_id AS prime_minority_type_prime_minority_type,
+            SUM(COALESCE(total_spending_amount,0)) AS check_amount_sum,
+            SUM(COALESCE(total_contract_amount,0)) AS total_contract_amount_sum,
+            SUM(COALESCE(total_spending_amount,0))/MAX(total.check_amount)*100 as percent_spending
+            FROM aggregateon_subven_spending_vendor a
+            JOIN vendor b ON b.vendor_id = a.prime_vendor_id
+            JOIN
+            (
+            SELECT SUM(total_spending_amount) AS check_amount
+            FROM aggregateon_subven_spending_vendor
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="year_id" paramName="year" />
+                    <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
+                </exp>
+            </where>
+            ) total on 1 = 1
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="a.year_id" paramName="year" />
+                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
+                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe"/>
+                    <exp op="IF" condition="IS_NOT" paramName="category" compareValue="NULL">
+                        <exp op="=" dbField="a.spending_category_id" paramName="category" />
+                    </exp>
+                </exp>
+            </where>
+            GROUP BY a.year_id, a.type_of_year, a.agency_id, a.prime_vendor_id, a.prime_minority_type_id, b.legal_name
         </sql>
     </statement>
 <!--GetMWBESpendingBySubVendors-->

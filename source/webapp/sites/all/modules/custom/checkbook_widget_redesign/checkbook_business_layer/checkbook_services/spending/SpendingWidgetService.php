@@ -48,6 +48,12 @@ class SpendingWidgetService extends AbstractWidgetService {
                 $url = "";
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
+            case "prime_vendor_ytd_spending_link":
+                $column = $row['check_amount_sum'];
+                $class = "bottomContainerReload";
+                $url = SpendingUrlService::ytdSpendindUrl('vendor',$row['vendor'], $this->getLegacyNodeId());
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
         }
 
         if(isset($value)) {
