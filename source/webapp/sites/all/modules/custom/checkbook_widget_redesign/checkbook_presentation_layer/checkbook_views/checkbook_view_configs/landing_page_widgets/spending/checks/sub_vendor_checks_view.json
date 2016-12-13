@@ -2,7 +2,7 @@
     "sqlConfig":
     {
         "serviceName":"SpendingWidgetService",
-        "sqlConfigName":"spending/sub_contract_spending",
+        "sqlConfigName":"spending/sub_contracts_spending",
         "statementName":"GetSpendingSubVendorsByChecks"
     },
     "serviceName":"SpendingWidgetService",
