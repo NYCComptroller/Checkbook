@@ -124,7 +124,7 @@
                     <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
                 </exp>
             </where>
-            s0.agency_id, s0.department_id, s0.year_id, d.department_name
+            GROUP BY s0.agency_id, s0.department_id, s0.year_id, d.department_name
         </sql>
     </statement>
 <!--GetSpendingByPrimeVendors-->
