@@ -3,7 +3,8 @@
         "landing_page_widgets":{
             "checks":{
                 "widget_config":"checks_view",
-                "legacy_node_id":502
+                "legacy_node_id":502,
+                "visibility_parameters":["-category:2"]
             }
         }
     },
@@ -11,7 +12,8 @@
         "landing_page_widgets":{
             "checks":{
                 "widget_config":"checks_view",
-                "legacy_node_id":758
+                "legacy_node_id":758,
+                "visibility_parameters":["-category:2"]
             }
         }
     },
@@ -19,7 +21,8 @@
         "landing_page_widgets":{
             "checks":{
                 "widget_config":"sub_vendor_checks_view",
-                "legacy_node_id":715
+                "legacy_node_id":715,
+                "visibility_parameters":["-category:2"]
             }
         }
     },
@@ -27,7 +30,8 @@
         "landing_page_widgets":{
             "checks":{
                 "widget_config":"sub_vendor_checks_view",
-                "legacy_node_id":715
+                "legacy_node_id":715,
+                "visibility_parameters":["-category:2"]
             }
         }
     },
@@ -35,7 +39,8 @@
         "landing_page_widgets":{
             "checks":{
                 "widget_config":"mwbe_sub_vendors_checks_view",
-                "legacy_node_id":745
+                "legacy_node_id":745,
+                "visibility_parameters":["-category:2"]
             }
         }
     },
@@ -43,7 +48,8 @@
         "landing_page_widgets":{
             "checks":{
                 "widget_config":"oge_checks_view",
-                "legacy_node_id":651
+                "legacy_node_id":651,
+                "visibility_parameters":["-category:2"]
             }
         }
     }
