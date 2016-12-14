@@ -75,7 +75,7 @@
         <param name="magid"/>
         <sql>
             SELECT a.agency_name,
-                   v.legal_name,
+                   v.legal_name AS vendor_name,
                    s0.type_of_year,
                    s0.year_id,
                    s0.agency_id,
