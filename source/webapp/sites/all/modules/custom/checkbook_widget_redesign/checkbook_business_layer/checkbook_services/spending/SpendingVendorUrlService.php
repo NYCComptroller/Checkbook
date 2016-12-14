@@ -32,9 +32,9 @@ class SpendingVendorUrlService {
      * @return string
      */
     static function citywideVendorUrl($row){
-        $vendor_id = isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["prime_vendor_prime_vendor"];
+        $vendor_id = isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["vendor_id"];
         if(!isset($vendor_id)) {
-            $vendor_id = isset($row["vendor_id"]) ? $row["vendor_id"] : $row["vendor_vendor"];
+            $vendor_id = isset($row["vendor_id"]) ? $row["vendor_id"] : $row["vendor"];
         }
         $year_id = RequestUtilities::getRequestParamValue("year");
         $year_type = RequestUtilities::getRequestParamValue("yeartype");
