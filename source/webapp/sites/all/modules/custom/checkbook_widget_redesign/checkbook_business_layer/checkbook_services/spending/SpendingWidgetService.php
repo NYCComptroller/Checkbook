@@ -41,6 +41,12 @@ class SpendingWidgetService extends AbstractWidgetService {
                 $url = SpendingUrlService::contractAmountUrl($row, $this->getLegacyNodeId());
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
+            case "contract_number_link":
+                $column = $row['check_amount_sum'];
+                $class = "new_window";
+                $url = SpendingUrlService::contractIdUrl($row);
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
             case "mwbe_category":
                 $column = $row['minority_type'];
                 $value = MappingUtil::getMinorityCategoryById($column);
