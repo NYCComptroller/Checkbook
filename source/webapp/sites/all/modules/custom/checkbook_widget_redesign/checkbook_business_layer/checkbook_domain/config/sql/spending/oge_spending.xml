@@ -103,9 +103,7 @@
                     <exp op="=" dbField="a.year_id" paramName="year" />
                     <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
                     <exp op="=" dbField="a.agency_id" paramName="agency" />
-                    <exp op="IF" condition="IS_NOT" paramName="category" compareValue="NULL">
-                        <exp op="=" dbField="a.spending_category_id" paramName="category" />
-                    </exp>
+                    <exp op="=" dbField="a.spending_category_id" paramName="category" />
                 </exp>
             </where>
             GROUP BY a.vendor_id, a.year_id, a.type_of_year,b.legal_name
