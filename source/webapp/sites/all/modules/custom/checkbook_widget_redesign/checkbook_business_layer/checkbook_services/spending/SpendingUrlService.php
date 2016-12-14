@@ -130,9 +130,6 @@ class SpendingUrlService {
     }
 
 
-
-
-
     /**
      * @param $parameters
      * @param null $legacy_node_id
