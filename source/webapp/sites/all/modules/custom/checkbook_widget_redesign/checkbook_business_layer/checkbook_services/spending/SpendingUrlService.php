@@ -127,8 +127,9 @@ class SpendingUrlService {
      */
     static function primevendorUrl($vendor_id){
         $url = '/spending_landing'
-            .RequestUtilities::_getUrlParamString('category')
             .RequestUtilities::_getUrlParamString('agency')
+            .RequestUtilities::_getUrlParamString('category')
+            .RequestUtilities::_getUrlParamString('industry')
             ._checkbook_project_get_year_url_param_string()
             . '/vendor/'. $vendor_id;
         return $url;
@@ -140,8 +141,10 @@ class SpendingUrlService {
      */
     static function vendorUrl($vendor_id){
         $url = '/spending_landing'
-            .RequestUtilities::_getUrlParamString('category')
             .RequestUtilities::_getUrlParamString('agency')
+            .RequestUtilities::_getUrlParamString('category')
+            .RequestUtilities::_getUrlParamString('industry')
+            .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
             ._checkbook_project_get_year_url_param_string()
             . '/vendor/'. $vendor_id;
         return $url;
