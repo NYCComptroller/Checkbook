@@ -166,6 +166,7 @@
             a.vendor_id AS vendor,
             SUM(COALESCE(total_spending_amount,0)) AS check_amount_sum,
             MAX(COALESCE(total_contract_amount,0)) AS total_contract_amount_sum,
+            SUM(total_spending_amount)/MAX(total.check_amount)*100 as percent_spending,
             b.legal_name AS vendor_legal_name
             FROM aggregateon_mwbe_spending_vendor a
             JOIN vendor b ON b.vendor_id = a.vendor_id

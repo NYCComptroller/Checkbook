@@ -14,7 +14,7 @@
         {"labelAlias": "ytd_spending","column": "check_amount_sum","derivedColumn":"prime_vendor_ytd_spending_link","format":"dollar"},
         {"labelAlias": "percent_spending","column": "percent_spending","format":"percent"},
         {"label": "","column": ""},
-        {"labelAlias": "total_contract_amount","column": "total_contract_amount_sum"},
+        {"labelAlias": "total_contract_amount","column": "total_contract_amount_sum","format":"dollar"},
         {"label": "","column": ""}
     ],
     "dataTableOptions":{
