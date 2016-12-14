@@ -3,7 +3,8 @@
     {
         "serviceName":"SpendingWidgetService",
         "sqlConfigName":"spending/spending",
-        "statementName":"GetSpendingByContracts"
+        "statementName":"GetSpendingByContracts",
+        "countStatementName":"GetCountContracts"
     },
     "serviceName":"SpendingWidgetService",
     "defaultParameters":{"type_of_year":"B"},
