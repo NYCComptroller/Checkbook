@@ -28,6 +28,39 @@
             </where>
         </sql>
     </statement>
+<!--GetSpendingByAgencies-->
+    <statement name="GetSpendingByAgencies" datasource="checkbook">
+        <param name="year" required ="true" type="int" />
+        <param name="yeartype" required ="true" type="string"/>
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="fvendor" type="int" />
+        <param name="category" type="int" />
+        <param name="industry" type="int" />
+        <param name="mwbe"/>
+        <sql>
+            SELECT s0.type_of_year,
+                   SUM(total_spending_amount) AS check_amount_sum,
+                   s0.agency_id,
+                   s0.year_id,
+                   a.agency_name
+            FROM aggregateon_spending_coa_entities s0
+            JOIN ref_agency a ON a.agency_id = s0.agency_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="s0.year_id" paramName="year" />
+                    <exp op="=" dbField="s0.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="s0.vendor_id" paramName="fvendor" />
+                    <exp op="=" dbField="s0.agency_id" paramName="agency" />
+                    <exp op="=" dbField="s0.spending_category_id" paramName="category" />
+                    <exp op="=" dbField="s0.industry_type_id" paramName="industry" />
+                    <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
+                </exp>
+            </where>
+            GROUP BY s0.agency_id, s0.year_id, s0.type_of_year, a.agency_name
+        </sql>
+    </statement>
 <!--GetSpendingByContracts-->
     <statement name="GetSpendingByContracts" datasource="checkbook">
         <param name="year" required ="true" type="int" />
