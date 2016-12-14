@@ -16,6 +16,7 @@ class SpendingUrlService {
         $url = '/spending_landing'
                .RequestUtilities::_getUrlParamString('vendor')
                .RequestUtilities::_getUrlParamString('category')
+               .RequestUtilities::_getUrlParamString('industry')
                .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
                ._checkbook_project_get_year_url_param_string()
                . '/agency/'. $agency_id;
@@ -34,6 +35,7 @@ class SpendingUrlService {
                .RequestUtilities::_getUrlParamString('vendor')
                .RequestUtilities::_getUrlParamString('agency')
                .RequestUtilities::_getUrlParamString('category')
+               .RequestUtilities::_getUrlParamString('industry')
                .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
                ._checkbook_project_get_year_url_param_string()
                .$smnid_param
@@ -60,6 +62,7 @@ class SpendingUrlService {
                .RequestUtilities::_getUrlParamString('vendor')
                .RequestUtilities::_getUrlParamString('agency')
                .RequestUtilities::_getUrlParamString('category')
+               .RequestUtilities::_getUrlParamString('industry')
                .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
                ._checkbook_project_get_year_url_param_string()
                .$smnidParam
@@ -142,6 +145,7 @@ class SpendingUrlService {
                 .RequestUtilities::_getUrlParamString('fvendor')
                 .RequestUtilities::_getUrlParamString('agency')
                 .RequestUtilities::_getUrlParamString('category')
+                .RequestUtilities::_getUrlParamString('industry')
                 .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
                 ._checkbook_project_get_year_url_param_string()
                 .$dtsmnid_param;
