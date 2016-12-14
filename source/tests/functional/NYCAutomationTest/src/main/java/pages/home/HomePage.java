@@ -5,7 +5,9 @@ import org.openqa.selenium.WebElement;
 
 import utility.Driver;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class HomePage {
 
@@ -48,5 +50,51 @@ public class HomePage {
     public static boolean IsAtCheckbookNYC(){
     	return Driver.Instance.getCurrentUrl().contains("checkbooknyc");
     }
+    
+    public static ArrayList<String> VisualizationTitles() {
+		ArrayList<String> titles = new ArrayList<String>();
+		List<WebElement> titleContainers = Driver.Instance.findElements(By.cssSelector("#nyc-spending > .top-chart > .inside > .panel-pane"));
+		for(int i=0; i < titleContainers.size(); i++){
+			selectVisualizationSlider(i);
+			WebElement titleClass = titleContainers.get(i).findElement(By.cssSelector(".pane-content .chart-title"));
+			if(titleClass.isDisplayed()){
+				String title = titleClass.getText();
+				titles.add(title);
+			}
+		}	
+		return titles;
+	}
+	
+	public static void selectVisualizationSlider(int sliderPosition){
+		List<WebElement> sliderContainer = Driver.Instance.findElements(By.cssSelector("#nyc-spending > .top-chart > .slider-pager > a"));
+		sliderContainer.get(sliderPosition).click();
+		Driver.Instance.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+	}
+	
+	public static void ShowWidgetDetails(){
+		WebElement detailsLinkContainer = Driver.Instance.findElement(By.className("bottomContainerToggle"));
+		if(detailsLinkContainer.getText().contains("Show Details")){
+			detailsLinkContainer.click();
+		}
+		Driver.Instance.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+	}
+
+	public static Boolean IsTableNotEmpty(String TableTitle) {
+		List<WebElement> panelContainers = Driver.Instance.findElements(By.cssSelector(".bottomContainer > .panel-display > .panel-panel > .inside > .panel-pane"));
+		for (WebElement panelContainer : panelContainers) {
+			WebElement header= panelContainer.findElement(By.tagName("h2"));
+			String tex = header.getText();
+			if(header.getText().equalsIgnoreCase(TableTitle)){
+				List<WebElement> emptyContainer = panelContainer.findElements(By.id("no-records-datatable"));
+				if(emptyContainer.size() > 0)
+					return false;
+				else
+					return true;
+			}
+			else 
+				return null;
+		}
+		return null;
+	}
     
 }

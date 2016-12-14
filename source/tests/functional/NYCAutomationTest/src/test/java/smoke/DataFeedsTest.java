@@ -7,8 +7,9 @@ import org.junit.*;
 import navigation.PrimaryMenuNavigation;
 import pages.datafeeds.DataFeedsPage;
 import utilities.NYCBaseTest;
+import utility.TestStatusReport;
 
-public class DataFeedsTest{
+public class DataFeedsTest extends TestStatusReport{
 	@Before
 	public void GoToPage(){
 		if(!DataFeedsPage.isAt()){

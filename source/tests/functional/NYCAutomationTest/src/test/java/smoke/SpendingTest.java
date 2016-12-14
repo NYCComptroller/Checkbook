@@ -14,8 +14,9 @@ import pages.spending.SpendingPage;
 import utilities.NYCBaseTest;
 import utilities.NYCDatabaseUtil;
 import utility.Helper;
+import utility.TestStatusReport;
 
-public class SpendingTest{
+public class SpendingTest extends TestStatusReport{
 	
 	@Before
     public void GoToPage(){
@@ -49,7 +50,7 @@ public class SpendingTest{
 	    						"Top 5 Prime Vendors",
 	    						"Top 5 Contracts",
 	    						"Top 5 Agencies"};  
-    	SpendingPage.ShowWidgetDetails();
+    	HomePage.ShowWidgetDetails();
     	assertTrue(Arrays.equals(widgetTitles, SpendingPage.WidgetTitles().toArray()));
     }
 	
