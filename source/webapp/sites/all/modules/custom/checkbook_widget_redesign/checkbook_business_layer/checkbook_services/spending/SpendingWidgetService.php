@@ -51,6 +51,12 @@ class SpendingWidgetService extends AbstractWidgetService {
                 $url = SpendingUrlService::mwbeUrl($column);
                 $value = RequestUtil::isNewWindow() || !MappingUtil::isMWBECertified(array($column)) ? $mwbe_category_name  : "<a href= '{$url}'>{$mwbe_category_name}</a>";
                 break;
+            case "contract_vendor_name_link":
+                $column = $row['vendor_name'];
+                $class = "bottomContainerReload";
+                $url = SpendingVendorUrlService::vendorUrl($row);
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
             case "vendor_name_link":
                 $vendor_id = isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["vendor"];
                 $column = $row['vendor_name'];
