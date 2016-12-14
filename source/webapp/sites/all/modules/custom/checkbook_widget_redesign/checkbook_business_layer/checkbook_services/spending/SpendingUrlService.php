@@ -66,7 +66,9 @@ class SpendingUrlService {
                .$contractUrl;
         return $url;
     }
-    
+
+
+
     /**
     * determines whether contract is master agreement or not based on the contract number
     * @return string
@@ -96,7 +98,38 @@ class SpendingUrlService {
             . '/mwbe/'. $minority_type_id . '?expandBottomCont=true';
         return $url;
     }
-    
+
+
+    /**
+     * @param $prime_vendor_id
+     * @return string
+     */
+    static function primevendorUrl($vendor_id){
+        $url = '/spending_landing'
+            .RequestUtilities::_getUrlParamString('category')
+            .RequestUtilities::_getUrlParamString('agency')
+            ._checkbook_project_get_year_url_param_string()
+            . '/vendor/'. $vendor_id;
+        return $url;
+    }
+
+    /**
+     * @param $prime_vendor_id
+     * @return string
+     */
+    static function vendorUrl($vendor_id){
+        $url = '/spending_landing'
+            .RequestUtilities::_getUrlParamString('category')
+            .RequestUtilities::_getUrlParamString('agency')
+            ._checkbook_project_get_year_url_param_string()
+            . '/vendor/'. $vendor_id;
+        return $url;
+    }
+
+
+
+
+
     /**
      * @param $parameters
      * @param null $legacy_node_id

@@ -179,9 +179,9 @@
         <param name="yeartype" required="true" type="string"/>
         <sql>
             SELECT
-            a.type_of_year AS yeartype_yeartype,
+            a.type_of_year AS yeartype,
             a.year_id AS year_year,
-            a.vendor_id AS vendor_vendor,
+            a.vendor_id AS vendor,
             SUM(COALESCE(total_spending_amount,0)) AS check_amount_sum,
             MAX(COALESCE(total_contract_amount,0)) AS total_contract_amount_sum,
             b.legal_name AS vendor_name
@@ -206,7 +206,7 @@
         <param name="yeartype" required="true" type="string"/>
         <sql>
             SELECT
-            a.type_of_year AS yeartype_yeartype,
+            a.type_of_year AS yeartype,
             a.year_id AS year_year,
             a.agency_id AS agency_agency,
             b.agency_short_name AS agency_agency_agency_short_name,

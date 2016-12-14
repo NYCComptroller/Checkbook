@@ -19,6 +19,10 @@
                "widget_config":"spending_by_departments_view",
                "legacy_node_id": 29,
                "visibility_parameters":["agency"]
+            },
+            "prime_vendors":{
+                "widget_config":"prime_vendors_view",
+                "legacy_node_id": 26
             }
         }
     },
@@ -42,6 +46,10 @@
                "widget_config":"spending_by_departments_view",
                "legacy_node_id": 760,
                "visibility_parameters":["agency"]
+            },
+            "prime_vendors":{
+                "widget_config":"mwbe_prime_vendors_view",
+                "legacy_node_id": 762
             }
         }
     },
@@ -56,6 +64,10 @@
                "widget_config":"subven_spending_by_agencies_view",
                "legacy_node_id": 716,
                "visibility_parameters":["-agency"]
+            },
+        "prime_vendors":{
+            "widget_config":"sub_vendors_prime_vendors_view",
+            "legacy_node_id": 717
             }
         }
     },
@@ -70,6 +82,10 @@
                "widget_config":"subven_spending_by_agencies_view",
                "legacy_node_id": 716,
                "visibility_parameters":["-agency"]
+            },
+            "prime_vendors":{
+                "widget_config":"sub_vendors_prime_vendors_view",
+                "legacy_node_id": 717
             }
         }
     },
@@ -84,6 +100,10 @@
                "widget_config":"mwbe_subven_spending_by_agencies_view",
                "legacy_node_id": 746,
                "visibility_parameters":["-agency"]
+            },
+            "prime_vendors":{
+                "widget_config":"mwbe_sub_vendors_prime_vendors_view",
+                "legacy_node_id": 747
             }
         }
     },
@@ -102,6 +122,10 @@
                "widget_config":"spending_by_departments_view",
                "legacy_node_id": 29,
                "visibility_parameters":["agency"]
+            },
+            "prime_vendors":{
+                "widget_config":"oge_prime_vendors_view",
+                "legacy_node_id": 26
             }
         }
     }
