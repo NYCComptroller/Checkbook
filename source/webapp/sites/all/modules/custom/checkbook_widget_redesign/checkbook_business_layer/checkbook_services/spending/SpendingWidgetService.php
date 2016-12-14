@@ -42,7 +42,7 @@ class SpendingWidgetService extends AbstractWidgetService {
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
             case "contract_number_link":
-                $column = $row['check_amount_sum'];
+                $column = $row['document_id'];
                 $class = "new_window";
                 $url = SpendingUrlService::contractIdUrl($row);
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
