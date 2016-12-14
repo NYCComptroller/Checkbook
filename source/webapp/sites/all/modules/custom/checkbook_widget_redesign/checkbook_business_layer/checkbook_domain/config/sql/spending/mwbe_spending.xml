@@ -51,7 +51,7 @@
         </sql>
     </statement>
 <!--GetMWBESpendingByExpenseCategories-->
-    <statement name="GetMWBESpendingByPrimeVendors" datasource="checkbook">
+    <statement name="GetMWBESpendingByExpenseCategories" datasource="checkbook">
         <param name="year" required ="true" type="int" />
         <param name="yeartype" required ="true" type="string"/>
         <param name="agency" type="int" />
@@ -172,16 +172,13 @@
             JOIN
             (
             SELECT SUM(total_spending_amount) AS check_amount
-            FROM aggregateon_mwbe_spending_coa_entities
+            FROM aggregateon_mwbe_spending_vendor
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="year_id" paramName="year" />
                     <exp op="=" dbField="type_of_year" paramName="yeartype" />
                     <exp op="=" dbField="vendor_id" paramName="vendor" />
-                    <exp op="=" dbField="vendor_id" paramName="fvendor" />
-                    <exp op="=" dbField="agency_id" paramName="agency" />
                     <exp op="=" dbField="spending_category_id" paramName="category" />
-                    <exp op="=" dbField="industry_type_id" paramName="industry" />
                     <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
                 </exp>
             </where>
