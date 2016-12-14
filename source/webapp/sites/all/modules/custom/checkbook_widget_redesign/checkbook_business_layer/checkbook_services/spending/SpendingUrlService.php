@@ -81,6 +81,21 @@ class SpendingUrlService {
            return $contractNumber_3;
        }
     }
+
+    /**
+     * @param $minority_type_id
+     * @return string
+     */
+    static function mwbeUrl($minority_type_id){
+        $minority_type_id = $minority_type_id == 4 || $minority_type_id == 5 ? '4~5' : $minority_type_id;
+        $url = '/spending_landing'
+            .RequestUtilities::_getUrlParamString('vendor')
+            .RequestUtilities::_getUrlParamString('category')
+            .RequestUtilities::_getUrlParamString('dashboard')
+            ._checkbook_project_get_year_url_param_string()
+            . '/mwbe/'. $minority_type_id . '?expandBottomCont=true';
+        return $url;
+    }
     
     /**
      * @param $parameters
