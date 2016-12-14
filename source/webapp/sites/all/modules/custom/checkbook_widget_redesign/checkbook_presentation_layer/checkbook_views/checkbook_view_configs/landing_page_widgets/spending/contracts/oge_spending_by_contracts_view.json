@@ -3,6 +3,7 @@
     "sqlConfig": {
         "serviceName": "SpendingWidgetService",
         "sqlConfigName": "spending/oge_spending",
-        "statementName": "GetOGESpendingByContracts"
+        "statementName": "GetOGESpendingByContracts",
+        "countStatementName":"GetOGECountContracts"
     }
 }
