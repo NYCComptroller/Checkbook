@@ -22,7 +22,7 @@ class SpendingUrlService {
         return $url;
     } 
     
-      /**
+     /**
      * @param $param - Widget Name to be used in the URL
      * @param $value - value of @param to be used in the URL
      * @param null $legacy_node_id
@@ -39,6 +39,47 @@ class SpendingUrlService {
                .$smnid_param
                . '/'.$param.'/'. $value;
         return $url;
+    }
+    
+    /**
+     * @param $param - Widget Name to be used in the URL
+     * @param $value - value of @param to be used in the URL
+     * @param null $legacy_node_id
+     * @return string
+     */
+    static function contractAmountUrl($row, $legacy_node_id = null){
+        $smnidParam = isset($legacy_node_id) ? '/smnid/'.$legacy_node_id : '';
+        $contractType = self::getContractType($row['document_id']);
+        if(strtolower($contractType) == 'mma1' || strtolower($contractType) == 'ma1'){
+            $contractUrl = '/magid/'.$row['agreement_id'].'/doctype/'.$contractType;
+        }else{
+            $contractUrl = '/agid/'.$row['agreement_id'].'/doctype/'.$contractType;
+        }
+        
+        $url = '/panel_html/spending_transactions/spending/transactions'
+               .RequestUtilities::_getUrlParamString('vendor')
+               .RequestUtilities::_getUrlParamString('agency')
+               .RequestUtilities::_getUrlParamString('category')
+               .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
+               ._checkbook_project_get_year_url_param_string()
+               .$smnidParam
+               .$contractUrl;
+        return $url;
+    }
+    
+    /**
+    * determines whether contract is master agreement or not based on the contract number
+    * @return string
+    */
+    static function getContractType($contractNumber){
+       $contractNumber_3 = substr($contractNumber, 0, 3); //get first 3 characters from contract number
+       $contractNumber_4 = substr($contractNumber, 0, 4); //get first 4 characters from contract number
+       $fourLetterContractTypes = array('mma1', 'cta1', 'rct1', 'pcc1', 'cta2', 'mac1');
+       if(in_array(strtolower($contractNumber_4), $fourLetterContractTypes)){
+           return $contractNumber_4;
+       }else{
+           return $contractNumber_3;
+       }
     }
     
     /**
