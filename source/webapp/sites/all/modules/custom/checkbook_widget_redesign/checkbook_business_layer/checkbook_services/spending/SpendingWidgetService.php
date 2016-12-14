@@ -55,9 +55,9 @@ class SpendingWidgetService extends AbstractWidgetService {
                 $vendor_id = isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["vendor"];
                 $column = $row['vendor_name'];
                 if(isset($row['prime_vendor_id'])){
-                    $url = primevendorUrl($vendor_id);
+                    $url = SpendingUrlService::primevendorUrl($vendor_id);
                 }else{
-                    $url = vendorUrl($vendor_id);
+                    $url = SpendingUrlService::vendorUrl($vendor_id);
                 }
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;

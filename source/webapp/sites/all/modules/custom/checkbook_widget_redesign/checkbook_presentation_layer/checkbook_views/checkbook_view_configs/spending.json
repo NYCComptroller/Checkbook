@@ -22,7 +22,8 @@
             },
             "prime_vendors":{
                 "widget_config":"prime_vendors_view",
-                "legacy_node_id": 26
+                "legacy_node_id": 26,
+                "visibility_parameters":["-category:2"]
             }
         }
     },
@@ -49,7 +50,8 @@
             },
             "prime_vendors":{
                 "widget_config":"mwbe_prime_vendors_view",
-                "legacy_node_id": 762
+                "legacy_node_id": 762,
+                "visibility_parameters":["-category:2"]
             }
         }
     },
@@ -67,7 +69,8 @@
             },
         "prime_vendors":{
             "widget_config":"sub_vendors_prime_vendors_view",
-            "legacy_node_id": 717
+            "legacy_node_id": 717,
+            "visibility_parameters":["-category:2"]
             }
         }
     },
@@ -85,7 +88,8 @@
             },
             "prime_vendors":{
                 "widget_config":"sub_vendors_prime_vendors_view",
-                "legacy_node_id": 717
+                "legacy_node_id": 717,
+                "visibility_parameters":["-category:2"]
             }
         }
     },
@@ -103,7 +107,8 @@
             },
             "prime_vendors":{
                 "widget_config":"mwbe_sub_vendors_prime_vendors_view",
-                "legacy_node_id": 747
+                "legacy_node_id": 747,
+                "visibility_parameters":["-category:2"]
             }
         }
     },
@@ -125,7 +130,8 @@
             },
             "prime_vendors":{
                 "widget_config":"oge_prime_vendors_view",
-                "legacy_node_id": 26
+                "legacy_node_id": 26,
+                "visibility_parameters":["-category:2"]
             }
         }
     }
