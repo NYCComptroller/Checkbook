@@ -82,6 +82,7 @@
                    s0.vendor_id,
                    s0.description,
                    s0.document_id,
+                   s0.document_code,
                    s0.agreement_id, 
                    SUM(COALESCE(total_spending_amount,0)) AS check_amount_sum,
                    MAX(COALESCE(total_contract_amount,0)) AS total_contract_amount_sum
@@ -103,7 +104,7 @@
                 </exp>
             </where>
             GROUP BY s0.agency_id, s0.year_id, s0.type_of_year, s0.vendor_id, s0.description, s0.document_id, s0.agreement_id,
-            a.agency_name, v.legal_name        
+            a.agency_name, v.legal_name, s0.document_code        
         </sql>
     </statement>
 <!--GetSpendingByExpenseCategories-->
