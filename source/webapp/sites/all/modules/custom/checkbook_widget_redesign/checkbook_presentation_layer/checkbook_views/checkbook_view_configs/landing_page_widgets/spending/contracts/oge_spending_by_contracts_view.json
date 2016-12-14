@@ -1,1 +1,8 @@
-
+{
+    "defaultConfigKey": "spending_by_contracts_view",
+    "sqlConfig": {
+        "serviceName": "SpendingWidgetService",
+        "sqlConfigName": "spending/oge_spending",
+        "statementName": "GetOGESpendingByContracts"
+    }
+}
