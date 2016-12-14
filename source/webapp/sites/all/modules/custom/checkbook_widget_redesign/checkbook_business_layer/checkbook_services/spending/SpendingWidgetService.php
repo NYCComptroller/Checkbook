@@ -85,6 +85,14 @@ class SpendingWidgetService extends AbstractWidgetService {
                 $url = SpendingUrlService::ytdSpendindUrl('vendor',$vendor_id, $this->getLegacyNodeId());
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
+            case "checks_vendor_link":
+                $vendor_id = $row["vendor_id"];
+                $column = $row['vendor_name'];
+                $citywide_vendor_name_link = SpendingVendorUrlService::getPrimeVendorNameLinkUrl($row);
+                $oge_vendor_link = SpendingVendorUrlService::getOGEPrimeVendorNameLinkUrl($vendor_id);
+                $url = _checkbook_check_isEDCPage() ? $oge_vendor_link : $citywide_vendor_name_link;
+                $value = ($row['expense_category'] == 'Payroll Summary') ? $column : "<a href='{$url}'>{$column}</a>";
+                break;
         }
 
         if(isset($value)) {
