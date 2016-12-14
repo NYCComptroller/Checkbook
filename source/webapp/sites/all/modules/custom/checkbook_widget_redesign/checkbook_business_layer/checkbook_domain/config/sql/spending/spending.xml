@@ -180,8 +180,8 @@
         <param name="yeartype" required="true" type="string"/>
         <sql>
             SELECT
-            a.type_of_year AS yeartype,
-            a.year_id AS year_year,
+            a.type_of_year,
+            a.year_id,
             a.vendor_id AS vendor,
             SUM(COALESCE(total_spending_amount,0)) AS check_amount_sum,
             MAX(COALESCE(total_contract_amount,0)) AS total_contract_amount_sum,
@@ -206,11 +206,11 @@
         <param name="yeartype" required="true" type="string"/>
         <sql>
             SELECT
-            a.type_of_year AS yeartype,
-            a.year_id AS year_year,
-            a.agency_id AS agency_agency,
-            b.agency_short_name AS agency_agency_agency_short_name,
-            b.agency_name AS agency_agency_agency_name,
+            a.type_of_year,
+            a.year_id,
+            a.agency_id,
+            b.agency_short_name,
+            b.agency_name,
             SUM(total_spending_amount) AS check_amount_sum
             FROM aggregateon_spending_coa_entities a
             JOIN ref_agency b ON b.agency_id = a.agency_id
