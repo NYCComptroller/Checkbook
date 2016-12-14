@@ -23,6 +23,24 @@ class SpendingUrlService {
         return $url;
     } 
     
+    /**
+     * @param $contractId
+     * @return string
+     */
+    static function contractIdUrl($row){
+        $contractType = self::getContractType($row['document_id']);
+        if(strtolower($contractType) == 'mma1' || strtolower($contractType) == 'ma1'){
+            $contractUrl = '/magid/'.$row['agreement_id'].'/doctype/'.$contractType;
+        }else{
+            $contractUrl = '/agid/'.$row['agreement_id'].'/doctype/'.$contractType;
+        }
+        $url = '/contract_details' .$contractUrl
+               .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
+               .'/newwindow' ; 
+
+        return $url;
+    } 
+    
      /**
      * @param $param - Widget Name to be used in the URL
      * @param $value - value of @param to be used in the URL
