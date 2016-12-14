@@ -1,8 +1,13 @@
 package utilities;
 
+import java.awt.Desktop;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
@@ -14,17 +19,17 @@ import org.junit.BeforeClass;
 
 import pages.home.HomePage;
 import utility.Driver;
-import utility.Helper;
 import utility.InterfaceExcel;
-import utility.InterfaceTextFile;
 
-public class NYCBaseTest {
+public class NYCBaseTest{
     // class fields
     public static Properties prop;
+    public static File report;
+	public static BufferedWriter writer;
 
     @BeforeClass
     public static void Init() throws IOException, SQLException, ClassNotFoundException {
-
+    	
         // loads properties from SupportingFiles/conf.properties
         try {
             NYCBaseTest.LoadProperties();
@@ -32,7 +37,7 @@ public class NYCBaseTest {
             e.printStackTrace();
         }
 
-        NYCDatabaseUtil.connectToDatabase();
+        //NYCDatabaseUtil.connectToDatabase();
 
         String browserSelection = NYCBaseTest.prop.getProperty("BrowserSelection");
 
@@ -43,17 +48,8 @@ public class NYCBaseTest {
         // launches web browser
         Driver.Initialize(browserSelection);
 
-        // Setup text results text file
-        // Allows you to add yyyyMMddHHmmss to file name so each test run has
-        // new file
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         String addDate = sdf.format(new Date());
-
-        String TextFileName = NYCBaseTest.prop.getProperty("TextFileName");
-        String DoTextReporting = NYCBaseTest.prop.getProperty("DoTextReporting");
-        boolean boolDoTextReporting = Boolean.parseBoolean(DoTextReporting);
-        InterfaceTextFile.setTextReporting(boolDoTextReporting);
-        InterfaceTextFile.CreateTextFile(TextFileName + addDate);
 
         // Setup excel reporting
         // Allows you to add yyyyMMddHHmmss to file name so each test run has
@@ -63,17 +59,33 @@ public class NYCBaseTest {
         boolean boolDoExcelReporting = Boolean.parseBoolean(DoExcelReporting);
         InterfaceExcel.setExcelReporting(boolDoExcelReporting);
         InterfaceExcel.CreateExcelFile(ExcelFileName + addDate);
+        
+        
+        String reportFile = "reportFile.html";
+		DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+		Date date = new Date();
+		report = new File(reportFile);
+		writer = new BufferedWriter(new FileWriter(report, true));
+		writer.write("<html><body>");
+		writer.write("<h1>Test Execution Summary - " + dateFormat.format(date)+ "</h1>");
 
         System.out.println("init");
-        HomePage.GoTo(NYCBaseTest.prop.getProperty("BaseUrl")); 
+        HomePage.GoTo(NYCBaseTest.prop.getProperty("BaseUrl"));       
+       
     }
 
 
     @AfterClass
-    public static void Stop() throws SQLException {
-        NYCDatabaseUtil.closeDatabase();
+    public static void Stop() throws SQLException, IOException {
+    	 writer.write("</body></html>");
+ 		writer.close();
+ 		//Desktop.getDesktop().browse(report.toURI());
+    	
+        //NYCDatabaseUtil.closeDatabase();
         Driver.TearDown();
         System.out.println("DONE");
+        
+       
     }
 
     private static void LoadProperties() throws IOException {

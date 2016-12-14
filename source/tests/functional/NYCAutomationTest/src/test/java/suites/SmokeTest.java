@@ -25,10 +25,10 @@ import utilities.NYCBaseTest;
 	SmartSearch.class,
 	DataFeedsTest.class,
 	AdvancedSearchTest.class,
-	PrimaryNavigationTest.class,
+	//PrimaryNavigationTest.class,
 	HomePageTest.class,
 	OGESpendingTest.class
 })
-public class SmokeTest extends NYCBaseTest {
+public class SmokeTest extends NYCBaseTest{
 	
 }

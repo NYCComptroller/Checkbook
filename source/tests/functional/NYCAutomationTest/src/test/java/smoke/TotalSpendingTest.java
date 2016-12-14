@@ -14,8 +14,9 @@ import pages.spending.SpendingPage;
 import pages.spending.TotalSpendingPage;
 import utilities.NYCBaseTest;
 import utility.Helper;
+import utility.TestStatusReport;
 
-public class TotalSpendingTest{
+public class TotalSpendingTest extends TestStatusReport{
 	@Before
     public void GoToPage(){
 	   if (!TotalSpendingPage.isAt())
@@ -26,7 +27,7 @@ public class TotalSpendingTest{
 	@Test
     public void VerifySpendingTop5ChecksTitle(){
        String totalSpendingTitle = "Checks Total Spending Transactions";
-	   SpendingPage.ShowWidgetDetails();
+	   HomePage.ShowWidgetDetails();
 	   TotalSpendingPage.GoToTop5ChecksDetailsPage();
 	   assertEquals("Payroll Spending Title did not match", totalSpendingTitle, TotalSpendingPage.GetChecksDetailsPageTitle());
     }
@@ -34,15 +35,22 @@ public class TotalSpendingTest{
 	@Test
     public void VerifyTotalSpendingTop5ChecksTotalSpendingAmount(){
        Number spendingAmount = 94.93;
-	   SpendingPage.ShowWidgetDetails();
+	   HomePage.ShowWidgetDetails();
 	   TotalSpendingPage.GoToTop5ChecksDetailsPage();
 	   assertEquals("Total Spending Top 5 Checks Total Spending Amount did not match.", TotalSpendingPage.GetTotalSpendingAmount(), spendingAmount);  
     }
 	
 	@Test
     public void VerifyTotalSpendingTop5ChecksTransactionCount(){
-	   SpendingPage.ShowWidgetDetails();
+	   HomePage.ShowWidgetDetails();
 	   TotalSpendingPage.GoToTop5ChecksDetailsPage();
 	   assertTrue(TotalSpendingPage.GetChecksTransactionCount() > 900000); 
     }
+	
+	@Test
+	public void VerifyTotalSpendingTop5ChecksTableRowsNotEmpty(){
+		HomePage.ShowWidgetDetails();
+		assertEquals(true, HomePage.IsTableNotEmpty("Top 5 Checks"));
+	}
+	
 }

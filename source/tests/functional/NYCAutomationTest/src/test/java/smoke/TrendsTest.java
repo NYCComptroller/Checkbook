@@ -7,8 +7,9 @@ import org.junit.Test;
 import navigation.PrimaryMenuNavigation;
 import pages.tools.trends.AllTrendsPage;
 import utility.Helper;
+import utility.TestStatusReport;
 
-public class TrendsTest {
+public class TrendsTest extends TestStatusReport{
 	
 	 @Test
     public void goToChangesInNetAssetsThroughAllTrendsPage() {

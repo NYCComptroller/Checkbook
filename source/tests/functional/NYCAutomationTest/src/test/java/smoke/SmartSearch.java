@@ -9,8 +9,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import pages.search.SearchPage;
+import utility.TestStatusReport;
 
-public class SmartSearch {
+public class SmartSearch extends TestStatusReport{
 	@Before 
     public void GoToPage(){
 	   if (!SearchPage.isAt())
