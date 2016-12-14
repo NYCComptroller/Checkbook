@@ -44,6 +44,41 @@ class SpendingVendorUrlService {
 
         return self::getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, '', $datasource);
     }
+
+    /**
+     * @param $prime_vendor_id
+     * @return string
+     */
+    static function getOGEPrimeVendorNameLinkUrl($vendor_id){
+        $url = '/spending_landing'
+            .RequestUtilities::_getUrlParamString('agency')
+            .RequestUtilities::_getUrlParamString('category')
+            ._checkbook_project_get_year_url_param_string()
+            . '/vendor/'. $vendor_id;
+        return $url;
+    }
+
+    /**
+     * Returns Prime Vendor Name Link Url based on values from current path & data row
+     *
+     * @param $node
+     * @param $row
+     * @return string
+     */
+    static function getPrimeVendorNameLinkUrl($row){
+
+        $vendor_id = isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["prime_vendor_prime_vendor"];
+        if(!isset($vendor_id)) {
+            $vendor_id = isset($row["vendor_id"]) ? $row["vendor_id"] : $row["vendor_vendor"];
+        }
+        $year_id = _getRequestParamValue("year");
+        $year_type = _getRequestParamValue("yeartype");
+        $agency_id = _getRequestParamValue("agency");
+        $dashboard = _getRequestParamValue("dashboard");
+        $datasource = _getRequestParamValue("datasource");
+
+        return self::getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, '', $datasource);
+    }
     
     /**
      * Returns Prime Vendor Name Link Url based on values from current path & data row
