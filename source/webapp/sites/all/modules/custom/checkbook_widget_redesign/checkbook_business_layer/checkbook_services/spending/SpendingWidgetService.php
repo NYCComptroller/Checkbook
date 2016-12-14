@@ -55,16 +55,9 @@ class SpendingWidgetService extends AbstractWidgetService {
                 $vendor_id = isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["vendor"];
                 $column = $row['vendor_name'];
                 if(isset($row['prime_vendor_id'])){
-                    $url = '/spending_landing'
-                        .RequestUtilities::_getUrlParamString('category')
-                        ._checkbook_project_get_year_url_param_string()
-                        . '/vendor/'. $vendor_id;
+                    $url = primevendorUrl($vendor_id);
                 }else{
-                    $url = '/spending_landing'
-                        .RequestUtilities::_getUrlParamString('category')
-                        .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
-                        ._checkbook_project_get_year_url_param_string()
-                        . '/vendor/'. $vendor_id;
+                    $url = vendorUrl($vendor_id);
                 }
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
