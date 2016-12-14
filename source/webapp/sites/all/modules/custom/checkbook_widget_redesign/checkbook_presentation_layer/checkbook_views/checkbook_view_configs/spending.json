@@ -24,6 +24,11 @@
                 "widget_config":"prime_vendors_view",
                 "legacy_node_id": 26,
                 "visibility_parameters":["-category:2"]
+            },
+            "payroll_agencies":{
+                "widget_config":"payroll_agencies_view",
+                "legacy_node_id": 501,
+                "visibility_parameters":["-category"]
             }
         }
     },
