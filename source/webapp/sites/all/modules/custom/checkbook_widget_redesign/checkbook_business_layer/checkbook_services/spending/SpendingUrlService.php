@@ -34,7 +34,7 @@ class SpendingUrlService {
             .RequestUtilities::_getUrlParamString('industry')
             .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
             ._checkbook_project_get_year_url_param_string()
-            . 'category/2/agency/'. $agency_id;
+            . '/category/2/agency/'. $agency_id;
         return $url;
     }
 
