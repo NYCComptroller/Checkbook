@@ -3,7 +3,7 @@
     {
         "serviceName":"SpendingWidgetService",
         "sqlConfigName":"spending/mwbe_spending",
-        "statementName":"GetMWBESpendingByPrimeVendors"
+        "statementName":"GetMWBESpendingByExpenseCategories"
     },
     "serviceName":"SpendingWidgetService",
     "defaultParameters":{"type_of_year":"B"},
