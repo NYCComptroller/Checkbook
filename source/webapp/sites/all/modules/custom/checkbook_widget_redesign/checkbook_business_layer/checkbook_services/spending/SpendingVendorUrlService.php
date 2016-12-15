@@ -79,7 +79,8 @@ class SpendingVendorUrlService {
 
         return self::getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, '', $datasource);
     }
-    
+
+
     /**
      * Returns Prime Vendor Name Link Url based on values from current path & data row
      *
@@ -136,7 +137,81 @@ class SpendingVendorUrlService {
         }
         return '/' . self::getLandingPageWidgetUrl($override_params);
     }
-    
+
+
+    /**
+     * Returns Sub Vendor Name Link Url based on values from current path & data row,
+     *
+     * @param $node
+     * @param $row
+     * @return string
+     */
+    static function getSubVendorNameLinkUrl($row){
+        $override_params = null;
+        $vendor_id = isset($row["sub_vendor_sub_vendor"]) ? $row["sub_vendor_sub_vendor"] : $row["vendor_id"];
+        $year_id = _getRequestParamValue("year");
+        $year_type = _getRequestParamValue("yeartype");
+        $agency_id = _getRequestParamValue("agency");
+        $dashboard = _getRequestParamValue("dashboard");
+
+        return self::getSubVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard);
+    }
+
+    /**
+     * Returns Sub Vendor Name Link Url based on values from current path & data row
+     *
+     * if sub vendor is M/WBE certified - go to M/WBE (Sub Vendor) dashboard
+     * if sub vendor is NOT M/WBE certified - go to Sub Vendor dashboard
+     *
+     * if switching from citywide->M/WBE OR M/WBE->citywide,
+     * then persist only agency filter (mwbe & vendor if applicable)
+     *
+     * if remaining in the same dashboard persist all filters (drill-down) except sub vendor
+     *
+     * @param $vendor_id
+     * @param $agency_id
+     * @param $year_id
+     * @param $year_type
+     * @param $current_dashboard
+     * @param $payee_name
+     * @return string
+     */
+    static function getSubVendorLink($vendor_id, $agency_id, $year_id, $year_type, $current_dashboard, $payee_name = false){
+
+        $override_params = null;
+        $latest_certified_minority_type_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type, "S");
+        $is_mwbe_certified = isset($latest_certified_minority_type_id);
+
+        //if M/WBE certified, go to M/WBE (Sub Vendor) else if NOT M/WBE certified, go to Sub Vendor dashboard
+        $new_dashboard = $is_mwbe_certified ? "ms" : "ss";
+
+        //if switching between dashboard, persist only agency filter (mwbe & subvendor if applicable)
+        if($current_dashboard != $new_dashboard) {
+            $override_params = array(
+                "dashboard"=>$new_dashboard,
+                "mwbe"=>$is_mwbe_certified ? "2~3~4~5~9" : null,
+                "agency"=>$agency_id,
+                "subvendor"=>$vendor_id,
+                "vendor"=>null,
+                "category"=>null,
+                "industry"=>null
+            );
+        }
+        //if remaining in the same dashboard persist all filters (drill-down) except vendor
+        else {
+            $override_params = array(
+                "dashboard"=>$new_dashboard,
+                "subvendor"=>$vendor_id,
+                "vendor"=>null
+            );
+            //payee name will never have a drill down, this is to avoid ajax issues on drill down
+            if($payee_name) {
+                $override_params["mwbe"] = $is_mwbe_certified ? "2~3~4~5~9" : null;
+            }
+        }
+        return '/' . self::getLandingPageWidgetUrl($override_params);
+    }
+
     /**
      * Returns M/WBE category for the given vendor id in the given year and year type
      *
