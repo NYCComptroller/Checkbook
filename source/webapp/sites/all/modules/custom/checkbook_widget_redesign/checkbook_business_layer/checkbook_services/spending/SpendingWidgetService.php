@@ -64,7 +64,7 @@ class SpendingWidgetService extends AbstractWidgetService {
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
             case "vendor_name_link":
-                $vendor_id = isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["vendor"];
+                $vendor_id = isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["vendor_id"];
                 $column = $row['vendor_name'];
                 if(isset($row['prime_vendor_id'])){
                     $url = SpendingUrlService::primevendorUrl($vendor_id);
@@ -79,7 +79,7 @@ class SpendingWidgetService extends AbstractWidgetService {
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
             case "prime_vendor_ytd_spending_link":
-                $vendor_id = isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["vendor"];
+                $vendor_id = isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["vendor_id"];
                 $column = $row['check_amount_sum'];
                 $class = "bottomContainerReload";
                 $url = SpendingUrlService::ytdSpendindUrl('vendor',$vendor_id, $this->getLegacyNodeId());
