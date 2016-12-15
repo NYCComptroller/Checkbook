@@ -21,8 +21,23 @@ class SpendingUrlService {
                ._checkbook_project_get_year_url_param_string()
                . '/agency/'. $agency_id;
         return $url;
-    } 
-    
+    }
+
+    /**
+     * @param $agency_id
+     * @return string
+     */
+    static function payrollagencyUrl($agency_id){
+        $url = '/spending_landing'
+            .RequestUtilities::_getUrlParamString('vendor')
+            .RequestUtilities::_getUrlParamString('category')
+            .RequestUtilities::_getUrlParamString('industry')
+            .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
+            ._checkbook_project_get_year_url_param_string()
+            . 'category/2/agency/'. $agency_id;
+        return $url;
+    }
+
     /**
      * @param $contractId
      * @return string
@@ -60,7 +75,26 @@ class SpendingUrlService {
                . '/'.$param.'/'. $value;
         return $url;
     }
-    
+
+    /**
+     * @param $param - Widget Name to be used in the URL
+     * @param $value - value of @param to be used in the URL
+     * @param null $legacy_node_id
+     * @return string
+     */
+    static function payrollagenciesytdSpendindUrl($param, $value, $legacy_node_id = null){
+        $smnid_param = isset($legacy_node_id) ? '/smnid/'.$legacy_node_id : '';
+        $url = '/panel_html/spending_transactions/spending/transactions'
+            .RequestUtilities::_getUrlParamString('vendor')
+            .RequestUtilities::_getUrlParamString('agency')
+            .RequestUtilities::_getUrlParamString('category')
+            .RequestUtilities::_getUrlParamString('industry')
+            .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
+            ._checkbook_project_get_year_url_param_string()
+            .$smnid_param
+            . '/category/2/'.$param.'/'. $value;
+        return $url;
+    }
     /**
      * @param $param - Widget Name to be used in the URL
      * @param $value - value of @param to be used in the URL
