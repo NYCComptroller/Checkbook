@@ -4,6 +4,7 @@
     {
         "serviceName":"SpendingWidgetService",
         "sqlConfigName":"spending/mwbe_spending",
-        "statementName":"GetMWBESubVendorsSpendingByPrimeVendors"
+        "statementName":"GetMWBESubVendorsSpendingByPrimeVendors",
+        "countStatementName":"GetMWBESubVendorsSpendingCountByPrimeVendors"
     }
 }

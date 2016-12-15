@@ -48,7 +48,7 @@ class SpendingWidgetService extends AbstractWidgetService {
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
             case "mwbe_category":
-                $column = $row['minority_type'];
+                $column = isset($row['minority_type']) ? $row['minority_type'] : $row['prime_minority_type'];
                 $value = MappingUtil::getMinorityCategoryById($column);
                 break;
             case "mwme_category_link":
@@ -82,7 +82,8 @@ class SpendingWidgetService extends AbstractWidgetService {
                 $vendor_id = isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["vendor_id"];
                 $column = $row['check_amount_sum'];
                 $class = "bottomContainerReload";
-                $vendor = $this->getLegacyNodeId() == 762 ? 'vendor' : 'fvendor';
+                $legacy_node_id = $this->getLegacyNodeId();
+                $vendor = ($legacy_node_id == 762 || $legacy_node_id == 717 || $legacy_node_id == 747) ? 'vendor' : 'fvendor';
                 $url = SpendingUrlService::ytdSpendindUrl($vendor,$vendor_id, $this->getLegacyNodeId());
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
@@ -93,6 +94,18 @@ class SpendingWidgetService extends AbstractWidgetService {
                 $oge_vendor_link = SpendingVendorUrlService::getOGEPrimeVendorNameLinkUrl($vendor_id);
                 $url = _checkbook_check_isEDCPage() ? $oge_vendor_link : $citywide_vendor_name_link;
                 $value = ($row['expense_category'] == 'Payroll Summary') ? $column : "<a href='{$url}'>{$column}</a>";
+                break;
+            case "checks_sub_vendor_link":
+                $vendor_id = $row["vendor_id"];
+                $column = $row['sub_vendor_name'];
+                $url =  SpendingVendorUrlService::getSubVendorNameLinkUrl($row);
+                $value = $vendor_id == null ? $column : "<a href='{$url}'>{$column}</a>";
+                break;
+            case "checks_prime_vendor_link":
+                $vendor_id = $row['prime_vendor_id'];
+                $column = $row['prime_vendor_name'];
+                $url =  SpendingVendorUrlService::getPrimeVendorNameLinkUrl($row);
+                $value = $vendor_id == null ? $column : "<a href='{$url}'>{$column}</a>";
                 break;
         }
 
