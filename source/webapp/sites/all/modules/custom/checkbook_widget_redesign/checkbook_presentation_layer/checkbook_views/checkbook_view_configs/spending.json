@@ -45,11 +45,11 @@
                "visibility_parameters":["-agency"]
             },
             "expense_categories":{
-               "widget_config":"mwe_spending_by_expense_categories_view",
+               "widget_config":"mwbe_spending_by_expense_categories_view",
                "legacy_node_id": 761
             },
             "departments":{
-               "widget_config":"spending_by_departments_view",
+               "widget_config":"mwbe_spending_by_departments_view",
                "legacy_node_id": 760,
                "visibility_parameters":["agency"]
             },
@@ -125,11 +125,11 @@
                 "visibility_parameters":["-category:2"]
             },
             "expense_categories":{
-               "widget_config":"spending_by_expense_categories_view",
+               "widget_config":"oge_spending_by_expense_categories_view",
                "legacy_node_id": 22
             },
             "departments":{
-               "widget_config":"spending_by_departments_view",
+               "widget_config":"oge_spending_by_departments_view",
                "legacy_node_id": 29,
                "visibility_parameters":["agency"]
             },
