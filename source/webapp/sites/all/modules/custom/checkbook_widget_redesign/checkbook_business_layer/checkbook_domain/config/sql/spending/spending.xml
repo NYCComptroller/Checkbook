@@ -1,10 +1,13 @@
 <!--GetSpendingbyChecks-->
 <statements>
     <statement name="GetSpendingByChecks" datasource="checkbook">
-        <param name="year" required ="true"/>
-        <param name="category" type="int"/>
-        <param name="mwbe" />
-        <param name="vendor" />
+        <param name="year" required ="true" type="int" />
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="fvendor" type="int" />
+        <param name="category" type="int" />
+        <param name="industry" type="int" />
+        <param name="mwbe"/>
         <sql>
             SELECT
             check_eft_issued_date as issue_date,
@@ -24,6 +27,9 @@
                     <exp op="IN" dbField="minority_type_id" paramName="mwbe"/>
                     <exp op="=" dbField="spending_category_id" paramName="category"/>
                     <exp op="=" dbField="vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="vendor_id" paramName="fvendor" />
+                    <exp op="=" dbField="agency_id" paramName="agency" />
+                    <exp op="=" dbField="industry_type_id" paramName="industry" />
                 </exp>
             </where>
         </sql>
@@ -207,9 +213,14 @@
     </statement>
 <!--GetSpendingByPrimeVendors-->
     <statement name="GetSpendingByPrimeVendors" datasource="checkbook">
-        <param name="year" required ="true"/>
-        <param name="category" type="int"/>
-        <param name="yeartype" required="true" type="string"/>
+        <param name="year" required ="true" type="int" />
+        <param name="yeartype" required ="true" type="string"/>
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="fvendor" type="int" />
+        <param name="category" type="int" />
+        <param name="industry" type="int" />
+        <param name="mwbe"/>
         <sql>
             SELECT
             a.type_of_year,
@@ -224,8 +235,12 @@
                 <exp op="AND">
                     <exp op="=" dbField="a.year_id" paramName="year" />
                     <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="a.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.vendor_id" paramName="fvendor" />
+                    <exp op="=" dbField="a.agency_id" paramName="agency" />
                     <exp op="=" dbField="a.spending_category_id" paramName="category" />
-
+                    <exp op="=" dbField="a.industry_type_id" paramName="industry" />
+                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                 </exp>
             </where>
             GROUP BY a.vendor_id, a.year_id, a.type_of_year,b.legal_name
@@ -233,9 +248,14 @@
     </statement>
     <!--GetSpendingByPayrollAgencies-->
     <statement name="GetSpendingByPayrollAgencies" datasource="checkbook">
-        <param name="year" required ="true"/>
-        <param name="category" type="int"/>
-        <param name="yeartype" required="true" type="string"/>
+        <param name="year" required ="true" type="int" />
+        <param name="yeartype" required ="true" type="string"/>
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="fvendor" type="int" />
+        <param name="category" type="int" />
+        <param name="industry" type="int" />
+        <param name="mwbe"/>
         <sql>
             SELECT
             a.type_of_year,
@@ -251,6 +271,11 @@
                     <exp op="=" dbField="a.year_id" paramName="year" />
                     <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
                     <exp op="=" dbField="a.spending_category_id">2</exp>
+                    <exp op="=" dbField="a.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.vendor_id" paramName="fvendor" />
+                    <exp op="=" dbField="a.agency_id" paramName="agency" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="industry" />
+                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                 </exp>
             </where>
             GROUP BY a.agency_id, a.year_id, a.type_of_year, b.agency_short_name, b.agency_name
