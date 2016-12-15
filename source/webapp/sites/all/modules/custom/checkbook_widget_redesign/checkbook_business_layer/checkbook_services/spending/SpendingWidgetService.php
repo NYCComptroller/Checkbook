@@ -14,7 +14,7 @@ class SpendingWidgetService extends AbstractWidgetService {
         switch($column_name) {
             case "agency_name_link":
                 $column = $row['agency_name'];
-                $url = SpendingUrlService::agencyUrl($row['agency_id']);
+                $url = SpendingUrlService::agencyUrl($row['agency_id'], $this->getLegacyNodeId());
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
             case "payroll_agency_name_link":
