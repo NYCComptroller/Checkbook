@@ -1,9 +1,14 @@
 
 <statements>
     <statement name="GetSpendingSubVendorsByChecks" datasource="checkbook">
-        <param name="year" required ="true"/>
-        <param name="category" type="int"/>
-        <param name="mwbe" />
+        <param name="year" required ="true" type="int" />
+        <param name="yeartype" required ="true" type="string"/>
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="subvendor" type="int" />
+        <param name="category" type="int" />
+        <param name="industry" type="int" />
+        <param name="mwbe"/>
         <sql>
             SELECT
             a.check_eft_issued_date as issue_date,
@@ -24,6 +29,12 @@
                     <exp op="=" dbField="a.check_eft_issued_nyc_year_id" paramName="year" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe"/>
                     <exp op="=" dbField="a.spending_category_id" paramName="category"/>
+                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="prime_vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="vendor_id" paramName="subvendor" />
+                    <exp op="=" dbField="agency_id" paramName="agency" />
+                    <exp op="=" dbField="industry_type_id" paramName="industry" />
+                    <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
                 </exp>
             </where>
         </sql>
@@ -81,9 +92,13 @@
     </statement>
     <!--GetSubVendorsSpendingByPrimeVendors-->
     <statement name="GetSubVendorsSpendingByPrimeVendors" datasource="checkbook">
-        <param name="year" required ="true"/>
-        <param name="category" type="int"/>
-        <param name="yeartype" required="true" type="string"/>
+        <param name="year" required ="true" type="int" />
+        <param name="yeartype" required ="true" type="string"/>
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="subvendor" type="int" />
+        <param name="category" type="int" />
+        <param name="industry" type="int" />
         <sql>
             SELECT
             a.type_of_year,
@@ -101,6 +116,11 @@
                     <exp op="=" dbField="a.year_id" paramName="year" />
                     <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
                     <exp op="=" dbField="a.spending_category_id" paramName="category" />
+                    <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.vendor_id" paramName="subvendor" />
+                    <exp op="=" dbField="a.agency_id" paramName="agency" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="industry" />
+                    <exp op="IN" dbField="a.prime_minority_type_id" paramName="mwbe" />
                 </exp>
             </where>
             GROUP BY a.year_id, a.type_of_year, a.prime_vendor_id, a.prime_minority_type_id, b.legal_name
@@ -159,10 +179,14 @@
     </statement>
     <!--GetSpendingBySubVendors-->
     <statement name="GetSpendingBySubVendors" datasource="checkbook">
-        <param name="year" required ="true"/>
-        <param name="category" type="int"/>
-        <param name="yeartype" required="true" type="string"/>
         <param name="mwbe" />
+        <param name="year" required ="true" type="int" />
+        <param name="yeartype" required ="true" type="string"/>
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="subvendor" type="int" />
+        <param name="category" type="int" />
+        <param name="industry" type="int" />
         <sql>
             SELECT
             a.vendor_id AS sub_vendor_id,
@@ -178,6 +202,10 @@
             JOIN vendor c ON c.vendor_id = a.prime_vendor_id
             <where>
                 <exp op="AND">
+                    <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.vendor_id" paramName="subvendor" />
+                    <exp op="=" dbField="a.agency_id" paramName="agency" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="industry" />
                     <exp op="=" dbField="a.year_id" paramName="year" />
                     <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe"/>
@@ -195,10 +223,14 @@
     </statement>
     <!--GetSubVendorsMWBESpendingBySubContracts-->
     <statement name="GetSubVendorsMWBESpendingBySubContracts" datasource="checkbook">
-        <param name="year" required ="true"/>
-        <param name="category" type="int"/>
-        <param name="yeartype" required="true" type="string"/>
         <param name="mwbe" />
+        <param name="year" required ="true" type="int" />
+        <param name="yeartype" required ="true" type="string"/>
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="subvendor" type="int" />
+        <param name="category" type="int" />
+        <param name="industry" type="int" />
         <sql>
             SELECT
             a.description AS sub_contract_purpose,
@@ -221,6 +253,10 @@
                     <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe"/>
                     <exp op="=" dbField="a.spending_category_id" paramName="category" />
+                    <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.vendor_id" paramName="subvendor" />
+                    <exp op="=" dbField="a.agency_id" paramName="agency" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="industry" />
                 </exp>
             </where>
             GROUP BY a.description, a.document_id, a.agreement_id, a.document_id, a.vendor_id, a.prime_vendor_id, b.legal_name, c.legal_name, d.original_agreement_id
