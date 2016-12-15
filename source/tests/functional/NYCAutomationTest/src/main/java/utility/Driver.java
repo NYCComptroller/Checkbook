@@ -41,7 +41,7 @@ public class Driver {
                 break;
 
             case "CHROME":
-                System.setProperty("webdriver.chrome.driver", Driver.DriverPath + "chromedriver");
+                System.setProperty("webdriver.chrome.driver", Driver.DriverPath + "chromedriver-linux-64.exe");
                 Instance = new ChromeDriver();
                 break;
 
