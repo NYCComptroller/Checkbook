@@ -10,7 +10,7 @@
     "headerTitle":"Agencies",
     "headerSubTitle":"Agencies",
     "table_columns":[
-        {"labelAlias":"agency_name","column":"agency_name","derivedColumn":"agency_name_link","tooltip":60},
+        {"labelAlias":"agency_name","column":"agency_name","derivedColumn":"agency_name_link","tooltip":40},
         {"labelAlias":"ytd_spending","column":"check_amount_sum","derivedColumn":"agency_ytd_spending_link","format":"dollar"},
         {"labelAlias":"percent_spending","column":"percent_spending","format":"percent"},
         {"label":"","column":""}
