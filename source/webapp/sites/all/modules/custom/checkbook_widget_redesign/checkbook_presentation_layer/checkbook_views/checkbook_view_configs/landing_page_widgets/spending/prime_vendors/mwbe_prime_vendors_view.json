@@ -3,7 +3,8 @@
     {
         "serviceName":"SpendingWidgetService",
         "sqlConfigName":"spending/mwbe_spending",
-        "statementName":"GetMWBESpendingByPrimeVendors"
+        "statementName":"GetMWBESpendingByPrimeVendors",
+        "countStatementName":"GetMWBESpendingCountByPrimeVendors"
     },
     "serviceName":"SpendingWidgetService",
     "headerTitle":"Prime Vendors",

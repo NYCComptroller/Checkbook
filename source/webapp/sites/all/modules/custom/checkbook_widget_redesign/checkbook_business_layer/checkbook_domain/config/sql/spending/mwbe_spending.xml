@@ -195,6 +195,27 @@
             GROUP BY a.vendor_id, a.year_id, a.type_of_year, a.minority_type_id, b.legal_name
         </sql>
     </statement>
+    <!--GetMWBESpendingCountByPrimeVendors-->
+    <statement name="GetMWBESpendingCountByPrimeVendors" datasource="checkbook">
+        <param name="year" required ="true"/>
+        <param name="category" type="int"/>
+        <param name="yeartype" required="true" type="string"/>
+        <param name="mwbe" />
+        <sql>
+            SELECT COUNT(*) AS record_count
+            FROM (SELECT a.vendor_id AS vendor_vendor
+                FROM aggregateon_mwbe_spending_vendor a
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="a.year_id" paramName="year" />
+                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
+                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe"/>
+                    <exp op="=" dbField="a.spending_category_id" paramName="category" />
+                </exp>
+            </where>
+            GROUP BY a.vendor_id) c
+        </sql>
+    </statement>
 <!-- GetMWBESubVendorsSpendingByPrimeVendors-->
     <statement name="GetMWBESubVendorsSpendingByPrimeVendors" datasource="checkbook">
         <param name="year" required ="true"/>
