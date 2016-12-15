@@ -17,10 +17,21 @@ class SpendingWidgetService extends AbstractWidgetService {
                 $url = SpendingUrlService::agencyUrl($row['agency_id']);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
+            case "payroll_agency_name_link":
+                $column = $row['agency_name'];
+                $url = SpendingUrlService::payrollagencyUrl($row['agency_id']);
+                $value = "<a href='{$url}'>{$column}</a>";
+                break;
             case "agency_ytd_spending_link":
                 $column = $row['check_amount_sum'];
                 $class = "bottomContainerReload";
                 $url = SpendingUrlService::ytdSpendindUrl('agency',$row['agency_id'], $this->getLegacyNodeId());
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
+            case "payroll_agency_ytd_spending_link":
+                $column = $row['check_amount_sum'];
+                $class = "bottomContainerReload";
+                $url = SpendingUrlService::payrollagenciesytdSpendindUrl('agency',$row['agency_id'], $this->getLegacyNodeId());
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
             case "expense_cat_ytd_spending_link":
