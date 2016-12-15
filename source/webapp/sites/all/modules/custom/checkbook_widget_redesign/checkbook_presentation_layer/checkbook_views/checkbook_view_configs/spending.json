@@ -67,7 +67,7 @@
                 "legacy_node_id":715,
                 "visibility_parameters":["-category:2"]
             },
-            "agencies":{
+            "subven_agencies":{
                "widget_config":"subven_spending_by_agencies_view",
                "legacy_node_id": 716,
                "visibility_parameters":["-agency"]
@@ -86,7 +86,7 @@
                 "legacy_node_id":715,
                 "visibility_parameters":["-category:2"]
             },
-            "agencies":{
+            "subven_agencies":{
                "widget_config":"subven_spending_by_agencies_view",
                "legacy_node_id": 716,
                "visibility_parameters":["-agency"]
