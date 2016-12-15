@@ -23,12 +23,12 @@
             "prime_vendors":{
                 "widget_config":"prime_vendors_view",
                 "legacy_node_id": 26,
-                "visibility_parameters":["-category:2"]
+                "visibility_parameters":["-category:2", "-vendor"]
             },
             "payroll_agencies":{
                 "widget_config":"payroll_agencies_view",
                 "legacy_node_id": 501,
-                "visibility_parameters":["-category"]
+                "visibility_parameters":["-category", "-vendor"]
             }
         }
     },
@@ -56,7 +56,7 @@
             "prime_vendors":{
                 "widget_config":"mwbe_prime_vendors_view",
                 "legacy_node_id": 762,
-                "visibility_parameters":["-category:2"]
+                "visibility_parameters":["-category:2", "-vendor"]
             }
         }
     },
@@ -75,7 +75,7 @@
         "prime_vendors":{
             "widget_config":"sub_vendors_prime_vendors_view",
             "legacy_node_id": 717,
-            "visibility_parameters":["-category:2"]
+            "visibility_parameters":["-category:2", "-vendor"]
             }
         }
     },
@@ -94,7 +94,7 @@
             "prime_vendors":{
                 "widget_config":"sub_vendors_prime_vendors_view",
                 "legacy_node_id": 717,
-                "visibility_parameters":["-category:2"]
+                "visibility_parameters":["-category:2", "-vendor"]
             }
         }
     },
@@ -113,7 +113,7 @@
             "prime_vendors":{
                 "widget_config":"mwbe_sub_vendors_prime_vendors_view",
                 "legacy_node_id": 747,
-                "visibility_parameters":["-category:2"]
+                "visibility_parameters":["-category:2", "-vendor"]
             }
         }
     },
@@ -136,7 +136,7 @@
             "prime_vendors":{
                 "widget_config":"oge_prime_vendors_view",
                 "legacy_node_id": 26,
-                "visibility_parameters":["-category:2"]
+                "visibility_parameters":["-category:2", "-vendor"]
             }
         }
     }
