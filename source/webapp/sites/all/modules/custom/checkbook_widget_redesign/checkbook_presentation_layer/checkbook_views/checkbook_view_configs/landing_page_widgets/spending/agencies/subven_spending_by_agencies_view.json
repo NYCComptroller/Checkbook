@@ -10,7 +10,7 @@
     "headerTitle":"Agencies",
     "headerSubTitle":"Agencies",
     "table_columns":[
-        {"labelAlias":"agency_name","column":"agency_name","derivedColumn":"agency_name_link","tooltip":60},
+        {"labelAlias":"agency_name","column":"agency_name","derivedColumn":"agency_name_link","tooltip":47},
         {"labelAlias":"num_sub_vendors","column":"sub_vendor_count","format":"number"},
         {"labelAlias":"ytd_spending_sub_vendors","column":"ytd_spending_sub_vendors","format":"dollar"},
         {"labelAlias":"sub_vendors_percent_paid","column":"check_amount_sum_no_payroll","format":"dollar"},
