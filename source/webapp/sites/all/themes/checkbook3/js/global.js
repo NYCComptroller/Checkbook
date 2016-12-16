@@ -1328,6 +1328,13 @@ Drupal.behaviors.hoveOverMWBE = {
                 else {
                     $('#edit-back-submit').attr('disabled', true);
                 }
+                /* Fixed for Chrome browser issue */
+                jQuery('.tableHeader').each(function( i ) {
+                    if(jQuery(this).find('.contCount').length > 0){
+                        jQuery(this).find('h2').append("<span class='contentCount'>"+jQuery('span.contCount').html()+'</span>');
+                        jQuery(this).find('.contCount').remove();
+                    }
+                });
 
             });
 
