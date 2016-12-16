@@ -67,6 +67,11 @@
                 "widget_config":"mwbe_spending_by_contracts_view",
                 "legacy_node_id": 764,
                 "visibility_parameters":["-category:2"]
+            },
+            "sub_vendors":{
+                "widget_config":"mwbe_sub_vendors_view",
+                "legacy_node_id": 763,
+                "visibility_parameters":["-category:2"]
             }
         }
     },
@@ -87,6 +92,11 @@
             "legacy_node_id": 717,
             "visibility_parameters":["-category:2", "-vendor"]
             }
+        },
+        "sub_vendors":{
+            "widget_config":"sub_vendors_view",
+            "legacy_node_id": 719,
+            "visibility_parameters":["-category:2"]
         }
     },
     "sub_vendors_mwbe":{
@@ -105,6 +115,11 @@
                 "widget_config":"sub_vendors_prime_vendors_view",
                 "legacy_node_id": 717,
                 "visibility_parameters":["-category:2", "-vendor"]
+            },
+            "sub_vendors":{
+                "widget_config":"sub_vendors_view",
+                "legacy_node_id": 719,
+                "visibility_parameters":["-category:2"]
             }
         }
     },
@@ -128,6 +143,11 @@
             "contracts":{
                 "widget_config":"mwbe_subven_spending_by_contracts_view",
                 "legacy_node_id": 749,
+                "visibility_parameters":["-category:2"]
+            },
+            "sub_vendors":{
+                "widget_config":"mwbe_sub_vendors_view",
+                "legacy_node_id": 748,
                 "visibility_parameters":["-category:2"]
             }
         }

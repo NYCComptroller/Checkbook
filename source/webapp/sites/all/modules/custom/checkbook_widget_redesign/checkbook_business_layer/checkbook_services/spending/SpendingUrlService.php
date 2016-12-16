@@ -7,7 +7,9 @@
  */
 
 class SpendingUrlService {
-    
+
+
+    static $landingPageParams = array("category"=>"category","industry"=>"industry","mwbe"=>"mwbe","dashboard"=>"dashboard","agency"=>"agency","vendor"=>"vendor","subvendor"=>"subvendor");
     /**
      * @param $agency_id
      * @return string
@@ -195,4 +197,69 @@ class SpendingUrlService {
         
         return $url;
     }
+
+    /**
+     * Returns Sub Vendor YTD Spending Link Url based on values from current path & data row
+     *
+     * @param $node
+     * @param $row
+     * @return string
+     */
+    static function getSubVendorYtdSpendingUrl($legacy_node_id, $row){
+        $override_params = array(
+            'subvendor'=>$row['vendor_id'],
+            'fvendor'=>$row['vendor_id'],
+            'smnid'=>$legacy_node_id
+        );
+        return '/' . self::getSpendingTransactionPageUrl($override_params);
+    }
+
+    /**
+     *  Returns a spending transaction page Url with custom parameters appended but instead of persisted
+     *
+     * @param array $override_params
+     * @return string
+     */
+    static function getSpendingTransactionPageUrl($override_params = array()) {
+        return self::getSpendingUrl('panel_html/spending_transactions/spending/transactions',$override_params);
+    }
+
+    /**
+     * Function build the url using the path and the current Spending URL parameters.
+     * The Url parameters can be overridden by the override parameter array.
+     *
+     * @param $path
+     * @param array $override_params
+     * @return string
+     */
+    static function getSpendingUrl($path, $override_params = array()) {
+
+        $url =  $path . _checkbook_project_get_year_url_param_string();
+
+        $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
+        $url_params = self::$landingPageParams;
+        $exclude_params = array_keys($override_params);
+        if(is_array($url_params)){
+            foreach($url_params as $key => $value){
+                if(!in_array($key,$exclude_params)){
+                    $url .=  CustomURLHelper::get_url_param($pathParams,$key,$value);
+                }
+            }
+        }
+
+        if(is_array($override_params)){
+            foreach($override_params as $key => $value){
+                if(isset($value)){
+                    if($key == 'yeartype' && $value == 'C'){
+                        $value = 'B';
+                    }
+                    $url .= "/$key";
+                    $url .= "/$value";
+                }
+            }
+        }
+
+        return $url;
+    }
+
 } 
