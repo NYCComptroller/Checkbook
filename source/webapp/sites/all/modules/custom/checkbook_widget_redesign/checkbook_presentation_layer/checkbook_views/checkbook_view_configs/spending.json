@@ -29,6 +29,11 @@
                 "widget_config":"payroll_agencies_view",
                 "legacy_node_id": 501,
                 "visibility_parameters":["-category", "-vendor"]
+            },
+            "contracts":{
+                "widget_config":"spending_by_contracts_view",
+                "legacy_node_id": 20,
+                "visibility_parameters":["-category:2"]
             }
         }
     },
@@ -57,6 +62,11 @@
                 "widget_config":"mwbe_prime_vendors_view",
                 "legacy_node_id": 762,
                 "visibility_parameters":["-category:2", "-vendor"]
+            },
+            "contracts":{
+                "widget_config":"mwbe_spending_by_contracts_view",
+                "legacy_node_id": 764,
+                "visibility_parameters":["-category:2"]
             }
         }
     },
@@ -114,6 +124,11 @@
                 "widget_config":"mwbe_sub_vendors_prime_vendors_view",
                 "legacy_node_id": 747,
                 "visibility_parameters":["-category:2", "-vendor"]
+            },
+            "contracts":{
+                "widget_config":"mwbe_subven_spending_by_contracts_view",
+                "legacy_node_id": 749,
+                "visibility_parameters":["-category:2"]
             }
         }
     },
@@ -137,6 +152,11 @@
                 "widget_config":"oge_prime_vendors_view",
                 "legacy_node_id": 26,
                 "visibility_parameters":["-category:2", "-vendor"]
+            },
+            "contracts":{
+                "widget_config":"oge_spending_by_contracts_view",
+                "legacy_node_id": 20,
+                "visibility_parameters":["-category:2"]
             }
         }
     }
