@@ -1662,15 +1662,15 @@ input[type="url"], input[type="week"] {
     margin:0px;
 }
 .tableHeader{margin-top:20px;}
-.tableHeader h2{float:left;}
-.tableHeader .contCount{
-    float:left;
+/* Fixed for Chrome browser issue */
+.tableHeader .contentCount{
     color: #5c5c5c;
     font-size:13px;
     font-style: italic;
     font-weight: bold;
     padding-top:6px;
     margin-left:15px;
+    font-family: 'Roboto';
 }
 .dataTables_processing {
     height: 24px;
