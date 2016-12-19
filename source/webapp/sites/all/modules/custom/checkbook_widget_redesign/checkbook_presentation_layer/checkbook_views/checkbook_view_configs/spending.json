@@ -87,16 +87,16 @@
                "legacy_node_id": 716,
                "visibility_parameters":["-agency"]
             },
-        "prime_vendors":{
-            "widget_config":"sub_vendors_prime_vendors_view",
-            "legacy_node_id": 717,
-            "visibility_parameters":["-category:2", "-vendor"]
+            "prime_vendors":{
+                "widget_config":"sub_vendors_prime_vendors_view",
+                "legacy_node_id": 717,
+                "visibility_parameters":["-category:2", "-vendor"]
+                },
+            "sub_vendors":{
+                "widget_config":"sub_vendors_view",
+                "legacy_node_id": 719,
+                "visibility_parameters":["-category:2"]
             }
-        },
-        "sub_vendors":{
-            "widget_config":"sub_vendors_view",
-            "legacy_node_id": 719,
-            "visibility_parameters":["-category:2"]
         }
     },
     "sub_vendors_mwbe":{
