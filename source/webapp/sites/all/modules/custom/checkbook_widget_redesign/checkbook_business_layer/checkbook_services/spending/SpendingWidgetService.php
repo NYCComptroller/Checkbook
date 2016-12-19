@@ -51,11 +51,11 @@ class SpendingWidgetService extends AbstractWidgetService {
                 $column = isset($row['minority_type']) ? $row['minority_type'] : $row['prime_minority_type'];
                 $value = MappingUtil::getMinorityCategoryById($column);
                 break;
-            case "mwme_category_link":
+            case "mwbe_category_link":
                 $column = $row['minority_type'];
                 $mwbe_category_name = MappingUtil::getMinorityCategoryById($column);
                 $url = SpendingUrlService::mwbeUrl($column);
-                $value = RequestUtil::isNewWindow() || !MappingUtil::isMWBECertified(array($column)) ? $mwbe_category_name  : "<a href= '{$url}'>{$mwbe_category_name}</a>";
+                $value = $this->getLegacyNodeId() == 763 ? $mwbe_category_name : (RequestUtil::isNewWindow() || !MappingUtil::isMWBECertified(array($column)))  ? $mwbe_category_name  : "<a href= '{$url}'>{$mwbe_category_name}</a>";
                 break;
             case "contract_vendor_name_link":
                 $column = $row['vendor_name'];
