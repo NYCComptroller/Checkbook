@@ -67,6 +67,11 @@
                 "widget_config":"mwbe_spending_by_contracts_view",
                 "legacy_node_id": 764,
                 "visibility_parameters":["-category:2"]
+            },
+            "sub_vendors":{
+                "widget_config":"mwbe_sub_vendors_view",
+                "legacy_node_id": 763,
+                "visibility_parameters":["-category:2"]
             }
         }
     },
@@ -82,10 +87,18 @@
                "legacy_node_id": 716,
                "visibility_parameters":["-agency"]
             },
-        "prime_vendors":{
-            "widget_config":"sub_vendors_prime_vendors_view",
-            "legacy_node_id": 717,
-            "visibility_parameters":["-category:2", "-vendor"]
+            "prime_vendors":{
+                "widget_config":"sub_vendors_prime_vendors_view",
+                "legacy_node_id": 717,
+                "visibility_parameters":["-category:2", "-vendor"]
+                },
+            "sub_vendors":{
+                "widget_config":"sub_vendors_view",
+                "legacy_node_id": 719
+            },
+            "sub_contracts":{
+                "widget_config":"sub_vendors_mwbe_view",
+                "legacy_node_id": 718
             }
         }
     },
@@ -105,6 +118,14 @@
                 "widget_config":"sub_vendors_prime_vendors_view",
                 "legacy_node_id": 717,
                 "visibility_parameters":["-category:2", "-vendor"]
+            },
+            "sub_vendors":{
+                "widget_config":"sub_vendors_view",
+                "legacy_node_id": 719
+            },
+            "sub_contracts":{
+                "widget_config":"sub_vendors_mwbe_view",
+                "legacy_node_id": 718
             }
         }
     },
@@ -115,7 +136,7 @@
                 "legacy_node_id":745,
                 "visibility_parameters":["-category:2"]
             },
-            "agencies":{
+            "subven_agencies":{
                "widget_config":"mwbe_subven_spending_by_agencies_view",
                "legacy_node_id": 746,
                "visibility_parameters":["-agency"]
@@ -129,6 +150,10 @@
                 "widget_config":"mwbe_subven_spending_by_contracts_view",
                 "legacy_node_id": 749,
                 "visibility_parameters":["-category:2"]
+            },
+            "sub_vendors":{
+                "widget_config":"mwbe_sub_vendors_view",
+                "legacy_node_id": 748
             }
         }
     },
