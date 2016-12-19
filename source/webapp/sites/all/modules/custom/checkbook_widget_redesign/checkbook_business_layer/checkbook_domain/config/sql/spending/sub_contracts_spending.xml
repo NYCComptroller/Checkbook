@@ -287,12 +287,12 @@
             a.description AS sub_contract_purpose,
             a.document_id,
             a.agreement_id ,
-            a.vendor_id AS sub_vendor_id,
+            a.vendor_id,
             b.legal_name AS sub_vendor_name,
             a.prime_vendor_id,
             c.legal_name AS prime_vendor_name,
             a.document_id AS sub_contract_number,
-            d.original_agreement_id AS sub_contract_number_sub_contract_number_original_agreement_id,
+            d.original_agreement_id,
             SUM(COALESCE(total_spending_amount,0)) AS check_amount_sum
             FROM aggregateon_subven_spending_contract a
             JOIN subvendor b ON b.vendor_id = a.vendor_id
@@ -311,6 +311,35 @@
                 </exp>
             </where>
             GROUP BY a.description, a.document_id, a.agreement_id, a.document_id, a.vendor_id, a.prime_vendor_id, b.legal_name, c.legal_name, d.original_agreement_id
+        </sql>
+    </statement>
+    <!--GetSubVendorsMWBESpendingCountBySubContracts-->
+    <statement name="GetSubVendorsMWBESpendingCountBySubContracts" datasource="checkbook">
+        <param name="mwbe" />
+        <param name="year" required ="true" type="int" />
+        <param name="yeartype" required ="true" type="string"/>
+        <param name="agency" type="int" />
+        <param name="vendor" type="int" />
+        <param name="subvendor" type="int" />
+        <param name="category" type="int" />
+        <param name="industry" type="int" />
+        <sql>
+            SELECT COUNT(*) AS record_count
+            FROM (SELECT a.document_id AS document_id_document_id, a.agreement_id AS agreement_id_agreement_id
+                FROM aggregateon_subven_spending_contract a
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="a.year_id" paramName="year" />
+                    <exp op="=" dbField="a.type_of_year" paramName="yeartype" />
+                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe"/>
+                    <exp op="=" dbField="a.spending_category_id" paramName="category" />
+                    <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="a.vendor_id" paramName="subvendor" />
+                    <exp op="=" dbField="a.agency_id" paramName="agency" />
+                    <exp op="=" dbField="a.industry_type_id" paramName="industry" />
+                </exp>
+            </where>
+            GROUP BY a.document_id, a.agreement_id) c
         </sql>
     </statement>
     <!--GetMWBESpendingByContracts-->
