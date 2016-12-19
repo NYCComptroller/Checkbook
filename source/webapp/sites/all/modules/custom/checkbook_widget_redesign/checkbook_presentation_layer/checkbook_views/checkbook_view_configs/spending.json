@@ -130,7 +130,7 @@
                 "legacy_node_id":745,
                 "visibility_parameters":["-category:2"]
             },
-            "agencies":{
+            "subven_agencies":{
                "widget_config":"mwbe_subven_spending_by_agencies_view",
                "legacy_node_id": 746,
                "visibility_parameters":["-agency"]
