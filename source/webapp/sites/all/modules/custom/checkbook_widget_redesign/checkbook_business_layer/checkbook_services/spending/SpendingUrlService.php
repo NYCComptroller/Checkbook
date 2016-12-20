@@ -186,8 +186,8 @@ class SpendingUrlService {
     static function getFooterUrl($parameters,$legacy_node_id = null) {
         $dtsmnid_param = isset($legacy_node_id) ? '/dtsmnid/'.$legacy_node_id : '';
         $url = '/panel_html/spending_transactions/spending/transactions'
+                .RequestUtilities::_getUrlParamString('vendor','fvendor')
                 .RequestUtilities::_getUrlParamString('vendor')
-                .RequestUtilities::_getUrlParamString('fvendor')
                 .RequestUtilities::_getUrlParamString('agency')
                 .RequestUtilities::_getUrlParamString('category')
                 .RequestUtilities::_getUrlParamString('industry')
