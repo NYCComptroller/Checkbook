@@ -264,5 +264,43 @@ class SpendingUrlService {
 
         return $url;
     }
+    
+    /**
+     * Returns the vendor or sub vendor id for the vendor facets
+     * @param $node
+     * @return null|request
+     */
+    static function getVendorFacetParameter(){
+        $dashboard = RequestUtilities::getRequestParamValue('dashboard');
+        $facet_vendor_param = null;
+
+        if($dashboard == "mp") {
+            $facet_vendor_param = RequestUtilities::getRequestParamValue("vendor");
+        }
+        else if($dashboard == "ss") {
+            $facet_vendor_param = RequestUtilities::getRequestParamValue("subvendor");
+        }
+        else if($dashboard == "ms") {
+            $facet_vendor_param = RequestUtilities::getRequestParamValue("subvendor");
+        }
+        return $facet_vendor_param;
+    }
+    
+    /**
+     * Returns Agency Amount Link Url based on values from current path & data row.
+     *
+     * @param $node
+     * @param $row
+     * @return string
+     */
+    static function agenciesYtdSpendingSubvendorsUrl($row, $legacyNodeId){
+        $override_params = array(
+            "agency"=>$row["agency_id"],
+            "fvendor"=>self::getVendorFacetParameter(),
+            "smnid"=>$legacyNodeId
+        );
+        return '/' . self::getSpendingTransactionPageUrl($override_params);
+    }
+
 
 } 
