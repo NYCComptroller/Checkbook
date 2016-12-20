@@ -65,6 +65,7 @@ class SpendingUrlService {
         if($legacy_node_id == 501) {
             $url = '/panel_html/spending_transactions/spending/transactions'
                 .RequestUtilities::_getUrlParamString('vendor')
+                .RequestUtilities::_getUrlParamString('vendor', 'fvendor')
                 .RequestUtilities::_getUrlParamString('agency')
                 .RequestUtilities::_getUrlParamString('category')
                 .RequestUtilities::_getUrlParamString('industry')
@@ -75,6 +76,7 @@ class SpendingUrlService {
         } else {
             $url = '/panel_html/spending_transactions/spending/transactions'
                 .RequestUtilities::_getUrlParamString('vendor')
+                .RequestUtilities::_getUrlParamString('vendor', 'fvendor')
                 .RequestUtilities::_getUrlParamString('agency')
                 .RequestUtilities::_getUrlParamString('category')
                 .RequestUtilities::_getUrlParamString('industry')
@@ -104,6 +106,7 @@ class SpendingUrlService {
         
         $url = '/panel_html/spending_transactions/spending/transactions'
                .RequestUtilities::_getUrlParamString('vendor')
+               .RequestUtilities::_getUrlParamString('vendor', 'fvendor')
                .RequestUtilities::_getUrlParamString('agency')
                .RequestUtilities::_getUrlParamString('category')
                .RequestUtilities::_getUrlParamString('industry')
