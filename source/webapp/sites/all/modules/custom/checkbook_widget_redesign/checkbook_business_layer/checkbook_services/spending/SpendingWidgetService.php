@@ -126,23 +126,6 @@ class SpendingWidgetService extends AbstractWidgetService {
     }
     
     public function adjustParameters($parameters, $urlPath) {
-
-        $is_all_category = $parameters['is_all_categories'];
-        $node_id = $this->getLegacyNodeId();
-        switch($node_id) {
-            case 763:
-                if(preg_match('/category/', $urlPath)) {
-                    $is_all_category = 'N';
-                }
-                else {
-                    $is_all_category = 'Y';
-                }
-                break;
-        }
-
-        $parameters['is_all_category'] = $is_all_category;
-
         return $parameters;
     }
-
 }

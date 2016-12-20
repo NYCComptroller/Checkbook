@@ -28,7 +28,7 @@
             "payroll_agencies":{
                 "widget_config":"payroll_agencies_view",
                 "legacy_node_id": 501,
-                "visibility_parameters":["-category", "-vendor"]
+                "visibility_parameters":["-category", "-vendor", "-agency"]
             },
             "contracts":{
                 "widget_config":"spending_by_contracts_view",
