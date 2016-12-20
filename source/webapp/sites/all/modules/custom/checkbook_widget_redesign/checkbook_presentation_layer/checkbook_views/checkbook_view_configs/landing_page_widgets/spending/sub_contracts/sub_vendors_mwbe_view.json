@@ -12,9 +12,9 @@
     "table_columns": [
         {"labelAlias":"contract_id","column":"document_id","derivedColumn":"contract_number_link"},
         {"labelAlias":"sub_vendor_name","column":"sub_vendor_name","derivedColumn":"sub_vendor_link","tooltip":36},
-        {"labelAlias":"sub_contract_purpose","column":"sub_contract_purpose"},
+        {"labelAlias":"sub_contract_purpose","column":"sub_contract_purpose","tooltip":40},
         {"labelAlias":"prime_vendor","column":"prime_vendor_name","derivedColumn":"prime_vendor_link","tooltip":36},
-        {"labelAlias":"ytd_spending","column":"check_amount_sum","derivedColumn":"sub_vendor_ytd_spending_link","format":"dollar"},
+        {"labelAlias":"ytd_spending","column":"check_amount_sum","derivedColumn":"sub_contracts_ytd_spending_link","format":"dollar"},
         {"label": "","column": ""}
     ],
     "dataTableOptions":{

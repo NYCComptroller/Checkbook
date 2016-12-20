@@ -119,6 +119,12 @@ class SpendingWidgetService extends AbstractWidgetService {
                 $url =  SpendingUrlService::agenciesYtdSpendingSubvendorsUrl($row, $this->getLegacyNodeId());
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
+            case "sub_contracts_ytd_spending_link":
+                $column = isset($row['check_amount_sum']) ? $row['check_amount_sum'] : $row['ytd_spending_sub_vendors'];
+                $class = "bottomContainerReload";
+                $url = SpendingUrlService::getSubContractAmountLinkUrl($this->getLegacyNodeId(), $row);
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
         }
 
         if(isset($value)) {

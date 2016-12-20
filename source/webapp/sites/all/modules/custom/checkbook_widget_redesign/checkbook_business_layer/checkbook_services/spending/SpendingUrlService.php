@@ -302,5 +302,24 @@ class SpendingUrlService {
         return '/' . self::getSpendingTransactionPageUrl($override_params);
     }
 
+    /**
+     * Returns Sub Contract Amount Link Url based on values from current path & data row
+     *
+     * @param $node
+     * @param $row
+     * @return string
+     */
+    static function getSubContractAmountLinkUrl($node, $row){
+        $agreement_id = $row["agreement_id"];
+        $document_id = isset($row["document_id"])
+            ? $row["document_id"]
+            : $row["reference_document_code"];
+        $contract_url_part = _checkbook_project_get_contract_url($document_id, $agreement_id);
+        $override_params = array(
+            "fvendor"=>self::getVendorFacetParameter($node),
+            "smnid"=>$node->nid
+        );
+        return '/' . self::getSpendingTransactionPageUrl($override_params) . $contract_url_part;
+    }
 
 } 
