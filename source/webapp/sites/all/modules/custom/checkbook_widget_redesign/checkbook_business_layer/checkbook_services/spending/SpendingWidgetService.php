@@ -113,6 +113,12 @@ class SpendingWidgetService extends AbstractWidgetService {
                 $url =  SpendingVendorUrlService::getPrimeVendorNameLinkUrl($row);
                 $value = $vendor_id == null ? $column : "<a href='{$url}'>{$column}</a>";
                 break;
+            case "agencies_ytd_spending_subvendors_link":
+                $column = $row['ytd_spending_sub_vendors'];
+                $class = "bottomContainerReload";
+                $url =  SpendingUrlService::agenciesYtdSpendingSubvendorsUrl($row, $legacy_node_id);
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
         }
 
         if(isset($value)) {
