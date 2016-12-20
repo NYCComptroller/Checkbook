@@ -188,6 +188,9 @@
                     <exp op="=" dbField="spending_category_id" paramName="category" />
                     <exp op="=" dbField="industry_type_id" paramName="industry" />
                     <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
+                    <exp op="IF" condition="=" paramName="category" compareValue="">
+                        <exp op="=" dbField="a.is_all_categories">'Y'</exp>
+                    </exp>
                 </exp>
             </where>
             ) total on 1 = 1
@@ -201,6 +204,9 @@
                     <exp op="=" dbField="a.vendor_id" paramName="fvendor" />
                     <exp op="=" dbField="a.agency_id" paramName="agency" />
                     <exp op="=" dbField="a.industry_type_id" paramName="industry" />
+                    <exp op="IF" condition="=" paramName="category" compareValue="">
+                        <exp op="=" dbField="a.is_all_categories">'Y'</exp>
+                    </exp>
                 </exp>
             </where>
             GROUP BY a.vendor_id, a.year_id, a.type_of_year, a.minority_type_id, b.legal_name
@@ -230,6 +236,9 @@
                     <exp op="=" dbField="a.vendor_id" paramName="fvendor" />
                     <exp op="=" dbField="a.agency_id" paramName="agency" />
                     <exp op="=" dbField="a.industry_type_id" paramName="industry" />
+                    <exp op="IF" condition="=" paramName="category" compareValue="">
+                        <exp op="=" dbField="a.is_all_categories">'Y'</exp>
+                    </exp>
                 </exp>
             </where>
             GROUP BY a.vendor_id) c
@@ -272,6 +281,9 @@
                     <exp op="=" dbField="spending_category_id" paramName="category" />
                     <exp op="=" dbField="industry_type_id" paramName="industry" />
                     <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
+                    <exp op="IF" condition="=" paramName="category" compareValue="">
+                        <exp op="=" dbField="a.is_all_categories">'Y'</exp>
+                    </exp>
                 </exp>
             </where>
             ) total on 1 = 1
@@ -285,6 +297,9 @@
                     <exp op="=" dbField="a.spending_category_id" paramName="category" />
                     <exp op="=" dbField="a.industry_type_id" paramName="industry" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
+                    <exp op="IF" condition="=" paramName="category" compareValue="">
+                        <exp op="=" dbField="a.is_all_categories">'Y'</exp>
+                    </exp>
                 </exp>
             </where>
             GROUP BY a.year_id, a.type_of_year, a.agency_id, a.prime_vendor_id, a.prime_minority_type_id, b.legal_name
@@ -314,6 +329,9 @@
                     <exp op="=" dbField="a.spending_category_id" paramName="category" />
                     <exp op="=" dbField="a.industry_type_id" paramName="industry" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
+                    <exp op="IF" condition="=" paramName="category" compareValue="">
+                        <exp op="=" dbField="a.is_all_categories">'Y'</exp>
+                    </exp>
                 </exp>
             </where>
             GROUP BY a.prime_vendor_id) c
@@ -355,6 +373,9 @@
                     <exp op="=" dbField="spending_category_id" paramName="category" />
                     <exp op="=" dbField="industry_type_id" paramName="industry" />
                     <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
+                    <exp op="IF" condition="=" paramName="category" compareValue="">
+                        <exp op="=" dbField="a.is_all_categories">'Y'</exp>
+                    </exp>
                 </exp>
             </where>
             ) total on 1 = 1
@@ -368,6 +389,9 @@
                     <exp op="=" dbField="a.industry_type_id" paramName="industry" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="a.spending_category_id" paramName="category" />
+                    <exp op="IF" condition="=" paramName="category" compareValue="">
+                        <exp op="=" dbField="a.is_all_categories">'Y'</exp>
+                    </exp>
                 </exp>
             </where>
             GROUP BY a.vendor_id, a.minority_type_id, b.legal_name
