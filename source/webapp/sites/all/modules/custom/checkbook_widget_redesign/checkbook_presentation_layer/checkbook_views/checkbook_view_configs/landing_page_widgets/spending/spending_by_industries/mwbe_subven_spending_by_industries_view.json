@@ -3,8 +3,7 @@
     "sqlConfig": {
         "serviceName": "SpendingWidgetService",
         "sqlConfigName": "spending/sub_contracts_spending",
-        "statementName": "GetMWBESubVenSpendingByIndustries",
-        "countStatementName":"GetCountIndustries"
+        "statementName": "GetMWBESubVenSpendingByIndustries"
     }
 }
 
