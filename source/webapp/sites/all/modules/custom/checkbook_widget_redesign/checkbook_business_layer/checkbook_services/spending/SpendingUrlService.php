@@ -321,5 +321,23 @@ class SpendingUrlService {
         );
         return '/' . self::getSpendingTransactionPageUrl($override_params) . $contract_url_part;
     }
+    
+    /**
+     * @param $agency_id
+     * @return string
+     */
+    static function industryUrl($industry_type_id, $legacy_node_id){
+            
+        $url = '/spending_landing'
+            .RequestUtilities::_getUrlParamString('vendor')
+            .RequestUtilities::_getUrlParamString('category')
+            .RequestUtilities::_getUrlParamString('industry')
+            .RequestUtilities::_getUrlParamString('agency')
+            .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
+            ._checkbook_project_get_year_url_param_string()
+            . '/industry/'. $industry_type_id;
+       
+        return $url;
+    }
 
 } 
