@@ -13,7 +13,11 @@ import java.util.List;
         for (WebElement tab : tabs) {
             WebElement tabAnchor = tab.findElement(By.tagName("a"));
             String tabValue = tabAnchor.getText();
-            String tabName = tabValue.substring(0, tabValue.lastIndexOf("\n")).replace("\n", " ");
+            String tabName;
+            if(tabValue.indexOf("\n")!= tabValue.lastIndexOf("\n"))
+            	tabName = tabValue.substring(tabValue.indexOf("\n")+1, tabValue.lastIndexOf("\n")).replace("\n", " ");
+            else
+            	tabName = tabValue.substring(0, tabValue.lastIndexOf("\n")).replace("\n", " ");
             if (tabName.equals(secondaryTabName)) {
                 if (tab.getAttribute("class").equals("active")) {
                     break;
@@ -34,7 +38,11 @@ import java.util.List;
         for (WebElement tab : tabs) {
             WebElement tabAnchor = tab.findElement(By.tagName("a"));
             String tabValue = tabAnchor.getText();
-            String tabName = tabValue.substring(0, tabValue.lastIndexOf("\n")).replace("\n", " ");
+            String tabName;
+            if(tabValue.indexOf("\n")!= tabValue.indexOf("\n"))
+            	tabName = tabValue.substring(tabValue.indexOf("\n")+1, tabValue.lastIndexOf("\n")).replace("\n", " ");
+            else
+            	tabName = tabValue.substring(0, tabValue.lastIndexOf("\n")).replace("\n", " ");
             if (tabName.equals(secondaryTabName)) {
                 if (tab.getAttribute("class").equals("active")) {
                 	isAt = true;
