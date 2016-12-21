@@ -510,6 +510,7 @@
                             <exp op="=" dbField="spending_category_id" paramName="category" />
                             <exp op="=" dbField="industry_type_id" paramName="industry" />
                             <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
+                            <exp op="IS NOT" dbField="industry_type_id">NULL</exp>
                         </exp>
                     </where>
             ) total on 1 = 1
@@ -525,6 +526,7 @@
                     <exp op="=" dbField="s0.agreement_id" paramName="agid" />
                     <exp op="=" dbField="s0.agreement_id" paramName="magid" />
                     <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
+                    <exp op="IS NOT" dbField="s0.industry_type_id">NULL</exp>
                 </exp>
             </where>
             GROUP BY s0.year_id, s0.type_of_year, s0.industry_type_id, i.industry_type_name      
