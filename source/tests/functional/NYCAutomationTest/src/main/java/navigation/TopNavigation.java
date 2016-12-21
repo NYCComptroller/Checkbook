@@ -52,6 +52,65 @@ public class TopNavigation {
 	}
 	
 	
+	public static class Contracts{
+		public static void Select() {
+			PrimaryTabSelector.Select("contracts");
+		}
+		
+		public static class ActiveExpenseContracts{
+			public static void Select() {
+				SecondaryTabSelector.Select("Active Expense Contracts");	
+			}
+			public static boolean isAt() {
+				return SecondaryTabSelector.isAt("Active Expense Contracts");	
+			}
+		}
+		
+		public static class RegisteredExpenseContracts{
+			public static void Select() {
+				SecondaryTabSelector.Select("Registered Expense Contracts");	
+			}
+			public static boolean isAt() {
+				return SecondaryTabSelector.isAt("Registered Expense Contracts");	
+			}
+		}
+		
+		public static class ActiveRevenueContracts{
+			public static void Select() {
+				SecondaryTabSelector.Select("Active Revenue Contracts");	
+			}
+			public static boolean isAt() {
+				return SecondaryTabSelector.isAt("Active Revenue Contracts");	
+			}
+		}
+		
+		public static class RegisteredRevenueContracts{
+			public static void Select() {
+				SecondaryTabSelector.Select("Registered Revenue Contracts");	
+			}
+			public static boolean isAt() {
+				return SecondaryTabSelector.isAt("Registered Revenue Contracts");	
+			}
+		}
+		
+		public static class PendingExpenseContracts{
+			public static void Select() {
+				SecondaryTabSelector.Select("Pending Expense Contracts");	
+			}
+			public static boolean isAt() {
+				return SecondaryTabSelector.isAt("Pending Expense Contract");	
+			}
+		}
+		
+		public static class PendingRevenueContracts{
+			public static void Select() {
+				SecondaryTabSelector.Select("Pending Revenue Contracts");	
+			}
+			public static boolean isAt() {
+				return SecondaryTabSelector.isAt("Pending Revenue Contracts");	
+			}
+		}
+	}
 	
 		
 	public enum TopNavTabs{
