@@ -492,7 +492,6 @@
                    s0.year_id,
                    s0.industry_type_id,
                    SUM(total_spending_amount) AS check_amount_sum,
-                   i.industry_type_id,
                    i.industry_type_name,
                    SUM(total_spending_amount)/MAX(total.check_amount)*100 as percent_spending
             FROM aggregateon_mwbe_spending_coa_entities s0
@@ -528,7 +527,7 @@
                     <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
                 </exp>
             </where>
-            GROUP BY s0.year_id, s0.type_of_year, s0.industry_type_id, i.industry_type_id,i.industry_type_name      
+            GROUP BY s0.year_id, s0.type_of_year, s0.industry_type_id, i.industry_type_name      
         </sql>
     </statement>
 </statements>
