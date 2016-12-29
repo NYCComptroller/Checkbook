@@ -10,9 +10,9 @@
     "headerTitle":"Agencies",
     "headerSubTitle":"Agencies",
     "table_columns": [
-        {"labelAlias": "agency_name","column": "agency_name","derivedColumn":"agency_name_link"},
-        {"labelAlias": "ytd_spending","column": "check_amount_sum","derivedColumn":"agency_ytd_spending_link","format":"dollar"},
-        {"labelAlias": "","column": ""}
+        {"labelAlias":"agency_name","column":"agency_name","derivedColumn":"payroll_agency_name_link"},
+        {"labelAlias":"ytd_spending","column":"check_amount_sum","derivedColumn":"agency_ytd_spending_link","format":"dollar"},
+        {"labelAlias":"","column": ""}
     ],
     "dataTableOptions":{
         "aoColumns": [

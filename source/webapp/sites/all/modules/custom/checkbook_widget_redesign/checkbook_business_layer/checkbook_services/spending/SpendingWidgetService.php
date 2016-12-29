@@ -17,6 +17,11 @@ class SpendingWidgetService extends AbstractWidgetService {
                 $url = SpendingUrlService::agencyUrl($row['agency_id'], $this->getLegacyNodeId());
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
+            case "payroll_agency_name_link":
+                $column = $row['agency_name'];
+                $url = SpendingUrlService::payrollagencyUrl($row['agency_id'], $this->getLegacyNodeId());
+                $value = "<a href='{$url}'>{$column}</a>";
+                break;
             case "agency_ytd_spending_link":
                 $column = $row['check_amount_sum'];
                 $class = "bottomContainerReload";
@@ -51,11 +56,16 @@ class SpendingWidgetService extends AbstractWidgetService {
                 $column = isset($row['minority_type']) ? $row['minority_type'] : $row['prime_minority_type'];
                 $value = MappingUtil::getMinorityCategoryById($column);
                 break;
+            case "mwbe_category_name": // node_id = 763
+                $column = $row['minority_type'];
+                $mwbe_category_name = MappingUtilities::getMinorityCategoryById($column);
+                $value = $mwbe_category_name;
+                break;
             case "mwbe_category_link":
                 $column = $row['minority_type'];
-                $mwbe_category_name = MappingUtil::getMinorityCategoryById($column);
+                $mwbe_category_name = MappingUtilities::getMinorityCategoryById($column);
                 $url = SpendingUrlService::mwbeUrl($column);
-                $value = $this->getLegacyNodeId() == 763 ? $mwbe_category_name : (RequestUtil::isNewWindow() || !MappingUtil::isMWBECertified(array($column)))  ? $mwbe_category_name  : "<a href= '{$url}'>{$mwbe_category_name}</a>";
+                $value = (RequestUtilities::isNewWindow() || !MappingUtilities::isMWBECertified(array($column)))  ? $mwbe_category_name  : "<a href= '{$url}'>{$mwbe_category_name}</a>";
                 break;
             case "contract_vendor_name_link":
                 $column = $row['vendor_name'];
@@ -103,7 +113,7 @@ class SpendingWidgetService extends AbstractWidgetService {
                 $column = $row['vendor_name'];
                 $citywide_vendor_name_link = SpendingVendorUrlService::getPrimeVendorNameLinkUrl($row);
                 $oge_vendor_link = SpendingVendorUrlService::getOGEPrimeVendorNameLinkUrl($vendor_id);
-                $url = _checkbook_check_isEDCPage() ? $oge_vendor_link : $citywide_vendor_name_link;
+                $url = RequestUtilities::_checkbook_check_isEDCPage() ? $oge_vendor_link : $citywide_vendor_name_link;
                 $value = ($row['expense_category'] == 'Payroll Summary') ? $column : "<a href='{$url}'>{$column}</a>";
                 break;
             case "sub_vendor_link":
