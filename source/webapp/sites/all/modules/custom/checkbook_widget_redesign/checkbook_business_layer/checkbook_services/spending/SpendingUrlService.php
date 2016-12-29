@@ -11,19 +11,10 @@ class SpendingUrlService {
 
     static $landingPageParams = array("category"=>"category","industry"=>"industry","mwbe"=>"mwbe","dashboard"=>"dashboard","agency"=>"agency","vendor"=>"vendor","subvendor"=>"subvendor");
     /**
-     * @param $agency_id
-     * @return string
-     */
+ * @param $agency_id
+ * @return string
+ */
     static function agencyUrl($agency_id, $legacy_node_id){
-        if($legacy_node_id == 501) {
-            $url = '/spending_landing'
-                .RequestUtilities::_getUrlParamString('vendor')
-                .RequestUtilities::_getUrlParamString('category')
-                .RequestUtilities::_getUrlParamString('industry')
-                .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
-                ._checkbook_project_get_year_url_param_string()
-                . '/category/2/agency/'. $agency_id;
-        } else {
             $url = '/spending_landing'
                 .RequestUtilities::_getUrlParamString('vendor')
                 .RequestUtilities::_getUrlParamString('category')
@@ -31,7 +22,24 @@ class SpendingUrlService {
                 .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
                 ._checkbook_project_get_year_url_param_string()
                 . '/agency/'. $agency_id;
-        }
+        return $url;
+    }
+
+    /**
+     * @param $agency_id
+     * @return string
+     * Payroll Agencies widget include '/category/2'
+     */
+    static function payrollagencyUrl($agency_id, $legacy_node_id){
+        //if($legacy_node_id == 501) {
+            $url = '/spending_landing'
+                .RequestUtilities::_getUrlParamString('vendor')
+                .RequestUtilities::_getUrlParamString('category')
+                .RequestUtilities::_getUrlParamString('industry')
+                .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
+                ._checkbook_project_get_year_url_param_string()
+                . '/category/2/agency/'. $agency_id;
+       // }
         return $url;
     }
 

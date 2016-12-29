@@ -189,7 +189,7 @@
                     <exp op="=" dbField="industry_type_id" paramName="industry" />
                     <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
                     <exp op="IF" condition="=" paramName="category" compareValue="">
-                        <exp op="=" dbField="a.is_all_categories">'Y'</exp>
+                        <exp op="=" dbField="is_all_categories">'Y'</exp>
                     </exp>
                 </exp>
             </where>
@@ -282,7 +282,7 @@
                     <exp op="=" dbField="industry_type_id" paramName="industry" />
                     <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
                     <exp op="IF" condition="=" paramName="category" compareValue="">
-                        <exp op="=" dbField="a.is_all_categories">'Y'</exp>
+                        <exp op="=" dbField="is_all_categories">'Y'</exp>
                     </exp>
                 </exp>
             </where>
@@ -374,7 +374,7 @@
                     <exp op="=" dbField="industry_type_id" paramName="industry" />
                     <exp op="IN" dbField="minority_type_id" paramName="mwbe" />
                     <exp op="IF" condition="=" paramName="category" compareValue="">
-                        <exp op="=" dbField="a.is_all_categories">'Y'</exp>
+                        <exp op="=" dbField="is_all_categories">'Y'</exp>
                     </exp>
                 </exp>
             </where>

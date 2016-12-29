@@ -71,11 +71,11 @@ class SpendingVendorUrlService {
         if(!isset($vendor_id)) {
             $vendor_id = isset($row["vendor_id"]) ? $row["vendor_id"] : $row["vendor_vendor"];
         }
-        $year_id = _getRequestParamValue("year");
-        $year_type = _getRequestParamValue("yeartype");
-        $agency_id = _getRequestParamValue("agency");
-        $dashboard = _getRequestParamValue("dashboard");
-        $datasource = _getRequestParamValue("datasource");
+        $year_id = RequestUtilities::getRequestParamValue("year");
+        $year_type = RequestUtilities::getRequestParamValue("yeartype");
+        $agency_id = RequestUtilities::getRequestParamValue("agency");
+        $dashboard = RequestUtilities::getRequestParamValue("dashboard");
+        $datasource = RequestUtilities::getRequestParamValue("datasource");
 
         return self::getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, '', $datasource);
     }
@@ -149,10 +149,10 @@ class SpendingVendorUrlService {
     static function getSubVendorNameLinkUrl($row){
         $override_params = null;
         $vendor_id = isset($row["sub_vendor_sub_vendor"]) ? $row["sub_vendor_sub_vendor"] : $row["vendor_id"];
-        $year_id = _getRequestParamValue("year");
-        $year_type = _getRequestParamValue("yeartype");
-        $agency_id = _getRequestParamValue("agency");
-        $dashboard = _getRequestParamValue("dashboard");
+        $year_id = RequestUtilities::getRequestParamValue("year");
+        $year_type = RequestUtilities::getRequestParamValue("yeartype");
+        $agency_id = RequestUtilities::getRequestParamValue("agency");
+        $dashboard = RequestUtilities::getRequestParamValue("dashboard");
 
         return self::getSubVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard);
     }
@@ -295,7 +295,7 @@ class SpendingVendorUrlService {
         if(is_array($url_params)){
             foreach($url_params as $key => $value){
                 if(!in_array($key,$exclude_params)){
-                    $url .=  CustomURLHelper::get_url_param($pathParams,$key,$value);
+                    $url .=  RequestUtilities::get_url_param($pathParams,$key,$value);
                 }
             }
         }

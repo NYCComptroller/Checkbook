@@ -120,4 +120,35 @@ class RequestUtilities {
         }
         return $url;
     }
+
+    /** Checks if the current URL is opened in a new window */
+    static function isNewWindow(){
+        $referer = $_SERVER['HTTP_REFERER'];
+
+        return preg_match('/newwindow/i',$referer);
+    }
+
+    function _checkbook_check_isEDCPage(){
+        $database = self::getRequestParamValue('datasource');
+        if(isset($database)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    static function get_url_param($pathParams,$key,$key_alias =  null){
+
+        $keyIndex = array_search($key,$pathParams);
+        if($keyIndex){
+            if($key_alias == null){
+                return "/$key/" . $pathParams[($keyIndex+1)];
+            }
+            else{
+                return "/$key_alias/" . $pathParams[($keyIndex+1)];
+            }
+        }
+        return NULL;
+
+    }
 }
