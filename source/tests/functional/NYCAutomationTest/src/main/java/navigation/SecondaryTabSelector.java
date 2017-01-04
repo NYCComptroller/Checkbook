@@ -14,23 +14,23 @@ import java.util.List;
             WebElement tabAnchor = tab.findElement(By.tagName("a"));
             String tabValue = tabAnchor.getText();
             String tabName;
-            if(tabValue.indexOf("\n")!= tabValue.lastIndexOf("\n"))
+            String subStr = tabValue.substring(tabValue.indexOf("\n")+1, tabValue.lastIndexOf("\n"));
+            if(subStr.contains("\n"))
             	tabName = tabValue.substring(tabValue.indexOf("\n")+1, tabValue.lastIndexOf("\n")).replace("\n", " ");
             else
             	tabName = tabValue.substring(0, tabValue.lastIndexOf("\n")).replace("\n", " ");
             if (tabName.equals(secondaryTabName)) {
-                if (tab.getAttribute("class").equals("active")) {
+                /*if (tab.getAttribute("class").equals("active")) {
                     break;
-                } else { 
+                } else { */
                     tabAnchor.click();
                     break;
-                }
+                //}
 
             }
         }
     }
-    
-    
+     
     static boolean isAt(String secondaryTabName) {
         WebElement secTabContainer = Driver.Instance.findElement(By.cssSelector(".nyc_totals_links tr"));
         List<WebElement> tabs = secTabContainer.findElements(By.tagName("td"));
@@ -39,7 +39,8 @@ import java.util.List;
             WebElement tabAnchor = tab.findElement(By.tagName("a"));
             String tabValue = tabAnchor.getText();
             String tabName;
-            if(tabValue.indexOf("\n")!= tabValue.indexOf("\n"))
+            String subStr = tabValue.substring(tabValue.indexOf("\n")+1, tabValue.lastIndexOf("\n"));
+            if(subStr.contains("\n"))
             	tabName = tabValue.substring(tabValue.indexOf("\n")+1, tabValue.lastIndexOf("\n")).replace("\n", " ");
             else
             	tabName = tabValue.substring(0, tabValue.lastIndexOf("\n")).replace("\n", " ");

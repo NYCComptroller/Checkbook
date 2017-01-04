@@ -15,20 +15,23 @@ import utilities.NYCBaseTest;
 import utility.Helper;
 import utility.TestStatusReport;
 
-public class PayrollSpendingTest extends TestStatusReport{
+public class PayrollSpendingTest extends NYCBaseTest{
 	@Before
     public void GoToPage(){
-	   if (!PayrollSpendingPage.isAt())
+	   if (!PayrollSpendingPage.isAt()){
+		   System.out.println("Inside ISAT");
 		   PayrollSpendingPage.GoTo();
+	   }
 	   if(!(Helper.getCurrentSelectedYear()).equalsIgnoreCase(NYCBaseTest.prop.getProperty("CurrentYear")))
 		   HomePage.SelectYear(NYCBaseTest.prop.getProperty("CurrentYear"));
     }
 	
 	@Test
     public void VerifyNumOfAgenciesPayrollSpending() {
-        String PayrollSpendingNumOfAgenciesFY2016 = "130";
-        String numberOfAgencies = PayrollSpendingPage.GetTotalNumOfAgencies();
-        assertEquals("Number of Agencies in Payroll Spending did not match", numberOfAgencies, PayrollSpendingNumOfAgenciesFY2016);
+        int PayrollSpendingNumOfAgenciesFY2016 = 130;
+        HomePage.ShowWidgetDetails();
+        int numberOfAgencies = Helper.stringToInt(PayrollSpendingPage.GetNumberOfAgencies());
+        assertEquals("Number of Agencies in Payroll Spending did not match",PayrollSpendingNumOfAgenciesFY2016, numberOfAgencies);
     }
 	
 	@Test

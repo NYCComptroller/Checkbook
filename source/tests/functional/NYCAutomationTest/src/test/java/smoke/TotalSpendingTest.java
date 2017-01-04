@@ -16,7 +16,7 @@ import utilities.NYCBaseTest;
 import utility.Helper;
 import utility.TestStatusReport;
 
-public class TotalSpendingTest extends TestStatusReport{
+public class TotalSpendingTest extends NYCBaseTest{
 	@Before
     public void GoToPage(){
 	   if (!TotalSpendingPage.isAt())
@@ -53,4 +53,10 @@ public class TotalSpendingTest extends TestStatusReport{
 		assertEquals(true, HomePage.IsTableNotEmpty("Top 5 Checks"));
 	}
 	
+	/*@Test
+	public void VerifySpendingTransactionsExport(){
+		HomePage.ShowWidgetDetails();
+		TotalSpendingPage.GoToTop5ChecksDetailsPage();
+		TotalSpendingPage.ExportAllTransactions();	
+	}*/
 }

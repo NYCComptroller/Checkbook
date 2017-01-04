@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import navigation.TopNavigation;
+import pages.home.HomePage;
 import utility.Driver;
 import utility.Helper;
 
@@ -46,5 +47,14 @@ public class TotalSpendingPage{
 	
 	public static boolean isAt(){
 		return TopNavigation.Spending.TotalSpending.isAt();    
+	}
+
+	public static void ExportAllTransactions() {
+		HomePage.ShowWidgetDetails();
+		WebElement export = Driver.Instance.findElement(By.cssSelector(".export"));
+		export.click();
+		WebElement downloadBtn = Driver.Instance.findElement(By.cssSelector(".ui-dialog-buttonset .ui-button-text"));
+		downloadBtn.click();
+		
 	}
 }
