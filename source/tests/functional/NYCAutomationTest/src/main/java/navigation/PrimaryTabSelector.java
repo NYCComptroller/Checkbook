@@ -12,9 +12,9 @@ class PrimaryTabSelector {
 		List<WebElement> tabs = TabContainer.findElements(By.tagName("td"));
 		for (WebElement tab : tabs) {
 			String tabclass = tab.getAttribute("class");
-			if(tabclass.equals(primaryTabClass+" active")){
+			if(tabclass.equals(primaryTabClass+" active") || tabclass.equals(primaryTabClass+" first active")){
 				break;
-			}else if(tabclass.equals(primaryTabClass)){
+			}else if(tabclass.contains(primaryTabClass)){
 				tab.findElement(By.className("expense-container")).click();
 				break;
 			}

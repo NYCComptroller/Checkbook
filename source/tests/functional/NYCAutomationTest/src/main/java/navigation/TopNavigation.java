@@ -112,6 +112,24 @@ public class TopNavigation {
 		}
 	}
 	
+	public static class Budget{
+		public static void Select() {
+			PrimaryTabSelector.Select("budget");
+		}
+	}
+	
+	public static class Revenue{
+		public static void Select() {
+			PrimaryTabSelector.Select("revenue");
+		}
+	}
+	
+	public static class Payroll{
+		public static void Select() {
+			PrimaryTabSelector.Select("employees");
+		}
+	}
+	
 		
 	public enum TopNavTabs{
 		Spending, Revenue, Budget, Contracts, Payroll
