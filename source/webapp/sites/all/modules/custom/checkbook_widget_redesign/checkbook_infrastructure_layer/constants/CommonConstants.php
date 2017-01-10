@@ -75,15 +75,27 @@ abstract class Dashboard {
     const SUB_VENDORS_MWBE = "sub_vendors_mwbe";
     const MWBE_SUB_VENDORS = "mwbe_sub_vendors";
     const MWBE = "mwbe";
+    const CURRENT = "current_year";
+    const PREVIOUS = "previous_year";
 
     static public function getCurrent() {
-        $dashboard = DashboardParameter::getCurrent();
-        switch($dashboard) {
-            case DashboardParameter::SUB_VENDORS: return self::SUB_VENDORS;
-            case DashboardParameter::SUB_VENDORS_MWBE: return self::SUB_VENDORS_MWBE;
-            case DashboardParameter::MWBE_SUB_VENDORS: return self::MWBE_SUB_VENDORS;
-            case DashboardParameter::MWBE: return self::MWBE;
-            default: return Datasource::isOGE() ? self::OGE : self::CITYWIDE;
+        $domain = CheckbookDomain::getCurrent();
+        $year = RequestUtilities::getRequestParamValue(UrlParameter::YEAR);
+        
+        if($domain == CheckbookDomain::REVENUE){
+            if($year >= RequestUtilities::getCurrentYearID())
+                return self::CURRENT; 
+            else 
+                return self::PEVIOUS; 
+        }else{
+            $dashboard = DashboardParameter::getCurrent();
+            switch($dashboard) {
+                case DashboardParameter::SUB_VENDORS: return self::SUB_VENDORS;
+                case DashboardParameter::SUB_VENDORS_MWBE: return self::SUB_VENDORS_MWBE;
+                case DashboardParameter::MWBE_SUB_VENDORS: return self::MWBE_SUB_VENDORS;
+                case DashboardParameter::MWBE: return self::MWBE;
+                default: return Datasource::isOGE() ? self::OGE : self::CITYWIDE;
+            }
         }
     }
 
