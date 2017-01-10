@@ -86,7 +86,7 @@ abstract class Dashboard {
             if($year >= RequestUtilities::getCurrentYearID())
                 return self::CURRENT; 
             else 
-                return self::PEVIOUS; 
+                return self::PREVIOUS; 
         }else{
             $dashboard = DashboardParameter::getCurrent();
             switch($dashboard) {
