@@ -9,6 +9,7 @@
 class Domain {
     public static $SPENDING = 'spending';
     public static $CONTRACTS = 'contracts';
+    public static $REVENUE = 'revenue';
 }
 
 class VendorType {
