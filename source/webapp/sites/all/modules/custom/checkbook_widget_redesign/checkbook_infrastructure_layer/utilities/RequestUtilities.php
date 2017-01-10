@@ -151,4 +151,24 @@ class RequestUtilities {
         return NULL;
 
     }
+    
+    /**
+    * This function returns the current NYC year  ...
+    * @return year_id
+    */
+    static function getCurrentYearID(){
+           STATIC $currentNYCYear;	
+           if(!isset($currentNYCYear)){
+             if(variable_get('current_fiscal_year_id')){
+               $currentNYCYear = variable_get('current_fiscal_year_id');
+             }else{	
+           $currentNYCYear=date("Y");
+           $currentMonth=date("m");
+           if($currentMonth > 6 )
+            $currentNYCYear +=1; 
+           $currentNYCYear = _getYearIDFromValue($currentNYCYear);
+             }
+            }
+        return $currentNYCYear;
+    }
 }
