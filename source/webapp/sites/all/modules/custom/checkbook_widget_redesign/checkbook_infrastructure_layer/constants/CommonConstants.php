@@ -29,6 +29,7 @@ abstract class CheckbookDomain {
 
     const SPENDING = "spending";
     const CONTRACTS = "contracts";
+    const REVENUE = "revenue";
 
     static public function getCurrent() {
         $path = current_path();
@@ -40,6 +41,9 @@ abstract class CheckbookDomain {
         }
         if(preg_match('/spending_landing/',$path)){
             $domain = self::SPENDING;
+        }
+        if(preg_match('/revenue/',$path)){
+            $domain = self::REVENUE;
         }
         return $domain;
     }
