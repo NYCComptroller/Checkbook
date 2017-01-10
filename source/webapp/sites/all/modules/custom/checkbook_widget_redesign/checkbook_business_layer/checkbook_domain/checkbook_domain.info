@@ -42,3 +42,5 @@ files[] = common/SqlEntityRepository.php
 
 files[] = config/sql/contracts/contracts.xml
 files[] = config/sql/spending/spending.xml
+files[] = config/sql/revenue/revenue.xml
+
