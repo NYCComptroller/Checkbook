@@ -25,6 +25,7 @@ core = 7.x
 files[] = common/AbstractDataService.php
 files[] = common/IDataService.php
 files[] = common/VendorService.php
+files[] = common/MinorityTypeURLService.php
 
 files[] = spending/CheckData.php
 files[] = spending/SpendingWidgetService.php
@@ -38,7 +39,10 @@ files[] = contracts/ContractsWidgetService.php
 files[] = contracts/ContractsWidgetVisibilityService.php
 files[] = contracts/ContractsParameters.php
 files[] = contracts/ContractsVendorUrlService.php
-files[] = common/MinorityTypeURLService.php
+files[] = revenue/RevenueDataService.php
+files[] = revenue/RevenueUrlService.php
+files[] = revenue/RevenueWidgetService.php
+files[] = revenue/RevenueWidgetVisibilityService.php
 
 files[] = widget/AbstractWidgetService.php
 files[] = widget/IWidgetService.php
