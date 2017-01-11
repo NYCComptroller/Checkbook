@@ -68,7 +68,7 @@
                 "legacy_node_id": 764,
                 "visibility_parameters":["-category:2"]
             },
-            "sub_vendors":{
+            "mwbe_sub_vendors":{
                 "widget_config":"mwbe_sub_vendors_view",
                 "legacy_node_id": 763,
                 "visibility_parameters":["-category:2"]
@@ -156,7 +156,7 @@
                 "legacy_node_id": 749,
                 "visibility_parameters":["-category:2"]
             },
-            "sub_vendors":{
+            "mwbe_sub_vendors":{
                 "widget_config":"mwbe_sv_sub_vendors_view",
                 "legacy_node_id": 748,
                 "visibility_parameters":["-subvendor"]
