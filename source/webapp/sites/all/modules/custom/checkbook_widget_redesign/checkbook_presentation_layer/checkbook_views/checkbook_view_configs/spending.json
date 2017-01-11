@@ -158,7 +158,8 @@
             },
             "sub_vendors":{
                 "widget_config":"mwbe_sv_sub_vendors_view",
-                "legacy_node_id": 748
+                "legacy_node_id": 748,
+                "visibility_parameters":["-subvendor"]
             },
             "industries":{
                 "widget_config":"mwbe_subven_spending_by_industries_view",
