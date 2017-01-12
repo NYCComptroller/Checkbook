@@ -16,7 +16,12 @@ class RevenueWidgetService extends AbstractWidgetService {
                 $column = $row['agency_name'];
                 $url = '';
                 $value = "<a href='{$url}'>{$column}</a>";
-                break; 
+                break;
+            case "recognized_amount_link":
+                $column = $row['recognized_amount'];
+                $url = '';
+                $value = "<a href='{$url}'>{$column}</a>";
+            break;
         }
         
         if(isset($value)) {
