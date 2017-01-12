@@ -69,9 +69,8 @@ class SpendingWidgetService extends AbstractWidgetService {
                 break;
             case "contract_vendor_name_link":
                 $column = $row['vendor_name'];
-                $class = "bottomContainerReload";
                 $url = SpendingVendorUrlService::vendorUrl($row);
-                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                $value = "<a href='{$url}'>{$column}</a>";
                 break;
             case "vendor_name_link":
                 $vendor_id = isset($row["prime_vendor_id"]) ? $row["prime_vendor_id"] : $row["vendor_id"];
