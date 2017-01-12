@@ -71,7 +71,7 @@
             "mwbe_sub_vendors":{
                 "widget_config":"mwbe_sub_vendors_view",
                 "legacy_node_id": 763,
-                "visibility_parameters":["-category:2"]
+                "visibility_parameters":["-category:2","-subvendor"]
             },
             "industries":{
                 "widget_config":"mwbe_spending_by_industries_view",
@@ -99,7 +99,8 @@
                 },
             "sub_vendors":{
                 "widget_config":"sub_vendors_view",
-                "legacy_node_id": 719
+                "legacy_node_id": 719,
+                "visibility_parameters":["-category:2", "-subvendor"]
             },
             "sub_contracts":{
                 "widget_config":"sub_vendors_mwbe_view",
@@ -126,7 +127,8 @@
             },
             "sub_vendors":{
                 "widget_config":"sub_vendors_view",
-                "legacy_node_id": 719
+                "legacy_node_id": 719,
+                "visibility_parameters":["-category:2", "-subvendor"]
             },
             "sub_contracts":{
                 "widget_config":"sub_vendors_mwbe_view",
