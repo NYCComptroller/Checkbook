@@ -4,7 +4,22 @@
         <param name="year" required ="true" type="int" />
         <param name="agency" type="int" />
         <sql>
-
+          SELECT
+          b.agency_id,
+          b.agency_name,
+          SUM(adopted_amount) AS adopted_budget,
+          SUM(COALESCE(current_modified_amount,0)) AS current_modified_budget,
+          SUM(COALESCE(posting_amount,0)) AS revenue_amount_sum,
+          SUM(COALESCE(current_modified_amount,0)) - SUM(COALESCE(posting_amount,0)) AS remaining_amount
+          FROM aggregateon_revenue_category_funding_class a
+          JOIN ref_agency b ON b.agency_id = a.agency_id
+          <where>
+              <exp op="AND">
+                  <exp op="=" dbField="a.budget_fiscal_year_id" paramName="year" />
+              </exp>
+          </where>
+          GROUP BY b.agency_id, b.agency_name
+          LIMIT 5
         </sql>
     </statement>
     <statement name="GetRevenueByFundingClasses" datasource="checkbook">
