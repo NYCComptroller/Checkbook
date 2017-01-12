@@ -151,6 +151,10 @@ class SpendingWidgetService extends AbstractWidgetService {
                 $class = "bottomContainerReload";
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
+            case "contract_purpose_formatted":
+                $column = $row['description'];
+                $value = !isset($column) ? 'N/A' : $column;
+                break;
         }
 
         if(isset($value)) {
