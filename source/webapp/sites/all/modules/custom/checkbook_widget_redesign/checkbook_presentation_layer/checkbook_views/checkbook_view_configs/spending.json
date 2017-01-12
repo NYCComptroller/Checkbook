@@ -76,7 +76,7 @@
             "industries":{
                 "widget_config":"mwbe_spending_by_industries_view",
                 "legacy_node_id": 765,
-                "visibility_parameters":["-category:2"]
+                "visibility_parameters":["-category:2","-industry"]
             } 
         }
     },
@@ -164,7 +164,7 @@
             "industries":{
                 "widget_config":"mwbe_subven_spending_by_industries_view",
                 "legacy_node_id": 750,
-                "visibility_parameters":["-category:2"]
+                "visibility_parameters":["-category:2","-industry"]
             } 
         }
     },
