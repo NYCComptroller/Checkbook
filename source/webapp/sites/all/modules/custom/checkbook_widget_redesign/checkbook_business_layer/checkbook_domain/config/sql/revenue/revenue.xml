@@ -1,1 +1,33 @@
 
+<statements>
+    <statement name="GetRevenueByAgencies" datasource="checkbook">
+        <param name="year" required ="true" type="int" />
+        <param name="agency" type="int" />
+        <sql>
+
+        </sql>
+    </statement>
+    <statement name="GetRevenueByFundingClasses" datasource="checkbook">
+        <param name="year" required ="true" type="int" />
+        <param name="agency" type="int" />
+        <sql>
+            SELECT
+            ref.funding_class_id,
+            ref.funding_class_name,
+            ref.funding_class_code,
+            SUM(adopted_amount) AS adopted_budget,
+            SUM(COALESCE(current_modified_amount,0)) AS current_modified_budget,
+            SUM(COALESCE(posting_amount,0)) AS recognized_amount,
+            SUM(COALESCE(current_modified_amount,0)) - SUM(COALESCE(posting_amount,0)) AS remaining_amount
+            FROM aggregateon_revenue_category_funding_class s0
+            JOIN ref_funding_class ref ON ref.funding_class_id = s0.funding_class_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="s0.budget_fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="s0.agency_id" paramName="agency" />
+                </exp>
+            </where>
+            GROUP BY ref.funding_class_id, ref.funding_class_name, ref.funding_class_code
+        </sql>
+    </statement>
+</statements>
