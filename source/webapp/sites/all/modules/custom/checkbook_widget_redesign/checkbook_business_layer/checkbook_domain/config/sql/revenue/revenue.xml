@@ -19,7 +19,6 @@
               </exp>
           </where>
           GROUP BY b.agency_id, b.agency_name
-          LIMIT 5
         </sql>
     </statement>
     <statement name="GetRevenueByFundingClasses" datasource="checkbook">
