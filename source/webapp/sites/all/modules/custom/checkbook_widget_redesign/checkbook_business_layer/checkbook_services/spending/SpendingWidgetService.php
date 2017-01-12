@@ -153,7 +153,7 @@ class SpendingWidgetService extends AbstractWidgetService {
                 break;
             case "contract_purpose_formatted":
                 $column = $row['description'];
-                $value = !isset($column) ? 'N/A' : $column;
+                $value = (strlen($column) > 0) ? _get_tooltip_markup($column, 40) : 'N/A';
                 break;
         }
 
