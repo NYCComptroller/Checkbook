@@ -53,7 +53,7 @@
                     s0.revenue_category_id,
                     SUM(adopted_amount) AS adopted_budget,
                     SUM(COALESCE(current_modified_amount,0)) AS current_modified_budget,
-                    SUM(COALESCE(posting_amount,0)) AS revenue_amount_sum,
+                    SUM(COALESCE(posting_amount,0)) AS recognized_amount,
                     SUM(COALESCE(current_modified_amount,0)) - SUM(COALESCE(posting_amount,0)) AS remaining_amount
             FROM aggregateon_revenue_category_funding_class s0
             JOIN ref_revenue_category j1 ON j1.revenue_category_id = s0.revenue_category_id
