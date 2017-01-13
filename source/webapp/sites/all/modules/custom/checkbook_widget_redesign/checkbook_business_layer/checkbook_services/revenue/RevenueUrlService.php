@@ -12,7 +12,21 @@ class RevenueUrlService {
      * @return string
      */
     static function getFooterUrl($parameters,$legacy_node_id = null) {
-        $url = '';
+        $url = '/panel_html/revenue_transactions/budget/transactions'.'/dtsmnid/' . $legacy_node_id;
+        $url .= RequestUtilities::_getUrlParamString('agency');
+        $url .= RequestUtilities::_getUrlParamString('revcat');
+        $url .= RequestUtilities::_getUrlParamString('fundsrccode');
+        $url .= _checkbook_project_get_year_url_param_string();
+        return $url;
+    }
+    
+    static function getRecognizedAmountUrl($param, $value,$legacy_node_id = null) {
+        $url = '/panel_html/revenue_transactions/budget/transactions'.'/dtsmnid/' . $legacy_node_id;
+        $url .= RequestUtilities::_getUrlParamString('agency');
+        $url .= RequestUtilities::_getUrlParamString('revcat');
+        $url .= RequestUtilities::_getUrlParamString('fundsrccode');
+        $url .= _checkbook_project_get_year_url_param_string();
+        $url .= '/'.$param.'/'.$value;
         return $url;
     }
 }

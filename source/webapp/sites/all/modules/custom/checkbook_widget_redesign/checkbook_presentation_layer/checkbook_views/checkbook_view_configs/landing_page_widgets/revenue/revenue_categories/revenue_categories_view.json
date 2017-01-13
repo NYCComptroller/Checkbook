@@ -11,7 +11,7 @@
         {"labelAlias": "revenue_category","column": "revenue_category_name","tooltip": 60},
         {"labelAlias": "adopted","column": "adopted_budget","format": "dollar"},
         {"labelAlias": "modified","column": "current_modified_budget","format": "dollar"},
-        {"labelAlias": "recognized","column": "revenue_amount_sum","format": "dollar"},
+        {"labelAlias": "recognized","column": "recognized_amount","derivedColumn":"recognized_amount_link","format": "dollar"},
         {"labelAlias": "remaining","column": "remaining_amount","format": "dollar"},
         {"label": "","column": ""}
   ],
