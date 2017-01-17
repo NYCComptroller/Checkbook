@@ -66,4 +66,27 @@
             GROUP BY s0.revenue_category_id, j1.revenue_category_name
         </sql>
     </statement>
+    <!--GetCrossYearCollectionsByAgencies-->
+    <statement name="GetCrossYearCollectionsByAgencies" datasource="checkbook">
+        <param name="year" required ="true" type="int" />
+        <param name="agency" type="int" />
+        <sql>
+            SELECT s0.agency_id,
+                j1.agency_name,
+                SUM(posting_amount_cy) AS current_recognized,
+                SUM(posting_amount_ny) AS recognized_1,
+                SUM(posting_amount_ny_1) AS recognized_2,
+                SUM(other_amount) AS other_years,
+                SUM(remaining_amount) AS remaining_amount
+            FROM aggregateon_revenue_category_funding_by_year s0
+            JOIN ref_agency j1 ON j1.agency_id = s0.agency_id
+            <where>
+                <exp op="AND">
+                    <exp op="=" dbField="s0.budget_fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="s0.agency_id" paramName="agency" />
+                </exp>
+            </where>
+            GROUP BY s0.agency_id, j1.agency_name
+        </sql>
+    </statement>
 </statements>

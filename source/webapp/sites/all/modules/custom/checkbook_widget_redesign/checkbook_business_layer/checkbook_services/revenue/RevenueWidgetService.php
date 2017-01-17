@@ -17,12 +17,36 @@ class RevenueWidgetService extends AbstractWidgetService {
                 $url = '';
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
-            case "recognized_amount_link":
+            case "revcat_recognized_amount_link":
                 $column = $row['recognized_amount'];
                 $url = RevenueUrlService::getRecognizedAmountUrl('revcat', $row['revenue_category_id'], $this->getLegacyNodeId());
                 $class = "bottomContainerReload";
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
-            break;
+                break;
+            case "agency_recognized_amount_link":
+                $column = $row['recognized_amount'];
+                $url = RevenueUrlService::getRecognizedAmountUrl('agency', $row['agency_id'], $this->getLegacyNodeId());
+                $class = "bottomContainerReload";
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
+            case "cross_agency_recognized_amount_link":
+                $column = $row['current_recognized'];
+                $url = RevenueUrlService::getRecognizedAmountUrl('agency', $row['agency_id'], $this->getLegacyNodeId(), 0);
+                $class = "bottomContainerReload";
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
+            case "cross_agency_recognized_amount_link_1":
+                $column = $row['recognized_1'];
+                $url = RevenueUrlService::getRecognizedAmountUrl('agency', $row['agency_id'], $this->getLegacyNodeId(), 1);
+                $class = "bottomContainerReload";
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
+            case "cross_agency_recognized_amount_link_2":
+                $column = $row['recognized_2'];
+                $url = RevenueUrlService::getRecognizedAmountUrl('agency', $row['agency_id'], $this->getLegacyNodeId(), 2);
+                $class = "bottomContainerReload";
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
         }
         
         if(isset($value)) {
