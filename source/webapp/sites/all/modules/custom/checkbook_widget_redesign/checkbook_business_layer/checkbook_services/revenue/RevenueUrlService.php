@@ -21,7 +21,7 @@ class RevenueUrlService {
     }
     
     static function getRecognizedAmountUrl($param, $value,$legacy_node_id = null) {
-        $url = '/panel_html/revenue_transactions/budget/transactions'.'/dtsmnid/' . $legacy_node_id;
+        $url = '/panel_html/revenue_transactions/budget/transactions'.'/smnid/' . $legacy_node_id;
         $url .= RequestUtilities::_getUrlParamString('agency');
         $url .= RequestUtilities::_getUrlParamString('revcat');
         $url .= RequestUtilities::_getUrlParamString('fundsrccode');
