@@ -3,7 +3,7 @@
     {
         "serviceName":"RevenueWidgetService",
         "sqlConfigName":"revenue/revenue",
-        "statementName":"RevenueWidgetService"
+        "statementName":"GetRevenueByFundingClasses"
     },
     "serviceName":"RevenueWidgetService",
     "headerTitle":"Revenue by Funding Classes",
@@ -12,7 +12,7 @@
         {"labelAlias":"funding_class","column":"funding_class_name"},
         {"labelAlias":"adopted","column":"adopted_budget","format":"dollar"},
         {"labelAlias":"modified","column":"current_modified_budget","format":"dollar"},
-        {"labelAlias":"recognized","column":"recognized_amount","derivedColumn":"recognized_amount_link","format":"dollar"},
+        {"labelAlias":"recognized","column":"recognized_amount","derivedColumn":"agency_recognized_amount_link","format":"dollar"},
         {"labelAlias":"remaining","column":"remaining_amount","format":"dollar"},
         {"label":"","column":""}
     ],
@@ -37,4 +37,3 @@
         "oLanguage":{"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
     }
 }
-
