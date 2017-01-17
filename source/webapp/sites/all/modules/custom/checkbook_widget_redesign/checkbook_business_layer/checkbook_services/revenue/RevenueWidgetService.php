@@ -19,32 +19,36 @@ class RevenueWidgetService extends AbstractWidgetService {
                   .'/agency/'.$row['agency_id'];
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
-            //url needs to be built for below cases
-            case "recognized_amount_link":
-                $column = $row['revenue_amount_sum'];
-                $url = '/revenue/transactions'.RequestUtilities::_getUrlParamString('year');
-                  //?
-                $value = "<a href='{$url}'>{$column}</a>";
+            case "revcat_recognized_amount_link":
+                $column = $row['recognized_amount'];
+                $url = RevenueUrlService::getRecognizedAmountUrl('revcat', $row['revenue_category_id'], $this->getLegacyNodeId());
+                $class = "bottomContainerReload";
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
-            case "current_recognized_link":
+            case "agency_recognized_amount_link":
+                $column = $row['recognized_amount'];
+                $url = RevenueUrlService::getRecognizedAmountUrl('agency', $row['agency_id'], $this->getLegacyNodeId());
+                $class = "bottomContainerReload";
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
+            case "cross_agency_recognized_amount_link":
                 $column = $row['current_recognized'];
-                $url = '/revenue/transactions'.RequestUtilities::_getUrlParamString('year');
-                  //?
-                $value = "<a href='{$url}'>{$column}</a>";
+                $url = RevenueUrlService::getRecognizedAmountUrl('agency', $row['agency_id'], $this->getLegacyNodeId(), 0);
+                $class = "bottomContainerReload";
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
-            case "reognized_1_link":
+            case "cross_agency_recognized_amount_link_1":
                 $column = $row['recognized_1'];
-                $url = '/revenue/transactions'.RequestUtilities::_getUrlParamString('year');
-                  //?
-                $value = "<a href='{$url}'>{$column}</a>";
+                $url = RevenueUrlService::getRecognizedAmountUrl('agency', $row['agency_id'], $this->getLegacyNodeId(), 1);
+                $class = "bottomContainerReload";
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
-            case "recognized_2_link":
+            case "cross_agency_recognized_amount_link_2":
                 $column = $row['recognized_2'];
-                $url = '/revenue/transactions'.RequestUtilities::_getUrlParamString('year');
-                  //?
-                $value = "<a href='{$url}'>{$column}</a>";
+                $url = RevenueUrlService::getRecognizedAmountUrl('agency', $row['agency_id'], $this->getLegacyNodeId(), 2);
+                $class = "bottomContainerReload";
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
-
         }
 
         if(isset($value)) {
