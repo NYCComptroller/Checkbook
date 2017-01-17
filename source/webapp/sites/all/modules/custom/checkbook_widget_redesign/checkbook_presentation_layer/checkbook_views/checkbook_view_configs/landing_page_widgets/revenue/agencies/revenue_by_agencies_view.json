@@ -30,7 +30,8 @@
     {
       "labelAlias": "recognized",
       "column": "revenue_amount_sum",
-      "format": "dollar"
+      "format": "dollar",
+      "derivedColumn": "revenue_agency_recognized"
     },
     {
       "labelAlias": "remaining",
