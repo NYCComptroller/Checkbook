@@ -2240,7 +2240,6 @@ table#assoc_contracts_list .assoc_item .rfed-amount {
 }
 .contract-id,
 .inside .contract-details-heading,
-.page-revenue .inside .panel-pane.pane-custom.pane-2,
 .page-budget .inside .panel-pane.pane-custom.pane-2,
 .expense_category_budget_details .panel-pane.pane-custom.pane-1
 {
@@ -2641,7 +2640,6 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 .inside .transactions-container
 .contract_transactions,
 #nyc-expense-pending-contracts .omega-12-twocol-3-9 .inside .contract-details-heading,
-/*.page-revenue .inside .panel-pane.pane-custom.pane-2,*/
 .page-budget .inside .panel-pane.pane-custom.pane-2,
 .expense_category_budget_details .panel-pane.pane-custom.pane-1{
     width:420px;
@@ -2673,6 +2671,7 @@ h1.no-spending-transactions {width: 500px}
     clear:both;
     width:100%;
 }
+
 .revenue-no-records {
     width:100% !important;
 }
