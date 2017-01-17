@@ -6,8 +6,8 @@
     "statementName": "GetCrossYearCollectionsByAgencies"
   },
   "serviceName": "RevenueWidgetService",
-  "headerTitle": "Revenue Categories",
-  "headerSubTitle": "Revenue Categories",
+  "headerTitle": "Agencies by Cross Year Collections",
+  "headerSubTitle": "Agencies",
   "table_columns": [
         {"labelAlias": "agency_name","column": "agency_name","derivedColumn":"agency_name_link","tooltip": 60},
         {"labelAlias": "recognized_current","column": "current_recognized","derivedColumn":"cross_agency_recognized_amount_link","format": "dollar"},
