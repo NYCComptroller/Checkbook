@@ -39,10 +39,10 @@ abstract class CheckbookDomain {
             preg_match('/contracts_pending/',$path)){
             $domain = self::CONTRACTS;
         }
-        if(preg_match('/spending_landing/',$path)){
+        else if(preg_match('/spending_landing/',$path)){
             $domain = self::SPENDING;
         }
-        if(preg_match('/revenue/',$path)){
+        else if(preg_match('/revenue/',$path)){
             $domain = self::REVENUE;
         }
         return $domain;
