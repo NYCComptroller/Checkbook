@@ -20,7 +20,8 @@ class RevenueWidgetService extends AbstractWidgetService {
             case "recognized_amount_link":
                 $column = $row['recognized_amount'];
                 $url = RevenueUrlService::getRecognizedAmountUrl('revcat', $row['revenue_category_id'], $this->getLegacyNodeId());
-                $value = "<a href='{$url}'>{$column}</a>";
+                $class = "bottomContainerReload";
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
             break;
         }
         
