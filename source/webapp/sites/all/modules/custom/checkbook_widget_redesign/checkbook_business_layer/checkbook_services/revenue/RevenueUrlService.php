@@ -20,6 +20,13 @@ class RevenueUrlService {
         return $url;
     }
     
+    /**
+     * @param $param Parameter Name
+     * @param $value pParameter Value
+     * @param $legacy_node_id Legacy Node Id
+     * @param $crorss_year Prevoius Year
+     * @return string
+     */
     static function getRecognizedAmountUrl($param, $value,$legacy_node_id = null, $crorss_year = null) {
         $url = '/panel_html/revenue_transactions/budget/transactions'.'/smnid/' . $legacy_node_id;
         $url .= RequestUtilities::_getUrlParamString('agency');
