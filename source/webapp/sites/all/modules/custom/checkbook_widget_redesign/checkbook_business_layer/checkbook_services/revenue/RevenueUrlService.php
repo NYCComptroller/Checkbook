@@ -21,6 +21,18 @@ class RevenueUrlService {
     }
     
     /**
+     * @param $agencyId
+     * @param null $legacy_node_id
+     * @return string
+     */
+    static function getAgencyUrl($agencyId,$legacy_node_id = null) {
+        $url = '/revenue'.RequestUtilities::_getUrlParamString('year')
+                .RequestUtilities::_getUrlParamString('yeartype')
+                .'/agency/'.$agencyId;
+        return $url;
+    }
+    
+    /**
      * @param $param Parameter Name
      * @param $value pParameter Value
      * @param $legacy_node_id Legacy Node Id
