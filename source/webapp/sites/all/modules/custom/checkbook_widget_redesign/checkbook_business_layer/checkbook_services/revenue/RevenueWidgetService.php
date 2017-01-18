@@ -14,12 +14,10 @@ class RevenueWidgetService extends AbstractWidgetService {
         switch($column_name) {
             case "agency_name_link":
                 $column = $row['agency_name'];
-                $url = '/revenue'.RequestUtilities::_getUrlParamString('year')
-                  .RequestUtilities::_getUrlParamString('yeartype')
-                  .'/agency/'.$row['agency_id'];
+                $url = RevenueUrlService::getAgencyUrl($row['agency_id'], $this->getLegacyNodeId());
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
-            case "agency_revenue_amount_sum":
+            case "agency_recognized_amount_link":
                 $column = $row['revenue_amount_sum'];
                 $url = RevenueUrlService::getRecognizedAmountUrl('agency', $row['agency_id'], $this->getLegacyNodeId());
                 $class = "bottomContainerReload";
@@ -28,12 +26,6 @@ class RevenueWidgetService extends AbstractWidgetService {
             case "revcat_recognized_amount_link":
                 $column = $row['recognized_amount'];
                 $url = RevenueUrlService::getRecognizedAmountUrl('revcat', $row['revenue_category_id'], $this->getLegacyNodeId());
-                $class = "bottomContainerReload";
-                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
-                break;
-            case "agency_recognized_amount_link":
-                $column = $row['recognized_amount'];
-                $url = RevenueUrlService::getRecognizedAmountUrl('agency', $row['agency_id'], $this->getLegacyNodeId());
                 $class = "bottomContainerReload";
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
