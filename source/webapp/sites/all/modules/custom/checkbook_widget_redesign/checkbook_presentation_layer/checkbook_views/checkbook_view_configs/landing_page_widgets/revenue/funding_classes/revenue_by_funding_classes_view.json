@@ -6,7 +6,7 @@
         "statementName":"GetRevenueByFundingClasses"
     },
     "serviceName":"RevenueWidgetService",
-    "headerTitle":"Revenue by Funding Classes",
+    "table_title":"Revenue by Funding Classes",
     "headerSubTitle":"Funding Classes",
     "table_columns":[
         {"labelAlias":"funding_class","column":"funding_class_name"},
