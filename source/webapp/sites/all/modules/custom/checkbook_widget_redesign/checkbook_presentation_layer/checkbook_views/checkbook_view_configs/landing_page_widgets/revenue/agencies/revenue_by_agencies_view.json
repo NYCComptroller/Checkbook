@@ -31,7 +31,7 @@
       "labelAlias": "recognized",
       "column": "revenue_amount_sum",
       "format": "dollar",
-      "derivedColumn": "revenue_agency_recognized"
+      "derivedColumn": "agency_revenue_amount_sum"
     },
     {
       "labelAlias": "remaining",
