@@ -49,6 +49,24 @@ class RevenueWidgetService extends AbstractWidgetService {
                 $class = "bottomContainerReload";
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
+            case "cross_rev_cat_recognized_amount_link":
+                $column = $row['current_recognized'];
+                $url = RevenueUrlService::getRecognizedAmountUrl('revcat', $row['revenue_category_id'], $this->getLegacyNodeId(), 0);
+                $class = "bottomContainerReload";
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
+            case "cross_rev_cat_recognized_amount_link_1":
+                $column = $row['recognized_1'];
+                $url = RevenueUrlService::getRecognizedAmountUrl('revcat', $row['revenue_category_id'], $this->getLegacyNodeId(), 1);
+                $class = "bottomContainerReload";
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
+            case "cross_rev_cat_recognized_amount_link_2":
+                $column = $row['recognized_2'];
+                $url = RevenueUrlService::getRecognizedAmountUrl('revcat', $row['revenue_category_id'], $this->getLegacyNodeId(), 2);
+                $class = "bottomContainerReload";
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
         }
 
         if(isset($value)) {
