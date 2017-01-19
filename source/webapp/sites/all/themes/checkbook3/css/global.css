@@ -176,7 +176,7 @@ h4 {
 ********************/
 #region-menu{
     width:100%;
-    margin:0px;  
+    margin:0px;
 }
 #nice-menu-1 {
     background: url("../images/main-nav-bg.png") repeat-x scroll 0 0;
@@ -339,7 +339,7 @@ h4 {
 }
 .other-agency-list-content .listContainer1{
 	height:130px;
-} 
+}
 .listContainer1 .agency-slide {
     margin: 0 24px 0 64px;
     padding: 0;
@@ -376,7 +376,7 @@ h4 {
 }
 .agency-list-nav #prev1,
 .agency-list-nav #prev2,
-.agency-list-nav #next1, 
+.agency-list-nav #next1,
 .agency-list-nav #next2 {
     bottom: 38%;
     height: 79px;
@@ -687,7 +687,7 @@ body.page-smart-search #filter-header{margin-top:5px;}
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-    border: 1px solid #d3d3d3; 
+    border: 1px solid #d3d3d3;
     background: #e6e6e6 url('/sites/all/themes/checkbook3/jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png') 50% 50% repeat-x;
 }
 .top-navigation-right .featured-dashboard-title{
@@ -2692,7 +2692,7 @@ h1.no-spending-transactions {width: 500px}
 #nyc-payroll .dollar-amounts > div{
     width:auto;
 }
-.newwindow #spending-transactions .grid-3, #contract-details .grid-3, 
+.newwindow #spending-transactions .grid-3, #contract-details .grid-3,
 #budget-transactions .grid-3,
 #revenue-transactions .grid-3
 {
@@ -2937,7 +2937,7 @@ body.page-payroll-employee-transactions #table_310{
     font-size:12px;
     line-height: 18px;
     font-weight: normal;
-    color:#000; 
+    color:#000;
 }
 #zone-postscript-wrapper h2 {
     font-weight: normal;
@@ -3176,7 +3176,7 @@ body.context-resources #zone-footer{padding:60px 2% 0px 2%;}
     top: 135px;
     padding-right: 2-px;
 }
-    
+
 .chart-nyc-legend .legend-title
 {
 	text-decoration: underline;
@@ -3570,7 +3570,7 @@ p.pieCount {
     cursor: default;
 }
 div.new-features-title{
-    margin: 25px 10px 10px 10px; 
+    margin: 25px 10px 10px 10px;
     font-weight: bold;
     font-size: 14px;
     color: black;
@@ -3583,11 +3583,11 @@ div.new-features-description{
 }
 .new-features-description > p{
     line-height: 1.5;
-    
+
 }
 .new-features-description > ul{
     margin: 20px;
-    
+
 }
 .new-features-description > ul li{
     padding-bottom: 5px;
@@ -3627,4 +3627,8 @@ a.new-features-morelink{
     float: left;
     margin-left: 10px;
     font-size: 13px;
+}
+
+#table_revenue_by_agencies_view tr {
+  height: 40px;
 }
