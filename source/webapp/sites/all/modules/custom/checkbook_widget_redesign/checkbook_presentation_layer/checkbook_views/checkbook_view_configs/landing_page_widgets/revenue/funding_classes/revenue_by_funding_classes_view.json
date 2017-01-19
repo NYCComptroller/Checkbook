@@ -12,7 +12,7 @@
         {"labelAlias":"funding_class","column":"funding_class_name"},
         {"labelAlias":"adopted","column":"adopted_budget","format":"dollar"},
         {"labelAlias":"modified","column":"current_modified_budget","format":"dollar"},
-        {"labelAlias":"recognized","column":"recognized_amount","derivedColumn":"revcat_recognized_amount_link","format":"dollar"},
+        {"labelAlias":"recognized","column":"recognized_amount","derivedColumn":"funding_recognized_amount_link","format":"dollar"},
         {"labelAlias":"remaining","column":"remaining_amount","format":"dollar"},
         {"label":"","column":""}
     ],
