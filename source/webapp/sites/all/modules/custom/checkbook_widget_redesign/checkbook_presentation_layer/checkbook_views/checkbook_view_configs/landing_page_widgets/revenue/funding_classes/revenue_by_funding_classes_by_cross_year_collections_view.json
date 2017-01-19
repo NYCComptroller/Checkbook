@@ -5,7 +5,7 @@
     "statementName": "GetRevenueFundingClassesByCrossYears"
   },
   "serviceName": "RevenueWidgetService",
-  "headerTitle": "Revenue by Funding Classes by Cross Year collections",
+  "table_title": "Revenue by Funding Classes by Cross Year collections",
   "headerSubTitle": "Funding Classes",
   "table_columns": [
         {"labelAlias": "funding_class","column": "funding_class_name"},
