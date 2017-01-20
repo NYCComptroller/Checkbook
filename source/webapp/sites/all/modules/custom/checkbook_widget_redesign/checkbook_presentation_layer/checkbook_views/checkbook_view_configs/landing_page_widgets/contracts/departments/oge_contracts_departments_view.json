@@ -1,8 +1,4 @@
 {
-    "defaultConfigKey": "contracts_departments_view",
-    "sqlConfig": {
-        "serviceName": "ContractsWidgetService",
-        "sqlConfigName": "contracts/oge_contracts",
-        "statementName": "GetOgeContractsByDepartments"
-    }
+    "defaultConfigKey":"contracts_departments_view",
+    "dataFunc":"GetOgeContractsByDepartments"
 }

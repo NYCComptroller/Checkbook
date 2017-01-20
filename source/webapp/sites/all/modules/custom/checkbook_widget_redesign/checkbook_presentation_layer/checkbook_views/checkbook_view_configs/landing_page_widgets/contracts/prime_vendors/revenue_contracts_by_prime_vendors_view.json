@@ -1,17 +1,11 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"ContractsWidgetService",
-        "sqlConfigName":"contracts/contracts",
-        "statementName":"GetContractsByPrimeVendors",
-        "countStatementName": "GetCountContractsByPrimeVendors"
-    },
     "serviceName":"ContractsWidgetService",
+    "dataFunc":"GetContractsByPrimeVendors",
     "defaultParameters":{"type_of_year":"B","status_flag":"A"},
     "headerTitle":"Prime Vendors",
     "headerSubTitle":"Prime Vendors",
     "table_columns":[
-        {"labelAlias":"prime_vendor","column":"vendor_name","derivedColumn":"vendor_name_link","tooltip":60},
+        {"labelAlias":"prime_vendor","column":"vendor_name","derivedColumn":"prime_vendor_link","tooltip":60},
         {"labelAlias":"no_of_contracts","column":"total_contracts","format":"number"},
         {"labelAlias":"current_amount","column":"current_amount_sum","format":"dollar"},
         {"labelAlias":"original_amount","column":"original_amount_sum","format":"dollar"},

@@ -17,8 +17,12 @@
         }else
             $parameters[$param] = htmlspecialchars_decode(_replace_special_characters_decode($value));
     }
-    $service = new ContractsDataService();
-    $data = $service->GetSubvendorContractsbyPrimeCounts($parameters); 
+
+    $subvendor = _getRequestParamValue('subvendor');
+    $fnName = isset($subvendor) ? 'GetContractsSubvendorReportingCountsSubLevel' : 'GetContractsSubvendorReportingCounts';
+
+    $repo = new ContractsRepository();
+    $data = $repo->$fnName($parameters)->getByDataset($parameters);
     $node->data  = $data;  
     
 ",

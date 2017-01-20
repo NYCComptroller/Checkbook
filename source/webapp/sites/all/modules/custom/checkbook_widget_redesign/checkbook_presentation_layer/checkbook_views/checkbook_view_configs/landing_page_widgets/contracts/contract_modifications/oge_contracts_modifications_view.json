@@ -1,9 +1,5 @@
 {
-    "defaultParameters":{"doctype":"'abc'"},
+    "defaultParameters":{"doctype":"'abc'","contract_type":"child_contract"},
     "defaultConfigKey": "contracts_modifications_view",
-    "sqlConfig": {
-        "serviceName": "ContractsWidgetService",
-        "sqlConfigName": "contracts/oge_contracts",
-        "statementName": "GetOgeContracts"
-    }
+    "dataFunc":"GetOgeContractModifications"
 }

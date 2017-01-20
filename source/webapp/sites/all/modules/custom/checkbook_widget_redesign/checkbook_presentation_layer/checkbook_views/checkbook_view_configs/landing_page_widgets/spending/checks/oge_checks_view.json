@@ -10,7 +10,7 @@
     "headerSubTitle":"Checks",
     "table_columns": [
         {"labelAlias":"agency_name","column":"agency_name","derivedColumn":"agency_name_link","tooltip":36},
-        {"labelAlias":"prime_vendor","column":"vendor_name","derivedColumn":"vendor_name_link","tooltip":36},
+        {"labelAlias":"prime_vendor","column":"prime_vendor_name","derivedColumn":"prime_vendor_link","tooltip":36},
         {"labelAlias":"expense_category","column":"expense_category"},
         {"labelAlias":"check_amount","column":"check_amount","format":"dollar"},
         {"label":"","column":""}

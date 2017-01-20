@@ -10,12 +10,12 @@
         <sql>
             SELECT
             check_eft_issued_date,
-            vendor_name,
+            vendor_name as prime_vendor_name,
             agency_name,
             check_amount,
             expenditure_object_name as expense_category,
             agency_id,
-            vendor_id,
+            vendor_id as prime_vendor_id,
             expenditure_object_id,
             department_name
             FROM disbursement_line_item_details
@@ -44,12 +44,12 @@
         <sql>
             SELECT
             check_eft_issued_date,
-            vendor_name,
+            vendor_name as prime_vendor_name,
             agency_name,
             check_amount,
             expenditure_object_name as expense_category,
             agency_id,
-            vendor_id,
+            vendor_id as prime_vendor_id,
             expenditure_object_id,
             department_name
             FROM disbursement_line_item_details
@@ -109,13 +109,12 @@
         <param name="category" type="int" />
         <param name="industry" type="int" />
         <sql>
-            SELECT
-            a.type_of_year AS yeartype_yeartype,
-            a.year_id AS year_year,
-            a.vendor_id AS vendor_id,
+            SELECT, AS yeartype_yeartype,
+            a.year_id,
+            a.vendor_id AS prime_vendor_id,
             SUM(COALESCE(total_spending_amount,0)) AS check_amount_sum,
             MAX(COALESCE(total_contract_amount,0)) AS total_contract_amount_sum,
-            b.legal_name AS vendor_name
+            b.legal_name AS prime_vendor_name
             FROM aggregateon_spending_vendor a
             JOIN vendor b ON b.vendor_id = a.vendor_id
             <where>
@@ -181,11 +180,11 @@
         <param name="magid"/>
         <sql>
             SELECT a.agency_name,
-                   v.legal_name AS vendor_name,
+                   v.legal_name AS prime_vendor_name,
                    s0.type_of_year,
                    s0.year_id,
                    s0.agency_id,
-                   s0.vendor_id,
+                   s0.vendor_id as prime_vendor_id,
                    s0.description,
                    s0.document_id,
                    s0.document_code,

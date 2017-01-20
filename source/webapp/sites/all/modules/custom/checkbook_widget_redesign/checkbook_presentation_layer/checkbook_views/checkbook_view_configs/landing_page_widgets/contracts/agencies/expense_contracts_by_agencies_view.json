@@ -1,13 +1,6 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"ContractsWidgetService",
-        "sqlConfigName":"contracts/contracts",
-        "statementName":"GetContractsByAgencies",
-        "countStatementName":"GetCountContractsByAgencies"
-
-    },
     "serviceName":"ContractsWidgetService",
+    "dataFunc":"GetContractsByAgencies",
     "defaultParameters":{"type_of_year":"B","status_flag":"A"},
     "headerTitle":"Agencies",
     "headerSubTitle":"Agencies",

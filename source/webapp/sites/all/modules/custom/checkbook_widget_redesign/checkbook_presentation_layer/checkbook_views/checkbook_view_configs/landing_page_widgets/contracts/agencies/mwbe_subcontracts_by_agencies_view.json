@@ -1,10 +1,5 @@
 {
-    "defaultConfigKey": "expense_contracts_by_agencies_view",
-    "sqlConfig": {
-        "serviceName": "ContractsWidgetService",
-        "sqlConfigName": "contracts/sub_contracts",
-        "statementName": "GetSubContractsByAgencies",
-        "countStatementName": "GetCountSubContractsByAgencies"
-    }
+    "defaultConfigKey":"expense_contracts_by_agencies_view",
+    "dataFunc":"GetSubContractsByAgencies"
 }
 

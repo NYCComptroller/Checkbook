@@ -164,14 +164,14 @@
         <param name="mwbe"/>
         <sql>
             SELECT
-            a.minority_type_id AS minority_type,
+            a.minority_type_id as prime_minority_type_id,
             a.type_of_year AS yeartype,
             a.year_id AS year,
-            a.vendor_id,
+            a.vendor_id as prime_vendor_id,
             SUM(COALESCE(total_spending_amount,0)) AS check_amount_sum,
             MAX(COALESCE(total_contract_amount,0)) AS total_contract_amount_sum,
             SUM(total_spending_amount)/MAX(total.check_amount)*100 as percent_spending,
-            b.legal_name AS vendor_name
+            b.legal_name AS prime_vendor_name
             FROM aggregateon_mwbe_spending_vendor a
             JOIN vendor b ON b.vendor_id = a.vendor_id
             JOIN
@@ -224,8 +224,7 @@
         <param name="mwbe"/>
         <sql>
             SELECT COUNT(*) AS record_count
-            FROM (SELECT a.vendor_id AS vendor_vendor
-                FROM aggregateon_mwbe_spending_vendor a
+            FROM (SELECT a.vendor_id FROM aggregateon_mwbe_spending_vendor a
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="a.year_id" paramName="year" />
@@ -257,12 +256,12 @@
         <param name="mwbe"/>
         <sql>
             SELECT
-            a.type_of_year AS yeartype_yeartype,
-            a.year_id AS year_year,
-            a.agency_id AS agency_agency,
+            a.type_of_year,
+            a.year_id,
+            a.agency_id ,
             a.prime_vendor_id AS prime_vendor_id,
-            b.legal_name AS vendor_name,
-            a.prime_minority_type_id AS minority_type,
+            b.legal_name AS prime_vendor_name,
+            a.prime_minority_type_id,
             SUM(COALESCE(total_spending_amount,0)) AS check_amount_sum,
             SUM(COALESCE(total_contract_amount,0)) AS total_contract_amount_sum,
             SUM(COALESCE(total_spending_amount,0))/MAX(total.check_amount)*100 as percent_spending
@@ -321,8 +320,7 @@
         <param name="mwbe"/>
         <sql>
             SELECT COUNT(*) AS record_count
-            FROM (SELECT a.prime_vendor_id AS prime_vendor_prime_vendor
-            FROM aggregateon_subven_spending_vendor a
+            FROM (SELECT a.prime_vendor_id FROM aggregateon_subven_spending_vendor a
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="a.year_id" paramName="year" />
@@ -354,8 +352,8 @@
         <param name="mwbe"/>
         <sql>
             SELECT
-            a.minority_type_id as minority_type,
-            a.vendor_id,
+            a.minority_type_id as sub_minority_type_id,
+            a.vendor_id as sub_vendor_id,
             b.legal_name AS sub_vendor_name,
             SUM(COALESCE(total_spending_amount,0)) AS check_amount_sum,
             SUM(COALESCE(total_contract_amount,0)) AS total_contract_amount_sum,
@@ -418,11 +416,11 @@
         <param name="magid"/>
         <sql>
             SELECT a.agency_name,
-                   v.legal_name AS vendor_name,
+                   v.legal_name AS prime_vendor_name,
                    s0.type_of_year,
                    s0.year_id,
                    s0.agency_id,
-                   s0.vendor_id,
+                   s0.vendor_id as prime_vendor_id,
                    s0.description,
                    s0.document_id,
                    s0.document_code,

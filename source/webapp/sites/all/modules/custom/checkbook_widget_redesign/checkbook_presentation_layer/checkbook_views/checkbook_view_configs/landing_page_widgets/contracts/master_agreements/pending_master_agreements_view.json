@@ -1,17 +1,12 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"ContractsWidgetService",
-        "sqlConfigName":"contracts/pending_contracts",
-        "statementName":"GetPendingMasterAgreements"
-    },
     "serviceName":"ContractsWidgetService",
-    "defaultParameters":{"doctype":"'MA1','MMA1','MAR'"},
+    "dataFunc":"GetMasterAgreementContracts",
+    "defaultParameters":{"type_of_year":"B","contract_type":"master_agreement"},
     "headerTitle":"Master Agreements",
     "headerSubTitle":"Master Agreement",
     "table_columns": [
         {"labelAlias": "contract_id","column": "contract_number","derivedColumn":"pending_master_contract_id_link"},
-        {"labelAlias": "contract_purpose","column": "pending_contract_purpose","tooltip":32},
+        {"labelAlias": "contract_purpose","column": "contract_purpose","tooltip":32},
         {"labelAlias": "contract_agency","column": "agency_name","tooltip":18,"derivedColumn":"master_agreements_agency_landing_link"},
         {"labelAlias": "prime_vendor","column": "vendor_name","tooltip":30,"derivedColumn":"master_agreements_vendor_name_link"},
         {"labelAlias": "recv_date","column": "received_date","format":"date"},

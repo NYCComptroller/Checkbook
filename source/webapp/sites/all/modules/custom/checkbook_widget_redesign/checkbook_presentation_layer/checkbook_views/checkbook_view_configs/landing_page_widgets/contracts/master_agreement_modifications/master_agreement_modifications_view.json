@@ -1,12 +1,7 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"ContractsWidgetService",
-        "sqlConfigName":"contracts/contracts",
-        "statementName":"GetMasterAgreementModifications"
-    },
     "serviceName":"ContractsWidgetService",
-    "defaultParameters":{"type_of_year":"B","doctype":"'MMA1','MA1'","status_flag":"A","dollar_difference":"0"},
+    "dataFunc":"GetMasterAgreementContractModifications",
+    "defaultParameters":{"type_of_year":"B","doctype":"'MMA1','MA1'","status_flag":"A","is_modification":"true","contract_type":"master_agreement"},
     "headerTitle":"Master Agreement Modifications",
     "headerSubTitle":"Master Agreement Modifications",
     "footerUrl":"_widget_controller_footer_url($node).ContractsUrlService::getAmtModificationUrlString(true)",

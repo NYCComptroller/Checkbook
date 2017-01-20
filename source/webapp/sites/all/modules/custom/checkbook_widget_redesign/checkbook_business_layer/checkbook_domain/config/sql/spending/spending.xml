@@ -11,12 +11,12 @@
         <sql>
             SELECT
             check_eft_issued_date as issue_date,
-            vendor_name,
+            vendor_name as prime_vendor_name,
             agency_name,
             check_amount,
             expenditure_object_name as expense_category,
             agency_id,
-            vendor_id,
+            vendor_id as prime_vendor_id,
             expenditure_object_id,
             department_name,
             industry_type_id
@@ -80,18 +80,17 @@
         <param name="agid"/>
         <param name="magid"/>
         <sql>
-            SELECT a.agency_name,
-                   v.legal_name AS vendor_name,
-                   s0.type_of_year,
-                   s0.year_id,
-                   s0.agency_id,
-                   s0.vendor_id,
-                   s0.description,
-                   s0.document_id,
-                   s0.document_code,
-                   s0.agreement_id, 
-                   SUM(COALESCE(total_spending_amount,0)) AS check_amount_sum,
-                   MAX(COALESCE(total_contract_amount,0)) AS total_contract_amount_sum
+            SELECT
+            a.agency_name,
+            v.legal_name AS prime_vendor_name,
+            s0.agency_id,
+            s0.vendor_id as prime_vendor_id,
+            s0.description as contract_purpose,
+            s0.document_id,
+            s0.document_code,
+            s0.agreement_id,
+            SUM(COALESCE(total_spending_amount,0)) AS check_amount_sum,
+            MAX(COALESCE(total_contract_amount,0)) AS total_contract_amount_sum
             FROM aggregateon_spending_contract s0
             JOIN vendor v ON v.vendor_id = s0.vendor_id
             JOIN ref_agency a ON a.agency_id = s0.agency_id
@@ -109,7 +108,7 @@
                     <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
                 </exp>
             </where>
-            GROUP BY s0.agency_id, s0.year_id, s0.type_of_year, s0.vendor_id, s0.description, s0.document_id, s0.agreement_id,
+            GROUP BY s0.agency_id, s0.vendor_id, s0.description, s0.document_id, s0.agreement_id,
             a.agency_name, v.legal_name, s0.document_code        
         </sql>
     </statement>
@@ -225,10 +224,10 @@
             SELECT
             a.type_of_year,
             a.year_id,
-            a.vendor_id AS vendor_id,
+            a.vendor_id AS prime_vendor_id,
             SUM(COALESCE(total_spending_amount,0)) AS check_amount_sum,
             MAX(COALESCE(total_contract_amount,0)) AS total_contract_amount_sum,
-            b.legal_name AS vendor_name
+            b.legal_name AS prime_vendor_name
             FROM aggregateon_spending_vendor a
             JOIN vendor b ON b.vendor_id = a.vendor_id
             <where>

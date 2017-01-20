@@ -13,7 +13,7 @@
         {"labelAlias":"sub_vendor_name","column":"sub_vendor_name","derivedColumn":"sub_vendor_link","tooltip":36},
         {"labelAlias":"num_sub_contracts","column":"total_sub_contracts","format":"number"},
         {"label":"","column":""},
-        {"labelAlias":"mwbe_category","column":"minority_type","derivedColumn":"mwbe_category_link"},
+        {"labelAlias":"mwbe_category","column":"sub_minority_type_id","derivedColumn":"sub_mwbe_category_link"},
         {"labelAlias":"prime_vendor","column":"prime_vendor_name","derivedColumn":"prime_vendor_link","tooltip":36},
         {"labelAlias":"ytd_spending","column":"check_amount_sum","derivedColumn":"sub_vendor_ytd_spending_link","format":"dollar"},
         {"label":"","column":""}

@@ -22,29 +22,33 @@ description = "Functionality to serve as a service layer for checkbook"
 package = REI Checkbook Widget Redesign
 core = 7.x
 
-files[] = common/AbstractDataService.php
-files[] = common/IDataService.php
-files[] = common/VendorService.php
-files[] = common/MinorityTypeURLService.php
 
-files[] = spending/CheckData.php
+files[] = common/VendorService.php
+files[] = common/PrimeVendorService.php
+files[] = common/SubVendorService.php
+files[] = common/MinorityTypeService.php
+files[] = common/data/IDataService.php
+files[] = common/data/DataService.php
+
+files[] = widget/IWidgetService.php
+files[] = widget/WidgetService.php
+files[] = widget/WidgetDataService.php
+files[] = widget/WidgetSqlService.php
+
 files[] = spending/SpendingWidgetService.php
-files[] = spending/SpendingDataService.php
+files[] = spending/SpendingWidgetVisibilityService.php
 files[] = spending/SpendingParameters.php
 files[] = spending/SpendingUrlService.php
-files[] = spending/SpendingVendorUrlService.php
-files[] = contracts/ContractsDataService.php
+
 files[] = contracts/ContractsUrlService.php
 files[] = contracts/ContractsWidgetService.php
 files[] = contracts/ContractsWidgetVisibilityService.php
 files[] = contracts/ContractsParameters.php
-files[] = contracts/ContractsVendorUrlService.php
+files[] = contracts/data/IContractsDataService.php
+files[] = contracts/data/ContractsDataService.php
+
 files[] = revenue/RevenueDataService.php
 files[] = revenue/RevenueUrlService.php
 files[] = revenue/RevenueWidgetService.php
-files[] = revenue/RevenueWidgetVisibilityService.php
 
-files[] = widget/AbstractWidgetService.php
-files[] = widget/IWidgetService.php
-files[] = widget/WidgetService.php
 dependencies[] = checkbook_domain

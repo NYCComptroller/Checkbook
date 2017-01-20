@@ -1,11 +1,6 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"ContractsWidgetService",
-        "sqlConfigName":"contracts/sub_contracts",
-        "statementName":"GetSubContractsByAwardMethods"
-    },
     "serviceName":"ContractsWidgetService",
+    "dataFunc":"GetSubContractsByAwardMethods",
     "defaultParameters":{"type_of_year":"B","status_flag":"A","minority_type_id":"2~3~4~5~9"},
     "headerTitle":"Award Methods",
     "headerSubTitle":"Award Methods",

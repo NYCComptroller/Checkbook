@@ -10,10 +10,10 @@
     "headerTitle":"Prime Vendors",
     "headerSubTitle":"Prime Vendors",
     "table_columns": [
-        {"labelAlias":"prime_vendor","column":"vendor_name","derivedColumn":"vendor_name_link","tooltip":36},
+        {"labelAlias":"prime_vendor","column":"prime_vendor_name","derivedColumn":"prime_vendor_link","tooltip":36},
         {"labelAlias":"num_sub_vendors","column":"sub_vendor_count","format":"number"},
         {"label":"","column":""},
-        {"labelAlias":"mwbe_category","column":"prime_minority_type","derivedColumn":"mwbe_category"},
+        {"labelAlias":"mwbe_category","column":"prime_minority_type_id","derivedColumn":"prime_mwbe_category_link"},
         {"labelAlias":"ytd_spending","column":"check_amount_sum","derivedColumn":"prime_vendor_ytd_spending_link","format":"dollar"},
         {"label":"","column":""},
         {"labelAlias":"total_contract_amount","column":"total_contract_amount_sum","format":"dollar"},

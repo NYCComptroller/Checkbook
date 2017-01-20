@@ -11,8 +11,8 @@
     "headerTitle":"Prime Vendors",
     "headerSubTitle":"Prime Vendors",
     "table_columns": [
-        {"labelAlias": "prime_vendor","column": "vendor_name","derivedColumn":"vendor_name_link"},
-        {"labelAlias":"mwbe_category","column":"minority_type", "derivedColumn":"mwbe_category_link"},
+        {"labelAlias":"prime_vendor","column": "prime_vendor_name","derivedColumn":"prime_vendor_link"},
+        {"labelAlias":"mwbe_category","column":"prime_minority_type_id", "derivedColumn":"prime_mwbe_category_link"},
         {"labelAlias": "ytd_spending","column": "check_amount_sum","derivedColumn":"prime_vendor_ytd_spending_link","format":"dollar"},
         {"labelAlias": "percent_spending","column": "percent_spending","format":"percent"},
         {"label": "","column": ""},

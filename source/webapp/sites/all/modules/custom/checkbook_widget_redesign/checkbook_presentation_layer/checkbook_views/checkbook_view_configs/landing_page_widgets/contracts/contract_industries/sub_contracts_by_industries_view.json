@@ -1,12 +1,7 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"ContractsWidgetService",
-        "sqlConfigName":"contracts/sub_contracts",
-        "statementName":"GetSubContractsByIndustries",
-        "countStatementName":"GetCountSubContractsByIndustries"
-    },
     "serviceName":"ContractsWidgetService",
+    "dataFunc":"GetSubContractsByIndustries",
+    "countFunc":"GetCountSubContracts",
     "table_title":"Contracts by Industries",
     "headerSubTitle":"Contracts",
     "table_columns":[

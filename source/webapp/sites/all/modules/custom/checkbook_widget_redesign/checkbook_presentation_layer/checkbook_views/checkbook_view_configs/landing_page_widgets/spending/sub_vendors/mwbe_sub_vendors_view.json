@@ -10,7 +10,7 @@
     "headerSubTitle":"Sub Vendors",
     "table_columns": [
         {"labelAlias":"sub_vendor_name","column":"sub_vendor_name","derivedColumn":"sub_vendor_link","tooltip":36},
-        {"labelAlias":"mwbe_category","column":"minority_type","derivedColumn":"mwbe_category_name"},
+        {"labelAlias":"mwbe_category","column":"sub_minority_type_id","derivedColumn":"sub_mwbe_category_link"},
         {"labelAlias":"ytd_spending","column":"check_amount_sum","derivedColumn":"sub_vendor_ytd_spending_link","format":"dollar"},
         {"labelAlias":"percent_spending","column":"percent_spending","format":"percent"},
         {"labelAlias":"num_sub_contracts","column":"total_sub_contracts","format":"number"},

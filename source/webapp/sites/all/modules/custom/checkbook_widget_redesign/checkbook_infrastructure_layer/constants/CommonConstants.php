@@ -32,17 +32,19 @@ abstract class CheckbookDomain {
     const REVENUE = "revenue";
 
     static public function getCurrent() {
-        $path = current_path();
+        $urlPath = $_GET['q'];
+        $ajaxPath = $_SERVER['HTTP_REFERER'];
+
         $domain = null;
-        if(preg_match('/contracts_landing/',$path) ||
-            preg_match('/contracts_revenue_landing/',$path) ||
-            preg_match('/contracts_pending/',$path)){
+        if(preg_match('/contracts_landing/',$urlPath) || preg_match('/contracts_landing/',$ajaxPath) ||
+            preg_match('/contracts_revenue_landing/',$urlPath) || preg_match('/contracts_revenue_landing/',$ajaxPath) ||
+            preg_match('/contracts_pending/',$urlPath) || preg_match('/contracts_pending/',$urlPath)) {
             $domain = self::CONTRACTS;
         }
-        else if(preg_match('/spending_landing/',$path)){
+        else if(preg_match('/spending_landing/',$urlPath) || preg_match('/spending_landing/',$ajaxPath)) {
             $domain = self::SPENDING;
         }
-        else if(preg_match('/revenue/',$path)){
+        else if(preg_match('/revenue/',$urlPath) || preg_match('/revenue/',$ajaxPath)) {
             $domain = self::REVENUE;
         }
         return $domain;

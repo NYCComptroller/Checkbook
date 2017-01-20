@@ -1,14 +1,16 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: atorkelson
- * Date: 4/20/16
- * Time: 4:05 PM
- */
 
-class ContractsWidgetService extends AbstractWidgetService {
+class ContractsWidgetService extends WidgetDataService implements IWidgetService {
 
-    public function implDerivedColumn($column_name,$row) {
+    /**
+     * Function to allow the client to initialize the data service
+     * @return mixed
+     */
+    public function initializeDataService() {
+        return new ContractsDataService();
+    }
+
+    public function implementDerivedColumn($column_name,$row) {
         $value = null;
         $legacy_node_id = $this->getLegacyNodeId();
         switch($column_name) {
@@ -51,24 +53,22 @@ class ContractsWidgetService extends AbstractWidgetService {
                 $url = ContractsUrlService::awardmethodUrl($row['award_method_id']);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
-            
+
             case "agency_landing_link":
                 $column = $row['agency_name'];
                 $url = ContractsUrlService::agencyUrl($row['agency_id']);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
 
-            case "vendor_name_link":
+            case "prime_vendor_link":
                 $column = $row['vendor_name'];
-                $year_id = _getRequestParamValue("year");
-                $year_type = _getRequestParamValue("yeartype");
-                $url = ContractsVendorUrlService::vendorUrl($row['vendor_id'], $row['agency_id'], $year_id, $year_type, $row['minority_type_id'], $row['is_prime_or_sub']);
+                $url = ContractsUrlService::primeVendorUrl($row['vendor_id']);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
 
-            case "sub_vendor_name_link":
+            case "sub_vendor_link":
                 $column = $row['sub_vendor_name'];
-                $url = ContractsVendorUrlService::getSubContractsVendorLink($row['sub_vendor_id']);
+                $url = ContractsUrlService::subVendorUrl($row['sub_vendor_id']);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
 
@@ -90,7 +90,7 @@ class ContractsWidgetService extends AbstractWidgetService {
                 }
                 $year_id = _getRequestParamValue("year");
                 $year_type = _getRequestParamValue("yeartype");
-                $url = ContractsVendorUrlService::vendorUrl($row['vendor_id'], $row['agency_id'], $year_id, $year_type, $row['minority_type_id'], $row['is_prime_or_sub']);
+                $url = ContractsUrlService::primeVendorUrl($row['vendor_id'], $row['agency_id'], $row['minority_type_id'], $year_id, $year_type);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
 
@@ -105,22 +105,22 @@ class ContractsWidgetService extends AbstractWidgetService {
                 $url = ContractsUrlService::contractSizeUrl($row['award_size_id']);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
-            
-            case "minority_type_name_link":
+
+            case "prime_mwbe_category_link":
                 $minority_type_id = $row['minority_type_id'];
-                $column = MinorityTypeURLService::$minority_type_category_map[$minority_type_id];
-                $url = ContractsUrlService::minorityTypeUrl($minority_type_id);
+                $column = MinorityTypeService::$minority_type_category_map[$minority_type_id];
+                $url = ContractsUrlService::primeMinorityTypeUrl($minority_type_id);
                 $value = (isset($url))?"<a href='{$url}'>{$column}</a>" : $column;
                 break;
-            
+
             case "minority_type_name":
                 $minority_type_id = isset($row['prime_minority_type_id']) ? $row['prime_minority_type_id'] : $row ['minority_type_id'] ;
-                $value = MinorityTypeURLService::$minority_type_category_map[$minority_type_id];
+                $value = MinorityTypeService::$minority_type_category_map[$minority_type_id];
                 break;
 
-            case "sub_minority_type_name_link":
+            case "sub_mwbe_category_link":
                 $column = $row['sub_minority_type_name'];
-                $url = MinorityTypeURLService::getSubMinorityTypeUrl($row['sub_minority_type_id']);
+                $url = ContractsUrlService::subMinorityTypeUrl($row['sub_minority_type_id']);
                 $value = (isset($url))?"<a href='{$url}'>{$column}</a>" : $column;
                 break;
 
@@ -199,22 +199,13 @@ class ContractsWidgetService extends AbstractWidgetService {
 
     public function adjustParameters($parameters, $urlPath) {
 
-        //contract category or doc type is derived from the page path
         $doc_type = $parameters['doctype'];
         if(!isset($doc_type)) {
-            if(preg_match('/revenue/',$urlPath)){
-                $doc_type =  "('RCT1')";
-            }
-            else if(preg_match('/pending_exp/',$urlPath)){
-                $doc_type = "('MMA1','MA1','MAR','CT1','CTA1','CTR')";
-            }
-            else if(preg_match('/pending_rev/',$urlPath)){
-                $doc_type = "('RCT1')";
-            }
-            else {
-                $doc_type = "('MA1','CTA1','CT1')";
-            }
-            $parameters['doctype'] = $doc_type;
+            $contractType = $parameters['contract_type'];
+            $status = ContractStatus::getCurrent();
+            $category = ContractCategory::getCurrent();
+            $parameters['contract_status'] = $status;
+            $parameters['doctype']  = $this->deriveDocumentCode($category, $status, $contractType);
         }
         return $parameters;
     }
@@ -223,4 +214,39 @@ class ContractsWidgetService extends AbstractWidgetService {
         return ContractsUrlService::getFooterUrl($parameters,$this->getLegacyNodeId());
     }
 
+    private function deriveDocumentCode($category, $status, $contractType = "all") {
+
+        $docCode = null;
+
+        switch($contractType) {
+            case "master_agreement":
+                $docCode =
+                    $category == ContractCategory::REVENUE
+                        ? "('RCT1')"
+                        : ($status == ContractStatus::PENDING
+                            ? "('MA1','MMA1','MAR')"
+                            : "('MMA1','MA1')");
+                break;
+
+            case "child_contract":
+                $docCode =
+                    $category == ContractCategory::REVENUE
+                        ? "('RCT1')"
+                        : ($status == ContractStatus::PENDING
+                            ? "('CT1','CTA1','CTR')"
+                            : "('CTA1','CT1')");
+                break;
+
+            default:
+                $docCode =
+                    $category == ContractCategory::REVENUE
+                        ? "('RCT1')"
+                        : ($status == ContractStatus::PENDING
+                            ? "('MMA1','MA1','CTA1','CT1','MAR','CTR')"
+                            : "('MA1','CTA1','CT1')");
+                break;
+
+        }
+        return $docCode;
+    }
 }

@@ -1,10 +1,5 @@
 {
     "defaultConfigKey":"contracts_by_industries_view",
-    "sqlConfig":
-    {
-        "serviceName":"ContractsWidgetService",
-        "sqlConfigName":"contracts/sub_contracts",
-        "statementName":"GetSubContractsByIndustries",
-        "countStatementName":"GetCountSubContractsByIndustries"
-    }
+    "dataFunc":"GetSubContractsByIndustries",
+    "countFunc":"GetCountSubContracts"
 }

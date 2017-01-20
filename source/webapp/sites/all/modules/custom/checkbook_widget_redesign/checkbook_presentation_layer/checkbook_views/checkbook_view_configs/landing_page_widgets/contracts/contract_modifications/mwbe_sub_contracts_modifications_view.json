@@ -1,10 +1,6 @@
 {
     "defaultConfigKey": "contracts_modifications_view",
-    "defaultParameters":{"contractmod":"true","doctype":"'CT1'~'CTA1'"},
-    "sqlConfig": {
-        "serviceName": "ContractsWidgetService",
-        "sqlConfigName": "contracts/sub_contracts",
-        "statementName": "GetSubContracts"
-    }
+    "dataFunc":"GetSubContractModifications",
+    "defaultParameters":{"is_modification":"true","doctype":"'CT1'~'CTA1'","contract_type":"child_contract"}
 }
 

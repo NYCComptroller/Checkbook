@@ -1,12 +1,7 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"ContractsWidgetService",
-        "sqlConfigName":"contracts/sub_contracts",
-        "statementName":"GetSubContracts"
-    },
     "serviceName":"ContractsWidgetService",
-    "defaultParameters":{"contractmod":"true","doctype":"'CT1'~'CTA1'"},
+    "dataFunc":"GetSubContractModifications",
+    "defaultParameters":{"is_modification":"true","doctype":"'CT1'~'CTA1'","contract_type":"child_contract"},
     "headerTitle":"Sub Contract Amount Modifications",
     "headerSubTitle":"Sub Contract Modifications",
     "footerUrl":"_widget_controller_footer_url($node).ContractsUrlService::getAmtModificationUrlString()",
@@ -14,7 +9,7 @@
         {"labelAlias":"contract_id","column":"contract_number","derivedColumn":"contract_id_link"},
         {"labelAlias":"sub_contract_purpose","column":"contract_purpose","tooltip":26},
         {"labelAlias":"contract_agency","column":"agency_name","tooltip":25,"derivedColumn":"agency_landing_link"},
-        {"labelAlias":"sub_vendor_name","column":"sub_vendor_name","tooltip":25,"derivedColumn":"sub_vendor_name_link"},
+        {"labelAlias":"sub_vendor_name","column":"sub_vendor_name","tooltip":25,"derivedColumn":"sub_vendor_link"},
         {"labelAlias":"current_amount","column":"current_amount_sum","format":"dollar"},
         {"labelAlias":"original_amount","column":"original_amount_sum","format":"dollar"},
         {"labelAlias":"spent_to_date","column":"spending_amount_sum","format":"dollar","derivedColumn":"contracts_spent_to_date_link"},

@@ -6,9 +6,9 @@
  * Time: 2:05 PM
  */
 
-class RevenueWidgetService extends AbstractWidgetService {
+class RevenueWidgetService extends WidgetSqlService implements IWidgetService {
 
-    public function implDerivedColumn($column_name,$row) {
+    public function implementDerivedColumn($column_name,$row) {
         $value = null;
         $legacy_node_id = $this->getLegacyNodeId();
         switch($column_name) {

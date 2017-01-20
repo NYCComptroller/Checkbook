@@ -54,12 +54,14 @@ class RequestUtilities {
         $currentUrl = explode('/',$_SERVER['HTTP_REFERER']);
         return '/'.$currentUrl[3];
     }
-    
+
     /**
-    * returns key value pair string is present in URL
-    * @return string
-    */
-    function _getUrlParamString($key,$key_alias =  null){
+     * Returns key value pair string is present in URL
+     * @param $key
+     * @param null $key_alias
+     * @return string
+     */
+    static function _getUrlParamString($key,$key_alias =  null){
         $urlPath = drupal_get_path_alias($_GET['q']);
         $pathParams = explode('/', $urlPath);
         $keyIndex = NULL;

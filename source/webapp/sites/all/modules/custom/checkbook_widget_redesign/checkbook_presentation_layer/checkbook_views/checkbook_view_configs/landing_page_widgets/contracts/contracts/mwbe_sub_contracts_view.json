@@ -1,11 +1,6 @@
 {
-    "defaultConfigKey":"oge_contracts_view",
-    "sqlConfig":
-    {
-        "serviceName":"ContractsWidgetService",
-        "sqlConfigName":"contracts/sub_contracts",
-        "statementName":"GetSubContracts"
-    },
+    "serviceName":"ContractsWidgetService",
+    "dataFunc":"GetSubContracts",
     "uniqueSortColumn":"sub_contract_original_agreement_id",
-    "defaultParameters":{"doctype":"'CTA1'~'CT1'"}
+    "defaultParameters":{"doctype":"'CTA1'~'CT1'","contract_type":"child_contract"}
 }

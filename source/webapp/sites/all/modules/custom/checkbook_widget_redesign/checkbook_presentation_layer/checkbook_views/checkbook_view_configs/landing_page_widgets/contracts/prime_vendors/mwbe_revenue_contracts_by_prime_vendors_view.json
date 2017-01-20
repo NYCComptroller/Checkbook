@@ -1,18 +1,13 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"ContractsWidgetService",
-        "sqlConfigName":"contracts/contracts",
-        "statementName":"GetMWBEContractsByPrimeVendors",
-        "countStatementName":"GetCountMWBEContractsByPrimeVendors"
-    },
     "serviceName":"ContractsWidgetService",
+    "dataFunc":"GetContractsByPrimeVendors",
+    "countFunc":"GetCountContractsByPrimeVendors",
     "defaultParameters":{"type_of_year":"B","status_flag":"A"},
     "headerTitle":"Prime Vendors",
     "headerSubTitle":"Prime Vendors",
     "table_columns":[
-        {"labelAlias":"prime_vendor","column":"vendor_name","derivedColumn":"vendor_name_link","tooltip":60},
-        {"labelAlias":"mwbe_category","column":"minority_type_id","derivedColumn":"minority_type_name_link"},
+        {"labelAlias":"prime_vendor","column":"vendor_name","derivedColumn":"prime_vendor_link","tooltip":60},
+        {"labelAlias":"mwbe_category","column":"minority_type_id","derivedColumn":"prime_mwbe_category_link"},
         {"labelAlias":"no_of_contracts","column":"total_contracts","format":"number"},
         {"labelAlias":"current_amount","column":"current_amount_sum","format":"dollar"},
         {"labelAlias":"original_amount","column":"original_amount_sum","format":"dollar"},
@@ -20,12 +15,12 @@
     ],
     "dataTableOptions":{
         "aoColumns":[
-            {"bSortable": false,"sClass":"text","sWidth":"405px" },
-            {"bSortable": false, "sWidth":"150px", "sClass":"text pad-left" },
-            {"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"90px"},
-            {"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"214px"},
-            {"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"214px"},
-            {"bSortable": false,"sWidth":"15px" }
+            {"bSortable":false,"sClass":"text","sWidth":"350px"},
+            {"bSortable":false, "sWidth":"150px", "sClass":"text"},
+            {"sClass":"number","asSorting":["desc","asc"],"sWidth":"90px"},
+            {"sClass":"number","asSorting":["desc","asc"],"sWidth":"150px"},
+            {"sClass":"number","asSorting":["desc","asc"],"sWidth":"150px"},
+            {"bSortable":false,"sWidth":"15px"}
         ],
         "bServerSide":true,
         "bFilter":false,

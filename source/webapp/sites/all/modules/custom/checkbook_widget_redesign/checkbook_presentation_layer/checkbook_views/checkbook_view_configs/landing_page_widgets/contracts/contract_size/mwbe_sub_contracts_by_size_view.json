@@ -1,10 +1,5 @@
 {
     "defaultConfigKey":"contracts_by_size_view",
-    "sqlConfig":
-    {
-        "serviceName":"ContractsWidgetService",
-        "sqlConfigName":"contracts/sub_contracts",
-        "statementName":"GetSubContractsBySize",
-        "countStatementName":"GetCountSubContractsBySize"
-    }
+    "dataFunc":"GetSubContractsBySize",
+    "countFunc":"GetCountSubContracts"
 }

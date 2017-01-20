@@ -1,9 +1,5 @@
 {
-    "defaultConfigKey": "revenue_contracts_by_agencies_view",
-    "sqlConfig": {
-        "serviceName": "ContractsWidgetService",
-        "sqlConfigName": "contracts/pending_contracts",
-        "statementName": "GetPendingContractsByAgencies",
-        "countStatementName": "GetCountPendingContractsByAgencies"
-    }
+    "defaultConfigKey":"revenue_contracts_by_agencies_view",
+    "dataFunc":"GetContractsByAgencies",
+    "defaultParameters":{"type_of_year":"B","status":"P"}
 }

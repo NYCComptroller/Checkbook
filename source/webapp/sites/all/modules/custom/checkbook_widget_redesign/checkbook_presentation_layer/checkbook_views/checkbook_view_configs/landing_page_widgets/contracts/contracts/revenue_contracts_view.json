@@ -1,20 +1,15 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"ContractsWidgetService",
-        "sqlConfigName":"contracts/contracts",
-        "statementName":"GetContracts"
-    },
     "serviceName":"ContractsWidgetService",
+    "dataFunc":"GetContracts",
     "uniqueSortColumn":"original_agreement_id",
-    "defaultParameters":{"doctype":"'RCT1'"},
+    "defaultParameters":{"doctype":"'RCT1'","contract_type":"child_contract"},
     "headerTitle":"Contracts",
     "headerSubTitle":"Stand Alone Contracts",
     "table_columns":[
         {"labelAlias":"contract_id","column":"contract_number","derivedColumn":"contract_id_link"},
         {"labelAlias":"contract_purpose","column":"contract_purpose","tooltip":40},
         {"labelAlias":"contract_agency","column":"agency_name","tooltip":50,"derivedColumn":"agency_name_link"},
-        {"labelAlias":"prime_vendor","column":"vendor_name","tooltip":44,"derivedColumn":"vendor_name_link"},
+        {"labelAlias":"prime_vendor","column":"vendor_name","tooltip":44,"derivedColumn":"prime_vendor_link"},
         {"labelAlias":"current_amount","column":"current_amount_sum","format":"dollar"},
         {"labelAlias":"original_amount","column":"original_amount_sum","format":"dollar"},
         {"label":"","column":""}
