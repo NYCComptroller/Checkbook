@@ -8,7 +8,7 @@
   "serviceName": "RevenueWidgetService",
   "headerTitle": "Agencies by Cross Year Collections",
   "headerSubTitle": "Agencies",
-  "footerUrl":"str_replace('/revenue_transactions/budget/transactions','/agency_revenue_by_cross_year_collections_details/revenue/agency_details',_widget_controller_footer_url($node))",
+  "footerUrl":"RevenueUrlService::getCrossYearFooterUrl(_widget_controller_footer_url($node),'/agency_revenue_by_cross_year_collections_details/revenue/agency_details/')",
   "table_columns": [
         {"labelAlias": "agency_name","column": "agency_name","derivedColumn":"agency_name_link","tooltip": 60},
         {"labelAlias": "recognized_current","column": "current_recognized","derivedColumn":"cross_agency_recognized_amount_link","format": "dollar"},

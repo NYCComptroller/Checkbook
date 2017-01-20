@@ -21,6 +21,16 @@ class RevenueUrlService {
     }
     
     /**
+     * @param $footerUrl
+     * @param $crossYearFooterUrl
+     * @return string
+     */
+    static function getCrossYearFooterUrl($footerUrl,$crossYearFooterUrl) {
+        $url = str_replace('/revenue_transactions/budget/transactions/',$crossYearFooterUrl,$footerUrl);
+        return $url;
+    }
+    
+    /**
      * @param $agencyId
      * @param null $legacy_node_id
      * @return string
