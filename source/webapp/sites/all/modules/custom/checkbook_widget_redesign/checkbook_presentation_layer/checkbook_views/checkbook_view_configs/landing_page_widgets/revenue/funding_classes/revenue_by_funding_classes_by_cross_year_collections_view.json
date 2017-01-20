@@ -7,7 +7,7 @@
   "serviceName": "RevenueWidgetService",
   "table_title": "Revenue by Funding Classes by Cross Year collections",
   "headerSubTitle": "Funding Classes",
-  "footerUrl":"str_replace('/revenue_transactions/budget/transactions','/funding_class_revenue_by_cross_year_collections_details/revenue/fundsrc_details',_widget_controller_footer_url($node))",
+  "footerUrl":"RevenueUrlService::getCrossYearFooterUrl(_widget_controller_footer_url($node),'/funding_class_revenue_by_cross_year_collections_details/revenue/fundsrc_details/')",
   "table_columns": [
         {"labelAlias": "funding_class","column": "funding_class_name"},
         {"labelAlias": "recognized_current","column": "current_recognized","derivedColumn":"cross_fund_recognized_amount_link","format": "dollar"},

@@ -8,7 +8,7 @@
   "serviceName": "RevenueWidgetService",
   "headerTitle": "Revenue Categories by Cross Year Collections",
   "headerSubTitle": "Revenue Categories",
-  "footerUrl":"str_replace('/revenue_transactions/budget/transactions','/revenue_category_revenue_by_cross_year_collections_details/revenue/revcat_details',_widget_controller_footer_url($node))",
+  "footerUrl":"RevenueUrlService::getCrossYearFooterUrl(_widget_controller_footer_url($node),'/revenue_category_revenue_by_cross_year_collections_details/revenue/revcat_details/')",
   "table_columns": [
         {"labelAlias": "revenue_category","column": "revenue_category_name"},
         {"labelAlias": "recognized_current","column": "current_recognized","derivedColumn":"cross_rev_cat_recognized_amount_link","format": "dollar"},
