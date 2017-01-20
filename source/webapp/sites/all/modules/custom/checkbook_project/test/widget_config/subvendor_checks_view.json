@@ -69,6 +69,7 @@
         $header='<div class=\"tableHeader\"><h2>Top ' .  $count . 'Checks</h2><span class=\"contCount\"> Number of Checks:  ' . number_format($node->totalDataCount) . '</span></div>';
         return $header;
     ",
+
     "footer":"
         $url = SpendingUtil::getSpendingFooterUrl($node);
 

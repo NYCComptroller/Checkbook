@@ -1,10 +1,5 @@
-
 {
     "defaultConfigKey": "expense_contracts_by_prime_vendors_view",
-    "sqlConfig": {
-        "serviceName": "ContractsWidgetService",
-        "sqlConfigName": "contracts/oge_contracts",
-        "statementName": "GetOgeContractsByPrimeVendors",
-        "countStatementName":"GetCountOgeContractsByPrimeVendors"
-    }
+    "dataFunc":"GetOgeContractsByPrimeVendors"//,
+//    "countFunc":"GetCountOgeContractsByPrimeVendors"
 }

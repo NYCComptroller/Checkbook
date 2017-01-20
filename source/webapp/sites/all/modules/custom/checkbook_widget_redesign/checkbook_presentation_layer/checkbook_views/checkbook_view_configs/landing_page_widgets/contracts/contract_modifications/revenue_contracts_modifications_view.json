@@ -1,12 +1,7 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"ContractsWidgetService",
-        "sqlConfigName":"contracts/contracts",
-        "statementName":"GetContracts"
-    },
     "serviceName":"ContractsWidgetService",
-    "defaultParameters":{"contractmod":"true","doctype":"'RCT1'"},
+    "dataFunc":"GetContractModifications",
+    "defaultParameters":{"is_modification":"true","doctype":"'RCT1'","contract_type":"child_contract"},
     "headerTitle":"Contract Amount Modifications",
     "headerSubTitle":"Contract Modifications",
     "footerUrl":"_widget_controller_footer_url($node).ContractsUrlService::getAmtModificationUrlString()",
@@ -14,7 +9,7 @@
         {"labelAlias":"contract_id","column":"contract_number","derivedColumn":"contract_id_link"},
         {"labelAlias":"contract_purpose","column":"contract_purpose","tooltip":20},
         {"labelAlias":"contract_agency","column":"agency_name","tooltip":30,"derivedColumn":"agency_landing_link"},
-        {"labelAlias":"prime_vendor","column":"vendor_name","tooltip":30,"derivedColumn":"vendor_name_link"},
+        {"labelAlias":"prime_vendor","column":"vendor_name","tooltip":30,"derivedColumn":"prime_vendor_link"},
         {"labelAlias":"current_amount","column":"current_amount_sum","format":"dollar"},
         {"labelAlias":"original_amount","column":"original_amount_sum","format":"dollar"},
         {"labelAlias":"dollar_diff","column":"dollar_difference","format":"dollar"},

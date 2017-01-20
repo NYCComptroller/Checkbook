@@ -1,21 +1,15 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"ContractsWidgetService",
-        "sqlConfigName":"contracts/oge_contracts",
-        "statementName":"GetOgeContracts",
-        "countStatementName":"GetCountOgeContracts"
-    },
     "serviceName":"ContractsWidgetService",
+    "dataFunc":"GetOgeContracts",
     "uniqueSortColumn":"original_agreement_id",
-    "defaultParameters":{"doctype":"'CTA1'~'CT1'"},
+    "defaultParameters":{"doctype":"'CTA1'~'CT1'","contract_type":"child_contract"},
     "headerTitle":"Contracts",
     "headerSubTitle":"Stand Alone Contracts",
     "table_columns":[
         {"labelAlias":"contract_id","column":"contract_number","derivedColumn":"contract_id_link"},
         {"labelAlias":"contract_purpose","column":"contract_purpose","tooltip":20},
         {"labelAlias":"contract_agency","column":"agency_name","tooltip":30,"derivedColumn":"agency_name_link"},
-        {"labelAlias":"prime_vendor","column":"vendor_name","tooltip":30,"derivedColumn":"vendor_name_link"},
+        {"labelAlias":"prime_vendor","column":"vendor_name","tooltip":30,"derivedColumn":"prime_vendor_link"},
         {"labelAlias":"current_amount","column":"current_amount_sum","format":"dollar"},
         {"labelAlias":"original_amount","column":"original_amount_sum","format":"dollar"},
         {"labelAlias":"spent_to_date","column":"spending_amount_sum","format":"dollar","derivedColumn":"contracts_spent_to_date_link"},

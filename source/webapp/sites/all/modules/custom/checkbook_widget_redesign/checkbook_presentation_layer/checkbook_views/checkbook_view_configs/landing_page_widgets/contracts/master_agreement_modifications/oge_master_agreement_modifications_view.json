@@ -1,9 +1,5 @@
 {
     "defaultParameters":{"doctype":"'abc'"},
     "defaultConfigKey": "master_agreement_modifications_view",
-    "sqlConfig": {
-        "serviceName": "ContractsWidgetService",
-        "sqlConfigName": "contracts/oge_contracts",
-        "statementName": "GetOgeMasterAgreementsModifications"
-    }
+    "dataFunc":"GetOgeMasterAgreementContractModifications"
 }

@@ -12,7 +12,7 @@
     "table_columns":[
         {"labelAlias":"agency_name","column":"agency_name","derivedColumn":"agency_name_link","tooltip":47},
         {"labelAlias":"num_sub_vendors","column":"sub_vendor_count","format":"number"},
-        {"labelAlias":"ytd_spending_sub_vendors","column":"ytd_spending_sub_vendors","derivedColumn":"agencies_ytd_spending_subvendors_link","format":"dollar"},
+        {"labelAlias":"ytd_spending_sub_vendors","column":"ytd_spending_sub_vendors","derivedColumn":"agency_ytd_spending_link","format":"dollar"},
         {"labelAlias":"sub_vendors_percent_paid","column":"percent_spending","format":"percent"},
         {"labelAlias":"ytd_spending_agency","column":"check_amount_sum","format":"dollar"},
         {"label":"","column":""}

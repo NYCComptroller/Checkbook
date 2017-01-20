@@ -185,6 +185,9 @@ class SqlModelFactory {
                         case SqlOperator::EQUAL:
                             $success  = $paramValue == $compareValue;
                             break;
+                        case SqlOperator::NOT_EQUAL:
+                            $success  = $paramValue != $compareValue;
+                            break;
                     }
                     if($success) {
                         $where .= $where != "" ? " {$logicOperator} " : "";

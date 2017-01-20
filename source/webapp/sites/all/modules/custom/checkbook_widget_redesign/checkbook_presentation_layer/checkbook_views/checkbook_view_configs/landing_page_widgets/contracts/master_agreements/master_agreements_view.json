@@ -1,12 +1,7 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"ContractsWidgetService",
-        "sqlConfigName":"contracts/contracts",
-        "statementName":"GetMasterAgreements"
-    },
     "serviceName":"ContractsWidgetService",
-    "defaultParameters":{"type_of_year":"B","doctype":"'MMA1','MA1'","status_flag":"A"},
+    "dataFunc":"GetMasterAgreementContracts",
+    "defaultParameters":{"type_of_year":"B","doctype":"'MMA1','MA1'","status_flag":"A","contract_type":"master_agreement"},
     "headerTitle":"Master Agreements",
     "headerSubTitle":"Master Agreement",
     "table_columns": [

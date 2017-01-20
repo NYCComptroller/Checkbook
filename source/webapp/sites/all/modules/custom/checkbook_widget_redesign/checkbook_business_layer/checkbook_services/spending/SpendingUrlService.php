@@ -1,351 +1,305 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pshirodkar
- * Date: 12/7/16
- * Time: 1:36 PM
- */
 
 class SpendingUrlService {
 
-
-    static $landingPageParams = array("category"=>"category","industry"=>"industry","mwbe"=>"mwbe","dashboard"=>"dashboard","agency"=>"agency","vendor"=>"vendor","subvendor"=>"subvendor");
     /**
- * @param $agency_id
- * @return string
- */
-    static function agencyUrl($agency_id, $legacy_node_id){
-            $url = '/spending_landing'
-                .RequestUtilities::_getUrlParamString('vendor')
-                .RequestUtilities::_getUrlParamString('category')
-                .RequestUtilities::_getUrlParamString('industry')
-                .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
-                ._checkbook_project_get_year_url_param_string()
-                . '/agency/'. $agency_id;
+     * Function to build the contract id url
+     * @param $agreement_id
+     * @param $document_code
+     * @return string
+     */
+    static function contractIdUrl($agreement_id, $document_code) {
+
+        $contractUrl = DocumentCode::isMasterAgreement($document_code)
+            ? '/magid/' . $agreement_id . '/doctype/' . $document_code
+            : '/agid/' . $agreement_id . '/doctype/' . $document_code;
+
+        $url = '/contract_details'
+            . $contractUrl
+            . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
+            . '/newwindow' ;
+
         return $url;
     }
 
     /**
-     * @param $agency_id
-     * @return string
-     * Payroll Agencies widget include '/category/2'
-     */
-    static function payrollagencyUrl($agency_id, $legacy_node_id){
-        //if($legacy_node_id == 501) {
-            $url = '/spending_landing'
-                .RequestUtilities::_getUrlParamString('vendor')
-                .RequestUtilities::_getUrlParamString('category')
-                .RequestUtilities::_getUrlParamString('industry')
-                .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
-                ._checkbook_project_get_year_url_param_string()
-                . '/category/2/agency/'. $agency_id;
-       // }
-        return $url;
-    }
-
-
-    /**
-     * @param $contractId
-     * @return string
-     */
-    static function contractIdUrl($row){
-        $contractType = self::getContractType($row['document_id']);
-        if(strtolower($contractType) == 'mma1' || strtolower($contractType) == 'ma1'){
-            $contractUrl = '/magid/'.$row['agreement_id'].'/doctype/'.$contractType;
-        }else{
-            $contractUrl = '/agid/'.$row['agreement_id'].'/doctype/'.$contractType;
-        }
-        $url = '/contract_details' .$contractUrl
-               .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
-               .'/newwindow' ; 
-
-        return $url;
-    } 
-    
-     /**
-     * @param $param - Widget Name to be used in the URL
-     * @param $value - value of @param to be used in the URL
-     * @param null $legacy_node_id
-     * @return string
-     */
-    static function ytdSpendindUrl($param, $value, $legacy_node_id = null){
-        $smnid_param = isset($legacy_node_id) ? '/smnid/'.$legacy_node_id : '';
-        if($legacy_node_id == 501) {
-            $url = '/panel_html/spending_transactions/spending/transactions'
-                .RequestUtilities::_getUrlParamString('vendor')
-                .RequestUtilities::_getUrlParamString('vendor', 'fvendor')
-                .RequestUtilities::_getUrlParamString('agency')
-                .RequestUtilities::_getUrlParamString('category')
-                .RequestUtilities::_getUrlParamString('industry')
-                .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
-                ._checkbook_project_get_year_url_param_string()
-                .$smnid_param
-                . '/category/2/'.$param.'/'. $value;
-        } else {
-            $url = '/panel_html/spending_transactions/spending/transactions'
-                .RequestUtilities::_getUrlParamString('vendor')
-                .RequestUtilities::_getUrlParamString('vendor', 'fvendor')
-                .RequestUtilities::_getUrlParamString('agency')
-                .RequestUtilities::_getUrlParamString('category')
-                .RequestUtilities::_getUrlParamString('industry')
-                .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
-                ._checkbook_project_get_year_url_param_string()
-                .$smnid_param
-                . '/'.$param.'/'. $value;
-        }
-        return $url;
-    }
-
-
-    /**
-     * @param $param - Widget Name to be used in the URL
-     * @param $value - value of @param to be used in the URL
-     * @param null $legacy_node_id
-     * @return string
-     */
-    static function contractAmountUrl($row, $legacy_node_id = null){
-        $smnidParam = isset($legacy_node_id) ? '/smnid/'.$legacy_node_id : '';
-        $contractType = self::getContractType($row['document_id']);
-        if(strtolower($contractType) == 'mma1' || strtolower($contractType) == 'ma1'){
-            $contractUrl = '/magid/'.$row['agreement_id'].'/doctype/'.$contractType;
-        }else{
-            $contractUrl = '/agid/'.$row['agreement_id'].'/doctype/'.$contractType;
-        }
-        
-        $url = '/panel_html/spending_transactions/spending/transactions'
-               .RequestUtilities::_getUrlParamString('vendor')
-               .RequestUtilities::_getUrlParamString('vendor', 'fvendor')
-               .RequestUtilities::_getUrlParamString('agency')
-               .RequestUtilities::_getUrlParamString('category')
-               .RequestUtilities::_getUrlParamString('industry')
-               .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
-               ._checkbook_project_get_year_url_param_string()
-               .$smnidParam
-               .$contractUrl;
-        return $url;
-    }
-
-
-
-    /**
-    * determines whether contract is master agreement or not based on the contract number
-    * @return string
-    */
-    static function getContractType($contractNumber){
-       $contractNumber_3 = substr($contractNumber, 0, 3); //get first 3 characters from contract number
-       $contractNumber_4 = substr($contractNumber, 0, 4); //get first 4 characters from contract number
-       $fourLetterContractTypes = array('mma1', 'cta1', 'rct1', 'pcc1', 'cta2', 'mac1');
-       if(in_array(strtolower($contractNumber_4), $fourLetterContractTypes)){
-           return $contractNumber_4;
-       }else{
-           return $contractNumber_3;
-       }
-    }
-
-    /**
-     * @param $minority_type_id
-     * @return string
-     */
-    static function mwbeUrl($minority_type_id){
-        $minority_type_id = $minority_type_id == 4 || $minority_type_id == 5 ? '4~5' : $minority_type_id;
-        $url = '/spending_landing'
-            .RequestUtilities::_getUrlParamString('vendor')
-            .RequestUtilities::_getUrlParamString('category')
-            .RequestUtilities::_getUrlParamString('dashboard')
-            ._checkbook_project_get_year_url_param_string()
-            . '/mwbe/'. $minority_type_id . '?expandBottomCont=true';
-        return $url;
-    }
-
-
-    /**
-     * @param $prime_vendor_id
-     * @return string
-     */
-    static function primevendorUrl($vendor_id){
-        $url = '/spending_landing'
-            .RequestUtilities::_getUrlParamString('agency')
-            .RequestUtilities::_getUrlParamString('category')
-            .RequestUtilities::_getUrlParamString('industry')
-            ._checkbook_project_get_year_url_param_string()
-            . '/vendor/'. $vendor_id;
-        return $url;
-    }
-
-    /**
-     * @param $prime_vendor_id
-     * @return string
-     */
-    static function vendorUrl($vendor_id){
-        $url = '/spending_landing'
-            .RequestUtilities::_getUrlParamString('agency')
-            .RequestUtilities::_getUrlParamString('category')
-            .RequestUtilities::_getUrlParamString('industry')
-            .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
-            ._checkbook_project_get_year_url_param_string()
-            . '/vendor/'. $vendor_id;
-        return $url;
-    }
-
-
-
-    /**
-     * @param $parameters
-     * @param null $legacy_node_id
-     * @return string
-     */
-    static function getFooterUrl($parameters,$legacy_node_id = null) {
-        $dtsmnid_param = isset($legacy_node_id) ? '/dtsmnid/'.$legacy_node_id : '';
-        $url = '/panel_html/spending_transactions/spending/transactions'
-                .RequestUtilities::_getUrlParamString('vendor','fvendor')
-                .RequestUtilities::_getUrlParamString('vendor')
-                .RequestUtilities::_getUrlParamString('agency')
-                .RequestUtilities::_getUrlParamString('category')
-                .RequestUtilities::_getUrlParamString('industry')
-                .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
-                ._checkbook_project_get_year_url_param_string()
-                .$dtsmnid_param;
-        
-        return $url;
-    }
-
-    /**
-     * Returns Sub Vendor YTD Spending Link Url based on values from current path & data row
-     *
-     * @param $node
-     * @param $row
-     * @return string
-     */
-    static function getSubVendorYtdSpendingUrl($legacy_node_id, $row){
-        $override_params = array(
-            'subvendor'=>$row['vendor_id'],
-            'fvendor'=>$row['vendor_id'],
-            'smnid'=>$legacy_node_id
-        );
-        return '/' . self::getSpendingTransactionPageUrl($override_params);
-    }
-
-    /**
-     *  Returns a spending transaction page Url with custom parameters appended but instead of persisted
-     *
-     * @param array $override_params
-     * @return string
-     */
-    static function getSpendingTransactionPageUrl($override_params = array()) {
-        return self::getSpendingUrl('panel_html/spending_transactions/spending/transactions',$override_params);
-    }
-
-    /**
-     * Function build the url using the path and the current Spending URL parameters.
-     * The Url parameters can be overridden by the override parameter array.
-     *
-     * @param $path
-     * @param array $override_params
-     * @return string
-     */
-    static function getSpendingUrl($path, $override_params = array()) {
-
-        $url =  $path . _checkbook_project_get_year_url_param_string();
-
-        $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
-        $url_params = self::$landingPageParams;
-        $exclude_params = array_keys($override_params);
-        if(is_array($url_params)){
-            foreach($url_params as $key => $value){
-                if(!in_array($key,$exclude_params)){
-                    $url .=  CustomURLHelper::get_url_param($pathParams,$key,$value);
-                }
-            }
-        }
-
-        if(is_array($override_params)){
-            foreach($override_params as $key => $value){
-                if(isset($value)){
-                    if($key == 'yeartype' && $value == 'C'){
-                        $value = 'B';
-                    }
-                    $url .= "/$key";
-                    $url .= "/$value";
-                }
-            }
-        }
-
-        return $url;
-    }
-    
-    /**
-     * Returns the vendor or sub vendor id for the vendor facets
-     * @param $node
-     * @return null|request
-     */
-    static function getVendorFacetParameter(){
-        $dashboard = RequestUtilities::getRequestParamValue('dashboard');
-        $facet_vendor_param = null;
-
-        if($dashboard == "mp") {
-            $facet_vendor_param = RequestUtilities::getRequestParamValue("vendor");
-        }
-        else if($dashboard == "ss") {
-            $facet_vendor_param = RequestUtilities::getRequestParamValue("subvendor");
-        }
-        else if($dashboard == "ms") {
-            $facet_vendor_param = RequestUtilities::getRequestParamValue("subvendor");
-        }
-        return $facet_vendor_param;
-    }
-    
-    /**
-     * Returns Agency Amount Link Url based on values from current path & data row.
-     *
-     * @param $node
-     * @param $row
-     * @return string
-     */
-    static function agenciesYtdSpendingSubvendorsUrl($row, $legacyNodeId){
-        $override_params = array(
-            "agency"=>$row["agency_id"],
-            "fvendor"=>self::getVendorFacetParameter(),
-            "smnid"=>$legacyNodeId
-        );
-        return '/' . self::getSpendingTransactionPageUrl($override_params);
-    }
-
-    /**
-     * Returns Sub Contract Amount Link Url based on values from current path & data row
-     *
-     * @param $node
-     * @param $row
-     * @return string
-     */
-    static function getSubContractAmountLinkUrl($node, $row){
-        $agreement_id = $row["agreement_id"];
-        $document_id = isset($row["document_id"])
-            ? $row["document_id"]
-            : $row["reference_document_code"];
-        $contract_url_part = _checkbook_project_get_contract_url($document_id, $agreement_id);
-        $override_params = array(
-            "fvendor"=>self::getVendorFacetParameter($node),
-            "smnid"=>$node->nid
-        );
-        return '/' . self::getSpendingTransactionPageUrl($override_params) . $contract_url_part;
-    }
-    
-    /**
+     * Function to build the agency url
      * @param $agency_id
      * @return string
      */
-    static function industryUrl($industry_type_id, $legacy_node_id){
-            
+    static function agencyUrl($agency_id) {
+        $url = '/spending_landing'
+            . RequestUtilities::_getUrlParamString('vendor')
+            . RequestUtilities::_getUrlParamString('subvendor')
+            . RequestUtilities::_getUrlParamString('category')
+            . RequestUtilities::_getUrlParamString('industry')
+            . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
+            . _checkbook_project_get_year_url_param_string()
+            . '/agency/'. $agency_id;
+
+        return $url;
+    }
+
+    /**
+     * Payroll Agencies widget include spending category url parameter for payroll
+     * @param $agency_id
+     * @return string
+     */
+    static function payrollAgencyUrl($agency_id) {
+        $url = '/spending_landing'
+            . RequestUtilities::_getUrlParamString('vendor')
+            . RequestUtilities::_getUrlParamString('category')
+            . RequestUtilities::_getUrlParamString('industry')
+            . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
+            . _checkbook_project_get_year_url_param_string()
+            . '/category/2/agency/'. $agency_id;
+
+        return $url;
+    }
+
+    /**
+     * Function to build the industry url
+     * @param $industry_type_id
+     * @return string
+     */
+    static function industryUrl($industry_type_id) {
+
         $url = '/spending_landing'
             .RequestUtilities::_getUrlParamString('vendor')
+            .RequestUtilities::_getUrlParamString('subvendor')
             .RequestUtilities::_getUrlParamString('category')
             .RequestUtilities::_getUrlParamString('industry')
             .RequestUtilities::_getUrlParamString('agency')
             .RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
             ._checkbook_project_get_year_url_param_string()
             . '/industry/'. $industry_type_id;
-       
+
         return $url;
+    }
+
+    /**
+     * Returns Prime Vendor Landing page URL for the given prime vendor, year and year type
+     *
+     * if vendor is M/WBE certified - go to M/WBE dashboard
+     * if vendor is NOT M/WBE certified - go to citywide (default) dashboard
+     *
+     * if switching from citywide->M/WBE OR M/WBE->citywide,
+     * then persist only agency filter (mwbe & vendor if applicable)
+     *
+     * if remaining in the same dashboard persist all filters (drill-down) except sub vendor
+     *
+     * @param $vendor_id
+     * @param $year_id
+     * @return string
+     */
+    static function primeVendorUrl($vendor_id, $year_id = null) {
+
+        if(!isset($vendor_id)) {
+            return null;
+        }
+
+        $year_type = _getRequestParamValue("yeartype");
+        $agency_id = _getRequestParamValue("agency");
+        $dashboard = _getRequestParamValue("dashboard");
+        $datasource = _getRequestParamValue("datasource");
+
+        $latest_minority_id = !isset($year_id)
+            ? PrimeVendorService::getLatestMinorityType($vendor_id, $agency_id)
+            : PrimeVendorService::getLatestMinorityTypeByYear($vendor_id, $year_id, $year_type);
+        $is_mwbe_certified = MinorityTypeService::isMWBECertified($latest_minority_id);
+
+        //if M/WBE certified, go to M/WBE dashboard else if NOT M/WBE certified, go to citywide
+        $new_dashboard = $is_mwbe_certified ? "mp" : null;
+
+        $url = RequestUtilities::_getCurrentPage() . _checkbook_project_get_year_url_param_string();
+
+        $mwbe = $is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "";
+        $agency = isset($agency_id) ? "/agency/{$agency_id}" : "";
+        $vendor = isset($vendor_id) ? "/vendor/{$vendor_id}" : "";
+        $datasource = isset($datasource) ? "/datasource/{$datasource}" : "";
+        $dashboard_param = isset($new_dashboard) ? "/dashboard/{$new_dashboard}" : "";
+
+        /**
+         * if switching between dashboard, persist only agency filter (mwbe & vendor if applicable),
+         * if remaining in the same dashboard persist all filters (drill-down) except sub vendor
+         */
+        $url = $dashboard != $new_dashboard
+            ? $url = $url . $dashboard_param . $mwbe . $agency . $vendor
+            : $url . $datasource . $dashboard_param . $mwbe . $agency . $vendor;
+        return $url;
+    }
+
+    /**
+     * Returns Sub Vendor Landing page URL for the given sub vendor, year and year type
+     *
+     * if sub vendor is M/WBE certified - go to M/WBE (Sub Vendor) dashboard
+     * if sub vendor is NOT M/WBE certified - go to Sub Vendor dashboard
+     *
+     * if switching from citywide->M/WBE OR M/WBE->citywide,
+     * then persist only agency filter (mwbe & vendor if applicable)
+     *
+     * if remaining in the same dashboard persist all filters (drill-down) except sub vendor
+     *
+     * @param $vendor_id
+     * @param $year_id
+     * @return string
+     */
+    static function subVendorUrl($vendor_id, $year_id = null) {
+
+        $year_type = _getRequestParamValue("yeartype");
+        $agency_id = _getRequestParamValue("agency");
+        $dashboard = _getRequestParamValue("dashboard");
+        $datasource = _getRequestParamValue("datasource");
+
+        $latest_minority_id = !isset($year_id)
+            ? SubVendorService::getLatestMinorityType($vendor_id, $agency_id)
+            : SubVendorService::getLatestMinorityTypeByYear($vendor_id, $year_id, $year_type);
+        $is_mwbe_certified = MinorityTypeService::isMWBECertified($latest_minority_id);
+
+        //if M/WBE certified, go to M/WBE (Sub Vendor) else if NOT M/WBE certified, go to Sub Vendor dashboard
+        $new_dashboard = $is_mwbe_certified ? "ms" : "ss";
+
+        $url = RequestUtilities::_getCurrentPage() . _checkbook_project_get_year_url_param_string();
+
+        $mwbe = $is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "";
+        $agency = isset($agency_id) ? "/agency/{$agency_id}" : "";
+        $vendor = isset($vendor_id) ? "/subvendor/{$vendor_id}" : "";
+        $datasource = isset($datasource) ? "/datasource/{$datasource}" : "";
+        $dashboard_param = isset($new_dashboard) ? "/dashboard/{$new_dashboard}" : "";
+
+        /**
+         * if switching between dashboard, persist only agency filter (mwbe & vendor if applicable),
+         * if remaining in the same dashboard persist all filters (drill-down) except sub vendor
+         */
+        $url = $dashboard != $new_dashboard
+            ? $url = $url . $dashboard_param . $mwbe . $agency . $vendor
+            : $url . $datasource . $dashboard_param . $mwbe . $agency . $vendor;
+        return $url;
+    }
+
+
+    /**
+     * Function to build the M/WBE Category url
+     * Do not hyperlink if you are looking at sub data (sub dashboard)
+     * Do not hyperlink if not M/WBE certified
+     * @param $minority_type_id
+     * @return string
+     */
+    static function PrimeMwbeCategoryUrl($minority_type_id){
+
+        // Do not hyperlink if you are looking at sub data
+        // Do not hyperlink if not M/WBE certified
+        $is_mwbe_certified = MinorityTypeService::isMWBECertified($minority_type_id);
+        if(Dashboard::isSubDashboard() || !$is_mwbe_certified) {
+            return null;
+        }
+
+        $dashboard = _getRequestParamValue("dashboard") ?: "mp";
+        $url = self::mwbeUrl($minority_type_id,$dashboard);
+
+        return $url;
+    }
+
+    /**
+     * Function to build the M/WBE Category url
+     * Do not hyperlink if you are looking at prime data (prime dashboard)
+     * Do not hyperlink if not M/WBE certified
+     * @param $minority_type_id
+     * @return string
+     */
+    static function SubMwbeCategoryUrl($minority_type_id) {
+
+        // Do not hyperlink if you are looking at prime data
+        // Do not hyperlink if not M/WBE certified
+        $is_mwbe_certified = MinorityTypeService::isMWBECertified($minority_type_id);
+        if(Dashboard::isPrimeDashboard() || !$is_mwbe_certified) {
+            return null;
+        }
+        $dashboard = "sp";
+        $url = self::mwbeUrl($minority_type_id,$dashboard);
+
+        return $url;
+    }
+
+    /**
+     * Function to build the M/WBE Category url
+     * @param $minority_type_id
+     * @param $dashboard
+     * @return string
+     */
+    static function mwbeUrl($minority_type_id, $dashboard) {
+        $minority_type_id = $minority_type_id == 4 || $minority_type_id == 5 ? '4~5' : $minority_type_id;
+        $url = '/spending_landing'
+            .RequestUtilities::_getUrlParamString('agency')
+            .RequestUtilities::_getUrlParamString('vendor')
+            .RequestUtilities::_getUrlParamString('category')
+            ._checkbook_project_get_year_url_param_string()
+            . '/dashboard/'. $dashboard
+            . '/mwbe/'. $minority_type_id
+            . '?expandBottomCont=true';
+
+        return $url;
+    }
+
+    /**
+     * Gets the YTD Spending link in a generic way
+     * @param $dynamic_parameter - custom dynamic parameters to be used in the URL
+     * @param null $legacy_node_id
+     * @return string
+     */
+    static function ytdSpendingUrl($dynamic_parameter, $legacy_node_id = null) {
+
+        $legacy_node_id = isset($legacy_node_id) ? '/smnid/'.$legacy_node_id : '';
+        $dynamic_parameter = isset($dynamic_parameter) ? $dynamic_parameter : '';
+
+        $url = '/panel_html/spending_transactions/spending/transactions'
+            . RequestUtilities::_getUrlParamString('vendor')
+            . self::getVendorFacetParameter()
+            . RequestUtilities::_getUrlParamString('agency')
+            . RequestUtilities::_getUrlParamString('category')
+            . RequestUtilities::_getUrlParamString('industry')
+            . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
+            . _checkbook_project_get_year_url_param_string()
+            . $dynamic_parameter
+            . $legacy_node_id;
+
+        return $url;
+    }
+
+    /**
+     * Function to build the footer url for the spending widgets
+     * @param $parameters
+     * @param null $legacy_node_id
+     * @return string
+     */
+    static function getFooterUrl($parameters,$legacy_node_id = null) {
+        $legacy_node_id = isset($legacy_node_id) ? '/dtsmnid/'.$legacy_node_id : '';
+        $url = '/panel_html/spending_transactions/spending/transactions'
+            . RequestUtilities::_getUrlParamString('vendor')
+            . self::getVendorFacetParameter()
+            . RequestUtilities::_getUrlParamString('agency')
+            . RequestUtilities::_getUrlParamString('category')
+            . RequestUtilities::_getUrlParamString('industry')
+            . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
+            . _checkbook_project_get_year_url_param_string()
+            . $legacy_node_id;
+        
+        return $url;
+    }
+
+    /**
+     * Returns the vendor or sub vendor id for the vendor facets
+     * @return request
+     */
+    static function getVendorFacetParameter() {
+
+        $facet_vendor_id = Dashboard::isSubDashboard()
+            ? RequestUtilities::getRequestParamValue("subvendor")
+            : RequestUtilities::getRequestParamValue("vendor");
+
+        $facet_vendor_id = isset($facet_vendor_id) ? "/fvendor/" . $facet_vendor_id : '';
+
+        return $facet_vendor_id;
     }
 
 } 

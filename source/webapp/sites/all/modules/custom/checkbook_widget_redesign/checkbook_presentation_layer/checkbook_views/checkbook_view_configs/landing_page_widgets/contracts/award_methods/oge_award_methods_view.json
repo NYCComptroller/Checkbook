@@ -1,8 +1,4 @@
 {
-    "defaultConfigKey": "expense_award_methods_view",
-    "sqlConfig": {
-        "serviceName": "ContractsWidgetService",
-        "sqlConfigName": "contracts/oge_contracts",
-        "statementName": "GetOgeContractsByAwardMethods"
-    }
+    "defaultConfigKey":"expense_award_methods_view",
+    "dataFunc":"GetOgeContractsByAwardMethods"
 }

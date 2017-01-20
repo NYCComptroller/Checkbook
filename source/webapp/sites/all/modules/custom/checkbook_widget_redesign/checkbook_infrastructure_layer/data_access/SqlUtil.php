@@ -48,6 +48,11 @@ class SqlUtil {
         return $model;
     }
 
+    /**
+     * @param sqlStatementModel $model
+     * @return DatabaseStatementBase|null
+     * @throws Exception
+     */
     public static function executeSqlQuery(sqlStatementModel $model) {
 
         try {
@@ -61,6 +66,11 @@ class SqlUtil {
         return $results;
     }
 
+    /**
+     * @param sqlStatementModel $model
+     * @return DatabaseStatementBase|null
+     * @throws Exception
+     */
     public static function executeCountSqlQuery(sqlStatementModel $model) {
 
         try {

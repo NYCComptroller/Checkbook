@@ -1,11 +1,6 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"ContractsWidgetService",
-        "sqlConfigName":"contracts/contracts",
-        "statementName":"GetDepartments"
-    },
     "serviceName":"ContractsWidgetService",
+    "dataFunc":"GetContractsByDepartments",
     "uniqueSortColumn":"department_id",
     "defaultParameters":{"doctype":"'CTA1'~'CT1'"},
     "headerTitle":"Departments",

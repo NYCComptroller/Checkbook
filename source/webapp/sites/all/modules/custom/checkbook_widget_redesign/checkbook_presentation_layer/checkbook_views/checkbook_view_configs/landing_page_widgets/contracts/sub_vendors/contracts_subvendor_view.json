@@ -1,17 +1,12 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"ContractsWidgetService",
-        "sqlConfigName":"contracts/sub_contracts",
-        "statementName":"GetSubContractsBySubVendors",
-        "countStatementName":"GetCountSubContractsBySubVendors"
-    },
     "serviceName":"ContractsWidgetService",
+    "dataFunc":"GetSubContractsBySubVendors",
+    "countFunc":"GetCountSubContractsBySubVendors",
     "defaultParameters":{"doctype":"'CTA1'~'CT1'"},
     "headerTitle":"Sub Vendors",
     "table_columns":[
-        {"labelAlias":"sub_vendor_name","column":"sub_vendor_name","derivedColumn":"sub_vendor_name_link"},
-        {"labelAlias":"mwbe_category","column":"minority_type_id","derivedColumn":"sub_minority_type_name_link"},
+        {"labelAlias":"sub_vendor_name","column":"sub_vendor_name","derivedColumn":"sub_vendor_link"},
+        {"labelAlias":"mwbe_category","column":"minority_type_id","derivedColumn":"sub_mwbe_category_link"},
         {"labelAlias":"num_sub_contracts","column":"total_contracts","format":"number"},
         {"labelAlias":"current_amount","column":"current_amount_sum","format":"dollar"},
         {"labelAlias":"original_amount","column":"original_amount_sum","format":"dollar"},

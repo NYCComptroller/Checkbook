@@ -1,10 +1,5 @@
 {
     "defaultConfigKey":"contracts_by_size_view",
-    "sqlConfig":
-    {
-        "serviceName":"ContractsWidgetService",
-        "sqlConfigName":"contracts/oge_contracts",
-        "statementName":"GetOgeContractsBySize",
-        "countStatementName":"GetCountOgeContractsBySize"
-    }
+    "dataFunc":"GetOgeContractsBySize",
+    "countFunc":"GetCountOgeContracts"
 }

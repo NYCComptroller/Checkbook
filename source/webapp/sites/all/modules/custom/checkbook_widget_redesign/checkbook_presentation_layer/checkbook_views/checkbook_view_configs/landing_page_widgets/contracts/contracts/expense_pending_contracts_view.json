@@ -1,20 +1,15 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"ContractsWidgetService",
-        "sqlConfigName":"contracts/pending_contracts",
-        "statementName":"GetPendingContracts"
-    },
     "serviceName":"ContractsWidgetService",
+    "dataFunc":"GetContracts",
     "uniqueSortColumn":"original_agreement_id",
-    "defaultParameters":{"doctype":"'CTA1'~'CT1'~'CTR'"},
+    "defaultParameters":{"type_of_year":"B","contract_type":"child_contract"},
     "headerTitle":"Contracts",
     "headerSubTitle":"Stand Alone Contracts",
     "table_columns":[
         {"labelAlias":"contract_id","column":"contract_number","derivedColumn":"pending_contract_id_link"},
         {"labelAlias":"contract_purpose","column":"contract_purpose","tooltip":35},
         {"labelAlias":"contract_agency","column":"agency_name","tooltip":25,"derivedColumn":"agency_name_link"},
-        {"labelAlias":"prime_vendor","column":"vendor_name","tooltip":25,"derivedColumn":"vendor_name_link"},
+        {"labelAlias":"prime_vendor","column":"vendor_name","tooltip":25,"derivedColumn":"prime_vendor_link"},
         {"labelAlias":"recv_date","column":"received_date"},
         {"labelAlias":"current_amount","column":"current_amount_sum","format":"dollar"},
         {"labelAlias":"original_amount","column":"original_amount_sum","format":"dollar"},

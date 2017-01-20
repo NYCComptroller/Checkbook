@@ -1,11 +1,7 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"ContractsWidgetService",
-        "sqlConfigName":"contracts/contracts",
-        "statementName":"GetSubvendorContractsbyPrime",
-        "countStatementName":"GetCountOfSubvendorContractsbyPrime"
-    },
+    "serviceName":"ContractsWidgetService",
+    "dataFunc":"GetContractsSubvendorContractsByPrime",
+    "countFunc":"GetCountContractsReportedWithSubVendors",
     "defaultParameters":{"doctype":"'CTA1'~'CT1'~'CT2'","status_flag":"A"},
     "table_title":"Summary of Sub Vendor Contracts by Prime Contracts",
     "headerSubTitle":"Reported Prime Contracts with Sub Vendors",

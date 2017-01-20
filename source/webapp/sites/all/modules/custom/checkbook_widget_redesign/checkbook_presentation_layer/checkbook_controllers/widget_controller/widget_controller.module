@@ -36,15 +36,57 @@ require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/ob
 require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/object/converter/handler/AbstractJson2PHP.php');
 require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/object/converter/handler/Json2PHP.php');
 
-require_once(realpath(drupal_get_path('module', 'checkbook_infrastructure_layer')) .'/constants/SpendingConstants.php');
-require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/spending/SpendingUrlService.php');
+//
+//// Remove these
+//require_once(realpath(drupal_get_path('module', 'checkbook_infrastructure_layer')) .'/constants/SpendingConstants.php');
 //require_once(realpath(drupal_get_path('module', 'checkbook_infrastructure_layer')) .'/constants/ContractConstants.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_infrastructure_layer')) .'/utilities/RequestUtilities.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/contracts/ContractsWidgetVisibilityService.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/contracts/ContractsUrlService.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/contracts/ContractsVendorUrlService.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_infrastructure_layer')) .'/constants/CommonConstants.php');
+//
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/spending/SpendingUrlService.php');
+//
+//require_once(realpath(drupal_get_path('module', 'checkbook_domain')) .'/constants/SqlConfigPath.php');
+//
+//require_once(realpath(drupal_get_path('module', 'checkbook_domain')) .'/common/EntityFactory.php');
+//
+//require_once(realpath(drupal_get_path('module', 'checkbook_domain')) .'/sql/SqlDatasetFactory.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_domain')) .'/sql/SqlRecordCountFactory.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_domain')) .'/sql/ISqlEntityRepository.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_domain')) .'/sql/SqlEntityRepository.php');
+//
+//require_once(realpath(drupal_get_path('module', 'checkbook_domain')) .'/widget/IWidgetRepository.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_domain')) .'/widget/WidgetRepository.php');
+//
+//// checkbook_services
 //require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/common/VendorService.php');
-//require_once('WidgetController.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/common/PrimeVendorService.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/common/SubVendorService.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/common/MinorityTypeService.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/common/data/IDataService.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/common/data/DataService.php');
+//
+//
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/widget/IWidgetService.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/widget/WidgetService.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/widget/WidgetDataService.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/widget/WidgetSqlService.php');
+//
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/spending/SpendingWidgetService.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/spending/SpendingParameters.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/spending/SpendingUrlService.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/spending/SpendingWidgetVisibilityService.php');
+//
+//
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/contracts/ContractsUrlService.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/contracts/ContractsWidgetService.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/contracts/ContractsWidgetVisibilityService.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/contracts/ContractsParameters.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/contracts/data/IContractsDataService.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/contracts/data/ContractsDataService.php');
+//
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/revenue/RevenueDataService.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/revenue/RevenueUrlService.php');
+//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/revenue/RevenueWidgetService.php');
+
 
 /***************************************/
 /* Implementation of Widget Node Type  */
@@ -555,12 +597,10 @@ function _widget_controller_format_widget_data($node, $service){
             //derived
             $original_row = $node->data[$key];
             foreach($derivedColumns as $column) {
-                $node->data[$key][$column->column] = $service->implDerivedColumn($column->derivedColumn,$original_row);
+                $node->data[$key][$column->column] = $service->implementDerivedColumn($column->derivedColumn,$original_row);
             }
         }
     }
-
-    //$results = $service->implementDerivedColumns($results);
     return $node->data;
 }
 

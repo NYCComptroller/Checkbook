@@ -16,8 +16,9 @@ abstract class ContractCategory {
         $ajaxPath = $_SERVER['HTTP_REFERER'];
         $category = self::EXPENSE;
 
-        if(preg_match('/revenue/',$urlPath) || preg_match('/revenue/',$ajaxPath)
-        || preg_match('/pending_rev/',$urlPath) || preg_match('/pending_rev/',$ajaxPath)) {
+        if(preg_match('/contracts_revenue/',$urlPath) || preg_match('/contracts_revenue/',$ajaxPath)
+            || preg_match('/contracts_revenue_landing/',$urlPath) || preg_match('/contracts_revenue_landing/',$ajaxPath)
+            || preg_match('/contracts_pending_rev/',$urlPath) || preg_match('/contracts_pending_rev/',$ajaxPath)) {
             $category = self::REVENUE;
         }
 
@@ -44,6 +45,7 @@ abstract class ContractStatus {
 abstract class ContractStatusParameter {
     const ACTIVE = "A";
     const REGISTERED = "R";
+    const PENDING = "P";
 
     static public function getCurrent() {
         return RequestUtilities::getRequestParamValue(UrlParameter::CONTRACT_STATUS);
@@ -85,3 +87,46 @@ abstract class noStatusExpenseContracts {
     }
 }
 
+abstract class DocumentType {
+
+    const CT1 = "General Contract";
+    const CTA1 = "Multiple Award Contract";
+    const CTA2 = "Consortium Contract";
+    const DO1 = "Delivery Order";
+    const MA1 = "Master agreement";
+    const MMA1 = "Multiple Award Master Agreement";
+    const RCT1 = "Revenue Contract";
+    const CTR = "Pending General Contract";
+}
+
+abstract class DocumentCode {
+
+    const CT1 = "CT1";
+    const CTA1 = "CTA1";
+    const CTA2 = "CTA2";
+    const DO1 = "DO1";
+    const MA1 = "MA1";
+    const MMA1 = "MMA1";
+    const RCT1 = "RCT1";
+    const CTR = "CTR";
+
+    static public function isMasterAgreement($documentCode) {
+        return $documentCode == self::MA1 || $documentCode == self::MMA1;
+    }
+}
+
+abstract class DocumentCodeId {
+
+    const CT1 = 1;
+    const CTA1 = 2;
+    const CTA2 = 3;
+    const DO1 = 4;
+    const MA1 = 5;
+    const MMA1 = 6;
+    const RCT1 = 7;
+    const CTR = 20;
+
+    static public function isMasterAgreement($documentCodeId) {
+        return $documentCodeId == self::MA1 || $documentCodeId == self::MMA1;
+    }
+}

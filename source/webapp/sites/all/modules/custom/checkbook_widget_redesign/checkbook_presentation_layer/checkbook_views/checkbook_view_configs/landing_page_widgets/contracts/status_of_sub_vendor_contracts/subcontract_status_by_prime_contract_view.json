@@ -1,11 +1,7 @@
 {
-    "sqlConfig":
-    {
-        "serviceName":"ContractsWidgetService",
-        "sqlConfigName":"contracts/contracts",
-        "statementName":"GetSubvendorStatusByPrimeContractID",
-        "countStatementName":"GetCountSubvendorStatusByPrimeContractID"
-    },
+    "serviceName":"ContractsWidgetService",
+    "dataFunc":"GetContractsSubvendorStatusByPrime",
+    "countFunc":"GetCountContractsReportedWithSubVendors",
     "defaultParameters":{"doctype":"'CTA1'~'CT1'~'CT2'","status_flag":"A"},
     "table_title":"Sub Contract Status by Prime Contract ID",
     "headerSubTitle":"Reported Prime Contracts with Sub Vendors",
@@ -16,7 +12,7 @@
         {"label":"","column":"","export":false},
         {"labelAlias":"contract_agency","column":"agency_name","tooltip":"30","derivedColumn":"agency_name_link"},
         {"label":"","column":"","export":false},
-        {"labelAlias":"prime_vendor","column":"vendor_name","tooltip":"30","derivedColumn":"vendor_name_link"},
+        {"labelAlias":"prime_vendor","column":"vendor_name","tooltip":"30","derivedColumn":"prime_vendor_link"},
         {"label":"","column":"","export":false},
         {"labelAlias":"sub_vendor_nowrap","column":"sub_vendor","tooltip":"30"},
         {"label":"","column":"","export":false},

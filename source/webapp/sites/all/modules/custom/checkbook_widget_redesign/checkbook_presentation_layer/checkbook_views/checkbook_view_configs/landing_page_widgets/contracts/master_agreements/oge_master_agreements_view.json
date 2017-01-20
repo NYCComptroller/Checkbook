@@ -1,8 +1,4 @@
 {
     "defaultConfigKey": "master_agreements_view",
-    "sqlConfig": {
-        "serviceName": "ContractsWidgetService",
-        "sqlConfigName": "contracts/oge_contracts",
-        "statementName": "GetOgeMasterAgreements"
-    }
+    "dataFunc":"GetOgeMasterAgreementContracts"
 }
