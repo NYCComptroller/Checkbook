@@ -399,7 +399,7 @@
                     "visibility_parameters":["agency"]
                 },
                 "agencies":{
-                    "widget_config":"revenue_contracts_by_agencies_view",
+                    "widget_config":"expense_contracts_by_agencies_view",
                     "legacy_node_id":370,
                     "visibility_parameters":["-agency"]
                 },
