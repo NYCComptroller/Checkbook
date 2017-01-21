@@ -107,7 +107,7 @@ class ContractsWidgetService extends WidgetDataService implements IWidgetService
                 break;
 
             case "prime_mwbe_category_link":
-                $minority_type_id = $row['minority_type_id'];
+                $minority_type_id = isset($row['prime_minority_type_id']) ? $row['prime_minority_type_id'] : $row ['minority_type_id'] ;
                 $column = MinorityTypeService::$minority_type_category_map[$minority_type_id];
                 $url = ContractsUrlService::primeMinorityTypeUrl($minority_type_id);
                 $value = (isset($url))?"<a href='{$url}'>{$column}</a>" : $column;
