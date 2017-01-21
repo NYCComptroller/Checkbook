@@ -572,7 +572,12 @@ function _widget_controller_format_widget_data($node, $service){
         });
 
     if(count($formatColumns) > 0 || count($tooltipColumns) > 0 || count($derivedColumns) > 0) {
-        foreach($node->data as $key=>$val) {
+        foreach($node->data as $key=>&$columnArray) {
+
+            //Handle special characters
+            array_walk($columnArray, function (&$value) {
+                $value = htmlentities($value);
+            });
             //formatting
             foreach($formatColumns as $column) {
                 switch($column->format) {
