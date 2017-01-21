@@ -118,6 +118,7 @@ class ContractsDataService extends DataService implements IContractsDataService 
 
     function GetContractsSubvendorStatusByPrime($parameters, $limit = null, $orderBy = null) {
         return $this->setDataFunction(__FUNCTION__)
+            ->setSqlConfigPath(SqlConfigPath::CitywideContracts)
             ->setParameters($parameters)
             ->setLimit($limit)
             ->setOrderBy($orderBy);
@@ -147,6 +148,7 @@ class ContractsDataService extends DataService implements IContractsDataService 
 
     function GetCountContractsReported($parameters) {
         return $this->setDataFunction(__FUNCTION__)
+            ->setSqlConfigPath(SqlConfigPath::CitywideContracts)
             ->setParameters($parameters);
     }
 
@@ -176,6 +178,7 @@ class ContractsDataService extends DataService implements IContractsDataService 
 
     function GetContractsSubvendorReportingCountsSubLevel($parameters, $limit = null, $orderBy = null) {
         return $this->setDataFunction(__FUNCTION__)
+            ->setSqlConfigPath(SqlConfigPath::CitywideContracts)
             ->setParameters($parameters)
             ->setLimit($limit)
             ->setOrderBy($orderBy);
@@ -280,6 +283,7 @@ class ContractsDataService extends DataService implements IContractsDataService 
 
     function GetSubContractsByAwardMethods($parameters, $limit = null, $orderBy = null) {
         return $this->setDataFunction(__FUNCTION__)
+            ->setSqlConfigPath(SqlConfigPath::SubContracts)
             ->setParameters($parameters)
             ->setLimit($limit)
             ->setOrderBy($orderBy);
@@ -287,6 +291,7 @@ class ContractsDataService extends DataService implements IContractsDataService 
 
     function GetSubContractsByPrimeVendors($parameters, $limit = null, $orderBy = null) {
         return $this->setDataFunction(__FUNCTION__)
+            ->setSqlConfigPath(SqlConfigPath::SubContracts)
             ->setParameters($parameters)
             ->setLimit($limit)
             ->setOrderBy($orderBy);
