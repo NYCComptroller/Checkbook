@@ -94,7 +94,7 @@ class SpendingUrlService {
      */
     static function primeVendorUrl($vendor_id, $year_id = null) {
 
-        if(!isset($vendor_id)) {
+        if(!isset($vendor_id) || $vendor_id == "") {
             return null;
         }
 
