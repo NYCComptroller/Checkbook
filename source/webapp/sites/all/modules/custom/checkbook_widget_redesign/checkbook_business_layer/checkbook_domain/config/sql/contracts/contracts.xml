@@ -103,6 +103,7 @@
         <param name="status" type="string"/>
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
+        <param name="mwbe" />
         <sql>
             SELECT
             a.type_of_year,
@@ -125,6 +126,7 @@
                     <exp op="IN" dbField="b.document_code" paramName="doctype" />
                     <exp op="=" dbField="c.agency_id" paramName="agency" />
                     <exp op="=" dbField="d.vendor_id" paramName="vendor" />
+                    <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                 </exp>
             </where>
             GROUP BY a.type_of_year,e.agency_id,e.agency_name
