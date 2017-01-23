@@ -21,8 +21,8 @@
     $subvendor = _getRequestParamValue('subvendor');
     $fnName = isset($subvendor) ? 'GetContractsSubvendorReportingCountsSubLevel' : 'GetContractsSubvendorReportingCounts';
 
-    $repo = new ContractsRepository();
-    $data = $repo->$fnName($parameters)->getByDataset($parameters);
+    $service = new ContractsDataService();
+    $data = $service->$fnName($parameters)->getByDataset($parameters);
     $node->data  = $data;  
     
 ",
