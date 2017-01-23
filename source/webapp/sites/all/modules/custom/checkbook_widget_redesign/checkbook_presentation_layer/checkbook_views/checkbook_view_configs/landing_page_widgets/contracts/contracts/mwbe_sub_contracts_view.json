@@ -2,5 +2,6 @@
     "serviceName":"ContractsWidgetService",
     "dataFunc":"GetSubContracts",
     "uniqueSortColumn":"sub_contract_original_agreement_id",
+    "defaultConfigKey":"oge_contracts_view",
     "defaultParameters":{"doctype":"'CTA1'~'CT1'","contract_type":"child_contract"}
 }
