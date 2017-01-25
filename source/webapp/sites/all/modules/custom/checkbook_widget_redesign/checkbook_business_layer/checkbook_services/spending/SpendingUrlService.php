@@ -230,10 +230,10 @@ class SpendingUrlService {
     static function mwbeUrl($minority_type_id, $dashboard) {
         $minority_type_id = $minority_type_id == 4 || $minority_type_id == 5 ? '4~5' : $minority_type_id;
         $url = '/spending_landing'
-            .RequestUtilities::_getUrlParamString('agency')
-            .RequestUtilities::_getUrlParamString('vendor')
-            .RequestUtilities::_getUrlParamString('category')
-            ._checkbook_project_get_year_url_param_string()
+            . _checkbook_project_get_year_url_param_string()
+            . RequestUtilities::_getUrlParamString('agency')
+            . RequestUtilities::_getUrlParamString('vendor')
+            . RequestUtilities::_getUrlParamString('category')
             . '/dashboard/'. $dashboard
             . '/mwbe/'. $minority_type_id
             . '?expandBottomCont=true';
