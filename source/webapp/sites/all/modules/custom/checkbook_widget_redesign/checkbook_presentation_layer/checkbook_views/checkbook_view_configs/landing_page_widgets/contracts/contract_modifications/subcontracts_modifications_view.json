@@ -12,7 +12,7 @@
         {"labelAlias":"sub_vendor_name","column":"sub_vendor_name","tooltip":25,"derivedColumn":"sub_vendor_link"},
         {"labelAlias":"current_amount","column":"current_amount_sum","format":"dollar"},
         {"labelAlias":"original_amount","column":"original_amount_sum","format":"dollar"},
-        {"labelAlias":"spent_to_date","column":"spending_amount_sum","format":"dollar","derivedColumn":"contracts_spent_to_date_link"},
+        {"labelAlias":"spent_to_date","column":"spending_amount_sum","format":"dollar","derivedColumn":"sub_contracts_spent_to_date_link"},
         {"labelAlias":"dollar_diff","column":"dollar_difference","format":"dollar"},
         {"labelAlias":"percent_diff","column":"percent_difference","format":"percent"},
         {"label":"","column":""}
