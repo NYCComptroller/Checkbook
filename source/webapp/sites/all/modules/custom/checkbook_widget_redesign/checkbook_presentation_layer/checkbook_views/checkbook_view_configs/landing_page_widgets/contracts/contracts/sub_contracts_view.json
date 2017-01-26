@@ -13,7 +13,7 @@
         {"labelAlias":"prime_vendor","column":"vendor_name","tooltip":32,"derivedColumn":"prime_vendor_link"},
         {"labelAlias":"current_amount","column":"current_amount_sum","format":"dollar"},
         {"labelAlias":"original_amount","column":"original_amount_sum","format":"dollar"},
-        {"labelAlias":"spent_to_date","column":"spending_amount_sum","format":"dollar","derivedColumn":"contracts_spent_to_date_link"},
+        {"labelAlias":"spent_to_date","column":"spending_amount_sum","format":"dollar","derivedColumn":"sub_contracts_spent_to_date_link"},
         {"label":"","column":""}
     ],
     "skipCustomPadding":true,
