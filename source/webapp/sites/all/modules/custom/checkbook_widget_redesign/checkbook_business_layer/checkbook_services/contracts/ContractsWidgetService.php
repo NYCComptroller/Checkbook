@@ -136,6 +136,24 @@ class ContractsWidgetService extends WidgetDataService implements IWidgetService
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
 
+            case "sub_contracts_spent_to_date_link":
+                $column = $row['spending_amount_sum'];
+                $class = "new_window";
+
+                $spend_type_parameter = "/agid/".$row['sub_contract_original_agreement_id'];
+                $url = ContractsUrlService::spentToDateUrl($spend_type_parameter,$legacy_node_id);
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
+
+            case "agency_spent_to_date_link":
+                $column = $row['spending_amount_sum'];
+                $class = "new_window";
+
+                $spend_type_parameter = "/cagency/".$row['agency_id'];
+                $url = ContractsUrlService::spentToDateUrl($spend_type_parameter,$legacy_node_id);
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
+
             case "prime_vendor_spent_to_date_link":
                 $column = $row['spending_amount_sum'];
                 $class = "new_window";

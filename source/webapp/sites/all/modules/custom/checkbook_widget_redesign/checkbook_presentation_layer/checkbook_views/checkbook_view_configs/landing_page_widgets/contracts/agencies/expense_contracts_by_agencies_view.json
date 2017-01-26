@@ -9,7 +9,7 @@
         {"labelAlias":"no_of_contracts","column":"total_contracts","format":"number"},
         {"labelAlias":"current_amount","column":"current_amount_sum","format":"dollar"},
         {"labelAlias":"original_amount","column":"original_amount_sum","format":"dollar"},
-        {"labelAlias":"spent_to_date","column":"spending_amount_sum","format":"dollar","derivedColumn":"prime_vendor_spent_to_date_link"},
+        {"labelAlias":"spent_to_date","column":"spending_amount_sum","format":"dollar","derivedColumn":"agency_spent_to_date_link"},
         {"label":"","column":""}
     ],
     "dataTableOptions":{
