@@ -217,10 +217,17 @@ class ContractsWidgetService extends WidgetDataService implements IWidgetService
 
     public function adjustParameters($parameters, $urlPath) {
 
+        $status = ContractStatus::getCurrent();
+        if($status == ContractStatus::ACTIVE) {
+            $parameters['effective_year'] = $parameters['year'];
+        }
+        else if($status == ContractStatus::REGISTERED) {
+            $parameters['registered_year'] = $parameters['year'];
+        }
+
         $doc_type = $parameters['doctype'];
         if(!isset($doc_type)) {
             $contractType = $parameters['contract_type'];
-            $status = ContractStatus::getCurrent();
             $category = ContractCategory::getCurrent();
             $parameters['contract_status'] = $status;
             $parameters['doctype']  = $this->deriveDocumentCode($category, $status, $contractType);
