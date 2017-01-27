@@ -10,11 +10,10 @@
         {"labelAlias":"contract_agency","column":"agency_name","tooltip":32,"derivedColumn":"agency_name_link"},
         {"labelAlias":"no_of_contracts","column":"number_contracts","format":"number"},
         {"label":"","column":""},
-        {"labelAlias":"spent_to_date","column":"spending_amount_sum","format":"dollar"},
+        {"labelAlias":"not_required_by_prime","column":"not_required","format":"number"},
         {"labelAlias":"no_response_status","column":"no_response_status","format":"number"},
         {"labelAlias":"reported_no_sub_count","column":"reported_no_sub_count","format":"number"},
         {"labelAlias":"reported_sub_count","column":"reported_sub_count","format":"number"},
-        {"labelAlias":"reported_no_details_count","column":"reported_no_details_count","format":"number"},
         {"label":"","column":""}
     ],
     "dataTableOptions":{
@@ -24,7 +23,6 @@
             {"bSortable":false,"sWidth":"5px"},
             {"bSortable":true,"sWidth":"75px","sClass":"number","asSorting":["desc","asc"]},
             {"bSortable":true,"sWidth":"116px","sClass":"number","asSorting":["desc","asc"]},
-            {"bSortable":true,"sWidth":"170px","sClass":"number","asSorting":["desc","asc"]},
             {"bSortable":true,"sWidth":"170px","sClass":"number","asSorting":["desc","asc"]},
             {"bSortable":true,"sWidth":"170px","sClass":"number","asSorting":["desc","asc"]},
             {"bSortable":false,"sWidth":"5px"}

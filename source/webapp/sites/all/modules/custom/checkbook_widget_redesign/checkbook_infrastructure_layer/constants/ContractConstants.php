@@ -37,7 +37,9 @@ abstract class ContractStatus {
         switch($parameter) {
             case ContractStatusParameter::ACTIVE: return self::ACTIVE;
             case ContractStatusParameter::REGISTERED: return self::REGISTERED;
-            default: return self::PENDING;
+            default:
+                //Todo: Fix Sub Vendor 3rd Nav to be Active
+                return Dashboard::isSubDashboard() ? self::ACTIVE : self::PENDING;
         }
     }
 }

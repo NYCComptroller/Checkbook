@@ -2,8 +2,8 @@
     <!--GetContracts-->
     <statement name="GetContracts" datasource="checkbook">
         <param name="year" required ="true" type="int"/>
-        <param name="yeartype" required ="true" type="string" />
-        <param name="status" type="string"/>
+        <param name="effective_year" />
+        <param name="registered_year" />
         <param name="category" type="string"/>
         <param name="doctype" />
         <param name="agency" type="int" />
@@ -34,38 +34,23 @@
             FROM all_agreement_transactions_by_prime_sub_vendor a
             JOIN ref_subcontract_status ref_status on ref_status.scntrc_status = a.scntrc_status
             <where>
-                <exp op="IF" condition="=" paramName="status" compareValue="A">
-                    <exp op="AND">
-                        <exp op="=" dbField="vendor_record_type">'Prime Vendor'</exp>
-                        <exp op="&lt;=" dbField="starting_year_id" paramName="year" />
-                        <exp op="&gt;=" dbField="ending_year_id" paramName="year" />
-                        <exp op="&lt;=" dbField="effective_begin_year_id" paramName="year" />
-                        <exp op="&gt;=" dbField="effective_end_year_id" paramName="year" />
-                        <exp op="IN" dbField="document_code" paramName="doctype" />
-                        <exp op="=" dbField="prime_vendor_id" paramName="vendor" />
-                        <exp op="=" dbField="agency_id" paramName="agency" />
-                        <exp op="IN" dbField="prime_minority_type_id" paramName="mwbe" />
-                        <exp op="=" dbField="award_method_id" paramName="awdmethod" />
-                        <exp op="=" dbField="award_size_id" paramName="csize" />
-                        <exp op="=" dbField="industry_type_id" paramName="cindustry" />
-                    </exp>
-                </exp>
-                <exp op="IF" condition="=" paramName="status" compareValue="R">
-                    <exp op="AND">
-                        <exp op="=" dbField="vendor_record_type">'Prime Vendor'</exp>
-                        <exp op="&lt;=" dbField="starting_year_id" paramName="year" />
-                        <exp op="&gt;=" dbField="ending_year_id" paramName="year" />
-                        <exp op="&gt;=" dbField="registered_year_id" paramName="year" />
-                        <exp op="IN" dbField="document_code" paramName="doctype" />
-                        <exp op="=" dbField="prime_vendor_id" paramName="vendor" />
-                        <exp op="=" dbField="agency_id" paramName="agency" />
-                        <exp op="IN" dbField="prime_minority_type_id" paramName="mwbe" />
-                        <exp op="=" dbField="award_method_id" paramName="awdmethod" />
-                        <exp op="=" dbField="award_size_id" paramName="csize" />
-                        <exp op="=" dbField="industry_type_id" paramName="cindustry" />
-                    </exp>
+                <exp op="AND">
+                    <exp op="=" dbField="vendor_record_type">'Prime Vendor'</exp>
+                    <exp op="&lt;=" dbField="starting_year_id" paramName="year" />
+                    <exp op="&gt;=" dbField="ending_year_id" paramName="year" />
+                    <exp op="&lt;=" dbField="effective_begin_year_id" paramName="effective_year" />
+                    <exp op="&gt;=" dbField="effective_end_year_id" paramName="effective_year" />
+                    <exp op="=" dbField="registered_year_id" paramName="registered_year" />
+                    <exp op="IN" dbField="document_code" paramName="doctype" />
+                    <exp op="=" dbField="prime_vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="agency_id" paramName="agency" />
+                    <exp op="IN" dbField="prime_minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="award_size_id" paramName="csize" />
+                    <exp op="=" dbField="industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
+
             GROUP BY contract_number,prime_purpose,agency_id,agency_name,prime_vendor_id,prime_vendor_name,prime_minority_type_id,
             original_agreement_id,document_code_id,document_code,ref_status.scntrc_status_name
             <exp op="IF" condition="=" paramName="is_modification" compareValue="true">
@@ -461,9 +446,9 @@
     <!-- GetContractsSubvendorReporting -->
     <!--GetPrimeContractSubVenReporting,GetCountPrimeContractSubVenReporting-->
     <statement name="GetContractsSubvendorReporting" datasource="checkbook">
-        <param name="year" required ="true" type="int"/>
-        <param name="yeartype" required ="true" type="string" />
-        <param name="status" type="string"/>
+        <param name="year" />
+        <param name="effective_year" />
+        <param name="registered_year" />
         <param name="doctype" />
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
@@ -473,41 +458,31 @@
         <param name="csize" />
         <param name="cindustry" />
         <sql>
-            SELECT
-            l3.agency_id,
-            l3.agency_name,
-            COUNT(DISTINCT l1.contract_number) as number_contracts,
-            SUM(COALESCE(l1.spending_amount,0)) AS spending_amount_sum,
-            SUM(CASE WHEN l1.scntrc_status = 1 THEN 1 ELSE 0 END) AS no_response_status,
-            SUM(CASE WHEN l1.scntrc_status = 2 THEN 1 ELSE 0 END) AS reported_sub_count,
-            SUM(CASE WHEN l1.scntrc_status = 3 THEN 1 ELSE 0 END) AS reported_no_sub_count,
-            SUM(CASE WHEN l1.scntrc_status = 2 AND sd.contract_number IS NULL THEN 1 ELSE 0 END) AS reported_no_details_count
-            FROM aggregateon_mwbe_contracts_cumulative_spending l1
-            LEFT JOIN
-            (
-            SELECT distinct contract_number FROM sub_agreement_snapshot
-            <where>
-                <exp op="=" dbField="latest_flag">'Y'</exp>
-            </where>
-            ) sd ON l1.contract_number = sd.contract_number
-            JOIN ref_document_code l2 ON l2.document_code_id = l1.document_code_id
-            JOIN ref_agency l3 on l3.agency_id = l1.agency_id
-            JOIN vendor l4 on l4.vendor_id = l1.vendor_id
+            SELECT agency_id, agency_name,
+            COUNT(DISTINCT a.contract_number) as number_contracts,
+            SUM(CASE WHEN scntrc_status = 1 THEN 1 ELSE 0 END) AS no_response_status,
+            SUM(CASE WHEN scntrc_status = 2 THEN 1 ELSE 0 END) AS reported_sub_count,
+            SUM(CASE WHEN scntrc_status = 3 THEN 1 ELSE 0 END) AS reported_no_sub_count,
+            SUM(CASE WHEN scntrc_status = 4 THEN 1 ELSE 0 END) AS not_required
+            FROM all_agreement_transactions_by_prime_sub_vendor a
             <where>
                 <exp op="AND">
-                    <exp op="=" dbField="l1.fiscal_year_id" paramName="year" />
-                    <exp op="=" dbField="l1.type_of_year" paramName="yeartype" />
-                    <exp op="=" dbField="l1.status_flag">'A'</exp>
-                    <exp op="IN" dbField="l2.document_code" paramName="doctype" />
-                    <exp op="=" dbField="l1.vendor_id" paramName="vendor" />
-                    <exp op="=" dbField="l1.agency_id" paramName="agency" />
-                    <exp op="=" dbField="l1.award_method_id" paramName="awdmethod" />
-                    <exp op="=" dbField="l1.award_size_id" paramName="csize" />
-                    <exp op="=" dbField="l1.industry_type_id" paramName="cindustry" />
-                    <exp op="IN" dbField="l1.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="vendor_record_type">'Prime Vendor'</exp>
+                    <exp op="&lt;=" dbField="starting_year_id" paramName="year" />
+                    <exp op="&gt;=" dbField="ending_year_id" paramName="year" />
+                    <exp op="&lt;=" dbField="effective_begin_year_id" paramName="effective_year" />
+                    <exp op="&gt;=" dbField="effective_end_year_id" paramName="effective_year" />
+                    <exp op="=" dbField="registered_year_id" paramName="registered_year" />
+                    <exp op="IN" dbField="document_code" paramName="doctype" />
+                    <exp op="=" dbField="prime_vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="agency_id" paramName="agency" />
+                    <exp op="IN" dbField="prime_minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="award_size_id" paramName="csize" />
+                    <exp op="=" dbField="industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
-            GROUP BY l3.agency_id, l3.agency_name
+            GROUP BY agency_id, agency_name
         </sql>
     </statement>
     <statement name="GetCountContractsSubvendorReporting" datasource="checkbook">
