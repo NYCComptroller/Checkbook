@@ -75,11 +75,10 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
     $mwbe_filters =  "<div class='main-nav-drop-down' style='display:none'></div>";
     $svendor_filters =  "<div class='main-nav-drop-down' style='display:none'></div>";
 }else{
-    // Get mwbe and subvendor links.	
+    //Get mwbe and subvendor links.	
     $mwbe_active_domain_link = RequestUtil::getDashboardTopNavURL("mwbe") ;
     $svendor_active_domain_link = RequestUtil::getDashboardTopNavURL("subvendor") ;
     $svendor_active_domain_link = preg_replace('/\/industry\/[^\/]*/','',$svendor_active_domain_link);
-
 
     // calcluate amount for mwbe and subvendors top nav. 
     if(preg_match('/contract/',$_GET['q'])){
@@ -133,7 +132,6 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 
         // call function to get mwbe drop down filters.
         $mwbe_filters = MappingUtil::getCurrentMWBETopNavFilters($mwbe_active_domain_link,"contracts");
-
         // call function to get sub vendors drop down filters.
         $svendor_filters = MappingUtil::getCurrentSubVendorsTopNavFilters($svendor_active_domain_link,"contracts");
     }else{
