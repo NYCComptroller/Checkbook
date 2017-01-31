@@ -84,6 +84,7 @@
             . _checkbook_project_get_url_param_string(\"year\")
             . _checkbook_project_get_url_param_string(\"yeartype\")
             .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
+            .  _checkbook_project_get_url_param_string(\"bottom_slider\")
             . '/agency/' . $row['agency_id']
             .  '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "
         },
@@ -107,7 +108,9 @@
         },
         "subvendor_name": {
             "type": "expression2",
-            "expression": "$row['sub_vendor_name'] == NULL ? 'NOT PROVIDED' : '<a href=\"/contracts_landing'  . ContractUtil::get_contracts_vendor_link_sub($row[sub_vendor_id],_getRequestParamValue('year'),_getRequestParamValue('yeartype'), null, $row[sub_minority_type_id]) .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>'"
+            "expression": "$row['sub_vendor_name'] == NULL ? 'NOT PROVIDED' : '<a href=\"/contracts_landing'  
+                                . ContractUtil::get_contracts_vendor_link_sub($row[sub_vendor_id],_getRequestParamValue('year'),_getRequestParamValue('yeartype'), null, $row[sub_minority_type_id]) 
+                                .  '?expandBottomCont=true\">' .$row[subvendor_name_formatted]. '</a>'"
         },
         "subvendor_name_export": {
             "type": "expression2",

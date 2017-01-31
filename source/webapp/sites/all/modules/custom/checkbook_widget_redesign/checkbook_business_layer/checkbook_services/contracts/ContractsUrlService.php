@@ -185,6 +185,7 @@ class ContractsUrlService {
             .RequestUtilities::_getUrlParamString('csize')
             .RequestUtilities::_getUrlParamString('awdmethod')
             .RequestUtilities::_getUrlParamString('status')
+            .RequestUtilities::_getUrlParamString('bottom_slider')
             ._checkbook_project_get_year_url_param_string()
             ."/agency/".$agency_id
             ."?expandBottomCont=true";
@@ -266,7 +267,7 @@ class ContractsUrlService {
         $contract_status = _checkbook_project_get_url_param_string('status','contstatus');
         $contract_status = isset($contract_status) && $contract_status != '' ? $contract_status : "/contstatus/P";
 
-        $path = Dashboard::isSubDashboard() && ContractStatus::getCurrent() == ContractStatus::PENDING
+        $path = Dashboard::isSubDashboard() && subVendorContractsByPrimeVendor::getCurrent() == ContractCategory::EXPENSE
             ? '/panel_html/sub_contracts_transactions/subcontract/transactions'
             : '/panel_html/contract_details/contract/transactions';
 
@@ -353,6 +354,7 @@ class ContractsUrlService {
             . RequestUtilities::_getUrlParamString("cindustry")
             . RequestUtilities::_getUrlParamString("csize")
             . RequestUtilities::_getUrlParamString("awdmethod")
+            .RequestUtilities::_getUrlParamString('bottom_slider')
             . _checkbook_project_get_year_url_param_string();
 
         $year_type = _getRequestParamValue("yeartype");

@@ -186,7 +186,7 @@ if($mwbe_amount  == 0 && $mwbe_amount_active_inc == 0){
 
 if($svendor_amount  == 0 && $svendor_amount_active_inc == 0){
     if($active_subven_amount == 0){
-        $svendor_active_domain_link = str_replace('/status/A', '', $svendor_active_domain_link);
+        $svendor_active_domain_link = ContractURLHelper::prepareSubvendorContractsSliderFilter();
         $subvendors_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format($svendor_amount ,1,'$') . '</div></div>',$svendor_active_domain_link ,$options);	 
     }else{
         $subvendors_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div></div>','',$options_disabled);			

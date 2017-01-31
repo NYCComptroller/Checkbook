@@ -71,7 +71,7 @@ abstract class ContractType {
     }
 }
 
-abstract class noStatusExpenseContracts {
+abstract class subVendorContractsByPrimeVendor {
 
     const EXPENSE = "expense";
 
@@ -81,7 +81,7 @@ abstract class noStatusExpenseContracts {
         $category = NULL;
 
         if((preg_match('/contracts_landing/',$urlPath) || preg_match('/contracts_landing/',$ajaxPath)) &&
-            !(preg_match('/status/',$urlPath) || preg_match('/status/',$ajaxPath))) {
+            (preg_match('/bottom_slider/',$urlPath) || preg_match('/bottom_slider/',$ajaxPath))) {
             $category = self::EXPENSE;
         }
 

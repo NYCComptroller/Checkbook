@@ -80,8 +80,8 @@ class WidgetController {
             case Domain::$CONTRACTS:
                 $status = ContractStatus::getCurrent();
                 $category = ContractCategory::getCurrent();
-                $nostatusExpenseContracts = noStatusExpenseContracts::getCurrent();
-                $dimension = isset($nostatusExpenseContracts)? "{$category}": "{$status}_{$category}";
+                $subVendorContractsByPrimeVendor = subVendorContractsByPrimeVendor::getCurrent();
+                $dimension = isset($subVendorContractsByPrimeVendor)? "{$category}": "{$status}_{$category}";
                 $config = $configuration->$dashboard->$dimension->landing_page_widgets->$widget;
                 break;
             case Domain::$SPENDING:
