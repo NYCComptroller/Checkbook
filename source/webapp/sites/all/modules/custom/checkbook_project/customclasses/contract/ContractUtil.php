@@ -21,7 +21,7 @@
 namespace { //global
     class ContractUtil{
 
-        static $landingPageParams = array("status"=>"status","awdmethod"=>"awdmethod","cindustry"=>"cindustry","csize"=>"csize","mwbe"=>"mwbe","dashboard"=>"dashboard","agency"=>"agency","vendor"=>"vendor","subvendor"=>"subvendor");
+        static $landingPageParams = array("status"=>"status","awdmethod"=>"awdmethod","cindustry"=>"cindustry","csize"=>"csize","mwbe"=>"mwbe","dashboard"=>"dashboard","agency"=>"agency","vendor"=>"vendor","subvendor"=>"subvendor","bottom_slider"=>"bottom_slider");
 
         /**
          * NYCCHKBK-3573 - Contract ID page notepad icon should be displayed only if there is a difference between OGE

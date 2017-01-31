@@ -937,17 +937,9 @@ class RequestUtil{
     	if(self::isContractsSpendingLandingPage()){
     		$url = $_GET['q'];
 
-    		if(preg_match('/contract/',$url)){
+            if(preg_match('/contract/',$url)){
                 $url =  ContractUtil::getLandingPageWidgetUrl(null);
-                //Default to active status
-                if(preg_match('/status/',$url)) {
-                    $url = preg_replace('/\/status\/./','/status/A',$url);
-                }
-                else {
-                    $url = preg_replace('/contracts_landing\//', 'contracts_landing/status/A/', $url);
-                }
-    		}
-            else{
+            }else{
                 //Default to total spending
                 $override_params = array("category"=>null);
                 $url =  SpendingUtil::getLandingPageWidgetUrl($override_params);
