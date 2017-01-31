@@ -191,7 +191,7 @@ class ContractURLHelper{
 
     }
 
-    public function prepareSubvendorContractsSliderFilter($page){
+    public function prepareSubvendorContractsSliderFilter($page, $dashboard=NULL){
 
         $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
         $url = $page;
@@ -201,10 +201,12 @@ class ContractURLHelper{
             $url .= "/yeartype/B/year/"._getCurrentYearID();
         }
         else{
-            $allowedFilters =  array("year","calyear","agency","yeartype","awdmethod","vendor","csize","cindustry","agid","dashboard","subvendor","mwbe","status");
+            $allowedFilters =  array("year","calyear","agency","yeartype","awdmethod","vendor","csize","cindustry","agid","subvendor","mwbe","status");
+            //Add new parameter for bottom slider
+            $dashboard = isset($dashboard)? $dashboard : _getRequestParamValue("dashboard");
+            $url .= "/bottom_slider/sub_vendor".
+                    (isset($dashboard)? '/dashboard/'.$dashboard :"");
         }
-        //Add new parameter for bottom slider
-        $url .= "/bottom_slider/sub_vendor";
         
         for($i=1;$i < count($pathParams);$i++){
 

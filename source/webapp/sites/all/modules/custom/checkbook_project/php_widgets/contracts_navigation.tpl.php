@@ -183,24 +183,24 @@ if($mwbe_amount  == 0 && $mwbe_amount_active_inc == 0){
     $mwbe_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' . RequestUtil::getDashboardTopNavTitle("mwbe") . '</span><br>&nbsp;'. custom_number_formatter_format($mwbe_amount ,1,'$') . '</div></div>',$mwbe_active_domain_link,$options);	
 }
 
-
-if($svendor_amount  == 0 && $svendor_amount_active_inc == 0){
-    if($active_subven_amount == 0 && preg_match('/contract/',$_GET['q'])){
-        $svendor_active_domain_link = ContractURLHelper::prepareSubvendorContractsSliderFilter('contracts_landing');
-        $subvendors_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format($svendor_amount ,1,'$') . '</div></div>',$svendor_active_domain_link ,$options);	 
-    }else{
-        $subvendors_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div></div>','',$options_disabled);			
-    }
-}else{
-    $subvendors_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format($svendor_amount ,1,'$') . '</div></div>',$svendor_active_domain_link ,$options);	
-}
-
 $indicator_left = true;
 $featured_dashboard = _getRequestParamValue("dashboard");
 if($featured_dashboard != null){
     $indicator_left = false;
 }else{
     $indicator_left = true;
+}
+
+if($svendor_amount  == 0 && $svendor_amount_active_inc == 0){
+    if($active_subven_amount == 0 && preg_match('/contract/',$_GET['q'])){
+        $dashboard = isset($featured_dashboard) ? $featured_dashboard : 'ss';
+        $svendor_active_domain_link = ContractURLHelper::prepareSubvendorContractsSliderFilter('contracts_landing', $dashboard);
+        $subvendors_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format($svendor_amount ,1,'$') . '</div></div>',$svendor_active_domain_link ,$options);	 
+    }else{
+        $subvendors_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div></div>','',$options_disabled);			
+    }
+}else{
+    $subvendors_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format($svendor_amount ,1,'$') . '</div></div>',$svendor_active_domain_link ,$options);	
 }
 
 // conditions for making mwbe active.
