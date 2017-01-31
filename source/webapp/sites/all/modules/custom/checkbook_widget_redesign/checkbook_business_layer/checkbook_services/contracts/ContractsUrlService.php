@@ -280,6 +280,7 @@ class ContractsUrlService {
             . _checkbook_project_get_url_param_string("vendor","fvendor")
             . _checkbook_project_get_url_param_string('awdmethod')
             . _checkbook_project_get_url_param_string('csize')
+            . _checkbook_project_get_url_param_string('bottom_silder')
             . $mwbe_param . $subvendor_param . $vendor_param . $industry_param
             . _checkbook_project_get_year_url_param_string()
             . self::getDocumentCodeUrlString($parameters)
