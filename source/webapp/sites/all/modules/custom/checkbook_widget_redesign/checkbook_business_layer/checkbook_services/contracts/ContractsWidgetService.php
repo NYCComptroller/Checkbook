@@ -52,4 +52,15 @@ class ContractsWidgetService extends AbstractWidgetService {
         return $value;
     }
 
+    public function adjustParameters($parameters, $urlPath) {
+
+        $status = ContractStatus::getCurrent();
+        if($status == ContractStatus::ACTIVE) {
+            $parameters['effective_year'] = $parameters['year'];
+        }
+        else if($status == ContractStatus::REGISTERED) {
+            $parameters['registered_year'] = $parameters['year'];
+        }
+        return $parameters;
+    }
 }
