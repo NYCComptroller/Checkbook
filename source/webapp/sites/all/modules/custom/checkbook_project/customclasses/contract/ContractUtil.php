@@ -280,6 +280,9 @@ namespace { //global
             $new_dashboard = $is_mwbe_certified ? "ms" : "ss";
             $status = strlen(_checkbook_project_get_url_param_string("contstatus","status"))== 0 ? "/status/A" : "";
             
+            //Add bottom_slider parameter for 'Sub Vendor Contracts Status by Prime Vendors' dashboard
+            $url .= _checkbook_project_get_url_param_string("bottom_slider");
+            
             if($current_dashboard != $new_dashboard ){
                     return $url . $status . "/dashboard/" . $new_dashboard . ($is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "" ) . "/subvendor/".$vendor_id;
             }else{

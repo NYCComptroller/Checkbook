@@ -19,7 +19,8 @@
 */
 ?>
 <?php
-    $is_active_expense_contracts = (preg_match("/^contracts_landing/", $_GET['q']) & _getRequestParamValue("status") == "A")? true:false;
+    $is_active_expense_contracts = (preg_match("/^contracts_landing/", $_GET['q']) && _getRequestParamValue("status") == "A" 
+                                    && _getRequestParamValue("bottom_slider") != "sub_vendor")? true:false;
     $td_class1 = ($is_active_expense_contracts)?'  class="active"':"";
     $active_link = ContractURLHelper::prepareActRegContractsSliderFilter('contracts_landing', 'A');
     $count = "<span class='count'>" . number_format($node->data[0]['total_contracts']) . "</span>";
@@ -64,7 +65,7 @@
                 <div class="indicator"></div>
             </td>
             <?php
-                $td_class3 = (preg_match("/^contracts_landing/", $_GET['q']) & _getRequestParamValue("status") == "")?' class="active"':"";
+                $td_class3 = (preg_match("/^contracts_landing/", $_GET['q']) & _getRequestParamValue("bottom_slider") == "sub_vendor")?' class="active"':"";
                 $subvendor_link = ContractURLHelper::prepareSubvendorContractsSliderFilter('contracts_landing');
             ?>
             <td<?php echo $td_class3; ?>>
