@@ -36,6 +36,12 @@ require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/ob
 require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/object/converter/handler/AbstractJson2PHP.php');
 require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/object/converter/handler/Json2PHP.php');
 
+// Remove these
+require_once(realpath(drupal_get_path('module', 'checkbook_infrastructure_layer')) .'/constants/ContractConstants.php');
+require_once(realpath(drupal_get_path('module', 'checkbook_infrastructure_layer')) .'/constants/CommonConstants.php');
+require_once(realpath(drupal_get_path('module', 'checkbook_infrastructure_layer')) .'/utilities/RequestUtilities.php');
+
+
 
 /***************************************/
 /* Implementation of Widget Node Type  */
@@ -374,6 +380,10 @@ function load_widget_controller_data_count($node) {
     //Prepare sql parameters
     $parameters = _prepare_input_parameters($node);
 
+    //Adjust sql parameters
+    $urlPath = $_GET['q'];
+    $parameters = $service->adjustParameters($parameters, $urlPath);
+
     //Load widget total row count
     try {
         $node->totalDataCount = _load_widget_controller_row_count($service, $parameters);
@@ -446,6 +456,10 @@ function _load_widget_controller_data($node, $service) {
     $orderBy = _prepare_order_by($node);
     $limit = $node->widgetConfig->limit;
     $parameters = _prepare_input_parameters($node);
+
+    //Adjust sql parameters
+    $urlPath = $_SERVER['HTTP_REFERER'];
+    $parameters = $service->adjustParameters($parameters, $urlPath);
 
     try {
         $results = $service->getWidgetData($parameters, $limit, $orderBy);
