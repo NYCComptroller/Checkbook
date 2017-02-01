@@ -515,6 +515,8 @@ class MappingUtil {
                 break;
             case 3: return('No');
                 break;
+            case 4: return('Not Required');
+                break;
         }
 
     }
