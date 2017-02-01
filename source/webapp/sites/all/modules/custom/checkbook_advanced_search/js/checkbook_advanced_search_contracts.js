@@ -82,11 +82,13 @@
                 default:
                     initializeContractsView(div_checkbook_contracts);
                     div_checkbook_contracts.contents().show();
-                    div_checkbook_contracts.ele('includes_sub_vendors').html('<option value="0" selected>Select Status</option>' +
-                            '<option value="2">Yes</option>' +
-                            '<option value="3">No</option>' +
-                            '<option value="1">No Data Entered</option>');
                     div_checkbook_contracts_oge.contents().hide();
+
+                    // div_checkbook_contracts.ele('includes_sub_vendors').html('<option value="0" selected>Select Status</option>' +
+                    //         '<option value="2">Yes</option>' +
+                    //         '<option value="3">No</option>' +
+                    //         '<option value="1">No Data Entered</option>');
+
                     break;
             }
         }
@@ -223,7 +225,7 @@
         function updateSubvendorStatusField(div) {
             var includes_sub_vendors = div.ele('includes_sub_vendors').val();
 
-            if(includes_sub_vendors == 3 || includes_sub_vendors == 1) {
+            if(includes_sub_vendors == 3 || includes_sub_vendors == 1 || includes_sub_vendors == 4) {
                 div.ele('sub_vendor_status').attr("disabled", "disabled");
                // div.ele('sub_vendor_status').val('');
             } else{
@@ -257,19 +259,22 @@
                         div.ele('includes_sub_vendors').html('<option value="0">Select Status</option>' +
                             '<option value="2" selected>Yes</option>' +
                             '<option value="3">No</option>' +
-                            '<option value="1">No Data Entered</option>');
+                            '<option value="1">No Data Entered</option>' +
+                            '<option value="4">Not Required</option>');
                     } else {
                         div.ele('includes_sub_vendors').html('<option value="0" selected>Select Status</option>' +
                             '<option value="2">Yes</option>' +
                             '<option value="3">No</option>' +
-                            '<option value="1">No Data Entered</option>');
+                            '<option value="1">No Data Entered</option>' +
+                            '<option value="4">Not Required</option>');
                     }
             }
             jQuery("#edit-contracts-clear").click(function() {
                 div.ele('includes_sub_vendors').html('<option value="0" selected>Select Status</option>' +
                     '<option value="2">Yes</option>' +
                     '<option value="3">No</option>' +
-                    '<option value="1">No Data Entered</option>');
+                    '<option value="1">No Data Entered</option>' +
+                    '<option value="4">Not Required</option>');
             });
         }
     })

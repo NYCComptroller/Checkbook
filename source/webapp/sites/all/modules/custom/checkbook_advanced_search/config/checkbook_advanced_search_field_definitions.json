@@ -275,12 +275,8 @@
         "field_name":"includes_sub_vendors",
         "attributes":{
             "title":"Contract Includes<br/>Sub Vendors",
-            "options":{
-                "0":"Select Status",
-                "2":"Yes",
-                "3":"No",
-                "1":"No Data Entered"
-            }
+            "options": "$includes_sub_vendors",
+            "option_attributes:": "$includes_sub_vendors_attributes"
         }
     },
     "sub_vendor_status":{

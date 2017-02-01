@@ -249,6 +249,42 @@ function _checkbook_advanced_search_get_subcontract_approval_status_and_id($attr
     }
 }
 
+
+
+/**
+ * Gets the scntrc_status_name, scntrc_status(id), and display_flag using the data controller
+ * @return array
+ */
+function _checkbook_advanced_search_get_contract_includes_subvendors_status($attributes = NULL)
+{
+    try {
+        $dataController = data_controller_get_instance();
+        $values = $dataController->queryDataset('checkbook:ref_subcontract_status', array('scntrc_status', 'scntrc_status_name', 'display_flag'), NULL, 'sort_order', 0, 10, NULL);
+
+        if($attributes){
+            $statuses = array('title' => 'Select Status');
+        }else{
+            $statuses = array('Select Status');
+        }
+        foreach ($values as $value) {
+            if($attributes){
+                $statuses[$value['scntrc_status']] = array('title' => $value['scntrc_status_name']);
+            }else{
+                if($value['display_flag'] == 1) {
+                    if(strlen($value['scntrc_status_name']) > 20)
+                        $statuses[$value['scntrc_status']] = substr($value['scntrc_status_name'], 0, 20) . '...';
+                    else
+                        $statuses[$value['scntrc_status']] = $value['scntrc_status_name'];
+                }
+            }
+        }
+        return $statuses;
+    } catch (Exception $e) {
+        log_error("Error getting data from controller: \n" . $e->getMessage());
+        return;
+    }
+}
+
 /**
  * Generates the Url param mappings for current amount id by prime and sub
  * @param $value
