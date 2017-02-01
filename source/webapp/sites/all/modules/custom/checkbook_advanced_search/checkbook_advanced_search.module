@@ -641,6 +641,9 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
         $industry_attributes = _checkbook_advanced_search_get_industry_type_and_id();
         $sub_vendor_status = _checkbook_advanced_search_get_subcontract_approval_status_and_id();
         $sub_vendor_status_attributes = _checkbook_advanced_search_get_subcontract_approval_status_and_id('attributes');
+
+        $includes_sub_vendors = _checkbook_advanced_search_get_contract_includes_subvendors_status();
+        $includes_sub_vendors_attributes = _checkbook_advanced_search_get_contract_includes_subvendors_status('attributes');
     }
     $expense_attributes = _checkbook_advanced_search_get_expensetype_and_id($data_source);
     $year_attribute = _checkbook_advanced_search_get_year($domain, $data_source);
@@ -651,58 +654,64 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
     $field_definition_configs = _checkbook_advanced_search_get_field_def_configs();
 
     foreach ($field_definition_configs as $i=>$field_config) {
-       if(!(is_null($field_config['attributes'])))
-       {
-           $attributes = $field_config['attributes'];
-           if(!(is_null($attributes['options'])))
-           {
-               $options = $attributes['options'];
-               switch ($options) {
-                   case '$agencies':
-                       $field_definition_configs[$i]['attributes']['options'] = $agencies;
-                       break;
-                   case '$expense_attributes':
-                       $field_definition_configs[$i]['attributes']['options'] = $expense_attributes;
-                       break;
-                   case'$year_attribute':
-                       $field_definition_configs[$i]['attributes']['options'] = $year_attribute;
-                       break;
-                   case'$award_method':
-                       $field_definition_configs[$i]['attributes']['options'] = $award_method;
-                       break;
-                   case'$year_range':
-                       $field_definition_configs[$i]['attributes']['options'] = $year_range;
-                       break;
-                   case'$contract_type_attribute':
-                       $field_definition_configs[$i]['attributes']['options'] = $contract_type_attribute;
-                       break;
-                   case '$mwbe_category_attributes':
-                       $field_definition_configs[$i]['attributes']['options'] = $mwbe_category_attributes;
-                       break;
-                   case '$industry_attributes':
-                       $field_definition_configs[$i]['attributes']['options'] = $industry_attributes;
-                       break;
-                   case '$sub_vendor_status':
-                       $field_definition_configs[$i]['attributes']['options'] = $sub_vendor_status;
-                       break;
-               }
-           }
-           if(!(is_null($attributes['option_attributes'])))
-           {
-               $option_attributes = $attributes['option_attributes'];
-               switch ($option_attributes) {
-                   case '$agency_attributes':
-                       $field_definition_configs[$i]['attributes']['option_attributes'] = $agency_attributes;
-                       break;
-                   case '$award_method_attributes':
-                       $field_definition_configs[$i]['attributes']['option_attributes'] = $award_method_attributes;
-                       break;
-                   case '$sub_vendor_status_attributes':
-                       $field_definition_configs[$i]['attributes']['option_attributes'] = $sub_vendor_status_attributes;
-                       break;
-               }
-           }
-       }
+        if(!(is_null($field_config['attributes'])))
+        {
+            $attributes = $field_config['attributes'];
+            if(!(is_null($attributes['options'])))
+            {
+                $options = $attributes['options'];
+                switch ($options) {
+                    case '$agencies':
+                        $field_definition_configs[$i]['attributes']['options'] = $agencies;
+                        break;
+                    case '$expense_attributes':
+                        $field_definition_configs[$i]['attributes']['options'] = $expense_attributes;
+                        break;
+                    case'$year_attribute':
+                        $field_definition_configs[$i]['attributes']['options'] = $year_attribute;
+                        break;
+                    case'$award_method':
+                        $field_definition_configs[$i]['attributes']['options'] = $award_method;
+                        break;
+                    case'$year_range':
+                        $field_definition_configs[$i]['attributes']['options'] = $year_range;
+                        break;
+                    case'$contract_type_attribute':
+                        $field_definition_configs[$i]['attributes']['options'] = $contract_type_attribute;
+                        break;
+                    case '$mwbe_category_attributes':
+                        $field_definition_configs[$i]['attributes']['options'] = $mwbe_category_attributes;
+                        break;
+                    case '$industry_attributes':
+                        $field_definition_configs[$i]['attributes']['options'] = $industry_attributes;
+                        break;
+                    case '$sub_vendor_status':
+                        $field_definition_configs[$i]['attributes']['options'] = $sub_vendor_status;
+                        break;
+                    case '$includes_sub_vendors':
+                        $field_definition_configs[$i]['attributes']['options'] = $includes_sub_vendors;
+                        break;
+                }
+            }
+            if(!(is_null($attributes['option_attributes'])))
+            {
+                $option_attributes = $attributes['option_attributes'];
+                switch ($option_attributes) {
+                    case '$agency_attributes':
+                        $field_definition_configs[$i]['attributes']['option_attributes'] = $agency_attributes;
+                        break;
+                    case '$award_method_attributes':
+                        $field_definition_configs[$i]['attributes']['option_attributes'] = $award_method_attributes;
+                        break;
+                    case '$sub_vendor_status_attributes':
+                        $field_definition_configs[$i]['attributes']['option_attributes'] = $sub_vendor_status_attributes;
+                        break;
+                    case '$includes_sub_vendors_attributes':
+                        $field_definition_configs[$i]['attributes']['option_attributes'] = $includes_sub_vendors_attributes;
+                        break;
+                }
+            }
+        }
     }
 
     return $field_definition_configs;
