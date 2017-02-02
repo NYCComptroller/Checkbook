@@ -200,7 +200,7 @@ if($mwbe_amount  == 0 && $mwbe_amount_active_inc == 0){
 
 
 if($svendor_amount  == 0 && $svendor_amount_active_inc == 0){
-    if($svendor_amount_active_inc == 0 && preg_match('/contract/',$_GET['q'])){
+    if($svendor_amount_active_inc == 0 && preg_match('/contract/',$_GET['q']) && !_checkbook_check_isEDCPage()){
         $svendor_active_domain_link = str_replace('/status/A', '', $svendor_active_domain_link);
         $subvendors_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format($svendor_amount ,1,'$') . '</div></div>',$svendor_active_domain_link ,$options);	
     }else{
