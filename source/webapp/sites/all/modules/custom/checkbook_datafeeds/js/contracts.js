@@ -32,12 +32,14 @@
                     $('#edit-contract_includes_sub_vendors_id').html('<option value="0">Select Status</option>' +
                         '<option value="2" selected>Yes</option>' +
                         '<option value="3">No</option>' +
-                        '<option value="1">No Data Entered</option>');
+                        '<option value="1">No Data Entered</option>' +
+                        '<option value="4">Not Required</option>');
                 } else {
                     $('#edit-contract_includes_sub_vendors_id').html('<option value="0" selected>Select Status</option>' +
                         '<option value="2">Yes</option>' +
                         '<option value="3">No</option>' +
-                        '<option value="1">No Data Entered</option>');
+                        '<option value="1">No Data Entered</option>' +
+                        '<option value="4">Not Required</option>');
                 }
             }
         });
