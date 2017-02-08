@@ -58,9 +58,13 @@ if($spending_amount  == 0){
 }else{
   $spending_link =  l('<span class="nav-title">Spending</span><br>'. custom_number_formatter_format($spending_amount ,1,'$'),RequestUtil::getTopNavURL("spending"),$options);
 }
-  
+
 if($contract_amount == 0){
-  $contracts_link =  l('<span class="nav-title">Contracts</span><br>'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
+  //Check if there are any Active contracts when the registered amount is zero to enable 'Contracts' domain
+  if($node->data[14]['total_contracts'] > 0)
+     $contracts_link = l('<span class="nav-title">Contracts</span><br>'.custom_number_formatter_format(0, 1,'$'),RequestUtil::getTopNavURL("contracts"),$options); 
+  else
+    $contracts_link =  l('<span class="nav-title">Contracts</span><br>'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
 }else{
   $contracts_link = l('<span class="nav-title">Contracts</span><br>'.custom_number_formatter_format($contract_amount, 1,'$'),RequestUtil::getTopNavURL("contracts"),$options);
 }
