@@ -276,7 +276,7 @@
         "attributes":{
             "title":"Contract Includes<br/>Sub Vendors",
             "options": "$includes_sub_vendors",
-            "option_attributes": "$includes_sub_vendors"
+            "option_attributes": "$includes_sub_vendors_attributes"
         }
     },
     "sub_vendor_status":{

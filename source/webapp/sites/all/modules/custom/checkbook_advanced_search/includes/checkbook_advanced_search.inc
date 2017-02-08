@@ -259,7 +259,9 @@ function _checkbook_advanced_search_get_contract_includes_subvendors_status($att
 {
     try {
         $dataController = data_controller_get_instance();
-        $values = $dataController->queryDataset('checkbook:ref_subcontract_status', array('scntrc_status', 'scntrc_status_name', 'display_flag'), NULL, 'sort_order', 0, 10, NULL);
+        $values = $dataController->queryDataset('checkbook:ref_subcontract_status',
+            array('scntrc_status', 'scntrc_status_name', 'display_flag'),
+            NULL, 'sort_order', 0, 10, NULL);
 
         if($attributes){
             $statuses = array('title' => 'Select Status');
