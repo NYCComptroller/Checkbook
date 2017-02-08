@@ -1465,7 +1465,9 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
     $contract_type_options = _contract_type_options();
     $award_method_options = _award_method_options();
     $sub_vendor_status_in_pip_options = _sub_vendor_status_in_pip();
-    $contract_includes_sub_vendors_options = _contract_includes_sub_vendors();
+    $contract_includes_sub_vendors_options = _get_contract_includes_subvendors_data();
+    $contract_includes_sub_vendors_attributes = _get_contract_includes_subvendors_data('attributes');
+
 
     switch ($data_source) {
         case 'checkbook_oge':
@@ -1793,8 +1795,8 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
             $form['filter']['contract_includes_sub_vendors_id'] = array(
                 '#type' => 'select',
                 '#title' => t('Contract Includes <br />Sub Vendors:'),
-                '#options' => $contract_includes_sub_vendors_options['options'],
-                '#option_attributes' => $contract_includes_sub_vendors_options['options_attributes'],
+                '#options' => $contract_includes_sub_vendors_options,
+                '#option_attributes' => $contract_includes_sub_vendors_attributes,
                 '#attributes' => array('class' => array('watch')),
                 '#prefix' => '<div class="datafield scntrc_status">',
                 '#suffix' => '</div>',
@@ -5990,47 +5992,6 @@ function _sub_vendor_status_in_pip() {
         return;
     }
 }
-
-/**
- * Get Contract Includes Sub Vendors from Data Controller and format into a FAPI select input #options array.
- *
- * @return array
- *   Contracts Inlcudes Sub Vendors ids and nammes
- */
-function _contract_includes_sub_vendors() {
-    $statuses[0] = 'Select Status';
-    try {
-        $dataController = data_controller_get_instance();
-        $data = $dataController->queryDataset('checkbook:ref_subcontract_status',
-            array('scntrc_status', 'scntrc_status_name', 'display_flag'),
-            NULL, 'sort_order', 0, 10, NULL);
-
-        $menu_options = array('0' => 'Select Status');
-        $title = 'Select Status';
-        $menu_options_attributes = array($title => array('title' => $title));
-
-        foreach ($data as $row) {
-            if ($row['display_flag'] == 1) {
-                $option = $row['scntrc_status_name'];
-                //Menu options
-                $menu_options[$row['scntrc_status']] = (strlen($option) > 20) ? substr($option, 0, 20) . '...' : $option;
-                //Menu option titles
-                $menu_options_attributes[$row['scntrc_status']] = array('title' => $option);
-            }
-        }
-        $results['options'] = $menu_options;
-        $results['options_attributes'] = $menu_options_attributes;
-        return $results;
-    }catch (Exception $e) {
-        log_error("Error getting data from controller: \n" . $e->getMessage());
-        return;
-    }
-}
-
-
-
-
-
 
 /**
  * Get Fund Classes from Data Controller and format into a FAPI select input #options array.

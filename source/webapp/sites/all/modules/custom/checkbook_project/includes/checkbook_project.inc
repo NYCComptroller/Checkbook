@@ -2179,6 +2179,37 @@ function isAdvancedSearchResultsPage(){
     return false;
 }
 
+function _get_contract_includes_subvendors_data($attributes = NULL) {
+    try {
+        $dataController = data_controller_get_instance();
+        $values = $dataController -> queryDataset('checkbook:ref_subcontract_status',
+            array('scntrc_status', 'scntrc_status_name', 'display_flag'),
+            NULL, 'sort_order', 0, 10, NULL);
+
+        if($attributes){
+            $statuses = array('title' => 'Select Status');
+        }else{
+            $statuses = array('Select Status');
+        }
+        foreach ($values as $value) {
+            if($attributes){
+                $statuses[$value['scntrc_status']] = array('title' => $value['scntrc_status_name']);
+            }else{
+                if($value['display_flag'] == 1) {
+                    if(strlen($value['scntrc_status_name']) > 20)
+                        $statuses[$value['scntrc_status']] = substr($value['scntrc_status_name'], 0, 20) . '...';
+                    else
+                        $statuses[$value['scntrc_status']] = $value['scntrc_status_name'];
+                }
+            }
+        }
+        return $statuses;
+    } catch (Exception $e) {
+        log_error("Error getting data from the controller: \n" . $e->getMessage());
+        return;
+    }
+}
+
 //Returns new features from Drupal database
 /*function _checkbook_get_new_features(){
     $query = new EntityFieldQuery();
@@ -2205,3 +2236,4 @@ function isAdvancedSearchResultsPage(){
     $html = theme('new_features',array('new_features'=>$new_features, 'total_count' => $count));
     return $html;
 }*/
+

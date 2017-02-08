@@ -245,7 +245,7 @@
         function updateIncludeSubvendorsField(div) {
             var sub_vendor_status = div.ele('sub_vendor_status').val();
             var includes_sub_vendors = div.ele('includes_sub_vendors').val();
-
+            
             if(sub_vendor_status == 6 || sub_vendor_status == 1 || sub_vendor_status == 4 || sub_vendor_status == 3 || sub_vendor_status == 2 || sub_vendor_status == 5 ) {
                 if(includes_sub_vendors == 2){
                     div.ele('includes_sub_vendors').html('<option value="0">Select Status</option>' +
