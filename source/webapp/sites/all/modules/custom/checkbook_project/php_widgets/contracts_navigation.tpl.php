@@ -59,17 +59,19 @@ if($spending_amount  == 0){
   $spending_link =  l('<span class="nav-title">Spending</span><br>'. custom_number_formatter_format($spending_amount ,1,'$'),RequestUtil::getTopNavURL("spending"),$options);
 }
 
+$current_dashboard = _getRequestParamValue("dashboard");
+
 if($contract_amount == 0){
   //Check if there are any Active contracts when the registered amount is zero to enable 'Contracts' domain
-  if($node->data[14]['total_contracts'] > 0)
-     $contracts_link = l('<span class="nav-title">Contracts</span><br>'.custom_number_formatter_format(0, 1,'$'),RequestUtil::getTopNavURL("contracts"),$options); 
-  else
+  if($node->data[14]['total_contracts'] > 0){
+     $contracts_url = (!in_array($current_dashboard, array('sp','ss', 'ms'))) ? str_replace('/status/A','',RequestUtil::getTopNavURL("contracts")) : RequestUtil::getTopNavURL("contracts");
+     $contracts_link = l('<span class="nav-title">Contracts</span><br>'.custom_number_formatter_format(0, 1,'$'),$contracts_url,$options); 
+  }else{
     $contracts_link =  l('<span class="nav-title">Contracts</span><br>'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
+  }
 }else{
   $contracts_link = l('<span class="nav-title">Contracts</span><br>'.custom_number_formatter_format($contract_amount, 1,'$'),RequestUtil::getTopNavURL("contracts"),$options);
 }
-
-$current_dashboard = _getRequestParamValue("dashboard");
 
 // Disable featured dashboatrd for other government entities. 
 if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
