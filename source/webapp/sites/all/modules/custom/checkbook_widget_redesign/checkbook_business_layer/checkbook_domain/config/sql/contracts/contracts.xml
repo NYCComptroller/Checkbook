@@ -2,8 +2,8 @@
     <!--GetContracts,GetCountContracts-->
     <statement name="GetContracts" datasource="checkbook">
         <param name="year" required ="true" type="int"/>
-        <param name="effective_year" />
-        <param name="registered_year" />
+        <param name="yeartype" required ="true" type="string" />
+        <param name="status" type="string"/>
         <param name="category" type="string"/>
         <param name="doctype" />
         <param name="agency" type="int" />
@@ -14,47 +14,44 @@
         <param name="cindustry" />
         <param name="is_modification" />
         <sql>
-            SELECT
-            contract_number,
-            prime_purpose as contract_purpose,
-            agency_id,
-            agency_name,
-            prime_vendor_id as vendor_id,
-            prime_vendor_name as vendor_name,
-            prime_minority_type_id as minority_type_id,
-            original_agreement_id,
-            document_code_id,
-            document_code,
+            SELECT l1.contract_number,
+            l1.description as contract_purpose,
+            l3.agency_id,
+            l3.agency_name,
+            l4.vendor_id,
+            l4.legal_name as vendor_name,
+            l1.minority_type_id,
+            l1.original_agreement_id,
+            l1.document_code_id,
+            l2.document_code,
             ref_status.scntrc_status_name as contract_subvendor_status,
-            SUM(COALESCE(prime_original_contract_amount,0)) AS original_amount_sum,
-            SUM(COALESCE(prime_maximum_contract_amount,0)) AS current_amount_sum,
-            SUM(COALESCE(prime_rfed_amount,0)) AS spending_amount_sum,
-            SUM(COALESCE(prime_dollar_difference,0)) AS dollar_difference,
-            AVG(prime_percent_difference) AS percent_difference
-            FROM all_agreement_transactions_by_prime_sub_vendor a
-            JOIN ref_subcontract_status ref_status on ref_status.scntrc_status = a.scntrc_status
+            SUM(COALESCE(l1.original_contract_amount,0)) AS original_amount_sum,
+            SUM(COALESCE(l1.maximum_contract_amount,0)) AS current_amount_sum,
+            SUM(COALESCE(l1.spending_amount,0)) AS spending_amount_sum,
+            SUM(COALESCE(dollar_difference,0)) AS dollar_difference,
+            AVG(percent_difference) AS percent_difference
+            FROM aggregateon_mwbe_contracts_cumulative_spending l1
+            JOIN ref_document_code l2 ON l2.document_code_id = l1.document_code_id
+            JOIN ref_agency l3 on l3.agency_id = l1.agency_id
+            JOIN vendor l4 on l4.vendor_id = l1.vendor_id
+            JOIN ref_subcontract_status ref_status on ref_status.scntrc_status = l1.scntrc_status
             <where>
                 <exp op="AND">
-                    <exp op="=" dbField="vendor_record_type">'Prime Vendor'</exp>
-                    <exp op="&lt;=" dbField="starting_year_id" paramName="year" />
-                    <exp op="&gt;=" dbField="ending_year_id" paramName="year" />
-                    <exp op="&lt;=" dbField="effective_begin_year_id" paramName="effective_year" />
-                    <exp op="&gt;=" dbField="effective_end_year_id" paramName="effective_year" />
-                    <exp op="=" dbField="registered_year_id" paramName="registered_year" />
-                    <exp op="IN" dbField="document_code" paramName="doctype" />
-                    <exp op="=" dbField="prime_vendor_id" paramName="vendor" />
-                    <exp op="=" dbField="agency_id" paramName="agency" />
-                    <exp op="IN" dbField="prime_minority_type_id" paramName="mwbe" />
-                    <exp op="=" dbField="award_method_id" paramName="awdmethod" />
-                    <exp op="=" dbField="award_size_id" paramName="csize" />
-                    <exp op="=" dbField="industry_type_id" paramName="cindustry" />
+                    <exp op="=" dbField="l1.fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="l1.type_of_year" paramName="yeartype" />
+                    <exp op="=" dbField="l1.status_flag" paramName="status" />
+                    <exp op="IN" dbField="l2.document_code" paramName="doctype" />
+                    <exp op="=" dbField="l1.vendor_id" paramName="vendor" />
+                    <exp op="=" dbField="l1.agency_id" paramName="agency" />
+                    <exp op="IN" dbField="l1.minority_type_id" paramName="mwbe" />
+                    <exp op="=" dbField="l1.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="l1.award_size_id" paramName="csize" />
+                    <exp op="=" dbField="l1.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
-
-            GROUP BY contract_number,prime_purpose,agency_id,agency_name,prime_vendor_id,prime_vendor_name,prime_minority_type_id,
-            original_agreement_id,document_code_id,document_code,ref_status.scntrc_status_name
+            GROUP BY l1.type_of_year, l1.description,l1.contract_number, l1.original_agreement_id, l1.document_code_id,l2.document_code, l1.minority_type_id,l3.agency_id,l3.agency_name,l4.vendor_id,l4.legal_name,contract_subvendor_status
             <exp op="IF" condition="=" paramName="is_modification" compareValue="true">
-                HAVING SUM(COALESCE(prime_dollar_difference,0)) != 0
+                HAVING SUM(COALESCE(dollar_difference,0)) != 0
             </exp>
         </sql>
     </statement>
